@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-160986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FC5AFD2DD
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E69AFD1E4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C11DA188F5D7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD3C716694B
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6A82045B5;
-	Tue,  8 Jul 2025 16:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EF72E4985;
+	Tue,  8 Jul 2025 16:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjlfWQR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyqAzm6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C00BE46;
-	Tue,  8 Jul 2025 16:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8373F289E2C;
+	Tue,  8 Jul 2025 16:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993267; cv=none; b=nBUnOvuXjJ4GYhIpml0K+n7mGGy+Si/ZZMy9SgtNfSXmapFoGVbz5AMuHHVHMNRwys7+/qZmetVEeO7w/49byNxjEWtFhV1NF62g/kO0ggaDjrVXZlZhudpzleIT/rgqPLDX5wBWeqho0cOjqaFV2/xhwueufZZDGK/04w60eZo=
+	t=1751992721; cv=none; b=JMP0vVRFRRX4qgOGeeRy4rjYKFRNrs0KF3stDk6HY6P/za8/Ue0r1E08NXWsRrXdc7qNhb2krzyA+96zgGoY+TECfjH/P7fciPfv0vbME+TyGlMdPC8r3QrOIhttO+yHzgajTUWlnVmg7tuamBoqnQQAUk5DDsO4zhnXTNUsS5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993267; c=relaxed/simple;
-	bh=xddW8fvts2LWgi5SkMCQ48yWCN0JMKqWhDuEJ5PlwTQ=;
+	s=arc-20240116; t=1751992721; c=relaxed/simple;
+	bh=+0xHeRuHr80/HlOdLmpqxsjQKjtDQHgyDJquQy80IBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4peZPvYCt1rORxiFKN8E7PjJh4IbwyQGSJyYU9fwyGRbw46cLK+vPsGgT/3W13H7dcAteXWxtCk8Jf6aLoVSBXXbHxRPMUwaVq020m71EpannSY9x+oFjOC8VH/BVVPzCjpIjvHeLKqNMM+0geKEQYWrSkT3hDB38lF5pm9E9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjlfWQR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E631EC4CEED;
-	Tue,  8 Jul 2025 16:47:46 +0000 (UTC)
+	 MIME-Version; b=eV1wrVM8gFtDoQ2YPxHqM68N8Hm0agmL3ua3Z9K/ElnxpscGsv2mNgFnebrHt2xD8pxbL41F2F+TyqICJZ/pV2pxtTXVnxBU4qzA19PQFumJc2jOg2LmmErzLRxLE/iCjik2/jHqKmDGmhxQMmaZ4CSDQ6cgmnd9fi4pl4E256E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyqAzm6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD8BC4CEED;
+	Tue,  8 Jul 2025 16:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993267;
-	bh=xddW8fvts2LWgi5SkMCQ48yWCN0JMKqWhDuEJ5PlwTQ=;
+	s=korg; t=1751992721;
+	bh=+0xHeRuHr80/HlOdLmpqxsjQKjtDQHgyDJquQy80IBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjlfWQR7QE1ju3hoRs8iyCD4ULHDcp2+kuDAgb0SN+U5faguR3YY63oqpRk/hLA2f
-	 lWnNXWJKTL5DDZjnZUWY0VcHLDTUm0DjlL9w+EtdS3QdafzowQevCZho2Kqzeg/e5k
-	 BumqMVS6J/ODnMRR8SLojPb9XQxeUd22uU3DofWk=
+	b=JyqAzm6F8mRejNcoOaboAsTnPypnXN2uWqhMyQCRkYIV4L1zd2rSKbNIvaDv62MuX
+	 Idxo2dytLU5Z8LIpgz/bcgU1VIAfUfhUQt5+rR7o0ReXSQp1MCeHq5Bf799/YRI534
+	 dmziUXdTGgJmA8nVSs4uLqTgpfWwHmF0X97D/OSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Shepherd <erick.shepherd@ni.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jonathan Liu <net147@gmail.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.15 016/178] Revert "mmc: sdhci: Disable SD card clock before changing parameters"
+	Fushuai Wang <wangfushuai@baidu.com>,
+	Simon Horman <horms@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 057/232] dpaa2-eth: fix xdp_rxq_info leak
 Date: Tue,  8 Jul 2025 18:20:53 +0200
-Message-ID: <20250708162236.970748390@linuxfoundation.org>
+Message-ID: <20250708162242.956024336@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Fushuai Wang <wangfushuai@baidu.com>
 
-commit dcc3bcfc5b50c625b475dcc25d167b6b947a6637 upstream.
+[ Upstream commit 2def09ead4ad5907988b655d1e1454003aaf8297 ]
 
-It has turned out the trying to strictly conform to the SDHCI specification
-is causing problems. Let's revert and start over.
+The driver registered xdp_rxq_info structures via xdp_rxq_info_reg()
+but failed to properly unregister them in error paths and during
+removal.
 
-This reverts commit fb3bbc46c94f261b6156ee863c1b06c84cf157dc.
-
-Cc: Erick Shepherd <erick.shepherd@ni.com>
-Cc: stable@vger.kernel.org
-Fixes: fb3bbc46c94f ("mmc: sdhci: Disable SD card clock before changing parameters")
-Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-Reported-by: Jonathan Liu <net147@gmail.com>
-Reported-by: Salvatore Bonaccorso <carnil@debian.org>
-Closes: https://bugs.debian.org/1108065
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20250624110932.176925-1-ulf.hansson@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d678be1dc1ec ("dpaa2-eth: add XDP_REDIRECT support")
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://patch.msgid.link/20250626133003.80136-1-wangfushuai@baidu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ .../net/ethernet/freescale/dpaa2/dpaa2-eth.c  | 26 +++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -2065,15 +2065,10 @@ void sdhci_set_clock(struct sdhci_host *
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index 29886a8ba73f3..efd0048acd3b2 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -3928,6 +3928,7 @@ static int dpaa2_eth_setup_rx_flow(struct dpaa2_eth_priv *priv,
+ 					 MEM_TYPE_PAGE_ORDER0, NULL);
+ 	if (err) {
+ 		dev_err(dev, "xdp_rxq_info_reg_mem_model failed\n");
++		xdp_rxq_info_unreg(&fq->channel->xdp_rxq);
+ 		return err;
+ 	}
  
- 	host->mmc->actual_clock = 0;
+@@ -4421,17 +4422,25 @@ static int dpaa2_eth_bind_dpni(struct dpaa2_eth_priv *priv)
+ 			return -EINVAL;
+ 		}
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
  
--	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
--	if (clk & SDHCI_CLOCK_CARD_EN)
--		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN,
--			SDHCI_CLOCK_CONTROL);
-+	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
+ 	err = dpni_get_qdid(priv->mc_io, 0, priv->mc_token,
+ 			    DPNI_QUEUE_TX, &priv->tx_qdid);
+ 	if (err) {
+ 		dev_err(dev, "dpni_get_qdid() failed\n");
+-		return err;
++		goto out;
+ 	}
  
--	if (clock == 0) {
--		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
-+	if (clock == 0)
- 		return;
--	}
+ 	return 0;
++
++out:
++	while (i--) {
++		if (priv->fq[i].type == DPAA2_RX_FQ &&
++		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
++			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
++	}
++	return err;
+ }
  
- 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
- 	sdhci_enable_clk(host, clk);
+ /* Allocate rings for storing incoming frame descriptors */
+@@ -4814,6 +4823,17 @@ static void dpaa2_eth_del_ch_napi(struct dpaa2_eth_priv *priv)
+ 	}
+ }
+ 
++static void dpaa2_eth_free_rx_xdp_rxq(struct dpaa2_eth_priv *priv)
++{
++	int i;
++
++	for (i = 0; i < priv->num_fqs; i++) {
++		if (priv->fq[i].type == DPAA2_RX_FQ &&
++		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
++			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
++	}
++}
++
+ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+ {
+ 	struct device *dev;
+@@ -5017,6 +5037,7 @@ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+ 	free_percpu(priv->percpu_stats);
+ err_alloc_percpu_stats:
+ 	dpaa2_eth_del_ch_napi(priv);
++	dpaa2_eth_free_rx_xdp_rxq(priv);
+ err_bind:
+ 	dpaa2_eth_free_dpbps(priv);
+ err_dpbp_setup:
+@@ -5069,6 +5090,7 @@ static void dpaa2_eth_remove(struct fsl_mc_device *ls_dev)
+ 	free_percpu(priv->percpu_extras);
+ 
+ 	dpaa2_eth_del_ch_napi(priv);
++	dpaa2_eth_free_rx_xdp_rxq(priv);
+ 	dpaa2_eth_free_dpbps(priv);
+ 	dpaa2_eth_free_dpio(priv);
+ 	dpaa2_eth_free_dpni(priv);
+-- 
+2.39.5
+
 
 
 
