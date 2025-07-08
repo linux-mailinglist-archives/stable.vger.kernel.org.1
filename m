@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-160781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A50AFD1DA
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:40:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D510AFD091
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:24:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14D8748743F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:37:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED017188C56F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FA92E5402;
-	Tue,  8 Jul 2025 16:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AB42E49AF;
+	Tue,  8 Jul 2025 16:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcPne4LD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xygCvJhF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4872E2F0D;
-	Tue,  8 Jul 2025 16:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D14D2E5417;
+	Tue,  8 Jul 2025 16:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992671; cv=none; b=h2ervmDI7T36OrAUUxC6OLRkfyhzzp+CYdtY5shgvuMpdERYRHAcvMVzSS+RXRz3sgVrxoC/qgPayJLTslRq6HjITRlQz5XxNUTFgSplymQ3dXh+P1FciZ13w3j0pTPUITP+jdIDiDhxFFwKU5EPpWQI0K9dqxe1pfX1Iyl7Dh0=
+	t=1751991829; cv=none; b=ckphUlKJNEQ6WnoWVar0mDHBTT0buphHmHWOuJuaC76G7eBJgaIcfiFB90qSIWw6MCIkMOZxfoswr7IlkXvGo/6gjE3oS5WekowlNrFn6RT604IeM29d0X+GaN0J5vPGT0LNxJIo56JwoFqnynB0JH6n8PKooc1UEEyJ0W4GnEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992671; c=relaxed/simple;
-	bh=Sr1/NNQD8LP+3RQomEyPMi8gNQmrA1b7HHxx6deuN98=;
+	s=arc-20240116; t=1751991829; c=relaxed/simple;
+	bh=U2m/tQPuIKyrOGVH9saLBmx3y9NFrdvLMViY6tirfSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8/qMqZL3WA6JBywvGfOgrMjNxrUdCdw0kys34eXlrcrsc/p+F3dWJcpnsQyB55n+aTGdMj1CHjIvCxEqbUJqw6EyUz0jPwT/rYSEiaLDS3gdM+k4X/ONDW1Ly4SDLJpbeo5zEH/20kJ6lKhG5iu/FpKPAGk2GB+v3zW6nq1svk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcPne4LD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA6EC4CEED;
-	Tue,  8 Jul 2025 16:37:50 +0000 (UTC)
+	 MIME-Version; b=UWWvUB58g3vPT4jwdTD+k9rRemo580oWuHYVfhIxqvYKRwTI2VD7ly0gbJAr7Fo1K2i9w8V1ymYVH4kYneoXogCZqxcy5Vk7/kLm86VqHu0KT2MsEdsJTTlIKa0m5ylxNZVmKg4ugEqGGb7GshBh4UIqL2GO6f/IRf1BzVV2vkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xygCvJhF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D9BC4CEED;
+	Tue,  8 Jul 2025 16:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992670;
-	bh=Sr1/NNQD8LP+3RQomEyPMi8gNQmrA1b7HHxx6deuN98=;
+	s=korg; t=1751991828;
+	bh=U2m/tQPuIKyrOGVH9saLBmx3y9NFrdvLMViY6tirfSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tcPne4LDntCTSXVu+Ua5Q0WapPTO1j89ZyN2vCmKBvlrcqzF7AoAmBy3C+ilqeg8I
-	 F1JA4qPN2+bqnBJ4IEF9LnekDwC2PKaG4Vq16lWxMooYEM8qNKPAEJdlEBmMQfNmwJ
-	 zUIRJJKzLxqDWrzeol/thOJgM6KxCe7mFEhWNYJM=
+	b=xygCvJhFXfHys1VRaJ4MvyicA9Oqy8ip6TvXNJnwW+QQR3+ISplWGtiTiRJEutvho
+	 f97H28fwFLLjmA9OAYnS6LlNx1lmp2UkBKYrjwxg0VeI9lM7z90eDMID54LJKTQeQB
+	 1aQ6eSvEEz7xdmHd37p8RgFmNssL6PYUyDiiQlpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/232] RDMA/mlx5: Fix HW counters query for non-representor devices
-Date: Tue,  8 Jul 2025 18:20:37 +0200
-Message-ID: <20250708162242.506200281@linuxfoundation.org>
+	Elena Popa <elena.popa@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.15 001/178] rtc: pcf2127: add missing semicolon after statement
+Date: Tue,  8 Jul 2025 18:20:38 +0200
+Message-ID: <20250708162236.592550092@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 3cc1dbfddf88dc5ecce0a75185061403b1f7352d ]
+commit 08d82d0cad51c2b1d454fe41ea1ff96ade676961 upstream.
 
-To get the device HW counters, a non-representor switchdev device
-should use the mlx5_ib_query_q_counters() function and query all of
-the available counters. While a representor device in switchdev mode
-should use the mlx5_ib_query_q_counters_vport() function and query only
-the Q_Counters without the PPCNT counters and congestion control counters,
-since they aren't relevant for a representor device.
+Replace comma with semicolon at the end of the statement when setting
+config.max_register.
 
-Currently a non-representor switchdev device skips querying the PPCNT
-counters and congestion control counters, leaving them unupdated.
-Fix that by properly querying those counters for non-representor devices.
-
-Fixes: d22467a71ebe ("RDMA/mlx5: Expand switchdev Q-counters to expose representor statistics")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Link: https://patch.msgid.link/56bf8af4ca8c58e3fb9f7e47b1dca2009eeeed81.1750064969.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fd28ceb4603f ("rtc: pcf2127: add variant-specific configuration structure")
+Cc: stable@vger.kernel.org
+Cc: Elena Popa <elena.popa@nxp.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20250529202923.1552560-1-hugo@hugovil.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/counters.c | 2 +-
+ drivers/rtc/rtc-pcf2127.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
-index 81cfa74147a18..fbabc5ac9ef27 100644
---- a/drivers/infiniband/hw/mlx5/counters.c
-+++ b/drivers/infiniband/hw/mlx5/counters.c
-@@ -391,7 +391,7 @@ static int do_get_hw_stats(struct ib_device *ibdev,
- 		return ret;
+--- a/drivers/rtc/rtc-pcf2127.c
++++ b/drivers/rtc/rtc-pcf2127.c
+@@ -1538,7 +1538,7 @@ static int pcf2127_spi_probe(struct spi_
+ 		variant = &pcf21xx_cfg[type];
+ 	}
  
- 	/* We don't expose device counters over Vports */
--	if (is_mdev_switchdev_mode(dev->mdev) && port_num != 0)
-+	if (is_mdev_switchdev_mode(dev->mdev) && dev->is_rep && port_num != 0)
- 		goto done;
+-	config.max_register = variant->max_register,
++	config.max_register = variant->max_register;
  
- 	if (MLX5_CAP_PCAM_FEATURE(dev->mdev, rx_icrc_encapsulated_counter)) {
--- 
-2.39.5
-
+ 	regmap = devm_regmap_init_spi(spi, &config);
+ 	if (IS_ERR(regmap)) {
 
 
 
