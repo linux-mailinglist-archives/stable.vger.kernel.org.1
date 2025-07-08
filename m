@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-161305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC4EAFD4BB
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:08:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0FACAFD37A
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8C84E008B
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:03:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD4C5440DD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECD52E5B15;
-	Tue,  8 Jul 2025 17:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9846621C190;
+	Tue,  8 Jul 2025 16:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vogndQdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+YDCjF4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8112E2F0D;
-	Tue,  8 Jul 2025 17:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D102F37;
+	Tue,  8 Jul 2025 16:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751994189; cv=none; b=ZU5wSYXkFBMv9Dd1+kO8ijM5bwKNpaOnYJtk+0EgsDqGS/Xtymt644gUSd9Bz783T5CL+dWHlub8lE0jyttKMWZ4BLP086Ks7ZJlJea5l3TvJzJjhc+3jmNQs4GaL6nLrcmOCR4408qhazVO0FOtRIYq4vUARjyxstfOF0ciWTU=
+	t=1751993676; cv=none; b=FXd99z6qutULVNhiwr2TdMFNp/6pPCrpOK1VHUjkY4YOdLHnyhVcwXXx+OJQ6GCgj5gFZqR2P8tvi9GIqYbVQKrprcRl4V0uiBSTCC0Fx2PsdUsNm9cZ1NhQizFf8ItA4oH24XBx0JUs1ZHrh9jVVfqjjzMjOf0sigPX64NT99g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751994189; c=relaxed/simple;
-	bh=Vhpp7M5Mh6cRSlMnFW4AIl/tJ5mV5CBfhIpS84hcZx8=;
+	s=arc-20240116; t=1751993676; c=relaxed/simple;
+	bh=eVQKyz4ZVRxe/M+yW2YXepiUxw1N58Bw5QOBd/NqD+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKLM/kBoDs99K+NJ4OHS4+D0wNaGqCQAEVnl1OYRQRCFZJRMRVQd9aImU8gRk+nUGyklLnIN4ZOWLBiAIlfzhpQmq+zyv5s+674d55G49MmhLZi8KcOO8Xrofa4aTU00o8qvrJ7ADePzzfQS7kn/7pmyOC+uPs6kOtbTbuBTkRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vogndQdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8358BC4CEF5;
-	Tue,  8 Jul 2025 17:03:08 +0000 (UTC)
+	 MIME-Version; b=NgucLRXbYiHtaIK5oA7fmCT4uAElK6sxMt/hTpzqGjdq1OVtFeUz2OrfxjC6nb1nojGm2QXOVaVR6acvSfue753E1cxbROB+3jUSftA87uwrKib79ty89hIcF+a8Per8zwmK46a7LRgOnY61cAa5qbVUeUsDwemBEqpbciOvFtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+YDCjF4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0EBDC4CEED;
+	Tue,  8 Jul 2025 16:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751994188;
-	bh=Vhpp7M5Mh6cRSlMnFW4AIl/tJ5mV5CBfhIpS84hcZx8=;
+	s=korg; t=1751993676;
+	bh=eVQKyz4ZVRxe/M+yW2YXepiUxw1N58Bw5QOBd/NqD+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vogndQdxM4/bgDdIszNRh+7zKqjw6LpQ3WaO8J970768IoxPKIaIvZGdZ4PyEK1oB
-	 AYp6pVg3yllZ/xT3s5JY1/fTcm360Hdn0QfhktOhL3ow+IDLVeHXm9Fn+liTw2lqwL
-	 NZwYdpokDtN528P04P1bGV0IOAJ9Zd14PRdHwINM=
+	b=t+YDCjF4LPboDVSN5GXcabMmd0fxEG+kMmVmKVRWtohjoMlni40riV1lkvp+rpJTL
+	 dbqc0Gsv9ZBJkp0YyaTXf39fsAeQLXMwPI0ZzKrKcNfLh8g50/PIT0xkUZk5zlgmrL
+	 TF3/L7iy5Gllx9k3oKxGovcRv3giLZQ/Xwacmam4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.15 155/160] usb: typec: displayport: Fix potential deadlock
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.15 155/178] usb: acpi: fix device link removal
 Date: Tue,  8 Jul 2025 18:23:12 +0200
-Message-ID: <20250708162235.598200962@linuxfoundation.org>
+Message-ID: <20250708162240.548808090@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-commit 099cf1fbb8afc3771f408109f62bdec66f85160e upstream.
+commit 3b18405763c1ebb1efc15feef5563c9cdb2cc3a7 upstream.
 
-The deadlock can occur due to a recursive lock acquisition of
-`cros_typec_altmode_data::mutex`.
-The call chain is as follows:
-1. cros_typec_altmode_work() acquires the mutex
-2. typec_altmode_vdm() -> dp_altmode_vdm() ->
-3. typec_altmode_exit() -> cros_typec_altmode_exit()
-4. cros_typec_altmode_exit() attempts to acquire the mutex again
+The device link to the USB4 host interface has to be removed
+manually since it's no longer auto removed.
 
-To prevent this, defer the `typec_altmode_exit()` call by scheduling
-it rather than calling it directly from within the mutex-protected
-context.
-
+Fixes: 623dae3e7084 ("usb: acpi: fix boot hang due to early incorrect 'tunneled' USB3 device links")
 Cc: stable <stable@kernel.org>
-Fixes: b4b38ffb38c9 ("usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250624133246.3936737-1-akuchynski@chromium.org
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/r/20250611111415.2707865-1-heikki.krogerus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/core/hub.c      |    3 +++
+ drivers/usb/core/usb-acpi.c |    4 +++-
+ include/linux/usb.h         |    2 ++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -299,8 +299,7 @@ static int dp_altmode_vdm(struct typec_a
- 	case CMDT_RSP_NAK:
- 		switch (cmd) {
- 		case DP_CMD_STATUS_UPDATE:
--			if (typec_altmode_exit(alt))
--				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
-+			dp->state = DP_STATE_EXIT;
- 			break;
- 		case DP_CMD_CONFIGURE:
- 			dp->data.conf = 0;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2337,6 +2337,9 @@ void usb_disconnect(struct usb_device **
+ 	usb_remove_ep_devs(&udev->ep0);
+ 	usb_unlock_device(udev);
+ 
++	if (udev->usb4_link)
++		device_link_del(udev->usb4_link);
++
+ 	/* Unregister the device.  The device driver is responsible
+ 	 * for de-configuring the device and invoking the remove-device
+ 	 * notifier chain (used by usbfs and possibly others).
+--- a/drivers/usb/core/usb-acpi.c
++++ b/drivers/usb/core/usb-acpi.c
+@@ -157,7 +157,7 @@ EXPORT_SYMBOL_GPL(usb_acpi_set_power_sta
+  */
+ static int usb_acpi_add_usb4_devlink(struct usb_device *udev)
+ {
+-	const struct device_link *link;
++	struct device_link *link;
+ 	struct usb_port *port_dev;
+ 	struct usb_hub *hub;
+ 
+@@ -188,6 +188,8 @@ static int usb_acpi_add_usb4_devlink(str
+ 	dev_dbg(&port_dev->dev, "Created device link from %s to %s\n",
+ 		dev_name(&port_dev->child->dev), dev_name(nhi_fwnode->dev));
+ 
++	udev->usb4_link = link;
++
+ 	return 0;
+ }
+ 
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -614,6 +614,7 @@ struct usb3_lpm_parameters {
+  *	FIXME -- complete doc
+  * @authenticated: Crypto authentication passed
+  * @tunnel_mode: Connection native or tunneled over USB4
++ * @usb4_link: device link to the USB4 host interface
+  * @lpm_capable: device supports LPM
+  * @lpm_devinit_allow: Allow USB3 device initiated LPM, exit latency is in range
+  * @usb2_hw_lpm_capable: device can perform USB2 hardware LPM
+@@ -724,6 +725,7 @@ struct usb_device {
+ 	unsigned reset_resume:1;
+ 	unsigned port_is_suspended:1;
+ 	enum usb_link_tunnel_mode tunnel_mode;
++	struct device_link *usb4_link;
+ 
+ 	int slot_id;
+ 	struct usb2_lpm_parameters l1_params;
 
 
 
