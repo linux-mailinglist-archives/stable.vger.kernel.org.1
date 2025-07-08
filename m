@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-160938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C7AAFD2A1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:48:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0029AFD362
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 243A654099F
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:45:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14EFE1C40137
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F7E2DEA94;
-	Tue,  8 Jul 2025 16:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516D32DCF48;
+	Tue,  8 Jul 2025 16:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ay0z9Nn5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTcTV324"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76B42DAFA3;
-	Tue,  8 Jul 2025 16:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5F221D5BB;
+	Tue,  8 Jul 2025 16:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993128; cv=none; b=mpbWpJWXYR+/Pt8ZT9Zbk0JRV6/4ZAT9vOEuijAPA9fAVzdXYLBjF+VvMqKQq/WoIM0f1tGuO06d0zzR2fbswihya1nmBh1RSTRYyaBL8CKj6oek8dxofdbVpcuZoD+2hDrTAxMhJfhU8rBpXt/ZyDkEo99AMLTBdQhKBGM/8ZE=
+	t=1751993593; cv=none; b=bVPmMQx0Sk9FSX2BH0mfQlyjuXNphpopDiiznLWDCA+rUoBgbkagUqxXoFO6zFX/dXOpPHeufA7NJXdibHqJEWnrayU4rN0OJ7uaR1NM1IGa8MC2z+O89SE2L29nuWJ9qLBR1MfMlTrKZKqZCtgxzkLtIER5P0kVPGYrnTdIlcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993128; c=relaxed/simple;
-	bh=/WVx55CAGI/F/1GPTkShF5hkPooUBZVvApugCMa1gqc=;
+	s=arc-20240116; t=1751993593; c=relaxed/simple;
+	bh=Qmk5TkGcJNQdmdFxnUzrEtgJuMlAGTT4kLyYsn2vu0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=heiOVrjMtKuI6GsXbw015GoZKL3DVZIfUyaGppMBiaDleHT9lxkAWnzoEQZqBhRUOZhUlSYNm0S4XOJdMj6UhpNktP9daqKe10ak5RZuI0aIagypTN/aHLU22JEC2sm0bHwg2BF6QLwiU7Bz4//8kuQ8PbjuRT/he8C5A+HomzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ay0z9Nn5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51059C4CEF0;
-	Tue,  8 Jul 2025 16:45:28 +0000 (UTC)
+	 MIME-Version; b=Rh9ObSyVxz8Y5vameBz6jQxDlc+uTL8AO+f1E7aw0K+Ev/iGLtl5NerUufCG6+BZADTsjYhwTnJKPo7oiWJ80nsHCRJcrWdR1jsCWvebcKsYkkLOYL+TOW96xHN8b65gq6hszXLvCgWhK3MqC8ICF/LWthdIYK/ED2/IHRB77rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTcTV324; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392BAC4CEED;
+	Tue,  8 Jul 2025 16:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993128;
-	bh=/WVx55CAGI/F/1GPTkShF5hkPooUBZVvApugCMa1gqc=;
+	s=korg; t=1751993592;
+	bh=Qmk5TkGcJNQdmdFxnUzrEtgJuMlAGTT4kLyYsn2vu0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ay0z9Nn5XWv+QyeA+4shqgnF9gR5o+c7AJ2bJXbFJzkTTZUnd3f42XANZyqJ6CaCA
-	 8T1r1Ndvyqb93DeQluP3rW0I7hrIT/DTciGiieqWZ85tKpPPXMAfarjukex1ttXoce
-	 dMQmnr9sp6YOM3w7zIXZojEX791ijIjEyqQe20ME=
+	b=fTcTV324j6FOlRiLYll2yIYZ1mo8iiJzgTyfxHZReSYoXIzKsnxpPIrp4v47/AoiU
+	 B7XWr8d3kIMqDIujXz6ISvckAwTAACE/XGW9aNk/T63/HYCiYb4BL9smwUYxIYuwca
+	 tYncsQDCSdJ56TwK7CZ6kYinfIHfutNXSgifHIiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 167/232] arm64: dts: qcom: x1e80100-crd: mark l12b and l15b always-on
-Date: Tue,  8 Jul 2025 18:22:43 +0200
-Message-ID: <20250708162245.806340781@linuxfoundation.org>
+Subject: [PATCH 6.15 127/178] ata: pata_cs5536: fix build on 32-bit UML
+Date: Tue,  8 Jul 2025 18:22:44 +0200
+Message-ID: <20250708162239.898316811@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,54 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit abf89bc4bb09c16a53d693b09ea85225cf57ff39 ]
+[ Upstream commit fe5b391fc56f77cf3c22a9dd4f0ce20db0e3533f ]
 
-The l12b and l15b supplies are used by components that are not (fully)
-described (and some never will be) and must never be disabled.
+On 32-bit ARCH=um, CONFIG_X86_32 is still defined, so it
+doesn't indicate building on real X86 machines. There's
+no MSR on UML though, so add a check for CONFIG_X86.
 
-Mark the regulators as always-on to prevent them from being disabled,
-for example, when consumers probe defer or suspend.
-
-Fixes: bd50b1f5b6f3 ("arm64: dts: qcom: x1e80100: Add Compute Reference Device")
-Cc: stable@vger.kernel.org	# 6.8
-Cc: Abel Vesa <abel.vesa@linaro.org>
-Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20250314145440.11371-2-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/r/20250606090110.15784-2-johannes@sipsolutions.net
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-crd.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/pata_cs5536.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-index 044a2f1432fe3..2a504a449b0bb 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-@@ -419,6 +419,7 @@ vreg_l12b_1p2: ldo12 {
- 			regulator-min-microvolt = <1200000>;
- 			regulator-max-microvolt = <1200000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
+diff --git a/drivers/ata/pata_cs5536.c b/drivers/ata/pata_cs5536.c
+index b811efd2cc346..73e81e160c91f 100644
+--- a/drivers/ata/pata_cs5536.c
++++ b/drivers/ata/pata_cs5536.c
+@@ -27,7 +27,7 @@
+ #include <scsi/scsi_host.h>
+ #include <linux/dmi.h>
  
- 		vreg_l13b_3p0: ldo13 {
-@@ -440,6 +441,7 @@ vreg_l15b_1p8: ldo15 {
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
- 
- 		vreg_l16b_2p9: ldo16 {
+-#ifdef CONFIG_X86_32
++#if defined(CONFIG_X86) && defined(CONFIG_X86_32)
+ #include <asm/msr.h>
+ static int use_msr;
+ module_param_named(msr, use_msr, int, 0644);
 -- 
 2.39.5
 
