@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953B4AFD2DF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:51:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B59F2AFD3B2
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07CCA1891644
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:48:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 959CD3A123F
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19426B672;
-	Tue,  8 Jul 2025 16:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31B12E0B4B;
+	Tue,  8 Jul 2025 16:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tK1n1+Y3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6Uuujqv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC90E1DD0EF;
-	Tue,  8 Jul 2025 16:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803988F5E;
+	Tue,  8 Jul 2025 16:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993278; cv=none; b=rugYzZTmqy2QjRtaa7cXFCNDYrXJGLWAuIV/3fIoH93FUe+0livDST7H5q16zPNA4fIT0qhCbWUPGWNluDCzUOXHzoFNGLRfGxZbb7JdrEgAqJzOI/enV1ymrRSYKCoOJXxzvh+rWUKNSEhgQjo8TwchYpQ0zukM8XLUfof1GU0=
+	t=1751993792; cv=none; b=GI1RkpNePyuf5iZ5JNm3FhbRmyAM/ZdnTOiSuulDZqSB/6yPu4xmR1+1GvlD1A/N/22gcFMsnULa3kZRZQT9g3zOIstmCpePZW9c9Wjs3s1ALBK5H+c18YJR6E3eNO7a5XP0LG6E5tPLBDNxVYM6UZJ5nBsmZZ7tZqu/kk9ojmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993278; c=relaxed/simple;
-	bh=xZb+2kX0x7uDApH1A4ui5whh2d84wqaBt68jKfzMp9w=;
+	s=arc-20240116; t=1751993792; c=relaxed/simple;
+	bh=KG345HwKongGRET+bwpHy1erZolIvwFC2kEVWeXwLY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2nAFyQoczKstOcLsIlF/NBO/qQnmvDY6nwoyP2jeHy7hVlSmvyEu2fZ0FuSk8Y22CTEfLLosKyJNszX/D9luPjS+mXIObEiBJ0pajDIfzf4gYLVRsh9+vRCpxuYKRql9mhd9IVqayeaxgUlR8VwgLYxi/97Hz6TGP69vF2L6do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tK1n1+Y3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A64DC4CEED;
-	Tue,  8 Jul 2025 16:47:58 +0000 (UTC)
+	 MIME-Version; b=lbCxRJdjzyefOIHdym8lIbX2r+GiMLWexyc1dMvKrp1WBiFSy32Jfg3BPlVOLtaRPc+Hdm3+JGs33QLf40nnTXbgIWLH3m/cMmrpD6eoah6h1Fue67p6PP8T1gVMBAYI/CQl3zjT4AC1dkRD3gLUmLmKPjfMmUwxqeUwUxndRTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6Uuujqv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08154C4CEF0;
+	Tue,  8 Jul 2025 16:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993278;
-	bh=xZb+2kX0x7uDApH1A4ui5whh2d84wqaBt68jKfzMp9w=;
+	s=korg; t=1751993792;
+	bh=KG345HwKongGRET+bwpHy1erZolIvwFC2kEVWeXwLY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tK1n1+Y3Y2BKxzPS1L4AnJtF3cgN+1iZUG0vtHm80yEWbOJeeSNQJiTtAaN00CVlP
-	 sgis03sZrE7EnJ/agpnkUMWtYF9OZr1rI6Kpc0WAms4NO5FD7RHYurMrcnyhP88MAw
-	 CnqHRBzxK1ZRyiVfJvb4D1FDNCsS29gfaXt1q2vM=
+	b=j6Uuujqvv9V83JhKShJEt9GGS61nvc1/ZpxbT2ix04ZabD6e0AU4DKYzsnp8wBwv8
+	 6HgMGrW1WL1cRnRHCC/fZG/pDYeuV6rAgaFOEoYWhzEy4wbypHk84qEV1PU380NwIE
+	 0QpL25eZeA+rB3JlXilvnK9U1phihdgmNdkFovv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.15 020/178] Bluetooth: HCI: Set extended advertising data synchronously
+	Robert Hodaszi <robert.hodaszi@digi.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 020/160] usb: cdc-wdm: avoid setting WDM_READ for ZLP-s
 Date: Tue,  8 Jul 2025 18:20:57 +0200
-Message-ID: <20250708162237.076679610@linuxfoundation.org>
+Message-ID: <20250708162232.067054013@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,333 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Robert Hodaszi <robert.hodaszi@digi.com>
 
-commit 89fb8acc38852116d38d721ad394aad7f2871670 upstream.
+[ Upstream commit 387602d8a75574fafb451b7a8215e78dfd67ee63 ]
 
-Currently, for controllers with extended advertising, the advertising
-data is set in the asynchronous response handler for extended
-adverstising params. As most advertising settings are performed in a
-synchronous context, the (asynchronous) setting of the advertising data
-is done too late (after enabling the advertising).
+Don't set WDM_READ flag in wdm_in_callback() for ZLP-s, otherwise when
+userspace tries to poll for available data, it might - incorrectly -
+believe there is something available, and when it tries to non-blocking
+read it, it might get stuck in the read loop.
 
-Move setting of adverstising data from asynchronous response handler
-into synchronous context to fix ordering of HCI commands.
+For example this is what glib does for non-blocking read (briefly):
 
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Fixes: a0fb3726ba55 ("Bluetooth: Use Set ext adv/scan rsp data if controller supports")
-Cc: stable@vger.kernel.org
-v2: https://lore.kernel.org/linux-bluetooth/20250626115209.17839-1-ceggers@arri.de/
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+  1. poll()
+  2. if poll returns with non-zero, starts a read data loop:
+    a. loop on poll() (EINTR disabled)
+    b. if revents was set, reads data
+      I. if read returns with EINTR or EAGAIN, goto 2.a.
+      II. otherwise return with data
+
+So if ZLP sets WDM_READ (#1), we expect data, and try to read it (#2).
+But as that was a ZLP, and we are doing non-blocking read, wdm_read()
+returns with EAGAIN (#2.b.I), so loop again, and try to read again
+(#2.a.).
+
+With glib, we might stuck in this loop forever, as EINTR is disabled
+(#2.a).
+
+Signed-off-by: Robert Hodaszi <robert.hodaszi@digi.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250403144004.3889125-1-robert.hodaszi@digi.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c |   36 --------
- net/bluetooth/hci_sync.c  |  207 ++++++++++++++++++++++++++++------------------
- 2 files changed, 130 insertions(+), 113 deletions(-)
+ drivers/usb/class/cdc-wdm.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2150,40 +2150,6 @@ static u8 hci_cc_set_adv_param(struct hc
- 	return rp->status;
- }
+diff --git a/drivers/usb/class/cdc-wdm.c b/drivers/usb/class/cdc-wdm.c
+index a4be6dba756b3..4b5cf1a5e30d8 100644
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -92,7 +92,6 @@ struct wdm_device {
+ 	u16			wMaxCommand;
+ 	u16			wMaxPacketSize;
+ 	__le16			inum;
+-	int			reslength;
+ 	int			length;
+ 	int			read;
+ 	int			count;
+@@ -214,6 +213,11 @@ static void wdm_in_callback(struct urb *urb)
+ 	if (desc->rerr == 0 && status != -EPIPE)
+ 		desc->rerr = status;
  
--static u8 hci_cc_set_ext_adv_param(struct hci_dev *hdev, void *data,
--				   struct sk_buff *skb)
--{
--	struct hci_rp_le_set_ext_adv_params *rp = data;
--	struct hci_cp_le_set_ext_adv_params *cp;
--	struct adv_info *adv_instance;
--
--	bt_dev_dbg(hdev, "status 0x%2.2x", rp->status);
--
--	if (rp->status)
--		return rp->status;
--
--	cp = hci_sent_cmd_data(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS);
--	if (!cp)
--		return rp->status;
--
--	hci_dev_lock(hdev);
--	hdev->adv_addr_type = cp->own_addr_type;
--	if (!cp->handle) {
--		/* Store in hdev for instance 0 */
--		hdev->adv_tx_power = rp->tx_power;
--	} else {
--		adv_instance = hci_find_adv_instance(hdev, cp->handle);
--		if (adv_instance)
--			adv_instance->tx_power = rp->tx_power;
--	}
--	/* Update adv data as tx power is known now */
--	hci_update_adv_data(hdev, cp->handle);
--
--	hci_dev_unlock(hdev);
--
--	return rp->status;
--}
--
- static u8 hci_cc_read_rssi(struct hci_dev *hdev, void *data,
- 			   struct sk_buff *skb)
- {
-@@ -4164,8 +4130,6 @@ static const struct hci_cc {
- 	HCI_CC(HCI_OP_LE_READ_NUM_SUPPORTED_ADV_SETS,
- 	       hci_cc_le_read_num_adv_sets,
- 	       sizeof(struct hci_rp_le_read_num_supported_adv_sets)),
--	HCI_CC(HCI_OP_LE_SET_EXT_ADV_PARAMS, hci_cc_set_ext_adv_param,
--	       sizeof(struct hci_rp_le_set_ext_adv_params)),
- 	HCI_CC_STATUS(HCI_OP_LE_SET_EXT_ADV_ENABLE,
- 		      hci_cc_le_set_ext_adv_enable),
- 	HCI_CC_STATUS(HCI_OP_LE_SET_ADV_SET_RAND_ADDR,
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1205,9 +1205,126 @@ static int hci_set_adv_set_random_addr_s
- 				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
- }
- 
-+static int
-+hci_set_ext_adv_params_sync(struct hci_dev *hdev, struct adv_info *adv,
-+			    const struct hci_cp_le_set_ext_adv_params *cp,
-+			    struct hci_rp_le_set_ext_adv_params *rp)
-+{
-+	struct sk_buff *skb;
-+
-+	skb = __hci_cmd_sync(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS, sizeof(*cp),
-+			     cp, HCI_CMD_TIMEOUT);
-+
-+	/* If command return a status event, skb will be set to -ENODATA */
-+	if (skb == ERR_PTR(-ENODATA))
-+		return 0;
-+
-+	if (IS_ERR(skb)) {
-+		bt_dev_err(hdev, "Opcode 0x%4.4x failed: %ld",
-+			   HCI_OP_LE_SET_EXT_ADV_PARAMS, PTR_ERR(skb));
-+		return PTR_ERR(skb);
++	if (length == 0) {
++		dev_dbg(&desc->intf->dev, "received ZLP\n");
++		goto skip_zlp;
 +	}
 +
-+	if (skb->len != sizeof(*rp)) {
-+		bt_dev_err(hdev, "Invalid response length for 0x%4.4x: %u",
-+			   HCI_OP_LE_SET_EXT_ADV_PARAMS, skb->len);
-+		kfree_skb(skb);
-+		return -EIO;
-+	}
-+
-+	memcpy(rp, skb->data, sizeof(*rp));
-+	kfree_skb(skb);
-+
-+	if (!rp->status) {
-+		hdev->adv_addr_type = cp->own_addr_type;
-+		if (!cp->handle) {
-+			/* Store in hdev for instance 0 */
-+			hdev->adv_tx_power = rp->tx_power;
-+		} else if (adv) {
-+			adv->tx_power = rp->tx_power;
-+		}
-+	}
-+
-+	return rp->status;
-+}
-+
-+static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
-+{
-+	DEFINE_FLEX(struct hci_cp_le_set_ext_adv_data, pdu, data, length,
-+		    HCI_MAX_EXT_AD_LENGTH);
-+	u8 len;
-+	struct adv_info *adv = NULL;
-+	int err;
-+
-+	if (instance) {
-+		adv = hci_find_adv_instance(hdev, instance);
-+		if (!adv || !adv->adv_data_changed)
-+			return 0;
-+	}
-+
-+	len = eir_create_adv_data(hdev, instance, pdu->data,
-+				  HCI_MAX_EXT_AD_LENGTH);
-+
-+	pdu->length = len;
-+	pdu->handle = adv ? adv->handle : instance;
-+	pdu->operation = LE_SET_ADV_DATA_OP_COMPLETE;
-+	pdu->frag_pref = LE_SET_ADV_DATA_NO_FRAG;
-+
-+	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_DATA,
-+				    struct_size(pdu, data, len), pdu,
-+				    HCI_CMD_TIMEOUT);
-+	if (err)
-+		return err;
-+
-+	/* Update data if the command succeed */
-+	if (adv) {
-+		adv->adv_data_changed = false;
-+	} else {
-+		memcpy(hdev->adv_data, pdu->data, len);
-+		hdev->adv_data_len = len;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
-+{
-+	struct hci_cp_le_set_adv_data cp;
-+	u8 len;
-+
-+	memset(&cp, 0, sizeof(cp));
-+
-+	len = eir_create_adv_data(hdev, instance, cp.data, sizeof(cp.data));
-+
-+	/* There's nothing to do if the data hasn't changed */
-+	if (hdev->adv_data_len == len &&
-+	    memcmp(cp.data, hdev->adv_data, len) == 0)
-+		return 0;
-+
-+	memcpy(hdev->adv_data, cp.data, sizeof(cp.data));
-+	hdev->adv_data_len = len;
-+
-+	cp.length = len;
-+
-+	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_DATA,
-+				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-+}
-+
-+int hci_update_adv_data_sync(struct hci_dev *hdev, u8 instance)
-+{
-+	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
-+		return 0;
-+
-+	if (ext_adv_capable(hdev))
-+		return hci_set_ext_adv_data_sync(hdev, instance);
-+
-+	return hci_set_adv_data_sync(hdev, instance);
-+}
-+
- int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
- {
- 	struct hci_cp_le_set_ext_adv_params cp;
-+	struct hci_rp_le_set_ext_adv_params rp;
- 	bool connectable;
- 	u32 flags;
- 	bdaddr_t random_addr;
-@@ -1314,8 +1431,12 @@ int hci_setup_ext_adv_instance_sync(stru
- 		cp.secondary_phy = HCI_ADV_PHY_1M;
+ 	if (length + desc->length > desc->wMaxCommand) {
+ 		/* The buffer would overflow */
+ 		set_bit(WDM_OVERFLOW, &desc->flags);
+@@ -222,18 +226,18 @@ static void wdm_in_callback(struct urb *urb)
+ 		if (!test_bit(WDM_OVERFLOW, &desc->flags)) {
+ 			memmove(desc->ubuf + desc->length, desc->inbuf, length);
+ 			desc->length += length;
+-			desc->reslength = length;
+ 		}
  	}
+ skip_error:
  
--	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS,
--				    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-+	err = hci_set_ext_adv_params_sync(hdev, adv, &cp, &rp);
-+	if (err)
-+		return err;
-+
-+	/* Update adv data as tx power is known now */
-+	err = hci_set_ext_adv_data_sync(hdev, cp.handle);
- 	if (err)
- 		return err;
+ 	if (desc->rerr) {
+ 		/*
+-		 * Since there was an error, userspace may decide to not read
+-		 * any data after poll'ing.
++		 * If there was a ZLP or an error, userspace may decide to not
++		 * read any data after poll'ing.
+ 		 * We should respond to further attempts from the device to send
+ 		 * data, so that we can get unstuck.
+ 		 */
++skip_zlp:
+ 		schedule_work(&desc->service_outs_intr);
+ 	} else {
+ 		set_bit(WDM_READ, &desc->flags);
+@@ -585,15 +589,6 @@ static ssize_t wdm_read
+ 			goto retry;
+ 		}
  
-@@ -1808,79 +1929,6 @@ int hci_le_terminate_big_sync(struct hci
- 				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
- }
+-		if (!desc->reslength) { /* zero length read */
+-			dev_dbg(&desc->intf->dev, "zero length - clearing WDM_READ\n");
+-			clear_bit(WDM_READ, &desc->flags);
+-			rv = service_outstanding_interrupt(desc);
+-			spin_unlock_irq(&desc->iuspin);
+-			if (rv < 0)
+-				goto err;
+-			goto retry;
+-		}
+ 		cntr = desc->length;
+ 		spin_unlock_irq(&desc->iuspin);
+ 	}
+@@ -1015,7 +1010,7 @@ static void service_interrupt_work(struct work_struct *work)
  
--static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
--{
--	DEFINE_FLEX(struct hci_cp_le_set_ext_adv_data, pdu, data, length,
--		    HCI_MAX_EXT_AD_LENGTH);
--	u8 len;
--	struct adv_info *adv = NULL;
--	int err;
--
--	if (instance) {
--		adv = hci_find_adv_instance(hdev, instance);
--		if (!adv || !adv->adv_data_changed)
--			return 0;
--	}
--
--	len = eir_create_adv_data(hdev, instance, pdu->data,
--				  HCI_MAX_EXT_AD_LENGTH);
--
--	pdu->length = len;
--	pdu->handle = adv ? adv->handle : instance;
--	pdu->operation = LE_SET_ADV_DATA_OP_COMPLETE;
--	pdu->frag_pref = LE_SET_ADV_DATA_NO_FRAG;
--
--	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_DATA,
--				    struct_size(pdu, data, len), pdu,
--				    HCI_CMD_TIMEOUT);
--	if (err)
--		return err;
--
--	/* Update data if the command succeed */
--	if (adv) {
--		adv->adv_data_changed = false;
--	} else {
--		memcpy(hdev->adv_data, pdu->data, len);
--		hdev->adv_data_len = len;
--	}
--
--	return 0;
--}
--
--static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
--{
--	struct hci_cp_le_set_adv_data cp;
--	u8 len;
--
--	memset(&cp, 0, sizeof(cp));
--
--	len = eir_create_adv_data(hdev, instance, cp.data, sizeof(cp.data));
--
--	/* There's nothing to do if the data hasn't changed */
--	if (hdev->adv_data_len == len &&
--	    memcmp(cp.data, hdev->adv_data, len) == 0)
--		return 0;
--
--	memcpy(hdev->adv_data, cp.data, sizeof(cp.data));
--	hdev->adv_data_len = len;
--
--	cp.length = len;
--
--	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_DATA,
--				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
--}
--
--int hci_update_adv_data_sync(struct hci_dev *hdev, u8 instance)
--{
--	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
--		return 0;
--
--	if (ext_adv_capable(hdev))
--		return hci_set_ext_adv_data_sync(hdev, instance);
--
--	return hci_set_adv_data_sync(hdev, instance);
--}
--
- int hci_schedule_adv_instance_sync(struct hci_dev *hdev, u8 instance,
- 				   bool force)
- {
-@@ -6263,6 +6311,7 @@ static int hci_le_ext_directed_advertisi
- 						struct hci_conn *conn)
- {
- 	struct hci_cp_le_set_ext_adv_params cp;
-+	struct hci_rp_le_set_ext_adv_params rp;
- 	int err;
- 	bdaddr_t random_addr;
- 	u8 own_addr_type;
-@@ -6304,8 +6353,12 @@ static int hci_le_ext_directed_advertisi
- 	if (err)
- 		return err;
- 
--	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS,
--				    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-+	err = hci_set_ext_adv_params_sync(hdev, NULL, &cp, &rp);
-+	if (err)
-+		return err;
-+
-+	/* Update adv data as tx power is known now */
-+	err = hci_set_ext_adv_data_sync(hdev, cp.handle);
- 	if (err)
- 		return err;
- 
+ 	spin_lock_irq(&desc->iuspin);
+ 	service_outstanding_interrupt(desc);
+-	if (!desc->resp_count) {
++	if (!desc->resp_count && (desc->length || desc->rerr)) {
+ 		set_bit(WDM_READ, &desc->flags);
+ 		wake_up(&desc->wait);
+ 	}
+-- 
+2.39.5
+
 
 
 
