@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-161236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889AAAFD460
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:05:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41479AFD328
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74790188D9F3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE6B4188ADE6
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182652E6D09;
-	Tue,  8 Jul 2025 16:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F702E54BA;
+	Tue,  8 Jul 2025 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdaBiYH7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQ6WvIvE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56352E0B4B;
-	Tue,  8 Jul 2025 16:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DD92E542F;
+	Tue,  8 Jul 2025 16:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993989; cv=none; b=qsHQ4w8pFnJUW12bYytLd5MIZR9xcWONTrj7GKlH4xb8sURFc8+fhxYCOczS9am9ajD/BkRnFXdcJO8A2iWRSvfDoiPGWMdFoAnX6AwlMNEqDqEckDjPft/faqC3Jg/gz5mhBLHBQwkLWrMxodOL2EjfBrrOs7ez4tsswt8lyhw=
+	t=1751993448; cv=none; b=l/xz/6wu3U2pBKtCEhWOY0c2Q2XO0I19YH2mGq9CBcN8nF0AMPhKwz3f77yqdgC+m96vrwcDPm5VUFp2bysSs2cK02conr+gXGSouNWueRaZLMkb4vTplFVtpMwAqs2EqNOBYkO6Ix5n0liAHXUnkHG0aYt7zTmnG6xQFsFWx5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993989; c=relaxed/simple;
-	bh=kxQ4W3aX6SLqe46EoYnjOVu+PJQnP1402ESY6xmFzZQ=;
+	s=arc-20240116; t=1751993448; c=relaxed/simple;
+	bh=gris6NlHGRG+jHwaKBibif4/G449+u2p+Put+QYXH9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JUsnOr2NI6lLPfOQPP6V84hCKUiBQ7+Bvja2X4H7RYRKgtrqQUvzWkDe2F0RRIgibnccTHGOcmbDQRkHcE09K+BIUuIUYhs6njdgZdPwWbej7TUmx7UE+bDP3/ckQjv78PAIiOgWOhXIG+YPq0OwvkvzgnHEKDLpXdadmcWoEpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdaBiYH7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2BAC4CEED;
-	Tue,  8 Jul 2025 16:59:49 +0000 (UTC)
+	 MIME-Version; b=qmcO2/rhgz0Efj5srwLLDAZSoHwxjLxMmCdb3+YwhZYvfJi8BazDXoshiS750Dc3JhkrvYKpwlzJY3Te+Anmyswfre9/8bnMJNW+3xwRRfre0iiosdcceBHmNz0bEaCfcUzURN7ZDUsfmoTJHmj2h47ZLEJZwaFtP2S5S7Z59P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQ6WvIvE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636ACC4CEF0;
+	Tue,  8 Jul 2025 16:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993989;
-	bh=kxQ4W3aX6SLqe46EoYnjOVu+PJQnP1402ESY6xmFzZQ=;
+	s=korg; t=1751993448;
+	bh=gris6NlHGRG+jHwaKBibif4/G449+u2p+Put+QYXH9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kdaBiYH76MckTYmDqk7V1zYHP8Uck04OEKIzZ/m/L1H29/+8prnj5dH1hkxtQoB6X
-	 ljkVH7ORsE4yHv0bv2+aQC5LCt+JQxmo9CZXeTNdZY+stBeGrppeT3ROcO8OjbwNxE
-	 ByUOnMDXAwInQaOl0OPbZZksEUNhup5t3x4DL5HE=
+	b=RQ6WvIvEKGiaQU9HfIr0sBzlUBlOOC3eVEw70fAlyf8HK8cYlcD9f2yU4Dpo9o9we
+	 E+SFYmkPpggz+RrOxQfHImZIuGH35m2dPVTAIEHVINsZSV5e5wrjteXovQa8kzH5Z2
+	 WJpOp3SP0ZjU51NpYbtWP0dkfZqXwAbvb8qMvIVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8bd335d2ad3b93e80715@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/160] atm: Release atm_dev_mutex after removing procfs in atm_dev_deregister().
+Subject: [PATCH 6.15 070/178] btrfs: use btrfs_record_snapshot_destroy() during rmdir
 Date: Tue,  8 Jul 2025 18:21:47 +0200
-Message-ID: <20250708162233.490770275@linuxfoundation.org>
+Message-ID: <20250708162238.505121884@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit a433791aeaea6e84df709e0b9584b9bbe040cd1c ]
+[ Upstream commit 157501b0469969fc1ba53add5049575aadd79d80 ]
 
-syzbot reported a warning below during atm_dev_register(). [0]
+We are setting the parent directory's last_unlink_trans directly which
+may result in a concurrent task starting to log the directory not see the
+update and therefore can log the directory after we removed a child
+directory which had a snapshot within instead of falling back to a
+transaction commit. Replaying such a log tree would result in a mount
+failure since we can't currently delete snapshots (and subvolumes) during
+log replay. This is the type of failure described in commit 1ec9a1ae1e30
+("Btrfs: fix unreplayable log after snapshot delete + parent dir fsync").
 
-Before creating a new device and procfs/sysfs for it, atm_dev_register()
-looks up a duplicated device by __atm_dev_lookup().  These operations are
-done under atm_dev_mutex.
+Fix this by using btrfs_record_snapshot_destroy() which updates the
+last_unlink_trans field while holding the inode's log_mutex lock.
 
-However, when removing a device in atm_dev_deregister(), it releases the
-mutex just after removing the device from the list that __atm_dev_lookup()
-iterates over.
-
-So, there will be a small race window where the device does not exist on
-the device list but procfs/sysfs are still not removed, triggering the
-splat.
-
-Let's hold the mutex until procfs/sysfs are removed in
-atm_dev_deregister().
-
-[0]:
-proc_dir_entry 'atm/atmtcp:0' already registered
-WARNING: CPU: 0 PID: 5919 at fs/proc/generic.c:377 proc_register+0x455/0x5f0 fs/proc/generic.c:377
-Modules linked in:
-CPU: 0 UID: 0 PID: 5919 Comm: syz-executor284 Not tainted 6.16.0-rc2-syzkaller-00047-g52da431bf03b #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-RIP: 0010:proc_register+0x455/0x5f0 fs/proc/generic.c:377
-Code: 48 89 f9 48 c1 e9 03 80 3c 01 00 0f 85 a2 01 00 00 48 8b 44 24 10 48 c7 c7 20 c0 c2 8b 48 8b b0 d8 00 00 00 e8 0c 02 1c ff 90 <0f> 0b 90 90 48 c7 c7 80 f2 82 8e e8 0b de 23 09 48 8b 4c 24 28 48
-RSP: 0018:ffffc9000466fa30 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff817ae248
-RDX: ffff888026280000 RSI: ffffffff817ae255 RDI: 0000000000000001
-RBP: ffff8880232bed48 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: ffff888076ed2140
-R13: dffffc0000000000 R14: ffff888078a61340 R15: ffffed100edda444
-FS:  00007f38b3b0c6c0(0000) GS:ffff888124753000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f38b3bdf953 CR3: 0000000076d58000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- proc_create_data+0xbe/0x110 fs/proc/generic.c:585
- atm_proc_dev_register+0x112/0x1e0 net/atm/proc.c:361
- atm_dev_register+0x46d/0x890 net/atm/resources.c:113
- atmtcp_create+0x77/0x210 drivers/atm/atmtcp.c:369
- atmtcp_attach drivers/atm/atmtcp.c:403 [inline]
- atmtcp_ioctl+0x2f9/0xd60 drivers/atm/atmtcp.c:464
- do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
- sock_do_ioctl+0x115/0x280 net/socket.c:1190
- sock_ioctl+0x227/0x6b0 net/socket.c:1311
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:907 [inline]
- __se_sys_ioctl fs/ioctl.c:893 [inline]
- __x64_sys_ioctl+0x18b/0x210 fs/ioctl.c:893
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f38b3b74459
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f38b3b0c198 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f38b3bfe318 RCX: 00007f38b3b74459
-RDX: 0000000000000000 RSI: 0000000000006180 RDI: 0000000000000005
-RBP: 00007f38b3bfe310 R08: 65732f636f72702f R09: 65732f636f72702f
-R10: 65732f636f72702f R11: 0000000000000246 R12: 00007f38b3bcb0ac
-R13: 00007f38b3b0c1a0 R14: 0000200000000200 R15: 00007f38b3bcb03b
- </TASK>
-
-Fixes: 64bf69ddff76 ("[ATM]: deregistration removes device from atm_devs list immediately")
-Reported-by: syzbot+8bd335d2ad3b93e80715@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/685316de.050a0220.216029.0087.GAE@google.com/
-Tested-by: syzbot+8bd335d2ad3b93e80715@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250624214505.570679-1-kuni1840@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/resources.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/atm/resources.c b/net/atm/resources.c
-index 995d29e7fb138..b19d851e1f443 100644
---- a/net/atm/resources.c
-+++ b/net/atm/resources.c
-@@ -146,11 +146,10 @@ void atm_dev_deregister(struct atm_dev *dev)
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 24db00a9319b3..f18f4d59d389e 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4764,7 +4764,7 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	 * deletes for directory foo.
  	 */
- 	mutex_lock(&atm_dev_mutex);
- 	list_del(&dev->dev_list);
--	mutex_unlock(&atm_dev_mutex);
--
- 	atm_dev_release_vccs(dev);
- 	atm_unregister_sysfs(dev);
- 	atm_proc_dev_deregister(dev);
-+	mutex_unlock(&atm_dev_mutex);
+ 	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
+-		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
++		btrfs_record_snapshot_destroy(trans, BTRFS_I(dir));
  
- 	atm_dev_put(dev);
- }
+ 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
+ 		ret = btrfs_unlink_subvol(trans, BTRFS_I(dir), dentry);
 -- 
 2.39.5
 
