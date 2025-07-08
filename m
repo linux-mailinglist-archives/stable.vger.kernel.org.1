@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-161130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDFDEAFD37D
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65168AFD2CB
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAD3C544355
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:54:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B7083AC656
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67A52E0B4B;
-	Tue,  8 Jul 2025 16:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A3D2E5412;
+	Tue,  8 Jul 2025 16:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSFcr4Is"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AD98bnQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7503B2DAFAE;
-	Tue,  8 Jul 2025 16:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064102E266B;
+	Tue,  8 Jul 2025 16:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993682; cv=none; b=USpQOXFSklc+0gMQmIVxl2GCWluA8b4fSaHdvTTqE7RSKqWoNz1ZGUZPCMJQXMhtpSA6wDCRR/pGI83vEbptFcM0+2UJ7JBmTqMqEiMs+aHtk0B6Bmo9pXfwpWRlHf3SVi/biomp+yjzSEeprA+NWgrNBeuPI1I4sP8HB2p4qWI=
+	t=1751993219; cv=none; b=RNhr7J2T4C8+UEO1xcj2Kc5x01gCbqOjBsxgWB7IbabKNY3hLj/pj5qDW1YKTLmVjUAsCIqeYF7s50kJod/XfYyJBK19xTJ4dEtIm4FfXF2jKagxYVshGPg6JPbtGVLLANhTLk+s00lBBrc03IfDkkxoRFFIc/uUXNgYBxbKMtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993682; c=relaxed/simple;
-	bh=sSML05HhxSNeXBMZXe3AAuBoRzs2ynHx7gwOH1cqI+o=;
+	s=arc-20240116; t=1751993219; c=relaxed/simple;
+	bh=0Ai4s/XnghSTYOv4KpMlnQSa5tSM9EUQdh3jnP3dq3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qa/HyCKATK9qERQYmj5cd4rrlbEVZhdZYT77AogKXMpUiyIeD3GLRZ1EqvB4boA3W5IbtMOXqAuXckm31dGiPORWwCnjljSYJKl7XSJ2D9XeLh2iRCy48gZlCHHChmaIH3M3FSTXzJTNUK3WS92XGPMTO9SCs8Ya/uY4DTbWX78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSFcr4Is; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBC1C4CEED;
-	Tue,  8 Jul 2025 16:54:41 +0000 (UTC)
+	 MIME-Version; b=tgH6juQ5aDbawZFA2M7Ky2TRckKUSE9hbN8nkGJqw/Gm1DKOsV2R3bKnzHt7rHhRjhoigFz+iPu7ui+CtZzxpHIwffO4eceMfP1o66hysBG0v/Udj5maz9BFQjcuTsVfS4kY/TCJyxp/SRTNMT7VyQPCZ2AD8Kt87oaN8H7Glqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AD98bnQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816BDC4CEED;
+	Tue,  8 Jul 2025 16:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993682;
-	bh=sSML05HhxSNeXBMZXe3AAuBoRzs2ynHx7gwOH1cqI+o=;
+	s=korg; t=1751993218;
+	bh=0Ai4s/XnghSTYOv4KpMlnQSa5tSM9EUQdh3jnP3dq3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qSFcr4IsTEaQBBn6oUrd8PM+oVO6hyCYfRDQ3AE/akX/JYkly5jq4X8U9b4QE7t9y
-	 7EkoPTdhY2qsTKxyg9JDylxQrHfcWaKyuddEPE3M51kpxZpsXqYXKyE7HKfTjJ2XUf
-	 KsrWEQjB3mtCOBjkAyn5vapwCQum1sSHTPIOeGXU=
+	b=AD98bnQaq+XCsguWNPVN1nu46fmEoLcDYH2x4YHeGdZMrUA6NqHqqdZ9JhKBO/j2M
+	 ueKYgXHjVbCUpRM/7jeA/F/k8Q2wdrTqtpp1sDwZNdGtTT9I34Ax3lYKmjj9fJEJG2
+	 28AvLocdfA6kPY9UQS/L7bgG2f8olz4AvdpJCgSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 157/178] cifs: all initializations for tcon should happen in tcon_info_alloc
+	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 198/232] NFSv4/flexfiles: Fix handling of NFS level errors in I/O
 Date: Tue,  8 Jul 2025 18:23:14 +0200
-Message-ID: <20250708162240.594843845@linuxfoundation.org>
+Message-ID: <20250708162246.618230659@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,255 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 74ebd02163fde05baa23129e06dde4b8f0f2377a upstream.
+[ Upstream commit 38074de35b015df5623f524d6f2b49a0cd395c40 ]
 
-Today, a few work structs inside tcon are initialized inside
-cifs_get_tcon and not in tcon_info_alloc. As a result, if a tcon
-is obtained from tcon_info_alloc, but not called as a part of
-cifs_get_tcon, we may trip over.
+Allow the flexfiles error handling to recognise NFS level errors (as
+opposed to RPC level errors) and handle them separately. The main
+motivator is the NFSERR_PERM errors that get returned if the NFS client
+connects to the data server through a port number that is lower than
+1024. In that case, the client should disconnect and retry a READ on a
+different data server, or it should retry a WRITE after reconnecting.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsproto.h |    1 +
- fs/smb/client/connect.c   |    8 +-------
- fs/smb/client/misc.c      |    6 ++++++
- 3 files changed, 8 insertions(+), 7 deletions(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c | 121 ++++++++++++++++++-------
+ 1 file changed, 87 insertions(+), 34 deletions(-)
 
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -136,6 +136,7 @@ extern int SendReceiveBlockingLock(const
- 			struct smb_hdr *out_buf,
- 			int *bytes_returned);
- 
-+void smb2_query_server_interfaces(struct work_struct *work);
- void
- cifs_signal_cifsd_for_reconnect(struct TCP_Server_Info *server,
- 				      bool all_channels);
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -97,7 +97,7 @@ static int reconn_set_ipaddr_from_hostna
- 	return rc;
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index 8f7ea4076653d..bf96f7a8900c1 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -1104,6 +1104,7 @@ static void ff_layout_reset_read(struct nfs_pgio_header *hdr)
  }
  
--static void smb2_query_server_interfaces(struct work_struct *work)
-+void smb2_query_server_interfaces(struct work_struct *work)
- {
- 	int rc;
- 	int xid;
-@@ -2880,20 +2880,14 @@ cifs_get_tcon(struct cifs_ses *ses, stru
- 	tcon->max_cached_dirs = ctx->max_cached_dirs;
- 	tcon->nodelete = ctx->nodelete;
- 	tcon->local_lease = ctx->local_lease;
--	INIT_LIST_HEAD(&tcon->pending_opens);
- 	tcon->status = TID_GOOD;
+ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
++					   u32 op_status,
+ 					   struct nfs4_state *state,
+ 					   struct nfs_client *clp,
+ 					   struct pnfs_layout_segment *lseg,
+@@ -1114,32 +1115,42 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
+ 	struct nfs4_deviceid_node *devid = FF_LAYOUT_DEVID_NODE(lseg, idx);
+ 	struct nfs4_slot_table *tbl = &clp->cl_session->fc_slot_table;
  
--	INIT_DELAYED_WORK(&tcon->query_interfaces,
--			  smb2_query_server_interfaces);
- 	if (ses->server->dialect >= SMB30_PROT_ID &&
- 	    (ses->server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
- 		/* schedule query interfaces poll */
- 		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
- 				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
+-	switch (task->tk_status) {
+-	case -NFS4ERR_BADSESSION:
+-	case -NFS4ERR_BADSLOT:
+-	case -NFS4ERR_BAD_HIGH_SLOT:
+-	case -NFS4ERR_DEADSESSION:
+-	case -NFS4ERR_CONN_NOT_BOUND_TO_SESSION:
+-	case -NFS4ERR_SEQ_FALSE_RETRY:
+-	case -NFS4ERR_SEQ_MISORDERED:
++	switch (op_status) {
++	case NFS4_OK:
++	case NFS4ERR_NXIO:
++		break;
++	case NFSERR_PERM:
++		if (!task->tk_xprt)
++			break;
++		xprt_force_disconnect(task->tk_xprt);
++		goto out_retry;
++	case NFS4ERR_BADSESSION:
++	case NFS4ERR_BADSLOT:
++	case NFS4ERR_BAD_HIGH_SLOT:
++	case NFS4ERR_DEADSESSION:
++	case NFS4ERR_CONN_NOT_BOUND_TO_SESSION:
++	case NFS4ERR_SEQ_FALSE_RETRY:
++	case NFS4ERR_SEQ_MISORDERED:
+ 		dprintk("%s ERROR %d, Reset session. Exchangeid "
+ 			"flags 0x%x\n", __func__, task->tk_status,
+ 			clp->cl_exchange_flags);
+ 		nfs4_schedule_session_recovery(clp->cl_session, task->tk_status);
+-		break;
+-	case -NFS4ERR_DELAY:
+-	case -NFS4ERR_GRACE:
++		goto out_retry;
++	case NFS4ERR_DELAY:
++		nfs_inc_stats(lseg->pls_layout->plh_inode, NFSIOS_DELAY);
++		fallthrough;
++	case NFS4ERR_GRACE:
+ 		rpc_delay(task, FF_LAYOUT_POLL_RETRY_MAX);
+-		break;
+-	case -NFS4ERR_RETRY_UNCACHED_REP:
+-		break;
++		goto out_retry;
++	case NFS4ERR_RETRY_UNCACHED_REP:
++		goto out_retry;
+ 	/* Invalidate Layout errors */
+-	case -NFS4ERR_PNFS_NO_LAYOUT:
+-	case -ESTALE:           /* mapped NFS4ERR_STALE */
+-	case -EBADHANDLE:       /* mapped NFS4ERR_BADHANDLE */
+-	case -EISDIR:           /* mapped NFS4ERR_ISDIR */
+-	case -NFS4ERR_FHEXPIRED:
+-	case -NFS4ERR_WRONG_TYPE:
++	case NFS4ERR_PNFS_NO_LAYOUT:
++	case NFS4ERR_STALE:
++	case NFS4ERR_BADHANDLE:
++	case NFS4ERR_ISDIR:
++	case NFS4ERR_FHEXPIRED:
++	case NFS4ERR_WRONG_TYPE:
+ 		dprintk("%s Invalid layout error %d\n", __func__,
+ 			task->tk_status);
+ 		/*
+@@ -1152,6 +1163,11 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
+ 		pnfs_destroy_layout(NFS_I(inode));
+ 		rpc_wake_up(&tbl->slot_tbl_waitq);
+ 		goto reset;
++	default:
++		break;
++	}
++
++	switch (task->tk_status) {
+ 	/* RPC connection errors */
+ 	case -ECONNREFUSED:
+ 	case -EHOSTDOWN:
+@@ -1167,26 +1183,56 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
+ 		nfs4_delete_deviceid(devid->ld, devid->nfs_client,
+ 				&devid->deviceid);
+ 		rpc_wake_up(&tbl->slot_tbl_waitq);
+-		fallthrough;
++		break;
+ 	default:
+-		if (ff_layout_avoid_mds_available_ds(lseg))
+-			return -NFS4ERR_RESET_TO_PNFS;
+-reset:
+-		dprintk("%s Retry through MDS. Error %d\n", __func__,
+-			task->tk_status);
+-		return -NFS4ERR_RESET_TO_MDS;
++		break;
  	}
--#ifdef CONFIG_CIFS_DFS_UPCALL
--	INIT_DELAYED_WORK(&tcon->dfs_cache_work, dfs_cache_refresh);
--#endif
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_add(&tcon->tcon_list, &ses->tcon_list);
- 	spin_unlock(&cifs_tcp_ses_lock);
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -151,6 +151,12 @@ tcon_info_alloc(bool dir_leases_enabled,
- #ifdef CONFIG_CIFS_DFS_UPCALL
- 	INIT_LIST_HEAD(&ret_buf->dfs_ses_list);
- #endif
-+	INIT_LIST_HEAD(&ret_buf->pending_opens);
-+	INIT_DELAYED_WORK(&ret_buf->query_interfaces,
-+			  smb2_query_server_interfaces);
-+#ifdef CONFIG_CIFS_DFS_UPCALL
-+	INIT_DELAYED_WORK(&ret_buf->dfs_cache_work, dfs_cache_refresh);
-+#endif
- 
- 	return ret_buf;
++
++	if (ff_layout_avoid_mds_available_ds(lseg))
++		return -NFS4ERR_RESET_TO_PNFS;
++reset:
++	dprintk("%s Retry through MDS. Error %d\n", __func__,
++		task->tk_status);
++	return -NFS4ERR_RESET_TO_MDS;
++
++out_retry:
+ 	task->tk_status = 0;
+ 	return -EAGAIN;
  }
+ 
+ /* Retry all errors through either pNFS or MDS except for -EJUKEBOX */
+ static int ff_layout_async_handle_error_v3(struct rpc_task *task,
++					   u32 op_status,
++					   struct nfs_client *clp,
+ 					   struct pnfs_layout_segment *lseg,
+ 					   u32 idx)
+ {
+ 	struct nfs4_deviceid_node *devid = FF_LAYOUT_DEVID_NODE(lseg, idx);
+ 
++	switch (op_status) {
++	case NFS_OK:
++	case NFSERR_NXIO:
++		break;
++	case NFSERR_PERM:
++		if (!task->tk_xprt)
++			break;
++		xprt_force_disconnect(task->tk_xprt);
++		goto out_retry;
++	case NFSERR_ACCES:
++	case NFSERR_BADHANDLE:
++	case NFSERR_FBIG:
++	case NFSERR_IO:
++	case NFSERR_NOSPC:
++	case NFSERR_ROFS:
++	case NFSERR_STALE:
++		goto out_reset_to_pnfs;
++	case NFSERR_JUKEBOX:
++		nfs_inc_stats(lseg->pls_layout->plh_inode, NFSIOS_DELAY);
++		goto out_retry;
++	default:
++		break;
++	}
++
+ 	switch (task->tk_status) {
+ 	/* File access problems. Don't mark the device as unavailable */
+ 	case -EACCES:
+@@ -1205,6 +1251,7 @@ static int ff_layout_async_handle_error_v3(struct rpc_task *task,
+ 		nfs4_delete_deviceid(devid->ld, devid->nfs_client,
+ 				&devid->deviceid);
+ 	}
++out_reset_to_pnfs:
+ 	/* FIXME: Need to prevent infinite looping here. */
+ 	return -NFS4ERR_RESET_TO_PNFS;
+ out_retry:
+@@ -1215,6 +1262,7 @@ static int ff_layout_async_handle_error_v3(struct rpc_task *task,
+ }
+ 
+ static int ff_layout_async_handle_error(struct rpc_task *task,
++					u32 op_status,
+ 					struct nfs4_state *state,
+ 					struct nfs_client *clp,
+ 					struct pnfs_layout_segment *lseg,
+@@ -1233,10 +1281,11 @@ static int ff_layout_async_handle_error(struct rpc_task *task,
+ 
+ 	switch (vers) {
+ 	case 3:
+-		return ff_layout_async_handle_error_v3(task, lseg, idx);
+-	case 4:
+-		return ff_layout_async_handle_error_v4(task, state, clp,
++		return ff_layout_async_handle_error_v3(task, op_status, clp,
+ 						       lseg, idx);
++	case 4:
++		return ff_layout_async_handle_error_v4(task, op_status, state,
++						       clp, lseg, idx);
+ 	default:
+ 		/* should never happen */
+ 		WARN_ON_ONCE(1);
+@@ -1289,6 +1338,7 @@ static void ff_layout_io_track_ds_error(struct pnfs_layout_segment *lseg,
+ 	switch (status) {
+ 	case NFS4ERR_DELAY:
+ 	case NFS4ERR_GRACE:
++	case NFS4ERR_PERM:
+ 		break;
+ 	case NFS4ERR_NXIO:
+ 		ff_layout_mark_ds_unreachable(lseg, idx);
+@@ -1321,7 +1371,8 @@ static int ff_layout_read_done_cb(struct rpc_task *task,
+ 		trace_ff_layout_read_error(hdr);
+ 	}
+ 
+-	err = ff_layout_async_handle_error(task, hdr->args.context->state,
++	err = ff_layout_async_handle_error(task, hdr->res.op_status,
++					   hdr->args.context->state,
+ 					   hdr->ds_clp, hdr->lseg,
+ 					   hdr->pgio_mirror_idx);
+ 
+@@ -1491,7 +1542,8 @@ static int ff_layout_write_done_cb(struct rpc_task *task,
+ 		trace_ff_layout_write_error(hdr);
+ 	}
+ 
+-	err = ff_layout_async_handle_error(task, hdr->args.context->state,
++	err = ff_layout_async_handle_error(task, hdr->res.op_status,
++					   hdr->args.context->state,
+ 					   hdr->ds_clp, hdr->lseg,
+ 					   hdr->pgio_mirror_idx);
+ 
+@@ -1537,8 +1589,9 @@ static int ff_layout_commit_done_cb(struct rpc_task *task,
+ 		trace_ff_layout_commit_error(data);
+ 	}
+ 
+-	err = ff_layout_async_handle_error(task, NULL, data->ds_clp,
+-					   data->lseg, data->ds_commit_index);
++	err = ff_layout_async_handle_error(task, data->res.op_status,
++					   NULL, data->ds_clp, data->lseg,
++					   data->ds_commit_index);
+ 
+ 	trace_nfs4_pnfs_commit_ds(data, err);
+ 	switch (err) {
+-- 
+2.39.5
+
 
 
 
