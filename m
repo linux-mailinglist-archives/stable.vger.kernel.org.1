@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016C5AFD2C2
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:50:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B745EAFD0D4
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BF2C542728
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:46:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42B851BC37DA
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DE32E1C74;
-	Tue,  8 Jul 2025 16:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF712DF3F8;
+	Tue,  8 Jul 2025 16:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/o3oLBN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+Ptw+ps"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2371FC0F3;
-	Tue,  8 Jul 2025 16:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460D31DF74F;
+	Tue,  8 Jul 2025 16:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993187; cv=none; b=Xa4SK+w9xAmkhtYLOluuiF9u1ipBNr9XkVtrh2/OgtrMF99TrFFkb5sazbNNG3VAdiyjb3PLBDzWOIFp/I6Kra6g8hjXP6/PRLsbNCOukPvBcxcuD1mMl2EnnOhL2UT+LQNi28/iHDhH7t8T9Xdbrrva5OapCnSsEwlVlPFQLl8=
+	t=1751992045; cv=none; b=LMS4uCmZxuKGkH6jBqAKZW5f21+eT/9NTx2CGwDGj3p2AlepCz2bem9DYW4VJ8lII+tCD9oS4Cc31MmxdWsuOq0jx0WOgwYib1tpH/ko3U3w/oUMXJEb+66pNePsIo3mzHNTqe4/OCDPjrE0UhbPcJ1HPTvakmqLX6W41CIHsfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993187; c=relaxed/simple;
-	bh=X2Gx1XFr3DmUxRJAWvzCn+/IcIru1Z92pU/sb00Z5mc=;
+	s=arc-20240116; t=1751992045; c=relaxed/simple;
+	bh=tK+VUVA+gbuOVTUr6jielqtG2ci9Srz0V+m0DiJyeRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CiEQNAY87T6uuH7/shVUtLOySLwmlVSFR/BNyGnxMxYOO0OhKa5ZDQbv4k4YFcGHPmT/K/azzzvZsbu8sAtSUVsc3JAiGKmOPMRzJPu8MzDKjkV7V7oEkTqw/c1ccQYoWqD2YmqBBCOUCA0MmqN6gcFm5Zi25hZhRsG0MRieRSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/o3oLBN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA7FC4CEED;
-	Tue,  8 Jul 2025 16:46:26 +0000 (UTC)
+	 MIME-Version; b=J1481mi66p8Otj0tIqKPduU44Y583zuiB0sCIrbQA0btji2mxzffpeSu61Clo7OIBIXqlBHmMknAsjl4i+mKriEjzOjZaTlowan8nLoY7dgL4BvYPgr+Bpcze41KQmHHIBzcUlUMzEJ/7YXUI8l9xwkWGkX+vh/X7/hBJMWpsLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+Ptw+ps; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710BAC4CEED;
+	Tue,  8 Jul 2025 16:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993187;
-	bh=X2Gx1XFr3DmUxRJAWvzCn+/IcIru1Z92pU/sb00Z5mc=;
+	s=korg; t=1751992044;
+	bh=tK+VUVA+gbuOVTUr6jielqtG2ci9Srz0V+m0DiJyeRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R/o3oLBNPuyTZzWOjurkGpUMAHiEAGFNvJEQ+07xaqyawXGXOdcGmnGKyNSVeSFAR
-	 be83iMGnYqN0dQt3b0/rwkUhgVqDXtE0x0k8rt3rfvdYcoeF5Lp/Ayg417VhNGoVu5
-	 +PuFWmCZ77+g4vMyDJ1JVkzzskInu/I2B+eo2bro=
+	b=A+Ptw+pspCiQgvW1ofQ/NJKVFcPpbatLc6uhN4ZLJAwePn8EbYe1l4ExHGE7iBs6Q
+	 9CUnfJ/LxrQZv7pCaUq7FYDsWAldJ8c/iJAkFfKsSMFBuCZ+wyTgHeo6yw9fEKk/2Y
+	 Mi8N2sVWfEVgIhwBznltJeGxbmyQNnDtxNYIkNUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>
-Subject: [PATCH 6.12 217/232] optee: ffa: fix sleep in atomic context
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 41/81] nui: Fix dma_mapping_error() check
 Date: Tue,  8 Jul 2025 18:23:33 +0200
-Message-ID: <20250708162247.117095090@linuxfoundation.org>
+Message-ID: <20250708162226.300274851@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,156 +63,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Wiklander <jens.wiklander@linaro.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 312d02adb959ea199372f375ada06e0186f651e4 upstream.
+[ Upstream commit 561aa0e22b70a5e7246b73d62a824b3aef3fc375 ]
 
-The OP-TEE driver registers the function notif_callback() for FF-A
-notifications. However, this function is called in an atomic context
-leading to errors like this when processing asynchronous notifications:
+dma_map_XXX() functions return values DMA_MAPPING_ERROR as error values
+which is often ~0.  The error value should be tested with
+dma_mapping_error().
 
- | BUG: sleeping function called from invalid context at kernel/locking/mutex.c:258
- | in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 9, name: kworker/0:0
- | preempt_count: 1, expected: 0
- | RCU nest depth: 0, expected: 0
- | CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted 6.14.0-00019-g657536ebe0aa #13
- | Hardware name: linux,dummy-virt (DT)
- | Workqueue: ffa_pcpu_irq_notification notif_pcpu_irq_work_fn
- | Call trace:
- |  show_stack+0x18/0x24 (C)
- |  dump_stack_lvl+0x78/0x90
- |  dump_stack+0x18/0x24
- |  __might_resched+0x114/0x170
- |  __might_sleep+0x48/0x98
- |  mutex_lock+0x24/0x80
- |  optee_get_msg_arg+0x7c/0x21c
- |  simple_call_with_arg+0x50/0xc0
- |  optee_do_bottom_half+0x14/0x20
- |  notif_callback+0x3c/0x48
- |  handle_notif_callbacks+0x9c/0xe0
- |  notif_get_and_handle+0x40/0x88
- |  generic_exec_single+0x80/0xc0
- |  smp_call_function_single+0xfc/0x1a0
- |  notif_pcpu_irq_work_fn+0x2c/0x38
- |  process_one_work+0x14c/0x2b4
- |  worker_thread+0x2e4/0x3e0
- |  kthread+0x13c/0x210
- |  ret_from_fork+0x10/0x20
+This patch creates a new function in niu_ops to test if the mapping
+failed.  The test is fixed in niu_rbr_add_page(), added in
+niu_start_xmit() and the successfully mapped pages are unmaped upon error.
 
-Fix this by adding work queue to process the notification in a
-non-atomic context.
-
-Fixes: d0476a59de06 ("optee: ffa_abi: add asynchronous notifications")
-Cc: stable@vger.kernel.org
-Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Tested-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/20250602120452.2507084-1-jens.wiklander@linaro.org
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ec2deec1f352 ("niu: Fix to check for dma mapping errors.")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tee/optee/ffa_abi.c       |   41 +++++++++++++++++++++++++++++---------
- drivers/tee/optee/optee_private.h |    2 +
- 2 files changed, 34 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/sun/niu.c | 31 ++++++++++++++++++++++++++++++-
+ drivers/net/ethernet/sun/niu.h |  4 ++++
+ 2 files changed, 34 insertions(+), 1 deletion(-)
 
---- a/drivers/tee/optee/ffa_abi.c
-+++ b/drivers/tee/optee/ffa_abi.c
-@@ -728,12 +728,21 @@ static bool optee_ffa_exchange_caps(stru
- 	return true;
+diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
+index 4bbf011d53e69..2b38cb4fdaeb8 100644
+--- a/drivers/net/ethernet/sun/niu.c
++++ b/drivers/net/ethernet/sun/niu.c
+@@ -3336,7 +3336,7 @@ static int niu_rbr_add_page(struct niu *np, struct rx_ring_info *rp,
+ 
+ 	addr = np->ops->map_page(np->device, page, 0,
+ 				 PAGE_SIZE, DMA_FROM_DEVICE);
+-	if (!addr) {
++	if (np->ops->mapping_error(np->device, addr)) {
+ 		__free_page(page);
+ 		return -ENOMEM;
+ 	}
+@@ -6672,6 +6672,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ 	len = skb_headlen(skb);
+ 	mapping = np->ops->map_single(np->device, skb->data,
+ 				      len, DMA_TO_DEVICE);
++	if (np->ops->mapping_error(np->device, mapping))
++		goto out_drop;
+ 
+ 	prod = rp->prod;
+ 
+@@ -6713,6 +6715,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ 		mapping = np->ops->map_page(np->device, skb_frag_page(frag),
+ 					    skb_frag_off(frag), len,
+ 					    DMA_TO_DEVICE);
++		if (np->ops->mapping_error(np->device, mapping))
++			goto out_unmap;
+ 
+ 		rp->tx_buffs[prod].skb = NULL;
+ 		rp->tx_buffs[prod].mapping = mapping;
+@@ -6737,6 +6741,19 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ out:
+ 	return NETDEV_TX_OK;
+ 
++out_unmap:
++	while (i--) {
++		const skb_frag_t *frag;
++
++		prod = PREVIOUS_TX(rp, prod);
++		frag = &skb_shinfo(skb)->frags[i];
++		np->ops->unmap_page(np->device, rp->tx_buffs[prod].mapping,
++				    skb_frag_size(frag), DMA_TO_DEVICE);
++	}
++
++	np->ops->unmap_single(np->device, rp->tx_buffs[rp->prod].mapping,
++			      skb_headlen(skb), DMA_TO_DEVICE);
++
+ out_drop:
+ 	rp->tx_errors++;
+ 	kfree_skb(skb);
+@@ -9636,6 +9653,11 @@ static void niu_pci_unmap_single(struct device *dev, u64 dma_address,
+ 	dma_unmap_single(dev, dma_address, size, direction);
  }
  
-+static void notif_work_fn(struct work_struct *work)
++static int niu_pci_mapping_error(struct device *dev, u64 addr)
 +{
-+	struct optee_ffa *optee_ffa = container_of(work, struct optee_ffa,
-+						   notif_work);
-+	struct optee *optee = container_of(optee_ffa, struct optee, ffa);
-+
-+	optee_do_bottom_half(optee->ctx);
++	return dma_mapping_error(dev, addr);
 +}
 +
- static void notif_callback(int notify_id, void *cb_data)
- {
- 	struct optee *optee = cb_data;
- 
- 	if (notify_id == optee->ffa.bottom_half_value)
--		optee_do_bottom_half(optee->ctx);
-+		queue_work(optee->ffa.notif_wq, &optee->ffa.notif_work);
- 	else
- 		optee_notif_send(optee, notify_id);
- }
-@@ -817,9 +826,11 @@ static void optee_ffa_remove(struct ffa_
- 	struct optee *optee = ffa_dev_get_drvdata(ffa_dev);
- 	u32 bottom_half_id = optee->ffa.bottom_half_value;
- 
--	if (bottom_half_id != U32_MAX)
-+	if (bottom_half_id != U32_MAX) {
- 		ffa_dev->ops->notifier_ops->notify_relinquish(ffa_dev,
- 							      bottom_half_id);
-+		destroy_workqueue(optee->ffa.notif_wq);
-+	}
- 	optee_remove_common(optee);
- 
- 	mutex_destroy(&optee->ffa.mutex);
-@@ -835,6 +846,13 @@ static int optee_ffa_async_notif_init(st
- 	u32 notif_id = 0;
- 	int rc;
- 
-+	INIT_WORK(&optee->ffa.notif_work, notif_work_fn);
-+	optee->ffa.notif_wq = create_workqueue("optee_notification");
-+	if (!optee->ffa.notif_wq) {
-+		rc = -EINVAL;
-+		goto err;
-+	}
-+
- 	while (true) {
- 		rc = ffa_dev->ops->notifier_ops->notify_request(ffa_dev,
- 								is_per_vcpu,
-@@ -851,19 +869,24 @@ static int optee_ffa_async_notif_init(st
- 		 * notifications in that case.
- 		 */
- 		if (rc != -EACCES)
--			return rc;
-+			goto err_wq;
- 		notif_id++;
- 		if (notif_id >= OPTEE_FFA_MAX_ASYNC_NOTIF_VALUE)
--			return rc;
-+			goto err_wq;
- 	}
- 	optee->ffa.bottom_half_value = notif_id;
- 
- 	rc = enable_async_notif(optee);
--	if (rc < 0) {
--		ffa_dev->ops->notifier_ops->notify_relinquish(ffa_dev,
--							      notif_id);
--		optee->ffa.bottom_half_value = U32_MAX;
--	}
-+	if (rc < 0)
-+		goto err_rel;
-+
-+	return 0;
-+err_rel:
-+	ffa_dev->ops->notifier_ops->notify_relinquish(ffa_dev, notif_id);
-+err_wq:
-+	destroy_workqueue(optee->ffa.notif_wq);
-+err:
-+	optee->ffa.bottom_half_value = U32_MAX;
- 
- 	return rc;
- }
---- a/drivers/tee/optee/optee_private.h
-+++ b/drivers/tee/optee/optee_private.h
-@@ -165,6 +165,8 @@ struct optee_ffa {
- 	/* Serializes access to @global_ids */
- 	struct mutex mutex;
- 	struct rhashtable global_ids;
-+	struct workqueue_struct *notif_wq;
-+	struct work_struct notif_work;
+ static const struct niu_ops niu_pci_ops = {
+ 	.alloc_coherent	= niu_pci_alloc_coherent,
+ 	.free_coherent	= niu_pci_free_coherent,
+@@ -9643,6 +9665,7 @@ static const struct niu_ops niu_pci_ops = {
+ 	.unmap_page	= niu_pci_unmap_page,
+ 	.map_single	= niu_pci_map_single,
+ 	.unmap_single	= niu_pci_unmap_single,
++	.mapping_error	= niu_pci_mapping_error,
  };
  
- struct optee;
+ static void niu_driver_version(void)
+@@ -10009,6 +10032,11 @@ static void niu_phys_unmap_single(struct device *dev, u64 dma_address,
+ 	/* Nothing to do.  */
+ }
+ 
++static int niu_phys_mapping_error(struct device *dev, u64 dma_address)
++{
++	return false;
++}
++
+ static const struct niu_ops niu_phys_ops = {
+ 	.alloc_coherent	= niu_phys_alloc_coherent,
+ 	.free_coherent	= niu_phys_free_coherent,
+@@ -10016,6 +10044,7 @@ static const struct niu_ops niu_phys_ops = {
+ 	.unmap_page	= niu_phys_unmap_page,
+ 	.map_single	= niu_phys_map_single,
+ 	.unmap_single	= niu_phys_unmap_single,
++	.mapping_error	= niu_phys_mapping_error,
+ };
+ 
+ static int niu_of_probe(struct platform_device *op)
+diff --git a/drivers/net/ethernet/sun/niu.h b/drivers/net/ethernet/sun/niu.h
+index 04c215f91fc08..0b169c08b0f2d 100644
+--- a/drivers/net/ethernet/sun/niu.h
++++ b/drivers/net/ethernet/sun/niu.h
+@@ -2879,6 +2879,9 @@ struct tx_ring_info {
+ #define NEXT_TX(tp, index) \
+ 	(((index) + 1) < (tp)->pending ? ((index) + 1) : 0)
+ 
++#define PREVIOUS_TX(tp, index) \
++	(((index) - 1) >= 0 ? ((index) - 1) : (((tp)->pending) - 1))
++
+ static inline u32 niu_tx_avail(struct tx_ring_info *tp)
+ {
+ 	return (tp->pending -
+@@ -3140,6 +3143,7 @@ struct niu_ops {
+ 			  enum dma_data_direction direction);
+ 	void (*unmap_single)(struct device *dev, u64 dma_address,
+ 			     size_t size, enum dma_data_direction direction);
++	int (*mapping_error)(struct device *dev, u64 dma_address);
+ };
+ 
+ struct niu_link_config {
+-- 
+2.39.5
+
 
 
 
