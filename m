@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-160818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A9FAFD1FF
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:42:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9893AFD309
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 337E1171C63
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:39:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73785188BA32
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDAD2DC34C;
-	Tue,  8 Jul 2025 16:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCF32E1C65;
+	Tue,  8 Jul 2025 16:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZUqpAta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhDacSkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27089F9E8;
-	Tue,  8 Jul 2025 16:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49366217722;
+	Tue,  8 Jul 2025 16:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992779; cv=none; b=l4UUijwGWlnKKt0p257NMmYN9iclbsxSNF8uhR3ZKrDpOpJika+XLotvAO0F0PgUE5ivSc9jDjrJ/dbt/OfBOu4BwNrJbCEmgkmsXIyrXCGtkRlhdZ/TOGn5etRAnd8L24crkvFZme0Sh5bF2mnvyQ8ozTGwz1Doe4lnSPY0z7U=
+	t=1751993356; cv=none; b=azgYgrfE2475Hax1JQlBg8JDe1VYkzy4hPOLXP+pUTcvtf1+eyDtbLcErc55PohVwjpvwMLQHgSW/9kuye3SKLhchimFdp2CGn377lBlqw5Jjh1AFNlwJjdoBCiNXJOUGHj2OPxY8G1QMbS7/27Ye9qdawK2G0ykJO+As8pMc3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992779; c=relaxed/simple;
-	bh=ZA4srMqAcO8J1m3of6/RXPqvXNSNqT6g2GHknek1WAY=;
+	s=arc-20240116; t=1751993356; c=relaxed/simple;
+	bh=QTXZuXgHuWcOrS59oC6QO4zT8sW3JHlIxZ4I7PSxaX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJRrHAZqO8/0lN6owPS1zkwggN3DxH4jmSANO4Wy21R2kO+pRStVR4OVs+ddvtnq8Xy2gSxBVgqOi9kNPT4x92PdqqkvzvOG2rJXnkpeJtY+b4mgk3LXQIyLlJlU6rhhTCZW7ZgZYZoNGz2Bvp7T60NOMnbRHzGHIwXfV3EngE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZUqpAta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5736C4CEED;
-	Tue,  8 Jul 2025 16:39:38 +0000 (UTC)
+	 MIME-Version; b=AZ06484T5Zp70LoZ8VNIDUn91UtB0NB+DXgp5iAt4fAIBm1w321ccBkl9JZgxjE4G6adIHUsp0gpn0WEkW+WztUPFmdHnxlWte0TJtljGzbKiX3rqd12Iq1d1vuflDeROrzV78O+KaYwf0NjcKlQP57oxbT80XoFzX/rcJIGOd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhDacSkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E7CC4CEED;
+	Tue,  8 Jul 2025 16:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992779;
-	bh=ZA4srMqAcO8J1m3of6/RXPqvXNSNqT6g2GHknek1WAY=;
+	s=korg; t=1751993356;
+	bh=QTXZuXgHuWcOrS59oC6QO4zT8sW3JHlIxZ4I7PSxaX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZUqpAtaEz9dvRqFj+RcEKOwH88u7I+24Z6PonV1SzyvGd4B00H0S9MzL/Dl3lFes
-	 Pzbyzj4530sKSiDeShEnl8whfnXJsfQVHX/wf0S215uPlgMK/cx15IMK5XNFc0CPpO
-	 nLCzi+9Y0Kfe07jwtTU5ytQnHJ6RMMcRTdOJRvBM=
+	b=vhDacSkLG5hcaQReRUOTWzQPgQkhJFdTRR5RHY8icR/W08aZTIdctKhT+jhe8f2pU
+	 dpfAOP+Pvq8bF6dQ0UYow9jgbO8SR5PU1jvab4I4TmM2V9aLefUFkTYVJ+OD0ccYoA
+	 +LHH4ahwxeSjpkiaEtLkah5cDtmOrpI0eLtXdFz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/232] idpf: return 0 size for RSS key if not supported
-Date: Tue,  8 Jul 2025 18:21:14 +0200
-Message-ID: <20250708162243.495484494@linuxfoundation.org>
+Subject: [PATCH 6.15 038/178] RDMA/mlx5: reduce stack usage in mlx5_ib_ufile_hw_cleanup
+Date: Tue,  8 Jul 2025 18:21:15 +0200
+Message-ID: <20250708162237.675950943@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+References: <20250708162236.549307806@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f77bf1ebf8ff6301ccdbc346f7b52db928f9cbf8 ]
+[ Upstream commit b26852daaa83f535109253d114426d1fa674155d ]
 
-Returning -EOPNOTSUPP from function returning u32 is leading to
-cast and invalid size value as a result.
+This function has an array of eight mlx5_async_cmd structures, which
+often fits on the stack, but depending on the configuration can
+end up blowing the stack frame warning limit:
 
--EOPNOTSUPP as a size probably will lead to allocation fail.
+drivers/infiniband/hw/mlx5/devx.c:2670:6: error: stack frame size (1392) exceeds limit (1280) in 'mlx5_ib_ufile_hw_cleanup' [-Werror,-Wframe-larger-than]
 
-Command: ethtool -x eth0
-It is visible on all devices that don't have RSS caps set.
+Change this to a dynamic allocation instead. While a kmalloc()
+can theoretically fail, a GFP_KERNEL allocation under a page will
+block until memory has been freed up, so in the worst case, this
+only adds extra time in an already constrained environment.
 
-[  136.615917] Call Trace:
-[  136.615921]  <TASK>
-[  136.615927]  ? __warn+0x89/0x130
-[  136.615942]  ? __alloc_frozen_pages_noprof+0x322/0x330
-[  136.615953]  ? report_bug+0x164/0x190
-[  136.615968]  ? handle_bug+0x58/0x90
-[  136.615979]  ? exc_invalid_op+0x17/0x70
-[  136.615987]  ? asm_exc_invalid_op+0x1a/0x20
-[  136.616001]  ? rss_prepare_get.constprop.0+0xb9/0x170
-[  136.616016]  ? __alloc_frozen_pages_noprof+0x322/0x330
-[  136.616028]  __alloc_pages_noprof+0xe/0x20
-[  136.616038]  ___kmalloc_large_node+0x80/0x110
-[  136.616072]  __kmalloc_large_node_noprof+0x1d/0xa0
-[  136.616081]  __kmalloc_noprof+0x32c/0x4c0
-[  136.616098]  ? rss_prepare_get.constprop.0+0xb9/0x170
-[  136.616105]  rss_prepare_get.constprop.0+0xb9/0x170
-[  136.616114]  ethnl_default_doit+0x107/0x3d0
-[  136.616131]  genl_family_rcv_msg_doit+0x100/0x160
-[  136.616147]  genl_rcv_msg+0x1b8/0x2c0
-[  136.616156]  ? __pfx_ethnl_default_doit+0x10/0x10
-[  136.616168]  ? __pfx_genl_rcv_msg+0x10/0x10
-[  136.616176]  netlink_rcv_skb+0x58/0x110
-[  136.616186]  genl_rcv+0x28/0x40
-[  136.616195]  netlink_unicast+0x19b/0x290
-[  136.616206]  netlink_sendmsg+0x222/0x490
-[  136.616215]  __sys_sendto+0x1fd/0x210
-[  136.616233]  __x64_sys_sendto+0x24/0x30
-[  136.616242]  do_syscall_64+0x82/0x160
-[  136.616252]  ? __sys_recvmsg+0x83/0xe0
-[  136.616265]  ? syscall_exit_to_user_mode+0x10/0x210
-[  136.616275]  ? do_syscall_64+0x8e/0x160
-[  136.616282]  ? __count_memcg_events+0xa1/0x130
-[  136.616295]  ? count_memcg_events.constprop.0+0x1a/0x30
-[  136.616306]  ? handle_mm_fault+0xae/0x2d0
-[  136.616319]  ? do_user_addr_fault+0x379/0x670
-[  136.616328]  ? clear_bhb_loop+0x45/0xa0
-[  136.616340]  ? clear_bhb_loop+0x45/0xa0
-[  136.616349]  ? clear_bhb_loop+0x45/0xa0
-[  136.616359]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  136.616369] RIP: 0033:0x7fd30ba7b047
-[  136.616376] Code: 0c 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 80 3d bd d5 0c 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 71 c3 55 48 83 ec 30 44 89 4c 24 2c 4c 89 44
-[  136.616381] RSP: 002b:00007ffde1796d68 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
-[  136.616388] RAX: ffffffffffffffda RBX: 000055d7bd89f2a0 RCX: 00007fd30ba7b047
-[  136.616392] RDX: 0000000000000028 RSI: 000055d7bd89f3b0 RDI: 0000000000000003
-[  136.616396] RBP: 00007ffde1796e10 R08: 00007fd30bb4e200 R09: 000000000000000c
-[  136.616399] R10: 0000000000000000 R11: 0000000000000202 R12: 000055d7bd89f340
-[  136.616403] R13: 000055d7bd89f3b0 R14: 000055d78943f200 R15: 0000000000000000
-
-Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
-Reviewed-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 7c891a4dbcc1 ("RDMA/mlx5: Add implementation for ufile_hw_cleanup device operation")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250610092846.2642535-1-arnd@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_ethtool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/devx.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-index 59b1a1a099967..f72420cf68216 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -46,7 +46,7 @@ static u32 idpf_get_rxfh_key_size(struct net_device *netdev)
- 	struct idpf_vport_user_config_data *user_config;
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index 2479da8620ca9..bceae1c1f9801 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -2669,7 +2669,7 @@ static void devx_wait_async_destroy(struct mlx5_async_cmd *cmd)
  
- 	if (!idpf_is_cap_ena_all(np->adapter, IDPF_RSS_CAPS, IDPF_CAP_RSS))
--		return -EOPNOTSUPP;
-+		return 0;
+ void mlx5_ib_ufile_hw_cleanup(struct ib_uverbs_file *ufile)
+ {
+-	struct mlx5_async_cmd async_cmd[MAX_ASYNC_CMDS];
++	struct mlx5_async_cmd *async_cmd;
+ 	struct ib_ucontext *ucontext = ufile->ucontext;
+ 	struct ib_device *device = ucontext->device;
+ 	struct mlx5_ib_dev *dev = to_mdev(device);
+@@ -2678,6 +2678,10 @@ void mlx5_ib_ufile_hw_cleanup(struct ib_uverbs_file *ufile)
+ 	int head = 0;
+ 	int tail = 0;
  
- 	user_config = &np->adapter->vport_config[np->vport_idx]->user_config;
++	async_cmd = kcalloc(MAX_ASYNC_CMDS, sizeof(*async_cmd), GFP_KERNEL);
++	if (!async_cmd)
++		return;
++
+ 	list_for_each_entry(uobject, &ufile->uobjects, list) {
+ 		WARN_ON(uverbs_try_lock_object(uobject, UVERBS_LOOKUP_WRITE));
  
-@@ -65,7 +65,7 @@ static u32 idpf_get_rxfh_indir_size(struct net_device *netdev)
- 	struct idpf_vport_user_config_data *user_config;
+@@ -2713,6 +2717,8 @@ void mlx5_ib_ufile_hw_cleanup(struct ib_uverbs_file *ufile)
+ 		devx_wait_async_destroy(&async_cmd[head % MAX_ASYNC_CMDS]);
+ 		head++;
+ 	}
++
++	kfree(async_cmd);
+ }
  
- 	if (!idpf_is_cap_ena_all(np->adapter, IDPF_RSS_CAPS, IDPF_CAP_RSS))
--		return -EOPNOTSUPP;
-+		return 0;
- 
- 	user_config = &np->adapter->vport_config[np->vport_idx]->user_config;
- 
+ static ssize_t devx_async_cmd_event_read(struct file *filp, char __user *buf,
 -- 
 2.39.5
 
