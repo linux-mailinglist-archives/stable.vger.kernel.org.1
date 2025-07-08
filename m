@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-160914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F2EAFD289
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:47:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32AF1AFD49D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:07:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E9C4425FF1
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:44:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6302516B7DD
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47662E5411;
-	Tue,  8 Jul 2025 16:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC282E5B19;
+	Tue,  8 Jul 2025 17:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrGHMowW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOmQxfO2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D736289E2C;
-	Tue,  8 Jul 2025 16:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1A52E5B04;
+	Tue,  8 Jul 2025 17:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993059; cv=none; b=d4PoJj13LpK45ztg59n6WxCayrEc7Nlsn+ZPVDax+o+O303iZtkHbn4pusOH3UKwKEGMqxR65/H+i8eb/MBp/9EQKCdKkbycGWxOm4sXJ3VafKCWOXr3jv46fX5DWThUVygarB4KHpdcdVQ5TUiKtqlvHoDqoBxJicEMLIlmS8E=
+	t=1751994228; cv=none; b=FRVauWOw70UcbLbELXtaVjqTWtSQpTUHuL44QbfXE2HkXqSnR7p/e18Dp3eIhSrZ1xVJqpqVyqgoY/MFXUxbIrhRMJ8DG5Nu8x874UgBkyuwLJKcG9T9gvpYAE7ks7mNREGJi6mfzOWiJ8fr3dE808zWlWWKU2MOZC9dH+5Ie+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993059; c=relaxed/simple;
-	bh=1vZACHQnAny7Z0bFw5KgbHRlG1Ksj9xTG87YcD2knAI=;
+	s=arc-20240116; t=1751994228; c=relaxed/simple;
+	bh=eOCd0SgkDWiP0j2dKlfYcAYHph9eJJQ1NQAhFvNL+38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfffaoBebQAsNXYx7LADn6xCOPdSgc/ZyoZ8EGfKXh+xYQaN3hpZZjxZEetXEU47X3d08KD0h4r4GfKJ1W6l9F1nyDMvsvtk4MAz+E2/E8SXOi/uQ+Ur9a4zOYtqPoaquZdpt06Y2NdnYO0msOIWKjXT06l9BtPoll7Otzs1m1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrGHMowW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE619C4CEF5;
-	Tue,  8 Jul 2025 16:44:18 +0000 (UTC)
+	 MIME-Version; b=b3JKimEh1UNkSKZHEtQvQtGEc/QXhhHUYkGQgRK6ef7PoGUnMihMuOhmbTG3R+jXo+vP8Nz9NA5cWp21LxAG6Oj1lgO15mM0FzCrtEXpdg/p+xwcSLK68+h07rgHUliElOdzI0IOq1cIrWsppoSsheapFQGkL3xzPHkGJO0gv9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOmQxfO2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31998C4CEF6;
+	Tue,  8 Jul 2025 17:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993059;
-	bh=1vZACHQnAny7Z0bFw5KgbHRlG1Ksj9xTG87YcD2knAI=;
+	s=korg; t=1751994228;
+	bh=eOCd0SgkDWiP0j2dKlfYcAYHph9eJJQ1NQAhFvNL+38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrGHMowW5iK9ZPeGqOpr/EUj5AhS05Jkl6C26yRv6WPAtU43ntXc5ss32367BGHlK
-	 di4M8BZup20bqpZPnfBFV62dw9mHSTFsawu85ZcmsOfFhzL1OYu6mhjf8sa4GYdlPp
-	 Q38IquO7bsuWwYHw1LaGYqbCCNAaQr8MOHPrQXMU=
+	b=nOmQxfO2knQjpx9LLkMQ/e2bT2oi1P2WS4YceiRIX0WUdAbamrBe1jqBz761EkQs6
+	 qOOrb98v0M+u7LEDYJAUnQ1fF163kZM3rVmyJRIcPPGcl3+TTEOs2pLDFhPzg7gbMe
+	 VgBZHMeu8NZREpslwS7kDCORHeMOvXELs8i70F/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 174/232] ALSA: sb: Force to disable DMAs once when DMA mode is changed
+Subject: [PATCH 5.15 133/160] wifi: ath6kl: remove WARN on bad firmware input
 Date: Tue,  8 Jul 2025 18:22:50 +0200
-Message-ID: <20250708162245.992414343@linuxfoundation.org>
+Message-ID: <20250708162235.081415349@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 4c267ae2ef349639b4d9ebf00dd28586a82fdbe6 ]
+[ Upstream commit e7417421d89358da071fd2930f91e67c7128fbff ]
 
-When the DMA mode is changed on the (still real!) SB AWE32 after
-playing a stream and closing, the previous DMA setup was still
-silently kept, and it can confuse the hardware, resulting in the
-unexpected noises.  As a workaround, enforce the disablement of DMA
-setups when the DMA setup is changed by the kcontrol.
+If the firmware gives bad input, that's nothing to do with
+the driver's stack at this point etc., so the WARN_ON()
+doesn't add any value. Additionally, this is one of the
+top syzbot reports now. Just print a message, and as an
+added bonus, print the sizes too.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=218185
-Link: https://patch.msgid.link/20250610064322.26787-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
+Tested-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
+Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250617114529.031a677a348e.I58bf1eb4ac16a82c546725ff010f3f0d2b0cca49@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/isa/sb/sb16_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/ath/ath6kl/bmi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/isa/sb/sb16_main.c b/sound/isa/sb/sb16_main.c
-index c4930efd44e3a..5a083eecaa6b9 100644
---- a/sound/isa/sb/sb16_main.c
-+++ b/sound/isa/sb/sb16_main.c
-@@ -714,6 +714,10 @@ static int snd_sb16_dma_control_put(struct snd_kcontrol *kcontrol, struct snd_ct
- 	change = nval != oval;
- 	snd_sb16_set_dma_mode(chip, nval);
- 	spin_unlock_irqrestore(&chip->reg_lock, flags);
-+	if (change) {
-+		snd_dma_disable(chip->dma8);
-+		snd_dma_disable(chip->dma16);
-+	}
- 	return change;
- }
+diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
+index af98e871199d3..5a9e93fd1ef42 100644
+--- a/drivers/net/wireless/ath/ath6kl/bmi.c
++++ b/drivers/net/wireless/ath/ath6kl/bmi.c
+@@ -87,7 +87,9 @@ int ath6kl_bmi_get_target_info(struct ath6kl *ar,
+ 		 * We need to do some backwards compatibility to make this work.
+ 		 */
+ 		if (le32_to_cpu(targ_info->byte_count) != sizeof(*targ_info)) {
+-			WARN_ON(1);
++			ath6kl_err("mismatched byte count %d vs. expected %zd\n",
++				   le32_to_cpu(targ_info->byte_count),
++				   sizeof(*targ_info));
+ 			return -EINVAL;
+ 		}
  
 -- 
 2.39.5
