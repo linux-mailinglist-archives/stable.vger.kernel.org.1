@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-160646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74716AFD116
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:31:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200AEAFD47E
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87605486B01
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:30:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11897189376D
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA471CAA85;
-	Tue,  8 Jul 2025 16:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BF32E5B2A;
+	Tue,  8 Jul 2025 17:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+8DXLvT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMRPv510"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C084881E;
-	Tue,  8 Jul 2025 16:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9222E6D18;
+	Tue,  8 Jul 2025 17:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992274; cv=none; b=WW4K2iz8UMRLEE4Xy1UyQleOB9fIsCqfaZ0NikJNJSDlvsBts3pbhTD3pmJCd6h/Am5lP5X3trNcEyXsuYp2CEmd2Z3YzXx54OoBAJTk13ftaQvbmVcwneTcbw3DOOG5uNiFcMey6BO6k6QsrptiOKddlvvmmTmxlTThwdMbviY=
+	t=1751994056; cv=none; b=FFAPtiyMYIAcb4NcqY3PaXYV/mHwkPmJqPczBSusBXY6BxgGhmcpxh0wJqDqLUWwlZmHWLyLiUGYNLLYwIoJ+aMJpqOLH1oI4UZK5aYuK3gp1Kn0W2M4gwlgRp4Hk0Nf2nZbALU97DUTLv8PSOSvz41eQsp/+ive6QirG2dT078=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992274; c=relaxed/simple;
-	bh=VeA+FiDi0cqRr9x/Iwa1W1J3rAKKEotWlNkI4GmFgxA=;
+	s=arc-20240116; t=1751994056; c=relaxed/simple;
+	bh=17bK684FTnhfBlEpuZUf/9GNeyZSOXlNV1D9Co6s4mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ea3bRVD/tQw6pW7N5dJrUggNpy0a4fthyqyHxh/yZ9ul5u8/uHdoSW87N4SlkmhcHe9vzx04DOnTEwGo/wKblqL2WCqEe8EvBpYU37rcsPloZFjbXno7+QIAUg8XpYdITNovmR+23j5TEW01n7VbLIdq82RC43kkUIvvc14kgNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+8DXLvT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C8AC4CEED;
-	Tue,  8 Jul 2025 16:31:13 +0000 (UTC)
+	 MIME-Version; b=No28v6MD6evkVThdP+9KD47UOaOoamPG3W0RnNSyoon/3kadA74lzA78LfvU0GFfRo3viyHKrSL0KAy51PJ8vRkvIqiWDnUPEtPlPs5aEwScIcjoVe3aLqTDRbCZV1IVzkELmSGrt0Qs99gndplToSC4txzxO2FFSam14NZCfV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMRPv510; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F623C4CEED;
+	Tue,  8 Jul 2025 17:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992274;
-	bh=VeA+FiDi0cqRr9x/Iwa1W1J3rAKKEotWlNkI4GmFgxA=;
+	s=korg; t=1751994056;
+	bh=17bK684FTnhfBlEpuZUf/9GNeyZSOXlNV1D9Co6s4mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+8DXLvT/dBdUFCSbqfhAUM9I4Z5ZLL8OdVWa8NNyyLF2en+Nx8HHBrHGT+wd2o33
-	 PscgQjRWf4nmlw0xpckXrCuN2WY6TeywBWJ/Mhh41YcrDam/4KGyECtHkxMtTHZeFG
-	 Z4L54y5Rtb4IrhezLVrZPfOHvJvPFFMGxELee6UA=
+	b=WMRPv510b6vm3SsKPT46vmY86cdUct7GM74F0ZLcdZJ3wmfG0unSMzE+2y15n5Qxa
+	 zRHO4w/NvAYKMB8fnsoFVMVGE7dNllwKLElDSGIYgJSr3MB0Sw9Xlgv/C+CDNYwMVI
+	 6vykbmg5iCvjWKq0aaN6AzH9FRJedemGh8r4HpFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Avri Altman <avri.altman@sandisk.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/132] ethernet: atl1: Add missing DMA mapping error checks and count errors
-Date: Tue,  8 Jul 2025 18:22:27 +0200
-Message-ID: <20250708162231.751902298@linuxfoundation.org>
+Subject: [PATCH 5.15 111/160] scsi: ufs: core: Fix spelling of a sysfs attribute name
+Date: Tue,  8 Jul 2025 18:22:28 +0200
+Message-ID: <20250708162234.548184620@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,215 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit d72411d20905180cdc452c553be17481b24463d2 ]
+[ Upstream commit 021f243627ead17eb6500170256d3d9be787dad8 ]
 
-The `dma_map_XXX()` functions can fail and must be checked using
-`dma_mapping_error()`.  This patch adds proper error handling for all
-DMA mapping calls.
+Change "resourse" into "resource" in the name of a sysfs attribute.
 
-In `atl1_alloc_rx_buffers()`, if DMA mapping fails, the buffer is
-deallocated and marked accordingly.
-
-In `atl1_tx_map()`, previously mapped buffers are unmapped and the
-packet is dropped on failure.
-
-If `atl1_xmit_frame()` drops the packet, increment the tx_error counter.
-
-Fixes: f3cc28c79760 ("Add Attansic L1 ethernet driver.")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20250625141629.114984-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d829fc8a1058 ("scsi: ufs: sysfs: unit descriptor")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250624181658.336035-1-bvanassche@acm.org
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/atheros/atlx/atl1.c | 79 +++++++++++++++++-------
- 1 file changed, 57 insertions(+), 22 deletions(-)
+ Documentation/ABI/testing/sysfs-driver-ufs | 2 +-
+ drivers/scsi/ufs/ufs-sysfs.c               | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/atheros/atlx/atl1.c b/drivers/net/ethernet/atheros/atlx/atl1.c
-index 02aa6fd8ebc2d..4ed165702d58e 100644
---- a/drivers/net/ethernet/atheros/atlx/atl1.c
-+++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -1861,14 +1861,21 @@ static u16 atl1_alloc_rx_buffers(struct atl1_adapter *adapter)
- 			break;
- 		}
+diff --git a/Documentation/ABI/testing/sysfs-driver-ufs b/Documentation/ABI/testing/sysfs-driver-ufs
+index ec3a7149ced59..2e2e0b992233d 100644
+--- a/Documentation/ABI/testing/sysfs-driver-ufs
++++ b/Documentation/ABI/testing/sysfs-driver-ufs
+@@ -655,7 +655,7 @@ Description:	This file shows the thin provisioning type. This is one of
  
--		buffer_info->alloced = 1;
--		buffer_info->skb = skb;
--		buffer_info->length = (u16) adapter->rx_buffer_len;
- 		page = virt_to_page(skb->data);
- 		offset = offset_in_page(skb->data);
- 		buffer_info->dma = dma_map_page(&pdev->dev, page, offset,
- 						adapter->rx_buffer_len,
- 						DMA_FROM_DEVICE);
-+		if (dma_mapping_error(&pdev->dev, buffer_info->dma)) {
-+			kfree_skb(skb);
-+			adapter->soft_stats.rx_dropped++;
-+			break;
-+		}
-+
-+		buffer_info->alloced = 1;
-+		buffer_info->skb = skb;
-+		buffer_info->length = (u16)adapter->rx_buffer_len;
-+
- 		rfd_desc->buffer_addr = cpu_to_le64(buffer_info->dma);
- 		rfd_desc->buf_len = cpu_to_le16(adapter->rx_buffer_len);
- 		rfd_desc->coalese = 0;
-@@ -2183,8 +2190,8 @@ static int atl1_tx_csum(struct atl1_adapter *adapter, struct sk_buff *skb,
- 	return 0;
- }
+ 		The file is read only.
  
--static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
--	struct tx_packet_desc *ptpd)
-+static bool atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
-+			struct tx_packet_desc *ptpd)
- {
- 	struct atl1_tpd_ring *tpd_ring = &adapter->tpd_ring;
- 	struct atl1_buffer *buffer_info;
-@@ -2194,6 +2201,7 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
- 	unsigned int nr_frags;
- 	unsigned int f;
- 	int retval;
-+	u16 first_mapped;
- 	u16 next_to_use;
- 	u16 data_len;
- 	u8 hdr_len;
-@@ -2201,6 +2209,7 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
- 	buf_len -= skb->data_len;
- 	nr_frags = skb_shinfo(skb)->nr_frags;
- 	next_to_use = atomic_read(&tpd_ring->next_to_use);
-+	first_mapped = next_to_use;
- 	buffer_info = &tpd_ring->buffer_info[next_to_use];
- 	BUG_ON(buffer_info->skb);
- 	/* put skb in last TPD */
-@@ -2216,6 +2225,8 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
- 		buffer_info->dma = dma_map_page(&adapter->pdev->dev, page,
- 						offset, hdr_len,
- 						DMA_TO_DEVICE);
-+		if (dma_mapping_error(&adapter->pdev->dev, buffer_info->dma))
-+			goto dma_err;
- 
- 		if (++next_to_use == tpd_ring->count)
- 			next_to_use = 0;
-@@ -2242,6 +2253,9 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
- 								page, offset,
- 								buffer_info->length,
- 								DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      buffer_info->dma))
-+					goto dma_err;
- 				if (++next_to_use == tpd_ring->count)
- 					next_to_use = 0;
- 			}
-@@ -2254,6 +2268,8 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
- 		buffer_info->dma = dma_map_page(&adapter->pdev->dev, page,
- 						offset, buf_len,
- 						DMA_TO_DEVICE);
-+		if (dma_mapping_error(&adapter->pdev->dev, buffer_info->dma))
-+			goto dma_err;
- 		if (++next_to_use == tpd_ring->count)
- 			next_to_use = 0;
- 	}
-@@ -2277,6 +2293,9 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
- 			buffer_info->dma = skb_frag_dma_map(&adapter->pdev->dev,
- 				frag, i * ATL1_MAX_TX_BUF_LEN,
- 				buffer_info->length, DMA_TO_DEVICE);
-+			if (dma_mapping_error(&adapter->pdev->dev,
-+					      buffer_info->dma))
-+				goto dma_err;
- 
- 			if (++next_to_use == tpd_ring->count)
- 				next_to_use = 0;
-@@ -2285,6 +2304,22 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
- 
- 	/* last tpd's buffer-info */
- 	buffer_info->skb = skb;
-+
-+	return true;
-+
-+ dma_err:
-+	while (first_mapped != next_to_use) {
-+		buffer_info = &tpd_ring->buffer_info[first_mapped];
-+		dma_unmap_page(&adapter->pdev->dev,
-+			       buffer_info->dma,
-+			       buffer_info->length,
-+			       DMA_TO_DEVICE);
-+		buffer_info->dma = 0;
-+
-+		if (++first_mapped == tpd_ring->count)
-+			first_mapped = 0;
-+	}
-+	return false;
- }
- 
- static void atl1_tx_queue(struct atl1_adapter *adapter, u16 count,
-@@ -2355,10 +2390,8 @@ static netdev_tx_t atl1_xmit_frame(struct sk_buff *skb,
- 
- 	len = skb_headlen(skb);
- 
--	if (unlikely(skb->len <= 0)) {
--		dev_kfree_skb_any(skb);
--		return NETDEV_TX_OK;
--	}
-+	if (unlikely(skb->len <= 0))
-+		goto drop_packet;
- 
- 	nr_frags = skb_shinfo(skb)->nr_frags;
- 	for (f = 0; f < nr_frags; f++) {
-@@ -2371,10 +2404,9 @@ static netdev_tx_t atl1_xmit_frame(struct sk_buff *skb,
- 	if (mss) {
- 		if (skb->protocol == htons(ETH_P_IP)) {
- 			proto_hdr_len = skb_tcp_all_headers(skb);
--			if (unlikely(proto_hdr_len > len)) {
--				dev_kfree_skb_any(skb);
--				return NETDEV_TX_OK;
--			}
-+			if (unlikely(proto_hdr_len > len))
-+				goto drop_packet;
-+
- 			/* need additional TPD ? */
- 			if (proto_hdr_len != len)
- 				count += (len - proto_hdr_len +
-@@ -2406,23 +2438,26 @@ static netdev_tx_t atl1_xmit_frame(struct sk_buff *skb,
- 	}
- 
- 	tso = atl1_tso(adapter, skb, ptpd);
--	if (tso < 0) {
--		dev_kfree_skb_any(skb);
--		return NETDEV_TX_OK;
--	}
-+	if (tso < 0)
-+		goto drop_packet;
- 
- 	if (!tso) {
- 		ret_val = atl1_tx_csum(adapter, skb, ptpd);
--		if (ret_val < 0) {
--			dev_kfree_skb_any(skb);
--			return NETDEV_TX_OK;
--		}
-+		if (ret_val < 0)
-+			goto drop_packet;
- 	}
- 
--	atl1_tx_map(adapter, skb, ptpd);
-+	if (!atl1_tx_map(adapter, skb, ptpd))
-+		goto drop_packet;
-+
- 	atl1_tx_queue(adapter, count, ptpd);
- 	atl1_update_mailbox(adapter);
- 	return NETDEV_TX_OK;
-+
-+drop_packet:
-+	adapter->soft_stats.tx_errors++;
-+	dev_kfree_skb_any(skb);
-+	return NETDEV_TX_OK;
- }
- 
- static int atl1_rings_clean(struct napi_struct *napi, int budget)
+-What:		/sys/class/scsi_device/*/device/unit_descriptor/physical_memory_resourse_count
++What:		/sys/class/scsi_device/*/device/unit_descriptor/physical_memory_resource_count
+ Date:		February 2018
+ Contact:	Stanislav Nijnikov <stanislav.nijnikov@wdc.com>
+ Description:	This file shows the total physical memory resources. This is
+diff --git a/drivers/scsi/ufs/ufs-sysfs.c b/drivers/scsi/ufs/ufs-sysfs.c
+index 3bfdcc2f22dc0..369595dbb1fcd 100644
+--- a/drivers/scsi/ufs/ufs-sysfs.c
++++ b/drivers/scsi/ufs/ufs-sysfs.c
+@@ -1180,7 +1180,7 @@ UFS_UNIT_DESC_PARAM(logical_block_size, _LOGICAL_BLK_SIZE, 1);
+ UFS_UNIT_DESC_PARAM(logical_block_count, _LOGICAL_BLK_COUNT, 8);
+ UFS_UNIT_DESC_PARAM(erase_block_size, _ERASE_BLK_SIZE, 4);
+ UFS_UNIT_DESC_PARAM(provisioning_type, _PROVISIONING_TYPE, 1);
+-UFS_UNIT_DESC_PARAM(physical_memory_resourse_count, _PHY_MEM_RSRC_CNT, 8);
++UFS_UNIT_DESC_PARAM(physical_memory_resource_count, _PHY_MEM_RSRC_CNT, 8);
+ UFS_UNIT_DESC_PARAM(context_capabilities, _CTX_CAPABILITIES, 2);
+ UFS_UNIT_DESC_PARAM(large_unit_granularity, _LARGE_UNIT_SIZE_M1, 1);
+ UFS_UNIT_DESC_PARAM(hpb_lu_max_active_regions, _HPB_LU_MAX_ACTIVE_RGNS, 2);
+@@ -1200,7 +1200,7 @@ static struct attribute *ufs_sysfs_unit_descriptor[] = {
+ 	&dev_attr_logical_block_count.attr,
+ 	&dev_attr_erase_block_size.attr,
+ 	&dev_attr_provisioning_type.attr,
+-	&dev_attr_physical_memory_resourse_count.attr,
++	&dev_attr_physical_memory_resource_count.attr,
+ 	&dev_attr_context_capabilities.attr,
+ 	&dev_attr_large_unit_granularity.attr,
+ 	&dev_attr_hpb_lu_max_active_regions.attr,
 -- 
 2.39.5
 
