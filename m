@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-160848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF59BAFD241
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:44:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5488DAFD488
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 19:06:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B19A1BC0FB7
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:41:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 149963AF251
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 17:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466BD2E543A;
-	Tue,  8 Jul 2025 16:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1008F5E;
+	Tue,  8 Jul 2025 17:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSjNRd8d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8n2KPfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BB92E542C;
-	Tue,  8 Jul 2025 16:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1A42E6D0D;
+	Tue,  8 Jul 2025 17:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992866; cv=none; b=M2mePswtO6+CsSFolRqu7A6oDlfP3HEqkjBU0Tlh5YLt6JwFivYyltGJN4PRxoEq7wY37myzcfvwrR7jZawZ3Nw/XLSPmfoJlvJ/Zlt7y5m+S8t40lbiRcVtCy6cPTAAwV8zIw3OImmEaDKml17KXz1S/R5LrG9XRjq+b+q4Tvo=
+	t=1751994048; cv=none; b=NXrIi3mM7HbeOgrBJofRPhy/wp62qe7GqwkaYlsOjwiM2U7g8Sh3JiYaALIcuJ73Jn42e1KtU/QKuG75dvtAyxTtkpXzDtLDLa/59b0PyYIYsBDE0176IGfI+QUn/p5kEK6vzG0ZpCVggVELQQukyqWmQpMtJOOyCe7T9+d27fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992866; c=relaxed/simple;
-	bh=W4MXJ4H6qwkrDc04AaZrD5KYURjIqe1HlycvQvs/0Js=;
+	s=arc-20240116; t=1751994048; c=relaxed/simple;
+	bh=nEYXjucQQ/AD7FFq/vQibu0/aAKnrkM2Nte+yEIV10Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBQG652/3YVOsYlIO9TjWqXPXBPxinPd38uq7D7Yd5XJCUag2PCKJ2f+9vqXwsz9TDc4ViroRG9GBvbqY4spxhF1Ued96mzaK3Gvax0+lElVZCPVII//q6KOMIrHhDsLg7nHk4K3ylxy6LBMCXTf/CpRXUSW0g3Vucli5goF7VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSjNRd8d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736ACC4CEF5;
-	Tue,  8 Jul 2025 16:41:05 +0000 (UTC)
+	 MIME-Version; b=L2opkbhFs7jo20smOOGflU58zMSsIGSXxX1rwrcwCU7SSg9XiHE0WtOlvQQ9Sm5zxcZc24NISknPIe3/V8nl8TYM59xjSJ0fqlSOptR75DgXzghO9bIoKUCor8tSKZnxGBsod6z8kJyxQ8PfWQOtC4XPoZ6zmZBZVAmptDyXgwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8n2KPfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF0DC4CEED;
+	Tue,  8 Jul 2025 17:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992865;
-	bh=W4MXJ4H6qwkrDc04AaZrD5KYURjIqe1HlycvQvs/0Js=;
+	s=korg; t=1751994048;
+	bh=nEYXjucQQ/AD7FFq/vQibu0/aAKnrkM2Nte+yEIV10Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSjNRd8dYO2Pv68CFoya0cTo6Z+sGsoR0IL9wLfMfCIJ3Wtr0S2b7o/k9VamhRI4k
-	 GnfpTgy4h2utZkm4gLONTkMNhVyi4WCTnjbYMqGbEJ8XzJgbTBa+zUbFbYpajoqbP9
-	 +zRarIYBpN2+2/ivoOXTc2COgpK3MmujwKJwaJ3I=
+	b=Z8n2KPfnXygUqiviOnIObmxi07+VnJ72AUhqzqO7VrUy7rWn6UjYZl2ubTMirAqyI
+	 KW2K+VwyknZy7fZUJm+ow6zUJHsyKkFRBg2Nh3K52+oSeghG5/LOWju3UjmY4tRPB8
+	 WWX9CQujcJ7aKEQRhMUMmG90IKKsNCjzFB7A1wfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/232] gfs2: Move gfs2_dinode_dealloc
-Date: Tue,  8 Jul 2025 18:21:44 +0200
-Message-ID: <20250708162244.266242050@linuxfoundation.org>
+Subject: [PATCH 5.15 068/160] um: ubd: Add missing error check in start_io_thread()
+Date: Tue,  8 Jul 2025 18:21:45 +0200
+Message-ID: <20250708162233.434125281@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-References: <20250708162241.426806072@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,196 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit bcd18105fb34e27c097f222733dba9a3e79f191c ]
+[ Upstream commit c55c7a85e02a7bfee20a3ffebdff7cbeb41613ef ]
 
-Move gfs2_dinode_dealloc() and its helper gfs2_final_release_pages()
-from super.c to inode.c.
+The subsequent call to os_set_fd_block() overwrites the previous
+return value. OR the two return values together to fix it.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Stable-dep-of: 2c63986dd35f ("gfs2: deallocate inodes in gfs2_create_inode")
+Fixes: f88f0bdfc32f ("um: UBD Improvements")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250606124428.148164-2-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/inode.c | 68 +++++++++++++++++++++++++++++++++++++++++++++++++
- fs/gfs2/inode.h |  1 +
- fs/gfs2/super.c | 68 -------------------------------------------------
- 3 files changed, 69 insertions(+), 68 deletions(-)
+ arch/um/drivers/ubd_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 2d2f7646440f5..e59fde1bae7b7 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -439,6 +439,74 @@ static int alloc_dinode(struct gfs2_inode *ip, u32 flags, unsigned *dblocks)
- 	return error;
- }
+diff --git a/arch/um/drivers/ubd_user.c b/arch/um/drivers/ubd_user.c
+index a1afe414ce481..fb5b1e7c133d8 100644
+--- a/arch/um/drivers/ubd_user.c
++++ b/arch/um/drivers/ubd_user.c
+@@ -41,7 +41,7 @@ int start_io_thread(unsigned long sp, int *fd_out)
+ 	*fd_out = fds[1];
  
-+static void gfs2_final_release_pages(struct gfs2_inode *ip)
-+{
-+	struct inode *inode = &ip->i_inode;
-+	struct gfs2_glock *gl = ip->i_gl;
-+
-+	if (unlikely(!gl)) {
-+		/* This can only happen during incomplete inode creation. */
-+		BUG_ON(!test_bit(GIF_ALLOC_FAILED, &ip->i_flags));
-+		return;
-+	}
-+
-+	truncate_inode_pages(gfs2_glock2aspace(gl), 0);
-+	truncate_inode_pages(&inode->i_data, 0);
-+
-+	if (atomic_read(&gl->gl_revokes) == 0) {
-+		clear_bit(GLF_LFLUSH, &gl->gl_flags);
-+		clear_bit(GLF_DIRTY, &gl->gl_flags);
-+	}
-+}
-+
-+int gfs2_dinode_dealloc(struct gfs2_inode *ip)
-+{
-+	struct gfs2_sbd *sdp = GFS2_SB(&ip->i_inode);
-+	struct gfs2_rgrpd *rgd;
-+	struct gfs2_holder gh;
-+	int error;
-+
-+	if (gfs2_get_inode_blocks(&ip->i_inode) != 1) {
-+		gfs2_consist_inode(ip);
-+		return -EIO;
-+	}
-+
-+	gfs2_rindex_update(sdp);
-+
-+	error = gfs2_quota_hold(ip, NO_UID_QUOTA_CHANGE, NO_GID_QUOTA_CHANGE);
-+	if (error)
-+		return error;
-+
-+	rgd = gfs2_blk2rgrpd(sdp, ip->i_no_addr, 1);
-+	if (!rgd) {
-+		gfs2_consist_inode(ip);
-+		error = -EIO;
-+		goto out_qs;
-+	}
-+
-+	error = gfs2_glock_nq_init(rgd->rd_gl, LM_ST_EXCLUSIVE,
-+				   LM_FLAG_NODE_SCOPE, &gh);
-+	if (error)
-+		goto out_qs;
-+
-+	error = gfs2_trans_begin(sdp, RES_RG_BIT + RES_STATFS + RES_QUOTA,
-+				 sdp->sd_jdesc->jd_blocks);
-+	if (error)
-+		goto out_rg_gunlock;
-+
-+	gfs2_free_di(rgd, ip);
-+
-+	gfs2_final_release_pages(ip);
-+
-+	gfs2_trans_end(sdp);
-+
-+out_rg_gunlock:
-+	gfs2_glock_dq_uninit(&gh);
-+out_qs:
-+	gfs2_quota_unhold(ip);
-+	return error;
-+}
-+
- static void gfs2_init_dir(struct buffer_head *dibh,
- 			  const struct gfs2_inode *parent)
- {
-diff --git a/fs/gfs2/inode.h b/fs/gfs2/inode.h
-index fd15d1c6b6fb1..225b9d0038cd0 100644
---- a/fs/gfs2/inode.h
-+++ b/fs/gfs2/inode.h
-@@ -92,6 +92,7 @@ struct inode *gfs2_inode_lookup(struct super_block *sb, unsigned type,
- struct inode *gfs2_lookup_by_inum(struct gfs2_sbd *sdp, u64 no_addr,
- 				  u64 no_formal_ino,
- 				  unsigned int blktype);
-+int gfs2_dinode_dealloc(struct gfs2_inode *ip);
- 
- int gfs2_inode_refresh(struct gfs2_inode *ip);
- 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index d982db129b2b4..aad6d5d2816e3 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1175,74 +1175,6 @@ static int gfs2_show_options(struct seq_file *s, struct dentry *root)
- 	return 0;
- }
- 
--static void gfs2_final_release_pages(struct gfs2_inode *ip)
--{
--	struct inode *inode = &ip->i_inode;
--	struct gfs2_glock *gl = ip->i_gl;
--
--	if (unlikely(!gl)) {
--		/* This can only happen during incomplete inode creation. */
--		BUG_ON(!test_bit(GIF_ALLOC_FAILED, &ip->i_flags));
--		return;
--	}
--
--	truncate_inode_pages(gfs2_glock2aspace(gl), 0);
--	truncate_inode_pages(&inode->i_data, 0);
--
--	if (atomic_read(&gl->gl_revokes) == 0) {
--		clear_bit(GLF_LFLUSH, &gl->gl_flags);
--		clear_bit(GLF_DIRTY, &gl->gl_flags);
--	}
--}
--
--static int gfs2_dinode_dealloc(struct gfs2_inode *ip)
--{
--	struct gfs2_sbd *sdp = GFS2_SB(&ip->i_inode);
--	struct gfs2_rgrpd *rgd;
--	struct gfs2_holder gh;
--	int error;
--
--	if (gfs2_get_inode_blocks(&ip->i_inode) != 1) {
--		gfs2_consist_inode(ip);
--		return -EIO;
--	}
--
--	gfs2_rindex_update(sdp);
--
--	error = gfs2_quota_hold(ip, NO_UID_QUOTA_CHANGE, NO_GID_QUOTA_CHANGE);
--	if (error)
--		return error;
--
--	rgd = gfs2_blk2rgrpd(sdp, ip->i_no_addr, 1);
--	if (!rgd) {
--		gfs2_consist_inode(ip);
--		error = -EIO;
--		goto out_qs;
--	}
--
--	error = gfs2_glock_nq_init(rgd->rd_gl, LM_ST_EXCLUSIVE,
--				   LM_FLAG_NODE_SCOPE, &gh);
--	if (error)
--		goto out_qs;
--
--	error = gfs2_trans_begin(sdp, RES_RG_BIT + RES_STATFS + RES_QUOTA,
--				 sdp->sd_jdesc->jd_blocks);
--	if (error)
--		goto out_rg_gunlock;
--
--	gfs2_free_di(rgd, ip);
--
--	gfs2_final_release_pages(ip);
--
--	gfs2_trans_end(sdp);
--
--out_rg_gunlock:
--	gfs2_glock_dq_uninit(&gh);
--out_qs:
--	gfs2_quota_unhold(ip);
--	return error;
--}
--
- /**
-  * gfs2_glock_put_eventually
-  * @gl:	The glock to put
+ 	err = os_set_fd_block(*fd_out, 0);
+-	err = os_set_fd_block(kernel_fd, 0);
++	err |= os_set_fd_block(kernel_fd, 0);
+ 	if (err) {
+ 		printk("start_io_thread - failed to set nonblocking I/O.\n");
+ 		goto out_close;
 -- 
 2.39.5
 
