@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-160697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-160559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CF8AFD165
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:35:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB4BAFD0B7
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0F081886AC3
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:34:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FEB43A04A3
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE9E2E3B03;
-	Tue,  8 Jul 2025 16:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F462E659;
+	Tue,  8 Jul 2025 16:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKbn8FVN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sH/gUaqE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB132D9ECD;
-	Tue,  8 Jul 2025 16:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662A52E49A4;
+	Tue,  8 Jul 2025 16:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751992426; cv=none; b=PpyKCnXXh5pMj7z3BFUh6s/f6BJll10ocUEz/LZI9w8AanfmMG3PsF7zqagPww+K+Z1u8pqgnTUsP4mvsoCIgMmR1u++aS3HwSwDQE/IVAKH8J6qlrmRyR3NdZNQUMItUMwZoJ9Dh7VakOPGEFNKAqJgapQ2dt01giFwdfsy8cQ=
+	t=1751991998; cv=none; b=nxAepSMfdq/vfZSdTJPH5opFbriSMfld/7AatVcHcZu8l5U7dMOBkntOo7QsJgOm9PCeHDZ4f3wlg/kFEQDyvOiv3Yz4SiVZC+jAS6NAOaAU1bpEaMSD1M+7euk0/1xNgMSURYnfKEkAH32x/Nvo9bzpBthSae+ERCYEgBFJdIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751992426; c=relaxed/simple;
-	bh=rFli3NmAN5Xl4YaiZvMPVr8xPwhPPdJxLW0fHv7icJ4=;
+	s=arc-20240116; t=1751991998; c=relaxed/simple;
+	bh=J0E848LNK3k+WXpJLp2ZZgmPldhS7gyDpNW8Vq8LIXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYCYNaiETghT7v1iOr0Mzn98+KBafe/T2ahFOkCBpf/afY43IIE8p+mG3JPtahJddkOWl0FcjTHTbpHwW+GXhmC0PFp8GaLbGhsBx6uuLhCKt1PSPBKqcMw+02Jv5jTc9KoVj4/nbNGtGTKzvMDrGgDtFmIJcdjyPBks51Q4zRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKbn8FVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2F8C4CEED;
-	Tue,  8 Jul 2025 16:33:45 +0000 (UTC)
+	 MIME-Version; b=uYlxb9r6cM/SkPEFU8qNGwr92/sZ2NT94pmb+02i4KKJWUrQTfyxOoJ21V/ZR5Rmy+ZDSrmL0sTNX/bUKda2MS3p3ITrs1ebOIIaw7HSqkBVtIhagYo33FqEwWHcMu2bpcDi1fTg5UogS0vMm7HWR2cIiWOV68JmD+x6sySB5Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sH/gUaqE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9974C4CEED;
+	Tue,  8 Jul 2025 16:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751992426;
-	bh=rFli3NmAN5Xl4YaiZvMPVr8xPwhPPdJxLW0fHv7icJ4=;
+	s=korg; t=1751991998;
+	bh=J0E848LNK3k+WXpJLp2ZZgmPldhS7gyDpNW8Vq8LIXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKbn8FVNRvZMpQf6o90munQ8zNZgHqxK/xD0S29cR4r6+auac4lM3EJH72REHtzUy
-	 KMHaxBIcUMiaHxX3TX0W9jaMb8lADfHmpgARmebsf6NqiKUkcSHZnSnydrCPAj5Ubj
-	 PhRQ4rcAJYsvD4X/alqKe3gdgPbITtrKD/R4K5eQ=
+	b=sH/gUaqEIkoX+qQ/j0KIs4T7yiMEecU/+KPpki77A/F+AStci0GCKQTvuJzP8YjzS
+	 BWsyh0finepUZ5Bc4jIyk3ehhYtvbO0nGJMc8LSiszNfgBS2JvQG4XwlYWl+uHTpmj
+	 gaUai1U37mrG9bXl9qzcBggTt9olv5h+HH//q6As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Santese <santesegabriel@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/132] ASoC: amd: yc: Add quirk for MSI Bravo 17 D7VF internal mic
+Subject: [PATCH 6.1 27/81] btrfs: fix iteration of extrefs during log replay
 Date: Tue,  8 Jul 2025 18:23:19 +0200
-Message-ID: <20250708162233.202504733@linuxfoundation.org>
+Message-ID: <20250708162225.798544686@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162230.765762963@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
+In-Reply-To: <20250708162224.795155912@linuxfoundation.org>
+References: <20250708162224.795155912@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Santese <santesegabriel@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ba06528ad5a31923efc24324706116ccd17e12d8 ]
+[ Upstream commit 54a7081ed168b72a8a2d6ef4ba3a1259705a2926 ]
 
-MSI Bravo 17 (D7VF), like other laptops from the family,
-has broken ACPI tables and needs a quirk for internal mic
-to work properly.
+At __inode_add_ref() when processing extrefs, if we jump into the next
+label we have an undefined value of victim_name.len, since we haven't
+initialized it before we did the goto. This results in an invalid memory
+access in the next iteration of the loop since victim_name.len was not
+initialized to the length of the name of the current extref.
 
-Signed-off-by: Gabriel Santese <santesegabriel@gmail.com>
-Link: https://patch.msgid.link/20250530005444.23398-1-santesegabriel@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix this by initializing victim_name.len with the current extref's name
+length.
+
+Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/btrfs/tree-log.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 40e2b5a87916a..1547cf8b46b13 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -451,6 +451,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 17 D7VEK"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 17 D7VF"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 35bb364089f8a..982dc92bdf1df 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1160,13 +1160,13 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
+ 			struct fscrypt_str victim_name;
+ 
+ 			extref = (struct btrfs_inode_extref *)(base + cur_offset);
++			victim_name.len = btrfs_inode_extref_name_len(leaf, extref);
+ 
+ 			if (btrfs_inode_extref_parent(leaf, extref) != parent_objectid)
+ 				goto next;
+ 
+ 			ret = read_alloc_one_name(leaf, &extref->name,
+-				 btrfs_inode_extref_name_len(leaf, extref),
+-				 &victim_name);
++						  victim_name.len, &victim_name);
+ 			if (ret)
+ 				return ret;
+ 
 -- 
 2.39.5
 
