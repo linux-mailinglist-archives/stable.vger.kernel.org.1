@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-161028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE9AAFD301
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:52:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D55E5AFD3AE
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 18:59:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49D993ADD07
-	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:49:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6ED6C7A5B12
+	for <lists+stable@lfdr.de>; Tue,  8 Jul 2025 16:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453C2225414;
-	Tue,  8 Jul 2025 16:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95752E62AD;
+	Tue,  8 Jul 2025 16:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRRnm4tF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxYMXonB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D9F18EAB;
-	Tue,  8 Jul 2025 16:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660BA1DB127;
+	Tue,  8 Jul 2025 16:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993390; cv=none; b=pbjHXRUm+q4Pc8STQcASlcY4B1P0ASHu45tiAw5UgWUJbWDDSJwuBlmAfUvI5TVmFI1T/4oAacTrjGjnw9Ux9Oz5a4SYxBpqUuktzmvXYsaIOzZt6u5QkMHbo2rpm4XoI5uYANjmPXlx8yTMvvQpEuDubUWwWQAxdWDAZC+6ghw=
+	t=1751993902; cv=none; b=TzfUDTTPs7htLoE6ZXJHohWLT4J7/P5dwQHJpSrx9E+uhIB0bNWPFRQmMcMwul3hEBCLxJa7O2HzukbzhJx86SoS6A6Xn1uUI+6GE1ISHj3EEl5tvVVRZ51jQo+0gRsJw0wEJeHJnCWgkQv9H2uy4Oe1ryy3huAy2CZFjtf7UPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993390; c=relaxed/simple;
-	bh=oahXISvbq6Q8RUF2iH6/qALfoTR0G55SDQNR+1v08E8=;
+	s=arc-20240116; t=1751993902; c=relaxed/simple;
+	bh=7UEE66aZdaNERC7lzbAB9DF5iBt1Cx8hMFer5gDXtp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieo3PuiR8UHhXkS810nwo+N8x7gFlzIMMyHJz+PoWLmq77Bjx5LSfUjVCL1xfJBkfleLljUNI3f0XLgk6GFrvXDED44eqkkaPOXb/nIlB25oJJ99jzOqhemqs05f81Br3F+F2qj3DeXSeJjYsowBRbLgjYhPlyWNJuM1qTs4VK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRRnm4tF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50728C4CEED;
-	Tue,  8 Jul 2025 16:49:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D7bcdlaC7mPoAXL7XXjVSiQdmkYip6LAWbov4zF3oKKYjN+1ggNmAwX4JZidapl8Ji8dN443o3DXmdlJ0izYlYu9+wfmbRX1t/2Nu2cDwsJ+k4wPor1Dmg8ZXd8k6fZNQa42MEK0VR54k2qbIigqz/Jg7bEWg6kYTkJm0IEwWbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxYMXonB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17FAC4CEED;
+	Tue,  8 Jul 2025 16:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993389;
-	bh=oahXISvbq6Q8RUF2iH6/qALfoTR0G55SDQNR+1v08E8=;
+	s=korg; t=1751993902;
+	bh=7UEE66aZdaNERC7lzbAB9DF5iBt1Cx8hMFer5gDXtp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRRnm4tFukP+pZXgiDcN3SD6zrayc4WPh2RWy+wjsuyTzXHgZIDTYnl1inXDTVSno
-	 6aSBLrR0euzVX/Pw/PyF+o4MUqqPOYTLcGisOqmBt+t9A6dZnSs+PC6o/yyZsHQJL/
-	 iryA1jxk0/TTzMGNo2z1MF2/jcwG4TtxLwn5rpYw=
+	b=rxYMXonBXxzjTvHlNsdl9F95wUUP3OknHqpbZx0dzaJQJNU5nPz2Q3oHoaeaO3hPe
+	 3ZEzjSQFHwoGqmnwMrGB/obVPJnswjkLVm1ksUcUbu3/AngOa/F8OkXoIbg1y101IQ
+	 yrpbdyDak68N/LOh0zJmE7UCD1zhJhrBZ5wxs8lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Felix Yan <felixonmars@archlinux.org>,
+	Eric Long <i@hack3r.moe>,
+	Jianfei Zhang <zhangjianfei3@gmail.com>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Minh Le <minhld139@gmail.com>,
+	Sicheng Zhu <Emmet_Z@outlook.com>,
+	Rong Zhang <i@rong.moe>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 057/178] RDMA/mlx5: Fix vport loopback for MPV device
+Subject: [PATCH 5.15 057/160] platform/x86: ideapad-laptop: use usleep_range() for EC polling
 Date: Tue,  8 Jul 2025 18:21:34 +0200
-Message-ID: <20250708162238.169484990@linuxfoundation.org>
+Message-ID: <20250708162233.127128913@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +66,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Rong Zhang <i@rong.moe>
 
-[ Upstream commit a9a9e68954f29b1e197663f76289db4879fd51bb ]
+[ Upstream commit 5808c34216954cd832bd4b8bc52dfa287049122b ]
 
-Always enable vport loopback for both MPV devices on driver start.
+It was reported that ideapad-laptop sometimes causes some recent (since
+2024) Lenovo ThinkBook models shut down when:
+ - suspending/resuming
+ - closing/opening the lid
+ - (dis)connecting a charger
+ - reading/writing some sysfs properties, e.g., fan_mode, touchpad
+ - pressing down some Fn keys, e.g., Brightness Up/Down (Fn+F5/F6)
+ - (seldom) loading the kmod
 
-Previously in some cases related to MPV RoCE, packets weren't correctly
-executing loopback check at vport in FW, since it was disabled.
-Due to complexity of identifying such cases for MPV always enable vport
-loopback for both GVMIs when binding the slave to the master port.
+The issue has existed since the launch day of such models, and there
+have been some out-of-tree workarounds (see Link:) for the issue. One
+disables some functionalities, while another one simply shortens
+IDEAPAD_EC_TIMEOUT. The disabled functionalities have read_ec_data() in
+their call chains, which calls schedule() between each poll.
 
-Fixes: 0042f9e458a5 ("RDMA/mlx5: Enable vport loopback when user context or QP mandate")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/d4298f5ebb2197459e9e7221c51ecd6a34699847.1750064969.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+It turns out that these models suffer from the indeterminacy of
+schedule() because of their low tolerance for being polled too
+frequently. Sometimes schedule() returns too soon due to the lack of
+ready tasks, causing the margin between two polls to be too short.
+In this case, the command is somehow aborted, and too many subsequent
+polls (they poll for "nothing!") may eventually break the state machine
+in the EC, resulting in a hard shutdown. This explains why shortening
+IDEAPAD_EC_TIMEOUT works around the issue - it reduces the total number
+of polls sent to the EC.
+
+Even when it doesn't lead to a shutdown, frequent polls may also disturb
+the ongoing operation and notably delay (+ 10-20ms) the availability of
+EC response. This phenomenon is unlikely to be exclusive to the models
+mentioned above, so dropping the schedule() manner should also slightly
+improve the responsiveness of various models.
+
+Fix these issues by migrating to usleep_range(150, 300). The interval is
+chosen to add some margin to the minimal 50us and considering EC
+responses are usually available after 150-2500us based on my test. It
+should be enough to fix these issues on all models subject to the EC bug
+without introducing latency on other models.
+
+Tested on ThinkBook 14 G7+ ASP and solved both issues. No regression was
+introduced in the test on a model without the EC bug (ThinkBook X IMH,
+thanks Eric).
+
+Link: https://github.com/ty2/ideapad-laptop-tb2024g6plus/commit/6c5db18c9e8109873c2c90a7d2d7f552148f7ad4
+Link: https://github.com/ferstar/ideapad-laptop-tb/commit/42d1e68e5009529d31bd23f978f636f79c023e80
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218771
+Fixes: 6a09f21dd1e2 ("ideapad: add ACPI helpers")
+Cc: stable@vger.kernel.org
+Tested-by: Felix Yan <felixonmars@archlinux.org>
+Tested-by: Eric Long <i@hack3r.moe>
+Tested-by: Jianfei Zhang <zhangjianfei3@gmail.com>
+Tested-by: Mingcong Bai <jeffbai@aosc.io>
+Tested-by: Minh Le <minhld139@gmail.com>
+Tested-by: Sicheng Zhu <Emmet_Z@outlook.com>
+Signed-off-by: Rong Zhang <i@rong.moe>
+Link: https://lore.kernel.org/r/20250525201833.37939-1-i@rong.moe
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c | 33 +++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ drivers/platform/x86/ideapad-laptop.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index d07cacaa0abd0..4ffe3afb560c9 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -1779,6 +1779,33 @@ static void deallocate_uars(struct mlx5_ib_dev *dev,
- 					     context->devx_uid);
- }
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index e75b09a144a32..7c655ace4fdc2 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -13,6 +13,7 @@
+ #include <linux/bitops.h>
+ #include <linux/bug.h>
+ #include <linux/debugfs.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/dmi.h>
+ #include <linux/fb.h>
+@@ -158,6 +159,20 @@ MODULE_PARM_DESC(no_bt_rfkill, "No rfkill for bluetooth.");
+  */
+ #define IDEAPAD_EC_TIMEOUT 200 /* in ms */
  
-+static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
-+				struct mlx5_core_dev *slave)
-+{
-+	int err;
++/*
++ * Some models (e.g., ThinkBook since 2024) have a low tolerance for being
++ * polled too frequently. Doing so may break the state machine in the EC,
++ * resulting in a hard shutdown.
++ *
++ * It is also observed that frequent polls may disturb the ongoing operation
++ * and notably delay the availability of EC response.
++ *
++ * These values are used as the delay before the first poll and the interval
++ * between subsequent polls to solve the above issues.
++ */
++#define IDEAPAD_EC_POLL_MIN_US 150
++#define IDEAPAD_EC_POLL_MAX_US 300
 +
-+	err = mlx5_nic_vport_update_local_lb(master, true);
-+	if (err)
-+		return err;
-+
-+	err = mlx5_nic_vport_update_local_lb(slave, true);
-+	if (err)
-+		goto out;
-+
-+	return 0;
-+
-+out:
-+	mlx5_nic_vport_update_local_lb(master, false);
-+	return err;
-+}
-+
-+static void mlx5_ib_disable_lb_mp(struct mlx5_core_dev *master,
-+				  struct mlx5_core_dev *slave)
-+{
-+	mlx5_nic_vport_update_local_lb(slave, false);
-+	mlx5_nic_vport_update_local_lb(master, false);
-+}
-+
- int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
+ static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
  {
- 	int err = 0;
-@@ -3483,6 +3510,8 @@ static void mlx5_ib_unbind_slave_port(struct mlx5_ib_dev *ibdev,
+ 	unsigned long long result;
+@@ -263,7 +278,7 @@ static int read_ec_data(acpi_handle handle, unsigned long cmd, unsigned long *da
+ 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
  
- 	lockdep_assert_held(&mlx5_ib_multiport_mutex);
+ 	while (time_before(jiffies, end_jiffies)) {
+-		schedule();
++		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
  
-+	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev);
-+
- 	mlx5_core_mp_event_replay(ibdev->mdev,
- 				  MLX5_DRIVER_EVENT_AFFILIATION_REMOVED,
- 				  NULL);
-@@ -3578,6 +3607,10 @@ static bool mlx5_ib_bind_slave_port(struct mlx5_ib_dev *ibdev,
- 				  MLX5_DRIVER_EVENT_AFFILIATION_DONE,
- 				  &key);
+ 		err = eval_vpcr(handle, 1, &val);
+ 		if (err)
+@@ -294,7 +309,7 @@ static int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned long dat
+ 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
  
-+	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev);
-+	if (err)
-+		goto unbind;
-+
- 	return true;
+ 	while (time_before(jiffies, end_jiffies)) {
+-		schedule();
++		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
  
- unbind:
+ 		err = eval_vpcr(handle, 1, &val);
+ 		if (err)
 -- 
 2.39.5
 
