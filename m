@@ -1,106 +1,161 @@
-Return-Path: <stable+bounces-161438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673AAAFE8C4
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 14:22:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED0EAFE8E9
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 14:27:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 655DF3B73D3
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 12:22:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DED21C47DE6
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 12:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAADE2D94BE;
-	Wed,  9 Jul 2025 12:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1622DC33E;
+	Wed,  9 Jul 2025 12:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aOK/pXVq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XiqhXepX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A206F289813;
-	Wed,  9 Jul 2025 12:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3940D2D8372
+	for <stable@vger.kernel.org>; Wed,  9 Jul 2025 12:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752063759; cv=none; b=m4ycDvnHWlVR6TwObgmLn50843xHoA2Z6J0rFY16R/8wa7YrcMjh3G4XDA4yIbTdo6T+EDwrFbUgDrwt7Zo24QxeIcON65A/kTeJ30c2/L3pEhnspBCesxd2D8sf+imBIuTv2yEJfTUuB5tZjlZzT2eSqg0ribYVJ90oAtg8OG8=
+	t=1752063951; cv=none; b=RBPEt6PEZWxmlSo9Vxv/i1V0Usmn+HvRngnI4FZu8JwNvkxpX+gHGDXvcZW5wrfGr9LHB9cMJw7ItifME7u7svq72lKzbdxLywXCrrS2CXBoulwKflK9Oo7IL/syxONrl5BW1EPsSRm4vBalJz43RgkniYnXUkPF9niBb37UJ3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752063759; c=relaxed/simple;
-	bh=ExusPl54+Z+6wa6Xfyog2ejojzWjQojh+qnvn+buZQ8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IxG8dvboc9X1dtcg4RkgrUFENRJFTc9VzW+63R+6LGYMrYvLvYcm4vI9iGmlrcPZUIPxQg9qhgT6XldKnnOHrjg4QoEcX/lI7cvP2/7tPb5GCC2/Sle1Yj53ttXY66xbG4zvKCeamDzBt8mvomXTimGGpmn2XbLALTcxGXS2eNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aOK/pXVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C15C4CEF4;
-	Wed,  9 Jul 2025 12:22:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752063759;
-	bh=ExusPl54+Z+6wa6Xfyog2ejojzWjQojh+qnvn+buZQ8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aOK/pXVq98TtbtsMyifPo27ZSiq4dlguYgxXqQfIH75/DZ+tloIWyr/e6Ee80jY8a
-	 BLFyS4i/7yHe7v1kjo5SV97w13jRqyxNxxqiiNfIiRxuWF+G7McEq5C4jYKVk2wNvt
-	 cvf5cvn+NzO7NHKmTm+58biAMXmJxCFcLiGANsBj/1tp5jMTOSH6q264W38oLqWP5C
-	 +pylrmwv6HzcTeYfa1ZGESqAh1hjAo5CFaeUUxE9Uv2l4xeXW65ilJkp5HfPhzrsXL
-	 y9pikMjVy0SGwOyy16hfn5x5p6L4nzQZqiV5wvQfzmJIxQvx9mS4JkkyO+4gCU6PVn
-	 MUsPKVz+LMJCQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1uZToq-00E8wS-Kz;
-	Wed, 09 Jul 2025 13:22:36 +0100
-From: Marc Zyngier <maz@kernel.org>
-To: catalin.marinas@arm.com,
-	will@kernel.org,
-	oliver.upton@linux.dev,
-	joey.gouly@arm.com,
-	suzuki.poulose@arm.com,
-	yuzenghui@huawei.com,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk,
-	linux-kernel@vger.kernel.org,
-	Ben Horgan <ben.horgan@arm.com>
-Cc: james.morse@arm.com,
-	stable@vger.kernel.org
-Subject: Re: (subset) [PATCH v2 1/2] KVM: arm64: Fix enforcement of upper bound on MDCR_EL2.HPMN
-Date: Wed,  9 Jul 2025 13:22:26 +0100
-Message-Id: <175206358921.2018765.12923963855524409894.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250709093808.920284-2-ben.horgan@arm.com>
-References: <20250709093808.920284-1-ben.horgan@arm.com> <20250709093808.920284-2-ben.horgan@arm.com>
+	s=arc-20240116; t=1752063951; c=relaxed/simple;
+	bh=wb22XIikD2qATxWdRxTA3iHhTy4uPTHwNH1Z3aIBhaM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IpWASnL8qUNBeOHzG+8ATjXXOSEd5Lai/ftDXcSBNdGINMSQGXNOI43QS0Ej2cycmJJ1X/Cl8cRezFyEdA45Lxs2Hd1PI9KiMXeBsLUzOAi8FgvghRLvsKOA93AA6VYJgrKzo5P/zFfwnOp/+ojsE79WHIj2uZjXr3i1jbLgMSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XiqhXepX; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-879d2e419b9so4307281a12.2
+        for <stable@vger.kernel.org>; Wed, 09 Jul 2025 05:25:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1752063949; x=1752668749; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=S/q7TshKKoT7nXGacRLVg39PUcU9ha1HeRSUxDk9nqI=;
+        b=XiqhXepXn0fEjeU4tmuOgqv7YqcMSaCduiCGHfcqz1fz5fjbftcgf3429eZyTDgS+D
+         gwBpwOgam1U3ucJmAXuO5udqNNKxhDahphTW7AFbFLJ2ZTMhq674zLf5z9YkDJKjJMMf
+         PrUeSYWx5s+k814p8EOOwOogGiaqg7mtDywz8O5TzZ9i+8Qsrlw+kdciiaHTvPh6L/Al
+         Apv5R2yVvqTfthL5UK85FSrY2Xsyj7yj0C9sgrbY3huWMv3eizjAOSR1UiZL5ss/hNhG
+         U4Fngs16HQl8pB2jdFZA6gXeR7DmHWZK6/75Sz27Pz2oMTpRbqv0IIHtOOu51IpLbnP2
+         fxDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752063949; x=1752668749;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S/q7TshKKoT7nXGacRLVg39PUcU9ha1HeRSUxDk9nqI=;
+        b=r2+RtEEEuil8TXkKMVHoc3qZ2BtEyQMLk/zHrOUzlQBZJzSgXiL3MvZP9poJYlT+tY
+         x7sMdlEjgvQkQaEyernIoiYN+x3Cfg7nN7Pve9ZcukmKZx5EwWkAUXi57XNo5ziWJLAT
+         LSh3jMiuqs5lEZVf9dbbu4aweSw5m3kPXy9FpYK4N2ys6GwBt2HvAOfpMTNF1gyCcBkq
+         qSkX9Z/YaUg/auoogNB5Q7ZnG2aYOzVzqHBADF0DDu8BrY1BzZ3KHtqMfffCjBPPnG20
+         Li0Zt9wvjKE56lxT7KBgJWi96hIz34NetwQNsROFmbOfEdH+4YLOd4q3c2LZsqW3PyJf
+         7jMg==
+X-Forwarded-Encrypted: i=1; AJvYcCXnXoEef2HtFmeMRcxx16GcYIBLRwjVP5o6Q+C5CBGPzx+oY9oLn8hNK5yq0DOYwXP0c8EMAlM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiOV2RgzCkttToBh1FnEqaBtKNQc2W2XBgRElMnkPQkYCamsMG
+	3MgUfFBiAsMrU8o20P5j4gLsuwCdcBBBiKoO2CJxobEwSH6XGJ9yfxvwU7U9PKUOtJBKzPDh/Am
+	89Eh8suWJzle010Jb6YL5TDxEBNznvdKW3oddVd1jVw==
+X-Gm-Gg: ASbGncvGDNDPIWMFSIzK0HdCw5wVPZ6El2uqTJkk/dLcSomIIoKHG0Sw8rSxc7AiW5q
+	B7BQ8e2jhS4p3iQ/KSX7pXVXR1s4YV1kKP1pfJF8WtliyjdBwZSUjiuLmmee9YHigGh86fqauwO
+	1tVrLdfXd86JBdoeS0w2sVunzq1Xb41yEimZScT3Jpd3HJHf429GsxB9kH5v0F5pPcHidH0UQwJ
+	Dfm
+X-Google-Smtp-Source: AGHT+IFcpLtOMbOqJ/FkYbFJ6ZieYCRLYBJIVZAFvoK2D08JwArVwDsz9XqCBlbkUqhACkrjBfuJcYeD1mdTmH+qlOM=
+X-Received: by 2002:a17:90a:f6ce:b0:312:daf3:bac9 with SMTP id
+ 98e67ed59e1d1-31c2fe15c5cmr2399918a91.34.1752063949445; Wed, 09 Jul 2025
+ 05:25:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: catalin.marinas@arm.com, will@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, yury.norov@gmail.com, linux@rasmusvillemoes.dk, linux-kernel@vger.kernel.org, ben.horgan@arm.com, james.morse@arm.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+References: <CA+G9fYtK2TLbpo-NE-KUXEp0y8+5zXNVRFkqdMjaGgcNFFG77g@mail.gmail.com>
+ <2025070924-slurp-monetary-a53f@gregkh>
+In-Reply-To: <2025070924-slurp-monetary-a53f@gregkh>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 9 Jul 2025 17:55:37 +0530
+X-Gm-Features: Ac12FXzBT0KHq5ReF1wh3qeMehbB0fUcTYzXrsEznaZ3aV6CJ3ajCFVqPCFB3rg
+Message-ID: <CA+G9fYurLq9o_PSbQKCOmSkQfa5-qtAu2HR1PzySBmJM4C4F3g@mail.gmail.com>
+Subject: Re: v6.16-rc5: ttys: auto login failed Login incorrect
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-serial@vger.kernel.org
+Cc: open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	Linux Regressions <regressions@lists.linux.dev>, linux-stable <stable@vger.kernel.org>, 
+	Jiri Slaby <jslaby@suse.com>, Aidan Stewart <astewart@tektelic.com>, 
+	Jakub Lewalski <jakub.lewalski@nokia.com>, Fabio Estevam <festevam@gmail.com>, 
+	Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 09 Jul 2025 10:38:07 +0100, Ben Horgan wrote:
-> Previously, u64_replace_bits() was used to no effect as the return value
-> was ignored. Convert to u64p_replace_bits() so the value is updated in
-> place.
-> 
-> 
++
 
-Applied to fixes, thanks!
+On Wed, 9 Jul 2025 at 16:31, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Wed, Jul 09, 2025 at 04:26:53PM +0530, Naresh Kamboju wrote:
+> > Approximately 20% of devices are experiencing intermittent boot failures
+> > with this kernel version. The issue appears to be related to auto login
+> > failures, where an incorrect password is being detected on the serial
+> > console during the login process.
+> >
+> > This intermittent regression is noticed on stable-rc 6.15.5-rc2 and
+> > Linux mainline master v6.16-rc5. This regressions is only specific
+> > to the devices not on the qemu's.
+> >
+> > Test environments:
+> >  - dragonboard-410c
+> >  - dragonboard-845c
+> >  - e850-96
+> >  - juno-r2
+> >  - rk3399-rock-pi-4b
+> >  - x86
+> >
+> > Regression Analysis:
+> > - New regression? Yes
+> > - Reproducibility? 20% only
+> >
+> > Test regression: 6.15.5-rc2 v6.16-rc5 auto login failed Login incorrect
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> >
+> > ## log in problem
+> >
+> > runner-ns46nmmj-project-40964107-concurrent-0 login: #
+> > Password:
+> > Login incorrect
+> > runner-ns46nmmj-project-40964107-concurrent-0 login:
+> >
+> > ## Investigation
+> > The following three patches were reverted and the system was re-tested.
+> > The previously reported issues are no longer observed after applying the
+> > reverts.
+> >
+> > serial: imx: Restore original RXTL for console to fix data loss
+> >     commit f23c52aafb1675ab1d1f46914556d8e29cbbf7b3 upstream.
+> >
+> > serial: core: restore of_node information in sysfs
+> >     commit d36f0e9a0002f04f4d6dd9be908d58fe5bd3a279 upstream.
+> >
+> > tty: serial: uartlite: register uart driver in init
+> >     [ Upstream commit 6bd697b5fc39fd24e2aa418c7b7d14469f550a93 ]
+>
+>
+> As stated before, those are 3 totally independent changes.  Any chance
+> you can nail this down to just one of the above?
 
-I have dropped the Cc: stable, as ths bug only exists in 6.16, and we
-are not backporting anything related to NV to previous kernel versions.
+You're right, since this issue is intermittent, it's challenging to reproduce
+consistently. Pinpointing the exact commit would be ideal, but it will
+require more time.
 
-[1/2] KVM: arm64: Fix enforcement of upper bound on MDCR_EL2.HPMN
-      commit: 2265c08ec393ef1f5ef5019add0ab1e3a7ee0b79
+>
+> thanks,
+>
+> greg k-h
 
-Cheers,
-
-	M.
--- 
-Without deviation from the norm, progress is not possible.
-
-
+Thanks,
+Naresh
 
