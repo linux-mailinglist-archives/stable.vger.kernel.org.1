@@ -1,106 +1,158 @@
-Return-Path: <stable+bounces-161484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2241AFF105
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 20:44:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2AAAFF10B
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 20:45:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FB2D1C810B5
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBAAA542AA7
 	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 18:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE2E23ABA3;
-	Wed,  9 Jul 2025 18:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B62823ABB3;
+	Wed,  9 Jul 2025 18:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="PP9fz4hu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VC9y5nf5"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D878D23507E;
-	Wed,  9 Jul 2025 18:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24E923ABB4;
+	Wed,  9 Jul 2025 18:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752086675; cv=none; b=SEwTf9ulRWsbxZ4i2orJ1ecDxFhdcaNVY2CQurAfALq3Cwe8i71bU1JTF3IcatmdU7zozfL/ID/gz9Ria2gsdLTSzxF49b71VBinTrd5xRC7kntRKFQjH4YA/rBaBKZfZhBxpNoKvRGbLn8SYnfdt51tmvVpABPyJdJrUqBg4Go=
+	t=1752086722; cv=none; b=LTHvKzOYjncpc+CYr9MCg3koa9fd0vbGlPJjHf5FaDLItbPsJ8BWo0WGarVCzMF+YKEvxQz5pC40v4TKcB/2St4Oh2YB/tGEgE15G877TCKm4AFWp0yvjNe3U3gRi8IxSzLwuDBptoFEZ5xlMhoPSoKD+D2Lqx/CIaYVAQN+SxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752086675; c=relaxed/simple;
-	bh=LnSpViirecCt5hQ3qDHHxWMQrkVthi3qX9NY3MXKyqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IqDj9pm+H8hxt05QN05aWzLjX8TIQXo4xbnKVXc4MxIKPtBR/yg56gQC4oFSeA5ckmYg9QBypA7MMPYqOMX7xS13avhNmKzWXu5Ig90ZoBH4idJPVkoUXM6N8Dryod+CR/4U4te4SqCNMpu18UPtVelIhGzEnbcpS1K82JY6JN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=PP9fz4hu; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from DESKTOP-0403QTC. (unknown [20.191.74.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id E7028201A4A9;
-	Wed,  9 Jul 2025 11:44:32 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E7028201A4A9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1752086673;
-	bh=G2dyhTNarlOLAveUVZiYAu+lzf15ztcoGNt03mbPme0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Reply-To:From;
-	b=PP9fz4hu1ioveQReVhuKlUAHtb9HH+nCfk2aboW5dHq5X3WKKZVE4nVVJWQKFS7+T
-	 fiR4bMl0Yp/IkEarB6JDAl2K7uTXv89F04ZOwbNQQb7AoULfiGkxhmoXdXl//7Voia
-	 CnY2mb9P8zlucmwoDrL+EObhYZejyi9wvZdxfRGE=
-Date: Wed, 9 Jul 2025 11:44:32 -0700
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Lu Baolu <baolu.lu@linux.intel.com>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy
- <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Jann Horn
- <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple
- <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>, Uladzislau
- Rezki <urezki@gmail.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Andy Lutomirski <luto@kernel.org>, iommu@lists.linux.dev,
- security@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- jacob.pan@linux.microsoft.com
-Subject: Re: [PATCH 1/1] iommu/sva: Invalidate KVA range on kernel TLB flush
-Message-ID: <20250709114432.294425ff@DESKTOP-0403QTC.>
-In-Reply-To: <42c500b8-6ffb-4793-85c0-d3fbae0116f1@intel.com>
-References: <20250704133056.4023816-1-baolu.lu@linux.intel.com>
-	<20250709085158.0f050630@DESKTOP-0403QTC.>
-	<20250709162724.GE1599700@nvidia.com>
-	<20250709111527.5ba9bc31@DESKTOP-0403QTC.>
-	<42c500b8-6ffb-4793-85c0-d3fbae0116f1@intel.com>
-Reply-To: jacob.pan@linux.microsoft.com
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1752086722; c=relaxed/simple;
+	bh=DsMHUj1PCbtPTOnyHGKOzdgaPopMri+qwoCvFjk5k4E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DKQXe7UdzGc+VU0F00/EqnNVIu1MgRT3BkV0vbgo7YMtFaLWUHF3bJFya86usFOg9us9mujvDTSWkCYJIbnl/4M1aM5wBxYGJ+kAdYVztqK33iSi6EDWOa7QcaUsaj0W5bMYrWt2H2qppoGvzRoNpf4iiU6b3xulXT6+JTkz0L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VC9y5nf5; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752086720; x=1783622720;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=DsMHUj1PCbtPTOnyHGKOzdgaPopMri+qwoCvFjk5k4E=;
+  b=VC9y5nf5cSNKOg0aBIIHdwztdQm7Zjp8360oim/ORVa3+cWZm74nTitM
+   4Eybqa3Klo/USkaWInXphb4zf+8VhyydV3cKexKSbgyj6KjB8CK4tkhMJ
+   leVSzurub/LcKSyG1KGaeowVadGUqx2nzpsnSV2FNckPKeTHa87V2PMKp
+   YNFf9XL4BXh2RxS1Np3/LGdnBxc8sEaoMDxnaJNoLeKsO6oP16A6iItlU
+   VEstBooYMApyStbZbHhZutBbnz3nsPQ2P7qJe662LlrmHGH0M4GBzxxUq
+   GdM9KadVIb33tmDssNgoykaRCUJIfNCMCFgWxX9mmKoT50AgFrHE4lqfF
+   A==;
+X-CSE-ConnectionGUID: KAPzRq2hTnGyNfm2Evk05Q==
+X-CSE-MsgGUID: akBZIyVWR0y51wUf1gJlcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54451011"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="54451011"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 11:45:18 -0700
+X-CSE-ConnectionGUID: epK/AetvTyWFZis1DfygqQ==
+X-CSE-MsgGUID: fz9FymE3R7KvHdxID+0xYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="161404834"
+Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.221.121])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 11:45:16 -0700
+From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
+To: platform-driver-x86@vger.kernel.org,
+	intel-xe@lists.freedesktop.org,
+	hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com,
+	lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	david.e.box@linux.intel.com
+Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v7 01/12] platform/x86/intel/pmt: fix a crashlog NULL pointer access
+Date: Wed,  9 Jul 2025 14:44:47 -0400
+Message-ID: <20250709184458.298283-2-michael.j.ruhl@intel.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250709184458.298283-1-michael.j.ruhl@intel.com>
+References: <20250709184458.298283-1-michael.j.ruhl@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Dave,
+Usage of the intel_pmt_read() for binary sysfs, requires a pcidev. The
+current use of the endpoint value is only valid for telemetry endpoint
+usage.
 
-On Wed, 9 Jul 2025 11:22:34 -0700
-Dave Hansen <dave.hansen@intel.com> wrote:
+Without the ep, the crashlog usage causes the following NULL pointer
+exception:
 
-> On 7/9/25 11:15, Jacob Pan wrote:
-> >>> Is there a use case where a SVA user can access kernel memory in
-> >>> the first place?   =20
-> >> No. It should be fully blocked.
-> >> =20
-> > Then I don't understand what is the "vulnerability condition" being
-> > addressed here. We are talking about KVA range here. =20
->=20
-> SVA users can't access kernel memory, but they can compel walks of
-> kernel page tables, which the IOMMU caches. The trouble starts if the
-> kernel happens to free that page table page and the IOMMU is using the
-> cache after the page is freed.
->=20
-According to VT-d spec. 6.2.4 S1 IOTLB caching includes access
-privilege.
-"First-stage mappings:
-=E2=80=94 Each of these is a mapping from a input page number in a request =
-to the physical page frame
-to which it translates (derived from first-stage translation), along with i=
-nformation about
-access privileges and memory typing (if applicable)."
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Oops: Oops: 0000 [#1] SMP NOPTI
+RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
+Code:
+Call Trace:
+ <TASK>
+ ? sysfs_kf_bin_read+0xc0/0xe0
+ kernfs_fop_read_iter+0xac/0x1a0
+ vfs_read+0x26d/0x350
+ ksys_read+0x6b/0xe0
+ __x64_sys_read+0x1d/0x30
+ x64_sys_call+0x1bc8/0x1d70
+ do_syscall_64+0x6d/0x110
 
-So you are saying IOMMU can cache user DMA initiated walks and cache
-with supervisor privilige? Since the SVA PASID is a user PASID, even if
-IOMMU uses the cache later on, how could it get supervior privilege?
+Augment struct intel_pmt_entry with a pointer to the pcidev to avoid
+the NULL pointer exception.
 
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Fixes: 045a513040cc ("platform/x86/intel/pmt: Use PMT callbacks")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+---
+ drivers/platform/x86/intel/pmt/class.c | 3 ++-
+ drivers/platform/x86/intel/pmt/class.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
+index 7233b654bbad..d046e8752173 100644
+--- a/drivers/platform/x86/intel/pmt/class.c
++++ b/drivers/platform/x86/intel/pmt/class.c
+@@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
+ 	if (count > entry->size - off)
+ 		count = entry->size - off;
+ 
+-	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
++	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
+ 				    entry->base, off, count);
+ 
+ 	return count;
+@@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct intel_pmt_entry *entry,
+ 		return -EINVAL;
+ 	}
+ 
++	entry->pcidev = pci_dev;
+ 	entry->guid = header->guid;
+ 	entry->size = header->size;
+ 	entry->cb = ivdev->priv_data;
+diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
+index b2006d57779d..f6ce80c4e051 100644
+--- a/drivers/platform/x86/intel/pmt/class.h
++++ b/drivers/platform/x86/intel/pmt/class.h
+@@ -39,6 +39,7 @@ struct intel_pmt_header {
+ 
+ struct intel_pmt_entry {
+ 	struct telem_endpoint	*ep;
++	struct pci_dev		*pcidev;
+ 	struct intel_pmt_header	header;
+ 	struct bin_attribute	pmt_bin_attr;
+ 	struct kobject		*kobj;
+-- 
+2.50.0
 
 
