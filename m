@@ -1,147 +1,117 @@
-Return-Path: <stable+bounces-161373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7A1AFDCB7
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 03:03:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E3EAFDCE2
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 03:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 198C67B874D
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 01:01:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34419584422
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 01:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5541E5718;
-	Wed,  9 Jul 2025 01:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88D817A305;
+	Wed,  9 Jul 2025 01:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="siR4dsf+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xc3tmFaA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F401E25F2;
-	Wed,  9 Jul 2025 01:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2E9156F4A;
+	Wed,  9 Jul 2025 01:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752022871; cv=none; b=mbseJeF1pl4rm9/JhR58hu+aNO6xXzooX5F18pv09Fbi370IUtf4Pb2e7NReSVtQOxUujtgWGJAT5Jp8UwZ6X4kgU3DSmU4rG9HTxG6hw4LpYBO2JPJItswZt5lNPw1u9c1XW6s7xM6dRWQjVbrjD3wQG9h1HJ1PrZGVmlm/7UY=
+	t=1752024450; cv=none; b=BEicd3gZx52QZjuz8w2dxuKdylOeNiT73nkVI0o4Kia1zcNPEJOTU0IaILisJ1JEkfF0IkU7pYfxjwlGV+8THe/ns1ZkW+bJMpZvxaTBZUt+O7iWmqeROlsxdjU1hSFmwmQlUnHu+jk+eIUgXyNjG+coFNueIHynIPK8UDIxp8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752022871; c=relaxed/simple;
-	bh=p+1ebn6vNh2rTReGQh5//ZEGguo2HhmtUqjfNBzIbsA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ek9Ifmsp9L6dIBtSAeS2PYmxQgkInfQKPrJgUSxi4Q2GROFJ901HjxoorrtHlFatxinaSnZ4/4ERebdZNDH9MdDFSpUTLZAUrXzQLg3zso9JDE3C4a2wyX2RVkkcLpam6o4L6KD6Vl70KQwKZWwJOsLXNDbBk3SOSQj4DXp/GTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=siR4dsf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847C2C4CEED;
-	Wed,  9 Jul 2025 01:01:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752022870;
-	bh=p+1ebn6vNh2rTReGQh5//ZEGguo2HhmtUqjfNBzIbsA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=siR4dsf+Qg4aH582lCEJSjNPrARp+yxvfN1ZWSiE0VArxrV7Wg0rvVbVzk3aAmR2C
-	 fW0UvCJqV75pNUXKVLcMcnxxSbboD4E2OqJj1Ye/tjG+2f3SY7iy6ZRHxtdavW7rE7
-	 w+FvKz4JzaB9I6sSneEhICDNVFWj9JT56JnbUPzCpCZ2437l3qvgyRY97HHOhJpwlB
-	 EosXTkedkaLlnJKhgJCXeAOLLkSuSr4+FmMRT4hdgbR4jhQ7ZanxXiAtA6peZVEdyQ
-	 FxY++8pR0lW+OzcFoQBLsk5cRFSn+hX4kmKnjL6QWEigl7j3PgY52G48MTw2gfqx8O
-	 gQLXARE5hYghA==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] crypto: acomp - Fix CFI failure due to type punning
-Date: Tue,  8 Jul 2025 17:59:54 -0700
-Message-ID: <20250709005954.155842-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1752024450; c=relaxed/simple;
+	bh=Mtu3ryYM7nbSc66VaKGc/UqsJYQrmCDah4qStzUswrc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uINmBFyqmqnRwhr99jjhmYhMzENmo10CAX+x/+eUtx1FQEK+70WSmuKF4bLiCpvbcJCh+4xxyZD6d/a2NelMX4ALeVZ+Z/53m16J00zWRjJcN5uBexZdbZ5Jf13anY1UeTCevyZhi8y9sqi/W5Aj/fVqnIf+kEoDbzyOkrS67Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xc3tmFaA; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752024449; x=1783560449;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Mtu3ryYM7nbSc66VaKGc/UqsJYQrmCDah4qStzUswrc=;
+  b=Xc3tmFaAd0sBkIzRRITNRCDZHNOgunSYoU+1lvWQPEm3M80Zzf88Xdlg
+   uMqdApSRiG3nz/PjC0W+oKFBa/DQdNCQ4SZJMWYjmplldLwxbJ4SqN6JQ
+   nIxS2MUMYpFCKbycmv3p7tDgTil0HLLibdRf30cn3yPvbFmtYzOXsXT28
+   pW+B0KwQpxLIe7F1LF/qg39gcY7Q25TeP88dI0/uU0l1th4SBQU4MWTJP
+   9b6s5jethRX5urxDIU7r0l17SrEjqRuUsP8qWOZjJpsivo/eI/mPlIljY
+   6DPNSFQgaZ8AJjOL19FiJ52OcBFh87iBjmKBeGC2SFcjTMUW1WtSeeLH/
+   A==;
+X-CSE-ConnectionGUID: H3c1VB/1ReOcFFSIFnomvA==
+X-CSE-MsgGUID: m6xmqTVMRC+8ADqkaxJNpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="71723356"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="71723356"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 18:27:28 -0700
+X-CSE-ConnectionGUID: bn+3Qc0+S0mV/AlaNPSL+A==
+X-CSE-MsgGUID: lu07r9b4T+mrbZrwXkPw/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="159670990"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 18:27:24 -0700
+Message-ID: <41dd5505-8a3a-4718-b906-936059620940@linux.intel.com>
+Date: Wed, 9 Jul 2025 09:25:46 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] iommu/sva: Invalidate KVA range on kernel TLB flush
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Dave Hansen <dave.hansen@intel.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+ iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250704133056.4023816-1-baolu.lu@linux.intel.com>
+ <0c6f6b3e-d68d-4deb-963e-6074944afff7@linux.intel.com>
+ <20250708122755.GV1410929@nvidia.com> <20250708140629.GQ904431@ziepe.ca>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20250708140629.GQ904431@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-To avoid a crash when control flow integrity is enabled, make the
-workspace ("stream") free function use a consistent type, and call it
-through a function pointer that has that same type.
+On 7/8/25 22:06, Jason Gunthorpe wrote:
+> On Tue, Jul 08, 2025 at 09:27:55AM -0300, Jason Gunthorpe wrote:
+>> On Tue, Jul 08, 2025 at 01:42:53PM +0800, Baolu Lu wrote:
+>>>> +void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end)
+>>>> +{
+>>>> +	struct iommu_mm_data *iommu_mm;
+>>>> +
+>>>> +	might_sleep();
+>>>
+>>> Yi Lai <yi1.lai@intel.com> reported an issue here. This interface could
+>>> potentially be called in a non-sleepable context.
+>>
+>> Oh thats really bad, the notifiers inside the iommu driver are not
+>> required to be called in a sleepable context either and I don't really
+>> want to change that requirement.
+> 
+> Actually, I have got confused here with the hmm use of notifiers.
+> 
+> The iommu drivers use arch_invalidate_secondary_tlbs so they are
+> already in atomic contexts.
+> 
+> So your idea to use a spinlock seems correct.
 
-Fixes: 42d9f6c77479 ("crypto: acomp - Move scomp stream allocation code into acomp")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
- crypto/deflate.c                    | 7 ++++++-
- crypto/zstd.c                       | 7 ++++++-
- include/crypto/internal/acompress.h | 5 +----
- 3 files changed, 13 insertions(+), 6 deletions(-)
+Okay, then let me post an updated version.
 
-diff --git a/crypto/deflate.c b/crypto/deflate.c
-index fe8e4ad0fee10..21404515dc77e 100644
---- a/crypto/deflate.c
-+++ b/crypto/deflate.c
-@@ -46,13 +46,18 @@ static void *deflate_alloc_stream(void)
- 	ctx->stream.workspace = ctx->workspace;
- 
- 	return ctx;
- }
- 
-+static void deflate_free_stream(void *ctx)
-+{
-+	kvfree(ctx);
-+}
-+
- static struct crypto_acomp_streams deflate_streams = {
- 	.alloc_ctx = deflate_alloc_stream,
--	.cfree_ctx = kvfree,
-+	.free_ctx = deflate_free_stream,
- };
- 
- static int deflate_compress_one(struct acomp_req *req,
- 				struct deflate_stream *ds)
- {
-diff --git a/crypto/zstd.c b/crypto/zstd.c
-index 657e0cf7b9524..ff5f596a4ea7e 100644
---- a/crypto/zstd.c
-+++ b/crypto/zstd.c
-@@ -52,13 +52,18 @@ static void *zstd_alloc_stream(void)
- 	ctx->wksp_size = wksp_size;
- 
- 	return ctx;
- }
- 
-+static void zstd_free_stream(void *ctx)
-+{
-+	kvfree(ctx);
-+}
-+
- static struct crypto_acomp_streams zstd_streams = {
- 	.alloc_ctx = zstd_alloc_stream,
--	.cfree_ctx = kvfree,
-+	.free_ctx = zstd_free_stream,
- };
- 
- static int zstd_init(struct crypto_acomp *acomp_tfm)
- {
- 	int ret = 0;
-diff --git a/include/crypto/internal/acompress.h b/include/crypto/internal/acompress.h
-index ffffd88bbbad3..2d97440028ffd 100644
---- a/include/crypto/internal/acompress.h
-+++ b/include/crypto/internal/acompress.h
-@@ -61,14 +61,11 @@ struct crypto_acomp_stream {
- };
- 
- struct crypto_acomp_streams {
- 	/* These must come first because of struct scomp_alg. */
- 	void *(*alloc_ctx)(void);
--	union {
--		void (*free_ctx)(void *);
--		void (*cfree_ctx)(const void *);
--	};
-+	void (*free_ctx)(void *);
- 
- 	struct crypto_acomp_stream __percpu *streams;
- 	struct work_struct stream_work;
- 	cpumask_t stream_want;
- };
-
-base-commit: 181698af38d3f93381229ad89c09b5bd0496661a
--- 
-2.50.1
-
+Thanks,
+baolu
 
