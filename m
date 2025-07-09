@@ -1,161 +1,136 @@
-Return-Path: <stable+bounces-161468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49D7AFEDAD
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 17:26:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62395AFEE0F
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 17:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D529D3B6620
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 15:26:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56BED189B2F3
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 15:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25B82E7BB6;
-	Wed,  9 Jul 2025 15:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223D32E7196;
+	Wed,  9 Jul 2025 15:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h4VtvaGa"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zJpgOccP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="i9bmBFfJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B265D5383;
-	Wed,  9 Jul 2025 15:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473CB2D2380;
+	Wed,  9 Jul 2025 15:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752074785; cv=none; b=LVEr26Adw4lICpYv4u1lDRUvqj1m4NttpZ0IS3ShGrG8Qtt/a1iSXIYUTZLCLQ46ymFYKs9jfFYcTk4t+IDu7bK954V2egUgV+v5zNb1j3//MuGaf8tDS5pY+qOqaM4VSL+w7eI30IcPmHXEulKCowdh+QZv4/ZNHX7fBcxYJ/I=
+	t=1752076235; cv=none; b=OXdflMrjnMtIcoEw0TZXRigcTL0GD/a4N2GEAJOmWKK2rOMYtIOd11+u5M7cGp/affEAMHqi1tqDwnyDJxb1maA8gIheBbvspS+uHcqDTCV5GpRmPj3JRSaaFkAlG8xMQnwAs6RXMPksD590BmZwdTE2aY/B3C0dE3EZDcdc6PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752074785; c=relaxed/simple;
-	bh=I58dVPo5Wh3ABbjQx+DKjLaTOmLE+HHk0PL8WqsGQZ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aG8JZTxER32UZ0gBPqIKgbWoYi0TOFY3EPIIQgB9xDJHDg87wOFrjJAmPSuhWmmll2zmxI+W8g/qxzlQZWOVbDE5uY2cegjsSyb5bLl83qp69yrkpprGvE/D8tz7UsbEQHiAR0DdeP1n/KVn/PNWCOCwTW5kVXkwtZrzldAp03w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h4VtvaGa; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752074783; x=1783610783;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=I58dVPo5Wh3ABbjQx+DKjLaTOmLE+HHk0PL8WqsGQZ8=;
-  b=h4VtvaGaq5Mxiiyjtv/eH/AeDdTp8ndxlFjzFp3rsxDZxhX73FLQmyWU
-   QYb54HZ4/0pAEZAzOwoFGI3V+qvxfmRQ7Ah0lhxNKiWKkd+H6DuTsqtAq
-   HDP7gZTfPL6iHh41tLrjEjMjf5a3T0mY95kGbuX8svsnk5ILxKKpGh92n
-   JcnBo8AlNJZ6Esp97mN/MXm71rDj7B788W5I9j1Ko0aQznYYg2jhVPrqu
-   1YXzbQ+9V/kpnyrl0LQH5wpv1CGtobycVgpI2LIQ3AaWrqzQ3yIuF6yb7
-   82eaqetQaaadv8hUbEko3M5/NRweF9o2g4FwYMd9fSZENqm9GJAg3x4mU
-   Q==;
-X-CSE-ConnectionGUID: +v9JfkZ/RTCUgfYOA5Jueg==
-X-CSE-MsgGUID: gMRDtlp9T/eoMhs+0JUs3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="58006799"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="58006799"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 08:26:22 -0700
-X-CSE-ConnectionGUID: yinaxIZjTniveTWTvfRBgg==
-X-CSE-MsgGUID: N81UnTO1TJ6iwQMtIin03A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="156370755"
-Received: from puneetse-mobl.amr.corp.intel.com (HELO [10.125.110.190]) ([10.125.110.190])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 08:26:21 -0700
-Message-ID: <ee7585bd-d87c-4f93-9c8e-b8c1d649cdfe@intel.com>
-Date: Wed, 9 Jul 2025 08:29:57 -0700
+	s=arc-20240116; t=1752076235; c=relaxed/simple;
+	bh=Wa46wRSbe8eRRlNEV30UC5rIJFEzqZlhrpSHEe/imCY=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=qXSkCe8VEeBbTGloNfbZzj3ieg11wlgFUdFl0c5GaQx9a7aWMxypkfglyT1Rx40Q2QF4J/ztFCPLxwtQVnw25v4SeABHOCKicjhQ7DdTxjJ1IPgNtxF6Yuai7pDearZhhDJBdSqhy3A2jRAXCUNyxqf95KsOiJEvPMovTTU6syc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zJpgOccP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=i9bmBFfJ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 09 Jul 2025 15:50:30 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1752076232;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=mBTpuXAjRCs1WKfYQc7SUYqpORihIvtnyJbuUa7SMV4=;
+	b=zJpgOccPPzhYfrOrQa+oX23PRGg5gLILIxOU3e9NKSnFuIzF8LDmMw8DWHFCPJaoo1v6Q9
+	eKAcO+oA8M3Dy7NVfxm5Ua3hSNt1JB5FH4Vi1Z9AeZNuZr2zTgp1qnfqrpFA6p8RKsNpE5
+	22uMNNtMQb64QLqJBorKMh3yS3yTCB9C7WSXxTSneEH8KP3vbYN5Ca+Rb7BNO6px7qeSMF
+	0UA1t69jWE/V6zW3P1pR37gk3sbKsp1o9xkT9ig7hjA9sHDXLsEccyEWA2oobDi9DN/RPZ
+	nQLIkVCaFW1yvjZnAwbDH2MWKlTTSx+BTT25PXHRhkWIOPDfa7RIYuFcy5UpZg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1752076232;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=mBTpuXAjRCs1WKfYQc7SUYqpORihIvtnyJbuUa7SMV4=;
+	b=i9bmBFfJxezijEfWqywddNgkA6WcoSECawV24332Q7BASQtanfn5snLg/1jFQ8NKTiG7ar
+	0VaDFZyuaOm6aZAA==
+From: "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/urgent] x86/mm: Disable hugetlb page table sharing on 32-bit
+Cc: Vitaly Chikunov <vt@altlinux.org>, Dave Hansen <dave.hansen@intel.com>,
+ Jann Horn <jannh@google.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] iommu/sva: Invalidate KVA range on kernel TLB
- flush
-To: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Andy Lutomirski <luto@kernel.org>, "Tested-by : Yi Lai" <yi1.lai@intel.com>
-Cc: iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250709062800.651521-1-baolu.lu@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250709062800.651521-1-baolu.lu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Message-ID: <175207623080.406.17185038526436313265.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-On 7/8/25 23:28, Lu Baolu wrote:
-> Modern IOMMUs often cache page table entries to optimize walk performance,
-> even for intermediate page table levels. If kernel page table mappings are
-> changed (e.g., by vfree()), but the IOMMU's internal caches retain stale
-> entries, Use-After-Free (UAF) vulnerability condition arises. If these
-> freed page table pages are reallocated for a different purpose, potentially
-> by an attacker, the IOMMU could misinterpret the new data as valid page
-> table entries. This allows the IOMMU to walk into attacker-controlled
-> memory, leading to arbitrary physical memory DMA access or privilege
-> escalation.
+The following commit has been merged into the x86/urgent branch of tip:
 
-The approach here is certainly conservative and simple. It's also not
-going to cause big problems on systems without fancy IOMMUs.
+Commit-ID:     76303ee8d54bff6d9a6d55997acd88a6c2ba63cf
+Gitweb:        https://git.kernel.org/tip/76303ee8d54bff6d9a6d55997acd88a6c2ba63cf
+Author:        Jann Horn <jannh@google.com>
+AuthorDate:    Wed, 02 Jul 2025 10:32:04 +02:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Wed, 09 Jul 2025 07:46:36 -07:00
 
-But I am a _bit_ worried that it's _too_ conservative. The changelog
-talks about page table page freeing, but the actual code:
+x86/mm: Disable hugetlb page table sharing on 32-bit
 
-> @@ -1540,6 +1541,7 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
->  		kernel_tlb_flush_range(info);
->  
->  	put_flush_tlb_info();
-> +	iommu_sva_invalidate_kva_range(start, end);
->  }
+Only select ARCH_WANT_HUGE_PMD_SHARE on 64-bit x86.
+Page table sharing requires at least three levels because it involves
+shared references to PMD tables; 32-bit x86 has either two-level paging
+(without PAE) or three-level paging (with PAE), but even with
+three-level paging, having a dedicated PGD entry for hugetlb is only
+barely possible (because the PGD only has four entries), and it seems
+unlikely anyone's actually using PMD sharing on 32-bit.
 
-is in a very generic TLB flushing spot that's used for a lot more than
-just freeing page tables.
+Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
+has 2-level paging) became particularly problematic after commit
+59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
+since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
+the `pt_share_count` (for PMDs) share the same union storage - and with
+2-level paging, PMDs are PGDs.
 
-If the problem is truly limited to freeing page tables, it needs to be
-commented appropriately.
+(For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
+configuration of page tables such that it is never enabled with 2-level
+paging.)
+
+Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
+Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
+Reported-by: Vitaly Chikunov <vt@altlinux.org>
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Tested-by: Vitaly Chikunov <vt@altlinux.org>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250702-x86-2level-hugetlb-v2-1-1a98096edf92%40google.com
+---
+ arch/x86/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 71019b3..4e0fe68 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -147,7 +147,7 @@ config X86
+ 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+ 	select ARCH_WANTS_NO_INSTR
+ 	select ARCH_WANT_GENERAL_HUGETLB
+-	select ARCH_WANT_HUGE_PMD_SHARE
++	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+ 	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if X86_64
+ 	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
 
