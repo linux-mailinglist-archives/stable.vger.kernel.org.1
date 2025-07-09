@@ -1,243 +1,200 @@
-Return-Path: <stable+bounces-161474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43BFAFEF3B
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 18:54:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89226AFEF42
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 18:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BB27189006B
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 16:53:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2D194A3BFE
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 16:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A978221DB4;
-	Wed,  9 Jul 2025 16:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777FC214813;
+	Wed,  9 Jul 2025 16:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NbsLUj4z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/UdVOQX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC9921FF26
-	for <stable@vger.kernel.org>; Wed,  9 Jul 2025 16:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306F61FBCB1;
+	Wed,  9 Jul 2025 16:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752080010; cv=none; b=H+Kxn/nDWelBXTmyGQl+cGNvEdMpoG0PeZp4OIesGyjI+SOOozNCg60oRFi/QbtWS4ZhRfB/Gk8obs6ViHiAJXYbAJ+SO79bPjoEqw3DPycFrRV77ZRF1asmHl9mSxlOdnbhYfP6/0B1kxuc0HvF2zUZGM+/s3dctRlDo0JAsRg=
+	t=1752080160; cv=none; b=HoBmWiD2gSr5Nt9E7hCtvz34abOMCKPlUDPbjEukODDMqnXNjQf6dk9pYYSTPFE9U4Kmeo0gfDZgXmSliYdwuzXlGrCPDgnh36X9bnalNxUqPnCfmkELooCrOQcGZmPpQwFLJn/KmX2v/ZxSKps7KoZ1h092grvmzEW86exuNus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752080010; c=relaxed/simple;
-	bh=ETmSGWb8s195ymgPNwflBPPZhtnQxXrVFwQL8Ep98yA=;
+	s=arc-20240116; t=1752080160; c=relaxed/simple;
+	bh=s/nX8zIHBhz7UzymyaWsPZGQQ2RKaw+8h1/MMQwig60=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qwuTXxTOviwJqT//qUINqyZlk1uRiTXVzmVS6YCFzpWgzqbtx/W8EwouGhb9rqgVwBu4YdBTIbjXiaB1adsnEqA8ThK0aUbiShwVtB3CL6TWR1FQVXM1/WuPRbI4rC5epSHH7D3mVYUKibwIeLU+MMR8krimSkC3HLeYYkJu+oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NbsLUj4z; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3138b2f0249so152492a91.2
-        for <stable@vger.kernel.org>; Wed, 09 Jul 2025 09:53:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752080008; x=1752684808; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4Nzb8QBeVA+iiDAxXQK5Sqsw2Affc73UEi8O9xXgrmw=;
-        b=NbsLUj4z7Nm2T3FceE/GSw47JNz+puUbfcTxvJtkm1miF/oXL+XqyiXsliigsOxT7A
-         5I3UpMewaB3ws8Vrsx7lk3RAH26dYe3XGfei0fchMoou3F5Bn+OhZTUzvZpt3BvNPDj/
-         BrU3ZQIhZm4jhDkJ8ugJz5/Sm8DEbbYCe1M1OTQZDeHil3v0oVTNRpHjRHyR0k0YEplc
-         oOncSqZxZcy/k4/P6vkpfSunkX9dcWU5xAH5c8GcJ5kOZA8aTNvmp/g0Sfsi8GPPXgBR
-         VwkoP1v8xpHlwYl04VzIg8+Dhhku4qyvnhFUheuPtNsl2Uo8Mu+vzUaelHNvuGmXP58F
-         cdDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752080008; x=1752684808;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4Nzb8QBeVA+iiDAxXQK5Sqsw2Affc73UEi8O9xXgrmw=;
-        b=nCPshxD2wmxXV7sDMyEw+9g9awk0x4GRFUTuR9Blc4wPLZ1c//GMpoaslekml0gQao
-         PwdQtFhDbSspF7TPow3UGBJVnbir78IX+MU6pda0uumTNcWl8fwC2L+rYVOldZiF4DnD
-         YLCFT+zkmAj5tsLVPTSut0RwaCfe439d8pnItTy7KpKR0vcqIvksNVX/FhWjHwXbkdyT
-         NEGLYKTB4prBumGm0vuqL5laHzAKj/15tNihGTmNxdeKPWby5C0PgrKnmbkT3vgXEvfr
-         DPLj/vesCNWZCZql3j+BeB/AU5pMwaKTKDtzq83F5Y5h5wwYIY+Qqlx0PVzdANUBg3qS
-         MkLw==
-X-Gm-Message-State: AOJu0YyUzX9SYw2AUxtLmKYg8KvLdjtiYy6SQDOlh9nhVMG4Yuceaxix
-	RZ1+0aiZaLBrLcCXx689mfExC0H9jWSSATK2LFWINHQv/Z3OgZ3l1o4QmyssDKdrLVvN6Q2bq1S
-	eWACVde8nW3U39U/Bn/P6RGnM/lXNvj/QgK9QGJqbYw==
-X-Gm-Gg: ASbGncspIeR4xA4YRV0G88XdYLsVr4jKXJeRSeVuqOcZmzDWZeJKtN19N+xwf+Vr7HM
-	Yw1rT0DZewcx8IB+xTYKPrBk6LLa6jizDczESrhbG69KoRayBc7abmdoJL068r7DXAZ3IN6VAXY
-	fFXa+HdC3H9yxBwGVYNOKsR0+XhV2MQ1wm3AZeb+DSGjW82QurjTiGlgGwZ3G23X7E8F9nPhG4O
-	bFg
-X-Google-Smtp-Source: AGHT+IFe5pMoIPZcou4Y8jFL5QVoIolrYs4GD43h1xsn5n1NDW2BR5XIUpU9iQTapT8p53r0thNXJxiwfvtfT+22B8U=
-X-Received: by 2002:a17:90b:4d01:b0:311:d258:3473 with SMTP id
- 98e67ed59e1d1-31c2fcffda2mr4788071a91.13.1752080007778; Wed, 09 Jul 2025
- 09:53:27 -0700 (PDT)
+	 To:Cc:Content-Type; b=jXnsJ1qWQcbKJg+kTuCwgZlrs6xPF1dIPFypSZi0aPoFxkAuNGCsP16jEJUiEpAMCN6BuD1KJLt5EBOx82vWyR/1EHDBJrm94BJX0OwlzX7Lc2rfdb23KXCEgWf9j8AtJMh43TTLrOQRPRDJs3hkGgvQqqae0HLb22yIHIlLUus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/UdVOQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D228AC4AF09;
+	Wed,  9 Jul 2025 16:55:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752080159;
+	bh=s/nX8zIHBhz7UzymyaWsPZGQQ2RKaw+8h1/MMQwig60=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=U/UdVOQXVmJEsmdVD1AsBg5HBpSzOUI1TZShH/yMS15dEBsXh5s+bL0yo+mHEuheF
+	 NOnoZrImJwF7we9U6+7ESNJhAyMuj6q0SVmPymnLHmAon+EebWOQuSyftxKIE3J3jg
+	 f3HkXB7x61Bq4BgvxWKe4Fdsqxat+YPN2qr6h07ErO9iOL0FEcoku1BCfSnl9l2tsh
+	 q4bxTS+v8pI68sL3lpCT/Bpwn7CobJpyV1PRSKrkVjMdMqVx7aYWqy4urXLnLVykaQ
+	 1y0REjV4M/7UDXzYfF9KnMiKyLtOpGrA0Qw9bHkwnaal2fpuqhtg1kvcZPEG/teStJ
+	 V4rRR2i9WyFPA==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-2ef891cd058so71720fac.1;
+        Wed, 09 Jul 2025 09:55:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUYxDBHtoKAIdyz5RIjZCC+KnBfr5Ck7yOa9u2ZXAvcoxc+27GMgKONWFPnrI2yVrIb4UW1CYoI@vger.kernel.org, AJvYcCWNQRDL5krIOs7a4maCTZyUtsdUWDjETeiljGNzFh82sMACcgzu6HNGVsgylCv2s7mwVGJmJE+sKg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFGUB4dE9FZIg97QOcnPR2+vphca2LGLz9emLJQjL1Zs6Thy5s
+	NfT05/J4RPhSnIrTAylEIrR4PlrEW1/D9Nwbb8L8uSSOBRyLVG23qvfbAd+6lHdw9y1rm1ngAVx
+	5iA+sEifUAMqT/lrVhn9rL6T/zZAnU/Y=
+X-Google-Smtp-Source: AGHT+IHxv3XyTmAE7BWnt5snY9w8QZkCASN2KwEpMUnGi9WrPdGJGGZnolR2Q0GJi5QXAyrvQ+bxSShfBvGLYf4yfn0=
+X-Received: by 2002:a05:6871:2b1c:b0:2b8:e4b9:47a3 with SMTP id
+ 586e51a60fabf-2fef871c3e8mr2134957fac.22.1752080158987; Wed, 09 Jul 2025
+ 09:55:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250708162241.426806072@linuxfoundation.org>
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 9 Jul 2025 22:23:15 +0530
-X-Gm-Features: Ac12FXwPd2uci1O7b_OMVYQ6v-yG4ihVV4AWxcyjiIC27vkrbJpvuFh-GYM2G3E
-Message-ID: <CA+G9fYtn9f2w+pwFR9AmQCig4vp41XrC1OD6=WYg8T_SZpTBZA@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/232] 6.12.37-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
+References: <20250708000215.793090-1-sashal@kernel.org> <20250708000215.793090-6-sashal@kernel.org>
+ <87ms9esclp.fsf@email.froward.int.ebiederm.org> <aG2AcbhWmFwaHT6C@lappy>
+ <87tt3mqrtg.fsf@email.froward.int.ebiederm.org> <aG2bAMGrDDSvOhbl@lappy>
+ <87ms9dpc3b.fsf@email.froward.int.ebiederm.org> <29441021-5758-4565-b120-e9713c58f6d8@amd.com>
+In-Reply-To: <29441021-5758-4565-b120-e9713c58f6d8@amd.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 9 Jul 2025 18:55:47 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gWD+pnkhWbW0ZF8+5PYxX6qRbeNoRuVo=CpwmMMLFjDg@mail.gmail.com>
+X-Gm-Features: Ac12FXx_bufmZGZgpHOzEG3RZctbXShNv4NKhZDCMLVWf0RX27NUB7NRU_usyCE
+Message-ID: <CAJZ5v0gWD+pnkhWbW0ZF8+5PYxX6qRbeNoRuVo=CpwmMMLFjDg@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.15 6/8] PM: Restrict swap use to later in the
+ suspend sequence
+To: Mario Limonciello <mario.limonciello@amd.com>, Sasha Levin <sashal@kernel.org>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>, patches@lists.linux.dev, stable@vger.kernel.org, 
+	Nat Wittstock <nat@fardog.io>, Lucian Langa <lucilanga@7pot.org>, 
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, rafael@kernel.org, pavel@ucw.cz, 
+	len.brown@intel.com, linux-pm@vger.kernel.org, kexec@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 8 Jul 2025 at 21:53, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Wed, Jul 9, 2025 at 6:35=E2=80=AFPM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 >
-> This is the start of the stable review cycle for the 6.12.37 release.
-> There are 232 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On 7/9/2025 12:23 PM, Eric W. Biederman wrote:
+> > Sasha Levin <sashal@kernel.org> writes:
+> >
+> >> On Tue, Jul 08, 2025 at 04:46:19PM -0500, Eric W. Biederman wrote:
+> >>> Sasha Levin <sashal@kernel.org> writes:
+> >>>
+> >>>> On Tue, Jul 08, 2025 at 02:32:02PM -0500, Eric W. Biederman wrote:
+> >>>>>
+> >>>>> Wow!
+> >>>>>
+> >>>>> Sasha I think an impersonator has gotten into your account, and
+> >>>>> is just making nonsense up.
+> >>>>
+> >>>> https://lore.kernel.org/all/aDXQaq-bq5BMMlce@lappy/
+> >>>
+> >>> It is nice it is giving explanations for it's backporting decisions.
+> >>>
+> >>> It would be nicer if those explanations were clearly marked as
+> >>> coming from a non-human agent, and did not read like a human being
+> >>> impatient for a patch to be backported.
+> >>
+> >> Thats a fair point. I'll add "LLM Analysis:" before the explanation to
+> >> future patches.
+> >>
+> >>> Further the machine given explanations were clearly wrong.  Do you ha=
+ve
+> >>> plans to do anything about that?  Using very incorrect justifications
+> >>> for backporting patches is scary.
+> >>
+> >> Just like in the past 8 years where AUTOSEL ran without any explanatio=
+n
+> >> whatsoever, the patches are manually reviewed and tested prior to bein=
+g
+> >> included in the stable tree.
+> >
+> > I believe there is some testing done.  However for a lot of what I see
+> > go by I would be strongly surprised if there is actually much manual
+> > review.
+> >
+> > I expect there is a lot of the changes are simply ignored after a quick
+> > glance because people don't know what is going on, or they are of too
+> > little consequence to spend time on.
+> >
+> >> I don't make a point to go back and correct the justification, it's
+> >> there more to give some idea as to why this patch was marked for
+> >> review and may be completely bogus (in which case I'll drop the patch)=
+.
+> >>
+> >> For that matter, I'd often look at the explanation only if I don't ful=
+ly
+> >> understand why a certain patch was selected. Most often I just use it =
+as
+> >> a "Yes/No" signal.
+> >>
+> >> In this instance I honestly haven't read the LLM explanation. I agree
+> >> with you that the explanation is flawed, but the patch clearly fixes a
+> >> problem:
+> >>
+> >>      "On AMD dGPUs this can lead to failed suspends under memory
+> >>      pressure situations as all VRAM must be evicted to system memory
+> >>      or swap."
+> >>
+> >> So it was included in the AUTOSEL patchset.
+> >
+> >
+> >> Do you have an objection to this patch being included in -stable? So f=
+ar
+> >> your concerns were about the LLM explanation rather than actual patch.
+> >
+> > Several objections.
+> > - The explanation was clearly bogus.
+> > - The maintainer takes alarm.
+> > - The patch while small, is not simple and not obviously correct.
+> > - The patch has not been thoroughly tested.
+> >
+> > I object because the code does not appear to have been well tested
+> > outside of the realm of fixing the issue.
+> >
+> > There is no indication that the kexec code path has ever been exercised=
+.
+> >
+> > So this appears to be one of those changes that was merged under
+> > the banner of "Let's see if this causes a regression".>
+> > To the original authors.  I would have appreciated it being a little
+> > more clearly called out in the change description that this came in
+> > under "Let's see if this causes a regression".
+> >
 >
-> Responses should be made by Thu, 10 Jul 2025 16:22:09 +0000.
-> Anything received after that time might be too late.
+> As the original author of this patch I don't feel this patch is any
+> different than any other patch in that regard.
+> I don't write in a commit message the expected risk of a patch.
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.37-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
+> There are always people that find interesting ways to exercise it and
+> they could find problems that I didn't envision.
 >
-> thanks,
+> > Such changes should not be backported automatically.  They should be
+> > backported with care after the have seen much more usage/testing of
+> > the kernel they were merged into.  Probably after a kernel release or
+> > so.  This is something that can take some actual judgment to decide,
+> > when a backport is reasonable.
 >
-> greg k-h
+> TBH - I didn't include stable in the commit message with the intent that
+> after this baked a cycle or so that we could bring it back later if
+> AUTOSEL hadn't picked it up by then.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+I actually see an issue in this patch that I have overlooked
+previously, so Sasha and "stable" folks - please drop this one.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Namely, the change in dpm_resume_end() is going too far.
 
-## Build
-* kernel: 6.12.37-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 3d503afbd029b665345130b4760e91f9d32d9f02
-* git describe: v6.12.36-233-g3d503afbd029
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.36-233-g3d503afbd029
+> It's a real issue people have complained about for years that is
+> non-obvious where the root cause is.
+>
+> Once we're all confident on this I'd love to discuss bringing it back
+> even further to LTS kernels if it's viable.
 
-## Test Regressions (compared to v6.12.35-219-g08de5e874160)
-
-## Metric Regressions (compared to v6.12.35-219-g08de5e874160)
-
-## Test Fixes (compared to v6.12.35-219-g08de5e874160)
-
-## Metric Fixes (compared to v6.12.35-219-g08de5e874160)
-
-## Test result summary
-total: 317029, pass: 291320, fail: 7015, skip: 18182, xfail: 512
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 137 passed, 2 failed
-* arm64: 57 total, 55 passed, 0 failed, 2 skipped
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 33 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 39 passed, 0 failed, 1 skipped
-* riscv: 25 total, 23 passed, 2 failed
-* s390: 22 total, 21 passed, 1 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 49 passed, 0 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* modules
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Sure.
 
