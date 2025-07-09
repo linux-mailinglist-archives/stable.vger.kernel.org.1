@@ -1,100 +1,98 @@
-Return-Path: <stable+bounces-161396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1991AFE2BE
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 10:36:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A3DAFE318
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 10:47:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E408A3A5A26
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 08:35:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8A1E480BAF
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 08:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD6527A918;
-	Wed,  9 Jul 2025 08:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E3D22DA0B;
+	Wed,  9 Jul 2025 08:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYHcikUK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oi5pSZnP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F290189905;
-	Wed,  9 Jul 2025 08:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A75127FB12;
+	Wed,  9 Jul 2025 08:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752050161; cv=none; b=D3Zx1BbDo8Bzyle+4o+RWzI9kFhtpnwR64XGeAbif9xnrywZo2vfSploKswlfByVUCJgQVpoIpw6OmLB3s/0SNWmiKeHBn12vk8AXolA6Zq+n58a2iT1Z4GvybWqJrJATutBTaCG3lRWYTIGJcRv9j3Vmm9EK1s63h0BuAByqXM=
+	t=1752050828; cv=none; b=PwU75FiSgphSmUDojt8UiHorvGXtnjpECjGLBCSuO5H7VCXUrrh5gM2FwKh3MjXe6B6i9Nn+YWrwF5a4Q3AIpaQciG0usAtKhO6QBRNMHuCV8bbEa9OGxIv7aaxh0Go0O+hTfnhsOfUpeUjhEBOlfuf0S8URmGCveLoyylEP5vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752050161; c=relaxed/simple;
-	bh=H/6KWOCh1Otuc6u/FpnmW+1tC+m+cq8bRv2psw4pl3Q=;
+	s=arc-20240116; t=1752050828; c=relaxed/simple;
+	bh=lFZ/3J/dfgojIoxW3tybEnI4LM5cOKI50TuFe38pSHI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WB5tNnWBg6NzU6htIFSG09VM082FcKSaar/WDcIVkC2nDpL/FAwHUTbumztxqbL56Ox29aycWLleOZFYF9dfVSQIi6AVZk1QXC1PAdUwa9m+2oLQdJntw1Y4BT7bqO9htp5n0TaDDkkUkLQSQv1q3w8PxQWmNhfMAXIliVAOBsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYHcikUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3540C4CEEF;
-	Wed,  9 Jul 2025 08:36:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752050161;
-	bh=H/6KWOCh1Otuc6u/FpnmW+1tC+m+cq8bRv2psw4pl3Q=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=ejVnWAJFRnswO8CYSEtsjXBSabUn7kpRnq+qM60+EhGoSsfF0pRnTb1iBToySukCDmE+O630TxXjDCmmXV6zeJS4QQZhybZGcd5rQ7TXptxsr939WmfvMnRUzLaVrq+aDmpD8dsB+DENzSqoe/pL82fUK9UYUsEB5Nwt1o3kU3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oi5pSZnP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F89BC4CEF0;
+	Wed,  9 Jul 2025 08:47:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752050827;
+	bh=lFZ/3J/dfgojIoxW3tybEnI4LM5cOKI50TuFe38pSHI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tYHcikUK9hlnoRMosGzRBlcSwIHywgG/zp6z1BJTwNX+wT/fOKWpH8o1AfZv9KMph
-	 /OAJpYt63NFMbt8B7OYyQEsP6MjWb6/rxp7eNpTmErz0NQ+Cgl+xX+WoL8SItWJxEv
-	 /4amOFG5L1E2uOEEApb33j4+uXnYBavz6vBCBNgI=
-Date: Wed, 9 Jul 2025 10:35:57 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Sudeep Holla <sudeep.holla@arm.com>
+	b=oi5pSZnPgKonq5oj4XxNNVl8vhvp0/A+VMaa8hzpXsCTEVYwDZKNWVlN7Y5r1XeFg
+	 SWfHGzdVOwhqeo+9UZdibzauHwVyxX+Rtg4PEM2KCYnTDcIpQdt3VOTUxjj0Y8+mZK
+	 hDCyH4qY1d7z7ZArIiykWxI76nGNlurJTLT23ZkPcFaKkquB2y+mwpcH5TVG39go/S
+	 KObwOmkJ9upnn9bOgDYc6HurDBskGzAsVKMhiTmedz3ne6FVvsadQTCbHBFk1rDQvs
+	 F74mcFbSEkl+3pXVZt58Tjp8/0p7KjYblGTtoPB72YOCwcDohdccd3g5ttrjqUo6XE
+	 SsSyd202j1TmA==
+Date: Wed, 9 Jul 2025 09:47:03 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 029/232] firmware: arm_ffa: Add support for
- {un,}registration of framework notifications
-Message-ID: <2025070906-marathon-uncorrupt-de38@gregkh>
-References: <20250708162241.426806072@linuxfoundation.org>
- <20250708162242.198209294@linuxfoundation.org>
- <20250708-jumping-strange-lemming-1bfc92@sudeepholla>
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.15 000/178] 6.15.6-rc1 review
+Message-ID: <aG4sh87DTt6LY6TZ@finisterre.sirena.org.uk>
+References: <20250708162236.549307806@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5L2s3+A3smagnZMr"
+Content-Disposition: inline
+In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
+X-Cookie: Do not cut switchbacks.
+
+
+--5L2s3+A3smagnZMr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250708-jumping-strange-lemming-1bfc92@sudeepholla>
 
-On Tue, Jul 08, 2025 at 08:34:00PM +0100, Sudeep Holla wrote:
-> On Tue, Jul 08, 2025 at 06:20:25PM +0200, Greg Kroah-Hartman wrote:
-> > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Sudeep Holla <sudeep.holla@arm.com>
-> > 
-> > [ Upstream commit c10debfe7f028c11f7a501a0f8e937c9be9e5327 ]
-> > 
-> > Framework notifications are doorbells that are rung by the partition
-> > managers to signal common events to an endpoint. These doorbells cannot
-> > be rung by an endpoint directly. A partition manager can signal a
-> > Framework notification in response to an FF-A ABI invocation by an
-> > endpoint.
-> > 
-> > Two additional notify_ops interface is being added for any FF-A device/
-> > driver to register and unregister for such a framework notifications.
-> > 
-> > Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
-> > Message-Id: <20250217-ffa_updates-v3-16-bd1d9de615e7@arm.com>
-> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> > Stable-dep-of: 27e850c88df0 ("firmware: arm_ffa: Move memory allocation outside the mutex locking")
-> 
-> I understand these are being added in order to resolve the dependency
-> from 27e850c88df0, but this patch adds new feature. I would like to
-> drop 027/232, 028/232 and 029/232 from the queue. I already knew this and
-> had backports ready for
-> 
-> Upstream commit 27e850c88df0e25474a8caeb2903e2e90b62c1dc - 030/232 here
-> Upstream commit 9ca7a421229bbdfbe2e1e628cff5cfa782720a10 - 190/232 here
-> 
-> I will send then now.
+On Tue, Jul 08, 2025 at 06:20:37PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.15.6 release.
+> There are 178 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Great, thanks, I'll drop these all and take your backports instead!
+Tested-by: Mark Brown <broonie@kernel.org>
 
-greg k-h
+--5L2s3+A3smagnZMr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhuLIYACgkQJNaLcl1U
+h9A5ewf/XmKVeZCBXUxBXex6/F6Pb9upcVgaEQLAqPs/6/KS89iy9hMgx7nq4MWo
+b4jDaQK3QYCyANX//ah5SsyJZ3S5YRhlMnlCDldY2XEOcaTv9Ew3vext2r053TfW
+y96V8woK7StTZ9iJO4MvqqT+1bXUQPviVbFX3NZCOPhazpi48I5rXUPxDi7HE7GW
+B/++VyhRVBKhmiL7PUuqHNpoBUhFvsY2p0pk2AQs1Kfejy9miw9b/pNQmsZvw1ef
+r7eM2M1ltgCPdprQIuz+va3yreLJjE3dEpr1ZibexW1XaI1NEsEJPgmBTKsFLhQ0
+lsjWXVihgaTi2UMU26hb3wmY2yxHFw==
+=Ki7l
+-----END PGP SIGNATURE-----
+
+--5L2s3+A3smagnZMr--
 
