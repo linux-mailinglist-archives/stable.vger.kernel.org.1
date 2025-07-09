@@ -1,240 +1,178 @@
-Return-Path: <stable+bounces-161473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF580AFEEF7
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 18:42:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954A8AFEED8
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 18:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96CA0188D5F2
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 16:42:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD2845A7D92
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 16:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F090021FF4B;
-	Wed,  9 Jul 2025 16:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F95621171D;
+	Wed,  9 Jul 2025 16:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PYodFvO7"
 X-Original-To: stable@vger.kernel.org
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2085.outbound.protection.outlook.com [40.107.223.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB38206F2A;
-	Wed,  9 Jul 2025 16:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.70.13.233
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752079330; cv=none; b=LVcDw+WviQjbEP7djGac9csN0e5kCxaf4w7wknBvx3oTvWttLXp2+y1njAnTaDEnmNlDudhv51Ct34thBw6RN29k9E8JZ33h91gA8epu376M8ODzNOtlQLWPLcTpLsEhPt0GFvKGOMmVc2E0AvOdIGhCZrSqUE3S9DzoKuuZ4zc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752079330; c=relaxed/simple;
-	bh=pwZh3BoCjDCOWjFcw83VsmJa0G1VKuWp9z8oOTPBC8c=;
-	h=From:To:Cc:References:Date:In-Reply-To:Message-ID:MIME-Version:
-	 Content-Type:Subject; b=tquHGQQRuK7i0x110pZm5qEp6dg50Y04sy5B817ofGDRCI+vjEI7WnIk3UTN59uXPjw4tVbfBD2tIV2AL1tycTXrFoEWjp9O8Tj5L6yCLMdluDCQxcOSUoMDFe3qo6YZIbClZ0IuP+ErzynAlLwX/loFViVgAejF6MtZrzn0oTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com; spf=pass smtp.mailfrom=xmission.com; arc=none smtp.client-ip=166.70.13.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xmission.com
-Received: from in02.mta.xmission.com ([166.70.13.52]:55620)
-	by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1uZXap-00GDB9-ED; Wed, 09 Jul 2025 10:24:23 -0600
-Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:58876 helo=email.froward.int.ebiederm.org.xmission.com)
-	by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1uZXao-00G7I3-2H; Wed, 09 Jul 2025 10:24:23 -0600
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev,  stable@vger.kernel.org,  Mario Limonciello
- <mario.limonciello@amd.com>,  Nat Wittstock <nat@fardog.io>,  Lucian Langa
- <lucilanga@7pot.org>,  "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-  rafael@kernel.org,  pavel@ucw.cz,  len.brown@intel.com,
-  linux-pm@vger.kernel.org,  kexec@lists.infradead.org
-References: <20250708000215.793090-1-sashal@kernel.org>
-	<20250708000215.793090-6-sashal@kernel.org>
-	<87ms9esclp.fsf@email.froward.int.ebiederm.org>
-	<aG2AcbhWmFwaHT6C@lappy>
-	<87tt3mqrtg.fsf@email.froward.int.ebiederm.org>
-	<aG2bAMGrDDSvOhbl@lappy>
-Date: Wed, 09 Jul 2025 11:23:36 -0500
-In-Reply-To: <aG2bAMGrDDSvOhbl@lappy> (Sasha Levin's message of "Tue, 8 Jul
-	2025 18:26:08 -0400")
-Message-ID: <87ms9dpc3b.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D982144CF;
+	Wed,  9 Jul 2025 16:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752078451; cv=fail; b=mhl717sm4HEYLEbCRIMlAxEDof0KN8yD0xj0EFs3AiOd7qMABihJ1h4cOXJoaAXTgMCK3pTNtoonKyqQVNHDKCh9+HJsDG2XX3nd7G2xSzK2Hir2/IjN6GfNnQUTj7OZQ4Lwol83B4s+fMsJ6oxsKFMEX1Ujw+PIhQo9cxKsOmQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752078451; c=relaxed/simple;
+	bh=KC+zilcQf6U2MCHfLZHxcIHrU4HWpTTab+Waxwh0Tpo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=B9dYazdtDyKHCWzRycyJ8RRPjQ2LphR2V3aztRyxDjF1B/IdLKJDXg332zs28I3rJtL++lp+cBvFkcCgU9H8ErlTMFQFv4HvqDNMRqdV9MK36hnad8cXbTnPhUcHnKbG7NjwHyKPgYVDD7qBKTgb0Z2GIKdstoPnDCL5NgV5X7M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PYodFvO7; arc=fail smtp.client-ip=40.107.223.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=maTW+cDHEImOMdJFI6DK5dxPx2qx/JgQ/kzUB30ohwI3pdnGFVG3206bKBcQJ6NRVTRe/uBngcpzXqvYSSq4CfGTrsOleiOPiubRiACJoXdLGQXxWZszU7LHp2pNLYjRf/EIL6+UbuCqR+DY2aDWI53CbodWfqTF6y/Y8Q+bNxLvQqVXoM/fu65GZmZcnJc7DRUWOm0glzQ9RRNWzs0Vh7EiCW0cIdEKb98Flm6Vy3SWb050c1KMrU6DdJzyCPy4HbmUeBEeBKZ0wEijOZim6ISp8f/mg7SoR5xJzqh2wbHVwpuanwQnvOxMlWh3iBWkW9w6duYeo7Z+wYsTLIyywg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KC+zilcQf6U2MCHfLZHxcIHrU4HWpTTab+Waxwh0Tpo=;
+ b=Qy8Gx3+vdVISFj6EWohy7p/Cd9QizgX00xl0YTZ1Au0PEeI595C/9UjoFatbn3oSTu7UoK0X8UfhanPrhHP9NC5GhBAIEp4LtfJVRS1QwZVOFGDA0yLI4x9cumM5eNQQ6ODVEUCBxbVfovzoB91jEGewpt0bZFpN6vaZRIo3+5odG5SS7kNp/5W5vZGPrxAyl3gGvBy7xTzPf8Yu2s5zAZQEKdTlb+KI5ic9EIMKmLmE/XYaSS5UJ7lLua2A1T9FTyrPxp5pXxJbMlok/1O6Ie2pmP3jranPljps9Vu8Wz62VSLJhpI0jsB3jMg/fAceqgpOeoZB6VOHkD8IFkzZOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KC+zilcQf6U2MCHfLZHxcIHrU4HWpTTab+Waxwh0Tpo=;
+ b=PYodFvO7y/Yex3H0UgG07SmiRR7BHeOhg9cLXGXWbV+rC09+PGAV4JaYMX734csx693ZLsWVQ7IrRMfU89gqw/nNTZ8llmdfIyp7BOAHZeaOjKDckWmim659GK/bUEkYALkLFlhmJ62i6FTanEco7qqPu8Oxk0Vc9Tz61qVkJrYaw9H2TfGi8zR351441FE8nPrGHHFpM3T+OR3efdcrM6LvaC2UFahGJB9FxMpfC4SYjoYiMWEkABAAJsFOPyG4ZscYpWQ0HK3qFLhsE0UAgX2fObwnjFtTeF827R3JcQRJQcNrlYbclkrHGKVd+p/irgwhuBvnlaQTUhY1UpnQEg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by DS7PR12MB6311.namprd12.prod.outlook.com (2603:10b6:8:94::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Wed, 9 Jul
+ 2025 16:27:26 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8901.024; Wed, 9 Jul 2025
+ 16:27:26 +0000
+Date: Wed, 9 Jul 2025 13:27:24 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Jacob Pan <jacob.pan@linux.microsoft.com>
+Cc: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>, iommu@lists.linux.dev,
+	security@kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] iommu/sva: Invalidate KVA range on kernel TLB flush
+Message-ID: <20250709162724.GE1599700@nvidia.com>
+References: <20250704133056.4023816-1-baolu.lu@linux.intel.com>
+ <20250709085158.0f050630@DESKTOP-0403QTC.>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250709085158.0f050630@DESKTOP-0403QTC.>
+X-ClientProxiedBy: SA9PR13CA0089.namprd13.prod.outlook.com
+ (2603:10b6:806:23::34) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1uZXao-00G7I3-2H;;;mid=<87ms9dpc3b.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
-X-XM-AID: U2FsdGVkX18thKjXD4GyCYLuzUNwo9PSKH5r56NcL1w=
-X-Spam-Level: 
-X-Spam-Virus: No
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-	*      [score: 0.4946]
-	*  0.7 XMSubLong Long Subject
-	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-	*      [sa01 1397; Body=1 Fuz1=1 Fuz2=1]
-	*  0.0 T_TooManySym_01 4+ unique symbols in subject
-	*  0.0 XM_B_AI_SPAM_COMBINATION Email matches multiple AI-related
-	*      patterns
-	*  0.2 XM_B_SpammyWords One or more commonly used spammy words
-X-Spam-DCC: XMission; sa01 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Sasha Levin <sashal@kernel.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 762 ms - load_scoreonly_sql: 0.02 (0.0%),
-	signal_user_changed: 4.1 (0.5%), b_tie_ro: 2.8 (0.4%), parse: 1.32
-	(0.2%), extract_message_metadata: 18 (2.3%), get_uri_detail_list: 5
-	(0.7%), tests_pri_-2000: 8 (1.0%), tests_pri_-1000: 2.0 (0.3%),
-	tests_pri_-950: 0.95 (0.1%), tests_pri_-900: 0.80 (0.1%),
-	tests_pri_-90: 112 (14.7%), check_bayes: 109 (14.3%), b_tokenize: 9
-	(1.2%), b_tok_get_all: 13 (1.6%), b_comp_prob: 4.3 (0.6%),
-	b_tok_touch_all: 80 (10.5%), b_finish: 0.79 (0.1%), tests_pri_0: 604
-	(79.3%), check_dkim_signature: 0.42 (0.1%), check_dkim_adsp: 3.1
-	(0.4%), poll_dns_idle: 0.96 (0.1%), tests_pri_10: 1.74 (0.2%),
-	tests_pri_500: 6 (0.8%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH AUTOSEL 6.15 6/8] PM: Restrict swap use to later in the
- suspend sequence
-X-SA-Exim-Connect-IP: 166.70.13.52
-X-SA-Exim-Rcpt-To: kexec@lists.infradead.org, linux-pm@vger.kernel.org, len.brown@intel.com, pavel@ucw.cz, rafael@kernel.org, rafael.j.wysocki@intel.com, lucilanga@7pot.org, nat@fardog.io, mario.limonciello@amd.com, stable@vger.kernel.org, patches@lists.linux.dev, sashal@kernel.org
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-SA-Exim-Scanned: No (on out03.mta.xmission.com); SAEximRunCond expanded to false
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DS7PR12MB6311:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1438eedb-9eae-4b98-eb23-08ddbf057dd4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?eLTrB3IOF4i8oAh+ryaANI+BC/mHjm3568Cr2/Nj9iDd5YOpLDBuPDehbCmv?=
+ =?us-ascii?Q?FO5cG/uaXevFIbxXCtV7ImtZHkO/Oi+1oR5rImDG9IBQ4MBBoRr7pF/yWptK?=
+ =?us-ascii?Q?33qXob/RQQ5E4chWnpn+owkDKMyg9kAIYBfHCvgmGw29jWfsJp0jIcA6m2Uz?=
+ =?us-ascii?Q?5fVbDZYovpt0wMbXeG7wqJev+mIhn3Vztzhc8Qdazxa6o7UNl/ycKuSgJHY8?=
+ =?us-ascii?Q?HP24WSPWs05xGZ7vFNzmFp7k3uADLXxNfi4GhMSAC9LVlP5ymgmbq0C33RU8?=
+ =?us-ascii?Q?UWB/xkDjmx0o5rdq0lab4cw6r0LkxM+1JiopZsyyomoIzYvPjKMY4SB86GoY?=
+ =?us-ascii?Q?emzG/Ky/SxFf16IS3Lu8abBfEkY1WRCX69JR/oLD2Uq8GnDnncLSizdngHui?=
+ =?us-ascii?Q?v/CQec9JjSv4vgPlbtF/P3y8QIQRJy80PVXenKWNVV6Drnd2SLNKscg9KhRD?=
+ =?us-ascii?Q?n/f+6JFJudIYQfxMv+q/T/HS1sGIEb6noUDQFX9CL0D6Pyev8duEdIVUqfXW?=
+ =?us-ascii?Q?fmTj6CBkrBhMPNoU+X1G6DUGRPMQiy1bf4DK016iYJM1fWb7oDbNXfRQMxd4?=
+ =?us-ascii?Q?+YdAK1TgYMtcm+bKiJJ8/MZ0fN3IZJl4AeKRdgu19wHt2SvxIfLvX6NIZPwM?=
+ =?us-ascii?Q?NcczxtI6Vj0BprCF1UGBnuFpE8TXWMMJs5cppnSiABqJx9pyO7dS+Gp8/IuW?=
+ =?us-ascii?Q?yh2qKI3v2876mjBED21Uc57mce8FU5sL34KHutOJg6Mn59RRgLoydc/lfFA/?=
+ =?us-ascii?Q?xdjtIHoo/B2DzilD3AUps+ut1UYsLqE0gDX6oiV9XdqzN9tfCvZKdDK+eQyH?=
+ =?us-ascii?Q?wJCZFZ85o/pWFi5+IfuS+lVCfWgDk7ji67h7mUd+9aDZU5ivsiQZSTyXGXGX?=
+ =?us-ascii?Q?Km6D5CdQlbvfIm4nBnYpKxF9CWH6BI8Q6n2ZpdNl8edosIBQ2K/zhFIzY+eL?=
+ =?us-ascii?Q?yzi7NbZFfpwVvPbErsW+7Jk0vKYdHNIo0zQRkw/W4svQEphnZ/N8PObTqmaP?=
+ =?us-ascii?Q?ynzD1O8keoiKLgCa9Jf7T/g4w5PdQVizNbmXdckNfoAwfOT4Oa+8f0EJPhfr?=
+ =?us-ascii?Q?R7l2hApBlJLKW+P/DEFytYsJCVG+g8yQFNOuv7J7vJXOM98C3CPLV7QHxkOR?=
+ =?us-ascii?Q?hZfdjo/vdm+IlOYwJSBbuDPu75vl/Y0srvWgINUzK5QENlVE0WUbmTAduPrH?=
+ =?us-ascii?Q?TN9VFAzGcbwgHTEov9EorGl2uJyJywJZ6BG4w4Cenhr+4bc1Cv1NQJYgLhY/?=
+ =?us-ascii?Q?01MxiQUwDNoVFD0QfTVKfuEvMSuVLawlE73uuBaLNEvfsuXn3ZRw0C2hlIqG?=
+ =?us-ascii?Q?4V8v2Go3KDHmE3Yn6Clq3p1CFIdhq4gmoHceLdQlrrkOvQJz9zK7jc/DY9Hg?=
+ =?us-ascii?Q?gynsKGGeEwqO1XwN/paAWP05VeKn1OXHpJ2e/McmH1N9u6Ea4uAHDzQssO1r?=
+ =?us-ascii?Q?gPRJ4AxjmmM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QP9rIezKcYNrfxHe4pU5Jht4S1JyiC14TvVhOWl9bTidYar2E1uKfEGRZZO2?=
+ =?us-ascii?Q?Tl9fhO0pEzZYEntffmvJhvPNsfrDGdrm19/5j+NjUYaBa5H35u7RzEPPAqm3?=
+ =?us-ascii?Q?Q0dxpArN56x82KJT0YtTs3RaaenSLWwjv2RqAhQk3xv8BtNXiHoy857wfrf1?=
+ =?us-ascii?Q?3k21SzKIX7PUsJWdhuvvksKmThsNUSP0MiEbMgmP87hV/vonoCQ2cYWwlY9z?=
+ =?us-ascii?Q?jQCHwaEs5jhYkDCp5W1+Tnvv7NcoePn2FJIPK3Sazf0C88sW0Mxvu93MClPb?=
+ =?us-ascii?Q?N+66mzccipV90kSRI+IX0uveSpwh6F7Wlz/Fdq4qoyChZYWlL1r/zaHhtT0s?=
+ =?us-ascii?Q?H5p9lXVfije5irhlk60hwVhowDXmMgUEpHYPpbKoj7TS4OJ5m9dTTu6BEYy6?=
+ =?us-ascii?Q?2BjtvAZHiG6ZmFAzfnAiCygfFKsLY5udbiX2od6rIvtGkZhO5pvnu5ggvd/1?=
+ =?us-ascii?Q?oQZEe3t/YINRwMGIxVQ5wsvvZyG+FdD/kHdf1HQrvHezGJVLl+ed+88M77th?=
+ =?us-ascii?Q?zhKyatYzKX9C8Pl10rgh1vflfUvgcWuRNlLvZEETyqsG/m/jG7jzo9s7o55T?=
+ =?us-ascii?Q?qSRVU2XQvy7mxLimjdxU9RTCjDmbqx2oF6P1CKpzzVpsiXZ09SC9Z4zUx4mn?=
+ =?us-ascii?Q?0h2V5Rw5OHur/H1wnGg2KsAi2qrvOplnf9aDAz7d5hbcLF+wtuvGi1fTETE+?=
+ =?us-ascii?Q?W++2XB22CeHqA65dRLwAf6sJNk9sTIJr3T7zZpBbq2iMBWYZ+UFAnMfVcWiZ?=
+ =?us-ascii?Q?MmvGDbrs5OoMOHQeE42OjK2b7Bt86FC0/SFS2NVls4oCnJuaOYMTneBG5dNS?=
+ =?us-ascii?Q?+FoziLTiJWrt9MaEL7SSWtCtx5CMhK3Ruzs5mmtP//O5ibOe2EFgS7EX/dOs?=
+ =?us-ascii?Q?oLHGWgNmVDM8DfeAjOHK/qgmo87Ew/FrUoHjovYiPH1vrZpQrNMHJaWLnx33?=
+ =?us-ascii?Q?kzozjyfgl8uuUv3fN92e23b4SpHlyFAnPxSZ1yJSkz+zdLav3+xpZpu5pO4C?=
+ =?us-ascii?Q?WCPIb9iOfhfrvK9G6PT+qPXDI1t9xCHKG0FBJb7pWCuEoRBSn9+Ke1iY7Sfj?=
+ =?us-ascii?Q?8BdOBnSOaLB4hrE/1zFgEKQ16QXDp19KkycHMkT8wOKSoBNamo7NOtuZzwad?=
+ =?us-ascii?Q?bhyO7enrVot+mRt8tXIRWnkDvfjmnCy5ZNr1aPjgXcOyP8qSgYUSvzIbOaXV?=
+ =?us-ascii?Q?0SYfkVwB47i1QLB42ZVBV8oH96+nXNWKn6/L1ruSW/XB0Sj0VlM23TiGYfvQ?=
+ =?us-ascii?Q?/vV/Mu8X7/HJjjt1s4pNSvDH9hGLJWL/KcCBHWpaNZQxPawFoR87xxnlu6zJ?=
+ =?us-ascii?Q?jBnBjzBwRDQYRoGEDyj0NH/gYdt/f3/1IEEPWvpW2T88A2aH57nZBF9iHW+U?=
+ =?us-ascii?Q?Jqcbc6VhFI2i2VVA/+b7bNCnWiYlKweMgfXuCtuMvu0cqg+xV992j4qyKn6x?=
+ =?us-ascii?Q?J5AxI83U66kIN2Q7KITZeennzX5yyEGMyELVeVnb+7Oyhhib3hYFeHrgP0V3?=
+ =?us-ascii?Q?a3q0tNsanQ1QzT+usnPuf5kJSZxW0n+V5555VRM1G7Bl+1i9g5FRLIgA3MQI?=
+ =?us-ascii?Q?X3qEHbAXn74FMjHD/6ZjwjRsWDrjfARlCm2rlXk3?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1438eedb-9eae-4b98-eb23-08ddbf057dd4
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 16:27:26.4918
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 45khU/aXISmF67RB/VSfv9BJy2BWYLVIDidgCrWLAdafOqEQz7OsxcruatnYHruL
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6311
 
-Sasha Levin <sashal@kernel.org> writes:
+On Wed, Jul 09, 2025 at 08:51:58AM -0700, Jacob Pan wrote:
+> > In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU
+> > hardware shares and walks the CPU's page tables. Architectures like
+> > x86 share static kernel address mappings across all user page tables,
+> > allowing the IOMMU to access the kernel portion of these tables.
 
-> On Tue, Jul 08, 2025 at 04:46:19PM -0500, Eric W. Biederman wrote:
->>Sasha Levin <sashal@kernel.org> writes:
->>
->>> On Tue, Jul 08, 2025 at 02:32:02PM -0500, Eric W. Biederman wrote:
->>>>
->>>>Wow!
->>>>
->>>>Sasha I think an impersonator has gotten into your account, and
->>>>is just making nonsense up.
->>>
->>> https://lore.kernel.org/all/aDXQaq-bq5BMMlce@lappy/
->>
->>It is nice it is giving explanations for it's backporting decisions.
->>
->>It would be nicer if those explanations were clearly marked as
->>coming from a non-human agent, and did not read like a human being
->>impatient for a patch to be backported.
->
-> Thats a fair point. I'll add "LLM Analysis:" before the explanation to
-> future patches.
->
->>Further the machine given explanations were clearly wrong.  Do you have
->>plans to do anything about that?  Using very incorrect justifications
->>for backporting patches is scary.
->
-> Just like in the past 8 years where AUTOSEL ran without any explanation
-> whatsoever, the patches are manually reviewed and tested prior to being
-> included in the stable tree.
+> Is there a use case where a SVA user can access kernel memory in the
+> first place?
 
-I believe there is some testing done.  However for a lot of what I see
-go by I would be strongly surprised if there is actually much manual
-review.
+No. It should be fully blocked.
 
-I expect there is a lot of the changes are simply ignored after a quick
-glance because people don't know what is going on, or they are of too
-little consequence to spend time on.
-
-> I don't make a point to go back and correct the justification, it's
-> there more to give some idea as to why this patch was marked for
-> review and may be completely bogus (in which case I'll drop the patch).
->
-> For that matter, I'd often look at the explanation only if I don't fully
-> understand why a certain patch was selected. Most often I just use it as
-> a "Yes/No" signal.
->
-> In this instance I honestly haven't read the LLM explanation. I agree
-> with you that the explanation is flawed, but the patch clearly fixes a
-> problem:
->
-> 	"On AMD dGPUs this can lead to failed suspends under memory
-> 	pressure situations as all VRAM must be evicted to system memory
-> 	or swap."
->
-> So it was included in the AUTOSEL patchset.
-
-
-> Do you have an objection to this patch being included in -stable? So far
-> your concerns were about the LLM explanation rather than actual patch.
-
-Several objections.
-- The explanation was clearly bogus.
-- The maintainer takes alarm.
-- The patch while small, is not simple and not obviously correct.
-- The patch has not been thoroughly tested.
-
-I object because the code does not appear to have been well tested
-outside of the realm of fixing the issue.
-
-There is no indication that the kexec code path has ever been exercised.
-
-So this appears to be one of those changes that was merged under
-the banner of "Let's see if this causes a regression".
-
-To the original authors.  I would have appreciated it being a little
-more clearly called out in the change description that this came in
-under "Let's see if this causes a regression".
-
-Such changes should not be backported automatically.  They should be
-backported with care after the have seen much more usage/testing of
-the kernel they were merged into.  Probably after a kernel release or
-so.  This is something that can take some actual judgment to decide,
-when a backport is reasonable.
-
->>I still highly recommend that you get your tool to not randomly
->>cut out bits from links it references, making them unfollowable.
->
-> Good point. I'm not really sure what messes up the line wraps. I'll take
-> a look.
-
-It was a bit more than line wraps.  At first glance I thought
-it was just removing a prefix from the links.  On second glance
-it appears it is completely making a hash of links:
-
-The links in question:
-https://github.com/ROCm/ROCK-Kernel-Driver/issues/174
-https://gitlab.freedesktop.org/drm/amd/-/issues/2362
-
-The unusable restatement of those links:
-ROCm/ROCK-Kernel-Driver#174
-freedesktop.org/drm/amd#2362
-
-Short of knowing to look up into the patch to find the links,
-those references are completely junk.
-
->>>>At best all of this appears to be an effort to get someone else to
->>>>do necessary thinking for you.  As my time for kernel work is very
->>>>limited I expect I will auto-nack any such future attempts to outsource
->>>>someone else's thinking on me.
->>>
->>> I've gone ahead and added you to the list of people who AUTOSEL will
->>> skip, so no need to worry about wasting your time here.
->>
->>Thank you for that.
->>
->>I assume going forward that AUTOSEL will not consider any patches
->>involving the core kernel and the user/kernel ABI going forward.  The
->>areas I have been involved with over the years, and for which my review
->>might be interesting.
->
-> The filter is based on authorship and SoBs. Individual maintainers of a
-> subsystem can elect to have their entire subsystem added to the ignore
-> list.
-
-As I said.  I expect that the process looking at the output of
-get_maintainers.pl and ignoring a change when my name is returned
-will result in effectively the entire core kernel and the user/kernel
-ABI not being eligible for backport.
-
-I bring this up because I was not an author and I did not have any
-signed-off-by's on the change in question, and yet I was still selected
-for the review.
-
-Eric
-
+Jason
 
