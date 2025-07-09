@@ -1,103 +1,89 @@
-Return-Path: <stable+bounces-161491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDEDCAFF2EA
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 22:23:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CABB1AFF3B9
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 23:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E021E1C231EE
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 20:23:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A2CA5A4A21
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 21:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCC62459FE;
-	Wed,  9 Jul 2025 20:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A60923A9B4;
+	Wed,  9 Jul 2025 21:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i1g8K2N/"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LCZPeXzK"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB49E244186
-	for <stable@vger.kernel.org>; Wed,  9 Jul 2025 20:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C95913B797;
+	Wed,  9 Jul 2025 21:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752092567; cv=none; b=AVPIWCHZHiL5rwnRfllwXMjkxWoX+zx30Jfl7vShZDguvroLcW9Dh1Lt2lj48aXwOow1zKISWK8rR8C/sAKaftzFRZJHz6+CjJQfS0UnXevEHIbGIZcGXa5rfxBMlYj7Ab9uwavIg37OcdrlvMCDDjS0grFuIgnEbzWO4gfAQ7g=
+	t=1752095642; cv=none; b=S0l1j0jPsAwpAMlPJv7qA4x1F5XjEnHlhJb69zAZOIfxE4GK1zIFfJPd7trguS7AHBO6H1q859+oxP2x5N+myQAYKMpI5+9SmLReR8MlEZDs3TdhE60kCfhQgpmjchhIjS8kuLSFQLK7Hlz/jep4iIIES38IjNAkFeIlQrohUs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752092567; c=relaxed/simple;
-	bh=/9Kns4ZXz/Qn4PrGGI5OGogJEIPcnnOmSvL0JleJ6ik=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=X50OuSynYTnXlVcBAXYSmdTg47JwZ5NQTnn4pKyytkoDRPB2gLvZe9xC33GzvXyXuNrQWLudtqFOrtk/47GHk9SXDU2a0R9HlvhMFWgLPvuWZ3D33KfWIHIntrSe8qKqNPP1Zdj1VaChKXHQcrmVDqs8bNw5bcyEePhhmD53Oo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i1g8K2N/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752092564;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kDiGMlKKETCealBEfy16p098aY14pQYAB7sWpWAIJfI=;
-	b=i1g8K2N/5AheNjNirZrdjVg3TkNRKkvAVz1KP3n8OqvPdMCEH33HXCiX3JOdoXM0LWJvXb
-	C+mXJuPxJgIK45ylwH5XggEiBIF/pXiyGgJy/czTUT2YJR9MyKSwAAOBaiCYss73JIcYwV
-	WikY7KuWsapEflj75q4tHOUFn016DGc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-lFtj-QW-N8iv7MzdbQf7tA-1; Wed,
- 09 Jul 2025 16:22:40 -0400
-X-MC-Unique: lFtj-QW-N8iv7MzdbQf7tA-1
-X-Mimecast-MFC-AGG-ID: lFtj-QW-N8iv7MzdbQf7tA_1752092558
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF21B180028D;
-	Wed,  9 Jul 2025 20:22:37 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 989511955E85;
-	Wed,  9 Jul 2025 20:22:33 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <CAKPOu+_ZXJqftqFj6fZ=hErPMOuEEtjhnQ3pxMr9OAtu+sw=KQ@mail.gmail.com>
-References: <CAKPOu+_ZXJqftqFj6fZ=hErPMOuEEtjhnQ3pxMr9OAtu+sw=KQ@mail.gmail.com> <20250701163852.2171681-1-dhowells@redhat.com> <CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com> <2724318.1752066097@warthog.procyon.org.uk>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
-    Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>,
-    netfs@lists.linux.dev, linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [PATCH 00/13] netfs, cifs: Fixes to retry-related code
+	s=arc-20240116; t=1752095642; c=relaxed/simple;
+	bh=CYo/mZw03O+EDuqFAlXNxX6aL4BphLCE1nJ1rHmAPhI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=HoC7yjgUCrrtc3Pa5vXjWXzYwbDVAVTi7TQYAQv4UNF5/rd2aE1YA5dQBRzEfUvytGWrWQHcJMp2GTuak6LaQawus4iC11jg4M/lnuVbHtxfrB5Fgwg+DPerYE6+oaDZ+4R4gbwaITk5N6nzvii5sbkzUPYZ30heqWvO0ayv3KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LCZPeXzK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E12EC4CEEF;
+	Wed,  9 Jul 2025 21:14:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1752095641;
+	bh=CYo/mZw03O+EDuqFAlXNxX6aL4BphLCE1nJ1rHmAPhI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LCZPeXzKGK9jv8LeXI7ebkvP22Xdz4m4XGL81JBozlZA5utTRHR4ZiWKlWSSKGc/a
+	 YDmELrt7d/4U6Px8e535iiRiC2PAtZFsoZkljkI9dGmvXkyIH5//FgXcujk2OHWzsO
+	 F7/f/mnScw2LLWu57V5g6hpPNSQ5wg+6F9pN09nw=
+Date: Wed, 9 Jul 2025 14:13:59 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
+ Lameter <cl@gentwo.org>, "H . Peter Anvin" <hpa@zytor.com>, Alexander
+ Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino
+ <vincenzo.frascino@arm.com>, Juergen Gross <jgross@suse.com>, Kevin Brodsky
+ <kevin.brodsky@arm.com>, Muchun Song <muchun.song@linux.dev>, Oscar
+ Salvador <osalvador@suse.de>, Joao Martins <joao.m.martins@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jane Chu
+ <jane.chu@oracle.com>, Alistair Popple <apopple@nvidia.com>, Mike Rapoport
+ <rppt@kernel.org>, Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [RFC V1 PATCH mm-hotfixes 2/3] x86/mm: define
+ p*d_populate_kernel() and top-level page table sync
+Message-Id: <20250709141359.dc03e32a2319d85a25faaf32@linux-foundation.org>
+In-Reply-To: <20250709131657.5660-3-harry.yoo@oracle.com>
+References: <20250709131657.5660-1-harry.yoo@oracle.com>
+	<20250709131657.5660-3-harry.yoo@oracle.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2738561.1752092552.1@warthog.procyon.org.uk>
-Date: Wed, 09 Jul 2025 21:22:32 +0100
-Message-ID: <2738562.1752092552@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Max Kellermann <max.kellermann@ionos.com> wrote:
+On Wed,  9 Jul 2025 22:16:56 +0900 Harry Yoo <harry.yoo@oracle.com> wrote:
 
->      kworker/8:1-437     [008] ...1.   107.149531: netfs_rreq:
-> R=00000065 2C WAKE-Q  f=80002020
->
-> ...
-> (The above was 6.15.5 plus all patches in this PR.)
+> Fixes: 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory savings for compound devmaps")
+> Fixes: faf1c0008a33 ("x86/vmemmap: optimize for consecutive sections in partial populated PMDs")
 
-Can you check that, please?  If you have patch 12 applied, then the flags
-should be renumbered and there shouldn't be a NETFS_RREQ_ flag with 13, but
-f=80002020 would seem to have 0x2000 (ie. bit 13) set in it.
+Fortunately both of these appeared in 6.9-rc7, which minimizes the
+problem with having more than one Fixes:.
 
-If you do have it applied, then this might be an indicator of the issue.
-
-David
-
+But still, the Fixes: is a pointer telling -stable maintainers where in
+the kernel history we want them to insert the patch(es).  Giving them
+multiple insertions points is confusing!  Can we narrow this down
+to a single Fixes:?
 
