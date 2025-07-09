@@ -1,131 +1,70 @@
-Return-Path: <stable+bounces-161441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239B0AFE98E
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 15:02:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF69AFE9B0
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 15:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AC5956760B
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 13:02:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B0FE1882255
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 13:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5B62DEA88;
-	Wed,  9 Jul 2025 13:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3332DBF75;
+	Wed,  9 Jul 2025 13:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cJCkevPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2anEjFma"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B62E28ECDA
-	for <stable@vger.kernel.org>; Wed,  9 Jul 2025 13:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB2B35962;
+	Wed,  9 Jul 2025 13:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752066119; cv=none; b=VNgmj5qhHCFXONrnOAliOwYiYgQAMmsw0j5AfILIjhcQXGOZXzi7OLoRr//tPzy2OcU9JhDtHb3LEOFOJULWrbR9567Xs8P5L3WvyIK6HVtbi7N/i8bwIEuzGOx8uCbmCNv8vg5w0J/ZVqwgMurP5IZf3GL+M+T631BXkQcK95g=
+	t=1752066547; cv=none; b=d2m1rVGSucSBMf7JEipYV7btVBzF6Q6ZtuLPA9XEC6jeVsbyZEXb01wa5h/qw5XfoAD8gDPSGHPtYK8WaF4jB8Z8MBNgQ0C7YxNIxugLuBX/EUCzdOdwq/U3Do0/anA34oRzB9qzGrlB0xIZJ6XtE784Oig5xCc4CqIElqc7Ajc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752066119; c=relaxed/simple;
-	bh=/H1wwcYQS3C200j65rusHRaNOcAUWMWreLwsmQzUutA=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=cDPwv7MGxgiutx/FN5HXP0S36oBIbQ7JdCODg06vpuS8PVSn6g/crIphAqIy55vUTrF9uxeN0k5HOhH9oHvxNUhif5SorOfXYOywYtrKb0dw7vP0PPLOs70+0XpVOpREfT40w0hxOtn+4P1q5QEq0IkKJkM8h/5iDg+zGaj9PZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cJCkevPO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752066116;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fPAEJueQlgI9BgBvvY5GihbFk6Uvv9VDWN1JiHtaB3M=;
-	b=cJCkevPOFsdwwQYiSs/jSJI0iogF0ec0f0KLivCl3amYqd1FWOo3+4FLevpmDmIK9QvEst
-	mjgbam4P30rLbMHVJFKDCeJtdPwNfDucIyWD6GPFg/nileU3QcdDJWklJJN4S6qeG7rVK9
-	yPnYNq/vc9r8CdI1IdhtOeJPu8oZCJE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-H1jXk4VzN_GhrVr5QRFMeA-1; Wed,
- 09 Jul 2025 09:01:53 -0400
-X-MC-Unique: H1jXk4VzN_GhrVr5QRFMeA-1
-X-Mimecast-MFC-AGG-ID: H1jXk4VzN_GhrVr5QRFMeA_1752066111
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1661C1801217;
-	Wed,  9 Jul 2025 13:01:51 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C1908195608F;
-	Wed,  9 Jul 2025 13:01:40 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com>
-References: <CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com> <20250701163852.2171681-1-dhowells@redhat.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
-    Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>,
-    netfs@lists.linux.dev, linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [PATCH 00/13] netfs, cifs: Fixes to retry-related code
+	s=arc-20240116; t=1752066547; c=relaxed/simple;
+	bh=VcrkJOKYoElm5nSFyr9BCkbo0248Iv7a8XslVXTjpGg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P7IlOK9DaFQrT9kloUQWkmvRyeW/H93W4iVaNg7UH3fqUMf7ZlpbThyK+FQTWZsoHRB1uqRUMvWxEmL3pisJgzn3+ol++GWZVowQkmpQeqRwxhWOaKaTl+Hv2VXG4qp2Af6zCv3F8xjepENyespY8sdfSS2IPeZXkjy2luIxbGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2anEjFma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D866FC4CEEF;
+	Wed,  9 Jul 2025 13:09:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752066547;
+	bh=VcrkJOKYoElm5nSFyr9BCkbo0248Iv7a8XslVXTjpGg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=2anEjFma8mkOp6nuQ/BwKsM15221uj4AMc+XSM9BpqfmCkA/dbpbmDHwFXp5eEMwT
+	 87dvIqBHl9GEc9WdPQppDPrlUTdefs979mV3TeS3W7eFLW4fq/rSrNkyP9UOXDguha
+	 sHoBzDKA+N7oOh5jQTwkUI5kWO8H43qjX8aMWny4=
+Date: Wed, 9 Jul 2025 15:09:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Christopher Turcotte <clturcotte@proton.me>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"alexey.makhalova@broadcom.com" <alexey.makhalova@broadcom.com>,
+	"ajay.kaher@broadcom.com" <ajay.kaher@broadcom.com>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: VMware Workstation Pro w/ recent Kernel-6.15.4
+Message-ID: <2025070938-abiding-speller-23be@gregkh>
+References: <4baJtp-j_IHshbbcugGEFuYVWNnoYMQ_-KELjaMMYPw1XwqyMJgfW4tO-hj1UhMId4hypNTOZrucUaOGx4qb3E-fIvhqS289kwlu_LR9nH0=@proton.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2724317.1752066097.1@warthog.procyon.org.uk>
-Date: Wed, 09 Jul 2025 14:01:37 +0100
-Message-ID: <2724318.1752066097@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4baJtp-j_IHshbbcugGEFuYVWNnoYMQ_-KELjaMMYPw1XwqyMJgfW4tO-hj1UhMId4hypNTOZrucUaOGx4qb3E-fIvhqS289kwlu_LR9nH0=@proton.me>
 
-Max Kellermann <max.kellermann@ionos.com> wrote:
-
-> your commit 2b1424cd131c ("netfs: Fix wait/wake to be consistent about
-> the waitqueue used") has given me serious headaches; it has caused
-> outages in our web hosting clusters (yet again - all Linux versions
-> since 6.9 had serious netfs regressions). Your patch was backported to
-> 6.15 as commit 329ba1cb402a in 6.15.3 (why oh why??), and therefore
-> the bugs it has caused will be "available" to all Linux stable users.
+On Wed, Jul 09, 2025 at 12:42:02PM +0000, Christopher Turcotte wrote:
+> Good morning
 > 
-> The problem we had is that writing to certain files never finishes. It
-> looks like it has to do with the cachefiles subrequest never reporting
-> completion. (We use Ceph with cachefiles)
-> 
-> I have tried applying the fixes in this pull request, which sounded
-> promising, but the problem is still there. The only thing that helps
-> is reverting 2b1424cd131c completely - everything is fine with 6.15.5
-> plus the revert.
-> 
-> What do you need from me in order to analyze the bug?
+> I'm hoping for a resolution to an issue I'm currently having with the latest kernel release and Workstation Pro (Free Edition). Every time I try to open Workstation, it's prompting me to reinstall modules that ultimately fail (see screenshots). Also see the attached log file. After doing some research, I see the issue is that several header files are missing. I've tried to manually compile and install original modules, but with no success. I'm still faced with an incompatibility issue and the latest kernel. This problem does not occur when I switch back to kernel 6.14.
 
-As a start, can you turn on:
+As you are using external modules, please contact the authors of them as
+there's nothing we can do here about them, sorry.
 
-echo 65536 >/sys/kernel/debug/tracing/buffer_size_kb
-echo 1 > /sys/kernel/debug/tracing/events/netfs/netfs_read/enable
-echo 1 > /sys/kernel/debug/tracing/events/netfs/netfs_rreq/enable
-echo 1 > /sys/kernel/debug/tracing/events/netfs/netfs_sreq/enable
-echo 1 > /sys/kernel/debug/tracing/events/netfs/netfs_failure/enable
-
-If you keep an eye on /proc/fs/netfs/requests you should be able to see any
-tasks in there that get stuck.  If one gets stuck, then:
-
-echo 0 > /sys/kernel/debug/tracing/events/enable
-
-to stop further tracing.
-
-Looking in /proc/fs/netfs/requests, you should be able to see the debug ID of
-the stuck request.  If you can try grepping the trace log for that:
-
-grep "R=<8-digit-hex-id>" /sys/kernel/debug/tracing/trace
-
-that should hopefully let me see how things progressed on that call.
-
-David
-
+greg k-h
 
