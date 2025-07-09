@@ -1,236 +1,267 @@
-Return-Path: <stable+bounces-161405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B88AFE40C
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 11:27:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC0FAFE423
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 11:35:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A49007B3F3D
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 09:26:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00FB93ABFCE
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 09:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51931283FF8;
-	Wed,  9 Jul 2025 09:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721D2285CA7;
+	Wed,  9 Jul 2025 09:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="pFXyRgbO";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="Pr4f1EzT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UtTYfJSm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE4B274FD1;
-	Wed,  9 Jul 2025 09:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752053247; cv=fail; b=q7ct1xqNxsIy6A8mQluFfY3T62z71t4W5p8P19B2MlgMjHoFSdG2PpIzDte/k5r8K6pfzaPhYhGFEQnAPe08AqPSD6AEh+UVixwT8Vccafr5H0ZPbQ1llUsSwPrXT2yBh5owDLQBkvsRiYNnnooebJFtGflxdp1twE7bS24IVuM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752053247; c=relaxed/simple;
-	bh=p7+AmTLNpKcFtjK4yOrGm9d4VV1/kK4bfwdKPywWMD0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kGzza/SR/A8GkvP2EokxxPZ9pEpsKa55IbhBcfvPSX6NBW+eAMVLwCqw/Ts3ZrHiLHN3GLt9OzMloNnGtv/FsWXHITpTZrIJCzyOzAyIrWcp1tSDh2nCmT2wGYxoNWIJplpbFWU62GRuz4rDfxAKFuLdizsjlN+LJUi8ctRjvXs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=pFXyRgbO; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=Pr4f1EzT; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5698C4FH017036;
-	Wed, 9 Jul 2025 09:26:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=ABgvImK0RYizq7NZK9PlZpDz+nv9jHG/KIj1yu7IcR0=; b=
-	pFXyRgbOf2wBobcZSfv1EzV7YDm0UhYUYXLZ32yMMUdMiIKClNMt5UgzTvcb9A6B
-	eY3NCm/f9OaIaoqtM0FXgRyi5hf9H+jN0oBdL2//gDPDQOamqLgxV6nXabpWMIs2
-	jlOvUI7dMCMbg+zwuSM7xNqS5iDELhicp8mN06fSKVI+lsCgEAEJT7HyPIXpN3fi
-	PycxO3eO03q1RGJujc+dTnJvAzFS4B7EThjXQJCwjXEhbNvHNhR3fDKjw9eIwKeF
-	RrM0RoJXQFqUOapB3I6/LZXD6ZYa+z/lYgqttt1fyAMehwu1HfA8QIsYLMIfgJzu
-	Jl2Ul1eoKmndBHnqiL5mXg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47smps85ay-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 09 Jul 2025 09:26:54 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5698BQLV023586;
-	Wed, 9 Jul 2025 09:26:53 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10on2060.outbound.protection.outlook.com [40.107.94.60])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47ptgb06a5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 09 Jul 2025 09:26:53 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KTqGJKj9JLHurOZ1+IxqV8MTnS7Q+RF6hE8hu2bfoC2f31ZOWtk7T6rcxBgGlEF4Yy/S0WFjug3+62wBKtfwEnUIGMeI0OXMF6JFM0eQVFsYD1zm2fOnHMMx0rd+9XXkaPpEM9BuGSNaWI/Qf4uElm2YCUsd5/+rJWnc3+Cw3NjBJ2Hx5Re8xymM5AJrb/ts/9brRIiS2Gcq1MvQpf2JwT1gJFP2Wx5VNbzCXf2j4CE5qMXeTrp3sjzyG7SLUheOMmzdYs0I3gZW5wKCZ+qdY9kj8xvkbrPU3eKb7a+pA0EzyDPZpT66lVFkO5fihyCXZiJqZuj9trvxzmoR8+bzQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ABgvImK0RYizq7NZK9PlZpDz+nv9jHG/KIj1yu7IcR0=;
- b=Ku3P4aEYHmEgKF0GgclhPXZZ1pkwVQ40RIw/ic7Rdp6qcC8h02crBEWfAJzUVDddTVPJHHkHRoHbsrvnO6JRKE6w6JuHIYgfmufkX83eAj6gvdRaxpDuXsNR/sHmDiR4s8U/vGh7aOml+UT+aDw8OANe2dSbtEBnVYkmg2r1/h8R9qd23NfmAiEemuwUsdCgQMKOeBQ8a0Yvf0//CaKGBFVmXEDWPdPzb2Xtr6ZKD00K2euESRILF4Cefm1zZcXFv565N4eD3Tr2s2Faf4O/z20nTbShYSEjSChjK4rCd6dHLkw/UMsLJbki+f06XLF4SpLZ/jXgTtnraOevE3LnyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619191D5150;
+	Wed,  9 Jul 2025 09:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752053696; cv=none; b=YPUm4Fy180Mduh+rPDiKCJMyQlF33y5J5tiaqBovvhud1aGmZE9OyYoLrKtubFf1IJQycu14J2IVVM+I+CK7u8A4M/hqJfHiRV5wlA9q6KV59ljT+MUtY+kaxEmHYIvYAnDu0LW5gGcseYLf99S65qTDinklmiGg4gTCLXV3DAI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752053696; c=relaxed/simple;
+	bh=r3uGUCdL6VdjxNHNtjRfySw9ECmoX3D9N3rOm6BkdHs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NEyCZSIhpkeHcRCS3InnY8CWwIGWpUHkMbRVA9OpBb2Ke/azzzdc/y0GFjsfxRbThznS+ga7gbrRHhROc+q96MjAjAcLz8o7rdNxnh9odqiquRt+2WiYxi89y2eJzboEZ3wPIVClqt3+4QRc/jbXbNbuhZHOZ3BwIq/1spEQF+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UtTYfJSm; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-453749aef9eso19414645e9.3;
+        Wed, 09 Jul 2025 02:34:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ABgvImK0RYizq7NZK9PlZpDz+nv9jHG/KIj1yu7IcR0=;
- b=Pr4f1EzTlyx3EsEKSEZSNnAxlxzSdwYO+PP9yk/QcGx7/dEh3cjoNwASEJWU28nsn3tOXJ7XaqUmkkEVwxUgQ7uv4SPEv++dCVldqJvtDhbewG3NXf0YsZFKUP9miaw7rXtG2DLB6ZemdSxo2ZdvENMlfcuBUlGJ5M1XgTp/u/Y=
-Received: from CY4PR1001MB2310.namprd10.prod.outlook.com
- (2603:10b6:910:4a::17) by SJ0PR10MB5661.namprd10.prod.outlook.com
- (2603:10b6:a03:3da::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Wed, 9 Jul
- 2025 09:26:50 +0000
-Received: from CY4PR1001MB2310.namprd10.prod.outlook.com
- ([fe80::5661:9254:4b5c:3428]) by CY4PR1001MB2310.namprd10.prod.outlook.com
- ([fe80::5661:9254:4b5c:3428%6]) with mapi id 15.20.8901.021; Wed, 9 Jul 2025
- 09:26:50 +0000
-Message-ID: <e7ebce87-2c1d-4bd9-8695-5431dcfeaa71@oracle.com>
-Date: Wed, 9 Jul 2025 14:56:35 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/232] 6.12.37-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com,
-        broonie@kernel.org
-References: <20250708162241.426806072@linuxfoundation.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN4PR01CA0093.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:2af::11) To CY4PR1001MB2310.namprd10.prod.outlook.com
- (2603:10b6:910:4a::17)
+        d=gmail.com; s=20230601; t=1752053693; x=1752658493; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=r3uGUCdL6VdjxNHNtjRfySw9ECmoX3D9N3rOm6BkdHs=;
+        b=UtTYfJSmyMrC7SkcO8TpZ4IEL42G/JSbmiLV/mGJ7OgvYjSE8S0Tb4PuMVfz8H7d9z
+         ZQEKd9EJufREqIHwtp356jyL+zUnyCU4n1CcWTOIx1rUmLSt19oRlMgvRwYPyiIPog7j
+         sOj52LmuyVA64ypRMAbgDIuBNy4MQtJp5L8kikZHDtaZ+sxI2FxuJtWDVGATwiwmKLHg
+         FCydDhM/FJqJUajPfutpenmvpelEPpHJP0uPXuI8qsE5c6xlNwO2p+gJn11by1a6TXy+
+         2c/cOkOjpTqclVt5NCJ525qsZeReuyIQzRqnduOZ74AJJAvedO0ubRLqwgjSFFeQ8WSb
+         gGZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752053693; x=1752658493;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=r3uGUCdL6VdjxNHNtjRfySw9ECmoX3D9N3rOm6BkdHs=;
+        b=JU3MQRbY+ie0LHMRNQp7eewdj8hK7GIuyQ7xa/OPwKlctu4aTDA8FC0LXE5+iZstt3
+         4brGhlcVVeAaQ2+YwobwDMOZoDySSA7/iB0ysg+Ymv7YYgJvB8bZWsofYFq/cqbBWZcL
+         OQs+Cbgy01ptFoDGHIHw9I6uUjhPXE5weVPEVLrqMZJ8K2pDPmupogfu5TwllUEOPa5n
+         HY/UUvLUc/urYcaMRLEhciK8vCyveVUvxheDeoe1HtqJnhqQxy0SXWI3X82qEKS52pCd
+         r2PxBFY1fuqgfYARQAqO/3HcVIFAfIX48BmvF/IYk1BVYWN4jtwzvR8gZRlUZG7wdN54
+         m8lA==
+X-Forwarded-Encrypted: i=1; AJvYcCXAYpV3MgBrHhlwv0eUCWpSfBNdFW/fMiX+SHEB4JEewlX6Zws5Sy/mik9ZjfITnrUg9JYGtpQ2tJDWfLU=@vger.kernel.org, AJvYcCXJhm71HTHLh1FiEzIVe5AjGc2G9jaZ2cmol79ZKi63OUHjwMgEoNaZ0PWHSh2aiQZ1D4mJlD7I@vger.kernel.org, AJvYcCXxjmX+GWnAuOSLm4jq5M0SOrJrxR7T42USw/B7OLRGNjq5p1L4YpJxLZ0ZZKvCR2+DnRp3zwfmKDuf4k41BxU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLINVy7Nu0RtUrhbNo0HwMheG4NgA+fhl5zcqZCoVDf+6vAyZF
+	bAvvUpPQCSL4xLHndKjZDwuXtzRJV5YCOlOz1z7VfymbcMdFmpZlN1Bj
+X-Gm-Gg: ASbGncu5VtRBm9J2mJULu8vsvyRuIOrv7ilguzUvZqREX0pt5YRmgTCe4lb6SJXtwtb
+	mZ/iEab7a+sKSLYAbDS13d4FNKcU8LL+qAzj+OEMS18h0b891Nad+9JP8YvRUvcVfpscujt1kTn
+	FC1pO78ShzbIL/fGHAesEe+66+9dLWsFie3CVHqvF88kkoKCfQnL2SVXTAkUIdnT/LocCpliViy
+	RdYd1Ow6cuS9kyXwD94T/WncNf7mtX0yOpKPMTKpIADaWpYDiiiUFZjxYfY4J1b4WNtUTxjJjy1
+	vmuQK6wbXnC/CTsm8/fT4+yo09cHfpFYgOVPRPNz4xvdfXbfGQ9btlWBIush7YdInMBo5QM3DcK
+	af5cZjks=
+X-Google-Smtp-Source: AGHT+IHFE/4lz+pXT1J2vuAB2sISwkp+K6S5gulkD0S/u+uitE+iDpKG56hey3SX5ivqJSrzP0P1RA==
+X-Received: by 2002:a05:600c:4f11:b0:43d:9d5:474d with SMTP id 5b1f17b1804b1-454d522d0d0mr17241865e9.0.1752053692156;
+        Wed, 09 Jul 2025 02:34:52 -0700 (PDT)
+Received: from vitor-nb.Home (bl21-87-120.dsl.telepac.pt. [2.82.87.120])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454d508e9d7sm16621975e9.36.2025.07.09.02.34.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Jul 2025 02:34:51 -0700 (PDT)
+Message-ID: <d6fc989334064cf9fe50185e7ecd20a5f614c312.camel@gmail.com>
+Subject: Re: [PATCH wireless v1] wifi: mwifiex: discard erroneous disassoc
+ frames on STA interface
+From: Vitor Soares <ivitro@gmail.com>
+To: Brian Norris <briannorris@chromium.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Vitor Soares
+	 <vitor.soares@toradex.com>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, David Lin <yu-hao.lin@nxp.com>, 
+	stable@vger.kernel.org
+Date: Wed, 09 Jul 2025 10:34:50 +0100
+In-Reply-To: <aG1lbC4LJDKzMuco@google.com>
+References: <20250701142643.658990-1-ivitro@gmail.com>
+	 <aG1lbC4LJDKzMuco@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PR1001MB2310:EE_|SJ0PR10MB5661:EE_
-X-MS-Office365-Filtering-Correlation-Id: e54ea76e-8e91-4186-f9e3-08ddbecabbf8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QUR2dktZQUtaRWhEVXBVcUp0ZHIwK3lGenlGTlBhQ3pZM2wyOXgrYzNXWjZC?=
- =?utf-8?B?YjN0WGJFcHhBY2QzYkVaWVR5N2ZzczU1cS8yUzA4VjVXWTVoVmFSejdYK01j?=
- =?utf-8?B?cE9saUJlM3dPSFBHYzY0M1g3bzJLb1ZIMW1LZFVhYjNxd2N6V0s1VTIvd1Q5?=
- =?utf-8?B?UnhwbzFWU0FUc0RYNENpQms5SnFZY3VycG4rTE9iWmhSdTNmWTdmM0tHRVlS?=
- =?utf-8?B?cmtYZU5XZzlyYWdVc0F6REZLTDJ5V0dnbEdSd3BpSGJrNzh1M2l4Y2ZPbHJK?=
- =?utf-8?B?SzdseE04b3pDV0d6MnorL3RnL0Q5VTd0NWdWbVNPdnVHUUJZcW1hdkd6MTd6?=
- =?utf-8?B?Tndha3RpZ0pnUjVzT2ZtNkhwbnRZUS84QkNIM0tSaHRCcWRSeXduQy9UTTB6?=
- =?utf-8?B?MkVrMElLdXVaY3FodjRKMDhtdXNWSWpUVldBMGhNRDlEdDFQd3ZJbFFZRDl1?=
- =?utf-8?B?T3RFckoyU1Rnb0NzZ2VIdGtNWmdDWUg5aTZpM0FXejNnQmZ6dnhjandtV3Zo?=
- =?utf-8?B?N2lEak9CZEhGN3dZK0tXcWdnWWNyRG4xRXpTNU9BVlJ6VG1uUWo0NlBEc1ZL?=
- =?utf-8?B?VW9GMjgzWlhqdzYyNHc0T3pTYnB0QVhFZnErNFowZi9iOTQxYkFHd2JITTFI?=
- =?utf-8?B?aGRnMFd3ekJtbkRnam1nNHNoWjd4WWttemQ1ZjR5R2M0b29BWGJJdkx2TjRp?=
- =?utf-8?B?SW8wbFFaR2cvSStIK0hvWUl6d1BMQUh6cmI1em8zMEo0MlExbGx0ZEd1QjB2?=
- =?utf-8?B?dlArbW5xUTdSbjIxL0JJcGJsMWtJREQxSGNmUmJYbmwyMWsycW9IMDNlRkdJ?=
- =?utf-8?B?dG9qeGNsWFR6aWp2Zm1hcEJuSjJvUjMwR2RuUjVveURPQzhod0QydUNBcDdn?=
- =?utf-8?B?Tkp2dlhtY2tYbHdNZi9mcnl6UWkxOXVZdHNPeGFrUE5pQlhLOUpwa1BYNERx?=
- =?utf-8?B?ejE2MmxEcEw2OVM0U1J5OWhDcC9JYlNLYnB1WDZxekllQUtYWEF6bDVyQU9a?=
- =?utf-8?B?dE9qU1FTR05SU09McEt6SGNla01uU3BCWDQvUU1rY3ZwaDB2MjJTTWZYWm9k?=
- =?utf-8?B?T1lCNW1sd0tsb1ZrRGRoNDVXWjdsL0hyTjNzSHlMVSs5N3BzSVFWNEZNOVNy?=
- =?utf-8?B?MVBNcUxzYllGMHNJNzFFd2NDN1NNK1dua3VBK2tsclhBdEJmVkNtaFFPNmRh?=
- =?utf-8?B?Z2NJVkRNL0JXVyt5ci94V1QvZGMrR0gyK09vTXI2T09HYUh0ZGVYRFpPZlRP?=
- =?utf-8?B?VTRDem5Ha1pKbVB3Zm1KNmt1S1U1MVQvWGlxak1jRkpZVzlTY1lmRWhjWDU3?=
- =?utf-8?B?VVBTZ3lubGdVN3NIUVUrWmVoV0RJSkd3ZEFiYUdlcHhDMWRXNDNZV3NRT2JC?=
- =?utf-8?B?N0w0WmRneE9wVEVEUVNKamJ5ZVlMTVQvQ0tpelJWN2hPRGU4UkdJQlo2bjVC?=
- =?utf-8?B?Nk5hUEp2ck1xMVlML2ZvSFRzdVU4SGlPbWNSNFZCTFdUaEdqemxRQ2JBVVRT?=
- =?utf-8?B?NnJ6NVd4QnZNOTlhQ3R3ck81SXdyNkRyTDBjUnhPZXVwNHBYL0NJd2VVcXFJ?=
- =?utf-8?B?d0RmbkptNEhlTzFPYU1JV3V4cEVvSUhOa0hhb2lQVmlURzlFQU83Y1FzdlNV?=
- =?utf-8?B?K2pUcUoxajBFT1hua08xMTdLSDVIUVNMREpOTEptMWE3UTlJZkQ4WWRkbzNE?=
- =?utf-8?B?T0p3OEMzRm9YSDBRVnY2Z2lKSDlzc3hUaG5DYVhQQXpRdHR4RTFRalgrVlpF?=
- =?utf-8?B?UE1VMzFnMER6aXNQb2g0RDdZMHRKMzFrWFBNOFRMT1lKMU9xUGNTWFNQam81?=
- =?utf-8?B?NjZLVjF3eFRsZFJ3NmhtcE1BMWRaVWRMWkJVTExRNm8xb3I4RSt2QnVvYUpk?=
- =?utf-8?B?enI0ZjFBN0FOZHo0UHVyN2xnRlU0MGRZQXZkbldjVDVGaExPamE4ODc3YmJ3?=
- =?utf-8?Q?l2kTowDJnE0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR1001MB2310.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TVFqZXZaRytMdG9yZUNpWTErTlBETkNRS2tBSWcvU0taL3VRdVUwejY5VXd3?=
- =?utf-8?B?ZGY3QmhRalNyWnFJYnhUU3RpS0ZDY3NNZWZKbnM0K25QRjJRUmRUOFhPMzhU?=
- =?utf-8?B?RmZMMHdoV2o0U2Y5c0Z0L3dxdjZ0WVM3TDYzMGtyOVhXQ1Njd1FrTzVnYVJE?=
- =?utf-8?B?cG5uODZoZjdhbHhqL2FOcHlVUmgzQXdkVGFwdTduOFZNMUhmaVg1ZURJcTlj?=
- =?utf-8?B?VGZvbnlEdlhLUUQzUG01dmZIaVZaUmZYRCtDV1R1UTUvN05FUWk5eVRDRS81?=
- =?utf-8?B?NTdaSlNBWGpOUDZHTm1pWmJleGFHTFhSVFJIYzJacU5HZzJGSXNTUHA5RzZw?=
- =?utf-8?B?dGx1WndoRVlWaUY2cFBDN1E3S0FGTy8yOXZQUWdCNy9Zd1JMZ2I1Q3krVGFo?=
- =?utf-8?B?RGNsOXVIWm5EMnI5eGdBTTd5Sm8raUxicUZXQklqSDRHZFAzUkwvRURkOXAw?=
- =?utf-8?B?dW8zeFVEd1FzMWlFNzNXOWlFUmV4YnFJcEwzM0w4SGxhbm8rR2g1UEVpdnRN?=
- =?utf-8?B?MHhpS0hOTjNSdnc4NkVhcGVlZnB0U21qVUNUd0tnVDBHOFJnZXR1UDJyYVpp?=
- =?utf-8?B?Vk1PNUdNN1R6b0ptQ2pLbHl4aG94OWZuaDVPa2ZzNVVsaUJUN3Q5bkdLQWVY?=
- =?utf-8?B?RFdDaXNlVGwrelhZaDczc2RFWmxLdU83VlpBWmlwQU1iU0xBdXVmUVlIeGp5?=
- =?utf-8?B?N1NTaTNFaHBjdFNGYjkwQzVLSktyUy8vMHp6TGc1TWd4aUc5WHpBSnB1S09l?=
- =?utf-8?B?bkgxRWtudVI5U0kxNEQ4eStyODBZMUdEVUp5ODBYbUJONk56bThOblo2N3Q4?=
- =?utf-8?B?d3NYVGhCaFdaSEVJZW40OWNSdEtoWC9jUXo1N2NicmhWWFgrbkl1MzYrci9V?=
- =?utf-8?B?SG9PNVV1dXY5c3dKaGRQTXpYZXZLbnZWbG5jNmtlbW0rS1BCOG8yV0pwSks0?=
- =?utf-8?B?TWoyZ3p5anpwdFQ5Y1ZPZG56bWhKQklwWHJ4OUhhVFYxZE9zdC93bkt1NUNX?=
- =?utf-8?B?RG1BS29ZN1hncFp2K3BFTkFmQ0pyRzlVVzczN25aaUU3Z1NQT01sRXgxZTFK?=
- =?utf-8?B?V21lQVJ4bTZHNkdJenNFempJSXRmN0Nydjg4V29YaGZqMVczWllranpUclJP?=
- =?utf-8?B?eFFYek4va0htemU2UW1XaUJCQ1c4RmY5TWQrcGF5WXRrOGwyMmM3SDkvUUsx?=
- =?utf-8?B?OHFjNmN1Y3lhZmRXTU5Yclh0RVh5ci9WRm5Va1FyQUhmcDV5STdKOUZrZUc2?=
- =?utf-8?B?VlBPMy81ZFNWQWlabktGUjRZZzR4aFZ5a2lvYVFteGxXWTRhNkFrOXFlNWZu?=
- =?utf-8?B?MysrTklXQ0NjMWtUU2w3T1QwcS9oVjZoT0tjQ2tiRUtjaFNyMU1LYTR0UkNw?=
- =?utf-8?B?d3Badk1FWnAyYW15a012REpCN0VhZ3dFVjFpYlVNcTc5NENkNUpIL0xZbkty?=
- =?utf-8?B?SURaYm9way9UTXdLaUFOVERyMi92SWZnL1Jvalg1eFM3Zk1Lam9Wc1VxWjVM?=
- =?utf-8?B?SGlOT3V5dXdScTdYdk5heVk4aG9FY3dMaVc4SmJlZnQ2NjN2WmhMUDg2WnF3?=
- =?utf-8?B?c2lqRmJEemEwbXNaWHBObk5xZURWaStZblhzaGtmY0JuaEZ4blZvSTNURll0?=
- =?utf-8?B?U0czNXVWMnRQcEhQNkZ0Y3k0cklSZFB2Ykt1Q3FIQlA0SndGdGszUjZsbXlp?=
- =?utf-8?B?RXMvMlRUaG11amExalo3SWNtSjRjWFV1MHgzTHNFTW9rdkN2bHU3TlpUSWxa?=
- =?utf-8?B?d1QrYjRxRm9OeVdaNEVDWjBaUjk4c1ZNWnN0TDJnNTFhU0h6MFFnZHdsVkZZ?=
- =?utf-8?B?aGpDM2dkNHcwTU12NlQweDRsN3VjZkZ5RFV6ZHgzS3FYVUdpNVBudTlXTFBW?=
- =?utf-8?B?MWEzRm1WOU9rMGRPN2c3bTdra3lpcGpuMDRpZ0c2WTdqaTkvcEVqTjNOUFJk?=
- =?utf-8?B?QzdNZ3ZxVDYySmVsbVV5NTZyMjFsSW9lZU9LRzNFMDNjWXJJY28yQmk0Vk1R?=
- =?utf-8?B?aGV6WHNzM0pmcVhOMHVmRXRDcG04MjllZE1hOUxpV1RzU1o1Vkg2MVVSdTM0?=
- =?utf-8?B?ckVIRGNzei9FdXQxVUU1d1hSYXhON3RLelZ1WXNTRmJOVTV4dkU2YzlzYXhq?=
- =?utf-8?B?U2M2allkMG9KdVNGdTBCV01ydVpLOXl4Z1RhK1RqWkR4bTRISW1RZWJLK1kw?=
- =?utf-8?Q?u0iNudhWfwf2ZJK5c7awaqQ=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	wnc1+GbGEEtK89/NIgORAovQZFw/75czRJw/eHTjXF5qD+muVL/iWbyfX8GE+fCGKpuzljZWFAQK4M6o4PY7fughqJmW6uucAqvYISbfo/UDuF2N/w/EgLUE5m4F4R33JO4X1cq+Jq8GXDBzW5DcqZUtfLf6WCnKtzxmDDDP7hYLlpxpnyBEZSMrrOxUDfitjApQeq/C/Z0/FNd71sjJvPgH/lzMx5uMktRuujwbUe/aeQlV8g4XJBKTB1w076ZYuUt29LTqiaDYik5fy6OIRXkwNaBys7S9AvQ4aatZSaPOk/IXVEiYqzMfo10x7279qGNjRTO/OLPjJJSg0Acg1x8FCkoSEEmhRZncm8jEtf3z1th7EcckWT7N2I9E28A5YAfhNWqskgq77E1cZ3XirjRfU5khhOpWyFtSNUFhq76hqXlu2YL7TuX/0T4FJPNTX9oT0sNtWsaqLdwPlZEc9CRAY+xtBHvOZ67xUw64725SoBWotVm668MNnw2b7ypUXINK4Lisw/O2YECH+Gc44wZlmPGb7XovElHrSTwd9/SfGXjjOyz9lP58taXwGDMDT2/bsQrikAX2y14pJRnv2Wt71sEHGpQIhMvCpTUcisw=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e54ea76e-8e91-4186-f9e3-08ddbecabbf8
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR1001MB2310.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 09:26:50.5906
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hJtejC/r78i9ofKwodRjt+jcqKK39JDk5aC+KyneeemEWfTYmi2xT//3x74Bk+uQKGR7NR9tvYxmnvwSjoU2TMPhznPbkkYLUYPABNPoBSJig+4bjW8YgOxakWtHHgnD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5661
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-09_02,2025-07-08_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 adultscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507090084
-X-Proofpoint-ORIG-GUID: sqF5YjZLyJKcWa-nUNYc1rmM2R1jUP65
-X-Proofpoint-GUID: sqF5YjZLyJKcWa-nUNYc1rmM2R1jUP65
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA5MDA4NCBTYWx0ZWRfX5iTpuwmo376E sy/WOqnY7OqRejKhCZJxEsdVa7BWowvbI0kKwVZ+jZfWthXBAw3N6xZcALoBekNc7qb0USGxmau GyMwD0N07q23qSlB2HTwERfOeN8sy2G/36MP6l3vF3r1Drav5zZRocU+DftfAb3UVSbrtj82xUB
- a+oZ3FczojUXM/kRra668Nj77WX8ubsQV3+zT3Vgeho9K6R//r0vLzeCk8A/oEIQbQt+3BQ7/hy z/OStLweBcLYWfWyCYQ4MeIbolddqb6Wk9WQkPwLt79LMp6d8u/wj5Ic9BvwtXLT9GKy17zsPIl Cp+ZRE9USZOKiDyhs4ChQDaUNPr6hZrJMkC5ssZhWmAIF3+4ZEgfa9TNEPJS4PxCREe2zjaemkh
- 9OKkUTS1VG5FEUgh8nkqehOTgBAShDR7GCDwjleqWCiSsANJxhvOC/9UW/QCzV6PU4ODJrXC
-X-Authority-Analysis: v=2.4 cv=Scr3duRu c=1 sm=1 tr=0 ts=686e35de b=1 cx=c_pps a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=ZFId0DEggJzLHO5cZtIA:9 a=QEXdDO2ut3YA:10
 
-Hi Greg,
+On Tue, 2025-07-08 at 11:37 -0700, Brian Norris wrote:
+> Hi Vitor,
+>=20
+> On Tue, Jul 01, 2025 at 03:26:43PM +0100, Vitor Soares wrote:
+> > From: Vitor Soares <vitor.soares@toradex.com>
+> >=20
+> > When operating in concurrent STA/AP mode with host MLME enabled,
+> > the firmware incorrectly sends disassociation frames to the STA
+> > interface when clients disconnect from the AP interface.
+> > This causes kernel warnings as the STA interface processes
+> > disconnect events that don't apply to it:
+> >=20
+> > [ 1303.240540] WARNING: CPU: 0 PID: 513 at net/wireless/mlme.c:141
+> > cfg80211_process_disassoc+0x78/0xec [cfg80211]
+> > [ 1303.250861] Modules linked in: 8021q garp stp mrp llc rfcomm bnep
+> > btnxpuart nls_iso8859_1 nls_cp437 onboard_us
+> > [ 1303.327651] CPU: 0 UID: 0 PID: 513 Comm: kworker/u9:2 Not tainted 6.=
+16.0-
+> > rc1+ #3 PREEMPT
+> > [ 1303.335937] Hardware name: Toradex Verdin AM62 WB on Verdin Developm=
+ent
+> > Board (DT)
+> > [ 1303.343588] Workqueue: MWIFIEX_RX_WORK_QUEUE mwifiex_rx_work_queue
+> > [mwifiex]
+> > [ 1303.350856] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BT=
+YPE=3D-
+> > -)
+> > [ 1303.357904] pc : cfg80211_process_disassoc+0x78/0xec [cfg80211]
+> > [ 1303.364065] lr : cfg80211_process_disassoc+0x70/0xec [cfg80211]
+> > [ 1303.370221] sp : ffff800083053be0
+> > [ 1303.373590] x29: ffff800083053be0 x28: 0000000000000000 x27:
+> > 0000000000000000
+> > [ 1303.380855] x26: 0000000000000000 x25: 00000000ffffffff x24:
+> > ffff000002c5b8ae
+> > [ 1303.388120] x23: ffff000002c5b884 x22: 0000000000000001 x21:
+> > 0000000000000008
+> > [ 1303.395382] x20: ffff000002c5b8ae x19: ffff0000064dd408 x18:
+> > 0000000000000006
+> > [ 1303.402646] x17: 3a36333a61623a30 x16: 32206d6f72662063 x15:
+> > ffff800080bfe048
+> > [ 1303.409910] x14: ffff000003625300 x13: 0000000000000001 x12:
+> > 0000000000000000
+> > [ 1303.417173] x11: 0000000000000002 x10: ffff000003958600 x9 :
+> > ffff000003625300
+> > [ 1303.424434] x8 : ffff00003fd9ef40 x7 : ffff0000039fc280 x6 :
+> > 0000000000000002
+> > [ 1303.431695] x5 : ffff0000038976d4 x4 : 0000000000000000 x3 :
+> > 0000000000003186
+> > [ 1303.438956] x2 : 000000004836ba20 x1 : 0000000000006986 x0 :
+> > 00000000d00479de
+> > [ 1303.446221] Call trace:
+> > [ 1303.448722]=C2=A0 cfg80211_process_disassoc+0x78/0xec [cfg80211] (P)
+> > [ 1303.454894]=C2=A0 cfg80211_rx_mlme_mgmt+0x64/0xf8 [cfg80211]
+> > [ 1303.460362]=C2=A0 mwifiex_process_mgmt_packet+0x1ec/0x460 [mwifiex]
+> > [ 1303.466380]=C2=A0 mwifiex_process_sta_rx_packet+0x1bc/0x2a0 [mwifiex=
+]
+> > [ 1303.472573]=C2=A0 mwifiex_handle_rx_packet+0xb4/0x13c [mwifiex]
+> > [ 1303.478243]=C2=A0 mwifiex_rx_work_queue+0x158/0x198 [mwifiex]
+> > [ 1303.483734]=C2=A0 process_one_work+0x14c/0x28c
+> > [ 1303.487845]=C2=A0 worker_thread+0x2cc/0x3d4
+> > [ 1303.491680]=C2=A0 kthread+0x12c/0x208
+> > [ 1303.495014]=C2=A0 ret_from_fork+0x10/0x20
+> >=20
+> > Add validation in the STA receive path to verify that disassoc/deauth
+> > frames originate from the connected AP. Frames that fail this check
+> > are discarded early, preventing them from reaching the MLME layer and
+> > triggering WARN_ON().
+> >=20
+> > This filtering logic is similar with that used in the
+> > ieee80211_rx_mgmt_disassoc() function in mac80211, which drops
+> > disassoc frames that don't match the current BSSID
+> > (!ether_addr_equal(mgmt->bssid, sdata->vif.cfg.ap_addr)), ensuring
+> > only relevant frames are processed.
+> >=20
+> > Tested on:
+> > - 8997 with FW 16.68.1.p197
+> >=20
+> > Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> > ---
+> > =C2=A0drivers/net/wireless/marvell/mwifiex/util.c | 4 +++-
+> > =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/util.c
+> > b/drivers/net/wireless/marvell/mwifiex/util.c
+> > index 4c5b1de0e936..6882e90e90b2 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/util.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/util.c
+> > @@ -459,7 +459,9 @@ mwifiex_process_mgmt_packet(struct mwifiex_private
+> > *priv,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "auth: r=
+eceive authentication from
+> > %pM\n",
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ieee_hdr=
+->addr3);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
+>=20
+> How about the other leg of this 'else' (ieee80211_is_auth())? Is it
+> possible for these spurious frames to accidentally look like our AUTH
+> frames?
 
-On 08/07/25 21:49, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.37 release.
-> There are 232 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+I haven't seen spurious frames matching the AUTH path so far. Also, if ther=
+e's
+no pending authentication on the STA, those frames should be already ignore=
+d.
 
+>=20
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!p=
+riv->wdev.connected)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!p=
+riv->wdev.connected ||
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 !ether_addr_equal(ieee_hdr->addr3,
+>=20
+> "addr3" doesn't make it totally obvious to me what this actually means,
+> nor that it's correct. Would ieee80211_get_SA(ieee_hdr) be equivalent?
+> That seems a bit more descriptive. Or else maybe a short comment (e.g.,
+> "ignore spurious management frames from other BSSIDs").
 
-No problems seen on x86_64 and aarch64 with our testing.
+In this case, ieee80211_get_SA() wouldn't be equivalent and as far as I kno=
+w,
+there isn't a helper like ieee80211_get_SA() available.
+This is an IBSS/Ad-hoc frame (To DS =3D 0, From DS =3D 0), so addr3 contain=
+s the
+BSSID, which is what we need to match against (same as
+ieee80211_rx_mgmt_disassoc()).
 
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Since the patch was already merged, if you think a clarifying comment would
+still be valuable, I can send a follow-up patch to add it.
 
-Thanks,
-Harshit
+>=20
+> It seems like it's correct, because this block already filters for
+> specific frame types (auth, deauth, disassoc), but in isolation, it's
+> not the most readable.
+>=20
+
+Yes, I agree with you.
+
+thanks,
+Vitor
+
+> Brian
+>=20
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 priv-
+> > >curr_bss_params.bss_descriptor.mac_address))
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+if (ieee80211_is_deauth(ieee_hdr->frame_control)) {
+> > --=20
+> > 2.34.1
+> >=20
 
 
