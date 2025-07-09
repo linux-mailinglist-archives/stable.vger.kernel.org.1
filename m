@@ -1,97 +1,104 @@
-Return-Path: <stable+bounces-161466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A21BFAFED88
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 17:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ECD6AFED9B
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 17:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFF73188A6D3
-	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 15:18:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91C731883FBA
+	for <lists+stable@lfdr.de>; Wed,  9 Jul 2025 15:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F45A2E7F37;
-	Wed,  9 Jul 2025 15:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FDA2E6131;
+	Wed,  9 Jul 2025 15:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oKEhwY/W"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="tfM/00Q/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79F935958;
-	Wed,  9 Jul 2025 15:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4155E265CBE
+	for <stable@vger.kernel.org>; Wed,  9 Jul 2025 15:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752074247; cv=none; b=uAWpr7WdCjKX1AlxQm67f065XvgJznXC3HGORMdP2Mv8LmUaE9VibGcM/r+SNPj6ukfEistCvCQugQBTYTUBnTmHOoGhXyjCS8E7srjOSbLLAOURJnWXhtXuKyK98HiyHzq+5c54H5N/1w/guAviC4bimbe0P03M/yvcqkdHPDA=
+	t=1752074603; cv=none; b=PekRsRG5UTe80CxdFfFw/P5TsNgbCRqeVpKlSsXExSyhbZISoeW17jo+oY3gIlUIcHozTySm237YAHEf2tpKiBCO2P5Jse0AyywOOtdBtrSayeTNeQkz3lX/4/DoZW3MHLpvwDvRMPa1jpitw8VBqSmmHKwjiat1nm1lbDXWk9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752074247; c=relaxed/simple;
-	bh=18qqlA5kt168isuNMXAGggkZU+AzFupJfjPwjcie+tU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clklr8ABI+K1wXGkJ4souy4ZRp6/G25F8CHYqTDsUASRk1E0h2TeuKO6V/hzG8uSFhy4I/4l0EsC9db9M0JVzBwDNbahO1KQ17M3dAM8SqzUqKZNyRTBadx1PtT7iW//NvfEjFyY8Ov+hpyGzM2TX7in4eeMIdA94s23s9OvY/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oKEhwY/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D861EC4CEEF;
-	Wed,  9 Jul 2025 15:17:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752074247;
-	bh=18qqlA5kt168isuNMXAGggkZU+AzFupJfjPwjcie+tU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oKEhwY/WIIUKIjTV2SWvqlxCxyPGjMCefCHs/zvJKFROzsJDlKHEtyOnoD0ncXI6f
-	 E7tHt98qiA4JKZYxIBCCVO6mJl3gkV+zvVpdLelnCYj41eiOgxbaPT6+qOvzL78Le9
-	 CnxftMfk3OID0FcSEdHjK50c722BcaBIIvG/GBMt43UYU3Do08hwDd96WLzK2yVF2O
-	 7esnj0eIwRiW3K9vJDZE04Vh1RbUoohMrnjsOnvGgx36URrD5sKX1bj84z29UHaM71
-	 SbaxuReK+toszWiUVI5q7aM7w+9p/OT6SrT8luyccvztDYrOTqsv0RYcrcypUPJpAc
-	 W+yKegWP9w5+Q==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	srw@sladewatkins.net,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.15 000/178] 6.15.6-rc1 review
-Date: Wed,  9 Jul 2025 17:17:15 +0200
-Message-ID: <20250709151715.840970-1-ojeda@kernel.org>
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
+	s=arc-20240116; t=1752074603; c=relaxed/simple;
+	bh=xNwWPqmfXox92HseMYI7HIS/IbNrVt1B74JGLKAC26I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kR3fO1NoXiGsClvf+TnlkSta0raZ+MVVsgxSjHkzLlomhRRB9jkNrMAxL0652WZnSOHBWhqC+IAA+UnKQSVIs+c+Gl2QkaOvpVw5vP2Hz6WkATHpKMRfAUnWLXt1xORS3OoA1sD2iTwuS+Zey8l8SuaZlzZxgvaZeAH0iZsx8I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=tfM/00Q/; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7d3e7503333so864384885a.3
+        for <stable@vger.kernel.org>; Wed, 09 Jul 2025 08:23:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1752074601; x=1752679401; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=taKscuAxBARZZVcojDiir7HwGviwhLXve6yI29pYzq4=;
+        b=tfM/00Q/tJZssHdpFGe4w/pocrFNZCY55Kg4ExwytRN+Erx21XF4V15vIqVJbAL5Xs
+         P4k9lxxYlJn5lvRwIxqKdgNKF2lFs8IWW2Mg3LMo9/iLNTNGxegDpHmmQ9cKSOLW1wYd
+         eLK4vpXxwSd6M2y5nFP5Ui7gBbj745vovHy4bu5pYvv+yYPD+UM/VtLUu7FAaf/OXKLy
+         xMGh/amc/AKpQyALk+QHLYMOjN/agHxPI1u2cHXIgNghFogGQTxPfdLKp5yX8dFXZ2Ps
+         U2bQqN27LxaebdF3j5sBl9H6jFEs6V9kyiyjjqCnZJhj6W45MWOsOwZxXggNxPxHEAhY
+         gGzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752074601; x=1752679401;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=taKscuAxBARZZVcojDiir7HwGviwhLXve6yI29pYzq4=;
+        b=ICfjzkwWK3TxfBWe3EuT5av5Y+rtLiDCpd+7HrP2qTlwKM2xncaLEdbSeZ0M2Lpi9U
+         swFs9omz/MYTmDrtZlu1iBMh7RAVZ3Fi52ZOykT9w3qSBTsqN3DrwEkciAaihzDvmRLg
+         2Zb4XS4fdNCTnvYK1GlUzQurnc5EwpmtLqg5mOPVa2/qpxAAdnWMs1nnvh6uANLZNonm
+         5vZU7tHgdO/KAPCMKLRPi9x7rx6Bi7AcluWCodgDz6O6fdU6vlTNPq1yQrYEwKJzumAe
+         rgfwOpIjlTiAOvB4Ws6D8Bc+jRadeqt+Ys3OddcNRtZULLyKKiLkJJ91xFMnbKxhmiTu
+         k7Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCX5DaCkUuz5je45uoXX4MhU6YYPw/jaAGEPaH3Jk/W+CFkvttxIGPlkyQb6PIesCswvF3rM8dI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZN7dKsHwjHRdjpK27Vrd5XS/TUoCBXTkY+1R6Ij4s7YyaIVWq
+	icf2efWLhIhLckaeKEsCA1oT6s4ppkZLKuHuHXIdx5zksAlmPX05633vVUgqO922idd6XLCzM32
+	cdsY=
+X-Gm-Gg: ASbGncubN7LfewAYZr8B9TuAjJgxkzVM4izZf1BEIAIPR6F5/DMsQxudiGLUGFSw90w
+	PHLhZKs/5Uc0HMKiQcGqwXNUrt6hYBtyEh+hUuNsd1EZ7G3arvlb9KUNoRqP0s7vUJCBDdhunq2
+	lpyNaY2b3yIrP5dwTJ/jPdn42TmGdIRAc1lyCzajLTXjHiXUgPqBWMHWK2USoWLmBtBsISQFJb1
+	OnZWFTdaGf3P4e2xRpCw6jUPnp+xfA+bjQPGBtiRqfpy+GGQJLisGPrw93opjgqokrA8tzWy71O
+	PdnTjUH7IrXtr5YtSWi62PtrbaoRzramtGtW2VyXzluUWun41ot6nW7GkryNAjjYrun8+CeNVEs
+	D4m4plUhZq+BlZow=
+X-Google-Smtp-Source: AGHT+IFbarZZxnuGdEIcNxHTdtx9ncDHcHXXZLfwwDFk0c7S4XwskR5r0Tcfdvp0h6o4S0UIJPdXug==
+X-Received: by 2002:a05:6214:5981:b0:6ff:16da:ae22 with SMTP id 6a1803df08f44-70494e94cd8mr5492326d6.17.1752074601088;
+        Wed, 09 Jul 2025 08:23:21 -0700 (PDT)
+Received: from rowland.harvard.edu ([140.247.181.15])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-702c4d5ac6dsm92634596d6.96.2025.07.09.08.23.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Jul 2025 08:23:20 -0700 (PDT)
+Date: Wed, 9 Jul 2025 11:23:18 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Benjamin Tissoires <bentiss@kernel.org>
+Cc: Jiri Kosina <jikos@kernel.org>, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 3/3] HID: core: do not bypass hid_hw_raw_request
+Message-ID: <dfaf82da-c389-4758-ac2c-102fc418ed41@rowland.harvard.edu>
+References: <20250709-report-size-null-v1-0-194912215cbc@kernel.org>
+ <20250709-report-size-null-v1-3-194912215cbc@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250709-report-size-null-v1-3-194912215cbc@kernel.org>
 
-On Tue, 08 Jul 2025 18:20:37 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.15.6 release.
-> There are 178 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 10 Jul 2025 16:22:09 +0000.
-> Anything received after that time might be too late.
+On Wed, Jul 09, 2025 at 04:51:48PM +0200, Benjamin Tissoires wrote:
+> hid_hw_raw_request() is actually useful to ensure the provided buffer
+> and length are valid. Directly calling in the low level transport driver
+> function bypassed those checks and allowed invalid paramto be used.
 
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64:
+Don't worry too much about the sanity checks.  If they had been in 
+place, we wouldn't have learned about the bugs in __hid_request()!
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
-
-Cheers,
-Miguel
+Alan Stern
 
