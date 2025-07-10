@@ -1,197 +1,145 @@
-Return-Path: <stable+bounces-161550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590D3AFFF64
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 12:35:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D84DAFFF90
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 12:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F2273BD5EF
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 10:35:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C49505A2B60
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 10:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4A72D8DC4;
-	Thu, 10 Jul 2025 10:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332B92E2F02;
+	Thu, 10 Jul 2025 10:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ck0Q9158"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BKk6Jbww"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439CF19CC28;
-	Thu, 10 Jul 2025 10:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0AC2E0B44
+	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 10:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752143719; cv=none; b=SQ+IvZM3eua8BOrnkK8tQVSuoYyiPAo+jVTUUsGkSYoTeEUDIf03Iu7WtzmY95SGs7GWj7TpBUjxzVDAMiqM8xJKTrOgoo1SWpaxUSemZqdRVuY7+Hg6iYdxrmLsb16qzSdodyWZaJnEl46NtAA6N+89a1ru6FKTXYNqRX1KlhI=
+	t=1752144441; cv=none; b=YH848zbyx06H+MKaw1gtW33wnzTpaXbctH1l/tRUVY1jYLzgAMcNu29pamskfBuxiS8Etp4Ouyw2Zm8MEz1ag3zr0k+XOrVuU3wAU+R2ntxYKiK+XTYWGho723A60kcyveYnisEkIjspFei78MkzfNuRzUEDaorTjHEDGyAiLak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752143719; c=relaxed/simple;
-	bh=bYZMyZWLjbybXxy6KtLgDhn/vD8fk7GrJM/5ipnjZL0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SaX8785W57dXchCSXKJakPOoZD9oPLtUB6reYY+BuyVwCYQ7D4kWbwH7ETEXMPMj2wr2CRwiIzfHBlqAp8UpGs2tIN50iqyEJtkaZ+N/K350BDst+8Plk+S6qiJ6l7wVR5k94IIBVanGw8Ecfee2UT0d7VIjCVbvOSmEId5tfWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ck0Q9158; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FC6C4CEE3;
-	Thu, 10 Jul 2025 10:35:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752143719;
-	bh=bYZMyZWLjbybXxy6KtLgDhn/vD8fk7GrJM/5ipnjZL0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ck0Q91586xsRB4whk1o6Tu4MKUSqZKpZN09appcfipZ4+SUKdIQfXekmZOrtBWHG/
-	 3CUuLC8/2we290Dh8/cSIK24SzbDxMG9jrLCfnOcoQ8U2i4eyaKh3J2G2O4QUuFbnA
-	 LV/7DQVyr02y4gE+5EvI1UjE1oaiFMwT9oWbi8k9AnYtN/h9ZjtZNMEU8qH+jnRMkL
-	 7N1MysoyYjZ0sHiZ4uJQwWSUPBb4NiBFu/sqlT2anLN+CxGRrGlRxdbhCFd01eAzFM
-	 3xX0AsVnWBjVH+n+4mGZKNH3JXwdQivpgGe4qHwj7ga//j3jHEWYGNQCjGzu4zzbuC
-	 i3go/8u74ssqA==
-Message-ID: <6f7328df-712b-4c62-82c6-ee69ecec2108@kernel.org>
-Date: Thu, 10 Jul 2025 11:35:14 +0100
+	s=arc-20240116; t=1752144441; c=relaxed/simple;
+	bh=SOep39LCruQJ5eUJmcxYU0zPt7Rxb5VZwOl88D+y7tQ=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=grochlNozvh/56U3aCb4yOwr5yVpKViGzB8vYGwmsTEB3Y2O9WbdJ+MWJjJmRaPhqeq5pDkCiYTdwCjH3MM9M+L3TJoap8W+QEFJvdpHRNKlIQiwTADm0Eo9DqLbdifwxUbDYiHOt0YLDsENPDDBNn0uBflqiNQisfXFu1Hm5Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BKk6Jbww; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752144439;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q0u3HIoTZyqgg631O8XZeTrysi+dlK3ZJXgoQ/uYQ84=;
+	b=BKk6Jbww2FSrepC5BeSV/XFncmwRmMhgnhmgTd7M6V+y0Cfv53s1qBnI0dfw5iNsxOvxjy
+	4CRZJ1ypVF3lPJFGe3oml2St1AFYiBPvOUw/I8wgjmrXrzNb1pOvRJUvI8liGyCBvsv4mp
+	yMI7fW12/dStW9Eqfuz8Z8M6JK418is=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-408-Qs5apeF0MfKwPreNiR2KRQ-1; Thu,
+ 10 Jul 2025 06:47:16 -0400
+X-MC-Unique: Qs5apeF0MfKwPreNiR2KRQ-1
+X-Mimecast-MFC-AGG-ID: Qs5apeF0MfKwPreNiR2KRQ_1752144434
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D985519560B0;
+	Thu, 10 Jul 2025 10:47:13 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 488C719373D8;
+	Thu, 10 Jul 2025 10:47:09 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <CAKPOu+-qYtC0iFWv856JZinO-0E=SEoQ6pOLvc0bZfsbSakR8w@mail.gmail.com>
+References: <CAKPOu+-qYtC0iFWv856JZinO-0E=SEoQ6pOLvc0bZfsbSakR8w@mail.gmail.com> <20250701163852.2171681-1-dhowells@redhat.com> <CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com> <2724318.1752066097@warthog.procyon.org.uk> <CAKPOu+_ZXJqftqFj6fZ=hErPMOuEEtjhnQ3pxMr9OAtu+sw=KQ@mail.gmail.com> <2738562.1752092552@warthog.procyon.org.uk>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Viacheslav Dubeyko <slava@dubeyko.com>,
+    Alex Markuze <amarkuze@redhat.com>, Steve French <sfrench@samba.org>,
+    Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 00/13] netfs, cifs: Fixes to retry-related code
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "soundwire: qcom: Add set_channel_map api support"
-To: Amit Pundir <amit.pundir@linaro.org>, Vinod Koul <vkoul@kernel.org>,
- Mark Brown <broonie@kernel.org>, Mohammad Rafi Shaik
- <quic_mohs@quicinc.com>, Srinivas Kandagatla <srini@kernel.org>,
- Bard Liao <yung-chuan.liao@linux.intel.com>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
- Sanyog Kale <sanyog.r.kale@intel.com>,
- Dan Carpenter <dan.carpenter@linaro.org>,
- Yongqin Liu <yongqin.liu@linaro.org>, Jie Gan <jie.gan@oss.qualcomm.com>
-Cc: linux-arm-msm <linux-arm-msm@vger.kernel.org>,
- linux-sound <linux-sound@vger.kernel.org>,
- lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-References: <20250709174949.8541-1-amit.pundir@linaro.org>
-Content-Language: en-US
-From: Srinivas Kandagatla <srini@kernel.org>
-In-Reply-To: <20250709174949.8541-1-amit.pundir@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2807749.1752144428.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 10 Jul 2025 11:47:08 +0100
+Message-ID: <2807750.1752144428@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
+Hi Max,
 
+I managed to reproduce it on my test machine with ceph + fscache.
 
-On 7/9/25 6:49 PM, Amit Pundir wrote:
-> This reverts commit 7796c97df6b1b2206681a07f3c80f6023a6593d5.
-> 
-> This patch broke Dragonboard 845c (sdm845). I see:
-> 
-thanks Amit for sending this out,
+Does this fix the problem for you?
 
->     Unexpected kernel BRK exception at EL1
->     Internal error: BRK handler: 00000000f20003e8 [#1]  SMP
->     pc : qcom_swrm_set_channel_map+0x7c/0x80 [soundwire_qcom]
->     lr : snd_soc_dai_set_channel_map+0x34/0x78
->     Call trace:
->      qcom_swrm_set_channel_map+0x7c/0x80 [soundwire_qcom] (P)
->      sdm845_dai_init+0x18c/0x2e0 [snd_soc_sdm845]
->      snd_soc_link_init+0x28/0x6c
->      snd_soc_bind_card+0x5f4/0xb0c
->      snd_soc_register_card+0x148/0x1a4
->      devm_snd_soc_register_card+0x50/0xb0
->      sdm845_snd_platform_probe+0x124/0x148 [snd_soc_sdm845]
->      platform_probe+0x6c/0xd0
->      really_probe+0xc0/0x2a4
->      __driver_probe_device+0x7c/0x130
->      driver_probe_device+0x40/0x118
->      __device_attach_driver+0xc4/0x108
->      bus_for_each_drv+0x8c/0xf0
->      __device_attach+0xa4/0x198
->      device_initial_probe+0x18/0x28
->      bus_probe_device+0xb8/0xbc
->      deferred_probe_work_func+0xac/0xfc
->      process_one_work+0x244/0x658
->      worker_thread+0x1b4/0x360
->      kthread+0x148/0x228
->      ret_from_fork+0x10/0x20
->     Kernel panic - not syncing: BRK handler: Fatal exception
-> 
-> Dan has also reported following issues with the original patch
-> https://lore.kernel.org/all/33fe8fe7-719a-405a-9ed2-d9f816ce1d57@sabinyo.mountain/
-> 
-> Bug #1:
-> The zeroeth element of ctrl->pconfig[] is supposed to be unused.  We
-> start counting at 1.  However this code sets ctrl->pconfig[0].ch_mask = 128.
-> 
-> Bug #2:
-> There are SLIM_MAX_TX_PORTS (16) elements in tx_ch[] array but only
-> QCOM_SDW_MAX_PORTS + 1 (15) in the ctrl->pconfig[] array so it corrupts
-> memory like Yongqin Liu pointed out.
-> 
-> Bug 3:
-> Like Jie Gan pointed out, it erases all the tx information with the rx
-> information.
-> 
-> Cc: <stable@vger.kernel.org> # v6.15+
-> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-> ---
+David
+---
+netfs: Fix copy-to-cache so that it performs collection with ceph+fscache
 
-Acked-by: Srinivas Kandagatla <srini@kernel.org>
+The netfs copy-to-cache that is used by Ceph with local caching sets up a
+new request to write data just read to the cache.  The request is started
+and then left to look after itself whilst the app continues.  The request
+gets notified by the backing fs upon completion of the async DIO write, bu=
+t
+then tries to wake up the app because NETFS_RREQ_OFFLOAD_COLLECTION isn't
+set - but the app isn't waiting there, and so the request just hangs.
 
---srini
->  drivers/soundwire/qcom.c | 26 --------------------------
->  1 file changed, 26 deletions(-)
-> 
-> diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
-> index 295a46dc2be7..0f45e3404756 100644
-> --- a/drivers/soundwire/qcom.c
-> +++ b/drivers/soundwire/qcom.c
-> @@ -156,7 +156,6 @@ struct qcom_swrm_port_config {
->  	u8 word_length;
->  	u8 blk_group_count;
->  	u8 lane_control;
-> -	u8 ch_mask;
->  };
->  
->  /*
-> @@ -1049,13 +1048,9 @@ static int qcom_swrm_port_enable(struct sdw_bus *bus,
->  {
->  	u32 reg = SWRM_DP_PORT_CTRL_BANK(enable_ch->port_num, bank);
->  	struct qcom_swrm_ctrl *ctrl = to_qcom_sdw(bus);
-> -	struct qcom_swrm_port_config *pcfg;
->  	u32 val;
->  
-> -	pcfg = &ctrl->pconfig[enable_ch->port_num];
->  	ctrl->reg_read(ctrl, reg, &val);
-> -	if (pcfg->ch_mask != SWR_INVALID_PARAM && pcfg->ch_mask != 0)
-> -		enable_ch->ch_mask = pcfg->ch_mask;
->  
->  	if (enable_ch->enable)
->  		val |= (enable_ch->ch_mask << SWRM_DP_PORT_CTRL_EN_CHAN_SHFT);
-> @@ -1275,26 +1270,6 @@ static void *qcom_swrm_get_sdw_stream(struct snd_soc_dai *dai, int direction)
->  	return ctrl->sruntime[dai->id];
->  }
->  
-> -static int qcom_swrm_set_channel_map(struct snd_soc_dai *dai,
-> -				     unsigned int tx_num, const unsigned int *tx_slot,
-> -				     unsigned int rx_num, const unsigned int *rx_slot)
-> -{
-> -	struct qcom_swrm_ctrl *ctrl = dev_get_drvdata(dai->dev);
-> -	int i;
-> -
-> -	if (tx_slot) {
-> -		for (i = 0; i < tx_num; i++)
-> -			ctrl->pconfig[i].ch_mask = tx_slot[i];
-> -	}
-> -
-> -	if (rx_slot) {
-> -		for (i = 0; i < rx_num; i++)
-> -			ctrl->pconfig[i].ch_mask = rx_slot[i];
-> -	}
-> -
-> -	return 0;
-> -}
-> -
->  static int qcom_swrm_startup(struct snd_pcm_substream *substream,
->  			     struct snd_soc_dai *dai)
->  {
-> @@ -1331,7 +1306,6 @@ static const struct snd_soc_dai_ops qcom_swrm_pdm_dai_ops = {
->  	.shutdown = qcom_swrm_shutdown,
->  	.set_stream = qcom_swrm_set_sdw_stream,
->  	.get_stream = qcom_swrm_get_sdw_stream,
-> -	.set_channel_map = qcom_swrm_set_channel_map,
->  };
->  
->  static const struct snd_soc_component_driver qcom_swrm_dai_component = {
+Fix this by setting NETFS_RREQ_OFFLOAD_COLLECTION which causes the
+notification from the backing filesystem to put the collection onto a work
+queue instead.
+
+Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use =
+one work item")
+Reported-by: Max Kellermann <max.kellermann@ionos.com>
+Link: https://lore.kernel.org/r/CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=3DshxyGLwfe-L=
+7AV3DhebS3w@mail.gmail.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: Alex Markuze <amarkuze@redhat.com>
+cc: Ilya Dryomov <idryomov@gmail.com>
+cc: netfs@lists.linux.dev
+cc: ceph-devel@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
+---
+ fs/netfs/read_pgpriv2.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
+index 5bbe906a551d..080d2a6a51d9 100644
+--- a/fs/netfs/read_pgpriv2.c
++++ b/fs/netfs/read_pgpriv2.c
+@@ -110,6 +110,7 @@ static struct netfs_io_request *netfs_pgpriv2_begin_co=
+py_to_cache(
+ 	if (!creq->io_streams[1].avail)
+ 		goto cancel_put;
+ =
+
++	__set_bit(NETFS_RREQ_OFFLOAD_COLLECTION, &creq->flags);
+ 	trace_netfs_write(creq, netfs_write_trace_copy_to_cache);
+ 	netfs_stat(&netfs_n_wh_copy_to_cache);
+ 	rreq->copy_to_cache =3D creq;
 
 
