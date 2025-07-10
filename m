@@ -1,263 +1,148 @@
-Return-Path: <stable+bounces-161545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06B1AFFC83
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 10:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D236DAFFD83
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 11:06:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E99716AE2F
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 08:37:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D6FE1731D7
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 09:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC92628C5CC;
-	Thu, 10 Jul 2025 08:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NyOmZ62I"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8124D28E5E6;
+	Thu, 10 Jul 2025 09:05:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.actia.se (mail.actia.se [212.181.117.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2583F233735;
-	Thu, 10 Jul 2025 08:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB03928E56B;
+	Thu, 10 Jul 2025 09:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752136576; cv=none; b=HdXOuGidP/XE0HVhs2rcojYnGGHZzSsqvLcqZjZzm+AAwlLC5gocB6bR0v5/q8hgQmYfQL7GnQmtyxwWEmc3t13Wv2mwCyJsjDj7Br1ex2OUGshi5a67w2IRuAM1LAe6GvoNzM5NR1L+J/ca0BhTmBFiURhTWDFbSdovrsx6aIU=
+	t=1752138357; cv=none; b=kOqTYhu2U4OXB0SQcp14uHi44SC3ForY66WzrShixZUpZWBMrenG6ssY03BpNvKAmqyVKLooCnZuCzjcp6MgPvaoTv7lc90/7+gnA7Whhp5mSMRzv5yNPYeeQ3piCGcim155wWfQX6ncJxOqDuFKHIWGLXy9vc9XSwfR4St8/7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752136576; c=relaxed/simple;
-	bh=mRrb7U9h+wd/ixXq0sOvssEZNpJV79yjfLJ6q1P/s40=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=r2SNi5S5u2smTpx2tFXdXb3FB1T5xtbtCONk5ZI35+jsdvgHdHhSnmAYrXdwnhhjRCCMbvqCoTeQpgtcebAMj/sfgfAsbPm6v5SLUOJNKD1yISavE9YgVVDYbWq7Dp+S6un+CIqfzk3H4LlHOVof0ojZNATdPmm/p5NNj/4OxkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NyOmZ62I; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56A1Waoc014142;
-	Thu, 10 Jul 2025 08:36:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=gzctx2
-	cjNDSfw97ECZU1rLs5oO4DX279zNGEhW51iW0=; b=NyOmZ62IW0yVPtR5TR+yIF
-	5CIHGgEme5WJMlIReXKsvBT8Z0+usW/1u6sh3ubfSUPbWPL1RwRdlXorBqMfFgrR
-	+WIZVS0gByZT6HAACuD4+oPSBy8RQfBfnpFS0fYyv+p21T/WsmZ/8uuJYlJA2/Ct
-	6iwIIa0cZEgd1w6/BU1sSdtzXPmAXVaE6NhGu4vprJbNo78xbp+acXrZqdXyrJhL
-	adOz99UxiX9I1IacqKqpEHzOW9ieancDA4DXoj/UcPil8O1iGcUZIPRXaEcbEgCF
-	AhE6yKRXrZFfUZGyTaUS1q8Z5TdDrNt2PWJ7V+zwqvnYMNGZraS+I/0ipdqG+8kw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47t3xd9qp3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Jul 2025 08:36:11 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56A5ZQ6I010841;
-	Thu, 10 Jul 2025 08:36:10 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47qes0cx51-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Jul 2025 08:36:10 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56A8a8SJ16122590
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Jul 2025 08:36:08 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B730358059;
-	Thu, 10 Jul 2025 08:36:08 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1294258058;
-	Thu, 10 Jul 2025 08:36:07 +0000 (GMT)
-Received: from [9.111.81.29] (unknown [9.111.81.29])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 10 Jul 2025 08:36:06 +0000 (GMT)
-Message-ID: <23b7e8e20d7f660513dce9c70958af81057f0f46.camel@linux.ibm.com>
-Subject: Re: [PATCH 6.6 108/132] s390/pci: Fix stale function handles in
- error handling
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Julian Ruess <julianr@linux.ibm.com>,
-        Gerd
- Bayer	 <gbayer@linux.ibm.com>, Farhan Ali <alifm@linux.ibm.com>,
-        Alexander
- Gordeev	 <agordeev@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Date: Thu, 10 Jul 2025 10:36:06 +0200
-In-Reply-To: <20250708162233.754242912@linuxfoundation.org>
-References: <20250708162230.765762963@linuxfoundation.org>
-	 <20250708162233.754242912@linuxfoundation.org>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
+	s=arc-20240116; t=1752138357; c=relaxed/simple;
+	bh=7WYC0Q01SuTeXVO2p/jlKOCMn9aAW/fTfixuG0PDXYo=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UKLmLO6gkeJC/jyoQ9kLbtYwXvChoBjXsnKeb52t8Oo9QEzqszpRAMfvDUW913EX1qcN/SoUljd0vwT75cLGyYpnxOJlB+b3JClJNwvNLh2C2OHBtue7sWQNljUSdFtNM/pKkGWImNbFt+/X4snha5/d/Lc4MfS6qQr/9Wzf5h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
+Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
+ (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Thu, 10 Jul
+ 2025 10:50:40 +0200
+Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
+ S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%6]) with mapi id
+ 15.01.2507.057; Thu, 10 Jul 2025 10:50:40 +0200
+From: John Ernberg <john.ernberg@actia.se>
+To: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Ming Lei <ming.lei@canonical.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, John Ernberg <john.ernberg@actia.se>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
+Thread-Topic: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
+ event
+Thread-Index: AQHb8Xe2qza52xx55UmGbnkg6Pc/lg==
+Date: Thu, 10 Jul 2025 08:50:40 +0000
+Message-ID: <20250710085028.1070922-1-john.ernberg@actia.se>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: git-send-email 2.49.0
+x-esetresult: clean, is OK
+x-esetid: 37303A2956B14450657066
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 59jT9K2GLUwbgAS_GcAQIIqRSowsTayt
-X-Authority-Analysis: v=2.4 cv=MLRgmNZl c=1 sm=1 tr=0 ts=686f7b7b cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=_t13bW5AxIeavYlgejsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 59jT9K2GLUwbgAS_GcAQIIqRSowsTayt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDA3MCBTYWx0ZWRfX8WjsLTqb4wwT Ijak7TS1Ap/8t0qj1KTpcUbqsATk4J+Rd83ZAUEeTH0nJ7EXlb+Q/9EM5LdzwZjo7QoRR6xXC3v CILDskLikFG5EqyE4sHDc47Ul3OhZHtE8qVapDbIP1kQTkh3T8BWp2TmNhyXDCfl2hdF2t1cXTP
- m/6mOom0+OuMsfBqWFlyzUuo1fzjj13ifnmLNhZYQmYnVcDZBPybeAsm/RlT3jOTx9CbjlteegD sYlMsc+D0OQF4bUjSm4snFgdQAGF9z9m6v0z7LsWbWko9p9OXhcjZuiCk9PuLK/LYAB8ZJIZAeZ dZ1esTWzYym/6GLfr/7R9S9engykhMBiPCe5k/I+eyTo51p1BxBGuUBdcNGOO7jQyvnRatj9qME
- /OpubosYcXUWHLtYEYNpLPHwvTse5HxmKcjWoPS6eHJAcTsCHd4QfXI+7Kh3ByfgB9gXPrHI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-10_01,2025-07-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- adultscore=0 priorityscore=1501 mlxscore=0 clxscore=1015 impostorscore=0
- malwarescore=0 mlxlogscore=999 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507100070
 
-On Tue, 2025-07-08 at 18:23 +0200, Greg Kroah-Hartman wrote:
-> 6.6-stable review patch.  If anyone has any objections, please let me kno=
-w.
->=20
-> ------------------
->=20
-> From: Niklas Schnelle <schnelle@linux.ibm.com>
->=20
-> [ Upstream commit 45537926dd2aaa9190ac0fac5a0fbeefcadfea95 ]
->=20
-> The error event information for PCI error events contains a function
-> handle for the respective function. This handle is generally captured at
-> the time the error event was recorded. Due to delays in processing or
-> cascading issues, it may happen that during firmware recovery multiple
-> events are generated. When processing these events in order Linux may
-> already have recovered an affected function making the event information
-> stale. Fix this by doing an unconditional CLP List PCI function
-> retrieving the current function handle with the zdev->state_lock held
-> and ignoring the event if its function handle is stale.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
-> Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
-> Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
-> Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  arch/s390/pci/pci_event.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->=20
-> diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
-> index d969f36bf186f..fd83588f3c11d 100644
-> --- a/arch/s390/pci/pci_event.c
-> +++ b/arch/s390/pci/pci_event.c
-> @@ -257,6 +257,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *=
-ccdf)
->  	struct zpci_dev *zdev =3D get_zdev_by_fid(ccdf->fid);
->  	struct pci_dev *pdev =3D NULL;
->  	pci_ers_result_t ers_res;
-> +	u32 fh =3D 0;
-> +	int rc;
-> =20
->  	zpci_dbg(3, "err fid:%x, fh:%x, pec:%x\n",
->  		 ccdf->fid, ccdf->fh, ccdf->pec);
-> @@ -264,6 +266,16 @@ static void __zpci_event_error(struct zpci_ccdf_err =
-*ccdf)
->  	zpci_err_hex(ccdf, sizeof(*ccdf));
-> =20
->  	if (zdev) {
-> +		mutex_lock(&zdev->state_lock);
+Having a Gemalto Cinterion PLS83-W modem attached to USB and activating the
+cellular data link would sometimes yield the following RCU stall, leading
+to a system freeze:
 
-This won't compile this tree misses commit bcb5d6c76903 ("s390/pci:
-introduce lock to synchronize state of zpci_dev's").
+    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... =
+} 33108 jiffies s: 201 root: 0x1/.
+    rcu: blocking rcu_node structures (internal RCU debug):
+    Sending NMI from CPU 1 to CPUs 0:
+    NMI backtrace for cpu 0
 
-> +		rc =3D clp_refresh_fh(zdev->fid, &fh);
-> +		if (rc)
-> +			goto no_pdev;
-> +		if (!fh || ccdf->fh !=3D fh) {
-> +			/* Ignore events with stale handles */
-> +			zpci_dbg(3, "err fid:%x, fh:%x (stale %x)\n",
-> +				 ccdf->fid, fh, ccdf->fh);
-> +			goto no_pdev;
-> +		}
->  		zpci_update_fh(zdev, ccdf->fh);
->  		if (zdev->zbus->bus)
->  			pdev =3D pci_get_slot(zdev->zbus->bus, zdev->devfn);
-> @@ -292,6 +304,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *=
-ccdf)
->  	}
->  	pci_dev_put(pdev);
->  no_pdev:
-> +	if (zdev)
-> +		mutex_unlock(&zdev->state_lock);
+    Call trace:
+     arch_local_irq_enable+0x4/0x8
+     local_bh_enable+0x18/0x20
+     __netdev_alloc_skb+0x18c/0x1cc
+     rx_submit+0x68/0x1f8 [usbnet]
+     rx_alloc_submit+0x4c/0x74 [usbnet]
+     usbnet_bh+0x1d8/0x218 [usbnet]
+     usbnet_bh_tasklet+0x10/0x18 [usbnet]
+     tasklet_action_common+0xa8/0x110
+     tasklet_action+0x2c/0x34
+     handle_softirqs+0x2cc/0x3a0
+     __do_softirq+0x10/0x18
+     ____do_softirq+0xc/0x14
+     call_on_irq_stack+0x24/0x34
+     do_softirq_own_stack+0x18/0x20
+     __irq_exit_rcu+0xa8/0xb8
+     irq_exit_rcu+0xc/0x30
+     el1_interrupt+0x34/0x48
+     el1h_64_irq_handler+0x14/0x1c
+     el1h_64_irq+0x68/0x6c
+     _raw_spin_unlock_irqrestore+0x38/0x48
+     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
+     unlink1+0xd4/0xdc [usbcore]
+     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
+     usb_unlink_urb+0x24/0x44 [usbcore]
+     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
+     __handle_link_change+0x34/0x70 [usbnet]
+     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
+     process_scheduled_works+0x2d0/0x48c
+     worker_thread+0x150/0x1dc
+     kthread+0xd8/0xe8
+     ret_from_fork+0x10/0x20
 
-Curiously this patch was adjusted differently here vs for 6.1.y, this
-one at least places the unlock in the same place as upstream.
+It turns out that during the link activation a LINK_CHANGE event is emitted
+which causes the active RX URBs to be unlinked, while that is happening
+rx_submit() may begin pushing new URBs to the queue being emptied.
+Causing the unlink queue to never empty.
 
->  	zpci_zdev_put(zdev);
->  }
-> =20
+Use the same approach as commit 43daa96b166c ("usbnet: Stop RX Q on MTU
+change") and pause the RX queue while unlinking the URBs on LINK_CHANGE
+as well.
 
-Please drop this patch! Ten can we pull in commit bcb5d6c76903
-("s390/pci: introduce lock to synchronize state of zpci_dev's")
-as a prerequiste? This fix would still work for its specific issue
-without the mutex i.e. just adjusting context but I'd prefer to have
-both in stable.
+Fixes: 4b49f58fff00 ("usbnet: handle link change")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
 
-Also, I wonder if it would be possible to have the subject of these
-kind of mails indicate if the backport patch was adjusted more than
-just line offsets or context? I think that would make it much easier to
-spot where extra attention is required.
+---
 
-Thanks,
-Niklas
+Tested on 6.12.20 and forward ported.
+---
+ drivers/net/usb/usbnet.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index c04e715a4c2a..156f0e85a135 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1115,7 +1115,9 @@ static void __handle_link_change(struct usbnet *dev)
+=20
+ 	if (!netif_carrier_ok(dev->net)) {
+ 		/* kill URBs for reading packets to save bus bandwidth */
++		usbnet_pause_rx(dev);
+ 		unlink_urbs(dev, &dev->rxq);
++		usbnet_resume_rx(dev);
+=20
+ 		/*
+ 		 * tx_timeout will unlink URBs for sending packets and
+--=20
+2.49.0
 
