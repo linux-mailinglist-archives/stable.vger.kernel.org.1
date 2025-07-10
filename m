@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-161534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54717AFF895
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 07:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E17CFAFF8AF
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 07:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EB975628CB
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 05:45:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C765E5630D3
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 05:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8188F286889;
-	Thu, 10 Jul 2025 05:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1273286D7C;
+	Thu, 10 Jul 2025 05:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pYnW4UJn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rq5VOF5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E952285CB3;
-	Thu, 10 Jul 2025 05:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F11A17741;
+	Thu, 10 Jul 2025 05:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752126366; cv=none; b=p+xDLn2GCJHoxlCnBQCW98aD4bWj2pe/UnISaMdt8se8CuOGO057kYeznIeaf/2t/TEA/NIPp9FoE8JIROgYf8DJiZCdNaFOX00nTg7ELwFt0pT21H6NwESWj7Rfbpi45q1xanLuqZz2wZIDyRoE3iS5IpanyNHUjFYk0VWOFSg=
+	t=1752127166; cv=none; b=StJud9vt3YaOoe3ehi8VxQaNvcVrNnU7m0Or0IuNC5GWFaXAZGLmVMfzZ5OIDqI95qZ0eeoigGr6aqha6mTwoILbUQMeoXy/TvNkv0S9WqUuu34M85fV6GHKqV5m7dDiIjzL6cjDubBmtcnJiaxig/bF7lXLw/EJpnWG0MgvdvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752126366; c=relaxed/simple;
-	bh=mMJw3qN7xBWYMFed7RotGp+EeqE3Q3iMoWZChDD72DA=;
-	h=Date:To:From:Subject:Message-Id; b=Vq9Qzp4WNSGFkcPVTEYv75Hu4r7rsnZdjoerHlwh+b4bOWmyJPHZmwpT5jFbEz7id8G8yN957IxDpOE2hbFhRuHj0x4VRMP4wXoqB9dd87R7C/U1WSipvonXo9be9Rf39fiWfEYgc3SH7J10BuGWT/9lw35x5z3sRdhmmYvvGEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pYnW4UJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8589C4CEE3;
-	Thu, 10 Jul 2025 05:46:05 +0000 (UTC)
+	s=arc-20240116; t=1752127166; c=relaxed/simple;
+	bh=lp9W+29Y+8aqABDM0lNtek8KHfq9WJez5ZwRtWbhbCk=;
+	h=Date:To:From:Subject:Message-Id; b=r67H08BZjw5IQ76CaxGVB2UltSRFgUPetpXz/X1QuBrYzQ4NYCN/7QIQ/4ZhtM/AiJr8WMDLXo6+ylHbeCc6kM/Ta1iv8X7ycKeh1flmsiEfGhIC9AH27vOMpM/7EsWuPHcltZYBX5ZvQGz+57nxFlc2tFhl9y3M2cGOqdJWi3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rq5VOF5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DF4C4CEE3;
+	Thu, 10 Jul 2025 05:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752126365;
-	bh=mMJw3qN7xBWYMFed7RotGp+EeqE3Q3iMoWZChDD72DA=;
+	s=korg; t=1752127166;
+	bh=lp9W+29Y+8aqABDM0lNtek8KHfq9WJez5ZwRtWbhbCk=;
 	h=Date:To:From:Subject:From;
-	b=pYnW4UJnX5n1WE0eq6+ZQT68qvjEy3yImY1jcGUwagsmuF4+R2GGP73KRhaj7UDpf
-	 ufDZHVAuZof69E020d1cFK/iWUdbFH3JsXEx+OqaFSacEjG+vR/H1G7qHVKx9Tcqqr
-	 7PiGAdZzoaZXkWMtpFRHsvsufbarVcFKtwvtRu4s=
-Date: Wed, 09 Jul 2025 22:46:05 -0700
-To: mm-commits@vger.kernel.org,will@kernel.org,svens@linux.ibm.com,stable@vger.kernel.org,ryan.roberts@arm.com,paul.walmsley@sifive.com,palmer@dabbelt.com,hca@linux.ibm.com,gor@linux.ibm.com,gerald.schaefer@linux.ibm.com,dev.jain@arm.com,david@redhat.com,catalin.marinas@arm.com,borntraeger@linux.ibm.com,agordeev@linux.ibm.com,anshuman.khandual@arm.com,akpm@linux-foundation.org
+	b=rq5VOF5ldCG5yqVBawquPwWQ+nc66ZqcKsSxacRL7v7wIvv2NWegwTcWO0AA/KIEo
+	 zK9FQwfD81JU0OAoJMPPBLGbLPCt8nkc3HUEFjVjymIRzI8X8JY8vkx4Ba/BK0ZyU7
+	 utyvaTRah/FH8cDnLczv2UjBEtQspllCNkV2ECWQ=
+Date: Wed, 09 Jul 2025 22:59:25 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,lizhi.xu@windriver.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd.patch removed from -mm tree
-Message-Id: <20250710054605.B8589C4CEE3@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] ocfs2-reset-folio-to-null-when-get-folio-fails.patch removed from -mm tree
+Message-Id: <20250710055926.53DF4C4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,143 +50,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
+     Subject: ocfs2: reset folio to NULL when get folio fails
 has been removed from the -mm tree.  Its filename was
-     mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd.patch
+     ocfs2-reset-folio-to-null-when-get-folio-fails.patch
 
-This patch was dropped because it was merged into the mm-stable branch
+This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
-Date: Fri, 20 Jun 2025 10:54:27 +0530
+From: Lizhi Xu <lizhi.xu@windriver.com>
+Subject: ocfs2: reset folio to NULL when get folio fails
+Date: Mon, 16 Jun 2025 09:31:40 +0800
 
-Memory hot remove unmaps and tears down various kernel page table regions
-as required.  The ptdump code can race with concurrent modifications of
-the kernel page tables.  When leaf entries are modified concurrently, the
-dump code may log stale or inconsistent information for a VA range, but
-this is otherwise not harmful.
+The reproducer uses FAULT_INJECTION to make memory allocation fail, which
+causes __filemap_get_folio() to fail, when initializing w_folios[i] in
+ocfs2_grab_folios_for_write(), it only returns an error code and the value
+of w_folios[i] is the error code, which causes
+ocfs2_unlock_and_free_folios() to recycle the invalid w_folios[i] when
+releasing folios.
 
-But when intermediate levels of kernel page table are freed, the dump code
-will continue to use memory that has been freed and potentially
-reallocated for another purpose.  In such cases, the ptdump code may
-dereference bogus addresses, leading to a number of potential problems.
-
-To avoid the above mentioned race condition, platforms such as arm64,
-riscv and s390 take memory hotplug lock, while dumping kernel page table
-via the sysfs interface /sys/kernel/debug/kernel_page_tables.
-
-Similar race condition exists while checking for pages that might have
-been marked W+X via /sys/kernel/debug/kernel_page_tables/check_wx_pages
-which in turn calls ptdump_check_wx().  Instead of solving this race
-condition again, let's just move the memory hotplug lock inside generic
-ptdump_check_wx() which will benefit both the scenarios.
-
-Drop get_online_mems() and put_online_mems() combination from all existing
-platform ptdump code paths.
-
-Link: https://lkml.kernel.org/r/20250620052427.2092093-1-anshuman.khandual@arm.com
-Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>	[s390]
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
+Link: https://lkml.kernel.org/r/20250616013140.3602219-1-lizhi.xu@windriver.com
+Reported-by: syzbot+c2ea94ae47cd7e3881ec@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c2ea94ae47cd7e3881ec
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/arm64/mm/ptdump_debugfs.c |    3 ---
- arch/riscv/mm/ptdump.c         |    3 ---
- arch/s390/mm/dump_pagetables.c |    2 --
- mm/ptdump.c                    |    2 ++
- 4 files changed, 2 insertions(+), 8 deletions(-)
+ fs/ocfs2/aops.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/mm/ptdump_debugfs.c~mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd
-+++ a/arch/arm64/mm/ptdump_debugfs.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/debugfs.h>
--#include <linux/memory_hotplug.h>
- #include <linux/seq_file.h>
- 
- #include <asm/ptdump.h>
-@@ -9,9 +8,7 @@ static int ptdump_show(struct seq_file *
- {
- 	struct ptdump_info *info = m->private;
- 
--	get_online_mems();
- 	ptdump_walk(m, info);
--	put_online_mems();
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(ptdump);
---- a/arch/riscv/mm/ptdump.c~mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd
-+++ a/arch/riscv/mm/ptdump.c
-@@ -6,7 +6,6 @@
- #include <linux/efi.h>
- #include <linux/init.h>
- #include <linux/debugfs.h>
--#include <linux/memory_hotplug.h>
- #include <linux/seq_file.h>
- #include <linux/ptdump.h>
- 
-@@ -413,9 +412,7 @@ bool ptdump_check_wx(void)
- 
- static int ptdump_show(struct seq_file *m, void *v)
- {
--	get_online_mems();
- 	ptdump_walk(m, m->private);
--	put_online_mems();
- 
- 	return 0;
- }
---- a/arch/s390/mm/dump_pagetables.c~mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd
-+++ a/arch/s390/mm/dump_pagetables.c
-@@ -247,11 +247,9 @@ static int ptdump_show(struct seq_file *
- 		.marker = markers,
- 	};
- 
--	get_online_mems();
- 	mutex_lock(&cpa_mutex);
- 	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
- 	mutex_unlock(&cpa_mutex);
--	put_online_mems();
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(ptdump);
---- a/mm/ptdump.c~mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd
-+++ a/mm/ptdump.c
-@@ -176,6 +176,7 @@ void ptdump_walk_pgd(struct ptdump_state
- {
- 	const struct ptdump_range *range = st->range;
- 
-+	get_online_mems();
- 	mmap_write_lock(mm);
- 	while (range->start != range->end) {
- 		walk_page_range_debug(mm, range->start, range->end,
-@@ -183,6 +184,7 @@ void ptdump_walk_pgd(struct ptdump_state
- 		range++;
- 	}
- 	mmap_write_unlock(mm);
-+	put_online_mems();
- 
- 	/* Flush out the last page */
- 	st->note_page_flush(st);
+--- a/fs/ocfs2/aops.c~ocfs2-reset-folio-to-null-when-get-folio-fails
++++ a/fs/ocfs2/aops.c
+@@ -1071,6 +1071,7 @@ static int ocfs2_grab_folios_for_write(s
+ 			if (IS_ERR(wc->w_folios[i])) {
+ 				ret = PTR_ERR(wc->w_folios[i]);
+ 				mlog_errno(ret);
++				wc->w_folios[i] = NULL;
+ 				goto out;
+ 			}
+ 		}
 _
 
-Patches currently in -mm which might be from anshuman.khandual@arm.com are
+Patches currently in -mm which might be from lizhi.xu@windriver.com are
 
 
 
