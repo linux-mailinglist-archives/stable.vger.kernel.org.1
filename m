@@ -1,152 +1,90 @@
-Return-Path: <stable+bounces-161612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73BAB0097F
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 19:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D77B00AE7
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 19:56:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13C791C8863C
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 17:04:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB6F11889AFA
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 17:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BCF2F0048;
-	Thu, 10 Jul 2025 17:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666B91DDC11;
+	Thu, 10 Jul 2025 17:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g2UKz81w"
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="JGITLxDl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7FD2797A0;
-	Thu, 10 Jul 2025 17:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFAC2F3647;
+	Thu, 10 Jul 2025 17:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752166998; cv=none; b=k3ePJHeIxiVcuWTaWXz+05nbT/xDjt40ZBqFuaGBfzK7jGDi4h9hxhpL/KX/4cnr117bfvAsgY3WvqDKTUfqPebgrLvtc9vjqPHpqZzxDZ8r0VyTe4UXs8tiV/rV7MFCQ3ZuGb7qtPS+o9xNoLdga2XN3ZNKfCBWAA7KsiyFzkM=
+	t=1752170196; cv=none; b=qZj1fxdjaVPitB38KsUbs7IJ3oO+4euKLtKmrts/rZNVqH/1GKuwYakywL1NHDgUlDcbhLhn6BUw4dierxyB2byMhRqvMFlLC5YQpRdFgSj3CqfKPJnqHeY9sjQNtfJYhWaKAbKbzS6Ri3Sq9ngXC10Uv4x45N49W/J1fUGkj7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752166998; c=relaxed/simple;
-	bh=W7zbUH+rxVwiXWiCIcevxN/uLfmclgsMQLofiJFemE8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DpE11Fzch2RRJ+vgGOG5j7P6S6iyDiwPBchPr4NlwAjjvScgP93hQ6CKn0V11Sm5BblcOqVbAcliEwia7lYeQTJHsvHxGEwvB10wNMvL67uo4YtYVdeimH2zZ15tpi5ABVyYELs0QmJYk+toti++kF+gkS9AWwalEAN3Gg9FHr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g2UKz81w; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752166997; x=1783702997;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=W7zbUH+rxVwiXWiCIcevxN/uLfmclgsMQLofiJFemE8=;
-  b=g2UKz81w9OmiifzRG7UjxBwNPU2lRFSL4JOnnSPaOc7/ga863nI/zehy
-   3wyO+F/IGfQvQjsJ1v/vu0FCpL7oWt5aGVjRrWxNboyJX6VLoXbDlXqQz
-   ZdIaWIVHzAqLpxl+3FgVkuF8xSDKhI9uXuCrl6zSUv+DcIRb+8zwrfZX6
-   t40MG4QYkUfje8tNDzF1yjqn2sDa85ezg+pQxJ613FfRBHduGHf0Pz2Cb
-   N8i0iMoTfq+IVj9WT4DJNpZG6xnBvzwMXBuOtedTkf3dEvWEW14RPCJoA
-   9K/CIz8srGkNElYckqId1DpvrCsBNB/aDOpPqmTCKw8UDVkbRhcTwFPyz
-   Q==;
-X-CSE-ConnectionGUID: 7j6GJ7G4TxC8T0HKNDv6Fw==
-X-CSE-MsgGUID: FcXhll5BQZ2PDrz2+Tb2fQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54611069"
-X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="54611069"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 10:02:32 -0700
-X-CSE-ConnectionGUID: e3p89pHySIe68v8tQzAc5g==
-X-CSE-MsgGUID: Jwe4w9AYQymXoADwzaUQow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="161710434"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa004.fm.intel.com with ESMTP; 10 Jul 2025 10:02:30 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id C43FB1A1; Thu, 10 Jul 2025 20:02:28 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Yevhen Kondrashyn <e.kondrashyn@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v1 1/1] Documentation: ACPI: Fix parent device references
-Date: Thu, 10 Jul 2025 20:00:23 +0300
-Message-ID: <20250710170225.961303-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1752170196; c=relaxed/simple;
+	bh=R2uBYRRVEDvnGQyRlNCUOU964/QuqXxp/NqMrC5S4b8=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=mQSQSz98YwwK3XL9aAoQSYNRk9Q2YJwFsgwOVojynUrdIMj35O4up+Q7WlTuhtdTW04pa1gtkw4yVvUXCUjK9idkR9CXwtX+DY2nFz+uQ6LeyXFQTGTjM9pbgo/xqucgpcKHaIHAyh/slGw/AtY2a6sylpyMH8/S/P126ded6c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=JGITLxDl; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 1CD67406FC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1752170188; bh=StHzJFEIgFoVTiFfu56FB8R7lyhp9GMEl5iQdWvQYb4=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=JGITLxDlEmdqwW+SNQ4aY9pYjrHrd2bBCHKvjYut/F1eKnySWszz4FQDB4EutM8hJ
+	 Ok92m8IB4IzW+FpfarkNM35cw68oPIZCvzb2EqbduOVCYIuP3h2Uf4pAIcgmsrQDz4
+	 ozYFmo5Yn/lbBpg0vUzbpbff63FTccg2oeC7xRWW+8BT5k9l1c+g2g7/kbT7mEDl21
+	 M5ZYYc+KDxkvSupo81GzfeiCgZbgA99bW4oK2xom3SNVkpWOvUmowaTyetPbQJunK6
+	 k7W1unAMNQFrM0hxEDilS//BZQYJ0VZxSeHdHC3UMBGJtpOifMPQnd2XkSqI9RmpXR
+	 oZA6N70tgMykA==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 1CD67406FC;
+	Thu, 10 Jul 2025 17:56:28 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Pavel Machek <pavel@ucw.cz>, sashal@kernel.org, stable@vger.kernel.org,
+ kernel list <linux-kernel@vger.kernel.org>, conduct@kernel.org,
+ ebiederm@xmission.com
+Subject: Re: Sasha Levin is halucinating, non human entity, has no ethics
+ and no memory
+In-Reply-To: <aG2B6UDvk2WB7RWx@duo.ucw.cz>
+References: <aG2B6UDvk2WB7RWx@duo.ucw.cz>
+Date: Thu, 10 Jul 2025 11:56:27 -0600
+Message-ID: <87ple8x73o.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-The _CRS resources in many cases want to have ResourceSource field
-to be a type of ACPI String. This means that to compile properly
-we need to enclosure the name path into double quotes. This will
-in practice defer the interpretation to a run-time stage, However,
-this may be interpreted differently on different OSes and ACPI
-interpreter implementations. In particular ACPICA might not correctly
-recognize the leading '^' (caret) character and will not resolve
-the relative name path properly. On top of that, this piece may be
-used in SSDTs which are loaded after the DSDT and on itself may also
-not resolve relative name paths outside of their own scopes.
-With this all said, fix documentation to use fully-qualified name
-paths always to avoid any misinterpretations, which is proven to
-work.
+Pavel Machek <pavel@ucw.cz> writes:
 
-Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
-Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
+> Hi!
+>
+> So... I'm afraid subject is pretty accurate. I assume there's actual
+> human being called "Sasha Levin" somewhere, but I interact with him
+> via email, and while some interactions may be by human, some are
+> written by LLM but not clearly marked as such.
+>
+> And that's not okay -- because LLMs lie, have no ethics, and no
+> memory, so there's no point arguing with them. Its just wasting
+> everyone's time. People are not very thrilled by 'Markus Elfring' on
+> the lists, as he seems to ignore feedback, but at least that's actual
+> human, not a damn LLM that interacts as human but then ignores
+> everything.
 
-Rafael, I prefer, if no objections, to push this as v6.16-rc6 material since
-the reported issue was detected on old (v5.10.y) and still LTS kernel. Would be
-nice for people to not trap to it in older kernels.
+So ... we probably need to have discussions about the role LLMs will
+play in kernel development, but this is not the way to do it.  You are
+talking about a fellow human, and should treat him with respect.
+Please, let's not have this kind of attack here.
 
- Documentation/firmware-guide/acpi/i2c-muxes.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/firmware-guide/acpi/i2c-muxes.rst b/Documentation/firmware-guide/acpi/i2c-muxes.rst
-index 3a8997ccd7c4..f366539acd79 100644
---- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
-+++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
-@@ -14,7 +14,7 @@ Consider this topology::
-     |      |   | 0x70 |--CH01--> i2c client B (0x50)
-     +------+   +------+
- 
--which corresponds to the following ASL::
-+which corresponds to the following ASL (in the scope of \_SB)::
- 
-     Device (SMB1)
-     {
-@@ -24,7 +24,7 @@ which corresponds to the following ASL::
-             Name (_HID, ...)
-             Name (_CRS, ResourceTemplate () {
-                 I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
--                            AddressingMode7Bit, "^SMB1", 0x00,
-+                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
-                             ResourceConsumer,,)
-             }
- 
-@@ -37,7 +37,7 @@ which corresponds to the following ASL::
-                     Name (_HID, ...)
-                     Name (_CRS, ResourceTemplate () {
-                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
--                                    AddressingMode7Bit, "^CH00", 0x00,
-+                                    AddressingMode7Bit, "\\_SB.SMB1.CH00", 0x00,
-                                     ResourceConsumer,,)
-                     }
-                 }
-@@ -52,7 +52,7 @@ which corresponds to the following ASL::
-                     Name (_HID, ...)
-                     Name (_CRS, ResourceTemplate () {
-                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
--                                    AddressingMode7Bit, "^CH01", 0x00,
-+                                    AddressingMode7Bit, "\\_SB.SMB1.CH01", 0x00,
-                                     ResourceConsumer,,)
-                     }
-                 }
--- 
-2.47.2
-
+jon
 
