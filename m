@@ -1,138 +1,129 @@
-Return-Path: <stable+bounces-161563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D3EB002B4
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:58:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CBBB002E6
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 15:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16BC27B0E3B
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 12:57:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00C4A7BCAE8
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 13:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C802690D9;
-	Thu, 10 Jul 2025 12:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79ED270EAB;
+	Thu, 10 Jul 2025 13:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="q3GiOvBz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkKybojH"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5B21E8333;
-	Thu, 10 Jul 2025 12:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377411DC9A3;
+	Thu, 10 Jul 2025 13:09:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752152303; cv=none; b=hJTZbL1c+O1WcustZCuxpT8JcpVRRtfBKClaDiXulysWkkLVKpIGmw33xW94GIpUiFuKZeIagFdEaXP+ZJT0178j9lD6rMfBeh+QMROXYdKz9avuWZEeIcUpqA15I2Lx49UadsRN+XMQtFRljTtjjdu3SsmRnb3UvEkleJOtgCY=
+	t=1752152963; cv=none; b=TdMMJ9IaFIMIviO1N7AWr6GVCWQLygdeFNVxxYrzBxi9J1zkkKK2FuAxLdcK2EDwy6/XKUueuJy4aE/cSAgIgkEbhvUwxi0kj/ktrGUDdwYstS+86UOcycqR6OdU9cEqevsn7S1JLSNXOZ96CBr7z9QOhjLueAfDgjBthZXtKX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752152303; c=relaxed/simple;
-	bh=QJ5+1lSHVPyBwnNaUmAFeueiaKEBeuJfDLfTIhMwJ5w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=doGJD1ZlWNfG82dKuteSP0xOkrt4+p8BAFgYtj65PqaJy1e8ksUGbx3c8wRjLt0abnPY8LLbpN7BqVhRMF0cG+2JFd8H4ActTKHyOYqtcYZpwpjzm5t/WpoerdLl7qEuydA1S+c4XilAF6rYRmeN2Y7IKaC24YCDIbMKyYJPpvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=q3GiOvBz; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4bdFJM2n5Sz9sx4;
-	Thu, 10 Jul 2025 14:58:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1752152291; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XUdTgSu/zHvFvHHBAYxFI7WNZhlx1N0C5aZ+BZgA/hg=;
-	b=q3GiOvBzyHujBbSJyAfbiklhFM/WL6aD01vbIbLLVfn3xsMoDfFurOVoZidipbO6tdQSCm
-	+jp+NwxFcqSX0dn491UeCiC85OkRiX6DRkUGbRyykenUQnIOAm0ZXo3fOR+ll//rzXmAbh
-	7uZMY6GrfjZxxJ+E8dEhNHds3xsFBvNz1okgpTa9fVoO0TbEpLL6miqPva47X12iZiQ2d2
-	iH8wNIwu8RjH9obhhxlvnS8hZNHfJTweC3qsF01o52IugnS9sKwBK0Z7iTYc92c3dCHQ8/
-	t4IE0FtScpgYTbTcHgYBuJ8Pj9tAxDWccbazxeLl/GDe3PrX1hOpy5z8gQINEA==
-Message-ID: <bec98a82435d7f448dff219a2238b15b6b3eb754.camel@mailbox.org>
-Subject: Re: [PATCH v4 1/8] drm/panfrost: Fix scheduler workqueue bug
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Philipp Stanner <phasta@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Matthew
- Brost <matthew.brost@intel.com>,  Christian =?ISO-8859-1?Q?K=F6nig?=
- <ckoenig.leichtzumerken@gmail.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
- <tzimmermann@suse.de>,  Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Cc: dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Thu, 10 Jul 2025 14:58:05 +0200
-In-Reply-To: <20250710125412.128476-3-phasta@kernel.org>
-References: <20250710125412.128476-2-phasta@kernel.org>
-	 <20250710125412.128476-3-phasta@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1752152963; c=relaxed/simple;
+	bh=aVJI3YGqiyP4dgHE0xW7hMbGBdmM1uJRcRjZGkNUOco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OB60JwQDRp8opgWYj1ugv9T5cJ7NEdmZMnn3YaM8eroVXBfx+1+lFp4pXS3VqhujoWiR4khj8/9NGa0ho6YvwXXkuURjuTm4n5eHo7vB6dlLEjaLv4bKMx7Sv9gRop7oQqmwj7RfLEpTV+NUNnZ1Uj+YvnWZEa7MvDDJ6kNZo4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkKybojH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6742AC4CEE3;
+	Thu, 10 Jul 2025 13:09:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752152962;
+	bh=aVJI3YGqiyP4dgHE0xW7hMbGBdmM1uJRcRjZGkNUOco=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fkKybojHJPRa5y3uHhmoR9eXKXBDf+N/z0/WnpoGb47ABPkdj2QoKkt6EPM7/0u7+
+	 MWv/onIO98v1tbty8kXEekD4qQBeHv/ZaZzWzemcwdY+szSwe7TYVIbU1sRuWtBWl6
+	 b1ZLCK1af8fIqGG0c/z3oWma31mcYHCMFeS3RUbU=
+Date: Thu, 10 Jul 2025 15:09:20 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Heyne, Maximilian" <mheyne@amazon.de>
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	"Sauerwein, David" <dssauerw@amazon.de>,
+	Sasha Levin <sashal@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
+Subject: Re: [RESEND PATCH 5.10] fs/proc: do_task_stat: use
+ __for_each_thread()
+Message-ID: <2025071044-bunt-sister-9d9e@gregkh>
+References: <20250710-dyne-quaff-a6577749@mheyne-amazon>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: 836fbb2b50af0e52d75
-X-MBO-RS-META: q7ni9ki5c4orx1jns8zppxa9ufa6zses
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250710-dyne-quaff-a6577749@mheyne-amazon>
 
-On Thu, 2025-07-10 at 14:54 +0200, Philipp Stanner wrote:
-> When the GPU scheduler was ported to using a struct for its
-> initialization parameters, it was overlooked that panfrost creates a
-> distinct workqueue for timeout handling.
->=20
-> The pointer to this new workqueue is not initialized to the struct,
-> resulting in NULL being passed to the scheduler, which then uses the
-> system_wq for timeout handling.
->=20
-> Set the correct workqueue to the init args struct.
->=20
-> Cc: stable@vger.kernel.org=C2=A0# 6.15+
-> Fixes: 796a9f55a8d1 ("drm/sched: Use struct for drm_sched_init()
-> params")
-> Reported-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Closes:
-> https://lore.kernel.org/dri-devel/b5d0921c-7cbf-4d55-aa47-c35cd7861c02@ig=
-alia.com/
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+On Thu, Jul 10, 2025 at 12:35:43PM +0000, Heyne, Maximilian wrote:
+> From: Oleg Nesterov <oleg@redhat.com>
+> 
+> [ Upstream commit 7904e53ed5a20fc678c01d5d1b07ec486425bb6a ]
+> 
+> do/while_each_thread should be avoided when possible.
+> 
+> Link: https://lkml.kernel.org/r/20230909164501.GA11581@redhat.com
+> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+> Cc: Eric W. Biederman <ebiederm@xmission.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Stable-dep-of: 7601df8031fd ("fs/proc: do_task_stat: use sig->stats_lock to gather the threads/children stats")
+> Cc: stable@vger.kernel.org
+> [mheyne: adjusted context]
+> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 > ---
+> 
+> Compile-tested only.
+> We're seeing soft lock-ups with 5.10.237 because of the backport of
+> commit 4fe85bdaabd6 ("fs/proc: do_task_stat: use sig->stats_lock to
+> gather the threads/children stats").
 
-aaaarrrgh, how did that one get here!
+And this fixes it?
 
-Ignore that. Will not be merged through this series.
+How?
 
+> 
+> ---
+>  fs/proc/array.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/fs/proc/array.c b/fs/proc/array.c
+> index 8fba6d39e776..77b94c04e4af 100644
+> --- a/fs/proc/array.c
+> +++ b/fs/proc/array.c
+> @@ -512,18 +512,18 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
+>  		cgtime = sig->cgtime;
+>  
+>  		if (whole) {
+> -			struct task_struct *t = task;
+> +			struct task_struct *t;
+>  
+>  			min_flt = sig->min_flt;
+>  			maj_flt = sig->maj_flt;
+>  			gtime = sig->gtime;
+>  
+>  			rcu_read_lock();
+> -			do {
+> +			__for_each_thread(sig, t) {
+>  				min_flt += t->min_flt;
+>  				maj_flt += t->maj_flt;
+>  				gtime += task_gtime(t);
+> -			} while_each_thread(task, t);
+> +			}
 
-P.
+Ideally, the code generated here should be identical as before, so why
+is this change needed?
 
-> =C2=A0drivers/gpu/drm/panfrost/panfrost_job.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/panfrost/panfrost_job.c
-> b/drivers/gpu/drm/panfrost/panfrost_job.c
-> index 5657106c2f7d..15e2d505550f 100644
-> --- a/drivers/gpu/drm/panfrost/panfrost_job.c
-> +++ b/drivers/gpu/drm/panfrost/panfrost_job.c
-> @@ -841,7 +841,6 @@ int panfrost_job_init(struct panfrost_device
-> *pfdev)
-> =C2=A0		.num_rqs =3D DRM_SCHED_PRIORITY_COUNT,
-> =C2=A0		.credit_limit =3D 2,
-> =C2=A0		.timeout =3D msecs_to_jiffies(JOB_TIMEOUT_MS),
-> -		.timeout_wq =3D pfdev->reset.wq,
-> =C2=A0		.name =3D "pan_js",
-> =C2=A0		.dev =3D pfdev->dev,
-> =C2=A0	};
-> @@ -879,6 +878,7 @@ int panfrost_job_init(struct panfrost_device
-> *pfdev)
-> =C2=A0	pfdev->reset.wq =3D alloc_ordered_workqueue("panfrost-reset",
-> 0);
-> =C2=A0	if (!pfdev->reset.wq)
-> =C2=A0		return -ENOMEM;
-> +	args.timeout_wq =3D pfdev->reset.wq;
-> =C2=A0
-> =C2=A0	for (j =3D 0; j < NUM_JOB_SLOTS; j++) {
-> =C2=A0		js->queue[j].fence_context =3D
-> dma_fence_context_alloc(1);
+confused,
 
+greg k-h
 
