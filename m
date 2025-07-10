@@ -1,147 +1,106 @@
-Return-Path: <stable+bounces-161573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1663B003C0
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 15:38:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E068B003DC
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 15:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFE7D1890ADB
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 13:38:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FC7C1C80737
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 13:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D828D259CAC;
-	Thu, 10 Jul 2025 13:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB418264626;
+	Thu, 10 Jul 2025 13:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUaMuXP2"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="XEgfwOn6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A282594B4
-	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 13:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86474262FFE
+	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 13:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752154592; cv=none; b=iIGlyaKSmeh38x0bKaz78DdGbllMTkNwspbmu59Y7Hh5CL0A6tuy4Fw0E5DI0gLKAWKqOgksSmwH7R52q32HLG8vRS5TqofBHa7OgHLvMWSXm7cWPgPChIx9WfiNVyUY8XIUbh/saAB/+jJ854Zt138W7dieeFWrgkCjWMSlMCs=
+	t=1752154900; cv=none; b=Lqh9YyyFSeO2ZTJq5RB3gyufPdm/RJVqthsCxahZzt+SAhsq2hQbrY8fDTYONppYo/zW3Gu2wXijSPe/NwsV6e1FTelzcoSTm6dK3UIDkSC788K0Gk5I0UWsX7msKJSnXnirKy7kg/G6ixq6ZkHdx30bnB1S1tt0XIIA2opzRNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752154592; c=relaxed/simple;
-	bh=NhmUTiE3h3rCFrVHLcYcafulaAWoaqa14SP/YprUk/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HAtVzH91rDWRBHzu5FeLPf7trU8P9U+aRuc/hKIKqx/p45c4uMuDxLCOi6ur/104qYnhsxaRbsfUIoUpPFLAAdahBo9LUuWRVDTlo5KOeiDSGeNCQimOP8eXwEbgjDvsC6b0p8IIoBOpA+kz+KzS5vxtmtuYO+qq4dLJvKpys9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUaMuXP2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC954C4CEED;
-	Thu, 10 Jul 2025 13:36:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752154592;
-	bh=NhmUTiE3h3rCFrVHLcYcafulaAWoaqa14SP/YprUk/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dUaMuXP2O5yJtNiNA5U3Nd67zB+aD5jdoHm0ib+vx73/dsUDPOZj5QT9VoNtyDTI8
-	 xN3zShIMNKZThg8wjHBxUPN+PvlLetmEdsE92mHIjuUCt2urXF3g2wdVPdmNTKvXGP
-	 kXwMVKa2jSGL8AuHr2QtVgEq/WlHXYd+PjeYS6Gg=
-Date: Thu, 10 Jul 2025 15:36:28 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	Seiji Nishikawa <snishika@redhat.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH for 5.4 and 5.10] ACPI: PAD: fix crash in
- exit_round_robin()
-Message-ID: <2025071024-move-barrette-1e52@gregkh>
-References: <1750809374-29306-1-git-send-email-nobuhiro1.iwamatsu@toshiba.co.jp>
+	s=arc-20240116; t=1752154900; c=relaxed/simple;
+	bh=Y2cPTKyp8+pa4kvRMd2DbHQIqkwHAegaMbr/kZOwiA8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iz3xDNBOBq+r/bi8gjGx1dyoRV5YrPnGhzmBBllPvTpjaHQSAe8kSfwNCN2kYPIAX/Yh1fd8ywlx8EGtK4Pd4mztS7CbqvoKjenD8rJVpGoH+gY86uqnDUOjdkiadLsmKz1Wqw1poSXHPVzj/ipkJM3NM4zyCe4P+glFhoIu1Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=XEgfwOn6; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ae0c4945c76so152733666b.3
+        for <stable@vger.kernel.org>; Thu, 10 Jul 2025 06:41:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1752154897; x=1752759697; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y2cPTKyp8+pa4kvRMd2DbHQIqkwHAegaMbr/kZOwiA8=;
+        b=XEgfwOn6lEE9/qgA61ga1NXFOke9ca1L74o1p+WZjkWJ/CM8+cXLpM0vWp4RAJlLmt
+         E8/aZmPgy+LXVRv48r6krjog3A0x17OhAewlZxL7OkaVnj856GbgLsg2QB1/aszz39oz
+         BuY+cNeHTRWSvj0R0JYI/b7eQdDRE+7TgV0Li1xTF+K9owuvbD/axBa6hxrc6Q9cFS3n
+         4q6nkCk8BMNizCuUGd07o5psDhI48EXo+KMKRTMof/QYIrsbZGFdKDjw4hsPqpt/0OH5
+         NCfpXVYRoeOdWeXWxUuAsZ3kndaSvJICAtqmuRNWcPry50hpsC+ldjdkaBZ9kBt8vJ5X
+         OxYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752154897; x=1752759697;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y2cPTKyp8+pa4kvRMd2DbHQIqkwHAegaMbr/kZOwiA8=;
+        b=dNmOm+fqxdg9ac46nXtLvggdKnE9yvkplKyMvuzNOHvJxYT1b9MpjrLef0vJbO4Ps/
+         LFOuD01xR+Ath6ACDtK+1cqpMJ3MfNEanQnJ6BWoIyVEWHER+kCHfpJrSjE0s4uVdX70
+         haUwHRP49o47HhIGsH5uMKBhLRx990f2giuHfAoCM4gAfwO4BDgk0JKwMxtc6BqY66fA
+         8zqFLp7eVTOmFU7TeN3zWQuv6OxaQX+gP6MZIXelizpquZ7/cdUeFxgs7djH/1/SYnvU
+         Jp3LMcsTahQxs5IHwM+P1elb8txtG0DPLw1mmAIJ1HVYGBWJ7XMO2bvF4l/HxIsA4xH0
+         FFug==
+X-Forwarded-Encrypted: i=1; AJvYcCXhA1Os+1VtaTS+TCv9gKotO7eD27p4X1GaBnpMs0A3g35+AQdaPmZ80RofHIRdzhi+unrVEM8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4XS+hkTJKZBNqXduyJF3jFa/Y8al3P29Yy7pwKTTqQECV/1lX
+	BfZb5d0tldr0+awFldj2e5dxbZflH+4yPBwcE/8aI4/sc1T3/bvgyoWIRclfiznD9gj7f98x2b/
+	U3z8kdW/YvXqP8G1qdl1fdY3W3N7VukkQEhQiZkXRmSLU/OvPhDTk
+X-Gm-Gg: ASbGncsOC3o8gHQnVYbZFwhdmWIv7bTeuaRWtbHHj1/yKhqGEMJAvhU5kfy8AZ5vLRH
+	eCavkepYWQk0LbZTcvHPCoiNu5zsz7P37YrEfcnz5s1OFpzq0u7kakTkGmKnD9A5qe8w7rYMm9i
+	aZb8LhLRSxkgn2prLG6k3fMkdy5nBh/vQ7sEHsBAtL6Jvq6TmxwOpDvDniHXhF/IxNZFKunx8=
+X-Google-Smtp-Source: AGHT+IEUfIhpap/ErtxncROC/XukLmMNwnnCP5z2dolLnhei5TAHwMgshdrm44CHSjNOH/5s8BRS/dOJLaexhl9LvyA=
+X-Received: by 2002:a17:907:d93:b0:ae3:6390:6ad3 with SMTP id
+ a640c23a62f3a-ae6e6ea0035mr262408366b.22.1752154896676; Thu, 10 Jul 2025
+ 06:41:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1750809374-29306-1-git-send-email-nobuhiro1.iwamatsu@toshiba.co.jp>
+References: <20250701163852.2171681-1-dhowells@redhat.com> <CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com>
+ <2724318.1752066097@warthog.procyon.org.uk> <CAKPOu+_ZXJqftqFj6fZ=hErPMOuEEtjhnQ3pxMr9OAtu+sw=KQ@mail.gmail.com>
+ <2738562.1752092552@warthog.procyon.org.uk> <CAKPOu+-qYtC0iFWv856JZinO-0E=SEoQ6pOLvc0bZfsbSakR8w@mail.gmail.com>
+ <2807750.1752144428@warthog.procyon.org.uk>
+In-Reply-To: <2807750.1752144428@warthog.procyon.org.uk>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Thu, 10 Jul 2025 15:41:25 +0200
+X-Gm-Features: Ac12FXzl_JlkX217YnsQK9NDpeOWbIXCejwCEnw4V1qbmZHn5mJ_E34Ih5jkMNQ
+Message-ID: <CAKPOu+9TN4hza48+uT_9W5wEYhZGLc2F57xxKDiyhy=pay5XAw@mail.gmail.com>
+Subject: Re: [PATCH 00/13] netfs, cifs: Fixes to retry-related code
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>, Viacheslav Dubeyko <slava@dubeyko.com>, 
+	Alex Markuze <amarkuze@redhat.com>, Steve French <sfrench@samba.org>, 
+	Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev, linux-afs@lists.infradead.org, 
+	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 25, 2025 at 08:56:14AM +0900, Nobuhiro Iwamatsu wrote:
-> From: Seiji Nishikawa <snishika@redhat.com>
-> 
-> commit 0a2ed70a549e61c5181bad5db418d223b68ae932 upstream.
-> 
-> The kernel occasionally crashes in cpumask_clear_cpu(), which is called
-> within exit_round_robin(), because when executing clear_bit(nr, addr) with
-> nr set to 0xffffffff, the address calculation may cause misalignment within
-> the memory, leading to access to an invalid memory address.
-> 
-> ----------
-> BUG: unable to handle kernel paging request at ffffffffe0740618
->         ...
-> CPU: 3 PID: 2919323 Comm: acpi_pad/14 Kdump: loaded Tainted: G           OE  X --------- -  - 4.18.0-425.19.2.el8_7.x86_64 #1
->         ...
-> RIP: 0010:power_saving_thread+0x313/0x411 [acpi_pad]
-> Code: 89 cd 48 89 d3 eb d1 48 c7 c7 55 70 72 c0 e8 64 86 b0 e4 c6 05 0d a1 02 00 01 e9 bc fd ff ff 45 89 e4 42 8b 04 a5 20 82 72 c0 <f0> 48 0f b3 05 f4 9c 01 00 42 c7 04 a5 20 82 72 c0 ff ff ff ff 31
-> RSP: 0018:ff72a5d51fa77ec8 EFLAGS: 00010202
-> RAX: 00000000ffffffff RBX: ff462981e5d8cb80 RCX: 0000000000000000
-> RDX: 0000000000000000 RSI: 0000000000000246 RDI: 0000000000000246
-> RBP: ff46297556959d80 R08: 0000000000000382 R09: ff46297c8d0f38d8
-> R10: 0000000000000000 R11: 0000000000000001 R12: 000000000000000e
-> R13: 0000000000000000 R14: ffffffffffffffff R15: 000000000000000e
-> FS:  0000000000000000(0000) GS:ff46297a800c0000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: ffffffffe0740618 CR3: 0000007e20410004 CR4: 0000000000771ee0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> PKRU: 55555554
-> Call Trace:
->  ? acpi_pad_add+0x120/0x120 [acpi_pad]
->  kthread+0x10b/0x130
->  ? set_kthread_struct+0x50/0x50
->  ret_from_fork+0x1f/0x40
->         ...
-> CR2: ffffffffe0740618
-> 
-> crash> dis -lr ffffffffc0726923
->         ...
-> /usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 114
-> 0xffffffffc0726918 <power_saving_thread+776>:	mov    %r12d,%r12d
-> /usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 325
-> 0xffffffffc072691b <power_saving_thread+779>:	mov    -0x3f8d7de0(,%r12,4),%eax
-> /usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./arch/x86/include/asm/bitops.h: 80
-> 0xffffffffc0726923 <power_saving_thread+787>:	lock btr %rax,0x19cf4(%rip)        # 0xffffffffc0740620 <pad_busy_cpus_bits>
-> 
-> crash> px tsk_in_cpu[14]
-> $66 = 0xffffffff
-> 
-> crash> px 0xffffffffc072692c+0x19cf4
-> $99 = 0xffffffffc0740620
-> 
-> crash> sym 0xffffffffc0740620
-> ffffffffc0740620 (b) pad_busy_cpus_bits [acpi_pad]
-> 
-> crash> px pad_busy_cpus_bits[0]
-> $42 = 0xfffc0
-> ----------
-> 
-> To fix this, ensure that tsk_in_cpu[tsk_index] != -1 before calling
-> cpumask_clear_cpu() in exit_round_robin(), just as it is done in
-> round_robin_cpu().
-> 
-> Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
-> Link: https://patch.msgid.link/20240825141352.25280-1-snishika@redhat.com
-> [ rjw: Subject edit, avoid updates to the same value ]
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Link: https://nvd.nist.gov/vuln/detail/CVE-2024-49935
+On Thu, Jul 10, 2025 at 12:47=E2=80=AFPM David Howells <dhowells@redhat.com=
+> wrote:
+> I managed to reproduce it on my test machine with ceph + fscache.
+>
+> Does this fix the problem for you?
 
-Why did you add a nist.gov link here?
-
-NIST is know to "enhance" cve.org reports in ways that are flat out
-wrong.  Never trust them, only rely on the original cve.org report
-please, as that is under our control.
-
-Also NIST totally ignores numerous parts of the cve.org report that we
-provide, making this type of link contain less information overall than
-the original report.
-
-And finally, no need to add links like this to backports.  If we were to
-do that everywhere, it would be a total mess given our rate of 13 CVEs a
-day we are currently running at.
-
-thanks,
-
-greg k-h
+Yes! I can no longer reproduce my problem.
+Thanks, David.
 
