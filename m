@@ -1,344 +1,233 @@
-Return-Path: <stable+bounces-161537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5A5AFFA95
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 09:14:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 218C7AFFB74
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 09:57:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2437582382
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 07:14:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 722984A8373
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 07:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8A62882A6;
-	Thu, 10 Jul 2025 07:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D452428B507;
+	Thu, 10 Jul 2025 07:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="MC1rQ6OK"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YhYjD/jc"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2058.outbound.protection.outlook.com [40.107.93.58])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6716814884C
-	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 07:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752131667; cv=fail; b=Xa7uh91h4SxzQJMmnOWN59h+VBWRVbN5ce6R4C7HHekoi1Jp72iATPlaCucEXayp2raJ1sF0xHlMTj4L1V7z3QKfe1Ynbn0qwRo6+LCria3L6LCc3HNuL6y+tu0Ah4NSRF3ARoDW3Y9s9dwkg8pFfpuO2wURRdgAv6dPUKGcfDs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752131667; c=relaxed/simple;
-	bh=+/WnOscUBNGS6noacb3AarMXAEe7fI6uZgJLgD06Ooo=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=oWAAy6hEgL7RuMLRrfxaRr8GobOeDcrQ5pRhdPwm3AF7CbiDeGuXNh/p9riaAE+4ViaVAqchiho6CXKQ1Ld0kHUMecisX/wNr6bN4BptDFBbkSZeXey7YJdNaOcseB3TUse3Ew86xm2YgpSkUG8qoYPZZH1YHkwJ95SPVL5lKCA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=MC1rQ6OK; arc=fail smtp.client-ip=40.107.93.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hg18pe8Z8/6FeYaCPODZUwz6kyLHgaIYf2TDNTgpXCFByD3NhxQH7AKBKEGnfQHWbwdAI6edxaNXb05d3qeQyEDA62LoLhVvvHFyrhW+buR35vyuw28O8dVSqhB7aI7Y7AKWOMNpB7vM/0AwlWa7LNqAcuyvtMSdv2orB1dhnLot+c4SXZJ7BZrEG461dwhLLvmwFjAAsppy+GB9NXcYXIcgV2RDZBFtALl5Qb7ncBYT5vs4SI78nlN1bm2P2a2gNOCNUwNKPp904go1qAcE4irVQz4YJsfDsdx2m1s2NBHFHKjOrDMrtYpedYawmuaFtTiTtDUkdlb4OR396rY9BQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uzUZg/XJ1uHLz+1rjNoMlpwxERENy4vemfx54/UyYY0=;
- b=jar5DuNkymBQcRScmi3/E9KGpWtVHmRneSvtpql9fmESJGvaq0QA3hQv65g6p858nHmuzCSaKAWRsOyMeMsA+ZeGWDjsGPSZWWORzxdYtJkf8Vrch4kIUBLuFQs/4mLYs5JOaH0wk3wLOfd7v5159UUJ2zxcQ6yWEXztrpEEsulBtjn/v2oaTbZIsMLNBltxucatrwWR1Oy8Za7Uy10SOXjM+3x6yXPsA2VFvCVQDEoQZ6vjjM5qbYRYABL2eK0Vp5ejEOfvB7g8mbAyhQiN94Ksj5m/StkRPwzGB23TGxIkhVI++gYZSQkEdXqNpuhKG/IkBNboeg1SQ9PZ2OkDyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uzUZg/XJ1uHLz+1rjNoMlpwxERENy4vemfx54/UyYY0=;
- b=MC1rQ6OKXNxE+KmP7KSS00hChHuYbhbHFGqvwAfFELGnDOEFz1VjjMvvyAnF+qcL9VnCw1tJClttR6WiVIBHuz3+FutAz78cF8yFdqJ54IOEK6vklXbh2brPK3IGnA4k4kWXUI01+4K8PsMh79CZK5c4+nUr0Qew2jEW3cdSCUg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH8PR12MB7301.namprd12.prod.outlook.com (2603:10b6:510:222::12)
- by DS5PPF4ACC15C0E.namprd12.prod.outlook.com (2603:10b6:f:fc00::64c) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.30; Thu, 10 Jul
- 2025 07:14:23 +0000
-Received: from PH8PR12MB7301.namprd12.prod.outlook.com
- ([fe80::a929:e8eb:ef22:6350]) by PH8PR12MB7301.namprd12.prod.outlook.com
- ([fe80::a929:e8eb:ef22:6350%4]) with mapi id 15.20.8901.028; Thu, 10 Jul 2025
- 07:14:22 +0000
-Message-ID: <16d56381-fec5-4cd8-a84c-4ce969786d9d@amd.com>
-Date: Thu, 10 Jul 2025 12:44:15 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] drm/amdgpu: Reset the clear flag in buddy during
- resume
-Content-Language: en-US
-To: Matthew Auld <matthew.auld@intel.com>, dri-devel@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org, christian.koenig@amd.com,
- matthew.brost@intel.com
-Cc: alexander.deucher@amd.com, stable@vger.kernel.org
-References: <20250708065404.4185-1-Arunpravin.PaneerSelvam@amd.com>
- <20250708065404.4185-2-Arunpravin.PaneerSelvam@amd.com>
- <f5386d20-326f-40ba-834f-953a0d7d18e1@intel.com>
-From: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>
-In-Reply-To: <f5386d20-326f-40ba-834f-953a0d7d18e1@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN4PR01CA0046.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:279::7) To PH8PR12MB7301.namprd12.prod.outlook.com
- (2603:10b6:510:222::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD9528B504;
+	Thu, 10 Jul 2025 07:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752134239; cv=none; b=sMljSkqxWE27R6KlD6lsEp/1rdgtVJmtNuhY0YjhYrXsorJb6N/0vdzLBdrP7tkSYCY1ulGSCtxBUeblTtkoJkyeZVhVfcjHiydKzQ5GkAv4eanFxcbcVaWm8fPPlJgMWY2LyG9ioDWMjhKpnQj0yutYS75gAUHaQUGPf7t8IIo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752134239; c=relaxed/simple;
+	bh=byBgfI/4HYqXz5MoL8PNW+q1b+cqGtjII06M8p4VvyE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MPXg0J/nomxr6Yxf9F8aOcuqRO8qqWfxBUS9Zs1RX+20NznWPEcVKrObtOanhaXHxPqrnq9i0o8yL6LnTJZgQeMeSeVmqrMQyqrppMrJ2SjViNqXKl97/bGDhZwqd5OTRpczWM7tn2FA1huWK3FWRBSjVJ91wKFs+aLOTTNZXl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YhYjD/jc; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56A1W8fl013032;
+	Thu, 10 Jul 2025 07:56:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=H2vB/M
+	fhdWEVcAeZHEWQ1fGqSJ2Ptx36hUWmTdynI7U=; b=YhYjD/jcZD4SoEE6xZ1RRk
+	dByhEXMDzDXOrjMhwZ3lEZaB/5NuH6z7GjJPnu3tAItP/egZq3PL8PekC8Z/c6B7
+	9e2dOu8m+SMtbAAQQeQe2F2u7Zsruifmu9zz4dfrB4KPmaoVwjCyj7KPEXkc37eV
+	Oxt3LRQcdk0Ie7LMNf3zb/MxgxJVZ79oSHN2KKCiWap4IL7bSzHZdpPi3aJhsjoq
+	L9NwBxhzXscjKk0ZSSHpsqrwOp6CarxGdl8qLWq/U0cH4BRctW6Q5kg/kScWmFMf
+	Mm4sCRUJ9tHLgdLqM227P4nUsw9wxqpG4x2p3GvExIGX5YxmQhdjSLoE9r7QaEPA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47t3xd9gx0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Jul 2025 07:56:41 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56A7bdW0029440;
+	Thu, 10 Jul 2025 07:56:40 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47t3xd9gww-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Jul 2025 07:56:40 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56A6afGq002847;
+	Thu, 10 Jul 2025 07:56:39 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47qfvmmg5k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Jul 2025 07:56:39 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56A7ubuP32113296
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Jul 2025 07:56:37 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5CDD358054;
+	Thu, 10 Jul 2025 07:56:37 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 251EA5803F;
+	Thu, 10 Jul 2025 07:56:33 +0000 (GMT)
+Received: from [9.111.81.29] (unknown [9.111.81.29])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 10 Jul 2025 07:56:32 +0000 (GMT)
+Message-ID: <54e22536eca7544fb5fab02d9b361eb1c31f44ee.camel@linux.ibm.com>
+Subject: Re: [PATCH 6.1 00/81] 6.1.144-rc2 review
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman
+	 <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        hargar@microsoft.com, broonie@kernel.org,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Julian Ruess	 <julianr@linux.ibm.com>, alifm@linux.ibm.com
+Date: Thu, 10 Jul 2025 09:56:32 +0200
+In-Reply-To: <CA+G9fYtkGSe0MP7+vXEcLxg80VC4-yHtme_xjnK-Dg8LkN1VAQ@mail.gmail.com>
+References: <20250708180901.558453595@linuxfoundation.org>
+	 <CA+G9fYtkGSe0MP7+vXEcLxg80VC4-yHtme_xjnK-Dg8LkN1VAQ@mail.gmail.com>
+Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7301:EE_|DS5PPF4ACC15C0E:EE_
-X-MS-Office365-Filtering-Correlation-Id: 141939aa-d334-47c1-85f9-08ddbf8164fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z1R0d3MzSmRDaGRxeU94Qmh3aS9IY2RlZ0VlejQrU2g4a0hkcVhBUUdNbExV?=
- =?utf-8?B?MTFZQSt6UGpYYy8vVmdtMmRDUFZvRHc4bWgwcDhqQ3RmRXY4R2p3MmVRVkhv?=
- =?utf-8?B?MlR5T2NvSmlzV29tanZuQWtBNDB6TkxSNUxiYnNtOWlLeDRNWEhLdk9CaWlu?=
- =?utf-8?B?bys5VnlXV0hXWEdGSVFtV3JpRGtPUTdzdnEvZTBGK3Vla2Z6Mzd0akRMUDBY?=
- =?utf-8?B?bCtjRGhpUkZKS2N3dXpxbHRvSi91Zy8vZnFvei9vYUJNYWtxVzZVRnlPYWtV?=
- =?utf-8?B?R0thUGNzYVIxaUpXYzJ1RWlFNGlpOTVvTnA1VmNlOXFONmxQZCtrbnhmUDh2?=
- =?utf-8?B?K2w5QW5GK3owR3QzaUkyc0swa2VOSDMyQ25XTjJRbmZiMFpFWWcwMTBSalVR?=
- =?utf-8?B?UllmSnVOaC8zUUIwS2cyMVNiQkZ3cWMvaFg4cXZUUXJ6a0pyNTRaY3cxNmhE?=
- =?utf-8?B?YVR5YXB2aVZJUUZjd3pwK2hkR3ZMMTVnQWVpajVLZGdGMEtOUnk5WGZWcWJp?=
- =?utf-8?B?K0x2ekxxcmxyR3kzV1dRSTB3Q0dBbjBoK1VkM1lTRExlV0c1VWE1Sk1ManlW?=
- =?utf-8?B?RnV2RHNzYTc1RFl4RW1JVnZlMmF3amp5WVRYNU52NFlJMzB1MUxVR2IyRzh3?=
- =?utf-8?B?MTdHMkc4ekZGQUhSRDk5ekUrRTA2SWJsNlRFdU5vS0Zkc0JKd1d6UitKenAy?=
- =?utf-8?B?cWdIaW9VbTdVTkNXMVVmM3VYUDZnUFowd1R6OHZCOWJkbjBSMExWaEdmOXNJ?=
- =?utf-8?B?a2o1UTVXemhlYVBwYlFCWXR4b1lVbjdtcnZDemZaRGRXUWx3ZVlaYm5hdVFU?=
- =?utf-8?B?M2o1SnNmSzhrUjJCbzhOaysvVVFkcXNvY29SMFMxMUR0N01WbDRGREMreGxt?=
- =?utf-8?B?V2ZnUEN3NVNMOXUyeXIxVjVoTWpFVzZKVkRZUE0waVBaeDdLUWk0N1ZuVnQ4?=
- =?utf-8?B?aTQxd210WmZpVlZGRjBZS0g0d3p0aFFPN2RMQ3pjanhjaVJ0N1RyZmlvZUMr?=
- =?utf-8?B?SDNiQlEwekNFNTJKaVFoanZDR2RiV01UL2tkOVRpMlBqdFR6QlhOWGFkWFY2?=
- =?utf-8?B?V0pkRVpsYlF3dklDRE1EVUJqTGkwbW5NRjFNUkxOaDVJS1c5ano2Y2ZKay90?=
- =?utf-8?B?N0VKTmJ0dExrMUE4QzJHb1dJUVlxNVdKNmVpTGJXRDBTQmd6QUl1RWJPMWFo?=
- =?utf-8?B?cGppUFNla1dsM01QcTMzL3lQcWE0aVM3ZyszTHQ0NVFuV1M5YmRXOHVBRzEw?=
- =?utf-8?B?NzhnakhlUzlra3hCdDRGYmFXU0dTc1dFSy9jdzhQdjBXTFhKcUo2UHJSQ2Y0?=
- =?utf-8?B?Zm9lY0MwN0FRT1N5djUzd3d3L00yWGp6NTVjOW0xWFNOSDhBZFFkdHlLeFU5?=
- =?utf-8?B?OE0rMHpTSHRDdWdWVWpIRzIxNUdWbmRjWDEwTTFCaWVKUFNyZWI2RVlIN3hF?=
- =?utf-8?B?aTI2eXRLbEJuKzJIcVNtQ3JJdmFZalBTZytuK0lZS2dqbW5JbFhaZmZIMWZm?=
- =?utf-8?B?a1o5dlkyOXNaTXZ3SWNyN29MZVR1MStnU2pmTFk0RHJ0NEVUU2ZRSGFUOUVR?=
- =?utf-8?B?alBVY21zbkhXdHVodzU3MHpkZkdyUVd2VE1CSlFGb2hpVWJvQVJnbit4Y2ky?=
- =?utf-8?B?dUo5M3VzUnpQS1BhWXRlU0JSUGl1ZFI1TkV1UXNYbGRPTWZ1bHpRdTVSYVpQ?=
- =?utf-8?B?RGxacjJydFl4b2NJRDdOVmZYV3hXeGtaSElZcHhxYXpzRlFqTjZvdjBiYlhG?=
- =?utf-8?B?a29aTDFwazZjU1p0ZU9LQ1RibEd0a2tneEd5MlpYeWN6L3BGaDdiR2o0N1ZQ?=
- =?utf-8?Q?wGLsVhza1VSGn7ZUNLi561nj3M5vnmPW2Fvig=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZTdBaWk1UzQ2V25Pa0tZN3VVMGhuZm9RZzJrMFd3SkNrTlNCUmdlWUlwQkl3?=
- =?utf-8?B?MENlclp6cUhCQm0ySkdFOEVpR1d5UnpVQXRTbGIzT1RMd3drMHNaOHVNbElD?=
- =?utf-8?B?QVV5M3dNcWUwSlp1Z0ptd0hRK1RtZlJraS9XRHU2bE10ajRqQ3BBK2EwSTFO?=
- =?utf-8?B?NEQ1VXQ1L2duV1BDckcyZ2ZIamZKUDYvTVRkWUVUMnNLeEU2RFFWV0xnejE5?=
- =?utf-8?B?TUp3N2xhRnRPZFg5RTFWaWpROEpJMXFCek9GOGVmU3BBTGlIdWE5di9ZTWpw?=
- =?utf-8?B?VDFxVXp0aGZwNVFVU2tFSStjbGdoNGhPb0Zoa2FVRnZlSmJ4YkdlZWdCbzZi?=
- =?utf-8?B?a0w2OURoYXhUcnI1QWNQRW1VNm5DaTMybnJDSnRvVjJWSGRQUXY3RTJycUls?=
- =?utf-8?B?REhMczhyV1BLa0xqVHF5TXIreUxVd00rM05WUGUxV1JYNENKa0JHdEwyaXdk?=
- =?utf-8?B?RmFqclcrNEdkcDk1K3d6L2RQK2ErZmlRN3NSQlQwLzR0MnFqbmE0czJEeDNU?=
- =?utf-8?B?aTBNc25rWFhSeWYydjhZelhLUFN4Q3A3Z1JqRStpcXhRZnZNeUlRNWcrWlJK?=
- =?utf-8?B?Rjk4YWZEckxoc1ozSk5WVjc4NXJldWVRa0NWTlk2Y1NieHRBQ3I4T0l4VVZt?=
- =?utf-8?B?RHNqQ1FyV1hvZU9aTGxLVHQ0d3FKdFVWNWZLazlxOEIranZEa1Frd0xaNmlJ?=
- =?utf-8?B?UlVPQStraGV0RmJaazJKU01zenRITnJjdHlhV0xTTXRvOFpCOVNNT0cyN0dD?=
- =?utf-8?B?cHZxK1orL1VsYXZmNTVjdVRuQmQ1RWdHSlk1ZWc1UTBaN0FYekhjbGdrQkdv?=
- =?utf-8?B?elBSZWp5bENkRHRwVllYMjdGUmkxRnVIM250Vk9zS2RNZDRDNlBKdkxoWFFp?=
- =?utf-8?B?NmQvVEhlQzJSMCtMTVFOK3RzWEhsZ1NmSmVMMTBCWmVDZnJPajVMekRlWkNm?=
- =?utf-8?B?eDBaT3NGZENvUklPbUlHTlpmcFRuWGs2UHhZa1N2THVXNHBUb0FTWFYrZisx?=
- =?utf-8?B?eHVWMjZzam5jeE41bVZ4L2JNMVFyTTgvdHF5dXhxMFJFMFc4WnVDSmU1elh1?=
- =?utf-8?B?VDBicnczSlNvUTlabFhHSXR1L3N3SWUraVdNMHl6UDN1RmpqVnVYRDhIODRu?=
- =?utf-8?B?aWV2SUNEUXhtQjNlaXVycWg0bjM4Qm5HanV2VGdxMGtmaC9YS0dYYjFnZDV3?=
- =?utf-8?B?SlhaYTBtRUVSRWNacUlHM2hLYjcxTGViUE1TSThnL2xScTdOc3dRZ3hiMmV1?=
- =?utf-8?B?cjZGbzBqTGsrMmhIb3dCc2ppam8yTlRMVXdFelZkNXkzZGpJTFI1S0NIcWdQ?=
- =?utf-8?B?RUdJNTFZVlBtRlkvcXM1MmlaSE1haTBySHBRNWdaaG9QZm01Qnd0MW54a0J6?=
- =?utf-8?B?SEh0TGJSbFEwMDY2dkhEditNVWJxWWZZMEdvUkZoNnhTdlNEckJFRG1SWHUv?=
- =?utf-8?B?MzNXZVBLNVpweVNNRWhmUjRYaEcxaUZwdStqUG9uMHFkZlM0eXU1Uk9nSEFB?=
- =?utf-8?B?Z040c1JCUFptRWFnZ1lkRi9xcWU5MWlOL291R2hhamJLclA1WldoOTlQb0ZQ?=
- =?utf-8?B?VEFPVERhRUQzZjNLOGdSRW1YWGxiMmZYY1JqaGV4NkFabXBYTXluN2VWOXFY?=
- =?utf-8?B?Z3JuVVo2djFKbzVFZDNGN2xBOFNoWHVDclFkWE9OK0JCclAvR1VnNkNsdUww?=
- =?utf-8?B?U1E3RzUzdnFqVG1CcXRRVEVJVzVuc0E3ZzFBQU9NTVVhbkdNNXRYUm1tNFVw?=
- =?utf-8?B?ZlM0K2FzS0dJbHRhMU1rSUZSSXFQVDZCVDM2VndEN3c3MUJDbmliaTBzUnhP?=
- =?utf-8?B?VTFoay9wMGRmYTRnQzNuaXRkV1hzSHpNdGlqRXFiWGZiNyt4WG83ZHdiMFlV?=
- =?utf-8?B?QXU0S2xFYkc2MS82TmJtRTVQKzI0Q3g1aGN6WXdZZFBlYmowTGRJVnpDV3dB?=
- =?utf-8?B?b1pwSGt3d014eExLbmQ3dzUzVzAzMW0xeC9FOVhzU00wd1d2N2V0QlBDUzJZ?=
- =?utf-8?B?a2ZTNDQrNkgxdFJqcTExKzdjU0lVaWFIeWpDNEZ5ZHREUWtXelBGQTFpYXVD?=
- =?utf-8?B?TkhyZHJTTllxZTE1OHhvNlZheXR5TU5tRjU2cktmTkQ4K0ZkYjkyZS9JMU4z?=
- =?utf-8?Q?JZficPov3vqZPltDsnb1Hov0m?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 141939aa-d334-47c1-85f9-08ddbf8164fd
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7301.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 07:14:22.6407
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +WxjvGYem3EAwTELNuXXToc2WH/YMV0chqwwbNy56ORjmA5ppDhlLO8HY1Tp9nZLC/PQctdL2muMQCrKyc2Sbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF4ACC15C0E
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: rk_20XK2bG6QkIGyhCyKtJHKEcHVL4n2
+X-Authority-Analysis: v=2.4 cv=MLRgmNZl c=1 sm=1 tr=0 ts=686f7239 cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=ag1SF4gXAAAA:8 a=pXt5Tz5fr4PmGulvd3oA:9 a=QEXdDO2ut3YA:10
+ a=Yupwre4RP9_Eg_Bd0iYG:22
+X-Proofpoint-GUID: Bx4NsGfdJMmseDl565dkBlsi28ajVf3H
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDA2NiBTYWx0ZWRfX8DYFWrGxuKDk d4nSxfYh10ryGxXwJWiNMOwt0BSj7MnpYPv+exn3KqLWH/td2dLUfQHPZ34xl1XJYSedJJ4JcDM j2S0+6RKHo5NqL17ONN58fa/B1Pk0rQO4QtCLXbbmC1XX+R7p/cpbQSFxgLKM0WzBj0NVrhfg0I
+ 4VIYFcZ3eKrKzOIjr44rkwBN571H/m0Ep2BReVavw4K4X7/RoNFWboupklGOTqg71NgcMhuCmAd kb2koVjdShXZyPNsg9eP7jK7lUUoYeTKM7rso43fLPjtTxMkzmpF91QXm8zkRXKcIuLkeHYD+JK /GWqKmLu2qTs/L7tqftajkoLiRacFb1Lp7+/M8YNy9ZvF9KPvPGvEcPSa4X+oTkjArCNVM0lgwD
+ oAYScAMoDy5IdxT3qlYVYhXP67gMDuTwHxkk00TyE4tNNX0vliKtDGcVziGlPE5czNUqV9SN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-09_05,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 mlxscore=0 clxscore=1011 impostorscore=0
+ malwarescore=0 mlxlogscore=928 lowpriorityscore=0 phishscore=0 spamscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507100066
 
+On Thu, 2025-07-10 at 01:34 +0530, Naresh Kamboju wrote:
+> On Tue, 8 Jul 2025 at 23:40, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >=20
+> > This is the start of the stable review cycle for the 6.1.144 release.
+> > There are 81 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >=20
+> > Responses should be made by Thu, 10 Jul 2025 18:08:50 +0000.
+> > Anything received after that time might be too late.
+> >=20
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patc=
+h-6.1.144-rc2.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git linux-6.1.y
+> > and the diffstat can be found below.
+> >=20
+> > thanks,
+> >=20
+> > greg k-h
+>=20
+>=20
+> Regression on the stable-rc 6.1.144-rc2 s390 builds failed with clang-20
+>=20
+--- snip ---
+>=20
+> in 'struct zpci_dev'
+>   285 |                 mutex_unlock(&zdev->state_lock);
+>       |                               ~~~~  ^
+> 4 errors generated.
+>=20
+> ## Source
+> * Kernel version: 6.1.144-rc2
+>=20
 
-On 7/8/2025 2:30 PM, Matthew Auld wrote:
-> On 08/07/2025 07:54, Arunpravin Paneer Selvam wrote:
->> - Added a handler in DRM buddy manager to reset the cleared
->>    flag for the blocks in the freelist.
->>
->> - This is necessary because, upon resuming, the VRAM becomes
->>    cluttered with BIOS data, yet the VRAM backend manager
->>    believes that everything has been cleared.
->>
->> v2:
->>    - Add lock before accessing drm_buddy_clear_reset_blocks()(Matthew 
->> Auld)
->>    - Force merge the two dirty blocks.(Matthew Auld)
->>    - Add a new unit test case for this issue.(Matthew Auld)
->>    - Having this function being able to flip the state either way 
->> would be
->>      good. (Matthew Brost)
->>
->> v3(Matthew Auld):
->>    - Do merge step first to avoid the use of extra reset flag.
->>
->> Signed-off-by: Arunpravin Paneer Selvam 
->> <Arunpravin.PaneerSelvam@amd.com>
->> Suggested-by: Christian König <christian.koenig@amd.com>
->> Cc: stable@vger.kernel.org
->> Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
->> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
->
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Hi Naresh, Hi Greg,
 
-Is this RB also for the unit test case (patch 3).
+Thanks for the report!=C2=A0
+
+Looks like the backport of 45537926dd2a ("s390/pci: Fix stale function
+handles in error handling") is broken. In the original commit there is
+a context line mutex_lock(&zdev->state_lock) from commit bcb5d6c76903
+("s390/pci: introduce lock to synchronize state of zpci_dev's") that
+ended up in the stable tree without also pulling in the rest of that
+commit. I found that backport in my mail and not only is the context
+turned into added lines but it also adds the matching unlock in the
+wrong place. Will comment on that mail too.
 
 Thanks,
-
-Arun.
-
->
->> ---
->>   drivers/gpu/drm/amd/amdgpu/amdgpu_device.c   |  2 +
->>   drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h      |  1 +
->>   drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 17 ++++++++
->>   drivers/gpu/drm/drm_buddy.c                  | 43 ++++++++++++++++++++
->>   include/drm/drm_buddy.h                      |  2 +
->>   5 files changed, 65 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c 
->> b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
->> index a59f194e3360..b89e46f29b51 100644
->> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
->> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
->> @@ -5193,6 +5193,8 @@ int amdgpu_device_resume(struct drm_device 
->> *dev, bool notify_clients)
->>           dev->dev->power.disable_depth--;
->>   #endif
->>       }
->> +
->> +    amdgpu_vram_mgr_clear_reset_blocks(adev);
->>       adev->in_suspend = false;
->>         if (amdgpu_acpi_smart_shift_update(dev, AMDGPU_SS_DEV_D0))
->> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h 
->> b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
->> index 208b7d1d8a27..450e4bf093b7 100644
->> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
->> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
->> @@ -154,6 +154,7 @@ int amdgpu_vram_mgr_reserve_range(struct 
->> amdgpu_vram_mgr *mgr,
->>                     uint64_t start, uint64_t size);
->>   int amdgpu_vram_mgr_query_page_status(struct amdgpu_vram_mgr *mgr,
->>                         uint64_t start);
->> +void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev);
->>     bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
->>                   struct ttm_resource *res);
->> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c 
->> b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
->> index abdc52b0895a..07c936e90d8e 100644
->> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
->> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
->> @@ -782,6 +782,23 @@ uint64_t amdgpu_vram_mgr_vis_usage(struct 
->> amdgpu_vram_mgr *mgr)
->>       return atomic64_read(&mgr->vis_usage);
->>   }
->>   +/**
->> + * amdgpu_vram_mgr_clear_reset_blocks - reset clear blocks
->> + *
->> + * @adev: amdgpu device pointer
->> + *
->> + * Reset the cleared drm buddy blocks.
->> + */
->> +void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev)
->> +{
->> +    struct amdgpu_vram_mgr *mgr = &adev->mman.vram_mgr;
->> +    struct drm_buddy *mm = &mgr->mm;
->> +
->> +    mutex_lock(&mgr->lock);
->> +    drm_buddy_reset_clear(mm, false);
->> +    mutex_unlock(&mgr->lock);
->> +}
->> +
->>   /**
->>    * amdgpu_vram_mgr_intersects - test each drm buddy block for 
->> intersection
->>    *
->> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
->> index a1e652b7631d..a94061f373de 100644
->> --- a/drivers/gpu/drm/drm_buddy.c
->> +++ b/drivers/gpu/drm/drm_buddy.c
->> @@ -405,6 +405,49 @@ drm_get_buddy(struct drm_buddy_block *block)
->>   }
->>   EXPORT_SYMBOL(drm_get_buddy);
->>   +/**
->> + * drm_buddy_reset_clear - reset blocks clear state
->> + *
->> + * @mm: DRM buddy manager
->> + * @is_clear: blocks clear state
->> + *
->> + * Reset the clear state based on @is_clear value for each block
->> + * in the freelist.
->> + */
->> +void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
->> +{
->> +    u64 root_size, size, start;
->> +    unsigned int order;
->> +    int i;
->> +
->> +    size = mm->size;
->> +    for (i = 0; i < mm->n_roots; ++i) {
->> +        order = ilog2(size) - ilog2(mm->chunk_size);
->> +        start = drm_buddy_block_offset(mm->roots[i]);
->> +        __force_merge(mm, start, start + size, order);
->> +
->> +        root_size = mm->chunk_size << order;
->> +        size -= root_size;
->> +    }
->> +
->> +    for (i = 0; i <= mm->max_order; ++i) {
->> +        struct drm_buddy_block *block;
->> +
->> +        list_for_each_entry_reverse(block, &mm->free_list[i], link) {
->> +            if (is_clear != drm_buddy_block_is_clear(block)) {
->> +                if (is_clear) {
->> +                    mark_cleared(block);
->> +                    mm->clear_avail += drm_buddy_block_size(mm, block);
->> +                } else {
->> +                    clear_reset(block);
->> +                    mm->clear_avail -= drm_buddy_block_size(mm, block);
->> +                }
->> +            }
->> +        }
->> +    }
->> +}
->> +EXPORT_SYMBOL(drm_buddy_reset_clear);
->> +
->>   /**
->>    * drm_buddy_free_block - free a block
->>    *
->> diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
->> index 9689a7c5dd36..513837632b7d 100644
->> --- a/include/drm/drm_buddy.h
->> +++ b/include/drm/drm_buddy.h
->> @@ -160,6 +160,8 @@ int drm_buddy_block_trim(struct drm_buddy *mm,
->>                u64 new_size,
->>                struct list_head *blocks);
->>   +void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear);
->> +
->>   void drm_buddy_free_block(struct drm_buddy *mm, struct 
->> drm_buddy_block *block);
->>     void drm_buddy_free_list(struct drm_buddy *mm,
->
+Niklas
 
