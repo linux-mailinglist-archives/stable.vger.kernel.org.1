@@ -1,165 +1,172 @@
-Return-Path: <stable+bounces-161560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41294B0023D
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:43:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C45DB00262
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D27561AA5A1B
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 12:43:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4349D5600DB
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 12:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228C525F796;
-	Thu, 10 Jul 2025 12:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF5811CA0;
+	Thu, 10 Jul 2025 12:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="scdYbRe1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gsOw+qXY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FCB255F22;
-	Thu, 10 Jul 2025 12:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF43195FE8;
+	Thu, 10 Jul 2025 12:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752151403; cv=none; b=XSkSnmsQrf0idz9IVQedSqYqktODNg86hrxCAASqlXuTr/+bw7y1/0uNm+3bVGrGqof6EkmWpQ9EySKZcK7SyGBQwJBgnoycWhlx3oCMYNnL3DPVqr7/kVhKG54ujBfg7plahQLXwFj+FktvrcdaTatGFPxoL1855TqReBIAsOo=
+	t=1752151743; cv=none; b=YsZkd0xwtOCN+Mw/PMRb8Q9IY0tGwCzPDTyvehLgrlvzsjyQJ7it4ogvZyCw8jIA7Y+sWYkmuXMSku6hYyu5qyt0zbT2gafTRdzc7F3WjQIjARddKIfv1fMllaz9EE9bwgt+WczIEf/qn+u3HG+bytyWaALDzdfV4d6bt5PgZLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752151403; c=relaxed/simple;
-	bh=YAlRdTBtbltqIObG/wS2N/TUks/eUA85AP5/ETkC2Ao=;
-	h=From:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=fasMCNOBGAH/xkLhwdL4CHMXdWmS3HUMlzAWGFUKqrYt4y4wBJ8OcP7yPv+CXPED9H2SUiZ2VCHV4jF1Ux8hvxzco5iqte3tgntIpTP27axyZpAXuCYyJlcUZk/SQIZS+Eq4/BBjYKlcXi4KVhyhMUcZ7/eFtmllwezmeW2BdFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=scdYbRe1; arc=none smtp.client-ip=99.78.197.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1752151402; x=1783687402;
-  h=from:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=TcL90y9yyUrQNV6wzTUzXovTLknFtEhr31RpPeHLwCo=;
-  b=scdYbRe1DBGGqZtpyHWStknKdtLzrB89Epdct++CuC3XyAJg3E+Dgtuq
-   mb19Nz9JwGm3scKMZbw1oTf8zbZafwNnCmKeigg2oP8cKtEVwk/kai5En
-   GUarli8zwiXurTbOkUzDR0/pDLAftgky8ZY0VqXT0CKBBoQQg+/WOpMLw
-   gXa1t72FEdVr0yL8LdnhEmFDLKypu2g2kLUh5Rla3a8AlAUL54p8iNVG5
-   oVGlo0swdXG6+ZfS1GePuTdPyC3S0xXcKdQ8S9Jf7zWq7YhP7q5Lm+m3T
-   hJC/o4v3thyypFw9ZoUyvTNKFrdskx4N53WLIfzdGYJY3lYvRWDoSDZPV
-   Q==;
-X-IronPort-AV: E=Sophos;i="6.16,300,1744070400"; 
-   d="scan'208";a="213811787"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 12:43:19 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [10.0.10.100:33526]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.44.180:2525] with esmtp (Farcaster)
- id 8ccd098b-9821-4a92-b3a0-d3d116f3a7ae; Thu, 10 Jul 2025 12:43:18 +0000 (UTC)
-X-Farcaster-Flow-ID: 8ccd098b-9821-4a92-b3a0-d3d116f3a7ae
-Received: from EX19D008EUC002.ant.amazon.com (10.252.51.146) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 10 Jul 2025 12:43:18 +0000
-Received: from EX19D008EUC001.ant.amazon.com (10.252.51.165) by
- EX19D008EUC002.ant.amazon.com (10.252.51.146) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 10 Jul 2025 12:43:18 +0000
-Received: from EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1]) by
- EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1%3]) with mapi id
- 15.02.1544.014; Thu, 10 Jul 2025 12:43:18 +0000
-From: "Heyne, Maximilian" <mheyne@amazon.de>
-CC: "Heyne, Maximilian" <mheyne@amazon.de>, Harshit Mogalapalli
-	<harshit.m.mogalapalli@oracle.com>, Oleg Nesterov <oleg@redhat.com>, "Eric W.
- Biederman" <ebiederm@xmission.com>, Andrew Morton
-	<akpm@linux-foundation.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "Sauerwein, David" <dssauerw@amazon.de>, "Sasha
- Levin" <sashal@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>
-Subject: [RESEND PATCH 5.15] fs/proc: do_task_stat: use __for_each_thread()
-Thread-Topic: [RESEND PATCH 5.15] fs/proc: do_task_stat: use
- __for_each_thread()
-Thread-Index: AQHb8Zg2fZamDUZRE0iXs8i1qPy6QA==
-Date: Thu, 10 Jul 2025 12:43:18 +0000
-Message-ID: <20250710-yams-adolf-9eb7e4b2@mheyne-amazon>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="iso-8859-1"
+	s=arc-20240116; t=1752151743; c=relaxed/simple;
+	bh=szFzYO4/tDYFL1WEanCO3dKC89I5WVhjWrKcwyefP6k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B+3MHMf2LMnHrMtdaulG9cUCsCKXOPRp5ZChaW/XyPc3bANDMmsSNeZXYP1IqsIhuuEfszpWrTMfLVqqM6npBVuuUSwdtuAN1KVFO+ZZ3WHTwsE3YpdXt21/ow7mpBHKKwlpDZT4BbU7j4VQz7NrWMpkZpEFBQuclzPVUjsveAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gsOw+qXY; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752151742; x=1783687742;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=szFzYO4/tDYFL1WEanCO3dKC89I5WVhjWrKcwyefP6k=;
+  b=gsOw+qXYSVtpiZO1Mv/e2wI/SoOJmMaEiOX+QnO2M4uqrBSnQZbPVsa4
+   rDqeX5swOt5b6wQOFplJB4movjPcz9/YPZ700LMnEK1jml41OsB4dE40g
+   iTxVrkbxTuo1Od7cTzZM93h5AtZeHfec7cBu9YhjQUPelzwxZsJ2cTTmO
+   N+w3aVHomP9dmznrf/C2UEu2gsMgFi6Vr0cTLKg5o6wPguPCXW4oBsL/W
+   8Ix9pf+kAPP2AbYErj2cI9kIGdRG09RXqWCSz+EWRW4M6AH+V5gDbLWNK
+   BfS2q0r+8PMJPSkxnq383MiVeDOYTBIt+S8lggfK5LUG+NDazNQhsXXOX
+   g==;
+X-CSE-ConnectionGUID: anyy4jz2Th+durvFZlJZkQ==
+X-CSE-MsgGUID: 8JxW+FNyTc6mnZ+L53ARZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="57041119"
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
+   d="scan'208";a="57041119"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 05:49:01 -0700
+X-CSE-ConnectionGUID: Ei5/NVc0QzW/IsWIuDAE3Q==
+X-CSE-MsgGUID: X5/6MNJ6QzmtMdGKLmh5LA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
+   d="scan'208";a="156551553"
+Received: from ldmartin-desk2.corp.intel.com (HELO [10.125.110.230]) ([10.125.110.230])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 05:49:01 -0700
+Message-ID: <326c60aa-37f3-458d-a534-6e0106cc244b@intel.com>
+Date: Thu, 10 Jul 2025 05:53:16 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Baolu Lu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, "Tested-by : Yi Lai" <yi1.lai@intel.com>
+Cc: iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250709062800.651521-1-baolu.lu@linux.intel.com>
+ <ee7585bd-d87c-4f93-9c8e-b8c1d649cdfe@intel.com>
+ <228cd2c9-b781-4505-8b54-42dab03f3650@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <228cd2c9-b781-4505-8b54-42dab03f3650@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Oleg Nesterov <oleg@redhat.com>
+On 7/9/25 19:14, Baolu Lu wrote:
+>> If the problem is truly limited to freeing page tables, it needs to be
+>> commented appropriately.
+> 
+> Yeah, good comments. It should not be limited to freeing page tables;
+> freeing page tables is just a real case that we can see in the vmalloc/
+> vfree paths. Theoretically, whenever a kernel page table update is done
+> and the CPU TLB needs to be flushed, the secondary TLB (i.e., the caches
+> on the IOMMU) should be flushed accordingly. It's assumed that this
+> happens in flush_tlb_kernel_range().
 
-[ Upstream commit 7904e53ed5a20fc678c01d5d1b07ec486425bb6a ]
+Could you elaborate on this a bit further?
 
-do/while_each_thread should be avoided when possible.
+I thought that the IOMMU was only ever doing "user" permission walks and
+never "supervisor". That's why we had the whole discussion about whether
+the IOMMU would stop if it saw an upper-level entry with _PAGE_USER clear.
 
-Link: https://lkml.kernel.org/r/20230909164501.GA11581@redhat.com
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 7601df8031fd ("fs/proc: do_task_stat: use sig->stats_lock to=
- gather the threads/children stats")
-Cc: stable@vger.kernel.org
-[mheyne: adjusted context]
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
----
+The reason this matters is that leaf kernel page table entries always
+have _PAGE_USER clear. That means an IOMMU doing "user" permission walks
+should never be able to do anything with them. Even if an IOTLB entry
+was created* for a _PAGE_USER=0 PTE, the "user" permission walk will
+stop when it finds that entry.
 
-Compile-tested only.
-We're seeing soft lock-ups with 5.10.237 because of the backport of
-commit 4fe85bdaabd6 ("fs/proc: do_task_stat: use sig->stats_lock to
-gather the threads/children stats"). I'm assuming this is broken on 5.15
-too.
+It doesn't matter if the entry is stale or not. The "user" permission
+IOMMU walk can't do anything with the supervisor mapping.
 
----
- fs/proc/array.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Why does this matter? We flush the CPU TLB in a bunch of different ways,
+_especially_ when it's being done for kernel mappings. For example,
+__flush_tlb_all() is a non-ranged kernel flush which has a completely
+parallel implementation with flush_tlb_kernel_range(). Call sites that
+use _it_ are unaffected by the patch here.
 
-diff --git a/fs/proc/array.c b/fs/proc/array.c
-index 2cb01aaa6718..2ff568dc5838 100644
---- a/fs/proc/array.c
-+++ b/fs/proc/array.c
-@@ -530,18 +530,18 @@ static int do_task_stat(struct seq_file *m, struct pi=
-d_namespace *ns,
- 		cgtime =3D sig->cgtime;
- =
+Basically, if we're only worried about vmalloc/vfree freeing page
+tables, then this patch is OK. If the problem is bigger than that, then
+we need a more comprehensive patch.
 
- 		if (whole) {
--			struct task_struct *t =3D task;
-+			struct task_struct *t;
- =
-
- 			min_flt =3D sig->min_flt;
- 			maj_flt =3D sig->maj_flt;
- 			gtime =3D sig->gtime;
- =
-
- 			rcu_read_lock();
--			do {
-+			__for_each_thread(sig, t) {
- 				min_flt +=3D t->min_flt;
- 				maj_flt +=3D t->maj_flt;
- 				gtime +=3D task_gtime(t);
--			} while_each_thread(task, t);
-+			}
- 			rcu_read_unlock();
- 		}
- 	} while (need_seqretry(&sig->stats_lock, seq));
--- =
-
-2.47.1
-
-
-
-
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
-
+ * I'm not sure if the IOMMU will even create an IOTLB entry for
+   a supervisor-permission mapping while doing a user-permission walk.
 
