@@ -1,153 +1,165 @@
-Return-Path: <stable+bounces-161558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9E3B00171
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:16:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F69EB00229
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:37:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21EF53B22C9
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 12:16:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B783E3B0C58
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 12:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD3024DCF8;
-	Thu, 10 Jul 2025 12:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FDC2505A9;
+	Thu, 10 Jul 2025 12:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JsU4qeQ3"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="V5815LAH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B403241C71;
-	Thu, 10 Jul 2025 12:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403C0223DF1;
+	Thu, 10 Jul 2025 12:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752149804; cv=none; b=D2aEgYNYo+96wePCpBGGM4gJwb5MLhQ157S3aPTMrsXrksNLx/9Rc2rH4XMo8ICWJztkmUYwLP9rrT08mFNgByiBuZPRarirsDF8B20hELIqotEtGkc3RZUh1e4Bp1q5Ik3Kn2sTChntYiCSmdIJi5dasov+dM4u+xYL5f5hCLc=
+	t=1752150965; cv=none; b=Dg3dM4iZOqqR0VoUKpU8HREstceJ64Kk9oS3rueseTEkHOy2F7m5bw+0HVvI25LIUBHj3ToY4/FpoHO9LzMvU+E8mb47mZ6KudUhdNe13q8lXgbmn5STsW4TuiszFn6t1Inw7HF6wXuVhGlKdAyGRsqhFgL1RzkPwc3BXOorIPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752149804; c=relaxed/simple;
-	bh=OqWFd6b+X//t3ckRR51QPPBHvoZ0MhmG7lwJZhuMCA8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MBDXj2H8s2YANwwvhOF4XdHw3z84fMeMHuZBrG9q56sLKd2jRg0aeKOEKAyo6d3v9POXYvzjTsvvIADqeeVQIHl3jfFL9B13tmpkTaaq9fDHm/kJ2DJEcigU1yPlWTgjKxJt+mEseGLJetSj1Hvm4ZgC3CmyQNPZI/0a6JumPk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JsU4qeQ3; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-450cb2ddd46so5226495e9.2;
-        Thu, 10 Jul 2025 05:16:42 -0700 (PDT)
+	s=arc-20240116; t=1752150965; c=relaxed/simple;
+	bh=RlDznsmnAeYJXA6vYnadPPJMeICEpomZbm5EaGSrE4Q=;
+	h=From:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=or5Xs8HKHzD0/3GEOHb3KTyVhPomXfqbpDi/dGMRD2uoFNJ0cA9dUJFRC+eUN8JiNrarmDpm8iVA1MV5NwSOGOroo98TorZ33nBs0SZAejxznJKHRqOGQeGRFlgcUQIFPFKOIr2FWqrMbAqvq0PsndyFXlLKDmE0D1h//z8ikTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=V5815LAH; arc=none smtp.client-ip=207.171.184.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752149801; x=1752754601; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GWDOSl2rgDLjMGrT+X7lzogJYNUDzCtbNnobaivJ58M=;
-        b=JsU4qeQ3r5SrWb8ljncAI+o/lIakgmr9WcOy3YtirFAa5Remmj/Gpp3yugDrMuuH7u
-         fZaRXcohYEh98w//xn2Nt0jG8zX3PZjoe7QfIuPGppy0h0lxe6Rna+X+tQa2+DC8XRZj
-         2/c0fp3kEeySwtWVcz8nvF2sKkGFB0vS0BmlAX0vsQ9/JSxc6mcdZhcKcMws+s8DrRoH
-         uUSW8julnM+g7IY0pz5IVEBbif45OPUmtVgyHqKFMQ4ZXVHKDIwHQrPNJaCAB1RvjRC/
-         o0aokOlrk2LM1dFBVL04di3spdFMuPyPUB6eb+IUYbQcctkU1q39np4lu6xhf4+u+ToY
-         rlrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752149801; x=1752754601;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GWDOSl2rgDLjMGrT+X7lzogJYNUDzCtbNnobaivJ58M=;
-        b=MOIblgo/W/4ZYf4+lyvD/PP/96dKQnj1wK2cbdlOD18peqkOTuvREqtFNXTK1BB1TK
-         5bCQfY12uN4AYYvWD2OmG0ih9KVAK8NLxb+zq4EnX3/KzZRWmDJnMAOAtbEJW1/mNtCO
-         WJuHbuTcmDc1ayCMfiUYP8X52RGThDiJd1IkIMCRbJwAJHOvx3IjGthn8FFwihKe0H3w
-         Vu5iRqo5jXhM671EXmG4FIQ4tt+3GtYH//xxjT0sKUU6kISmofm3bKfD7+c5TlVdyhmH
-         Dpuzct/daAOvLg3cfSU2HQ2vrYPC2+PIwtTRAxG6K8mbYYcmiPHZMo9DfYwqConJc3Fu
-         pueg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9fOWiEA1HvJXdDnk6h+vIfQa6dQwi6oJ4d61OxOSIEZhEK2GHTFP6bpxFL+NkuCHXozzdG08=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgBFubPO9ghsiVBr5gnxVAJldPbSSFXEemI9y8ddtE+hLT5NOA
-	lWPs751bom+yOVYyObuAwyAhVRaZq/7+tkE46c2OOhoI1pMmZ+YYcLWf
-X-Gm-Gg: ASbGncsq25m0p7o/x+5EPp8tfXUTOPp8omS+DOucWgrJmC04MRrMWPXyDJd0P+ml0Mu
-	8SfUZ1zQk/LLjttH6BInsnT5nkvGkNiplm59Cf7a9J2RCqGbajBABov12NKoBelT8RjI0w0/4+f
-	E/dUgqgNhTG/bYAF0rAxnO7JN0T0HrDDMGclokSn3g+KrvYmvGUhGAKEofDThb9DiSX7yXf7j9O
-	O5yZtCV1M/CAi82Lg+KnEHPIAoYaeLTfC1FOZoO7jdidr5kkPeGsS0Slg7klNV625L+LBHfmxRI
-	cYhk7lI/yyjelX4JP93N5LHLcpQVVD0GyrD4DuzasksbKrvXmQjFizk5fL4EXL98Lq3qUigvqTJ
-	6REfX/Bp5avCJa79V7A==
-X-Google-Smtp-Source: AGHT+IE9mYJ2LnB0l2FATaftyTwmgn1hBsc6d5VSOoLvQl2bva29E/6NYmizZe3vvHbRXutWCCa6SA==
-X-Received: by 2002:a05:6000:2891:b0:3a3:6e62:d8e8 with SMTP id ffacd0b85a97d-3b5e454564emr6393582f8f.55.1752149800632;
-        Thu, 10 Jul 2025 05:16:40 -0700 (PDT)
-Received: from labdl-itc-sw06.tmt.telital.com ([2a01:7d0:4800:a:8eec:4bff:febd:98b9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8dc217esm1691301f8f.28.2025.07.10.05.16.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 05:16:39 -0700 (PDT)
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-To: Johan Hovold <johan@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org,
-	Daniele Palmas <dnlplm@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] USB: serial: option: add Telit Cinterion FE910C04 (ECM) composition
-Date: Thu, 10 Jul 2025 14:16:38 +0200
-Message-ID: <20250710121638.121574-1-fabio.porcedda@gmail.com>
-X-Mailer: git-send-email 2.49.0
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1752150963; x=1783686963;
+  h=from:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eHk9yP7lBXu9adZ2ir5aZJJ1OXqvEejhLpZ90zVWF34=;
+  b=V5815LAHOKuaApnMV8vIq8K17pLv7TCPHKXQslc0J+o7a3j5JCAhP5oP
+   LxGuFZ0m8rfTUdzZOVRj2+/TU8/k3LjvOH4pE8msfPPs4D31+r7cNzr1U
+   z/5Zky0MLBskbM2vKCOpd4w7lChW7ZaToC9WT+YIB11lRv2l1m5Co+9WP
+   NrGLwD1XWj1s8+1t1M4a6bOiW5GOYvFnGxxZyB9uEyA6Z5zkVmMxzdQ0w
+   Ae6ZEcQpSJLojjwwjbKb4i4r1TdoY24ccTXFNIKA8BlJuEFxKdVhnfEJw
+   GfB1nLHz3R63VA5NxWZ8gAvyz9vnPNbRKWiqU32sj/EVeUdaAlYPGv7xW
+   w==;
+X-IronPort-AV: E=Sophos;i="6.16,300,1744070400"; 
+   d="scan'208";a="537432544"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 12:35:46 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [10.0.43.254:8628]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.44.180:2525] with esmtp (Farcaster)
+ id f707ad75-fcab-456a-a336-ed9fa25163e1; Thu, 10 Jul 2025 12:35:44 +0000 (UTC)
+X-Farcaster-Flow-ID: f707ad75-fcab-456a-a336-ed9fa25163e1
+Received: from EX19D008EUC002.ant.amazon.com (10.252.51.146) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 10 Jul 2025 12:35:43 +0000
+Received: from EX19D008EUC001.ant.amazon.com (10.252.51.165) by
+ EX19D008EUC002.ant.amazon.com (10.252.51.146) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 10 Jul 2025 12:35:43 +0000
+Received: from EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1]) by
+ EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1%3]) with mapi id
+ 15.02.1544.014; Thu, 10 Jul 2025 12:35:43 +0000
+From: "Heyne, Maximilian" <mheyne@amazon.de>
+CC: "Heyne, Maximilian" <mheyne@amazon.de>, Harshit Mogalapalli
+	<harshit.m.mogalapalli@oracle.com>, Oleg Nesterov <oleg@redhat.com>, "Eric W.
+ Biederman" <ebiederm@xmission.com>, Andrew Morton
+	<akpm@linux-foundation.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, Alexey Dobriyan <adobriyan@gmail.com>, "Sauerwein,
+ David" <dssauerw@amazon.de>, Sasha Levin <sashal@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
+Subject: [RESEND PATCH 5.10] fs/proc: do_task_stat: use __for_each_thread()
+Thread-Topic: [RESEND PATCH 5.10] fs/proc: do_task_stat: use
+ __for_each_thread()
+Thread-Index: AQHb8ZcntzXxOD03lUCK2AakuHm5cw==
+Date: Thu, 10 Jul 2025 12:35:43 +0000
+Message-ID: <20250710-dyne-quaff-a6577749@mheyne-amazon>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-Add Telit Cinterion FE910C04 (ECM) composition:
-0x10c7: ECM + tty (AT) + tty (AT) + tty (diag)
+From: Oleg Nesterov <oleg@redhat.com>
 
-usb-devices output:
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c7 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+[ Upstream commit 7904e53ed5a20fc678c01d5d1b07ec486425bb6a ]
 
+do/while_each_thread should be avoided when possible.
+
+Link: https://lkml.kernel.org/r/20230909164501.GA11581@redhat.com
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7601df8031fd ("fs/proc: do_task_stat: use sig->stats_lock to=
+ gather the threads/children stats")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+[mheyne: adjusted context]
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 ---
-v3:
-* Add missing change history
 
-v2:
-* https://lore.kernel.org/linux-usb/20250710115952.120835-1-fabio.porcedda@gmail.com/
-* NCTRL_ALL -> NCTRL(4)
+Compile-tested only.
+We're seeing soft lock-ups with 5.10.237 because of the backport of
+commit 4fe85bdaabd6 ("fs/proc: do_task_stat: use sig->stats_lock to
+gather the threads/children stats").
 
-v1:
-* https://lore.kernel.org/linux-usb/20250708120004.100254-1-fabio.porcedda@gmail.com/
+---
+ fs/proc/array.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- drivers/usb/serial/option.c | 3 +++
- 1 file changed, 3 insertions(+)
+diff --git a/fs/proc/array.c b/fs/proc/array.c
+index 8fba6d39e776..77b94c04e4af 100644
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -512,18 +512,18 @@ static int do_task_stat(struct seq_file *m, struct pi=
+d_namespace *ns,
+ 		cgtime =3D sig->cgtime;
+ =
 
-diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-index c0c44e594d36..147ca50c94be 100644
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1415,6 +1415,9 @@ static const struct usb_device_id option_ids[] = {
- 	  .driver_info = NCTRL(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
--- 
-2.49.0
+ 		if (whole) {
+-			struct task_struct *t =3D task;
++			struct task_struct *t;
+ =
+
+ 			min_flt =3D sig->min_flt;
+ 			maj_flt =3D sig->maj_flt;
+ 			gtime =3D sig->gtime;
+ =
+
+ 			rcu_read_lock();
+-			do {
++			__for_each_thread(sig, t) {
+ 				min_flt +=3D t->min_flt;
+ 				maj_flt +=3D t->maj_flt;
+ 				gtime +=3D task_gtime(t);
+-			} while_each_thread(task, t);
++			}
+ 			rcu_read_unlock();
+ =
+
+ 			thread_group_cputime_adjusted(task, &utime, &stime);
+-- =
+
+2.47.1
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
 
