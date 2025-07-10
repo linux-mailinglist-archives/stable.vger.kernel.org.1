@@ -1,253 +1,240 @@
-Return-Path: <stable+bounces-161509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D35AFF73D
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 05:02:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E69DAFF79B
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 05:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF6773AF5A7
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 03:02:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAC7D5A160A
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 03:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83F327FD68;
-	Thu, 10 Jul 2025 03:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5202A283FCE;
+	Thu, 10 Jul 2025 03:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UOD+JcpR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A/ajQGDg"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0029823B61D;
-	Thu, 10 Jul 2025 03:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752116546; cv=fail; b=WxMmNugtj5PYcY+mbNEHAz1oQ8URCV2zTS4W8C85pGaozCSc/jcqMlr/KYcFE+aM2XCHwfPu0i2YWoXKbBLXeRm4FJb9lnjgo9jFvOA7pLp2GV0Gx74hPVor2Mpa5GtSF8vCAbhYomMtV2X8ODE8QXjLGryxqNMkJJr26219DiQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752116546; c=relaxed/simple;
-	bh=U9V2RvW3W/xWGtZhYcZRlu5TW8ZAnfSB6ubiZB95QTA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=A6D8e/zJxRiih83Dc/jFwIWPRJE6ojNua9sBuuwq8FMsa9u6IPbSZBXUxqeq2ze3OMKsR+B8lvSGgdoNVrkRsciZiyjWa6QIJUwOBMm+kwUViwYvmg2M5cbdBpuAhdpOpescO1uSuRURi1154Vu6ZWw+iMrb6CJaSvm+LzBkTQg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UOD+JcpR; arc=fail smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752116545; x=1783652545;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=U9V2RvW3W/xWGtZhYcZRlu5TW8ZAnfSB6ubiZB95QTA=;
-  b=UOD+JcpRadQykwraxPdH0ZckgcGno2Qf2yzZk144qlXNGM1XYHJUVQO+
-   hDeEh8M7QTaCODHpsmmutYlPpT39S4wR/a9VSwnCBAq/SJdx5/liNU1BX
-   skxQ2PQVl2WaEYUu45D2ShbBVlkiWpXk8UIxhrkKyaBM7Ar4wzUk581st
-   9DI2m08bPv0AIkwpFjqkp0yLZALef6B/Za7hf1KpRr9UBEFt6WMHLnHvn
-   aXhydecdW3UmLt4g0oWfA5SshG//yRURTtQpoWSuHjB0ENcxrXUjl8B2C
-   rgos16k9iDILXEOTNvHubYwf9e5pwnWrdaBKGHP/BUWWVsZUCdbQDWA7a
-   Q==;
-X-CSE-ConnectionGUID: YcXgNywjTYK+JzaUKzWniw==
-X-CSE-MsgGUID: GpCeWcEKSTuFwS5Y/l7b4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="58156431"
-X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; 
-   d="scan'208";a="58156431"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 20:02:14 -0700
-X-CSE-ConnectionGUID: PrpZL3NFSyCImXX3zjVb+g==
-X-CSE-MsgGUID: M2qAL/oFS/qD9vy2ZmhuLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; 
-   d="scan'208";a="160233520"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 20:02:13 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 9 Jul 2025 20:02:12 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Wed, 9 Jul 2025 20:02:12 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.42)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 9 Jul 2025 20:02:10 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=My1Kj0NoDzuFC0OT9gkhEfgtunkDWdSbFJdBw5gveopuqBndIUX09BtYDy8Bp/cDjeQIeUjINwHYmDiWqlCRuRDJv4rgVOw++KzUBdkOjPEtNC87MT2Injdu2hjfxnuBuzirEBnbkzmLUwip5ArGrraNodRaA9BzERgZJ+5yhNmeEACjCOZtJ1LX50XJKY/2JEwgCfZ4QvX7UgxF8vLZMa/Y5GE2SwgzGBRUjcbBjrjreuLhG9XP1caOKuTWTqSGaGsT1haMTDg1YmiQTTqwU/ghowuOdh4pOb7G5a01oHMW0AZlEwID6V4xeRvm0Yg6M0h9ncCaXaPJI0V992wyug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DFeTKzoKNjYKwvh/KaP6l2RyIE17nscbJYfVyhpn4Q4=;
- b=m3g3qAkzBfSXifmTffZoZIdfvOf9Lv5N3TVVoTl9JwYr2RbR8g/+jHb7/IvPYja2S3onKC8BhMc988w+MXnHliA6Q7SHmkxWcJ5uN/mAOv2Px2iteX2JTD1XRJ/ORIkoDUFm+2kt3ouAcZAA9wFdipuE5FGuc7kDuCtZ8ayStq8wd5mP0ue7X/HxtO1IgoMxkBNSlUmg/DGE+k8W3XsMlUWui4Avt12kFWuywDwZIE02YME3cbsc4N2UxrCPu3uKvICkkmWImO2D/iCh1Ldxq8DS7qyU1CYkGLkT31Expt0tXf0Hlf/2YsF2HkVoucGwWJEO5ftzob91NiNwZlktng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
- by IA1PR11MB7174.namprd11.prod.outlook.com (2603:10b6:208:41a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Thu, 10 Jul
- 2025 03:02:08 +0000
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::b576:d3bd:c8e0:4bc1]) by BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::b576:d3bd:c8e0:4bc1%4]) with mapi id 15.20.8901.024; Thu, 10 Jul 2025
- 03:02:07 +0000
-From: "Tian, Kevin" <kevin.tian@intel.com>
-To: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, "Will
- Deacon" <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, "Jason
- Gunthorpe" <jgg@nvidia.com>, Jann Horn <jannh@google.com>, Vasant Hegde
-	<vasant.hegde@amd.com>, "Hansen, Dave" <dave.hansen@intel.com>, "Alistair
- Popple" <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>, Jean-Philippe Brucker
-	<jean-philippe@linaro.org>, Andy Lutomirski <luto@kernel.org>, "Lai, Yi1"
-	<yi1.lai@intel.com>
-CC: "iommu@lists.linux.dev" <iommu@lists.linux.dev>, "security@kernel.org"
-	<security@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2 1/1] iommu/sva: Invalidate KVA range on kernel TLB
- flush
-Thread-Topic: [PATCH v2 1/1] iommu/sva: Invalidate KVA range on kernel TLB
- flush
-Thread-Index: AQHb8JsDhmo0nc9lxUeepqGM5I/6nbQqqwhw
-Date: Thu, 10 Jul 2025 03:02:07 +0000
-Message-ID: <BN9PR11MB52765F651EBE0988E35E15FF8C48A@BN9PR11MB5276.namprd11.prod.outlook.com>
-References: <20250709062800.651521-1-baolu.lu@linux.intel.com>
-In-Reply-To: <20250709062800.651521-1-baolu.lu@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|IA1PR11MB7174:EE_
-x-ms-office365-filtering-correlation-id: e762bfa3-8cf0-481f-149d-08ddbf5e27d1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|921020|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?UaJ+7IzoKyPfZUC2GXDvSNsLTkycA3AJ76VGiGB+qqKswfhrood+p/Dry4vB?=
- =?us-ascii?Q?KBgAhvRoblNhIfeDmpk/amDLZuHCTYrS6DIPzNgaYWPTvq0FDzwUbxAeJxQg?=
- =?us-ascii?Q?cev/K5cgs4amheMCnKDhytTK6hK+qs8uwtZFg5+nhZf4n/zTmkbXe9PnzRnl?=
- =?us-ascii?Q?ePaGsYKbUv8JLy+dmfSWj5qBylShwdvdji1TKDpxbq882Ge3rat4cPT4QR8f?=
- =?us-ascii?Q?EcxQo2T4AcZqb9Q8G/7V3gOjv6XltskOQotVYOulDN+Rg61vewbfayQPocnq?=
- =?us-ascii?Q?cyrrusxriPtOUwLlLp35HxeJjS3W/7Ft79s0/DMtZev2l7uiM/RhV4j0UUGz?=
- =?us-ascii?Q?pys7eFZDq7Xx2O2ZEUM8CI0TO8wKRtD5x5Pm9ZveXV7iigp+kkMCITrUSdQ5?=
- =?us-ascii?Q?Ir+0pr9pYbsprjwySDgRMPpzQUQlOIrzY/VN3afDIZAHszl8Nod12CHB/j7V?=
- =?us-ascii?Q?f6VPLv/iPvDCUIhCsvqzqV4PoiG7tVIHXlPz+jMgKbZi0083qjQlqTLpNEK0?=
- =?us-ascii?Q?TeqgeW7orlX8V98GbNniIq2qdKxY5y+9d7bBq1nJ/PgSmcwOP8TvG2lWnpaV?=
- =?us-ascii?Q?fMXZ3GDPq6LuDR//woQK4Vv5EiCw0YludZxTDnB4lXHrewZZCC8Cj8iTaMg1?=
- =?us-ascii?Q?HocjpJ6LW0Z/teetrbSHJcxoI1WDsXGYl5EWy6jKdxSG62bgooxfabefMR9/?=
- =?us-ascii?Q?zrX4fQNQ0o3L8WeKKDmuQssPo/b3OyrZrUU0n0G/lJgnx091/W6cqKqwmtyY?=
- =?us-ascii?Q?siiYgPoJFyM1yh12A0qRHOcayCXw/VQh8eGod2k8nf1qoI9Z2kf03/BtHFXM?=
- =?us-ascii?Q?dpKpL+itodG/4nz19rCXhEYygWUwzMLLsE2T8HAEvEizUMw8ba7nYaNC/DwH?=
- =?us-ascii?Q?XCyERCPppXfXUl01tCPgtCZqzd6K2aOgYmGto54YrUR1SyO4vwkfQVohYm+k?=
- =?us-ascii?Q?Un2/GkGFOIfxLbVw3uTgN71B8Yy8PxUeLfnQunMR6Xj9XFOxVvKLagF9KJQr?=
- =?us-ascii?Q?D0IrDL9K11YOyRcHz8pGI1g1tLCWJKVJe4/iioy7UEGz4tsfA9B4e2dilQjb?=
- =?us-ascii?Q?OHFMNEeD1mI0zm0hEDjX14kdctrPiCGnIzpUjMAsaA+Jflx0oKu6n2fDBGSx?=
- =?us-ascii?Q?5AIVOEv/JN9KKV3Z34gz2InMHTX4wWuXU0WwhXnWA1drmzC0w4eD12oPzJZW?=
- =?us-ascii?Q?hhDMQDmnxhcifnD/bFhOaY7yCpxHmfRE5+d9KQDYFBIntV++gwtd8oD4J5Ih?=
- =?us-ascii?Q?qkK6le+VvtuIqQlp0Z22+QSDp+wRej82Yk8BIl2vp5UFnjT/CcnY4Y6IzRfk?=
- =?us-ascii?Q?rErC17Sh+JvfuwdavjTFwSDPjuhCnJyPrngo9SzFhTdp+ErUXe9MW35hRtaN?=
- =?us-ascii?Q?bVZnxBKDN7VSNq+udnjI15M85zAWI4+foWe/yAr+P9HHsLqFILe7xNgqRqlD?=
- =?us-ascii?Q?Zdp00VejSg1c0SDkkBsl+btRduA+0GzsUOFE7wyNuX9naS2a8ekqwEyfxQ/N?=
- =?us-ascii?Q?lMxct3IFOnK+cb8=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(921020)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ePjo63g7d7cbFEaAepsCPQzDuRpKAqjgXfPScz/uvlMf2kNEhkol5Aiy3HW3?=
- =?us-ascii?Q?j9R5J3n0cUhK/mxVL0/xmiXkTwclbmG5aSxBxRYzcqvjrUnpoazSioUIL5Lq?=
- =?us-ascii?Q?zE3fzkxcyJArn5YyjUGZbB/Zls2onMh0ebdL4eMob11iSmF0PTqIflfrze+6?=
- =?us-ascii?Q?rOyGWuaVbZMq3Fvv4aAa8ndQBc1J75ZnB7cDBakueYNm7KYXkylxAMDiaf6s?=
- =?us-ascii?Q?SZHOJZb20CTSpS0wshRfBTomOYzu9xvPIj/o0bxWiBraSV3S15Jts/OMSkst?=
- =?us-ascii?Q?MufyNJCnf865OsN2JhgpgKigK6Dq+FJkog4pZqRzXOSMaz+MMJfplvrXXSu+?=
- =?us-ascii?Q?zlOFWkBb85UevA9Vhm8rTFHyCoDcCJLUIkPuFraAx7dMQD9ItInekr1eSEC4?=
- =?us-ascii?Q?LNZobBLPfeZtbsKZ1QNix5HE80p0RpV4fw6seLy+OJQjTG2swwpOS/fwYfvL?=
- =?us-ascii?Q?jSAUXRjNIQYToFap5guiAlLrIcq9dE48J+n4JdUupHlpBXkSSqjV59fdmKFs?=
- =?us-ascii?Q?AKyVHCCzE+n939wE4AXXG9hj3XwA17xaOGFaL+zCaeF2JOb7hNiILpLaczKV?=
- =?us-ascii?Q?cpiBgsnAnjMTHL2UWI9UnvuErAJZqDhKTGO/z+W2HOzLU9ShDOHWtrTPYd9u?=
- =?us-ascii?Q?Za+WlZ9lUWvKg7vK7AbSH29520wogrTnlzxWkXcemRabUUw9P+c3pcVBlAt9?=
- =?us-ascii?Q?aORBEFqW3/U4OjzmR4lxbaKr5o9AyBmJcG0Z+1sTkaaDp3ML09Jg5Eba+Z2A?=
- =?us-ascii?Q?Z6xAUxbh+z5NSQlv+1d+AljddA4Z/i+jJ0PdXkep5d8osH1bx6v3eib9M510?=
- =?us-ascii?Q?5yLCpqfyGBksw9ZvnMAQly31PAbYAPAVbtYGDyQ6hSE6jnAYp650Nxsi4x8O?=
- =?us-ascii?Q?FBEcxAqQ9N07ExevkI4SdnESMME0FQnnYNWADdGy/NOO9NM2eoRNDXgP+vq8?=
- =?us-ascii?Q?o9VlBBS+cgymOLKZnny6kbB0xFpseKfkLohKDkfXGj+uPDjRsq/TiiADxYF8?=
- =?us-ascii?Q?INtQL3sIDvrA4HP5mnkJcHtfoiBxY5QtJjXLZa+MBCkSHr/EjArMy3Ej75O5?=
- =?us-ascii?Q?kVO7qREc1py3o+cUS1OOggHgFcttl9D9BA48bcL3ZrWtnsXL5tk35T+aoZl6?=
- =?us-ascii?Q?DMGIycKjIV9LtgZu5ncPBsvwh7Vt8ugPy+GvVYUrUYshIBqOSsddWmIUJWj9?=
- =?us-ascii?Q?mits0dMJef45Kg4okjIDwCPos/Ehs9XABCq8iZzv6JhADEGv+frMMyyPmCei?=
- =?us-ascii?Q?THuTvJJ3OKfcm/fl0Pfuac18o7UMNB5BYszqobYmuGQYZsK56Y3tFYq1P5zs?=
- =?us-ascii?Q?Gc9kl07Rfd6E25cLaIOcNLaRyobJAGxsFMdazkY3qPWyeaWxpAO7F4Lj6f05?=
- =?us-ascii?Q?7WfPgQSkgeVi2m71/jRD2rNUiwDeSVZjeNSLoEeYotXxQ6FglkEgygJfMXi3?=
- =?us-ascii?Q?dMldDgMx6C6aMhJ5XrXHsC6Ite3xfVEY9pTvBVHFRbblAnHt4gSXuNcnAouX?=
- =?us-ascii?Q?yFQyWUWcUeGVgdrXTvU3WRDEzsDR6cGdUcEkXeiJpJoa1hqW4yvJa3DG/ytS?=
- =?us-ascii?Q?Yj3KN6pxxNFTH3zPAIJj89tPiWCXA7JtnOgcz8UJ?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652802836B0;
+	Thu, 10 Jul 2025 03:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752118660; cv=none; b=FTJtc0FcPddsn5uVMfh+WJCvVXS3s0RkM8erngnxldQjKR/H4DLDermsOFfUqjCcfEUsoXly2Qr3aDN66cJ5OZJwgIlUEeBiVz66/lsPHFjAaUk1hPVqX3HMstmw+gJ/scOsZKyWV8j/Apd81r8B6t6+lrWmzQ8x6q9/MceaFJI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752118660; c=relaxed/simple;
+	bh=aHEKVPEcG65zMssaVDheCdyA1eEbVFSOQxSEcrZfmqo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lBJ8adxaXNGEMssi4OtKxA7l5Ss+nNR8Y0JhdFcq6Gxr4f9rOG0MD84lhISmck2sNhAGC/Apkf5v199Bn0xdmeEzkft9MBUl5Bbi6MP0XHMWaGXOAeaLpWcQy6BbqTxZcH17womJ9bBNQJpeq/hCGCk8pWDDep62LoT1HeRPcxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A/ajQGDg; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b321bd36a41so591251a12.2;
+        Wed, 09 Jul 2025 20:37:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752118658; x=1752723458; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Bl/mZF3g2hMilPsP1iGl5oIVwOLv3WwEcuUx0SZOALE=;
+        b=A/ajQGDgNbUKcGihJcIMcdTFmJye03H0sZUF0WGlX4IF2ETe6V3P8Oi9Hp3VC4h+M5
+         iwzL/4dY50Vsohvcceo2Sd0y9U2I1NV+J/rPOfMTHjbGvapUxDC0AMJjEm4jHtlFDtrD
+         Q7nVkfl37p/yQqopOQLGn3r/pTBEAMxxlFNijW7mW5MTQeRBQ0f6FiJpsl3OZuh3oAAU
+         YBZRbwdt5R8xdF6CMoEddPz2p8el9KZ+cPcF7qudEPWWGdaoPDK10/WkSyjE1t25w2P0
+         VM47HV8w0jgEc4rkKd+oKNc6gsCHDNrrCntkOLWrLV77gHR3enz6GCMsmcoNvPrZ7kiC
+         pHiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752118658; x=1752723458;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Bl/mZF3g2hMilPsP1iGl5oIVwOLv3WwEcuUx0SZOALE=;
+        b=RqsadSlrm5Cq4BykaYporFl1uWbbnUynHnlaeRIrR8WSQe/L8WTpGXlZbP7jh6PfjZ
+         ZKZzzImYA2T8BzlSVLfiZbVYoQQ+fW/gmJvBHWfBmWPamkaVf6uhX13xAjCZfjZztVHm
+         wLRnCjw3dGK0TSM5MDJmrN6zKKjMkNAp+YsO1NVvvAYxudIkYyO5DBPBGIZBAcMQiJv4
+         XyIO5Z+8rO8Y67uOqRZfLZkQkNBEsaU64aD3hrEv0dzM87Wde6aMHEWrmvVMMrjthaIT
+         3oPS9i0QfymIIkfkGHA5o2c3+HnaI2lf3PMbU6tvt6rLry+V3FmhnKC8gnOjLuE++yWl
+         0Zkw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5yblfCofpa1aVeEAu+84HQVkAfFEYUdZtx1WmCcSVIx4OV+V9v9nQYRMsGesdpscXfUmL+TQgSz6fxGg=@vger.kernel.org, AJvYcCVKFFlJxr2vKOnrSUtqcRLyrqhf+bO3CEF2nEcbFos1XRiXQ+3Rf3iN8cMPXVciyKP7HGdtRnal@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAe55HyqUK3DwwhTGCyGNzj4OcpHr+gVpvlGk0VbzPf+pDUFtg
+	R3Nqfh1j3zw4JM/oEP8aZaTxzHb9P4OdNDS8eDVovpOjva0reMZkfZEv
+X-Gm-Gg: ASbGncsw5xNA8619aWZ98cEUIAlCW9hge42a1rnUI90wDR2XvPaVDR7ncsqEVRGpN7O
+	5RqNaOb8SW57gPEymYVioO7hl0QMvAb9IIRxUhj9dTy7Wm5+xs+xvi5VgUDpgqLrvUQz5bPuFK/
+	lLJNdWYPV7J5LWQVjbSs1f3M25mceqozWJxxnrmSn/V2DINGbY27M0BiJpKVamVE2V1eBe6utjp
+	TnP4yKXpbrGiUYdkjX/IxeL4ZQeSQmHADomgmh5heTjq1ylfw3Fj26yde74dfB30euH133ax/BM
+	3XI7caeaJTsApB+Y5ahLe6iBkL6APbMl/Qq332NjjjKc/JzoiPwlBEo8YIQrHMZH0OJQYhZVJa/
+	Z
+X-Google-Smtp-Source: AGHT+IHjm1osjfE3BDbqUtnApUOiVzDzZtYqYWPkiNlunBCJHYXm4X1KAkOQOJDiTMx24KRJxs5NqA==
+X-Received: by 2002:a17:90b:1f8d:b0:311:ffe8:20e9 with SMTP id 98e67ed59e1d1-31c3f00b99bmr1966495a91.17.1752118657447;
+        Wed, 09 Jul 2025 20:37:37 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.20])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c300689aasm3716320a91.13.2025.07.09.20.37.33
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 09 Jul 2025 20:37:36 -0700 (PDT)
+From: Kairui Song <ryncsn@gmail.com>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Chris Li <chrisl@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Kairui Song <kasong@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 1/8] mm/shmem, swap: improve cached mTHP handling and fix potential hung
+Date: Thu, 10 Jul 2025 11:36:59 +0800
+Message-ID: <20250710033706.71042-2-ryncsn@gmail.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250710033706.71042-1-ryncsn@gmail.com>
+References: <20250710033706.71042-1-ryncsn@gmail.com>
+Reply-To: Kairui Song <kasong@tencent.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e762bfa3-8cf0-481f-149d-08ddbf5e27d1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jul 2025 03:02:07.2124
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qfL0juED5Q6sr5eunXHC9ism+1PMuOVCD7D4ZoXZa3nS+MQeKc3JXL5GsXHR+1gCeDhR4CQzw1uzgVizjjqAmQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7174
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-> From: Lu Baolu <baolu.lu@linux.intel.com>
-> Sent: Wednesday, July 9, 2025 2:28 PM
->=20
-> The vmalloc() and vfree() functions manage virtually contiguous, but not
-> necessarily physically contiguous, kernel memory regions. When vfree()
-> unmaps such a region, it tears down the associated kernel page table
-> entries and frees the physical pages.
->=20
-> In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU
-> hardware
-> shares and walks the CPU's page tables. Architectures like x86 share
-> static kernel address mappings across all user page tables, allowing the
+From: Kairui Song <kasong@tencent.com>
 
-I'd remove 'static'
+The current swap-in code assumes that, when a swap entry in shmem mapping
+is order 0, its cached folios (if present) must be order 0 too, which
+turns out not always correct.
 
-> IOMMU to access the kernel portion of these tables.
->=20
-> Modern IOMMUs often cache page table entries to optimize walk
-> performance,
-> even for intermediate page table levels. If kernel page table mappings ar=
-e
-> changed (e.g., by vfree()), but the IOMMU's internal caches retain stale
-> entries, Use-After-Free (UAF) vulnerability condition arises. If these
-> freed page table pages are reallocated for a different purpose, potential=
-ly
-> by an attacker, the IOMMU could misinterpret the new data as valid page
-> table entries. This allows the IOMMU to walk into attacker-controlled
-> memory, leading to arbitrary physical memory DMA access or privilege
-> escalation.
+The problem is shmem_split_large_entry is called before verifying the
+folio will eventually be swapped in, one possible race is:
 
-this lacks of a background that currently the iommu driver is notified
-only for changes of user VA mappings, so the IOMMU's internal caches
-may retain stale entries for kernel VA.
+    CPU1                          CPU2
+shmem_swapin_folio
+/* swap in of order > 0 swap entry S1 */
+  folio = swap_cache_get_folio
+  /* folio = NULL */
+  order = xa_get_order
+  /* order > 0 */
+  folio = shmem_swap_alloc_folio
+  /* mTHP alloc failure, folio = NULL */
+  <... Interrupted ...>
+                                 shmem_swapin_folio
+                                 /* S1 is swapped in */
+                                 shmem_writeout
+                                 /* S1 is swapped out, folio cached */
+  shmem_split_large_entry(..., S1)
+  /* S1 is split, but the folio covering it has order > 0 now */
 
->=20
-> To mitigate this, introduce a new iommu interface to flush IOMMU caches
-> and fence pending page table walks when kernel page mappings are updated.
-> This interface should be invoked from architecture-specific code that
-> manages combined user and kernel page tables.
+Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
+folio lookup will return a folio with order > 0.  The
+`xa_get_order(&mapping->i_pages, index) != folio_order(folio)` will always
+return false causing swap-in to return -EEXIST.
 
-this also needs some words about the fact that new flushes are triggered
-not just for freeing page tables.
+And this looks fragile.  So fix this up by allowing seeing a larger folio
+in swap cache, and check the whole shmem mapping range covered by the
+swapin have the right swap value upon inserting the folio.  And drop the
+redundant tree walks before the insertion.
 
->=20
->  static DEFINE_MUTEX(iommu_sva_lock);
-> +static DEFINE_STATIC_KEY_FALSE(iommu_sva_present);
-> +static LIST_HEAD(iommu_sva_mms);
-> +static DEFINE_SPINLOCK(iommu_mms_lock);
+This will actually improve performance, as it avoids two redundant Xarray
+tree walks in the hot path, and the only side effect is that in the
+failure path, shmem may redundantly reallocate a few folios causing
+temporary slight memory pressure.
 
-s/iommu_mms_lock/iommu_mm_lock/
+And worth noting, it may seems the order and value check before inserting
+might help reducing the lock contention, which is not true.  The swap
+cache layer ensures raced swapin will either see a swap cache folio or
+failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
+bypassed), so holding the folio lock and checking the folio flag is
+already good enough for avoiding the lock contention.  The chance that a
+folio passes the swap entry value check but the shmem mapping slot has
+changed should be very low.
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+---
+ mm/shmem.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 334b7b4a61a0..e3c9a1365ff4 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struct folio *folio,
+ 				   pgoff_t index, void *expected, gfp_t gfp)
+ {
+ 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
+-	long nr = folio_nr_pages(folio);
++	unsigned long nr = folio_nr_pages(folio);
++	swp_entry_t iter, swap;
++	void *entry;
+ 
+ 	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+@@ -896,14 +898,24 @@ static int shmem_add_to_page_cache(struct folio *folio,
+ 
+ 	gfp &= GFP_RECLAIM_MASK;
+ 	folio_throttle_swaprate(folio, gfp);
++	swap = iter = radix_to_swp_entry(expected);
+ 
+ 	do {
+ 		xas_lock_irq(&xas);
+-		if (expected != xas_find_conflict(&xas)) {
+-			xas_set_err(&xas, -EEXIST);
+-			goto unlock;
++		xas_for_each_conflict(&xas, entry) {
++			/*
++			 * The range must either be empty, or filled with
++			 * expected swap entries. Shmem swap entries are never
++			 * partially freed without split of both entry and
++			 * folio, so there shouldn't be any holes.
++			 */
++			if (!expected || entry != swp_to_radix_entry(iter)) {
++				xas_set_err(&xas, -EEXIST);
++				goto unlock;
++			}
++			iter.val += 1 << xas_get_order(&xas);
+ 		}
+-		if (expected && xas_find_conflict(&xas)) {
++		if (expected && iter.val - nr != swap.val) {
+ 			xas_set_err(&xas, -EEXIST);
+ 			goto unlock;
+ 		}
+@@ -2323,7 +2335,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+ 			error = -ENOMEM;
+ 			goto failed;
+ 		}
+-	} else if (order != folio_order(folio)) {
++	} else if (order > folio_order(folio)) {
+ 		/*
+ 		 * Swap readahead may swap in order 0 folios into swapcache
+ 		 * asynchronously, while the shmem mapping can still stores
+@@ -2348,15 +2360,15 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+ 
+ 			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
+ 		}
++	} else if (order < folio_order(folio)) {
++		swap.val = round_down(swap.val, 1 << folio_order(folio));
+ 	}
+ 
+ alloced:
+ 	/* We have to do this with folio locked to prevent races */
+ 	folio_lock(folio);
+ 	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
+-	    folio->swap.val != swap.val ||
+-	    !shmem_confirm_swap(mapping, index, swap) ||
+-	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
++	    folio->swap.val != swap.val) {
+ 		error = -EEXIST;
+ 		goto unlock;
+ 	}
+-- 
+2.50.0
+
 
