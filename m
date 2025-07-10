@@ -1,184 +1,100 @@
-Return-Path: <stable+bounces-161588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6423B0053A
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 16:28:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75CC4B00548
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 16:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43E186462B1
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:27:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 786081C40B77
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DC9273D7E;
-	Thu, 10 Jul 2025 14:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB4E273801;
+	Thu, 10 Jul 2025 14:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X0RYYk9i"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dSUPZSLO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8676155393;
-	Thu, 10 Jul 2025 14:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE2C22E3FA
+	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 14:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752157682; cv=none; b=Lv3aZBWycrXA1Cne7w/pT30f7N8EwGJUFVyQvaxDIj9nD574VWOSj7cUY8YlcNyVEwef+9p5Bh6Njy60FXuqRenegDpCHJhmYYEVxWNmkCOd1Krahgl7hEimgS/GdqMHAPFArYcdrVSOnZV2OutjYE0Rq96aFCY6kacocT6wVU0=
+	t=1752157817; cv=none; b=cnCJRAJ5QmjMgxj8/XJqIDDexax+5xwpd8VtYvPW7/k/kA0xV4wT1BgwxNRuaF/ETTsVVvBAmGu3TUaiIJDpSvGgORZ8Taa4noqlPn73mMadwMioWH7N7tqZUYTZL5a/PmSXaxxqNH7G9ZKM02CwdMotqJAe+VyFRR5flL7EKns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752157682; c=relaxed/simple;
-	bh=j2nbPASgvYLLYNCi4Etlcf80Fw6mKYASEA43fPe1Uiw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KXaRA0QuDJXpV/4oyKa8zeRQRysT0fCKXNF1GYnYIs4/iQDB9VHa+pF1Uh0GpKmjylQSZMQiMoblas/YoHZV1xRqIl7HnE7IadzlkW2PqnJ5YE4zRdtufVaE33J+FdR8glSERZh8Fy/+bOxolxpe2CD/LH9ckbnESgxcOE87jo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X0RYYk9i; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3a575a988f9so754760f8f.0;
-        Thu, 10 Jul 2025 07:28:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752157679; x=1752762479; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6PZo8JJ1Wfz2lrXJvo02pOBuZpAeF+qVv1oHWeeIC4s=;
-        b=X0RYYk9iHKKsoGlOb+7ddT0MlKNc7HhChcAmc7zegLENO39RgYaDIkg/5GOuc8JfPO
-         MT3fLMTiavc2lDGMuzt0jcB+sXVaFK7RJOA4ujimWhxyl43Ddva76L7hW+mVuyG68tEI
-         xpJyyjH/fYN5qUAzCsAP8fwHVEh69GZIFOnMG28EsxBhFUnCUuAjMYh5dzZ9rMuqq0Hq
-         rcv562oyB1Fa/QfDyzAbLt+LSA5qWxRWik4LpjimCUl7FSMnqFWRHSWf7whCqPcF1tDI
-         aCPEq1yVheVTMU3Mliw+XEEGIQYtLETuy195xdez83Pn4hmXR9waV0L3oC8wGFwRY+C0
-         R9Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752157679; x=1752762479;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6PZo8JJ1Wfz2lrXJvo02pOBuZpAeF+qVv1oHWeeIC4s=;
-        b=tbNZQqDTlY6x9zFxNNianI/ACUXmDDAg0ILlqYbcIQZ5hbCw7rY1ZTI0WUWJqIM/ke
-         KsuQMmtq7rtsKqOKUjt/j1pDh2iKu+V20fpwouNeJM0HobmFRU2mV5JJRIaPmQLLddGy
-         if+KHvl8yD+cH6ORdBdJOtIbtSiIdGuv+fEV0CeGTCdSXTBIsUUa5OdD+I3heVE4QH5W
-         0bh4dcIwY2EMf5xwkDM8idqw5sTiU6xB+V5CoFike0AnRU4RvF8+S931DsyS2GtPFAGX
-         84iRG/Jr5Hzi0RbRgfJY6OJglbvPl+O12PbMLM2YBOw+7GshGPtUGji8layNSsF1+Whx
-         vS7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV2PoGZWtSMZbEbuQTRf/gtm2yLKa/o61dW1g60XjJs92BrlZWeR6wHaLuAU1UUjDjnJbw/XsEZ@vger.kernel.org, AJvYcCXHHp+N1XYtvB6uJhp5zSK01SrdYw+ArpcdbBZd9fodlwZUO32QRpaiZQsIqO6OcJk40gx1aGiCrkhJpdw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyaf1+JdwpaKxsLAQaypG1VdnJCGxv1ztZ5dq4iF4WKQt+mDqXq
-	/b5TnlqsvUgBapmIummdT78F+FDuta0kyVZjXPqghde7ReRIovoG42k5Cc7wpBRj
-X-Gm-Gg: ASbGncsstaflBPupXQfNRBUo2QPOWWCICD2wv6HFsa79297bcILpDwwqfn6YLzMsWDT
-	3DVqGaZn4OmFzPABkI0ClQxPSxkvIQ0/tzp95nfBb2NZzl3tKzVOZ0Ca6ynzazLh+2jxIeMUeh+
-	tLzzjtqzDrn8qaA8xeGUn7WjSu3GPmxVbnjPjh7NbvK/H3/QfMduGs+WtWm0pFx7ndl91tDPKm5
-	6o29GzWYLtDHk9b+djGlEs2iQGoegng3Zx63CYCmW3vlz6EyiogHVtY4Qj5IwlmBC3GQ20fPwdW
-	BrhNT25+oJcPS/RDEGG2z+5fO1ZoK/sybPrPKnjtV/YQQMzzMQGRwMo6ivtDJFzmECbN+dUkwz0
-	=
-X-Google-Smtp-Source: AGHT+IERXmuDI3GoiPegJhpVc4M5/ShLvIXoN+HM9hwExW1oNRKiHyLGAJMD0WfwvtQKPkXVFPvNLA==
-X-Received: by 2002:a05:6000:4184:b0:3a4:d274:1d9b with SMTP id ffacd0b85a97d-3b5e7898ca5mr3092611f8f.25.1752157678945;
-        Thu, 10 Jul 2025 07:27:58 -0700 (PDT)
-Received: from localhost.localdomain ([45.128.133.228])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454dd55b0e4sm21237845e9.39.2025.07.10.07.27.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 07:27:58 -0700 (PDT)
-From: Oscar Maes <oscmaes92@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Oscar Maes <oscmaes92@gmail.com>
-Subject: [PATCH net-next v2 2/2] selftests: net: add test for variable PMTU in broadcast routes
-Date: Thu, 10 Jul 2025 16:27:14 +0200
-Message-Id: <20250710142714.12986-2-oscmaes92@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250710142714.12986-1-oscmaes92@gmail.com>
-References: <20250710142714.12986-1-oscmaes92@gmail.com>
+	s=arc-20240116; t=1752157817; c=relaxed/simple;
+	bh=g5MwrCI6sk832lhryi4KgtNtnuCrduxIO6sRbESPEoc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Z47CRDBewxmTa+qRIQneH3Tmg0h+LA3ArwkazykigEUIVcJMKK82MIYlq8PusIWg1/a+5w12w0gXxzHZFmSrzyeS/n385spcKKBeRWQ67fExllAa56T05VX2H0yLuZD/13jko1Y8hT91Ki+GmH3ZrXC/MNuDCrLHc/T0csXyZlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dSUPZSLO; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752157816; x=1783693816;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=g5MwrCI6sk832lhryi4KgtNtnuCrduxIO6sRbESPEoc=;
+  b=dSUPZSLOFrr/9pQD3q6eU8htJcwLAos+ilC4I58nMbEE3bKY6H2guIup
+   GzJaCBcv+ux5xJKgKzYUtCECTJnlE683i7DNJqbO6sE/8Eqnvu4B9XCZ0
+   8KrtPB1WS61JCtJTJ6DoPp5F1lv6c4lVTKu2diCY79j9CyS9x9hMzu2Sm
+   siZs8DcB2phYZAnVlDKXnnbx5cq9oR3W4isFE1hsZvMf3dJXhUxNITgvx
+   d8eTT9ZervJJYUH6Mr+rITIs7tTaNGJZRPicE3sYCae7IwCf76m3vGCx7
+   s35yKhap+hxuxvzc9RgLMx9SSFbY+flv0QCCHd26eB7c10tj3kqcsOo2u
+   g==;
+X-CSE-ConnectionGUID: CAaNask5S9eB9xqVbn1bhA==
+X-CSE-MsgGUID: 39dmpgOkQGaMt7Si1PWlwA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="71891306"
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
+   d="scan'208";a="71891306"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 07:30:16 -0700
+X-CSE-ConnectionGUID: 1rWwfLNoRsqucLhvBUaTMg==
+X-CSE-MsgGUID: TEgytC4iQk+CxN74GmzpSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
+   d="scan'208";a="156584903"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 10 Jul 2025 07:30:14 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uZsHs-00057v-0j;
+	Thu, 10 Jul 2025 14:30:12 +0000
+Date: Thu, 10 Jul 2025 22:29:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Oscar Maes <oscmaes92@gmail.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH net-next v2 1/2] net: ipv4: fix incorrect MTU in
+ broadcast routes
+Message-ID: <aG_OQ2K-ubHM4iey@6c88aed3eaa3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250710142714.12986-1-oscmaes92@gmail.com>
 
-Added a test for variable PMTU in broadcast routes.
+Hi,
 
-This test uses iputils' ping and attempts to send a ping between
-two peers, which should result in a regular echo reply.
+Thanks for your patch.
 
-This test will fail when the receiving peer does not receive the echo
-request due to a lack of packet fragmentation.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
----
- tools/testing/selftests/net/Makefile          |  1 +
- tools/testing/selftests/net/broadcast_pmtu.sh | 47 +++++++++++++++++++
- 2 files changed, 48 insertions(+)
- create mode 100755 tools/testing/selftests/net/broadcast_pmtu.sh
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 543776596..fc308c68a 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -114,6 +114,7 @@ TEST_PROGS += skf_net_off.sh
- TEST_GEN_FILES += skf_net_off
- TEST_GEN_FILES += tfo
- TEST_PROGS += tfo_passive.sh
-+TEST_PROGS += broadcast_pmtu.sh
- 
- # YNL files, must be before "include ..lib.mk"
- YNL_GEN_FILES := busy_poller netlink-dumps
-diff --git a/tools/testing/selftests/net/broadcast_pmtu.sh b/tools/testing/selftests/net/broadcast_pmtu.sh
-new file mode 100755
-index 000000000..726eb5d25
---- /dev/null
-+++ b/tools/testing/selftests/net/broadcast_pmtu.sh
-@@ -0,0 +1,47 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Ensures broadcast route MTU is respected
-+
-+CLIENT_NS=$(mktemp -u client-XXXXXXXX)
-+CLIENT_IP4="192.168.0.1/24"
-+CLIENT_BROADCAST_ADDRESS="192.168.0.255"
-+
-+SERVER_NS=$(mktemp -u server-XXXXXXXX)
-+SERVER_IP4="192.168.0.2/24"
-+
-+setup() {
-+	ip netns add "${CLIENT_NS}"
-+	ip netns add "${SERVER_NS}"
-+
-+	ip -net "${SERVER_NS}" link add link1 type veth peer name link0 netns "${CLIENT_NS}"
-+
-+	ip -net "${CLIENT_NS}" link set link0 up
-+	ip -net "${CLIENT_NS}" link set link0 mtu 9000
-+	ip -net "${CLIENT_NS}" addr add "${CLIENT_IP4}" dev link0
-+
-+	ip -net "${SERVER_NS}" link set link1 up
-+	ip -net "${SERVER_NS}" link set link1 mtu 1500
-+	ip -net "${SERVER_NS}" addr add "${SERVER_IP4}" dev link1
-+
-+	read -r -a CLIENT_BROADCAST_ENTRY <<< "$(ip -net "${CLIENT_NS}" route show table local type broadcast)"
-+	ip -net "${CLIENT_NS}" route del "${CLIENT_BROADCAST_ENTRY[@]}"
-+	ip -net "${CLIENT_NS}" route add "${CLIENT_BROADCAST_ENTRY[@]}" mtu 1500
-+
-+	ip net exec "${SERVER_NS}" sysctl -wq net.ipv4.icmp_echo_ignore_broadcasts=0
-+}
-+
-+cleanup() {
-+	ip -net "${SERVER_NS}" link del link1
-+	ip netns del "${CLIENT_NS}"
-+	ip netns del "${SERVER_NS}"
-+}
-+
-+trap cleanup EXIT
-+
-+setup &&
-+	echo "Testing for broadcast route MTU" &&
-+	ip net exec "${CLIENT_NS}" ping -f -M want -q -c 1 -s 8000 -w 1 -b "${CLIENT_BROADCAST_ADDRESS}" > /dev/null 2>&1
-+
-+exit $?
-+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH net-next v2 1/2] net: ipv4: fix incorrect MTU in broadcast routes
+Link: https://lore.kernel.org/stable/20250710142714.12986-1-oscmaes92%40gmail.com
+
 -- 
-2.39.5
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
