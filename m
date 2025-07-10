@@ -1,125 +1,128 @@
-Return-Path: <stable+bounces-161617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DEB8B00E30
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 23:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8358EB00E41
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 23:58:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DDDB1C84CDE
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 21:51:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 634501C86625
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 21:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B6028C2B1;
-	Thu, 10 Jul 2025 21:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47607292B37;
+	Thu, 10 Jul 2025 21:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VhG4pzoG"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Zw2eN3Lc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474754A0C;
-	Thu, 10 Jul 2025 21:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A493F28DF06;
+	Thu, 10 Jul 2025 21:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752184281; cv=none; b=twoLUh3kwl4305CecBQsfawUHYtzwfOkJaII0rtxiRmjwXDJtcoFdlm8rRMGnvf2VrX7kcVrpWF/YyGpr/mTK0UcNuyFcIKOF4B1DHvcJrKl5bI9DIQ5PZrAUh0BybIXf3ZIGx4SYWDwULBiB8+MhsUX08NHUtlZC4hgky7hV2w=
+	t=1752184727; cv=none; b=NCu0HKev0BP0vyDq1nqluNTNTTT/clX/CYZc97wzFcxUr3y9vRaFFZSTu+mVm3eGochXycYUEVUhQLj784EsWlNF/x+6acBS3sXxi8UuqDwPoGRteLiMgjmIRhv/tjRZxmhy7aNKqvhm/wDqxyYacLwOth0y7RJk2NW352DRIBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752184281; c=relaxed/simple;
-	bh=5m6qJ9eZoJPjAGXkbNfPJq6weZQQsBSwKfU7jVBaEaQ=;
-	h=Date:To:From:Subject:Message-Id; b=VDeEXL8a+sMgoB3WulgHVf3zH/7CzE+VNDiFVyi4L/U+VlpJwytUGxAeiyOXg6a05oheQrYhR7LoIZKZqYPVcmii985OjDwIJrbg/LDbkCQa/5E+1Sw+Hd8ep08lnMLR9bp+QlHCC0oZqm0kn/ukPck2mKUIDiA1up96jYPkMDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VhG4pzoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2973C4CEE3;
-	Thu, 10 Jul 2025 21:51:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752184280;
-	bh=5m6qJ9eZoJPjAGXkbNfPJq6weZQQsBSwKfU7jVBaEaQ=;
-	h=Date:To:From:Subject:From;
-	b=VhG4pzoG026nII0MShiZCaEVymN1/dg3yvsKP+bqq6wEy6Gp7mfVtU/p8NOY+197z
-	 OK8ExSnkp8yjp98ZTA/pG/twGcbAcmIe6kae0W0LpPFL4F4LeqckdhknE7J0jm4X3o
-	 aBGRW6A0Pe3oaM7qxIg0df+ANlnOkoT/tAoSQal8=
-Date: Thu, 10 Jul 2025 14:51:20 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-reject-invalid-file-types-when-reading-inodes.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250710215120.B2973C4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1752184727; c=relaxed/simple;
+	bh=6R4AfM3R1wEZiWtFCBcBFSt2hOWMC3/HaGlzJNvgy2M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tH2UOuIutFLwWuQfnMcVgjrnvDzNDHJ8xjkBhCMBpmLYUNUnjLMgicF6ofjwAPgZB7nzzHpsBq8ulv3Ax8u31+HWORp8DGixOkav8ckJmdwwMcd7CJXixQgzbYeL8M1RK8p66jyMcRjqt6MdrdeavZd1PyNBPSYOiABx2zY7bLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Zw2eN3Lc; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1752184723;
+	bh=6R4AfM3R1wEZiWtFCBcBFSt2hOWMC3/HaGlzJNvgy2M=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=Zw2eN3Lcd7idnzq75lC7pHv6s4aFqcmDIi+hNe1nyz2Dp+fW8wFJ2hLez0luZTZ+z
+	 49G3Ei8k53XOlTy4Hu/Q2OOI0vShclRibpcAp8RmUm7krJF7f0jfBvnK7eIq5HRYd5
+	 HxDTTSjJ0Qx+Hoc/fEswyeBhOwTcb48Tis7iCpT8=
+Received: from [10.106.168.56] (unknown [167.220.61.56])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 917FA1C0249;
+	Thu, 10 Jul 2025 17:58:42 -0400 (EDT)
+Message-ID: <0925430dad9e55179be0df89d8af1df72dfa0c89.camel@HansenPartnership.com>
+Subject: Re: [PATCH V3] efi/tpm: Fix the issue where the CC platforms event
+ log header can't be correctly identified
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: yangge1116@126.com, ardb@kernel.org
+Cc: jarkko@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	ilias.apalodimas@linaro.org, jgg@ziepe.ca, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, liuzixing@hygon.cn
+Date: Thu, 10 Jul 2025 14:58:16 -0700
+In-Reply-To: <1751858087-10366-1-git-send-email-yangge1116@126.com>
+References: <1751858087-10366-1-git-send-email-yangge1116@126.com>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
 
+On Mon, 2025-07-07 at 11:14 +0800, yangge1116@126.com wrote:
+> The pcr_idx value in the Intel TDX log header is 1, causing the
+> function __calc_tpm2_event_size() to fail to recognize the log
+> header, ultimately leading to the "Failed to parse event in TPM Final
+> Events Log" error.
+>=20
+> According to UEFI Specification 2.10, Section 38.4.1: For TDX, TPM
+> PCR 0 maps to MRTD, so the log header uses TPM PCR 1 instead. To
+> successfully parse the TDX event log header, the check for a pcr_idx
+> value of 0 must be skipped.
 
-The patch titled
-     Subject: nilfs2: reject invalid file types when reading inodes
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-reject-invalid-file-types-when-reading-inodes.patch
+I think someone has misread the spec.  EV_NO_ACTION events produce no
+PCR extension.  So the PCR value zero is conventional (and required by
+the TCG) since nothing gets logged.  Therefore even if you're
+technically using PCR0 for something else EV_NO_ACTION events should
+still have the conventional PCR =3D 0 value to conform to the TCG spec.=20
+I assume it's too late to correct this in the implementation?
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-reject-invalid-file-types-when-reading-inodes.patch
+>  __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
+> =C2=A0	count =3D event->count;
+> =C2=A0	event_type =3D event->event_type;
+> =C2=A0
+> -	/* Verify that it's the log header */
+> -	if (event_header->pcr_idx !=3D 0 ||
+> +	/*
+> +	 * Verify that it's the log header. According to the TCG PC
+> Client
+> +	 * Specification, when identifying a log header, the check
+> for a
+> +	 * pcr_idx value of 0 is not required. For CC platforms,
+> skipping
+> +	 * this check during log header is necessary; otherwise, the
+> CC
+> +	 * platform's log header may fail to be recognized.
+> +	 */
+> +	if ((!is_cc_event && event_header->pcr_idx !=3D 0) ||
+> =C2=A0	=C2=A0=C2=A0=C2=A0 event_header->event_type !=3D NO_ACTION ||
+> =C2=A0	=C2=A0=C2=A0=C2=A0 memcmp(event_header->digest, zero_digest,
+> sizeof(zero_digest))) {
+> =C2=A0		size =3D 0;
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The above is just a heuristic to recognize an EV_NO_ACTION event as
+zero size.  All the TCG specs require that EV_NO_ACTION have pcr 0 in
+the event, but if the heuristic is wrong because of Intel/CC spec
+violations which can't be fixed, then we should update the heuristic
+... so I don't think you need to thread the is_cc_event.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Regards,
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: reject invalid file types when reading inodes
-Date: Thu, 10 Jul 2025 22:49:08 +0900
-
-To prevent inodes with invalid file types from tripping through the vfs
-and causing malfunctions or assertion failures, add a missing sanity check
-when reading an inode from a block device.  If the file type is not valid,
-treat it as a filesystem error.
-
-Link: https://lkml.kernel.org/r/20250710134952.29862-1-konishi.ryusuke@gmail.com
-Fixes: 05fe58fdc10d ("nilfs2: inode operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/inode.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
---- a/fs/nilfs2/inode.c~nilfs2-reject-invalid-file-types-when-reading-inodes
-+++ a/fs/nilfs2/inode.c
-@@ -472,11 +472,18 @@ static int __nilfs_read_inode(struct sup
- 		inode->i_op = &nilfs_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_mapping->a_ops = &nilfs_aops;
--	} else {
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		inode->i_op = &nilfs_special_inode_operations;
- 		init_special_inode(
- 			inode, inode->i_mode,
- 			huge_decode_dev(le64_to_cpu(raw_inode->i_device_code)));
-+	} else {
-+		nilfs_error(sb,
-+			    "invalid file type bits in mode 0%o for inode %lu",
-+			    inode->i_mode, ino);
-+		err = -EIO;
-+		goto failed_unmap;
- 	}
- 	nilfs_ifile_unmap_inode(raw_inode);
- 	brelse(bh);
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-nilfs2-reject-invalid-file-types-when-reading-inodes.patch
-
+James
 
