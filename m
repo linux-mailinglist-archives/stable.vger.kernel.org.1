@@ -1,163 +1,110 @@
-Return-Path: <stable+bounces-161567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6EA6B00328
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 15:18:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1218FB00368
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 15:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CE781892CE4
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 13:18:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8B11883C01
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 13:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1715F221F12;
-	Thu, 10 Jul 2025 13:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707D52586C8;
+	Thu, 10 Jul 2025 13:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFtdLgt4"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="G4yE/SNL";
+	dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b="TusmlQ2g"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from e3i282.smtp2go.com (e3i282.smtp2go.com [158.120.85.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BF917993;
-	Thu, 10 Jul 2025 13:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BCD82899
+	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 13:33:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752153483; cv=none; b=LVItZFItE9v3GnklY/7VFiMN2ae0ll0yzdsQwf5XWONQU6e4qbKYZ7dZPBUF/qjzdBkSbCSLV/N+yyaeZBx4Hp921/6zGyjRwd2wqM2oHLz2ozwZOTfezTZLtaRJOy3ffzpBerS/bGjhaiZy/AZlSm7r7EEZQMGRYk+/f+5Crjk=
+	t=1752154423; cv=none; b=GOKxoeOkUqdtqX7b+91bCY6Ckj3kKXYIf6H8C/mFe6GYXdTKXVtk/qFq00xRoYpAoawshk3LXPmzSrzTBTNK5zxBs0PMzW8/wahnn1LNuu8b6eQFjSU9w+daITLtU3uXL/ryeOj9o8NZrVn3s2yemut/RkhJjHGO6m9gkUS0gwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752153483; c=relaxed/simple;
-	bh=1rtiOKlL0gjZt0JsCJ4IP4OtVn/TjSI4IPpsxl+t7Qs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HKkP0GPgA/+CNTUXgNdvaX7H8j9n5EFNkQ7vVaj/8U5Wcqmtkn8S46vl8xEmdJ7wPlH7NX8kjcPNEKI7dIVyCJ4FFqqkQJGthbxZttnYfTW7bj/nKrHQO00NsKTXfNVeqLf4yaMyyjxhJM56SjptmvmQzNOBRbrm0jflqhATqfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFtdLgt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD52CC4CEED;
-	Thu, 10 Jul 2025 13:18:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752153483;
-	bh=1rtiOKlL0gjZt0JsCJ4IP4OtVn/TjSI4IPpsxl+t7Qs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GFtdLgt4W82WAVOdQTSekyXcJPYEsnenZxIzh2gNcwm8tfmYlugWKfoLT1HBMMkIL
-	 Ia6rHN3we7qcZsrKInElBLHSzpJMDNR96XKR5urwiFbk3pypsEJ8XYBaJgPjnEd78D
-	 LZtlKBSSXCaM/CZo8w4PHyzJsZIP2ke4QAxf/NTE=
-Date: Thu, 10 Jul 2025 15:18:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Niklas Schnelle <schnelle@linux.ibm.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Julian Ruess <julianr@linux.ibm.com>,
-	Gerd Bayer <gbayer@linux.ibm.com>, Farhan Ali <alifm@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 108/132] s390/pci: Fix stale function handles in
- error handling
-Message-ID: <2025071037-bulgur-frostily-3a6b@gregkh>
-References: <20250708162230.765762963@linuxfoundation.org>
- <20250708162233.754242912@linuxfoundation.org>
- <23b7e8e20d7f660513dce9c70958af81057f0f46.camel@linux.ibm.com>
+	s=arc-20240116; t=1752154423; c=relaxed/simple;
+	bh=M7l6/QLIPUoglGrfdye4yiQdtH9sXmYpR0Yv55tKrto=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b5IA60oA4LYmQUYQFZdolClbhnyYIMnJRoSczCdZJgkQbDiW0ndK1owBg7RPZpiC3srE2ZsMuyJd0+tu68Tuc1P4onAkopuCx46ju9tPZJVZg49Zq/WmlM9NGZBG0uCLBrioD6qfTR8RDtAUft3fcx37ja4NnbPjetfhDlpuMlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev; spf=pass smtp.mailfrom=em1255854.medip.dev; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=G4yE/SNL; dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b=TusmlQ2g; arc=none smtp.client-ip=158.120.85.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1255854.medip.dev
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1752153510; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=vsPjCCPZRDftl844wyMwpzELOqTezWUQYA1LB69ZyMk=;
+ b=G4yE/SNLr8BAGcqjHtH6mlmaIwPLpe5OKf69q9OyYF6HlhnmlpT5pcA1i2s9XlQzhDrUe
+ SyfyVWrVjH1IRCr72LCYI8vuCAJOulfgSlI8GV5lw50aajUid1DudOR+LkTvcnZ6QfUPdZz
+ K88zoXMTI0RTqENkMF7bhZfRV5dQ2B8n2HHqmcAtc1PKe5cpu3Vd6phGaqHFu2QgFdGh8hT
+ 7P1RznjoO1GiypucrMlAkbgrdYLWKFQOtJtCNNuENQg4PRCfDd/2NZxU/FW0GIscdit5/Pe
+ Cik9mBwBfJrLy81jWIzBrzvvUrquVT/Ay6du/hT6eaG1LU+O74lxOUsYcIwg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=medip.dev;
+ i=@medip.dev; q=dns/txt; s=s1255854; t=1752153510; h=from : subject :
+ to : message-id : date;
+ bh=vsPjCCPZRDftl844wyMwpzELOqTezWUQYA1LB69ZyMk=;
+ b=TusmlQ2gjfXqE9TlbIih8sKHnhk2eaf5LjNnVBYqv5MWxlgv0CMse27WKCZ+ckgdVP9OI
+ f1BT+IcQQ4yIHuwCTfoJSAz2V6uIeZqFeK1X+fb9OaEO9XnSueKSenrhkbnT1dO3fxOOiwx
+ VNSKyMIIfeAT0nI/8sZYXZuBszJoFdzbn67Qwan8eAOncjEXdevl0JsaDvDF7byktt4zSu7
+ Yvx44DzCFLWh6dgZu13Y/KjISNfYXzxXoHKzQx+rbcZ7Er8icEohaOyJeXDwSetOUrKZrgY
+ yn384jefVLRHsEVer6GSCWV70evGdgBAXPDUTe/zuyAbJ9GUZpoJgKwgBglA==
+Received: from [10.152.250.198] (helo=vilez)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.1-S2G)
+	(envelope-from <edip@medip.dev>)
+	id 1uZrAQ-4o5NDgrsm8D-h6lg;
+	Thu, 10 Jul 2025 13:18:26 +0000
+From: edip@medip.dev
+To: perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Edip Hazuri <edip@medip.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda/realtek - Fix mute LED for HP Victus 16-r0xxx
+Date: Thu, 10 Jul 2025 16:18:12 +0300
+Message-ID: <20250710131812.27509-1-edip@medip.dev>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <23b7e8e20d7f660513dce9c70958af81057f0f46.camel@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 1255854m:1255854ay30w_v:1255854sasdnPZ66u
+X-smtpcorp-track: bcK5NAWFqeUd.3SthsYtiPHjZ.6u2eHgbJvIn
 
-On Thu, Jul 10, 2025 at 10:36:06AM +0200, Niklas Schnelle wrote:
-> On Tue, 2025-07-08 at 18:23 +0200, Greg Kroah-Hartman wrote:
-> > 6.6-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Niklas Schnelle <schnelle@linux.ibm.com>
-> > 
-> > [ Upstream commit 45537926dd2aaa9190ac0fac5a0fbeefcadfea95 ]
-> > 
-> > The error event information for PCI error events contains a function
-> > handle for the respective function. This handle is generally captured at
-> > the time the error event was recorded. Due to delays in processing or
-> > cascading issues, it may happen that during firmware recovery multiple
-> > events are generated. When processing these events in order Linux may
-> > already have recovered an affected function making the event information
-> > stale. Fix this by doing an unconditional CLP List PCI function
-> > retrieving the current function handle with the zdev->state_lock held
-> > and ignoring the event if its function handle is stale.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
-> > Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
-> > Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
-> > Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-> > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> > Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >  arch/s390/pci/pci_event.c | 14 ++++++++++++++
-> >  1 file changed, 14 insertions(+)
-> > 
-> > diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
-> > index d969f36bf186f..fd83588f3c11d 100644
-> > --- a/arch/s390/pci/pci_event.c
-> > +++ b/arch/s390/pci/pci_event.c
-> > @@ -257,6 +257,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
-> >  	struct zpci_dev *zdev = get_zdev_by_fid(ccdf->fid);
-> >  	struct pci_dev *pdev = NULL;
-> >  	pci_ers_result_t ers_res;
-> > +	u32 fh = 0;
-> > +	int rc;
-> >  
-> >  	zpci_dbg(3, "err fid:%x, fh:%x, pec:%x\n",
-> >  		 ccdf->fid, ccdf->fh, ccdf->pec);
-> > @@ -264,6 +266,16 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
-> >  	zpci_err_hex(ccdf, sizeof(*ccdf));
-> >  
-> >  	if (zdev) {
-> > +		mutex_lock(&zdev->state_lock);
-> 
-> This won't compile this tree misses commit bcb5d6c76903 ("s390/pci:
-> introduce lock to synchronize state of zpci_dev's").
-> 
-> > +		rc = clp_refresh_fh(zdev->fid, &fh);
-> > +		if (rc)
-> > +			goto no_pdev;
-> > +		if (!fh || ccdf->fh != fh) {
-> > +			/* Ignore events with stale handles */
-> > +			zpci_dbg(3, "err fid:%x, fh:%x (stale %x)\n",
-> > +				 ccdf->fid, fh, ccdf->fh);
-> > +			goto no_pdev;
-> > +		}
-> >  		zpci_update_fh(zdev, ccdf->fh);
-> >  		if (zdev->zbus->bus)
-> >  			pdev = pci_get_slot(zdev->zbus->bus, zdev->devfn);
-> > @@ -292,6 +304,8 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
-> >  	}
-> >  	pci_dev_put(pdev);
-> >  no_pdev:
-> > +	if (zdev)
-> > +		mutex_unlock(&zdev->state_lock);
-> 
-> Curiously this patch was adjusted differently here vs for 6.1.y, this
-> one at least places the unlock in the same place as upstream.
-> 
-> >  	zpci_zdev_put(zdev);
-> >  }
-> >  
-> 
-> Please drop this patch! Ten can we pull in commit bcb5d6c76903
-> ("s390/pci: introduce lock to synchronize state of zpci_dev's")
-> as a prerequiste? This fix would still work for its specific issue
-> without the mutex i.e. just adjusting context but I'd prefer to have
-> both in stable.
-> 
-> Also, I wonder if it would be possible to have the subject of these
-> kind of mails indicate if the backport patch was adjusted more than
-> just line offsets or context? I think that would make it much easier to
-> spot where extra attention is required.
+From: Edip Hazuri <edip@medip.dev>
 
-Already dropped.  And yes, it should have contained some
-meta-information about this, normally that goes in the signed-off-by
-area.
+The mute led on this laptop is using ALC245 but requires a quirk to work
+This patch enables the existing quirk for the device.
 
-thanks,
+Tested on Victus 16-r0xxx Laptop. The LED behaviour works
+as intended.
 
-greg k-h
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Edip Hazuri <edip@medip.dev>
+---
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 060db37ea..132cef8fa 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10814,6 +10814,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8bb3, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bb4, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x8bbe, "HP Victus 16-r0xxx (MB 8BBE)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8bc8, "HP Victus 15-fa1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+-- 
+2.50.1
+
 
