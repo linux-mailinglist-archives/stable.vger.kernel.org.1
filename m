@@ -1,108 +1,134 @@
-Return-Path: <stable+bounces-161510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E69DAFF79B
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 05:37:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096B5AFF7AF
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 05:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAC7D5A160A
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 03:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E76D03AB007
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 03:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5202A283FCE;
-	Thu, 10 Jul 2025 03:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B9A21B182;
+	Thu, 10 Jul 2025 03:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A/ajQGDg"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oMm3RZJO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652802836B0;
-	Thu, 10 Jul 2025 03:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3A8B660;
+	Thu, 10 Jul 2025 03:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752118660; cv=none; b=FTJtc0FcPddsn5uVMfh+WJCvVXS3s0RkM8erngnxldQjKR/H4DLDermsOFfUqjCcfEUsoXly2Qr3aDN66cJ5OZJwgIlUEeBiVz66/lsPHFjAaUk1hPVqX3HMstmw+gJ/scOsZKyWV8j/Apd81r8B6t6+lrWmzQ8x6q9/MceaFJI=
+	t=1752119226; cv=none; b=O4+zsYCACtpT4QPRR8fRqMF8LQ9yTQwl2ox0SLBH+W5mNidXLAkRsd/AKr8klANkSF/7rzf7SD+EysUylmZr7JfyETdBAARwXAxQt4Ji7H73Na7EIfQeK8opychT9VCHLkqArjs3T2HI/+HHUilliAOIFdGp8puhG/LZ7LF5m30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752118660; c=relaxed/simple;
-	bh=aHEKVPEcG65zMssaVDheCdyA1eEbVFSOQxSEcrZfmqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBJ8adxaXNGEMssi4OtKxA7l5Ss+nNR8Y0JhdFcq6Gxr4f9rOG0MD84lhISmck2sNhAGC/Apkf5v199Bn0xdmeEzkft9MBUl5Bbi6MP0XHMWaGXOAeaLpWcQy6BbqTxZcH17womJ9bBNQJpeq/hCGCk8pWDDep62LoT1HeRPcxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A/ajQGDg; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b321bd36a41so591251a12.2;
-        Wed, 09 Jul 2025 20:37:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752118658; x=1752723458; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Bl/mZF3g2hMilPsP1iGl5oIVwOLv3WwEcuUx0SZOALE=;
-        b=A/ajQGDgNbUKcGihJcIMcdTFmJye03H0sZUF0WGlX4IF2ETe6V3P8Oi9Hp3VC4h+M5
-         iwzL/4dY50Vsohvcceo2Sd0y9U2I1NV+J/rPOfMTHjbGvapUxDC0AMJjEm4jHtlFDtrD
-         Q7nVkfl37p/yQqopOQLGn3r/pTBEAMxxlFNijW7mW5MTQeRBQ0f6FiJpsl3OZuh3oAAU
-         YBZRbwdt5R8xdF6CMoEddPz2p8el9KZ+cPcF7qudEPWWGdaoPDK10/WkSyjE1t25w2P0
-         VM47HV8w0jgEc4rkKd+oKNc6gsCHDNrrCntkOLWrLV77gHR3enz6GCMsmcoNvPrZ7kiC
-         pHiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752118658; x=1752723458;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bl/mZF3g2hMilPsP1iGl5oIVwOLv3WwEcuUx0SZOALE=;
-        b=RqsadSlrm5Cq4BykaYporFl1uWbbnUynHnlaeRIrR8WSQe/L8WTpGXlZbP7jh6PfjZ
-         ZKZzzImYA2T8BzlSVLfiZbVYoQQ+fW/gmJvBHWfBmWPamkaVf6uhX13xAjCZfjZztVHm
-         wLRnCjw3dGK0TSM5MDJmrN6zKKjMkNAp+YsO1NVvvAYxudIkYyO5DBPBGIZBAcMQiJv4
-         XyIO5Z+8rO8Y67uOqRZfLZkQkNBEsaU64aD3hrEv0dzM87Wde6aMHEWrmvVMMrjthaIT
-         3oPS9i0QfymIIkfkGHA5o2c3+HnaI2lf3PMbU6tvt6rLry+V3FmhnKC8gnOjLuE++yWl
-         0Zkw==
-X-Forwarded-Encrypted: i=1; AJvYcCV5yblfCofpa1aVeEAu+84HQVkAfFEYUdZtx1WmCcSVIx4OV+V9v9nQYRMsGesdpscXfUmL+TQgSz6fxGg=@vger.kernel.org, AJvYcCVKFFlJxr2vKOnrSUtqcRLyrqhf+bO3CEF2nEcbFos1XRiXQ+3Rf3iN8cMPXVciyKP7HGdtRnal@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAe55HyqUK3DwwhTGCyGNzj4OcpHr+gVpvlGk0VbzPf+pDUFtg
-	R3Nqfh1j3zw4JM/oEP8aZaTxzHb9P4OdNDS8eDVovpOjva0reMZkfZEv
-X-Gm-Gg: ASbGncsw5xNA8619aWZ98cEUIAlCW9hge42a1rnUI90wDR2XvPaVDR7ncsqEVRGpN7O
-	5RqNaOb8SW57gPEymYVioO7hl0QMvAb9IIRxUhj9dTy7Wm5+xs+xvi5VgUDpgqLrvUQz5bPuFK/
-	lLJNdWYPV7J5LWQVjbSs1f3M25mceqozWJxxnrmSn/V2DINGbY27M0BiJpKVamVE2V1eBe6utjp
-	TnP4yKXpbrGiUYdkjX/IxeL4ZQeSQmHADomgmh5heTjq1ylfw3Fj26yde74dfB30euH133ax/BM
-	3XI7caeaJTsApB+Y5ahLe6iBkL6APbMl/Qq332NjjjKc/JzoiPwlBEo8YIQrHMZH0OJQYhZVJa/
-	Z
-X-Google-Smtp-Source: AGHT+IHjm1osjfE3BDbqUtnApUOiVzDzZtYqYWPkiNlunBCJHYXm4X1KAkOQOJDiTMx24KRJxs5NqA==
-X-Received: by 2002:a17:90b:1f8d:b0:311:ffe8:20e9 with SMTP id 98e67ed59e1d1-31c3f00b99bmr1966495a91.17.1752118657447;
-        Wed, 09 Jul 2025 20:37:37 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c300689aasm3716320a91.13.2025.07.09.20.37.33
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 09 Jul 2025 20:37:36 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v5 1/8] mm/shmem, swap: improve cached mTHP handling and fix potential hung
-Date: Thu, 10 Jul 2025 11:36:59 +0800
-Message-ID: <20250710033706.71042-2-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250710033706.71042-1-ryncsn@gmail.com>
-References: <20250710033706.71042-1-ryncsn@gmail.com>
-Reply-To: Kairui Song <kasong@tencent.com>
+	s=arc-20240116; t=1752119226; c=relaxed/simple;
+	bh=ecUlYZ/+WcTsQU3WcRk6IiNaD5f96M/z98/FnbKCE0Y=;
+	h=Date:To:From:Subject:Message-Id; b=Ub3mLB3Vt+m+3B1d7LFziW6rSt1hOF3kP7l6xtQoZUuGRYx/dg3cm9yfhnsbfDznVqwHymsMilWbHlEwgeFiRJp2/epzrNMCOi4brAFU/Wry0nsfbjgpewo288Ot/PNUCwcqLgrx8IT1/85R6ZwcJokU+ItVLh0+HZpLrd6laXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oMm3RZJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DA4C4CEE3;
+	Thu, 10 Jul 2025 03:47:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1752119225;
+	bh=ecUlYZ/+WcTsQU3WcRk6IiNaD5f96M/z98/FnbKCE0Y=;
+	h=Date:To:From:Subject:From;
+	b=oMm3RZJOTkXXcROSQ9fVt5gcDgiRQszAhaYlnu25Cdlq96N9IHh5MytjCuD0rzhT3
+	 +E4yrVU4SGW1KHMkUypiIq0Cv8OcQo1zXKSzRG95O8XiwzsBKlTVn4VSrgO1yd7OIq
+	 YaDLg0BiiS0rs2UaOZb60LKMvkY68UYJeeE+dUso=
+Date: Wed, 09 Jul 2025 20:47:04 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,hughd@google.com,dev.jain@arm.com,chrisl@kernel.org,bhe@redhat.com,baolin.wang@linux.alibaba.com,kasong@tencent.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch added to mm-new branch
+Message-Id: <20250710034705.26DA4C4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
+
+The patch titled
+     Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hung
+has been added to the -mm mm-new branch.  Its filename is
+     mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch
+
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
 From: Kairui Song <kasong@tencent.com>
+Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hung
+Date: Thu, 10 Jul 2025 11:36:59 +0800
+
+Patch series "mm/shmem, swap: bugfix and improvement of mTHP swap in", v5.
+
+The current mTHP swapin path have several problems.  It may potentially
+hang, may cause redundant faults due to false positive swap cache lookup,
+and it will involve at least 4 Xarray tree walks (get order, get order
+again, confirm swap, insert folio).  And for !CONFIG_TRANSPARENT_HUGEPAGE
+builds, it will performs some mTHP related checks.
+
+This series fixes all of the mentioned issues, and the code should be more
+robust and prepared for the swap table series.  Now tree walks is reduced
+to twice (get order & confirm, insert folio), !CONFIG_TRANSPARENT_HUGEPAGE
+build overhead is also minimized, and comes with a sanity check now.
+
+The performance is slightly better after this series, sequential swap in
+of 24G data from ZRAM, using transparent_hugepage_tmpfs=always (24 samples
+each):
+
+Before:         Avg: 10.67s,  stddev: 0.04
+After patch 1:  Avg: 10.49s,  stddev: 0.04
+After patch 2:  Avg: 10.42s,  stddev: 0.05
+After patch 3:  Avg: 10.45s,  stddev: 0.05
+After patch 4:  Avg: 10.49s,  stddev: 0.04
+After patch 5:  Avg: 9.67s,   stddev: 0.03
+After patch 6:  Avg: 9.67s,   stddev: 0.04
+After patch 7:  Avg: 9.68s,   stddev: 0.05
+After patch 8:  Avg: 9.66s,   stddev: 0.04
+
+Several patches improve the performance by a little, which is about ~10%
+faster in total.
+
+Build kernel test showed very slightly improvement, testing with make -j48
+with defconfig in a 768M memcg also using ZRAM as swap, and
+transparent_hugepage_tmpfs=always (6 test runs):
+
+Before:         avg: 3353.66s, stddev: 33.73
+After patch 1:  avg: 3354.19s, stddev: 42.54
+After patch 2:  avg: 3364.16s, stddev: 52.74
+After patch 3:  avg: 3355.73s, stddev: 36.17
+After patch 4:  avg: 3352.78s, stddev: 39.80
+After patch 5:  avg: 3355.19s, stddev: 50.78
+After patch 6:  avg: 3333.63s, stddev: 32.50
+After patch 7:  avg: 3297.70s, stddev: 38.93
+After patch 8:  avg: 3302.35s, stddev: 50.61
+
+
+This patch (of 8):
 
 The current swap-in code assumes that, when a swap entry in shmem mapping
 is order 0, its cached folios (if present) must be order 0 too, which
@@ -152,21 +178,30 @@ already good enough for avoiding the lock contention.  The chance that a
 folio passes the swap entry value check but the shmem mapping slot has
 changed should be very low.
 
+Link: https://lkml.kernel.org/r/20250710033706.71042-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20250710033706.71042-2-ryncsn@gmail.com
 Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
 Signed-off-by: Kairui Song <kasong@tencent.com>
 Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: <stable@vger.kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/shmem.c | 30 +++++++++++++++++++++---------
+
+ mm/shmem.c |   30 +++++++++++++++++++++---------
  1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 334b7b4a61a0..e3c9a1365ff4 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struct folio *folio,
+--- a/mm/shmem.c~mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung
++++ a/mm/shmem.c
+@@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struc
  				   pgoff_t index, void *expected, gfp_t gfp)
  {
  	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
@@ -177,7 +212,7 @@ index 334b7b4a61a0..e3c9a1365ff4 100644
  
  	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
  	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-@@ -896,14 +898,24 @@ static int shmem_add_to_page_cache(struct folio *folio,
+@@ -896,14 +898,24 @@ static int shmem_add_to_page_cache(struc
  
  	gfp &= GFP_RECLAIM_MASK;
  	folio_throttle_swaprate(folio, gfp);
@@ -206,7 +241,7 @@ index 334b7b4a61a0..e3c9a1365ff4 100644
  			xas_set_err(&xas, -EEXIST);
  			goto unlock;
  		}
-@@ -2323,7 +2335,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+@@ -2323,7 +2335,7 @@ static int shmem_swapin_folio(struct ino
  			error = -ENOMEM;
  			goto failed;
  		}
@@ -215,7 +250,7 @@ index 334b7b4a61a0..e3c9a1365ff4 100644
  		/*
  		 * Swap readahead may swap in order 0 folios into swapcache
  		 * asynchronously, while the shmem mapping can still stores
-@@ -2348,15 +2360,15 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+@@ -2348,15 +2360,15 @@ static int shmem_swapin_folio(struct ino
  
  			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
  		}
@@ -234,7 +269,18 @@ index 334b7b4a61a0..e3c9a1365ff4 100644
  		error = -EEXIST;
  		goto unlock;
  	}
--- 
-2.50.0
+_
+
+Patches currently in -mm which might be from kasong@tencent.com are
+
+mm-list_lru-refactor-the-locking-code.patch
+mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch
+mm-shmem-swap-avoid-redundant-xarray-lookup-during-swapin.patch
+mm-shmem-swap-tidy-up-thp-swapin-checks.patch
+mm-shmem-swap-tidy-up-swap-entry-splitting.patch
+mm-shmem-swap-never-use-swap-cache-and-readahead-for-swp_synchronous_io.patch
+mm-shmem-swap-simplify-swapin-path-and-result-handling.patch
+mm-shmem-swap-rework-swap-entry-and-index-calculation-for-large-swapin.patch
+mm-shmem-swap-fix-major-fault-counting.patch
 
 
