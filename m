@@ -1,90 +1,124 @@
-Return-Path: <stable+bounces-161613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D77B00AE7
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 19:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D33B00BD1
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 21:06:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB6F11889AFA
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 17:56:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DC381C885B5
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 19:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666B91DDC11;
-	Thu, 10 Jul 2025 17:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E2E2FCFE1;
+	Thu, 10 Jul 2025 19:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="JGITLxDl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UpRhusBm"
 X-Original-To: stable@vger.kernel.org
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFAC2F3647;
-	Thu, 10 Jul 2025 17:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555E825760;
+	Thu, 10 Jul 2025 19:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752170196; cv=none; b=qZj1fxdjaVPitB38KsUbs7IJ3oO+4euKLtKmrts/rZNVqH/1GKuwYakywL1NHDgUlDcbhLhn6BUw4dierxyB2byMhRqvMFlLC5YQpRdFgSj3CqfKPJnqHeY9sjQNtfJYhWaKAbKbzS6Ri3Sq9ngXC10Uv4x45N49W/J1fUGkj7w=
+	t=1752174386; cv=none; b=OtlT8FZU0j/oaHMqcDo2AhwNeAWH+h9gw50aqBdDZkTX8pIVR31LJ2APfW7FyDt24r+YU4kueEj2Uk+J8C9ZPGr9MxHhspQMRHtakDSsMir2EkYOkBIUrtljujFuFfZzwudgJwa15RYSsIA/OX1AE0havERPQJhdAuyUMrVO6+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752170196; c=relaxed/simple;
-	bh=R2uBYRRVEDvnGQyRlNCUOU964/QuqXxp/NqMrC5S4b8=;
-	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=mQSQSz98YwwK3XL9aAoQSYNRk9Q2YJwFsgwOVojynUrdIMj35O4up+Q7WlTuhtdTW04pa1gtkw4yVvUXCUjK9idkR9CXwtX+DY2nFz+uQ6LeyXFQTGTjM9pbgo/xqucgpcKHaIHAyh/slGw/AtY2a6sylpyMH8/S/P126ded6c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=JGITLxDl; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 1CD67406FC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1752170188; bh=StHzJFEIgFoVTiFfu56FB8R7lyhp9GMEl5iQdWvQYb4=;
-	h=From:To:Subject:In-Reply-To:References:Date:From;
-	b=JGITLxDlEmdqwW+SNQ4aY9pYjrHrd2bBCHKvjYut/F1eKnySWszz4FQDB4EutM8hJ
-	 Ok92m8IB4IzW+FpfarkNM35cw68oPIZCvzb2EqbduOVCYIuP3h2Uf4pAIcgmsrQDz4
-	 ozYFmo5Yn/lbBpg0vUzbpbff63FTccg2oeC7xRWW+8BT5k9l1c+g2g7/kbT7mEDl21
-	 M5ZYYc+KDxkvSupo81GzfeiCgZbgA99bW4oK2xom3SNVkpWOvUmowaTyetPbQJunK6
-	 k7W1unAMNQFrM0hxEDilS//BZQYJ0VZxSeHdHC3UMBGJtpOifMPQnd2XkSqI9RmpXR
-	 oZA6N70tgMykA==
-Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 1CD67406FC;
-	Thu, 10 Jul 2025 17:56:28 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Pavel Machek <pavel@ucw.cz>, sashal@kernel.org, stable@vger.kernel.org,
- kernel list <linux-kernel@vger.kernel.org>, conduct@kernel.org,
- ebiederm@xmission.com
-Subject: Re: Sasha Levin is halucinating, non human entity, has no ethics
- and no memory
-In-Reply-To: <aG2B6UDvk2WB7RWx@duo.ucw.cz>
-References: <aG2B6UDvk2WB7RWx@duo.ucw.cz>
-Date: Thu, 10 Jul 2025 11:56:27 -0600
-Message-ID: <87ple8x73o.fsf@trenco.lwn.net>
+	s=arc-20240116; t=1752174386; c=relaxed/simple;
+	bh=N/CJm8Q37Va3Ls9gDwlRWmfbEFB9jggb2Srg/9czkzM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ltQQxTeaPUbT0senE+bhsGcQjqRty4xCOH7WRCKOUvzVp2jWZp7H3J6fFX6g2MPA2pfazPI5E4KG1UJNj/oXalCYadPHIGEVtqvFfA+m/k1FeT2DMVfryE7b1tdqQk+D2jEB55EMh6S5iIcya9meXenxslFgNIJxPcPm/FC5V50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UpRhusBm; arc=none smtp.client-ip=209.85.219.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f196.google.com with SMTP id 3f1490d57ef6-e740a09eb00so1118468276.0;
+        Thu, 10 Jul 2025 12:06:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752174384; x=1752779184; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N/CJm8Q37Va3Ls9gDwlRWmfbEFB9jggb2Srg/9czkzM=;
+        b=UpRhusBmbRMkNWCdz3woBPXAs74oY5IzhGZX9TuU7pf8mFPbdgxQKpMhYA0mmyESLb
+         1d87f/56msl6YeDbn81vX1+SCskbrjAl5ovDKCWkpZNZajSWulgN/at4BfsxYt80jBsb
+         X1Q8ySgxMoKHnT9/asDNgMDq91yWP41Mj+2xTMUcBOom0IO9cq0fTFJH7W2/zJsoy/QB
+         pdqqlgRt/u4OPYyVTkNduC4u2Tci0soMrxE5D9mpPu/35QdjEt4kNJNEWxyatUT5f0GL
+         SqFSyLtmcR3hKaYXZV4gh+Iifg1qOocXDgZjTy2qmSny9JTAL/HffffI0K42SjdJ0MfA
+         W9Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752174384; x=1752779184;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N/CJm8Q37Va3Ls9gDwlRWmfbEFB9jggb2Srg/9czkzM=;
+        b=bbintGz1+IctgzZZ/8EgokB5jI/XYzjW3Nk2F9QUvJpFAE8bZM18wg7Tshz7PZ5WqQ
+         YDmmH6/g9at0PGVkN0UK/g/TUXT4nMjk29RHFS0hAz3czhLVSbEp4yXlZ0v5SFVQfhjo
+         LocVJ5mFGbWvQ2BECF0j1gDIqain/VeCYDImUyZ5GSKjl2Uykr3NSL9wji+BA2TAPVOu
+         XTI44X75kD2i14nAXZcA9J1dxXkVQBpcWo+6bTDvnaHUpybvJy34B8bYLkHi7Z5sMnTg
+         xON69JfHVOp3Am4szJ/A+41Nr2GZYz3xOM+ui8LdvWxnMjj/qW9aqyMo4cyt6kawVy7F
+         8LOA==
+X-Forwarded-Encrypted: i=1; AJvYcCWmIze9SwF7lFMK9CyVRKNwGcJBNNI9Q9Jp4nQNrHrsX3nDnq2l38CjwJtCcxkQXFrhLPoFhQMn@vger.kernel.org, AJvYcCWsqa1usEKhwpQNnQ010ivoMTlh02Qo+RBxxMPKrVby8F7RKR5ZcAzeL5z9X+2RB/jlVtUT8kBdYaV8@vger.kernel.org, AJvYcCX4/gTRcndxQqBpp1b/wMzq3h7gB73qc/Ku75lhZd3vMa+6jTRWfo/MxS/Op0QVi8HUr3Wlfq1AmY9vPRibWX8=@vger.kernel.org, AJvYcCXATu3aphJ4KoK4JVOqAdBLY0KN5fcfp196N+OgaB0/nL15NfDHRS/kC99ezcc+WPwYTerfYZkZUKnf@vger.kernel.org
+X-Gm-Message-State: AOJu0YylktxNmSuL5JMTka/uTbrl0mwPCIkeWnaHTgePz2lvhscwK1mh
+	mnNljbThNofTyi1fVsAvlb/euuKd+kZObsxUEnab3j4q6WB9p0i6Asy1+Rya1eF83mhh4HIi7s7
+	TlD6aTxWNG1fH2UoBh2wvGHzDci/Q1lzW5YGJswltBg==
+X-Gm-Gg: ASbGnct0ajdDqemJpyfWx/EX2hcURBDIYui2xpLz4pd2pNLL7eFtPHt5kwcHP9OjGjI
+	KcG4iysQcUPo3GFGkxI/o0fETBwtsQZFplSfr57Q4AUchaNYs4zAvTbqOrGdubU8hBNjAvjJTA4
+	EhpKoKUcs4PEgY38IHOKV3tBumkjWjOaQCHTQLb52xoxbQlA==
+X-Google-Smtp-Source: AGHT+IH/La36AZil68VOGEY6oXvInjSrZkyqxX4Csk+T+jPPRq31W1rogvQyxXSOBTCvOC1EsXl5hSyqgohVEvW5L04=
+X-Received: by 2002:a05:690c:38b:b0:710:f39f:4d66 with SMTP id
+ 00721157ae682-717d78b6564mr4126457b3.13.1752174384216; Thu, 10 Jul 2025
+ 12:06:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250705195846.GA2011829@bhelgaas> <9D9D9375-1BD0-46EA-9E85-47A2D8325F98@gmail.com>
+ <2cq6jeywii5fscozazz2epugh6zflcpfbo4ffhjt2lyk76cq4m@vg2jcsmlhtho> <FB89ECA8-93E2-4015-8DCF-6D362A53D825@gmail.com>
+In-Reply-To: <FB89ECA8-93E2-4015-8DCF-6D362A53D825@gmail.com>
+From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+Date: Fri, 11 Jul 2025 00:36:12 +0530
+X-Gm-Features: Ac12FXyPTlLwATY_CErqME9P_iG-GcCgUwb6H3kdzCI5TuYyYXv0SfmzVne8uYY
+Message-ID: <CAEmM+Qj=TA=WtQAXQZx6wCUpdsOQ4j66Kpyze3KNZHC79KfyRA@mail.gmail.com>
+Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
+ disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, ath10k@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Pavel Machek <pavel@ucw.cz> writes:
+Ok, we did it. Could reproduce the errors properly.
 
-> Hi!
+Here are the journalctl logs:
+
+Kernel level: https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23ec=
+a03ca2ea43a1d832a16180/raw/a9e93c4ba41fb0b3d7602e6bfddce9aa5f3a19b2/KERNEL%=
+2520journalctl%2520v6.16-rc4
+User level: https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca0=
+3ca2ea43a1d832a16180/raw/a9e93c4ba41fb0b3d7602e6bfddce9aa5f3a19b2/NON-KERNE=
+L%2520journalctl%2520v6.16-rc4
+
+Just so you know, I have used v6.16-rc4.
+
+Bandhan.
+
+On Wed, Jul 9, 2025 at 11:00=E2=80=AFPM Bandhan Pramanik
+<bandhanpramanik06.foss@gmail.com> wrote:
 >
-> So... I'm afraid subject is pretty accurate. I assume there's actual
-> human being called "Sasha Levin" somewhere, but I interact with him
-> via email, and while some interactions may be by human, some are
-> written by LLM but not clearly marked as such.
+> Hello,
 >
-> And that's not okay -- because LLMs lie, have no ethics, and no
-> memory, so there's no point arguing with them. Its just wasting
-> everyone's time. People are not very thrilled by 'Markus Elfring' on
-> the lists, as he seems to ignore feedback, but at least that's actual
-> human, not a damn LLM that interacts as human but then ignores
-> everything.
-
-So ... we probably need to have discussions about the role LLMs will
-play in kernel development, but this is not the way to do it.  You are
-talking about a fellow human, and should treat him with respect.
-Please, let's not have this kind of attack here.
-
-jon
+> I was actually a bit distracted by the things caused by the Automatic Par=
+titioning of Fedora. I'll inform that in Fedora Bugzilla... anyway.
+>
+> I realised that making the modules will take 8-9 hours, I didn't even hav=
+e much of a success (because all the modules didn't properly load, particul=
+arly the firmware-N.bin files couldn't be found).
+>
+> But I'll try to recompile the kernel, I'll just have to give it overnight=
+ time.
+>
+> Bandhan
 
