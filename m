@@ -1,60 +1,88 @@
-Return-Path: <stable+bounces-161582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6AA1B004E2
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 16:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9274B004E9
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 16:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 392041C40C3A
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:15:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AF9D1C40C31
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF397272813;
-	Thu, 10 Jul 2025 14:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D4C2727E9;
+	Thu, 10 Jul 2025 14:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iYlLOM/P"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j7mz2C55"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADD71442E8;
-	Thu, 10 Jul 2025 14:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBAA18E750;
+	Thu, 10 Jul 2025 14:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752156922; cv=none; b=ZVzI0u6boMkGbpfYdeA/mzil8nFFxTiC6xqai/VbchITKE8pcq3vsryUDeJiuPqaIwLVd6+GxQnGVw+q0Sol4lHc15EpJQjhMOqBaRVpPZTHLRdISvttJM1jj9oHue4Wjf4hJ+bV5PswiUoY27hSmo8SnXeMSLDNyUDuu0QVWh8=
+	t=1752157026; cv=none; b=cSk3sFfBtkcItkDSYIsvTbESBu2Qk5kdnmv3PUXHRT4f+VSviczKNAu7X61Vq4/D3Zm+DwNNJETmMgR6EtxvGhW87ebtxYj8+x78vwT9Pgv3VjRd40PljXzKtm10t6wKweuG7y2bLj0VYhv3iwO397EnahXKLbvj1+oz1JMfq3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752156922; c=relaxed/simple;
-	bh=4zfxTFyV/TN0ivVrKUj+cVKgP4/5alPqCqzx7/Atvrk=;
+	s=arc-20240116; t=1752157026; c=relaxed/simple;
+	bh=cH0XWF4BIOD4tAIb15pLfn9fM2ClrDO4rTeFXsuzzK0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nah5tpvbmXcc92X3WoLupnw7prvjx1TDfq9b6lMuYm5rOd+4tJf+bd6VjsTKp5tqFD2pn8FVxgjpebCN8XPaMmMg3iMtlk85y06jKiNXnGZDDvn0bBWGrXM+mbXTwolOK3qvcSI8L+FcIYe6SNKX9aouFZLHebY6I2/p+Zpe7q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iYlLOM/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E31C4CEF5;
-	Thu, 10 Jul 2025 14:15:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752156922;
-	bh=4zfxTFyV/TN0ivVrKUj+cVKgP4/5alPqCqzx7/Atvrk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iYlLOM/PU7zbwRj1NHMVtATCsOdF0WkYlS+M30bqNfbPVVgqXHCTswwJ92npqwTvu
-	 xnF2Xa6jfPZ1qLuR9QhSYdKUd90BJRSHDUMud1zVDP/huKkUUXlqfOWsC4BcbcHAJu
-	 FxpsAhzAoC9FqQG0mRsxZB4vIJY3EjBN3GCDbd1ikTY1ecyFmAYp+riTZnNaxMp6qe
-	 H+fgLpHDp7Q03lUcKkL4rsImllpYqEqe9v8u0Vm4e3Yqzmn8H2DKb5u30QsQ0TN5wJ
-	 gDzC10J0JTm5pHnBNuOFFqwJWr/v20lqkvEjL0gHyP9Hg+YfS70Qa9tbaqBkPpoKy8
-	 866YKfRy1en4Q==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1uZs3P-0000000050N-2Cft;
-	Thu, 10 Jul 2025 16:15:15 +0200
-Date: Thu, 10 Jul 2025 16:15:15 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Daniele Palmas <dnlplm@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] USB: serial: option: add Telit Cinterion FE910C04
- (ECM) composition
-Message-ID: <aG_K85kECOF0hx34@hovoldconsulting.com>
-References: <20250710121638.121574-1-fabio.porcedda@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=QYECfUJxeIPinLIm6YPnr4i8fff44JsITmYpMPWtr9BPZ51EhQfILmAl7cN7xm9WLINUqY97NRjghE9iQYNq06Xg0lIGk9seEKLrOTwtFiad+0UEnng+jQPS4GfeLB+XONIdG1ZMuylfOUFkPBbYc+n9jj37yaSFFj5vr2xsVis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j7mz2C55; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-450cfb79177so5679755e9.0;
+        Thu, 10 Jul 2025 07:17:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752157023; x=1752761823; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=X6NQWnLkUsU4IbrEIKvkyte6IAfv41gNTZEjbgwjMjg=;
+        b=j7mz2C55Yn0wCCTYLGknSaS51U/3FNC4K0K7ue6l6PpocT1CI+nkL6obIm+xOevnkM
+         l63VqbvCdOEBOOtoIrcZqCW6t9+ye0AX37i/1IHfavcAy4NJc9NIt1KsmtmtXDD1xwNF
+         6W81yNG+wqo/dUd6YhjDLxIjAdJb/gq6GoKMSvJH4qMyIpNzmUdl9kWqn4vUNchS+Gwu
+         g19122BJuRnksMCQkQ5R2b3k/FFcr44GH5qaoySKqVqUTZVZYInf3Cral3wUZSwr8zfP
+         CE553P6nYAOp2pKOA3MKfRC+SNmzwCpSz6GwokoRJbbgEha9QqUTcRJ9zf6jXnYznxP/
+         tHcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752157023; x=1752761823;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X6NQWnLkUsU4IbrEIKvkyte6IAfv41gNTZEjbgwjMjg=;
+        b=SkYo3h7Qqv3sood39hZ1BhV2DRknw1iLcu5odVc2IvnCK7py2a1YCtGXxVkkpKlhnd
+         Oxq4lTQ8cLDGXIFXK2h6zPC92aBm7QGvP2K0wgh4E/OtkOHcSVhrXMqNhEJtQWP9epEX
+         PLWq5t3UFAWUWHMNF5tPnGyLfYEdR7NcwYQEh2Ep3wzajdqa4zuV3KmXhmP/7A6l9G88
+         HU3svz0wCUFEcHXWRf1ihSW975RSVbpvrnRgtFI7fXamDVrok6zzQxLkeif9dvh9jubs
+         k9dwfs8KqQyQMw++131KJqvXlr2WUl7ntmTChsi69rhybf9bZ6JAyBcymAYg5TzO39Zx
+         KNeg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrQhh4ayMyaKyEzeBHyu01FWVpytPaAXzCjjl+p+KdW+IbGnrhfAsjkzTz7JukRQMtPP8TtqVJ@vger.kernel.org, AJvYcCVV4VeXAbbnYmFzmCjsufxk3J6nn86BCz+hMy7Q1NZCXTZG6qbFj2sWc+yhEFrdncRFAboJiGkoYyXIJjs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWBicky05QZHGczIisqJ0QzHR/QeXvmf552HTzINSopv2M+Zf4
+	OrJpaFqKptfm93fFirym4ql6FJbWy653ud9YB4+nSLuQKC6CGxoVEAyj
+X-Gm-Gg: ASbGnct+Ue8aJ9RzKr2EFqnSey8ZRA14TpnvJhjL7mg1nFqtS4EKsJOXL7BKKB3DFUT
+	4LR4woJTW0lgPzGl4jKtDIwXIqjwxDpskd/bA267KWqVjk6jFAppO8iIX7I7DyStwCUPM8igOyw
+	mHeup90PczfBZ/u+6j+AmOOlDivzVLbSGzL8bmu8FXhSqDPxH7LBfTyzqGMTqXj6nXCroohHWr/
+	YW7dPgjmr6FsjvMrdviaWV5SqQodM1v5yG/CnUBFgj5lwfjtRcOla2ZgI+fdfdYF5A8EFOJvWl6
+	Ygycnx9I0D3Qr9kytsXCEnoYOB7yZWF8mIA1GeOqwsGiSdrgazyJXW9FEgxrVlBtdPW2n9pfPoU
+	=
+X-Google-Smtp-Source: AGHT+IGlGSMIN0Z2uimGznfKX4FTEu7U4tYvxhLK7Fd9GfFLljkOaCUfaX3W2X7dXjvzvPzvhqq93g==
+X-Received: by 2002:a05:600c:8b63:b0:43c:fffc:7886 with SMTP id 5b1f17b1804b1-454dd404f37mr28160105e9.8.1752157021984;
+        Thu, 10 Jul 2025 07:17:01 -0700 (PDT)
+Received: from localhost.localdomain ([45.128.133.228])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454d5133183sm60150125e9.40.2025.07.10.07.16.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jul 2025 07:17:01 -0700 (PDT)
+Date: Thu, 10 Jul 2025 16:16:48 +0200
+From: Oscar Maes <oscmaes92@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org,
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] net: ipv4: fix incorrect MTU in broadcast
+ routes
+Message-ID: <20250710141648-oscmaes92@gmail.com>
+References: <20250703152838.2993-1-oscmaes92@gmail.com>
+ <20250708185430.68f143a2@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,26 +91,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250710121638.121574-1-fabio.porcedda@gmail.com>
+In-Reply-To: <20250708185430.68f143a2@kernel.org>
 
-On Thu, Jul 10, 2025 at 02:16:38PM +0200, Fabio Porcedda wrote:
-> Add Telit Cinterion FE910C04 (ECM) composition:
-> 0x10c7: ECM + tty (AT) + tty (AT) + tty (diag)
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-> ---
-> v3:
-> * Add missing change history
+On Tue, Jul 08, 2025 at 06:54:30PM -0700, Jakub Kicinski wrote:
+> On Thu,  3 Jul 2025 17:28:37 +0200 Oscar Maes wrote:
+> >  	if (type == RTN_BROADCAST) {
+> >  		flags |= RTCF_BROADCAST | RTCF_LOCAL;
+> > -		fi = NULL;
+> >  	} else if (type == RTN_MULTICAST) {
+> >  		flags |= RTCF_MULTICAST | RTCF_LOCAL;
+> >  		if (!ip_check_mc_rcu(in_dev, fl4->daddr, fl4->saddr,
 > 
-> v2:
-> * https://lore.kernel.org/linux-usb/20250710115952.120835-1-fabio.porcedda@gmail.com/
-> * NCTRL_ALL -> NCTRL(4)
+> Not super familiar with this code, but do we not need to set 
+> do_cache = false; ? I'm guessing cache interactions may have
+> been the reason fib_info was originally cleared, not sure if
+> that's still relevant..
 > 
-> v1:
-> * https://lore.kernel.org/linux-usb/20250708120004.100254-1-fabio.porcedda@gmail.com/
+> I'd also target this at net-next, unless you can pinpoint
+> some kernel version where MTU on bcast routes worked..
+> -- 
+> pw-bot: cr
 
-Applied, thanks.
+The caching mechanism was introduced after this line, back when nhc was embedded in fib_info.
+(see https://lore.kernel.org/netdev/20120720.142612.691540831359186107.davem@davemloft.net/)
 
-Johan
+I'll resend to net-next.
 
