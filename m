@@ -1,260 +1,148 @@
-Return-Path: <stable+bounces-161584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 197EFB004FB
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 16:21:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D07B00526
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 16:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFE9216B733
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:20:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA8B67B3D5A
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B902727FB;
-	Thu, 10 Jul 2025 14:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F8D273809;
+	Thu, 10 Jul 2025 14:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yd55rMNp"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lt2uq7gy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="THCxeiiY";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CuKZNGn6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GGp2+8IX"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67117224B14
-	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 14:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2A7273808
+	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 14:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752157216; cv=none; b=JPZn5SUzsLclQhTKbEeP3n80vRJYztaUSwyjWyYP7PSzeFoaB0HNIsk71PA9kA5kCoXn7WadTVy2kfkfcmWiapHQpILQXNtasVEWaNLAdEcc6mNpDSgKLaYLGZbAJKrABzU47v16jX63+7qNArWuREz+wUkE9T62JL9iQt69B48=
+	t=1752157465; cv=none; b=QCD8uL9r3ZwCN9e6WJ1V0jMJAtKhxcjVwNilqdebdMhiVQfRi/PCHYjc2FlexB9DG4jwW302QVCK+0Mc+t/AeeZbvI+k/mTuEEnhNEiTmeRFluL3JZ/aFEXfm0QFQvieszzAiyVpc9/RcHYF8Dl9xckxpA8jjkEwOIs0lgRNKdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752157216; c=relaxed/simple;
-	bh=cPzYruLyHkC5VoJGrl/95F28HujEa0C4GArD7CHxeA4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IV2z3HiNrPie6ZtDMeipaYiX8T7JUWFFjzFGEb26I3W9V5XKIJMW0OC3Q17d8LdDIjPPBbyraz48fr++WLNXZ3H7fU/1JbmQNSUA0ng3vRnaUfTq665hqJhX+NT3fRxpdbSKCuwnaaVuLGG88HwL81b2olUQDiQq+rhTX8bN80E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yd55rMNp; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752157214; x=1783693214;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=cPzYruLyHkC5VoJGrl/95F28HujEa0C4GArD7CHxeA4=;
-  b=Yd55rMNpt0asTvWAPa1oO/YbP/XUDt8TWWqyLR7832S7O7yrkvcZ5kUO
-   tU7hcI6aHWpMx1PpZmNzY6mdg4r5M2lgKiTZKNLdevaLSiSviKb9Fm2b+
-   NnZKmybGjdMJhXZOlCHhV2qCsmPJxEIO9Z40XFzdbHSJMj2wzVtcaWgoS
-   ZUhvB50ysKNO+USsHIeMaofdkJSLFfL/l4OhXAa/gR2iHFUzm5rfGL1RN
-   A/QPyMHFsMAaDWNgcoOmxaCeh05acHC3zUGJvazJcjkfKSjY9oT1GQZc5
-   miovVW8QwaaE+re99vZAOJHktTebrGCjOFUEPBWOc1SXfNLGq5J3cmW+J
-   g==;
-X-CSE-ConnectionGUID: enSaCE7kRumfhAmB5WUz6w==
-X-CSE-MsgGUID: JxKT36RERIq5ud9OXdy0HQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="65891602"
-X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
-   d="scan'208";a="65891602"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 07:20:13 -0700
-X-CSE-ConnectionGUID: 7JXHWjbkRmuECqzs1/iilA==
-X-CSE-MsgGUID: EcNl9M+2R7iGPqzEwa9Hug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
-   d="scan'208";a="187103021"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.244.129]) ([10.245.244.129])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 07:20:12 -0700
-Message-ID: <83353f59-fdae-432c-9071-7a05acd8a2bc@intel.com>
-Date: Thu, 10 Jul 2025 15:20:10 +0100
+	s=arc-20240116; t=1752157465; c=relaxed/simple;
+	bh=LaSsV2vwq3+LmiMOjvvCtzy5wlKCbPOt7jm2qzUFcSc=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XkJw0LLJj7wtflCABmSEEcUKLFV3dZ9HAR4Tfg/SFKZlrZLuwMH8cY+LO61f879X02YOITGR1jUtIT3VqBYFgKZsYCfeL/SHeplTOMtB+4VcvgZ+Qh5qM/JXlMez3Sxa+rg3RCLL8GKNajsknUO43qVZfqis1cqJoNnsq3eYDsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lt2uq7gy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=THCxeiiY; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CuKZNGn6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GGp2+8IX; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3086B2174C;
+	Thu, 10 Jul 2025 14:24:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1752157462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=twGJxQb8UVyUK3S+JiU8TaYBAXe6Ze9h9EkUNVW1Cdc=;
+	b=lt2uq7gyHPKbHv6f+nVnTOFCoE+SgJkg8wDd7oXL1eTCuAJHU75vDpW/eAX7eXEqmUj31f
+	ayiEA58VQVEfparMwJ8djX5z7FfO7op8blE5IdTuCnoPn9oZMuJqT3t1nUvkrRnDEMCu1G
+	UVqmhBHuTrQlpYm0JhSuA8p4kjYT4ks=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1752157462;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=twGJxQb8UVyUK3S+JiU8TaYBAXe6Ze9h9EkUNVW1Cdc=;
+	b=THCxeiiYNZ3oNG79YNU4HrrPyUXM7x7MDgZruzS05Y59LS0aP4zsfmIqLd8+h2yz6RUsAv
+	Nn2u6+jPnEdhwkAg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1752157461; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=twGJxQb8UVyUK3S+JiU8TaYBAXe6Ze9h9EkUNVW1Cdc=;
+	b=CuKZNGn6hXiqKKjDosfFtpT1RB8+jrEmZ/S4+wFUJAPkF2puzdlCldjp5ATNcF6Elz2jhl
+	wmD401J4D53p0zc6YM41frwzIHu28iQLFgUT+M9nhQ97Z3KiBGMOy2Ipc0qiCSQYHEeVMh
+	AAUf6sH/ieawwshaefPbf0cJttWxsJw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1752157461;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=twGJxQb8UVyUK3S+JiU8TaYBAXe6Ze9h9EkUNVW1Cdc=;
+	b=GGp2+8IXB4TbDza9S7xfj4WRSrKJkXeft6Q2vw2LCb5xiD8nYAoX8oAPuBizocPzunFq9H
+	58MXFAJViUsSxgCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 008C7136DC;
+	Thu, 10 Jul 2025 14:24:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id kjeKOhTNb2gPMwAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Thu, 10 Jul 2025 14:24:20 +0000
+Date: Thu, 10 Jul 2025 16:24:20 +0200
+Message-ID: <87wm8gw2cr.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: edip@medip.dev
+Cc: perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: hda/realtek - Fix mute LED for HP Victus 16-r0xxx
+In-Reply-To: <20250710131812.27509-1-edip@medip.dev>
+References: <20250710131812.27509-1-edip@medip.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] drm/amdgpu: Reset the clear flag in buddy during
- resume
-To: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- christian.koenig@amd.com, matthew.brost@intel.com
-Cc: alexander.deucher@amd.com, stable@vger.kernel.org
-References: <20250708065404.4185-1-Arunpravin.PaneerSelvam@amd.com>
- <20250708065404.4185-2-Arunpravin.PaneerSelvam@amd.com>
- <f5386d20-326f-40ba-834f-953a0d7d18e1@intel.com>
- <16d56381-fec5-4cd8-a84c-4ce969786d9d@amd.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <16d56381-fec5-4cd8-a84c-4ce969786d9d@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_DN_NONE(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[medip.dev:email,suse.de:mid]
+X-Spam-Flag: NO
+X-Spam-Score: -3.30
 
-On 10/07/2025 08:14, Arunpravin Paneer Selvam wrote:
+On Thu, 10 Jul 2025 15:18:12 +0200,
+edip@medip.dev wrote:
 > 
-> On 7/8/2025 2:30 PM, Matthew Auld wrote:
->> On 08/07/2025 07:54, Arunpravin Paneer Selvam wrote:
->>> - Added a handler in DRM buddy manager to reset the cleared
->>>    flag for the blocks in the freelist.
->>>
->>> - This is necessary because, upon resuming, the VRAM becomes
->>>    cluttered with BIOS data, yet the VRAM backend manager
->>>    believes that everything has been cleared.
->>>
->>> v2:
->>>    - Add lock before accessing drm_buddy_clear_reset_blocks()(Matthew 
->>> Auld)
->>>    - Force merge the two dirty blocks.(Matthew Auld)
->>>    - Add a new unit test case for this issue.(Matthew Auld)
->>>    - Having this function being able to flip the state either way 
->>> would be
->>>      good. (Matthew Brost)
->>>
->>> v3(Matthew Auld):
->>>    - Do merge step first to avoid the use of extra reset flag.
->>>
->>> Signed-off-by: Arunpravin Paneer Selvam 
->>> <Arunpravin.PaneerSelvam@amd.com>
->>> Suggested-by: Christian König <christian.koenig@amd.com>
->>> Cc: stable@vger.kernel.org
->>> Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
->>> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
->>
->> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> From: Edip Hazuri <edip@medip.dev>
 > 
-> Is this RB also for the unit test case (patch 3).
+> The mute led on this laptop is using ALC245 but requires a quirk to work
+> This patch enables the existing quirk for the device.
+> 
+> Tested on Victus 16-r0xxx Laptop. The LED behaviour works
+> as intended.
+> 
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Edip Hazuri <edip@medip.dev>
 
-Feel free to apply my r-b there also.
+Applied now.  Thanks.
 
-> 
-> Thanks,
-> 
-> Arun.
-> 
->>
->>> ---
->>>   drivers/gpu/drm/amd/amdgpu/amdgpu_device.c   |  2 +
->>>   drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h      |  1 +
->>>   drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 17 ++++++++
->>>   drivers/gpu/drm/drm_buddy.c                  | 43 ++++++++++++++++++++
->>>   include/drm/drm_buddy.h                      |  2 +
->>>   5 files changed, 65 insertions(+)
->>>
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/ 
->>> gpu/drm/amd/amdgpu/amdgpu_device.c
->>> index a59f194e3360..b89e46f29b51 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
->>> @@ -5193,6 +5193,8 @@ int amdgpu_device_resume(struct drm_device 
->>> *dev, bool notify_clients)
->>>           dev->dev->power.disable_depth--;
->>>   #endif
->>>       }
->>> +
->>> +    amdgpu_vram_mgr_clear_reset_blocks(adev);
->>>       adev->in_suspend = false;
->>>         if (amdgpu_acpi_smart_shift_update(dev, AMDGPU_SS_DEV_D0))
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h b/drivers/gpu/ 
->>> drm/amd/amdgpu/amdgpu_ttm.h
->>> index 208b7d1d8a27..450e4bf093b7 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
->>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
->>> @@ -154,6 +154,7 @@ int amdgpu_vram_mgr_reserve_range(struct 
->>> amdgpu_vram_mgr *mgr,
->>>                     uint64_t start, uint64_t size);
->>>   int amdgpu_vram_mgr_query_page_status(struct amdgpu_vram_mgr *mgr,
->>>                         uint64_t start);
->>> +void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev);
->>>     bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
->>>                   struct ttm_resource *res);
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/ 
->>> gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
->>> index abdc52b0895a..07c936e90d8e 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
->>> @@ -782,6 +782,23 @@ uint64_t amdgpu_vram_mgr_vis_usage(struct 
->>> amdgpu_vram_mgr *mgr)
->>>       return atomic64_read(&mgr->vis_usage);
->>>   }
->>>   +/**
->>> + * amdgpu_vram_mgr_clear_reset_blocks - reset clear blocks
->>> + *
->>> + * @adev: amdgpu device pointer
->>> + *
->>> + * Reset the cleared drm buddy blocks.
->>> + */
->>> +void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev)
->>> +{
->>> +    struct amdgpu_vram_mgr *mgr = &adev->mman.vram_mgr;
->>> +    struct drm_buddy *mm = &mgr->mm;
->>> +
->>> +    mutex_lock(&mgr->lock);
->>> +    drm_buddy_reset_clear(mm, false);
->>> +    mutex_unlock(&mgr->lock);
->>> +}
->>> +
->>>   /**
->>>    * amdgpu_vram_mgr_intersects - test each drm buddy block for 
->>> intersection
->>>    *
->>> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
->>> index a1e652b7631d..a94061f373de 100644
->>> --- a/drivers/gpu/drm/drm_buddy.c
->>> +++ b/drivers/gpu/drm/drm_buddy.c
->>> @@ -405,6 +405,49 @@ drm_get_buddy(struct drm_buddy_block *block)
->>>   }
->>>   EXPORT_SYMBOL(drm_get_buddy);
->>>   +/**
->>> + * drm_buddy_reset_clear - reset blocks clear state
->>> + *
->>> + * @mm: DRM buddy manager
->>> + * @is_clear: blocks clear state
->>> + *
->>> + * Reset the clear state based on @is_clear value for each block
->>> + * in the freelist.
->>> + */
->>> +void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
->>> +{
->>> +    u64 root_size, size, start;
->>> +    unsigned int order;
->>> +    int i;
->>> +
->>> +    size = mm->size;
->>> +    for (i = 0; i < mm->n_roots; ++i) {
->>> +        order = ilog2(size) - ilog2(mm->chunk_size);
->>> +        start = drm_buddy_block_offset(mm->roots[i]);
->>> +        __force_merge(mm, start, start + size, order);
->>> +
->>> +        root_size = mm->chunk_size << order;
->>> +        size -= root_size;
->>> +    }
->>> +
->>> +    for (i = 0; i <= mm->max_order; ++i) {
->>> +        struct drm_buddy_block *block;
->>> +
->>> +        list_for_each_entry_reverse(block, &mm->free_list[i], link) {
->>> +            if (is_clear != drm_buddy_block_is_clear(block)) {
->>> +                if (is_clear) {
->>> +                    mark_cleared(block);
->>> +                    mm->clear_avail += drm_buddy_block_size(mm, block);
->>> +                } else {
->>> +                    clear_reset(block);
->>> +                    mm->clear_avail -= drm_buddy_block_size(mm, block);
->>> +                }
->>> +            }
->>> +        }
->>> +    }
->>> +}
->>> +EXPORT_SYMBOL(drm_buddy_reset_clear);
->>> +
->>>   /**
->>>    * drm_buddy_free_block - free a block
->>>    *
->>> diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
->>> index 9689a7c5dd36..513837632b7d 100644
->>> --- a/include/drm/drm_buddy.h
->>> +++ b/include/drm/drm_buddy.h
->>> @@ -160,6 +160,8 @@ int drm_buddy_block_trim(struct drm_buddy *mm,
->>>                u64 new_size,
->>>                struct list_head *blocks);
->>>   +void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear);
->>> +
->>>   void drm_buddy_free_block(struct drm_buddy *mm, struct 
->>> drm_buddy_block *block);
->>>     void drm_buddy_free_list(struct drm_buddy *mm,
->>
 
+Takashi
 
