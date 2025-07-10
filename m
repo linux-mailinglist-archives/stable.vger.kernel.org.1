@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-161531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E28FAFF88E
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 07:43:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69623AFF890
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 07:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BD8A5618E3
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 05:43:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42302189A156
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 05:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C414F284B3F;
-	Thu, 10 Jul 2025 05:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35676284B2E;
+	Thu, 10 Jul 2025 05:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pk0k+6Ul"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BJK7fs5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E4E28467B;
-	Thu, 10 Jul 2025 05:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A2D2036FF;
+	Thu, 10 Jul 2025 05:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752126230; cv=none; b=J2xphBFLpjNue4z1UgwJxojDa9tBmmlwYnVgfRBmywKedvJFnTLYzbiwDS6s06r61nPjbGPlj5ncFbD34i5qX7oCxuPRXn8auquf6rQ8jHM6YVqghDVJd19cXolBC98hXsUXPfmpCWqgIWgG/QGyWh/Ob1yVhqpWjlouWV1OW+c=
+	t=1752126279; cv=none; b=hdG8u1NNbsUc8Eo1G1+cP8JNZep/xBeVqSIGObzt568QstFLrSg9FYbxfqjq+1B3J55fhlDUkQf61GV2Ga64EkMYj6kEI901BF/riy0dWoJfPXf4B58hMyCfOt2RFaAgoBjU9IaiGh1Rr7ydikVtnvmfKZw4wybBOq5MEoq9Ink=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752126230; c=relaxed/simple;
-	bh=EdSFCn1zjmyJlce2sPpqOqCUqeuTT2D3BJb4YlwgN9Q=;
-	h=Date:To:From:Subject:Message-Id; b=kAgn3dWwTswMapu7waWtkDq6AEUjb6xMPJ67QRF3QJLrD8OKpCZztmN04URVZiRy0ookpPB6t2FJqMDcx9WphxZJW0qNxHKqhtuDpeLz/adm8AJ9p+XNExsW4d29E6JljCKjV7YmdKM5ElUs5HFji638P0MCqugG0pc3UGqCnCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pk0k+6Ul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F74C4CEE3;
-	Thu, 10 Jul 2025 05:43:49 +0000 (UTC)
+	s=arc-20240116; t=1752126279; c=relaxed/simple;
+	bh=mt0EcNc5B0EZnX+qVsFJ8OVNyStC3s9WRLhg90waipQ=;
+	h=Date:To:From:Subject:Message-Id; b=mPcKsFtTiRqDnuJLvuVuFMMykL1v5cdMwhARxOQTfVSgD9zJfC8JTqj1vS7Z4uzm8xoFimxgZPUti9ch9ruig8XWMD/6K6Tnhe+3f/p8igB11zfzIzfXgZA5563aluaWkpl1kjQ5XP75ZfaTK7ZampzwT+yF4rdmRQZCK1innHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BJK7fs5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8D8C4CEE3;
+	Thu, 10 Jul 2025 05:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752126230;
-	bh=EdSFCn1zjmyJlce2sPpqOqCUqeuTT2D3BJb4YlwgN9Q=;
+	s=korg; t=1752126278;
+	bh=mt0EcNc5B0EZnX+qVsFJ8OVNyStC3s9WRLhg90waipQ=;
 	h=Date:To:From:Subject:From;
-	b=pk0k+6UlDw+d/nNeXMox0HthNifk00aOZOqlhDUe52hopZRvwt1xpEZCQPnNyhIKG
-	 SPvihvqMHxE1qNaZ6Jos5E+HoAGEMHBF60JDRjMG1ZkL3HXcjNChpFeJ0r4vhvczVw
-	 hLsrXlDaWh7ULDTyAHUdqNGNYFubYrtd18KyyAOk=
-Date: Wed, 09 Jul 2025 22:43:49 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,josef@toxicpanda.com,jack@suse.cz,chizhiling@kylinos.cn,akpm@linux-foundation.org
+	b=BJK7fs5p/yDWdWFCkRV5CZ9Ka9uetCEIdwGxoSl6Rsl69eKHKfN4wfzSmOyZd2JhS
+	 APVmV95+IEgJwTRnnTmJUCiMUNXdodoChufCDHAq+XvlQZm0dbI4Zit2Bsmt4uIB4u
+	 DUskaKxLRLapQfCcA5dAGrBg2B5GrV7qY5m/eJLI=
+Date: Wed, 09 Jul 2025 22:44:38 -0700
+To: mm-commits@vger.kernel.org,ying.huang@linux.alibaba.com,stable@vger.kernel.org,osalvador@suse.de,donettom@linux.ibm.com,balbirs@nvidia.com,lizhijian@fujitsu.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] readahead-fix-return-value-of-page_cache_next_miss-when-no-hole-is-found.patch removed from -mm tree
-Message-Id: <20250710054349.F3F74C4CEE3@smtp.kernel.org>
+Subject: [merged mm-stable] mm-memory-tier-fix-abstract-distance-calculation-overflow.patch removed from -mm tree
+Message-Id: <20250710054438.BC8D8C4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,56 +50,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: readahead: fix return value of page_cache_next_miss() when no hole is found
+     Subject: mm/memory-tier: fix abstract distance calculation overflow
 has been removed from the -mm tree.  Its filename was
-     readahead-fix-return-value-of-page_cache_next_miss-when-no-hole-is-found.patch
+     mm-memory-tier-fix-abstract-distance-calculation-overflow.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Chi Zhiling <chizhiling@kylinos.cn>
-Subject: readahead: fix return value of page_cache_next_miss() when no hole is found
-Date: Thu, 5 Jun 2025 13:49:35 +0800
+From: Li Zhijian <lizhijian@fujitsu.com>
+Subject: mm/memory-tier: fix abstract distance calculation overflow
+Date: Tue, 10 Jun 2025 14:27:51 +0800
 
-max_scan in page_cache_next_miss always decreases to zero when no hole is
-found, causing the return value to be index + 0.
+In mt_perf_to_adistance(), the calculation of abstract distance (adist)
+involves multiplying several int values including
+MEMTIER_ADISTANCE_DRAM.
 
-Fix this by preserving the max_scan value throughout the loop.
+*adist = MEMTIER_ADISTANCE_DRAM *
+		(perf->read_latency + perf->write_latency) /
+		(default_dram_perf.read_latency + default_dram_perf.write_latency) *
+		(default_dram_perf.read_bandwidth + default_dram_perf.write_bandwidth) /
+		(perf->read_bandwidth + perf->write_bandwidth);
 
-Jan said "From what I know and have seen in the past, wrong responses
-from page_cache_next_miss() can lead to readahead window reduction and
-thus reduced read speeds."
+Since these values can be large, the multiplication may exceed the
+maximum value of an int (INT_MAX) and overflow (Our platform did),
+leading to an incorrect adist.
 
-Link: https://lkml.kernel.org/r/20250605054935.2323451-1-chizhiling@163.com
-Fixes: 901a269ff3d5 ("filemap: fix page_cache_next_miss() when no hole found")
-Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+User-visible impact:
+The memory tiering subsystem will misinterpret slow memory (like CXL)
+as faster than DRAM, causing inappropriate demotion of pages from
+CXL (slow memory) to DRAM (fast memory).
+
+For example, we will see the following demotion chains from the dmesg, where
+Node0,1 are DRAM, and Node2,3 are CXL node:
+ Demotion targets for Node 0: null
+ Demotion targets for Node 1: null
+ Demotion targets for Node 2: preferred: 0-1, fallback: 0-1
+ Demotion targets for Node 3: preferred: 0-1, fallback: 0-1
+
+Change MEMTIER_ADISTANCE_DRAM to be a long constant by writing it with
+the 'L' suffix.  This prevents the overflow because the multiplication
+will then be done in the long type which has a larger range.
+
+Link: https://lkml.kernel.org/r/20250611023439.2845785-1-lizhijian@fujitsu.com
+Link: https://lkml.kernel.org/r/20250610062751.2365436-1-lizhijian@fujitsu.com
+Fixes: 3718c02dbd4c ("acpi, hmat: calculate abstract distance with HMAT")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+Acked-by: Balbir Singh <balbirs@nvidia.com>
+Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/filemap.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/memory-tiers.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/filemap.c~readahead-fix-return-value-of-page_cache_next_miss-when-no-hole-is-found
-+++ a/mm/filemap.c
-@@ -1778,8 +1778,9 @@ pgoff_t page_cache_next_miss(struct addr
- 			     pgoff_t index, unsigned long max_scan)
- {
- 	XA_STATE(xas, &mapping->i_pages, index);
-+	unsigned long nr = max_scan;
+--- a/include/linux/memory-tiers.h~mm-memory-tier-fix-abstract-distance-calculation-overflow
++++ a/include/linux/memory-tiers.h
+@@ -18,7 +18,7 @@
+  * adistance value (slightly faster) than default DRAM adistance to be part of
+  * the same memory tier.
+  */
+-#define MEMTIER_ADISTANCE_DRAM	((4 * MEMTIER_CHUNK_SIZE) + (MEMTIER_CHUNK_SIZE >> 1))
++#define MEMTIER_ADISTANCE_DRAM	((4L * MEMTIER_CHUNK_SIZE) + (MEMTIER_CHUNK_SIZE >> 1))
  
--	while (max_scan--) {
-+	while (nr--) {
- 		void *entry = xas_next(&xas);
- 		if (!entry || xa_is_value(entry))
- 			return xas.xa_index;
+ struct memory_tier;
+ struct memory_dev_type {
 _
 
-Patches currently in -mm which might be from chizhiling@kylinos.cn are
+Patches currently in -mm which might be from lizhijian@fujitsu.com are
 
 
 
