@@ -1,110 +1,152 @@
-Return-Path: <stable+bounces-161572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1218FB00368
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 15:34:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E238B0032A
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 15:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8B11883C01
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 13:34:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7DFA3B538C
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 13:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707D52586C8;
-	Thu, 10 Jul 2025 13:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2082264CF;
+	Thu, 10 Jul 2025 13:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="G4yE/SNL";
-	dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b="TusmlQ2g"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Ps4JuEGI";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="S3rXCAZ0";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DEawNO0+";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="dGivfsD+"
 X-Original-To: stable@vger.kernel.org
-Received: from e3i282.smtp2go.com (e3i282.smtp2go.com [158.120.85.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BCD82899
-	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 13:33:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3317A22538F
+	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 13:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752154423; cv=none; b=GOKxoeOkUqdtqX7b+91bCY6Ckj3kKXYIf6H8C/mFe6GYXdTKXVtk/qFq00xRoYpAoawshk3LXPmzSrzTBTNK5zxBs0PMzW8/wahnn1LNuu8b6eQFjSU9w+daITLtU3uXL/ryeOj9o8NZrVn3s2yemut/RkhJjHGO6m9gkUS0gwE=
+	t=1752153565; cv=none; b=dPooUwyPlC/KjjzrrtbOB3E19tHUUbO/OyYdrVJFZGLAcIPEDMKEi5DzLlbCTR8CvOABeXYt7DuTXg+f9WXAOv0goHx72eO4GFRDv8edQDqPKvyl8z/E6o0OnUnXtRm29tFB9RtqhQgUR8wm1e5BOsJk2Ji2ih0+y7zQc+XNRUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752154423; c=relaxed/simple;
-	bh=M7l6/QLIPUoglGrfdye4yiQdtH9sXmYpR0Yv55tKrto=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b5IA60oA4LYmQUYQFZdolClbhnyYIMnJRoSczCdZJgkQbDiW0ndK1owBg7RPZpiC3srE2ZsMuyJd0+tu68Tuc1P4onAkopuCx46ju9tPZJVZg49Zq/WmlM9NGZBG0uCLBrioD6qfTR8RDtAUft3fcx37ja4NnbPjetfhDlpuMlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev; spf=pass smtp.mailfrom=em1255854.medip.dev; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=G4yE/SNL; dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b=TusmlQ2g; arc=none smtp.client-ip=158.120.85.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1255854.medip.dev
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
- i=@smtpservice.net; q=dns/txt; s=a1-4; t=1752153510; h=feedback-id :
- x-smtpcorp-track : date : message-id : to : subject : from : reply-to
- : sender : list-unsubscribe : list-unsubscribe-post;
- bh=vsPjCCPZRDftl844wyMwpzELOqTezWUQYA1LB69ZyMk=;
- b=G4yE/SNLr8BAGcqjHtH6mlmaIwPLpe5OKf69q9OyYF6HlhnmlpT5pcA1i2s9XlQzhDrUe
- SyfyVWrVjH1IRCr72LCYI8vuCAJOulfgSlI8GV5lw50aajUid1DudOR+LkTvcnZ6QfUPdZz
- K88zoXMTI0RTqENkMF7bhZfRV5dQ2B8n2HHqmcAtc1PKe5cpu3Vd6phGaqHFu2QgFdGh8hT
- 7P1RznjoO1GiypucrMlAkbgrdYLWKFQOtJtCNNuENQg4PRCfDd/2NZxU/FW0GIscdit5/Pe
- Cik9mBwBfJrLy81jWIzBrzvvUrquVT/Ay6du/hT6eaG1LU+O74lxOUsYcIwg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=medip.dev;
- i=@medip.dev; q=dns/txt; s=s1255854; t=1752153510; h=from : subject :
- to : message-id : date;
- bh=vsPjCCPZRDftl844wyMwpzELOqTezWUQYA1LB69ZyMk=;
- b=TusmlQ2gjfXqE9TlbIih8sKHnhk2eaf5LjNnVBYqv5MWxlgv0CMse27WKCZ+ckgdVP9OI
- f1BT+IcQQ4yIHuwCTfoJSAz2V6uIeZqFeK1X+fb9OaEO9XnSueKSenrhkbnT1dO3fxOOiwx
- VNSKyMIIfeAT0nI/8sZYXZuBszJoFdzbn67Qwan8eAOncjEXdevl0JsaDvDF7byktt4zSu7
- Yvx44DzCFLWh6dgZu13Y/KjISNfYXzxXoHKzQx+rbcZ7Er8icEohaOyJeXDwSetOUrKZrgY
- yn384jefVLRHsEVer6GSCWV70evGdgBAXPDUTe/zuyAbJ9GUZpoJgKwgBglA==
-Received: from [10.152.250.198] (helo=vilez)
-	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1-S2G)
-	(envelope-from <edip@medip.dev>)
-	id 1uZrAQ-4o5NDgrsm8D-h6lg;
-	Thu, 10 Jul 2025 13:18:26 +0000
-From: edip@medip.dev
-To: perex@perex.cz,
-	tiwai@suse.com
-Cc: linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Edip Hazuri <edip@medip.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH] ALSA: hda/realtek - Fix mute LED for HP Victus 16-r0xxx
-Date: Thu, 10 Jul 2025 16:18:12 +0300
-Message-ID: <20250710131812.27509-1-edip@medip.dev>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1752153565; c=relaxed/simple;
+	bh=AF6+2zX8wb1MUyKUf0RHPK9Mqhph+YSgFjyITRnNUNQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gjq4+yqXqX2xJYbIs/9Mvn0lVVrcZxsya26w2ER5FPoiQU21zExT62pFTdXO/5tgzmYs9SYQOUr6K+i1HMj8btpbPlTrisDintQUPucOmwBqHyHj0lCtMCWzhRsCc4gP+AzzUh33zPEj6SHxNqps9jn5vBvwTL/mCiwBsy2sPJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Ps4JuEGI; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=S3rXCAZ0; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=DEawNO0+; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=dGivfsD+; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 210841F785;
+	Thu, 10 Jul 2025 13:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1752153562; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DDESiVf559zx0p6jexviCKkR6yPH61rymkbr1Slyd2Y=;
+	b=Ps4JuEGINlI33trM5Ptqi7eTQ7ry5+/JxYWCxSkEq5LmK0GxwA2mqfhKcCLhumh4+VLMso
+	kjWkrto2OGVhJAjg+SH5L5nNtWFhIJ0VRaF532mrHm7OiHgIQM31XueQHf5iUbeIvaS2ra
+	ln+/eGnbM+9KN0yYlsSXoOATjDUg/Ag=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1752153562;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DDESiVf559zx0p6jexviCKkR6yPH61rymkbr1Slyd2Y=;
+	b=S3rXCAZ0SSALYbMtmf5cP3SASLHmbVMa/m4Q7bihM3xb4WyeWi/r8A8hhNTiepL9f3nOXr
+	pWTSKa1pErmvHXDw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1752153561; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DDESiVf559zx0p6jexviCKkR6yPH61rymkbr1Slyd2Y=;
+	b=DEawNO0+5fN6YergZYd60ol9k4gU0EDqspKjamOQCY3nr10gpwh640mx/iT9a+Tuusumu1
+	d+wh6BZTroiv/nuHV+DrHyMv1mwdDu4diS9NXLxyD3MDeW81LdxUGKTKnN3ZCilfhTskmD
+	Jrx24jQXnYSIGXYUE4pUEnWO6ZdiCXM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1752153561;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DDESiVf559zx0p6jexviCKkR6yPH61rymkbr1Slyd2Y=;
+	b=dGivfsD+1/yLNQLlYj9jZ8H9/SHJU/kZjVvITOjeIgy8mnmQlw99m6hSscKKc0peO+Iq7+
+	EssY3J88jK5frBAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 15018136CB;
+	Thu, 10 Jul 2025 13:19:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qPIcBdm9b2joHAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 10 Jul 2025 13:19:21 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id BAB94A098F; Thu, 10 Jul 2025 15:19:20 +0200 (CEST)
+Date: Thu, 10 Jul 2025 15:19:20 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH] isofs: Verify inode mode when loading from disk
+Message-ID: <w5v5cu3ljogzkck7hhyff5h3r3pfsgqxnryy3onwlvzug57sz5@wdfr4pzvphjc>
+References: <20250709095545.31062-2-jack@suse.cz>
+ <20250710-milchglas-entzaubern-17d9e0440a55@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 1255854m:1255854ay30w_v:1255854sasdnPZ66u
-X-smtpcorp-track: bcK5NAWFqeUd.3SthsYtiPHjZ.6u2eHgbJvIn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250710-milchglas-entzaubern-17d9e0440a55@brauner>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_COUNT_THREE(0.00)[3];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_RCPT(0.00)[895c23f6917da440ed0d];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,appspotmail.com:email,suse.cz:email,suse.com:email]
+X-Spam-Flag: NO
+X-Spam-Score: -2.30
 
-From: Edip Hazuri <edip@medip.dev>
+On Thu 10-07-25 13:28:42, Christian Brauner wrote:
+> On Wed, Jul 09, 2025 at 11:55:46AM +0200, Jan Kara wrote:
+> > Verify that the inode mode is sane when loading it from the disk to
+> > avoid complaints from VFS about setting up invalid inodes.
+> > 
+> > Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
+> > CC: stable@vger.kernel.org
+> > Signed-off-by: Jan Kara <jack@suse.cz>
+> > ---
+> 
+> Thanks! You want me to throw that in vfs.fixes for this week?
+> Acked-by: Christian Brauner <brauner@kernel.org>
 
-The mute led on this laptop is using ALC245 but requires a quirk to work
-This patch enables the existing quirk for the device.
+OK, please go ahead. Thanks!
 
-Tested on Victus 16-r0xxx Laptop. The LED behaviour works
-as intended.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Edip Hazuri <edip@medip.dev>
----
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 060db37ea..132cef8fa 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10814,6 +10814,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8bb3, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bb4, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8bbe, "HP Victus 16-r0xxx (MB 8BBE)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bc8, "HP Victus 15-fa1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+								Honza
 -- 
-2.50.1
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
