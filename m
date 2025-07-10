@@ -1,148 +1,107 @@
-Return-Path: <stable+bounces-161585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D07B00526
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 16:25:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13ED8B0053B
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 16:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA8B67B3D5A
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:24:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21D2B5A3057
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 14:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F8D273809;
-	Thu, 10 Jul 2025 14:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C40272E54;
+	Thu, 10 Jul 2025 14:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lt2uq7gy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="THCxeiiY";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CuKZNGn6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GGp2+8IX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUFAYUfs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2A7273808
-	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 14:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467AA272E44;
+	Thu, 10 Jul 2025 14:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752157465; cv=none; b=QCD8uL9r3ZwCN9e6WJ1V0jMJAtKhxcjVwNilqdebdMhiVQfRi/PCHYjc2FlexB9DG4jwW302QVCK+0Mc+t/AeeZbvI+k/mTuEEnhNEiTmeRFluL3JZ/aFEXfm0QFQvieszzAiyVpc9/RcHYF8Dl9xckxpA8jjkEwOIs0lgRNKdg=
+	t=1752157623; cv=none; b=lmyTzZTgADXlNHEH3e56C57EOn4I0qMBVL5kqQI/Xad0ABjb2brWiEM3d2QxQSKC1TgbyUaZy0IF3oeVzqpI2Qs3jy7HOHiW6d2eGclOJemm2zWhR1pFP9v3gMfi3JCZJ7jnl+8joZuWZG5RwBlCRzdwWqXmiFVVkIjAL+nM6WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752157465; c=relaxed/simple;
-	bh=LaSsV2vwq3+LmiMOjvvCtzy5wlKCbPOt7jm2qzUFcSc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XkJw0LLJj7wtflCABmSEEcUKLFV3dZ9HAR4Tfg/SFKZlrZLuwMH8cY+LO61f879X02YOITGR1jUtIT3VqBYFgKZsYCfeL/SHeplTOMtB+4VcvgZ+Qh5qM/JXlMez3Sxa+rg3RCLL8GKNajsknUO43qVZfqis1cqJoNnsq3eYDsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lt2uq7gy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=THCxeiiY; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CuKZNGn6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GGp2+8IX; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3086B2174C;
-	Thu, 10 Jul 2025 14:24:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1752157462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=twGJxQb8UVyUK3S+JiU8TaYBAXe6Ze9h9EkUNVW1Cdc=;
-	b=lt2uq7gyHPKbHv6f+nVnTOFCoE+SgJkg8wDd7oXL1eTCuAJHU75vDpW/eAX7eXEqmUj31f
-	ayiEA58VQVEfparMwJ8djX5z7FfO7op8blE5IdTuCnoPn9oZMuJqT3t1nUvkrRnDEMCu1G
-	UVqmhBHuTrQlpYm0JhSuA8p4kjYT4ks=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1752157462;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=twGJxQb8UVyUK3S+JiU8TaYBAXe6Ze9h9EkUNVW1Cdc=;
-	b=THCxeiiYNZ3oNG79YNU4HrrPyUXM7x7MDgZruzS05Y59LS0aP4zsfmIqLd8+h2yz6RUsAv
-	Nn2u6+jPnEdhwkAg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1752157461; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=twGJxQb8UVyUK3S+JiU8TaYBAXe6Ze9h9EkUNVW1Cdc=;
-	b=CuKZNGn6hXiqKKjDosfFtpT1RB8+jrEmZ/S4+wFUJAPkF2puzdlCldjp5ATNcF6Elz2jhl
-	wmD401J4D53p0zc6YM41frwzIHu28iQLFgUT+M9nhQ97Z3KiBGMOy2Ipc0qiCSQYHEeVMh
-	AAUf6sH/ieawwshaefPbf0cJttWxsJw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1752157461;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=twGJxQb8UVyUK3S+JiU8TaYBAXe6Ze9h9EkUNVW1Cdc=;
-	b=GGp2+8IXB4TbDza9S7xfj4WRSrKJkXeft6Q2vw2LCb5xiD8nYAoX8oAPuBizocPzunFq9H
-	58MXFAJViUsSxgCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 008C7136DC;
-	Thu, 10 Jul 2025 14:24:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kjeKOhTNb2gPMwAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 10 Jul 2025 14:24:20 +0000
-Date: Thu, 10 Jul 2025 16:24:20 +0200
-Message-ID: <87wm8gw2cr.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: edip@medip.dev
-Cc: perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1752157623; c=relaxed/simple;
+	bh=Lp0YKCDEbOTykxsN9b7ISwn3sIb0ktutrPOjgADtWTo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mY4QL8YoWrSxKxe4jIAuzRpmokqrOZ4GflKeFffEvJ8uIHyjbeG9tvwzclrC/Yd8GbYR24GwgsIJ8VGE3rIcfjhFpqkcGc6PVVAJiY1602isAvAz8FehkFG9S3fQ2COMfEx3q891tgfj5WPj8f9R+4DuIhCYO/FNgkIakemFGBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUFAYUfs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE687C4CEE3;
+	Thu, 10 Jul 2025 14:27:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752157622;
+	bh=Lp0YKCDEbOTykxsN9b7ISwn3sIb0ktutrPOjgADtWTo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sUFAYUfs+dQsYzEFb4sR6gIxcqKZVzRQ/A0iSgpF4lSWWIhnM9cREvEsr4Mt8C8Jd
+	 YFhgYhAGdxo5WyS/33r3fYg1ZXqSnrEw+ZKGTw5DA93cGRmTuifePdfIWiShqsT51E
+	 WTvbkOiGJWR53vS9fcFX+Dx60WACbt2noQxtmEZ/l2TJCQoSCLEMc4p+48kCdtGguj
+	 BWYyvhMiBimhWkBWB5dvY5WglYBDCudet8N2FIO/MTOwAx3eoKhp52kw7XVwKk06K1
+	 ZHTYbhjow1GgDk2Sz+TIur3ilq7tGw626x6MKDLmyMv2pRIqz14Uxj/fLG85N5FkkN
+	 T7hchzHvKTMdg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uZsEi-000000005Bb-2yia;
+	Thu, 10 Jul 2025 16:26:56 +0200
+Date: Thu, 10 Jul 2025 16:26:56 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Daniele Palmas <dnlplm@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda/realtek - Fix mute LED for HP Victus 16-r0xxx
-In-Reply-To: <20250710131812.27509-1-edip@medip.dev>
-References: <20250710131812.27509-1-edip@medip.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+Subject: Re: [PATCH] USB: serial: option: add Telit Cinterion FE910C04 (ECM)
+ composition
+Message-ID: <aG_NsFLI5UsVvYkt@hovoldconsulting.com>
+References: <20250708120004.100254-1-fabio.porcedda@gmail.com>
+ <aG4_jEQmeD9a_oWo@hovoldconsulting.com>
+ <CAHkwnC9tb=SZXsP7t8oeNPJ24pij4Y1ayFVRk6tqLhzc5zbsqQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.997];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_DN_NONE(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[medip.dev:email,suse.de:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -3.30
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHkwnC9tb=SZXsP7t8oeNPJ24pij4Y1ayFVRk6tqLhzc5zbsqQ@mail.gmail.com>
 
-On Thu, 10 Jul 2025 15:18:12 +0200,
-edip@medip.dev wrote:
-> 
-> From: Edip Hazuri <edip@medip.dev>
-> 
-> The mute led on this laptop is using ALC245 but requires a quirk to work
-> This patch enables the existing quirk for the device.
-> 
-> Tested on Victus 16-r0xxx Laptop. The LED behaviour works
-> as intended.
-> 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Edip Hazuri <edip@medip.dev>
+On Wed, Jul 09, 2025 at 12:50:27PM +0200, Fabio Porcedda wrote:
+> Il giorno mer 9 lug 2025 alle ore 12:08 Johan Hovold
+> <johan@kernel.org> ha scritto:
+> >
+> > On Tue, Jul 08, 2025 at 02:00:04PM +0200, Fabio Porcedda wrote:
+> > > Add Telit Cinterion FE910C04 (ECM) composition:
+> > > 0x10c7: ECM + tty (AT) + tty (AT) + tty (diag)
 
-Applied now.  Thanks.
+> > >  /* Interface does not support modem-control requests */
+> > >  #define NCTRL(ifnum) ((BIT(ifnum) & 0xff) << 8)
+> > > +#define NCTRL_ALL    (0xff << 8)
 
+> > > +     { USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),     /* Telit FE910C04 (ECM) */
+> > > +       .driver_info = NCTRL_ALL },
+> >
+> > Please just use NCTRL(4) here. (And remember to mention additions like
+> > this in the commit message in the future.)
+> 
+> Ok, I will send a v2.
+> 
+> > Or do you have reasons to believe the interface numbering may change? Or
+> > is it just to avoid matching on both number and protocol?
+> 
+> The interface number should not change, it's just to have a more
+> generic definition that matches also other pids for the same soc. I
+> think it's easier to write and less error prone because the interface
+> number changes based on the PID.
 
-Takashi
+Yeah, I can see it having some merit. Maybe I reacted to the naming as
+I at first incorrectly read it as no interface supporting the control
+request (perhaps naming it "NCTRL_ANY" would have avoided this).
+
+But for consistency I think we can continue using the interface numbers
+until we have some better abstraction for these that can be used to
+avoid also the explicit per protocol entries.
+
+Johan
 
