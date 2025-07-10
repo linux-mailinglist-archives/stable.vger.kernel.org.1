@@ -1,128 +1,130 @@
-Return-Path: <stable+bounces-161506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF77AFF6AE
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 04:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3214AFF6A6
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 04:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F255D3B21C6
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 02:18:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD8D13B045A
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 02:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C242727EF;
-	Thu, 10 Jul 2025 02:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF1F26E14C;
+	Thu, 10 Jul 2025 02:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="njsVZi27"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S8hZwqcE"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519C1264FB3;
-	Thu, 10 Jul 2025 02:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FB3A944;
+	Thu, 10 Jul 2025 02:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752113903; cv=none; b=YI00wZJp0mXc2RaB9Aj/vXnGBwiB3EJMi6V2kf5B3FosFz8xLuKgsaSujuwSjBO1O63H62cs0wK9u6dG+dMZ5cXeLeeHAd8rxA25BAldO6lFn+XViiYgEdhIYVV+lXZ6uGwESKmJ1Ixrp2iwjpkdDORgJhDXLWXKBIrdMd+AFbs=
+	t=1752113803; cv=none; b=hiqAZDKlFnPU5/oFcLhUdibxI8vk9ojuUBMQT3kNaXkvmID0NwIoTKyUWWKdPCqsL7yv4JKpF9MT+BwpqB8GrUNfKio1OuStAG3tcESBDZ5QlR4l/HhOI8e0IGhClRTq7m5n+wYwUJUVGEPwMGLruvtwofDn3NFI3wbCBZsIeEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752113903; c=relaxed/simple;
-	bh=YncpeWYjw31dFey/cwnZPymn2+vmtnLzfzSuuDjkjEE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ArTbcdKY2E5q88MVluLPGQc993UNLQ6vwFQ5tuPOPpl5ZOfF6dPGczrg1YleHIzsGoENk9VOEchpefpso+27/ZgmKqOthPh/f7DciFaZFlVOMNQOO8Y2ULleX/0R0IgdQ0BKPOwJl8uSIMUWaEjtLOc/VuRFeLCScizfA58qQR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=njsVZi27; arc=none smtp.client-ip=192.198.163.16
+	s=arc-20240116; t=1752113803; c=relaxed/simple;
+	bh=EyqwCncsgl6qAwYEVSz/MtYJS7SeGpr3zIv6jcm5xBk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r2bd+rrH1/PdT6CupSBVAMiXOI/n/thk5+VM740J3ea7MGeNYF1UfF6Uf8/rETDrCnutiNtenckMcW+5Rf36KE8gd9B3k+D3XGXNg4TYenj7vLDV59suG95yg6VIufvLNc4PILLuKexYuaLysMvlGObhPHZi8XfskEhXR5v8jOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S8hZwqcE; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752113902; x=1783649902;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YncpeWYjw31dFey/cwnZPymn2+vmtnLzfzSuuDjkjEE=;
-  b=njsVZi27lClZ+YOJ3vMd/yzlgDjisu40dglLLRk+iBZfMrIF2rrbYdkA
-   paC1P0AnB2sNGd0DNZiSm6DxuIX/SQlP/y39IhUNVMwC3lX1gCx07LI6V
-   N/UG1DWIC1+p9AhALTZCZN5uTlAR2+8+ckSXCrEGf2ZBYf8DiYW+MfxSZ
-   GG2MxDp+zp3sPkRKDXLbXe2xW5HDxseF8h5XojcCSr4LCJP0c0BoUkHUe
-   IZNCQRSESnJk0rI4kuJJGqcGtuw8UoKMTWYJH8LiztD1sf4VOHe39tOux
-   9BaYM3wiCr+joIRlDkmfQd4PIqpZkfLCTSxxpm/4lZ/k757rAB4iF2QUy
-   Q==;
-X-CSE-ConnectionGUID: PB5NGTC6TbiJyxGhpD8Z+w==
-X-CSE-MsgGUID: LLBl3FqNT/Wf3uTMStvHQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="42012168"
+  t=1752113802; x=1783649802;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EyqwCncsgl6qAwYEVSz/MtYJS7SeGpr3zIv6jcm5xBk=;
+  b=S8hZwqcEsU7ClmeHA5Q0r/YkXjY8p8aa39YEKZrPyi/univPKb9kedNN
+   5O6i8qAU/dfzIBxNq/KqmL7x4yy2I9YrRO38cBg6ryWCAYlESiVVpT8lU
+   qvmieNFwXInyWY/Alcge9kmpUh0xWTf9BaDP/+137NS/vI4yxJOzwxtU8
+   KdoO33mhle6gOLmM/2B+0JmLKfldTAhLYbpgaUkjQgfmoZ1Mi3yiQ1Lfw
+   kk+QwxJMU4NeOhCxagWZAdQAzW7D9Q54ObxQwtfy02UEaVnagVWpB58kG
+   pKgdj5Y1QgeBtP30qPaXUCyxF11RynBNnuYpK/bRfuWGHYlw7Q576OEtC
+   A==;
+X-CSE-ConnectionGUID: Q9jXkI/pRZGnrS5P9adFAw==
+X-CSE-MsgGUID: K+218n0kTwmrUg79XXNj1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54478315"
 X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; 
-   d="scan'208";a="42012168"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 19:18:20 -0700
-X-CSE-ConnectionGUID: SRXOa2pITreNuddkTH38qw==
-X-CSE-MsgGUID: xZHymS2NTSi2P2hP07/uIw==
+   d="scan'208";a="54478315"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 19:16:41 -0700
+X-CSE-ConnectionGUID: CtSF3vhWQlOmlEHQTgPpDw==
+X-CSE-MsgGUID: ueASjIQ0T+SeGsf66lCpDA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; 
-   d="scan'208";a="160227380"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa005.fm.intel.com with ESMTP; 09 Jul 2025 19:17:47 -0700
-Date: Thu, 10 Jul 2025 10:09:28 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: linux-fpga@vger.kernel.org, Moritz Fischer <mdf@kernel.org>,
-	Wu Hao <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>, Michal Simek <michal.simek@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] zynq_fpga: use sgtable-based scatterlist wrappers
-Message-ID: <aG8g2AchbLRJT9jU@yilunxu-OptiPlex-7050>
-References: <CGME20250616120941eucas1p2329f4080332615953fa77ba5ad0c0155@eucas1p2.samsung.com>
- <20250616120932.1090614-1-m.szyprowski@samsung.com>
+   d="scan'208";a="155588610"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 19:16:37 -0700
+Message-ID: <228cd2c9-b781-4505-8b54-42dab03f3650@linux.intel.com>
+Date: Thu, 10 Jul 2025 10:14:57 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250616120932.1090614-1-m.szyprowski@samsung.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Dave Hansen <dave.hansen@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, "Tested-by : Yi Lai" <yi1.lai@intel.com>
+Cc: iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250709062800.651521-1-baolu.lu@linux.intel.com>
+ <ee7585bd-d87c-4f93-9c8e-b8c1d649cdfe@intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <ee7585bd-d87c-4f93-9c8e-b8c1d649cdfe@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 16, 2025 at 02:09:32PM +0200, Marek Szyprowski wrote:
-> Use common wrappers operating directly on the struct sg_table objects to
-> fix incorrect use of statterlists related calls. dma_unmap_sg() function
-> has to be called with the number of elements originally passed to the
-> dma_map_sg() function, not the one returned in sgtable's nents.
+On 7/9/25 23:29, Dave Hansen wrote:
+> On 7/8/25 23:28, Lu Baolu wrote:
+>> Modern IOMMUs often cache page table entries to optimize walk performance,
+>> even for intermediate page table levels. If kernel page table mappings are
+>> changed (e.g., by vfree()), but the IOMMU's internal caches retain stale
+>> entries, Use-After-Free (UAF) vulnerability condition arises. If these
+>> freed page table pages are reallocated for a different purpose, potentially
+>> by an attacker, the IOMMU could misinterpret the new data as valid page
+>> table entries. This allows the IOMMU to walk into attacker-controlled
+>> memory, leading to arbitrary physical memory DMA access or privilege
+>> escalation.
 > 
-> CC: stable@vger.kernel.org
-> Fixes: 425902f5c8e3 ("fpga zynq: Use the scatterlist interface")
-> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> The approach here is certainly conservative and simple. It's also not
+> going to cause big problems on systems without fancy IOMMUs.
+> 
+> But I am a _bit_ worried that it's _too_ conservative. The changelog
+> talks about page table page freeing, but the actual code:
+> 
+>> @@ -1540,6 +1541,7 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
+>>   		kernel_tlb_flush_range(info);
+>>   
+>>   	put_flush_tlb_info();
+>> +	iommu_sva_invalidate_kva_range(start, end);
+>>   }
+> 
+> is in a very generic TLB flushing spot that's used for a lot more than
+> just freeing page tables.
+> 
+> If the problem is truly limited to freeing page tables, it needs to be
+> commented appropriately.
 
-Applied to for-next.
-Thanks.
+Yeah, good comments. It should not be limited to freeing page tables;
+freeing page tables is just a real case that we can see in the vmalloc/
+vfree paths. Theoretically, whenever a kernel page table update is done
+and the CPU TLB needs to be flushed, the secondary TLB (i.e., the caches
+on the IOMMU) should be flushed accordingly. It's assumed that this
+happens in flush_tlb_kernel_range().
 
-> ---
-> v2:
-> - fixed build break (missing flags parameter)
-> ---
->  drivers/fpga/zynq-fpga.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git drivers/fpga/zynq-fpga.c drivers/fpga/zynq-fpga.c
-> index f7e08f7ea9ef..0be0d569589d 100644
-> --- drivers/fpga/zynq-fpga.c
-> +++ drivers/fpga/zynq-fpga.c
-> @@ -406,7 +406,7 @@ static int zynq_fpga_ops_write(struct fpga_manager *mgr, struct sg_table *sgt)
->  	}
->  
->  	priv->dma_nelms =
-> -	    dma_map_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
-> +	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
->  	if (priv->dma_nelms == 0) {
->  		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
->  		return -ENOMEM;
-> @@ -478,7 +478,7 @@ static int zynq_fpga_ops_write(struct fpga_manager *mgr, struct sg_table *sgt)
->  	clk_disable(priv->clk);
->  
->  out_free:
-> -	dma_unmap_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
-> +	dma_unmap_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
->  	return err;
->  }
->  
-> -- 
-> 2.34.1
-> 
-> 
+Thanks,
+baolu
 
