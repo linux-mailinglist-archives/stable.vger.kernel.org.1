@@ -1,128 +1,118 @@
-Return-Path: <stable+bounces-161615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50ACCB00CDF
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 22:17:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4003B00D0D
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 22:28:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22ACB645B12
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 20:17:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99F406478AF
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 20:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DB721CC63;
-	Thu, 10 Jul 2025 20:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA3D30207B;
+	Thu, 10 Jul 2025 20:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lCTrMBDP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MAZHJaQE"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64BD1F0E50
-	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 20:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D75302CBE;
+	Thu, 10 Jul 2025 20:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752178647; cv=none; b=J26NvQKqommAA4YqVyWhmev3ekEvowP6KD/ouK/13QbhfINu1oIymNHeZyy6+TnW7R+G14gJr4T21GHIjQGNtvB3+LNu9WVwy8wmQIWuaxW9W6yf6HwG4NHtKgYFidCed8xYuMnP3FkzKFSqcPlJCoDsJlxT6XCzAS1vB2plSIg=
+	t=1752179136; cv=none; b=CMaB9KIxVfbZtvXczeMNnMLfE8KAuX6Q9wteQv3YfT6lpdDslj5cp1ntUymZiN87WIIuSYWhthYzbckP8Ocypl9vuuJuEM6XUzcy+9hQ3y2R2izbkBJByPrZ1pCm6kjnS3PqB/m6NRyHQU+MoMBGBvLRYHg/G+86btX58JGjBhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752178647; c=relaxed/simple;
-	bh=6Zk4fBa6kRr/oBR2bQdbV1gR6RhEausXd1tlnv/LMnw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IUYIE05iVwJrfJUxrS2OuaoqN/gZ0bIqpCKkGG1UREFlY62Z9oXuw43YVwOXwnrPruTOyFPnwEDfkYh5iAkOHmkVI5MdH2S65O68S3AMpq5OKu0mp2VCV2XI36YmVtqcpf1kcNlu8tC0T69W9aqs9jMbwKHn49eXx2FYhiXoExs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lCTrMBDP; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752178646; x=1783714646;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6Zk4fBa6kRr/oBR2bQdbV1gR6RhEausXd1tlnv/LMnw=;
-  b=lCTrMBDPntZGtY9yoNI5yMzQZ0C8ArTE2NZYC5LYe8vb8yw3UGifq/OC
-   yR+z+n78UBIHlsPeLFooI1cmIDmWIvn8gUgVP6/wpdUFom2F7Voo48RbP
-   iKIt4q5w+O8yx9bDnqPfyxZiSxZSUWWxxp6hiBWwgPWvQAXn/FlPyrBmr
-   0+2wqDRf84Py42z61Jm6uwyDtZ7s1vqyxiDCOEUQqVL24mYLNV3kpprLr
-   Cwp87HOn4SGxUqqyaN2AGI+GthLfd+2K9DpBJlYIJti1QjYBlnb34X/Jq
-   mUIZSg7sHf7uOgSAonst0Gp1TLCdZKf73+HjwMloBswjBQyGrUdGeqbyM
-   w==;
-X-CSE-ConnectionGUID: H3/uHkSYQMaSdfqf/ra/Cg==
-X-CSE-MsgGUID: 0meWLh21ScK7v6nL9ZwYSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54444537"
-X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="54444537"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 13:17:25 -0700
-X-CSE-ConnectionGUID: IGexykX3Q6GLr585i58kfg==
-X-CSE-MsgGUID: KKCb/39xSZGrkC046ENvVw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="161877524"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO stinkbox) ([10.245.244.160])
-  by orviesa005.jf.intel.com with SMTP; 10 Jul 2025 13:17:23 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Thu, 10 Jul 2025 23:17:22 +0300
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org,
-	stable@vger.kernel.org
-Subject: [PATCH 1/7] drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x
-Date: Thu, 10 Jul 2025 23:17:12 +0300
-Message-ID: <20250710201718.25310-2-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250710201718.25310-1-ville.syrjala@linux.intel.com>
-References: <20250710201718.25310-1-ville.syrjala@linux.intel.com>
+	s=arc-20240116; t=1752179136; c=relaxed/simple;
+	bh=P7zxnegUb85mA+6We1f5qwe9gxYERpxjlx3DtZfguCA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tzn784DNiBzSooEy7Mv4alCGmoLeMDrEGIUAE6LYrR102v5T8JNe2i431TT8lsijfPvr5Oi1AofzjDLycrgkNANTbkNsnf6lPVEGPT5lbaxcCM6GL6MKPWhWXoP6LDWh8GsGrLEDE/NXrDStfnYjKESPmoXu70HHkSPpdDQL1lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MAZHJaQE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3119DC4CEE3;
+	Thu, 10 Jul 2025 20:25:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752179135;
+	bh=P7zxnegUb85mA+6We1f5qwe9gxYERpxjlx3DtZfguCA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=MAZHJaQEl4RJFiWhzI3upsOYplIPkUFIXG+52Z7Vn9eyuEbdwP9bNFfV2xivWTVzr
+	 qVJZwBHTtqwWiJo7G+LSHGQLJYDnpzXx6tq0AgokWVmFdm9o25DeuDvREcmijzCUaG
+	 C800Ch4D0aC58qxnP60bRmCL+9euDH1tZn7dW8BgqVo6gilYGnHtfGrdSFzzZF+w3T
+	 YoCxACJHdqSjeJ4uyWsy38HG8b2yROMCk3Wk/44rOnd+DKeNgXf69VDuDv1Mw41Qm3
+	 ydBZbFVHDKmQQdtuod0CVXVRQZgfDBVceHKgIvfxtpGor0S/vS0C6oK8apDSkj/Q07
+	 W6KHh5QCtpOYA==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Thu, 10 Jul 2025 13:25:26 -0700
+Subject: [PATCH] riscv: Only allow LTO with CMODEL_MEDANY
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250710-riscv-restrict-lto-to-medany-v1-1-b1dac9871ecf@kernel.org>
+X-B4-Tracking: v=1; b=H4sIALUhcGgC/x3MTQqEMAxA4atI1gZaoYheRVz0J84EtEpSRBHvP
+ mXgbb7Ne0BJmBTG5gGhk5X3XGHbBuLX5w8hp2roTOdMbw0KazxRSItwLLiWHWsbJZ9vXGzoU3J
+ xCMFDXRxCC1///TS/7w8UBY/6bgAAAA==
+X-Change-ID: 20250710-riscv-restrict-lto-to-medany-f1b7dd5c9bba
+To: Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, 
+ llvm@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ kernel test robot <lkp@intel.com>, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2038; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=P7zxnegUb85mA+6We1f5qwe9gxYERpxjlx3DtZfguCA=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBkFinvFdQXcOyVYGBbwrDGPu3pHf842lsbawhssml7F1
+ uX/70V1lLIwiHExyIopslQ/Vj1uaDjnLOONU5Ng5rAygQxh4OIUgIm8Fmb4H5O99uTxLbNfv1xd
+ 9LcnXNImkOfzJ2HrGDflFT2v88NduBkZmv9M5f5x74Jot33wwuXb8h55fn3NLnFWMjtOb1bCr3m
+ JzAA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+When building with CONFIG_CMODEL_MEDLOW and CONFIG_LTO_CLANG, there is a
+series of errors due to some files being unconditionally compiled with
+'-mcmodel=medany', mismatching with the rest of the kernel built with
+'-mcmodel=medlow':
 
-On g4x we currently use the 96MHz non-SSC refclk, which can't actually
-generate an exact 2.7 Gbps link rate. In practice we end up with 2.688
-Gbps which seems to be close enough to actually work, but link training
-is currently failing due to miscalculating the DP_LINK_BW value (we
-calcualte it directly from port_clock which reflects the actual PLL
-outpout frequency).
+  ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 899908), and 'i32 1' from vmlinux.a(net-traces.o at 1014628)
 
-Ideas how to fix this:
-- nudge port_clock back up to 270000 during PLL computation/readout
-- track port_clock and the nominal link rate separately so they might
-  differ a bit
-- switch to the 100MHz refclk, but that one should be SSC so perhaps
-  not something we want
-
-While we ponder about a better solution apply some band aid to the
-immediate issue of miscalculated DP_LINK_BW value. With this
-I can again use 2.7 Gbps link rate on g4x.
+Only allow LTO to be performed when CONFIG_CMODEL_MEDANY is enabled to
+ensure there will be no code model mismatch errors. An alternative
+solution would be disabling LTO for the files with a different code
+model than the main kernel like some specialized areas of the kernel do
+but doing that for individual files is not as sustainable than
+forbidding the combination altogether.
 
 Cc: stable@vger.kernel.org
-Fixes: 665a7b04092c ("drm/i915: Feed the DPLL output freq back into crtc_state")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Fixes: 021d23428bdb ("RISC-V: build: Allow LTO to be selected")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506290255.KBVM83vZ-lkp@intel.com/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/riscv/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index f48912f308df..7976fec88606 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -1606,6 +1606,12 @@ int intel_dp_rate_select(struct intel_dp *intel_dp, int rate)
- void intel_dp_compute_rate(struct intel_dp *intel_dp, int port_clock,
- 			   u8 *link_bw, u8 *rate_select)
- {
-+	struct intel_display *display = to_intel_display(intel_dp);
-+
-+	/* FIXME g4x can't generate an exact 2.7GHz with the 96MHz non-SSC refclk */
-+	if (display->platform.g4x && port_clock == 268800)
-+		port_clock = 270000;
-+
- 	/* eDP 1.4 rate select method. */
- 	if (intel_dp->use_rate_select) {
- 		*link_bw = 0;
--- 
-2.49.0
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 36061f4732b7..4eee737a050f 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -68,7 +68,7 @@ config RISCV
+ 	select ARCH_SUPPORTS_HUGE_PFNMAP if TRANSPARENT_HUGEPAGE
+ 	select ARCH_SUPPORTS_HUGETLBFS if MMU
+ 	# LLD >= 14: https://github.com/llvm/llvm-project/issues/50505
+-	select ARCH_SUPPORTS_LTO_CLANG if LLD_VERSION >= 140000
++	select ARCH_SUPPORTS_LTO_CLANG if LLD_VERSION >= 140000 && CMODEL_MEDANY
+ 	select ARCH_SUPPORTS_LTO_CLANG_THIN if LLD_VERSION >= 140000
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS if 64BIT && MMU
+ 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK if MMU
+
+---
+base-commit: fda589c286040d9ba2d72a0eaf0a13945fc48026
+change-id: 20250710-riscv-restrict-lto-to-medany-f1b7dd5c9bba
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
 
 
