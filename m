@@ -1,87 +1,76 @@
-Return-Path: <stable+bounces-161611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1FC1B00944
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 18:53:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73BAB0097F
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 19:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D0EB16B701
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 16:53:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13C791C8863C
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 17:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AFF2836B0;
-	Thu, 10 Jul 2025 16:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BCF2F0048;
+	Thu, 10 Jul 2025 17:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="BysCcMAO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g2UKz81w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011D5285062
-	for <stable@vger.kernel.org>; Thu, 10 Jul 2025 16:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7FD2797A0;
+	Thu, 10 Jul 2025 17:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752166395; cv=none; b=M6uRoD0y3LS5Z0S2YSox6+1ldLOeygzdLtstJFV5RmDEFGKvvtH80YYXAXuUFwHEOJKm1n64W/T9CWBOvqLc1i74qCabJRoac6evf8n/kvA6mQoHjc3Be/e7xgdwnL2fRnY3NmzJpi7ik5iZ3ijAlY/T6j70pY3WEIJRJqBcc3w=
+	t=1752166998; cv=none; b=k3ePJHeIxiVcuWTaWXz+05nbT/xDjt40ZBqFuaGBfzK7jGDi4h9hxhpL/KX/4cnr117bfvAsgY3WvqDKTUfqPebgrLvtc9vjqPHpqZzxDZ8r0VyTe4UXs8tiV/rV7MFCQ3ZuGb7qtPS+o9xNoLdga2XN3ZNKfCBWAA7KsiyFzkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752166395; c=relaxed/simple;
-	bh=z4Wq8TqyeIjjgk+V/Gm4DspBzsLgkVjkd8sZF5ysnNc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XFgMsCd3Arf+9F3KVqR9TmODubwrPUeT4YFMk7qVPrhci7jmUH6uyVmeMmjJqCzLEBeXpAvdr2NAhTWI02cUK8Ogr2+/SOaVmxC+KBEkWhIM6GUUr6gIpw3Y3Y9lyWnsLGHfChYECm0R8V+CxRb+4kkLGwujSvfvldLHSjiklDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=BysCcMAO; arc=none smtp.client-ip=209.85.221.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f67.google.com with SMTP id ffacd0b85a97d-3a54690d369so1233766f8f.3
-        for <stable@vger.kernel.org>; Thu, 10 Jul 2025 09:53:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1752166390; x=1752771190; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Q1IK3GqKF8NVWixUC1jFkt7PBtdZyjJHmShjCXxIzw=;
-        b=BysCcMAOKMpMRDVCns2GhQYaLNO8M8KXsi67VbnAYGRPAiXcSjsaDG+sEjcak98sFF
-         kiZkPrsPqvoRwmdVWWUT3agwLp6+Uy2lQt6XT04JiX3a31XvyvBgX7WMcduzLVB061he
-         p8dqMgNCr5oDnly3NQrNDdf5wMFlSgIZwKb1GX+ipsygSBhnLSseMOtx62bmVl8X+4NS
-         jL143QmGsCBXnAnjVGZ4XIc+iqPw72wNkHeXfnLhDy68slI9jr+DOOPt/IxLVC57UD5a
-         RbNDGIoQiGMbe8lRkXQCcfyw834Fd90ZK2P0TxOKKMoeaZMTOza2WHQV9WVDOeFQoLgC
-         c0XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752166390; x=1752771190;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8Q1IK3GqKF8NVWixUC1jFkt7PBtdZyjJHmShjCXxIzw=;
-        b=luXwWuTcnlkgx7wF4qlD7heWTs8M91PCQE659kKT03BoYwTrnSYB7VemlZizyJbs3b
-         jQbhEAyfmUuT79dYKhDzQAPfv+vkZpF8Apwnt0JFVkxAkF/yEMa8gpZrXCO1M+qHnoAo
-         +teGtf40lvRG3iGjsW8UIDrS9yXlS6NcPI6lzB9G1PSPYlPl7trMSQStIuCUOyaGud6X
-         wzxJLIp7RZELgUrmYbZYUN4W0oHxlgwconZPZIJt6ImjOAD6KbNOnIMNqOMZWavzVOmi
-         MYHgHEMLWKbaWJPMz8QUSQHDkMp11ymqpOn2ySfJUbLtaw6LugQg066tQxhBfenItQT2
-         Bobg==
-X-Gm-Message-State: AOJu0YwKR8k4ywDMlCTG+B9bwZMdXOgprS9JdUtcg8EgYgy+jGc6yu2c
-	BjJOxTvPUWYP2JkxBzfZPGyFdX7Qc1WzIUW/6F/GE6/+aay6Upw+L6HmZSMY+VEYHWTxafaV0p6
-	DdnklQ3NXBQ==
-X-Gm-Gg: ASbGncskKJEFTHF7dcDC8m4dZ2sDUxPT6b8dyNuG9byEAKveQLSSwh2TNF2DsoS5iPO
-	M35z4Lklc59AmiZjciSINcQJWI1seTxIbWygiTMt1lAxAgTzSpJyCyHNsSsXfNSj2vgj0POIcbQ
-	JgxPyd7kYPU3bWK91nmWLUMauu6tsbhhctaIHQHHHMqmwFHjL8g6fBZVJaWjRfLwDehM49NKGcJ
-	rjVU3qUznatMHs220wgAgwAjhA9gqZKRiDwq7yAQFSgiG0ndqpJcYg0YMWH1zPmd4/FPlms4Vtv
-	2iMKsxryXhL6PxLmL7J315RLD6WuW10BapZiPW8zZQsWqaiohVLZqz0+BP0N3GA+UOYF1s43PbH
-	sHZllWa30vV8=
-X-Google-Smtp-Source: AGHT+IGrdz31l8ytEw4slUi213DBNuveM59F6Vrt68zhWC15A/FqHaYihvruZySsSw86Xhh/El72Ng==
-X-Received: by 2002:a05:6000:220e:b0:3a1:fa6c:4735 with SMTP id ffacd0b85a97d-3b5f1891105mr288332f8f.35.1752166390078;
-        Thu, 10 Jul 2025 09:53:10 -0700 (PDT)
-Received: from localhost.localdomain ([2804:7f0:bc00:fc9b:1aa7:f529:d2f7:747d])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9f1b54bsm2852250b3a.90.2025.07.10.09.53.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 09:53:09 -0700 (PDT)
-From: Henrique Carvalho <henrique.carvalho@suse.com>
-To: stable@vger.kernel.org,
-	smfrench@gmail.com,
-	dhowells@redhat.com
-Cc: linux-cifs@vger.kernel.org,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Laura Kerner <laura.kerner@ichaus.de>
-Subject: [PATCH 6.6.y] smb: client: support kvec iterators in async read path
-Date: Thu, 10 Jul 2025 13:50:40 -0300
-Message-ID: <20250710165040.3525304-1-henrique.carvalho@suse.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1752166998; c=relaxed/simple;
+	bh=W7zbUH+rxVwiXWiCIcevxN/uLfmclgsMQLofiJFemE8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DpE11Fzch2RRJ+vgGOG5j7P6S6iyDiwPBchPr4NlwAjjvScgP93hQ6CKn0V11Sm5BblcOqVbAcliEwia7lYeQTJHsvHxGEwvB10wNMvL67uo4YtYVdeimH2zZ15tpi5ABVyYELs0QmJYk+toti++kF+gkS9AWwalEAN3Gg9FHr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g2UKz81w; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752166997; x=1783702997;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=W7zbUH+rxVwiXWiCIcevxN/uLfmclgsMQLofiJFemE8=;
+  b=g2UKz81w9OmiifzRG7UjxBwNPU2lRFSL4JOnnSPaOc7/ga863nI/zehy
+   3wyO+F/IGfQvQjsJ1v/vu0FCpL7oWt5aGVjRrWxNboyJX6VLoXbDlXqQz
+   ZdIaWIVHzAqLpxl+3FgVkuF8xSDKhI9uXuCrl6zSUv+DcIRb+8zwrfZX6
+   t40MG4QYkUfje8tNDzF1yjqn2sDa85ezg+pQxJ613FfRBHduGHf0Pz2Cb
+   N8i0iMoTfq+IVj9WT4DJNpZG6xnBvzwMXBuOtedTkf3dEvWEW14RPCJoA
+   9K/CIz8srGkNElYckqId1DpvrCsBNB/aDOpPqmTCKw8UDVkbRhcTwFPyz
+   Q==;
+X-CSE-ConnectionGUID: 7j6GJ7G4TxC8T0HKNDv6Fw==
+X-CSE-MsgGUID: FcXhll5BQZ2PDrz2+Tb2fQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54611069"
+X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
+   d="scan'208";a="54611069"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 10:02:32 -0700
+X-CSE-ConnectionGUID: e3p89pHySIe68v8tQzAc5g==
+X-CSE-MsgGUID: Jwe4w9AYQymXoADwzaUQow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
+   d="scan'208";a="161710434"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa004.fm.intel.com with ESMTP; 10 Jul 2025 10:02:30 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id C43FB1A1; Thu, 10 Jul 2025 20:02:28 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Yevhen Kondrashyn <e.kondrashyn@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v1 1/1] Documentation: ACPI: Fix parent device references
+Date: Thu, 10 Jul 2025 20:00:23 +0300
+Message-ID: <20250710170225.961303-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,108 +79,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-commit 3ee1a1fc39819906f04d6c62c180e760cd3a689d upstream.
+The _CRS resources in many cases want to have ResourceSource field
+to be a type of ACPI String. This means that to compile properly
+we need to enclosure the name path into double quotes. This will
+in practice defer the interpretation to a run-time stage, However,
+this may be interpreted differently on different OSes and ACPI
+interpreter implementations. In particular ACPICA might not correctly
+recognize the leading '^' (caret) character and will not resolve
+the relative name path properly. On top of that, this piece may be
+used in SSDTs which are loaded after the DSDT and on itself may also
+not resolve relative name paths outside of their own scopes.
+With this all said, fix documentation to use fully-qualified name
+paths always to avoid any misinterpretations, which is proven to
+work.
 
-Add cifs_limit_kvec_subset() and select the appropriate limiter in
-cifs_send_async_read() to handle kvec iterators in async read path,
-fixing the EIO bug when running executables in cifs shares mounted
-with nolease.
-
-This patch -- or equivalent patch, does not exist upstream, as the
-upstream code has suffered considerable API changes. The affected path
-is currently handled by netfs lib and located under netfs/direct_read.c.
-
-Reproducer:
-
-$ mount.cifs //server/share /mnt -o nolease
-$ cat - > /mnt/test.sh <<EOL
-echo hallo
-EOL
-$ chmod +x /mnt/test.sh
-$ /mnt/test.sh
-bash: /mnt/test.sh: /bin/bash: Defekter Interpreter: Eingabe-/Ausgabefehler
-$ rm -f /mnt/test.sh
-
-Fixes: d08089f649a0 ("cifs: Change the I/O paths to use an iterator rather than a page list")
-Reported-by: Laura Kerner <laura.kerner@ichaus.de>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1245449
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
+Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- fs/smb/client/file.c | 46 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index d883ed75022c..4878c74bae6f 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -3527,6 +3527,42 @@ static size_t cifs_limit_bvec_subset(const struct iov_iter *iter, size_t max_siz
- 	return span;
- }
+Rafael, I prefer, if no objections, to push this as v6.16-rc6 material since
+the reported issue was detected on old (v5.10.y) and still LTS kernel. Would be
+nice for people to not trap to it in older kernels.
+
+ Documentation/firmware-guide/acpi/i2c-muxes.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/firmware-guide/acpi/i2c-muxes.rst b/Documentation/firmware-guide/acpi/i2c-muxes.rst
+index 3a8997ccd7c4..f366539acd79 100644
+--- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
++++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
+@@ -14,7 +14,7 @@ Consider this topology::
+     |      |   | 0x70 |--CH01--> i2c client B (0x50)
+     +------+   +------+
  
-+static size_t cifs_limit_kvec_subset(const struct iov_iter *iter, size_t max_size,
-+				     size_t max_segs, unsigned int *_nsegs)
-+{
-+	const struct kvec *kvecs = iter->kvec;
-+	unsigned int nkv = iter->nr_segs, ix = 0, nsegs = 0;
-+	size_t len, span = 0, n = iter->count;
-+	size_t skip = iter->iov_offset;
-+
-+	if (WARN_ON(!iov_iter_is_kvec(iter)) || n == 0)
-+		return 0;
-+
-+	while (n && ix < nkv && skip) {
-+		len = kvecs[ix].iov_len;
-+		if (skip < len)
-+			break;
-+		skip -= len;
-+		n -= len;
-+		ix++;
-+	}
-+
-+	while (n && ix < nkv) {
-+		len = min3(n, kvecs[ix].iov_len - skip, max_size);
-+		span += len;
-+		max_size -= len;
-+		nsegs++;
-+		ix++;
-+		if (max_size == 0 || nsegs >= max_segs)
-+			break;
-+		skip = 0;
-+		n -= len;
-+	}
-+
-+	*_nsegs = nsegs;
-+	return span;
-+}
-+
- static int
- cifs_write_from_iter(loff_t fpos, size_t len, struct iov_iter *from,
- 		     struct cifsFileInfo *open_file,
-@@ -4079,6 +4115,13 @@ cifs_send_async_read(loff_t fpos, size_t len, struct cifsFileInfo *open_file,
- 	int rc;
- 	pid_t pid;
- 	struct TCP_Server_Info *server;
-+	size_t (*limit_iov_subset)(const struct iov_iter *iter, size_t max_size,
-+				   size_t max_segs, unsigned int *_nsegs);
-+
-+	if (iov_iter_is_kvec(&ctx->iter))
-+		limit_iov_subset = cifs_limit_kvec_subset;
-+	else
-+		limit_iov_subset = cifs_limit_bvec_subset;
+-which corresponds to the following ASL::
++which corresponds to the following ASL (in the scope of \_SB)::
  
- 	server = cifs_pick_channel(tlink_tcon(open_file->tlink)->ses);
+     Device (SMB1)
+     {
+@@ -24,7 +24,7 @@ which corresponds to the following ASL::
+             Name (_HID, ...)
+             Name (_CRS, ResourceTemplate () {
+                 I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
+-                            AddressingMode7Bit, "^SMB1", 0x00,
++                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
+                             ResourceConsumer,,)
+             }
  
-@@ -4113,8 +4156,7 @@ cifs_send_async_read(loff_t fpos, size_t len, struct cifsFileInfo *open_file,
- 
- 		max_len = min_t(size_t, len, rsize);
- 
--		cur_len = cifs_limit_bvec_subset(&ctx->iter, max_len,
--						 max_segs, &nsegs);
-+		cur_len = limit_iov_subset(&ctx->iter, max_len, max_segs, &nsegs);
- 		cifs_dbg(FYI, "read-to-iter len=%zx/%zx nsegs=%u/%lu/%u\n",
- 			 cur_len, max_len, nsegs, ctx->iter.nr_segs, max_segs);
- 		if (cur_len == 0) {
+@@ -37,7 +37,7 @@ which corresponds to the following ASL::
+                     Name (_HID, ...)
+                     Name (_CRS, ResourceTemplate () {
+                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
+-                                    AddressingMode7Bit, "^CH00", 0x00,
++                                    AddressingMode7Bit, "\\_SB.SMB1.CH00", 0x00,
+                                     ResourceConsumer,,)
+                     }
+                 }
+@@ -52,7 +52,7 @@ which corresponds to the following ASL::
+                     Name (_HID, ...)
+                     Name (_CRS, ResourceTemplate () {
+                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
+-                                    AddressingMode7Bit, "^CH01", 0x00,
++                                    AddressingMode7Bit, "\\_SB.SMB1.CH01", 0x00,
+                                     ResourceConsumer,,)
+                     }
+                 }
 -- 
-2.47.0
+2.47.2
 
 
