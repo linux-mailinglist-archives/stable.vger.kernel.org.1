@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-161532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69623AFF890
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 07:44:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA47AFF892
+	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 07:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42302189A156
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63A0E565719
 	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 05:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35676284B2E;
-	Thu, 10 Jul 2025 05:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF03C2857E2;
+	Thu, 10 Jul 2025 05:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BJK7fs5p"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Zb+GxUfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A2D2036FF;
-	Thu, 10 Jul 2025 05:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB92284B2E;
+	Thu, 10 Jul 2025 05:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752126279; cv=none; b=hdG8u1NNbsUc8Eo1G1+cP8JNZep/xBeVqSIGObzt568QstFLrSg9FYbxfqjq+1B3J55fhlDUkQf61GV2Ga64EkMYj6kEI901BF/riy0dWoJfPXf4B58hMyCfOt2RFaAgoBjU9IaiGh1Rr7ydikVtnvmfKZw4wybBOq5MEoq9Ink=
+	t=1752126297; cv=none; b=JIUinswoZxrlh9TLvagtQ6v3CdHiD4cVjtNoRCozKSSCPIR/mN50HjYDH7G/dt8eB09Bo20bMfurob9R7rcVS/aLw8QN8PDFoQNOEagO2pgUj4cD2YirIP2kQLsrI7C3RA4kDWP0gtqYRZqJ0jgtF4eVlSryOzGnzWJ0sASMkG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752126279; c=relaxed/simple;
-	bh=mt0EcNc5B0EZnX+qVsFJ8OVNyStC3s9WRLhg90waipQ=;
-	h=Date:To:From:Subject:Message-Id; b=mPcKsFtTiRqDnuJLvuVuFMMykL1v5cdMwhARxOQTfVSgD9zJfC8JTqj1vS7Z4uzm8xoFimxgZPUti9ch9ruig8XWMD/6K6Tnhe+3f/p8igB11zfzIzfXgZA5563aluaWkpl1kjQ5XP75ZfaTK7ZampzwT+yF4rdmRQZCK1innHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BJK7fs5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8D8C4CEE3;
-	Thu, 10 Jul 2025 05:44:38 +0000 (UTC)
+	s=arc-20240116; t=1752126297; c=relaxed/simple;
+	bh=WjYxnZrAhHRmc1tAladj3uBA1FPpujp5fQThYfc8l84=;
+	h=Date:To:From:Subject:Message-Id; b=olS4gC2gQ0ehz5N0R8JLQOvvn3BElJ+1IVfV8I44Al3wj1DBYf3ZoFrV/dg53o6tpsXPx8OpiV0mCYUF8PgN4IgKW+y93hW8vi47q/j4QqtZ2qrMHXBoHQPbv8b2AiHrl+iz3ZhklvVKGxEZoMpckQRWqVh+Nzd2u7WUMN4nUvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Zb+GxUfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D72EC4CEE3;
+	Thu, 10 Jul 2025 05:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752126278;
-	bh=mt0EcNc5B0EZnX+qVsFJ8OVNyStC3s9WRLhg90waipQ=;
+	s=korg; t=1752126297;
+	bh=WjYxnZrAhHRmc1tAladj3uBA1FPpujp5fQThYfc8l84=;
 	h=Date:To:From:Subject:From;
-	b=BJK7fs5p/yDWdWFCkRV5CZ9Ka9uetCEIdwGxoSl6Rsl69eKHKfN4wfzSmOyZd2JhS
-	 APVmV95+IEgJwTRnnTmJUCiMUNXdodoChufCDHAq+XvlQZm0dbI4Zit2Bsmt4uIB4u
-	 DUskaKxLRLapQfCcA5dAGrBg2B5GrV7qY5m/eJLI=
-Date: Wed, 09 Jul 2025 22:44:38 -0700
-To: mm-commits@vger.kernel.org,ying.huang@linux.alibaba.com,stable@vger.kernel.org,osalvador@suse.de,donettom@linux.ibm.com,balbirs@nvidia.com,lizhijian@fujitsu.com,akpm@linux-foundation.org
+	b=Zb+GxUfnS9str7Rhhgy8zr/fWrQh5vBcO5guzkzpbzlCc1clVtM6d0v30RjU70nri
+	 AgU3sR1rpwCyaoQXvABVabmSHeWNEE60CE1j9a2zp6T0/HsiggcuRbZgNC5BIUKfCU
+	 SCQN/6RQ1godOpu0umcxQcWZypzpqYzz+HiGIh7I=
+Date: Wed, 09 Jul 2025 22:44:56 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,ryan.roberts@arm.com,rppt@kernel.org,osalvador@suse.de,npache@redhat.com,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jgg@nvidia.com,dev.jain@arm.com,dan.j.williams@intel.com,baolin.wang@linux.alibaba.com,apopple@nvidia.com,david@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-memory-tier-fix-abstract-distance-calculation-overflow.patch removed from -mm tree
-Message-Id: <20250710054438.BC8D8C4CEE3@smtp.kernel.org>
+Subject: [merged mm-stable] mm-huge_memory-dont-ignore-queried-cachemode-in-vmf_insert_pfn_pud.patch removed from -mm tree
+Message-Id: <20250710054457.4D72EC4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,77 +50,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/memory-tier: fix abstract distance calculation overflow
+     Subject: mm/huge_memory: don't ignore queried cachemode in vmf_insert_pfn_pud()
 has been removed from the -mm tree.  Its filename was
-     mm-memory-tier-fix-abstract-distance-calculation-overflow.patch
+     mm-huge_memory-dont-ignore-queried-cachemode-in-vmf_insert_pfn_pud.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Li Zhijian <lizhijian@fujitsu.com>
-Subject: mm/memory-tier: fix abstract distance calculation overflow
-Date: Tue, 10 Jun 2025 14:27:51 +0800
+From: David Hildenbrand <david@redhat.com>
+Subject: mm/huge_memory: don't ignore queried cachemode in vmf_insert_pfn_pud()
+Date: Fri, 13 Jun 2025 11:27:00 +0200
 
-In mt_perf_to_adistance(), the calculation of abstract distance (adist)
-involves multiplying several int values including
-MEMTIER_ADISTANCE_DRAM.
+Patch series "mm/huge_memory: vmf_insert_folio_*() and
+vmf_insert_pfn_pud() fixes", v3.
 
-*adist = MEMTIER_ADISTANCE_DRAM *
-		(perf->read_latency + perf->write_latency) /
-		(default_dram_perf.read_latency + default_dram_perf.write_latency) *
-		(default_dram_perf.read_bandwidth + default_dram_perf.write_bandwidth) /
-		(perf->read_bandwidth + perf->write_bandwidth);
+While working on improving vm_normal_page() and friends, I stumbled over
+this issues: refcounted "normal" folios must not be marked using
+pmd_special() / pud_special().  Otherwise, we're effectively telling the
+system that these folios are no "normal", violating the rules we
+documented for vm_normal_page().
 
-Since these values can be large, the multiplication may exceed the
-maximum value of an int (INT_MAX) and overflow (Our platform did),
-leading to an incorrect adist.
+Fortunately, there are not many pmd_special()/pud_special() users yet.  So
+far there doesn't seem to be serious damage.
 
-User-visible impact:
-The memory tiering subsystem will misinterpret slow memory (like CXL)
-as faster than DRAM, causing inappropriate demotion of pages from
-CXL (slow memory) to DRAM (fast memory).
+Tested using the ndctl tests ("ndctl:dax" suite).
 
-For example, we will see the following demotion chains from the dmesg, where
-Node0,1 are DRAM, and Node2,3 are CXL node:
- Demotion targets for Node 0: null
- Demotion targets for Node 1: null
- Demotion targets for Node 2: preferred: 0-1, fallback: 0-1
- Demotion targets for Node 3: preferred: 0-1, fallback: 0-1
 
-Change MEMTIER_ADISTANCE_DRAM to be a long constant by writing it with
-the 'L' suffix.  This prevents the overflow because the multiplication
-will then be done in the long type which has a larger range.
+This patch (of 3):
 
-Link: https://lkml.kernel.org/r/20250611023439.2845785-1-lizhijian@fujitsu.com
-Link: https://lkml.kernel.org/r/20250610062751.2365436-1-lizhijian@fujitsu.com
-Fixes: 3718c02dbd4c ("acpi, hmat: calculate abstract distance with HMAT")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-Acked-by: Balbir Singh <balbirs@nvidia.com>
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+We set up the cache mode but ...  don't forward the updated pgprot to
+insert_pfn_pud().
+
+Only a problem on x86-64 PAT when mapping PFNs using PUDs that require a
+special cachemode.
+
+Fix it by using the proper pgprot where the cachemode was setup.
+
+It is unclear in which configurations we would get the cachemode wrong:
+through vfio seems possible.  Getting cachemodes wrong is usually ... 
+bad.  As the fix is easy, let's backport it to stable.
+
+Identified by code inspection.
+
+Link: https://lkml.kernel.org/r/20250613092702.1943533-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20250613092702.1943533-2-david@redhat.com
+Fixes: 7b806d229ef1 ("mm: remove vmf_insert_pfn_xxx_prot() for huge page-table entries")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Tested-by: Dan Williams <dan.j.williams@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Mariano Pache <npache@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Zi Yan <ziy@nvidia.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/memory-tiers.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/huge_memory.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/include/linux/memory-tiers.h~mm-memory-tier-fix-abstract-distance-calculation-overflow
-+++ a/include/linux/memory-tiers.h
-@@ -18,7 +18,7 @@
-  * adistance value (slightly faster) than default DRAM adistance to be part of
-  * the same memory tier.
-  */
--#define MEMTIER_ADISTANCE_DRAM	((4 * MEMTIER_CHUNK_SIZE) + (MEMTIER_CHUNK_SIZE >> 1))
-+#define MEMTIER_ADISTANCE_DRAM	((4L * MEMTIER_CHUNK_SIZE) + (MEMTIER_CHUNK_SIZE >> 1))
+--- a/mm/huge_memory.c~mm-huge_memory-dont-ignore-queried-cachemode-in-vmf_insert_pfn_pud
++++ a/mm/huge_memory.c
+@@ -1516,10 +1516,9 @@ static pud_t maybe_pud_mkwrite(pud_t pud
+ }
  
- struct memory_tier;
- struct memory_dev_type {
+ static void insert_pfn_pud(struct vm_area_struct *vma, unsigned long addr,
+-		pud_t *pud, pfn_t pfn, bool write)
++		pud_t *pud, pfn_t pfn, pgprot_t prot, bool write)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+-	pgprot_t prot = vma->vm_page_prot;
+ 	pud_t entry;
+ 
+ 	if (!pud_none(*pud)) {
+@@ -1581,7 +1580,7 @@ vm_fault_t vmf_insert_pfn_pud(struct vm_
+ 	pfnmap_setup_cachemode_pfn(pfn_t_to_pfn(pfn), &pgprot);
+ 
+ 	ptl = pud_lock(vma->vm_mm, vmf->pud);
+-	insert_pfn_pud(vma, addr, vmf->pud, pfn, write);
++	insert_pfn_pud(vma, addr, vmf->pud, pfn, pgprot, write);
+ 	spin_unlock(ptl);
+ 
+ 	return VM_FAULT_NOPAGE;
+@@ -1625,7 +1624,7 @@ vm_fault_t vmf_insert_folio_pud(struct v
+ 		add_mm_counter(mm, mm_counter_file(folio), HPAGE_PUD_NR);
+ 	}
+ 	insert_pfn_pud(vma, addr, vmf->pud, pfn_to_pfn_t(folio_pfn(folio)),
+-		write);
++		       vma->vm_page_prot, write);
+ 	spin_unlock(ptl);
+ 
+ 	return VM_FAULT_NOPAGE;
 _
 
-Patches currently in -mm which might be from lizhijian@fujitsu.com are
+Patches currently in -mm which might be from david@redhat.com are
 
+mm-balloon_compaction-we-cannot-have-isolated-pages-in-the-balloon-list.patch
+mm-balloon_compaction-convert-balloon_page_delete-to-balloon_page_finalize.patch
+mm-zsmalloc-drop-pageisolated-related-vm_bug_ons.patch
+mm-page_alloc-let-page-freeing-clear-any-set-page-type.patch
+mm-balloon_compaction-make-pageoffline-sticky-until-the-page-is-freed.patch
+mm-zsmalloc-make-pagezsmalloc-sticky-until-the-page-is-freed.patch
+mm-migrate-rename-isolate_movable_page-to-isolate_movable_ops_page.patch
+mm-migrate-rename-putback_movable_folio-to-putback_movable_ops_page.patch
+mm-migrate-factor-out-movable_ops-page-handling-into-migrate_movable_ops_page.patch
+mm-migrate-remove-folio_test_movable-and-folio_movable_ops.patch
+mm-migrate-move-movable_ops-page-handling-out-of-move_to_new_folio.patch
+mm-zsmalloc-stop-using-__clearpagemovable.patch
+mm-balloon_compaction-stop-using-__clearpagemovable.patch
+mm-migrate-remove-__clearpagemovable.patch
+mm-migration-remove-pagemovable.patch
+mm-rename-__pagemovable-to-page_has_movable_ops.patch
+mm-page_isolation-drop-__folio_test_movable-check-for-large-folios.patch
+mm-remove-__folio_test_movable.patch
+mm-stop-storing-migration_ops-in-page-mapping.patch
+mm-convert-movable-flag-in-page-mapping-to-a-page-flag.patch
+mm-rename-pg_isolated-to-pg_movable_ops_isolated.patch
+mm-page-flags-rename-page_mapping_movable-to-page_mapping_anon_ksm.patch
+mm-page-alloc-remove-pagemappingflags.patch
+mm-page-flags-remove-folio_mapping_flags.patch
+mm-simplify-folio_expected_ref_count.patch
+mm-rename-page_mapping_-to-folio_mapping_.patch
+docs-mm-convert-from-non-lru-page-migration-to-movable_ops-page-migration.patch
+mm-balloon_compaction-movable_ops-doc-updates.patch
+mm-balloon_compaction-provide-single-balloon_page_insert-and-balloon_mapping_gfp_mask.patch
+mm-convert-fpb_ignore_-into-fpb_respect_.patch
+mm-smaller-folio_pte_batch-improvements.patch
+mm-split-folio_pte_batch-into-folio_pte_batch-and-folio_pte_batch_flags.patch
+mm-remove-boolean-output-parameters-from-folio_pte_batch_ext.patch
+mm-memory-introduce-is_huge_zero_pfn-and-use-it-in-vm_normal_page_pmd.patch
 
 
