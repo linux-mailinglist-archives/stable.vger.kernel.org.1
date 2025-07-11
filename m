@@ -1,139 +1,141 @@
-Return-Path: <stable+bounces-161619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E81B00EAC
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 00:26:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F70B010C6
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 03:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68F6C5877A8
-	for <lists+stable@lfdr.de>; Thu, 10 Jul 2025 22:26:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE82C1AA7F2E
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 01:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7404B29993F;
-	Thu, 10 Jul 2025 22:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24ACA72615;
+	Fri, 11 Jul 2025 01:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Nu+9wdSs"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="SSzGpQPq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298EC2356D2;
-	Thu, 10 Jul 2025 22:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8D3173;
+	Fri, 11 Jul 2025 01:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752186365; cv=none; b=b+xH4Y9HPZsVOBWuKp+HJASDxF3sfVVmPfPVlR8MXW2q0xV15VJzFeEsFhCv2Or1vtY6AGU725QqZ6AJlAio3lGd+K9ryIqtADTNKQj23EOTkzFEQLUe+YRvXL/lVuBn1oORqSVR1fK8zjQCkl4HeHa/yHK9aTzlDgPnSPw+2y4=
+	t=1752197087; cv=none; b=sMb9LwzJFoNH68iH2c41ImUdFgf8JMeuuFIFNLY9Y7qsuTtOHBWO2NAK4BYsH3QOFnr9lmNW2WAFJE4AzygQKAbIONLiexdgvIhUsBuq/japUXET9PPZn4AKroHkvpJ+8lZniqoCV1jSETnOnz6GF6fw4fr3s6FslQSDt8+zQ+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752186365; c=relaxed/simple;
-	bh=iyJTP5SWsB2i90a19oBWqALGqsvzNyXo5DkiDW+YnSg=;
-	h=Date:To:From:Subject:Message-Id; b=rKEUjIJycEBe1ke1xNScOq5PGP8S3yNtxMjHqhAbjbrMNtDW/SUsN+zz4nqjW/dd3ECH9gj58C+OU4gvCoQiYssXtH9/MhwHgptXjdME/9FA4aQ4UKJ/wCBtd52NVL810BNzPIIlTJDrQktyn0gcBO3mG3o8Cs5IWULJ1q0+wfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Nu+9wdSs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9891AC4CEE3;
-	Thu, 10 Jul 2025 22:26:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752186364;
-	bh=iyJTP5SWsB2i90a19oBWqALGqsvzNyXo5DkiDW+YnSg=;
-	h=Date:To:From:Subject:From;
-	b=Nu+9wdSsIND1wuOFvLO++qf31aOJZt/KemAgbtPKatfUrxpMizRLk5Jj5lOjNEv7Y
-	 lZ0B9Vc6eiXgQWEJEqJFWjEHtugBrTfyNFeIpdLCq02aa/rXswaZ+b5yGJl6ieej26
-	 i89beQjtwIc+4zV3iFHfPiK9DcU5kOOeVRUq1iGo=
-Date: Thu, 10 Jul 2025 15:26:04 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nathan@kernel.org,morbo@google.com,leonro@nvidia.com,justinstitt@google.com,jglisse@redhat.com,andriy.shevchenko@linux.intel.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery.patch added to mm-new branch
-Message-Id: <20250710222604.9891AC4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1752197087; c=relaxed/simple;
+	bh=3ZMNlFalkkuUHsd9SBK2uZHzyIlO8TrocAFm0EYy13k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hkpi3DSHv/ChvgL1aXgdR/o57OmTr95josZCSVDvCFK8/lFKELXKdlP1lyMS7KGgR40+leaZlAZBW8hc9Yutgdv5sX1QhDO7yvmRPAr3H09VThmur3SPGOhMiG+YX1esryQxZF6EATvuz+/DhDVuM7z8KVt+ii3YvJwm0OnPQxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=SSzGpQPq; arc=none smtp.client-ip=117.135.210.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=15RKKkH+/2iUNAMJx640lee+ElhFwKK7j4mMwT0+tOM=;
+	b=SSzGpQPq+IWOabPPt2JpRX8MMH2HuXmUJZ7hp3iQbEp4v3FR8he+fmgiqm8/D8
+	qpMTKoBfacqLqIUp3tVLZ+kKjygdSMshcfgI4PJUk105nscL44GNUHWXWrrXgzJS
+	t/6acKFhad4hzlmDynj0Gb1ZylvD5vlNjPoq4R38JWQ1U=
+Received: from [172.19.20.199] (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3lyisZ3BoJad1AA--.35076S2;
+	Fri, 11 Jul 2025 09:23:57 +0800 (CST)
+Message-ID: <ec847802-5189-461a-a372-f81839938579@126.com>
+Date: Fri, 11 Jul 2025 09:23:56 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3] efi/tpm: Fix the issue where the CC platforms event
+ log header can't be correctly identified
+To: James Bottomley <James.Bottomley@HansenPartnership.com>, ardb@kernel.org
+Cc: jarkko@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com,
+ ilias.apalodimas@linaro.org, jgg@ziepe.ca, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, liuzixing@hygon.cn
+References: <1751858087-10366-1-git-send-email-yangge1116@126.com>
+ <0925430dad9e55179be0df89d8af1df72dfa0c89.camel@HansenPartnership.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <0925430dad9e55179be0df89d8af1df72dfa0c89.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3lyisZ3BoJad1AA--.35076S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAF4rury7try7Wr1rGF4fuFg_yoW5WrWxpw
+	43KF1ay34DJr12vwnIv3WUuws8urWFyayDXryktw10yrZ0vF92gay0k345Ja93CryDWF18
+	Xw1jqF13CayvkaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbdbbUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiWB+HG2hwYzRqsQAAsP
 
 
-The patch titled
-     Subject: mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
-has been added to the -mm mm-new branch.  Its filename is
-     mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery.patch
+在 2025/7/11 5:58, James Bottomley 写道:
+> On Mon, 2025-07-07 at 11:14 +0800, yangge1116@126.com wrote:
+>> The pcr_idx value in the Intel TDX log header is 1, causing the
+>> function __calc_tpm2_event_size() to fail to recognize the log
+>> header, ultimately leading to the "Failed to parse event in TPM Final
+>> Events Log" error.
+>>
+>> According to UEFI Specification 2.10, Section 38.4.1: For TDX, TPM
+>> PCR 0 maps to MRTD, so the log header uses TPM PCR 1 instead. To
+>> successfully parse the TDX event log header, the check for a pcr_idx
+>> value of 0 must be skipped.
+> 
+> I think someone has misread the spec.  EV_NO_ACTION events produce no
+> PCR extension.  So the PCR value zero is conventional (and required by
+> the TCG) since nothing gets logged.  Therefore even if you're
+> technically using PCR0 for something else EV_NO_ACTION events should
+> still have the conventional PCR = 0 value to conform to the TCG spec.
+> I assume it's too late to correct this in the implementation?
+> 
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+According to Table 14 in Section 10.4.1 of the TCG PC Client 
+Specification, for EV_NO_ACTION events, the PCR (Platform Configuration 
+Register) value can be 0 or other values, such as 6.
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
+Link: 
+https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClient_PFP_r1p05_v23_pub.pdf
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+>>   __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
+>>   	count = event->count;
+>>   	event_type = event->event_type;
+>>   
+>> -	/* Verify that it's the log header */
+>> -	if (event_header->pcr_idx != 0 ||
+>> +	/*
+>> +	 * Verify that it's the log header. According to the TCG PC
+>> Client
+>> +	 * Specification, when identifying a log header, the check
+>> for a
+>> +	 * pcr_idx value of 0 is not required. For CC platforms,
+>> skipping
+>> +	 * this check during log header is necessary; otherwise, the
+>> CC
+>> +	 * platform's log header may fail to be recognized.
+>> +	 */
+>> +	if ((!is_cc_event && event_header->pcr_idx != 0) ||
+>>   	    event_header->event_type != NO_ACTION ||
+>>   	    memcmp(event_header->digest, zero_digest,
+>> sizeof(zero_digest))) {
+>>   		size = 0;
+> 
+> The above is just a heuristic to recognize an EV_NO_ACTION event as
+> zero size.  All the TCG specs require that EV_NO_ACTION have pcr 0 in
+> the event, but if the heuristic is wrong because of Intel/CC spec
+> violations which can't be fixed, then we should update the heuristic
+> ... so I don't think you need to thread the is_cc_event.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+It seems that the TCG specifications do not stipulate that the 
+EV_NO_ACTION event must have PCR 0. In addition, adding is_cc_event can 
+maximize the reuse of TPM code for CC platforms without disrupting TPM 
+functionality; otherwise, new functions would need to be added for CC 
+platforms.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Please review the latest patch. Patch link: 
+https://lore.kernel.org/lkml/1751961289-29673-1-git-send-email-yangge1116@126.com/
 
-------------------------------------------------------
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
-Date: Thu, 10 Jul 2025 11:23:53 +0300
-
-When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
-clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
-
-  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
-
-Fix this by moving the function to the respective existing ifdeffery
-for its the only user.
-
-See also:
-
-  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-
-Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
-Fixes: 9d3973d60f0a ("mm/hmm: cleanup the hmm_vma_handle_pmd stub")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hmm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/hmm.c~mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery
-+++ a/mm/hmm.c
-@@ -183,6 +183,7 @@ static inline unsigned long hmm_pfn_flag
- 	return order << HMM_PFN_ORDER_SHIFT;
- }
- 
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline unsigned long pmd_to_hmm_pfn_flags(struct hmm_range *range,
- 						 pmd_t pmd)
- {
-@@ -193,7 +194,6 @@ static inline unsigned long pmd_to_hmm_p
- 	       hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
- }
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
- 			      unsigned long end, unsigned long hmm_pfns[],
- 			      pmd_t pmd)
-_
-
-Patches currently in -mm which might be from andriy.shevchenko@linux.intel.com are
-
-mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery.patch
-panic-add-panic_sys_info-sysctl-to-take-human-readable-string-parameter-fix.patch
+> 
+> Regards,
+> 
+> James
 
 
