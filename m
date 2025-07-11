@@ -1,90 +1,123 @@
-Return-Path: <stable+bounces-161640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86418B01833
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 11:39:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11367B019A7
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 12:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE79F168EF5
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 09:39:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 664F05A0193
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 10:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27BE2586DA;
-	Fri, 11 Jul 2025 09:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1rLlJb5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E98281531;
+	Fri, 11 Jul 2025 10:25:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C763235355;
-	Fri, 11 Jul 2025 09:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB931F4282;
+	Fri, 11 Jul 2025 10:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752226793; cv=none; b=UAN014N8dFcqNqRn0DQWwrfzDu3JvgpZzoNtgNAb6W5i/FxVeAfHT4t3QhycXH7sQEY497pMjRG6r1G4CBhvtprO+AE0lQb1CxOcUoOSW9piNIy8aZbxmIQmPIDtSQn464eguq/Bz95jRdd8mv6Nz2W65KYQsAH3oiNK9GlrtLA=
+	t=1752229536; cv=none; b=AHe/+zzphUeJsm70ckq8h6QNCa952gBj+rS3Ubxezg78aOfD4rR1F3QcXr0oz6RSP8c/bw87y8vdkq6TOua8M3Za13N4ny2t8XRm2P2Hq1L0FbeTrBbjuGloKpzvgr0vxm8uuLfgtWmZ79WlAjKoeYmKtUCVqZZeaA7gP+t8BYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752226793; c=relaxed/simple;
-	bh=8KMYBLowxMAusWCsCNJGYgTcbLYvQAEMZyBnuCD5fDs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FNTSD65R/uNoH4Tq1Ji3sx8o+B5n9bToCrsBcdsfalgfI8hEeVAFBRfrrkOD3HPA6YYxaROUA1otDq8Sl4h7KGQ9k+BRwlcEIJfAqhycl2Lqmvr9KLqA7zHCJFcysoYQkEV7emn3TgChJc02Qo+h66M+aY1Tur2tkA2wL2tRKGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1rLlJb5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F55C4CEED;
-	Fri, 11 Jul 2025 09:39:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752226793;
-	bh=8KMYBLowxMAusWCsCNJGYgTcbLYvQAEMZyBnuCD5fDs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1rLlJb5cTYomFzy7lg6bpHZWL20XDdMLBikBfGYiVR1dY5zHTg5kQY4uGgNgh7mk
-	 KeciabVTC2FS+5CVMY3RJGUPeP9dSEXmRp+E1O2E3lULZEii2wadila77lIgy6NyX3
-	 zk4YW73BmVeoz2dlv+Y88JPY5aJfibFS65CiJSJO6c231fs+9sE+kWTsEtjkQyiIdB
-	 N36B++iwY/q2E/V66n6+HC9o6CNCK1T9futhiNqaB7TrXxT7cbmvcWREn9l+OlURoA
-	 jaccK6SSdcgYp5sjx/7QHYiVMJ9x5/X4WU3a9gTov51niH/d/HAqa9wFR9XCMCcIT6
-	 SXE+bL+JlXhFA==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org,
-	Jan Kara <jack@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>,
-	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
+	s=arc-20240116; t=1752229536; c=relaxed/simple;
+	bh=vKJvOURhUE13DR5vB8HI3FuVcBQKiAi/1A/TkD7JfWI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JZmiEFZanf7heAb7WQRgDvXDUOOFAz1XyX4fXWTtVWsdq0EkXmeR1K+++6vu/jD8iG9SEl9ifNDzp7YVJQw8QR2M6VRvULbFS0Evnfd/+AMh3oMGgY5TJehBlvQQsidA+TmcM/nqj9mLAEJUZ8YBsTGDuLtOQjUcmxSLpDpXUQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.193])
+	by gateway (Coremail) with SMTP id _____8Bx22qT5nBosysnAQ--.48018S3;
+	Fri, 11 Jul 2025 18:25:23 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.193])
+	by front1 (Coremail) with SMTP id qMiowJDxscKH5nBoupkSAA--.12437S2;
+	Fri, 11 Jul 2025 18:25:21 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] isofs: Verify inode mode when loading from disk
-Date: Fri, 11 Jul 2025 11:39:46 +0200
-Message-ID: <20250711-geknackt-plant-f347dc35e76a@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250709095545.31062-2-jack@suse.cz>
-References: <20250709095545.31062-2-jack@suse.cz>
+Subject: [PATCH] init: Handle bootloader head in kernel parameters
+Date: Fri, 11 Jul 2025 18:24:55 +0800
+Message-ID: <20250711102455.3673865-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=956; i=brauner@kernel.org; h=from:subject:message-id; bh=8KMYBLowxMAusWCsCNJGYgTcbLYvQAEMZyBnuCD5fDs=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQU3H589dAMkVcKt0W2lKhqbPfw9PZVuio14eouyexHd grrs++IdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExkoSLDX4Gp4k6XWi3ulJ36 XuRQEe/78uI3S/fSypaNS5nXRG+P02FkOM2c1bhn5ay7ab/iXtaVyP9893e7TdPCpD4ln1wNHfk l3AA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxscKH5nBoupkSAA--.12437S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Kr1xCrWxCF48ZF1DuFy3Awc_yoW8XF4DpF
+	4qvry3X3s7Jr4Svw48ZrWvg34fuwnxWa12kanruan8JF15Wry0qas5CFZxW3Zxtr4fKF4j
+	qF1kXF10k3W7AFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvKb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17
+	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_
+	JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17
+	CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0
+	I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I
+	8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU
+	0xZFpf9x07jepB-UUUUU=
 
-On Wed, 09 Jul 2025 11:55:46 +0200, Jan Kara wrote:
-> Verify that the inode mode is sane when loading it from the disk to
-> avoid complaints from VFS about setting up invalid inodes.
-> 
-> 
+BootLoader may pass a head such as "BOOT_IMAGE=/boot/vmlinuz-x.y.z" to
+kernel parameters. But this head is not recognized by the kernel so will
+be passed to user space. However, user space init program also doesn't
+recognized it.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+KEXEC may also pass a head such as "kexec" on some architectures.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+So the the best way is handle it by the kernel itself, which can avoid
+such boot warnings:
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Kernel command line: BOOT_IMAGE=(hd0,1)/vmlinuz-6.x root=/dev/sda3 ro console=tty
+Unknown kernel command line parameters "BOOT_IMAGE=(hd0,1)/vmlinuz-6.x", will be passed to user space.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ init/main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
+diff --git a/init/main.c b/init/main.c
+index 225a58279acd..9e0a7e8913c0 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -545,6 +545,7 @@ static int __init unknown_bootoption(char *param, char *val,
+ 				     const char *unused, void *arg)
+ {
+ 	size_t len = strlen(param);
++	const char *bootloader[] = { "BOOT_IMAGE", "kexec", NULL };
+ 
+ 	/* Handle params aliased to sysctls */
+ 	if (sysctl_is_alias(param))
+@@ -552,6 +553,12 @@ static int __init unknown_bootoption(char *param, char *val,
+ 
+ 	repair_env_string(param, val);
+ 
++	/* Handle bootloader head */
++	for (int i = 0; bootloader[i]; i++) {
++		if (!strncmp(param, bootloader[i], strlen(bootloader[i])))
++			return 0;
++	}
++
+ 	/* Handle obsolete-style parameters */
+ 	if (obsolete_checksetup(param))
+ 		return 0;
+-- 
+2.47.1
 
-[1/1] isofs: Verify inode mode when loading from disk
-      https://git.kernel.org/vfs/vfs/c/0a9e74051313
 
