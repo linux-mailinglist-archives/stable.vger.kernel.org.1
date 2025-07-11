@@ -1,157 +1,184 @@
-Return-Path: <stable+bounces-161686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991D8B024C4
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 21:46:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC7AB02609
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 22:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4699561F67
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 19:46:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E79B547A09
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 20:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEA81E521E;
-	Fri, 11 Jul 2025 19:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4302288E3;
+	Fri, 11 Jul 2025 20:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SLtdscP7"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="H8FGOcZT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06B38F7D
-	for <stable@vger.kernel.org>; Fri, 11 Jul 2025 19:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B3019995E;
+	Fri, 11 Jul 2025 20:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752263175; cv=none; b=lXZyfUC2lUA9CJQepFfCFoOwuZotKS8c7O989Y3uOA8ii6jYARWZNKNvdrq+19XIwPB472G87LyBDexjXHZG8Gkv0UzKKQS2eRvDlTFFF4ofd52CGQp4XDFznqav15TWUvTas0pEkX6Zpm1VhUsao5p6RuWF3GCPM7S1IgNFPIY=
+	t=1752267456; cv=none; b=tP/JKzD3h9zuyrx1tZbSsREko86fsCUcyeUpyy2aq7pzvennLoYp67AmWL71nhD+2N94hZiyJjjVf0E0s5cFB9euwa6WeBTQAARf/2qsSrNFcUzWazonw8Z7nuXOZZJDhXZ41IeM9BIyIloVf+D4/8EIkWmxrBO6K6Wrcnec5jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752263175; c=relaxed/simple;
-	bh=rVsWLDfF7bN5xsDhd2LzOUvvv4tRQU5COCvQm6oxUxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=orw1nwjwVmrDKRigSao705nyzpnYZUl/ktmqRzimeacYNi6R2TFL1HNRPP0p+ikA+TV/YE3+LAfkuNhxp5tMl6nHlYLMgS8vlPNsTGur6BRUdBrd0EDFrrjhSm9bzhHcsD69qH6bF/aBKM1PDKz3R6onJqI073E2g+uaZ/6j0GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=SLtdscP7; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E84A240E0218;
-	Fri, 11 Jul 2025 19:46:11 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id fOho075tlNRJ; Fri, 11 Jul 2025 19:46:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1752263168; bh=Tr8ebBDdnvbUwhFZCNfYvwaP/0LI7fFXQd5cizmPzpw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SLtdscP7iz2uKWbgcNyfjNVriPZbEILUzvCpDaVPSwzzz7b9a3zaHxP+eIU7seAAF
-	 l02dxvhJXxA1vIG1js1TPBGvqyt7fskfxEE8/lGOA36BJ7aExrfep9J+u4NfQqFlcc
-	 oqcoB1u6qL8vBaN3W/W9IxTHBsXXE1CINY9DjLQjLKNncXTLhsDYWMQB4IA35PsJcq
-	 BooQADF+aJGKkmtIdITCufFYqDz8zTSBPmaiQ4ZzAjmb3K9b178Ed0aRJsX3gGFNzM
-	 4WeX9afpOtxMqCfQYFNVPFoAphNcWLyKW/hIF/G2ylsKCF27tBzEvQ48LhNV7S9ByR
-	 j6WK7eKII1J+Q4owGICXRE58odHshisc5EbnI7/73pJR0mh7qtRR4eKn14gA0HNLpx
-	 2ruve/5JQ4bxMq1SJXjBjjZQmaQFF1BVFxOBFQyuCQ/tWkBCwQTNJyWXZ0mzyp+yF4
-	 mmxif9w1p+NjSXa+N5sYELRvWLHSfcrn6KPj+4DnAKsiCb24q3SYDpJgkop33GBcW1
-	 t78bWSqFdQfarNQ2+nyGiz0LVmTTDMMXV19qzb8u6VrEptvBGtt4T1MDZR77nrEtYD
-	 rlVTh/m59khqrblp64YvBEv6sI4aUKV3wi7BpcGL9GjgYx/RegzhFu9JegYafpIP9b
-	 Bf/UqFumt8ViwaTCjvUg2aQc=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D812240E0205;
-	Fri, 11 Jul 2025 19:46:04 +0000 (UTC)
-Date: Fri, 11 Jul 2025 21:45:58 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: stable@vger.kernel.org
-Cc: Thomas Voegtle <tv@lio96.de>, kim.phillips@amd.com
-Subject: [PATCH 5.15-stable] x86/CPU/AMD: Properly check the TSA microcode
-Message-ID: <20250711194558.GLaHFp9kw1s5dSmBUa@fat_crate.local>
-References: <04ea0a8e-edb0-c59e-ce21-5f3d5d167af3@lio96.de>
- <20250711122541.GAaHECxVpy31mIrqDb@fat_crate.local>
- <c7f1bb7d-ec91-ca9d-981a-a0bd5e484d05@lio96.de>
- <20250711153546.GBaHEvUmfVORJmONfh@fat_crate.local>
- <3e198176-90c4-4759-84c7-16d79d368ccd@lio96.de>
- <20250711164410.GDaHE_Wrs5lCnxegVz@fat_crate.local>
- <bd209368-4098-df9b-e80d-8dd3521a83ba@lio96.de>
- <20250711174157.GFaHFM5VNp1OynrF7E@fat_crate.local>
- <1a655339-cf7d-d711-f8a9-a5a689422be5@lio96.de>
- <20250711181517.GHaHFUtblXgUqlf-ym@fat_crate.local>
+	s=arc-20240116; t=1752267456; c=relaxed/simple;
+	bh=7oeksbsqlBDbsMLdrS0Ae+ePAmrEawcDiCXcwACxhMo=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=ruFAvmE7mYETo8cM01pq3Xj8c+1GPQyIFb30I/VgVhcG0NicLWJBiaxRFzFKYU1MXJZhVVvwS2JuOpDiuMviRippt1tm68xQ0/M/eH1gLKTQ++KUQr1kGvxqD9XpyIr86f+wVY1J84qogZ8uJ7P4WsMdVNpIUlt7926FWJkmlyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=H8FGOcZT; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1006)
+	id B09CB2054690; Fri, 11 Jul 2025 13:57:34 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B09CB2054690
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1752267454;
+	bh=YK2hlHCdDL9aIF8iZPjno6SLfHSItOAg/HMmpGq7cI4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H8FGOcZTmEHW9KxdvYWdoPW3ZPC7yk2wPyvCcf2NB9TifwHY4URnXuZnoNHrR4cUY
+	 Stt2BkIIRrnJUWkJE+kgpk904FGKUGGKhE8I4MTWVUg40p94Wu+YxtihQAxw0ydc6b
+	 8b8ChiKH9SiMJhrhlwxC/q2Wo3F4PjQDN/chCkL0=
+From: Haiyang Zhang <haiyangz@linux.microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: haiyangz@microsoft.com,
+	kys@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	stephen@networkplumber.org,
+	davem@davemloft.net,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] hv_netvsc: Switch VF namespace in netvsc_open instead
+Date: Fri, 11 Jul 2025 13:57:10 -0700
+Message-Id: <1752267430-28487-1-git-send-email-haiyangz@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250711181517.GHaHFUtblXgUqlf-ym@fat_crate.local>
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
-Date: Fri, 11 Jul 2025 17:40:18 +0200
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-In order to simplify backports, I resorted to an older version of the
-microcode revision checking which didn't pull in the whole struct
-x86_cpu_id matching machinery.
+The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
+received on netvsc NIC. During deletion of the namespace,
+default_device_exit_batch() >> default_device_exit_net() is called. When
+netvsc NIC is moved back and registered to the default namespace, it
+automatically brings VF NIC back to the default namespace. This will cause
+the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
+the list end, and hit NULL ptr:
 
-My simpler method, however, forgot to add the extended CPU model to the
-patch revision, which lead to mismatches when determining whether TSA
-mitigation support is present.
+[  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
+[  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
+[  231.450246] #PF: supervisor read access in kernel mode
+[  231.450579] #PF: error_code(0x0000) - not-present page
+[  231.450916] PGD 17b8a8067 P4D 0 
+[  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
+[  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY 
+[  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
+[  231.452692] Workqueue: netns cleanup_net
+[  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
+[  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
+[  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
+[  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
+[  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
+[  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
+[  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
+[  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
+[  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
+[  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
+[  231.458434] Call Trace:
+[  231.458600]  <TASK>
+[  231.458777]  ops_undo_list+0x100/0x220
+[  231.459015]  cleanup_net+0x1b8/0x300
+[  231.459285]  process_one_work+0x184/0x340
 
-So add that forgotten extended model.
+To fix it, move the VF namespace switching code from the NETDEV_REGISTER
+event handler to netvsc_open().
 
-Also, fix a backport mismerge which put tsa_init() where it doesn't
-belong.
 
-This is a stable-only fix and the preference is to do it this way
-because it is a lot simpler. Also, the Fixes: tag below points to the
-respective stable patch.
-
-Fixes: 90293047df18 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
-Reported-by: Thomas Voegtle <tv@lio96.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Thomas Voegtle <tv@lio96.de>
-Message-ID: <04ea0a8e-edb0-c59e-ce21-5f3d5d167af3@lio96.de>
+Cc: stable@vger.kernel.org
+Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
+Reported-by: Cathy Avery <cavery@redhat.com>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
 ---
- arch/x86/kernel/cpu/amd.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/hyperv/netvsc_drv.c | 43 ++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 30 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index d409ba7fba85..04ac18ff022f 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -590,6 +590,7 @@ static bool amd_check_tsa_microcode(void)
- 
- 	p.ext_fam	= c->x86 - 0xf;
- 	p.model		= c->x86_model;
-+	p.ext_model	= c->x86_model >> 4;
- 	p.stepping	= c->x86_stepping;
- 
- 	if (c->x86 == 0x19) {
-@@ -704,6 +705,8 @@ static void bsp_init_amd(struct cpuinfo_x86 *c)
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index 42d98e99566e..074ecc346108 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -135,6 +135,19 @@ static int netvsc_open(struct net_device *net)
  	}
  
- 	resctrl_cpu_detect(c);
+ 	if (vf_netdev) {
++		if (!net_eq(dev_net(net), dev_net(vf_netdev))) {
++			ret = dev_change_net_namespace(vf_netdev, dev_net(net),
++						       "eth%d");
++			if (ret)
++				netdev_err(vf_netdev,
++					   "Cannot move to same ns as %s: %d\n",
++					   net->name, ret);
++			else
++				netdev_info(vf_netdev,
++					    "Moved VF to namespace with: %s\n",
++					    net->name);
++		}
 +
-+	tsa_init(c);
- }
+ 		/* Setting synthetic device up transparently sets
+ 		 * slave as up. If open fails, then slave will be
+ 		 * still be offline (and not used).
+@@ -2772,31 +2785,6 @@ static struct  hv_driver netvsc_drv = {
+ 	},
+ };
  
- static void early_detect_mem_encrypt(struct cpuinfo_x86 *c)
-@@ -743,8 +746,6 @@ static void early_detect_mem_encrypt(struct cpuinfo_x86 *c)
- 			goto clear_sev;
- 
- 
--	tsa_init(c);
+-/* Set VF's namespace same as the synthetic NIC */
+-static void netvsc_event_set_vf_ns(struct net_device *ndev)
+-{
+-	struct net_device_context *ndev_ctx = netdev_priv(ndev);
+-	struct net_device *vf_netdev;
+-	int ret;
 -
- 		return;
+-	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
+-	if (!vf_netdev)
+-		return;
+-
+-	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
+-		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
+-					       "eth%d");
+-		if (ret)
+-			netdev_err(vf_netdev,
+-				   "Cannot move to same namespace as %s: %d\n",
+-				   ndev->name, ret);
+-		else
+-			netdev_info(vf_netdev,
+-				    "Moved VF to namespace with: %s\n",
+-				    ndev->name);
+-	}
+-}
+-
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2809,11 +2797,6 @@ static int netvsc_netdev_event(struct notifier_block *this,
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
+ 	int ret = 0;
  
- clear_all:
+-	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
+-		netvsc_event_set_vf_ns(event_dev);
+-		return NOTIFY_DONE;
+-	}
+-
+ 	ret = check_dev_is_matching_vf(event_dev);
+ 	if (ret != 0)
+ 		return NOTIFY_DONE;
 -- 
-2.43.0
+2.34.1
 
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
