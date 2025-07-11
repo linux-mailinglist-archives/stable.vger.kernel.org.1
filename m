@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-161645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59617B01B5F
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 14:02:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEAADB01B60
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 14:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08817545E10
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 12:01:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FB515A28BC
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 12:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB8928E5F3;
-	Fri, 11 Jul 2025 12:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F1F295DB3;
+	Fri, 11 Jul 2025 12:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="aUaSRnYI"
+	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="XUTDNfBh"
 X-Original-To: stable@vger.kernel.org
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013018.outbound.protection.outlook.com [40.107.159.18])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011049.outbound.protection.outlook.com [52.101.70.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A2A28E594;
-	Fri, 11 Jul 2025 12:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C4E28B7DA;
+	Fri, 11 Jul 2025 12:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752235310; cv=fail; b=BAkIhKAuUPP6yZiMa9PCkmSTUdHzjbVSTpufcUJBom1z/vxOCiKKhWcVeKi10Mlyy1/4EbxTlE5Had/myKJmarjVVxacurp9QmAy2PewxghTfNxLW4U9UNYzfAaJYwDCw8GnaQaTlero9eqfsou/KqZ/3xZhnCuMstzsrUASmEU=
+	t=1752235314; cv=fail; b=FPZMaqpKOomVBBc/6/S9+ts6AZ2Be9dz2KSXQle9wrd1OjNO6OE02tZyH5+jczF8kPNLVXLQ/8NSzCtLn4T/O3qrhExgxVYCccgKlhWOwzKm1Zo97uJtNTBOArmJpMquP4Y85X4mM3tBWV075Dr2smAed6tbI80hdWyXfoRJXT0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752235310; c=relaxed/simple;
-	bh=OBXjXet0pk45ayYnaEOv+b31hMSw0kD6NoUVt3P325I=;
+	s=arc-20240116; t=1752235314; c=relaxed/simple;
+	bh=pnqvu0IrAkdV+gmWR0LZSkRQQT4YKe9W5OS2jXVWjic=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YkT/F6gs0k56nNSvEu7FDfTfII4po+bjM5M+xkzzLqItKDPHuuwfP3WnmeDBKUkmNDEnqP01hr+FFVBH78cdzNKUA002LlK9yrv2YFiD8vKm9ufPY4nqNC1IxAolNfq30RhW5jyjnCoTxN2yCrG5qEhrzmXOOUcNrIMpjwTsk9w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=aUaSRnYI; arc=fail smtp.client-ip=40.107.159.18
+	 MIME-Version:Content-Type; b=Q7gD+4x4ujgd0UIq9mlv9iemGtNTxislqNjQxzfRYdO9yCrZQCgeOaG/p6+fBp5sEdGoCRdYu7vWHecGFUtw9gP8VJzLQah71S/ItT2RsHkX5E0Hh/KKxg935On5s2xPsErC1MRCDc9Y+ve8mx1kCtzz/o7aKU3puQWRoDdRQog=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=XUTDNfBh; arc=fail smtp.client-ip=52.101.70.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BAw0AZ+llqaz+hcvke8PxKrOYq/Y8suEOscPTAIZvCwxrjuXlBx1v3FDfRDBX94uD9IKcazz7pnS4T++o9OGkDLVl8ztDORBylUTSfzgYZB10u1ZMjBo9VmjfamshDJQFSlutJ0QfIziW29yLh89Hm/dbCFRtUI7tIYAvG/Dke+nplgdU3yt9x/PKdRNsCNuwny5Y/q0aXTOsbzw81h5g785JipUXmsiKcoWwIRwIwe5300Mp80m0d9pHolYcD3fPCWWO0whRWnTNxcYjtP8z3Ehu8O9CRpHyRVT9BSdRMMP2RhLVMCZbA4mzIueNMowQRUWS2U8AVwWRJYFp3206A==
+ b=pQThHdpofwtDsXZs+MsQ58jbtkYUuaB+6wfZA3DLxnIjOn4Eu67AjIqsZinKBMAcoy1/ZbSkzs/MIh0GyYvwH3LQsMpX3AZr2wz5TzgWL4QGboPDopxJdC5gKUhCHlRbgs/lpaBSkE0D92ZZUyfNXihpYpLHHwYuR9/8gkh1bK234q79a6R0UrBdAM3oWsj95ncT3fLiwiGUuUmW7QlMxl8BXttr3KWENOl9JF/b5eTK8qxMNPTw4Guclu9PxPer60+w5CXPw6EuuqqB97Twd36vVupYzc0triEEOzxEuWk5YQyxqXLiZF3KOufzA3hcRXGAhv6HTF8S71Vu6zhXAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VrJ+nPgqSQzLzJMZ8lQd1TWE3VQTpIhJGub411SIjQo=;
- b=PbUFvc50aXAy0aR7pMAmyjSSzwRt79E2/3uaEChKaN5MC46J/NFb70qR07Kbw96N++uOdzpiyXjy+suaKO3xUYaqNBoUhr1owlchJoKBt4D+Ob3Z5k2rOEkB4+wXvkd6asrRKcm9SxdNrgSv4yfjKr3E4JDqE/J2tAe/TuvoSnHe/8Slzq+mJNDm65pvZgBWqx+OtUoSBk1uXzd5dW3VIThuMvHKUuT0hIWU7xpTPr7G+eHj2/eAbrk0ocW9LVuVp0ZfMvyfdWlG7ItEDOagP7qK4HjdPfV3/PgRbMBkoECY+NzMwIJEd216xbji8Xs0f6D9lu+YSryGSn+luXrkhQ==
+ bh=+McHn7DalzcIgymFaZSpYE2KY4wWUGqal/hKL4lE/Vk=;
+ b=nlzATvy/6qUbU4Ibx5DsoSzJIKp4HIgmXGuaQpU6z76R13OK+eEzONbtzT7+EMXUWQAR5Sh3Q6DGfKqMPbyiBmuNBJuGXt/ipvUL7tiBozJfccxnf/45Qi6CM3oOIS4OpeAv7MoRMnGV6TpXzScKTAEciC3c5Ax6XqgTGXas//k0c13wjY1UcLwlRWn7Aiz3UzJ3LKGMRWJvJDhwADbycZombKlpQ8EBBmG/nm3PlCzbrIrciEdJWjA5BrW/J8EGRT3JsoP5q23HDg1LcwdBRr9t2gaJXsrkxT+YJYLYoflnJVgjGzhmpAJKriGJfyid87IwTU4fSdOVr2IMt3w/dw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
  217.111.95.7) smtp.rcpttodomain=kernel.org smtp.mailfrom=arri.de; dmarc=fail
  (p=none sp=none pct=100) action=none header.from=arri.de; dkim=none (message
  not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VrJ+nPgqSQzLzJMZ8lQd1TWE3VQTpIhJGub411SIjQo=;
- b=aUaSRnYIGmzGuAJnbOKRflScVCSt0YiWthAoVPhlOwF151y1OVvWep0yTZ8CdGGklXJ5CyEbTMR12qHsfRdyXuGXDKQpTpPH1bgSTQGBavF3K3mewW6KZPjEPpL93Li55K5WtIj+L5aAdclTyhBnfvXCZTT6qG3wTfZa2OjQ7js=
-Received: from DB8P191CA0016.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:130::26)
- by GV1PR03MB10727.eurprd03.prod.outlook.com (2603:10a6:150:210::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.24; Fri, 11 Jul
- 2025 12:01:40 +0000
-Received: from DB3PEPF0000885A.eurprd02.prod.outlook.com
- (2603:10a6:10:130:cafe::98) by DB8P191CA0016.outlook.office365.com
- (2603:10a6:10:130::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.23 via Frontend Transport; Fri,
- 11 Jul 2025 12:01:40 +0000
+ bh=+McHn7DalzcIgymFaZSpYE2KY4wWUGqal/hKL4lE/Vk=;
+ b=XUTDNfBhnSDtsDBP2GWoF4wJSOJGJa5j9QzEJLLn0GqU0iuARVhtd1014fJxzLoNurhtYkXv7FOHH5zlQc8Kd4qDsuIVX94QE9dPPlcrunq/Ht6aUc3LC67p2e9xrxapAHKLBlnmtnNjUpexzO6hQ3AolaMmN+8ZCqTck/el6tQ=
+Received: from DUZPR01CA0035.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:468::13) by DB3PR0302MB9205.eurprd03.prod.outlook.com
+ (2603:10a6:10:429::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Fri, 11 Jul
+ 2025 12:01:48 +0000
+Received: from DB3PEPF0000885E.eurprd02.prod.outlook.com
+ (2603:10a6:10:468:cafe::95) by DUZPR01CA0035.outlook.office365.com
+ (2603:10a6:10:468::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.26 via Frontend Transport; Fri,
+ 11 Jul 2025 12:02:09 +0000
 X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
  smtp.mailfrom=arri.de; dkim=none (message not signed)
  header.d=none;dmarc=fail action=none header.from=arri.de;
@@ -63,13 +63,13 @@ Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
  designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
  client-ip=217.111.95.7; helo=mta.arri.de;
 Received: from mta.arri.de (217.111.95.7) by
- DB3PEPF0000885A.mail.protection.outlook.com (10.167.242.5) with Microsoft
+ DB3PEPF0000885E.mail.protection.outlook.com (10.167.242.9) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8922.22 via Frontend Transport; Fri, 11 Jul 2025 12:01:39 +0000
+ 15.20.8922.22 via Frontend Transport; Fri, 11 Jul 2025 12:01:48 +0000
 Received: from N9W6SW14.arri.de (192.168.54.39) by mta.arri.de (10.10.18.5)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.38; Fri, 11 Jul
- 2025 14:01:38 +0200
+ 2025 14:01:47 +0200
 From: Christian Eggers <ceggers@arri.de>
 To: Srinivas Kandagatla <srini@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>, Dmitry Baryshkov <lumag@kernel.org>,
@@ -79,9 +79,9 @@ CC: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
  Levin" <sashal@kernel.org>, <imx@lists.linux.dev>,
 	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
 	Christian Eggers <ceggers@arri.de>, <stable@vger.kernel.org>
-Subject: [PATCH 1/2] nvmem: imx: assign nvmem_cell_info::raw_len
-Date: Fri, 11 Jul 2025 13:55:47 +0200
-Message-ID: <20250711120110.12885-2-ceggers@arri.de>
+Subject: [PATCH 2/2] nvmem: imx: Swap only the first 6 bytes of the MAC address
+Date: Fri, 11 Jul 2025 13:55:48 +0200
+Message-ID: <20250711120110.12885-3-ceggers@arri.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250711120110.12885-1-ceggers@arri.de>
 References: <20250711120110.12885-1-ceggers@arri.de>
@@ -95,96 +95,118 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB3PEPF0000885A:EE_|GV1PR03MB10727:EE_
-X-MS-Office365-Filtering-Correlation-Id: 289fdbd2-c1e9-43a4-45ac-08ddc072b1ad
+X-MS-TrafficTypeDiagnostic: DB3PEPF0000885E:EE_|DB3PR0302MB9205:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f2b530f-8218-4ede-9fbb-08ddc072b6d3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700013|82310400026|1800799024;
+	BCL:0;ARA:13230040|376014|1800799024|7416014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ppA/u/88Da5jpXyrMAksQEMx9zY1C6Lrn6hElksX4sFonvrEgQg201Mx24up?=
- =?us-ascii?Q?aujZCroh7Jc9xy7y5Cxbop4j7xf0Xpm1XRqaKRJmX5wx7Eu5YBIFTVB7ZHvS?=
- =?us-ascii?Q?4TwSxDInvNdz2EcsNDbj9XLL6AIku5m4biygR+P7pleiz6dNtOxCVOUHLty6?=
- =?us-ascii?Q?/yemQ7MqrSZ3upGImkSblCTCDwkKU9+1l5kVt3DILIU5axqbg4qB5XsQfoA0?=
- =?us-ascii?Q?EIwZ6robuLH9Mgu/j/kawsrdufS6RVam1jZoftq24zzTxyzsNB3K61VVAKfv?=
- =?us-ascii?Q?U8Y8N/5u3w+pugV5G6Y/wdeXBsj6vyf1xl2wKgiwSUtd8O1p3jqdPfjjhK46?=
- =?us-ascii?Q?nKgICgtVBK2Ww5uJBz94Ucku9GefC6pnlzBq5B5XuSU+4j6JcgnHjh/RIK93?=
- =?us-ascii?Q?7A4gk8WudViO1DQ5MXH2HviK5Idc+SF3PEtLU1g/RawMJb6d8viNN/0vHO2g?=
- =?us-ascii?Q?FmEOvY2//cPWZ3OYZVEMHGpLcMmLc5qGlU88d6WqApzzKX0LedMkH9omCW6Z?=
- =?us-ascii?Q?nnzOln5EIGeDlg9QfX9AOlpQe59nl5sqh0GqVMP6ZK3kmW5BJe75Tl/oquMc?=
- =?us-ascii?Q?F4Iu9HHOzaHyo7anUO0kOYOC8SViVkenTefxVHoj8yDNuY9SmmrqqWohYBLh?=
- =?us-ascii?Q?vzdmoGWSrG1vTitzGm84gM0cTrrgXv+478NcDAidzQxv8DkjDioGv8N7+TCa?=
- =?us-ascii?Q?ZdbaaTHz35raE/FZvn0DLcE/8KdTayGGm9ngRKSWgSYJjCr/1PEYlea2p45d?=
- =?us-ascii?Q?yeUDo+0uZYvAjJ1kJLojrQw372+fSemlhwmPcfHQRKjYT/S4Rjwa4Pwv0X2o?=
- =?us-ascii?Q?OqX5IB4ncg35h5qoNMDd10OVT/HSAC5o/R+HRVKGN9mTRiRFOGaAcoUNDVQB?=
- =?us-ascii?Q?JqRtdAMFZALB8apqkn0ngK1CABP/qb9JH5R0pZNEW2dKPuzCjqQXh5LiqAFv?=
- =?us-ascii?Q?27KQbQCOkNbGUB4RtwmUc59KQfQzlwOuRoLZjeCyeY4RFRmL9NG4Oio6BMdt?=
- =?us-ascii?Q?6X+PSMMaoxUXUdQ53qYAptqvPNOJUvkwx/Mq2gCKN+AXzb3rbxQKDgAbZgYU?=
- =?us-ascii?Q?OyPtiLLPXD3ddHVEd8R15n6Dd0FiLeVRD0ccHXO28EIuUWhz+ktOXmJyDrTH?=
- =?us-ascii?Q?rnCMinpS0AwYmNAmLQqraowGxM7pNYerlu4TP5aMnofn4ditiS47MI47dvyv?=
- =?us-ascii?Q?AmvwfDSy/JfFTu9102mEbVVRrAtxEy3omaBkqsWLE8RGtMW+mzwlutmStCar?=
- =?us-ascii?Q?TJBtDDcT2Z5cgAUqjTlnhnNu28Yqu7tj66xIJAuHr66l8MsXv7sa65a6W58F?=
- =?us-ascii?Q?3SSh+9upkdBpbu4d0SYtENEkcphjl4y48Y5lnLHUg4JIifCmmEE9cF0vzmWO?=
- =?us-ascii?Q?e6bzWwboI3fkglRGqa+PsQoF4e+49HUkSxdknFUS/71NmUACYdcvKXD1EbsK?=
- =?us-ascii?Q?4qx16+mCBxGhalJH511b79ppJZXrrT1v1arUEhLmqdGlJDgk+NzhZ6I6AzlJ?=
- =?us-ascii?Q?uuGTdELFZEufLkIzV0YP0DCADuqTkgJ/1vcv?=
+	=?us-ascii?Q?UoSWV1gOseHX7y6xKQr+fh605K1pMtmd7w4uBcCiNbwx07idvarmXAodQjAp?=
+ =?us-ascii?Q?qiCTmY6MwRx+rT5RyiQhaIP0oeH1DMqZjms/4numrrFl97Y81KWRaPMH50vR?=
+ =?us-ascii?Q?hzwABq8XPxGbKQzvMeZebkG+k9Du/8wrMNdRiL0kYVbQnUJAY9MKwHe5Azxl?=
+ =?us-ascii?Q?xB8q7/UxrbPojqetQoc/QfBo5fEBh4s3NqMtEjCxk9cPOnfTWmDzhU4zSC4H?=
+ =?us-ascii?Q?jx9bya0eglQDh/B30R/buDygqok9/6Loey8tGAsZNTXrjIUgVlDFjcMMtC5D?=
+ =?us-ascii?Q?HOKLIG3bOkunZTuvyx+dIfWafp8vlrVVHpp/0b/cWCBQGz9N3Hykoes8p3kb?=
+ =?us-ascii?Q?2vU6aRwZeKY0e79zgqO4Fl1oe709x8jR+GSEg9MHQYP9WumJFvoP7haxwau6?=
+ =?us-ascii?Q?ReXvIq8earlLuMt/4rxyiiV/pZVi8yy2Hn2HGKqDjxiMIgzKaCw2iEfvlt4v?=
+ =?us-ascii?Q?wGjA7QbNskZyii7WynZUFMtaKdRNTk7rF6jNSDHdpT9GVpWbQ0c4YndHCvZG?=
+ =?us-ascii?Q?9fXlRfXyGvIeShtwNR06P4ymlsd/ldvv4/ck838XvWAR8trdlVy+ONLlnvlk?=
+ =?us-ascii?Q?t1bItFQ53Za86ImFs79SEXE+VSp+C6V96/UxIesmIjajfk7MPTgwVRKbF1dI?=
+ =?us-ascii?Q?TwaR27/chqqbuxV739Rh9bJAlMxFE/WppyRrTjL63MRzB1NT2fo21mEQZc07?=
+ =?us-ascii?Q?IZq6HmI8vgFxUNbpqzVd30zbp66nrdhmG91uXQ3qAnQCd8ClJH/YKFVYzOEi?=
+ =?us-ascii?Q?mrNUKINnPKtBO9EnWjpU8vXtYFoybB9OQCctBv/vAT/Wrjf7yWUw65en9QYy?=
+ =?us-ascii?Q?zTwl1/jTo8y1tnxPYndX/AWt1ERB2bkUn7LQXfpRzP2OVEDAXwZLKTbi6Nlv?=
+ =?us-ascii?Q?3f36WMdtN/0/PNRK5QhwR1OBf+MhzWO2qKEfsS/H0q8FZl6RadSdFGXyXAFn?=
+ =?us-ascii?Q?b34t+XufsVeHLWCmvr44GTg3ldA87wHQKU7S9KxtB7u8m20M2kWURUOkatXP?=
+ =?us-ascii?Q?iwsNrYUXqrcSlxUA4ncRJwpHTngw6uBly49fx9LTV9XjdRRtjOudRVe2AHVA?=
+ =?us-ascii?Q?Ug+RdVsyW6GEuVVA4eA38HEAmpOgmh2qg+ngz0CRBoNOM/SplFyQ+tK+EQym?=
+ =?us-ascii?Q?aK0wUFkt/0D09ofpPSybuvIrmeXwiIuGzb//WUrTDccm+MnUs07vpFkFzru9?=
+ =?us-ascii?Q?Wci8Ny2hKaX787tVYTr3Y/Y6ISFgQD7PI1xrVK6bPzAGVfTGDgdF0HHmWgqe?=
+ =?us-ascii?Q?1uRUOZPrxzS++uVe1zj0wZc+jnLy/Py3mWH2x40ikStqBAzjlkwqX5DP7EoA?=
+ =?us-ascii?Q?ZncmM5WUzD3CMflui0wpjxw7pLaWxV1Huql3pZqGSH1AUVbC/iKKn8jSF3eP?=
+ =?us-ascii?Q?SVzBi+cTgPmKE/xGW2HNTNOU0QwX0v1TrXmqcQ9tD8kb7aNFnzHqCQNGXf3t?=
+ =?us-ascii?Q?nLEssVX7uX+RRBhf+MW1hZf78vbSwlbgSCiAWbN1ef18luxt4f0lUA49b/vS?=
+ =?us-ascii?Q?+POBTaaN0UHfbU6VIZkyeugsX1oHoJPKcwJu?=
 X-Forefront-Antispam-Report:
-	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
+	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: arri.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2025 12:01:39.4662
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2025 12:01:48.1855
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 289fdbd2-c1e9-43a4-45ac-08ddc072b1ad
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f2b530f-8218-4ede-9fbb-08ddc072b6d3
 X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DB3PEPF0000885A.eurprd02.prod.outlook.com
+	DB3PEPF0000885E.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR03MB10727
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0302MB9205
 
-Avoid getting error messages at startup like the following on i.MX6ULL:
+Since commit 55d4980ce55b ("nvmem: core: support specifying both: cell
+raw data & post read lengths"), the aligned length (e.g. '8' instead of
+'6') is passed to the read_post_process callback. This causes that the 2
+bytes following the MAC address in the ocotp are swapped to the
+beginning of the address. As a result, an invalid MAC address is
+returned and to make it even worse, this address can be equal on boards
+with the same OUI vendor prefix.
 
-nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
-nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
-
-This shouldn't cause any functional change as this alignment would
-otherwise be done in nvmem_cell_info_to_nvmem_cell_entry_nodup().
-
-Fixes: 4327479e559c ("nvmem: core: verify cell's raw_len")
+Fixes: 55d4980ce55b ("nvmem: core: support specifying both: cell raw data & post read lengths")
 Signed-off-by: Christian Eggers <ceggers@arri.de>
 Cc: stable@vger.kernel.org
 ---
-Tested on i.MX6ULL, but I assume that this is also required for 
+Tested on i.MX6ULL, but I assume that this is also required for.
 imx-ocotp-ele.c (i.MX93).
 
- drivers/nvmem/imx-ocotp-ele.c | 1 +
- drivers/nvmem/imx-ocotp.c     | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/nvmem/imx-ocotp-ele.c | 5 +++--
+ drivers/nvmem/imx-ocotp.c     | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-index ca6dd71d8a2e..83617665c8d7 100644
+index 83617665c8d7..07830785ebf1 100644
 --- a/drivers/nvmem/imx-ocotp-ele.c
 +++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -128,6 +128,7 @@ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
- static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
- 					 struct nvmem_cell_info *cell)
- {
-+	cell->raw_len = round_up(cell->bytes, 4);
- 	cell->read_post_process = imx_ocotp_cell_pp;
- }
+@@ -6,6 +6,7 @@
+  */
  
+ #include <linux/device.h>
++#include <linux/if_ether.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+ #include <linux/nvmem-provider.h>
+@@ -119,8 +120,8 @@ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
+ 
+ 	/* Deal with some post processing of nvmem cell data */
+ 	if (id && !strcmp(id, "mac-address"))
+-		for (i = 0; i < bytes / 2; i++)
+-			swap(buf[i], buf[bytes - i - 1]);
++		for (i = 0; i < ETH_ALEN / 2; i++)
++			swap(buf[i], buf[ETH_ALEN - i - 1]);
+ 
+ 	return 0;
+ }
 diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-index 79dd4fda0329..22cc77908018 100644
+index 22cc77908018..4dd3b0f94de2 100644
 --- a/drivers/nvmem/imx-ocotp.c
 +++ b/drivers/nvmem/imx-ocotp.c
-@@ -586,6 +586,7 @@ MODULE_DEVICE_TABLE(of, imx_ocotp_dt_ids);
- static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
- 					 struct nvmem_cell_info *cell)
- {
-+	cell->raw_len = round_up(cell->bytes, 4);
- 	cell->read_post_process = imx_ocotp_cell_pp;
- }
+@@ -16,6 +16,7 @@
  
+ #include <linux/clk.h>
+ #include <linux/device.h>
++#include <linux/if_ether.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+ #include <linux/nvmem-provider.h>
+@@ -228,8 +229,8 @@ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
+ 
+ 	/* Deal with some post processing of nvmem cell data */
+ 	if (id && !strcmp(id, "mac-address"))
+-		for (i = 0; i < bytes / 2; i++)
+-			swap(buf[i], buf[bytes - i - 1]);
++		for (i = 0; i < ETH_ALEN / 2; i++)
++			swap(buf[i], buf[ETH_ALEN - i - 1]);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
