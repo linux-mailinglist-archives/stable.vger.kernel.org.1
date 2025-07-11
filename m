@@ -1,110 +1,155 @@
-Return-Path: <stable+bounces-161638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DCFB01717
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 11:02:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFAC1B01773
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 11:17:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA386170E64
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 09:02:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FCE53B2F39
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 09:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA271FE45B;
-	Fri, 11 Jul 2025 09:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D3227A139;
+	Fri, 11 Jul 2025 09:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DRsLp5s6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RBeqeZPu"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227BD20D500
-	for <stable@vger.kernel.org>; Fri, 11 Jul 2025 09:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981A5279DC4;
+	Fri, 11 Jul 2025 09:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752224533; cv=none; b=gGxPL/R93DYvRHPGvHT43+dp8bu2bpcKF5uqK5vpk3Kl3HquPtUfjy/gObSVnHIM8xkCWh8EbXm54f3KlC/YYQH0HkTIVROccMtpfz4c8ppkAKKWZxfo2RfyI8VV56VyYj9zAJdq9WZ2VpJQyOSbdyB5Q+PNW04JffzOrZ5P52M=
+	t=1752225439; cv=none; b=PHz/gxi3dmTd/nz2rBO+3+SrcKMaRVNHUA6IUCCUPpExNxl2uylQLzOAqX4lxtauTqFjpy93/2c2eS52SjCNsANVMfeEhfjwkiBrgiYxu4I1+d9U2EjTDOQA70PR9Xl99CahPcGAZId6gw4R0KXU3gVnbtJT6jGnKFCfYU6fW0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752224533; c=relaxed/simple;
-	bh=cto3EzGQZzW73ugCld0nMZaHD1j8pd8ICo4AwYB7fdA=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=gPka2UedsjufYnoeFuAHHtgrqiYnayfcwA2f8tkjfbHwO68cK6iV1/al+ZXNTuGA/PUVS9HdsRpIjUHnM3JAmHzZeATiGopASi7UAQT6yP7jpC43eiiCcqSJbx/aLD7ebmlWHc9kv9r26wPVPt4cyoAk6HeXxFv7VQYFWtbM3nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DRsLp5s6; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752224529;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o1jZHyMv/IfsPFuzxj8R0DksAkT3xvNU/ruvopmewh4=;
-	b=DRsLp5s6Vwpdqtn9rwBKAPlXegf3eyGxCiUH4Ajr52/nfZ/nRy2fvT+RVsFID+SqZSghcM
-	YIVFCh38FLD01rvJiWpjrHegAzKo2L59z1vSOHVRVTgrTWatjkvc9lyUq8f9yWsdwlvB5m
-	jYDbm/vgBwEuz0ThccTOdSDwcolDhhk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-rivJtzP0M4KrE81clFfU_Q-1; Fri,
- 11 Jul 2025 05:02:04 -0400
-X-MC-Unique: rivJtzP0M4KrE81clFfU_Q-1
-X-Mimecast-MFC-AGG-ID: rivJtzP0M4KrE81clFfU_Q_1752224521
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A262819560A5;
-	Fri, 11 Jul 2025 09:02:01 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.2])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E349030001A1;
-	Fri, 11 Jul 2025 09:01:59 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250710165040.3525304-1-henrique.carvalho@suse.com>
-References: <20250710165040.3525304-1-henrique.carvalho@suse.com>
-To: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: dhowells@redhat.com, stable@vger.kernel.org, smfrench@gmail.com,
-    linux-cifs@vger.kernel.org, Laura Kerner <laura.kerner@ichaus.de>
-Subject: Re: [PATCH 6.6.y] smb: client: support kvec iterators in async read path
+	s=arc-20240116; t=1752225439; c=relaxed/simple;
+	bh=qas8Ip1ScJCoaTrX3R4wMho9GVn9YvhmfmZhGegY6y8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VXi0+t0ptEtvOMiKBfjuI7UIN0LgHl8/EfPQJHuKtIpGrMNUnY92KgnpA/2tHzWBSK8/8SuV20So72F15sAY6G2F9B38hQexevUZZzGsa17eTxLmkU2QmRMwZj6D/bk3L8kR8EyxJCOWTtkuar0DfwmBRWyOF4G8MsU+PSIOkMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RBeqeZPu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260B9C4CEF7;
+	Fri, 11 Jul 2025 09:17:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752225439;
+	bh=qas8Ip1ScJCoaTrX3R4wMho9GVn9YvhmfmZhGegY6y8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RBeqeZPubBEdYJaX01TuP9sfqskbf+24alKEgQHHlfwzpXDPYH13GdNG/9daVpzut
+	 6Z5c2CA24FoSfG5QtMzrmInM/3UgQHltjIQofwKJLoL0WhpwCkeR8CJnZO1yyYQws5
+	 +oJl7GQh3HUHoSQ0zJGWT7w4WOrermHqrI5Zr5G2f27mMA+ppzoa+3wWk5/YDeghHn
+	 dINzVt9dPXfhnk6xLqzpogDAo0Bw64EWPP5eEYvhpR5m3xGXi6pMb0gfQAC283rrSE
+	 E5/Zhd3bEpqqHJcYqP/9Th4FxvHVM5NYK6dQChViW32ROjpNY1WZH7d0da/oz60kJn
+	 I6MFV0pLFJdLQ==
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-61208b86da2so545397eaf.2;
+        Fri, 11 Jul 2025 02:17:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWaE3szyoHeclGyJ2Rc+etOYTa3LbrJhhdmyESQES+cWSANefbteqJZfTZOfeDh94f3CMYsStl0WhdUwqs=@vger.kernel.org, AJvYcCX6Ntb+wyEPwbYLKongjCGMje6z1xLtUQAEqi/MD1883NxEwK1NUN22h682r1yRHp+WykOUKoB2@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5U/r8ItiVCLiefdyvRZ56vNy62hfc9GF6Yi/60g3bF61FVvWB
+	xrnxaktX+iN3OZwyQ6CGGbrvmqVKOeJwpjLH2nB68ukDNHO/EgTMEo/4zh4SIWYpjxRoZlBA6wS
+	50B0gqdVGRY5OPrtIHIFVihtc2a16Nws=
+X-Google-Smtp-Source: AGHT+IG6Qc9Tz0KlmO4rhSB8sfe+y9NNQJCUb5S/z18RnmWf3Q0RSYE1jwDtNZ5pI/UhwhySpomDx6CThnX6pLkfGbk=
+X-Received: by 2002:a05:6820:310b:b0:613:87ee:10e with SMTP id
+ 006d021491bc7-613e5fa3322mr1415729eaf.5.1752225438314; Fri, 11 Jul 2025
+ 02:17:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2944135.1752224518.1@warthog.procyon.org.uk>
-Date: Fri, 11 Jul 2025 10:01:58 +0100
-Message-ID: <2944136.1752224518@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <20250710170225.961303-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20250710170225.961303-1-andriy.shevchenko@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 11 Jul 2025 11:17:07 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0inCyNEJW-B0zppJv74t07paX3aG-OX=x20sqY3A3A26A@mail.gmail.com>
+X-Gm-Features: Ac12FXxJy6F_7MoFjlhCsfzlsxOZ-2x76mgQjKJRIw6ts1IJAgYTKbEvzipZaEM
+Message-ID: <CAJZ5v0inCyNEJW-B0zppJv74t07paX3aG-OX=x20sqY3A3A26A@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] Documentation: ACPI: Fix parent device references
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Yevhen Kondrashyn <e.kondrashyn@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Henrique Carvalho <henrique.carvalho@suse.com> wrote:
+On Thu, Jul 10, 2025 at 7:03=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> The _CRS resources in many cases want to have ResourceSource field
+> to be a type of ACPI String. This means that to compile properly
+> we need to enclosure the name path into double quotes. This will
+> in practice defer the interpretation to a run-time stage, However,
+> this may be interpreted differently on different OSes and ACPI
+> interpreter implementations. In particular ACPICA might not correctly
+> recognize the leading '^' (caret) character and will not resolve
+> the relative name path properly. On top of that, this piece may be
+> used in SSDTs which are loaded after the DSDT and on itself may also
+> not resolve relative name paths outside of their own scopes.
+> With this all said, fix documentation to use fully-qualified name
+> paths always to avoid any misinterpretations, which is proven to
+> work.
+>
+> Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
+> Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>
+> Rafael, I prefer, if no objections, to push this as v6.16-rc6 material si=
+nce
+> the reported issue was detected on old (v5.10.y) and still LTS kernel. Wo=
+uld be
+> nice for people to not trap to it in older kernels.
+>
+>  Documentation/firmware-guide/acpi/i2c-muxes.rst | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/Documentation/firmware-guide/acpi/i2c-muxes.rst b/Documentat=
+ion/firmware-guide/acpi/i2c-muxes.rst
+> index 3a8997ccd7c4..f366539acd79 100644
+> --- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
+> +++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
+> @@ -14,7 +14,7 @@ Consider this topology::
+>      |      |   | 0x70 |--CH01--> i2c client B (0x50)
+>      +------+   +------+
+>
+> -which corresponds to the following ASL::
+> +which corresponds to the following ASL (in the scope of \_SB)::
+>
+>      Device (SMB1)
+>      {
+> @@ -24,7 +24,7 @@ which corresponds to the following ASL::
+>              Name (_HID, ...)
+>              Name (_CRS, ResourceTemplate () {
+>                  I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
+> -                            AddressingMode7Bit, "^SMB1", 0x00,
+> +                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
+>                              ResourceConsumer,,)
+>              }
+>
+> @@ -37,7 +37,7 @@ which corresponds to the following ASL::
+>                      Name (_HID, ...)
+>                      Name (_CRS, ResourceTemplate () {
+>                          I2cSerialBus (0x50, ControllerInitiated, I2C_SPE=
+ED,
+> -                                    AddressingMode7Bit, "^CH00", 0x00,
+> +                                    AddressingMode7Bit, "\\_SB.SMB1.CH00=
+", 0x00,
+>                                      ResourceConsumer,,)
+>                      }
+>                  }
+> @@ -52,7 +52,7 @@ which corresponds to the following ASL::
+>                      Name (_HID, ...)
+>                      Name (_CRS, ResourceTemplate () {
+>                          I2cSerialBus (0x50, ControllerInitiated, I2C_SPE=
+ED,
+> -                                    AddressingMode7Bit, "^CH01", 0x00,
+> +                                    AddressingMode7Bit, "\\_SB.SMB1.CH01=
+", 0x00,
+>                                      ResourceConsumer,,)
+>                      }
+>                  }
+> --
 
-> Add cifs_limit_kvec_subset() and select the appropriate limiter in
-> cifs_send_async_read() to handle kvec iterators in async read path,
-> fixing the EIO bug when running executables in cifs shares mounted
-> with nolease.
-> 
-> This patch -- or equivalent patch, does not exist upstream, as the
-> upstream code has suffered considerable API changes. The affected path
-> is currently handled by netfs lib and located under netfs/direct_read.c.
-
-Are you saying that you do see this upstream too?
-
-> Reproducer:
-> 
-> $ mount.cifs //server/share /mnt -o nolease
-> $ cat - > /mnt/test.sh <<EOL
-> echo hallo
-> EOL
-> $ chmod +x /mnt/test.sh
-> $ /mnt/test.sh
-> bash: /mnt/test.sh: /bin/bash: Defekter Interpreter: Eingabe-/Ausgabefehler
-> $ rm -f /mnt/test.sh
-
-Is this what you are expecting to see when it works or when it fails?
-
-David
-
+Applied as 6.17 material, thanks!
 
