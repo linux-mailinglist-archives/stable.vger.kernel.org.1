@@ -1,155 +1,90 @@
-Return-Path: <stable+bounces-161639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAC1B01773
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 11:17:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86418B01833
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 11:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FCE53B2F39
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 09:17:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE79F168EF5
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 09:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D3227A139;
-	Fri, 11 Jul 2025 09:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27BE2586DA;
+	Fri, 11 Jul 2025 09:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RBeqeZPu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1rLlJb5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981A5279DC4;
-	Fri, 11 Jul 2025 09:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C763235355;
+	Fri, 11 Jul 2025 09:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752225439; cv=none; b=PHz/gxi3dmTd/nz2rBO+3+SrcKMaRVNHUA6IUCCUPpExNxl2uylQLzOAqX4lxtauTqFjpy93/2c2eS52SjCNsANVMfeEhfjwkiBrgiYxu4I1+d9U2EjTDOQA70PR9Xl99CahPcGAZId6gw4R0KXU3gVnbtJT6jGnKFCfYU6fW0A=
+	t=1752226793; cv=none; b=UAN014N8dFcqNqRn0DQWwrfzDu3JvgpZzoNtgNAb6W5i/FxVeAfHT4t3QhycXH7sQEY497pMjRG6r1G4CBhvtprO+AE0lQb1CxOcUoOSW9piNIy8aZbxmIQmPIDtSQn464eguq/Bz95jRdd8mv6Nz2W65KYQsAH3oiNK9GlrtLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752225439; c=relaxed/simple;
-	bh=qas8Ip1ScJCoaTrX3R4wMho9GVn9YvhmfmZhGegY6y8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VXi0+t0ptEtvOMiKBfjuI7UIN0LgHl8/EfPQJHuKtIpGrMNUnY92KgnpA/2tHzWBSK8/8SuV20So72F15sAY6G2F9B38hQexevUZZzGsa17eTxLmkU2QmRMwZj6D/bk3L8kR8EyxJCOWTtkuar0DfwmBRWyOF4G8MsU+PSIOkMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RBeqeZPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260B9C4CEF7;
-	Fri, 11 Jul 2025 09:17:19 +0000 (UTC)
+	s=arc-20240116; t=1752226793; c=relaxed/simple;
+	bh=8KMYBLowxMAusWCsCNJGYgTcbLYvQAEMZyBnuCD5fDs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FNTSD65R/uNoH4Tq1Ji3sx8o+B5n9bToCrsBcdsfalgfI8hEeVAFBRfrrkOD3HPA6YYxaROUA1otDq8Sl4h7KGQ9k+BRwlcEIJfAqhycl2Lqmvr9KLqA7zHCJFcysoYQkEV7emn3TgChJc02Qo+h66M+aY1Tur2tkA2wL2tRKGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1rLlJb5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F55C4CEED;
+	Fri, 11 Jul 2025 09:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752225439;
-	bh=qas8Ip1ScJCoaTrX3R4wMho9GVn9YvhmfmZhGegY6y8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RBeqeZPubBEdYJaX01TuP9sfqskbf+24alKEgQHHlfwzpXDPYH13GdNG/9daVpzut
-	 6Z5c2CA24FoSfG5QtMzrmInM/3UgQHltjIQofwKJLoL0WhpwCkeR8CJnZO1yyYQws5
-	 +oJl7GQh3HUHoSQ0zJGWT7w4WOrermHqrI5Zr5G2f27mMA+ppzoa+3wWk5/YDeghHn
-	 dINzVt9dPXfhnk6xLqzpogDAo0Bw64EWPP5eEYvhpR5m3xGXi6pMb0gfQAC283rrSE
-	 E5/Zhd3bEpqqHJcYqP/9Th4FxvHVM5NYK6dQChViW32ROjpNY1WZH7d0da/oz60kJn
-	 I6MFV0pLFJdLQ==
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-61208b86da2so545397eaf.2;
-        Fri, 11 Jul 2025 02:17:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWaE3szyoHeclGyJ2Rc+etOYTa3LbrJhhdmyESQES+cWSANefbteqJZfTZOfeDh94f3CMYsStl0WhdUwqs=@vger.kernel.org, AJvYcCX6Ntb+wyEPwbYLKongjCGMje6z1xLtUQAEqi/MD1883NxEwK1NUN22h682r1yRHp+WykOUKoB2@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5U/r8ItiVCLiefdyvRZ56vNy62hfc9GF6Yi/60g3bF61FVvWB
-	xrnxaktX+iN3OZwyQ6CGGbrvmqVKOeJwpjLH2nB68ukDNHO/EgTMEo/4zh4SIWYpjxRoZlBA6wS
-	50B0gqdVGRY5OPrtIHIFVihtc2a16Nws=
-X-Google-Smtp-Source: AGHT+IG6Qc9Tz0KlmO4rhSB8sfe+y9NNQJCUb5S/z18RnmWf3Q0RSYE1jwDtNZ5pI/UhwhySpomDx6CThnX6pLkfGbk=
-X-Received: by 2002:a05:6820:310b:b0:613:87ee:10e with SMTP id
- 006d021491bc7-613e5fa3322mr1415729eaf.5.1752225438314; Fri, 11 Jul 2025
- 02:17:18 -0700 (PDT)
+	s=k20201202; t=1752226793;
+	bh=8KMYBLowxMAusWCsCNJGYgTcbLYvQAEMZyBnuCD5fDs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Z1rLlJb5cTYomFzy7lg6bpHZWL20XDdMLBikBfGYiVR1dY5zHTg5kQY4uGgNgh7mk
+	 KeciabVTC2FS+5CVMY3RJGUPeP9dSEXmRp+E1O2E3lULZEii2wadila77lIgy6NyX3
+	 zk4YW73BmVeoz2dlv+Y88JPY5aJfibFS65CiJSJO6c231fs+9sE+kWTsEtjkQyiIdB
+	 N36B++iwY/q2E/V66n6+HC9o6CNCK1T9futhiNqaB7TrXxT7cbmvcWREn9l+OlURoA
+	 jaccK6SSdcgYp5sjx/7QHYiVMJ9x5/X4WU3a9gTov51niH/d/HAqa9wFR9XCMCcIT6
+	 SXE+bL+JlXhFA==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org,
+	Jan Kara <jack@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>,
+	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] isofs: Verify inode mode when loading from disk
+Date: Fri, 11 Jul 2025 11:39:46 +0200
+Message-ID: <20250711-geknackt-plant-f347dc35e76a@brauner>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250709095545.31062-2-jack@suse.cz>
+References: <20250709095545.31062-2-jack@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250710170225.961303-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20250710170225.961303-1-andriy.shevchenko@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 11 Jul 2025 11:17:07 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0inCyNEJW-B0zppJv74t07paX3aG-OX=x20sqY3A3A26A@mail.gmail.com>
-X-Gm-Features: Ac12FXxJy6F_7MoFjlhCsfzlsxOZ-2x76mgQjKJRIw6ts1IJAgYTKbEvzipZaEM
-Message-ID: <CAJZ5v0inCyNEJW-B0zppJv74t07paX3aG-OX=x20sqY3A3A26A@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] Documentation: ACPI: Fix parent device references
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Yevhen Kondrashyn <e.kondrashyn@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=956; i=brauner@kernel.org; h=from:subject:message-id; bh=8KMYBLowxMAusWCsCNJGYgTcbLYvQAEMZyBnuCD5fDs=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQU3H589dAMkVcKt0W2lKhqbPfw9PZVuio14eouyexHd grrs++IdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExkoSLDX4Gp4k6XWi3ulJ36 XuRQEe/78uI3S/fSypaNS5nXRG+P02FkOM2c1bhn5ay7ab/iXtaVyP9893e7TdPCpD4ln1wNHfk l3AA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 10, 2025 at 7:03=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> The _CRS resources in many cases want to have ResourceSource field
-> to be a type of ACPI String. This means that to compile properly
-> we need to enclosure the name path into double quotes. This will
-> in practice defer the interpretation to a run-time stage, However,
-> this may be interpreted differently on different OSes and ACPI
-> interpreter implementations. In particular ACPICA might not correctly
-> recognize the leading '^' (caret) character and will not resolve
-> the relative name path properly. On top of that, this piece may be
-> used in SSDTs which are loaded after the DSDT and on itself may also
-> not resolve relative name paths outside of their own scopes.
-> With this all said, fix documentation to use fully-qualified name
-> paths always to avoid any misinterpretations, which is proven to
-> work.
->
-> Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
-> Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->
-> Rafael, I prefer, if no objections, to push this as v6.16-rc6 material si=
-nce
-> the reported issue was detected on old (v5.10.y) and still LTS kernel. Wo=
-uld be
-> nice for people to not trap to it in older kernels.
->
->  Documentation/firmware-guide/acpi/i2c-muxes.rst | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/Documentation/firmware-guide/acpi/i2c-muxes.rst b/Documentat=
-ion/firmware-guide/acpi/i2c-muxes.rst
-> index 3a8997ccd7c4..f366539acd79 100644
-> --- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
-> +++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
-> @@ -14,7 +14,7 @@ Consider this topology::
->      |      |   | 0x70 |--CH01--> i2c client B (0x50)
->      +------+   +------+
->
-> -which corresponds to the following ASL::
-> +which corresponds to the following ASL (in the scope of \_SB)::
->
->      Device (SMB1)
->      {
-> @@ -24,7 +24,7 @@ which corresponds to the following ASL::
->              Name (_HID, ...)
->              Name (_CRS, ResourceTemplate () {
->                  I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
-> -                            AddressingMode7Bit, "^SMB1", 0x00,
-> +                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
->                              ResourceConsumer,,)
->              }
->
-> @@ -37,7 +37,7 @@ which corresponds to the following ASL::
->                      Name (_HID, ...)
->                      Name (_CRS, ResourceTemplate () {
->                          I2cSerialBus (0x50, ControllerInitiated, I2C_SPE=
-ED,
-> -                                    AddressingMode7Bit, "^CH00", 0x00,
-> +                                    AddressingMode7Bit, "\\_SB.SMB1.CH00=
-", 0x00,
->                                      ResourceConsumer,,)
->                      }
->                  }
-> @@ -52,7 +52,7 @@ which corresponds to the following ASL::
->                      Name (_HID, ...)
->                      Name (_CRS, ResourceTemplate () {
->                          I2cSerialBus (0x50, ControllerInitiated, I2C_SPE=
-ED,
-> -                                    AddressingMode7Bit, "^CH01", 0x00,
-> +                                    AddressingMode7Bit, "\\_SB.SMB1.CH01=
-", 0x00,
->                                      ResourceConsumer,,)
->                      }
->                  }
-> --
+On Wed, 09 Jul 2025 11:55:46 +0200, Jan Kara wrote:
+> Verify that the inode mode is sane when loading it from the disk to
+> avoid complaints from VFS about setting up invalid inodes.
+> 
+> 
 
-Applied as 6.17 material, thanks!
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
+
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] isofs: Verify inode mode when loading from disk
+      https://git.kernel.org/vfs/vfs/c/0a9e74051313
 
