@@ -1,184 +1,206 @@
-Return-Path: <stable+bounces-161687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC7AB02609
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 22:57:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 452F4B0267A
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 23:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E79B547A09
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 20:57:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32AAD1C27CDD
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 21:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4302288E3;
-	Fri, 11 Jul 2025 20:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFEF1F418B;
+	Fri, 11 Jul 2025 21:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="H8FGOcZT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZyhMw0iy"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B3019995E;
-	Fri, 11 Jul 2025 20:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFA41991C9;
+	Fri, 11 Jul 2025 21:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752267456; cv=none; b=tP/JKzD3h9zuyrx1tZbSsREko86fsCUcyeUpyy2aq7pzvennLoYp67AmWL71nhD+2N94hZiyJjjVf0E0s5cFB9euwa6WeBTQAARf/2qsSrNFcUzWazonw8Z7nuXOZZJDhXZ41IeM9BIyIloVf+D4/8EIkWmxrBO6K6Wrcnec5jE=
+	t=1752270145; cv=none; b=iGAlbyLQ/nyZuXhFcbmNqAAAk0DsH//IwVvQ9t9/+o5AqM0TOdbdo9iGrXNaJSwc0uivr7yUd2rAfGx7uDt/F8F5f6FeWmp1kMWmtz9TthfKoHn7al3C+/yn4rdO+9M6mSOc9h6omRBbAkiZ9nuJFueFN17agDG09Iy0wFU/UDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752267456; c=relaxed/simple;
-	bh=7oeksbsqlBDbsMLdrS0Ae+ePAmrEawcDiCXcwACxhMo=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=ruFAvmE7mYETo8cM01pq3Xj8c+1GPQyIFb30I/VgVhcG0NicLWJBiaxRFzFKYU1MXJZhVVvwS2JuOpDiuMviRippt1tm68xQ0/M/eH1gLKTQ++KUQr1kGvxqD9XpyIr86f+wVY1J84qogZ8uJ7P4WsMdVNpIUlt7926FWJkmlyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=H8FGOcZT; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1006)
-	id B09CB2054690; Fri, 11 Jul 2025 13:57:34 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B09CB2054690
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1752267454;
-	bh=YK2hlHCdDL9aIF8iZPjno6SLfHSItOAg/HMmpGq7cI4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=H8FGOcZTmEHW9KxdvYWdoPW3ZPC7yk2wPyvCcf2NB9TifwHY4URnXuZnoNHrR4cUY
-	 Stt2BkIIRrnJUWkJE+kgpk904FGKUGGKhE8I4MTWVUg40p94Wu+YxtihQAxw0ydc6b
-	 8b8ChiKH9SiMJhrhlwxC/q2Wo3F4PjQDN/chCkL0=
-From: Haiyang Zhang <haiyangz@linux.microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: haiyangz@microsoft.com,
-	kys@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	stephen@networkplumber.org,
-	davem@davemloft.net,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1752270145; c=relaxed/simple;
+	bh=FRJZTMDli33z+2VYtIwPjKtkzXPLWnmyhYXuUGVZ4Hc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kRl11OzuIE07/kWkvnBB8xKRGuxWqiZ7M0wVC1OAqmk/qm+BvQl5nfcZVezinBWDvZrvGuwvu2PGG0rO9eI5o0OOYTQiqvTYvN719ikwWYwgxAhjKWBdLCIiUjl4YLS5yFelPawWPXryQBZ0UNYSKuOiCDVDf0Ai4MGTz4tn1Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZyhMw0iy; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752270142; x=1783806142;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FRJZTMDli33z+2VYtIwPjKtkzXPLWnmyhYXuUGVZ4Hc=;
+  b=ZyhMw0iyqoO6BKg1ZY98ZdWk3d0RLfZjuUlLMkLsS0pVZRz2wNJP6EXc
+   8GvT41UVlFz47z2rPQnmqNmCsCkA8qjqU6B8BqyBOKO0r22tGPYpsMLI9
+   9kr56yYE8+vjePOp+7K3c/59AyPp+rE63aZEK+SJkpuhffDLoOhS3os42
+   MJ/HqPalSuEPw36glQI6CfFteEi143St8E17K6qApiYU39LaVP8MQPM/F
+   GM1DT0rYNOiHj26c43UgD6U2jyD6B09dcO0IkTsRDRHR0QR5C4u+bDdKG
+   +gicy0qxSeVz497KmocSNZaaetiPjepaFFA64U5LOTeT6T704XV/ma7mY
+   A==;
+X-CSE-ConnectionGUID: /243kq0ERAe4dc0aZ5/AgA==
+X-CSE-MsgGUID: En9f3oxGSIOA0M/zyoC1zw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58381142"
+X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
+   d="scan'208";a="58381142"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 14:42:21 -0700
+X-CSE-ConnectionGUID: DLeCp0zyQniDp8k0huMS+w==
+X-CSE-MsgGUID: D+NrjiQ5QSK5LShoTx+gxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
+   d="scan'208";a="160759947"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 11 Jul 2025 14:42:19 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uaLVZ-0006oN-0u;
+	Fri, 11 Jul 2025 21:42:17 +0000
+Date: Sat, 12 Jul 2025 05:42:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nikunj A Dadhania <nikunj@amd.com>, seanjc@google.com,
+	pbonzini@redhat.com, kvm@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	thomas.lendacky@amd.com, santosh.shukla@amd.com, bp@alien8.de,
+	nikunj@amd.com, Michael Roth <michael.roth@amd.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net] hv_netvsc: Switch VF namespace in netvsc_open instead
-Date: Fri, 11 Jul 2025 13:57:10 -0700
-Message-Id: <1752267430-28487-1-git-send-email-haiyangz@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
+Subject: Re: [PATCH] KVM: SEV: Enforce minimum GHCB version requirement for
+ SEV-SNP guests
+Message-ID: <202507120551.iDEiTBBN-lkp@intel.com>
+References: <20250711045408.95129-1-nikunj@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250711045408.95129-1-nikunj@amd.com>
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+Hi Nikunj,
 
-The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
-received on netvsc NIC. During deletion of the namespace,
-default_device_exit_batch() >> default_device_exit_net() is called. When
-netvsc NIC is moved back and registered to the default namespace, it
-automatically brings VF NIC back to the default namespace. This will cause
-the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
-the list end, and hit NULL ptr:
+kernel test robot noticed the following build errors:
 
-[  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
-[  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
-[  231.450246] #PF: supervisor read access in kernel mode
-[  231.450579] #PF: error_code(0x0000) - not-present page
-[  231.450916] PGD 17b8a8067 P4D 0 
-[  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
-[  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY 
-[  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
-[  231.452692] Workqueue: netns cleanup_net
-[  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
-[  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
-[  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
-[  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
-[  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
-[  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
-[  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
-[  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
-[  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
-[  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
-[  231.458434] Call Trace:
-[  231.458600]  <TASK>
-[  231.458777]  ops_undo_list+0x100/0x220
-[  231.459015]  cleanup_net+0x1b8/0x300
-[  231.459285]  process_one_work+0x184/0x340
+[auto build test ERROR on kvm/queue]
+[also build test ERROR on kvm/next linus/master v6.16-rc5 next-20250711]
+[cannot apply to kvm/linux-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-To fix it, move the VF namespace switching code from the NETDEV_REGISTER
-event handler to netvsc_open().
+url:    https://github.com/intel-lab-lkp/linux/commits/Nikunj-A-Dadhania/KVM-SEV-Enforce-minimum-GHCB-version-requirement-for-SEV-SNP-guests/20250711-125527
+base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
+patch link:    https://lore.kernel.org/r/20250711045408.95129-1-nikunj%40amd.com
+patch subject: [PATCH] KVM: SEV: Enforce minimum GHCB version requirement for SEV-SNP guests
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250712/202507120551.iDEiTBBN-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250712/202507120551.iDEiTBBN-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507120551.iDEiTBBN-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/x86/kvm/svm/sev.c:426:6: error: use of undeclared identifier 'snp_active'
+     426 |         if (snp_active && data->ghcb_version && data->ghcb_version < 2)
+         |             ^
+   1 error generated.
 
 
-Cc: stable@vger.kernel.org
-Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
-Reported-by: Cathy Avery <cavery@redhat.com>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
----
- drivers/net/hyperv/netvsc_drv.c | 43 ++++++++++-----------------------
- 1 file changed, 13 insertions(+), 30 deletions(-)
+vim +/snp_active +426 arch/x86/kvm/svm/sev.c
 
-diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
-index 42d98e99566e..074ecc346108 100644
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -135,6 +135,19 @@ static int netvsc_open(struct net_device *net)
- 	}
- 
- 	if (vf_netdev) {
-+		if (!net_eq(dev_net(net), dev_net(vf_netdev))) {
-+			ret = dev_change_net_namespace(vf_netdev, dev_net(net),
-+						       "eth%d");
-+			if (ret)
-+				netdev_err(vf_netdev,
-+					   "Cannot move to same ns as %s: %d\n",
-+					   net->name, ret);
-+			else
-+				netdev_info(vf_netdev,
-+					    "Moved VF to namespace with: %s\n",
-+					    net->name);
-+		}
-+
- 		/* Setting synthetic device up transparently sets
- 		 * slave as up. If open fails, then slave will be
- 		 * still be offline (and not used).
-@@ -2772,31 +2785,6 @@ static struct  hv_driver netvsc_drv = {
- 	},
- };
- 
--/* Set VF's namespace same as the synthetic NIC */
--static void netvsc_event_set_vf_ns(struct net_device *ndev)
--{
--	struct net_device_context *ndev_ctx = netdev_priv(ndev);
--	struct net_device *vf_netdev;
--	int ret;
--
--	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
--	if (!vf_netdev)
--		return;
--
--	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
--		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
--					       "eth%d");
--		if (ret)
--			netdev_err(vf_netdev,
--				   "Cannot move to same namespace as %s: %d\n",
--				   ndev->name, ret);
--		else
--			netdev_info(vf_netdev,
--				    "Moved VF to namespace with: %s\n",
--				    ndev->name);
--	}
--}
--
- /*
-  * On Hyper-V, every VF interface is matched with a corresponding
-  * synthetic interface. The synthetic interface is presented first
-@@ -2809,11 +2797,6 @@ static int netvsc_netdev_event(struct notifier_block *this,
- 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
- 	int ret = 0;
- 
--	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
--		netvsc_event_set_vf_ns(event_dev);
--		return NOTIFY_DONE;
--	}
--
- 	ret = check_dev_is_matching_vf(event_dev);
- 	if (ret != 0)
- 		return NOTIFY_DONE;
+   400	
+   401	static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+   402				    struct kvm_sev_init *data,
+   403				    unsigned long vm_type)
+   404	{
+   405		struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
+   406		struct sev_platform_init_args init_args = {0};
+   407		bool es_active = vm_type != KVM_X86_SEV_VM;
+   408		u64 valid_vmsa_features = es_active ? sev_supported_vmsa_features : 0;
+   409		int ret;
+   410	
+   411		if (kvm->created_vcpus)
+   412			return -EINVAL;
+   413	
+   414		if (data->flags)
+   415			return -EINVAL;
+   416	
+   417		if (data->vmsa_features & ~valid_vmsa_features)
+   418			return -EINVAL;
+   419	
+   420		if (data->ghcb_version > GHCB_VERSION_MAX || (!es_active && data->ghcb_version))
+   421			return -EINVAL;
+   422	
+   423		if (unlikely(sev->active))
+   424			return -EINVAL;
+   425	
+ > 426		if (snp_active && data->ghcb_version && data->ghcb_version < 2)
+   427			return -EINVAL;
+   428	
+   429		sev->active = true;
+   430		sev->es_active = es_active;
+   431		sev->vmsa_features = data->vmsa_features;
+   432		sev->ghcb_version = data->ghcb_version;
+   433	
+   434		/*
+   435		 * Currently KVM supports the full range of mandatory features defined
+   436		 * by version 2 of the GHCB protocol, so default to that for SEV-ES
+   437		 * guests created via KVM_SEV_INIT2.
+   438		 */
+   439		if (sev->es_active && !sev->ghcb_version)
+   440			sev->ghcb_version = GHCB_VERSION_DEFAULT;
+   441	
+   442		if (vm_type == KVM_X86_SNP_VM)
+   443			sev->vmsa_features |= SVM_SEV_FEAT_SNP_ACTIVE;
+   444	
+   445		ret = sev_asid_new(sev);
+   446		if (ret)
+   447			goto e_no_asid;
+   448	
+   449		init_args.probe = false;
+   450		ret = sev_platform_init(&init_args);
+   451		if (ret)
+   452			goto e_free;
+   453	
+   454		/* This needs to happen after SEV/SNP firmware initialization. */
+   455		if (vm_type == KVM_X86_SNP_VM) {
+   456			ret = snp_guest_req_init(kvm);
+   457			if (ret)
+   458				goto e_free;
+   459		}
+   460	
+   461		INIT_LIST_HEAD(&sev->regions_list);
+   462		INIT_LIST_HEAD(&sev->mirror_vms);
+   463		sev->need_init = false;
+   464	
+   465		kvm_set_apicv_inhibit(kvm, APICV_INHIBIT_REASON_SEV);
+   466	
+   467		return 0;
+   468	
+   469	e_free:
+   470		argp->error = init_args.error;
+   471		sev_asid_free(sev);
+   472		sev->asid = 0;
+   473	e_no_asid:
+   474		sev->vmsa_features = 0;
+   475		sev->es_active = false;
+   476		sev->active = false;
+   477		return ret;
+   478	}
+   479	
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
