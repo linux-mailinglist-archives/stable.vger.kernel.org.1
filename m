@@ -1,56 +1,72 @@
-Return-Path: <stable+bounces-161650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A229B01BC3
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 14:16:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2729FB01BEF
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 14:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EA295A5AC6
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 12:16:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DDC23B2E42
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 12:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC992BE641;
-	Fri, 11 Jul 2025 12:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1954F29B764;
+	Fri, 11 Jul 2025 12:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilwu63lF"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="eow4rQ24"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4C4299AA9;
-	Fri, 11 Jul 2025 12:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCAB299AA4
+	for <stable@vger.kernel.org>; Fri, 11 Jul 2025 12:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752236140; cv=none; b=JoKzE+j/HUOuWcUUesNMMBfS3I+qC2bVDD9hjEf/ldCFy3ERQYr31fc2dl3lsimMd/jRpSLCW+Woqtvv+xq1WSUh1ZpmgjXBvD2nuYK80Zfcg5ts6ac9OtYqt8KnQenKO4vdvYyVMRWsPgBBLzBSPPMiBNAu1JIdjw9fG4jf3dY=
+	t=1752236762; cv=none; b=T0ONaofVjN1MPrNPVLRWNHnQNlUHhx7QtCEy4IbwmgZR+pMJL7KnLnNVyXIHj2t9bNkbRTSv6IuTEzQaKWmiY6Z6h+Cnx5/w3klMGPcX/wKwRF9ed8NQCiAW+3sXIgDjHaSh6NcveLFFrq/+iVPmWVofjCEoLiQh+4Wj6EUF52c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752236140; c=relaxed/simple;
-	bh=n82RM4cgT4El7yNKeOkJ1+B9gFq+IBgDJwiJGDyoQKw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=W+Wzf/pNgiWd5kuupp6VkllRIZDR3DkGH+1pSrtmxxssCXPFHeIPyBPLfMgavS4C0VzEuxpYjDNPhyVXBxqEvChxJlp2Z9VtsOz3360t3MrJE26PsFYjVAoGVSqpP3uiuREFwj8wSAviLrs8FCjsmPHJvFahI568qjTdjair4/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilwu63lF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC62C4CEED;
-	Fri, 11 Jul 2025 12:15:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752236138;
-	bh=n82RM4cgT4El7yNKeOkJ1+B9gFq+IBgDJwiJGDyoQKw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=ilwu63lFCyYgGCXpzoljE+Ssp/LjbyGVktjqkhe+S5vf8WIYt7R/1iHH6nC9IYpeA
-	 EdfwpsLFcWOrzMG5Juf5bLwjvC/feIl6gtjDVaA2TLTFL+wtS7riYM33x722uYj6Vx
-	 F9yOIimLMfCqg27rzoHqdggfrY/JFn3HUFWQCcN4GUIYYkfeQUqosBqEyMRVpKEBAi
-	 smbmkHQXo+rpfwcXwSUHjQ9ZCODE7C2pE0XJdB3EYNh0II9jPPSxwguXeUgDHSnBVP
-	 dlBsXWSjJg11MpoMcum2NRMu9SWjdJqHk/8htJFweRk0lp3dYqXTNIyaokJyzPjeCb
-	 kj5Gb/1ABU+xw==
-Date: Fri, 11 Jul 2025 07:15:37 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
-	linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
- disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
-Message-ID: <20250711121537.GA2289649@bhelgaas>
+	s=arc-20240116; t=1752236762; c=relaxed/simple;
+	bh=L4mOUd1++E1glrzv41b5IZLOWOsB23hyMFtMeTbZeTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e8OYPPkkQaftkVCVAEaGqdB6vcwqundBaEbkrE06mXY0L02EaWIs2iIeqftcdDwGeSbuAV0v+zqVXo0YSAdt+vnNfiS9aAnujpIR1qqL3iEZaR5LV46DHGcP0DKRfK2mue47QRtjyZW6VfWpX0+QYPAorM9Kwoc3y6d46VHwiJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=eow4rQ24; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5BE2440E021F;
+	Fri, 11 Jul 2025 12:25:55 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 2reMMpL1mpO7; Fri, 11 Jul 2025 12:25:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1752236751; bh=x24BIcKFg8E0rQaaWGgUaG7qf3ydwt0ZpTCCOxf1wU4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eow4rQ24dMTD7BKWM0Otlh71vk6v+jjgLuvf1JE9uJT51SrvirtF3aeXNkL+YSuSk
+	 QHzrxu/zkG9tp22FagJe4LzWrhj4xH5J/PZhEzdhCoshvdqOFSi4JdZlWqb2FQnYcs
+	 gCOdzdMRf8vBSmCxV5jSH8fOGewUtm9XpC69XF5vc7vBAJNyLeFTUF3gnUEfARZcQK
+	 n+WGnOE6Oy8+Hpo7TFyVlqO8C9SEoVuVuH7G2bT1QH6j+B0Z5Mc60VJ25aMHWDaCid
+	 rda0DDx0ppJqBXoY3ata0vbuAMbF1Xw6fhGVmf7AkxYm//aWrYrga4bqp9D+LMq5LG
+	 bpP+vAOEuQReerhgWMz1iK+UxYpsTBxKCGsFBD2W8I2mok/uF6N/dsyt54jUDT5ykt
+	 UodQfxhyFLQi75HadM3ZaKUKo8TXfeQc3S64SHQfu60enc73cPHPzTsWwaEspEzHoa
+	 lVYcZmVY76H98AEBm9YjD7hLxg7XnKLGdVlFLf1KW/N4btHB57QnbRFVcS/lqQeXyb
+	 dr9r4IEDLmxYqcDyN8RmxkYfV9TqjdJF9/yKzHTZgddec4i1ditGMI6lxCCt56td8r
+	 JIxWw3Ot8I2gVMlDk34jvdTdocPpiN7SxDaFWLP6bLzdEOkPLt+qzmtjsw6gOH5gPj
+	 xptHhuQUcrDqWtd8hqn47Av4=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 172BD40E0218;
+	Fri, 11 Jul 2025 12:25:48 +0000 (UTC)
+Date: Fri, 11 Jul 2025 14:25:41 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Thomas Voegtle <tv@lio96.de>
+Cc: stable@vger.kernel.org, kim.phillips@amd.com
+Subject: Re: TSA mitigation doesn't work on 6.6.y
+Message-ID: <20250711122541.GAaHECxVpy31mIrqDb@fat_crate.local>
+References: <04ea0a8e-edb0-c59e-ce21-5f3d5d167af3@lio96.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,36 +75,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEmM+Qj=TA=WtQAXQZx6wCUpdsOQ4j66Kpyze3KNZHC79KfyRA@mail.gmail.com>
+In-Reply-To: <04ea0a8e-edb0-c59e-ce21-5f3d5d167af3@lio96.de>
 
-On Fri, Jul 11, 2025 at 12:36:12AM +0530, Bandhan Pramanik wrote:
-> Ok, we did it. Could reproduce the errors properly.
-> 
-> Here are the journalctl logs:
-> 
-> Kernel level: https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/a9e93c4ba41fb0b3d7602e6bfddce9aa5f3a19b2/KERNEL%2520journalctl%2520v6.16-rc4
-> User level: https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/a9e93c4ba41fb0b3d7602e6bfddce9aa5f3a19b2/NON-KERNEL%2520journalctl%2520v6.16-rc4
+On Fri, Jul 11, 2025 at 02:03:31PM +0200, Thomas Voegtle wrote:
+> Is something missing in 6.6.y and 6.12.y?
 
-Thanks.  These logs look like the kernel doesn't include the patch I
-sent at https://lore.kernel.org/r/20250705195846.GA2011829@bhelgaas
+I have a suspicion. Run the below patch, pls, and send me full dmesg.
 
-Can you please try with that patch?
+Also send me your .config.
 
-> Just so you know, I have used v6.16-rc4.
-> 
-> Bandhan.
-> 
-> On Wed, Jul 9, 2025 at 11:00 PM Bandhan Pramanik
-> <bandhanpramanik06.foss@gmail.com> wrote:
-> >
-> > Hello,
-> >
-> > I was actually a bit distracted by the things caused by the Automatic Partitioning of Fedora. I'll inform that in Fedora Bugzilla... anyway.
-> >
-> > I realised that making the modules will take 8-9 hours, I didn't even have much of a success (because all the modules didn't properly load, particularly the firmware-N.bin files couldn't be found).
-> >
-> > But I'll try to recompile the kernel, I'll just have to give it overnight time.
-> >
-> > Bandhan
+Thx.
+
+---
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 1180689a2390..104a2375c281 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -569,12 +569,15 @@ static bool amd_check_tsa_microcode(void)
+ 		case 0xa70c0:	min_rev = 0x0a70c008; break;
+ 		case 0xaa002:	min_rev = 0x0aa00216; break;
+ 		default:
+-			pr_debug("%s: ucode_rev: 0x%x, current revision: 0x%x\n",
++			pr_info("%s: ucode_rev: 0x%x, current revision: 0x%x\n",
+ 				 __func__, p.ucode_rev, c->microcode);
+ 			return false;
+ 		}
+ 	}
+ 
++	pr_info("c->microcode: 0x%x, min_rev: 0x%x\n",
++		c->microcode, min_rev);
++
+ 	if (!min_rev)
+ 		return false;
+ 
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
