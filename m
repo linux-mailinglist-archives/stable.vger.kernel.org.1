@@ -1,117 +1,163 @@
-Return-Path: <stable+bounces-161651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2729FB01BEF
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 14:26:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3547B01BFF
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 14:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DDC23B2E42
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 12:25:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7D197A9912
+	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 12:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1954F29B764;
-	Fri, 11 Jul 2025 12:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B191E5729;
+	Fri, 11 Jul 2025 12:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="eow4rQ24"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lQH8XQyH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCAB299AA4
-	for <stable@vger.kernel.org>; Fri, 11 Jul 2025 12:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A696CF9D6;
+	Fri, 11 Jul 2025 12:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752236762; cv=none; b=T0ONaofVjN1MPrNPVLRWNHnQNlUHhx7QtCEy4IbwmgZR+pMJL7KnLnNVyXIHj2t9bNkbRTSv6IuTEzQaKWmiY6Z6h+Cnx5/w3klMGPcX/wKwRF9ed8NQCiAW+3sXIgDjHaSh6NcveLFFrq/+iVPmWVofjCEoLiQh+4Wj6EUF52c=
+	t=1752236893; cv=none; b=SeakbFB03Ox6ZGvm39KiyzjfwqbwbdBKFXdzNSu7ZNbg4DLI1vpzEdnMZtYMdvB1FhZo5ucEo8VZqxlSDfNSjusiXJSzHIIQnVDzSA4QqwwJtGrI9Sh3GnPgB1RrjORg01cb7ej2dZOQSg9K5lVTrwGPESRG0UdFf7ZLrsxnX64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752236762; c=relaxed/simple;
-	bh=L4mOUd1++E1glrzv41b5IZLOWOsB23hyMFtMeTbZeTM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e8OYPPkkQaftkVCVAEaGqdB6vcwqundBaEbkrE06mXY0L02EaWIs2iIeqftcdDwGeSbuAV0v+zqVXo0YSAdt+vnNfiS9aAnujpIR1qqL3iEZaR5LV46DHGcP0DKRfK2mue47QRtjyZW6VfWpX0+QYPAorM9Kwoc3y6d46VHwiJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=eow4rQ24; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5BE2440E021F;
-	Fri, 11 Jul 2025 12:25:55 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 2reMMpL1mpO7; Fri, 11 Jul 2025 12:25:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1752236751; bh=x24BIcKFg8E0rQaaWGgUaG7qf3ydwt0ZpTCCOxf1wU4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eow4rQ24dMTD7BKWM0Otlh71vk6v+jjgLuvf1JE9uJT51SrvirtF3aeXNkL+YSuSk
-	 QHzrxu/zkG9tp22FagJe4LzWrhj4xH5J/PZhEzdhCoshvdqOFSi4JdZlWqb2FQnYcs
-	 gCOdzdMRf8vBSmCxV5jSH8fOGewUtm9XpC69XF5vc7vBAJNyLeFTUF3gnUEfARZcQK
-	 n+WGnOE6Oy8+Hpo7TFyVlqO8C9SEoVuVuH7G2bT1QH6j+B0Z5Mc60VJ25aMHWDaCid
-	 rda0DDx0ppJqBXoY3ata0vbuAMbF1Xw6fhGVmf7AkxYm//aWrYrga4bqp9D+LMq5LG
-	 bpP+vAOEuQReerhgWMz1iK+UxYpsTBxKCGsFBD2W8I2mok/uF6N/dsyt54jUDT5ykt
-	 UodQfxhyFLQi75HadM3ZaKUKo8TXfeQc3S64SHQfu60enc73cPHPzTsWwaEspEzHoa
-	 lVYcZmVY76H98AEBm9YjD7hLxg7XnKLGdVlFLf1KW/N4btHB57QnbRFVcS/lqQeXyb
-	 dr9r4IEDLmxYqcDyN8RmxkYfV9TqjdJF9/yKzHTZgddec4i1ditGMI6lxCCt56td8r
-	 JIxWw3Ot8I2gVMlDk34jvdTdocPpiN7SxDaFWLP6bLzdEOkPLt+qzmtjsw6gOH5gPj
-	 xptHhuQUcrDqWtd8hqn47Av4=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 172BD40E0218;
-	Fri, 11 Jul 2025 12:25:48 +0000 (UTC)
-Date: Fri, 11 Jul 2025 14:25:41 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Thomas Voegtle <tv@lio96.de>
-Cc: stable@vger.kernel.org, kim.phillips@amd.com
-Subject: Re: TSA mitigation doesn't work on 6.6.y
-Message-ID: <20250711122541.GAaHECxVpy31mIrqDb@fat_crate.local>
-References: <04ea0a8e-edb0-c59e-ce21-5f3d5d167af3@lio96.de>
+	s=arc-20240116; t=1752236893; c=relaxed/simple;
+	bh=zaidj1cqmri96h3Ou5+kJ33yUWJ+9TE2bFH+MK/FBpM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i1TvMcyKTcL8bYhNB7PzXp+IRwBdFFmTL9FHVU+evx4d+glbzjEVwnVC/1btRvi45hJ9MgGuKw9+SDB2NQCY0yh1Z+luZ04vrg9Hnv+8Ttw3hJUi7ur0gSiDUEV9vqnlPRlQ5QUh3lSmTdFBx3Z+d8tgqldLBw1yM1cEfA2hxgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lQH8XQyH; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752236892; x=1783772892;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zaidj1cqmri96h3Ou5+kJ33yUWJ+9TE2bFH+MK/FBpM=;
+  b=lQH8XQyHqIjx354cz8Y8vlhyVyCnFDB+xMxifA8XqEAAD2px5RHPiKgc
+   0q6wOulOJgesLmEZ9SkL7O34Qv+CrSFHCVWD9S/OX/kFYajHUejrBW09L
+   XFWL0Gzf47i+Abalv38AiGiujseYLUwOVvU5b8lmlo5iZ/BjU2all/ESC
+   saa6oZzfZRKoWgzWq8aGiok+xwawj3FawW+XoPC7cJ3zQhVkYgn1p31H7
+   Ad+EbXbX++dMmACF/WrYXrc5LO8CjVu+8xUbzhnrULx3TMuJqcjlCPGWA
+   rhchCAxDB5BfMuhFfDEgwln+yxWCfoWtQ5kITianOSSe7fdzFijX0XHCx
+   A==;
+X-CSE-ConnectionGUID: xenVQfEhRjuOo8OAO8UhIw==
+X-CSE-MsgGUID: vqu8abo9SKSysURrYKq/Pg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54250712"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; 
+   d="scan'208";a="54250712"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 05:28:11 -0700
+X-CSE-ConnectionGUID: JO6JALGURcKgzTVEen9e5Q==
+X-CSE-MsgGUID: HiVSZSRcRZmRdc0myLt5oA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; 
+   d="scan'208";a="160657877"
+Received: from silpixa00400314.ir.intel.com (HELO silpixa00400314.ger.corp.intel.com) ([10.237.223.204])
+  by fmviesa005.fm.intel.com with ESMTP; 11 Jul 2025 05:28:09 -0700
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+To: herbert@gondor.apana.org.au
+Cc: linux-crypto@vger.kernel.org,
+	qat-linux@intel.com,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	stable@vger.kernel.org,
+	Ahsan Atta <ahsan.atta@intel.com>
+Subject: [PATCH] crypto: qat - flush misc workqueue during device shutdown
+Date: Fri, 11 Jul 2025 13:27:43 +0100
+Message-ID: <20250711122753.9824-2-giovanni.cabiddu@intel.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <04ea0a8e-edb0-c59e-ce21-5f3d5d167af3@lio96.de>
+Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 11, 2025 at 02:03:31PM +0200, Thomas Voegtle wrote:
-> Is something missing in 6.6.y and 6.12.y?
+Repeated loading and unloading of a device specific QAT driver, for
+example qat_4xxx, in a tight loop can lead to a crash due to a
+use-after-free scenario. This occurs when a power management (PM)
+interrupt triggers just before the device-specific driver (e.g.,
+qat_4xxx.ko) is unloaded, while the core driver (intel_qat.ko) remains
+loaded.
 
-I have a suspicion. Run the below patch, pls, and send me full dmesg.
+Since the driver uses a shared workqueue (`qat_misc_wq`) across all
+devices and owned by intel_qat.ko, a deferred routine from the
+device-specific driver may still be pending in the queue. If this
+routine executes after the driver is unloaded, it can dereference freed
+memory, resulting in a page fault and kernel crash like the following:
 
-Also send me your .config.
+    BUG: unable to handle page fault for address: ffa000002e50a01c
+    #PF: supervisor read access in kernel mode
+    RIP: 0010:pm_bh_handler+0x1d2/0x250 [intel_qat]
+    Call Trace:
+      pm_bh_handler+0x1d2/0x250 [intel_qat]
+      process_one_work+0x171/0x340
+      worker_thread+0x277/0x3a0
+      kthread+0xf0/0x120
+      ret_from_fork+0x2d/0x50
 
-Thx.
+To prevent this, flush the misc workqueue during device shutdown to
+ensure that all pending work items are completed before the driver is
+unloaded.
 
+Note: This approach may slightly increase shutdown latency if the
+workqueue contains jobs from other devices, but it ensures correctness
+and stability.
+
+Fixes: e5745f34113b ("crypto: qat - enable power management for QAT GEN4")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
 ---
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 1180689a2390..104a2375c281 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -569,12 +569,15 @@ static bool amd_check_tsa_microcode(void)
- 		case 0xa70c0:	min_rev = 0x0a70c008; break;
- 		case 0xaa002:	min_rev = 0x0aa00216; break;
- 		default:
--			pr_debug("%s: ucode_rev: 0x%x, current revision: 0x%x\n",
-+			pr_info("%s: ucode_rev: 0x%x, current revision: 0x%x\n",
- 				 __func__, p.ucode_rev, c->microcode);
- 			return false;
- 		}
- 	}
+ drivers/crypto/intel/qat/qat_common/adf_common_drv.h | 1 +
+ drivers/crypto/intel/qat/qat_common/adf_init.c       | 1 +
+ drivers/crypto/intel/qat/qat_common/adf_isr.c        | 5 +++++
+ 3 files changed, 7 insertions(+)
+
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_common_drv.h b/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
+index eaa6388a6678..7a022bd4ae07 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
+@@ -189,6 +189,7 @@ void adf_exit_misc_wq(void);
+ bool adf_misc_wq_queue_work(struct work_struct *work);
+ bool adf_misc_wq_queue_delayed_work(struct delayed_work *work,
+ 				    unsigned long delay);
++void adf_misc_wq_flush(void);
+ #if defined(CONFIG_PCI_IOV)
+ int adf_sriov_configure(struct pci_dev *pdev, int numvfs);
+ void adf_disable_sriov(struct adf_accel_dev *accel_dev);
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_init.c b/drivers/crypto/intel/qat/qat_common/adf_init.c
+index f189cce7d153..46491048e0bb 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_init.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_init.c
+@@ -404,6 +404,7 @@ static void adf_dev_shutdown(struct adf_accel_dev *accel_dev)
+ 		hw_data->exit_admin_comms(accel_dev);
  
-+	pr_info("c->microcode: 0x%x, min_rev: 0x%x\n",
-+		c->microcode, min_rev);
+ 	adf_cleanup_etr_data(accel_dev);
++	adf_misc_wq_flush();
+ 	adf_dev_restore(accel_dev);
+ }
+ 
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_isr.c b/drivers/crypto/intel/qat/qat_common/adf_isr.c
+index cae1aee5479a..12e565613661 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_isr.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_isr.c
+@@ -407,3 +407,8 @@ bool adf_misc_wq_queue_delayed_work(struct delayed_work *work,
+ {
+ 	return queue_delayed_work(adf_misc_wq, work, delay);
+ }
 +
- 	if (!min_rev)
- 		return false;
- 
++void adf_misc_wq_flush(void)
++{
++	flush_workqueue(adf_misc_wq);
++}
 
+base-commit: 9d21467fca15472efb701dad69abf685195845a4
 -- 
-Regards/Gruss,
-    Boris.
+2.50.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
