@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-161732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8687FB02B62
-	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 16:24:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DAA8B02B63
+	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 16:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF4224A1A15
-	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 14:24:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA2C93A5404
+	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 14:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E4D27CB06;
-	Sat, 12 Jul 2025 14:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBED127EFF9;
+	Sat, 12 Jul 2025 14:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2Vr15If"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFFu07lt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04477278E62
-	for <stable@vger.kernel.org>; Sat, 12 Jul 2025 14:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8BE15C158
+	for <stable@vger.kernel.org>; Sat, 12 Jul 2025 14:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752330281; cv=none; b=a3Hil2BTtoFCHZf6nSeTf93RNrDmQEmLagE+/LNUm007shAXZkcj6p90YrLGz1VUmY9UFSvwWqsZRYEjS5kZidhgpC3m0PgKXLTILe1730j2ZZOosToRAxUqwktcQO+rCeyfPQ5t4kvuMHLKaiR4ZWHnLr7bYxMcxEqgMiDKIDI=
+	t=1752330398; cv=none; b=AVH466p0V2qdpKi9+r4eIBaKi2rrL40SK431XflcHGq6MD5ySypM1XM9/waqkYOWKPFluMrm1o8AL136DaK/bXSqaxfvXImef/mtmBaQ431A3Tu7PK+QYWJhiwz4Hw8nkGTnAwPSeLYOJmTOgIgPJqler3BZr/qLs+gMWndKpck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752330281; c=relaxed/simple;
-	bh=7DiUO3SXZGr6eHE8KR3PU1LUYX79uK4evYzMYf0ANV4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QFr47WJ9KnONf/MOSU8Pw0DdL8S4NAlwkiYjMPlQ6MHWd/SqQEspy8KTCfZUjACQHs01r8bNNK7XMZfP1zb2P7fTwZOhalfg6bNvzJ4UFyMRx8FvLqGwbqSbBUQRGxObsXApbtXaPU6pRtaJT2TGk2V0R5D4agiS+tfOqNEZ6dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2Vr15If; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0B3C4CEEF;
-	Sat, 12 Jul 2025 14:24:40 +0000 (UTC)
+	s=arc-20240116; t=1752330398; c=relaxed/simple;
+	bh=p3qwwoDQQKXrhllTZvJKGGbKfxkpl7KiUqD2mcQ1EuA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PQyYR/xiCupyYjeDnfNP5ixFV14S2k7a96+imLT2+SxGvQVEYuOymQ0bhtJaqWLRgNqFiHORhqPZPMyMa69R+RvlMoRL/xJ7C2EgiNdpIYK6BpgoGYAZMbKwl+G/cZ4hS0MCLw/nbL0PA0ZPFgDNHIIQr0otedO4CBnxQ9uxJt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFFu07lt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4502BC4CEF0;
+	Sat, 12 Jul 2025 14:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752330280;
-	bh=7DiUO3SXZGr6eHE8KR3PU1LUYX79uK4evYzMYf0ANV4=;
+	s=korg; t=1752330398;
+	bh=p3qwwoDQQKXrhllTZvJKGGbKfxkpl7KiUqD2mcQ1EuA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=J2Vr15IfAxcC7AfCsAcTkGD11rDSp0M/Y2JyD1GWG9j1BcErT64F+p5IOvOXcmTry
-	 68ucDvevD5i0ki10tx9ejRgr2uu5TI08v/Vb45akQNydODoet6V9UloguxjmqRQvMH
-	 tNCuu7InvY9giK/gVmK6coT6pcjnYg+tfz5hsvIU=
-Subject: FAILED: patch "[PATCH] drm/amdkfd: Don't call mmput from MMU notifier callback" failed to apply to 6.1-stable tree
-To: Philip.Yang@amd.com,alexander.deucher@amd.com,felix.kuehling@amd.com
+	b=WFFu07lthMLxWGpiVT4MFbA4LoiDekh3Uood+sbNurdjABGlFZPgwkQkov7AeJg4q
+	 BJ7J2bZwIhkPAoH+5jF3jPSXYibvHFGt6fmT2YRnVe+j0uv/WQBV/OtNMOgXd+lCEX
+	 mbEHmxOeUddUbloCEkUzVTnZRIDYyt8ghe15Mchc=
+Subject: FAILED: patch "[PATCH] KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB" failed to apply to 6.6-stable tree
+To: manuel.andreas@tum.de,seanjc@google.com,vkuznets@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 12 Jul 2025 16:23:56 +0200
-Message-ID: <2025071256-province-work-ddbd@gregkh>
+Date: Sat, 12 Jul 2025 16:25:40 +0200
+Message-ID: <2025071240-smugly-detergent-14e4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x cf234231fcbc7d391e2135b9518613218cc5347f
+git cherry-pick -x fa787ac07b3ceb56dd88a62d1866038498e96230
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071256-province-work-ddbd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071240-smugly-detergent-14e4@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,184 +77,68 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cf234231fcbc7d391e2135b9518613218cc5347f Mon Sep 17 00:00:00 2001
-From: Philip Yang <Philip.Yang@amd.com>
-Date: Fri, 20 Jun 2025 18:32:32 -0400
-Subject: [PATCH] drm/amdkfd: Don't call mmput from MMU notifier callback
+From fa787ac07b3ceb56dd88a62d1866038498e96230 Mon Sep 17 00:00:00 2001
+From: Manuel Andreas <manuel.andreas@tum.de>
+Date: Wed, 25 Jun 2025 15:53:19 +0200
+Subject: [PATCH] KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB
+ flush
 
-If the process is exiting, the mmput inside mmu notifier callback from
-compactd or fork or numa balancing could release the last reference
-of mm struct to call exit_mmap and free_pgtable, this triggers deadlock
-with below backtrace.
+In KVM guests with Hyper-V hypercalls enabled, the hypercalls
+HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST and HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST_EX
+allow a guest to request invalidation of portions of a virtual TLB.
+For this, the hypercall parameter includes a list of GVAs that are supposed
+to be invalidated.
 
-The deadlock will leak kfd process as mmu notifier release is not called
-and cause VRAM leaking.
+However, when non-canonical GVAs are passed, there is currently no
+filtering in place and they are eventually passed to checked invocations of
+INVVPID on Intel / INVLPGA on AMD.  While AMD's INVLPGA silently ignores
+non-canonical addresses (effectively a no-op), Intel's INVVPID explicitly
+signals VM-Fail and ultimately triggers the WARN_ONCE in invvpid_error():
 
-The fix is to take mm reference mmget_non_zero when adding prange to the
-deferred list to pair with mmput in deferred list work.
+  invvpid failed: ext=0x0 vpid=1 gva=0xaaaaaaaaaaaaa000
+  WARNING: CPU: 6 PID: 326 at arch/x86/kvm/vmx/vmx.c:482
+  invvpid_error+0x91/0xa0 [kvm_intel]
+  Modules linked in: kvm_intel kvm 9pnet_virtio irqbypass fuse
+  CPU: 6 UID: 0 PID: 326 Comm: kvm-vm Not tainted 6.15.0 #14 PREEMPT(voluntary)
+  RIP: 0010:invvpid_error+0x91/0xa0 [kvm_intel]
+  Call Trace:
+    vmx_flush_tlb_gva+0x320/0x490 [kvm_intel]
+    kvm_hv_vcpu_flush_tlb+0x24f/0x4f0 [kvm]
+    kvm_arch_vcpu_ioctl_run+0x3013/0x5810 [kvm]
 
-If prange split and add into pchild list, the pchild work_item.mm is not
-used, so remove the mm parameter from svm_range_unmap_split and
-svm_range_add_child.
+Hyper-V documents that invalid GVAs (those that are beyond a partition's
+GVA space) are to be ignored.  While not completely clear whether this
+ruling also applies to non-canonical GVAs, it is likely fine to make that
+assumption, and manual testing on Azure confirms "real" Hyper-V interprets
+the specification in the same way.
 
-The backtrace of hung task:
+Skip non-canonical GVAs when processing the list of address to avoid
+tripping the INVVPID failure.  Alternatively, KVM could filter out "bad"
+GVAs before inserting into the FIFO, but practically speaking the only
+downside of pushing validation to the final processing is that doing so
+is suboptimal for the guest, and no well-behaved guest will request TLB
+flushes for non-canonical addresses.
 
- INFO: task python:348105 blocked for more than 64512 seconds.
- Call Trace:
-  __schedule+0x1c3/0x550
-  schedule+0x46/0xb0
-  rwsem_down_write_slowpath+0x24b/0x4c0
-  unlink_anon_vmas+0xb1/0x1c0
-  free_pgtables+0xa9/0x130
-  exit_mmap+0xbc/0x1a0
-  mmput+0x5a/0x140
-  svm_range_cpu_invalidate_pagetables+0x2b/0x40 [amdgpu]
-  mn_itree_invalidate+0x72/0xc0
-  __mmu_notifier_invalidate_range_start+0x48/0x60
-  try_to_unmap_one+0x10fa/0x1400
-  rmap_walk_anon+0x196/0x460
-  try_to_unmap+0xbb/0x210
-  migrate_page_unmap+0x54d/0x7e0
-  migrate_pages_batch+0x1c3/0xae0
-  migrate_pages_sync+0x98/0x240
-  migrate_pages+0x25c/0x520
-  compact_zone+0x29d/0x590
-  compact_zone_order+0xb6/0xf0
-  try_to_compact_pages+0xbe/0x220
-  __alloc_pages_direct_compact+0x96/0x1a0
-  __alloc_pages_slowpath+0x410/0x930
-  __alloc_pages_nodemask+0x3a9/0x3e0
-  do_huge_pmd_anonymous_page+0xd7/0x3e0
-  __handle_mm_fault+0x5e3/0x5f0
-  handle_mm_fault+0xf7/0x2e0
-  hmm_vma_fault.isra.0+0x4d/0xa0
-  walk_pmd_range.isra.0+0xa8/0x310
-  walk_pud_range+0x167/0x240
-  walk_pgd_range+0x55/0x100
-  __walk_page_range+0x87/0x90
-  walk_page_range+0xf6/0x160
-  hmm_range_fault+0x4f/0x90
-  amdgpu_hmm_range_get_pages+0x123/0x230 [amdgpu]
-  amdgpu_ttm_tt_get_user_pages+0xb1/0x150 [amdgpu]
-  init_user_pages+0xb1/0x2a0 [amdgpu]
-  amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x543/0x7d0 [amdgpu]
-  kfd_ioctl_alloc_memory_of_gpu+0x24c/0x4e0 [amdgpu]
-  kfd_ioctl+0x29d/0x500 [amdgpu]
-
-Fixes: fa582c6f3684 ("drm/amdkfd: Use mmget_not_zero in MMU notifier")
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a29e067bd38946f752b0ef855f3dfff87e77bec7)
+Fixes: 260970862c88 ("KVM: x86: hyper-v: Handle HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST{,EX} calls gently")
 Cc: stable@vger.kernel.org
+Signed-off-by: Manuel Andreas <manuel.andreas@tum.de>
+Suggested-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://lore.kernel.org/r/c090efb3-ef82-499f-a5e0-360fc8420fb7@tum.de
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 7763e4742080..a0f22ea6d15a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -1171,13 +1171,12 @@ svm_range_split_head(struct svm_range *prange, uint64_t new_start,
- }
+diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+index 75221a11e15e..ee27064dd72f 100644
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -1979,6 +1979,9 @@ int kvm_hv_vcpu_flush_tlb(struct kvm_vcpu *vcpu)
+ 		if (entries[i] == KVM_HV_TLB_FLUSHALL_ENTRY)
+ 			goto out_flush_all;
  
- static void
--svm_range_add_child(struct svm_range *prange, struct mm_struct *mm,
--		    struct svm_range *pchild, enum svm_work_list_ops op)
-+svm_range_add_child(struct svm_range *prange, struct svm_range *pchild, enum svm_work_list_ops op)
- {
- 	pr_debug("add child 0x%p [0x%lx 0x%lx] to prange 0x%p child list %d\n",
- 		 pchild, pchild->start, pchild->last, prange, op);
- 
--	pchild->work_item.mm = mm;
-+	pchild->work_item.mm = NULL;
- 	pchild->work_item.op = op;
- 	list_add_tail(&pchild->child_list, &prange->child_list);
- }
-@@ -2394,15 +2393,17 @@ svm_range_add_list_work(struct svm_range_list *svms, struct svm_range *prange,
- 		    prange->work_item.op != SVM_OP_UNMAP_RANGE)
- 			prange->work_item.op = op;
- 	} else {
--		prange->work_item.op = op;
--
--		/* Pairs with mmput in deferred_list_work */
--		mmget(mm);
--		prange->work_item.mm = mm;
--		list_add_tail(&prange->deferred_list,
--			      &prange->svms->deferred_range_list);
--		pr_debug("add prange 0x%p [0x%lx 0x%lx] to work list op %d\n",
--			 prange, prange->start, prange->last, op);
-+		/* Pairs with mmput in deferred_list_work.
-+		 * If process is exiting and mm is gone, don't update mmu notifier.
-+		 */
-+		if (mmget_not_zero(mm)) {
-+			prange->work_item.mm = mm;
-+			prange->work_item.op = op;
-+			list_add_tail(&prange->deferred_list,
-+				      &prange->svms->deferred_range_list);
-+			pr_debug("add prange 0x%p [0x%lx 0x%lx] to work list op %d\n",
-+				 prange, prange->start, prange->last, op);
-+		}
- 	}
- 	spin_unlock(&svms->deferred_list_lock);
- }
-@@ -2416,8 +2417,7 @@ void schedule_deferred_list_work(struct svm_range_list *svms)
- }
- 
- static void
--svm_range_unmap_split(struct mm_struct *mm, struct svm_range *parent,
--		      struct svm_range *prange, unsigned long start,
-+svm_range_unmap_split(struct svm_range *parent, struct svm_range *prange, unsigned long start,
- 		      unsigned long last)
- {
- 	struct svm_range *head;
-@@ -2438,12 +2438,12 @@ svm_range_unmap_split(struct mm_struct *mm, struct svm_range *parent,
- 		svm_range_split(tail, last + 1, tail->last, &head);
- 
- 	if (head != prange && tail != prange) {
--		svm_range_add_child(parent, mm, head, SVM_OP_UNMAP_RANGE);
--		svm_range_add_child(parent, mm, tail, SVM_OP_ADD_RANGE);
-+		svm_range_add_child(parent, head, SVM_OP_UNMAP_RANGE);
-+		svm_range_add_child(parent, tail, SVM_OP_ADD_RANGE);
- 	} else if (tail != prange) {
--		svm_range_add_child(parent, mm, tail, SVM_OP_UNMAP_RANGE);
-+		svm_range_add_child(parent, tail, SVM_OP_UNMAP_RANGE);
- 	} else if (head != prange) {
--		svm_range_add_child(parent, mm, head, SVM_OP_UNMAP_RANGE);
-+		svm_range_add_child(parent, head, SVM_OP_UNMAP_RANGE);
- 	} else if (parent != prange) {
- 		prange->work_item.op = SVM_OP_UNMAP_RANGE;
- 	}
-@@ -2520,14 +2520,14 @@ svm_range_unmap_from_cpu(struct mm_struct *mm, struct svm_range *prange,
- 		l = min(last, pchild->last);
- 		if (l >= s)
- 			svm_range_unmap_from_gpus(pchild, s, l, trigger);
--		svm_range_unmap_split(mm, prange, pchild, start, last);
-+		svm_range_unmap_split(prange, pchild, start, last);
- 		mutex_unlock(&pchild->lock);
- 	}
- 	s = max(start, prange->start);
- 	l = min(last, prange->last);
- 	if (l >= s)
- 		svm_range_unmap_from_gpus(prange, s, l, trigger);
--	svm_range_unmap_split(mm, prange, prange, start, last);
-+	svm_range_unmap_split(prange, prange, start, last);
- 
- 	if (unmap_parent)
- 		svm_range_add_list_work(svms, prange, mm, SVM_OP_UNMAP_RANGE);
-@@ -2570,8 +2570,6 @@ svm_range_cpu_invalidate_pagetables(struct mmu_interval_notifier *mni,
- 
- 	if (range->event == MMU_NOTIFY_RELEASE)
- 		return true;
--	if (!mmget_not_zero(mni->mm))
--		return true;
- 
- 	start = mni->interval_tree.start;
- 	last = mni->interval_tree.last;
-@@ -2598,7 +2596,6 @@ svm_range_cpu_invalidate_pagetables(struct mmu_interval_notifier *mni,
- 	}
- 
- 	svm_range_unlock(prange);
--	mmput(mni->mm);
- 
- 	return true;
- }
++		if (is_noncanonical_invlpg_address(entries[i], vcpu))
++			continue;
++
+ 		/*
+ 		 * Lower 12 bits of 'address' encode the number of additional
+ 		 * pages to flush.
 
 
