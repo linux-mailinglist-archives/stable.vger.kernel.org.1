@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-161730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01518B02B2B
-	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 16:00:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052AEB02B2E
+	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 16:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92BB4A462AE
-	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 14:00:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4F7E1C223A6
+	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 14:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF7727935C;
-	Sat, 12 Jul 2025 14:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FAA27A440;
+	Sat, 12 Jul 2025 14:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9zjFYVK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJdkdKd6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36AE1F5823
-	for <stable@vger.kernel.org>; Sat, 12 Jul 2025 14:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083A727935C
+	for <stable@vger.kernel.org>; Sat, 12 Jul 2025 14:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752328854; cv=none; b=Y1u0SKTSjd3QtvfufuD2aUvEAelkGLQYdHyBkEupcD9uNbuTQhvoWWZy3lgc6BAG5KvWSeGVVnqbT5DQd0vRYNpWPMMWibec1hQOZcdCVdakYnFxSutOpXgkSL9WVEu0A0AOG7qJE1Hg05d/MDoxMETsHZHbrsMDp7yTZrmyS7k=
+	t=1752328970; cv=none; b=fg1gVE8qPtzX2TJ47eEz0ITlvS8qoQZgFFv4xAmyz73ECuouNln86BVRmrNdmhdzfl0iizmVZ0Sna5h7Qh/8r+0CiUdzX9kXhhhqx8Nf+th+9ztNW+PS1jcyNI2F73tQWI2CakMbILduvARnAJOhrJiiQwkWtrBaKeOWjVOu3Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752328854; c=relaxed/simple;
-	bh=6R0KOqo70rHzWjQTXyZv7eGdio2PyKXQDsqm7jjFjH8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tjWzFs5ak++RNxoXVWoux63PhvhBigwuQ8yezyBqig9YVlYLaqpeHSu70EOEE8Ic0RJwy4tCBiJUQGH/IFg1QqPxxM0kcNFDmadAaKiVhf5iXsbt0W55iWH87WlkoBalM5mtOz1aVj93LWV0URCd159aYA8sDZWX2KiX9IzeeRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9zjFYVK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33673C4CEEF;
-	Sat, 12 Jul 2025 14:00:53 +0000 (UTC)
+	s=arc-20240116; t=1752328970; c=relaxed/simple;
+	bh=hBOfoS1j2fmfJQIKQDkvIsiQXR8QTpVB05VrcOFYWcs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QITB0jlsRMZa9hpBq4e2YUN5luuv+d5L7xUd737AxBFerFUmkZVuz/eQDYeF/Go1YXPmpqQxd+LbxG489upKEuAp33rloztdm1MjCi6Bv2cPNLuAoF4PDI5d/Fb8CI3gQGJAlB4oohQ1ZZIsygPAyA658HEtSxRPrI8yxk6wUek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJdkdKd6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804E3C4CEEF;
+	Sat, 12 Jul 2025 14:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752328853;
-	bh=6R0KOqo70rHzWjQTXyZv7eGdio2PyKXQDsqm7jjFjH8=;
+	s=korg; t=1752328969;
+	bh=hBOfoS1j2fmfJQIKQDkvIsiQXR8QTpVB05VrcOFYWcs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=R9zjFYVKsYKyQohpq4hWgvHbSyCbiVYvNG1vkMnt8CYiwXg31HYYPuNB58mpMZ6v9
-	 xGNJmuDPLufV4usixgwR+AEBn43AW3B1068H2apS6pW2JM5DKQg5aToQUBOxs+obRr
-	 FsQTIFGzhZhD1H6GRJ+tCSZv9ArcbC3pGyCxKLgE=
-Subject: FAILED: patch "[PATCH] pwm: mediatek: Ensure to disable clocks in error path" failed to apply to 5.10-stable tree
-To: u.kleine-koenig@baylibre.com,ukleinek@kernel.org
+	b=VJdkdKd6yNGik2bZYf8UgX5b62dfWmdgw+dPt408ePITXi+mkLuFaRFhE9FL7jsa+
+	 EEgFjEIc9NXt8VUXcqBZofF+GEcD9X89B6YIG0+Xlhk2x8wKiR+iBAe9l3nMuEtrzB
+	 ntZPZ1mjFirvNK3RHPuVKHiqGQQkonsDCI5sRbHI=
+Subject: FAILED: patch "[PATCH] drm/amdkfd: Don't call mmput from MMU notifier callback" failed to apply to 5.15-stable tree
+To: Philip.Yang@amd.com,alexander.deucher@amd.com,felix.kuehling@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 12 Jul 2025 16:00:36 +0200
-Message-ID: <2025071236-propeller-quality-54b9@gregkh>
+Date: Sat, 12 Jul 2025 16:02:46 +0200
+Message-ID: <2025071246-carol-kung-5103@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 505b730ede7f5c4083ff212aa955155b5b92e574
+git cherry-pick -x cf234231fcbc7d391e2135b9518613218cc5347f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071236-propeller-quality-54b9@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071246-carol-kung-5103@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,64 +77,184 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 505b730ede7f5c4083ff212aa955155b5b92e574 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Date: Fri, 4 Jul 2025 19:27:27 +0200
-Subject: [PATCH] pwm: mediatek: Ensure to disable clocks in error path
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From cf234231fcbc7d391e2135b9518613218cc5347f Mon Sep 17 00:00:00 2001
+From: Philip Yang <Philip.Yang@amd.com>
+Date: Fri, 20 Jun 2025 18:32:32 -0400
+Subject: [PATCH] drm/amdkfd: Don't call mmput from MMU notifier callback
 
-After enabling the clocks each error path must disable the clocks again.
-One of them failed to do so. Unify the error paths to use goto to make it
-harder for future changes to add a similar bug.
+If the process is exiting, the mmput inside mmu notifier callback from
+compactd or fork or numa balancing could release the last reference
+of mm struct to call exit_mmap and free_pgtable, this triggers deadlock
+with below backtrace.
 
-Fixes: 7ca59947b5fc ("pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250704172728.626815-2-u.kleine-koenig@baylibre.com
+The deadlock will leak kfd process as mmu notifier release is not called
+and cause VRAM leaking.
+
+The fix is to take mm reference mmget_non_zero when adding prange to the
+deferred list to pair with mmput in deferred list work.
+
+If prange split and add into pchild list, the pchild work_item.mm is not
+used, so remove the mm parameter from svm_range_unmap_split and
+svm_range_add_child.
+
+The backtrace of hung task:
+
+ INFO: task python:348105 blocked for more than 64512 seconds.
+ Call Trace:
+  __schedule+0x1c3/0x550
+  schedule+0x46/0xb0
+  rwsem_down_write_slowpath+0x24b/0x4c0
+  unlink_anon_vmas+0xb1/0x1c0
+  free_pgtables+0xa9/0x130
+  exit_mmap+0xbc/0x1a0
+  mmput+0x5a/0x140
+  svm_range_cpu_invalidate_pagetables+0x2b/0x40 [amdgpu]
+  mn_itree_invalidate+0x72/0xc0
+  __mmu_notifier_invalidate_range_start+0x48/0x60
+  try_to_unmap_one+0x10fa/0x1400
+  rmap_walk_anon+0x196/0x460
+  try_to_unmap+0xbb/0x210
+  migrate_page_unmap+0x54d/0x7e0
+  migrate_pages_batch+0x1c3/0xae0
+  migrate_pages_sync+0x98/0x240
+  migrate_pages+0x25c/0x520
+  compact_zone+0x29d/0x590
+  compact_zone_order+0xb6/0xf0
+  try_to_compact_pages+0xbe/0x220
+  __alloc_pages_direct_compact+0x96/0x1a0
+  __alloc_pages_slowpath+0x410/0x930
+  __alloc_pages_nodemask+0x3a9/0x3e0
+  do_huge_pmd_anonymous_page+0xd7/0x3e0
+  __handle_mm_fault+0x5e3/0x5f0
+  handle_mm_fault+0xf7/0x2e0
+  hmm_vma_fault.isra.0+0x4d/0xa0
+  walk_pmd_range.isra.0+0xa8/0x310
+  walk_pud_range+0x167/0x240
+  walk_pgd_range+0x55/0x100
+  __walk_page_range+0x87/0x90
+  walk_page_range+0xf6/0x160
+  hmm_range_fault+0x4f/0x90
+  amdgpu_hmm_range_get_pages+0x123/0x230 [amdgpu]
+  amdgpu_ttm_tt_get_user_pages+0xb1/0x150 [amdgpu]
+  init_user_pages+0xb1/0x2a0 [amdgpu]
+  amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x543/0x7d0 [amdgpu]
+  kfd_ioctl_alloc_memory_of_gpu+0x24c/0x4e0 [amdgpu]
+  kfd_ioctl+0x29d/0x500 [amdgpu]
+
+Fixes: fa582c6f3684 ("drm/amdkfd: Use mmget_not_zero in MMU notifier")
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a29e067bd38946f752b0ef855f3dfff87e77bec7)
 Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index 7eaab5831499..33d3554b9197 100644
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -130,8 +130,10 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 		return ret;
- 
- 	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
--	if (!clk_rate)
--		return -EINVAL;
-+	if (!clk_rate) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
- 
- 	/* Make sure we use the bus clock and not the 26MHz clock */
- 	if (pc->soc->has_ck_26m_sel)
-@@ -150,9 +152,9 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	}
- 
- 	if (clkdiv > PWM_CLK_DIV_MAX) {
--		pwm_mediatek_clk_disable(chip, pwm);
- 		dev_err(pwmchip_parent(chip), "period of %d ns not supported\n", period_ns);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto out;
- 	}
- 
- 	if (pc->soc->pwm45_fixup && pwm->hwpwm > 2) {
-@@ -169,9 +171,10 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
- 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
- 
-+out:
- 	pwm_mediatek_clk_disable(chip, pwm);
- 
--	return 0;
-+	return ret;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 7763e4742080..a0f22ea6d15a 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1171,13 +1171,12 @@ svm_range_split_head(struct svm_range *prange, uint64_t new_start,
  }
  
- static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+ static void
+-svm_range_add_child(struct svm_range *prange, struct mm_struct *mm,
+-		    struct svm_range *pchild, enum svm_work_list_ops op)
++svm_range_add_child(struct svm_range *prange, struct svm_range *pchild, enum svm_work_list_ops op)
+ {
+ 	pr_debug("add child 0x%p [0x%lx 0x%lx] to prange 0x%p child list %d\n",
+ 		 pchild, pchild->start, pchild->last, prange, op);
+ 
+-	pchild->work_item.mm = mm;
++	pchild->work_item.mm = NULL;
+ 	pchild->work_item.op = op;
+ 	list_add_tail(&pchild->child_list, &prange->child_list);
+ }
+@@ -2394,15 +2393,17 @@ svm_range_add_list_work(struct svm_range_list *svms, struct svm_range *prange,
+ 		    prange->work_item.op != SVM_OP_UNMAP_RANGE)
+ 			prange->work_item.op = op;
+ 	} else {
+-		prange->work_item.op = op;
+-
+-		/* Pairs with mmput in deferred_list_work */
+-		mmget(mm);
+-		prange->work_item.mm = mm;
+-		list_add_tail(&prange->deferred_list,
+-			      &prange->svms->deferred_range_list);
+-		pr_debug("add prange 0x%p [0x%lx 0x%lx] to work list op %d\n",
+-			 prange, prange->start, prange->last, op);
++		/* Pairs with mmput in deferred_list_work.
++		 * If process is exiting and mm is gone, don't update mmu notifier.
++		 */
++		if (mmget_not_zero(mm)) {
++			prange->work_item.mm = mm;
++			prange->work_item.op = op;
++			list_add_tail(&prange->deferred_list,
++				      &prange->svms->deferred_range_list);
++			pr_debug("add prange 0x%p [0x%lx 0x%lx] to work list op %d\n",
++				 prange, prange->start, prange->last, op);
++		}
+ 	}
+ 	spin_unlock(&svms->deferred_list_lock);
+ }
+@@ -2416,8 +2417,7 @@ void schedule_deferred_list_work(struct svm_range_list *svms)
+ }
+ 
+ static void
+-svm_range_unmap_split(struct mm_struct *mm, struct svm_range *parent,
+-		      struct svm_range *prange, unsigned long start,
++svm_range_unmap_split(struct svm_range *parent, struct svm_range *prange, unsigned long start,
+ 		      unsigned long last)
+ {
+ 	struct svm_range *head;
+@@ -2438,12 +2438,12 @@ svm_range_unmap_split(struct mm_struct *mm, struct svm_range *parent,
+ 		svm_range_split(tail, last + 1, tail->last, &head);
+ 
+ 	if (head != prange && tail != prange) {
+-		svm_range_add_child(parent, mm, head, SVM_OP_UNMAP_RANGE);
+-		svm_range_add_child(parent, mm, tail, SVM_OP_ADD_RANGE);
++		svm_range_add_child(parent, head, SVM_OP_UNMAP_RANGE);
++		svm_range_add_child(parent, tail, SVM_OP_ADD_RANGE);
+ 	} else if (tail != prange) {
+-		svm_range_add_child(parent, mm, tail, SVM_OP_UNMAP_RANGE);
++		svm_range_add_child(parent, tail, SVM_OP_UNMAP_RANGE);
+ 	} else if (head != prange) {
+-		svm_range_add_child(parent, mm, head, SVM_OP_UNMAP_RANGE);
++		svm_range_add_child(parent, head, SVM_OP_UNMAP_RANGE);
+ 	} else if (parent != prange) {
+ 		prange->work_item.op = SVM_OP_UNMAP_RANGE;
+ 	}
+@@ -2520,14 +2520,14 @@ svm_range_unmap_from_cpu(struct mm_struct *mm, struct svm_range *prange,
+ 		l = min(last, pchild->last);
+ 		if (l >= s)
+ 			svm_range_unmap_from_gpus(pchild, s, l, trigger);
+-		svm_range_unmap_split(mm, prange, pchild, start, last);
++		svm_range_unmap_split(prange, pchild, start, last);
+ 		mutex_unlock(&pchild->lock);
+ 	}
+ 	s = max(start, prange->start);
+ 	l = min(last, prange->last);
+ 	if (l >= s)
+ 		svm_range_unmap_from_gpus(prange, s, l, trigger);
+-	svm_range_unmap_split(mm, prange, prange, start, last);
++	svm_range_unmap_split(prange, prange, start, last);
+ 
+ 	if (unmap_parent)
+ 		svm_range_add_list_work(svms, prange, mm, SVM_OP_UNMAP_RANGE);
+@@ -2570,8 +2570,6 @@ svm_range_cpu_invalidate_pagetables(struct mmu_interval_notifier *mni,
+ 
+ 	if (range->event == MMU_NOTIFY_RELEASE)
+ 		return true;
+-	if (!mmget_not_zero(mni->mm))
+-		return true;
+ 
+ 	start = mni->interval_tree.start;
+ 	last = mni->interval_tree.last;
+@@ -2598,7 +2596,6 @@ svm_range_cpu_invalidate_pagetables(struct mmu_interval_notifier *mni,
+ 	}
+ 
+ 	svm_range_unlock(prange);
+-	mmput(mni->mm);
+ 
+ 	return true;
+ }
 
 
