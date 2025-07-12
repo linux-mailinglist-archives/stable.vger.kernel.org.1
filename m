@@ -1,84 +1,85 @@
-Return-Path: <stable+bounces-161750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BAC2B02CFB
-	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 22:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E90FB02D03
+	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 23:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4F751AA5937
-	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 20:58:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D6D21893A4E
+	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 21:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C3522652D;
-	Sat, 12 Jul 2025 20:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5F713AA20;
+	Sat, 12 Jul 2025 21:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ZV9JftxO"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vVg6U6mn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE77B2AE99
-	for <stable@vger.kernel.org>; Sat, 12 Jul 2025 20:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1657C2E0
+	for <stable@vger.kernel.org>; Sat, 12 Jul 2025 21:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752353889; cv=none; b=XBjd71x9FntJRct14m4Ms0/KSVEcta4Mil+mm1wt2QNZvc+RkGiz/aJ2ZqcvrMW1A/qdS42ea4nlQNhOw0ZnixuHKDZxDGktNZYWGzIL2xtgVe//FV8b7XG2k4FcdBIX4UGe1LZIVsWZ7cx6ZAZk3Gms6HH7dWcjFpaM3zrv/54=
+	t=1752354022; cv=none; b=YYqa32F7f/Z+HgdoArkPFDQv3MB/Aqi4clQ8k1F9gnT1wZvpZxiBCx42v9PJwM0P0gpdlm0q0lYWkG/mFt9g/M8ZBAKd0ZYXpMEy1UpyVaolB+VyQN+6b/4PpymqHVRChT/Vxm1Od06bNUvE35DAU47GoPMdM521BJS7oG+4J20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752353889; c=relaxed/simple;
-	bh=VSEpu8ujeUFhDwIvkuodUsE8d8xEQEygKNs1oPQsa54=;
+	s=arc-20240116; t=1752354022; c=relaxed/simple;
+	bh=YOCye7RNjet2KuZ0zkUQtl7/kruqqFZuzgc6rzdtHcQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a0HVYqbsg3DyQdK52p1Qnx5h6P//uLNmuA5jWHyjU8InoWrp6gZobvz5QYXJxeh9baY+21+H09fhU/hazEdGac9qMBoX88cdLEuuvozXj69gTsibjLW23kQUVm9dx8UcmSj4U16W5gNEi0diKUWdVFCjczz5+Xqo8x8hb8a/x0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ZV9JftxO; arc=none smtp.client-ip=209.85.208.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=mgAfzaXK72OvVXf5ITbEP3WYRDU7pRbKqbmzaYzZpWm4owRsMd/D221tuhAcl9E9uGc8OGaOpXYsJHcLZ53OJINNaARhIVXts7+jOn30Qon3sCB0oFXvRQtfmEJvE2Ap3M+CiK/bmEZNI6APljcWoJLNSsw9mQK4jilP5CwTMpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vVg6U6mn; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-60c9d8a16e5so6078294a12.0
-        for <stable@vger.kernel.org>; Sat, 12 Jul 2025 13:58:05 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ae0dd7ac1f5so650095966b.2
+        for <stable@vger.kernel.org>; Sat, 12 Jul 2025 14:00:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752353884; x=1752958684; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752354018; x=1752958818; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VSEpu8ujeUFhDwIvkuodUsE8d8xEQEygKNs1oPQsa54=;
-        b=ZV9JftxOuMORSjfCpBKZQSvcIhRp0CmFuRLyhoL+3klWqVun1ioLuJLJmlpdn0037V
-         j5sP6HQTC8gBlx/MUstSJTWz76NtGPdJHRdyrH+Dh73TvBAJXs3DUMKEIm84VBTfVwPE
-         knYbl2Z6nVA6EAnu5O7SQXzPM4f1D4Qlq6RA8dXbaxyzQ8+CPXR/PwchMqL5oVtphcWQ
-         T0yBUvBMnHhn+uvBuILMC8bXgxL5sThIcdf7rpbH92fbFsy7tBkRYKE0kEp6X3VVNsh9
-         Aow6B8LV0PSYUzEA0/I4kGYkYxsOIku6Aky3xup4aXJ7U6ZaWhgp868rWKtP8h5PC2/G
-         HOTw==
+        bh=YOCye7RNjet2KuZ0zkUQtl7/kruqqFZuzgc6rzdtHcQ=;
+        b=vVg6U6mn7trzjlW09ZPjwHqHanXUUjLwa5wQXIszmxLhpi0xrLBejIh5JjDT4fHrsp
+         HQJ6kJXlf1Ztmfdv3jK2+n/Z/dkGhFGI+b476j24ga/Or0WtzPTEe3k6U8VmfIbNmPyj
+         /zOHBbPgtB4/TW31unL7HVHTqa1nMtSSNchvg+fdj0tLl6owpXtuFxzIPfScF7ZbytJw
+         gnViFTNI0zB0gotwnWSgTGcaHdhhOPT11OUj70axaBXH38Whj4hhWrhz1uwlACvzRmZf
+         g1IxTcaHZ0Wi9U1d5EHTfXIeJQRYPgkAe1TVG7E7Ir1USIwldxmlaYYuXkEATi9CQQXC
+         kF3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752353884; x=1752958684;
+        d=1e100.net; s=20230601; t=1752354018; x=1752958818;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VSEpu8ujeUFhDwIvkuodUsE8d8xEQEygKNs1oPQsa54=;
-        b=MzkuR8EAtTN5g8+6XdXk+X9sW72ILDwE0MynMjimFOReLt2B7aHaWIIPouyfMag3K1
-         D3ak3+iubPUoU96FoCzOxlh2w9AoQ09hO48Mnn5XFtQgJhwPN/IScScxRpSt8Uio4mVm
-         ET21N4rvdVfho7pdm9oGZvLSvkfc+1ct+/YwK7jLGeNrCkJrKXulLqUua4JNtw2T1DJk
-         Erkh195qghUsOaJDYWjuMErEyGgZRxVhJfVFhttPAoqu1sHRT9X0QXfkFK44SO9c52/h
-         I9L/gczK1m4gfq6wasDsSNGNSmIdifhX808vGeFkMzT0zZK19BSab0pghiE2A1+EkxSg
-         porg==
-X-Gm-Message-State: AOJu0YyVwUq+jWu0XCG6zsSUmdGmgIWDkpvqHizSvBRBIAuTeKQELqIW
-	ZahpaBS3DOa+GO+wYPTBTvIg52IGiMnIiC/12t0q4HydYOUGmTPOYZmjUqDPvxGeZE4=
-X-Gm-Gg: ASbGncswGm/1HNASfvVfwom6tKk4VxWlZsUSd6Kg5SgrhyprEhQSjoEuPKRWQh2ndim
-	1Jz96haqD1buX0nm4BYPqtV+QcXftXdHMvoOFi4o2VfdzH5yVRxPDdlVuxGvOdyBMb9+Qdk0IY0
-	f6QyhWWlIvFN/OzPOHaJWvECt1rthbca7tyvs9SEz0PlSQD+lLVqJd+iADAuuaDd4OgPa0HFlY+
-	v3FuDiHaOlgYbWD1Yy4x2ElIXEKh5892y0X2RjugB0MPY9hn0ug8CzTg5XOWfX3uM3kxQBnEPdd
-	L5cJhr81brJ6TUwEWmliiUHRSKyA+p3MKsTVh3yuNsQsBGft54sY491E112emtJCaB+o0QR11/L
-	tvoV5uNTdJ4xNHfk4ITYpiyuePFo=
-X-Google-Smtp-Source: AGHT+IGyoIq1C5JTqmLvirMvpABKzl3CVZynSx1Hq4rglMhON5XPQm1ykxQW2IV7tkB7/54J5cTVbA==
-X-Received: by 2002:a17:907:1c8c:b0:ae0:e18b:e92f with SMTP id a640c23a62f3a-ae6fbc8c32emr696204666b.23.1752353883867;
-        Sat, 12 Jul 2025 13:58:03 -0700 (PDT)
+        bh=YOCye7RNjet2KuZ0zkUQtl7/kruqqFZuzgc6rzdtHcQ=;
+        b=D3mXa4gSg+UlP5rwDoijbxZW9q6uxhKjiTipvNql8EvRJ3yqRWPR2fGocO1i7mTaOm
+         AVaTn+JoEfr7SBJZzyS3z4niDqnJbfDK7V+vj3NgyR2kO6c9tLaolmx+Ryf0BILiUlRx
+         QJIto8RJ4mP+vzwMMq+Ed+fBcb1emnIQ6LEybYIDVcb5/RKOKxDxBITTX6VhzfpUOgO0
+         KVUuPijQXf31c8sNeTVdHcx54iyRgnM+uD2HH98LgOeiD6Cp2KaNi8MHd1CRheHRT5gC
+         L/lu5KkNprwvBfYhmZ6+0iWxBv5dSdf2J9HbKhYQzNGccOt7LCYz/vsY1oC53XCusIdz
+         Czfg==
+X-Gm-Message-State: AOJu0YxaiIyagZWM7WeYWKNdABY+diM/oJCkqbOJV6w43ayBc6xH7wW4
+	UJUoHMlkVONhJ4h4NGzV0SIoMeSVnl/5+MhS+CVGiUBJAQwekUrMzVzb1n10SMybagEXO3pd9do
+	razb3
+X-Gm-Gg: ASbGnctMwe3lVPVN4CxB3Bu1dSKF38bM6WdcaIvI9Ej3oc51G8PuN/GjG+64yij43EU
+	wAgVc7T9k0ztgDPl2B3QF96AhXn5hxV5zj2v+o2CtPj95x5vFRdKsi3oPoARes5gPuo+j04Iees
+	BEZcSlTliQ134r1mikXieLcuby3Klxf4U5udyDBOoLZDQ+B7tIcslfMBhgA0gspE77T7YcL42Ml
+	1KWh52hXXrbVB939cIPZKkbBV5jvaZSUtfmeQmSzVrpXyqlobiwI/nfmVk+Hn6eeTxmYmf7PRHa
+	J5W8Ul/qO2uvrNT26saXheoCcuuOGiPqSWxPykNaGgLh27SftWqrNmGDcz0eTSv7RuHkODNECgT
+	d0qifufbaNiB+TFzcdjepWwo2jg21bXDybPWL3Q==
+X-Google-Smtp-Source: AGHT+IG4L5XJGQEMfpp4bV3gSTypOeiSD6KhIOVKFRU37Ym9v0AcAjVDKxsQvJ3hA5yaJxG1DayS9Q==
+X-Received: by 2002:a17:907:cd07:b0:ae3:64ec:5eb0 with SMTP id a640c23a62f3a-ae6fbc55069mr796640766b.11.1752354017921;
+        Sat, 12 Jul 2025 14:00:17 -0700 (PDT)
 Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-ae6e7eead92sm547968966b.63.2025.07.12.13.58.03
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-ae6e8264663sm538692066b.87.2025.07.12.14.00.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Jul 2025 13:58:03 -0700 (PDT)
-Date: Sat, 12 Jul 2025 22:58:02 +0200
+        Sat, 12 Jul 2025 14:00:17 -0700 (PDT)
+Date: Sat, 12 Jul 2025 23:00:16 +0200
 From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: gregkh@linuxfoundation.org
 Cc: stable@vger.kernel.org
 Subject: Re: FAILED: patch "[PATCH] pwm: mediatek: Ensure to disable clocks
- in error path" failed to apply to 5.10-stable tree
-Message-ID: <nnwmktibtyiugeifg47o2lkeiadmnlzgi5oq3o3pf2nrm2utbs@zhblnf36nfkg>
-References: <2025071236-propeller-quality-54b9@gregkh>
+ in error path" failed to apply to 5.4-stable tree
+Message-ID: <ensabnoqktuudz4ohh3kyi57p7us2f3td3vascmtkvknspnpyg@jqpgnwokd3tu>
+References: <2025071236-generous-jazz-41e4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,22 +87,24 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wlosgh5puwlracvi"
+	protocol="application/pgp-signature"; boundary="b3sqpfgpkoduj444"
 Content-Disposition: inline
-In-Reply-To: <2025071236-propeller-quality-54b9@gregkh>
+In-Reply-To: <2025071236-generous-jazz-41e4@gregkh>
 
 
---wlosgh5puwlracvi
+--b3sqpfgpkoduj444
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 Subject: Re: FAILED: patch "[PATCH] pwm: mediatek: Ensure to disable clocks
- in error path" failed to apply to 5.10-stable tree
+ in error path" failed to apply to 5.4-stable tree
 MIME-Version: 1.0
+
+Hello,
 
 On Sat, Jul 12, 2025 at 04:00:36PM +0200, gregkh@linuxfoundation.org wrote:
 >=20
-> The patch below does not apply to the 5.10-stable tree.
+> The patch below does not apply to the 5.4-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
@@ -110,34 +113,34 @@ On Sat, Jul 12, 2025 at 04:00:36PM +0200, gregkh@linuxfoundation.org wrote:
 s:
 >=20
 > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
-t/ linux-5.10.y
+t/ linux-5.4.y
 > git checkout FETCH_HEAD
 > git cherry-pick -x 505b730ede7f5c4083ff212aa955155b5b92e574
 > # <resolve conflicts, build, test, etc.>
 > git commit -s
 > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071236-=
-propeller-quality-54b9@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+generous-jazz-41e4@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
-The patch I just sent for 5.15 applies fine on 5.10, too. I assume this
-is good enough here. If not, please tell me.
+the patch I just sent for 5.15 applies fine on 5.4.y. I assume this is
+good enough and someone will tell me if not.
 
 Best regards
 Uwe
 
---wlosgh5puwlracvi
+--b3sqpfgpkoduj444
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhyzFcACgkQj4D7WH0S
-/k4GoggAiSXixB3DY/v6+FpOk7n0jauX4Oh+CqSSrPgjaGTbZIWFUSFIcTP0H5kP
-vQ00wJAKUxLngBpkoIzJmfrdmTlXR5zZbXEbzqWZmyNHanA3s0PefUMCy+wEFRUS
-uMFp4dV6wecmHSGSrFFqjSzKeLE7ONDSGpD7ci01Z7kDnrzKs0HcSJ+UpZpb7il0
-ScHnz/EJwerCZaXvb5gzwTaLY8mvHFfZS046OK3PuUeKgMby33RChHwvxWzL1rkF
-v4fGuXAk3bOInUlVXpxfRryIZ692hAUvglAI/s7inDo/Uxdx9SsAcpvbQmpP+Wqo
-FoeOsmEFXoXhIDhQYXxgXn4/OCH/uA==
-=yAU+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhyzN0ACgkQj4D7WH0S
+/k7JVAgAgIkzqhleT7R1lcucTlt7lCEXJB4xWsnpB5d4KZqZcmS8uiYjCDCeGzvg
+a/ydHAwc6Obdl+wBMAEIbtwArohb8OXjpgwE3xIIhnVkS++OfxXsW3z9gqwJPgi2
+JJqc8U25gYxi3k8Ep6vFO405hG7Nf6sPqupPVBBFIT0U2oGH2aqndLX1d876sYDj
+7nb4Q4WPhbg/Hb1i1L7MHUh7KqOn+nuVrzHQngHj4w1D4aOZ9dzW3iwZKVIlr0PR
+uInCPMBJJNdaWuYh8maJNkxoqJhJX45+ASzfNhK/GGESJyV6w0k9rgqud2misi0n
+DiNxwEDBTMqRYvISELKjKyMjtzlK0Q==
+=Df+v
 -----END PGP SIGNATURE-----
 
---wlosgh5puwlracvi--
+--b3sqpfgpkoduj444--
 
