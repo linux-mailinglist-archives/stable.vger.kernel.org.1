@@ -1,132 +1,117 @@
-Return-Path: <stable+bounces-161696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DC4B0292C
-	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 05:41:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D8CB02976
+	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 07:25:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC4691BC2668
-	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 03:41:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABD16562392
+	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 05:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BED1EF38E;
-	Sat, 12 Jul 2025 03:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A06915E5BB;
+	Sat, 12 Jul 2025 05:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="fENIcC70"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="h8pme+2c"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A4C1B95B;
-	Sat, 12 Jul 2025 03:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CFF1F582C
+	for <stable@vger.kernel.org>; Sat, 12 Jul 2025 05:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752291684; cv=none; b=nyz2i1FJNFNhV4q+Ta7TxzhDUhIFPnKryJ4o1cU20vC7Ys9Hb0gRvje/qjv2Vcof2mxrPoX2pSZp3hYOqBGUpcRoTu0keDA8ntSyZz1dtig76d87jyUJ54nHYJMzwdusb+NmIjke2p6g4CkNpURjZ+SkUOL7qzpolDP+5m6/Vt8=
+	t=1752297923; cv=none; b=ECq89vv0zv1d+9CMGfyuVyeO/hWKFE6BoRTDBvgYdFc+CcdM/Ng6wHFpOA7vNCFl1R474BU7RySQIwsN4wpmtXn0kiS6YAtIwppMcoenxxRsIkHrpS3aSyMBwWeiKN+c8FWEE9nKnY/brcqPbaCOlJ535yqhMtG/yjxbjgXtM68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752291684; c=relaxed/simple;
-	bh=gE/8JUvGtNdOETekl43BDZmmXp8+/VN9DF8Job0bELM=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=P0BxWOCkI6Qt2J/PtPFuvisZaqb8BNB571+rvmtxPaViK30/A0Bam493XpvsPCRMMsVaqRL1uFrgw+PLh1W5MwPVosUbxNdSMm+6tH9ivycHyQtM/PytRnhADsIAAePMaMfyjw+Xv0pusCkoCJwQKJy/yCJ6zNRYlQAR7c1ST18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=fENIcC70; arc=none smtp.client-ip=117.135.210.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id; bh=8t7OohShBC0pqB1
-	JRi7AhEL4nwregm6rK5n5ue/Gx3c=; b=fENIcC70FMtsHbXYy2gcEahN4Y+mJgQ
-	rayMHH6MPVi+tLifgJxfkUJZHbn1feuu4cyIPTFwi3CIo0E5SLsPIp79Cp0IAapa
-	4e4P6owTr8e/+B++GxL0OrXRPJSF654HLxGHKPkkVz4u2F204WXRyK4iUenXfGye
-	wlrsh+JfR19g=
-Received: from hg-OptiPlex-7040.hygon.cn (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3z_eR1XFoYnt8AA--.35976S2;
-	Sat, 12 Jul 2025 11:25:06 +0800 (CST)
-From: yangge1116@126.com
-To: ardb@kernel.org
-Cc: jarkko@kernel.org,
-	James.Bottomley@HansenPartnership.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	ilias.apalodimas@linaro.org,
-	jgg@ziepe.ca,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	liuzixing@hygon.cn,
-	Ge Yang <yangge1116@126.com>
-Subject: [PATCH V6] efi/tpm: Fix the issue where the CC platforms event log header can't be correctly identified
-Date: Sat, 12 Jul 2025 11:24:45 +0800
-Message-Id: <1752290685-22164-1-git-send-email-yangge1116@126.com>
-X-Mailer: git-send-email 2.7.4
-X-CM-TRANSID:_____wD3z_eR1XFoYnt8AA--.35976S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJryxCF4UKF4rtF1UXFyrZwb_yoW8uw48pF
-	9rGrnYy3s5Kry29r93Awn2yw47A393KFWDGFWDWw1Yyr98WF92qa4j9a45G3Z3GrsrKa98
-	Wa4Utr17Ca4jvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRYhFxUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiWAqIG2hx1OkMxAAAst
+	s=arc-20240116; t=1752297923; c=relaxed/simple;
+	bh=OzWsfRdh2rEvxUhB0pK+C5jZ3YphBuaX/nfPDWir2oc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Upxog+7axXkf+ZPXmNeh0supo3JCTXmI+8OgdVmSEr/K1KrPdqXxTyp3FKNRDwpBB85WHxtrDn8Y987ukimK/YbsYiyo50jsDKBKd/o4C3A3Rz5nrtrIX74lGg+WrlbougEy39tJAZHMiP/Ip8zDf6Ic5hXNF52U6FCdbbNhLrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=h8pme+2c; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ae04d3d63e6so518182866b.2
+        for <stable@vger.kernel.org>; Fri, 11 Jul 2025 22:25:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1752297919; x=1752902719; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=boc987p5GRc2CF/iPi0/+tIlnyX8mVA51H3ddLq0Reo=;
+        b=h8pme+2czoxn377wcsYImLfiK0tyLMEzxmutBmuVmkDk8qJ7SiJRAq5ev1OYIgo7p/
+         wNpqumQQL2Asw/5KPuBwSITlG9t+kLHi8D5NS7VhTXZZig9/k+8WYDLGQOAgqc9hc/FX
+         g43lM0/CMvVn7qq/PZu98O2cSpDASMdUf4Fk83z9KjSrqbEKrPjcXXuIMk+Nr/WBsGhI
+         AogW7Nk+6sf7tOCC/TfCd8P7ocZDbnuyg9Tc/+sTvddHGLrtDmotXV58g9uwOMWTuaAE
+         4eqrPAsDNcK5CxhTzzmiWXVOGiDgkYxncNQ2uX45Q87k0rS56AicNaeu21nIFjzREgc6
+         rQAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752297919; x=1752902719;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=boc987p5GRc2CF/iPi0/+tIlnyX8mVA51H3ddLq0Reo=;
+        b=jxPTKkh0gCDIEn6RwXb7vYRCNAk+IY8YuBfOXD+r+cORQfjH4FuZXewitAgowRuMx0
+         9bYAGjbrb4f1v+43AJSheHcePmEgS0Iiuuh58mw9Abs/Q+Alm+a2SD9YadVirKFEqT5F
+         1eglc6OV0hoKa4zTBx8pYSveKfelWZc2pd4k2l5igT1WEFTA0KN8VxH1eQYv/EYe1IGj
+         ub0YeP00+kNtW0/OseW67bhKaxX+3I/yLjWwcGvOzB8zp0aslGMcR5CFfAzEt4ptkW86
+         wj5kZOTRJeBjESwwzlm4E530QE6nsNOyC+giKYfU1T5hWYbHeRBpsB7ffbTLBvKQRDsQ
+         D6YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXeaWlNt1DjRiRfTxzD1d7wqFR3g1E9xNjifBnk1hRf3aiP23luz4IHtuFQ5U+aKouN8wCbE0I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztJwIp6/IQaraqxhym49/SOXT130RcmxlDrJvYLFCvJRePpRVt
+	Nw7wPvFLswnSdb0AzMaohfw64mc7O6WI0bLQPkMSCsF87xZZ+vPxMqYRGCXq1+qPUXfarsYz/v+
+	78+xIKQ/d2tdT3jHjIswpGNt62GrqqyTmkh/sg2k8Mg==
+X-Gm-Gg: ASbGncuWydFtPwKLgJLHx5kh18pIVuESqrHjis5V+uFcc027Ks5vItbJECnDpaT7oxF
+	MdYKPVOW8ldCLRNdg8GlNKNIvLAT5Q3L1AyuRF7mGgDbOjGpJyeIND+Ib+a+LjyrSxk02JPQlUo
+	L9/8x+TgXrSRWV09fRvE/V6khuhBSuMEjI4DRxe1YfLOCfd3YQiwggpgGfPLzejHUtKWLmr49n4
+	ypqR5rSfaVZnb8HnAie3kzPS1Vv56I5DKY=
+X-Google-Smtp-Source: AGHT+IHRqhss1VHoNOeBE3dSH85TBdQyutMEzLaeevjSPISD0eb6jad4c18gV5T9kZxrzRKcHgf2BSQwMPB2TaBTj0c=
+X-Received: by 2002:a17:906:fe05:b0:ade:4339:9358 with SMTP id
+ a640c23a62f3a-ae6fbc9275emr580496666b.22.1752297919256; Fri, 11 Jul 2025
+ 22:25:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20250711151005.2956810-1-dhowells@redhat.com> <20250711151005.2956810-2-dhowells@redhat.com>
+In-Reply-To: <20250711151005.2956810-2-dhowells@redhat.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Sat, 12 Jul 2025 07:25:08 +0200
+X-Gm-Features: Ac12FXwI74XFtOm4i3YUfybrD81gXwe_XUMrlDA403K5FZ8k3_E2nvLf9lzB7zA
+Message-ID: <CAKPOu+-Qsy0cr7XH1FsJbBxQpjmsK2swz-ptexaRvEM+oMGknA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] netfs: Fix copy-to-cache so that it performs
+ collection with ceph+fscache
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>, Paulo Alcantara <pc@manguebit.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, Alex Markuze <amarkuze@redhat.com>, 
+	Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Paulo Alcantara <pc@manguebit.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ge Yang <yangge1116@126.com>
+On Fri, Jul 11, 2025 at 5:10=E2=80=AFPM David Howells <dhowells@redhat.com>=
+ wrote:
+>
+> The netfs copy-to-cache that is used by Ceph with local caching sets up a
+> new request to write data just read to the cache.  The request is started
+> and then left to look after itself whilst the app continues.  The request
+> gets notified by the backing fs upon completion of the async DIO write, b=
+ut
+> then tries to wake up the app because NETFS_RREQ_OFFLOAD_COLLECTION isn't
+> set - but the app isn't waiting there, and so the request just hangs.
+>
+> Fix this by setting NETFS_RREQ_OFFLOAD_COLLECTION which causes the
+> notification from the backing filesystem to put the collection onto a wor=
+k
+> queue instead.
 
-Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
-for CC platforms") reuses TPM2 support code for the CC platforms, when
-launching a TDX virtual machine with coco measurement enabled, the
-following error log is generated:
+Thanks David, you can add me as Tested-by if you want.
 
-[Firmware Bug]: Failed to parse event in TPM Final Events Log
-
-Call Trace:
-efi_config_parse_tables()
-  efi_tpm_eventlog_init()
-    tpm2_calc_event_log_size()
-      __calc_tpm2_event_size()
-
-The pcr_idx value in the Intel TDX log header is 1, causing the function
-__calc_tpm2_event_size() to fail to recognize the log header, ultimately
-leading to the "Failed to parse event in TPM Final Events Log" error.
-
-Intel misread the spec and wrongly sets pcrIndex to 1 in the header and
-since they did this, we fear others might, so we're relaxing the header
-check. There's no danger of this causing problems because we check for
-the TCG_SPECID_SIG signature as the next thing.
-
-Fixes: d228814b1913 ("efi/libstub: Add get_event_log() support for CC platforms")
-Signed-off-by: Ge Yang <yangge1116@126.com>
-Cc: stable@vger.kernel.org
----
-
-V6:
-- improve commit message suggested by James 
-
-V5:
-- remove the pcr_index check without adding any replacement checks suggested by James and Sathyanarayanan 
-
-V4:
-- remove cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT) suggested by Ard
-
-V3:
-- fix build error
-
-V2:
-- limit the fix for CC only suggested by Jarkko and Sathyanarayanan
-
- include/linux/tpm_eventlog.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
-index 891368e..05c0ae5 100644
---- a/include/linux/tpm_eventlog.h
-+++ b/include/linux/tpm_eventlog.h
-@@ -202,8 +202,7 @@ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
- 	event_type = event->event_type;
- 
- 	/* Verify that it's the log header */
--	if (event_header->pcr_idx != 0 ||
--	    event_header->event_type != NO_ACTION ||
-+	if (event_header->event_type != NO_ACTION ||
- 	    memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
- 		size = 0;
- 		goto out;
--- 
-2.7.4
-
+I can't test the other patch for the next two weeks (vacation). When
+I'm back, I'll install both fixes on some heavily loaded production
+machines - our clusters always shake out the worst in every piece of
+code they run!
 
