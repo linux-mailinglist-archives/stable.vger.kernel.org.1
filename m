@@ -1,107 +1,152 @@
-Return-Path: <stable+bounces-161691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E13FB0276B
-	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 01:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB6FB028F9
+	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 04:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6CCA41C5D
-	for <lists+stable@lfdr.de>; Fri, 11 Jul 2025 23:08:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09F063A6DC5
+	for <lists+stable@lfdr.de>; Sat, 12 Jul 2025 02:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA061220F20;
-	Fri, 11 Jul 2025 23:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A2B17A2E2;
+	Sat, 12 Jul 2025 02:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="02nz6Iiu"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="B+WmxjOa"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A4DEEBD;
-	Fri, 11 Jul 2025 23:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C0E13A3F7;
+	Sat, 12 Jul 2025 02:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752275325; cv=none; b=r79iOrhip+PzKCvsMveRSUwqUPo9wLy/6gHml8d+vQ2zizfbo8SG1sqlQ7LAkc7oJF3WJI+9Oah0kjW9/ScT9VkohbGM5YltIc3lqFXRgVHkZN+LMoOGczs/9GzE9jJhub9Pr1K+ykVWcen7WoStoJnEQdlDKRDin+0CuHkxc30=
+	t=1752287191; cv=none; b=INr+ZA5gTFuO7DQ+MDEcry54IfkqQen6/b5z2PGNuZiNjQWOzmosLm1fXL/oIIxRpc5cak7c74VDRLjiN+k3+2X67sF9WP8P3PaTKKJ+deeLN3h98E+8NH3c2NW+l/vyUJfVd8iv49FsE0sM3oK6Miki3Q+4TG2HALEYfXNUUTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752275325; c=relaxed/simple;
-	bh=+ICMoXA52mh6wjhVQL+jgW1x7ZFK7RA91iVCPBQIxzs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sUDlRAaxYGLC4q5fPnkwgHaWn+azuByp7pqSSwl+Byt+n8yV4n99RAfV6GHZfR164XnSS5uwP+n/D1niIjFZ0Zqk1ur9KAp2CUgqKsQRFt5uQ1qR+bjYsWqI35bFSYv9tayIdllFGC6EIs8/p4z1Nednx+4jYVEGCEV24kqJSd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=02nz6Iiu; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4bf6pH64wRz9svH;
-	Sat, 12 Jul 2025 01:08:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
-	t=1752275319;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YsokS1HHDcW/fuPwGIRSA3H7pQfCAdn3V93lXZuDPJM=;
-	b=02nz6Iiu1jAE4EARO9A82YMoVMVbJkr88PQbCSrxZBMcm0QzXxJWrra4LPYrIMeGKERQMH
-	taILE2jrh28YMQkpINDNtHNJNZBfENegygdpJeIP7WqUckZbv8s/tTZZlcVV95tVrhwGGC
-	+MUUcm1sxNuQNuf4dyHdQeT8O67SV8FEyYRN3ivxw4KaUGpQMAQx3/7cgyFi+eyD8kcmRv
-	t3d19sRccMiIiagq9JuTIXLEGD1xGdMrhgXJUGuBGuEODAOvWQdpQ6s1YqZhW9us6Cpn4y
-	boPnd6hPDxGUQ0FLq8oXEYbAzM+l6Y+zPvtM262akNzIlpl3WNMkv4USjQQm5Q==
-From: Hauke Mehrtens <hauke@hauke-m.de>
-To: sashal@kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: frederic@kernel.org,
-	david@redhat.com,
-	viro@zeniv.linux.org.uk,
-	paulmck@kernel.org,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] kernel/fork: Increase minimum number of allowed threads
-Date: Sat, 12 Jul 2025 01:08:29 +0200
-Message-ID: <20250711230829.214773-1-hauke@hauke-m.de>
+	s=arc-20240116; t=1752287191; c=relaxed/simple;
+	bh=7iV8CCsAIC/s1vnMxsCKKzncROQ/ca9bHARuKb1XwvY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W5NC8b/3Zb498c9TpWITzFKisLzjy0EtQhCyoxN+tIdUurEIrUu5kMk8cZen1UjnIA6s71xaW01W9X71seu86ZY9/Iw6WuXGii6cU8C2uZKNiVjT+5jHjy04PLOM/Lp6wMJVC05E7c0o26552JknV6/BQb5QJIbz3xAkmS//SKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=B+WmxjOa; arc=none smtp.client-ip=117.135.210.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=L7ha/pLISZdmDAMWnB/kNNjY6qrcIPRfa0Z8sVzjRiQ=;
+	b=B+WmxjOaxiiw8Ksx6NXuVnjFOmZUo6gpdnDwsB+VHlYv+Dj5Ps5js9EatqcyDR
+	fzAoxDjEBajXmoTzxsMO96yawSjU4WAmiQdCbKhb9Jv3xX7+TBhhJPs2GTfXzHdN
+	i6Xe/mCO9IhF4Pmw8sAx/wKg52wbevoIWkSamlPcRVxdU=
+Received: from [172.19.20.199] (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCkvCgC3v_9xx3Fotc+SAA--.29575S2;
+	Sat, 12 Jul 2025 10:24:49 +0800 (CST)
+Message-ID: <9b67baf0-79ee-4156-bb64-1b8ccf073ae9@126.com>
+Date: Sat, 12 Jul 2025 10:24:49 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4] efi/tpm: Fix the issue where the CC platforms event
+ log header can't be correctly identified
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>, ardb@kernel.org
+Cc: jarkko@kernel.org, ilias.apalodimas@linaro.org, jgg@ziepe.ca,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, liuzixing@hygon.cn
+References: <1751961289-29673-1-git-send-email-yangge1116@126.com>
+ <757cd21fb4eaebf0f89af1a5290c6f6665f66bae.camel@HansenPartnership.com>
+ <df4ccaf7-005d-4cbe-acef-20878421ce20@linux.intel.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <df4ccaf7-005d-4cbe-acef-20878421ce20@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCkvCgC3v_9xx3Fotc+SAA--.29575S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGFW3uw43ZrWrKw1xCr4xCrg_yoW5ArykpF
+	Z7K3WYy3s5GFyIvrnaq3WUu3Wjyw4rAa98XF95J3W0yr909F1vqFW2k3W5GasxWFs7ua4Y
+	vFWjqr17Aas8ZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbdbbUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiWByHG2hw-41n0wADsF
 
-A modern Linux system creates much more than 20 threads at bootup.
-When I booted up OpenWrt in qemu the system sometimes failed to boot up
-when it wanted to create the 419th thread. The VM had 128MB RAM and the
-calculation in set_max_threads() calculated that max_threads should be
-set to 419. When the system booted up it tried to notify the user space
-about every device it created because CONFIG_UEVENT_HELPER was set and
-used. I counted 1299 calls to call_usermodehelper_setup(), all of
-them try to create a new thread and call the userspace hotplug script in
-it.
 
-This fixes bootup of Linux on systems with low memory.
 
-I saw the problem with qemu 10.0.2 using these commands:
-qemu-system-aarch64 -machine virt -cpu cortex-a57 -nographic
+在 2025/7/12 1:01, Sathyanarayanan Kuppuswamy 写道:
+> 
+> On 7/11/25 7:00 AM, James Bottomley wrote:
+>> On Tue, 2025-07-08 at 15:54 +0800, yangge1116@126.com wrote:
+>>> From: Ge Yang <yangge1116@126.com>
+>>>
+>>> Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
+>>> for CC platforms") reuses TPM2 support code for the CC platforms,
+>>> when launching a TDX virtual machine with coco measurement enabled,
+>>> the following error log is generated:
+>>>
+>>> [Firmware Bug]: Failed to parse event in TPM Final Events Log
+>>>
+>>> Call Trace:
+>>> efi_config_parse_tables()
+>>>    efi_tpm_eventlog_init()
+>>>      tpm2_calc_event_log_size()
+>>>        __calc_tpm2_event_size()
+>>>
+>>> The pcr_idx value in the Intel TDX log header is 1, causing the
+>>> function __calc_tpm2_event_size() to fail to recognize the log
+>>> header, ultimately leading to the "Failed to parse event in TPM Final
+>>> Events Log" error.
+>>>
+>>> According to UEFI Specification 2.10, Section 38.4.1: For TDX, TPM
+>>> PCR 0 maps to MRTD, so the log header uses TPM PCR 1 instead. To
+>>> successfully parse the TDX event log header, the check for a pcr_idx
+>>> value of 0 must be skipped.
+>>>
+>>> According to Table 6 in Section 10.2.1 of the TCG PC Client
+>>> Specification, the index field does not require the PCR index to be
+>>> fixed at zero. Therefore, skipping the check for a pcr_idx value of
+>>> 0 for CC platforms is safe.
+>> This is wrong: the spec does not allow a header EV_ACTION to be
+>> recorded with anything other than pcrIndex == 0.
+>>
+>> However, the fact that Intel, who practically wrote the TPM spec, can
+>> get this wrong shows that others can too.  So the best way to fix this
+>> is to remove the pcrIndex check for the first event.  There's no danger
+>> of this causing problems because we check for the TCG_SPECID_SIG
+>> signature as the next thing.  That means you don't need to thread
+>> knowledge of whether this is a CC environment and we're pre-emptively
+>> ready for any other spec violators who misread the spec in the same way
+>> Intel did.
+> 
+> 
+> I agree with James Bottomley's suggestion to remove the pcr_index check
+> without adding any replacement checks.
+> 
+> This check was originally introduced in the following commit to handle a
+> case where certain Dell platforms provided an event log without a valid
+> header:
+> 
+> commit 7dfc06a0f25b593a9f51992f540c0f80a57f3629
+> Author: Fabian Vogt <fvogt@suse.de>
+> Date:   Mon Jun 15 09:16:36 2020 +0200
+> 
+>      efi/tpm: Verify event log header before parsing
+> 
+> At first, I was concerned that the pcr_index check might still be 
+> important for
+> this fix. However, after re-reading the commit and reviewing the intent, 
+> it appears
+> that relying on the event_type and digest checks should be sufficient 
+> for validating
+> the event log header.
+> 
+> 
+> 
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- kernel/fork.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks to the suggestions from Bottomley and Sathyanarayanan. Now, I'll 
+submit another version of the patch.
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 7966c9a1c163..388299525f3c 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -115,7 +115,7 @@
- /*
-  * Minimum number of threads to boot the kernel
-  */
--#define MIN_THREADS 20
-+#define MIN_THREADS 600
- 
- /*
-  * Maximum number of threads
--- 
-2.50.1
+> 
+>> Regards,
+>>
+>> James
+>>
 
 
