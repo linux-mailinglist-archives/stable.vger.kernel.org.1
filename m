@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-161790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDBE8B03383
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 01:41:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48208B03384
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 01:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456DC177BDF
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 23:42:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75F451899920
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 23:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5203221736;
-	Sun, 13 Jul 2025 23:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88DF2222A6;
+	Sun, 13 Jul 2025 23:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yNJ3In8o"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="juYCDnbj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8322B21CC51;
-	Sun, 13 Jul 2025 23:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60C9221DB6;
+	Sun, 13 Jul 2025 23:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752450115; cv=none; b=jOru0fC4kR2jmm2vUncsB8MubVwM0I+kEaDDFfILYwomYPtxRal+5GbuPlj5cOQl3U11U+DL5dDPmgVQ9uciSLY4/1q8jTHLYA48YJ6yCJlBrylfxCC9l8JZQm21HNr3xVpwmCCmxUc4fFbKe4yNWEb4nfkCUxpvpC6z6MgMess=
+	t=1752450118; cv=none; b=g1ggzRPQxDng0cLZeOr3+y5jLpCEw0UdX+IZps6L7wzO42ntfLPUwDZ1zK3N+Bxf/LGD3NNWQKUTxSVod8uIN7DXPZuNzIAPZudAkcH7yndd5CR1OyRU22YW9AHTgc87tZnKgY/WAnwo89EGrVU+Kn73PkTECGRX4Z/1g9PMDh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752450115; c=relaxed/simple;
-	bh=MvrV+IDBdZGaPgZv9ofy8GlkqpB96yS67eQZboZz1TY=;
-	h=Date:To:From:Subject:Message-Id; b=W/CdINBEpifuyKMxZLSoDyQcnSekjtg/FxGIIa2vq57Er+ekCgI+DX5rhvrhYzKNrZdiUO6hE3vXhtSfSWQjkNWHz5Bzh8BayxXBY5bF/S2PH24F3bOzHah4xQAdyOWjAdWPPTqpZ0dQiLzhEC4g6cw+xbrl7xWqt9Gs0fEiV/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yNJ3In8o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509C6C4CEE3;
-	Sun, 13 Jul 2025 23:41:55 +0000 (UTC)
+	s=arc-20240116; t=1752450118; c=relaxed/simple;
+	bh=KEebHWc4k0T1KPC0EnxVALZCl+BzzJ24PpU1xLI4lyw=;
+	h=Date:To:From:Subject:Message-Id; b=DICLqfp9/5/9WAV//Nw+J0PMOqDbAE+AKOGcYZvyhxDwLb2fJJLw9EzPgsqPwp1LvpAnuVRuVmUyQAa0q5/vEMe5bDAWLjEenErs+l6Gwzag5bv7FyMacZg2Mw9unptW8X93rB403GrkGVuK2oyI/t6cxyUB9+ChM45R4KCmCMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=juYCDnbj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C97DC4CEE3;
+	Sun, 13 Jul 2025 23:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752450115;
-	bh=MvrV+IDBdZGaPgZv9ofy8GlkqpB96yS67eQZboZz1TY=;
+	s=korg; t=1752450118;
+	bh=KEebHWc4k0T1KPC0EnxVALZCl+BzzJ24PpU1xLI4lyw=;
 	h=Date:To:From:Subject:From;
-	b=yNJ3In8oYpy8yXzQJppn51K0CLp3L02+GyjxSez3Ww87yg6MW3Evqgy7O0W35Guc2
-	 cMRbeXBDV49oSzpf1aCLVRIFt8LMIA+7Wmo08UBlQJ8LcGTXRqpizb1PeGp70z+kp2
-	 mDziDs+ghvgtRJRqBb0YrCXmW3/3y5KS7xzmoTGU=
-Date: Sun, 13 Jul 2025 16:41:54 -0700
+	b=juYCDnbjKnz8PXNBfIGqiu8A1Q2wguwmXeWWXQvq9B3AHqSsdGr7ljABz+oM4Gwqa
+	 gBGSmvIibpQKBy6vDafzk8IcBhR82a0rTljPWuNBgkP1cjZh3l+b46AZIj6qNd+xrd
+	 dGi1Su4M7EHI/NHBkSpSix3oqSwdp6GB+895SxmI=
+Date: Sun, 13 Jul 2025 16:41:56 -0700
 To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] samples-damon-wsse-fix-boot-time-enable-handling.patch removed from -mm tree
-Message-Id: <20250713234155.509C6C4CEE3@smtp.kernel.org>
+Subject: [merged mm-stable] samples-damon-mtier-support-boot-time-enable-setup.patch removed from -mm tree
+Message-Id: <20250713234158.7C97DC4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,86 +50,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: samples/damon/wsse: fix boot time enable handling
+     Subject: samples/damon/mtier: support boot time enable setup
 has been removed from the -mm tree.  Its filename was
-     samples-damon-wsse-fix-boot-time-enable-handling.patch
+     samples-damon-mtier-support-boot-time-enable-setup.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
 From: SeongJae Park <sj@kernel.org>
-Subject: samples/damon/wsse: fix boot time enable handling
-Date: Sun, 6 Jul 2025 12:32:02 -0700
+Subject: samples/damon/mtier: support boot time enable setup
+Date: Sun, 6 Jul 2025 12:32:04 -0700
 
-Patch series "mm/damon: fix misc bugs in DAMON modules".
-
-From manual code review, I found below bugs in DAMON modules.
-
-DAMON sample modules crash if those are enabled at boot time, via kernel
-command line.  A similar issue was found and fixed on DAMON non-sample
-modules in the past, but we didn't check that for sample modules.
-
-DAMON non-sample modules are not setting 'enabled' parameters accordingly
-when real enabling is failed.  Honggyu found and fixed[1] this type of
-bugs in DAMON sample modules, and my inspection was motivated by the great
-work.  Kudos to Honggyu.
-
-Finally, DAMON_RECLIAM is mistakenly losing scheme internal status due to
-misuse of damon_commit_ctx().  DAMON_LRU_SORT has a similar misuse, but
-fortunately it is not causing real status loss.
-
-Fix the bugs.  Since these are similar patterns of bugs that were found in
-the past, it would be better to add tests or refactor the code, in future.
-
-
-This patch (of 6):
-
-If 'enable' parameter of the 'wsse' DAMON sample module is set at boot
+If 'enable' parameter of the 'mtier' DAMON sample module is set at boot
 time via the kernel command line, memory allocation is tried before the
 slab is initialized.  As a result kernel NULL pointer dereference BUG can
 happen.  Fix it by checking the initialization status.
 
-Link: https://lkml.kernel.org/r/20250706193207.39810-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20250706193207.39810-2-sj@kernel.org
-Link: https://lore.kernel.org/20250702000205.1921-1-honggyu.kim@sk.com [1]
-Fixes: b757c6cfc696 ("samples/damon/wsse: start and stop DAMON as the user requests")
+Link: https://lkml.kernel.org/r/20250706193207.39810-4-sj@kernel.org
+Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- samples/damon/wsse.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ samples/damon/mtier.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/samples/damon/wsse.c~samples-damon-wsse-fix-boot-time-enable-handling
-+++ a/samples/damon/wsse.c
-@@ -89,6 +89,8 @@ static void damon_sample_wsse_stop(void)
- 		put_pid(target_pidp);
+--- a/samples/damon/mtier.c~samples-damon-mtier-support-boot-time-enable-setup
++++ a/samples/damon/mtier.c
+@@ -157,6 +157,8 @@ static void damon_sample_mtier_stop(void
+ 	damon_destroy_ctx(ctxs[1]);
  }
  
 +static bool init_called;
 +
- static int damon_sample_wsse_enable_store(
+ static int damon_sample_mtier_enable_store(
  		const char *val, const struct kernel_param *kp)
  {
-@@ -114,7 +116,15 @@ static int damon_sample_wsse_enable_stor
+@@ -182,6 +184,14 @@ static int damon_sample_mtier_enable_sto
  
- static int __init damon_sample_wsse_init(void)
+ static int __init damon_sample_mtier_init(void)
  {
--	return 0;
 +	int err = 0;
 +
 +	init_called = true;
 +	if (enable) {
-+		err = damon_sample_wsse_start();
++		err = damon_sample_mtier_start();
 +		if (err)
 +			enable = false;
 +	}
-+	return err;
+ 	return 0;
  }
  
- module_init(damon_sample_wsse_init);
 _
 
 Patches currently in -mm which might be from sj@kernel.org are
