@@ -1,122 +1,102 @@
-Return-Path: <stable+bounces-161785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71509B03201
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 18:06:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F546B0320A
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 18:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE797189A62E
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 16:06:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 072B43BE91B
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 16:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE25C2797A1;
-	Sun, 13 Jul 2025 16:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB50D27978B;
+	Sun, 13 Jul 2025 16:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HH6PZkBZ"
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cuxL2Iyc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7581EEE0;
-	Sun, 13 Jul 2025 16:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AAF53BE
+	for <stable@vger.kernel.org>; Sun, 13 Jul 2025 16:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752422769; cv=none; b=A+Jxmnby5AbT94ByME7pTmgoyKZmBR1ZEDalIV7ymI5FnZ53i+NmMwsH6WfqUSBsw3R2+Jy2io++8wB8aS72Uqv2KaJyPT16JgRXStAiPsGp98YWNEK45WMUojlt0vfWwzOA1b4IySr+DjAlLdh81nUvpH24RVWk6/jFzOarjS8=
+	t=1752423058; cv=none; b=lPQQwBDqi8p3A2puTMyGfonLh5xTXwBgyjR/Kaqca1N6sC6Iuq4ODZZktflYNOjEfORi4KSN0hJA2YU5ykEZ+O2FcZX3dAlyxrItNX285+EgVNqI8BtWxocs4XejGDLVFZk0j9qCnBZRUqU7twplJboyhNTsu6FExa46BFxOutY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752422769; c=relaxed/simple;
-	bh=5OxDQXyY4URrF3P9mUulIaAkyMsAeyIXYocMcv5kJLc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4hEhhehh2ghyP6d8xBvKTGGl6/EOZxjPiIz7zuD2FaviC5OhB2WKHhVtOMC47tPY9B0LAx2GB2fEb0BX9Umcv6RSzQNYdgEjMGidNIB1W9BWHfQX81WTd1l394phl5ZU77jtfNPlYWlKQtNcdBerUalntkzibDw30fCQlW8cxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HH6PZkBZ; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6fb1be9ba89so31845706d6.2;
-        Sun, 13 Jul 2025 09:06:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752422767; x=1753027567; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fZcK1QUAW+5a7xVqjfrgwGtPRqq6Ew7Nn7a5EpGCHW8=;
-        b=HH6PZkBZwJkYbjbT9vvj5EKA7MFAkAzRX7ZV6YSUtvMYUm3ZWqYXDpAJYge7svKzZ+
-         lcwclnvwlTQ89DuhKrI3r6AotCKfr3hA6vE3XFzA6tHBNBBTgucXmNb0tH4CjTTCbc4S
-         XJiOO0N2aetIFKyHs+lXJqo3YbU/JN1c8SDitIg4wNbHR/IIkl8tR/ViE3DWEtJGYMbM
-         4z/qYVfJoHV6AWgRccOQbObTI+PeLVdlM4Fpf4isAa3NX2thlgWTys7wp0KEJ7pIo8qj
-         7qrpAUXKUUozV/9KxAKnIaKoBz988Jz0FmBoMXwpLmV4CeOrKlqNKTniIQeQWzm0SeDc
-         81bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752422767; x=1753027567;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fZcK1QUAW+5a7xVqjfrgwGtPRqq6Ew7Nn7a5EpGCHW8=;
-        b=fH6PJn8kc1HevV+ZE9rYujrp8OyoI8rjeoiz2S8r5DX6Ssy0KvEl7UGbGL5X609gP8
-         J7rDB66fCv80dRKsCaethv8PnMNbRtWAs92sfao5cS/u9CM074SuqM79eHLgNqpNDuKm
-         CXDsxuuR8SlcaL4ktjyYlOKPGDAmB2HrJIcwVjbnopt64xtE3fuDg/o8hk05bbe749ED
-         qcIig8lJS82nmAyWcskUm5EReUJjSDjtmjk0qrPLG7uW+efrdlBmjFnlg0oGtxNEtxFq
-         LUDkqvTcdddExCRcke5NjDbnGzmbtauBuyf/riLAteNuLRlOzBEs9HlYmzfqKhJ/HxXu
-         G61Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUElmHhjnForB81cnEiZR1t4duu69xsqMaWgW6+awFLbvscJTXuRGo9s6kR6bCLCDlvqSBC769DfVvk@vger.kernel.org, AJvYcCVfHyqpnL5Xqv0Zey6Fj9jNvHX6kh3n40N5aq9WIVt0WFZDlODMwm7ln0giBMVhkEf3JbTM6vzzzwUyutU=@vger.kernel.org, AJvYcCWZPhkl/Pnc3qwaqq5JUmpyd2R2s4SPwR0uXR/NK0OIA2UNbq6F8OZexg9weZmZQx46dqvHEYQC@vger.kernel.org
-X-Gm-Message-State: AOJu0YySec2LvGBcCetcU3Utiu2wSA+or5a9bUuvFGMIx0arjVh0x2mF
-	XIM5ZpwshyoyqM0x7E8yQX8JVk8HV2njJNsGZ5bMwNmJRTjz+YNqHaHy
-X-Gm-Gg: ASbGncs881+9NPiVJqcNsEw8oAtQcxqh3j96pU99cRWXWNqRBMda7pj+f+7lWrumezu
-	PxM9K+Llli4rixWwZtqFFfCbcgyeByw84HMcb0+Wt3mVoNMtpXHe/GbtcF+XRgMdfjOrdnNzyR3
-	43J0EvpwNtSctAfH5SpUgtFpCqRmCIZBaCYLa1wIihIKQDy4vEp/5s3r6Eztr5bKkkUnybYlZcr
-	i25oD8n/NJObsMGUGAOSxYplQ6jHQuTzmlMwNJ34WbBWu4jArrZab6/BXKHuaQpTlFdi6eXIq07
-	9XHrbXrrdrYZc/8Q3gcTMQcotpWBZ54SKw6Q0eOeDjShvUGmpXYNLN18BDqct2HNd5/HcGQmSg2
-	PlaQHAdv7XjmqIevsKJ3GRFASwqZAIt2M0h3ReZ5JKVXTpyYfLZU=
-X-Google-Smtp-Source: AGHT+IEDBjwKKJNiMI1f5doxO+PsDIYjJdPVQtkWqnJwLuQ59AtIxU42y76cJ3gKWN4/T2YAELVtAA==
-X-Received: by 2002:a05:6214:5017:b0:704:95ce:17da with SMTP id 6a1803df08f44-704a40c8425mr156221926d6.11.1752422766949;
-        Sun, 13 Jul 2025 09:06:06 -0700 (PDT)
-Received: from mango-teamkim.. ([129.170.197.108])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-704979e3146sm38340516d6.41.2025.07.13.09.06.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Jul 2025 09:06:06 -0700 (PDT)
-From: pip-izony <eeodqql09@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>,
-	Jassi Brar <jaswinder.singh@linaro.org>,
-	Felipe Balbi <balbi@kernel.org>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] usb: gadget: max3420_udc: Fix out-of-bounds endpoint index access
-Date: Sun, 13 Jul 2025 12:05:40 -0400
-Message-ID: <20250713160540.125960-1-eeodqql09@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2025063044-uninvited-simplify-0420@gregkh>
-References: <2025063044-uninvited-simplify-0420@gregkh>
+	s=arc-20240116; t=1752423058; c=relaxed/simple;
+	bh=gzAL/EueJ0C8lly+6l5vUD51zodpiimwjNuUTAmhF/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iv5ry+VClX0/wnMSzCTIG/qfdl8SAXUiyM2if7fJGKUwlq729H7c6w8UPsNfluyJqHCqmrKKfVpmFSChWKxGkbHXuDMnVX64lgMqUMTt08MoqUc/5NdEjDi52D2334BlP7j5MHoYpLiVnnimCY/z1/Nb49xbMHVX5lop9jKjeZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cuxL2Iyc reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B3AF640E019D;
+	Sun, 13 Jul 2025 16:10:44 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id zR9hEDrrV1iJ; Sun, 13 Jul 2025 16:10:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1752423041; bh=eEV6al1b4tlwbBWLC0lZ2kXqFkVfmKjct/ARV+PmJ7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cuxL2IycmBxO0hUCh9CtEid3rlOd4lGDheEcLgFbY0rFYe4xfUHUWWh75EHLxCLv+
+	 8Y/aOXt/n9pYyXD/IQHrurh59643aP5o+gMjg1y+AuwW6y2TRLWMZs1aj62nNoGSYO
+	 7uM8BzhyRroznlDVVqKeX/ybStIEhgWkKCmjM3foLT8HDSN+waIfiCpOJmMGmOFHhx
+	 +kIwvwWzjqKiHqbLuPPYK6qNOlGGYSNS5N/oUP5BUg9tzDyvXN6GF/7Rfx7cisxFXR
+	 Sq0zjZsafWxh+2Z/AnubIYTnZTxfh6V3MpaZoxrDbPC7PYLF6KfIPbrigKEN0P6p7H
+	 DdhgfpEfnSO/Oai9kZKnVYmwGmGaxrcpsGa1bbgw3dKle2cGybESifgwXfREWnqsOH
+	 hHLgwECtgogJYvitMHGsa4AprLsB3iQXiCV3jFClgpIXplzakpS57SELWk8TR9OYfy
+	 ioOKQtspI7HZsqN5WDu/Xqjt0ZLe5Ngvr5CEhFg5c/3tFf0fAvhvjinjEVB/pIrQoy
+	 wLr7BNBKKuCyx7UEZKTiAOdrRbwdTWj4UZ8VCJpU3DMZ4tIwA+RgcOo5Pkwv1cdS0p
+	 Wh/Ky3RpmAPVmmBu+gUfc9O3DdBC0xx7nv64FPvBXZKd3d5WfOmu76MM7L6BwPWR8S
+	 YZZpQ66tiX65joOYaXK8VUMo=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F3E6B40E0163;
+	Sun, 13 Jul 2025 16:10:38 +0000 (UTC)
+Date: Sun, 13 Jul 2025 18:10:32 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 5.15-stable] x86/CPU/AMD: Properly check the TSA microcode
+Message-ID: <20250713161032.GCaHPaeCpf5Y0_WBiq@fat_crate.local>
+References: <20250711194558.GLaHFp9kw1s5dSmBUa@fat_crate.local>
+ <20250712211157-88bc729ab524b77b@stable.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250712211157-88bc729ab524b77b@stable.kernel.org>
+Content-Transfer-Encoding: quoted-printable
 
-> Also, you sent 2 patches, with identical subject lines, but they did
-> different things. That's not ok as you know.
+Dear Sasha's backport helper bot,
 
-My apologies for the mistake. I will separate them properly in the
-next version of the patch series.
+On Sun, Jul 13, 2025 at 09:06:05AM -0400, Sasha Levin wrote:
+> [ Sasha's backport helYper bot ]
+>=20
+> Hi,
+>=20
+> Summary of potential issues:
+> =E2=9A=A0=EF=B8=8F Could not find matching upstream commit
+>=20
+> No upstream commit was identified. Using temporary commit for testing.
 
-> And I think you really need to test this on hardware.  How could that
-> request ever have a windex set to greater than 3?  Is that a hardware
-> value or a user-controlled value?
+I think you need to be trained more to actually read commit messages too.
+Because there it is explained why.
 
-The wIndex field of a SETUP packet is sent by the USB host and can
-be controlled by a malicious or malformed host.
-This same class of vulnerability was identified and fixed in other
-UDC drivers, as described in CVE-2022-27223 and fixed in the xilinx
-UDC driver by commit 7f14c7227f34 ("USB: gadget: validate endpoint 
-index for xilinx udc").
+--=20
+Regards/Gruss,
+    Boris.
 
-Following this established pattern, I added the necessary bounds
-check to the max3420_udc driver before wIndex is used to access
-the endpoint array.
-
-Thank you.
-
-Seungjin Bae
+https://people.kernel.org/tglx/notes-about-netiquette
 
