@@ -1,187 +1,164 @@
-Return-Path: <stable+bounces-161789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DA7B03373
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 01:31:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBE8B03383
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 01:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E112F3B54A5
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 23:30:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456DC177BDF
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 23:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9EA1FECBA;
-	Sun, 13 Jul 2025 23:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5203221736;
+	Sun, 13 Jul 2025 23:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fl+jGQ90"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yNJ3In8o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E0386340;
-	Sun, 13 Jul 2025 23:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8322B21CC51;
+	Sun, 13 Jul 2025 23:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752449466; cv=none; b=b07tt00cm6bEX4ZI2vsNYJg2JBNUcIEKCs/H0naKlvT/DIN5jsy+jVGjyyyXenI7Ijqe6useUql8ocKG58bfoXeaupo2CLzVCIq1kEATpkucI6C2ALNIGg6iXFpv0sAu1n8Gef0KZ70mS/CK9yrB+dG6t4Ah6gNySRb/UdZi9m8=
+	t=1752450115; cv=none; b=jOru0fC4kR2jmm2vUncsB8MubVwM0I+kEaDDFfILYwomYPtxRal+5GbuPlj5cOQl3U11U+DL5dDPmgVQ9uciSLY4/1q8jTHLYA48YJ6yCJlBrylfxCC9l8JZQm21HNr3xVpwmCCmxUc4fFbKe4yNWEb4nfkCUxpvpC6z6MgMess=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752449466; c=relaxed/simple;
-	bh=bJo8xxjcE1lTfLcGzMb3T/rRcaK4egKjQlWJDWN+OR0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UBehOf/BtXmj2X5tcK3So3NieOk2C7w9nF11W9VGwese4Vs3DwmqQYCte/PaKZcCTwGuRDCNzzXsMEgttaGe8Fjt2xUZU5/GXgu65Yd6yRQ4udixIcQ2pLt9Di4IkiiaqumZCxEXrSRx3BCaa9aiQpv1XsAPxJ1YxMTFxV5IYXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fl+jGQ90; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a510432236so2760642f8f.0;
-        Sun, 13 Jul 2025 16:31:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752449463; x=1753054263; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=h/GY2/dE+mO5MryruF4BoK/v2xcVkd9rBBGX0ZUv8DE=;
-        b=fl+jGQ90Yc5zN2z/aO+B+SEuPkUnYoV/kVtKkaKBHmAwlu2gbtSRJHK069fQsgP9TX
-         5cnvkb1FJcv9tByyG18GDTImFdTV+ExhhrrLp6iAvfIf6fxLOpZAzLUhHcKaj+Q1phvW
-         KMRSB61b4jiagLrqq1NpiAAJoJMIGZ/Wbb5KhhluGgoieKjzjwEgveHgFhPK16+Nhus2
-         1rr2Mc0YezT3UxvnHvUA3EhH0+g19M1nWcG7TCMj5e9rcKWjmpmJYGaJ3qavjBYOYN1d
-         XhtHfF+kptXX8+jV9m+iHu/Vh1gKZRHHNB+wUTAOtpkcNc+l57w+fVTH40MUKG1Czp8K
-         b6NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752449463; x=1753054263;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h/GY2/dE+mO5MryruF4BoK/v2xcVkd9rBBGX0ZUv8DE=;
-        b=bxS7uKw9dCkXrWAb25sv5v29Y4swD7D1TlLzHiKmQquN7iiSgc1EalA4BIKYAJQmrs
-         0PwPD3iOj2OePTgS9LO9y8Is0CcqGzeh+jtZxTtz7/3OWHpDp2h5hiYENm03Fm35JVM4
-         1qNqmBiUUaoAP2aJf/73orVTo/cHi9xpGZlepAmXrcNb3QxspyfShMM3TUxlWMywiGSC
-         qbK72J3s/VDsq/4uGYY+IvXXaCdeRm44h0VcoBnhXLztoR6/J4VkzFx7q4COoZO63wD/
-         lrh5ozhGxHup/9Wojp+knlrnPHBfxVsVYC787LYty3CtHGO4fFr3A0ZX8k76Ki1xHzb4
-         YrUw==
-X-Forwarded-Encrypted: i=1; AJvYcCVDJEHZkVQcsqzyKmU2BkwrLE+01nkjX2ZSG1r3FTthXKhLeFDXERDjBXAdqnWwmj/EMtFxC5W/@vger.kernel.org, AJvYcCW7SHohvKAEAilC8St4RzFHUtsTF2BOm74dhMLwyVPmF6viZ7HXHOWvj+WNFe+FA91PdrN+cduqCuXvKw==@vger.kernel.org, AJvYcCXjBI0TUj+TEtCyz3hz+JxD5v9Z3NkFbzeCAQyC0+J1+6VVWX6JNb5Z8L4HTBVkxcfkAqQliFUMYiY40KUV@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFaQJYl4Vz+oZPEFDpRfCMRSHvQmFUBbNzt5IOtnyoQFZR91M8
-	SyqgHNy6fgjRQF/C5uT862xnZgDQAYyoL67F82Xs9BHyVOa7Hkd3zEOT
-X-Gm-Gg: ASbGnctZgO8dU1lJQRKW+BLJHQctr+kWV3oUwqi+sClPYomLTmE1YzxZ9onp0NQXcMi
-	ngzWf73G7CuTsZ2l8O7JVxJ8vNOXiN0T4SrMuBlzh5eDNyAMTWGgtPYuAlOkko5QVvvJ5zNJUnS
-	ykbkGcZ14rnbJFh1GI0svmDziCimkZ+JbegJYHiJMuBXAhSrI6620HkCsMrfPBinvwJmzSvgpdB
-	cAY5nX2lQmxi0MrW/MjIJYO5bJMekPo531y1RrTs/jUkO8WbUgdnlNfcNapzoFH+vDXRzZCqbGW
-	vYq93RngZ8QQ/lDvxb756+lVa6qVgVsEGzbQLniNuvLHF0Poob2BwCGHePsN6LBwM2pZlrciDEH
-	PS6II54qWXib7lVBKGvGP3Q==
-X-Google-Smtp-Source: AGHT+IGCP9p4QYP5SRA9YCVbSRg9d+gvPcHbKXec0egiN+Ad0ekd4msTCPwzNoabooADvXVCdvgPbw==
-X-Received: by 2002:a05:6000:2f84:b0:3a4:f70d:a65e with SMTP id ffacd0b85a97d-3b5f2e1bb53mr7805557f8f.37.1752449462880;
-        Sun, 13 Jul 2025 16:31:02 -0700 (PDT)
-Received: from qasdev.Home ([2a02:c7c:f4f0:900:20f4:6eb9:1d8b:99cc])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8dc21e7sm10865512f8f.36.2025.07.13.16.31.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Jul 2025 16:31:02 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: jikos@kernel.org,
-	bentiss@kernel.org
-Cc: gargaditya08@live.com,
-	orlandoch.dev@gmail.com,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] HID: apple: validate feature-report field count to prevent NULL pointer dereference 
-Date: Mon, 14 Jul 2025 00:30:08 +0100
-Message-Id: <20250713233008.15131-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1752450115; c=relaxed/simple;
+	bh=MvrV+IDBdZGaPgZv9ofy8GlkqpB96yS67eQZboZz1TY=;
+	h=Date:To:From:Subject:Message-Id; b=W/CdINBEpifuyKMxZLSoDyQcnSekjtg/FxGIIa2vq57Er+ekCgI+DX5rhvrhYzKNrZdiUO6hE3vXhtSfSWQjkNWHz5Bzh8BayxXBY5bF/S2PH24F3bOzHah4xQAdyOWjAdWPPTqpZ0dQiLzhEC4g6cw+xbrl7xWqt9Gs0fEiV/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yNJ3In8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509C6C4CEE3;
+	Sun, 13 Jul 2025 23:41:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1752450115;
+	bh=MvrV+IDBdZGaPgZv9ofy8GlkqpB96yS67eQZboZz1TY=;
+	h=Date:To:From:Subject:From;
+	b=yNJ3In8oYpy8yXzQJppn51K0CLp3L02+GyjxSez3Ww87yg6MW3Evqgy7O0W35Guc2
+	 cMRbeXBDV49oSzpf1aCLVRIFt8LMIA+7Wmo08UBlQJ8LcGTXRqpizb1PeGp70z+kp2
+	 mDziDs+ghvgtRJRqBb0YrCXmW3/3y5KS7xzmoTGU=
+Date: Sun, 13 Jul 2025 16:41:54 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] samples-damon-wsse-fix-boot-time-enable-handling.patch removed from -mm tree
+Message-Id: <20250713234155.509C6C4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-A malicious HID device with quirk APPLE_MAGIC_BACKLIGHT can trigger a NULL
-pointer dereference whilst the power feature-report is toggled and sent to
-the device in apple_magic_backlight_report_set(). The power feature-report
-is expected to have two data fields, but if the descriptor declares one
-field then accessing field[1] and dereferencing it in
-apple_magic_backlight_report_set() becomes invalid
-since field[1] will be NULL.
 
-An example of a minimal descriptor which can cause the crash is something
-like the following where the report with ID 3 (power report) only
-references a single 1-byte field. When hid core parses the descriptor it
-will encounter the final feature tag, allocate a hid_report (all members
-of field[] will be zeroed out), create field structure and populate it,
-increasing the maxfield to 1. The subsequent field[1] access and
-dereference causes the crash.
+The quilt patch titled
+     Subject: samples/damon/wsse: fix boot time enable handling
+has been removed from the -mm tree.  Its filename was
+     samples-damon-wsse-fix-boot-time-enable-handling.patch
 
-  Usage Page (Vendor Defined 0xFF00)
-  Usage (0x0F)
-  Collection (Application)
-    Report ID (1)
-    Usage (0x01)
-    Logical Minimum (0)
-    Logical Maximum (255)
-    Report Size (8)
-    Report Count (1)
-    Feature (Data,Var,Abs)
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-    Usage (0x02)
-    Logical Maximum (32767)
-    Report Size (16)
-    Report Count (1)
-    Feature (Data,Var,Abs)
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: samples/damon/wsse: fix boot time enable handling
+Date: Sun, 6 Jul 2025 12:32:02 -0700
 
-    Report ID (3)
-    Usage (0x03)
-    Logical Minimum (0)
-    Logical Maximum (1)
-    Report Size (8)
-    Report Count (1)
-    Feature (Data,Var,Abs)
-  End Collection
+Patch series "mm/damon: fix misc bugs in DAMON modules".
 
-Here we see the KASAN splat when the kernel dereferences the
-NULL pointer and crashes:
+From manual code review, I found below bugs in DAMON modules.
 
-  [   15.164723] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP KASAN NOPTI
-  [   15.165691] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-  [   15.165691] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0 #31 PREEMPT(voluntary) 
-  [   15.165691] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-  [   15.165691] RIP: 0010:apple_magic_backlight_report_set+0xbf/0x210
-  [   15.165691] Call Trace:
-  [   15.165691]  <TASK>
-  [   15.165691]  apple_probe+0x571/0xa20
-  [   15.165691]  hid_device_probe+0x2e2/0x6f0
-  [   15.165691]  really_probe+0x1ca/0x5c0
-  [   15.165691]  __driver_probe_device+0x24f/0x310
-  [   15.165691]  driver_probe_device+0x4a/0xd0
-  [   15.165691]  __device_attach_driver+0x169/0x220
-  [   15.165691]  bus_for_each_drv+0x118/0x1b0
-  [   15.165691]  __device_attach+0x1d5/0x380
-  [   15.165691]  device_initial_probe+0x12/0x20
-  [   15.165691]  bus_probe_device+0x13d/0x180
-  [   15.165691]  device_add+0xd87/0x1510
-  [...]
+DAMON sample modules crash if those are enabled at boot time, via kernel
+command line.  A similar issue was found and fixed on DAMON non-sample
+modules in the past, but we didn't check that for sample modules.
 
-To fix this issue we should validate the number of fields that the
-backlight and power reports have and if they do not have the required
-number of fields then bail.
+DAMON non-sample modules are not setting 'enabled' parameters accordingly
+when real enabling is failed.  Honggyu found and fixed[1] this type of
+bugs in DAMON sample modules, and my inspection was motivated by the great
+work.  Kudos to Honggyu.
 
-Fixes: 394ba612f941 ("HID: apple: Add support for magic keyboard backlight on T2 Macs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Finally, DAMON_RECLIAM is mistakenly losing scheme internal status due to
+misuse of damon_commit_ctx().  DAMON_LRU_SORT has a similar misuse, but
+fortunately it is not causing real status loss.
+
+Fix the bugs.  Since these are similar patterns of bugs that were found in
+the past, it would be better to add tests or refactor the code, in future.
+
+
+This patch (of 6):
+
+If 'enable' parameter of the 'wsse' DAMON sample module is set at boot
+time via the kernel command line, memory allocation is tried before the
+slab is initialized.  As a result kernel NULL pointer dereference BUG can
+happen.  Fix it by checking the initialization status.
+
+Link: https://lkml.kernel.org/r/20250706193207.39810-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20250706193207.39810-2-sj@kernel.org
+Link: https://lore.kernel.org/20250702000205.1921-1-honggyu.kim@sk.com [1]
+Fixes: b757c6cfc696 ("samples/damon/wsse: start and stop DAMON as the user requests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/hid/hid-apple.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
-index ed34f5cd5a91..183229ae5f02 100644
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -890,7 +890,8 @@ static int apple_magic_backlight_init(struct hid_device *hdev)
- 	backlight->brightness = report_enum->report_id_hash[APPLE_MAGIC_REPORT_ID_BRIGHTNESS];
- 	backlight->power = report_enum->report_id_hash[APPLE_MAGIC_REPORT_ID_POWER];
+ samples/damon/wsse.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+--- a/samples/damon/wsse.c~samples-damon-wsse-fix-boot-time-enable-handling
++++ a/samples/damon/wsse.c
+@@ -89,6 +89,8 @@ static void damon_sample_wsse_stop(void)
+ 		put_pid(target_pidp);
+ }
  
--	if (!backlight->brightness || !backlight->power)
-+	if (!backlight->brightness || backlight->brightness->maxfield < 2 ||
-+	    !backlight->power || backlight->power->maxfield < 2)
- 		return -ENODEV;
++static bool init_called;
++
+ static int damon_sample_wsse_enable_store(
+ 		const char *val, const struct kernel_param *kp)
+ {
+@@ -114,7 +116,15 @@ static int damon_sample_wsse_enable_stor
  
- 	backlight->cdev.name = ":white:" LED_FUNCTION_KBD_BACKLIGHT;
--- 
-2.39.5
+ static int __init damon_sample_wsse_init(void)
+ {
+-	return 0;
++	int err = 0;
++
++	init_called = true;
++	if (enable) {
++		err = damon_sample_wsse_start();
++		if (err)
++			enable = false;
++	}
++	return err;
+ }
+ 
+ module_init(damon_sample_wsse_init);
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+samples-damon-wsse-rename-to-have-damon_sample_-prefix.patch
+samples-damon-prcl-rename-to-have-damon_sample_-prefix.patch
+samples-damon-mtier-rename-to-have-damon_sample_-prefix.patch
+mm-damon-sysfs-use-damon-core-api-damon_is_running.patch
+mm-damon-sysfs-dont-hold-kdamond_lock-in-before_terminate.patch
+docs-mm-damon-maintainer-profile-update-for-mm-new-tree.patch
+mm-damon-add-struct-damos_migrate_dests.patch
+mm-damon-core-add-damos-migrate_dests-field.patch
+mm-damon-sysfs-schemes-implement-damos-action-destinations-directory.patch
+mm-damon-sysfs-schemes-set-damos-migrate_dests.patch
+docs-abi-damon-document-schemes-dests-directory.patch
+docs-admin-guide-mm-damon-usage-document-dests-directory.patch
+mm-damon-accept-parallel-damon_call-requests.patch
+mm-damon-core-introduce-repeat-mode-damon_call.patch
+mm-damon-stat-use-damon_call-repeat-mode-instead-of-damon_callback.patch
+mm-damon-reclaim-use-damon_call-repeat-mode-instead-of-damon_callback.patch
+mm-damon-lru_sort-use-damon_call-repeat-mode-instead-of-damon_callback.patch
+samples-damon-prcl-use-damon_call-repeat-mode-instead-of-damon_callback.patch
+samples-damon-wsse-use-damon_call-repeat-mode-instead-of-damon_callback.patch
+mm-damon-core-do-not-call-opscleanup-when-destroying-targets.patch
+mm-damon-core-add-cleanup_target-ops-callback.patch
+mm-damon-vaddr-put-pid-in-cleanup_target.patch
+mm-damon-sysfs-remove-damon_sysfs_destroy_targets.patch
+mm-damon-core-destroy-targets-when-kdamond_fn-finish.patch
+mm-damon-sysfs-remove-damon_sysfs_before_terminate.patch
+mm-damon-core-remove-damon_callback.patch
 
 
