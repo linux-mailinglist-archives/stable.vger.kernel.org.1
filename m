@@ -1,86 +1,118 @@
-Return-Path: <stable+bounces-161779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A482BB0319A
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 16:40:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF20B0319B
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 16:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC0F168596
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 14:40:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13A0F3AD72B
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 14:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF79275B1C;
-	Sun, 13 Jul 2025 14:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2053B279915;
+	Sun, 13 Jul 2025 14:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXRGG3gs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhJ25fD2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1F38836
-	for <stable@vger.kernel.org>; Sun, 13 Jul 2025 14:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97668836;
+	Sun, 13 Jul 2025 14:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752417639; cv=none; b=pX3Zn5OHnQjgtfRc2/dJtMIQAfdtn4QPNNsYjPNnzfOokzlVQW/CRkdQ3/MM/GFxR/SKeLNczU6Yx/gxZymFZHzsuMb4gmKWUMvhlUdAsed2ENVX33LB3OH2/QYITHdBiDd7Y/M+O3uSScJFP+VfXMMW87T6G+1u8NYpj1Ck9Hc=
+	t=1752417719; cv=none; b=pXJPc6XLUGOORMUFPcSMkh9ESlCqzZffWpyx/iE0R9zXes+A5N6ep21M2CxKd4U8WAgNV6cCOKmeirxcUKRW/s4HcMhXUodPoTys88U8MMEFYNEsqV2xW+O6P24dtYIllCnYzkYDR0LPD0HG4cvUpmfhISH4q1H/GiDYXgv7m3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752417639; c=relaxed/simple;
-	bh=7SqjEGCYQX+9A/ppf0Distjh4dcvuyFCxKbbORwGnSI=;
+	s=arc-20240116; t=1752417719; c=relaxed/simple;
+	bh=gB1jqi5LgzW94AvIRE03EfjOH2ASn9e19gKaS+AxytA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UJUshconhJQ7eItHQc2VeCQO8+LvzdGU1i+c8ID3Gl1qh1ghKxYUy+EMU+Tsdd5xX27uyNP2wVn5XITZ6kvp2x7KWIKSeC1bUA1Od9hJxy7cwn+Rkv90QWVX1GXR7m4m4XSPYJn0Fbc65dYSrlcwUZA/+PhHwJO+gRTGtMS9zho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXRGG3gs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DFFC4CEE3;
-	Sun, 13 Jul 2025 14:40:37 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=AiHtimOavM3HaX/oFrqO3/HizbSeZ8R/67D0G5A3a/gN3jqjRfOfF/HtkoC2+MoJ1folzGyBEPeCm+CV7CKxmkx4jevH4uIL8aiEoNdyPRKPXDZ8Bc9+E2DY3Nz4Ni3oxaPUDTQYmmbxc/jJc6lqqM/FpFi4OE57HS+Ee2Xk0YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhJ25fD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C609DC4CEE3;
+	Sun, 13 Jul 2025 14:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752417637;
-	bh=7SqjEGCYQX+9A/ppf0Distjh4dcvuyFCxKbbORwGnSI=;
+	s=korg; t=1752417719;
+	bh=gB1jqi5LgzW94AvIRE03EfjOH2ASn9e19gKaS+AxytA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZXRGG3gsYfHQI4fZyxXW2YPIcvZ7rOfMekqIqHd5vbmrpk/lVlq1wUdmP4UfupneT
-	 6fc66abs9XhZFv5dR/9Imdi2Bc0kjih6GwnMymllPIiT2YJH8GsSucUPmHPBct5Iy1
-	 o2CxLCClf6pgkT0wzHKKueAKiCvDY0yZM2oYoCdc=
-Date: Sun, 13 Jul 2025 16:40:35 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] pwm: mediatek: Ensure to disable clocks
- in error path" failed to apply to 5.4-stable tree
-Message-ID: <2025071326-ablaze-unadorned-8a10@gregkh>
-References: <2025071236-generous-jazz-41e4@gregkh>
- <ensabnoqktuudz4ohh3kyi57p7us2f3td3vascmtkvknspnpyg@jqpgnwokd3tu>
+	b=KhJ25fD2q8imQFUA8s64v2ESJnw7nqTaiTN9dHi85I2rqbcySeNXDjj0VdEC9FB47
+	 t5N/xU84pm6n6/roHkRYnVT5h+/laalTvM3poVM7oQm8QMze0UH5pu4pY26BZcB7G8
+	 hr096Cg2VSkFkaWiIlkd32T7xlfyA+NkX8J2bTjo=
+Date: Sun, 13 Jul 2025 16:41:56 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Sasha Levin <sashal@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, stable@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [PATCH 6.12.y] rust: init: allow `dead_code` warnings for Rust
+ >= 1.89.0
+Message-ID: <2025071348-jogger-clarity-641c@gregkh>
+References: <20250712171038.1287789-1-ojeda@kernel.org>
+ <DBA9X9FU5M9A.14RBXD887DKB1@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ensabnoqktuudz4ohh3kyi57p7us2f3td3vascmtkvknspnpyg@jqpgnwokd3tu>
+In-Reply-To: <DBA9X9FU5M9A.14RBXD887DKB1@kernel.org>
 
-On Sat, Jul 12, 2025 at 11:00:16PM +0200, Uwe Kleine-König wrote:
-> Hello,
+On Sat, Jul 12, 2025 at 08:04:48PM +0200, Benno Lossin wrote:
+> On Sat Jul 12, 2025 at 7:10 PM CEST, Miguel Ojeda wrote:
+> > Starting with Rust 1.89.0 (expected 2025-08-07), the Rust compiler
+> > may warn:
+> >
+> >     error: trait `MustNotImplDrop` is never used
+> >        --> rust/kernel/init/macros.rs:927:15
+> >         |
+> >     927 |         trait MustNotImplDrop {}
+> >         |               ^^^^^^^^^^^^^^^
+> >         |
+> >        ::: rust/kernel/sync/arc.rs:133:1
+> >         |
+> >     133 | #[pin_data]
+> >         | ----------- in this procedural macro expansion
+> >         |
+> >         = note: `-D dead-code` implied by `-D warnings`
+> >         = help: to override `-D warnings` add `#[allow(dead_code)]`
+> >         = note: this error originates in the macro `$crate::__pin_data`
+> >                 which comes from the expansion of the attribute macro
+> >                 `pin_data` (in Nightly builds, run with
+> >                 -Z macro-backtrace for more info)
+> >
+> > Thus `allow` it to clean it up.
 > 
-> On Sat, Jul 12, 2025 at 04:00:36PM +0200, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 5.4-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 505b730ede7f5c4083ff212aa955155b5b92e574
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071236-generous-jazz-41e4@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+> This is a bit strange, I can't directly reproduce the issue... I already
+> get this warning in 1.88:
 > 
-> the patch I just sent for 5.15 applies fine on 5.4.y. I assume this is
-> good enough and someone will tell me if not.
+>     https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=465f71a848e77ac3f7a96a0af6bc9e2a
+> 
+> > This does not happen in mainline nor 6.15.y, because there the macro was
+> > moved out of the `kernel` crate, and `dead_code` warnings are not
+> > emitted if the macro is foreign to the crate. Thus this patch is
+> > directly sent to stable and intended for 6.12.y only.
+> >
+> > Similarly, it is not needed in previous LTSs, because there the Rust
+> > version is pinned.
+> >
+> > Cc: Benno Lossin <lossin@kernel.org>
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> 
+> Anyways the patch itself looks fine, nobody should care about the
+> dead-code warning (since it is in fact used to prevent `Drop` being
+> implemented).
+> 
+> Acked-by: Benno Lossin <lossin@kernel.org>
 
-All now queued up, thanks for the backports.
+Thanks, now queued up.
 
 greg k-h
 
