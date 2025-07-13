@@ -1,102 +1,159 @@
-Return-Path: <stable+bounces-161786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F546B0320A
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 18:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8C1B0324A
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 19:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 072B43BE91B
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 16:10:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0814E3B9822
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 17:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB50D27978B;
-	Sun, 13 Jul 2025 16:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEAF280318;
+	Sun, 13 Jul 2025 17:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cuxL2Iyc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dshQBYDU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AAF53BE
-	for <stable@vger.kernel.org>; Sun, 13 Jul 2025 16:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7AB27F4D9;
+	Sun, 13 Jul 2025 17:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752423058; cv=none; b=lPQQwBDqi8p3A2puTMyGfonLh5xTXwBgyjR/Kaqca1N6sC6Iuq4ODZZktflYNOjEfORi4KSN0hJA2YU5ykEZ+O2FcZX3dAlyxrItNX285+EgVNqI8BtWxocs4XejGDLVFZk0j9qCnBZRUqU7twplJboyhNTsu6FExa46BFxOutY=
+	t=1752427797; cv=none; b=eQskuaLMts7IHdWX7GlJVaGylP98pkT/XhzZ/r3G/luVen/wOC4OI/qClQvvfRRYiePxZni//j2zVCDDpWtUmcFYvTXxGgDZ7K/tFOPNR8J4NjqK1gDl87ioEtEU98Or2DoO2xXfzrydoTEAZQLkqFLnauB/tAPhuLbc7chbelY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752423058; c=relaxed/simple;
-	bh=gzAL/EueJ0C8lly+6l5vUD51zodpiimwjNuUTAmhF/4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iv5ry+VClX0/wnMSzCTIG/qfdl8SAXUiyM2if7fJGKUwlq729H7c6w8UPsNfluyJqHCqmrKKfVpmFSChWKxGkbHXuDMnVX64lgMqUMTt08MoqUc/5NdEjDi52D2334BlP7j5MHoYpLiVnnimCY/z1/Nb49xbMHVX5lop9jKjeZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cuxL2Iyc reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B3AF640E019D;
-	Sun, 13 Jul 2025 16:10:44 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id zR9hEDrrV1iJ; Sun, 13 Jul 2025 16:10:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1752423041; bh=eEV6al1b4tlwbBWLC0lZ2kXqFkVfmKjct/ARV+PmJ7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cuxL2IycmBxO0hUCh9CtEid3rlOd4lGDheEcLgFbY0rFYe4xfUHUWWh75EHLxCLv+
-	 8Y/aOXt/n9pYyXD/IQHrurh59643aP5o+gMjg1y+AuwW6y2TRLWMZs1aj62nNoGSYO
-	 7uM8BzhyRroznlDVVqKeX/ybStIEhgWkKCmjM3foLT8HDSN+waIfiCpOJmMGmOFHhx
-	 +kIwvwWzjqKiHqbLuPPYK6qNOlGGYSNS5N/oUP5BUg9tzDyvXN6GF/7Rfx7cisxFXR
-	 Sq0zjZsafWxh+2Z/AnubIYTnZTxfh6V3MpaZoxrDbPC7PYLF6KfIPbrigKEN0P6p7H
-	 DdhgfpEfnSO/Oai9kZKnVYmwGmGaxrcpsGa1bbgw3dKle2cGybESifgwXfREWnqsOH
-	 hHLgwECtgogJYvitMHGsa4AprLsB3iQXiCV3jFClgpIXplzakpS57SELWk8TR9OYfy
-	 ioOKQtspI7HZsqN5WDu/Xqjt0ZLe5Ngvr5CEhFg5c/3tFf0fAvhvjinjEVB/pIrQoy
-	 wLr7BNBKKuCyx7UEZKTiAOdrRbwdTWj4UZ8VCJpU3DMZ4tIwA+RgcOo5Pkwv1cdS0p
-	 Wh/Ky3RpmAPVmmBu+gUfc9O3DdBC0xx7nv64FPvBXZKd3d5WfOmu76MM7L6BwPWR8S
-	 YZZpQ66tiX65joOYaXK8VUMo=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F3E6B40E0163;
-	Sun, 13 Jul 2025 16:10:38 +0000 (UTC)
-Date: Sun, 13 Jul 2025 18:10:32 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 5.15-stable] x86/CPU/AMD: Properly check the TSA microcode
-Message-ID: <20250713161032.GCaHPaeCpf5Y0_WBiq@fat_crate.local>
-References: <20250711194558.GLaHFp9kw1s5dSmBUa@fat_crate.local>
- <20250712211157-88bc729ab524b77b@stable.kernel.org>
+	s=arc-20240116; t=1752427797; c=relaxed/simple;
+	bh=xDEfxrZXVShq+Qj7chXkah+DfC6F5cV0MK8+jeraBow=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CO/itsxiWWta8+2ksxIyIYe8B5jLxIKK9I0X2qwCB3CI4+PlWK/iS2ccFa4qYe27qOguIsuNFj6YwRCg9J7+4736rudujYA1CDwOlHrAhCsOt8VD0bgkowo60Dam3qIoAmZY8yJc6TsMHD1CYN1KA/XMysqE9DD34it1KqKsXws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dshQBYDU; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752427796; x=1783963796;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=xDEfxrZXVShq+Qj7chXkah+DfC6F5cV0MK8+jeraBow=;
+  b=dshQBYDUsWyk1BZrt2DB7vVkmfuongo8UWiPklbUe6b6+sdyCwcvkDf6
+   aAuSKBJvOvoycM+kJ0TpAA+RTD0RXz7BIBa0ibNQso+2zhOAWDOH8y68E
+   s2c2f+E3PbumJ5zVYgmVky4ytTsM36CJP3hiLkm2YLPdB92C3gLZEoO2E
+   lHf7cqsr+0BkbNcb5TcQ1AeW/4LSMX2+puOkYbFfldBY3WWUQsN/8xm+h
+   7t3y2vTbf570RkiJR5lAFao4BzQMI9LC6VHvb034xsMEnIMhIKLIutTtf
+   r8S/lnWf3U/mXOLJe3oC7yHVAdOuRdkttBnmWcXr+DSymUcSwGfMvANZn
+   Q==;
+X-CSE-ConnectionGUID: gl0/PAn1QQimlHPIc3nnoQ==
+X-CSE-MsgGUID: L9mXuP2JSJ+zpFAs4laUQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65334111"
+X-IronPort-AV: E=Sophos;i="6.16,309,1744095600"; 
+   d="scan'208";a="65334111"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2025 10:29:56 -0700
+X-CSE-ConnectionGUID: zpaf+F0kTcWkj+1WNJWVwQ==
+X-CSE-MsgGUID: QL8gho/HReWgU8hx+IOlUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,309,1744095600"; 
+   d="scan'208";a="161069175"
+Received: from mgoodin-mobl3.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.223.19])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2025 10:29:54 -0700
+From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
+To: platform-driver-x86@vger.kernel.org,
+	intel-xe@lists.freedesktop.org,
+	hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com,
+	lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	david.e.box@linux.intel.com
+Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v8 01/13] platform/x86/intel/pmt: fix a crashlog NULL pointer access
+Date: Sun, 13 Jul 2025 13:29:31 -0400
+Message-ID: <20250713172943.7335-2-michael.j.ruhl@intel.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250713172943.7335-1-michael.j.ruhl@intel.com>
+References: <20250713172943.7335-1-michael.j.ruhl@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250712211157-88bc729ab524b77b@stable.kernel.org>
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Dear Sasha's backport helper bot,
+Usage of the intel_pmt_read() for binary sysfs, requires a pcidev. The
+current use of the endpoint value is only valid for telemetry endpoint
+usage.
 
-On Sun, Jul 13, 2025 at 09:06:05AM -0400, Sasha Levin wrote:
-> [ Sasha's backport helYper bot ]
->=20
-> Hi,
->=20
-> Summary of potential issues:
-> =E2=9A=A0=EF=B8=8F Could not find matching upstream commit
->=20
-> No upstream commit was identified. Using temporary commit for testing.
+Without the ep, the crashlog usage causes the following NULL pointer
+exception:
 
-I think you need to be trained more to actually read commit messages too.
-Because there it is explained why.
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Oops: Oops: 0000 [#1] SMP NOPTI
+RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
+Code:
+Call Trace:
+ <TASK>
+ ? sysfs_kf_bin_read+0xc0/0xe0
+ kernfs_fop_read_iter+0xac/0x1a0
+ vfs_read+0x26d/0x350
+ ksys_read+0x6b/0xe0
+ __x64_sys_read+0x1d/0x30
+ x64_sys_call+0x1bc8/0x1d70
+ do_syscall_64+0x6d/0x110
 
---=20
-Regards/Gruss,
-    Boris.
+Augment struct intel_pmt_entry with a pointer to the pcidev to avoid
+the NULL pointer exception.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Reviewed-by: David E. Box <david.e.box@linux.intel.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Fixes: 045a513040cc ("platform/x86/intel/pmt: Use PMT callbacks")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+---
+ drivers/platform/x86/intel/pmt/class.c | 3 ++-
+ drivers/platform/x86/intel/pmt/class.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
+index 7233b654bbad..d046e8752173 100644
+--- a/drivers/platform/x86/intel/pmt/class.c
++++ b/drivers/platform/x86/intel/pmt/class.c
+@@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
+ 	if (count > entry->size - off)
+ 		count = entry->size - off;
+ 
+-	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
++	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
+ 				    entry->base, off, count);
+ 
+ 	return count;
+@@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct intel_pmt_entry *entry,
+ 		return -EINVAL;
+ 	}
+ 
++	entry->pcidev = pci_dev;
+ 	entry->guid = header->guid;
+ 	entry->size = header->size;
+ 	entry->cb = ivdev->priv_data;
+diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
+index b2006d57779d..f6ce80c4e051 100644
+--- a/drivers/platform/x86/intel/pmt/class.h
++++ b/drivers/platform/x86/intel/pmt/class.h
+@@ -39,6 +39,7 @@ struct intel_pmt_header {
+ 
+ struct intel_pmt_entry {
+ 	struct telem_endpoint	*ep;
++	struct pci_dev		*pcidev;
+ 	struct intel_pmt_header	header;
+ 	struct bin_attribute	pmt_bin_attr;
+ 	struct kobject		*kobj;
+-- 
+2.50.0
+
 
