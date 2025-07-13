@@ -1,159 +1,159 @@
-Return-Path: <stable+bounces-161787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D8C1B0324A
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 19:30:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192A4B0328D
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 19:56:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0814E3B9822
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 17:29:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 507E01895D33
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 17:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEAF280318;
-	Sun, 13 Jul 2025 17:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B7227FD78;
+	Sun, 13 Jul 2025 17:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dshQBYDU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aRL5197n"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7AB27F4D9;
-	Sun, 13 Jul 2025 17:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D131B2581;
+	Sun, 13 Jul 2025 17:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752427797; cv=none; b=eQskuaLMts7IHdWX7GlJVaGylP98pkT/XhzZ/r3G/luVen/wOC4OI/qClQvvfRRYiePxZni//j2zVCDDpWtUmcFYvTXxGgDZ7K/tFOPNR8J4NjqK1gDl87ioEtEU98Or2DoO2xXfzrydoTEAZQLkqFLnauB/tAPhuLbc7chbelY=
+	t=1752429384; cv=none; b=H4iF+z0TNLNULaqSqkhDWff1eU5fvaq4lcHeGDLEXv7XchpUgAGS5eMiOlAJRNFNdfZZmQjqxxvfhWx4rp7tp3Te228qPaIXLSQdN+z3KW9s/MMjPf8FxwDrGQVgnU9iLABAxSOD5LbfhcMiARPwDVQ4pPsPj1z0DKHr97q1O5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752427797; c=relaxed/simple;
-	bh=xDEfxrZXVShq+Qj7chXkah+DfC6F5cV0MK8+jeraBow=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CO/itsxiWWta8+2ksxIyIYe8B5jLxIKK9I0X2qwCB3CI4+PlWK/iS2ccFa4qYe27qOguIsuNFj6YwRCg9J7+4736rudujYA1CDwOlHrAhCsOt8VD0bgkowo60Dam3qIoAmZY8yJc6TsMHD1CYN1KA/XMysqE9DD34it1KqKsXws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dshQBYDU; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752427796; x=1783963796;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xDEfxrZXVShq+Qj7chXkah+DfC6F5cV0MK8+jeraBow=;
-  b=dshQBYDUsWyk1BZrt2DB7vVkmfuongo8UWiPklbUe6b6+sdyCwcvkDf6
-   aAuSKBJvOvoycM+kJ0TpAA+RTD0RXz7BIBa0ibNQso+2zhOAWDOH8y68E
-   s2c2f+E3PbumJ5zVYgmVky4ytTsM36CJP3hiLkm2YLPdB92C3gLZEoO2E
-   lHf7cqsr+0BkbNcb5TcQ1AeW/4LSMX2+puOkYbFfldBY3WWUQsN/8xm+h
-   7t3y2vTbf570RkiJR5lAFao4BzQMI9LC6VHvb034xsMEnIMhIKLIutTtf
-   r8S/lnWf3U/mXOLJe3oC7yHVAdOuRdkttBnmWcXr+DSymUcSwGfMvANZn
-   Q==;
-X-CSE-ConnectionGUID: gl0/PAn1QQimlHPIc3nnoQ==
-X-CSE-MsgGUID: L9mXuP2JSJ+zpFAs4laUQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65334111"
-X-IronPort-AV: E=Sophos;i="6.16,309,1744095600"; 
-   d="scan'208";a="65334111"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2025 10:29:56 -0700
-X-CSE-ConnectionGUID: zpaf+F0kTcWkj+1WNJWVwQ==
-X-CSE-MsgGUID: QL8gho/HReWgU8hx+IOlUQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,309,1744095600"; 
-   d="scan'208";a="161069175"
-Received: from mgoodin-mobl3.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.223.19])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2025 10:29:54 -0700
-From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
-To: platform-driver-x86@vger.kernel.org,
-	intel-xe@lists.freedesktop.org,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com,
-	lucas.demarchi@intel.com,
-	rodrigo.vivi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	david.e.box@linux.intel.com
-Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v8 01/13] platform/x86/intel/pmt: fix a crashlog NULL pointer access
-Date: Sun, 13 Jul 2025 13:29:31 -0400
-Message-ID: <20250713172943.7335-2-michael.j.ruhl@intel.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250713172943.7335-1-michael.j.ruhl@intel.com>
-References: <20250713172943.7335-1-michael.j.ruhl@intel.com>
+	s=arc-20240116; t=1752429384; c=relaxed/simple;
+	bh=P+ZGpMquPfCHNe224IKptMJLR+y5tQ5d/vbWwHQvmck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DmTM12wQPWXUwWAzpuPkbVxwrpUy6r4cBFhcEl7scm97hmLMeTLhwupU0xlw39vOuhs9fBnX3Q/6qPTBcy4eOY8odcenk+uHyt38CTJICCuVSKwA48cipvXobCnb5SQrdlz1ww+J+ehKnOwAz6yisKF+cxzvn8ZyZDh8QllmkoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aRL5197n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C3AC4CEE3;
+	Sun, 13 Jul 2025 17:56:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752429384;
+	bh=P+ZGpMquPfCHNe224IKptMJLR+y5tQ5d/vbWwHQvmck=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aRL5197nqMjr05xGN5g0zw/NpBK9l35yCYREJWMyObTAyxvoeKkdbRkguviRQyWru
+	 qvE1QRGmzQ1VaF8essjumL49HXZ7Jd3v8OF7zwINCkQ0AgrJc92KRSxrY1o9bOCdLL
+	 VkLp9+/x/hMoTGF6Xcj6jz2F6PJI7OgL1JNmnF0LPTBCwnsqgNAoNNRulmzs7a2JMo
+	 L7jw0iwn/wt5L0JQLgnojswEXOudNgPt+3uOhusGR+3FkW1by9lkMz0SRd9MNYAhli
+	 G/gcpZCx+VIYKjHzKwbrv4cM0UBdtktAmhnQPB8FX/GQ6gE2tIKfgSrJy6SmVJJu0v
+	 /JXT21VQ3POhw==
+Date: Sun, 13 Jul 2025 20:56:10 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Juergen Gross <jgross@suse.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [RFC V1 PATCH mm-hotfixes 1/3] mm: introduce and use
+ {pgd,p4d}_populate_kernel()
+Message-ID: <aHPzOrS7ZfO-3Wf6@kernel.org>
+References: <20250709131657.5660-1-harry.yoo@oracle.com>
+ <20250709131657.5660-2-harry.yoo@oracle.com>
+ <02146c79-a4de-430f-8357-0608e796fa60@redhat.com>
+ <aHObCemGNrGakq_b@hyeyoo>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aHObCemGNrGakq_b@hyeyoo>
 
-Usage of the intel_pmt_read() for binary sysfs, requires a pcidev. The
-current use of the endpoint value is only valid for telemetry endpoint
-usage.
+On Sun, Jul 13, 2025 at 08:39:53PM +0900, Harry Yoo wrote:
+> On Fri, Jul 11, 2025 at 06:18:44PM +0200, David Hildenbrand wrote:
+> > On 09.07.25 15:16, Harry Yoo wrote:
+> > > Intrdocue and use {pgd,p4d}_pouplate_kernel() in core MM code when
+> > > populating PGD and P4D entries corresponding to the kernel address
+> > > space. The main purpose of these helpers is to ensure synchronization of
+> > > the kernel portion of the top-level page tables whenever such an entry
+> > > is populated.
+> > > 
+> > > Until now, the kernel has relied on each architecture to handle
+> > > synchronization of top-level page tables in an ad-hoc manner.
+> > > For example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for
+> > > direct mapping and vmemmap mapping changes").
+> > > 
+> > > However, this approach has proven fragile, as it's easy to forget to
+> > > perform the necessary synchronization when introducing new changes.
+> > > 
+> > > To address this, introduce _kernel() varients of the page table
+> > 
+> > s/varients/variants/
+> 
+> Will fix. Thanks.
+> 
+> > > population helpers that invoke architecture-specific hooks to properly
+> > > synchronize the page tables.
+> > 
+> > I was expecting to see the sync be done in common code -- such that it
+> > cannot be missed :)
+> 
+> You mean something like an arch-independent implementation of
+> sync_global_pgds()?
+>
+> That would be a "much more robust" approach ;)
+> 
+> To do that, the kernel would need to maintain a list of page tables that
+> have kernel portion mapped and perform the sync in the common code.
+> 
+> But determining which page tables to add to the list would be highly
+> architecture-specific. For example, I think some architectures use separate
+> page tables for kernel space, unlike x86 (e.g., arm64 TTBR1, SPARC) and
+> user page tables should not be affected.
 
-Without the ep, the crashlog usage causes the following NULL pointer
-exception:
+sync_global_pgds() can be still implemented per architecture, but it can be
+called from the common code.
+We already have something like that for vmalloc that calls
+arch_sync_kernel_mappings(). It's implemented only by x86-32 and arm, other
+architectures do not define it.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Oops: Oops: 0000 [#1] SMP NOPTI
-RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
-Code:
-Call Trace:
- <TASK>
- ? sysfs_kf_bin_read+0xc0/0xe0
- kernfs_fop_read_iter+0xac/0x1a0
- vfs_read+0x26d/0x350
- ksys_read+0x6b/0xe0
- __x64_sys_read+0x1d/0x30
- x64_sys_call+0x1bc8/0x1d70
- do_syscall_64+0x6d/0x110
+> While doing the sync in common code might be a more robust option
+> in the long term, I'm afraid that making it work correctly across
+> all architectures would be challenging, due to differences in how each
+> architecture manages the kernel address space.
+> 
+> > But it's really just rerouting to the arch code where the sync can be done,
+> > correct?
+> 
+> Yes, that's correct.
+> 
+> Thanks for taking a look!
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
 
-Augment struct intel_pmt_entry with a pointer to the pcidev to avoid
-the NULL pointer exception.
-
-Reviewed-by: David E. Box <david.e.box@linux.intel.com>
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Fixes: 045a513040cc ("platform/x86/intel/pmt: Use PMT callbacks")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
----
- drivers/platform/x86/intel/pmt/class.c | 3 ++-
- drivers/platform/x86/intel/pmt/class.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
-index 7233b654bbad..d046e8752173 100644
---- a/drivers/platform/x86/intel/pmt/class.c
-+++ b/drivers/platform/x86/intel/pmt/class.c
-@@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
- 	if (count > entry->size - off)
- 		count = entry->size - off;
- 
--	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
-+	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
- 				    entry->base, off, count);
- 
- 	return count;
-@@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct intel_pmt_entry *entry,
- 		return -EINVAL;
- 	}
- 
-+	entry->pcidev = pci_dev;
- 	entry->guid = header->guid;
- 	entry->size = header->size;
- 	entry->cb = ivdev->priv_data;
-diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
-index b2006d57779d..f6ce80c4e051 100644
---- a/drivers/platform/x86/intel/pmt/class.h
-+++ b/drivers/platform/x86/intel/pmt/class.h
-@@ -39,6 +39,7 @@ struct intel_pmt_header {
- 
- struct intel_pmt_entry {
- 	struct telem_endpoint	*ep;
-+	struct pci_dev		*pcidev;
- 	struct intel_pmt_header	header;
- 	struct bin_attribute	pmt_bin_attr;
- 	struct kobject		*kobj;
 -- 
-2.50.0
-
+Sincerely yours,
+Mike.
 
