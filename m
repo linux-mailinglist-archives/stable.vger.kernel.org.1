@@ -1,117 +1,93 @@
-Return-Path: <stable+bounces-161767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C994B0312C
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 15:30:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA10FB0315A
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 16:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07D3E7A960E
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 13:29:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E64D61898607
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 14:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78725226CF4;
-	Sun, 13 Jul 2025 13:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBF127815E;
+	Sun, 13 Jul 2025 14:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hkViS1BQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eezoriYX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C1E2E36E3
-	for <stable@vger.kernel.org>; Sun, 13 Jul 2025 13:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD8B247DF9
+	for <stable@vger.kernel.org>; Sun, 13 Jul 2025 14:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752413424; cv=none; b=JHUMRlcMm3bRT3p3iv8rtclfFEkTtP0Xe4lp9Ay2rw8vex/Sy/woqIneYju9OJ3YtCW8JGMxFzwndDkA2B9RVvd8ehQ+ldW9oNLrZq16zE1Yj+ErrAcd+ItjyvD6x98Y69Rb1Fh/i8sFVQ5Y3hAnim9RV2bTZMN1nL+9zrnxSqU=
+	t=1752415840; cv=none; b=mGNY+UNPCVDKupVI2rNcvXNtwoyn0K/tnvrBvSS6ty02EHq4pYlZuGQLTSY8n4qPsAKEu9eEIcrM1G+RBoUAObptro4RykeqhsGicybKk4gRV3VUBy3VgPs5P9Z90inG8zrnmwKHf6wG9sB+ElwgkMyJhHDYD1vNj1pEdblgRO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752413424; c=relaxed/simple;
-	bh=hRFYpgqyfoGesfV6z3ehAdCO8YzHlQGuWXhDjGk8tSE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MVKdtGUBonvXQzb3oFMyNWQ8QgZ4cNGiR9IgsEiF0RVMCPv2LvVin5oC6wnLIuaFVVg39z8c094hmwvDDefw+AOcBBKh4bDZKUy9dh9HrNmpm26IZHldccLvKRh2miT+R6VYzjN766XrrRQ8xdUvG84u1dK6Z58oswzO03yZESg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hkViS1BQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460BBC4CEE3;
-	Sun, 13 Jul 2025 13:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752413423;
-	bh=hRFYpgqyfoGesfV6z3ehAdCO8YzHlQGuWXhDjGk8tSE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hkViS1BQXegD8wcD0v9ZOzHRpGxbPqvzjcaACk1gUiow6xsjui9r8jC53fE4aLfcy
-	 Pr8+lxwwLogH4XSlqzSITQsnfvd/3hdTrFk4fQ8i0joKo2wSYDWt0LQ7CXe4Dl6IZ+
-	 BwfLJ5TsDYC0Hy2vQ0bOa5eJziuEHZ+dnqOptX2gGJmu/Cuvk38VgPZOIBIjGt+Bzc
-	 mnH5UlS/BjaoouovRMIxDfyUSo9KVE2lQFGsQJTi4JwaiWUdasVY3JsxReynLbeuvE
-	 dShJvGlx4ecHldhC2tsxvdLo8TANi8GPdlW+DCzBfJ+2lNBuDpxF6eAkBLjUrE3/Yv
-	 UdbGfCX157wZQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] pwm: mediatek: Ensure to disable clocks in error path
-Date: Sun, 13 Jul 2025 09:30:19 -0400
-Message-Id: <20250712204829-fc0f4c74bb537235@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250712205600.2182944-2-u.kleine-koenig@baylibre.com>
-References: 
+	s=arc-20240116; t=1752415840; c=relaxed/simple;
+	bh=7GmVr36zRep6ZMN5xI/+uqBQoXPeTipUdwdzOLjP6C4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nX7RyP6tj3YXm1joO7OElKLrKakCbkTRXP5wPP/kTsEljaBjXyrjDaabB07WB1MlJev5Ge5jnY4WtRg5pBpBqmzZfolbhCTibNEIRizWI/I+R6eAFueqF3FHGSaSOAGqThv3+HGUE8O//WxKBVr39SSNKtq05yeHXkyDYRmaq/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eezoriYX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0292DC4CEF4;
+	Sun, 13 Jul 2025 14:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752415840;
+	bh=7GmVr36zRep6ZMN5xI/+uqBQoXPeTipUdwdzOLjP6C4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eezoriYXs3exVGa5k6KueelBSQ7bGwRybpqn6B+L+3CoknGVhDsEYbzkeitemMpE5
+	 UdK+NHcgnbGJmjSe6yZNJoPhXVskTtfTizHU5Hpzkhy1ATNicPziykS715LkzVmTq4
+	 pqXXA2fXv7r1P36sJmSJhqegIrQxL/xxENF41UOw=
+Date: Sun, 13 Jul 2025 16:10:37 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Rainer Fiebig <jrf@mailbox.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: TSA-mitigation not working: "no microcode" although
+ microcode-revision should suffice
+Message-ID: <2025071336-obsession-aching-ded8@gregkh>
+References: <66ec28bc-b9db-95e9-b3d4-5faaa03e0f78@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <66ec28bc-b9db-95e9-b3d4-5faaa03e0f78@mailbox.org>
 
-[ Sasha's backport helper bot ]
+On Sun, Jul 13, 2025 at 03:12:42PM +0200, Rainer Fiebig wrote:
+> Built 6.12.37 with CONFIG_MITIGATION_TSA=y on a Ryzen 5700G system.
+> According to [1] the minimum BIOS revision should be
+> ComboAM4v2PI 1.2.0.E which is installed.  According to [2] the minimum
+> microcode revision required for that CPU is 0x0A500012.  Installed is
+> 0x0A500014.  So I think the mitigating should work.  But this is not the
+> case:
+> 
+> ~> dmesg | grep -Ei 'ryzen|microcode'
+> [    0.171006] Transient Scheduler Attacks: Vulnerable: Clear CPU
+> buffers attempted, no microcode
+> [    0.288006] smpboot: CPU0: AMD Ryzen 7 5700G with Radeon Graphics
+> (family: 0x19, model: 0x50, stepping: 0x0)
+> [    0.480729] microcode: Current revision: 0x0a500014
+> 
+> I'm wondering why the mitigation isn't working.  Thanks.
+> 
+> Rainer
+> 
+> 
+> [1]
+> https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7029.html
+> [2]
+> https://www.amd.com/content/dam/amd/en/documents/resources/bulletin/technical-guidance-for-mitigating-transient-scheduler-attacks.pdf
 
-Hi,
+Should be fixed in the next round of kernel releases, see this fix if
+you want to grab it now:
+	https://lore.kernel.org/r/20250711191844.GIaHFjlJiQi_HxyyWG@fat_crate.local
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Let us know if this doesn't solve it for you.
 
-The upstream commit SHA1 provided is correct: 505b730ede7f5c4083ff212aa955155b5b92e574
+thanks,
 
-Status in newer kernel trees:
-6.15.y | Present (different SHA1: c4ffbbd8e366)
-6.12.y | Present (different SHA1: dd878f5a5d0d)
-6.6.y | Not found
-6.1.y | Not found
-
-Note: The patch differs from the upstream commit:
----
-1:  505b730ede7f5 ! 1:  06f8584381eb0 pwm: mediatek: Ensure to disable clocks in error path
-    @@ Metadata
-      ## Commit message ##
-         pwm: mediatek: Ensure to disable clocks in error path
-     
-    +    commit 505b730ede7f5c4083ff212aa955155b5b92e574 upstream.
-    +
-         After enabling the clocks each error path must disable the clocks again.
-         One of them failed to do so. Unify the error paths to use goto to make it
-         harder for future changes to add a similar bug.
-    @@ Commit message
-         Link: https://lore.kernel.org/r/20250704172728.626815-2-u.kleine-koenig@baylibre.com
-         Cc: stable@vger.kernel.org
-         Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-    +    [ukleinek: backported to 5.15.y]
-    +    Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-     
-      ## drivers/pwm/pwm-mediatek.c ##
-     @@ drivers/pwm/pwm-mediatek.c: static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
-    @@ drivers/pwm/pwm-mediatek.c: static int pwm_mediatek_config(struct pwm_chip *chip
-      
-      	if (clkdiv > PWM_CLK_DIV_MAX) {
-     -		pwm_mediatek_clk_disable(chip, pwm);
-    - 		dev_err(pwmchip_parent(chip), "period of %d ns not supported\n", period_ns);
-    +-		dev_err(chip->dev, "period %d not supported\n", period_ns);
-     -		return -EINVAL;
-    ++		dev_err(chip->dev, "period of %d ns not supported\n", period_ns);
-     +		ret = -EINVAL;
-     +		goto out;
-      	}
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+greg k-h
 
