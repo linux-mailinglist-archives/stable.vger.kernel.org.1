@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-161760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C941B0310E
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 15:06:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76722B0310F
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 15:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E4EA1893D6A
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 13:06:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6E9E17C54F
+	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 13:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57C219CD01;
-	Sun, 13 Jul 2025 13:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4F12472A8;
+	Sun, 13 Jul 2025 13:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tjMiU7CJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ubjorsJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADE26FC3
-	for <stable@vger.kernel.org>; Sun, 13 Jul 2025 13:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD8F6FC3
+	for <stable@vger.kernel.org>; Sun, 13 Jul 2025 13:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752411963; cv=none; b=YfMTCtIh+qVtH3yPUhF9gej4lKyRsUQhOIrWZ0EGmU+TgBiVkKN9mC+vvzuM8uPzPyhrEHUC965I42GuVSjTtv6uFhFADtgkbaMptzrbgz6qGt+a8ZN2wPtNGNX5b5a2kj3C4mCeyu0N8/AqZ+TmQn3IqFi1U5TDcXFJ4zUrr0s=
+	t=1752411966; cv=none; b=hUK/yKpAn9bScDktAfQgWuWgWcdp9Mdkx9XfAoEed5aD6o0lhwq0dtEL4y0QxixKn31TAIxsuYh+DPbEDhgFF/0uHFYlRtrm130vY94iNPj7nf2tNNUXR30ngcwslhzW4m1Uk3hPHJoGeeZhLfbeL0JPtbOqqLvnFDY6unnRqDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752411963; c=relaxed/simple;
-	bh=ofAjwtxJJ90hiXxaQO0TYvFGJ/CtVPmOp0RxlxCZStA=;
+	s=arc-20240116; t=1752411966; c=relaxed/simple;
+	bh=F1R5fIBjLEVOw0K8LCtdzq/yHNqsYaFxWD59c+iBF44=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qo2KLVHiiTztIoGoehbQ1CGTEhRaVwD24R3xQT2Ue6X8hVFm+18jgEstCXkrzAXtHV3gZhwjvi95OE7bpW7hveKBFmshLiVYUlewYTtxRkV60hi72re3dXqSC4Rptfz0w8vwhT0kSSj7k4VogRXVv6CWPIVBOahdI9xD/0d7Fos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tjMiU7CJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD8EC4CEE3;
-	Sun, 13 Jul 2025 13:06:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XgI86dc8Tia/v8JDQ66WWeapTP+4w6jiFm0PCVRInBmKu1I9ppwyK8SkgBtZRl8exbmEMeGCK0B3/oN7VHHEI/vLpDwSH4+yReSrMwni6MXvesIXsYTBXYulP52Zvn9rrZctTtlaLZ3Tvhlc1ahTvvYtO+nNRfNdl6pG6u033CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ubjorsJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADD4C4CEE3;
+	Sun, 13 Jul 2025 13:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752411962;
-	bh=ofAjwtxJJ90hiXxaQO0TYvFGJ/CtVPmOp0RxlxCZStA=;
+	s=k20201202; t=1752411965;
+	bh=F1R5fIBjLEVOw0K8LCtdzq/yHNqsYaFxWD59c+iBF44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjMiU7CJ5G6x/4akYxTLsJCzWwuOwwk5JnhS1HcWvVxXo2JncKgRxmAyb1IW/T3sK
-	 BzOfivfS1/by6sEk2Chc2ZVVnjIBidapvSHKjMjIN5UyFH2gPFzLY9PMXlX+t0VLG9
-	 IaJx1FQlKEctePq5FcA8W2dUl7NU7Ylyx0LO/nT8dvNGK0gX29f307txL8DxUxPyAM
-	 46M9xJ+wOrdrh0twAaCJTpTNhAxwjryMmVUxcG3zNm+/82RF+weiWjgnR2/Fzb6xUx
-	 +/3H40ej6njNvtvX7yaBGvtcrhFqGGsPD6nfdOFLcjzXXVTDdrG/OmQMaqgkRFkp6B
-	 zqrY8d8pA2BGQ==
+	b=ubjorsJE2ualqNIwU+O8MO5S9VibO3nQuCRtFZTWlF/mzeTHGsOaN6yb3vFPrLbgT
+	 p1Id03SlfXEaH4kK2pp35NYQzp5JqLFG+qn0RKvqWGNtEGHqr3Xys/1Y980DuEanaL
+	 GtvgCRPlKo4UlbkZGSXLkNnOK4pvAKiurNKTQwKc4rvkYL8JouSj6nd7h4AtX3nong
+	 2H6xH3WUqeCN5TXJpEMaaTCt9mHXWe8TyXUUtvnqdRRXVGIwyCp4UhbphD8ZfR3Vbh
+	 lMHlQ4cbWeljcfpAAhSHIsszQPdrCo2os/Kt0vNTAhjcaFXliHwuwu/goWNXVWBK17
+	 WrLDVJqsgOiEw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	bp@alien8.de
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12-stable] x86/CPU/AMD: Properly check the TSA microcode
-Date: Sun, 13 Jul 2025 09:05:57 -0400
-Message-Id: <20250712202635-a16ae9be6fcbeec3@stable.kernel.org>
+Subject: Re: [PATCH 6.1-stable] x86/CPU/AMD: Properly check the TSA microcode
+Date: Sun, 13 Jul 2025 09:06:03 -0400
+Message-Id: <20250712203342-53f56e26abacad80@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250711191844.GIaHFjlJiQi_HxyyWG@fat_crate.local>
+In-Reply-To:  <20250711193039.GKaHFmX8215MRwSR_z@fat_crate.local>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -73,5 +73,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
