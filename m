@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-161819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59ADB03A44
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 11:05:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E777AB03A4A
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 11:06:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 769BD7AA730
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 09:04:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5313717A189
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 09:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C5C23AB88;
-	Mon, 14 Jul 2025 09:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105EE23A9BF;
+	Mon, 14 Jul 2025 09:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L914gAz0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujx/jdIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F87CA6B
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 09:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1D4239E63
+	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 09:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752483939; cv=none; b=OhedE5k19JsBhEN34ZQw5wbNF5+VoRBqiFWQBM9hA6c2GUAug7HT2AUrjb+fo/mqmVGCJ7m3DRsP9Xj3RyWoZOEexPUZobeAwkC2j9drc6biIGsiNzf15gDMuR9k/PFW7Gf+oG0saWbjtYF+aUdbVXVUkRny36oSqpXIlPchV7c=
+	t=1752483971; cv=none; b=r6HOb+BeDm8ND3Fq8X+pQNHBuS7mf3t4eUQuA4RxA6lKRMaVdSU2+xAjDpn6qox64W3j55LwE8D2qigDdXPAl9/8Y+rpOYtqTHXDtwsOYTH3Eig0bXrrj2EvLEVWuh+CKruR4gdL4TnoOVSwVc6mMPqBDfNia0KK8etO41cet3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752483939; c=relaxed/simple;
-	bh=4fHU0tAhEpD0woxkC9lChz6VEwaQn1fEiSMjf9kgpNU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rBbOc31QqALplZFk+Em7V5i8hu1854+cjih79ff5bfQBCzmt3DHwLQtXc0Ir1DHSOpBqUkF+Gg3kR4KTmLbUsb3NNxBzVaA9sgJV7epYuHRNzZLGiCK/4g26Q+dU+VvpJrG+wXUPAxZETELyiFNAU0QwSjJBjr3vkrHqV/aOxgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L914gAz0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E125FC4CEED;
-	Mon, 14 Jul 2025 09:05:37 +0000 (UTC)
+	s=arc-20240116; t=1752483971; c=relaxed/simple;
+	bh=6550NEkM5DbN70uQNft37/OdzAq8Y02qnmmo20xHZf4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EivNaFgwS/Jrr9hLUuPcNGJ1OzGv9Blicxh8gx+a56qoZarlR0phGSFYOjTMsQpCp59fD89klnheyqsbpe/iXky5Pu3Yb8QmxHtvoOquQhUlyHmMPCtLGV8ZfwoiEH0GWHJFtAoM+oAttE51s4aZZcVlJ9e79Vzr1g/KDU6AOeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujx/jdIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D6BC4CEF4;
+	Mon, 14 Jul 2025 09:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752483938;
-	bh=4fHU0tAhEpD0woxkC9lChz6VEwaQn1fEiSMjf9kgpNU=;
+	s=korg; t=1752483971;
+	bh=6550NEkM5DbN70uQNft37/OdzAq8Y02qnmmo20xHZf4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=L914gAz0vwNBLyvghCzrKoya2/xExXVk47p910ZX1bXg4tMXfzZkIHg1YClp83Vbp
-	 +dJ8shl5OTPMuOJp4N9FKw+g81ZynT+MluYJWDzAoPkxJsMflZJWJkcGBbXngJpzZW
-	 h5wjHYPk84AiQYrQL2oiGWcao6CV+/mNsfM4KCdE=
-Subject: FAILED: patch "[PATCH] x86/mm: Disable hugetlb page table sharing on 32-bit" failed to apply to 5.4-stable tree
-To: jannh@google.com,dave.hansen@intel.com,dave.hansen@linux.intel.com,david@redhat.com,osalvador@suse.de,vt@altlinux.org
+	b=ujx/jdIC5alzblM6G3D4YBMSrhEXfDkO5ioe/J6mPlehNI1dD0IM4zq6aZS+zZ3ZJ
+	 2GCU+NGMMGY8Pd+1SzRgPuWkwLv3frm8+Od8ev//1+CE/kKkMuFV+ZEgWPYLEufKgL
+	 oKQKKcOuvQp3wyFKurjbZOPMKWyTO+hh+L+T8U6A=
+Subject: FAILED: patch "[PATCH] smb: server: make use of rdma_destroy_qp()" failed to apply to 5.15-stable tree
+To: metze@samba.org,hyc.lee@gmail.com,linkinjeon@kernel.org,sergey.senozhatsky@gmail.com,stfrench@microsoft.com,tom@talpey.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 14 Jul 2025 11:05:23 +0200
-Message-ID: <2025071423-imbecile-slander-d8e9@gregkh>
+Date: Mon, 14 Jul 2025 11:06:08 +0200
+Message-ID: <2025071408-overarch-ashes-8fbd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 76303ee8d54bff6d9a6d55997acd88a6c2ba63cf
+git cherry-pick -x 0c2b53997e8f5e2ec9e0fbd17ac0436466b65488
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071423-imbecile-slander-d8e9@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071408-overarch-ashes-8fbd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,54 +77,66 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 76303ee8d54bff6d9a6d55997acd88a6c2ba63cf Mon Sep 17 00:00:00 2001
-From: Jann Horn <jannh@google.com>
-Date: Wed, 2 Jul 2025 10:32:04 +0200
-Subject: [PATCH] x86/mm: Disable hugetlb page table sharing on 32-bit
+From 0c2b53997e8f5e2ec9e0fbd17ac0436466b65488 Mon Sep 17 00:00:00 2001
+From: Stefan Metzmacher <metze@samba.org>
+Date: Wed, 2 Jul 2025 09:18:05 +0200
+Subject: [PATCH] smb: server: make use of rdma_destroy_qp()
 
-Only select ARCH_WANT_HUGE_PMD_SHARE on 64-bit x86.
-Page table sharing requires at least three levels because it involves
-shared references to PMD tables; 32-bit x86 has either two-level paging
-(without PAE) or three-level paging (with PAE), but even with
-three-level paging, having a dedicated PGD entry for hugetlb is only
-barely possible (because the PGD only has four entries), and it seems
-unlikely anyone's actually using PMD sharing on 32-bit.
+The qp is created by rdma_create_qp() as t->cm_id->qp
+and t->qp is just a shortcut.
 
-Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
-has 2-level paging) became particularly problematic after commit
-59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
-since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
-the `pt_share_count` (for PMDs) share the same union storage - and with
-2-level paging, PMDs are PGDs.
+rdma_destroy_qp() also calls ib_destroy_qp(cm_id->qp) internally,
+but it is protected by a mutex, clears the cm_id and also calls
+trace_cm_qp_destroy().
 
-(For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
-configuration of page tables such that it is never enabled with 2-level
-paging.)
+This should make the tracing more useful as both
+rdma_create_qp() and rdma_destroy_qp() are traces and it makes
+the code look more sane as functions from the same layer are used
+for the specific qp object.
 
-Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
-Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
-Reported-by: Vitaly Chikunov <vt@altlinux.org>
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Vitaly Chikunov <vt@altlinux.org>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250702-x86-2level-hugetlb-v2-1-1a98096edf92%40google.com
+trace-cmd stream -e rdma_cma:cm_qp_create -e rdma_cma:cm_qp_destroy
+shows this now while doing a mount and unmount from a client:
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 71019b3b54ea..4e0fe688cc83 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -147,7 +147,7 @@ config X86
- 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
- 	select ARCH_WANTS_NO_INSTR
- 	select ARCH_WANT_GENERAL_HUGETLB
--	select ARCH_WANT_HUGE_PMD_SHARE
-+	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
- 	select ARCH_WANT_LD_ORPHAN_WARN
- 	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if X86_64
- 	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
+  <...>-80   [002] 378.514182: cm_qp_create:  cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 pd.id=0 qp_type=RC send_wr=867 recv_wr=255 qp_num=1 rc=0
+  <...>-6283 [001] 381.686172: cm_qp_destroy: cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 qp_num=1
+
+Before we only saw the first line.
+
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <stfrench@microsoft.com>
+Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Cc: Hyunchul Lee <hyc.lee@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 64a428a06ace..c6cbe0d56e32 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -433,7 +433,8 @@ static void free_transport(struct smb_direct_transport *t)
+ 	if (t->qp) {
+ 		ib_drain_qp(t->qp);
+ 		ib_mr_pool_destroy(t->qp, &t->qp->rdma_mrs);
+-		ib_destroy_qp(t->qp);
++		t->qp = NULL;
++		rdma_destroy_qp(t->cm_id);
+ 	}
+ 
+ 	ksmbd_debug(RDMA, "drain the reassembly queue\n");
+@@ -1940,8 +1941,8 @@ static int smb_direct_create_qpair(struct smb_direct_transport *t,
+ 	return 0;
+ err:
+ 	if (t->qp) {
+-		ib_destroy_qp(t->qp);
+ 		t->qp = NULL;
++		rdma_destroy_qp(t->cm_id);
+ 	}
+ 	if (t->recv_cq) {
+ 		ib_destroy_cq(t->recv_cq);
 
 
