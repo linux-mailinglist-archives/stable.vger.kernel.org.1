@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-161924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706A7B04BFC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 01:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C094CB04C00
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 01:14:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 441784A03C2
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 23:12:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11E084A1D2D
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 23:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07AAF29DB6A;
-	Mon, 14 Jul 2025 23:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3903B29DB8F;
+	Mon, 14 Jul 2025 23:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="feJGyymi"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRrTPQsI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4E229CB58;
-	Mon, 14 Jul 2025 23:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC2529CB58;
+	Mon, 14 Jul 2025 23:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752534491; cv=none; b=WaT+vY/eEbylshA1kaJK1EKggUL7BDMOcC1I8zaQ9RjvD/sO0cptKi/3SWU8lK9qiH0MeFEtmJJ06YQ3o2IdIGxQMNDf39PND8UEEZIjG96oTyWG9hi9YpHwr0T+bj7fzFE7oV19OZXqp+LihgKyOQejCYv2yp6Pa+JAgrXe6B8=
+	t=1752534500; cv=none; b=vDGA5y31GMqBo8BgluNW9BENkOuQduA3JaQOmkMOKeafzD8DHSQ/Lj6G7STSq1AKqrqvinrXYloA2VFLPkh7NSnDNOZ4qBZGGk0/rSfz1P4rQp/y9sCDYXDofUc7F4FoVLJ9T/13uHzQ/O27XItvKZZLYLG60zd+g2kRzZ2B4Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752534491; c=relaxed/simple;
-	bh=AqiPT8XXFfGA33M/IreuwUURLhP9JSskrKmOJIGLc3Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=avg6oEh+fInTKlMhcpaKgOCROOEoszRIU9LHcS3oO3Y0B9dLt0YbhoXFtxEtKbxzx5hCyfQqVl4+PkAYMfDJXBY+NB0SHSAf9KJurjRQ721P+1QEj/iBb1B3TQqyt7zxOITi0qV9PUwIBzh0x8buP827+g0GrXaCCfBSfWwPDTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=feJGyymi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D713C4CEED;
-	Mon, 14 Jul 2025 23:08:10 +0000 (UTC)
+	s=arc-20240116; t=1752534500; c=relaxed/simple;
+	bh=vk2Y8kEEKYK9jP60kU2qg+C98h3evx7z/vw+tUivw7I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KH4yX7Vxp875SU7nyXr0BSx8n17qWQpu81WTiJhg36RGKzbCZGSjOJenLpQ4kInQXig3yaLybu7tHqrJVtQLQLdKa3tKH3PsYtNAvqqiCr11q/+TOp5+yHVeCz1Km24otVu7Y+HnWB8Jfj4SZ7ScSIMkD6ZiIZiOegMaFFULZyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRrTPQsI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176B6C4CEED;
+	Mon, 14 Jul 2025 23:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752534491;
-	bh=AqiPT8XXFfGA33M/IreuwUURLhP9JSskrKmOJIGLc3Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=feJGyymiPWqcKfqyvOfjn5/evxh/lLY6fPMcnqXb1I+ZnFYmrnWe8bYHdceLYXjN+
-	 jEwV29P32di46DjbGY+8JbOTcESbuQW9yU9TaSVcF+eODaxmMCgYZTsBlPiZYkQ1bz
-	 209eZeeU06UJZOScoN0kh4cF58F3+LxhJvv8S2Sp0HHDSGMaefo+UEM8WuH9L+NHBw
-	 bCVR7sBNwdd/se4px0HMfmIaAxdJlWHxrDz/gLId700xvqeDWqgHpvu5UBXgRcBAn3
-	 38+4DWGHRcJnNUd1QK/z1F97v/zhe8vTUw4Y/hJ+3qWzS0tD7E8m26WBMCDYN89vlE
-	 0ORsHEL/nt34Q==
+	s=k20201202; t=1752534497;
+	bh=vk2Y8kEEKYK9jP60kU2qg+C98h3evx7z/vw+tUivw7I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WRrTPQsIE6B/1xs60A3RVYfUYtvGD7izcZsMCowY0FtamRX2QIsALyaZrwfLYso1e
+	 gjKwUPDiLb2bvmdNt6AnUB44j+c4PjMfGTVph5ojTeWpndVDr+iZK/v2SaFnfFC+jT
+	 YJ4UvqaxMMnl4Ietviq6J1pbube7soIfIuo6cAY+vMyCq1nB5vBiAUjRv2Y5NxRjn0
+	 Xsx5fpW4N+sXQDyndGeJJbH69r6EuACIkzTOFgEnNwAI1vHU/1XD98hF8WXut0x92x
+	 40GDcunEZMectF06bbR+H4JtFERWmDllBV7jHtPXMP5Qazg/AF0/huSZUP3tr7E441
+	 pFlPxfspCyU0g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Ziyan Xu <research@securitygossip.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>,
-	smfrench@gmail.com,
-	linux-cifs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 4/4] ksmbd: fix potential use-after-free in oplock/lease break ack
-Date: Mon, 14 Jul 2025 19:07:58 -0400
-Message-Id: <20250714230759.3710404-4-sashal@kernel.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Junvyyang@web.codeaurora.org,
+	Tencent Zhuque Lab <zhuque@tencent.com>,
+	LePremierHomme <kwqcheii@proton.me>,
+	Marc Dionne <marc.dionne@auristor.com>, Willy Tarreau <w@1wt.eu>,
+	Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 1/3] rxrpc: Fix oops due to non-existence of prealloc backlog struct
+Date: Mon, 14 Jul 2025 19:08:10 -0400
+Message-Id: <20250714230812.3710500-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250714230759.3710404-1-sashal@kernel.org>
-References: <20250714230759.3710404-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,20 +62,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.145
+X-stable-base: Linux 5.15.188
 Content-Transfer-Encoding: 8bit
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 50f930db22365738d9387c974416f38a06e8057e ]
+[ Upstream commit 880a88f318cf1d2a0f4c0a7ff7b07e2062b434a4 ]
 
-If ksmbd_iov_pin_rsp return error, use-after-free can happen by
-accessing opinfo->state and opinfo_put and ksmbd_fd_put could
-called twice.
+If an AF_RXRPC service socket is opened and bound, but calls are
+preallocated, then rxrpc_alloc_incoming_call() will oops because the
+rxrpc_backlog struct doesn't get allocated until the first preallocation is
+made.
 
-Reported-by: Ziyan Xu <research@securitygossip.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix this by returning NULL from rxrpc_alloc_incoming_call() if there is no
+backlog struct.  This will cause the incoming call to be aborted.
+
+Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Suggested-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: LePremierHomme <kwqcheii@proton.me>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Willy Tarreau <w@1wt.eu>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250708211506.2699012-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
@@ -85,179 +94,61 @@ LLM Generated explanations, may be completely bogus:
 
 **YES**
 
-This commit should be backported to stable kernel trees. Here's my
-extensive analysis:
+This commit should be backported to stable kernel trees for the
+following reasons:
 
-## Security Impact Analysis
+1. **Fixes a Critical Kernel Oops**: The commit addresses a NULL pointer
+   dereference that causes a kernel crash when `rx->backlog` is NULL. At
+   line 257 of the original code,
+   `smp_load_acquire(&b->call_backlog_head)` would dereference a NULL
+   pointer if no preallocation was done.
 
-This commit fixes a critical **use-after-free vulnerability** in the
-oplock/lease break acknowledgment handling code paths in ksmbd (kernel
-SMB server). This is a serious security issue that can lead to:
+2. **Minimal and Safe Fix**: The fix is a simple defensive check:
+  ```c
+  +       if (!b)
+  +               return NULL;
+  ```
+  This is placed immediately after obtaining the backlog pointer and
+  before any usage. The fix has zero risk of regression - if `b` is
+  NULL, the code would have crashed anyway.
 
-1. **Memory corruption** - Accessing freed memory can corrupt kernel
-   memory
-2. **Kernel crashes** - Dereferencing freed pointers can cause kernel
-   panics
-3. **Potential privilege escalation** - UAF vulnerabilities can
-   potentially be exploited for privilege escalation
+3. **Clear Reproducible Scenario**: The bug occurs in a specific but
+   realistic scenario - when an AF_RXRPC service socket is opened and
+   bound but no calls are preallocated (meaning
+   `rxrpc_service_prealloc()` was never called to allocate the backlog
+   structure).
 
-## Code Analysis
+4. **Follows Stable Kernel Rules**: This fix meets all criteria for
+   stable backporting:
+   - Fixes a real bug that users can hit
+   - Small and contained change (2 lines)
+   - Obviously correct with no side effects
+   - Already tested and merged upstream
 
-The commit addresses a race condition where:
+5. **Similar to Previously Backported Fixes**: Looking at Similar Commit
+   #2 which was marked YES, it also fixed an oops in the rxrpc
+   preallocation/backlog system with minimal changes.
 
-1. **Double-free issue**: Both `opinfo_put()` and `ksmbd_fd_put()` could
-   be called twice on error paths
-2. **Use-after-free of opinfo->op_state**: The code was accessing
-   `opinfo->op_state` after potentially freeing the opinfo structure
+The commit prevents a kernel crash with a trivial NULL check, making it
+an ideal candidate for stable backporting.
 
-### Specific Code Changes
+ net/rxrpc/call_accept.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-In both `smb20_oplock_break_ack()` and `smb21_lease_break_ack()`, the
-fix reorganizes the cleanup logic:
-
-**Before (vulnerable pattern):**
-```c
-opinfo->op_state = OPLOCK_STATE_NONE;
-wake_up_interruptible_all(&opinfo->oplock_q);
-opinfo_put(opinfo);
-ksmbd_fd_put(work, fp);
-
-// ... response setup ...
-ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(...));
-if (!ret)
-    return;
-
-err_out:
-opinfo->op_state = OPLOCK_STATE_NONE;  // UAF: opinfo may be freed
-wake_up_interruptible_all(&opinfo->oplock_q);
-opinfo_put(opinfo);  // Double-free
-ksmbd_fd_put(work, fp);  // Double-free
-```
-
-**After (fixed pattern):**
-```c
-// ... response setup ...
-ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(...));
-if (ret) {
-err_out:
-    smb2_set_err_rsp(work);
-}
-
-// Single cleanup path
-opinfo->op_state = OPLOCK_STATE_NONE;
-wake_up_interruptible_all(&opinfo->oplock_q);
-opinfo_put(opinfo);
-ksmbd_fd_put(work, fp);
-```
-
-## Stable Kernel Criteria
-
-This commit meets all the stable kernel requirements:
-
-1. **Fixes a real bug**: UAF vulnerabilities are serious security bugs
-2. **Small and contained**: The fix is minimal, only reorganizing
-   cleanup logic
-3. **No new features**: Only fixes the bug, no functional changes
-4. **Low regression risk**: The change is straightforward and doesn't
-   modify core logic
-5. **Clear fix**: The commit clearly addresses the specific UAF issue
-
-## Historical Context
-
-Looking at similar commits in ksmbd:
-- Multiple UAF fixes have been backported (e.g., commits 18b4fac5ef17,
-  21a4e47578d4, a1f46c99d9ea)
-- All have "Cc: stable@vger.kernel.org" tags
-- This follows the same pattern of fixing race conditions and UAF issues
-  in SMB protocol handling
-
-## Conclusion
-
-This commit should be backported because:
-1. It fixes a critical security vulnerability (UAF)
-2. The fix is minimal and low-risk
-3. It follows the pattern of other ksmbd UAF fixes that were backported
-4. The vulnerability was reported by a security researcher (Ziyan Xu)
-5. It prevents potential kernel crashes and exploitation
-
-The commit follows stable tree rules perfectly - it's a targeted fix for
-an important bug with minimal changes and no architectural
-modifications.
-
- fs/smb/server/smb2pdu.c | 29 +++++++++--------------------
- 1 file changed, 9 insertions(+), 20 deletions(-)
-
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 899285bba8dda..a04413095b23b 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -8144,11 +8144,6 @@ static void smb20_oplock_break_ack(struct ksmbd_work *work)
- 		goto err_out;
- 	}
+diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
+index 99e10eea37321..658b592e58e05 100644
+--- a/net/rxrpc/call_accept.c
++++ b/net/rxrpc/call_accept.c
+@@ -270,6 +270,9 @@ static struct rxrpc_call *rxrpc_alloc_incoming_call(struct rxrpc_sock *rx,
+ 	unsigned short call_tail, conn_tail, peer_tail;
+ 	unsigned short call_count, conn_count;
  
--	opinfo->op_state = OPLOCK_STATE_NONE;
--	wake_up_interruptible_all(&opinfo->oplock_q);
--	opinfo_put(opinfo);
--	ksmbd_fd_put(work, fp);
--
- 	rsp->StructureSize = cpu_to_le16(24);
- 	rsp->OplockLevel = rsp_oplevel;
- 	rsp->Reserved = 0;
-@@ -8156,16 +8151,15 @@ static void smb20_oplock_break_ack(struct ksmbd_work *work)
- 	rsp->VolatileFid = volatile_id;
- 	rsp->PersistentFid = persistent_id;
- 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_oplock_break));
--	if (!ret)
--		return;
--
-+	if (ret) {
- err_out:
-+		smb2_set_err_rsp(work);
-+	}
++	if (!b)
++		return NULL;
 +
- 	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
--
- 	opinfo_put(opinfo);
- 	ksmbd_fd_put(work, fp);
--	smb2_set_err_rsp(work);
- }
- 
- static int check_lease_state(struct lease *lease, __le32 req_state)
-@@ -8295,11 +8289,6 @@ static void smb21_lease_break_ack(struct ksmbd_work *work)
- 	}
- 
- 	lease_state = lease->state;
--	opinfo->op_state = OPLOCK_STATE_NONE;
--	wake_up_interruptible_all(&opinfo->oplock_q);
--	atomic_dec(&opinfo->breaking_cnt);
--	wake_up_interruptible_all(&opinfo->oplock_brk);
--	opinfo_put(opinfo);
- 
- 	rsp->StructureSize = cpu_to_le16(36);
- 	rsp->Reserved = 0;
-@@ -8308,16 +8297,16 @@ static void smb21_lease_break_ack(struct ksmbd_work *work)
- 	rsp->LeaseState = lease_state;
- 	rsp->LeaseDuration = 0;
- 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_lease_ack));
--	if (!ret)
--		return;
--
-+	if (ret) {
- err_out:
-+		smb2_set_err_rsp(work);
-+	}
-+
-+	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
- 	atomic_dec(&opinfo->breaking_cnt);
- 	wake_up_interruptible_all(&opinfo->oplock_brk);
--
- 	opinfo_put(opinfo);
--	smb2_set_err_rsp(work);
- }
- 
- /**
+ 	/* #calls >= #conns >= #peers must hold true. */
+ 	call_head = smp_load_acquire(&b->call_backlog_head);
+ 	call_tail = b->call_backlog_tail;
 -- 
 2.39.5
 
