@@ -1,57 +1,51 @@
-Return-Path: <stable+bounces-161808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132FDB0376C
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 08:53:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8F3B03783
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 09:05:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6188D3BA964
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 06:52:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2CB8176651
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 07:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E378822A7F2;
-	Mon, 14 Jul 2025 06:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E8422DA1F;
+	Mon, 14 Jul 2025 07:04:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350B220C030
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 06:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DAB122DA08;
+	Mon, 14 Jul 2025 07:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752475987; cv=none; b=HkEN2U20jw0ACZUvif4qs4p5YEPgMeWu/BpcbC8xcXryPDMJGNYju+CUrhJXs4N1CEQ9SDeVtjP2vs4exWMGGfsVf+oE6tPDFyXy/6qinLMfyktR0WvmvOES8mDjh5uAU8xHH7tSKsLzPvSCIIaEFay647hwD6qqqgvKoaLgMZI=
+	t=1752476699; cv=none; b=Fz8mCgai61HlYUBtqS89G5BQ9nxP5jhMjyyaS06Gj1LSlvstN1XRA0Gdss59ln2Uz3qOgwghfv5mfzkBsnT0rrhAheoTQjeCEOqmnPNVBoxPaOVSlfAiT2uUaVq2DiflfiUSvmpfrHeECcQVK4499EB4PonheoH+fNoy6zx2YBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752475987; c=relaxed/simple;
-	bh=q3dbDox0wLy17FbhH1tWZ7g5EfNujoxb5SpJaWCWR8o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P1Ue0UrRepdy4lCmsIjmQBRr6c/spXPngyXDStAN75py+whWcAnA1Id9zSpbeL/6oXDaQ6+iUsWKWzg98ij4Zph1f0GtMWbq8VaMLh6ix7hYXxNms29oHhiifNsX3NQD3PlZWyffZUpHeei9RZnGuB40B4ZjvNb/kjmWiOugnFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7FFDF1D70;
-	Sun, 13 Jul 2025 23:52:56 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 11A163F694;
-	Sun, 13 Jul 2025 23:53:03 -0700 (PDT)
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: stable@vger.kernel.org
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1.y 1/1] kasan: remove kasan_find_vm_area() to prevent possible deadlock
-Date: Mon, 14 Jul 2025 07:52:50 +0100
-Message-Id: <20250714065250.981893-1-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2025071348-swizzle-utter-2496@gregkh>
-References: <2025071348-swizzle-utter-2496@gregkh>
+	s=arc-20240116; t=1752476699; c=relaxed/simple;
+	bh=cToq3o3HlGCMSYHZ2d6IQRVOA5a0EC+VOiw+pnCaSKk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oUNgw9zBnMazxf3ubQtFiHcMgec/h1U4NjGAo+3Fozl43GUdoKx03BvvpO/Ciob1HK+omcDV2y0Y4gUWP65RggDDO6d4NCZXcpCZpLa2U5w/efocywu4wKXO96RHuSH70Ncenyy8i7Yzqa1+8aTz6kiacmIVEWgBxxIqSCRG9TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.193])
+	by gateway (Coremail) with SMTP id _____8DxzOIVrHRo6g4pAQ--.19529S3;
+	Mon, 14 Jul 2025 15:04:53 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.193])
+	by front1 (Coremail) with SMTP id qMiowJAx_8EPrHRo4HoWAA--.4569S2;
+	Mon, 14 Jul 2025 15:04:52 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Guo Ren <guoren@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] LoongArch: Make relocate_new_kernel_size be a .quad value
+Date: Mon, 14 Jul 2025 15:04:38 +0800
+Message-ID: <20250714070438.2399153-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,72 +53,51 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAx_8EPrHRo4HoWAA--.4569S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7GrWfWF17Ar18GFy5XryDXFc_yoWktrX_KF
+	yxJws8Gr4UJF4jywn0vwsavr1Ygw15Jas5Cw1kX3yxJasxArWjyr45Xan5uwsIkr4kGrWY
+	qw1DGFsayr42qosvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUb7kYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
+	wI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUcVc_UUUUU
 
-find_vm_area() couldn't be called in atomic_context.  If find_vm_area() is
-called to reports vm area information, kasan can trigger deadlock like:
+Now relocate_new_kernel_size is a .long value, which means 32bit, so its
+high 32bit is undefined. This causes memcpy((void *)reboot_code_buffer,
+relocate_new_kernel, relocate_new_kernel_size) in machine_kexec_prepare()
+access out of range memories in some cases, and then end up with an ADE
+exception.
 
-CPU0                                CPU1
-vmalloc();
- alloc_vmap_area();
-  spin_lock(&vn->busy.lock)
-                                    spin_lock_bh(&some_lock);
-   <interrupt occurs>
-   <in softirq>
-   spin_lock(&some_lock);
-                                    <access invalid address>
-                                    kasan_report();
-                                     print_report();
-                                      print_address_description();
-                                       kasan_find_vm_area();
-                                        find_vm_area();
-                                         spin_lock(&vn->busy.lock) // deadlock!
+So make relocate_new_kernel_size be a .quad value, which means 64bit, to
+avoid such errors.
 
-To prevent possible deadlock while kasan reports, remove kasan_find_vm_area().
-
-Link: https://lkml.kernel.org/r/20250703181018.580833-1-yeoreum.yun@arm.com
-Fixes: c056a364e954 ("kasan: print virtual mapping info in reports")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reported-by: Yunseong Kim <ysk@kzalloc.com>
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 6ee9b3d84775944fb8c8a447961cd01274ac671c)
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- mm/kasan/report.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ arch/loongarch/kernel/relocate_kernel.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/kasan/report.c b/mm/kasan/report.c
-index 6ad986c267b5..d21d216f838a 100644
---- a/mm/kasan/report.c
-+++ b/mm/kasan/report.c
-@@ -337,17 +337,8 @@ static void print_address_description(void *addr, u8 tag,
- 	}
+diff --git a/arch/loongarch/kernel/relocate_kernel.S b/arch/loongarch/kernel/relocate_kernel.S
+index 84e6de2fd973..8b5140ac9ea1 100644
+--- a/arch/loongarch/kernel/relocate_kernel.S
++++ b/arch/loongarch/kernel/relocate_kernel.S
+@@ -109,4 +109,4 @@ SYM_CODE_END(kexec_smp_wait)
+ relocate_new_kernel_end:
  
- 	if (is_vmalloc_addr(addr)) {
--		struct vm_struct *va = find_vm_area(addr);
--
--		if (va) {
--			pr_err("The buggy address belongs to the virtual mapping at\n"
--			       " [%px, %px) created by:\n"
--			       " %pS\n",
--			       va->addr, va->addr + va->size, va->caller);
--			pr_err("\n");
--
--			page = vmalloc_to_page(addr);
--		}
-+		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
-+		page = vmalloc_to_page(addr);
- 	}
- 
- 	if (page) {
+ 	.section ".data"
+-SYM_DATA(relocate_new_kernel_size, .long relocate_new_kernel_end - relocate_new_kernel)
++SYM_DATA(relocate_new_kernel_size, .quad relocate_new_kernel_end - relocate_new_kernel)
 -- 
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+2.47.1
 
 
