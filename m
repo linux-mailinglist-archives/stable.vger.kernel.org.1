@@ -1,215 +1,398 @@
-Return-Path: <stable+bounces-161826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF89DB03BC0
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 12:18:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8954B03BCB
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 12:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DD4E7A8D31
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 10:17:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2FC63BED83
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 10:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F98243369;
-	Mon, 14 Jul 2025 10:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE9F24337D;
+	Mon, 14 Jul 2025 10:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvRnGL8h"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="GGiT+usd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F57023A984;
-	Mon, 14 Jul 2025 10:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3A81FE461
+	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 10:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752488313; cv=none; b=aSoH7RIikikPuZORqw0CkS1hIqNz6Fy2uBxVJhTyYp8dHyH/2bMjjfYDlLqMpfTP/Z9HgW2cInLTXS5w2XKrPBf8ElneM+8G+i5Xn2XqoCBgrEpPAo4eUIM3RWab1EQB31N71ZoqQ7S7MiiOUygq/k9S+Wo+M/tH9c7jYAbUk5U=
+	t=1752488630; cv=none; b=mM8c4LXbEU/ycGa+33iecL2hPqHJKzKzU/6MkR1C+XVSK8Mhit4mi5qfDrWLZx+yupjYDhSOhzSrcPKG9BYTlKuhz/fQwAszIyiaN1mIkpBmDFdRtWmlNYAhniur9cBSV7Cumt8HC+wIMC49zzsF0r7LoILaCr0ikT2eaR35aoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752488313; c=relaxed/simple;
-	bh=+57UPy+qTf25cjB3/LPUH3B7cWaNxCDrc05uMGhvQLM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KIUWLoh38CTpazkw0liq8wL7cDltLbWfOqAnMXf2xnPgy7Og2beRQmTFwMfcHrhtOUS+YGKzbFywH+/4g0oPNUEE38RjoaVG8kyjf9lysCimWoa4R4XJFDy7SyRhlNkNLI81Yah8U3GGy1hSnBdGz6vXzKSsb0K1+d755eg5+LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvRnGL8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9449CC4CEF6;
-	Mon, 14 Jul 2025 10:18:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752488312;
-	bh=+57UPy+qTf25cjB3/LPUH3B7cWaNxCDrc05uMGhvQLM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RvRnGL8hLV+iMQFt525uF2/QGslE0TJmTeEVlLHMEOUGk4C7T3WQhPwH0rOgip/vT
-	 moBfDx36WrGsnaTe1lzKdpQ5b5ColUw5aChYlPg4ekdSBw0hoWakohY+48+FWjRbhD
-	 xKiYALgi1O4ScrvmdyJJWd5tTSJYD+xsP5jUDrMt1WgwN7TsLKaLmvYjI+j+/femJ8
-	 7x1SM6uxaydacWii2tN4WMPVCIMm/eEoyjgEGAlMfI+DjDhhBOTyf/pm9EMoE+Vkkg
-	 nw4GSsaaGcqB7hzYyTPRtueiRUK0zRIiinMxM6zvePmv2lhLTHoFLAwBM+8+Ruxb7O
-	 SEJOIKTecA6sg==
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-60700a745e5so8591416a12.3;
-        Mon, 14 Jul 2025 03:18:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWdItN5DcS/g9SV+d9I8u+u/5UpmzIlrzuaZT1JqnS1GO5ag7yhDrBkVOJQB/tVN5LfcnjYj6EnEs8Ty9Q=@vger.kernel.org, AJvYcCXzkJVhGib7IFYjt6RLCqZXqDalTbYMz3Bc0mXt3xf9fTN6wToTkp4KWOX/uDwfUyNwq5A/fh7y@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7EphUQ6vYkgSA2c0VJyvPDjIlMBIbrUAo8tK9JIBBxdD4JcWo
-	JeZUNZZ098Syw4AmltCEmrw8klHC9xvnrvttlpB7k1mOT4BJ0vxQgE+nHjrP3dDnxifBROUrWSV
-	kYoH3c/q8HgHo9MdiKuo+GFKCY0EkYKM=
-X-Google-Smtp-Source: AGHT+IEbgsdrEbpMoRTpuQx3aEWsVHDo+zRZGrPlM9uO/YzZhKjwT1oque9/aqHQNdP/KW3JflRrozLBlvMp3rCzrns=
-X-Received: by 2002:a05:6402:30bb:b0:60c:4220:5d8b with SMTP id
- 4fb4d7f45d1cf-611e84ab122mr8444566a12.17.1752488310997; Mon, 14 Jul 2025
- 03:18:30 -0700 (PDT)
+	s=arc-20240116; t=1752488630; c=relaxed/simple;
+	bh=no35QV3vIyWeCdpJ8jJwT1KQPajrDYtHWGc2cil3q2Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZokEujsnlPjujSmniqejco25gxIGsKoQ8aClKK47yB9ZLkm3CvL+Zx/R27/WkODucfomUM+2GdzWL3m6QKUKWtE+AJ+t1exJnXXt7XXj0ugeb4Ls7tSgHxubNgUpPTC14tXAemEbb0C/iSHVuuNahltsGTgTSdpSoZw+glymCIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=GGiT+usd; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-556fd896c99so3534268e87.3
+        for <stable@vger.kernel.org>; Mon, 14 Jul 2025 03:23:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1752488626; x=1753093426; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DavYUHOWvKzUM5lx4uFk3JOkCwZftAUgMq2nVE2s+k0=;
+        b=GGiT+usdoUWe+/5LCF2npcFi+FUljJjgDWMy7OOxQHGllWktotshoMnV3O5LYEzK+s
+         IhYTlnQSxoFhzTajcsmLPmD0si4k1SzB23Yz3o1B8UV4mP25oz8wE/qNKor5lud3lnWE
+         mIShblwA2vf/efFRDwi4ROwKPHinnsMRHzbFk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752488626; x=1753093426;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DavYUHOWvKzUM5lx4uFk3JOkCwZftAUgMq2nVE2s+k0=;
+        b=l4Zauv7PyVTnLCC9g/G6XBZ02qWbgW0KIBZYqOTlQDx0JRFz64BLOp5Dvcpmvfo4TU
+         3hmO0E66dLxoCDbH48Qh7ZkdmxmGPRqaZe1nnzgPcTK9k+2A/N7mDxo/lM1SsLGC5ztc
+         CapuDuoOlp7RTm1Rq++IOlJcG6o+NmMRkHlZnvl+utVzP6LDePNe+4ZzOqWbh/29tsoP
+         LSnBD68FXYlUSNvBYjZZi1vwkLJSueaR+j/+y4w2it+ZoWl/R3ZRaPTW1X4ZyrZ0tJiO
+         sCyCH0tVjHd5qsVdjTHh1uH3G7BV4vS14EmjAGoRZXb+5zqCZVgo49hmR5T7QySg5uo2
+         BXtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWlfg7LwBMo5bKoqAmn4CAe3uf0ip4h4rOKYm/eR3SzTqUz6dPw92Qt7+vMJjV+5nSfR3/E198=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yznx9YceLrCX6Phx54yXNE3ZmBHAm4rVEahgaZX5BhMGUXt+K8q
+	hsVNnl656R4ewtWt6lViGQa4LFMZFvS0NQdS5UT8cQt5byASxIz8wNwtbWLFXDe29A==
+X-Gm-Gg: ASbGncuP0FVQuD7uNWxSiP4liupvyreRgLiIu96cW6ClYcj6W9+PByobHA/1smBNqen
+	kc1k03iwMVll3SzP3dIfa77CcJtEvKsJq+yMIdrnzKlSVp36ljx4jO8JjHfHHevArrT6KTMEasM
+	is9mBMvQCv+uszJDEsnXiCVmYJ2shqI2vaPtyu6A/XFOZs9UPwBVaTHEt25bYwxtPU0kAfw6Saq
+	dYE9lBNE+UlVw2aD+ln+zJTw8GCWHCe15o0FxpgAVTdBNCqUDuw/TgJtxlrWOgFtc+Uz4kAfqI3
+	ZTnLR7A4gmaqb1YEVjN9uc1LiNIdqlgVhnyclN+Uf0rxgRiBu0xp2UkUkrnoNBfmKUYb7878skz
+	lswh7dOvM0+YtvQZs1mF0KU0KYtgfgmYv7mar+s05GsuLkVEVJPxvX+hppjgkqm/+1it1JTorJz
+	b5wQ==
+X-Google-Smtp-Source: AGHT+IFafPg+eFbYD4mcM+qAx7qhf8GHwHgp1n94L56Kb8GD3q/u7xCeUYTyYlkKC/sfFohQd4Zlow==
+X-Received: by 2002:a05:6512:3ca6:b0:553:2ce7:a1f3 with SMTP id 2adb3069b0e04-55a0462ce94mr3811441e87.43.1752488626360;
+        Mon, 14 Jul 2025 03:23:46 -0700 (PDT)
+Received: from ribalda.c.googlers.com (166.141.88.34.bc.googleusercontent.com. [34.88.141.166])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5593c9d323csm1884487e87.119.2025.07.14.03.23.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Jul 2025 03:23:46 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Mon, 14 Jul 2025 10:23:45 +0000
+Subject: [PATCH] media: uvcvideo: Fix race condition for meta buffer list
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250711102455.3673865-1-chenhuacai@loongson.cn>
- <2025071130-mangle-ramrod-38ff@gregkh> <CAAhV-H7oEv5jPufY+J-0wOax=m1pszck1__Ptapz5pmzYU5KHg@mail.gmail.com>
- <2025071116-pushchair-happening-a4cf@gregkh> <CAAhV-H69oz-Rmz4Q2Gad-x5AR0C2cxtK7Mgsc5iJHALP_NcEhw@mail.gmail.com>
- <2025071150-oasis-chewy-4137@gregkh> <CAAhV-H4kzxR9e762r+ZzCyPrUemDtwqXvp_BJY3R1O1MPV9hrw@mail.gmail.com>
- <2025071330-alkalize-bonus-ebec@gregkh> <CAAhV-H6MnutZughoES5z_vuZq3PErqMjcJrNEYO+kQLcCQd=sw@mail.gmail.com>
- <2025071306-barber-unbalance-53bb@gregkh>
-In-Reply-To: <2025071306-barber-unbalance-53bb@gregkh>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 14 Jul 2025 18:18:17 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7P352ujN-ki=vGxSY2DQPnwMWFq=3i+-LywBLMG3iqeQ@mail.gmail.com>
-X-Gm-Features: Ac12FXygS4qiUkiWUpWDgdRwfIMJyn6wDTCQVcKxzmp_IilR1J7VWEyTwUbL9Xg
-Message-ID: <CAAhV-H7P352ujN-ki=vGxSY2DQPnwMWFq=3i+-LywBLMG3iqeQ@mail.gmail.com>
-Subject: Re: [PATCH] init: Handle bootloader head in kernel parameters
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-mm@kvack.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250714-uvc-racemeta-v1-1-360de2e15a9a@chromium.org>
+X-B4-Tracking: v=1; b=H4sIALDadGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDc0MT3dKyZN2ixOTU3NSSRN201FSjVDPLpKS05BQloJaCotS0zAqwcdG
+ xtbUAtBiARl4AAAA=
+X-Change-ID: 20250714-uvc-racemeta-fee2e69bbfcd
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Hans de Goede <hansg@kernel.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Ricardo Ribalda <ribalda@chromium.org>
+X-Mailer: b4 0.14.2
 
-On Sun, Jul 13, 2025 at 5:35=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Sun, Jul 13, 2025 at 05:11:20PM +0800, Huacai Chen wrote:
-> > On Sun, Jul 13, 2025 at 4:30=E2=80=AFPM Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-> > >
-> > > On Sat, Jul 12, 2025 at 11:18:44PM +0800, Huacai Chen wrote:
-> > > > On Fri, Jul 11, 2025 at 9:04=E2=80=AFPM Greg KH <gregkh@linuxfounda=
-tion.org> wrote:
-> > > > >
-> > > > > On Fri, Jul 11, 2025 at 08:51:28PM +0800, Huacai Chen wrote:
-> > > > > > On Fri, Jul 11, 2025 at 8:41=E2=80=AFPM Greg KH <gregkh@linuxfo=
-undation.org> wrote:
-> > > > > > >
-> > > > > > > On Fri, Jul 11, 2025 at 08:34:25PM +0800, Huacai Chen wrote:
-> > > > > > > > Hi, Greg,
-> > > > > > > >
-> > > > > > > > On Fri, Jul 11, 2025 at 7:06=E2=80=AFPM Greg KH <gregkh@lin=
-uxfoundation.org> wrote:
-> > > > > > > > >
-> > > > > > > > > On Fri, Jul 11, 2025 at 06:24:55PM +0800, Huacai Chen wro=
-te:
-> > > > > > > > > > BootLoader may pass a head such as "BOOT_IMAGE=3D/boot/=
-vmlinuz-x.y.z" to
-> > > > > > > > > > kernel parameters. But this head is not recognized by t=
-he kernel so will
-> > > > > > > > > > be passed to user space. However, user space init progr=
-am also doesn't
-> > > > > > > > > > recognized it.
-> > > > > > > > >
-> > > > > > > > > Then why is it on the kernel command line if it is not re=
-cognized?
-> > > > > > > > UEFI put it at the beginning of the command line, you can s=
-ee it from
-> > > > > > > > /proc/cmdline, both on x86 and LoongArch.
-> > > > > > >
-> > > > > > > Then fix UEFI :)
-> > > > > > >
-> > > > > > > My boot command line doesn't have that on x86, perhaps you ne=
-ed to fix
-> > > > > > > your bootloader?
-> > > > > > Not only UEFI, Grub also do this, for many years, not now. I do=
-n't
-> > > > > > know why they do this, but I think at least it is not a bug. Fo=
-r
-> > > > > > example, maybe it just tells user the path of kernel image via
-> > > > > > /proc/cmdline.
-> > > > > >
-> > > > > > [chenhuacai@kernelserver linux-official.git]$ uname -a
-> > > > > > Linux kernelserver 6.12.0-84.el10.x86_64 #1 SMP PREEMPT_DYNAMIC=
- Tue
-> > > > > > May 13 13:39:02 UTC 2025 x86_64 GNU/Linux
-> > > > > > [chenhuacai@kernelserver linux-official.git]$ cat /proc/cmdline
-> > > > > > BOOT_IMAGE=3D(hd0,gpt2)/vmlinuz-6.12.0-84.el10.x86_64
-> > > > > > root=3DUUID=3Dc8fcb11a-0f2f-48e5-a067-4cec1d18a721 ro
-> > > > > > crashkernel=3D2G-64G:256M,64G-:512M
-> > > > > > resume=3DUUID=3D1c320fec-3274-4b5b-9adf-a06
-> > > > > > 42e7943c0 rhgb quiet
-> > > > >
-> > > > > Sounds like a bootloader bug:
-> > > > >
-> > > > > $ cat /proc/cmdline
-> > > > > root=3D/dev/sda2 rw
-> > > > >
-> > > > > I suggest fixing the issue there, at the root please.
-> > > > Grub pass BOOT_IMAGE for all EFI-based implementations, related com=
-mits of Grub:
-> > > > https://cgit.git.savannah.gnu.org/cgit/grub.git/commit/?id=3D16ccb8=
-b138218d56875051d547af84410d18f9aa
-> > > > https://cgit.git.savannah.gnu.org/cgit/grub.git/commit/?id=3D25953e=
-10553dad2e378541a68686fc094603ec54
-> > >
-> > > From 2005 and 2011?  Why have we not had any reports of this being an
-> > > issue before now?  What changed in the kernel recently?
-> > As said before, just in some corner cases it causes problems, but
-> > corner case doesn't means nothing.
-> >
-> > >
-> > > > Linux kernel treats BOOT_IMAGE as an "offender" of unknown command
-> > > > line parameters, related commits of kernel:
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-commit/?id=3D86d1919a4fb0d9c115dd1d3b969f5d1650e45408
-> > >
-> > > So in 2021 we started printing out command line arguments that were
-> > > "wrong", so is this when everyone noticed that grub was wrong?
-> > Somebody may think a warning is harmless, somebody thinks a warning
-> > means a problem needs to fix.
->
-> Great, then fix it in grub to not do this :)
->
-> Are we supposed to paper over the bugs in all bootloaders?  Especially
-> for ones that we have the source to?
->
-> > > > There are user space projects that search BOOT_IMAGE from /proc/cmd=
-line:
-> > > > https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.=
-go
-> > > > (search getBootOptions)
-> > > > https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.=
-go
-> > > > (search getKernelReleaseWithBootOption)
-> > >
-> > > What does it use these options for that it can't get from the valid o=
-nes
-> > > instead?
-> > Some projects have fallback methods, some projects don't work, but at
-> > least this means some user space programs depend on it already.
-> >
-> > >
-> > > > So, we can say Grub pass BOOT_IMAGE is reasonable and there are use=
-r
-> > > > space programs that hope it be in /proc/cmdline.
-> > >
-> > > But who relies on this that never noticed the kernel complaining abou=
-t
-> > > it for the past 4 years?
-> > So If I'm the first man who notices this and wants to improve
-> > something, then it is my mistake?
->
-> No, not at all, I'm saying to fix the root problem here please.  And
-> that root problem is grub adding stuff that causes warnings in Linux to
-> happen.  Why is this Linux's issue to handle?
-As I said before:
+queue->irqueue contains a list of the buffers owned by the driver. The
+list is protected by queue->irqlock. uvc_queue_get_current_buffer()
+returns a pointer to the current buffer in that list, but does not
+remove the buffer from it. This can lead to race conditions.
 
-Corner cases have had problems since 2005, and just because they are
-corner cases, they are not noticed by everyone. But once they are
-noticed, they need to be fixed. And we cannot change Grub (LILO do the
-same thing) now, because user space relies on it already.
+Inspecting the code, it seems that the candidate for such race is
+uvc_queue_return_buffers(). For the capture queue, that function is
+called with the device streamoff, so no race can occur. On the other
+hand, the metadata queue, could trigger a race condition, because
+stop_streaming can be called with the device in any streaming state.
 
->
-> thanks,
->
-> greg k-h
+We can solve this issue modifying the way the metadata buffer
+lifetime works. We can keep the queue->irqlock while the use the current
+metadata buffer.
+
+The core of this change is uvc_video_decode_meta(), it now obtains the
+buffer and holds the spinlock instead of getting the buffer as an
+argument.
+
+Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Closes: https://lore.kernel.org/linux-media/20250630141707.GG20333@pendragon.ideasonboard.com/
+Cc: stable@vger.kernel.org
+Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+ drivers/media/usb/uvc/uvc_isight.c |  3 +-
+ drivers/media/usb/uvc/uvc_queue.c  |  4 +-
+ drivers/media/usb/uvc/uvc_video.c  | 92 ++++++++++++++++++++++----------------
+ drivers/media/usb/uvc/uvcvideo.h   |  8 ++--
+ 4 files changed, 62 insertions(+), 45 deletions(-)
+
+diff --git a/drivers/media/usb/uvc/uvc_isight.c b/drivers/media/usb/uvc/uvc_isight.c
+index 43cda5e760a345af56186603e2f0594b814cdbcb..f0e71744d25cab98184335b46569b31ba1346e12 100644
+--- a/drivers/media/usb/uvc/uvc_isight.c
++++ b/drivers/media/usb/uvc/uvc_isight.c
+@@ -98,8 +98,7 @@ static int isight_decode(struct uvc_video_queue *queue, struct uvc_buffer *buf,
+ 	return 0;
+ }
+ 
+-void uvc_video_decode_isight(struct uvc_urb *uvc_urb, struct uvc_buffer *buf,
+-			struct uvc_buffer *meta_buf)
++void uvc_video_decode_isight(struct uvc_urb *uvc_urb, struct uvc_buffer *buf)
+ {
+ 	struct urb *urb = uvc_urb->urb;
+ 	struct uvc_streaming *stream = uvc_urb->stream;
+diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
+index 790184c9843d211d34fa7d66801631d5a07450bd..e184e3ae0f59f142a683263168724bca64509628 100644
+--- a/drivers/media/usb/uvc/uvc_queue.c
++++ b/drivers/media/usb/uvc/uvc_queue.c
+@@ -310,9 +310,11 @@ void uvc_queue_cancel(struct uvc_video_queue *queue, int disconnect)
+  * Buffers may span multiple packets, and even URBs, therefore the active buffer
+  * remains on the queue until the EOF marker.
+  */
+-static struct uvc_buffer *
++struct uvc_buffer *
+ __uvc_queue_get_current_buffer(struct uvc_video_queue *queue)
+ {
++	lockdep_assert_held(&queue->irqlock);
++
+ 	if (list_empty(&queue->irqqueue))
+ 		return NULL;
+ 
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index 2e377e7b9e81599aca19b800a171cc16a09c1e8a..d6777090d0f892ffe93696c915acd4ec171ca798 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -1428,9 +1428,11 @@ static int uvc_video_encode_data(struct uvc_streaming *stream,
+  * previous header.
+  */
+ static void uvc_video_decode_meta(struct uvc_streaming *stream,
+-				  struct uvc_buffer *meta_buf,
+ 				  const u8 *mem, unsigned int length)
+ {
++	struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
++	struct uvc_video_queue *qmeta = &stream->meta.queue;
++	struct uvc_buffer *meta_buf;
+ 	struct uvc_meta_buf *meta;
+ 	size_t len_std = 2;
+ 	bool has_pts, has_scr;
+@@ -1439,7 +1441,13 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
+ 	ktime_t time;
+ 	const u8 *scr;
+ 
+-	if (!meta_buf || length == 2)
++	if (!vb2_qmeta || length <= 2)
++		return;
++
++	guard(spinlock_irqsave)(&qmeta->irqlock);
++
++	meta_buf = __uvc_queue_get_current_buffer(qmeta);
++	if (!meta_buf)
+ 		return;
+ 
+ 	has_pts = mem[1] & UVC_STREAM_PTS;
+@@ -1512,30 +1520,48 @@ static void uvc_video_validate_buffer(const struct uvc_streaming *stream,
+  * Completion handler for video URBs.
+  */
+ 
+-static void uvc_video_next_buffers(struct uvc_streaming *stream,
+-		struct uvc_buffer **video_buf, struct uvc_buffer **meta_buf)
++static void uvc_video_next_meta(struct uvc_streaming *stream,
++				struct uvc_buffer *video_buf)
+ {
+-	uvc_video_validate_buffer(stream, *video_buf);
++	struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
++	struct uvc_video_queue *qmeta = &stream->meta.queue;
++	struct uvc_buffer *meta_buf;
++	struct vb2_v4l2_buffer *vb2_meta;
++	const struct vb2_v4l2_buffer *vb2_video;
+ 
+-	if (*meta_buf) {
+-		struct vb2_v4l2_buffer *vb2_meta = &(*meta_buf)->buf;
+-		const struct vb2_v4l2_buffer *vb2_video = &(*video_buf)->buf;
++	if (!vb2_qmeta)
++		return;
+ 
+-		vb2_meta->sequence = vb2_video->sequence;
+-		vb2_meta->field = vb2_video->field;
+-		vb2_meta->vb2_buf.timestamp = vb2_video->vb2_buf.timestamp;
++	guard(spinlock_irqsave)(&qmeta->irqlock);
+ 
+-		(*meta_buf)->state = UVC_BUF_STATE_READY;
+-		if (!(*meta_buf)->error)
+-			(*meta_buf)->error = (*video_buf)->error;
+-		*meta_buf = uvc_queue_next_buffer(&stream->meta.queue,
+-						  *meta_buf);
+-	}
+-	*video_buf = uvc_queue_next_buffer(&stream->queue, *video_buf);
++	meta_buf = __uvc_queue_get_current_buffer(qmeta);
++	if (!meta_buf)
++		return;
++	list_del(&meta_buf->queue);
++
++	vb2_meta = &meta_buf->buf;
++	vb2_video = &video_buf->buf;
++
++	vb2_meta->sequence = vb2_video->sequence;
++	vb2_meta->field = vb2_video->field;
++	vb2_meta->vb2_buf.timestamp = vb2_video->vb2_buf.timestamp;
++	meta_buf->state = UVC_BUF_STATE_READY;
++	if (!meta_buf->error)
++		meta_buf->error = video_buf->error;
++
++	uvc_queue_buffer_release(meta_buf);
++}
++
++static struct uvc_buffer *uvc_video_next_buffer(struct uvc_streaming *stream,
++						struct uvc_buffer *video_buf)
++{
++	uvc_video_validate_buffer(stream, video_buf);
++	uvc_video_next_meta(stream, video_buf);
++	return uvc_queue_next_buffer(&stream->queue, video_buf);
+ }
+ 
+ static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
+-			struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
++				  struct uvc_buffer *buf)
+ {
+ 	struct urb *urb = uvc_urb->urb;
+ 	struct uvc_streaming *stream = uvc_urb->stream;
+@@ -1559,13 +1585,13 @@ static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
+ 			ret = uvc_video_decode_start(stream, buf, mem,
+ 				urb->iso_frame_desc[i].actual_length);
+ 			if (ret == -EAGAIN)
+-				uvc_video_next_buffers(stream, &buf, &meta_buf);
++				buf = uvc_video_next_buffer(stream, buf);
+ 		} while (ret == -EAGAIN);
+ 
+ 		if (ret < 0)
+ 			continue;
+ 
+-		uvc_video_decode_meta(stream, meta_buf, mem, ret);
++		uvc_video_decode_meta(stream, mem, ret);
+ 
+ 		/* Decode the payload data. */
+ 		uvc_video_decode_data(uvc_urb, buf, mem + ret,
+@@ -1576,12 +1602,12 @@ static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
+ 			urb->iso_frame_desc[i].actual_length);
+ 
+ 		if (buf->state == UVC_BUF_STATE_READY)
+-			uvc_video_next_buffers(stream, &buf, &meta_buf);
++			buf = uvc_video_next_buffer(stream, buf);
+ 	}
+ }
+ 
+ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
+-			struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
++				  struct uvc_buffer *buf)
+ {
+ 	struct urb *urb = uvc_urb->urb;
+ 	struct uvc_streaming *stream = uvc_urb->stream;
+@@ -1607,7 +1633,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
+ 		do {
+ 			ret = uvc_video_decode_start(stream, buf, mem, len);
+ 			if (ret == -EAGAIN)
+-				uvc_video_next_buffers(stream, &buf, &meta_buf);
++				buf = uvc_video_next_buffer(stream, buf);
+ 		} while (ret == -EAGAIN);
+ 
+ 		/* If an error occurred skip the rest of the payload. */
+@@ -1617,7 +1643,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
+ 			memcpy(stream->bulk.header, mem, ret);
+ 			stream->bulk.header_size = ret;
+ 
+-			uvc_video_decode_meta(stream, meta_buf, mem, ret);
++			uvc_video_decode_meta(stream, mem, ret);
+ 
+ 			mem += ret;
+ 			len -= ret;
+@@ -1644,7 +1670,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
+ 			uvc_video_decode_end(stream, buf, stream->bulk.header,
+ 				stream->bulk.payload_size);
+ 			if (buf->state == UVC_BUF_STATE_READY)
+-				uvc_video_next_buffers(stream, &buf, &meta_buf);
++				buf = uvc_video_next_buffer(stream, buf);
+ 		}
+ 
+ 		stream->bulk.header_size = 0;
+@@ -1654,7 +1680,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
+ }
+ 
+ static void uvc_video_encode_bulk(struct uvc_urb *uvc_urb,
+-	struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
++				  struct uvc_buffer *buf)
+ {
+ 	struct urb *urb = uvc_urb->urb;
+ 	struct uvc_streaming *stream = uvc_urb->stream;
+@@ -1707,8 +1733,6 @@ static void uvc_video_complete(struct urb *urb)
+ 	struct uvc_video_queue *qmeta = &stream->meta.queue;
+ 	struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
+ 	struct uvc_buffer *buf = NULL;
+-	struct uvc_buffer *buf_meta = NULL;
+-	unsigned long flags;
+ 	int ret;
+ 
+ 	switch (urb->status) {
+@@ -1734,14 +1758,6 @@ static void uvc_video_complete(struct urb *urb)
+ 
+ 	buf = uvc_queue_get_current_buffer(queue);
+ 
+-	if (vb2_qmeta) {
+-		spin_lock_irqsave(&qmeta->irqlock, flags);
+-		if (!list_empty(&qmeta->irqqueue))
+-			buf_meta = list_first_entry(&qmeta->irqqueue,
+-						    struct uvc_buffer, queue);
+-		spin_unlock_irqrestore(&qmeta->irqlock, flags);
+-	}
+-
+ 	/* Re-initialise the URB async work. */
+ 	uvc_urb->async_operations = 0;
+ 
+@@ -1755,7 +1771,7 @@ static void uvc_video_complete(struct urb *urb)
+ 	 * Process the URB headers, and optionally queue expensive memcpy tasks
+ 	 * to be deferred to a work queue.
+ 	 */
+-	stream->decode(uvc_urb, buf, buf_meta);
++	stream->decode(uvc_urb, buf);
+ 
+ 	/* If no async work is needed, resubmit the URB immediately. */
+ 	if (!uvc_urb->async_operations) {
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index 757254fc4fe930ae61c9d0425f04d4cd074a617e..bb41477ce4ff5cdbf27bc9d830b63a60645e3fa1 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -479,8 +479,7 @@ struct uvc_streaming {
+ 	unsigned int frozen : 1;
+ 	struct uvc_video_queue queue;
+ 	struct workqueue_struct *async_wq;
+-	void (*decode)(struct uvc_urb *uvc_urb, struct uvc_buffer *buf,
+-		       struct uvc_buffer *meta_buf);
++	void (*decode)(struct uvc_urb *uvc_urb, struct uvc_buffer *buf);
+ 
+ 	struct {
+ 		struct video_device vdev;
+@@ -694,6 +693,8 @@ int uvc_queue_init(struct uvc_video_queue *queue, enum v4l2_buf_type type);
+ void uvc_queue_cancel(struct uvc_video_queue *queue, int disconnect);
+ struct uvc_buffer *uvc_queue_next_buffer(struct uvc_video_queue *queue,
+ 					 struct uvc_buffer *buf);
++struct uvc_buffer *
++__uvc_queue_get_current_buffer(struct uvc_video_queue *queue);
+ struct uvc_buffer *uvc_queue_get_current_buffer(struct uvc_video_queue *queue);
+ void uvc_queue_buffer_release(struct uvc_buffer *buf);
+ static inline int uvc_queue_streaming(struct uvc_video_queue *queue)
+@@ -802,8 +803,7 @@ u16 uvc_endpoint_max_bpi(struct usb_device *dev, struct usb_host_endpoint *ep);
+ 
+ /* Quirks support */
+ void uvc_video_decode_isight(struct uvc_urb *uvc_urb,
+-			     struct uvc_buffer *buf,
+-			     struct uvc_buffer *meta_buf);
++			     struct uvc_buffer *buf);
+ 
+ /* debugfs and statistics */
+ void uvc_debugfs_init(void);
+
+---
+base-commit: d968e50b5c26642754492dea23cbd3592bde62d8
+change-id: 20250714-uvc-racemeta-fee2e69bbfcd
+
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
+
 
