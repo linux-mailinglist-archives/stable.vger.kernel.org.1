@@ -1,119 +1,158 @@
-Return-Path: <stable+bounces-161883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E33BB04809
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 21:44:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C553B0481C
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 21:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 705F24A0D17
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 19:44:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 426DC3B3207
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 19:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D30D22B5B8;
-	Mon, 14 Jul 2025 19:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A0758210;
+	Mon, 14 Jul 2025 19:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="IOPf4sql"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="JVyyY8KU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39DE215789
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 19:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A19213D531;
+	Mon, 14 Jul 2025 19:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752522251; cv=none; b=upg+1TCKJhA5uRoBJSrAP5razi5OkluoBENLLEF8x+/LW6XRRm2Y0n8ML/WeSbi7IIBe/ab6aazW7WfbeXq/0KcATwft8HohjgE5QiGw7Jyrz00quJZC8LZuhnPSkwfGUxfrMvtov1peZPYiBvJj8gNlyMQJ3M6upcHNJZzTF+I=
+	t=1752522984; cv=none; b=Mxxdt6haOuLtPrRbskO7dP0J3hSaDTF8MxU+6eM/LfbJS6yVQP6PvgN17F11OJFeOCdgM4eME0IJ+0QKVBHSJYiYrCy25ysNJHBWVVSgxxRp5jxrLa6FmynWGJhvX5vuB3bD/GTAIg2+3pNKUwAj2qnWARhf+pnhIfaFFSuKIQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752522251; c=relaxed/simple;
-	bh=TwdLIVIcy05ovhCoe0mmnthCimk8eZR9YyC7Mlw5tds=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QWcxomTYNN/lTtiTCp3j5fy8bMigQRulKeKNq2oTAhtaKo8b5z0t7NX0OEZH9lBLAyy3je3X4VK2TbatiOZU/mtNotLz2qX2ehu5h1O7QpUe3XORHDbFp9EOOFYTiqDbb4jPrNA07w+wqAK5hjXDRmcNdfXbT1iZ6SxRA8jJvzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=IOPf4sql; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B3ED040E0217;
-	Mon, 14 Jul 2025 19:44:06 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id l4Tcj7hETAs7; Mon, 14 Jul 2025 19:44:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1752522242; bh=v2iaT/xyBOp4qp+tsz9TqaF8iMW8dRrmCOXi2e4hFYg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IOPf4sqleDFW3NZtM6TgCk6+N3PANVdiFnvj4/ZQ4uNz3JbmC+YZCScQA1+rQSjEF
-	 IUEtPqKhzuzpe1p+XlBe3v7GgR714sHOcoQzxQdtyJ+Jkje8mRto9cQR808QWhBk7h
-	 FaIoYRrxfeRcYA1+FbnAHt1evGbA0MVPQmVbUKtE6ipHb6agckmd4sNk6qxCLOGhd6
-	 8NE6UFfermy0xDj0RxFE1yu97x9+B77UWgZRp9zeYt2n3psxaci63o+YG1I9fYE8uR
-	 1c6Km1X65Mbh84fM2vvxFlW1cf8MWK5mClRyPbGboq7nzsHR51/dA7MG6Xw4gkk+l3
-	 jptx5tB1KYno6TcfK7TWnBFM7FdNm0y75UPNU8dLy1+gC3QXxbJ5JoUSHJZ74Zrv6i
-	 WrkGgKUEfmcLN7oLo6/1rDq5JYbKqD6sYuBengae+QXRsYvg9bGm8flrBzyqtcIQGa
-	 hSV7qGyjDu0/1of/K+h4vBn1kdJ3ikK8nueEozo9YjX3bdW7AvBnNyv5QIxywD1uFh
-	 dWM2nx8Kl7cA6qXq3pul92NjT7hOE8L31JbVqHllOJgDq/OQJsOUEwcuw4MxGCyOJ4
-	 fROU4hUrJJKvWCq1/tn0JLxEwOuGoj7CKRxExVTCAQbW//m2Xp1XrXFeGUR+4L0evL
-	 ulw5SVJ+ipodPzqjbGIumw3c=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 37D4740E0208;
-	Mon, 14 Jul 2025 19:43:58 +0000 (UTC)
-Date: Mon, 14 Jul 2025 21:43:51 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Jack Wang <jinpu.wang@ionos.com>
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org
-Subject: Re: [stable-6.1] x86: Fix X86_FEATURE_VERW_CLEAR definition
-Message-ID: <20250714194351.GRaHVd98o6K3VDXiXV@fat_crate.local>
-References: <20250714193339.6954-1-jinpu.wang@ionos.com>
+	s=arc-20240116; t=1752522984; c=relaxed/simple;
+	bh=msrTOzkx3nVfxEF+cyCWrsAAKGHytXv//zdlie3Ckr4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O55xWZUgHCUdEJRl8k9jAFMSyHSrUvfILJO8DxoL9euaT+HhHUJO7VgIXX11hBu3GrtqDkpV8bwuffhPSPI61oOVYD4gKkUxY+gkFnCGGT7ZcCEVgYEtD7Q9oD3AzQfmxby2QFLk3yBlZ1lCSjRiBbAHGDTao11q2xZ/G+5zv9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=JVyyY8KU; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2350b1b9129so32696125ad.0;
+        Mon, 14 Jul 2025 12:56:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1752522982; x=1753127782; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R8l3TuLeGRC12/isQU6yAP3w/Lelz62KKBJILK/IPuM=;
+        b=JVyyY8KUAWyXBKn5/RoN5ilGhW+X2w+ylJtXlvtXk/U8d+IL72wv7Z/18+PP2bH6JF
+         kKL3m1/GQPnfnbHR9zhvEf4fHeuSdUV1I+KwzHD/AepQ38xctW2nfzakfb+xzlRtGAg4
+         HKfDwIRAsldTwoI4xeQvQ7FHVB69+hx6ZaaV5Vo313t7Ga/guayfXjqwlwvf1b5Uhiml
+         lisnGXdHBnKbU1L3FqVr2/URDVxhQBNfc1C0WktXnCDnliD4hmeEqzsEJ4di0zWujuNB
+         LUvQHjyFOGKp4Y4qG/5tyt1Ggkuc8S6ysaUN3WDp9/BrinV/BCkrhAjWDqjBfp5EfCxc
+         7rMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752522982; x=1753127782;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R8l3TuLeGRC12/isQU6yAP3w/Lelz62KKBJILK/IPuM=;
+        b=P4gUBJIlyQysex3mDQHXtDgCPMfKde7sBJhz4NQZobgAuUixGH8/jwl8SGdKFlskkC
+         ntq/YifninHSZf3PPBnjYtjXIOfTF5n2k1MLMsO+p3rPv8PZ4H2hRfKH80MEjxNF0H2r
+         w3STXhI3I/Lx07ke8lur6M+zfD3mhC08t99NsAxW0pJOITgzgbjEEqHDE0x8exIntNgc
+         bSfVm3ebILG2X7nC1UzJ33mR6iATmVURDzmnpPF6+kHrn2Twe1D2srP7PoMHSZl/6HiK
+         xQ2Lu9izvVi10BngOlM6qXYtrvhQHmvBlWby4226xAStjAm3mrHaRB1NOTKFDqkzx3bZ
+         vtgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW2lhll6ThcVSRJzO5l0zgoL3/T+atqz/aALQcBWqiqriuh9Eawj0TFPYER8vZKSlxNWNLxIx6Z@vger.kernel.org, AJvYcCXKp/TFubFxx6nemDehfpmeG0AcyJ1oNcrN5GZToX2ujrZ/OrBY3GgWMnOPDIu0+VMbvMhHCmT0S9OfjVk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuLyYiLF84vNng2lyLcW1hnvwlXrPyro3kEQqHmVT6Bddvsy94
+	lhh1xHTjxFbo4Q0h0yBNiss8aRGFKEgEsT99Rz+R93SH0rXeylEdC67VviVcWRlG9G1fl5Ade6S
+	8FqogaRCCDX2CRiXT87bLG/yiZTNCxns=
+X-Gm-Gg: ASbGnctXwCLdnBMPt/tAeYFa8VurHrvO6UvPTBH+jmOs64XR2FRoR1dxhbcnd0o83Z+
+	vYTMJkgMJ/9o3oNM9gk8ehq1f5ulabQVnJTQmRK7LiAZqMb69WZi6n18Q4FxBrLX0xSOgO1kFtw
+	phol46xwvGW/sHnSHTg4VBzhzBMjla4Rgerlx0mqxZ+hw1uDGP1z1zvzoFFbxv03vaY6UYMUbdQ
+	wlvKPbgaD4cO6bY9okbe/HblWL6rFlGDh3oEp4l
+X-Google-Smtp-Source: AGHT+IEKcPO2dj8iuRmnxnt2knjE9fyHOUuiEh14mnU8le4Tje5sE5O+cSpiQaZ8gk8V5vL7ks0Ktg/2wNRtqQYal+I=
+X-Received: by 2002:a17:902:e805:b0:234:c2e7:a0e4 with SMTP id
+ d9443c01a7336-23dede2f317mr186119465ad.3.1752522982432; Mon, 14 Jul 2025
+ 12:56:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250714193339.6954-1-jinpu.wang@ionos.com>
+References: <20250623130632.993849527@linuxfoundation.org> <70823da1-a24d-4694-bf8a-68ca7f85e8a3@roeck-us.net>
+ <CAFBinCD8MKFbqzG2ge5PFgU74bgZVhmCwCXt+1UK8b=QDndVuw@mail.gmail.com> <2025071238-decency-backboard-09dd@gregkh>
+In-Reply-To: <2025071238-decency-backboard-09dd@gregkh>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date: Mon, 14 Jul 2025 21:56:11 +0200
+X-Gm-Features: Ac12FXyfcdIioMVTiQL-1AbAhQ1x9Xhcwx1gMDfemUjWBrxju3vhXDvvescNI1M
+Message-ID: <CAFBinCANe9oajzfZ_OGHoA-TtGC-CQdOm_O5TG8ke8m_NNE5NQ@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/411] 5.15.186-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, 
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 14, 2025 at 09:33:39PM +0200, Jack Wang wrote:
-> This is a mistake during backport.
-> VERW_CLEAR is on bit 5, not bit 10.
-> 
-> Fixes: d12145e8454f ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
-> 
-> Cc: Borislav Petkov (AMD) <bp@alien8.de>
-> Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-> ---
->  arch/x86/include/asm/cpufeatures.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-> index 1c71f947b426..6f6ea3b9a95e 100644
-> --- a/arch/x86/include/asm/cpufeatures.h
-> +++ b/arch/x86/include/asm/cpufeatures.h
-> @@ -429,8 +429,8 @@
->  #define X86_FEATURE_V_TSC_AUX		(19*32+ 9) /* "" Virtual TSC_AUX */
->  #define X86_FEATURE_SME_COHERENT	(19*32+10) /* "" AMD hardware-enforced cache coherency */
->  
-> +#define X86_FEATURE_VERW_CLEAR		(20*32+ 5) /* "" The memory form of VERW mitigates TSA */
->  #define X86_FEATURE_AUTOIBRS		(20*32+ 8) /* "" Automatic IBRS */
-> -#define X86_FEATURE_VERW_CLEAR		(20*32+ 10) /* "" The memory form of VERW mitigates TSA */
->  #define X86_FEATURE_SBPB		(20*32+27) /* "" Selective Branch Prediction Barrier */
->  #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* "" MSR_PRED_CMD[IBPB] flushes all branch type predictions */
->  #define X86_FEATURE_SRSO_NO		(20*32+29) /* "" CPU is not affected by SRSO */
-> -- 
+Hi Greg,
 
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+On Sat, Jul 12, 2025 at 2:37=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Jul 08, 2025 at 06:05:14PM +0200, Martin Blumenstingl wrote:
+> > Hi Guenter,
+> >
+> > On Mon, Jul 7, 2025 at 8:05=E2=80=AFPM Guenter Roeck <linux@roeck-us.ne=
+t> wrote:
+> > >
+> > > On Mon, Jun 23, 2025 at 03:02:24PM +0200, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 5.15.186 relea=
+se.
+> > > > There are 411 patches in this series, all will be posted as a respo=
+nse
+> > > > to this one.  If anyone has any issues with these being applied, pl=
+ease
+> > > > let me know.
+> > > >
+> > > > Responses should be made by Wed, 25 Jun 2025 13:05:51 +0000.
+> > > > Anything received after that time might be too late.
+> > > >
+> > > ...
+> > > > Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> > > >     drm/meson: use unsigned long long / Hz for frequency types
+> > > >
+> > >
+> > > This patch triggers:
+> > >
+> > > Building arm:allmodconfig ... failed
+> > > --------------
+> > > Error log:
+> > > drivers/gpu/drm/meson/meson_vclk.c:399:17: error: this decimal consta=
+nt is unsigned only in ISO C90 [-Werror]
+> > >   399 |                 .pll_freq =3D 2970000000,
+> > >
+> > > and other similar problems. This is with gcc 13.4.0.
+> > Sorry to hear that this is causing issues.
+> > Are you only seeing this with the backport on top of 5.15 or also on
+> > top of mainline or -next?
+> >
+> > If it's only for 5.15 then personally I'd be happy with just skipping
+> > this patch (and the ones that depend on it).
+>
+> It's already merged, and I see these errors in the Android build reports
+> now.  I think they've just disabled the driver entirely to get around it =
+:(
+Can you confirm that only 5.15 is affected - or do you also see
+problems with other stable versions?
 
-Good catch for this and the 5.15 one.
+> > 5.15 is scheduled to be sunset in 16 months and I am not aware of many
+> > people running Amlogic SoCs with mainline 5.15.
+>
+> Great, can we send a "CONFIG_BROKEN" patch for this then?
+In my own words: you're asking for a patch for the next 5.15 release
+which adds "depends on BROKEN" to the meson drm driver. Is this
+correct?
 
-Thx.
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Best regards,
+Martin
 
