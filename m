@@ -1,133 +1,268 @@
-Return-Path: <stable+bounces-161834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F7DAB03EDF
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 14:39:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4908DB03EE7
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 14:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A29721897E6B
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 12:39:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66AA21898D2C
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 12:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848BD225771;
-	Mon, 14 Jul 2025 12:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787C624888C;
+	Mon, 14 Jul 2025 12:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iOuHotqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdT6A/8G"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C01D24888F;
-	Mon, 14 Jul 2025 12:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2111991B6
+	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 12:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752496765; cv=none; b=oQBa6rm5ik9NH1Zf2TQjEInOI86vvyYOPdI0hgGXQuvrRgIKxUszeB1Jmge5tYwSpgTM3yDWuxD96o0OF2BPzRQteDakR07gIiZ0LNGjHjB6oJth1+1wbURw6OBH0uTeOcGXmIHAtWT6f4r5ZvB+CYBfSSR+jVLXVu7M0bZh5mw=
+	t=1752496840; cv=none; b=lnUaK3mhRqI2kSAms2GCKQW3YfH407UhzO7skZmXEjZxjoqJYchuUypztYSZVTXRBH6rxXhbAoUunl65h1129c9lqMBuiU1M1nJ/pm+H5eMV435KO0Rd5CJD9BD6QdDJTPxyET/mZ/K95nXrMv2nszkbw+qqLh5eYRnZ06O3wH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752496765; c=relaxed/simple;
-	bh=TnP+vFs7IXRlmpvE3Fk2ALLQD/fNY7FOCcgBNk0jD4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LUmA2+bkKDEzOId1QGcd2yf5fub+QQOLRWv56zAiot5clXmHfI3OlEUYzlkGBIsn/PPo3rvq177sI3HRtMHiii0bopi/c3+fw+cLqUBMmXuYeD2sbLaOgAfPxByzr6DWRFfQT6+bcrP10/NX3w89DBZT8XixzGQj4OM8xbAlXQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iOuHotqw; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-451d6ade159so30763065e9.1;
-        Mon, 14 Jul 2025 05:39:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752496762; x=1753101562; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hu7d6TzejWOVv1PWLxvsbY8Bo8x9azrAfli/oRpw5r0=;
-        b=iOuHotqwLPBPZKpXHIamngyTskvsjOfEjbvFdnYI3j16Un+/Fbxh2IHFBvjX01nT0u
-         H4NXCu/42E/H4iOUf/rguzZ8bbjnDQL6YcflYZtfFztNQXz8tJMteI9yUUNk6kbFO9R4
-         7bLAbhtWe04h4YkES7fsog0T8xxIminv3wE9McY1keb1EDeTodJMP2kNZuoM5u8nFrbW
-         zTeVDm/jW8JeGLqiUJ4bkxI8jhHbHtUQtDO2KOapJPsy/xe21rvpghO0DuX1o8/JxJ10
-         ttlduY3VzVO/EIp7gxxVogI1DKlVe/2yWpRyoSXYx93bX9dCXm0GGa64mB2RdZC33n9C
-         ocag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752496762; x=1753101562;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hu7d6TzejWOVv1PWLxvsbY8Bo8x9azrAfli/oRpw5r0=;
-        b=XMZZfBOAeMirZNonGU0A0vzWsJQNmSnuB6x/MfhZUvNkmLQFsBQcUYySOUJ9vPj92M
-         cp1HzpL0Kv4aZJ2tmyAJTB+gac1Hi5K4q6G5WF/HKwyquvWjAk3hLn2y9yS9KnQUDBTF
-         MhbF/cIzkNzuyLja3Y8mo5dn+mriztTmR+OKAImJGFrNDVu/rcdlwVBPjG7bR+amFSOe
-         h6cascrK2Z0Z7FK5nzdqGpxZ+9V+nYiwaVmIJRkoXLtBbbZeSNaDy9yiCPcecIdYAX5J
-         ub6pwolsMO+bQ1zt6EmKus4WIhY/Yg8RF7a4yWiVZLKbrofNg/TGVTaQHe0u/7dSNupa
-         aUUg==
-X-Forwarded-Encrypted: i=1; AJvYcCV1EhBwNKAgoJa6l1XQUcQ39HmHqDGk9GtpE9zj3VwFyWAeX1BeyH8AWPNKO59VFpazMZZTrkGAiZVNx2U=@vger.kernel.org, AJvYcCVnl9D38y2Zd93PkByS4GMU47SH5pGn/kuNRhAAcLPvHrGUQ5z77n3M62XR0a28AgSW60m0qT2Y@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZfgl9L+RIrEAEakakYuYADS6ee/QDNWcptfjDfKjeKQh+FOW7
-	RpPUZwWgJvOrZ2KA9hyGBKZBjc3j+t1qUFe9HJrktFEycThW8LjVWuun
-X-Gm-Gg: ASbGnctL39od5sP58nXXOkqz5Ntbl15rzEDXuQjtSwX6jDG2GP+wUT8VkgGa+4V+M2V
-	eRo+jOnPGTf2I1Hl/v1hZV3OicV1V5kvQrV5JO0OiI/tOftgVAsowaJUh6++149ryg6YsCv0QbB
-	xsJkRHUlwsCVIIq4g4BySdp1mZcWlNE/PBzqnvabujpiNFx9QNZtf8/EN8hA1yaDWrMfCTBSNJw
-	B3UFIqjNKp0Vy0MQ141KmEffU4eedx11D9jYhyAOljEHTAmnC83H4+mImofyKBwcIFSjGefnuuY
-	JwuTqNjJPjxKd/uJ2W2Ts5PEY4i/TDvns19fhbyny6mYnuo+7J98H0PXeRIgLomCTSl9v/fyJ2z
-	gcHWZOhI/bbOIJh8GxfZjclxFZhUcXi9+HcRthzutWOp27DC9LQQcBBN5ETzMI/DIeo3pq8s=
-X-Google-Smtp-Source: AGHT+IGYYRHzkc0tCtHZgZ1HBPkUbfByAJiZ46m1oEz+lW6gbL5TanX3NgxDe/beQeMjz+LASAM6nw==
-X-Received: by 2002:a05:6000:5c2:b0:3a5:2b1d:7889 with SMTP id ffacd0b85a97d-3b5f2e26c9cmr9474793f8f.43.1752496761755;
-        Mon, 14 Jul 2025 05:39:21 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8e2710bsm12288225f8f.99.2025.07.14.05.39.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jul 2025 05:39:21 -0700 (PDT)
-Date: Mon, 14 Jul 2025 13:39:20 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: jacob.pan@linux.microsoft.com, Jason Gunthorpe <jgg@nvidia.com>, Lu
- Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will
- Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Kevin Tian
- <kevin.tian@intel.com>, Jann Horn <jannh@google.com>, Vasant Hegde
- <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>, Peter
- Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>, Andy Lutomirski
- <luto@kernel.org>, iommu@lists.linux.dev, security@kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] iommu/sva: Invalidate KVA range on kernel TLB flush
-Message-ID: <20250714133920.55fde0f5@pumpkin>
-In-Reply-To: <42c500b8-6ffb-4793-85c0-d3fbae0116f1@intel.com>
-References: <20250704133056.4023816-1-baolu.lu@linux.intel.com>
-	<20250709085158.0f050630@DESKTOP-0403QTC.>
-	<20250709162724.GE1599700@nvidia.com>
-	<20250709111527.5ba9bc31@DESKTOP-0403QTC.>
-	<42c500b8-6ffb-4793-85c0-d3fbae0116f1@intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1752496840; c=relaxed/simple;
+	bh=9t4fWiplyObsN2ZgPHLV+Ei/k2Fh5vp9t4BNXEAx2DI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mmXrzmEd+z8/mnNsIIQdfZ6NVgigyHiPuqx5XY2DSslv4TyocgPFDz7TBXTmVuXB7za1j8jJbBYWudXnN2mU6nhCjYycnuH/SLpYWtE3zhVUQ1MYNOXiRmjhxXcSd+aX14ZwHcgZjuJV+JAGz1XOY+kAGahy2+l9I7fe7G8qfHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdT6A/8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D87EC4CEED;
+	Mon, 14 Jul 2025 12:40:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752496839;
+	bh=9t4fWiplyObsN2ZgPHLV+Ei/k2Fh5vp9t4BNXEAx2DI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=IdT6A/8GHPuEHoVLwm82zef8Zeh1f7EHtBtriaeB8HqUXIX7YIsbzTzv3l6ia5tLv
+	 ZXkBgcXy7pXxTh3s9vKitHCb0s+kazaKGfXQNBTGNt2k6YDDAIP09pBMg98xCtKlkY
+	 GqnmkYFPYMw/gfrtM5nbByZc5ANOg0Jyytev4cxs=
+Subject: FAILED: patch "[PATCH] bpf, sockmap: Fix panic when calling skb_linearize" failed to apply to 5.15-stable tree
+To: jiayuan.chen@linux.dev,ast@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 14 Jul 2025 14:40:37 +0200
+Message-ID: <2025071437-unloaded-unstitch-e838@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, 9 Jul 2025 11:22:34 -0700
-Dave Hansen <dave.hansen@intel.com> wrote:
 
-> On 7/9/25 11:15, Jacob Pan wrote:
-> >>> Is there a use case where a SVA user can access kernel memory in the
-> >>> first place?    
-> >> No. It should be fully blocked.
-> >>  
-> > Then I don't understand what is the "vulnerability condition" being
-> > addressed here. We are talking about KVA range here.  
-> 
-> SVA users can't access kernel memory, but they can compel walks of
-> kernel page tables, which the IOMMU caches. The trouble starts if the
-> kernel happens to free that page table page and the IOMMU is using the
-> cache after the page is freed.
-> 
-> That was covered in the changelog, but I guess it could be made a bit
-> more succinct.
-> 
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Is it worth just never freeing the page tables used for vmalloc() memory?
-After all they are likely to be reallocated again.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-That (should) only require IOMMU invalidate for pages that are actually
-used for io.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5ca2e29f6834c64c0e5a9ccf1278c21fb49b827e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071437-unloaded-unstitch-e838@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-	David
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 5ca2e29f6834c64c0e5a9ccf1278c21fb49b827e Mon Sep 17 00:00:00 2001
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+Date: Mon, 7 Apr 2025 22:21:22 +0800
+Subject: [PATCH] bpf, sockmap: Fix panic when calling skb_linearize
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The panic can be reproduced by executing the command:
+./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress --rx-strp 100000
+
+Then a kernel panic was captured:
+'''
+[  657.460555] kernel BUG at net/core/skbuff.c:2178!
+[  657.462680] Tainted: [W]=WARN
+[  657.463287] Workqueue: events sk_psock_backlog
+...
+[  657.469610]  <TASK>
+[  657.469738]  ? die+0x36/0x90
+[  657.469916]  ? do_trap+0x1d0/0x270
+[  657.470118]  ? pskb_expand_head+0x612/0xf40
+[  657.470376]  ? pskb_expand_head+0x612/0xf40
+[  657.470620]  ? do_error_trap+0xa3/0x170
+[  657.470846]  ? pskb_expand_head+0x612/0xf40
+[  657.471092]  ? handle_invalid_op+0x2c/0x40
+[  657.471335]  ? pskb_expand_head+0x612/0xf40
+[  657.471579]  ? exc_invalid_op+0x2d/0x40
+[  657.471805]  ? asm_exc_invalid_op+0x1a/0x20
+[  657.472052]  ? pskb_expand_head+0xd1/0xf40
+[  657.472292]  ? pskb_expand_head+0x612/0xf40
+[  657.472540]  ? lock_acquire+0x18f/0x4e0
+[  657.472766]  ? find_held_lock+0x2d/0x110
+[  657.472999]  ? __pfx_pskb_expand_head+0x10/0x10
+[  657.473263]  ? __kmalloc_cache_noprof+0x5b/0x470
+[  657.473537]  ? __pfx___lock_release.isra.0+0x10/0x10
+[  657.473826]  __pskb_pull_tail+0xfd/0x1d20
+[  657.474062]  ? __kasan_slab_alloc+0x4e/0x90
+[  657.474707]  sk_psock_skb_ingress_enqueue+0x3bf/0x510
+[  657.475392]  ? __kasan_kmalloc+0xaa/0xb0
+[  657.476010]  sk_psock_backlog+0x5cf/0xd70
+[  657.476637]  process_one_work+0x858/0x1a20
+'''
+
+The panic originates from the assertion BUG_ON(skb_shared(skb)) in
+skb_linearize(). A previous commit(see Fixes tag) introduced skb_get()
+to avoid race conditions between skb operations in the backlog and skb
+release in the recvmsg path. However, this caused the panic to always
+occur when skb_linearize is executed.
+
+The "--rx-strp 100000" parameter forces the RX path to use the strparser
+module which aggregates data until it reaches 100KB before calling sockmap
+logic. The 100KB payload exceeds MAX_MSG_FRAGS, triggering skb_linearize.
+
+To fix this issue, just move skb_get into sk_psock_skb_ingress_enqueue.
+
+'''
+sk_psock_backlog:
+    sk_psock_handle_skb
+       skb_get(skb) <== we move it into 'sk_psock_skb_ingress_enqueue'
+       sk_psock_skb_ingress____________
+                                       ↓
+                                       |
+                                       | → sk_psock_skb_ingress_self
+                                       |      sk_psock_skb_ingress_enqueue
+sk_psock_verdict_apply_________________↑          skb_linearize
+'''
+
+Note that for verdict_apply path, the skb_get operation is unnecessary so
+we add 'take_ref' param to control it's behavior.
+
+Fixes: a454d84ee20b ("bpf, sockmap: Fix skb refcnt race after locking changes")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://lore.kernel.org/r/20250407142234.47591-4-jiayuan.chen@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 9533b3e40ad7..276934673066 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -530,16 +530,22 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buff *skb,
+ 					u32 off, u32 len,
+ 					struct sk_psock *psock,
+ 					struct sock *sk,
+-					struct sk_msg *msg)
++					struct sk_msg *msg,
++					bool take_ref)
+ {
+ 	int num_sge, copied;
+ 
++	/* skb_to_sgvec will fail when the total number of fragments in
++	 * frag_list and frags exceeds MAX_MSG_FRAGS. For example, the
++	 * caller may aggregate multiple skbs.
++	 */
+ 	num_sge = skb_to_sgvec(skb, msg->sg.data, off, len);
+ 	if (num_sge < 0) {
+ 		/* skb linearize may fail with ENOMEM, but lets simply try again
+ 		 * later if this happens. Under memory pressure we don't want to
+ 		 * drop the skb. We need to linearize the skb so that the mapping
+ 		 * in skb_to_sgvec can not error.
++		 * Note that skb_linearize requires the skb not to be shared.
+ 		 */
+ 		if (skb_linearize(skb))
+ 			return -EAGAIN;
+@@ -556,7 +562,7 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buff *skb,
+ 	msg->sg.start = 0;
+ 	msg->sg.size = copied;
+ 	msg->sg.end = num_sge;
+-	msg->skb = skb;
++	msg->skb = take_ref ? skb_get(skb) : skb;
+ 
+ 	sk_psock_queue_msg(psock, msg);
+ 	sk_psock_data_ready(sk, psock);
+@@ -564,7 +570,7 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buff *skb,
+ }
+ 
+ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
+-				     u32 off, u32 len);
++				     u32 off, u32 len, bool take_ref);
+ 
+ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+ 				u32 off, u32 len)
+@@ -578,7 +584,7 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+ 	 * correctly.
+ 	 */
+ 	if (unlikely(skb->sk == sk))
+-		return sk_psock_skb_ingress_self(psock, skb, off, len);
++		return sk_psock_skb_ingress_self(psock, skb, off, len, true);
+ 	msg = sk_psock_create_ingress_msg(sk, skb);
+ 	if (!msg)
+ 		return -EAGAIN;
+@@ -590,7 +596,7 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+ 	 * into user buffers.
+ 	 */
+ 	skb_set_owner_r(skb, sk);
+-	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg);
++	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, true);
+ 	if (err < 0)
+ 		kfree(msg);
+ 	return err;
+@@ -601,7 +607,7 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+  * because the skb is already accounted for here.
+  */
+ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
+-				     u32 off, u32 len)
++				     u32 off, u32 len, bool take_ref)
+ {
+ 	struct sk_msg *msg = alloc_sk_msg(GFP_ATOMIC);
+ 	struct sock *sk = psock->sk;
+@@ -610,7 +616,7 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
+ 	if (unlikely(!msg))
+ 		return -EAGAIN;
+ 	skb_set_owner_r(skb, sk);
+-	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg);
++	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, take_ref);
+ 	if (err < 0)
+ 		kfree(msg);
+ 	return err;
+@@ -619,18 +625,13 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
+ static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
+ 			       u32 off, u32 len, bool ingress)
+ {
+-	int err = 0;
+-
+ 	if (!ingress) {
+ 		if (!sock_writeable(psock->sk))
+ 			return -EAGAIN;
+ 		return skb_send_sock(psock->sk, skb, off, len);
+ 	}
+-	skb_get(skb);
+-	err = sk_psock_skb_ingress(psock, skb, off, len);
+-	if (err < 0)
+-		kfree_skb(skb);
+-	return err;
++
++	return sk_psock_skb_ingress(psock, skb, off, len);
+ }
+ 
+ static void sk_psock_skb_state(struct sk_psock *psock,
+@@ -1019,7 +1020,7 @@ static int sk_psock_verdict_apply(struct sk_psock *psock, struct sk_buff *skb,
+ 				off = stm->offset;
+ 				len = stm->full_len;
+ 			}
+-			err = sk_psock_skb_ingress_self(psock, skb, off, len);
++			err = sk_psock_skb_ingress_self(psock, skb, off, len, false);
+ 		}
+ 		if (err < 0) {
+ 			spin_lock_bh(&psock->ingress_lock);
+
 
