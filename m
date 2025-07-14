@@ -1,127 +1,148 @@
-Return-Path: <stable+bounces-161838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80AEAB03F32
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 15:04:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26396B03FAB
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 15:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEFEA1887B4A
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 13:04:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CC4E163061
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 13:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CF9246BB7;
-	Mon, 14 Jul 2025 13:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A279724DD11;
+	Mon, 14 Jul 2025 13:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UArDJHtL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JcMD5mgU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE9C2E36F0;
-	Mon, 14 Jul 2025 13:04:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63B424A047;
+	Mon, 14 Jul 2025 13:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752498272; cv=none; b=BRhE9g5K36uoxvQkB/HAT/QqBC33XdOBviKBg7QPx3hGHBeZwAMOw8HhVfSzqJE1O1HUQ9iLsDZr1zdhJS0EmOhMZiB0kig4yzDn9h9uy3xDn2HhZRsEES4+uk10YEVTlLSma6fSBfx0eIpEbsMj+4JAmXZ00btWy8O4nq8beCY=
+	t=1752499165; cv=none; b=BhiiLffmRumNiSFc7ld1Wpt6J2aXlHK/8lgG1GaPAFzsvAdECgj9zZvx/6c8mhwY4Ewo2E27RzDtP+OxKGlhxZCffYJYOdBKyA/jT+4Fp4UanmcxK6s27DWC4Wy0LlTU/thvWFic1CEEg4dAbw2aI6tvlIirzfb5I+xh6Fe+3pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752498272; c=relaxed/simple;
-	bh=diav37jiaTDB5/BPwgT+0WGoc+iJmsDN4KmTv9KnmmY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k4qcvuHRZr/06W/OHSFNEfbaz7B7J0WUrc1Vuwe50KIumUraCDuyrN4dq5uN9LX4zoTRz0WeccSxy9aAqev2LVkw9Q8Y0Z0kxLhojY5ymiIADrR5NwHxQxSXxMABlsHTfwsOdd8QXnFAcpyWBrDqFWBpfbkHWvSWKEnH6bNrCz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UArDJHtL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1504C4CEF4;
-	Mon, 14 Jul 2025 13:04:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752498272;
-	bh=diav37jiaTDB5/BPwgT+0WGoc+iJmsDN4KmTv9KnmmY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UArDJHtLSymi3gEKJfIyKNCFWM55EgGb+SoXY/ab2mHNsGkV5lfsJ0H65wZSe+U3k
-	 bpKZqQHmufJcqLcCA+MUUz4ruIilzH6Z+CqUqq5/pdQPGDXV9ywtbkHXsmRpX4Usyy
-	 mi0ZGmd/hTv3Mcx2l9nU8NmKZyXdb0/qwwIzmIf4=
-Date: Mon, 14 Jul 2025 15:04:29 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Amit Kucheria <amitk@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1752499165; c=relaxed/simple;
+	bh=MEiZe9dT3AcI47jjSXnxopISrbtPuAcEGPjwBbo8RXM=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RwIf3MVcUA9zX4VCUdW9gOlE4Xqi18C4uoVLwgRId6Ym2paXrsypDs5up4x5aO5xJBPYzwcId8ULd0QAkpV0yrYSlGZOtP29qJr79cV1iHDV7AvtfobyT7LEb2dxXk0Evt5bbF1QR9Xe8VY8MFX90rvNUo7IplFiplfGVjRKV0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JcMD5mgU; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-555163cd09aso3354377e87.3;
+        Mon, 14 Jul 2025 06:19:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752499162; x=1753103962; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=78IVLypB20S33j4pHBE/zVDOjkBG6gwwlw+HOaWrG1k=;
+        b=JcMD5mgUC3YmuPmlMuaQplY5S10mIx3tKbPTjikpdjclzjiAp/r7dfn3ZdzQ4t6aTw
+         nZ97rPLh7VI7QgIt1+N2CWLSv2xJMfMZo0eMWfTL61itjn5rnwf37c+DPXG7xa1j5wFs
+         qluz9joYGYawMn/F4Pcr4NpzkZYZDHsR7yNxizd1iw2O6ExXTb9xO7384JMbEAT051Fc
+         n4+Zxpua+qkAtSXeVQqlRMuKD81NKf5a7sEMVN2AROXmNdDQ2KtOURRbB3LtiV5MjHPh
+         KAkvfr+XHISapoSZJXhHzZo+qLrgbFDWSdKGdzTQN1EOgprVGO8JAzQhgYDCNS+x27FI
+         r27Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752499162; x=1753103962;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=78IVLypB20S33j4pHBE/zVDOjkBG6gwwlw+HOaWrG1k=;
+        b=NHYcmTcEUtEwv/2H7KrjD9j/6vBysjfDZM1tqYMd9lgrz0mWxN4xFhOUd+8rdPUHBJ
+         7yUts7YG03BPfGPQ3FqElKz01KODpNzpdDgJxRFZuJbHqYMc4eAF7G8eIngo+Gd71DWm
+         ywF0FFLm28MW263icvgHKiNVVYnRIPm9hMKS+zyaip5QSQN4uZrwirGWsh0PkaHqcKPO
+         xKTJNONcvcVi8BhBewcMyZH1Axys51K7vowj3tcToCuUkn6ULxMot9lNlkPEOr3fIn+s
+         zNsLqoBwBiW3F/mZFYWiDgXFgPiAFua7EdQuk5YVDHdmumM8JcNOEl75qhzXtg0dsPDw
+         yHvg==
+X-Forwarded-Encrypted: i=1; AJvYcCUVXaOG1oWWZyenENsSiifJ+ylxtcoNWJhT2bcdhQBXAwUdkCdLJOpQ9JpzJKNhGyAQZBFNLS4Q@vger.kernel.org, AJvYcCW86jSQrV3uMHr4DYm2pedVsmcCsKiAEdUaF+vHxxbvs229gw7PfuTH7jyH7uRE7CibVjOsIdvib4HAdvU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzo5nGvRL9BJ607j3j5ZPn336CNFtKhJ6B4vRyUJviXbn3bdIsv
+	Itsj1EqlVFuOxDZBjvmB5LD6uHpR907KO3i5XFqMLBH/afxhru0hxK96
+X-Gm-Gg: ASbGncuK+BCh+uR3AbElOXRWkPemqIDtBpMB0gIujB6ceQA20jDhDUSN5PuQ+gVq5v8
+	HCV4kLZ3HHUWFXHsSWc9q/g6Km/Xymks3eBrFU5M+dt6Dvihuc7alCMorT+I1iGe/5znjeaBswJ
+	JkOdhd+Ur0L4GH/C6A/ZLTIG58TvUfJvkk1iMcAqaldi7KIBbXKQGVzVIDrXu0yEIeFfzXlGE64
+	9f8wgYEHv7miTEne5k7We9LRLa0vlRQKeAfC6MkZi952CU8iDTR7TZ9LF0pYI7q2h26Yv+wwzmx
+	aotxH678kKi9334+DJWiCbJ6C1YYMyzBJtTEILiRg2iXk8iS3cduJWE1MJf7JpoYm8T1Ziyfs2D
+	vzLWMzLL+YSSsmqO+OOO7SArh9eLZzF7T4lr/AZkwwuJ265UoBpBEvr81mA==
+X-Google-Smtp-Source: AGHT+IEMCGGGprcbXRR1yMw//2aiZLM5Ci4pXvi2khlJ9ETOkX78f4aDe8DT5j9DDWK3UG+TrKW9ew==
+X-Received: by 2002:a05:6512:a89:b0:553:addb:ef5c with SMTP id 2adb3069b0e04-55a046538fbmr3898999e87.54.1752499161600;
+        Mon, 14 Jul 2025 06:19:21 -0700 (PDT)
+Received: from pc636 (host-95-203-19-28.mobileonline.telia.com. [95.203.19.28])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55943b77c64sm1956468e87.219.2025.07.14.06.19.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Jul 2025 06:19:20 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Mon, 14 Jul 2025 15:19:17 +0200
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, jacob.pan@linux.microsoft.com,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>, iommu@lists.linux.dev,
+	security@kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 6.6] thermal/of: Fix mask mismatch when no trips subnode
-Message-ID: <2025071407-fender-passcode-b53c@gregkh>
-References: <20250707-trip-point-v1-1-8f89d158eda0@chromium.org>
- <2025071012-granola-daylong-9943@gregkh>
- <CAHc4DN+kb8w+VVX0XAfN5YVo9M+RBatKkv8-nOiOTA+7yZjmfA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] iommu/sva: Invalidate KVA range on kernel TLB flush
+Message-ID: <aHUD1cklhydR-gE5@pc636>
+References: <20250704133056.4023816-1-baolu.lu@linux.intel.com>
+ <20250709085158.0f050630@DESKTOP-0403QTC.>
+ <20250709162724.GE1599700@nvidia.com>
+ <20250709111527.5ba9bc31@DESKTOP-0403QTC.>
+ <42c500b8-6ffb-4793-85c0-d3fbae0116f1@intel.com>
+ <20250714133920.55fde0f5@pumpkin>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHc4DN+kb8w+VVX0XAfN5YVo9M+RBatKkv8-nOiOTA+7yZjmfA@mail.gmail.com>
+In-Reply-To: <20250714133920.55fde0f5@pumpkin>
 
-On Mon, Jul 14, 2025 at 08:36:29PM +0800, Hsin-Te Yuan wrote:
-> On Thu, Jul 10, 2025 at 9:33 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Mon, Jul 07, 2025 at 06:27:10PM +0800, Hsin-Te Yuan wrote:
-> > > After commit 725f31f300e3 ("thermal/of: support thermal zones w/o trips
-> > > subnode") was backported on 6.6 stable branch as commit d3304dbc2d5f
-> > > ("thermal/of: support thermal zones w/o trips subnode"), thermal zones
-> > > w/o trips subnode still fail to register since `mask` argument is not
-> > > set correctly. When number of trips subnode is 0, `mask` must be 0 to
-> > > pass the check in `thermal_zone_device_register_with_trips()`.
-> > >
-> > > Set `mask` to 0 when there's no trips subnode.
-> > >
-> > > Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-> > > ---
-> > >  drivers/thermal/thermal_of.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-> > > index 0f520cf923a1e684411a3077ad283551395eec11..97aeb869abf5179dfa512dd744725121ec7fd0d9 100644
-> > > --- a/drivers/thermal/thermal_of.c
-> > > +++ b/drivers/thermal/thermal_of.c
-> > > @@ -514,7 +514,7 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
-> > >       of_ops->bind = thermal_of_bind;
-> > >       of_ops->unbind = thermal_of_unbind;
-> > >
-> > > -     mask = GENMASK_ULL((ntrips) - 1, 0);
-> > > +     mask = ntrips ? GENMASK_ULL((ntrips) - 1, 0) : 0;
-> >
-> > Meta-comment, I hate ? : lines in C, especially when they are not
-> > needed, like here.  Spell this out, with a real if statement please, so
-> > that we can read and easily understand what is going on.
-> >
-> I will change this in v2 if we end up going with this solution.
+On Mon, Jul 14, 2025 at 01:39:20PM +0100, David Laight wrote:
+> On Wed, 9 Jul 2025 11:22:34 -0700
+> Dave Hansen <dave.hansen@intel.com> wrote:
 > 
-> > That being said, I agree with Rafael, let's do whatever is in mainline
-> > instead.  Fix it the same way it was fixed there by backporting the
-> > relevant commits.
-> >
-> > thanks,
-> >
-> > greg k-h
+> > On 7/9/25 11:15, Jacob Pan wrote:
+> > >>> Is there a use case where a SVA user can access kernel memory in the
+> > >>> first place?    
+> > >> No. It should be fully blocked.
+> > >>  
+> > > Then I don't understand what is the "vulnerability condition" being
+> > > addressed here. We are talking about KVA range here.  
+> > 
+> > SVA users can't access kernel memory, but they can compel walks of
+> > kernel page tables, which the IOMMU caches. The trouble starts if the
+> > kernel happens to free that page table page and the IOMMU is using the
+> > cache after the page is freed.
+> > 
+> > That was covered in the changelog, but I guess it could be made a bit
+> > more succinct.
+> > 
 > 
-> `mask` is removed in 83c2d444ed9d ("thermal: of: Set
-> THERMAL_TRIP_FLAG_RW_TEMP directly"), which needs 5340f7647294
-> ("thermal: core: Add flags to struct thermal_trip"). I think it's
-> beyond a fix to introduce this. Also, there were several conflicts
-> when I tried to cherry-pick 5340f7647294. Compared to a simple
-> solution like setting `mask` to 0, I don't think it's worthwhile and
-> safe to cherry-pick all the dependencies.
+> Is it worth just never freeing the page tables used for vmalloc() memory?
+> After all they are likely to be reallocated again.
+> 
+>
+Do we free? Maybe on some arches? According to my tests(AMD x86-64) i did
+once upon a time, the PTE entries were not freed after vfree(). It could be
+expensive if we did it, due to a global "page_table_lock" lock.
 
-Remember, every patch you add to the tree that is NOT upstream, will
-almost always cause problems later on, if not immediately (we have a
-lousy track record of one-off-patches.)  Also this prevents future
-upstream changes from being able to be applied to the tree.
+I see one place though, it is in the vmap_try_huge_pud()
 
-And as you will now be responsible for maintaining this for the next 3-4
-years, do whatever possible to make it easy to keep alive properly.
+	if (pud_present(*pud) && !pud_free_pmd_page(pud, addr))
+		return 0;
 
-thanks,
+it is when replace a pud by a huge-page.
 
-greg k-h
+--
+Uladzislau Rezki
 
