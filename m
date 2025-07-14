@@ -1,144 +1,188 @@
-Return-Path: <stable+bounces-161871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F060B0458A
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 18:35:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94970B045BF
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 18:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D0094A2918
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 16:35:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAD9E7AE689
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 16:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71AF32620F1;
-	Mon, 14 Jul 2025 16:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7F02620C6;
+	Mon, 14 Jul 2025 16:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFoc59lB"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="L6iTTA5J"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5892620D5;
-	Mon, 14 Jul 2025 16:35:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEA025F97F;
+	Mon, 14 Jul 2025 16:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752510942; cv=none; b=JhpyJRcUT5MkklL7bzj5OiU19JrDcJrwhqH7gPXor4n970vw0qv0o0n0wNykWpMl4HGyqWuv+LEDkmxpCf59tLY5cpmgBywLwgpKeHx/KyNaQ1kpc762EnJpW7ecovWxE2pVlIGqpHm7QJR3qGcZdGZy6RnWkzxWJpVyWjnFQE4=
+	t=1752511310; cv=none; b=YDc3EhVn67lvYUCrmC+TrLoN/HQ87+Q/Jy0JefROQNNOaDBxHrmBBOIvb+mtIZaYyyIORjQMMdi5O81LfLcSzzyfUk1caKnw23Hw84P+rMRddVBim4VltNrUTPyT1AYfAaNvvVDJkxZr/c1bL1xarRIJnFmQlKjjfP9ZA/yJudM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752510942; c=relaxed/simple;
-	bh=HCTIYugXe3ybLmowCq2D9pzqaHhFBDzT2Z0kcsA7nhI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kHPLnyYO8fdvGgAwMO35O+jnWK7jXbmHA+Dy0jONK3YKnaNN8str5rHlNPycWnAfQ8ZCtS8n42Q0B/73XBc0yCBn1dbi0ZbFAqhfjZEguznlMqfr32Amb9B/zDoVCJb59cJJez64d1wyTxeWfsX31k01tD9is1Tcg/KHiJxvOEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFoc59lB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7FFC4CEED;
-	Mon, 14 Jul 2025 16:35:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752510941;
-	bh=HCTIYugXe3ybLmowCq2D9pzqaHhFBDzT2Z0kcsA7nhI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tFoc59lB7p3DS+EG+cbfcNxThwczpLZw+oWAaDlUE1pnYxwjcDWMipv7X+Hi1jBE2
-	 oSzSUphDbDG3DMZXmY3pQpQdopCVp1+ytg0DibEw6Z9nX4ZR3j7A21fTHf/MTPYdPU
-	 kT/LGqIeg81vWG1Oxc2qO9HEaY5Ilnyl1RzFi9rB0gHV0MM0abv/tk97UJzGcVMWr4
-	 ag7tLS8Z46CCRPPi+L4/u0AnUfxo0LEDQLGVqjL2rU8UgRHJTl8XirLjpnrqhtzy9a
-	 gTGHUWD6w039b4I9r6grLoVJycZPPEgTf4fl2SV+5+rMCgRLMQD49AG7MOEYM/kjwz
-	 8gfXF4tNL0o7Q==
-Message-ID: <bb98ecb6-eb56-44d9-8f80-3172f9e7de03@kernel.org>
-Date: Mon, 14 Jul 2025 11:35:39 -0500
+	s=arc-20240116; t=1752511310; c=relaxed/simple;
+	bh=LHGxNKkPFo/k6boxFl7Q/3wRfLXRmp0votNJ5kvkbBo=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=N9HL2gTGK+vrcmptuu7i6l+cBaWTTTe8gyaoP6pM5YQ8dzU6ujUxKzY3qHbh9nUPCPv2IuN8y/qjdkwXGOATBrrWukXVsg5tVUoV455IV0kEGg2FTloNuhiM9CC4LYErwLDClGsHlIQlP5JcLBgO7D9I61JmSaiodMMHuCNCDIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=L6iTTA5J; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1006)
+	id E9B75211CE1A; Mon, 14 Jul 2025 09:41:48 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E9B75211CE1A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1752511308;
+	bh=9QMFgykrjbbChs7NfmUYFWDLoGQ54scZpKmu2YN1Lfc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=L6iTTA5Jbf04Sku70ZErFpMBMRww6mhw9GT3gAxesPCCOvk0EfTzHDRAnz7JBP+Ea
+	 TKnNd3cZ1/79MTufulnV7MiLdxMqPOCEq3ZQEk+2c+quGHI1hnJUPHKFdoGvwJYcEi
+	 +pTK3YVfmiPhB7Hn28znwDSfE7E+F6dkEhPYrizM=
+From: Haiyang Zhang <haiyangz@linux.microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: haiyangz@microsoft.com,
+	kys@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	davem@davemloft.net,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	cavery@redhat.com
+Subject: [PATCH net,v2] hv_netvsc: Switch VF namespace in netvsc_open instead
+Date: Mon, 14 Jul 2025 09:41:37 -0700
+Message-Id: <1752511297-8817-1-git-send-email-haiyangz@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] thunderbolt: Fix a logic error in wake on connect
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: mario.limonciello@amd.com, andreas.noever@gmail.com,
- michael.jamet@intel.com, westeri@kernel.org, YehezkelShB@gmail.com,
- rajat.khandelwal@intel.com, mika.westerberg@linux.intel.com,
- linux-usb@vger.kernel.org, kim.lindberger@gmail.com, linux@lunaa.ch,
- Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
- Alyssa Ross <hi@alyssa.is>, regressions@lists.linux.dev
-References: <20250411151446.4121877-1-superm1@kernel.org>
- <cavyeum32dd7kxj65argtem6xh2575oq3gcv3svd3ubnvdc6cr@6nv7ieimfc5e>
- <87v7odo46s.fsf@alyssa.is> <51d5393c-d0e1-4f35-bed0-16c7ce40a8a8@kernel.org>
- <2025070737-charbroil-imply-7b5e@gregkh>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <2025070737-charbroil-imply-7b5e@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 7/7/25 2:57 AM, Greg Kroah-Hartman wrote:
-> On Sun, Jul 06, 2025 at 10:46:53AM -0400, Mario Limonciello wrote:
->> On 6/30/25 07:32, Alyssa Ross wrote:
->>> Alyssa Ross <hi@alyssa.is> writes:
->>>
->>>> On Fri, Apr 11, 2025 at 10:14:44AM -0500, Mario Limonciello wrote:
->>>>> From: Mario Limonciello <mario.limonciello@amd.com>
->>>>>
->>>>> commit a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect
->>>>> on USB4 ports") introduced a sysfs file to control wake up policy
->>>>> for a given USB4 port that defaulted to disabled.
->>>>>
->>>>> However when testing commit 4bfeea6ec1c02 ("thunderbolt: Use wake
->>>>> on connect and disconnect over suspend") I found that it was working
->>>>> even without making changes to the power/wakeup file (which defaults
->>>>> to disabled). This is because of a logic error doing a bitwise or
->>>>> of the wake-on-connect flag with device_may_wakeup() which should
->>>>> have been a logical AND.
->>>>>
->>>>> Adjust the logic so that policy is only applied when wakeup is
->>>>> actually enabled.
->>>>>
->>>>> Fixes: a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect on USB4 ports")
->>>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>>>
->>>> Hi! There have been a couple of reports of a Thunderbolt regression in
->>>> recent stable kernels, and one reporter has now bisected it to this
->>>> change:
->>>>
->>>>    • https://bugzilla.kernel.org/show_bug.cgi?id=220284
->>>>    • https://github.com/NixOS/nixpkgs/issues/420730
->>>>
->>>> Both reporters are CCed, and say it starts working after the module is
->>>> reloaded.
->>>>
->>>> Link: https://lore.kernel.org/r/bug-220284-208809@https.bugzilla.kernel.org%2F/
->>>> (for regzbot)
->>>
->>> Apparently[1] fixed by the first linked patch below, which is currently in
->>> the Thunderbolt tree waiting to be pulled into the USB tree.
->>>
->>> #regzbot monitor: https://lore.kernel.org/linux-usb/20250619213840.2388646-1-superm1@kernel.org/
->>> #regzbot monitor: https://lore.kernel.org/linux-usb/20250626154009.GK2824380@black.fi.intel.com/
->>>
->>> [1]: https://github.com/NixOS/nixpkgs/issues/420730#issuecomment-3018563631
->>
->> Hey Greg,
->>
->> Can you pick up the pull request from Mika from a week and a half ago with
->> this fix for the next 6.16-rc?
->>
->> https://lore.kernel.org/linux-usb/20250626154009.GK2824380@black.fi.intel.com/
-> 
-> Yes, I was waiting for this last round to go to Linus as the pull
-> request was made against a newer version of Linus's tree than I
-> currently had in my "for linus" branch.  I'll go get to that later
-> today.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-Greg,
+The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
+received on netvsc NIC. During deletion of the namespace,
+default_device_exit_batch() >> default_device_exit_net() is called. When
+netvsc NIC is moved back and registered to the default namespace, it
+automatically brings VF NIC back to the default namespace. This will cause
+the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
+the list end, and hit NULL ptr:
 
-Sorry to be a bugger, but I was surprised I didn't see this come in -rc6 
-this week, and I went and double checked your "usb-linus" branch [1] and 
-didn't see it there.
+[  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
+[  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
+[  231.450246] #PF: supervisor read access in kernel mode
+[  231.450579] #PF: error_code(0x0000) - not-present page
+[  231.450916] PGD 17b8a8067 P4D 0 
+[  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
+[  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY 
+[  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
+[  231.452692] Workqueue: netns cleanup_net
+[  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
+[  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
+[  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
+[  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
+[  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
+[  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
+[  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
+[  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
+[  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
+[  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
+[  231.458434] Call Trace:
+[  231.458600]  <TASK>
+[  231.458777]  ops_undo_list+0x100/0x220
+[  231.459015]  cleanup_net+0x1b8/0x300
+[  231.459285]  process_one_work+0x184/0x340
 
-Thanks,
+To fix it, move the VF namespace switching code from the NETDEV_REGISTER
+event handler to netvsc_open().
 
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git/log/?h=usb-linus
+Cc: stable@vger.kernel.org
+Cc: cavery@redhat.com
+Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+---
+v2: verified it's applicable to net, fixed cc list.
+
+---
+ drivers/net/hyperv/netvsc_drv.c | 43 ++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index 42d98e99566e..074ecc346108 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -135,6 +135,19 @@ static int netvsc_open(struct net_device *net)
+ 	}
+ 
+ 	if (vf_netdev) {
++		if (!net_eq(dev_net(net), dev_net(vf_netdev))) {
++			ret = dev_change_net_namespace(vf_netdev, dev_net(net),
++						       "eth%d");
++			if (ret)
++				netdev_err(vf_netdev,
++					   "Cannot move to same ns as %s: %d\n",
++					   net->name, ret);
++			else
++				netdev_info(vf_netdev,
++					    "Moved VF to namespace with: %s\n",
++					    net->name);
++		}
++
+ 		/* Setting synthetic device up transparently sets
+ 		 * slave as up. If open fails, then slave will be
+ 		 * still be offline (and not used).
+@@ -2772,31 +2785,6 @@ static struct  hv_driver netvsc_drv = {
+ 	},
+ };
+ 
+-/* Set VF's namespace same as the synthetic NIC */
+-static void netvsc_event_set_vf_ns(struct net_device *ndev)
+-{
+-	struct net_device_context *ndev_ctx = netdev_priv(ndev);
+-	struct net_device *vf_netdev;
+-	int ret;
+-
+-	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
+-	if (!vf_netdev)
+-		return;
+-
+-	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
+-		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
+-					       "eth%d");
+-		if (ret)
+-			netdev_err(vf_netdev,
+-				   "Cannot move to same namespace as %s: %d\n",
+-				   ndev->name, ret);
+-		else
+-			netdev_info(vf_netdev,
+-				    "Moved VF to namespace with: %s\n",
+-				    ndev->name);
+-	}
+-}
+-
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2809,11 +2797,6 @@ static int netvsc_netdev_event(struct notifier_block *this,
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
+ 	int ret = 0;
+ 
+-	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
+-		netvsc_event_set_vf_ns(event_dev);
+-		return NOTIFY_DONE;
+-	}
+-
+ 	ret = check_dev_is_matching_vf(event_dev);
+ 	if (ret != 0)
+ 		return NOTIFY_DONE;
+-- 
+2.34.1
+
 
