@@ -1,126 +1,146 @@
-Return-Path: <stable+bounces-161801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329CFB03572
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 07:03:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E6EB035B0
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 07:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73321189905C
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 05:03:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 524397A8DA7
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 05:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5451F0994;
-	Mon, 14 Jul 2025 05:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F5A1FECA1;
+	Mon, 14 Jul 2025 05:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ml+e+nJj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JyTYApNw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386D31B87E9;
-	Mon, 14 Jul 2025 05:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76BC1DF963;
+	Mon, 14 Jul 2025 05:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752469381; cv=none; b=QhBTi9vdbtvllnBv8RXOX6v+TyhHjZzfwRz6YJ1GCzaCPrxYLVxF0HxZZ6lCTj56qdMQwv6ySq/w0ef3vO+y5KQ2AmLWWntwEO409aqP2fvD1UfVjpyjQSg4JQV4qTYhjItQBn8Xw3ICjmC3Yx8Nl2nh8jhFTvY+FvhIefiTqV8=
+	t=1752470797; cv=none; b=jvFlLVOnpD9JzjWRvemm3ZBVACEvIwRnqm54LOoDAAIRDovdkMIRvsWwaAZQHqjryjcmtqtpjRFsrbmouz4nmXdS9URpOnTy0Op0x+ohdqnh1xhfdVie6Br4d66fy3Q5fz/xrZR9zyEQKnfZEIkAvsjcM73JVyAvaOrSxOuZK5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752469381; c=relaxed/simple;
-	bh=bk+D5GWjlKkrsF4m2p4rY+C+7RTHgzpB647/hMjATqM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZYmv66BxcbdvzF48usgJOoiJc2TognewSFoh97IK03bDE3LgR0mWHbqRepT6C2gt6XD4tTLydq2/EO7as56NE9rCRYy+k6jPs41ZAUqdmCSThIzdMERGx3tAslB76TI+/et59TQgAmWiWXJcPW+J1icmSwBzRNx/Pg2NGQetBvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ml+e+nJj; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752469380; x=1784005380;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bk+D5GWjlKkrsF4m2p4rY+C+7RTHgzpB647/hMjATqM=;
-  b=ml+e+nJjq4AWNWbFiDfE9DXHfaO+kq9AoBG/ICziveZYt5qOXj8Zm8M6
-   gEFyq3apqq8FlQ3DAr0YpjBVhZsE6lHX0Gp1ZMi8DRY9snRb1BxRbVajY
-   1Oi+PqEUNFfGBeEmGCLU4bx/Uj6BT/lr96Ofva51JnPuAZfcL8bGNUNP9
-   FV03uFpScNrj+x5Llmxa0UjYewkRd89T7izMls/6xkkhGJRnUnguiBJro
-   sgewKmWSzv8SXhx8xWLDC6SLGeLq69cDRbUykptzMrEiX5kZcji08fGWu
-   uIAdL/krQS0BSRhNcX4zeSLR9S12j8LDoL8mVTclton+mItmuOz3RireW
-   Q==;
-X-CSE-ConnectionGUID: hxhX03CVRniDCmwPFPMpOQ==
-X-CSE-MsgGUID: kdOOqJjZTQWgTGuTUAXBPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="53765664"
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; 
-   d="scan'208";a="53765664"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2025 22:02:59 -0700
-X-CSE-ConnectionGUID: BWuprgykSqi8fDTzocsl4Q==
-X-CSE-MsgGUID: rhP02i+NTCGJ7P8FPinBkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; 
-   d="scan'208";a="157185381"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2025 22:02:57 -0700
-Message-ID: <131705ba-95f6-4ad5-9249-400b0ae97dee@linux.intel.com>
-Date: Mon, 14 Jul 2025 13:01:09 +0800
+	s=arc-20240116; t=1752470797; c=relaxed/simple;
+	bh=+YD2xPUzuD70jmjIVVAHxEBS+CGZKObCvB8tH4bcPPc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H43/F1c0DP+P81ysd0zfYDV9IMXqzJGoclQwBgmacS5/JL4UAzecoNozpqmKBu/8YFEj5brAbjOwMGf+LeVwWWlFIfrrJwwXqRAqSKJcRXBQj3esgU5sNjidQ7LpbYtE1IxxYPHNIHTYJ8bvKOM2dw8rvB7vcaeyGiG6v+mNecQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JyTYApNw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1CAC4CEF6;
+	Mon, 14 Jul 2025 05:26:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752470797;
+	bh=+YD2xPUzuD70jmjIVVAHxEBS+CGZKObCvB8tH4bcPPc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=JyTYApNw4vW0uT/9iTe09qMoF4mjZ0A/ksxlVlh3PymGPyfowmYE0IXFPUJXNDWdd
+	 rB+goce/o4UU/KiRBGXSCi3jn+WWqE84IGFKjkqFYXQu5m89xPRq+icOX3y6sZem52
+	 395EXKFoqUUhUyYTWJ5ifxruAvaXaaQ6hkO58wjqqiGg+6hfV0lpPASGi4F1rT7HWL
+	 NsdbBeSw1he8FkvJ8OzzYSHrr/sBbjlbB0HwSRVaEIPh8S3PgjEbBAFXTgTzhVn8mR
+	 JISXihKiYRqAhMoVNhxiQ35b8TeAZyAk0BFMLmM5IXuX7Ozqe9Et2lbwP+SXQEriie
+	 0I66W58wNv2WQ==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-553dceb342fso3493668e87.0;
+        Sun, 13 Jul 2025 22:26:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUmM1nbUHFZwTijvcP4DMbvsf+fLwBFk1RcI4y5CtDh1OPmBUbGghNfJaw0TvCw0gKM6WyyDxds/9E=@vger.kernel.org, AJvYcCW7IlzJq4wCwiVaey6+zadIbqD7mq6YlocKCtvWWxOeJhNCBz1MagJct7Kr31guAWxDxRBtJ/m6S1WrnhxP@vger.kernel.org, AJvYcCXrRyHDiWLZBj4RUhlZKI1lAbPrezTpC6HiTN5ACwqfysKqjNdMV1e8Ii/o5sHmW6n6faTSadeV@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvIzsIzJEfkV1BPv3jGLWMtWowTQGu219C3n+0iIfhoY4Gp2mm
+	3FVU/PMw1nDEcTt0PN0iwSvDb5qssDcybM/MXsKyY0MoOyoLVGv3oe4GblSCds1cF+AXTMUPjaI
+	oEgeSsylC73hEf3MkalSyAQUisdEd+3c=
+X-Google-Smtp-Source: AGHT+IFWJcY5F4n7NTOkaJxHA3LUZv9nxFS6nHZJN3f0q7VyVFRR8RV1ztE5fC1mOEiedbqtI95Nj+UC2n4FSz5rbc4=
+X-Received: by 2002:a05:6512:3b10:b0:553:5148:5b69 with SMTP id
+ 2adb3069b0e04-55a04608eadmr3201545e87.36.1752470796044; Sun, 13 Jul 2025
+ 22:26:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] iommu/vt-d: Optimize iotlb_sync_map for
- non-caching/non-RWBF modes
-To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Ioanna Alifieraki <ioanna-maria.alifieraki@canonical.com>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250703031545.3378602-1-baolu.lu@linux.intel.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20250703031545.3378602-1-baolu.lu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <1752290685-22164-1-git-send-email-yangge1116@126.com>
+In-Reply-To: <1752290685-22164-1-git-send-email-yangge1116@126.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 14 Jul 2025 15:26:24 +1000
+X-Gmail-Original-Message-ID: <CAMj1kXFxFoB3942U1SQBhGwMMh8GMy558CY3UspncK1DsEtWPg@mail.gmail.com>
+X-Gm-Features: Ac12FXwXeCsLDvmmkZYe3eRWj_LtxomV3Gh2WhrcAFXoWNEv9gmvrc0aRCDisy0
+Message-ID: <CAMj1kXFxFoB3942U1SQBhGwMMh8GMy558CY3UspncK1DsEtWPg@mail.gmail.com>
+Subject: Re: [PATCH V6] efi/tpm: Fix the issue where the CC platforms event
+ log header can't be correctly identified
+To: yangge1116@126.com
+Cc: jarkko@kernel.org, James.Bottomley@hansenpartnership.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, ilias.apalodimas@linaro.org, 
+	jgg@ziepe.ca, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, liuzixing@hygon.cn
+Content-Type: text/plain; charset="UTF-8"
 
-On 7/3/25 11:15, Lu Baolu wrote:
-> The iotlb_sync_map iommu ops allows drivers to perform necessary cache
-> flushes when new mappings are established. For the Intel iommu driver,
-> this callback specifically serves two purposes:
-> 
-> - To flush caches when a second-stage page table is attached to a device
->    whose iommu is operating in caching mode (CAP_REG.CM==1).
-> - To explicitly flush internal write buffers to ensure updates to memory-
->    resident remapping structures are visible to hardware (CAP_REG.RWBF==1).
-> 
-> However, in scenarios where neither caching mode nor the RWBF flag is
-> active, the cache_tag_flush_range_np() helper, which is called in the
-> iotlb_sync_map path, effectively becomes a no-op.
-> 
-> Despite being a no-op, cache_tag_flush_range_np() involves iterating
-> through all cache tags of the iommu's attached to the domain, protected
-> by a spinlock. This unnecessary execution path introduces overhead,
-> leading to a measurable I/O performance regression. On systems with NVMes
-> under the same bridge, performance was observed to drop from approximately
-> ~6150 MiB/s down to ~4985 MiB/s.
-> 
-> Introduce a flag in the dmar_domain structure. This flag will only be set
-> when iotlb_sync_map is required (i.e., when CM or RWBF is set). The
-> cache_tag_flush_range_np() is called only for domains where this flag is
-> set.
-> 
-> Reported-by: Ioanna Alifieraki<ioanna-maria.alifieraki@canonical.com>
-> Closes:https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2115738
-> Link:https://lore.kernel.org/r/20250701171154.52435-1-ioanna- 
-> maria.alifieraki@canonical.com
-> Fixes: 129dab6e1286 ("iommu/vt-d: Use cache_tag_flush_range_np() in iotlb_sync_map")
-> Cc:stable@vger.kernel.org
-> Signed-off-by: Lu Baolu<baolu.lu@linux.intel.com>
+On Sat, 12 Jul 2025 at 13:41, <yangge1116@126.com> wrote:
+>
+> From: Ge Yang <yangge1116@126.com>
+>
+> Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
+> for CC platforms") reuses TPM2 support code for the CC platforms, when
+> launching a TDX virtual machine with coco measurement enabled, the
+> following error log is generated:
+>
+> [Firmware Bug]: Failed to parse event in TPM Final Events Log
+>
+> Call Trace:
+> efi_config_parse_tables()
+>   efi_tpm_eventlog_init()
+>     tpm2_calc_event_log_size()
+>       __calc_tpm2_event_size()
+>
+> The pcr_idx value in the Intel TDX log header is 1, causing the function
+> __calc_tpm2_event_size() to fail to recognize the log header, ultimately
+> leading to the "Failed to parse event in TPM Final Events Log" error.
+>
+> Intel misread the spec and wrongly sets pcrIndex to 1 in the header and
+> since they did this, we fear others might, so we're relaxing the header
+> check. There's no danger of this causing problems because we check for
+> the TCG_SPECID_SIG signature as the next thing.
+>
+> Fixes: d228814b1913 ("efi/libstub: Add get_event_log() support for CC platforms")
+> Signed-off-by: Ge Yang <yangge1116@126.com>
+> Cc: stable@vger.kernel.org
+
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+
+
 > ---
->   drivers/iommu/intel/iommu.c | 19 ++++++++++++++++++-
->   drivers/iommu/intel/iommu.h |  3 +++
->   2 files changed, 21 insertions(+), 1 deletion(-)
-
-Queued for linux-next.
-
---
-baolu
+>
+> V6:
+> - improve commit message suggested by James
+>
+> V5:
+> - remove the pcr_index check without adding any replacement checks suggested by James and Sathyanarayanan
+>
+> V4:
+> - remove cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT) suggested by Ard
+>
+> V3:
+> - fix build error
+>
+> V2:
+> - limit the fix for CC only suggested by Jarkko and Sathyanarayanan
+>
+>  include/linux/tpm_eventlog.h | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+> index 891368e..05c0ae5 100644
+> --- a/include/linux/tpm_eventlog.h
+> +++ b/include/linux/tpm_eventlog.h
+> @@ -202,8 +202,7 @@ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
+>         event_type = event->event_type;
+>
+>         /* Verify that it's the log header */
+> -       if (event_header->pcr_idx != 0 ||
+> -           event_header->event_type != NO_ACTION ||
+> +       if (event_header->event_type != NO_ACTION ||
+>             memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
+>                 size = 0;
+>                 goto out;
+> --
+> 2.7.4
+>
 
