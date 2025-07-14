@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-161820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E777AB03A4A
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 11:06:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB671B03A4E
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 11:06:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5313717A189
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 09:06:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24BC6189C69E
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 09:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105EE23A9BF;
-	Mon, 14 Jul 2025 09:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76B623C518;
+	Mon, 14 Jul 2025 09:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujx/jdIC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vB3Vcde1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1D4239E63
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 09:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757352376EF
+	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 09:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752483971; cv=none; b=r6HOb+BeDm8ND3Fq8X+pQNHBuS7mf3t4eUQuA4RxA6lKRMaVdSU2+xAjDpn6qox64W3j55LwE8D2qigDdXPAl9/8Y+rpOYtqTHXDtwsOYTH3Eig0bXrrj2EvLEVWuh+CKruR4gdL4TnoOVSwVc6mMPqBDfNia0KK8etO41cet3Q=
+	t=1752483988; cv=none; b=ERfjUkmkcqIKm0+wIhWDagkaWIStMr0dVDnMSKNfkmRTa2PvzO++H+Y6O2PQJVI8SWJkjBb1zx7JDqa/WsG5DSDnmcm1MXzapquykZ7BZzKlsfKyetvpbpRM1HK3UnpnBH7Um+U12R8hCUn7apSDIWpazpeFQMCqPjL1Wu85PDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752483971; c=relaxed/simple;
-	bh=6550NEkM5DbN70uQNft37/OdzAq8Y02qnmmo20xHZf4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EivNaFgwS/Jrr9hLUuPcNGJ1OzGv9Blicxh8gx+a56qoZarlR0phGSFYOjTMsQpCp59fD89klnheyqsbpe/iXky5Pu3Yb8QmxHtvoOquQhUlyHmMPCtLGV8ZfwoiEH0GWHJFtAoM+oAttE51s4aZZcVlJ9e79Vzr1g/KDU6AOeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujx/jdIC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D6BC4CEF4;
-	Mon, 14 Jul 2025 09:06:11 +0000 (UTC)
+	s=arc-20240116; t=1752483988; c=relaxed/simple;
+	bh=59pczhRIz4hXv0UvsGmtD+MzETX7CLs15QG6edInaY4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Xe5nC9zlQCpJltxzZ6oPqG1iJP15b41X1FN37zllrathr3fYNU97Oeh6LwsZjqs6nHv+L18NnLJYpU+IycRdUs95JxtWvhNRR2gadHIgzZQRmP7yDrA9oKfXyMzTu75dnFEOtk+pRpYme0XAb513CG52sCUFLnFuhuyJcX29Zbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vB3Vcde1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2658C4CEF4;
+	Mon, 14 Jul 2025 09:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752483971;
-	bh=6550NEkM5DbN70uQNft37/OdzAq8Y02qnmmo20xHZf4=;
+	s=korg; t=1752483988;
+	bh=59pczhRIz4hXv0UvsGmtD+MzETX7CLs15QG6edInaY4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ujx/jdIC5alzblM6G3D4YBMSrhEXfDkO5ioe/J6mPlehNI1dD0IM4zq6aZS+zZ3ZJ
-	 2GCU+NGMMGY8Pd+1SzRgPuWkwLv3frm8+Od8ev//1+CE/kKkMuFV+ZEgWPYLEufKgL
-	 oKQKKcOuvQp3wyFKurjbZOPMKWyTO+hh+L+T8U6A=
-Subject: FAILED: patch "[PATCH] smb: server: make use of rdma_destroy_qp()" failed to apply to 5.15-stable tree
-To: metze@samba.org,hyc.lee@gmail.com,linkinjeon@kernel.org,sergey.senozhatsky@gmail.com,stfrench@microsoft.com,tom@talpey.com
+	b=vB3Vcde1gWkltBtMJ+nsj0HpsMOkTMESlE7UsdqelH3CKJ1OX0borJQSWVLUShZpi
+	 FfiHXOwyGJ49h7yNbudXMnKolZ8UjWOkmrvyc8/upBbQRXTszn83OzrO9x5oOjj3m7
+	 N3ANfXt0rQminqIJ7TgRHCZZDLgqiC96xgdbYEBU=
+Subject: FAILED: patch "[PATCH] ksmbd: fix a mount write count leak in" failed to apply to 5.15-stable tree
+To: viro@zeniv.linux.org.uk,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 14 Jul 2025 11:06:08 +0200
-Message-ID: <2025071408-overarch-ashes-8fbd@gregkh>
+Date: Mon, 14 Jul 2025 11:06:24 +0200
+Message-ID: <2025071424-payroll-posh-4e3e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0c2b53997e8f5e2ec9e0fbd17ac0436466b65488
+git cherry-pick -x 277627b431a0a6401635c416a21b2a0f77a77347
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071408-overarch-ashes-8fbd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071424-payroll-posh-4e3e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,66 +77,34 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0c2b53997e8f5e2ec9e0fbd17ac0436466b65488 Mon Sep 17 00:00:00 2001
-From: Stefan Metzmacher <metze@samba.org>
-Date: Wed, 2 Jul 2025 09:18:05 +0200
-Subject: [PATCH] smb: server: make use of rdma_destroy_qp()
+From 277627b431a0a6401635c416a21b2a0f77a77347 Mon Sep 17 00:00:00 2001
+From: Al Viro <viro@zeniv.linux.org.uk>
+Date: Sun, 6 Jul 2025 02:26:45 +0100
+Subject: [PATCH] ksmbd: fix a mount write count leak in
+ ksmbd_vfs_kern_path_locked()
 
-The qp is created by rdma_create_qp() as t->cm_id->qp
-and t->qp is just a shortcut.
+If the call of ksmbd_vfs_lock_parent() fails, we drop the parent_path
+references and return an error.  We need to drop the write access we
+just got on parent_path->mnt before we drop the mount reference - callers
+assume that ksmbd_vfs_kern_path_locked() returns with mount write
+access grabbed if and only if it has returned 0.
 
-rdma_destroy_qp() also calls ib_destroy_qp(cm_id->qp) internally,
-but it is protected by a mutex, clears the cm_id and also calls
-trace_cm_qp_destroy().
-
-This should make the tracing more useful as both
-rdma_create_qp() and rdma_destroy_qp() are traces and it makes
-the code look more sane as functions from the same layer are used
-for the specific qp object.
-
-trace-cmd stream -e rdma_cma:cm_qp_create -e rdma_cma:cm_qp_destroy
-shows this now while doing a mount and unmount from a client:
-
-  <...>-80   [002] 378.514182: cm_qp_create:  cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 pd.id=0 qp_type=RC send_wr=867 recv_wr=255 qp_num=1 rc=0
-  <...>-6283 [001] 381.686172: cm_qp_destroy: cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 qp_num=1
-
-Before we only saw the first line.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <stfrench@microsoft.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Reviewed-by: Tom Talpey <tom@talpey.com>
+Fixes: 864fb5d37163 ("ksmbd: fix possible deadlock in smb2_open")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 64a428a06ace..c6cbe0d56e32 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -433,7 +433,8 @@ static void free_transport(struct smb_direct_transport *t)
- 	if (t->qp) {
- 		ib_drain_qp(t->qp);
- 		ib_mr_pool_destroy(t->qp, &t->qp->rdma_mrs);
--		ib_destroy_qp(t->qp);
-+		t->qp = NULL;
-+		rdma_destroy_qp(t->cm_id);
- 	}
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 0f3aad12e495..d3437f6644e3 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1282,6 +1282,7 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
  
- 	ksmbd_debug(RDMA, "drain the reassembly queue\n");
-@@ -1940,8 +1941,8 @@ static int smb_direct_create_qpair(struct smb_direct_transport *t,
- 	return 0;
- err:
- 	if (t->qp) {
--		ib_destroy_qp(t->qp);
- 		t->qp = NULL;
-+		rdma_destroy_qp(t->cm_id);
- 	}
- 	if (t->recv_cq) {
- 		ib_destroy_cq(t->recv_cq);
+ 		err = ksmbd_vfs_lock_parent(parent_path->dentry, path->dentry);
+ 		if (err) {
++			mnt_drop_write(parent_path->mnt);
+ 			path_put(path);
+ 			path_put(parent_path);
+ 		}
 
 
