@@ -1,99 +1,144 @@
-Return-Path: <stable+bounces-161870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7EAB04585
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 18:33:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F060B0458A
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 18:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D328C173E8D
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 16:33:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D0094A2918
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 16:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C26725F96B;
-	Mon, 14 Jul 2025 16:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71AF32620F1;
+	Mon, 14 Jul 2025 16:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cgwJOvwH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFoc59lB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5CF2494D8
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 16:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5892620D5;
+	Mon, 14 Jul 2025 16:35:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752510806; cv=none; b=nq90sjFbhaq5orenm+UN6ogbUbtGkFDcMkRaMF1SqLp7iGqR3HZygNDbr870XjX0HYTHtDeV7J1NwAApolKsntGSxp11y3Gaxe7MBJW73yPQpnJfDovBGgp9AHo6Mnk80YdtHTX+UBUBJR8PtrPOncaO/8v+ZS2Gw+9L0H4FLgo=
+	t=1752510942; cv=none; b=JhpyJRcUT5MkklL7bzj5OiU19JrDcJrwhqH7gPXor4n970vw0qv0o0n0wNykWpMl4HGyqWuv+LEDkmxpCf59tLY5cpmgBywLwgpKeHx/KyNaQ1kpc762EnJpW7ecovWxE2pVlIGqpHm7QJR3qGcZdGZy6RnWkzxWJpVyWjnFQE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752510806; c=relaxed/simple;
-	bh=2mABgtiqbdDUO8VPQlrEbhhG3/K8du8Lb8d2qIsRbq4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ms82b4IF7/kcPuIXllx8spZ4dMskY2j6FUL9+P04GoBJXLK+vrhvyGBeHnRpjkA635BTimWEpuh6MnqVghp0mbP3jvJ1xmWsa5YJ2Fl8tOdHOj2ydLv7jt0wYn+0qH9DT65p+YBZrayvueJI6dIT0PwE+clAS8viMGChnfJh044=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cgwJOvwH; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8E94840E0213;
-	Mon, 14 Jul 2025 16:33:22 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id e1FeYFmjJidV; Mon, 14 Jul 2025 16:33:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1752510799; bh=N1zwmld0xEX49as0VVWdEzQKP5r4tvQBDxgGk3RVbTw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cgwJOvwHglPX5H6qxMLpnMQMLl3o0UG8aPwOldwpARCwnOsI3XIDm1KNKFi5eBi6d
-	 CrUfgxh7TPNUtk2x3oYOHTYnDxA2stRMWZYU5w79KvCdn9YjBd2uEsu6q50O35CgvW
-	 j0uCzbpEmjM/7osqYQgqPn1RhIZ3Komu+xveVD6DSzN7e9MGJclqCC9bea+Er4M13+
-	 wZDCSEq1ibgZ1Cp7mFXzsWTjo4usu7lCUsp+DCDgXklElovviKmqk8J41R/pECuPdP
-	 Nt9yevT3EfrSgSaAmHyuMuMEmYIeVSS9Xi77xvgvgw6ngjkiLsp6K0agr0C1HbL/ed
-	 TnYAxdOV9hNjHUXfK5NNf3JUj1H1cNJUpCv28RcfWqTFFTobi7CibLI+ovOIwEbGFD
-	 kkFjKdqCn7mpC4FjZ9s8ysYpycEENWYH6MTXodfz3v+J81xv/kZLobkNeIg2Aj5VYr
-	 J+kKne217a63srkZ608HxyNLIjw7Ix/wEFIU/ZpUx8rFyjw0Q+oGHS2YJMw265Rw0O
-	 Gnu33e2j3JiXTVVnGj2XfYNS/L9EFzd4I/A2fR69jfCBFVP8nwkSmtrsDsmQ/xLlFU
-	 jt7YtiCOvBmBuCjofk2VUHUqFEOL/0KdvWW1agrYntUZnjytgFS+uuVdgpgbGIm/Cp
-	 wCrnfWrnV7krY+WNRCdrqItg=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5A5F440E00DA;
-	Mon, 14 Jul 2025 16:33:17 +0000 (UTC)
-Date: Mon, 14 Jul 2025 18:33:12 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 5.15-stable] x86/CPU/AMD: Properly check the TSA microcode
-Message-ID: <20250714163312.GMaHUxSKZjDdU61FB_@fat_crate.local>
-References: <20250711194558.GLaHFp9kw1s5dSmBUa@fat_crate.local>
- <20250712211157-88bc729ab524b77b@stable.kernel.org>
- <20250713161032.GCaHPaeCpf5Y0_WBiq@fat_crate.local>
- <aHRiYX_T-I--jgaT@lappy>
- <20250714102819.GEaHTbw207UYtxKnL7@fat_crate.local>
- <aHUwk83588ey0hUO@lappy>
+	s=arc-20240116; t=1752510942; c=relaxed/simple;
+	bh=HCTIYugXe3ybLmowCq2D9pzqaHhFBDzT2Z0kcsA7nhI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kHPLnyYO8fdvGgAwMO35O+jnWK7jXbmHA+Dy0jONK3YKnaNN8str5rHlNPycWnAfQ8ZCtS8n42Q0B/73XBc0yCBn1dbi0ZbFAqhfjZEguznlMqfr32Amb9B/zDoVCJb59cJJez64d1wyTxeWfsX31k01tD9is1Tcg/KHiJxvOEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFoc59lB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7FFC4CEED;
+	Mon, 14 Jul 2025 16:35:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752510941;
+	bh=HCTIYugXe3ybLmowCq2D9pzqaHhFBDzT2Z0kcsA7nhI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tFoc59lB7p3DS+EG+cbfcNxThwczpLZw+oWAaDlUE1pnYxwjcDWMipv7X+Hi1jBE2
+	 oSzSUphDbDG3DMZXmY3pQpQdopCVp1+ytg0DibEw6Z9nX4ZR3j7A21fTHf/MTPYdPU
+	 kT/LGqIeg81vWG1Oxc2qO9HEaY5Ilnyl1RzFi9rB0gHV0MM0abv/tk97UJzGcVMWr4
+	 ag7tLS8Z46CCRPPi+L4/u0AnUfxo0LEDQLGVqjL2rU8UgRHJTl8XirLjpnrqhtzy9a
+	 gTGHUWD6w039b4I9r6grLoVJycZPPEgTf4fl2SV+5+rMCgRLMQD49AG7MOEYM/kjwz
+	 8gfXF4tNL0o7Q==
+Message-ID: <bb98ecb6-eb56-44d9-8f80-3172f9e7de03@kernel.org>
+Date: Mon, 14 Jul 2025 11:35:39 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aHUwk83588ey0hUO@lappy>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] thunderbolt: Fix a logic error in wake on connect
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: mario.limonciello@amd.com, andreas.noever@gmail.com,
+ michael.jamet@intel.com, westeri@kernel.org, YehezkelShB@gmail.com,
+ rajat.khandelwal@intel.com, mika.westerberg@linux.intel.com,
+ linux-usb@vger.kernel.org, kim.lindberger@gmail.com, linux@lunaa.ch,
+ Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+ Alyssa Ross <hi@alyssa.is>, regressions@lists.linux.dev
+References: <20250411151446.4121877-1-superm1@kernel.org>
+ <cavyeum32dd7kxj65argtem6xh2575oq3gcv3svd3ubnvdc6cr@6nv7ieimfc5e>
+ <87v7odo46s.fsf@alyssa.is> <51d5393c-d0e1-4f35-bed0-16c7ce40a8a8@kernel.org>
+ <2025070737-charbroil-imply-7b5e@gregkh>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <2025070737-charbroil-imply-7b5e@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 14, 2025 at 12:30:11PM -0400, Sasha Levin wrote:
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=821ca5c7308ff85cef8028124dd0755d0eeced0c
+On 7/7/25 2:57 AM, Greg Kroah-Hartman wrote:
+> On Sun, Jul 06, 2025 at 10:46:53AM -0400, Mario Limonciello wrote:
+>> On 6/30/25 07:32, Alyssa Ross wrote:
+>>> Alyssa Ross <hi@alyssa.is> writes:
+>>>
+>>>> On Fri, Apr 11, 2025 at 10:14:44AM -0500, Mario Limonciello wrote:
+>>>>> From: Mario Limonciello <mario.limonciello@amd.com>
+>>>>>
+>>>>> commit a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect
+>>>>> on USB4 ports") introduced a sysfs file to control wake up policy
+>>>>> for a given USB4 port that defaulted to disabled.
+>>>>>
+>>>>> However when testing commit 4bfeea6ec1c02 ("thunderbolt: Use wake
+>>>>> on connect and disconnect over suspend") I found that it was working
+>>>>> even without making changes to the power/wakeup file (which defaults
+>>>>> to disabled). This is because of a logic error doing a bitwise or
+>>>>> of the wake-on-connect flag with device_may_wakeup() which should
+>>>>> have been a logical AND.
+>>>>>
+>>>>> Adjust the logic so that policy is only applied when wakeup is
+>>>>> actually enabled.
+>>>>>
+>>>>> Fixes: a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect on USB4 ports")
+>>>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>>>>
+>>>> Hi! There have been a couple of reports of a Thunderbolt regression in
+>>>> recent stable kernels, and one reporter has now bisected it to this
+>>>> change:
+>>>>
+>>>>    • https://bugzilla.kernel.org/show_bug.cgi?id=220284
+>>>>    • https://github.com/NixOS/nixpkgs/issues/420730
+>>>>
+>>>> Both reporters are CCed, and say it starts working after the module is
+>>>> reloaded.
+>>>>
+>>>> Link: https://lore.kernel.org/r/bug-220284-208809@https.bugzilla.kernel.org%2F/
+>>>> (for regzbot)
+>>>
+>>> Apparently[1] fixed by the first linked patch below, which is currently in
+>>> the Thunderbolt tree waiting to be pulled into the USB tree.
+>>>
+>>> #regzbot monitor: https://lore.kernel.org/linux-usb/20250619213840.2388646-1-superm1@kernel.org/
+>>> #regzbot monitor: https://lore.kernel.org/linux-usb/20250626154009.GK2824380@black.fi.intel.com/
+>>>
+>>> [1]: https://github.com/NixOS/nixpkgs/issues/420730#issuecomment-3018563631
+>>
+>> Hey Greg,
+>>
+>> Can you pick up the pull request from Mika from a week and a half ago with
+>> this fix for the next 6.16-rc?
+>>
+>> https://lore.kernel.org/linux-usb/20250626154009.GK2824380@black.fi.intel.com/
+> 
+> Yes, I was waiting for this last round to go to Linus as the pull
+> request was made against a newer version of Linus's tree than I
+> currently had in my "for linus" branch.  I'll go get to that later
+> today.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-LOOL.
+Greg,
 
-I might have another one though but I'll stick to the protocol.
+Sorry to be a bugger, but I was surprised I didn't see this come in -rc6 
+this week, and I went and double checked your "usb-linus" branch [1] and 
+didn't see it there.
 
-:-P
+Thanks,
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git/log/?h=usb-linus
 
