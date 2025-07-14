@@ -1,137 +1,86 @@
-Return-Path: <stable+bounces-161791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48208B03384
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 01:42:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728CEB0343B
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 03:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75F451899920
-	for <lists+stable@lfdr.de>; Sun, 13 Jul 2025 23:42:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A482E18952F4
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 01:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88DF2222A6;
-	Sun, 13 Jul 2025 23:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463811465A1;
+	Mon, 14 Jul 2025 01:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="juYCDnbj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RWUYeGI5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60C9221DB6;
-	Sun, 13 Jul 2025 23:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BFF944F
+	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 01:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752450118; cv=none; b=g1ggzRPQxDng0cLZeOr3+y5jLpCEw0UdX+IZps6L7wzO42ntfLPUwDZ1zK3N+Bxf/LGD3NNWQKUTxSVod8uIN7DXPZuNzIAPZudAkcH7yndd5CR1OyRU22YW9AHTgc87tZnKgY/WAnwo89EGrVU+Kn73PkTECGRX4Z/1g9PMDh8=
+	t=1752457830; cv=none; b=dBo4ElO625l2W5sugh1nYSuiDkAOPWsulR3E1bBLmL3V0hMq7VUEhCwNq22Hy5L2J/lDlynZvf61nunwjCB2ANwrhlMGZld9WQVR9HTFMaLG8+KmksHtgtUfuO3YoGH6YzCmytUnPhNjyEQBGj6wEDugg9bkb6wLouo6nKK9L3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752450118; c=relaxed/simple;
-	bh=KEebHWc4k0T1KPC0EnxVALZCl+BzzJ24PpU1xLI4lyw=;
-	h=Date:To:From:Subject:Message-Id; b=DICLqfp9/5/9WAV//Nw+J0PMOqDbAE+AKOGcYZvyhxDwLb2fJJLw9EzPgsqPwp1LvpAnuVRuVmUyQAa0q5/vEMe5bDAWLjEenErs+l6Gwzag5bv7FyMacZg2Mw9unptW8X93rB403GrkGVuK2oyI/t6cxyUB9+ChM45R4KCmCMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=juYCDnbj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C97DC4CEE3;
-	Sun, 13 Jul 2025 23:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752450118;
-	bh=KEebHWc4k0T1KPC0EnxVALZCl+BzzJ24PpU1xLI4lyw=;
-	h=Date:To:From:Subject:From;
-	b=juYCDnbjKnz8PXNBfIGqiu8A1Q2wguwmXeWWXQvq9B3AHqSsdGr7ljABz+oM4Gwqa
-	 gBGSmvIibpQKBy6vDafzk8IcBhR82a0rTljPWuNBgkP1cjZh3l+b46AZIj6qNd+xrd
-	 dGi1Su4M7EHI/NHBkSpSix3oqSwdp6GB+895SxmI=
-Date: Sun, 13 Jul 2025 16:41:56 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] samples-damon-mtier-support-boot-time-enable-setup.patch removed from -mm tree
-Message-Id: <20250713234158.7C97DC4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1752457830; c=relaxed/simple;
+	bh=wfMJ5XYI5fG9Nro4Aa8x0GVVZ7Uf4KP0SfiWmecyu5c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OOGKQRkH2MaPX53g9XP1BlUTSRdIJISIVSVp+nmr0dCctGOR3PVMREnpvTEihmzqPH4Y1nlgRbMJ+Ey0Cldo3HXhCMvFBW9nNpLwCioxJuZB2pPrS19XlVz7tHie1zImIhqZELWzg56RY8IDNzpmWBy4vVT0uqPgslpwmYtPva0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RWUYeGI5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B85CC4CEE3;
+	Mon, 14 Jul 2025 01:50:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752457829;
+	bh=wfMJ5XYI5fG9Nro4Aa8x0GVVZ7Uf4KP0SfiWmecyu5c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RWUYeGI5k7hjN3LxhSltH39BNMZF/1UP0CtLP/pNop5Iol7wYS4vHUqSnZYrZ11nz
+	 JNHT2odhWNlHXgz0pCpFIKYl+X7KmCQyQvuSolJHEUb90Opcf2W2jdpqckR1fl5PXk
+	 FJd4vBnB63SPqvyB6Y2KB1Y5UtSmywV2gHrNTLj2kuF1tgdG5zgQAtouyVVe9+6KFK
+	 fMejLMYmNVweiEpAgyVt7oZcO0cqfqA7qEzlzABy//j78qvNxwV8CZ4Xhy6h2FTvUE
+	 PKgb4csyubIG1euW28lWcvICI0b2dlXUVXeJNgqVwyZlWAoqEr34wrslaPwetV37cT
+	 +Beh/o9PiLn1w==
+Date: Sun, 13 Jul 2025 21:50:25 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 5.15-stable] x86/CPU/AMD: Properly check the TSA microcode
+Message-ID: <aHRiYX_T-I--jgaT@lappy>
+References: <20250711194558.GLaHFp9kw1s5dSmBUa@fat_crate.local>
+ <20250712211157-88bc729ab524b77b@stable.kernel.org>
+ <20250713161032.GCaHPaeCpf5Y0_WBiq@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250713161032.GCaHPaeCpf5Y0_WBiq@fat_crate.local>
 
+On Sun, Jul 13, 2025 at 06:10:32PM +0200, Borislav Petkov wrote:
+>Dear Sasha's backport helper bot,
+>
+>On Sun, Jul 13, 2025 at 09:06:05AM -0400, Sasha Levin wrote:
+>> [ Sasha's backport helYper bot ]
+>>
+>> Hi,
+>>
+>> Summary of potential issues:
+>> ⚠️ Could not find matching upstream commit
+>>
+>> No upstream commit was identified. Using temporary commit for testing.
+>
+>I think you need to be trained more to actually read commit messages too.
+>Because there it is explained why.
 
-The quilt patch titled
-     Subject: samples/damon/mtier: support boot time enable setup
-has been removed from the -mm tree.  Its filename was
-     samples-damon-mtier-support-boot-time-enable-setup.patch
+I'll add "stable-only" as a filter, but you have to promise using it on
+all of these backports going forward :)
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: samples/damon/mtier: support boot time enable setup
-Date: Sun, 6 Jul 2025 12:32:04 -0700
-
-If 'enable' parameter of the 'mtier' DAMON sample module is set at boot
-time via the kernel command line, memory allocation is tried before the
-slab is initialized.  As a result kernel NULL pointer dereference BUG can
-happen.  Fix it by checking the initialization status.
-
-Link: https://lkml.kernel.org/r/20250706193207.39810-4-sj@kernel.org
-Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- samples/damon/mtier.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
-
---- a/samples/damon/mtier.c~samples-damon-mtier-support-boot-time-enable-setup
-+++ a/samples/damon/mtier.c
-@@ -157,6 +157,8 @@ static void damon_sample_mtier_stop(void
- 	damon_destroy_ctx(ctxs[1]);
- }
- 
-+static bool init_called;
-+
- static int damon_sample_mtier_enable_store(
- 		const char *val, const struct kernel_param *kp)
- {
-@@ -182,6 +184,14 @@ static int damon_sample_mtier_enable_sto
- 
- static int __init damon_sample_mtier_init(void)
- {
-+	int err = 0;
-+
-+	init_called = true;
-+	if (enable) {
-+		err = damon_sample_mtier_start();
-+		if (err)
-+			enable = false;
-+	}
- 	return 0;
- }
- 
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-samples-damon-wsse-rename-to-have-damon_sample_-prefix.patch
-samples-damon-prcl-rename-to-have-damon_sample_-prefix.patch
-samples-damon-mtier-rename-to-have-damon_sample_-prefix.patch
-mm-damon-sysfs-use-damon-core-api-damon_is_running.patch
-mm-damon-sysfs-dont-hold-kdamond_lock-in-before_terminate.patch
-docs-mm-damon-maintainer-profile-update-for-mm-new-tree.patch
-mm-damon-add-struct-damos_migrate_dests.patch
-mm-damon-core-add-damos-migrate_dests-field.patch
-mm-damon-sysfs-schemes-implement-damos-action-destinations-directory.patch
-mm-damon-sysfs-schemes-set-damos-migrate_dests.patch
-docs-abi-damon-document-schemes-dests-directory.patch
-docs-admin-guide-mm-damon-usage-document-dests-directory.patch
-mm-damon-accept-parallel-damon_call-requests.patch
-mm-damon-core-introduce-repeat-mode-damon_call.patch
-mm-damon-stat-use-damon_call-repeat-mode-instead-of-damon_callback.patch
-mm-damon-reclaim-use-damon_call-repeat-mode-instead-of-damon_callback.patch
-mm-damon-lru_sort-use-damon_call-repeat-mode-instead-of-damon_callback.patch
-samples-damon-prcl-use-damon_call-repeat-mode-instead-of-damon_callback.patch
-samples-damon-wsse-use-damon_call-repeat-mode-instead-of-damon_callback.patch
-mm-damon-core-do-not-call-opscleanup-when-destroying-targets.patch
-mm-damon-core-add-cleanup_target-ops-callback.patch
-mm-damon-vaddr-put-pid-in-cleanup_target.patch
-mm-damon-sysfs-remove-damon_sysfs_destroy_targets.patch
-mm-damon-core-destroy-targets-when-kdamond_fn-finish.patch
-mm-damon-sysfs-remove-damon_sysfs_before_terminate.patch
-mm-damon-core-remove-damon_callback.patch
-
+-- 
+Thanks,
+Sasha
 
