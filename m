@@ -1,178 +1,128 @@
-Return-Path: <stable+bounces-161851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 318F2B041FC
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 16:41:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C15EB04226
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 16:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46786189151F
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 14:41:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 950744A15FC
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 14:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A953D246BD3;
-	Mon, 14 Jul 2025 14:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CB8258CED;
+	Mon, 14 Jul 2025 14:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XU0c7U4S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KW4HSDXH"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D692580CA
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 14:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853572580CA;
+	Mon, 14 Jul 2025 14:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752504065; cv=none; b=kf+Uh2tVCx6x6b2OsvL3Y/hCaqP4YOcrWMX3JOmH7hcGSiQ1zp4pXdQGGBsD1E0o6/6jkYYsPrxQZAE8m4NQFAdoo9AlE8HZn+o6/prhp/BowZ3IJdn+2XyosmYuaceFqd0Wl/SD7dgOEvUGwpYcBQgl282a6RULIznsw2sr330=
+	t=1752504618; cv=none; b=LAIn6bqdI2YeUzfqHuk25jF+z3EUP8FU2dj+5/Dcvz1YWiRLqczJSpgoqQVWhKM75wGcj9y/ar6mv+U9NdQYagJXuNgBU+Fir/ZoJeDoMpXPWCeG7ybmkyug707wxrPJt/NK3Ys2QRWmNW7qdBe4lciApBFY38c10qAZ5n8fq2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752504065; c=relaxed/simple;
-	bh=WkbnkSN/9C9x5BAWT4GOvXy3evb45ZMcjMYvY/vr8qY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WCS9K+dQ7mxO3H9CcMTjt+/f/GxLthYWX8qeVz1RQNUsbCQ5yU8AWR8obyAxcoRw4jKsTPaEWr+FFfbq5EVXL7HlODwiusuQnxBsRnaTgPKpfaG5+HF2Yh+fZL45/QleG1cZLyxtq8MDaeAMMcvtiZ+U5hubDRrF5L7E8n2bInM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XU0c7U4S; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752504062;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aLXKhg1K3xQXwvyv6fgRzq/1onAkTRUAFhWSI1xTzJI=;
-	b=XU0c7U4SHvGco2ckJdj7d4yRt73I53c7qGtrFtYvyCSV2Nhj6pAsxmGCx+ifJ1Z1ZTT5sx
-	yzG1NJ0ZoswpofHL6WdOse8NRrr12mr+RAfzvesMktnymZHyiq6Pn0+6m3OlmaiqhcysrF
-	6dmanAhPz0cU70Hwes4saT1LZsBjmZ8=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-bfpdmmkcNJmq4nTW5wGcSg-1; Mon, 14 Jul 2025 10:40:58 -0400
-X-MC-Unique: bfpdmmkcNJmq4nTW5wGcSg-1
-X-Mimecast-MFC-AGG-ID: bfpdmmkcNJmq4nTW5wGcSg_1752504057
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-ae6ee7602c7so367891266b.0
-        for <stable@vger.kernel.org>; Mon, 14 Jul 2025 07:40:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752504056; x=1753108856;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aLXKhg1K3xQXwvyv6fgRzq/1onAkTRUAFhWSI1xTzJI=;
-        b=P3ObtDK701iccBhFnepctNcgxUC3hfUpchNeZ8ee51qK9NYkmuDwlA5pxEyDUiNsAi
-         XfUiP1NDFN1nUYwIHkgrBpocJUTMj9ZRZKegnegg917HTjBottY7rhnl1KIvN1wQ8ke1
-         RcECAzIe+wqaVRHk0FeA/8W29zKbBG/fdBvi+LApwXp1Ej88E56v82sldVxn0x0yYwWk
-         vMNiWVMX5NjkqNRSaaJh5s0nNb9bepymjzm0CGaJzDyZM6HS4k9KcNIuvSDjFG2PTc5g
-         9Kkz0KpxrBUMTrqpojGQpFomLeMxFS6ON2TwvnLhGw9gwTss9D0Agin9YnnGttlSvlcN
-         dVvg==
-X-Forwarded-Encrypted: i=1; AJvYcCVbgT3rVA7PRXwUswfJPV7WVdJTT4ymgHNSTrskBzzHluZv3bc6O5F/7l0uQIYrGeYqe1Q545k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2/cOtcIpv1PCit5UwoZT5rNpwwcosbW6aUsbWDNKaPN/ZOro5
-	p8IpGStQbcNCTHI6h8dddzmXi+UXJFzQq+HKHivYZl1LaOH+mb3w3pxCtNEWAco6Xm5/01Y0Ymt
-	qfk9Kv25LWUIw9Y7AHE0YP+dsErUJryuI846YQx9nXk+MIl69qAVTKxEnOw==
-X-Gm-Gg: ASbGncu3k6RTeZbf5Zd1/JHyJESgxxRuumfZVmCbgv8n8M9ifos2LdJIVCEU0PtE6cJ
-	YQfsaKIws62ISRjjmfeZDFyACm9YYcvS/rdppqbvag4Dx5nd2uNR66qqFyJued4/b9ZYfF1AZPG
-	aBGor5YXRX0NFvsLlMunkdOf2/PEYe0EVduUaHcpjUgmjLP1uv7bbR2oXSRRwxmmXlxo9LyHQqY
-	fl+ucjzgxn0EoLD2UfGbDqBXgCVVgh/jvofIwZQDJz6ic5ex2z+0BCRrSDbeDHdoK8DkVOPmUIh
-	LvGL91Y5A/ykMdIPTcDtDLA6yuYiMxGNmcjoFI304BCe
-X-Received: by 2002:a17:907:3d44:b0:ae3:ab68:4d7a with SMTP id a640c23a62f3a-ae6fbed8219mr1633100066b.25.1752504056147;
-        Mon, 14 Jul 2025 07:40:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHucm1YdLEC7W2MqVgXeYA2wsn4X0D/6ulvdMPDsK2hXL50tiQScU0+GEvdxz/6WUq3kW52KA==
-X-Received: by 2002:a17:907:3d44:b0:ae3:ab68:4d7a with SMTP id a640c23a62f3a-ae6fbed8219mr1633096866b.25.1752504055640;
-        Mon, 14 Jul 2025 07:40:55 -0700 (PDT)
-Received: from [10.40.98.122] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7e91a0bsm827763966b.7.2025.07.14.07.40.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Jul 2025 07:40:55 -0700 (PDT)
-Message-ID: <afeadd0a-d341-46ee-9634-01c5122b416a@redhat.com>
-Date: Mon, 14 Jul 2025 16:40:54 +0200
+	s=arc-20240116; t=1752504618; c=relaxed/simple;
+	bh=hXzOR+olA7S2G5J00jXZPUDprAPkJ5ZTCiCyKy0y35c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V0vqWUXHJfDlPNeW9/jwO8+ZjXWukFOzVxsl2m7u/hrnpYut0ybVzJiJZ6Is0EAToswr0LzBMrxKm6XQXvn789tWYd9222Yn5jbL0INWEK1K283C+AzBrPRMy67ze47mKb1WazOcdvMKp5gAnVSEpsBT9VBFMG2oMHYHPRVlYXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KW4HSDXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BDEC4CEED;
+	Mon, 14 Jul 2025 14:50:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752504618;
+	bh=hXzOR+olA7S2G5J00jXZPUDprAPkJ5ZTCiCyKy0y35c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KW4HSDXHZxiSFI2dHqjBhYv6RY2g0qN2s0+i+buCp2fRFKF5jb87i/PkMBNKtqmvY
+	 h+WBo176r5npnFDpjTt7kwI1UKTUwCxkv5nZT8QRSdh4GnRSfap7TbYAXb7HghImxQ
+	 X6z4zXQ4px+Deo0BhYPUrLCxAEFCH95ymy8/tGekYDZRDwIKgWPzlYRv30JdC30pR3
+	 N9JdOf1J43u4n6BJwVQjUXQz+g6pZ1DMa1WzCGKzj753GbP21EJTGI7zmb6HqAnG2H
+	 DVXartEo4EjFuyc9nNE/L9uoZTnRThzcHy6R0FrTSaReUcwFFgfFaER3D5/IXJMLZp
+	 6wC7Dlo3CxsCw==
+Date: Mon, 14 Jul 2025 17:50:09 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: David Laight <david.laight.linux@gmail.com>,
+	Dave Hansen <dave.hansen@intel.com>, jacob.pan@linux.microsoft.com,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>, iommu@lists.linux.dev,
+	security@kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] iommu/sva: Invalidate KVA range on kernel TLB flush
+Message-ID: <aHUZIVbLV9KAoZ3H@kernel.org>
+References: <20250704133056.4023816-1-baolu.lu@linux.intel.com>
+ <20250709085158.0f050630@DESKTOP-0403QTC.>
+ <20250709162724.GE1599700@nvidia.com>
+ <20250709111527.5ba9bc31@DESKTOP-0403QTC.>
+ <42c500b8-6ffb-4793-85c0-d3fbae0116f1@intel.com>
+ <20250714133920.55fde0f5@pumpkin>
+ <aHUD1cklhydR-gE5@pc636>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 087150] Input atkbd - skip ATKBD_CMD_GETID in
- translated mode
-To: Wang Hai <wanghai38@huawei.com>
-Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org,
- patches@lists.linux.dev, yesh25@mail2.sysu.edu.cn, mail@gurevit.ch,
- egori@altlinux.org, anton@cpp.in, dmitry.torokhov@gmail.com,
- sashal@kernel.org
-References: <456b5d9c-f72a-4bfe-a72a-b5cc0f15eb70@huawei.com>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <456b5d9c-f72a-4bfe-a72a-b5cc0f15eb70@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aHUD1cklhydR-gE5@pc636>
 
-Hi,
+On Mon, Jul 14, 2025 at 03:19:17PM +0200, Uladzislau Rezki wrote:
+> On Mon, Jul 14, 2025 at 01:39:20PM +0100, David Laight wrote:
+> > On Wed, 9 Jul 2025 11:22:34 -0700
+> > Dave Hansen <dave.hansen@intel.com> wrote:
+> > 
+> > > On 7/9/25 11:15, Jacob Pan wrote:
+> > > >>> Is there a use case where a SVA user can access kernel memory in the
+> > > >>> first place?    
+> > > >> No. It should be fully blocked.
+> > > >>  
+> > > > Then I don't understand what is the "vulnerability condition" being
+> > > > addressed here. We are talking about KVA range here.  
+> > > 
+> > > SVA users can't access kernel memory, but they can compel walks of
+> > > kernel page tables, which the IOMMU caches. The trouble starts if the
+> > > kernel happens to free that page table page and the IOMMU is using the
+> > > cache after the page is freed.
+> > > 
+> > > That was covered in the changelog, but I guess it could be made a bit
+> > > more succinct.
 
-On 14-Jul-25 15:49, Wang Hai wrote:
+But does this really mean that every flush_tlb_kernel_range() should flush
+the IOMMU page tables as well? AFAIU, set_memory flushes TLB even when bits
+in pte change and it seems like an overkill...
+
+> > Is it worth just never freeing the page tables used for vmalloc() memory?
+> > After all they are likely to be reallocated again.
+> > 
+> >
+> Do we free? Maybe on some arches? According to my tests(AMD x86-64) i did
+> once upon a time, the PTE entries were not freed after vfree(). It could be
+> expensive if we did it, due to a global "page_table_lock" lock.
 > 
+> I see one place though, it is in the vmap_try_huge_pud()
 > 
-> On 1970/1/1 8:00,  wrote:
->> 6.6-stable review patch.  If anyone has any objections, please let me know.
->>
->> ------------------
->>
->>  From Hans de Goede hdegoede@redhat.com
->>
->> [ Upstream commit 936e4d49ecbc8c404790504386e1422b599dec39 ]
->>
->> There have been multiple reports of keyboard issues on recent laptop models
->> which can be worked around by setting i8042.dumbkbd, with the downside
->> being this breaks the capslock LED.
->>
->> It seems that these issues are caused by recent laptops getting confused by
->> ATKBD_CMD_GETID. Rather then adding and endless growing list of quirks for
->> this, just skip ATKBD_CMD_GETID alltogether on laptops in translated mode.
->>
->> The main goal of sending ATKBD_CMD_GETID is to skip binding to ps2
->> micetouchpads and those are never used in translated mode.
->>
->> Examples of laptop models which benefit from skipping ATKBD_CMD_GETID
->>
->>   HP Laptop 15s-fq2xxx, HP laptop 15s-fq4xxx and HP Laptop 15-dy2xxx
->>    models the kbd stops working for the first 2 - 5 minutes after boot
->>    (waiting for EC watchdog reset)
->>
->>   On HP Spectre x360 13-aw2xxx atkbd fails to probe the keyboard
->>
->>   At least 9 different Lenovo models have issues with ATKBD_CMD_GETID, see
->>    httpsgithub.comyescallopatkbd-nogetid
->>
->> This has been tested on
->>
->> 1. A MSI B550M PRO-VDH WIFI desktop, where the i8042 controller is not
->>     in translated mode when no keyboard is plugged in and with a ps2 kbd
->>     a AT Translated Set 2 keyboard devinputevent# node shows up
->>
->> 2. A Lenovo ThinkPad X1 Yoga gen 8 (always has a translated set 2 keyboard)
->>
->> Reported-by Shang Ye yesh25@mail2.sysu.edu.cn
->> Closes httpslore.kernel.orglinux-input886D6167733841AE+20231017135318.11142-1-yesh25@mail2.sysu.edu.cn
->> Closes httpsgithub.comyescallopatkbd-nogetid
->> Reported-by gurevitch mail@gurevit.ch
->> Closes httpslore.kernel.orglinux-input2iAJTwqZV6lQs26cTb38RNYqxvsink6SRmrZ5h0cBUSuf9NT0tZTsf9fEAbbto2maavHJEOP8GA1evlKa6xjKOsaskDhtJWxjcnrgPigzVo=@gurevit.ch
->> Reported-by Egor Ignatov egori@altlinux.org
->> Closes httpslore.kernel.orgall20210609073333.8425-1-egori@altlinux.org
->> Reported-by Anton Zhilyaev anton@cpp.in
->> Closes httpslore.kernel.orglinux-input20210201160336.16008-1-anton@cpp.in
->> Closes httpsbugzilla.redhat.comshow_bug.cgiid=2086156
->> Signed-off-by Hans de Goede hdegoede@redhat.com
->> Link httpslore.kernel.orgr20231115174625.7462-1-hdegoede@redhat.com
->> Signed-off-by Dmitry Torokhov dmitry.torokhov@gmail.com
->> Signed-off-by Sasha Levin sashal@kernel.org
->> ---
+> 	if (pud_present(*pud) && !pud_free_pmd_page(pud, addr))
+> 		return 0;
 > 
-> Hi, Hans
-> 
-> I noticed there's a subsequent bugfix [1] for this patch, but it hasn't been merged into the stable-6.6 branch. Based on the bugfix description, the issue should exist there as well. Would you like this patch to be merged into the stable-6.6 branch?"
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9cf6e24c9fbf17e52de9fff07f12be7565ea6d61
+> it is when replace a pud by a huge-page.
 
-Yes, if you can submit that patch for inclusion into the 6.6 stable branch
-that would be good.
+There's also a place that replaces a pmd by a smaller huge page, but other
+than that vmalloc does not free page tables.
 
-Regards,
+> --
+> Uladzislau Rezki
 
-Hans
-
+-- 
+Sincerely yours,
+Mike.
 
