@@ -1,97 +1,56 @@
-Return-Path: <stable+bounces-161885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D877B04822
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 21:58:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D664B04830
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 22:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98C667A2F47
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 19:56:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 948C61A680E8
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 20:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3132475E3;
-	Mon, 14 Jul 2025 19:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0476119CD01;
+	Mon, 14 Jul 2025 20:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CFLDJoxF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eB/iQEun"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E4A2367DF;
-	Mon, 14 Jul 2025 19:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B474384A35;
+	Mon, 14 Jul 2025 20:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752523077; cv=none; b=P8UDVPTUP/CMZAiGdTf8Il5EULFPi+swzAcBq7p7y3ziXVDQs7HMudZpQfTAoZ9dD56qefrHUcQoy8Q7U9Spf3Ueni/mE+wrykLzjQi/JZuF5IY0ywqSCLot+08H3WevPEOKph6SleDp5RoFBnEqVlHeDVZksuqE3YqpLrL4KI0=
+	t=1752523220; cv=none; b=iA9zRZwYqNJhjJZY8vwCnldEW7nIlPqIvM6kVkEioxfYh2m3xBKSJTdo2uSsZ/bjBlLX934o9gNpZUvL1xi7/NTCtyRe8ZvlpYgXuepgeSxeGjpOn8KwLg5gHYos/kXHcU2AVn4RQhljwfvZaJd4OmE+ErQxznSsH3+l6H7tnF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752523077; c=relaxed/simple;
-	bh=Uk5w1V6I4YwPMjZtuY2O0PIn9pPbYViPRep+5RgeIQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=qKlDPGcYHNSBwhVtCkyj44MsKhJ1x+Jk1h6BzixchADNs4drlP5Rg4+5qDacGk9ECyxrBlbLoi0v/RfQv5dhm9zX2ThvFfsVKl2PZ5PnTqzhpKPhciOEpsIvruerkrgprk79By7UEmg/pKAabGhiKkpcyDysrWFL242SQoY94MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CFLDJoxF; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-60c51860bf5so7823837a12.1;
-        Mon, 14 Jul 2025 12:57:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752523074; x=1753127874; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=00htzvS//PxmAK1/kqageAXUez+cznfXa5IYx31PylU=;
-        b=CFLDJoxFZ1O3yXEkX5LkPmsjGV3hEUaZlWOVKTsc0+63mmWgtLIP9F/gaibuLfAv4X
-         D9Kq0eB2JNtiHtABmyVoA7kJjG1fz2haUMRD1ul5LUXtnNGiOdt0BPnXj6JsQoiIctWA
-         GMopbjW8Mel4acFPRm2lRaDQ+IeOuyceD3bSw5XNHRXzSMMurm9qfIZroMHL9BOVRTC0
-         z+2R2gKnkD1ajsZZEZVS8/HGEGCuw5FvMsCpfcL+blhD+QlN+FiKAXRmpuA5LRJn36N8
-         9MNr5V6zwDcj97yI5C8DYBvPmmWfuqnF1kwdkPDlE1+RQnnOInAieMh05kGYZ6+Ow8/x
-         fKiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752523074; x=1753127874;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=00htzvS//PxmAK1/kqageAXUez+cznfXa5IYx31PylU=;
-        b=wYk2yEId7wEkHCSr5dYxNADbjytwbuKD1r85noPcM5az2o3VD3OOPEFnegAB1yKN9h
-         xxp6e4MWDNeP8gnT8yraLeqB85XtEUU1CfAVnr7VvFfMklyztt+THcAgXyThzVAarAee
-         cKcOXVOCHpcEgkUNjK/qmX2Iufow/Xuhz5Xdm1STAy1NQ52U89ew3+WVjeQgZn6/Y76S
-         tqYQ+eahgtKkMhwcrTNyJOrruUv0IakCM0uxFEfUMa5hLrkmYZpRlwu7t/8asPzjTxvq
-         aqU2Ax6d9ier5X67vLJ5lXMnp6MH/nyIz+n4LJOs0NfsP6mOF3ZIhMlXZmzl5e9hMKe1
-         KMPw==
-X-Forwarded-Encrypted: i=1; AJvYcCV3tLdMrivKn3UkLfMcY36VOElu6zNogCrob8AufOq9aZKJBKkI8GEkTL9KBLKQZqRTgB8bnLYC@vger.kernel.org, AJvYcCVivt43YitkZ4EJvSqAipvVMDI/xHw+8EQpirB5To50i+l6aGIpf0TWJvGc/MWgHhvgfabXSJA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7Iprms3zaa4j1C1y3jiCls9BP6CP86veTpnDbtOjCYlByQpLM
-	CKPP+lLJahBvf08d8fAJsOwjK2NbYQlakZ+1hoBqavFqLBCT7KPKYHQn
-X-Gm-Gg: ASbGncvqNfpnSL2LifJJYwkPUQB+AkGSHhATW+nfeuQgD5KoGzoHox3mGMwbv4i84D/
-	64sZGusWThjnCbHOJCN8ayAdio3b+a8pf8afxAUF2jz1QuF4iyVUN19wFck6QOBFDv+PHhcMucf
-	b64jKF+WRwLoUJeTkYQZiImcgDZvJZS7cpLsY8n5WZG+9cYX8KWkKCexSnNv/CEgT4RYa4qKBqi
-	Zh2x4Oxiyud7bE8EWMbogJrhEfMDKfoP7l+9akZVhh9snwyCtj9Ls+5nbGkESB64pn0VzM6d4EG
-	DR74sIAuXvFoXxGkI1gux77uT+GYq6dVIn3ZguMAuGildYMY0Yuv8/mRipHx2HvHpkdaPmh8Q6C
-	Zs2qS69lK3bHzxG68HySJo31PWjecf+i9cFmUasE2IAOmZN/nozL0xoP6+tXkgDlxPh2JBJl4lL
-	iU
-X-Google-Smtp-Source: AGHT+IG8cI1AwM6WE16Z8zxT3NpTjDoZqeS9GrJMxlRZ5DUBoix7AwUjHNbjadZtnPsAHQK/pQUcEg==
-X-Received: by 2002:a17:906:c14b:b0:ae3:7b53:31b9 with SMTP id a640c23a62f3a-ae70125f453mr1245606366b.35.1752523073891;
-        Mon, 14 Jul 2025 12:57:53 -0700 (PDT)
-Received: from eldamar.lan (host-87-16-197-101.retail.telecomitalia.it. [87.16.197.101])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e82952d2sm879782966b.140.2025.07.14.12.57.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jul 2025 12:57:53 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 1052BBE2DE0; Mon, 14 Jul 2025 21:57:52 +0200 (CEST)
-Date: Mon, 14 Jul 2025 21:57:52 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Guillaume Nault <gnault@redhat.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Aaron Conole <aconole@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-	Charles Bordet <rough.rock3059@datachamp.fr>
-Cc: linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org, 1108860@bugs.debian.org
-Subject: [regression] Wireguard fragmentation fails with VXLAN since
- 8930424777e4 ("tunnels: Accept PACKET_HOST skb_tunnel_check_pmtu().")
- causing network timeouts
-Message-ID: <aHVhQLPJIhq-SYPM@eldamar.lan>
+	s=arc-20240116; t=1752523220; c=relaxed/simple;
+	bh=1EuLxQcoalPrJoC0+kKDMPul2uferMAfFFNpnRudPHs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=shh+bkNB8L/kYVJQCJpse9OJXH0n3jUzPbpQxYLda6oGBu7fgTQbB4KX4LIhvLcE4mWcmGTMFpQIocThsu1MnX5ap1fmP/EmhzPh4pgXZQCS/h9pQ/5f4lYbsFJoDgQpd8k8nJKzCbHwyP/OkR+y+kYHYlnkiBSjQP7NWmN7r9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eB/iQEun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CA4C4CEED;
+	Mon, 14 Jul 2025 20:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752523220;
+	bh=1EuLxQcoalPrJoC0+kKDMPul2uferMAfFFNpnRudPHs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eB/iQEuncCntN2Vi1sK+eMQKX9USnt+MYbYVTV6W4ubG7df0HECYUmwXf3h8uBl5h
+	 3+D0Y74sD7ZQ2OxqvBKcaxe7Z0HfGN8MqPCWuaW13bAKgcxmk3dpu7Td/rlWHcK56A
+	 Slu9qaMm7yTG2a4cSmwilcoj/4p9rsPpHHWzKbD+5KGISkdcTnThyqLWGFjnj3NagH
+	 58FRM29G/yPrnVIZyQTPprUDXv4arfvUol06PIN9H6/SWe40aYQtYXUuu5S23+jEVx
+	 B1hI17jKL8pdDt1EXTD34pmP2iSCizqW0fQU4eZ8z98W7wFpHqxXcNDrtP6lmWV/i4
+	 dFwgMvJTANRoA==
+Date: Mon, 14 Jul 2025 13:00:16 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Russell King <linux@armlinux.org.uk>,
+	Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Rob Landley <rob@landley.net>,
+	Martin Wetterwald <martin@wetterwald.eu>
+Subject: Re: [PATCH] ARM: Fix allowing linker DCE with binutils < 2.36
+Message-ID: <20250714200016.GA3444087@ax162>
+References: <20250707-arm-fix-dce-older-binutils-v1-1-3b5e59dc3b26@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,61 +59,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20250707-arm-fix-dce-older-binutils-v1-1-3b5e59dc3b26@kernel.org>
 
-Hi,
+On Mon, Jul 07, 2025 at 12:39:26PM -0700, Nathan Chancellor wrote:
+> Commit e7607f7d6d81 ("ARM: 9443/1: Require linker to support KEEP within
+> OVERLAY for DCE") accidentally broke the binutils version restriction
+> that was added in commit 0d437918fb64 ("ARM: 9414/1: Fix build issue
+> with LD_DEAD_CODE_DATA_ELIMINATION"), reintroducing the segmentation
+> fault addressed by that workaround.
+> 
+> Restore the binutils version dependency by using
+> CONFIG_LD_CAN_USE_KEEP_IN_OVERLAY as an additional condition to ensure
+> that CONFIG_HAVE_LD_DEAD_CODE_DATA_ELIMINATION is only enabled with
+> binutils >= 2.36 and ld.lld >= 21.0.0.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: e7607f7d6d81 ("ARM: 9443/1: Require linker to support KEEP within OVERLAY for DCE")
+> Reported-by: Rob Landley <rob@landley.net>
+> Closes: https://lore.kernel.org/6739da7d-e555-407a-b5cb-e5681da71056@landley.net/
+> Tested-by: Rob Landley <rob@landley.net>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  arch/arm/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 3072731fe09c..962451e54fdd 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -121,7 +121,7 @@ config ARM
+>  	select HAVE_KERNEL_XZ
+>  	select HAVE_KPROBES if !XIP_KERNEL && !CPU_ENDIAN_BE32 && !CPU_V7M
+>  	select HAVE_KRETPROBES if HAVE_KPROBES
+> -	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if (LD_VERSION >= 23600 || LD_CAN_USE_KEEP_IN_OVERLAY)
+> +	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if (LD_VERSION >= 23600 || LD_IS_LLD) && LD_CAN_USE_KEEP_IN_OVERLAY
+>  	select HAVE_MOD_ARCH_SPECIFIC
+>  	select HAVE_NMI
+>  	select HAVE_OPTPROBES if !THUMB2_KERNEL
+> 
 
-Charles Bordet reported the following issue (full context in
-https://bugs.debian.org/1108860)
+I have dropped this in the patch tracker with an updated set of tags
+since Martin reported the same issue after I sent this to the list.
 
-> Dear Maintainer,
-> 
-> What led up to the situation?
-> We run a production environment using Debian 12 VMs, with a network
-> topology involving VXLAN tunnels encapsulated inside Wireguard
-> interfaces. This setup has worked reliably for over a year, with MTU set
-> to 1500 on all interfaces except the Wireguard interface (set to 1420).
-> Wireguard kernel fragmentation allowed this configuration to function
-> without issues, even though the effective path MTU is lower than 1500.
-> 
-> What exactly did you do (or not do) that was effective (or ineffective)?
-> We performed a routine system upgrade, updating all packages include the
-> kernel. After the upgrade, we observed severe network issues (timeouts,
-> very slow HTTP/HTTPS, and apt update failures) on all VMs behind the
-> router. SSH and small-packet traffic continued to work.
-> 
-> To diagnose, we:
-> 
-> * Restored a backup (with the previous kernel): the problem disappeared.
-> * Repeated the upgrade, confirming the issue reappeared.
-> * Systematically tested each kernel version from 6.1.124-1 up to
-> 6.1.140-1. The problem first appears with kernel 6.1.135-1; all earlier
-> versions work as expected.
-> * Kernel version from the backports (6.12.32-1) did not resolve the
-> problem.
-> 
-> What was the outcome of this action?
-> 
-> * With kernel 6.1.135-1 or later, network timeouts occur for
-> large-packet protocols (HTTP, apt, etc.), while SSH and small-packet
-> protocols work.
-> * With kernel 6.1.133-1 or earlier, everything works as expected.
-> 
-> What outcome did you expect instead?
-> We expected the network to function as before, with Wireguard handling
-> fragmentation transparently and no application-level timeouts,
-> regardless of the kernel version.
+https://www.armlinux.org.uk/developer/patches/viewpatch.php?id=9450/1
 
-While triaging the issue we found that the commit 8930424777e4
-("tunnels: Accept PACKET_HOST in skb_tunnel_check_pmtu()." introduces
-the issue and Charles confirmed that the issue was present as well in
-6.12.35 and 6.15.4 (other version up could potentially still be
-affected, but we wanted to check it is not a 6.1.y specific
-regression).
-
-Reverthing the commit fixes Charles' issue.
-
-Does that ring a bell?
-
-Regards,
-Salvatore
+Cheers,
+Nathan
 
