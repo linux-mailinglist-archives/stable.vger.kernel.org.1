@@ -1,228 +1,143 @@
-Return-Path: <stable+bounces-161837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309D4B03F19
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 14:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C90B03FA3
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 15:22:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 732EE189CC54
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 12:59:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE90A1A6466E
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 13:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD0F2472BA;
-	Mon, 14 Jul 2025 12:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDtv1C2r"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBE325A35F;
+	Mon, 14 Jul 2025 13:18:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF321DEFDD
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 12:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D1A256C87;
+	Mon, 14 Jul 2025 13:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752497918; cv=none; b=rBoCnjMq1hHaf2oeJk9Ii20j1l4DFoVwQHi1vCktgzWsFT24pNT90MRVyPjEgkDNZ8z1tHaHOusJgGxAn/pUG3lAV1vQtlM4Zs9ZqZq1LBIoAE+BENtcGCYYYjTyweS+I+dAlmZPeGQk1b4AkfiHo92UWbkoHrnQ70reRaICAok=
+	t=1752499123; cv=none; b=RQnaCcml3WqPi1qR/cRfxXhguLNDhFO9K3BwMK7ibp2pRpvF7pafwm7ogUj1G9Humnuz9qGlltk8sLlCcmsnnolN2ssteYbgJU98bYuyZb/pVA04gh7AQxdf29Ex69aal1uXG+zxULlo+ga45Wz8tAhMYogiJh4zGVimF1fKRUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752497918; c=relaxed/simple;
-	bh=wlKH2Z5lLFKrgPdvwGqL431xclAKweWc1qwOvpJuuTY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BdGohPLsaXoZJUC9ieykWZkxrGndgmhaAsFypsBNN6AZgMagr+FgnVQnqtEMUvoWqwcN5ZCYPzZItiSyxfsOVxVJ4Ld8kKgsNU5lLzPDn4+MuahdwWMq/nSDD0QwhMGrtV9OhAiZegbnjGiHmPvk4ZR9qcGjheUN9iNfYW9iJTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDtv1C2r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E1AC4CEED;
-	Mon, 14 Jul 2025 12:58:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752497915;
-	bh=wlKH2Z5lLFKrgPdvwGqL431xclAKweWc1qwOvpJuuTY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=NDtv1C2r7nx+fsu3DOKJDT5XGvqbFjuR0fIv1ttCsmeicjgwegIkRSKLEvQIcBrac
-	 odbClpjv/9JVDbuuBLyBzaQqmspGrHWClmZK9UgQVwM8LJaxlu2mwlecJ8SxjKD6iv
-	 2DPJXd5F5eo+GFRaOBuVUhQNLyeiyJZJF9Dmizko=
-Subject: FAILED: patch "[PATCH] x86/its: explicitly manage permissions for ITS pages" failed to apply to 5.10-stable tree
-To: peterz@infradead.org,nik.borisov@suse.com,rppt@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 14 Jul 2025 14:58:33 +0200
-Message-ID: <2025071433-smugly-husked-3295@gregkh>
+	s=arc-20240116; t=1752499123; c=relaxed/simple;
+	bh=IUW4gaV1KDTb5jP0+YAOyulP1v3r3Bqb+J9SVwIt7oc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NfuDGlBBIKDpXvTf9YF7U7QdwKrlZuQrOrW+dsyKZ0YRXmn3DyB43SQzccJrKfTuifwp7MFVLkbhXXa/kxrok9wQ5PgdWdbuPXQ5h3CETjyVl30kRAfQk4EK8azmjKniV4zK8VyS/qS9ytHem2zk+/lvJU15PaaTF1Jopef8tmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bgjWm52Cgz2TT0R;
+	Mon, 14 Jul 2025 21:16:36 +0800 (CST)
+Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9DC78140135;
+	Mon, 14 Jul 2025 21:18:38 +0800 (CST)
+Received: from huawei.com (10.175.112.188) by dggpemf500013.china.huawei.com
+ (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 14 Jul
+ 2025 21:18:37 +0800
+From: Baokun Li <libaokun1@huawei.com>
+To: <linux-ext4@vger.kernel.org>
+CC: <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
+	<linux-kernel@vger.kernel.org>, <ojaswin@linux.ibm.com>,
+	<julia.lawall@inria.fr>, <yi.zhang@huawei.com>, <yangerkun@huawei.com>,
+	<libaokun1@huawei.com>, <libaokun@huaweicloud.com>, <stable@vger.kernel.org>
+Subject: [PATCH v3 10/17] ext4: fix zombie groups in average fragment size lists
+Date: Mon, 14 Jul 2025 21:03:20 +0800
+Message-ID: <20250714130327.1830534-11-libaokun1@huawei.com>
+X-Mailer: git-send-email 2.46.1
+In-Reply-To: <20250714130327.1830534-1-libaokun1@huawei.com>
+References: <20250714130327.1830534-1-libaokun1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500013.china.huawei.com (7.185.36.188)
 
+Groups with no free blocks shouldn't be in any average fragment size list.
+However, when all blocks in a group are allocated(i.e., bb_fragments or
+bb_free is 0), we currently skip updating the average fragment size, which
+means the group isn't removed from its previous s_mb_avg_fragment_size[old]
+list.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This created "zombie" groups that were always skipped during traversal as
+they couldn't satisfy any block allocation requests, negatively impacting
+traversal efficiency.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Therefore, when a group becomes completely full, bb_avg_fragment_size_order
+is now set to -1. If the old order was not -1, a removal operation is
+performed; if the new order is not -1, an insertion is performed.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x a82b26451de126a5ae130361081986bc459afe9b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025071433-smugly-husked-3295@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+---
+ fs/ext4/mballoc.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From a82b26451de126a5ae130361081986bc459afe9b Mon Sep 17 00:00:00 2001
-From: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Date: Tue, 3 Jun 2025 14:14:44 +0300
-Subject: [PATCH] x86/its: explicitly manage permissions for ITS pages
-
-execmem_alloc() sets permissions differently depending on the kernel
-configuration, CPU support for PSE and whether a page is allocated
-before or after mark_rodata_ro().
-
-Add tracking for pages allocated for ITS when patching the core kernel
-and make sure the permissions for ITS pages are explicitly managed for
-both kernel and module allocations.
-
-Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250603111446.2609381-5-rppt@kernel.org
-
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index b50fe6ce4655..6455f7f751b3 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -116,6 +116,24 @@ static struct module *its_mod;
- #endif
- static void *its_page;
- static unsigned int its_offset;
-+struct its_array its_pages;
-+
-+static void *__its_alloc(struct its_array *pages)
-+{
-+	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
-+	if (!page)
-+		return NULL;
-+
-+	void *tmp = krealloc(pages->pages, (pages->num+1) * sizeof(void *),
-+			     GFP_KERNEL);
-+	if (!tmp)
-+		return NULL;
-+
-+	pages->pages = tmp;
-+	pages->pages[pages->num++] = page;
-+
-+	return no_free_ptr(page);
-+}
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 6d98f2a5afc4..72b20fc52bbf 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -841,30 +841,30 @@ static void
+ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	int new_order;
++	int new, old;
  
- /* Initialize a thunk with the "jmp *reg; int3" instructions. */
- static void *its_init_thunk(void *thunk, int reg)
-@@ -151,6 +169,21 @@ static void *its_init_thunk(void *thunk, int reg)
- 	return thunk + offset;
- }
+-	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
++	if (!test_opt2(sb, MB_OPTIMIZE_SCAN))
+ 		return;
  
-+static void its_pages_protect(struct its_array *pages)
-+{
-+	for (int i = 0; i < pages->num; i++) {
-+		void *page = pages->pages[i];
-+		execmem_restore_rox(page, PAGE_SIZE);
+-	new_order = mb_avg_fragment_size_order(sb,
+-					grp->bb_free / grp->bb_fragments);
+-	if (new_order == grp->bb_avg_fragment_size_order)
++	old = grp->bb_avg_fragment_size_order;
++	new = grp->bb_fragments == 0 ? -1 :
++	      mb_avg_fragment_size_order(sb, grp->bb_free / grp->bb_fragments);
++	if (new == old)
+ 		return;
+ 
+-	if (grp->bb_avg_fragment_size_order != -1) {
+-		write_lock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
++	if (old >= 0) {
++		write_lock(&sbi->s_mb_avg_fragment_size_locks[old]);
+ 		list_del(&grp->bb_avg_fragment_size_node);
+-		write_unlock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
+-	}
+-	grp->bb_avg_fragment_size_order = new_order;
+-	write_lock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
+-	list_add_tail(&grp->bb_avg_fragment_size_node,
+-		&sbi->s_mb_avg_fragment_size[grp->bb_avg_fragment_size_order]);
+-	write_unlock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
++		write_unlock(&sbi->s_mb_avg_fragment_size_locks[old]);
 +	}
-+}
 +
-+static void its_fini_core(void)
-+{
-+	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
-+		its_pages_protect(&its_pages);
-+	kfree(its_pages.pages);
-+}
-+
- #ifdef CONFIG_MODULES
- void its_init_mod(struct module *mod)
- {
-@@ -173,10 +206,8 @@ void its_fini_mod(struct module *mod)
- 	its_page = NULL;
- 	mutex_unlock(&text_mutex);
- 
--	for (int i = 0; i < mod->arch.its_pages.num; i++) {
--		void *page = mod->arch.its_pages.pages[i];
--		execmem_restore_rox(page, PAGE_SIZE);
--	}
-+	if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
-+		its_pages_protect(&mod->arch.its_pages);
++	grp->bb_avg_fragment_size_order = new;
++	if (new >= 0) {
++		write_lock(&sbi->s_mb_avg_fragment_size_locks[new]);
++		list_add_tail(&grp->bb_avg_fragment_size_node,
++				&sbi->s_mb_avg_fragment_size[new]);
++		write_unlock(&sbi->s_mb_avg_fragment_size_locks[new]);
++	}
  }
- 
- void its_free_mod(struct module *mod)
-@@ -194,28 +225,23 @@ void its_free_mod(struct module *mod)
- 
- static void *its_alloc(void)
- {
--	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
-+	struct its_array *pages = &its_pages;
-+	void *page;
- 
-+#ifdef CONFIG_MODULE
-+	if (its_mod)
-+		pages = &its_mod->arch.its_pages;
-+#endif
-+
-+	page = __its_alloc(pages);
- 	if (!page)
- 		return NULL;
- 
--#ifdef CONFIG_MODULES
--	if (its_mod) {
--		struct its_array *pages = &its_mod->arch.its_pages;
--		void *tmp = krealloc(pages->pages,
--				     (pages->num+1) * sizeof(void *),
--				     GFP_KERNEL);
--		if (!tmp)
--			return NULL;
-+	execmem_make_temp_rw(page, PAGE_SIZE);
-+	if (pages == &its_pages)
-+		set_memory_x((unsigned long)page, 1);
- 
--		pages->pages = tmp;
--		pages->pages[pages->num++] = page;
--
--		execmem_make_temp_rw(page, PAGE_SIZE);
--	}
--#endif /* CONFIG_MODULES */
--
--	return no_free_ptr(page);
-+	return page;
- }
- 
- static void *its_allocate_thunk(int reg)
-@@ -269,7 +295,9 @@ u8 *its_static_thunk(int reg)
- 	return thunk;
- }
- 
--#endif
-+#else
-+static inline void its_fini_core(void) {}
-+#endif /* CONFIG_MITIGATION_ITS */
  
  /*
-  * Nomenclature for variable names to simplify and clarify this code and ease
-@@ -2339,6 +2367,8 @@ void __init alternative_instructions(void)
- 	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
- 	apply_returns(__return_sites, __return_sites_end);
- 
-+	its_fini_core();
-+
- 	/*
- 	 * Adjust all CALL instructions to point to func()-10, including
- 	 * those in .altinstr_replacement.
+-- 
+2.46.1
 
 
