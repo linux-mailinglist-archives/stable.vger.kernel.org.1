@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-161847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19900B040C8
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 16:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B0ACB040D8
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 16:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B25D916B547
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 13:58:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9E6F166398
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 14:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6016B254AEC;
-	Mon, 14 Jul 2025 13:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8435D2222A6;
+	Mon, 14 Jul 2025 14:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Cf2Ne+IK"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZURt12En"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265A9253954
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 13:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8718F25487A
+	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 14:00:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752501445; cv=none; b=lHOFUe6tHr3nqKesQdI32rbUVOTVtgDVrNmvE8KrC7RLFn7YuQ/Y0Anl2oTnygCytYgU3GLWcHgfsNBzG2aokWiADvB435pdqrNQfaL9slDp7Rahc6sN5h/r9czRTZdfxxiEl8ixvK6goUPZHnP8R/+AkGfKU8yQDI93UsKdkPs=
+	t=1752501612; cv=none; b=QGn7tCf3ZNh+YUs9gSux27LFHkoOqX9qf4Pbl0YRwgLlkMecy0mqMiN6xAjA3IDc9tVGCSabuPXK52ewAY1VcTLSsyQE9shNag+7QHwgAw1yLj7Ymsq1rItGcLNsCYSYitR+XWJCYQO/3CdFJ/DF/mljh0iYg7VdZdweT8e7qAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752501445; c=relaxed/simple;
-	bh=lIoWUmXvWj86sMKGqu+ntXXIgWMsTnjd2dZeMhtEubE=;
+	s=arc-20240116; t=1752501612; c=relaxed/simple;
+	bh=gi5jLndN60r1GCzdNcPmMBCx/qoYpFg7MWyfJhfkABg=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgiH7yTsed2LV7pqyvZfOPOyaFj7eV0zk6FWx1JFZthegjxneVuIhUg5GCCEwaTNOX8A8c7N+Vpub/2I/XD+ceOnA5CcTFFGmyWWDMLxFrvcRKVQuDeuPIAVhulpK3u6ZP3EVhC3coWU3m3lXPjsGOoryjEwjamz6p4JhNQDvHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Cf2Ne+IK; arc=none smtp.client-ip=209.85.128.41
+	 MIME-Version; b=YFSSXPscgqfF8AfoFT05KH1ngh2hgrB37ZbYe7hDwlUJNP+kYe8xCWUMteiYOiowoDTZHUwPJJnjLh8keDw6XQ96fx2MToA/DaaXeGI3YKmHdFhviJ0FMNXNPUSenLDblMidLla/kUny8qDqm2z7ICcFQnqGI+jIBsox4sE90qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZURt12En; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4561b43de62so55635e9.0
-        for <stable@vger.kernel.org>; Mon, 14 Jul 2025 06:57:22 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-456007cfcd7so120825e9.1
+        for <stable@vger.kernel.org>; Mon, 14 Jul 2025 07:00:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752501441; x=1753106241; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752501609; x=1753106409; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0/W3q8fvXyiB8GSS7p6uoLRJWawx0nxrBlyiHcj2vnE=;
-        b=Cf2Ne+IKr8XUw3dZR9gYb4DvA1PI7RrhVAV3TS+iDkWXnU1+FvQdrs2Tta/YJWp/lM
-         kh3mKdjVCKkCVZz8PknaGMzfYf/mQB8xXkzI7EUH7K3GWnfJcFBDRnOvIC1KLxLftb/R
-         7PIVM5dv7X1V76oplt3ORsvPPhnFqP8s0bVDIWDehVlWtuLuVVeIdNAmKmBuhVUKfqxj
-         v/HoHVmXnU8vKZ4yiPHMQswjs4cdfD3tU1V5twZRdeAeB5KeZRXOHJv0o9CBfYOYk8mY
-         O4Cdf+BXfKmUrLrAqbXn1w1zJFNgdJLCPD2hOA8AdNWpvMgLUmql4Djzs6DDn5fUE4KV
-         wjwA==
+        bh=Zp028BzBWMoMJzcM1QZOC4JCXXo0mx5dWlZ0phPXl4U=;
+        b=ZURt12EnAhXgQkMZVo6wcRx+h9Kp4CU7WwMK1YXAz4Zkz7QqjoZUIT092ckEGBQyCr
+         uZkbVN9UVdwMLdqDUMJdCvbrc1X5GLRov79TsEY4O1McqLCsl3YMd13QsBrbuNAoJlkl
+         I62hZPHUYsApGVnwWvGOUP4zJJJGTZAZREQqQkSd4LsXnM2cvoaUrO+JenvMN89dnlL4
+         h7JdqqVTixHE7KIbdweoim4Q2M8muzL/AYKs94mr2wUm0Um+HQknusChg/VNp0FgY/Go
+         o8CYQcZxb9TuYWVhp2tezfAOrFLqSEsMh44K3WHnApg07GhvKYBy+sZobJLcx7w+eKc9
+         r50Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752501441; x=1753106241;
+        d=1e100.net; s=20230601; t=1752501609; x=1753106409;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0/W3q8fvXyiB8GSS7p6uoLRJWawx0nxrBlyiHcj2vnE=;
-        b=d2k2nNA6rFOYnntNYbqeyH898Y3SXxK6/oZswl8esZTww6BGSPI3OHJ7UBtHcWRJ00
-         kkbTfDp0Q1nrVndBkowbHVBaozmx4adRSk7cCSgt71KfffKwDWerNIQ0TnPyr/zmHpjq
-         GmURSNbHKUPwqWb1uKT+BJctx7AV5zTu7uXivwI3u9jRFecvhCCoCkxheHq9W/1srAyf
-         foHLfDDxxYLzY5I4YxKwRvpuIwrZDSG0HSq6ftXMabflhKwYqHHbRO5PKIaWm2TrGLj5
-         Mlr3D0gLgm14yct7B8Om0ASFtvT6B3H4tE0QGZhoSJ41YM4hReu3iIIHbtGcki+kRUv9
-         hZtA==
-X-Gm-Message-State: AOJu0YwwFp/ooqG9QZoguxPHV1gJ2uhL/WOFFFNn79AevDw1WVn0X5Gu
-	C83pUGKSO7W0cP72QynDcPpKoCp1bygdigTsuzJWaBgd0IW006u0FgPqErH4jTZmJPtUcAQm9Sg
-	S7l38K9V9
-X-Gm-Gg: ASbGncvGzaAimcGvrXT4u1m7B0YCXNv5eHgSVzWXueuuY57aaYQ6e0fNTLmvl586aHB
-	5uiIokGKSakIe8h4Xt4FQk72BBYSSwR71QYkY3Ve4GCzBOw+CtPZlCzjl/KRA71StVjiKBMa13X
-	XGC0fGrH7F7HQrphXU3XR9WHP5d+SoqDn7TGwWHpDLIHEVGccOkevc2+xc3xaQyP3LaK+R72Qmo
-	GPp4lST08xGR+GTVmYO8iylw6bJfSeip7cWBsD/fUnPLgU9jK1SqLxONyTEm4+3PS2rw5yaZW/c
-	3MebTCdkxjrG061/bH6XxXmYz96o+ElJnYrgfyh7hbsNPENUIVoBMAvn0JqX+H71iw0NWW3BnIf
-	iiXiz27QKeAf2V5iVaj8E
-X-Google-Smtp-Source: AGHT+IF6yOWh2nfG/LDWv5YhpQ+NUu1hvPFAaOdI0apzeRMAAeVs2YUa5pFkLIoFujeU2LD0ih99WQ==
-X-Received: by 2002:a05:600c:5023:b0:453:79c3:91d6 with SMTP id 5b1f17b1804b1-45604733553mr3507795e9.1.1752501440652;
-        Mon, 14 Jul 2025 06:57:20 -0700 (PDT)
+        bh=Zp028BzBWMoMJzcM1QZOC4JCXXo0mx5dWlZ0phPXl4U=;
+        b=YHV7jIFEtlYK+DvhywZbQwuH/ceNWj451umwV46cOVPUdyxYn9RJNxQtDH4z8wwF9V
+         iF2RQQ/Na506OiYQSaPuXYho+U0nl+hPcVxUru87LcGZI7YqbKCcrKakyJ3c4UOC2Wl7
+         cUqaikzp68trMXpQwo/FRFX4x2RUvMkwDzGmU5bKqZ0Z+VW66WlMbMnEbXzfETSAWnb6
+         WVQmh9kp1PGP8bp0Yt4xAZ4PlQ1r0BP+QJ3wCAhrtCsWvU7IbJ/w7IL0QFniXZBTWI8S
+         gn1WtmrYZUECBjaJhs5HUblFQX6DqXQeiMUcVVhfJsd9DwTNugo66rJ1dMzj5lhOsN9W
+         UdAA==
+X-Gm-Message-State: AOJu0Ywvi9/X//6ZWczNhDkYXAvzqxtSHYJaT0kqyD78mUHhJYhnodEY
+	TYnlTFN/4BbLQvdsTl360ZfryLAbplKp/mtat2JrHRPAIZROnlhoS/8lKdJ4lC+hyCvbcv+RP8D
+	uBuXWaYHV
+X-Gm-Gg: ASbGncvSsXvoa/k6Q2NQcIbvihqzSWwHitUw9GuGk4j4YhETo8mZAfb1TT8iLe5iWGP
+	f0ZyzzctBTArRgGeUsoKtqzzR3DK31qJjFNzoYrmi4ZPr0U2r67/5O2xx/Ifs2os5HAPrQ+A7sb
+	+KoEwbg/4yOEXz9BiwYjfkfnqFzzsA4kDFU89k032JgcUMXg1GEbzsMlv08ZNgBixO1jcOHBfH9
+	kvQi69dvCyXBRhAKT76xutGmE8DSPFuvs7ekPPeGB4C1cpbe57MP1WPiouoiwfW+jto/Yl6H9zc
+	ZnsVqW057h3W1wfox6RmFDSwmcAG27u2aCkwdz9n7PcbL4J0nS8cexoAiIULq3Q3CNdtQ3ZAwAY
+	pB+EE5Apc
+X-Google-Smtp-Source: AGHT+IHDOlMR0d0zev1YApSlYdsjynsBkgM7pPH4/a11qa+hAa2BHqJXThIMtVE3hR5/PTnbPHUFSA==
+X-Received: by 2002:a05:600c:8589:b0:455:fd3e:4e12 with SMTP id 5b1f17b1804b1-45600886fb5mr2381955e9.4.1752501608359;
+        Mon, 14 Jul 2025 07:00:08 -0700 (PDT)
 Received: from localhost ([2a00:79e0:9d:4:46a:594a:89a5:b3cc])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b5e8dc3a62sm12349780f8f.40.2025.07.14.06.57.19
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b5e8dc2087sm12702902f8f.30.2025.07.14.07.00.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jul 2025 06:57:20 -0700 (PDT)
+        Mon, 14 Jul 2025 07:00:07 -0700 (PDT)
 From: Jann Horn <jannh@google.com>
 To: stable@vger.kernel.org
-Subject: [PATCH 5.10.y] x86/mm: Disable hugetlb page table sharing on 32-bit
-Date: Mon, 14 Jul 2025 15:57:18 +0200
-Message-ID: <20250714135718.361404-1-jannh@google.com>
+Subject: [PATCH 5.4.y] x86/mm: Disable hugetlb page table sharing on 32-bit
+Date: Mon, 14 Jul 2025 16:00:06 +0200
+Message-ID: <20250714140006.411966-1-jannh@google.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-In-Reply-To: <2025071422-target-professor-6f97@gregkh>
-References: <2025071422-target-professor-6f97@gregkh>
+In-Reply-To: <2025071423-imbecile-slander-d8e9@gregkh>
+References: <2025071423-imbecile-slander-d8e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -126,18 +126,18 @@ Signed-off-by: Jann Horn <jannh@google.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 93a1f9937a9b..6b4f232a00d2 100644
+index e92b5eb57acd..30e1b61bc10a 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -102,7 +102,7 @@ config X86
+@@ -95,7 +95,7 @@ config X86
+ 	select ARCH_USE_QUEUED_SPINLOCKS
  	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
- 	select ARCH_WANT_DEFAULT_BPF_JIT	if X86_64
  	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
 -	select ARCH_WANT_HUGE_PMD_SHARE
 +	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
- 	select ARCH_WANT_LD_ORPHAN_WARN
  	select ARCH_WANTS_THP_SWAP		if X86_64
- 	select BUILDTIME_TABLE_SORT
+ 	select BUILDTIME_EXTABLE_SORT
+ 	select CLKEVT_I8253
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
