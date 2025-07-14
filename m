@@ -1,58 +1,46 @@
-Return-Path: <stable+bounces-161824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66685B03AD2
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 11:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E12ACB03B29
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 11:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF0323BAA2D
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 09:30:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD5034A0054
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 09:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4A323C503;
-	Mon, 14 Jul 2025 09:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b="Bq/RqKlb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4A32459E1;
+	Mon, 14 Jul 2025 09:42:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-o94.zoho.com (sender4-pp-o94.zoho.com [136.143.188.94])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACF221C174;
-	Mon, 14 Jul 2025 09:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.94
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752485433; cv=pass; b=Fq7TbYU7f/Qs/wGdUtjy3ZXwLWEkpQM6YTwyj11XOe1jDuEudQTdc7p7RT1Y+xmiYxZbMZVKuf9sxXmCEn6KUiGDiyo7SIjIbVwe4E4aiIlAdh939Vwhy9MmB0c5g+bd4tsmXkVZ9k1nVIEptOwOgQv7lYlid29NKS12m0j7M+Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752485433; c=relaxed/simple;
-	bh=0viVw14qLa+IIUKZf23RNEgmHcGaOEDjZy5FdVzfuB8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JmR1pMNZ6G2n166AD9mlpbx8fB7bPg6i6NyNOCVjgJ89n5IEV8rqyZfhrfvzcgwVtEll1lAt2nIgGfbMjCv6Gkh1d1+chbu1kPnKNZhZMp+ycigI7aQP0qNmGxGpWlwkg1pPTo6bTbQDux4zDtSaHqreqYuhlFhlRRpULgczIp4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b=Bq/RqKlb; arc=pass smtp.client-ip=136.143.188.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
-ARC-Seal: i=1; a=rsa-sha256; t=1752485407; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Lkjpl+d5f8l8xdYgnWp8IKWtj1jBrzxKAfy4mdX9qQ32hSRgThY4CKRFNDmzVXQpHBUnryctvmTV6oSoEmHDdaCqXjmk5WveUJLR3xCWhU+UuLQS2OWQtdIl8d8WPiCSoDjCYjc4f+pTphC8xNZDetaGsVNN7KFHm62nCM3NmIc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1752485407; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=z22yQXuLYE/Mv13/zs5rlwmEVg1w4jHq5ZFpK/GGYnw=; 
-	b=Y5xwRom7qOWSMuKWgwQm38JfM3ewbLobVsa3Zma0ZwARsqcbQFMnT2MZTrbe0UOy2dnQJjd+oAiIyQw2Uth1FNqZjsw8Woh1soi8M9aZ3v9vtzYQ9CVSC6oQspITAHozDbEd+EBpsNpSl3FPW+NSmOI0eulFL4X8iTW45IX7KYs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=zohomail.com;
-	spf=pass  smtp.mailfrom=ming.li@zohomail.com;
-	dmarc=pass header.from=<ming.li@zohomail.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752485406;
-	s=zm2022; d=zohomail.com; i=ming.li@zohomail.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
-	bh=z22yQXuLYE/Mv13/zs5rlwmEVg1w4jHq5ZFpK/GGYnw=;
-	b=Bq/RqKlbo3w4Lzb6QIcJ5U0dMk/v9++6OEqk/j03Tff0bpZ1wl00gDpPjlTSu5sg
-	V9HkiMfGc74BZS0AixWEPBtTSsIHDutkdATwgBvL1ltOJElGl9LowJBPj5vIrdnsIIM
-	O1apupA6oI7E3VuyHQ0nPG63TXzzShg+1QvnHHrg=
-Received: by mx.zohomail.com with SMTPS id 1752485403948754.1647085662507;
-	Mon, 14 Jul 2025 02:30:03 -0700 (PDT)
-Message-ID: <ada3b3d9-3e79-4f51-b0ea-baa11f1b2bbb@zohomail.com>
-Date: Mon, 14 Jul 2025 17:29:57 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F269A2459DC;
+	Mon, 14 Jul 2025 09:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752486136; cv=none; b=jqW7e/y0bXdT6L5nbrYa3BCyRKCQ/jXgP++wzHW5jpTt552wtmNb6sMqVJQbgy/27ozVsP2iqwEjkwVNDzK12k3+FYZNIwCIbDx0pGGi8gwdwmh28pt6z1t76L6q335RVtrhRb0l1HspkXuGd04a84mOanP2eoUJcKmVYaO8LFM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752486136; c=relaxed/simple;
+	bh=NtkYmkh+MWKkc3tiz4++RahH7N+j3NrwtINdVItqgGc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jrPYGH+Q+WFJ+3X8gJNhe+JxtTGPJ/T0jCjrM+gNbxVLrA+SbWhdUj+GMw+6RfU8gg0ZTvLJlPLuwL9Nn1tHnhZP5ncOl4SniQ9ql/ZlbE268vF106HUiTWDlpu4jvwFteDkHsSP7PijRsuo9IMAEdkGe2iwABCS3mkY68Bh7hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4bgcnS34D0z2YPrJ;
+	Mon, 14 Jul 2025 17:43:08 +0800 (CST)
+Received: from kwepemo200008.china.huawei.com (unknown [7.202.195.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id C6F441400FD;
+	Mon, 14 Jul 2025 17:42:09 +0800 (CST)
+Received: from [10.67.110.83] (10.67.110.83) by kwepemo200008.china.huawei.com
+ (7.202.195.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 14 Jul
+ 2025 17:42:09 +0800
+Message-ID: <10baccb6-f00e-4911-a3ec-8d28aec67b13@huawei.com>
+Date: Mon, 14 Jul 2025 17:42:08 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,61 +48,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cxl/region: Balance device refcount when destroying
- devices
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
- dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
- ira.weiny@intel.com, dan.j.williams@intel.com, rrichter@amd.com,
- zijun.hu@oss.qualcomm.com, fabio.m.de.francesco@linux.intel.com
-References: <20250714091654.3206432-1-make24@iscas.ac.cn>
-From: Li Ming <ming.li@zohomail.com>
-In-Reply-To: <20250714091654.3206432-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v5.10] vhost-scsi: protect vq->log_used with vq->mutex
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: <mst@redhat.com>, <jasowang@redhat.com>, <pbonzini@redhat.com>,
+	<stefanha@redhat.com>, <virtualization@lists.linux-foundation.org>,
+	<kvm@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20250702082945.4164475-1-zhengxinyu6@huawei.com>
+ <2025071002-festive-outcast-7edd@gregkh>
+From: "zhengxinyu (E)" <zhengxinyu6@huawei.com>
+In-Reply-To: <2025071002-festive-outcast-7edd@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Feedback-ID: rr08011227cda918ae3a36950e7e4eba90000036761418356bc7ce59264f6f2c88af6ae760e84c7d35465815:zu080112271d08ad947e296a6c4f35997300006b313e96501b4b2d38f9fefdfec798f44da6d688199d67bd63:rf0801122de93c9513d46e2ad2d76d99d20000c38db3e85870edecaa6517ea6dd5f6b02422d9d4215971af6f0daae7e20ec4:ZohoMail
-X-ZohoMailClient: External
-
-On 7/14/2025 5:16 PM, Ma Ke wrote:
-> Using device_find_child() to lookup the proper device to destroy
-> causes an unbalance in device refcount, since device_find_child()
-> calls an implicit get_device() to increment the device's reference
-> count before returning the pointer. cxl_port_find_switch_decoder()
-> directly converts this pointer to a cxl_decoder and returns it without
-> releasing the reference properly. We should call put_device() to
-> decrement reference count.
->
-> As comment of device_find_child() says, 'NOTE: you will need to drop
-> the reference with put_device() after use'.
->
-> Found by code review.
->
-> Cc: stable@vger.kernel.org
-> Fixes: d6879d8cfb81 ("cxl/region: Add function to find a port's switch decoder by range")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/cxl/core/region.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index 6e5e1460068d..cae16d761261 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -3234,6 +3234,9 @@ cxl_port_find_switch_decoder(struct cxl_port *port, struct range *hpa)
->  	struct device *cxld_dev = device_find_child(&port->dev, hpa,
->  						    match_decoder_by_range);
->  
-> +	/* Drop the refcnt bumped implicitly by device_find_child */
-> +	put_device(cxld_dev);
-> +
->  	return cxld_dev ? to_cxl_decoder(cxld_dev) : NULL;
->  }
->  
-
-It is not needed, because cxl_port_find_switch_decoder() is only invoked in cxl_find_root_decoder(), and cxl_find_root_decoder() is only called in cxl_add_to_region(), there is a __free(put_cxl_root_decoder) in cxl_add_to_region() for the device dereference.
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemo200008.china.huawei.com (7.202.195.61)
 
 
-Ming
+
+On 7/10/2025 9:41 PM, Greg KH wrote:
+> On Wed, Jul 02, 2025 at 08:29:45AM +0000, Xinyu Zheng wrote:
+>> From: Dongli Zhang <dongli.zhang@oracle.com>
+>>
+>> [ Upstream commit f591cf9fce724e5075cc67488c43c6e39e8cbe27 ]
+>>
+>> The vhost-scsi completion path may access vq->log_base when vq->log_used is
+>> already set to false.
+>>
+>>      vhost-thread                       QEMU-thread
+>>
+>> vhost_scsi_complete_cmd_work()
+>> -> vhost_add_used()
+>>     -> vhost_add_used_n()
+>>        if (unlikely(vq->log_used))
+>>                                        QEMU disables vq->log_used
+>>                                        via VHOST_SET_VRING_ADDR.
+>>                                        mutex_lock(&vq->mutex);
+>>                                        vq->log_used = false now!
+>>                                        mutex_unlock(&vq->mutex);
+>>
+>> 				      QEMU gfree(vq->log_base)
+>>          log_used()
+>>          -> log_write(vq->log_base)
+>>
+>> Assuming the VMM is QEMU. The vq->log_base is from QEMU userpace and can be
+>> reclaimed via gfree(). As a result, this causes invalid memory writes to
+>> QEMU userspace.
+>>
+>> The control queue path has the same issue.
+>>
+>> CVE-2025-38074
+> 
+> This is not needed.
+> 
+>> Cc: stable@vger.kernel.org#5.10.x
+> 
+> What about 5.15.y and 6.1.y?  We can't take a patch just for 5.10 as
+> that would cause regressions, right?
+> 
+> Please provide all relevant backports and I will be glad to queue them
+> up then.  I'll drop this from my queue for now, thanks.
+> 
+> greg k-h
+
+Sorry for forgetting the 5.15.y and 6.1.y patches. I will resend it as 
+soon as possible. Thanks for pointing out my patch format error.
+
+Xinyu Zheng
 
 
