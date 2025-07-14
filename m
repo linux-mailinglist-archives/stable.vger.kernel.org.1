@@ -1,159 +1,133 @@
-Return-Path: <stable+bounces-161833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33CD2B03ED4
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 14:37:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7DAB03EDF
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 14:39:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D3BE1749F4
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 12:37:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A29721897E6B
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 12:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02514248894;
-	Mon, 14 Jul 2025 12:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848BD225771;
+	Mon, 14 Jul 2025 12:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ns/X6vcH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iOuHotqw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A09C239E69
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 12:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C01D24888F;
+	Mon, 14 Jul 2025 12:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752496630; cv=none; b=qSQ1ux5JNZRCvF8U78fPC/hdv0omkSvjijR41CInt6HTRB9IgyMSeFUI9gQFVzCFclJboPfAgCuiIoEoOGNVXn/66Kvd4KS+cNDsIxdWAIODfbEo4vn3d9scWnAEkxuaEeuHH0Q+2uPhSkEYruikIp4qPxqAUilNwdepYoGbWGM=
+	t=1752496765; cv=none; b=oQBa6rm5ik9NH1Zf2TQjEInOI86vvyYOPdI0hgGXQuvrRgIKxUszeB1Jmge5tYwSpgTM3yDWuxD96o0OF2BPzRQteDakR07gIiZ0LNGjHjB6oJth1+1wbURw6OBH0uTeOcGXmIHAtWT6f4r5ZvB+CYBfSSR+jVLXVu7M0bZh5mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752496630; c=relaxed/simple;
-	bh=ze70y/U4LiuMguEZ/qbQTQRs/404X4FXJWc3lUugnLc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xzu3SzGRWx55mLetHjc8Qoj+68eectJJrn5AksFemtpWQXb1MLg396G6+fuP3si6vkkAQdSvhR2eh+M5uOmjulkafBGXNbd8OkQX5orAD6N8twSghybNovyLbZPB0RoPCo+pKKD940SbwpTdrhQRZvAj4Ti/FJqAVAaSwn91Jx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ns/X6vcH; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ae0bc7aa21bso893433866b.2
-        for <stable@vger.kernel.org>; Mon, 14 Jul 2025 05:37:08 -0700 (PDT)
+	s=arc-20240116; t=1752496765; c=relaxed/simple;
+	bh=TnP+vFs7IXRlmpvE3Fk2ALLQD/fNY7FOCcgBNk0jD4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LUmA2+bkKDEzOId1QGcd2yf5fub+QQOLRWv56zAiot5clXmHfI3OlEUYzlkGBIsn/PPo3rvq177sI3HRtMHiii0bopi/c3+fw+cLqUBMmXuYeD2sbLaOgAfPxByzr6DWRFfQT6+bcrP10/NX3w89DBZT8XixzGQj4OM8xbAlXQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iOuHotqw; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-451d6ade159so30763065e9.1;
+        Mon, 14 Jul 2025 05:39:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1752496627; x=1753101427; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1752496762; x=1753101562; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mxQWwN5893QgqEKCT5i+8flzUyp8H+JAUyY8KUUtFSI=;
-        b=ns/X6vcH7/a9HKPSi/1JrGtCGOmx66CKvjHInTAJv5EEUUOrBQPtUf2XUyQXEhKn13
-         5x5SLN0Z1l6Vva4K1JJSb6ypwg+tEIc/QpMyYsPeHUs5EpgouXxcH0QXFlSuQ95OBCmn
-         BMOdyvqWHxfgjaRoLL5+zA4nqRSEKwNLzL2+s=
+        bh=Hu7d6TzejWOVv1PWLxvsbY8Bo8x9azrAfli/oRpw5r0=;
+        b=iOuHotqwLPBPZKpXHIamngyTskvsjOfEjbvFdnYI3j16Un+/Fbxh2IHFBvjX01nT0u
+         H4NXCu/42E/H4iOUf/rguzZ8bbjnDQL6YcflYZtfFztNQXz8tJMteI9yUUNk6kbFO9R4
+         7bLAbhtWe04h4YkES7fsog0T8xxIminv3wE9McY1keb1EDeTodJMP2kNZuoM5u8nFrbW
+         zTeVDm/jW8JeGLqiUJ4bkxI8jhHbHtUQtDO2KOapJPsy/xe21rvpghO0DuX1o8/JxJ10
+         ttlduY3VzVO/EIp7gxxVogI1DKlVe/2yWpRyoSXYx93bX9dCXm0GGa64mB2RdZC33n9C
+         ocag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752496627; x=1753101427;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1752496762; x=1753101562;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mxQWwN5893QgqEKCT5i+8flzUyp8H+JAUyY8KUUtFSI=;
-        b=Ga33u5qJxxffcOsfcFv0aVGZulTsBmzh3qnegTRmKIYkVHhsSmUO/rg4+1S3gFuhS3
-         h9Uby5u8mU1LPvwYp5TEjhUlQTcGL1fYXgIMxosUsCZk6/q9Ye8FD611tj64S7cL9U7V
-         PChifQjK14uYonLh1OlVQkpY+KsmbNc+nwWlsPc9Y+32MJLPGinc66TcK5ErdTP4Sn0A
-         BOpSAzNArv0RrsnieJaReWJJz3BtA4rDZdcKXlyd7zkxxdhZI670twrQdsfY3gqoaBep
-         cNr532UoKKrVqbA5yRgPEGb/0evXLgRIwEyGu5gEKi2sbgYDdOE2I1YB5jn3bsnr9/mc
-         hXMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWoqzAxH6YeCRMdfNzFlwEiaGdopSAeUQOlUiHGuaKD5KvLwkH3v60hZ2eDnssKyY8tBMoax0M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoU49aX/XK22MpnzinY0YRZFtIrJy6b6jRdWlMxKpp0bSSbzMa
-	tOC7aBTA6+uscy1dqreTYDM4Wg3CpkUcJUmyD1eKD6lDgaW8YC7eht3PjejZkGHCUH6lFGt//PL
-	17fQ=
-X-Gm-Gg: ASbGncs5+CxlzngNbPjyvwFjCoVdeSi4lQYPcGfPmep3flFtep5MQcL72updAugWq/8
-	WSoTxYwyV+l919RRQF/KM/o5mdt9UIz271INCG2lZaS1sHrnLn93iwqCTKGui3uNr3b2pNs/Fkv
-	syQQc+YQhJnomXLjKD2BOw+KYaUPdu2+a7tkdJCBdwqmZddzd47fDeIr4djOpWnCLxGl4x2vneO
-	4SIYxc8SZX+R7yiKWJo00BvTcvlsEkKgBnyWLFlYglh4BHNkDcXVc4+OgTiM9Q/W7Kpv0MTfoQa
-	nH0qvk9cj5o17l6Xl35yB6huXwOZNPCkDZbmAjxwMbJVeKSxmFNRgQUMMVe2qkepGRjXJbI0v3w
-	tokw6TXsFtEbuK2rzB3YjKdhEPF3T9WAek7Bxe7S1gAmhaoTS2JlQZSRNHTjnsW2h
-X-Google-Smtp-Source: AGHT+IFinS6UnhS+4UmDcxWcmfCuNtPSuyhQlTZeWp3B8XNS9JGlDS2BG/LKWqR+hBYlCBe5tqRoGA==
-X-Received: by 2002:a17:907:6e90:b0:ad8:8719:f6f3 with SMTP id a640c23a62f3a-ae6fca5bb7bmr1395424766b.22.1752496627081;
-        Mon, 14 Jul 2025 05:37:07 -0700 (PDT)
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e82952d2sm824155966b.140.2025.07.14.05.37.05
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Jul 2025 05:37:06 -0700 (PDT)
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-60b86fc4b47so13090a12.1
-        for <stable@vger.kernel.org>; Mon, 14 Jul 2025 05:37:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUTvxBi4V7AI73EtN3w+fBeCe7oJOSbcddTh5PKwJon4EJB5McR3DoyQ8LcMYSzMCuDL5Sm7Xg=@vger.kernel.org
-X-Received: by 2002:a05:6402:5242:b0:60e:3d45:c65a with SMTP id
- 4fb4d7f45d1cf-6120ca85d1cmr158081a12.5.1752496625328; Mon, 14 Jul 2025
- 05:37:05 -0700 (PDT)
+        bh=Hu7d6TzejWOVv1PWLxvsbY8Bo8x9azrAfli/oRpw5r0=;
+        b=XMZZfBOAeMirZNonGU0A0vzWsJQNmSnuB6x/MfhZUvNkmLQFsBQcUYySOUJ9vPj92M
+         cp1HzpL0Kv4aZJ2tmyAJTB+gac1Hi5K4q6G5WF/HKwyquvWjAk3hLn2y9yS9KnQUDBTF
+         MhbF/cIzkNzuyLja3Y8mo5dn+mriztTmR+OKAImJGFrNDVu/rcdlwVBPjG7bR+amFSOe
+         h6cascrK2Z0Z7FK5nzdqGpxZ+9V+nYiwaVmIJRkoXLtBbbZeSNaDy9yiCPcecIdYAX5J
+         ub6pwolsMO+bQ1zt6EmKus4WIhY/Yg8RF7a4yWiVZLKbrofNg/TGVTaQHe0u/7dSNupa
+         aUUg==
+X-Forwarded-Encrypted: i=1; AJvYcCV1EhBwNKAgoJa6l1XQUcQ39HmHqDGk9GtpE9zj3VwFyWAeX1BeyH8AWPNKO59VFpazMZZTrkGAiZVNx2U=@vger.kernel.org, AJvYcCVnl9D38y2Zd93PkByS4GMU47SH5pGn/kuNRhAAcLPvHrGUQ5z77n3M62XR0a28AgSW60m0qT2Y@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZfgl9L+RIrEAEakakYuYADS6ee/QDNWcptfjDfKjeKQh+FOW7
+	RpPUZwWgJvOrZ2KA9hyGBKZBjc3j+t1qUFe9HJrktFEycThW8LjVWuun
+X-Gm-Gg: ASbGnctL39od5sP58nXXOkqz5Ntbl15rzEDXuQjtSwX6jDG2GP+wUT8VkgGa+4V+M2V
+	eRo+jOnPGTf2I1Hl/v1hZV3OicV1V5kvQrV5JO0OiI/tOftgVAsowaJUh6++149ryg6YsCv0QbB
+	xsJkRHUlwsCVIIq4g4BySdp1mZcWlNE/PBzqnvabujpiNFx9QNZtf8/EN8hA1yaDWrMfCTBSNJw
+	B3UFIqjNKp0Vy0MQ141KmEffU4eedx11D9jYhyAOljEHTAmnC83H4+mImofyKBwcIFSjGefnuuY
+	JwuTqNjJPjxKd/uJ2W2Ts5PEY4i/TDvns19fhbyny6mYnuo+7J98H0PXeRIgLomCTSl9v/fyJ2z
+	gcHWZOhI/bbOIJh8GxfZjclxFZhUcXi9+HcRthzutWOp27DC9LQQcBBN5ETzMI/DIeo3pq8s=
+X-Google-Smtp-Source: AGHT+IGYYRHzkc0tCtHZgZ1HBPkUbfByAJiZ46m1oEz+lW6gbL5TanX3NgxDe/beQeMjz+LASAM6nw==
+X-Received: by 2002:a05:6000:5c2:b0:3a5:2b1d:7889 with SMTP id ffacd0b85a97d-3b5f2e26c9cmr9474793f8f.43.1752496761755;
+        Mon, 14 Jul 2025 05:39:21 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8e2710bsm12288225f8f.99.2025.07.14.05.39.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Jul 2025 05:39:21 -0700 (PDT)
+Date: Mon, 14 Jul 2025 13:39:20 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: jacob.pan@linux.microsoft.com, Jason Gunthorpe <jgg@nvidia.com>, Lu
+ Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will
+ Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Kevin Tian
+ <kevin.tian@intel.com>, Jann Horn <jannh@google.com>, Vasant Hegde
+ <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>, Peter
+ Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>, Andy Lutomirski
+ <luto@kernel.org>, iommu@lists.linux.dev, security@kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] iommu/sva: Invalidate KVA range on kernel TLB flush
+Message-ID: <20250714133920.55fde0f5@pumpkin>
+In-Reply-To: <42c500b8-6ffb-4793-85c0-d3fbae0116f1@intel.com>
+References: <20250704133056.4023816-1-baolu.lu@linux.intel.com>
+	<20250709085158.0f050630@DESKTOP-0403QTC.>
+	<20250709162724.GE1599700@nvidia.com>
+	<20250709111527.5ba9bc31@DESKTOP-0403QTC.>
+	<42c500b8-6ffb-4793-85c0-d3fbae0116f1@intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250707-trip-point-v1-1-8f89d158eda0@chromium.org> <2025071012-granola-daylong-9943@gregkh>
-In-Reply-To: <2025071012-granola-daylong-9943@gregkh>
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Date: Mon, 14 Jul 2025 20:36:29 +0800
-X-Gmail-Original-Message-ID: <CAHc4DN+kb8w+VVX0XAfN5YVo9M+RBatKkv8-nOiOTA+7yZjmfA@mail.gmail.com>
-X-Gm-Features: Ac12FXyVzm_ojEyrAQbgVa06K6s51wQivdJmMs1O_Fv6DwV3kcnfZgVpo_aFCek
-Message-ID: <CAHc4DN+kb8w+VVX0XAfN5YVo9M+RBatKkv8-nOiOTA+7yZjmfA@mail.gmail.com>
-Subject: Re: [PATCH 6.6] thermal/of: Fix mask mismatch when no trips subnode
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Hsin-Te Yuan <yuanhsinte@chromium.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Amit Kucheria <amitk@kernel.org>, 
-	Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 10, 2025 at 9:33=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Mon, Jul 07, 2025 at 06:27:10PM +0800, Hsin-Te Yuan wrote:
-> > After commit 725f31f300e3 ("thermal/of: support thermal zones w/o trips
-> > subnode") was backported on 6.6 stable branch as commit d3304dbc2d5f
-> > ("thermal/of: support thermal zones w/o trips subnode"), thermal zones
-> > w/o trips subnode still fail to register since `mask` argument is not
-> > set correctly. When number of trips subnode is 0, `mask` must be 0 to
-> > pass the check in `thermal_zone_device_register_with_trips()`.
-> >
-> > Set `mask` to 0 when there's no trips subnode.
-> >
-> > Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-> > ---
-> >  drivers/thermal/thermal_of.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.=
-c
-> > index 0f520cf923a1e684411a3077ad283551395eec11..97aeb869abf5179dfa512dd=
-744725121ec7fd0d9 100644
-> > --- a/drivers/thermal/thermal_of.c
-> > +++ b/drivers/thermal/thermal_of.c
-> > @@ -514,7 +514,7 @@ static struct thermal_zone_device *thermal_of_zone_=
-register(struct device_node *
-> >       of_ops->bind =3D thermal_of_bind;
-> >       of_ops->unbind =3D thermal_of_unbind;
-> >
-> > -     mask =3D GENMASK_ULL((ntrips) - 1, 0);
-> > +     mask =3D ntrips ? GENMASK_ULL((ntrips) - 1, 0) : 0;
->
-> Meta-comment, I hate ? : lines in C, especially when they are not
-> needed, like here.  Spell this out, with a real if statement please, so
-> that we can read and easily understand what is going on.
->
-I will change this in v2 if we end up going with this solution.
+On Wed, 9 Jul 2025 11:22:34 -0700
+Dave Hansen <dave.hansen@intel.com> wrote:
 
-> That being said, I agree with Rafael, let's do whatever is in mainline
-> instead.  Fix it the same way it was fixed there by backporting the
-> relevant commits.
->
-> thanks,
->
-> greg k-h
+> On 7/9/25 11:15, Jacob Pan wrote:
+> >>> Is there a use case where a SVA user can access kernel memory in the
+> >>> first place?    
+> >> No. It should be fully blocked.
+> >>  
+> > Then I don't understand what is the "vulnerability condition" being
+> > addressed here. We are talking about KVA range here.  
+> 
+> SVA users can't access kernel memory, but they can compel walks of
+> kernel page tables, which the IOMMU caches. The trouble starts if the
+> kernel happens to free that page table page and the IOMMU is using the
+> cache after the page is freed.
+> 
+> That was covered in the changelog, but I guess it could be made a bit
+> more succinct.
+> 
 
-`mask` is removed in 83c2d444ed9d ("thermal: of: Set
-THERMAL_TRIP_FLAG_RW_TEMP directly"), which needs 5340f7647294
-("thermal: core: Add flags to struct thermal_trip"). I think it's
-beyond a fix to introduce this. Also, there were several conflicts
-when I tried to cherry-pick 5340f7647294. Compared to a simple
-solution like setting `mask` to 0, I don't think it's worthwhile and
-safe to cherry-pick all the dependencies.
+Is it worth just never freeing the page tables used for vmalloc() memory?
+After all they are likely to be reallocated again.
 
-Regards,
-Hsin-Te
+That (should) only require IOMMU invalidate for pages that are actually
+used for io.
+
+	David
 
