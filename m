@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-161805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7C4B03759
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 08:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FAAB03763
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 08:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E681F7AB5CC
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 06:45:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE94A7A4A75
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 06:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5731F3FC6;
-	Mon, 14 Jul 2025 06:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869562264CE;
+	Mon, 14 Jul 2025 06:50:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6941CD1F
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 06:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B26218827
+	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 06:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752475585; cv=none; b=ssRrRJD1b69O3Afdyh7xegpPNBsNUIng/d8un/rLNYVHbsDSw1YupL7eaezN8huZuftUUw5vYUPuF3QGk9z7JQHAK5+qEcqbT8ywG5BA5LeK63XzKr2wSAJRX1TglEm3vXIeVf4Iz79VFtLrd+/84DHV/xEufg7nS+CRL3tFbf0=
+	t=1752475806; cv=none; b=d8cPPG8AQGKkE6hLwjbFUW28TvLcMe99S8cLpGBOLrJQyhHVdyN9TO2eTB6K10ryoQm/WSibdSoAIEqU3KwO4Hw/0SvVSTJKfva5o2PPVauw28FCHR9KrsK8ysI7N2dyXM6+skNSBWKhyLOU5FXoliyQSRAPLrAwMnX+w7czy90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752475585; c=relaxed/simple;
-	bh=zugDobkgVmIGPx+9HOr18ZQP1YebPEC+f2NyXkaylZ0=;
+	s=arc-20240116; t=1752475806; c=relaxed/simple;
+	bh=9Uh3r+eRCP8/5sfGbSFtOEOmG7Nl+ZoP3x/eWiDsj/4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eyxo+0wIaKqGDoZ8Y5EsjewV53F38BcP45EzUNJe15+mI5QdbygH7nEtcGaz8j/2+AhHz7q9+rp+91llwKn6YxvLY/3Gn08hpFm4kG9bcNYvjhfcPQqmj4+kCnRmhax3JwoNUz+sADLju6ueT/jtJTf5/meq9tV6mzbr27wMbpk=
+	 MIME-Version; b=ALV4VkPASn1WUjrCehNaK8Qz72HBt5PBzTjifzPbFTxeZuY+HoTvt0NIIZk1u6ZlQ1xKzgM0M/p4fChH+LeoPZ5vnvo5kZNLL8xujw8zCqb9AexYtNU/IlTmdU25dWmIq0chWqYd1zs5rsvCCPhh8hINupsse9xxb4Qk48Zuj0w=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3761E1D70;
-	Sun, 13 Jul 2025 23:46:13 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4B27F1D70;
+	Sun, 13 Jul 2025 23:49:54 -0700 (PDT)
 Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C0F543F6A8;
-	Sun, 13 Jul 2025 23:46:20 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CFEF93F6A8;
+	Sun, 13 Jul 2025 23:50:01 -0700 (PDT)
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: stable@vger.kernel.org
 Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
@@ -46,12 +46,12 @@ Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Vincenzo Frascino <vincenzo.frascino@arm.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12.y 1/1] kasan: remove kasan_find_vm_area() to prevent possible deadlock
-Date: Mon, 14 Jul 2025 07:46:11 +0100
-Message-Id: <20250714064611.979679-1-yeoreum.yun@arm.com>
+Subject: [PATCH 6.6.y 1/1] kasan: remove kasan_find_vm_area() to prevent possible deadlock
+Date: Mon, 14 Jul 2025 07:49:59 +0100
+Message-Id: <20250714064959.981387-1-yeoreum.yun@arm.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2025071347-compel-crate-aeba@gregkh>
-References: <2025071347-compel-crate-aeba@gregkh>
+In-Reply-To: <2025071347-pregnant-dismount-40e9@gregkh>
+References: <2025071347-pregnant-dismount-40e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,10 +101,10 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  1 file changed, 2 insertions(+), 11 deletions(-)
 
 diff --git a/mm/kasan/report.c b/mm/kasan/report.c
-index c7c0083203cb..5675d6a412ef 100644
+index 465e6a53b3bf..44636fa953a7 100644
 --- a/mm/kasan/report.c
 +++ b/mm/kasan/report.c
-@@ -398,17 +398,8 @@ static void print_address_description(void *addr, u8 tag,
+@@ -385,17 +385,8 @@ static void print_address_description(void *addr, u8 tag,
  	}
  
  	if (is_vmalloc_addr(addr)) {
