@@ -1,144 +1,106 @@
-Return-Path: <stable+bounces-161848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0ACB040D8
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 16:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F0FB041A2
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 16:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9E6F166398
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 14:00:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 458031740B4
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 14:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8435D2222A6;
-	Mon, 14 Jul 2025 14:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99F0256C9C;
+	Mon, 14 Jul 2025 14:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZURt12En"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uAGeiYYl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8718F25487A
-	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 14:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB0E1EC014
+	for <stable@vger.kernel.org>; Mon, 14 Jul 2025 14:29:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752501612; cv=none; b=QGn7tCf3ZNh+YUs9gSux27LFHkoOqX9qf4Pbl0YRwgLlkMecy0mqMiN6xAjA3IDc9tVGCSabuPXK52ewAY1VcTLSsyQE9shNag+7QHwgAw1yLj7Ymsq1rItGcLNsCYSYitR+XWJCYQO/3CdFJ/DF/mljh0iYg7VdZdweT8e7qAc=
+	t=1752503387; cv=none; b=T4c0oXgW8tJvM9+sRGWGA/ziLUfI+nuY3zGLypCs3/WzGIdmHx+CFmIbUsmcmQ9tkonmnGs5BTPbLdVCwW80lieHn3MnsDNEzJflXSGHF7JQira13SlGWYpfKINTQaDviV4IVv/3bGRanndvhJ9nX96A6nngvAGnSv2MO7dMUzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752501612; c=relaxed/simple;
-	bh=gi5jLndN60r1GCzdNcPmMBCx/qoYpFg7MWyfJhfkABg=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFSSXPscgqfF8AfoFT05KH1ngh2hgrB37ZbYe7hDwlUJNP+kYe8xCWUMteiYOiowoDTZHUwPJJnjLh8keDw6XQ96fx2MToA/DaaXeGI3YKmHdFhviJ0FMNXNPUSenLDblMidLla/kUny8qDqm2z7ICcFQnqGI+jIBsox4sE90qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZURt12En; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1752503387; c=relaxed/simple;
+	bh=ufySmEqBbtquRctyHihRjgUCBqAXenXpl+S/YpUoETg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=q2oprc6KlTaMv3khD2Y2mTZh2Aa0JF50HJMMjhfXMv3aL4jhwiEugP/mGsDzqfJznKYANLzRh4Xz2d+IOEzn6oX8+uVMr/b0hu8bFFjkXV3zZpUyPbXtfT58neiRakKiOFXiwab/Qvvn1GJcSrAFyhlE1trJ0Fd3zIoXDVkdHuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uAGeiYYl; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-456007cfcd7so120825e9.1
-        for <stable@vger.kernel.org>; Mon, 14 Jul 2025 07:00:10 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-31215090074so8362189a91.0
+        for <stable@vger.kernel.org>; Mon, 14 Jul 2025 07:29:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752501609; x=1753106409; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Zp028BzBWMoMJzcM1QZOC4JCXXo0mx5dWlZ0phPXl4U=;
-        b=ZURt12EnAhXgQkMZVo6wcRx+h9Kp4CU7WwMK1YXAz4Zkz7QqjoZUIT092ckEGBQyCr
-         uZkbVN9UVdwMLdqDUMJdCvbrc1X5GLRov79TsEY4O1McqLCsl3YMd13QsBrbuNAoJlkl
-         I62hZPHUYsApGVnwWvGOUP4zJJJGTZAZREQqQkSd4LsXnM2cvoaUrO+JenvMN89dnlL4
-         h7JdqqVTixHE7KIbdweoim4Q2M8muzL/AYKs94mr2wUm0Um+HQknusChg/VNp0FgY/Go
-         o8CYQcZxb9TuYWVhp2tezfAOrFLqSEsMh44K3WHnApg07GhvKYBy+sZobJLcx7w+eKc9
-         r50Q==
+        d=google.com; s=20230601; t=1752503385; x=1753108185; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4tygLsD/nDlBf1TdRSRDBMb7SCjx6RmbKyS7KTfm/5Y=;
+        b=uAGeiYYlEN4XcxPWc1DhZ+BblDxuOpENsykrj5Fo/OjMSd+VyUuAbLtLZIDa3/PpS8
+         fE89x5B/KJ4eso9VP4RnwXBvxMl+2pMJcBlJk0Rwyu1n+K+P7k47Y7L29FUvo9zgBjWH
+         tctFQDko7GFoCusCFg+Or8osiMabp4eJGBNDKYgjxDaBaH+k6DQt1Sku977niS3pUUl6
+         AMmz/yHhxwGyRPfkdGU9g4O0+lvsna/KxTOCjPI6EI6i3UUcfuLLJXOu6g+HYKK9VnK8
+         ifTlbptTikje2HezoJ7sVWui1XLRABpbi66W978jq5lrK1BQxoeAgpm7Y0S7HbrvdgJD
+         scig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752501609; x=1753106409;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Zp028BzBWMoMJzcM1QZOC4JCXXo0mx5dWlZ0phPXl4U=;
-        b=YHV7jIFEtlYK+DvhywZbQwuH/ceNWj451umwV46cOVPUdyxYn9RJNxQtDH4z8wwF9V
-         iF2RQQ/Na506OiYQSaPuXYho+U0nl+hPcVxUru87LcGZI7YqbKCcrKakyJ3c4UOC2Wl7
-         cUqaikzp68trMXpQwo/FRFX4x2RUvMkwDzGmU5bKqZ0Z+VW66WlMbMnEbXzfETSAWnb6
-         WVQmh9kp1PGP8bp0Yt4xAZ4PlQ1r0BP+QJ3wCAhrtCsWvU7IbJ/w7IL0QFniXZBTWI8S
-         gn1WtmrYZUECBjaJhs5HUblFQX6DqXQeiMUcVVhfJsd9DwTNugo66rJ1dMzj5lhOsN9W
-         UdAA==
-X-Gm-Message-State: AOJu0Ywvi9/X//6ZWczNhDkYXAvzqxtSHYJaT0kqyD78mUHhJYhnodEY
-	TYnlTFN/4BbLQvdsTl360ZfryLAbplKp/mtat2JrHRPAIZROnlhoS/8lKdJ4lC+hyCvbcv+RP8D
-	uBuXWaYHV
-X-Gm-Gg: ASbGncvSsXvoa/k6Q2NQcIbvihqzSWwHitUw9GuGk4j4YhETo8mZAfb1TT8iLe5iWGP
-	f0ZyzzctBTArRgGeUsoKtqzzR3DK31qJjFNzoYrmi4ZPr0U2r67/5O2xx/Ifs2os5HAPrQ+A7sb
-	+KoEwbg/4yOEXz9BiwYjfkfnqFzzsA4kDFU89k032JgcUMXg1GEbzsMlv08ZNgBixO1jcOHBfH9
-	kvQi69dvCyXBRhAKT76xutGmE8DSPFuvs7ekPPeGB4C1cpbe57MP1WPiouoiwfW+jto/Yl6H9zc
-	ZnsVqW057h3W1wfox6RmFDSwmcAG27u2aCkwdz9n7PcbL4J0nS8cexoAiIULq3Q3CNdtQ3ZAwAY
-	pB+EE5Apc
-X-Google-Smtp-Source: AGHT+IHDOlMR0d0zev1YApSlYdsjynsBkgM7pPH4/a11qa+hAa2BHqJXThIMtVE3hR5/PTnbPHUFSA==
-X-Received: by 2002:a05:600c:8589:b0:455:fd3e:4e12 with SMTP id 5b1f17b1804b1-45600886fb5mr2381955e9.4.1752501608359;
-        Mon, 14 Jul 2025 07:00:08 -0700 (PDT)
-Received: from localhost ([2a00:79e0:9d:4:46a:594a:89a5:b3cc])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b5e8dc2087sm12702902f8f.30.2025.07.14.07.00.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jul 2025 07:00:07 -0700 (PDT)
-From: Jann Horn <jannh@google.com>
-To: stable@vger.kernel.org
-Subject: [PATCH 5.4.y] x86/mm: Disable hugetlb page table sharing on 32-bit
-Date: Mon, 14 Jul 2025 16:00:06 +0200
-Message-ID: <20250714140006.411966-1-jannh@google.com>
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-In-Reply-To: <2025071423-imbecile-slander-d8e9@gregkh>
-References: <2025071423-imbecile-slander-d8e9@gregkh>
+        d=1e100.net; s=20230601; t=1752503385; x=1753108185;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4tygLsD/nDlBf1TdRSRDBMb7SCjx6RmbKyS7KTfm/5Y=;
+        b=uVhe4IAD3vxRr/G2knqsv53OYYu+oMrRCbhWbWwHDDqBE+5w3m9nJ+By78t/ZiTPVu
+         jcRI0kaTRBIlE4s9+N3hw9e3LPjSbOv6dv6w3PFn8HBlJ4qff9gUteZ5eeUEw6//wMSn
+         iQu7Kh/8HhgRi35D+kVJMMUJYI6YYKpOVMM7y1SbeYy6xbSmexz3ULozhcnNAz3x2v6P
+         PBh7PLXC+0Sj8t4N+CIvyxdIup1lrjy9xYG9sPiZZ1bJGRKynS4LwL3LtUi0ENrnKCNw
+         2FLdSDqWA+VbKDIncxSH7GVXKWTudOwFGXy5HuArynyhpsWUMPc6NcGbiDo538EN1vgF
+         71hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW+kTrgSvXtcoLYDPAjesv8eWFriI9wN5c//5PQQdZzMhhZuNsPhQS5dJ5PTSLHJqwAnRfRiWI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfCMGQZNGnyTaP7R6uefZ4tCU3QatJvktmrJGrxPpn0sz8EQL7
+	WPXxul/Uc+LZpZpR4b0TnDxWjNnimPeQUgDpj51gzzXVPZgZUuF+1Prk27dE1KnrdDrorQPK63C
+	1rqyVag==
+X-Google-Smtp-Source: AGHT+IFkGn9Pwfi4frrhWyUFfdwjDug5P0qHJhq+LIZYaS8C2on2pMqnJ55kCHqRmZFrnUCz7f8esSFTOXQ=
+X-Received: from pjmm3.prod.google.com ([2002:a17:90b:5803:b0:30a:31eb:ec8e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3a10:b0:31c:23f2:d2ae
+ with SMTP id 98e67ed59e1d1-31c4f4dc5femr18443109a91.15.1752503385575; Mon, 14
+ Jul 2025 07:29:45 -0700 (PDT)
+Date: Mon, 14 Jul 2025 07:29:44 -0700
+In-Reply-To: <85ple4go0k.fsf@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250711045408.95129-1-nikunj@amd.com> <aHEMmmBWzW_FpX7e@google.com>
+ <85ple4go0k.fsf@amd.com>
+Message-ID: <aHUUWMnTBfcRO7Uj@google.com>
+Subject: Re: [PATCH] KVM: SEV: Enforce minimum GHCB version requirement for
+ SEV-SNP guests
+From: Sean Christopherson <seanjc@google.com>
+To: Nikunj A Dadhania <nikunj@amd.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, thomas.lendacky@amd.com, 
+	santosh.shukla@amd.com, bp@alien8.de, Michael Roth <michael.roth@amd.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Only select ARCH_WANT_HUGE_PMD_SHARE on 64-bit x86.
-Page table sharing requires at least three levels because it involves
-shared references to PMD tables; 32-bit x86 has either two-level paging
-(without PAE) or three-level paging (with PAE), but even with
-three-level paging, having a dedicated PGD entry for hugetlb is only
-barely possible (because the PGD only has four entries), and it seems
-unlikely anyone's actually using PMD sharing on 32-bit.
+On Sun, Jul 13, 2025, Nikunj A Dadhania wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> > On Fri, Jul 11, 2025, Nikunj A Dadhania wrote:
+> >> Require a minimum GHCB version of 2 when starting SEV-SNP guests through
+> >> KVM_SEV_INIT2. When a VMM attempts to start an SEV-SNP guest with an
+> >> incompatible GHCB version (less than 2), reject the request early rather
+> >> than allowing the guest to start with an incorrect protocol version and
+> >> fail later.
+> >
+> > What happens with ghcb_version==1?   I.e. what failure occurs, and
+> > when?
+> 
+> SNP guest terminates with following error:
 
-Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
-has 2-level paging) became particularly problematic after commit
-59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
-since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
-the `pt_share_count` (for PMDs) share the same union storage - and with
-2-level paging, PMDs are PGDs.
-
-(For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
-configuration of page tables such that it is never enabled with 2-level
-paging.)
-
-Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
-Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
-Reported-by: Vitaly Chikunov <vt@altlinux.org>
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Vitaly Chikunov <vt@altlinux.org>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250702-x86-2level-hugetlb-v2-1-1a98096edf92%40google.com
-(cherry picked from commit 76303ee8d54bff6d9a6d55997acd88a6c2ba63cf)
-Signed-off-by: Jann Horn <jannh@google.com>
----
- arch/x86/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index e92b5eb57acd..30e1b61bc10a 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -95,7 +95,7 @@ config X86
- 	select ARCH_USE_QUEUED_SPINLOCKS
- 	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
- 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
--	select ARCH_WANT_HUGE_PMD_SHARE
-+	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
- 	select ARCH_WANTS_THP_SWAP		if X86_64
- 	select BUILDTIME_EXTABLE_SORT
- 	select CLKEVT_I8253
--- 
-2.50.0.727.gbf7dc18ff4-goog
-
+So this probably isn't stable@ worth then?  Because I don't see any risk to the
+kernel, this is ultimately only a problem if the VMM is broken, and the "fix"
+doesn't provide any meaningful change in functionality (the VM is dead no matter
+what).
 
