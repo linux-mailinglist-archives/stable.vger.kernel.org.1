@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-161861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBFEB043A9
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 17:25:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9988DB043B3
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 17:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A3DF4A7E85
-	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 15:22:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8091A4E0060
+	for <lists+stable@lfdr.de>; Mon, 14 Jul 2025 15:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8255262FD3;
-	Mon, 14 Jul 2025 15:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40222264A89;
+	Mon, 14 Jul 2025 15:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cU9/P+kD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFQcd8iz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE342627FC;
-	Mon, 14 Jul 2025 15:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A0126462E;
+	Mon, 14 Jul 2025 15:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752506475; cv=none; b=fSa5Kvq1bMZIYcXh1YG7n0z+ai0UhUDWzGBMZ3CV4yNcnLRDW89GaUbVgfFuAwVt/kgnMpzTSyrOGHjXnfVRPwFIwTeYLPRiqdTcTKihF+nKyRzKLq3DsyCivIlSLJOvBgzkTyVrP2KWq4neUrtYs7O/hQfZaL5+n7vmpGKT6nI=
+	t=1752506478; cv=none; b=FXyRlehl6IMFJAa5ce/xEe6sIld/jjpFw3zArHvrqLv5+11QtcLo5jku701s507lUOt+lDppAlVHAfWc1k9O8s2XsqhTbO0N/EhDrw1wGnisvZNkVSUEdA3VjPj+EmmQT7CiwEX6LLn/8YCgFBmue2KhaAdK/ilqlgNUzq3Z21s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752506475; c=relaxed/simple;
-	bh=iISDn9L+D3wVAHPNNIcp/TCqX/3WWeX/S60myFyZsyQ=;
+	s=arc-20240116; t=1752506478; c=relaxed/simple;
+	bh=oKf208jR2snmwBDg9o+AlVnnid4IgiStTjfyVYgKtp0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fMhqXtVCahyKYTjYBtN+0DhSX/wicKEzjtNzt8CFSI/oZaJzet9mpmwvglDsFaf0/HQ0qq4fckrlR8eQN//Q2sZXgISL7y35mYsZwpAKZSXvpzfE0/tdC52Agr0rTEDyT/Ha9WAKooZaRSOgqLm2uK6iFn1YUEo16RPYd+qOYiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cU9/P+kD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5BEC4CEF0;
-	Mon, 14 Jul 2025 15:21:12 +0000 (UTC)
+	 MIME-Version; b=ApipDRbO4+9PfsDP4mHV5yVOhkSpcpldQtBAimodG/FSyCztYbdE4w8rNQulmBaAC6wQbFsk9inuVgEFF2k3b97aMhwzxZk2Nsv5nLTK5/wHFqid2+EGyj+HUy2sxOVCv7uhJl/UNFAy21NGwx0NcsHaawkmnkMRokpJ1dLsHFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFQcd8iz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60278C4CEF5;
+	Mon, 14 Jul 2025 15:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752506474;
-	bh=iISDn9L+D3wVAHPNNIcp/TCqX/3WWeX/S60myFyZsyQ=;
+	s=k20201202; t=1752506477;
+	bh=oKf208jR2snmwBDg9o+AlVnnid4IgiStTjfyVYgKtp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cU9/P+kDTb3VLqs+GQ/BAkKRBw8CyTjCxzTm4rbVmE9cIWhZ4tsKrFOnsr/NQYfBB
-	 ybyjk5TUFAgVXnNH5DpiiB9cB9aiXnwWWyjwksYKFN8scGaawPY3rouhHjfngKZXl+
-	 xAXw9D7iQh0nCLmI/e6D3/vW0qw+E6ZFx7vLFPmiAqMZpUvF3W5Gk4vexxtA/PEJZw
-	 S3/nPh1QtzuTAnr4ghzxr5/F32KE4W5EG9q5GWuJ+VArWqTPkBP/4LFSJAklps2/Fm
-	 UXucZZKDy20diWMOfEexVZv+Qhp7VlnBD7gSfyrBbOH4sNzQEq8rJQIU12aQ5/Szyt
-	 tJ1A+drGgRUoQ==
+	b=BFQcd8izY8tenB38W6DzhOcXP2i3ZQLYLWqpDlBlnBQIhbyiBhsJqUo/uuhJy62+l
+	 n/4mnE90DP+7YeflVKcA4DalJ1BHNPFVENQTgRRj9FYh6g7KeFswzk21m55YrPkTsl
+	 NF1S+cwYi4o8qPrf+kBFgBd8fjzUmGg6sxYjOIl35E+sh+IE1DFGyJs9O3cIKjKfeZ
+	 vyjNzRguNaVladnJ7HxjhR932uM/L26KqYMoxQiKvfsCT02FFoB1/egVHFICmtPFfi
+	 6sXUDtXTDWp9OG6RlcSTz5wgj1HlNPhaGOvli31yRIJJneOrz0PC9m4jHk/99A91Md
+	 DqPegSk3ECUSg==
 From: Will Deacon <will@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: Will Deacon <will@kernel.org>,
@@ -55,9 +55,9 @@ Cc: Will Deacon <will@kernel.org>,
 	netdev@vger.kernel.org,
 	virtualization@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH v3 1/9] vhost/vsock: Avoid allocating arbitrarily-sized SKBs
-Date: Mon, 14 Jul 2025 16:20:55 +0100
-Message-Id: <20250714152103.6949-2-will@kernel.org>
+Subject: [PATCH v3 2/9] vsock/virtio: Validate length in packet header before skb_put()
+Date: Mon, 14 Jul 2025 16:20:56 +0100
+Message-Id: <20250714152103.6949-3-will@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250714152103.6949-1-will@kernel.org>
 References: <20250714152103.6949-1-will@kernel.org>
@@ -69,48 +69,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-vhost_vsock_alloc_skb() returns NULL for packets advertising a length
-larger than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE in the packet header. However,
-this is only checked once the SKB has been allocated and, if the length
-in the packet header is zero, the SKB may not be freed immediately.
+When receiving a vsock packet in the guest, only the virtqueue buffer
+size is validated prior to virtio_vsock_skb_rx_put(). Unfortunately,
+virtio_vsock_skb_rx_put() uses the length from the packet header as the
+length argument to skb_put(), potentially resulting in SKB overflow if
+the host has gone wonky.
 
-Hoist the size check before the SKB allocation so that an iovec larger
-than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + the header size is rejected
-outright. The subsequent check on the length field in the header can
-then simply check that the allocated SKB is indeed large enough to hold
-the packet.
+Validate the length as advertised by the packet header before calling
+virtio_vsock_skb_rx_put().
 
 Cc: <stable@vger.kernel.org>
 Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
 Signed-off-by: Will Deacon <will@kernel.org>
 ---
- drivers/vhost/vsock.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/vmw_vsock/virtio_transport.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 802153e23073..66a0f060770e 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -344,6 +344,9 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index f0e48e6911fc..bd2c6aaa1a93 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -624,8 +624,9 @@ static void virtio_transport_rx_work(struct work_struct *work)
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		for (;;) {
++			unsigned int len, payload_len;
++			struct virtio_vsock_hdr *hdr;
+ 			struct sk_buff *skb;
+-			unsigned int len;
  
- 	len = iov_length(vq->iov, out);
+ 			if (!virtio_transport_more_replies(vsock)) {
+ 				/* Stop rx until the device processes already
+@@ -642,12 +643,19 @@ static void virtio_transport_rx_work(struct work_struct *work)
+ 			vsock->rx_buf_nr--;
  
-+	if (len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
-+		return NULL;
+ 			/* Drop short/long packets */
+-			if (unlikely(len < sizeof(struct virtio_vsock_hdr) ||
++			if (unlikely(len < sizeof(*hdr) ||
+ 				     len > virtio_vsock_skb_len(skb))) {
+ 				kfree_skb(skb);
+ 				continue;
+ 			}
+ 
++			hdr = virtio_vsock_hdr(skb);
++			payload_len = le32_to_cpu(hdr->len);
++			if (payload_len > len - sizeof(*hdr)) {
++				kfree_skb(skb);
++				continue;
++			}
 +
- 	/* len contains both payload and hdr */
- 	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
- 	if (!skb)
-@@ -367,8 +370,7 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
- 		return skb;
- 
- 	/* The pkt is too big or the length in the header is invalid */
--	if (payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE ||
--	    payload_len + sizeof(*hdr) > len) {
-+	if (payload_len + sizeof(*hdr) > len) {
- 		kfree_skb(skb);
- 		return NULL;
- 	}
+ 			virtio_vsock_skb_rx_put(skb);
+ 			virtio_transport_deliver_tap_pkt(skb);
+ 			virtio_transport_recv_pkt(&virtio_transport, skb);
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
