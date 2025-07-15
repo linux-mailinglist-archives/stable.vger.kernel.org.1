@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC3FB06035
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE8EB05F91
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 248081C42634
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB8451C445DD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE5C2EE5E1;
-	Tue, 15 Jul 2025 13:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDE42E49B2;
+	Tue, 15 Jul 2025 13:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRFbYFWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LElbjs2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B2D2ECD30;
-	Tue, 15 Jul 2025 13:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE6A2561AE;
+	Tue, 15 Jul 2025 13:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587695; cv=none; b=RRQtVRfW9nvQaksb6sJsA1bxuRpRpxKyctcGuybyPhCZQyDE5ZUHK6ggyP5HRKxRVVoZlLzy5CIJ9RE8LqAYWxOSbIA3OihuE3H1q9wEY1C4ruC04RQnfAl44HnKqCADiSGh2DLOpgmOVy49klk4hTNKHbQ0P14BFGmF/6bVOjE=
+	t=1752587286; cv=none; b=hF9h0cGcq1xdak8u4PX+2Il4eomOXjq5WydUKjYIX2wu2ro2OXwpjMnuJbLYMQIdYOmueN+7JNoKgrAz/b3dUjKQ5gqKEkSymbJlIjEoUXwlysNmlN5g64gs1r+uFibg8lZgc/HokvQekP1hOIAulIivzPTHvARjg2ixWFeHKQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587695; c=relaxed/simple;
-	bh=5vC8KAJ6Es23ZyrtqjXf95ZdPdrWVopYs/xEArOrUMU=;
+	s=arc-20240116; t=1752587286; c=relaxed/simple;
+	bh=nNp3/WzAuuQ37UbNOwoCD+7GxiEPZ/sll/Ew5RrRstA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9VuhUmJpwZZgdUYiQEN/8LSLp8zk96K3+akr4U5u2tZus5HtIR/+p7kHQQENhRJh4j6/Ke1hVDhoH+1OM4HPRbwDnhIqgWqiewrnKUZNHWST5wCC4lCxuhpb1j+7FMLTsZxfJMyoCaZ4dfmHmqwE/P7/FlyEQDyE7S5vXXvimI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRFbYFWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B146AC4CEE3;
-	Tue, 15 Jul 2025 13:54:54 +0000 (UTC)
+	 MIME-Version; b=FtyFtmovPg4a8L18GwwR3b+kQ6w+oq46OTVU1o6P7JaDvYxZ8CWqXqiSjXdD1px7LG/My+9Sa2aMIQDv5LFY5BFc7RyDXrequV6t47hnqnedj3ZYQHfhiNiXhhKYN+7zDCxvlsK4jIGnO2E1iLylrcJjYumClRLpoKSm+bXeMP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LElbjs2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EE7C4CEE3;
+	Tue, 15 Jul 2025 13:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587695;
-	bh=5vC8KAJ6Es23ZyrtqjXf95ZdPdrWVopYs/xEArOrUMU=;
+	s=korg; t=1752587286;
+	bh=nNp3/WzAuuQ37UbNOwoCD+7GxiEPZ/sll/Ew5RrRstA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bRFbYFWEXlLD8A+LkwdLHGyjLoRuztLw70fRwg8Q7np6+pxy5gVM7lXF3SRs88wgQ
-	 LqAz8oYKsSDakXTkjZkEPfJYXWQBwXXH7rKOEcr4o3AISiGe5sqUVk6TyOazUaSCpU
-	 3j6IHvHG8D/RUKkxZtlMTV9MtOjYx0CH6AMj414s=
+	b=LElbjs2F/TBtcWxVKGp8h80qDY6knm761DBrvhRMVOVR29RancBf45A2vanyPDfL4
+	 tWq4Nx1/bJSy2kz4gwVQ8Mz7VXFdynvZEy+4eZqYF6hYIkNq/PTto6lCEjfdwkjvvL
+	 rHHn1plOJyYe3neP48Kp1+aRg5ywO8+t+9HyLoS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/208] regulator: gpio: Fix the out-of-bounds access to drvdata::gpiods
-Date: Tue, 15 Jul 2025 15:13:38 +0200
-Message-ID: <20250715130815.315568603@linuxfoundation.org>
+Subject: [PATCH 6.1 03/88] ASoC: fsl_asrc: use internal measured ratio for non-ideal ratio mode
+Date: Tue, 15 Jul 2025 15:13:39 +0200
+Message-ID: <20250715130754.637799734@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <mani@kernel.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit c9764fd88bc744592b0604ccb6b6fc1a5f76b4e3 ]
+[ Upstream commit cbe876121633dadb2b0ce52711985328638e9aab ]
 
-drvdata::gpiods is supposed to hold an array of 'gpio_desc' pointers. But
-the memory is allocated for only one pointer. This will lead to
-out-of-bounds access later in the code if 'config::ngpios' is > 1. So
-fix the code to allocate enough memory to hold 'config::ngpios' of GPIO
-descriptors.
+When USRC=0, there is underrun issue for the non-ideal ratio mode;
+according to the reference mannual, the internal measured ratio can be
+used with USRC=1 and IDRC=0.
 
-While at it, also move the check for memory allocation failure to be below
-the allocation to make it more readable.
-
-Cc: stable@vger.kernel.org # 5.0
-Fixes: d6cd33ad7102 ("regulator: gpio: Convert to use descriptors")
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20250703103549.16558-1-mani@kernel.org
+Fixes: d0250cf4f2ab ("ASoC: fsl_asrc: Add an option to select internal ratio mode")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://patch.msgid.link/20250625020504.2728161-1-shengjiu.wang@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/gpio-regulator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_asrc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/gpio-regulator.c b/drivers/regulator/gpio-regulator.c
-index 5927d4f3eabd7..de07b16b34f8e 100644
---- a/drivers/regulator/gpio-regulator.c
-+++ b/drivers/regulator/gpio-regulator.c
-@@ -257,8 +257,8 @@ static int gpio_regulator_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	}
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index e16e7b3fa96cc..c541e2a0202a6 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -517,7 +517,8 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair, bool use_ideal_rate)
+ 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
+ 			   ASRCTR_ATSi_MASK(index), ASRCTR_ATS(index));
+ 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
+-			   ASRCTR_USRi_MASK(index), 0);
++			   ASRCTR_IDRi_MASK(index) | ASRCTR_USRi_MASK(index),
++			   ASRCTR_USR(index));
  
--	drvdata->gpiods = devm_kzalloc(dev, sizeof(struct gpio_desc *),
--				       GFP_KERNEL);
-+	drvdata->gpiods = devm_kcalloc(dev, config->ngpios,
-+				       sizeof(struct gpio_desc *), GFP_KERNEL);
- 	if (!drvdata->gpiods)
- 		return -ENOMEM;
- 	for (i = 0; i < config->ngpios; i++) {
+ 	/* Set the input and output clock sources */
+ 	regmap_update_bits(asrc->regmap, REG_ASRCSR,
 -- 
 2.39.5
 
