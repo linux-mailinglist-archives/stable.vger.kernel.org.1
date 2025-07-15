@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DBFB05D63
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5CAB05C05
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6045416E931
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5202E744FA4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE022EBDF3;
-	Tue, 15 Jul 2025 13:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913E32E3363;
+	Tue, 15 Jul 2025 13:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDmPupks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9HZ7BjF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BED62EBDF2;
-	Tue, 15 Jul 2025 13:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE9F2566;
+	Tue, 15 Jul 2025 13:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586460; cv=none; b=Z7k3Df9rgyCAVirYn+RPU7PkrPtLOyRamQCuOwUsu6WNcxbusDBgKflf/lsVoFQ00a+a4YWcBI+xR8/cDpIWq+n43mvn6kHWYktnFZcBu0Ji6O4vkEzDJMZdY80kt18w2iMI/KuqdT+DjfjSUEke0jFAvK1qBOH0NbUyVtiKMzY=
+	t=1752585814; cv=none; b=i0b0gak+aWZp/FM47odMUrNn02UjBK89eFl28UDacWIQlX0ON2pzjLr2rKZqdVzPWCP9DluNxvhKjoGEffquimgpL9CPTLASs5cCSnwcTybBZGwLVt9vqZZ7wQqX43q2jfUe1P2Or9p/fzCYnKlbRxB7A6itbnaIcbC7TN1RGJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586460; c=relaxed/simple;
-	bh=zXqhJYItIfecZ+9P7uZlqWVyKI+uLeXOO1h85IwVTII=;
+	s=arc-20240116; t=1752585814; c=relaxed/simple;
+	bh=oOelEYDp7bDQ46ajCOuDEWRp6/7mlFRxR5gPTe3ytIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTte5AL/TkGBBGACxu0pWNgnRD1iUI16nEiDpP9qP83XnkTnP/96cDfSFyGNLg++uvQM7sr2OlPo+Jh8EbGFFsSgRvHxpYK5mfOJw/txUtAx/P2YZbouxFZCC+x8Kc93/7otU0ryalEBHJBxO23S6djTuZCJm/NM1hNkbAxeg38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDmPupks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E19C4CEE3;
-	Tue, 15 Jul 2025 13:34:19 +0000 (UTC)
+	 MIME-Version; b=qnc/VjBfn9J7jRMzJHaG7GLc8GbnWECImRrY6adS75+Bc3yQhQPHIhZ6FXrFQVnAiU1wbKRog/RntdFOq4Cxh5eAMfjwZPWL20XLDqfpHcyPQK9QSdIFAPaprPRbCf9DE5Y6tuTzd9DC7FIovvIMTSmCfWfultLWijbFFThLquo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9HZ7BjF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89B4C4CEE3;
+	Tue, 15 Jul 2025 13:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586459;
-	bh=zXqhJYItIfecZ+9P7uZlqWVyKI+uLeXOO1h85IwVTII=;
+	s=korg; t=1752585814;
+	bh=oOelEYDp7bDQ46ajCOuDEWRp6/7mlFRxR5gPTe3ytIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BDmPupks7hW8dZklIsXU8+I5+4Url26LUO6h4T3Eou8Vg2uQB0CLybyBnD/4FQ8+0
-	 +AkPZN0ZKRM6Eid8U8SkgsxUiVElmhaYZ+NkNFVYCtdJo+Ykjt2HBTyB+iLAYclDVG
-	 CxN8AcLPZ3z8K7suRxuZpNaH/uuC5DgOxdaCj2OI=
+	b=p9HZ7BjFfSv1PoGfbbGLkHTmE77i/QmSajrlJBU1SBXK8MmEmNYhNILUJk4AaovE+
+	 ijfecoTG/dUYZpbQhrvgKjXGQyLML4f0C80mkg5TvS1NBe1eTHtDV4GnwgpaCLbbbe
+	 w6iDSnE8N0LHhmcX+EK0Rfc2K2wo05J7NaI5WC04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+365005005522b70a36f2@syzkaller.appspotmail.com,
-	Denis Arefev <arefev@swemel.ru>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	EricChan <chenchuangyu@xiaomi.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 032/148] media: vivid: Change the siize of the composing
+Subject: [PATCH 6.6 018/109] net: stmmac: Fix interrupt handling for level-triggered mode in DWC_XGMAC2
 Date: Tue, 15 Jul 2025 15:12:34 +0200
-Message-ID: <20250715130801.600621161@linuxfoundation.org>
+Message-ID: <20250715130759.610156847@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: EricChan <chenchuangyu@xiaomi.com>
 
-[ Upstream commit f83ac8d30c43fd902af7c84c480f216157b60ef0 ]
+[ Upstream commit 78b7920a03351a8402de2f81914c1d2e2bdf24b7 ]
 
-syzkaller found a bug:
+According to the Synopsys Controller IP XGMAC-10G Ethernet MAC Databook
+v3.30a (section 2.7.2), when the INTM bit in the DMA_Mode register is set
+to 2, the sbd_perch_tx_intr_o[] and sbd_perch_rx_intr_o[] signals operate
+in level-triggered mode. However, in this configuration, the DMA does not
+assert the XGMAC_NIS status bit for Rx or Tx interrupt events.
 
-BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
-BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
-Write of size 1440 at addr ffffc9000d0ffda0 by task vivid-000-vid-c/5304
+This creates a functional regression where the condition
+if (likely(intr_status & XGMAC_NIS)) in dwxgmac2_dma_interrupt() will
+never evaluate to true, preventing proper interrupt handling for
+level-triggered mode. The hardware specification explicitly states that
+"The DMA does not assert the NIS status bit for the Rx or Tx interrupt
+events" (Synopsys DWC_XGMAC2 Databook v3.30a, sec. 2.7.2).
 
-CPU: 0 UID: 0 PID: 5304 Comm: vivid-000-vid-c Not tainted 6.14.0-rc2-syzkaller-00039-g09fbf3d50205 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+The fix ensures correct handling of both edge and level-triggered
+interrupts while maintaining backward compatibility with existing
+configurations. It has been tested on the hardware device (not publicly
+available), and it can properly trigger the RX and TX interrupt handling
+in both the INTM=0 and INTM=2 configurations.
 
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:489
- kasan_report+0x143/0x180 mm/kasan/report.c:602
- kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
- __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
- tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
- tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
- vivid_fillbuff drivers/media/test-drivers/vivid/vivid-kthread-cap.c:470 [inline]
- vivid_thread_vid_cap_tick+0xf8e/0x60d0 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:629
- vivid_thread_vid_cap+0x8aa/0xf30 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:767
- kthread+0x7a9/0x920 kernel/kthread.c:464
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-The composition size cannot be larger than the size of fmt_cap_rect.
-So execute v4l2_rect_map_inside() even if has_compose_cap == 0.
-
-Fixes: 94a7ad928346 ("media: vivid: fix compose size exceed boundary")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+365005005522b70a36f2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=8ed8e8cc30cbe0d86c9a25bd1d6a5775129b8ea3
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: d6ddfacd95c7 ("net: stmmac: Add DMA related callbacks for XGMAC2")
+Tested-by: EricChan <chenchuangyu@xiaomi.com>
+Signed-off-by: EricChan <chenchuangyu@xiaomi.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250703020449.105730-1-chenchuangyu@xiaomi.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/vivid/vivid-vid-cap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/stmicro/stmmac/dwxgmac2_dma.c    | 24 +++++++++----------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/platform/vivid/vivid-vid-cap.c b/drivers/media/platform/vivid/vivid-vid-cap.c
-index 842ebfe9b117a..00935d600db06 100644
---- a/drivers/media/platform/vivid/vivid-vid-cap.c
-+++ b/drivers/media/platform/vivid/vivid-vid-cap.c
-@@ -935,8 +935,8 @@ int vivid_vid_cap_s_selection(struct file *file, void *fh, struct v4l2_selection
- 			if (dev->has_compose_cap) {
- 				v4l2_rect_set_min_size(compose, &min_rect);
- 				v4l2_rect_set_max_size(compose, &max_rect);
--				v4l2_rect_map_inside(compose, &fmt);
- 			}
-+			v4l2_rect_map_inside(compose, &fmt);
- 			dev->fmt_cap_rect = fmt;
- 			tpg_s_buf_height(&dev->tpg, fmt.height);
- 		} else if (dev->has_compose_cap) {
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+index dd2ab6185c40e..05ea74e937939 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+@@ -364,19 +364,17 @@ static int dwxgmac2_dma_interrupt(struct stmmac_priv *priv,
+ 	}
+ 
+ 	/* TX/RX NORMAL interrupts */
+-	if (likely(intr_status & XGMAC_NIS)) {
+-		if (likely(intr_status & XGMAC_RI)) {
+-			u64_stats_update_begin(&stats->syncp);
+-			u64_stats_inc(&stats->rx_normal_irq_n[chan]);
+-			u64_stats_update_end(&stats->syncp);
+-			ret |= handle_rx;
+-		}
+-		if (likely(intr_status & (XGMAC_TI | XGMAC_TBU))) {
+-			u64_stats_update_begin(&stats->syncp);
+-			u64_stats_inc(&stats->tx_normal_irq_n[chan]);
+-			u64_stats_update_end(&stats->syncp);
+-			ret |= handle_tx;
+-		}
++	if (likely(intr_status & XGMAC_RI)) {
++		u64_stats_update_begin(&stats->syncp);
++		u64_stats_inc(&stats->rx_normal_irq_n[chan]);
++		u64_stats_update_end(&stats->syncp);
++		ret |= handle_rx;
++	}
++	if (likely(intr_status & (XGMAC_TI | XGMAC_TBU))) {
++		u64_stats_update_begin(&stats->syncp);
++		u64_stats_inc(&stats->tx_normal_irq_n[chan]);
++		u64_stats_update_end(&stats->syncp);
++		ret |= handle_tx;
+ 	}
+ 
+ 	/* Clear interrupts */
 -- 
 2.39.5
 
