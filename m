@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286DAB05B5F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7057B05D06
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:39:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBA403ACAD3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 200B61629D3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF37B26D4F2;
-	Tue, 15 Jul 2025 13:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E562E7BB1;
+	Tue, 15 Jul 2025 13:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ka4iXUwg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJiRR9xu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F1C1A23AF;
-	Tue, 15 Jul 2025 13:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81AF2E92BF;
+	Tue, 15 Jul 2025 13:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585521; cv=none; b=A++q7hUGWAOQRly0dn90CTGbxWD3uX2VB7C5Tx+ByUbB4jaCjSlriWZZM5AZH90yiV2Wauwo+pbKooR/+ZUHypS8CTgAN4yHVWcCJaoZl5v2ux4wJktPWOhj2zGkLXStRK9wQntNW41RfHg4c7OgG+gwcSVfa9XZ28U0QdwEnbw=
+	t=1752586312; cv=none; b=uVyUo8sHaqFNMKqZc0xOlqCm5iG915MZLL18DM84x4tSGoZsfUAWHCm1PtSAW9nMCLhmxcPRLXKmXSXtGXALueA8T5+8Kar04kSptUMMuEr90zrI4eHMSK/ME/XJcRAzKCyWXBT4XU/OrZCeWyhvMdVE6oyi+lUMsmJIgUUgECY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585521; c=relaxed/simple;
-	bh=w9EHeDbFB/tBbgQBkwGZ2AmS+aZ9/XolJkrM1oJcus8=;
+	s=arc-20240116; t=1752586312; c=relaxed/simple;
+	bh=mLduRzYT9whOKJqz0P1lkHqLIN9v2PMeB/y6waeFVp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fryvLKufBQ2PLYi7Bbft5mYYpbSGcYWeEHpOT80DOj0lEd0eyLk5GVMRGdGF4PpSjfvKQUetYniJdu1q0UzOk1vFP2Vgx3SzCHOLdafVLOWacQeYDYQcZporFaN6fR7g/v0mDe6j6107fmjUsyKdDOljVK4P2mlNDopUOiCBgMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ka4iXUwg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4F8C4CEE3;
-	Tue, 15 Jul 2025 13:18:41 +0000 (UTC)
+	 MIME-Version; b=eOO2gtgrP3YT5ZFqpaprYI7ZQx2AcE2trypNFrmB9Smt9GQji9dn/pm+6IIiYRxMdYI/6hooPgj5+6+puGvggJixUvE3alqhOX7ZIuJEkOim7nmeP8fbg3y+yOTPs3nN5zv/EglPUB/PCS/bAf2nwdO3IF8wRBfiFLNCsxyia70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJiRR9xu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D1EC4CEE3;
+	Tue, 15 Jul 2025 13:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585521;
-	bh=w9EHeDbFB/tBbgQBkwGZ2AmS+aZ9/XolJkrM1oJcus8=;
+	s=korg; t=1752586311;
+	bh=mLduRzYT9whOKJqz0P1lkHqLIN9v2PMeB/y6waeFVp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ka4iXUwghEiYo3VvNNwiOes3douyypxAdHC/BgcGTMUFX/rj/GUO34oz9LcpEF84N
-	 jvsAK0uxFhMNt0kg0PZc3aTZtQ3ofda/6kXOpGI13hE4eaeseT6edVHkRLRyfZ0T6U
-	 goN8V0/Z5zmexsseULO2zJdUAfV+jmSlQ8mITTsk=
+	b=vJiRR9xufyJ50EJBcPR0zZo5ArRFKNlDATfTJJh5eFGEdRsDk0NtvNE+RdlJGsGx8
+	 qbGqEFsbiXhHfCm+abTHVEQsuiNa0gJ1eiMQRMk35kMOI8ztIYGs8EHh8JKS3HtYDF
+	 6M3AIw6Sm7WdAxChhYCgIQiv7BtBtz0NpGUtSdQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Lo <michael.lo@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.12 071/163] wifi: mt76: mt7925: fix invalid array index in ssid assignment during hw scan
-Date: Tue, 15 Jul 2025 15:12:19 +0200
-Message-ID: <20250715130811.587128055@linuxfoundation.org>
+	syzkaller <syzkaller@googlegroups.com>,
+	George Kennedy <george.kennedy@oracle.com>,
+	Vishnu Dasa <vdasa@vmware.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 018/148] VMCI: check context->notify_page after call to get_user_pages_fast() to avoid GPF
+Date: Tue, 15 Jul 2025 15:12:20 +0200
+Message-ID: <20250715130801.035622088@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Lo <michael.lo@mediatek.com>
+From: George Kennedy <george.kennedy@oracle.com>
 
-commit c701574c54121af2720648572efbfe77564652d1 upstream.
+[ Upstream commit 1a726cb47fd204109c767409fa9ca15a96328f14 ]
 
-Update the destination index to use 'n_ssids', which is incremented only
-when a valid SSID is present. Previously, both mt76_connac_mcu_hw_scan()
-and mt7925_mcu_hw_scan() used the loop index 'i' for the destination
-array, potentially leaving gaps if any source SSIDs had zero length.
+The call to get_user_pages_fast() in vmci_host_setup_notify() can return
+NULL context->notify_page causing a GPF. To avoid GPF check if
+context->notify_page == NULL and return error if so.
 
-Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Michael Lo <michael.lo@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250612062046.160598-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+general protection fault, probably for non-canonical address
+    0xe0009d1000000060: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: maybe wild-memory-access in range [0x0005088000000300-
+    0x0005088000000307]
+CPU: 2 PID: 26180 Comm: repro_34802241 Not tainted 6.1.0-rc4 #1
+Hardware name: Red Hat KVM, BIOS 1.15.0-2.module+el8.6.0 04/01/2014
+RIP: 0010:vmci_ctx_check_signal_notify+0x91/0xe0
+Call Trace:
+ <TASK>
+ vmci_host_unlocked_ioctl+0x362/0x1f40
+ __x64_sys_ioctl+0x1a1/0x230
+ do_syscall_64+0x3a/0x90
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Fixes: a1d88436d53a ("VMCI: Fix two UVA mapping bugs")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+Reviewed-by: Vishnu Dasa <vdasa@vmware.com>
+Link: https://lore.kernel.org/r/1669666705-24012-1-git-send-email-george.kennedy@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 1bd6406fb5f3 ("VMCI: fix race between vmci_host_setup_notify and vmci_ctx_unset_notify")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |    4 ++--
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c      |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/misc/vmw_vmci/vmci_host.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1696,8 +1696,8 @@ int mt76_connac_mcu_hw_scan(struct mt76_
- 		if (!sreq->ssids[i].ssid_len)
- 			continue;
- 
--		req->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
--		memcpy(req->ssids[i].ssid, sreq->ssids[i].ssid,
-+		req->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
-+		memcpy(req->ssids[n_ssids].ssid, sreq->ssids[i].ssid,
- 		       sreq->ssids[i].ssid_len);
- 		n_ssids++;
+diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
+index 8ff8d649d9b3a..81ebdb1380f37 100644
+--- a/drivers/misc/vmw_vmci/vmci_host.c
++++ b/drivers/misc/vmw_vmci/vmci_host.c
+@@ -245,6 +245,8 @@ static int vmci_host_setup_notify(struct vmci_ctx *context,
+ 		context->notify_page = NULL;
+ 		return VMCI_ERROR_GENERIC;
  	}
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -2823,8 +2823,8 @@ int mt7925_mcu_hw_scan(struct mt76_phy *
- 		if (!sreq->ssids[i].ssid_len)
- 			continue;
++	if (context->notify_page == NULL)
++		return VMCI_ERROR_UNAVAILABLE;
  
--		ssid->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
--		memcpy(ssid->ssids[i].ssid, sreq->ssids[i].ssid,
-+		ssid->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
-+		memcpy(ssid->ssids[n_ssids].ssid, sreq->ssids[i].ssid,
- 		       sreq->ssids[i].ssid_len);
- 		n_ssids++;
- 	}
+ 	/*
+ 	 * Map the locked page and set up notify pointer.
+-- 
+2.39.5
+
 
 
 
