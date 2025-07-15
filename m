@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F031FB05F6B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD717B05C37
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8B6F7B9599
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 678F17B8A07
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529462E6D2B;
-	Tue, 15 Jul 2025 13:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F332E2F1E;
+	Tue, 15 Jul 2025 13:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3//oBQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BANZFi8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100BC2E3AE7;
-	Tue, 15 Jul 2025 13:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80FA2E041E;
+	Tue, 15 Jul 2025 13:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587522; cv=none; b=akd8p5MYtIdSaqm6gjniXITBgPu/5zo4tli/jfwZugZg+vVgD69TwNrmZVChYDC3Dc5KacKN0eFSmN8DDl25ElT42dS1rLMjCPxASX3a9MOzEi2Oj8yuiCdsRWXxiI+HytEKus/xk8wJmjGZWpriEA24MkjMAdaX2IAt0LY42RU=
+	t=1752585811; cv=none; b=ZzZSns/dlifGD4efnToNsNHfLaHD1hdZrHArI/JTePf+D4gqSX0h2Kv7cQEXKW41WcP56OlWcuZsFLdMigrHGUPD4ZlL/rCDh/yebyDS7hFsHaGU4SJW49kEIBWYp/H2nzCzxVk8qwm703N88HvgIVv1E7Bq2EEzphHpz39N60c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587522; c=relaxed/simple;
-	bh=AFVQeH7mEGB1S5gYceKzR8K7j7xLfCcmDS80DOaz4WM=;
+	s=arc-20240116; t=1752585811; c=relaxed/simple;
+	bh=vQf3riLDBKjyaGTPaAet7OWwUKfrIF3/wXhlwHoSqRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PWYCjMMvhoNhN5mOf8R4RHQgyjSvwT/yA5PluhCNK+ME/gZ2V4iTxeFdSdt3NYNL14dNHxFZ5bxRcn0KiHFjCT8HJbNGBAEvHMbVsDRRzwpctrkz9VUgU7GySmDFO8ifnItwCD+cRzgCqET9EZjnxIvn8aB+p4z9hhy+maiDYwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3//oBQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CF7C4CEF4;
-	Tue, 15 Jul 2025 13:52:01 +0000 (UTC)
+	 MIME-Version; b=isJQtjR+50b5einh1aSq5erpKt6cyMvlPR77AhtaVrsE1gtkKquI0l4yRyse3cqDCbrQcRfGiqldf3hQv/86UOvvgNX3ZSyaVRs/n//c5VFwM5hil/lAM+qZEYmNb6LbdgK8LbTA4uJKkK8uz7QQl/vvngLBRpH7hLu4gaf2p5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BANZFi8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7AAC4CEE3;
+	Tue, 15 Jul 2025 13:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587521;
-	bh=AFVQeH7mEGB1S5gYceKzR8K7j7xLfCcmDS80DOaz4WM=;
+	s=korg; t=1752585811;
+	bh=vQf3riLDBKjyaGTPaAet7OWwUKfrIF3/wXhlwHoSqRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K3//oBQzfmWUNLeR854UPzAvQLWSFeL+x9Q1+oE0Qi8GUpJK7VBfoolyqyYKYO9C3
-	 TEy8OulfZGdcVMVuibp/Cg7Wp4FYDh6sqOP9Xx4QDPmI17TwJkJZvIJCw7sJQFPQEq
-	 akD/JDaPJEcJYaZ7mg+9I7yPog9Sh6fdhoQpLbFI=
+	b=BANZFi8hd19vKrmaf5ZCTqzQmxhbc4+uhatQ+a6VHGcTgeTH/YSYU2omvAP2vLiPA
+	 TR0n0/fbeuRLgfRpJDBGtEVlzwtD2FK/XUAuj+3WWDtBL9HejgvvCPyrg4+J5ZFzRN
+	 +nGdq9y3Wm4IBDqIl8Xo3rjg7oS5OCys7dGD2dEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/208] net_sched: sch_sfq: reject invalid perturb period
+Subject: [PATCH 6.6 017/109] vsock: Fix IOCTL_VM_SOCKETS_GET_LOCAL_CID to check also `transport_local`
 Date: Tue, 15 Jul 2025 15:12:33 +0200
-Message-ID: <20250715130812.720449607@linuxfoundation.org>
+Message-ID: <20250715130759.569934062@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 7ca52541c05c832d32b112274f81a985101f9ba8 ]
+[ Upstream commit 1e7d9df379a04ccd0c2f82f39fbb69d482e864cc ]
 
-Gerrard Tai reported that SFQ perturb_period has no range check yet,
-and this can be used to trigger a race condition fixed in a separate patch.
+Support returning VMADDR_CID_LOCAL in case no other vsock transport is
+available.
 
-We want to make sure ctl->perturb_period * HZ will not overflow
-and is positive.
-
-Tested:
-
-tc qd add dev lo root sfq perturb -10   # negative value : error
-Error: sch_sfq: invalid perturb period.
-
-tc qd add dev lo root sfq perturb 1000000000 # too big : error
-Error: sch_sfq: invalid perturb period.
-
-tc qd add dev lo root sfq perturb 2000000 # acceptable value
-tc -s -d qd sh dev lo
-qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
- Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
- backlog 0b 0p requeues 0
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
+Fixes: 0e12190578d0 ("vsock: add local transport support in the vsock core")
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-3-98f0eb530747@rbox.co
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/vmw_vsock/af_vsock.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index e87560e244861..4a10f794be588 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -653,6 +653,14 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
- 		return -EINVAL;
- 	}
-+
-+	if (ctl->perturb_period < 0 ||
-+	    ctl->perturb_period > INT_MAX / HZ) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-+		return -EINVAL;
-+	}
-+	perturb_period = ctl->perturb_period * HZ;
-+
- 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
- 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
- 		return -EINVAL;
-@@ -669,14 +677,12 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
- 	headdrop = q->headdrop;
- 	maxdepth = q->maxdepth;
- 	maxflows = q->maxflows;
--	perturb_period = q->perturb_period;
- 	quantum = q->quantum;
- 	flags = q->flags;
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 58b7404a0da05..f20b117e5255e 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -2436,6 +2436,8 @@ static long vsock_dev_do_ioctl(struct file *filp,
+ 		cid = vsock_registered_transport_cid(&transport_g2h);
+ 		if (cid == VMADDR_CID_ANY)
+ 			cid = vsock_registered_transport_cid(&transport_h2g);
++		if (cid == VMADDR_CID_ANY)
++			cid = vsock_registered_transport_cid(&transport_local);
  
- 	/* update and validate configuration */
- 	if (ctl->quantum)
- 		quantum = ctl->quantum;
--	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
- 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
+ 		if (put_user(cid, p) != 0)
+ 			retval = -EFAULT;
 -- 
 2.39.5
 
