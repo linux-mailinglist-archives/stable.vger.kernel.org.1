@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-162917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1013B0605E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:16:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B01FB05FEF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC3F587BFE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:08:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 934981C44A5F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A38E2E92CA;
-	Tue, 15 Jul 2025 13:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1E42EA745;
+	Tue, 15 Jul 2025 13:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2lypPO/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltTAGaKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DD02397BF;
-	Tue, 15 Jul 2025 13:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3B82EA726;
+	Tue, 15 Jul 2025 13:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587812; cv=none; b=kY8q5AP+r2pl6QPQ98ntW6vfv9cU07DoYo9SrR5tm1sQGCUKlHlGtzeFme7lk57CB9Po2H8e6IF16+2R/b0pNPcWfAj6eTSHi0V0RcWZ1wY2Gds6bhtOmbUcO4uPm/v82lrKfny0tl95kCpP2wTaTop4ArBf8lU4AuNrj2dvE18=
+	t=1752587374; cv=none; b=clUvxJKceygQ3V+OsnfK++1r7e9h0tAM8rkGodzfOifxLqhmhKYGMLAX7YcdbDsXiqqF4WfQgHGV85CkULkZOxOf6qnyas8Nf2HrAkZob6ph59+neDgeZS24Ww4/G/0BS1aaZT44Ub0uH4cy6g/qsMeVjhYmI/kkXlHF4bodSWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587812; c=relaxed/simple;
-	bh=DJILK9pERcKw0xVD2xGZsKSIYl2pp3pZ8K8OYNrABm0=;
+	s=arc-20240116; t=1752587374; c=relaxed/simple;
+	bh=95c7cSpsjnXN2POgL9tV4RpmkHta3PFi9J0CUG76W9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQ8mNABZCZJtG+PrPAjlUx2XpBuoWC/FhfNqIoUrnYDxOnjFZUWYhpH2ItXMv5i2kxKfCZHW1KyxbdSf1sMzvJ+phI7H1xISkU4jgySw1YBWZLRwcRcj6/isIyLZAlM8K1nRA/J6LcBVjcnX9BYJyGyO7cthpchBqEIBibMohZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2lypPO/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1C0C4CEE3;
-	Tue, 15 Jul 2025 13:56:51 +0000 (UTC)
+	 MIME-Version; b=UP5MnEz4kVEe+9cwmrIZUeifA0yTQRc2MNp/vzbDU+Ylg4GtrPIoI5HZiQyh/9Z6Fo/cH8ClRfBIXq1TI6S4vx5cHC/Ljxm2TFenXG9Oe/9G+pbb+3oLUXnvIsca2mCLbokbm0MBtoAzsd/UpSFJC9u16et4bT0CjdlmPykIh7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltTAGaKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E94CC4CEE3;
+	Tue, 15 Jul 2025 13:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587812;
-	bh=DJILK9pERcKw0xVD2xGZsKSIYl2pp3pZ8K8OYNrABm0=;
+	s=korg; t=1752587373;
+	bh=95c7cSpsjnXN2POgL9tV4RpmkHta3PFi9J0CUG76W9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2lypPO/3q3slx4YvtK10Y9Rc9Q96+HQD6u63fcZaJkNAFWQ0SaY2BJo7Ee3ojNJK
-	 +nPX1l99eAIEnvEDSyhWaC7cOR+4bXG5qOhOmLKxfSuAQlxWWoix3LDjgOoo7rUexq
-	 0TsjRIrnamgnG6vzovtE3Hm1Iisk+vKu6NejdS+4=
+	b=ltTAGaKmKDQTAs0wWwNjFKKj4nqp4XHEhUNJViesGnV2dWJ2eJe0akVuOfOE3mqhX
+	 rOBZlTr+q3kiCW8JUBk9OInZ0l9d8Bx2Zqu/yCtsHY86c+uXYCHAkoIeT2LGoW3hqe
+	 tCmgU/xe5PgEkkBs4BBktfBUXurowNabTcRhatYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com,
-	syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com,
-	syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com,
-	syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com,
-	syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 152/208] net/sched: Abort __tc_modify_qdisc if parent class does not exist
+Subject: [PATCH 6.1 45/88] btrfs: propagate last_unlink_trans earlier when doing a rmdir
 Date: Tue, 15 Jul 2025 15:14:21 +0200
-Message-ID: <20250715130817.001074504@linuxfoundation.org>
+Message-ID: <20250715130756.343011415@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,123 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ffdde7bf5a439aaa1955ebd581f5c64ab1533963 ]
+[ Upstream commit c466e33e729a0ee017d10d919cba18f503853c60 ]
 
-Lion's patch [1] revealed an ancient bug in the qdisc API.
-Whenever a user creates/modifies a qdisc specifying as a parent another
-qdisc, the qdisc API will, during grafting, detect that the user is
-not trying to attach to a class and reject. However grafting is
-performed after qdisc_create (and thus the qdiscs' init callback) is
-executed. In qdiscs that eventually call qdisc_tree_reduce_backlog
-during init or change (such as fq, hhf, choke, etc), an issue
-arises. For example, executing the following commands:
+In case the removed directory had a snapshot that was deleted, we are
+propagating its inode's last_unlink_trans to the parent directory after
+we removed the entry from the parent directory. This leaves a small race
+window where someone can log the parent directory after we removed the
+entry and before we updated last_unlink_trans, and as a result if we ever
+try to replay such a log tree, we will fail since we will attempt to
+remove a snapshot during log replay, which is currently not possible and
+results in the log replay (and mount) to fail. This is the type of failure
+described in commit 1ec9a1ae1e30 ("Btrfs: fix unreplayable log after
+snapshot delete + parent dir fsync").
 
-sudo tc qdisc add dev lo root handle a: htb default 2
-sudo tc qdisc add dev lo parent a: handle beef fq
+So fix this by propagating the last_unlink_trans to the parent directory
+before we remove the entry from it.
 
-Qdiscs such as fq, hhf, choke, etc unconditionally invoke
-qdisc_tree_reduce_backlog() in their control path init() or change() which
-then causes a failure to find the child class; however, that does not stop
-the unconditional invocation of the assumed child qdisc's qlen_notify with
-a null class. All these qdiscs make the assumption that class is non-null.
-
-The solution is ensure that qdisc_leaf() which looks up the parent
-class, and is invoked prior to qdisc_create(), should return failure on
-not finding the class.
-In this patch, we leverage qdisc_leaf to return ERR_PTRs whenever the
-parentid doesn't correspond to a class, so that we can detect it
-earlier on and abort before qdisc_create is called.
-
-[1] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
-
-Fixes: 5e50da01d0ce ("[NET_SCHED]: Fix endless loops (part 2): "simple" qdiscs")
-Reported-by: syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68663c93.a70a0220.5d25f.0857.GAE@google.com/
-Reported-by: syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68663c94.a70a0220.5d25f.0858.GAE@google.com/
-Reported-by: syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0013.GAE@google.com/
-Reported-by: syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0014.GAE@google.com/
-Reported-by: syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68679e81.a70a0220.29cf51.0016.GAE@google.com/
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250707210801.372995-1-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ fs/btrfs/inode.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 7fd4c94d6f464..a325036f3ae02 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -331,17 +331,22 @@ struct Qdisc *qdisc_lookup_rcu(struct net_device *dev, u32 handle)
- 	return q;
- }
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 5ecc2f3dc3a99..469a622b440b6 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4881,6 +4881,23 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 		goto out_notrans;
+ 	}
  
--static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid)
-+static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid,
-+				struct netlink_ext_ack *extack)
- {
- 	unsigned long cl;
- 	const struct Qdisc_class_ops *cops = p->ops->cl_ops;
- 
--	if (cops == NULL)
--		return NULL;
-+	if (cops == NULL) {
-+		NL_SET_ERR_MSG(extack, "Parent qdisc is not classful");
-+		return ERR_PTR(-EOPNOTSUPP);
-+	}
- 	cl = cops->find(p, classid);
- 
--	if (cl == 0)
--		return NULL;
-+	if (cl == 0) {
-+		NL_SET_ERR_MSG(extack, "Specified class not found");
-+		return ERR_PTR(-ENOENT);
-+	}
- 	return cops->leaf(p, cl);
- }
- 
-@@ -1462,7 +1467,7 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Failed to find qdisc with specified classid");
- 					return -ENOENT;
- 				}
--				q = qdisc_leaf(p, clid);
-+				q = qdisc_leaf(p, clid, extack);
- 			} else if (dev_ingress_queue(dev)) {
- 				q = dev_ingress_queue(dev)->qdisc_sleeping;
- 			}
-@@ -1473,6 +1478,8 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 			NL_SET_ERR_MSG(extack, "Cannot find specified qdisc on specified device");
- 			return -ENOENT;
- 		}
-+		if (IS_ERR(q))
-+			return PTR_ERR(q);
- 
- 		if (tcm->tcm_handle && q->handle != tcm->tcm_handle) {
- 			NL_SET_ERR_MSG(extack, "Invalid handle");
-@@ -1569,7 +1576,9 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Failed to find specified qdisc");
- 					return -ENOENT;
- 				}
--				q = qdisc_leaf(p, clid);
-+				q = qdisc_leaf(p, clid, extack);
-+				if (IS_ERR(q))
-+					return PTR_ERR(q);
- 			} else if (dev_ingress_queue_create(dev)) {
- 				q = dev_ingress_queue(dev)->qdisc_sleeping;
- 			}
++	/*
++	 * Propagate the last_unlink_trans value of the deleted dir to its
++	 * parent directory. This is to prevent an unrecoverable log tree in the
++	 * case we do something like this:
++	 * 1) create dir foo
++	 * 2) create snapshot under dir foo
++	 * 3) delete the snapshot
++	 * 4) rmdir foo
++	 * 5) mkdir foo
++	 * 6) fsync foo or some file inside foo
++	 *
++	 * This is because we can't unlink other roots when replaying the dir
++	 * deletes for directory foo.
++	 */
++	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
++		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
++
+ 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
+ 		err = btrfs_unlink_subvol(trans, dir, dentry);
+ 		goto out;
+@@ -4895,17 +4912,6 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 				 &fname.disk_name);
+ 	if (!err) {
+ 		btrfs_i_size_write(BTRFS_I(inode), 0);
+-		/*
+-		 * Propagate the last_unlink_trans value of the deleted dir to
+-		 * its parent directory. This is to prevent an unrecoverable
+-		 * log tree in the case we do something like this:
+-		 * 1) create dir foo
+-		 * 2) create snapshot under dir foo
+-		 * 3) delete the snapshot
+-		 * 4) rmdir foo
+-		 * 5) mkdir foo
+-		 * 6) fsync foo or some file inside foo
+-		 */
+ 		if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
+ 			btrfs_record_snapshot_destroy(trans, BTRFS_I(dir));
+ 	}
 -- 
 2.39.5
 
