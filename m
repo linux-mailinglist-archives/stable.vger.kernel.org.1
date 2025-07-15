@@ -1,172 +1,92 @@
-Return-Path: <stable+bounces-161943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E67F7B05184
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 08:08:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A31B05292
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 09:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BCB3166832
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 06:08:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F0483B23EA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 07:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48FB2D3757;
-	Tue, 15 Jul 2025 06:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tbT2T8R8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675E0275118;
+	Tue, 15 Jul 2025 07:16:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2053.outbound.protection.outlook.com [40.107.93.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.actia.se (mail.actia.se [212.181.117.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AD52D375A;
-	Tue, 15 Jul 2025 06:08:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752559693; cv=fail; b=RX2Yg2RTrvz/6MJxEkIiGfDv/FlrziTxeOiZjpBogGcXKm3mCgHOX+Xkr2gjrzwk2ajAuo7WfRfTT6gkMqR+Xnpt0K+8VMNEguFBxTFp2A/UkK5AE+snLkfiJYAo0b7CrfhyuHdhn2RWhLJqSosU6KDxOcgiH1jK3hf+kE8gXqs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752559693; c=relaxed/simple;
-	bh=lRPxVGiCeOjP6Ie9ESDENII3PQCPG3+IbEArJx3ZGAc=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gfZXgP0pAEAdbI8QfVCFSzLErSyI4XNC6QXqF09gaXhhg+PkEOXcGsXiAS7jGF05pbuYhBYvl/KPGz60sHT99vcy0t8W92Z+5Wc3Ps7Kbsq1rzKr8nHPPRG/B0YWLn63CDlkCRqzAs9T2I3R8cFidfhtOjpgAZ4Y119u6w4mUJQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tbT2T8R8; arc=fail smtp.client-ip=40.107.93.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Km3tm9qEOu+j79WdRryU7wpA+z2yeGZQNwk+DapFtu6BMGl19ag/VFPtRVDtxsxhut5iBHsq2ETriny9odCAkAILaTyTYj8XPfAy3bzj7WYqj2/k2dEnQnIeKIiE2dLu01Z8aPs4gz51nbK4rxyt9WghTLPj1J9AYrDX3Hp5jVplkbRkjvUSyR/Hd9A5KWci19cz6+B/j9q2d1Kh1VyccxdC1gPJo2yKy5USCkvCQbqgWtyqz6wSW4K2r6qLQ/4T5xwGu2p38LAIvJCbwxAmWnU8aG8++FqyXdqTEbgl4exSpX+1RAoKzISV6yRj/tnGd8ttkYcdZ33HixE+nBRjVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F2hXFdyIm5hnmcc06spiyzyeeICoicMxGglZE9cgINQ=;
- b=Mocu3G5aF/h6uf3RzP7HNcgzi0AdOe5yLH809MQBJXKlsUYwzOQ0gx5f2/HWmq+wW7cQylcbYt4dR2Pw2uXI8/LTf8JPnZ1YpYh1VR6JId8ylheVCWbpphg52sVTZmfAA8DnOJUqPlrwvNdq1b7IPDTuNctWpiuLAll23wDYjHyAgWryMIXKnleSq1n6aThlR8gZhViuhY8gt3YIHf5d5Y4yC17qxdkIQ/PjP5VGkyg+iRRi8070mQuAS83osmXy0VwRPyLke0YVAoeaOcjlCMD11SIsPzaT+dvapzI082mhM3gCPJwZn2aUc4d5zDlB7tnwD7SUjE2PfeWz7vO23Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F2hXFdyIm5hnmcc06spiyzyeeICoicMxGglZE9cgINQ=;
- b=tbT2T8R8c9IVlYXnJ4Zou8RTw/Z/E7BMlbOvP6y/VFMrfzpWsWqQ9y+6SgJGSVVkNSQuy+ZvQKzheOoW44m/kgIKwP7ti56UoBvJ1WSY5qytUAugZBzPaodS4M1UCwqSZRghWD+5XdTwv2S++ibZCf/5+W9g6T5vWYzCUn1V33I=
-Received: from BN6PR17CA0030.namprd17.prod.outlook.com (2603:10b6:405:75::19)
- by SA1PR12MB8117.namprd12.prod.outlook.com (2603:10b6:806:334::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Tue, 15 Jul
- 2025 06:08:08 +0000
-Received: from BN3PEPF0000B06C.namprd21.prod.outlook.com
- (2603:10b6:405:75:cafe::5) by BN6PR17CA0030.outlook.office365.com
- (2603:10b6:405:75::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.32 via Frontend Transport; Tue,
- 15 Jul 2025 06:08:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN3PEPF0000B06C.mail.protection.outlook.com (10.167.243.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8964.1 via Frontend Transport; Tue, 15 Jul 2025 06:08:07 +0000
-Received: from BLR-L1-NDADHANI (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 15 Jul
- 2025 01:08:04 -0500
-From: Nikunj A Dadhania <nikunj@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: <pbonzini@redhat.com>, <kvm@vger.kernel.org>, <thomas.lendacky@amd.com>,
-	<santosh.shukla@amd.com>, <bp@alien8.de>, Michael Roth
-	<michael.roth@amd.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] KVM: SEV: Enforce minimum GHCB version requirement for
- SEV-SNP guests
-In-Reply-To: <aHUUWMnTBfcRO7Uj@google.com>
-References: <20250711045408.95129-1-nikunj@amd.com>
- <aHEMmmBWzW_FpX7e@google.com> <85ple4go0k.fsf@amd.com>
- <aHUUWMnTBfcRO7Uj@google.com>
-Date: Tue, 15 Jul 2025 06:08:01 +0000
-Message-ID: <85ms96vvem.fsf@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93416270EB0;
+	Tue, 15 Jul 2025 07:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752563765; cv=none; b=lMLH1mpNdqS45bELoZOskWytT1+9hIU0z0Gl/eWjlecdR5yJY1q0H6rb1ljrZZbQWrmrhXw4J4ueAsU0O4rwS4mJaqOhMQsyhVA+OGrQ9xZS8C8Q2WincjVovsv8+Na/DyyPWgvnIkl4Eb50Pn1vz5oQjOW8KMFmav/kH0y1nr4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752563765; c=relaxed/simple;
+	bh=Lyytan91LGxiGOiz6/sBkllxKJCm/8j0ZtObVauBKEA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=t5qkQyd2xRcUW7TYaQMKuUl/E5BjvQ1IH+/MKXkcGuJQjntt/OQp3tSx2Rt/kuS13bm2F8zse/p6J3mrEJ4Qt2HTIsljwl3K9eDc4OAXmm09I3SrO5Lcz1lkYJB999Nitq2NLplAaHPCtjMxgfZDQzep+qSu15f5Nv7CjYLqwsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
+Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
+ (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Tue, 15 Jul
+ 2025 09:15:52 +0200
+Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
+ S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%6]) with mapi id
+ 15.01.2507.057; Tue, 15 Jul 2025 09:15:52 +0200
+From: John Ernberg <john.ernberg@actia.se>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>, Ming Lei <ming.lei@canonical.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
+ event
+Thread-Topic: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
+ event
+Thread-Index: AQHb8Xe2qza52xx55UmGbnkg6Pc/lrQyK2OAgACAvYA=
+Date: Tue, 15 Jul 2025 07:15:51 +0000
+Message-ID: <74a87648-bc02-4edb-9e6a-102cb6621547@actia.se>
+References: <20250710085028.1070922-1-john.ernberg@actia.se>
+ <20250714163505.44876e62@kernel.org>
+In-Reply-To: <20250714163505.44876e62@kernel.org>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-esetresult: clean, is OK
+x-esetid: 37303A2956B14450647564
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2368C8D7F7F3C84C9856F28BFA337566@actia.se>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06C:EE_|SA1PR12MB8117:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7751aafb-3d90-4941-518a-08ddc365f816
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JziILZPzmf8HBNXTPo+E84eTkEDaWM01Y2ocYIEhvWsgSqJDbw2/tPnrXTfQ?=
- =?us-ascii?Q?ojz+S/t4PRZP3wqP7XabW6LCsBoEEDMd+ENQ5rgoWRln4UlOuTj3+Izxl8mH?=
- =?us-ascii?Q?asUxZSh5NcOFCNFHPKCABLYF0TNpTbRwBNMjvYaIrJfJRPc+KsYO9rwGO64K?=
- =?us-ascii?Q?14jhrzUguCh7BbFUN3EC/KreEZhdwAzgjrOLFfTFXGrWtUruqYiAPkcXE1t4?=
- =?us-ascii?Q?owL9K7USmlSWv4YrKDus7Nu5qalLwCu7p1RJggOZea0okrh7V5NcXl50ZczK?=
- =?us-ascii?Q?Du/Bqor3mw2kt036if3shiEsEGnIWjyXkVEm2BD1xG7P/HAdUia3IVM9ejiX?=
- =?us-ascii?Q?nlsjp+dElEeRwWjvQ71GNIpOe3GVcHZmGYeLYz7WbdZLpONpk5K7L3QRmF/+?=
- =?us-ascii?Q?jAWVhmaxl+0oTqNwf8BeGBESSPb6KxmgBJeETcs+WfhHEiNiWpLaiy5++WQA?=
- =?us-ascii?Q?0rYe2JrEkSRt2C9V0W+KfWNvBnRwNX8CYGnkr3TiVAIU7mVHtFomvOlbXCJi?=
- =?us-ascii?Q?QFVRvCZYPx8uA6lXJKULCc47EklXs7aLXy6104nplCmXKVUQ51vfu2PtJsnK?=
- =?us-ascii?Q?qU5ZQwrEtRZf53d4qunWUpnRgPMnBSPpXuiQCcofzBEJtkFVzTuapNTb0QHN?=
- =?us-ascii?Q?WG+1TrMDI5x/Khwi/k9ynvdwZmovNP/a88TGjO3NfuC/dCSSB3uiWZi1RB9V?=
- =?us-ascii?Q?T607U6rSUzXWLykKcEQhAz3y7TduUV4xv8pIdNzIyH0/OjOHAuOK9KnxasCL?=
- =?us-ascii?Q?TYdoCqXZq3dF2O0Ivejs7rRuvS2tLyNs2ViQYmWTayhh/mfQNMVmFQqi/biV?=
- =?us-ascii?Q?g7/z6IissyiLsXks1XbF43j26qQqFSAFBJrSmg28UyS8Ax2fwS7f1KP3m3oC?=
- =?us-ascii?Q?tZkKLsWUBYfcIEhVFgDwD0XrKI/BbQySK5Gw2KLX1GMeGROeQxOb68KPy93j?=
- =?us-ascii?Q?IDYT4gxgQsNXHsD6AaMlH9VclA1M/OLFd7dDcvp5m6WzIxaJQDX0b9yTZpxx?=
- =?us-ascii?Q?owpAGR6ruquLOjS25N5CMRaUMrH2S/KNoreqPJLK7Aovo/GZdm+kYsRTDn53?=
- =?us-ascii?Q?6wyJzdJiT4konOSvvsmcnSRmyEFmSd0kvWhiFa269bEXQbas5C2zSgGlYbVp?=
- =?us-ascii?Q?GDILWznVv7E0SaP2CmJyyKWtgm3beFoKSpjgrG1pRBLHJjj+u/8H8hlmLsgY?=
- =?us-ascii?Q?FNJExcXTGk/KD1rEghuUorsadkIgX4O2KDODYMNP7NcRQAJxU3i5rxgkfxjy?=
- =?us-ascii?Q?e5YYe2Z0DCExLn2M+/F0NqSYaSgGO92uxYVzd36imPoNdPVIrDakP2GJ31Wn?=
- =?us-ascii?Q?mPNg3TLtoDNBrzkqNOrfcrX118ilGE8G89XaNBZaa14l8pW6daJKhZK267sG?=
- =?us-ascii?Q?h2q6MxxLp5CTu/LGgKS282tlVIPgtyGrl1EXKMlg1Sw3Hp2MnFVbboyY+USp?=
- =?us-ascii?Q?T2oj9aJHzju3B4cvc9e1TsdHA4nY1VB6cdMrc0CAN1RiSn+vE6l6z3LXsYpg?=
- =?us-ascii?Q?uQVPufamCGTLN4RN5WmgpOaqE4n/DGRh/G4A?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 06:08:07.7382
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7751aafb-3d90-4941-518a-08ddc365f816
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B06C.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8117
 
-Sean Christopherson <seanjc@google.com> writes:
-
-> On Sun, Jul 13, 2025, Nikunj A Dadhania wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->> 
->> > On Fri, Jul 11, 2025, Nikunj A Dadhania wrote:
->> >> Require a minimum GHCB version of 2 when starting SEV-SNP guests through
->> >> KVM_SEV_INIT2. When a VMM attempts to start an SEV-SNP guest with an
->> >> incompatible GHCB version (less than 2), reject the request early rather
->> >> than allowing the guest to start with an incorrect protocol version and
->> >> fail later.
->> >
->> > What happens with ghcb_version==1?   I.e. what failure occurs, and
->> > when?
->> 
->> SNP guest terminates with following error:
->
-> So this probably isn't stable@ worth then?  Because I don't see any risk to the
-> kernel, this is ultimately only a problem if the VMM is broken, and the "fix"
-> doesn't provide any meaningful change in functionality (the VM is dead no matter
-> what).
-
-Agree, VM start will fail no matter what, just that it will be early.
-I will send a v2 with updated change log and dropping the stable@ tag.
-
-Regards,
-Nikunj
-
+SGkgSmFrdWIsDQoNCk9uIDcvMTUvMjUgMTozNSBBTSwgSmFrdWIgS2ljaW5za2kgd3JvdGU6DQo+
+IE9uIFRodSwgMTAgSnVsIDIwMjUgMDg6NTA6NDAgKzAwMDAgSm9obiBFcm5iZXJnIHdyb3RlOg0K
+Pj4gSGF2aW5nIGEgR2VtYWx0byBDaW50ZXJpb24gUExTODMtVyBtb2RlbSBhdHRhY2hlZCB0byBV
+U0IgYW5kIGFjdGl2YXRpbmcgdGhlDQo+PiBjZWxsdWxhciBkYXRhIGxpbmsgd291bGQgc29tZXRp
+bWVzIHlpZWxkIHRoZSBmb2xsb3dpbmcgUkNVIHN0YWxsLCBsZWFkaW5nDQo+PiB0byBhIHN5c3Rl
+bSBmcmVlemU6DQo+IA0KPiBEbyB5b3Uga25vdyB3aGljaCBzdWItZHJpdmVyIGl0J3MgdXNpbmc/
+DQoNClRoZSBtb2RlbSB1c2VzIGNkY19ldGhlciAoYW5kIG9wdGlvbiBmb3IgdGhlIFRUWXMpLg0K
+DQo+IEknbSB3b3JyaWVkIHRoYXQgdGhpcyBpcyBzdGlsbCByYWN5Lg0KPiBTaW5jZSB1c2JuZXRf
+YmggY2hlY2tzIGlmIGNhcnJpZXIgaXMgb2sgYW5kIF9faGFuZGxlX2xpbmtfY2hhbmdlKCkNCj4g
+Y2hlY2tzIHRoZSBvcHBvc2l0ZSBzb21ldGhpbmcgbXVzdCBiZSBvdXQgb2Ygc3luYyBpZiBib3Ro
+IHJ1bi4NCj4gTW9zdCBsaWtlbHkgc29tZXRoaW5nIHJlc3RvcmVkIHRoZSBjYXJyaWVyIHdoaWxl
+IHdlJ3JlIHN0aWxsIGhhbmRsaW5nDQo+IHRoZSBwcmV2aW91cyBjYXJyaWVyIGxvc3MuDQoNClRo
+ZXJlIGNvdWxkIGRlZmluaXRlbHkgYmUgb3RoZXIgZmFjdG9ycywgSSdsbCB0cnkgdG8gZGlnIHNv
+bWUgaW4gDQpjZGNfZXRoZXIgYW5kIHNlZSBpZiBzb21ldGhpbmcgdGhlcmUgY291bGQgYmUgY2F1
+c2luZyBwcm9ibGVtcyBmb3IgdGhlIA0KdXNibmV0IGNvcmUuDQpJIGhvbmVzdGx5IGtpbmRhIHN0
+b3BwZWQgZGlnZ2luZyB3aGVuIEkgZm91bmQgdW5saW5rX3VyYnMoKSBiZWluZyANCndyYXBwZWQg
+d2l0aCBhIHBhdXNlL3VucGF1c2UgYXQgYW5vdGhlciBwbGFjZSB0aWVkIHRvIGEgY29tbWl0IHNl
+ZWluZyBhIA0Kc2ltaWxhciBpc3N1ZS4NCg0KVGhhbmtzISAvLyBKb2huIEVybmJlcmc=
 
