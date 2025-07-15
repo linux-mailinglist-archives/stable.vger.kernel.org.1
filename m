@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104C8B05BBE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F019B05F07
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68A241C2029C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADB317B8A7E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719122E2EE9;
-	Tue, 15 Jul 2025 13:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB722D8788;
+	Tue, 15 Jul 2025 13:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M89Pu7sT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPGKXygW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4742E041E;
-	Tue, 15 Jul 2025 13:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D932CA9;
+	Tue, 15 Jul 2025 13:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585777; cv=none; b=aQlQwyLVcTxEGFxZnqLbrx2JX/7PLGDjda2X3S8vexcBf2sdHk5rB4RW0mD1n3L8YG2LK3AlJ7iJNB5iS9ty/qO580RDjacVKPtkC5YJ42vX10BjFg/9QXb11fGsKfWvEbccLeU6bONNu4bbRifKXDahCpHwD3d1gQi8WE1814w=
+	t=1752587272; cv=none; b=oni0FSpj+I3VCv5j01yZLSnQcuMPYGSSzRadpzdBjRNiIFzYR4CA2/Qu22ALHOTqLRHDDaQvWMTj94HfCuTH5gVKjlS7wYYfgRHVyoai0a7EIhX/ztOvwE5ikVBoN8sTQM4GU0rg9HB9aBwqP2hC33MS5UkHtcUAzPSFXae8AY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585777; c=relaxed/simple;
-	bh=kYKLFSVEEz4kwz0NYE84sQ7CexkcUCV5XLTecRDFCUs=;
+	s=arc-20240116; t=1752587272; c=relaxed/simple;
+	bh=yefP47YhCOzioedxsSOdGO1HWKHdSUW71Rsqa/imJlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LvdtqatUcEqGYMKDLQD692fVqFajaNr4gXJgcxR8a+dqsrBTm0p1fkP1B8S7AJpMPGdLYN7NDRojDIsMHZ9RDc/qFFownoHYazQR6Yh4lG9LSwhpNLyHh5A/dQaRhDw+6ekB3FmvgD9Zj/5xetdD2XurR8FcdjapIWA8AQkfUMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M89Pu7sT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD384C4CEE3;
-	Tue, 15 Jul 2025 13:22:56 +0000 (UTC)
+	 MIME-Version; b=ZttKPJ9vqBOisf8Vznekehd6LyxAJTAqvtVtLNjW6zfqfuqBT67MB/iF956ImTjC5cMrgKtzX1+VjyoCibWx4J0U6w2KqDGaEdln4vLoF5GbOwEBbja1Dfe44a2VL4S4SfWg+VnoDItLURyl6Jj7DbqjLieT4nbIATcHgdV3AlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPGKXygW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD14CC4CEE3;
+	Tue, 15 Jul 2025 13:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585777;
-	bh=kYKLFSVEEz4kwz0NYE84sQ7CexkcUCV5XLTecRDFCUs=;
+	s=korg; t=1752587272;
+	bh=yefP47YhCOzioedxsSOdGO1HWKHdSUW71Rsqa/imJlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M89Pu7sTzXlldzQE/dY3Mv5oEB2ZnTOj4tc6UHwVb4yPUHtotDnlaLr+AZ6Efc+s3
-	 Wrmm4qAjxmPMX185dS6jwzqo1fGX6JrWTDT/4ffl6DNEDL1oV9AuNo42HZqbGyTJnm
-	 Vey5yvqBiehkpM9POEliUOPQYxHUUcd6bIS5fwRY=
+	b=UPGKXygWfXuCWDjiwimyDDbCRC45v3hgjAEnZOpYiLr6dTus7Nt565Y1YsgHSJtKl
+	 CJ/PK1w4sGlPFhoL059RvWfEZWlEm5mrmXP8sN6O+ZPw00KCMJGD3M1a4FCmLEgLr3
+	 FZ92XnJpqvUZaJzvKw47+M2Y7ANat4Neziua/SyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	syzbot+d333febcf8f4bc5f6110@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/163] HID: quirks: Add quirk for 2 Chicony Electronics HP 5MP Cameras
+Subject: [PATCH 6.1 08/88] tipc: Fix use-after-free in tipc_conn_close().
 Date: Tue, 15 Jul 2025 15:13:44 +0200
-Message-ID: <20250715130815.096528354@linuxfoundation.org>
+Message-ID: <20250715130754.841691823@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 54bae4c17c11688339eb73a04fd24203bb6e7494 ]
+[ Upstream commit 667eeab4999e981c96b447a4df5f20bdf5c26f13 ]
 
-The Chicony Electronics HP 5MP Cameras (USB ID 04F2:B824 & 04F2:B82C)
-report a HID sensor interface that is not actually implemented.
-Attempting to access this non-functional sensor via iio_info causes
-system hangs as runtime PM tries to wake up an unresponsive sensor.
+syzbot reported a null-ptr-deref in tipc_conn_close() during netns
+dismantle. [0]
 
-Add these 2 devices to the HID ignore list since the sensor interface is
-non-functional by design and should not be exposed to userspace.
+tipc_topsrv_stop() iterates tipc_net(net)->topsrv->conn_idr and calls
+tipc_conn_close() for each tipc_conn.
 
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+The problem is that tipc_conn_close() is called after releasing the
+IDR lock.
+
+At the same time, there might be tipc_conn_recv_work() running and it
+could call tipc_conn_close() for the same tipc_conn and release its
+last ->kref.
+
+Once we release the IDR lock in tipc_topsrv_stop(), there is no
+guarantee that the tipc_conn is alive.
+
+Let's hold the ref before releasing the lock and put the ref after
+tipc_conn_close() in tipc_topsrv_stop().
+
+[0]:
+BUG: KASAN: use-after-free in tipc_conn_close+0x122/0x140 net/tipc/topsrv.c:165
+Read of size 8 at addr ffff888099305a08 by task kworker/u4:3/435
+
+CPU: 0 PID: 435 Comm: kworker/u4:3 Not tainted 4.19.204-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: netns cleanup_net
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x1fc/0x2ef lib/dump_stack.c:118
+ print_address_description.cold+0x54/0x219 mm/kasan/report.c:256
+ kasan_report_error.cold+0x8a/0x1b9 mm/kasan/report.c:354
+ kasan_report mm/kasan/report.c:412 [inline]
+ __asan_report_load8_noabort+0x88/0x90 mm/kasan/report.c:433
+ tipc_conn_close+0x122/0x140 net/tipc/topsrv.c:165
+ tipc_topsrv_stop net/tipc/topsrv.c:701 [inline]
+ tipc_topsrv_exit_net+0x27b/0x5c0 net/tipc/topsrv.c:722
+ ops_exit_list+0xa5/0x150 net/core/net_namespace.c:153
+ cleanup_net+0x3b4/0x8b0 net/core/net_namespace.c:553
+ process_one_work+0x864/0x1570 kernel/workqueue.c:2153
+ worker_thread+0x64c/0x1130 kernel/workqueue.c:2296
+ kthread+0x33f/0x460 kernel/kthread.c:259
+ ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:415
+
+Allocated by task 23:
+ kmem_cache_alloc_trace+0x12f/0x380 mm/slab.c:3625
+ kmalloc include/linux/slab.h:515 [inline]
+ kzalloc include/linux/slab.h:709 [inline]
+ tipc_conn_alloc+0x43/0x4f0 net/tipc/topsrv.c:192
+ tipc_topsrv_accept+0x1b5/0x280 net/tipc/topsrv.c:470
+ process_one_work+0x864/0x1570 kernel/workqueue.c:2153
+ worker_thread+0x64c/0x1130 kernel/workqueue.c:2296
+ kthread+0x33f/0x460 kernel/kthread.c:259
+ ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:415
+
+Freed by task 23:
+ __cache_free mm/slab.c:3503 [inline]
+ kfree+0xcc/0x210 mm/slab.c:3822
+ tipc_conn_kref_release net/tipc/topsrv.c:150 [inline]
+ kref_put include/linux/kref.h:70 [inline]
+ conn_put+0x2cd/0x3a0 net/tipc/topsrv.c:155
+ process_one_work+0x864/0x1570 kernel/workqueue.c:2153
+ worker_thread+0x64c/0x1130 kernel/workqueue.c:2296
+ kthread+0x33f/0x460 kernel/kthread.c:259
+ ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:415
+
+The buggy address belongs to the object at ffff888099305a00
+ which belongs to the cache kmalloc-512 of size 512
+The buggy address is located 8 bytes inside of
+ 512-byte region [ffff888099305a00, ffff888099305c00)
+The buggy address belongs to the page:
+page:ffffea000264c140 count:1 mapcount:0 mapping:ffff88813bff0940 index:0x0
+flags: 0xfff00000000100(slab)
+raw: 00fff00000000100 ffffea00028b6b88 ffffea0002cd2b08 ffff88813bff0940
+raw: 0000000000000000 ffff888099305000 0000000100000006 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff888099305900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888099305980: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff888099305a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                      ^
+ ffff888099305a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888099305b00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+
+Fixes: c5fa7b3cf3cb ("tipc: introduce new TIPC server infrastructure")
+Reported-by: syzbot+d333febcf8f4bc5f6110@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=27169a847a70550d17be
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250702014350.692213-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 2 ++
- drivers/hid/hid-quirks.c | 2 ++
- 2 files changed, 4 insertions(+)
+ net/tipc/topsrv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index de6bab6a7394b..b472140421f5a 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -311,6 +311,8 @@
- #define USB_DEVICE_ID_ASUS_AK1D		0x1125
- #define USB_DEVICE_ID_CHICONY_TOSHIBA_WT10A	0x1408
- #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
- 
- #define USB_VENDOR_ID_CHUNGHWAT		0x2247
- #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index e4d80307b898c..80372342c176a 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -747,6 +747,8 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AVERMEDIA, USB_DEVICE_ID_AVER_FM_MR800) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AXENTIA, USB_DEVICE_ID_AXENTIA_FM_RADIO) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
+diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
+index 69c88cc03887d..0445c91db009e 100644
+--- a/net/tipc/topsrv.c
++++ b/net/tipc/topsrv.c
+@@ -699,8 +699,10 @@ static void tipc_topsrv_stop(struct net *net)
+ 	for (id = 0; srv->idr_in_use; id++) {
+ 		con = idr_find(&srv->conn_idr, id);
+ 		if (con) {
++			conn_get(con);
+ 			spin_unlock_bh(&srv->idr_lock);
+ 			tipc_conn_close(con);
++			conn_put(con);
+ 			spin_lock_bh(&srv->idr_lock);
+ 		}
+ 	}
 -- 
 2.39.5
 
