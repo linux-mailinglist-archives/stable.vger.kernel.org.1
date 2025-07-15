@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F9FB05E52
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:52:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5D3B05DC4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0439216813E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8781C249C6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BA22EA49B;
-	Tue, 15 Jul 2025 13:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66AB82E54A9;
+	Tue, 15 Jul 2025 13:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvvzX2+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJk1rBcj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAA12EA49C;
-	Tue, 15 Jul 2025 13:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220D32EA746;
+	Tue, 15 Jul 2025 13:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586836; cv=none; b=rKmk2qKb47AOemcb/TSZeE06GftMpiwtorgMiWhYLGzgBMhOsS/7XpysX+pEwkulLNrnldVLmc8WM/A1sfxwYEFedA0YHRGmJl122uv0f5YaHuvHINZEOSHeOR8IQyTZ5iOHZ76YEvquVuFTI5WR4Rd4oqjAZDrGxhhiHb2WdSo=
+	t=1752586455; cv=none; b=SO9MOtNGKH23EdFW1VgXoJSmD3BpdNtnGhHAllQwl5EOrcT54MZHyQPZurLXtuxr0DpD25Rb+898fc3mDAmN8XyF3GOB7cSR9Dvz/e8JgeFu8T2hwcDNvgw8JpbGGX7YYseAFlZ88/vBXUPLaSIbiwlRfwtcF4TaSHwi3CmX5pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586836; c=relaxed/simple;
-	bh=wg+dlCNc3yovJ4uBRPNQ/z6oo1OkwKCW65dKxMst+RQ=;
+	s=arc-20240116; t=1752586455; c=relaxed/simple;
+	bh=ksmy/UNubdp7Tzc89nQDLEPRuhuDajkx3danH2SVBik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAvdPfSIRpJ7Fi/c99ljZSKARvco6Epei8IKm2ZAPUz7dV+QfzlVPkUXTaLPj3gt2RAxRdS6PfFcwCpR3BVbFIL7iBSWYTCMzNBjUtaAhXAa3vp10dt6QYvmqJrHcPy3G3DM6j9ZhCLeiJxWhmTC3KvmdOxvx707cPJUNZsglMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvvzX2+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCAFC4CEE3;
-	Tue, 15 Jul 2025 13:40:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CX/FdJmT1gWpGANryraz8vpJyrn9/XiX7QRzRZpDFw8KvBnb5b1O0FnZuq7jAX9LrEdOVDK+auIs4P3IbAYNajMEPol3tONstOLdvToPIUYNbNwtrLmieebc5LE07WAUJP0etdUuxfZV3UoJP8VX4xwobVui2GOWsFZWFoNdXho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJk1rBcj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D4FC4CEF1;
+	Tue, 15 Jul 2025 13:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586835;
-	bh=wg+dlCNc3yovJ4uBRPNQ/z6oo1OkwKCW65dKxMst+RQ=;
+	s=korg; t=1752586454;
+	bh=ksmy/UNubdp7Tzc89nQDLEPRuhuDajkx3danH2SVBik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvvzX2+uKxER33AjsaySHQ9Ihnatx31pz6pOrLDgsKX36Bc+czz3lg2X74mq+nd3Q
-	 XtyRozATCbENws1MZLRNQ1qTkBgI77pjmjP1/BoduSTQ91kdtX4H5pEZISBgvSFcog
-	 oBMeWoMGzPjmcTf0TXvGB2YMkyu0w3GTB+7sl7L8=
+	b=aJk1rBcjJlVMlkQck4uZlw0yTYEG/FwRGY5Peuvp1vRElSpGn07DPKbHb9pETtCz3
+	 RpfpLfi2dLWW0EVluuNmtUGwEDND91XtgDeaoEQwTNSoktgjIkwqUfIwG5Un44+u69
+	 AiXQEzA+nnjCkuv37a7eryJOOPZ5EXoCrCUAbxPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aiden Yang <ling@moedove.com>,
-	Gary Guo <gary@garyguo.net>,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 067/192] gre: Fix IPv6 multicast route creation.
+	Daan De Meyer <daan.j.demeyer@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 040/148] vsock/uapi: fix linux/vm_sockets.h userspace compilation errors
 Date: Tue, 15 Jul 2025 15:12:42 +0200
-Message-ID: <20250715130817.627318973@linuxfoundation.org>
+Message-ID: <20250715130801.921091802@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit 4e914ef063de40397e25a025c70d9737a9e45a8c upstream.
+[ Upstream commit 22bbc1dcd0d6785fb390c41f0dd5b5e218d23bdd ]
 
-Use addrconf_add_dev() instead of ipv6_find_idev() in
-addrconf_gre_config() so that we don't just get the inet6_dev, but also
-install the default ff00::/8 multicast route.
+If a userspace application just include <linux/vm_sockets.h> will fail
+to build with the following errors:
 
-Before commit 3e6a0243ff00 ("gre: Fix again IPv6 link-local address
-generation."), the multicast route was created at the end of the
-function by addrconf_add_mroute(). But this code path is now only taken
-in one particular case (gre devices not bound to a local IP address and
-in EUI64 mode). For all other cases, the function exits early and
-addrconf_add_mroute() is not called anymore.
+    /usr/include/linux/vm_sockets.h:182:39: error: invalid application of ‘sizeof’ to incomplete type ‘struct sockaddr’
+      182 |         unsigned char svm_zero[sizeof(struct sockaddr) -
+          |                                       ^~~~~~
+    /usr/include/linux/vm_sockets.h:183:39: error: ‘sa_family_t’ undeclared here (not in a function)
+      183 |                                sizeof(sa_family_t) -
+          |
 
-Using addrconf_add_dev() instead of ipv6_find_idev() in
-addrconf_gre_config(), fixes the problem as it will create the default
-multicast route for all gre devices. This also brings
-addrconf_gre_config() a bit closer to the normal netdevice IPv6
-configuration code (addrconf_dev_config()).
+Include <sys/socket.h> for userspace (guarded by ifndef __KERNEL__)
+where `struct sockaddr` and `sa_family_t` are defined.
+We already do something similar in <linux/mptcp.h> and <linux/if.h>.
 
-Cc: stable@vger.kernel.org
-Fixes: 3e6a0243ff00 ("gre: Fix again IPv6 link-local address generation.")
-Reported-by: Aiden Yang <ling@moedove.com>
-Closes: https://lore.kernel.org/netdev/CANR=AhRM7YHHXVxJ4DmrTNMeuEOY87K2mLmo9KMed1JMr20p6g@mail.gmail.com/
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Tested-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/027a923dcb550ad115e6d93ee8bb7d310378bd01.1752070620.git.gnault@redhat.com
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Reported-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250623100053.40979-1-sgarzare@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ include/uapi/linux/vm_sockets.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -3525,11 +3525,9 @@ static void addrconf_gre_config(struct n
+diff --git a/include/uapi/linux/vm_sockets.h b/include/uapi/linux/vm_sockets.h
+index 68d57c5e99bc0..f763d1caf27df 100644
+--- a/include/uapi/linux/vm_sockets.h
++++ b/include/uapi/linux/vm_sockets.h
+@@ -17,6 +17,10 @@
+ #ifndef _UAPI_VM_SOCKETS_H
+ #define _UAPI_VM_SOCKETS_H
  
- 	ASSERT_RTNL();
++#ifndef __KERNEL__
++#include <sys/socket.h>        /* for struct sockaddr and sa_family_t */
++#endif
++
+ #include <linux/socket.h>
  
--	idev = ipv6_find_idev(dev);
--	if (IS_ERR(idev)) {
--		pr_debug("%s: add_dev failed\n", __func__);
-+	idev = addrconf_add_dev(dev);
-+	if (IS_ERR(idev))
- 		return;
--	}
- 
- 	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
- 	 * unless we have an IPv4 GRE device not bound to an IP address and
-@@ -3543,9 +3541,6 @@ static void addrconf_gre_config(struct n
- 	}
- 
- 	add_v4_addrs(idev);
--
--	if (dev->flags & IFF_POINTOPOINT)
--		addrconf_add_mroute(dev);
- }
- #endif
- 
+ /* Option name for STREAM socket buffer size.  Use as the option name in
+-- 
+2.39.5
+
 
 
 
