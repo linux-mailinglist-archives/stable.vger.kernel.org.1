@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76B9B05EBD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A8AB05BBF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E211C7A67D9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:55:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DDEF56653B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8742EF9CE;
-	Tue, 15 Jul 2025 13:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37402E3AE1;
+	Tue, 15 Jul 2025 13:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LujQUDAd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpsfy1Ph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04662EF9C2;
-	Tue, 15 Jul 2025 13:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29C72E1758;
+	Tue, 15 Jul 2025 13:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587201; cv=none; b=mEtM1ISyWmjv+wbVWJWmzWfhpUZJijLmPjd6gcwkWdCDrHpKiU3OPqSoO1zUl+3GgkuLaRB5dHeFbeduF4jhfUjqexu4HLuw26jirDX4B/Dzvsnau05Nicjq7jHeP9JyT5aNw5fWLhC23FY2ozl/C2sbEwAgbVEsWCkz+zgjO+c=
+	t=1752585766; cv=none; b=OeqPq2BoA5VQe20s+PgPXVA5F4C16RTd9KPpYYBfM08OMK/JOVK2ZejpOt5MNsMJfO36rc23A0nA0YwZelvYexg59wgpKdfWP4sh2v1WTgsuflTMatXepsA7ipL7TC8aRzT8zf+oXjP1xj6g73eD1stbZjcwOt7TBXlsb3yRy4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587201; c=relaxed/simple;
-	bh=qW0HV8ed9cvAGGxZLCVVizX3CYKsdVvhxEsU3cm2CUk=;
+	s=arc-20240116; t=1752585766; c=relaxed/simple;
+	bh=llJT89xUxt1n3XOPj2ZYYTvLlYCsr5/vZ08PblGJ3ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWOVZGxYreVeVQGnIvinCi+97H0+NQZCiom1rut2oSqVgK6yCV7uXUGqYEpzx3ZE2zUQLB+IJUt/JpgsDo0I0wNGpT8taATnLgubnN7+nVTYQE/bUSKiOi//uSWRJSM4GE5NDfKmNMX6Adi6dzfXH2nAgCVsYrnBdkwUHjVc8qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LujQUDAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13AB3C4CEE3;
-	Tue, 15 Jul 2025 13:46:39 +0000 (UTC)
+	 MIME-Version; b=bTOeTWOfknHUAhOv7Lrc8uxTCuvKMaBh5wuk6NUlNZ50ygFoCirwkJFbwmbUCBIp55aVE1P/Mipma2BwywJTsYJVIzteP9mDfS8D5eA4XFaftTI4b3/BmLJklxD8trvWVhEez3psZSw/duNbKLAG8S4hNuSwrL3kd2wK3YFRHiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpsfy1Ph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44203C4CEE3;
+	Tue, 15 Jul 2025 13:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587200;
-	bh=qW0HV8ed9cvAGGxZLCVVizX3CYKsdVvhxEsU3cm2CUk=;
+	s=korg; t=1752585766;
+	bh=llJT89xUxt1n3XOPj2ZYYTvLlYCsr5/vZ08PblGJ3ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LujQUDAdmdMBRIXNWJZ/2mUA/eADhQrSy40U1AlxUZcpm8mbiL0tNoNGXpI+wQRqu
-	 VrsppTVkwc1HF+ZMud4WsArnRQOtq3LImrlJ1PoSKijl6/s9m+7/a/zZeNMgiaQA8Z
-	 zEqzkCE8THLz971jOeH82RUrkmD5YqoLdWrhNYvo=
+	b=fpsfy1Phegk6kGxPOBWs3fzNqyMkXjORE8tgFw/LHUKebEWhn0zsJd8m2eENw/BIW
+	 WMfXhUYY/PKtCvTK2gn34oXV+ze9P8vV7q99Wbc4VC0wPkAWyKrawQdELtpFp7zJpy
+	 164sChlsQ0BUdXE8ZkSBXh3QmU2VB7eXI4b4DL2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Nicolas Pitre <npitre@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 04/88] perf: Revert to requiring CAP_SYS_ADMIN for uprobes
+Subject: [PATCH 6.12 152/163] vt: add missing notification when switching back to text mode
 Date: Tue, 15 Jul 2025 15:13:40 +0200
-Message-ID: <20250715130754.677996750@linuxfoundation.org>
+Message-ID: <20250715130814.938537704@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Nicolas Pitre <npitre@baylibre.com>
 
-[ Upstream commit ba677dbe77af5ffe6204e0f3f547f3ba059c6302 ]
+[ Upstream commit ff78538e07fa284ce08cbbcb0730daa91ed16722 ]
 
-Jann reports that uprobes can be used destructively when used in the
-middle of an instruction. The kernel only verifies there is a valid
-instruction at the requested offset, but due to variable instruction
-length cannot determine if this is an instruction as seen by the
-intended execution stream.
+Programs using poll() on /dev/vcsa to be notified when VT changes occur
+were missing one case: the switch from gfx to text mode.
 
-Additionally, Mark Rutland notes that on architectures that mix data
-in the text segment (like arm64), a similar things can be done if the
-data word is 'mistaken' for an instruction.
-
-As such, require CAP_SYS_ADMIN for uprobes.
-
-Fixes: c9e0924e5c2b ("perf/core: open access to probes for CAP_PERFMON privileged process")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/CAG48ez1n4520sq0XrWYDHKiKxE_+WCfAK+qt9qkY4ZiBGmL-5g@mail.gmail.com
+Signed-off-by: Nicolas Pitre <npitre@baylibre.com>
+Link: https://lore.kernel.org/r/9o5ro928-0pp4-05rq-70p4-ro385n21n723@onlyvoer.pbz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/vt/vt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 2761db0365ddc..f815b808db20a 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -10207,7 +10207,7 @@ static int perf_uprobe_event_init(struct perf_event *event)
- 	if (event->attr.type != perf_uprobe.type)
- 		return -ENOENT;
+diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+index be5564ed8c018..5b09ce71345b6 100644
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -4566,6 +4566,7 @@ void do_unblank_screen(int leaving_gfx)
+ 	set_palette(vc);
+ 	set_cursor(vc);
+ 	vt_event_post(VT_EVENT_UNBLANK, vc->vc_num, vc->vc_num);
++	notify_update(vc);
+ }
+ EXPORT_SYMBOL(do_unblank_screen);
  
--	if (!perfmon_capable())
-+	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 
- 	/*
 -- 
 2.39.5
 
