@@ -1,105 +1,140 @@
-Return-Path: <stable+bounces-162983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A145B061CF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:50:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72204B0621D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9967C16DCE7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:37:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62F711AA475B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BECF1925BC;
-	Tue, 15 Jul 2025 14:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A538D1F5828;
+	Tue, 15 Jul 2025 14:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="qVmTgbDu"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238E21D5ADE
-	for <stable@vger.kernel.org>; Tue, 15 Jul 2025 14:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF1A1EEA5D;
+	Tue, 15 Jul 2025 14:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752590215; cv=none; b=j7Eya1v04JdbZ0EC1jQe84TFuomE4Wqoor+DtPvaGS3o79pK6D5aI9HjJBpy1ypxK4uKnTF+smyM6wJAcBnni/Rq/xEJDrqVlK4AuVR9erqeiVqoVxPYlDXmwn5HA4gVCdvNsByMar/E9lJYhYjGv4HdyADa34Jf3JmtWOV1t70=
+	t=1752591228; cv=none; b=tQkreqkDEWuoWRvff/rqFojBCoPD8dpS333GvQyDNPhQjgA6vuTmwEBEiCtoEXLda/IdfxVb58eIJV+DpXNIh07E2qRwvBk02eFxv8kuKmRZOjnKk3sDmUCdPO5+UcbZ4VUwfxyAGUf8Q4q30A5eP9N2y+uOv6VnpdArUCGh5ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752590215; c=relaxed/simple;
-	bh=8VmRtZW1HYTBTvFWY9G1TDVX7HqJjugkdDxLJ5GNOj8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mMQAxkhl7YNFVZz/JumSIh0NAWr1bgLmfATy5u2B1JzU68oX2gsH9JZwK0oG71LcxTuagVihHqaYuKysP6Y9heWhIQrhqWTq8fdJpEdlBMEJzDb5vX5BHH7e+0mVRZr5S7eVb32kxqC71DRCGd+WmOK5k0h3acV+KnaROkPO1EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=gladserv.com; arc=none smtp.client-ip=185.128.210.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gladserv.com
-Received: from [2a0c:e303:0:7000:1adb:f2ff:fe4f:84eb] (port=50574 helo=localhost)
-	by bregans-0.gladserv.net with utf8esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(envelope-from <brett@gladserv.com>)
-	id 1ubgm0-00967d-1t;
-	Tue, 15 Jul 2025 14:36:48 +0000
-Date: Tue, 15 Jul 2025 16:36:47 +0200
-From: Brett Sheffield <bacs@librecast.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 5.10 000/208] 5.10.240-rc1 review
-Message-ID: <aHZnf9ZJrmrytZvk@karahi.gladserv.com>
-References: <20250715130810.830580412@linuxfoundation.org>
+	s=arc-20240116; t=1752591228; c=relaxed/simple;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aFUJEJsi8QurDYztZlI3dlEAGLEYu+pe0SA92LgSXrQJPSWrN7ZEMofjr9QxY5kzxBlgZZ8Vr1vLW622KOuTuHsVGwyflsmEaHAAHCH+S1Oa4usMmiCiGkzbuW3SbcSJ80BZs14Na3WxaECv5t3ihcx1jhXkz50OfMWVXTlA/rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=qVmTgbDu; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1752591202; x=1753196002; i=rwarsow@gmx.de;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=qVmTgbDuDLfRGMXvO6kMV+4jLXvA28eQZNBmnLG+PjUozTVpPDB4v7Ctf/Jyz+30
+	 rdkFsRW8huJXfkfBWAao4RhmcD9tlp0VijCXSaSh7vvgGGXKjW0Uh7tFmKYO2HAHC
+	 SRIylFZfReNpIkt3e0V7Co0RcU5PuWE+eTe7C+NXuu+zYZXEwziGKW1qxzDIb2xOB
+	 zdziDY10Cr4XPTie6+NcoDOYLGajZNI0O2nrmxd7Msj0hPsne/cz9WUKceusfgHTp
+	 2piiooZiVnj3m5Kvkga/y4xVZP51wTHFr/s80Rx26syPTynRWPD71PUql4ksuzBij
+	 e9hvMvdYDSP49D9ZFA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.32.22]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M26vL-1ue9sG14Kf-00G6dp; Tue, 15
+ Jul 2025 16:53:21 +0200
+Message-ID: <de05944d-7775-43da-8b90-54161e35b785@gmx.de>
+Date: Tue, 15 Jul 2025 16:53:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-Organisation: Gladserv Limited.  Registered in Scotland with company number SC318051. Registered Office 272 Bath Street, Glasgow, G2 4JR, Scotland. VAT Registration Number 902 6097 39.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.15 000/192] 6.15.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250715130814.854109770@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:fD558cLm1hehTFRcs1Mip0yH4zvJ5cqwcBVwGAZPGCUclqWIM4H
+ FKx9Ba14wTDwOeVQkjuPeXrryALSS5ZsjTNOhaVpAUMO3lGJRySVwIWXVGPUCNlyo7dZOTU
+ Kk4MdKyCGrnH1Hx1vZfQ23XLi7MMhIMJBxn3/WVq/xEEhMh0TKrRKu+9f+YE9wVsRxERPTg
+ 5+CQ5vaI6inNPO1wvdhNw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:FqgNm0QlxSk=;oIb0jJIitS3v4JK8vW3eTSCeTMd
+ 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
+ NMjeCUMBSAskoWUpeA6kd14=
 
-Hi Greg,
+Hi
 
-On 2025-07-15 15:11, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.240 release.
-> There are 208 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 17 Jul 2025 13:07:32 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.240-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-...
+Thanks
 
-> Brett A C Sheffield (Librecast) <bacs@librecast.net>
->     Revert "ipv6: save dontfrag in cork"
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
-Looking good. With this last patch applied, that regression is now fixed on all
-stable kernels it affected.
-
- https://lore.kernel.org/stable/aElivdUXqd1OqgMY@karahi.gladserv.com/#r
-
-I'll make a point of running our test suite over the stable RC kernels when I
-can. That will give the network code paths (mainly IPv6 and multicast) a bit of
-exercise and hopefully catch anything like this earlier.
-
-CPU: AMD Ryzen 9 9950X
-Boot: OK
-130/130 Librecast tests passing
-
-Tested-by: Brett A C Sheffield (Librecast) <bacs@librecast.net>
-
-Cheers,
-
-
-Brett
--- 
-Brett Sheffield (he/him)
-Librecast - Decentralising the Internet with Multicast
-https://librecast.net/
-https://blog.brettsheffield.com/
 
