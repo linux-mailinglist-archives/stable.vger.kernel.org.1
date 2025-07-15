@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29086B05EFE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94F7B05D28
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AE147B957F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:56:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3784C1892D00
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A2D2E7F00;
-	Tue, 15 Jul 2025 13:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56822E762F;
+	Tue, 15 Jul 2025 13:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0sN1C53e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLWaEp+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820B22E3380;
-	Tue, 15 Jul 2025 13:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7489ABA42;
+	Tue, 15 Jul 2025 13:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587261; cv=none; b=YSza3JFmHyMrxucTF5y8bu22cCG2Gn5WnoIwaPgshA5aTSpFw0RTdV5CicT15fIShxfCnv4JjC4c3s+2lYFKQi0kWvefffW3QuI1WVQlHD/0i3zMsxTd57qOG0VXaC6MF2cjoy2usplMyGW1Jplu769nb5p+T5QZ1fm1tCVzmtk=
+	t=1752586274; cv=none; b=rSpA98k8pYGmYz3vH1cwc1Iv+UDLF6kBB1CTXlWRpnZP3aMsjEk+gVWkgFcyfjlGXiui1QVeqG9X9OqMuoyNypObsMAjtsE5aEEk3yAQH0GmgJpNxboUJekjrmT/S0jXPzCNGc7mX+lWCTpp9lzCNo0+toezQEoipvRxtwptfyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587261; c=relaxed/simple;
-	bh=/r7lgVVKrEFri0BEaUIqPCGSBBbk58Y+B3Ue3xGh1eI=;
+	s=arc-20240116; t=1752586274; c=relaxed/simple;
+	bh=9p1bPJAtNms3/v7Dwz70kjFI5vEqDVraL/hj84rHoLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hqbF3s11q+4YpJNCe+ze5UnjggzmUXz9rO2ELrFIMDsTGbw53iSOCQ4hP6rqC73SZypc8KCK354Ufq5tFdBnQv3ssbSRM7xl5FZt4gJZiAo0QOP1Wlq54tPGgzjXyUGKmaKZQE7BQ40juhDH0XE1kxUizmGT+o7u5Qe9+eTuXyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sN1C53e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E7DC4CEE3;
-	Tue, 15 Jul 2025 13:47:40 +0000 (UTC)
+	 MIME-Version; b=JYUL6cE8SAgEFQ6vzsHuUQRRLqhulaW9bxatsangz6Hyryu0Jr2TZGDWIdzQsLGvbLl4Qv5VK904qkoEcbP+P5L03UtisltfLxpRMuMcs1m8R8M+0kGNaqAAbRviCis3ABbwkEyMMlMYsZS2CR+tFFODzSY8vglGhfvGDYsD3RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLWaEp+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46ECC4CEE3;
+	Tue, 15 Jul 2025 13:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587261;
-	bh=/r7lgVVKrEFri0BEaUIqPCGSBBbk58Y+B3Ue3xGh1eI=;
+	s=korg; t=1752586274;
+	bh=9p1bPJAtNms3/v7Dwz70kjFI5vEqDVraL/hj84rHoLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0sN1C53eaDcDgthtVy29Q52A2Qjrc1+Pz0qxT0y1sN0fG+P1BHH9jUhpyPqSEgHnq
-	 IhXclWsswxhfVNU/ySlOjo25PtzarzcNwZTkBuF4BVV6H2g8Vqz2i1B8m+1577nGaJ
-	 RpavulGq47RN3aTuN7XgBLRX+e7X7EljE/NZl43k=
+	b=nLWaEp+eYMXwG9r0bVGziQXQjS9zgeQl0zogjJqss/6KisVWZ9EsWDw6q3729npD3
+	 BYXhO0yM9rkLv3ggwhJgRNV/vONMYnsID6jNAsFVOvpmsoIQHuKdEbHEzF+U/bn79e
+	 znoofX9hobejZ2YtnGbtEqbUQ1PEyljvxo5o+sWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH 6.1 33/88] drm/ttm: fix error handling in ttm_buffer_object_transfer
+	Akira Inoue <niyarium@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 70/77] HID: lenovo: Add support for ThinkPad X1 Tablet Thin Keyboard Gen2
 Date: Tue, 15 Jul 2025 15:14:09 +0200
-Message-ID: <20250715130755.850865503@linuxfoundation.org>
+Message-ID: <20250715130754.535647196@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +60,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Akira Inoue <niyarium@gmail.com>
 
-commit 97e000acf2e20a86a50a0ec8c2739f0846f37509 upstream.
+[ Upstream commit a8905238c3bbe13db90065ed74682418f23830c3 ]
 
-Unlocking the resv object was missing in the error path, additionally to
-that we should move over the resource only after the fence slot was
-reserved.
+Add "Thinkpad X1 Tablet Gen 2 Keyboard" PID to hid-lenovo driver to fix trackpoint not working issue.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Fixes: c8d4c18bfbc4a ("dma-buf/drivers: make reserving a shared slot mandatory v4")
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20250616130726.22863-3-christian.koenig@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Akira Inoue <niyarium@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo_util.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-lenovo.c     | 8 ++++++++
+ drivers/hid/hid-multitouch.c | 8 +++++++-
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/ttm/ttm_bo_util.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
-@@ -244,6 +244,13 @@ static int ttm_buffer_object_transfer(st
- 	ret = dma_resv_trylock(&fbo->base.base._resv);
- 	WARN_ON(!ret);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 08494eb652091..17d00cb1e9be6 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -764,6 +764,7 @@
+ #define USB_DEVICE_ID_LENOVO_TPPRODOCK	0x6067
+ #define USB_DEVICE_ID_LENOVO_X1_COVER	0x6085
+ #define USB_DEVICE_ID_LENOVO_X1_TAB	0x60a3
++#define USB_DEVICE_ID_LENOVO_X1_TAB2	0x60a4
+ #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
+ #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
+ #define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
+diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+index 9536f468b42c5..d74f0ddb45fdb 100644
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -343,6 +343,7 @@ static int lenovo_input_mapping(struct hid_device *hdev,
+ 		return lenovo_input_mapping_tp10_ultrabook_kbd(hdev, hi, field,
+ 							       usage, bit, max);
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		return lenovo_input_mapping_x1_tab_kbd(hdev, hi, field, usage, bit, max);
+ 	default:
+@@ -432,6 +433,7 @@ static ssize_t attr_fn_lock_store(struct device *dev,
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_led_set_tp10ubkbd(hdev, TP10UBKBD_FN_LOCK_LED, value);
+ 		if (ret)
+@@ -616,6 +618,7 @@ static int lenovo_event(struct hid_device *hdev, struct hid_field *field,
+ 		return lenovo_event_cptkbd(hdev, field, usage, value);
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		return lenovo_event_tp10ubkbd(hdev, field, usage, value);
+ 	default:
+@@ -899,6 +902,7 @@ static int lenovo_led_brightness_set(struct led_classdev *led_cdev,
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_led_set_tp10ubkbd(hdev, tp10ubkbd_led[led_nr], value);
+ 		break;
+@@ -1140,6 +1144,7 @@ static int lenovo_probe(struct hid_device *hdev,
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_probe_tp10ubkbd(hdev);
+ 		break;
+@@ -1207,6 +1212,7 @@ static void lenovo_remove(struct hid_device *hdev)
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		lenovo_remove_tp10ubkbd(hdev);
+ 		break;
+@@ -1253,6 +1259,8 @@ static const struct hid_device_id lenovo_devices[] = {
+ 	 */
+ 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
+ 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB) },
++	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
++		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB2) },
+ 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
+ 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB3) },
+ 	{ }
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index bc9ba011ff607..c12f7cb7e1d95 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2108,12 +2108,18 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_GENERIC,
+ 			USB_VENDOR_ID_LG, I2C_DEVICE_ID_LG_7010) },
  
-+	ret = dma_resv_reserve_fences(&fbo->base.base._resv, 1);
-+	if (ret) {
-+		dma_resv_unlock(&fbo->base.base._resv);
-+		kfree(fbo);
-+		return ret;
-+	}
+-	/* Lenovo X1 TAB Gen 2 */
++	/* Lenovo X1 TAB Gen 1 */
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
+ 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
+ 			   USB_VENDOR_ID_LENOVO,
+ 			   USB_DEVICE_ID_LENOVO_X1_TAB) },
+ 
++	/* Lenovo X1 TAB Gen 2 */
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
++		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++			   USB_VENDOR_ID_LENOVO,
++			   USB_DEVICE_ID_LENOVO_X1_TAB2) },
 +
- 	if (fbo->base.resource) {
- 		ttm_resource_set_bo(fbo->base.resource, &fbo->base);
- 		bo->resource = NULL;
-@@ -252,12 +259,6 @@ static int ttm_buffer_object_transfer(st
- 		fbo->base.bulk_move = NULL;
- 	}
- 
--	ret = dma_resv_reserve_fences(&fbo->base.base._resv, 1);
--	if (ret) {
--		kfree(fbo);
--		return ret;
--	}
--
- 	ttm_bo_get(bo);
- 	fbo->bo = bo;
- 
+ 	/* Lenovo X1 TAB Gen 3 */
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
+ 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
+-- 
+2.39.5
+
 
 
 
