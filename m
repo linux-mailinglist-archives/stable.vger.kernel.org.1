@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084C6B05CF5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:38:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B94B05EEA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 331C0563BE8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35E381891F74
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBACA2E7634;
-	Tue, 15 Jul 2025 13:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7618F2EBDFC;
+	Tue, 15 Jul 2025 13:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ain3/StC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ra8vVEcF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26F52E3AE9;
-	Tue, 15 Jul 2025 13:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BD52EB5D6;
+	Tue, 15 Jul 2025 13:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586279; cv=none; b=DeGXQArfPkbtg2lOINDJ0RvVYxx9goEEz8fT60l7Dl86XefLypAINxSnzRHz5ouSpyvsVntfU7Rd2Yxz1FECvTWqQ7tSPbiFxfPN8oGrRMTN53/YpO4Fz7a3xFTjKKDnwJ2epu3iXdLZns6rMqi8dm2p1W1usNc7elCX0djo+rA=
+	t=1752587092; cv=none; b=SO+EPWKhep930fT01LAjrStEP57Gt4+WxuawCAWQ/F3NjIKUeuqXLEQKVSGtlLB670sC+N1/M2JQiVodmge3Ud/BdyOYm06bfaHpt+LSrD4Bh8oa7RE5wOe4AXUazmoMCb20iPHB/e48ALNvBd7sXeIKcVEx8y0AZAggR/gxvcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586279; c=relaxed/simple;
-	bh=F2gI7KipE13YNqb9s5LePc8nHjHCDWPYCkscNCIQOBY=;
+	s=arc-20240116; t=1752587092; c=relaxed/simple;
+	bh=zwb74O2s/s18J3co5Cpr7nJmmMxnACo16gtiprh1Vb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HCzgyOk2/YPcS4nBUAqRWV8XSzdqhKupt5i9CQIgFszlr86gmGg9+EDt2rrgFTM1d/B3pcxfrME3S9X/9IK2vdzYuWIxd08YEFGSKeWGqyM/f5EjzSsyqCLtidrnjyho73oCrcvVO7hDiKpbhp9b/52U6xp5KvT/cAXDtkbIDzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ain3/StC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3694FC4CEE3;
-	Tue, 15 Jul 2025 13:31:19 +0000 (UTC)
+	 MIME-Version; b=bcXEBfyZpU17eibVivv0wRdMZMUSmebm7UDHg67DBGqvmTCCrLC1erXHBdA1ei8T/usgs4OfzkGuyy2P9ChMKt/30guO0znPRfW9KFjzF45sO6mutpih0pJRmCRlJ0wbqp4haTPQlMtW3kXMD8mwREbWzgshwofj9HKPwPw55zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ra8vVEcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C13C4CEE3;
+	Tue, 15 Jul 2025 13:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586279;
-	bh=F2gI7KipE13YNqb9s5LePc8nHjHCDWPYCkscNCIQOBY=;
+	s=korg; t=1752587092;
+	bh=zwb74O2s/s18J3co5Cpr7nJmmMxnACo16gtiprh1Vb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ain3/StCXUzw/x41ngPcJQqjC8tTEEvrr5S7LXl/wmw52y2X9qC9SXcX8/v/X3/uA
-	 XRwZhf8r8MTbzVTekLm9EJVucPxAXKB9gymwWSiquJLAVCD7AzlchH3fCsDg1eeMEu
-	 v1ojLgttJd4gaXWtLyY7EDnCikD23g0SPfr28Sig=
+	b=ra8vVEcFPZQGvRfafBSv+n8ISVy2pU3pj7eTl9EGXEb1rzbV9eYVaFQjCzOPvwiUa
+	 ssmczo+sO2SbKlqTUMzwFkEoub6/W7ATYl85G5JZTjfW12CTXAJqBzQQ488yDtlWLs
+	 8t3/xzrqAbURpU2dXqhb8tqLmoPsFoZzOv2YmiWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Jiri Kosina <jkosina@suse.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 72/77] HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY
+Subject: [PATCH 6.15 156/192] selftests: net: lib: fix shift count out of range
 Date: Tue, 15 Jul 2025 15:14:11 +0200
-Message-ID: <20250715130754.614321549@linuxfoundation.org>
+Message-ID: <20250715130821.178055882@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 1a8953f4f7746c6a515989774fe03047c522c613 ]
+[ Upstream commit 47c84997c686b4d43b225521b732492552b84758 ]
 
-MARTLINKTECHNOLOGY is a microphone device, when the HID interface in an
-audio device is requested to get specific report id, the following error
-may occur.
+I got the following warning when writing other tests:
 
-[  562.939373] usb 1-1.4.1.2: new full-speed USB device number 21 using xhci_hcd
-[  563.104908] usb 1-1.4.1.2: New USB device found, idVendor=4c4a, idProduct=4155, bcdDevice= 1.00
-[  563.104910] usb 1-1.4.1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  563.104911] usb 1-1.4.1.2: Product: USB Composite Device
-[  563.104912] usb 1-1.4.1.2: Manufacturer: SmartlinkTechnology
-[  563.104913] usb 1-1.4.1.2: SerialNumber: 20201111000001
-[  563.229499] input: SmartlinkTechnology USB Composite Device as /devices/pci0000:00/0000:00:07.1/0000:04:00.3/usb1/1-1/1-1.4/1-1.4.1/1-1.4.1.2/1-1.4.1.2:1.2/0003:4C4A:4155.000F/input/input35
-[  563.291505] hid-generic 0003:4C4A:4155.000F: input,hidraw2: USB HID v2.01 Keyboard [SmartlinkTechnology USB Composite Device] on usb-0000:04:00.3-1.4.1.2/input2
-[  563.291557] usbhid 1-1.4.1.2:1.3: couldn't find an input interrupt endpoint
-[  568.506654] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
-[  573.626656] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
-[  578.746657] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
-[  583.866655] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
-[  588.986657] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+  + handle_test_result_pass 'bond 802.3ad' '(lacp_active off)'
+  + local 'test_name=bond 802.3ad'
+  + shift
+  + local 'opt_str=(lacp_active off)'
+  + shift
+  + log_test_result 'bond 802.3ad' '(lacp_active off)' ' OK '
+  + local 'test_name=bond 802.3ad'
+  + shift
+  + local 'opt_str=(lacp_active off)'
+  + shift
+  + local 'result= OK '
+  + shift
+  + local retmsg=
+  + shift
+  /net/tools/testing/selftests/net/forwarding/../lib.sh: line 315: shift: shift count out of range
 
-Ignore HID interface. The device is working properly.
+This happens because an extra shift is executed even after all arguments
+have been consumed. Remove the last shift in log_test_result() to avoid
+this warning.
 
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: a923af1ceee7 ("selftests: forwarding: Convert log_test() to recognize RET values")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20250709091244.88395-1-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ tools/testing/selftests/net/lib.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 17d00cb1e9be6..6b3c380584402 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1401,4 +1401,7 @@
- #define USB_VENDOR_ID_SIGNOTEC			0x2133
- #define USB_DEVICE_ID_SIGNOTEC_VIEWSONIC_PD1011	0x0018
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index 701905eeff66d..f380f30425945 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -286,7 +286,7 @@ log_test_result()
+ 	local test_name=$1; shift
+ 	local opt_str=$1; shift
+ 	local result=$1; shift
+-	local retmsg=$1; shift
++	local retmsg=$1
  
-+#define USB_VENDOR_ID_SMARTLINKTECHNOLOGY              0x4c4a
-+#define USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155         0x4155
-+
- #endif
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 126cadb117fef..f188a79330c68 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -874,6 +874,7 @@ static const struct hid_device_id hid_ignore_list[] = {
- #endif
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_SMARTLINKTECHNOLOGY, USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155) },
- 	{ }
- };
- 
+ 	printf "TEST: %-60s  [%s]\n" "$test_name $opt_str" "$result"
+ 	if [[ $retmsg ]]; then
 -- 
 2.39.5
 
