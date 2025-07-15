@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-162061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDD0B05B79
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E71D7B05E69
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B0D0744F8A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6606E1C24A5A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198C92E2EE7;
-	Tue, 15 Jul 2025 13:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517842E7BC9;
+	Tue, 15 Jul 2025 13:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UKCIFhv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXyQXlXs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7322E11D3;
-	Tue, 15 Jul 2025 13:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2E02E7BC5;
+	Tue, 15 Jul 2025 13:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585569; cv=none; b=Lx16JAdUgdk4KtE7+Fc9t2DnKyoXOKhrbETmAxaTxq21QstLwfWtg5eU6u83u2uc19pN7nZRpaU8SCyGcYLoLsjKLDSAdbZ0vlvV8BWDeEEaHq4cgOQgbI2ZhN+f0S08qrG/7Hkzp/UohzGWxRkHkQptcEmatDlppkqL/EthbsE=
+	t=1752586741; cv=none; b=fFOWtAUCTVZ1B02IdFlsoLFfkM4HBqCH4fQKMHEo6WinxkUvAsEYwXAiU9wmb0dgH1y+Pw2ypRqVgMPRwr9KkIbecq8jXfQEz1g3zwiYETMFEDk/dPZbxp3So6TwTNao7JzWNXSl4e5bTJb+HtUVJ7TLHxD+ujAe3QrKj3EJtjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585569; c=relaxed/simple;
-	bh=uU+ZbTUetQ6UfAWdmpWK0nvfJowIDV0JaUhoiMJA+rw=;
+	s=arc-20240116; t=1752586741; c=relaxed/simple;
+	bh=Vs1ODGz74E0UuMlUKr0a0v0P/r45/4K3/OJ4R/+hrdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3FFV2tYI5dU9D4ljpMdAZk2D2l4lsFtDZX0Cbem7XsLEcIgaqOwWd03Vdvlr6YfONN+VpzT2nnYpZNbSQsmT8VElL2wMJxZp0rVytLqY5osEeqp/4xcCVoe9+u0vaf48pcqt3Uu76h1EIizQYDvVSHo77zqjvAlguj/h64jk0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UKCIFhv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566AEC4CEE3;
-	Tue, 15 Jul 2025 13:19:29 +0000 (UTC)
+	 MIME-Version; b=F+3RrJVdqkUSQiCFsXmxLAPYqMuVz2cYapifrmmjT4zrO7QEPROX0BS2d3VBV/EjM3AFNIAr2oQzEsJ2NQjPJBDuhYlXNwQr2ToAsGqlx9fDePx0wu+LcPpzVR4mnoIfeZbE05TqwiLwSqsMtUDLJDrkieb9bXk/2cQdg4QR658=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXyQXlXs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F0AC4CEE3;
+	Tue, 15 Jul 2025 13:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585569;
-	bh=uU+ZbTUetQ6UfAWdmpWK0nvfJowIDV0JaUhoiMJA+rw=;
+	s=korg; t=1752586740;
+	bh=Vs1ODGz74E0UuMlUKr0a0v0P/r45/4K3/OJ4R/+hrdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UKCIFhvMBhvlgOmI/UkDE+XdkrBx0o5praWZ9G/TN8ne61EbgegUxOWV62YrGycM
-	 o4KLJedfnYfa+qgA/GeKjUndyFamfwONxTCXJgwER1Ns+wBNXOXzWXr458VSeLVLKr
-	 Ceb70UT6QwmFspN8On2P8Sb9obYElxWDJQtSek/Y=
+	b=aXyQXlXsE8SrzUNwf1JdnCRgZxtM0YIsXGHK8wpXMT7gIol6M3bchWaNCFz7NaGLd
+	 pAXufwblP/2PEvvVWUMC9cBlI8Y+DpDrCXH4LZfPxqI2HdQgBz2QCjvGzqCbJBsEFF
+	 LETpa35QYAKDj39JBzZ4p6sq2TiBCFAkd7kx1Tgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 058/163] ALSA: ad1816a: Fix potential NULL pointer deref in snd_card_ad1816a_pnp()
+	syzbot+de6565462ab540f50e47@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	David Howells <dhowells@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 031/192] tcp: Correct signedness in skb remaining space calculation
 Date: Tue, 15 Jul 2025 15:12:06 +0200
-Message-ID: <20250715130811.078634860@linuxfoundation.org>
+Message-ID: <20250715130816.109046373@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit 043faef334a1f3d96ae88e1b7618bfa2b4946388 upstream.
+[ Upstream commit d3a5f2871adc0c61c61869f37f3e697d97f03d8c ]
 
-Use pr_warn() instead of dev_warn() when 'pdev' is NULL to avoid a
-potential NULL pointer dereference.
+Syzkaller reported a bug [1] where sk->sk_forward_alloc can overflow.
 
-Cc: stable@vger.kernel.org
-Fixes: 20869176d7a7 ("ALSA: ad1816a: Use standard print API")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20250703200616.304309-2-thorsten.blum@linux.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When we send data, if an skb exists at the tail of the write queue, the
+kernel will attempt to append the new data to that skb. However, the code
+that checks for available space in the skb is flawed:
+'''
+copy = size_goal - skb->len
+'''
+
+The types of the variables involved are:
+'''
+copy: ssize_t (s64 on 64-bit systems)
+size_goal: int
+skb->len: unsigned int
+'''
+
+Due to C's type promotion rules, the signed size_goal is converted to an
+unsigned int to match skb->len before the subtraction. The result is an
+unsigned int.
+
+When this unsigned int result is then assigned to the s64 copy variable,
+it is zero-extended, preserving its non-negative value. Consequently, copy
+is always >= 0.
+
+Assume we are sending 2GB of data and size_goal has been adjusted to a
+value smaller than skb->len. The subtraction will result in copy holding a
+very large positive integer. In the subsequent logic, this large value is
+used to update sk->sk_forward_alloc, which can easily cause it to overflow.
+
+The syzkaller reproducer uses TCP_REPAIR to reliably create this
+condition. However, this can also occur in real-world scenarios. The
+tcp_bound_to_half_wnd() function can also reduce size_goal to a small
+value. This would cause the subsequent tcp_wmem_schedule() to set
+sk->sk_forward_alloc to a value close to INT_MAX. Further memory
+allocation requests would then cause sk_forward_alloc to wrap around and
+become negative.
+
+[1]: https://syzkaller.appspot.com/bug?extid=de6565462ab540f50e47
+
+Reported-by: syzbot+de6565462ab540f50e47@syzkaller.appspotmail.com
+Fixes: 270a1c3de47e ("tcp: Support MSG_SPLICE_PAGES")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20250707054112.101081-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/isa/ad1816a/ad1816a.c | 2 +-
+ net/ipv4/tcp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/isa/ad1816a/ad1816a.c b/sound/isa/ad1816a/ad1816a.c
-index 99006dc4777e..5c9e2d41d900 100644
---- a/sound/isa/ad1816a/ad1816a.c
-+++ b/sound/isa/ad1816a/ad1816a.c
-@@ -98,7 +98,7 @@ static int snd_card_ad1816a_pnp(int dev, struct pnp_card_link *card,
- 	pdev = pnp_request_card_device(card, id->devs[1].id, NULL);
- 	if (pdev == NULL) {
- 		mpu_port[dev] = -1;
--		dev_warn(&pdev->dev, "MPU401 device busy, skipping.\n");
-+		pr_warn("MPU401 device busy, skipping.\n");
- 		return 0;
- 	}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 6edc441b37023..905cf7635f77f 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1154,7 +1154,7 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 		goto do_error;
  
+ 	while (msg_data_left(msg)) {
+-		ssize_t copy = 0;
++		int copy = 0;
+ 
+ 		skb = tcp_write_queue_tail(sk);
+ 		if (skb)
 -- 
-2.50.1
+2.39.5
 
 
 
