@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94F7B05D28
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD65B05DB9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3784C1892D00
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85CE1165411
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56822E762F;
-	Tue, 15 Jul 2025 13:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67062E8892;
+	Tue, 15 Jul 2025 13:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLWaEp+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wy3sApNM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7489ABA42;
-	Tue, 15 Jul 2025 13:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E4D2E888C;
+	Tue, 15 Jul 2025 13:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586274; cv=none; b=rSpA98k8pYGmYz3vH1cwc1Iv+UDLF6kBB1CTXlWRpnZP3aMsjEk+gVWkgFcyfjlGXiui1QVeqG9X9OqMuoyNypObsMAjtsE5aEEk3yAQH0GmgJpNxboUJekjrmT/S0jXPzCNGc7mX+lWCTpp9lzCNo0+toezQEoipvRxtwptfyE=
+	t=1752586602; cv=none; b=I6hgIsUYYu5kazY9OUjesEbiVsIE2EByuBwMa1n9Ff9Etu9xvuVxQxTv6CqQAOmVPwPUelBcGOqo/aWi7sS/6jXv/6nutrG6eGtrBwHJe8p9Ea53WR0V+XxkvXdILjG0Ag2gnhnHYdrEsYvmN6pgwbS5czoUX3A45NZKhDz2lys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586274; c=relaxed/simple;
-	bh=9p1bPJAtNms3/v7Dwz70kjFI5vEqDVraL/hj84rHoLQ=;
+	s=arc-20240116; t=1752586602; c=relaxed/simple;
+	bh=xoC2lqjjeKRRr1QQmiwfvs6+re3iQlbz16cG5FMYx2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYUL6cE8SAgEFQ6vzsHuUQRRLqhulaW9bxatsangz6Hyryu0Jr2TZGDWIdzQsLGvbLl4Qv5VK904qkoEcbP+P5L03UtisltfLxpRMuMcs1m8R8M+0kGNaqAAbRviCis3ABbwkEyMMlMYsZS2CR+tFFODzSY8vglGhfvGDYsD3RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLWaEp+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46ECC4CEE3;
-	Tue, 15 Jul 2025 13:31:13 +0000 (UTC)
+	 MIME-Version; b=ISTpRGRLTmoHKSQkH1UQ20TZfu0qQ5HJcXVxmPA4E17xNrrNJePHtH1C7YJ8BkWJUIoc7pyGCfyES2rkTHWhUN7P6r6XFjtRzfzY0ILmL2t4qhP5o3NSn2HdHw4oyadopV4Uez7vUojM2lKWCHjgkdyXMoROLrcSK1LJZn2FYKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wy3sApNM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17892C4CEE3;
+	Tue, 15 Jul 2025 13:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586274;
-	bh=9p1bPJAtNms3/v7Dwz70kjFI5vEqDVraL/hj84rHoLQ=;
+	s=korg; t=1752586602;
+	bh=xoC2lqjjeKRRr1QQmiwfvs6+re3iQlbz16cG5FMYx2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLWaEp+eYMXwG9r0bVGziQXQjS9zgeQl0zogjJqss/6KisVWZ9EsWDw6q3729npD3
-	 BYXhO0yM9rkLv3ggwhJgRNV/vONMYnsID6jNAsFVOvpmsoIQHuKdEbHEzF+U/bn79e
-	 znoofX9hobejZ2YtnGbtEqbUQ1PEyljvxo5o+sWU=
+	b=Wy3sApNMq8c/R165RCvlUCzCh6fcWhSJfQYRoLxabgwqqhoFad+8xOpN93Bwy5rwR
+	 oqaZPu+dyzd1nsWXRhExb/ElOidnOzSv7Eee5Vb3oFPkfpnqGe1AQ/5PmTSMHZLIVa
+	 ztbv6DK9OwC1ikVAmhpagjMnZKLVhEMhVKmIDZSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Inoue <niyarium@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 70/77] HID: lenovo: Add support for ThinkPad X1 Tablet Thin Keyboard Gen2
+Subject: [PATCH 5.4 127/148] RDMA/mlx5: Fix vport loopback for MPV device
 Date: Tue, 15 Jul 2025 15:14:09 +0200
-Message-ID: <20250715130754.535647196@linuxfoundation.org>
+Message-ID: <20250715130805.378103426@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akira Inoue <niyarium@gmail.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit a8905238c3bbe13db90065ed74682418f23830c3 ]
+[ Upstream commit a9a9e68954f29b1e197663f76289db4879fd51bb ]
 
-Add "Thinkpad X1 Tablet Gen 2 Keyboard" PID to hid-lenovo driver to fix trackpoint not working issue.
+Always enable vport loopback for both MPV devices on driver start.
 
-Signed-off-by: Akira Inoue <niyarium@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Previously in some cases related to MPV RoCE, packets weren't correctly
+executing loopback check at vport in FW, since it was disabled.
+Due to complexity of identifying such cases for MPV always enable vport
+loopback for both GVMIs when binding the slave to the master port.
+
+Fixes: 0042f9e458a5 ("RDMA/mlx5: Enable vport loopback when user context or QP mandate")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/d4298f5ebb2197459e9e7221c51ecd6a34699847.1750064969.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h        | 1 +
- drivers/hid/hid-lenovo.c     | 8 ++++++++
- drivers/hid/hid-multitouch.c | 8 +++++++-
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/main.c | 33 +++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 08494eb652091..17d00cb1e9be6 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -764,6 +764,7 @@
- #define USB_DEVICE_ID_LENOVO_TPPRODOCK	0x6067
- #define USB_DEVICE_ID_LENOVO_X1_COVER	0x6085
- #define USB_DEVICE_ID_LENOVO_X1_TAB	0x60a3
-+#define USB_DEVICE_ID_LENOVO_X1_TAB2	0x60a4
- #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
- #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
- #define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
-diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
-index 9536f468b42c5..d74f0ddb45fdb 100644
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -343,6 +343,7 @@ static int lenovo_input_mapping(struct hid_device *hdev,
- 		return lenovo_input_mapping_tp10_ultrabook_kbd(hdev, hi, field,
- 							       usage, bit, max);
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_input_mapping_x1_tab_kbd(hdev, hi, field, usage, bit, max);
- 	default:
-@@ -432,6 +433,7 @@ static ssize_t attr_fn_lock_store(struct device *dev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, TP10UBKBD_FN_LOCK_LED, value);
- 		if (ret)
-@@ -616,6 +618,7 @@ static int lenovo_event(struct hid_device *hdev, struct hid_field *field,
- 		return lenovo_event_cptkbd(hdev, field, usage, value);
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_event_tp10ubkbd(hdev, field, usage, value);
- 	default:
-@@ -899,6 +902,7 @@ static int lenovo_led_brightness_set(struct led_classdev *led_cdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, tp10ubkbd_led[led_nr], value);
- 		break;
-@@ -1140,6 +1144,7 @@ static int lenovo_probe(struct hid_device *hdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_probe_tp10ubkbd(hdev);
- 		break;
-@@ -1207,6 +1212,7 @@ static void lenovo_remove(struct hid_device *hdev)
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		lenovo_remove_tp10ubkbd(hdev);
- 		break;
-@@ -1253,6 +1259,8 @@ static const struct hid_device_id lenovo_devices[] = {
- 	 */
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB) },
-+	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
-+		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB2) },
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB3) },
- 	{ }
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index bc9ba011ff607..c12f7cb7e1d95 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2108,12 +2108,18 @@ static const struct hid_device_id mt_devices[] = {
- 		HID_DEVICE(BUS_I2C, HID_GROUP_GENERIC,
- 			USB_VENDOR_ID_LG, I2C_DEVICE_ID_LG_7010) },
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 1b880b555412f..84b8588f6dada 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -1686,6 +1686,33 @@ static void deallocate_uars(struct mlx5_ib_dev *dev,
+ 			mlx5_cmd_free_uar(dev->mdev, bfregi->sys_pages[i]);
+ }
  
--	/* Lenovo X1 TAB Gen 2 */
-+	/* Lenovo X1 TAB Gen 1 */
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
- 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
- 			   USB_VENDOR_ID_LENOVO,
- 			   USB_DEVICE_ID_LENOVO_X1_TAB) },
- 
-+	/* Lenovo X1 TAB Gen 2 */
-+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
-+		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
-+			   USB_VENDOR_ID_LENOVO,
-+			   USB_DEVICE_ID_LENOVO_X1_TAB2) },
++static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
++				struct mlx5_core_dev *slave)
++{
++	int err;
 +
- 	/* Lenovo X1 TAB Gen 3 */
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
- 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++	err = mlx5_nic_vport_update_local_lb(master, true);
++	if (err)
++		return err;
++
++	err = mlx5_nic_vport_update_local_lb(slave, true);
++	if (err)
++		goto out;
++
++	return 0;
++
++out:
++	mlx5_nic_vport_update_local_lb(master, false);
++	return err;
++}
++
++static void mlx5_ib_disable_lb_mp(struct mlx5_core_dev *master,
++				  struct mlx5_core_dev *slave)
++{
++	mlx5_nic_vport_update_local_lb(slave, false);
++	mlx5_nic_vport_update_local_lb(master, false);
++}
++
+ int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
+ {
+ 	int err = 0;
+@@ -5839,6 +5866,8 @@ static void mlx5_ib_unbind_slave_port(struct mlx5_ib_dev *ibdev,
+ 
+ 	lockdep_assert_held(&mlx5_ib_multiport_mutex);
+ 
++	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev);
++
+ 	mlx5_ib_cleanup_cong_debugfs(ibdev, port_num);
+ 
+ 	spin_lock(&port->mp.mpi_lock);
+@@ -5927,6 +5956,10 @@ static bool mlx5_ib_bind_slave_port(struct mlx5_ib_dev *ibdev,
+ 
+ 	mlx5_ib_init_cong_debugfs(ibdev, port_num);
+ 
++	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev);
++	if (err)
++		goto unbind;
++
+ 	return true;
+ 
+ unbind:
 -- 
 2.39.5
 
