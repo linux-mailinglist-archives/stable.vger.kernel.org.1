@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53CBB05E97
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2596DB05B93
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D20CA1C43BDC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A9F956614B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37EE2E5435;
-	Tue, 15 Jul 2025 13:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB182E3366;
+	Tue, 15 Jul 2025 13:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1x52fa2k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wazk2xU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21592E3391;
-	Tue, 15 Jul 2025 13:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B592E3391;
+	Tue, 15 Jul 2025 13:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586854; cv=none; b=dKytztHUix1JxqAmWEIWO4iSVWMjPTScYEq829tnYwgcK8lP7DGUALtUaW94fan6aAUdKyb6hK8kngV2fxyyrT33r/FOEYzB6TGW7Ri5IXuL+4VIL5MYgZ0gkgGjXDdIySIMpXeHhAkAmUo9MeRJQm89A0GMfJNWNYEI2LAGUBg=
+	t=1752585659; cv=none; b=QRdpw/vRJ9po/GTXuI2h+m4wD+N01Mv5CwQ/mRsna4/VzMLFYJ4rD9mda1NmoZuvGCNyfRGcCv+i7N/A//388jrgeU/kBKPSERZ/5+SOkHYQknATBjD7HPjocibVWBOiaXWE91J77rNV+l0uOHJh2DPvSrRSV1L1C2YhO6HvBSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586854; c=relaxed/simple;
-	bh=rVUvktp3l/txSVD5oy5vh0Qa1znWvKZXYWLD6zcr9ZA=;
+	s=arc-20240116; t=1752585659; c=relaxed/simple;
+	bh=L7KJLFVeKZh+xzpzJWvE74ZsDqH6ol7sETCW72UQjt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MvO+FJ6LRkggZ8VZwfM8C/dhHDm3Yv63hizUkyCrUdFM/TR+0v6oyMwvNew84uP8MV0vxFQs08BvXP9iAarnCmCfmgEYRYf8qYlw9/Qd5k1lUwN6hNPJQpZWnJrKpt5RXpKGg0AzjENH3oPcr6QNu+Mxgn7bD97G/kWie+fW5fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1x52fa2k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2FEC4CEF1;
-	Tue, 15 Jul 2025 13:40:53 +0000 (UTC)
+	 MIME-Version; b=p/RmWf7zvF8dxYiDQR+M18xXsU0IVz/MdjQuqA12Q86tumgeGaY5eE3RvXNMMU0gOwWrJgGRvavMWoK4QQG50itAGVtLB3i+FcZy2z6xHZgk3V0d5cUkfJJ014yPP2JV/InnQIZ07iUKAX2Ehn3GdU3ubvMfmfb1C+OTG7F8SIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wazk2xU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E876C4CEE3;
+	Tue, 15 Jul 2025 13:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586854;
-	bh=rVUvktp3l/txSVD5oy5vh0Qa1znWvKZXYWLD6zcr9ZA=;
+	s=korg; t=1752585659;
+	bh=L7KJLFVeKZh+xzpzJWvE74ZsDqH6ol7sETCW72UQjt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1x52fa2k8DuUsARY9T9Q3ur9Tp6HGkCydSS9HtdDuHGSNdnvWAqEmuiwxBIH2ekNt
-	 qZ7V4wEBhDfMM0FB8oe/0Y+DmCR6aYkcAZ5PgGpeq6fSBchPqMHSKMUmaleVwU5S3+
-	 fm/x2YxaeBP5hLYrUGo+Wvd0TGINvTnxNR5uB+6A=
+	b=wazk2xU5sGWmuPKZhfeWP6ogLJp0liSHPRo4fayXWi+cCGUInz97yPLi+EhMUyO0W
+	 jJemQNtDQYKCcb5VaexOqru8fnUnBzg6IGt+hAIJrcH8wfPMhIgeUdfQI7y/ouVJae
+	 ws54rU42ZTaDUrMYaLqlRHmPkr2F2rJwSoUwpslY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Paul Durrant <paul@xen.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.15 056/192] KVM: x86/xen: Allow out of range event channel ports in IRQ routing table.
+	Matthew Brost <matthew.brost@intel.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.12 083/163] drm/xe: Allocate PF queue size on pow2 boundary
 Date: Tue, 15 Jul 2025 15:12:31 +0200
-Message-ID: <20250715130817.088416139@linuxfoundation.org>
+Message-ID: <20250715130812.059870943@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit a7f4dff21fd744d08fa956c243d2b1795f23cbf7 upstream.
+commit c9a95dbe06102cf01afee4cd83ecb29f8d587a72 upstream.
 
-To avoid imposing an ordering constraint on userspace, allow 'invalid'
-event channel targets to be configured in the IRQ routing table.
-
-This is the same as accepting interrupts targeted at vCPUs which don't
-exist yet, which is already the case for both Xen event channels *and*
-for MSIs (which don't do any filtering of permitted APIC ID targets at
-all).
-
-If userspace actually *triggers* an IRQ with an invalid target, that
-will fail cleanly, as kvm_xen_set_evtchn_fast() also does the same range
-check.
-
-If KVM enforced that the IRQ target must be valid at the time it is
-*configured*, that would force userspace to create all vCPUs and do
-various other parts of setup (in this case, setting the Xen long_mode)
-before restoring the IRQ table.
+CIRC_SPACE does not work unless the size argument is a power of 2,
+allocate PF queue size on power of 2 boundary.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Link: https://lore.kernel.org/r/e489252745ac4b53f1f7f50570b03fb416aa2065.camel@infradead.org
-[sean: massage comment]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
+Fixes: 29582e0ea75c ("drm/xe: Add page queue multiplier")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Link: https://lore.kernel.org/r/20250702213511.3226167-1-matthew.brost@intel.com
+(cherry picked from commit 491b9783126303755717c0cbde0b08ee59b6abab)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/xen.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_pagefault.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -1970,8 +1970,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm
- {
- 	struct kvm_vcpu *vcpu;
+--- a/drivers/gpu/drm/xe/xe_gt_pagefault.c
++++ b/drivers/gpu/drm/xe/xe_gt_pagefault.c
+@@ -432,6 +432,7 @@ static int xe_alloc_pf_queue(struct xe_g
+ #define PF_MULTIPLIER	8
+ 	pf_queue->num_dw =
+ 		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW * PF_MULTIPLIER;
++	pf_queue->num_dw = roundup_pow_of_two(pf_queue->num_dw);
+ #undef PF_MULTIPLIER
  
--	if (ue->u.xen_evtchn.port >= max_evtchn_port(kvm))
--		return -EINVAL;
-+	/*
-+	 * Don't check for the port being within range of max_evtchn_port().
-+	 * Userspace can configure what ever targets it likes; events just won't
-+	 * be delivered if/while the target is invalid, just like userspace can
-+	 * configure MSIs which target non-existent APICs.
-+	 *
-+	 * This allow on Live Migration and Live Update, the IRQ routing table
-+	 * can be restored *independently* of other things like creating vCPUs,
-+	 * without imposing an ordering dependency on userspace.  In this
-+	 * particular case, the problematic ordering would be with setting the
-+	 * Xen 'long mode' flag, which changes max_evtchn_port() to allow 4096
-+	 * instead of 1024 event channels.
-+	 */
- 
- 	/* We only support 2 level event channels for now */
- 	if (ue->u.xen_evtchn.priority != KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL)
+ 	pf_queue->gt = gt;
 
 
 
