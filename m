@@ -1,160 +1,172 @@
-Return-Path: <stable+bounces-161941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A268B05154
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 07:56:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E67F7B05184
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 08:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86D9E7AD993
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 05:54:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BCB3166832
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 06:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D862D3757;
-	Tue, 15 Jul 2025 05:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48FB2D3757;
+	Tue, 15 Jul 2025 06:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mA5FHg6J"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tbT2T8R8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2053.outbound.protection.outlook.com [40.107.93.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDAD2D29CF;
-	Tue, 15 Jul 2025 05:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752558966; cv=none; b=q6jaYiZvxuPy5FHxvOZnZAfUN4E4U5WqXqR8ksUkvkA0kYUV3WXlZ9vBDaZqCH2tMr5JmDUrhRmZEjojq/zpufuzbpll5Sm2NXgfdAAQ2oVFbID2lFO6UBb02xv2VE96z0+U60of29JsDxszCVHhqBAK+RemPEdDEo0lu9ifh3w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752558966; c=relaxed/simple;
-	bh=Tm/bLrHAyjqlxAbci7zBwGiOLC1PnlncvMx9VRv6rwY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bdrLxlEGrmXVVpremlcr/GMEWrdPQvBUIVid+spBqo8FIF5ARaF0IC+GIMPC/CclPXGPfjHGvEC18hTSwOaO1n7gxqDYlL859SuSSDX5J/pRYqATH37Qkkh+XdvFrcm1j5lYaxYOMsZSmEJIghzoIduOg05h7l0/kwdVb10JEaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mA5FHg6J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB68C4CEF8;
-	Tue, 15 Jul 2025 05:56:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752558965;
-	bh=Tm/bLrHAyjqlxAbci7zBwGiOLC1PnlncvMx9VRv6rwY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mA5FHg6JotJX7HnwrRSf2X4czKopA5D7yxKcDXLdKR2kpyIWHSIFdZRwEJlqIIYVz
-	 +2DQvPQf4JxvlAjd5GrOwEIrPN2klA+ozkjbc5IHl2qAzLUs/QaXqT7qr4pxxeWXyQ
-	 S0UuUEv8JciDdZsxmK+jATNRPYiqqI3+0VFlCPn0=
-Date: Tue, 15 Jul 2025 07:56:02 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Mario Limonciello <superm1@kernel.org>
-Cc: mario.limonciello@amd.com, andreas.noever@gmail.com,
-	michael.jamet@intel.com, westeri@kernel.org, YehezkelShB@gmail.com,
-	rajat.khandelwal@intel.com, mika.westerberg@linux.intel.com,
-	linux-usb@vger.kernel.org, kim.lindberger@gmail.com, linux@lunaa.ch,
-	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Alyssa Ross <hi@alyssa.is>, regressions@lists.linux.dev
-Subject: Re: [REGRESSION] thunderbolt: Fix a logic error in wake on connect
-Message-ID: <2025071552-drinking-moisten-5bf7@gregkh>
-References: <20250411151446.4121877-1-superm1@kernel.org>
- <cavyeum32dd7kxj65argtem6xh2575oq3gcv3svd3ubnvdc6cr@6nv7ieimfc5e>
- <87v7odo46s.fsf@alyssa.is>
- <51d5393c-d0e1-4f35-bed0-16c7ce40a8a8@kernel.org>
- <2025070737-charbroil-imply-7b5e@gregkh>
- <bb98ecb6-eb56-44d9-8f80-3172f9e7de03@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AD52D375A;
+	Tue, 15 Jul 2025 06:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752559693; cv=fail; b=RX2Yg2RTrvz/6MJxEkIiGfDv/FlrziTxeOiZjpBogGcXKm3mCgHOX+Xkr2gjrzwk2ajAuo7WfRfTT6gkMqR+Xnpt0K+8VMNEguFBxTFp2A/UkK5AE+snLkfiJYAo0b7CrfhyuHdhn2RWhLJqSosU6KDxOcgiH1jK3hf+kE8gXqs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752559693; c=relaxed/simple;
+	bh=lRPxVGiCeOjP6Ie9ESDENII3PQCPG3+IbEArJx3ZGAc=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gfZXgP0pAEAdbI8QfVCFSzLErSyI4XNC6QXqF09gaXhhg+PkEOXcGsXiAS7jGF05pbuYhBYvl/KPGz60sHT99vcy0t8W92Z+5Wc3Ps7Kbsq1rzKr8nHPPRG/B0YWLn63CDlkCRqzAs9T2I3R8cFidfhtOjpgAZ4Y119u6w4mUJQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tbT2T8R8; arc=fail smtp.client-ip=40.107.93.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Km3tm9qEOu+j79WdRryU7wpA+z2yeGZQNwk+DapFtu6BMGl19ag/VFPtRVDtxsxhut5iBHsq2ETriny9odCAkAILaTyTYj8XPfAy3bzj7WYqj2/k2dEnQnIeKIiE2dLu01Z8aPs4gz51nbK4rxyt9WghTLPj1J9AYrDX3Hp5jVplkbRkjvUSyR/Hd9A5KWci19cz6+B/j9q2d1Kh1VyccxdC1gPJo2yKy5USCkvCQbqgWtyqz6wSW4K2r6qLQ/4T5xwGu2p38LAIvJCbwxAmWnU8aG8++FqyXdqTEbgl4exSpX+1RAoKzISV6yRj/tnGd8ttkYcdZ33HixE+nBRjVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F2hXFdyIm5hnmcc06spiyzyeeICoicMxGglZE9cgINQ=;
+ b=Mocu3G5aF/h6uf3RzP7HNcgzi0AdOe5yLH809MQBJXKlsUYwzOQ0gx5f2/HWmq+wW7cQylcbYt4dR2Pw2uXI8/LTf8JPnZ1YpYh1VR6JId8ylheVCWbpphg52sVTZmfAA8DnOJUqPlrwvNdq1b7IPDTuNctWpiuLAll23wDYjHyAgWryMIXKnleSq1n6aThlR8gZhViuhY8gt3YIHf5d5Y4yC17qxdkIQ/PjP5VGkyg+iRRi8070mQuAS83osmXy0VwRPyLke0YVAoeaOcjlCMD11SIsPzaT+dvapzI082mhM3gCPJwZn2aUc4d5zDlB7tnwD7SUjE2PfeWz7vO23Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F2hXFdyIm5hnmcc06spiyzyeeICoicMxGglZE9cgINQ=;
+ b=tbT2T8R8c9IVlYXnJ4Zou8RTw/Z/E7BMlbOvP6y/VFMrfzpWsWqQ9y+6SgJGSVVkNSQuy+ZvQKzheOoW44m/kgIKwP7ti56UoBvJ1WSY5qytUAugZBzPaodS4M1UCwqSZRghWD+5XdTwv2S++ibZCf/5+W9g6T5vWYzCUn1V33I=
+Received: from BN6PR17CA0030.namprd17.prod.outlook.com (2603:10b6:405:75::19)
+ by SA1PR12MB8117.namprd12.prod.outlook.com (2603:10b6:806:334::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Tue, 15 Jul
+ 2025 06:08:08 +0000
+Received: from BN3PEPF0000B06C.namprd21.prod.outlook.com
+ (2603:10b6:405:75:cafe::5) by BN6PR17CA0030.outlook.office365.com
+ (2603:10b6:405:75::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.32 via Frontend Transport; Tue,
+ 15 Jul 2025 06:08:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B06C.mail.protection.outlook.com (10.167.243.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8964.1 via Frontend Transport; Tue, 15 Jul 2025 06:08:07 +0000
+Received: from BLR-L1-NDADHANI (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 15 Jul
+ 2025 01:08:04 -0500
+From: Nikunj A Dadhania <nikunj@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: <pbonzini@redhat.com>, <kvm@vger.kernel.org>, <thomas.lendacky@amd.com>,
+	<santosh.shukla@amd.com>, <bp@alien8.de>, Michael Roth
+	<michael.roth@amd.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] KVM: SEV: Enforce minimum GHCB version requirement for
+ SEV-SNP guests
+In-Reply-To: <aHUUWMnTBfcRO7Uj@google.com>
+References: <20250711045408.95129-1-nikunj@amd.com>
+ <aHEMmmBWzW_FpX7e@google.com> <85ple4go0k.fsf@amd.com>
+ <aHUUWMnTBfcRO7Uj@google.com>
+Date: Tue, 15 Jul 2025 06:08:01 +0000
+Message-ID: <85ms96vvem.fsf@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bb98ecb6-eb56-44d9-8f80-3172f9e7de03@kernel.org>
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06C:EE_|SA1PR12MB8117:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7751aafb-3d90-4941-518a-08ddc365f816
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?JziILZPzmf8HBNXTPo+E84eTkEDaWM01Y2ocYIEhvWsgSqJDbw2/tPnrXTfQ?=
+ =?us-ascii?Q?ojz+S/t4PRZP3wqP7XabW6LCsBoEEDMd+ENQ5rgoWRln4UlOuTj3+Izxl8mH?=
+ =?us-ascii?Q?asUxZSh5NcOFCNFHPKCABLYF0TNpTbRwBNMjvYaIrJfJRPc+KsYO9rwGO64K?=
+ =?us-ascii?Q?14jhrzUguCh7BbFUN3EC/KreEZhdwAzgjrOLFfTFXGrWtUruqYiAPkcXE1t4?=
+ =?us-ascii?Q?owL9K7USmlSWv4YrKDus7Nu5qalLwCu7p1RJggOZea0okrh7V5NcXl50ZczK?=
+ =?us-ascii?Q?Du/Bqor3mw2kt036if3shiEsEGnIWjyXkVEm2BD1xG7P/HAdUia3IVM9ejiX?=
+ =?us-ascii?Q?nlsjp+dElEeRwWjvQ71GNIpOe3GVcHZmGYeLYz7WbdZLpONpk5K7L3QRmF/+?=
+ =?us-ascii?Q?jAWVhmaxl+0oTqNwf8BeGBESSPb6KxmgBJeETcs+WfhHEiNiWpLaiy5++WQA?=
+ =?us-ascii?Q?0rYe2JrEkSRt2C9V0W+KfWNvBnRwNX8CYGnkr3TiVAIU7mVHtFomvOlbXCJi?=
+ =?us-ascii?Q?QFVRvCZYPx8uA6lXJKULCc47EklXs7aLXy6104nplCmXKVUQ51vfu2PtJsnK?=
+ =?us-ascii?Q?qU5ZQwrEtRZf53d4qunWUpnRgPMnBSPpXuiQCcofzBEJtkFVzTuapNTb0QHN?=
+ =?us-ascii?Q?WG+1TrMDI5x/Khwi/k9ynvdwZmovNP/a88TGjO3NfuC/dCSSB3uiWZi1RB9V?=
+ =?us-ascii?Q?T607U6rSUzXWLykKcEQhAz3y7TduUV4xv8pIdNzIyH0/OjOHAuOK9KnxasCL?=
+ =?us-ascii?Q?TYdoCqXZq3dF2O0Ivejs7rRuvS2tLyNs2ViQYmWTayhh/mfQNMVmFQqi/biV?=
+ =?us-ascii?Q?g7/z6IissyiLsXks1XbF43j26qQqFSAFBJrSmg28UyS8Ax2fwS7f1KP3m3oC?=
+ =?us-ascii?Q?tZkKLsWUBYfcIEhVFgDwD0XrKI/BbQySK5Gw2KLX1GMeGROeQxOb68KPy93j?=
+ =?us-ascii?Q?IDYT4gxgQsNXHsD6AaMlH9VclA1M/OLFd7dDcvp5m6WzIxaJQDX0b9yTZpxx?=
+ =?us-ascii?Q?owpAGR6ruquLOjS25N5CMRaUMrH2S/KNoreqPJLK7Aovo/GZdm+kYsRTDn53?=
+ =?us-ascii?Q?6wyJzdJiT4konOSvvsmcnSRmyEFmSd0kvWhiFa269bEXQbas5C2zSgGlYbVp?=
+ =?us-ascii?Q?GDILWznVv7E0SaP2CmJyyKWtgm3beFoKSpjgrG1pRBLHJjj+u/8H8hlmLsgY?=
+ =?us-ascii?Q?FNJExcXTGk/KD1rEghuUorsadkIgX4O2KDODYMNP7NcRQAJxU3i5rxgkfxjy?=
+ =?us-ascii?Q?e5YYe2Z0DCExLn2M+/F0NqSYaSgGO92uxYVzd36imPoNdPVIrDakP2GJ31Wn?=
+ =?us-ascii?Q?mPNg3TLtoDNBrzkqNOrfcrX118ilGE8G89XaNBZaa14l8pW6daJKhZK267sG?=
+ =?us-ascii?Q?h2q6MxxLp5CTu/LGgKS282tlVIPgtyGrl1EXKMlg1Sw3Hp2MnFVbboyY+USp?=
+ =?us-ascii?Q?T2oj9aJHzju3B4cvc9e1TsdHA4nY1VB6cdMrc0CAN1RiSn+vE6l6z3LXsYpg?=
+ =?us-ascii?Q?uQVPufamCGTLN4RN5WmgpOaqE4n/DGRh/G4A?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 06:08:07.7382
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7751aafb-3d90-4941-518a-08ddc365f816
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B06C.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8117
 
-On Mon, Jul 14, 2025 at 11:35:39AM -0500, Mario Limonciello wrote:
-> On 7/7/25 2:57 AM, Greg Kroah-Hartman wrote:
-> > On Sun, Jul 06, 2025 at 10:46:53AM -0400, Mario Limonciello wrote:
-> > > On 6/30/25 07:32, Alyssa Ross wrote:
-> > > > Alyssa Ross <hi@alyssa.is> writes:
-> > > > 
-> > > > > On Fri, Apr 11, 2025 at 10:14:44AM -0500, Mario Limonciello wrote:
-> > > > > > From: Mario Limonciello <mario.limonciello@amd.com>
-> > > > > > 
-> > > > > > commit a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect
-> > > > > > on USB4 ports") introduced a sysfs file to control wake up policy
-> > > > > > for a given USB4 port that defaulted to disabled.
-> > > > > > 
-> > > > > > However when testing commit 4bfeea6ec1c02 ("thunderbolt: Use wake
-> > > > > > on connect and disconnect over suspend") I found that it was working
-> > > > > > even without making changes to the power/wakeup file (which defaults
-> > > > > > to disabled). This is because of a logic error doing a bitwise or
-> > > > > > of the wake-on-connect flag with device_may_wakeup() which should
-> > > > > > have been a logical AND.
-> > > > > > 
-> > > > > > Adjust the logic so that policy is only applied when wakeup is
-> > > > > > actually enabled.
-> > > > > > 
-> > > > > > Fixes: a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect on USB4 ports")
-> > > > > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > > > 
-> > > > > Hi! There have been a couple of reports of a Thunderbolt regression in
-> > > > > recent stable kernels, and one reporter has now bisected it to this
-> > > > > change:
-> > > > > 
-> > > > >    • https://bugzilla.kernel.org/show_bug.cgi?id=220284
-> > > > >    • https://github.com/NixOS/nixpkgs/issues/420730
-> > > > > 
-> > > > > Both reporters are CCed, and say it starts working after the module is
-> > > > > reloaded.
-> > > > > 
-> > > > > Link: https://lore.kernel.org/r/bug-220284-208809@https.bugzilla.kernel.org%2F/
-> > > > > (for regzbot)
-> > > > 
-> > > > Apparently[1] fixed by the first linked patch below, which is currently in
-> > > > the Thunderbolt tree waiting to be pulled into the USB tree.
-> > > > 
-> > > > #regzbot monitor: https://lore.kernel.org/linux-usb/20250619213840.2388646-1-superm1@kernel.org/
-> > > > #regzbot monitor: https://lore.kernel.org/linux-usb/20250626154009.GK2824380@black.fi.intel.com/
-> > > > 
-> > > > [1]: https://github.com/NixOS/nixpkgs/issues/420730#issuecomment-3018563631
-> > > 
-> > > Hey Greg,
-> > > 
-> > > Can you pick up the pull request from Mika from a week and a half ago with
-> > > this fix for the next 6.16-rc?
-> > > 
-> > > https://lore.kernel.org/linux-usb/20250626154009.GK2824380@black.fi.intel.com/
-> > 
-> > Yes, I was waiting for this last round to go to Linus as the pull
-> > request was made against a newer version of Linus's tree than I
-> > currently had in my "for linus" branch.  I'll go get to that later
-> > today.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> > 
-> 
-> Greg,
-> 
-> Sorry to be a bugger, but I was surprised I didn't see this come in -rc6
-> this week, and I went and double checked your "usb-linus" branch [1] and
-> didn't see it there.
-> 
-> Thanks,
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git/log/?h=usb-linus
+Sean Christopherson <seanjc@google.com> writes:
 
-It's in there:
+> On Sun, Jul 13, 2025, Nikunj A Dadhania wrote:
+>> Sean Christopherson <seanjc@google.com> writes:
+>> 
+>> > On Fri, Jul 11, 2025, Nikunj A Dadhania wrote:
+>> >> Require a minimum GHCB version of 2 when starting SEV-SNP guests through
+>> >> KVM_SEV_INIT2. When a VMM attempts to start an SEV-SNP guest with an
+>> >> incompatible GHCB version (less than 2), reject the request early rather
+>> >> than allowing the guest to start with an incorrect protocol version and
+>> >> fail later.
+>> >
+>> > What happens with ghcb_version==1?   I.e. what failure occurs, and
+>> > when?
+>> 
+>> SNP guest terminates with following error:
+>
+> So this probably isn't stable@ worth then?  Because I don't see any risk to the
+> kernel, this is ultimately only a problem if the VMM is broken, and the "fix"
+> doesn't provide any meaningful change in functionality (the VM is dead no matter
+> what).
 
-$ git lg main..usb-linus
-*   cd0f8649d0e1 - (HEAD -> usb-linus, origin/usb-linus, kroah.org/usb-linus, work-linus) Merge tag 'usb-serial-6.16-rc6' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/johan/usb-serial into usb-linus (6 days ago) <Greg Kroah-Hartman>
-|\  
-| * 08f49cdb71f3 - USB: serial: option: add Foxconn T99W640 (3 weeks ago) <Slark Xiao>
-* 3014168731b7 - usb: gadget: configfs: Fix OOB read on empty string write (6 days ago) <Xinyu Liu>
-* 67a59f82196c - usb: musb: fix gadget state on disconnect (8 days ago) <Drew Hamilton>
-* 9fccced2d25b - Merge tag 'thunderbolt-for-v6.16-rc4' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/westeri/thunderbolt into usb-linus (8 days ago) <Greg Kroah-Hartman>
-* 2cdde91c14ec - thunderbolt: Fix bit masking in tb_dp_port_set_hops() (3 weeks ago) <Alok Tiwari>
-* 58d71d4242ce - thunderbolt: Fix wake on connect at runtime (3 weeks ago) <Mario Limonciello>
+Agree, VM start will fail no matter what, just that it will be early.
+I will send a v2 with updated change log and dropping the stable@ tag.
 
-I'll get this to Linus for the next -rc.
+Regards,
+Nikunj
 
-thanks,
-
-greg k-h
 
