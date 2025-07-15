@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC323B05E8B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3374CB05B4F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7316E1C4333A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B71D4E3CE0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E274C2E7BD3;
-	Tue, 15 Jul 2025 13:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396F62D9EFF;
+	Tue, 15 Jul 2025 13:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plFmit7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6DLx+DH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982EF2E7BC0;
-	Tue, 15 Jul 2025 13:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7B227470;
+	Tue, 15 Jul 2025 13:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586743; cv=none; b=g2V+WpHpKCOMANZIG7F3LTPn9o4a2iFWHJGR8m57A81uO8iNYx4HEcT5Sz6dqXir5AlIwvD1kcoV6aNE+zH9h+o/3yGI0or9nIwNeDwiBD1ButO6ixA5tYnr9ezHFuIKWkNWZw1e91LCKkP7eIVdBiXCWhU/FUkCyA/gVohpAB0=
+	t=1752585487; cv=none; b=tGbD8MWVQACcDxxI3iZsnjqRtJPKm420GeBpY4iFsY5w/yij5jVQFzt6mROsO0SKQ4xEyJxYBA/Vd6J1tVrnmhj5B/k9uuidR5SglsY3qfv+BzVaHqkwbsJLIvz/JYDSmwBH3z1xgf1PnCHSnresIwrZlImAbaLHTo8hs+ppHBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586743; c=relaxed/simple;
-	bh=2oC2TIWPYuBtRWBIJ6hFLiUC4z/EgWPSIwHj5BujCrY=;
+	s=arc-20240116; t=1752585487; c=relaxed/simple;
+	bh=Qokx3mFJI/i+LNjYEWR1PgyeKpGMwQiZvD9sK4iVjN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iHiWX5iNdxZt+3gXbDPB0b1Wq9J8SjuRkD0oypRVkkB+IwOOrmE4Q9gUxdy1BuGMrjspXECjDa3ioJXPRxMBRMrMs3MNTnIy4EfmZI0Ij6T42dCBij/goiGsEyQQAijtlf0JZ8MjAf1zDM58U7TAwBp8Pzm6faKHq1Es7exACe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plFmit7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFAFC4CEE3;
-	Tue, 15 Jul 2025 13:39:03 +0000 (UTC)
+	 MIME-Version; b=JvSWF8QNiDx15apcZLpfNlnxRGAA/ZZF7xQi8yotJ2lNqVZhAKpHaOgtbfv8eLE18eaIFhEbDSvU3QP0V6YnmaFcXR/3IPXnHV4EJe0TxlGq8eBB6wBcJSArFqXxlFjyY+WR/3LB85X+PVQ4VhVcUYek8QB0xh64mw3weJLDw6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6DLx+DH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9F5C4CEE3;
+	Tue, 15 Jul 2025 13:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586743;
-	bh=2oC2TIWPYuBtRWBIJ6hFLiUC4z/EgWPSIwHj5BujCrY=;
+	s=korg; t=1752585486;
+	bh=Qokx3mFJI/i+LNjYEWR1PgyeKpGMwQiZvD9sK4iVjN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=plFmit7Y11Qd18QXatcP4TbrVqk9QKMKxNRFSu0PoxOwdk+wPASh+UihbjXj3l2pg
-	 nJ1fVySdX+cbAf61lh30cWNL0yr5+hBORYBAkY4Jddfges/U+xCTqVybrVayvQdeJi
-	 lQALbVUz7JJtoHkhrYR3msWzEAxa3hH3keRwNpHo=
+	b=n6DLx+DHo0AfgMqcamQpfgIztkPVhzNUymoO6XWmy/j2wmJWrfO6Y/4zAQoE6/R/z
+	 lM8kVKKCWGE2x5Wzk+pRsQ76kIHAdlbZQj2nmquBjQZjcmNUeQYe4TwRVMpb0TGf7+
+	 2Lw2RsKl9djepF7WYymxzMD3plx79geCXl0JPxTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 032/192] vsock: Fix transport_{g2h,h2g} TOCTOU
+	Arun Raghavan <arun@asymptotic.io>,
+	Pieterjan Camerlynck <p.camerlynck@televic.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 059/163] ASoC: fsl_sai: Force a software reset when starting in consumer mode
 Date: Tue, 15 Jul 2025 15:12:07 +0200
-Message-ID: <20250715130816.148644462@linuxfoundation.org>
+Message-ID: <20250715130811.117285875@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Arun Raghavan <arun@asymptotic.io>
 
-[ Upstream commit 209fd720838aaf1420416494c5505096478156b4 ]
+commit dc78f7e59169d3f0e6c3c95d23dc8e55e95741e2 upstream.
 
-vsock_find_cid() and vsock_dev_do_ioctl() may race with module unload.
-transport_{g2h,h2g} may become NULL after the NULL check.
+On an imx8mm platform with an external clock provider, when running the
+receiver (arecord) and triggering an xrun with xrun_injection, we see a
+channel swap/offset. This happens sometimes when running only the
+receiver, but occurs reliably if a transmitter (aplay) is also
+concurrently running.
 
-Introduce vsock_transport_local_cid() to protect from a potential
-null-ptr-deref.
+It seems that the SAI loses track of frame sync during the trigger stop
+-> trigger start cycle that occurs during an xrun. Doing just a FIFO
+reset in this case does not suffice, and only a software reset seems to
+get it back on track.
 
-KASAN: null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
-RIP: 0010:vsock_find_cid+0x47/0x90
-Call Trace:
- __vsock_bind+0x4b2/0x720
- vsock_bind+0x90/0xe0
- __sys_bind+0x14d/0x1e0
- __x64_sys_bind+0x6e/0xc0
- do_syscall_64+0x92/0x1c0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
+This looks like the same h/w bug that is already handled for the
+producer case, so we now do the reset unconditionally on config disable.
 
-KASAN: null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
-RIP: 0010:vsock_dev_do_ioctl.isra.0+0x58/0xf0
-Call Trace:
- __x64_sys_ioctl+0x12d/0x190
- do_syscall_64+0x92/0x1c0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-1-98f0eb530747@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Arun Raghavan <arun@asymptotic.io>
+Reported-by: Pieterjan Camerlynck <p.camerlynck@televic.com>
+Fixes: 3e3f8bd56955 ("ASoC: fsl_sai: fix no frame clk in master mode")
+Cc: stable@vger.kernel.org
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://patch.msgid.link/20250626130858.163825-1-arun@arunraghavan.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ sound/soc/fsl/fsl_sai.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index fc6afbc8d6806..43be340233dae 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -531,9 +531,25 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -771,13 +771,15 @@ static void fsl_sai_config_disable(struc
+ 	 * anymore. Add software reset to fix this issue.
+ 	 * This is a hardware bug, and will be fix in the
+ 	 * next sai version.
++	 *
++	 * In consumer mode, this can happen even after a
++	 * single open/close, especially if both tx and rx
++	 * are running concurrently.
+ 	 */
+-	if (!sai->is_consumer_mode[tx]) {
+-		/* Software Reset */
+-		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
+-		/* Clear SR bit to finish the reset */
+-		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
+-	}
++	/* Software Reset */
++	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
++	/* Clear SR bit to finish the reset */
++	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
  }
- EXPORT_SYMBOL_GPL(vsock_assign_transport);
  
-+/*
-+ * Provide safe access to static transport_{h2g,g2h,dgram,local} callbacks.
-+ * Otherwise we may race with module removal. Do not use on `vsk->transport`.
-+ */
-+static u32 vsock_registered_transport_cid(const struct vsock_transport **transport)
-+{
-+	u32 cid = VMADDR_CID_ANY;
-+
-+	mutex_lock(&vsock_register_mutex);
-+	if (*transport)
-+		cid = (*transport)->get_local_cid();
-+	mutex_unlock(&vsock_register_mutex);
-+
-+	return cid;
-+}
-+
- bool vsock_find_cid(unsigned int cid)
- {
--	if (transport_g2h && cid == transport_g2h->get_local_cid())
-+	if (cid == vsock_registered_transport_cid(&transport_g2h))
- 		return true;
- 
- 	if (transport_h2g && cid == VMADDR_CID_HOST)
-@@ -2503,18 +2519,17 @@ static long vsock_dev_do_ioctl(struct file *filp,
- 			       unsigned int cmd, void __user *ptr)
- {
- 	u32 __user *p = ptr;
--	u32 cid = VMADDR_CID_ANY;
- 	int retval = 0;
-+	u32 cid;
- 
- 	switch (cmd) {
- 	case IOCTL_VM_SOCKETS_GET_LOCAL_CID:
- 		/* To be compatible with the VMCI behavior, we prioritize the
- 		 * guest CID instead of well-know host CID (VMADDR_CID_HOST).
- 		 */
--		if (transport_g2h)
--			cid = transport_g2h->get_local_cid();
--		else if (transport_h2g)
--			cid = transport_h2g->get_local_cid();
-+		cid = vsock_registered_transport_cid(&transport_g2h);
-+		if (cid == VMADDR_CID_ANY)
-+			cid = vsock_registered_transport_cid(&transport_h2g);
- 
- 		if (put_user(cid, p) != 0)
- 			retval = -EFAULT;
--- 
-2.39.5
-
+ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
 
 
 
