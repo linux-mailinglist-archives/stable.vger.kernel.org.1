@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-162756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDCEB05F42
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51183B05F46
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 314437BA72E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44F897BBA20
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F09B2EA74D;
-	Tue, 15 Jul 2025 13:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79ACC2E6103;
+	Tue, 15 Jul 2025 13:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hi9fU3se"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDfvRYe5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16FF2E6122;
-	Tue, 15 Jul 2025 13:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37ADD244691;
+	Tue, 15 Jul 2025 13:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587395; cv=none; b=C1Irgy9nlU/Qeex65DwP/wDjUr6zKN0+eTjPcAsMg6gZNwNkCgCSxh2HK0g04EeUQgHQnfQZmyUK+AbJ0g6i3l8k2BUfc/cPsNcRZ5b50wM18JiRn4dR36be978FlXxUAuahVtL6qiLZrJT0voEAzy5T1yZJ+aEmdLxqSh8xjN0=
+	t=1752587400; cv=none; b=n1obS1d2hCNT8hFoatGjSXn0cw6vxDeh/q4moa2mJzzUAHJWZ/yYJHQKK3or/TNHIPZT1RLvsiWfro5Ky3I+BW00N7yz48MIsQr4hBX23Y+TBSB5oPaEjSg5CNDtRLPTVKHd4yB9WxTdp8Bz43nNRvXk/f5POKCx6xb6KVeP7bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587395; c=relaxed/simple;
-	bh=aoJVrWR+pUBDYPmK5JyW9EzXEJe+S1aBu3mKQaeX6fw=;
+	s=arc-20240116; t=1752587400; c=relaxed/simple;
+	bh=4I4t2dpEWVA0KKgIKLBws4NKnH7aSN/ZZPb8MpTRtyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCa2xVluy7Z/1tomWZD/fDdCxFBJr4QrpT+QFHl7r255w3tP20aaWnIaMchYNly+T9aziGm77yxNOrM1XhEZVdnaT4OESbMUjDlTbUi5eHTTnczcsdIX2SH1TZ2m1k6/aZ78NFz6zbgrbO/vZpRMm3waF/JF1l3qIOvHyHR86Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hi9fU3se; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85720C4CEE3;
-	Tue, 15 Jul 2025 13:49:54 +0000 (UTC)
+	 MIME-Version; b=BdEpAryJKTQ5om6R+g0AJtXtTM9kNY6H5pTcBRzDFjRHkfJp57PE1WV4eYLVz7bd0uITFwRTqBkKvoE+IeNpN2HxOk7gWwjbsP9o7mAYNrdGLvjq73pHDnoUb9dmrMB7hVfVWHyvIpylxkui2Gb30GSCeuYyK8UGukAFE+mQ7eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDfvRYe5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D07C4CEE3;
+	Tue, 15 Jul 2025 13:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587394;
-	bh=aoJVrWR+pUBDYPmK5JyW9EzXEJe+S1aBu3mKQaeX6fw=;
+	s=korg; t=1752587400;
+	bh=4I4t2dpEWVA0KKgIKLBws4NKnH7aSN/ZZPb8MpTRtyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hi9fU3seljfKRRzaCK5NRRy9Pe4tYQsPDghmOJI3Gi48jgPbC5wtEOjaFHKJiHNIg
-	 GWcP8JVXyYvTqjaLoUg3RLGe+V6zsukH3GMDhZKVRLLH8KscYlNu1BBX8Kn9qSLSVW
-	 0I4SVDF9f6r6L8pxO41oCdLyj5Q5S69I720d4JG8=
+	b=PDfvRYe58yoLLIgLa0GqcoNwPmcJkX00acRaUkdOJIizHqhPuYfQeb3xDsrA1v8xF
+	 5NUufM4vP3W8+w4S4OzeRtsAm8hfw8Pd5pl9mCjNW3g1D82QkKSrRY2QUBRBtTolB9
+	 wcORdVAYjKWFSnt54XbhuXGVgsHKNe2gVp48vYk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Jann Horn <jannh@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH 6.1 85/88] x86/mm: Disable hugetlb page table sharing on 32-bit
-Date: Tue, 15 Jul 2025 15:15:01 +0200
-Message-ID: <20250715130757.980989097@linuxfoundation.org>
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Yunseong Kim <ysk@kzalloc.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 87/88] kasan: remove kasan_find_vm_area() to prevent possible deadlock
+Date: Tue, 15 Jul 2025 15:15:03 +0200
+Message-ID: <20250715130758.060379814@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
 References: <20250715130754.497128560@linuxfoundation.org>
@@ -69,56 +74,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-commit 76303ee8d54bff6d9a6d55997acd88a6c2ba63cf upstream.
+commit 6ee9b3d84775944fb8c8a447961cd01274ac671c upstream.
 
-Only select ARCH_WANT_HUGE_PMD_SHARE on 64-bit x86.
-Page table sharing requires at least three levels because it involves
-shared references to PMD tables; 32-bit x86 has either two-level paging
-(without PAE) or three-level paging (with PAE), but even with
-three-level paging, having a dedicated PGD entry for hugetlb is only
-barely possible (because the PGD only has four entries), and it seems
-unlikely anyone's actually using PMD sharing on 32-bit.
+find_vm_area() couldn't be called in atomic_context.  If find_vm_area() is
+called to reports vm area information, kasan can trigger deadlock like:
 
-Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
-has 2-level paging) became particularly problematic after commit
-59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
-since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
-the `pt_share_count` (for PMDs) share the same union storage - and with
-2-level paging, PMDs are PGDs.
+CPU0                                CPU1
+vmalloc();
+ alloc_vmap_area();
+  spin_lock(&vn->busy.lock)
+                                    spin_lock_bh(&some_lock);
+   <interrupt occurs>
+   <in softirq>
+   spin_lock(&some_lock);
+                                    <access invalid address>
+                                    kasan_report();
+                                     print_report();
+                                      print_address_description();
+                                       kasan_find_vm_area();
+                                        find_vm_area();
+                                         spin_lock(&vn->busy.lock) // deadlock!
 
-(For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
-configuration of page tables such that it is never enabled with 2-level
-paging.)
+To prevent possible deadlock while kasan reports, remove kasan_find_vm_area().
 
-Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
-Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
-Reported-by: Vitaly Chikunov <vt@altlinux.org>
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Vitaly Chikunov <vt@altlinux.org>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250702-x86-2level-hugetlb-v2-1-1a98096edf92%40google.com
+Link: https://lkml.kernel.org/r/20250703181018.580833-1-yeoreum.yun@arm.com
+Fixes: c056a364e954 ("kasan: print virtual mapping info in reports")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
+Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/kasan/report.c |   13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -124,7 +124,7 @@ config X86
- 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
- 	select ARCH_WANTS_NO_INSTR
- 	select ARCH_WANT_GENERAL_HUGETLB
--	select ARCH_WANT_HUGE_PMD_SHARE
-+	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
- 	select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP	if X86_64
- 	select ARCH_WANT_LD_ORPHAN_WARN
- 	select ARCH_WANTS_THP_SWAP		if X86_64
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -337,17 +337,8 @@ static void print_address_description(vo
+ 	}
+ 
+ 	if (is_vmalloc_addr(addr)) {
+-		struct vm_struct *va = find_vm_area(addr);
+-
+-		if (va) {
+-			pr_err("The buggy address belongs to the virtual mapping at\n"
+-			       " [%px, %px) created by:\n"
+-			       " %pS\n",
+-			       va->addr, va->addr + va->size, va->caller);
+-			pr_err("\n");
+-
+-			page = vmalloc_to_page(addr);
+-		}
++		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
++		page = vmalloc_to_page(addr);
+ 	}
+ 
+ 	if (page) {
 
 
 
