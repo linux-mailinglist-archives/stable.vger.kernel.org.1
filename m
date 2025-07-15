@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-162890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FA1B06088
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:18:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39446B05FAA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 148C61C27B9E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67B891882B73
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181A02EBBAF;
-	Tue, 15 Jul 2025 13:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3228B2E425F;
+	Tue, 15 Jul 2025 13:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRIbAsK6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5MdYrDR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA49D2DAFBD;
-	Tue, 15 Jul 2025 13:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2B22E3AE5;
+	Tue, 15 Jul 2025 13:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587745; cv=none; b=QgdF/hC9SuDU8oJps/JPYxALhCFI11N+kQnC9/32KhVgii3wN9rPwN+O1kG86wTlXDwWTrGZFL/9eM2YV22MdcPCLir3+IijUvSpl1WxZDxFxe9WJvTzYJnK4F8R2Rb6vDyeiIAUkUFqmHtyirVFebuhBqjlgqT2ngiwOXbJJgI=
+	t=1752587222; cv=none; b=Jo257znDl6eebybckpgAVz6Gk9hmNz3BMYaLeO/+THjtAP9BxR4LRZMZvj/OMT0QEVIvAobsnsBFJUX0iyS/6BVTH+EZpHtvs0x/2fxp0DY0tFFCuUPm4isww9rii93Uma0Yt+pRDX8pooWBbbc8ECGLPjUKoZA2Z1EUv6inwL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587745; c=relaxed/simple;
-	bh=KzBgGuImW5+Ntubma0XOheCiV7QXwK58FEhBXaLLqHo=;
+	s=arc-20240116; t=1752587222; c=relaxed/simple;
+	bh=FyqZqMqzrdIfMw5u2X/BdcCcA3GICGHy3JHLNNLsmYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJ54HbT9FZsREfr1MikRMFt8U+zqAgU26HvED3eJV6l/HuFJH8KnfWCNtY2DQEXuhujOhSbcWfdbSOcchUuL6dNcihQV4KLmmqpcBpGRQadW7Qz4QKtUiy9V8T69aesf5ajx62nBBpJoE0D+Dp/qLAfNplIXLaD9/1yjbAu84i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRIbAsK6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACE6C4CEE3;
-	Tue, 15 Jul 2025 13:55:45 +0000 (UTC)
+	 MIME-Version; b=rhgC9mUBh1PuXFFGRgjSrco82w6/NqQoopCEiFB1DlbpSU5p/fQLENsQPAWYfoX3kndJLSBUIMTc06oyxnNca1ChKaqezr5O8tM0YiT63Ry5Tuc8Tz/DWce6MnPL0jzRn7sY/QP8Dtfzl6rpXgsr9TF7yeTpSsJNRfKdtBwgUHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5MdYrDR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AC0C4CEE3;
+	Tue, 15 Jul 2025 13:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587745;
-	bh=KzBgGuImW5+Ntubma0XOheCiV7QXwK58FEhBXaLLqHo=;
+	s=korg; t=1752587221;
+	bh=FyqZqMqzrdIfMw5u2X/BdcCcA3GICGHy3JHLNNLsmYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fRIbAsK6OT2emTmeFQNRO+nal293/0A7SoA/t6QjUJ10hVZU9mG52n1gaChYV+amr
-	 DRnVQ9+E6rwQtuv86NhNIYN53FwrPt0MZ0WlnSV78aZ/TRY1XK0dGVG1Or+BfKYmSm
-	 BHYt/JqncL7HOg5zCpdTq9gpq/NUzDJx0UqgO7bo=
+	b=c5MdYrDRlvz4l6FEllu/OPxIRGWVp8WESXZNf5zpKuclC8dhF3zsbqDSzvOfRhIlM
+	 LbheZuSxhjOeyNTv5mYVmLZf+vWLUBpzSkASR9Yzzpxweks/2IVCfWaFNY1KxjFYng
+	 5IjKG6Mpm7y9RRP9OGI/swTJGYbSHlYl4kZvJQRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 126/208] Logitech C-270 even more broken
-Date: Tue, 15 Jul 2025 15:13:55 +0200
-Message-ID: <20250715130815.990954930@linuxfoundation.org>
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	David Howells <dhowells@redhat.com>,
+	LePremierHomme <kwqcheii@proton.me>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Willy Tarreau <w@1wt.eu>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 20/88] rxrpc: Fix oops due to non-existence of prealloc backlog struct
+Date: Tue, 15 Jul 2025 15:13:56 +0200
+Message-ID: <20250715130755.324477686@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +67,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: David Howells <dhowells@redhat.com>
 
-commit cee4392a57e14a799fbdee193bc4c0de65b29521 upstream.
+commit 880a88f318cf1d2a0f4c0a7ff7b07e2062b434a4 upstream.
 
-Some varieties of this device don't work with
-RESET_RESUME alone.
+If an AF_RXRPC service socket is opened and bound, but calls are
+preallocated, then rxrpc_alloc_incoming_call() will oops because the
+rxrpc_backlog struct doesn't get allocated until the first preallocation is
+made.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250605122852.1440382-1-oneukum@suse.com
+Fix this by returning NULL from rxrpc_alloc_incoming_call() if there is no
+backlog struct.  This will cause the incoming call to be aborted.
+
+Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Suggested-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: LePremierHomme <kwqcheii@proton.me>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Willy Tarreau <w@1wt.eu>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250708211506.2699012-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/rxrpc/call_accept.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -224,7 +224,8 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x046a, 0x0023), .driver_info = USB_QUIRK_RESET_RESUME },
+--- a/net/rxrpc/call_accept.c
++++ b/net/rxrpc/call_accept.c
+@@ -270,6 +270,9 @@ static struct rxrpc_call *rxrpc_alloc_in
+ 	unsigned short call_tail, conn_tail, peer_tail;
+ 	unsigned short call_count, conn_count;
  
- 	/* Logitech HD Webcam C270 */
--	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME },
-+	{ USB_DEVICE(0x046d, 0x0825), .driver_info = USB_QUIRK_RESET_RESUME |
-+		USB_QUIRK_NO_LPM},
- 
- 	/* Logitech HD Pro Webcams C920, C920-C, C922, C925e and C930e */
- 	{ USB_DEVICE(0x046d, 0x082d), .driver_info = USB_QUIRK_DELAY_INIT },
++	if (!b)
++		return NULL;
++
+ 	/* #calls >= #conns >= #peers must hold true. */
+ 	call_head = smp_load_acquire(&b->call_backlog_head);
+ 	call_tail = b->call_backlog_tail;
 
 
 
