@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B27B05DBD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:46:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB83BB05B87
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26ED33AFD94
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C4FA7B65CE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012372EBDED;
-	Tue, 15 Jul 2025 13:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9492E1734;
+	Tue, 15 Jul 2025 13:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T724QmIZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2H6vL0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CCF2E54B7;
-	Tue, 15 Jul 2025 13:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496401A23AF;
+	Tue, 15 Jul 2025 13:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586458; cv=none; b=P2SPZbNMB4V+BE5znMynQgIGeKn7HFabxkhbjZIE4KSxep5v004bWSHYxFESs/8lU5Jcbq/CetmtuYx5O0eBmCHlP6arEVC156lXV3h9/BeqGVSrnm7cU6wyEaAgWAKkPG46TIcMFOA6Iioo5J/WTHeDV+w5FvvUd9r44tBNVrw=
+	t=1752585583; cv=none; b=b2qK0LYedI7Dr8WD8WH1K3yYVGpvnnsRPLH0bvGp3cRwuRSTTYw1LpMaQmTc5yrWE/54wke4WvHPUIGE/l3j2SNiF53f2oQbeJtT5D9+vjZ2uKpyvLtx/O0P00H29gwJgNWBcnvQtZADOSLnqAuho6WYCVYVZiHbg8Wno8cjXKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586458; c=relaxed/simple;
-	bh=sOssEsSYaPaABb9n8QBz93FMBhp9epvJjntfhRBPb58=;
+	s=arc-20240116; t=1752585583; c=relaxed/simple;
+	bh=eEabLZeky6r3Dyz1ocpcANYj8rxIwkU+GZu9p0JgS8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxdnlcN8rNOxK4zYS5V/yFDsl7KV3P7z/bY2swPStFDjq4A/r2T8yh+Y1dH5W3QElHB5QRHCyjqIJA2JvKmr7mbWEKLlRfnQ/ptYoXnH1v1hXgPzQLbga+Ibe2X+x6BgjhK79wY3ksi66yrZc/DqySw6fKv9xoP2vsqEn8o1f+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T724QmIZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B0AC4CEE3;
-	Tue, 15 Jul 2025 13:34:16 +0000 (UTC)
+	 MIME-Version; b=k+/mwut8XscHzxRa/CRnY7HNjoVvkujPhGSS88hnI0Qv6ARkeimC+MbLTBDn24ZMkQfoTGG/1AFISusYfRoYNEjqX6Lk3FkBwe6kwM1sfqdK/f9Hh4gEpxrc4sDsqbCfIXtfcQzP+yJKcZXCSBRfE7zgxqZM/lFJLBx76Hy/S48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2H6vL0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D006AC4CEE3;
+	Tue, 15 Jul 2025 13:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586457;
-	bh=sOssEsSYaPaABb9n8QBz93FMBhp9epvJjntfhRBPb58=;
+	s=korg; t=1752585583;
+	bh=eEabLZeky6r3Dyz1ocpcANYj8rxIwkU+GZu9p0JgS8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T724QmIZgF16phLwVOB6sLY8UY/a6/ztJmz/rnGzFniFxJvsN7o8jTqJyt//Uce19
-	 2o3XpSHdOu7fbN17Y7HN1Kq2m8c3fJSsN5gfp7gabyatEg3VFumv3V1U3Az0/mH88M
-	 mWIbOyUG2GQ5vyzfKMSv0QtWUWYBjp/Sil2Zs9+A=
+	b=o2H6vL0CMA4i0Ft+ACakND6Fn+fXJ1k1CawnsK9ddS/8sfFfgba4pF9uvb0PWSgwv
+	 PfgSDwHCAtAbJ7wBMkm7oZJsz8VDX6PH39m+x3u0WRJwIFi2yI4pFeaCzpWkTFE9ac
+	 O45ofu19dpOLTbojZj6gmRgXFU+nnrkiqwjvgP3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/148] um: ubd: Add missing error check in start_io_thread()
+	Frank Li <Frank.Li@nxp.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.12 095/163] clk: imx: Fix an out-of-bounds access in dispmix_csr_clk_dev_data
 Date: Tue, 15 Jul 2025 15:12:43 +0200
-Message-ID: <20250715130801.961162399@linuxfoundation.org>
+Message-ID: <20250715130812.679383878@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit c55c7a85e02a7bfee20a3ffebdff7cbeb41613ef ]
+commit aacc875a448d363332b9df0621dde6d3a225ea9f upstream.
 
-The subsequent call to os_set_fd_block() overwrites the previous
-return value. OR the two return values together to fix it.
+When num_parents is 4, __clk_register() occurs an out-of-bounds
+when accessing parent_names member. Use ARRAY_SIZE() instead of
+hardcode number here.
 
-Fixes: f88f0bdfc32f ("um: UBD Improvements")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20250606124428.148164-2-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ BUG: KASAN: global-out-of-bounds in __clk_register+0x1844/0x20d8
+ Read of size 8 at addr ffff800086988e78 by task kworker/u24:3/59
+  Hardware name: NXP i.MX95 19X19 board (DT)
+  Workqueue: events_unbound deferred_probe_work_func
+  Call trace:
+    dump_backtrace+0x94/0xec
+    show_stack+0x18/0x24
+    dump_stack_lvl+0x8c/0xcc
+    print_report+0x398/0x5fc
+    kasan_report+0xd4/0x114
+    __asan_report_load8_noabort+0x20/0x2c
+    __clk_register+0x1844/0x20d8
+    clk_hw_register+0x44/0x110
+    __clk_hw_register_mux+0x284/0x3a8
+    imx95_bc_probe+0x4f4/0xa70
+
+Fixes: 5224b189462f ("clk: imx: add i.MX95 BLK CTL clk driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Link: https://lore.kernel.org/r/20250619062108.2016511-1-xiaolei.wang@windriver.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/drivers/ubd_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx95-blk-ctl.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/um/drivers/ubd_user.c b/arch/um/drivers/ubd_user.c
-index a1afe414ce481..fb5b1e7c133d8 100644
---- a/arch/um/drivers/ubd_user.c
-+++ b/arch/um/drivers/ubd_user.c
-@@ -41,7 +41,7 @@ int start_io_thread(unsigned long sp, int *fd_out)
- 	*fd_out = fds[1];
+diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
+index 25974947ad0c..cc2ee2be1819 100644
+--- a/drivers/clk/imx/clk-imx95-blk-ctl.c
++++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+@@ -219,11 +219,15 @@ static const struct imx95_blk_ctl_dev_data lvds_csr_dev_data = {
+ 	.clk_reg_offset = 0,
+ };
  
- 	err = os_set_fd_block(*fd_out, 0);
--	err = os_set_fd_block(kernel_fd, 0);
-+	err |= os_set_fd_block(kernel_fd, 0);
- 	if (err) {
- 		printk("start_io_thread - failed to set nonblocking I/O.\n");
- 		goto out_close;
++static const char * const disp_engine_parents[] = {
++	"videopll1", "dsi_pll", "ldb_pll_div7"
++};
++
+ static const struct imx95_blk_ctl_clk_dev_data dispmix_csr_clk_dev_data[] = {
+ 	[IMX95_CLK_DISPMIX_ENG0_SEL] = {
+ 		.name = "disp_engine0_sel",
+-		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
+-		.num_parents = 4,
++		.parent_names = disp_engine_parents,
++		.num_parents = ARRAY_SIZE(disp_engine_parents),
+ 		.reg = 0,
+ 		.bit_idx = 0,
+ 		.bit_width = 2,
+@@ -232,8 +236,8 @@ static const struct imx95_blk_ctl_clk_dev_data dispmix_csr_clk_dev_data[] = {
+ 	},
+ 	[IMX95_CLK_DISPMIX_ENG1_SEL] = {
+ 		.name = "disp_engine1_sel",
+-		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
+-		.num_parents = 4,
++		.parent_names = disp_engine_parents,
++		.num_parents = ARRAY_SIZE(disp_engine_parents),
+ 		.reg = 0,
+ 		.bit_idx = 2,
+ 		.bit_width = 2,
 -- 
-2.39.5
+2.50.1
 
 
 
