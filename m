@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6A4B05D70
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34510B05B8F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A25CB171471
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CB531C20155
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243EC2EAB82;
-	Tue, 15 Jul 2025 13:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69492E2EE7;
+	Tue, 15 Jul 2025 13:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2A4jpsO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aiWKXq/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67E42E54B7;
-	Tue, 15 Jul 2025 13:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E3027584E;
+	Tue, 15 Jul 2025 13:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586478; cv=none; b=fHNDDB/Y4T/LqdeMDYQdulNVyKtYdtBhRGQNAfUDiuuhjzGojW8S+h/Yeae2083UD3DOIVQEvMcKWecDCM1H+Z9s0wKPcJh8lrM+uqkUUUvj1pJgSpJt/HbiDxQaf+aM0OU2brn+mIMWrFr//u1jrxgdEOeDcVLg6XXE9oD+d24=
+	t=1752585688; cv=none; b=JoMEtu+/qiMxg4iiui/FimSOr4RE5MXf28+jriekAC2nWKq5ugPH8ZZaILyPy4V5+9afnwoHJV95X3Y5+juT/pHekorotC3xB8n/11Uok2L5lQNyk+zc5o9juT2wRaelBkBHkj+KtNKd6q5ko3Pv5RhL3JnHei//edYbVnW3dPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586478; c=relaxed/simple;
-	bh=Qels/7FSUrJiI/CH+g+/+VtrnRWAtFJkKB7jWbK39SE=;
+	s=arc-20240116; t=1752585688; c=relaxed/simple;
+	bh=Mp3Fld91axa9a8CJwVTgA6j4S9PQwPwZ4oPYR45d/rE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/WzHl0exyr8jQ0P8KmuCl6Czil9BcfKGo4k0iBw9TzjVKYDJzpt0OUaeVPKiGi6yTRPQcgsTb819Fxr3I0CHhzCu42n44Lh7Bq20UmfEU7goiOo6zdS4UlNV/XQLDzV/ddFVxUepKnmjCTt38JAppTXjbixbGwyuq04IQbBPwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2A4jpsO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29409C4CEE3;
-	Tue, 15 Jul 2025 13:34:38 +0000 (UTC)
+	 MIME-Version; b=inQMja0kJ7d7gUhNb4mqBOCvHGT526ntgDsREOOuHR/VJoUADNYzMDlDiP3UB1QN0NWLxcr+yFFo8tTXaAFgvi8CgxDsl26BxB0rMAVONrpk7/VcFU7SkaqV6cUgO4dyaHdzcyWO351GLTaV5/r66y7YQQUxpliMGxXpVE7LiMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aiWKXq/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCA6C4CEE3;
+	Tue, 15 Jul 2025 13:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586478;
-	bh=Qels/7FSUrJiI/CH+g+/+VtrnRWAtFJkKB7jWbK39SE=;
+	s=korg; t=1752585688;
+	bh=Mp3Fld91axa9a8CJwVTgA6j4S9PQwPwZ4oPYR45d/rE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N2A4jpsO30GeIE6qe7dk6YCgd8IC/EsVWSAUkU+MX26BEbzq1cHb9uax2RbSYksvB
-	 Am6qD603dtUwWAPNanR1maFSAO2RAyInXehGHo8l4DHRXzJvxbXBI0Gz2ZkOsPDazD
-	 JKC4MI3QYuk9n3O3lXCNbtb4cq3Hq2oqWklXQvj8=
+	b=aiWKXq/O9UqdJ8/M22gV61WbnNcWMnSksEbtXZTPgpkA0EE1zFqQkHjYoJKlk078J
+	 b5dMaW/jRfOcwxq6wdGQmOyfdoqvxOxS/TpaXRIeD9tPdUgOqo+Z1T92wAuCbBReGP
+	 3ZGeN1QDACy7Z9JAxR/wPsF7aOUym0jxl0IrTNtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Hu <huyue2@yulong.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 081/148] mmc: mediatek: use data instead of mrq parameter from msdc_{un}prepare_data()
+Subject: [PATCH 6.12 135/163] net: ll_temac: Fix missing tx_pending check in ethtools_set_ringparam()
 Date: Tue, 15 Jul 2025 15:13:23 +0200
-Message-ID: <20250715130803.565069705@linuxfoundation.org>
+Message-ID: <20250715130814.255195040@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Hu <huyue2@yulong.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 151071351bb6f3d1861e99a22c4cebadf81911a0 ]
+[ Upstream commit e81750b4e3826fedce7362dad839cb40384d60ae ]
 
-We already have 'mrq->data' before calling these two functions, no
-need to find it again via 'mrq->data' internally. Also remove local
-data variable accordingly.
+The function ll_temac_ethtools_set_ringparam() incorrectly checked
+rx_pending twice, once correctly for RX and once mistakenly in place
+of tx_pending. This caused tx_pending to be left unchecked against
+TX_BD_NUM_MAX.
+As a result, invalid TX ring sizes may have been accepted or valid
+ones wrongly rejected based on the RX limit, leading to potential
+misconfiguration or unexpected results.
 
-Signed-off-by: Yue Hu <huyue2@yulong.com>
-Link: https://lore.kernel.org/r/20210517100900.1620-1-zbestahu@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: f5de469990f1 ("mtk-sd: Prevent memory corruption from DMA map failure")
+This patch corrects the condition to properly validate tx_pending.
+
+Fixes: f7b261bfc35e ("net: ll_temac: Make RX/TX ring sizes configurable")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250710180621.2383000-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/xilinx/ll_temac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index c87227bf6e68f..5d330f2a3faae 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -676,10 +676,8 @@ static inline void msdc_dma_setup(struct msdc_host *host, struct msdc_dma *dma,
- 	writel(lower_32_bits(dma->gpd_addr), host->base + MSDC_DMA_SA);
- }
+diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
+index 1072e2210aed3..6b93418224e7e 100644
+--- a/drivers/net/ethernet/xilinx/ll_temac_main.c
++++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
+@@ -1309,7 +1309,7 @@ ll_temac_ethtools_set_ringparam(struct net_device *ndev,
+ 	if (ering->rx_pending > RX_BD_NUM_MAX ||
+ 	    ering->rx_mini_pending ||
+ 	    ering->rx_jumbo_pending ||
+-	    ering->rx_pending > TX_BD_NUM_MAX)
++	    ering->tx_pending > TX_BD_NUM_MAX)
+ 		return -EINVAL;
  
--static void msdc_prepare_data(struct msdc_host *host, struct mmc_request *mrq)
-+static void msdc_prepare_data(struct msdc_host *host, struct mmc_data *data)
- {
--	struct mmc_data *data = mrq->data;
--
- 	if (!(data->host_cookie & MSDC_PREPARE_FLAG)) {
- 		data->sg_count = dma_map_sg(host->dev, data->sg, data->sg_len,
- 					    mmc_get_dma_dir(data));
-@@ -688,10 +686,8 @@ static void msdc_prepare_data(struct msdc_host *host, struct mmc_request *mrq)
- 	}
- }
- 
--static void msdc_unprepare_data(struct msdc_host *host, struct mmc_request *mrq)
-+static void msdc_unprepare_data(struct msdc_host *host, struct mmc_data *data)
- {
--	struct mmc_data *data = mrq->data;
--
- 	if (data->host_cookie & MSDC_ASYNC_FLAG)
- 		return;
- 
-@@ -1034,7 +1030,7 @@ static void msdc_request_done(struct msdc_host *host, struct mmc_request *mrq)
- 
- 	msdc_track_cmd_data(host, mrq->cmd, mrq->data);
- 	if (mrq->data)
--		msdc_unprepare_data(host, mrq);
-+		msdc_unprepare_data(host, mrq->data);
- 	if (host->error)
- 		msdc_reset_hw(host);
- 	mmc_request_done(host->mmc, mrq);
-@@ -1203,7 +1199,7 @@ static void msdc_ops_request(struct mmc_host *mmc, struct mmc_request *mrq)
- 	host->mrq = mrq;
- 
- 	if (mrq->data)
--		msdc_prepare_data(host, mrq);
-+		msdc_prepare_data(host, mrq->data);
- 
- 	/* if SBC is required, we have HW option and SW option.
- 	 * if HW option is enabled, and SBC does not have "special" flags,
-@@ -1224,7 +1220,7 @@ static void msdc_pre_req(struct mmc_host *mmc, struct mmc_request *mrq)
- 	if (!data)
- 		return;
- 
--	msdc_prepare_data(host, mrq);
-+	msdc_prepare_data(host, data);
- 	data->host_cookie |= MSDC_ASYNC_FLAG;
- }
- 
-@@ -1232,14 +1228,14 @@ static void msdc_post_req(struct mmc_host *mmc, struct mmc_request *mrq,
- 		int err)
- {
- 	struct msdc_host *host = mmc_priv(mmc);
--	struct mmc_data *data;
-+	struct mmc_data *data = mrq->data;
- 
--	data = mrq->data;
- 	if (!data)
- 		return;
-+
- 	if (data->host_cookie) {
- 		data->host_cookie &= ~MSDC_ASYNC_FLAG;
--		msdc_unprepare_data(host, mrq);
-+		msdc_unprepare_data(host, data);
- 	}
- }
- 
+ 	if (netif_running(ndev))
 -- 
 2.39.5
 
