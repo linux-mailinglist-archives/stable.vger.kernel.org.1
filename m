@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07084B05E4B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:52:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC64B05B5C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4736316488E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DAFF7B64B0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC372EA477;
-	Tue, 15 Jul 2025 13:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F622E175C;
+	Tue, 15 Jul 2025 13:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2VGomMs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+drfZQC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0712E498B;
-	Tue, 15 Jul 2025 13:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A9E2DECC2;
+	Tue, 15 Jul 2025 13:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586814; cv=none; b=s8qVM5tWmdrflId9mK+pos1S3Lil05usooQtdiNZ0GOniyYziks2Z0q1RSY+L5IOgI+ffXTbhft9e0KRXb7rXHTokFcQsD4f3wboGw0YeiSEqPFuvzxiTjU7PmCh32klogwzCu2wxPT1dd9EUTLBH8foQNP2ZMGBfafVvqAGMhg=
+	t=1752585559; cv=none; b=r7LqZSF9Dm7zYEQ5RukcFxV9AdUsu5LtQezEVtkV2y4I6jv5BkT1CZC+Rj1OnXyg4eFvVVYV5WALzAX121ciDh81cce/S16NQHwKmaj8y8uyJH0GLASBQyeaFzvUqCCewGHr2W2PWSOMaDqo8+iMuRlMgxhs5+RgnMwWZkwxe5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586814; c=relaxed/simple;
-	bh=5Y0inInMKQ/vgcxB+EWKsc0MBW2qARQA3TzIhe12lIk=;
+	s=arc-20240116; t=1752585559; c=relaxed/simple;
+	bh=wn/wvk7Hg8pCqxh2CwoNqUMLZKLnoI0/hWsRDMqQS14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXnk4JOXkHuSrGslFNq/jydpjYXooKzk/eG7QSTVJDromT7YCd2goJchWDdErVWRuYysCNCxAn9aChwN9cUMPdzn3CIqh4FYjnmaSYlUf88cbozDSv4q6kFARNTOW6DCsAGsUqs6EpnlBRMu22zNqjjI/2W2Q0EGrF84tKAuPAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2VGomMs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F31AC4CEE3;
-	Tue, 15 Jul 2025 13:40:14 +0000 (UTC)
+	 MIME-Version; b=DbmazgGilq/+SKe7i5BaI7i5/4zMh9sNyg15oxm8z9Q/sy6a28xVZ4bvEf9DuNER9vmbfuQlEgLB2aGEd/K0lRY0vFho66bkOk7JqxcHvgV9MzIMHcrEIFWquXvy6eVfXn0fyKkkcfUKdbjzJdS/Gn3BEiQpeP6JDBlxxTIgd2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+drfZQC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B8BC4CEE3;
+	Tue, 15 Jul 2025 13:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586814;
-	bh=5Y0inInMKQ/vgcxB+EWKsc0MBW2qARQA3TzIhe12lIk=;
+	s=korg; t=1752585558;
+	bh=wn/wvk7Hg8pCqxh2CwoNqUMLZKLnoI0/hWsRDMqQS14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2VGomMswKmAwuK9KKRtd44vVEcJWUcHmEYZ0KdzFu64aNJEVp/nEk8ZSvpDneVBh
-	 AkrQjDFKnLhMlbtMtQzCCMzQW865n7fRyGvCKveIxjbOj81o7cs8FJb+aG33QvcufU
-	 NtBJD9dPYJmRLMnwaR9l/w/WD+uVz1i2bD8OL51g=
+	b=U+drfZQCuMeWcWn7VRckFnZuzRyUZM3wyagIJLmOs0CFOGA0ZTVrfRFQWaWhWw7/s
+	 4NcWFUZLtTmgJ1JtjnvLbBTTxImfOlCgfNqzba+A3BqCQbq3PVC+pXRs0SSnIJfs5j
+	 ljIeor1bNMEeK2HiJJuCRixXX6hAVNzoz6pfANwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Jie <quic_luoj@quicinc.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 027/192] net: phy: qcom: qca808x: Fix WoL issue by utilizing at8031_set_wol()
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Paul Durrant <paul@xen.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 054/163] KVM: x86/xen: Allow out of range event channel ports in IRQ routing table.
 Date: Tue, 15 Jul 2025 15:12:02 +0200
-Message-ID: <20250715130815.953045439@linuxfoundation.org>
+Message-ID: <20250715130810.920939878@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Jie <quic_luoj@quicinc.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit 4ab9ada765b7acb5cd02fe27632ec2586b7868ee ]
+commit a7f4dff21fd744d08fa956c243d2b1795f23cbf7 upstream.
 
-The previous commit unintentionally removed the code responsible for
-enabling WoL via MMD3 register 0x8012 BIT5. As a result, Wake-on-LAN
-(WoL) support for the QCA808X PHY is no longer functional.
+To avoid imposing an ordering constraint on userspace, allow 'invalid'
+event channel targets to be configured in the IRQ routing table.
 
-The WoL (Wake-on-LAN) feature for the QCA808X PHY is enabled via MMD3
-register 0x8012, BIT5. This implementation is aligned with the approach
-used in at8031_set_wol().
+This is the same as accepting interrupts targeted at vCPUs which don't
+exist yet, which is already the case for both Xen event channels *and*
+for MSIs (which don't do any filtering of permitted APIC ID targets at
+all).
 
-Fixes: e58f30246c35 ("net: phy: at803x: fix the wol setting functions")
-Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250704-qcom_phy_wol_support-v1-2-053342b1538d@quicinc.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If userspace actually *triggers* an IRQ with an invalid target, that
+will fail cleanly, as kvm_xen_set_evtchn_fast() also does the same range
+check.
+
+If KVM enforced that the IRQ target must be valid at the time it is
+*configured*, that would force userspace to create all vCPUs and do
+various other parts of setup (in this case, setting the Xen long_mode)
+before restoring the IRQ table.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Link: https://lore.kernel.org/r/e489252745ac4b53f1f7f50570b03fb416aa2065.camel@infradead.org
+[sean: massage comment]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/qcom/qca808x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/xen.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/qcom/qca808x.c b/drivers/net/phy/qcom/qca808x.c
-index 71498c518f0fe..6de16c0eaa089 100644
---- a/drivers/net/phy/qcom/qca808x.c
-+++ b/drivers/net/phy/qcom/qca808x.c
-@@ -633,7 +633,7 @@ static struct phy_driver qca808x_driver[] = {
- 	.handle_interrupt	= at803x_handle_interrupt,
- 	.get_tunable		= at803x_get_tunable,
- 	.set_tunable		= at803x_set_tunable,
--	.set_wol		= at803x_set_wol,
-+	.set_wol		= at8031_set_wol,
- 	.get_wol		= at803x_get_wol,
- 	.get_features		= qca808x_get_features,
- 	.config_aneg		= qca808x_config_aneg,
--- 
-2.39.5
-
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -1916,8 +1916,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm
+ {
+ 	struct kvm_vcpu *vcpu;
+ 
+-	if (ue->u.xen_evtchn.port >= max_evtchn_port(kvm))
+-		return -EINVAL;
++	/*
++	 * Don't check for the port being within range of max_evtchn_port().
++	 * Userspace can configure what ever targets it likes; events just won't
++	 * be delivered if/while the target is invalid, just like userspace can
++	 * configure MSIs which target non-existent APICs.
++	 *
++	 * This allow on Live Migration and Live Update, the IRQ routing table
++	 * can be restored *independently* of other things like creating vCPUs,
++	 * without imposing an ordering dependency on userspace.  In this
++	 * particular case, the problematic ordering would be with setting the
++	 * Xen 'long mode' flag, which changes max_evtchn_port() to allow 4096
++	 * instead of 1024 event channels.
++	 */
+ 
+ 	/* We only support 2 level event channels for now */
+ 	if (ue->u.xen_evtchn.priority != KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL)
 
 
 
