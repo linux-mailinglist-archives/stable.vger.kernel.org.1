@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-162478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A8BB05DD4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA3DB05F35
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:02:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23D5A16D5C2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4EB9586BFD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8422E7174;
-	Tue, 15 Jul 2025 13:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7262EF2AF;
+	Tue, 15 Jul 2025 13:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRdnBG+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKEEH4us"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC4B1B4231;
-	Tue, 15 Jul 2025 13:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0672EF295;
+	Tue, 15 Jul 2025 13:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586661; cv=none; b=nBu21aELQKj9jAWDen8EVOkUb+qfl3AzkyWW8l2IqyNUMvgIa0hJwIrAw5tkJXdCU51FGj/L/8eUKoAEDXv6gTQ8KcRhyihuwqUAX9M0lbX7rV4huI86H5JZ6Foygxtmbpx+OG9W9Qptv3+QpgDFE/DfjrtzfpTYek8OOSTjQxA=
+	t=1752587176; cv=none; b=hrzyWKnNtoyIjn9jt5SXVICDqI567g6bRo9I7AJuYDbkkHiIyHora6GhbjUL7WJPHhVSktnuMqP89q9GkxDqwqJ0vzsOAuZPNNyUHTJBf81xdr6y3s85mFvBsqfj26OSVmSCqUF/ZHigqulhg1TAaujhFRwUFSTxMinJkdhB2ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586661; c=relaxed/simple;
-	bh=d+kiW2BJgngkZ1DTLfesk8MiwZthb4AzewgWpqOkEsE=;
+	s=arc-20240116; t=1752587176; c=relaxed/simple;
+	bh=3rG4DRMaPb/jVboiNdDJchYe8E23EG26Vps0QWIrOiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCoiLzUW1rfGUWndHKIgJLr0Iejz39tTcMECFLdWvHUOKVrfVK8VV0XHEH+W5szCwNR0WXfr/N4T6UwvnCiUE5fd9g05QW0Djed47/4srwOff5GGd2zaEvN1Jg+kPf3vcjmhYYX3kAYGzXGV2B65OdzUsNQfwJZpLycqplflkOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRdnBG+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EBBC4CEE3;
-	Tue, 15 Jul 2025 13:37:40 +0000 (UTC)
+	 MIME-Version; b=MfGsQrZleTes0if0Y5+2w5hkq8CPseVQKXVx6JBxyF9riS1XzDG5smKA2lg2LSRN60SHIENF4fpBw+XDUfpNjVmvnLe3eWvsZuxHVGmPnTVdCAxLYw+cpCiNvUctQ+vheUxLWZN8yleTQa2jEFKEvVu880dDfSC7LEZgKthfZBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKEEH4us; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602F0C4CEE3;
+	Tue, 15 Jul 2025 13:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586661;
-	bh=d+kiW2BJgngkZ1DTLfesk8MiwZthb4AzewgWpqOkEsE=;
+	s=korg; t=1752587176;
+	bh=3rG4DRMaPb/jVboiNdDJchYe8E23EG26Vps0QWIrOiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRdnBG+OVYvtj7AWrQDuzFGXpDN3RWx90TH7SXhr6IHG47s53ErND79Bm+SrmHnQ/
-	 73tRzdGRqGj33dvlfanRxYnGRTG7UFPf9TLsARQtDY4zTvmKXekFs+C0YeGWOyTBYI
-	 PI1UV8ezoPgB4rWRN2H1nu33QooiNbtan72pFLV8=
+	b=bKEEH4ussBn5eQWZrx8gsjXm//5cLWE+ynGG9kqkDGyAHySK284YylI/gCpmQOnB+
+	 9ArPkud8PHKadyAD9sR0/uo8HXchezHk+yFo0EhkzJ9VMohxFaDgtGTKKWF0V96Nca
+	 I2TDUGNLNdMevYEYNlDko0TYum82fLi+M9H/b9T0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	Shravya KN <shravya.k-n@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 137/148] net: phy: microchip: limit 100M workaround to link-down events on LAN88xx
+Subject: [PATCH 6.15 164/192] bnxt_en: Fix DCB ETS validation
 Date: Tue, 15 Jul 2025 15:14:19 +0200
-Message-ID: <20250715130805.771546747@linuxfoundation.org>
+Message-ID: <20250715130821.497017924@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Shravya KN <shravya.k-n@broadcom.com>
 
-[ Upstream commit dd4360c0e8504f2f7639c7f5d07c93cfd6a98333 ]
+[ Upstream commit b74c2a2e9cc471e847abd87e50a2354c07e02040 ]
 
-Restrict the 100Mbit forced-mode workaround to link-down transitions
-only, to prevent repeated link reset cycles in certain configurations.
+In bnxt_ets_validate(), the code incorrectly loops over all possible
+traffic classes to check and add the ETS settings.  Fix it to loop
+over the configured traffic classes only.
 
-The workaround was originally introduced to improve signal reliability
-when switching cables between long and short distances. It temporarily
-forces the PHY into 10 Mbps before returning to 100 Mbps.
+The unconfigured traffic classes will default to TSA_ETS with 0
+bandwidth.  Looping over these unconfigured traffic classes may
+cause the validation to fail and trigger this error message:
 
-However, when used with autonegotiating link partners (e.g., Intel i350),
-executing this workaround on every link change can confuse the partner
-and cause constant renegotiation loops. This results in repeated link
-down/up transitions and the PHY never reaching a stable state.
+"rejecting ETS config starving a TC\n"
 
-Limit the workaround to only run during the PHY_NOLINK state. This ensures
-it is triggered only once per link drop, avoiding disruptive toggling
-while still preserving its intended effect.
+The .ieee_setets() will then fail.
 
-Note: I am not able to reproduce the original issue that this workaround
-addresses. I can only confirm that 100 Mbit mode works correctly in my
-test setup. Based on code inspection, I assume the workaround aims to
-reset some internal state machine or signal block by toggling speeds.
-However, a PHY reset is already performed earlier in the function via
-phy_init_hw(), which may achieve a similar effect. Without a reproducer,
-I conservatively keep the workaround but restrict its conditions.
-
-Fixes: e57cf3639c32 ("net: lan78xx: fix accessing the LAN7800's internal phy specific registers from the MAC driver")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250709130753.3994461-3-o.rempel@pengutronix.de
+Fixes: 7df4ae9fe855 ("bnxt_en: Implement DCBNL to support host-based DCBX.")
+Reviewed-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250710213938.1959625-2-michael.chan@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/microchip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index 375bbd60b38af..e6ad7d29a0559 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -335,7 +335,7 @@ static void lan88xx_link_change_notify(struct phy_device *phydev)
- 	 * As workaround, set to 10 before setting to 100
- 	 * at forced 100 F/H mode.
- 	 */
--	if (!phydev->autoneg && phydev->speed == 100) {
-+	if (phydev->state == PHY_NOLINK && !phydev->autoneg && phydev->speed == 100) {
- 		/* disable phy interrupt */
- 		temp = phy_read(phydev, LAN88XX_INT_MASK);
- 		temp &= ~LAN88XX_INT_MASK_MDINTPIN_EN_;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
+index 0dbb880a7aa0e..71e14be2507e1 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
+@@ -487,7 +487,9 @@ static int bnxt_ets_validate(struct bnxt *bp, struct ieee_ets *ets, u8 *tc)
+ 
+ 		if ((ets->tc_tx_bw[i] || ets->tc_tsa[i]) && i > bp->max_tc)
+ 			return -EINVAL;
++	}
+ 
++	for (i = 0; i < max_tc; i++) {
+ 		switch (ets->tc_tsa[i]) {
+ 		case IEEE_8021QAZ_TSA_STRICT:
+ 			break;
 -- 
 2.39.5
 
