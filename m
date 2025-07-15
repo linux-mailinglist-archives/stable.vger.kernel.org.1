@@ -1,125 +1,161 @@
-Return-Path: <stable+bounces-163019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34346B06634
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 20:44:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C9EB06656
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 20:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7215D504BE7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 18:43:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B0351729CE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 18:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CA42BFC9D;
-	Tue, 15 Jul 2025 18:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD742BE7A0;
+	Tue, 15 Jul 2025 18:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="POFu4SQ6"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="v7+D7ZSu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D212BE640;
-	Tue, 15 Jul 2025 18:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7E72BE057
+	for <stable@vger.kernel.org>; Tue, 15 Jul 2025 18:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752605031; cv=none; b=J0PVbvFRXs4lDZj5+FBs2WdKknmTv1mHifiN086J3Sho51a+m0U+REj4QZDNiYLR3K8KO7Q1xs+59M43gkDAIkYjswVCQ4Rp/suO6QdrJzkJ5oMzefs8iqy2hzM3hCDmpmmZptcUFCk7HtlEdLhlhHKqd8RVFCHxCTXdsXov3YM=
+	t=1752605666; cv=none; b=KxOxigAq2e9PwE/GprchBdLukLHzGaEN/3p+cAYLLpJtd2AfhO66lOckxcNHzKfBtm514bQOtuoThY6r6ym/Jd+LnoZKIhFsyNxByDOa+cp57DHwFsecpdULmFY8rN2ANamikA7ZkSKFEkujg+IAmGJ+RAhD5CJl3H2oklcgZbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752605031; c=relaxed/simple;
-	bh=bYWiZR1eTZ8EGDhusWSCdTYKC+ZSADShQnvxVOLvoMM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dbGqVJPChBWbRlv8T3JF4Z8/V6YXK5Uzm5m4RcChxjuWbz+3SVqkZWa6ECj83mPWUw/Tv21Fs0YeG+ii/kkEqhkhd6OadXa0svklgMAT46poIJwMO89FwDtNYWQJuCRNx+O6QpI/3ondXykQiOfJEj7ovAu/Lt8QpodqLTo6CDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=POFu4SQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46300C4CEE3;
-	Tue, 15 Jul 2025 18:43:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752605031;
-	bh=bYWiZR1eTZ8EGDhusWSCdTYKC+ZSADShQnvxVOLvoMM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=POFu4SQ6CGPu2l3zuP3ifTTaMGCKRSZXdUv1uR12tFA2aw6ip5F4BHt0TAvc8yf09
-	 GDy7f+hKgIAzGwP6tOqWGcKsugXXybIeHLfZ85plsG0+7jNZ2VnWLWME/YIFxnqAdy
-	 Hq4r8JBKH6NguM3hXUXBUMrogM+FjDo5hErmAU4kIO+y3ey3bekEFo8T2JNqxVjWxm
-	 9dvqjcCHVdyY8va8xFhw3eZ3gVrlcdR6xmRzIG7b+xgDokupEGNMerdGBtMFmiI/Nz
-	 zWZRCZz0qzbRHsWdTsPUpkkuFFBULg0LX2X2+moWamveVSmGbcka3nhvaDw0Q/gNvg
-	 JJWe0nRv83diw==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 15 Jul 2025 20:43:29 +0200
-Subject: [PATCH net v2 2/2] selftests: mptcp: connect: also cover checksum
+	s=arc-20240116; t=1752605666; c=relaxed/simple;
+	bh=eiWActdfHOI8oeeJEbcY3YKFLwfcbkbqlswFOrYbJms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LOC+UZ3T3T3UXz3JWfe19+6VZlgb/cC4T2FLJjuYz0SdYL4m3fTCmxSyGlm71skiO4jCKNAEFMS6C2BMGYrYJBBa2mGfpFvoD1eckjU4wBb5muck8T7BY/8gxNyZ04HELjutfBs7u4jHhyiFB7+pAImspHedPrLEq7zPjmCgj8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=v7+D7ZSu; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7dfc604107eso364715085a.2
+        for <stable@vger.kernel.org>; Tue, 15 Jul 2025 11:54:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1752605664; x=1753210464; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=F6L7Xk5SLTqSGeNBwfmprp+iwshdHjMDQuZqDyxpk10=;
+        b=v7+D7ZSu9RtbhEtQtvgXprbzJ7/XkFRiuU6Bz8DTdAgyQWii9yuiJ+jezu4KoeD5ai
+         MTb653Rwy/vuo2rJQ8F+UNYLB6n9l9f7UFfkWY1ev88Cg5Ao7b5jJ4H6Wl0qlONAnv5y
+         M2y+i3QshJGbcASVd9ysU5qFZhdk73oGOiu/j2soGlNJFoCx9jhpdFhb5RHB97d3tucQ
+         gEUpWIqrqsgqAUiWz/+fVL0UiVxe++TfWyY2FNnJUWMVPZFMrbFifjkIdKENfcAudYII
+         1mAY8XY19TzcnELO3Sv+K6sFu+dSlmrzoe2ux2EnA5cqGU08NFCjgv6CuJrWU2WzPury
+         o8mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752605664; x=1753210464;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=F6L7Xk5SLTqSGeNBwfmprp+iwshdHjMDQuZqDyxpk10=;
+        b=heisVLfvDE+iaY6xT+9oCOiB4AgE404f/GgC8fRxxj0y1atGhwaiAVQRoNTdwMXRT3
+         m0IUfYMfO2aCQpMIlygmvFZSs8vtHO9SbK0IByfWMYbtQbEKvSndGDbNgOw/lNMYsW4O
+         ngcubXrScsBTDGO4PNDO87NfN8n5QPtTJaXivTFtglYBVZE/fqqVIiUduKMwcjmdoLfw
+         H8pt6W9o5X1l1GEUnqBNqeCuH97h50Pe/i0jIbjL3K2J4cMJVKsHhh6urPUTlYHrfFOO
+         qHl1WHdGjQoRBGVqi2nfEZ6y114uGwiOUrJFyjjYYH1ggKyQyntD9jeKeHYbzXp05Ipz
+         4/qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXcURe4rAQm6HGEsu6MH1n4lasR3PHK5cf4TUBzqM227Lx2ylE0vtDfsEKkP+dsXXPwsnRBsww=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3W6BklqhwY2E9I0RuJIVAPg4MNdGX00fGZZJETYe9nO5QP+hh
+	3v1uMN/SeZWEkLEQBet6FqYrNMmDbA0cdTaaTWjQceYxRaLzDR+sUGMRUrdj+qfH+TLozDLegGM
+	aupc=
+X-Gm-Gg: ASbGncuvzrLwVBVB344bHVPjuGPv5jj9r1a01Pnm1+Ouiu1t151V0nQRz6coYrOdvRR
+	Izj/LjbM4owV2g+6FqeTYmRYd7+3LSPTVKgxIwlA6bIcTwqpQ9+v3Q3NdGQ8E6elCaQL5vM2H/k
+	75lmvUGDo8uHAcHnW3t1mUuc3JLB16WDh+7N/57ZZC02UflxcXKTX8BZFOzLaW83A3xhbXsu0r4
+	pd/hUPxl9RQwV2N41TOhOctpu8x3mqJ8gAc8bMBu8vFe2TEfCoDt9+Puk2kfb41aotzSMJCoIMe
+	6ziR2eV761JR6K/nVlnf4ne8coLBEwIioSKcx+3vjz54KQt5ypraNIE0ojG569E2ypIB3ov6DnO
+	05Sv5OW2979PVvFOOQ8qzfekPuWGnYGEKeMVuOyvnv1+7TFUEwg+2K+7dWUDaQejsvd08LcVuqo
+	BfeM5anpakE2nkxhs=
+X-Google-Smtp-Source: AGHT+IEXn4TQ02fu1uMkkFZdTXgxqxb8mfiHmn8c4hx03bTaKQ7HGTfKW2NtkQZ1wyy0UH2HyLy+iA==
+X-Received: by 2002:a05:620a:4513:b0:7e3:4104:f72c with SMTP id af79cd13be357-7e342b839d3mr31475285a.49.1752605663964;
+        Tue, 15 Jul 2025 11:54:23 -0700 (PDT)
+Received: from rowland.harvard.edu (nat-65-112-8-52.harvard-secure.wrls.harvard.edu. [65.112.8.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e3397f4e38sm106909685a.28.2025.07.15.11.54.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Jul 2025 11:54:23 -0700 (PDT)
+Date: Tue, 15 Jul 2025 14:54:20 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
+	linux-usb@vger.kernel.org, stable@vger.kernel.org,
+	=?utf-8?Q?=C5=81ukasz?= Bartosik <ukaszb@chromium.org>
+Subject: Re: [PATCH] usb: hub: Don't try to recover devices lost during warm
+ reset.
+Message-ID: <e14963bd-bf80-4b1d-b1a8-23207dd5b7ee@rowland.harvard.edu>
+References: <20250623133947.3144608-1-mathias.nyman@linux.intel.com>
+ <2025071527-vendor-rockfish-ef19@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250715-net-mptcp-sft-connect-alt-v2-2-8230ddd82454@kernel.org>
-References: <20250715-net-mptcp-sft-connect-alt-v2-0-8230ddd82454@kernel.org>
-In-Reply-To: <20250715-net-mptcp-sft-connect-alt-v2-0-8230ddd82454@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, Christoph Paasch <cpaasch@openai.com>, 
- Davide Caratti <dcaratti@redhat.com>
-Cc: Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2174; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=bYWiZR1eTZ8EGDhusWSCdTYKC+ZSADShQnvxVOLvoMM=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDLKFsa06FzyF8+Z5v3qu8br4ytDilJmH4zcse5i374gD
- u7oOKUjHaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABPp92RkmFG6jbXuZVf11sju
- b/FRIrkBc3cxX9rH1yvzumfhw7Xukgz/s1ff2SO5xDG6p2Lhtwwmh0K2jFlqnZdyvmo92vZ9l8E
- DbgA=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025071527-vendor-rockfish-ef19@gregkh>
 
-The checksum mode has been added a while ago, but it is only validated
-when manually launching mptcp_connect.sh with "-C".
+On Tue, Jul 15, 2025 at 07:48:50PM +0200, Greg KH wrote:
+> On Mon, Jun 23, 2025 at 04:39:47PM +0300, Mathias Nyman wrote:
+> > Hub driver warm-resets ports in SS.Inactive or Compliance mode to
+> > recover a possible connected device. The port reset code correctly
+> > detects if a connection is lost during reset, but hub driver
+> > port_event() fails to take this into account in some cases.
+> > port_event() ends up using stale values and assumes there is a
+> > connected device, and will try all means to recover it, including
+> > power-cycling the port.
+> > 
+> > Details:
+> > This case was triggered when xHC host was suspended with DbC (Debug
+> > Capability) enabled and connected. DbC turns one xHC port into a simple
+> > usb debug device, allowing debugging a system with an A-to-A USB debug
+> > cable.
+> > 
+> > xhci DbC code disables DbC when xHC is system suspended to D3, and
+> > enables it back during resume.
+> > We essentially end up with two hosts connected to each other during
+> > suspend, and, for a short while during resume, until DbC is enabled back.
+> > The suspended xHC host notices some activity on the roothub port, but
+> > can't train the link due to being suspended, so xHC hardware sets a CAS
+> > (Cold Attach Status) flag for this port to inform xhci host driver that
+> > the port needs to be warm reset once xHC resumes.
+> > 
+> > CAS is xHCI specific, and not part of USB specification, so xhci driver
+> > tells usb core that the port has a connection and link is in compliance
+> > mode. Recovery from complinace mode is similar to CAS recovery.
+> > 
+> > xhci CAS driver support that fakes a compliance mode connection was added
+> > in commit 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
+> > 
+> > Once xHCI resumes and DbC is enabled back, all activity on the xHC
+> > roothub host side port disappears. The hub driver will anyway think
+> > port has a connection and link is in compliance mode, and hub driver
+> > will try to recover it.
+> > 
+> > The port power-cycle during recovery seems to cause issues to the active
+> > DbC connection.
+> > 
+> > Fix this by clearing connect_change flag if hub_port_reset() returns
+> > -ENOTCONN, thus avoiding the whole unnecessary port recovery and
+> > initialization attempt.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
+> > Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+> > Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+> > ---
+> >  drivers/usb/core/hub.c | 8 ++++++--
+> >  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> Alan, any objection to this?
 
-The different CIs were then not validating these MPTCP Connect tests
-with checksum enabled. To make sure they do, add a new test program
-executing mptcp_connect.sh with the checksum mode.
+No objection, it looks okay to me.
 
-Fixes: 94d66ba1d8e4 ("selftests: mptcp: enable checksum in mptcp_connect.sh")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-Notes:
- - v2: force using a different prefix in the subtests to avoid having
-       the same test names in all mptcp_connect*.sh selftests.
----
- tools/testing/selftests/net/mptcp/Makefile                  | 2 +-
- tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
 
-diff --git a/tools/testing/selftests/net/mptcp/Makefile b/tools/testing/selftests/net/mptcp/Makefile
-index c6b030babba8cf888101d6af44f3e56fe5ab831b..4c7e51336ab25c662f02719f1632fa2d27d148f1 100644
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -5,7 +5,7 @@ top_srcdir = ../../../../..
- CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
- 
- TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
--	      pm_netlink.sh mptcp_join.sh diag.sh \
-+	      mptcp_connect_checksum.sh pm_netlink.sh mptcp_join.sh diag.sh \
- 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
- 
- TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq mptcp_diag
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh b/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
-new file mode 100755
-index 0000000000000000000000000000000000000000..ce93ec2f107fba2a699387188932a2680bc9ded7
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
-@@ -0,0 +1,5 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
-+	"$(dirname "${0}")/mptcp_connect.sh" -C "${@}"
+Alan Stern
 
--- 
-2.48.1
 
 
