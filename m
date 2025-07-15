@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-162900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A027DB06092
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:18:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C65F0B06038
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4D9C1C474E5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 590D55034CE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083162ECD2A;
-	Tue, 15 Jul 2025 13:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD822EF282;
+	Tue, 15 Jul 2025 13:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjgOpJEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAcpCFuj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD9E1531E8;
-	Tue, 15 Jul 2025 13:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDCA2EE99B;
+	Tue, 15 Jul 2025 13:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587769; cv=none; b=kL0pD5PPiCwnUUqRX0MiZjnyMMbsSMPxDzo0zzgrdPMiPSX+3u17nV9DXcXc8zQhOOUThP6wiVurFW7EUympe603NSIvGuw+mpYs866b/odVgTI5GrjdKt3On92Yd0BxWIbc0jNMHcRbcYFu/wj725PImFp8XE6DWj6Za/phRGs=
+	t=1752587799; cv=none; b=LG+oF+83f2j0t3SV5aVf7CUB90Lt3qdlFRZaAofr6y9D3EiFhgxxpd8u+2JaRGxR8r/3xRQQk/JeVhCUk9nsc81VEp9jti4dGt4T76L9Y88gq2ukUGOTgUrU8ZuIO1G1EhKuCowPBm9NmxDs2JWoglu1e9F3Xqcd+4iEF83Bako=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587769; c=relaxed/simple;
-	bh=gQZj7yo1QvvzJGGgESfCoo12k2x1wr5+gZCBl+gXa3g=;
+	s=arc-20240116; t=1752587799; c=relaxed/simple;
+	bh=ISvSzp7k6w1EHjImUGwkNcmxQT5unboit2ZlRb5lKXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYybxf474RYK/7X4nkVw1QFaM485xBVnwdsvhXPaK1Z9eK8mE2tUUG1iyh2hD4eIQ0oXk6JGV8RGN+rZ3KSZE8y3txH2G/EdGs0GU7On4RZdTevWigIw72v8bdpv+7FFUYDOXtKRICmMTKEExvhJKMx/YOpRVtIYUcKsBhuwOzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjgOpJEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB84C4CEE3;
-	Tue, 15 Jul 2025 13:56:09 +0000 (UTC)
+	 MIME-Version; b=tDjgXRAWDQ9863XDWZBj4u3aaBGpe5jvt94idWAUjP/UIy7o0uqpDAcGTPTnCUYx+Rg2BSPBGilDixo5HSl6Atg37lfcOEA7MZwtO1TxrDrLNluauzRNSf3bnnCDVmpbA9Gh4r2nd9+/l+T39lKt7sO/px5rsLlNgcXbxwtH0LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAcpCFuj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73053C4CEE3;
+	Tue, 15 Jul 2025 13:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587769;
-	bh=gQZj7yo1QvvzJGGgESfCoo12k2x1wr5+gZCBl+gXa3g=;
+	s=korg; t=1752587798;
+	bh=ISvSzp7k6w1EHjImUGwkNcmxQT5unboit2ZlRb5lKXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjgOpJEFMEzpiDxmW0G6h8nk85cjs4dugyi89iCSxPBSkHFShoMRWVAUmR7kqRDB3
-	 h/Yv5rD8iaEkSd8t5xOEGV+34XJosdaOCnEQC7aqF2/vfvNg+8b30g/bno0AE0V6ch
-	 aJ3Zhw3/tWoySPVCNxM2odac2OwZvdf7He7+o3zE=
+	b=gAcpCFujFjXYNefX6raAeqLpP0UHh3R3rKmyvsG1F0Zn0C/wvw3NhGfO286K2wl0e
+	 WXLerU6g9eU50IiEaOZ6yBoL72Xs9Mlq0sxynyQsh2u5kNDo02uwzL4LcryR5q5Nls
+	 qFJ7qMncFCDOPKl02erBP4PvsUACGT+Iq6bnVzig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Ricardo Ribalda <ribalda@chromium.org>,
 	Hans de Goede <hdegoede@redhat.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 129/208] media: uvcvideo: Return the number of processed controls
-Date: Tue, 15 Jul 2025 15:13:58 +0200
-Message-ID: <20250715130816.108222038@linuxfoundation.org>
+Subject: [PATCH 5.10 130/208] media: uvcvideo: Send control events for partial succeeds
+Date: Tue, 15 Jul 2025 15:13:59 +0200
+Message-ID: <20250715130816.147872967@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -70,70 +69,63 @@ Content-Transfer-Encoding: 8bit
 
 From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit ba4fafb02ad6a4eb2e00f861893b5db42ba54369 upstream.
+commit 5c791467aea6277430da5f089b9b6c2a9d8a4af7 upstream.
 
-If we let know our callers that we have not done anything, they will be
-able to optimize their decisions.
+Today, when we are applying a change to entities A, B. If A succeeds and B
+fails the events for A are not sent.
+
+This change changes the code so the events for A are send right after
+they happen.
 
 Cc: stable@kernel.org
 Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-1-de993ed9823b@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-2-de993ed9823b@chromium.org>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 --- a/drivers/media/usb/uvc/uvc_ctrl.c
 +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1560,11 +1560,16 @@ int uvc_ctrl_begin(struct uvc_video_chai
- 	return mutex_lock_interruptible(&chain->ctrl_mutex) ? -ERESTARTSYS : 0;
+@@ -1429,7 +1429,9 @@ static bool uvc_ctrl_xctrls_has_control(
  }
  
-+/*
-+ * Returns the number of uvc controls that have been correctly set, or a
-+ * negative number if there has been an error.
-+ */
- static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 				  struct uvc_fh *handle,
- 				  struct uvc_entity *entity,
- 				  int rollback)
+ static void uvc_ctrl_send_events(struct uvc_fh *handle,
+-	const struct v4l2_ext_control *xctrls, unsigned int xctrls_count)
++				 struct uvc_entity *entity,
++				 const struct v4l2_ext_control *xctrls,
++				 unsigned int xctrls_count)
  {
-+	unsigned int processed_ctrls = 0;
+ 	struct uvc_control_mapping *mapping;
  	struct uvc_control *ctrl;
- 	unsigned int i;
- 	int ret;
-@@ -1598,6 +1603,9 @@ static int uvc_ctrl_commit_entity(struct
- 		else
- 			ret = 0;
+@@ -1440,6 +1442,9 @@ static void uvc_ctrl_send_events(struct
+ 		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
  
-+		if (!ret)
-+			processed_ctrls++;
+ 		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
++		if (ctrl->entity != entity)
++			continue;
 +
- 		if (rollback || ret < 0)
- 			memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
- 			       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_BACKUP),
-@@ -1613,7 +1621,7 @@ static int uvc_ctrl_commit_entity(struct
- 			uvc_ctrl_set_handle(handle, ctrl, handle);
+ 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+ 			/* Notification will be sent from an Interrupt event. */
+ 			continue;
+@@ -1638,10 +1643,11 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ 					     rollback);
+ 		if (ret < 0)
+ 			goto done;
++		else if (ret > 0 && !rollback)
++			uvc_ctrl_send_events(handle, entity, xctrls,
++					     xctrls_count);
  	}
  
--	return 0;
-+	return processed_ctrls;
- }
- 
- int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
-@@ -1634,6 +1642,7 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 
- 	if (!rollback)
- 		uvc_ctrl_send_events(handle, xctrls, xctrls_count);
-+	ret = 0;
+-	if (!rollback)
+-		uvc_ctrl_send_events(handle, xctrls, xctrls_count);
+ 	ret = 0;
  done:
  	mutex_unlock(&chain->ctrl_mutex);
- 	return ret;
 
 
 
