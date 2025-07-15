@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057E1B05C5B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:30:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D2EB05DA2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AE5656707D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1D164A3979
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EA32E62A8;
-	Tue, 15 Jul 2025 13:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBF62EA481;
+	Tue, 15 Jul 2025 13:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAVzA/HV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGa2nlXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102E22E339B;
-	Tue, 15 Jul 2025 13:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED042EA482;
+	Tue, 15 Jul 2025 13:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585970; cv=none; b=OWgNhR5D3ELBto7BVhNgS+hlFk+nK/GSdfxHgl2oMKCCouoNgxYDaFJ2qj7dSDaggJJKoWeKNKJz8yPB2r7XNykcy3c9aqSoWK9dSR+Jb6D8BokBEmDKT0GC5Ixdewo0Rir3beh56aC/jZ74GxQOKE53cqm0kYu9A0TBrn7E4XA=
+	t=1752586422; cv=none; b=e8YgkqiPfFlHKC7we0dY2QE42prm4a+ASipCzEHXL+jpbqiZEHAWuJcPIWXTpojdVXc1kclKeNmBUavbUQ/jILRZU5o6AOa/fWIriokK2e+BRwJkpWH6yThISji1YzW7sgdEilhmE7kMqoxZYNmhbyix7e9s4QiokLHYxKza5Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585970; c=relaxed/simple;
-	bh=UMA/9yZhYnpyzgTpQkS8ini2DO+8dlyE0QAb9CRTgsg=;
+	s=arc-20240116; t=1752586422; c=relaxed/simple;
+	bh=YMBu3uPeEGxWDW4sdVt94CB5QMDmIWbi+y7aiy6wWHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tqOU/um+XwRBmMm3rzkxUh452gGiUpovyYXkGppWW1rb6JjVNb4BpCQ8a14f3+twlIU/iAmTI0/E1thVdvcjcEpv9XZcfEcemkLSf4noG+IO8bVEhPF6PqIuHBDT+WpJpq59VJl0UtBPbDh91cgNtwJU37qYg2v2qUxwP7NRK7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAVzA/HV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E39C4CEE3;
-	Tue, 15 Jul 2025 13:26:09 +0000 (UTC)
+	 MIME-Version; b=T7j2pynzzRSZ8CMgxJ7gY379cDGX95KWkdMFUerA3Os+ZVZCPF5G78WzARR0H0oY36Ncd3F8HbjwqmgJg23IDZdg0Uo2q+LLfDdC2thu7bQWlsEP3aJ84C88hVGEckPGPIFS/NIFu38ye6KMA+w9R9NUpCO0kmwIkRG9Hw3UJDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGa2nlXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493B4C4CEE3;
+	Tue, 15 Jul 2025 13:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585969;
-	bh=UMA/9yZhYnpyzgTpQkS8ini2DO+8dlyE0QAb9CRTgsg=;
+	s=korg; t=1752586422;
+	bh=YMBu3uPeEGxWDW4sdVt94CB5QMDmIWbi+y7aiy6wWHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAVzA/HVcxTEXP29r3o8i4YLehgF+vjcd2fUjUrHJu/hCC3/D8TKHj5JdAstQULvt
-	 fcF7iHSNDhqNlrigvE4iiEeWjx6kt4pdITR25/nLHL8sMBJiXD+URomwgMMDFjPfya
-	 ZsBMsikct4nKJpAw7yfXvCXT1own2Li92cNTid8I=
+	b=LGa2nlXRfH2acENHQjHaVLnLGF7ZtMlkecxwDFr6RxtObLaXQV/fhnMJsY9p1sYEb
+	 UBn8y4v3wRLIgMW4wKoEx6oG+eczXuWKeKhtQn935F5ilb8Q/b+co4rQLf/XuP5Lt4
+	 P46Yax5yZSsijxWzAniq1oik5Nd8JbTRo6OC+N9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH 6.6 045/109] drm/ttm: fix error handling in ttm_buffer_object_transfer
+	stable <stable@kernel.org>,
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.4 059/148] usb: typec: altmodes/displayport: do not index invalid pin_assignments
 Date: Tue, 15 Jul 2025 15:13:01 +0200
-Message-ID: <20250715130800.683558095@linuxfoundation.org>
+Message-ID: <20250715130802.692567856@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: RD Babiera <rdbabiera@google.com>
 
-commit 97e000acf2e20a86a50a0ec8c2739f0846f37509 upstream.
+commit af4db5a35a4ef7a68046883bfd12468007db38f1 upstream.
 
-Unlocking the resv object was missing in the error path, additionally to
-that we should move over the resource only after the fence slot was
-reserved.
+A poorly implemented DisplayPort Alt Mode port partner can indicate
+that its pin assignment capabilities are greater than the maximum
+value, DP_PIN_ASSIGN_F. In this case, calls to pin_assignment_show
+will cause a BRK exception due to an out of bounds array access.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Fixes: c8d4c18bfbc4a ("dma-buf/drivers: make reserving a shared slot mandatory v4")
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20250616130726.22863-3-christian.koenig@amd.com
+Prevent for loop in pin_assignment_show from accessing
+invalid values in pin_assignments by adding DP_PIN_ASSIGN_MAX
+value in typec_dp.h and using i < DP_PIN_ASSIGN_MAX as a loop
+condition.
+
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable <stable@kernel.org>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250618224943.3263103-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo_util.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c |    2 +-
+ include/linux/usb/typec_dp.h             |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/ttm/ttm_bo_util.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
-@@ -254,6 +254,13 @@ static int ttm_buffer_object_transfer(st
- 	ret = dma_resv_trylock(&fbo->base.base._resv);
- 	WARN_ON(!ret);
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -492,7 +492,7 @@ static ssize_t pin_assignment_show(struc
  
-+	ret = dma_resv_reserve_fences(&fbo->base.base._resv, 1);
-+	if (ret) {
-+		dma_resv_unlock(&fbo->base.base._resv);
-+		kfree(fbo);
-+		return ret;
-+	}
-+
- 	if (fbo->base.resource) {
- 		ttm_resource_set_bo(fbo->base.resource, &fbo->base);
- 		bo->resource = NULL;
-@@ -262,12 +269,6 @@ static int ttm_buffer_object_transfer(st
- 		fbo->base.bulk_move = NULL;
- 	}
+ 	assignments = get_current_pin_assignments(dp);
  
--	ret = dma_resv_reserve_fences(&fbo->base.base._resv, 1);
--	if (ret) {
--		kfree(fbo);
--		return ret;
--	}
--
- 	ttm_bo_get(bo);
- 	fbo->bo = bo;
+-	for (i = 0; assignments; assignments >>= 1, i++) {
++	for (i = 0; assignments && i < DP_PIN_ASSIGN_MAX; assignments >>= 1, i++) {
+ 		if (assignments & 1) {
+ 			if (i == cur)
+ 				len += sprintf(buf + len, "[%s] ",
+--- a/include/linux/usb/typec_dp.h
++++ b/include/linux/usb/typec_dp.h
+@@ -56,6 +56,7 @@ enum {
+ 	DP_PIN_ASSIGN_D,
+ 	DP_PIN_ASSIGN_E,
+ 	DP_PIN_ASSIGN_F, /* Not supported after v1.0b */
++	DP_PIN_ASSIGN_MAX,
+ };
  
+ /* DisplayPort alt mode specific commands */
 
 
 
