@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-162541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C5EB05E50
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:52:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6076B05B9E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAF0B166CA3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E628E7B25E4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C63B2E7F1D;
-	Tue, 15 Jul 2025 13:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B0E2E3364;
+	Tue, 15 Jul 2025 13:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzXLJac5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TljsDrx7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087B52E498B;
-	Tue, 15 Jul 2025 13:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B5F2E3363;
+	Tue, 15 Jul 2025 13:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586828; cv=none; b=igzPpQoQ69QIfo+8agHWL82GTGXsecSMNpF5+uPy6JEBGv8v9TmPK4wznCw5WPeODFZyxQE/JxwaalcdgoL5Yr8lM8a1vkG5MlP7D5mSqVRIrQFXmvwGhT/cf91wLGhRUpD7OuC+LTY7oOb05PYzeGh0orOkX9jhBnwcn0V2QXg=
+	t=1752585654; cv=none; b=DmrZt9eiJf/eQAGGY7SSMVvvHHyYGR7CEMNktzKQGGIhPcausjGbPIXY8aPyD/AUQxXAckygOXUfnijbru/A0QZH6Woqa4IC+9G2q1SuywV9jMB4M3A8E4ln28kmkoQ7g6E7uNblMrq7K5eahPm9+IYmvhQDkcfBG1KfBLYZlTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586828; c=relaxed/simple;
-	bh=tD4LltkqDTNVSY6q8zyN9QNGZQSnNjBjEJtHVuxbmZw=;
+	s=arc-20240116; t=1752585654; c=relaxed/simple;
+	bh=8RuLXYaAAteM2bBkrn6UeMoHi3uKBDJA/0ZdlnT1Tsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5IQ7+5jutb4+CAa3oezdRiOjZY9cFt4olssCdcNhJzBRmF0JxGiuOOqPb8sE3wrDZBnEyJEOLn0/NnDYQLA0Bx4dFMRDniZS2WAEvd+E5lbyPvYF3S8CCPwbPjULl5UrxO22FQWpNnxWVh+AH4h7JD3MpyPjEcThW6xq1kGFSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzXLJac5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91117C4CEE3;
-	Tue, 15 Jul 2025 13:40:27 +0000 (UTC)
+	 MIME-Version; b=ZkrvAFdgNFHrqnFFco3JvuX41MsffGh5HfKG4np4g5NkImW1YKC4k2SAZcv21Pt1lUjEKFiICunKLr9kdGA5Elj77SmCLQ5oL+vt/DrSS8QXUGDgtv7sLjV8I5ENO1l/8DGOEJ3jfyg2p1Ty3Jua6/sJg0DPZyxAf1Q9attBMMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TljsDrx7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFC3C4CEE3;
+	Tue, 15 Jul 2025 13:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586827;
-	bh=tD4LltkqDTNVSY6q8zyN9QNGZQSnNjBjEJtHVuxbmZw=;
+	s=korg; t=1752585654;
+	bh=8RuLXYaAAteM2bBkrn6UeMoHi3uKBDJA/0ZdlnT1Tsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzXLJac55u5lkaGlsYlj5j9fjpwiDSSiK2+Cu1yCZ5Sw+T4FmTdtkkN3whqiB0Dgx
-	 H0oyK6VOIyTepKG8wxc5qqirg29Q6mAa8lnIwjrq39o6J7dnhtvXYb4qg6kjW6VY+5
-	 wtfeXng1DAWPKmbYZWIL4hHFRxifmGD4qyImyCoo=
+	b=TljsDrx7nJJRgmWQhvqnJ6HsAqPN1QlKJ3uIMLLggH5sgSYrpPstMIfce3GGYTSo0
+	 Oi/Lkt2JElAt7MhnTNBGLXobhw9v5v8psebo7YnTfSfVdZHbDUeoSu+fyoLHqi8OcE
+	 JkSNIDTVdFm3QkNTXqfbJvgmRb4YYwpBZ27S6qBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yury Khrustalev <yury.khrustalev@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.15 064/192] arm64: Filter out SME hwcaps when FEAT_SME isnt implemented
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 091/163] scripts/gdb: fix interrupts.py after maple tree conversion
 Date: Tue, 15 Jul 2025 15:12:39 +0200
-Message-ID: <20250715130817.508353416@linuxfoundation.org>
+Message-ID: <20250715130812.525115103@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +65,394 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit a75ad2fc76a2ab70817c7eed3163b66ea84ca6ac upstream.
+commit a02b0cde8ee515ee0c8efd33e7fbe6830c282e69 upstream.
 
-We have a number of hwcaps for various SME subfeatures enumerated via
-ID_AA64SMFR0_EL1. Currently we advertise these without cross checking
-against the main SME feature, advertised in ID_AA64PFR1_EL1.SME which
-means that if the two are out of sync userspace can see a confusing
-situation where SME subfeatures are advertised without the base SME
-hwcap. This can be readily triggered by using the arm64.nosme override
-which only masks out ID_AA64PFR1_EL1.SME, and there have also been
-reports of VMMs which do the same thing.
+In commit 721255b9826b ("genirq: Use a maple tree for interrupt descriptor
+management"), the irq_desc_tree was replaced with a sparse_irqs tree using
+a maple tree structure.  Since the script looked for the irq_desc_tree
+symbol which is no longer available, no interrupts would be printed and
+the script output would not be useful anymore.
 
-Fix this as we did previously for SVE in 064737920bdb ("arm64: Filter
-out SVE hwcaps when FEAT_SVE isn't implemented") by filtering out the
-SME subfeature hwcaps when FEAT_SME is not present.
+In addition to looking up the correct symbol (sparse_irqs), a new module
+(mapletree.py) is added whose mtree_load() implementation is largely
+copied after the C version and uses the same variable and intermediate
+function names wherever possible to ensure that both the C and Python
+version be updated in the future.
 
-Fixes: 5e64b862c482 ("arm64/sme: Basic enumeration support")
-Reported-by: Yury Khrustalev <yury.khrustalev@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250620-arm64-sme-filter-hwcaps-v1-1-02b9d3c2d8ef@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+This restores the scripts' output to match that of /proc/interrupts.
+
+Link: https://lkml.kernel.org/r/20250625021020.1056930-1-florian.fainelli@broadcom.com
+Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Shanker Donthineni <sdonthineni@nvidia.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/cpufeature.c |   57 +++++++++++++++++++++++------------------
- 1 file changed, 32 insertions(+), 25 deletions(-)
+ scripts/gdb/linux/constants.py.in |    7 +
+ scripts/gdb/linux/interrupts.py   |   12 -
+ scripts/gdb/linux/mapletree.py    |  252 ++++++++++++++++++++++++++++++++++++++
+ scripts/gdb/linux/xarray.py       |   28 ++++
+ 4 files changed, 293 insertions(+), 6 deletions(-)
+ create mode 100644 scripts/gdb/linux/mapletree.py
+ create mode 100644 scripts/gdb/linux/xarray.py
 
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -3122,6 +3122,13 @@ static bool has_sve_feature(const struct
- }
- #endif
+--- a/scripts/gdb/linux/constants.py.in
++++ b/scripts/gdb/linux/constants.py.in
+@@ -20,6 +20,7 @@
+ #include <linux/of_fdt.h>
+ #include <linux/page_ext.h>
+ #include <linux/radix-tree.h>
++#include <linux/maple_tree.h>
+ #include <linux/slab.h>
+ #include <linux/threads.h>
+ #include <linux/vmalloc.h>
+@@ -93,6 +94,12 @@ LX_GDBPARSED(RADIX_TREE_MAP_SIZE)
+ LX_GDBPARSED(RADIX_TREE_MAP_SHIFT)
+ LX_GDBPARSED(RADIX_TREE_MAP_MASK)
  
-+#ifdef CONFIG_ARM64_SME
-+static bool has_sme_feature(const struct arm64_cpu_capabilities *cap, int scope)
-+{
-+	return system_supports_sme() && has_user_cpuid_feature(cap, scope);
-+}
-+#endif
++/* linux/maple_tree.h */
++LX_VALUE(MAPLE_NODE_SLOTS)
++LX_VALUE(MAPLE_RANGE64_SLOTS)
++LX_VALUE(MAPLE_ARANGE64_SLOTS)
++LX_GDBPARSED(MAPLE_NODE_MASK)
 +
- static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
-@@ -3210,31 +3217,31 @@ static const struct arm64_cpu_capabiliti
- 	HWCAP_CAP(ID_AA64ISAR2_EL1, BC, IMP, CAP_HWCAP, KERNEL_HWCAP_HBC),
- #ifdef CONFIG_ARM64_SME
- 	HWCAP_CAP(ID_AA64PFR1_EL1, SME, IMP, CAP_HWCAP, KERNEL_HWCAP_SME),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, FA64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_FA64),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, LUTv2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_LUTV2),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SMEver, SME2p2, CAP_HWCAP, KERNEL_HWCAP_SME2P2),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SMEver, SME2p1, CAP_HWCAP, KERNEL_HWCAP_SME2P1),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SMEver, SME2, CAP_HWCAP, KERNEL_HWCAP_SME2),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, I16I64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I64),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F64F64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F64F64),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, I16I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16B16),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F16F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F16),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F8F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F16),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F8F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, I8I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I8I32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, B16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16F32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, BI32I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_BI32I32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F32F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F32F32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SF8FMA, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8FMA),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SF8DP4, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP4),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SF8DP2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP2),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SBitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SBITPERM),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_AES),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SFEXPA, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SFEXPA),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, STMOP, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_STMOP),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SMOP4, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SMOP4),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, FA64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_FA64),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, LUTv2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_LUTV2),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMEver, SME2p2, CAP_HWCAP, KERNEL_HWCAP_SME2P2),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMEver, SME2p1, CAP_HWCAP, KERNEL_HWCAP_SME2P1),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMEver, SME2, CAP_HWCAP, KERNEL_HWCAP_SME2),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I16I64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I64),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F64F64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F64F64),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I16I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16B16),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F16F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F16),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F8F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F16),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F8F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I8I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I8I32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, B16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16F32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, BI32I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_BI32I32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F32F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F32F32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SF8FMA, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8FMA),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SF8DP4, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP4),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SF8DP2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP2),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SBitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SBITPERM),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_AES),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SFEXPA, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SFEXPA),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, STMOP, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_STMOP),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMOP4, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SMOP4),
- #endif /* CONFIG_ARM64_SME */
- 	HWCAP_CAP(ID_AA64FPFR0_EL1, F8CVT, IMP, CAP_HWCAP, KERNEL_HWCAP_F8CVT),
- 	HWCAP_CAP(ID_AA64FPFR0_EL1, F8FMA, IMP, CAP_HWCAP, KERNEL_HWCAP_F8FMA),
+ /* linux/vmalloc.h */
+ LX_VALUE(VM_IOREMAP)
+ LX_VALUE(VM_ALLOC)
+--- a/scripts/gdb/linux/interrupts.py
++++ b/scripts/gdb/linux/interrupts.py
+@@ -7,7 +7,7 @@ import gdb
+ from linux import constants
+ from linux import cpus
+ from linux import utils
+-from linux import radixtree
++from linux import mapletree
+ 
+ irq_desc_type = utils.CachedType("struct irq_desc")
+ 
+@@ -23,12 +23,12 @@ def irqd_is_level(desc):
+ def show_irq_desc(prec, irq):
+     text = ""
+ 
+-    desc = radixtree.lookup(gdb.parse_and_eval("&irq_desc_tree"), irq)
++    desc = mapletree.mtree_load(gdb.parse_and_eval("&sparse_irqs"), irq)
+     if desc is None:
+         return text
+ 
+-    desc = desc.cast(irq_desc_type.get_type())
+-    if desc is None:
++    desc = desc.cast(irq_desc_type.get_type().pointer())
++    if desc == 0:
+         return text
+ 
+     if irq_settings_is_hidden(desc):
+@@ -221,8 +221,8 @@ class LxInterruptList(gdb.Command):
+             gdb.write("CPU%-8d" % cpu)
+         gdb.write("\n")
+ 
+-        if utils.gdb_eval_or_none("&irq_desc_tree") is None:
+-            return
++        if utils.gdb_eval_or_none("&sparse_irqs") is None:
++            raise gdb.GdbError("Unable to find the sparse IRQ tree, is CONFIG_SPARSE_IRQ enabled?")
+ 
+         for irq in range(nr_irqs):
+             gdb.write(show_irq_desc(prec, irq))
+--- /dev/null
++++ b/scripts/gdb/linux/mapletree.py
+@@ -0,0 +1,252 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++#  Maple tree helpers
++#
++# Copyright (c) 2025 Broadcom
++#
++# Authors:
++#  Florian Fainelli <florian.fainelli@broadcom.com>
++
++import gdb
++
++from linux import utils
++from linux import constants
++from linux import xarray
++
++maple_tree_root_type = utils.CachedType("struct maple_tree")
++maple_node_type = utils.CachedType("struct maple_node")
++maple_enode_type = utils.CachedType("void")
++
++maple_dense = 0
++maple_leaf_64 = 1
++maple_range_64 = 2
++maple_arange_64 = 3
++
++class Mas(object):
++    ma_active = 0
++    ma_start = 1
++    ma_root = 2
++    ma_none = 3
++    ma_pause = 4
++    ma_overflow = 5
++    ma_underflow = 6
++    ma_error = 7
++
++    def __init__(self, mt, first, end):
++        if mt.type == maple_tree_root_type.get_type().pointer():
++            self.tree = mt.dereference()
++        elif mt.type != maple_tree_root_type.get_type():
++            raise gdb.GdbError("must be {} not {}"
++                               .format(maple_tree_root_type.get_type().pointer(), mt.type))
++        self.tree = mt
++        self.index = first
++        self.last = end
++        self.node = None
++        self.status = self.ma_start
++        self.min = 0
++        self.max = -1
++
++    def is_start(self):
++        # mas_is_start()
++        return self.status == self.ma_start
++
++    def is_ptr(self):
++        # mas_is_ptr()
++        return self.status == self.ma_root
++
++    def is_none(self):
++        # mas_is_none()
++        return self.status == self.ma_none
++
++    def root(self):
++        # mas_root()
++        return self.tree['ma_root'].cast(maple_enode_type.get_type().pointer())
++
++    def start(self):
++        # mas_start()
++        if self.is_start() is False:
++            return None
++
++        self.min = 0
++        self.max = ~0
++
++        while True:
++            self.depth = 0
++            root = self.root()
++            if xarray.xa_is_node(root):
++                self.depth = 0
++                self.status = self.ma_active
++                self.node = mte_safe_root(root)
++                self.offset = 0
++                if mte_dead_node(self.node) is True:
++                    continue
++
++                return None
++
++            self.node = None
++            # Empty tree
++            if root is None:
++                self.status = self.ma_none
++                self.offset = constants.LX_MAPLE_NODE_SLOTS
++                return None
++
++            # Single entry tree
++            self.status = self.ma_root
++            self.offset = constants.LX_MAPLE_NODE_SLOTS
++
++            if self.index != 0:
++                return None
++
++            return root
++
++        return None
++
++    def reset(self):
++        # mas_reset()
++        self.status = self.ma_start
++        self.node = None
++
++def mte_safe_root(node):
++    if node.type != maple_enode_type.get_type().pointer():
++        raise gdb.GdbError("{} must be {} not {}"
++                           .format(mte_safe_root.__name__, maple_enode_type.get_type().pointer(), node.type))
++    ulong_type = utils.get_ulong_type()
++    indirect_ptr = node.cast(ulong_type) & ~0x2
++    val = indirect_ptr.cast(maple_enode_type.get_type().pointer())
++    return val
++
++def mte_node_type(entry):
++    ulong_type = utils.get_ulong_type()
++    val = None
++    if entry.type == maple_enode_type.get_type().pointer():
++        val = entry.cast(ulong_type)
++    elif entry.type == ulong_type:
++        val = entry
++    else:
++        raise gdb.GdbError("{} must be {} not {}"
++                           .format(mte_node_type.__name__, maple_enode_type.get_type().pointer(), entry.type))
++    return (val >> 0x3) & 0xf
++
++def ma_dead_node(node):
++    if node.type != maple_node_type.get_type().pointer():
++        raise gdb.GdbError("{} must be {} not {}"
++                           .format(ma_dead_node.__name__, maple_node_type.get_type().pointer(), node.type))
++    ulong_type = utils.get_ulong_type()
++    parent = node['parent']
++    indirect_ptr = node['parent'].cast(ulong_type) & ~constants.LX_MAPLE_NODE_MASK
++    return indirect_ptr == node
++
++def mte_to_node(enode):
++    ulong_type = utils.get_ulong_type()
++    if enode.type == maple_enode_type.get_type().pointer():
++        indirect_ptr = enode.cast(ulong_type)
++    elif enode.type == ulong_type:
++        indirect_ptr = enode
++    else:
++        raise gdb.GdbError("{} must be {} not {}"
++                           .format(mte_to_node.__name__, maple_enode_type.get_type().pointer(), enode.type))
++    indirect_ptr = indirect_ptr & ~constants.LX_MAPLE_NODE_MASK
++    return indirect_ptr.cast(maple_node_type.get_type().pointer())
++
++def mte_dead_node(enode):
++    if enode.type != maple_enode_type.get_type().pointer():
++        raise gdb.GdbError("{} must be {} not {}"
++                           .format(mte_dead_node.__name__, maple_enode_type.get_type().pointer(), enode.type))
++    node = mte_to_node(enode)
++    return ma_dead_node(node)
++
++def ma_is_leaf(tp):
++    result = tp < maple_range_64
++    return tp < maple_range_64
++
++def mt_pivots(t):
++    if t == maple_dense:
++        return 0
++    elif t == maple_leaf_64 or t == maple_range_64:
++        return constants.LX_MAPLE_RANGE64_SLOTS - 1
++    elif t == maple_arange_64:
++        return constants.LX_MAPLE_ARANGE64_SLOTS - 1
++
++def ma_pivots(node, t):
++    if node.type != maple_node_type.get_type().pointer():
++        raise gdb.GdbError("{}: must be {} not {}"
++                           .format(ma_pivots.__name__, maple_node_type.get_type().pointer(), node.type))
++    if t == maple_arange_64:
++        return node['ma64']['pivot']
++    elif t == maple_leaf_64 or t == maple_range_64:
++        return node['mr64']['pivot']
++    else:
++        return None
++
++def ma_slots(node, tp):
++    if node.type != maple_node_type.get_type().pointer():
++        raise gdb.GdbError("{}: must be {} not {}"
++                           .format(ma_slots.__name__, maple_node_type.get_type().pointer(), node.type))
++    if tp == maple_arange_64:
++        return node['ma64']['slot']
++    elif tp == maple_range_64 or tp == maple_leaf_64:
++        return node['mr64']['slot']
++    elif tp == maple_dense:
++        return node['slot']
++    else:
++        return None
++
++def mt_slot(mt, slots, offset):
++    ulong_type = utils.get_ulong_type()
++    return slots[offset].cast(ulong_type)
++
++def mtree_lookup_walk(mas):
++    ulong_type = utils.get_ulong_type()
++    n = mas.node
++
++    while True:
++        node = mte_to_node(n)
++        tp = mte_node_type(n)
++        pivots = ma_pivots(node, tp)
++        end = mt_pivots(tp)
++        offset = 0
++        while True:
++            if pivots[offset] >= mas.index:
++                break
++            if offset >= end:
++                break
++            offset += 1
++
++        slots = ma_slots(node, tp)
++        n = mt_slot(mas.tree, slots, offset)
++        if ma_dead_node(node) is True:
++            mas.reset()
++            return None
++            break
++
++        if ma_is_leaf(tp) is True:
++            break
++
++    return n
++
++def mtree_load(mt, index):
++    ulong_type = utils.get_ulong_type()
++    # MT_STATE(...)
++    mas = Mas(mt, index, index)
++    entry = None
++
++    while True:
++        entry = mas.start()
++        if mas.is_none():
++            return None
++
++        if mas.is_ptr():
++            if index != 0:
++                entry = None
++            return entry
++
++        entry = mtree_lookup_walk(mas)
++        if entry is None and mas.is_start():
++            continue
++        else:
++            break
++
++    if xarray.xa_is_zero(entry):
++        return None
++
++    return entry
+--- /dev/null
++++ b/scripts/gdb/linux/xarray.py
+@@ -0,0 +1,28 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++#  Xarray helpers
++#
++# Copyright (c) 2025 Broadcom
++#
++# Authors:
++#  Florian Fainelli <florian.fainelli@broadcom.com>
++
++import gdb
++
++from linux import utils
++from linux import constants
++
++def xa_is_internal(entry):
++    ulong_type = utils.get_ulong_type()
++    return ((entry.cast(ulong_type) & 3) == 2)
++
++def xa_mk_internal(v):
++    return ((v << 2) | 2)
++
++def xa_is_zero(entry):
++    ulong_type = utils.get_ulong_type()
++    return entry.cast(ulong_type) == xa_mk_internal(257)
++
++def xa_is_node(entry):
++    ulong_type = utils.get_ulong_type()
++    return xa_is_internal(entry) and (entry.cast(ulong_type) > 4096)
 
 
 
