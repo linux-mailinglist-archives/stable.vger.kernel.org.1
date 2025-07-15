@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-162769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52100B05FD6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:10:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6440BB05F96
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 300404A1850
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FC21500378
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6258F2E6D15;
-	Tue, 15 Jul 2025 13:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D7E2E611D;
+	Tue, 15 Jul 2025 13:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ns2/IYa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgDLbWr9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200FC2E6D0E;
-	Tue, 15 Jul 2025 13:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333FF2E3AE1;
+	Tue, 15 Jul 2025 13:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587429; cv=none; b=WxjME6ceUvV0PMliq1VTGob53LqhBjj4t+HV78sBKCaBkog9fIqTweOOtvrhJdU8WvarKVjXKyyCjOdVx/VBdrLNS+3Ssi8uCPOutTFwl57TWoXRLl7BB5eLefFW06/Wlo8cKYR9ZVv1LKkMGlBoRZxYMgI24hjvu3gt39wwezg=
+	t=1752587458; cv=none; b=SrtAndy77oSUPx24YfXkD8150crPJvHB10hbWmfHaD31/aJvu2EmBMCIHo3wksXuF9AHvTpqZUsvMGh7d8wSIAucxpNUB35J3Da4LGS6g7SsGtVvGFn+uUhQVR02/AU3rCzeVFKuLdcNpKgk2VURHnqa9sR4NCbr6bykAF2+J2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587429; c=relaxed/simple;
-	bh=/acimN+XRsKyvXcu0M04DznstB79oBxSe8t5b30COPY=;
+	s=arc-20240116; t=1752587458; c=relaxed/simple;
+	bh=YER0xUEPTE5LGhvK+AAcZd2ugifezz6EMBcpMRKXuig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vrp6P4HEclSwmGteIfE1W9o68geyj0OtoBh8+ew6Lvg0dFbOjmBG0KUg87UztJ6/nshHAysxa9HC0nxAqe8BU9hbd7dDjgr5/nq2ED030S4kksnqHL3oFdtUNT68SQuA5wR8+0kam1+UJqzv1kpuH6yfnfJk0zxL2H+28aZVQuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ns2/IYa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1F5C4CEE3;
-	Tue, 15 Jul 2025 13:50:28 +0000 (UTC)
+	 MIME-Version; b=pHaZMdbp77T60SYe/Zq4E5V4FuJLd0mCIos27wR6h3N0wt3qzVfUUO3ytCJ82t6rnsqIh6ZOVK6x8wfV9b+/1lqO42jmKk/cOakPMQVRtBav/ifeXhxwzBwb0qfJaSqXAIu5W6Xcl/Yh46T6goqjH6F+8EDYg+JqfaFche5tCA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgDLbWr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA172C4CEE3;
+	Tue, 15 Jul 2025 13:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587429;
-	bh=/acimN+XRsKyvXcu0M04DznstB79oBxSe8t5b30COPY=;
+	s=korg; t=1752587458;
+	bh=YER0xUEPTE5LGhvK+AAcZd2ugifezz6EMBcpMRKXuig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Ns2/IYacCDjmL1fCu2lWVksejRcstBfw7xgJ6cKxHRqsJh7D9rRa/tu7N52mcIIh
-	 qC6UxnzubJOHsXMCIJ7asYuUgzKy6C9Mo0ln5/owGSoXtJ63gC5aezmXIAcJMUidLK
-	 p90g03RcA/hBDnDzvuDs6Hf7o/AgfVNqLdR8zJBQ=
+	b=dgDLbWr9tzoacAaAKzjekzrUgaWw8PqD6Yk/4+88Ir6VwvgLWRBh9gsqSgFdU1AZ9
+	 4n+vIIVFBHSWS0TqawHnxqytn0CaA60kLYTF02vYAuyfpmycYHUc7W8vmsXVFHqev7
+	 5fK2LzjilcfAsAaCC2SMxFk0lPrCm4XPTp3SI30Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 001/208] cifs: Fix cifs_query_path_info() for Windows NT servers
-Date: Tue, 15 Jul 2025 15:11:50 +0200
-Message-ID: <20250715130810.893945345@linuxfoundation.org>
+Subject: [PATCH 5.10 002/208] NFSv4.2: fix listxattr to return selinux security label
+Date: Tue, 15 Jul 2025 15:11:51 +0200
+Message-ID: <20250715130810.932383721@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -60,57 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit a3e771afbb3bce91c8296828304903e7348003fe ]
+[ Upstream commit 243fea134633ba3d64aceb4c16129c59541ea2c6 ]
 
-For TRANS2 QUERY_PATH_INFO request when the path does not exist, the
-Windows NT SMB server returns error response STATUS_OBJECT_NAME_NOT_FOUND
-or ERRDOS/ERRbadfile without the SMBFLG_RESPONSE flag set. Similarly it
-returns STATUS_DELETE_PENDING when the file is being deleted. And looks
-like that any error response from TRANS2 QUERY_PATH_INFO does not have
-SMBFLG_RESPONSE flag set.
+Currently, when NFS is queried for all the labels present on the
+file via a command example "getfattr -d -m . /mnt/testfile", it
+does not return the security label. Yet when asked specifically for
+the label (getfattr -n security.selinux) it will be returned.
+Include the security label when all attributes are queried.
 
-So relax check in check_smb_hdr() for detecting if the packet is response
-for this special case.
-
-This change fixes stat() operation against Windows NT SMB servers and also
-all operations which depends on -ENOENT result from stat like creat() or
-mkdir().
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/misc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/nfs/nfs4proc.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/fs/cifs/misc.c b/fs/cifs/misc.c
-index 2d46018b02839..54c443686daba 100644
---- a/fs/cifs/misc.c
-+++ b/fs/cifs/misc.c
-@@ -310,6 +310,14 @@ check_smb_hdr(struct smb_hdr *smb)
- 	if (smb->Command == SMB_COM_LOCKING_ANDX)
- 		return 0;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 1005ecf7c250b..77cc1c4219e15 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -10378,7 +10378,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
  
-+	/*
-+	 * Windows NT server returns error resposne (e.g. STATUS_DELETE_PENDING
-+	 * or STATUS_OBJECT_NAME_NOT_FOUND or ERRDOS/ERRbadfile or any other)
-+	 * for some TRANS2 requests without the RESPONSE flag set in header.
-+	 */
-+	if (smb->Command == SMB_COM_TRANSACTION2 && smb->Status.CifsError != 0)
-+		return 0;
+ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ {
+-	ssize_t error, error2, error3;
++	ssize_t error, error2, error3, error4;
+ 	size_t left = size;
+ 
+ 	error = generic_listxattr(dentry, list, left);
+@@ -10401,8 +10401,16 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ 	error3 = nfs4_listxattr_nfs4_user(d_inode(dentry), list, left);
+ 	if (error3 < 0)
+ 		return error3;
++	if (list) {
++		list += error3;
++		left -= error3;
++	}
 +
- 	cifs_dbg(VFS, "Server sent request, not response. mid=%u\n",
- 		 get_mid(smb));
- 	return 1;
++	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
++	if (error4 < 0)
++		return error4;
+ 
+-	error += error2 + error3;
++	error += error2 + error3 + error4;
+ 	if (size && error > size)
+ 		return -ERANGE;
+ 	return error;
 -- 
 2.39.5
 
