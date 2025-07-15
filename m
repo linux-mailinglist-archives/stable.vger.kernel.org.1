@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AB5B05CBA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CFEB05E93
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E8007BE90E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:33:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB575168227
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0210C2E611A;
-	Tue, 15 Jul 2025 13:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62612E6D06;
+	Tue, 15 Jul 2025 13:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVGAFZ5Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFPyD11v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B372E5B09;
-	Tue, 15 Jul 2025 13:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657A72E62CF;
+	Tue, 15 Jul 2025 13:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586155; cv=none; b=SlGf/b/Lkej3FTiqcxqYBKnLeBIRH8E3WfElBf85gP0GKyqsxmVm/97lvmWNvlczou95E6Zo6HOd20MbCU4hl4h3eodoikjozhdsEdsY30hCv6tyfU3G2E9D8IUopdyYmVSlMMFkM2VEKGNJAvd1/OIxtRbLtAzoprka/MhxW0Y=
+	t=1752586989; cv=none; b=BbLazTawVEISug5RTBtneDUGGa2a3PZ3e++xafAWcREEaaE81FO1nFd3yd8HA50la/hAqfgFl7t1v7j/WzkZGVcwkv3ypF5x11P1pvdVOKHrCa2zdvTnSvEbiBMf7XDBxHAo86SmBQWL/hLSH8gsNK6KIxckf+CfLOOyfjnv72c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586155; c=relaxed/simple;
-	bh=QzKfpBFr0uHVAV9wYwRW4lUXsOsaVy1o0Pe8Dp+p4dI=;
+	s=arc-20240116; t=1752586989; c=relaxed/simple;
+	bh=JuFwPF0QMloIugKrWB5SDJBG7sFIIpd/RtFSQBrE0cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLVHwSomW3ch3aHR65iA4vxOMnu+qAUTPHG0SQe12q4SZiD0DaSNy9wZWl3IJvXHYQ4zmyyWIDhDrmejtfHcKmDc3nqiBjE1a8YjTHcXkIVFt/zFn+UhsHbE4p/o/dh1q7290l+NuFaLJ080MzCQjsk0crt+UNNv5uemUZavZAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVGAFZ5Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3FBC4CEF6;
-	Tue, 15 Jul 2025 13:29:14 +0000 (UTC)
+	 MIME-Version; b=M4Vf2J2NEKS7TRTWNhxOB4aaTo6eH7Z6OwudkXKd4EWs1LSLfnMQmlbriMJyxf9ZJelyVLXpI71+k3Pc31kRBbGo6mk857UAo1F8T1UlZrESrxm3GpTe1pjCj169NZTX0/NVi0SeuBHlqUGCCGldx5AZtc7lm0jrbMz+aYUT+as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFPyD11v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF28CC4CEE3;
+	Tue, 15 Jul 2025 13:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586155;
-	bh=QzKfpBFr0uHVAV9wYwRW4lUXsOsaVy1o0Pe8Dp+p4dI=;
+	s=korg; t=1752586989;
+	bh=JuFwPF0QMloIugKrWB5SDJBG7sFIIpd/RtFSQBrE0cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lVGAFZ5Q4H9Q9QokQWq5K7uym1tXELRSHyNjGEt8gV1/VARekdVBoAdbzx+/19OMR
-	 bYv9XdTKOGTvE20faeNB2OAUeVLMmLvJwywycH+AJTmoA//oCOmUSogyVAiDLFSOP4
-	 1J0Ay/N2kpx8yDFaPT4YFZ8TjptR3eiQeBmqlRCE=
+	b=wFPyD11vtaB8Zq4iP8rhZc4Kwg5sCZBBSw1/giihydek9jS6CC7OURzXUXjMI7ZdC
+	 Re2hu835jz6VwCw+yrDxVGgekRHhZ6H7/wWwPNkDozVus0O58dfiQnddhj/O7cH9n1
+	 xvwloY4VeQFNrlDCuYZUcNpyNxgpv4/geayvrsZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/77] vsock: Fix IOCTL_VM_SOCKETS_GET_LOCAL_CID to check also `transport_local`
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Prashanth K <prashanth.k@oss.qualcomm.com>
+Subject: [PATCH 6.15 093/192] Revert "usb: gadget: u_serial: Add null pointer check in gs_start_io"
 Date: Tue, 15 Jul 2025 15:13:08 +0200
-Message-ID: <20250715130752.060288544@linuxfoundation.org>
+Message-ID: <20250715130818.636519643@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 1e7d9df379a04ccd0c2f82f39fbb69d482e864cc ]
+commit f6c7bc4a6823a0a959f40866a1efe99bd03c2c5b upstream.
 
-Support returning VMADDR_CID_LOCAL in case no other vsock transport is
-available.
+This reverts commit ffd603f214237e250271162a5b325c6199a65382.
 
-Fixes: 0e12190578d0 ("vsock: add local transport support in the vsock core")
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-3-98f0eb530747@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in
+gs_start_io") adds null pointer checks at the beginning of the
+gs_start_io() function to prevent a null pointer dereference. However,
+these checks are redundant because the function's comment already
+requires callers to hold the port_lock and ensure port.tty and port_usb
+are not null. All existing callers already follow these rules.
+
+The true cause of the null pointer dereference is a race condition. When
+gs_start_io() calls either gs_start_rx() or gs_start_tx(), the port_lock
+is temporarily released for usb_ep_queue(). This allows port.tty and
+port_usb to be cleared.
+
+Fixes: ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in gs_start_io")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250617050844.1848232-1-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/function/u_serial.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index f2caef4cda67d..c4006e09db091 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -2338,6 +2338,8 @@ static long vsock_dev_do_ioctl(struct file *filp,
- 		cid = vsock_registered_transport_cid(&transport_g2h);
- 		if (cid == VMADDR_CID_ANY)
- 			cid = vsock_registered_transport_cid(&transport_h2g);
-+		if (cid == VMADDR_CID_ANY)
-+			cid = vsock_registered_transport_cid(&transport_local);
+--- a/drivers/usb/gadget/function/u_serial.c
++++ b/drivers/usb/gadget/function/u_serial.c
+@@ -544,20 +544,16 @@ static int gs_alloc_requests(struct usb_
+ static int gs_start_io(struct gs_port *port)
+ {
+ 	struct list_head	*head = &port->read_pool;
+-	struct usb_ep		*ep;
++	struct usb_ep		*ep = port->port_usb->out;
+ 	int			status;
+ 	unsigned		started;
  
- 		if (put_user(cid, p) != 0)
- 			retval = -EFAULT;
--- 
-2.39.5
-
+-	if (!port->port_usb || !port->port.tty)
+-		return -EIO;
+-
+ 	/* Allocate RX and TX I/O buffers.  We can't easily do this much
+ 	 * earlier (with GFP_KERNEL) because the requests are coupled to
+ 	 * endpoints, as are the packet sizes we'll be using.  Different
+ 	 * configurations may use different endpoints with a given port;
+ 	 * and high speed vs full speed changes packet sizes too.
+ 	 */
+-	ep = port->port_usb->out;
+ 	status = gs_alloc_requests(ep, head, gs_read_complete,
+ 		&port->read_allocated);
+ 	if (status)
 
 
 
