@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-162582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9018DB05E9C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F7DB05D69
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97F541C441A8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 993B1165745
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61ABE84A35;
-	Tue, 15 Jul 2025 13:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA952EAB79;
+	Tue, 15 Jul 2025 13:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUlF6Gsa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlknICqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A7B26D4F2;
-	Tue, 15 Jul 2025 13:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE762E54B7;
+	Tue, 15 Jul 2025 13:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586936; cv=none; b=KkgE1DiMmpU2k+zRwH3g4VuU5OWqmUg90E6n3FoqLqMZEGWMcrh9nliK5U+3bs1MeD9RRcPJn5Qr2A7aikgiNlApgbBOpu50lhXCOLYn5uknj8ySeRd8lN1g34iUXGOeP9bzK6Us8j+XXBmD9meCxFK75FKG/JnOXzkVg5HvEuo=
+	t=1752586470; cv=none; b=RV/ZWkM7Qb4TFyCdWrL8bLnt6P6YUPiGJgvdVSpIlUas/iur+9r6j73wmGmRDHtNPjGCa6Fxlc3yUSQd4XqKVIgAnmqLq1JLUkl2HdOF+6+wtTeDlSIxKidY0BkMJR7s1kt9FanhkQJqvmYb7eSOtAgh15+Z1F8ZE2PaPX9xWmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586936; c=relaxed/simple;
-	bh=0ZBJDQqNzBd3Dzd3Va8LLPCN0oaR8JB7wzG86lfjCrg=;
+	s=arc-20240116; t=1752586470; c=relaxed/simple;
+	bh=MgXbfIzUIzNaGcouThsfFenj1XUtoDulWABCesBIf7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jp7DpSF2TrwYiY2yle5tqtZ42gCw467gfKQKsEskHs8l1mAFufe4TieXeABqV9O+sppIR//XuM1H9mz7/DYgNZONc/oVb4OtWUtvUT5z7Q7aG4+/GsukO8S2Q01ND+9lABzkpif2vK8FZghihyzeCr2EuwmmnUeN6A29cxhYBz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUlF6Gsa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52CBC4CEF1;
-	Tue, 15 Jul 2025 13:42:15 +0000 (UTC)
+	 MIME-Version; b=J841M+xiZFrDyj11hcCXRxKRWAbfC7eN5r14UPH7zZqPTC7qKakGPany7Kzqil/VJ8yaOOlgI29IppVe3EKK1EEkmow01RYThYuTLBec+UunO4KgcTnFKYcmsmeGDr13XsgFva7UR+ZDDO0zGPWh4ivCPCa9IDeA1g+TZ1wu/Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlknICqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECABC4CEE3;
+	Tue, 15 Jul 2025 13:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586936;
-	bh=0ZBJDQqNzBd3Dzd3Va8LLPCN0oaR8JB7wzG86lfjCrg=;
+	s=korg; t=1752586470;
+	bh=MgXbfIzUIzNaGcouThsfFenj1XUtoDulWABCesBIf7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lUlF6Gsa2Vrk/SmEbrOE9v2GhjuoYKBA3LxYn6ciiYyDUvYC3/VgMRiPxEUbWmnpr
-	 902TkNd3HvRzk0b7nMVOzaEXfObSjMGEH3v0PUaCdmpVBKXssrYZzBroXXXPbT7Yuk
-	 6849GLMR/Sm/mE1SenSlRWV2ImfjAkGGO3mjCuGg=
+	b=vlknICqp8CykK0GxHkJsuW8aCNqC3D4MKMNg63KsHyKY/rOjndzLwIUL8yhbwZUhm
+	 W6JGiw0G0RZ8mbgaezUE/xgjvcRHOfuTXUMQqQ540+p6WmaRNwXR0x9O2YyLVsAxka
+	 g0lUkIlh0j1WpGTf1SrT8bv2etnzzxhAHnhMSoZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Illia Ostapyshyn <illia@yshyn.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 105/192] scripts: gdb: vfs: support external dentry names
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 078/148] rcu: Return early if callback is not specified
 Date: Tue, 15 Jul 2025 15:13:20 +0200
-Message-ID: <20250715130819.103733410@linuxfoundation.org>
+Message-ID: <20250715130803.445522542@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,51 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Illia Ostapyshyn <illia@yshyn.com>
+From: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-commit e6d3e653b084f003977bf2e33820cb84d2e4541f upstream.
+[ Upstream commit 33b6a1f155d627f5bd80c7485c598ce45428f74f ]
 
-d_shortname of struct dentry only reserves D_NAME_INLINE_LEN characters
-and contains garbage for longer names.  Use d_name instead, which always
-references the valid name.
+Currently the call_rcu() API does not check whether a callback
+pointer is NULL. If NULL is passed, rcu_core() will try to invoke
+it, resulting in NULL pointer dereference and a kernel crash.
 
-Link: https://lore.kernel.org/all/20250525213709.878287-2-illia@yshyn.com/
-Link: https://lkml.kernel.org/r/20250629003811.2420418-1-illia@yshyn.com
-Fixes: 79300ac805b6 ("scripts/gdb: fix dentry_name() lookup")
-Signed-off-by: Illia Ostapyshyn <illia@yshyn.com>
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To prevent this and improve debuggability, this patch adds a check
+for NULL and emits a kernel stack trace to help identify a faulty
+caller.
+
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gdb/linux/vfs.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/rcu/tree.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/scripts/gdb/linux/vfs.py b/scripts/gdb/linux/vfs.py
-index b5fbb18ccb77..9e921b645a68 100644
---- a/scripts/gdb/linux/vfs.py
-+++ b/scripts/gdb/linux/vfs.py
-@@ -22,7 +22,7 @@ def dentry_name(d):
-     if parent == d or parent == 0:
-         return ""
-     p = dentry_name(d['d_parent']) + "/"
--    return p + d['d_shortname']['string'].string()
-+    return p + d['d_name']['name'].string()
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 615283404d9dc..562c1ff452837 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -2568,6 +2568,10 @@ __call_rcu(struct rcu_head *head, rcu_callback_t func, bool lazy)
+ 	/* Misaligned rcu_head! */
+ 	WARN_ON_ONCE((unsigned long)head & (sizeof(void *) - 1));
  
- class DentryName(gdb.Function):
-     """Return string of the full path of a dentry.
++	/* Avoid NULL dereference if callback is NULL. */
++	if (WARN_ON_ONCE(!func))
++		return;
++
+ 	if (debug_rcu_head_queue(head)) {
+ 		/*
+ 		 * Probable double call_rcu(), so leak the callback.
 -- 
-2.50.1
+2.39.5
 
 
 
