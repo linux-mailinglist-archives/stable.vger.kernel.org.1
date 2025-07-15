@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE139B05CB9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21116B05C19
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01EFD567589
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81EEE1C21A9F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAE62EAB8F;
-	Tue, 15 Jul 2025 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCE32E4986;
+	Tue, 15 Jul 2025 13:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqzAk05f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gkV1yZtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389A42EAB8E;
-	Tue, 15 Jul 2025 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C60A2E4984;
+	Tue, 15 Jul 2025 13:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586142; cv=none; b=r2FESR0oflhMvk3GZ6EnfCjVieqZ1EXxhA9jBJULNns0a7LeAOLy49dgwBIX+AUfBVIPeib7ej/UylCcwwVfrUePlCkHmrIcAiTG/e468uXIZdgE152t/7nZ2u8q/knH14lJPZ+473RB+/CpuNRUsTpQflXqNE7bkYoDCtXynYk=
+	t=1752585894; cv=none; b=KvIfEIc+LCTcDkZM5HlZlg8a2JmyEYaudhTjieosXhbv7NUw4AKpSGwM5X9yG5uR6GY8cqRqiIVtG7pBCeFwJs3Zdix0aatVZ5WO1xPNqIKhPEdD1C9hamxGcZ2gQMzHnKF+JC9/luovEEZIiUIjRB3ZE4wAdDeUVX76b+cJQzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586142; c=relaxed/simple;
-	bh=AotPO7yYcUlRa1Cg70OYHCglqQELskYLDUUMkfx4w9Y=;
+	s=arc-20240116; t=1752585894; c=relaxed/simple;
+	bh=CxlemCWH6nzzt2Gsva6eA7CkTGpbtJgkp9Ro0wR8cpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcPcNhzD6awq5Jmb01rysU9n/61U0v2R1U/+61kun9bUtqFj3BS+PGakRPQ19uZN5+8LutPyTctW5Y8THz2B5H5CI9Mv1LVItKIoxQDhBE3psGQa12/uVrIPwZ8TJgjczg6a0FTHpgSZkjJu4bWPYU1oL9GEV12NYtH9DcOmYtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqzAk05f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0824C4CEF1;
-	Tue, 15 Jul 2025 13:29:01 +0000 (UTC)
+	 MIME-Version; b=AcdwrzC+wkcBQbmUf+naIz5AhKp74O9RaQZbhEDKMn67Euj1Q3TyWnYhRCbDaxure5V+2XpQ8b/pPaPhByZ9q1gixfI+yPjjgRVJqKtaFmYVcLhlREX4D538ZU1PHRmj/VaNfalHR6OujkhIyNHbg7+vH6YXxYa5UXamkwV/NLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkV1yZtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FA7C4CEE3;
+	Tue, 15 Jul 2025 13:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586142;
-	bh=AotPO7yYcUlRa1Cg70OYHCglqQELskYLDUUMkfx4w9Y=;
+	s=korg; t=1752585893;
+	bh=CxlemCWH6nzzt2Gsva6eA7CkTGpbtJgkp9Ro0wR8cpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jqzAk05flPvgGMWTw5hDVdu6J5OCK3JiynG5uBqlgAeu2mGF/5AkrQnsStnn7iRBw
-	 S9CPs/hNQrLVfD6bdm3GBRKpiArlzUtqJ5gSSQnISMsPqqtQNX1xC3rLxDw0310zzT
-	 hBIM+1IjBllup1KkkjgFkQxgerSDapITKBpQUqW8=
+	b=gkV1yZtreclyljWsXiqcOFfS14Twob+7fo4qDjJf8GYlnOUuNlUkYpEps+U55KvZv
+	 myQt2yaKd/ozGDi1YvXVWaXWZGzg/k0vF0q2R8e3X4+QAXoIJtm+g/HZ3+gJrENHHj
+	 kS4i7HsMSi0vJYd2tsdXs0126VOGHUHWxZznUsTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@brown.name>,
-	Christian Brauner <brauner@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 04/77] fix proc_sys_compare() handling of in-lookup dentries
-Date: Tue, 15 Jul 2025 15:13:03 +0200
-Message-ID: <20250715130751.859031138@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Prashanth K <prashanth.k@oss.qualcomm.com>
+Subject: [PATCH 6.6 048/109] Revert "usb: gadget: u_serial: Add null pointer check in gs_start_io"
+Date: Tue, 15 Jul 2025 15:13:04 +0200
+Message-ID: <20250715130800.798395989@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit b969f9614885c20f903e1d1f9445611daf161d6d ]
+commit f6c7bc4a6823a0a959f40866a1efe99bd03c2c5b upstream.
 
-There's one case where ->d_compare() can be called for an in-lookup
-dentry; usually that's nothing special from ->d_compare() point of
-view, but... proc_sys_compare() is weird.
+This reverts commit ffd603f214237e250271162a5b325c6199a65382.
 
-The thing is, /proc/sys subdirectories can look differently for
-different processes.  Up to and including having the same name
-resolve to different dentries - all of them hashed.
+Commit ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in
+gs_start_io") adds null pointer checks at the beginning of the
+gs_start_io() function to prevent a null pointer dereference. However,
+these checks are redundant because the function's comment already
+requires callers to hold the port_lock and ensure port.tty and port_usb
+are not null. All existing callers already follow these rules.
 
-The way it's done is ->d_compare() refusing to admit a match unless
-this dentry is supposed to be visible to this caller.  The information
-needed to discriminate between them is stored in inode; it is set
-during proc_sys_lookup() and until it's done d_splice_alias() we really
-can't tell who should that dentry be visible for.
+The true cause of the null pointer dereference is a race condition. When
+gs_start_io() calls either gs_start_rx() or gs_start_tx(), the port_lock
+is temporarily released for usb_ep_queue(). This allows port.tty and
+port_usb to be cleared.
 
-Normally there's no negative dentries in /proc/sys; we can run into
-a dying dentry in RCU dcache lookup, but those can be safely rejected.
-
-However, ->d_compare() is also called for in-lookup dentries, before
-they get positive - or hashed, for that matter.  In case of match
-we will wait until dentry leaves in-lookup state and repeat ->d_compare()
-afterwards.  In other words, the right behaviour is to treat the
-name match as sufficient for in-lookup dentries; if dentry is not
-for us, we'll see that when we recheck once proc_sys_lookup() is
-done with it.
-
-While we are at it, fix the misspelled READ_ONCE and WRITE_ONCE there.
-
-Fixes: d9171b934526 ("parallel lookups machinery, part 4 (and last)")
-Reported-by: NeilBrown <neilb@brown.name>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in gs_start_io")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250617050844.1848232-1-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/inode.c       |  2 +-
- fs/proc/proc_sysctl.c | 18 +++++++++++-------
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/usb/gadget/function/u_serial.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index 695471fa24fe5..de5ae2e5a97df 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -54,7 +54,7 @@ static void proc_evict_inode(struct inode *inode)
+--- a/drivers/usb/gadget/function/u_serial.c
++++ b/drivers/usb/gadget/function/u_serial.c
+@@ -539,20 +539,16 @@ static int gs_alloc_requests(struct usb_
+ static int gs_start_io(struct gs_port *port)
+ {
+ 	struct list_head	*head = &port->read_pool;
+-	struct usb_ep		*ep;
++	struct usb_ep		*ep = port->port_usb->out;
+ 	int			status;
+ 	unsigned		started;
  
- 	head = ei->sysctl;
- 	if (head) {
--		RCU_INIT_POINTER(ei->sysctl, NULL);
-+		WRITE_ONCE(ei->sysctl, NULL);
- 		proc_sys_evict_inode(inode, head);
- 	}
- }
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index 7c5d472b193f8..1a22aa43e740d 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -910,17 +910,21 @@ static int proc_sys_compare(const struct dentry *dentry,
- 	struct ctl_table_header *head;
- 	struct inode *inode;
- 
--	/* Although proc doesn't have negative dentries, rcu-walk means
--	 * that inode here can be NULL */
--	/* AV: can it, indeed? */
--	inode = d_inode_rcu(dentry);
--	if (!inode)
--		return 1;
- 	if (name->len != len)
- 		return 1;
- 	if (memcmp(name->name, str, len))
- 		return 1;
--	head = rcu_dereference(PROC_I(inode)->sysctl);
-+
-+	// false positive is fine here - we'll recheck anyway
-+	if (d_in_lookup(dentry))
-+		return 0;
-+
-+	inode = d_inode_rcu(dentry);
-+	// we just might have run into dentry in the middle of __dentry_kill()
-+	if (!inode)
-+		return 1;
-+
-+	head = READ_ONCE(PROC_I(inode)->sysctl);
- 	return !head || !sysctl_is_seen(head);
- }
- 
--- 
-2.39.5
-
+-	if (!port->port_usb || !port->port.tty)
+-		return -EIO;
+-
+ 	/* Allocate RX and TX I/O buffers.  We can't easily do this much
+ 	 * earlier (with GFP_KERNEL) because the requests are coupled to
+ 	 * endpoints, as are the packet sizes we'll be using.  Different
+ 	 * configurations may use different endpoints with a given port;
+ 	 * and high speed vs full speed changes packet sizes too.
+ 	 */
+-	ep = port->port_usb->out;
+ 	status = gs_alloc_requests(ep, head, gs_read_complete,
+ 		&port->read_allocated);
+ 	if (status)
 
 
 
