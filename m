@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-162809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1A3B05F8A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C37B05FAC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBD2C7BDE96
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7D92500DA6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB245BA42;
-	Tue, 15 Jul 2025 13:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83E62E7BAA;
+	Tue, 15 Jul 2025 13:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7qpovsv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFqKUziq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666B32E7646;
-	Tue, 15 Jul 2025 13:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3D62E3AF9;
+	Tue, 15 Jul 2025 13:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587532; cv=none; b=UQERQqKtnXE0vGRgGc8VRlZJaRPIFJjso77izwnVDl/aPrBk5D+Zemp7ZQmghKO9/yqWKpV8JJv/Kg7djtDnm6WTyZlilVrDwft6mM/FX37yTs11HGP/VmuLf/4ZXlPR05s/z7XHKWQiReM2mpiLFVwkxewnfE7YECrtHoO/ud4=
+	t=1752587537; cv=none; b=iFkHTVQpwrfw9mgY7mc0/WkLmUB1M+QvSDLF7OxaXbfoWiqy2ptVrxxL0yyQeAy2fx2mDz/Nh5S8en3DNKE95EusSi1RFkIvqibPWEvGFDm5hkd8+Uidvg31fj/dbhWAof/mhW89uB4LZRLc+OqY3gmwJaUgI+ig/evilEhSDWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587532; c=relaxed/simple;
-	bh=EEsIx2fX3Iv+j2gWhcpIg7BK1fTJDSp6H/Dwb07JwAc=;
+	s=arc-20240116; t=1752587537; c=relaxed/simple;
+	bh=4qJn+IfkjKAM3XwXgCb5U/fHWPfBG2mSyffyWiNYKzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WL/++C+7gMxiPE2sOliGM/JiRUz/S5CX2TZsKSI3dQXMrRVfI8BJ/z5iF97vz6aaFljOHoNWDWXNJWTrYifTXbWIm+ZkdpFsCzzc1jUZpTh9cPwfT2VSuFQ7BFZLnIdjMFATp9NYwQxGU8Sd7gLwatgoWA4rBMnh7WStuQ/QQGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7qpovsv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E15C4CEE3;
-	Tue, 15 Jul 2025 13:52:11 +0000 (UTC)
+	 MIME-Version; b=uLwNprHhHbw1f/bIvxx2fAL2kOtR5cKND83W8zkGr13WMXs4O+BXTC7sxdeNSQfyRNxFlJcUfbW0fiCXO0EqlMGZg7ecWm17cmQzpqF2a/UX8REX91iZT+wVYq1+QuyKvZOrbQVrKGbexDM+mp2pNEvwijBCMWk0ZWQaiuFfoFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFqKUziq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D29C4CEF4;
+	Tue, 15 Jul 2025 13:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587532;
-	bh=EEsIx2fX3Iv+j2gWhcpIg7BK1fTJDSp6H/Dwb07JwAc=;
+	s=korg; t=1752587537;
+	bh=4qJn+IfkjKAM3XwXgCb5U/fHWPfBG2mSyffyWiNYKzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7qpovsvEcs/+dDt4KBhIOcrnZB1l8wPsFICGvr0hFQI0FpNaNNAafXSSTBpB2HAy
-	 DnEleCfLGXwcBvKmsYOBKLAqmsuFnKKikoeYzDNVckIpXCIMbRVMGI1JeP1x/ZKYyQ
-	 NTMW+DboHmwkLxlNENhF4Juw4+d+oAWOexFv5W3Q=
+	b=UFqKUziqHQq7FnWXMOifXUDYV4okhNqb1kI9pcnPkcWK9b8nOqsgR4S5NIvXe51wt
+	 m6a4bg3l72NcpBoJyEkhn24uFIDU+MXPBLExQqBX2i2xBOnYlfqd3xERMBQiWy8vCd
+	 meayU0g0CXvHSlPucfgMYZuVRWhqZJZGX+zrXfpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Gengming Liu <l.dmxcsnsbh@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 047/208] atm: clip: prevent NULL deref in clip_push()
-Date: Tue, 15 Jul 2025 15:12:36 +0200
-Message-ID: <20250715130812.839795972@linuxfoundation.org>
+Subject: [PATCH 5.10 049/208] attach_recursive_mnt(): do not lock the covering tree when sliding something under it
+Date: Tue, 15 Jul 2025 15:12:38 +0200
+Message-ID: <20250715130812.919492337@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -70,58 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit b993ea46b3b601915ceaaf3c802adf11e7d6bac6 ]
+[ Upstream commit ce7df19686530920f2f6b636e71ce5eb1d9303ef ]
 
-Blamed commit missed that vcc_destroy_socket() calls
-clip_push() with a NULL skb.
+If we are propagating across the userns boundary, we need to lock the
+mounts added there.  However, in case when something has already
+been mounted there and we end up sliding a new tree under that,
+the stuff that had been there before should not get locked.
 
-If clip_devs is NULL, clip_push() then crashes when reading
-skb->truesize.
+IOW, lock_mnt_tree() should be called before we reparent the
+preexisting tree on top of what we are adding.
 
-Fixes: 93a2014afbac ("atm: fix a UAF in lec_arp_clear_vccs()")
-Reported-by: syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68556f59.a00a0220.137b3.004e.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Gengming Liu <l.dmxcsnsbh@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 3bd045cc9c4b ("separate copying and locking mount tree on cross-userns copies")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/clip.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ fs/namespace.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 294cb9efe3d38..511467bb7fe40 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -193,12 +193,6 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
- 
- 	pr_debug("\n");
- 
--	if (!clip_devs) {
--		atm_return(vcc, skb->truesize);
--		kfree_skb(skb);
--		return;
--	}
--
- 	if (!skb) {
- 		pr_debug("removing VCC %p\n", clip_vcc);
- 		if (clip_vcc->entry)
-@@ -208,6 +202,11 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
- 		return;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 2d5af6653cd11..ee6d139f75292 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2186,14 +2186,14 @@ static int attach_recursive_mnt(struct mount *source_mnt,
+ 	hlist_for_each_entry_safe(child, n, &tree_list, mnt_hash) {
+ 		struct mount *q;
+ 		hlist_del_init(&child->mnt_hash);
+-		q = __lookup_mnt(&child->mnt_parent->mnt,
+-				 child->mnt_mountpoint);
+-		if (q)
+-			mnt_change_mountpoint(child, smp, q);
+ 		/* Notice when we are propagating across user namespaces */
+ 		if (child->mnt_parent->mnt_ns->user_ns != user_ns)
+ 			lock_mnt_tree(child);
+ 		child->mnt.mnt_flags &= ~MNT_LOCKED;
++		q = __lookup_mnt(&child->mnt_parent->mnt,
++				 child->mnt_mountpoint);
++		if (q)
++			mnt_change_mountpoint(child, smp, q);
+ 		commit_tree(child);
  	}
- 	atm_return(vcc, skb->truesize);
-+	if (!clip_devs) {
-+		kfree_skb(skb);
-+		return;
-+	}
-+
- 	skb->dev = clip_vcc->entry ? clip_vcc->entry->neigh->dev : clip_devs;
- 	/* clip_vcc->entry == NULL if we don't have an IP address yet */
- 	if (!skb->dev) {
+ 	put_mountpoint(smp);
 -- 
 2.39.5
 
