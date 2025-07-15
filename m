@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-162912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65F0B06038
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:13:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 952C0B06041
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 590D55034CE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7DF54A2ED8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD822EF282;
-	Tue, 15 Jul 2025 13:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80E42EF677;
+	Tue, 15 Jul 2025 13:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAcpCFuj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="welHEIoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDCA2EE99B;
-	Tue, 15 Jul 2025 13:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6551B2E716D;
+	Tue, 15 Jul 2025 13:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587799; cv=none; b=LG+oF+83f2j0t3SV5aVf7CUB90Lt3qdlFRZaAofr6y9D3EiFhgxxpd8u+2JaRGxR8r/3xRQQk/JeVhCUk9nsc81VEp9jti4dGt4T76L9Y88gq2ukUGOTgUrU8ZuIO1G1EhKuCowPBm9NmxDs2JWoglu1e9F3Xqcd+4iEF83Bako=
+	t=1752587828; cv=none; b=kUn8sRq+3o3d8EQkUntOHlyldOWveuEeCHFwpKnCQ+ELjytsNTvtNENAt+WsHBJ5JzrdVKYmrTOYs+6T9VqPXAzNRPawLrG1ksv3fwoh2Z2nUcwZ7baEDh7judJLrFgU8CAx77eMpUB9ZU8qEEWZQad5BVve7aAxI8xTFvbFCyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587799; c=relaxed/simple;
-	bh=ISvSzp7k6w1EHjImUGwkNcmxQT5unboit2ZlRb5lKXQ=;
+	s=arc-20240116; t=1752587828; c=relaxed/simple;
+	bh=4vPP0HNWPXz9cCDv3RAQLyGRw3JWQIYy1wABmzhv9tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDjgXRAWDQ9863XDWZBj4u3aaBGpe5jvt94idWAUjP/UIy7o0uqpDAcGTPTnCUYx+Rg2BSPBGilDixo5HSl6Atg37lfcOEA7MZwtO1TxrDrLNluauzRNSf3bnnCDVmpbA9Gh4r2nd9+/l+T39lKt7sO/px5rsLlNgcXbxwtH0LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAcpCFuj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73053C4CEE3;
-	Tue, 15 Jul 2025 13:56:38 +0000 (UTC)
+	 MIME-Version; b=kMrAOK6oopjUIvQaiPl1bGm/IhJW3yjcku9d9kt8Gqw1cX1XBp2baFj9bh8/6BthRfnlG7Y8RXRVaBDS4jNYPl5Z849DWnecFX1wuk5dNoVaayPgzxJT4WJzwZz7Nk4pP+ckcrTdS84lG3lO6154xxruU54TbJZCbpBzf7LoQKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=welHEIoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCC3C4CEE3;
+	Tue, 15 Jul 2025 13:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587798;
-	bh=ISvSzp7k6w1EHjImUGwkNcmxQT5unboit2ZlRb5lKXQ=;
+	s=korg; t=1752587828;
+	bh=4vPP0HNWPXz9cCDv3RAQLyGRw3JWQIYy1wABmzhv9tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gAcpCFujFjXYNefX6raAeqLpP0UHh3R3rKmyvsG1F0Zn0C/wvw3NhGfO286K2wl0e
-	 WXLerU6g9eU50IiEaOZ6yBoL72Xs9Mlq0sxynyQsh2u5kNDo02uwzL4LcryR5q5Nls
-	 qFJ7qMncFCDOPKl02erBP4PvsUACGT+Iq6bnVzig=
+	b=welHEIoh4MR7DFVn0Ya0JSGEk7XsixUPYoX3C6cMr4xACFPJTGheDV9koV5aSIXDG
+	 LQrRBLW8v149JOaQvL3YFAHCWlQ3mq5sZkClgjqnkFYMoUt8Uaa1iXwq+XMTH0yk+L
+	 yEYg/XIFTRlIvK5iJ/pJMRfXfuGl8McZx14xvuyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Ricardo Ribalda <ribalda@chromium.org>,
 	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 130/208] media: uvcvideo: Send control events for partial succeeds
-Date: Tue, 15 Jul 2025 15:13:59 +0200
-Message-ID: <20250715130816.147872967@linuxfoundation.org>
+Subject: [PATCH 5.10 131/208] media: uvcvideo: Rollback non processed entities on error
+Date: Tue, 15 Jul 2025 15:14:00 +0200
+Message-ID: <20250715130816.185942227@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -69,63 +69,112 @@ Content-Transfer-Encoding: 8bit
 
 From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 5c791467aea6277430da5f089b9b6c2a9d8a4af7 upstream.
+commit a70705d3c020d0d5c3ab6a5cc93e011ac35e7d48 upstream.
 
-Today, when we are applying a change to entities A, B. If A succeeds and B
-fails the events for A are not sent.
-
-This change changes the code so the events for A are send right after
-they happen.
+If we fail to commit an entity, we need to restore the
+UVC_CTRL_DATA_BACKUP for the other uncommitted entities. Otherwise the
+control cache and the device would be out of sync.
 
 Cc: stable@kernel.org
 Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Closes: https://lore.kernel.org/linux-media/fe845e04-9fde-46ee-9763-a6f00867929a@redhat.com/
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-2-de993ed9823b@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-3-de993ed9823b@chromium.org>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |   42 ++++++++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
 --- a/drivers/media/usb/uvc/uvc_ctrl.c
 +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1429,7 +1429,9 @@ static bool uvc_ctrl_xctrls_has_control(
- }
- 
- static void uvc_ctrl_send_events(struct uvc_fh *handle,
--	const struct v4l2_ext_control *xctrls, unsigned int xctrls_count)
-+				 struct uvc_entity *entity,
-+				 const struct v4l2_ext_control *xctrls,
-+				 unsigned int xctrls_count)
- {
- 	struct uvc_control_mapping *mapping;
+@@ -1577,7 +1577,7 @@ static int uvc_ctrl_commit_entity(struct
+ 	unsigned int processed_ctrls = 0;
  	struct uvc_control *ctrl;
-@@ -1440,6 +1442,9 @@ static void uvc_ctrl_send_events(struct
- 		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
+ 	unsigned int i;
+-	int ret;
++	int ret = 0;
  
- 		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
-+		if (ctrl->entity != entity)
-+			continue;
+ 	if (entity == NULL)
+ 		return 0;
+@@ -1605,8 +1605,6 @@ static int uvc_ctrl_commit_entity(struct
+ 				dev->intfnum, ctrl->info.selector,
+ 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+ 				ctrl->info.size);
+-		else
+-			ret = 0;
+ 
+ 		if (!ret)
+ 			processed_ctrls++;
+@@ -1618,14 +1616,22 @@ static int uvc_ctrl_commit_entity(struct
+ 
+ 		ctrl->dirty = 0;
+ 
+-		if (ret < 0)
+-			return ret;
+-
+-		if (!rollback && handle &&
++		if (!rollback && handle && !ret &&
+ 		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+ 			uvc_ctrl_set_handle(handle, ctrl, handle);
 +
- 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
- 			/* Notification will be sent from an Interrupt event. */
- 			continue;
-@@ -1638,10 +1643,11 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 					     rollback);
- 		if (ret < 0)
- 			goto done;
-+		else if (ret > 0 && !rollback)
-+			uvc_ctrl_send_events(handle, entity, xctrls,
-+					     xctrls_count);
++		if (ret < 0 && !rollback) {
++			/*
++			 * If we fail to set a control, we need to rollback
++			 * the next ones.
++			 */
++			rollback = 1;
++		}
  	}
  
--	if (!rollback)
--		uvc_ctrl_send_events(handle, xctrls, xctrls_count);
- 	ret = 0;
- done:
++	if (ret)
++		return ret;
++
+ 	return processed_ctrls;
+ }
+ 
+@@ -1635,23 +1641,31 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ {
+ 	struct uvc_video_chain *chain = handle->chain;
+ 	struct uvc_entity *entity;
+-	int ret = 0;
++	int ret_out = 0;
++	int ret;
+ 
+ 	/* Find the control. */
+ 	list_for_each_entry(entity, &chain->entities, chain) {
+ 		ret = uvc_ctrl_commit_entity(chain->dev, handle, entity,
+ 					     rollback);
+-		if (ret < 0)
+-			goto done;
+-		else if (ret > 0 && !rollback)
++		if (ret < 0) {
++			/*
++			 * When we fail to commit an entity, we need to
++			 * restore the UVC_CTRL_DATA_BACKUP for all the
++			 * controls in the other entities, otherwise our cache
++			 * and the hardware will be out of sync.
++			 */
++			rollback = 1;
++
++			ret_out = ret;
++		} else if (ret > 0 && !rollback) {
+ 			uvc_ctrl_send_events(handle, entity, xctrls,
+ 					     xctrls_count);
++		}
+ 	}
+ 
+-	ret = 0;
+-done:
  	mutex_unlock(&chain->ctrl_mutex);
+-	return ret;
++	return ret_out;
+ }
+ 
+ int uvc_ctrl_get(struct uvc_video_chain *chain,
 
 
 
