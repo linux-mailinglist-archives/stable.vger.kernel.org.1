@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-162822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1E6B06011
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5006CB06032
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:13:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB0781C24D4D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:03:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112661C46FF9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24AA2EB5AA;
-	Tue, 15 Jul 2025 13:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFDD2EE28F;
+	Tue, 15 Jul 2025 13:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Nj/bjNz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJiTYB8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B702EB5A2;
-	Tue, 15 Jul 2025 13:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEC12EBDD6;
+	Tue, 15 Jul 2025 13:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587567; cv=none; b=Fky2vxYnPy9Vwyvnt54v1P9an1r3jW80PLpUwtYZq6rV92dQ5NfkSeeEDC9iQyJ50+m3f8n0SO8gLVlpmPnR+xPwzHYJj+vw/mzSEOr9QPIOOSfuzRwSsJlTJrdy7duJJmG3Co4i5457YQIAfGbdCYva1h0qpBJ1HRhPS74/1Ak=
+	t=1752587676; cv=none; b=DzkY1FmnicvN7fyGiTHz2YGn7KRvksWYbOGVPLihDTCqngacAzpLT3+0g+Ksy/6VXpdiUI3Cr0FbJsFU/0WssyW5n8xc1Gwrg/wC7tL+GZrTlwkJQ9W9T1Cfc82OLjaPc9PCn1FyYGNHDQckJaTyPL2yEZbleqPpH5BL4aHzjhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587567; c=relaxed/simple;
-	bh=Wycrv70JUobkUpHmn8Fv0xuD8hmqmUfppIBuDjCGoBw=;
+	s=arc-20240116; t=1752587676; c=relaxed/simple;
+	bh=SiKAou7/M44cB+Vx4AY8QfzMcvUMfUi8WR4Rw57U8EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GJ2zTiLUvjgYdYcULLyeiCMFTIeI7Cu0h2n5cjcUVCRrcpA3Nur86R97lxL/9kk/dWM5idCC3PArd2MHDwKhuPAt/5vwrri19V6oVRuFfKlWvcoLHzd8DludgUcaU2sftOUA9YX3ksPv8aGtPJy+2aULAXci8NhoZyFme4VRWRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Nj/bjNz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D597C4CEE3;
-	Tue, 15 Jul 2025 13:52:46 +0000 (UTC)
+	 MIME-Version; b=HdeMI66CLQy9XuLrAr4vNwBO2/vzD89C/WmByaPQdWFhVH1d811HdecYam/WWaboHZF992mhoSPTgCT2hZTcexxCcaGTLxX1kfnClCtAt2RylAQCWI6dF5ZRfvjGiF6rOj1OnyD2+xIFzAy8+kPNl+N0CKWs63/1Q/KB3+1eiwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJiTYB8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D494C4CEE3;
+	Tue, 15 Jul 2025 13:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587567;
-	bh=Wycrv70JUobkUpHmn8Fv0xuD8hmqmUfppIBuDjCGoBw=;
+	s=korg; t=1752587676;
+	bh=SiKAou7/M44cB+Vx4AY8QfzMcvUMfUi8WR4Rw57U8EQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Nj/bjNzxg2JyX/5P74GAqMe3kFpxGZQJeXhM6E5w6nJPN013DPBD2aHdeBxxLALG
-	 De7yvj5OCT9wYaUPfcSLJvHJmMo/RXXzO1ubsYL3n01a5siQPBNel4+NOmYi5MNBPB
-	 mumyZQi2ciYgMee+zrs46aS1Oqbfp4lj3sqDirx0=
+	b=lJiTYB8w6zLhfiQrr87DTY3Vt65+7xORtg93gMF0fSo9Dvg6utXmYFlFckAaEVtFM
+	 zPVHzO5k9fqWnqNkgxmk0gFu7dSkzgXWAC51jcSrWJScan2kR8qOQG7d61+CtA55+n
+	 mv8ewK3h28rM3Fx28X2Eu5HriKKTZSMoJ/J/xSmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <maharmstone@fb.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 059/208] btrfs: update superblocks device bytes_used when dropping chunk
-Date: Tue, 15 Jul 2025 15:12:48 +0200
-Message-ID: <20250715130813.313373977@linuxfoundation.org>
+	Ping Cheng <ping.cheng@wacom.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.10 060/208] HID: wacom: fix memory leak on kobject creation failure
+Date: Tue, 15 Jul 2025 15:12:49 +0200
+Message-ID: <20250715130813.355165601@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -66,66 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Harmstone <maharmstone@fb.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit ae4477f937569d097ca5dbce92a89ba384b49bc6 upstream.
+commit 5ae416c5b1e2e816aee7b3fc8347adf70afabb4c upstream.
 
-Each superblock contains a copy of the device item for that device. In a
-transaction which drops a chunk but doesn't create any new ones, we were
-correctly updating the device item in the chunk tree but not copying
-over the new bytes_used value to the superblock.
+During wacom_initialize_remotes() a fifo buffer is allocated
+with kfifo_alloc() and later a cleanup action is registered
+during devm_add_action_or_reset() to clean it up.
 
-This can be seen by doing the following:
+However if the code fails to create a kobject and register it
+with sysfs the code simply returns -ENOMEM before the cleanup
+action is registered leading to a memory leak.
 
-  # dd if=/dev/zero of=test bs=4096 count=2621440
-  # mkfs.btrfs test
-  # mount test /root/temp
+Fix this by ensuring the fifo is freed when the kobject creation
+and registration process fails.
 
-  # cd /root/temp
-  # for i in {00..10}; do dd if=/dev/zero of=$i bs=4096 count=32768; done
-  # sync
-  # rm *
-  # sync
-  # btrfs balance start -dusage=0 .
-  # sync
-
-  # cd
-  # umount /root/temp
-  # btrfs check test
-
-For btrfs-check to detect this, you will also need my patch at
-https://github.com/kdave/btrfs-progs/pull/991.
-
-Change btrfs_remove_dev_extents() so that it adds the devices to the
-fs_info->post_commit_list if they're not there already. This causes
-btrfs_commit_device_sizes() to be called, which updates the bytes_used
-value in the superblock.
-
-Fixes: bbbf7243d62d ("btrfs: combine device update operations during transaction commit")
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <maharmstone@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hid/wacom_sys.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3101,6 +3101,12 @@ int btrfs_remove_chunk(struct btrfs_tran
- 					device->bytes_used - dev_extent_len);
- 			atomic64_add(dev_extent_len, &fs_info->free_chunk_space);
- 			btrfs_clear_space_info_full(fs_info);
-+
-+			if (list_empty(&device->post_commit_list)) {
-+				list_add_tail(&device->post_commit_list,
-+					      &trans->transaction->dev_update_list);
-+			}
-+
- 			mutex_unlock(&fs_info->chunk_mutex);
- 		}
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2020,8 +2020,10 @@ static int wacom_initialize_remotes(stru
+ 
+ 	remote->remote_dir = kobject_create_and_add("wacom_remote",
+ 						    &wacom->hdev->dev.kobj);
+-	if (!remote->remote_dir)
++	if (!remote->remote_dir) {
++		kfifo_free(&remote->remote_fifo);
+ 		return -ENOMEM;
++	}
+ 
+ 	error = sysfs_create_files(remote->remote_dir, remote_unpair_attrs);
  
 
 
