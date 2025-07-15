@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA83B05E65
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A79CB05B5B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A11F64A6158
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DC9F4E751D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65FF2566;
-	Tue, 15 Jul 2025 13:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0481B274FDB;
+	Tue, 15 Jul 2025 13:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZy/0+BZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZvVzTTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F1A2E7BDC;
-	Tue, 15 Jul 2025 13:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F982472AE;
+	Tue, 15 Jul 2025 13:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586793; cv=none; b=sZ3kzcHPHEXdURiGG5AKcN9CJ7bk3FXeNDiYy6ev54RPt37Uck3qiAYbCeIMZTqmln32RH1V8mXDJMbsTcEFzKML/GJ8+PEBC0GIYYV3ZCHDFoWtU8AxZuMlbI7IAb4lCzSXy5lftmMf4nGTOID0eQ5KHmk63+TQsHMCEdLEgDQ=
+	t=1752585513; cv=none; b=SkH+2YTB/gG+WI5SjfkapIfCoFHn9ognE+L7jyb8TByNU/WpsJ8uS9ztD9y0QjPTeNFZzX3V3pT+JmoJabOcmzHZhtb+xeV1v8+w9cCXHZRRR86mAg7qNP+J+XUqxfjLjsv6BsKVUzrb4IY9nAmW2qDmnmXAMgtLPUK535U44SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586793; c=relaxed/simple;
-	bh=D2biGhonGNgel4YpYAsMaywFetr0tiejDgwQmZAvJlU=;
+	s=arc-20240116; t=1752585513; c=relaxed/simple;
+	bh=lrjwa8sbEm6F+AJJWwM2/4B+muj4eKa6HFttNLsjQqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P9m8pl3TnkYkb+nLaygQ3epK+0SXnO1ix/mMWywRyLzAGHomendyKhzCZirkGSmelKNQBbHM+ZLdLhCWWwhFIz2wi1uU1UyQkUifb3lAWO1sLqzj1hrfzqy3+VR/vkxikqm7wT0tIxbZVB47/3AlyJ/6Ac7wef2K7XHgzvyG5WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZy/0+BZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05453C4CEF6;
-	Tue, 15 Jul 2025 13:39:52 +0000 (UTC)
+	 MIME-Version; b=nduf/7jWey6QeQ/ep2rwyKnYS6NsNMMYvAUOsNP6kpxt9QyGtrOb9uXumdf9pNbTUxT4mP+eN9jCxWV4cyHkCh17QLAGG530HHIQDV4O7aqcTEa0G5geYc9xMDeudYVkYX0gf3rR65ug+Lh0J57yLMoBtnfy2duaNd6Td1Bz9AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZvVzTTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABBDC4CEE3;
+	Tue, 15 Jul 2025 13:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586793;
-	bh=D2biGhonGNgel4YpYAsMaywFetr0tiejDgwQmZAvJlU=;
+	s=korg; t=1752585513;
+	bh=lrjwa8sbEm6F+AJJWwM2/4B+muj4eKa6HFttNLsjQqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZy/0+BZeQnfVVcdyOjGg5TwtE3dERs71Ha1UAocZCHXIk6M5tYdgtObURy0h/HNx
-	 DNjgy/sUVzz8SkYGSE8jLJI59VmNHBqG8MowxyIwvMh+wwS5M7Hah/HFNAXa4AKIIC
-	 Gbz0hmr8qj9BiJLTHouNUucXz6WpL53Hgp8QZce8=
+	b=nZvVzTTG667E0lbp4Wp9rvyl+HHlCFsK2TBXt9aj271MfmjVK7MK2j7bq+4WiV1V2
+	 R89nGUfXPdB1ITghRCniZqIa5Mv3GZYg8jD9WGpDA96J3jPF9OPvh6btstitjZj8hz
+	 SwImlnPJQqgDKfZZESpGRq8VHh/hXuMok/zDdC8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Jason Xing <kernelxing@tencent.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 023/192] bnxt_en: eliminate the compile warning in bnxt_request_irq due to CONFIG_RFS_ACCEL
-Date: Tue, 15 Jul 2025 15:11:58 +0200
-Message-ID: <20250715130815.795294667@linuxfoundation.org>
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>
+Subject: [PATCH 6.12 051/163] x86/mce: Dont remove sysfs if thresholding sysfs init fails
+Date: Tue, 15 Jul 2025 15:11:59 +0200
+Message-ID: <20250715130810.805566106@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit b9fd9888a5654e59f6c6249337e36c53c1faa329 ]
+commit 4c113a5b28bfd589e2010b5fc8867578b0135ed7 upstream.
 
-I received a kernel-test-bot report[1] that shows the
-[-Wunused-but-set-variable] warning. Since the previous commit I made, as
-the 'Fixes' tag shows, gives users an option to turn on and off the
-CONFIG_RFS_ACCEL, the issue then can be discovered and reproduced with
-GCC specifically.
+Currently, the MCE subsystem sysfs interface will be removed if the
+thresholding sysfs interface fails to be created. A common failure is due to
+new MCA bank types that are not recognized and don't have a short name set.
 
-Like Simon and Jakub suggested, use fewer #ifdefs which leads to fewer
-bugs.
+The MCA thresholding feature is optional and should not break the common MCE
+sysfs interface. Also, new MCA bank types are occasionally introduced, and
+updates will be needed to recognize them. But likewise, this should not break
+the common sysfs interface.
 
-[1]
-All warnings (new ones prefixed by >>):
+Keep the MCE sysfs interface regardless of the status of the thresholding
+sysfs interface.
 
-   drivers/net/ethernet/broadcom/bnxt/bnxt.c: In function 'bnxt_request_irq':
->> drivers/net/ethernet/broadcom/bnxt/bnxt.c:10703:9: warning: variable 'j' set but not used [-Wunused-but-set-variable]
-   10703 |  int i, j, rc = 0;
-         |         ^
-
-Fixes: 9b6a30febddf ("net: allow rps/rfs related configs to be switched")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506282102.x1tXt0qz-lkp@intel.com/
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Tony Luck <tony.luck@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-1-236dd74f645f@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 9de6eefad9791..d66519ce57af0 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11565,11 +11565,9 @@ static void bnxt_free_irq(struct bnxt *bp)
- 
- static int bnxt_request_irq(struct bnxt *bp)
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2756,15 +2756,9 @@ static int mce_cpu_dead(unsigned int cpu
+ static int mce_cpu_online(unsigned int cpu)
  {
-+	struct cpu_rmap *rmap = NULL;
- 	int i, j, rc = 0;
- 	unsigned long flags = 0;
--#ifdef CONFIG_RFS_ACCEL
--	struct cpu_rmap *rmap;
--#endif
+ 	struct timer_list *t = this_cpu_ptr(&mce_timer);
+-	int ret;
  
- 	rc = bnxt_setup_int_mode(bp);
- 	if (rc) {
-@@ -11590,15 +11588,15 @@ static int bnxt_request_irq(struct bnxt *bp)
- 		int map_idx = bnxt_cp_num_to_irq_num(bp, i);
- 		struct bnxt_irq *irq = &bp->irq_tbl[map_idx];
- 
--#ifdef CONFIG_RFS_ACCEL
--		if (rmap && bp->bnapi[i]->rx_ring) {
-+		if (IS_ENABLED(CONFIG_RFS_ACCEL) &&
-+		    rmap && bp->bnapi[i]->rx_ring) {
- 			rc = irq_cpu_rmap_add(rmap, irq->vector);
- 			if (rc)
- 				netdev_warn(bp->dev, "failed adding irq rmap for ring %d\n",
- 					    j);
- 			j++;
- 		}
--#endif
-+
- 		rc = request_irq(irq->vector, irq->handler, flags, irq->name,
- 				 bp->bnapi[i]);
- 		if (rc)
--- 
-2.39.5
-
+ 	mce_device_create(cpu);
+-
+-	ret = mce_threshold_create_device(cpu);
+-	if (ret) {
+-		mce_device_remove(cpu);
+-		return ret;
+-	}
++	mce_threshold_create_device(cpu);
+ 	mce_reenable_cpu();
+ 	mce_start_timer(t);
+ 	return 0;
 
 
 
