@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D426B05EC9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B600B05D53
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEEC71894F72
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EE2C169918
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F562E6D00;
-	Tue, 15 Jul 2025 13:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ACB2E5433;
+	Tue, 15 Jul 2025 13:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBp95nIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACrw9BIq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B232E62CF;
-	Tue, 15 Jul 2025 13:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7532E2F18;
+	Tue, 15 Jul 2025 13:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586986; cv=none; b=ciqBJSthLVxX2I0zJ5PbiWDUsZwM8xDeP8tU/RAUdhE49nX8WETSEjssLFdlUPPiFggNsmHSqXURWzAI6yBWhLlBKXFdx/lJfcQk35ldr/39jzC8z/+xsqQnDmj1j2gYkA13adDRe0SMBl6BLIgbts6pAXy1TMewILxkEJWzZd4=
+	t=1752586441; cv=none; b=bnn4KY3Qxo58nrK7mHb/L0/7YDSAyelesohcD4ZdoZeQLJZIyos7kYBmfiQL4qiIG8GuRgNmxZW16YZ2lZYIxIsk6ws9V2fRxcgd8Cmwf6l9WMdvjzXKIfBTmCeXyomm+s0tN+iwLdvWWPUlic6Wzow4qBK5IvmdQjU3myO21ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586986; c=relaxed/simple;
-	bh=LOT6fMaHD1m5HnJ3ecY6h1xzPWp2suB8OuShk7PtQ4o=;
+	s=arc-20240116; t=1752586441; c=relaxed/simple;
+	bh=vO0ybVFdYtiRpS509Ter6qoZp4wfsevSQpzRgd6eoUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hvk0wmGY+1C9+MuNxc/I0HopIoHe+tletP4QsMgTmwPBpfQekNuHtv2W0fhKaRvvmCHzxSAAW5My2niuhl0w/3zCk3d/EejX2AADrod6VpONlK3WnivUQ/o4pooYhq7vmwwlcMNlGxh4Tq0xrQiR6FDT8fAfEQyFIAcnKKQYkHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBp95nIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583A9C4CEE3;
-	Tue, 15 Jul 2025 13:43:06 +0000 (UTC)
+	 MIME-Version; b=TjpeJS/WxcY14cKXEK5/ULMQv1plTJV1WaCEONUbp4/cE4PDdytrmEpc6StXIZpwyXGKDX+rL/TdYqnH58N80t3JQdc5HEFbOd4o5RRGRucCFyrdmsSWtGxGFQVkwSvocOhc+/5MnJVSX8u3e+Nb0+NcuRxBCFmoQQ2N0VG6maU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACrw9BIq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D6AC4CEE3;
+	Tue, 15 Jul 2025 13:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586986;
-	bh=LOT6fMaHD1m5HnJ3ecY6h1xzPWp2suB8OuShk7PtQ4o=;
+	s=korg; t=1752586441;
+	bh=vO0ybVFdYtiRpS509Ter6qoZp4wfsevSQpzRgd6eoUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WBp95nIcjo/9hDQTJK0iEt+vFBD0fGnIx/FjtSQYrOQMR6GYkRr6r4nYYDJmMB5O7
-	 uZGRBBSy8R85foKwKv4eRmEVNWutp5Hmxvw0R2NiRGMryF85vEGP+kVWa1s/9W5GFS
-	 d8WBA3LgTz27vYIriqodYWizRcp2mOWMjwDm10ok=
+	b=ACrw9BIqTAoOUP7spVD49MSuufqjeVnsmxtdlTKBUzQaMRn20IvbTFgow6XnkNPNg
+	 efP7ZB6Be8m3W73jXllT3XWCsiH5yTCJ2Y4pcfQysYh9WOMi9IhMPWfDGobws8a4VQ
+	 yn6yborN5wZVRGcK2PnCUTJ2QEqigkIXk9BdSuKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.15 092/192] usb: gadget: u_serial: Fix race condition in TTY wakeup
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 065/148] btrfs: fix missing error handling when searching for inode refs during log replay
 Date: Tue, 15 Jul 2025 15:13:07 +0200
-Message-ID: <20250715130818.598766572@linuxfoundation.org>
+Message-ID: <20250715130802.931013347@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit c529c3730bd09115684644e26bf01ecbd7e2c2c9 upstream.
+[ Upstream commit 6561a40ceced9082f50c374a22d5966cf9fc5f5c ]
 
-A race condition occurs when gs_start_io() calls either gs_start_rx() or
-gs_start_tx(), as those functions briefly drop the port_lock for
-usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
-port.tty and port_usb, respectively.
+During log replay, at __add_inode_ref(), when we are searching for inode
+ref keys we totally ignore if btrfs_search_slot() returns an error. This
+may make a log replay succeed when there was an actual error and leave
+some metadata inconsistency in a subvolume tree. Fix this by checking if
+an error was returned from btrfs_search_slot() and if so, return it to
+the caller.
 
-Use the null-safe TTY Port helper function to wake up TTY.
-
-Example
-  CPU1:			      CPU2:
-  gserial_connect() // lock
-  			      gs_close() // await lock
-  gs_start_rx()     // unlock
-  usb_ep_queue()
-  			      gs_close() // lock, reset port.tty and unlock
-  gs_start_rx()     // lock
-  tty_wakeup()      // NPE
-
-Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/linux-usb/20240116141801.396398-1-khtsai@google.com/
-Link: https://lore.kernel.org/r/20250617050844.1848232-2-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e02119d5a7b4 ("Btrfs: Add a write ahead tree log to optimize synchronous operations")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/tree-log.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -295,8 +295,8 @@ __acquires(&port->port_lock)
- 			break;
- 	}
- 
--	if (do_tty_wake && port->port.tty)
--		tty_wakeup(port->port.tty);
-+	if (do_tty_wake)
-+		tty_port_tty_wakeup(&port->port);
- 	return status;
- }
- 
-@@ -578,7 +578,7 @@ static int gs_start_io(struct gs_port *p
- 		gs_start_tx(port);
- 		/* Unblock any pending writes into our circular buffer, in case
- 		 * we didn't in gs_start_tx() */
--		tty_wakeup(port->port.tty);
-+		tty_port_tty_wakeup(&port->port);
- 	} else {
- 		/* Free reqs only if we are still connected */
- 		if (port->port_usb) {
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index f75333d7b78a5..75bf490cd7320 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1033,7 +1033,9 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
+ 	search_key.type = BTRFS_INODE_REF_KEY;
+ 	search_key.offset = parent_objectid;
+ 	ret = btrfs_search_slot(NULL, root, &search_key, path, 0, 0);
+-	if (ret == 0) {
++	if (ret < 0) {
++		return ret;
++	} else if (ret == 0) {
+ 		struct btrfs_inode_ref *victim_ref;
+ 		unsigned long ptr;
+ 		unsigned long ptr_end;
+-- 
+2.39.5
+
 
 
 
