@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-161993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C138DB05B0D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:16:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51082B05B00
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6A6F7A7629
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D0931898DA8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250DD193077;
-	Tue, 15 Jul 2025 13:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FC71A23AF;
+	Tue, 15 Jul 2025 13:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfYjgeKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tt4En3C5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D793BBF2;
-	Tue, 15 Jul 2025 13:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7163BBF2;
+	Tue, 15 Jul 2025 13:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585388; cv=none; b=ayamHypxEXJ8AzyoT84JZ8h+pS3OWDUcIV+WHp1USxdaRMVwQdER5qCABxceSVw+MFuT0P4nCFpqumjlOLaSvKBRuXhFOvOWD4YXmSNSMh2RtZ1qhWdzuhV9CIgiwG66PaFInqp+PkJYfJl6wg2RNmHlrwPgcS1fD3N4HsDRnBE=
+	t=1752585356; cv=none; b=Zf9cVsO7LCnTyGE9Zk/0BnoCBBgyWqnzBl5ZcQTneL0aRn3GXseADCrs1rZ9P0lnx6Ik5P44gK2buSCJhctlk4Tm8F2ObUz836AGkDxJa7HNQtZkJQxGOF0culfClh1yUE6dhqY9LnDdbFNUWNpWt1gXOE+6TO/wcZGoVV506mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585388; c=relaxed/simple;
-	bh=ozrttte2IVLv9PF7WgJ1GyN6MX5CLPdyRx6Tps45Vog=;
+	s=arc-20240116; t=1752585356; c=relaxed/simple;
+	bh=GCCvrUGsWqOU5aTVG7w+JZAaguCDmA6he79I48eHTs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=elwwu2zovOb/kU426JaQpoyfGXPMZXe/3a+bY5GCfht0PJ+OoxZeRBn33pKx3NVKH0yF8JT6BK304UhAJsjcw3Mf5Dm8l1kKI7dE4T8lfGjhIdVNTHiD2yfD5GJbjVFT1dCBA6J57nXrluXewGX9oLF4fWimnz/rc5oLCqFXhns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfYjgeKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091C1C4CEE3;
-	Tue, 15 Jul 2025 13:16:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KhTbC/CSYQ8OKT+fj1g5qCkf/nDTFtlVlJ/joHPY/G+CVpMckz0uZ3x1o7AObME+vIFGguH03RJh4Jl/liMp3o1OYTGXZg+rW1hCb+306rZPjtvb2KuFkGYRxWJLePA6Et8hZAvFM4mTE9omUA7Ux9NNMefEoyQUFMz9y0GJtSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tt4En3C5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD08C4CEE3;
+	Tue, 15 Jul 2025 13:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585388;
-	bh=ozrttte2IVLv9PF7WgJ1GyN6MX5CLPdyRx6Tps45Vog=;
+	s=korg; t=1752585356;
+	bh=GCCvrUGsWqOU5aTVG7w+JZAaguCDmA6he79I48eHTs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YfYjgeKRg2dW7nLScTTjFkDmTZqL/Cb3n/mYH+8Zm6nRtsFvt6590vy9P+shl9KXr
-	 m+YL+a9MMPqDffnBq75Bo8LNy68AQ3l3OGPswCFRJqZDMWgF+Ut19WJXwen0DNsAca
-	 iLlD+QEngj2KigV1OyCzvruGcGfAeQ0zoHkZXnB8=
+	b=tt4En3C5lNIpR/szmkDRk9xzhCvSaBKeY4nnao5j+mQK845Bf0EUkl1sqqUYUyO+9
+	 xLMqn+sn7/A25O5SCBFHXX2Ee1QR3nXNAnZyrKweXrJxUyWEL3L4P65Eva1pkmnjLl
+	 BXflOyjRtXpSg8LT4f5waHnywm7gTBgBcc24b3DE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/163] ASoC: Intel: soc-acpi: arl: Correct naming of a cs35l56 address struct
-Date: Tue, 15 Jul 2025 15:11:17 +0200
-Message-ID: <20250715130809.151204921@linuxfoundation.org>
+Subject: [PATCH 6.12 010/163] ASoC: Intel: soc-acpi: arl: Add match entries for new cs42l43 laptops
+Date: Tue, 15 Jul 2025 15:11:18 +0200
+Message-ID: <20250715130809.190033395@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
 References: <20250715130808.777350091@linuxfoundation.org>
@@ -72,49 +72,91 @@ Content-Transfer-Encoding: 8bit
 
 From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit a3003af649efb6f3d86d379d1e9a966ea6d5f5ab ]
+[ Upstream commit d7f671b2f566379f275c13e25a29fa7001bb278f ]
 
-As there are many combinations these follow a naming scheme to make
-the content of link structures clearer:
-
-cs35l56_<controller link>_<l or r><unique instance id>_adr
+Add some new match table entries on Arrowlake for some coming cs42l43
+laptops.
 
 Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
 Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
 Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20241206075903.195730-10-yung-chuan.liao@linux.intel.com
+Link: https://patch.msgid.link/20241206075903.195730-11-yung-chuan.liao@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Stable-dep-of: a7528e9beadb ("ASoC: Intel: soc-acpi: arl: Correct order of cs42l43 matches")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-arl-match.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../intel/common/soc-acpi-intel-arl-match.c   | 43 +++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
 diff --git a/sound/soc/intel/common/soc-acpi-intel-arl-match.c b/sound/soc/intel/common/soc-acpi-intel-arl-match.c
-index 24d850df77ca8..d7dfb23277d09 100644
+index d7dfb23277d09..32147dc9d2d66 100644
 --- a/sound/soc/intel/common/soc-acpi-intel-arl-match.c
 +++ b/sound/soc/intel/common/soc-acpi-intel-arl-match.c
-@@ -138,7 +138,7 @@ static const struct snd_soc_acpi_adr_device cs35l56_2_r1_adr[] = {
+@@ -147,6 +147,24 @@ static const struct snd_soc_acpi_adr_device cs35l56_3_l3_adr[] = {
  	},
  };
  
--static const struct snd_soc_acpi_adr_device cs35l56_3_l1_adr[] = {
-+static const struct snd_soc_acpi_adr_device cs35l56_3_l3_adr[] = {
- 	{
- 		.adr = 0x00033301fa355601ull,
- 		.num_endpoints = 1,
-@@ -306,8 +306,8 @@ static const struct snd_soc_acpi_link_adr arl_cs42l43_l0_cs35l56_2_l23[] = {
- 	},
- 	{
- 		.mask = BIT(3),
--		.num_adr = ARRAY_SIZE(cs35l56_3_l1_adr),
--		.adr_d = cs35l56_3_l1_adr,
-+		.num_adr = ARRAY_SIZE(cs35l56_3_l3_adr),
-+		.adr_d = cs35l56_3_l3_adr,
- 	},
++static const struct snd_soc_acpi_adr_device cs35l56_2_r3_adr[] = {
++	{
++		.adr = 0x00023301fa355601ull,
++		.num_endpoints = 1,
++		.endpoints = &spk_r_endpoint,
++		.name_prefix = "AMP2"
++	},
++};
++
++static const struct snd_soc_acpi_adr_device cs35l56_3_l1_adr[] = {
++	{
++		.adr = 0x00033101fa355601ull,
++		.num_endpoints = 1,
++		.endpoints = &spk_l_endpoint,
++		.name_prefix = "AMP1"
++	},
++};
++
+ static const struct snd_soc_acpi_endpoint cs42l43_endpoints[] = {
+ 	{ /* Jack Playback Endpoint */
+ 		.num = 0,
+@@ -312,6 +330,25 @@ static const struct snd_soc_acpi_link_adr arl_cs42l43_l0_cs35l56_2_l23[] = {
  	{}
  };
+ 
++static const struct snd_soc_acpi_link_adr arl_cs42l43_l0_cs35l56_3_l23[] = {
++	{
++		.mask = BIT(0),
++		.num_adr = ARRAY_SIZE(cs42l43_0_adr),
++		.adr_d = cs42l43_0_adr,
++	},
++	{
++		.mask = BIT(2),
++		.num_adr = ARRAY_SIZE(cs35l56_2_r3_adr),
++		.adr_d = cs35l56_2_r3_adr,
++	},
++	{
++		.mask = BIT(3),
++		.num_adr = ARRAY_SIZE(cs35l56_3_l1_adr),
++		.adr_d = cs35l56_3_l1_adr,
++	},
++	{}
++};
++
+ static const struct snd_soc_acpi_link_adr arl_rvp[] = {
+ 	{
+ 		.mask = BIT(0),
+@@ -406,6 +443,12 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[] = {
+ 		.drv_name = "sof_sdw",
+ 		.sof_tplg_filename = "sof-arl-cs42l43-l0-cs35l56-l23.tplg",
+ 	},
++	{
++		.link_mask = BIT(0) | BIT(2) | BIT(3),
++		.links = arl_cs42l43_l0_cs35l56_3_l23,
++		.drv_name = "sof_sdw",
++		.sof_tplg_filename = "sof-arl-cs42l43-l0-cs35l56-l23.tplg",
++	},
+ 	{
+ 		.link_mask = BIT(0) | BIT(2),
+ 		.links = arl_cs42l43_l0_cs35l56_l2,
 -- 
 2.39.5
 
