@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D2EB05DA2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 135F1B05B8E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1D164A3979
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CBAF565FA5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBF62EA481;
-	Tue, 15 Jul 2025 13:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BCD2D5426;
+	Tue, 15 Jul 2025 13:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGa2nlXR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3zyyDLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED042EA482;
-	Tue, 15 Jul 2025 13:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B589C1991D2;
+	Tue, 15 Jul 2025 13:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586422; cv=none; b=e8YgkqiPfFlHKC7we0dY2QE42prm4a+ASipCzEHXL+jpbqiZEHAWuJcPIWXTpojdVXc1kclKeNmBUavbUQ/jILRZU5o6AOa/fWIriokK2e+BRwJkpWH6yThISji1YzW7sgdEilhmE7kMqoxZYNmhbyix7e9s4QiokLHYxKza5Eg=
+	t=1752585635; cv=none; b=huwpQ/ASELJoo8PdkT3OwBYZGvm4yiG0bxGWuPpuA2Ax3sxA2NMoPiggVK6lj97fGkQdeO1/aXpbG5Xo4Q+xo/YD/SVt7bVslViQlMrgh5CU019uDE9yOmms/a05JnqDiqzTMPs0Sqkt04EJEVWWfe/OqYOruSh2Uk0hClSm8j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586422; c=relaxed/simple;
-	bh=YMBu3uPeEGxWDW4sdVt94CB5QMDmIWbi+y7aiy6wWHk=;
+	s=arc-20240116; t=1752585635; c=relaxed/simple;
+	bh=+oEWqwAe6PbZOfPklL2YDtBDD40OWX3+FquU54xyzVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7j2pynzzRSZ8CMgxJ7gY379cDGX95KWkdMFUerA3Os+ZVZCPF5G78WzARR0H0oY36Ncd3F8HbjwqmgJg23IDZdg0Uo2q+LLfDdC2thu7bQWlsEP3aJ84C88hVGEckPGPIFS/NIFu38ye6KMA+w9R9NUpCO0kmwIkRG9Hw3UJDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGa2nlXR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493B4C4CEE3;
-	Tue, 15 Jul 2025 13:33:42 +0000 (UTC)
+	 MIME-Version; b=WyOrxEig5Bb+1dwVgiW/vDtURp4IzEG22KbgIw8RtiuYKWSH7rrK7c3elNNDyB8/rRV3Sqr62jFMm2RnHNRbnG6ZaaaW5gfGeSRwfxM/oA4Hxmwv5gfXG4XGSy6qtDsn1D52FpP+r/0bi3aaDksja/I+gCN1zys19EwFJyvVpdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3zyyDLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AF7C4CEE3;
+	Tue, 15 Jul 2025 13:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586422;
-	bh=YMBu3uPeEGxWDW4sdVt94CB5QMDmIWbi+y7aiy6wWHk=;
+	s=korg; t=1752585635;
+	bh=+oEWqwAe6PbZOfPklL2YDtBDD40OWX3+FquU54xyzVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LGa2nlXRfH2acENHQjHaVLnLGF7ZtMlkecxwDFr6RxtObLaXQV/fhnMJsY9p1sYEb
-	 UBn8y4v3wRLIgMW4wKoEx6oG+eczXuWKeKhtQn935F5ilb8Q/b+co4rQLf/XuP5Lt4
-	 P46Yax5yZSsijxWzAniq1oik5Nd8JbTRo6OC+N9E=
+	b=m3zyyDLxy+/8nxSf/K8iNbCbkULa0pUqii5zdGobcgNjxQdgdzIuKSiShAjAnO5bV
+	 hUUYO9h5HqC5c9ba2QzaE3UHxQNKisWrh2X11oy0HGqBHlP+7Y8x0k0Xbxk8qUZYv1
+	 Nb8ZUij4hPMkCtRVJDjStSJzA1RtmhWsUFO0DQdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	RD Babiera <rdbabiera@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.4 059/148] usb: typec: altmodes/displayport: do not index invalid pin_assignments
+	Michael-CY Lee <michael-cy.lee@mediatek.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 113/163] wifi: mac80211: fix non-transmitted BSSID profile search
 Date: Tue, 15 Jul 2025 15:13:01 +0200
-Message-ID: <20250715130802.692567856@linuxfoundation.org>
+Message-ID: <20250715130813.386188487@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit af4db5a35a4ef7a68046883bfd12468007db38f1 upstream.
+[ Upstream commit e1e6ebf490e55fee1ae573aa443c1d4aea5e4a40 ]
 
-A poorly implemented DisplayPort Alt Mode port partner can indicate
-that its pin assignment capabilities are greater than the maximum
-value, DP_PIN_ASSIGN_F. In this case, calls to pin_assignment_show
-will cause a BRK exception due to an out of bounds array access.
+When the non-transmitted BSSID profile is found, immediately return
+from the search to not return the wrong profile_len when the profile
+is found in a multiple BSSID element that isn't the last one in the
+frame.
 
-Prevent for loop in pin_assignment_show from accessing
-invalid values in pin_assignments by adding DP_PIN_ASSIGN_MAX
-value in typec_dp.h and using i < DP_PIN_ASSIGN_MAX as a loop
-condition.
-
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-Cc: stable <stable@kernel.org>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250618224943.3263103-2-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5023b14cf4df ("mac80211: support profile split between elements")
+Reported-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
+Link: https://patch.msgid.link/20250630154501.f26cd45a0ecd.I28e0525d06e8a99e555707301bca29265cf20dc8@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    2 +-
- include/linux/usb/typec_dp.h             |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/parse.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -492,7 +492,7 @@ static ssize_t pin_assignment_show(struc
+diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
+index 6da39c864f45b..922ea9a6e2412 100644
+--- a/net/mac80211/parse.c
++++ b/net/mac80211/parse.c
+@@ -758,7 +758,6 @@ static size_t ieee802_11_find_bssid_profile(const u8 *start, size_t len,
+ {
+ 	const struct element *elem, *sub;
+ 	size_t profile_len = 0;
+-	bool found = false;
  
- 	assignments = get_current_pin_assignments(dp);
+ 	if (!bss || !bss->transmitted_bss)
+ 		return profile_len;
+@@ -809,15 +808,14 @@ static size_t ieee802_11_find_bssid_profile(const u8 *start, size_t len,
+ 					       index[2],
+ 					       new_bssid);
+ 			if (ether_addr_equal(new_bssid, bss->bssid)) {
+-				found = true;
+ 				elems->bssid_index_len = index[1];
+ 				elems->bssid_index = (void *)&index[2];
+-				break;
++				return profile_len;
+ 			}
+ 		}
+ 	}
  
--	for (i = 0; assignments; assignments >>= 1, i++) {
-+	for (i = 0; assignments && i < DP_PIN_ASSIGN_MAX; assignments >>= 1, i++) {
- 		if (assignments & 1) {
- 			if (i == cur)
- 				len += sprintf(buf + len, "[%s] ",
---- a/include/linux/usb/typec_dp.h
-+++ b/include/linux/usb/typec_dp.h
-@@ -56,6 +56,7 @@ enum {
- 	DP_PIN_ASSIGN_D,
- 	DP_PIN_ASSIGN_E,
- 	DP_PIN_ASSIGN_F, /* Not supported after v1.0b */
-+	DP_PIN_ASSIGN_MAX,
- };
+-	return found ? profile_len : 0;
++	return 0;
+ }
  
- /* DisplayPort alt mode specific commands */
+ static void
+-- 
+2.39.5
+
 
 
 
