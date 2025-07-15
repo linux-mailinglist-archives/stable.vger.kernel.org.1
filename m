@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F76B05B54
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28998B05E57
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A2F04E52D8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CAB9502098
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0742E1C54;
-	Tue, 15 Jul 2025 13:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76D22E8E07;
+	Tue, 15 Jul 2025 13:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkZJeu03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrlKHlAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B662192D8A;
-	Tue, 15 Jul 2025 13:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CF32E3380;
+	Tue, 15 Jul 2025 13:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585500; cv=none; b=He7lyjskdRUIf5cZRCHU6E433ERLupbAqCoKxtvKt6sgEMLoHzWlHJYz4LTOyp2+YNMcpU/PT/EmzC/afQK3o/r4bFhqOxyiNITFG8Pt/8kxH0Qe/PE8il//dDcqMXGO7ASupZ0FiywQrGbgIgm2QmvmcijQGF9sUP6gYrIl1EQ=
+	t=1752586756; cv=none; b=t8dq5Jd/j1puWri3Dby2rNN45mFlAyY1nG7o5kqCslK67ZsbQoTeeMCEpXpPSpWu2zx/ZiPMsfUF2kNB+fIPhmVm3ac8DimJaYyJy8wUo7YkdyHMWRc3NQYNrIgI+LsQpJleVeA6kixqx0E6qmJgm7zJzjA8iycqiLCaTcqwop4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585500; c=relaxed/simple;
-	bh=TkyT1mXx/OT0w6TlRbJ6H70zrL/N4zSdI69ibWMJegU=;
+	s=arc-20240116; t=1752586756; c=relaxed/simple;
+	bh=P5SmTFDGW7qxjtsLR5GTbi0vET46VM9Uet5s9MxYltU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aZ7zMuZUwwT8d020mJ3Z6Nn0b3HpEz5r/6FHnB8L1i1ez/Im53NZz6PTvo6T9hIoHRLrs4L2upfjnFqjCTb+71gVOnFrVrD+NygII7Rml+WEX9MsWZrCNZDAXmwCEMbvCZ5ta9OOZJeNr/2oSfIoPYplNh+Zw7YFc0UYN79XZWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkZJeu03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AACC4CEE3;
-	Tue, 15 Jul 2025 13:18:19 +0000 (UTC)
+	 MIME-Version; b=CROkA78UNlDYKdw3j2zZ087WR515pq0RT8zje2iOR836AkXkQQhgRRYp/cDfn0StCDrDR1lTH+n7d1vD+ZCDaAfRoLGkAeKxbLpJmaZ5wj/N5IPD8EMGti2wWBnQQmH9/nzh6K7f5YXgmynBicHbdKR2paRF9uxez3kqoURulIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrlKHlAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8C3C4CEE3;
+	Tue, 15 Jul 2025 13:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585500;
-	bh=TkyT1mXx/OT0w6TlRbJ6H70zrL/N4zSdI69ibWMJegU=;
+	s=korg; t=1752586756;
+	bh=P5SmTFDGW7qxjtsLR5GTbi0vET46VM9Uet5s9MxYltU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkZJeu03ovsKFNbNR3U617DCs/6u+y0TVj+064gP35KYigiYLvTckF9gtajq0CxeH
-	 fXgaHW7OYNW1nCk6Bc+hmn9VOMAgSAayN7diy/aUoN64LP3nnyKSUDv9/Z7H4MWq7Y
-	 cE3wai47W+uEOQ3/e7Og9Rh8oSK0PgZ6yHrQohF8=
+	b=rrlKHlAwn8HSmjXBn+JBpvGhUnzEmYNQ3WZNi+wUcIE7RDX3XXqXpaHaB44Lk/BxZ
+	 pZaN1AzpxuFi/KaWmC1s4utMzxVUtncMDgqOvsJdfy2LIwCm0Pqy4543sFDY8N2QXV
+	 PtQ+BdDvxpuPDEhWuWnjuZ+eveykFV3Jho2eWDXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.12 064/163] pwm: Fix invalid state detection
+	EricChan <chenchuangyu@xiaomi.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 037/192] net: stmmac: Fix interrupt handling for level-triggered mode in DWC_XGMAC2
 Date: Tue, 15 Jul 2025 15:12:12 +0200
-Message-ID: <20250715130811.318286803@linuxfoundation.org>
+Message-ID: <20250715130816.346187112@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: EricChan <chenchuangyu@xiaomi.com>
 
-commit 9ee124caae1b0defd0e02c65686f539845a3ac9b upstream.
+[ Upstream commit 78b7920a03351a8402de2f81914c1d2e2bdf24b7 ]
 
-Commit 9dd42d019e63 ("pwm: Allow pwm state transitions from an invalid
-state") intended to allow some state transitions that were not allowed
-before. The idea is sane and back then I also got the code comment
-right, but the check for enabled is bogus. This resulted in state
-transitions for enabled states to be allowed to have invalid duty/period
-settings and thus it can happen that low-level drivers get requests for
-invalid states🙄.
+According to the Synopsys Controller IP XGMAC-10G Ethernet MAC Databook
+v3.30a (section 2.7.2), when the INTM bit in the DMA_Mode register is set
+to 2, the sbd_perch_tx_intr_o[] and sbd_perch_rx_intr_o[] signals operate
+in level-triggered mode. However, in this configuration, the DMA does not
+assert the XGMAC_NIS status bit for Rx or Tx interrupt events.
 
-Invert the check to allow state transitions for disabled states only.
+This creates a functional regression where the condition
+if (likely(intr_status & XGMAC_NIS)) in dwxgmac2_dma_interrupt() will
+never evaluate to true, preventing proper interrupt handling for
+level-triggered mode. The hardware specification explicitly states that
+"The DMA does not assert the NIS status bit for the Rx or Tx interrupt
+events" (Synopsys DWC_XGMAC2 Databook v3.30a, sec. 2.7.2).
 
-Fixes: 9dd42d019e63 ("pwm: Allow pwm state transitions from an invalid state")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250704172416.626433-2-u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fix ensures correct handling of both edge and level-triggered
+interrupts while maintaining backward compatibility with existing
+configurations. It has been tested on the hardware device (not publicly
+available), and it can properly trigger the RX and TX interrupt handling
+in both the INTM=0 and INTM=2 configurations.
+
+Fixes: d6ddfacd95c7 ("net: stmmac: Add DMA related callbacks for XGMAC2")
+Tested-by: EricChan <chenchuangyu@xiaomi.com>
+Signed-off-by: EricChan <chenchuangyu@xiaomi.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250703020449.105730-1-chenchuangyu@xiaomi.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/stmicro/stmmac/dwxgmac2_dma.c    | 24 +++++++++----------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -148,7 +148,7 @@ static bool pwm_state_valid(const struct
- 	 * and supposed to be ignored. So also ignore any strange values and
- 	 * consider the state ok.
- 	 */
--	if (state->enabled)
-+	if (!state->enabled)
- 		return true;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+index 7840bc403788e..5dcc95bc0ad28 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+@@ -364,19 +364,17 @@ static int dwxgmac2_dma_interrupt(struct stmmac_priv *priv,
+ 	}
  
- 	if (!state->period)
+ 	/* TX/RX NORMAL interrupts */
+-	if (likely(intr_status & XGMAC_NIS)) {
+-		if (likely(intr_status & XGMAC_RI)) {
+-			u64_stats_update_begin(&stats->syncp);
+-			u64_stats_inc(&stats->rx_normal_irq_n[chan]);
+-			u64_stats_update_end(&stats->syncp);
+-			ret |= handle_rx;
+-		}
+-		if (likely(intr_status & (XGMAC_TI | XGMAC_TBU))) {
+-			u64_stats_update_begin(&stats->syncp);
+-			u64_stats_inc(&stats->tx_normal_irq_n[chan]);
+-			u64_stats_update_end(&stats->syncp);
+-			ret |= handle_tx;
+-		}
++	if (likely(intr_status & XGMAC_RI)) {
++		u64_stats_update_begin(&stats->syncp);
++		u64_stats_inc(&stats->rx_normal_irq_n[chan]);
++		u64_stats_update_end(&stats->syncp);
++		ret |= handle_rx;
++	}
++	if (likely(intr_status & (XGMAC_TI | XGMAC_TBU))) {
++		u64_stats_update_begin(&stats->syncp);
++		u64_stats_inc(&stats->tx_normal_irq_n[chan]);
++		u64_stats_update_end(&stats->syncp);
++		ret |= handle_tx;
+ 	}
+ 
+ 	/* Clear interrupts */
+-- 
+2.39.5
+
 
 
 
