@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C12B05E75
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FD0B05BB9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 494B917CD4B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B16116B594
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065502EAB93;
-	Tue, 15 Jul 2025 13:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BD32E266C;
+	Tue, 15 Jul 2025 13:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeI/zfla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvDXBpB1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A6E2E6100;
-	Tue, 15 Jul 2025 13:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B762227584E;
+	Tue, 15 Jul 2025 13:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586917; cv=none; b=EUWWEFFG45xVa8bxuhlfBHRwnoH2bM9l7v8+0CWcPLwDves1OWxJD1ZF076TzcOxQSiWj9EKS1n/YY4hBAN2y3/od8XiS6PDUM5AnhZ4L1bRawPNoxK14o6X1F6AqXzbT5gpAypR6XXGrgPnB29aXQ7Slf31aco419/LSppW2Po=
+	t=1752585746; cv=none; b=Ghp7rmMKIuU021FN+0NO3DZEjojNW+2y7+j62TI5otBUjiVin9SMeEl2f0KGGtx6E4qkv+DgLKc2kQ/pRopUB8qp30zDOqwDy8cga4108llxqVJNj4j38bgFcuXx0cF//gfKuvbqTZEqT13yAJa4WnilZ9sY5LMoJhtd5SRMLvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586917; c=relaxed/simple;
-	bh=AobKhIJOOcobIKHaHVfGPaLQlP7XDeSkY+oN1ygrZpM=;
+	s=arc-20240116; t=1752585746; c=relaxed/simple;
+	bh=PGkWo5N+19Ec5p2V43mKNga0lVhg7+O4kwGNXuZNjsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0OM9aWWYv49Q7llliemP3DUnv/qMs7coP0GlGi1aFlnyO9oQ+IzTwxVJIQbenezM/fz66u2msdwSGmVZ37iLizZn6CCjdCTEIgUjE4mOv/g9LU3tpalmamShozajrjSIB5uPsD08W4BiSo52U/q5ClwPa/13tEcWCUyvztIEGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeI/zfla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB8CC4CEE3;
-	Tue, 15 Jul 2025 13:41:57 +0000 (UTC)
+	 MIME-Version; b=mNYt4owTuLPSL+8wTBEfKi6CNkMJtgMIyZRSydC9MQ7xvUpbPg1Ir46hc1ofmE12RU5jTFVV8Ll/6yYQKDV5Y+5uc9+a0AhvmCvE8EAnCLvaVfJE/nKcBZlF8/vDxX3AbhG5gG01cSlvOhDL1Ogb9wZn4nhmxPrTHlYhdRqRVxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvDXBpB1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9B2C4CEF1;
+	Tue, 15 Jul 2025 13:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586917;
-	bh=AobKhIJOOcobIKHaHVfGPaLQlP7XDeSkY+oN1ygrZpM=;
+	s=korg; t=1752585746;
+	bh=PGkWo5N+19Ec5p2V43mKNga0lVhg7+O4kwGNXuZNjsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IeI/zfla+P1nEbNkqcbyfm6pWhGN762zB6VSC2e/6E0w9VmG97hybrnHLo2oqLNLo
-	 CefrtpyeAhs75T1do/yb9AY50p71xgLPVG/ULKZ28bSdAut4q02bgRl+rC9DKod7k3
-	 JVlNp6L+tTOgWyJUplqOPVKTqsYnfd+TpKI8lvbk=
+	b=qvDXBpB1CkGKqkLBtXLvmGfeiAjFheEjU/8t9Gb0JD3lH9S6oTiJcd5fv9tpV/+qM
+	 gog3CWGSUA4GagKBaf3fHEFi2CUB0AQOlKvRZjHFguyjIIZChe1M6v3xPyfY4s2zsK
+	 DdBsllIrPVb3Vp+w26FxNRLosAW7+YFzdJDTOq8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Achill Gilgenast <fossdd@pwned.life>,
-	Luis Henriques <luis@igalia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 098/192] kallsyms: fix build without execinfo
+	Kito Xu <veritas501@foxmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 125/163] net: appletalk: Fix device refcount leak in atrtr_create()
 Date: Tue, 15 Jul 2025 15:13:13 +0200
-Message-ID: <20250715130818.828653969@linuxfoundation.org>
+Message-ID: <20250715130813.861930727@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Achill Gilgenast <fossdd@pwned.life>
+From: Kito Xu <veritas501@foxmail.com>
 
-commit a95743b53031b015e8949e845a9f6fdfb2656347 upstream.
+[ Upstream commit 711c80f7d8b163d3ecd463cd96f07230f488e750 ]
 
-Some libc's like musl libc don't provide execinfo.h since it's not part of
-POSIX.  In order to fix compilation on musl, only include execinfo.h if
-available (HAVE_BACKTRACE_SUPPORT)
+When updating an existing route entry in atrtr_create(), the old device
+reference was not being released before assigning the new device,
+leading to a device refcount leak. Fix this by calling dev_put() to
+release the old device reference before holding the new one.
 
-This was discovered with c104c16073b7 ("Kunit to check the longest symbol
-length") which starts to include linux/kallsyms.h with Alpine Linux'
-configs.
-
-Link: https://lkml.kernel.org/r/20250622014608.448718-1-fossdd@pwned.life
-Fixes: c104c16073b7 ("Kunit to check the longest symbol length")
-Signed-off-by: Achill Gilgenast <fossdd@pwned.life>
-Cc: Luis Henriques <luis@igalia.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c7f905f0f6d4 ("[ATALK]: Add missing dev_hold() to atrtr_create().")
+Signed-off-by: Kito Xu <veritas501@foxmail.com>
+Link: https://patch.msgid.link/tencent_E1A26771CDAB389A0396D1681A90A49E5D09@qq.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/linux/kallsyms.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/appletalk/ddp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/include/linux/kallsyms.h
-+++ b/tools/include/linux/kallsyms.h
-@@ -18,6 +18,7 @@ static inline const char *kallsyms_looku
- 	return NULL;
- }
+diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+index b068651984fe3..fa7f002b14fa3 100644
+--- a/net/appletalk/ddp.c
++++ b/net/appletalk/ddp.c
+@@ -576,6 +576,7 @@ static int atrtr_create(struct rtentry *r, struct net_device *devhint)
  
-+#ifdef HAVE_BACKTRACE_SUPPORT
- #include <execinfo.h>
- #include <stdlib.h>
- static inline void print_ip_sym(const char *loglvl, unsigned long ip)
-@@ -30,5 +31,8 @@ static inline void print_ip_sym(const ch
- 
- 	free(name);
- }
-+#else
-+static inline void print_ip_sym(const char *loglvl, unsigned long ip) {}
-+#endif
- 
- #endif
+ 	/* Fill in the routing entry */
+ 	rt->target  = ta->sat_addr;
++	dev_put(rt->dev); /* Release old device */
+ 	dev_hold(devhint);
+ 	rt->dev     = devhint;
+ 	rt->flags   = r->rt_flags;
+-- 
+2.39.5
+
 
 
 
