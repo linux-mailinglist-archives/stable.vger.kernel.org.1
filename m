@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC42B05FEE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:11:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60847B060B6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 732D01C433D8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E5DE1C43DB4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BF720F08C;
-	Tue, 15 Jul 2025 13:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084292F2C41;
+	Tue, 15 Jul 2025 13:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSi4KRGO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6f/t6WR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6042984A35;
-	Tue, 15 Jul 2025 13:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA392E9EC3;
+	Tue, 15 Jul 2025 13:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587392; cv=none; b=UpO0CVIVGaDkiugiBFflBxdbbB0bJoH3dJjbsXfcK9vsKezP1qqb4vaObmtF7a5X402um+YA2q/aEVCe1cJHVS5gx+t/1kbsAzeXx0EguhWXL9UqyKqJ/toXIQrK/DfTWAL+g0uqHJ5ujXn6IBwqOyIRd+ElYLNTdX7jtngexmc=
+	t=1752587923; cv=none; b=QDVDHNSBcnmohJNYMykTQQCBHH2clkOusDZLfUptnMYMNL+VUJM9qCFUZKU63PvM+sNOPATsQS4ybrzmlVNZ0L4O9uXF4I9xNA265y8FqMw3XhanIxlDq+AoSnWcTKpTu5uhbIU1E5COajm24iK2iEcdEtWu5wFdfrGeB2zysLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587392; c=relaxed/simple;
-	bh=qzx6s2UFaPGCYqI7L1Mi9EdpudBuAA0FnQNC7Ggq8tI=;
+	s=arc-20240116; t=1752587923; c=relaxed/simple;
+	bh=AXpk9koZ21v1bX4sMSlLjPgb4jIbS/+JsCHw5YFu/WI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T6kdKeAxCqEJiX8bL57BS51WgLwFeK10yKDO9wtEU2+vHbsuOnoA3i2XzPxMka7VYQcyCEskWzQvrLULUlDaaeH1lJYHh3I2cBzdQXaey+AyreNAM6N+Qf6IAyHmB0y0lEL8d67gxXHsMBQVUCO69cggWWWYDxKSNqGXmFWR/ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSi4KRGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9BDC4CEF1;
-	Tue, 15 Jul 2025 13:49:51 +0000 (UTC)
+	 MIME-Version; b=d5cyMkWpFR4S8XxzuM/S/IR5EF8Hcg7KUEvQF8vHgw+rXI6UifueEu5NJIYat+5mLEpRB7uQNsS3ekCJckd/8X2y7smsFGt6YvZ+yHS/ohR5EU+V8bE4mOEnBdKpr9Rjg2iXXaXw0zD7pWG0JMrdxoK65OCR3Cd8hWN7Oltt3S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6f/t6WR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA78C4CEE3;
+	Tue, 15 Jul 2025 13:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587392;
-	bh=qzx6s2UFaPGCYqI7L1Mi9EdpudBuAA0FnQNC7Ggq8tI=;
+	s=korg; t=1752587923;
+	bh=AXpk9koZ21v1bX4sMSlLjPgb4jIbS/+JsCHw5YFu/WI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSi4KRGOBfXsycVGNMloPysPAC400WdTFBiD5hLMPyOMzLrX2vmQwEoSuv3DJ51Cn
-	 lA9MpXszrUJESpC8ekNdLA43L4OjiVqOHAlAXVrq+B+2j/KnNHu3VHthq/950BvbYV
-	 09gly4QdS5kl8AFaN4ZwR7wNu7DJReFFfivNoXTY=
+	b=B6f/t6WRBnNMFU4MAJp7y90Y5qjNrdfRbcCnv/KlKAdbQqBf6217Fs52znBGCKnWP
+	 My0mWXfkG3O3i/UmEosZARBk1/9SpY3bnuvKS9UzYX4ge1A8KNSqd7rfesK3n20LIk
+	 mV3cWiHUqc0vHCQnPBoQ9oeY0zDnykcnQo8Iq+ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Xinyu Zheng <zhengxinyu6@huawei.com>
-Subject: [PATCH 6.1 84/88] vhost-scsi: protect vq->log_used with vq->mutex
-Date: Tue, 15 Jul 2025 15:15:00 +0200
-Message-ID: <20250715130757.942070943@linuxfoundation.org>
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 192/208] net: ll_temac: Fix missing tx_pending check in ethtools_set_ringparam()
+Date: Tue, 15 Jul 2025 15:15:01 +0200
+Message-ID: <20250715130818.637288368@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit f591cf9fce724e5075cc67488c43c6e39e8cbe27 upstream.
+[ Upstream commit e81750b4e3826fedce7362dad839cb40384d60ae ]
 
-The vhost-scsi completion path may access vq->log_base when vq->log_used is
-already set to false.
+The function ll_temac_ethtools_set_ringparam() incorrectly checked
+rx_pending twice, once correctly for RX and once mistakenly in place
+of tx_pending. This caused tx_pending to be left unchecked against
+TX_BD_NUM_MAX.
+As a result, invalid TX ring sizes may have been accepted or valid
+ones wrongly rejected based on the RX limit, leading to potential
+misconfiguration or unexpected results.
 
-    vhost-thread                       QEMU-thread
+This patch corrects the condition to properly validate tx_pending.
 
-vhost_scsi_complete_cmd_work()
--> vhost_add_used()
-   -> vhost_add_used_n()
-      if (unlikely(vq->log_used))
-                                      QEMU disables vq->log_used
-                                      via VHOST_SET_VRING_ADDR.
-                                      mutex_lock(&vq->mutex);
-                                      vq->log_used = false now!
-                                      mutex_unlock(&vq->mutex);
-
-				      QEMU gfree(vq->log_base)
-        log_used()
-        -> log_write(vq->log_base)
-
-Assuming the VMM is QEMU. The vq->log_base is from QEMU userpace and can be
-reclaimed via gfree(). As a result, this causes invalid memory writes to
-QEMU userspace.
-
-The control queue path has the same issue.
-
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20250403063028.16045-2-dongli.zhang@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-[ resoloved conflicts in drivers/vhost/scsi.c
-  bacause vhost_scsi_complete_cmd_work() has been refactored. ]
-Signed-off-by: Xinyu Zheng <zhengxinyu6@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f7b261bfc35e ("net: ll_temac: Make RX/TX ring sizes configurable")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250710180621.2383000-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/xilinx/ll_temac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -568,8 +568,10 @@ static void vhost_scsi_complete_cmd_work
- 		ret = copy_to_iter(&v_rsp, sizeof(v_rsp), &iov_iter);
- 		if (likely(ret == sizeof(v_rsp))) {
- 			struct vhost_scsi_virtqueue *q;
--			vhost_add_used(cmd->tvc_vq, cmd->tvc_vq_desc, 0);
- 			q = container_of(cmd->tvc_vq, struct vhost_scsi_virtqueue, vq);
-+			mutex_lock(&q->vq.mutex);
-+			vhost_add_used(cmd->tvc_vq, cmd->tvc_vq_desc, 0);
-+			mutex_unlock(&q->vq.mutex);
- 			vq = q - vs->vqs;
- 			__set_bit(vq, vs->compl_bitmap);
- 		} else
-@@ -1173,8 +1175,11 @@ static void vhost_scsi_tmf_resp_work(str
- 	else
- 		resp_code = VIRTIO_SCSI_S_FUNCTION_REJECTED;
+diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
+index e50b59efe188b..5ace1a4905d7e 100644
+--- a/drivers/net/ethernet/xilinx/ll_temac_main.c
++++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
+@@ -1299,7 +1299,7 @@ static int ll_temac_ethtools_set_ringparam(struct net_device *ndev,
+ 	if (ering->rx_pending > RX_BD_NUM_MAX ||
+ 	    ering->rx_mini_pending ||
+ 	    ering->rx_jumbo_pending ||
+-	    ering->rx_pending > TX_BD_NUM_MAX)
++	    ering->tx_pending > TX_BD_NUM_MAX)
+ 		return -EINVAL;
  
-+	mutex_lock(&tmf->svq->vq.mutex);
- 	vhost_scsi_send_tmf_resp(tmf->vhost, &tmf->svq->vq, tmf->in_iovs,
- 				 tmf->vq_desc, &tmf->resp_iov, resp_code);
-+	mutex_unlock(&tmf->svq->vq.mutex);
-+
- 	vhost_scsi_release_tmf_res(tmf);
- }
- 
+ 	if (netif_running(ndev))
+-- 
+2.39.5
+
 
 
 
