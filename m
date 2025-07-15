@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF8DB05E72
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC771B05B91
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA6B0168D6E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68D3716FC5A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1112EACE9;
-	Tue, 15 Jul 2025 13:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030652E2F1A;
+	Tue, 15 Jul 2025 13:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPGj9LAC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="005P7b/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319F220F08C;
-	Tue, 15 Jul 2025 13:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A741991D2;
+	Tue, 15 Jul 2025 13:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586907; cv=none; b=QrXdI3PhqT+fyCvMVhkviCn14K5UhbolAFbpxeTTf8X5ZGwiAgIXAGQbOOT985kVTEktwya5f++WLU2gTm+C3jkcr14I8Ohg90/AE1V0jh0dMuovTzbLjm2zfd38C80O0cIANGMRBqF70YQUa+IVOhxmTUhAknYevuNrYjEAeqo=
+	t=1752585651; cv=none; b=CwHjsZyn9khlbquDN2h/LPJsUc0OpMCBxJqwAdfXssax0oF9DuX0QK+V31SP2X63YJo6y/sgx6wKcQa/sKIpIVcHPdjRWzYaH4+jBp8yWQHW+l/CYpND5NXRMwcKUdmDLVq7BNZCGXf+IZg9fOOTPTLvwBreoX4A7hXDZOCt5co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586907; c=relaxed/simple;
-	bh=zOfIkH0VUdbrVsbuSjevDclLZYRiOVw7YHPzb5l6c1E=;
+	s=arc-20240116; t=1752585651; c=relaxed/simple;
+	bh=nmQDbsWReh/JA4mDjQ6O6cJmlPpD4IhMxQ2Zs9OJJcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlxszAHPLTeDAlTuqjl+050RF2yiFuPobJFURQ7yMtAmu+dwkRP3O9i2iQoKf/PoVyEvkIu1Xh5mAlIlW754o48Qb1avgkJ8THxpfMO+F+lt/8dBTynqDyBuIPHqdOBl6b60yLb6kuqIXzQbq0SISY1F2PQsfxm0qetTmFZwqlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPGj9LAC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8480C4CEE3;
-	Tue, 15 Jul 2025 13:41:46 +0000 (UTC)
+	 MIME-Version; b=Wenqq4+mLAoyjuAZEjuJbuP/xYRLNTAH7+Njc4pSw3poX/tZK7WJdzRtDI3ON9Tdce3GmU8PXebtTtKmX8V19LxXouqhSxBjlCYI3HG4SI9M3UbA/AFLe2gZXD/kRu+0eyQDPSgZA1eU6a3+m9WRfgMZ2cLWQGcKLYz5vteZoMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=005P7b/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DD9C4CEE3;
+	Tue, 15 Jul 2025 13:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586907;
-	bh=zOfIkH0VUdbrVsbuSjevDclLZYRiOVw7YHPzb5l6c1E=;
+	s=korg; t=1752585651;
+	bh=nmQDbsWReh/JA4mDjQ6O6cJmlPpD4IhMxQ2Zs9OJJcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPGj9LAC4VD8NceeHacrVAMPgeIiz56lX1fyODQbpoPnoBwwT98g7QwNTlVk0pJFa
-	 tUwWIfxMt8l3a0k5hrqd+AFRA1KVW1wLmElV3bPN7ciZgaBx5+BqGgfVDeO3mDoOC0
-	 kCPUPHzfk47hHFlf9VXYc8hJ9DTTayj/sTrGPEvg=
+	b=005P7b/apBp9pvN7wBJP87a7DKE7oixrE3bzIX/bmSTPHZ5ixcpH03W7qJ+JJ65qV
+	 rxwNacjcmdAvWKVLEe0/T6NPNKEnl/tKYXOORXmqhJeIMM0VeaeUiFETJ/pRilcneO
+	 pTOITdKpfz8zrGLEYMdSPrvsovWo0Dm0TDZ7TMtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edip Hazuri <edip@medip.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.15 063/192] ALSA: hda/realtek - Add mute LED support for HP Victus 15-fb2xxx
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 090/163] scripts/gdb: de-reference per-CPU MCE interrupts
 Date: Tue, 15 Jul 2025 15:12:38 +0200
-Message-ID: <20250715130817.468547258@linuxfoundation.org>
+Message-ID: <20250715130812.486190459@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edip Hazuri <edip@medip.dev>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit ce174b48aebb3fa18fe48c59a3d10a89c414fdf2 upstream.
+commit 50f4d2ba26d5c3a4687ae0569be3bbf1c8f0cbed upstream.
 
-The mute led on this laptop is using ALC245 but requires a quirk to work
-This patch enables the existing quirk for the device.
+The per-CPU MCE interrupts are looked up by reference and need to be
+de-referenced before printing, otherwise we print the addresses of the
+variables instead of their contents:
 
-Tested on my friend's Victus 15-fb2xxx Laptop. The LED behaviour works
-as intended.
+MCE: 18379471554386948492   Machine check exceptions
+MCP: 18379471554386948488   Machine check polls
 
+The corrected output looks like this instead now:
+
+MCE:          0   Machine check exceptions
+MCP:          1   Machine check polls
+
+Link: https://lkml.kernel.org/r/20250625021109.1057046-1-florian.fainelli@broadcom.com
+Link: https://lkml.kernel.org/r/20250624030020.882472-1-florian.fainelli@broadcom.com
+Fixes: b0969d7687a7 ("scripts/gdb: print interrupts")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Edip Hazuri <edip@medip.dev>
-Link: https://patch.msgid.link/20250627203415.56785-2-edip@medip.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ scripts/gdb/linux/interrupts.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10855,6 +10855,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8ce0, "HP SnowWhite", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8d01, "HP ZBook Power 14 G12", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8d07, "HP Victus 15-fb2xxx (MB 8D07)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8d18, "HP EliteStudio 8 AIO", ALC274_FIXUP_HP_AIO_BIND_DACS),
- 	SND_PCI_QUIRK(0x103c, 0x8d84, "HP EliteBook X G1i", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8d85, "HP EliteBook 14 G12", ALC285_FIXUP_HP_GPIO_LED),
+--- a/scripts/gdb/linux/interrupts.py
++++ b/scripts/gdb/linux/interrupts.py
+@@ -110,7 +110,7 @@ def x86_show_mce(prec, var, pfx, desc):
+     pvar = gdb.parse_and_eval(var)
+     text = "%*s: " % (prec, pfx)
+     for cpu in cpus.each_online_cpu():
+-        text += "%10u " % (cpus.per_cpu(pvar, cpu))
++        text += "%10u " % (cpus.per_cpu(pvar, cpu).dereference())
+     text += "  %s\n" % (desc)
+     return text
+ 
 
 
 
