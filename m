@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAF5B05D50
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3568B05DEC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CECF43A553A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB9177A28E0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00462E763A;
-	Tue, 15 Jul 2025 13:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9732EA473;
+	Tue, 15 Jul 2025 13:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpYomT/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XV/CL572"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5FC70831;
-	Tue, 15 Jul 2025 13:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E77C2E266C;
+	Tue, 15 Jul 2025 13:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586287; cv=none; b=IdABmAWE8DxQUqCMNBy6NytrFrePuWAxvcgWgVg/FeQXPXD1dwAAfEfmm0eWT8lIFSBIRJTVL7PGyMVV2sxPKb58WiaH54GsknxBZBuOnE3mrCjCQmsNNs1jDSrCapP3M35x7H56XI+binzCvxzI4EplcUByOzZbaDB6sueR1VU=
+	t=1752586817; cv=none; b=sPoQYFuwh/7mWKkwSkEaXhM0ZWazhES/2b8jpioV3BxV+YltSO9A14yjMYTRg/m0sKxg5eUP/K5wRa3ys8oz2e5telIek3GI8Pp7xDNVly2RPhwk+dAc+8jsUy9hcCO7emxZaDCfgAF7SGhGc2BpvXRcNwDeUYcFlHEkYdruhyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586287; c=relaxed/simple;
-	bh=8D2X9lvGxreTgEibUXyY5aNJw0IJPZc/ZpSvIV97IH0=;
+	s=arc-20240116; t=1752586817; c=relaxed/simple;
+	bh=WxcVVwmCJ/RmX7V05W5+HTSNlkEp29no4Xvq+gRO+Yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZmGElX31QBamTDfUhDEq2HjPAnC2asUOaqVnAWGIv+d9MbrL881cPnnb0K9YisJH6rboZbLAmpNnj3TWzudA72Y7K8nWUa1uDrqz7TGdoXECFaxyZ6kpMWW58L+rCbiAeN5snw1/31Zz8BPx7feKz0Ke3RJokmPjt6KgtkrcQto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpYomT/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11443C4CEF6;
-	Tue, 15 Jul 2025 13:31:26 +0000 (UTC)
+	 MIME-Version; b=aNBZ0hgGL5bG8jPTMFhUAspQRNjn8VC/fEusqJV1Wt9UhCmXgopJOVl5tW4oKFxVs5tW11zahQq0VDbLEcGSsV3D6+wUCoVkgHuUzP8Rzw5I7UA/8e69SmBM5nlzbjixd6LKys0usuEN8LPrBUeGIq4BtDxZ8bG7yjogdaDZzek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XV/CL572; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE916C4CEE3;
+	Tue, 15 Jul 2025 13:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586287;
-	bh=8D2X9lvGxreTgEibUXyY5aNJw0IJPZc/ZpSvIV97IH0=;
+	s=korg; t=1752586817;
+	bh=WxcVVwmCJ/RmX7V05W5+HTSNlkEp29no4Xvq+gRO+Yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpYomT/cVcXudSp5L/SQczmVop2TQr1BUtwepI6YZty8p5nKcTIjflkhQfGbn/n0c
-	 u7pLv8c5eeTCOxrcWN3jiKh4Fmx2jRJ6cHPEI/Jcv5XPU9XEC/753dvnX1EwRC1YAo
-	 zJD8HNhcF4UE3xTmhf8RhWJJUSjpEnuYRt80R0s8=
+	b=XV/CL572n2EEmGIA2bBnjE08pB618Xu+qNRwoJOplJo6wFSF2SoQS9CHsg4yjKtEn
+	 SmDQKGleC8SUO9QkNVgljaLUj71xP1ZbZHhgseK6awJLmzDbIEhHm00KrDQzlD5YPE
+	 N1criM4BUfZilWrUxxlRvjd7MQesDcQyP7aNOljc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Jason Baron <jbaron@akamai.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 001/148] cifs: Fix cifs_query_path_info() for Windows NT servers
+Subject: [PATCH 6.15 028/192] netlink: Fix wraparounds of sk->sk_rmem_alloc.
 Date: Tue, 15 Jul 2025 15:12:03 +0200
-Message-ID: <20250715130800.356346177@linuxfoundation.org>
+Message-ID: <20250715130815.992284581@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,204 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit a3e771afbb3bce91c8296828304903e7348003fe ]
+[ Upstream commit ae8f160e7eb24240a2a79fc4c815c6a0d4ee16cc ]
 
-For TRANS2 QUERY_PATH_INFO request when the path does not exist, the
-Windows NT SMB server returns error response STATUS_OBJECT_NAME_NOT_FOUND
-or ERRDOS/ERRbadfile without the SMBFLG_RESPONSE flag set. Similarly it
-returns STATUS_DELETE_PENDING when the file is being deleted. And looks
-like that any error response from TRANS2 QUERY_PATH_INFO does not have
-SMBFLG_RESPONSE flag set.
+Netlink has this pattern in some places
 
-So relax check in check_smb_hdr() for detecting if the packet is response
-for this special case.
+  if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
+  	atomic_add(skb->truesize, &sk->sk_rmem_alloc);
 
-This change fixes stat() operation against Windows NT SMB servers and also
-all operations which depends on -ENOENT result from stat like creat() or
-mkdir().
+, which has the same problem fixed by commit 5a465a0da13e ("udp:
+Fix multiple wraparounds of sk->sk_rmem_alloc.").
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+For example, if we set INT_MAX to SO_RCVBUFFORCE, the condition
+is always false as the two operands are of int.
+
+Then, a single socket can eat as many skb as possible until OOM
+happens, and we can see multiple wraparounds of sk->sk_rmem_alloc.
+
+Let's fix it by using atomic_add_return() and comparing the two
+variables as unsigned int.
+
+Before:
+  [root@fedora ~]# ss -f netlink
+  Recv-Q      Send-Q Local Address:Port                Peer Address:Port
+  -1668710080 0               rtnl:nl_wraparound/293               *
+
+After:
+  [root@fedora ~]# ss -f netlink
+  Recv-Q     Send-Q Local Address:Port                Peer Address:Port
+  2147483072 0               rtnl:nl_wraparound/290               *
+  ^
+  `--- INT_MAX - 576
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Jason Baron <jbaron@akamai.com>
+Closes: https://lore.kernel.org/netdev/cover.1750285100.git.jbaron@akamai.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250704054824.1580222-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/misc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/netlink/af_netlink.c | 81 ++++++++++++++++++++++++----------------
+ 1 file changed, 49 insertions(+), 32 deletions(-)
 
-diff --git a/fs/cifs/misc.c b/fs/cifs/misc.c
-index db1fcdedf289a..af9752535dbab 100644
---- a/fs/cifs/misc.c
-+++ b/fs/cifs/misc.c
-@@ -306,6 +306,14 @@ check_smb_hdr(struct smb_hdr *smb)
- 	if (smb->Command == SMB_COM_LOCKING_ANDX)
- 		return 0;
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index e8972a857e51e..79fbaf7333ce2 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -387,7 +387,6 @@ static void netlink_skb_set_owner_r(struct sk_buff *skb, struct sock *sk)
+ 	WARN_ON(skb->sk != NULL);
+ 	skb->sk = sk;
+ 	skb->destructor = netlink_skb_destructor;
+-	atomic_add(skb->truesize, &sk->sk_rmem_alloc);
+ 	sk_mem_charge(sk, skb->truesize);
+ }
  
-+	/*
-+	 * Windows NT server returns error resposne (e.g. STATUS_DELETE_PENDING
-+	 * or STATUS_OBJECT_NAME_NOT_FOUND or ERRDOS/ERRbadfile or any other)
-+	 * for some TRANS2 requests without the RESPONSE flag set in header.
-+	 */
-+	if (smb->Command == SMB_COM_TRANSACTION2 && smb->Status.CifsError != 0)
+@@ -1212,41 +1211,48 @@ struct sk_buff *netlink_alloc_large_skb(unsigned int size, int broadcast)
+ int netlink_attachskb(struct sock *sk, struct sk_buff *skb,
+ 		      long *timeo, struct sock *ssk)
+ {
++	DECLARE_WAITQUEUE(wait, current);
+ 	struct netlink_sock *nlk;
++	unsigned int rmem;
+ 
+ 	nlk = nlk_sk(sk);
++	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+ 
+-	if ((atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
+-	     test_bit(NETLINK_S_CONGESTED, &nlk->state))) {
+-		DECLARE_WAITQUEUE(wait, current);
+-		if (!*timeo) {
+-			if (!ssk || netlink_is_kernel(ssk))
+-				netlink_overrun(sk);
+-			sock_put(sk);
+-			kfree_skb(skb);
+-			return -EAGAIN;
+-		}
+-
+-		__set_current_state(TASK_INTERRUPTIBLE);
+-		add_wait_queue(&nlk->wait, &wait);
++	if ((rmem == skb->truesize || rmem < READ_ONCE(sk->sk_rcvbuf)) &&
++	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
++		netlink_skb_set_owner_r(skb, sk);
 +		return 0;
++	}
+ 
+-		if ((atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
+-		     test_bit(NETLINK_S_CONGESTED, &nlk->state)) &&
+-		    !sock_flag(sk, SOCK_DEAD))
+-			*timeo = schedule_timeout(*timeo);
++	atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
+ 
+-		__set_current_state(TASK_RUNNING);
+-		remove_wait_queue(&nlk->wait, &wait);
++	if (!*timeo) {
++		if (!ssk || netlink_is_kernel(ssk))
++			netlink_overrun(sk);
+ 		sock_put(sk);
++		kfree_skb(skb);
++		return -EAGAIN;
++	}
+ 
+-		if (signal_pending(current)) {
+-			kfree_skb(skb);
+-			return sock_intr_errno(*timeo);
+-		}
+-		return 1;
++	__set_current_state(TASK_INTERRUPTIBLE);
++	add_wait_queue(&nlk->wait, &wait);
++	rmem = atomic_read(&sk->sk_rmem_alloc);
 +
- 	cifs_dbg(VFS, "Server sent request, not response. mid=%u\n",
- 		 get_mid(smb));
- 	return 1;
++	if (((rmem && rmem + skb->truesize > READ_ONCE(sk->sk_rcvbuf)) ||
++	     test_bit(NETLINK_S_CONGESTED, &nlk->state)) &&
++	    !sock_flag(sk, SOCK_DEAD))
++		*timeo = schedule_timeout(*timeo);
++
++	__set_current_state(TASK_RUNNING);
++	remove_wait_queue(&nlk->wait, &wait);
++	sock_put(sk);
++
++	if (signal_pending(current)) {
++		kfree_skb(skb);
++		return sock_intr_errno(*timeo);
+ 	}
+-	netlink_skb_set_owner_r(skb, sk);
+-	return 0;
++
++	return 1;
+ }
+ 
+ static int __netlink_sendskb(struct sock *sk, struct sk_buff *skb)
+@@ -1307,6 +1313,7 @@ static int netlink_unicast_kernel(struct sock *sk, struct sk_buff *skb,
+ 	ret = -ECONNREFUSED;
+ 	if (nlk->netlink_rcv != NULL) {
+ 		ret = skb->len;
++		atomic_add(skb->truesize, &sk->sk_rmem_alloc);
+ 		netlink_skb_set_owner_r(skb, sk);
+ 		NETLINK_CB(skb).sk = ssk;
+ 		netlink_deliver_tap_kernel(sk, ssk, skb);
+@@ -1383,13 +1390,19 @@ EXPORT_SYMBOL_GPL(netlink_strict_get_check);
+ static int netlink_broadcast_deliver(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct netlink_sock *nlk = nlk_sk(sk);
++	unsigned int rmem, rcvbuf;
+ 
+-	if (atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf &&
++	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
++	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
++
++	if ((rmem != skb->truesize || rmem <= rcvbuf) &&
+ 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
+ 		netlink_skb_set_owner_r(skb, sk);
+ 		__netlink_sendskb(sk, skb);
+-		return atomic_read(&sk->sk_rmem_alloc) > (sk->sk_rcvbuf >> 1);
++		return rmem > (rcvbuf >> 1);
+ 	}
++
++	atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
+ 	return -1;
+ }
+ 
+@@ -2249,6 +2262,7 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
+ 	struct module *module;
+ 	int err = -ENOBUFS;
+ 	int alloc_min_size;
++	unsigned int rmem;
+ 	int alloc_size;
+ 
+ 	if (!lock_taken)
+@@ -2258,9 +2272,6 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
+ 		goto errout_skb;
+ 	}
+ 
+-	if (atomic_read(&sk->sk_rmem_alloc) >= sk->sk_rcvbuf)
+-		goto errout_skb;
+-
+ 	/* NLMSG_GOODSIZE is small to avoid high order allocations being
+ 	 * required, but it makes sense to _attempt_ a 32KiB allocation
+ 	 * to reduce number of system calls on dump operations, if user
+@@ -2283,6 +2294,12 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
+ 	if (!skb)
+ 		goto errout_skb;
+ 
++	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
++	if (rmem >= READ_ONCE(sk->sk_rcvbuf)) {
++		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
++		goto errout_skb;
++	}
++
+ 	/* Trim skb to allocated size. User is expected to provide buffer as
+ 	 * large as max(min_dump_alloc, 32KiB (max_recvmsg_len capped at
+ 	 * netlink_recvmsg())). dump will pack as many smaller messages as
 -- 
 2.39.5
 
