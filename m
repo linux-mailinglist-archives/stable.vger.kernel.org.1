@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C964B05C7C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631E6B05E32
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56617564420
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30C157B6559
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449492E764C;
-	Tue, 15 Jul 2025 13:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5918E2E88AE;
+	Tue, 15 Jul 2025 13:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojUU98Z8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvS7byVM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F268C2E763C;
-	Tue, 15 Jul 2025 13:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D7E2E6D32;
+	Tue, 15 Jul 2025 13:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586023; cv=none; b=Z4F0+lUyqDlckYx8x5NeldpWr43G1B7K9gCsKT/fHVv9P4QcI5wkmAy2HdqfFp3kI6I0LuOL0Qfxn3cp1uexHCmHaXKT0NF83CP7A13TjhoZp0tcBQt5RK9XpaP/hL4ZPQLDDTw9+1nBoS/xiZH9PM1igfcWNph3Hmp6oBYf6KA=
+	t=1752587021; cv=none; b=RN+7g/EQfh7AJBh3svLp/iKjTtBcAC6hHOqcV2/U49yl/qzs1Vq4BU/bQ7XLMGL2OsR3n2SpTRURHgn2VxHJsQmIUBgc+nOTXl0HK8LrN7N/nyahYytfE3YWsbOevg8NljgZ2UqkPx4+72QEJbXFFQccdnsCaUZrNNB1o9qSfVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586023; c=relaxed/simple;
-	bh=wgvLIe9R+rzu5nx+GDU6AcpVTdn1GWykXnfGnNTjhBI=;
+	s=arc-20240116; t=1752587021; c=relaxed/simple;
+	bh=97qbLqzqhjhyYTk+wf89Or/ngAj9w7sD5K3rNBQj6Uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5Uc8ogtbjt+s3oIUwksMSk7057T7p720WFKX5M85Em6Z/+zNgaefQTF1wQVcrKSHw12RmcK7ylJM7M7+8CucgvlgKXSsYd4azHtOAiWCfUp76PJQEHDmqhE3uY4Fv0LzjBXhNxgHdxF4XVwb8u3oFKlsVaufMYd0n1xkHeeT8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojUU98Z8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FE8C4CEE3;
-	Tue, 15 Jul 2025 13:27:02 +0000 (UTC)
+	 MIME-Version; b=bbAozhFzrkLq5Ruv8h6dYYfLINVEnShi/PhYXp3M85HViMECUvV714fqcAQWWfmIP4bC+Cjkhhv20EM7GGupKcBimH4nbIhF8raBq+FA5GDHqNV3a7Cd64PsPQl1Pt+uFA12c5qZQ+UTTlbM6vv0ngVj2+NKkn2szTG8QridXc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvS7byVM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CB9C4CEE3;
+	Tue, 15 Jul 2025 13:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586022;
-	bh=wgvLIe9R+rzu5nx+GDU6AcpVTdn1GWykXnfGnNTjhBI=;
+	s=korg; t=1752587021;
+	bh=97qbLqzqhjhyYTk+wf89Or/ngAj9w7sD5K3rNBQj6Uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojUU98Z8pFpofwTLZ5V+1ALwN1RxIjyMhxxru61G2pSYHYjDrAB03sakPkwWQq9AO
-	 HIZYrZhpeAdqrklPqXUh/MPcCN9fJW/QY1G+EqmruFZph1u56lQT+XIuwWuiD0QC0A
-	 4Nrv+1y0sBqMnNLNWXss9FxMyZsh5xFgvpfkKcd8=
+	b=ZvS7byVMggC1aOnRbW5lD/ELjU/iGlBIhi2F/CzglGakVvoM4kGO6NSXxMQ4I8UkU
+	 0+N3fcEOxn7H2yn78vOmy9/G1sWy6Wkcsw+Kc69DCiH2G+NFrT/bvxItEg1IOg4/Ml
+	 tayXFLWwVUFiL9sPNG4Rg4Abe1jWmHol5P2yViZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yasmin Fitzgerald <sunoflife1.git@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/109] ALSA: hda/realtek - Enable mute LED on HP Pavilion Laptop 15-eg100
+Subject: [PATCH 6.15 137/192] io_uring/zcrx: fix pp destruction warnings
 Date: Tue, 15 Jul 2025 15:13:52 +0200
-Message-ID: <20250715130802.725719608@linuxfoundation.org>
+Message-ID: <20250715130820.401373572@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yasmin Fitzgerald <sunoflife1.git@gmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 68cc9d3c8e44afe90e43cbbd2960da15c2f31e23 ]
+[ Upstream commit 203817de269539c062724d97dfa5af3cdf77a3ec ]
 
-The HP Pavilion Laptop 15-eg100 has Realtek HDA codec ALC287.
-It needs the ALC287_FIXUP_HP_GPIO_LED quirk to enable the mute LED.
+With multiple page pools and in some other cases we can have allocated
+niovs on page pool destruction. Remove a misplaced warning checking that
+all niovs are returned to zcrx on io_pp_zc_destroy(). It was reported
+before but apparently got lost.
 
-Signed-off-by: Yasmin Fitzgerald <sunoflife1.git@gmail.com>
-Link: https://patch.msgid.link/20250621053832.52950-1-sunoflife1.git@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Pedro Tammela <pctammela@mojatatu.com>
+Fixes: 34a3e60821ab9 ("io_uring/zcrx: implement zerocopy receive pp memory provider")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/b9e6d919d2964bc48ddbf8eb52fc9f5d118e9bc1.1751878185.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/zcrx.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 0d367cec03ade..1c2059e37fdab 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10151,6 +10151,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8975, "HP EliteBook x360 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x897d, "HP mt440 Mobile Thin Client U74", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8981, "HP Elite Dragonfly G3", ALC245_FIXUP_CS35L41_SPI_4),
-+	SND_PCI_QUIRK(0x103c, 0x898a, "HP Pavilion 15-eg100", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x898e, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x898f, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8991, "HP EliteBook 845 G9", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index a53058dd6b7a1..adb1e426987ed 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -676,10 +676,7 @@ static int io_pp_zc_init(struct page_pool *pp)
+ static void io_pp_zc_destroy(struct page_pool *pp)
+ {
+ 	struct io_zcrx_ifq *ifq = io_pp_to_ifq(pp);
+-	struct io_zcrx_area *area = ifq->area;
+ 
+-	if (WARN_ON_ONCE(area->free_count != area->nia.num_niovs))
+-		return;
+ 	percpu_ref_put(&ifq->ctx->refs);
+ }
+ 
 -- 
 2.39.5
 
