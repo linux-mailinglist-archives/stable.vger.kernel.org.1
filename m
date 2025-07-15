@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19211B05F78
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC23FB0607D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BD654A7AC5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B6365A1DB4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3FA2EA738;
-	Tue, 15 Jul 2025 13:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFE82ED14C;
+	Tue, 15 Jul 2025 13:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ce+rokiW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVQDA813"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CEA2EA736;
-	Tue, 15 Jul 2025 13:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF252E92BE;
+	Tue, 15 Jul 2025 13:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587368; cv=none; b=rcze8BGuwn3mOqNEG3B3Eb64kgygsOPfVJjbb01Y63mnVNq2MfUKnmNBpwZFwFlnDwfR8EyV7h2EBUmGVxQQW3dTNvJepnNF/Qw/v0JCCWBSmcXwZpS4qSbBub7mhL5ToKugWjXjmAXbNZW1PprS3AIdS2ETCwKYBO3yFIPKgNg=
+	t=1752587806; cv=none; b=AoupB8TjY4Bprh8+0gsWp83HOGLVsM9o1yibuM8yNAABD29/dYeI8McnX27Zp2VRsL9UM3HAPSKYwdiFGlVq8x4j/aVFQhSZTnlmPoikAoD0qJ6pZBS2e8cvVyXG6CZvpCy3CK3N9bJBLyZyG7T35Dw8C8V7zUA4BG9uJYJ57cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587368; c=relaxed/simple;
-	bh=lqUhWOleLH25Q8mFNSX1oCCQgdKnjA2pSnmyM8veLzs=;
+	s=arc-20240116; t=1752587806; c=relaxed/simple;
+	bh=rgZjyvGZoK8HRJiVMWLYZ6cEVhvcdtfdUT9PEq141eU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKvxn9B+zVuqv452xNz3o/iNerP65FniEbaMt0/ClphzoXybpgBGuse7PbHtimc5RNfecHYKn9XwuHvOxejBhyptDLduHXFQ4Vnwtk3fIc3obMQXSYAvPEqFK01VpbKpNvfq8vbVfhj99bxRWQiBf/UpPKznNFTro/iF8RRsEMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ce+rokiW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DC5C4CEE3;
-	Tue, 15 Jul 2025 13:49:28 +0000 (UTC)
+	 MIME-Version; b=HKnuL7802qLGzjfWtrNUW3uBkvMM2UASbn2TPW642KzloS+zNFPKUmIsSduFmjLihnhIOhJcVYS3L4aY4mRdFOsFGI3+ezb5Omr75eIEFY+FMDU7Iist8AxTc1jgwirBBD8j7db/Cd1Oq39g0xbrU1d+9KOzslfi7AU1ThvcJQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVQDA813; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA46C4CEE3;
+	Tue, 15 Jul 2025 13:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587368;
-	bh=lqUhWOleLH25Q8mFNSX1oCCQgdKnjA2pSnmyM8veLzs=;
+	s=korg; t=1752587806;
+	bh=rgZjyvGZoK8HRJiVMWLYZ6cEVhvcdtfdUT9PEq141eU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ce+rokiWW8Ft/WsRKlswPj4JejVv9t/n6LFBANxv+QJmwX6RTzyLorm95hXnsDmlO
-	 CfJf1OtoSM1htVEKDwKNSJK6n47J2vCSHXQ/QH5F9CeJRkUIvZiAMSZ5hGEjlkw5Tf
-	 /Ml1nGAhUTAb7oCe607x0hzlNCkVNGLVvJUoqEgw=
+	b=UVQDA813bsiU/frACrp3Pb5Kq0bbMMGOpIAaOQBNLiOVG5IQoFND/nIvotq/0JtXr
+	 +zgdb4uhpnulFuwmq7NSh3GZukYKH2ZdyDBB9D9dHDmTAkcb91Ey35yxYC0rU9ZJ5E
+	 auZL7TRY56d7N2lwqpfcYz9KBmsmRs0Pqg6CxW2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	syzbot+0c77cccd6b7cd917b35a@syzkaller.appspotmail.com,
 	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 43/88] netlink: make sure we allow at least one dump skb
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 150/208] atm: clip: Fix infinite recursive call of clip_push().
 Date: Tue, 15 Jul 2025 15:14:19 +0200
-Message-ID: <20250715130756.258644230@linuxfoundation.org>
+Message-ID: <20250715130816.922401332@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit a215b5723922f8099078478122f02100e489cb80 upstream.
+[ Upstream commit c489f3283dbfc0f3c00c312149cae90d27552c45 ]
 
-Commit under Fixes tightened up the memory accounting for Netlink
-sockets. Looks like the accounting is too strict for some existing
-use cases, Marek reported issues with nl80211 / WiFi iw CLI.
+syzbot reported the splat below. [0]
 
-To reduce number of iterations Netlink dumps try to allocate
-messages based on the size of the buffer passed to previous
-recvmsg() calls. If user space uses a larger buffer in recvmsg()
-than sk_rcvbuf we will allocate an skb we won't be able to queue.
+This happens if we call ioctl(ATMARP_MKIP) more than once.
 
-Make sure we always allow at least one skb to be queued.
-Same workaround is already present in netlink_attachskb().
-Alternative would be to cap the allocation size to
-  rcvbuf - rmem_alloc
-but as I said, the workaround is already present in other places.
+During the first call, clip_mkip() sets clip_push() to vcc->push(),
+and the second call copies it to clip_vcc->old_push().
 
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/9794af18-4905-46c6-b12c-365ea2f05858@samsung.com
-Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250711001121.3649033-1-kuba@kernel.org
+Later, when the socket is close()d, vcc_destroy_socket() passes
+NULL skb to clip_push(), which calls clip_vcc->old_push(),
+triggering the infinite recursion.
+
+Let's prevent the second ioctl(ATMARP_MKIP) by checking
+vcc->user_back, which is allocated by the first call as clip_vcc.
+
+Note also that we use lock_sock() to prevent racy calls.
+
+[0]:
+BUG: TASK stack guard page was hit at ffffc9000d66fff8 (stack is ffffc9000d670000..ffffc9000d678000)
+Oops: stack guard page: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 5322 Comm: syz.0.0 Not tainted 6.16.0-rc4-syzkaller #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:clip_push+0x5/0x720 net/atm/clip.c:191
+Code: e0 8f aa 8c e8 1c ad 5b fa eb ae 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 55 <41> 57 41 56 41 55 41 54 53 48 83 ec 20 48 89 f3 49 89 fd 48 bd 00
+RSP: 0018:ffffc9000d670000 EFLAGS: 00010246
+RAX: 1ffff1100235a4a5 RBX: ffff888011ad2508 RCX: ffff8880003c0000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888037f01000
+RBP: dffffc0000000000 R08: ffffffff8fa104f7 R09: 1ffffffff1f4209e
+R10: dffffc0000000000 R11: ffffffff8a99b300 R12: ffffffff8a99b300
+R13: ffff888037f01000 R14: ffff888011ad2500 R15: ffff888037f01578
+FS:  000055557ab6d500(0000) GS:ffff88808d250000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc9000d66fff8 CR3: 0000000043172000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ clip_push+0x6dc/0x720 net/atm/clip.c:200
+ clip_push+0x6dc/0x720 net/atm/clip.c:200
+ clip_push+0x6dc/0x720 net/atm/clip.c:200
+...
+ clip_push+0x6dc/0x720 net/atm/clip.c:200
+ clip_push+0x6dc/0x720 net/atm/clip.c:200
+ clip_push+0x6dc/0x720 net/atm/clip.c:200
+ vcc_destroy_socket net/atm/common.c:183 [inline]
+ vcc_release+0x157/0x460 net/atm/common.c:205
+ __sock_release net/socket.c:647 [inline]
+ sock_close+0xc0/0x240 net/socket.c:1391
+ __fput+0x449/0xa70 fs/file_table.c:465
+ task_work_run+0x1d1/0x260 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop+0xec/0x110 kernel/entry/common.c:114
+ exit_to_user_mode_prepare include/linux/entry-common.h:330 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:414 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:449 [inline]
+ do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff31c98e929
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fffb5aa1f78 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
+RAX: 0000000000000000 RBX: 0000000000012747 RCX: 00007ff31c98e929
+RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
+RBP: 00007ff31cbb7ba0 R08: 0000000000000001 R09: 0000000db5aa226f
+R10: 00007ff31c7ff030 R11: 0000000000000246 R12: 00007ff31cbb608c
+R13: 00007ff31cbb6080 R14: ffffffffffffffff R15: 00007fffb5aa2090
+ </TASK>
+Modules linked in:
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+0c77cccd6b7cd917b35a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2371d94d248d126c1eb1
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250704062416.1613927-4-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/atm/clip.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -2168,11 +2168,11 @@ static int netlink_dump(struct sock *sk,
- 	struct netlink_ext_ack extack = {};
- 	struct netlink_callback *cb;
- 	struct sk_buff *skb = NULL;
-+	unsigned int rmem, rcvbuf;
- 	size_t max_recvmsg_len;
- 	struct module *module;
- 	int err = -ENOBUFS;
- 	int alloc_min_size;
--	unsigned int rmem;
- 	int alloc_size;
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index 14b485f725d0c..936b9558be4b9 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -429,6 +429,8 @@ static int clip_mkip(struct atm_vcc *vcc, int timeout)
  
- 	if (!lock_taken)
-@@ -2204,8 +2204,9 @@ static int netlink_dump(struct sock *sk,
- 	if (!skb)
- 		goto errout_skb;
- 
-+	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
- 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
--	if (rmem >= READ_ONCE(sk->sk_rcvbuf)) {
-+	if (rmem != skb->truesize && rmem >= rcvbuf) {
- 		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
- 		goto errout_skb;
- 	}
+ 	if (!vcc->push)
+ 		return -EBADFD;
++	if (vcc->user_back)
++		return -EINVAL;
+ 	clip_vcc = kmalloc(sizeof(struct clip_vcc), GFP_KERNEL);
+ 	if (!clip_vcc)
+ 		return -ENOMEM;
+-- 
+2.39.5
+
 
 
 
