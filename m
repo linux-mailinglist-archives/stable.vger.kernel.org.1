@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-162361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E19B05D6D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDD0B05B79
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 119274A128C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B0D0744F8A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B11E2E4270;
-	Tue, 15 Jul 2025 13:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198C92E2EE7;
+	Tue, 15 Jul 2025 13:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAZCFDOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UKCIFhv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C3E2D028A;
-	Tue, 15 Jul 2025 13:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7322E11D3;
+	Tue, 15 Jul 2025 13:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586354; cv=none; b=iFnHKpF3hZo2seJnJpTh2YrpxVuGKEoz0S6KanowuDxFG5h8TpB6E4yPRrKDRgwHLebKVtOKLK5R/MHFit0kqd981LS1MKYMO84KA8vfuFIMmvsIXEEmwR2czfFkgLqavKLoicm7zD03j/XRZgNas/qSNK2Nv8BN9lJbhkc/6C8=
+	t=1752585569; cv=none; b=Lx16JAdUgdk4KtE7+Fc9t2DnKyoXOKhrbETmAxaTxq21QstLwfWtg5eU6u83u2uc19pN7nZRpaU8SCyGcYLoLsjKLDSAdbZ0vlvV8BWDeEEaHq4cgOQgbI2ZhN+f0S08qrG/7Hkzp/UohzGWxRkHkQptcEmatDlppkqL/EthbsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586354; c=relaxed/simple;
-	bh=/RIFg4gUoDaEt9629DFVdfG226PEfXT2SSwD7vivUeM=;
+	s=arc-20240116; t=1752585569; c=relaxed/simple;
+	bh=uU+ZbTUetQ6UfAWdmpWK0nvfJowIDV0JaUhoiMJA+rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bAL8XxEDloLinaMwkjfaVQuEAfThYB8pjmEfXqdaQWcfoIfZ7bsvKCiQmhLlynF07F7LR3mSTYHn7iGCFOFwE626mzPLdOJnnmE46qYYiIZP2olMe4eAP3LZHNSAQXlkfSVpSvPDJHvUAvcjsRjgU+rrx4STbU3esL4cZ3RPHdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAZCFDOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90086C4CEE3;
-	Tue, 15 Jul 2025 13:32:33 +0000 (UTC)
+	 MIME-Version; b=U3FFV2tYI5dU9D4ljpMdAZk2D2l4lsFtDZX0Cbem7XsLEcIgaqOwWd03Vdvlr6YfONN+VpzT2nnYpZNbSQsmT8VElL2wMJxZp0rVytLqY5osEeqp/4xcCVoe9+u0vaf48pcqt3Uu76h1EIizQYDvVSHo77zqjvAlguj/h64jk0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UKCIFhv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566AEC4CEE3;
+	Tue, 15 Jul 2025 13:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586353;
-	bh=/RIFg4gUoDaEt9629DFVdfG226PEfXT2SSwD7vivUeM=;
+	s=korg; t=1752585569;
+	bh=uU+ZbTUetQ6UfAWdmpWK0nvfJowIDV0JaUhoiMJA+rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zAZCFDOD+nJdqyJYH8FJN7WDUEkFsY+nBzTNSsioSm6OCRbw9SfcnzMzSD128M+XN
-	 8wc0RgiWfy7ArGdJNBRnLqK/oi/UD1mHneekFTUU8j0dXas605cLtmxaVYdC4Ac1aE
-	 my+VtWuJ24f+B1Byh/TLp+ZwTeMLIz5zxJx7bL2o=
+	b=2UKCIFhvMBhvlgOmI/UkDE+XdkrBx0o5praWZ9G/TN8ne61EbgegUxOWV62YrGycM
+	 o4KLJedfnYfa+qgA/GeKjUndyFamfwONxTCXJgwER1Ns+wBNXOXzWXr458VSeLVLKr
+	 Ceb70UT6QwmFspN8On2P8Sb9obYElxWDJQtSek/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Folker Schwesinger <dev@folker-schwesinger.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 004/148] dmaengine: xilinx_dma: Set dma_device directions
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 058/163] ALSA: ad1816a: Fix potential NULL pointer deref in snd_card_ad1816a_pnp()
 Date: Tue, 15 Jul 2025 15:12:06 +0200
-Message-ID: <20250715130800.475332165@linuxfoundation.org>
+Message-ID: <20250715130811.078634860@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 7e01511443c30a55a5ae78d3debd46d4d872517e ]
+commit 043faef334a1f3d96ae88e1b7618bfa2b4946388 upstream.
 
-Coalesce the direction bits from the enabled TX and/or RX channels into
-the directions bit mask of dma_device. Without this mask set,
-dma_get_slave_caps() in the DMAEngine fails, which prevents the driver
-from being used with an IIO DMAEngine buffer.
+Use pr_warn() instead of dev_warn() when 'pdev' is NULL to avoid a
+potential NULL pointer dereference.
 
-Signed-off-by: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>
-Reviewed-by: Suraj Gupta <suraj.gupta2@amd.com>
-Tested-by: Folker Schwesinger <dev@folker-schwesinger.de>
-Link: https://lore.kernel.org/r/20250507182101.909010-1-thomas.gessler@brueckmann-gmbh.de
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 20869176d7a7 ("ALSA: ad1816a: Use standard print API")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://patch.msgid.link/20250703200616.304309-2-thorsten.blum@linux.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/isa/ad1816a/ad1816a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index be44c86a1e037..5b5cbea997ff7 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -2490,6 +2490,8 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
- 		return -EINVAL;
+diff --git a/sound/isa/ad1816a/ad1816a.c b/sound/isa/ad1816a/ad1816a.c
+index 99006dc4777e..5c9e2d41d900 100644
+--- a/sound/isa/ad1816a/ad1816a.c
++++ b/sound/isa/ad1816a/ad1816a.c
+@@ -98,7 +98,7 @@ static int snd_card_ad1816a_pnp(int dev, struct pnp_card_link *card,
+ 	pdev = pnp_request_card_device(card, id->devs[1].id, NULL);
+ 	if (pdev == NULL) {
+ 		mpu_port[dev] = -1;
+-		dev_warn(&pdev->dev, "MPU401 device busy, skipping.\n");
++		pr_warn("MPU401 device busy, skipping.\n");
+ 		return 0;
  	}
  
-+	xdev->common.directions |= chan->direction;
-+
- 	/* Request the interrupt */
- 	chan->irq = irq_of_parse_and_map(node, 0);
- 	err = request_irq(chan->irq, xilinx_dma_irq_handler, IRQF_SHARED,
 -- 
-2.39.5
+2.50.1
 
 
 
