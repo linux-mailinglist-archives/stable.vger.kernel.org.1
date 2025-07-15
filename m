@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E30B05BD5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9609B05DDA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0569F3A933F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9231E1C26E0D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1002E1C69;
-	Tue, 15 Jul 2025 13:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD6C2E6125;
+	Tue, 15 Jul 2025 13:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oawSUNkO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEuaeef2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295732C327B;
-	Tue, 15 Jul 2025 13:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B42E610D;
+	Tue, 15 Jul 2025 13:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585712; cv=none; b=XYUKYu7GzRYYk3FpdSKbzkVz97GTUsJuKbep774AhkLiEZihA0ybQaF3w579X2xo+QApOI+Hjw3F/DDHCJEThfic3akCcxJmGaGufswvxS6S9cBv2/10DLcypTwiR5+5t202+lxre/0EGIToC6dCJ9h8W2ApZMf+G+poZwAzgQg=
+	t=1752586502; cv=none; b=S+hPHErHzqHCPrppZJaFL67L2smDEYC8xxJZKJxVQCATPvcnZtWqze7/j8nZZROd/RF4CsblMSKz2pZJqJdGWAFuRpB/yyYI20jsOpLDCGYrSaGxQFia74PsN0eTxFGUREymiA4QFwsPsL+hrfecHOz/pweXmdfD7UdXjLhzi3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585712; c=relaxed/simple;
-	bh=8SpRUlA+hdA3E5loFbvWNO7M2zSBEYpB3Lnf2N7eOuA=;
+	s=arc-20240116; t=1752586502; c=relaxed/simple;
+	bh=Or4iJUtJm7yygzatVXXtKlsCW2+mBUoAjGqe3E1wO8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/zNgR/P1dVWurjNzxBQ26C8oziuUYZxcUPHuOp3x06WomfCfeJvGVaZBX+WqeuhyZ3Ypw6gZrpisuOLWHqMibWaSprHiUDS2rYMCTQwHMk6yVfMO/ek5aCY1+7uQM+ddJuRAU238Rq0tVL50cT8mWQ/Cqptx+56wSZcTyR13sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oawSUNkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F2EC4CEE3;
-	Tue, 15 Jul 2025 13:21:51 +0000 (UTC)
+	 MIME-Version; b=pkqEuWZw70YXADaV0HWYb5vne0Jq22E6RyOrRg09MK21aM81sEN9Ln9CPyCTPz+Oot4hm/dprAc47sNKpkhzxypYIDYQA+v+LhAj6iFuuKR3WeZwvWqf3Ha4Fem6BCuSLIrUlWYcfy9AO6hIG0onnLBCjCWu4Ixz/tbRZkXiKc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEuaeef2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A3EC4CEF1;
+	Tue, 15 Jul 2025 13:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585712;
-	bh=8SpRUlA+hdA3E5loFbvWNO7M2zSBEYpB3Lnf2N7eOuA=;
+	s=korg; t=1752586502;
+	bh=Or4iJUtJm7yygzatVXXtKlsCW2+mBUoAjGqe3E1wO8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oawSUNkOCjM9ROGmR08izKrl+vxvdEeyBkTEvZpL3oMSRDPLD1V+aEdsJgJfhnUzh
-	 1FpgADPN7DRTS+cw5wjLjbhmrwPwti07PdZrm5ARTm9Gjy2ZWZZqY9u8rSSb/vYfV/
-	 He188bemqRUPK61UGeViRPimYd2zfd5rpZerXRR4=
+	b=cEuaeef2c3xE/X21UrHqLqqde1nHaLezYd24zVWWq4oIBwLJKKMUkAdAImDMpqQIl
+	 TEHD1rLMQ1mNuE1aRZYtJilaE+6+OLvnoX4C6SCqcZEY8re/LNa7o8kr9kLO4mbrFX
+	 vy8+p0TmgN0cozZpZokajn4rrP6NtTxqCFMms2GA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fengnan Chang <changfengnan@bytedance.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 143/163] io_uring: make fallocate be hashed work
+Subject: [PATCH 5.4 089/148] btrfs: use btrfs_record_snapshot_destroy() during rmdir
 Date: Tue, 15 Jul 2025 15:13:31 +0200
-Message-ID: <20250715130814.570633215@linuxfoundation.org>
+Message-ID: <20250715130803.880344161@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fengnan Chang <changfengnan@bytedance.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 88a80066af1617fab444776135d840467414beb6 ]
+[ Upstream commit 157501b0469969fc1ba53add5049575aadd79d80 ]
 
-Like ftruncate and write, fallocate operations on the same file cannot
-be executed in parallel, so it is better to make fallocate be hashed
-work.
+We are setting the parent directory's last_unlink_trans directly which
+may result in a concurrent task starting to log the directory not see the
+update and therefore can log the directory after we removed a child
+directory which had a snapshot within instead of falling back to a
+transaction commit. Replaying such a log tree would result in a mount
+failure since we can't currently delete snapshots (and subvolumes) during
+log replay. This is the type of failure described in commit 1ec9a1ae1e30
+("Btrfs: fix unreplayable log after snapshot delete + parent dir fsync").
 
-Signed-off-by: Fengnan Chang <changfengnan@bytedance.com>
-Link: https://lore.kernel.org/r/20250623110218.61490-1-changfengnan@bytedance.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fix this by using btrfs_record_snapshot_destroy() which updates the
+last_unlink_trans field while holding the inode's log_mutex lock.
+
+Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/opdef.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/opdef.c b/io_uring/opdef.c
-index a2be3bbca5ffa..5dc1cba158a06 100644
---- a/io_uring/opdef.c
-+++ b/io_uring/opdef.c
-@@ -214,6 +214,7 @@ const struct io_issue_def io_issue_defs[] = {
- 	},
- 	[IORING_OP_FALLOCATE] = {
- 		.needs_file		= 1,
-+		.hash_reg_file          = 1,
- 		.prep			= io_fallocate_prep,
- 		.issue			= io_fallocate,
- 	},
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 8f92f998dc37b..757111e529948 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4772,7 +4772,7 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	 * deletes for directory foo.
+ 	 */
+ 	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
+-		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
++		btrfs_record_snapshot_destroy(trans, BTRFS_I(dir));
+ 
+ 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
+ 		err = btrfs_unlink_subvol(trans, dir, dentry);
 -- 
 2.39.5
 
