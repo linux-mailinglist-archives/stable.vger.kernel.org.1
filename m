@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18578B05EC4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76B9B05EBD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F59350173A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E211C7A67D9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0419B2E762F;
-	Tue, 15 Jul 2025 13:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8742EF9CE;
+	Tue, 15 Jul 2025 13:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uU6ApTWD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LujQUDAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82EB2E267F;
-	Tue, 15 Jul 2025 13:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04662EF9C2;
+	Tue, 15 Jul 2025 13:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587073; cv=none; b=YkM7O8skp/RMzbgH+3YlSNKkYu4KmP3wkU8CHjF57SCB+wo5wdR2ohHvXrxMWfbmg5VIWJtl+7IrbDHc255KYGpYUqGaTkzgojRQMECeGcjVYm39olZETSy2O046gmixu9zMCuRDoIZm+KRWM+WfiSi7+Fs9k91tl/+qtvx4tpk=
+	t=1752587201; cv=none; b=mEtM1ISyWmjv+wbVWJWmzWfhpUZJijLmPjd6gcwkWdCDrHpKiU3OPqSoO1zUl+3GgkuLaRB5dHeFbeduF4jhfUjqexu4HLuw26jirDX4B/Dzvsnau05Nicjq7jHeP9JyT5aNw5fWLhC23FY2ozl/C2sbEwAgbVEsWCkz+zgjO+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587073; c=relaxed/simple;
-	bh=0YLE+FFOstYQXbmTaAcvUYmGY1KQa0pWhKticBr2Zrg=;
+	s=arc-20240116; t=1752587201; c=relaxed/simple;
+	bh=qW0HV8ed9cvAGGxZLCVVizX3CYKsdVvhxEsU3cm2CUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IokVxQZH2hkfAzrBTeZ8aTvqjSJJa24LWTmaXpxsAuFM9P1c4KyOe/ESM+xeBoWhBL3XN7y6zWJ8qupJpQLMbrNUuuX2+5lswZQDJhg5C0stHJ2z1tz+Tb27zrQqwH7Be4gsdQnBYQmwnPjB1SMeUfbbCAFB4R0vB2JbWDgHqeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uU6ApTWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEEBC4CEE3;
-	Tue, 15 Jul 2025 13:44:33 +0000 (UTC)
+	 MIME-Version; b=kWOVZGxYreVeVQGnIvinCi+97H0+NQZCiom1rut2oSqVgK6yCV7uXUGqYEpzx3ZE2zUQLB+IJUt/JpgsDo0I0wNGpT8taATnLgubnN7+nVTYQE/bUSKiOi//uSWRJSM4GE5NDfKmNMX6Adi6dzfXH2nAgCVsYrnBdkwUHjVc8qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LujQUDAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13AB3C4CEE3;
+	Tue, 15 Jul 2025 13:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587073;
-	bh=0YLE+FFOstYQXbmTaAcvUYmGY1KQa0pWhKticBr2Zrg=;
+	s=korg; t=1752587200;
+	bh=qW0HV8ed9cvAGGxZLCVVizX3CYKsdVvhxEsU3cm2CUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uU6ApTWDBA8HroCN1tldZt87GVCZITFPdHweDsK2h5Txu1lK/yTcuaIZ9TF9nHS14
-	 86T5GZbgcyMWNlBAe2fn48ZXuohYfxxXadtZ5Yu/T+k5s/NAtxQd+L34UJZGp788xh
-	 aMv3CyrNv0YwfHiD/ly1wC4kWIExMOXSFgut158s=
+	b=LujQUDAdmdMBRIXNWJZ/2mUA/eADhQrSy40U1AlxUZcpm8mbiL0tNoNGXpI+wQRqu
+	 VrsppTVkwc1HF+ZMud4WsArnRQOtq3LImrlJ1PoSKijl6/s9m+7/a/zZeNMgiaQA8Z
+	 zEqzkCE8THLz971jOeH82RUrkmD5YqoLdWrhNYvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 125/192] netlink: Fix rmem check in netlink_broadcast_deliver().
+	Jann Horn <jannh@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 04/88] perf: Revert to requiring CAP_SYS_ADMIN for uprobes
 Date: Tue, 15 Jul 2025 15:13:40 +0200
-Message-ID: <20250715130819.913773800@linuxfoundation.org>
+Message-ID: <20250715130754.677996750@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit a3c4a125ec725cefb40047eb05ff9eafd57830b4 upstream.
+[ Upstream commit ba677dbe77af5ffe6204e0f3f547f3ba059c6302 ]
 
-We need to allow queuing at least one skb even when skb is
-larger than sk->sk_rcvbuf.
+Jann reports that uprobes can be used destructively when used in the
+middle of an instruction. The kernel only verifies there is a valid
+instruction at the requested offset, but due to variable instruction
+length cannot determine if this is an instruction as seen by the
+intended execution stream.
 
-The cited commit made a mistake while converting a condition
-in netlink_broadcast_deliver().
+Additionally, Mark Rutland notes that on architectures that mix data
+in the text segment (like arm64), a similar things can be done if the
+data word is 'mistaken' for an instruction.
 
-Let's correct the rmem check for the allow-one-skb rule.
+As such, require CAP_SYS_ADMIN for uprobes.
 
-Fixes: ae8f160e7eb24 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250711053208.2965945-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c9e0924e5c2b ("perf/core: open access to probes for CAP_PERFMON privileged process")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/CAG48ez1n4520sq0XrWYDHKiKxE_+WCfAK+qt9qkY4ZiBGmL-5g@mail.gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c |    2 +-
+ kernel/events/core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1395,7 +1395,7 @@ static int netlink_broadcast_deliver(str
- 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
- 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 2761db0365ddc..f815b808db20a 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -10207,7 +10207,7 @@ static int perf_uprobe_event_init(struct perf_event *event)
+ 	if (event->attr.type != perf_uprobe.type)
+ 		return -ENOENT;
  
--	if ((rmem != skb->truesize || rmem <= rcvbuf) &&
-+	if ((rmem == skb->truesize || rmem <= rcvbuf) &&
- 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
- 		netlink_skb_set_owner_r(skb, sk);
- 		__netlink_sendskb(sk, skb);
+-	if (!perfmon_capable())
++	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+ 
+ 	/*
+-- 
+2.39.5
+
 
 
 
