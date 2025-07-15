@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-162548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C378DB05E54
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86D6B05D82
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E95216A59A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04F024A2291
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F472EA49E;
-	Tue, 15 Jul 2025 13:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32032E9EC4;
+	Tue, 15 Jul 2025 13:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDBlps2G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+tGVAbv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C672E3AEA;
-	Tue, 15 Jul 2025 13:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13432E7BDE;
+	Tue, 15 Jul 2025 13:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586846; cv=none; b=P8vyQDXt24IbXr87ZgULshZAytuu9nDkihU7fF7LcsrdRz7jQ+F8aN6Np10g0Yd2/R3V/9a54W0BRTlRcsZbDCb6NLYwc4l3lT16ffKugT0sHZgfZ7ndqVUlY5D2inlIS+Xpq5/fI3sQztbOnTsjHYsCaIYk+2J9VDbGl57AFgw=
+	t=1752586380; cv=none; b=tECUrt65uWnNxtdrpflI67Q9GflsJPHOXNIE9Dd2QV4W3k1Fwi2vV0eqwf80YFoWbfIPi7vuXOe6yvc9MBVN/+A/H7NfHfndW2NFABs9SDwtqErdloURgc++rmWyASrX32Wa9fXE6DKpRFUS/ilJA6SynMxCfL9rO2YuABgYqic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586846; c=relaxed/simple;
-	bh=Nezzx/sc24y28zKcF6HAMmx3m1kH3qt3ddPDAG2oWng=;
+	s=arc-20240116; t=1752586380; c=relaxed/simple;
+	bh=tJL3ygODqkRz8FFsXZCc0b5Ju6xSvsAtKkpGTb+hFuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPH2Y+A19tdm+ac42MAs+LpTwM0UHtgW6kKs6zvpRCMDLkZDhh1UEhYAu844lV6pIREXrSpVI74ya/TEBcMY3iVyTxMO9XbAXCkd3dataQQGEho0em5VBeVW+Usy+/RN9zAw60wd6IMpV0cZFi2mq6KKarP00ycX5w41qShNDgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDBlps2G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB72C4CEE3;
-	Tue, 15 Jul 2025 13:40:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pBJdw3edH4G2feSHoqLoS9x38pd51vAzpP2AuiWlZymNHP1ywpyNjxZB/893XPV3rENYiz01ZW1BpX3MB4936M7x5TohH+sVueRalBWQlXPM0bE0YxICVHEfymlSQoKF+G2aHGqLy67EpgTn4fjMZM9mOxo+lU8hrP+lXc9Z/yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+tGVAbv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365F2C4CEE3;
+	Tue, 15 Jul 2025 13:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586846;
-	bh=Nezzx/sc24y28zKcF6HAMmx3m1kH3qt3ddPDAG2oWng=;
+	s=korg; t=1752586380;
+	bh=tJL3ygODqkRz8FFsXZCc0b5Ju6xSvsAtKkpGTb+hFuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDBlps2G9mGma5mdRplrG/LfDlQmOyWk23uCU7ihi69IUwYW918YrtGlRCRzF+qzq
-	 P0iwRjJIuzbRutWrkpqMJ5UJcxp+3EQqDRUeYB8EtazfJqtw2WOyOAAoG5ktz2WItO
-	 8h47preporZmmj1AQCrrWLOZEhzubfz2bs2gkawQ=
+	b=l+tGVAbvSEseYqmLp4LKzgeXIxUt57OBfto6NEWdWdpYu9FP1pw0rTfV2nzZPCv1r
+	 /AHkH6Sl8KJt4PtJiknRwM6YtgAwQbpgGeYKbwezG3H9cgPk/S53l72C1dKX+WIuCv
+	 OHBAL+p8EDC26nm92Wf4VkZ5fY0mMe0TdBBdtadY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.15 071/192] pinctrl: nuvoton: Fix boot on ma35dx platforms
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.4 044/148] Bluetooth: L2CAP: Fix L2CAP MTU negotiation
 Date: Tue, 15 Jul 2025 15:12:46 +0200
-Message-ID: <20250715130817.785763851@linuxfoundation.org>
+Message-ID: <20250715130802.081483587@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,85 +59,231 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-commit 46147490b4098e200b7d7d3ac4637a3e4f7b806a upstream.
+commit 042bb9603c44620dce98717a2d23235ca57a00d7 upstream.
 
-As part of a wider cleanup trying to get rid of OF specific APIs, an
-incorrect (and partially unrelated) cleanup was introduced.
+OBEX download from iPhone is currently slow due to small packet size
+used to transfer data which doesn't follow the MTU negotiated during
+L2CAP connection, i.e. 672 bytes instead of 32767:
 
-The goal was to replace a device_for_each_chil_node() loop including an
-additional condition inside by a macro doing both the loop and the
-check on a single line.
+  < ACL Data TX: Handle 11 flags 0x00 dlen 12
+      L2CAP: Connection Request (0x02) ident 18 len 4
+        PSM: 4103 (0x1007)
+        Source CID: 72
+  > ACL Data RX: Handle 11 flags 0x02 dlen 16
+      L2CAP: Connection Response (0x03) ident 18 len 8
+        Destination CID: 14608
+        Source CID: 72
+        Result: Connection successful (0x0000)
+        Status: No further information available (0x0000)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 27
+      L2CAP: Configure Request (0x04) ident 20 len 19
+        Destination CID: 14608
+        Flags: 0x0000
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 32767
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 63
+          Max transmit: 3
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 26
+      L2CAP: Configure Request (0x04) ident 72 len 18
+        Destination CID: 72
+        Flags: 0x0000
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 32
+          Max transmit: 255
+          Retransmission timeout: 0
+          Monitor timeout: 0
+          Maximum PDU size: 65527
+        Option: Frame Check Sequence (0x05) [mandatory]
+          FCS: 16-bit FCS (0x01)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 29
+      L2CAP: Configure Response (0x05) ident 72 len 21
+        Source CID: 14608
+        Flags: 0x0000
+        Result: Success (0x0000)
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 672
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 32
+          Max transmit: 255
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 32
+      L2CAP: Configure Response (0x05) ident 20 len 24
+        Source CID: 72
+        Flags: 0x0000
+        Result: Success (0x0000)
+        Option: Maximum Transmission Unit (0x01) [mandatory]
+          MTU: 32767
+        Option: Retransmission and Flow Control (0x04) [mandatory]
+          Mode: Enhanced Retransmission (0x03)
+          TX window size: 63
+          Max transmit: 3
+          Retransmission timeout: 2000
+          Monitor timeout: 12000
+          Maximum PDU size: 1009
+        Option: Frame Check Sequence (0x05) [mandatory]
+          FCS: 16-bit FCS (0x01)
+  ...
+  > ACL Data RX: Handle 11 flags 0x02 dlen 680
+      Channel: 72 len 676 ctrl 0x0202 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 1 ReqSeq 2
+  < ACL Data TX: Handle 11 flags 0x00 dlen 13
+      Channel: 14608 len 9 ctrl 0x0204 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 2 ReqSeq 2
+  > ACL Data RX: Handle 11 flags 0x02 dlen 680
+      Channel: 72 len 676 ctrl 0x0304 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+      I-frame: Unsegmented TxSeq 2 ReqSeq 3
 
-The snippet:
+The MTUs are negotiated for each direction. In this traces 32767 for
+iPhone->localhost and no MTU for localhost->iPhone, which based on
+'4.4 L2CAP_CONFIGURATION_REQ' (Core specification v5.4, Vol. 3, Part
+A):
 
-	device_for_each_child_node(dev, child)
-		if (fwnode_property_present(child, "gpio-controller"))
-			continue;
+  The only parameters that should be included in the
+  L2CAP_CONFIGURATION_REQ packet are those that require different
+  values than the default or previously agreed values.
+  ...
+  Any missing configuration parameters are assumed to have their
+  most recently explicitly or implicitly accepted values.
 
-was replaced by:
+and '5.1 Maximum transmission unit (MTU)':
 
-	for_each_gpiochip_node(dev, child)
+  If the remote device sends a positive L2CAP_CONFIGURATION_RSP
+  packet it should include the actual MTU to be used on this channel
+  for traffic flowing into the local device.
+  ...
+  The default value is 672 octets.
 
-which expands into:
+is set by BlueZ to 672 bytes.
 
-	device_for_each_child_node(dev, child)
-		for_each_if(fwnode_property_present(child, "gpio-controller"))
+It seems that the iPhone used the lowest negotiated value to transfer
+data to the localhost instead of the negotiated one for the incoming
+direction.
 
-This change is actually doing the opposite of what was initially
-expected, breaking the probe of this driver, breaking at the same time
-the whole boot of Nuvoton platforms (no more console, the kernel WARN()).
+This could be fixed by using the MTU negotiated for the other
+direction, if exists, in the L2CAP_CONFIGURATION_RSP.
+This allows to use segmented packets as in the following traces:
 
-Revert these two changes to roll back to the correct behavior.
+  < ACL Data TX: Handle 11 flags 0x00 dlen 12
+        L2CAP: Connection Request (0x02) ident 22 len 4
+          PSM: 4103 (0x1007)
+          Source CID: 72
+  < ACL Data TX: Handle 11 flags 0x00 dlen 27
+        L2CAP: Configure Request (0x04) ident 24 len 19
+          Destination CID: 2832
+          Flags: 0x0000
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 63
+            Max transmit: 3
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 26
+        L2CAP: Configure Request (0x04) ident 15 len 18
+          Destination CID: 72
+          Flags: 0x0000
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 32
+            Max transmit: 255
+            Retransmission timeout: 0
+            Monitor timeout: 0
+            Maximum PDU size: 65527
+          Option: Frame Check Sequence (0x05) [mandatory]
+            FCS: 16-bit FCS (0x01)
+  < ACL Data TX: Handle 11 flags 0x00 dlen 29
+        L2CAP: Configure Response (0x05) ident 15 len 21
+          Source CID: 2832
+          Flags: 0x0000
+          Result: Success (0x0000)
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 32
+            Max transmit: 255
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+  > ACL Data RX: Handle 11 flags 0x02 dlen 32
+        L2CAP: Configure Response (0x05) ident 24 len 24
+          Source CID: 72
+          Flags: 0x0000
+          Result: Success (0x0000)
+          Option: Maximum Transmission Unit (0x01) [mandatory]
+            MTU: 32767
+          Option: Retransmission and Flow Control (0x04) [mandatory]
+            Mode: Enhanced Retransmission (0x03)
+            TX window size: 63
+            Max transmit: 3
+            Retransmission timeout: 2000
+            Monitor timeout: 12000
+            Maximum PDU size: 1009
+          Option: Frame Check Sequence (0x05) [mandatory]
+            FCS: 16-bit FCS (0x01)
+  ...
+  > ACL Data RX: Handle 11 flags 0x02 dlen 1009
+        Channel: 72 len 1005 ctrl 0x4202 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+        I-frame: Start (len 21884) TxSeq 1 ReqSeq 2
+  > ACL Data RX: Handle 11 flags 0x02 dlen 1009
+        Channel: 72 len 1005 ctrl 0xc204 [PSM 4103 mode Enhanced Retransmission (0x03)] {chan 8}
+        I-frame: Continuation TxSeq 2 ReqSeq 2
 
-Fixes: 693c9ecd8326 ("pinctrl: nuvoton: Reduce use of OF-specific APIs")
+This has been tested with kernel 5.4 and BlueZ 5.77.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/20250613181312.1269794-1-miquel.raynal@bootlin.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/nuvoton/pinctrl-ma35.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/nuvoton/pinctrl-ma35.c b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
-index 06ae1fe8b8c5..b51704bafd81 100644
---- a/drivers/pinctrl/nuvoton/pinctrl-ma35.c
-+++ b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
-@@ -1074,7 +1074,10 @@ static int ma35_pinctrl_probe_dt(struct platform_device *pdev, struct ma35_pinct
- 	u32 idx = 0;
- 	int ret;
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -3373,7 +3373,7 @@ static int l2cap_parse_conf_req(struct l
+ 	struct l2cap_conf_rfc rfc = { .mode = L2CAP_MODE_BASIC };
+ 	struct l2cap_conf_efs efs;
+ 	u8 remote_efs = 0;
+-	u16 mtu = L2CAP_DEFAULT_MTU;
++	u16 mtu = 0;
+ 	u16 result = L2CAP_CONF_SUCCESS;
+ 	u16 size;
  
--	for_each_gpiochip_node(dev, child) {
-+	device_for_each_child_node(dev, child) {
-+		if (fwnode_property_present(child, "gpio-controller"))
-+			continue;
-+
- 		npctl->nfunctions++;
- 		npctl->ngroups += of_get_child_count(to_of_node(child));
- 	}
-@@ -1092,7 +1095,10 @@ static int ma35_pinctrl_probe_dt(struct platform_device *pdev, struct ma35_pinct
- 	if (!npctl->groups)
- 		return -ENOMEM;
+@@ -3484,6 +3484,13 @@ done:
+ 		/* Configure output options and let the other side know
+ 		 * which ones we don't like. */
  
--	for_each_gpiochip_node(dev, child) {
-+	device_for_each_child_node(dev, child) {
-+		if (fwnode_property_present(child, "gpio-controller"))
-+			continue;
++		/* If MTU is not provided in configure request, use the most recently
++		 * explicitly or implicitly accepted value for the other direction,
++		 * or the default value.
++		 */
++		if (mtu == 0)
++			mtu = chan->imtu ? chan->imtu : L2CAP_DEFAULT_MTU;
 +
- 		ret = ma35_pinctrl_parse_functions(child, npctl, idx++);
- 		if (ret) {
- 			fwnode_handle_put(child);
--- 
-2.50.1
-
+ 		if (mtu < L2CAP_DEFAULT_MIN_MTU)
+ 			result = L2CAP_CONF_UNACCEPT;
+ 		else {
 
 
 
