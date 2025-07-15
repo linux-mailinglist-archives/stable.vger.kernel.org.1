@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-162857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097A7B06042
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:14:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD302B05FDE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B3035A0FCD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E3977BC02C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1072E7BB2;
-	Tue, 15 Jul 2025 13:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F0F2EE60A;
+	Tue, 15 Jul 2025 13:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1c2yvHWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UitcQpE5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB842E5B39;
-	Tue, 15 Jul 2025 13:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244F71531E8;
+	Tue, 15 Jul 2025 13:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587658; cv=none; b=J6MBg9y59hTjX01kwqT5IrLIINn4Hxt0AAVkNdhwNNTfffcQ65tAwHlga+j2iJHFilnYmK2eyQMEqqsiSQXrwv6d7qMCJTDKfQ6+cDK2At/f9V3Cr7qwOPuAPubYUm/HQMUVVoDMa4sHxzeIdxuYAGiEFrFZWmcTN8CEeKIw62Q=
+	t=1752587767; cv=none; b=XEUsJ80/HTxf+mNkoci/oFQbctFKbXW8e8hdpOKvDor4PDG2RXb/xubHApGFPmNbykphIOolk1YD+RMl8cui7SG7cn7+P3fTUefCcL6d4bhv6VA62BUlNjHrSuZuwAeS6ZyM2SSEvUg1kUopivdtlJaLx+DlHPYFrWkcQEzHBLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587658; c=relaxed/simple;
-	bh=7NNwaxDLLRkcf4D4SuY7SCyqaYwtJt0HFsEI9IKJ4ow=;
+	s=arc-20240116; t=1752587767; c=relaxed/simple;
+	bh=4Ks5zBmBSzp8Tsn4ePwaijoE9Xiz7h0spPPFKzbIYMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bz9Na32KqpUgbybdTB8Pwy3MGWA9YU0s+5B+ZwBvKSwBt1yegSZ4ZDLbtwEMfWDjnEWVJXGtdvV5cNkqMb8zplDm0pSoRvlWdWmadWRH5cAJshM0nbvAfW666zB457FUCIU6D9nQYkkp5nNxAJNJd0vwKQLHS/h4og6t+YSNv9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1c2yvHWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50039C4CEE3;
-	Tue, 15 Jul 2025 13:54:17 +0000 (UTC)
+	 MIME-Version; b=r4Py4/x8HXY6Femh5dksMI6Do9TULW52cYhwu/14u2TdIMowE7ptJi4a2oPGsccFG6cqYLHEskYxHEpzdUgu/7y7PS1v6YFAFZiK3OEF0CgCxUe9mE6NMuFNUaBsraeTN3+sTGcWOinNvV4LcXw8pDtx6Lq7tBUx2UTeGLi+Xo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UitcQpE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9EEC4CEE3;
+	Tue, 15 Jul 2025 13:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587657;
-	bh=7NNwaxDLLRkcf4D4SuY7SCyqaYwtJt0HFsEI9IKJ4ow=;
+	s=korg; t=1752587767;
+	bh=4Ks5zBmBSzp8Tsn4ePwaijoE9Xiz7h0spPPFKzbIYMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1c2yvHWKJeIUWMASnDsuF2uTI6T7T8cystRnD1OrEDzR8OUJxwvS1pBHJi+4DG7Dx
-	 uVHYUIRVBJKiGw6nIBq8ZCN2Jci65M/dNhm43CVd1GoMuUkmJrdzLhp2v7Ukw3bM3V
-	 YKKefmvWT6Zzp4V+XaUTajTvfwKC2ewEiKaBVQNI=
+	b=UitcQpE5A35fDH8b88JgaqelYrTwNV0MuSB++VIebmro3dHOCTdy/NNKJID83Af34
+	 kUcJQL3sN2Zxbp1hhbq/gN/1dS0q2uWLW/9vh+CbH4UgKCXGfeI9bLjfuY5i/riROk
+	 kAVhBRIxgLCbzrPeq+4Uld3yJ/wx7IU4gdql7Ff8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 093/208] drm/i915/gt: Fix timeline left held on VMA alloc error
-Date: Tue, 15 Jul 2025 15:13:22 +0200
-Message-ID: <20250715130814.668069333@linuxfoundation.org>
+Subject: [PATCH 5.10 094/208] lib: test_objagg: Set error message in check_expect_hints_stats()
+Date: Tue, 15 Jul 2025 15:13:23 +0200
+Message-ID: <20250715130814.707785222@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -73,126 +69,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit a5aa7bc1fca78c7fa127d9e33aa94a0c9066c1d6 ]
+[ Upstream commit e6ed134a4ef592fe1fd0cafac9683813b3c8f3e8 ]
 
-The following error has been reported sporadically by CI when a test
-unbinds the i915 driver on a ring submission platform:
+Smatch complains that the error message isn't set in the caller:
 
-<4> [239.330153] ------------[ cut here ]------------
-<4> [239.330166] i915 0000:00:02.0: [drm] drm_WARN_ON(dev_priv->mm.shrink_count)
-<4> [239.330196] WARNING: CPU: 1 PID: 18570 at drivers/gpu/drm/i915/i915_gem.c:1309 i915_gem_cleanup_early+0x13e/0x150 [i915]
-...
-<4> [239.330640] RIP: 0010:i915_gem_cleanup_early+0x13e/0x150 [i915]
-...
-<4> [239.330942] Call Trace:
-<4> [239.330944]  <TASK>
-<4> [239.330949]  i915_driver_late_release+0x2b/0xa0 [i915]
-<4> [239.331202]  i915_driver_release+0x86/0xa0 [i915]
-<4> [239.331482]  devm_drm_dev_init_release+0x61/0x90
-<4> [239.331494]  devm_action_release+0x15/0x30
-<4> [239.331504]  release_nodes+0x3d/0x120
-<4> [239.331517]  devres_release_all+0x96/0xd0
-<4> [239.331533]  device_unbind_cleanup+0x12/0x80
-<4> [239.331543]  device_release_driver_internal+0x23a/0x280
-<4> [239.331550]  ? bus_find_device+0xa5/0xe0
-<4> [239.331563]  device_driver_detach+0x14/0x20
-...
-<4> [357.719679] ---[ end trace 0000000000000000 ]---
+    lib/test_objagg.c:923 test_hints_case2()
+    error: uninitialized symbol 'errmsg'.
 
-If the test also unloads the i915 module then that's followed with:
+This static checker warning only showed up after a recent refactoring
+but the bug dates back to when the code was originally added.  This
+likely doesn't affect anything in real life.
 
-<3> [357.787478] =============================================================================
-<3> [357.788006] BUG i915_vma (Tainted: G     U  W        N ): Objects remaining on __kmem_cache_shutdown()
-<3> [357.788031] -----------------------------------------------------------------------------
-<3> [357.788204] Object 0xffff888109e7f480 @offset=29824
-<3> [357.788670] Allocated in i915_vma_instance+0xee/0xc10 [i915] age=292729 cpu=4 pid=2244
-<4> [357.788994]  i915_vma_instance+0xee/0xc10 [i915]
-<4> [357.789290]  init_status_page+0x7b/0x420 [i915]
-<4> [357.789532]  intel_engines_init+0x1d8/0x980 [i915]
-<4> [357.789772]  intel_gt_init+0x175/0x450 [i915]
-<4> [357.790014]  i915_gem_init+0x113/0x340 [i915]
-<4> [357.790281]  i915_driver_probe+0x847/0xed0 [i915]
-<4> [357.790504]  i915_pci_probe+0xe6/0x220 [i915]
-...
-
-Closer analysis of CI results history has revealed a dependency of the
-error on a few IGT tests, namely:
-- igt@api_intel_allocator@fork-simple-stress-signal,
-- igt@api_intel_allocator@two-level-inception-interruptible,
-- igt@gem_linear_blits@interruptible,
-- igt@prime_mmap_coherency@ioctl-errors,
-which invisibly trigger the issue, then exhibited with first driver unbind
-attempt.
-
-All of the above tests perform actions which are actively interrupted with
-signals.  Further debugging has allowed to narrow that scope down to
-DRM_IOCTL_I915_GEM_EXECBUFFER2, and ring_context_alloc(), specific to ring
-submission, in particular.
-
-If successful then that function, or its execlists or GuC submission
-equivalent, is supposed to be called only once per GEM context engine,
-followed by raise of a flag that prevents the function from being called
-again.  The function is expected to unwind its internal errors itself, so
-it may be safely called once more after it returns an error.
-
-In case of ring submission, the function first gets a reference to the
-engine's legacy timeline and then allocates a VMA.  If the VMA allocation
-fails, e.g. when i915_vma_instance() called from inside is interrupted
-with a signal, then ring_context_alloc() fails, leaving the timeline held
-referenced.  On next I915_GEM_EXECBUFFER2 IOCTL, another reference to the
-timeline is got, and only that last one is put on successful completion.
-As a consequence, the legacy timeline, with its underlying engine status
-page's VMA object, is still held and not released on driver unbind.
-
-Get the legacy timeline only after successful allocation of the context
-engine's VMA.
-
-v2: Add a note on other submission methods (Krzysztof Karas):
-    Both execlists and GuC submission use lrc_alloc() which seems free
-    from a similar issue.
-
-Fixes: 75d0a7f31eec ("drm/i915: Lift timeline into intel_context")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Reviewed-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20250611104352.1014011-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit cc43422b3cc79eacff4c5a8ba0d224688ca9dd4f)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202506281403.DsuyHFTZ-lkp@intel.com/
+Fixes: 0a020d416d0a ("lib: introduce initial implementation of object aggregation manager")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/8548f423-2e3b-4bb7-b816-5041de2762aa@sabinyo.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_ring_submission.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ lib/test_objagg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_ring_submission.c b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
-index 6aaca73eaee60..af57192a7846f 100644
---- a/drivers/gpu/drm/i915/gt/intel_ring_submission.c
-+++ b/drivers/gpu/drm/i915/gt/intel_ring_submission.c
-@@ -576,7 +576,6 @@ static int ring_context_alloc(struct intel_context *ce)
- 	/* One ringbuffer to rule them all */
- 	GEM_BUG_ON(!engine->legacy.ring);
- 	ce->ring = engine->legacy.ring;
--	ce->timeline = intel_timeline_get(engine->legacy.timeline);
+diff --git a/lib/test_objagg.c b/lib/test_objagg.c
+index da137939a4100..78d25ab19a960 100644
+--- a/lib/test_objagg.c
++++ b/lib/test_objagg.c
+@@ -899,8 +899,10 @@ static int check_expect_hints_stats(struct objagg_hints *objagg_hints,
+ 	int err;
  
- 	GEM_BUG_ON(ce->state);
- 	if (engine->context_size) {
-@@ -591,6 +590,8 @@ static int ring_context_alloc(struct intel_context *ce)
- 			__set_bit(CONTEXT_VALID_BIT, &ce->flags);
- 	}
- 
-+	ce->timeline = intel_timeline_get(engine->legacy.timeline);
-+
- 	return 0;
- }
- 
+ 	stats = objagg_hints_stats_get(objagg_hints);
+-	if (IS_ERR(stats))
++	if (IS_ERR(stats)) {
++		*errmsg = "objagg_hints_stats_get() failed.";
+ 		return PTR_ERR(stats);
++	}
+ 	err = __check_expect_stats(stats, expect_stats, errmsg);
+ 	objagg_stats_put(stats);
+ 	return err;
 -- 
 2.39.5
 
