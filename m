@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-162056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E991B05B56
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07084B05E4B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:52:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06081565823
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4736316488E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94232E2F17;
-	Tue, 15 Jul 2025 13:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC372EA477;
+	Tue, 15 Jul 2025 13:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doLjw0z+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2VGomMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892BD1A5B9D;
-	Tue, 15 Jul 2025 13:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0712E498B;
+	Tue, 15 Jul 2025 13:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585556; cv=none; b=dwYjOkEQU6TwojS2JaT/b1fQXARFnPQcnVjKdRAmDp6g0+UziBDjsmF398I0O5YC56I3u8ISNGweLjA3yL9/Eb5tVislt9RkR8vOspe/1cD4e62nIuKxxZ3BsFoRPC9vMtdWPf3MvvRG2wlSSLexOsQji1XXmrOq+Qj79AGhkgE=
+	t=1752586814; cv=none; b=s8qVM5tWmdrflId9mK+pos1S3Lil05usooQtdiNZ0GOniyYziks2Z0q1RSY+L5IOgI+ffXTbhft9e0KRXb7rXHTokFcQsD4f3wboGw0YeiSEqPFuvzxiTjU7PmCh32klogwzCu2wxPT1dd9EUTLBH8foQNP2ZMGBfafVvqAGMhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585556; c=relaxed/simple;
-	bh=loVkRoNoWOnlNzh7PuGxrJGlQRmyH/Fe7WGjG2DLotw=;
+	s=arc-20240116; t=1752586814; c=relaxed/simple;
+	bh=5Y0inInMKQ/vgcxB+EWKsc0MBW2qARQA3TzIhe12lIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N/l8a2IAoFerA/21MG3Og+DVSzQyKxxEsIQ6GEVAtjeQHN59UvXGSovy6h4y7qzD/Gj53C29tdLjzkzMMgiBzYJVqLkCLHryGSrTSZr780YwYHcI06CK5pU+ITj65V9fxvIa7YzgjE9Eevn1ESvt2sUmb+EX5DuK/53LeLyiKRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doLjw0z+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9EC9C4CEE3;
-	Tue, 15 Jul 2025 13:19:15 +0000 (UTC)
+	 MIME-Version; b=iXnk4JOXkHuSrGslFNq/jydpjYXooKzk/eG7QSTVJDromT7YCd2goJchWDdErVWRuYysCNCxAn9aChwN9cUMPdzn3CIqh4FYjnmaSYlUf88cbozDSv4q6kFARNTOW6DCsAGsUqs6EpnlBRMu22zNqjjI/2W2Q0EGrF84tKAuPAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2VGomMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F31AC4CEE3;
+	Tue, 15 Jul 2025 13:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585556;
-	bh=loVkRoNoWOnlNzh7PuGxrJGlQRmyH/Fe7WGjG2DLotw=;
+	s=korg; t=1752586814;
+	bh=5Y0inInMKQ/vgcxB+EWKsc0MBW2qARQA3TzIhe12lIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doLjw0z+uDBW//nAyySrfC+NsuBs0oCKonD8sSAoQYReDMKeRSBxxuEOuZfhD9O+p
-	 s/PWrslNe69iFLw8RjZd7M/AB9wFFEoNCsX+jmqKglRsKgq+1MEPUbQ488eIzJ9PHr
-	 ANylwDn3gRD3G8QNwBVzC5LDTeVVuGHwViCwvzbI=
+	b=C2VGomMswKmAwuK9KKRtd44vVEcJWUcHmEYZ0KdzFu64aNJEVp/nEk8ZSvpDneVBh
+	 AkrQjDFKnLhMlbtMtQzCCMzQW865n7fRyGvCKveIxjbOj81o7cs8FJb+aG33QvcufU
+	 NtBJD9dPYJmRLMnwaR9l/w/WD+uVz1i2bD8OL51g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aijay Adams <aijay@meta.com>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.12 053/163] x86/mce: Make sure CMCI banks are cleared during shutdown on Intel
-Date: Tue, 15 Jul 2025 15:12:01 +0200
-Message-ID: <20250715130810.882911857@linuxfoundation.org>
+	Luo Jie <quic_luoj@quicinc.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 027/192] net: phy: qcom: qca808x: Fix WoL issue by utilizing at8031_set_wol()
+Date: Tue, 15 Jul 2025 15:12:02 +0200
+Message-ID: <20250715130815.953045439@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Kobryn <inwardvessel@gmail.com>
+From: Luo Jie <quic_luoj@quicinc.com>
 
-commit 30ad231a5029bfa16e46ce868497b1a5cdd3c24d upstream.
+[ Upstream commit 4ab9ada765b7acb5cd02fe27632ec2586b7868ee ]
 
-CMCI banks are not cleared during shutdown on Intel CPUs. As a side effect,
-when a kexec is performed, CPUs coming back online are unable to
-rediscover/claim these occupied banks which breaks MCE reporting.
+The previous commit unintentionally removed the code responsible for
+enabling WoL via MMD3 register 0x8012 BIT5. As a result, Wake-on-LAN
+(WoL) support for the QCA808X PHY is no longer functional.
 
-Clear the CPU ownership during shutdown via cmci_clear() so the banks can
-be reclaimed and MCE reporting will become functional once more.
+The WoL (Wake-on-LAN) feature for the QCA808X PHY is enabled via MMD3
+register 0x8012, BIT5. This implementation is aligned with the approach
+used in at8031_set_wol().
 
-  [ bp: Massage commit message. ]
-
-Reported-by: Aijay Adams <aijay@meta.com>
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250627174935.95194-1-inwardvessel@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e58f30246c35 ("net: phy: at803x: fix the wol setting functions")
+Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250704-qcom_phy_wol_support-v1-2-053342b1538d@quicinc.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/intel.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/qcom/qca808x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/mce/intel.c
-+++ b/arch/x86/kernel/cpu/mce/intel.c
-@@ -477,6 +477,7 @@ void mce_intel_feature_init(struct cpuin
- void mce_intel_feature_clear(struct cpuinfo_x86 *c)
- {
- 	intel_clear_lmce();
-+	cmci_clear();
- }
- 
- bool intel_filter_mce(struct mce *m)
+diff --git a/drivers/net/phy/qcom/qca808x.c b/drivers/net/phy/qcom/qca808x.c
+index 71498c518f0fe..6de16c0eaa089 100644
+--- a/drivers/net/phy/qcom/qca808x.c
++++ b/drivers/net/phy/qcom/qca808x.c
+@@ -633,7 +633,7 @@ static struct phy_driver qca808x_driver[] = {
+ 	.handle_interrupt	= at803x_handle_interrupt,
+ 	.get_tunable		= at803x_get_tunable,
+ 	.set_tunable		= at803x_set_tunable,
+-	.set_wol		= at803x_set_wol,
++	.set_wol		= at8031_set_wol,
+ 	.get_wol		= at803x_get_wol,
+ 	.get_features		= qca808x_get_features,
+ 	.config_aneg		= qca808x_config_aneg,
+-- 
+2.39.5
+
 
 
 
