@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-162547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC208B05DF3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A108B05BEA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D8367B5BC2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAEC91897491
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB012E49B8;
-	Tue, 15 Jul 2025 13:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936B52E3AF6;
+	Tue, 15 Jul 2025 13:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6ZtqU7J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6nNLaS2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A2B2E3AEA;
-	Tue, 15 Jul 2025 13:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B722E49B3;
+	Tue, 15 Jul 2025 13:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586843; cv=none; b=qE2eJCT1URfa6k/jx6QvoLzZAtuT8oN0YeXPfJy+Q4EScBXIfyK9tsabVgvLbh0jct6s+GuvpWaNDHOPvio1ylchvrxTqc8FM3V2PmkfBqcb7dv0Fb5BSByivHq7BMRc3H28iDOzVkbMNCio1eifZ0q02vtD53D+Z1AjORKG5dM=
+	t=1752585846; cv=none; b=JnTKp3At4YhSsvc53JYXZ4qUrHR5WFFlSRBJnIjej2HoK0PW2+RSjnkdYu7j0DsWGW9UgfdcVb16T3igYjmeMuSBXxlF2H9KAFIA4JvctQJYhokFZ6wD8Ryk0rFOZq3xiwsGgo6TSFvZAva7orFvqgCfk3H9ueSU1KnmKTVJWt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586843; c=relaxed/simple;
-	bh=+UQwviovj8R0yeRjccW07m/0KY8Fyt+NppJ5+JRgQ3I=;
+	s=arc-20240116; t=1752585846; c=relaxed/simple;
+	bh=Bnz3mERIuVhvUcIAiN6LhvDIneBmeXeacaBMKJscMR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=myKYlVge4CGCnG59G78aQlAuJX2frZ7tMloaphIoFwxlT7Z6uCV6VmeY0ZfU38TvLj9dUNpgylCrP+hjN/4q7lepCVKtkAhL84NdBp3IPJKUcPX6CMcdzA6i4OiIXTh+saQA6MUR3MLjmt535OWVKtMaHRMmv5G2HgzKIEwvB5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6ZtqU7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68646C4CEE3;
-	Tue, 15 Jul 2025 13:40:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=isjTKAN49xLaKoHwsaq4HEaCPRizTLZGzwh6D9ZAsUHGfNc5VhGbeJhOTinEEca9lj1Ey8oXy+StDNQhU7FFk81RlJoABFgfM/crILzE+Obk6+xoIow4jRdgGIsbOu9vqepaPegXHak7QDdepw3slNGZynJMTUJ6TD4QSD8Adqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6nNLaS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A14C4CEF8;
+	Tue, 15 Jul 2025 13:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586843;
-	bh=+UQwviovj8R0yeRjccW07m/0KY8Fyt+NppJ5+JRgQ3I=;
+	s=korg; t=1752585846;
+	bh=Bnz3mERIuVhvUcIAiN6LhvDIneBmeXeacaBMKJscMR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6ZtqU7J5w1RaCWF6O4vs4xLpSMk845fHt2dN5KI1jyvqPeZVjVJF1RtVRjQvisbk
-	 KrzW+FJW75pZdYt/5hEnpViEx9lgEwy532nXllOtLF5TWOn1Q+Vy99v/UFC0LLY9fB
-	 7kd6XOyrKNxxqTW0Vqtx+Bbq+iigekPcUg0fE/Co=
+	b=U6nNLaS28VoTNySIK1czAQ0x6FP5zTRCOWaz7xX3BycS+HKf+0Ji31VDIBLk3Lw2A
+	 Q8SvjkPaEhqa9Kv+dwuKpW3/KfYSbD+j7hlWZwjHJaXsJKhDVKrfQIAzrt31UpNI0g
+	 7OqYQYiJFr17Xwv4Eer8A6iqGShY4fa2mkz20gXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Gibson <gerald.gibson@oracle.com>,
-	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-	Yu Kuai <yukuai3@huawei.com>
-Subject: [PATCH 6.15 070/192] md/md-bitmap: fix GPF in bitmap_get_stats()
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	amadio@gentoo.org,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Subject: [PATCH 6.6 029/109] perf: build: Setup PKG_CONFIG_LIBDIR for cross compilation
 Date: Tue, 15 Jul 2025 15:12:45 +0200
-Message-ID: <20250715130817.747060856@linuxfoundation.org>
+Message-ID: <20250715130800.050584569@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +66,109 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Håkon Bugge <haakon.bugge@oracle.com>
+From: Leo Yan <leo.yan@arm.com>
 
-commit c17fb542dbd1db745c9feac15617056506dd7195 upstream.
+commit 440cf77625e300e683ca0edc39fbc4b6f3175feb upstream.
 
-The commit message of commit 6ec1f0239485 ("md/md-bitmap: fix stats
-collection for external bitmaps") states:
+On recent Linux distros like Ubuntu Noble and Debian Bookworm, the
+'pkg-config-aarch64-linux-gnu' package is missing. As a result, the
+aarch64-linux-gnu-pkg-config command is not available, which causes
+build failures.
 
-    Remove the external bitmap check as the statistics should be
-    available regardless of bitmap storage location.
+When a build passes the environment variables PKG_CONFIG_LIBDIR or
+PKG_CONFIG_PATH, like a user uses make command or a build system
+(like Yocto, Buildroot, etc) prepares the variables and passes to the
+Perf's Makefile, the commit keeps these variables for package
+configuration. Otherwise, this commit sets the PKG_CONFIG_LIBDIR
+variable to use the Multiarch libs for the cross compilation.
 
-    Return -EINVAL only for invalid bitmap with no storage (neither in
-    superblock nor in external file).
-
-But, the code does not adhere to the above, as it does only check for
-a valid super-block for "internal" bitmaps. Hence, we observe:
-
-Oops: GPF, probably for non-canonical address 0x1cd66f1f40000028
-RIP: 0010:bitmap_get_stats+0x45/0xd0
-Call Trace:
-
- seq_read_iter+0x2b9/0x46a
- seq_read+0x12f/0x180
- proc_reg_read+0x57/0xb0
- vfs_read+0xf6/0x380
- ksys_read+0x6d/0xf0
- do_syscall_64+0x8c/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-We fix this by checking the existence of a super-block for both the
-internal and external case.
-
-Fixes: 6ec1f0239485 ("md/md-bitmap: fix stats collection for external bitmaps")
-Cc: stable@vger.kernel.org
-Reported-by: Gerald Gibson <gerald.gibson@oracle.com>
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Link: https://lore.kernel.org/linux-raid/20250702091035.2061312-1-haakon.bugge@oracle.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Cc: amadio@gentoo.org
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240717082211.524826-2-leo.yan@arm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Alexis Lothoré <alexis.lothore@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md-bitmap.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/build/feature/Makefile |   25 ++++++++++++++++++++++++-
+ tools/perf/Makefile.perf     |   27 ++++++++++++++++++++++++++-
+ 2 files changed, 50 insertions(+), 2 deletions(-)
 
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2357,8 +2357,7 @@ static int bitmap_get_stats(void *data,
+--- a/tools/build/feature/Makefile
++++ b/tools/build/feature/Makefile
+@@ -80,7 +80,30 @@ FILES=
  
- 	if (!bitmap)
- 		return -ENOENT;
--	if (!bitmap->mddev->bitmap_info.external &&
--	    !bitmap->storage.sb_page)
-+	if (!bitmap->storage.sb_page)
- 		return -EINVAL;
- 	sb = kmap_local_page(bitmap->storage.sb_page);
- 	stats->sync_size = le64_to_cpu(sb->sync_size);
+ FILES := $(addprefix $(OUTPUT),$(FILES))
+ 
+-PKG_CONFIG ?= $(CROSS_COMPILE)pkg-config
++# Some distros provide the command $(CROSS_COMPILE)pkg-config for
++# searching packges installed with Multiarch. Use it for cross
++# compilation if it is existed.
++ifneq (, $(shell which $(CROSS_COMPILE)pkg-config))
++  PKG_CONFIG ?= $(CROSS_COMPILE)pkg-config
++else
++  PKG_CONFIG ?= pkg-config
++
++  # PKG_CONFIG_PATH or PKG_CONFIG_LIBDIR, alongside PKG_CONFIG_SYSROOT_DIR
++  # for modified system root, are required for the cross compilation.
++  # If these PKG_CONFIG environment variables are not set, Multiarch library
++  # paths are used instead.
++  ifdef CROSS_COMPILE
++    ifeq ($(PKG_CONFIG_LIBDIR)$(PKG_CONFIG_PATH)$(PKG_CONFIG_SYSROOT_DIR),)
++      CROSS_ARCH = $(shell $(CC) -dumpmachine)
++      PKG_CONFIG_LIBDIR := /usr/local/$(CROSS_ARCH)/lib/pkgconfig/
++      PKG_CONFIG_LIBDIR := $(PKG_CONFIG_LIBDIR):/usr/local/lib/$(CROSS_ARCH)/pkgconfig/
++      PKG_CONFIG_LIBDIR := $(PKG_CONFIG_LIBDIR):/usr/lib/$(CROSS_ARCH)/pkgconfig/
++      PKG_CONFIG_LIBDIR := $(PKG_CONFIG_LIBDIR):/usr/local/share/pkgconfig/
++      PKG_CONFIG_LIBDIR := $(PKG_CONFIG_LIBDIR):/usr/share/pkgconfig/
++      export PKG_CONFIG_LIBDIR
++    endif
++  endif
++endif
+ 
+ all: $(FILES)
+ 
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -188,7 +188,32 @@ HOSTLD  ?= ld
+ HOSTAR  ?= ar
+ CLANG   ?= clang
+ 
+-PKG_CONFIG = $(CROSS_COMPILE)pkg-config
++# Some distros provide the command $(CROSS_COMPILE)pkg-config for
++# searching packges installed with Multiarch. Use it for cross
++# compilation if it is existed.
++ifneq (, $(shell which $(CROSS_COMPILE)pkg-config))
++  PKG_CONFIG ?= $(CROSS_COMPILE)pkg-config
++else
++  PKG_CONFIG ?= pkg-config
++
++  # PKG_CONFIG_PATH or PKG_CONFIG_LIBDIR, alongside PKG_CONFIG_SYSROOT_DIR
++  # for modified system root, is required for the cross compilation.
++  # If these PKG_CONFIG environment variables are not set, Multiarch library
++  # paths are used instead.
++  ifdef CROSS_COMPILE
++    ifeq ($(PKG_CONFIG_LIBDIR)$(PKG_CONFIG_PATH)$(PKG_CONFIG_SYSROOT_DIR),)
++      CROSS_ARCH = $(shell $(CC) -dumpmachine)
++      PKG_CONFIG_LIBDIR := /usr/local/$(CROSS_ARCH)/lib/pkgconfig/
++      PKG_CONFIG_LIBDIR := $(PKG_CONFIG_LIBDIR):/usr/local/lib/$(CROSS_ARCH)/pkgconfig/
++      PKG_CONFIG_LIBDIR := $(PKG_CONFIG_LIBDIR):/usr/lib/$(CROSS_ARCH)/pkgconfig/
++      PKG_CONFIG_LIBDIR := $(PKG_CONFIG_LIBDIR):/usr/local/share/pkgconfig/
++      PKG_CONFIG_LIBDIR := $(PKG_CONFIG_LIBDIR):/usr/share/pkgconfig/
++      export PKG_CONFIG_LIBDIR
++      $(warning Missing PKG_CONFIG_LIBDIR, PKG_CONFIG_PATH and PKG_CONFIG_SYSROOT_DIR for cross compilation,)
++      $(warning set PKG_CONFIG_LIBDIR for using Multiarch libs.)
++    endif
++  endif
++endif
+ 
+ RM      = rm -f
+ LN      = ln -f
 
 
 
