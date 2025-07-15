@@ -1,125 +1,215 @@
-Return-Path: <stable+bounces-162994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9478B0639D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 17:58:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52F5B063C7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 18:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42C357B7336
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38CEF4E7847
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E9D23A9AC;
-	Tue, 15 Jul 2025 15:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7FE22DFB5;
+	Tue, 15 Jul 2025 16:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="XQYyvOng"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="G65x0Lba";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xWvwY1gQ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="G65x0Lba";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xWvwY1gQ"
 X-Original-To: stable@vger.kernel.org
-Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFDC1F95C;
-	Tue, 15 Jul 2025 15:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8169222068F
+	for <stable@vger.kernel.org>; Tue, 15 Jul 2025 16:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752595036; cv=none; b=Hr5LfIbuaprHsjKzTx0w4IJhmoQvUm1RmA+UTuJZYPCmn+Aa+zC04LmzWcF+rHpkasoVRhCtVP+Nvn3D6FxbfXzpDVGGYbHEtlJHuyykMNSeQ+5ci8zLL68JPXi6YfQa6Ar/yTl4IpCw+16pX49u3NsnvvUKT02DEwoctPa0OhE=
+	t=1752595370; cv=none; b=UQk3LnUf13+DbmVHSgDApRRdESfFMkZdzxCclIovWb//GfNFC+ww9zNd+mDiA0jfAQOE99l5G/up4ZBhz/WvIHCVgiyPhEwIwSzUJfbBBYK6K1R45KyTsccJT1m6mXOohmsdoHGyo7FeYXFYbmDR9pAGSOKVgmMC5WSoqnXwls8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752595036; c=relaxed/simple;
-	bh=RM/DyyvFCuoPR2G/1M3cnV1rKEC9pgRNGVd1be7JIwQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WOKVt5ztGIfV5++mrxXVMk9CNRruZMP6cKpFQQjH8RD8C3isoyL0adfEc4sTI6UOBJYcdhnF0g3y0WDWlbqbkYQqNH3mhnRMCOyWF6+1Us5HB/n1VxTNv4n9AlYkqoE34/nmFFjkfauzOOJdFAKxDtj5tB3VSwc4axPBBTd2xeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=XQYyvOng; arc=none smtp.client-ip=144.76.82.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-	s=42; h=From:Cc:To:Date:Message-ID;
-	bh=doj9c5g/LNoQwpGFEmtof3iDbmFEpLN+TDB7ER9gFC8=; b=XQYyvOngYyoXQ77q6o2//O39YZ
-	lBi+/iPp/GzUge1LzhvV/XPl1Wt/AvZ9X7UaFL1H44JLFbZkmrltF1tsxKMWpYl1uJxvXTrnG7XRt
-	tC0tynTQDpW+loiHViK7PUvNgS7ARdUH+v2RlfsVyJE/UEoam1GnbmSU88phk9ELF+VF/Pha+XU/0
-	w0D9GMsQm0yJAojHI8Hm0IprUuotq7xsohOztr5ym0/2stYEQrwO9E9TLuCcOMuRMZrPgwW3SWRmb
-	KDcK8DEnFbbtdi4vrehRD3Rj/N30uDsUZxOfgAcMJuurXvb1eFbgHuXIXu5jbIE5qs/DSf4MWO51f
-	k8OIGWSH7/ykRcrhTOmTjFk+/REMQWqnWOjHfeFtqU995hNkI++Sjw7psQilpcb66RfYfCvgMZegR
-	cSpy5IcZhyKgymkcH0vF2GQYCnuftkWW2Zq5amqf7qDGUQ54SDOF1utZcrA6VimgluhTBAXMeCtSP
-	8Mf7IKFJqFYACRxTQRBFDP9s;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__CHACHA20_POLY1305:256)
-	(Exim)
-	id 1ubi1m-00FUBc-1n;
-	Tue, 15 Jul 2025 15:57:10 +0000
-Message-ID: <28fde5eb-42d0-4e41-b048-d5b6f1593bcf@samba.org>
-Date: Tue, 15 Jul 2025 17:57:10 +0200
+	s=arc-20240116; t=1752595370; c=relaxed/simple;
+	bh=eDIyXMTvY0mQNVNU58DSlj4WMmRYO0/5h33LtWcJrLE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EwgLhVlIhJ8jZZL/kThPI+6xII6TVgbSD+9f98VMf2ntQKa+MGjyOH5ioYYsvOWkSoyJqtzsLpqynARIPNP4AArkOgbDf3+VJKc2XIITnzxW/o9MooWsLqbC3J51LacMCz82/HRhdrpxZO3aicLV2ZLRSO/QSICIbvxBmcoshUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=G65x0Lba; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xWvwY1gQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=G65x0Lba; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xWvwY1gQ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C679C1F7A6;
+	Tue, 15 Jul 2025 16:02:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1752595366; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jir8K1RevdFYXhg35JgD5UILhrMZesElJzUYJwjOmeo=;
+	b=G65x0Lba81J4S8mU2Q1r7nmvthq1NSADa09U3bN4Xq8beXVI59Uw98srL7RpLOkZ6vVgNQ
+	AxZ36UviY/MlE+4+otQ6/axJudidD1jE/vWIwUdslmJxxa26VbOY57XeuSq6CT9m6LUNA6
+	T+aUESu43ipQMJA/JqhrGngLH6Arp50=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1752595366;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jir8K1RevdFYXhg35JgD5UILhrMZesElJzUYJwjOmeo=;
+	b=xWvwY1gQmIunchjm2uoiapiWSKRXNNo7b/0kD8wciq8JXExur7C6go9racTk3RTX/RRyUz
+	jr/1fDhq5SyPE+AQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=G65x0Lba;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xWvwY1gQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1752595366; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jir8K1RevdFYXhg35JgD5UILhrMZesElJzUYJwjOmeo=;
+	b=G65x0Lba81J4S8mU2Q1r7nmvthq1NSADa09U3bN4Xq8beXVI59Uw98srL7RpLOkZ6vVgNQ
+	AxZ36UviY/MlE+4+otQ6/axJudidD1jE/vWIwUdslmJxxa26VbOY57XeuSq6CT9m6LUNA6
+	T+aUESu43ipQMJA/JqhrGngLH6Arp50=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1752595366;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jir8K1RevdFYXhg35JgD5UILhrMZesElJzUYJwjOmeo=;
+	b=xWvwY1gQmIunchjm2uoiapiWSKRXNNo7b/0kD8wciq8JXExur7C6go9racTk3RTX/RRyUz
+	jr/1fDhq5SyPE+AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3A55D13A68;
+	Tue, 15 Jul 2025 16:02:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GCEUDaZ7dmiFaQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 15 Jul 2025 16:02:46 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: simona@ffwll.ch,
+	airlied@gmail.com,
+	christian.koenig@amd.com,
+	torvalds@linux-foundation.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	l.stach@pengutronix.de,
+	linux+etnaviv@armlinux.org.uk,
+	kraxel@redhat.com,
+	christian.gmeiner@gmail.com,
+	dmitry.osipenko@collabora.com,
+	gurchetansingh@chromium.org,
+	olvaffe@gmail.com,
+	zack.rusin@broadcom.com
+Cc: bcm-kernel-feedback-list@broadcom.com,
+	dri-devel@lists.freedesktop.org,
+	etnaviv@lists.freedesktop.org,
+	virtualization@lists.linux.dev,
+	intel-gfx@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 4/7] Revert "drm/prime: Use dma_buf from GEM object instance"
+Date: Tue, 15 Jul 2025 17:58:14 +0200
+Message-ID: <20250715155934.150656-5-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250715155934.150656-1-tzimmermann@suse.de>
+References: <20250715155934.150656-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "smb: client: make use of common
- smbdirect_socket_parameters" has been added to the 6.12-stable tree
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, Stable <stable@vger.kernel.org>,
- stable-commits@vger.kernel.org, Steve French <sfrench@samba.org>,
- Paulo Alcantara <pc@manguebit.org>,
- Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
- Bharath SM <bharathsm@microsoft.com>, Steve French <smfrench@gmail.com>
-References: <20250629142801.1093341-1-sashal@kernel.org>
- <e3d3d647-12a7-4e17-9206-25d03304ac65@samba.org>
- <CAH2r5muFzLct62LPL-1rE35X9Ps+ghxGk=J0FQPfLXwQeTXc6w@mail.gmail.com>
- <73624e22-5421-492c-8725-88284f976dc9@samba.org>
- <2025070824-untreated-bouncing-deb0@gregkh>
-Content-Language: en-US
-From: Stefan Metzmacher <metze@samba.org>
-In-Reply-To: <2025070824-untreated-bouncing-deb0@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: C679C1F7A6
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_TRACE(0.00)[0:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,amd.com,linux-foundation.org,linux.intel.com,kernel.org,pengutronix.de,armlinux.org.uk,redhat.com,collabora.com,chromium.org,broadcom.com];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[etnaviv];
+	DKIM_TRACE(0.00)[suse.de:+];
+	R_RATELIMIT(0.00)[to_ip_from(RLau4tukfh38qp3nirdnk14qe9)];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid,suse.de:email]
+X-Spam-Score: -2.01
 
-Hi Greg,
+This reverts commit f83a9b8c7fd0557b0c50784bfdc1bbe9140c9bf8.
 
->> any reason why this is only backported to 6.12, but not 6.15?
-> 
-> Looks like Sasha's scripts missed them, thanks for catching.  We need to
-> run the "what patches are only in older trees" script again one of these
-> days to sweep all of these up...
-> 
->> I'm looking at v6.15.5 and v6.12.36 and the following are missing
->> from 6.15:
->>
->> bced02aca343 David Howells Wed Apr 2 20:27:26 2025 +0100 cifs: Fix reading into an ITER_FOLIOQ from the smbdirect code
->> 87dcc7e33fc3 David Howells Wed Jun 25 14:15:04 2025 +0100 cifs: Fix the smbd_response slab to allow usercopy
->> b8ddcca4391e Stefan Metzmacher Wed May 28 18:01:40 2025 +0200 smb: client: make use of common smbdirect_socket_parameters
->> 69cafc413c2d Stefan Metzmacher Wed May 28 18:01:39 2025 +0200 smb: smbdirect: introduce smbdirect_socket_parameters
->> c39639bc7723 Stefan Metzmacher Wed May 28 18:01:37 2025 +0200 smb: client: make use of common smbdirect_socket
->> f4b05342c293 Stefan Metzmacher Wed May 28 18:01:36 2025 +0200 smb: smbdirect: add smbdirect_socket.h
->> a6ec1fcafd41 Stefan Metzmacher Wed May 28 18:01:33 2025 +0200 smb: smbdirect: add smbdirect.h with public structures
->> 6509de31b1b6 Stefan Metzmacher Wed May 28 18:01:31 2025 +0200 smb: client: make use of common smbdirect_pdu.h
->> a9bb4006c4f3 Stefan Metzmacher Wed May 28 18:01:30 2025 +0200 smb: smbdirect: add smbdirect_pdu.h with protocol definitions
->>
->> With these being backported to 6.15 too, the following is missing in
->> both:
->>
->> commit 1944f6ab4967db7ad8d4db527dceae8c77de76e9
->> Author:     Stefan Metzmacher <metze@samba.org>
->> AuthorDate: Wed Jun 25 10:16:38 2025 +0200
->> Commit:     Steve French <stfrench@microsoft.com>
->> CommitDate: Wed Jun 25 11:12:54 2025 -0500
->>
->>      smb: client: let smbd_post_send_iter() respect the peers max_send_size and transmit all data
->>
->> As it was marked as
->> Cc: <stable+noautosel@kernel.org> # sp->max_send_size should be info->max_send_size in backports
->>
->> But now that the patches up to b8ddcca4391e are backported it can be cherry-picked just
->> fine to both branches.
-> 
-> Ok, will do.  I think I might have dropped these from 6.15 previously as
-> the "noautosel" tag threw me...
+The dma_buf field in struct drm_gem_object is not stable over the
+object instance's lifetime. The field becomes NULL when user space
+releases the final GEM handle on the buffer object. This resulted
+in a NULL-pointer deref.
 
-Any idea when this will happen?
+Workarounds in commit 5307dce878d4 ("drm/gem: Acquire references on
+GEM handles for framebuffers") and commit f6bfc9afc751 ("drm/framebuffer:
+Acquire internal references on GEM handles") only solved the problem
+partially. They especially don't work for buffer objects without a DRM
+framebuffer associated.
 
-Thanks!
-metze
+Hence, this revert to going back to using .import_attach->dmabuf.
 
+v3:
+- cc stable
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+Acked-by: Christian König <christian.koenig@amd.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+---
+ drivers/gpu/drm/drm_prime.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/drm_prime.c b/drivers/gpu/drm/drm_prime.c
+index b703f83874e1..a23fc712a8b7 100644
+--- a/drivers/gpu/drm/drm_prime.c
++++ b/drivers/gpu/drm/drm_prime.c
+@@ -453,7 +453,13 @@ struct dma_buf *drm_gem_prime_handle_to_dmabuf(struct drm_device *dev,
+ 	}
+ 
+ 	mutex_lock(&dev->object_name_lock);
+-	/* re-export the original imported/exported object */
++	/* re-export the original imported object */
++	if (obj->import_attach) {
++		dmabuf = obj->import_attach->dmabuf;
++		get_dma_buf(dmabuf);
++		goto out_have_obj;
++	}
++
+ 	if (obj->dma_buf) {
+ 		get_dma_buf(obj->dma_buf);
+ 		dmabuf = obj->dma_buf;
+-- 
+2.50.0
 
 
