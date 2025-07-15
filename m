@@ -1,324 +1,123 @@
-Return-Path: <stable+bounces-161958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55AAB0590F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:45:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59285B0591F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D540A4A0D84
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 11:45:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81DD27AE680
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 11:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53672749D6;
-	Tue, 15 Jul 2025 11:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B892D9490;
+	Tue, 15 Jul 2025 11:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b="mHldVO7Y"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="CPN0oTWo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E684273D8C;
-	Tue, 15 Jul 2025 11:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0D5252906
+	for <stable@vger.kernel.org>; Tue, 15 Jul 2025 11:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752579918; cv=none; b=spRefpsyfliRvAHiC+O8oKU62cYhyAL2Ttf628LDDeQZCaGlIlY8cBrcT3p34C6KREQYN7nLtmgMxpP0tZPs//Blj09y5Jf9BQ+heI3AUgsjoZjVTyZrvQTsTQoBKjkNj0PDFB6M8CGRSU2qYs0bJem4+jA57rPbBsA5oxZ1cy4=
+	t=1752580151; cv=none; b=VGUUNhJDb1CRhHPA2XzJ81ZCRYTdHAt2PckfxkzpgYLx07UCwr6DNnYW6o8UHOmheHB29raLa0vv7bPTmPJJ5uMbmymQGxor9KsYGA5IpWUitnpbKlyDlV5RlK9xWsGSKUM53WMhRAW9mQ6CXLJ6X/pkqk+ghClL2f2RP5OOtKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752579918; c=relaxed/simple;
-	bh=608RSHYDARmN7w7GmzCJTlD5GyD5T5nmfrCZYZjpm0I=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=rylyEiczE9ZgrgpXTkRKQ3Gu5XD2JWm+Axep6d726U8UOQdLbnJq6YXmmLN5Ur24SUe3kF7S4G8DVF27HH+t+t5GWUVBJCISNb41Cmr1pu5C8Uvi1DUKG00R1JGltpw/QR6G9fH+8+qB/Kwbhx6gpcCvrdk+XzDGc7LvfgiWpao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io; spf=pass smtp.mailfrom=flyingcircus.io; dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b=mHldVO7Y; arc=none smtp.client-ip=212.122.41.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flyingcircus.io
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
-	s=mail; t=1752579568;
-	bh=eEcGcN258SQMOtXfnCjedVFo7N8rP+anM9d6N39ofdo=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To;
-	b=mHldVO7YpQzQNxdaJJCoBecW2QpAMiRppgPkNqXlKfIhy994OlcAqZjeea4Rj4vRa
-	 5tph7tQFJqprP2PiN1ezXVMC+U5ijr4Cpj63LfjnBubQaeeIj9M36Fpnhth62zAML8
-	 DVxUgwqb1x8OrdzGzpp0EDhfuwtk3V1+3knm25RE=
+	s=arc-20240116; t=1752580151; c=relaxed/simple;
+	bh=H65xc5R0MlyO0nD0fYmQfSB1vnTb//tbsmGqm0vbgPk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cQVBa0S2UyAWvXlAkZdxMxeZZtJgU6WpuR8hoA9VmPf34gSuGnW0K4Md+97bVffteo1ReaMbSK+NOWdz9L1nWkld0Hr/izAKOu6NfMnmTrNDK1WPX0K4KU4zUSnUSUVJS+CThKA4Cwzh5AE02bdplqmkxOuZiRB6hqwC/DlLjrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=CPN0oTWo; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-60867565fb5so8745616a12.3
+        for <stable@vger.kernel.org>; Tue, 15 Jul 2025 04:49:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1752580148; x=1753184948; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oYFAX28B73ZWV81uVTn+uVGouCQNziKk/Cb++ZONJv0=;
+        b=CPN0oTWok489uuh/Ul0GxV71e8yodVgNEnbtawWwqo+8q4/TmYy/LEtF0wKOv+2kIz
+         40VdXQLTJBnJ0ipt8SXlIk2bkkSFvutUMq0iI1ZN2bO2PX94O66qcWHHsjzIxjKrAOCx
+         JcBJxDKjNWtPMzwq2m7utfVrrM3CW1zWHx4pf1A9bcAh+XkFJQ6CyUL3dU4NqfZxHOeB
+         e7XCDagxk2k2hQ9akBZvvhZoUEq0Vt3fi8EjW6iBfYm+mJ4QRi+S6reMy+D4KDg/5uJx
+         JKe2ywOCQQqyiysPap4IT0zMeACSUj+GVNWezEi6chw8q6ce06JFcRLw/fPSXkm6FOWY
+         G7Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752580148; x=1753184948;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oYFAX28B73ZWV81uVTn+uVGouCQNziKk/Cb++ZONJv0=;
+        b=v/eRJyHE2sTc218oLH6wQ0iYp5L/sDo9a5cz0aHJBCidJkCMOG6NBU6Ij+++4j6cZJ
+         Yjs7nYT0bEpJuyxCCMhGKpZDyftZGrZueGqWBI3+JecWoJjyepgb1ONwGftKXmQv9TRA
+         4wUc1qG2uOC3H0TRRuLf4y+aJhcDjv82ae6gqncRpvrGV6IqE188ic+YlOG5nyrilLHe
+         SryshTLM2DUGMJhrI8QLJ0ZXbVB9TZgDEmkubd8HUadvUl3VKiaRydlagnOOXE+eVuNp
+         TO3cj5y1/OFISTkAw3FSLwMxXiXO93B6dxPVtct219EJ6jyIK0zCousTGTZ4q/y5Sp3K
+         smFg==
+X-Forwarded-Encrypted: i=1; AJvYcCVGhhxwiPrepBRd11kZJaljarbRImkBVH13yKo6o/XgdBeTtgrDk3tqosTjB/ilf0xPu82FsjU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI2rC5MzIVrgyRODEfymHniwy8wkaPLKgbYldox4C5p51NC+hI
+	iHZ314tAVF23PVnbYOiH0h4XSvFpBeELB6gW4aJzq5Tf9giX+8MvIowqJLbaV2P+aXRmF92XBS2
+	0KzS/AZk=
+X-Gm-Gg: ASbGncs+7Fh+Hh4saB3ufg7ZrITeTwaeicXmWJlqC3ageoiElYSsEiOSNJlMfuoNmOJ
+	dEkNbFX0I75soft0lJB5H3RHHlU6eMu5EyJFg8ck+vqrgYBGoK0RqFrt5gTBy13/dwIHq1nlBsi
+	/HKkeykx1oA1vnPhu11sC7ticNK/ecTJjryNzrrKsL9laSrCmbqe4tV5W1q8TKNrRTM0bHkOjX/
+	wFvggl85ldnKKL+DvnTTggsJGjKIlWzRY7dRt4pCRGC4FlGw68km4Xub3PgvYXdYd9rtSD7GxpJ
+	eWWEQisHqj6KzOimBxYKxHc/hop3hzZu3kHHCK49IhAXiVV5EdpSYKNOgcv+ezOK1y94Lhq9rkM
+	dlxyr+B5/TsQGFp+/rsM7GN+Rk33YHBqX5eHVhXEf2E9S+QbOzqATHfsqyHM+XWHSGA==
+X-Google-Smtp-Source: AGHT+IGpZJAcfXHpIV6qXP8Zk9PSOKUee3mFWI6sjN8MP30hMErhwYj770Upg2/rLyzH0ZZRMVTPig==
+X-Received: by 2002:a17:906:f5aa:b0:ae3:5e70:32fb with SMTP id a640c23a62f3a-ae9b9488e4cmr232066866b.4.1752580147476;
+        Tue, 15 Jul 2025 04:49:07 -0700 (PDT)
+Received: from ?IPV6:2001:a61:1337:8001:1c60:c024:2a6e:24da? ([2001:a61:1337:8001:1c60:c024:2a6e:24da])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7e91d05sm984882066b.3.2025.07.15.04.49.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Jul 2025 04:49:07 -0700 (PDT)
+Message-ID: <22e2c652-7861-48d2-b769-79b2ef4ea878@suse.com>
+Date: Tue, 15 Jul 2025 13:49:06 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: temporary hung tasks on XFS since updating to 6.6.92
-From: Christian Theune <ct@flyingcircus.io>
-In-Reply-To: <D2237B2F-0FA8-44EB-A5B3-E7BA4512A872@flyingcircus.io>
-Date: Tue, 15 Jul 2025 13:39:17 +0200
-Cc: Carlos Maiolino <cem@kernel.org>,
- stable@vger.kernel.org,
- "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
- regressions@lists.linux.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <35DDC68B-8BB0-46BC-B468-82F7E0732CCC@flyingcircus.io>
-References: <M1JxD6k5Sdxnq-pztTdv_FZwURA8AaT9qWNFUYGCmhiTRQFESfH7xqdOqQjz-oKQiin8pQckoNhfNyCHu-cxEQ==@protonmail.internalid>
- <14E1A49D-23BF-4929-A679-E6D5C8977D40@flyingcircus.io>
- <umhydsim2pkxhtux5hizyahwd6hy36yct5znt6u6ewo4fojvgy@zn4gkroozwes>
- <Z9Ih4yZoepxhmmH5Jrd1bCz35l6iPh5g2J61q2NR7loEdQb_aRquKdD1xLaE_5SPMlkBM8zLdVfdPvvKuNBrGQ==@protonmail.internalid>
- <3E218629-EA2C-4FD1-B2DB-AA6E40D422EE@flyingcircus.io>
- <g7wcgkxdlbshztwihayxma7xkxe23nic7zcreb3eyg3yeld5cu@yk7l2e4ibajk>
- <01751810-C689-4270-8797-FC0D632B6AB6@flyingcircus.io>
- <aFHsJmPhK6hBfEPC@dread.disaster.area>
- <E4F29FAF-D17F-48BC-9F13-05F04C0C2AF5@flyingcircus.io>
- <aFM1rGs1zW52M8ov@dread.disaster.area>
- <D2237B2F-0FA8-44EB-A5B3-E7BA4512A872@flyingcircus.io>
-To: Dave Chinner <david@fromorbit.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
+ event
+To: John Ernberg <john.ernberg@actia.se>, Oliver Neukum <oneukum@suse.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Ming Lei <ming.lei@canonical.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250710085028.1070922-1-john.ernberg@actia.se>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20250710085028.1070922-1-john.ernberg@actia.se>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thanks everyone chiming in so far. I wanted to report back on this to =
-assist with potential
-future people stumbling over this.
+On 10.07.25 10:50, John Ernberg wrote:
+> Having a Gemalto Cinterion PLS83-W modem attached to USB and activating the
+> cellular data link would sometimes yield the following RCU stall, leading
+> to a system freeze:
 
-I=E2=80=99ve monitored the situation with the changes described in the =
-last mail (adjusted writeback and dirty limits
-way down and updated to 6.12.34+) and I=E2=80=99ve only seen very few =
-instances of stuck requests in the last week.
+[..]
+   
+>   	if (!netif_carrier_ok(dev->net)) {
+>   		/* kill URBs for reading packets to save bus bandwidth */
+> +		usbnet_pause_rx(dev);
+>   		unlink_urbs(dev, &dev->rxq);
+> +		usbnet_resume_rx(dev);
 
-Those situations show very high sudden writeback buffers. I=E2=80=99ve =
-tracked this down to a particular type of tarball (nixpkgs channels) =
-that we regularly update and extract which cause a very high number of =
-small files to be created very quickly (a total of about 150k IOs that =
-need to happen).
+This will schedule work.
+Do you really want that?
 
-Implementing a further suggestion I=E2=80=99ll be adding more lenient =
-burst behaviour that should get rid of the remaining stuck tasks.
-
-In case that anyone considers that I=E2=80=99ve escalated this to the =
-regressions list to early:
-mea culpa, apparently I=E2=80=99ve had one too many actual issues in the =
-last years and my pattern
-matching  was ascribing this to a kernel bug too quickly.
-
-> On 19. Jun 2025, at 12:05, Christian Theune <ct@flyingcircus.io> =
-wrote:
->=20
-> Ouch, thanks for that explanation. I now get why and how this really =
-is either
-> a log-related or even general dirty/writeback flushing issue. We =
-definitely
-> have some quite sub-optimal settings here - so I=E2=80=99m revisiting =
-our dirty/writeback=20
-> settings and XFS journal sizes. My understanding is that (in our
-> situation) those should be sized based on the backing storage =
-performance -
-> so typically we=E2=80=99ll end up with fixed sizes independent of the =
-available
-> RAM or volume size that will guarantee an upper bound for worst case
-> of flushing/processing.
->=20
-> However, I=E2=80=99m still a bit puzzled why this has escalated to =
-user-visible
-> incidents in the last weeks - we=E2=80=99ve been running with those =
-sub-optimal
-> settings for a very long time and haven=E2=80=99t had these issues =
-before.
->=20
-> I took some time to educate myself further around the writeback =
-behaviour
-> and noticed the special relationship with that keeps getting mentioned
-> between writeback and cgroups and those are in play with our setup, so
-> maybe it=E2=80=99s worth another look.=20
->=20
-> Whenever this issue hits us, the system is running one of two system
-> management tasks where one performs garbage collection on the nix =
-store
-> (which typically contains multiple generations of all packages on the
-> system) and the other builds out a new system config. Those jobs are =
-run in
-> separate cgroups and throttled at 31 RW IOPS (12.5% of 250) and 188 RW =
-IOPS
-> (75% of 250). Those jobs aren=E2=80=99t time critical at all, so we =
-want to leave
-> sufficient IOPS to not starve the actual workload.
->=20
-> Those jobs run relatively often without causing issues, but then =
-they=E2=80=99re
-> also lazy. Still, even when they do work they do not always cause =
-those
-> issues. If they do, then i can see a sudden spike in our telemetry for
-> dirty pages (around 300-400 MiB typically) followed by a jump in =
-writeback
-> pages (which is typically a bit higher: around 200 MiB more than dirty =
-pages).
->=20
-> So far so good - that=E2=80=99s expected behaviour: one of the jobs =
-might be deleting
-> a lot of files - so that=E2=80=99s lots of metadata operations in the =
-journal,
-> and the other typically extracts archives, so many new files with =
-different sizes.
->=20
-> Here=E2=80=99s why I think there might be a bug lurking (or I=E2=80=99m =
-still missing something):
->=20
-> When the journal in a volume is relatively small (10 MiB) but the =
-amount of
-> data in writeback is around 450 MiB this indicates regular file =
-content
-> being flushed. I only see 3 mib/s at around 100 iops (indicating =
-average 32k writes).
->=20
-> The 100 IOPS is a weird number here. Especially as at this time =
-customer traffic
-> is impacted and apparently completely stalled. My impression from =
-reading about
-> the writeback mechanisms and your description of journal flushes was =
-that=20
-> none of the flushing operations should cause a full stall until the =
-caches or
-> journal is empty, but allow traffic to trickle, roughly at the backing =
-storage
-> speed. Of course, if the system adds more traffic then is being =
-written out
-> then it would still starve.
->=20
-> (I=E2=80=99m guessing that the journal flush doesn=E2=80=99t go =
-through the writeback cache.
-> So maybe the journal isn=E2=80=99t really involved here at all.)
->=20
-> So, could it be that there is some (faulty) relationship with the =
-cgroup
-> throttling interacting with the writeback and/or journal flush that =
-causes=20
-> a) the available IOPS from the backing storage not being properly used =
-and
-> b) other traffic being stalled that shouldn=E2=80=99t be?
->=20
-> How would I go about proving that?
->=20
-> I tried again to replicate the worst case traffic patterns and ran=20
->=20
-> fio --rw=3Drandwrite --name=3Dsynctest --bs=3D512 --direct=3D1 =
---numjobs=3D1 --ioengine=3Dlibaio --iodepth=3D8 --runtime=3D600 =
---fdatasync=3D8 --size=3D10m
->=20
-> which gave me consistent ~250 IOPS and finished in around 80 seconds.=20=
-
->=20
-> I=E2=80=99m going to try to find a machine that exhibits the issues =
-most often
-> and will a) apply lower bounds for the writeback cache, b) remove the
-> cgroup limits and c) both.
->=20
-> Thanks again,
-> Christian
->=20
->> On 18. Jun 2025, at 23:54, Dave Chinner <david@fromorbit.com> wrote:
->>=20
->> On Wed, Jun 18, 2025 at 03:01:26PM +0200, Christian Theune wrote:
->>> [=E2=80=A6]
->>> Yeah, I=E2=80=99m very wary of reporting these tracebacks as =
-potential
->>> bugs because of them easily being just a hint on slow storage. My
->>> problem here is that I can=E2=80=99t point to anything that says the
->>> storage would have been slow.
->>>=20
->>> I=E2=80=99ve gone through all metrics and logs on the KVM servers as =
-well
->>> as the Ceph servers and they=E2=80=99ve been performing completely =
-at
->>> baseline level regarding errors, queues, iops, latency.
->>>=20
->>> I=E2=80=99ve done a measurement to try to emulate those accesses by
->>> running
->>>=20
->>> $ fio --rw=3Drandrw --name=3Dsynctest --bs=3D4k --direct=3D1 =
---numjobs=3D1
->>> --ioengine=3Dlibaio --iodepth=3D1 --runtime=3D600 --write_barrier=3D1
->>> --size=3D60m
->>>=20
->>> I hope this is sufficiently comparable behaviour (maybe with a
->>> different read/write ratio instead of 0.5?) to what XFS log
->>> flushing does. This resulted in [1].
->>=20
->> Not really comparable. "write-barrier" is not the option for data
->> integrity - fdatasync=3D8 would be closer, but even that doesn't
->> replicate the cache flush/fua write pattern of journal IOs.
->>=20
->> Also, journals are write only and sequential, not random. The
->> iodepth is typically 8 when fully busy, and the IO size ranges from
->> single sector to logbsize (from /proc/mounts) depending on the
->> workload.
->>=20
->> Metadata writeback to clear the journal, OTOH, is larger random
->> 4kB writes with no data integrity implied (the journal cache flush
->> mechanism I mention above handles that).
->>=20
->>=20
->>> My interpretation of this measurement (and the VM showed no illnes
->>> while this was running over 10 minutes): the VM is throttled at
->>> 250 IOPs and is reporting back after 10 minutes of 4k random
->>> writes with average IOPS of exactly 250. The latencies are a bit
->>> varied, this could be due to Qemu throttling. The max latency was
->>> 133ms, the average 2ms. This is on a 10g storage network with Ceph
->>> that requires another network roundtrip for replication before
->>> ACKing a write.
->>=20
->> Oh. Ceph.
->>=20
->> Slow random write performance on ceph rbd devices seem to be a
->> recurring problem - the filesystem is way faster than the storage,
->> and by the time the filesystem throttles on journal space (even with
->> small logs), the backlog of IO cannot be drained very quickly and so
->> everything stalls.
->>=20
->> IOWs, a hard cap of 250 random 4kB write IOPS is extremely slow and
->> a likely cause of your random stall problems. When you have lots of
->> dirty metadata in memory, then it can take minutes of IO for
->> writeback to free journal space to allow progress to be made again.
->>=20
->> For example, modify an inode (e.g. chmod), and that only takes ~250
->> bytes of journal space to record. So a 10MB journal can hold ~40,000
->> dirty inodes. If we assume that there maximum locality in these
->> inodes (i.e. best case writeback IO patterns) we have ~1300 x 16kB
->> writes to perform to empty the journal.
->>=20
->> Hence there's up to 10-15s of writeback IO to "unstall" a small
->> journal. Worst case, it's one 16kB write per inode, and that means
->> potential for multiple minutes of writeback to unstall a 10MB
->> journal. Now consider a 64MB journal, and the potential stalls
->> waiting on metadata writeback are much, much worse...
->>=20
->> These stalls will come and go with workload peaks. The filesystem
->> can soak up some of the peak into memory and the journal, then it
->> throttles to storage speed and that's where the hung task warnings
->> fire. Once the storage catches up, everything goes back to "normal"
->> latencies.
->>=20
->>> I=E2=80=99m out of ideas for now, I=E2=80=99ll keep thinking about =
-this. If anyone
->>> has any pointer for further tests in any direction, I=E2=80=99m open =
-to
->>> anything. ;)
->>=20
->> Don't use hard throttling on IOPS rates. Measure IO rates over a
->> longer period of time (e.g. rolling average over a minute) so that
->> the storage can rapidly sink the short term IO peaks that occur when
->> the workload runs the journal out of space and the fs throttles it
->> whilst metadata writeback makes progress.
->>=20
->> -Dave.
->> --=20
->> Dave Chinner
->> david@fromorbit.com
->=20
-> --=20
-> Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
-> Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
-> Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
-> HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian =
-Theune, Christian Zagrodnick
-
-
---=20
-Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
-Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
-Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
-HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
-Christian Zagrodnick
+	Regards
+		Oliver
 
 
