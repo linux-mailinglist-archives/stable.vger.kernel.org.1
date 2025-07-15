@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E551CB05BDF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E42B05C69
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:31:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE2A33AE3C9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6A9A173260
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F248E2E1734;
-	Tue, 15 Jul 2025 13:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F152E5421;
+	Tue, 15 Jul 2025 13:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tk7P/0Nc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5HvsK24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A77192D8A;
-	Tue, 15 Jul 2025 13:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BAC2E6D28;
+	Tue, 15 Jul 2025 13:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585730; cv=none; b=PoS6yDxqm4omqjspzb3xqOVbr/bF1SCXQ+8qh1IcyxnYysWwLqrtYpRxeJY1qQ55FmHl74AONEBJQPtlBg4vGv0AweEnuGX2jc8YLNFKqzERBvzX7pBt58kK4L1jv0yQmMDYWuMkIXI4PUio1RHKRWc0emtyIpz5cCLHVPoAzpc=
+	t=1752585983; cv=none; b=rAfnM5/hdwW1NZreKJwvvW+peLPVRq1ntrigYl54A9XSjujtGG5Xg9HodgDfP7sWNgsgkDwLPpfyKITjvVbgxlRaG0KJx8a/2EPhEV/j90QOMI9m3kzz/bTl7vO0ZrwRnmV/N0QhTGwf7YyKeKNhTIp2Em+/wWWVOLM1pcP8ULQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585730; c=relaxed/simple;
-	bh=l10+plt18Mm/A/Vfnczk/HVYtUCZgb2qf+xrIuuRngA=;
+	s=arc-20240116; t=1752585983; c=relaxed/simple;
+	bh=yJU0tN77dJCmQb3rgE6XB9vcfUqMBvrsKvB4Qnk30gY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djAr/73s6XTMTx4paAh1xM+GRf16Blf/YzICUgJaeao3ezEPXOWiyy8ywbjLvRxLmrgdmEsOiXI+gkzXL0oluiK1qpBO9yoDRrVjXwkWbyQbfcpSV/S+BQqnlTT8qIXcpkJ/gMN+EC8AiuPRAzA9MnrWKimkH0KzKk8zJnWg3e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tk7P/0Nc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40546C4CEE3;
-	Tue, 15 Jul 2025 13:22:10 +0000 (UTC)
+	 MIME-Version; b=Z67+A7/wd8k+ItPyEd37NgSLEqlHdGhO/L6ZRYO3AsevZ1b7yuqA5g7RRokSrMITiw7sqjeZPZLOclszR1/6ydE95WYwNHtf116BjYq09Vd9mOWt3hoi3bQWvv/n3MO/kJ8vKBWp9vlXAxnl+F7TzQKVDZy1VdEdg3YedlK6cOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5HvsK24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D1BC4CEE3;
+	Tue, 15 Jul 2025 13:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585730;
-	bh=l10+plt18Mm/A/Vfnczk/HVYtUCZgb2qf+xrIuuRngA=;
+	s=korg; t=1752585983;
+	bh=yJU0tN77dJCmQb3rgE6XB9vcfUqMBvrsKvB4Qnk30gY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tk7P/0NcHIyU4+iSQdzfejwxokQmcz3wLaMSZr1oDHMVOIGTNM6SP5R9PwH0T0XZZ
-	 L+rAyccbyMKWglZCxkgGmc2v6DmPFCq80TtM5wVa9PH0KokzIzeEFeLEt3Ux6IehaX
-	 KiIpHwrpkEomd4PnNfTeXm6JiOGqzYXfteGybL5U=
+	b=c5HvsK24/AN9mL/tUoMS4Bq61kWFkJ8Ge3NLvgbC9WQ9RCy8yynhWzTNud6U6U38a
+	 Oup/5c1qlQDtkGfIjU01SUyE83Q/scjcd9iu0z9KmF08TU74nznMYeREK/+S0GJbAl
+	 3A/nbjXJqZDMxFKOo94XsXgB6G9EFnzyLFBwdlN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Inoue <niyarium@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	syzbot+48240bab47e705c53126@syzkaller.appspotmail.com,
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 149/163] HID: lenovo: Add support for ThinkPad X1 Tablet Thin Keyboard Gen2
-Date: Tue, 15 Jul 2025 15:13:37 +0200
-Message-ID: <20250715130814.812043266@linuxfoundation.org>
+Subject: [PATCH 6.6 082/109] nbd: fix uaf in nbd_genl_connect() error path
+Date: Tue, 15 Jul 2025 15:13:38 +0200
+Message-ID: <20250715130802.164340872@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akira Inoue <niyarium@gmail.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit a8905238c3bbe13db90065ed74682418f23830c3 ]
+[ Upstream commit aa9552438ebf015fc5f9f890dbfe39f0c53cf37e ]
 
-Add "Thinkpad X1 Tablet Gen 2 Keyboard" PID to hid-lenovo driver to fix trackpoint not working issue.
+There is a use-after-free issue in nbd:
 
-Signed-off-by: Akira Inoue <niyarium@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+block nbd6: Receive control failed (result -104)
+block nbd6: shutting down sockets
+==================================================================
+BUG: KASAN: slab-use-after-free in recv_work+0x694/0xa80 drivers/block/nbd.c:1022
+Write of size 4 at addr ffff8880295de478 by task kworker/u33:0/67
+
+CPU: 2 UID: 0 PID: 67 Comm: kworker/u33:0 Not tainted 6.15.0-rc5-syzkaller-00123-g2c89c1b655c0 #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: nbd6-recv recv_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0xc3/0x670 mm/kasan/report.c:521
+ kasan_report+0xe0/0x110 mm/kasan/report.c:634
+ check_region_inline mm/kasan/generic.c:183 [inline]
+ kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
+ instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
+ atomic_dec include/linux/atomic/atomic-instrumented.h:592 [inline]
+ recv_work+0x694/0xa80 drivers/block/nbd.c:1022
+ process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3319 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+ kthread+0x3c2/0x780 kernel/kthread.c:464
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+nbd_genl_connect() does not properly stop the device on certain
+error paths after nbd_start_device() has been called. This causes
+the error path to put nbd->config while recv_work continue to use
+the config after putting it, leading to use-after-free in recv_work.
+
+This patch moves nbd_start_device() after the backend file creation.
+
+Reported-by: syzbot+48240bab47e705c53126@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68227a04.050a0220.f2294.00b5.GAE@google.com/T/
+Fixes: 6497ef8df568 ("nbd: provide a way for userspace processes to identify device backends")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250612132405.364904-1-zhengqixing@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h        | 1 +
- drivers/hid/hid-lenovo.c     | 8 ++++++++
- drivers/hid/hid-multitouch.c | 8 +++++++-
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/block/nbd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index c6424f6259487..49dc86981287a 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -814,6 +814,7 @@
- #define USB_DEVICE_ID_LENOVO_TPPRODOCK	0x6067
- #define USB_DEVICE_ID_LENOVO_X1_COVER	0x6085
- #define USB_DEVICE_ID_LENOVO_X1_TAB	0x60a3
-+#define USB_DEVICE_ID_LENOVO_X1_TAB2	0x60a4
- #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
- #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
- #define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
-diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
-index 56e530860caef..8482852c662dd 100644
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -473,6 +473,7 @@ static int lenovo_input_mapping(struct hid_device *hdev,
- 		return lenovo_input_mapping_tp10_ultrabook_kbd(hdev, hi, field,
- 							       usage, bit, max);
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_input_mapping_x1_tab_kbd(hdev, hi, field, usage, bit, max);
- 	default:
-@@ -587,6 +588,7 @@ static ssize_t attr_fn_lock_store(struct device *dev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, TP10UBKBD_FN_LOCK_LED, value);
- 		if (ret)
-@@ -781,6 +783,7 @@ static int lenovo_event(struct hid_device *hdev, struct hid_field *field,
- 		return lenovo_event_cptkbd(hdev, field, usage, value);
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_event_tp10ubkbd(hdev, field, usage, value);
- 	default:
-@@ -1062,6 +1065,7 @@ static int lenovo_led_brightness_set(struct led_classdev *led_cdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, tp10ubkbd_led[led_nr], value);
- 		break;
-@@ -1293,6 +1297,7 @@ static int lenovo_probe(struct hid_device *hdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_probe_tp10ubkbd(hdev);
- 		break;
-@@ -1380,6 +1385,7 @@ static void lenovo_remove(struct hid_device *hdev)
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		lenovo_remove_tp10ubkbd(hdev);
- 		break;
-@@ -1430,6 +1436,8 @@ static const struct hid_device_id lenovo_devices[] = {
- 	 */
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB) },
-+	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
-+		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB2) },
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB3) },
- 	{ }
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 93b5c648ef82c..641292cfdaa6f 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2116,12 +2116,18 @@ static const struct hid_device_id mt_devices[] = {
- 		HID_DEVICE(BUS_I2C, HID_GROUP_GENERIC,
- 			USB_VENDOR_ID_LG, I2C_DEVICE_ID_LG_7010) },
- 
--	/* Lenovo X1 TAB Gen 2 */
-+	/* Lenovo X1 TAB Gen 1 */
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
- 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
- 			   USB_VENDOR_ID_LENOVO,
- 			   USB_DEVICE_ID_LENOVO_X1_TAB) },
- 
-+	/* Lenovo X1 TAB Gen 2 */
-+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
-+		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
-+			   USB_VENDOR_ID_LENOVO,
-+			   USB_DEVICE_ID_LENOVO_X1_TAB2) },
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 2203686156bfe..3742ddf46c55a 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -2120,9 +2120,7 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
+ 				goto out;
+ 		}
+ 	}
+-	ret = nbd_start_device(nbd);
+-	if (ret)
+-		goto out;
 +
- 	/* Lenovo X1 TAB Gen 3 */
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
- 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
+ 	if (info->attrs[NBD_ATTR_BACKEND_IDENTIFIER]) {
+ 		nbd->backend = nla_strdup(info->attrs[NBD_ATTR_BACKEND_IDENTIFIER],
+ 					  GFP_KERNEL);
+@@ -2138,6 +2136,8 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
+ 		goto out;
+ 	}
+ 	set_bit(NBD_RT_HAS_BACKEND_FILE, &config->runtime_flags);
++
++	ret = nbd_start_device(nbd);
+ out:
+ 	mutex_unlock(&nbd->config_lock);
+ 	if (!ret) {
 -- 
 2.39.5
 
