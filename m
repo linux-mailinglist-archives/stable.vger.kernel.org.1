@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617B7B05ECB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E30B05BD5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A72A1C4435D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0569F3A933F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63D12EAD0C;
-	Tue, 15 Jul 2025 13:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1002E1C69;
+	Tue, 15 Jul 2025 13:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAjURpk0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oawSUNkO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656A52E6136;
-	Tue, 15 Jul 2025 13:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295732C327B;
+	Tue, 15 Jul 2025 13:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586968; cv=none; b=t50Nw/UQVyCP51UNn6EC2Pfs6VAB4oa/zJUaQ9zL2E3WTNVYyKrZTsZALiL9o1iym21ql+PNHh87XgoPi/bPMTfCIb37CAZFcBP9BXkEop2mVWQ8jo4fRA4o0xXW2H+GgZUsrvBgHei/R96yjfZgJW++klde/dLzwAYSGe08CTs=
+	t=1752585712; cv=none; b=XYUKYu7GzRYYk3FpdSKbzkVz97GTUsJuKbep774AhkLiEZihA0ybQaF3w579X2xo+QApOI+Hjw3F/DDHCJEThfic3akCcxJmGaGufswvxS6S9cBv2/10DLcypTwiR5+5t202+lxre/0EGIToC6dCJ9h8W2ApZMf+G+poZwAzgQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586968; c=relaxed/simple;
-	bh=RMFsho1VV5Gcqaxb/MoJmRZFdL7t8MOoEW1VYsrg/Wc=;
+	s=arc-20240116; t=1752585712; c=relaxed/simple;
+	bh=8SpRUlA+hdA3E5loFbvWNO7M2zSBEYpB3Lnf2N7eOuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NYKFp61dEEcPXHH9I6s3ewlNfnGLYDoZEXNGNje0W//V0NisSq1nCTsvqq5z2cEa0YQsj1z2wk1z0QMZ11M3mn5lzEcbUgqdJWgU8cMTV3Veq0/jU8uHAmcIE1Gz3/G1LomyrnLYCLku5TyzQ7wdOGqP06WD6N+HVy8CtOBq8cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAjURpk0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC79C4CEE3;
-	Tue, 15 Jul 2025 13:42:47 +0000 (UTC)
+	 MIME-Version; b=s/zNgR/P1dVWurjNzxBQ26C8oziuUYZxcUPHuOp3x06WomfCfeJvGVaZBX+WqeuhyZ3Ypw6gZrpisuOLWHqMibWaSprHiUDS2rYMCTQwHMk6yVfMO/ek5aCY1+7uQM+ddJuRAU238Rq0tVL50cT8mWQ/Cqptx+56wSZcTyR13sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oawSUNkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F2EC4CEE3;
+	Tue, 15 Jul 2025 13:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586968;
-	bh=RMFsho1VV5Gcqaxb/MoJmRZFdL7t8MOoEW1VYsrg/Wc=;
+	s=korg; t=1752585712;
+	bh=8SpRUlA+hdA3E5loFbvWNO7M2zSBEYpB3Lnf2N7eOuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAjURpk0TC/sSpGkhrZjTpWOVmx8F38s2Dw4n1z/VX82KEftipFHZpdj5PtmK4wit
-	 fpOqkdwdjoyTo8FeuHvAu4qHWokVlXzuiB8rO8XHM03Y8R/VQERbLknTQdEtSmbjU9
-	 LRdaSlv5c7mQF8dGnROHX3vBaLf8zojMsmyFzeKg=
+	b=oawSUNkOCjM9ROGmR08izKrl+vxvdEeyBkTEvZpL3oMSRDPLD1V+aEdsJgJfhnUzh
+	 1FpgADPN7DRTS+cw5wjLjbhmrwPwti07PdZrm5ARTm9Gjy2ZWZZqY9u8rSSb/vYfV/
+	 He188bemqRUPK61UGeViRPimYd2zfd5rpZerXRR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Paulyshka <me@mixaill.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.15 116/192] x86/CPU/AMD: Disable INVLPGB on Zen2
+	Fengnan Chang <changfengnan@bytedance.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 143/163] io_uring: make fallocate be hashed work
 Date: Tue, 15 Jul 2025 15:13:31 +0200
-Message-ID: <20250715130819.542044496@linuxfoundation.org>
+Message-ID: <20250715130814.570633215@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Paulyshka <me@mixaill.net>
+From: Fengnan Chang <changfengnan@bytedance.com>
 
-commit a74bb5f202dabddfea96abc1328fcedae8aa140a upstream.
+[ Upstream commit 88a80066af1617fab444776135d840467414beb6 ]
 
-AMD Cyan Skillfish (Family 17h, Model 47h, Stepping 0h) has an issue
-that causes system oopses and panics when performing TLB flush using
-INVLPGB.
+Like ftruncate and write, fallocate operations on the same file cannot
+be executed in parallel, so it is better to make fallocate be hashed
+work.
 
-However, the problem is that that machine has misconfigured CPUID and
-should not report the INVLPGB bit in the first place. So zap the
-kernel's representation of the flag so that nothing gets confused.
-
-  [ bp: Massage. ]
-
-Fixes: 767ae437a32d ("x86/mm: Add INVLPGB feature and Kconfig entry")
-Signed-off-by: Mikhail Paulyshka <me@mixaill.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/1ebe845b-322b-4929-9093-b41074e9e939@mixaill.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fengnan Chang <changfengnan@bytedance.com>
+Link: https://lore.kernel.org/r/20250623110218.61490-1-changfengnan@bytedance.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/amd.c |    3 +++
- 1 file changed, 3 insertions(+)
+ io_uring/opdef.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -979,6 +979,9 @@ static void init_amd_zen2(struct cpuinfo
- 		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
- 		pr_emerg("RDSEED is not reliable on this platform; disabling.\n");
- 	}
-+
-+	/* Correct misconfigured CPUID on some clients. */
-+	clear_cpu_cap(c, X86_FEATURE_INVLPGB);
- }
- 
- static void init_amd_zen3(struct cpuinfo_x86 *c)
+diff --git a/io_uring/opdef.c b/io_uring/opdef.c
+index a2be3bbca5ffa..5dc1cba158a06 100644
+--- a/io_uring/opdef.c
++++ b/io_uring/opdef.c
+@@ -214,6 +214,7 @@ const struct io_issue_def io_issue_defs[] = {
+ 	},
+ 	[IORING_OP_FALLOCATE] = {
+ 		.needs_file		= 1,
++		.hash_reg_file          = 1,
+ 		.prep			= io_fallocate_prep,
+ 		.issue			= io_fallocate,
+ 	},
+-- 
+2.39.5
+
 
 
 
