@@ -1,100 +1,124 @@
-Return-Path: <stable+bounces-161976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F3C8B05AB9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:02:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A3AB05AC3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DCB73B3D06
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:01:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4217F560F26
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489731A2387;
-	Tue, 15 Jul 2025 13:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C3B2E1727;
+	Tue, 15 Jul 2025 13:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wa4lt46h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vG8xap+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0429A2566;
-	Tue, 15 Jul 2025 13:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CABF2561AE;
+	Tue, 15 Jul 2025 13:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752584533; cv=none; b=amY0ranz3ZYhitCQqYhHpTor+MKIHGb49gUmRAdTpgOOBamvVG+9N/XrRJ6JZg6hPWjl9SrzCukfjh7y0xpYAx+NJzddvfFrxbC2w5wBJ9t0kh+7hVws236n2iqweY+sdmVundtFqaGZSXSwfuNO0Qes00TCH5kX20z67JgPpcI=
+	t=1752584753; cv=none; b=WcuTSRb/rbs0Ij3CgFnPPrg9Xy/F1JyeX59BSOzIdGcmT+JP3eCZMp/L7FD+K3bTvzvbKCp+zZgHq8C+vtSdId10S/5TyLiHU9XN6GZXjMHrb3eTetopYPDIWGDoGCLW+Uo9+9ugd1g2v6o9LvGEEFyMJYVbBU08GkNAozip74g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752584533; c=relaxed/simple;
-	bh=bOJ8SJUmwY1xIJRqQBze5bezXdl7AQhRGfQSUOpqANE=;
+	s=arc-20240116; t=1752584753; c=relaxed/simple;
+	bh=0uPpU45llipC3TzVqDMQ5evN4sRa1g4MKHiGLtm5jEU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mh2UPNLAlPlV+MTFMzFymTOzLGWh5YySL/K5qdsHxPtELOAVIuPRYpYWD8ZFqgp+0qOrQ5A+wMxvI5krBH3pXhHlGZrpDJ8o/cS7pWLhWbQwxkUHkRPWMKsFGHxGc/mcJ/mbLu/C9PW9Op8PhB8k4RBVdNTQzWoHTB5yGHKIbi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wa4lt46h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54820C4CEE3;
-	Tue, 15 Jul 2025 13:02:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TZLmWZ5IW0YJ7dgbePttZsNzNrLUIQ4RGEEPo6aPvhH8oohQpjFeGrV0yeRvYzsejF6ZuqrKJdWVmnuqe+IcLYZr0Buv9CLuLg0F2iBA1drfGkISa4Ix6htH9soabKm/0AotZiueF6WetImN4zN6H1C/7iVc0bkDKPjOGSCJC7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vG8xap+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F2AC4CEE3;
+	Tue, 15 Jul 2025 13:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752584532;
-	bh=bOJ8SJUmwY1xIJRqQBze5bezXdl7AQhRGfQSUOpqANE=;
+	s=k20201202; t=1752584752;
+	bh=0uPpU45llipC3TzVqDMQ5evN4sRa1g4MKHiGLtm5jEU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wa4lt46hR9M+XTqb16d4GClW13D8t4MOlHF6PRtU4lkV9lxJg4UJz5RXmx+HxJl3V
-	 8K46nZJmPk+x3imGfk5hPBGmobGtu9CCb+NiQ2uQpUVgF2oRdFMRShjwpuR13Ge3eW
-	 UbBBj2HJNu8ob4wQ6+wlQLQGEopVzZwgkpFWwdBdLvS5N0VWW2uZUoxiyY9FZa/urS
-	 ymbVgNWPSPphkHmaYXhQybks1By5OfK+8LUmxMNbmB8jbxbIwrWf3JL9pfpFkicAc6
-	 62BBTk6Qua+FrIQ1ohAWfo1d7mLyHfOusS8KrFQUChhA2GMRg7JvenidfcwG0SRY5B
-	 If0dYrsAXXwmQ==
-Date: Tue, 15 Jul 2025 14:02:08 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, stable@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Yury Khrustalev <yury.khrustalev@arm.com>
-Subject: Re: [PATCH 6.12.y] arm64: Filter out SME hwcaps when FEAT_SME isn't
- implemented
-Message-ID: <c586f05c-a077-4865-8529-08aaf16b8bd6@sirena.org.uk>
-References: <20250715-stable-6-12-sme-feat-filt-v1-1-4c1d9c0336f6@kernel.org>
+	b=vG8xap+xPani99WC7EezMokh7vHK7xaU73nUyI6x6jK3v2jEwl9hx+p0kvDxS6E+T
+	 VRAfURHh72NhMJEHFyQBie+ArNzs6KztNn011inS+zewEb/VCU8mbrogOFRVK9OT1F
+	 3PcWZskbZ9XmD+CP0YpY4rcFSIf8tuu3NUyNkB2vc4xpTPUayXDeniP5qsG3toEpql
+	 APGb/pzZqRMnBC1D/94iC9dFaHNrO93pVYfT3up8JiMiUKgoH59f4wVgETVJaKgxwf
+	 gIhj+5zf8e0VbRSpPm47rjMGQYATWXXwLvTbgiZ+fPGn0o+BW/2OpzybqFtaJ63DjF
+	 QrzFlzRXBsnNg==
+Date: Tue, 15 Jul 2025 14:05:47 +0100
+From: Simon Horman <horms@kernel.org>
+To: Haiyang Zhang <haiyangz@linux.microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	haiyangz@microsoft.com, kys@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, andrew+netdev@lunn.ch, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, davem@davemloft.net,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	cavery@redhat.com
+Subject: Re: [PATCH net,v2] hv_netvsc: Switch VF namespace in netvsc_open
+ instead
+Message-ID: <20250715130547.GV721198@horms.kernel.org>
+References: <1752511297-8817-1-git-send-email-haiyangz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3fAbC77fD/JeM77s"
-Content-Disposition: inline
-In-Reply-To: <20250715-stable-6-12-sme-feat-filt-v1-1-4c1d9c0336f6@kernel.org>
-X-Cookie: Your own mileage may vary.
-
-
---3fAbC77fD/JeM77s
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <1752511297-8817-1-git-send-email-haiyangz@linux.microsoft.com>
 
-On Tue, Jul 15, 2025 at 01:49:23PM +0100, Mark Brown wrote:
-
-> Fixes: 5e64b862c482 ("arm64/sme: Basic enumeration support")
-> Reported-by: Yury Khrustalev <yury.khrustalev@arm.com>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
+On Mon, Jul 14, 2025 at 09:41:37AM -0700, Haiyang Zhang wrote:
+> From: Haiyang Zhang <haiyangz@microsoft.com>
+> 
+> The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
+> received on netvsc NIC. During deletion of the namespace,
+> default_device_exit_batch() >> default_device_exit_net() is called. When
+> netvsc NIC is moved back and registered to the default namespace, it
+> automatically brings VF NIC back to the default namespace. This will cause
+> the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
+> the list end, and hit NULL ptr:
+> 
+> [  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
+> [  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
+> [  231.450246] #PF: supervisor read access in kernel mode
+> [  231.450579] #PF: error_code(0x0000) - not-present page
+> [  231.450916] PGD 17b8a8067 P4D 0 
+> [  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
+> [  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY 
+> [  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
+> [  231.452692] Workqueue: netns cleanup_net
+> [  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
+> [  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
+> [  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
+> [  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
+> [  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
+> [  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
+> [  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
+> [  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
+> [  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
+> [  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
+> [  231.458434] Call Trace:
+> [  231.458600]  <TASK>
+> [  231.458777]  ops_undo_list+0x100/0x220
+> [  231.459015]  cleanup_net+0x1b8/0x300
+> [  231.459285]  process_one_work+0x184/0x340
+> 
+> To fix it, move the VF namespace switching code from the NETDEV_REGISTER
+> event handler to netvsc_open().
+> 
 > Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/r/20250620-arm64-sme-filter-hwcaps-v1-1-02b9d3c2d8ef@kernel.org
-> Signed-off-by: Will Deacon <will@kernel.org>
-> ---
+> Cc: cavery@redhat.com
+> Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
+> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
 
-This needs an additional signoff from me, sorry - I didn't register due
-there being a signoff from me further up the chain.
+With this change do we go back to the situation that existed prior
+to the cited patch? Quoting the cited commit:
 
---3fAbC77fD/JeM77s
-Content-Type: application/pgp-signature; name="signature.asc"
+    The existing code moves VF to the same namespace as the synthetic NIC
+    during netvsc_register_vf(). But, if the synthetic device is moved to a
+    new namespace after the VF registration, the VF won't be moved together.
 
------BEGIN PGP SIGNATURE-----
+Or perhaps not because if synthetic device is moved then, in practice, it
+will subsequently be reopened? (Because it is closed as part of the move
+to a different netns?)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmh2UU8ACgkQJNaLcl1U
-h9AkyAf8CTyXRFAOmA2UW5KB9lyNRiQUjIEy8ntNvLDc1wUCqr7h9VwSjNVeKEo5
-i0SAWtzT04UMrFordXykPqRJ8ZC07MEDEnMTJ0JRG/wVVc+MwYm8OzGRSAh8EX3o
-EymAqKldtvgc27fX/8btlgLLv5y7UNJBQKYEYNJvUBlo5Mpw7QerBrJGRVKK3XFO
-/xGtPDGtutdnLqM62sM7kGHqVx9nusATF32e3Tp0TiExCS6IguGmAA20T61zU/Mc
-NIGl7dEfQm71BZkHYACpzrOsjQvXT2nSrsslBzj5nDSp69hfxoZtXsjHDybWymw+
-5eiwwbHDdXiE5kOhTHoV1nYPAwgs7w==
-=ijxT
------END PGP SIGNATURE-----
-
---3fAbC77fD/JeM77s--
+I am unsure.
 
