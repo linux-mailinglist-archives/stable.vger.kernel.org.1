@@ -1,137 +1,253 @@
-Return-Path: <stable+bounces-163009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D58B06488
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 18:43:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A090EB0649F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 18:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6954B561EB1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:43:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E8AB3A18D0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055A0279327;
-	Tue, 15 Jul 2025 16:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49A026E6F1;
+	Tue, 15 Jul 2025 16:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SI3kAVwt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPLcD8G7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C2B27876E
-	for <stable@vger.kernel.org>; Tue, 15 Jul 2025 16:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CC7186E2E;
+	Tue, 15 Jul 2025 16:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752597793; cv=none; b=WUq4S6lglhqge+/PE/QmxPFmqUaucVYqdQBHptwfOI88d7khQjH2P2EyglZk/4J8CwMdfSJE0B7QFO9VrUvMUVNmFlOyE6cYUKnJAIwCN1e8hTtIEJ99VQp26JhfDG7W/ggePuah9F7dMmOVrhuJc4EGXIIk8TbaSy1usbYvImw=
+	t=1752598287; cv=none; b=bwhDdSd3V8O6sUdTrzeGgHhKppqitMdKnZmrAlDUZNYM/thtWAOv0/Tz2u1Jtgd9zrpsUulhaSauiEXIh7gUS9xFurpN6txA3sDc+9se9Gd/J3MG01ucqXBtYvcPmt5bQD6v+RrW8tviCD/getYMvS4lHk5JRtGEk1xlovYYrkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752597793; c=relaxed/simple;
-	bh=OZLBdP80AuAPBpQatgV4tnOFj5nsWaDVvWpCLDIyI1k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cojWj0PgLoTBQdfC0wOXV1mrhegf8c1gVOPR8B4Ip8ZboWu6YikPT/Pa3JJGvQqs4mFMl5g5UtfAai7xlr4IS+24f47FSmS57pQiNm7vb0iAJutdf/ssB4ajof/n75rd07mIf2nacjp1rB5zVWW5piwcex/enDigKC1FRwLnTy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SI3kAVwt; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-60bf5a08729so10473200a12.0
-        for <stable@vger.kernel.org>; Tue, 15 Jul 2025 09:43:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1752597790; x=1753202590; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=46zpS+UQ3AzjYrdMtZXy87Fu+5mO7Am2ZTQb8NQ0ZbA=;
-        b=SI3kAVwt4n2o1Aq3Hv+RmcxE60FVsLNTY25pw4y83pRPZN+IX1Cj1r8I5mooJ5zAs0
-         zmC3mZV+tFEk/UqEF5Sy8eGCWQ2JCuGnN2ZC0y6kwvgGl3ioOoPy/GNX9tnydgCrzEL6
-         Fi4b03i+ljxj35R8zMEfjAPKibfDra9z3dx5g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752597790; x=1753202590;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=46zpS+UQ3AzjYrdMtZXy87Fu+5mO7Am2ZTQb8NQ0ZbA=;
-        b=rigRvTDMs3+QpeDpDJ3/VglG4GteDqnolfGqv7OZenBOUeOnca7DbZDbrSp2x6bDpa
-         KB3hKv8fJeRm609KOVDCtNMbG6/xxkWbpQTj4hq+dwEojjoD3eyYAEvr02dTOkcArMBs
-         aocJQmtsHgKPwtT9KtVenLXslkXwivJ+P64+ha+kdfCFhNGSkE8LMZa+2zcYcL3kghHC
-         RcFvP7CKP1fLq1W/5VMetCjIufNrAjVxiVSXmFfiNYuUbDCrhFT0/3NVouJC0huUwUBD
-         noCzJBLVY9UYHGNyUi5mzcb2d/CYXSMu0qccvI0Hcqi6WdvTjCv0q0dMA/2Y6w3z3rth
-         fnRA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbbRhxr37f72/ErP/uNe89HqmTj24kF3w49mUlIyCCCp+Koq9fyDgEFLgOTlmkdbdETYQrM9A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpKd7acXiaMrNPo/VbG4JF3o3HmYbCDye521rEc1YDosjaX5Pu
-	WnApX5qt4ceye3Two8o4L78Da+irlRZPv1PebbZhi0WxS8OBrrETlRBWTos9gCJTEm19lP1jG4v
-	6VoTyDqo=
-X-Gm-Gg: ASbGncu+n6KDuI5aIsJJ0FiJUmGGGvY1kYu39w0rOBd8n5Uul45EHUk+mCD1GKpIhAc
-	cbMcuzdiV6ve40D5PG8U/7g3ejOTCT0Gs+i8Nh9c+OkkmhaYmtqrxGvjpNHU5IO4oApL36ACZ3R
-	EqTPKgA6sXNOCKDLvX7r1YCWtjK27DjYePvbe7TqKJW/te6onC8obh0gvqip7kfpH4iC4JE48HA
-	v4nSOlkeRhnilJzri5qNZcXTRRba7mTBN/F5BuL9kZ7veSGNB9QHuRFFy4r/FSGbD7B1zFrcqlY
-	0nw8vX3jmIeCYuFR0KItOpS//tEANh0T4zIfk2y2DbJ/PpOUypaqYAv3c6e8bnIDyb4wxX+Sbci
-	dflJVEOuci+06R2gUD/Mveqy++PXY1ca3ok6ojc6HPadEP2fnhxwxmJprxdhRvEj50Jmh7CZinA
-	YkTIQzEA0=
-X-Google-Smtp-Source: AGHT+IEIrgAGU/WReWJIuStHjnMximEKVuCGOyFjaCa3RI5XeeDwHTQt54l7M/wa1KPA4OifSeJ/mg==
-X-Received: by 2002:a05:6402:3549:b0:5f3:26bb:8858 with SMTP id 4fb4d7f45d1cf-611e8613dffmr17621839a12.34.1752597789748;
-        Tue, 15 Jul 2025 09:43:09 -0700 (PDT)
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-611c9543144sm7518680a12.33.2025.07.15.09.43.09
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Jul 2025 09:43:09 -0700 (PDT)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-60700a745e5so11728120a12.3
-        for <stable@vger.kernel.org>; Tue, 15 Jul 2025 09:43:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXrQGudwovpiOZuvb8sdGJUxHpODEWBUOYQ+rBLXA3OXObSweuoM1tYUhweFhRt2a01xu/2R0A=@vger.kernel.org
-X-Received: by 2002:a05:6402:2686:b0:607:f64a:47f9 with SMTP id
- 4fb4d7f45d1cf-61281f226d2mr26921a12.3.1752597788853; Tue, 15 Jul 2025
- 09:43:08 -0700 (PDT)
+	s=arc-20240116; t=1752598287; c=relaxed/simple;
+	bh=QuDBPInlpwUSmQnRa356s40FHT7mdzjlze1wJQAFCMo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oxBJo8C0otgMXYqWfV8Ljk+rqKyNrZAcLgAJw6gPh0aPpSkq3eOLkFY5XdEj4C3IC87QjCr30dpjtDgugVGcgTunjeQrKk9A0Sp0Sf7zrKOwBuCAhbo/z/Uw+twYtBnWV0BO8EQvYKx0el7nsgUWMFZimStBmd23JKy35O4LHnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPLcD8G7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1161C4CEE3;
+	Tue, 15 Jul 2025 16:51:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752598287;
+	bh=QuDBPInlpwUSmQnRa356s40FHT7mdzjlze1wJQAFCMo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FPLcD8G7MNGk/dz2KDumhfYrwMlPJUwqokkHYRL3S8oc44w7hTIVuHzfjy1acjRU4
+	 E4FWoVB407lIX+rv+28pkXS1F26XdzUTSjhdfScexBuF8cJAlgTVXBkZDnT0Erbtd0
+	 qfSWuUAz4EaELBi8vUO9Ghypn6a6AjiV+aux85SE6bkvyLkh+wUk0/BXtTIouksmCv
+	 QGi9YEwTmCbcMY5Q4cXl79sdN0XgrJFboXCYQa8Le5AiRpEtHPrx7QL7tmUE5BZbcM
+	 QwtQcvj2fgK6nArAFeiLo8EdfC1lPkJVLqfuGP7nFjgF8Gg5fG50/65Z5ZNyUv27QB
+	 kKU6JepqO3cvw==
+Date: Tue, 15 Jul 2025 17:51:22 +0100
+From: Simon Horman <horms@kernel.org>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: ioana.ciornei@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: dpaa2: Fix device reference count leak in MAC
+ endpoint handling
+Message-ID: <20250715165122.GF721198@horms.kernel.org>
+References: <20250715120056.3274056-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1752581388.git.namcao@linutronix.de> <ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de>
-In-Reply-To: <ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 15 Jul 2025 09:42:52 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wheHZRWPyNNoqXB8+ygw2PqEYjbyKQfSbYpirecg5K1Nw@mail.gmail.com>
-X-Gm-Features: Ac12FXwEFq81tRpxQQo-YtMJ6UxIp_wzb2appHmE6OGEEPULt8cuT-X-Zaqr3nQ
-Message-ID: <CAHk-=wheHZRWPyNNoqXB8+ygw2PqEYjbyKQfSbYpirecg5K1Nw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/1] eventpoll: Replace rwlock with spinlock
-To: Nam Cao <namcao@linutronix.de>
-Cc: Christian Brauner <brauner@kernel.org>, Xi Ruoyao <xry111@xry111.site>, 
-	Frederic Weisbecker <frederic@kernel.org>, Valentin Schneider <vschneid@redhat.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, John Ogness <john.ogness@linutronix.de>, 
-	K Prateek Nayak <kprateek.nayak@amd.com>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	linux-rt-users@vger.kernel.org, Joe Damato <jdamato@fastly.com>, 
-	Martin Karsten <mkarsten@uwaterloo.ca>, Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250715120056.3274056-1-make24@iscas.ac.cn>
 
-On Tue, 15 Jul 2025 at 05:47, Nam Cao <namcao@linutronix.de> wrote:
->
->  fs/eventpoll.c | 139 +++++++++----------------------------------------
->  1 file changed, 26 insertions(+), 113 deletions(-)
+On Tue, Jul 15, 2025 at 08:00:56PM +0800, Ma Ke wrote:
+> The fsl_mc_get_endpoint() function uses device_find_child() for
+> localization, which implicitly calls get_device() to increment the
+> device's reference count before returning the pointer. However, the
+> caller dpaa2_switch_port_connect_mac() and dpaa2_eth_connect_mac()
+> fails to properly release this reference in multiple scenarios. We
+> should call put_device() to decrement reference count properly.
+> 
+> As comment of device_find_child() says, 'NOTE: you will need to drop
+> the reference with put_device() after use'.
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 719479230893 ("dpaa2-eth: add MAC/PHY support through phylink")
+> Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 
-Yeah, this is more like the kind of diffstat I like to see for
-eventpoll. Plus it makes things fundamentally simpler.
+As a fix for Networking code this should be targeted at the net tree.
+That can be done like this:
 
-It might be worth looking at ep_poll_callback() - the only case that
-had read_lock_irqsave() - and seeing if perhaps some of the tests
-inside the lock might be done optimistically, or delayed to after the
-lock.
+Please also make sure that the patch compiles against the main branch
+of the net tree. That doesn't appear to be the case with this patch.
 
-For example, the whole wakeup sequence looks like it should be done
-*after* the ep->lock has been released, because it uses its own lock
-(ie the
+> ---
+>  drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 15 ++++++++++++---
+>  .../net/ethernet/freescale/dpaa2/dpaa2-switch.c  | 15 ++++++++++++---
 
-                if (sync)
-                        wake_up_sync(&ep->wq);
-                else
-                        wake_up(&ep->wq);
+As this updates two drivers I have a week preference for two patches.
+One with the prefix dpaa2-eth and the other with the prefix dpaa2-switch.
 
-thing uses the wq lock, and there is nothing that ep->lock protects
-there as far as I can tell.
+Subject: [PATCH net v2 1/2] dpaa2-eth: ...
+Subject: [PATCH net v2 2/2] dpaa2-switch: ...
 
-So I think this has some potential for _simple_ optimizations, but I'm
-not sure how worth it it is.
+>  2 files changed, 25 insertions(+), 6 deletions(-)
 
-Thanks,
-          Linus
+I looked over fsl_mc_get_endpoint. I see that that it calls
+device_find_child() indirectly via fsl_mc_device_lookup(). And I agree that
+leaking references is a concern.
+
+But if so, is it not also a concern that fsl_mc_get_endpoint()
+can make two successful calls to to_fsl_mc_bus(). That is, the
+reference count may be taken twice.
+
+So I wonder if something like the following is appropriate.
+(Compile tested only).
+
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index 7671bd158545..c1c0a4759c7e 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -943,6 +943,7 @@ struct fsl_mc_device *fsl_mc_get_endpoint(struct fsl_mc_device *mc_dev,
+ 	struct fsl_mc_obj_desc endpoint_desc = {{ 0 }};
+ 	struct dprc_endpoint endpoint1 = {{ 0 }};
+ 	struct dprc_endpoint endpoint2 = {{ 0 }};
++	struct fsl_mc_bus *mc_bus;
+ 	int state, err;
+ 
+ 	mc_bus_dev = to_fsl_mc_device(mc_dev->dev.parent);
+@@ -966,6 +967,8 @@ struct fsl_mc_device *fsl_mc_get_endpoint(struct fsl_mc_device *mc_dev,
+ 	strcpy(endpoint_desc.type, endpoint2.type);
+ 	endpoint_desc.id = endpoint2.id;
+ 	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
++	if (endpoint)
++		return endpoint;
+ 
+ 	/*
+ 	 * We know that the device has an endpoint because we verified by
+@@ -973,17 +976,13 @@ struct fsl_mc_device *fsl_mc_get_endpoint(struct fsl_mc_device *mc_dev,
+ 	 * yet discovered by the fsl-mc bus, thus the lookup returned NULL.
+ 	 * Force a rescan of the devices in this container and retry the lookup.
+ 	 */
+-	if (!endpoint) {
+-		struct fsl_mc_bus *mc_bus = to_fsl_mc_bus(mc_bus_dev);
+-
+-		if (mutex_trylock(&mc_bus->scan_mutex)) {
+-			err = dprc_scan_objects(mc_bus_dev, true);
+-			mutex_unlock(&mc_bus->scan_mutex);
+-		}
+-
+-		if (err < 0)
+-			return ERR_PTR(err);
++	mc_bus = to_fsl_mc_bus(mc_bus_dev);
++	if (mutex_trylock(&mc_bus->scan_mutex)) {
++		err = dprc_scan_objects(mc_bus_dev, true);
++		mutex_unlock(&mc_bus->scan_mutex);
+ 	}
++	if (err < 0)
++		return ERR_PTR(err);
+ 
+ 	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
+ 	/*
+
+
+> 
+> diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+> index b82f121cadad..f1543039a5b6 100644
+> --- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+> +++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+> @@ -4666,12 +4666,19 @@ static int dpaa2_eth_connect_mac(struct dpaa2_eth_priv *priv)
+>  		return PTR_ERR(dpmac_dev);
+>  	}
+>  
+> -	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
+> +	if (IS_ERR(dpmac_dev))
+>  		return 0;
+>  
+> +	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
+> +		put_device(&dpmac_dev->dev);
+> +		return 0;
+> +	}
+> +
+>  	mac = kzalloc(sizeof(struct dpaa2_mac), GFP_KERNEL);
+> -	if (!mac)
+> +	if (!mac) {
+> +		put_device(&dpmac_dev->dev);
+>  		return -ENOMEM;
+> +	}
+>  
+>  	mac->mc_dev = dpmac_dev;
+>  	mac->mc_io = priv->mc_io;
+> @@ -4679,7 +4686,7 @@ static int dpaa2_eth_connect_mac(struct dpaa2_eth_priv *priv)
+>  
+>  	err = dpaa2_mac_open(mac);
+>  	if (err)
+> -		goto err_free_mac;
+> +		goto err_put_device;
+>  
+>  	if (dpaa2_mac_is_type_phy(mac)) {
+>  		err = dpaa2_mac_connect(mac);
+> @@ -4703,6 +4710,8 @@ static int dpaa2_eth_connect_mac(struct dpaa2_eth_priv *priv)
+>  
+>  err_close_mac:
+>  	dpaa2_mac_close(mac);
+> +err_put_device:
+> +	put_device(&dpmac_dev->dev);
+>  err_free_mac:
+>  	kfree(mac);
+>  	return err;
+
+I think it would be best to construct the lader of unwind labels
+such that they release resources in the reverse order to which
+they were taken. This allows the ladder to be used consistently
+to release the reources for all cases where that is needed.
+
+E.g. (compile tested only!)
+
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index b82f121cadad..2f553336b02f 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -4666,12 +4666,20 @@ static int dpaa2_eth_connect_mac(struct dpaa2_eth_priv *priv)
+ 		return PTR_ERR(dpmac_dev);
+ 	}
+ 
+-	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
++
++	if (IS_ERR(dpmac_dev))
+ 		return 0;
+ 
++	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
++		err = 0;
++		goto out_put_device;
++	}
++
+ 	mac = kzalloc(sizeof(struct dpaa2_mac), GFP_KERNEL);
+-	if (!mac)
+-		return -ENOMEM;
++	if (!mac) {
++		err = -ENOMEM;
++		goto out_put_device;
++	}
+ 
+ 	mac->mc_dev = dpmac_dev;
+ 	mac->mc_io = priv->mc_io;
+@@ -4705,6 +4713,8 @@ static int dpaa2_eth_connect_mac(struct dpaa2_eth_priv *priv)
+ 	dpaa2_mac_close(mac);
+ err_free_mac:
+ 	kfree(mac);
++out_put_device:
++	put_device(&dpmac_dev->dev);
+ 	return err;
+ }
+ 
+...
+
+-- 
+pw-bot: changes-requested
 
