@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F89B05F92
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B41DB06066
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D59C51C42424
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7CE24A15C6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BAE2E3390;
-	Tue, 15 Jul 2025 13:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8208C2EFDAA;
+	Tue, 15 Jul 2025 13:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpT/6154"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XthqX88d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FD42E337B;
-	Tue, 15 Jul 2025 13:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC5D2ECE90;
+	Tue, 15 Jul 2025 13:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587224; cv=none; b=ZkwJpCbQw5ItYdkZQmwRxufIEPu7jkjwtIHEqQ5UxGewUek1LPqE+tI65xMmWTAi2+rf90rk0I+T/qd36R3N5cdIGuQyY4RzgIemLKsrtTa4YmZoSNvkRZc5Yjw0V8GZZGfF4oTJUa2kJKnno9lCCv+X2VJ4Cvmpqqgab409V+w=
+	t=1752587857; cv=none; b=Q1Oh+0IU8RoHsVS0QJnXauF6p0nK3Hfr4CVYUjIUUArq4KcCs7YNZWgJ3g0sZ3cH7DpSiH7emvQrLcc74uWhqjq+4aPrrwNQAnu/JehWPCNUa1YO0tLsw/qwhnwe7B28Zz9m//GOd6lbtNyX62JJ8/4Il/awSHrFHZ7OR8DqG4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587224; c=relaxed/simple;
-	bh=mmkLNBEUpTRHg3fp3rn6vTTt8CPTx7YnN0rW7+Qhu7w=;
+	s=arc-20240116; t=1752587857; c=relaxed/simple;
+	bh=CvKuNePCOiSkDGvQNbMmqTSZrwlDXtZwOFsTR3h+xY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6hIquOT5e4ZFRSl/PBLhI2NzuZBufrCr4hn26IAEKV9F7YxU16XlSGf1SpK2hbupXskfRWf6CgUGLEOBpcspxbh6p0IoXYDrouKa9aznC7ZH99a5deGIM6LSAuNwpfJ/l8azXHglMav1L8Ndgz3QBIQjwf2jHGmOCssMXZ7l/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpT/6154; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2E2C4CEE3;
-	Tue, 15 Jul 2025 13:47:03 +0000 (UTC)
+	 MIME-Version; b=Megi+wZ4yDyEb3mP2lYYktKefoalrF9aj/Ehtxu1OFKFQQYHa5Up7jC6hCwbVAXQrYlnE5euT75V+afa4TTKeV0HkxSFBubz7IOVpD22NVUecF+tMb7fgJT9zRT2xb//4tGMeqGciuJYtvSV+5IcBWWMeeQ6rKlsc3v9La6TQGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XthqX88d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC91C4CEE3;
+	Tue, 15 Jul 2025 13:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587224;
-	bh=mmkLNBEUpTRHg3fp3rn6vTTt8CPTx7YnN0rW7+Qhu7w=;
+	s=korg; t=1752587857;
+	bh=CvKuNePCOiSkDGvQNbMmqTSZrwlDXtZwOFsTR3h+xY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OpT/61547hQ2/CHcHzTmjexBjMex6YRAVukRtIsFf3xc8/RCrT+hX+suUB2uoQgrT
-	 JQES2tuZ5H3V7CN/0KhueDtuL94367nw9pMayYtJxtuBvC554nciPEmXwLk2/j95qq
-	 lfUDu74XAwbGROiq9n3ZzJYPKi6y0sHiqiSx+XsA=
+	b=XthqX88db0b3pGkFhsTD/nlksSjKDxs6z1ySvqdttoNrMTGcNXhVeFAJ4OFPUu1TZ
+	 /KXZiKzj0oPtNcRN8wTidf2AtdLgmj5/UB1BMV9Fd0LoeNE4kAzUVUnxgBEj9kyo4L
+	 8YrcOHGAGLSTr9FUOWmD82QgrvppB5SUvJesvm+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
-	Borislav Petkov <bp@alien8.de>
-Subject: [PATCH 6.1 21/88] x86/boot: Compile boot code with -std=gnu11 too
+	Seiji Nishikawa <snishika@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH 5.10 128/208] ACPI: PAD: fix crash in exit_round_robin()
 Date: Tue, 15 Jul 2025 15:13:57 +0200
-Message-ID: <20250715130755.366749918@linuxfoundation.org>
+Message-ID: <20250715130816.069220324@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+From: Seiji Nishikawa <snishika@redhat.com>
 
-commit b3bee1e7c3f2b1b77182302c7b2131c804175870 upstream.
+commit 0a2ed70a549e61c5181bad5db418d223b68ae932 upstream.
 
-Use -std=gnu11 for consistency with main kernel code.
+The kernel occasionally crashes in cpumask_clear_cpu(), which is called
+within exit_round_robin(), because when executing clear_bit(nr, addr) with
+nr set to 0xffffffff, the address calculation may cause misalignment within
+the memory, leading to access to an invalid memory address.
 
-It doesn't seem to change anything in vmlinux.
+----------
+BUG: unable to handle kernel paging request at ffffffffe0740618
+        ...
+CPU: 3 PID: 2919323 Comm: acpi_pad/14 Kdump: loaded Tainted: G           OE  X --------- -  - 4.18.0-425.19.2.el8_7.x86_64 #1
+        ...
+RIP: 0010:power_saving_thread+0x313/0x411 [acpi_pad]
+Code: 89 cd 48 89 d3 eb d1 48 c7 c7 55 70 72 c0 e8 64 86 b0 e4 c6 05 0d a1 02 00 01 e9 bc fd ff ff 45 89 e4 42 8b 04 a5 20 82 72 c0 <f0> 48 0f b3 05 f4 9c 01 00 42 c7 04 a5 20 82 72 c0 ff ff ff ff 31
+RSP: 0018:ff72a5d51fa77ec8 EFLAGS: 00010202
+RAX: 00000000ffffffff RBX: ff462981e5d8cb80 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000246 RDI: 0000000000000246
+RBP: ff46297556959d80 R08: 0000000000000382 R09: ff46297c8d0f38d8
+R10: 0000000000000000 R11: 0000000000000001 R12: 000000000000000e
+R13: 0000000000000000 R14: ffffffffffffffff R15: 000000000000000e
+FS:  0000000000000000(0000) GS:ff46297a800c0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffe0740618 CR3: 0000007e20410004 CR4: 0000000000771ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ ? acpi_pad_add+0x120/0x120 [acpi_pad]
+ kthread+0x10b/0x130
+ ? set_kthread_struct+0x50/0x50
+ ret_from_fork+0x1f/0x40
+        ...
+CR2: ffffffffe0740618
 
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Link: https://lore.kernel.org/r/2058761e-12a4-4b2f-9690-3c3c1c9902a5@p183
-Cc: Borislav Petkov <bp@alien8.de>
+crash> dis -lr ffffffffc0726923
+        ...
+/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 114
+0xffffffffc0726918 <power_saving_thread+776>:	mov    %r12d,%r12d
+/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 325
+0xffffffffc072691b <power_saving_thread+779>:	mov    -0x3f8d7de0(,%r12,4),%eax
+/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./arch/x86/include/asm/bitops.h: 80
+0xffffffffc0726923 <power_saving_thread+787>:	lock btr %rax,0x19cf4(%rip)        # 0xffffffffc0740620 <pad_busy_cpus_bits>
+
+crash> px tsk_in_cpu[14]
+$66 = 0xffffffff
+
+crash> px 0xffffffffc072692c+0x19cf4
+$99 = 0xffffffffc0740620
+
+crash> sym 0xffffffffc0740620
+ffffffffc0740620 (b) pad_busy_cpus_bits [acpi_pad]
+
+crash> px pad_busy_cpus_bits[0]
+$42 = 0xfffc0
+----------
+
+To fix this, ensure that tsk_in_cpu[tsk_index] != -1 before calling
+cpumask_clear_cpu() in exit_round_robin(), just as it is done in
+round_robin_cpu().
+
+Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
+Link: https://patch.msgid.link/20240825141352.25280-1-snishika@redhat.com
+[ rjw: Subject edit, avoid updates to the same value ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpi_pad.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -43,7 +43,7 @@ endif
+--- a/drivers/acpi/acpi_pad.c
++++ b/drivers/acpi/acpi_pad.c
+@@ -128,8 +128,11 @@ static void round_robin_cpu(unsigned int
+ static void exit_round_robin(unsigned int tsk_index)
+ {
+ 	struct cpumask *pad_busy_cpus = to_cpumask(pad_busy_cpus_bits);
+-	cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
+-	tsk_in_cpu[tsk_index] = -1;
++
++	if (tsk_in_cpu[tsk_index] != -1) {
++		cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
++		tsk_in_cpu[tsk_index] = -1;
++	}
+ }
  
- # How to compile the 16-bit code.  Note we always compile for -march=i386;
- # that way we can complain to the user if the CPU is insufficient.
--REALMODE_CFLAGS	:= -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
-+REALMODE_CFLAGS	:= -std=gnu11 -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
- 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
- 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
- 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
+ static unsigned int idle_pct = 5; /* percentage */
 
 
 
