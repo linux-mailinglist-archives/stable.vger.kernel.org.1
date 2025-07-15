@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06269B05B97
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE95B05D8F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAFC44E5015
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4768C1890222
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C522E3386;
-	Tue, 15 Jul 2025 13:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709E02EA160;
+	Tue, 15 Jul 2025 13:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXH1cS3J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHc0O1T2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C282E3380;
-	Tue, 15 Jul 2025 13:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5CD2E3391;
+	Tue, 15 Jul 2025 13:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585617; cv=none; b=kz2uJ/XVAiR4pQvXM3XQ0FgdMKUpqyK5zVz06ySl5UaPIwGIragR/TL+7/SUI6+yf6q/uxZ70CUb94p20oZ7zAA+SxOY9M2u5gAtbKjq+hkZe30LTC37ht2sOyXAlEStPVYsl4ypAzriJYmTVG85Vit55KStvJ0vCUb8Dx3IDEg=
+	t=1752586407; cv=none; b=aSc/vnMaN+U9T/KURMXd0hIf7o2hDmKl80mlitQXMkNVP0+RuU8iLeuDcRsfrfizfx33Y0ss0kE0xauNIYvLQ5yHQRqTft3Jh9cx0YDFxNmd5XRGg+H4mXAPULgucUz+8ptK9O50Kj2tU2l9kM4vEK5Y6b73LH9If30Jat0DLf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585617; c=relaxed/simple;
-	bh=D4BrgpG5f8UpymrGZFGCW1ywEvTWSncUN4Zft5ONr8Q=;
+	s=arc-20240116; t=1752586407; c=relaxed/simple;
+	bh=7ag8/InDUYg8LMYFlYXXQnsU2dS8GJMM3FJM5CrQ2Gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gt3oBFUT5pOT6ih78muDO8OpoyMcZK9jb/n0htjzR/fwsgN4lxGocyPxs6h0e45zOtXU71mk19XjMpCeR5msXK4naKgIPp7NqPv+5FHVSbgBDJm98K2xl2hqTFtbgHns/LPyf2nEXFo5rfod0nI0xLYbzWu71WIrYqSVmOLpdd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXH1cS3J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC12C4CEE3;
-	Tue, 15 Jul 2025 13:20:16 +0000 (UTC)
+	 MIME-Version; b=Og0BHYCg4ZdWM6rvhikVEPlQk6oULr5etF2dBn1KKQsJeHHyV8ydEPlCqRZGQQSIpCADYZDaSFwmAqrnWOlW6ygT/wIwIHHUVMwICgmyKfggxh4fpAqvimcy41MBuHHY9iNoAHRwgH/cac1KoMABifNcgQdu/h4R6Pw2/qSNn4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHc0O1T2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAC1C4CEE3;
+	Tue, 15 Jul 2025 13:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585617;
-	bh=D4BrgpG5f8UpymrGZFGCW1ywEvTWSncUN4Zft5ONr8Q=;
+	s=korg; t=1752586406;
+	bh=7ag8/InDUYg8LMYFlYXXQnsU2dS8GJMM3FJM5CrQ2Gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nXH1cS3JXY6fOb/1wh7B770WZcCcy+IN61pTUdbDPCjymQpSJcr2fxB9dL7wm+dCz
-	 oYrmXVGyTPyft7kOhf9UB6CccnWaGnHHEgp6hHxUudz5jz7aPduh5ke0arJfaWtd60
-	 wfoAbqcN/iakBX8kc+ZF7fUh4vGj20DitWREujkQ=
+	b=YHc0O1T2404JeT4oUOiEHCohHCuxMk7uo54W2kQEahF75CIpYMRNYYvG0uYRuy6Gu
+	 PisHBAnP4eMeVX0VHjsvYuzD6vQ4B7Z/ETpDXtVuSMZmK3Jyr4FbSbiGfAxyAKWeJs
+	 WC6Iwf3GLhjxNC31aerINm7P8sAMGIuqJQ3oR72o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/163] wifi: cfg80211: fix S1G beacon head validation in nl80211
+	Nathan Chancellor <nathan@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 5.4 053/148] s390: Add -std=gnu11 to decompressor and purgatory CFLAGS
 Date: Tue, 15 Jul 2025 15:12:55 +0200
-Message-ID: <20250715130813.151723030@linuxfoundation.org>
+Message-ID: <20250715130802.447745777@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 1fe44a86ff0ff483aa1f1332f2b08f431fa51ce8 ]
+commit 3b8b80e993766dc96d1a1c01c62f5d15fafc79b9 upstream.
 
-S1G beacons contain fixed length optional fields that precede the
-variable length elements, ensure we take this into account when
-validating the beacon. This particular case was missed in
-1e1f706fc2ce ("wifi: cfg80211/mac80211: correctly parse S1G
-beacon optional elements").
+GCC changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, there are certain
+places in the s390 code that use their own CFLAGS without a '-std='
+value, which break with this dialect change because of the kernel's own
+definitions of bool, false, and true conflicting with the C23 reserved
+keywords.
 
-Fixes: 1d47f1198d58 ("nl80211: correctly validate S1G beacon head")
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Link: https://patch.msgid.link/20250626115118.68660-1-lachlan.hodges@morsemicro.com
-[shorten/reword subject]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+
+Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
+these errors and make the C standard version of these areas match the
+rest of the kernel.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/nl80211.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/s390/Makefile           |    2 +-
+ arch/s390/purgatory/Makefile |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index c778ffa1c8efd..4eb44821c70d3 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -229,6 +229,7 @@ static int validate_beacon_head(const struct nlattr *attr,
- 	unsigned int len = nla_len(attr);
- 	const struct element *elem;
- 	const struct ieee80211_mgmt *mgmt = (void *)data;
-+	const struct ieee80211_ext *ext;
- 	unsigned int fixedlen, hdrlen;
- 	bool s1g_bcn;
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -23,7 +23,7 @@ endif
+ aflags_dwarf	:= -Wa,-gdwarf-2
+ KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -D__ASSEMBLY__
+ KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
+-KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2
++KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -std=gnu11
+ KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
+--- a/arch/s390/purgatory/Makefile
++++ b/arch/s390/purgatory/Makefile
+@@ -20,7 +20,7 @@ GCOV_PROFILE := n
+ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
  
-@@ -237,8 +238,10 @@ static int validate_beacon_head(const struct nlattr *attr,
- 
- 	s1g_bcn = ieee80211_is_s1g_beacon(mgmt->frame_control);
- 	if (s1g_bcn) {
--		fixedlen = offsetof(struct ieee80211_ext,
--				    u.s1g_beacon.variable);
-+		ext = (struct ieee80211_ext *)mgmt;
-+		fixedlen =
-+			offsetof(struct ieee80211_ext, u.s1g_beacon.variable) +
-+			ieee80211_s1g_optional_len(ext->frame_control);
- 		hdrlen = offsetof(struct ieee80211_ext, u.s1g_beacon);
- 	} else {
- 		fixedlen = offsetof(struct ieee80211_mgmt,
--- 
-2.39.5
-
+-KBUILD_CFLAGS := -fno-strict-aliasing -Wall -Wstrict-prototypes
++KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
+ KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
+ KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
+ KBUILD_CFLAGS += -c -MD -Os -m64 -msoft-float -fno-common
 
 
 
