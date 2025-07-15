@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B94B05EEA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34622B05DF6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35E381891F74
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:52:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6B2B1C2155E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7618F2EBDFC;
-	Tue, 15 Jul 2025 13:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B672EB5AF;
+	Tue, 15 Jul 2025 13:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ra8vVEcF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRM5+XuH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BD52EB5D6;
-	Tue, 15 Jul 2025 13:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49242E8893;
+	Tue, 15 Jul 2025 13:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587092; cv=none; b=SO+EPWKhep930fT01LAjrStEP57Gt4+WxuawCAWQ/F3NjIKUeuqXLEQKVSGtlLB670sC+N1/M2JQiVodmge3Ud/BdyOYm06bfaHpt+LSrD4Bh8oa7RE5wOe4AXUazmoMCb20iPHB/e48ALNvBd7sXeIKcVEx8y0AZAggR/gxvcY=
+	t=1752586607; cv=none; b=Xo2vfqrlgFPBHqfPDINy1u2PLDFaDmPvIKpF2pvP478JSQ/vzp7BtluzyeFEMh5fUmxSYSUc44TZ4YzEdlswmqL9VjV9tUf3pf7b0Dy7JtgjCwANeEiIJgo8n4/cY0fS812AvBREK8EmKiTphZd2d5I6zfmxbVgKuxt4BZdAQpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587092; c=relaxed/simple;
-	bh=zwb74O2s/s18J3co5Cpr7nJmmMxnACo16gtiprh1Vb8=;
+	s=arc-20240116; t=1752586607; c=relaxed/simple;
+	bh=y8cxn3vKmBb86DgeLcyGsrhjzRRHau7e93xsK629Zp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcXEBfyZpU17eibVivv0wRdMZMUSmebm7UDHg67DBGqvmTCCrLC1erXHBdA1ei8T/usgs4OfzkGuyy2P9ChMKt/30guO0znPRfW9KFjzF45sO6mutpih0pJRmCRlJ0wbqp4haTPQlMtW3kXMD8mwREbWzgshwofj9HKPwPw55zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ra8vVEcF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C13C4CEE3;
-	Tue, 15 Jul 2025 13:44:51 +0000 (UTC)
+	 MIME-Version; b=gnTVE0NwExuSvAg9DudgrDK4aRUkZseJ8pZ63gAoKAogBPTBccU8tLYd6kDicQzikC0juBdjqWRfh7WR4PJlXZJwHpVPRXzqlw8nqM2boCsg6YIlOAIbk3syQHDy8bCeVydyEuAZhUMrrAURsdX2AOmyQYVHc97ZHFwCiXjf+ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRM5+XuH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553C6C4CEE3;
+	Tue, 15 Jul 2025 13:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587092;
-	bh=zwb74O2s/s18J3co5Cpr7nJmmMxnACo16gtiprh1Vb8=;
+	s=korg; t=1752586607;
+	bh=y8cxn3vKmBb86DgeLcyGsrhjzRRHau7e93xsK629Zp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ra8vVEcFPZQGvRfafBSv+n8ISVy2pU3pj7eTl9EGXEb1rzbV9eYVaFQjCzOPvwiUa
-	 ssmczo+sO2SbKlqTUMzwFkEoub6/W7ATYl85G5JZTjfW12CTXAJqBzQQ488yDtlWLs
-	 8t3/xzrqAbURpU2dXqhb8tqLmoPsFoZzOv2YmiWE=
+	b=CRM5+XuHZ6+KD688UkTzIt+ljJ9TE9J+w6btDkBBp0vFUDg2FWJBRCsCtBEHtoJq7
+	 kkVzVfwrI2bDXCk1ScuJcidn0zaj71hHSl4OHDeSg/lOtoomxFiYHh3h4M8MK4ZFWE
+	 9aYzvR1vbesHrf/ua5D0VDJmF2pSSCkOehbctCnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 156/192] selftests: net: lib: fix shift count out of range
+Subject: [PATCH 5.4 129/148] NFSv4/flexfiles: Fix handling of NFS level errors in I/O
 Date: Tue, 15 Jul 2025 15:14:11 +0200
-Message-ID: <20250715130821.178055882@linuxfoundation.org>
+Message-ID: <20250715130805.458939005@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,287 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 47c84997c686b4d43b225521b732492552b84758 ]
+[ Upstream commit 38074de35b015df5623f524d6f2b49a0cd395c40 ]
 
-I got the following warning when writing other tests:
+Allow the flexfiles error handling to recognise NFS level errors (as
+opposed to RPC level errors) and handle them separately. The main
+motivator is the NFSERR_PERM errors that get returned if the NFS client
+connects to the data server through a port number that is lower than
+1024. In that case, the client should disconnect and retry a READ on a
+different data server, or it should retry a WRITE after reconnecting.
 
-  + handle_test_result_pass 'bond 802.3ad' '(lacp_active off)'
-  + local 'test_name=bond 802.3ad'
-  + shift
-  + local 'opt_str=(lacp_active off)'
-  + shift
-  + log_test_result 'bond 802.3ad' '(lacp_active off)' ' OK '
-  + local 'test_name=bond 802.3ad'
-  + shift
-  + local 'opt_str=(lacp_active off)'
-  + shift
-  + local 'result= OK '
-  + shift
-  + local retmsg=
-  + shift
-  /net/tools/testing/selftests/net/forwarding/../lib.sh: line 315: shift: shift count out of range
-
-This happens because an extra shift is executed even after all arguments
-have been consumed. Remove the last shift in log_test_result() to avoid
-this warning.
-
-Fixes: a923af1ceee7 ("selftests: forwarding: Convert log_test() to recognize RET values")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20250709091244.88395-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/lib.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c | 142 ++++++++++++++++++-------
+ 1 file changed, 104 insertions(+), 38 deletions(-)
 
-diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-index 701905eeff66d..f380f30425945 100644
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -286,7 +286,7 @@ log_test_result()
- 	local test_name=$1; shift
- 	local opt_str=$1; shift
- 	local result=$1; shift
--	local retmsg=$1; shift
-+	local retmsg=$1
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index 87e8b869d9696..31ae042f5a758 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -1129,6 +1129,7 @@ static void ff_layout_reset_read(struct nfs_pgio_header *hdr)
+ }
  
- 	printf "TEST: %-60s  [%s]\n" "$test_name $opt_str" "$result"
- 	if [[ $retmsg ]]; then
+ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
++					   u32 op_status,
+ 					   struct nfs4_state *state,
+ 					   struct nfs_client *clp,
+ 					   struct pnfs_layout_segment *lseg,
+@@ -1139,34 +1140,42 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
+ 	struct nfs4_deviceid_node *devid = FF_LAYOUT_DEVID_NODE(lseg, idx);
+ 	struct nfs4_slot_table *tbl = &clp->cl_session->fc_slot_table;
+ 
+-	switch (task->tk_status) {
+-	case -NFS4ERR_BADSESSION:
+-	case -NFS4ERR_BADSLOT:
+-	case -NFS4ERR_BAD_HIGH_SLOT:
+-	case -NFS4ERR_DEADSESSION:
+-	case -NFS4ERR_CONN_NOT_BOUND_TO_SESSION:
+-	case -NFS4ERR_SEQ_FALSE_RETRY:
+-	case -NFS4ERR_SEQ_MISORDERED:
++	switch (op_status) {
++	case NFS4_OK:
++	case NFS4ERR_NXIO:
++		break;
++	case NFSERR_PERM:
++		if (!task->tk_xprt)
++			break;
++		xprt_force_disconnect(task->tk_xprt);
++		goto out_retry;
++	case NFS4ERR_BADSESSION:
++	case NFS4ERR_BADSLOT:
++	case NFS4ERR_BAD_HIGH_SLOT:
++	case NFS4ERR_DEADSESSION:
++	case NFS4ERR_CONN_NOT_BOUND_TO_SESSION:
++	case NFS4ERR_SEQ_FALSE_RETRY:
++	case NFS4ERR_SEQ_MISORDERED:
+ 		dprintk("%s ERROR %d, Reset session. Exchangeid "
+ 			"flags 0x%x\n", __func__, task->tk_status,
+ 			clp->cl_exchange_flags);
+ 		nfs4_schedule_session_recovery(clp->cl_session, task->tk_status);
+-		break;
+-	case -NFS4ERR_DELAY:
++		goto out_retry;
++	case NFS4ERR_DELAY:
+ 		nfs_inc_stats(lseg->pls_layout->plh_inode, NFSIOS_DELAY);
+ 		fallthrough;
+-	case -NFS4ERR_GRACE:
++	case NFS4ERR_GRACE:
+ 		rpc_delay(task, FF_LAYOUT_POLL_RETRY_MAX);
+-		break;
+-	case -NFS4ERR_RETRY_UNCACHED_REP:
+-		break;
++		goto out_retry;
++	case NFS4ERR_RETRY_UNCACHED_REP:
++		goto out_retry;
+ 	/* Invalidate Layout errors */
+-	case -NFS4ERR_PNFS_NO_LAYOUT:
+-	case -ESTALE:           /* mapped NFS4ERR_STALE */
+-	case -EBADHANDLE:       /* mapped NFS4ERR_BADHANDLE */
+-	case -EISDIR:           /* mapped NFS4ERR_ISDIR */
+-	case -NFS4ERR_FHEXPIRED:
+-	case -NFS4ERR_WRONG_TYPE:
++	case NFS4ERR_PNFS_NO_LAYOUT:
++	case NFS4ERR_STALE:
++	case NFS4ERR_BADHANDLE:
++	case NFS4ERR_ISDIR:
++	case NFS4ERR_FHEXPIRED:
++	case NFS4ERR_WRONG_TYPE:
+ 		dprintk("%s Invalid layout error %d\n", __func__,
+ 			task->tk_status);
+ 		/*
+@@ -1179,6 +1188,11 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
+ 		pnfs_destroy_layout(NFS_I(inode));
+ 		rpc_wake_up(&tbl->slot_tbl_waitq);
+ 		goto reset;
++	default:
++		break;
++	}
++
++	switch (task->tk_status) {
+ 	/* RPC connection errors */
+ 	case -ECONNREFUSED:
+ 	case -EHOSTDOWN:
+@@ -1192,26 +1206,56 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
+ 		nfs4_delete_deviceid(devid->ld, devid->nfs_client,
+ 				&devid->deviceid);
+ 		rpc_wake_up(&tbl->slot_tbl_waitq);
+-		/* fall through */
++		break;
+ 	default:
+-		if (ff_layout_avoid_mds_available_ds(lseg))
+-			return -NFS4ERR_RESET_TO_PNFS;
+-reset:
+-		dprintk("%s Retry through MDS. Error %d\n", __func__,
+-			task->tk_status);
+-		return -NFS4ERR_RESET_TO_MDS;
++		break;
+ 	}
++
++	if (ff_layout_avoid_mds_available_ds(lseg))
++		return -NFS4ERR_RESET_TO_PNFS;
++reset:
++	dprintk("%s Retry through MDS. Error %d\n", __func__,
++		task->tk_status);
++	return -NFS4ERR_RESET_TO_MDS;
++
++out_retry:
+ 	task->tk_status = 0;
+ 	return -EAGAIN;
+ }
+ 
+ /* Retry all errors through either pNFS or MDS except for -EJUKEBOX */
+ static int ff_layout_async_handle_error_v3(struct rpc_task *task,
++					   u32 op_status,
++					   struct nfs_client *clp,
+ 					   struct pnfs_layout_segment *lseg,
+ 					   int idx)
+ {
+ 	struct nfs4_deviceid_node *devid = FF_LAYOUT_DEVID_NODE(lseg, idx);
+ 
++	switch (op_status) {
++	case NFS_OK:
++	case NFSERR_NXIO:
++		break;
++	case NFSERR_PERM:
++		if (!task->tk_xprt)
++			break;
++		xprt_force_disconnect(task->tk_xprt);
++		goto out_retry;
++	case NFSERR_ACCES:
++	case NFSERR_BADHANDLE:
++	case NFSERR_FBIG:
++	case NFSERR_IO:
++	case NFSERR_NOSPC:
++	case NFSERR_ROFS:
++	case NFSERR_STALE:
++		goto out_reset_to_pnfs;
++	case NFSERR_JUKEBOX:
++		nfs_inc_stats(lseg->pls_layout->plh_inode, NFSIOS_DELAY);
++		goto out_retry;
++	default:
++		break;
++	}
++
+ 	switch (task->tk_status) {
+ 	/* File access problems. Don't mark the device as unavailable */
+ 	case -EACCES:
+@@ -1230,6 +1274,7 @@ static int ff_layout_async_handle_error_v3(struct rpc_task *task,
+ 		nfs4_delete_deviceid(devid->ld, devid->nfs_client,
+ 				&devid->deviceid);
+ 	}
++out_reset_to_pnfs:
+ 	/* FIXME: Need to prevent infinite looping here. */
+ 	return -NFS4ERR_RESET_TO_PNFS;
+ out_retry:
+@@ -1240,6 +1285,7 @@ static int ff_layout_async_handle_error_v3(struct rpc_task *task,
+ }
+ 
+ static int ff_layout_async_handle_error(struct rpc_task *task,
++					u32 op_status,
+ 					struct nfs4_state *state,
+ 					struct nfs_client *clp,
+ 					struct pnfs_layout_segment *lseg,
+@@ -1258,10 +1304,11 @@ static int ff_layout_async_handle_error(struct rpc_task *task,
+ 
+ 	switch (vers) {
+ 	case 3:
+-		return ff_layout_async_handle_error_v3(task, lseg, idx);
+-	case 4:
+-		return ff_layout_async_handle_error_v4(task, state, clp,
++		return ff_layout_async_handle_error_v3(task, op_status, clp,
+ 						       lseg, idx);
++	case 4:
++		return ff_layout_async_handle_error_v4(task, op_status, state,
++						       clp, lseg, idx);
+ 	default:
+ 		/* should never happen */
+ 		WARN_ON_ONCE(1);
+@@ -1306,7 +1353,17 @@ static void ff_layout_io_track_ds_error(struct pnfs_layout_segment *lseg,
+ 	switch (status) {
+ 	case NFS4ERR_DELAY:
+ 	case NFS4ERR_GRACE:
+-		return;
++	case NFS4ERR_PERM:
++		break;
++	case NFS4ERR_NXIO:
++		ff_layout_mark_ds_unreachable(lseg, idx);
++		/*
++		 * Don't return the layout if this is a read and we still
++		 * have layouts to try
++		 */
++		if (opnum == OP_READ)
++			break;
++		fallthrough;
+ 	default:
+ 		break;
+ 	}
+@@ -1329,12 +1386,15 @@ static int ff_layout_read_done_cb(struct rpc_task *task,
+ 	int err;
+ 
+ 	trace_nfs4_pnfs_read(hdr, task->tk_status);
+-	if (task->tk_status < 0)
++	if (task->tk_status < 0) {
+ 		ff_layout_io_track_ds_error(hdr->lseg, hdr->pgio_mirror_idx,
+ 					    hdr->args.offset, hdr->args.count,
+ 					    hdr->res.op_status, OP_READ,
+ 					    task->tk_status);
+-	err = ff_layout_async_handle_error(task, hdr->args.context->state,
++	}
++
++	err = ff_layout_async_handle_error(task, hdr->res.op_status,
++					   hdr->args.context->state,
+ 					   hdr->ds_clp, hdr->lseg,
+ 					   hdr->pgio_mirror_idx);
+ 
+@@ -1502,12 +1562,15 @@ static int ff_layout_write_done_cb(struct rpc_task *task,
+ 	int err;
+ 
+ 	trace_nfs4_pnfs_write(hdr, task->tk_status);
+-	if (task->tk_status < 0)
++	if (task->tk_status < 0) {
+ 		ff_layout_io_track_ds_error(hdr->lseg, hdr->pgio_mirror_idx,
+ 					    hdr->args.offset, hdr->args.count,
+ 					    hdr->res.op_status, OP_WRITE,
+ 					    task->tk_status);
+-	err = ff_layout_async_handle_error(task, hdr->args.context->state,
++	}
++
++	err = ff_layout_async_handle_error(task, hdr->res.op_status,
++					   hdr->args.context->state,
+ 					   hdr->ds_clp, hdr->lseg,
+ 					   hdr->pgio_mirror_idx);
+ 
+@@ -1545,13 +1608,16 @@ static int ff_layout_commit_done_cb(struct rpc_task *task,
+ 	int err;
+ 
+ 	trace_nfs4_pnfs_commit_ds(data, task->tk_status);
+-	if (task->tk_status < 0)
++	if (task->tk_status < 0) {
+ 		ff_layout_io_track_ds_error(data->lseg, data->ds_commit_index,
+ 					    data->args.offset, data->args.count,
+ 					    data->res.op_status, OP_COMMIT,
+ 					    task->tk_status);
+-	err = ff_layout_async_handle_error(task, NULL, data->ds_clp,
+-					   data->lseg, data->ds_commit_index);
++	}
++
++	err = ff_layout_async_handle_error(task, data->res.op_status,
++					   NULL, data->ds_clp, data->lseg,
++					   data->ds_commit_index);
+ 
+ 	switch (err) {
+ 	case -NFS4ERR_RESET_TO_PNFS:
 -- 
 2.39.5
 
