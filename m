@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-162378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0576CB05D26
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A135B05EB4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99689565F5E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC1251C4045F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342632E9ED4;
-	Tue, 15 Jul 2025 13:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3523D2EA726;
+	Tue, 15 Jul 2025 13:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNYvNJE2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TY5mx1Fk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E612A2E3391;
-	Tue, 15 Jul 2025 13:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E589D2E041E;
+	Tue, 15 Jul 2025 13:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586399; cv=none; b=fv3kpM6Rg8vtIg2q1l5yuZVOq9felmCBM232zgTUcRoxjt9L4DntA6fwtTWHeDCPCWxLiP94SmU5D2Czb61/YmtSGvm8tlLCEY/viCdonfqviAUC/l8h8ZS6W+svHXrWiVALVq3JE5AVc0U8WMd0LHcAzpw4DFU7rqNMjBfOpiA=
+	t=1752586868; cv=none; b=Q00nCjnJd/QuAQjS2gjelTiSOSVl4mxEj5UBtEJMVu8zc056Zn9E0Kfr6GQVwAQfQjiZLcTzUUf9unFfaNT2yKavlqFEgMjeFTOY2qdJmkXBYKd7h/MEeLPLWpJ5xBdR6B78vBtfrYnaCmimTZdj47VfoKJmtAY/A1tyGt5xE+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586399; c=relaxed/simple;
-	bh=5ShqdG7csOlitq8plmC7EAIqAAdF24DfJrFOhjtpWYc=;
+	s=arc-20240116; t=1752586868; c=relaxed/simple;
+	bh=NUyMdCDvV/gQ/c6DynG3XUza65/+lEtZYDHp1S2WWiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0yRC/xAKNXUrshSXKbBZRqq27HXwmJZQZWjGJM8i3Tbnv+etUDX6zKtFuUXsY5S/MSJKMX9FByaakiTm7T/C9VBoMhWwOVS8Sl+5Sic/Ukcn8zaO0YYxKQUCyTCKLNAVch3m8CWAitFSGk7Bv2cofEzb1+4AeqcErQQkFHrLVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNYvNJE2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B8DC4CEE3;
-	Tue, 15 Jul 2025 13:33:18 +0000 (UTC)
+	 MIME-Version; b=NFid/DWkHwys7QjUjOLlF1nLi87KsC0EHcKHdSEOf1RH5JEAqymmkyux3wQrRzftBNvpcLuC0dPkJZjbzVvHfwPBR5Rw5NTFiU5EQuLtl35O15kl8WjmAyJwYMHCbIv2YbE5doq/56h6cNCmOkBTDyIRKWteWSuc54cwahvpeNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TY5mx1Fk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4B2C4CEE3;
+	Tue, 15 Jul 2025 13:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586398;
-	bh=5ShqdG7csOlitq8plmC7EAIqAAdF24DfJrFOhjtpWYc=;
+	s=korg; t=1752586867;
+	bh=NUyMdCDvV/gQ/c6DynG3XUza65/+lEtZYDHp1S2WWiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNYvNJE2qwsvjO0I710Wx20AWMxQPb7BcckvOr7UcBsBVxsk+gNu0rg2dxJNjGmjb
-	 k2fojM5MjUto91P8zGWEFkCBQL48DWclZTy+JOqJTJPdn57XoI3pcgw6qK5mpbvvIw
-	 tZGXE8jNGcgWha53bUBRURNPDZYlGDxYEo2Nsz6w=
+	b=TY5mx1FkyLDTMhRvQ6G6/3Pzsa1GflUX0zLUFVvzadGzkGfn2vQAzPNY6RIq5KqvR
+	 TrKdC6YpRNUKqdNhG8CcXCKNBhOYTG+c65kTlOGpXk+M/xxKNpERGLfbzbCoseAbal
+	 tTwHHrryqOFcR/RgBdFNfr5xvjcnVhK1se3trBS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 5.4 051/148] drm/bridge: cdns-dsi: Fix connecting to next bridge
+	Deren Wu <deren.wu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.15 078/192] wifi: mt76: mt7925: prevent NULL pointer dereference in mt7925_sta_set_decap_offload()
 Date: Tue, 15 Jul 2025 15:12:53 +0200
-Message-ID: <20250715130802.366474552@linuxfoundation.org>
+Message-ID: <20250715130818.057046947@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Deren Wu <deren.wu@mediatek.com>
 
-commit 688eb4d465484bc2a3471a6a6f06f833b58c7867 upstream.
+commit 35ad47c0b3da04b00b19a8b9ed5632e2f2520472 upstream.
 
-Fix the OF node pointer passed to the of_drm_find_bridge() call to find
-the next bridge in the display chain.
+Add a NULL check for msta->vif before accessing its members to prevent
+a kernel panic in AP mode deployment. This also fix the issue reported
+in [1].
 
-The code to find the next panel (and create its panel-bridge) works
-fine, but to find the next (non-panel) bridge does not.
+The crash occurs when this function is triggered before the station is
+fully initialized. The call trace shows a page fault at
+mt7925_sta_set_decap_offload() due to accessing resources when msta->vif
+is NULL.
 
-To find the next bridge in the pipeline, we need to pass "np" - the OF
-node pointer of the next entity in the devicetree chain. Passing
-"of_node" to of_drm_find_bridge (which is what the code does currently)
-will fetch the bridge for the cdns-dsi which is not what's required.
+Fix this by adding an early return if msta->vif is NULL and also check
+wcid.sta is ready. This ensures we only proceed with decap offload
+configuration when the station's state is properly initialized.
 
-Fix that.
+[14739.655703] Unable to handle kernel paging request at virtual address ffffffffffffffa0
+[14739.811820] CPU: 0 UID: 0 PID: 895854 Comm: hostapd Tainted: G
+[14739.821394] Tainted: [C]=CRAP, [O]=OOT_MODULE
+[14739.825746] Hardware name: Raspberry Pi 4 Model B Rev 1.1 (DT)
+[14739.831577] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[14739.838538] pc : mt7925_sta_set_decap_offload+0xc0/0x1b8 [mt7925_common]
+[14739.845271] lr : mt7925_sta_set_decap_offload+0x58/0x1b8 [mt7925_common]
+[14739.851985] sp : ffffffc085efb500
+[14739.855295] x29: ffffffc085efb500 x28: 0000000000000000 x27: ffffff807803a158
+[14739.862436] x26: ffffff8041ececb8 x25: 0000000000000001 x24: 0000000000000001
+[14739.869577] x23: 0000000000000001 x22: 0000000000000008 x21: ffffff8041ecea88
+[14739.876715] x20: ffffff8041c19ca0 x19: ffffff8078031fe0 x18: 0000000000000000
+[14739.883853] x17: 0000000000000000 x16: ffffffe2aeac1110 x15: 000000559da48080
+[14739.890991] x14: 0000000000000001 x13: 0000000000000000 x12: 0000000000000000
+[14739.898130] x11: 0a10020001008e88 x10: 0000000000001a50 x9 : ffffffe26457bfa0
+[14739.905269] x8 : ffffff8042013bb0 x7 : ffffff807fb6cbf8 x6 : dead000000000100
+[14739.912407] x5 : dead000000000122 x4 : ffffff80780326c8 x3 : 0000000000000000
+[14739.919546] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffffff8041ececb8
+[14739.926686] Call trace:
+[14739.929130]  mt7925_sta_set_decap_offload+0xc0/0x1b8 [mt7925_common]
+[14739.935505]  ieee80211_check_fast_rx+0x19c/0x510 [mac80211]
+[14739.941344]  _sta_info_move_state+0xe4/0x510 [mac80211]
+[14739.946860]  sta_info_move_state+0x1c/0x30 [mac80211]
+[14739.952116]  sta_apply_auth_flags.constprop.0+0x90/0x1b0 [mac80211]
+[14739.958708]  sta_apply_parameters+0x234/0x5e0 [mac80211]
+[14739.964332]  ieee80211_add_station+0xdc/0x190 [mac80211]
+[14739.969950]  nl80211_new_station+0x46c/0x670 [cfg80211]
+[14739.975516]  genl_family_rcv_msg_doit+0xdc/0x150
+[14739.980158]  genl_rcv_msg+0x218/0x298
+[14739.983830]  netlink_rcv_skb+0x64/0x138
+[14739.987670]  genl_rcv+0x40/0x60
+[14739.990816]  netlink_unicast+0x314/0x380
+[14739.994742]  netlink_sendmsg+0x198/0x3f0
+[14739.998664]  __sock_sendmsg+0x64/0xc0
+[14740.002324]  ____sys_sendmsg+0x260/0x298
+[14740.006242]  ___sys_sendmsg+0xb4/0x110
 
-Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Link: https://lore.kernel.org/r/20250329113925.68204-2-aradhya.bhatia@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://github.com/morrownr/USB-WiFi/issues/603 [1]
+Fixes: b859ad65309a ("wifi: mt76: mt7925: add link handling in mt7925_sta_set_decap_offload")
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Link: https://patch.msgid.link/35aedbffa050e98939264300407a52ba4e236d52.1748149855.git.deren.wu@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/cdns-dsi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/bridge/cdns-dsi.c
-+++ b/drivers/gpu/drm/bridge/cdns-dsi.c
-@@ -959,7 +959,7 @@ static int cdns_dsi_attach(struct mipi_d
- 	if (!IS_ERR(panel)) {
- 		bridge = drm_panel_bridge_add(panel, DRM_MODE_CONNECTOR_DSI);
- 	} else {
--		bridge = of_drm_find_bridge(dev->dev.of_node);
-+		bridge = of_drm_find_bridge(np);
- 		if (!bridge)
- 			bridge = ERR_PTR(-EINVAL);
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1600,6 +1600,9 @@ static void mt7925_sta_set_decap_offload
+ 	unsigned long valid = mvif->valid_links;
+ 	u8 i;
+ 
++	if (!msta->vif)
++		return;
++
+ 	mt792x_mutex_acquire(dev);
+ 
+ 	valid = ieee80211_vif_is_mld(vif) ? mvif->valid_links : BIT(0);
+@@ -1614,6 +1617,9 @@ static void mt7925_sta_set_decap_offload
+ 		else
+ 			clear_bit(MT_WCID_FLAG_HDR_TRANS, &mlink->wcid.flags);
+ 
++		if (!mlink->wcid.sta)
++			continue;
++
+ 		mt7925_mcu_wtbl_update_hdr_trans(dev, vif, sta, i);
  	}
+ 
 
 
 
