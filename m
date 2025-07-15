@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-162876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E061FB05FF4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE45B06010
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 836F57BBC83
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:05:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF6597BD090
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A5D2ECD3F;
-	Tue, 15 Jul 2025 13:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315132E718E;
+	Tue, 15 Jul 2025 13:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNHzgehB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2o5/9rQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B452E718E;
-	Tue, 15 Jul 2025 13:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38902ECE80;
+	Tue, 15 Jul 2025 13:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587708; cv=none; b=PAbGmWHt56zofIXAlkwF4NdP0000rSR1yZFzn8ljOnyJ1tkluYxu3P9AwE9dSzr9IWx245F4fAurwRBV9McZdpJISE6ns+nhconSWorWSHgG+4P2eIak1uI1eFJIQllb8zvFaYbbO7n0ACoHuhZhAziDk17DzVwCkn8M7XPngUk=
+	t=1752587738; cv=none; b=oVdZx14uiWJBtuTzmB1hyV/hYHydtxGMF/z25KH9SUjNwTp/dX1BBp2JUitqGMLno2IU1S5vaurY1d+Mff1ftrl5AY82kkfXHVhd+IZvhW1RErk6Opybql8eLpzy1DWdZUmeKah5pMbI1ufiVAOCSwvvi6n+gb88gf1KOzqcFDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587708; c=relaxed/simple;
-	bh=Wf3Q4h2y2eD/33JBOSt0GI7Xjm93F/uQYPCY0KQXOhg=;
+	s=arc-20240116; t=1752587738; c=relaxed/simple;
+	bh=3MRK57SFk7MCYWxY7TLCdZjxjCKc6ScW6xsHbvytGVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UV8eFUEVxPEyKt96A1TCX5vLK6pfO2669FQ15L9p7ZWySp3Rg5berBxDs6WHKtFymYx4zEps8BJD6tK3FC2mPQ4HLXDeW7/Q+kV3zHjCLe219p05e/L3DCbUmOn9pHF2gdFYBb9PlcS2x4UWC6eIQ82/NaJEfyyvgtZOVNVOOWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNHzgehB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B9AC4CEE3;
-	Tue, 15 Jul 2025 13:55:08 +0000 (UTC)
+	 MIME-Version; b=aODwtaCoVZn59Q29KydU3vPA4DldVAJCA196vTCoMxEjGME+ZUVD7OgxJ+eZrg3nt1N0oIPEbDT6a4DQsZvYUhgOJLWgXhK6s4cJ5oOxf9+pnWT2IQ7K+ER39ervXofs7f3x06V6xJ6UaG4W5EdMNIa/Ig7ho1H0v5jE28kbOQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2o5/9rQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E8BC4CEE3;
+	Tue, 15 Jul 2025 13:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587708;
-	bh=Wf3Q4h2y2eD/33JBOSt0GI7Xjm93F/uQYPCY0KQXOhg=;
+	s=korg; t=1752587737;
+	bh=3MRK57SFk7MCYWxY7TLCdZjxjCKc6ScW6xsHbvytGVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNHzgehBitWiZd4SwDZprQr4qtIy/bzbnRkml3RLiOlpk1e6THUDOkNjDPo4kKhUq
-	 5059htgDqSwpxtwruAwxy4NPDfLtPr6ApUMG3fm1WJ1MeXnUxO9jPOYNuymHzpF6Oc
-	 XC49QTfpBPkFnPiWlNlvTt2HuJ/k+Wo9kptnv7zQ=
+	b=J2o5/9rQK/wdzNAvZaBbOkWv7UMY9EJ0KT4YUp3Ykl7hjHhBEriIhaATe4GTPFYPd
+	 vgAkvVY1LbEluk2qqDPdh0hYFADOCDZtYjRcVrGhADNfK2jznIHQDeTbgGSv/xMkHt
+	 BQ4cit/nX87UlRWziTPvYNeWgTamCKI6cs25pawk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	John Daley <johndale@cisco.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 096/208] enic: fix incorrect MTU comparison in enic_change_mtu()
-Date: Tue, 15 Jul 2025 15:13:25 +0200
-Message-ID: <20250715130814.789292165@linuxfoundation.org>
+Subject: [PATCH 5.10 097/208] net: rose: Fix fall-through warnings for Clang
+Date: Tue, 15 Jul 2025 15:13:26 +0200
+Message-ID: <20250715130814.829683441@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -68,45 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit aaf2b2480375099c022a82023e1cd772bf1c6a5d ]
+[ Upstream commit 90d181ca488f466904ea59dd5c836f766b69c71b ]
 
-The comparison in enic_change_mtu() incorrectly used the current
-netdev->mtu instead of the new new_mtu value when warning about
-an MTU exceeding the port MTU. This could suppress valid warnings
-or issue incorrect ones.
+In preparation to enable -Wimplicit-fallthrough for Clang, fix multiple
+warnings by explicitly adding multiple break statements instead of
+letting the code fall through to the next case.
 
-Fix the condition and log to properly reflect the new_mtu.
-
-Fixes: ab123fe071c9 ("enic: handle mtu change for vf properly")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Acked-by: John Daley <johndale@cisco.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250628145612.476096-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/KSPP/linux/issues/115
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 34a500caf48c ("rose: fix dangling neighbour pointers in rose_rt_device_down()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cisco/enic/enic_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/rose/rose_route.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index b695f3f233286..f59d658d624f5 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -2058,10 +2058,10 @@ static int enic_change_mtu(struct net_device *netdev, int new_mtu)
- 	if (enic_is_dynamic(enic) || enic_is_sriov_vf(enic))
- 		return -EOPNOTSUPP;
- 
--	if (netdev->mtu > enic->port_mtu)
-+	if (new_mtu > enic->port_mtu)
- 		netdev_warn(netdev,
- 			    "interface MTU (%d) set higher than port MTU (%d)\n",
--			    netdev->mtu, enic->port_mtu);
-+			    new_mtu, enic->port_mtu);
- 
- 	return _enic_change_mtu(netdev, new_mtu);
- }
+diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
+index 981bdefd478b0..66aa05db5390f 100644
+--- a/net/rose/rose_route.c
++++ b/net/rose/rose_route.c
+@@ -347,6 +347,7 @@ static int rose_del_node(struct rose_route_struct *rose_route,
+ 				case 1:
+ 					rose_node->neighbour[1] =
+ 						rose_node->neighbour[2];
++					break;
+ 				case 2:
+ 					break;
+ 				}
+@@ -508,6 +509,7 @@ void rose_rt_device_down(struct net_device *dev)
+ 					fallthrough;
+ 				case 1:
+ 					t->neighbour[1] = t->neighbour[2];
++					break;
+ 				case 2:
+ 					break;
+ 				}
 -- 
 2.39.5
 
