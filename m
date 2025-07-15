@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1202AB05FA6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0147B06025
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6B0917AC9C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 996C87A3EC7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21BBD2E49AE;
-	Tue, 15 Jul 2025 13:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C072F235A;
+	Tue, 15 Jul 2025 13:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTNte0ps"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5aGpa9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34642E266C;
-	Tue, 15 Jul 2025 13:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32782E7F1A;
+	Tue, 15 Jul 2025 13:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587323; cv=none; b=mtJZ4NbS7gnefIifly6gzdDwz5ql09BCPvc/ceUQyoZmYr8/W7GDolnMB0QNcHUagq7vkOIre1sC2nn4VRUlv0MbwoACPhy3pXJ5QMigQMxrKAkiT20ph5fmVgVhpzGx3X/+XOzGsKYfwLRb83Sh1PzJ+wzHkdGvQKiiz84SIY8=
+	t=1752587889; cv=none; b=VbQ6v7yq5FxaPSs0ZhUcoJByYBcKRzKm9UE8qKX61Csp0wJhKOLyPiYxbhmZydjCeyPJVm4g3EAns2JuhUUJruJOu8bGN89pnNKqrMvQReL0mIw9D4Y+dIwhpUCfI6VVdUnU8Bvh771S53JXCmsNTn4rkThnfjGWU+tcNxXw4Qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587323; c=relaxed/simple;
-	bh=4hp19hlSRpfEXiPysapcxBEziC+y6fCf0HjP4SB6+eA=;
+	s=arc-20240116; t=1752587889; c=relaxed/simple;
+	bh=+SWmiBJ+pv+YhcVJh4wQtucQwdMnhmH34bDWd2EaT2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hl2EX4uk9J8Gl7/LySvaOVBkpcgKFw9/H9mNysXoSam0N26QXmaA3/RfYPC01vz/OnEdmEyg/AYB5RwBVnWzEGNiQMYw6deTsGj6gsGf8A59MqRbPFTblFl6537IgwVNYSaLkSLKg1WhQLK6b7BhW8y/8vpQHdNSUq4QuwOWPDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTNte0ps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606B6C4CEE3;
-	Tue, 15 Jul 2025 13:48:43 +0000 (UTC)
+	 MIME-Version; b=uE7BE2cNQ5fpWX9znKmPwkBclMmaJmtOf7prAnlBEOLHdpvRe1q6dvzKFgrtLrFNhZxlmeOIYmkwl2fLMoioCYdLA1e8JtTAGUpJF4P0VGbe1W3bTQiyVB5kN85GJdo0Z8hgCbyPn2KpQtTKIE+lmVImfULVA/CS3GDSGaaDn7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5aGpa9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B84C4CEF7;
+	Tue, 15 Jul 2025 13:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587323;
-	bh=4hp19hlSRpfEXiPysapcxBEziC+y6fCf0HjP4SB6+eA=;
+	s=korg; t=1752587889;
+	bh=+SWmiBJ+pv+YhcVJh4wQtucQwdMnhmH34bDWd2EaT2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTNte0pstJI6m5zerr085iN58velGnR2IkjKCca2RvS16mmreeDHsQYWpiTLs5z+f
-	 tYOtMDDadwCXQruXsbkPK/cKoh3hznOVUSeyC2GSQEaNmNS2T33Xul+95yPkTsBpMt
-	 xi9XlkHhdGDoZTiNjR7ZQ32/35/VgsvakOWkOBE0=
+	b=j5aGpa9YelHvS5JFHUR6K5RPeuhqtY/1zV24I/13/NKO5q7kfcNjUuaYNEcbypNHl
+	 gNIM/SZyJZ44kvDSD/5LS30ZnbDAXiILSh/1flVvCJiHujDaviiNcIZAzHrrNFIob3
+	 deo2YWya+z2fFZfz0OroROkSnU27TiLgAS4svGt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nigel Croxon <ncroxon@redhat.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 57/88] raid10: cleanup memleak at raid10_make_request
+	Guenter Roeck <linux@roeck-us.net>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 5.10 164/208] x86/its: Fix undefined reference to cpu_wants_rethunk_at()
 Date: Tue, 15 Jul 2025 15:14:33 +0200
-Message-ID: <20250715130756.852071505@linuxfoundation.org>
+Message-ID: <20250715130817.547752927@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nigel Croxon <ncroxon@redhat.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 43806c3d5b9bb7d74ba4e33a6a8a41ac988bde24 ]
+Below error was reported in a 32-bit kernel build:
 
-If raid10_read_request or raid10_write_request registers a new
-request and the REQ_NOWAIT flag is set, the code does not
-free the malloc from the mempool.
+  static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
+  make[1]: [Makefile:1234: vmlinux] Error
 
-unreferenced object 0xffff8884802c3200 (size 192):
-   comm "fio", pid 9197, jiffies 4298078271
-   hex dump (first 32 bytes):
-     00 00 00 00 00 00 00 00 88 41 02 00 00 00 00 00  .........A......
-     08 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-   backtrace (crc c1a049a2):
-     __kmalloc+0x2bb/0x450
-     mempool_alloc+0x11b/0x320
-     raid10_make_request+0x19e/0x650 [raid10]
-     md_handle_request+0x3b3/0x9e0
-     __submit_bio+0x394/0x560
-     __submit_bio_noacct+0x145/0x530
-     submit_bio_noacct_nocheck+0x682/0x830
-     __blkdev_direct_IO_async+0x4dc/0x6b0
-     blkdev_read_iter+0x1e5/0x3b0
-     __io_read+0x230/0x1110
-     io_read+0x13/0x30
-     io_issue_sqe+0x134/0x1180
-     io_submit_sqes+0x48c/0xe90
-     __do_sys_io_uring_enter+0x574/0x8b0
-     do_syscall_64+0x5c/0xe0
-     entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This is because the definition of cpu_wants_rethunk_at() depends on
+CONFIG_STACK_VALIDATION which is only enabled in 64-bit mode.
 
-V4: changing backing tree to see if CKI tests will pass.
-The patch code has not changed between any versions.
+Define the empty function for CONFIG_STACK_VALIDATION=n, rethunk mitigation
+is anyways not supported without it.
 
-Fixes: c9aa889b035f ("md: raid10 add nowait support")
-Signed-off-by: Nigel Croxon <ncroxon@redhat.com>
-Link: https://lore.kernel.org/linux-raid/c0787379-9caa-42f3-b5fc-369aed784400@redhat.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 5d19a0574b75 ("x86/its: Add support for ITS-safe return thunk")
+Link: https://lore.kernel.org/stable/0f597436-5da6-4319-b918-9f57bde5634a@roeck-us.net/
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/alternative.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 24427eddf61bc..2ae68b7b79598 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1210,8 +1210,11 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- 		rcu_read_unlock();
- 	}
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -80,7 +80,7 @@ extern void apply_returns(s32 *start, s3
  
--	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors))
-+	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
-+		raid_end_bio_io(r10_bio);
- 		return;
-+	}
-+
- 	rdev = read_balance(conf, r10_bio, &max_sectors);
- 	if (!rdev) {
- 		if (err_rdev) {
-@@ -1432,8 +1435,11 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
- 	}
+ struct module;
  
- 	sectors = r10_bio->sectors;
--	if (!regular_request_wait(mddev, conf, bio, sectors))
-+	if (!regular_request_wait(mddev, conf, bio, sectors)) {
-+		raid_end_bio_io(r10_bio);
- 		return;
-+	}
-+
- 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery) &&
- 	    (mddev->reshape_backwards
- 	     ? (bio->bi_iter.bi_sector < conf->reshape_safe &&
--- 
-2.39.5
-
+-#ifdef CONFIG_RETHUNK
++#if defined(CONFIG_RETHUNK) && defined(CONFIG_STACK_VALIDATION)
+ extern bool cpu_wants_rethunk(void);
+ extern bool cpu_wants_rethunk_at(void *addr);
+ #else
 
 
 
