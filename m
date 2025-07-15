@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE8DB05B2C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:18:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7598B05DF1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 210543ABF10
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:16:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DA9D4A0C73
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7C019F420;
-	Tue, 15 Jul 2025 13:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992CE2EBB8F;
+	Tue, 15 Jul 2025 13:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ylvxT77"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zbmsd1/p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BB27261B;
-	Tue, 15 Jul 2025 13:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546C12EBB89;
+	Tue, 15 Jul 2025 13:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585438; cv=none; b=R8ySK1Bx7dLc984k1PGOTCbeB1+vgGxdL5XKoo6tWpTa2K1otWmbuykJFlmmcMTaGUpL8h+bjJV4mb4xHKUC0ndXX/J/3BvB9ZSD+0y/Bf/TKrdN6f1Nc3+zGsxEpF+8IgxBdGyzU1X3C+VUiiI28HoXL6NXVFzr8wzAbKjGYeU=
+	t=1752586693; cv=none; b=V5z3+2WFBf0KGP3tfZssUhZUE+nXY6LD0Lir790S+NzCoGnDinq9h7nk+wtnF5DcQ0p4GhSN/BpMVNPm0lN/+1SYoUVVtFT2L/9bKSBXMZC8FpsQxB37MOHxCqx44b77DgMg8Hb9N/OYE/3QlOwriRbgCs+JJZ6+Mw5rh9hNYrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585438; c=relaxed/simple;
-	bh=zK8mxX0Pm2ThdAZKWdjHRs7+x6W4Dlh8MmlV7DxSmCY=;
+	s=arc-20240116; t=1752586693; c=relaxed/simple;
+	bh=K6B+wwsD3gW0+ulgLj7E0cqU2ohmtW9+SxPl6J2xEVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oyKYaHu9W+akndz7L+k+uZMfhmOiz1DLTuLoUzd0lmJ26SWGPm0j9u5TWVRL0XWDgiJRAFGJQ152GSrceEBKo9acOiI5wUkD3jBJ7Kom06nHZizPWOauIirIK0DRdAlfSRrdkVQ4HwVyYY8/F20T9MObuXxOG/miE10IeUO4/Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ylvxT77; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537A9C4CEE3;
-	Tue, 15 Jul 2025 13:17:18 +0000 (UTC)
+	 MIME-Version; b=m0yKXWcSAUaE+DFwj+C/grF776I67MCWJJi/NIrEyxEvBVDL2ozEVQA51RcDkx/pnzu3cX/LmeDueXZsMS/DmJw/6iPT89B+as4YPmU4mJCsiTGxMN0yAUpYw8mecHRB0BAdYK91pNOqgMmrBq+/b99Fq/TRfHNMXg+LtvvBDE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zbmsd1/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C872C4CEE3;
+	Tue, 15 Jul 2025 13:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585438;
-	bh=zK8mxX0Pm2ThdAZKWdjHRs7+x6W4Dlh8MmlV7DxSmCY=;
+	s=korg; t=1752586692;
+	bh=K6B+wwsD3gW0+ulgLj7E0cqU2ohmtW9+SxPl6J2xEVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ylvxT77DnjW9mdXs8aaeXcMl66+4lPkHhzoeWHI/Xli1yvobDpvh5u/UirGxu59X
-	 o+RFQ3v0spZNESPdm3kDXD5jyOlSfZ3CB6IRu0OVxGv37ftP/55m/YKQVL/OV+BsmE
-	 rfcAdPSs0AUBR5Np7sNnVUfAfdJjg2r1jJ/fDQlo=
+	b=Zbmsd1/pkbzUAejhVlRChsuRmoO22KAn2l8/FptgKYlbKHCUKOItJjcLWj86al+h/
+	 PrQQUhd/ptHTuDwyXqbMerHDZj+HdVbwdMrE3FLI/6zmsvPt24Ou/p7++Gx3b9ZYXL
+	 U1UPSQT3xXm9mGq8+8KFHnCi04pZcTptBJqrKKmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/163] atm: clip: Fix potential null-ptr-deref in to_atmarpd().
+Subject: [PATCH 6.15 013/192] objtool: Add missing endian conversion to read_annotate()
 Date: Tue, 15 Jul 2025 15:11:48 +0200
-Message-ID: <20250715130810.364972415@linuxfoundation.org>
+Message-ID: <20250715130815.395402187@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,136 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 706cc36477139c1616a9b2b96610a8bb520b7119 ]
+[ Upstream commit ccdd09e0fc0d5ce6dfc8360f0c88da9a5045b6ea ]
 
-atmarpd is protected by RTNL since commit f3a0592b37b8 ("[ATM]: clip
-causes unregister hang").
+Trying to compile an x86 kernel on big endian results in this error:
 
-However, it is not enough because to_atmarpd() is called without RTNL,
-especially clip_neigh_solicit() / neigh_ops->solicit() is unsleepable.
+net/ipv4/netfilter/iptable_nat.o: warning: objtool: iptable_nat_table_init+0x150: Unknown annotation type: 50331648
+make[5]: *** [scripts/Makefile.build:287: net/ipv4/netfilter/iptable_nat.o] Error 255
 
-Also, there is no RTNL dependency around atmarpd.
+Reason is a missing endian conversion in read_annotate().
+Add the missing conversion to fix this.
 
-Let's use a private mutex and RCU to protect access to atmarpd in
-to_atmarpd().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250704062416.1613927-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2116b349e29a ("objtool: Generic annotation infrastructure")
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250630131230.4130185-1-hca@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/clip.c | 44 +++++++++++++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 15 deletions(-)
+ tools/objtool/check.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 0d7744442b25a..59bd67aac168d 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -45,7 +45,8 @@
- #include <net/atmclip.h>
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index f23bdda737aaa..d967ac001498b 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2318,6 +2318,7 @@ static int read_annotate(struct objtool_file *file,
  
- static struct net_device *clip_devs;
--static struct atm_vcc *atmarpd;
-+static struct atm_vcc __rcu *atmarpd;
-+static DEFINE_MUTEX(atmarpd_lock);
- static struct timer_list idle_timer;
- static const struct neigh_ops clip_neigh_ops;
+ 	for_each_reloc(sec->rsec, reloc) {
+ 		type = *(u32 *)(sec->data->d_buf + (reloc_idx(reloc) * sec->sh.sh_entsize) + 4);
++		type = bswap_if_needed(file->elf, type);
  
-@@ -53,24 +54,35 @@ static int to_atmarpd(enum atmarp_ctrl_type type, int itf, __be32 ip)
- {
- 	struct sock *sk;
- 	struct atmarp_ctrl *ctrl;
-+	struct atm_vcc *vcc;
- 	struct sk_buff *skb;
-+	int err = 0;
- 
- 	pr_debug("(%d)\n", type);
--	if (!atmarpd)
--		return -EUNATCH;
-+
-+	rcu_read_lock();
-+	vcc = rcu_dereference(atmarpd);
-+	if (!vcc) {
-+		err = -EUNATCH;
-+		goto unlock;
-+	}
- 	skb = alloc_skb(sizeof(struct atmarp_ctrl), GFP_ATOMIC);
--	if (!skb)
--		return -ENOMEM;
-+	if (!skb) {
-+		err = -ENOMEM;
-+		goto unlock;
-+	}
- 	ctrl = skb_put(skb, sizeof(struct atmarp_ctrl));
- 	ctrl->type = type;
- 	ctrl->itf_num = itf;
- 	ctrl->ip = ip;
--	atm_force_charge(atmarpd, skb->truesize);
-+	atm_force_charge(vcc, skb->truesize);
- 
--	sk = sk_atm(atmarpd);
-+	sk = sk_atm(vcc);
- 	skb_queue_tail(&sk->sk_receive_queue, skb);
- 	sk->sk_data_ready(sk);
--	return 0;
-+unlock:
-+	rcu_read_unlock();
-+	return err;
- }
- 
- static void link_vcc(struct clip_vcc *clip_vcc, struct atmarp_entry *entry)
-@@ -607,10 +619,12 @@ static void atmarpd_close(struct atm_vcc *vcc)
- {
- 	pr_debug("\n");
- 
--	rtnl_lock();
--	atmarpd = NULL;
-+	mutex_lock(&atmarpd_lock);
-+	RCU_INIT_POINTER(atmarpd, NULL);
-+	mutex_unlock(&atmarpd_lock);
-+
-+	synchronize_rcu();
- 	skb_queue_purge(&sk_atm(vcc)->sk_receive_queue);
--	rtnl_unlock();
- 
- 	pr_debug("(done)\n");
- 	module_put(THIS_MODULE);
-@@ -631,15 +645,15 @@ static struct atm_dev atmarpd_dev = {
- 
- static int atm_init_atmarp(struct atm_vcc *vcc)
- {
--	rtnl_lock();
-+	mutex_lock(&atmarpd_lock);
- 	if (atmarpd) {
--		rtnl_unlock();
-+		mutex_unlock(&atmarpd_lock);
- 		return -EADDRINUSE;
- 	}
- 
- 	mod_timer(&idle_timer, jiffies + CLIP_CHECK_INTERVAL * HZ);
- 
--	atmarpd = vcc;
-+	rcu_assign_pointer(atmarpd, vcc);
- 	set_bit(ATM_VF_META, &vcc->flags);
- 	set_bit(ATM_VF_READY, &vcc->flags);
- 	    /* allow replies and avoid getting closed if signaling dies */
-@@ -648,7 +662,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
- 	vcc->push = NULL;
- 	vcc->pop = NULL; /* crash */
- 	vcc->push_oam = NULL; /* crash */
--	rtnl_unlock();
-+	mutex_unlock(&atmarpd_lock);
- 	return 0;
- }
- 
+ 		offset = reloc->sym->offset + reloc_addend(reloc);
+ 		insn = find_insn(file, reloc->sym->sec, offset);
 -- 
 2.39.5
 
