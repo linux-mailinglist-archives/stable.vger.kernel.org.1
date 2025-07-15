@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78DE6B06095
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E522B05FAE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA0275880AD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:10:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66DFC17FB2E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DD42F0C67;
-	Tue, 15 Jul 2025 13:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D5E2EA49C;
+	Tue, 15 Jul 2025 13:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0BYg1xy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6u1iznu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651EC2E3382;
-	Tue, 15 Jul 2025 13:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF4F19D8A7;
+	Tue, 15 Jul 2025 13:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587873; cv=none; b=ZRC//dLlmrlswUEuQKfa0a8D1KWn+nYBidIl2+px3A4ycSG6+QBO3qvArUP60JpqeQ7F9BR1xx04keEicswcKQXgVTbDsy1cHYRAnYW7Qs7Pj6BxDvxX6ab5BMmC4BoHTOQCdjhPSWKVG3IsiOozFdFjhB+92OoILbmvDmWKDXM=
+	t=1752587358; cv=none; b=MI2b1PTchgWeVEtHdT6+GS4wZkUKNe7WDJNoQ+NbNrWa5Yfl0go0Pez3f+sM2TMj+sOJfJJSU7I8Rt3D0GKKiJe49c/9eUEmBnNTWoGI+CtHHCN+bnqzpGvBi6Pq1dBykboVZYAfJ9L4XzRv+RQRjiFrDmvZb1VLu9n296JTOQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587873; c=relaxed/simple;
-	bh=szJ++SjUKi5ZspnwmI5hf61rNbDdlN3qw7Dpq4d2zyk=;
+	s=arc-20240116; t=1752587358; c=relaxed/simple;
+	bh=eCttoadScFc/zdqWkrNSnXHNao3P/mxvWNkDUeHpmXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLGaNHt1ddbcu0VM2+8nWZ9L/iIuO/zpJvriV19dzFfpfwyi3G7zktNkxciOL50YSUi0IcXnaqGAf+6mE1vOk5FG9zZPmAQA6KqhfpN0DjPuQ8F4bIoXcev4WhOTSsYC9Y6c8jDae133+FrmvuVUbI3abt+YVEWUA7YKRJ/aVpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0BYg1xy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F63BC4CEE3;
-	Tue, 15 Jul 2025 13:57:52 +0000 (UTC)
+	 MIME-Version; b=crtqq9Q2h6k1eoKzKR9Qo0NaTx+EL4eGzDhiMO9IOi27ovK6Lcob0oWN85hAWJ2LYRHS403X0zgKB+ZFIdVFYIHcEGMqOCh9+qnmQVoYS93TUHH8JmAWc64USGQ9351KBioL3GPiOTTpLlYsbFuMEskBNLYOVAi00xRlqyCFziE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6u1iznu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99BCC4CEE3;
+	Tue, 15 Jul 2025 13:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587873;
-	bh=szJ++SjUKi5ZspnwmI5hf61rNbDdlN3qw7Dpq4d2zyk=;
+	s=korg; t=1752587358;
+	bh=eCttoadScFc/zdqWkrNSnXHNao3P/mxvWNkDUeHpmXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n0BYg1xyetsAracFyN9wX/ZQMcJssfqZ4qzj02KNmTHwOGsHYyt7fX6yBLAENl62Q
-	 bPH+MJAOYVqaaxXxiaVZHk9NYyR7k01ddfYKj37elRkbgUS4wdNGR4CYpmKqJCJfRK
-	 tR9vA3wDF1GF/Dx1o71BLIG+oym38VF7OopvKngs=
+	b=e6u1iznulICAFhN6sKdRH1RwX1d9Zs1gV00exq/ZlkT6dntdM9+QCZmr55teckAH0
+	 LwKzu11NhLsdFwdkbBK2GYuDmu7/3Jj2WabKDhgLD3Bnaqb2VdAQrfnYgsNdkZI3ib
+	 bEh9WuRchv4oZrXewd3U8Kvr7gG6hoSMVfpxJPCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 5.10 176/208] usb: gadget: u_serial: Fix race condition in TTY wakeup
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 69/88] can: m_can: m_can_handle_lost_msg(): downgrade msg lost in rx message to debug level
 Date: Tue, 15 Jul 2025 15:14:45 +0200
-Message-ID: <20250715130818.018714848@linuxfoundation.org>
+Message-ID: <20250715130757.340105934@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-commit c529c3730bd09115684644e26bf01ecbd7e2c2c9 upstream.
+[ Upstream commit 58805e9cbc6f6a28f35d90e740956e983a0e036e ]
 
-A race condition occurs when gs_start_io() calls either gs_start_rx() or
-gs_start_tx(), as those functions briefly drop the port_lock for
-usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
-port.tty and port_usb, respectively.
+Downgrade the "msg lost in rx" message to debug level, to prevent
+flooding the kernel log with error messages.
 
-Use the null-safe TTY Port helper function to wake up TTY.
-
-Example
-  CPU1:			      CPU2:
-  gserial_connect() // lock
-  			      gs_close() // await lock
-  gs_start_rx()     // unlock
-  usb_ep_queue()
-  			      gs_close() // lock, reset port.tty and unlock
-  gs_start_rx()     // lock
-  tty_wakeup()      // NPE
-
-Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/linux-usb/20240116141801.396398-1-khtsai@google.com/
-Link: https://lore.kernel.org/r/20250617050844.1848232-2-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250711-mcan_ratelimit-v3-1-7413e8e21b84@geanix.com
+[mkl: enhance commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/can/m_can/m_can.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -292,8 +292,8 @@ __acquires(&port->port_lock)
- 			break;
- 	}
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index 56b0f49c81164..814f947e7f505 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -577,7 +577,7 @@ static int m_can_handle_lost_msg(struct net_device *dev)
+ 	struct can_frame *frame;
+ 	u32 timestamp = 0;
  
--	if (do_tty_wake && port->port.tty)
--		tty_wakeup(port->port.tty);
-+	if (do_tty_wake)
-+		tty_port_tty_wakeup(&port->port);
- 	return status;
- }
+-	netdev_err(dev, "msg lost in rxf0\n");
++	netdev_dbg(dev, "msg lost in rxf0\n");
  
-@@ -570,7 +570,7 @@ static int gs_start_io(struct gs_port *p
- 		gs_start_tx(port);
- 		/* Unblock any pending writes into our circular buffer, in case
- 		 * we didn't in gs_start_tx() */
--		tty_wakeup(port->port.tty);
-+		tty_port_tty_wakeup(&port->port);
- 	} else {
- 		/* Free reqs only if we are still connected */
- 		if (port->port_usb) {
+ 	stats->rx_errors++;
+ 	stats->rx_over_errors++;
+-- 
+2.39.5
+
 
 
 
