@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-162237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C457DB05C7F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03ECEB05EE5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7FCF5666DF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD9D47B8A0E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713C82E9EAE;
-	Tue, 15 Jul 2025 13:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416102E4272;
+	Tue, 15 Jul 2025 13:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUtJpeGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLl6aM+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D05C2E1747;
-	Tue, 15 Jul 2025 13:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23852E424E;
+	Tue, 15 Jul 2025 13:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586028; cv=none; b=BOPo3368pANpddtTW507eWxUHgkDegspT9JKCFVaFnGnncC6lwZaaHXTMUcYaVGfZIdAn83YEO5bkKKeNt0PdZPEGff9vF3eUO8YSLUh/Yhcx2HrsyvB66agW/BZ/mOWct3FtLGqHLDL+8OihQ/juI8GZwR1kBHrr/dIHpV9uEE=
+	t=1752587219; cv=none; b=OJvs4laL4SHoKJF7NJOrTvNdG6F1gUSznLPtLyLCFjGcDvwCTVjQZMDyGR0HmErKrJFheoruxqXC+Kp6nAyP2J33yA9waOaixk68ESZsQVcyBtCOUtdUinm+8F05MI1/FjnXkueCol1l+i8FqTlrSmrXITNUxtWRXglUTOvVpak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586028; c=relaxed/simple;
-	bh=4CVH6uh8H1ZvmvEjpfj6Fqiz9zECbn8RV6tfQ34bMOw=;
+	s=arc-20240116; t=1752587219; c=relaxed/simple;
+	bh=BJc2oKrBiFyExis0PhbWzGfELvL9FaE4Dwc+SbOUSVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XIJHWMmMP5QDaBaHnIxOzgCzlPssGpo7XZJyOf/8ySzvevo8+NTYYPPLjWhgRVCOKkuoLLNwiHr29PGJp/x24Dr2Zsw5T7vGJszrA7c1jcAiusN6fJmF+CS5URpwsc/+L/Gd4gE+u+5zWHZbP5CoCcYg8El5pfh1MSZgCOOaFpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUtJpeGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6989C4CEE3;
-	Tue, 15 Jul 2025 13:27:07 +0000 (UTC)
+	 MIME-Version; b=p9TOsF8AJh3FEGRCZP/Ecp3mLL67QvVZQUFMj5xiXateWSIzTO0WgYg8hXS0P6c0uDGWhEGbjTNd7zgVE5joSxfAulF/MXV6QqKw1JRh9FugcyVeCBHhFnVGx5jCPwy225nNjNiNNxLssy6puonOn2NtuwE9WER0UlvTBNNLDWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLl6aM+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA06C4CEE3;
+	Tue, 15 Jul 2025 13:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586028;
-	bh=4CVH6uh8H1ZvmvEjpfj6Fqiz9zECbn8RV6tfQ34bMOw=;
+	s=korg; t=1752587218;
+	bh=BJc2oKrBiFyExis0PhbWzGfELvL9FaE4Dwc+SbOUSVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUtJpeGxbs20ZU+wdr6hNMGVZAAx/dg9GeOLLZTSLFPonDK4NKDOkCuMxOnuXd1jD
-	 onhRwFv/ne1pgmmiVGGXaSBcQdWkUESAodHOrtOlMycc95/Znn1O4wDRl011/K1HVR
-	 FyvEVeEaH3bvQ7HIZ+oxsHQavpgsDSZL7nMLvIa8=
+	b=CLl6aM+NStAhRmZMCMSdbvHSDk/wCMhmsvv8LjLshQSmQo7F1z8Irc80M6jSXsy3/
+	 9K/GYKnAVeFlc73zfs38RGpkmI2ugjohjYzs9R7q2HmhBokVmcAiMiWPHwsTd/46mj
+	 J0EGJaqPhnCmiYZjAWhk09Qv5xDIoqkwdCFcet+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Inoue <niyarium@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/109] HID: lenovo: Add support for ThinkPad X1 Tablet Thin Keyboard Gen2
-Date: Tue, 15 Jul 2025 15:13:54 +0200
-Message-ID: <20250715130802.807579959@linuxfoundation.org>
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Hailong Liu <hailong.liu@oppo.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"zhangpeng.00@bytedance.com" <zhangpeng.00@bytedance.com>,
+	Steve Kang <Steve.Kang@unisoc.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 19/88] maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
+Date: Tue, 15 Jul 2025 15:13:55 +0200
+Message-ID: <20250715130755.283873893@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +69,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akira Inoue <niyarium@gmail.com>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-[ Upstream commit a8905238c3bbe13db90065ed74682418f23830c3 ]
+commit fba46a5d83ca8decb338722fb4899026d8d9ead2 upstream.
 
-Add "Thinkpad X1 Tablet Gen 2 Keyboard" PID to hid-lenovo driver to fix trackpoint not working issue.
+Temporarily clear the preallocation flag when explicitly requesting
+allocations.  Pre-existing allocations are already counted against the
+request through mas_node_count_gfp(), but the allocations will not happen
+if the MA_STATE_PREALLOC flag is set.  This flag is meant to avoid
+re-allocating in bulk allocation mode, and to detect issues with
+preallocation calculations.
 
-Signed-off-by: Akira Inoue <niyarium@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The MA_STATE_PREALLOC flag should also always be set on zero allocations
+so that detection of underflow allocations will print a WARN_ON() during
+consumption.
+
+User visible effect of this flaw is a WARN_ON() followed by a null pointer
+dereference when subsequent requests for larger number of nodes is
+ignored, such as the vma merge retry in mmap_region() caused by drivers
+altering the vma flags (which happens in v6.6, at least)
+
+Link: https://lkml.kernel.org/r/20250616184521.3382795-3-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Reported-by: Hailong Liu <hailong.liu@oppo.com>
+Link: https://lore.kernel.org/all/1652f7eb-a51b-4fee-8058-c73af63bacd1@oppo.com/
+Link: https://lore.kernel.org/all/20250428184058.1416274-1-Liam.Howlett@oracle.com/
+Link: https://lore.kernel.org/all/20250429014754.1479118-1-Liam.Howlett@oracle.com/
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Hailong Liu <hailong.liu@oppo.com>
+Cc: zhangpeng.00@bytedance.com <zhangpeng.00@bytedance.com>
+Cc: Steve Kang <Steve.Kang@unisoc.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h        | 1 +
- drivers/hid/hid-lenovo.c     | 8 ++++++++
- drivers/hid/hid-multitouch.c | 8 +++++++-
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ lib/maple_tree.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index a8665d57094b2..c0ce11393f0fb 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -807,6 +807,7 @@
- #define USB_DEVICE_ID_LENOVO_TPPRODOCK	0x6067
- #define USB_DEVICE_ID_LENOVO_X1_COVER	0x6085
- #define USB_DEVICE_ID_LENOVO_X1_TAB	0x60a3
-+#define USB_DEVICE_ID_LENOVO_X1_TAB2	0x60a4
- #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
- #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
- #define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
-diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
-index ee65da98c7d5b..32cb2e75228c4 100644
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -473,6 +473,7 @@ static int lenovo_input_mapping(struct hid_device *hdev,
- 		return lenovo_input_mapping_tp10_ultrabook_kbd(hdev, hi, field,
- 							       usage, bit, max);
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_input_mapping_x1_tab_kbd(hdev, hi, field, usage, bit, max);
- 	default:
-@@ -587,6 +588,7 @@ static ssize_t attr_fn_lock_store(struct device *dev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, TP10UBKBD_FN_LOCK_LED, value);
- 		if (ret)
-@@ -782,6 +784,7 @@ static int lenovo_event(struct hid_device *hdev, struct hid_field *field,
- 		return lenovo_event_cptkbd(hdev, field, usage, value);
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_event_tp10ubkbd(hdev, field, usage, value);
- 	default:
-@@ -1065,6 +1068,7 @@ static int lenovo_led_brightness_set(struct led_classdev *led_cdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, tp10ubkbd_led[led_nr], value);
- 		break;
-@@ -1296,6 +1300,7 @@ static int lenovo_probe(struct hid_device *hdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_probe_tp10ubkbd(hdev);
- 		break;
-@@ -1383,6 +1388,7 @@ static void lenovo_remove(struct hid_device *hdev)
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB2:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		lenovo_remove_tp10ubkbd(hdev);
- 		break;
-@@ -1433,6 +1439,8 @@ static const struct hid_device_id lenovo_devices[] = {
- 	 */
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB) },
-+	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
-+		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB2) },
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB3) },
- 	{ }
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 6386043aab0bb..becd4c1ccf93c 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2110,12 +2110,18 @@ static const struct hid_device_id mt_devices[] = {
- 		HID_DEVICE(BUS_I2C, HID_GROUP_GENERIC,
- 			USB_VENDOR_ID_LG, I2C_DEVICE_ID_LG_7010) },
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -5802,10 +5802,12 @@ int mas_preallocate(struct ma_state *mas
+ {
+ 	int ret;
  
--	/* Lenovo X1 TAB Gen 2 */
-+	/* Lenovo X1 TAB Gen 1 */
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
- 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
- 			   USB_VENDOR_ID_LENOVO,
- 			   USB_DEVICE_ID_LENOVO_X1_TAB) },
++	mas->mas_flags &= ~MA_STATE_PREALLOC;
+ 	mas_node_count_gfp(mas, 1 + mas_mt_height(mas) * 3, gfp);
+-	mas->mas_flags |= MA_STATE_PREALLOC;
+-	if (likely(!mas_is_err(mas)))
++	if (likely(!mas_is_err(mas))) {
++		mas->mas_flags |= MA_STATE_PREALLOC;
+ 		return 0;
++	}
  
-+	/* Lenovo X1 TAB Gen 2 */
-+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
-+		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
-+			   USB_VENDOR_ID_LENOVO,
-+			   USB_DEVICE_ID_LENOVO_X1_TAB2) },
-+
- 	/* Lenovo X1 TAB Gen 3 */
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
- 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
--- 
-2.39.5
-
+ 	mas_set_alloc_req(mas, 0);
+ 	ret = xa_err(mas->node);
 
 
 
