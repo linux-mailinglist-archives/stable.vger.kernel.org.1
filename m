@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18EBB05F5F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:05:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05EC5B05B45
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7294D7BB7DC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F28E17B63B0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B272E6D1F;
-	Tue, 15 Jul 2025 13:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66AAA2E266C;
+	Tue, 15 Jul 2025 13:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+oWZfJx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xu0fak5P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93B5275103;
-	Tue, 15 Jul 2025 13:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F742E11D3;
+	Tue, 15 Jul 2025 13:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587466; cv=none; b=jTwmlZhAsT6dokur0rdcoggIx403QntZpp86TWr0sGc51SQChmM3LDjMObmOZNtq2m7FuOZQHKJlJ5u+OvxW0aZ80IBeCeBrdZ49KJ23OEUs6X+Iw+3IscJnEJZRRSFDu/L5EHnTpjqJR7Ek1yUjb+WmI6nkjk29Q01REHssaic=
+	t=1752585498; cv=none; b=aIJbilEu5nmWulCuVj4LfmBvcSd417E01VxrBqynOFig1LzGsO6PGTvWj/dr3ID9i+DY7/b8hiUDgG1RQ0S2Sgu+CMk3GHmwuO6NRxvHob61JacSZspnjXizxpBZcaRAq5BhT8Q01suUqKTE71USDZ9MxgvjOmMda/X4ZBvRx3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587466; c=relaxed/simple;
-	bh=3hBJrp2Cqfe/anng+xqysnrTD6ID55WZBOIAYYCZw54=;
+	s=arc-20240116; t=1752585498; c=relaxed/simple;
+	bh=8IxZQf8XyfQO2lRDhFTrVDvmy1K2V2haB0/Jt6elngM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEe30kTCkYkuHzgFAaMjyiPyWFA5HF+JKLcVwIfRbxgassau5bFe1PNI8FwlWzav3HukvriKm6PvvEddrUNZ4oR76Z/vQBMJWVBJybKbeqwTFzU/2Gl+7AXxT6rIj2b7p2qUz4HUc3yKZR8ByNbW0UF8XMFLKJ3VpZOU6I7d8UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+oWZfJx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B44C4CEE3;
-	Tue, 15 Jul 2025 13:51:05 +0000 (UTC)
+	 MIME-Version; b=ap8d/e9W+tN6XBxog2FwIlQHlk6ungujGMEByxKiWs2ERqjlElHjaJWPfk2jh91qnegxiLymnPgDeqEV5HxxeC0ARUxLImwlQZG+xTtdl54SeBX2weCzL/SBMquXcTo0AU1PAVqr/rQ46DsT6Lel8uVPUlJlpm7DkoUh1Th8H6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xu0fak5P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F011C4CEF1;
+	Tue, 15 Jul 2025 13:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587466;
-	bh=3hBJrp2Cqfe/anng+xqysnrTD6ID55WZBOIAYYCZw54=;
+	s=korg; t=1752585497;
+	bh=8IxZQf8XyfQO2lRDhFTrVDvmy1K2V2haB0/Jt6elngM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+oWZfJxu51+mh1Pe059QJo/VcKbY+gzwHVzInZW4cx737pESiQX/20d3saaSRdiT
-	 flkf3t97trWXvX4TXAA5qQKszellOqPgKZt67EGyob4ph+0Wp3ASoEUipqOD8Tumfp
-	 d0y4R320rqk9FujMNuZMTphJ5fv7XtyT910RxN7I=
+	b=Xu0fak5PRHo0GokMIdRVgG/HCOwMA9bOf+Jm7cfB8dIN7DoFTXbhGJ8DK3cI0FX66
+	 nB2btDTdOnMVNhjsDMfKS3N5hyl6geFSRRgwb3GaaV563IgVX8jwOKRaS3OsqdKjMv
+	 iHDsu1hMzkcLlIQGDFRDoM4t2mV02aX1pOlkIEIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian-Wei Wu <jian-wei_wu@keysight.com>,
-	Guido Kiener <guido.kiener@rohde-schwarz.com>,
-	Dave Penkler <dpenkler@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 022/208] USB: usbtmc: Add USBTMC_IOCTL_GET_STB
+	Bjorn Andersson <andersson@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.12 063/163] pinctrl: qcom: msm: mark certain pins as invalid for interrupts
 Date: Tue, 15 Jul 2025 15:12:11 +0200
-Message-ID: <20250715130811.725344645@linuxfoundation.org>
+Message-ID: <20250715130811.279662318@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit c9784e23c1020e63d6dba5e10ca8bf3d8b85c19c ]
+commit 93712205ce2f1fb047739494c0399a26ea4f0890 upstream.
 
-This new ioctl reads the status byte (STB) from the device and returns
-the STB unmodified to the application. The srq_asserted bit is not taken
-into account and not changed.
+On some platforms, the UFS-reset pin has no interrupt logic in TLMM but
+is nevertheless registered as a GPIO in the kernel. This enables the
+user-space to trigger a BUG() in the pinctrl-msm driver by running, for
+example: `gpiomon -c 0 113` on RB2.
 
-This ioctl is useful to support non USBTMC-488 compliant devices.
+The exact culprit is requesting pins whose intr_detection_width setting
+is not 1 or 2 for interrupts. This hits a BUG() in
+msm_gpio_irq_set_type(). Potentially crashing the kernel due to an
+invalid request from user-space is not optimal, so let's go through the
+pins and mark those that would fail the check as invalid for the irq chip
+as we should not even register them as available irqs.
 
-Tested-by: Jian-Wei Wu <jian-wei_wu@keysight.com>
-Reviewed-by: Guido Kiener <guido.kiener@rohde-schwarz.com>
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20201215155621.9592-3-dpenkler@gmail.com
+This function can be extended if we determine that there are more
+corner-cases like this.
+
+Fixes: f365be092572 ("pinctrl: Add Qualcomm TLMM driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/20250612091448.41546-1-brgl@bgdev.pl
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: acb3dac2805d ("usb: usbtmc: Fix read_stb function and get_stb ioctl")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/usbtmc.c   | 6 ++++++
- include/uapi/linux/usb/tmc.h | 2 ++
- 2 files changed, 8 insertions(+)
+ drivers/pinctrl/qcom/pinctrl-msm.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/usb/class/usbtmc.c b/drivers/usb/class/usbtmc.c
-index bfd99d461f813..093040ea7e065 100644
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -2173,6 +2173,12 @@ static long usbtmc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 			file_data->auto_abort = !!tmp_byte;
- 		break;
+--- a/drivers/pinctrl/qcom/pinctrl-msm.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm.c
+@@ -1035,6 +1035,25 @@ static bool msm_gpio_needs_dual_edge_par
+ 	       test_bit(d->hwirq, pctrl->skip_wake_irqs);
+ }
  
-+	case USBTMC_IOCTL_GET_STB:
-+		retval = usbtmc_get_stb(file_data, &tmp_byte);
-+		if (retval > 0)
-+			retval = put_user(tmp_byte, (__u8 __user *)arg);
-+		break;
++static void msm_gpio_irq_init_valid_mask(struct gpio_chip *gc,
++					 unsigned long *valid_mask,
++					 unsigned int ngpios)
++{
++	struct msm_pinctrl *pctrl = gpiochip_get_data(gc);
++	const struct msm_pingroup *g;
++	int i;
 +
- 	case USBTMC_IOCTL_CANCEL_IO:
- 		retval = usbtmc_ioctl_cancel_io(file_data);
- 		break;
-diff --git a/include/uapi/linux/usb/tmc.h b/include/uapi/linux/usb/tmc.h
-index fdd4d88a7b95d..1e7878fe591f4 100644
---- a/include/uapi/linux/usb/tmc.h
-+++ b/include/uapi/linux/usb/tmc.h
-@@ -102,6 +102,8 @@ struct usbtmc_message {
- #define USBTMC_IOCTL_MSG_IN_ATTR	_IOR(USBTMC_IOC_NR, 24, __u8)
- #define USBTMC_IOCTL_AUTO_ABORT		_IOW(USBTMC_IOC_NR, 25, __u8)
++	bitmap_fill(valid_mask, ngpios);
++
++	for (i = 0; i < ngpios; i++) {
++		g = &pctrl->soc->groups[i];
++
++		if (g->intr_detection_width != 1 &&
++		    g->intr_detection_width != 2)
++			clear_bit(i, valid_mask);
++	}
++}
++
+ static int msm_gpio_irq_set_type(struct irq_data *d, unsigned int type)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+@@ -1438,6 +1457,7 @@ static int msm_gpio_init(struct msm_pinc
+ 	girq->default_type = IRQ_TYPE_NONE;
+ 	girq->handler = handle_bad_irq;
+ 	girq->parents[0] = pctrl->irq;
++	girq->init_valid_mask = msm_gpio_irq_init_valid_mask;
  
-+#define USBTMC_IOCTL_GET_STB            _IOR(USBTMC_IOC_NR, 26, __u8)
-+
- /* Cancel and cleanup asynchronous calls */
- #define USBTMC_IOCTL_CANCEL_IO		_IO(USBTMC_IOC_NR, 35)
- #define USBTMC_IOCTL_CLEANUP_IO		_IO(USBTMC_IOC_NR, 36)
--- 
-2.39.5
-
+ 	ret = gpiochip_add_data(&pctrl->chip, pctrl);
+ 	if (ret) {
 
 
 
