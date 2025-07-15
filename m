@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8326DB05E99
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0E9B05D14
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF39558019F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 363F97BF8AE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A402E6D26;
-	Tue, 15 Jul 2025 13:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E402E7F1F;
+	Tue, 15 Jul 2025 13:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0CHgzkH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxW25vE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239572DEA72;
-	Tue, 15 Jul 2025 13:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A352E2E6D12;
+	Tue, 15 Jul 2025 13:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587005; cv=none; b=Ti8POJ9UOZ4o+9csD4ByFi7sL0LP9ACpYBKTii3d05SJwd+1fU5KaEUWiXOVjIs5g8rNtlKMFEV/TodXWQyTOZ2pUR47oLYCFY9FpxehiTf1Qly7GbgYvGaYof3At7HBQxNqawwbsBUFHpyCoFEfLlKPMu/ctY44LAahy+bwhZI=
+	t=1752586184; cv=none; b=aG3FtaPCy8Yfkrs3+BRWeKF/yIV6kBJZeWACSBb3mTKop37j/Wzmjs3C/TtlXGr6uOTz4I2oJwVtb5U6bbAlDFYxUld1V0aZ99YfyZOmOl818UFmG3ffdNJuHfp5s4Wu7332ApzdX98ReCCFiVtxEffY43EQnYit+c51IWazenI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587005; c=relaxed/simple;
-	bh=OHpGAv27Zp0dKGLXoDC6/+epby1B/MMYt6II+wZWbZE=;
+	s=arc-20240116; t=1752586184; c=relaxed/simple;
+	bh=3/5oIqVuBILgjbqkNUTgyjh3b1csEjNlXeD6OHDRCTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dFgK18isp6NB9yw9c4axmoAdzl+TYKp7mxGhX3nSt1v1OX1J3WQPBavhUZoZvUpJm4wwE+DVbDKowymKBxBElFTyVFKs7KzB/VjrRkjyxfrcaa0pTkM/3Z40B2ZXa9heP6no5diy0p1nVR/tyqxZJ9o2Uu+IJrasVU1p6EmAKGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0CHgzkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A955FC4CEE3;
-	Tue, 15 Jul 2025 13:43:24 +0000 (UTC)
+	 MIME-Version; b=Qgm+Gcnz5IyK44Y543uqjUVtWbsJz1a4SHfLiVctxku/wFgkJhOXzNd623M9bVyMT/o6dadQh/oNBmxEg5ZPbGPp/EHI7SrFn666xr3yeGPo/2ULC/MmL/5hb1ADB3WllrgVHzJ5Q1BKey5PPSr0J08WOdr6E/V3E+1p3+ipZms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxW25vE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A1CC4CEF1;
+	Tue, 15 Jul 2025 13:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587005;
-	bh=OHpGAv27Zp0dKGLXoDC6/+epby1B/MMYt6II+wZWbZE=;
+	s=korg; t=1752586184;
+	bh=3/5oIqVuBILgjbqkNUTgyjh3b1csEjNlXeD6OHDRCTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0CHgzkH3AeXthN53Y07uSzR0PGm52txle286XGtXd5VJC5D61xNyENCIaUJDQbkn
-	 RwyEvX7hwDtNl0Abbaa/Kbu+itFOqvlhq5qCzxNzL7jCPq3jsoQohtMqFFSmFGbuUl
-	 TtQkyjnoCV9DsLQNNEpCiKWsqAjPbpe62ncdGMOM=
+	b=GxW25vE7K2dqwFUjh9xrxoVpBhwczfs55CunfX6NEo98LiYeCiRvNCCOI8vpqZlFm
+	 bsz1T8RWZitE6gcNnXJuW026KmU55A3AdfZMg7zaPOfSfx4xq4AI8qFtdOgfO1b0oD
+	 gYlV+MRdjAr81enNqXdcKvdjfh6qO+jdLctHMHRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nigel Croxon <ncroxon@redhat.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	stable <stable@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 131/192] raid10: cleanup memleak at raid10_make_request
-Date: Tue, 15 Jul 2025 15:13:46 +0200
-Message-ID: <20250715130820.153655262@linuxfoundation.org>
+Subject: [PATCH 5.15 48/77] usb: cdnsp: Fix issue with CV Bad Descriptor test
+Date: Tue, 15 Jul 2025 15:13:47 +0200
+Message-ID: <20250715130753.647727109@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nigel Croxon <ncroxon@redhat.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-[ Upstream commit 43806c3d5b9bb7d74ba4e33a6a8a41ac988bde24 ]
+[ Upstream commit 2831a81077f5162f104ba5a97a7d886eb371c21c ]
 
-If raid10_read_request or raid10_write_request registers a new
-request and the REQ_NOWAIT flag is set, the code does not
-free the malloc from the mempool.
+The SSP2 controller has extra endpoint state preserve bit (ESP) which
+setting causes that endpoint state will be preserved during
+Halt Endpoint command. It is used only for EP0.
+Without this bit the Command Verifier "TD 9.10 Bad Descriptor Test"
+failed.
+Setting this bit doesn't have any impact for SSP controller.
 
-unreferenced object 0xffff8884802c3200 (size 192):
-   comm "fio", pid 9197, jiffies 4298078271
-   hex dump (first 32 bytes):
-     00 00 00 00 00 00 00 00 88 41 02 00 00 00 00 00  .........A......
-     08 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-   backtrace (crc c1a049a2):
-     __kmalloc+0x2bb/0x450
-     mempool_alloc+0x11b/0x320
-     raid10_make_request+0x19e/0x650 [raid10]
-     md_handle_request+0x3b3/0x9e0
-     __submit_bio+0x394/0x560
-     __submit_bio_noacct+0x145/0x530
-     submit_bio_noacct_nocheck+0x682/0x830
-     __blkdev_direct_IO_async+0x4dc/0x6b0
-     blkdev_read_iter+0x1e5/0x3b0
-     __io_read+0x230/0x1110
-     io_read+0x13/0x30
-     io_issue_sqe+0x134/0x1180
-     io_submit_sqes+0x48c/0xe90
-     __do_sys_io_uring_enter+0x574/0x8b0
-     do_syscall_64+0x5c/0xe0
-     entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-V4: changing backing tree to see if CKI tests will pass.
-The patch code has not changed between any versions.
-
-Fixes: c9aa889b035f ("md: raid10 add nowait support")
-Signed-off-by: Nigel Croxon <ncroxon@redhat.com>
-Link: https://lore.kernel.org/linux-raid/c0787379-9caa-42f3-b5fc-369aed784400@redhat.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB95382CCD50549DABAEFD6156DD7CA@PH7PR07MB9538.namprd07.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/usb/cdns3/cdnsp-debug.h  |  5 +++--
+ drivers/usb/cdns3/cdnsp-ep0.c    | 18 +++++++++++++++---
+ drivers/usb/cdns3/cdnsp-gadget.h |  6 ++++++
+ drivers/usb/cdns3/cdnsp-ring.c   |  3 ++-
+ 4 files changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 54320a887ecc5..0443a479809f9 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1182,8 +1182,11 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- 		}
+diff --git a/drivers/usb/cdns3/cdnsp-debug.h b/drivers/usb/cdns3/cdnsp-debug.h
+index cd138acdcce16..86860686d8363 100644
+--- a/drivers/usb/cdns3/cdnsp-debug.h
++++ b/drivers/usb/cdns3/cdnsp-debug.h
+@@ -327,12 +327,13 @@ static inline const char *cdnsp_decode_trb(char *str, size_t size, u32 field0,
+ 	case TRB_RESET_EP:
+ 	case TRB_HALT_ENDPOINT:
+ 		ret = scnprintf(str, size,
+-				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
++				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c %c",
+ 				cdnsp_trb_type_string(type),
+ 				ep_num, ep_id % 2 ? "out" : "in",
+ 				TRB_TO_EP_INDEX(field3), field1, field0,
+ 				TRB_TO_SLOT_ID(field3),
+-				field3 & TRB_CYCLE ? 'C' : 'c');
++				field3 & TRB_CYCLE ? 'C' : 'c',
++				field3 & TRB_ESP ? 'P' : 'p');
+ 		break;
+ 	case TRB_STOP_RING:
+ 		ret = scnprintf(str, size,
+diff --git a/drivers/usb/cdns3/cdnsp-ep0.c b/drivers/usb/cdns3/cdnsp-ep0.c
+index f317d3c847810..5cd9b898ce971 100644
+--- a/drivers/usb/cdns3/cdnsp-ep0.c
++++ b/drivers/usb/cdns3/cdnsp-ep0.c
+@@ -414,6 +414,7 @@ static int cdnsp_ep0_std_request(struct cdnsp_device *pdev,
+ void cdnsp_setup_analyze(struct cdnsp_device *pdev)
+ {
+ 	struct usb_ctrlrequest *ctrl = &pdev->setup;
++	struct cdnsp_ep *pep;
+ 	int ret = -EINVAL;
+ 	u16 len;
+ 
+@@ -427,10 +428,21 @@ void cdnsp_setup_analyze(struct cdnsp_device *pdev)
+ 		goto out;
  	}
  
--	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors))
-+	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
-+		raid_end_bio_io(r10_bio);
- 		return;
-+	}
++	pep = &pdev->eps[0];
 +
- 	rdev = read_balance(conf, r10_bio, &max_sectors);
- 	if (!rdev) {
- 		if (err_rdev) {
-@@ -1370,8 +1373,11 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 	/* Restore the ep0 to Stopped/Running state. */
+-	if (pdev->eps[0].ep_state & EP_HALTED) {
+-		trace_cdnsp_ep0_halted("Restore to normal state");
+-		cdnsp_halt_endpoint(pdev, &pdev->eps[0], 0);
++	if (pep->ep_state & EP_HALTED) {
++		if (GET_EP_CTX_STATE(pep->out_ctx) == EP_STATE_HALTED)
++			cdnsp_halt_endpoint(pdev, pep, 0);
++
++		/*
++		 * Halt Endpoint Command for SSP2 for ep0 preserve current
++		 * endpoint state and driver has to synchronize the
++		 * software endpoint state with endpoint output context
++		 * state.
++		 */
++		pep->ep_state &= ~EP_HALTED;
++		pep->ep_state |= EP_STOPPED;
  	}
  
- 	sectors = r10_bio->sectors;
--	if (!regular_request_wait(mddev, conf, bio, sectors))
-+	if (!regular_request_wait(mddev, conf, bio, sectors)) {
-+		raid_end_bio_io(r10_bio);
- 		return;
-+	}
+ 	/*
+diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
+index 48336e121ed6f..155fd770a8cd9 100644
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -987,6 +987,12 @@ enum cdnsp_setup_dev {
+ #define STREAM_ID_FOR_TRB(p)		((((p)) << 16) & GENMASK(31, 16))
+ #define SCT_FOR_TRB(p)			(((p) << 1) & 0x7)
+ 
++/*
++ * Halt Endpoint Command TRB field.
++ * The ESP bit only exists in the SSP2 controller.
++ */
++#define TRB_ESP				BIT(9)
 +
- 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery) &&
- 	    (mddev->reshape_backwards
- 	     ? (bio->bi_iter.bi_sector < conf->reshape_safe &&
+ /* Link TRB specific fields. */
+ #define TRB_TC				BIT(1)
+ 
+diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
+index 795668435c77e..42db256978bcc 100644
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -2475,7 +2475,8 @@ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev, unsigned int ep_index)
+ {
+ 	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_HALT_ENDPOINT) |
+ 			    SLOT_ID_FOR_TRB(pdev->slot_id) |
+-			    EP_ID_FOR_TRB(ep_index));
++			    EP_ID_FOR_TRB(ep_index) |
++			    (!ep_index ? TRB_ESP : 0));
+ }
+ 
+ void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
 -- 
 2.39.5
 
