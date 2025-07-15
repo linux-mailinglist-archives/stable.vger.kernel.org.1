@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-162586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6241DB05E77
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E69EB05BA4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79B4F17FEC9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1F1856635E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529572E2657;
-	Tue, 15 Jul 2025 13:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58AB2E2F1E;
+	Tue, 15 Jul 2025 13:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ws/oo1bq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTWrLg73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015472E49B3;
-	Tue, 15 Jul 2025 13:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925C02E1C69;
+	Tue, 15 Jul 2025 13:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586947; cv=none; b=kkI2HC0zwlPQJmDqG9mOtDiDETZyD3c0PuJkTJDv/h10Ur/2H9nXSkNTfsYwIRaj1sG6PtJT/KxYXv6R4YipwjK3UMpPW3nraH/ETJx7B0TNlfHrKTL764nFn+HAyYSKOPKcoDOFqAl+RvSdDRLDhsInqgEAXyR4hqoB18cXB78=
+	t=1752585693; cv=none; b=Da4/Y8KS2urZskB2CeR25yoWKjg9sVDLGfBwAKHD7jMqakvN6iHvcNDCLA0GoT4DR23KNUGg4pndIqxL2YngvVq5akDIuwDTlN5KgbfJ86XQSKGAf/ApAgOABx9wGZScWVNq57L4ZaOBmqmY0/ZOxx+A+mFmuXHHuFFo3iDPhxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586947; c=relaxed/simple;
-	bh=bQ5FNtSqEMmG1pUzMjhGg2NDhSHq/KBHaoNTjAeY428=;
+	s=arc-20240116; t=1752585693; c=relaxed/simple;
+	bh=xzWIsrchLNdQGmaimcV/l1rsAe04EUuPgXsdXsC6QVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNBQZViJsP9G9f63aKSU+L5OSckWW0Yd1aCKE2UtQmLWSQQdNcszFCX5WWmrs4P0GefGpPo7YaxEplEk5tdbnhr5m3WYLkm90hOrY8SEzoDKXsXJxiaxHwfyChPJPNv44imFSmJ4A4dPZakOJvVZUDcYy7qgxFh1jbtydjq38Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ws/oo1bq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC76C4CEE3;
-	Tue, 15 Jul 2025 13:42:26 +0000 (UTC)
+	 MIME-Version; b=KejB+lEqT9Xa0We0XamXvcCNGaTpjjadhansDt19LwZlxVBJIaH6odx7eDzG/zAsJtuyfcAbKEqEQNsc+jHW7nMW1xYftZpLC3NieRAhNdAlhw1hFAHxxmFVqeC6BeGRNqyRvaN7Ydw5bXEQa3nwTZNVt4GnddLSqJ+Rp2hfKhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTWrLg73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CB1C4CEE3;
+	Tue, 15 Jul 2025 13:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586946;
-	bh=bQ5FNtSqEMmG1pUzMjhGg2NDhSHq/KBHaoNTjAeY428=;
+	s=korg; t=1752585693;
+	bh=xzWIsrchLNdQGmaimcV/l1rsAe04EUuPgXsdXsC6QVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ws/oo1bqm8XbKXjPDumN1iPz4r98hBvgo1h6qKKrohKq2cmTe1TQc6D82WBQq9tKy
-	 WA83F1HvqAAfwF32BubXksfXG53yf1EkwFyGb/hNmyDEjR7v6AffdIOSppxpSyOcGF
-	 /+ojt10Nw0ZdbIApxRm2Yj0iKLYG+QUXujXDi/8w=
+	b=LTWrLg73/AlKh7AVxzAdSMEVVjVoteM92d62Dxt9dXmpKPp4B4r2ik4axGcOcQeYZ
+	 ktfPpPqIBkaXtEHuxMB5+Ne3P1yVzy+wQvSg1jzr7MAnSpKQ4gg3sfJRzD3LFSe0N8
+	 f9XzmxlvpaO11ihtA38g5ESxVu4y1QvYqoTnz4Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 108/192] mm/damon/core: handle damon_call_control as normal under kdmond deactivation
-Date: Tue, 15 Jul 2025 15:13:23 +0200
-Message-ID: <20250715130819.224610705@linuxfoundation.org>
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	Shravya KN <shravya.k-n@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 136/163] bnxt_en: Fix DCB ETS validation
+Date: Tue, 15 Jul 2025 15:13:24 +0200
+Message-ID: <20250715130814.293976975@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Shravya KN <shravya.k-n@broadcom.com>
 
-commit bb1b5929b4279b136816f95ce1e8f1fa689bf4a1 upstream.
+[ Upstream commit b74c2a2e9cc471e847abd87e50a2354c07e02040 ]
 
-DAMON sysfs interface internally uses damon_call() to update DAMON
-parameters as users requested, online.  However, DAMON core cancels any
-damon_call() requests when it is deactivated by DAMOS watermarks.
+In bnxt_ets_validate(), the code incorrectly loops over all possible
+traffic classes to check and add the ETS settings.  Fix it to loop
+over the configured traffic classes only.
 
-As a result, users cannot change DAMON parameters online while DAMON is
-deactivated.  Note that users can turn DAMON off and on with different
-watermarks to work around.  Since deactivated DAMON is nearly same to
-stopped DAMON, the work around should have no big problem.  Anyway, a bug
-is a bug.
+The unconfigured traffic classes will default to TSA_ETS with 0
+bandwidth.  Looping over these unconfigured traffic classes may
+cause the validation to fail and trigger this error message:
 
-There is no real good reason to cancel the damon_call() request under
-DAMOS deactivation.  Fix it by simply handling the request as normal,
-rather than cancelling under the situation.
+"rejecting ETS config starving a TC\n"
 
-Link: https://lkml.kernel.org/r/20250629204914.54114-1-sj@kernel.org
-Fixes: 42b7491af14c ("mm/damon/core: introduce damon_call()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.14+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The .ieee_setets() will then fail.
+
+Fixes: 7df4ae9fe855 ("bnxt_en: Implement DCBNL to support host-based DCBX.")
+Reviewed-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250710213938.1959625-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/core.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2306,9 +2306,8 @@ static void kdamond_usleep(unsigned long
-  *
-  * If there is a &struct damon_call_control request that registered via
-  * &damon_call() on @ctx, do or cancel the invocation of the function depending
-- * on @cancel.  @cancel is set when the kdamond is deactivated by DAMOS
-- * watermarks, or the kdamond is already out of the main loop and therefore
-- * will be terminated.
-+ * on @cancel.  @cancel is set when the kdamond is already out of the main loop
-+ * and therefore will be terminated.
-  */
- static void kdamond_call(struct damon_ctx *ctx, bool cancel)
- {
-@@ -2356,7 +2355,7 @@ static int kdamond_wait_activation(struc
- 		if (ctx->callback.after_wmarks_check &&
- 				ctx->callback.after_wmarks_check(ctx))
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
+index 0dbb880a7aa0e..71e14be2507e1 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
+@@ -487,7 +487,9 @@ static int bnxt_ets_validate(struct bnxt *bp, struct ieee_ets *ets, u8 *tc)
+ 
+ 		if ((ets->tc_tx_bw[i] || ets->tc_tsa[i]) && i > bp->max_tc)
+ 			return -EINVAL;
++	}
+ 
++	for (i = 0; i < max_tc; i++) {
+ 		switch (ets->tc_tsa[i]) {
+ 		case IEEE_8021QAZ_TSA_STRICT:
  			break;
--		kdamond_call(ctx, true);
-+		kdamond_call(ctx, false);
- 		damos_walk_cancel(ctx);
- 	}
- 	return -EBUSY;
+-- 
+2.39.5
+
 
 
 
