@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F262B05E1C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D95FB05EA4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AA801C40619
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 295F5580529
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9EE2E8DE8;
-	Tue, 15 Jul 2025 13:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB00526AA94;
+	Tue, 15 Jul 2025 13:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRS0Dfr7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PsQRBUl4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8829D2E8DE0;
-	Tue, 15 Jul 2025 13:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81612DEA72;
+	Tue, 15 Jul 2025 13:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586634; cv=none; b=bNxDGgbwRTfmFEOefAiYyZgMoK0TiYXFyAlRyWx94UxjsSA6vMgMDfxkX9rtCV9Bv7+n5DNLqotA4CkIMg/IY3jG+vawX1+Gl5SzAHHCAuTTNaiwWoapk8Ak29nz7qesGnfxT0gd+wZed/XLMgowAus6KieNLvnemoYqOSOiO4c=
+	t=1752587015; cv=none; b=hAir7rZA5Wa/C3cwyykxaN0U82zuvLLu6ad98xzO0J8slBMBR2V1dW42dQX9jQfByBXg7zPAnNcHoiwl7mC9pl95CzActJkG8JpAs2T06IKqM+AiGi+0gRAVKpEs/nQ2uWy0ZN72NcPD6iGZF9rb1eOEEW6ZxnMFkx1PTOr/5cM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586634; c=relaxed/simple;
-	bh=GriXLbIF0J9zUVt6JIMAfUIUaBNCvI4KR38xed0n/aQ=;
+	s=arc-20240116; t=1752587015; c=relaxed/simple;
+	bh=j/r4JdAr0wOqxqZWrBIA2yN/iGXFKL1YQr35TxPNbDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rt7WyDO/ImpPq2pNh2cF/cKD2dE1D124ehQoNDxtGgwPR99tYDnDqZBys7SF+oO41KK7WMIV6qK/Nl8mwVbW3Q1WcjSBIIFgUes0EkM03BXdE7jU7ZUKPNhErbI14duwpRcSRl0DxGmoDDXIIihNngm0IqoL0l1zy4hfVUeS0Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRS0Dfr7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B79C4CEE3;
-	Tue, 15 Jul 2025 13:37:13 +0000 (UTC)
+	 MIME-Version; b=qrmYVYGSuti9ZXWTgeeH2opBjSmu+LSL1Fc9Sd2sanPVa5VZW67UU3/NsFclvxNpw7P1mk2zxSE68hPjrrPLdIdPZQu9dLM1Q33om3NVaUlvkU8vl3PMLgNcsSzvONEmtWOuK/9a6eadJCYEhV7iK/wEoFW2hPUiiI2pUHn3cPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PsQRBUl4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5E5C4CEE3;
+	Tue, 15 Jul 2025 13:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586634;
-	bh=GriXLbIF0J9zUVt6JIMAfUIUaBNCvI4KR38xed0n/aQ=;
+	s=korg; t=1752587015;
+	bh=j/r4JdAr0wOqxqZWrBIA2yN/iGXFKL1YQr35TxPNbDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRS0Dfr7DS+A+EnVitI9z6QGhCRnfCN8Ge9W0T2eTJDa0knj2Kb7CpmasD0U0GxHi
-	 3VOy8wbqvMSCLTzzoPTMhDrpFrBZBu/ZniYj3IyFR1ivqmBGaHkZRiIE8DjV2Fzt0Z
-	 T9Z6fXyJfP58PX1+1Dv9nGbrp5j17cwYmNIKVb80=
+	b=PsQRBUl4ZsFLtVCKCpq2ZRRseG7Du2VfkHVGVoVE6z0NLQREozLI5a3Gqdedf3EEZ
+	 /8Dm5fsSK8dnSanIqIKT4TiSe/q+o5c91GTi3vok0E6ALzP7SDPRqsZXuhgjM0mjTh
+	 +LRDD2GpOTHtYc3EK352Sr/VAjz0xqNKth8m/eaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@brown.name>,
-	Christian Brauner <brauner@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	syzbot+ededba317ddeca8b3f08@syzkaller.appspotmail.com,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 108/148] fix proc_sys_compare() handling of in-lookup dentries
+Subject: [PATCH 6.15 135/192] wifi: mac80211: reject VHT opmode for unsupported channel widths
 Date: Tue, 15 Jul 2025 15:13:50 +0200
-Message-ID: <20250715130804.635751101@linuxfoundation.org>
+Message-ID: <20250715130820.321473588@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit b969f9614885c20f903e1d1f9445611daf161d6d ]
+[ Upstream commit 58fcb1b4287ce38850402bb2bb16d09bf77b91d9 ]
 
-There's one case where ->d_compare() can be called for an in-lookup
-dentry; usually that's nothing special from ->d_compare() point of
-view, but... proc_sys_compare() is weird.
+VHT operating mode notifications are not defined for channel widths
+below 20 MHz. In particular, 5 MHz and 10 MHz are not valid under the
+VHT specification and must be rejected.
 
-The thing is, /proc/sys subdirectories can look differently for
-different processes.  Up to and including having the same name
-resolve to different dentries - all of them hashed.
+Without this check, malformed notifications using these widths may
+reach ieee80211_chan_width_to_rx_bw(), leading to a WARN_ON due to
+invalid input. This issue was reported by syzbot.
 
-The way it's done is ->d_compare() refusing to admit a match unless
-this dentry is supposed to be visible to this caller.  The information
-needed to discriminate between them is stored in inode; it is set
-during proc_sys_lookup() and until it's done d_splice_alias() we really
-can't tell who should that dentry be visible for.
+Reject these unsupported widths early in sta_link_apply_parameters()
+when opmode_notif is used. The accepted set includes 20, 40, 80, 160,
+and 80+80 MHz, which are valid for VHT. While 320 MHz is not defined
+for VHT, it is allowed to avoid rejecting HE or EHT clients that may
+still send a VHT opmode notification.
 
-Normally there's no negative dentries in /proc/sys; we can run into
-a dying dentry in RCU dcache lookup, but those can be safely rejected.
-
-However, ->d_compare() is also called for in-lookup dentries, before
-they get positive - or hashed, for that matter.  In case of match
-we will wait until dentry leaves in-lookup state and repeat ->d_compare()
-afterwards.  In other words, the right behaviour is to treat the
-name match as sufficient for in-lookup dentries; if dentry is not
-for us, we'll see that when we recheck once proc_sys_lookup() is
-done with it.
-
-While we are at it, fix the misspelled READ_ONCE and WRITE_ONCE there.
-
-Fixes: d9171b934526 ("parallel lookups machinery, part 4 (and last)")
-Reported-by: NeilBrown <neilb@brown.name>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reported-by: syzbot+ededba317ddeca8b3f08@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ededba317ddeca8b3f08
+Fixes: 751e7489c1d7 ("wifi: mac80211: expose ieee80211_chan_width_to_rx_bw() to drivers")
+Tested-by: syzbot+ededba317ddeca8b3f08@syzkaller.appspotmail.com
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Link: https://patch.msgid.link/20250703193756.46622-2-moonhee.lee.ca@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/inode.c       |  2 +-
- fs/proc/proc_sysctl.c | 18 +++++++++++-------
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ net/mac80211/cfg.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index a6bb1b5c903e6..86175a8c04b3f 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -53,7 +53,7 @@ static void proc_evict_inode(struct inode *inode)
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index acfde525fad2f..4a8d9c3ea480f 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1942,6 +1942,20 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 	ieee80211_sta_init_nss(link_sta);
  
- 	head = ei->sysctl;
- 	if (head) {
--		RCU_INIT_POINTER(ei->sysctl, NULL);
-+		WRITE_ONCE(ei->sysctl, NULL);
- 		proc_sys_evict_inode(inode, head);
- 	}
- }
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index f4264dd4ea31b..c8dad20069803 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -928,17 +928,21 @@ static int proc_sys_compare(const struct dentry *dentry,
- 	struct ctl_table_header *head;
- 	struct inode *inode;
- 
--	/* Although proc doesn't have negative dentries, rcu-walk means
--	 * that inode here can be NULL */
--	/* AV: can it, indeed? */
--	inode = d_inode_rcu(dentry);
--	if (!inode)
--		return 1;
- 	if (name->len != len)
- 		return 1;
- 	if (memcmp(name->name, str, len))
- 		return 1;
--	head = rcu_dereference(PROC_I(inode)->sysctl);
+ 	if (params->opmode_notif_used) {
++		enum nl80211_chan_width width = link->conf->chanreq.oper.width;
 +
-+	// false positive is fine here - we'll recheck anyway
-+	if (d_in_lookup(dentry))
-+		return 0;
++		switch (width) {
++		case NL80211_CHAN_WIDTH_20:
++		case NL80211_CHAN_WIDTH_40:
++		case NL80211_CHAN_WIDTH_80:
++		case NL80211_CHAN_WIDTH_160:
++		case NL80211_CHAN_WIDTH_80P80:
++		case NL80211_CHAN_WIDTH_320: /* not VHT, allowed for HE/EHT */
++			break;
++		default:
++			return -EINVAL;
++		}
 +
-+	inode = d_inode_rcu(dentry);
-+	// we just might have run into dentry in the middle of __dentry_kill()
-+	if (!inode)
-+		return 1;
-+
-+	head = READ_ONCE(PROC_I(inode)->sysctl);
- 	return !head || !sysctl_is_seen(head);
- }
- 
+ 		/* returned value is only needed for rc update, but the
+ 		 * rc isn't initialized here yet, so ignore it
+ 		 */
 -- 
 2.39.5
 
