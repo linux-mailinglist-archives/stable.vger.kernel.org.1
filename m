@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5BAB05D16
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:41:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6695FB05DFD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8AB188CF22
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A2554A7AAF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660BD2E8E06;
-	Tue, 15 Jul 2025 13:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA04A2E7F13;
+	Tue, 15 Jul 2025 13:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZFDuIbZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLkEftDP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222732E8DF8;
-	Tue, 15 Jul 2025 13:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F9B2E6D11;
+	Tue, 15 Jul 2025 13:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586224; cv=none; b=KhlB+V1hQ9tY0zXuokySYWIEuEWL3FrgW0u7XWOYwk2eA0p1bIwkI+5Sw03SMFEsr/DoRxbZRuFifgrK+nOTfpiaME1ErG4122d36rmdx7AwzLMM/7whzxzLTyChllgJKPoWOlSxa7mNTUUjmrm/gQvYigw2Yx+VoZEb7cbfNYs=
+	t=1752586576; cv=none; b=ZaAEuycro1qdlVnyk0lvJtoKbHD/Q9+lz/7GoVXYieLpEW5kNLw8gLX91g6zATbMzQ/yjVmlgG2PstMVPVgr93SAPFB01LDo4Tu0xGUm8XOOQv7g+X4BWy9+Y5fM851+6qJ+UxkcDYFLbE7bdx4mPmIoyCdryxpda8rOiagH+FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586224; c=relaxed/simple;
-	bh=W72veoatk05AUH3bakbJTZkel/C+KqLpyculeKUu6H0=;
+	s=arc-20240116; t=1752586576; c=relaxed/simple;
+	bh=y9/NUxFhgQwWpX+CbA8esJe3+u0HNqhw6JLvHCJYAd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QUlELny4OwWoOZRZih+vpIw4P06aMaaNo9rkHVW438jwGFYFylZZYfFuy0i+l9EhEoLApgkq6saqeRAB3TJpVLRvdsiMkXCsYT1l+my+/Ygpb+H/+FBwTf97auxGBwFeKwl11be6+iutXRtubjexmUmJJi+0iUwdVcR80bJiAC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZFDuIbZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A6DC4CEE3;
-	Tue, 15 Jul 2025 13:30:23 +0000 (UTC)
+	 MIME-Version; b=iCai4NCtTY+2yeR495Kg2LoQYqWARXquV51QmRtd6UWWL5mDif+CCiYiCYvZ1XhVY8/MVqqN4ExJ+Ad+WaL9zEWXJY3Wi+lTMbO0Nvi79kj7eXNHfKjBrbwdfayXnITGuDb1duiIIz06H7pS2k7lRQyVkkXOuK5OoJD3jDRBzxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLkEftDP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC30C4CEE3;
+	Tue, 15 Jul 2025 13:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586224;
-	bh=W72veoatk05AUH3bakbJTZkel/C+KqLpyculeKUu6H0=;
+	s=korg; t=1752586576;
+	bh=y9/NUxFhgQwWpX+CbA8esJe3+u0HNqhw6JLvHCJYAd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZFDuIbZQBKKIE9GtxnYbBDk2xV4IZ/vRL4ljBBlu12rNz5ps00uuWZEW3BPocDAJ
-	 1b2TUysMSPcmb0FzS4y5wYQz6Y/TdtrUmT5WACBbAQMxGj0az6q5jZLV7U5FK0Yw0J
-	 WBQzWGv0vFky3OZgCKtA5eLw7+SC/79out9qrLLw=
+	b=xLkEftDPndEW3mgmEk6WOugFZ7OQxroaOeVsJEA+pTsPXd4CmRSKQjCU7R6GPVeKf
+	 VxPVaWmCM7gL9yrYsP9ztMi6/8XPKQbxX45wynL5khNzCDPU0Hy3z0sL8ScLxY+5bc
+	 v77EVOHiJB2jWIPQ0LVO9G4mZYMNe33Rp4E0RJ5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kito Xu <veritas501@foxmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 61/77] net: appletalk: Fix device refcount leak in atrtr_create()
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>
+Subject: [PATCH 5.4 118/148] x86/mce: Dont remove sysfs if thresholding sysfs init fails
 Date: Tue, 15 Jul 2025 15:14:00 +0200
-Message-ID: <20250715130754.176745158@linuxfoundation.org>
+Message-ID: <20250715130805.027878301@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kito Xu <veritas501@foxmail.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 711c80f7d8b163d3ecd463cd96f07230f488e750 ]
+commit 4c113a5b28bfd589e2010b5fc8867578b0135ed7 upstream.
 
-When updating an existing route entry in atrtr_create(), the old device
-reference was not being released before assigning the new device,
-leading to a device refcount leak. Fix this by calling dev_put() to
-release the old device reference before holding the new one.
+Currently, the MCE subsystem sysfs interface will be removed if the
+thresholding sysfs interface fails to be created. A common failure is due to
+new MCA bank types that are not recognized and don't have a short name set.
 
-Fixes: c7f905f0f6d4 ("[ATALK]: Add missing dev_hold() to atrtr_create().")
-Signed-off-by: Kito Xu <veritas501@foxmail.com>
-Link: https://patch.msgid.link/tencent_E1A26771CDAB389A0396D1681A90A49E5D09@qq.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The MCA thresholding feature is optional and should not break the common MCE
+sysfs interface. Also, new MCA bank types are occasionally introduced, and
+updates will be needed to recognize them. But likewise, this should not break
+the common sysfs interface.
+
+Keep the MCE sysfs interface regardless of the status of the thresholding
+sysfs interface.
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Tony Luck <tony.luck@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-1-236dd74f645f@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/appletalk/ddp.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/mce/core.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
-index 8daa3a1bfa4cd..344a38905c48d 100644
---- a/net/appletalk/ddp.c
-+++ b/net/appletalk/ddp.c
-@@ -563,6 +563,7 @@ static int atrtr_create(struct rtentry *r, struct net_device *devhint)
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2464,15 +2464,9 @@ static int mce_cpu_dead(unsigned int cpu
+ static int mce_cpu_online(unsigned int cpu)
+ {
+ 	struct timer_list *t = this_cpu_ptr(&mce_timer);
+-	int ret;
  
- 	/* Fill in the routing entry */
- 	rt->target  = ta->sat_addr;
-+	dev_put(rt->dev); /* Release old device */
- 	dev_hold(devhint);
- 	rt->dev     = devhint;
- 	rt->flags   = r->rt_flags;
--- 
-2.39.5
-
+ 	mce_device_create(cpu);
+-
+-	ret = mce_threshold_create_device(cpu);
+-	if (ret) {
+-		mce_device_remove(cpu);
+-		return ret;
+-	}
++	mce_threshold_create_device(cpu);
+ 	mce_reenable_cpu();
+ 	mce_start_timer(t);
+ 	return 0;
 
 
 
