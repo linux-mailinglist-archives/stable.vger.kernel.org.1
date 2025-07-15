@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-162248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65AA7B05C93
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC562B05EEC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21A3D1898573
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:32:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 147C31C20EDF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FEC2E3AEE;
-	Tue, 15 Jul 2025 13:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929062E6128;
+	Tue, 15 Jul 2025 13:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMbFhSu6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHy3a6y9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E59B26CE27;
-	Tue, 15 Jul 2025 13:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B5C26D4F2;
+	Tue, 15 Jul 2025 13:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586055; cv=none; b=YT3FeBIbSAel/pU3kX8U86tabpoXc73zzp3X5kAGGgnP1YSTqVCghq5b8LBGVQjZ8zVE0FrGBaVCqCRd4GUnPjWHQAIEo49XiuMkOyB/csdvJtyyUZhFue5DlTNmwNcrUBbToYUJcPaUX7/Uqn/O2Y3+oFQRZuffec/pjSyXRKY=
+	t=1752586976; cv=none; b=riHXzyHNZ/eptyBYDdzMHeYqw3bvI3DI8uZwEYeNxsNjal6nyGbvhP5cx0xwJrsw75yFv+17L1ZRHYmxZzzDT8WrZCAAcyRt6OeWgoPYIyno0oSDNO2ExHMQgx+DhUK0LUUBzSeL0r6IVYGWFfOH2SjzSF4Rgltm4PUjy/mG/mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586055; c=relaxed/simple;
-	bh=6129G5mgFGCVq9DINgmpiOQ0zllzGZpk9wTRNTHiRr4=;
+	s=arc-20240116; t=1752586976; c=relaxed/simple;
+	bh=ESLTDTP6DCfObntqdBA4eIiHjqnYJthlQvrGFhgEIHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQ1CXgjqzLjJ1u+5FLYGR7N18gEHR3m61hWscHLa6kD5yZETt4jbZTOHB8r1TLnO8lbHZTVXYanunVLgVcle5CqWmER+U8Vnqqm32aNDIBnXnP7ye75WFdrmmOgibBrYc7Pd4n1W8kZGJujS1rCmqnIYpkmEgqIZrREWOCng3kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMbFhSu6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A3CC4CEF7;
-	Tue, 15 Jul 2025 13:27:34 +0000 (UTC)
+	 MIME-Version; b=VZEqo2To56CEKlQ5x0QZQjThLBxpOs90SHz812FAmENkB1C11qvJ0Vc/ng2Q0Lbr8IoS+MWTMbJgSDASRlrSirmjaoHkMjpHF424cyHx1mXX/VCeF4YYWBppwDc81hTPTVQV/srf7s2TuSJIGxiCl9jbR7xLeALCDQQ0GVcjPfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHy3a6y9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8CF3C4CEF1;
+	Tue, 15 Jul 2025 13:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586055;
-	bh=6129G5mgFGCVq9DINgmpiOQ0zllzGZpk9wTRNTHiRr4=;
+	s=korg; t=1752586976;
+	bh=ESLTDTP6DCfObntqdBA4eIiHjqnYJthlQvrGFhgEIHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMbFhSu6As6K1ompjaJpfYTz+s5at/U0YG3FkMJ7+dHz5RifMCeqBbUcfAOciXoir
-	 Ws1cj14AX9fOS4TCsYO2JKEB6RwgmYjOT7HitBQgLvEiNOYko5munCpbzOXgUwDA2A
-	 LLJbsXtmJ43ZErVIXqyHglmcLCKozSu2Uvgd/Exs=
+	b=oHy3a6y9cXb4FCcsoHWZpfYXQAfnQWQCp5LmJTuODzb/CpRqIyfkd6gltNhxFgV/g
+	 1w5W39Uzr4Y77wymUEiFuqcEbp5sJA08WobXnmU2PuOEU7k/61+5orRhJKZ2DeUzrL
+	 UXDTzwbhAtOF+GPgVSd3imSLecylq6BHC3iQEdKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/109] cifs: all initializations for tcon should happen in tcon_info_alloc
+	peng.fan@nxp.com,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.15 118/192] clk: scmi: Handle case where child clocks are initialized before their parents
 Date: Tue, 15 Jul 2025 15:13:33 +0200
-Message-ID: <20250715130801.966652822@linuxfoundation.org>
+Message-ID: <20250715130819.626594589@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 74ebd02163fde05baa23129e06dde4b8f0f2377a ]
+commit 6306e0c5a0d28e9df2b5902f4a021204bee75173 upstream.
 
-Today, a few work structs inside tcon are initialized inside
-cifs_get_tcon and not in tcon_info_alloc. As a result, if a tcon
-is obtained from tcon_info_alloc, but not called as a part of
-cifs_get_tcon, we may trip over.
+The SCMI clock driver currently assumes that parent clocks are always
+initialized before their children. However, this assumption can fail if
+a child clock is encountered before its parent during probe.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leads to an issue during initialization of the parent_data array:
+
+    sclk->parent_data[i].hw = hws[sclk->info->parents[i]];
+
+If the parent clock's hardware structure has not been initialized yet,
+this assignment results in invalid data.
+
+To resolve this, allocate all struct scmi_clk instances as a contiguous
+array at the beginning of the probe and populate the hws[] array
+upfront. This ensures that any parent referenced later is already
+initialized, regardless of the order in which clocks are processed.
+
+Note that we can no longer free individual scmi_clk instances if
+scmi_clk_ops_init() fails which shouldn't be a problem if the SCMI
+platform has proper per-agent clock discovery.
+
+Fixes: 65a8a3dd3b95f ("clk: scmi: Add support for clock {set,get}_parent")
+Reviewed-by: peng.fan@nxp.com
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.kernel.org/r/20250612-clk-scmi-children-parent-fix-v3-1-7de52a27593d@pengutronix.de
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsproto.h | 1 +
- fs/smb/client/connect.c   | 8 +-------
- fs/smb/client/misc.c      | 6 ++++++
- 3 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/clk/clk-scmi.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 8edb6fe89a97c..5ab877e480abc 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -136,6 +136,7 @@ extern int SendReceiveBlockingLock(const unsigned int xid,
- 			struct smb_hdr *out_buf,
- 			int *bytes_returned);
+--- a/drivers/clk/clk-scmi.c
++++ b/drivers/clk/clk-scmi.c
+@@ -404,6 +404,7 @@ static int scmi_clocks_probe(struct scmi
+ 	const struct scmi_handle *handle = sdev->handle;
+ 	struct scmi_protocol_handle *ph;
+ 	const struct clk_ops *scmi_clk_ops_db[SCMI_MAX_CLK_OPS] = {};
++	struct scmi_clk *sclks;
  
-+void smb2_query_server_interfaces(struct work_struct *work);
- void
- cifs_signal_cifsd_for_reconnect(struct TCP_Server_Info *server,
- 				      bool all_channels);
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 14be8822d23a2..33a292dabdb87 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -113,7 +113,7 @@ static int reconn_set_ipaddr_from_hostname(struct TCP_Server_Info *server)
- 	return rc;
- }
+ 	if (!handle)
+ 		return -ENODEV;
+@@ -430,18 +431,21 @@ static int scmi_clocks_probe(struct scmi
+ 	transport_is_atomic = handle->is_transport_atomic(handle,
+ 							  &atomic_threshold_us);
  
--static void smb2_query_server_interfaces(struct work_struct *work)
-+void smb2_query_server_interfaces(struct work_struct *work)
- {
- 	int rc;
- 	int xid;
-@@ -2818,20 +2818,14 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 	tcon->max_cached_dirs = ctx->max_cached_dirs;
- 	tcon->nodelete = ctx->nodelete;
- 	tcon->local_lease = ctx->local_lease;
--	INIT_LIST_HEAD(&tcon->pending_opens);
- 	tcon->status = TID_GOOD;
++	sclks = devm_kcalloc(dev, count, sizeof(*sclks), GFP_KERNEL);
++	if (!sclks)
++		return -ENOMEM;
++
++	for (idx = 0; idx < count; idx++)
++		hws[idx] = &sclks[idx].hw;
++
+ 	for (idx = 0; idx < count; idx++) {
+-		struct scmi_clk *sclk;
++		struct scmi_clk *sclk = &sclks[idx];
+ 		const struct clk_ops *scmi_ops;
  
--	INIT_DELAYED_WORK(&tcon->query_interfaces,
--			  smb2_query_server_interfaces);
- 	if (ses->server->dialect >= SMB30_PROT_ID &&
- 	    (ses->server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
- 		/* schedule query interfaces poll */
- 		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
- 				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
+-		sclk = devm_kzalloc(dev, sizeof(*sclk), GFP_KERNEL);
+-		if (!sclk)
+-			return -ENOMEM;
+-
+ 		sclk->info = scmi_proto_clk_ops->info_get(ph, idx);
+ 		if (!sclk->info) {
+ 			dev_dbg(dev, "invalid clock info for idx %d\n", idx);
+-			devm_kfree(dev, sclk);
++			hws[idx] = NULL;
+ 			continue;
+ 		}
+ 
+@@ -479,13 +483,11 @@ static int scmi_clocks_probe(struct scmi
+ 		if (err) {
+ 			dev_err(dev, "failed to register clock %d\n", idx);
+ 			devm_kfree(dev, sclk->parent_data);
+-			devm_kfree(dev, sclk);
+ 			hws[idx] = NULL;
+ 		} else {
+ 			dev_dbg(dev, "Registered clock:%s%s\n",
+ 				sclk->info->name,
+ 				scmi_ops->enable ? " (atomic ops)" : "");
+-			hws[idx] = &sclk->hw;
+ 		}
  	}
--#ifdef CONFIG_CIFS_DFS_UPCALL
--	INIT_DELAYED_WORK(&tcon->dfs_cache_work, dfs_cache_refresh);
--#endif
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_add(&tcon->tcon_list, &ses->tcon_list);
- 	spin_unlock(&cifs_tcp_ses_lock);
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index 2e9a14e28e466..bbbe48447765d 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -148,6 +148,12 @@ tcon_info_alloc(bool dir_leases_enabled, enum smb3_tcon_ref_trace trace)
- #ifdef CONFIG_CIFS_DFS_UPCALL
- 	INIT_LIST_HEAD(&ret_buf->dfs_ses_list);
- #endif
-+	INIT_LIST_HEAD(&ret_buf->pending_opens);
-+	INIT_DELAYED_WORK(&ret_buf->query_interfaces,
-+			  smb2_query_server_interfaces);
-+#ifdef CONFIG_CIFS_DFS_UPCALL
-+	INIT_DELAYED_WORK(&ret_buf->dfs_cache_work, dfs_cache_refresh);
-+#endif
  
- 	return ret_buf;
- }
--- 
-2.39.5
-
 
 
 
