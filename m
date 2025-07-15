@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1E8B05B53
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1320BB05EE0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A40F4A2D15
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A57B31C44081
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498EC1A23AF;
-	Tue, 15 Jul 2025 13:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282CD263F52;
+	Tue, 15 Jul 2025 13:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxDyDMmV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klHELxLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C07275103;
-	Tue, 15 Jul 2025 13:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB98F2E5B2B;
+	Tue, 15 Jul 2025 13:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585551; cv=none; b=c+b6aKu76HExySCVUjCAKDREx3LJJ1estJTT6gg1QXE/BG8ydAwWKEw+MM+SQ8Ln/u1kIxUKYhyVw609xDFSbBUNaQQq88+Ynkt/FqiwhYjXLpyQLGZV2+7DGSYe/YSsYdyOLCHRbEkN/ic1rwjOCINwAtgXp1zz/khS+j9xgo0=
+	t=1752586909; cv=none; b=hkYjo9MeKfp/t1nnj51sEK4Fl0VLNDqWaVj7pyr0Xizedd6Ch26i3Bx3HW2E9vuYTp0M348pxpwIhK+NFmS4hUX2NojN9dOJ6gPPDMPEPAvCeBBbOKCb0+bdihfFVWOiqBFoMpWnqo91sOE/8UFP9wwOCIgZTOSqsZhm1zXXjgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585551; c=relaxed/simple;
-	bh=d/AYu+TMC/R0tkPU2UW+uQDpz95USbEfaaFtrctDhKc=;
+	s=arc-20240116; t=1752586909; c=relaxed/simple;
+	bh=OL2sU3SZfB16b21CZrrHh2VXgLleuZs02y48IXC94G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=et/SUd9ew+IjVhj/0ojI3/1si5kmTGOdYOQoO2wSBaqw6OLG3LOUyF0mUSnO+1/ywPGN0H7nwOiFNgQR1F5E8eTmGibMuxxG3fjCbzJys0V518kU/bNP2hVTRIOsZmVXIuMB4K1bW19tbxRamIw5Ftua/dfQpKmgbctdrS9GkUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxDyDMmV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D484C4CEE3;
-	Tue, 15 Jul 2025 13:19:10 +0000 (UTC)
+	 MIME-Version; b=Fxakh6OoLYnMvFN90rhtVBDL+EvIXVuLK43UaXL75iIf5iIixcVqTUFvzzbrd9BuHWbB/U5vDgNBkJ0P6kv+FBFq81yMo1Uxl0/QifbS7u5vezdu7zRZPhNVWJPPhlNz4s7OscbwWltBMmLIR+XJIqam518UiMUdV6HvJ/NWY/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klHELxLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A59CC4CEE3;
+	Tue, 15 Jul 2025 13:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585550;
-	bh=d/AYu+TMC/R0tkPU2UW+uQDpz95USbEfaaFtrctDhKc=;
+	s=korg; t=1752586909;
+	bh=OL2sU3SZfB16b21CZrrHh2VXgLleuZs02y48IXC94G8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxDyDMmVfInLnPcgU6tSTlq/BlxaVzEDQbayFdOytpFTT/tUPR7zMgSb4JUJe6Nfw
-	 Te/9t4t3PoaM8GRoaAM0wewm6LtO9TObwS+FwKSvZZnd3gojIvMGhtNHkTH2tiH02f
-	 5Q91vE+D1uj8PuoQHPh5qtwtTTib3pWzRJ9UkB5U=
+	b=klHELxLADiURK2v7I0LgBlJomHMJkyI9b0LC1YrE8XWaAr0G0OH+5lE2NkvZvqmyZ
+	 Vv1avKer2NEwwvDMozONxb8NrXJ2zaEiD0ctKvtDYvWndJh9J9Dzu0ztW1guAt21Fy
+	 uPWO1nJ4KCt6hAwTP4TQgIsY9gWoRRG34LUu5wJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.12 081/163] Revert "usb: gadget: u_serial: Add null pointer check in gs_start_io"
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.15 054/192] x86/mce: Ensure user polling settings are honored when restarting timer
 Date: Tue, 15 Jul 2025 15:12:29 +0200
-Message-ID: <20250715130811.981172951@linuxfoundation.org>
+Message-ID: <20250715130817.011655744@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-commit f6c7bc4a6823a0a959f40866a1efe99bd03c2c5b upstream.
+commit 00c092de6f28ebd32208aef83b02d61af2229b60 upstream.
 
-This reverts commit ffd603f214237e250271162a5b325c6199a65382.
+Users can disable MCA polling by setting the "ignore_ce" parameter or by
+setting "check_interval=0". This tells the kernel to *not* start the MCE
+timer on a CPU.
 
-Commit ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in
-gs_start_io") adds null pointer checks at the beginning of the
-gs_start_io() function to prevent a null pointer dereference. However,
-these checks are redundant because the function's comment already
-requires callers to hold the port_lock and ensure port.tty and port_usb
-are not null. All existing callers already follow these rules.
+If the user did not disable CMCI, then storms can occur. When these
+happen, the MCE timer will be started with a fixed interval. After the
+storm subsides, the timer's next interval is set to check_interval.
 
-The true cause of the null pointer dereference is a race condition. When
-gs_start_io() calls either gs_start_rx() or gs_start_tx(), the port_lock
-is temporarily released for usb_ep_queue(). This allows port.tty and
-port_usb to be cleared.
+This disregards the user's input through "ignore_ce" and
+"check_interval". Furthermore, if "check_interval=0", then the new timer
+will run faster than expected.
 
-Fixes: ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in gs_start_io")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250617050844.1848232-1-khtsai@google.com
+Create a new helper to check these conditions and use it when a CMCI
+storm ends.
+
+  [ bp: Massage. ]
+
+Fixes: 7eae17c4add5 ("x86/mce: Add per-bank CMCI storm mitigation")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-2-236dd74f645f@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -543,20 +543,16 @@ static int gs_alloc_requests(struct usb_
- static int gs_start_io(struct gs_port *port)
- {
- 	struct list_head	*head = &port->read_pool;
--	struct usb_ep		*ep;
-+	struct usb_ep		*ep = port->port_usb->out;
- 	int			status;
- 	unsigned		started;
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1740,6 +1740,11 @@ static void mc_poll_banks_default(void)
  
--	if (!port->port_usb || !port->port.tty)
--		return -EIO;
+ void (*mc_poll_banks)(void) = mc_poll_banks_default;
+ 
++static bool should_enable_timer(unsigned long iv)
++{
++	return !mca_cfg.ignore_ce && iv;
++}
++
+ static void mce_timer_fn(struct timer_list *t)
+ {
+ 	struct timer_list *cpu_t = this_cpu_ptr(&mce_timer);
+@@ -1763,7 +1768,7 @@ static void mce_timer_fn(struct timer_li
+ 
+ 	if (mce_get_storm_mode()) {
+ 		__start_timer(t, HZ);
+-	} else {
++	} else if (should_enable_timer(iv)) {
+ 		__this_cpu_write(mce_next_interval, iv);
+ 		__start_timer(t, iv);
+ 	}
+@@ -2156,11 +2161,10 @@ static void mce_start_timer(struct timer
+ {
+ 	unsigned long iv = check_interval * HZ;
+ 
+-	if (mca_cfg.ignore_ce || !iv)
+-		return;
 -
- 	/* Allocate RX and TX I/O buffers.  We can't easily do this much
- 	 * earlier (with GFP_KERNEL) because the requests are coupled to
- 	 * endpoints, as are the packet sizes we'll be using.  Different
- 	 * configurations may use different endpoints with a given port;
- 	 * and high speed vs full speed changes packet sizes too.
- 	 */
--	ep = port->port_usb->out;
- 	status = gs_alloc_requests(ep, head, gs_read_complete,
- 		&port->read_allocated);
- 	if (status)
+-	this_cpu_write(mce_next_interval, iv);
+-	__start_timer(t, iv);
++	if (should_enable_timer(iv)) {
++		this_cpu_write(mce_next_interval, iv);
++		__start_timer(t, iv);
++	}
+ }
+ 
+ static void __mcheck_cpu_setup_timer(void)
 
 
 
