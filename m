@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-162653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD70B05F0A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 473CFB05E05
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A4951C2420C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D57BC1C27AE2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961552ED856;
-	Tue, 15 Jul 2025 13:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310C52E7F3E;
+	Tue, 15 Jul 2025 13:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Otds1ck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoLmFufh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BBD2ED842;
-	Tue, 15 Jul 2025 13:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41642E62D1;
+	Tue, 15 Jul 2025 13:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587121; cv=none; b=c6RzV8UD1sPuicSDeZXs39MeW7JvAs7IufHPm3lVENjGF0YSJO18g9xCRXDOBINAYS8jQaOHeibvvTgUfl/kzGruYbmmYlb1ji4P8ragds2dlQoPlrDv7d7++Ruyl9uHfoKJpGjElHI2lcVCKKKYz1841k8fLsxND38kOOtKh3Y=
+	t=1752586617; cv=none; b=b+cr35CiOX6ELAm8eRqlYw75Y+tW39JN8PZ5XRlxcN0J20GMv+eQoE4NnkkQ+dz//aBnqrrLG5aTvVe5XIJOgufD7sh+xK1anVx9PfKY9dK02lXDlM96jTPcwMF3E1CICl+OAJJgAMGJdghLV/vrb03MPWbaeTDtEUukSATEUgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587121; c=relaxed/simple;
-	bh=+g0egLZsHVyqR78vnv4VvzupLX5M6zar+55aDG6/X2o=;
+	s=arc-20240116; t=1752586617; c=relaxed/simple;
+	bh=KjIB0PcOneRow9pndEqEGLxwYcFlDHPM05Snz2v3/4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZjzPz2BW/NTrrwrBXGAPzpNoyaMVljdYf5GiMEMaZ1V46xyEffHDPOZeJw3BhJ5zjQH1vXuCXXb5lVCmJkT40Iyxy+nTjyRpqvYdCS9IpTFhieLaX34Z5YfuComrbCwYtuOCs5jEkUOGdBhik9kEUujYr9PtoEmcCvpQweAAZiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Otds1ck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16A6C4CEF6;
-	Tue, 15 Jul 2025 13:45:20 +0000 (UTC)
+	 MIME-Version; b=iQ7DiSTAkVMLInb3c3khT2XpAxZvAs9sBlRX9+GprruyAHt2Edy7Xm1K4Jq34a1U2wwVIuAsyKqhvOvaMINa+3oiZbgtKFXhxfiQT9+eA5xrs0OTYZyo8IL9wcAg0goJQx7MltoJPsRyE3TAKdnUr9Op8SoOFyKZqYG7mnjt0a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoLmFufh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B8EC4CEE3;
+	Tue, 15 Jul 2025 13:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587121;
-	bh=+g0egLZsHVyqR78vnv4VvzupLX5M6zar+55aDG6/X2o=;
+	s=korg; t=1752586615;
+	bh=KjIB0PcOneRow9pndEqEGLxwYcFlDHPM05Snz2v3/4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Otds1ckCqiFwxLx59viVlQcmzGrJ8ji+bojbVnR6v540MZnAOeA3WN3XAM0ap6VT
-	 j8a3E/v2Ei2SkR+yrozra36mndZHVugEh9NA70SuGFQlPfr/8B82KC8dHA6vSUtHam
-	 soj6xuPwTGRcM5f4/r/4uAtQBz3sdfq6Vm3R8n9M=
+	b=xoLmFufhuoOivWSJvwbww3/tf2eStFfG3VtW2ktunowThb51wyexqX99JecSyJmqo
+	 2DA59BVz+sLo9Xn7whDiHE3WyBjc8bw5YuuFRj+pzlTD11k+5X9INQGwZ/GPVkSf8u
+	 mJI1fD00d22sbRxEb8Bb3kzY4B6gHYa6iheiI8is=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Vicki Pfau <vi@endrift.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 157/192] drm/xe/pm: Restore display pm if there is error after display suspend
-Date: Tue, 15 Jul 2025 15:14:12 +0200
-Message-ID: <20250715130821.219207321@linuxfoundation.org>
+Subject: [PATCH 5.4 131/148] Input: xpad - add VID for Turtle Beach controllers
+Date: Tue, 15 Jul 2025 15:14:13 +0200
+Message-ID: <20250715130805.538197013@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,54 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit 6d33df611a39a1b4ad9f2b609ded5d6efa04d97e ]
+[ Upstream commit 1999a6b12a3b5c8953fc9ec74863ebc75a1b851d ]
 
-xe_bo_evict_all() is called after xe_display_pm_suspend(). So if there
-is error with xe_bo_evict_all(), display pm should be restored.
+This adds support for the Turtle Beach REACT-R and Recon Xbox controllers
 
-Fixes: 51462211f4a9 ("drm/xe/pxp: add PXP PM support")
-Fixes: cb8f81c17531 ("drm/xe/display: Make display suspend/resume work on discrete")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Link: https://lore.kernel.org/r/20250708035424.3608190-2-shuicheng.lin@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 83dcee17855c4e5af037ae3262809036de127903)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Link: https://lore.kernel.org/r/20230225012147.276489-4-vi@endrift.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Stable-dep-of: 22c69d786ef8 ("Input: xpad - support Acer NGR 200 Controller")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/input/joystick/xpad.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index 7b6b754ad6eb7..c499c86382858 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -135,7 +135,7 @@ int xe_pm_suspend(struct xe_device *xe)
- 	/* FIXME: Super racey... */
- 	err = xe_bo_evict_all(xe);
- 	if (err)
--		goto err_pxp;
-+		goto err_display;
- 
- 	for_each_gt(gt, xe, id) {
- 		err = xe_gt_suspend(gt);
-@@ -152,7 +152,6 @@ int xe_pm_suspend(struct xe_device *xe)
- 
- err_display:
- 	xe_display_pm_resume(xe);
--err_pxp:
- 	xe_pxp_pm_resume(xe->pxp);
- err:
- 	drm_dbg(&xe->drm, "Device suspend failed %d\n", err);
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index fb714004641b7..21a4bf8b1f58e 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -452,6 +452,7 @@ static const struct usb_device_id xpad_table[] = {
+ 	XPAD_XBOX360_VENDOR(0x0f0d),		/* Hori Controllers */
+ 	XPAD_XBOXONE_VENDOR(0x0f0d),		/* Hori Controllers */
+ 	XPAD_XBOX360_VENDOR(0x1038),		/* SteelSeries Controllers */
++	XPAD_XBOXONE_VENDOR(0x10f5),		/* Turtle Beach Controllers */
+ 	XPAD_XBOX360_VENDOR(0x11c9),		/* Nacon GC100XF */
+ 	XPAD_XBOX360_VENDOR(0x11ff),		/* PXN V900 */
+ 	XPAD_XBOX360_VENDOR(0x1209),		/* Ardwiino Controllers */
 -- 
 2.39.5
 
