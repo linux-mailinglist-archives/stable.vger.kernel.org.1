@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF4FB05E08
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEBBCB05E92
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE5064A7E36
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4AC37B814A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14EF2E6D1C;
-	Tue, 15 Jul 2025 13:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07AD52E7641;
+	Tue, 15 Jul 2025 13:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G92iWtDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuF0rymO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9DB2E88B3;
-	Tue, 15 Jul 2025 13:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96012E2F0B;
+	Tue, 15 Jul 2025 13:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586618; cv=none; b=QnneNoD+sHLF2P+5syrF4eRH1awwVdUptCUCE4kRPEFc/eIaQQYd5KSTn5zddbnH0Lnxbuve/qpnJo/W54b1lUCJ/61cqQYWsA0USGREswVLeSOlW2nnHqDBp+WHzdjPIjxDj+Fsta8HocQlsoj5YXwURuvNjiFgWZsi+BhFSws=
+	t=1752587163; cv=none; b=ZnwTY8m/9HseCYVe/SG03UXFRGE2eUitfDsD5BAObUG91mlc6giFoQ3rG9oYs+TocXvytym2wmiHUsPUzoNJ69E8wiyF7Q9boRPEq8cBZ7UMFn/4pzl0eQGJPwm4pMeTtRaAJ2tnvlP/mfifrgra0KOrgekFZKtDn4DdgzrMroI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586618; c=relaxed/simple;
-	bh=2Y67LhGgRYAZ7+YORqSrvczd8qAxPh/hgU2rJtDlMjs=;
+	s=arc-20240116; t=1752587163; c=relaxed/simple;
+	bh=IL2WQMmsJIAYa+nlKjgrberE12KX6S9TR7wySrk03v8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A6Z0qTeTGMfT31rfeCJKB3CJKcbBBH48QQmH9McEj+XU6YipF3BOck91iGav87/IGZv8yg2TAcR0PqAmLUYiQqiyadD4mM+ZS/6lON+zbv5PC6nmicBI9uX+5kmx2+vSvdaPGyuB6inVD7GFSWoblcYVb33pqym5qHLb/XKF6ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G92iWtDs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E569BC4CEE3;
-	Tue, 15 Jul 2025 13:36:57 +0000 (UTC)
+	 MIME-Version; b=rmHv/pjyBm4dVcyQ+p6KnlsL2UVv499KSOQoAAv+snLaVMub/SdXzeWHr0rO/sDt2ISdCMnJcvoPN6Gfvo1RSOghpnxzrZt72x5Qei2fW4OOEn+WRyWrleJRtbEMihFksis4lAmbekMGjF4GBYiHGS9FjeUe5Wh6SuIv9uR8/R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuF0rymO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE5EC4CEF6;
+	Tue, 15 Jul 2025 13:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586618;
-	bh=2Y67LhGgRYAZ7+YORqSrvczd8qAxPh/hgU2rJtDlMjs=;
+	s=korg; t=1752587163;
+	bh=IL2WQMmsJIAYa+nlKjgrberE12KX6S9TR7wySrk03v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G92iWtDsz/p0HwXB9Rk/rfubMk6flUwvgepW+MJQH3qryBHTyoPGTOqUVYk1wkd5M
-	 8zQq5lORZbkxLWO6DWAc+LOY8NyQ7qLywyfJnJvppZpWJABRanMdqmYOYRiYrL921B
-	 yLRV/ks61DMv/K06GxmokTb1pjoHUHmzDKBD18t0=
+	b=HuF0rymOxzvsfZEjlzwOFPWQi8G7sYPEiDibELzDQCXsSaZlt3nSwXh9+o5aFqsbf
+	 2d5Hh9g4ZZU6GbWlK7OzFE+yBrSnEmCrFX4/aiRqVpkoabh6Xd3Sc1bNIZctoS8zqg
+	 fXR4CIuGxR7QXOs+fGNMvyPlWscMHG6VZX6JV5NA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilton Perim Neto <niltonperimneto@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 132/148] Input: xpad - support Acer NGR 200 Controller
+Subject: [PATCH 6.15 159/192] can: m_can: m_can_handle_lost_msg(): downgrade msg lost in rx message to debug level
 Date: Tue, 15 Jul 2025 15:14:14 +0200
-Message-ID: <20250715130805.576150563@linuxfoundation.org>
+Message-ID: <20250715130821.297733595@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilton Perim Neto <niltonperimneto@gmail.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit 22c69d786ef8fb789c61ca75492a272774221324 ]
+[ Upstream commit 58805e9cbc6f6a28f35d90e740956e983a0e036e ]
 
-Add the NGR 200 Xbox 360 to the list of recognized controllers.
+Downgrade the "msg lost in rx" message to debug level, to prevent
+flooding the kernel log with error messages.
 
-Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
-Link: https://lore.kernel.org/r/20250608060517.14967-1-niltonperimneto@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250711-mcan_ratelimit-v3-1-7413e8e21b84@geanix.com
+[mkl: enhance commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/can/m_can/m_can.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 21a4bf8b1f58e..a0362201b5d35 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -147,6 +147,7 @@ static const struct xpad_device {
- 	{ 0x05fd, 0x107a, "InterAct 'PowerPad Pro' X-Box pad (Germany)", 0, XTYPE_XBOX },
- 	{ 0x05fe, 0x3030, "Chic Controller", 0, XTYPE_XBOX },
- 	{ 0x05fe, 0x3031, "Chic Controller", 0, XTYPE_XBOX },
-+	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX },
- 	{ 0x062a, 0x0020, "Logic3 Xbox GamePad", 0, XTYPE_XBOX },
- 	{ 0x062a, 0x0033, "Competition Pro Steering Wheel", 0, XTYPE_XBOX },
- 	{ 0x06a3, 0x0200, "Saitek Racing Wheel", 0, XTYPE_XBOX },
-@@ -440,6 +441,7 @@ static const struct usb_device_id xpad_table[] = {
- 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft X-Box 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x045e),		/* Microsoft X-Box One controllers */
- 	XPAD_XBOX360_VENDOR(0x046d),		/* Logitech X-Box 360 style controllers */
-+	XPAD_XBOX360_VENDOR(0x0502),		/* Acer Inc. Xbox 360 style controllers */
- 	XPAD_XBOX360_VENDOR(0x056e),		/* Elecom JC-U3613M */
- 	XPAD_XBOX360_VENDOR(0x06a3),		/* Saitek P3600 */
- 	XPAD_XBOX360_VENDOR(0x0738),		/* Mad Catz X-Box 360 controllers */
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index c2c116ce1087c..782131de5ef76 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -665,7 +665,7 @@ static int m_can_handle_lost_msg(struct net_device *dev)
+ 	struct can_frame *frame;
+ 	u32 timestamp = 0;
+ 
+-	netdev_err(dev, "msg lost in rxf0\n");
++	netdev_dbg(dev, "msg lost in rxf0\n");
+ 
+ 	stats->rx_errors++;
+ 	stats->rx_over_errors++;
 -- 
 2.39.5
 
