@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1D1B05BA0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27FF7B05E7F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E529574555D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 464794A0706
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70A32E3AE2;
-	Tue, 15 Jul 2025 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440EA2E54C5;
+	Tue, 15 Jul 2025 13:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2HHo3BN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWtI7PS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BFB2E3398;
-	Tue, 15 Jul 2025 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F338C2E5413;
+	Tue, 15 Jul 2025 13:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585625; cv=none; b=DpuV6C6IeiaeSpGoTOql6Bq7inUbZkfvmiyQhior16VOpXaaxWovgmFcl0adK696Q8/IGMebpjttShOlNe5yvGZ9ZJIVTxypCKAfljMOz+xw9Tu+bkoaGQV3t9e4oyymVbdMBk1UlWy4YqWcY+xpxqr6i4eGIot6oXAJgy1k5D8=
+	t=1752586881; cv=none; b=d8Rd/EMd1t0CQ7JI1LF6gWjwy0QqjoTDsIpbvBrPTu6RFY7B68RWaKH7QRwBl9tI2vG7IvlMBDTN0AAxA3k/Fb2bpy1SjsvowXNoPOniEezRlg9xhCFapgxd9nqYZFKzyeOWXeP3U+3ea943zXik8EB6hPEqDGpUFZTSOfu9Q78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585625; c=relaxed/simple;
-	bh=KC3NLrlQ4H8ccBV8QVnmIqUe92B1AUDaSNam9hw+68g=;
+	s=arc-20240116; t=1752586881; c=relaxed/simple;
+	bh=lswOJUpPYepB3IncIuCSxiRyvtSC1Iwfq7bZGifuK88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGIOxaBHu4OzM72pdrR38mBeilE++JEdMtCNdoYl76bZYGFZCwf5wRuJd8Wp26dolJ7vD2YnaQN2aNMsCwvgxpa9xa3+f+Mj7AuQ/Ehe0eZz+G5p71WlVE1IsWYBxtusbmQ4NRtN9uaLhLcXmBf3tUdi9d2ztJIKjaqybsgWMEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2HHo3BN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC440C4CEE3;
-	Tue, 15 Jul 2025 13:20:24 +0000 (UTC)
+	 MIME-Version; b=cAkaahlkzU4HZ+ByfCmIfosO1GF23CYYcs+bG13zjs0oxRXnKCg5tWt5MFS+6kZm8p75ItO1q2K9Rfnd1et5T5io1tt2HVX3kQnKoYwzbO+0FN1vuKfhneDxlFFIC086BorKCmBwE0VUhLTSRJj9ytqcPFnEE2Ay0+7FZECJuCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWtI7PS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873F0C4CEE3;
+	Tue, 15 Jul 2025 13:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585625;
-	bh=KC3NLrlQ4H8ccBV8QVnmIqUe92B1AUDaSNam9hw+68g=;
+	s=korg; t=1752586880;
+	bh=lswOJUpPYepB3IncIuCSxiRyvtSC1Iwfq7bZGifuK88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p2HHo3BNgV9UdeuP5TRALsqEuDoM/M6zupV8vWnt1xMlvClxOprwtmteKR99agz2V
-	 h+d8iIJk1NkpdnQeN5xvQhj0QckGFI1hiz+U9BiLNfB04HHaalCBZTf430Y1J/kriz
-	 plkeMKfKkWhvz7jZtviMwRZKqE/rydmkzFEWrQ60=
+	b=wWtI7PS1pwXbr6v2XnJA8t6JyC92arV2VzabPEqk6f5IlUIpL6o2REMVI+OQsprOe
+	 PyhnQM71a3RxtolM5OmuE723b3bMDYYhy2Fh9SxKAE6PImlF+zo49GkfGWgBz4TMnU
+	 wKrsVXKf2/DyIoBlWsxCWDegwTYhfOk5Y+HF99vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Jinchao <wangjinchao600@gmail.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/163] md/raid1: Fix stack memory use after return in raid1_reshape
+	Kent Russell <kent.russell@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 083/192] drm/amdgpu: Include sdma_4_4_4.bin
 Date: Tue, 15 Jul 2025 15:12:58 +0200
-Message-ID: <20250715130813.269485625@linuxfoundation.org>
+Message-ID: <20250715130818.251052230@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jinchao <wangjinchao600@gmail.com>
+From: Kent Russell <kent.russell@amd.com>
 
-[ Upstream commit d67ed2ccd2d1dcfda9292c0ea8697a9d0f2f0d98 ]
+commit e54c5de901ea56fc68f8d56b3cce9940169346f4 upstream.
 
-In the raid1_reshape function, newpool is
-allocated on the stack and assigned to conf->r1bio_pool.
-This results in conf->r1bio_pool.wait.head pointing
-to a stack address.
-Accessing this address later can lead to a kernel panic.
+This got missed during SDMA 4.4.4 support.
 
-Example access path:
-
-raid1_reshape()
-{
-	// newpool is on the stack
-	mempool_t newpool, oldpool;
-	// initialize newpool.wait.head to stack address
-	mempool_init(&newpool, ...);
-	conf->r1bio_pool = newpool;
-}
-
-raid1_read_request() or raid1_write_request()
-{
-	alloc_r1bio()
-	{
-		mempool_alloc()
-		{
-			// if pool->alloc fails
-			remove_element()
-			{
-				--pool->curr_nr;
-			}
-		}
-	}
-}
-
-mempool_free()
-{
-	if (pool->curr_nr < pool->min_nr) {
-		// pool->wait.head is a stack address
-		// wake_up() will try to access this invalid address
-		// which leads to a kernel panic
-		return;
-		wake_up(&pool->wait);
-	}
-}
-
-Fix:
-reinit conf->r1bio_pool.wait after assigning newpool.
-
-Fixes: afeee514ce7f ("md: convert to bioset_init()/mempool_init()")
-Signed-off-by: Wang Jinchao <wangjinchao600@gmail.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250612112901.3023950-1-wangjinchao600@gmail.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 968e3811c3e8 ("drm/amdgpu: add initial support for sdma444")
+Signed-off-by: Kent Russell <kent.russell@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 51526efe02714339ed6139f7bc348377d363200a)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid1.c | 1 +
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 6b6cd753d61a9..fe1599db69c84 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -3380,6 +3380,7 @@ static int raid1_reshape(struct mddev *mddev)
- 	/* ok, everything is stopped */
- 	oldpool = conf->r1bio_pool;
- 	conf->r1bio_pool = newpool;
-+	init_waitqueue_head(&conf->r1bio_pool.wait);
+diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
+index cef68df4c663..bb82c652e4c0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
+@@ -45,6 +45,7 @@
+ #include "amdgpu_ras.h"
  
- 	for (d = d2 = 0; d < conf->raid_disks; d++) {
- 		struct md_rdev *rdev = conf->mirrors[d].rdev;
+ MODULE_FIRMWARE("amdgpu/sdma_4_4_2.bin");
++MODULE_FIRMWARE("amdgpu/sdma_4_4_4.bin");
+ MODULE_FIRMWARE("amdgpu/sdma_4_4_5.bin");
+ 
+ static const struct amdgpu_hwip_reg_entry sdma_reg_list_4_4_2[] = {
 -- 
-2.39.5
+2.50.1
 
 
 
