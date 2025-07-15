@@ -1,174 +1,180 @@
-Return-Path: <stable+bounces-161974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375FAB05AAB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:54:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9E2B05AB0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EBA03A87EE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 12:54:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE8F61AA5B7B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 12:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB772D9795;
-	Tue, 15 Jul 2025 12:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA622DE6E7;
+	Tue, 15 Jul 2025 12:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdeMibKp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sf7bZYQ9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eSMLzsEO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBE51B043A;
-	Tue, 15 Jul 2025 12:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F082627FC;
+	Tue, 15 Jul 2025 12:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752584091; cv=none; b=gKVd5dClLUjRmwDZb5F6gMRfuI45gwr/JJYhS18brzgIS1/TPtqKHjR/ADYviFYT+0tO41ya3w5qMgTV9jIlPhA6I68+Yt/5OZMqbmcin57uyLHbkvgKWMq0GmRYcAE5K5afjKEbGkCTKlLeMJ8puk7OUaA+Il9SYJwb7Vj14Oc=
+	t=1752584312; cv=none; b=ScWMAoxiP7vwH3HLwJZsxuVf/MAArt8y231qSdZIGSPkW2eWabJ5R9ggfj9GIqjdXUeBMGmpx4aWw+2DiCXob46oNV4ZIxgmBU5NNBwryPZvgJVJ+jBIALRsxdukKdZ0KpKGNKrjWFmXqYWl2ct/ipkh8oocHKlvLZJjcRYt/bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752584091; c=relaxed/simple;
-	bh=5O2Y0BxfJj/Qqa+KlWHCOfUSGCTb2wf1Q/PPcxWsLNQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aezfhPoeGdUWpWrVygZ7xhNYEtQlX2kOkFmwdagFdxvPxOc9iAPyR9l3ioj5Vuda+qVjTCnVSfs9IhuNojVGeBO/GidoJNDYjgKoY/INu6ol70RDq7IUm33pYnXJEqOdSfNlmMx22UOpA4co6VS6WiY71SdLJ/dmn0o/t4S5UUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdeMibKp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3D2C4CEE3;
-	Tue, 15 Jul 2025 12:54:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752584091;
-	bh=5O2Y0BxfJj/Qqa+KlWHCOfUSGCTb2wf1Q/PPcxWsLNQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=fdeMibKpUPuMEbjx+PEeY1R4c9jWFe4K7jkPjT8DBRXAuDpuJ8ytPLwG8z9HAsGJY
-	 N9X8S8Oevdse7sq4rOiSOHyHlOzv+tuTudJ6iqVrhsl4Go/ngGGWsWPrxEasPUzA10
-	 AeNGE7cRocUJGamAPTr8ID60gm52hiObYOEdS0+SuGIOmbPSrWF8iaatp66j6nJxdX
-	 pXRqIBBNZCzlvI0n/CEEy4pn6o9G69vEbD7E3pIxOj1jmvmVLlEAqq1wKOKU/IvY5o
-	 RbBpapAzRFc/AqOpIX7AbdzFCUCoIQ+zptMzJFzNxWhQFRI8Y1luHqGQyW2tChzPm0
-	 O/53OfPAu7mpA==
-From: Mark Brown <broonie@kernel.org>
-Date: Tue, 15 Jul 2025 13:49:23 +0100
-Subject: [PATCH 6.12.y] arm64: Filter out SME hwcaps when FEAT_SME isn't
- implemented
+	s=arc-20240116; t=1752584312; c=relaxed/simple;
+	bh=6SCddfOTDHHGObCBwebbZIS9WbD3aNhWQRhtOi2Ux8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rD3TtzwdrV6fCBoYf1jedyoOVBNjsng2FQf7JdX+sGed2+Q2Win5H0ljZjj4vRsXQhqbK+VsEDG+Y2xpmhJ7lmFTk9/rJO3ac4VW/YzoF3I/PO94TaEf03j5u7Ux5htboVddbyls3yU1zUJKM2Fc51rHfBLt1VwPbmUhLlZhlyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sf7bZYQ9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eSMLzsEO; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 15 Jul 2025 14:58:27 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1752584308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/B9TLRBtxUDCJxsWBE7GcJCQaPVHwv80Fiu3ht2Nt6I=;
+	b=sf7bZYQ9ZiWk8RvGDCHDL5F8ixwxhN0UkvRoxyuTukIbBSsEU5PzrZOjeWZQYp48EFpWkg
+	2MAY3rRSagVDoMRaqQnLWkcV+KBXWbfiLIXodnP4cSabUINmn/LdWr5WCB0XkAPhHim+yc
+	wYyoC4xYPDTXbKQNr8l29WxulcFT1ro2IgYZ9tiyUH397IvTxTjpXM8nuA5oVZKywjewOH
+	ECsLT2IXIEaRXeuhPaZLf9SvyA+dsHd9Zryu42MjCjReF68glSLY3u/CaW59YUn5t0n713
+	YaoDdwkyDwSusJtCHbB77Nh12PYJTArvZDMAMY2d/B8VzFIqeHNaXNCek7KU4A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1752584308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/B9TLRBtxUDCJxsWBE7GcJCQaPVHwv80Fiu3ht2Nt6I=;
+	b=eSMLzsEOm6CDkh/rn6rfN0u0+4XWy5ZXnYN77a0NBMn1Yx6NruYwZ37rJqm2+2cocS5fjg
+	eItyNbeObWf/6VCg==
+From: Nam Cao <namcao@linutronix.de>
+To: Christian Brauner <brauner@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	John Ogness <john.ogness@linutronix.de>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-rt-users@vger.kernel.org, Joe Damato <jdamato@fastly.com>,
+	Martin Karsten <mkarsten@uwaterloo.ca>,
+	Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/1] eventpoll: Replace rwlock with spinlock
+Message-ID: <20250715125827.SpZa8hHS@linutronix.de>
+References: <cover.1752581388.git.namcao@linutronix.de>
+ <ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250715-stable-6-12-sme-feat-filt-v1-1-4c1d9c0336f6@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAFJOdmgC/x3MywqDMBBG4VeRWXckCV5CX6W4SPVPHbC2ZIJYx
- Hc3dPktzjlIkQRK9+qghE1UPmuBvVU0zmF9gWUqJmdca3rbsObwXMAdW8f6BkeEzFGWzB6tjyb
- 40fiJSv9NiLL/3w/qauvqHw3neQHrmRN/cwAAAA==
-X-Change-ID: 20250714-stable-6-12-sme-feat-filt-8e58f0a8c08d
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, stable@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Yury Khrustalev <yury.khrustalev@arm.com>, Mark Brown <broonie@kernel.org>
-X-Mailer: b4 0.15-dev-cff91
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6158; i=broonie@kernel.org;
- h=from:subject:message-id; bh=5O2Y0BxfJj/Qqa+KlWHCOfUSGCTb2wf1Q/PPcxWsLNQ=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBodk+YkBXzyFKccbuiUAxu1S/zl9ZiQCEz6djVo
- nGb2kewGs2JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaHZPmAAKCRAk1otyXVSH
- 0PWZB/4g+LvxhS1jnDuGNU/QzflvEeUEy4YKtQenEQ2k/wJh5b7rAorEKXu9JSku7z0bPWsD7ay
- omzfSzB3tqFTZgICGHB/uOAJ8fimjUrZ/Fkj8dJiPUOmxZOyhclviGfnklOhZC8OSxhf5/Vs6AK
- q7tsAW+fxRXcfkoP0hUrxW1mh/yBgvQDiHe6OGWiA8hf2Rki2Mf6vKlQ1lmdHhfVeEb+OdFNz78
- uMRw4/lBRXG69kmaP7kdziOCWg38tGwjGm+rel4rUIREkBaMNxcSdwyRfRlCqaqe4gGoX7BSQPy
- 4GAbu5HepHKXWGfWpOBnNsfxhIwpNYwH4VCdnTgxBj4BwkyE
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de>
 
-[ Upstream commit a75ad2fc76a2ab70817c7eed3163b66ea84ca6ac ]
+On Tue, Jul 15, 2025 at 02:46:34PM +0200, Nam Cao wrote:
+> The ready event list of an epoll object is protected by read-write
+> semaphore:
+> 
+>   - The consumer (waiter) acquires the write lock and takes items.
+>   - the producer (waker) takes the read lock and adds items.
+> 
+> The point of this design is enabling epoll to scale well with large number
+> of producers, as multiple producers can hold the read lock at the same
+> time.
+> 
+> Unfortunately, this implementation may cause scheduling priority inversion
+> problem. Suppose the consumer has higher scheduling priority than the
+> producer. The consumer needs to acquire the write lock, but may be blocked
+> by the producer holding the read lock. Since read-write semaphore does not
+> support priority-boosting for the readers (even with CONFIG_PREEMPT_RT=y),
+> we have a case of priority inversion: a higher priority consumer is blocked
+> by a lower priority producer. This problem was reported in [1].
+> 
+> Furthermore, this could also cause stall problem, as described in [2].
+> 
+> Fix this problem by replacing rwlock with spinlock.
+> 
+> This reduces the event bandwidth, as the producers now have to contend with
+> each other for the spinlock. According to the benchmark from
+> https://github.com/rouming/test-tools/blob/master/stress-epoll.c:
+> 
+>     On 12 x86 CPUs:
+>                   Before     After        Diff
+>         threads  events/ms  events/ms
+>               8       7162       4956     -31%
+>              16       8733       5383     -38%
+>              32       7968       5572     -30%
+>              64      10652       5739     -46%
+>             128      11236       5931     -47%
+> 
+>     On 4 riscv CPUs:
+>                   Before     After        Diff
+>         threads  events/ms  events/ms
+>               8       2958       2833      -4%
+>              16       3323       3097      -7%
+>              32       3451       3240      -6%
+>              64       3554       3178     -11%
+>             128       3601       3235     -10%
+> 
+> Although the numbers look bad, it should be noted that this benchmark
+> creates multiple threads who do nothing except constantly generating new
+> epoll events, thus contention on the spinlock is high. For real workload,
+> the event rate is likely much lower, and the performance drop is not as
+> bad.
+> 
+> Using another benchmark (perf bench epoll wait) where spinlock contention
+> is lower, improvement is even observed on x86:
+> 
+>     On 12 x86 CPUs:
+>         Before: Averaged 110279 operations/sec (+- 1.09%), total secs = 8
+>         After:  Averaged 114577 operations/sec (+- 2.25%), total secs = 8
+> 
+>     On 4 riscv CPUs:
+>         Before: Averaged 175767 operations/sec (+- 0.62%), total secs = 8
+>         After:  Averaged 167396 operations/sec (+- 0.23%), total secs = 8
+> 
+> In conclusion, no one is likely to be upset over this change. After all,
+> spinlock was used originally for years, and the commit which converted to
+> rwlock didn't mention a real workload, just that the benchmark numbers are
+> nice.
+> 
+> This patch is not exactly the revert of commit a218cc491420 ("epoll: use
+> rwlock in order to reduce ep_poll_callback() contention"), because git
+> revert conflicts in some places which are not obvious on the resolution.
+> This patch is intended to be backported, therefore go with the obvious
+> approach:
+> 
+>   - Replace rwlock_t with spinlock_t one to one
+> 
+>   - Delete list_add_tail_lockless() and chain_epi_lockless(). These were
+>     introduced to allow producers to concurrently add items to the list.
+>     But now that spinlock no longer allows producers to touch the event
+>     list concurrently, these two functions are not necessary anymore.
+> 
+> Fixes: a218cc491420 ("epoll: use rwlock in order to reduce ep_poll_callback() contention")
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Cc: stable@vger.kernel.org
 
-We have a number of hwcaps for various SME subfeatures enumerated via
-ID_AA64SMFR0_EL1. Currently we advertise these without cross checking
-against the main SME feature, advertised in ID_AA64PFR1_EL1.SME which
-means that if the two are out of sync userspace can see a confusing
-situation where SME subfeatures are advertised without the base SME
-hwcap. This can be readily triggered by using the arm64.nosme override
-which only masks out ID_AA64PFR1_EL1.SME, and there have also been
-reports of VMMs which do the same thing.
+I forgot to add:
 
-Fix this as we did previously for SVE in 064737920bdb ("arm64: Filter
-out SVE hwcaps when FEAT_SVE isn't implemented") by filtering out the
-SME subfeature hwcaps when FEAT_SME is not present.
+Reported-by: Frederic Weisbecker <frederic@kernel.org>
+Closes: https://lore.kernel.org/linux-rt-users/20210825132754.GA895675@lothringen/ [1]
+Reported-by: Valentin Schneider <vschneid@redhat.com>
+Closes: https://lore.kernel.org/linux-rt-users/xhsmhttqvnall.mognet@vschneid.remote.csb/ [2]
 
-Fixes: 5e64b862c482 ("arm64/sme: Basic enumeration support")
-Reported-by: Yury Khrustalev <yury.khrustalev@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250620-arm64-sme-filter-hwcaps-v1-1-02b9d3c2d8ef@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
----
- arch/arm64/kernel/cpufeature.c | 45 ++++++++++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 19 deletions(-)
+Christian, do you mind adding those for me, if/when you apply the patch?
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 05ccf4ec278f..9ca5ffd8d817 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -2959,6 +2959,13 @@ static bool has_sve_feature(const struct arm64_cpu_capabilities *cap, int scope)
- }
- #endif
- 
-+#ifdef CONFIG_ARM64_SME
-+static bool has_sme_feature(const struct arm64_cpu_capabilities *cap, int scope)
-+{
-+	return system_supports_sme() && has_user_cpuid_feature(cap, scope);
-+}
-+#endif
-+
- static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
-@@ -3037,25 +3044,25 @@ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64ISAR2_EL1, BC, IMP, CAP_HWCAP, KERNEL_HWCAP_HBC),
- #ifdef CONFIG_ARM64_SME
- 	HWCAP_CAP(ID_AA64PFR1_EL1, SME, IMP, CAP_HWCAP, KERNEL_HWCAP_SME),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, FA64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_FA64),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, LUTv2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_LUTV2),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SMEver, SME2p1, CAP_HWCAP, KERNEL_HWCAP_SME2P1),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SMEver, SME2, CAP_HWCAP, KERNEL_HWCAP_SME2),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, I16I64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I64),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F64F64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F64F64),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, I16I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16B16),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F16F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F16),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F8F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F16),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F8F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, I8I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I8I32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, B16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16F32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, BI32I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_BI32I32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, F32F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F32F32),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SF8FMA, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8FMA),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SF8DP4, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP4),
--	HWCAP_CAP(ID_AA64SMFR0_EL1, SF8DP2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP2),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, FA64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_FA64),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, LUTv2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_LUTV2),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMEver, SME2p1, CAP_HWCAP, KERNEL_HWCAP_SME2P1),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMEver, SME2, CAP_HWCAP, KERNEL_HWCAP_SME2),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I16I64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I64),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F64F64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F64F64),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I16I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16B16),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F16F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F16),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F8F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F16),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F8F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I8I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I8I32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, B16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16F32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, BI32I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_BI32I32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F32F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F32F32),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SF8FMA, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8FMA),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SF8DP4, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP4),
-+	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SF8DP2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP2),
- #endif /* CONFIG_ARM64_SME */
- 	HWCAP_CAP(ID_AA64FPFR0_EL1, F8CVT, IMP, CAP_HWCAP, KERNEL_HWCAP_F8CVT),
- 	HWCAP_CAP(ID_AA64FPFR0_EL1, F8FMA, IMP, CAP_HWCAP, KERNEL_HWCAP_F8FMA),
-
----
-base-commit: fbad404f04d758c52bae79ca20d0e7fe5fef91d3
-change-id: 20250714-stable-6-12-sme-feat-filt-8e58f0a8c08d
-
-Best regards,
---  
-Mark Brown <broonie@kernel.org>
-
+Nam
 
