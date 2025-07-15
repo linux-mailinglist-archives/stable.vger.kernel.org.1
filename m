@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55E8B05CF6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:38:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 939BCB05E07
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 695CC5681AA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B8C4A7E09
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29BB2E7181;
-	Tue, 15 Jul 2025 13:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E712E88AC;
+	Tue, 15 Jul 2025 13:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkG6qOgn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYm6os/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6051F4CB3;
-	Tue, 15 Jul 2025 13:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842FC2E62DD;
+	Tue, 15 Jul 2025 13:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586282; cv=none; b=E0H9+37g2Yz0ZPq3Eys619uvtVjdtF/sb18KMwo3GSD1Qkl3u5eIoPh/P1TFPczsbGr+kcuRxs2vS0gil069D4fu2l3PyxV/Do2By+3PQ0x0782KAueql+f0fa7LAfeaGCsUntlTNkOz48Wrfrn2XWgrUdDkzuH87u4VUQ8oyzo=
+	t=1752586614; cv=none; b=YEypylKK2Ck/vr2CsHD4FKhR+mG9ouXp6WmdesdurdlGbn/LlDoGLzN5RUuKwEPlNaCqQYxrUY1+utQ5nahpLH35kW5HpWbfMhReiJP1In/xiv0uK/M6V/uWnv2A3l5Z4k2l6HPCom2XHAhFzCxI8pHH+tLw4nlFaWlBiPtvI/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586282; c=relaxed/simple;
-	bh=0LxJTtfsyEfuxgthpOue3qOM+RUdeimjTNhQPNTouLc=;
+	s=arc-20240116; t=1752586614; c=relaxed/simple;
+	bh=EVMNlXZyiXBkrJ0P/2OArQOcU0NeXEug4fcXFOccmFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0/Qs3YChte1jgnvx7ecVQxvuCX+0/1i3/WRUtyc9HqopG+kBMJLJWDwO0QCiM1pR5QNPWpiewYZb2bdfmS33JGEiF3WrK4x04xOxGrcoKg4rxBVNTddXqjAEqczBl7W3GJEzcJX0Ysw0hZh89b5d+JWnMNZ3RP4goZDrxJ8CUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkG6qOgn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1985C4CEFF;
-	Tue, 15 Jul 2025 13:31:21 +0000 (UTC)
+	 MIME-Version; b=P66TBpW3Mmy0z+2HCugbalHPsnLPHNZiWVEkp03G2MbBJi0cM/CiVDYBjlETCmLqKMr4S6PProzOlQMALeGFoRWipzl/hHwOOpoWJHMYgvS3FxO9IafKDz5PT9v9NkNYH+j/UpSve7caZheQyQJyEOiB46YQixh1b+mEKAHPJSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYm6os/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0335C4CEF1;
+	Tue, 15 Jul 2025 13:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586282;
-	bh=0LxJTtfsyEfuxgthpOue3qOM+RUdeimjTNhQPNTouLc=;
+	s=korg; t=1752586613;
+	bh=EVMNlXZyiXBkrJ0P/2OArQOcU0NeXEug4fcXFOccmFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkG6qOgnbU1GC3J+/IwS6pKXNCj74posvn9wH9Pb9/93ttovv7Mu84IRN1QNx7YSs
-	 LklnN1rLPFH9/ozo4bw+nOTGpOy9lVzpUMw7c2SUwJr0/w7yqW2EAmlGOsCXzYWlJ6
-	 qXtZDOQlPY3a4Y+Og1DS4IcpVYWpx6kjkiIs6CWQ=
+	b=sYm6os/YgJ6p2/ZvnRVuhFXSTUwqufh8rmXtAtFnWyfHxuFZ+gOud1ECMmDCB+cUY
+	 X9Dh7tWkBoo0OwG92HmhLrd6j00uNzo3ejXKU42AG8uI7vIi/qrK/8XmnyMO0oRN4S
+	 W8UOW+/WsYsxWuDBP7RQZclCwFbiom1RUhwvfiUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Matt Reynolds <mattreynolds@chromium.org>,
+	Harry Cutts <hcutts@chromium.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 73/77] HID: quirks: Add quirk for 2 Chicony Electronics HP 5MP Cameras
+Subject: [PATCH 5.4 130/148] Input: xpad - add support for Amazon Game Controller
 Date: Tue, 15 Jul 2025 15:14:12 +0200
-Message-ID: <20250715130754.654752842@linuxfoundation.org>
+Message-ID: <20250715130805.498635303@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+From: Matt Reynolds <mattreynolds@chromium.org>
 
-[ Upstream commit 54bae4c17c11688339eb73a04fd24203bb6e7494 ]
+[ Upstream commit 05665cef4b745cb46b1d1b8e96deaa25464092d3 ]
 
-The Chicony Electronics HP 5MP Cameras (USB ID 04F2:B824 & 04F2:B82C)
-report a HID sensor interface that is not actually implemented.
-Attempting to access this non-functional sensor via iio_info causes
-system hangs as runtime PM tries to wake up an unresponsive sensor.
+The Amazon Luna controller (product name "Amazon Game Controller") behaves
+like an Xbox 360 controller when connected over USB.
 
-Add these 2 devices to the HID ignore list since the sensor interface is
-non-functional by design and should not be exposed to userspace.
-
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Matt Reynolds <mattreynolds@chromium.org>
+Reviewed-by: Harry Cutts <hcutts@chromium.org>
+Link: https://lore.kernel.org/r/20210429103548.1.If5f9a44cb81e25b9350f7c6c0b3c88b4ecd81166@changeid
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Stable-dep-of: 22c69d786ef8 ("Input: xpad - support Acer NGR 200 Controller")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 2 ++
- drivers/hid/hid-quirks.c | 2 ++
- 2 files changed, 4 insertions(+)
+ drivers/input/joystick/xpad.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 6b3c380584402..bdad42f1e9f96 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -283,6 +283,8 @@
- #define USB_DEVICE_ID_ASUS_AK1D		0x1125
- #define USB_DEVICE_ID_CHICONY_TOSHIBA_WT10A	0x1408
- #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
- 
- #define USB_VENDOR_ID_CHUNGHWAT		0x2247
- #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index f188a79330c68..72b7aebcc771f 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -727,6 +727,8 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AVERMEDIA, USB_DEVICE_ID_AVER_FM_MR800) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AXENTIA, USB_DEVICE_ID_AXENTIA_FM_RADIO) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index 00b973e0f79ff..fb714004641b7 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -275,6 +275,7 @@ static const struct xpad_device {
+ 	{ 0x1689, 0xfd00, "Razer Onza Tournament Edition", 0, XTYPE_XBOX360 },
+ 	{ 0x1689, 0xfd01, "Razer Onza Classic Edition", 0, XTYPE_XBOX360 },
+ 	{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
++	{ 0x1949, 0x041a, "Amazon Game Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0x0002, "Harmonix Rock Band Guitar", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0x0003, "Harmonix Rock Band Drumkit", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0x0130, "Ion Drum Rocker", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
+@@ -462,6 +463,7 @@ static const struct usb_device_id xpad_table[] = {
+ 	XPAD_XBOX360_VENDOR(0x15e4),		/* Numark X-Box 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x162e),		/* Joytech X-Box 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x1689),		/* Razer Onza */
++	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
+ 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harminix Rock Band Guitar and Drums */
+ 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA Controllers */
+ 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA Controllers */
 -- 
 2.39.5
 
