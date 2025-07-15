@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-162163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCEAB05C01
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:26:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E86B05D7D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC12E7BA8C8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA02D1888207
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148F52E3AE4;
-	Tue, 15 Jul 2025 13:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BA52E975D;
+	Tue, 15 Jul 2025 13:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zI2b11r+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKkrcKZy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67822E3AF9;
-	Tue, 15 Jul 2025 13:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621F82E7F08;
+	Tue, 15 Jul 2025 13:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585840; cv=none; b=c2UJkWV1BoViJ4GYLOpNJZ4cxluV1YNAF+Z9oxTb8Q34r+ofDNBwqm4ggzhVYOou+yj3ClxncsKtyRtv1sUAjahY86Exi3ntdvV0D8lRq+G/BXGR6l4r/4kRQQrejTnVw44guRTegVQc+t5PzWwcdfbuCAdVJgxxyWl38FxJ3G4=
+	t=1752586375; cv=none; b=PCaEtzkpQzsawaztTr+anHIaBrDa9566humWovQlAfAcJasZq4P1xXi4cYaPkCOuRFfg/PKGMRsadTpRoVFXNwUn8e6c/Dthkz0kYtcmxXQaeCi7lUpuO7qMDtzNQiHVQ9/lSbAzCzdF7SaNoLaiwjFKiHimy4WjJ2E1MRGMZJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585840; c=relaxed/simple;
-	bh=chKQqaTLnNShTwhfDY0GbUXT3vYF2/vAIVerGz8UMn0=;
+	s=arc-20240116; t=1752586375; c=relaxed/simple;
+	bh=E3G4eWJ8K+mtq6fjo5knmWRO1YYEvzwJVyURro6J1cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMnCLSEXPxdNNqgbJHOVs72vk921d7YdyrqClxeyT05/HCJamA15MwHNcb73v+pzYjGs9i1xmBsscDgQHlKKfF98+lzo/Uu0hH1CFtsFqEzlUfJ9c30KWDWbVl/ZDZfFagejWsqnNNUzGt8o4+U8QnkruGrkX0iP3maa2FD2oJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zI2b11r+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23629C4CEF1;
-	Tue, 15 Jul 2025 13:23:59 +0000 (UTC)
+	 MIME-Version; b=WNKpyaopx0vlr5Q4ha5W9UoFzT/wAitUWQEP9NVzrxOHrkBDeKkS2GgfwZFta0UL+sGbkIKpMabuJ6AajkJD7bslsFt930HvTPQMFyIteOr79RYpYSOmeHnR7Ac9nnaFcMZjNhThB8KEraA1kvYWNz6Fy6JtzMKODdIzUdtvPvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKkrcKZy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E3AC4CEE3;
+	Tue, 15 Jul 2025 13:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585840;
-	bh=chKQqaTLnNShTwhfDY0GbUXT3vYF2/vAIVerGz8UMn0=;
+	s=korg; t=1752586375;
+	bh=E3G4eWJ8K+mtq6fjo5knmWRO1YYEvzwJVyURro6J1cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zI2b11r+i5ZLR8i0Edua9M+i6HeW5RDeFvsbDwkwrIdjC86vb0U1pehBHwYwiUXn6
-	 Aw84N3M90Ns4gr3gEdnWq8nNNPRsqLAEYib5XETb3O91OKaaulPbs+H3HIqtBOLPC8
-	 cJDrticM/ULExofCpM++cLLAnQn9Tfbge7I+GPcM=
+	b=ZKkrcKZyHvCBV5lAmCWMYEpeY86tYi4I5d5YpkjF8pw49G8WkzmieIK9fId+7X735
+	 rKvuw/hA3xpKwdLDHgRneB+gthazOiFHOc6JOCPl7eLjd6Hor1xvb/u33s2jRFscpP
+	 Z2dUujSTv9mSIL7xsBVXC64eEMPuw4o2Ozkz/99U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	David Howells <dhowells@redhat.com>,
-	LePremierHomme <kwqcheii@proton.me>,
-	Marc Dionne <marc.dionne@auristor.com>,
 	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
+	Wei Fang <wei.fang@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/109] rxrpc: Fix bug due to prealloc collision
-Date: Tue, 15 Jul 2025 15:12:43 +0200
-Message-ID: <20250715130759.969824841@linuxfoundation.org>
+Subject: [PATCH 5.4 042/148] net: enetc: Correct endianness handling in _enetc_rd_reg64
+Date: Tue, 15 Jul 2025 15:12:44 +0200
+Message-ID: <20250715130802.000390010@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,59 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 69e4186773c6445b258fb45b6e1df18df831ec45 ]
+[ Upstream commit 7b515f35a911fdc31fbde6531828dcd6ae9803d3 ]
 
-When userspace is using AF_RXRPC to provide a server, it has to preallocate
-incoming calls and assign to them call IDs that will be used to thread
-related recvmsg() and sendmsg() together.  The preallocated call IDs will
-automatically be attached to calls as they come in until the pool is empty.
+enetc_hw.h provides two versions of _enetc_rd_reg64.
+One which simply calls ioread64() when available.
+And another that composes the 64-bit result from ioread32() calls.
 
-To the kernel, the call IDs are just arbitrary numbers, but userspace can
-use the call ID to hold a pointer to prepared structs.  In any case, the
-user isn't permitted to create two calls with the same call ID (call IDs
-become available again when the call ends) and EBADSLT should result from
-sendmsg() if an attempt is made to preallocate a call with an in-use call
-ID.
+In the second case the code appears to assume that each ioread32() call
+returns a little-endian value. However both the shift and logical or
+used to compose the return value would not work correctly on big endian
+systems if this were the case. Moreover, this is inconsistent with the
+first case where the return value of ioread64() is assumed to be in host
+byte order.
 
-However, the cleanup in the error handling will trigger both assertions in
-rxrpc_cleanup_call() because the call isn't marked complete and isn't
-marked as having been released.
+It appears that the correct approach is for both versions to treat the
+return value of ioread*() functions as being in host byte order. And
+this patch corrects the ioread32()-based version to do so.
 
-Fix this by setting the call state in rxrpc_service_prealloc_one() and then
-marking it as being released before calling the cleanup function.
+This is a bug but would only manifest on big endian systems
+that make use of the ioread32-based implementation of _enetc_rd_reg64.
+While all in-tree users of this driver are little endian and
+make use of the ioread64-based implementation of _enetc_rd_reg64.
+Thus, no in-tree user of this driver is affected by this bug.
 
-Fixes: 00e907127e6f ("rxrpc: Preallocate peers, conns and calls for incoming service requests")
-Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: LePremierHomme <kwqcheii@proton.me>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/20250708211506.2699012-2-dhowells@redhat.com
+Flagged by Sparse.
+Compile tested only.
+
+Fixes: 16eb4c85c964 ("enetc: Add ethtool statistics")
+Closes: https://lore.kernel.org/all/AM9PR04MB850500D3FC24FE23DEFCEA158879A@AM9PR04MB8505.eurprd04.prod.outlook.com/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/call_accept.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/freescale/enetc/enetc_hw.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
-index 0f5a1d77b890f..65ef58ab7aa0c 100644
---- a/net/rxrpc/call_accept.c
-+++ b/net/rxrpc/call_accept.c
-@@ -149,6 +149,7 @@ static int rxrpc_service_prealloc_one(struct rxrpc_sock *rx,
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+index fac80831d5327..e99546b6a356c 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+@@ -319,7 +319,7 @@ static inline u64 enetc_rd_reg64(void __iomem *reg)
+ 		tmp = ioread32(reg + 4);
+ 	} while (high != tmp);
  
- id_in_use:
- 	write_unlock(&rx->call_lock);
-+	rxrpc_prefail_call(call, RXRPC_CALL_LOCAL_ERROR, -EBADSLT);
- 	rxrpc_cleanup_call(call);
- 	_leave(" = -EBADSLT");
- 	return -EBADSLT;
+-	return le64_to_cpu((__le64)high << 32 | low);
++	return (u64)high << 32 | low;
+ }
+ #endif
+ 
 -- 
 2.39.5
 
