@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F568B05BAE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9D5B05F3B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:03:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8BEB1C20019
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FCC250178A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0972E2F10;
-	Tue, 15 Jul 2025 13:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A3F2EFD9C;
+	Tue, 15 Jul 2025 13:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mn7Fm5N1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aoJKUC7E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADC92E1C69;
-	Tue, 15 Jul 2025 13:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D212EFD9A;
+	Tue, 15 Jul 2025 13:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585761; cv=none; b=RwoLy5ArtLWrSDPpcqzexL7Bk9ikyQfHlm8Va9RuJanOPYgOy5yT8Ukg2309RCbEMw3uhn9HZqsc77ljYiSflB9i7C5GwRXCpzDWSAvELaQy62yiNXtlQluAcJ6iVV5I5bdTxxoJ2rhirOjx5Urw17GiOWPotetBGIdHIeQU6yk=
+	t=1752587206; cv=none; b=MQIGa2ZPhuf55TaOP3G2nJsZv0MNELjq1kYGQ/1b9ABmpFYoHcz/Fb9pg2IlbiXHexIDeeWrjztQGO4QVvc3kA0g6JfgF5+mhYk/+g7Wkd5PFfH414XGjmhI/ecew+DICdKa0VUi8qns3asE1lEKpBBGnJEsqSLURgU+Y6TuLwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585761; c=relaxed/simple;
-	bh=hI70LW6VPGMVv2cD2AtJ1OKEGHeQEeveeyb8HGHoAzg=;
+	s=arc-20240116; t=1752587206; c=relaxed/simple;
+	bh=FlW5turlUs8JVqaNhf0tl0jMXtgtfK3dw+TFMwn27PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJaHtkxbi5dUQCXPa3+dDXy4S2Vj2PKk6dXyHgPS+w9gCqHJwNx5IQrVfyl9evDfcKp9fH4zJdbRfPvg9PrJUe0lX8akUP9rs71wOQOjcM1iJHJ+BwlVLbZ6OJBA9dOXM/34gGtqZ2hQp+1Ri0I5XBJo1Ru7/e8BHeS1D5cDBhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mn7Fm5N1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5E9C4CEFE;
-	Tue, 15 Jul 2025 13:22:40 +0000 (UTC)
+	 MIME-Version; b=troh0//6z7ROGE4l0ocw5aAg5UxxAs+7habNlPUwNRyOIwqcvG+DI2LXO1AJfHtRDESDj4RHYyyvaOv5QRdCccIlWHwmafsSJM5175/o2PIH3e3MQmCEeCvOyuW3HDmBhQ/tNayxOItHXLrhY+JkVzP/97p18JyTMojMFTjbrNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aoJKUC7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F753C4CEFA;
+	Tue, 15 Jul 2025 13:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585761;
-	bh=hI70LW6VPGMVv2cD2AtJ1OKEGHeQEeveeyb8HGHoAzg=;
+	s=korg; t=1752587205;
+	bh=FlW5turlUs8JVqaNhf0tl0jMXtgtfK3dw+TFMwn27PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mn7Fm5N1TnAUxU9OAeRIf/Tq5gAkc21qI0utqjLWhn5N5OsDfjp8E8wOWaDrdYZ4h
-	 qXC9YOZ3V9zNe22GBVZ13e4ycYupY/L4mS6dLnlniSIxizAfvK61j6lywAoq8fsVAp
-	 Jnrp0uH8r4mpFSwyYqgKyZzFXkcWW1heaKBw3dA4=
+	b=aoJKUC7E1Zs326gs0wmE12VdCvC9MMNBWAGGVPSqtEyDtYY3VnzbwNLHMs7Jq97Vw
+	 +cw24n3xsaRAZsjsx/so5Vozrb6oMu3KjTkfUVV2XXIXa+dVbHPTB/IsZFcqFgV7jC
+	 scXadVGcs08goMf6uBkrNCRKFgVMLHbBjQT7yk9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyan Xu <research@securitygossip.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 162/163] ksmbd: fix potential use-after-free in oplock/lease break ack
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 14/88] atm: clip: Fix potential null-ptr-deref in to_atmarpd().
 Date: Tue, 15 Jul 2025 15:13:50 +0200
-Message-ID: <20250715130815.331268960@linuxfoundation.org>
+Message-ID: <20250715130755.084658314@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 50f930db22365738d9387c974416f38a06e8057e upstream.
+[ Upstream commit 706cc36477139c1616a9b2b96610a8bb520b7119 ]
 
-If ksmbd_iov_pin_rsp return error, use-after-free can happen by
-accessing opinfo->state and opinfo_put and ksmbd_fd_put could
-called twice.
+atmarpd is protected by RTNL since commit f3a0592b37b8 ("[ATM]: clip
+causes unregister hang").
 
-Reported-by: Ziyan Xu <research@securitygossip.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, it is not enough because to_atmarpd() is called without RTNL,
+especially clip_neigh_solicit() / neigh_ops->solicit() is unsleepable.
+
+Also, there is no RTNL dependency around atmarpd.
+
+Let's use a private mutex and RCU to protect access to atmarpd in
+to_atmarpd().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250704062416.1613927-2-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   29 +++++++++--------------------
- 1 file changed, 9 insertions(+), 20 deletions(-)
+ net/atm/clip.c | 44 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 15 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -8517,11 +8517,6 @@ static void smb20_oplock_break_ack(struc
- 		goto err_out;
- 	}
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index 511467bb7fe40..8059b7d1fb931 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -45,7 +45,8 @@
+ #include <net/atmclip.h>
  
--	opinfo->op_state = OPLOCK_STATE_NONE;
--	wake_up_interruptible_all(&opinfo->oplock_q);
--	opinfo_put(opinfo);
--	ksmbd_fd_put(work, fp);
--
- 	rsp->StructureSize = cpu_to_le16(24);
- 	rsp->OplockLevel = rsp_oplevel;
- 	rsp->Reserved = 0;
-@@ -8529,16 +8524,15 @@ static void smb20_oplock_break_ack(struc
- 	rsp->VolatileFid = volatile_id;
- 	rsp->PersistentFid = persistent_id;
- 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_oplock_break));
--	if (!ret)
--		return;
--
-+	if (ret) {
- err_out:
-+		smb2_set_err_rsp(work);
-+	}
+ static struct net_device *clip_devs;
+-static struct atm_vcc *atmarpd;
++static struct atm_vcc __rcu *atmarpd;
++static DEFINE_MUTEX(atmarpd_lock);
+ static struct timer_list idle_timer;
+ static const struct neigh_ops clip_neigh_ops;
+ 
+@@ -53,24 +54,35 @@ static int to_atmarpd(enum atmarp_ctrl_type type, int itf, __be32 ip)
+ {
+ 	struct sock *sk;
+ 	struct atmarp_ctrl *ctrl;
++	struct atm_vcc *vcc;
+ 	struct sk_buff *skb;
++	int err = 0;
+ 
+ 	pr_debug("(%d)\n", type);
+-	if (!atmarpd)
+-		return -EUNATCH;
 +
- 	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
--
- 	opinfo_put(opinfo);
- 	ksmbd_fd_put(work, fp);
--	smb2_set_err_rsp(work);
++	rcu_read_lock();
++	vcc = rcu_dereference(atmarpd);
++	if (!vcc) {
++		err = -EUNATCH;
++		goto unlock;
++	}
+ 	skb = alloc_skb(sizeof(struct atmarp_ctrl), GFP_ATOMIC);
+-	if (!skb)
+-		return -ENOMEM;
++	if (!skb) {
++		err = -ENOMEM;
++		goto unlock;
++	}
+ 	ctrl = skb_put(skb, sizeof(struct atmarp_ctrl));
+ 	ctrl->type = type;
+ 	ctrl->itf_num = itf;
+ 	ctrl->ip = ip;
+-	atm_force_charge(atmarpd, skb->truesize);
++	atm_force_charge(vcc, skb->truesize);
+ 
+-	sk = sk_atm(atmarpd);
++	sk = sk_atm(vcc);
+ 	skb_queue_tail(&sk->sk_receive_queue, skb);
+ 	sk->sk_data_ready(sk);
+-	return 0;
++unlock:
++	rcu_read_unlock();
++	return err;
  }
  
- static int check_lease_state(struct lease *lease, __le32 req_state)
-@@ -8668,11 +8662,6 @@ static void smb21_lease_break_ack(struct
+ static void link_vcc(struct clip_vcc *clip_vcc, struct atmarp_entry *entry)
+@@ -607,10 +619,12 @@ static void atmarpd_close(struct atm_vcc *vcc)
+ {
+ 	pr_debug("\n");
+ 
+-	rtnl_lock();
+-	atmarpd = NULL;
++	mutex_lock(&atmarpd_lock);
++	RCU_INIT_POINTER(atmarpd, NULL);
++	mutex_unlock(&atmarpd_lock);
++
++	synchronize_rcu();
+ 	skb_queue_purge(&sk_atm(vcc)->sk_receive_queue);
+-	rtnl_unlock();
+ 
+ 	pr_debug("(done)\n");
+ 	module_put(THIS_MODULE);
+@@ -631,15 +645,15 @@ static struct atm_dev atmarpd_dev = {
+ 
+ static int atm_init_atmarp(struct atm_vcc *vcc)
+ {
+-	rtnl_lock();
++	mutex_lock(&atmarpd_lock);
+ 	if (atmarpd) {
+-		rtnl_unlock();
++		mutex_unlock(&atmarpd_lock);
+ 		return -EADDRINUSE;
  	}
  
- 	lease_state = lease->state;
--	opinfo->op_state = OPLOCK_STATE_NONE;
--	wake_up_interruptible_all(&opinfo->oplock_q);
--	atomic_dec(&opinfo->breaking_cnt);
--	wake_up_interruptible_all(&opinfo->oplock_brk);
--	opinfo_put(opinfo);
+ 	mod_timer(&idle_timer, jiffies + CLIP_CHECK_INTERVAL * HZ);
  
- 	rsp->StructureSize = cpu_to_le16(36);
- 	rsp->Reserved = 0;
-@@ -8681,16 +8670,16 @@ static void smb21_lease_break_ack(struct
- 	rsp->LeaseState = lease_state;
- 	rsp->LeaseDuration = 0;
- 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_lease_ack));
--	if (!ret)
--		return;
--
-+	if (ret) {
- err_out:
-+		smb2_set_err_rsp(work);
-+	}
-+
-+	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
- 	atomic_dec(&opinfo->breaking_cnt);
- 	wake_up_interruptible_all(&opinfo->oplock_brk);
--
- 	opinfo_put(opinfo);
--	smb2_set_err_rsp(work);
+-	atmarpd = vcc;
++	rcu_assign_pointer(atmarpd, vcc);
+ 	set_bit(ATM_VF_META, &vcc->flags);
+ 	set_bit(ATM_VF_READY, &vcc->flags);
+ 	    /* allow replies and avoid getting closed if signaling dies */
+@@ -648,7 +662,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
+ 	vcc->push = NULL;
+ 	vcc->pop = NULL; /* crash */
+ 	vcc->push_oam = NULL; /* crash */
+-	rtnl_unlock();
++	mutex_unlock(&atmarpd_lock);
+ 	return 0;
  }
  
- /**
+-- 
+2.39.5
+
 
 
 
