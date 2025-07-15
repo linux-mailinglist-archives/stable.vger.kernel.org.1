@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-162937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61474B060B3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:21:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3B3B05FA8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 275A61C242C8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:10:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E699C188F076
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DC72E427C;
-	Tue, 15 Jul 2025 13:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951442EA49E;
+	Tue, 15 Jul 2025 13:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqMIKYd/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwlD2z2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAE02E3AE5;
-	Tue, 15 Jul 2025 13:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5395C2EA49C;
+	Tue, 15 Jul 2025 13:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587865; cv=none; b=M57+NOKdwM2gl1oEB+nZpqCCdm0B1DFI+DSzLx1xBAS1omdkd9UCDK0YlL9oUizeeInwLszj09X7uSZO1sTnchmuUWm2m/t/uGH0I/YJOUahuX4oWTgcTw2cZgVv4N6u5dqPBjCEQRv4qEyz4gCgL0jFwVX86a5wCh9wc2yoxkw=
+	t=1752587353; cv=none; b=tCDcPGwu8i2yQnGfswyaqT2jcDyB4hLeeaNV03Aw2umDKq9IM0n88zLtAlFB7CTyt/fAHhrknmueSjWi9HY2u76i2G6HB+d/PWo9lnohSpmupixwcYg71RS8mWdKOqL8SBl9yrTtaygrYQQAi8TsTSTxFVvUcMpqMUHoJFffu8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587865; c=relaxed/simple;
-	bh=umip7bTMYE96QKeBe3EmJEn09Mnh8Zh6OZfpR7CwGyQ=;
+	s=arc-20240116; t=1752587353; c=relaxed/simple;
+	bh=D/0Hdji3fZ+K/44Hq7sY6YwbYxoWmw4GXJJ5OLyagIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IrptGD7nqRDt9UPAbuKupvDHQ6MUgjbnNh4qgL/JPFlS77lCjfQNLTfr/iMKeZm7xZhVZnNuRSlos6eKgSEyRR6InjDCnIQqvEXThutMw7yLIhWUjvHvhwyosneHVPnO3EPd/0FwFsCqYoIae/XwbB/sbbWHg83EdjRq4cUcAl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqMIKYd/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A133AC4CEE3;
-	Tue, 15 Jul 2025 13:57:44 +0000 (UTC)
+	 MIME-Version; b=VQ2N4/kohEJPRrSzNtZqyYhcUuEQMmMp+uMFHBEyZt8PRJ7lHPEO1jTl1YHfdyt9KqWGr0m6wKbI8lOT2Sts1v7p2yfDeznHj6TBUCK6k3gi8mDVor09I14gMPsQjoektItdbvesz1jVOSV7Nas25NMr9VMzOxWF/vDOl3YhTlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwlD2z2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E76C4CEE3;
+	Tue, 15 Jul 2025 13:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587865;
-	bh=umip7bTMYE96QKeBe3EmJEn09Mnh8Zh6OZfpR7CwGyQ=;
+	s=korg; t=1752587352;
+	bh=D/0Hdji3fZ+K/44Hq7sY6YwbYxoWmw4GXJJ5OLyagIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CqMIKYd/k9ZyoTVwJRNWjh88erFCblDeVnAdLtuy2rUDTw3fk0ZblMh1THvngY6En
-	 SKJINIFGgFCO8nhpuJAtNT3lcBtl7LhYEUb4P8Vsm1IUT48rwej6SAP6OL3ncKfI3x
-	 W7Fr/RirfOebVrz3FG4TvXMDDvU39siUuATv8904=
+	b=JwlD2z2EZ8VpN0MfdgEBW2FZvbLbeinem9jSBS8QfllrmejDE4Rm2U8tC/MlziT7s
+	 qJVvaNa9bivj4/HJ2bBpSyPvFCf9sCU3WdfaRZilN942xDamqkS5rs6CwSgsm/Hubf
+	 V1k9zy/9rk/8fNVTrJSrB3/fzKGUaIgANAqYn3us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aijay Adams <aijay@meta.com>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	stable@kernel.org
-Subject: [PATCH 5.10 173/208] x86/mce: Make sure CMCI banks are cleared during shutdown on Intel
-Date: Tue, 15 Jul 2025 15:14:42 +0200
-Message-ID: <20250715130817.904391671@linuxfoundation.org>
+	Mingming Cao <mmc@linux.ibm.com>,
+	Dave Marquardt <davemarq@linux.ibm.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 67/88] ibmvnic: Fix hardcoded NUM_RX_STATS/NUM_TX_STATS with dynamic sizeof
+Date: Tue, 15 Jul 2025 15:14:43 +0200
+Message-ID: <20250715130757.261712780@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Kobryn <inwardvessel@gmail.com>
+From: Mingming Cao <mmc@linux.ibm.com>
 
-commit 30ad231a5029bfa16e46ce868497b1a5cdd3c24d upstream.
+[ Upstream commit 01b8114b432d7baaa5e51ab229c12c4f36b8e2c6 ]
 
-CMCI banks are not cleared during shutdown on Intel CPUs. As a side effect,
-when a kexec is performed, CPUs coming back online are unable to
-rediscover/claim these occupied banks which breaks MCE reporting.
+The previous hardcoded definitions of NUM_RX_STATS and
+NUM_TX_STATS were not updated when new fields were added
+to the ibmvnic_{rx,tx}_queue_stats structures. Specifically,
+commit 2ee73c54a615 ("ibmvnic: Add stat for tx direct vs tx
+batched") added a fourth TX stat, but NUM_TX_STATS remained 3,
+leading to a mismatch.
 
-Clear the CPU ownership during shutdown via cmci_clear() so the banks can
-be reclaimed and MCE reporting will become functional once more.
+This patch replaces the static defines with dynamic sizeof-based
+calculations to ensure the stat arrays are correctly sized.
+This fixes incorrect indexing and prevents incomplete stat
+reporting in tools like ethtool.
 
-  [ bp: Massage commit message. ]
-
-Reported-by: Aijay Adams <aijay@meta.com>
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250627174935.95194-1-inwardvessel@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2ee73c54a615 ("ibmvnic: Add stat for tx direct vs tx batched")
+Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+Reviewed-by: Haren Myneni <haren@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250709153332.73892-1-mmc@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/intel.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/ibm/ibmvnic.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/mce/intel.c
-+++ b/arch/x86/kernel/cpu/mce/intel.c
-@@ -522,6 +522,7 @@ void mce_intel_feature_init(struct cpuin
- void mce_intel_feature_clear(struct cpuinfo_x86 *c)
- {
- 	intel_clear_lmce();
-+	cmci_clear();
- }
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
+index f923cdab03f57..91291b5e8a2a2 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.h
++++ b/drivers/net/ethernet/ibm/ibmvnic.h
+@@ -211,7 +211,6 @@ struct ibmvnic_statistics {
+ 	u8 reserved[72];
+ } __packed __aligned(8);
  
- bool intel_filter_mce(struct mce *m)
+-#define NUM_TX_STATS 3
+ struct ibmvnic_tx_queue_stats {
+ 	u64 batched_packets;
+ 	u64 direct_packets;
+@@ -219,13 +218,18 @@ struct ibmvnic_tx_queue_stats {
+ 	u64 dropped_packets;
+ };
+ 
+-#define NUM_RX_STATS 3
++#define NUM_TX_STATS \
++	(sizeof(struct ibmvnic_tx_queue_stats) / sizeof(u64))
++
+ struct ibmvnic_rx_queue_stats {
+ 	u64 packets;
+ 	u64 bytes;
+ 	u64 interrupts;
+ };
+ 
++#define NUM_RX_STATS \
++	(sizeof(struct ibmvnic_rx_queue_stats) / sizeof(u64))
++
+ struct ibmvnic_acl_buffer {
+ 	__be32 len;
+ 	__be32 version;
+-- 
+2.39.5
+
 
 
 
