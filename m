@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309DFB05EBC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA82DB05BAD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2D411C279B5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7349E7B8F6C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ACCF2EAD10;
-	Tue, 15 Jul 2025 13:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C4C2E1758;
+	Tue, 15 Jul 2025 13:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQ7Zro7g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Is7e7kLB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FA42E62A4;
-	Tue, 15 Jul 2025 13:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364CD2E11D3;
+	Tue, 15 Jul 2025 13:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586960; cv=none; b=WvoqBhHbq56bVy1xLzLqKLBwHROJcHW+OeY+tieWKoEuliDV+CkuIkKzaP62Ses1CE770xENP0NStjhHJ5avKGAlur5MbDH1FKiJU3hIeAhkq6Og6PcH/NeF9r91UphWb01JvTBqLfq1NLk+sfXvF5dKXMtd6KfhxCXUkNSJ9ww=
+	t=1752585704; cv=none; b=P8V9JjcupSl+Gn0m4Fejb5uqg7aLQ1OKSBP02f+SjHdRbkvIE3klQEQzqnym4pEM/1BKppTngZ5eogpLCwbzE8/ScXorGsxh68VdsOnVGYk/N7tAE982Xra1S1Ey1JZdBP/0VMBy4aiFhN222FOsm1iUiVu0T7+lypyi6KA3Pvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586960; c=relaxed/simple;
-	bh=gDSpDJlSyB1HDaFhWfFjifMoXcwTpz1IUHda0H9z4H8=;
+	s=arc-20240116; t=1752585704; c=relaxed/simple;
+	bh=FcUVviDNxnpMyUt7SC19GnQoZDeUb5gCTRGJ9KI6ouY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmRUyZF8sWX+0+ZdD2TC7D6S7LuppCyg/DL+KK0YWbhfbCni1y+k3tewPEtzp5L4J039OiarXdmU2Uzz60PBXkDrJlsVjCRgZxCgce+LIiaJYxk32z9NSumcz4uogFs5irNwl3jAd9t81IqPItMmZnaB5+iLGrW4sfZl/MrAo4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQ7Zro7g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2ABC4CEE3;
-	Tue, 15 Jul 2025 13:42:39 +0000 (UTC)
+	 MIME-Version; b=IoD3V0k6zsmmsYiRuJyrehsOR40KVEcAjOkvLeotC561fTpglYvv0CBBP5XegCXgxDiwOj3vq9dQSTYrVfBfZrG49l8gu2jh+HHSaT9XkaROYitRlCgiDjsWRCu4u5VwBWv+tMHZuDmUUmvwlRfdTnQhzW0Pq4NN2e8PSgwjZN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Is7e7kLB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B284AC4CEE3;
+	Tue, 15 Jul 2025 13:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586960;
-	bh=gDSpDJlSyB1HDaFhWfFjifMoXcwTpz1IUHda0H9z4H8=;
+	s=korg; t=1752585704;
+	bh=FcUVviDNxnpMyUt7SC19GnQoZDeUb5gCTRGJ9KI6ouY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQ7Zro7gxzE8ftrcfqHhaLdZifnlJjcNgeS8cz+DIFy3b61El736AZMYluTRm5OIe
-	 de319JvofYdeV+bsGc06edfN/cbPphoWsKGVHfYQi37uiy0qIM9p1cvq9yx4Y3hSDu
-	 O+CYwKRLn1JUruy8AGOlveRdmBybwy77zyd/Fjwc=
+	b=Is7e7kLBpUyqbG9mf9yLLyDysU6ETxWiaOgoI7JB1MDiJIBxX9WceEhAhOOEdvyps
+	 /dgXOE7sof2+ztsIVwV1gYFNfPC3Z0hDeRE6n5JZmItgK4bPk7u4bLd0pjCyMFHuy+
+	 U7kHjO5LvDWX55sisFHdxH+fVY3ipu2UG1v8lib8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.15 113/192] clk: imx: Fix an out-of-bounds access in dispmix_csr_clk_dev_data
+	kernel test robot <lkp@intel.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 140/163] um: vector: Reduce stack usage in vector_eth_configure()
 Date: Tue, 15 Jul 2025 15:13:28 +0200
-Message-ID: <20250715130819.423085359@linuxfoundation.org>
+Message-ID: <20250715130814.451639667@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-commit aacc875a448d363332b9df0621dde6d3a225ea9f upstream.
+[ Upstream commit 2d65fc13be85c336c56af7077f08ccd3a3a15a4a ]
 
-When num_parents is 4, __clk_register() occurs an out-of-bounds
-when accessing parent_names member. Use ARRAY_SIZE() instead of
-hardcode number here.
+When compiling with clang (19.1.7), initializing *vp using a compound
+literal may result in excessive stack usage. Fix it by initializing the
+required fields of *vp individually.
 
- BUG: KASAN: global-out-of-bounds in __clk_register+0x1844/0x20d8
- Read of size 8 at addr ffff800086988e78 by task kworker/u24:3/59
-  Hardware name: NXP i.MX95 19X19 board (DT)
-  Workqueue: events_unbound deferred_probe_work_func
-  Call trace:
-    dump_backtrace+0x94/0xec
-    show_stack+0x18/0x24
-    dump_stack_lvl+0x8c/0xcc
-    print_report+0x398/0x5fc
-    kasan_report+0xd4/0x114
-    __asan_report_load8_noabort+0x20/0x2c
-    __clk_register+0x1844/0x20d8
-    clk_hw_register+0x44/0x110
-    __clk_hw_register_mux+0x284/0x3a8
-    imx95_bc_probe+0x4f4/0xa70
+Without this patch:
 
-Fixes: 5224b189462f ("clk: imx: add i.MX95 BLK CTL clk driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Link: https://lore.kernel.org/r/20250619062108.2016511-1-xiaolei.wang@windriver.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+$ objdump -d arch/um/drivers/vector_kern.o | ./scripts/checkstack.pl x86_64 0
+...
+0x0000000000000540 vector_eth_configure [vector_kern.o]:1472
+...
+
+With this patch:
+
+$ objdump -d arch/um/drivers/vector_kern.o | ./scripts/checkstack.pl x86_64 0
+...
+0x0000000000000540 vector_eth_configure [vector_kern.o]:208
+...
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506221017.WtB7Usua-lkp@intel.com/
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250623110829.314864-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx95-blk-ctl.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/um/drivers/vector_kern.c | 42 +++++++++++------------------------
+ 1 file changed, 13 insertions(+), 29 deletions(-)
 
---- a/drivers/clk/imx/clk-imx95-blk-ctl.c
-+++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
-@@ -219,11 +219,15 @@ static const struct imx95_blk_ctl_dev_da
- 	.clk_reg_offset = 0,
- };
+diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+index 64c09db392c16..7a88b13d289f1 100644
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -1592,35 +1592,19 @@ static void vector_eth_configure(
  
-+static const char * const disp_engine_parents[] = {
-+	"videopll1", "dsi_pll", "ldb_pll_div7"
-+};
-+
- static const struct imx95_blk_ctl_clk_dev_data dispmix_csr_clk_dev_data[] = {
- 	[IMX95_CLK_DISPMIX_ENG0_SEL] = {
- 		.name = "disp_engine0_sel",
--		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
--		.num_parents = 4,
-+		.parent_names = disp_engine_parents,
-+		.num_parents = ARRAY_SIZE(disp_engine_parents),
- 		.reg = 0,
- 		.bit_idx = 0,
- 		.bit_width = 2,
-@@ -232,8 +236,8 @@ static const struct imx95_blk_ctl_clk_de
- 	},
- 	[IMX95_CLK_DISPMIX_ENG1_SEL] = {
- 		.name = "disp_engine1_sel",
--		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
--		.num_parents = 4,
-+		.parent_names = disp_engine_parents,
-+		.num_parents = ARRAY_SIZE(disp_engine_parents),
- 		.reg = 0,
- 		.bit_idx = 2,
- 		.bit_width = 2,
+ 	device->dev = dev;
+ 
+-	*vp = ((struct vector_private)
+-		{
+-		.list			= LIST_HEAD_INIT(vp->list),
+-		.dev			= dev,
+-		.unit			= n,
+-		.options		= get_transport_options(def),
+-		.rx_irq			= 0,
+-		.tx_irq			= 0,
+-		.parsed			= def,
+-		.max_packet		= get_mtu(def) + ETH_HEADER_OTHER,
+-		/* TODO - we need to calculate headroom so that ip header
+-		 * is 16 byte aligned all the time
+-		 */
+-		.headroom		= get_headroom(def),
+-		.form_header		= NULL,
+-		.verify_header		= NULL,
+-		.header_rxbuffer	= NULL,
+-		.header_txbuffer	= NULL,
+-		.header_size		= 0,
+-		.rx_header_size		= 0,
+-		.rexmit_scheduled	= false,
+-		.opened			= false,
+-		.transport_data		= NULL,
+-		.in_write_poll		= false,
+-		.coalesce		= 2,
+-		.req_size		= get_req_size(def),
+-		.in_error		= false,
+-		.bpf			= NULL
+-	});
++	INIT_LIST_HEAD(&vp->list);
++	vp->dev		= dev;
++	vp->unit	= n;
++	vp->options	= get_transport_options(def);
++	vp->parsed	= def;
++	vp->max_packet	= get_mtu(def) + ETH_HEADER_OTHER;
++	/*
++	 * TODO - we need to calculate headroom so that ip header
++	 * is 16 byte aligned all the time
++	 */
++	vp->headroom	= get_headroom(def);
++	vp->coalesce	= 2;
++	vp->req_size	= get_req_size(def);
+ 
+ 	dev->features = dev->hw_features = (NETIF_F_SG | NETIF_F_FRAGLIST);
+ 	INIT_WORK(&vp->reset_tx, vector_reset_tx);
+-- 
+2.39.5
+
 
 
 
