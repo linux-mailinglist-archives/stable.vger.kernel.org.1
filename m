@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-162557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469CDB05E78
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5B5B05B68
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6D484A78B5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E50AD1AA7E2B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D232EA729;
-	Tue, 15 Jul 2025 13:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0298A2E2F0C;
+	Tue, 15 Jul 2025 13:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ee46FZa+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtufEJ6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C18D2E54A8;
-	Tue, 15 Jul 2025 13:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DF02E2EEE;
+	Tue, 15 Jul 2025 13:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586870; cv=none; b=u51BABgUh46UJeGDiSSVJkLtQFebr8p6qwE9/b255sDpvUAhL28aOkNsdb93uqk4tvLzP5RX6qMvzkE2RRNMPRXm4EgfRuY2eNBvcel4WXMl1DhpjRTgeXmtNJTi3hDyZ9Fd7x7T5aa63Cnm9N7tTGlnpwlf/p9Fa7gqVdG+bVA=
+	t=1752585614; cv=none; b=NRolAejtI9k/5aMLxhvr7fXmH9WKidIZ32ljRamRE18tQvAsc5bfntCQlIiq0vJqVoKPsjQANCz6Hj9zAjTyUZgUaMPdWGacNzNQxCPfodwg0oqdwBswpclt2yoE7ZkxFFMq4W/YlxRsllv7KRFBVst5WX9ZI8Bc8pq0imYqhKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586870; c=relaxed/simple;
-	bh=zSsfcGP9v2gEF70RTpNS8td+buZxG4usFIjyNXj8NnA=;
+	s=arc-20240116; t=1752585614; c=relaxed/simple;
+	bh=GttpmwWLPpfA92yt7p/T9TwPaMcvB84SRYcfzZnep+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIlcXYy7uES/9WKkyxNpzw/oayYtP5wsS2RrH2awMdTKvz8Aro1MCK86CfSXpyF3bAYg7+B0RAKGXC85ZZHmN3oMMBbdlZpwdo72dB2iLCDEi4VZQsZC3eTQqq7aVDtERYYSApcNMoNiC+OqReGMg04B7Iq/B33MUGr2qpHqoPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ee46FZa+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C553CC4CEE3;
-	Tue, 15 Jul 2025 13:41:09 +0000 (UTC)
+	 MIME-Version; b=bEp/kmY4rBrWb503iD8XBGRrIgeL0n7e0MH5tCiSJz4f6gfEyFfwfI/mZbGZgP/XJ418rSfXxNn2SKVOhbwHIh2yAUuIMoFR4IoToRHAqzDvQ4KhDgZR4RxMBBpRKVf4VGULzdRmJQfVy/EBOT35wTwlA+tTta8UKySzgD4+rv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtufEJ6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C872C4CEE3;
+	Tue, 15 Jul 2025 13:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586870;
-	bh=zSsfcGP9v2gEF70RTpNS8td+buZxG4usFIjyNXj8NnA=;
+	s=korg; t=1752585614;
+	bh=GttpmwWLPpfA92yt7p/T9TwPaMcvB84SRYcfzZnep+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ee46FZa+FORMZF7KbLRLVO4o3EYbghA9TzXZ5hHGeUQg2mkfQiQq1FakGTQilBn3l
-	 3gcPQxBfk/RwUyR6+I2tF1XZyeOuKR4aNIqHVBlshQ6157KINFKE1mFmcBQVe9tfUJ
-	 UTaWjGwalc+lxcJLvIuSizKonEaaWiAllomiRpO8=
+	b=KtufEJ6N/vpWkBvRT3ANTGQmUudH6HV1Orx+34Ose86XPyavHoR520C+qhFxRrhXo
+	 T70CQL/R9aJXqMblfI7LmmLiJN0LoQJBm6gu15vEqPtY5l6Qlvl2E5nrUHNdT1s4UR
+	 V4+4i2ir1xBB4FsDHjyIdjaXIGCcdlKlVuZWR79E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.15 079/192] wifi: mt76: mt7925: fix the wrong config for tx interrupt
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 106/163] netfs: Fix ref leak on inserted extra subreq in write retry
 Date: Tue, 15 Jul 2025 15:12:54 +0200
-Message-ID: <20250715130818.095643222@linuxfoundation.org>
+Message-ID: <20250715130813.111931582@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +66,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: David Howells <dhowells@redhat.com>
 
-commit d20de55332e92f9e614c34783c00bb6ce2fec067 upstream.
+[ Upstream commit 97d8e8e52cb8ab3d7675880a92626d9a4332f7a6 ]
 
-MT_INT_TX_DONE_MCU_WM may cause tx interrupt to be mishandled
-during a reset failure, leading to the reset process failing.
-By using MT_INT_TX_DONE_MCU instead of MT_INT_TX_DONE_MCU_WM,
-the handling of tx interrupt is improved.
+The write-retry algorithm will insert extra subrequests into the list if it
+can't get sufficient capacity to split the range that needs to be retried
+into the sequence of subrequests it currently has (for instance, if the
+cifs credit pool has fewer credits available than it did when the range was
+originally divided).
 
-Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250612060931.135635-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, the allocator furnishes each new subreq with 2 refs and then
+another is added for resubmission, causing one to be leaked.
+
+Fix this by replacing the ref-getting line with a neutral trace line.
+
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/20250701163852.2171681-6-dhowells@redhat.com
+Tested-by: Steve French <sfrench@samba.org>
+Reviewed-by: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/regs.h |    2 +-
+ fs/netfs/write_collect.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
-@@ -58,7 +58,7 @@
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index 7cb21da40a0a4..a968688a73234 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -285,7 +285,7 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
+ 			trace_netfs_sreq_ref(wreq->debug_id, subreq->debug_index,
+ 					     refcount_read(&subreq->ref),
+ 					     netfs_sreq_trace_new);
+-			netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
++			trace_netfs_sreq(subreq, netfs_sreq_trace_split);
  
- #define MT_INT_TX_DONE_MCU		(MT_INT_TX_DONE_MCU_WM |	\
- 					 MT_INT_TX_DONE_FWDL)
--#define MT_INT_TX_DONE_ALL		(MT_INT_TX_DONE_MCU_WM |	\
-+#define MT_INT_TX_DONE_ALL		(MT_INT_TX_DONE_MCU |	\
- 					 MT_INT_TX_DONE_BAND0 |	\
- 					GENMASK(18, 4))
- 
+ 			list_add(&subreq->rreq_link, &to->rreq_link);
+ 			to = list_next_entry(to, rreq_link);
+-- 
+2.39.5
+
 
 
 
