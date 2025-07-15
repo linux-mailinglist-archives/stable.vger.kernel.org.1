@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8AF6B06065
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:16:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19211B05F78
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6D151C267D5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:08:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BD654A7AC5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749CD2ED148;
-	Tue, 15 Jul 2025 13:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3FA2EA738;
+	Tue, 15 Jul 2025 13:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xr6y7YY6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ce+rokiW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3342A2E92BE;
-	Tue, 15 Jul 2025 13:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CEA2EA736;
+	Tue, 15 Jul 2025 13:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587804; cv=none; b=rDPv6j5ue/lP7aM6HXupePYFKuC8dlbuQoFxw6HjC5lRP2c160NtdCeihiVPMs5bu9QF9Jn8IM0lryAoY6eV+Ttubjl5rwTVLSKvDtzoJZwAggoUsYh+tWMhOaS6TvwAQCz8RPJuMo6JC7+eVSLZqaMpq23aiKVYQMO2z1JU32o=
+	t=1752587368; cv=none; b=rcze8BGuwn3mOqNEG3B3Eb64kgygsOPfVJjbb01Y63mnVNq2MfUKnmNBpwZFwFlnDwfR8EyV7h2EBUmGVxQQW3dTNvJepnNF/Qw/v0JCCWBSmcXwZpS4qSbBub7mhL5ToKugWjXjmAXbNZW1PprS3AIdS2ETCwKYBO3yFIPKgNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587804; c=relaxed/simple;
-	bh=5OwD+34CXi29dlzDpB2grCUYjrH9FssWn+3U4NTBwG0=;
+	s=arc-20240116; t=1752587368; c=relaxed/simple;
+	bh=lqUhWOleLH25Q8mFNSX1oCCQgdKnjA2pSnmyM8veLzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAWht7B106HLz8nO7I7+jKALQ7YhuLBxw3mpEqJUU6pcu8Ukyi5DqeMwxI+4CaKOEf8/khv/bmQB5NfuphEu/yHIcCbDmkWvxxkCkiNbGIhkoja4SqUSRz2w+yxgjgrpB+qkgQRnXx2D5++PyR7UNhJ91McbHGsnd7Fsnr15rTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xr6y7YY6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9F4C4CEE3;
-	Tue, 15 Jul 2025 13:56:43 +0000 (UTC)
+	 MIME-Version; b=cKvxn9B+zVuqv452xNz3o/iNerP65FniEbaMt0/ClphzoXybpgBGuse7PbHtimc5RNfecHYKn9XwuHvOxejBhyptDLduHXFQ4Vnwtk3fIc3obMQXSYAvPEqFK01VpbKpNvfq8vbVfhj99bxRWQiBf/UpPKznNFTro/iF8RRsEMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ce+rokiW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DC5C4CEE3;
+	Tue, 15 Jul 2025 13:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587804;
-	bh=5OwD+34CXi29dlzDpB2grCUYjrH9FssWn+3U4NTBwG0=;
+	s=korg; t=1752587368;
+	bh=lqUhWOleLH25Q8mFNSX1oCCQgdKnjA2pSnmyM8veLzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xr6y7YY6MlWJOacw48XcAkumNF3XVvI7ExUESpIjG7qOnnGUp2SAyPnibAnf5/1Iz
-	 3OZ7kjuC2YuI9Iy32ovTtHpDaGFsnRYM4M1ci/atJMc8KMN5h5CPMoJX9SjReG3guy
-	 MMlQH3OJPyksA1TeG/XRsC3nkgqryiNQzdZV+dYM=
+	b=Ce+rokiWW8Ft/WsRKlswPj4JejVv9t/n6LFBANxv+QJmwX6RTzyLorm95hXnsDmlO
+	 CfJf1OtoSM1htVEKDwKNSJK6n47J2vCSHXQ/QH5F9CeJRkUIvZiAMSZ5hGEjlkw5Tf
+	 /Ml1nGAhUTAb7oCe607x0hzlNCkVNGLVvJUoqEgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 149/208] atm: clip: Fix memory leak of struct clip_vcc.
-Date: Tue, 15 Jul 2025 15:14:18 +0200
-Message-ID: <20250715130816.884118713@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 43/88] netlink: make sure we allow at least one dump skb
+Date: Tue, 15 Jul 2025 15:14:19 +0200
+Message-ID: <20250715130756.258644230@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 62dba28275a9a3104d4e33595c7b3328d4032d8d ]
+commit a215b5723922f8099078478122f02100e489cb80 upstream.
 
-ioctl(ATMARP_MKIP) allocates struct clip_vcc and set it to
-vcc->user_back.
+Commit under Fixes tightened up the memory accounting for Netlink
+sockets. Looks like the accounting is too strict for some existing
+use cases, Marek reported issues with nl80211 / WiFi iw CLI.
 
-The code assumes that vcc_destroy_socket() passes NULL skb
-to vcc->push() when the socket is close()d, and then clip_push()
-frees clip_vcc.
+To reduce number of iterations Netlink dumps try to allocate
+messages based on the size of the buffer passed to previous
+recvmsg() calls. If user space uses a larger buffer in recvmsg()
+than sk_rcvbuf we will allocate an skb we won't be able to queue.
 
-However, ioctl(ATMARPD_CTRL) sets NULL to vcc->push() in
-atm_init_atmarp(), resulting in memory leak.
+Make sure we always allow at least one skb to be queued.
+Same workaround is already present in netlink_attachskb().
+Alternative would be to cap the allocation size to
+  rcvbuf - rmem_alloc
+but as I said, the workaround is already present in other places.
 
-Let's serialise two ioctl() by lock_sock() and check vcc->push()
-in atm_init_atmarp() to prevent memleak.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250704062416.1613927-3-kuniyu@google.com
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/9794af18-4905-46c6-b12c-365ea2f05858@samsung.com
+Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250711001121.3649033-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/atm/clip.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/netlink/af_netlink.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 8059b7d1fb931..14b485f725d0c 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -645,6 +645,9 @@ static struct atm_dev atmarpd_dev = {
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2168,11 +2168,11 @@ static int netlink_dump(struct sock *sk,
+ 	struct netlink_ext_ack extack = {};
+ 	struct netlink_callback *cb;
+ 	struct sk_buff *skb = NULL;
++	unsigned int rmem, rcvbuf;
+ 	size_t max_recvmsg_len;
+ 	struct module *module;
+ 	int err = -ENOBUFS;
+ 	int alloc_min_size;
+-	unsigned int rmem;
+ 	int alloc_size;
  
- static int atm_init_atmarp(struct atm_vcc *vcc)
- {
-+	if (vcc->push == clip_push)
-+		return -EINVAL;
-+
- 	mutex_lock(&atmarpd_lock);
- 	if (atmarpd) {
- 		mutex_unlock(&atmarpd_lock);
-@@ -669,6 +672,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
- static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- {
- 	struct atm_vcc *vcc = ATM_SD(sock);
-+	struct sock *sk = sock->sk;
- 	int err = 0;
+ 	if (!lock_taken)
+@@ -2204,8 +2204,9 @@ static int netlink_dump(struct sock *sk,
+ 	if (!skb)
+ 		goto errout_skb;
  
- 	switch (cmd) {
-@@ -689,14 +693,18 @@ static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		err = clip_create(arg);
- 		break;
- 	case ATMARPD_CTRL:
-+		lock_sock(sk);
- 		err = atm_init_atmarp(vcc);
- 		if (!err) {
- 			sock->state = SS_CONNECTED;
- 			__module_get(THIS_MODULE);
- 		}
-+		release_sock(sk);
- 		break;
- 	case ATMARP_MKIP:
-+		lock_sock(sk);
- 		err = clip_mkip(vcc, arg);
-+		release_sock(sk);
- 		break;
- 	case ATMARP_SETENTRY:
- 		err = clip_setentry(vcc, (__force __be32)arg);
--- 
-2.39.5
-
++	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+ 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+-	if (rmem >= READ_ONCE(sk->sk_rcvbuf)) {
++	if (rmem != skb->truesize && rmem >= rcvbuf) {
+ 		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
+ 		goto errout_skb;
+ 	}
 
 
 
