@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE67B05F9B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E659B06058
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A51F21C45AA8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 658705A11D5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1472E3AE5;
-	Tue, 15 Jul 2025 13:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2912ECD35;
+	Tue, 15 Jul 2025 13:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2o0/woaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feUgAF3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DEA2E498D;
-	Tue, 15 Jul 2025 13:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FBD2E7BBD;
+	Tue, 15 Jul 2025 13:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587229; cv=none; b=O6xRQDo07Ptq4qDJoxjwjKAdSs5NLCamEZTJAOdHqymORUxOrQKx7BZnWFjDS6F69rGGHWvBrRAbDfPICt6s67YiEWXClkGoZy6r7jM1JuhIicFqHbiB0zNgEezOSExKebO6iCaGGpfi4RHLkYQx1IIaqh7qT0bKmcSGJ2OUbtY=
+	t=1752587706; cv=none; b=pJlbPfLFBjbOSyOOTVtU0zIXUhh+J5gbrv2OzIGtPS+OsVCuZvEXAWZWvZpkdjQCWPbtv5vcG42NZMK2IFktGJnhqZZs2vzR/3NAUg7tIDdqGReqAlQDpJsD3CkA6qNsd7HqnQWBeofhO35KjISRUD7i5Vmqk3ttqE1xYHpC5Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587229; c=relaxed/simple;
-	bh=VHQBAqAfiYbRUTjmTbQjjQl/GFaijqNiqKw3znw1FXc=;
+	s=arc-20240116; t=1752587706; c=relaxed/simple;
+	bh=lUf0jwqxpK/PeN4fsX/xGn/mfnGUfggIJl/h6YzSkaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtvUbUWTaw70OrI6J474/izGz5yRAi6kzRv/IZtMIJC2jGzzYJJVzzaF4gZJMPrlEnE6Tc54yIrB+6Obt9T/lSiX/BL7M6HYf1rZ/LM65ih2kGYAnyW9d0GGg6OfFhDqjeT5rIBhjZNhrJiXed8SVfDG8TcSWGHeve04c4HjZhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2o0/woaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B85C4CEE3;
-	Tue, 15 Jul 2025 13:47:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t9SL4aACtOwkKYjctEYDgmNwZNZYHTklvaART0N0u3Z1ti4bhwDcQDlIAhVFsgFUwyo7/81L2fWTrDh7nON1+TzyZSsb7jALrxhTUjh8+Hu4JrDIExqIGkSxDXWSmvHqTKhNi3CetLvYr7lJtff3GwdDMzOM3AiwZnrKpyTbcPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feUgAF3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36E0C4CEE3;
+	Tue, 15 Jul 2025 13:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587229;
-	bh=VHQBAqAfiYbRUTjmTbQjjQl/GFaijqNiqKw3znw1FXc=;
+	s=korg; t=1752587706;
+	bh=lUf0jwqxpK/PeN4fsX/xGn/mfnGUfggIJl/h6YzSkaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2o0/woaIhZzPx3KtAxQ4ZixinQNPfWPKP7ApmWd97J+UsjmcBEq2RB8JN3hvMCSx7
-	 1BkqHIfs9B32D/JRRkKURFncTcvm9ck1el7arMsmL9XgrKrDFDcg4c2L7S5n9Ttwwc
-	 X4HxTffCitX/YB6nSWxRSohvJ/AtThRsYIwRBdC8=
+	b=feUgAF3+LP5VgkaqHnjPCMTC4UShswW0+p3MMNzm0XTIaFnWte7IC2txUTb64IyX9
+	 1acPXvSebXUk6epuejUYlymUL4mIlP3lBLdpj2KMq0nwUTbnluf8ZHNnB19kEY8EBc
+	 8IAThPdviWV2aPOZ51/5goWNO/WzZWrCKuPdfmbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	"Juan A. Suarez" <jasuarez@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 05/88] Bluetooth: hci_sync: Fix not disabling advertising instance
-Date: Tue, 15 Jul 2025 15:13:41 +0200
-Message-ID: <20250715130754.721155236@linuxfoundation.org>
+Subject: [PATCH 5.10 113/208] drm/v3d: Disable interrupts before resetting the GPU
+Date: Tue, 15 Jul 2025 15:13:42 +0200
+Message-ID: <20250715130815.473330805@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +61,217 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit ef9675b0ef030d135413e8638989f3a7d1f3217a ]
+[ Upstream commit 226862f50a7a88e4e4de9abbf36c64d19acd6fd0 ]
 
-As the code comments on hci_setup_ext_adv_instance_sync suggests the
-advertising instance needs to be disabled in order to update its
-parameters, but it was wrongly checking that !adv->pending.
+Currently, an interrupt can be triggered during a GPU reset, which can
+lead to GPU hangs and NULL pointer dereference in an interrupt context
+as shown in the following trace:
 
-Fixes: cba6b758711c ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 2")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+ [  314.035040] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c0
+ [  314.043822] Mem abort info:
+ [  314.046606]   ESR = 0x0000000096000005
+ [  314.050347]   EC = 0x25: DABT (current EL), IL = 32 bits
+ [  314.055651]   SET = 0, FnV = 0
+ [  314.058695]   EA = 0, S1PTW = 0
+ [  314.061826]   FSC = 0x05: level 1 translation fault
+ [  314.066694] Data abort info:
+ [  314.069564]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+ [  314.075039]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+ [  314.080080]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+ [  314.085382] user pgtable: 4k pages, 39-bit VAs, pgdp=0000000102728000
+ [  314.091814] [00000000000000c0] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
+ [  314.100511] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+ [  314.106770] Modules linked in: v3d i2c_brcmstb vc4 snd_soc_hdmi_codec gpu_sched drm_shmem_helper drm_display_helper cec drm_dma_helper drm_kms_helper drm drm_panel_orientation_quirks snd_soc_core snd_compress snd_pcm_dmaengine snd_pcm snd_timer snd backlight
+ [  314.129654] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.25+rpt-rpi-v8 #1  Debian 1:6.12.25-1+rpt1
+ [  314.139388] Hardware name: Raspberry Pi 4 Model B Rev 1.4 (DT)
+ [  314.145211] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ [  314.152165] pc : v3d_irq+0xec/0x2e0 [v3d]
+ [  314.156187] lr : v3d_irq+0xe0/0x2e0 [v3d]
+ [  314.160198] sp : ffffffc080003ea0
+ [  314.163502] x29: ffffffc080003ea0 x28: ffffffec1f184980 x27: 021202b000000000
+ [  314.170633] x26: ffffffec1f17f630 x25: ffffff8101372000 x24: ffffffec1f17d9f0
+ [  314.177764] x23: 000000000000002a x22: 000000000000002a x21: ffffff8103252000
+ [  314.184895] x20: 0000000000000001 x19: 00000000deadbeef x18: 0000000000000000
+ [  314.192026] x17: ffffff94e51d2000 x16: ffffffec1dac3cb0 x15: c306000000000000
+ [  314.199156] x14: 0000000000000000 x13: b2fc982e03cc5168 x12: 0000000000000001
+ [  314.206286] x11: ffffff8103f8bcc0 x10: ffffffec1f196868 x9 : ffffffec1dac3874
+ [  314.213416] x8 : 0000000000000000 x7 : 0000000000042a3a x6 : ffffff810017a180
+ [  314.220547] x5 : ffffffec1ebad400 x4 : ffffffec1ebad320 x3 : 00000000000bebeb
+ [  314.227677] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+ [  314.234807] Call trace:
+ [  314.237243]  v3d_irq+0xec/0x2e0 [v3d]
+ [  314.240906]  __handle_irq_event_percpu+0x58/0x218
+ [  314.245609]  handle_irq_event+0x54/0xb8
+ [  314.249439]  handle_fasteoi_irq+0xac/0x240
+ [  314.253527]  handle_irq_desc+0x48/0x68
+ [  314.257269]  generic_handle_domain_irq+0x24/0x38
+ [  314.261879]  gic_handle_irq+0x48/0xd8
+ [  314.265533]  call_on_irq_stack+0x24/0x58
+ [  314.269448]  do_interrupt_handler+0x88/0x98
+ [  314.273624]  el1_interrupt+0x34/0x68
+ [  314.277193]  el1h_64_irq_handler+0x18/0x28
+ [  314.281281]  el1h_64_irq+0x64/0x68
+ [  314.284673]  default_idle_call+0x3c/0x168
+ [  314.288675]  do_idle+0x1fc/0x230
+ [  314.291895]  cpu_startup_entry+0x3c/0x50
+ [  314.295810]  rest_init+0xe4/0xf0
+ [  314.299030]  start_kernel+0x5e8/0x790
+ [  314.302684]  __primary_switched+0x80/0x90
+ [  314.306691] Code: 940029eb 360ffc13 f9442ea0 52800001 (f9406017)
+ [  314.312775] ---[ end trace 0000000000000000 ]---
+ [  314.317384] Kernel panic - not syncing: Oops: Fatal exception in interrupt
+ [  314.324249] SMP: stopping secondary CPUs
+ [  314.328167] Kernel Offset: 0x2b9da00000 from 0xffffffc080000000
+ [  314.334076] PHYS_OFFSET: 0x0
+ [  314.336946] CPU features: 0x08,00002013,c0200000,0200421b
+ [  314.342337] Memory Limit: none
+ [  314.345382] ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+
+Before resetting the GPU, it's necessary to disable all interrupts and
+deal with any interrupt handler still in-flight. Otherwise, the GPU might
+reset with jobs still running, or yet, an interrupt could be handled
+during the reset.
+
+Cc: stable@vger.kernel.org
+Fixes: 57692c94dcbe ("drm/v3d: Introduce a new DRM driver for Broadcom V3D V3.x+")
+Reviewed-by: Juan A. Suarez <jasuarez@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://lore.kernel.org/r/20250628224243.47599-1-mcanal@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_drv.h |  7 +++++++
+ drivers/gpu/drm/v3d/v3d_gem.c |  2 ++
+ drivers/gpu/drm/v3d/v3d_irq.c | 38 ++++++++++++++++++++++++++---------
+ 3 files changed, 37 insertions(+), 10 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index c1e018eaa6f4c..7d22b2b02745a 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1204,7 +1204,7 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
- 	 * Command Disallowed error, so we must first disable the
- 	 * instance if it is active.
- 	 */
--	if (adv && !adv->pending) {
-+	if (adv) {
- 		err = hci_disable_ext_adv_instance_sync(hdev, instance);
- 		if (err)
- 			return err;
+diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
+index 8a390738d65ba..a605b31a8224c 100644
+--- a/drivers/gpu/drm/v3d/v3d_drv.h
++++ b/drivers/gpu/drm/v3d/v3d_drv.h
+@@ -37,6 +37,12 @@ struct v3d_queue_state {
+ 	u64 emit_seqno;
+ };
+ 
++enum v3d_irq {
++	V3D_CORE_IRQ,
++	V3D_HUB_IRQ,
++	V3D_MAX_IRQS,
++};
++
+ struct v3d_dev {
+ 	struct drm_device drm;
+ 
+@@ -46,6 +52,7 @@ struct v3d_dev {
+ 	int ver;
+ 	bool single_irq_line;
+ 
++	int irq[V3D_MAX_IRQS];
+ 	void __iomem *hub_regs;
+ 	void __iomem *core_regs[3];
+ 	void __iomem *bridge_regs;
+diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
+index 64fe63c1938f5..32cc461937cf3 100644
+--- a/drivers/gpu/drm/v3d/v3d_gem.c
++++ b/drivers/gpu/drm/v3d/v3d_gem.c
+@@ -120,6 +120,8 @@ v3d_reset(struct v3d_dev *v3d)
+ 	if (false)
+ 		v3d_idle_axi(v3d, 0);
+ 
++	v3d_irq_disable(v3d);
++
+ 	v3d_idle_gca(v3d);
+ 	v3d_reset_v3d(v3d);
+ 
+diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+index c678c4ce4f113..96766a788215f 100644
+--- a/drivers/gpu/drm/v3d/v3d_irq.c
++++ b/drivers/gpu/drm/v3d/v3d_irq.c
+@@ -218,7 +218,7 @@ v3d_hub_irq(int irq, void *arg)
+ int
+ v3d_irq_init(struct v3d_dev *v3d)
+ {
+-	int irq1, ret, core;
++	int irq, ret, core;
+ 
+ 	INIT_WORK(&v3d->overflow_mem_work, v3d_overflow_mem_work);
+ 
+@@ -229,17 +229,24 @@ v3d_irq_init(struct v3d_dev *v3d)
+ 		V3D_CORE_WRITE(core, V3D_CTL_INT_CLR, V3D_CORE_IRQS);
+ 	V3D_WRITE(V3D_HUB_INT_CLR, V3D_HUB_IRQS);
+ 
+-	irq1 = platform_get_irq(v3d_to_pdev(v3d), 1);
+-	if (irq1 == -EPROBE_DEFER)
+-		return irq1;
+-	if (irq1 > 0) {
+-		ret = devm_request_irq(v3d->drm.dev, irq1,
++	irq = platform_get_irq(v3d_to_pdev(v3d), 1);
++	if (irq == -EPROBE_DEFER)
++		return irq;
++	if (irq > 0) {
++		v3d->irq[V3D_CORE_IRQ] = irq;
++
++		ret = devm_request_irq(v3d->drm.dev, v3d->irq[V3D_CORE_IRQ],
+ 				       v3d_irq, IRQF_SHARED,
+ 				       "v3d_core0", v3d);
+ 		if (ret)
+ 			goto fail;
+-		ret = devm_request_irq(v3d->drm.dev,
+-				       platform_get_irq(v3d_to_pdev(v3d), 0),
++
++		irq = platform_get_irq(v3d_to_pdev(v3d), 0);
++		if (irq < 0)
++			return irq;
++		v3d->irq[V3D_HUB_IRQ] = irq;
++
++		ret = devm_request_irq(v3d->drm.dev, v3d->irq[V3D_HUB_IRQ],
+ 				       v3d_hub_irq, IRQF_SHARED,
+ 				       "v3d_hub", v3d);
+ 		if (ret)
+@@ -247,8 +254,12 @@ v3d_irq_init(struct v3d_dev *v3d)
+ 	} else {
+ 		v3d->single_irq_line = true;
+ 
+-		ret = devm_request_irq(v3d->drm.dev,
+-				       platform_get_irq(v3d_to_pdev(v3d), 0),
++		irq = platform_get_irq(v3d_to_pdev(v3d), 0);
++		if (irq < 0)
++			return irq;
++		v3d->irq[V3D_CORE_IRQ] = irq;
++
++		ret = devm_request_irq(v3d->drm.dev, v3d->irq[V3D_CORE_IRQ],
+ 				       v3d_irq, IRQF_SHARED,
+ 				       "v3d", v3d);
+ 		if (ret)
+@@ -283,12 +294,19 @@ void
+ v3d_irq_disable(struct v3d_dev *v3d)
+ {
+ 	int core;
++	int i;
+ 
+ 	/* Disable all interrupts. */
+ 	for (core = 0; core < v3d->cores; core++)
+ 		V3D_CORE_WRITE(core, V3D_CTL_INT_MSK_SET, ~0);
+ 	V3D_WRITE(V3D_HUB_INT_MSK_SET, ~0);
+ 
++	/* Finish any interrupt handler still in flight. */
++	for (i = 0; i < V3D_MAX_IRQS; i++) {
++		if (v3d->irq[i])
++			synchronize_irq(v3d->irq[i]);
++	}
++
+ 	/* Clear any pending interrupts we might have left. */
+ 	for (core = 0; core < v3d->cores; core++)
+ 		V3D_CORE_WRITE(core, V3D_CTL_INT_CLR, V3D_CORE_IRQS);
 -- 
 2.39.5
 
