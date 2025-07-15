@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-162727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDEC5B05FCC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E84B05FBB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FC801890CDC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0628A188CB56
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91D72E49B8;
-	Tue, 15 Jul 2025 13:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68E02E54CF;
+	Tue, 15 Jul 2025 13:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnxCIpd8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPs2T/Q0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781092E266C;
-	Tue, 15 Jul 2025 13:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49F92E041E;
+	Tue, 15 Jul 2025 13:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587318; cv=none; b=J1zlSgMVPZa4fcDqzSiV88sEG0gs6a4MvdJSZ+hBhUs6kGFhEVf1hZQTLkTxjXS+Xpd6FtKssHI+52lm9EO2mH0oKc4F/h8v+GE47+nqgJrEGzU3t+QN0O0UAt7wz3DF9oc9k0w+VqiIIHk8oYPO2zaltqS1G3xZ76Wy46V6Wbg=
+	t=1752587347; cv=none; b=mbPS/e026/zAkZakE9FbA3oXO1y7ktPMbDXbrPExlsMjLBP2ScBLKq0L9F44t4BUL01JWmAoezUORlwUBepaCYfpwqwFvFRLCU121ryBCB5BImmPnsUFoaBTi/cfD/CMdQe02UNsG7ItsDFKtSHiRMxVVkD6mNd8JQQL+kE7msQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587318; c=relaxed/simple;
-	bh=nzL3o3zK8ysbywf0NZ7YelDMfGWmBNseXlKx2uDTBi4=;
+	s=arc-20240116; t=1752587347; c=relaxed/simple;
+	bh=0mt7s2vfPyT5zuQJ0eGA30rIQCam/wE5V5ZK6atnBX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nsp9dDLJMwRz4mrl6o3M0PHK3Q+d0ZFOCNSX7OzWOJT8A6/s80NAPeF4y3WozpBPG9lC0i1PdLBvxtuFJ+vTOX3hMFIOx3+WHaEHFO4uI5Bqe0avIswmwTIpG2RmMht5oKv8zmtFrIF5B4yyRi0uqVWMAWCxkpRWcYI3LE53pqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnxCIpd8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3A8C4CEE3;
-	Tue, 15 Jul 2025 13:48:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xio68Teq3iCq4vBYBDVJ7KCC3hxKSN+YQO6OiTrdyBrk+eOzYScEky5P6awwANNdiJ8WgeYomz+Xa3F0/946ER4ELloV9V9mZbI6xVnk7YbRZ8fs9oJ0R2QE3/ew3hwLLoMusceDboGY6QhglwzZMZ1ZMCBZN1h1v6hCEpNUmGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPs2T/Q0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360F3C4CEE3;
+	Tue, 15 Jul 2025 13:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587318;
-	bh=nzL3o3zK8ysbywf0NZ7YelDMfGWmBNseXlKx2uDTBi4=;
+	s=korg; t=1752587347;
+	bh=0mt7s2vfPyT5zuQJ0eGA30rIQCam/wE5V5ZK6atnBX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lnxCIpd8AXuQIociwn5u06jJUWGCfuVa02uAEYSxSmYNJxmpjf+8z4JdcbVgjm/oB
-	 nW9zMw9QfvIFPM0nlhJ9gSxKrHOTnVcpptk7IrWRapXB9oIUTGUm10Hx3zLz5O8v/l
-	 I4oLoLEholfFcSx6yww8+BExRu6btzjcOx2O7eB4=
+	b=wPs2T/Q0mrv54mK6wySFKaBQ5BX2soXhf8h/EwHiKgn6OoXJoellMEwQ1r9fZvQ+x
+	 /kwZg1iAvasccMK47mp28I4vBJDaIBe8wwmpZPx9H6z2C2n/PQYi2EzbZ4ZgJJGoqS
+	 yC1i3WDW+lCNa54wbt2KdOnEQ1l+b/gS+srbzMOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 38/88] maple_tree: fix mt_destroy_walk() on root leaf node
-Date: Tue, 15 Jul 2025 15:14:14 +0200
-Message-ID: <20250715130756.052365567@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.1 39/88] pwm: mediatek: Ensure to disable clocks in error path
+Date: Tue, 15 Jul 2025 15:14:15 +0200
+Message-ID: <20250715130756.091153581@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
 References: <20250715130754.497128560@linuxfoundation.org>
@@ -61,47 +59,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit ea9b77f98d94c4d5c1bd1ac1db078f78b40e8bf5 upstream.
+commit 505b730ede7f5c4083ff212aa955155b5b92e574 upstream.
 
-On destroy, we should set each node dead.  But current code miss this when
-the maple tree has only the root node.
+After enabling the clocks each error path must disable the clocks again.
+One of them failed to do so. Unify the error paths to use goto to make it
+harder for future changes to add a similar bug.
 
-The reason is mt_destroy_walk() leverage mte_destroy_descend() to set node
-dead, but this is skipped since the only root node is a leaf.
-
-Fixes this by setting the node dead if it is a leaf.
-
-Link: https://lore.kernel.org/all/20250407231354.11771-1-richard.weiyang@gmail.com/
-Link: https://lkml.kernel.org/r/20250624191841.64682-1-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 7ca59947b5fc ("pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250704172728.626815-2-u.kleine-koenig@baylibre.com
+Cc: stable@vger.kernel.org
+[ukleinek: backported to 6.6.y]
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/maple_tree.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/pwm/pwm-mediatek.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5619,6 +5619,7 @@ static void mt_destroy_walk(struct maple
- 	struct maple_enode *start;
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -129,8 +129,10 @@ static int pwm_mediatek_config(struct pw
+ 		return ret;
  
- 	if (mte_is_leaf(enode)) {
-+		mte_set_node_dead(enode);
- 		node->type = mte_node_type(enode);
- 		goto free_leaf;
+ 	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
+-	if (!clk_rate)
+-		return -EINVAL;
++	if (!clk_rate) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 
+ 	/* Make sure we use the bus clock and not the 26MHz clock */
+ 	if (pc->soc->has_ck_26m_sel)
+@@ -149,9 +151,9 @@ static int pwm_mediatek_config(struct pw
  	}
+ 
+ 	if (clkdiv > PWM_CLK_DIV_MAX) {
+-		pwm_mediatek_clk_disable(chip, pwm);
+ 		dev_err(chip->dev, "period of %d ns not supported\n", period_ns);
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto out;
+ 	}
+ 
+ 	if (pc->soc->pwm45_fixup && pwm->hwpwm > 2) {
+@@ -168,9 +170,10 @@ static int pwm_mediatek_config(struct pw
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
+ 
++out:
+ 	pwm_mediatek_clk_disable(chip, pwm);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
 
 
 
