@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53CD1B05F55
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD0BB05F61
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:05:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 083151C454CB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:56:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69C667BBB79
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AA32ECEAB;
-	Tue, 15 Jul 2025 13:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7422E6135;
+	Tue, 15 Jul 2025 13:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mj/tRcQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lcukf3uZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C152EF65C;
-	Tue, 15 Jul 2025 13:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0B6244691;
+	Tue, 15 Jul 2025 13:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587187; cv=none; b=H2np/8Qu3P/7mhH1dVynW/xBPhiSvajwv+FaDZbxBQaSGbW0sRYYzSjhKNb++mQCmL9TnOsXyQ7Lgd3l1rrupXgzc008Tee4p4A9nfsAxotFj7zwcph9/MylxYP1g7RqiWlfIt/++f9c26rx5/BwpXauOL7T6mZcZepV5f6tFj4=
+	t=1752587411; cv=none; b=eNSFOPOi5Wx3XnWbn8/3QA4c9ExLqZhoNw7C6RTRKdvhO0q+EeJuXDdEIWc2CSoTLxW4NqueaIWDzVqOpsSY+Bpl/hTPT5JHITB1a/p9G2Jlwfoh3y9XyCYEd2vHH67i6qVGqKzPdanANVR1cDpkL4RKZr7bSkhsqX8g6jOQgi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587187; c=relaxed/simple;
-	bh=rjQpVgcrU0aOojY2DtM5IBPQZPdMUtqCYSlZepI9XQc=;
+	s=arc-20240116; t=1752587411; c=relaxed/simple;
+	bh=MMK49/B0u6xcI7yE+wqpSH1nI/5nk5Eqtr1KCWt66y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sHLljJsCR1UDY0Vd0XijwrVLRpxDFOuAjrdoswyXJ8L5mjcgacL9/AorhOMy7wbQ7heiIA75HzbvRTWLIufbLvZWo1DwYLXZsvuAjdsYff9U1QAcbaEsQbIn6hkFi8Em8rhJirKkKtB7vxytU0YLHBOrbccWxP7BkJCgjHlQtP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mj/tRcQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF292C4CEE3;
-	Tue, 15 Jul 2025 13:46:26 +0000 (UTC)
+	 MIME-Version; b=AcK82mq1wTpFU/g7Og5H8qj+ZPv6If4v8F1Cx0y0ixuAb+yOWf9PMpB/2wCbApeW6fCuGrrYW+E7A8yAY5NInxXbT3gDIArqzJj4RBY0WU8F073PfKAmugz2pXTUKbV9siDinWS8BDgaUomij0BdizlaK1cYIdd96+J74QnoOy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lcukf3uZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6464EC4CEE3;
+	Tue, 15 Jul 2025 13:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587187;
-	bh=rjQpVgcrU0aOojY2DtM5IBPQZPdMUtqCYSlZepI9XQc=;
+	s=korg; t=1752587410;
+	bh=MMK49/B0u6xcI7yE+wqpSH1nI/5nk5Eqtr1KCWt66y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mj/tRcQ/zdudN05p/TlS/Xp/R00phNaihDwdjBlyQIZ6zkGhjMsupZ7WymcDmLQg2
-	 KUS+RuguhuCsTrtetioNce5JiHDHWZT3mixeYxWQj7CAGKkeI+1VXcpY/4yJ/c/Er/
-	 AmQpaCJbuXP9mq0XeYrSfOSwu76PqJ2uW1Jds7g4=
+	b=Lcukf3uZFgzMgcMU1h3wsYlR9+5wM3ykRQFAT2XbgV6l3rQVWuyKf07KikZAaBO59
+	 TRVDmvNQ5O1hIe2i3fbaDbw5z7Ds48r7v+e/OEgPOn90nP+OSjm5T644bv9oDH35HO
+	 D9Qm03zB8K4x9+MfASf6+0VMjj0EjqE52/oUg/tI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyan Xu <research@securitygossip.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 192/192] ksmbd: fix potential use-after-free in oplock/lease break ack
-Date: Tue, 15 Jul 2025 15:14:47 +0200
-Message-ID: <20250715130822.629147906@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 74/88] um: vector: Reduce stack usage in vector_eth_configure()
+Date: Tue, 15 Jul 2025 15:14:50 +0200
+Message-ID: <20250715130757.544069102@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-commit 50f930db22365738d9387c974416f38a06e8057e upstream.
+[ Upstream commit 2d65fc13be85c336c56af7077f08ccd3a3a15a4a ]
 
-If ksmbd_iov_pin_rsp return error, use-after-free can happen by
-accessing opinfo->state and opinfo_put and ksmbd_fd_put could
-called twice.
+When compiling with clang (19.1.7), initializing *vp using a compound
+literal may result in excessive stack usage. Fix it by initializing the
+required fields of *vp individually.
 
-Reported-by: Ziyan Xu <research@securitygossip.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Without this patch:
+
+$ objdump -d arch/um/drivers/vector_kern.o | ./scripts/checkstack.pl x86_64 0
+...
+0x0000000000000540 vector_eth_configure [vector_kern.o]:1472
+...
+
+With this patch:
+
+$ objdump -d arch/um/drivers/vector_kern.o | ./scripts/checkstack.pl x86_64 0
+...
+0x0000000000000540 vector_eth_configure [vector_kern.o]:208
+...
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506221017.WtB7Usua-lkp@intel.com/
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250623110829.314864-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   29 +++++++++--------------------
- 1 file changed, 9 insertions(+), 20 deletions(-)
+ arch/um/drivers/vector_kern.c | 42 +++++++++++------------------------
+ 1 file changed, 13 insertions(+), 29 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -8535,11 +8535,6 @@ static void smb20_oplock_break_ack(struc
- 		goto err_out;
- 	}
+diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+index 2baa8d4a33ed3..1a068859a4185 100644
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -1600,35 +1600,19 @@ static void vector_eth_configure(
  
--	opinfo->op_state = OPLOCK_STATE_NONE;
--	wake_up_interruptible_all(&opinfo->oplock_q);
--	opinfo_put(opinfo);
--	ksmbd_fd_put(work, fp);
--
- 	rsp->StructureSize = cpu_to_le16(24);
- 	rsp->OplockLevel = rsp_oplevel;
- 	rsp->Reserved = 0;
-@@ -8547,16 +8542,15 @@ static void smb20_oplock_break_ack(struc
- 	rsp->VolatileFid = volatile_id;
- 	rsp->PersistentFid = persistent_id;
- 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_oplock_break));
--	if (!ret)
--		return;
--
-+	if (ret) {
- err_out:
-+		smb2_set_err_rsp(work);
-+	}
-+
- 	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
--
- 	opinfo_put(opinfo);
- 	ksmbd_fd_put(work, fp);
--	smb2_set_err_rsp(work);
- }
+ 	device->dev = dev;
  
- static int check_lease_state(struct lease *lease, __le32 req_state)
-@@ -8686,11 +8680,6 @@ static void smb21_lease_break_ack(struct
- 	}
+-	*vp = ((struct vector_private)
+-		{
+-		.list			= LIST_HEAD_INIT(vp->list),
+-		.dev			= dev,
+-		.unit			= n,
+-		.options		= get_transport_options(def),
+-		.rx_irq			= 0,
+-		.tx_irq			= 0,
+-		.parsed			= def,
+-		.max_packet		= get_mtu(def) + ETH_HEADER_OTHER,
+-		/* TODO - we need to calculate headroom so that ip header
+-		 * is 16 byte aligned all the time
+-		 */
+-		.headroom		= get_headroom(def),
+-		.form_header		= NULL,
+-		.verify_header		= NULL,
+-		.header_rxbuffer	= NULL,
+-		.header_txbuffer	= NULL,
+-		.header_size		= 0,
+-		.rx_header_size		= 0,
+-		.rexmit_scheduled	= false,
+-		.opened			= false,
+-		.transport_data		= NULL,
+-		.in_write_poll		= false,
+-		.coalesce		= 2,
+-		.req_size		= get_req_size(def),
+-		.in_error		= false,
+-		.bpf			= NULL
+-	});
++	INIT_LIST_HEAD(&vp->list);
++	vp->dev		= dev;
++	vp->unit	= n;
++	vp->options	= get_transport_options(def);
++	vp->parsed	= def;
++	vp->max_packet	= get_mtu(def) + ETH_HEADER_OTHER;
++	/*
++	 * TODO - we need to calculate headroom so that ip header
++	 * is 16 byte aligned all the time
++	 */
++	vp->headroom	= get_headroom(def);
++	vp->coalesce	= 2;
++	vp->req_size	= get_req_size(def);
  
- 	lease_state = lease->state;
--	opinfo->op_state = OPLOCK_STATE_NONE;
--	wake_up_interruptible_all(&opinfo->oplock_q);
--	atomic_dec(&opinfo->breaking_cnt);
--	wake_up_interruptible_all(&opinfo->oplock_brk);
--	opinfo_put(opinfo);
- 
- 	rsp->StructureSize = cpu_to_le16(36);
- 	rsp->Reserved = 0;
-@@ -8699,16 +8688,16 @@ static void smb21_lease_break_ack(struct
- 	rsp->LeaseState = lease_state;
- 	rsp->LeaseDuration = 0;
- 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_lease_ack));
--	if (!ret)
--		return;
--
-+	if (ret) {
- err_out:
-+		smb2_set_err_rsp(work);
-+	}
-+
-+	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
- 	atomic_dec(&opinfo->breaking_cnt);
- 	wake_up_interruptible_all(&opinfo->oplock_brk);
--
- 	opinfo_put(opinfo);
--	smb2_set_err_rsp(work);
- }
- 
- /**
+ 	dev->features = dev->hw_features = (NETIF_F_SG | NETIF_F_FRAGLIST);
+ 	INIT_WORK(&vp->reset_tx, vector_reset_tx);
+-- 
+2.39.5
+
 
 
 
