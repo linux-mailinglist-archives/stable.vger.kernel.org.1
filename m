@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56BA6B05C8B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:33:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14875B05DC7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB3814A0C42
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7B2500DC3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26ED62E5B3F;
-	Tue, 15 Jul 2025 13:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930792EAB83;
+	Tue, 15 Jul 2025 13:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSPpdACM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhHMn1H+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC08E2E5B09;
-	Tue, 15 Jul 2025 13:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429102EAB84;
+	Tue, 15 Jul 2025 13:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585951; cv=none; b=QJV3u4Xs8Ufd7ah71MIqQCJverCjaFcakfAg7qFzBYBhLUUcundUfBzMWpEdJnrZDJLDQxPIg5izbAKaaLlXHyDuQ1EhrKgLulijVS714MZJSh5sOAcEmexn95bSS3fyKWuCaNkA7BZbzB/cuqFEDkJFHU4wQxH9a0vEcMp0cWc=
+	t=1752586481; cv=none; b=UcdGnlGAonWiIUjpEnHmHlDda+MiYlCVtCui5wRll0WtC7Apqq3YEpNzpySLh8FG0bkQHqBly2LIyOtzG6WQfWdCgW4zwPIhNmECPV0zABtn/aVx0MlCQBvuPNkXAwuZXe4ue0daoaFJnxYf/EpHL2J13wgNGsOI0PKR76stCNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585951; c=relaxed/simple;
-	bh=FSCHEJPK3JOzbXOf8BeYCSzaj3aUlZW6lwJfzSpNcJ8=;
+	s=arc-20240116; t=1752586481; c=relaxed/simple;
+	bh=aHllR8XRlGMfwDE+8STM3zk3V5Q2jBIYVDoodFBBWEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXSnLWJDlAMROutGFeNy6G/7mnV/8+ErJp2VFqfQmANYA1aDO/mx79N4TVyU4kjzEz6bczg7MdCZRJngGUhkw6Iv262qhdzl/g2azzP54FlOlvw3RQjXvaMo5uZ8Xa381eE7ShDcdN0jkZ0R/5htvq4+sqyS+N2SWR+BhQNPvH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSPpdACM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558C0C4CEE3;
-	Tue, 15 Jul 2025 13:25:51 +0000 (UTC)
+	 MIME-Version; b=m3bVQ3FNMwZRsDmHolhouCxrN/Q0OuhehHKa7yTub3be8A+BbpABh9QM5qAJs+h48DnCV1vzTxspzypCMfs2yioLrBTcsN1FwfL6tgPhi+7xD3qF24shhE+/o6aGdiBmJTkJ5RkXIdz02kgZeCSCTAn1usLq98OXTHBV3al8P5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhHMn1H+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA600C4CEE3;
+	Tue, 15 Jul 2025 13:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585951;
-	bh=FSCHEJPK3JOzbXOf8BeYCSzaj3aUlZW6lwJfzSpNcJ8=;
+	s=korg; t=1752586481;
+	bh=aHllR8XRlGMfwDE+8STM3zk3V5Q2jBIYVDoodFBBWEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSPpdACMBKZEbVRtSr90JzxDtHogkKUlFclQk6YDDpSuqMw5zHsGCnZMGQ5suxUXv
-	 6PAf4A7FD+VAXtKAFe3WxDfpx2pu3C8rIXdrqK28gg84Bhk/yjgGM5HXxZurt3O+9w
-	 t9lLC0EP+lk8U3pOgiu5lua78Xlu19KhPFy5ORUo=
+	b=GhHMn1H+p7S43Yt4g+/Pw2UF4IFLh+boQPH0jYl/Us6z3mkfuHC9BXjexLVnmOBHh
+	 eiYjN4fySHcXsmXp4Sy3zLBcPDcyaFmcoD1QZFlFXqmSjrNGEq+7zmojGpqBaMy/0B
+	 Xr9zWeG9F1xIDr5DUlpbBhuSv06s9/fkpzyWlIM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/109] btrfs: remove redundant root argument from fixup_inode_link_count()
+Subject: [PATCH 5.4 082/148] mtk-sd: Prevent memory corruption from DMA map failure
 Date: Tue, 15 Jul 2025 15:13:24 +0200
-Message-ID: <20250715130801.605722307@linuxfoundation.org>
+Message-ID: <20250715130803.604117768@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 8befc61cbba2d4567122d400542da8900a352971 ]
+[ Upstream commit f5de469990f19569627ea0dd56536ff5a13beaa3 ]
 
-The root argument for fixup_inode_link_count() always matches the root of
-the given inode, so remove the root argument and get it from the inode
-argument. This also applies to the helpers count_inode_extrefs() and
-count_inode_refs() used by fixup_inode_link_count() - they don't need the
-root argument, as it always matches the root of the inode passed to them.
+If msdc_prepare_data() fails to map the DMA region, the request is
+not prepared for data receiving, but msdc_start_data() proceeds
+the DMA with previous setting.
+Since this will lead a memory corruption, we have to stop the
+request operation soon after the msdc_prepare_data() fails to
+prepare it.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 5f61b961599a ("btrfs: fix inode lookup error handling during log replay")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/174972756982.3337526.6755001617701603082.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/mmc/host/mtk-sd.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 13377c3b22897..a17942f4c155b 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1504,8 +1504,7 @@ static noinline int add_inode_ref(struct btrfs_trans_handle *trans,
- 	return ret;
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index 5d330f2a3faae..dbe3478cc2308 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -686,6 +686,11 @@ static void msdc_prepare_data(struct msdc_host *host, struct mmc_data *data)
+ 	}
  }
  
--static int count_inode_extrefs(struct btrfs_root *root,
--		struct btrfs_inode *inode, struct btrfs_path *path)
-+static int count_inode_extrefs(struct btrfs_inode *inode, struct btrfs_path *path)
++static bool msdc_data_prepared(struct mmc_data *data)
++{
++	return data->host_cookie & MSDC_PREPARE_FLAG;
++}
++
+ static void msdc_unprepare_data(struct msdc_host *host, struct mmc_data *data)
  {
- 	int ret = 0;
- 	int name_len;
-@@ -1519,8 +1518,8 @@ static int count_inode_extrefs(struct btrfs_root *root,
- 	struct extent_buffer *leaf;
+ 	if (data->host_cookie & MSDC_ASYNC_FLAG)
+@@ -1198,8 +1203,18 @@ static void msdc_ops_request(struct mmc_host *mmc, struct mmc_request *mrq)
+ 	WARN_ON(host->mrq);
+ 	host->mrq = mrq;
  
- 	while (1) {
--		ret = btrfs_find_one_extref(root, inode_objectid, offset, path,
--					    &extref, &offset);
-+		ret = btrfs_find_one_extref(inode->root, inode_objectid, offset,
-+					    path, &extref, &offset);
- 		if (ret)
- 			break;
+-	if (mrq->data)
++	if (mrq->data) {
+ 		msdc_prepare_data(host, mrq->data);
++		if (!msdc_data_prepared(mrq->data)) {
++			/*
++			 * Failed to prepare DMA area, fail fast before
++			 * starting any commands.
++			 */
++			mrq->cmd->error = -ENOSPC;
++			mmc_request_done(mmc_from_priv(host), mrq);
++			return;
++		}
++	}
  
-@@ -1548,8 +1547,7 @@ static int count_inode_extrefs(struct btrfs_root *root,
- 	return nlink;
- }
- 
--static int count_inode_refs(struct btrfs_root *root,
--			struct btrfs_inode *inode, struct btrfs_path *path)
-+static int count_inode_refs(struct btrfs_inode *inode, struct btrfs_path *path)
- {
- 	int ret;
- 	struct btrfs_key key;
-@@ -1564,7 +1562,7 @@ static int count_inode_refs(struct btrfs_root *root,
- 	key.offset = (u64)-1;
- 
- 	while (1) {
--		ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
-+		ret = btrfs_search_slot(NULL, inode->root, &key, path, 0, 0);
- 		if (ret < 0)
- 			break;
- 		if (ret > 0) {
-@@ -1616,9 +1614,9 @@ static int count_inode_refs(struct btrfs_root *root,
-  * will free the inode.
-  */
- static noinline int fixup_inode_link_count(struct btrfs_trans_handle *trans,
--					   struct btrfs_root *root,
- 					   struct inode *inode)
- {
-+	struct btrfs_root *root = BTRFS_I(inode)->root;
- 	struct btrfs_path *path;
- 	int ret;
- 	u64 nlink = 0;
-@@ -1628,13 +1626,13 @@ static noinline int fixup_inode_link_count(struct btrfs_trans_handle *trans,
- 	if (!path)
- 		return -ENOMEM;
- 
--	ret = count_inode_refs(root, BTRFS_I(inode), path);
-+	ret = count_inode_refs(BTRFS_I(inode), path);
- 	if (ret < 0)
- 		goto out;
- 
- 	nlink = ret;
- 
--	ret = count_inode_extrefs(root, BTRFS_I(inode), path);
-+	ret = count_inode_extrefs(BTRFS_I(inode), path);
- 	if (ret < 0)
- 		goto out;
- 
-@@ -1706,7 +1704,7 @@ static noinline int fixup_inode_link_counts(struct btrfs_trans_handle *trans,
- 			break;
- 		}
- 
--		ret = fixup_inode_link_count(trans, root, inode);
-+		ret = fixup_inode_link_count(trans, inode);
- 		iput(inode);
- 		if (ret)
- 			break;
+ 	/* if SBC is required, we have HW option and SW option.
+ 	 * if HW option is enabled, and SBC does not have "special" flags,
 -- 
 2.39.5
 
