@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85755B05DE4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD6DB05EDE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE45617761C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:44:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79B344A3BBB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7566F2E62B7;
-	Tue, 15 Jul 2025 13:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782632ECD0D;
+	Tue, 15 Jul 2025 13:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVeL8jET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4b6Np7M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331DA70831;
-	Tue, 15 Jul 2025 13:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2142ECD02;
+	Tue, 15 Jul 2025 13:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586677; cv=none; b=O28rEeH3OgNQIoenoTW0p5ZoLLUjru/rKFx+OcrQCsp9uldJUPzp8V6Yb4g4TWHQ1Z/9knvCZje2tZaxz45ML6xSPPWLLuioJUAPt3nBY1Btw3A8Pm2osy+gx4YnovTli+kg8qEBhWpcTj8yW1VlwwMFVpgmDps25pRm+O8cdR4=
+	t=1752587108; cv=none; b=ccOe6bhidW14mYLwOvHRQPva0yzOxN+oLDBHiFwGU7ULGjrtNhsDwaK8Ben7/LaFBSWTxjeROW854aoEoKc1iuavD/PqUrFq/ZZaCM4HncjtKNeduqCip1wpWwdudVSxSXIMA3dBHDzWffEvlU6aHYN/Hpue96MUAEFPaLV5GUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586677; c=relaxed/simple;
-	bh=QKHfm4aZS8MNImHR++I5qY24Vzue4fQbWxRISTboKsg=;
+	s=arc-20240116; t=1752587108; c=relaxed/simple;
+	bh=/LEnGDZVeiqWAcsRgzl7jVcwwyR8Ge2zcMdaGIy6wPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lkq/6gPlE7Mfc5q4WDd4ZuZz5xwymLilR7yPC/B4aOWjyDj4mlkVogcBq5PGyW1snkwejnNkhwnPQCyhjtXe6PJSTyK1VdOThiAhzhWpmAx/XlQwBTaEY/NrrSF6B2sm2YjPmBUeDxoDI4jlGyxcuxq4nWieiDIQJg/Au8CZo90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVeL8jET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF6DC4CEE3;
-	Tue, 15 Jul 2025 13:37:56 +0000 (UTC)
+	 MIME-Version; b=OH5lTrF1THNMTEIO/CpNNzc8jdKzWwWUjKjdl5tb5wXNE0yrd/FduCJl3S1aj8VWpktRHsb0+0h9D4WFtTvO6Ock77eIYrYK5+FEDfzAbrgSpXMQ1J1rjiCGIDzAJoyQpQZVwk4RhnNZ9W3QlUkl6Q34BSNmmasPxcPhAcBVKvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4b6Np7M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34B4C4CEE3;
+	Tue, 15 Jul 2025 13:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586677;
-	bh=QKHfm4aZS8MNImHR++I5qY24Vzue4fQbWxRISTboKsg=;
+	s=korg; t=1752587108;
+	bh=/LEnGDZVeiqWAcsRgzl7jVcwwyR8Ge2zcMdaGIy6wPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UVeL8jETFqsN4sCRUD+7FQqFGb5dujoQ70mKMtnjlCKd7tQK4CWbemktBUDYzlJes
-	 5zhSV83LZ8SkL50BI95GUpvh3gxQZy6HJFhnQugODKbgmytjyB0i/Xf7cKnfAZdhlB
-	 gJEmvSzE1fAMdmr3F/xxtqZDuieGaKCzCKtUXivc=
+	b=X4b6Np7MutiJgHIMLuQliWTEN27/hVw30VIsCA6mrdfAmbymsFRL8hVqkVLlYnCwU
+	 zEy7OSH9WaDK5qlbzeDq1O6wwdw9NA+PAkD37klOpZKKJIVDr7yvBORNbJ64UL4pb/
+	 NJguxVOMsE9/OpSQWAgG0KOZZ7d6sGQsby8rMMjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Pitre <npitre@baylibre.com>,
+	Tamura Dai <kirinode0@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 143/148] vt: add missing notification when switching back to text mode
+Subject: [PATCH 6.15 170/192] ASoC: SOF: Intel: hda: Use devm_kstrdup() to avoid memleak.
 Date: Tue, 15 Jul 2025 15:14:25 +0200
-Message-ID: <20250715130806.004163777@linuxfoundation.org>
+Message-ID: <20250715130821.734444921@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Pitre <npitre@baylibre.com>
+From: Tamura Dai <kirinode0@gmail.com>
 
-[ Upstream commit ff78538e07fa284ce08cbbcb0730daa91ed16722 ]
+[ Upstream commit 6c038b58a2dc5a008c7e7a1297f5aaa4deaaaa7e ]
 
-Programs using poll() on /dev/vcsa to be notified when VT changes occur
-were missing one case: the switch from gfx to text mode.
+sof_pdata->tplg_filename can have address allocated by kstrdup()
+and can be overwritten. Memory leak was detected with kmemleak:
 
-Signed-off-by: Nicolas Pitre <npitre@baylibre.com>
-Link: https://lore.kernel.org/r/9o5ro928-0pp4-05rq-70p4-ro385n21n723@onlyvoer.pbz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+unreferenced object 0xffff88812391ff60 (size 16):
+  comm "kworker/4:1", pid 161, jiffies 4294802931
+  hex dump (first 16 bytes):
+    73 6f 66 2d 68 64 61 2d 67 65 6e 65 72 69 63 00  sof-hda-generic.
+  backtrace (crc 4bf1675c):
+    __kmalloc_node_track_caller_noprof+0x49c/0x6b0
+    kstrdup+0x46/0xc0
+    hda_machine_select.cold+0x1de/0x12cf [snd_sof_intel_hda_generic]
+    sof_init_environment+0x16f/0xb50 [snd_sof]
+    sof_probe_continue+0x45/0x7c0 [snd_sof]
+    sof_probe_work+0x1e/0x40 [snd_sof]
+    process_one_work+0x894/0x14b0
+    worker_thread+0x5e5/0xfb0
+    kthread+0x39d/0x760
+    ret_from_fork+0x31/0x70
+    ret_from_fork_asm+0x1a/0x30
+
+Signed-off-by: Tamura Dai <kirinode0@gmail.com>
+Link: https://patch.msgid.link/20250615235548.8591-1-kirinode0@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/vt.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/sof/intel/hda.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index e58dceaf7ff0e..3db8efd58747d 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -4368,6 +4368,7 @@ void do_unblank_screen(int leaving_gfx)
- 	set_palette(vc);
- 	set_cursor(vc);
- 	vt_event_post(VT_EVENT_UNBLANK, vc->vc_num, vc->vc_num);
-+	notify_update(vc);
+diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+index 6a3932d90b43a..27b077f5c8f58 100644
+--- a/sound/soc/sof/intel/hda.c
++++ b/sound/soc/sof/intel/hda.c
+@@ -1254,11 +1254,11 @@ static int check_tplg_quirk_mask(struct snd_soc_acpi_mach *mach)
+ 	return 0;
  }
- EXPORT_SYMBOL(do_unblank_screen);
+ 
+-static char *remove_file_ext(const char *tplg_filename)
++static char *remove_file_ext(struct device *dev, const char *tplg_filename)
+ {
+ 	char *filename, *tmp;
+ 
+-	filename = kstrdup(tplg_filename, GFP_KERNEL);
++	filename = devm_kstrdup(dev, tplg_filename, GFP_KERNEL);
+ 	if (!filename)
+ 		return NULL;
+ 
+@@ -1342,7 +1342,7 @@ struct snd_soc_acpi_mach *hda_machine_select(struct snd_sof_dev *sdev)
+ 		 */
+ 		if (!sof_pdata->tplg_filename) {
+ 			/* remove file extension if it exists */
+-			tplg_filename = remove_file_ext(mach->sof_tplg_filename);
++			tplg_filename = remove_file_ext(sdev->dev, mach->sof_tplg_filename);
+ 			if (!tplg_filename)
+ 				return NULL;
  
 -- 
 2.39.5
