@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-162417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770C4B05DE6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25CE0B05ED8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB7AF1C26D19
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9FBE1C4434A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2012EBDFC;
-	Tue, 15 Jul 2025 13:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155722E611E;
+	Tue, 15 Jul 2025 13:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2niaYzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="laBO2k/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB442EACF0;
-	Tue, 15 Jul 2025 13:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85762E2EFF;
+	Tue, 15 Jul 2025 13:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586499; cv=none; b=KYMwKYz3gLihp9IPN+HWbzPlkOeLUxyUvhaBaXFb/Ov6qF9yM4vvWwMqoyOVQDmRABCJ0QiTVk8tJhh6+7czuTwA6YAsQ2UyNxSWV/EkaYShD9n7E+EhvdoGg6uwceRnpxZEpnXrd1n8d8bdxWZHmnBtYKkjzFC7CPUOlrnElro=
+	t=1752586965; cv=none; b=nWSzu20NlcqF/AgpQDkZDy5mGWNgO2DHakaXGqRzQ0Pi3fBQ06slRt4mKMtC5wlq9iWIkNC26BRsrREqqNOEEwPJnaPuF+Vin9HUpoVnnM4Xqh0m+OjpLGeGe+2vowgypi6VdtgaVzBliub2UCnIFwHpe/NZG/Joh1kKA5pS3p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586499; c=relaxed/simple;
-	bh=NEBpKIrwfgwCf7U8Z85JxsjHOWdKbK1GwntGNEH+v7E=;
+	s=arc-20240116; t=1752586965; c=relaxed/simple;
+	bh=bdMc/ZoMXloZ8aoOa+o6HNPEVbNTMkG6wB2Ftrey+vA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHyZ/WnxOyS7wwSqm3sCB3WLSX5oXwzrktPJldYvxLNvJYjUgZ6DL3yjwXmMssi/dLeRoohGU5yDQz1t00HxzwKDKEA8jQMVQlPnOK9pqOJZ4VQFJClIsEYVBVHiIWT0NKVj5Cb9wpyvmv2W5xtZBbpkd9oDMsOWW8IcTgRIUV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2niaYzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217D1C4CEF7;
-	Tue, 15 Jul 2025 13:34:58 +0000 (UTC)
+	 MIME-Version; b=EsRwxjRWMejY0upwkU/JHV00ihZvXw31E03d6iQFsPqZop+svYrJWe9Prrt6Ixu1boTDY8h06OoKjwYdJH0CYafE6ydIjLm8xxiu7ycsY+ZzLreSkxm0ZLV924W/ef63k/JxDbIBSv/2RbZPz0M/GGba0dw/xhhJZN0VWOyL1E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=laBO2k/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE7CC4CEF7;
+	Tue, 15 Jul 2025 13:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586499;
-	bh=NEBpKIrwfgwCf7U8Z85JxsjHOWdKbK1GwntGNEH+v7E=;
+	s=korg; t=1752586965;
+	bh=bdMc/ZoMXloZ8aoOa+o6HNPEVbNTMkG6wB2Ftrey+vA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N2niaYzoTZTvQjBo9qoPudPQQBCr1ts13xVh9t4Q166i2LREBGB/Qvkp/wtu36R7f
-	 2X1lgs07iKgSSM6akkKIDoHxFFQy87ngRinA4C2r8EiFwag7ce6DW5yxHbn6h49H8l
-	 M9efLYKijBpmKBD7VowBiDyRUAMzlvAPOwNE0bRU=
+	b=laBO2k/IOBNjgHb5lXrftM2ZQIC4DOwkyDhwWqnXQCxBKcsw4B7q+8WkAiIjeUx1k
+	 omUgDICiG77hDBaNd0duJ0mXPZvSmRWrc+bJ3G7Fv8GL961J/rxno1pOXE37SYIN9G
+	 3BjcT23fNG/tCF8Ay2JTj4q1C8775pdW8bvd4ISs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 088/148] btrfs: propagate last_unlink_trans earlier when doing a rmdir
+	Vitaly Chikunov <vt@altlinux.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Jann Horn <jannh@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 6.15 115/192] x86/mm: Disable hugetlb page table sharing on 32-bit
 Date: Tue, 15 Jul 2025 15:13:30 +0200
-Message-ID: <20250715130803.839714528@linuxfoundation.org>
+Message-ID: <20250715130819.502804024@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit c466e33e729a0ee017d10d919cba18f503853c60 ]
+commit 76303ee8d54bff6d9a6d55997acd88a6c2ba63cf upstream.
 
-In case the removed directory had a snapshot that was deleted, we are
-propagating its inode's last_unlink_trans to the parent directory after
-we removed the entry from the parent directory. This leaves a small race
-window where someone can log the parent directory after we removed the
-entry and before we updated last_unlink_trans, and as a result if we ever
-try to replay such a log tree, we will fail since we will attempt to
-remove a snapshot during log replay, which is currently not possible and
-results in the log replay (and mount) to fail. This is the type of failure
-described in commit 1ec9a1ae1e30 ("Btrfs: fix unreplayable log after
-snapshot delete + parent dir fsync").
+Only select ARCH_WANT_HUGE_PMD_SHARE on 64-bit x86.
+Page table sharing requires at least three levels because it involves
+shared references to PMD tables; 32-bit x86 has either two-level paging
+(without PAE) or three-level paging (with PAE), but even with
+three-level paging, having a dedicated PGD entry for hugetlb is only
+barely possible (because the PGD only has four entries), and it seems
+unlikely anyone's actually using PMD sharing on 32-bit.
 
-So fix this by propagating the last_unlink_trans to the parent directory
-before we remove the entry from it.
+Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
+has 2-level paging) became particularly problematic after commit
+59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
+since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
+the `pt_share_count` (for PMDs) share the same union storage - and with
+2-level paging, PMDs are PGDs.
 
-Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+(For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
+configuration of page tables such that it is never enabled with 2-level
+paging.)
+
+Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
+Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
+Reported-by: Vitaly Chikunov <vt@altlinux.org>
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Tested-by: Vitaly Chikunov <vt@altlinux.org>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250702-x86-2level-hugetlb-v2-1-1a98096edf92%40google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ arch/x86/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 004894e6dd23b..8f92f998dc37b 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4747,7 +4747,6 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	int err = 0;
- 	struct btrfs_root *root = BTRFS_I(dir)->root;
- 	struct btrfs_trans_handle *trans;
--	u64 last_unlink_trans;
- 
- 	if (inode->i_size > BTRFS_EMPTY_DIR_SIZE)
- 		return -ENOTEMPTY;
-@@ -4758,6 +4757,23 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	if (IS_ERR(trans))
- 		return PTR_ERR(trans);
- 
-+	/*
-+	 * Propagate the last_unlink_trans value of the deleted dir to its
-+	 * parent directory. This is to prevent an unrecoverable log tree in the
-+	 * case we do something like this:
-+	 * 1) create dir foo
-+	 * 2) create snapshot under dir foo
-+	 * 3) delete the snapshot
-+	 * 4) rmdir foo
-+	 * 5) mkdir foo
-+	 * 6) fsync foo or some file inside foo
-+	 *
-+	 * This is because we can't unlink other roots when replaying the dir
-+	 * deletes for directory foo.
-+	 */
-+	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
-+		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
-+
- 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
- 		err = btrfs_unlink_subvol(trans, dir, dentry);
- 		goto out;
-@@ -4767,28 +4783,12 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	if (err)
- 		goto out;
- 
--	last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
--
- 	/* now the directory is empty */
- 	err = btrfs_unlink_inode(trans, root, BTRFS_I(dir),
- 			BTRFS_I(d_inode(dentry)), dentry->d_name.name,
- 			dentry->d_name.len);
--	if (!err) {
-+	if (!err)
- 		btrfs_i_size_write(BTRFS_I(inode), 0);
--		/*
--		 * Propagate the last_unlink_trans value of the deleted dir to
--		 * its parent directory. This is to prevent an unrecoverable
--		 * log tree in the case we do something like this:
--		 * 1) create dir foo
--		 * 2) create snapshot under dir foo
--		 * 3) delete the snapshot
--		 * 4) rmdir foo
--		 * 5) mkdir foo
--		 * 6) fsync foo or some file inside foo
--		 */
--		if (last_unlink_trans >= trans->transid)
--			BTRFS_I(dir)->last_unlink_trans = last_unlink_trans;
--	}
- out:
- 	btrfs_end_transaction(trans);
- 	btrfs_btree_balance_dirty(root->fs_info);
--- 
-2.39.5
-
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -146,7 +146,7 @@ config X86
+ 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+ 	select ARCH_WANTS_NO_INSTR
+ 	select ARCH_WANT_GENERAL_HUGETLB
+-	select ARCH_WANT_HUGE_PMD_SHARE
++	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+ 	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if X86_64
+ 	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
 
 
 
