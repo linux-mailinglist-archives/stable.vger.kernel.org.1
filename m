@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF57B05CB8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DFBB05CE2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B96593B9954
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440DB1644EB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2542E9EBD;
-	Tue, 15 Jul 2025 13:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53D72E6D2D;
+	Tue, 15 Jul 2025 13:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PwtN1mn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGDDEp4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0672E7173;
-	Tue, 15 Jul 2025 13:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F8A2E88B7;
+	Tue, 15 Jul 2025 13:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586025; cv=none; b=Z+YtGLGjpL1VqD6ImqHvmGssb6drDjN3f7032EM5AaZjMXzX0+1s68sAIgcFCU+yyC/ZTtJSRvmD6/f+VJfCcQDAUeHMDwvCVEOwnR6zdbbpuoK3T11ALBOAv5TaDZhwTh1h3q1QsjbU7pd8jvVcY7f2FEJCVkZgXQxuZAWUI/0=
+	t=1752586203; cv=none; b=EuWqjxNNZ+YoEl9BnSXYeK+9WdetNLAiz1d3PUSO3FEzsQCOAgtV9m2CDbXNXfrrLif5d9DCOa94dqX28hVZuCUTqFUZE9m2/XaSek42TtRW7m5A5tNTbZSRT6a8x4L4nwhRyPdTmhWATMII36sUmeKytQp+HHYt6EtMh+z+PJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586025; c=relaxed/simple;
-	bh=Cdbkrim4lLyeD2CwvWf1Jh/86eNi7MhFtAvKym2QV4c=;
+	s=arc-20240116; t=1752586203; c=relaxed/simple;
+	bh=ltaRzX6NSjvfT+HXonCH+JOhdiXdsfGlNQ1z/Skgs0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GwZq/SVx2WdX26QMizouz+sOktfbNYIp1UpT15JKVXcH5/asPlJvRxSS6mQVd0BhLUHa3jz16VR0NnrTzwJj7CCM7Uh+q9jAzTKnQhHxVMP/VR36rR0+5mEUcA3I+qIQNbFlDDut+A+okhrIo3qO3XsH9OJTUg+NxwIrCbHoN0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PwtN1mn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2485AC4CEF6;
-	Tue, 15 Jul 2025 13:27:04 +0000 (UTC)
+	 MIME-Version; b=WUPyYSUCnTEkG/kB0oTRKBdrE2xYJdbTwGsFTqO3C3ppcBeKQhgsiQjDkY5YPRvmhviHNVB0qU+099A4X99TLeHVLIhuz8Fe35PmOmavTr1RPTvrIeinjVo/VVHQnyoctxsC81Kzt8rRxQbdlF3jhc0b71Fdul2zganwL+mTzEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGDDEp4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A010C4CEF1;
+	Tue, 15 Jul 2025 13:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586025;
-	bh=Cdbkrim4lLyeD2CwvWf1Jh/86eNi7MhFtAvKym2QV4c=;
+	s=korg; t=1752586202;
+	bh=ltaRzX6NSjvfT+HXonCH+JOhdiXdsfGlNQ1z/Skgs0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0PwtN1mnXmD/o+ZzPcVXavxhTGSmxRYYgojJ6SpQwU3wzZJ/7d3LX6vjJKLbDzazi
-	 V3G34jchMgTJEqfCK0P8leGwXokUf7eS7YRgiAulpOrMiAhPKCLlEIUbRHPmpb9J4+
-	 +N4VFjiSSxIZ5G4szNcK8GwxMEnIIDXzBWBJMhGk=
+	b=IGDDEp4M7bodjaAsVsQQ+EyM+aJNeKVg8mYbVe+zVtSqexxqUCySXTaJ+51aYh8Mm
+	 pB+OIWPVq85v76CqZ05fdEfUwWcsuGueTXjfy+eqh1Eaf5d5XdheNJhPydbU0Lw3MB
+	 iJwHrMuLgw9kZjBRy01DW9FVCRYKINAdeuct1Cts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaowei Li <xiaowei.li@simcom.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/109] net: usb: qmi_wwan: add SIMCom 8230C composition
+Subject: [PATCH 5.15 54/77] wifi: zd1211rw: Fix potential NULL pointer dereference in zd_mac_tx_to_dev()
 Date: Tue, 15 Jul 2025 15:13:53 +0200
-Message-ID: <20250715130802.768303558@linuxfoundation.org>
+Message-ID: <20250715130753.897627165@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaowei Li <xiaowei.li@simcom.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 0b39b055b5b48cbbdf5746a1ca6e3f6b0221e537 ]
+[ Upstream commit 74b1ec9f5d627d2bdd5e5b6f3f81c23317657023 ]
 
-Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
-0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1e0e ProdID=9071 Rev= 5.15
-S:  Manufacturer=SIMCOM
-S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
-S:  SerialNumber=0123456789ABCDEF
-C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=none
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+There is a potential NULL pointer dereference in zd_mac_tx_to_dev(). For
+example, the following is possible:
 
-Signed-off-by: Xiaowei Li <xiaowei.li@simcom.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://patch.msgid.link/tencent_21D781FAA4969FEACA6ABB460362B52C9409@qq.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    	T0			    		T1
+zd_mac_tx_to_dev()
+  /* len == skb_queue_len(q) */
+  while (len > ZD_MAC_MAX_ACK_WAITERS) {
+
+					  filter_ack()
+					    spin_lock_irqsave(&q->lock, flags);
+					    /* position == skb_queue_len(q) */
+					    for (i=1; i<position; i++)
+				    	      skb = __skb_dequeue(q)
+
+					    if (mac->type == NL80211_IFTYPE_AP)
+					      skb = __skb_dequeue(q);
+					    spin_unlock_irqrestore(&q->lock, flags);
+
+    skb_dequeue() -> NULL
+
+Since there is a small gap between checking skb queue length and skb being
+unconditionally dequeued in zd_mac_tx_to_dev(), skb_dequeue() can return NULL.
+Then the pointer is passed to zd_mac_tx_status() where it is dereferenced.
+
+In order to avoid potential NULL pointer dereference due to situations like
+above, check if skb is not NULL before passing it to zd_mac_tx_status().
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 459c51ad6e1f ("zd1211rw: port to mac80211")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Link: https://patch.msgid.link/20250626114619.172631-1-d.dulov@aladdin.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/zydas/zd1211rw/zd_mac.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index dc84d9029c2c7..3976bc4295dd1 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1432,6 +1432,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x22de, 0x9051, 2)}, /* Hucom Wireless HM-211S/K */
- 	{QMI_FIXED_INTF(0x22de, 0x9061, 3)},	/* WeTelecom WPD-600N */
- 	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9001, 5)},	/* SIMCom 7100E, 7230E, 7600E ++ */
-+	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9071, 3)},	/* SIMCom 8230C ++ */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0121, 4)},	/* Quectel EC21 Mini PCIe */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
+diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+index 3ef8533205f91..0a7f368f0d99c 100644
+--- a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
++++ b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+@@ -583,7 +583,11 @@ void zd_mac_tx_to_dev(struct sk_buff *skb, int error)
+ 
+ 		skb_queue_tail(q, skb);
+ 		while (skb_queue_len(q) > ZD_MAC_MAX_ACK_WAITERS) {
+-			zd_mac_tx_status(hw, skb_dequeue(q),
++			skb = skb_dequeue(q);
++			if (!skb)
++				break;
++
++			zd_mac_tx_status(hw, skb,
+ 					 mac->ack_pending ? mac->ack_signal : 0,
+ 					 NULL);
+ 			mac->ack_pending = 0;
 -- 
 2.39.5
 
