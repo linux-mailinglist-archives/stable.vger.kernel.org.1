@@ -1,248 +1,224 @@
-Return-Path: <stable+bounces-162995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F146B063A8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 18:00:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E5CB06375
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 17:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB1AF1AA7283
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:00:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F4817B377C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEAF24DCF9;
-	Tue, 15 Jul 2025 15:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A11F24A069;
+	Tue, 15 Jul 2025 15:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="xxOOV9k8";
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="GO2ZlztN"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="e0tO8rWq"
 X-Original-To: stable@vger.kernel.org
-Received: from mailhub9-fb.kaspersky-labs.com (mailhub9-fb.kaspersky-labs.com [195.122.169.2])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11023111.outbound.protection.outlook.com [40.93.201.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB7F247DF9;
-	Tue, 15 Jul 2025 15:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.122.169.2
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752595191; cv=none; b=qLUGC3WXNHndSEDwEf9d2mp+2kvQ5XlK9GO+yxrqh3x3gUTN39f8Ac+g2nAcc/DBL3nEVdlrqQCat+5ue/ndMboluTgcu3gYq8UhwchdLPtrSJwK9eBsoYJCVetEXypIIEdErgzitgJjTBopCjRWu21lq2dsgBzrLWpgMpKEO4Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752595191; c=relaxed/simple;
-	bh=QLCIHkyCxn8yd+d7z+CTvrTx81eKRW3lAKmQcLX13B4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZUPFRe/TXMtmbtXiuP25gGih2lkzwrRAoWuu0ye1ygA+OIHJrZ+jjC5clysory5lYOXWHhYi5gpoUwPg3r4yiw06kAoCxGLEQ9qT956TPWivCY/k9N4T6yead6BnHLQJTALwOnL18ia7FA5H+NtwYMFAXOdhe+j0cATNPXZdzeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=xxOOV9k8; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=GO2ZlztN; arc=none smtp.client-ip=195.122.169.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1752594651;
-	bh=9gU0AfKr4YjzUxSgA+NdV2Yg+QJia3Jk/uXqq1EDjVw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=xxOOV9k8HKyuGC5Nc7wW5GbQ+nER9wTVvb/WXZscMPxv26q7Tkk+ruaHjrL6mC3De
-	 /w/djVIBNTVR1rUzZunfK7PKuCGxJgjYYtyzympgkVxQ8eaMkVZQvb6GYp46/tDVUE
-	 HOrjGIL39fZCbI0Ayk2Iggglb9Y4QcEuV/nynpu1UAvWmiafhFsnI1CEi5sOoE8z1M
-	 1Vobix2iCYSg0zEAQPvD0l0eOm873U4cQ5FsuUO+Sk41iArCnl9iCJZsRuKmXSLX1U
-	 T9CHNIS+lcxI0cMBaCkBL+nub5Tnbgi8FOXoxr6b+8SlgXJpd3KWj7IRNHBbVNBU9v
-	 LI+LIf+bduLRg==
-Received: from mailhub9-fb.kaspersky-labs.com (localhost [127.0.0.1])
-	by mailhub9-fb.kaspersky-labs.com (Postfix) with ESMTP id 49498905BDE;
-	Tue, 15 Jul 2025 18:50:51 +0300 (MSK)
-Received: from mx13.kaspersky-labs.com (mx13.kaspersky-labs.com [91.103.66.164])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "mx13.kaspersky-labs.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub9-fb.kaspersky-labs.com (Postfix) with ESMTPS id 1A397902205;
-	Tue, 15 Jul 2025 18:50:51 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1752594642;
-	bh=9gU0AfKr4YjzUxSgA+NdV2Yg+QJia3Jk/uXqq1EDjVw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=GO2ZlztNSJKaJsD+KHDh6kbW37GRJnVMXiae37+puVystSIFNCRg0eA19ewiAk8d5
-	 kYrAC3O/oKnJEw+v9BF34K6DBtcpmdQkOnttEO9j+UcCQNhAOqE8WP/FbvGsu6kLDH
-	 jHR60K+31WOndxHEo3sHPctRV6ltqAqqllX6gA6G9G7v/9qKYzuSFHEDG/Yc3/RS0N
-	 pITSxd3cuEb+Oi4xWt/EaVQ7d59Fm24elpg9lIeduc2XKuUHHZg4MMuPAAG3Ij3JJ8
-	 Ym9z3xgExFzxOfu40Kt/Jup3D0JFWR1dEMaVo9GTXRypEi7wW6cEiIIkXZN8pHTJ3/
-	 rhC8cwpKLfmYw==
-Received: from relay13.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay13.kaspersky-labs.com (Postfix) with ESMTP id E2B503E2085;
-	Tue, 15 Jul 2025 18:50:42 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub13.kaspersky-labs.com (Postfix) with ESMTPS id 2EDD73E21E5;
-	Tue, 15 Jul 2025 18:50:42 +0300 (MSK)
-Received: from Nalivayko.avp.ru (10.16.106.60) by HQMAILSRV3.avp.ru
- (10.64.57.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 15 Jul
- 2025 18:49:50 +0300
-From: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
-To: <v9fs-developer@lists.sourceforge.net>, <netdev@vger.kernel.org>
-CC: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>, Eric Van Hensbergen
-	<ericvh@gmail.com>, Wang Hai <wanghai38@huawei.com>, Latchesar Ionkov
-	<lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
-	<lvc-project@linuxtesting.org>, <stable@vger.kernel.org>
-Subject: [PATCH] net: 9p: fix double req put in p9_fd_cancelled
-Date: Tue, 15 Jul 2025 18:48:15 +0300
-Message-ID: <20250715154815.3501030-1-Sergey.Nalivayko@kaspersky.com>
-X-Mailer: git-send-email 2.30.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D428020E710;
+	Tue, 15 Jul 2025 15:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.111
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752594598; cv=fail; b=ZU7REgF+E6fLGCATPbFqfldt4pJrYQPWrFCRV6ugix+pa6qheYwhyDeALOq7h6295iVv0IKRq283aZn5qjC86wbwpMhfBEMKL7MKSSlnU2RhGlOMQlGxPDaBDSyH1OnwRFrYuczH+RRv3w2psFN5IUt/kEBBBQT4mvzt/MrZtW4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752594598; c=relaxed/simple;
+	bh=8/vXEyweDMyiuDF9TKDveqPtQ6QqOY4YcSy7GKZFGX4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=IagIInvSbvz7TzwDKYxUZFVmiYLQgJl3XIMEFWPfOmBhjfh7TjvD9kKdudT2ilXT4gQF6EHm5f7eyewL3dxj8y24W9M5f+QOLM7ZQGpW+cEgGLJIgLJ2zZPLxGrlEHsYSfbarq/9FXic8HPvRfObshrXrvVGdtPpj7bR8VofoZE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=e0tO8rWq; arc=fail smtp.client-ip=40.93.201.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VJ+hJv/nMmvFS2zNegfDVk9eTvCTJHmqITtbpJ+26bSJ0XwEYSwZB78hqDUn0+EVrsuya7blgSyBmAJcDBdBcwiXTUK7R/XO048IUIlm5BBqUw7gFFyPLAJkTujI8SwxMwCMYsagvmp/3WcF7AXSGOEC9Fw/EylQUmDD/U84bwCQr9R9P+RXn3kMQpk7+MwfvyDRWBioeXDEjSA82K21e/OpFuGusWZDSBD9SECpGDp6qjQ33lR9XQVaokOdZfAnulQxnvwGKyAVabi+VyCuB1n5eS2F6AwgXGPN5DnSyCVGKvbhOQxqJRrNCQOjCTaykgRwYzoNxHICM23qjSPHuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8/vXEyweDMyiuDF9TKDveqPtQ6QqOY4YcSy7GKZFGX4=;
+ b=IqdFk6BVODX60KAX5yv7W9/4Z/eyd10nxgSHe4ZHqIJJLbaMPnn5D+ESUAppdU+Jn/IceHJlHj0Eavl1IC6LoMEPBNxfW8IQ4FVRQMtVMnnueE+lv9c1AvdWHVqvwGbStjnJ3aG0+/sMiY6JkagZrUcr+AP1spbhHcZIDp6TwA9KxdFF4IVbzAgCiz7lY0Wrp8pApJ+GtarQbBPw6YLo0EJQSBrXZkkLxSyzj+03dOio1B4st6HCJa6UbTxA8Gxw7Lj+YvUwdF8v0c7ZrfjbJWjnX1FWfF5B2vTz2AVTPP3sLrg7Ieb+ODv6L19RAOUBmVpxC99hsvo+acdyP9/jww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8/vXEyweDMyiuDF9TKDveqPtQ6QqOY4YcSy7GKZFGX4=;
+ b=e0tO8rWq3Z/l2qAdb88e0gEODW5Tofn2myCxWXDjI+Np04dFTd5kqabH4KYvchhPXef8oVwoLgwsaswSgjHYHA+d5lAy46vgr8PkWKavvYPhGhU3akcf4YvjXuclH6HWgm17TctG0TqBT/6XN7xstRuLUUNM5yCwxoeiUw28oUU=
+Received: from SN6PR2101MB0943.namprd21.prod.outlook.com (2603:10b6:805:f::12)
+ by SA0PR21MB3037.namprd21.prod.outlook.com (2603:10b6:806:153::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.11; Tue, 15 Jul
+ 2025 15:49:52 +0000
+Received: from SN6PR2101MB0943.namprd21.prod.outlook.com
+ ([fe80::c112:335:8240:6ecf]) by SN6PR2101MB0943.namprd21.prod.outlook.com
+ ([fe80::c112:335:8240:6ecf%5]) with mapi id 15.20.8964.004; Tue, 15 Jul 2025
+ 15:49:52 +0000
+From: Haiyang Zhang <haiyangz@microsoft.com>
+To: Jakub Kicinski <kuba@kernel.org>, Haiyang Zhang
+	<haiyangz@linux.microsoft.com>
+CC: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, KY Srinivasan
+	<kys@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>, Dexuan Cui
+	<decui@microsoft.com>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "stephen@networkplumber.org"
+	<stephen@networkplumber.org>, "davem@davemloft.net" <davem@davemloft.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [EXTERNAL] Re: [PATCH net] hv_netvsc: Switch VF namespace in
+ netvsc_open instead
+Thread-Topic: [EXTERNAL] Re: [PATCH net] hv_netvsc: Switch VF namespace in
+ netvsc_open instead
+Thread-Index: AQHb8qZwEo+zpg1Bpky71Oo7+qJ8VrQyanIAgADsrsA=
+Date: Tue, 15 Jul 2025 15:49:52 +0000
+Message-ID:
+ <SN6PR2101MB0943E6D0DB9E9D7906FDD54DCA57A@SN6PR2101MB0943.namprd21.prod.outlook.com>
+References: <1752267430-28487-1-git-send-email-haiyangz@linux.microsoft.com>
+ <20250714182914.27c94a91@kernel.org>
+In-Reply-To: <20250714182914.27c94a91@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=999cd5fd-7af6-48ac-9949-a551fcbcbfd4;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2025-07-15T15:36:20Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR2101MB0943:EE_|SA0PR21MB3037:EE_
+x-ms-office365-filtering-correlation-id: 34ce18d2-b1b2-4ea5-4fd8-08ddc3b73cc5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?YGaz01IaJx8nir9Dpky/K5RtE+qQKQE92JfiE9nz+RmrCUbbAV8Cs2QhJzgb?=
+ =?us-ascii?Q?ZJa75iU+a2CYOej25n9gPfTFTNRp1/M0qFmpHLQYg0x1WfVDavKT4jGYSqxD?=
+ =?us-ascii?Q?ZxxlgL7Zcn0keJqTE5CUkMBEYuP0V2yFiXP9VGuZtNyDRhqXoFfEkJdlRX4/?=
+ =?us-ascii?Q?38KmGtzzpPFsfEaCtQnvCOuNm8rChN+PeZhP7A3TYRef2wlI5BaRK0gzYAy1?=
+ =?us-ascii?Q?APDR9L1u9i3omBtkC4rW5VM25wm7PF4iV4jY9O6y2BRd/v7uwuB03bqFtTU1?=
+ =?us-ascii?Q?WHZ35qv5SsImdRLviE0HD2ZJL0NGYmVM/YyY4stvoF/7vShZkjK4lJFBh4MY?=
+ =?us-ascii?Q?tX1C+0l2I/Ybas25amMvEAA9Cih9sPZFox0XezcPCN0Hr6aau9zjlKKuYXSL?=
+ =?us-ascii?Q?2Qy8ahw5n6iGJ79WP6cgyx5m0KP+/q1r0YspbNrAndL8ywWYT3Me8AEvWgVb?=
+ =?us-ascii?Q?362Z11X+mWNBEBlKrPUJYr8weNw782FXP3HgvdM7g0HDedQLJxNXbla+Axk+?=
+ =?us-ascii?Q?jwUVg1aqXKTgD1SS8d9CAzaaamC0mMrrzgfoVVpYTAPAbCa5XWWt2Z3YKbJf?=
+ =?us-ascii?Q?RtJS6dq5LE5hU3Dnvl1nJsrdH9gNrNOOSCB3whWmhXqYhd1NxXGZSWwgb1sv?=
+ =?us-ascii?Q?J1l0eNwWZfVxl4TMxaBIPlat1y2Ww14l6+2wxQsZuxYsXIEd1k9Rqi4GNyRQ?=
+ =?us-ascii?Q?BA5NZX37CQ44mfijqvAlpK/ndOUQtmiqzBl1xG4HgUjUCfzQ1FXpLM9Dsh33?=
+ =?us-ascii?Q?VyEzBA/7Tz22IiGqHBpyb6NsTOZgxHoT9Tb+KdirubpZuYM8Z1oiEjGLuQF4?=
+ =?us-ascii?Q?2ZGkN/PIzQaf4fymsLP4gvxLXhbYyo3CuXQKyqc8ogFr+OkJrpCCP2TgI3Ko?=
+ =?us-ascii?Q?+f775fRHaZ2VnGuT+Rx5Qtl1gW9BpRmJ5MOyqFqEA7jcqiAXcHgQ5nlspExW?=
+ =?us-ascii?Q?YuD7Q+tHrxkVm82yP9T9E129OdNDjOtBLNwSFsJiRDT0Z9MKnvFpoqyYHw6M?=
+ =?us-ascii?Q?KblpYkbIT5rwZf88MohYWbxtmr/AWDDe8mlToZRbPU48Ebm8yHMQ3GRQ3D3n?=
+ =?us-ascii?Q?Yak8Xhz2ii+IpebOOGUl+pSh2tKbHBrGOzmCN/bDwTzx8K2VkjmAxXaVTH8H?=
+ =?us-ascii?Q?dtpHQJLGC54Hd6MxkqFfjZesrrWRdwdn2RkQvUnOTmtQ7rSEeQnt5kvg1bHu?=
+ =?us-ascii?Q?SrnCOkleEEJEM/KTwt0SRr6Yw4jfhlY0tx4G0Weqy1H7isiZX1+NzCNKLZCR?=
+ =?us-ascii?Q?W4V0IlDwWwINaPurqfsbc+D77+q8SkJ9HXojaQUbZwyBezVcm2Hw1YVJjhFV?=
+ =?us-ascii?Q?Rl4pH4mDeMgZLddLssa3nHlXVme6U8ooO5XuZOD4a8qVHmZzPypto22jrOda?=
+ =?us-ascii?Q?XOrqYJPFWKxe3ufHeL+4pja7NhTjMnEA49iUSqklwsA9xKcJfvuxsIpO9tkI?=
+ =?us-ascii?Q?k8qpbv92ulVylMa0lTyvYlEbNiSx9AxSvZ/v8qJRXpBhMY4TE4EpGg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR2101MB0943.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?U/66ybjZjwZOywXahYmEHtRCaf0bm9YBV2tQ78BaGAvH3j3dP4KIBBExG8Wa?=
+ =?us-ascii?Q?wAxfD0gGb+RS2SbhmwGh++NhutdQ76KlUQ8TvEL1Uo0RS1GSw2ZsxSlnuMlu?=
+ =?us-ascii?Q?cSJhKsWR/XxXWE4eaMCS44vaX/NSj3mexpROur0mCWdcrJZVxA6fIWRFIQT3?=
+ =?us-ascii?Q?ixQzB+4JgbzOogROtbjWf3CW8u/P6IxuSS6CuMTfMTAyYVlJvfntz62nWbQ1?=
+ =?us-ascii?Q?S/FMElbi7H5tZBA1CD3YyT+wIQzLGnoTZWqhAhkDWkQw6xyVxBLUnnl2BoC4?=
+ =?us-ascii?Q?Rbou6IZ5pHpywkPovrO/zWSxP/jCNiQi550t/BzUl1LS3yPh5zLjg+WsHb1m?=
+ =?us-ascii?Q?HlGGNlzYNmO2jg9/+wyjMvHOwi8KLmuruJLwELvQvHI1RnuN9X1MdCFPvHp2?=
+ =?us-ascii?Q?cQDl6tO+2phsnXPC6z0tay9pCG4lADjrHuDQgKh3ODOW4x69g1BmxcwJPfRT?=
+ =?us-ascii?Q?jf8IUpMNNctSpdKBRpJJGAzONxHZZ/GrtcgFihugOdyP7ypaBMkjkvdLdmy9?=
+ =?us-ascii?Q?PGv09uPamBLMllX3aV6F0LPSFgBNRnzvY2T3GeGIyVgFQqFhYTH/VW9mkH9i?=
+ =?us-ascii?Q?0ZTTgJkVKxElxGknM0T/NflTx4nFvRQmygAQ1GHxt/ChQRQggds7Q6SUbK9D?=
+ =?us-ascii?Q?0KG1RlfDciQgetyLc3GwYr0xCGq/98dhxFsPjL3zNbvr/tHO3krPovo5djgM?=
+ =?us-ascii?Q?RNiKaLvzdi24JW8BCiFtVqC7H427iqEJxardvdMLUbIZSnL83LuImsmIXlnQ?=
+ =?us-ascii?Q?huYg6dcljIuesjCxn/RdBvyxfOId2oPUnaR2Fjhd1ifAK6nQtrzfRa9UR+Y6?=
+ =?us-ascii?Q?uwndkHBypLAWLR5PP7zcJBxxqjQdAggH4bwDCVij9U24OukDoz5lz3PXyWEE?=
+ =?us-ascii?Q?NZRjJI2NI+i4PcTDZenjlHpUOR5CG/8cDSIHHUWIuKYToLeRHoTvkFdueK/s?=
+ =?us-ascii?Q?+M5jjjQzgQsqMRbe92+cSjUYtUabuIoOaol6/yswBrR3XVbnJR/+PNApdval?=
+ =?us-ascii?Q?Shh1j/3e8hwBa2fISo/Eb6fMBFIWXa4auYKlXn3fprBbFUXbyfrIEnEx1s06?=
+ =?us-ascii?Q?DC+TFR/6NL05H9XAhPcRgje+b61dvanokWjFz4fcMT1kCTyOD4r/9VVwIsrq?=
+ =?us-ascii?Q?K8kQtGFLI7WtsjEhW9n08rSNsGsQrBZHdn+TiSRV86sqEbgPkl1tQckx/ZiI?=
+ =?us-ascii?Q?FJFK784SEMPz2xh7o/Bsxze+L0aSJ661usS6ghSUbGUF/THsr+n5TAfzHkd5?=
+ =?us-ascii?Q?QV/RotP4WmqrX2gZW6ZN8/eFHAKyECumWhJNgtU5vodzAFv/PPaPQmc+J6Tm?=
+ =?us-ascii?Q?lYfuLbR77p8woS5C5kdLSsFRtshOunMHoYNH3xxKaKDUQcynDfgmjQLnabA2?=
+ =?us-ascii?Q?djoJIQVRSzzKIMn8A6/8qY9YbgjXYnSaRt5UML2fHoHZs3/GJf/J/nky6GGI?=
+ =?us-ascii?Q?yqTDzTl5NIBYAB8kcrt/c52lg2GJ6t8urMWPo3hF/UVdJSbI0MEzCx08f+vG?=
+ =?us-ascii?Q?lVUN60QKJ33sjAoFcREiwHuTvil5qoG1ak3Yzxa3+6QLMhDOxm1nJ70Qm+v3?=
+ =?us-ascii?Q?wHrl2LaChSb+8FZ7ci0T6RRHtxSatli02Rc+5oK/?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HQMAILSRV2.avp.ru (10.64.57.52) To HQMAILSRV3.avp.ru
- (10.64.57.53)
-X-KSE-ServerInfo: HQMAILSRV3.avp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 07/15/2025 15:31:12
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 194865 [Jul 15 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: Sergey.Nalivayko@kaspersky.com
-X-KSE-AntiSpam-Info: LuaCore: 63 0.3.63
- 9cc2b4b18bf16653fda093d2c494e542ac094a39
-X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;kaspersky.com:5.0.1,7.1.1
-X-KSE-AntiSpam-Info: {Tracking_white_helo}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/15/2025 15:33:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 7/15/2025 2:29:00 PM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/07/15 13:18:00 #27641879
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR2101MB0943.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34ce18d2-b1b2-4ea5-4fd8-08ddc3b73cc5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jul 2025 15:49:52.2203
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kXPpS/66Rj/i1xsP/zIGR93JoCQTstAEsBk2+BGnN1WEfpGa0J7HaJuMqkEDjRxXNgdEJ2BAkrEiX64Lvjsn2g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR21MB3037
 
-Syzkaller reports a KASAN issue as below:
 
-general protection fault, probably for non-canonical address 0xfbd59c0000000021: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: maybe wild-memory-access in range [0xdead000000000108-0xdead00000000010f]
-CPU: 0 PID: 5083 Comm: syz-executor.2 Not tainted 6.1.134-syzkaller-00037-g855bd1d7d838 #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:__list_del include/linux/list.h:114 [inline]
-RIP: 0010:__list_del_entry include/linux/list.h:137 [inline]
-RIP: 0010:list_del include/linux/list.h:148 [inline]
-RIP: 0010:p9_fd_cancelled+0xe9/0x200 net/9p/trans_fd.c:734
 
-Call Trace:
- <TASK>
- p9_client_flush+0x351/0x440 net/9p/client.c:614
- p9_client_rpc+0xb6b/0xc70 net/9p/client.c:734
- p9_client_version net/9p/client.c:920 [inline]
- p9_client_create+0xb51/0x1240 net/9p/client.c:1027
- v9fs_session_init+0x1f0/0x18f0 fs/9p/v9fs.c:408
- v9fs_mount+0xba/0xcb0 fs/9p/vfs_super.c:126
- legacy_get_tree+0x108/0x220 fs/fs_context.c:632
- vfs_get_tree+0x8e/0x300 fs/super.c:1573
- do_new_mount fs/namespace.c:3056 [inline]
- path_mount+0x6a6/0x1e90 fs/namespace.c:3386
- do_mount fs/namespace.c:3399 [inline]
- __do_sys_mount fs/namespace.c:3607 [inline]
- __se_sys_mount fs/namespace.c:3584 [inline]
- __x64_sys_mount+0x283/0x300 fs/namespace.c:3584
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+> -----Original Message-----
+> From: Jakub Kicinski <kuba@kernel.org>
+> Sent: Monday, July 14, 2025 9:29 PM
+> To: Haiyang Zhang <haiyangz@linux.microsoft.com>
+> Cc: linux-hyperv@vger.kernel.org; netdev@vger.kernel.org; Haiyang Zhang
+> <haiyangz@microsoft.com>; KY Srinivasan <kys@microsoft.com>;
+> wei.liu@kernel.org; Dexuan Cui <decui@microsoft.com>; edumazet@google.com=
+;
+> pabeni@redhat.com; stephen@networkplumber.org; davem@davemloft.net; linux=
+-
+> kernel@vger.kernel.org; stable@vger.kernel.org
+> Subject: [EXTERNAL] Re: [PATCH net] hv_netvsc: Switch VF namespace in
+> netvsc_open instead
+>=20
+> On Fri, 11 Jul 2025 13:57:10 -0700 Haiyang Zhang wrote:
+> > The existing code move the VF NIC to new namespace when NETDEV_REGISTER
+> is
+> > received on netvsc NIC. During deletion of the namespace,
+> > default_device_exit_batch() >> default_device_exit_net() is called. Whe=
+n
+> > netvsc NIC is moved back and registered to the default namespace, it
+> > automatically brings VF NIC back to the default namespace. This will
+> cause
+> > the default_device_exit_net() >> for_each_netdev_safe loop unable to
+> detect
+> > the list end, and hit NULL ptr:
+>=20
+> Are you saying that when netns is dismantled both devices are listed
+> for moving back to default, but the netvsc_event_set_vf_ns() logic
+> tries to undo the move / move the VF before the netns dismantle loop
+> got to it?
 
-This happens because of a race condition between:
+netvsc_event_set_vf_ns() moves the VF to default ns before the netns=20
+dismantle loop got to it, and causes the Null prt error.
 
-- The 9p client sending an invalid flush request and later cleaning it up;
-- The 9p client in p9_read_work() canceled all pending requests.
+> This needs a better fix, moving on open is way too hacky.
+> Perhaps we should start with reverting 4c262801ea60 and then trying
+> to implement it in a more robust way?
 
-      Thread 1                              Thread 2
-    ...
-    p9_client_create()
-    ...
-    p9_fd_create()
-    ...
-    p9_conn_create()
-    ...
-    // start Thread 2
-    INIT_WORK(&m->rq, p9_read_work);
-                                        p9_read_work()
-    ...
-    p9_client_rpc()
-    ...
-                                        ...
-                                        p9_conn_cancel()
-                                        ...
-                                        spin_lock(&m->req_lock);
-    ...
-    p9_fd_cancelled()
-    ...
-                                        ...
-                                        spin_unlock(&m->req_lock);
-                                        // status rewrite
-                                        p9_client_cb(m->client, req, REQ_STATUS_ERROR)
-                                        // first remove
-                                        list_del(&req->req_list);
-                                        ...
+This patch reverts the 4c262801ea60, and moves the logic to netvsc_open().
 
-    spin_lock(&m->req_lock)
-    ...
-    // second remove
-    list_del(&req->req_list);
-    spin_unlock(&m->req_lock)
-  ...
+I was thinking some other ways too... But seems I couldn't find a way
+to know it's in the for_each_netdev_safe loop, and to skip moving the=20
+VF in netvsc_event_set_vf_ns() this case.
 
-Commit 74d6a5d56629 ("9p/trans_fd: Fix concurrency del of req_list in
-p9_fd_cancelled/p9_read_work") fixes a concurrency issue in the 9p filesystem
-client where the req_list could be deleted simultaneously by both
-p9_read_work and p9_fd_cancelled functions, but for the case where req->status
-equals REQ_STATUS_RCVD.
+Thanks,
+- Haiyang
 
-Add an explicit check for REQ_STATUS_ERROR in p9_fd_cancelled before
-processing the request. Skip processing if the request is already in the error
-state, as it has been removed and its resources cleaned up.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-Fixes: afd8d6541155 ("9P: Add cancelled() to the transport functions.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
----
- net/9p/trans_fd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index a69422366a23..a6054a392a90 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -721,9 +721,9 @@ static int p9_fd_cancelled(struct p9_client *client, struct p9_req_t *req)
- 
- 	spin_lock(&m->req_lock);
- 	/* Ignore cancelled request if message has been received
--	 * before lock.
--	 */
--	if (req->status == REQ_STATUS_RCVD) {
-+	* or cancelled with error before lock.
-+	*/
-+	if (req->status == REQ_STATUS_RCVD || req->status == REQ_STATUS_ERROR) {
- 		spin_unlock(&m->req_lock);
- 		return 0;
- 	}
--- 
-2.30.2
 
 
