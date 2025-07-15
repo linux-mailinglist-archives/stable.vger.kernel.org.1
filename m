@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9B1B05BDB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E50D7B05D9E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 999077B8BBD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F778164FC3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C736E2E2F1E;
-	Tue, 15 Jul 2025 13:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0502EAD0E;
+	Tue, 15 Jul 2025 13:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+7N0LAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCtNJKpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E262E1734;
-	Tue, 15 Jul 2025 13:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5FF72628;
+	Tue, 15 Jul 2025 13:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585667; cv=none; b=OR3dE0DKkB6oHrsMPGHhbrKppgnLk4CKETjBE9yET4iCBEz6S6hYLxiyx6RSKTiThrV19Uej/LlOlXucHmyZfgX0rgkC7ERZ6TNnF8+HyzV8jLrR0UKphkdqdN9VBpWsA+fGBAxBk/tFvQwQncTp1GJreTqgwXzwJ4lBldsAuaE=
+	t=1752586542; cv=none; b=QDA/8a5+4QF4jdiU+AiufkkScrGKwJWHLlVORrpUoB4HGQ2EnD0xcMyrGia6Hw7tb721IwwSwFTGWazKnhB/7Phldy43SDNqlL3hb5YYusrvWSOQW34S1U3n6MT7ZctckIWjvVz+g1N1eLJse99QBpMr3QHwT88qkGSxlfN4aiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585667; c=relaxed/simple;
-	bh=/J20ZSQZpsQySrOeeiZM4FT2/yytU/IiMq1dR7odv/4=;
+	s=arc-20240116; t=1752586542; c=relaxed/simple;
+	bh=0ry/JJ90fo3cy0Eoz22zs0eou5H0s2Ml3ggi24aZSOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pw+t9mdG5C9Mdc5CLJVqVKTWi7Qynp29z3Ifm/fzg9HPz9a1H0h0lvt2jpr89C0oaUDAiZz4DLprUodrwkj9+KWumeiP1N8FyE2EOOdBaCy6vmrfnvCBuA8kbBzJdNsAMJ83N8hDpd4jtim+lEcPM+7/xCpLFkrW+Vo8huMTfUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+7N0LAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13826C4CEF1;
-	Tue, 15 Jul 2025 13:21:06 +0000 (UTC)
+	 MIME-Version; b=ZLkWvMuJmw2s+2N3unQ3yoHjH2ACluDWRtRl6bTvq0b73+0rcvjBAKw+2B/zfdiH2JLyr1Xl5ntoKy1D92153Sgi2B8O8i9+8dkZC4PsrDau6KDzzxHt8mnx87EYMXE0u3zH6VY5bpLETyrHBmx7jonnwMlsJBaurtwwqwyIyK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCtNJKpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E664C4CEE3;
+	Tue, 15 Jul 2025 13:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585667;
-	bh=/J20ZSQZpsQySrOeeiZM4FT2/yytU/IiMq1dR7odv/4=;
+	s=korg; t=1752586541;
+	bh=0ry/JJ90fo3cy0Eoz22zs0eou5H0s2Ml3ggi24aZSOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+7N0LAPlTj6BUX2mrVYVHYSmPCEhxIwD5sGnS1mUvF48OA6mf3QO+Vm8LQ83TCQK
-	 MpHBQNgq8ufrLvf0NGlQrjp5s5Rb2kEJb8UZX4MQAhWCdI9pEr+78hoR4tu8OC8ww1
-	 /Y5uu6ZUGJrMtLycKNfHqT46kF2RYAUuFtbptqfQ=
+	b=GCtNJKpWTqqu8pEWorERROumPIycwylGy7pZGeuSEjqs4hZcyWEnO8aikiDBQJOF4
+	 xPiNtHMNgWAMbdFlwfAZ3meT3NXzVtcORYY4m8+TcRKSD9q7TGkP2QpNAnyG/oI3zy
+	 aXrrNT7AeExcw1k2Dw9SXV6JrM4rQP2GPm+Ce13k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 127/163] net: phy: microchip: Use genphy_soft_reset() to purge stale LPA bits
+Subject: [PATCH 5.4 073/148] ata: pata_cs5536: fix build on 32-bit UML
 Date: Tue, 15 Jul 2025 15:13:15 +0200
-Message-ID: <20250715130813.939372537@linuxfoundation.org>
+Message-ID: <20250715130803.247622344@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit b4517c363e0e005c7f81ae3be199eec68e87f122 ]
+[ Upstream commit fe5b391fc56f77cf3c22a9dd4f0ce20db0e3533f ]
 
-Enable .soft_reset for the LAN88xx PHY driver by assigning
-genphy_soft_reset() to ensure that the phylib core performs a proper
-soft reset during reconfiguration.
+On 32-bit ARCH=um, CONFIG_X86_32 is still defined, so it
+doesn't indicate building on real X86 machines. There's
+no MSR on UML though, so add a check for CONFIG_X86.
 
-Previously, the driver left .soft_reset unimplemented, so calls to
-phy_init_hw() (e.g., from lan88xx_link_change_notify()) did not fully
-reset the PHY. As a result, stale contents in the Link Partner Ability
-(LPA) register could persist, causing the PHY to incorrectly report
-that the link partner advertised autonegotiation even when it did not.
-
-Using genphy_soft_reset() guarantees a clean reset of the PHY and
-corrects the false autoneg reporting in these scenarios.
-
-Fixes: ccb989e4d1ef ("net: phy: microchip: Reset LAN88xx PHY to ensure clean link state on LAN7800/7850")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250709130753.3994461-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/r/20250606090110.15784-2-johannes@sipsolutions.net
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/microchip.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ata/pata_cs5536.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index e3a5961dced9b..c9b6ede7ac6ac 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -486,6 +486,7 @@ static struct phy_driver microchip_phy_driver[] = {
- 	.config_init	= lan88xx_config_init,
- 	.config_aneg	= lan88xx_config_aneg,
- 	.link_change_notify = lan88xx_link_change_notify,
-+	.soft_reset	= genphy_soft_reset,
+diff --git a/drivers/ata/pata_cs5536.c b/drivers/ata/pata_cs5536.c
+index 760ac6e65216f..3737d1bf1539d 100644
+--- a/drivers/ata/pata_cs5536.c
++++ b/drivers/ata/pata_cs5536.c
+@@ -27,7 +27,7 @@
+ #include <scsi/scsi_host.h>
+ #include <linux/dmi.h>
  
- 	/* Interrupt handling is broken, do not define related
- 	 * functions to force polling.
+-#ifdef CONFIG_X86_32
++#if defined(CONFIG_X86) && defined(CONFIG_X86_32)
+ #include <asm/msr.h>
+ static int use_msr;
+ module_param_named(msr, use_msr, int, 0644);
 -- 
 2.39.5
 
