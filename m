@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-162154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB28B05C06
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:26:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2EEB05F5D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B48F74507A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42E4D7BB6BD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385422E2F12;
-	Tue, 15 Jul 2025 13:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097522E8DFE;
+	Tue, 15 Jul 2025 13:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nlBOR0r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nK+poLl3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7A6137923;
-	Tue, 15 Jul 2025 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B955F2E7659;
+	Tue, 15 Jul 2025 13:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585817; cv=none; b=Rqhg2TseHGngTtHoveGjl9jAXRqvYMaeW25mF3cO1H0G8T+5JZgjhmaNN2Cq0YeTT7u6fZmnK+B71zmS8dEBuwRnRhKPsBeXa2GgiaE+8G+hbKPpP3Gd3YJDQqPs17gAkI5KyT1usrMtceQLVHDbUsuKNtvhQr6TC7FPZZ5fhJE=
+	t=1752587529; cv=none; b=coFStnQmYeGFRW7OtcSKs5tqVOBF76Tl3hJeP456XFAfbvoCq5/GaCN0VvLXrhuWBsmtmLBuUCnSJ4cIydqW1CH8B7NHTg7eqVeETOLe7r3bFKZrIwwPhqkKA3VgbjH/ABoLsNIdUYf1puaacFUc3u/SJkAsTe2NJBD+HF/Rmmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585817; c=relaxed/simple;
-	bh=TRH+Kt9ld09981792TzKffyBwOPjWv2/K69A1xaKFh8=;
+	s=arc-20240116; t=1752587529; c=relaxed/simple;
+	bh=fkPc4NzPv9XjV/vE/GmMUc1xxfuoCkHCj7zdbN9djGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7sfTxKjOwsp8NGUyyF3CC0vLEdSE4tu7FshRl7j+5FG8DwVTshgi0Igj4HziJqzXP+4n6yrVUgqjx68in8j22WSSAg2XoyFF/bC41CJ+DEy77rHG7lScMGWo8P7FIulEos5CbXHKAwaMdEaqA0Qcg0Yaw/QGbULXoLS9cwkp9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nlBOR0r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC21C4CEE3;
-	Tue, 15 Jul 2025 13:23:36 +0000 (UTC)
+	 MIME-Version; b=ac0A2veI55lNRzoTchWrZrQMDhpUSbTLfbHL2G+ZrbhaDFZihRJA/IxhnvDmdCQQUg43dCqMhUA0GXaJgfTohrAVzaAgnknCTvC2Orkjtkh23CBlcTKKO5y2vjJbBXA8yvKS8SGmNVoGolkxzV2kHy3tsH/SlrCrGNUJDyHtEM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nK+poLl3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B81CC4CEE3;
+	Tue, 15 Jul 2025 13:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585816;
-	bh=TRH+Kt9ld09981792TzKffyBwOPjWv2/K69A1xaKFh8=;
+	s=korg; t=1752587529;
+	bh=fkPc4NzPv9XjV/vE/GmMUc1xxfuoCkHCj7zdbN9djGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2nlBOR0rqx0wlPrqmbp1B2WJfbvhy8qzXMDT5gxQ6U2A33vuswSZRteTF17aVHjJJ
-	 0w1P/T9SXgzXH9buZaTUGZuhg+CxGesLL9jAAX3KibvEjAGpVzony/P2F59mPuGnHo
-	 7I0GLifVCqZHDbWdE7eFHfc4QjGqgrUhheY+/Gwc=
+	b=nK+poLl3C2B++9rjtIa1wPFQZIOA+khrm19KwiPc35+bdgmWsa97nkNeLEEB1gDUN
+	 V+P6bnEBjffugKHjSaBXesuY9sWV7dzIEUJmc7UFusz6h4FXIOQqNMlsA2fpraQCwD
+	 SlnL3ssVzw0HfHl7oRhJh3xxF9u7KzuoaBSWzdnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andre Edich <andre.edich@microchip.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/109] net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.10 046/208] i2c: robotfuzz-osif: disable zero-length read messages
 Date: Tue, 15 Jul 2025 15:12:35 +0200
-Message-ID: <20250715130759.651714434@linuxfoundation.org>
+Message-ID: <20250715130812.800107434@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit a141af8eb2272ab0f677a7f2653874840bc9b214 ]
+commit 56ad91c1aa9c18064348edf69308080b03c9dc48 upstream.
 
-Correct the Auto-MDIX configuration to ensure userspace settings are
-respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
+This driver passes the length of an i2c_msg directly to
+usb_control_msg(). If the message is now a read and of length 0, it
+violates the USB protocol and a warning will be printed. Enable the
+I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
+read messages altogether.
 
-The LAN9500 PHY allows its default MDI-X mode to be configured via a
-hardware strap. If this strap sets the default to "MDI-X off", the
-driver was previously unable to enable Auto-MDIX from userspace.
-
-When handling the ETH_TP_MDI_AUTO case, the driver would set the
-SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
-SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
-falls back to its hardware strap default, ignoring the software request.
-
-This patch corrects the behavior by also setting the override bit when
-enabling Auto-MDIX. This ensures that the userspace configuration takes
-precedence over the hardware strap, allowing Auto-MDIX to be enabled
-correctly in all scenarios.
-
-Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andre Edich <andre.edich@microchip.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250703114941.3243890-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 83e53a8f120f ("i2c: Add bus driver for for OSIF USB i2c device.")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: <stable@vger.kernel.org> # v3.14+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250522064234.3721-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/smsc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-robotfuzz-osif.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index c88edb19d2e71..b7f9c4649652b 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -167,7 +167,8 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
- 			SPECIAL_CTRL_STS_AMDIX_STATE_;
- 		break;
- 	case ETH_TP_MDI_AUTO:
--		val = SPECIAL_CTRL_STS_AMDIX_ENABLE_;
-+		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
-+			SPECIAL_CTRL_STS_AMDIX_ENABLE_;
- 		break;
- 	default:
- 		return genphy_config_aneg(phydev);
--- 
-2.39.5
-
+--- a/drivers/i2c/busses/i2c-robotfuzz-osif.c
++++ b/drivers/i2c/busses/i2c-robotfuzz-osif.c
+@@ -111,6 +111,11 @@ static u32 osif_func(struct i2c_adapter
+ 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
+ }
+ 
++/* prevent invalid 0-length usb_control_msg */
++static const struct i2c_adapter_quirks osif_quirks = {
++	.flags = I2C_AQ_NO_ZERO_LEN_READ,
++};
++
+ static const struct i2c_algorithm osif_algorithm = {
+ 	.master_xfer	= osif_xfer,
+ 	.functionality	= osif_func,
+@@ -143,6 +148,7 @@ static int osif_probe(struct usb_interfa
+ 
+ 	priv->adapter.owner = THIS_MODULE;
+ 	priv->adapter.class = I2C_CLASS_HWMON;
++	priv->adapter.quirks = &osif_quirks;
+ 	priv->adapter.algo = &osif_algorithm;
+ 	priv->adapter.algo_data = priv;
+ 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
 
 
 
