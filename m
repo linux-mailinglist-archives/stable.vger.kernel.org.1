@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B8FB06002
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14346B05F71
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C4684A730A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C9FD189AB2D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621762E7BBD;
-	Tue, 15 Jul 2025 13:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604ED2E7BDA;
+	Tue, 15 Jul 2025 13:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cq4z3jCg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVhZx/I6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F682E1757;
-	Tue, 15 Jul 2025 13:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCE32561AE;
+	Tue, 15 Jul 2025 13:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587714; cv=none; b=tYz2XawFB0WYhRFk37VFcsYVqI/Nvc21v7ASh0GMCIEpArU88WKL1Fu9lH9RaA5VXLs3p3ZIYm28tc+HprfJidpHdev79kK39iSTc4/niKt/DNGG7mY641pOL7FasOsmpVWUWwkwrEqItlILr4Y5no+uT5NNhOqw1US96TKuphQ=
+	t=1752587275; cv=none; b=HdHX9fNHoHbq7v9NKdVLW1uIgNPMgdEZOgUQ1vPPKoHSd7d0G2kr+GB9xFvnjCaRGZiFsYMrZdk0MXDNa0IozQ1Ds+s09oPUy8XcJkeYUVq7bZ/F5uEaAhkqOeGbl93UcdLryHbFAR2tWkxql2nMnaQkrXRmPdHdrEXuRg7Yb9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587714; c=relaxed/simple;
-	bh=hjd/OR+KvhA7NBmBF56ERX4GZjbC6Tk6DTU5y3u1rDA=;
+	s=arc-20240116; t=1752587275; c=relaxed/simple;
+	bh=ZfwB9NZgg5Jp+R0S5eJiJoKfpZShcmc9/0magCCfQ8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUKDJCo9dauiISsTeoi/D0dMyOTXrD6+ds4ubC3lqpayt2rEs5qDJSO9lcXdaci/HXZVFx4Fi/CwonRQP6yRDgl0fOXZ5mTIYJXhv4mP6bjHxyzjMEuSTwKm4bMr/BekItPKngm2neadD9wyISHSX3Pn1jLA9bHs5c+LoWy4FBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cq4z3jCg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A970BC4CEE3;
-	Tue, 15 Jul 2025 13:55:13 +0000 (UTC)
+	 MIME-Version; b=SlT9QsQkqRv+H7VJa3I2fAiQ7TbN/9hsz0Pw9DpSkhHRsGfS1EOy3OwdkxVRNksaUShdlPUXV1aCCtGJX96MvDVH3gk0RzLIffeFLnLUD6Kxlf9UneH5mjAXAr6hbNrJ3Z5seKBUMguWRLn9gGqb4nc5vWvipfQoJzjafRLVdDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVhZx/I6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2513C4CEE3;
+	Tue, 15 Jul 2025 13:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587714;
-	bh=hjd/OR+KvhA7NBmBF56ERX4GZjbC6Tk6DTU5y3u1rDA=;
+	s=korg; t=1752587275;
+	bh=ZfwB9NZgg5Jp+R0S5eJiJoKfpZShcmc9/0magCCfQ8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cq4z3jCgtB8g/dMnY8704fBhEDbB2yO/e4o2XGJ2XjyXKoPSUfMnT49HV4dtyd92g
-	 bIeiw+oB8AIRVq3xfTnjWFgHv7pLMsy+fZ275NdIrwvUs4D8pWaoSqM20l1w4O+Jss
-	 9MFwyBTboG81J7n+O+WOD0cbdbKMtzYZAxbUZUmM=
+	b=QVhZx/I6tNGSdPcvPvPvrM9SIWsk58hXksUFrqSIU7HCoGlwvqLOx9HTm/TAGdS/h
+	 eS2hSBDlT8VckhnO0zPs6a/H/EtfsIOzQYYhbhORUVM2lfPhroXCTWPw8XhYbmLt3y
+	 AjPJ4ZNwBsjRZI01ULFyiudOfSQDclep8rjHoh+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 115/208] flexfiles/pNFS: update stats on NFS4ERR_DELAY for v4.1 DSes
-Date: Tue, 15 Jul 2025 15:13:44 +0200
-Message-ID: <20250715130815.555271026@linuxfoundation.org>
+Subject: [PATCH 6.1 09/88] vsock: Fix transport_{g2h,h2g} TOCTOU
+Date: Tue, 15 Jul 2025 15:13:45 +0200
+Message-ID: <20250715130754.881089744@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit e3e3775392f3f0f3e3044f8c162bf47858e01759 ]
+[ Upstream commit 209fd720838aaf1420416494c5505096478156b4 ]
 
-On NFS4ERR_DELAY nfs slient updates its stats, but misses for
-flexfiles v4.1 DSes.
+vsock_find_cid() and vsock_dev_do_ioctl() may race with module unload.
+transport_{g2h,h2g} may become NULL after the NULL check.
 
-Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Stable-dep-of: 38074de35b01 ("NFSv4/flexfiles: Fix handling of NFS level errors in I/O")
+Introduce vsock_transport_local_cid() to protect from a potential
+null-ptr-deref.
+
+KASAN: null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
+RIP: 0010:vsock_find_cid+0x47/0x90
+Call Trace:
+ __vsock_bind+0x4b2/0x720
+ vsock_bind+0x90/0xe0
+ __sys_bind+0x14d/0x1e0
+ __x64_sys_bind+0x6e/0xc0
+ do_syscall_64+0x92/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+KASAN: null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
+RIP: 0010:vsock_dev_do_ioctl.isra.0+0x58/0xf0
+Call Trace:
+ __x64_sys_ioctl+0x12d/0x190
+ do_syscall_64+0x92/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-1-98f0eb530747@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/vmw_vsock/af_vsock.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index ce9c2d1f54ae0..46b106785eb82 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -1127,6 +1127,8 @@ static int ff_layout_async_handle_error_v4(struct rpc_task *task,
- 		nfs4_schedule_session_recovery(clp->cl_session, task->tk_status);
- 		break;
- 	case -NFS4ERR_DELAY:
-+		nfs_inc_stats(lseg->pls_layout->plh_inode, NFSIOS_DELAY);
-+		fallthrough;
- 	case -NFS4ERR_GRACE:
- 		rpc_delay(task, FF_LAYOUT_POLL_RETRY_MAX);
- 		break;
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index a2271da346d34..42b5ff148d80b 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -527,9 +527,25 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ }
+ EXPORT_SYMBOL_GPL(vsock_assign_transport);
+ 
++/*
++ * Provide safe access to static transport_{h2g,g2h,dgram,local} callbacks.
++ * Otherwise we may race with module removal. Do not use on `vsk->transport`.
++ */
++static u32 vsock_registered_transport_cid(const struct vsock_transport **transport)
++{
++	u32 cid = VMADDR_CID_ANY;
++
++	mutex_lock(&vsock_register_mutex);
++	if (*transport)
++		cid = (*transport)->get_local_cid();
++	mutex_unlock(&vsock_register_mutex);
++
++	return cid;
++}
++
+ bool vsock_find_cid(unsigned int cid)
+ {
+-	if (transport_g2h && cid == transport_g2h->get_local_cid())
++	if (cid == vsock_registered_transport_cid(&transport_g2h))
+ 		return true;
+ 
+ 	if (transport_h2g && cid == VMADDR_CID_HOST)
+@@ -2320,18 +2336,17 @@ static long vsock_dev_do_ioctl(struct file *filp,
+ 			       unsigned int cmd, void __user *ptr)
+ {
+ 	u32 __user *p = ptr;
+-	u32 cid = VMADDR_CID_ANY;
+ 	int retval = 0;
++	u32 cid;
+ 
+ 	switch (cmd) {
+ 	case IOCTL_VM_SOCKETS_GET_LOCAL_CID:
+ 		/* To be compatible with the VMCI behavior, we prioritize the
+ 		 * guest CID instead of well-know host CID (VMADDR_CID_HOST).
+ 		 */
+-		if (transport_g2h)
+-			cid = transport_g2h->get_local_cid();
+-		else if (transport_h2g)
+-			cid = transport_h2g->get_local_cid();
++		cid = vsock_registered_transport_cid(&transport_g2h);
++		if (cid == VMADDR_CID_ANY)
++			cid = vsock_registered_transport_cid(&transport_h2g);
+ 
+ 		if (put_user(cid, p) != 0)
+ 			retval = -EFAULT;
 -- 
 2.39.5
 
