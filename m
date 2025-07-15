@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51656B05F44
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:03:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF803B05B35
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:18:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 946737BC29C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44B651AA6C7D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2612E7172;
-	Tue, 15 Jul 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9642E2F10;
+	Tue, 15 Jul 2025 13:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OD0zofyW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjo55Rb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB252D8790;
-	Tue, 15 Jul 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE642D9EFF;
+	Tue, 15 Jul 2025 13:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587490; cv=none; b=mtfK1tskKik3Th4iBoY1EO/6oolxd7YDL8vk5B0fJvkI9dedG8U43TXTfGGJQHrjiI1bTx3xnVv92VAQ2Fc1pcKW5skyIhLCm5B9HsH+NNnkHhkD3h+Qn4kzOZDKmB6C/ztQzBc+f46EYWPiUb9eUwneac26zIOppTD1RS/HYy4=
+	t=1752585484; cv=none; b=GmX1rnqI/gILNTBVBb5MQBSRzenmA2lYIdZ7MXs2SbRL917RimzyOaoaPykJWo/hCYsM6sehuGsipGLC9ERJ1rQqsm7NwC7Q01GgyD/xrSJiN22iwT515nyKsP+RR3VfAZr6pIeoGR6+D4AxJprJ3uxIlMVgvNtaLaUGOruONmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587490; c=relaxed/simple;
-	bh=iLeiJxZ1q1pvZypch2W2JzeQLzC/2scRPGTsbKpMugw=;
+	s=arc-20240116; t=1752585484; c=relaxed/simple;
+	bh=ggkGnzCQ1iIkTm1bMVltf2T+zgMG5YJ96W4ZEHETtc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uv5/bAqS7ZpW6h83lnbIPqkc4uaUvR2OvefD0fNP8g8ruKsxfqi0Ewa+Y/cECJTZt8l0K/KzFPmZBaPJja+pmrkMGlLkR0CAHoxgqwRmmawnGfqmYObAIRS26SaDhmSyCID7kuAVPzzGQB6X9HUeYUG5w1nw29hxaJc3XwCbTX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OD0zofyW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3994C4CEE3;
-	Tue, 15 Jul 2025 13:51:29 +0000 (UTC)
+	 MIME-Version; b=o/IJFELTBZxaba4JSWL3P3lxggAQ7hU8Ay4RuMISLpGj6QsJQ8ez2APfrahPc5Jrr1uGasLyGFjkV/kdFPz0q4Uko3l/VOMiwdQkBVHiz36SsxZj9nwCUnwdXASbr7jjp3safD/eaVAdICzSEujiNicSBDfbG6o2u5YIABAJsPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjo55Rb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F47C4CEE3;
+	Tue, 15 Jul 2025 13:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587490;
-	bh=iLeiJxZ1q1pvZypch2W2JzeQLzC/2scRPGTsbKpMugw=;
+	s=korg; t=1752585484;
+	bh=ggkGnzCQ1iIkTm1bMVltf2T+zgMG5YJ96W4ZEHETtc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OD0zofyWLdkWjSyloWQtW3eK/3a2Z7156VIMYPjcvW3MtX9X8m2jY00MNhe7g5J5v
-	 bO2tNPPbA6qbca2UFvpoxhMX4FeUpwOynFdeU2RMLvk9p93CTiy7N+d1UIAsTFu2H9
-	 2jjf1jrgWAl5EqMl1v5opIKarenro3XSLByJ4+/c=
+	b=gjo55Rb2rxWVaZiJXLi6DgY2rYkkqJMNg7BzgIEE/1WJ9y5XT04eD4cBUX82WQDGP
+	 nDZuuo2B8/zKaDsHWRbfGbKjV+0qZBmgt1R0cGMQYKatqn0hl5GnQPMITFle5NfJCr
+	 RrSjUTtVne0KtRuxc0ychM/qPTZjrDWRas1bZVZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 008/208] md/md-bitmap: fix dm-raid max_write_behind setting
-Date: Tue, 15 Jul 2025 15:11:57 +0200
-Message-ID: <20250715130811.170706504@linuxfoundation.org>
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.12 050/163] x86/mce/amd: Fix threshold limit reset
+Date: Tue, 15 Jul 2025 15:11:58 +0200
+Message-ID: <20250715130810.766136186@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 2afe17794cfed5f80295b1b9facd66e6f65e5002 ]
+commit 5f6e3b720694ad771911f637a51930f511427ce1 upstream.
 
-It's supposed to be COUNTER_MAX / 2, not COUNTER_MAX.
+The MCA threshold limit must be reset after servicing the interrupt.
 
-Link: https://lore.kernel.org/linux-raid/20250524061320.370630-14-yukuai1@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently, the restart function doesn't have an explicit check for this.  It
+makes some assumptions based on the current limit and what's in the registers.
+These assumptions don't always hold, so the limit won't be reset in some
+cases.
+
+Make the reset condition explicit. Either an interrupt/overflow has occurred
+or the bank is being initialized.
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-4-236dd74f645f@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md-bitmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/amd.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 91bc764a854c6..f2ba541ed89d4 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -546,7 +546,7 @@ static int md_bitmap_new_disk_sb(struct bitmap *bitmap)
- 	 * is a good choice?  We choose COUNTER_MAX / 2 arbitrarily.
- 	 */
- 	write_behind = bitmap->mddev->bitmap_info.max_write_behind;
--	if (write_behind > COUNTER_MAX)
-+	if (write_behind > COUNTER_MAX / 2)
- 		write_behind = COUNTER_MAX / 2;
- 	sb->write_behind = cpu_to_le32(write_behind);
- 	bitmap->mddev->bitmap_info.max_write_behind = write_behind;
--- 
-2.39.5
-
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -327,7 +327,6 @@ static void smca_configure(unsigned int
+ 
+ struct thresh_restart {
+ 	struct threshold_block	*b;
+-	int			reset;
+ 	int			set_lvt_off;
+ 	int			lvt_off;
+ 	u16			old_limit;
+@@ -422,13 +421,13 @@ static void threshold_restart_bank(void
+ 
+ 	rdmsr(tr->b->address, lo, hi);
+ 
+-	if (tr->b->threshold_limit < (hi & THRESHOLD_MAX))
+-		tr->reset = 1;	/* limit cannot be lower than err count */
+-
+-	if (tr->reset) {		/* reset err count and overflow bit */
+-		hi =
+-		    (hi & ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI)) |
+-		    (THRESHOLD_MAX - tr->b->threshold_limit);
++	/*
++	 * Reset error count and overflow bit.
++	 * This is done during init or after handling an interrupt.
++	 */
++	if (hi & MASK_OVERFLOW_HI || tr->set_lvt_off) {
++		hi &= ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI);
++		hi |= THRESHOLD_MAX - tr->b->threshold_limit;
+ 	} else if (tr->old_limit) {	/* change limit w/o reset */
+ 		int new_count = (hi & THRESHOLD_MAX) +
+ 		    (tr->old_limit - tr->b->threshold_limit);
 
 
 
