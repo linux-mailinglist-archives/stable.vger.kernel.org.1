@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D717B05C55
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:30:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0576CB05D26
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7177B188F787
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99689565F5E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A902E62CB;
-	Tue, 15 Jul 2025 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342632E9ED4;
+	Tue, 15 Jul 2025 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glSMuIGq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNYvNJE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6B416D4EF;
-	Tue, 15 Jul 2025 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E612A2E3391;
+	Tue, 15 Jul 2025 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585975; cv=none; b=fe/YMLjMQNGMlSQUKVYRedsQfAKUfd6EeVWhmulMK3Irr0uipG3MVgJVCKqvhX7onEvDcYdS26Tc2yCKuxTSG1iCTTwdgrmL0ehlPyTBM6GLkLWpNWcxqwYMULPBTp0Box/EWH5qQYdh60xlr4W4iFeBv4PiiFrP4T6MLo1SNnk=
+	t=1752586399; cv=none; b=fv3kpM6Rg8vtIg2q1l5yuZVOq9felmCBM232zgTUcRoxjt9L4DntA6fwtTWHeDCPCWxLiP94SmU5D2Czb61/YmtSGvm8tlLCEY/viCdonfqviAUC/l8h8ZS6W+svHXrWiVALVq3JE5AVc0U8WMd0LHcAzpw4DFU7rqNMjBfOpiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585975; c=relaxed/simple;
-	bh=5BqD2YRn8DjMdNBUyX4liFWoanXJNBgIdcsRTdBZfao=;
+	s=arc-20240116; t=1752586399; c=relaxed/simple;
+	bh=5ShqdG7csOlitq8plmC7EAIqAAdF24DfJrFOhjtpWYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bnbxy9Tbteax1iejjVNNvrYshL/w0wb8DTABElhDIDkKlVkCv/Mi/w9MetxmtgzSvlPhw9SXYS9tKsL+QqkK3Rkwhk58qdz1BdaHWlZubnRY/tlHJTxO8olZYebN3CFCZl//Ea8xcBpCvaXEKfsxUscC6uoeBduCVc0kThIxXTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glSMuIGq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF74C4CEE3;
-	Tue, 15 Jul 2025 13:26:14 +0000 (UTC)
+	 MIME-Version; b=F0yRC/xAKNXUrshSXKbBZRqq27HXwmJZQZWjGJM8i3Tbnv+etUDX6zKtFuUXsY5S/MSJKMX9FByaakiTm7T/C9VBoMhWwOVS8Sl+5Sic/Ukcn8zaO0YYxKQUCyTCKLNAVch3m8CWAitFSGk7Bv2cofEzb1+4AeqcErQQkFHrLVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNYvNJE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B8DC4CEE3;
+	Tue, 15 Jul 2025 13:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585975;
-	bh=5BqD2YRn8DjMdNBUyX4liFWoanXJNBgIdcsRTdBZfao=;
+	s=korg; t=1752586398;
+	bh=5ShqdG7csOlitq8plmC7EAIqAAdF24DfJrFOhjtpWYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glSMuIGqpdyCk7Pl7ThdfLcY5hvNm0xPj8PRQkdZxli8EGyFTU0XMYhPcZMDfTPry
-	 Z4dDZZP6WeuKYlDYBTrCjGqagghMVjEP3iXPx8KXhqrGlQWo7vdrwYRe/nx5M0IkIe
-	 gNVPdHUkDzQz/v5MTkGU9o6YK0aKcjxYG2v2bwAc=
+	b=mNYvNJE2qwsvjO0I710Wx20AWMxQPb7BcckvOr7UcBsBVxsk+gNu0rg2dxJNjGmjb
+	 k2fojM5MjUto91P8zGWEFkCBQL48DWclZTy+JOqJTJPdn57XoI3pcgw6qK5mpbvvIw
+	 tZGXE8jNGcgWha53bUBRURNPDZYlGDxYEo2Nsz6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Paul Durrant <paul@xen.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 037/109] KVM: x86/xen: Allow out of range event channel ports in IRQ routing table.
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 5.4 051/148] drm/bridge: cdns-dsi: Fix connecting to next bridge
 Date: Tue, 15 Jul 2025 15:12:53 +0200
-Message-ID: <20250715130800.366223483@linuxfoundation.org>
+Message-ID: <20250715130802.366474552@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-commit a7f4dff21fd744d08fa956c243d2b1795f23cbf7 upstream.
+commit 688eb4d465484bc2a3471a6a6f06f833b58c7867 upstream.
 
-To avoid imposing an ordering constraint on userspace, allow 'invalid'
-event channel targets to be configured in the IRQ routing table.
+Fix the OF node pointer passed to the of_drm_find_bridge() call to find
+the next bridge in the display chain.
 
-This is the same as accepting interrupts targeted at vCPUs which don't
-exist yet, which is already the case for both Xen event channels *and*
-for MSIs (which don't do any filtering of permitted APIC ID targets at
-all).
+The code to find the next panel (and create its panel-bridge) works
+fine, but to find the next (non-panel) bridge does not.
 
-If userspace actually *triggers* an IRQ with an invalid target, that
-will fail cleanly, as kvm_xen_set_evtchn_fast() also does the same range
-check.
+To find the next bridge in the pipeline, we need to pass "np" - the OF
+node pointer of the next entity in the devicetree chain. Passing
+"of_node" to of_drm_find_bridge (which is what the code does currently)
+will fetch the bridge for the cdns-dsi which is not what's required.
 
-If KVM enforced that the IRQ target must be valid at the time it is
-*configured*, that would force userspace to create all vCPUs and do
-various other parts of setup (in this case, setting the Xen long_mode)
-before restoring the IRQ table.
+Fix that.
 
+Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Link: https://lore.kernel.org/r/e489252745ac4b53f1f7f50570b03fb416aa2065.camel@infradead.org
-[sean: massage comment]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Link: https://lore.kernel.org/r/20250329113925.68204-2-aradhya.bhatia@linux.dev
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/xen.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/cdns-dsi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -1737,8 +1737,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm
- {
- 	struct kvm_vcpu *vcpu;
- 
--	if (ue->u.xen_evtchn.port >= max_evtchn_port(kvm))
--		return -EINVAL;
-+	/*
-+	 * Don't check for the port being within range of max_evtchn_port().
-+	 * Userspace can configure what ever targets it likes; events just won't
-+	 * be delivered if/while the target is invalid, just like userspace can
-+	 * configure MSIs which target non-existent APICs.
-+	 *
-+	 * This allow on Live Migration and Live Update, the IRQ routing table
-+	 * can be restored *independently* of other things like creating vCPUs,
-+	 * without imposing an ordering dependency on userspace.  In this
-+	 * particular case, the problematic ordering would be with setting the
-+	 * Xen 'long mode' flag, which changes max_evtchn_port() to allow 4096
-+	 * instead of 1024 event channels.
-+	 */
- 
- 	/* We only support 2 level event channels for now */
- 	if (ue->u.xen_evtchn.priority != KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL)
+--- a/drivers/gpu/drm/bridge/cdns-dsi.c
++++ b/drivers/gpu/drm/bridge/cdns-dsi.c
+@@ -959,7 +959,7 @@ static int cdns_dsi_attach(struct mipi_d
+ 	if (!IS_ERR(panel)) {
+ 		bridge = drm_panel_bridge_add(panel, DRM_MODE_CONNECTOR_DSI);
+ 	} else {
+-		bridge = of_drm_find_bridge(dev->dev.of_node);
++		bridge = of_drm_find_bridge(np);
+ 		if (!bridge)
+ 			bridge = ERR_PTR(-EINVAL);
+ 	}
 
 
 
