@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59851B05C81
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6BAB05EE9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A4E83B45AC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADA6A1883C07
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB67D2E49BE;
-	Tue, 15 Jul 2025 13:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02B02E7F39;
+	Tue, 15 Jul 2025 13:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPWjtXT0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uT7mKhAm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996972E3AF6;
-	Tue, 15 Jul 2025 13:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DAB2E339B;
+	Tue, 15 Jul 2025 13:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585909; cv=none; b=XQEiU7BmpvFNM7VEV4EM5+Cj+DoHyCiqsoQWgysNHEgy37NodNuZVC4ng9wq5yytV9vFBDyvRNG9t8hTXGTYfcZ41H/C+qNZsosDdgtXTlYcPhIdEk6AEh7jrhHWc4Y/LztyA/56QF0p60M6hS5bNLrSMdoP/CK1Mh96nKn4myE=
+	t=1752586994; cv=none; b=h3pHPOsUs9zADV5MPKXuUceXNCry4YaOuh1OXvo2OGwrtK8TzibAsKzkTXrPvLUuhTHI/b/vz9hbzqIKaX0CKlhj7z5Tz+LX1R2WhTESgWQ+zPTxbocPxel3+LWvJeI21iA1K2Z4/QxdxHIqjL076adJ125dAdhRawvnJMomeYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585909; c=relaxed/simple;
-	bh=7uDUYGjKLBaIyv8zo15NUtKQxFlAS+r6YoyFtTEnOVw=;
+	s=arc-20240116; t=1752586994; c=relaxed/simple;
+	bh=x17jeFV2wN16FpE2rOKGe9zLL6Uwr3oxHnFJ4AzytpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZFv00HzyhtpVKMKXwIG35L78/iJhpO9grULMpkw1KFbRWX9mr93r1shVXEhOFAhWDPylEIwTN1mYVWzytFzTviZIcL8j7LmO9x+YGisgOlTIQ3Jhh3XARBIy+nNz4RrYJl+VBM3UMw6YXSE1SeH0BNpYV+xnow3vWhq60Y40ZBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPWjtXT0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E082C4CEE3;
-	Tue, 15 Jul 2025 13:25:09 +0000 (UTC)
+	 MIME-Version; b=s9jDS2/TsLEyOc7Oo947vu3sNT6h1X5AxBu9H0j6XpUG2wz8CD3tqCI+6+oRuUJvK2/Ya+e9aLEGbEM1NT95WceDzmWNwSZDSxYtPTj7Kawy4Qmey2gBRKBpUYxJZQFTU18sYnv0ssfqgj4rtAPFHyjap+CDJU+ZgSGIblfYDBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uT7mKhAm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3520CC4CEE3;
+	Tue, 15 Jul 2025 13:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585909;
-	bh=7uDUYGjKLBaIyv8zo15NUtKQxFlAS+r6YoyFtTEnOVw=;
+	s=korg; t=1752586994;
+	bh=x17jeFV2wN16FpE2rOKGe9zLL6Uwr3oxHnFJ4AzytpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPWjtXT0bgrjoz7ROw+XAWLv7zoC0pu6R4aQASBzvnFHQbJ0oycCTfumXBzBYK4Pv
-	 iYrP6dyxMafUohkv+1RJi1KkGirNvveTJtcdnQB9FKD+lw0kgXhBtX+VlkjbtVDSJr
-	 u5PvcjDBMGGLC323/P69U40ASK9Y+gBh6auXDA6A=
+	b=uT7mKhAmlwDMmgIO00T7j3Ur17hiPk1VoMTy+h4j0fWYt5dHPrdzuCCiuWtggrkb1
+	 3kBlXcRwUMGv6h400GSb2u4rJAoJ/0qImvx2vaNzMqg3VBbHYjFX6ET5z4/bJDNfUZ
+	 Q0mamb0MXJADUDFmrMk6TpAoo1Bs4uup5rfMm1To=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 054/109] scripts/gdb: fix interrupts display after MCP on x86
+	Matthew Brost <matthew.brost@intel.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.15 095/192] drm/xe: Allocate PF queue size on pow2 boundary
 Date: Tue, 15 Jul 2025 15:13:10 +0200
-Message-ID: <20250715130801.036181075@linuxfoundation.org>
+Message-ID: <20250715130818.714574050@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit 7627b459aa0737bdd62a8591a1481cda467f20e3 upstream.
+commit c9a95dbe06102cf01afee4cd83ecb29f8d587a72 upstream.
 
-The text line would not be appended to as it should have, it should have
-been a '+=' but ended up being a '==', fix that.
+CIRC_SPACE does not work unless the size argument is a power of 2,
+allocate PF queue size on power of 2 boundary.
 
-Link: https://lkml.kernel.org/r/20250623164153.746359-1-florian.fainelli@broadcom.com
-Fixes: b0969d7687a7 ("scripts/gdb: print interrupts")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
+Fixes: 29582e0ea75c ("drm/xe: Add page queue multiplier")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Link: https://lore.kernel.org/r/20250702213511.3226167-1-matthew.brost@intel.com
+(cherry picked from commit 491b9783126303755717c0cbde0b08ee59b6abab)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gdb/linux/interrupts.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_gt_pagefault.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/gdb/linux/interrupts.py b/scripts/gdb/linux/interrupts.py
-index 616a5f26377a..199d9e8193f4 100644
---- a/scripts/gdb/linux/interrupts.py
-+++ b/scripts/gdb/linux/interrupts.py
-@@ -142,7 +142,7 @@ def x86_show_interupts(prec):
+--- a/drivers/gpu/drm/xe/xe_gt_pagefault.c
++++ b/drivers/gpu/drm/xe/xe_gt_pagefault.c
+@@ -444,6 +444,7 @@ static int xe_alloc_pf_queue(struct xe_g
+ #define PF_MULTIPLIER	8
+ 	pf_queue->num_dw =
+ 		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW * PF_MULTIPLIER;
++	pf_queue->num_dw = roundup_pow_of_two(pf_queue->num_dw);
+ #undef PF_MULTIPLIER
  
-     if constants.LX_CONFIG_X86_MCE:
-         text += x86_show_mce(prec, "&mce_exception_count", "MCE", "Machine check exceptions")
--        text == x86_show_mce(prec, "&mce_poll_count", "MCP", "Machine check polls")
-+        text += x86_show_mce(prec, "&mce_poll_count", "MCP", "Machine check polls")
- 
-     text += show_irq_err_count(prec)
- 
--- 
-2.50.1
-
+ 	pf_queue->gt = gt;
 
 
 
