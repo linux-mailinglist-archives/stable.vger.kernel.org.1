@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-162865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569F3B0600A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E061FB05FF4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F2A77BDF45
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:04:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 836F57BBC83
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958A42EE295;
-	Tue, 15 Jul 2025 13:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A5D2ECD3F;
+	Tue, 15 Jul 2025 13:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BO4JtOi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNHzgehB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541952ECD2F;
-	Tue, 15 Jul 2025 13:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B452E718E;
+	Tue, 15 Jul 2025 13:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587679; cv=none; b=C5pqeV6PC8nS93khC/Wxe8OkpbdbzjhY8c9JJXY+M2MngNEl3ouVvAQTRUcki5Mh9u5AHvRnz7qKK/+WyRO+VERyF2FApFGdtkRiKNNaUh55vkfuB1d8yzZIlwqL/VoiZUEyO1GiDYOKSz4suWGhq2JKDL0woHpvtfonOLdpxNE=
+	t=1752587708; cv=none; b=PAbGmWHt56zofIXAlkwF4NdP0000rSR1yZFzn8ljOnyJ1tkluYxu3P9AwE9dSzr9IWx245F4fAurwRBV9McZdpJISE6ns+nhconSWorWSHgG+4P2eIak1uI1eFJIQllb8zvFaYbbO7n0ACoHuhZhAziDk17DzVwCkn8M7XPngUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587679; c=relaxed/simple;
-	bh=6hyh6C4HJ34SYkKVwKzjpFAGpJ+J8WS+rG30vibuf9Q=;
+	s=arc-20240116; t=1752587708; c=relaxed/simple;
+	bh=Wf3Q4h2y2eD/33JBOSt0GI7Xjm93F/uQYPCY0KQXOhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtj7KyfHMyZCnfjICNhGZK4FKEZbhHiEXLPrrBk7hZQOy+zRjv90hb6Yc8V8TCJapy6la+Fjpdy8rCRFZQEECZ9wYuc1+aNbfRwkF92UL51dfcyedz4gDSoP3C29wwYELSxj9Lbmit4sfWsNVPbVpQ7rcMlN3fpcGMU+ZUaq6/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BO4JtOi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5624C4CEE3;
-	Tue, 15 Jul 2025 13:54:38 +0000 (UTC)
+	 MIME-Version; b=UV8eFUEVxPEyKt96A1TCX5vLK6pfO2669FQ15L9p7ZWySp3Rg5berBxDs6WHKtFymYx4zEps8BJD6tK3FC2mPQ4HLXDeW7/Q+kV3zHjCLe219p05e/L3DCbUmOn9pHF2gdFYBb9PlcS2x4UWC6eIQ82/NaJEfyyvgtZOVNVOOWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNHzgehB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B9AC4CEE3;
+	Tue, 15 Jul 2025 13:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587679;
-	bh=6hyh6C4HJ34SYkKVwKzjpFAGpJ+J8WS+rG30vibuf9Q=;
+	s=korg; t=1752587708;
+	bh=Wf3Q4h2y2eD/33JBOSt0GI7Xjm93F/uQYPCY0KQXOhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BO4JtOi+M8YHJvCtmTADlt5IQFsiFyr0CWG0/xtR+rB/+exL9MvJ4lQ1WU8Hgr9R
-	 P0FNXHm9et0pAub3+g+ONUG+H2+NgYejkBGzMh7szyy4BqgrYfEzXUwGfi/pFSD6S5
-	 0TiqRYpAs7ITJKGPJrp5YlQA7OwvSsXR2vJY7rWY=
+	b=UNHzgehBitWiZd4SwDZprQr4qtIy/bzbnRkml3RLiOlpk1e6THUDOkNjDPo4kKhUq
+	 5059htgDqSwpxtwruAwxy4NPDfLtPr6ApUMG3fm1WJ1MeXnUxO9jPOYNuymHzpF6Oc
+	 XC49QTfpBPkFnPiWlNlvTt2HuJ/k+Wo9kptnv7zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	John Daley <johndale@cisco.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 095/208] amd-xgbe: align CL37 AN sequence as per databook
-Date: Tue, 15 Jul 2025 15:13:24 +0200
-Message-ID: <20250715130814.747625910@linuxfoundation.org>
+Subject: [PATCH 5.10 096/208] enic: fix incorrect MTU comparison in enic_change_mtu()
+Date: Tue, 15 Jul 2025 15:13:25 +0200
+Message-ID: <20250715130814.789292165@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -66,87 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 42fd432fe6d320323215ebdf4de4d0d7e56e6792 ]
+[ Upstream commit aaf2b2480375099c022a82023e1cd772bf1c6a5d ]
 
-Update the Clause 37 Auto-Negotiation implementation to properly align
-with the PCS hardware specifications:
-- Fix incorrect bit settings in Link Status and Link Duplex fields
-- Implement missing sequence steps 2 and 7
+The comparison in enic_change_mtu() incorrectly used the current
+netdev->mtu instead of the new new_mtu value when warning about
+an MTU exceeding the port MTU. This could suppress valid warnings
+or issue incorrect ones.
 
-These changes ensure CL37 auto-negotiation protocol follows the exact
-sequence patterns as specified in the hardware databook.
+Fix the condition and log to properly reflect the new_mtu.
 
-Fixes: 1bf40ada6290 ("amd-xgbe: Add support for clause 37 auto-negotiation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20250630192636.3838291-1-Raju.Rangoju@amd.com
+Fixes: ab123fe071c9 ("enic: handle mtu change for vf properly")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Acked-by: John Daley <johndale@cisco.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250628145612.476096-1-alok.a.tiwari@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-common.h | 2 ++
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c   | 9 +++++++++
- drivers/net/ethernet/amd/xgbe/xgbe.h        | 4 ++--
- 3 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cisco/enic/enic_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-common.h b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-index 533b8519ec352..c5dc23906a78d 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-@@ -1355,6 +1355,8 @@
- #define MDIO_VEND2_CTRL1_SS13		BIT(13)
- #endif
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index b695f3f233286..f59d658d624f5 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -2058,10 +2058,10 @@ static int enic_change_mtu(struct net_device *netdev, int new_mtu)
+ 	if (enic_is_dynamic(enic) || enic_is_sriov_vf(enic))
+ 		return -EOPNOTSUPP;
  
-+#define XGBE_VEND2_MAC_AUTO_SW		BIT(9)
-+
- /* MDIO mask values */
- #define XGBE_AN_CL73_INT_CMPLT		BIT(0)
- #define XGBE_AN_CL73_INC_LINK		BIT(1)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 60be836b294bb..19fed56b6ee3f 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -363,6 +363,10 @@ static void xgbe_an37_set(struct xgbe_prv_data *pdata, bool enable,
- 		reg |= MDIO_VEND2_CTRL1_AN_RESTART;
+-	if (netdev->mtu > enic->port_mtu)
++	if (new_mtu > enic->port_mtu)
+ 		netdev_warn(netdev,
+ 			    "interface MTU (%d) set higher than port MTU (%d)\n",
+-			    netdev->mtu, enic->port_mtu);
++			    new_mtu, enic->port_mtu);
  
- 	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_CTRL1, reg);
-+
-+	reg = XMDIO_READ(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL);
-+	reg |= XGBE_VEND2_MAC_AUTO_SW;
-+	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL, reg);
+ 	return _enic_change_mtu(netdev, new_mtu);
  }
- 
- static void xgbe_an37_restart(struct xgbe_prv_data *pdata)
-@@ -991,6 +995,11 @@ static void xgbe_an37_init(struct xgbe_prv_data *pdata)
- 
- 	netif_dbg(pdata, link, pdata->netdev, "CL37 AN (%s) initialized\n",
- 		  (pdata->an_mode == XGBE_AN_MODE_CL37) ? "BaseX" : "SGMII");
-+
-+	reg = XMDIO_READ(pdata, MDIO_MMD_AN, MDIO_CTRL1);
-+	reg &= ~MDIO_AN_CTRL1_ENABLE;
-+	XMDIO_WRITE(pdata, MDIO_MMD_AN, MDIO_CTRL1, reg);
-+
- }
- 
- static void xgbe_an73_init(struct xgbe_prv_data *pdata)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index 0493de8ee545a..61f22462197ae 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -291,11 +291,11 @@
- #define XGBE_LINK_TIMEOUT		5
- #define XGBE_KR_TRAINING_WAIT_ITER	50
- 
--#define XGBE_SGMII_AN_LINK_STATUS	BIT(1)
-+#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(1)
- #define XGBE_SGMII_AN_LINK_SPEED	(BIT(2) | BIT(3))
- #define XGBE_SGMII_AN_LINK_SPEED_100	0x04
- #define XGBE_SGMII_AN_LINK_SPEED_1000	0x08
--#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(4)
-+#define XGBE_SGMII_AN_LINK_STATUS	BIT(4)
- 
- /* ECC correctable error notification window (seconds) */
- #define XGBE_ECC_LIMIT			60
 -- 
 2.39.5
 
