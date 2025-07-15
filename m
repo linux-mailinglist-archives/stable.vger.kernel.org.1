@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50DFBB05CE2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:37:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F310B05DA3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440DB1644EB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:36:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA303581175
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53D72E6D2D;
-	Tue, 15 Jul 2025 13:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199992E62CB;
+	Tue, 15 Jul 2025 13:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGDDEp4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/P2gC9F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F8A2E88B7;
-	Tue, 15 Jul 2025 13:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB24192D8A;
+	Tue, 15 Jul 2025 13:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586203; cv=none; b=EuWqjxNNZ+YoEl9BnSXYeK+9WdetNLAiz1d3PUSO3FEzsQCOAgtV9m2CDbXNXfrrLif5d9DCOa94dqX28hVZuCUTqFUZE9m2/XaSek42TtRW7m5A5tNTbZSRT6a8x4L4nwhRyPdTmhWATMII36sUmeKytQp+HHYt6EtMh+z+PJ8=
+	t=1752586557; cv=none; b=Im7R/KAQtEuGg4ItyZbMWx4yMCldE7fzj7Jn6uYUNrOwJsgouohjmmempdYAU2R5WkPQ6qPgEEetyWIerfcgoubrXgk2B6zKG/GuCePd4fIkwZ0G3VslAnM1hOsFN5EbbwS8S4OXTt0JRNwVD/wQa+A1hP4rbV8GqGb1EVY7+dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586203; c=relaxed/simple;
-	bh=ltaRzX6NSjvfT+HXonCH+JOhdiXdsfGlNQ1z/Skgs0M=;
+	s=arc-20240116; t=1752586557; c=relaxed/simple;
+	bh=fDHcaNgX1d0t1dEbJU6XhP3XZWT14GfGQAgTQrPgvDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUPyYSUCnTEkG/kB0oTRKBdrE2xYJdbTwGsFTqO3C3ppcBeKQhgsiQjDkY5YPRvmhviHNVB0qU+099A4X99TLeHVLIhuz8Fe35PmOmavTr1RPTvrIeinjVo/VVHQnyoctxsC81Kzt8rRxQbdlF3jhc0b71Fdul2zganwL+mTzEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGDDEp4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A010C4CEF1;
-	Tue, 15 Jul 2025 13:30:02 +0000 (UTC)
+	 MIME-Version; b=iUdTmBrCOcwJIt+eZ7pHNiIuHihhrZ3QKUohKqFFZn0J0ykE4NKgkMFRubJ5DierZ0n497pg/8JifO7q+p9jq2BFkYRhHDhm+ibMgxw4zd4INyvI+hEyrJnlvdfyBrQGGvncPhTAZZvTRfzpkTC5P9Xuh2Y/sSkiAYrKOgDTEk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/P2gC9F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC71C4CEE3;
+	Tue, 15 Jul 2025 13:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586202;
-	bh=ltaRzX6NSjvfT+HXonCH+JOhdiXdsfGlNQ1z/Skgs0M=;
+	s=korg; t=1752586557;
+	bh=fDHcaNgX1d0t1dEbJU6XhP3XZWT14GfGQAgTQrPgvDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGDDEp4M7bodjaAsVsQQ+EyM+aJNeKVg8mYbVe+zVtSqexxqUCySXTaJ+51aYh8Mm
-	 pB+OIWPVq85v76CqZ05fdEfUwWcsuGueTXjfy+eqh1Eaf5d5XdheNJhPydbU0Lw3MB
-	 iJwHrMuLgw9kZjBRy01DW9FVCRYKINAdeuct1Cts=
+	b=D/P2gC9Fsn3nI5cTnfpUc4+7vGt22qxs02MJnXRxP/i116s1CNXud1XCfJDZZhPfI
+	 1sB0bqtW8L5keBG9AtT5WfUaTyO3cM5bRvjIIExYRVn4CHowB3MCvB0ktRIvsUdT/f
+	 zZj6A6iJQ3Q/S7wAIqxJgA/1z5hz2YdQE8j4t4gU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 54/77] wifi: zd1211rw: Fix potential NULL pointer dereference in zd_mac_tx_to_dev()
+Subject: [PATCH 5.4 111/148] atm: clip: Fix potential null-ptr-deref in to_atmarpd().
 Date: Tue, 15 Jul 2025 15:13:53 +0200
-Message-ID: <20250715130753.897627165@linuxfoundation.org>
+Message-ID: <20250715130804.755214284@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 74b1ec9f5d627d2bdd5e5b6f3f81c23317657023 ]
+[ Upstream commit 706cc36477139c1616a9b2b96610a8bb520b7119 ]
 
-There is a potential NULL pointer dereference in zd_mac_tx_to_dev(). For
-example, the following is possible:
+atmarpd is protected by RTNL since commit f3a0592b37b8 ("[ATM]: clip
+causes unregister hang").
 
-    	T0			    		T1
-zd_mac_tx_to_dev()
-  /* len == skb_queue_len(q) */
-  while (len > ZD_MAC_MAX_ACK_WAITERS) {
+However, it is not enough because to_atmarpd() is called without RTNL,
+especially clip_neigh_solicit() / neigh_ops->solicit() is unsleepable.
 
-					  filter_ack()
-					    spin_lock_irqsave(&q->lock, flags);
-					    /* position == skb_queue_len(q) */
-					    for (i=1; i<position; i++)
-				    	      skb = __skb_dequeue(q)
+Also, there is no RTNL dependency around atmarpd.
 
-					    if (mac->type == NL80211_IFTYPE_AP)
-					      skb = __skb_dequeue(q);
-					    spin_unlock_irqrestore(&q->lock, flags);
+Let's use a private mutex and RCU to protect access to atmarpd in
+to_atmarpd().
 
-    skb_dequeue() -> NULL
-
-Since there is a small gap between checking skb queue length and skb being
-unconditionally dequeued in zd_mac_tx_to_dev(), skb_dequeue() can return NULL.
-Then the pointer is passed to zd_mac_tx_status() where it is dereferenced.
-
-In order to avoid potential NULL pointer dereference due to situations like
-above, check if skb is not NULL before passing it to zd_mac_tx_status().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 459c51ad6e1f ("zd1211rw: port to mac80211")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Link: https://patch.msgid.link/20250626114619.172631-1-d.dulov@aladdin.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250704062416.1613927-2-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/zydas/zd1211rw/zd_mac.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/atm/clip.c | 44 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
-index 3ef8533205f91..0a7f368f0d99c 100644
---- a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
-+++ b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
-@@ -583,7 +583,11 @@ void zd_mac_tx_to_dev(struct sk_buff *skb, int error)
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index 294cb9efe3d38..d5363ae5296ad 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -45,7 +45,8 @@
+ #include <net/atmclip.h>
  
- 		skb_queue_tail(q, skb);
- 		while (skb_queue_len(q) > ZD_MAC_MAX_ACK_WAITERS) {
--			zd_mac_tx_status(hw, skb_dequeue(q),
-+			skb = skb_dequeue(q);
-+			if (!skb)
-+				break;
+ static struct net_device *clip_devs;
+-static struct atm_vcc *atmarpd;
++static struct atm_vcc __rcu *atmarpd;
++static DEFINE_MUTEX(atmarpd_lock);
+ static struct timer_list idle_timer;
+ static const struct neigh_ops clip_neigh_ops;
+ 
+@@ -53,24 +54,35 @@ static int to_atmarpd(enum atmarp_ctrl_type type, int itf, __be32 ip)
+ {
+ 	struct sock *sk;
+ 	struct atmarp_ctrl *ctrl;
++	struct atm_vcc *vcc;
+ 	struct sk_buff *skb;
++	int err = 0;
+ 
+ 	pr_debug("(%d)\n", type);
+-	if (!atmarpd)
+-		return -EUNATCH;
 +
-+			zd_mac_tx_status(hw, skb,
- 					 mac->ack_pending ? mac->ack_signal : 0,
- 					 NULL);
- 			mac->ack_pending = 0;
++	rcu_read_lock();
++	vcc = rcu_dereference(atmarpd);
++	if (!vcc) {
++		err = -EUNATCH;
++		goto unlock;
++	}
+ 	skb = alloc_skb(sizeof(struct atmarp_ctrl), GFP_ATOMIC);
+-	if (!skb)
+-		return -ENOMEM;
++	if (!skb) {
++		err = -ENOMEM;
++		goto unlock;
++	}
+ 	ctrl = skb_put(skb, sizeof(struct atmarp_ctrl));
+ 	ctrl->type = type;
+ 	ctrl->itf_num = itf;
+ 	ctrl->ip = ip;
+-	atm_force_charge(atmarpd, skb->truesize);
++	atm_force_charge(vcc, skb->truesize);
+ 
+-	sk = sk_atm(atmarpd);
++	sk = sk_atm(vcc);
+ 	skb_queue_tail(&sk->sk_receive_queue, skb);
+ 	sk->sk_data_ready(sk);
+-	return 0;
++unlock:
++	rcu_read_unlock();
++	return err;
+ }
+ 
+ static void link_vcc(struct clip_vcc *clip_vcc, struct atmarp_entry *entry)
+@@ -608,10 +620,12 @@ static void atmarpd_close(struct atm_vcc *vcc)
+ {
+ 	pr_debug("\n");
+ 
+-	rtnl_lock();
+-	atmarpd = NULL;
++	mutex_lock(&atmarpd_lock);
++	RCU_INIT_POINTER(atmarpd, NULL);
++	mutex_unlock(&atmarpd_lock);
++
++	synchronize_rcu();
+ 	skb_queue_purge(&sk_atm(vcc)->sk_receive_queue);
+-	rtnl_unlock();
+ 
+ 	pr_debug("(done)\n");
+ 	module_put(THIS_MODULE);
+@@ -632,15 +646,15 @@ static struct atm_dev atmarpd_dev = {
+ 
+ static int atm_init_atmarp(struct atm_vcc *vcc)
+ {
+-	rtnl_lock();
++	mutex_lock(&atmarpd_lock);
+ 	if (atmarpd) {
+-		rtnl_unlock();
++		mutex_unlock(&atmarpd_lock);
+ 		return -EADDRINUSE;
+ 	}
+ 
+ 	mod_timer(&idle_timer, jiffies + CLIP_CHECK_INTERVAL * HZ);
+ 
+-	atmarpd = vcc;
++	rcu_assign_pointer(atmarpd, vcc);
+ 	set_bit(ATM_VF_META, &vcc->flags);
+ 	set_bit(ATM_VF_READY, &vcc->flags);
+ 	    /* allow replies and avoid getting closed if signaling dies */
+@@ -649,7 +663,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
+ 	vcc->push = NULL;
+ 	vcc->pop = NULL; /* crash */
+ 	vcc->push_oam = NULL; /* crash */
+-	rtnl_unlock();
++	mutex_unlock(&atmarpd_lock);
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
