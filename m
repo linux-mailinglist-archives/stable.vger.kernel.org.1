@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5EAB05EA1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B812B05D94
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B71916A9F6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1C3B7B88AF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C8426E6F1;
-	Tue, 15 Jul 2025 13:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F892E62D7;
+	Tue, 15 Jul 2025 13:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdV+0cXu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Fg+5vHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E3B2E6D2B;
-	Tue, 15 Jul 2025 13:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C646F2E3363;
+	Tue, 15 Jul 2025 13:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587034; cv=none; b=EK7qBtywE+Hjh6WVjSCq/gtDayS4vQFQs/EQXIvTOzu2dpRqFH3EfOhKAI4NquMpRWvvUQFwk8a+VDn08T2bcT8rRuFCes+y78i6L+Jos5CjY4DdfyVBNP2p6qcwgtdch7ewoGUqYLM42n6RoAUq4IvVXV4XWvAo/qLWW1XKRrE=
+	t=1752586565; cv=none; b=GpsyxGqfY0/spl70OWJJq5O4ZmGX3Pr/SBug5eZspR6oEdnBh6rpfljuK+D1bVJH8gvUGzt6wj9vVolR/l/Mi+JT0WN8HL89yYwTSBUWISTGpyYhQMyAkvQSP2lHKcacorUQ3RRR+6ai9uNtizQLcwMEMC/4Ay61wdykEqV4qV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587034; c=relaxed/simple;
-	bh=4mRYAG9kAEuYWG/S1xE6/Z4LDwoM4ZVg4NmdRs6PClA=;
+	s=arc-20240116; t=1752586565; c=relaxed/simple;
+	bh=foDgtUr4gP/TFhxii+koqKvGJ1jnlAq527wRY3g41aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7F2Npt+WCOJ8AZUfe5gaJCzstgxdpb5UtNz65YtwAn3VXkRQwzZevNQ/oSSWubTG1ojSfItJbpcIwGeVcb3ZCBdupvOdnJVhmL92Hjy1lbCHf33dJA4a7jQFaZh0aRKhECVVSJIdYckEdHp/05VvbzZOI4ZSNytCywN4A0hhOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdV+0cXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0ECC4CEE3;
-	Tue, 15 Jul 2025 13:43:53 +0000 (UTC)
+	 MIME-Version; b=lHuExFbmq122rXEIC+d1IfLjZLb2GsNwJJo9XUOi6wZIQdbGUojebp9zHCfss4myAYy3Lnl5/AzEUB+Xp233Tox4d3qEClOPog+pQG4bhycC+1l00xsYkUKsR2YRJbOjyGRm2is4XB3UcyhcISyo0gz9Cy+PmsuEtMItMu4Rs00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Fg+5vHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A48C4CEE3;
+	Tue, 15 Jul 2025 13:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587034;
-	bh=4mRYAG9kAEuYWG/S1xE6/Z4LDwoM4ZVg4NmdRs6PClA=;
+	s=korg; t=1752586565;
+	bh=foDgtUr4gP/TFhxii+koqKvGJ1jnlAq527wRY3g41aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HdV+0cXu3DP9Zc/MHKWeeeZzKJhIufC+FXtq7oJh9Fwtt6DiG/6gEIaY2ZlszbUj7
-	 J0bAmscV1K4wbYiQlgJLK1wnWJUcEXKAIX8m1J6PTMQXh9c77vXqif29NJshHo7qqq
-	 pg1PjpCdLKYFKr75PK3V6hnray9lk64ofN3nxkwA=
+	b=2Fg+5vHtpnQZYesE3Lha7v6YU6mxWI0kxGaDErAVl9UYXU4sqzEep3vSrb/Nb3UUX
+	 itSXg82twqheJ4Y1EoyVzm1nU0/9IqNrIxLnwD3hUB25CrOcRb+7sbIwGVIBht27bB
+	 2fPLlpm0jfy5XmoPepn4K5Kd3Koj4bDcAb83yer8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	syzbot+e34e5e6b5eddb0014def@syzkaller.appspotmail.com,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 141/192] wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl_fixed()
+Subject: [PATCH 5.4 114/148] atm: clip: Fix NULL pointer dereference in vcc_sendmsg()
 Date: Tue, 15 Jul 2025 15:13:56 +0200
-Message-ID: <20250715130820.560358826@linuxfoundation.org>
+Message-ID: <20250715130804.872136566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,190 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit 28d519d0d493a8cf3f8ca01f10d962c56cec1825 ]
+[ Upstream commit 22fc46cea91df3dce140a7dc6847c6fcf0354505 ]
 
-Since mt7996_mcu_set_fixed_field() can't be executed in a RCU critical
-section, move RCU section in mt7996_mcu_add_rate_ctrl_fixed() and run
-mt7996_mcu_set_fixed_field() in non-atomic context. This is a
-preliminary patch to fix a 'sleep while atomic' issue in
-mt7996_mac_sta_rc_work().
+atmarpd_dev_ops does not implement the send method, which may cause crash
+as bellow.
 
-Fixes: 0762bdd30279 ("wifi: mt76: mt7996: rework mt7996_mac_sta_rc_work to support MLO")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250605-mt7996-sleep-while-atomic-v1-3-d46d15f9203c@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+PGD 0 P4D 0
+Oops: Oops: 0010 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 5324 Comm: syz.0.0 Not tainted 6.15.0-rc6-syzkaller-00346-g5723cc3450bc #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:0x0
+Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+RSP: 0018:ffffc9000d3cf778 EFLAGS: 00010246
+RAX: 1ffffffff1910dd1 RBX: 00000000000000c0 RCX: dffffc0000000000
+RDX: ffffc9000dc82000 RSI: ffff88803e4c4640 RDI: ffff888052cd0000
+RBP: ffffc9000d3cf8d0 R08: ffff888052c9143f R09: 1ffff1100a592287
+R10: dffffc0000000000 R11: 0000000000000000 R12: 1ffff92001a79f00
+R13: ffff888052cd0000 R14: ffff88803e4c4640 R15: ffffffff8c886e88
+FS:  00007fbc762566c0(0000) GS:ffff88808d6c2000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffd6 CR3: 0000000041f1b000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ vcc_sendmsg+0xa10/0xc50 net/atm/common.c:644
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg+0x219/0x270 net/socket.c:727
+ ____sys_sendmsg+0x52d/0x830 net/socket.c:2566
+ ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2620
+ __sys_sendmmsg+0x227/0x430 net/socket.c:2709
+ __do_sys_sendmmsg net/socket.c:2736 [inline]
+ __se_sys_sendmmsg net/socket.c:2733 [inline]
+ __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2733
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf6/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+e34e5e6b5eddb0014def@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/682f82d5.a70a0220.1765ec.0143.GAE@google.com/T
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250705085228.329202-1-yuehaibing@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 86 ++++++++++++-------
- 1 file changed, 57 insertions(+), 29 deletions(-)
+ net/atm/clip.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index d67ed58d7126d..6c2b258ce4ff6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1955,51 +1955,74 @@ int mt7996_mcu_set_fixed_field(struct mt7996_dev *dev, struct mt7996_sta *msta,
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index bf62d94554d9f..0caed86736582 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -633,8 +633,16 @@ static void atmarpd_close(struct atm_vcc *vcc)
+ 	module_put(THIS_MODULE);
  }
  
- static int
--mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev,
--			       struct ieee80211_link_sta *link_sta,
--			       struct mt7996_vif_link *link,
--			       struct mt7996_sta_link *msta_link,
--			       u8 link_id)
-+mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev, struct mt7996_sta *msta,
-+			       struct ieee80211_vif *vif, u8 link_id)
- {
--	struct cfg80211_chan_def *chandef = &link->phy->mt76->chandef;
--	struct cfg80211_bitrate_mask *mask = &link->bitrate_mask;
--	enum nl80211_band band = chandef->chan->band;
--	struct mt7996_sta *msta = msta_link->sta;
-+	struct ieee80211_link_sta *link_sta;
-+	struct cfg80211_bitrate_mask mask;
-+	struct mt7996_sta_link *msta_link;
-+	struct mt7996_vif_link *link;
- 	struct sta_phy_uni phy = {};
--	int ret, nrates = 0;
-+	struct ieee80211_sta *sta;
-+	int ret, nrates = 0, idx;
-+	enum nl80211_band band;
-+	bool has_he;
- 
- #define __sta_phy_bitrate_mask_check(_mcs, _gi, _ht, _he)			\
- 	do {									\
--		u8 i, gi = mask->control[band]._gi;				\
-+		u8 i, gi = mask.control[band]._gi;				\
- 		gi = (_he) ? gi : gi == NL80211_TXRATE_FORCE_SGI;		\
- 		phy.sgi = gi;							\
--		phy.he_ltf = mask->control[band].he_ltf;			\
--		for (i = 0; i < ARRAY_SIZE(mask->control[band]._mcs); i++) {	\
--			if (!mask->control[band]._mcs[i])			\
-+		phy.he_ltf = mask.control[band].he_ltf;				\
-+		for (i = 0; i < ARRAY_SIZE(mask.control[band]._mcs); i++) {	\
-+			if (!mask.control[band]._mcs[i])			\
- 				continue;					\
--			nrates += hweight16(mask->control[band]._mcs[i]);	\
--			phy.mcs = ffs(mask->control[band]._mcs[i]) - 1;		\
-+			nrates += hweight16(mask.control[band]._mcs[i]);	\
-+			phy.mcs = ffs(mask.control[band]._mcs[i]) - 1;		\
- 			if (_ht)						\
- 				phy.mcs += 8 * i;				\
- 		}								\
- 	} while (0)
- 
--	if (link_sta->he_cap.has_he) {
-+	rcu_read_lock();
++static int atmarpd_send(struct atm_vcc *vcc, struct sk_buff *skb)
++{
++	atm_return_tx(vcc, skb);
++	dev_kfree_skb_any(skb);
++	return 0;
++}
 +
-+	link = mt7996_vif_link(dev, vif, link_id);
-+	if (!link)
-+		goto error_unlock;
-+
-+	msta_link = rcu_dereference(msta->link[link_id]);
-+	if (!msta_link)
-+		goto error_unlock;
-+
-+	sta = wcid_to_sta(&msta_link->wcid);
-+	link_sta = rcu_dereference(sta->link[link_id]);
-+	if (!link_sta)
-+		goto error_unlock;
-+
-+	band = link->phy->mt76->chandef.chan->band;
-+	has_he = link_sta->he_cap.has_he;
-+	mask = link->bitrate_mask;
-+	idx = msta_link->wcid.idx;
-+
-+	if (has_he) {
- 		__sta_phy_bitrate_mask_check(he_mcs, he_gi, 0, 1);
- 	} else if (link_sta->vht_cap.vht_supported) {
- 		__sta_phy_bitrate_mask_check(vht_mcs, gi, 0, 0);
- 	} else if (link_sta->ht_cap.ht_supported) {
- 		__sta_phy_bitrate_mask_check(ht_mcs, gi, 1, 0);
- 	} else {
--		nrates = hweight32(mask->control[band].legacy);
--		phy.mcs = ffs(mask->control[band].legacy) - 1;
-+		nrates = hweight32(mask.control[band].legacy);
-+		phy.mcs = ffs(mask.control[band].legacy) - 1;
- 	}
-+
-+	rcu_read_unlock();
-+
- #undef __sta_phy_bitrate_mask_check
+ static const struct atmdev_ops atmarpd_dev_ops = {
+-	.close = atmarpd_close
++	.close = atmarpd_close,
++	.send = atmarpd_send
+ };
  
- 	/* fall back to auto rate control */
--	if (mask->control[band].gi == NL80211_TXRATE_DEFAULT_GI &&
--	    mask->control[band].he_gi == GENMASK(7, 0) &&
--	    mask->control[band].he_ltf == GENMASK(7, 0) &&
-+	if (mask.control[band].gi == NL80211_TXRATE_DEFAULT_GI &&
-+	    mask.control[band].he_gi == GENMASK(7, 0) &&
-+	    mask.control[band].he_ltf == GENMASK(7, 0) &&
- 	    nrates != 1)
- 		return 0;
  
-@@ -2012,16 +2035,16 @@ mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev,
- 	}
- 
- 	/* fixed GI */
--	if (mask->control[band].gi != NL80211_TXRATE_DEFAULT_GI ||
--	    mask->control[band].he_gi != GENMASK(7, 0)) {
-+	if (mask.control[band].gi != NL80211_TXRATE_DEFAULT_GI ||
-+	    mask.control[band].he_gi != GENMASK(7, 0)) {
- 		u32 addr;
- 
- 		/* firmware updates only TXCMD but doesn't take WTBL into
- 		 * account, so driver should update here to reflect the
- 		 * actual txrate hardware sends out.
- 		 */
--		addr = mt7996_mac_wtbl_lmac_addr(dev, msta_link->wcid.idx, 7);
--		if (link_sta->he_cap.has_he)
-+		addr = mt7996_mac_wtbl_lmac_addr(dev, idx, 7);
-+		if (has_he)
- 			mt76_rmw_field(dev, addr, GENMASK(31, 24), phy.sgi);
- 		else
- 			mt76_rmw_field(dev, addr, GENMASK(15, 12), phy.sgi);
-@@ -2033,7 +2056,7 @@ mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev,
- 	}
- 
- 	/* fixed HE_LTF */
--	if (mask->control[band].he_ltf != GENMASK(7, 0)) {
-+	if (mask.control[band].he_ltf != GENMASK(7, 0)) {
- 		ret = mt7996_mcu_set_fixed_field(dev, msta, &phy, link_id,
- 						 RATE_PARAM_FIXED_HE_LTF);
- 		if (ret)
-@@ -2041,6 +2064,11 @@ mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev,
- 	}
- 
- 	return 0;
-+
-+error_unlock:
-+	rcu_read_unlock();
-+
-+	return -ENODEV;
- }
- 
- static void
-@@ -2159,6 +2187,7 @@ int mt7996_mcu_add_rate_ctrl(struct mt7996_dev *dev,
- 			     struct mt7996_sta_link *msta_link,
- 			     u8 link_id, bool changed)
- {
-+	struct mt7996_sta *msta = msta_link->sta;
- 	struct sk_buff *skb;
- 	int ret;
- 
-@@ -2185,8 +2214,7 @@ int mt7996_mcu_add_rate_ctrl(struct mt7996_dev *dev,
- 	if (ret)
- 		return ret;
- 
--	return mt7996_mcu_add_rate_ctrl_fixed(dev, link_sta, link, msta_link,
--					      link_id);
-+	return mt7996_mcu_add_rate_ctrl_fixed(dev, msta, vif, link_id);
- }
- 
- static int
 -- 
 2.39.5
 
