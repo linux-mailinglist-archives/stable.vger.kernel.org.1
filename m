@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-162524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EC2B05E63
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1221B05B49
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750664A615E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC2A34A49CC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757CF2D8788;
-	Tue, 15 Jul 2025 13:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FB919066B;
+	Tue, 15 Jul 2025 13:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wydrPPgI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQVDrV6y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348B12566;
-	Tue, 15 Jul 2025 13:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB991F0E26;
+	Tue, 15 Jul 2025 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586783; cv=none; b=Ex6oTzzlTDskDTgd3kwfQPuJ5iSUKH1vO3MyrTRVRXh9hAw/5vjjkPqbLhHJ5aZ42Y/4k3Fkyto0VwCYWkPqWoSYcf699iTc0/QoOCLKlJ/hp/5TMz/kCqbh3Ry+rVOQQ7L4k27BTGrRw65K9lduoK8i73wr7qkoT5Pgxj4g9Hs=
+	t=1752585527; cv=none; b=d+1DZBsbkYc5DXq7OQVB9RMUZeyMeIq8A1+NgkJYKxcCQtYgNeeCFRbjCeS46Bhzy7pWddHessJqMGw6Usekc+Q2h3uQHHCchrPVVBgBEcx73fn4k2f+5IiY119zOiJxb/G7zIltCFxNKyzMdK9A8JEZHSQXz0HgmcCv2m2JUhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586783; c=relaxed/simple;
-	bh=gG7kjpLt5IJWireSw/Q6gLOvim+YotuN71v0KbcHRt4=;
+	s=arc-20240116; t=1752585527; c=relaxed/simple;
+	bh=KMXYQfXMcG1RRFsvtYmy7Q1IoCEg6+ZBKoZQVYgJdGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLE+FNirnWvqo55YSjyyYBIkpZAY4ttH4IBgNvOu934FMrO0RE52K7RO6H6Ta1bbhHlKa4mhKtdchPAnFu4W/iEf+9v+q8dRB0QOTxiO01H2j9vSbArJwowrS+PVxvvTanVwe/gd2uKdgFFmKpEuTdrsqi5e1fG8Pt2olvrKVwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wydrPPgI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E846C4CEE3;
-	Tue, 15 Jul 2025 13:39:42 +0000 (UTC)
+	 MIME-Version; b=L/2Fad/entyE5bGqi40unwEvwRnich6aVpaVbP7tlyjR3HLu1Chb2n9zEEJtjnNoGl7+lm0MXokONCRoWTcefhQq+CzXSa2Lv3rMBudN+ugxQWSR58ykGxcykXAf8oBcTlwmA28ywSREa+IIVH7bR14zEkV9oxs1H6VIsxJeDzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQVDrV6y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72836C4CEE3;
+	Tue, 15 Jul 2025 13:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586782;
-	bh=gG7kjpLt5IJWireSw/Q6gLOvim+YotuN71v0KbcHRt4=;
+	s=korg; t=1752585526;
+	bh=KMXYQfXMcG1RRFsvtYmy7Q1IoCEg6+ZBKoZQVYgJdGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wydrPPgIPd1Mv37pRV9vxYDYJac++nmj5vye2z/eqXf+Qulwawt0bO8Svm7ZGCkUx
-	 8Tj+YBgltl6Xlb0iFpEWpqcgo1j3v5UkvHS2C8hH6OD8Bufl2bMYPU3zbHqPEG0wDS
-	 5Q2NkUtBdXoC1EYx7d5BPntDNaiSQZJ2unKRlA+o=
+	b=eQVDrV6yga2M6y/QveddnvI+9rjJwDZVs+5sslJX7Y1oFmvUrtU6s2MRy2k6697z2
+	 q40lyzYDKxbmQ790SBKdU0Yclct+H3fKFVkn5ONB+YZrRkB6eUiciDJVyO3aN2HsVi
+	 HyMxXB3a2A+l1XAg+2NqEfJgEsoeUe0I7faiYQ28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com,
-	syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com,
-	syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com,
-	syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com,
-	syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 046/192] net/sched: Abort __tc_modify_qdisc if parent class does not exist
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 073/163] drm/amdkfd: Dont call mmput from MMU notifier callback
 Date: Tue, 15 Jul 2025 15:12:21 +0200
-Message-ID: <20250715130816.697052294@linuxfoundation.org>
+Message-ID: <20250715130811.667068938@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,126 +62,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit ffdde7bf5a439aaa1955ebd581f5c64ab1533963 ]
+commit cf234231fcbc7d391e2135b9518613218cc5347f upstream.
 
-Lion's patch [1] revealed an ancient bug in the qdisc API.
-Whenever a user creates/modifies a qdisc specifying as a parent another
-qdisc, the qdisc API will, during grafting, detect that the user is
-not trying to attach to a class and reject. However grafting is
-performed after qdisc_create (and thus the qdiscs' init callback) is
-executed. In qdiscs that eventually call qdisc_tree_reduce_backlog
-during init or change (such as fq, hhf, choke, etc), an issue
-arises. For example, executing the following commands:
+If the process is exiting, the mmput inside mmu notifier callback from
+compactd or fork or numa balancing could release the last reference
+of mm struct to call exit_mmap and free_pgtable, this triggers deadlock
+with below backtrace.
 
-sudo tc qdisc add dev lo root handle a: htb default 2
-sudo tc qdisc add dev lo parent a: handle beef fq
+The deadlock will leak kfd process as mmu notifier release is not called
+and cause VRAM leaking.
 
-Qdiscs such as fq, hhf, choke, etc unconditionally invoke
-qdisc_tree_reduce_backlog() in their control path init() or change() which
-then causes a failure to find the child class; however, that does not stop
-the unconditional invocation of the assumed child qdisc's qlen_notify with
-a null class. All these qdiscs make the assumption that class is non-null.
+The fix is to take mm reference mmget_non_zero when adding prange to the
+deferred list to pair with mmput in deferred list work.
 
-The solution is ensure that qdisc_leaf() which looks up the parent
-class, and is invoked prior to qdisc_create(), should return failure on
-not finding the class.
-In this patch, we leverage qdisc_leaf to return ERR_PTRs whenever the
-parentid doesn't correspond to a class, so that we can detect it
-earlier on and abort before qdisc_create is called.
+If prange split and add into pchild list, the pchild work_item.mm is not
+used, so remove the mm parameter from svm_range_unmap_split and
+svm_range_add_child.
 
-[1] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
+The backtrace of hung task:
 
-Fixes: 5e50da01d0ce ("[NET_SCHED]: Fix endless loops (part 2): "simple" qdiscs")
-Reported-by: syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68663c93.a70a0220.5d25f.0857.GAE@google.com/
-Reported-by: syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68663c94.a70a0220.5d25f.0858.GAE@google.com/
-Reported-by: syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0013.GAE@google.com/
-Reported-by: syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0014.GAE@google.com/
-Reported-by: syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68679e81.a70a0220.29cf51.0016.GAE@google.com/
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250707210801.372995-1-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ INFO: task python:348105 blocked for more than 64512 seconds.
+ Call Trace:
+  __schedule+0x1c3/0x550
+  schedule+0x46/0xb0
+  rwsem_down_write_slowpath+0x24b/0x4c0
+  unlink_anon_vmas+0xb1/0x1c0
+  free_pgtables+0xa9/0x130
+  exit_mmap+0xbc/0x1a0
+  mmput+0x5a/0x140
+  svm_range_cpu_invalidate_pagetables+0x2b/0x40 [amdgpu]
+  mn_itree_invalidate+0x72/0xc0
+  __mmu_notifier_invalidate_range_start+0x48/0x60
+  try_to_unmap_one+0x10fa/0x1400
+  rmap_walk_anon+0x196/0x460
+  try_to_unmap+0xbb/0x210
+  migrate_page_unmap+0x54d/0x7e0
+  migrate_pages_batch+0x1c3/0xae0
+  migrate_pages_sync+0x98/0x240
+  migrate_pages+0x25c/0x520
+  compact_zone+0x29d/0x590
+  compact_zone_order+0xb6/0xf0
+  try_to_compact_pages+0xbe/0x220
+  __alloc_pages_direct_compact+0x96/0x1a0
+  __alloc_pages_slowpath+0x410/0x930
+  __alloc_pages_nodemask+0x3a9/0x3e0
+  do_huge_pmd_anonymous_page+0xd7/0x3e0
+  __handle_mm_fault+0x5e3/0x5f0
+  handle_mm_fault+0xf7/0x2e0
+  hmm_vma_fault.isra.0+0x4d/0xa0
+  walk_pmd_range.isra.0+0xa8/0x310
+  walk_pud_range+0x167/0x240
+  walk_pgd_range+0x55/0x100
+  __walk_page_range+0x87/0x90
+  walk_page_range+0xf6/0x160
+  hmm_range_fault+0x4f/0x90
+  amdgpu_hmm_range_get_pages+0x123/0x230 [amdgpu]
+  amdgpu_ttm_tt_get_user_pages+0xb1/0x150 [amdgpu]
+  init_user_pages+0xb1/0x2a0 [amdgpu]
+  amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x543/0x7d0 [amdgpu]
+  kfd_ioctl_alloc_memory_of_gpu+0x24c/0x4e0 [amdgpu]
+  kfd_ioctl+0x29d/0x500 [amdgpu]
+
+Fixes: fa582c6f3684 ("drm/amdkfd: Use mmget_not_zero in MMU notifier")
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a29e067bd38946f752b0ef855f3dfff87e77bec7)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_api.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c |   43 ++++++++++++++++-------------------
+ 1 file changed, 20 insertions(+), 23 deletions(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index d58921ffcf35e..a96f9f74777bc 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -335,17 +335,22 @@ struct Qdisc *qdisc_lookup_rcu(struct net_device *dev, u32 handle)
- 	return q;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1170,13 +1170,12 @@ svm_range_split_head(struct svm_range *p
  }
  
--static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid)
-+static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid,
-+				struct netlink_ext_ack *extack)
+ static void
+-svm_range_add_child(struct svm_range *prange, struct mm_struct *mm,
+-		    struct svm_range *pchild, enum svm_work_list_ops op)
++svm_range_add_child(struct svm_range *prange, struct svm_range *pchild, enum svm_work_list_ops op)
  {
- 	unsigned long cl;
- 	const struct Qdisc_class_ops *cops = p->ops->cl_ops;
+ 	pr_debug("add child 0x%p [0x%lx 0x%lx] to prange 0x%p child list %d\n",
+ 		 pchild, pchild->start, pchild->last, prange, op);
  
--	if (cops == NULL)
--		return NULL;
-+	if (cops == NULL) {
-+		NL_SET_ERR_MSG(extack, "Parent qdisc is not classful");
-+		return ERR_PTR(-EOPNOTSUPP);
-+	}
- 	cl = cops->find(p, classid);
- 
--	if (cl == 0)
--		return NULL;
-+	if (cl == 0) {
-+		NL_SET_ERR_MSG(extack, "Specified class not found");
-+		return ERR_PTR(-ENOENT);
-+	}
- 	return cops->leaf(p, cl);
+-	pchild->work_item.mm = mm;
++	pchild->work_item.mm = NULL;
+ 	pchild->work_item.op = op;
+ 	list_add_tail(&pchild->child_list, &prange->child_list);
+ }
+@@ -2384,15 +2383,17 @@ svm_range_add_list_work(struct svm_range
+ 		    prange->work_item.op != SVM_OP_UNMAP_RANGE)
+ 			prange->work_item.op = op;
+ 	} else {
+-		prange->work_item.op = op;
+-
+-		/* Pairs with mmput in deferred_list_work */
+-		mmget(mm);
+-		prange->work_item.mm = mm;
+-		list_add_tail(&prange->deferred_list,
+-			      &prange->svms->deferred_range_list);
+-		pr_debug("add prange 0x%p [0x%lx 0x%lx] to work list op %d\n",
+-			 prange, prange->start, prange->last, op);
++		/* Pairs with mmput in deferred_list_work.
++		 * If process is exiting and mm is gone, don't update mmu notifier.
++		 */
++		if (mmget_not_zero(mm)) {
++			prange->work_item.mm = mm;
++			prange->work_item.op = op;
++			list_add_tail(&prange->deferred_list,
++				      &prange->svms->deferred_range_list);
++			pr_debug("add prange 0x%p [0x%lx 0x%lx] to work list op %d\n",
++				 prange, prange->start, prange->last, op);
++		}
+ 	}
+ 	spin_unlock(&svms->deferred_list_lock);
+ }
+@@ -2406,8 +2407,7 @@ void schedule_deferred_list_work(struct
  }
  
-@@ -1489,7 +1494,7 @@ static int __tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Failed to find qdisc with specified classid");
- 					return -ENOENT;
- 				}
--				q = qdisc_leaf(p, clid);
-+				q = qdisc_leaf(p, clid, extack);
- 			} else if (dev_ingress_queue(dev)) {
- 				q = rtnl_dereference(dev_ingress_queue(dev)->qdisc_sleeping);
- 			}
-@@ -1500,6 +1505,8 @@ static int __tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 			NL_SET_ERR_MSG(extack, "Cannot find specified qdisc on specified device");
- 			return -ENOENT;
- 		}
-+		if (IS_ERR(q))
-+			return PTR_ERR(q);
+ static void
+-svm_range_unmap_split(struct mm_struct *mm, struct svm_range *parent,
+-		      struct svm_range *prange, unsigned long start,
++svm_range_unmap_split(struct svm_range *parent, struct svm_range *prange, unsigned long start,
+ 		      unsigned long last)
+ {
+ 	struct svm_range *head;
+@@ -2428,12 +2428,12 @@ svm_range_unmap_split(struct mm_struct *
+ 		svm_range_split(tail, last + 1, tail->last, &head);
  
- 		if (tcm->tcm_handle && q->handle != tcm->tcm_handle) {
- 			NL_SET_ERR_MSG(extack, "Invalid handle");
-@@ -1601,7 +1608,9 @@ static int __tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Failed to find specified qdisc");
- 					return -ENOENT;
- 				}
--				q = qdisc_leaf(p, clid);
-+				q = qdisc_leaf(p, clid, extack);
-+				if (IS_ERR(q))
-+					return PTR_ERR(q);
- 			} else if (dev_ingress_queue_create(dev)) {
- 				q = rtnl_dereference(dev_ingress_queue(dev)->qdisc_sleeping);
- 			}
--- 
-2.39.5
-
+ 	if (head != prange && tail != prange) {
+-		svm_range_add_child(parent, mm, head, SVM_OP_UNMAP_RANGE);
+-		svm_range_add_child(parent, mm, tail, SVM_OP_ADD_RANGE);
++		svm_range_add_child(parent, head, SVM_OP_UNMAP_RANGE);
++		svm_range_add_child(parent, tail, SVM_OP_ADD_RANGE);
+ 	} else if (tail != prange) {
+-		svm_range_add_child(parent, mm, tail, SVM_OP_UNMAP_RANGE);
++		svm_range_add_child(parent, tail, SVM_OP_UNMAP_RANGE);
+ 	} else if (head != prange) {
+-		svm_range_add_child(parent, mm, head, SVM_OP_UNMAP_RANGE);
++		svm_range_add_child(parent, head, SVM_OP_UNMAP_RANGE);
+ 	} else if (parent != prange) {
+ 		prange->work_item.op = SVM_OP_UNMAP_RANGE;
+ 	}
+@@ -2510,14 +2510,14 @@ svm_range_unmap_from_cpu(struct mm_struc
+ 		l = min(last, pchild->last);
+ 		if (l >= s)
+ 			svm_range_unmap_from_gpus(pchild, s, l, trigger);
+-		svm_range_unmap_split(mm, prange, pchild, start, last);
++		svm_range_unmap_split(prange, pchild, start, last);
+ 		mutex_unlock(&pchild->lock);
+ 	}
+ 	s = max(start, prange->start);
+ 	l = min(last, prange->last);
+ 	if (l >= s)
+ 		svm_range_unmap_from_gpus(prange, s, l, trigger);
+-	svm_range_unmap_split(mm, prange, prange, start, last);
++	svm_range_unmap_split(prange, prange, start, last);
+ 
+ 	if (unmap_parent)
+ 		svm_range_add_list_work(svms, prange, mm, SVM_OP_UNMAP_RANGE);
+@@ -2560,8 +2560,6 @@ svm_range_cpu_invalidate_pagetables(stru
+ 
+ 	if (range->event == MMU_NOTIFY_RELEASE)
+ 		return true;
+-	if (!mmget_not_zero(mni->mm))
+-		return true;
+ 
+ 	start = mni->interval_tree.start;
+ 	last = mni->interval_tree.last;
+@@ -2588,7 +2586,6 @@ svm_range_cpu_invalidate_pagetables(stru
+ 	}
+ 
+ 	svm_range_unlock(prange);
+-	mmput(mni->mm);
+ 
+ 	return true;
+ }
 
 
 
