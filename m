@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-162199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5BDB05C88
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6941EB05CA6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC2723B905D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 397F11639D0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463C92E5433;
-	Tue, 15 Jul 2025 13:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F562EA723;
+	Tue, 15 Jul 2025 13:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqxztoQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtSVd/ol"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033DA2E2F0F;
-	Tue, 15 Jul 2025 13:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D0A2E7F1D;
+	Tue, 15 Jul 2025 13:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585936; cv=none; b=Hj+6p2HfkAgYyRHBq3ox+8QmbLivjlvZaEgWHDPjh6VczdIJV4m7+yAeRrTf9H1WQNET8eBeg6DrtUxzQRpabTfFVl8vAqB8letooF4cS+ZhZ9GSkLucv1cInTcP2YpPSJJp1byHEZZoIVqkVgXIvPlyspUXP+7enNL17XWywE8=
+	t=1752586113; cv=none; b=tzxX5UhZsfHuPWWd0hTInsOB5OwAjbz8GX0Rzx1aKlkF7cNN624hN09h8VWk1UQAUmzKZC4rx5dDjkPg79cRWXxETqbcPFR8mjqSzaBeoxJxeult2Eoj5BieReeArGUo4cTk+KNSjr2Vo3lRBxhthxf04hDzqkOBG41ko51Dqz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585936; c=relaxed/simple;
-	bh=B/3PSWz/S5N5/ipt9cOtCJctXYHjBBTHt9vHzPWguY4=;
+	s=arc-20240116; t=1752586113; c=relaxed/simple;
+	bh=IsIyxXTgsNuSTlGGMnty2y533zh4Qca4d84udi0Lc9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPzVtJyKwT7/g5asON9lrCF27LW5VOk7zsrIR5bQPZVC2CdQ/4RUmsTL5d6dMj1OdQ1FpFH1RXEuJAjRPmcLxWRtDbJLg99c3VlloJSTxBhHGGDiaPiHjj3TVgkUqG901n/iXg8eDOltVL/3i9gFFgtYBwZ7tifunGfEQOkkilg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqxztoQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BED1C4CEE3;
-	Tue, 15 Jul 2025 13:25:35 +0000 (UTC)
+	 MIME-Version; b=hwxnwP3tL9xoAnKgJCnK4t/FWJDCfrp7nt3fAsEuii//c3F6r0nmzX1neOc29LrFb2qb/xVC5mdumwyyxa7EwcUeXXZBZmmVFSn5kAjtD/r9b3bwtyE/36A8NQtS7UnHpn12kjsV5nNcKUw9QZ+oQJccRgz4t2scWi0TjZliRUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtSVd/ol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06ADC4CEE3;
+	Tue, 15 Jul 2025 13:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585935;
-	bh=B/3PSWz/S5N5/ipt9cOtCJctXYHjBBTHt9vHzPWguY4=;
+	s=korg; t=1752586113;
+	bh=IsIyxXTgsNuSTlGGMnty2y533zh4Qca4d84udi0Lc9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zqxztoQvnY0e6NhzufidR7jYLKvYZNFYYBSbRmhwJPVeZm9DWzti87iib4s0pvMF1
-	 l34Ho7kfDiHs+MsnYhz1n5P+tklx6IZ6hv4o3O74WOuzDSgvPS4fbk/y3WIkAIIVgC
-	 Xflzo61QQLlTPqmdwnFTY9gLaiSq05EBMAK9lGBI=
+	b=PtSVd/olCReFmNwieormmMwI0eqjzIAIG3gXhnVCugeeSq64NkNauSu8c5hYsyRQm
+	 NupqUisAATIJUX//6BYWhRdFTnS+jtr57YAIoyEhIMDvc4ygbB9rgCZkVlGmIvGRGF
+	 b5fuWfq5OR8JdKYryAXrvADkYP0+KQZ/Hwac22lA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.6 063/109] erofs: fix to add missing tracepoint in erofs_read_folio()
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Aaron Lu <ziqianlu@bytedance.com>,
+	Wei Wei <weiwei.danny@bytedance.com>
+Subject: [PATCH 5.15 20/77] bpf: fix precision backtracking instruction iteration
 Date: Tue, 15 Jul 2025 15:13:19 +0200
-Message-ID: <20250715130801.406011581@linuxfoundation.org>
+Message-ID: <20250715130752.510143224@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 99f7619a77a0a2e3e2bcae676d0f301769167754 upstream.
+commit 4bb7ea946a370707315ab774432963ce47291946 upstream.
 
-Commit 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
-converts to use iomap interface, it removed trace_erofs_readpage()
-tracepoint in the meantime, let's add it back.
+Fix an edge case in __mark_chain_precision() which prematurely stops
+backtracking instructions in a state if it happens that state's first
+and last instruction indexes are the same. This situations doesn't
+necessarily mean that there were no instructions simulated in a state,
+but rather that we starting from the instruction, jumped around a bit,
+and then ended up at the same instruction before checkpointing or
+marking precision.
 
-Fixes: 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250708111942.3120926-1-chao@kernel.org
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+To distinguish between these two possible situations, we need to consult
+jump history. If it's empty or contain a single record "bridging" parent
+state and first instruction of processed state, then we indeed
+backtracked all instructions in this state. But if history is not empty,
+we are definitely not done yet.
+
+Move this logic inside get_prev_insn_idx() to contain it more nicely.
+Use -ENOENT return code to denote "we are out of instructions"
+situation.
+
+This bug was exposed by verifier_loop1.c's bounded_recursion subtest, once
+the next fix in this patch set is applied.
+
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Fixes: b5dc0163d8fd ("bpf: precise scalar_value tracking")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20231110002638.4168352-3-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Aaron Lu <ziqianlu@bytedance.com>
+Reported-by: Wei Wei <weiwei.danny@bytedance.com>
+Closes: https://lore.kernel.org/all/20250605070921.GA3795@bytedance/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/data.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/verifier.c |   21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
---- a/fs/erofs/data.c
-+++ b/fs/erofs/data.c
-@@ -358,6 +358,8 @@ int erofs_fiemap(struct inode *inode, st
-  */
- static int erofs_read_folio(struct file *file, struct folio *folio)
- {
-+	trace_erofs_read_folio(folio, true);
-+
- 	return iomap_read_folio(folio, &erofs_iomap_ops);
- }
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2134,12 +2134,29 @@ static int push_jmp_history(struct bpf_v
  
+ /* Backtrack one insn at a time. If idx is not at the top of recorded
+  * history then previous instruction came from straight line execution.
++ * Return -ENOENT if we exhausted all instructions within given state.
++ *
++ * It's legal to have a bit of a looping with the same starting and ending
++ * insn index within the same state, e.g.: 3->4->5->3, so just because current
++ * instruction index is the same as state's first_idx doesn't mean we are
++ * done. If there is still some jump history left, we should keep going. We
++ * need to take into account that we might have a jump history between given
++ * state's parent and itself, due to checkpointing. In this case, we'll have
++ * history entry recording a jump from last instruction of parent state and
++ * first instruction of given state.
+  */
+ static int get_prev_insn_idx(struct bpf_verifier_state *st, int i,
+ 			     u32 *history)
+ {
+ 	u32 cnt = *history;
+ 
++	if (i == st->first_insn_idx) {
++		if (cnt == 0)
++			return -ENOENT;
++		if (cnt == 1 && st->jmp_history[0].idx == i)
++			return -ENOENT;
++	}
++
+ 	if (cnt && st->jmp_history[cnt - 1].idx == i) {
+ 		i = st->jmp_history[cnt - 1].prev_idx;
+ 		(*history)--;
+@@ -2630,9 +2647,9 @@ static int __mark_chain_precision(struct
+ 				 * Nothing to be tracked further in the parent state.
+ 				 */
+ 				return 0;
+-			if (i == first_idx)
+-				break;
+ 			i = get_prev_insn_idx(st, i, &history);
++			if (i == -ENOENT)
++				break;
+ 			if (i >= env->prog->len) {
+ 				/* This can happen if backtracking reached insn 0
+ 				 * and there are still reg_mask or stack_mask
 
 
 
