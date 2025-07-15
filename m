@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B7EB05B26
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:17:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF77EB05DCB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FB223AFFE6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:16:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C56F7B13AF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17CA19F420;
-	Tue, 15 Jul 2025 13:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF092E425F;
+	Tue, 15 Jul 2025 13:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeXa15Os"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ru+ZfAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB0C3BBF2;
-	Tue, 15 Jul 2025 13:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8A92ECEA5;
+	Tue, 15 Jul 2025 13:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585409; cv=none; b=nMTcQzk76DVOXcsyEGFaW//0RrKUnp7HBAbcnSqkApp5ZhjUFn0112JEXJ7yLZsJkFkhRpkdrOAh1V0+Ly8wMywEL1Xi2ugsV+Pnj52nR+NpalMRKiusrTCEWqKF6DtLcVWELSmq+YyLR7lno0d9wyeVPkKiG/rs0TQemyqYBx8=
+	t=1752586714; cv=none; b=lTBstImOuAPv/517haM3a4cvSUx4UgVO8ma3B04sNZFqZFDBfjWRnwU3geP4C9tjAXiQnSt79pD1zqa14dNTY9/Law1wnIDKZGX8nB14NtptsznfGGj7yGpuPJXKqEZqXRDkNu6s8DBnnKmw92Lz20aPvEF9zSVp9gUHQO207WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585409; c=relaxed/simple;
-	bh=vK4iQwZHQzeo88+msVar9h4ArYd3wO5Fvpt1GT2tYo8=;
+	s=arc-20240116; t=1752586714; c=relaxed/simple;
+	bh=WER04ewkKy/KAkZhZMgGHUxl1HMQWxFddpAjQyo0g5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHo98arp8/IFbEms9+bXILkjCFkpQsj18MVh7CBOnjar98hto6iqOfCbgooc94BIex+iuEwsbSz04mjcOl6oRmD5qYXfFo4XeHr4swai5l10XZLlG61M79TdEPDutUwg9ITZ9esZryUYstCivMnkgHNGlwOzkuNOqzIIPJChtec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeXa15Os; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F492C4CEE3;
-	Tue, 15 Jul 2025 13:16:48 +0000 (UTC)
+	 MIME-Version; b=OCfoPdxi46XotCdlTKHDzQYr8wgvw33CLylfVDXlHHIUt4z91bvVxJg9ihevxwnU9KCQhrAWbB5xbynDk+rDd1lYjUzGv5ZmlbHLSfshaZ4pP0e/o0uokdRcs810IgBkN8oi65Y6JpKAxrzbyhV2NH4+V8RtG0eRbOSgQ5iXO+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ru+ZfAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB83DC4CEE3;
+	Tue, 15 Jul 2025 13:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585409;
-	bh=vK4iQwZHQzeo88+msVar9h4ArYd3wO5Fvpt1GT2tYo8=;
+	s=korg; t=1752586714;
+	bh=WER04ewkKy/KAkZhZMgGHUxl1HMQWxFddpAjQyo0g5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CeXa15OsPSvjGu5Z13P+wR/WGLsQk/vL3cTDyxoJ1qG3RNTjhmBVKEwzm8pnG7ujf
-	 5ptgCov43AewOLSF+9rsQobhMIrhnQSSRxJE5qJNGGtMUsuAsCKW0ZGtHXhPIhXc7o
-	 gSHSvKOFDA6f4KGILFyE/EwLDc8ZxWUYGUGhTtYU=
+	b=0ru+ZfARN5nCYSF3Z4D98NIWHH5dSRGvlRkU+Y32iVP9w3odJaVR0SAtJQfkPNfb5
+	 CUK4y73ZErTooYLMTktekVERR5wuuOhNe5vf2Ey5VDfdch2ljfJmeDlgd5ybpflxvY
+	 CUrRLbw3WENyXrdhSKoZnnMtEhjjODmfdnCW/q58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/163] vsock: fix `vsock_proto` declaration
+Subject: [PATCH 6.15 003/192] ASoC: fsl_asrc: use internal measured ratio for non-ideal ratio mode
 Date: Tue, 15 Jul 2025 15:11:38 +0200
-Message-ID: <20250715130809.964876187@linuxfoundation.org>
+Message-ID: <20250715130814.999308194@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 1e3b66e326015f77bc4b36976bebeedc2ac0f588 ]
+[ Upstream commit cbe876121633dadb2b0ce52711985328638e9aab ]
 
->From commit 634f1a7110b4 ("vsock: support sockmap"), `struct proto
-vsock_proto`, defined in af_vsock.c, is not static anymore, since it's
-used by vsock_bpf.c.
+When USRC=0, there is underrun issue for the non-ideal ratio mode;
+according to the reference mannual, the internal measured ratio can be
+used with USRC=1 and IDRC=0.
 
-If CONFIG_BPF_SYSCALL is not defined, `make C=2` will print a warning:
-    $ make O=build C=2 W=1 net/vmw_vsock/
-      ...
-      CC [M]  net/vmw_vsock/af_vsock.o
-      CHECK   ../net/vmw_vsock/af_vsock.c
-    ../net/vmw_vsock/af_vsock.c:123:14: warning: symbol 'vsock_proto' was not declared. Should it be static?
-
-Declare `vsock_proto` regardless of CONFIG_BPF_SYSCALL, since it's defined
-in af_vsock.c, which is built regardless of CONFIG_BPF_SYSCALL.
-
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20250703112329.28365-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d0250cf4f2ab ("ASoC: fsl_asrc: Add an option to select internal ratio mode")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://patch.msgid.link/20250625020504.2728161-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_vsock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl_asrc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 9e85424c83435..70302c92d329f 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -242,8 +242,8 @@ int __vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
- int vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
- 			size_t len, int flags);
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index 677529916dc0e..745532ccbdba6 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -517,7 +517,8 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair, bool use_ideal_rate)
+ 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
+ 			   ASRCTR_ATSi_MASK(index), ASRCTR_ATS(index));
+ 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
+-			   ASRCTR_USRi_MASK(index), 0);
++			   ASRCTR_IDRi_MASK(index) | ASRCTR_USRi_MASK(index),
++			   ASRCTR_USR(index));
  
--#ifdef CONFIG_BPF_SYSCALL
- extern struct proto vsock_proto;
-+#ifdef CONFIG_BPF_SYSCALL
- int vsock_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore);
- void __init vsock_bpf_build_proto(void);
- #else
+ 	/* Set the input and output clock sources */
+ 	regmap_update_bits(asrc->regmap, REG_ASRCSR,
 -- 
 2.39.5
 
