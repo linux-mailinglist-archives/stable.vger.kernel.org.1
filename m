@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70893B05CAA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B56FB05CDD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:37:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 196754A48BE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63972567885
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC512E718D;
-	Tue, 15 Jul 2025 13:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAAE2EBBA0;
+	Tue, 15 Jul 2025 13:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04kWZDU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em+aJzAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE9B2E5B06;
-	Tue, 15 Jul 2025 13:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC832EBB99;
+	Tue, 15 Jul 2025 13:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586012; cv=none; b=UwI+cRVBC6cY8BQipEE2Azn1IKs/wG/pWcbKckRN2Tjl9o34D6Vlf/FGLKrGqVmQphyUd/YnMJ+aEulR+t2Kbbt0q+VpT5qtySsZESKz+YUVQgTd7Opy5lN9oerxbqzbsI/th3j4xFOQ1IuZ4aO+GVibs4LjhdDqVYfUEawxxbs=
+	t=1752586187; cv=none; b=SPg6N+rvCJ65j+rvuaubNvguvuXHP1GrtfCJyL06AQnXs89RIr1mL5v04OyV10u+ZvWAw6fVFMuvw2z0PaD5/IkKi0vQpDuFYNXRTtFsKYrCgIlcR7zQo8SgVpcB535fneM7eAugy5C7dgicmP35DKBG4iN6E3CCCMSCiHosIKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586012; c=relaxed/simple;
-	bh=q7CXoPkMk4SR0K/myC8IEv0OSK8lPulb/ct4WpD6WVk=;
+	s=arc-20240116; t=1752586187; c=relaxed/simple;
+	bh=snVdj9DVNecFYw8VDmXdNl5kBQReI8Tyk3cp2nK3W5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Na/Bv/FXKhEZpitH0XG0mg9MVmYgnJQC5Ny/qa6VWfZNZlNQEdF2+PJgMEef7g7iqYwiIQFJM55naNJZ6CKYCKnlJdsu9Trct0ttmYG8KYVv+EEnyrMZfizeASvesep2pz/4Q4pu7UWQB8vN2b9kyrAuVJABh66P9AsEki9Yf+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04kWZDU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3003C4CEF1;
-	Tue, 15 Jul 2025 13:26:51 +0000 (UTC)
+	 MIME-Version; b=Qp5SQg1ufzxLqcsSollyz8ibvdUiMIetdu6LOoGwXAMoqHTng/YrlwF3LC4KnVBiJmTopzcQtRUG+RUMjmjnOPvuq2qJHYQgYOvKpeLksr1e5HL2voEvIabOp20F8/dTaC3ncjprvx7MzlIb4WZ0w85I6dRO91EdqgYF92/Z/Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=em+aJzAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DE9C4CEE3;
+	Tue, 15 Jul 2025 13:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586012;
-	bh=q7CXoPkMk4SR0K/myC8IEv0OSK8lPulb/ct4WpD6WVk=;
+	s=korg; t=1752586186;
+	bh=snVdj9DVNecFYw8VDmXdNl5kBQReI8Tyk3cp2nK3W5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=04kWZDU1XZHsS+4l7eygilDOB2QJ6IJ8szYvI4Yhp7/2hdhvqmASd2hI2hnkKolKE
-	 LlN7nHQZ8Amx4pjNvrLdDOkIBynDl+AGXIQHDlExJCiMEeGc/KcFLFJ9h/jEmmu59q
-	 aUjp/0URsrEcinu+EYR7ixvujiUKYCDiizB7QSYU=
+	b=em+aJzAuxf/jPQF9tg9O0f02/LW5DGvCerZq92hxwoD+NLxspawRxAMUg5+7qs2Mw
+	 ALcXY48UqfGLb4mGi5F1Sv5WuDS++WsAYKSvDoxDFl9V0o90MMHJjnbOMdFGYK//go
+	 KOyLIaiDPE769R3/dwRB4I0fhFaBfJzb5YagXQ/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Kuen-Han Tsai <khtsai@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/109] atm: idt77252: Add missing `dma_map_error()`
+Subject: [PATCH 5.15 49/77] usb: dwc3: Abort suspend on soft disconnect failure
 Date: Tue, 15 Jul 2025 15:13:48 +0200
-Message-ID: <20250715130802.567928146@linuxfoundation.org>
+Message-ID: <20250715130753.690789316@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit c4890963350dcf4e9a909bae23665921fba4ad27 ]
+[ Upstream commit 630a1dec3b0eba2a695b9063f1c205d585cbfec9 ]
 
-The DMA map functions can fail and should be tested for errors.
+When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
+going with the suspend, resulting in a period where the power domain is
+off, but the gadget driver remains connected.  Within this time frame,
+invoking vbus_event_work() will cause an error as it attempts to access
+DWC3 registers for endpoint disabling after the power domain has been
+completely shut down.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250624064148.12815-3-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
+controller and proceeds with a soft connect.
+
+Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
+Cc: stable <stable@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250528100315.2162699-1-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/idt77252.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/dwc3/core.c   |  9 +++++++--
+ drivers/usb/dwc3/gadget.c | 22 +++++++++-------------
+ 2 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
-index a876024d8a05f..63d41320cd5cf 100644
---- a/drivers/atm/idt77252.c
-+++ b/drivers/atm/idt77252.c
-@@ -852,6 +852,8 @@ queue_skb(struct idt77252_dev *card, struct vc_map *vc,
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index bb20d8dd18791..488cb16acd67e 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1818,6 +1818,7 @@ static int dwc3_core_init_for_resume(struct dwc3 *dwc)
+ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ {
+ 	u32 reg;
++	int ret;
  
- 	IDT77252_PRV_PADDR(skb) = dma_map_single(&card->pcidev->dev, skb->data,
- 						 skb->len, DMA_TO_DEVICE);
-+	if (dma_mapping_error(&card->pcidev->dev, IDT77252_PRV_PADDR(skb)))
-+		return -ENOMEM;
+ 	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
+ 		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
+@@ -1836,7 +1837,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+ 		if (pm_runtime_suspended(dwc->dev))
+ 			break;
+-		dwc3_gadget_suspend(dwc);
++		ret = dwc3_gadget_suspend(dwc);
++		if (ret)
++			return ret;
+ 		synchronize_irq(dwc->irq_gadget);
+ 		dwc3_core_exit(dwc);
+ 		break;
+@@ -1867,7 +1870,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 			break;
  
- 	error = -EINVAL;
+ 		if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
+-			dwc3_gadget_suspend(dwc);
++			ret = dwc3_gadget_suspend(dwc);
++			if (ret)
++				return ret;
+ 			synchronize_irq(dwc->irq_gadget);
+ 		}
  
-@@ -1857,6 +1859,8 @@ add_rx_skb(struct idt77252_dev *card, int queue,
- 		paddr = dma_map_single(&card->pcidev->dev, skb->data,
- 				       skb_end_pointer(skb) - skb->data,
- 				       DMA_FROM_DEVICE);
-+		if (dma_mapping_error(&card->pcidev->dev, paddr))
-+			goto outpoolrm;
- 		IDT77252_PRV_PADDR(skb) = paddr;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index a99e669468ee3..44bb3770f8bb2 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4580,26 +4580,22 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
+ 	int ret;
  
- 		if (push_rx_skb(card, skb, queue)) {
-@@ -1871,6 +1875,7 @@ add_rx_skb(struct idt77252_dev *card, int queue,
- 	dma_unmap_single(&card->pcidev->dev, IDT77252_PRV_PADDR(skb),
- 			 skb_end_pointer(skb) - skb->data, DMA_FROM_DEVICE);
+ 	ret = dwc3_gadget_soft_disconnect(dwc);
+-	if (ret)
+-		goto err;
+-
+-	spin_lock_irqsave(&dwc->lock, flags);
+-	if (dwc->gadget_driver)
+-		dwc3_disconnect_gadget(dwc);
+-	spin_unlock_irqrestore(&dwc->lock, flags);
+-
+-	return 0;
+-
+-err:
+ 	/*
+ 	 * Attempt to reset the controller's state. Likely no
+ 	 * communication can be established until the host
+ 	 * performs a port reset.
+ 	 */
+-	if (dwc->softconnect)
++	if (ret && dwc->softconnect) {
+ 		dwc3_gadget_soft_connect(dwc);
++		return -EAGAIN;
++	}
  
-+outpoolrm:
- 	handle = IDT77252_PRV_POOL(skb);
- 	card->sbpool[POOL_QUEUE(handle)].skb[POOL_INDEX(handle)] = NULL;
+-	return ret;
++	spin_lock_irqsave(&dwc->lock, flags);
++	if (dwc->gadget_driver)
++		dwc3_disconnect_gadget(dwc);
++	spin_unlock_irqrestore(&dwc->lock, flags);
++
++	return 0;
+ }
  
+ int dwc3_gadget_resume(struct dwc3 *dwc)
 -- 
 2.39.5
 
