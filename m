@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3622B05F88
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D25B0603D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:14:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3616C1C45BAC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 404355A181D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5842E7F34;
-	Tue, 15 Jul 2025 13:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986E12ECEAC;
+	Tue, 15 Jul 2025 13:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KT7/ITUR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zi3vCeZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AD62561AE;
-	Tue, 15 Jul 2025 13:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574FF26D4F2;
+	Tue, 15 Jul 2025 13:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587289; cv=none; b=Xl3GLZVpmYLSwZiKV0CM70L2yOX1nMVKMu4Ug7HCW1LFEB2gjzIiZCRhLH13iQCqEW54qCxRftuD6SDYnLI/BpxKMZvdC0dKQOa9BaDzuuoudTpewXg3KO11sJ0nbrsyDNUqFDvAi8n1COw2a4XbtA4WyeDgtv3k35+LL01lTDU=
+	t=1752587788; cv=none; b=OVP83dSpO+SLaUkTC+U+TfKwzCyfwU8ea9pxiKMmoV9GJDEiz0lWkxzf4UzDGAQbKQsGCbclNpjWO4JeIjUOBQKdXYGTexWVoZMEr6JBndJu94kNGgEEFNcIwk5UXNDrTZO/5NqEygTFLlp5d9ug2a7crxRpkN76AFap6eizBPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587289; c=relaxed/simple;
-	bh=gymZ/Fst5fKmTI6aG2s4e8MO13Cy9VwnbsW8ZMXgB7w=;
+	s=arc-20240116; t=1752587788; c=relaxed/simple;
+	bh=cyf4YJlBJ2DkmU8h6Q0NRq0jak+nbY1JmLyFPF1EYl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLjWNMVY6xa8ljGQMz1JQgmUk1perWyJB9bw7rYBEdbpw03ClM6ghUz2m+eyL++ZJ/TqOMWUViHFIriiCm1fMJhSagWFyI8suWtdCH+Su0+/+3E9xxFOGedlfxSKj9onoKKRGXZe7sUG2+mB32bgYOhXkj/3G2oqaBkthnx87BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KT7/ITUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADAFBC4CEE3;
-	Tue, 15 Jul 2025 13:48:08 +0000 (UTC)
+	 MIME-Version; b=IV6e/ICYd/v3ZAvdDNxoV7GZNXm987aM0Bpn7pPkxPjayYu8Fw7iotOodVPaMXnnr9bej6VPsNZaH6jxAVLoSzL1NJ54UcBNoWDlEJmFPMli8jhrgGNC5PSQRsBP4NX1+vzaVFtD044Gj3p+Cqxp9ttJ5EMmQWUTDR4wQB2CA2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zi3vCeZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED70C4CEE3;
+	Tue, 15 Jul 2025 13:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587289;
-	bh=gymZ/Fst5fKmTI6aG2s4e8MO13Cy9VwnbsW8ZMXgB7w=;
+	s=korg; t=1752587788;
+	bh=cyf4YJlBJ2DkmU8h6Q0NRq0jak+nbY1JmLyFPF1EYl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KT7/ITURx4GjcpPfUbVLmca8/3ZUGtX7stlpXa/eR/Y69ofIDautmNDo6Q2mksbV5
-	 gIJriiu5z7dX40+5hLcJ3qqYSqY4wrZUfTRkKtJIGhikjP1Vvvq8FvwlwiWGPT96G3
-	 44G+hR5gib3QVC8ECK8chxRfNAd4uhP390Rq/9TU=
+	b=zi3vCeZ6TXarnH+vmsLaHRjb6e4zAAhVVBBhKhpmcHVFOlfXWLZvoKzQISUnRfMGl
+	 x48pt3KK/6VuLGEqUKHl59QnFv17K7gxsQNkrsYEiXhSfQ3kjsoLQRMRQsp1li57zr
+	 w7oeizME3sWXGp9clzoScY7GRYHJrKROAM5fb3co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Achill Gilgenast <fossdd@pwned.life>,
-	Luis Henriques <luis@igalia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 37/88] kallsyms: fix build without execinfo
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 144/208] vsock: Fix transport_* TOCTOU
 Date: Tue, 15 Jul 2025 15:14:13 +0200
-Message-ID: <20250715130756.013086225@linuxfoundation.org>
+Message-ID: <20250715130816.690411228@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Achill Gilgenast <fossdd@pwned.life>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit a95743b53031b015e8949e845a9f6fdfb2656347 upstream.
+[ Upstream commit 687aa0c5581b8d4aa87fd92973e4ee576b550cdf ]
 
-Some libc's like musl libc don't provide execinfo.h since it's not part of
-POSIX.  In order to fix compilation on musl, only include execinfo.h if
-available (HAVE_BACKTRACE_SUPPORT)
+Transport assignment may race with module unload. Protect new_transport
+from becoming a stale pointer.
 
-This was discovered with c104c16073b7 ("Kunit to check the longest symbol
-length") which starts to include linux/kallsyms.h with Alpine Linux'
-configs.
+This also takes care of an insecure call in vsock_use_local_transport();
+add a lockdep assert.
 
-Link: https://lkml.kernel.org/r/20250622014608.448718-1-fossdd@pwned.life
-Fixes: c104c16073b7 ("Kunit to check the longest symbol length")
-Signed-off-by: Achill Gilgenast <fossdd@pwned.life>
-Cc: Luis Henriques <luis@igalia.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: unable to handle page fault for address: fffffbfff8056000
+Oops: Oops: 0000 [#1] SMP KASAN
+RIP: 0010:vsock_assign_transport+0x366/0x600
+Call Trace:
+ vsock_connect+0x59c/0xc40
+ __sys_connect+0xe8/0x100
+ __x64_sys_connect+0x6e/0xc0
+ do_syscall_64+0x92/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-2-98f0eb530747@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/linux/kallsyms.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/vmw_vsock/af_vsock.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/tools/include/linux/kallsyms.h b/tools/include/linux/kallsyms.h
-index 5a37ccbec54f..f61a01dd7eb7 100644
---- a/tools/include/linux/kallsyms.h
-+++ b/tools/include/linux/kallsyms.h
-@@ -18,6 +18,7 @@ static inline const char *kallsyms_lookup(unsigned long addr,
- 	return NULL;
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index beacbe957594a..f65868d2e82c3 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -400,6 +400,8 @@ EXPORT_SYMBOL_GPL(vsock_enqueue_accept);
+ 
+ static bool vsock_use_local_transport(unsigned int remote_cid)
+ {
++	lockdep_assert_held(&vsock_register_mutex);
++
+ 	if (!transport_local)
+ 		return false;
+ 
+@@ -457,6 +459,8 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ 
+ 	remote_flags = vsk->remote_addr.svm_flags;
+ 
++	mutex_lock(&vsock_register_mutex);
++
+ 	switch (sk->sk_type) {
+ 	case SOCK_DGRAM:
+ 		new_transport = transport_dgram;
+@@ -471,12 +475,15 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ 			new_transport = transport_h2g;
+ 		break;
+ 	default:
+-		return -ESOCKTNOSUPPORT;
++		ret = -ESOCKTNOSUPPORT;
++		goto err;
+ 	}
+ 
+ 	if (vsk->transport) {
+-		if (vsk->transport == new_transport)
+-			return 0;
++		if (vsk->transport == new_transport) {
++			ret = 0;
++			goto err;
++		}
+ 
+ 		/* transport->release() must be called with sock lock acquired.
+ 		 * This path can only be taken during vsock_stream_connect(),
+@@ -500,8 +507,16 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ 	/* We increase the module refcnt to prevent the transport unloading
+ 	 * while there are open sockets assigned to it.
+ 	 */
+-	if (!new_transport || !try_module_get(new_transport->module))
+-		return -ENODEV;
++	if (!new_transport || !try_module_get(new_transport->module)) {
++		ret = -ENODEV;
++		goto err;
++	}
++
++	/* It's safe to release the mutex after a successful try_module_get().
++	 * Whichever transport `new_transport` points at, it won't go away until
++	 * the last module_put() below or in vsock_deassign_transport().
++	 */
++	mutex_unlock(&vsock_register_mutex);
+ 
+ 	ret = new_transport->init(vsk, psk);
+ 	if (ret) {
+@@ -512,6 +527,9 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ 	vsk->transport = new_transport;
+ 
+ 	return 0;
++err:
++	mutex_unlock(&vsock_register_mutex);
++	return ret;
  }
+ EXPORT_SYMBOL_GPL(vsock_assign_transport);
  
-+#ifdef HAVE_BACKTRACE_SUPPORT
- #include <execinfo.h>
- #include <stdlib.h>
- static inline void print_ip_sym(const char *loglvl, unsigned long ip)
-@@ -30,5 +31,8 @@ static inline void print_ip_sym(const char *loglvl, unsigned long ip)
- 
- 	free(name);
- }
-+#else
-+static inline void print_ip_sym(const char *loglvl, unsigned long ip) {}
-+#endif
- 
- #endif
 -- 
-2.50.1
+2.39.5
 
 
 
