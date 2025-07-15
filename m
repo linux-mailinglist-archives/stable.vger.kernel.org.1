@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-162698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63BEFB05F49
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F22B05EB2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 017553B11A5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7888F581638
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9531D1A3142;
-	Tue, 15 Jul 2025 13:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E08E2D839A;
+	Tue, 15 Jul 2025 13:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijy9CkLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nz73L3Pk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557A52E4997;
-	Tue, 15 Jul 2025 13:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FA22E7185;
+	Tue, 15 Jul 2025 13:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587240; cv=none; b=ivpLvdA3SS1WdeVYJcd+IXeobqbrse2Ud58eAQz68SU4c6lBaREe1irYsfz3aU2JVRMeuDt3PM8Z3y6cfmJvNT59ukwILYxTuglo3VzN5RwHz6jE+6i120cV12v9ZAi4tB3GPcq3sl9KqT/NwNO3LlMgdJ4oym5O6+4DerIL0xY=
+	t=1752587050; cv=none; b=jRoEVV7yVtAK+oAVTBKjh5F2GNDomMc3zE8AjKqBlbfmFIoySI3Rjf6jB3MURQnRTtKNQrhOm6KgS7ZfFPgU13P4wxQr5wEA+et1lAQoPJK/oBndH36LI+i5dMm4TLkvgDeU1QZ1e1kGK4fLAlgx3AkwamlYQM1an9926UfRRTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587240; c=relaxed/simple;
-	bh=8vnVMC5V3k0eXBtpPVdZkrbr+gvMNxEgBwQDlWr3ULs=;
+	s=arc-20240116; t=1752587050; c=relaxed/simple;
+	bh=ZvdUt4DS6lh6YkjSYHg0EA1ImKOpSPIQAJGnfpwM/00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1JPYupM7jrwnYYUhcTtEh4t7w/Y5HnAcJBQRwVTWigGZTOE3nYd4mZI+n+rw8MpVywJC0PYVAd2jAlknSNDkhGAsyD7jLzHhYmk8zeKfY/9kWDULFr1Esz/pYhLdMQqLKTyuvD9opxJFQb8Q+Ckxg/yHabZdvb8DxtvpjhN7WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijy9CkLx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE156C4CEE3;
-	Tue, 15 Jul 2025 13:47:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b2onBV05VCRMS+7TZ0EEEq6mivhIKILo4OPX1G6ddkgc6Vz0Uv57c8eD8agRt3Gsr33bGuE+s0MNBzhfxKOgzNNsgNldGb9X32HVEwKjETYwD5hRRUjUtq0lWjZm835bo8gMHaEIlwA0mJljPoRyWHVPshSHyApWJEVQBvitrw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nz73L3Pk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719D2C4CEE3;
+	Tue, 15 Jul 2025 13:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587240;
-	bh=8vnVMC5V3k0eXBtpPVdZkrbr+gvMNxEgBwQDlWr3ULs=;
+	s=korg; t=1752587049;
+	bh=ZvdUt4DS6lh6YkjSYHg0EA1ImKOpSPIQAJGnfpwM/00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijy9CkLxJF17xPxzWg1OUUf8IKwMeVU48ZIYjEaS0FYCln4W5Wxgm+he0vl0xntFP
-	 9g6zfyUoW70B8JZ2b+YIfz/rNnKUAITnxi68ebwVPTPxNHho9eEgGOXjGQnVUf488d
-	 qEBeUoWTz+Z+ryfSjjneku1SOpEuSB3VfFqCfNBA=
+	b=Nz73L3PkrYX3SDq+1KBJC4+BApkZGC9tmIOSMRiFVdZ+hcH61tYaFX6HdUr0XnE8D
+	 HEPTFcCE23tAXCu88DnsP2lC6uf6pD2FA08JtcuyWMj4F9E6c+DZiLER6sZQVbEC8C
+	 41L/vU9zEMTR/szy+5x4jTm1mJDKT9fKniJAj/kY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Paul Durrant <paul@xen.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 26/88] KVM: x86/xen: Allow out of range event channel ports in IRQ routing table.
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	Lukasz Laguna <lukasz.laguna@intel.com>,
+	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 147/192] drm/xe/pf: Clear all LMTT pages on alloc
 Date: Tue, 15 Jul 2025 15:14:02 +0200
-Message-ID: <20250715130755.565316821@linuxfoundation.org>
+Message-ID: <20250715130820.809996564@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-commit a7f4dff21fd744d08fa956c243d2b1795f23cbf7 upstream.
+[ Upstream commit 705a412a367f383430fa34bada387af2e52eb043 ]
 
-To avoid imposing an ordering constraint on userspace, allow 'invalid'
-event channel targets to be configured in the IRQ routing table.
+Our LMEM buffer objects are not cleared by default on alloc
+and during VF provisioning we only setup LMTT PTEs for the
+actually provisioned LMEM range. But beyond that valid range
+we might leave some stale data that could either point to some
+other VFs allocations or even to the PF pages.
 
-This is the same as accepting interrupts targeted at vCPUs which don't
-exist yet, which is already the case for both Xen event channels *and*
-for MSIs (which don't do any filtering of permitted APIC ID targets at
-all).
+Explicitly clear all new LMTT page to avoid the risk that a
+malicious VF would try to exploit that gap.
 
-If userspace actually *triggers* an IRQ with an invalid target, that
-will fail cleanly, as kvm_xen_set_evtchn_fast() also does the same range
-check.
+While around add asserts to catch any undesired PTE overwrites
+and low-level debug traces to track LMTT PT life-cycle.
 
-If KVM enforced that the IRQ target must be valid at the time it is
-*configured*, that would force userspace to create all vCPUs and do
-various other parts of setup (in this case, setting the Xen long_mode)
-before restoring the IRQ table.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Link: https://lore.kernel.org/r/e489252745ac4b53f1f7f50570b03fb416aa2065.camel@infradead.org
-[sean: massage comment]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b1d204058218 ("drm/xe/pf: Introduce Local Memory Translation Table")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Michał Winiarski <michal.winiarski@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Reviewed-by: Michał Winiarski <michal.winiarski@intel.com>
+Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Link: https://lore.kernel.org/r/20250701220052.1612-1-michal.wajdeczko@intel.com
+(cherry picked from commit 3fae6918a3e27cce20ded2551f863fb05d4bef8d)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/xen.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_lmtt.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -1536,8 +1536,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm
+diff --git a/drivers/gpu/drm/xe/xe_lmtt.c b/drivers/gpu/drm/xe/xe_lmtt.c
+index 89393dcb53d9d..1337cf49f1c20 100644
+--- a/drivers/gpu/drm/xe/xe_lmtt.c
++++ b/drivers/gpu/drm/xe/xe_lmtt.c
+@@ -78,6 +78,9 @@ static struct xe_lmtt_pt *lmtt_pt_alloc(struct xe_lmtt *lmtt, unsigned int level
+ 	}
+ 
+ 	lmtt_assert(lmtt, xe_bo_is_vram(bo));
++	lmtt_debug(lmtt, "level=%u addr=%#llx\n", level, (u64)xe_bo_main_addr(bo, XE_PAGE_SIZE));
++
++	xe_map_memset(lmtt_to_xe(lmtt), &bo->vmap, 0, 0, bo->size);
+ 
+ 	pt->level = level;
+ 	pt->bo = bo;
+@@ -91,6 +94,9 @@ static struct xe_lmtt_pt *lmtt_pt_alloc(struct xe_lmtt *lmtt, unsigned int level
+ 
+ static void lmtt_pt_free(struct xe_lmtt_pt *pt)
  {
- 	struct kvm_vcpu *vcpu;
++	lmtt_debug(&pt->bo->tile->sriov.pf.lmtt, "level=%u addr=%llx\n",
++		   pt->level, (u64)xe_bo_main_addr(pt->bo, XE_PAGE_SIZE));
++
+ 	xe_bo_unpin_map_no_vm(pt->bo);
+ 	kfree(pt);
+ }
+@@ -226,9 +232,14 @@ static void lmtt_write_pte(struct xe_lmtt *lmtt, struct xe_lmtt_pt *pt,
  
--	if (ue->u.xen_evtchn.port >= max_evtchn_port(kvm))
--		return -EINVAL;
-+	/*
-+	 * Don't check for the port being within range of max_evtchn_port().
-+	 * Userspace can configure what ever targets it likes; events just won't
-+	 * be delivered if/while the target is invalid, just like userspace can
-+	 * configure MSIs which target non-existent APICs.
-+	 *
-+	 * This allow on Live Migration and Live Update, the IRQ routing table
-+	 * can be restored *independently* of other things like creating vCPUs,
-+	 * without imposing an ordering dependency on userspace.  In this
-+	 * particular case, the problematic ordering would be with setting the
-+	 * Xen 'long mode' flag, which changes max_evtchn_port() to allow 4096
-+	 * instead of 1024 event channels.
-+	 */
- 
- 	/* We only support 2 level event channels for now */
- 	if (ue->u.xen_evtchn.priority != KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL)
+ 	switch (lmtt->ops->lmtt_pte_size(level)) {
+ 	case sizeof(u32):
++		lmtt_assert(lmtt, !overflows_type(pte, u32));
++		lmtt_assert(lmtt, !pte || !iosys_map_rd(&pt->bo->vmap, idx * sizeof(u32), u32));
++
+ 		xe_map_wr(lmtt_to_xe(lmtt), &pt->bo->vmap, idx * sizeof(u32), u32, pte);
+ 		break;
+ 	case sizeof(u64):
++		lmtt_assert(lmtt, !pte || !iosys_map_rd(&pt->bo->vmap, idx * sizeof(u64), u64));
++
+ 		xe_map_wr(lmtt_to_xe(lmtt), &pt->bo->vmap, idx * sizeof(u64), u64, pte);
+ 		break;
+ 	default:
+-- 
+2.39.5
+
 
 
 
