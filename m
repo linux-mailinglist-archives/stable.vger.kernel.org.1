@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-162362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE35B05D6C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A616B05B41
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D2954E4344
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B63A47B5454
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145432E338F;
-	Tue, 15 Jul 2025 13:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EC12E2EEE;
+	Tue, 15 Jul 2025 13:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOymY30k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PvdMhni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69C61A3142;
-	Tue, 15 Jul 2025 13:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25483192D8A;
+	Tue, 15 Jul 2025 13:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586356; cv=none; b=X8DzlMEEbXGZqk1zTN9HrXHfMojU1m70+v9UOMTpGhglmSfBCnlnQ4l115W1rQXXh3YpZZ/IWQ8M1aOceHDie+pPvWOs588wg6RiNW9YH12N5ZVAkML1MY2+lDp64wWdH55sJm2G+xNvtYg9KrpQqCb0+FbhkbQwGRfQt0njEkk=
+	t=1752585490; cv=none; b=EFdH9PgF9nh/fjOsN9VbcaKQ7JV0AJoMsIZhQutz/fiII4x62iyydZ/ZidIN5vuf8CoesBQiHso6cf0P6SrPTisCHg84+4cuUCD1slSDWl0+8cGKtO/nrGG1AcKJoHuLsHkeORRI2nJvgFAly34+zqj6Y9QUtS7GB24ZUpcf+eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586356; c=relaxed/simple;
-	bh=B8QJsYHFqByveVlI0nvk1FGESFnm+51uDe5y8LfG6rw=;
+	s=arc-20240116; t=1752585490; c=relaxed/simple;
+	bh=8s4TGRXqJ9LKxsysdS18fjxidhX3Ds/sWkP3RLGZYSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKBp8QWLtx8ZZH9wrJmHjUaaNvP1KeuubYLgouUo1BwhIMBEo0eASbBBJEdoBoRSqv8zojPY3BGFDRk+T/D4vKkeinZdC3beKxReMgNupk1Kjl6Y4aPt+I9c7wSJU1j4c7WYsZSlcnlplkgfFR1kTtzphOcjN0tnCnJhu1iflxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOymY30k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E1DC4CEE3;
-	Tue, 15 Jul 2025 13:32:36 +0000 (UTC)
+	 MIME-Version; b=Pmp8RCocciaKiUS+1iuU1FEqS/yLo4s5I7DFefBTIwONaRgiloHyXpAhudLxb3f80FKnuS/++JPrgvr5thbHMfP2CVbk8wuOgfsFfw7yPKgdwCGPp+ISET+EzW2+WSGCJJ2Z5kOYznpSzjzikLsscU0vfMq4VFwKo0MB/1YXl/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PvdMhni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33313C4CEE3;
+	Tue, 15 Jul 2025 13:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586356;
-	bh=B8QJsYHFqByveVlI0nvk1FGESFnm+51uDe5y8LfG6rw=;
+	s=korg; t=1752585489;
+	bh=8s4TGRXqJ9LKxsysdS18fjxidhX3Ds/sWkP3RLGZYSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOymY30kfv4cz8qqIZ9oOcAXs5++zpkfF7I7r0JGE6ImirtKSm3bj67M6x50o3hFl
-	 JCySOcFVL3MiOxOXjFWjreAhSI808xrqbRrja4xTF12x1swLmflpPaukzwDKVVvBKQ
-	 83IGn+xVMGsNAhSFlZNZIU4HJheTXIHGRD8cyVTU=
+	b=2PvdMhniEzUJ5jY0q8j5pmLbVby/sUpCVfPMM305/8fppkIwDC/lYZTuXc9ktxUih
+	 J2jxRY2Qhy5RcXcJy8rdHc0UW6SfUfh1inWZbbKcLaxp4Zv8Uw1bN+yBHv91zRiwEK
+	 ebIyJEPbRL2zlG7y+nH84TFPj8IkjiwIEY3/IaFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 005/148] md/md-bitmap: fix dm-raid max_write_behind setting
-Date: Tue, 15 Jul 2025 15:12:07 +0200
-Message-ID: <20250715130800.514944934@linuxfoundation.org>
+	Aiden Yang <ling@moedove.com>,
+	Gary Guo <gary@garyguo.net>,
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 060/163] gre: Fix IPv6 multicast route creation.
+Date: Tue, 15 Jul 2025 15:12:08 +0200
+Message-ID: <20250715130811.157949907@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 2afe17794cfed5f80295b1b9facd66e6f65e5002 ]
+commit 4e914ef063de40397e25a025c70d9737a9e45a8c upstream.
 
-It's supposed to be COUNTER_MAX / 2, not COUNTER_MAX.
+Use addrconf_add_dev() instead of ipv6_find_idev() in
+addrconf_gre_config() so that we don't just get the inet6_dev, but also
+install the default ff00::/8 multicast route.
 
-Link: https://lore.kernel.org/linux-raid/20250524061320.370630-14-yukuai1@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before commit 3e6a0243ff00 ("gre: Fix again IPv6 link-local address
+generation."), the multicast route was created at the end of the
+function by addrconf_add_mroute(). But this code path is now only taken
+in one particular case (gre devices not bound to a local IP address and
+in EUI64 mode). For all other cases, the function exits early and
+addrconf_add_mroute() is not called anymore.
+
+Using addrconf_add_dev() instead of ipv6_find_idev() in
+addrconf_gre_config(), fixes the problem as it will create the default
+multicast route for all gre devices. This also brings
+addrconf_gre_config() a bit closer to the normal netdevice IPv6
+configuration code (addrconf_dev_config()).
+
+Cc: stable@vger.kernel.org
+Fixes: 3e6a0243ff00 ("gre: Fix again IPv6 link-local address generation.")
+Reported-by: Aiden Yang <ling@moedove.com>
+Closes: https://lore.kernel.org/netdev/CANR=AhRM7YHHXVxJ4DmrTNMeuEOY87K2mLmo9KMed1JMr20p6g@mail.gmail.com/
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Tested-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/027a923dcb550ad115e6d93ee8bb7d310378bd01.1752070620.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md-bitmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/addrconf.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 8fc85b6251e48..feff5b29d0985 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -549,7 +549,7 @@ static int md_bitmap_new_disk_sb(struct bitmap *bitmap)
- 	 * is a good choice?  We choose COUNTER_MAX / 2 arbitrarily.
- 	 */
- 	write_behind = bitmap->mddev->bitmap_info.max_write_behind;
--	if (write_behind > COUNTER_MAX)
-+	if (write_behind > COUNTER_MAX / 2)
- 		write_behind = COUNTER_MAX / 2;
- 	sb->write_behind = cpu_to_le32(write_behind);
- 	bitmap->mddev->bitmap_info.max_write_behind = write_behind;
--- 
-2.39.5
-
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3548,11 +3548,9 @@ static void addrconf_gre_config(struct n
+ 
+ 	ASSERT_RTNL();
+ 
+-	idev = ipv6_find_idev(dev);
+-	if (IS_ERR(idev)) {
+-		pr_debug("%s: add_dev failed\n", __func__);
++	idev = addrconf_add_dev(dev);
++	if (IS_ERR(idev))
+ 		return;
+-	}
+ 
+ 	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
+ 	 * unless we have an IPv4 GRE device not bound to an IP address and
+@@ -3566,9 +3564,6 @@ static void addrconf_gre_config(struct n
+ 	}
+ 
+ 	add_v4_addrs(idev);
+-
+-	if (dev->flags & IFF_POINTOPOINT)
+-		addrconf_add_mroute(dev);
+ }
+ #endif
+ 
 
 
 
