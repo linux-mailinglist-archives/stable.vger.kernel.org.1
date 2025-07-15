@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-162679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368FDB05F59
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:05:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 450FBB05F2F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:02:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED7C189F900
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:56:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49D76586D7A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418E62EF662;
-	Tue, 15 Jul 2025 13:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A659C2ECEB2;
+	Tue, 15 Jul 2025 13:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKnE9Va5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzAFZjt8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F9A2E3AE2;
-	Tue, 15 Jul 2025 13:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652B02ECEAA;
+	Tue, 15 Jul 2025 13:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587190; cv=none; b=KXZvsGZOqy+/xga9Q3u2GFIaelYzJ7hfaWLzU6AF+RHM00FKfHIL+hc6Jn3URB2bRHJej6xS5yNBAo8NGHSUEJn2+1yH/6Jmb3K/tWwUTu67tcgAVbJooLaqzhXIf/ZobJ8rPsOw7k66709w+ooHvjgOkFDECNiLG/US4ryBMOg=
+	t=1752587182; cv=none; b=qULAZQjzJUtpWLB/yYxOFLGMkaOEdnNwmE8oqjvFnIvDwaVZRbbzEQLsMjXOzd6O0HgwQLA1JueKIXdPcglJ4kynOOockgoxgh1PnMEYHxyFMakZFkFEv6rz5d/s+hNkf64VSFgxzjGNUwbeTbtMTnfA4OArfAvHQUB4WmNhCH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587190; c=relaxed/simple;
-	bh=MJ8Gcj9K7Ihcdktdk19IUN9uaLsT7mhxK+OnlQN0Qh0=;
+	s=arc-20240116; t=1752587182; c=relaxed/simple;
+	bh=S/k4dExbwtOoKnRzG0Mu+oPPQ7C2z3h8XuHwICceiT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=az6y8fxPYwdoC244cCrWUNCw56N7HKzGCxy5qAtLsGQaEMtNgBvd56DCOWqy77yFc3sJ6Wo1759SThJsWAKMruObkjdxwG4zEDA7d8iiJw+hHmYBbidWDElp+LX2nl7N/BWvzBuzVuoI1nqBKLJY+gJLQ+hL+AHAq0V+YL3BvuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKnE9Va5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8538BC4CEE3;
-	Tue, 15 Jul 2025 13:46:29 +0000 (UTC)
+	 MIME-Version; b=jsJRtcxPcTjM7qNPSiIWo+1F34f0pHxH4R7fwWjVtvn1pDiywOL5SpI9c8d5LXC9nkEAc+wroJlEoC4Jd0lfv+GR8pw0RupvSnwnIaBnR/URJjPfPZjnEfNQDzyWk7uuWClqGW0CxoKfkAcvsmbkIH40uAwn5MVwrqdRxlHN6Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzAFZjt8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9F9C4CEF1;
+	Tue, 15 Jul 2025 13:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587189;
-	bh=MJ8Gcj9K7Ihcdktdk19IUN9uaLsT7mhxK+OnlQN0Qh0=;
+	s=korg; t=1752587182;
+	bh=S/k4dExbwtOoKnRzG0Mu+oPPQ7C2z3h8XuHwICceiT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DKnE9Va5HjnAh/OojKLtLCjGdZmNzLCbZdhfneJ4Ofv5aNu+ooAp5wlzM6MtH2ZnK
-	 9tBoY1B+Adc5LcPFCL9MAc5bFUpsmk1zxo6a9/8z+FIiJkoQjQd+J2KGYOVXRMPqXD
-	 9Wih+Ltdlo3dxkHGJkzQ1JJMjpmNaOG9OMQ1b05c=
+	b=mzAFZjt8QAL1TwrVvbPH4yr+64LA61pi6bB7RyhE3U98zfHgkM7YaOwAAx5mJO3c+
+	 okkxX06tGDhwRn2aczcYKvegeQeOxdWQgTRNzTJIR/f7yGG906U2K1jzEz2Nelv92i
+	 NFsZZSe/eLRhaPJMuva5j+/jhRg6kEfADIVKCAAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.15 189/192] selftests/bpf: adapt one more case in test_lru_map to the new target_free
-Date: Tue, 15 Jul 2025 15:14:44 +0200
-Message-ID: <20250715130822.508776317@linuxfoundation.org>
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.15 190/192] net: wangxun: revert the adjustment of the IRQ vector sequence
+Date: Tue, 15 Jul 2025 15:14:45 +0200
+Message-ID: <20250715130822.549636598@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
 References: <20250715130814.854109770@linuxfoundation.org>
@@ -65,102 +66,163 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-commit 5e9388f7984a9cc7e659a105113f6ccf0aebedd0 upstream.
+commit e37546ad1f9b2c777d3a21d7e50ce265ee3dece8 upstream.
 
-The below commit that updated BPF_MAP_TYPE_LRU_HASH free target,
-also updated tools/testing/selftests/bpf/test_lru_map to match.
+Due to hardware limitations of NGBE, queue IRQs can only be requested
+on vector 0 to 7. When the number of queues is set to the maximum 8,
+the PCI IRQ vectors are allocated from 0 to 8. The vector 0 is used by
+MISC interrupt, and althrough the vector 8 is used by queue interrupt,
+it is unable to receive packets. This will cause some packets to be
+dropped when RSS is enabled and they are assigned to queue 8.
 
-But that missed one case that passes with 4 cores, but fails at
-higher cpu counts.
+So revert the adjustment of the MISC IRQ location, to make it be the
+last one in IRQ vectors.
 
-Update test_lru_sanity3 to also adjust its expectation of target_free.
-
-This time tested with 1, 4, 16, 64 and 384 cpu count.
-
-Fixes: d4adf1c9ee77 ("bpf: Adjust free target to avoid global starvation of LRU map")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20250625210412.2732970-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 937d46ecc5f9 ("net: wangxun: add ethtool_ops for channel number")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Link: https://patch.msgid.link/20250701063030.59340-3-jiawenwu@trustnetic.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/test_lru_map.c |   33 +++++++++++++++--------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c     |   16 ++++++++--------
+ drivers/net/ethernet/wangxun/libwx/wx_type.h    |    2 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   |    2 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h   |    2 +-
+ drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c  |    4 ++--
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h |    4 ++--
+ 6 files changed, 15 insertions(+), 15 deletions(-)
 
---- a/tools/testing/selftests/bpf/test_lru_map.c
-+++ b/tools/testing/selftests/bpf/test_lru_map.c
-@@ -138,6 +138,12 @@ static int sched_next_online(int pid, in
- 	return ret;
- }
- 
-+/* Derive target_free from map_size, same as bpf_common_lru_populate */
-+static unsigned int __tgt_size(unsigned int map_size)
-+{
-+	return (map_size / nr_cpus) / 2;
-+}
-+
- /* Inverse of how bpf_common_lru_populate derives target_free from map_size. */
- static unsigned int __map_size(unsigned int tgt_free)
- {
-@@ -410,12 +416,12 @@ static void test_lru_sanity2(int map_typ
- 	printf("Pass\n");
- }
- 
--/* Size of the LRU map is 2*tgt_free
-- * It is to test the active/inactive list rotation
-- * Insert 1 to 2*tgt_free (+2*tgt_free keys)
-- * Lookup key 1 to tgt_free*3/2
-- * Add 1+2*tgt_free to tgt_free*5/2 (+tgt_free/2 keys)
-- *  => key 1+tgt_free*3/2 to 2*tgt_free are removed from LRU
-+/* Test the active/inactive list rotation
-+ *
-+ * Fill the whole map, deplete the free list.
-+ * Reference all except the last lru->target_free elements.
-+ * Insert lru->target_free new elements. This triggers one shrink.
-+ * Verify that the non-referenced elements are replaced.
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -1680,7 +1680,7 @@ static void wx_set_num_queues(struct wx
   */
- static void test_lru_sanity3(int map_type, int map_flags, unsigned int tgt_free)
+ static int wx_acquire_msix_vectors(struct wx *wx)
  {
-@@ -434,8 +440,7 @@ static void test_lru_sanity3(int map_typ
+-	struct irq_affinity affd = { .pre_vectors = 1 };
++	struct irq_affinity affd = { .post_vectors = 1 };
+ 	int nvecs, i;
  
- 	assert(sched_next_online(0, &next_cpu) != -1);
- 
--	batch_size = tgt_free / 2;
--	assert(batch_size * 2 == tgt_free);
-+	batch_size = __tgt_size(tgt_free);
- 
- 	map_size = tgt_free * 2;
- 	lru_map_fd = create_map(map_type, map_flags, map_size);
-@@ -446,23 +451,21 @@ static void test_lru_sanity3(int map_typ
- 
- 	value[0] = 1234;
- 
--	/* Insert 1 to 2*tgt_free (+2*tgt_free keys) */
--	end_key = 1 + (2 * tgt_free);
-+	/* Fill the map */
-+	end_key = 1 + map_size;
- 	for (key = 1; key < end_key; key++)
- 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
- 					    BPF_NOEXIST));
- 
--	/* Lookup key 1 to tgt_free*3/2 */
--	end_key = tgt_free + batch_size;
-+	/* Reference all but the last batch_size */
-+	end_key = 1 + map_size - batch_size;
- 	for (key = 1; key < end_key; key++) {
- 		assert(!bpf_map_lookup_elem_with_ref_bit(lru_map_fd, key, value));
- 		assert(!bpf_map_update_elem(expected_map_fd, &key, value,
- 					    BPF_NOEXIST));
+ 	/* We start by asking for one vector per queue pair */
+@@ -1717,16 +1717,17 @@ static int wx_acquire_msix_vectors(struc
+ 		return nvecs;
  	}
  
--	/* Add 1+2*tgt_free to tgt_free*5/2
--	 * (+tgt_free/2 keys)
--	 */
-+	/* Insert new batch_size: replaces the non-referenced elements */
- 	key = 2 * tgt_free + 1;
- 	end_key = key + batch_size;
- 	for (; key < end_key; key++) {
+-	wx->msix_entry->entry = 0;
+-	wx->msix_entry->vector = pci_irq_vector(wx->pdev, 0);
+ 	nvecs -= 1;
+ 	for (i = 0; i < nvecs; i++) {
+ 		wx->msix_q_entries[i].entry = i;
+-		wx->msix_q_entries[i].vector = pci_irq_vector(wx->pdev, i + 1);
++		wx->msix_q_entries[i].vector = pci_irq_vector(wx->pdev, i);
+ 	}
+ 
+ 	wx->num_q_vectors = nvecs;
+ 
++	wx->msix_entry->entry = nvecs;
++	wx->msix_entry->vector = pci_irq_vector(wx->pdev, nvecs);
++
+ 	return 0;
+ }
+ 
+@@ -2182,7 +2183,6 @@ static void wx_set_ivar(struct wx *wx, s
+ 		wr32(wx, WX_PX_MISC_IVAR, ivar);
+ 	} else {
+ 		/* tx or rx causes */
+-		msix_vector += 1; /* offset for queue vectors */
+ 		msix_vector |= WX_PX_IVAR_ALLOC_VAL;
+ 		index = ((16 * (queue & 1)) + (8 * direction));
+ 		ivar = rd32(wx, WX_PX_IVAR(queue >> 1));
+@@ -2220,7 +2220,7 @@ void wx_write_eitr(struct wx_q_vector *q
+ 
+ 	itr_reg |= WX_PX_ITR_CNT_WDIS;
+ 
+-	wr32(wx, WX_PX_ITR(v_idx + 1), itr_reg);
++	wr32(wx, WX_PX_ITR(v_idx), itr_reg);
+ }
+ 
+ /**
+@@ -2266,9 +2266,9 @@ void wx_configure_vectors(struct wx *wx)
+ 		wx_write_eitr(q_vector);
+ 	}
+ 
+-	wx_set_ivar(wx, -1, 0, 0);
++	wx_set_ivar(wx, -1, 0, v_idx);
+ 	if (pdev->msix_enabled)
+-		wr32(wx, WX_PX_ITR(0), 1950);
++		wr32(wx, WX_PX_ITR(v_idx), 1950);
+ }
+ EXPORT_SYMBOL(wx_configure_vectors);
+ 
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1242,7 +1242,7 @@ struct wx {
+ };
+ 
+ #define WX_INTR_ALL (~0ULL)
+-#define WX_INTR_Q(i) BIT((i) + 1)
++#define WX_INTR_Q(i) BIT((i))
+ 
+ /* register operations */
+ #define wr32(a, reg, value)	writel((value), ((a)->hw_addr + (reg)))
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -155,7 +155,7 @@ static void ngbe_irq_enable(struct wx *w
+ 	if (queues)
+ 		wx_intr_enable(wx, NGBE_INTR_ALL);
+ 	else
+-		wx_intr_enable(wx, NGBE_INTR_MISC);
++		wx_intr_enable(wx, NGBE_INTR_MISC(wx));
+ }
+ 
+ /**
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+@@ -85,7 +85,7 @@
+ #define NGBE_PX_MISC_IC_TIMESYNC		BIT(11) /* time sync */
+ 
+ #define NGBE_INTR_ALL				0x1FF
+-#define NGBE_INTR_MISC				BIT(0)
++#define NGBE_INTR_MISC(A)			BIT((A)->num_q_vectors)
+ 
+ #define NGBE_PHY_CONFIG(reg_offset)		(0x14000 + ((reg_offset) * 4))
+ #define NGBE_CFG_LAN_SPEED			0x14440
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+@@ -21,7 +21,7 @@ void txgbe_irq_enable(struct wx *wx, boo
+ 	wr32(wx, WX_PX_MISC_IEN, TXGBE_PX_MISC_IEN_MASK);
+ 
+ 	/* unmask interrupt */
+-	wx_intr_enable(wx, TXGBE_INTR_MISC);
++	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
+ 	if (queues)
+ 		wx_intr_enable(wx, TXGBE_INTR_QALL(wx));
+ }
+@@ -147,7 +147,7 @@ static irqreturn_t txgbe_misc_irq_thread
+ 		nhandled++;
+ 	}
+ 
+-	wx_intr_enable(wx, TXGBE_INTR_MISC);
++	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
+ 	return (nhandled > 0 ? IRQ_HANDLED : IRQ_NONE);
+ }
+ 
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -280,8 +280,8 @@ struct txgbe_fdir_filter {
+ #define TXGBE_DEFAULT_RX_WORK           128
+ #endif
+ 
+-#define TXGBE_INTR_MISC       BIT(0)
+-#define TXGBE_INTR_QALL(A)    GENMASK((A)->num_q_vectors, 1)
++#define TXGBE_INTR_MISC(A)    BIT((A)->num_q_vectors)
++#define TXGBE_INTR_QALL(A)    (TXGBE_INTR_MISC(A) - 1)
+ 
+ #define TXGBE_MAX_EITR        GENMASK(11, 3)
+ 
 
 
 
