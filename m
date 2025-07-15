@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9F4B05CC3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6241DB05E77
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 621191C257C2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79B4F17FEC9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEBE2E49B7;
-	Tue, 15 Jul 2025 13:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529572E2657;
+	Tue, 15 Jul 2025 13:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ll0MWr4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ws/oo1bq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F46263F52;
-	Tue, 15 Jul 2025 13:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015472E49B3;
+	Tue, 15 Jul 2025 13:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586123; cv=none; b=TLQCJMy1InzuJt0HFuNjnlOFbq4C2ePJtpv7+guzJAVC4FS4zuUBeks9TwzYdhrA7fGsnPa/f6DFw9V+Jwii7OunvlbUr7rd6GUzUPclC8Gh13BOAn/UduRgzASFpvP10Jl9snY8C+i7yIOEueBlNKBbnr9rKgPRGviYjiOY1cE=
+	t=1752586947; cv=none; b=kkI2HC0zwlPQJmDqG9mOtDiDETZyD3c0PuJkTJDv/h10Ur/2H9nXSkNTfsYwIRaj1sG6PtJT/KxYXv6R4YipwjK3UMpPW3nraH/ETJx7B0TNlfHrKTL764nFn+HAyYSKOPKcoDOFqAl+RvSdDRLDhsInqgEAXyR4hqoB18cXB78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586123; c=relaxed/simple;
-	bh=Mzi1aspxwvSJXJ8Pt1E7wpxFmtCM4C9lofwZvvc5kFg=;
+	s=arc-20240116; t=1752586947; c=relaxed/simple;
+	bh=bQ5FNtSqEMmG1pUzMjhGg2NDhSHq/KBHaoNTjAeY428=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHjE4KhjfrxR9Drrbeapsp1gvna94ePGJVgyqILtUSY5uWfNOcrYRIUZLlwwZ7LFY9meEZH5J2PFPaDsXXexJUO9WprucGny+7uinUHNqd0177xcNpIbOACzV2dxdN/1UObbDxW5028amcqiPB+98ljWxObP1RwLgrW+4S2evnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ll0MWr4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB21C4CEE3;
-	Tue, 15 Jul 2025 13:28:42 +0000 (UTC)
+	 MIME-Version; b=YNBQZViJsP9G9f63aKSU+L5OSckWW0Yd1aCKE2UtQmLWSQQdNcszFCX5WWmrs4P0GefGpPo7YaxEplEk5tdbnhr5m3WYLkm90hOrY8SEzoDKXsXJxiaxHwfyChPJPNv44imFSmJ4A4dPZakOJvVZUDcYy7qgxFh1jbtydjq38Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ws/oo1bq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC76C4CEE3;
+	Tue, 15 Jul 2025 13:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586123;
-	bh=Mzi1aspxwvSJXJ8Pt1E7wpxFmtCM4C9lofwZvvc5kFg=;
+	s=korg; t=1752586946;
+	bh=bQ5FNtSqEMmG1pUzMjhGg2NDhSHq/KBHaoNTjAeY428=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ll0MWr4IsrmHGuwWAJ+pgY6oopMh36JRr+89cC+e3DitNod9SknZ8RFdFa82cHvtW
-	 oq12TUYAl2aJR4sC3V5FaG6ADuWMC5X9Wi+oWq9ibnOGQWrSW4qBYgASfgBX4MFd+f
-	 RBGktqUnXjps/hDO5yamz/AO+f+H9td5NAFs12R8=
+	b=Ws/oo1bqm8XbKXjPDumN1iPz4r98hBvgo1h6qKKrohKq2cmTe1TQc6D82WBQq9tKy
+	 WA83F1HvqAAfwF32BubXksfXG53yf1EkwFyGb/hNmyDEjR7v6AffdIOSppxpSyOcGF
+	 /+ojt10Nw0ZdbIApxRm2Yj0iKLYG+QUXujXDi/8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bba84aef3a26fb93deb9@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Aditya Dutt <duttaditya18@gmail.com>
-Subject: [PATCH 5.15 24/77] jfs: fix null ptr deref in dtInsertEntry
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 108/192] mm/damon/core: handle damon_call_control as normal under kdmond deactivation
 Date: Tue, 15 Jul 2025 15:13:23 +0200
-Message-ID: <20250715130752.673321389@linuxfoundation.org>
+Message-ID: <20250715130819.224610705@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit ce6dede912f064a855acf6f04a04cbb2c25b8c8c upstream.
+commit bb1b5929b4279b136816f95ce1e8f1fa689bf4a1 upstream.
 
-[syzbot reported]
-general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 0 PID: 5061 Comm: syz-executor404 Not tainted 6.8.0-syzkaller-08951-gfe46a7dd189e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-RIP: 0010:dtInsertEntry+0xd0c/0x1780 fs/jfs/jfs_dtree.c:3713
-...
-[Analyze]
-In dtInsertEntry(), when the pointer h has the same value as p, after writing
-name in UniStrncpy_to_le(), p->header.flag will be cleared. This will cause the
-previously true judgment "p->header.flag & BT-LEAF" to change to no after writing
-the name operation, this leads to entering an incorrect branch and accessing the
-uninitialized object ih when judging this condition for the second time.
+DAMON sysfs interface internally uses damon_call() to update DAMON
+parameters as users requested, online.  However, DAMON core cancels any
+damon_call() requests when it is deactivated by DAMOS watermarks.
 
-[Fix]
-After got the page, check freelist first, if freelist == 0 then exit dtInsert()
-and return -EINVAL.
+As a result, users cannot change DAMON parameters online while DAMON is
+deactivated.  Note that users can turn DAMON off and on with different
+watermarks to work around.  Since deactivated DAMON is nearly same to
+stopped DAMON, the work around should have no big problem.  Anyway, a bug
+is a bug.
 
-Reported-by: syzbot+bba84aef3a26fb93deb9@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
+There is no real good reason to cancel the damon_call() request under
+DAMOS deactivation.  Fix it by simply handling the request as normal,
+rather than cancelling under the situation.
+
+Link: https://lkml.kernel.org/r/20250629204914.54114-1-sj@kernel.org
+Fixes: 42b7491af14c ("mm/damon/core: introduce damon_call()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.14+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c |    2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/core.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -835,6 +835,8 @@ int dtInsert(tid_t tid, struct inode *ip
- 	 * the full page.
- 	 */
- 	DT_GETSEARCH(ip, btstack->top, bn, mp, p, index);
-+	if (p->header.freelist == 0)
-+		return -EINVAL;
- 
- 	/*
- 	 *	insert entry for new key
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2306,9 +2306,8 @@ static void kdamond_usleep(unsigned long
+  *
+  * If there is a &struct damon_call_control request that registered via
+  * &damon_call() on @ctx, do or cancel the invocation of the function depending
+- * on @cancel.  @cancel is set when the kdamond is deactivated by DAMOS
+- * watermarks, or the kdamond is already out of the main loop and therefore
+- * will be terminated.
++ * on @cancel.  @cancel is set when the kdamond is already out of the main loop
++ * and therefore will be terminated.
+  */
+ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+ {
+@@ -2356,7 +2355,7 @@ static int kdamond_wait_activation(struc
+ 		if (ctx->callback.after_wmarks_check &&
+ 				ctx->callback.after_wmarks_check(ctx))
+ 			break;
+-		kdamond_call(ctx, true);
++		kdamond_call(ctx, false);
+ 		damos_walk_cancel(ctx);
+ 	}
+ 	return -EBUSY;
 
 
 
