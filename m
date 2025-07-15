@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE95B05D8F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37AABB05C83
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4768C1890222
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B481E3B9F08
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709E02EA160;
-	Tue, 15 Jul 2025 13:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68BE2E5400;
+	Tue, 15 Jul 2025 13:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHc0O1T2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3rRUsCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5CD2E3391;
-	Tue, 15 Jul 2025 13:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D952E3B13;
+	Tue, 15 Jul 2025 13:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586407; cv=none; b=aSc/vnMaN+U9T/KURMXd0hIf7o2hDmKl80mlitQXMkNVP0+RuU8iLeuDcRsfrfizfx33Y0ss0kE0xauNIYvLQ5yHQRqTft3Jh9cx0YDFxNmd5XRGg+H4mXAPULgucUz+8ptK9O50Kj2tU2l9kM4vEK5Y6b73LH9If30Jat0DLf0=
+	t=1752585917; cv=none; b=mCqdif4A/rOFZzXGh4UlEIrMdVz1Px5bQYty8U9OT43+RigEIEV1//loGYULq1eahVAyCZsB68zZxPcdgYhOSMMpUX19ne35hA1H7O1N5tr++eppcJKeEkuEDWis7S1CZbz9uOnAol3IZr0oyM2U3xJbu95p/Q4i6zuUEAnJz1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586407; c=relaxed/simple;
-	bh=7ag8/InDUYg8LMYFlYXXQnsU2dS8GJMM3FJM5CrQ2Gw=;
+	s=arc-20240116; t=1752585917; c=relaxed/simple;
+	bh=xXztFy2HL5t+zg8g64xsDF6oBMbkRf85xfr6Cav2kWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Og0BHYCg4ZdWM6rvhikVEPlQk6oULr5etF2dBn1KKQsJeHHyV8ydEPlCqRZGQQSIpCADYZDaSFwmAqrnWOlW6ygT/wIwIHHUVMwICgmyKfggxh4fpAqvimcy41MBuHHY9iNoAHRwgH/cac1KoMABifNcgQdu/h4R6Pw2/qSNn4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHc0O1T2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAC1C4CEE3;
-	Tue, 15 Jul 2025 13:33:26 +0000 (UTC)
+	 MIME-Version; b=pkMrYOroHuHIBibx2xrELPqkezu8d6fsJDrtm7H9gEED0XVPmnByLPKvE/z2KVOqCh5S7S0InHLyTGduKyga8eSRgk0hu5uu5qFAye7K++KeBGNkf07LeNX1IQNXbkv3fxQgCEaFqScfJjZU0D4uI9IY1WQWkWteQxuUNXon7Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3rRUsCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329B7C4CEE3;
+	Tue, 15 Jul 2025 13:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586406;
-	bh=7ag8/InDUYg8LMYFlYXXQnsU2dS8GJMM3FJM5CrQ2Gw=;
+	s=korg; t=1752585917;
+	bh=xXztFy2HL5t+zg8g64xsDF6oBMbkRf85xfr6Cav2kWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHc0O1T2404JeT4oUOiEHCohHCuxMk7uo54W2kQEahF75CIpYMRNYYvG0uYRuy6Gu
-	 PisHBAnP4eMeVX0VHjsvYuzD6vQ4B7Z/ETpDXtVuSMZmK3Jyr4FbSbiGfAxyAKWeJs
-	 WC6Iwf3GLhjxNC31aerINm7P8sAMGIuqJQ3oR72o=
+	b=B3rRUsCaJnGYdrworzJ+HuXxj4JDe9y7WxCpW57PSdIXZ1gZKfBs/G+VhnRmKeAas
+	 kFUZ+6MDsv9feq8Z1JdD597PHf4wWJ+DBxwAohtqIrpSub8p/xyikZXwNiCW0u5Gfd
+	 hcvD5NElSA5A85y6GAw8xLzbKrnSwRHEO2UWFS40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 5.4 053/148] s390: Add -std=gnu11 to decompressor and purgatory CFLAGS
+	Aiden Yang <ling@moedove.com>,
+	Gary Guo <gary@garyguo.net>,
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 039/109] gre: Fix IPv6 multicast route creation.
 Date: Tue, 15 Jul 2025 15:12:55 +0200
-Message-ID: <20250715130802.447745777@linuxfoundation.org>
+Message-ID: <20250715130800.445562551@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Guillaume Nault <gnault@redhat.com>
 
-commit 3b8b80e993766dc96d1a1c01c62f5d15fafc79b9 upstream.
+commit 4e914ef063de40397e25a025c70d9737a9e45a8c upstream.
 
-GCC changed the default C standard dialect from gnu17 to gnu23,
-which should not have impacted the kernel because it explicitly requests
-the gnu11 standard in the main Makefile. However, there are certain
-places in the s390 code that use their own CFLAGS without a '-std='
-value, which break with this dialect change because of the kernel's own
-definitions of bool, false, and true conflicting with the C23 reserved
-keywords.
+Use addrconf_add_dev() instead of ipv6_find_idev() in
+addrconf_gre_config() so that we don't just get the inet6_dev, but also
+install the default ff00::/8 multicast route.
 
-  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-     11 |         false   = 0,
-        |         ^~~~~
-  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
-     35 | typedef _Bool                   bool;
-        |                                 ^~~~
-  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+Before commit 3e6a0243ff00 ("gre: Fix again IPv6 link-local address
+generation."), the multicast route was created at the end of the
+function by addrconf_add_mroute(). But this code path is now only taken
+in one particular case (gre devices not bound to a local IP address and
+in EUI64 mode). For all other cases, the function exits early and
+addrconf_add_mroute() is not called anymore.
 
-Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
-these errors and make the C standard version of these areas match the
-rest of the kernel.
+Using addrconf_add_dev() instead of ipv6_find_idev() in
+addrconf_gre_config(), fixes the problem as it will create the default
+multicast route for all gre devices. This also brings
+addrconf_gre_config() a bit closer to the normal netdevice IPv6
+configuration code (addrconf_dev_config()).
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 3e6a0243ff00 ("gre: Fix again IPv6 link-local address generation.")
+Reported-by: Aiden Yang <ling@moedove.com>
+Closes: https://lore.kernel.org/netdev/CANR=AhRM7YHHXVxJ4DmrTNMeuEOY87K2mLmo9KMed1JMr20p6g@mail.gmail.com/
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Tested-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/027a923dcb550ad115e6d93ee8bb7d310378bd01.1752070620.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/Makefile           |    2 +-
- arch/s390/purgatory/Makefile |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/addrconf.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/arch/s390/Makefile
-+++ b/arch/s390/Makefile
-@@ -23,7 +23,7 @@ endif
- aflags_dwarf	:= -Wa,-gdwarf-2
- KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -D__ASSEMBLY__
- KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
--KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2
-+KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -std=gnu11
- KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
---- a/arch/s390/purgatory/Makefile
-+++ b/arch/s390/purgatory/Makefile
-@@ -20,7 +20,7 @@ GCOV_PROFILE := n
- UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3499,11 +3499,9 @@ static void addrconf_gre_config(struct n
  
--KBUILD_CFLAGS := -fno-strict-aliasing -Wall -Wstrict-prototypes
-+KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
- KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
- KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
- KBUILD_CFLAGS += -c -MD -Os -m64 -msoft-float -fno-common
+ 	ASSERT_RTNL();
+ 
+-	idev = ipv6_find_idev(dev);
+-	if (IS_ERR(idev)) {
+-		pr_debug("%s: add_dev failed\n", __func__);
++	idev = addrconf_add_dev(dev);
++	if (IS_ERR(idev))
+ 		return;
+-	}
+ 
+ 	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
+ 	 * unless we have an IPv4 GRE device not bound to an IP address and
+@@ -3517,9 +3515,6 @@ static void addrconf_gre_config(struct n
+ 	}
+ 
+ 	add_v4_addrs(idev);
+-
+-	if (dev->flags & IFF_POINTOPOINT)
+-		addrconf_add_mroute(dev);
+ }
+ #endif
+ 
 
 
 
