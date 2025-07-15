@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 222A3B05C7D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8326DB05E99
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A3771C245E4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF39558019F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD902E7189;
-	Tue, 15 Jul 2025 13:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A402E6D26;
+	Tue, 15 Jul 2025 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJ6LEcPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0CHgzkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8392E7176;
-	Tue, 15 Jul 2025 13:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239572DEA72;
+	Tue, 15 Jul 2025 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586004; cv=none; b=LN9C1sjn0XAlzn4Nq0OXrM1K+jzdQfwLU0lzqjujZUXnOJM2IZzZ4xil1YP0VdS75pSaEAddp/nCT0zC+fGRY4QR1+3UYI0g4JL6az1XaFbh42533fACj2sioAlue0fLR8QzOo7224cUG1WXma0eMyJQlOvBveK93uZgO0+eUtI=
+	t=1752587005; cv=none; b=Ti8POJ9UOZ4o+9csD4ByFi7sL0LP9ACpYBKTii3d05SJwd+1fU5KaEUWiXOVjIs5g8rNtlKMFEV/TodXWQyTOZ2pUR47oLYCFY9FpxehiTf1Qly7GbgYvGaYof3At7HBQxNqawwbsBUFHpyCoFEfLlKPMu/ctY44LAahy+bwhZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586004; c=relaxed/simple;
-	bh=oqCCRvhZ4H/fz2hz77is6b10cfBIpaqb2w9z+kC2BF0=;
+	s=arc-20240116; t=1752587005; c=relaxed/simple;
+	bh=OHpGAv27Zp0dKGLXoDC6/+epby1B/MMYt6II+wZWbZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hh+zTks7zgxI1vZ/n5E/eRzf0ZW02jGwmcKinlUfytIsheENAssapNBpiaHgXv9+TwFdUMfWTXPrt6tJGv+DWNVp4ul5Ovv/y+Aasvp/Pmw4bvBAvg3DQfHDSullBhE42P5wpQSK8dUOO8ZwHZbPl3+drOmlUVR0lVzCY6OzY00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJ6LEcPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0EC5C4CEE3;
-	Tue, 15 Jul 2025 13:26:43 +0000 (UTC)
+	 MIME-Version; b=dFgK18isp6NB9yw9c4axmoAdzl+TYKp7mxGhX3nSt1v1OX1J3WQPBavhUZoZvUpJm4wwE+DVbDKowymKBxBElFTyVFKs7KzB/VjrRkjyxfrcaa0pTkM/3Z40B2ZXa9heP6no5diy0p1nVR/tyqxZJ9o2Uu+IJrasVU1p6EmAKGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0CHgzkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A955FC4CEE3;
+	Tue, 15 Jul 2025 13:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586004;
-	bh=oqCCRvhZ4H/fz2hz77is6b10cfBIpaqb2w9z+kC2BF0=;
+	s=korg; t=1752587005;
+	bh=OHpGAv27Zp0dKGLXoDC6/+epby1B/MMYt6II+wZWbZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJ6LEcPCZR+4ahayz7tbx1FLu9sxJwsDLh0wIjxSqIyabrrtV9UTcdv0x22FwNWaQ
-	 dlYvpZuEuEYzWLjRLtV3s4S7/6PAUF85AIqEnv1FPfCebYaStAznWyC7Ky6rFDWyXU
-	 6mEVsLCMjZNEDkr+V9kxudhzdES+NHSQV2AfbM+U=
+	b=f0CHgzkH3AeXthN53Y07uSzR0PGm52txle286XGtXd5VJC5D61xNyENCIaUJDQbkn
+	 RwyEvX7hwDtNl0Abbaa/Kbu+itFOqvlhq5qCzxNzL7jCPq3jsoQohtMqFFSmFGbuUl
+	 TtQkyjnoCV9DsLQNNEpCiKWsqAjPbpe62ncdGMOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nigel Croxon <ncroxon@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/109] bnxt_en: Set DMA unmap len correctly for XDP_REDIRECT
+Subject: [PATCH 6.15 131/192] raid10: cleanup memleak at raid10_make_request
 Date: Tue, 15 Jul 2025 15:13:46 +0200
-Message-ID: <20250715130802.488303380@linuxfoundation.org>
+Message-ID: <20250715130820.153655262@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Somnath Kotur <somnath.kotur@broadcom.com>
+From: Nigel Croxon <ncroxon@redhat.com>
 
-[ Upstream commit 3cdf199d4755d477972ee87110b2aebc88b3cfad ]
+[ Upstream commit 43806c3d5b9bb7d74ba4e33a6a8a41ac988bde24 ]
 
-When transmitting an XDP_REDIRECT packet, call dma_unmap_len_set()
-with the proper length instead of 0.  This bug triggers this warning
-on a system with IOMMU enabled:
+If raid10_read_request or raid10_write_request registers a new
+request and the REQ_NOWAIT flag is set, the code does not
+free the malloc from the mempool.
 
-WARNING: CPU: 36 PID: 0 at drivers/iommu/dma-iommu.c:842 __iommu_dma_unmap+0x159/0x170
-RIP: 0010:__iommu_dma_unmap+0x159/0x170
-Code: a8 00 00 00 00 48 c7 45 b0 00 00 00 00 48 c7 45 c8 00 00 00 00 48 c7 45 a0 ff ff ff ff 4c 89 45
-b8 4c 89 45 c0 e9 77 ff ff ff <0f> 0b e9 60 ff ff ff e8 8b bf 6a 00 66 66 2e 0f 1f 84 00 00 00 00
-RSP: 0018:ff22d31181150c88 EFLAGS: 00010206
-RAX: 0000000000002000 RBX: 00000000e13a0000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ff22d31181150cf0 R08: ff22d31181150ca8 R09: 0000000000000000
-R10: 0000000000000000 R11: ff22d311d36c9d80 R12: 0000000000001000
-R13: ff13544d10645010 R14: ff22d31181150c90 R15: ff13544d0b2bac00
-FS: 0000000000000000(0000) GS:ff13550908a00000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005be909dacff8 CR3: 0008000173408003 CR4: 0000000000f71ef0
-PKRU: 55555554
-Call Trace:
-<IRQ>
-? show_regs+0x6d/0x80
-? __warn+0x89/0x160
-? __iommu_dma_unmap+0x159/0x170
-? report_bug+0x17e/0x1b0
-? handle_bug+0x46/0x90
-? exc_invalid_op+0x18/0x80
-? asm_exc_invalid_op+0x1b/0x20
-? __iommu_dma_unmap+0x159/0x170
-? __iommu_dma_unmap+0xb3/0x170
-iommu_dma_unmap_page+0x4f/0x100
-dma_unmap_page_attrs+0x52/0x220
-? srso_alias_return_thunk+0x5/0xfbef5
-? xdp_return_frame+0x2e/0xd0
-bnxt_tx_int_xdp+0xdf/0x440 [bnxt_en]
-__bnxt_poll_work_done+0x81/0x1e0 [bnxt_en]
-bnxt_poll+0xd3/0x1e0 [bnxt_en]
+unreferenced object 0xffff8884802c3200 (size 192):
+   comm "fio", pid 9197, jiffies 4298078271
+   hex dump (first 32 bytes):
+     00 00 00 00 00 00 00 00 88 41 02 00 00 00 00 00  .........A......
+     08 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+   backtrace (crc c1a049a2):
+     __kmalloc+0x2bb/0x450
+     mempool_alloc+0x11b/0x320
+     raid10_make_request+0x19e/0x650 [raid10]
+     md_handle_request+0x3b3/0x9e0
+     __submit_bio+0x394/0x560
+     __submit_bio_noacct+0x145/0x530
+     submit_bio_noacct_nocheck+0x682/0x830
+     __blkdev_direct_IO_async+0x4dc/0x6b0
+     blkdev_read_iter+0x1e5/0x3b0
+     __io_read+0x230/0x1110
+     io_read+0x13/0x30
+     io_issue_sqe+0x134/0x1180
+     io_submit_sqes+0x48c/0xe90
+     __do_sys_io_uring_enter+0x574/0x8b0
+     do_syscall_64+0x5c/0xe0
+     entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: f18c2b77b2e4 ("bnxt_en: optimized XDP_REDIRECT support")
-Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250710213938.1959625-4-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+V4: changing backing tree to see if CKI tests will pass.
+The patch code has not changed between any versions.
+
+Fixes: c9aa889b035f ("md: raid10 add nowait support")
+Signed-off-by: Nigel Croxon <ncroxon@redhat.com>
+Link: https://lore.kernel.org/linux-raid/c0787379-9caa-42f3-b5fc-369aed784400@redhat.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/raid10.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-index 758f51366ef03..07a458ecb7cc9 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-@@ -115,7 +115,7 @@ static void __bnxt_xmit_xdp_redirect(struct bnxt *bp,
- 	tx_buf->action = XDP_REDIRECT;
- 	tx_buf->xdpf = xdpf;
- 	dma_unmap_addr_set(tx_buf, mapping, mapping);
--	dma_unmap_len_set(tx_buf, len, 0);
-+	dma_unmap_len_set(tx_buf, len, len);
- }
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 54320a887ecc5..0443a479809f9 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1182,8 +1182,11 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+ 		}
+ 	}
  
- void bnxt_tx_int_xdp(struct bnxt *bp, struct bnxt_napi *bnapi, int budget)
+-	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors))
++	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
++		raid_end_bio_io(r10_bio);
+ 		return;
++	}
++
+ 	rdev = read_balance(conf, r10_bio, &max_sectors);
+ 	if (!rdev) {
+ 		if (err_rdev) {
+@@ -1370,8 +1373,11 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 	}
+ 
+ 	sectors = r10_bio->sectors;
+-	if (!regular_request_wait(mddev, conf, bio, sectors))
++	if (!regular_request_wait(mddev, conf, bio, sectors)) {
++		raid_end_bio_io(r10_bio);
+ 		return;
++	}
++
+ 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery) &&
+ 	    (mddev->reshape_backwards
+ 	     ? (bio->bi_iter.bi_sector < conf->reshape_safe &&
 -- 
 2.39.5
 
