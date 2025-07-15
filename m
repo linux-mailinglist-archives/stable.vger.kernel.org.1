@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CF0B05B96
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF08B05DB4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D97AA17AA81
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E0713B0CDF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF532E2EE9;
-	Tue, 15 Jul 2025 13:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6562E5430;
+	Tue, 15 Jul 2025 13:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEz/Ra4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwkz5hcs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACB62E2EEE;
-	Tue, 15 Jul 2025 13:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CC02E2657;
+	Tue, 15 Jul 2025 13:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585662; cv=none; b=mvs0qg7oB1qMJsysPI2gljIwaqFRqyCMN8dsKmcOk7EnWcRgry0W+bgLOgGSEe0PiWVPm3jwabLp1fhRj5ZTgb3UNVvZ2o+in6/DlSPyl2xTxHF4pczbEmfwWUkKiG3vez6BD3pokEt/RUTj+CtPPUr+Wth89MmbxLzwZ03P/9I=
+	t=1752586436; cv=none; b=Csxo0/k3kXE+2sHOJSGyQjTMxQ/25MIoLJMeoH3Imwsv5Qi2gJEPp6/8omQiVrTFBGVdaQpZP9w7KhRfBfnouNfhwCkhUyeFbzRhemYoqu4rXAxuSMJrTY326niICHxu6UhOGShhI75TOaKKm/p3i7WxwPR5eWevgfEqb3gYOJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585662; c=relaxed/simple;
-	bh=b4oPxGSEtVJ+K5gcwIT8KaQTR1l6kDckIxLsNdJhxeQ=;
+	s=arc-20240116; t=1752586436; c=relaxed/simple;
+	bh=KvEvJ34IzOcdcP19eBCsf01HHgKgx9VbiEW+L3wqgeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRgdNLk6HtlIXiPc3NsS3N6mmnXDVtvjaEveYYEcb+Bqc/TCu3GU/Sm0C4KUdHC9rJ954ASzIRtyuFPGrUx6qTz1YhFk1lb9Ij7hxQORoMYyAzo1Vz+O8EAVHQSBkYQL/KxWnTUjog/eLe+FmmFNyiF2Dj9HJpAa/cImoJ2JmEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEz/Ra4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF97C4CEE3;
-	Tue, 15 Jul 2025 13:21:01 +0000 (UTC)
+	 MIME-Version; b=N3oeuIXYAtb6MNDIqllHc51Nrxslaq3qdw1VtHilZVDIqmSRW2W2SSrdjLikcXk6OiFqF1g4N4hsnsXgirVladj1sdw41ErGqSKeXpRlnIj0xcQJ6n4G01DsvKpOHeOxfXIz2fMhaTwfy4VChALUx0IdsCc2JoKx5mnLmiXBAS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwkz5hcs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E75C4CEF1;
+	Tue, 15 Jul 2025 13:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585662;
-	bh=b4oPxGSEtVJ+K5gcwIT8KaQTR1l6kDckIxLsNdJhxeQ=;
+	s=korg; t=1752586436;
+	bh=KvEvJ34IzOcdcP19eBCsf01HHgKgx9VbiEW+L3wqgeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEz/Ra4odPW72QuFKn5qWvre7fUgNvp0iwg0CBSCwVyYYixIDfW9xqjDFzkgvwnnz
-	 DqIiMqDeh2WPTBydq7EhFX2RxyYNZXNPRtOOJ3CnJiXGK6wXsoKv4uKSZfW3lKraNb
-	 HiBG6oG4RcaoKid0Wf6AU09rcJJ7KWcmHcl5Wazo=
+	b=iwkz5hcs8NCmKZ/ZzV5R53futEOZdgR7PKJgEfI9Vx0Av/RQG5Mb8PpWD8UmZZV+E
+	 1Ymcjkp7rNBk+Da6CL5Fb6g1CEs3NHHqJ55YUEt0jD6UG6vcB8KxOTgWDeP4kbOMn3
+	 ycq1XB9pJmjY6g6ZQqe2ggVeGyGjTiNLKdgrImb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+48240bab47e705c53126@syzkaller.appspotmail.com,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/163] nbd: fix uaf in nbd_genl_connect() error path
+Subject: [PATCH 5.4 063/148] nfs: Clean up /proc/net/rpc/nfs when nfs_fs_proc_net_init() fails.
 Date: Tue, 15 Jul 2025 15:13:05 +0200
-Message-ID: <20250715130813.546119325@linuxfoundation.org>
+Message-ID: <20250715130802.852166976@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit aa9552438ebf015fc5f9f890dbfe39f0c53cf37e ]
+[ Upstream commit e8d6f3ab59468e230f3253efe5cb63efa35289f7 ]
 
-There is a use-after-free issue in nbd:
+syzbot reported a warning below [1] following a fault injection in
+nfs_fs_proc_net_init(). [0]
 
-block nbd6: Receive control failed (result -104)
-block nbd6: shutting down sockets
-==================================================================
-BUG: KASAN: slab-use-after-free in recv_work+0x694/0xa80 drivers/block/nbd.c:1022
-Write of size 4 at addr ffff8880295de478 by task kworker/u33:0/67
+When nfs_fs_proc_net_init() fails, /proc/net/rpc/nfs is not removed.
 
-CPU: 2 UID: 0 PID: 67 Comm: kworker/u33:0 Not tainted 6.15.0-rc5-syzkaller-00123-g2c89c1b655c0 #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: nbd6-recv recv_work
+Later, rpc_proc_exit() tries to remove /proc/net/rpc, and the warning
+is logged as the directory is not empty.
+
+Let's handle the error of nfs_fs_proc_net_init() properly.
+
+[0]:
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 0, space 0, times 0
+CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
 Call Trace:
  <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- check_region_inline mm/kasan/generic.c:183 [inline]
- kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
- instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
- atomic_dec include/linux/atomic/atomic-instrumented.h:592 [inline]
- recv_work+0x694/0xa80 drivers/block/nbd.c:1022
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:464
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+  dump_stack_lvl (lib/dump_stack.c:123)
+ should_fail_ex (lib/fault-inject.c:73 lib/fault-inject.c:174)
+ should_failslab (mm/failslab.c:46)
+ kmem_cache_alloc_noprof (mm/slub.c:4178 mm/slub.c:4204)
+ __proc_create (fs/proc/generic.c:427)
+ proc_create_reg (fs/proc/generic.c:554)
+ proc_create_net_data (fs/proc/proc_net.c:120)
+ nfs_fs_proc_net_init (fs/nfs/client.c:1409)
+ nfs_net_init (fs/nfs/inode.c:2600)
+ ops_init (net/core/net_namespace.c:138)
+ setup_net (net/core/net_namespace.c:443)
+ copy_net_ns (net/core/net_namespace.c:576)
+ create_new_namespaces (kernel/nsproxy.c:110)
+ unshare_nsproxy_namespaces (kernel/nsproxy.c:218 (discriminator 4))
+ ksys_unshare (kernel/fork.c:3123)
+ __x64_sys_unshare (kernel/fork.c:3190)
+ do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
  </TASK>
 
-nbd_genl_connect() does not properly stop the device on certain
-error paths after nbd_start_device() has been called. This causes
-the error path to put nbd->config while recv_work continue to use
-the config after putting it, leading to use-after-free in recv_work.
+[1]:
+remove_proc_entry: removing non-empty directory 'net/rpc', leaking at least 'nfs'
+ WARNING: CPU: 1 PID: 6120 at fs/proc/generic.c:727 remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
+Modules linked in:
+CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+ RIP: 0010:remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
+Code: 3c 02 00 0f 85 85 00 00 00 48 8b 93 d8 00 00 00 4d 89 f0 4c 89 e9 48 c7 c6 40 ba a2 8b 48 c7 c7 60 b9 a2 8b e8 33 81 1d ff 90 <0f> 0b 90 90 e9 5f fe ff ff e8 04 69 5e ff 90 48 b8 00 00 00 00 00
+RSP: 0018:ffffc90003637b08 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff88805f534140 RCX: ffffffff817a92c8
+RDX: ffff88807da99e00 RSI: ffffffff817a92d5 RDI: 0000000000000001
+RBP: ffff888033431ac0 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffff888033431a00
+R13: ffff888033431ae4 R14: ffff888033184724 R15: dffffc0000000000
+FS:  0000555580328500(0000) GS:ffff888124a62000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f71733743e0 CR3: 000000007f618000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  sunrpc_exit_net+0x46/0x90 net/sunrpc/sunrpc_syms.c:76
+  ops_exit_list net/core/net_namespace.c:200 [inline]
+  ops_undo_list+0x2eb/0xab0 net/core/net_namespace.c:253
+  setup_net+0x2e1/0x510 net/core/net_namespace.c:457
+  copy_net_ns+0x2a6/0x5f0 net/core/net_namespace.c:574
+  create_new_namespaces+0x3ea/0xa90 kernel/nsproxy.c:110
+  unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:218
+  ksys_unshare+0x45b/0xa40 kernel/fork.c:3121
+  __do_sys_unshare kernel/fork.c:3192 [inline]
+  __se_sys_unshare kernel/fork.c:3190 [inline]
+  __x64_sys_unshare+0x31/0x40 kernel/fork.c:3190
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xcd/0x490 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa1a6b8e929
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff3a090368 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
+RAX: ffffffffffffffda RBX: 00007fa1a6db5fa0 RCX: 00007fa1a6b8e929
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040000080
+RBP: 00007fa1a6c10b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa1a6db5fa0 R14: 00007fa1a6db5fa0 R15: 0000000000000001
+ </TASK>
 
-This patch moves nbd_start_device() after the backend file creation.
-
-Reported-by: syzbot+48240bab47e705c53126@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68227a04.050a0220.f2294.00b5.GAE@google.com/T/
-Fixes: 6497ef8df568 ("nbd: provide a way for userspace processes to identify device backends")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250612132405.364904-1-zhengqixing@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: d47151b79e32 ("nfs: expose /proc/net/sunrpc/nfs in net namespaces")
+Reported-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a4cc4ac22daa4a71b87c
+Tested-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfs/inode.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 450458267e6e6..c705acc4d6f4b 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -2136,9 +2136,7 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
- 				goto out;
- 		}
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 251f45fee53ca..0dc53732b5c98 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2180,15 +2180,26 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ static int nfs_net_init(struct net *net)
+ {
+ 	struct nfs_net *nn = net_generic(net, nfs_net_id);
++	int err;
+ 
+ 	nfs_clients_init(net);
+ 
+ 	if (!rpc_proc_register(net, &nn->rpcstats)) {
+-		nfs_clients_exit(net);
+-		return -ENOMEM;
++		err = -ENOMEM;
++		goto err_proc_rpc;
  	}
--	ret = nbd_start_device(nbd);
--	if (ret)
--		goto out;
+ 
+-	return nfs_fs_proc_net_init(net);
++	err = nfs_fs_proc_net_init(net);
++	if (err)
++		goto err_proc_nfs;
 +
- 	if (info->attrs[NBD_ATTR_BACKEND_IDENTIFIER]) {
- 		nbd->backend = nla_strdup(info->attrs[NBD_ATTR_BACKEND_IDENTIFIER],
- 					  GFP_KERNEL);
-@@ -2154,6 +2152,8 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
- 		goto out;
- 	}
- 	set_bit(NBD_RT_HAS_BACKEND_FILE, &config->runtime_flags);
++	return 0;
 +
-+	ret = nbd_start_device(nbd);
- out:
- 	mutex_unlock(&nbd->config_lock);
- 	if (!ret) {
++err_proc_nfs:
++	rpc_proc_unregister(net, "nfs");
++err_proc_rpc:
++	nfs_clients_exit(net);
++	return err;
+ }
+ 
+ static void nfs_net_exit(struct net *net)
 -- 
 2.39.5
 
