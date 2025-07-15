@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1598CB05BB2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB82B05D83
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF2277B7B31
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34CA4188AF9B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3812E175D;
-	Tue, 15 Jul 2025 13:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1A22E9ED8;
+	Tue, 15 Jul 2025 13:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz86ixuP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7Uj6Li4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28A119D09C;
-	Tue, 15 Jul 2025 13:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9E62E7BDA;
+	Tue, 15 Jul 2025 13:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585599; cv=none; b=kgheuRE4NCbX1CzYwy4WhbD0U4c3HYC9buqv1D2s0PWZfob8mIs0Biv481uazZwz6nHpfUnaC+fcCOBehAN35O/OnvflHm3A3CEQ5IeEF1EvYsyajKNi9Pqb9YyX+wXff243ZF7Mi3cARVRm0YlGRaqUqhfVa/aqBA7+ax30hCg=
+	t=1752586391; cv=none; b=dr5VtThOzhv49ygaHWLDmdygUKmq9omC8h7HS8ySWdyg5vXQO/JOC2rWLv3o3MxZb65gVGpuw0+YV3y7ADKjB9rQGAn+KUoN1Oz2WEGGmkGB3wg+DdQ5ZLQvqVYOF3PdAlkYY9Z8kq7tbbT5yOWNID4xK/5YaSI3cHCMgh/p158=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585599; c=relaxed/simple;
-	bh=70HYWFoEIvEN/DpNUHiBvl3ocrDiWf8zxJhvfd5aBm0=;
+	s=arc-20240116; t=1752586391; c=relaxed/simple;
+	bh=PWepeBMXzG2phsk2drzjU62zdAR+wmKE6QXZNLHa4Tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sQy5MZp0GeYc5AjvWRZvsSwyrP/u/t8yrdsSRfb7YP1tNNy8JH+Ul3puNH+AMmLAQzmNQxW7Oh5KlPsAA72pS8GeOszksVlckEOSQJeq4PH0FippY7rSYBktpE4fGc0snWk5zO1rGHLAUeVREvMVDZvxm+1ybh1oABLaFwD75xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz86ixuP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E67C4CEE3;
-	Tue, 15 Jul 2025 13:19:58 +0000 (UTC)
+	 MIME-Version; b=c/3Mm/f7pzS/m82dkExdC/FsQ8Y8eqtZOgEI8QxbZGIKwNV9Lp2B0shP4OBsn4F656DyTFPN9IgXcVnIILptF8mBSkRaRO8O3BifYKKiOreV9Cjt0IjZ0pvTdOtWrSi0Bv8GgtAoj+KBDxj2BAdc1QhoHsVY/SElshnRvyAH6MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7Uj6Li4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C64C4CEE3;
+	Tue, 15 Jul 2025 13:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585598;
-	bh=70HYWFoEIvEN/DpNUHiBvl3ocrDiWf8zxJhvfd5aBm0=;
+	s=korg; t=1752586390;
+	bh=PWepeBMXzG2phsk2drzjU62zdAR+wmKE6QXZNLHa4Tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xz86ixuPpgEVoy8EyKuIBZ0ak0sOSQ3ZYFZ5vV4c/+D7C7OS9aaqgMaC9fI3Zhubq
-	 oPU21HgpdlZvGdeGJ2+caOCx1W0FJGfI8LdbutekBZOYSZNyOmCJizZq3AVr2Gw0fP
-	 hBmqcRmbZNaDWNpRsFhLJ9vNd0VtHPy9JRGyns+o=
+	b=R7Uj6Li4k2nf5uX+DtG5tOHw5NQv2x4nTGxhYPQQYbjEBBxKMp58rL35f2ddRJAjt
+	 +T2U2i8aOooW5HEu8qz78qssUYy747+uUwge/SHdKniqGTUTk/35JGqerdyjWgNSot
+	 2GoMsnOW2LfOVqBN2Bmuj9TXAYcfIvqSUhlBkjO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.12 101/163] erofs: fix to add missing tracepoint in erofs_read_folio()
-Date: Tue, 15 Jul 2025 15:12:49 +0200
-Message-ID: <20250715130812.913680007@linuxfoundation.org>
+	Ping Cheng <ping.cheng@wacom.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.4 048/148] HID: wacom: fix kobject reference count leak
+Date: Tue, 15 Jul 2025 15:12:50 +0200
+Message-ID: <20250715130802.243135283@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit 99f7619a77a0a2e3e2bcae676d0f301769167754 upstream.
+commit 85a720f4337f0ddf1603c8b75a8f1ffbbe022ef9 upstream.
 
-Commit 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
-converts to use iomap interface, it removed trace_erofs_readpage()
-tracepoint in the meantime, let's add it back.
+When sysfs_create_files() fails in wacom_initialize_remotes() the error
+is returned and the cleanup action will not have been registered yet.
 
-Fixes: 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250708111942.3120926-1-chao@kernel.org
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+As a result the kobject???s refcount is never dropped, so the
+kobject can never be freed leading to a reference leak.
+
+Fix this by calling kobject_put() before returning.
+
+Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
+Acked-by: Ping Cheng <ping.cheng@wacom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/data.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/wacom_sys.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/erofs/data.c
-+++ b/fs/erofs/data.c
-@@ -378,6 +378,8 @@ int erofs_fiemap(struct inode *inode, st
-  */
- static int erofs_read_folio(struct file *file, struct folio *folio)
- {
-+	trace_erofs_read_folio(folio, true);
-+
- 	return iomap_read_folio(folio, &erofs_iomap_ops);
- }
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2031,6 +2031,7 @@ static int wacom_initialize_remotes(stru
+ 		hid_err(wacom->hdev,
+ 			"cannot create sysfs group err: %d\n", error);
+ 		kfifo_free(&remote->remote_fifo);
++		kobject_put(remote->remote_dir);
+ 		return error;
+ 	}
  
 
 
