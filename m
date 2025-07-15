@@ -1,98 +1,122 @@
-Return-Path: <stable+bounces-163039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81281B0689D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 23:34:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77193B068D0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 23:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84C5C4E24B7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 21:34:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8915A50158F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 21:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E952BE64E;
-	Tue, 15 Jul 2025 21:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D9226E710;
+	Tue, 15 Jul 2025 21:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b="ljMEHrsw"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="g0As/wod"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nixnet.email (mx.nixnet.email [5.161.67.119])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B0F24DCEC;
-	Tue, 15 Jul 2025 21:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.161.67.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE0B26AD9;
+	Tue, 15 Jul 2025 21:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752615292; cv=none; b=pJn/zF5bts8/MaoQXt7C3DEnr+1By/i/frdH3c6WKfaxZDwbcYFAO4hnew6UxwmyCqfCKCufeUS1ytf0i/iRGXog3eSzqr1zQr0P0PC8rVwbsQcyNCbrw+HFZqgMrqDKErvjhjF6OYrBfag1Cdwxt8ktVchVMeAMPPAcLPDean0=
+	t=1752616168; cv=none; b=XVBrSydo3uzgzPpyzYUoSYGTUfxHq/lBzkioU6CpMUE6RQpWFG5bp4dbAne9A77xedAR7sqaQ5wSGc0BDD3D0kKnpOOtXgVO4WYWFS/oCjDDGlmblA8pDQHCggkpMW+c5hZ15T7eNTraXsho4V1cG9TMmJMYr29jDzpgToooLyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752615292; c=relaxed/simple;
-	bh=IFNMR37pFCsxNKnP/HnH757U8wunjC7Ye9Euo8+I5SE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=qC8ymKyowPjrKcLEB2TeG8NNvFxhqs4XYZnOx+/QbGgWniBkxW5IJ1PMr2/IGbiiKB2ccxC8m78AJSTE9Y73xku+P0Mtht1O0bC3yBicWvCqP3eLvZWkDn4UwGnH6k6JoMAAPAAX+SOQbgkr0sPbBMfhdblp6m5vqo3k6/scHSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life; spf=pass smtp.mailfrom=pwned.life; dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b=ljMEHrsw; arc=none smtp.client-ip=5.161.67.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pwned.life
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by mx.nixnet.email (Postfix) with ESMTPSA id AA0C87D32D;
-	Tue, 15 Jul 2025 23:34:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pwned.life; s=202002021149;
-	t=1752615282;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3q1nBxw+JcGoqroH8se/TEselkikRYqFQQ4XJJpobcs=;
-	b=ljMEHrswOmkjxRg5Z0C65St1LhxdGSgheUlhIbx2Q22vz/zmafXyAvKyoOxqwVcTRt+F3q
-	rfCEeuwwuejTzRBsp+1zM7f/FfWUR2Z3kpaVGI5R3nE4HqtAaNlX4juz9ZwReraqeYfNy2
-	o90JUrCfv78P4dcKzzMax3PlQtp76DY=
+	s=arc-20240116; t=1752616168; c=relaxed/simple;
+	bh=trlF5H1bYaM4dSNd149hpjrn6kkLss+dok8sk3g3LnM=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=efDlp1vdlgF2gPTlg7EkLxFMsdGHNcEa2OGqx7qGuD26yINo9DkXNMaaX2fxGTzu+n0r2Wzlh0kRo/OWS57lS7QAk8ZbBEaSXlKVz9vGndb/BSQalkRI5poDIzSoKHnItkd39yYxp46aPrpYjSul/387D+L59uP5DwUW3Wd+ZFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=g0As/wod; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788B8C4CEE3;
+	Tue, 15 Jul 2025 21:49:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1752616167;
+	bh=trlF5H1bYaM4dSNd149hpjrn6kkLss+dok8sk3g3LnM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=g0As/woditO0fQse77Q8HOkzON0mKGPIbnLkXg9YXDDeJJ/Bc1sTvL4hQRNhpK/9h
+	 CzH+FjOgrus4JTTGor4EBVSr6kAAINVr/VN30Lcyer4IpzqtCBVfolnNn0762NYj6e
+	 FVp0WTxWjmZgJdF0throkVSeoLeysnr7r83OAhRg=
+Date: Tue, 15 Jul 2025 14:49:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Stefan Roesch
+ <shr@devkernel.io>, linux-mm@kvack.org, llvm@lists.linux.dev,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm/ksm: Fix -Wsometimes-uninitialized from clang-21 in
+ advisor_mode_show()
+Message-Id: <20250715144926.90546c48efc5f288cfde319e@linux-foundation.org>
+In-Reply-To: <20250715-ksm-fix-clang-21-uninit-warning-v1-1-f443feb4bfc4@kernel.org>
+References: <20250715-ksm-fix-clang-21-uninit-warning-v1-1-f443feb4bfc4@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Jul 2025 23:34:37 +0200
-Message-Id: <DBCY9JJVK09V.2BJZREMMACGKI@pwned.life>
-Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
- <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
- <lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
- <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
- <srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
- <hargar@microsoft.com>, <broonie@kernel.org>
-Subject: Re: [PATCH 6.15 000/192] 6.15.7-rc1 review
-From: "Achill Gilgenast" <fossdd@pwned.life>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- <stable@vger.kernel.org>
-X-Greeting: Hi mom! Look, I'm in somebodys mail client!
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250715130814.854109770@linuxfoundation.org>
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue Jul 15, 2025 at 3:11 PM CEST, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.15.7 release.
-> There are 192 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 17 Jul 2025 13:07:32 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.15.7-=
-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
- linux-6.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Tue, 15 Jul 2025 12:56:16 -0700 Nathan Chancellor <nathan@kernel.org> wrote:
 
-Thanks, build-tested on all Alpine Linux architectures and boot-tested
-on x86_64. No issues noticed.
+> After a recent change in clang to expose uninitialized warnings from
+> const variables [1], there is a warning from the if statement in
+> advisor_mode_show().
 
-Tested-By: Achill Gilgenast <fossdd@pwned.life>
+I'll change this to "a false positive warning".
+
+>   mm/ksm.c:3687:11: error: variable 'output' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
+>    3687 |         else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+>         |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   mm/ksm.c:3690:33: note: uninitialized use occurs here
+>    3690 |         return sysfs_emit(buf, "%s\n", output);
+>         |                                        ^~~~~~
+> 
+> Rewrite the if statement to implicitly make KSM_ADVISOR_NONE the else
+> branch so that it is obvious to the compiler that ksm_advisor can only
+> be KSM_ADVISOR_NONE or KSM_ADVISOR_SCAN_TIME due to the assignments in
+> advisor_mode_store().
+> 
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -3682,10 +3682,10 @@ static ssize_t advisor_mode_show(struct kobject *kobj,
+>  {
+>  	const char *output;
+>  
+> -	if (ksm_advisor == KSM_ADVISOR_NONE)
+> -		output = "[none] scan-time";
+> -	else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+> +	if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+>  		output = "none [scan-time]";
+> +	else
+> +		output = "[none] scan-time";
+>  
+>  	return sysfs_emit(buf, "%s\n", output);
+>  }
+
+Ho hum OK, but the code did deteriorate a bit.
+
+static ssize_t advisor_mode_show(struct kobject *kobj,
+				 struct kobj_attribute *attr, char *buf)
+{
+	const char *output;
+
+	if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+		output = "none [scan-time]";
+	else
+		output = "[none] scan-time";
+
+	return sysfs_emit(buf, "%s\n", output);
+}
+
+Inconsistent with the other code which looks at this enum.  Previously
+the code explicitly recognized that there are only two modes and that
+became implicit.
+
+Oh well, no big deal and we don't want clang builds erroring out like
+this.
+
 
