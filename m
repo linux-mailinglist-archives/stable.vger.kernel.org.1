@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 376F7B05D1B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:41:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25866B05CCE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C0AD1C26DB1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFD227BDA36
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99D42E92AC;
-	Tue, 15 Jul 2025 13:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5332E3366;
+	Tue, 15 Jul 2025 13:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pS3AB3Xh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvHsAOxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A973A2E92AB;
-	Tue, 15 Jul 2025 13:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C76A2397BF;
+	Tue, 15 Jul 2025 13:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586229; cv=none; b=Mnj7nAhmH4H7PGR89ON/FhPuzLVwUmghpO2ZAwzH0wwmkKU7KtYVXFCpKU1L/uhIlDZUtJAfVRCvsaxWz4Y5Jo7pjxH4TWS2KKIk0qtMhWPohJw9AVugn5h9501IzeRoVDLRZ3B6ZU+GaHg/fAD3obqKm17lA9hVjLbsQjK96eI=
+	t=1752586068; cv=none; b=SnxYTtAw3ctzjsWpSPSwCxSUzasoFH6YHfMirfKpScaH9SKt4fdFgMAy3DdJQaDevPELkSpPaABEHG+ivIZiHgV9yk3UONjw97M9oNUJQyxDtdUdgKiTLjbKe6uIPApREiCKEeDXvlqutKrgd1g9FvO3FACzKHvsPs3HMwI3B2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586229; c=relaxed/simple;
-	bh=RNUdTxJ/214lW0lRkX5TsOTmXNwmWvKMXYoUezXPPT0=;
+	s=arc-20240116; t=1752586068; c=relaxed/simple;
+	bh=XCwL5oyPD5FwSjoUH+SW0P+BDDlY3n/mWPhTd4xNPco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYb95J+NzaHGShuRvo8dhMqgJDvM2SZ8NBSBGwF6u85GJyRqkZtI7dEUo6Ub+5ISXW4RkJzLMz6ia/o7CjSuJOUP8ShKUfZz9d7j44wSygxmGSN4YnpW6+RCovJKqWmFop7fqe1j+X618OL7O4TlZDi8mcGVf42BoI8CrxhP/RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pS3AB3Xh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC02FC4CEE3;
-	Tue, 15 Jul 2025 13:30:28 +0000 (UTC)
+	 MIME-Version; b=B2hALBpqFKHkUj2B5La071Z9DC6CV+84TeBJcA9a2yecCaNM6KYFZ3NG1Twfw/71RMgGf3RxUXAfApEFhRNuPLCO5isdngXZ2LA9VMiim4G2cSKwn5PGTpuYeaRWoS5onvT7sdSPV7WigwZfxoGGzVulUIlP3jPlYQFG9/rSxdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvHsAOxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3E9C4CEE3;
+	Tue, 15 Jul 2025 13:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586229;
-	bh=RNUdTxJ/214lW0lRkX5TsOTmXNwmWvKMXYoUezXPPT0=;
+	s=korg; t=1752586068;
+	bh=XCwL5oyPD5FwSjoUH+SW0P+BDDlY3n/mWPhTd4xNPco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pS3AB3XhiAW2ZDUVNgTXBUcMLQ8nfFut/M0fmSSlTqimkQy8KpBX7q2i7c9ryoOms
-	 4J4auEVOJ6crioY+5gjjVn0Z6O6j6IjtY/L5SifeZQI+jMmnI1WbBfJ5vInII/6yld
-	 ts4cOgXbyrL0wvbcqUVZ2aSRjNYEYg50ow8w6Eec=
+	b=nvHsAOxaVbopvGev58ldEsPOgazeT0TSWbdWswTXTCG49vwIUCVTG911ZweIZgQne
+	 r7m8mYm2YPp1PpcptWkt37d2IK1HD+QJlTBMbHrfcr0aWA6xGblLpbKcGPDzDhThWz
+	 bC8ovzWHFwXUv5ZyXR/nSJk/rBzMqvAcRraMGsxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 63/77] can: m_can: m_can_handle_lost_msg(): downgrade msg lost in rx message to debug level
+	Willem de Bruijn <willemb@google.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 106/109] selftests/bpf: adapt one more case in test_lru_map to the new target_free
 Date: Tue, 15 Jul 2025 15:14:02 +0200
-Message-ID: <20250715130754.257416137@linuxfoundation.org>
+Message-ID: <20250715130803.122515818@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit 58805e9cbc6f6a28f35d90e740956e983a0e036e ]
+commit 5e9388f7984a9cc7e659a105113f6ccf0aebedd0 upstream.
 
-Downgrade the "msg lost in rx" message to debug level, to prevent
-flooding the kernel log with error messages.
+The below commit that updated BPF_MAP_TYPE_LRU_HASH free target,
+also updated tools/testing/selftests/bpf/test_lru_map to match.
 
-Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250711-mcan_ratelimit-v3-1-7413e8e21b84@geanix.com
-[mkl: enhance commit message]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But that missed one case that passes with 4 cores, but fails at
+higher cpu counts.
+
+Update test_lru_sanity3 to also adjust its expectation of target_free.
+
+This time tested with 1, 4, 16, 64 and 384 cpu count.
+
+Fixes: d4adf1c9ee77 ("bpf: Adjust free target to avoid global starvation of LRU map")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20250625210412.2732970-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/m_can/m_can.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/test_lru_map.c |   33 +++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index e8b35661c5389..17b893eb286e7 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -582,7 +582,7 @@ static int m_can_handle_lost_msg(struct net_device *dev)
- 	struct can_frame *frame;
- 	u32 timestamp = 0;
+--- a/tools/testing/selftests/bpf/test_lru_map.c
++++ b/tools/testing/selftests/bpf/test_lru_map.c
+@@ -138,6 +138,12 @@ static int sched_next_online(int pid, in
+ 	return ret;
+ }
  
--	netdev_err(dev, "msg lost in rxf0\n");
-+	netdev_dbg(dev, "msg lost in rxf0\n");
++/* Derive target_free from map_size, same as bpf_common_lru_populate */
++static unsigned int __tgt_size(unsigned int map_size)
++{
++	return (map_size / nr_cpus) / 2;
++}
++
+ /* Inverse of how bpf_common_lru_populate derives target_free from map_size. */
+ static unsigned int __map_size(unsigned int tgt_free)
+ {
+@@ -410,12 +416,12 @@ static void test_lru_sanity2(int map_typ
+ 	printf("Pass\n");
+ }
  
- 	stats->rx_errors++;
- 	stats->rx_over_errors++;
--- 
-2.39.5
-
+-/* Size of the LRU map is 2*tgt_free
+- * It is to test the active/inactive list rotation
+- * Insert 1 to 2*tgt_free (+2*tgt_free keys)
+- * Lookup key 1 to tgt_free*3/2
+- * Add 1+2*tgt_free to tgt_free*5/2 (+tgt_free/2 keys)
+- *  => key 1+tgt_free*3/2 to 2*tgt_free are removed from LRU
++/* Test the active/inactive list rotation
++ *
++ * Fill the whole map, deplete the free list.
++ * Reference all except the last lru->target_free elements.
++ * Insert lru->target_free new elements. This triggers one shrink.
++ * Verify that the non-referenced elements are replaced.
+  */
+ static void test_lru_sanity3(int map_type, int map_flags, unsigned int tgt_free)
+ {
+@@ -434,8 +440,7 @@ static void test_lru_sanity3(int map_typ
+ 
+ 	assert(sched_next_online(0, &next_cpu) != -1);
+ 
+-	batch_size = tgt_free / 2;
+-	assert(batch_size * 2 == tgt_free);
++	batch_size = __tgt_size(tgt_free);
+ 
+ 	map_size = tgt_free * 2;
+ 	lru_map_fd = create_map(map_type, map_flags, map_size);
+@@ -446,23 +451,21 @@ static void test_lru_sanity3(int map_typ
+ 
+ 	value[0] = 1234;
+ 
+-	/* Insert 1 to 2*tgt_free (+2*tgt_free keys) */
+-	end_key = 1 + (2 * tgt_free);
++	/* Fill the map */
++	end_key = 1 + map_size;
+ 	for (key = 1; key < end_key; key++)
+ 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
+ 					    BPF_NOEXIST));
+ 
+-	/* Lookup key 1 to tgt_free*3/2 */
+-	end_key = tgt_free + batch_size;
++	/* Reference all but the last batch_size */
++	end_key = 1 + map_size - batch_size;
+ 	for (key = 1; key < end_key; key++) {
+ 		assert(!bpf_map_lookup_elem_with_ref_bit(lru_map_fd, key, value));
+ 		assert(!bpf_map_update_elem(expected_map_fd, &key, value,
+ 					    BPF_NOEXIST));
+ 	}
+ 
+-	/* Add 1+2*tgt_free to tgt_free*5/2
+-	 * (+tgt_free/2 keys)
+-	 */
++	/* Insert new batch_size: replaces the non-referenced elements */
+ 	key = 2 * tgt_free + 1;
+ 	end_key = key + batch_size;
+ 	for (; key < end_key; key++) {
 
 
 
