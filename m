@@ -1,161 +1,204 @@
-Return-Path: <stable+bounces-163020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C9EB06656
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 20:54:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A0EB06666
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 21:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B0351729CE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 18:54:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3F351AA20AC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 19:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD742BE7A0;
-	Tue, 15 Jul 2025 18:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F311EDA3C;
+	Tue, 15 Jul 2025 19:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="v7+D7ZSu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eoZm7xnG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7E72BE057
-	for <stable@vger.kernel.org>; Tue, 15 Jul 2025 18:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE516281358
+	for <stable@vger.kernel.org>; Tue, 15 Jul 2025 19:00:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752605666; cv=none; b=KxOxigAq2e9PwE/GprchBdLukLHzGaEN/3p+cAYLLpJtd2AfhO66lOckxcNHzKfBtm514bQOtuoThY6r6ym/Jd+LnoZKIhFsyNxByDOa+cp57DHwFsecpdULmFY8rN2ANamikA7ZkSKFEkujg+IAmGJ+RAhD5CJl3H2oklcgZbY=
+	t=1752606018; cv=none; b=r6sbqo6Dd4ST2bxIIaIUVeJJ8r11z/i448+zqn4QUwxUP7nLP2PfmmVaLjfixYPA7tVmX2j+RNIF7w0fAv00szQZICDNeHWsq7fq3Esz2pIZ4E4pfpHuMp1ANprZBmnQe7E0RriqYWqxEaz/UlUYq66KR09uYeBnDsLkGmQ6gS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752605666; c=relaxed/simple;
-	bh=eiWActdfHOI8oeeJEbcY3YKFLwfcbkbqlswFOrYbJms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LOC+UZ3T3T3UXz3JWfe19+6VZlgb/cC4T2FLJjuYz0SdYL4m3fTCmxSyGlm71skiO4jCKNAEFMS6C2BMGYrYJBBa2mGfpFvoD1eckjU4wBb5muck8T7BY/8gxNyZ04HELjutfBs7u4jHhyiFB7+pAImspHedPrLEq7zPjmCgj8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=v7+D7ZSu; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7dfc604107eso364715085a.2
-        for <stable@vger.kernel.org>; Tue, 15 Jul 2025 11:54:25 -0700 (PDT)
+	s=arc-20240116; t=1752606018; c=relaxed/simple;
+	bh=pWXwXM6tAdo40Zqoke4D1RqRiDl4ZRREhPbpU8XtXRw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=dwpmX9IRFmiNSnwqm7xCjD0u7BM62aQk7/yGBTscJzxIyOz6Uy4z4r1mbB2NJ3KptZ4DjxgofWyltmVtF9Ra0PV7smH9uQTNbfZrTTXY1Gu5uBqU4lXBj8mK68s6nNzfbkOQ6jxdU3I1Ci1DXf3sbS6vidvgetrGRiC7AFTERgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eoZm7xnG; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-23636167b30so52968405ad.1
+        for <stable@vger.kernel.org>; Tue, 15 Jul 2025 12:00:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1752605664; x=1753210464; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=F6L7Xk5SLTqSGeNBwfmprp+iwshdHjMDQuZqDyxpk10=;
-        b=v7+D7ZSu9RtbhEtQtvgXprbzJ7/XkFRiuU6Bz8DTdAgyQWii9yuiJ+jezu4KoeD5ai
-         MTb653Rwy/vuo2rJQ8F+UNYLB6n9l9f7UFfkWY1ev88Cg5Ao7b5jJ4H6Wl0qlONAnv5y
-         M2y+i3QshJGbcASVd9ysU5qFZhdk73oGOiu/j2soGlNJFoCx9jhpdFhb5RHB97d3tucQ
-         gEUpWIqrqsgqAUiWz/+fVL0UiVxe++TfWyY2FNnJUWMVPZFMrbFifjkIdKENfcAudYII
-         1mAY8XY19TzcnELO3Sv+K6sFu+dSlmrzoe2ux2EnA5cqGU08NFCjgv6CuJrWU2WzPury
-         o8mA==
+        d=gmail.com; s=20230601; t=1752606010; x=1753210810; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=B614pib7pAycthxoO8JsT0qk8Pb5A/7JMNSYzzDIx9g=;
+        b=eoZm7xnG9Pi+iQECHm18YT13puv7PRJll26LBFcGJVL+Xe+sOtXwRuQdAisWcYY18D
+         2bV4iBrI2KdZr2bqv0Urxgi1tGaA29uLU6Fs/i6lVvfYx7t3dz4iDFxT8iL2cqG8lzbT
+         ajCfOAhuoUdcnqQJ/b1eb73U8m08+rQ1Twd6POA8ynJbwZ3J0UfAQYhxAEqVeblFFNmB
+         VXOUvYR7kQCXWcynpU6AYrJ2nbCgHaRnw3RNSvFSJTCqpflKdiBomvEfg49EwZbrr/UK
+         UnpKjA9IVAJfdNgJCCPdHMijNVisi6w4lP+mq21cY8PAk3yvSh3GrjSWP2OKE5zqfl7o
+         gLXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752605664; x=1753210464;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F6L7Xk5SLTqSGeNBwfmprp+iwshdHjMDQuZqDyxpk10=;
-        b=heisVLfvDE+iaY6xT+9oCOiB4AgE404f/GgC8fRxxj0y1atGhwaiAVQRoNTdwMXRT3
-         m0IUfYMfO2aCQpMIlygmvFZSs8vtHO9SbK0IByfWMYbtQbEKvSndGDbNgOw/lNMYsW4O
-         ngcubXrScsBTDGO4PNDO87NfN8n5QPtTJaXivTFtglYBVZE/fqqVIiUduKMwcjmdoLfw
-         H8pt6W9o5X1l1GEUnqBNqeCuH97h50Pe/i0jIbjL3K2J4cMJVKsHhh6urPUTlYHrfFOO
-         qHl1WHdGjQoRBGVqi2nfEZ6y114uGwiOUrJFyjjYYH1ggKyQyntD9jeKeHYbzXp05Ipz
-         4/qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXcURe4rAQm6HGEsu6MH1n4lasR3PHK5cf4TUBzqM227Lx2ylE0vtDfsEKkP+dsXXPwsnRBsww=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3W6BklqhwY2E9I0RuJIVAPg4MNdGX00fGZZJETYe9nO5QP+hh
-	3v1uMN/SeZWEkLEQBet6FqYrNMmDbA0cdTaaTWjQceYxRaLzDR+sUGMRUrdj+qfH+TLozDLegGM
-	aupc=
-X-Gm-Gg: ASbGncuvzrLwVBVB344bHVPjuGPv5jj9r1a01Pnm1+Ouiu1t151V0nQRz6coYrOdvRR
-	Izj/LjbM4owV2g+6FqeTYmRYd7+3LSPTVKgxIwlA6bIcTwqpQ9+v3Q3NdGQ8E6elCaQL5vM2H/k
-	75lmvUGDo8uHAcHnW3t1mUuc3JLB16WDh+7N/57ZZC02UflxcXKTX8BZFOzLaW83A3xhbXsu0r4
-	pd/hUPxl9RQwV2N41TOhOctpu8x3mqJ8gAc8bMBu8vFe2TEfCoDt9+Puk2kfb41aotzSMJCoIMe
-	6ziR2eV761JR6K/nVlnf4ne8coLBEwIioSKcx+3vjz54KQt5ypraNIE0ojG569E2ypIB3ov6DnO
-	05Sv5OW2979PVvFOOQ8qzfekPuWGnYGEKeMVuOyvnv1+7TFUEwg+2K+7dWUDaQejsvd08LcVuqo
-	BfeM5anpakE2nkxhs=
-X-Google-Smtp-Source: AGHT+IEXn4TQ02fu1uMkkFZdTXgxqxb8mfiHmn8c4hx03bTaKQ7HGTfKW2NtkQZ1wyy0UH2HyLy+iA==
-X-Received: by 2002:a05:620a:4513:b0:7e3:4104:f72c with SMTP id af79cd13be357-7e342b839d3mr31475285a.49.1752605663964;
-        Tue, 15 Jul 2025 11:54:23 -0700 (PDT)
-Received: from rowland.harvard.edu (nat-65-112-8-52.harvard-secure.wrls.harvard.edu. [65.112.8.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e3397f4e38sm106909685a.28.2025.07.15.11.54.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Jul 2025 11:54:23 -0700 (PDT)
-Date: Tue, 15 Jul 2025 14:54:20 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
-	linux-usb@vger.kernel.org, stable@vger.kernel.org,
-	=?utf-8?Q?=C5=81ukasz?= Bartosik <ukaszb@chromium.org>
-Subject: Re: [PATCH] usb: hub: Don't try to recover devices lost during warm
- reset.
-Message-ID: <e14963bd-bf80-4b1d-b1a8-23207dd5b7ee@rowland.harvard.edu>
-References: <20250623133947.3144608-1-mathias.nyman@linux.intel.com>
- <2025071527-vendor-rockfish-ef19@gregkh>
+        d=1e100.net; s=20230601; t=1752606010; x=1753210810;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B614pib7pAycthxoO8JsT0qk8Pb5A/7JMNSYzzDIx9g=;
+        b=KOhCYxysx8g06m/AWzO26IX2v7Sm26gt+HQVHQcrSTPkmxoNjGuvpjfZ+GxZ8wkwaf
+         IFMkTWegghKmN9S6KMY2YhxpfpjcxxxHZfbLOKQxCJcvEL5fd5/4vSFFoSWQUnQ5nyop
+         gO0IM+EDEcH0OluAOzqW0n9jIhYIMGlZ7syU9MdFd/SVxbU1s6EstgPnRJMkOLtc8WUQ
+         oLcuTzHpzi2H4t+o06S+BKhbI0R9qPjsUrcrZAfWJZyrDpR+oAp5aRwIOiP0+MwHrHWP
+         ADJ+4GhGvcH93Fj5hbKoQGlcMzpFEs8Ryvl6gyP/oiqHLkv+N+ZVWKARY1AUFTCbPON7
+         vCGg==
+X-Forwarded-Encrypted: i=1; AJvYcCX5RK0p5F3RT8CLhkGoYrl9uxIsErP2x+C+2484n/5c/2MeY/0VhCk9FzX1WFKqmKI6auUq5tw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcNufuAXnihYPYstGmwjmC+vCvdreHM/3ORUhIJaQqBxK/KrL2
+	++CdEqSPDIVZAwfa+jFpVGG+c4/vbt3y60eQlUlixpwlUEWVxG4uB51j
+X-Gm-Gg: ASbGncu9VpfFnffHK017+UNAuyViZJ8D0iC0hmTGZhwe8bgTvsqmVFUHOYPOLlkJbO9
+	oTS+w94rJ+9UW6eFzoTCvBIhL+sIAvARXgK+hJg49W4mSX/PpPzDUuH1GwnSI/f7r1sGcpMSZ8d
+	UnWOJ2d1lCF0+rheV/8xKxTQJXaQJ4ZV25xvi5HpJ72zVSQYZ3HsuoKbFepPvc1sfaMbTu0XxrW
+	0tgvAiYDNv0BflHUkdRIE5OHrta0MJJAtEIBmLh9ENz63wsb32zZ1X4JwfsOgLbohBgH5slYzP3
+	dpavdIo+DYjMzp+iLgLuOe/dYro/ek+njk7ymZszZpNopHIKJ0QERZhVRDR4v5IkI0yLwOPoJbN
+	jAVpRkhC8+OV7HXk=
+X-Google-Smtp-Source: AGHT+IGXg63En8UwNbHvC3EVCnl48K0RJt2iU0X+MJUPoLgvwhmELNpjE06v08xMkZ1otSaUADAgkg==
+X-Received: by 2002:a17:902:f64b:b0:235:7c6:ebd2 with SMTP id d9443c01a7336-23e24f4a447mr1572015ad.31.1752606009764;
+        Tue, 15 Jul 2025 12:00:09 -0700 (PDT)
+Received: from localhost ([181.88.247.122])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4332e8bsm111828635ad.159.2025.07.15.12.00.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Jul 2025 12:00:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2025071527-vendor-rockfish-ef19@gregkh>
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=88259b1cec92413ceb591c4ba6bff3312655c8c3fb7b4f234cc6a689c960;
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+Date: Tue, 15 Jul 2025 16:00:06 -0300
+Message-Id: <DBCUZ88MSEOA.1Z8AFHVC0U0T4@gmail.com>
+Subject: Re: [PATCH 5.15 53/77] platform/x86: think-lmi: Fix sysfs group
+ cleanup
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "Kurt Borja" <kuurtb@gmail.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+Cc: <patches@lists.linux.dev>, "Mark Pearson" <mpearson-lenovo@squebb.ca>,
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Sasha
+ Levin" <sashal@kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250715130751.668489382@linuxfoundation.org>
+ <20250715130753.855799519@linuxfoundation.org>
+ <DBCUJ1QHGTKA.3H4TW1FB3FYJC@gmail.com>
+In-Reply-To: <DBCUJ1QHGTKA.3H4TW1FB3FYJC@gmail.com>
 
-On Tue, Jul 15, 2025 at 07:48:50PM +0200, Greg KH wrote:
-> On Mon, Jun 23, 2025 at 04:39:47PM +0300, Mathias Nyman wrote:
-> > Hub driver warm-resets ports in SS.Inactive or Compliance mode to
-> > recover a possible connected device. The port reset code correctly
-> > detects if a connection is lost during reset, but hub driver
-> > port_event() fails to take this into account in some cases.
-> > port_event() ends up using stale values and assumes there is a
-> > connected device, and will try all means to recover it, including
-> > power-cycling the port.
-> > 
-> > Details:
-> > This case was triggered when xHC host was suspended with DbC (Debug
-> > Capability) enabled and connected. DbC turns one xHC port into a simple
-> > usb debug device, allowing debugging a system with an A-to-A USB debug
-> > cable.
-> > 
-> > xhci DbC code disables DbC when xHC is system suspended to D3, and
-> > enables it back during resume.
-> > We essentially end up with two hosts connected to each other during
-> > suspend, and, for a short while during resume, until DbC is enabled back.
-> > The suspended xHC host notices some activity on the roothub port, but
-> > can't train the link due to being suspended, so xHC hardware sets a CAS
-> > (Cold Attach Status) flag for this port to inform xhci host driver that
-> > the port needs to be warm reset once xHC resumes.
-> > 
-> > CAS is xHCI specific, and not part of USB specification, so xhci driver
-> > tells usb core that the port has a connection and link is in compliance
-> > mode. Recovery from complinace mode is similar to CAS recovery.
-> > 
-> > xhci CAS driver support that fakes a compliance mode connection was added
-> > in commit 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-> > 
-> > Once xHCI resumes and DbC is enabled back, all activity on the xHC
-> > roothub host side port disappears. The hub driver will anyway think
-> > port has a connection and link is in compliance mode, and hub driver
-> > will try to recover it.
-> > 
-> > The port power-cycle during recovery seems to cause issues to the active
-> > DbC connection.
-> > 
-> > Fix this by clearing connect_change flag if hub_port_reset() returns
-> > -ENOTCONN, thus avoiding the whole unnecessary port recovery and
-> > initialization attempt.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-> > Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-> > Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-> > ---
-> >  drivers/usb/core/hub.c | 8 ++++++--
-> >  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> Alan, any objection to this?
+--88259b1cec92413ceb591c4ba6bff3312655c8c3fb7b4f234cc6a689c960
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-No objection, it looks okay to me.
+On Tue Jul 15, 2025 at 3:38 PM -03, Kurt Borja wrote:
+> Hi Greg,
+>
+> On Tue Jul 15, 2025 at 10:13 AM -03, Greg Kroah-Hartman wrote:
+>> 5.15-stable review patch.  If anyone has any objections, please let me k=
+now.
+>>
+>> ------------------
+>>
+>> From: Kurt Borja <kuurtb@gmail.com>
+>>
+>> [ Upstream commit 4f30f946f27b7f044cf8f3f1f353dee1dcd3517a ]
+>>
+>> Many error paths in tlmi_sysfs_init() lead to sysfs groups being removed
+>> when they were not even created.
+>>
+>> Fix this by letting the kobject core manage these groups through their
+>> kobj_type's defult_groups.
+>>
+>> Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support=
+ on Lenovo platforms")
+>> Cc: stable@vger.kernel.org
+>> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+>> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+>> Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-3-ce4f81c9c481@gmail=
+.com
+>> Signed-off-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>  drivers/platform/x86/think-lmi.c | 35 +++++++++-----------------------
+>>  1 file changed, 10 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/thi=
+nk-lmi.c
+>> index 36ff64a7b6847..cc46aa5f1da2c 100644
+>> --- a/drivers/platform/x86/think-lmi.c
+>> +++ b/drivers/platform/x86/think-lmi.c
+>> @@ -491,6 +491,7 @@ static struct attribute *auth_attrs[] =3D {
+>>  static const struct attribute_group auth_attr_group =3D {
+>>  	.attrs =3D auth_attrs,
+>>  };
+>> +__ATTRIBUTE_GROUPS(auth_attr);
+>> =20
+>>  /* ---- Attributes sysfs ----------------------------------------------=
+----------- */
+>>  static ssize_t display_name_show(struct kobject *kobj, struct kobj_attr=
+ibute *attr,
+>> @@ -643,6 +644,7 @@ static const struct attribute_group tlmi_attr_group =
+=3D {
+>>  	.is_visible =3D attr_is_visible,
+>>  	.attrs =3D tlmi_attrs,
+>>  };
+>> +__ATTRIBUTE_GROUPS(tlmi_attr);
+>> =20
+>>  static ssize_t tlmi_attr_show(struct kobject *kobj, struct attribute *a=
+ttr,
+>>  				    char *buf)
+>> @@ -688,12 +690,14 @@ static void tlmi_pwd_setting_release(struct kobjec=
+t *kobj)
+>> =20
+>>  static struct kobj_type tlmi_attr_setting_ktype =3D {
+>>  	.release        =3D &tlmi_attr_setting_release,
+>> -	.sysfs_ops	=3D &tlmi_kobj_sysfs_ops,
+>> +	.sysfs_ops	=3D &kobj_sysfs_ops,
+>> +	.default_groups =3D tlmi_attr_groups,
+>
+> I did *not* author this change and it utterly *breaks* the driver.
+>
+> This patch should be dropped ASAP.
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+I double checked and apparently it does not exactly break the driver.
 
-Alan Stern
+But still. I did not author this patch. It's similar from the one I
+authored but still has other issues. It breaks cleanup instead of fixing
+it.
+
+Was this an AI conflict resolution?
+
+I really don't appreciate the lack of transparency, specially when it
+claims to be authored by me (!).
+
+Please, drop.
+
+--=20
+ ~ Kurt
 
 
+--88259b1cec92413ceb591c4ba6bff3312655c8c3fb7b4f234cc6a689c960
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSHYKL24lpu7U7AVd8WYEM49J/UZgUCaHalOAAKCRAWYEM49J/U
+Zt03AP9RPeO+DDoeBYDtV2lxY0uoJz8T4pTzTZGmlqMJ9gk8PwD/WDQ6gKObLgX1
+CSsQxgX5YggbhZzZpOrO0yotg+uYCwQ=
+=oycW
+-----END PGP SIGNATURE-----
+
+--88259b1cec92413ceb591c4ba6bff3312655c8c3fb7b4f234cc6a689c960--
 
