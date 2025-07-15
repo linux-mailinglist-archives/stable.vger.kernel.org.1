@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D10FB05B40
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA247B05F6F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C591916DADB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 201757BCFEA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A959B1A5B9D;
-	Tue, 15 Jul 2025 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608C62E6D1A;
+	Tue, 15 Jul 2025 13:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjsKwVI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWrJaHQ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C1027470;
-	Tue, 15 Jul 2025 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4C92E3AF1;
+	Tue, 15 Jul 2025 13:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585492; cv=none; b=edACGjLnkmA6dB1ZUFEgsoCJA4uNyfLgLgAZEuQ4fadeeTv3gxFHhuqWQ+nG3GjMyuyf+9py6g158gu4EXMRozb+O+zuN7mvU/lyjs8MQetBZjsk3h/2opfdTsgEF1y1heawhqCB84baxNP7ySQpIPVTqUPmrqYDEgGWXKMLfUo=
+	t=1752587461; cv=none; b=m3L6mBuVI3JILEMaubfJwzfXBOAEcAqhXdZ8Y2SCg7hupk2KKW4pVkOW7lwY6G5/re4RP/qdDTKJtdGKXbCo7vCIZMPsRs4goyOvR9astbEtpwZFrgR8iz9GaN5sdixkP08+TtWrbHgoKurTUdYV2HbM3BYMiD62l9A4RsfYlKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585492; c=relaxed/simple;
-	bh=l8KUcjpLMaQZmsi/wbRAraGQYh7eu8t+ab3CRQGy6uo=;
+	s=arc-20240116; t=1752587461; c=relaxed/simple;
+	bh=DXj6ElBecYXCzCg3RsvLf9Sbzr07FZ8IYV5TKiUdXPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rxib7e8kExDlKT+uhT51gZ5WXs13AWLxf5fxwl1+S0WmzIhHXD03YnP8YlAWzI7+sT5wJnOiNdZY5V2mT+w0gTcnxdADTPnzRCwOJSTrLiyuNsRpJMjyThzY5pBm/+DHBnyRMI+XB23Y73Ky0f5ISljQOL07O7HMkFd7MlzbkY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjsKwVI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F95C4CEE3;
-	Tue, 15 Jul 2025 13:18:11 +0000 (UTC)
+	 MIME-Version; b=aBYk8hLGiYBpuypsaeSkywjs7ifTQNbYL/Dsnyv8dyB/XxlBWJlzH84JqAypANTZ2A2t+ITbBaDt3TsdYT/B/5S/dlywBHtsie2QRENJNKUpUpkwGJgLoEsbBZs7EdU5D4JZt/5u4ehF/fi7yDQG8pjHDT7FEkdylXn+Tsq0Mx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWrJaHQ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EFCC4CEE3;
+	Tue, 15 Jul 2025 13:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585492;
-	bh=l8KUcjpLMaQZmsi/wbRAraGQYh7eu8t+ab3CRQGy6uo=;
+	s=korg; t=1752587461;
+	bh=DXj6ElBecYXCzCg3RsvLf9Sbzr07FZ8IYV5TKiUdXPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjsKwVI/S0khIzKYUCgpvu4hoVtPaVU0E/DgLH053xfKw+qqYkXIXwEqc18Y7H1pH
-	 SEB6j/cG6upvIKBsqYesEaBvzbZgWYDmb7l5HXE4Admfts2wFcwRjcql+Nupi6zJAh
-	 0chhBrYZ9FHnuvkXFgONZZAi55aqyCj6Zp7pnaw8=
+	b=vWrJaHQ9F9jOH0HXyrEtDSIl6OZdSdqgwIomSnySfUc2O1QJ9z7wMIyCOlWJ5S40r
+	 JvX4lMGw3kJXhzdhVvgY0Zc544W3mv0r7cqHyjKJb9AEF54NBiqcRaWiJEkdwxO7G3
+	 DEQhqcdmYy6+tT6vsCgbnw/QQOsaNDmTmBqzCj6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 061/163] net: ethernet: rtsn: Fix a null pointer dereference in rtsn_probe()
+	Amir Goldstein <amir73il@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 020/208] ovl: Check for NULL d_inode() in ovl_dentry_upper()
 Date: Tue, 15 Jul 2025 15:12:09 +0200
-Message-ID: <20250715130811.200747946@linuxfoundation.org>
+Message-ID: <20250715130811.644808764@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Kees Cook <kees@kernel.org>
 
-commit 95a234f6affbf51f06338383537ab80d637bb785 upstream.
+[ Upstream commit 8a39f1c870e9d6fbac5638f3a42a6a6363829c49 ]
 
-Add check for the return value of rcar_gen4_ptp_alloc()
-to prevent potential null pointer dereference.
+In ovl_path_type() and ovl_is_metacopy_dentry() GCC notices that it is
+possible for OVL_E() to return NULL (which implies that d_inode(dentry)
+may be NULL). This would result in out of bounds reads via container_of(),
+seen with GCC 15's -Warray-bounds -fdiagnostics-details. For example:
 
-Fixes: b0d3969d2b4d ("net: ethernet: rtsn: Add support for Renesas Ethernet-TSN")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://patch.msgid.link/20250703100109.2541018-1-haoxiang_li2024@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In file included from arch/x86/include/generated/asm/rwonce.h:1,
+                 from include/linux/compiler.h:339,
+                 from include/linux/export.h:5,
+                 from include/linux/linkage.h:7,
+                 from include/linux/fs.h:5,
+                 from fs/overlayfs/util.c:7:
+In function 'ovl_upperdentry_dereference',
+    inlined from 'ovl_dentry_upper' at ../fs/overlayfs/util.c:305:9,
+    inlined from 'ovl_path_type' at ../fs/overlayfs/util.c:216:6:
+include/asm-generic/rwonce.h:44:26: error: array subscript 0 is outside array bounds of 'struct inode[7486503276667837]' [-Werror=array-bounds=]
+   44 | #define __READ_ONCE(x)  (*(const volatile __unqual_scalar_typeof(x) *)&(x))
+      |                         ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/asm-generic/rwonce.h:50:9: note: in expansion of macro '__READ_ONCE'
+   50 |         __READ_ONCE(x);                                                 \
+      |         ^~~~~~~~~~~
+fs/overlayfs/ovl_entry.h:195:16: note: in expansion of macro 'READ_ONCE'
+  195 |         return READ_ONCE(oi->__upperdentry);
+      |                ^~~~~~~~~
+  'ovl_path_type': event 1
+  185 |         return inode ? OVL_I(inode)->oe : NULL;
+  'ovl_path_type': event 2
+
+Avoid this by allowing ovl_dentry_upper() to return NULL if d_inode() is
+NULL, as that means the problematic dereferencing can never be reached.
+Note that this fixes the over-eager compiler warning in an effort to
+being able to enable -Warray-bounds globally. There is no known
+behavioral bug here.
+
+Suggested-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/rtsn.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/overlayfs/util.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/renesas/rtsn.c b/drivers/net/ethernet/renesas/rtsn.c
-index 6b3f7fca8d15..05c4b6c8c9c3 100644
---- a/drivers/net/ethernet/renesas/rtsn.c
-+++ b/drivers/net/ethernet/renesas/rtsn.c
-@@ -1259,7 +1259,12 @@ static int rtsn_probe(struct platform_device *pdev)
- 	priv = netdev_priv(ndev);
- 	priv->pdev = pdev;
- 	priv->ndev = ndev;
-+
- 	priv->ptp_priv = rcar_gen4_ptp_alloc(pdev);
-+	if (!priv->ptp_priv) {
-+		ret = -ENOMEM;
-+		goto error_free;
-+	}
+diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+index 62a258c2b59cd..26f29a3e5ada0 100644
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -211,7 +211,9 @@ enum ovl_path_type ovl_path_real(struct dentry *dentry, struct path *path)
  
- 	spin_lock_init(&priv->lock);
- 	platform_set_drvdata(pdev, priv);
+ struct dentry *ovl_dentry_upper(struct dentry *dentry)
+ {
+-	return ovl_upperdentry_dereference(OVL_I(d_inode(dentry)));
++	struct inode *inode = d_inode(dentry);
++
++	return inode ? ovl_upperdentry_dereference(OVL_I(inode)) : NULL;
+ }
+ 
+ struct dentry *ovl_dentry_lower(struct dentry *dentry)
 -- 
-2.50.1
+2.39.5
 
 
 
