@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD0CB05F97
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC3AB0603A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:14:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 949361C27E30
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82E1D5036B0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8B22E7BC0;
-	Tue, 15 Jul 2025 13:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8502EF29B;
+	Tue, 15 Jul 2025 13:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6ueR+xP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAfRy5NX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD7A2566;
-	Tue, 15 Jul 2025 13:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CED22397BF;
+	Tue, 15 Jul 2025 13:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587291; cv=none; b=BTxl8EMEJgRIELPEt9ye28whVvSWGhfAJQue+6xerhPYBRe3h9pvOXyEDcqEOp5THG8biBxmJnkbjSjd8UMUGb8Nq1Hmvc+3WXPZYquF6PqwFblN6L7V2q8cZv5CkKsoA9vPHP8LErA9uMjgB2K5gMRkRNdfu1HTnzdBNGzWDzE=
+	t=1752587815; cv=none; b=X3bOVucqY6JE9eRCJAkDzPYq+2VXpyJsP9KFTv5e/ff6iSL+C6Qx2TTTFIaQw5+GXFTt53tpAPWkJR+KN9iczQ1PIYzZvUdjcohPnCyoTXyHPLmDShvTeXHBeYPELK3TAfJ5e5XQDVLF00x5PMGJDA9D41nbJbpcMiLrpDX758c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587291; c=relaxed/simple;
-	bh=csiWDixZoE3ByqRob/Ij0E+X485xagYKbBG3VGUCOmQ=;
+	s=arc-20240116; t=1752587815; c=relaxed/simple;
+	bh=jf/utHT9qhOjqJitvg1ws9asGMTmINU2Jt6d08bT/bQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEmBEyd5OZzmy78x64ovTq28nZHGCelxX6Nu/XypEdtKg0kfhh9Mdh+UhfR4BAToYuW949NfLGsbuDo3xarJGvwfwMiijGOGJU1AdNTDY169u+chjTM1UKPdXPauAiFZ6Ojkq212ch36ILylsolbgSAVQ9+Pb44zOX+R+GS1CxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6ueR+xP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F44CC4CEE3;
-	Tue, 15 Jul 2025 13:48:11 +0000 (UTC)
+	 MIME-Version; b=YiuOhqbI559bCcTxFKKmXksbSVciaZ1zDEj2fa/GqKECTSBWDJUzpaNrHNh16zaaplCm8cFhLtfqc4vmcXCzyQkojnEyY9MBooCS0AK0QZGB94a/8KudwUwmWIjXmLgG3EU7Apad9D4GkMyVufjytyufu+oTuMbK1znBmfO3ezg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAfRy5NX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9CCC4CEE3;
+	Tue, 15 Jul 2025 13:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587291;
-	bh=csiWDixZoE3ByqRob/Ij0E+X485xagYKbBG3VGUCOmQ=;
+	s=korg; t=1752587814;
+	bh=jf/utHT9qhOjqJitvg1ws9asGMTmINU2Jt6d08bT/bQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A6ueR+xPZrZVoYsfQAT4ENbSXP40nSI5SC+i8ccjC/5uBDOP9D6D3M3LAL8GL8e+S
-	 MuKH9urAPSYbgkFPrfaYatmT/WXqULfu5ylIl8PgU5DfVnLYlLF7EyBRW4mgGOoNk6
-	 zHDsAzJl2QeNTzJwtXXIp1DdinH64I5rQ8g4tExQ=
+	b=kAfRy5NX0W6ziqrjBky+ie8cOojHMt/qbcbFGpRsOg3uVrDD6IEY0Ddimxk2yKmWF
+	 gqDCyXKNGAKW3FYut33TJ8383A2dOpZMt6WY0oGqrQpiFO8j26AgQSYXdmOg6H8aC8
+	 DoEN5xq1OSWeggHf3khOw9BWOLDPdhjH2WO6YO4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Oleksandr Natalenko <oleksandr@natalenko.name>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 46/88] xhci: Allow RPM on the USB controller (1022:43f7) by default
+	Oleg Nesterov <oleg@redhat.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Maximilian Heyne <mheyne@amazon.de>
+Subject: [PATCH 5.10 153/208] fs/proc: do_task_stat: use __for_each_thread()
 Date: Tue, 15 Jul 2025 15:14:22 +0200
-Message-ID: <20250715130756.390364563@linuxfoundation.org>
+Message-ID: <20250715130817.039390912@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 28cbed496059fe1868203b76e9e0ef285733524d ]
+commit 7904e53ed5a20fc678c01d5d1b07ec486425bb6a upstream.
 
-Enable runtime PM by default for older AMD 1022:43f7 xHCI 1.1 host as it
-is proven to work.
-Driver enables runtime PM by default for newer xHCI 1.2 host.
+do/while_each_thread should be avoided when possible.
 
-Link: https://lore.kernel.org/all/12335218.O9o76ZdvQC@natalenko.name/
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240304054327.2564500-1-Basavaraj.Natikar@amd.com
+Link: https://lkml.kernel.org/r/20230909164501.GA11581@redhat.com
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7601df8031fd ("fs/proc: do_task_stat: use sig->stats_lock to gather the threads/children stats")
+Cc: stable@vger.kernel.org
+[ mheyne: adjusted context ]
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: cbc889ab0122 ("usb: xhci: quirk for data loss in ISOC transfers")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/proc/array.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index ca27bc15209c2..30b2188a3cf8a 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -190,8 +190,11 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 		xhci->quirks |= XHCI_RESET_ON_RESUME;
- 	}
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -512,18 +512,18 @@ static int do_task_stat(struct seq_file
+ 		cgtime = sig->cgtime;
  
--	if (pdev->vendor == PCI_VENDOR_ID_AMD)
-+	if (pdev->vendor == PCI_VENDOR_ID_AMD) {
- 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
-+		if (pdev->device == 0x43f7)
-+			xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
-+	}
+ 		if (whole) {
+-			struct task_struct *t = task;
++			struct task_struct *t;
  
- 	if ((pdev->vendor == PCI_VENDOR_ID_AMD) &&
- 		((pdev->device == PCI_DEVICE_ID_AMD_PROMONTORYA_4) ||
--- 
-2.39.5
-
+ 			min_flt = sig->min_flt;
+ 			maj_flt = sig->maj_flt;
+ 			gtime = sig->gtime;
+ 
+ 			rcu_read_lock();
+-			do {
++			__for_each_thread(sig, t) {
+ 				min_flt += t->min_flt;
+ 				maj_flt += t->maj_flt;
+ 				gtime += task_gtime(t);
+-			} while_each_thread(task, t);
++			}
+ 			rcu_read_unlock();
+ 
+ 			thread_group_cputime_adjusted(task, &utime, &stime);
 
 
 
