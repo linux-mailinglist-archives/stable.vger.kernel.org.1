@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-162164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A609FB05C0F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:27:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBE1B05B5A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFB113AE790
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:24:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7A11899F41
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD482E4249;
-	Tue, 15 Jul 2025 13:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7062E2F18;
+	Tue, 15 Jul 2025 13:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvDfbY0t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAaUJ4TK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812802E3B16;
-	Tue, 15 Jul 2025 13:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF09A2E2F0C;
+	Tue, 15 Jul 2025 13:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585843; cv=none; b=orhBsJ/VtGofKEC4dER7WmpuCQp6BImRl4yZs18JmQjJ4fpOCtT6JF2hLOuyfqz0ZlcI4OxSWg4nBFhUSULIp5RSZAVp7Bjohuz6eJ7euPV/goRnLaXo7E5uveDepe0JH6qMCBcmc8vt7zrlJ40rrgu7BoYNp0N+Q3PUoU9o96Y=
+	t=1752585589; cv=none; b=QWRN7ygHuwbsTGXM5NZDp+M3dncbVPZth8e9Xz8CbLTX/M7GrPcEaw3lsscayJd23jmoailsOTYMmYShn5iUkRwxnxthziRsrKleRwsgVgtmQGIc9H+joTdcVHBZw9WCTb6+DgG3mhzy8v+HEabHY707i9fjFyITCdy+i7smQgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585843; c=relaxed/simple;
-	bh=R3Q/ISxcRTxJcY8BjVz3zuaEynW9q//vMosG9UP/i2Q=;
+	s=arc-20240116; t=1752585589; c=relaxed/simple;
+	bh=5dWFUewCwh4cQ2rxDt8SC+2Idluw1wcXJQMvxUmUJyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pEdknLC/QdnrSGutzMhqu3jUQ9zxMHOLRi0jDrJs+oo2kTlHGTh3KqYy6T9M6hL7Ix3dUEthExVWFNkzfZDAtVA87BxzJNONdRFPAox81OkTyPYASMZHHqav4ywBy+3oQLmqiLApaGG0pIiFojWcFgCe8kmBmN04YqclSYN+Zzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvDfbY0t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF31C4AF09;
-	Tue, 15 Jul 2025 13:24:02 +0000 (UTC)
+	 MIME-Version; b=CMRG9+AxWPZQBSFd4TiAIOHmP8h/oUQNjBqz9xbL69woh9TrKghpUNX1fdL13KaxOzQsBZIJtpB7x0DQR/7o8ZRl85K4NOvrgX/hxT6YNHfpNX8/N3AOoSa3YyzljyNOw+4frGCQL/jVpI+goVauhWtRmre9Sbwg7dAzngd7E6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAaUJ4TK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21297C4CEE3;
+	Tue, 15 Jul 2025 13:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585843;
-	bh=R3Q/ISxcRTxJcY8BjVz3zuaEynW9q//vMosG9UP/i2Q=;
+	s=korg; t=1752585588;
+	bh=5dWFUewCwh4cQ2rxDt8SC+2Idluw1wcXJQMvxUmUJyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MvDfbY0tCeRAlgTnWm7CZ83MU5NzLWTl0B6BUgnqvg/c8Ok740cYr8tkduUDr9Lze
-	 W4poxm+yBcMPQ/ZOoPPn25CmzrYz9RXrM6DrEJdD9/nlYt0DE2w6KuA3MTRRxX+DX0
-	 p3VJM92ytHNLbOkWm0vTR1W61bhl0FwJaAj2tjLI=
+	b=ZAaUJ4TK7WcHEeFwUauzLyjisvDWMI1V96t7R6gp5/fED4a2BzP16WdZse/jgBTcb
+	 OrAC/hSDXyarGLBzrLAjYzxoXg1Q52C9DGswy1TAktp74upj0byhry1jQFVJH9660A
+	 3dczEdRCE6jyyofKyRtsjo1nN8VjC7h4v6r0XUQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
-	Hailong Liu <hailong.liu@oppo.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"zhangpeng.00@bytedance.com" <zhangpeng.00@bytedance.com>,
-	Steve Kang <Steve.Kang@unisoc.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 028/109] maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
-Date: Tue, 15 Jul 2025 15:12:44 +0200
-Message-ID: <20250715130800.010231825@linuxfoundation.org>
+	Vitaly Chikunov <vt@altlinux.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Jann Horn <jannh@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 6.12 097/163] x86/mm: Disable hugetlb page table sharing on 32-bit
+Date: Tue, 15 Jul 2025 15:12:45 +0200
+Message-ID: <20250715130812.758066100@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Jann Horn <jannh@google.com>
 
-commit fba46a5d83ca8decb338722fb4899026d8d9ead2 upstream.
+commit 76303ee8d54bff6d9a6d55997acd88a6c2ba63cf upstream.
 
-Temporarily clear the preallocation flag when explicitly requesting
-allocations.  Pre-existing allocations are already counted against the
-request through mas_node_count_gfp(), but the allocations will not happen
-if the MA_STATE_PREALLOC flag is set.  This flag is meant to avoid
-re-allocating in bulk allocation mode, and to detect issues with
-preallocation calculations.
+Only select ARCH_WANT_HUGE_PMD_SHARE on 64-bit x86.
+Page table sharing requires at least three levels because it involves
+shared references to PMD tables; 32-bit x86 has either two-level paging
+(without PAE) or three-level paging (with PAE), but even with
+three-level paging, having a dedicated PGD entry for hugetlb is only
+barely possible (because the PGD only has four entries), and it seems
+unlikely anyone's actually using PMD sharing on 32-bit.
 
-The MA_STATE_PREALLOC flag should also always be set on zero allocations
-so that detection of underflow allocations will print a WARN_ON() during
-consumption.
+Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
+has 2-level paging) became particularly problematic after commit
+59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
+since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
+the `pt_share_count` (for PMDs) share the same union storage - and with
+2-level paging, PMDs are PGDs.
 
-User visible effect of this flaw is a WARN_ON() followed by a null pointer
-dereference when subsequent requests for larger number of nodes is
-ignored, such as the vma merge retry in mmap_region() caused by drivers
-altering the vma flags (which happens in v6.6, at least)
+(For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
+configuration of page tables such that it is never enabled with 2-level
+paging.)
 
-Link: https://lkml.kernel.org/r/20250616184521.3382795-3-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reported-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Reported-by: Hailong Liu <hailong.liu@oppo.com>
-Link: https://lore.kernel.org/all/1652f7eb-a51b-4fee-8058-c73af63bacd1@oppo.com/
-Link: https://lore.kernel.org/all/20250428184058.1416274-1-Liam.Howlett@oracle.com/
-Link: https://lore.kernel.org/all/20250429014754.1479118-1-Liam.Howlett@oracle.com/
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Hailong Liu <hailong.liu@oppo.com>
-Cc: zhangpeng.00@bytedance.com <zhangpeng.00@bytedance.com>
-Cc: Steve Kang <Steve.Kang@unisoc.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
+Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
+Reported-by: Vitaly Chikunov <vt@altlinux.org>
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Tested-by: Vitaly Chikunov <vt@altlinux.org>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250702-x86-2level-hugetlb-v2-1-1a98096edf92%40google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/maple_tree.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/x86/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5497,7 +5497,7 @@ int mas_preallocate(struct ma_state *mas
- 	/* At this point, we are at the leaf node that needs to be altered. */
- 	/* Exact fit, no nodes needed. */
- 	if (wr_mas.r_min == mas->index && wr_mas.r_max == mas->last)
--		return 0;
-+		goto set_flag;
- 
- 	mas_wr_end_piv(&wr_mas);
- 	node_size = mas_wr_new_end(&wr_mas);
-@@ -5506,10 +5506,10 @@ int mas_preallocate(struct ma_state *mas
- 	if (node_size == wr_mas.node_end) {
- 		/* reuse node */
- 		if (!mt_in_rcu(mas->tree))
--			return 0;
-+			goto set_flag;
- 		/* shifting boundary */
- 		if (wr_mas.offset_end - mas->offset == 1)
--			return 0;
-+			goto set_flag;
- 	}
- 
- 	if (node_size >= mt_slots[wr_mas.type]) {
-@@ -5528,10 +5528,13 @@ int mas_preallocate(struct ma_state *mas
- 
- 	/* node store, slot store needs one node */
- ask_now:
-+	mas->mas_flags &= ~MA_STATE_PREALLOC;
- 	mas_node_count_gfp(mas, request, gfp);
--	mas->mas_flags |= MA_STATE_PREALLOC;
--	if (likely(!mas_is_err(mas)))
-+	if (likely(!mas_is_err(mas))) {
-+set_flag:
-+		mas->mas_flags |= MA_STATE_PREALLOC;
- 		return 0;
-+	}
- 
- 	mas_set_alloc_req(mas, 0);
- 	ret = xa_err(mas->node);
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -137,7 +137,7 @@ config X86
+ 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+ 	select ARCH_WANTS_NO_INSTR
+ 	select ARCH_WANT_GENERAL_HUGETLB
+-	select ARCH_WANT_HUGE_PMD_SHARE
++	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+ 	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if X86_64
+ 	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
 
 
 
