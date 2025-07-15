@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50D1B05D4E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64025B05EAE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92F533B51B5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A396581C81
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428312E3364;
-	Tue, 15 Jul 2025 13:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE412E7634;
+	Tue, 15 Jul 2025 13:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VD3HV5Rk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpOBzyaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F51BA42;
-	Tue, 15 Jul 2025 13:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADFF2E7631;
+	Tue, 15 Jul 2025 13:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586272; cv=none; b=HtVQrTMQ7M7ONhmqBNEkBiRSYFD1i709abQ/UnJle7tCtgGzXOIE0mcZHknxRtKfUc68LGDuwjt0HYKa+Hu6Zy1h1Gp/QSOsaaeVfyZuRa2iEaCoAuYJEnFKS/K4JScrKD6RybQZdgMpLp4vWFtBPevGgRMS2r5RYEZfGOCBkt4=
+	t=1752587071; cv=none; b=hzQmYu3AajKN6JFlPo5q4zIYskcxoss5ZPjR+lBnffqaXD60hIWH7OrVFw+PMNRjNGvCWX+YOsAvCiumW5GqqbhRfPV1cFOD5vmaA+Mjvg+zpfBdJD5kER9zpJDMVfxgnCxCi1gur0ufJ3MKGHT6hDId+FJFzyZJUexSiIs+6r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586272; c=relaxed/simple;
-	bh=+9f1wb7kYXtSgTHvWheNvo1wXl5+amyRHhG8gVnSmjY=;
+	s=arc-20240116; t=1752587071; c=relaxed/simple;
+	bh=1h/oNmcjHKW5bvBOvKNpWHwF2DexvIib41Eb59QBGu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iDlfma98B7Qn9YHiefF9R3KAJ9LH7W2fz9Z4K85aGGzVGu6jjpsmyPcpFlUhHmx5oE7KDCU09dStj1kYiv8p6qqc90MIQMgbSoq7mz+jXtOIWhDYXLW/oR0REtYx4fYGftfpSGlvYD8fvea4fSG+9gWs1a9+J0h/icHmgfdidnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VD3HV5Rk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD3AC4CEE3;
-	Tue, 15 Jul 2025 13:31:11 +0000 (UTC)
+	 MIME-Version; b=GlQR1IS/I644WIb6PDR513ZzTllj6/s4JzJCVLsta/o0LZIFolz4v62VOle8u3DGeyHOr1o1TYaxYurYCTGkPMcfuLFH1w05eePPZtz82r/YG0wTJ86XJNCJ1kBz3VvWOaBadq27uPyPd7h3q6UfwWNXLS8KWDaO/QINWIR9Ipg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpOBzyaW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A725EC4CEE3;
+	Tue, 15 Jul 2025 13:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586271;
-	bh=+9f1wb7kYXtSgTHvWheNvo1wXl5+amyRHhG8gVnSmjY=;
+	s=korg; t=1752587071;
+	bh=1h/oNmcjHKW5bvBOvKNpWHwF2DexvIib41Eb59QBGu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VD3HV5Rk1XJREPJTzJk1/wV3XCKyPWZw36atKvdFqVoigp2duahKalHFIQTBjOU1q
-	 wScUzAct2zdR6YgX1UyK6aT6M/gNqXDn6hJ7OdLR+Lfog+d8IAeNvEXzdnkI1IrZWA
-	 vOwz9DYftGjcIb7LNMl2+ItStcsoAzd80vNfvzcY=
+	b=xpOBzyaW8iBtKtEsfzpJUd77DGs+0JgCEefk6rYM0Vo3Ltsnzs8mmR6GuaXeDq2Y9
+	 lJlvX5AbXGCf/TOsAciCvR1j6k0ukfUGGnDAKKL/GPKU9WOI8jrzS5gFeYgcyq3L5Y
+	 Ck0t25p9R8s1LLWiOt6PrDE9J2H9boUutUDYVrqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaowei Li <xiaowei.li@simcom.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 69/77] net: usb: qmi_wwan: add SIMCom 8230C composition
-Date: Tue, 15 Jul 2025 15:14:08 +0200
-Message-ID: <20250715130754.495614680@linuxfoundation.org>
+Subject: [PATCH 6.15 154/192] net: phy: microchip: Use genphy_soft_reset() to purge stale LPA bits
+Date: Tue, 15 Jul 2025 15:14:09 +0200
+Message-ID: <20250715130821.094989679@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaowei Li <xiaowei.li@simcom.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 0b39b055b5b48cbbdf5746a1ca6e3f6b0221e537 ]
+[ Upstream commit b4517c363e0e005c7f81ae3be199eec68e87f122 ]
 
-Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
-0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1e0e ProdID=9071 Rev= 5.15
-S:  Manufacturer=SIMCOM
-S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
-S:  SerialNumber=0123456789ABCDEF
-C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=none
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Enable .soft_reset for the LAN88xx PHY driver by assigning
+genphy_soft_reset() to ensure that the phylib core performs a proper
+soft reset during reconfiguration.
 
-Signed-off-by: Xiaowei Li <xiaowei.li@simcom.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://patch.msgid.link/tencent_21D781FAA4969FEACA6ABB460362B52C9409@qq.com
+Previously, the driver left .soft_reset unimplemented, so calls to
+phy_init_hw() (e.g., from lan88xx_link_change_notify()) did not fully
+reset the PHY. As a result, stale contents in the Link Partner Ability
+(LPA) register could persist, causing the PHY to incorrectly report
+that the link partner advertised autonegotiation even when it did not.
+
+Using genphy_soft_reset() guarantees a clean reset of the PHY and
+corrects the false autoneg reporting in these scenarios.
+
+Fixes: ccb989e4d1ef ("net: phy: microchip: Reset LAN88xx PHY to ensure clean link state on LAN7800/7850")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250709130753.3994461-2-o.rempel@pengutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
+ drivers/net/phy/microchip.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 600a190f22128..d21d23f10d422 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1421,6 +1421,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x03f0, 0x9d1d, 1)},	/* HP lt4120 Snapdragon X5 LTE */
- 	{QMI_FIXED_INTF(0x22de, 0x9061, 3)},	/* WeTelecom WPD-600N */
- 	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9001, 5)},	/* SIMCom 7100E, 7230E, 7600E ++ */
-+	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9071, 3)},	/* SIMCom 8230C ++ */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0121, 4)},	/* Quectel EC21 Mini PCIe */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
+diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
+index 93de88c1c8fd5..5d1ca285d95ba 100644
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -486,6 +486,7 @@ static struct phy_driver microchip_phy_driver[] = {
+ 	.config_init	= lan88xx_config_init,
+ 	.config_aneg	= lan88xx_config_aneg,
+ 	.link_change_notify = lan88xx_link_change_notify,
++	.soft_reset	= genphy_soft_reset,
+ 
+ 	/* Interrupt handling is broken, do not define related
+ 	 * functions to force polling.
 -- 
 2.39.5
 
