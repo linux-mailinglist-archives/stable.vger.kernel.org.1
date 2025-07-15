@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-163023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9E0B06680
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 21:08:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143C1B06749
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 21:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B6B74E3136
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 19:08:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 136004E0A60
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 19:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE082BE7DD;
-	Tue, 15 Jul 2025 19:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3AE926FA4C;
+	Tue, 15 Jul 2025 19:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSIMXftV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rdodJGVK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B48529B20C;
-	Tue, 15 Jul 2025 19:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F357B672;
+	Tue, 15 Jul 2025 19:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752606504; cv=none; b=mjUvhmGxIAF0S9f7fACaGx6XryC/Pcryx9AsbWZ5NLBRIBehjYf3gu/dbmR6YHb/PAHp+qQWxXxpy3g8BuXOnkVVAXhHH9tDmtXHHSjBkmNfBHgpl2GZepY0Lgt8bF5UAJ80JAYQRcH18aXwxHSviXpwwxTZXbTUddUxEYJQRAU=
+	t=1752609298; cv=none; b=dcG12RVFzVArB/FnK/Bl8SUfY23tbO3p2nsevu0JKx5cOBdUiRjwT7J7kMVGUC9RB0MEMG/HZA6RR4G6FX03HM+Q6INL+XNBN/l+BLyOpKo77iD35Dm2fDY4NZgF0l9vXnM60IM7v2BoF9sUinvww2/Png97YWt2x+CbLUTL+W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752606504; c=relaxed/simple;
-	bh=C6NSJLdCxzeBZjFXiADceoqSo7HrYuwno6HE5J6teGU=;
+	s=arc-20240116; t=1752609298; c=relaxed/simple;
+	bh=QRZp+4I8maMQPrmjNoRyUwwSYnT+bKiX3aX0Y433DVg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HPdh8fJb884xWWwS4+sCV9BJ9/SFMX4aTxR5LSM037Z9jTNSkyZeNQ2B9nojhgPPPcr6WkGrO3HnlDScFNA6rNppuU1Zf8g78UJPzKq/JHI/Q+XTc2rmnGNcHiCWqjUKdrYexfXk95Ebjh7OflE+qEmZeh84jCxEZkvATVP5tbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSIMXftV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C68C4CEF5;
-	Tue, 15 Jul 2025 19:08:23 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ACroH+nZYqURNkESZV6wntvwqc77nrehRJl7DYH9i9TQhzYDK/YN7TZvexWDYfry3VD1tS+cmAm4Cei2ErfLDU9Oayqgd0SNaMmp+y00QXiZot+nSQ/Ezq7zaeikTQVZzhaEliE8X1W3B/9BlcScSN5jU0BuvHjWP5d9exqtZ0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rdodJGVK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8BCC4CEE3;
+	Tue, 15 Jul 2025 19:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752606503;
-	bh=C6NSJLdCxzeBZjFXiADceoqSo7HrYuwno6HE5J6teGU=;
+	s=k20201202; t=1752609298;
+	bh=QRZp+4I8maMQPrmjNoRyUwwSYnT+bKiX3aX0Y433DVg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KSIMXftV6MD0i82lGLIpdJsXDyWXf/UfNEcd0Nqe3lSlgDY2q/RYm/f01yvpkfm8R
-	 CzxPyjdMrJu7BES1mJx4yFYcIQC0NtuLjzi/96zdUTXQY26tOxVlIezQzlxuQ0x9uW
-	 6Eky+nAVoZZSDzyb5B6CZhAZP3lXYDZvE96QElBPaNzG6fWc3wSVigMitUVokn4WJj
-	 ticixJU3fEmeVPNbEs2oX1QUV1qIF5itKSJLYmoBS6HxlzenLuu+GPs52EmXTX1lWJ
-	 vJ/Qe8SaUge1+LkwXZYkK+fK2pgvLNef9cjklwC/MWQMDBe5ByiC5pSNHJ35sI47v3
-	 /Ev1DC29cM2LQ==
-Date: Tue, 15 Jul 2025 15:06:43 -0400
+	b=rdodJGVK4uo4adZp/P3a8MMJi67HL9sr270p92nS9sHZLLEaH2+WesXl7ZBUTGsXo
+	 zB3IFq62diBa7eefr9dVtCybrbSq2VCRA0O6EuJILOPWtQiokuPGRhH0ZngMQXM17Z
+	 23LQ05CvXYGkdBWuxHV4kVZdrTFiKfDPbiOGpu7Dzf4xdt7dNyRxaUmFbYUJag7htQ
+	 1nfuFFSmUaglJsi7So1gUYSiGsSnzL4nHNjx6LJcNwDY9GA316H9rmhxTND1HQgGgX
+	 1SixH2X7GlVGAW0J4meIznLjmjEKUi6WSZrTkRp6eaMKmZXZCs9C2SqRXGQcZk8GgG
+	 L5c0MhCdR4m3g==
+Date: Tue, 15 Jul 2025 15:12:52 -0400
 From: Sasha Levin <sashal@kernel.org>
 To: Kurt Borja <kuurtb@gmail.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
 	patches@lists.linux.dev, Mark Pearson <mpearson-lenovo@squebb.ca>,
 	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH 6.1 53/88] platform/x86: think-lmi: Fix sysfs group
+Subject: Re: [PATCH 5.15 53/77] platform/x86: think-lmi: Fix sysfs group
  cleanup
-Message-ID: <aHamw2kyYlWv3Vnt@lappy>
-References: <20250715130754.497128560@linuxfoundation.org>
- <20250715130756.686654974@linuxfoundation.org>
- <DBCUFWL772Z5.2MUF08I4D6AH2@gmail.com>
+Message-ID: <aHaoNDFKsoogzNge@lappy>
+References: <20250715130751.668489382@linuxfoundation.org>
+ <20250715130753.855799519@linuxfoundation.org>
+ <DBCUJ1QHGTKA.3H4TW1FB3FYJC@gmail.com>
+ <aHamVeuNznVqMb2x@lappy>
+ <DBCVGAAFB8Q3.21ZP9FUITWDI9@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,99 +64,98 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <DBCUFWL772Z5.2MUF08I4D6AH2@gmail.com>
+In-Reply-To: <DBCVGAAFB8Q3.21ZP9FUITWDI9@gmail.com>
 
-On Tue, Jul 15, 2025 at 03:34:51PM -0300, Kurt Borja wrote:
->Hi Greg,
+On Tue, Jul 15, 2025 at 04:22:22PM -0300, Kurt Borja wrote:
+>Hi Sasha,
 >
->On Tue Jul 15, 2025 at 10:14 AM -03, Greg Kroah-Hartman wrote:
->> 6.1-stable review patch.  If anyone has any objections, please let me know.
+>On Tue Jul 15, 2025 at 4:04 PM -03, Sasha Levin wrote:
+>> On Tue, Jul 15, 2025 at 03:38:58PM -0300, Kurt Borja wrote:
+>>>Hi Greg,
+>>>
+>>>On Tue Jul 15, 2025 at 10:13 AM -03, Greg Kroah-Hartman wrote:
+>>>> 5.15-stable review patch.  If anyone has any objections, please let me know.
+>>>>
+>>>> ------------------
+>>>>
+>>>> From: Kurt Borja <kuurtb@gmail.com>
+>>>>
+>>>> [ Upstream commit 4f30f946f27b7f044cf8f3f1f353dee1dcd3517a ]
+>>>>
+>>>> Many error paths in tlmi_sysfs_init() lead to sysfs groups being removed
+>>>> when they were not even created.
+>>>>
+>>>> Fix this by letting the kobject core manage these groups through their
+>>>> kobj_type's defult_groups.
+>>>>
+>>>> Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
+>>>> Cc: stable@vger.kernel.org
+>>>> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+>>>> Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+>>>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+>>>> Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-3-ce4f81c9c481@gmail.com
+>>>> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+>>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>>> ---
+>>>>  drivers/platform/x86/think-lmi.c | 35 +++++++++-----------------------
+>>>>  1 file changed, 10 insertions(+), 25 deletions(-)
+>>>>
+>>>> diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
+>>>> index 36ff64a7b6847..cc46aa5f1da2c 100644
+>>>> --- a/drivers/platform/x86/think-lmi.c
+>>>> +++ b/drivers/platform/x86/think-lmi.c
+>>>> @@ -491,6 +491,7 @@ static struct attribute *auth_attrs[] = {
+>>>>  static const struct attribute_group auth_attr_group = {
+>>>>  	.attrs = auth_attrs,
+>>>>  };
+>>>> +__ATTRIBUTE_GROUPS(auth_attr);
+>>>>
+>>>>  /* ---- Attributes sysfs --------------------------------------------------------- */
+>>>>  static ssize_t display_name_show(struct kobject *kobj, struct kobj_attribute *attr,
+>>>> @@ -643,6 +644,7 @@ static const struct attribute_group tlmi_attr_group = {
+>>>>  	.is_visible = attr_is_visible,
+>>>>  	.attrs = tlmi_attrs,
+>>>>  };
+>>>> +__ATTRIBUTE_GROUPS(tlmi_attr);
+>>>>
+>>>>  static ssize_t tlmi_attr_show(struct kobject *kobj, struct attribute *attr,
+>>>>  				    char *buf)
+>>>> @@ -688,12 +690,14 @@ static void tlmi_pwd_setting_release(struct kobject *kobj)
+>>>>
+>>>>  static struct kobj_type tlmi_attr_setting_ktype = {
+>>>>  	.release        = &tlmi_attr_setting_release,
+>>>> -	.sysfs_ops	= &tlmi_kobj_sysfs_ops,
+>>>> +	.sysfs_ops	= &kobj_sysfs_ops,
+>>>> +	.default_groups = tlmi_attr_groups,
+>>>
+>>>I did *not* author this change and it utterly *breaks* the driver.
+>>>
+>>>This patch should be dropped ASAP.
 >>
->> ------------------
->>
->> From: Zhang Rui <rui.zhang@intel.com>
->>
->> [ Upstream commit 4f30f946f27b7f044cf8f3f1f353dee1dcd3517a ]
->>
->> Many error paths in tlmi_sysfs_init() lead to sysfs groups being removed
->> when they were not even created.
->>
->> Fix this by letting the kobject core manage these groups through their
->> kobj_type's defult_groups.
->>
->> Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
->> Cc: stable@vger.kernel.org
->> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
->> Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
->> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
->> Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-3-ce4f81c9c481@gmail.com
->> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  drivers/powercap/intel_rapl_common.c | 22 ++++++++++++++++++++--
->>  1 file changed, 20 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
->> index 26d00b1853b42..02787682b395e 100644
->> --- a/drivers/powercap/intel_rapl_common.c
->> +++ b/drivers/powercap/intel_rapl_common.c
->> @@ -21,6 +21,7 @@
->>  #include <linux/intel_rapl.h>
->>  #include <linux/processor.h>
->>  #include <linux/platform_device.h>
->> +#include <linux/string_helpers.h>
->>
->>  #include <asm/iosf_mbi.h>
->>  #include <asm/cpu_device_id.h>
->> @@ -227,17 +228,34 @@ static int find_nr_power_limit(struct rapl_domain *rd)
->>  static int set_domain_enable(struct powercap_zone *power_zone, bool mode)
->>  {
->>  	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
->> +	u64 val;
->> +	int ret;
->>
->>  	if (rd->state & DOMAIN_STATE_BIOS_LOCKED)
->>  		return -EACCES;
->>
->>  	cpus_read_lock();
->> -	rapl_write_data_raw(rd, PL1_ENABLE, mode);
->> +	ret = rapl_write_data_raw(rd, PL1_ENABLE, mode);
->> +	if (ret)
->> +		goto end;
->> +
->> +	ret = rapl_read_data_raw(rd, PL1_ENABLE, true, &val);
->> +	if (ret)
->> +		goto end;
->> +
->> +	if (mode != val) {
->> +		pr_debug("%s cannot be %s\n", power_zone->name,
->> +			 str_enabled_disabled(mode));
->> +		goto end;
->> +	}
->> +
->>  	if (rapl_defaults->set_floor_freq)
->>  		rapl_defaults->set_floor_freq(rd, mode);
->> +
->> +end:
->>  	cpus_read_unlock();
->>
->> -	return 0;
->> +	return ret;
->>  }
->>
->>  static int get_domain_enable(struct powercap_zone *power_zone, bool *mode)
+>> Right sorry about that - I accidently left that extra line of context
+>> you've pointed out. Dropped now along with the other patch you've
+>> pointed out.
 >
->This diff has no relation to commit 4f30f946f27b ("platform/x86:
->think-lmi: Fix sysfs group cleanup"), which the commit message claims.
+>Thank you for the quick response!
 >
->It should be removed ASAP. Thanks!
+>May I suggest informing authors and maintainers about manual conflict
+>resolution in the email's subject?
+>
+>This resolution was not acked by anyone and I don't appreciate that.
 
-Dropped, thanks!
+In general we'd note a manual resolution and wait for an ack if any
+significant changes were made to a commit.
 
-This was supposed to be a backport of 964209202ebe ("powercap:
-intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be
-changed").
+In this case I messed up the context when resolving the conflict, and
+didn't consider it meaningful.
 
+However, yes, just noting that along with my signoff wouldn't have hurt.
+I'll start doing that more often.
+
+>In the past couple of weeks and I got like 50 stable related emails. I
+>simply cannot check each and every one for things like this.
+
+Is there something we can do on our end to make it more managable?
 
 -- 
 Thanks,
