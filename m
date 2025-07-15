@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-162197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A56B05C42
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:29:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EBC9B05CA3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:34:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2DAF16A466
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F1A11C24C85
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC68263F52;
-	Tue, 15 Jul 2025 13:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3FD2EA163;
+	Tue, 15 Jul 2025 13:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7zgDED8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOgB+jTg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8C62E49AE;
-	Tue, 15 Jul 2025 13:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F722E7F12;
+	Tue, 15 Jul 2025 13:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585930; cv=none; b=nQX0bp2GXTeK++bsuFxSdOQb8IlAPoTjqL+Y8SbXKSlbsPzOD3uKCXlnYN+Xo1HCglUqzd/DkcvETxiXwNq2nE5mUa2s4sUUJFHg8+W3ZY3ePUHd5u5ST5JOykAs3dk5wJfzPbgOJP6T8sQ4oogZ62pece6Vq8LSqgrvWKYru+M=
+	t=1752586105; cv=none; b=FdHA9S0fO4hTfkeUFilIxg01McME/2NNL+EuPxZepyzXGIUP15J8Ap357AvRAS4kSD0R0rB0D0MptkftI1vqo0dq2dCUpGK0W+wO4A3QG6zOMv5voBZ8rTRBwxVhDN9HLod488j1yFwdj6zPVWNeAjGGNTt/JVQhk8g4WGzLZTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585930; c=relaxed/simple;
-	bh=FJSd5ZW6j1Km+LxB5v4Ye/HApt+w+afUT9CPI+Jv/a8=;
+	s=arc-20240116; t=1752586105; c=relaxed/simple;
+	bh=WBRuWRVABOBT2njLvKxm5d1Wmg+J3rPTxWpr/k3EGKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YAXA3bb15ac5ebtwV1Jqg3Ww2Imv+fDvaqVJgA4d3pNAoRudIb3rIdkqyvWnE3O/0EjabGaniiNe/Ks4YjUmGOhAEVTKiW/PlT0SigyVY6Exc8EWAk9qjG4pYHfDFX5dvqq4g05m2ZKrxpTb5C2s/7nhPS6QlCCNkAIw7yglspY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7zgDED8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA47C4CEE3;
-	Tue, 15 Jul 2025 13:25:30 +0000 (UTC)
+	 MIME-Version; b=EQFOmCe26MfXSncpvHF4zBzarYcgKgpC+gZ1u9cNmrrZd5onpyHEK9Lwv7W1rt26C2JhssDoDmlnQmj7SPf0lhRMASSBekgIEBrujpS1QcRmUn2EnPoQDUBLj3G1jqjny3DT4ELotVkrA7RDBIbeQHbWBX+cidEmVPOkn/dB3xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOgB+jTg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94DBC4CEE3;
+	Tue, 15 Jul 2025 13:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585930;
-	bh=FJSd5ZW6j1Km+LxB5v4Ye/HApt+w+afUT9CPI+Jv/a8=;
+	s=korg; t=1752586105;
+	bh=WBRuWRVABOBT2njLvKxm5d1Wmg+J3rPTxWpr/k3EGKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7zgDED8Fwc+0Vf9kN1HFRcZQb6HUySkXKBUelpUJ7Jdx+ozTCHZNfKiIyzEZ7JUW
-	 gybmdTVcqtqX6NcHuu9chL8/1Xh4cJi6jRKWVobYfbNAfQFEbcLHYN3mEo2WxwgOEN
-	 3s3EH/PSwbsjgftxgZVis1vdzOVqzrZRzvLR5rMk=
+	b=oOgB+jTg+eqQUcdYpCUXtKCZUye5A8eXTLLtd+ajZulMLqHvWPDnr1Lk76dlWm+8o
+	 M5N7LH5GKojTArjPQPLsBtvgm9VbIpMZVc4Si2tlKHVgO9qWOd3G2AjT2wNJ9pXm1O
+	 prX+3R7PvDw8n8D9jBTAH0Z0SPD+1Ydv7fl9S5VY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Stefan Metzmacher <metze@samba.org>
-Subject: [PATCH 6.6 061/109] smb: server: make use of rdma_destroy_qp()
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Gurucharan G <gurucharanx.g@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH 5.15 18/77] ice: safer stats processing
 Date: Tue, 15 Jul 2025 15:13:17 +0200
-Message-ID: <20250715130801.328374722@linuxfoundation.org>
+Message-ID: <20250715130752.429393465@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-commit 0c2b53997e8f5e2ec9e0fbd17ac0436466b65488 upstream.
+commit 1a0f25a52e08b1f67510cabbb44888d2b3c46359 upstream.
 
-The qp is created by rdma_create_qp() as t->cm_id->qp
-and t->qp is just a shortcut.
+The driver was zeroing live stats that could be fetched by
+ndo_get_stats64 at any time. This could result in inconsistent
+statistics, and the telltale sign was when reading stats frequently from
+/proc/net/dev, the stats would go backwards.
 
-rdma_destroy_qp() also calls ib_destroy_qp(cm_id->qp) internally,
-but it is protected by a mutex, clears the cm_id and also calls
-trace_cm_qp_destroy().
+Fix by collecting stats into a local, and delaying when we write to the
+structure so it's not incremental.
 
-This should make the tracing more useful as both
-rdma_create_qp() and rdma_destroy_qp() are traces and it makes
-the code look more sane as functions from the same layer are used
-for the specific qp object.
-
-trace-cmd stream -e rdma_cma:cm_qp_create -e rdma_cma:cm_qp_destroy
-shows this now while doing a mount and unmount from a client:
-
-  <...>-80   [002] 378.514182: cm_qp_create:  cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 pd.id=0 qp_type=RC send_wr=867 recv_wr=255 qp_num=1 rc=0
-  <...>-6283 [001] 381.686172: cm_qp_destroy: cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 qp_num=1
-
-Before we only saw the first line.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <stfrench@microsoft.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Tested-by: Gurucharan G <gurucharanx.g@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Closes: https://lore.kernel.org/intel-wired-lan/CAP8M2pGttT4JBjt+i4GJkxy7yERbqWJ5a8R14HzoonTLByc2Cw@mail.gmail.com
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_rdma.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c |   29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -426,7 +426,8 @@ static void free_transport(struct smb_di
- 	if (t->qp) {
- 		ib_drain_qp(t->qp);
- 		ib_mr_pool_destroy(t->qp, &t->qp->rdma_mrs);
--		ib_destroy_qp(t->qp);
-+		t->qp = NULL;
-+		rdma_destroy_qp(t->cm_id);
- 	}
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -5731,14 +5731,15 @@ ice_fetch_u64_stats_per_ring(struct ice_
+ /**
+  * ice_update_vsi_tx_ring_stats - Update VSI Tx ring stats counters
+  * @vsi: the VSI to be updated
++ * @vsi_stats: the stats struct to be updated
+  * @rings: rings to work on
+  * @count: number of rings
+  */
+ static void
+-ice_update_vsi_tx_ring_stats(struct ice_vsi *vsi, struct ice_ring **rings,
+-			     u16 count)
++ice_update_vsi_tx_ring_stats(struct ice_vsi *vsi,
++			     struct rtnl_link_stats64 *vsi_stats,
++			     struct ice_ring **rings, u16 count)
+ {
+-	struct rtnl_link_stats64 *vsi_stats = &vsi->net_stats;
+ 	u16 i;
  
- 	ksmbd_debug(RDMA, "drain the reassembly queue\n");
-@@ -1934,8 +1935,8 @@ static int smb_direct_create_qpair(struc
- 	return 0;
- err:
- 	if (t->qp) {
--		ib_destroy_qp(t->qp);
- 		t->qp = NULL;
-+		rdma_destroy_qp(t->cm_id);
- 	}
- 	if (t->recv_cq) {
- 		ib_destroy_cq(t->recv_cq);
+ 	for (i = 0; i < count; i++) {
+@@ -5761,15 +5762,13 @@ ice_update_vsi_tx_ring_stats(struct ice_
+  */
+ static void ice_update_vsi_ring_stats(struct ice_vsi *vsi)
+ {
+-	struct rtnl_link_stats64 *vsi_stats = &vsi->net_stats;
++	struct rtnl_link_stats64 *vsi_stats;
+ 	u64 pkts, bytes;
+ 	int i;
+ 
+-	/* reset netdev stats */
+-	vsi_stats->tx_packets = 0;
+-	vsi_stats->tx_bytes = 0;
+-	vsi_stats->rx_packets = 0;
+-	vsi_stats->rx_bytes = 0;
++	vsi_stats = kzalloc(sizeof(*vsi_stats), GFP_ATOMIC);
++	if (!vsi_stats)
++		return;
+ 
+ 	/* reset non-netdev (extended) stats */
+ 	vsi->tx_restart = 0;
+@@ -5781,7 +5780,8 @@ static void ice_update_vsi_ring_stats(st
+ 	rcu_read_lock();
+ 
+ 	/* update Tx rings counters */
+-	ice_update_vsi_tx_ring_stats(vsi, vsi->tx_rings, vsi->num_txq);
++	ice_update_vsi_tx_ring_stats(vsi, vsi_stats, vsi->tx_rings,
++				     vsi->num_txq);
+ 
+ 	/* update Rx rings counters */
+ 	ice_for_each_rxq(vsi, i) {
+@@ -5796,10 +5796,17 @@ static void ice_update_vsi_ring_stats(st
+ 
+ 	/* update XDP Tx rings counters */
+ 	if (ice_is_xdp_ena_vsi(vsi))
+-		ice_update_vsi_tx_ring_stats(vsi, vsi->xdp_rings,
++		ice_update_vsi_tx_ring_stats(vsi, vsi_stats, vsi->xdp_rings,
+ 					     vsi->num_xdp_txq);
+ 
+ 	rcu_read_unlock();
++
++	vsi->net_stats.tx_packets = vsi_stats->tx_packets;
++	vsi->net_stats.tx_bytes = vsi_stats->tx_bytes;
++	vsi->net_stats.rx_packets = vsi_stats->rx_packets;
++	vsi->net_stats.rx_bytes = vsi_stats->rx_bytes;
++
++	kfree(vsi_stats);
+ }
+ 
+ /**
 
 
 
