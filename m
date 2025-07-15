@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22561B05CFF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:39:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA8BB05ED9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 875481C2492B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:36:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9BD7501924
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D2E2E6D00;
-	Tue, 15 Jul 2025 13:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634442E765E;
+	Tue, 15 Jul 2025 13:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyPPeDM+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCf8Oi9O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2520B2E339B;
-	Tue, 15 Jul 2025 13:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215EF2E1747;
+	Tue, 15 Jul 2025 13:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586179; cv=none; b=mNNNcM3+7TEVUXrq9yvOv2lF/HXKlhas+CJ6eGv4R1aeNQJeJNpZ1NMaWPyi9dbgkRtdEHTSMolJT48/ayNmErOHaKsvobV+KiFN31Hux3Vpjz6Z5DBmTJvfa/quVC8lo1APpzVfURCZY2j72IiFSTsnD6mijYMau/HVn/njvyY=
+	t=1752587087; cv=none; b=PTL+5FHFmwm9/FpBL91SfOIJwXldqvzq9xHYHY6YySJsu0TnZTOVXLzP15tJL4bAFWVo5k7lG6X5Yn2oAxPCLL+ydZtHp0bSTBjugBI/FKXxna9U9+dKE/sscdvQmqP7ToXOECL924WWdBaBuOOPDOwzz9mL42S+lEWguX5JaLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586179; c=relaxed/simple;
-	bh=VttGYL4QBLjj7feE3SQgIjGGG/HZwbTT2IC/BKcEHh0=;
+	s=arc-20240116; t=1752587087; c=relaxed/simple;
+	bh=33fOF0xmD4U+VcEURYIttzp95Kfu83igMDFpiKWCIDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t7Z3EXc/8Q4Iaq9DP/t4+R89/DpgSHaPd/VoBxtUO53pCSIMcLjn6ZBE/MdNNX0gMS2PC9PFtF+hBNcUnb+wzFPemEtmkE29zwd/mRdGrmYaYG4JTxP/IBtGkqHpA/ClUqs02umCo3DcQhJzhAGQ1Pt2u/dyid38I4emM/jD/2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyPPeDM+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9EDC4CEE3;
-	Tue, 15 Jul 2025 13:29:38 +0000 (UTC)
+	 MIME-Version; b=ZobiLlIqEAjSfvTU0ZsFHmGEftOym2diGFrxhTf8Dl5czziDoOBUOZjNJCDOtAdsbB89VqVQejcUDTOn734Ahn75fbRpZ1c6Xs0kgyU98VypTuq7YXP0Jlow+y+K4U8LfmmId2c/O74+3xdL9It9XF87n/qROEZ7k2VqUYPEnFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCf8Oi9O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6238EC4CEE3;
+	Tue, 15 Jul 2025 13:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586179;
-	bh=VttGYL4QBLjj7feE3SQgIjGGG/HZwbTT2IC/BKcEHh0=;
+	s=korg; t=1752587086;
+	bh=33fOF0xmD4U+VcEURYIttzp95Kfu83igMDFpiKWCIDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FyPPeDM+jvgPHyT+GKm9DmaKwpx5MlM9EiHgCcL8w6jABQczJYKjDYAjALlExOXp8
-	 nhFptUot9C+qUyM6fflNmcpD0L9cLY4cUUtTjAZGvVG98eJv7aBv9tCYWyBMSSj0QG
-	 3LkPiESYHjwk0TeZKTpBtpL4NRcBaOZBwFoPTPdg=
+	b=cCf8Oi9O5cQCkmhkUMeD/atdCSlVUcwQ6ZNdpebE0HRJcIHgIxHW6bMYm2F9RvM8C
+	 X1tEoFc7SLYNa+JbNaeOue+rT7GpQPozGsqLDiB2T9R7JRWyNcdMXPJ0b2XN3bfeBo
+	 4kFz2yKyA82pzh/wIyi7K9RbDPkbq/0ZSD5XB7/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>,
+	Wang Jinchao <wangjinchao600@gmail.com>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 46/77] usb:cdnsp: remove TRB_FLUSH_ENDPOINT command
+Subject: [PATCH 6.15 130/192] md/raid1: Fix stack memory use after return in raid1_reshape
 Date: Tue, 15 Jul 2025 15:13:45 +0200
-Message-ID: <20250715130753.561929393@linuxfoundation.org>
+Message-ID: <20250715130820.115382604@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Wang Jinchao <wangjinchao600@gmail.com>
 
-[ Upstream commit 2998874736bca1031ca84b0a3235a2cd09dfa426 ]
+[ Upstream commit d67ed2ccd2d1dcfda9292c0ea8697a9d0f2f0d98 ]
 
-Patch removes TRB_FLUSH_ENDPOINT command from driver.
-This command is not supported by controller and
-USBSSP returns TRB Error completion code for it.
+In the raid1_reshape function, newpool is
+allocated on the stack and assigned to conf->r1bio_pool.
+This results in conf->r1bio_pool.wait.head pointing
+to a stack address.
+Accessing this address later can lead to a kernel panic.
 
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20231026073737.165450-1-pawell@cadence.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 2831a81077f5 ("usb: cdnsp: Fix issue with CV Bad Descriptor test")
+Example access path:
+
+raid1_reshape()
+{
+	// newpool is on the stack
+	mempool_t newpool, oldpool;
+	// initialize newpool.wait.head to stack address
+	mempool_init(&newpool, ...);
+	conf->r1bio_pool = newpool;
+}
+
+raid1_read_request() or raid1_write_request()
+{
+	alloc_r1bio()
+	{
+		mempool_alloc()
+		{
+			// if pool->alloc fails
+			remove_element()
+			{
+				--pool->curr_nr;
+			}
+		}
+	}
+}
+
+mempool_free()
+{
+	if (pool->curr_nr < pool->min_nr) {
+		// pool->wait.head is a stack address
+		// wake_up() will try to access this invalid address
+		// which leads to a kernel panic
+		return;
+		wake_up(&pool->wait);
+	}
+}
+
+Fix:
+reinit conf->r1bio_pool.wait after assigning newpool.
+
+Fixes: afeee514ce7f ("md: convert to bioset_init()/mempool_init()")
+Signed-off-by: Wang Jinchao <wangjinchao600@gmail.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/linux-raid/20250612112901.3023950-1-wangjinchao600@gmail.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdnsp-debug.h  |  3 ---
- drivers/usb/cdns3/cdnsp-gadget.c |  6 +-----
- drivers/usb/cdns3/cdnsp-gadget.h |  5 -----
- drivers/usb/cdns3/cdnsp-ring.c   | 24 ------------------------
- 4 files changed, 1 insertion(+), 37 deletions(-)
+ drivers/md/raid1.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/cdns3/cdnsp-debug.h b/drivers/usb/cdns3/cdnsp-debug.h
-index f0ca865cce2a0..ad617b7455b9c 100644
---- a/drivers/usb/cdns3/cdnsp-debug.h
-+++ b/drivers/usb/cdns3/cdnsp-debug.h
-@@ -131,8 +131,6 @@ static inline const char *cdnsp_trb_type_string(u8 type)
- 		return "Endpoint Not ready";
- 	case TRB_HALT_ENDPOINT:
- 		return "Halt Endpoint";
--	case TRB_FLUSH_ENDPOINT:
--		return "FLush Endpoint";
- 	default:
- 		return "UNKNOWN";
- 	}
-@@ -328,7 +326,6 @@ static inline const char *cdnsp_decode_trb(char *str, size_t size, u32 field0,
- 		break;
- 	case TRB_RESET_EP:
- 	case TRB_HALT_ENDPOINT:
--	case TRB_FLUSH_ENDPOINT:
- 		ret = snprintf(str, size,
- 			       "%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
- 			       cdnsp_trb_type_string(type),
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.c b/drivers/usb/cdns3/cdnsp-gadget.c
-index 1e9aee824eb7d..1de82fb9dcb48 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -1061,10 +1061,8 @@ static int cdnsp_gadget_ep_disable(struct usb_ep *ep)
- 	pep->ep_state |= EP_DIS_IN_RROGRESS;
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 1fe645e630012..80efe737010b5 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -3431,6 +3431,7 @@ static int raid1_reshape(struct mddev *mddev)
+ 	/* ok, everything is stopped */
+ 	oldpool = conf->r1bio_pool;
+ 	conf->r1bio_pool = newpool;
++	init_waitqueue_head(&conf->r1bio_pool.wait);
  
- 	/* Endpoint was unconfigured by Reset Device command. */
--	if (!(pep->ep_state & EP_UNCONFIGURED)) {
-+	if (!(pep->ep_state & EP_UNCONFIGURED))
- 		cdnsp_cmd_stop_ep(pdev, pep);
--		cdnsp_cmd_flush_ep(pdev, pep);
--	}
- 
- 	/* Remove all queued USB requests. */
- 	while (!list_empty(&pep->pending_list)) {
-@@ -1464,8 +1462,6 @@ static void cdnsp_stop(struct cdnsp_device *pdev)
- {
- 	u32 temp;
- 
--	cdnsp_cmd_flush_ep(pdev, &pdev->eps[0]);
--
- 	/* Remove internally queued request for ep0. */
- 	if (!list_empty(&pdev->eps[0].pending_list)) {
- 		struct cdnsp_request *req;
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
-index 2998548177aba..48336e121ed6f 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.h
-+++ b/drivers/usb/cdns3/cdnsp-gadget.h
-@@ -1138,8 +1138,6 @@ union cdnsp_trb {
- #define TRB_HALT_ENDPOINT	54
- /* Doorbell Overflow Event. */
- #define TRB_DRB_OVERFLOW	57
--/* Flush Endpoint Command. */
--#define TRB_FLUSH_ENDPOINT	58
- 
- #define TRB_TYPE_LINK(x)	(((x) & TRB_TYPE_BITMASK) == TRB_TYPE(TRB_LINK))
- #define TRB_TYPE_LINK_LE32(x)	(((x) & cpu_to_le32(TRB_TYPE_BITMASK)) == \
-@@ -1552,8 +1550,6 @@ void cdnsp_queue_configure_endpoint(struct cdnsp_device *pdev,
- void cdnsp_queue_reset_ep(struct cdnsp_device *pdev, unsigned int ep_index);
- void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev,
- 			       unsigned int ep_index);
--void cdnsp_queue_flush_endpoint(struct cdnsp_device *pdev,
--				unsigned int ep_index);
- void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num);
- void cdnsp_queue_reset_device(struct cdnsp_device *pdev);
- void cdnsp_queue_new_dequeue_state(struct cdnsp_device *pdev,
-@@ -1587,7 +1583,6 @@ void cdnsp_irq_reset(struct cdnsp_device *pdev);
- int cdnsp_halt_endpoint(struct cdnsp_device *pdev,
- 			struct cdnsp_ep *pep, int value);
- int cdnsp_cmd_stop_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep);
--int cdnsp_cmd_flush_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep);
- void cdnsp_setup_analyze(struct cdnsp_device *pdev);
- int cdnsp_status_stage(struct cdnsp_device *pdev);
- int cdnsp_reset_device(struct cdnsp_device *pdev);
-diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
-index c9ad4280f4ba2..795668435c77e 100644
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -2157,19 +2157,6 @@ int cdnsp_cmd_stop_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep)
- 	return ret;
- }
- 
--int cdnsp_cmd_flush_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep)
--{
--	int ret;
--
--	cdnsp_queue_flush_endpoint(pdev, pep->idx);
--	cdnsp_ring_cmd_db(pdev);
--	ret = cdnsp_wait_for_cmd_compl(pdev);
--
--	trace_cdnsp_handle_cmd_flush_ep(pep->out_ctx);
--
--	return ret;
--}
--
- /*
-  * The transfer burst count field of the isochronous TRB defines the number of
-  * bursts that are required to move all packets in this TD. Only SuperSpeed
-@@ -2491,17 +2478,6 @@ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev, unsigned int ep_index)
- 			    EP_ID_FOR_TRB(ep_index));
- }
- 
--/*
-- * Queue a flush endpoint request on the command ring.
-- */
--void  cdnsp_queue_flush_endpoint(struct cdnsp_device *pdev,
--				 unsigned int ep_index)
--{
--	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_FLUSH_ENDPOINT) |
--			    SLOT_ID_FOR_TRB(pdev->slot_id) |
--			    EP_ID_FOR_TRB(ep_index));
--}
--
- void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
- {
- 	u32 lo, mid;
+ 	for (d = d2 = 0; d < conf->raid_disks; d++) {
+ 		struct md_rdev *rdev = conf->mirrors[d].rdev;
 -- 
 2.39.5
 
