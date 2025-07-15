@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E57BB05EBA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFEDB05CE4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C58F25819E5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93DD37BC157
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30CC2E7198;
-	Tue, 15 Jul 2025 13:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9061B2D8790;
+	Tue, 15 Jul 2025 13:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZgm4tOp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BylhdMAc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAF72E62B4;
-	Tue, 15 Jul 2025 13:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3542E5B3F;
+	Tue, 15 Jul 2025 13:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587060; cv=none; b=fL0n4YPYNzp/HPiLaQBjpOeJNd2hWI4NaVY7avNo+vHapFEI6LRb7k9yzgjjiORUJy3n249F5Q8S7d4xjmsDKIvxjXFPYuD50NTLdvZ+WKhVIFkb2BQa7Qb+BpN/HbdYA8jnjBF+J7FMowynfgemmfYOckYQO36p+wjc4jksjC0=
+	t=1752586163; cv=none; b=iZdcqCNdTSIOzWXJuXXqQk0MWuzca5PJU5dMd9G/+zm4EN1SyhrLVHULWY0SxjJTkpYTZI466pzJDP47QfUWlewrgneBX8oiTIUmurWaXJ62a15zW0Xn39SfAjiRo9/zVv9BsHwWpLQgs/RlSZ8Y7e8Dlli/hGIj9z+Ejt/iiz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587060; c=relaxed/simple;
-	bh=YGeZ4tyg2IPURAAB1LKloqsbQhN3zGTq4v7wuvGghuc=;
+	s=arc-20240116; t=1752586163; c=relaxed/simple;
+	bh=wa87xCwtBwQZhUd+X7Ld3os7EkHfbF+R5yQ7RStOstk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYt5KfkV+xALxew50XYaNMdj57X0PNqM78nrTLqM0SISzfvJ6Mr5q/UC/24p4JPiP9kAwpSvSEwiOYnxGgRCA4x+dfX+v74Kt+caNmygqmae6Cy9ZeTeln+mosyWOAXRJMmHhdq1lfPpV8SP696o67zTPQYG9wfYO1FQTJkRWlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZgm4tOp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12478C4CEE3;
-	Tue, 15 Jul 2025 13:44:19 +0000 (UTC)
+	 MIME-Version; b=LjiD2rpE5ITo8u6AdH6usXCF+uptReSlxnPPI3JkqZI+mU9iiZWi4gXgZVTAvQ5kJaovcMUGctsTNEKZAlDX9jsa3Tqgr54iCXQLZqKluWjtocGqlOuzmZJapeGDwoAJhVsiaOUI3eJjEFg4wxHXMl5TDuu1dGvEkPjzGzmQ7LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BylhdMAc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C91C4CEF1;
+	Tue, 15 Jul 2025 13:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587060;
-	bh=YGeZ4tyg2IPURAAB1LKloqsbQhN3zGTq4v7wuvGghuc=;
+	s=korg; t=1752586163;
+	bh=wa87xCwtBwQZhUd+X7Ld3os7EkHfbF+R5yQ7RStOstk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZgm4tOp6EsRuwj3uERpxf7Ufxfj7H4Lqx+AmSmAqjLDKbi/ElOPPvx8YLxw3dyIf
-	 9ZzhpJG47YkxkYJlThuXVvEMsTFBhhDA3iUmx4k5mFGoUUymmdQukdlHoNcq9LMCqk
-	 z/stLhxpWY9DvQnlM0vN6lD0jGTzvnQK8on2+rF4=
+	b=BylhdMAcWaJkjYGDY6MQmp9n/ZS6j27bZTIw+pr0DICGCIzVVSsKOuELPwE0qUqL1
+	 7ZYM9ezON3RsyxKxW3GZhGp0pQ2cC3fLnRwLQ1DQFG+JTkAiDXl4snXB+oWtdkxKCc
+	 n/Tx4tOlBRDcxM8/AGq+YdVjCGV74mJQhCilSJUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.15 124/192] ASoC: Intel: sof-function-topology-lib: Print out the unsupported dmic count
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 40/77] netlink: make sure we allow at least one dump skb
 Date: Tue, 15 Jul 2025 15:13:39 +0200
-Message-ID: <20250715130819.869750090@linuxfoundation.org>
+Message-ID: <20250715130753.318565915@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 16ea4666bbb7f5bd1130fa2d75631ccf8b62362e upstream.
+commit a215b5723922f8099078478122f02100e489cb80 upstream.
 
-It is better to print out the non supported num_dmics than printing that
-it is not matching with 2 or 4.
+Commit under Fixes tightened up the memory accounting for Netlink
+sockets. Looks like the accounting is too strict for some existing
+use cases, Marek reported issues with nl80211 / WiFi iw CLI.
 
-Fixes: 2fbeff33381c ("ASoC: Intel: add sof_sdw_get_tplg_files ops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Link: https://patch.msgid.link/20250619104705.26057-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To reduce number of iterations Netlink dumps try to allocate
+messages based on the size of the buffer passed to previous
+recvmsg() calls. If user space uses a larger buffer in recvmsg()
+than sk_rcvbuf we will allocate an skb we won't be able to queue.
+
+Make sure we always allow at least one skb to be queued.
+Same workaround is already present in netlink_attachskb().
+Alternative would be to cap the allocation size to
+  rcvbuf - rmem_alloc
+but as I said, the workaround is already present in other places.
+
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/9794af18-4905-46c6-b12c-365ea2f05858@samsung.com
+Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250711001121.3649033-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/common/sof-function-topology-lib.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netlink/af_netlink.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/sound/soc/intel/common/sof-function-topology-lib.c
-+++ b/sound/soc/intel/common/sof-function-topology-lib.c
-@@ -73,7 +73,8 @@ int sof_sdw_get_tplg_files(struct snd_so
- 				break;
- 			default:
- 				dev_warn(card->dev,
--					 "only -2ch and -4ch are supported for dmic\n");
-+					 "unsupported number of dmics: %d\n",
-+					 mach_params.dmic_num);
- 				continue;
- 			}
- 			tplg_dev = TPLG_DEVICE_INTEL_PCH_DMIC;
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2215,11 +2215,11 @@ static int netlink_dump(struct sock *sk,
+ 	struct netlink_ext_ack extack = {};
+ 	struct netlink_callback *cb;
+ 	struct sk_buff *skb = NULL;
++	unsigned int rmem, rcvbuf;
+ 	size_t max_recvmsg_len;
+ 	struct module *module;
+ 	int err = -ENOBUFS;
+ 	int alloc_min_size;
+-	unsigned int rmem;
+ 	int alloc_size;
+ 
+ 	if (!lock_taken)
+@@ -2251,8 +2251,9 @@ static int netlink_dump(struct sock *sk,
+ 	if (!skb)
+ 		goto errout_skb;
+ 
++	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+ 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+-	if (rmem >= READ_ONCE(sk->sk_rcvbuf)) {
++	if (rmem != skb->truesize && rmem >= rcvbuf) {
+ 		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
+ 		goto errout_skb;
+ 	}
 
 
 
