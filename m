@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD6DB05EDE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73163B05E23
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79B344A3BBB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:52:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D44DE1C407B7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782632ECD0D;
-	Tue, 15 Jul 2025 13:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C65D2E6D37;
+	Tue, 15 Jul 2025 13:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4b6Np7M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EP4qxZmC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2142ECD02;
-	Tue, 15 Jul 2025 13:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344AF2E92A8;
+	Tue, 15 Jul 2025 13:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587108; cv=none; b=ccOe6bhidW14mYLwOvHRQPva0yzOxN+oLDBHiFwGU7ULGjrtNhsDwaK8Ben7/LaFBSWTxjeROW854aoEoKc1iuavD/PqUrFq/ZZaCM4HncjtKNeduqCip1wpWwdudVSxSXIMA3dBHDzWffEvlU6aHYN/Hpue96MUAEFPaLV5GUI=
+	t=1752586645; cv=none; b=cptLhevf5JzbqUdSEUAeni2Q8E7X/lO9xPYW7YPm/ONtpGh1nH5X+yjB3OxzaWlzHMHpHeQ/gXl/D2aN3yIivAfO5cTjgX5ngB1wTzPQ6t5yjy9QUJ69tLEqdNtmiZJmF8PcBITmUKkIiMW++d7aksqK1eTG0bGi0eJkYXXkx7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587108; c=relaxed/simple;
-	bh=/LEnGDZVeiqWAcsRgzl7jVcwwyR8Ge2zcMdaGIy6wPo=;
+	s=arc-20240116; t=1752586645; c=relaxed/simple;
+	bh=habjh1iOJnEqgyLU1pnYZasRF4yVQxIGVWgUOD6RSdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OH5lTrF1THNMTEIO/CpNNzc8jdKzWwWUjKjdl5tb5wXNE0yrd/FduCJl3S1aj8VWpktRHsb0+0h9D4WFtTvO6Ock77eIYrYK5+FEDfzAbrgSpXMQ1J1rjiCGIDzAJoyQpQZVwk4RhnNZ9W3QlUkl6Q34BSNmmasPxcPhAcBVKvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4b6Np7M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34B4C4CEE3;
-	Tue, 15 Jul 2025 13:45:07 +0000 (UTC)
+	 MIME-Version; b=f/cFOCAts1iRPPLtIYymIhBpUEPbhK4ZcAxEN3LFWsIva6J8EeqhE80+DmUfJZnsDu45I8ciVO9uYSn83It/hdCvSwvczmdrBrLCPWhIaoO9ow2U43nhEm7UdJ6tz6dFzRIjSxiuAuXqZhuecVPh3XpVZTzQKx+J+ojU0msdbeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EP4qxZmC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF534C4CEE3;
+	Tue, 15 Jul 2025 13:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587108;
-	bh=/LEnGDZVeiqWAcsRgzl7jVcwwyR8Ge2zcMdaGIy6wPo=;
+	s=korg; t=1752586645;
+	bh=habjh1iOJnEqgyLU1pnYZasRF4yVQxIGVWgUOD6RSdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4b6Np7MutiJgHIMLuQliWTEN27/hVw30VIsCA6mrdfAmbymsFRL8hVqkVLlYnCwU
-	 zEy7OSH9WaDK5qlbzeDq1O6wwdw9NA+PAkD37klOpZKKJIVDr7yvBORNbJ64UL4pb/
-	 NJguxVOMsE9/OpSQWAgG0KOZZ7d6sGQsby8rMMjk=
+	b=EP4qxZmCiRVMnGEPkbGDsZqsRp6zyFU+QZ7l0R6bDiGPmzn63ZzM/K15xPM+BqzDc
+	 G3sK0blUVMFzy3PLfKTAkdDT6uwlHs3KdUIr72mrZcZ1XK07B1i73FaX9qh4ojcjqr
+	 zCXYYItCHd2phgwkJ9ssRJUzm9NuruTrsj4oDcHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamura Dai <kirinode0@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 170/192] ASoC: SOF: Intel: hda: Use devm_kstrdup() to avoid memleak.
-Date: Tue, 15 Jul 2025 15:14:25 +0200
-Message-ID: <20250715130821.734444921@linuxfoundation.org>
+Subject: [PATCH 5.4 144/148] HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY
+Date: Tue, 15 Jul 2025 15:14:26 +0200
+Message-ID: <20250715130806.042517035@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamura Dai <kirinode0@gmail.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-[ Upstream commit 6c038b58a2dc5a008c7e7a1297f5aaa4deaaaa7e ]
+[ Upstream commit 1a8953f4f7746c6a515989774fe03047c522c613 ]
 
-sof_pdata->tplg_filename can have address allocated by kstrdup()
-and can be overwritten. Memory leak was detected with kmemleak:
+MARTLINKTECHNOLOGY is a microphone device, when the HID interface in an
+audio device is requested to get specific report id, the following error
+may occur.
 
-unreferenced object 0xffff88812391ff60 (size 16):
-  comm "kworker/4:1", pid 161, jiffies 4294802931
-  hex dump (first 16 bytes):
-    73 6f 66 2d 68 64 61 2d 67 65 6e 65 72 69 63 00  sof-hda-generic.
-  backtrace (crc 4bf1675c):
-    __kmalloc_node_track_caller_noprof+0x49c/0x6b0
-    kstrdup+0x46/0xc0
-    hda_machine_select.cold+0x1de/0x12cf [snd_sof_intel_hda_generic]
-    sof_init_environment+0x16f/0xb50 [snd_sof]
-    sof_probe_continue+0x45/0x7c0 [snd_sof]
-    sof_probe_work+0x1e/0x40 [snd_sof]
-    process_one_work+0x894/0x14b0
-    worker_thread+0x5e5/0xfb0
-    kthread+0x39d/0x760
-    ret_from_fork+0x31/0x70
-    ret_from_fork_asm+0x1a/0x30
+[  562.939373] usb 1-1.4.1.2: new full-speed USB device number 21 using xhci_hcd
+[  563.104908] usb 1-1.4.1.2: New USB device found, idVendor=4c4a, idProduct=4155, bcdDevice= 1.00
+[  563.104910] usb 1-1.4.1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  563.104911] usb 1-1.4.1.2: Product: USB Composite Device
+[  563.104912] usb 1-1.4.1.2: Manufacturer: SmartlinkTechnology
+[  563.104913] usb 1-1.4.1.2: SerialNumber: 20201111000001
+[  563.229499] input: SmartlinkTechnology USB Composite Device as /devices/pci0000:00/0000:00:07.1/0000:04:00.3/usb1/1-1/1-1.4/1-1.4.1/1-1.4.1.2/1-1.4.1.2:1.2/0003:4C4A:4155.000F/input/input35
+[  563.291505] hid-generic 0003:4C4A:4155.000F: input,hidraw2: USB HID v2.01 Keyboard [SmartlinkTechnology USB Composite Device] on usb-0000:04:00.3-1.4.1.2/input2
+[  563.291557] usbhid 1-1.4.1.2:1.3: couldn't find an input interrupt endpoint
+[  568.506654] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+[  573.626656] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+[  578.746657] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+[  583.866655] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+[  588.986657] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
 
-Signed-off-by: Tamura Dai <kirinode0@gmail.com>
-Link: https://patch.msgid.link/20250615235548.8591-1-kirinode0@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Ignore HID interface. The device is working properly.
+
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/hid-ids.h    | 3 +++
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
-index 6a3932d90b43a..27b077f5c8f58 100644
---- a/sound/soc/sof/intel/hda.c
-+++ b/sound/soc/sof/intel/hda.c
-@@ -1254,11 +1254,11 @@ static int check_tplg_quirk_mask(struct snd_soc_acpi_mach *mach)
- 	return 0;
- }
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 356916608cc49..3787bd508b616 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1347,4 +1347,7 @@
+ #define USB_VENDOR_ID_SIGNOTEC			0x2133
+ #define USB_DEVICE_ID_SIGNOTEC_VIEWSONIC_PD1011	0x0018
  
--static char *remove_file_ext(const char *tplg_filename)
-+static char *remove_file_ext(struct device *dev, const char *tplg_filename)
- {
- 	char *filename, *tmp;
- 
--	filename = kstrdup(tplg_filename, GFP_KERNEL);
-+	filename = devm_kstrdup(dev, tplg_filename, GFP_KERNEL);
- 	if (!filename)
- 		return NULL;
- 
-@@ -1342,7 +1342,7 @@ struct snd_soc_acpi_mach *hda_machine_select(struct snd_sof_dev *sdev)
- 		 */
- 		if (!sof_pdata->tplg_filename) {
- 			/* remove file extension if it exists */
--			tplg_filename = remove_file_ext(mach->sof_tplg_filename);
-+			tplg_filename = remove_file_ext(sdev->dev, mach->sof_tplg_filename);
- 			if (!tplg_filename)
- 				return NULL;
++#define USB_VENDOR_ID_SMARTLINKTECHNOLOGY              0x4c4a
++#define USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155         0x4155
++
+ #endif
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index ff1a9d142cddf..2cf58e3016e7b 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -879,6 +879,7 @@ static const struct hid_device_id hid_ignore_list[] = {
+ #endif
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_SMARTLINKTECHNOLOGY, USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155) },
+ 	{ }
+ };
  
 -- 
 2.39.5
