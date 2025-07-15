@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-162813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 446CEB06030
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:13:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC4EB06016
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E15EC1C26DCB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:03:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86BC582222
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278662E5410;
-	Tue, 15 Jul 2025 13:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A50B2EACFB;
+	Tue, 15 Jul 2025 13:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCRDbPOh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I6tQYT/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92A72E92A8;
-	Tue, 15 Jul 2025 13:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F7F2E92AB;
+	Tue, 15 Jul 2025 13:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587542; cv=none; b=a9lEP1x7Lgj1xlmgYRsVT70zj7Hv6z8XDTdPsbxaWjcfnCa/o4QAMraB3O2GStcXdasRbkgjBpMK4r28mhcJhTA01JD+urxyy/YhVJe1FLHEh3nSS/jibURitLF94x4B6/VNRjY9boLjFeSA7+CHqSTXbf3adxNNE2D3G2dPNKw=
+	t=1752587548; cv=none; b=AoZTvhPL/Ix2an+45uSIRL3mvEZT7S3AXM3B+Ir5aESge3O3T0yDJxvA//usQX9yIHe0/seVXkfVShNb+6T5pSh+G8gySlpnMKtT8jNmnZFUsOSqIRdeGzOnho/PZ4Z9J1cncuAYVu9MiERwHfMmnUMxmqNypRbgMxRfodyuwVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587542; c=relaxed/simple;
-	bh=E3oKN7K38yx3kecR5rhaUY1HnQdD+tEKj+LAJJnVxIo=;
+	s=arc-20240116; t=1752587548; c=relaxed/simple;
+	bh=ZddlqOmmI0jVU/2+HKLlfk2jus/qZAL9fkRt8iXmR/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9YFeabeIW3LpFhbYrcElKG/ZypSUlc8mTwyjBxGT7/LOY/XMtAnYDGt6bZtswWSdZzB6JL4gbFTAwuDkJtN4iFZx+q+KQ5ErpS9BFWpUz4YJwaBgjggXucL+pHABCrcybNtgDiKifp0JoRQImUi/Lw2IiBCofpK55VaqlptEnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCRDbPOh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB19C4CEE3;
-	Tue, 15 Jul 2025 13:52:22 +0000 (UTC)
+	 MIME-Version; b=tgC3vH1RafPDy/bEkmGX1cIKNFC5xGo0XXKgIIkYd+dNg4jTkrUVW4Q2XYy/5gOZHPO7wysnN6WcKl4Qvv/U/qvqfSOnxkIl1uiI/0+vWiAdulxB+pEustcx7xPxij1rf4oCb7s5QUOhmsJHh37uMqp59nqhlXq4Hre+GJJ6Yqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I6tQYT/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DD3C4CEE3;
+	Tue, 15 Jul 2025 13:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587542;
-	bh=E3oKN7K38yx3kecR5rhaUY1HnQdD+tEKj+LAJJnVxIo=;
+	s=korg; t=1752587548;
+	bh=ZddlqOmmI0jVU/2+HKLlfk2jus/qZAL9fkRt8iXmR/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCRDbPOhKfzqW/eEaGiclGfQMBJDVegmW3sQw2kXZT2sP9JaVeeApBZ5zc16StGSp
-	 5nr+W4cGm3NR/22igTq1PyzS90jsBqxd1Z43T76YnrTMqf2WayE/I4IiqxLZ5QvcrH
-	 jVQUNq6viusdzzEY4Sdal0PMPd56OkNxL0Tzx+6k=
+	b=I6tQYT/ryvVgSuzKroM5Bpx8oTw9RpcyySxVLMrnldxWKKZnI7A2UXin1UuEeQ/6q
+	 Mn/RecKtQCJEIU1ox1UfmzNNxPeVtZMcU15XqdnrDVZj3u0nJn6ZAZBzeX6M92octp
+	 2OeHgmKOmplSvg3jP8NvZJjdG0zzDU8ifINtyVjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/208] wifi: mac80211: fix beacon interval calculation overflow
-Date: Tue, 15 Jul 2025 15:12:40 +0200
-Message-ID: <20250715130812.997762893@linuxfoundation.org>
+Subject: [PATCH 5.10 053/208] um: ubd: Add missing error check in start_io_thread()
+Date: Tue, 15 Jul 2025 15:12:42 +0200
+Message-ID: <20250715130813.075711520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -66,36 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 7a3750ff0f2e8fee338a9c168f429f6c37f0e820 ]
+[ Upstream commit c55c7a85e02a7bfee20a3ffebdff7cbeb41613ef ]
 
-As we are converting from TU to usecs, a beacon interval of
-100*1024 usecs will lead to integer wrapping. To fix change
-to use a u32.
+The subsequent call to os_set_fd_block() overwrites the previous
+return value. OR the two return values together to fix it.
 
-Fixes: 057d5f4ba1e4 ("mac80211: sync dtim_count to TSF")
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Link: https://patch.msgid.link/20250621123209.511796-1-lachlan.hodges@morsemicro.com
+Fixes: f88f0bdfc32f ("um: UBD Improvements")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250606124428.148164-2-tiwei.btw@antgroup.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/util.c | 2 +-
+ arch/um/drivers/ubd_user.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 0da845d9d4863..7cb32340108e3 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -4242,7 +4242,7 @@ void ieee80211_recalc_dtim(struct ieee80211_local *local,
- {
- 	u64 tsf = drv_get_tsf(local, sdata);
- 	u64 dtim_count = 0;
--	u16 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
-+	u32 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
- 	u8 dtim_period = sdata->vif.bss_conf.dtim_period;
- 	struct ps_data *ps;
- 	u8 bcns_from_dtim;
+diff --git a/arch/um/drivers/ubd_user.c b/arch/um/drivers/ubd_user.c
+index a1afe414ce481..fb5b1e7c133d8 100644
+--- a/arch/um/drivers/ubd_user.c
++++ b/arch/um/drivers/ubd_user.c
+@@ -41,7 +41,7 @@ int start_io_thread(unsigned long sp, int *fd_out)
+ 	*fd_out = fds[1];
+ 
+ 	err = os_set_fd_block(*fd_out, 0);
+-	err = os_set_fd_block(kernel_fd, 0);
++	err |= os_set_fd_block(kernel_fd, 0);
+ 	if (err) {
+ 		printk("start_io_thread - failed to set nonblocking I/O.\n");
+ 		goto out_close;
 -- 
 2.39.5
 
