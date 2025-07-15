@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD37B05CC5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B15B05DF4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9A37165056
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE66F4A7546
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179E82E54BE;
-	Tue, 15 Jul 2025 13:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C67D2EB5A2;
+	Tue, 15 Jul 2025 13:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqCfdeE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGlF0cQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A452E611D;
-	Tue, 15 Jul 2025 13:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00102D29C2;
+	Tue, 15 Jul 2025 13:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586152; cv=none; b=Pqm5HyzaIp+0ux6VVY3e4ckmAvvsKT0HPH1g0RRzvWAB56O/U149evO3WVZLfJr/ik3NSeSzcKjd4uzq+Ho+H4C9Kj6hWMKHLFEzEg/ZF5Mr2IlzOad24B4sI6L7enD4eAPCyxoSQJ7sfdpkCR4d8iXixqUif5zvabedZb5ymw4=
+	t=1752586549; cv=none; b=dOyGDdLXJq02UXOVeK1u78GTSGmlvAKQNpjio7p3SpCrxOlqNl8K4JR24pYzaJShOYqNvEXT1lecUT1UMj1MNvzvDypeSyr1b/AOxzv7+xlFFt6O284uTUnk7vtp9y5KX4k2SNusmGIsBeg5CXlUuYQdl0CD+biVeLfzdJPEudI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586152; c=relaxed/simple;
-	bh=tr8sNgZY7+60KRbkkZ4cZrfMm2uuV9MoirheWCyiiO0=;
+	s=arc-20240116; t=1752586549; c=relaxed/simple;
+	bh=EOm45dcFgHNobBunax5okYmUgpieiSRuzXPuXzglCEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBrw/JgNe3PkYriqXf3wxfvGxaknsUVDKffKVt3H3/87s6+ZhtAFC9NNpueLPH8/RIy4CPPyMW4etjhBwcSMjY0gffG7Gy5UqkLT4sPbwNJhSSFAatqK6g6JQdfOGcifSnVC6a6F5bR5mQL5jIO2W/MJzxSoPY3EhFwCst/5L3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqCfdeE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C72BC4CEE3;
-	Tue, 15 Jul 2025 13:29:12 +0000 (UTC)
+	 MIME-Version; b=pchwsnaO+hyvaD3eoOCsENZl2OkgG4AVLLspjpUW4c2i09fnZ6qrOTIUZpmv++iTQrXQwQcn7R236jYhOjWBGiZw6EnSPIWUumoAVTZBjHHgLRXh3Is9QvCYznmfLDcSqmZbQMQ9i4oBfkoU7HSeYj+ziIA1Qb/DNXC/A3Ssfh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGlF0cQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655FEC4CEE3;
+	Tue, 15 Jul 2025 13:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586152;
-	bh=tr8sNgZY7+60KRbkkZ4cZrfMm2uuV9MoirheWCyiiO0=;
+	s=korg; t=1752586549;
+	bh=EOm45dcFgHNobBunax5okYmUgpieiSRuzXPuXzglCEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gqCfdeE+25bV/uzDA7xJt+TmPjqo74C45BvH5S3U78vJgIxgXaLOHm1/OqQboXtfE
-	 p7ZnFycbtbpBFxs2BxbdDXMiwadpkEqc3E22MHwxv4+ZUj70CVl+HJ2y8nvh1r7QkU
-	 zu/4T6E3zhZ7ndg97W8KSfBmZmbDottBcTrfV+NQ=
+	b=gGlF0cQcVyY4GgvfpUlg7K4CAYHn2JJwDMEmnjSkdDIvzS04f0rVq7+KaZjvcEPCT
+	 JcFgGMZm9xR1lpWqo8covaBpv9cFtoM754YPhaCZfu5KhUr6J/2btYDonHcatEQLX4
+	 4isOWAInCz6wKAGHpzuGw5FSYrHKFcYPmwZj6ga8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 08/77] vsock: Fix transport_* TOCTOU
-Date: Tue, 15 Jul 2025 15:13:07 +0200
-Message-ID: <20250715130752.020888614@linuxfoundation.org>
+Subject: [PATCH 5.4 066/148] drm/exynos: fimd: Guard display clock control with runtime PM calls
+Date: Tue, 15 Jul 2025 15:13:08 +0200
+Message-ID: <20250715130802.971144003@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 687aa0c5581b8d4aa87fd92973e4ee576b550cdf ]
+[ Upstream commit 5d91394f236167ac624b823820faf4aa928b889e ]
 
-Transport assignment may race with module unload. Protect new_transport
-from becoming a stale pointer.
+Commit c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable
+and post-disable") changed the call sequence to the CRTC enable/disable
+and bridge pre_enable/post_disable methods, so those bridge methods are
+now called when CRTC is not yet enabled.
 
-This also takes care of an insecure call in vsock_use_local_transport();
-add a lockdep assert.
+This causes a lockup observed on Samsung Peach-Pit/Pi Chromebooks. The
+source of this lockup is a call to fimd_dp_clock_enable() function, when
+FIMD device is not yet runtime resumed. It worked before the mentioned
+commit only because the CRTC implemented by the FIMD driver was always
+enabled what guaranteed the FIMD device to be runtime resumed.
 
-BUG: unable to handle page fault for address: fffffbfff8056000
-Oops: Oops: 0000 [#1] SMP KASAN
-RIP: 0010:vsock_assign_transport+0x366/0x600
-Call Trace:
- vsock_connect+0x59c/0xc40
- __sys_connect+0xe8/0x100
- __x64_sys_connect+0x6e/0xc0
- do_syscall_64+0x92/0x1c0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
+This patch adds runtime PM guards to the fimd_dp_clock_enable() function
+to enable its proper operation also when the CRTC implemented by FIMD is
+not yet enabled.
 
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-2-98f0eb530747@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 196e059a8a6a ("drm/exynos: convert clock_enable crtc callback to pipeline clock")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_fimd.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 9a1788bd5c789..f2caef4cda67d 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -400,6 +400,8 @@ EXPORT_SYMBOL_GPL(vsock_enqueue_accept);
- 
- static bool vsock_use_local_transport(unsigned int remote_cid)
- {
-+	lockdep_assert_held(&vsock_register_mutex);
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimd.c b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
+index 4fe4ca41665b3..1978491d3f846 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_fimd.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
+@@ -182,6 +182,7 @@ struct fimd_context {
+ 	u32				i80ifcon;
+ 	bool				i80_if;
+ 	bool				suspended;
++	bool				dp_clk_enabled;
+ 	wait_queue_head_t		wait_vsync_queue;
+ 	atomic_t			wait_vsync_event;
+ 	atomic_t			win_updated;
+@@ -1003,7 +1004,18 @@ static void fimd_dp_clock_enable(struct exynos_drm_clk *clk, bool enable)
+ 	struct fimd_context *ctx = container_of(clk, struct fimd_context,
+ 						dp_clk);
+ 	u32 val = enable ? DP_MIE_CLK_DP_ENABLE : DP_MIE_CLK_DISABLE;
 +
- 	if (!transport_local)
- 		return false;
- 
-@@ -457,6 +459,8 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 
- 	remote_flags = vsk->remote_addr.svm_flags;
- 
-+	mutex_lock(&vsock_register_mutex);
++	if (enable == ctx->dp_clk_enabled)
++		return;
 +
- 	switch (sk->sk_type) {
- 	case SOCK_DGRAM:
- 		new_transport = transport_dgram;
-@@ -472,12 +476,15 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 			new_transport = transport_h2g;
- 		break;
- 	default:
--		return -ESOCKTNOSUPPORT;
-+		ret = -ESOCKTNOSUPPORT;
-+		goto err;
- 	}
- 
- 	if (vsk->transport) {
--		if (vsk->transport == new_transport)
--			return 0;
-+		if (vsk->transport == new_transport) {
-+			ret = 0;
-+			goto err;
-+		}
- 
- 		/* transport->release() must be called with sock lock acquired.
- 		 * This path can only be taken during vsock_connect(), where we
-@@ -501,8 +508,16 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 	/* We increase the module refcnt to prevent the transport unloading
- 	 * while there are open sockets assigned to it.
- 	 */
--	if (!new_transport || !try_module_get(new_transport->module))
--		return -ENODEV;
-+	if (!new_transport || !try_module_get(new_transport->module)) {
-+		ret = -ENODEV;
-+		goto err;
-+	}
++	if (enable)
++		pm_runtime_resume_and_get(ctx->dev);
 +
-+	/* It's safe to release the mutex after a successful try_module_get().
-+	 * Whichever transport `new_transport` points at, it won't go away until
-+	 * the last module_put() below or in vsock_deassign_transport().
-+	 */
-+	mutex_unlock(&vsock_register_mutex);
- 
- 	if (sk->sk_type == SOCK_SEQPACKET) {
- 		if (!new_transport->seqpacket_allow ||
-@@ -521,6 +536,9 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 	vsk->transport = new_transport;
- 
- 	return 0;
-+err:
-+	mutex_unlock(&vsock_register_mutex);
-+	return ret;
++	ctx->dp_clk_enabled = enable;
+ 	writel(val, ctx->regs + DP_MIE_CLKCON);
++
++	if (!enable)
++		pm_runtime_put(ctx->dev);
  }
- EXPORT_SYMBOL_GPL(vsock_assign_transport);
  
+ static const struct exynos_drm_crtc_ops fimd_crtc_ops = {
 -- 
 2.39.5
 
