@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83B3B05CD4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02138B05E12
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAC4F1644BF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:35:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5300E50136C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886782E3AF9;
-	Tue, 15 Jul 2025 13:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780652E6D2B;
+	Tue, 15 Jul 2025 13:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBhIm4oK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0evRp3P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E132E62C4;
-	Tue, 15 Jul 2025 13:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AFE2E8DF8;
+	Tue, 15 Jul 2025 13:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586171; cv=none; b=T9GA/elbAGzGyV4ycFcuYSSC4zqjQR+hVw1X1vRDBLMOFC1iM+8U7c5zdO95il5IqFT2Dfw34VAlBdgfbO+vqQjepi7H4sk+dDIlHIGwgPSvt5um7fPOye4AnMxWpWuIViIPXYJyP9q6BJMVO7kwu0Bdanz/bt58PG+PC7yRiGA=
+	t=1752586640; cv=none; b=a8qklLzuaLArMomtaYbXDOLxdcd8wwvaOi8ENLqweQs8Co1FzOYoDvD/DBltZZwAcAM/7KvEjuoWIl9HSo6qMiijfDF/FDax6qPkuODymx9+P3pKNaBHWQ9cSNcgm9ucLfxTCtT4Nr7V5tPWWKmwWgGIYVk6vgQ6YSTtNex9o0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586171; c=relaxed/simple;
-	bh=giv9DcGs8GkmmKoN/byWySOrI7BVL3Z1Lp0H69/UFJ0=;
+	s=arc-20240116; t=1752586640; c=relaxed/simple;
+	bh=IMRiQIpYF7wMMgz5aNQSrVE9bdhpaYFvBANroQOlgUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gazv61VKukC4ZMJqZ37ktEv9YmkTIWV0BBxMEr0u1osfo8Y5ahuYi5+KQQ+FBho+ldu8lLeoOgthPVUWag5iAAupDQTTQpfpQOAzyEvhVDIodrVZwZKFCCkDILeGcVZNUU8fJtmg/fN8ff2QMfqBsZr2tmk83sQZJbLQDOQ/YJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBhIm4oK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0425C4CEE3;
-	Tue, 15 Jul 2025 13:29:30 +0000 (UTC)
+	 MIME-Version; b=N4CncXw4oTyJHk/bfCqn43LaaAvVBx7cohWKCSmi5Nef9w71ypZg0afMac3BIbR69tPMNjO44ku7qR3w5q46iw6M0VQBCdJWJySVdLLaRZODFrtliW3kaC/5RszYGFRyKrbk+MBF4/F4k7WrVgFJRSvSY6e9gHveaCAh+u8jomQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0evRp3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53744C4CEF1;
+	Tue, 15 Jul 2025 13:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586171;
-	bh=giv9DcGs8GkmmKoN/byWySOrI7BVL3Z1Lp0H69/UFJ0=;
+	s=korg; t=1752586639;
+	bh=IMRiQIpYF7wMMgz5aNQSrVE9bdhpaYFvBANroQOlgUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TBhIm4oKCwMicGtAxchDkIZx8Egkb2sPGeVpTZZHgoFDfTc9I24vQQt1bWVPzbmDi
-	 CjWEmsZ/O0U7J9ARJv3zg0i3+QpR16+T3YC3ltVF5ODyn7l7w8dNBUK5gB4i8Jh0iz
-	 wnYMeTGyBFPpYSbFhIAck5ZpPHV7Qo7nptEl6k3s=
+	b=b0evRp3PzyY55W+gS+5Vz56APDl0q6m8iq7c93TJ3uIM8xuLsYL6Im5+HXTt7IZz2
+	 KQdsibbNJ+1YISb74+EdMiuE79kmqphTHftBIiYtUdK2jCI+ACHdG7lgAHc64eAMLr
+	 JvYaPCIi+F0blHwKd6ps6XHsvl7ydUMZfz46U3gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 43/77] usb: xhci: quirk for data loss in ISOC transfers
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.4 100/148] usb: typec: displayport: Fix potential deadlock
 Date: Tue, 15 Jul 2025 15:13:42 +0200
-Message-ID: <20250715130753.440788440@linuxfoundation.org>
+Message-ID: <20250715130804.318577998@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,125 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-[ Upstream commit cbc889ab0122366f6cdbe3c28d477c683ebcebc2 ]
+commit 099cf1fbb8afc3771f408109f62bdec66f85160e upstream.
 
-During the High-Speed Isochronous Audio transfers, xHCI
-controller on certain AMD platforms experiences momentary data
-loss. This results in Missed Service Errors (MSE) being
-generated by the xHCI.
+The deadlock can occur due to a recursive lock acquisition of
+`cros_typec_altmode_data::mutex`.
+The call chain is as follows:
+1. cros_typec_altmode_work() acquires the mutex
+2. typec_altmode_vdm() -> dp_altmode_vdm() ->
+3. typec_altmode_exit() -> cros_typec_altmode_exit()
+4. cros_typec_altmode_exit() attempts to acquire the mutex again
 
-The root cause of the MSE is attributed to the ISOC OUT endpoint
-being omitted from scheduling. This can happen when an IN
-endpoint with a 64ms service interval either is pre-scheduled
-prior to the ISOC OUT endpoint or the interval of the ISOC OUT
-endpoint is shorter than that of the IN endpoint. Consequently,
-the OUT service is neglected when an IN endpoint with a service
-interval exceeding 32ms is scheduled concurrently (every 64ms in
-this scenario).
-
-This issue is particularly seen on certain older AMD platforms.
-To mitigate this problem, it is recommended to adjust the service
-interval of the IN endpoint to not exceed 32ms (interval 8). This
-adjustment ensures that the OUT endpoint will not be bypassed,
-even if a smaller interval value is utilized.
+To prevent this, defer the `typec_altmode_exit()` call by scheduling
+it rather than calling it directly from within the mutex-protected
+context.
 
 Cc: stable <stable@kernel.org>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627144127.3889714-2-mathias.nyman@linux.intel.com
+Fixes: b4b38ffb38c9 ("usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250624133246.3936737-1-akuchynski@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c |  4 ++++
- drivers/usb/host/xhci-pci.c | 25 +++++++++++++++++++++++++
- drivers/usb/host/xhci.h     |  1 +
- 3 files changed, 30 insertions(+)
+ drivers/usb/typec/altmodes/displayport.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index db22ab0d88893..149128b89100b 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1462,6 +1462,10 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
- 	/* Periodic endpoint bInterval limit quirk */
- 	if (usb_endpoint_xfer_int(&ep->desc) ||
- 	    usb_endpoint_xfer_isoc(&ep->desc)) {
-+		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
-+		    interval >= 9) {
-+			interval = 8;
-+		}
- 		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
- 		    udev->speed >= USB_SPEED_HIGH &&
- 		    interval >= 7) {
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 5c46e85cc2d7c..9c7491ac28f2f 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -65,12 +65,22 @@
- #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_PCH_XHCI		0x51ed
- #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_N_PCH_XHCI	0x54ed
- 
-+#define PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI		0x13ed
-+#define PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI		0x13ee
-+#define PCI_DEVICE_ID_AMD_STARSHIP_XHCI			0x148c
-+#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI		0x15d4
-+#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI		0x15d5
-+#define PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI		0x15e0
-+#define PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI		0x15e1
-+#define PCI_DEVICE_ID_AMD_RAVEN2_XHCI			0x15e5
- #define PCI_DEVICE_ID_AMD_RENOIR_XHCI			0x1639
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_2			0x43bb
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_1			0x43bc
- 
-+#define PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI		0x7316
-+
- #define PCI_DEVICE_ID_ASMEDIA_1042_XHCI			0x1042
- #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
- #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
-@@ -168,6 +178,21 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 	if (pdev->vendor == PCI_VENDOR_ID_NEC)
- 		xhci->quirks |= XHCI_NEC_HOST;
- 
-+	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
-+	    (pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_STARSHIP_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN2_XHCI))
-+		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
-+
-+	if (pdev->vendor == PCI_VENDOR_ID_ATI &&
-+	    pdev->device == PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI)
-+		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
-+
- 	if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version == 0x96)
- 		xhci->quirks |= XHCI_AMD_0x96_HOST;
- 
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index b71e02ed9f0b3..cc332de73d813 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1669,6 +1669,7 @@ struct xhci_hcd {
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
-+#define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(49)
- 
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
--- 
-2.39.5
-
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -289,8 +289,7 @@ static int dp_altmode_vdm(struct typec_a
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
+ 		case DP_CMD_STATUS_UPDATE:
+-			if (typec_altmode_exit(alt))
+-				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			dp->state = DP_STATE_EXIT;
+ 			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
 
 
 
