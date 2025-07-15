@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-162669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEBBCB05E92
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15683B05D47
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4AC37B814A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:53:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A25FB4A0554
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07AD52E7641;
-	Tue, 15 Jul 2025 13:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E71D2E718C;
+	Tue, 15 Jul 2025 13:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuF0rymO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G03uk8hK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96012E2F0B;
-	Tue, 15 Jul 2025 13:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4362D372D;
+	Tue, 15 Jul 2025 13:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587163; cv=none; b=ZnwTY8m/9HseCYVe/SG03UXFRGE2eUitfDsD5BAObUG91mlc6giFoQ3rG9oYs+TocXvytym2wmiHUsPUzoNJ69E8wiyF7Q9boRPEq8cBZ7UMFn/4pzl0eQGJPwm4pMeTtRaAJ2tnvlP/mfifrgra0KOrgekFZKtDn4DdgzrMroI=
+	t=1752586258; cv=none; b=RSam32FuvXTXKcOEiMFBbHeQamSXlaISs+u4Zde0BoF4CGB5TDTOagb4gIa6oqm0XXBFv0m8Br/6OtKtHkh1eBkeDI6y4QcYyQ5FRWwy+gdlc6tPZNtGHdsa8/ZKpazuCzdSsqX0Dq+w2ePz+gR+ciBB2oFtoqyB4JWJDp+6ABw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587163; c=relaxed/simple;
-	bh=IL2WQMmsJIAYa+nlKjgrberE12KX6S9TR7wySrk03v8=;
+	s=arc-20240116; t=1752586258; c=relaxed/simple;
+	bh=OMtpvZ+w8bSlIy44CfoR8U3rDeFVU01+p6LqKnMEG4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmHv/pjyBm4dVcyQ+p6KnlsL2UVv499KSOQoAAv+snLaVMub/SdXzeWHr0rO/sDt2ISdCMnJcvoPN6Gfvo1RSOghpnxzrZt72x5Qei2fW4OOEn+WRyWrleJRtbEMihFksis4lAmbekMGjF4GBYiHGS9FjeUe5Wh6SuIv9uR8/R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuF0rymO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE5EC4CEF6;
-	Tue, 15 Jul 2025 13:46:03 +0000 (UTC)
+	 MIME-Version; b=XFOpSrL3zX9kR+jJGg0SkCyQzhmfgSYSx4yRAmw/+l5o7OFvqq8O0VWjblW0VwTIH+fM0elvYrxlPuAmbBd8nhmr3HGGNwDRVL3ZvKSHSukWm13UiY8WuonLOUOe9BnAY4LEYOdpiNWbLQaWVHzfKMXZoYYKSSo4icQZnmp4roA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G03uk8hK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF424C4CEE3;
+	Tue, 15 Jul 2025 13:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587163;
-	bh=IL2WQMmsJIAYa+nlKjgrberE12KX6S9TR7wySrk03v8=;
+	s=korg; t=1752586258;
+	bh=OMtpvZ+w8bSlIy44CfoR8U3rDeFVU01+p6LqKnMEG4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HuF0rymOxzvsfZEjlzwOFPWQi8G7sYPEiDibELzDQCXsSaZlt3nSwXh9+o5aFqsbf
-	 2d5Hh9g4ZZU6GbWlK7OzFE+yBrSnEmCrFX4/aiRqVpkoabh6Xd3Sc1bNIZctoS8zqg
-	 fXR4CIuGxR7QXOs+fGNMvyPlWscMHG6VZX6JV5NA=
+	b=G03uk8hKp7v03zx59wlg5+OaPXd9Km+Bcc5soQeM9xPA4ZlboIXjARp9z1rkFJTJ2
+	 bbBv9GtKIDEjit5R6f/Hj2w7Dhcnxo2Lh5/ggwAPjFLJFkZNHX72/M3YtXhmwAkuDk
+	 2VHjH9xesEp/53baPr5dTkuVS5espaoZM3QhWt50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 159/192] can: m_can: m_can_handle_lost_msg(): downgrade msg lost in rx message to debug level
-Date: Tue, 15 Jul 2025 15:14:14 +0200
-Message-ID: <20250715130821.297733595@linuxfoundation.org>
+	Vitaly Chikunov <vt@altlinux.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Jann Horn <jannh@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 5.15 76/77] x86/mm: Disable hugetlb page table sharing on 32-bit
+Date: Tue, 15 Jul 2025 15:14:15 +0200
+Message-ID: <20250715130754.781630598@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 58805e9cbc6f6a28f35d90e740956e983a0e036e ]
+commit 76303ee8d54bff6d9a6d55997acd88a6c2ba63cf upstream.
 
-Downgrade the "msg lost in rx" message to debug level, to prevent
-flooding the kernel log with error messages.
+Only select ARCH_WANT_HUGE_PMD_SHARE on 64-bit x86.
+Page table sharing requires at least three levels because it involves
+shared references to PMD tables; 32-bit x86 has either two-level paging
+(without PAE) or three-level paging (with PAE), but even with
+three-level paging, having a dedicated PGD entry for hugetlb is only
+barely possible (because the PGD only has four entries), and it seems
+unlikely anyone's actually using PMD sharing on 32-bit.
 
-Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250711-mcan_ratelimit-v3-1-7413e8e21b84@geanix.com
-[mkl: enhance commit message]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
+has 2-level paging) became particularly problematic after commit
+59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
+since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
+the `pt_share_count` (for PMDs) share the same union storage - and with
+2-level paging, PMDs are PGDs.
+
+(For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
+configuration of page tables such that it is never enabled with 2-level
+paging.)
+
+Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
+Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
+Reported-by: Vitaly Chikunov <vt@altlinux.org>
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Tested-by: Vitaly Chikunov <vt@altlinux.org>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250702-x86-2level-hugetlb-v2-1-1a98096edf92%40google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/m_can/m_can.c | 2 +-
+ arch/x86/Kconfig |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index c2c116ce1087c..782131de5ef76 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -665,7 +665,7 @@ static int m_can_handle_lost_msg(struct net_device *dev)
- 	struct can_frame *frame;
- 	u32 timestamp = 0;
- 
--	netdev_err(dev, "msg lost in rxf0\n");
-+	netdev_dbg(dev, "msg lost in rxf0\n");
- 
- 	stats->rx_errors++;
- 	stats->rx_over_errors++;
--- 
-2.39.5
-
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -118,7 +118,7 @@ config X86
+ 	select ARCH_WANT_DEFAULT_BPF_JIT	if X86_64
+ 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+ 	select ARCH_WANTS_NO_INSTR
+-	select ARCH_WANT_HUGE_PMD_SHARE
++	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+ 	select ARCH_WANTS_THP_SWAP		if X86_64
+ 	select ARCH_HAS_PARANOID_L1D_FLUSH
 
 
 
