@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-162127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7697EB05BE2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A315FB05C27
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB1C43B1C3A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 040D51C21E9C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BC22E1C69;
-	Tue, 15 Jul 2025 13:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2527B2E49A2;
+	Tue, 15 Jul 2025 13:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBC+Ag0M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJKi2mhv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6FA27584E;
-	Tue, 15 Jul 2025 13:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80982E2EEF;
+	Tue, 15 Jul 2025 13:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585744; cv=none; b=k1aMhqyp9UAl4Kf6xb+xQ0DvMeRoRj58pcNVc2mNWH/lh15oEdJpammRLZgQANN1capI1QcQhmT+OLkbBkF98sU3oRBtwsEUqdYxtZQJGAL1Ayge367gT46jg3l5ZDEzjegkLyC6lhzj/2rp7fYrwJw0U0Pzhz8T6NoQmPbx3fQ=
+	t=1752585914; cv=none; b=G4khB8WTQmVLtFQavFe7pD+YhpY1LPZf7lsmzYXEpDYBDY2LaAxXV9I2U4EfleIDpU5VorulvJGDIJOqr137/7WtayUNyDdlCbCr4/pa3HrDInstqmbThLOdWaf6HM6N+Es1ESoY7LEkYyTlnD4zueDseSEfW+OsfEpmnyykJ/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585744; c=relaxed/simple;
-	bh=WKHP1MqZU0vZgb82fMUPcCy5lD1WECw4FcTrcH+bIX0=;
+	s=arc-20240116; t=1752585914; c=relaxed/simple;
+	bh=2CmwxPA8gf/OHBZPZdoa4L8YaDYKwCV4Wztfg/6xKV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M+RRcqWt2l4gyF4QOrvPB0sYH5ntwCCBrUk6gseku4BuyzaMW1MUjDTCBZRKkh3w7rquD3mueYd1QFTUpXZA9ZPQrXBOkxvgw/XdoqQCmhMLI4RNuIXxRINv7CJ4hzn9VbD2oLykpqbqCn7dA3aOW/LtC6ee9So5bm1DA5IyaFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBC+Ag0M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5049C4CEE3;
-	Tue, 15 Jul 2025 13:22:23 +0000 (UTC)
+	 MIME-Version; b=Lx7xC0B3uk5ZssOilumKY1jO2YN5TM57XjSaH0pc0Utns5rg+5UtbwSA9qrj6jwtUE/+D/BvV6lKYwov85WFEG3RIR+ji708EahQ08rObTwXPXDrg+lpwThioc5YDOR6ZwEI2CXBTSGRxsqzGq9s0ch1Wu+6xzbJExs4TZ2c1XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJKi2mhv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E900C4CEE3;
+	Tue, 15 Jul 2025 13:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585744;
-	bh=WKHP1MqZU0vZgb82fMUPcCy5lD1WECw4FcTrcH+bIX0=;
+	s=korg; t=1752585914;
+	bh=2CmwxPA8gf/OHBZPZdoa4L8YaDYKwCV4Wztfg/6xKV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JBC+Ag0Mq89JCJwJuMOjzn2k/Xd/szRLq8qGupUMKW1lMfZZuw7hjaClNgFVTYqGI
-	 H8h4+4y1PX4hXRCsU5PVsnxYkZkcT3JIWFjuLlQZwOyvH9/shYl5neTFOogJtQpR9r
-	 ojNvrKBWgfE/HUXB3tP2qHHT8yv+J2y3U/TCxKYM=
+	b=eJKi2mhvMZevK01JjpWvRhqn+bkWC/6pFh1kXcZeN9iNP6o3pvL5aVfaN9DjV4dL9
+	 xK5ZQm2c27X/4AcsVzg9AAuVTvNiWM5NZ7hqjtIZZ+eSvG6pWcJzz81akaWp7vuKfp
+	 lGCubaW8562r5kmohKR73g7mpnVMaK1/erL3iWyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bf6ed459397e307c3ad2@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 124/163] netfilter: flowtable: account for Ethernet header in nf_flow_pppoe_proto()
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 056/109] scripts/gdb: fix interrupts.py after maple tree conversion
 Date: Tue, 15 Jul 2025 15:13:12 +0200
-Message-ID: <20250715130813.823193162@linuxfoundation.org>
+Message-ID: <20250715130801.119544596@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +65,394 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit 18cdb3d982da8976b28d57691eb256ec5688fad2 ]
+commit a02b0cde8ee515ee0c8efd33e7fbe6830c282e69 upstream.
 
-syzbot found a potential access to uninit-value in nf_flow_pppoe_proto()
+In commit 721255b9826b ("genirq: Use a maple tree for interrupt descriptor
+management"), the irq_desc_tree was replaced with a sparse_irqs tree using
+a maple tree structure.  Since the script looked for the irq_desc_tree
+symbol which is no longer available, no interrupts would be printed and
+the script output would not be useful anymore.
 
-Blamed commit forgot the Ethernet header.
+In addition to looking up the correct symbol (sparse_irqs), a new module
+(mapletree.py) is added whose mtree_load() implementation is largely
+copied after the C version and uses the same variable and intermediate
+function names wherever possible to ensure that both the C and Python
+version be updated in the future.
 
-BUG: KMSAN: uninit-value in nf_flow_offload_inet_hook+0x7e4/0x940 net/netfilter/nf_flow_table_inet.c:27
-  nf_flow_offload_inet_hook+0x7e4/0x940 net/netfilter/nf_flow_table_inet.c:27
-  nf_hook_entry_hookfn include/linux/netfilter.h:157 [inline]
-  nf_hook_slow+0xe1/0x3d0 net/netfilter/core.c:623
-  nf_hook_ingress include/linux/netfilter_netdev.h:34 [inline]
-  nf_ingress net/core/dev.c:5742 [inline]
-  __netif_receive_skb_core+0x4aff/0x70c0 net/core/dev.c:5837
-  __netif_receive_skb_one_core net/core/dev.c:5975 [inline]
-  __netif_receive_skb+0xcc/0xac0 net/core/dev.c:6090
-  netif_receive_skb_internal net/core/dev.c:6176 [inline]
-  netif_receive_skb+0x57/0x630 net/core/dev.c:6235
-  tun_rx_batched+0x1df/0x980 drivers/net/tun.c:1485
-  tun_get_user+0x4ee0/0x6b40 drivers/net/tun.c:1938
-  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1984
-  new_sync_write fs/read_write.c:593 [inline]
-  vfs_write+0xb4b/0x1580 fs/read_write.c:686
-  ksys_write fs/read_write.c:738 [inline]
-  __do_sys_write fs/read_write.c:749 [inline]
+This restores the scripts' output to match that of /proc/interrupts.
 
-Reported-by: syzbot+bf6ed459397e307c3ad2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/686bc073.a00a0220.c7b3.0086.GAE@google.com/T/#u
-Fixes: 87b3593bed18 ("netfilter: flowtable: validate pppoe header")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Link: https://patch.msgid.link/20250707124517.614489-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250625021020.1056930-1-florian.fainelli@broadcom.com
+Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Shanker Donthineni <sdonthineni@nvidia.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_flow_table.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/gdb/linux/constants.py.in |    7 +
+ scripts/gdb/linux/interrupts.py   |   12 -
+ scripts/gdb/linux/mapletree.py    |  252 ++++++++++++++++++++++++++++++++++++++
+ scripts/gdb/linux/xarray.py       |   28 ++++
+ 4 files changed, 293 insertions(+), 6 deletions(-)
+ create mode 100644 scripts/gdb/linux/mapletree.py
+ create mode 100644 scripts/gdb/linux/xarray.py
 
-diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
-index b63d53bb9dd6d..1a6fca0131653 100644
---- a/include/net/netfilter/nf_flow_table.h
-+++ b/include/net/netfilter/nf_flow_table.h
-@@ -369,7 +369,7 @@ static inline __be16 __nf_flow_pppoe_proto(const struct sk_buff *skb)
+--- a/scripts/gdb/linux/constants.py.in
++++ b/scripts/gdb/linux/constants.py.in
+@@ -20,6 +20,7 @@
+ #include <linux/of_fdt.h>
+ #include <linux/page_ext.h>
+ #include <linux/radix-tree.h>
++#include <linux/maple_tree.h>
+ #include <linux/slab.h>
+ #include <linux/threads.h>
+ #include <linux/vmalloc.h>
+@@ -93,6 +94,12 @@ LX_GDBPARSED(RADIX_TREE_MAP_SIZE)
+ LX_GDBPARSED(RADIX_TREE_MAP_SHIFT)
+ LX_GDBPARSED(RADIX_TREE_MAP_MASK)
  
- static inline bool nf_flow_pppoe_proto(struct sk_buff *skb, __be16 *inner_proto)
- {
--	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
-+	if (!pskb_may_pull(skb, ETH_HLEN + PPPOE_SES_HLEN))
- 		return false;
++/* linux/maple_tree.h */
++LX_VALUE(MAPLE_NODE_SLOTS)
++LX_VALUE(MAPLE_RANGE64_SLOTS)
++LX_VALUE(MAPLE_ARANGE64_SLOTS)
++LX_GDBPARSED(MAPLE_NODE_MASK)
++
+ /* linux/vmalloc.h */
+ LX_VALUE(VM_IOREMAP)
+ LX_VALUE(VM_ALLOC)
+--- a/scripts/gdb/linux/interrupts.py
++++ b/scripts/gdb/linux/interrupts.py
+@@ -7,7 +7,7 @@ import gdb
+ from linux import constants
+ from linux import cpus
+ from linux import utils
+-from linux import radixtree
++from linux import mapletree
  
- 	*inner_proto = __nf_flow_pppoe_proto(skb);
--- 
-2.39.5
-
+ irq_desc_type = utils.CachedType("struct irq_desc")
+ 
+@@ -23,12 +23,12 @@ def irqd_is_level(desc):
+ def show_irq_desc(prec, irq):
+     text = ""
+ 
+-    desc = radixtree.lookup(gdb.parse_and_eval("&irq_desc_tree"), irq)
++    desc = mapletree.mtree_load(gdb.parse_and_eval("&sparse_irqs"), irq)
+     if desc is None:
+         return text
+ 
+-    desc = desc.cast(irq_desc_type.get_type())
+-    if desc is None:
++    desc = desc.cast(irq_desc_type.get_type().pointer())
++    if desc == 0:
+         return text
+ 
+     if irq_settings_is_hidden(desc):
+@@ -221,8 +221,8 @@ class LxInterruptList(gdb.Command):
+             gdb.write("CPU%-8d" % cpu)
+         gdb.write("\n")
+ 
+-        if utils.gdb_eval_or_none("&irq_desc_tree") is None:
+-            return
++        if utils.gdb_eval_or_none("&sparse_irqs") is None:
++            raise gdb.GdbError("Unable to find the sparse IRQ tree, is CONFIG_SPARSE_IRQ enabled?")
+ 
+         for irq in range(nr_irqs):
+             gdb.write(show_irq_desc(prec, irq))
+--- /dev/null
++++ b/scripts/gdb/linux/mapletree.py
+@@ -0,0 +1,252 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++#  Maple tree helpers
++#
++# Copyright (c) 2025 Broadcom
++#
++# Authors:
++#  Florian Fainelli <florian.fainelli@broadcom.com>
++
++import gdb
++
++from linux import utils
++from linux import constants
++from linux import xarray
++
++maple_tree_root_type = utils.CachedType("struct maple_tree")
++maple_node_type = utils.CachedType("struct maple_node")
++maple_enode_type = utils.CachedType("void")
++
++maple_dense = 0
++maple_leaf_64 = 1
++maple_range_64 = 2
++maple_arange_64 = 3
++
++class Mas(object):
++    ma_active = 0
++    ma_start = 1
++    ma_root = 2
++    ma_none = 3
++    ma_pause = 4
++    ma_overflow = 5
++    ma_underflow = 6
++    ma_error = 7
++
++    def __init__(self, mt, first, end):
++        if mt.type == maple_tree_root_type.get_type().pointer():
++            self.tree = mt.dereference()
++        elif mt.type != maple_tree_root_type.get_type():
++            raise gdb.GdbError("must be {} not {}"
++                               .format(maple_tree_root_type.get_type().pointer(), mt.type))
++        self.tree = mt
++        self.index = first
++        self.last = end
++        self.node = None
++        self.status = self.ma_start
++        self.min = 0
++        self.max = -1
++
++    def is_start(self):
++        # mas_is_start()
++        return self.status == self.ma_start
++
++    def is_ptr(self):
++        # mas_is_ptr()
++        return self.status == self.ma_root
++
++    def is_none(self):
++        # mas_is_none()
++        return self.status == self.ma_none
++
++    def root(self):
++        # mas_root()
++        return self.tree['ma_root'].cast(maple_enode_type.get_type().pointer())
++
++    def start(self):
++        # mas_start()
++        if self.is_start() is False:
++            return None
++
++        self.min = 0
++        self.max = ~0
++
++        while True:
++            self.depth = 0
++            root = self.root()
++            if xarray.xa_is_node(root):
++                self.depth = 0
++                self.status = self.ma_active
++                self.node = mte_safe_root(root)
++                self.offset = 0
++                if mte_dead_node(self.node) is True:
++                    continue
++
++                return None
++
++            self.node = None
++            # Empty tree
++            if root is None:
++                self.status = self.ma_none
++                self.offset = constants.LX_MAPLE_NODE_SLOTS
++                return None
++
++            # Single entry tree
++            self.status = self.ma_root
++            self.offset = constants.LX_MAPLE_NODE_SLOTS
++
++            if self.index != 0:
++                return None
++
++            return root
++
++        return None
++
++    def reset(self):
++        # mas_reset()
++        self.status = self.ma_start
++        self.node = None
++
++def mte_safe_root(node):
++    if node.type != maple_enode_type.get_type().pointer():
++        raise gdb.GdbError("{} must be {} not {}"
++                           .format(mte_safe_root.__name__, maple_enode_type.get_type().pointer(), node.type))
++    ulong_type = utils.get_ulong_type()
++    indirect_ptr = node.cast(ulong_type) & ~0x2
++    val = indirect_ptr.cast(maple_enode_type.get_type().pointer())
++    return val
++
++def mte_node_type(entry):
++    ulong_type = utils.get_ulong_type()
++    val = None
++    if entry.type == maple_enode_type.get_type().pointer():
++        val = entry.cast(ulong_type)
++    elif entry.type == ulong_type:
++        val = entry
++    else:
++        raise gdb.GdbError("{} must be {} not {}"
++                           .format(mte_node_type.__name__, maple_enode_type.get_type().pointer(), entry.type))
++    return (val >> 0x3) & 0xf
++
++def ma_dead_node(node):
++    if node.type != maple_node_type.get_type().pointer():
++        raise gdb.GdbError("{} must be {} not {}"
++                           .format(ma_dead_node.__name__, maple_node_type.get_type().pointer(), node.type))
++    ulong_type = utils.get_ulong_type()
++    parent = node['parent']
++    indirect_ptr = node['parent'].cast(ulong_type) & ~constants.LX_MAPLE_NODE_MASK
++    return indirect_ptr == node
++
++def mte_to_node(enode):
++    ulong_type = utils.get_ulong_type()
++    if enode.type == maple_enode_type.get_type().pointer():
++        indirect_ptr = enode.cast(ulong_type)
++    elif enode.type == ulong_type:
++        indirect_ptr = enode
++    else:
++        raise gdb.GdbError("{} must be {} not {}"
++                           .format(mte_to_node.__name__, maple_enode_type.get_type().pointer(), enode.type))
++    indirect_ptr = indirect_ptr & ~constants.LX_MAPLE_NODE_MASK
++    return indirect_ptr.cast(maple_node_type.get_type().pointer())
++
++def mte_dead_node(enode):
++    if enode.type != maple_enode_type.get_type().pointer():
++        raise gdb.GdbError("{} must be {} not {}"
++                           .format(mte_dead_node.__name__, maple_enode_type.get_type().pointer(), enode.type))
++    node = mte_to_node(enode)
++    return ma_dead_node(node)
++
++def ma_is_leaf(tp):
++    result = tp < maple_range_64
++    return tp < maple_range_64
++
++def mt_pivots(t):
++    if t == maple_dense:
++        return 0
++    elif t == maple_leaf_64 or t == maple_range_64:
++        return constants.LX_MAPLE_RANGE64_SLOTS - 1
++    elif t == maple_arange_64:
++        return constants.LX_MAPLE_ARANGE64_SLOTS - 1
++
++def ma_pivots(node, t):
++    if node.type != maple_node_type.get_type().pointer():
++        raise gdb.GdbError("{}: must be {} not {}"
++                           .format(ma_pivots.__name__, maple_node_type.get_type().pointer(), node.type))
++    if t == maple_arange_64:
++        return node['ma64']['pivot']
++    elif t == maple_leaf_64 or t == maple_range_64:
++        return node['mr64']['pivot']
++    else:
++        return None
++
++def ma_slots(node, tp):
++    if node.type != maple_node_type.get_type().pointer():
++        raise gdb.GdbError("{}: must be {} not {}"
++                           .format(ma_slots.__name__, maple_node_type.get_type().pointer(), node.type))
++    if tp == maple_arange_64:
++        return node['ma64']['slot']
++    elif tp == maple_range_64 or tp == maple_leaf_64:
++        return node['mr64']['slot']
++    elif tp == maple_dense:
++        return node['slot']
++    else:
++        return None
++
++def mt_slot(mt, slots, offset):
++    ulong_type = utils.get_ulong_type()
++    return slots[offset].cast(ulong_type)
++
++def mtree_lookup_walk(mas):
++    ulong_type = utils.get_ulong_type()
++    n = mas.node
++
++    while True:
++        node = mte_to_node(n)
++        tp = mte_node_type(n)
++        pivots = ma_pivots(node, tp)
++        end = mt_pivots(tp)
++        offset = 0
++        while True:
++            if pivots[offset] >= mas.index:
++                break
++            if offset >= end:
++                break
++            offset += 1
++
++        slots = ma_slots(node, tp)
++        n = mt_slot(mas.tree, slots, offset)
++        if ma_dead_node(node) is True:
++            mas.reset()
++            return None
++            break
++
++        if ma_is_leaf(tp) is True:
++            break
++
++    return n
++
++def mtree_load(mt, index):
++    ulong_type = utils.get_ulong_type()
++    # MT_STATE(...)
++    mas = Mas(mt, index, index)
++    entry = None
++
++    while True:
++        entry = mas.start()
++        if mas.is_none():
++            return None
++
++        if mas.is_ptr():
++            if index != 0:
++                entry = None
++            return entry
++
++        entry = mtree_lookup_walk(mas)
++        if entry is None and mas.is_start():
++            continue
++        else:
++            break
++
++    if xarray.xa_is_zero(entry):
++        return None
++
++    return entry
+--- /dev/null
++++ b/scripts/gdb/linux/xarray.py
+@@ -0,0 +1,28 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++#  Xarray helpers
++#
++# Copyright (c) 2025 Broadcom
++#
++# Authors:
++#  Florian Fainelli <florian.fainelli@broadcom.com>
++
++import gdb
++
++from linux import utils
++from linux import constants
++
++def xa_is_internal(entry):
++    ulong_type = utils.get_ulong_type()
++    return ((entry.cast(ulong_type) & 3) == 2)
++
++def xa_mk_internal(v):
++    return ((v << 2) | 2)
++
++def xa_is_zero(entry):
++    ulong_type = utils.get_ulong_type()
++    return entry.cast(ulong_type) == xa_mk_internal(257)
++
++def xa_is_node(entry):
++    ulong_type = utils.get_ulong_type()
++    return xa_is_internal(entry) and (entry.cast(ulong_type) > 4096)
 
 
 
