@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-162149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B386B05BDE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B53CBB05E97
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 484551795F4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D20CA1C43BDC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646022E3AE9;
-	Tue, 15 Jul 2025 13:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37EE2E5435;
+	Tue, 15 Jul 2025 13:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATktzxIN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1x52fa2k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E772E339C;
-	Tue, 15 Jul 2025 13:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21592E3391;
+	Tue, 15 Jul 2025 13:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585804; cv=none; b=Uk2M8gGhkpgVWn4XMYxIUsu8fnV1GiViGWoh6TuDnaR4J4hxkg81wBxFv2HsmPqElBGHZPTsytnMEWsIRv5gh7ierYye3ejxuvkO8OBtPZ0E+An1ZsXpkwZ19x5gGh0UYi7hLXmyMzP/QzBBtjp6gKSx32cSZfirbqfKhn9dXBY=
+	t=1752586854; cv=none; b=dKytztHUix1JxqAmWEIWO4iSVWMjPTScYEq829tnYwgcK8lP7DGUALtUaW94fan6aAUdKyb6hK8kngV2fxyyrT33r/FOEYzB6TGW7Ri5IXuL+4VIL5MYgZ0gkgGjXDdIySIMpXeHhAkAmUo9MeRJQm89A0GMfJNWNYEI2LAGUBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585804; c=relaxed/simple;
-	bh=9VCPOr45Xw+wsaN66c44owxHf6U63mlgo8Xa1s/NCn8=;
+	s=arc-20240116; t=1752586854; c=relaxed/simple;
+	bh=rVUvktp3l/txSVD5oy5vh0Qa1znWvKZXYWLD6zcr9ZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oB0sfOS4b5dv6Afst1y6rKjRfSuKG8HMevunygpD7U3wP6xYpzdEDTC3qm0SO7RZnJOeRvI5q0iohSmr3h8zKuUnoF3OsGZIYozDK1Yf6DeY4Dqfr9k0fvMd1vooJmNZpm6RPtce8xbbYpXJ6t/rc668XKU1ezgMmp2qjv9BO+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATktzxIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56ECFC4CEE3;
-	Tue, 15 Jul 2025 13:23:23 +0000 (UTC)
+	 MIME-Version; b=MvO+FJ6LRkggZ8VZwfM8C/dhHDm3Yv63hizUkyCrUdFM/TR+0v6oyMwvNew84uP8MV0vxFQs08BvXP9iAarnCmCfmgEYRYf8qYlw9/Qd5k1lUwN6hNPJQpZWnJrKpt5RXpKGg0AzjENH3oPcr6QNu+Mxgn7bD97G/kWie+fW5fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1x52fa2k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2FEC4CEF1;
+	Tue, 15 Jul 2025 13:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585803;
-	bh=9VCPOr45Xw+wsaN66c44owxHf6U63mlgo8Xa1s/NCn8=;
+	s=korg; t=1752586854;
+	bh=rVUvktp3l/txSVD5oy5vh0Qa1znWvKZXYWLD6zcr9ZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATktzxIN7vTv3/A/4w99M6M+K0aYqQRNW2h2JcaB745Y87+Lab2s6QMj8GDoaLVYP
-	 RH0Qtmg2dJQVbTq4tImCbZbHB2HYVTXkblGs3CItfQDLUlsicc7624nWnXVm0Z6i3f
-	 CjSpHQ7SHpSIN7GXijI6InmMiMRrZOTqZyi6mFx0=
+	b=1x52fa2k8DuUsARY9T9Q3ur9Tp6HGkCydSS9HtdDuHGSNdnvWAqEmuiwxBIH2ekNt
+	 qZ7V4wEBhDfMM0FB8oe/0Y+DmCR6aYkcAZ5PgGpeq6fSBchPqMHSKMUmaleVwU5S3+
+	 fm/x2YxaeBP5hLYrUGo+Wvd0TGINvTnxNR5uB+6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+de6565462ab540f50e47@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	David Howells <dhowells@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/109] tcp: Correct signedness in skb remaining space calculation
-Date: Tue, 15 Jul 2025 15:12:30 +0200
-Message-ID: <20250715130759.451162733@linuxfoundation.org>
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Paul Durrant <paul@xen.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.15 056/192] KVM: x86/xen: Allow out of range event channel ports in IRQ routing table.
+Date: Tue, 15 Jul 2025 15:12:31 +0200
+Message-ID: <20250715130817.088416139@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit d3a5f2871adc0c61c61869f37f3e697d97f03d8c ]
+commit a7f4dff21fd744d08fa956c243d2b1795f23cbf7 upstream.
 
-Syzkaller reported a bug [1] where sk->sk_forward_alloc can overflow.
+To avoid imposing an ordering constraint on userspace, allow 'invalid'
+event channel targets to be configured in the IRQ routing table.
 
-When we send data, if an skb exists at the tail of the write queue, the
-kernel will attempt to append the new data to that skb. However, the code
-that checks for available space in the skb is flawed:
-'''
-copy = size_goal - skb->len
-'''
+This is the same as accepting interrupts targeted at vCPUs which don't
+exist yet, which is already the case for both Xen event channels *and*
+for MSIs (which don't do any filtering of permitted APIC ID targets at
+all).
 
-The types of the variables involved are:
-'''
-copy: ssize_t (s64 on 64-bit systems)
-size_goal: int
-skb->len: unsigned int
-'''
+If userspace actually *triggers* an IRQ with an invalid target, that
+will fail cleanly, as kvm_xen_set_evtchn_fast() also does the same range
+check.
 
-Due to C's type promotion rules, the signed size_goal is converted to an
-unsigned int to match skb->len before the subtraction. The result is an
-unsigned int.
+If KVM enforced that the IRQ target must be valid at the time it is
+*configured*, that would force userspace to create all vCPUs and do
+various other parts of setup (in this case, setting the Xen long_mode)
+before restoring the IRQ table.
 
-When this unsigned int result is then assigned to the s64 copy variable,
-it is zero-extended, preserving its non-negative value. Consequently, copy
-is always >= 0.
-
-Assume we are sending 2GB of data and size_goal has been adjusted to a
-value smaller than skb->len. The subtraction will result in copy holding a
-very large positive integer. In the subsequent logic, this large value is
-used to update sk->sk_forward_alloc, which can easily cause it to overflow.
-
-The syzkaller reproducer uses TCP_REPAIR to reliably create this
-condition. However, this can also occur in real-world scenarios. The
-tcp_bound_to_half_wnd() function can also reduce size_goal to a small
-value. This would cause the subsequent tcp_wmem_schedule() to set
-sk->sk_forward_alloc to a value close to INT_MAX. Further memory
-allocation requests would then cause sk_forward_alloc to wrap around and
-become negative.
-
-[1]: https://syzkaller.appspot.com/bug?extid=de6565462ab540f50e47
-
-Reported-by: syzbot+de6565462ab540f50e47@syzkaller.appspotmail.com
-Fixes: 270a1c3de47e ("tcp: Support MSG_SPLICE_PAGES")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20250707054112.101081-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Link: https://lore.kernel.org/r/e489252745ac4b53f1f7f50570b03fb416aa2065.camel@infradead.org
+[sean: massage comment]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/xen.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index ff22060f9145f..a4bbe959d1e25 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1132,7 +1132,7 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
- 		goto do_error;
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -1970,8 +1970,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm
+ {
+ 	struct kvm_vcpu *vcpu;
  
- 	while (msg_data_left(msg)) {
--		ssize_t copy = 0;
-+		int copy = 0;
+-	if (ue->u.xen_evtchn.port >= max_evtchn_port(kvm))
+-		return -EINVAL;
++	/*
++	 * Don't check for the port being within range of max_evtchn_port().
++	 * Userspace can configure what ever targets it likes; events just won't
++	 * be delivered if/while the target is invalid, just like userspace can
++	 * configure MSIs which target non-existent APICs.
++	 *
++	 * This allow on Live Migration and Live Update, the IRQ routing table
++	 * can be restored *independently* of other things like creating vCPUs,
++	 * without imposing an ordering dependency on userspace.  In this
++	 * particular case, the problematic ordering would be with setting the
++	 * Xen 'long mode' flag, which changes max_evtchn_port() to allow 4096
++	 * instead of 1024 event channels.
++	 */
  
- 		skb = tcp_write_queue_tail(sk);
- 		if (skb)
--- 
-2.39.5
-
+ 	/* We only support 2 level event channels for now */
+ 	if (ue->u.xen_evtchn.priority != KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL)
 
 
 
