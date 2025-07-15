@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429DBB05BF6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:25:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C4CB05D1D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6998D7B918B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2E461C26EF6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BED2E175C;
-	Tue, 15 Jul 2025 13:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D1226E6F1;
+	Tue, 15 Jul 2025 13:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqjW5xb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdZQm47X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148C72D5426;
-	Tue, 15 Jul 2025 13:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936C82E62AB;
+	Tue, 15 Jul 2025 13:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585728; cv=none; b=nRCW4hOMP/45OFMsOgPPe5ro9l88/10y0FdnyqgfFkJgTQ8lX3Szjxacr4tnFxWXyRO8N3hqSn8eCy54u7e7ovxg0RBbySiJsP0vx5R3pzXw4QLQrHbLGToVazg/9epkqtvuCuexbYL+XAVu/pPTvs2vTHfvpHyc0kgMQoJyrzI=
+	t=1752586242; cv=none; b=PTqCq/Lx0Ti+f8AATUOPRBpdNgPhpH9qvAx8Hix+WIXOB06Q3kXaztzJ3G+Ahb2c4YyPDLR2kNotwrBdTZz1AqqBuEuQfoR7kSkN3e5HyFzl8Qh6uvVYwK/dAph5ksSiR43vWVwNVyOZlrRn+GO0RR8H1hwVE1EIp1GM1cGP4qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585728; c=relaxed/simple;
-	bh=gRj2AecfhSPzYrYRfsfyGQ5o8ltOw83OBRmU+1Vpdyc=;
+	s=arc-20240116; t=1752586242; c=relaxed/simple;
+	bh=zNeo78SmgaDlf1AKNUe8iLHd4Ek/hlZupT9HPcmP3Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXM/6X5eyyvZxKaitiqWUJ+L9/FxsD3XQ5U6R9dpNpDjtS2FiB280iTs0xorjGe4xlkOe8o0LAFEqpUvV3p2qu/y0VwXVv25WiBoavIAGF7X5Fk5KHKfxYdaTv12Z7PhfH9i1MdTzTVtGZKKRs/AnqmlQgc0r2r7PRCo+1G362o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqjW5xb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFABC4CEE3;
-	Tue, 15 Jul 2025 13:22:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IILLDqFPAibD0ESH/zMwFCNmOhsrWxwn+dmeMYSmvAYpaXjKTCVOS9aVuFvZQAx+nF50ONAUC8qvAOidSFo57GjL5/vYfywbefNuckNLdw28is82tINCNkdyC4Uat3Fs4Hm3a9/xbMAJiLVu0wfvUvg9G0Hd4GibaMCYiz26Bz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdZQm47X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27427C4CEE3;
+	Tue, 15 Jul 2025 13:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585728;
-	bh=gRj2AecfhSPzYrYRfsfyGQ5o8ltOw83OBRmU+1Vpdyc=;
+	s=korg; t=1752586242;
+	bh=zNeo78SmgaDlf1AKNUe8iLHd4Ek/hlZupT9HPcmP3Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqjW5xb6uGrPPOUKj7wsj+p6AV4UCDEShERjvBTDVL7UZ6eEpqC2jHh3Jgy3qkKVL
-	 4RQqcQGBCxVncGDyrTRv0W9CD+FaPEJvl6QNSVC+Ke3wKAdRliyHqjayRglAYwxHJy
-	 BOoJQ8xmTy3S0pyJ3LqmcLH6IqgWeyYEr5D9EyiE=
+	b=NdZQm47XIWvS5uIOHeIGA7KO2gEtYqt1vooShdCQ0MRvdf5Ydxzg8XBA9hD7hRkc/
+	 K6Trs6jZhrxh5GaH84IpLgRHKUFf1yhwvYJnavFDjG11R1wo5oxeFWjbnRjTa0g3HK
+	 6RmKO8FvCKRCk61RC+nUWsiRPe5x2qlGKTtMTSvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Zhang <quic_shuaz@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 148/163] driver: bluetooth: hci_qca:fix unable to load the BT driver
-Date: Tue, 15 Jul 2025 15:13:36 +0200
-Message-ID: <20250715130814.769798434@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 5.15 38/77] pwm: mediatek: Ensure to disable clocks in error path
+Date: Tue, 15 Jul 2025 15:13:37 +0200
+Message-ID: <20250715130753.239693293@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Zhang <quic_shuaz@quicinc.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit db0ff7e15923ffa7067874604ca275e92343f1b1 ]
+commit 505b730ede7f5c4083ff212aa955155b5b92e574 upstream.
 
-Some modules have BT_EN enabled via a hardware pull-up,
-meaning it is not defined in the DTS and is not controlled
-through the power sequence. In such cases, fall through
-to follow the legacy flow.
+After enabling the clocks each error path must disable the clocks again.
+One of them failed to do so. Unify the error paths to use goto to make it
+harder for future changes to add a similar bug.
 
-Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7ca59947b5fc ("pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250704172728.626815-2-u.kleine-koenig@baylibre.com
+Cc: stable@vger.kernel.org
+[ukleinek: backported to 5.15.y]
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/pwm/pwm-mediatek.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 025b9a07c0875..e6ad01d5e1d5d 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -2363,10 +2363,17 @@ static int qca_serdev_probe(struct serdev_device *serdev)
- 			 */
- 			qcadev->bt_power->pwrseq = devm_pwrseq_get(&serdev->dev,
- 								   "bluetooth");
--			if (IS_ERR(qcadev->bt_power->pwrseq))
--				return PTR_ERR(qcadev->bt_power->pwrseq);
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -129,8 +129,10 @@ static int pwm_mediatek_config(struct pw
+ 		return ret;
  
--			break;
-+			/*
-+			 * Some modules have BT_EN enabled via a hardware pull-up,
-+			 * meaning it is not defined in the DTS and is not controlled
-+			 * through the power sequence. In such cases, fall through
-+			 * to follow the legacy flow.
-+			 */
-+			if (IS_ERR(qcadev->bt_power->pwrseq))
-+				qcadev->bt_power->pwrseq = NULL;
-+			else
-+				break;
- 		}
- 		fallthrough;
- 	case QCA_WCN3988:
--- 
-2.39.5
-
+ 	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
+-	if (!clk_rate)
+-		return -EINVAL;
++	if (!clk_rate) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 
+ 	/* Make sure we use the bus clock and not the 26MHz clock */
+ 	if (pc->soc->has_ck_26m_sel)
+@@ -149,9 +151,9 @@ static int pwm_mediatek_config(struct pw
+ 	}
+ 
+ 	if (clkdiv > PWM_CLK_DIV_MAX) {
+-		pwm_mediatek_clk_disable(chip, pwm);
+-		dev_err(chip->dev, "period %d not supported\n", period_ns);
+-		return -EINVAL;
++		dev_err(chip->dev, "period of %d ns not supported\n", period_ns);
++		ret = -EINVAL;
++		goto out;
+ 	}
+ 
+ 	if (pc->soc->pwm45_fixup && pwm->hwpwm > 2) {
+@@ -168,9 +170,10 @@ static int pwm_mediatek_config(struct pw
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
+ 
++out:
+ 	pwm_mediatek_clk_disable(chip, pwm);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
 
 
 
