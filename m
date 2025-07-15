@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-162049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DACCCB05B3E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:18:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3AEB05DE1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21E381AA6DCA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5251E7A2FE6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971732701B8;
-	Tue, 15 Jul 2025 13:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610A52E7BDC;
+	Tue, 15 Jul 2025 13:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAGbTZIX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s25TCSoA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C24F19F420;
-	Tue, 15 Jul 2025 13:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FF02E49BB;
+	Tue, 15 Jul 2025 13:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585537; cv=none; b=VEbDYsKYPYs15A4RbyiyospoHsfIycQB7AbZ6OzSy578DO1zqCJs2AtOem4F43p5O2ii3NKkNbxgAkarT3+i7KWaqHr7ng0K15sB0mD556kuSBiMGJn9tRieOO37fhNS0Nske8RgtcxxoHuAVpFpaDkWaKWSW2HTMf1du4pPQX0=
+	t=1752586796; cv=none; b=TxnNUrZbsGUDOOin2b+dsFyrtEM3fnIhO/24g6KLbRlXvn35UOWNJXnta/FCDVlDQECeg+RLjDyGufOioK8O8CzNBSvW0Xfjstx0+lqSMviRM9KExlRHl1yfmkUy/fHAlNJyB/yzFofSQTL+CeJ3nQZeO7HEGU7OBob/a8Yl6yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585537; c=relaxed/simple;
-	bh=PuvmOy6xMlAeFBZ54D6uFaT+R5JcVrCrRLZZrTbq15E=;
+	s=arc-20240116; t=1752586796; c=relaxed/simple;
+	bh=DQc1DcnWLySaXegNbBtcy+E/fjVU1k0z4VYVanKP1sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0wyRtgkIjwJJA0awlrE79LPQdd53Xwz/Xx/+FU++j6qvosvYzUsLi7YWUUs/PT/zW8YshhyXMQnv9XEliORbTNLs92w3mrE/qX8TWn7rpGgLsg0a5hNLw+vXgjjpiIJ3SSAZ+O/sQuU0KP56Vt4gjp8ecTNSemrM6X8esRWYlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAGbTZIX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D516DC4CEE3;
-	Tue, 15 Jul 2025 13:18:56 +0000 (UTC)
+	 MIME-Version; b=YAI9FqklPC2ZpIqjj/cOm09NJ5g8SjyXcmI2noDbZNY+8okomamLeE1b3+Vglnw3R2gTAfBAGoMazNnxVyw9VZpZzLJ7hzkJvBcD6kKsRAfxOg0MnuFXvhht/KQ/oL5zjbsQ6IrVShTgrkbAfNJsdWnPQm+LEKM1K/OCCaqEY7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s25TCSoA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3584C4CEF1;
+	Tue, 15 Jul 2025 13:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585537;
-	bh=PuvmOy6xMlAeFBZ54D6uFaT+R5JcVrCrRLZZrTbq15E=;
+	s=korg; t=1752586796;
+	bh=DQc1DcnWLySaXegNbBtcy+E/fjVU1k0z4VYVanKP1sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FAGbTZIXRriGZtQ1qxN0N2NrVKOSLzNOxTU7tuKU9r+vHLqjD5FG/VbTWYeBvkiYm
-	 tX5ZrnhZ3fp3+PPZgAFiu/UNnrPkfsccQw6JeG30ym7u+j53Ta39QO4tsD48BQ9orD
-	 ucLENZpHCya+AShh2/ekrSJBDFXoY6WWgYXTYv5k=
+	b=s25TCSoAkQ/osJxUHSkW+d57lsToctoMFzudWM9e/Uo/94lNwvzAym1+BAwyCA4Dq
+	 +Wp6Cjh+uAV0CwddqkcbKDFKn3AbWMIUsULIYBruD7pUPJJsF6mo2/08b/PXXHxiGC
+	 PUrfOoiiamzIip6PqOWFz7rY57Ot3ffiNFzy6mHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Simona Vetter <simona.vetter@intel.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>
-Subject: [PATCH 6.12 077/163] drm/gem: Fix race in drm_gem_handle_create_tail()
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Corey Minyard <corey@minyard.net>,
+	Brendan Jackman <jackmanb@google.com>
+Subject: [PATCH 6.15 050/192] ipmi:msghandler: Fix potential memory corruption in ipmi_create_user()
 Date: Tue, 15 Jul 2025 15:12:25 +0200
-Message-ID: <20250715130811.825064108@linuxfoundation.org>
+Message-ID: <20250715130816.854706537@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,145 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simona Vetter <simona.vetter@ffwll.ch>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit bd46cece51a36ef088f22ef0416ac13b0a46d5b0 upstream.
+commit fa332f5dc6fc662ad7d3200048772c96b861cf6b upstream.
 
-Object creation is a careful dance where we must guarantee that the
-object is fully constructed before it is visible to other threads, and
-GEM buffer objects are no difference.
+The "intf" list iterator is an invalid pointer if the correct
+"intf->intf_num" is not found.  Calling atomic_dec(&intf->nr_users) on
+and invalid pointer will lead to memory corruption.
 
-Final publishing happens by calling drm_gem_handle_create(). After
-that the only allowed thing to do is call drm_gem_object_put() because
-a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
-(which is trivial since we have a linear allocator) can already tear
-down the object again.
+We don't really need to call atomic_dec() if we haven't called
+atomic_add_return() so update the if (intf->in_shutdown) path as well.
 
-Luckily most drivers get this right, the very few exceptions I've
-pinged the relevant maintainers for. Unfortunately we also need
-drm_gem_handle_create() when creating additional handles for an
-already existing object (e.g. GETFB ioctl or the various bo import
-ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
-the only exported function to stop these issues from happening.
-
-Now unfortunately the implementation of drm_gem_handle_create() isn't
-living up to standards: It does correctly finishe object
-initialization at the global level, and hence is safe against a
-concurrent tear down. But it also sets up the file-private aspects of
-the handle, and that part goes wrong: We fully register the object in
-the drm_file.object_idr before calling drm_vma_node_allow() or
-obj->funcs->open, which opens up races against concurrent removal of
-that handle in drm_gem_handle_delete().
-
-Fix this with the usual two-stage approach of first reserving the
-handle id, and then only registering the object after we've completed
-the file-private setup.
-
-Jacek reported this with a testcase of concurrently calling GEM_CLOSE
-on a freshly-created object (which also destroys the object), but it
-should be possible to hit this with just additional handles created
-through import or GETFB without completed destroying the underlying
-object with the concurrent GEM_CLOSE ioctl calls.
-
-Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
-Release driver references to handle before making it available
-again"), which means a cool 9 years have passed until someone noticed
-that we need to make this symmetry or there's still gaps left :-/
-Without the 2-stage close approach we'd still have a race, therefore
-that's an integral part of this bugfix.
-
-More importantly, this means we can have NULL pointers behind
-allocated id in our drm_file.object_idr. We need to check for that
-now:
-
-- drm_gem_handle_delete() checks for ERR_OR_NULL already
-
-- drm_gem.c:object_lookup() also chekcs for NULL
-
-- drm_gem_release() should never be called if there's another thread
-  still existing that could call into an IOCTL that creates a new
-  handle, so cannot race. For paranoia I added a NULL check to
-  drm_gem_object_release_handle() though.
-
-- most drivers (etnaviv, i915, msm) are find because they use
-  idr_find(), which maps both ENOENT and NULL to NULL.
-
-- drivers using idr_for_each_entry() should also be fine, because
-  idr_get_next does filter out NULL entries and continues the
-  iteration.
-
-- The same holds for drm_show_memory_stats().
-
-v2: Use drm_WARN_ON (Thomas)
-
-Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Tested-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: stable@vger.kernel.org
-Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250707151814.603897-1-simona.vetter@ffwll.ch
+Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Message-ID: <aBjMZ8RYrOt6NOgi@stanley.mountain>
+Signed-off-by: Corey Minyard <corey@minyard.net>
+[ - Dropped change to the `if (intf->in_shutdown)` block since that logic
+    doesn't exist yet.
+  - Modified out_unlock to release the srcu lock instead of the mutex
+    since we don't have the mutex here yet. ]
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem.c |   10 +++++++++-
- include/drm/drm_file.h    |    3 +++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ drivers/char/ipmi/ipmi_msghandler.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -289,6 +289,9 @@ drm_gem_object_release_handle(int id, vo
- 	struct drm_file *file_priv = data;
- 	struct drm_gem_object *obj = ptr;
- 
-+	if (drm_WARN_ON(obj->dev, !data))
-+		return 0;
-+
- 	if (obj->funcs->close)
- 		obj->funcs->close(obj, file_priv);
- 
-@@ -409,7 +412,7 @@ drm_gem_handle_create_tail(struct drm_fi
- 	idr_preload(GFP_KERNEL);
- 	spin_lock(&file_priv->table_lock);
- 
--	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
-+	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
- 
- 	spin_unlock(&file_priv->table_lock);
- 	idr_preload_end();
-@@ -430,6 +433,11 @@ drm_gem_handle_create_tail(struct drm_fi
- 			goto err_revoke;
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -1241,7 +1241,7 @@ int ipmi_create_user(unsigned int
  	}
+ 	/* Not found, return an error */
+ 	rv = -EINVAL;
+-	goto out_kfree;
++	goto out_unlock;
  
-+	/* mirrors drm_gem_handle_delete to avoid races */
-+	spin_lock(&file_priv->table_lock);
-+	obj = idr_replace(&file_priv->object_idr, obj, handle);
-+	WARN_ON(obj != NULL);
-+	spin_unlock(&file_priv->table_lock);
- 	*handlep = handle;
- 	return 0;
+  found:
+ 	if (atomic_add_return(1, &intf->nr_users) > max_users) {
+@@ -1283,6 +1283,7 @@ int ipmi_create_user(unsigned int
  
---- a/include/drm/drm_file.h
-+++ b/include/drm/drm_file.h
-@@ -300,6 +300,9 @@ struct drm_file {
- 	 *
- 	 * Mapping of mm object handles to object pointers. Used by the GEM
- 	 * subsystem. Protected by @table_lock.
-+	 *
-+	 * Note that allocated entries might be NULL as a transient state when
-+	 * creating or deleting a handle.
- 	 */
- 	struct idr object_idr;
- 
+ out_kfree:
+ 	atomic_dec(&intf->nr_users);
++out_unlock:
+ 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
+ 	vfree(new_user);
+ 	return rv;
 
 
 
