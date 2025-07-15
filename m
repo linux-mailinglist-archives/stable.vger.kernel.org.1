@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5346B05F0B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:59:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8B2B05F1C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:00:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7478D178A16
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:53:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C57EA7B98EC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080D02EBB92;
-	Tue, 15 Jul 2025 13:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546A72E3378;
+	Tue, 15 Jul 2025 13:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5HMUJxi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbQTUK+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB892EE287;
-	Tue, 15 Jul 2025 13:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121C02E2EEF;
+	Tue, 15 Jul 2025 13:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587134; cv=none; b=O0KPwtKtqHaoJHv+SVZqoLYefWCQMEw8cO5FhuewtSbboQq7ribFA7xFvr862NhsmzZnlEB2eO/y6K2lEy62UVOskBaj6S8NF7yOxT7IDSzM0Uidsni/ml9PcefVT2Y4mnpRYY3imWzOgU+qnbfxIx7WiC41i3tNY9PDmQDfMmA=
+	t=1752587329; cv=none; b=PNGMCN7mNe95EG/FajNoNPvM8ViB/z6XsbEEVpJBB0VcJAZ7p6Hh9e+/QxqJoPurk31O6BS9vAI7IJ/u/KG8AMHbD7WSjsFbBxtCEVg2UfPa17C3f8ceRtSFNOsQ12Q8eFOFOi5pHHoLHwBBwzY1nVXitHUMzBcJrv0TzFa4czA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587134; c=relaxed/simple;
-	bh=cVEW7shMxoqNwAFPyCZ1Ofb3Ah5E5ETeLYyE/gEcfzY=;
+	s=arc-20240116; t=1752587329; c=relaxed/simple;
+	bh=7VQQBq1JxtiKGYS2xWFEpsi++KdibzHpjWNl7NCCFsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IT2XK3NIgZHZuxml1A0dNRulxQXNs+H/f42Da3SF7xwjfY6APDhYhzv+wy3ayVdke+yp2ICGWOAKLCUmxe+ISb1Hv0+HczCPLaS9O1UghqlySes6XsO4+c71DFPssKj1v6dGi92y9tpXa25aus8VPoCoptR2M/G65CK6LBZfEPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5HMUJxi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1195FC4CEF1;
-	Tue, 15 Jul 2025 13:45:33 +0000 (UTC)
+	 MIME-Version; b=u//JJfyspAodDD0BQCYvIEUCzad4L0DVj4YJZaUoXo30Cl5WNodXVOIevqN45UlvpAxVlJRMqRGb56K+eEsuq2qnCWkwaJ2FqRySAibtiELl+CcKsfQ/8vFoGXgmgTxyn8WHz88P/x+gmmyfyopTJZtVeiMi65tsra7Ajsvh6Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbQTUK+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B799C4CEE3;
+	Tue, 15 Jul 2025 13:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587134;
-	bh=cVEW7shMxoqNwAFPyCZ1Ofb3Ah5E5ETeLYyE/gEcfzY=;
+	s=korg; t=1752587329;
+	bh=7VQQBq1JxtiKGYS2xWFEpsi++KdibzHpjWNl7NCCFsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k5HMUJxiVTF7eLeotqSiQGRRen1hK9bccEtXMr4ux4cyBIHKHxSGmgrQ4Vo2kvcx0
-	 uSZUGcTMDyJzrkqHqrZwteyZF9K+ZAhRlY83sM3bN5c69jgwmGSrUNFRUD+KRObYVj
-	 cxvtqoUDQU81OgdWP71B+YxcTV2oHJD7ddb5lSSs=
+	b=RbQTUK+PfeDEXOuI7jWw6f027n3yE44KVOSueTmSzaPN1ROocI9fh8OcpYYNnCiCB
+	 7FjYKK3jH5PoTSqSmaTqQJI59ivF/MgPNeLj3MUettDSS+CX1qVgvf8KSpR+7wWRLy
+	 K7521VE+dntPO4n6ORk8zLrvrLNg3RGqGqJoBTio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Zhang <quic_shuaz@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Yue Hu <huyue2@coolpad.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 179/192] driver: bluetooth: hci_qca:fix unable to load the BT driver
-Date: Tue, 15 Jul 2025 15:14:34 +0200
-Message-ID: <20250715130822.093434779@linuxfoundation.org>
+Subject: [PATCH 6.1 59/88] erofs: remove the member readahead from struct z_erofs_decompress_frontend
+Date: Tue, 15 Jul 2025 15:14:35 +0200
+Message-ID: <20250715130756.932211838@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Zhang <quic_shuaz@quicinc.com>
+From: Yue Hu <huyue2@coolpad.com>
 
-[ Upstream commit db0ff7e15923ffa7067874604ca275e92343f1b1 ]
+[ Upstream commit ef4b4b46c6aaf8edeea9a79320627fe10993f153 ]
 
-Some modules have BT_EN enabled via a hardware pull-up,
-meaning it is not defined in the DTS and is not controlled
-through the power sequence. In such cases, fall through
-to follow the legacy flow.
+The struct member is only used to add REQ_RAHEAD during I/O submission.
+So it is cleaner to pass it as a parameter than keep it in the struct.
 
-Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Also, rename function z_erofs_get_sync_decompress_policy() to
+z_erofs_is_sync_decompress() for better clarity and conciseness.
+
+Signed-off-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230524063944.1655-1-zbestahu@gmail.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Stable-dep-of: 99f7619a77a0 ("erofs: fix to add missing tracepoint in erofs_read_folio()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/erofs/zdata.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index a2dc39c005f4f..976ec88a0f62a 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -2392,10 +2392,17 @@ static int qca_serdev_probe(struct serdev_device *serdev)
- 			 */
- 			qcadev->bt_power->pwrseq = devm_pwrseq_get(&serdev->dev,
- 								   "bluetooth");
--			if (IS_ERR(qcadev->bt_power->pwrseq))
--				return PTR_ERR(qcadev->bt_power->pwrseq);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 94e9e0bf3bbd1..8018f31d2dbca 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -407,7 +407,6 @@ struct z_erofs_decompress_frontend {
+ 	z_erofs_next_pcluster_t owned_head;
+ 	enum z_erofs_pclustermode mode;
  
--			break;
-+			/*
-+			 * Some modules have BT_EN enabled via a hardware pull-up,
-+			 * meaning it is not defined in the DTS and is not controlled
-+			 * through the power sequence. In such cases, fall through
-+			 * to follow the legacy flow.
-+			 */
-+			if (IS_ERR(qcadev->bt_power->pwrseq))
-+				qcadev->bt_power->pwrseq = NULL;
-+			else
-+				break;
- 		}
- 		fallthrough;
- 	case QCA_WCN3950:
+-	bool readahead;
+ 	/* used for applying cache strategy on the fly */
+ 	bool backmost;
+ 	erofs_off_t headoffset;
+@@ -949,7 +948,7 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
+ 	return err;
+ }
+ 
+-static bool z_erofs_get_sync_decompress_policy(struct erofs_sb_info *sbi,
++static bool z_erofs_is_sync_decompress(struct erofs_sb_info *sbi,
+ 				       unsigned int readahead_pages)
+ {
+ 	/* auto: enable for read_folio, disable for readahead */
+@@ -1482,7 +1481,7 @@ static void z_erofs_decompressqueue_endio(struct bio *bio)
+ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 				 struct page **pagepool,
+ 				 struct z_erofs_decompressqueue *fgq,
+-				 bool *force_fg)
++				 bool *force_fg, bool readahead)
+ {
+ 	struct super_block *sb = f->inode->i_sb;
+ 	struct address_space *mc = MNGD_MAPPING(EROFS_SB(sb));
+@@ -1568,7 +1567,7 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 				bio->bi_iter.bi_sector = (sector_t)cur <<
+ 					(sb->s_blocksize_bits - 9);
+ 				bio->bi_private = q[JQ_SUBMIT];
+-				if (f->readahead)
++				if (readahead)
+ 					bio->bi_opf |= REQ_RAHEAD;
+ 				++nr_bios;
+ 			}
+@@ -1604,13 +1603,13 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ }
+ 
+ static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
+-			     struct page **pagepool, bool force_fg)
++			     struct page **pagepool, bool force_fg, bool ra)
+ {
+ 	struct z_erofs_decompressqueue io[NR_JOBQUEUES];
+ 
+ 	if (f->owned_head == Z_EROFS_PCLUSTER_TAIL)
+ 		return;
+-	z_erofs_submit_queue(f, pagepool, io, &force_fg);
++	z_erofs_submit_queue(f, pagepool, io, &force_fg, ra);
+ 
+ 	/* handle bypass queue (no i/o pclusters) immediately */
+ 	z_erofs_decompress_queue(&io[JQ_BYPASS], pagepool);
+@@ -1708,8 +1707,8 @@ static int z_erofs_read_folio(struct file *file, struct folio *folio)
+ 	(void)z_erofs_collector_end(&f);
+ 
+ 	/* if some compressed cluster ready, need submit them anyway */
+-	z_erofs_runqueue(&f, &pagepool,
+-			 z_erofs_get_sync_decompress_policy(sbi, 0));
++	z_erofs_runqueue(&f, &pagepool, z_erofs_is_sync_decompress(sbi, 0),
++			 false);
+ 
+ 	if (err)
+ 		erofs_err(inode->i_sb, "failed to read, err [%d]", err);
+@@ -1727,7 +1726,6 @@ static void z_erofs_readahead(struct readahead_control *rac)
+ 	struct page *pagepool = NULL, *head = NULL, *page;
+ 	unsigned int nr_pages;
+ 
+-	f.readahead = true;
+ 	f.headoffset = readahead_pos(rac);
+ 
+ 	z_erofs_pcluster_readmore(&f, rac, f.headoffset +
+@@ -1758,7 +1756,7 @@ static void z_erofs_readahead(struct readahead_control *rac)
+ 	(void)z_erofs_collector_end(&f);
+ 
+ 	z_erofs_runqueue(&f, &pagepool,
+-			 z_erofs_get_sync_decompress_policy(sbi, nr_pages));
++			 z_erofs_is_sync_decompress(sbi, nr_pages), true);
+ 	erofs_put_metabuf(&f.map.buf);
+ 	erofs_release_pages(&pagepool);
+ }
 -- 
 2.39.5
 
