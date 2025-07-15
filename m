@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043D5B0605A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:16:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F365B05FAB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A3AA504771
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CEE217DCE0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41072F0059;
-	Tue, 15 Jul 2025 13:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA9C2E54D3;
+	Tue, 15 Jul 2025 13:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fruZDe+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xez07KFi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721D32F0043;
-	Tue, 15 Jul 2025 13:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01B98462;
+	Tue, 15 Jul 2025 13:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587870; cv=none; b=gFfn9KEZ6ihMsYFPX+khOrNhSzafFevIAq4YXEQwGAQSnHkp6VExhYw+rXb4lsptfi+UQdw/odmxQ2PTBrt1qEknEcLpe8ZAGFqaSLaDXNbQkmVnQdFMIRTew4h5VrWT7dd5NU/i7unj+zF8cJRa6SLQDNi+ZxrTWZcR2aamHi8=
+	t=1752587355; cv=none; b=MeAvzIKquLStBffwQ1+bBD1frA1dI9H6E8G8T1rhGE5q3J+tIEIlgN/CjIMcvrlYiWF62vQn624XYR/fO/To+T/RDKmZyg2nzfydXVOEyFrpqEgIaoHtGu70pgxh98ZPDOfhvUXAuvuX9VDv2ZwGTxSzd2mFk6iOf8mYww9rxsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587870; c=relaxed/simple;
-	bh=xyBnJ7iCcPE8ZToIqINQ3ldzvzrlQIr0+kL/lp6vOZg=;
+	s=arc-20240116; t=1752587355; c=relaxed/simple;
+	bh=9QmwgG/2S+E4ZZMKaG2E8x/gtr5XQZT7Hb4gxAFmnF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O4PC970mfx72zKCqq70f/a1SdCbktR8wisM/tLxUNczXi7otTqKmSh6g44iWVKlN1Moyj3E8owRKUwpFZ/NG3zOJUV16PWNk4rv7af1Z/RoEmUJpkk7L5QsvG6/Qo0yMqI5ktNYJ82MXJur9eRCyWuMCYj9ypqhD+OTSuoFntKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fruZDe+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A8EC4CEE3;
-	Tue, 15 Jul 2025 13:57:49 +0000 (UTC)
+	 MIME-Version; b=otraiXWWOkTX0cmphGoyhMnoelA++2bjJeYxpNn09O1cK1YF1ydxC3rBZy51NyirKAfpLtD0/c5BYm1tHGWCuTnI4vID3dI+tEPHMHPVYj4bVtOJGG48x7BVmtMXOCWeT3i5PwKojjablFWfWiVDpwlhWZnxbfATh07Xq8nqFaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xez07KFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 498BEC4CEE3;
+	Tue, 15 Jul 2025 13:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587870;
-	bh=xyBnJ7iCcPE8ZToIqINQ3ldzvzrlQIr0+kL/lp6vOZg=;
+	s=korg; t=1752587355;
+	bh=9QmwgG/2S+E4ZZMKaG2E8x/gtr5XQZT7Hb4gxAFmnF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fruZDe+FZsabF0vjMxYbWE3LH2b6WGaoxjhrP+vuTuR+YP1sX1QW3xucIrNrRd4VR
-	 Fv1v4+SHKuHdurWTp/GW/GAbN+lCrkHJKdxt3D2TxnE6pwfs0ZKQometWiTIn4YgzE
-	 wtqy2Le4lYblnBVIdLQr+ueU35aptMatndfsufk8=
+	b=Xez07KFixN6nqwq0h3DqJYasRiue5+itzYHssc8xT7XphDRi5DBhmgsopX0mpQ+yT
+	 PeiPUBsjO7GQpYQQ/styB0miZlH0YZEOF778HJ7htmRl2rXSroyh6Nm2V1yO9zumK0
+	 8d0djZrUiQ6HO5n5vtxUT4nE0MnikdHA5XyZU7tE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>
-Subject: [PATCH 5.10 175/208] drm/sched: Increment job count before swapping tail spsc queue
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 68/88] net: phy: microchip: limit 100M workaround to link-down events on LAN88xx
 Date: Tue, 15 Jul 2025 15:14:44 +0200
-Message-ID: <20250715130817.979962654@linuxfoundation.org>
+Message-ID: <20250715130757.300297965@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 8af39ec5cf2be522c8eb43a3d8005ed59e4daaee upstream.
+[ Upstream commit dd4360c0e8504f2f7639c7f5d07c93cfd6a98333 ]
 
-A small race exists between spsc_queue_push and the run-job worker, in
-which spsc_queue_push may return not-first while the run-job worker has
-already idled due to the job count being zero. If this race occurs, job
-scheduling stops, leading to hangs while waiting on the job’s DMA
-fences.
+Restrict the 100Mbit forced-mode workaround to link-down transitions
+only, to prevent repeated link reset cycles in certain configurations.
 
-Seal this race by incrementing the job count before appending to the
-SPSC queue.
+The workaround was originally introduced to improve signal reliability
+when switching cables between long and short distances. It temporarily
+forces the PHY into 10 Mbps before returning to 100 Mbps.
 
-This race was observed on a drm-tip 6.16-rc1 build with the Xe driver in
-an SVM test case.
+However, when used with autonegotiating link partners (e.g., Intel i350),
+executing this workaround on every link change can confuse the partner
+and cause constant renegotiation loops. This results in repeated link
+down/up transitions and the PHY never reaching a stable state.
 
-Fixes: 1b1f42d8fde4 ("drm: move amd_gpu_scheduler into common location")
-Fixes: 27105db6c63a ("drm/amdgpu: Add SPSC queue to scheduler.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://lore.kernel.org/r/20250613212013.719312-1-matthew.brost@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Limit the workaround to only run during the PHY_NOLINK state. This ensures
+it is triggered only once per link drop, avoiding disruptive toggling
+while still preserving its intended effect.
+
+Note: I am not able to reproduce the original issue that this workaround
+addresses. I can only confirm that 100 Mbit mode works correctly in my
+test setup. Based on code inspection, I assume the workaround aims to
+reset some internal state machine or signal block by toggling speeds.
+However, a PHY reset is already performed earlier in the function via
+phy_init_hw(), which may achieve a similar effect. Without a reproducer,
+I conservatively keep the workaround but restrict its conditions.
+
+Fixes: e57cf3639c32 ("net: lan78xx: fix accessing the LAN7800's internal phy specific registers from the MAC driver")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250709130753.3994461-3-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/spsc_queue.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/phy/microchip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/drm/spsc_queue.h
-+++ b/include/drm/spsc_queue.h
-@@ -70,9 +70,11 @@ static inline bool spsc_queue_push(struc
- 
- 	preempt_disable();
- 
-+	atomic_inc(&queue->job_count);
-+	smp_mb__after_atomic();
-+
- 	tail = (struct spsc_node **)atomic_long_xchg(&queue->tail, (long)&node->next);
- 	WRITE_ONCE(*tail, node);
--	atomic_inc(&queue->job_count);
- 
- 	/*
- 	 * In case of first element verify new node will be visible to the consumer
+diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
+index 0b88635f4fbca..3750f8778c65c 100644
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -351,7 +351,7 @@ static void lan88xx_link_change_notify(struct phy_device *phydev)
+ 	 * As workaround, set to 10 before setting to 100
+ 	 * at forced 100 F/H mode.
+ 	 */
+-	if (!phydev->autoneg && phydev->speed == 100) {
++	if (phydev->state == PHY_NOLINK && !phydev->autoneg && phydev->speed == 100) {
+ 		/* disable phy interrupt */
+ 		temp = phy_read(phydev, LAN88XX_INT_MASK);
+ 		temp &= ~LAN88XX_INT_MASK_MDINTPIN_EN_;
+-- 
+2.39.5
+
 
 
 
