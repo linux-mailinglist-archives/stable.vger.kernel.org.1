@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC171B05C6F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:31:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DA0B05BF3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19085165056
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A1803BBA3A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AA22E92C8;
-	Tue, 15 Jul 2025 13:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E392E3376;
+	Tue, 15 Jul 2025 13:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CH962KIX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNHAzleQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66082E62BE;
-	Tue, 15 Jul 2025 13:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A6A2E2F18;
+	Tue, 15 Jul 2025 13:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585996; cv=none; b=uOKUO/qp9IGZPLz0bxZ2lv6gORa8AL1axcEpicZ10KRVeBUdp5h57gJzGIBi3XgssuNbJWcAS4vPE3T/3v+Agr0HQ252PoF6n+siW57CQBuFQRbFzhht6bWE4OAIVz+crnrtPkP0qEeTy+87Kl3aANKbXXIuzN29kZTIqakiqXY=
+	t=1752585774; cv=none; b=ubGwedTVkgjviOKJQf8ERfjH8bu4wHfV8UL3qV/K3wHjevQWy1NSMnIOEEavuzd+YvkdZqmUxti4hgBkdYH1/Xyg86N8fVghUjLx3A1hpr3j9pLkONT8QD4TgqdardJnnetB3bBoV/dPVfLfaADHiBZT70sRhZ977N2QLQmfuUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585996; c=relaxed/simple;
-	bh=ADs/62x78aDnT030KrSdHDM2tHxNdM8SHgo9EulMx/A=;
+	s=arc-20240116; t=1752585774; c=relaxed/simple;
+	bh=19sBgKvaMUAXVI1LaMd+zdIdAZhh1ulWY7MfmJ6ldY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZukeBVZkBbfOs3U5yNTdZxZBn5d5IozR/GJ99hDg0i6/gSkErP0udpBljdSDb/DhW7d6iPnpAgYkSrU1bKgkHxZlxdacEuGsTzTIspIHSaU4C4dYghS1O04kFUPoqSrrXjMnKlwA7OnCL1nGrSHzRTzZaQXwv+EizChaiZcQMyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CH962KIX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B13C4CEE3;
-	Tue, 15 Jul 2025 13:26:35 +0000 (UTC)
+	 MIME-Version; b=EtJeIOp/zAZa+KIzc8cj6vbF1cqAbRu7bM6/QDExDs+WU6sqGEfQsR59beNG/dj03q5sS1OPrwpfVwz2EpCNTDwdd0Uq/XUBFmTlinYHKZltEuUkKa7ndjDzQY7DDiPgCTyr6nHxRx19yFzy65ptXtHpieplaNyuff3/g16zx6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNHAzleQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187EFC4CEE3;
+	Tue, 15 Jul 2025 13:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585996;
-	bh=ADs/62x78aDnT030KrSdHDM2tHxNdM8SHgo9EulMx/A=;
+	s=korg; t=1752585774;
+	bh=19sBgKvaMUAXVI1LaMd+zdIdAZhh1ulWY7MfmJ6ldY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CH962KIX8zs0D4GxRA4j7DBYVVg10YFntlIZ/9kR/S/nrmZNcNovUFSvKqlDUSB6J
-	 QEZjq5fc2BfMag9dcNci3OD7mZiuUR4kk0rg49MHQ2fEVBiabXvMaAG4Z4/82vOPB2
-	 Fz3P+hmlbO5FvjfHH79f4fCqkhoAaCprfxcRq6Y0=
+	b=DNHAzleQ6rKmyEvKekxj/4Hvm6xxj+4eScmKGu6fcDyq5cqRaLRC4Ue87uB5kbeET
+	 z3+IzzX4e0k9nVFps1keRS8jy8haUHuuYGpNsHcQ5bvYqsN5/1Vvs7fbBk0p1uIZNx
+	 FKPFbMvtudaAmUTX87TRp1R4pUGaDPVG3O1PIQ+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/109] can: m_can: m_can_handle_lost_msg(): downgrade msg lost in rx message to debug level
+Subject: [PATCH 6.12 155/163] HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY
 Date: Tue, 15 Jul 2025 15:13:43 +0200
-Message-ID: <20250715130802.364714554@linuxfoundation.org>
+Message-ID: <20250715130815.056879975@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-[ Upstream commit 58805e9cbc6f6a28f35d90e740956e983a0e036e ]
+[ Upstream commit 1a8953f4f7746c6a515989774fe03047c522c613 ]
 
-Downgrade the "msg lost in rx" message to debug level, to prevent
-flooding the kernel log with error messages.
+MARTLINKTECHNOLOGY is a microphone device, when the HID interface in an
+audio device is requested to get specific report id, the following error
+may occur.
 
-Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250711-mcan_ratelimit-v3-1-7413e8e21b84@geanix.com
-[mkl: enhance commit message]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+[  562.939373] usb 1-1.4.1.2: new full-speed USB device number 21 using xhci_hcd
+[  563.104908] usb 1-1.4.1.2: New USB device found, idVendor=4c4a, idProduct=4155, bcdDevice= 1.00
+[  563.104910] usb 1-1.4.1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  563.104911] usb 1-1.4.1.2: Product: USB Composite Device
+[  563.104912] usb 1-1.4.1.2: Manufacturer: SmartlinkTechnology
+[  563.104913] usb 1-1.4.1.2: SerialNumber: 20201111000001
+[  563.229499] input: SmartlinkTechnology USB Composite Device as /devices/pci0000:00/0000:00:07.1/0000:04:00.3/usb1/1-1/1-1.4/1-1.4.1/1-1.4.1.2/1-1.4.1.2:1.2/0003:4C4A:4155.000F/input/input35
+[  563.291505] hid-generic 0003:4C4A:4155.000F: input,hidraw2: USB HID v2.01 Keyboard [SmartlinkTechnology USB Composite Device] on usb-0000:04:00.3-1.4.1.2/input2
+[  563.291557] usbhid 1-1.4.1.2:1.3: couldn't find an input interrupt endpoint
+[  568.506654] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+[  573.626656] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+[  578.746657] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+[  583.866655] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+[  588.986657] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+
+Ignore HID interface. The device is working properly.
+
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/m_can/m_can.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-ids.h    | 3 +++
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index ba7f7de25c852..e6a74d66f0d8c 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -606,7 +606,7 @@ static int m_can_handle_lost_msg(struct net_device *dev)
- 	struct can_frame *frame;
- 	u32 timestamp = 0;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 49dc86981287a..de6bab6a7394b 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1519,4 +1519,7 @@
+ #define USB_VENDOR_ID_SIGNOTEC			0x2133
+ #define USB_DEVICE_ID_SIGNOTEC_VIEWSONIC_PD1011	0x0018
  
--	netdev_err(dev, "msg lost in rxf0\n");
-+	netdev_dbg(dev, "msg lost in rxf0\n");
++#define USB_VENDOR_ID_SMARTLINKTECHNOLOGY              0x4c4a
++#define USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155         0x4155
++
+ #endif
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 73979643315bf..e4d80307b898c 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -894,6 +894,7 @@ static const struct hid_device_id hid_ignore_list[] = {
+ #endif
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_SMARTLINKTECHNOLOGY, USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155) },
+ 	{ }
+ };
  
- 	stats->rx_errors++;
- 	stats->rx_over_errors++;
 -- 
 2.39.5
 
