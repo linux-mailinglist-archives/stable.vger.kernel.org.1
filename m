@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-162668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6E4B05F2E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 368FDB05F59
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 887BB1C260A4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:55:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED7C189F900
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EC22EBDCF;
-	Tue, 15 Jul 2025 13:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418E62EF662;
+	Tue, 15 Jul 2025 13:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYaRp1wZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKnE9Va5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254482E2F0B;
-	Tue, 15 Jul 2025 13:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F9A2E3AE2;
+	Tue, 15 Jul 2025 13:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587161; cv=none; b=PMwbT9voV8I3oSustnMEtIofbrWWXSDrvHuY3tMJcAtBbhjm22vbzs00/2CrCh1emcLLScmgjOW4fEAh9+pOobwqscG8THEWJ++ov8Kwm4RSv0FssEy8XIFbgQhhs3x1kGZng8cgSfY9OzZjva25Dn1XjN/4poNg8ehq8vOwqiw=
+	t=1752587190; cv=none; b=KXZvsGZOqy+/xga9Q3u2GFIaelYzJ7hfaWLzU6AF+RHM00FKfHIL+hc6Jn3URB2bRHJej6xS5yNBAo8NGHSUEJn2+1yH/6Jmb3K/tWwUTu67tcgAVbJooLaqzhXIf/ZobJ8rPsOw7k66709w+ooHvjgOkFDECNiLG/US4ryBMOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587161; c=relaxed/simple;
-	bh=KRijS3liWUo3sch/zmzbwyqUEUfzG77IgKCbfq3Dvck=;
+	s=arc-20240116; t=1752587190; c=relaxed/simple;
+	bh=MJ8Gcj9K7Ihcdktdk19IUN9uaLsT7mhxK+OnlQN0Qh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwHOsPPaEnpkleka25baygOUCQm0bemhHn//xHlK7fZEvUyl+TOCHLUnQvZ92upIos5Ibmfbb5qvkM+adbtBd41XweVkdYNLJlpKQyCnE8cJWX7JqnNWPT9JbDlGx07T1rY1o3mBaX5warOJeuV4mYLnjkyT1fftNtjEmNGJGWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYaRp1wZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDACC4CEE3;
-	Tue, 15 Jul 2025 13:46:00 +0000 (UTC)
+	 MIME-Version; b=az6y8fxPYwdoC244cCrWUNCw56N7HKzGCxy5qAtLsGQaEMtNgBvd56DCOWqy77yFc3sJ6Wo1759SThJsWAKMruObkjdxwG4zEDA7d8iiJw+hHmYBbidWDElp+LX2nl7N/BWvzBuzVuoI1nqBKLJY+gJLQ+hL+AHAq0V+YL3BvuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKnE9Va5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8538BC4CEE3;
+	Tue, 15 Jul 2025 13:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587161;
-	bh=KRijS3liWUo3sch/zmzbwyqUEUfzG77IgKCbfq3Dvck=;
+	s=korg; t=1752587189;
+	bh=MJ8Gcj9K7Ihcdktdk19IUN9uaLsT7mhxK+OnlQN0Qh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYaRp1wZvX7eTUJW6MHGn3l397wnbSq/FuZgFU79THJWzyIhQ2L9cwwxJHkEjrvhq
-	 qKwQ0zvGZMubzHL2TKwgJtsmIsVA1PPsSfn9+Rl5ewxh9H3y5k1kUxTLvH+Un0qYyL
-	 hiLTccSSqsvaMySxLPuIPWs980AJx4OqM37YvXvo=
+	b=DKnE9Va5HjnAh/OojKLtLCjGdZmNzLCbZdhfneJ4Ofv5aNu+ooAp5wlzM6MtH2ZnK
+	 9tBoY1B+Adc5LcPFCL9MAc5bFUpsmk1zxo6a9/8z+FIiJkoQjQd+J2KGYOVXRMPqXD
+	 9Wih+Ltdlo3dxkHGJkzQ1JJMjpmNaOG9OMQ1b05c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Daniel J. Ogorchock" <djogorchock@gmail.com>,
-	Silvan Jegen <s.jegen@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 188/192] HID: nintendo: avoid bluetooth suspend/resume stalls
-Date: Tue, 15 Jul 2025 15:14:43 +0200
-Message-ID: <20250715130822.466768753@linuxfoundation.org>
+	Willem de Bruijn <willemb@google.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.15 189/192] selftests/bpf: adapt one more case in test_lru_map to the new target_free
+Date: Tue, 15 Jul 2025 15:14:44 +0200
+Message-ID: <20250715130822.508776317@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
 References: <20250715130814.854109770@linuxfoundation.org>
@@ -67,106 +65,102 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel J. Ogorchock <djogorchock@gmail.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit 4a0381080397e77792a5168069f174d3e56175ff ]
+commit 5e9388f7984a9cc7e659a105113f6ccf0aebedd0 upstream.
 
-Ensure we don't stall or panic the kernel when using bluetooth-connected
-controllers. This was reported as an issue on android devices using
-kernel 6.6 due to the resume hook which had been added for usb joycons.
+The below commit that updated BPF_MAP_TYPE_LRU_HASH free target,
+also updated tools/testing/selftests/bpf/test_lru_map to match.
 
-First, set a new state value to JOYCON_CTLR_STATE_SUSPENDED in a
-newly-added nintendo_hid_suspend. This makes sure we will not stall out
-the kernel waiting for input reports during led classdev suspend. The
-stalls could happen if connectivity is unreliable or lost to the
-controller prior to suspend.
+But that missed one case that passes with 4 cores, but fails at
+higher cpu counts.
 
-Second, since we lose connectivity during suspend, do not try
-joycon_init() for bluetooth controllers in the nintendo_hid_resume path.
+Update test_lru_sanity3 to also adjust its expectation of target_free.
 
-Tested via multiple suspend/resume flows when using the controller both
-in USB and bluetooth modes.
+This time tested with 1, 4, 16, 64 and 384 cpu count.
 
-Signed-off-by: Daniel J. Ogorchock <djogorchock@gmail.com>
-Reviewed-by: Silvan Jegen <s.jegen@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d4adf1c9ee77 ("bpf: Adjust free target to avoid global starvation of LRU map")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20250625210412.2732970-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-nintendo.c | 38 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_lru_map.c |   33 +++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/hid/hid-nintendo.c b/drivers/hid/hid-nintendo.c
-index 839d5bcd72b1e..fb4985988615b 100644
---- a/drivers/hid/hid-nintendo.c
-+++ b/drivers/hid/hid-nintendo.c
-@@ -308,6 +308,7 @@ enum joycon_ctlr_state {
- 	JOYCON_CTLR_STATE_INIT,
- 	JOYCON_CTLR_STATE_READ,
- 	JOYCON_CTLR_STATE_REMOVED,
-+	JOYCON_CTLR_STATE_SUSPENDED,
- };
- 
- /* Controller type received as part of device info */
-@@ -2750,14 +2751,46 @@ static void nintendo_hid_remove(struct hid_device *hdev)
- 
- static int nintendo_hid_resume(struct hid_device *hdev)
- {
--	int ret = joycon_init(hdev);
-+	struct joycon_ctlr *ctlr = hid_get_drvdata(hdev);
-+	int ret;
-+
-+	hid_dbg(hdev, "resume\n");
-+	if (!joycon_using_usb(ctlr)) {
-+		hid_dbg(hdev, "no-op resume for bt ctlr\n");
-+		ctlr->ctlr_state = JOYCON_CTLR_STATE_READ;
-+		return 0;
-+	}
- 
-+	ret = joycon_init(hdev);
- 	if (ret)
--		hid_err(hdev, "Failed to restore controller after resume");
-+		hid_err(hdev,
-+			"Failed to restore controller after resume: %d\n",
-+			ret);
-+	else
-+		ctlr->ctlr_state = JOYCON_CTLR_STATE_READ;
- 
+--- a/tools/testing/selftests/bpf/test_lru_map.c
++++ b/tools/testing/selftests/bpf/test_lru_map.c
+@@ -138,6 +138,12 @@ static int sched_next_online(int pid, in
  	return ret;
  }
  
-+static int nintendo_hid_suspend(struct hid_device *hdev, pm_message_t message)
++/* Derive target_free from map_size, same as bpf_common_lru_populate */
++static unsigned int __tgt_size(unsigned int map_size)
 +{
-+	struct joycon_ctlr *ctlr = hid_get_drvdata(hdev);
-+
-+	hid_dbg(hdev, "suspend: %d\n", message.event);
-+	/*
-+	 * Avoid any blocking loops in suspend/resume transitions.
-+	 *
-+	 * joycon_enforce_subcmd_rate() can result in repeated retries if for
-+	 * whatever reason the controller stops providing input reports.
-+	 *
-+	 * This has been observed with bluetooth controllers which lose
-+	 * connectivity prior to suspend (but not long enough to result in
-+	 * complete disconnection).
-+	 */
-+	ctlr->ctlr_state = JOYCON_CTLR_STATE_SUSPENDED;
-+	return 0;
++	return (map_size / nr_cpus) / 2;
 +}
 +
- #endif
+ /* Inverse of how bpf_common_lru_populate derives target_free from map_size. */
+ static unsigned int __map_size(unsigned int tgt_free)
+ {
+@@ -410,12 +416,12 @@ static void test_lru_sanity2(int map_typ
+ 	printf("Pass\n");
+ }
  
- static const struct hid_device_id nintendo_hid_devices[] = {
-@@ -2796,6 +2829,7 @@ static struct hid_driver nintendo_hid_driver = {
+-/* Size of the LRU map is 2*tgt_free
+- * It is to test the active/inactive list rotation
+- * Insert 1 to 2*tgt_free (+2*tgt_free keys)
+- * Lookup key 1 to tgt_free*3/2
+- * Add 1+2*tgt_free to tgt_free*5/2 (+tgt_free/2 keys)
+- *  => key 1+tgt_free*3/2 to 2*tgt_free are removed from LRU
++/* Test the active/inactive list rotation
++ *
++ * Fill the whole map, deplete the free list.
++ * Reference all except the last lru->target_free elements.
++ * Insert lru->target_free new elements. This triggers one shrink.
++ * Verify that the non-referenced elements are replaced.
+  */
+ static void test_lru_sanity3(int map_type, int map_flags, unsigned int tgt_free)
+ {
+@@ -434,8 +440,7 @@ static void test_lru_sanity3(int map_typ
  
- #ifdef CONFIG_PM
- 	.resume		= nintendo_hid_resume,
-+	.suspend	= nintendo_hid_suspend,
- #endif
- };
- static int __init nintendo_init(void)
--- 
-2.39.5
-
+ 	assert(sched_next_online(0, &next_cpu) != -1);
+ 
+-	batch_size = tgt_free / 2;
+-	assert(batch_size * 2 == tgt_free);
++	batch_size = __tgt_size(tgt_free);
+ 
+ 	map_size = tgt_free * 2;
+ 	lru_map_fd = create_map(map_type, map_flags, map_size);
+@@ -446,23 +451,21 @@ static void test_lru_sanity3(int map_typ
+ 
+ 	value[0] = 1234;
+ 
+-	/* Insert 1 to 2*tgt_free (+2*tgt_free keys) */
+-	end_key = 1 + (2 * tgt_free);
++	/* Fill the map */
++	end_key = 1 + map_size;
+ 	for (key = 1; key < end_key; key++)
+ 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
+ 					    BPF_NOEXIST));
+ 
+-	/* Lookup key 1 to tgt_free*3/2 */
+-	end_key = tgt_free + batch_size;
++	/* Reference all but the last batch_size */
++	end_key = 1 + map_size - batch_size;
+ 	for (key = 1; key < end_key; key++) {
+ 		assert(!bpf_map_lookup_elem_with_ref_bit(lru_map_fd, key, value));
+ 		assert(!bpf_map_update_elem(expected_map_fd, &key, value,
+ 					    BPF_NOEXIST));
+ 	}
+ 
+-	/* Add 1+2*tgt_free to tgt_free*5/2
+-	 * (+tgt_free/2 keys)
+-	 */
++	/* Insert new batch_size: replaces the non-referenced elements */
+ 	key = 2 * tgt_free + 1;
+ 	end_key = key + batch_size;
+ 	for (; key < end_key; key++) {
 
 
 
