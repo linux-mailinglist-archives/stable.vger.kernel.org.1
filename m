@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147B4B05CFE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:39:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE438B05EE2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49A6018970C4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:36:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D12CD1C42604
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0F72E62B9;
-	Tue, 15 Jul 2025 13:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7D12EB5AD;
+	Tue, 15 Jul 2025 13:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSP1ST+V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdR1qssV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC5D2E3363;
-	Tue, 15 Jul 2025 13:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893052EB5A0;
+	Tue, 15 Jul 2025 13:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586174; cv=none; b=Qqfbs+5XVTtlEtZeCYxXzuxPkaJPSK0TgzgEuW9D+1wDSL4ovidMZK0QCXmXT4O/J5QLdt/je27dc5ckmOjla5xq4h88ZLzu49ae1CCWlxc2qlgg1AklR0N7gcRSLmWz8Toq9pB+qEeJjxIIlux1lXFFmzjbeXtSxEl2YDTkX64=
+	t=1752587081; cv=none; b=Xtv5gmll35D9qkX44693joka3pkSVbUgc/OfNTLlvxgYWWSy2W7MbPT0+iQcrWWRChkmXmcCzFI9qiQ7gsV4uLx3ATYRkifZnltPIn27d9jBPCZCRyjnD5BTNcxCx2DP0ttJnAZxobZf6Yus+XKi7p0dD0COVEbqZl3f33K03KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586174; c=relaxed/simple;
-	bh=xXtlmuAOD5+GRXSDhmlC2Z2kT0+dKf/17YZb+i7XqQw=;
+	s=arc-20240116; t=1752587081; c=relaxed/simple;
+	bh=GNQODW5LSyHMt3Rwg04jUXGI7/UdFvJMkim+H3dMUU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DNITBpeEhIQ4Fqiq9+QFVN8508QaTl7TPZSDdKw9zC2Vt2OypCvEMF4No5yPiy1Qb9KwbV4lKyuGLHf4gYxldIXiPTHwIcsSYZrmdsmfb47mQh03YPpFAnCzv/f50OyNeMcORTBAT0qX0yczJjF0fa04D6FbKkYyC9xRNjqlrfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSP1ST+V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E578C4CEF1;
-	Tue, 15 Jul 2025 13:29:33 +0000 (UTC)
+	 MIME-Version; b=HHpCTMpwAQ4BkTUu/4tckBUzwqqMR6WLDdDLK/yWC2QIMKPmaVY19iPttKCsuDuS8AtLFtWvboW7VvVoYvBURW/VK1O8C4BCcBP2GkUOcg9ptUwjy4HeJlMFEwPspc2sTrOxB824vpV+Jk2koWbYq83JiPMdKXchO/mebo0tabs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdR1qssV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFC5C4CEE3;
+	Tue, 15 Jul 2025 13:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586173;
-	bh=xXtlmuAOD5+GRXSDhmlC2Z2kT0+dKf/17YZb+i7XqQw=;
+	s=korg; t=1752587081;
+	bh=GNQODW5LSyHMt3Rwg04jUXGI7/UdFvJMkim+H3dMUU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSP1ST+VOTCkGOZPlG2WA4aFLty8enTnFKHCZcIJMkX/7DiAM1vN4nSAv7lhVby3V
-	 Eoc9OFhn6d4e73XaM2yJzwecQRtvxJkCa+3HA0AkHUSTGtCU/Oa/R+EXPVDq0tx13t
-	 +k86v0Hsf1Y8yO8TM0nYxERDY1ZEXrPqDmLfX9g4=
+	b=NdR1qssVkKDr6L4T3PIcbTCb3d3VL5s0PfnvyRH/lvvfXicDWBPa31qa8RZ6TxWuZ
+	 NNk0oSPE9Bgq8SN6IsuB6tXKbmRzE5oaXVHIipi08oK/wolXUKeiCcv2Ckz21MzDTv
+	 Y43CRW+NciGpT8Yj0h8lfqkeuklAtgVt30BlcJVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Hongyu Xie <xiehongyu1@kylinos.cn>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 44/77] xhci: Disable stream for xHC controller with XHCI_BROKEN_STREAMS
+Subject: [PATCH 6.15 128/192] wifi: zd1211rw: Fix potential NULL pointer dereference in zd_mac_tx_to_dev()
 Date: Tue, 15 Jul 2025 15:13:43 +0200
-Message-ID: <20250715130753.480818737@linuxfoundation.org>
+Message-ID: <20250715130820.035500340@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongyu Xie <xiehongyu1@kylinos.cn>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit cd65ee81240e8bc3c3119b46db7f60c80864b90b ]
+[ Upstream commit 74b1ec9f5d627d2bdd5e5b6f3f81c23317657023 ]
 
-Disable stream for platform xHC controller with broken stream.
+There is a potential NULL pointer dereference in zd_mac_tx_to_dev(). For
+example, the following is possible:
 
-Fixes: 14aec589327a6 ("storage: accept some UAS devices if streams are unavailable")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627144127.3889714-3-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    	T0			    		T1
+zd_mac_tx_to_dev()
+  /* len == skb_queue_len(q) */
+  while (len > ZD_MAC_MAX_ACK_WAITERS) {
+
+					  filter_ack()
+					    spin_lock_irqsave(&q->lock, flags);
+					    /* position == skb_queue_len(q) */
+					    for (i=1; i<position; i++)
+				    	      skb = __skb_dequeue(q)
+
+					    if (mac->type == NL80211_IFTYPE_AP)
+					      skb = __skb_dequeue(q);
+					    spin_unlock_irqrestore(&q->lock, flags);
+
+    skb_dequeue() -> NULL
+
+Since there is a small gap between checking skb queue length and skb being
+unconditionally dequeued in zd_mac_tx_to_dev(), skb_dequeue() can return NULL.
+Then the pointer is passed to zd_mac_tx_status() where it is dereferenced.
+
+In order to avoid potential NULL pointer dereference due to situations like
+above, check if skb is not NULL before passing it to zd_mac_tx_status().
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 459c51ad6e1f ("zd1211rw: port to mac80211")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Link: https://patch.msgid.link/20250626114619.172631-1-d.dulov@aladdin.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/zydas/zd1211rw/zd_mac.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index 83c7dffa945c3..daf93bee7669b 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -361,7 +361,8 @@ static int xhci_plat_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto disable_usb_phy;
+diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+index 9653dbaac3c05..781510a3ec6d5 100644
+--- a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
++++ b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+@@ -583,7 +583,11 @@ void zd_mac_tx_to_dev(struct sk_buff *skb, int error)
  
--	if (HCC_MAX_PSA(xhci->hcc_params) >= 4)
-+	if (HCC_MAX_PSA(xhci->hcc_params) >= 4 &&
-+	    !(xhci->quirks & XHCI_BROKEN_STREAMS))
- 		xhci->shared_hcd->can_do_streams = 1;
- 
- 	ret = usb_add_hcd(xhci->shared_hcd, irq, IRQF_SHARED);
+ 		skb_queue_tail(q, skb);
+ 		while (skb_queue_len(q) > ZD_MAC_MAX_ACK_WAITERS) {
+-			zd_mac_tx_status(hw, skb_dequeue(q),
++			skb = skb_dequeue(q);
++			if (!skb)
++				break;
++
++			zd_mac_tx_status(hw, skb,
+ 					 mac->ack_pending ? mac->ack_signal : 0,
+ 					 NULL);
+ 			mac->ack_pending = 0;
 -- 
 2.39.5
 
