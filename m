@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE50B05D2C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B106B05E7D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C27975681DD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E70233BE0E8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659922E49B6;
-	Tue, 15 Jul 2025 13:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4E02EA733;
+	Tue, 15 Jul 2025 13:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hx92u6l5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7bzYeme"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FD62E7F16;
-	Tue, 15 Jul 2025 13:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD532E5413;
+	Tue, 15 Jul 2025 13:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586412; cv=none; b=EGdYexwVxTrgU8VBVZhbkqcKfky7IrqdP7j1Te9C6wE/UVpIbmwaTKoN0bcXEv46ko1xfX7jKYE7006jhC6cME7lBa6AtYMGfUB0GnSCjcHbEjwPZ/umICuQyj07iYogpVFLGPy/7T3z5QcSWmZLzahnTh7LFlMKeA/QiUDo7tU=
+	t=1752586878; cv=none; b=bXErCnm6k1etot1nCTkSyYScSTPGpg9dBu6z7u8S/RfXZbWhB9E5cnC25kREV04jbvelIqfLf9r82Q07OEOnzXdLbTOQ388aWLTcTAEWdmEODxSHRil0XtX52JSsrhjK3fPtxJ5uoirZSPbDjxxx8Zy7sZnkK6KI5RuUo+nq9Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586412; c=relaxed/simple;
-	bh=U3pNmQ8v7kDi3XUrXcTh5Hv+vjnBjhWvJcuPqQC7jTQ=;
+	s=arc-20240116; t=1752586878; c=relaxed/simple;
+	bh=0I43PuuQpxP1OxylRe0d7+Yh/YtOZc+3CJSLoFYf47g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAL0dDTK2ez5COu9PDHmnzEDRZb1o+y+3pkLIcNdOVBcf7vgmcDlfgq5sU4CQSG6GUKmmdDDdXQF0I4zeUvzV6P1Oc/7+6FxiIwo5WoZB/TiYfdFIhz0gifOv7JdYnOlSMZqamZPgLOKK7hzdnwe968D8EXyyvHwTm1WTtug7gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hx92u6l5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FB7C4CEE3;
-	Tue, 15 Jul 2025 13:33:31 +0000 (UTC)
+	 MIME-Version; b=jMf2sO1RIByIW3LgAWOztN9UzyxKnl01+Fbr0Bji3XMZW5nPBrI4aJaDldg2odqgQgdpwkkuN+hqQiXDsPiD6jJ91lfJhB6hY4Dp6IYYNcRhXkecZrT7PvKsKQ7KFhx39qKAMhvl/bx2skDHsaI/nwCUB96/IYK70221GL6vLZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7bzYeme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E67C4CEE3;
+	Tue, 15 Jul 2025 13:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586412;
-	bh=U3pNmQ8v7kDi3XUrXcTh5Hv+vjnBjhWvJcuPqQC7jTQ=;
+	s=korg; t=1752586878;
+	bh=0I43PuuQpxP1OxylRe0d7+Yh/YtOZc+3CJSLoFYf47g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hx92u6l51xdG1q/4SPVrUONjz/s9ck9b8PgR9NkHqdkB7mlDUHhIQF0GmyCdsokTS
-	 2BKo51HZu3BvyRvMjQIBi7FGaqghpInmDpXPBHnLXoT5gmmOhbK6k9z4XVDk9XmDxW
-	 ZGOOOyOYKlqSh2q7gVAbQL5G1MBAw7y+NFtmeB8Y=
+	b=u7bzYemetoKL2gdK3CKmRoVR69dj+5fcDiA6KBgai0Y1nkgRhPsbjTyjkqChLF88f
+	 tQa4DKaEfXUHfOW8cKsLKQeoMjjAQ3qgbZ6eqLcXbOaz7HdvkXE2MdxTRpBCsDvBgG
+	 C7U9sF584a0bg+oxvVJ5sEOI4ZVpiBXaVhfV6V98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Anand Jain <anand.jain@oracle.com>,
-	Omar Sandoval <osandov@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Larry Bassel <larry.bassel@oracle.com>
-Subject: [PATCH 5.4 055/148] btrfs: dont abort filesystem when attempting to snapshot deleted subvolume
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 082/192] drm/amdkfd: Dont call mmput from MMU notifier callback
 Date: Tue, 15 Jul 2025 15:12:57 +0200
-Message-ID: <20250715130802.530636401@linuxfoundation.org>
+Message-ID: <20250715130818.212122736@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +62,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Omar Sandoval <osandov@fb.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-commit 7081929ab2572920e94d70be3d332e5c9f97095a upstream.
+commit cf234231fcbc7d391e2135b9518613218cc5347f upstream.
 
-If the source file descriptor to the snapshot ioctl refers to a deleted
-subvolume, we get the following abort:
+If the process is exiting, the mmput inside mmu notifier callback from
+compactd or fork or numa balancing could release the last reference
+of mm struct to call exit_mmap and free_pgtable, this triggers deadlock
+with below backtrace.
 
-  BTRFS: Transaction aborted (error -2)
-  WARNING: CPU: 0 PID: 833 at fs/btrfs/transaction.c:1875 create_pending_snapshot+0x1040/0x1190 [btrfs]
-  Modules linked in: pata_acpi btrfs ata_piix libata scsi_mod virtio_net blake2b_generic xor net_failover virtio_rng failover scsi_common rng_core raid6_pq libcrc32c
-  CPU: 0 PID: 833 Comm: t_snapshot_dele Not tainted 6.7.0-rc6 #2
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
-  RIP: 0010:create_pending_snapshot+0x1040/0x1190 [btrfs]
-  RSP: 0018:ffffa09c01337af8 EFLAGS: 00010282
-  RAX: 0000000000000000 RBX: ffff9982053e7c78 RCX: 0000000000000027
-  RDX: ffff99827dc20848 RSI: 0000000000000001 RDI: ffff99827dc20840
-  RBP: ffffa09c01337c00 R08: 0000000000000000 R09: ffffa09c01337998
-  R10: 0000000000000003 R11: ffffffffb96da248 R12: fffffffffffffffe
-  R13: ffff99820535bb28 R14: ffff99820b7bd000 R15: ffff99820381ea80
-  FS:  00007fe20aadabc0(0000) GS:ffff99827dc00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000559a120b502f CR3: 00000000055b6000 CR4: 00000000000006f0
-  Call Trace:
-   <TASK>
-   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
-   ? __warn+0x81/0x130
-   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
-   ? report_bug+0x171/0x1a0
-   ? handle_bug+0x3a/0x70
-   ? exc_invalid_op+0x17/0x70
-   ? asm_exc_invalid_op+0x1a/0x20
-   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
-   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
-   create_pending_snapshots+0x92/0xc0 [btrfs]
-   btrfs_commit_transaction+0x66b/0xf40 [btrfs]
-   btrfs_mksubvol+0x301/0x4d0 [btrfs]
-   btrfs_mksnapshot+0x80/0xb0 [btrfs]
-   __btrfs_ioctl_snap_create+0x1c2/0x1d0 [btrfs]
-   btrfs_ioctl_snap_create_v2+0xc4/0x150 [btrfs]
-   btrfs_ioctl+0x8a6/0x2650 [btrfs]
-   ? kmem_cache_free+0x22/0x340
-   ? do_sys_openat2+0x97/0xe0
-   __x64_sys_ioctl+0x97/0xd0
-   do_syscall_64+0x46/0xf0
-   entry_SYSCALL_64_after_hwframe+0x6e/0x76
-  RIP: 0033:0x7fe20abe83af
-  RSP: 002b:00007ffe6eff1360 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007fe20abe83af
-  RDX: 00007ffe6eff23c0 RSI: 0000000050009417 RDI: 0000000000000003
-  RBP: 0000000000000003 R08: 0000000000000000 R09: 00007fe20ad16cd0
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 00007ffe6eff13c0 R14: 00007fe20ad45000 R15: 0000559a120b6d58
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-  BTRFS: error (device vdc: state A) in create_pending_snapshot:1875: errno=-2 No such entry
-  BTRFS info (device vdc: state EA): forced readonly
-  BTRFS warning (device vdc: state EA): Skipping commit of aborted transaction.
-  BTRFS: error (device vdc: state EA) in cleanup_transaction:2055: errno=-2 No such entry
+The deadlock will leak kfd process as mmu notifier release is not called
+and cause VRAM leaking.
 
-This happens because create_pending_snapshot() initializes the new root
-item as a copy of the source root item. This includes the refs field,
-which is 0 for a deleted subvolume. The call to btrfs_insert_root()
-therefore inserts a root with refs == 0. btrfs_get_new_fs_root() then
-finds the root and returns -ENOENT if refs == 0, which causes
-create_pending_snapshot() to abort.
+The fix is to take mm reference mmget_non_zero when adding prange to the
+deferred list to pair with mmput in deferred list work.
 
-Fix it by checking the source root's refs before attempting the
-snapshot, but after locking subvol_sem to avoid racing with deletion.
+If prange split and add into pchild list, the pchild work_item.mm is not
+used, so remove the mm parameter from svm_range_unmap_split and
+svm_range_add_child.
 
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Larry: backport to 5.4.y. Minor conflict resolved due to missing commit 92a7cc425223
-  btrfs: rename BTRFS_ROOT_REF_COWS to BTRFS_ROOT_SHAREABLE ]
-Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
+The backtrace of hung task:
+
+ INFO: task python:348105 blocked for more than 64512 seconds.
+ Call Trace:
+  __schedule+0x1c3/0x550
+  schedule+0x46/0xb0
+  rwsem_down_write_slowpath+0x24b/0x4c0
+  unlink_anon_vmas+0xb1/0x1c0
+  free_pgtables+0xa9/0x130
+  exit_mmap+0xbc/0x1a0
+  mmput+0x5a/0x140
+  svm_range_cpu_invalidate_pagetables+0x2b/0x40 [amdgpu]
+  mn_itree_invalidate+0x72/0xc0
+  __mmu_notifier_invalidate_range_start+0x48/0x60
+  try_to_unmap_one+0x10fa/0x1400
+  rmap_walk_anon+0x196/0x460
+  try_to_unmap+0xbb/0x210
+  migrate_page_unmap+0x54d/0x7e0
+  migrate_pages_batch+0x1c3/0xae0
+  migrate_pages_sync+0x98/0x240
+  migrate_pages+0x25c/0x520
+  compact_zone+0x29d/0x590
+  compact_zone_order+0xb6/0xf0
+  try_to_compact_pages+0xbe/0x220
+  __alloc_pages_direct_compact+0x96/0x1a0
+  __alloc_pages_slowpath+0x410/0x930
+  __alloc_pages_nodemask+0x3a9/0x3e0
+  do_huge_pmd_anonymous_page+0xd7/0x3e0
+  __handle_mm_fault+0x5e3/0x5f0
+  handle_mm_fault+0xf7/0x2e0
+  hmm_vma_fault.isra.0+0x4d/0xa0
+  walk_pmd_range.isra.0+0xa8/0x310
+  walk_pud_range+0x167/0x240
+  walk_pgd_range+0x55/0x100
+  __walk_page_range+0x87/0x90
+  walk_page_range+0xf6/0x160
+  hmm_range_fault+0x4f/0x90
+  amdgpu_hmm_range_get_pages+0x123/0x230 [amdgpu]
+  amdgpu_ttm_tt_get_user_pages+0xb1/0x150 [amdgpu]
+  init_user_pages+0xb1/0x2a0 [amdgpu]
+  amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x543/0x7d0 [amdgpu]
+  kfd_ioctl_alloc_memory_of_gpu+0x24c/0x4e0 [amdgpu]
+  kfd_ioctl+0x29d/0x500 [amdgpu]
+
+Fixes: fa582c6f3684 ("drm/amdkfd: Use mmget_not_zero in MMU notifier")
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a29e067bd38946f752b0ef855f3dfff87e77bec7)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ioctl.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c |   43 ++++++++++++++++-------------------
+ 1 file changed, 20 insertions(+), 23 deletions(-)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -793,6 +793,9 @@ static int create_snapshot(struct btrfs_
- 	if (!test_bit(BTRFS_ROOT_REF_COWS, &root->state))
- 		return -EINVAL;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1171,13 +1171,12 @@ svm_range_split_head(struct svm_range *p
+ }
  
-+	if (btrfs_root_refs(&root->root_item) == 0)
-+		return -ENOENT;
-+
- 	if (atomic_read(&root->nr_swapfiles)) {
- 		btrfs_warn(fs_info,
- 			   "cannot snapshot subvolume with active swapfile");
+ static void
+-svm_range_add_child(struct svm_range *prange, struct mm_struct *mm,
+-		    struct svm_range *pchild, enum svm_work_list_ops op)
++svm_range_add_child(struct svm_range *prange, struct svm_range *pchild, enum svm_work_list_ops op)
+ {
+ 	pr_debug("add child 0x%p [0x%lx 0x%lx] to prange 0x%p child list %d\n",
+ 		 pchild, pchild->start, pchild->last, prange, op);
+ 
+-	pchild->work_item.mm = mm;
++	pchild->work_item.mm = NULL;
+ 	pchild->work_item.op = op;
+ 	list_add_tail(&pchild->child_list, &prange->child_list);
+ }
+@@ -2394,15 +2393,17 @@ svm_range_add_list_work(struct svm_range
+ 		    prange->work_item.op != SVM_OP_UNMAP_RANGE)
+ 			prange->work_item.op = op;
+ 	} else {
+-		prange->work_item.op = op;
+-
+-		/* Pairs with mmput in deferred_list_work */
+-		mmget(mm);
+-		prange->work_item.mm = mm;
+-		list_add_tail(&prange->deferred_list,
+-			      &prange->svms->deferred_range_list);
+-		pr_debug("add prange 0x%p [0x%lx 0x%lx] to work list op %d\n",
+-			 prange, prange->start, prange->last, op);
++		/* Pairs with mmput in deferred_list_work.
++		 * If process is exiting and mm is gone, don't update mmu notifier.
++		 */
++		if (mmget_not_zero(mm)) {
++			prange->work_item.mm = mm;
++			prange->work_item.op = op;
++			list_add_tail(&prange->deferred_list,
++				      &prange->svms->deferred_range_list);
++			pr_debug("add prange 0x%p [0x%lx 0x%lx] to work list op %d\n",
++				 prange, prange->start, prange->last, op);
++		}
+ 	}
+ 	spin_unlock(&svms->deferred_list_lock);
+ }
+@@ -2416,8 +2417,7 @@ void schedule_deferred_list_work(struct
+ }
+ 
+ static void
+-svm_range_unmap_split(struct mm_struct *mm, struct svm_range *parent,
+-		      struct svm_range *prange, unsigned long start,
++svm_range_unmap_split(struct svm_range *parent, struct svm_range *prange, unsigned long start,
+ 		      unsigned long last)
+ {
+ 	struct svm_range *head;
+@@ -2438,12 +2438,12 @@ svm_range_unmap_split(struct mm_struct *
+ 		svm_range_split(tail, last + 1, tail->last, &head);
+ 
+ 	if (head != prange && tail != prange) {
+-		svm_range_add_child(parent, mm, head, SVM_OP_UNMAP_RANGE);
+-		svm_range_add_child(parent, mm, tail, SVM_OP_ADD_RANGE);
++		svm_range_add_child(parent, head, SVM_OP_UNMAP_RANGE);
++		svm_range_add_child(parent, tail, SVM_OP_ADD_RANGE);
+ 	} else if (tail != prange) {
+-		svm_range_add_child(parent, mm, tail, SVM_OP_UNMAP_RANGE);
++		svm_range_add_child(parent, tail, SVM_OP_UNMAP_RANGE);
+ 	} else if (head != prange) {
+-		svm_range_add_child(parent, mm, head, SVM_OP_UNMAP_RANGE);
++		svm_range_add_child(parent, head, SVM_OP_UNMAP_RANGE);
+ 	} else if (parent != prange) {
+ 		prange->work_item.op = SVM_OP_UNMAP_RANGE;
+ 	}
+@@ -2520,14 +2520,14 @@ svm_range_unmap_from_cpu(struct mm_struc
+ 		l = min(last, pchild->last);
+ 		if (l >= s)
+ 			svm_range_unmap_from_gpus(pchild, s, l, trigger);
+-		svm_range_unmap_split(mm, prange, pchild, start, last);
++		svm_range_unmap_split(prange, pchild, start, last);
+ 		mutex_unlock(&pchild->lock);
+ 	}
+ 	s = max(start, prange->start);
+ 	l = min(last, prange->last);
+ 	if (l >= s)
+ 		svm_range_unmap_from_gpus(prange, s, l, trigger);
+-	svm_range_unmap_split(mm, prange, prange, start, last);
++	svm_range_unmap_split(prange, prange, start, last);
+ 
+ 	if (unmap_parent)
+ 		svm_range_add_list_work(svms, prange, mm, SVM_OP_UNMAP_RANGE);
+@@ -2570,8 +2570,6 @@ svm_range_cpu_invalidate_pagetables(stru
+ 
+ 	if (range->event == MMU_NOTIFY_RELEASE)
+ 		return true;
+-	if (!mmget_not_zero(mni->mm))
+-		return true;
+ 
+ 	start = mni->interval_tree.start;
+ 	last = mni->interval_tree.last;
+@@ -2598,7 +2596,6 @@ svm_range_cpu_invalidate_pagetables(stru
+ 	}
+ 
+ 	svm_range_unlock(prange);
+-	mmput(mni->mm);
+ 
+ 	return true;
+ }
 
 
 
