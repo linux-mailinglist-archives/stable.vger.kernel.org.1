@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-162600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83150B05E1D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97BAB05BA3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD4667A103B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A00566335
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C0C2E62CB;
-	Tue, 15 Jul 2025 13:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAC42E2EF9;
+	Tue, 15 Jul 2025 13:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FumPQ8sB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wH8C4tQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E282D8790;
-	Tue, 15 Jul 2025 13:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED14527584E;
+	Tue, 15 Jul 2025 13:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586984; cv=none; b=iZFWun5TGqiuPEloTDMSqBh+WBIpPEVhZdBcETxHiG2sSfMkxfOqrMiUzlSQ06cRZAdAv40W2h3nx1LPOtKxy63B10bLwGh0RnhuiHtyfgdMnwE8IwyB+nXQiYxrBAclRJzidUUCYZWxZYYlsDMWjrYfaRaJwkGGgB5zPMqHIQw=
+	t=1752585691; cv=none; b=cmERPTDuaH2Ckvl5aeLBa6usWgUXuzmRTCWNBNKpKmCP19YhnAymQTi5MFy68HS3bUtUkc1H3DjMil0ktf9AkctRWgx01y5x1i7FgGWIjoiOkVBWSi0psoxIboPRWdoKsoN/UL6LZd9DtImhi6PACUhPP7NDTu76ix5kGUNEnPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586984; c=relaxed/simple;
-	bh=wNuOyJgAwOWCfGgZrlEbj3Mh0MwC8GLsXK6i0GVYsSI=;
+	s=arc-20240116; t=1752585691; c=relaxed/simple;
+	bh=tSB/C6wS0FNQdVPKNQBXoiVQSmypmBWegOWBhRzFHQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xq9txjhIGyN52qX/k1TZFD/ysr99Ahm9QjydZ9Kap6sB47ulVEIaYkeyamaA6o/5fG7UegbHwCBng9xfksEvW7LaDHgcOVmk4cLidkwsaSN617uM94rcAYALGT1UXgCmWuzbSD/KA4gtvAVMarhLfXajIavIhFPYOijCiz+6Fjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FumPQ8sB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFE4C4CEF6;
-	Tue, 15 Jul 2025 13:43:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l35/tyK52DK7QwP53tCZ+JPNHN8rtNgDAd1MPOtRuxQIoACC0u3xHpGgSmnQDE2BFWn/MLQvVrS2MJsmUw6adb+qNpSNYtiU8SwIWuDcjqiFvrQfcco0iOBAcrHAsdnax+pGWFYqfredHTgp1HE/eQOCwUGkRxn3a7hm3tssy9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wH8C4tQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81942C4CEE3;
+	Tue, 15 Jul 2025 13:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586984;
-	bh=wNuOyJgAwOWCfGgZrlEbj3Mh0MwC8GLsXK6i0GVYsSI=;
+	s=korg; t=1752585690;
+	bh=tSB/C6wS0FNQdVPKNQBXoiVQSmypmBWegOWBhRzFHQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FumPQ8sBB+0eak14Dy+4ZtWJQD+18jO4Awf01Kjiopz1EeaIlTRY6Rn6+0jxOlHRs
-	 X3Ur85vi/wSOma9f38yHgnl4SAl41rRIo2kz2zzGDm+U86dOyoe4ESMA26brk/2i01
-	 a/4T0vPZJGoNdgsQ5wTasK/xMXtV4vk6XJCFxdyA=
+	b=wH8C4tQPZ1tjOMbDMDpx7wI6sknY4qh+720+19P7ZoLhDYu0ZKriWghB4gVchfyN9
+	 /b0F0ATSZ21lvfPsucvBK75Ty7HJRvSyBP28R+/EXXhYMT5jzhelHuJsfH8dwohIaq
+	 V61IiK7oOsur4lUQ+s/wUM85TG+QH6wozfLWiTyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Thompson <dev@aaront.org>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.15 091/192] drm/nouveau: Do not fail module init on debugfs errors
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	Lukasz Laguna <lukasz.laguna@intel.com>,
+	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 118/163] drm/xe/pf: Clear all LMTT pages on alloc
 Date: Tue, 15 Jul 2025 15:13:06 +0200
-Message-ID: <20250715130818.559574810@linuxfoundation.org>
+Message-ID: <20250715130813.585693434@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Thompson <dev@aaront.org>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-commit 78f88067d5c56d9aed69f27e238742841461cf67 upstream.
+[ Upstream commit 705a412a367f383430fa34bada387af2e52eb043 ]
 
-If CONFIG_DEBUG_FS is enabled, nouveau_drm_init() returns an error if it
-fails to create the "nouveau" directory in debugfs. One case where that
-will happen is when debugfs access is restricted by
-CONFIG_DEBUG_FS_ALLOW_NONE or by the boot parameter debugfs=off, which
-cause the debugfs APIs to return -EPERM.
+Our LMEM buffer objects are not cleared by default on alloc
+and during VF provisioning we only setup LMTT PTEs for the
+actually provisioned LMEM range. But beyond that valid range
+we might leave some stale data that could either point to some
+other VFs allocations or even to the PF pages.
 
-So just ignore errors from debugfs. Note that nouveau_debugfs_root may
-be an error now, but that is a standard pattern for debugfs. From
-include/linux/debugfs.h:
+Explicitly clear all new LMTT page to avoid the risk that a
+malicious VF would try to exploit that gap.
 
-"NOTE: it's expected that most callers should _ignore_ the errors
-returned by this function. Other debugfs functions handle the fact that
-the "dentry" passed to them could be an error and they don't crash in
-that case. Drivers should generally work fine even if debugfs fails to
-init anyway."
+While around add asserts to catch any undesired PTE overwrites
+and low-level debug traces to track LMTT PT life-cycle.
 
-Fixes: 97118a1816d2 ("drm/nouveau: create module debugfs root")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aaron Thompson <dev@aaront.org>
-Acked-by: Timur Tabi <ttabi@nvidia.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/r/20250703211949.9916-1-dev@aaront.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b1d204058218 ("drm/xe/pf: Introduce Local Memory Translation Table")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Michał Winiarski <michal.winiarski@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Reviewed-by: Michał Winiarski <michal.winiarski@intel.com>
+Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Link: https://lore.kernel.org/r/20250701220052.1612-1-michal.wajdeczko@intel.com
+(cherry picked from commit 3fae6918a3e27cce20ded2551f863fb05d4bef8d)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_debugfs.c |    6 +-----
- drivers/gpu/drm/nouveau/nouveau_debugfs.h |    5 ++---
- drivers/gpu/drm/nouveau/nouveau_drm.c     |    4 +---
- 3 files changed, 4 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/xe/xe_lmtt.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nouveau_debugfs.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_debugfs.c
-@@ -314,14 +314,10 @@ nouveau_debugfs_fini(struct nouveau_drm
- 	drm->debugfs = NULL;
- }
+diff --git a/drivers/gpu/drm/xe/xe_lmtt.c b/drivers/gpu/drm/xe/xe_lmtt.c
+index 8999ac511555f..485658f69fba8 100644
+--- a/drivers/gpu/drm/xe/xe_lmtt.c
++++ b/drivers/gpu/drm/xe/xe_lmtt.c
+@@ -78,6 +78,9 @@ static struct xe_lmtt_pt *lmtt_pt_alloc(struct xe_lmtt *lmtt, unsigned int level
+ 	}
  
--int
-+void
- nouveau_module_debugfs_init(void)
+ 	lmtt_assert(lmtt, xe_bo_is_vram(bo));
++	lmtt_debug(lmtt, "level=%u addr=%#llx\n", level, (u64)xe_bo_main_addr(bo, XE_PAGE_SIZE));
++
++	xe_map_memset(lmtt_to_xe(lmtt), &bo->vmap, 0, 0, bo->size);
+ 
+ 	pt->level = level;
+ 	pt->bo = bo;
+@@ -91,6 +94,9 @@ static struct xe_lmtt_pt *lmtt_pt_alloc(struct xe_lmtt *lmtt, unsigned int level
+ 
+ static void lmtt_pt_free(struct xe_lmtt_pt *pt)
  {
- 	nouveau_debugfs_root = debugfs_create_dir("nouveau", NULL);
--	if (IS_ERR(nouveau_debugfs_root))
--		return PTR_ERR(nouveau_debugfs_root);
--
--	return 0;
++	lmtt_debug(&pt->bo->tile->sriov.pf.lmtt, "level=%u addr=%llx\n",
++		   pt->level, (u64)xe_bo_main_addr(pt->bo, XE_PAGE_SIZE));
++
+ 	xe_bo_unpin_map_no_vm(pt->bo);
+ 	kfree(pt);
  }
+@@ -226,9 +232,14 @@ static void lmtt_write_pte(struct xe_lmtt *lmtt, struct xe_lmtt_pt *pt,
  
- void
---- a/drivers/gpu/drm/nouveau/nouveau_debugfs.h
-+++ b/drivers/gpu/drm/nouveau/nouveau_debugfs.h
-@@ -24,7 +24,7 @@ extern void nouveau_debugfs_fini(struct
- 
- extern struct dentry *nouveau_debugfs_root;
- 
--int  nouveau_module_debugfs_init(void);
-+void nouveau_module_debugfs_init(void);
- void nouveau_module_debugfs_fini(void);
- #else
- static inline void
-@@ -42,10 +42,9 @@ nouveau_debugfs_fini(struct nouveau_drm
- {
- }
- 
--static inline int
-+static inline void
- nouveau_module_debugfs_init(void)
- {
--	return 0;
- }
- 
- static inline void
---- a/drivers/gpu/drm/nouveau/nouveau_drm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -1456,9 +1456,7 @@ nouveau_drm_init(void)
- 	if (!nouveau_modeset)
- 		return 0;
- 
--	ret = nouveau_module_debugfs_init();
--	if (ret)
--		return ret;
-+	nouveau_module_debugfs_init();
- 
- #ifdef CONFIG_NOUVEAU_PLATFORM_DRIVER
- 	platform_driver_register(&nouveau_platform_driver);
+ 	switch (lmtt->ops->lmtt_pte_size(level)) {
+ 	case sizeof(u32):
++		lmtt_assert(lmtt, !overflows_type(pte, u32));
++		lmtt_assert(lmtt, !pte || !iosys_map_rd(&pt->bo->vmap, idx * sizeof(u32), u32));
++
+ 		xe_map_wr(lmtt_to_xe(lmtt), &pt->bo->vmap, idx * sizeof(u32), u32, pte);
+ 		break;
+ 	case sizeof(u64):
++		lmtt_assert(lmtt, !pte || !iosys_map_rd(&pt->bo->vmap, idx * sizeof(u64), u64));
++
+ 		xe_map_wr(lmtt_to_xe(lmtt), &pt->bo->vmap, idx * sizeof(u64), u64, pte);
+ 		break;
+ 	default:
+-- 
+2.39.5
+
 
 
 
