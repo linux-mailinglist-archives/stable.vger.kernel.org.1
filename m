@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF54EB05EF1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A850B05E16
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57ECF501EF4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:52:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 446401C23BFB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F612EBB97;
-	Tue, 15 Jul 2025 13:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A4C2E2F04;
+	Tue, 15 Jul 2025 13:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKGLC7+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKS9O0T6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1814A2EBB88;
-	Tue, 15 Jul 2025 13:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B1C1B4231;
+	Tue, 15 Jul 2025 13:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587116; cv=none; b=bat6yopbSwMdpzNAGKOCUNvqdZE3Lm7V7qWiNAUyfftuoZAxsjiadaRSITBiJVdrjJc0pr5HpbrPfjxo1l5VGUeVWf2Ph+MPd9uvk9VvK4aL3gqazuJM7rQe+DmGAAPyfbu5lS815KrtKa2KVWqCQrhHLd0e+iiQyrGH4MmBg4s=
+	t=1752586650; cv=none; b=ij6IT2K1l36jGL6l2vOV/isFSuYl3qD0D0DHJvtZjmLiRy6lvUeJVHfs7Cymco1pXZGgjKmwt75cHWj8UWQ5xi33gxz9qnGCCcVB2hNPCFuO5eEkkSOi5DUcDI6lFLRX+mI6U/HUJjDA8tdZZ7QfvHh46eziERY/r1bTGOpQdug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587116; c=relaxed/simple;
-	bh=VgSGkXmxCN8QyKU5K/MHmAbh3YySgWm1CKx3J2exdc4=;
+	s=arc-20240116; t=1752586650; c=relaxed/simple;
+	bh=fZevT78siy67cITHvoPyg6ISzq4OqASjGbYxETc9GUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBDPUBAbKn/cU+oDn64PK7a/3GaoXjxqeQH/sBAJ/zmpMLT/FpjFR0kKsdjlA9JxLwQ163w2eEZHXAJyImm53no8ppqTjkW1qXIiAl8ocq1kLXJ5/KbJx9FivaC3vgQGQICmsgrqZcSQOTwBZQ2Y9/aXNOGVNmnjV7sE5UwbzAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKGLC7+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962FDC4CEE3;
-	Tue, 15 Jul 2025 13:45:15 +0000 (UTC)
+	 MIME-Version; b=Ct4a7Nowlg7qkY96BTR46Xq2srzNU81LLBh+Ksm8H+K9vaqQBsuHNidGaoXu1q0n4QZmohYKwaYmea8LFjdvg0kg3gIU5WHSY4+da5eLNcMt+QHWflt8S5q2GkJ0djrmiOTCJBZ0bOZ1HjH7neW0iNjXQtfU9JP9rASk2ES1MhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKS9O0T6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08ADAC4CEE3;
+	Tue, 15 Jul 2025 13:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587115;
-	bh=VgSGkXmxCN8QyKU5K/MHmAbh3YySgWm1CKx3J2exdc4=;
+	s=korg; t=1752586650;
+	bh=fZevT78siy67cITHvoPyg6ISzq4OqASjGbYxETc9GUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKGLC7+eCsNdV/5B+xnG3rulgVAzff22gFaR+XdMUP8WoYw82Say0gVWLhY5r3SRo
-	 cmFvYj/ZgR7Y336/yudKVumoe8vb1PrIW+pDSw1uAu5fHlHINeQCqoVJtL35kCiCqH
-	 QK6lHEcTiIpOPJaJ+FJqV651jDrD29CPCHeG7gqY=
+	b=jKS9O0T6ogknnFu4in7rB2DDn+HT3eDo79a8AwfZ6cT01sPkkDgU6XVupYy76C3ml
+	 9BOLOPtHQq+mXdMnaWlMWdsbywJz+ZvOCcFyZUna9F5H2Csp8lyUvK+aIq1VdmYn4K
+	 1RTQ2pHUu6ykEPRQrOUskHCZoGo4fsslWQWjFu3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chris.chiu@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 173/192] ALSA: hda/realtek: fix mute/micmute LEDs for HP EliteBook 6 G1a
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Wang Hai <wanghai38@huawei.com>
+Subject: [PATCH 5.4 146/148] Input: atkbd - do not skip atkbd_deactivate() when skipping ATKBD_CMD_GETID
 Date: Tue, 15 Jul 2025 15:14:28 +0200
-Message-ID: <20250715130821.856012233@linuxfoundation.org>
+Message-ID: <20250715130806.120720190@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 9a07ca9a4015f8f71e2b594ee76ac55483babd89 ]
+commit 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 upstream.
 
-HP EliteBook 6 G1a laptops use ALC236 codec and need the fixup
-ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF to make the mic/micmute LEDs
-work.
+After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
+translated mode") not only the getid command is skipped, but also
+the de-activating of the keyboard at the end of atkbd_probe(), potentially
+re-introducing the problem fixed by commit be2d7e4233a4 ("Input: atkbd -
+fix multi-byte scancode handling on reconnect").
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Link: https://patch.msgid.link/20250623063023.374920-1-chris.chiu@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make sure multi-byte scancode handling on reconnect is still handled
+correctly by not skipping the atkbd_deactivate() call.
+
+Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240126160724.13278-3-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/input/keyboard/atkbd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index beb9423658d72..b3cd0ab29bb6a 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10886,7 +10886,9 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8def, "HP EliteBook 660 G12", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8df0, "HP EliteBook 630 G12", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8df1, "HP EliteBook 630 G12", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8dfb, "HP EliteBook 6 G1a 14", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8dfc, "HP EliteBook 645 G12", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8dfd, "HP EliteBook 6 G1a 16", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8dfe, "HP EliteBook 665 G12", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e11, "HP Trekker", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8e12, "HP Trekker", ALC287_FIXUP_CS35L41_I2C_2),
--- 
-2.39.5
-
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -776,7 +776,7 @@ static int atkbd_probe(struct atkbd *atk
+ 
+ 	if (atkbd_skip_getid(atkbd)) {
+ 		atkbd->id = 0xab83;
+-		return 0;
++		goto deactivate_kbd;
+ 	}
+ 
+ /*
+@@ -813,6 +813,7 @@ static int atkbd_probe(struct atkbd *atk
+ 		return -1;
+ 	}
+ 
++deactivate_kbd:
+ /*
+  * Make sure nothing is coming from the keyboard and disturbs our
+  * internal state.
 
 
 
