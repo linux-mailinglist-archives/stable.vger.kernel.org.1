@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93027B05EC2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D50B05E03
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 576124A290C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3D765011CB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE6C2E7629;
-	Tue, 15 Jul 2025 13:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8862B2E8889;
+	Tue, 15 Jul 2025 13:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoLKs4+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smLeglw2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE042E6D2B;
-	Tue, 15 Jul 2025 13:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B902E339B;
+	Tue, 15 Jul 2025 13:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587066; cv=none; b=UMhn7W1BJSLU3uKVWjbfwIN4Y30qRydn7ZKZIx+hcrAER8GVLdZZT3x0im1kvrVE8gqqShllqOiXd8ri5eNevR6Q/f02yBcgEbiAao9Kfh3rKey0NRqbX4C5aGpykCFIH+omes3DxQOhmg4u6W5Pn2tGALi91VqqNYizcx0/efM=
+	t=1752586597; cv=none; b=BvDaZTny8ig4Frkj4fSyF2v19OWZW0paTqjOBgD6yPAYn7Tmo/1dPj+toq0m6cSpuQUg0jUewBCYWuOW5v+Kj5IJN8j6IKaHrN8JlwKnRzGKBkKHGf7KsaLkcDejYCG7DnPdS4BjZgh9EgB1T2rndtkZGx5CKelVVG8czNC7T5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587066; c=relaxed/simple;
-	bh=r5Sp3KX0QqbpWlTkdM6QFp/dwTkcsMvejn1T+MFBcSc=;
+	s=arc-20240116; t=1752586597; c=relaxed/simple;
+	bh=AL3Hd6xQiiPVmXPowzOlVLyIs1wpjv7PFBDLJFXPD2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfX/FEj7Inge1ot6Df6ocYtKSywUPFcdGM5j0ZqBfNTumDQH1eIsuF+U7I52eNNthPAU4771NiFoQXZwHRmaTZdHs4wSQkwuC7PFqsomEwGHW0qjlPHxh/0DDIIPtKNi4WRwNle7zY9AEM3w4UXgErKidjjPxIPqHQ43mBw2hNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoLKs4+X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71908C4CEE3;
-	Tue, 15 Jul 2025 13:44:25 +0000 (UTC)
+	 MIME-Version; b=AkmVJ3HJotRO/KkEUOzcjAjl8ok2QZQf+z+ZKq5h7E/lUPDqUq85GtYnGaqP6B+HLJAQbHeBdAS44Wspnj2ovIFtpFA820fWnC9Q+tEGDezkVd6FGGLcUo89TBtHfY0lIRqSy6qzaCKAL9WZ9vsoIPRnQlrLfSuxXa3rfPDxHPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smLeglw2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEC2C4CEE3;
+	Tue, 15 Jul 2025 13:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587065;
-	bh=r5Sp3KX0QqbpWlTkdM6QFp/dwTkcsMvejn1T+MFBcSc=;
+	s=korg; t=1752586597;
+	bh=AL3Hd6xQiiPVmXPowzOlVLyIs1wpjv7PFBDLJFXPD2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EoLKs4+XKTaTLgXEsAJC9YSpWcHWnmztyeUb/5ueCTdIh5d0Nn5YJu7PySu/kyo1G
-	 TMHkJkpNfdaa7niTmomTicjf3UmssM8/IuYeqQ89rPTaMjmksDqwouC5TwAtFbeFIi
-	 4+hcN20QHEvjHxjwrOwwTp0QZqetucZtT3qjKxEU=
+	b=smLeglw2cOCnluaPlAxwoNeNsFqoEUy3DZWxjyTB2EUNeUGRnA5DdufyQyV2u0LFV
+	 FyUQsnbiGmEcEOxkooVDGVrh9tbvQq8LIV4J2x3HhzdVBoiUsYTURKHSz4hcmYENgF
+	 9kxE/uWMgSjO1soIv3sMrU75U/coZK7OobDqpEH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kito Xu <veritas501@foxmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 152/192] net: appletalk: Fix device refcount leak in atrtr_create()
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 125/148] netlink: make sure we allow at least one dump skb
 Date: Tue, 15 Jul 2025 15:14:07 +0200
-Message-ID: <20250715130821.011750066@linuxfoundation.org>
+Message-ID: <20250715130805.300163679@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kito Xu <veritas501@foxmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 711c80f7d8b163d3ecd463cd96f07230f488e750 ]
+commit a215b5723922f8099078478122f02100e489cb80 upstream.
 
-When updating an existing route entry in atrtr_create(), the old device
-reference was not being released before assigning the new device,
-leading to a device refcount leak. Fix this by calling dev_put() to
-release the old device reference before holding the new one.
+Commit under Fixes tightened up the memory accounting for Netlink
+sockets. Looks like the accounting is too strict for some existing
+use cases, Marek reported issues with nl80211 / WiFi iw CLI.
 
-Fixes: c7f905f0f6d4 ("[ATALK]: Add missing dev_hold() to atrtr_create().")
-Signed-off-by: Kito Xu <veritas501@foxmail.com>
-Link: https://patch.msgid.link/tencent_E1A26771CDAB389A0396D1681A90A49E5D09@qq.com
+To reduce number of iterations Netlink dumps try to allocate
+messages based on the size of the buffer passed to previous
+recvmsg() calls. If user space uses a larger buffer in recvmsg()
+than sk_rcvbuf we will allocate an skb we won't be able to queue.
+
+Make sure we always allow at least one skb to be queued.
+Same workaround is already present in netlink_attachskb().
+Alternative would be to cap the allocation size to
+  rcvbuf - rmem_alloc
+but as I said, the workaround is already present in other places.
+
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/9794af18-4905-46c6-b12c-365ea2f05858@samsung.com
+Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250711001121.3649033-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/appletalk/ddp.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netlink/af_netlink.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
-index b068651984fe3..fa7f002b14fa3 100644
---- a/net/appletalk/ddp.c
-+++ b/net/appletalk/ddp.c
-@@ -576,6 +576,7 @@ static int atrtr_create(struct rtentry *r, struct net_device *devhint)
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2186,11 +2186,11 @@ static int netlink_dump(struct sock *sk)
+ 	struct netlink_ext_ack extack = {};
+ 	struct netlink_callback *cb;
+ 	struct sk_buff *skb = NULL;
++	unsigned int rmem, rcvbuf;
+ 	struct nlmsghdr *nlh;
+ 	struct module *module;
+ 	int err = -ENOBUFS;
+ 	int alloc_min_size;
+-	unsigned int rmem;
+ 	int alloc_size;
  
- 	/* Fill in the routing entry */
- 	rt->target  = ta->sat_addr;
-+	dev_put(rt->dev); /* Release old device */
- 	dev_hold(devhint);
- 	rt->dev     = devhint;
- 	rt->flags   = r->rt_flags;
--- 
-2.39.5
-
+ 	mutex_lock(nlk->cb_mutex);
+@@ -2220,8 +2220,9 @@ static int netlink_dump(struct sock *sk)
+ 	if (!skb)
+ 		goto errout_skb;
+ 
++	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+ 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+-	if (rmem >= READ_ONCE(sk->sk_rcvbuf)) {
++	if (rmem != skb->truesize && rmem >= rcvbuf) {
+ 		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
+ 		goto errout_skb;
+ 	}
 
 
 
