@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02138B05E12
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E81AB05EBF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5300E50136C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A62DD16F178
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780652E6D2B;
-	Tue, 15 Jul 2025 13:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832F42E8E0D;
+	Tue, 15 Jul 2025 13:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0evRp3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xS5uLP7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AFE2E8DF8;
-	Tue, 15 Jul 2025 13:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EE72E8E04;
+	Tue, 15 Jul 2025 13:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586640; cv=none; b=a8qklLzuaLArMomtaYbXDOLxdcd8wwvaOi8ENLqweQs8Co1FzOYoDvD/DBltZZwAcAM/7KvEjuoWIl9HSo6qMiijfDF/FDax6qPkuODymx9+P3pKNaBHWQ9cSNcgm9ucLfxTCtT4Nr7V5tPWWKmwWgGIYVk6vgQ6YSTtNex9o0w=
+	t=1752587079; cv=none; b=slaMnKyyXYW5R9ThbZhcoyijFnUK/ZfxduWMINZYN9tsSgAmMjhCn79R6YCgFeGi2EpBYlEvWhxsAajRyXnIg4WzqJbFlW17CFwgzplcDJ3tonuaagHx1AEhIEXDOrC56G+kdRST2MG9han+PU0HwiBk4Dexmyqy87vMusLgV+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586640; c=relaxed/simple;
-	bh=IMRiQIpYF7wMMgz5aNQSrVE9bdhpaYFvBANroQOlgUo=;
+	s=arc-20240116; t=1752587079; c=relaxed/simple;
+	bh=QWQT3QKdNeSBTE88Q3r5OCucxCl0MbeayFQEBOJOyBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4CncXw4oTyJHk/bfCqn43LaaAvVBx7cohWKCSmi5Nef9w71ypZg0afMac3BIbR69tPMNjO44ku7qR3w5q46iw6M0VQBCdJWJySVdLLaRZODFrtliW3kaC/5RszYGFRyKrbk+MBF4/F4k7WrVgFJRSvSY6e9gHveaCAh+u8jomQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0evRp3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53744C4CEF1;
-	Tue, 15 Jul 2025 13:37:19 +0000 (UTC)
+	 MIME-Version; b=ltvQU2KHJYstore2tEdJnwbYNGeNgP/tq8ZF7EkrHDIPyuDAzIGlhaqt7zscJrDNR5/qB/W8vXS4AYFR5UdYZ7u7m1qW6mhlEVWY6EuwoOnX9nBk+kG+/d0znfJe99RBDSsA4LtZVMnOBCtmnxYmlXshK0mbPwUnPOZC60yN0/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xS5uLP7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BA4C4CEE3;
+	Tue, 15 Jul 2025 13:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586639;
-	bh=IMRiQIpYF7wMMgz5aNQSrVE9bdhpaYFvBANroQOlgUo=;
+	s=korg; t=1752587078;
+	bh=QWQT3QKdNeSBTE88Q3r5OCucxCl0MbeayFQEBOJOyBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0evRp3PzyY55W+gS+5Vz56APDl0q6m8iq7c93TJ3uIM8xuLsYL6Im5+HXTt7IZz2
-	 KQdsibbNJ+1YISb74+EdMiuE79kmqphTHftBIiYtUdK2jCI+ACHdG7lgAHc64eAMLr
-	 JvYaPCIi+F0blHwKd6ps6XHsvl7ydUMZfz46U3gs=
+	b=1xS5uLP7SoNEcipiMenqkuMRabD6FOwMUj7bAZez3bVJFmoqkDyNmNu1yvsr6fiGb
+	 TPSY0Uc7SEWu5iHhmy24MXj49m6anRk3c4qi/mX9ctOIqikC11bRAtoo7sUsRwF+pw
+	 3A9+5/hsH1ZgrGlJl2uyxuD//caE0rvVUffHYnFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.4 100/148] usb: typec: displayport: Fix potential deadlock
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 127/192] wifi: cfg80211: fix S1G beacon head validation in nl80211
 Date: Tue, 15 Jul 2025 15:13:42 +0200
-Message-ID: <20250715130804.318577998@linuxfoundation.org>
+Message-ID: <20250715130819.993024429@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-commit 099cf1fbb8afc3771f408109f62bdec66f85160e upstream.
+[ Upstream commit 1fe44a86ff0ff483aa1f1332f2b08f431fa51ce8 ]
 
-The deadlock can occur due to a recursive lock acquisition of
-`cros_typec_altmode_data::mutex`.
-The call chain is as follows:
-1. cros_typec_altmode_work() acquires the mutex
-2. typec_altmode_vdm() -> dp_altmode_vdm() ->
-3. typec_altmode_exit() -> cros_typec_altmode_exit()
-4. cros_typec_altmode_exit() attempts to acquire the mutex again
+S1G beacons contain fixed length optional fields that precede the
+variable length elements, ensure we take this into account when
+validating the beacon. This particular case was missed in
+1e1f706fc2ce ("wifi: cfg80211/mac80211: correctly parse S1G
+beacon optional elements").
 
-To prevent this, defer the `typec_altmode_exit()` call by scheduling
-it rather than calling it directly from within the mutex-protected
-context.
-
-Cc: stable <stable@kernel.org>
-Fixes: b4b38ffb38c9 ("usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250624133246.3936737-1-akuchynski@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1d47f1198d58 ("nl80211: correctly validate S1G beacon head")
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250626115118.68660-1-lachlan.hodges@morsemicro.com
+[shorten/reword subject]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/wireless/nl80211.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -289,8 +289,7 @@ static int dp_altmode_vdm(struct typec_a
- 	case CMDT_RSP_NAK:
- 		switch (cmd) {
- 		case DP_CMD_STATUS_UPDATE:
--			if (typec_altmode_exit(alt))
--				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
-+			dp->state = DP_STATE_EXIT;
- 			break;
- 		case DP_CMD_CONFIGURE:
- 			dp->data.conf = 0;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index f039a7d0d6f73..0c7e8389bc49e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -229,6 +229,7 @@ static int validate_beacon_head(const struct nlattr *attr,
+ 	unsigned int len = nla_len(attr);
+ 	const struct element *elem;
+ 	const struct ieee80211_mgmt *mgmt = (void *)data;
++	const struct ieee80211_ext *ext;
+ 	unsigned int fixedlen, hdrlen;
+ 	bool s1g_bcn;
+ 
+@@ -237,8 +238,10 @@ static int validate_beacon_head(const struct nlattr *attr,
+ 
+ 	s1g_bcn = ieee80211_is_s1g_beacon(mgmt->frame_control);
+ 	if (s1g_bcn) {
+-		fixedlen = offsetof(struct ieee80211_ext,
+-				    u.s1g_beacon.variable);
++		ext = (struct ieee80211_ext *)mgmt;
++		fixedlen =
++			offsetof(struct ieee80211_ext, u.s1g_beacon.variable) +
++			ieee80211_s1g_optional_len(ext->frame_control);
+ 		hdrlen = offsetof(struct ieee80211_ext, u.s1g_beacon);
+ 	} else {
+ 		fixedlen = offsetof(struct ieee80211_mgmt,
+-- 
+2.39.5
+
 
 
 
