@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6FA9B05F8B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D901B060AA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93AD05857B4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E50091C42467
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F3B2E9743;
-	Tue, 15 Jul 2025 13:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BE22EF67D;
+	Tue, 15 Jul 2025 13:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn9WPqzN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4YROtma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D9F2E9EAD;
-	Tue, 15 Jul 2025 13:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5192EF671;
+	Tue, 15 Jul 2025 13:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587301; cv=none; b=CMLmeYgwO9TtsgKhgW/XmXU3lGBf8TSG3gPxGPTxh/YVteNtDK0tp1fKSdCvciGptmE5GOajjsC9WbO2At/Te4v49Huz35Cw2W++Fa176G3UORUYDvSR+x3jAx/pEmpLxYygW9hDn4tr/aLyk4F3yUzwrDWJ7bYwpwpesm0x7iI=
+	t=1752587825; cv=none; b=P+MeCw+NEtC6CtebfM+++5uAzS8FSkG1qyvC5zBKA39/K5W4ZMEUmeJsj3ONbH6PUcSz8p7eOQFcedeYwHbkAzA8S4RlUmLG5SPiGVw+ht5PIOrKgXAs82kyuHNOXnODk/Y3uVAyeF/NdRwhyItn6GHPpLi4cIjxgn53/PTkU7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587301; c=relaxed/simple;
-	bh=+zNvY7ELnPsh5XUgZKDqOFGcJ4hlnFIZFslXFGLL2cQ=;
+	s=arc-20240116; t=1752587825; c=relaxed/simple;
+	bh=7Rjdix3IkE9yvn0154AdZFhilbUZV0xeUQhO2S4XWm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWf1O7R7CxxLnoiSJD4DrpYyg6p8HKaXOybGx1vaGPJGdf+eQSIzfbol8vVSESNibyomiEL1CmI0uvOe/uzkcewxU5RkmAQEYvBd3wRYD4FisYld7Fw3H6aiT0tvbUnp6OOmsd5bV+UUOhGpVyQ5pKmWceIXK1ZYOzvUqxQxKh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn9WPqzN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B50BC4CEE3;
-	Tue, 15 Jul 2025 13:48:19 +0000 (UTC)
+	 MIME-Version; b=bhjfSn5LPEY0NWza2HQ/8o2+fGSFa0qk8fApFnJMeT+GY/OOcvBp5Gbs2P/2hpUW1ofxlGZ9wQCdzZ6UxeIPFkYZb5rciP9ngl81ZSZXKC1n9KJpci3TQm3eWyhpm+pG//BvLhDldPgG11rYe5rJfEyedQP4V9TbrjFAWKiKaHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4YROtma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023C0C4CEE3;
+	Tue, 15 Jul 2025 13:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587299;
-	bh=+zNvY7ELnPsh5XUgZKDqOFGcJ4hlnFIZFslXFGLL2cQ=;
+	s=korg; t=1752587825;
+	bh=7Rjdix3IkE9yvn0154AdZFhilbUZV0xeUQhO2S4XWm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gn9WPqzNbCk2VVO2riID/rVUVS1qK29OIpkvdKtaCCxevj0znT05/BNOweazcukky
-	 w/OeN2O49Pk/pkb6eQQAJoEp/A1bMO2gIF9Ng4JBf9wQ7WcjwAPDN6hFZWhjIWDfi6
-	 DINyhvj+h3eYhj6rzK1oEO0Uti37naVO7MWN6GVI=
+	b=O4YROtmaHU7qamuovkpZgtkpJ6LXLqlgaMZ1aSD0iWWrueQZnl0pFZ5HSVRDatYIg
+	 P8UicBGH8+MVEzmckqjZIl0aU8k2SNj09BS09FITHu/GC5nzAaNg1+nw5BjiauYX0g
+	 8YOfdcdV75pr2tWsSu9xjg4PIWVpV2KfPIYYtLCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 49/88] usb:cdnsp: remove TRB_FLUSH_ENDPOINT command
-Date: Tue, 15 Jul 2025 15:14:25 +0200
-Message-ID: <20250715130756.517166609@linuxfoundation.org>
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 5.10 157/208] x86/its: Enumerate Indirect Target Selection (ITS) bug
+Date: Tue, 15 Jul 2025 15:14:26 +0200
+Message-ID: <20250715130817.194898868@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,152 +63,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 2998874736bca1031ca84b0a3235a2cd09dfa426 ]
+commit 159013a7ca18c271ff64192deb62a689b622d860 upstream.
 
-Patch removes TRB_FLUSH_ENDPOINT command from driver.
-This command is not supported by controller and
-USBSSP returns TRB Error completion code for it.
+ITS bug in some pre-Alderlake Intel CPUs may allow indirect branches in the
+first half of a cache line get predicted to a target of a branch located in
+the second half of the cache line.
 
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20231026073737.165450-1-pawell@cadence.com
+Set X86_BUG_ITS on affected CPUs. Mitigation to follow in later commits.
+
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 2831a81077f5 ("usb: cdnsp: Fix issue with CV Bad Descriptor test")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdnsp-debug.h  |  3 ---
- drivers/usb/cdns3/cdnsp-gadget.c |  6 +-----
- drivers/usb/cdns3/cdnsp-gadget.h |  5 -----
- drivers/usb/cdns3/cdnsp-ring.c   | 24 ------------------------
- 4 files changed, 1 insertion(+), 37 deletions(-)
+ arch/x86/include/asm/cpufeatures.h |    1 
+ arch/x86/include/asm/msr-index.h   |    8 +++++
+ arch/x86/kernel/cpu/common.c       |   58 +++++++++++++++++++++++++++++--------
+ arch/x86/kvm/x86.c                 |    4 +-
+ 4 files changed, 58 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/usb/cdns3/cdnsp-debug.h b/drivers/usb/cdns3/cdnsp-debug.h
-index f0ca865cce2a0..ad617b7455b9c 100644
---- a/drivers/usb/cdns3/cdnsp-debug.h
-+++ b/drivers/usb/cdns3/cdnsp-debug.h
-@@ -131,8 +131,6 @@ static inline const char *cdnsp_trb_type_string(u8 type)
- 		return "Endpoint Not ready";
- 	case TRB_HALT_ENDPOINT:
- 		return "Halt Endpoint";
--	case TRB_FLUSH_ENDPOINT:
--		return "FLush Endpoint";
- 	default:
- 		return "UNKNOWN";
- 	}
-@@ -328,7 +326,6 @@ static inline const char *cdnsp_decode_trb(char *str, size_t size, u32 field0,
- 		break;
- 	case TRB_RESET_EP:
- 	case TRB_HALT_ENDPOINT:
--	case TRB_FLUSH_ENDPOINT:
- 		ret = snprintf(str, size,
- 			       "%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
- 			       cdnsp_trb_type_string(type),
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.c b/drivers/usb/cdns3/cdnsp-gadget.c
-index bc63c039d3ac9..ccd02f6be78ae 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -1061,10 +1061,8 @@ static int cdnsp_gadget_ep_disable(struct usb_ep *ep)
- 	pep->ep_state |= EP_DIS_IN_RROGRESS;
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -459,4 +459,5 @@
+ #define X86_BUG_RFDS			X86_BUG(1*32 + 2) /* CPU is vulnerable to Register File Data Sampling */
+ #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
+ #define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
++#define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
+ #endif /* _ASM_X86_CPUFEATURES_H */
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -179,6 +179,14 @@
+ 						 * VERW clears CPU Register
+ 						 * File.
+ 						 */
++#define ARCH_CAP_ITS_NO			BIT_ULL(62) /*
++						     * Not susceptible to
++						     * Indirect Target Selection.
++						     * This bit is not set by
++						     * HW, but is synthesized by
++						     * VMMs for guests to know
++						     * their affected status.
++						     */
  
- 	/* Endpoint was unconfigured by Reset Device command. */
--	if (!(pep->ep_state & EP_UNCONFIGURED)) {
-+	if (!(pep->ep_state & EP_UNCONFIGURED))
- 		cdnsp_cmd_stop_ep(pdev, pep);
--		cdnsp_cmd_flush_ep(pdev, pep);
--	}
+ #define MSR_IA32_FLUSH_CMD		0x0000010b
+ #define L1D_FLUSH			BIT(0)	/*
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1135,6 +1135,8 @@ static const __initconst struct x86_cpu_
+ #define GDS		BIT(6)
+ /* CPU is affected by Register File Data Sampling */
+ #define RFDS		BIT(7)
++/* CPU is affected by Indirect Target Selection */
++#define ITS		BIT(8)
  
- 	/* Remove all queued USB requests. */
- 	while (!list_empty(&pep->pending_list)) {
-@@ -1461,8 +1459,6 @@ static void cdnsp_stop(struct cdnsp_device *pdev)
- {
- 	u32 temp;
- 
--	cdnsp_cmd_flush_ep(pdev, &pdev->eps[0]);
--
- 	/* Remove internally queued request for ep0. */
- 	if (!list_empty(&pdev->eps[0].pending_list)) {
- 		struct cdnsp_request *req;
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
-index 2998548177aba..48336e121ed6f 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.h
-+++ b/drivers/usb/cdns3/cdnsp-gadget.h
-@@ -1138,8 +1138,6 @@ union cdnsp_trb {
- #define TRB_HALT_ENDPOINT	54
- /* Doorbell Overflow Event. */
- #define TRB_DRB_OVERFLOW	57
--/* Flush Endpoint Command. */
--#define TRB_FLUSH_ENDPOINT	58
- 
- #define TRB_TYPE_LINK(x)	(((x) & TRB_TYPE_BITMASK) == TRB_TYPE(TRB_LINK))
- #define TRB_TYPE_LINK_LE32(x)	(((x) & cpu_to_le32(TRB_TYPE_BITMASK)) == \
-@@ -1552,8 +1550,6 @@ void cdnsp_queue_configure_endpoint(struct cdnsp_device *pdev,
- void cdnsp_queue_reset_ep(struct cdnsp_device *pdev, unsigned int ep_index);
- void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev,
- 			       unsigned int ep_index);
--void cdnsp_queue_flush_endpoint(struct cdnsp_device *pdev,
--				unsigned int ep_index);
- void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num);
- void cdnsp_queue_reset_device(struct cdnsp_device *pdev);
- void cdnsp_queue_new_dequeue_state(struct cdnsp_device *pdev,
-@@ -1587,7 +1583,6 @@ void cdnsp_irq_reset(struct cdnsp_device *pdev);
- int cdnsp_halt_endpoint(struct cdnsp_device *pdev,
- 			struct cdnsp_ep *pep, int value);
- int cdnsp_cmd_stop_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep);
--int cdnsp_cmd_flush_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep);
- void cdnsp_setup_analyze(struct cdnsp_device *pdev);
- int cdnsp_status_stage(struct cdnsp_device *pdev);
- int cdnsp_reset_device(struct cdnsp_device *pdev);
-diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
-index c9ad4280f4ba2..795668435c77e 100644
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -2157,19 +2157,6 @@ int cdnsp_cmd_stop_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep)
- 	return ret;
+ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
+ 	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
+@@ -1146,22 +1148,25 @@ static const struct x86_cpu_id cpu_vuln_
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
+-	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPINGS(0x0, 0x5),	MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+ 	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+-	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+-	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPINGS(0x0, 0xb),	MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS),
+-	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
++	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
+ 	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
+ 	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
+@@ -1225,6 +1230,32 @@ static bool __init vulnerable_to_rfds(u6
+ 	return cpu_matches(cpu_vuln_blacklist, RFDS);
  }
  
--int cdnsp_cmd_flush_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep)
--{
--	int ret;
--
--	cdnsp_queue_flush_endpoint(pdev, pep->idx);
--	cdnsp_ring_cmd_db(pdev);
--	ret = cdnsp_wait_for_cmd_compl(pdev);
--
--	trace_cdnsp_handle_cmd_flush_ep(pep->out_ctx);
--
--	return ret;
--}
--
- /*
-  * The transfer burst count field of the isochronous TRB defines the number of
-  * bursts that are required to move all packets in this TD. Only SuperSpeed
-@@ -2491,17 +2478,6 @@ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev, unsigned int ep_index)
- 			    EP_ID_FOR_TRB(ep_index));
- }
- 
--/*
-- * Queue a flush endpoint request on the command ring.
-- */
--void  cdnsp_queue_flush_endpoint(struct cdnsp_device *pdev,
--				 unsigned int ep_index)
--{
--	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_FLUSH_ENDPOINT) |
--			    SLOT_ID_FOR_TRB(pdev->slot_id) |
--			    EP_ID_FOR_TRB(ep_index));
--}
--
- void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
++static bool __init vulnerable_to_its(u64 x86_arch_cap_msr)
++{
++	/* The "immunity" bit trumps everything else: */
++	if (x86_arch_cap_msr & ARCH_CAP_ITS_NO)
++		return false;
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
++		return false;
++
++	/* None of the affected CPUs have BHI_CTRL */
++	if (boot_cpu_has(X86_FEATURE_BHI_CTRL))
++		return false;
++
++	/*
++	 * If a VMM did not expose ITS_NO, assume that a guest could
++	 * be running on a vulnerable hardware or may migrate to such
++	 * hardware.
++	 */
++	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
++		return true;
++
++	if (cpu_matches(cpu_vuln_blacklist, ITS))
++		return true;
++
++	return false;
++}
++
+ static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
  {
- 	u32 lo, mid;
--- 
-2.39.5
-
+ 	u64 ia32_cap = x86_read_arch_cap_msr();
+@@ -1339,6 +1370,9 @@ static void __init cpu_set_bug_bits(stru
+ 	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
+ 		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
+ 
++	if (vulnerable_to_its(ia32_cap))
++		setup_force_cpu_bug(X86_BUG_ITS);
++
+ 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
+ 		return;
+ 
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1390,7 +1390,7 @@ static unsigned int num_msr_based_featur
+ 	 ARCH_CAP_PSCHANGE_MC_NO | ARCH_CAP_TSX_CTRL_MSR | ARCH_CAP_TAA_NO | \
+ 	 ARCH_CAP_SBDR_SSDP_NO | ARCH_CAP_FBSDP_NO | ARCH_CAP_PSDP_NO | \
+ 	 ARCH_CAP_FB_CLEAR | ARCH_CAP_RRSBA | ARCH_CAP_PBRSB_NO | ARCH_CAP_GDS_NO | \
+-	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR)
++	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR | ARCH_CAP_ITS_NO)
+ 
+ static u64 kvm_get_arch_capabilities(void)
+ {
+@@ -1429,6 +1429,8 @@ static u64 kvm_get_arch_capabilities(voi
+ 		data |= ARCH_CAP_MDS_NO;
+ 	if (!boot_cpu_has_bug(X86_BUG_RFDS))
+ 		data |= ARCH_CAP_RFDS_NO;
++	if (!boot_cpu_has_bug(X86_BUG_ITS))
++		data |= ARCH_CAP_ITS_NO;
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_RTM)) {
+ 		/*
 
 
 
