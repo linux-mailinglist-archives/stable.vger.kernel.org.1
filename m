@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FD4B060EA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2777B05FA5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B4D716A0B5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:12:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D520017B20E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA9A2F3646;
-	Tue, 15 Jul 2025 13:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB76A2E5430;
+	Tue, 15 Jul 2025 13:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdUNcHK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9STAHJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01DE2E2F0C;
-	Tue, 15 Jul 2025 13:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82B52D8778;
+	Tue, 15 Jul 2025 13:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587936; cv=none; b=Mjbm6HskD5hiw5CvxEPKdP9KxJjl16dxI8OLWGxDPn3nXW4H18vtknaksJP04dah43UBVmVOCtPkEXg+n/3IhEdK/xx1WWY6Vf38gbg2gtvuKunGzaiv3BKebq/+dhHBfrd5cvCX1IjNwMEfPQjKJSC4WIirROINP77B2c5q71A=
+	t=1752587331; cv=none; b=l65SPVhNbq/xMrm/Lvk9AY00TvM3NeVAe799pUwRNhrxGTEHWe6vCTq8NpAMgZSu5/Xj37xJqUHGotuW95q5yePqZQGtsX7axafuRunfjCN9IWXee+viUniZV4aQMemMZPEI1+4s75YF4AqPGrNJB1aGLtCs7HQEoPYK/5z3QGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587936; c=relaxed/simple;
-	bh=7QFAx513F6j88YIPHnn5ysDsAwgDTMi4tFtRsPVPjfE=;
+	s=arc-20240116; t=1752587331; c=relaxed/simple;
+	bh=SGZD6oWQHjkkVGsnY4VEud5XPQNx+CuZUDlVlMOlMKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5vTTkjEvtLi9QC7evCl2z9FRHI7gqN8wPIJb/x0xaPy0oaIYOTxQ2aPEw6OmUMMtWZNTtAjgUehgej8sN/+43XBaEvJkhL9REbDO+X3CBwLBCpzhCBuVlGhY3erNyAPycDa19cotrG9pQCZT8bI0JQ2eR9PIL3qA2l93te+234=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdUNcHK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F59C4CEE3;
-	Tue, 15 Jul 2025 13:58:56 +0000 (UTC)
+	 MIME-Version; b=tVXhSYvs4jABeYlcrwQ1xEAE5iB5HptFLcOWEZ5QllS/ah7461PSpsJplpxIzUt5MinmJO5bqcTJLW7xOyE2LOPsOFg5tONd5SuTjj3FSYxQHP2yvkmpqCCRetwdaB4Sm56tw4vgU3OGOsmxtRVphheDPhKNxrzXEEzdbYT5BgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9STAHJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0B1C4CEE3;
+	Tue, 15 Jul 2025 13:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587936;
-	bh=7QFAx513F6j88YIPHnn5ysDsAwgDTMi4tFtRsPVPjfE=;
+	s=korg; t=1752587331;
+	bh=SGZD6oWQHjkkVGsnY4VEud5XPQNx+CuZUDlVlMOlMKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SdUNcHK7ihHHdbJJyDxuEdEqFYWhARlBsL4YApuZA77+bf7tziAevKDj7JQ7Rc/wG
-	 VLADSwoYkneBIIzzDtJnm4bp9bhhxts1xye/tar4YOpr9k5oH2pcy/OLLp6NgGbHyY
-	 pstYMhevThhKvFg9RdWqWFvsIIAcrZiF2dwhx8Z0=
+	b=c9STAHJ33RWy0JXKWRaoBbpGerzQV8XkgOURFlIFoP4WqP6vscpbs/7m74M4WJTbd
+	 J58TRlOdnQ38mpj26/AxnI5yJVhLyzkPVYngMKh11g2a5fOGO1huVNZg3cgnVgnn74
+	 wTOsasy9AZeHcR0KfWhEkm2Uc7aLCQnBXHqNEbyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.10 167/208] x86/modules: Set VM_FLUSH_RESET_PERMS in module_alloc()
+	Yue Hu <huyue2@coolpad.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 60/88] erofs: clean up z_erofs_pcluster_readmore()
 Date: Tue, 15 Jul 2025 15:14:36 +0200
-Message-ID: <20250715130817.670221771@linuxfoundation.org>
+Message-ID: <20250715130756.976195288@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Yue Hu <huyue2@coolpad.com>
 
-commit 4c4eb3ecc91f4fee6d6bf7cfbc1e21f2e38d19ff upstream.
+[ Upstream commit 796e9149a2fcdba5543e247abd8d911a399bb9a6 ]
 
-Instead of resetting permissions all over the place when freeing module
-memory tell the vmalloc code to do so. Avoids the exercise for the next
-upcoming user.
+`end` parameter is no needed since it's pointless for !backmost, we can
+handle it with backmost internally.  And we only expand the trailing
+edge, so the newstart can be replaced with ->headoffset.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220915111143.406703869@infradead.org
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also, remove linux/prefetch.h inclusion since that is not used anymore
+after commit 386292919c25 ("erofs: introduce readmore decompression
+strategy").
+
+Signed-off-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230525072605.17857-1-zbestahu@gmail.com
+[ Gao Xiang: update commit description. ]
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Stable-dep-of: 99f7619a77a0 ("erofs: fix to add missing tracepoint in erofs_read_folio()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/ftrace.c       |    2 --
- arch/x86/kernel/kprobes/core.c |    1 -
- arch/x86/kernel/module.c       |    8 ++++----
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ fs/erofs/zdata.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -422,8 +422,6 @@ create_trampoline(struct ftrace_ops *ops
- 	/* ALLOC_TRAMP flags lets us know we created it */
- 	ops->flags |= FTRACE_OPS_FL_ALLOC_TRAMP;
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 8018f31d2dbca..50dd104dbaabf 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -5,7 +5,6 @@
+  * Copyright (C) 2022 Alibaba Cloud
+  */
+ #include "compress.h"
+-#include <linux/prefetch.h>
+ #include <linux/psi.h>
  
--	set_vm_flush_reset_perms(trampoline);
+ #include <trace/events/erofs.h>
+@@ -1630,28 +1629,28 @@ static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
+  */
+ static void z_erofs_pcluster_readmore(struct z_erofs_decompress_frontend *f,
+ 				      struct readahead_control *rac,
+-				      erofs_off_t end,
+-				      struct page **pagepool,
+-				      bool backmost)
++				      struct page **pagepool, bool backmost)
+ {
+ 	struct inode *inode = f->inode;
+ 	struct erofs_map_blocks *map = &f->map;
+-	erofs_off_t cur;
++	erofs_off_t cur, end, headoffset = f->headoffset;
+ 	int err;
+ 
+ 	if (backmost) {
++		if (rac)
++			end = headoffset + readahead_length(rac) - 1;
++		else
++			end = headoffset + PAGE_SIZE - 1;
+ 		map->m_la = end;
+ 		err = z_erofs_map_blocks_iter(inode, map,
+ 					      EROFS_GET_BLOCKS_READMORE);
+ 		if (err)
+ 			return;
+ 
+-		/* expend ra for the trailing edge if readahead */
++		/* expand ra for the trailing edge if readahead */
+ 		if (rac) {
+-			loff_t newstart = readahead_pos(rac);
 -
- 	if (likely(system_state != SYSTEM_BOOTING))
- 		set_memory_ro((unsigned long)trampoline, npages);
- 	set_memory_x((unsigned long)trampoline, npages);
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -403,7 +403,6 @@ void *alloc_insn_page(void)
- 	if (!page)
- 		return NULL;
+ 			cur = round_up(map->m_la + map->m_llen, PAGE_SIZE);
+-			readahead_expand(rac, newstart, cur - newstart);
++			readahead_expand(rac, headoffset, cur - headoffset);
+ 			return;
+ 		}
+ 		end = round_up(end, PAGE_SIZE);
+@@ -1699,10 +1698,9 @@ static int z_erofs_read_folio(struct file *file, struct folio *folio)
+ 	trace_erofs_readpage(page, false);
+ 	f.headoffset = (erofs_off_t)page->index << PAGE_SHIFT;
  
--	set_vm_flush_reset_perms(page);
- 	/*
- 	 * First make the page read-only, and only then make it executable to
- 	 * prevent it from being W+X in between.
---- a/arch/x86/kernel/module.c
-+++ b/arch/x86/kernel/module.c
-@@ -73,10 +73,10 @@ void *module_alloc(unsigned long size)
- 		return NULL;
+-	z_erofs_pcluster_readmore(&f, NULL, f.headoffset + PAGE_SIZE - 1,
+-				  &pagepool, true);
++	z_erofs_pcluster_readmore(&f, NULL, &pagepool, true);
+ 	err = z_erofs_do_read_page(&f, page, &pagepool);
+-	z_erofs_pcluster_readmore(&f, NULL, 0, &pagepool, false);
++	z_erofs_pcluster_readmore(&f, NULL, &pagepool, false);
  
- 	p = __vmalloc_node_range(size, MODULE_ALIGN,
--				    MODULES_VADDR + get_module_load_offset(),
--				    MODULES_END, GFP_KERNEL,
--				    PAGE_KERNEL, 0, NUMA_NO_NODE,
--				    __builtin_return_address(0));
-+				 MODULES_VADDR + get_module_load_offset(),
-+				 MODULES_END, GFP_KERNEL, PAGE_KERNEL,
-+				 VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
-+				 __builtin_return_address(0));
- 	if (p && (kasan_module_alloc(p, size) < 0)) {
- 		vfree(p);
- 		return NULL;
+ 	(void)z_erofs_collector_end(&f);
+ 
+@@ -1728,8 +1726,7 @@ static void z_erofs_readahead(struct readahead_control *rac)
+ 
+ 	f.headoffset = readahead_pos(rac);
+ 
+-	z_erofs_pcluster_readmore(&f, rac, f.headoffset +
+-				  readahead_length(rac) - 1, &pagepool, true);
++	z_erofs_pcluster_readmore(&f, rac, &pagepool, true);
+ 	nr_pages = readahead_count(rac);
+ 	trace_erofs_readpages(inode, readahead_index(rac), nr_pages, false);
+ 
+@@ -1752,7 +1749,7 @@ static void z_erofs_readahead(struct readahead_control *rac)
+ 				  page->index, EROFS_I(inode)->nid);
+ 		put_page(page);
+ 	}
+-	z_erofs_pcluster_readmore(&f, rac, 0, &pagepool, false);
++	z_erofs_pcluster_readmore(&f, rac, &pagepool, false);
+ 	(void)z_erofs_collector_end(&f);
+ 
+ 	z_erofs_runqueue(&f, &pagepool,
+-- 
+2.39.5
+
 
 
 
