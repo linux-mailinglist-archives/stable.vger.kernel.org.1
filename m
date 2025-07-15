@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455BBB05E98
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 599E5B05C13
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04A2D1C25130
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 173EC1C219C3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EDC2E9ED4;
-	Tue, 15 Jul 2025 13:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7A42E3B08;
+	Tue, 15 Jul 2025 13:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbWpq5i3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvjK7iH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14242E2F0C;
-	Tue, 15 Jul 2025 13:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE0C2E3AF9;
+	Tue, 15 Jul 2025 13:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586801; cv=none; b=F0GYJwxewm9EDvwfBIxBs1ET0sx/LmXHdAk5kJHPnUb3GCBAW7Imp1N3jKDt8XPAT7qgo/uVcC7GU6XjTMzZ0pjRy5KpaMHVTV/mcqjZSs2S2MEOaqfkhq0nwGpszDlnMHf/QqNCePl7xkEAnj6F07c+wHVQoNXXGfL0RApWS4k=
+	t=1752585880; cv=none; b=e7FraSYetIMYQNGcdhIsDXonXRw5avYEAJ3lsc0YwpZZRS8y4dL7kV6AniiIvA0IejpVPa1JKf8CxKYU4JrUnfuybFf265tYu3Y5kJkwsJIhMvLFgOUXwSbRClbXkKCluzSZ4IYBiCAp9ml2B4hMraq+YtmPGXfKZIpqLZMZcxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586801; c=relaxed/simple;
-	bh=+P63tgq/ViANIC/cD3HAuazNaMF2FyIODW5EKbNDP8o=;
+	s=arc-20240116; t=1752585880; c=relaxed/simple;
+	bh=cEJgvMiUzXVtoJnDBZZsuB40cgX3M/O4aBVqCGWag7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYAAfFcctofOElKKqCw6ekP+l8Dlb1n+/wwmazU2YrpHpALirxQmt18OQkRjkkbh3X3O2bRwaG8OYAj6gvWSlDiHkAsB84qqd0x/+QPehmuI0sRF2aJiAPOTcnPmkJh5oRanehcEefQur56dHnsyrR3RWUjAxoIgzHrVaLYWlds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbWpq5i3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D46C4CEE3;
-	Tue, 15 Jul 2025 13:40:00 +0000 (UTC)
+	 MIME-Version; b=EbmP02zEssAe6YCja9mJLEQ17LYzlXn+ucTp2QESxoXmZ2FIAPNRo4DZk04sDWwHvg2IC226xeQfB62a3d9fKh7vRyGd6VPWJG9+VnbiZAaqBe5YD1wZQeXBV4c9y40ERGKOC5cDfHSoPtXheZmulBrdEK+gDqDcX2/ECB1D5VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvjK7iH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32DB9C4CEE3;
+	Tue, 15 Jul 2025 13:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586801;
-	bh=+P63tgq/ViANIC/cD3HAuazNaMF2FyIODW5EKbNDP8o=;
+	s=korg; t=1752585880;
+	bh=cEJgvMiUzXVtoJnDBZZsuB40cgX3M/O4aBVqCGWag7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbWpq5i3olXeYwf1VN+Lvjxku9fGzmknhP8evfPgHtOmc7SPeizjguHb8ZhjB8C0W
-	 9fbJWtmoUFIRFQw059wXrL875UoN2B3etitxaLty1s3Gp4z0iQke7RHrJSVQEmgS9V
-	 EnxVtuNoFilD1c326Q4GOyn+knyOn7Hgfb85JoRU=
+	b=VvjK7iH4H+7ZWuX/0xJia3nouq66XZFFZ5ZHYx01/OlY3Id5gp+w3w8oK/AeSpNws
+	 /xw6dfpiz01Wq+peOEx/yqoZntYWuvGYmLHS00ChzOla2TW6mGgQ2tbXec6Dx/0WLu
+	 MhlNYt9ewmo8BA0copit8ZL7+CdmhYOUIJ+gswUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.15 052/192] x86/mce/amd: Fix threshold limit reset
-Date: Tue, 15 Jul 2025 15:12:27 +0200
-Message-ID: <20250715130816.932363156@linuxfoundation.org>
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 012/109] vsock: fix `vsock_proto` declaration
+Date: Tue, 15 Jul 2025 15:12:28 +0200
+Message-ID: <20250715130759.372770819@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit 5f6e3b720694ad771911f637a51930f511427ce1 upstream.
+[ Upstream commit 1e3b66e326015f77bc4b36976bebeedc2ac0f588 ]
 
-The MCA threshold limit must be reset after servicing the interrupt.
+>From commit 634f1a7110b4 ("vsock: support sockmap"), `struct proto
+vsock_proto`, defined in af_vsock.c, is not static anymore, since it's
+used by vsock_bpf.c.
 
-Currently, the restart function doesn't have an explicit check for this.  It
-makes some assumptions based on the current limit and what's in the registers.
-These assumptions don't always hold, so the limit won't be reset in some
-cases.
+If CONFIG_BPF_SYSCALL is not defined, `make C=2` will print a warning:
+    $ make O=build C=2 W=1 net/vmw_vsock/
+      ...
+      CC [M]  net/vmw_vsock/af_vsock.o
+      CHECK   ../net/vmw_vsock/af_vsock.c
+    ../net/vmw_vsock/af_vsock.c:123:14: warning: symbol 'vsock_proto' was not declared. Should it be static?
 
-Make the reset condition explicit. Either an interrupt/overflow has occurred
-or the bank is being initialized.
+Declare `vsock_proto` regardless of CONFIG_BPF_SYSCALL, since it's defined
+in af_vsock.c, which is built regardless of CONFIG_BPF_SYSCALL.
 
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-4-236dd74f645f@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20250703112329.28365-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/amd.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ include/net/af_vsock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -350,7 +350,6 @@ static void smca_configure(unsigned int
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index f8b09a82f62e1..1820b87b8b7ff 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -236,8 +236,8 @@ int __vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
+ int vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
+ 			size_t len, int flags);
  
- struct thresh_restart {
- 	struct threshold_block	*b;
--	int			reset;
- 	int			set_lvt_off;
- 	int			lvt_off;
- 	u16			old_limit;
-@@ -432,13 +431,13 @@ static void threshold_restart_bank(void
- 
- 	rdmsr(tr->b->address, lo, hi);
- 
--	if (tr->b->threshold_limit < (hi & THRESHOLD_MAX))
--		tr->reset = 1;	/* limit cannot be lower than err count */
--
--	if (tr->reset) {		/* reset err count and overflow bit */
--		hi =
--		    (hi & ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI)) |
--		    (THRESHOLD_MAX - tr->b->threshold_limit);
-+	/*
-+	 * Reset error count and overflow bit.
-+	 * This is done during init or after handling an interrupt.
-+	 */
-+	if (hi & MASK_OVERFLOW_HI || tr->set_lvt_off) {
-+		hi &= ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI);
-+		hi |= THRESHOLD_MAX - tr->b->threshold_limit;
- 	} else if (tr->old_limit) {	/* change limit w/o reset */
- 		int new_count = (hi & THRESHOLD_MAX) +
- 		    (tr->old_limit - tr->b->threshold_limit);
+-#ifdef CONFIG_BPF_SYSCALL
+ extern struct proto vsock_proto;
++#ifdef CONFIG_BPF_SYSCALL
+ int vsock_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore);
+ void __init vsock_bpf_build_proto(void);
+ #else
+-- 
+2.39.5
+
 
 
 
