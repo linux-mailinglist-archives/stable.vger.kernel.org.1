@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68469B05D41
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA2EB05E5C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A79461899115
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750765021AF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277552E92CD;
-	Tue, 15 Jul 2025 13:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100A12E9EA0;
+	Tue, 15 Jul 2025 13:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mxd4B2at"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6SSks22"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E452E7BB1;
-	Tue, 15 Jul 2025 13:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10772E974E;
+	Tue, 15 Jul 2025 13:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586300; cv=none; b=DuHDfIf6HEkX0zbphSv62qj85KnZhxlLunaasFcuE8JR5fKh2orzlowTYrQGBf/tyUnL6iEftPZ31iFSiXrOxHMnZhKGetKVffM31Z9KoBURmzDEziNr9nyFFWGnJt2RIKbRs42hFd9VJFmnoNvfZzgT51Z4rQ3nrYZNoiC3Prs=
+	t=1752586769; cv=none; b=DDm8egac2vpEKgikC/KOyslL02G1j/D/olyjMsoPJudWaYOSHggf1fJGyrKzQNISkK00jJye7YNug2PbJW5GH6eTDARz8maK89BMewu0+fHF5piJdPJQ0kvaIJhP5bI04VQ5YJRP373KTNYizl3kNMZaez0KYSHRwXMLEFXBGJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586300; c=relaxed/simple;
-	bh=xpgTpNwemqiAf6vu7BQ13hin96lVEyf/zpmXd/gFAVY=;
+	s=arc-20240116; t=1752586769; c=relaxed/simple;
+	bh=rtsZkhPgsTBY0RzoLhKXQlCyywFlVL84iPp+YQvbehc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7wH16Fg9tA1kSKdTOItwBU9myIsFYRdpffPg3Z+nm9u60ehjZuJg5+VOlol9qvOvExeIgfEReDKtP8WrlsziZSu6j5Mb50BkqOSdxrGIurYOkAjRWJ9i2PlO9B+uO/4q22hD3TGrNdKC40TE8h24N3SXfPseKXarmoMzJpyOVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mxd4B2at; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64253C4CEF1;
-	Tue, 15 Jul 2025 13:31:40 +0000 (UTC)
+	 MIME-Version; b=XDckMrvcMFlTiiy/NCcAGCeqlFMJI4574Meu0obLcxBnMkxRq7XAK8kdmE06xPJcAZ+BHO6lYSutmXhSpuNRUm/DukyzR0dpwuYOyCQKIYc19LRshWc/3+W1PjSWSsLA45aQC0imzXZ4aHMbFuzuoKDplIoriu/Yz20JjEg0n/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6SSks22; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BD2C4CEE3;
+	Tue, 15 Jul 2025 13:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586300;
-	bh=xpgTpNwemqiAf6vu7BQ13hin96lVEyf/zpmXd/gFAVY=;
+	s=korg; t=1752586769;
+	bh=rtsZkhPgsTBY0RzoLhKXQlCyywFlVL84iPp+YQvbehc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mxd4B2atV5yZl0Qjr76MpHzKfi+n3BCPmMVMoipt/rE/VuDBIIrJH1/BanyueKUso
-	 wi5Mz/oxUobgGOFry4XmnGSL7I116adrVhKD460YU8Kg+KPrb2JzGwfTh2GqsXvFoW
-	 wjbqRbubpbxQhJsUbUvF36UWEZKXTzTdK0yg7Wms=
+	b=d6SSks22CErKZ85LE5yeNL7CAAP4FEQH6aALHHWvmachX4zV8eT26KH6ucoFMwFKi
+	 Elz4SOXXf0xBkv/bZNTksQpBeRINmJmENI8lfIytnftsyrrL6HCKQykExs7p1rCjlx
+	 Jn1HWOA//XFieqvf2bb7E9KdRqe48XdpSDe/298M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 014/148] ovl: Check for NULL d_inode() in ovl_dentry_upper()
+Subject: [PATCH 6.15 041/192] atm: clip: Fix potential null-ptr-deref in to_atmarpd().
 Date: Tue, 15 Jul 2025 15:12:16 +0200
-Message-ID: <20250715130800.877210510@linuxfoundation.org>
+Message-ID: <20250715130816.502959961@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 8a39f1c870e9d6fbac5638f3a42a6a6363829c49 ]
+[ Upstream commit 706cc36477139c1616a9b2b96610a8bb520b7119 ]
 
-In ovl_path_type() and ovl_is_metacopy_dentry() GCC notices that it is
-possible for OVL_E() to return NULL (which implies that d_inode(dentry)
-may be NULL). This would result in out of bounds reads via container_of(),
-seen with GCC 15's -Warray-bounds -fdiagnostics-details. For example:
+atmarpd is protected by RTNL since commit f3a0592b37b8 ("[ATM]: clip
+causes unregister hang").
 
-In file included from arch/x86/include/generated/asm/rwonce.h:1,
-                 from include/linux/compiler.h:339,
-                 from include/linux/export.h:5,
-                 from include/linux/linkage.h:7,
-                 from include/linux/fs.h:5,
-                 from fs/overlayfs/util.c:7:
-In function 'ovl_upperdentry_dereference',
-    inlined from 'ovl_dentry_upper' at ../fs/overlayfs/util.c:305:9,
-    inlined from 'ovl_path_type' at ../fs/overlayfs/util.c:216:6:
-include/asm-generic/rwonce.h:44:26: error: array subscript 0 is outside array bounds of 'struct inode[7486503276667837]' [-Werror=array-bounds=]
-   44 | #define __READ_ONCE(x)  (*(const volatile __unqual_scalar_typeof(x) *)&(x))
-      |                         ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-include/asm-generic/rwonce.h:50:9: note: in expansion of macro '__READ_ONCE'
-   50 |         __READ_ONCE(x);                                                 \
-      |         ^~~~~~~~~~~
-fs/overlayfs/ovl_entry.h:195:16: note: in expansion of macro 'READ_ONCE'
-  195 |         return READ_ONCE(oi->__upperdentry);
-      |                ^~~~~~~~~
-  'ovl_path_type': event 1
-  185 |         return inode ? OVL_I(inode)->oe : NULL;
-  'ovl_path_type': event 2
+However, it is not enough because to_atmarpd() is called without RTNL,
+especially clip_neigh_solicit() / neigh_ops->solicit() is unsleepable.
 
-Avoid this by allowing ovl_dentry_upper() to return NULL if d_inode() is
-NULL, as that means the problematic dereferencing can never be reached.
-Note that this fixes the over-eager compiler warning in an effort to
-being able to enable -Warray-bounds globally. There is no known
-behavioral bug here.
+Also, there is no RTNL dependency around atmarpd.
 
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Let's use a private mutex and RCU to protect access to atmarpd in
+to_atmarpd().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250704062416.1613927-2-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/util.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/atm/clip.c | 44 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 15 deletions(-)
 
-diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
-index 4d75e1cdf0b9c..af813e7773795 100644
---- a/fs/overlayfs/util.c
-+++ b/fs/overlayfs/util.c
-@@ -191,7 +191,9 @@ enum ovl_path_type ovl_path_real(struct dentry *dentry, struct path *path)
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index b234dc3bcb0d4..f36f2c7d87146 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -45,7 +45,8 @@
+ #include <net/atmclip.h>
  
- struct dentry *ovl_dentry_upper(struct dentry *dentry)
+ static struct net_device *clip_devs;
+-static struct atm_vcc *atmarpd;
++static struct atm_vcc __rcu *atmarpd;
++static DEFINE_MUTEX(atmarpd_lock);
+ static struct timer_list idle_timer;
+ static const struct neigh_ops clip_neigh_ops;
+ 
+@@ -53,24 +54,35 @@ static int to_atmarpd(enum atmarp_ctrl_type type, int itf, __be32 ip)
  {
--	return ovl_upperdentry_dereference(OVL_I(d_inode(dentry)));
-+	struct inode *inode = d_inode(dentry);
+ 	struct sock *sk;
+ 	struct atmarp_ctrl *ctrl;
++	struct atm_vcc *vcc;
+ 	struct sk_buff *skb;
++	int err = 0;
+ 
+ 	pr_debug("(%d)\n", type);
+-	if (!atmarpd)
+-		return -EUNATCH;
 +
-+	return inode ? ovl_upperdentry_dereference(OVL_I(inode)) : NULL;
++	rcu_read_lock();
++	vcc = rcu_dereference(atmarpd);
++	if (!vcc) {
++		err = -EUNATCH;
++		goto unlock;
++	}
+ 	skb = alloc_skb(sizeof(struct atmarp_ctrl), GFP_ATOMIC);
+-	if (!skb)
+-		return -ENOMEM;
++	if (!skb) {
++		err = -ENOMEM;
++		goto unlock;
++	}
+ 	ctrl = skb_put(skb, sizeof(struct atmarp_ctrl));
+ 	ctrl->type = type;
+ 	ctrl->itf_num = itf;
+ 	ctrl->ip = ip;
+-	atm_force_charge(atmarpd, skb->truesize);
++	atm_force_charge(vcc, skb->truesize);
+ 
+-	sk = sk_atm(atmarpd);
++	sk = sk_atm(vcc);
+ 	skb_queue_tail(&sk->sk_receive_queue, skb);
+ 	sk->sk_data_ready(sk);
+-	return 0;
++unlock:
++	rcu_read_unlock();
++	return err;
  }
  
- struct dentry *ovl_dentry_lower(struct dentry *dentry)
+ static void link_vcc(struct clip_vcc *clip_vcc, struct atmarp_entry *entry)
+@@ -607,10 +619,12 @@ static void atmarpd_close(struct atm_vcc *vcc)
+ {
+ 	pr_debug("\n");
+ 
+-	rtnl_lock();
+-	atmarpd = NULL;
++	mutex_lock(&atmarpd_lock);
++	RCU_INIT_POINTER(atmarpd, NULL);
++	mutex_unlock(&atmarpd_lock);
++
++	synchronize_rcu();
+ 	skb_queue_purge(&sk_atm(vcc)->sk_receive_queue);
+-	rtnl_unlock();
+ 
+ 	pr_debug("(done)\n");
+ 	module_put(THIS_MODULE);
+@@ -631,15 +645,15 @@ static struct atm_dev atmarpd_dev = {
+ 
+ static int atm_init_atmarp(struct atm_vcc *vcc)
+ {
+-	rtnl_lock();
++	mutex_lock(&atmarpd_lock);
+ 	if (atmarpd) {
+-		rtnl_unlock();
++		mutex_unlock(&atmarpd_lock);
+ 		return -EADDRINUSE;
+ 	}
+ 
+ 	mod_timer(&idle_timer, jiffies + CLIP_CHECK_INTERVAL * HZ);
+ 
+-	atmarpd = vcc;
++	rcu_assign_pointer(atmarpd, vcc);
+ 	set_bit(ATM_VF_META, &vcc->flags);
+ 	set_bit(ATM_VF_READY, &vcc->flags);
+ 	    /* allow replies and avoid getting closed if signaling dies */
+@@ -648,7 +662,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
+ 	vcc->push = NULL;
+ 	vcc->pop = NULL; /* crash */
+ 	vcc->push_oam = NULL; /* crash */
+-	rtnl_unlock();
++	mutex_unlock(&atmarpd_lock);
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
