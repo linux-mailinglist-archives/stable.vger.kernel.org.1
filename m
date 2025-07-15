@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60847B060B6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:21:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2B0B05F7F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E5DE1C43DB4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:12:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DC3C4E2E3B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084292F2C41;
-	Tue, 15 Jul 2025 13:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D9F2E2657;
+	Tue, 15 Jul 2025 13:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6f/t6WR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0L69Ongl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA392E9EC3;
-	Tue, 15 Jul 2025 13:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FDC84A35;
+	Tue, 15 Jul 2025 13:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587923; cv=none; b=QDVDHNSBcnmohJNYMykTQQCBHH2clkOusDZLfUptnMYMNL+VUJM9qCFUZKU63PvM+sNOPATsQS4ybrzmlVNZ0L4O9uXF4I9xNA265y8FqMw3XhanIxlDq+AoSnWcTKpTu5uhbIU1E5COajm24iK2iEcdEtWu5wFdfrGeB2zysLo=
+	t=1752587398; cv=none; b=C9yskLZDjRChVByERCqdEHe+dpV85uA2iCostGAyhqdOP6kxXWYsc55+EnDsbnBwR2yi5HX+a9G2Gw3T+Bk/8a74/ewoWFyS7rpIwI9+0LkvQ4mT/u80tcObH5phJ2MqlakqKCqH0RCHo2ylo5V89vG/mquoLADzuHEgqX6rFDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587923; c=relaxed/simple;
-	bh=AXpk9koZ21v1bX4sMSlLjPgb4jIbS/+JsCHw5YFu/WI=;
+	s=arc-20240116; t=1752587398; c=relaxed/simple;
+	bh=gojUl8xaDuh9LY97mGlpMB7eTaL9m+vWzMVD2cS2Afk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5cyMkWpFR4S8XxzuM/S/IR5EF8Hcg7KUEvQF8vHgw+rXI6UifueEu5NJIYat+5mLEpRB7uQNsS3ekCJckd/8X2y7smsFGt6YvZ+yHS/ohR5EU+V8bE4mOEnBdKpr9Rjg2iXXaXw0zD7pWG0JMrdxoK65OCR3Cd8hWN7Oltt3S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6f/t6WR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA78C4CEE3;
-	Tue, 15 Jul 2025 13:58:43 +0000 (UTC)
+	 MIME-Version; b=JLOlHvMbvASiKHe1twGQWowWq4LBOxQx3pLo3Sl/F8NY4ofCBbeilv8VQ9E2A/aGbwamN8v4oq8DEeIGDTfgmmxLi2IPYugELduBrPf/1DcsCMBVEZwoLM2SqlfI/VmWd8dLcJTeCuEm4dhP4AlbMFFAep/opT3Pts0g3ab6RNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0L69Ongl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CAFC4CEE3;
+	Tue, 15 Jul 2025 13:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587923;
-	bh=AXpk9koZ21v1bX4sMSlLjPgb4jIbS/+JsCHw5YFu/WI=;
+	s=korg; t=1752587397;
+	bh=gojUl8xaDuh9LY97mGlpMB7eTaL9m+vWzMVD2cS2Afk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6f/t6WRBnNMFU4MAJp7y90Y5qjNrdfRbcCnv/KlKAdbQqBf6217Fs52znBGCKnWP
-	 My0mWXfkG3O3i/UmEosZARBk1/9SpY3bnuvKS9UzYX4ge1A8KNSqd7rfesK3n20LIk
-	 mV3cWiHUqc0vHCQnPBoQ9oeY0zDnykcnQo8Iq+ls=
+	b=0L69OnglIROmEo4+36fF5ZBGkXlj4BNfJdvtfBqYZwq6JbfPDvBFdaA8hZiul59/n
+	 uPfYQGVNuhQ6yuouna5oveaJOmQZ3YWjkvW45PpKgB6teSCnsAF3ZeVR8l1Un1N5I0
+	 jqjvtMFYQaygysiWvM+8tU/DKg776OzRT196CWfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 192/208] net: ll_temac: Fix missing tx_pending check in ethtools_set_ringparam()
-Date: Tue, 15 Jul 2025 15:15:01 +0200
-Message-ID: <20250715130818.637288368@linuxfoundation.org>
+	Borislav Petkov <bp@alien8.de>,
+	Jack Wang <jinpu.wang@ionos.com>
+Subject: [PATCH 6.1 86/88] x86: Fix X86_FEATURE_VERW_CLEAR definition
+Date: Tue, 15 Jul 2025 15:15:02 +0200
+Message-ID: <20250715130758.020374948@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit e81750b4e3826fedce7362dad839cb40384d60ae ]
+This is a mistake during backport.
+VERW_CLEAR is on bit 5, not bit 10.
 
-The function ll_temac_ethtools_set_ringparam() incorrectly checked
-rx_pending twice, once correctly for RX and once mistakenly in place
-of tx_pending. This caused tx_pending to be left unchecked against
-TX_BD_NUM_MAX.
-As a result, invalid TX ring sizes may have been accepted or valid
-ones wrongly rejected based on the RX limit, leading to potential
-misconfiguration or unexpected results.
+Fixes: d12145e8454f ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
 
-This patch corrects the condition to properly validate tx_pending.
-
-Fixes: f7b261bfc35e ("net: ll_temac: Make RX/TX ring sizes configurable")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250710180621.2383000-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/ll_temac_main.c | 2 +-
+ arch/x86/include/asm/cpufeatures.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
-index e50b59efe188b..5ace1a4905d7e 100644
---- a/drivers/net/ethernet/xilinx/ll_temac_main.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
-@@ -1299,7 +1299,7 @@ static int ll_temac_ethtools_set_ringparam(struct net_device *ndev,
- 	if (ering->rx_pending > RX_BD_NUM_MAX ||
- 	    ering->rx_mini_pending ||
- 	    ering->rx_jumbo_pending ||
--	    ering->rx_pending > TX_BD_NUM_MAX)
-+	    ering->tx_pending > TX_BD_NUM_MAX)
- 		return -EINVAL;
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -429,8 +429,8 @@
+ #define X86_FEATURE_V_TSC_AUX		(19*32+ 9) /* "" Virtual TSC_AUX */
+ #define X86_FEATURE_SME_COHERENT	(19*32+10) /* "" AMD hardware-enforced cache coherency */
  
- 	if (netif_running(ndev))
--- 
-2.39.5
-
++#define X86_FEATURE_VERW_CLEAR		(20*32+ 5) /* "" The memory form of VERW mitigates TSA */
+ #define X86_FEATURE_AUTOIBRS		(20*32+ 8) /* "" Automatic IBRS */
+-#define X86_FEATURE_VERW_CLEAR		(20*32+ 10) /* "" The memory form of VERW mitigates TSA */
+ #define X86_FEATURE_SBPB		(20*32+27) /* "" Selective Branch Prediction Barrier */
+ #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* "" MSR_PRED_CMD[IBPB] flushes all branch type predictions */
+ #define X86_FEATURE_SRSO_NO		(20*32+29) /* "" CPU is not affected by SRSO */
 
 
 
