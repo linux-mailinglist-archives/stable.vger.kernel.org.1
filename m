@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-162220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E42B05C69
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:31:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 329BAB05EB6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6A9A173260
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4499B3B942A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F152E5421;
-	Tue, 15 Jul 2025 13:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFC32E6D37;
+	Tue, 15 Jul 2025 13:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5HvsK24"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3mf7Kb4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BAC2E6D28;
-	Tue, 15 Jul 2025 13:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A79A2E62C9;
+	Tue, 15 Jul 2025 13:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585983; cv=none; b=rAfnM5/hdwW1NZreKJwvvW+peLPVRq1ntrigYl54A9XSjujtGG5Xg9HodgDfP7sWNgsgkDwLPpfyKITjvVbgxlRaG0KJx8a/2EPhEV/j90QOMI9m3kzz/bTl7vO0ZrwRnmV/N0QhTGwf7YyKeKNhTIp2Em+/wWWVOLM1pcP8ULQ=
+	t=1752587031; cv=none; b=Rf0QgrlhnIrT/X2lPHWZSXr1c+vuIy8MTQdduFdgvR3591t1ns7WnrnIbMf0Chlu7C3lFqzNPiblOvNfthPOTdIXUwPrwi6t229zpKalYWmadM2ncLwy55g7cg//faZz32pYe7zP0TWpEv5Lm4uCdHIhtY/FjMB0Ifeet/kwrhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585983; c=relaxed/simple;
-	bh=yJU0tN77dJCmQb3rgE6XB9vcfUqMBvrsKvB4Qnk30gY=;
+	s=arc-20240116; t=1752587031; c=relaxed/simple;
+	bh=b9ItFOQbr7LAyezWkBoHgzKpHGljag5zvpv9hPxybNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z67+A7/wd8k+ItPyEd37NgSLEqlHdGhO/L6ZRYO3AsevZ1b7yuqA5g7RRokSrMITiw7sqjeZPZLOclszR1/6ydE95WYwNHtf116BjYq09Vd9mOWt3hoi3bQWvv/n3MO/kJ8vKBWp9vlXAxnl+F7TzQKVDZy1VdEdg3YedlK6cOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5HvsK24; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D1BC4CEE3;
-	Tue, 15 Jul 2025 13:26:22 +0000 (UTC)
+	 MIME-Version; b=BEQB+52WTuOPvf1DHMzu5uyY+5eqAbNwK/g17H7xGMkwXukG3BR1+lMdFM2UuRPlO12oK8yZaeefjtWtslxsG5hWVNxwWSKZweeSW0Eq68DbOLl0gk+vAeaLfZi/4B6SaYDrcJt6I8qS67hyICzTIrByKbOIz6wtnaDPFY52Amk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3mf7Kb4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDE6C4CEE3;
+	Tue, 15 Jul 2025 13:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585983;
-	bh=yJU0tN77dJCmQb3rgE6XB9vcfUqMBvrsKvB4Qnk30gY=;
+	s=korg; t=1752587031;
+	bh=b9ItFOQbr7LAyezWkBoHgzKpHGljag5zvpv9hPxybNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5HvsK24/AN9mL/tUoMS4Bq61kWFkJ8Ge3NLvgbC9WQ9RCy8yynhWzTNud6U6U38a
-	 Oup/5c1qlQDtkGfIjU01SUyE83Q/scjcd9iu0z9KmF08TU74nznMYeREK/+S0GJbAl
-	 3A/nbjXJqZDMxFKOo94XsXgB6G9EFnzyLFBwdlN0=
+	b=f3mf7Kb4neTYIgiQn5oRcqLYsJmgiqvnsyY941qHyx9precnTNelWslFcYvvOVJzO
+	 LPNt/2EFVKQ3uFcGIJhMlAfM7Z12AE9Grx0wyaCtqHFHxExmtfb0CVqPkILOQNCDqJ
+	 Df/JOEtEshTrGQKQqW+Jm5nPtRocT1EU/yqCeGpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+48240bab47e705c53126@syzkaller.appspotmail.com,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/109] nbd: fix uaf in nbd_genl_connect() error path
+	Axel Fontaine <axel@axelfontaine.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.15 123/192] erofs: fix large fragment handling
 Date: Tue, 15 Jul 2025 15:13:38 +0200
-Message-ID: <20250715130802.164340872@linuxfoundation.org>
+Message-ID: <20250715130819.829144037@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit aa9552438ebf015fc5f9f890dbfe39f0c53cf37e ]
+commit b44686c8391b427fb1c85a31c35077e6947c6d90 upstream.
 
-There is a use-after-free issue in nbd:
+Fragments aren't limited by Z_EROFS_PCLUSTER_MAX_DSIZE. However, if
+a fragment's logical length is larger than Z_EROFS_PCLUSTER_MAX_DSIZE
+but the fragment is not the whole inode, it currently returns
+-EOPNOTSUPP because m_flags has the wrong EROFS_MAP_ENCODED flag set.
+It is not intended by design but should be rare, as it can only be
+reproduced by mkfs with `-Eall-fragments` in a specific case.
 
-block nbd6: Receive control failed (result -104)
-block nbd6: shutting down sockets
-==================================================================
-BUG: KASAN: slab-use-after-free in recv_work+0x694/0xa80 drivers/block/nbd.c:1022
-Write of size 4 at addr ffff8880295de478 by task kworker/u33:0/67
+Let's normalize fragment m_flags using the new EROFS_MAP_FRAGMENT.
 
-CPU: 2 UID: 0 PID: 67 Comm: kworker/u33:0 Not tainted 6.15.0-rc5-syzkaller-00123-g2c89c1b655c0 #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: nbd6-recv recv_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- check_region_inline mm/kasan/generic.c:183 [inline]
- kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
- instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
- atomic_dec include/linux/atomic/atomic-instrumented.h:592 [inline]
- recv_work+0x694/0xa80 drivers/block/nbd.c:1022
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:464
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-nbd_genl_connect() does not properly stop the device on certain
-error paths after nbd_start_device() has been called. This causes
-the error path to put nbd->config while recv_work continue to use
-the config after putting it, leading to use-after-free in recv_work.
-
-This patch moves nbd_start_device() after the backend file creation.
-
-Reported-by: syzbot+48240bab47e705c53126@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68227a04.050a0220.f2294.00b5.GAE@google.com/T/
-Fixes: 6497ef8df568 ("nbd: provide a way for userspace processes to identify device backends")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250612132405.364904-1-zhengqixing@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Axel Fontaine <axel@axelfontaine.com>
+Closes: https://github.com/erofs/erofs-utils/issues/23
+Fixes: 7c3ca1838a78 ("erofs: restrict pcluster size limitations")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250711195826.3601157-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/nbd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/erofs/internal.h |    4 +++-
+ fs/erofs/zdata.c    |    2 +-
+ fs/erofs/zmap.c     |    9 ++++-----
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 2203686156bfe..3742ddf46c55a 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -2120,9 +2120,7 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
- 				goto out;
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -314,10 +314,12 @@ static inline struct folio *erofs_grab_f
+ /* The length of extent is full */
+ #define EROFS_MAP_FULL_MAPPED	0x0008
+ /* Located in the special packed inode */
+-#define EROFS_MAP_FRAGMENT	0x0010
++#define __EROFS_MAP_FRAGMENT	0x0010
+ /* The extent refers to partial decompressed data */
+ #define EROFS_MAP_PARTIAL_REF	0x0020
+ 
++#define EROFS_MAP_FRAGMENT	(EROFS_MAP_MAPPED | __EROFS_MAP_FRAGMENT)
++
+ struct erofs_map_blocks {
+ 	struct erofs_buf buf;
+ 
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1003,7 +1003,7 @@ static int z_erofs_scan_folio(struct z_e
+ 		if (!(map->m_flags & EROFS_MAP_MAPPED)) {
+ 			folio_zero_segment(folio, cur, end);
+ 			tight = false;
+-		} else if (map->m_flags & EROFS_MAP_FRAGMENT) {
++		} else if (map->m_flags & __EROFS_MAP_FRAGMENT) {
+ 			erofs_off_t fpos = offset + cur - map->m_la;
+ 
+ 			err = z_erofs_read_fragment(inode->i_sb, folio, cur,
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -413,8 +413,7 @@ static int z_erofs_map_blocks_fo(struct
+ 	    !vi->z_tailextent_headlcn) {
+ 		map->m_la = 0;
+ 		map->m_llen = inode->i_size;
+-		map->m_flags = EROFS_MAP_MAPPED |
+-			EROFS_MAP_FULL_MAPPED | EROFS_MAP_FRAGMENT;
++		map->m_flags = EROFS_MAP_FRAGMENT;
+ 		return 0;
+ 	}
+ 	initial_lcn = ofs >> lclusterbits;
+@@ -489,7 +488,7 @@ static int z_erofs_map_blocks_fo(struct
+ 			goto unmap_out;
  		}
- 	}
--	ret = nbd_start_device(nbd);
--	if (ret)
--		goto out;
-+
- 	if (info->attrs[NBD_ATTR_BACKEND_IDENTIFIER]) {
- 		nbd->backend = nla_strdup(info->attrs[NBD_ATTR_BACKEND_IDENTIFIER],
- 					  GFP_KERNEL);
-@@ -2138,6 +2136,8 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
- 		goto out;
- 	}
- 	set_bit(NBD_RT_HAS_BACKEND_FILE, &config->runtime_flags);
-+
-+	ret = nbd_start_device(nbd);
- out:
- 	mutex_unlock(&nbd->config_lock);
- 	if (!ret) {
--- 
-2.39.5
-
+ 	} else if (fragment && m.lcn == vi->z_tailextent_headlcn) {
+-		map->m_flags |= EROFS_MAP_FRAGMENT;
++		map->m_flags = EROFS_MAP_FRAGMENT;
+ 	} else {
+ 		map->m_pa = erofs_pos(sb, m.pblk);
+ 		err = z_erofs_get_extent_compressedlen(&m, initial_lcn);
+@@ -617,7 +616,7 @@ static int z_erofs_map_blocks_ext(struct
+ 	if (lstart < lend) {
+ 		map->m_la = lstart;
+ 		if (last && (vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER)) {
+-			map->m_flags |= EROFS_MAP_MAPPED | EROFS_MAP_FRAGMENT;
++			map->m_flags = EROFS_MAP_FRAGMENT;
+ 			vi->z_fragmentoff = map->m_plen;
+ 			if (recsz > offsetof(struct z_erofs_extent, pstart_lo))
+ 				vi->z_fragmentoff |= map->m_pa << 32;
+@@ -797,7 +796,7 @@ static int z_erofs_iomap_begin_report(st
+ 	iomap->length = map.m_llen;
+ 	if (map.m_flags & EROFS_MAP_MAPPED) {
+ 		iomap->type = IOMAP_MAPPED;
+-		iomap->addr = map.m_flags & EROFS_MAP_FRAGMENT ?
++		iomap->addr = map.m_flags & __EROFS_MAP_FRAGMENT ?
+ 			      IOMAP_NULL_ADDR : map.m_pa;
+ 	} else {
+ 		iomap->type = IOMAP_HOLE;
 
 
 
