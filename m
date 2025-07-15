@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-162299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1270AB05D08
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:40:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB97B05D4B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9259C1C21A36
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:36:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26DF57B660D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD392E8887;
-	Tue, 15 Jul 2025 13:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1DA2E7BA9;
+	Tue, 15 Jul 2025 13:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiPskh9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVdQf9uq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB39C2E7F3C;
-	Tue, 15 Jul 2025 13:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE40C2E3AED;
+	Tue, 15 Jul 2025 13:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586189; cv=none; b=cIZcJIjRy1LLk6+B+vXJGi89JgLZrZiA2IXJGgXBomkezbbThJOmfFN8NZh5Fh3B41HdPZO7YoZJ2lAA5cSWnAlnAAsK2hVuN5TyIO2EHvslagGRGJcGQhalsO168QyyVsUh/M+uptYPZZrXjS2vi4m+JVbOMnhlLAlMFfrUxoM=
+	t=1752586050; cv=none; b=aWTAY/kgLXLMs0HFZGo2k5KDrRMlwiwziPy3CX3UxQBWFz3zbhjiVT5i1BEAfZOOUbuJ6A9CH3vjmj2B/OOkM93jqK2qHsR6mUZW2soO2tws1H7eUb4y+UjlNxgHRVtXDmTra4btLFGvFQrIHH2UMS4hY8keUYb/OZg33mf0nCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586189; c=relaxed/simple;
-	bh=abnAHv8wb3biEtYvtiBoD9IxxMijfuV2HVNV11ENL20=;
+	s=arc-20240116; t=1752586050; c=relaxed/simple;
+	bh=Urhc0WLito1KGueqNqdBS4Odv4ildhAqkrljrcoyk8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbOBdLIb8F71zT2yJwHyrvb7nsDDMxpLnza6bpAGx49sCoMgKJr8hQMiIBxeUh0lZqmw/tvA1ltJCPUalswGU5sS4KH8SF2e80/GsnNG10j1eBpawQhOjQXVI+bu3FOqT73q03vYesOdsgz7wAj2U10JN688bjmxa3HZxgrvKdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiPskh9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DDFC4CEE3;
-	Tue, 15 Jul 2025 13:29:49 +0000 (UTC)
+	 MIME-Version; b=JyfEBWP/fOpMhhvhZ7tgv+bnf2Yv2KPv/iHNqMfin91ut0UIixfxn+PkJ6SNkoPHLRLYOaGt5AOYqaFAMmzxKE6MOGiJpYMXlKcMHiYrYFmo/OL+LGQ4w9yHSlOo9XkSQvklWEsPgQyZ1+/1NZIvKJdiKtcVN+IFxv5rZkg66aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVdQf9uq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDC7C4CEE3;
+	Tue, 15 Jul 2025 13:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586189;
-	bh=abnAHv8wb3biEtYvtiBoD9IxxMijfuV2HVNV11ENL20=;
+	s=korg; t=1752586049;
+	bh=Urhc0WLito1KGueqNqdBS4Odv4ildhAqkrljrcoyk8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IiPskh9goZyWzbZvkAqIvE7alAMidvTuNVr987fSoS4hL3R0VHdMhMt9XZwgXyqbt
-	 ea4soW8DSLl5zcAlkD6Kpfxi5NVh7ps8SAHp1ZZpiT3g1XpQsWFYXjiZftGM3j2bxc
-	 PgAkf2PnBddfRAjAcqZmwpsHXqDUB+RI9L/aJ/Ug=
+	b=TVdQf9uqHEs4Bd2n8/FGJcxbdxtWLqKBbegzyvwq36k8L7mXO3ocw2zw6ah/bmxgm
+	 0EhqHRVgioCtMKOUUYiINuaKjDwLtAR3jE+LRifYiRkQ7OUbvgqiXfjZpYiuaiZiux
+	 Fr7xU/ijtzVyOPlkpfIyGfombuzBSd98z3LhFCaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Simona Vetter <simona.vetter@intel.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>
-Subject: [PATCH 5.15 32/77] drm/gem: Fix race in drm_gem_handle_create_tail()
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 075/109] smb: client: avoid unnecessary reconnects when refreshing referrals
 Date: Tue, 15 Jul 2025 15:13:31 +0200
-Message-ID: <20250715130752.997780056@linuxfoundation.org>
+Message-ID: <20250715130801.886545460@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,145 +62,292 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simona Vetter <simona.vetter@ffwll.ch>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit bd46cece51a36ef088f22ef0416ac13b0a46d5b0 upstream.
+[ Upstream commit 242d23efc987151ecd34bc0cae4c0b737494fc40 ]
 
-Object creation is a careful dance where we must guarantee that the
-object is fully constructed before it is visible to other threads, and
-GEM buffer objects are no difference.
+Do not mark tcons for reconnect when current connection matches any of
+the targets returned by new referral even when there is no cached
+entry.
 
-Final publishing happens by calling drm_gem_handle_create(). After
-that the only allowed thing to do is call drm_gem_object_put() because
-a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
-(which is trivial since we have a linear allocator) can already tear
-down the object again.
-
-Luckily most drivers get this right, the very few exceptions I've
-pinged the relevant maintainers for. Unfortunately we also need
-drm_gem_handle_create() when creating additional handles for an
-already existing object (e.g. GETFB ioctl or the various bo import
-ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
-the only exported function to stop these issues from happening.
-
-Now unfortunately the implementation of drm_gem_handle_create() isn't
-living up to standards: It does correctly finishe object
-initialization at the global level, and hence is safe against a
-concurrent tear down. But it also sets up the file-private aspects of
-the handle, and that part goes wrong: We fully register the object in
-the drm_file.object_idr before calling drm_vma_node_allow() or
-obj->funcs->open, which opens up races against concurrent removal of
-that handle in drm_gem_handle_delete().
-
-Fix this with the usual two-stage approach of first reserving the
-handle id, and then only registering the object after we've completed
-the file-private setup.
-
-Jacek reported this with a testcase of concurrently calling GEM_CLOSE
-on a freshly-created object (which also destroys the object), but it
-should be possible to hit this with just additional handles created
-through import or GETFB without completed destroying the underlying
-object with the concurrent GEM_CLOSE ioctl calls.
-
-Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
-Release driver references to handle before making it available
-again"), which means a cool 9 years have passed until someone noticed
-that we need to make this symmetry or there's still gaps left :-/
-Without the 2-stage close approach we'd still have a race, therefore
-that's an integral part of this bugfix.
-
-More importantly, this means we can have NULL pointers behind
-allocated id in our drm_file.object_idr. We need to check for that
-now:
-
-- drm_gem_handle_delete() checks for ERR_OR_NULL already
-
-- drm_gem.c:object_lookup() also chekcs for NULL
-
-- drm_gem_release() should never be called if there's another thread
-  still existing that could call into an IOCTL that creates a new
-  handle, so cannot race. For paranoia I added a NULL check to
-  drm_gem_object_release_handle() though.
-
-- most drivers (etnaviv, i915, msm) are find because they use
-  idr_find(), which maps both ENOENT and NULL to NULL.
-
-- drivers using idr_for_each_entry() should also be fine, because
-  idr_get_next does filter out NULL entries and continues the
-  iteration.
-
-- The same holds for drm_show_memory_stats().
-
-v2: Use drm_WARN_ON (Thomas)
-
-Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Tested-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: stable@vger.kernel.org
-Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250707151814.603897-1-simona.vetter@ffwll.ch
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 74ebd02163fd ("cifs: all initializations for tcon should happen in tcon_info_alloc")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_gem.c |   10 +++++++++-
- include/drm/drm_file.h    |    3 +++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ fs/smb/client/dfs_cache.c | 187 ++++++++++++++++++++++++--------------
+ 1 file changed, 117 insertions(+), 70 deletions(-)
 
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -234,6 +234,9 @@ drm_gem_object_release_handle(int id, vo
- 	struct drm_file *file_priv = data;
- 	struct drm_gem_object *obj = ptr;
+diff --git a/fs/smb/client/dfs_cache.c b/fs/smb/client/dfs_cache.c
+index 11c8efecf7aa1..3cf7c88489be4 100644
+--- a/fs/smb/client/dfs_cache.c
++++ b/fs/smb/client/dfs_cache.c
+@@ -1095,16 +1095,18 @@ int dfs_cache_get_tgt_share(char *path, const struct dfs_cache_tgt_iterator *it,
+ 	return 0;
+ }
  
-+	if (drm_WARN_ON(obj->dev, !data))
-+		return 0;
+-static bool target_share_equal(struct TCP_Server_Info *server, const char *s1, const char *s2)
++static bool target_share_equal(struct cifs_tcon *tcon, const char *s1)
+ {
+-	char unc[sizeof("\\\\") + SERVER_NAME_LENGTH] = {0};
++	struct TCP_Server_Info *server = tcon->ses->server;
++	struct sockaddr_storage ss;
+ 	const char *host;
++	const char *s2 = &tcon->tree_name[1];
+ 	size_t hostlen;
+-	struct sockaddr_storage ss;
++	char unc[sizeof("\\\\") + SERVER_NAME_LENGTH] = {0};
+ 	bool match;
+ 	int rc;
+ 
+-	if (strcasecmp(s1, s2))
++	if (strcasecmp(s2, s1))
+ 		return false;
+ 
+ 	/*
+@@ -1128,34 +1130,6 @@ static bool target_share_equal(struct TCP_Server_Info *server, const char *s1, c
+ 	return match;
+ }
+ 
+-/*
+- * Mark dfs tcon for reconnecting when the currently connected tcon does not match any of the new
+- * target shares in @refs.
+- */
+-static void mark_for_reconnect_if_needed(struct TCP_Server_Info *server,
+-					 const char *path,
+-					 struct dfs_cache_tgt_list *old_tl,
+-					 struct dfs_cache_tgt_list *new_tl)
+-{
+-	struct dfs_cache_tgt_iterator *oit, *nit;
+-
+-	for (oit = dfs_cache_get_tgt_iterator(old_tl); oit;
+-	     oit = dfs_cache_get_next_tgt(old_tl, oit)) {
+-		for (nit = dfs_cache_get_tgt_iterator(new_tl); nit;
+-		     nit = dfs_cache_get_next_tgt(new_tl, nit)) {
+-			if (target_share_equal(server,
+-					       dfs_cache_get_tgt_name(oit),
+-					       dfs_cache_get_tgt_name(nit))) {
+-				dfs_cache_noreq_update_tgthint(path, nit);
+-				return;
+-			}
+-		}
+-	}
+-
+-	cifs_dbg(FYI, "%s: no cached or matched targets. mark dfs share for reconnect.\n", __func__);
+-	cifs_signal_cifsd_for_reconnect(server, true);
+-}
+-
+ static bool is_ses_good(struct cifs_ses *ses)
+ {
+ 	struct TCP_Server_Info *server = ses->server;
+@@ -1172,41 +1146,35 @@ static bool is_ses_good(struct cifs_ses *ses)
+ 	return ret;
+ }
+ 
+-/* Refresh dfs referral of @ses and mark it for reconnect if needed */
+-static void __refresh_ses_referral(struct cifs_ses *ses, bool force_refresh)
++static char *get_ses_refpath(struct cifs_ses *ses)
+ {
+ 	struct TCP_Server_Info *server = ses->server;
+-	DFS_CACHE_TGT_LIST(old_tl);
+-	DFS_CACHE_TGT_LIST(new_tl);
+-	bool needs_refresh = false;
+-	struct cache_entry *ce;
+-	unsigned int xid;
+-	char *path = NULL;
+-	int rc = 0;
+-
+-	xid = get_xid();
++	char *path = ERR_PTR(-ENOENT);
+ 
+ 	mutex_lock(&server->refpath_lock);
+ 	if (server->leaf_fullpath) {
+ 		path = kstrdup(server->leaf_fullpath + 1, GFP_ATOMIC);
+ 		if (!path)
+-			rc = -ENOMEM;
++			path = ERR_PTR(-ENOMEM);
+ 	}
+ 	mutex_unlock(&server->refpath_lock);
+-	if (!path)
+-		goto out;
++	return path;
++}
+ 
+-	down_read(&htable_rw_lock);
+-	ce = lookup_cache_entry(path);
+-	needs_refresh = force_refresh || IS_ERR(ce) || cache_entry_expired(ce);
+-	if (!IS_ERR(ce)) {
+-		rc = get_targets(ce, &old_tl);
+-		cifs_dbg(FYI, "%s: get_targets: %d\n", __func__, rc);
+-	}
+-	up_read(&htable_rw_lock);
++/* Refresh dfs referral of @ses */
++static void refresh_ses_referral(struct cifs_ses *ses)
++{
++	struct cache_entry *ce;
++	unsigned int xid;
++	char *path;
++	int rc = 0;
+ 
+-	if (!needs_refresh) {
+-		rc = 0;
++	xid = get_xid();
 +
- 	if (obj->funcs->close)
- 		obj->funcs->close(obj, file_priv);
- 
-@@ -361,7 +364,7 @@ drm_gem_handle_create_tail(struct drm_fi
- 	idr_preload(GFP_KERNEL);
- 	spin_lock(&file_priv->table_lock);
- 
--	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
-+	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
- 
- 	spin_unlock(&file_priv->table_lock);
- 	idr_preload_end();
-@@ -382,6 +385,11 @@ drm_gem_handle_create_tail(struct drm_fi
- 			goto err_revoke;
++	path = get_ses_refpath(ses);
++	if (IS_ERR(path)) {
++		rc = PTR_ERR(path);
++		path = NULL;
+ 		goto out;
  	}
  
-+	/* mirrors drm_gem_handle_delete to avoid races */
-+	spin_lock(&file_priv->table_lock);
-+	obj = idr_replace(&file_priv->object_idr, obj, handle);
-+	WARN_ON(obj != NULL);
-+	spin_unlock(&file_priv->table_lock);
- 	*handlep = handle;
- 	return 0;
+@@ -1217,29 +1185,106 @@ static void __refresh_ses_referral(struct cifs_ses *ses, bool force_refresh)
+ 		goto out;
+ 	}
  
---- a/include/drm/drm_file.h
-+++ b/include/drm/drm_file.h
-@@ -273,6 +273,9 @@ struct drm_file {
- 	 *
- 	 * Mapping of mm object handles to object pointers. Used by the GEM
- 	 * subsystem. Protected by @table_lock.
-+	 *
-+	 * Note that allocated entries might be NULL as a transient state when
-+	 * creating or deleting a handle.
+-	ce = cache_refresh_path(xid, ses, path, true);
+-	if (!IS_ERR(ce)) {
+-		rc = get_targets(ce, &new_tl);
++	ce = cache_refresh_path(xid, ses, path, false);
++	if (!IS_ERR(ce))
+ 		up_read(&htable_rw_lock);
+-		cifs_dbg(FYI, "%s: get_targets: %d\n", __func__, rc);
+-		mark_for_reconnect_if_needed(server, path, &old_tl, &new_tl);
+-	}
++	else
++		rc = PTR_ERR(ce);
+ 
+ out:
+ 	free_xid(xid);
+-	dfs_cache_free_tgts(&old_tl);
+-	dfs_cache_free_tgts(&new_tl);
+ 	kfree(path);
+ }
+ 
+-static inline void refresh_ses_referral(struct cifs_ses *ses)
++static int __refresh_tcon_referral(struct cifs_tcon *tcon,
++				   const char *path,
++				   struct dfs_info3_param *refs,
++				   int numrefs, bool force_refresh)
+ {
+-	__refresh_ses_referral(ses, false);
++	struct cache_entry *ce;
++	bool reconnect = force_refresh;
++	int rc = 0;
++	int i;
++
++	if (unlikely(!numrefs))
++		return 0;
++
++	if (force_refresh) {
++		for (i = 0; i < numrefs; i++) {
++			/* TODO: include prefix paths in the matching */
++			if (target_share_equal(tcon, refs[i].node_name)) {
++				reconnect = false;
++				break;
++			}
++		}
++	}
++
++	down_write(&htable_rw_lock);
++	ce = lookup_cache_entry(path);
++	if (!IS_ERR(ce)) {
++		if (force_refresh || cache_entry_expired(ce))
++			rc = update_cache_entry_locked(ce, refs, numrefs);
++	} else if (PTR_ERR(ce) == -ENOENT) {
++		ce = add_cache_entry_locked(refs, numrefs);
++	}
++	up_write(&htable_rw_lock);
++
++	if (IS_ERR(ce))
++		rc = PTR_ERR(ce);
++	if (reconnect) {
++		cifs_tcon_dbg(FYI, "%s: mark for reconnect\n", __func__);
++		cifs_signal_cifsd_for_reconnect(tcon->ses->server, true);
++	}
++	return rc;
+ }
+ 
+-static inline void force_refresh_ses_referral(struct cifs_ses *ses)
++static void refresh_tcon_referral(struct cifs_tcon *tcon, bool force_refresh)
+ {
+-	__refresh_ses_referral(ses, true);
++	struct dfs_info3_param *refs = NULL;
++	struct cache_entry *ce;
++	struct cifs_ses *ses;
++	unsigned int xid;
++	bool needs_refresh;
++	char *path;
++	int numrefs = 0;
++	int rc = 0;
++
++	xid = get_xid();
++	ses = tcon->ses;
++
++	path = get_ses_refpath(ses);
++	if (IS_ERR(path)) {
++		rc = PTR_ERR(path);
++		path = NULL;
++		goto out;
++	}
++
++	down_read(&htable_rw_lock);
++	ce = lookup_cache_entry(path);
++	needs_refresh = force_refresh || IS_ERR(ce) || cache_entry_expired(ce);
++	if (!needs_refresh) {
++		up_read(&htable_rw_lock);
++		goto out;
++	}
++	up_read(&htable_rw_lock);
++
++	ses = CIFS_DFS_ROOT_SES(ses);
++	if (!is_ses_good(ses)) {
++		cifs_dbg(FYI, "%s: skip cache refresh due to disconnected ipc\n",
++			 __func__);
++		goto out;
++	}
++
++	rc = get_dfs_referral(xid, ses, path, &refs, &numrefs);
++	if (!rc) {
++		rc = __refresh_tcon_referral(tcon, path, refs,
++					     numrefs, force_refresh);
++	}
++
++out:
++	free_xid(xid);
++	kfree(path);
++	free_dfs_info_array(refs, numrefs);
+ }
+ 
+ /**
+@@ -1280,7 +1325,7 @@ int dfs_cache_remount_fs(struct cifs_sb_info *cifs_sb)
  	 */
- 	struct idr object_idr;
+ 	cifs_sb->mnt_cifs_flags |= CIFS_MOUNT_USE_PREFIX_PATH;
  
+-	force_refresh_ses_referral(tcon->ses);
++	refresh_tcon_referral(tcon, true);
+ 	return 0;
+ }
+ 
+@@ -1291,9 +1336,11 @@ void dfs_cache_refresh(struct work_struct *work)
+ 	struct cifs_ses *ses;
+ 
+ 	tcon = container_of(work, struct cifs_tcon, dfs_cache_work.work);
++	ses = tcon->ses->dfs_root_ses;
+ 
+-	for (ses = tcon->ses; ses; ses = ses->dfs_root_ses)
++	for (; ses; ses = ses->dfs_root_ses)
+ 		refresh_ses_referral(ses);
++	refresh_tcon_referral(tcon, false);
+ 
+ 	queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
+ 			   atomic_read(&dfs_cache_ttl) * HZ);
+-- 
+2.39.5
+
 
 
 
