@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-162161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F26B05BCD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC25BB05E70
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B881D188320B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:24:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981823BAABF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94BD2E2657;
-	Tue, 15 Jul 2025 13:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7202EA48E;
+	Tue, 15 Jul 2025 13:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+Q+38Vc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIps1ktP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F5A1F4CB3;
-	Tue, 15 Jul 2025 13:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B812E498B;
+	Tue, 15 Jul 2025 13:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585835; cv=none; b=b7IO2KDviJROCvum5S8WrzkOFGm1TJsBsTrjAu2vA0Mr6BNa4sU645/dQDe18cSk/zHFB2Fyq775QNAK3NkJIehrjyAHNcCVkVAPRRKtUj50+ulsk3qniH4/YVgNwAmGd06GmOu6/zly3Sr+1QstAVKsEtg/DhSCuGwQOaPnRDk=
+	t=1752586833; cv=none; b=DVPIKXXHXlyCz9al+xlys7HeldINPZbSXW9fW/So7I8cRWbHLCY2WNvKTrfq/Kqar6rssTvIfL8pSCfRc4KANJRG6ECC8detU1uxBTT6juEN5fIv0vXvzqLwz+WuviOsvU/B3W6zo3w6NeUBgvmQJ66kBSaokhOAgfFSjc2TcXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585835; c=relaxed/simple;
-	bh=4FFYH9kyOA5ZplRDBtWH13zgxlsC6yp3SxSXy/5QrbE=;
+	s=arc-20240116; t=1752586833; c=relaxed/simple;
+	bh=eL0CY1csAHfwSap++gtrqAZqmuopaLLy2I/OBAk4XTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBF9qw23yDS0U8d7j9p2j6p3X3wRrXX5zFrkK27IWyJ/e8Pr8QxvZ3yvpN3OMeFM34VVVRP0iSChEa8NFqHDPlzS83KFgqhdqwDrqgw/+wKQjJqOgnvfVDhGCs+wr7DWZStOUaEe5p8/l+TR+mnwCJsrM5R0DUF/1ugcYWP/zno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+Q+38Vc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC564C4CEE3;
-	Tue, 15 Jul 2025 13:23:54 +0000 (UTC)
+	 MIME-Version; b=IQv3m+tzWlE63rXG3ZIv/FBl2xQkgMw8HsvUj6GoZ55rx4YTsoCkpV7jX9/QnVk5rTuNvjeDTP59qGU39oGxKUNKwxYgKK2vi8mruasNiE6iV47jOzrQbPghLYDAUzEm5sHwWnAPrBbwZEoT6V8lZnETePqeQ8/uYUoXtvyvgjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIps1ktP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B7DC4CEF1;
+	Tue, 15 Jul 2025 13:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585835;
-	bh=4FFYH9kyOA5ZplRDBtWH13zgxlsC6yp3SxSXy/5QrbE=;
+	s=korg; t=1752586833;
+	bh=eL0CY1csAHfwSap++gtrqAZqmuopaLLy2I/OBAk4XTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+Q+38VcOV79OdF88O8X36nW8Ovg5qruTNretmug+Ne/zXORriEFas7IYKzTgqZIf
-	 GG/MKp1/kkx45QUBb+X6a+VuVS1n85/kRqta8ajcI/02JY0XWO5XGkKnnIOjeXw1Oe
-	 5eBuT6KGIpsC7bTC0vaK9+0Ufo5h+9wH+/x78Rck=
+	b=FIps1ktPRrxFCkkZ4U1hBAboKa/nx4KyWh83TZzdbX7lHzQqzFCpIJkpVVS0vwMyf
+	 LYHX1I534pMzt51TzYiTNhgEa6i+mbp0AuStcOsgfMtPuPT7UZQvkdhDiKq+2705rv
+	 XVFjy8gU1WMocoMkcuYr4I+0EYtLwk/Eebu7qLRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e34e5e6b5eddb0014def@syzkaller.appspotmail.com,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/109] atm: clip: Fix NULL pointer dereference in vcc_sendmsg()
+	syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.15 066/192] io_uring/msg_ring: ensure io_kiocb freeing is deferred for RCU
 Date: Tue, 15 Jul 2025 15:12:41 +0200
-Message-ID: <20250715130759.888124639@linuxfoundation.org>
+Message-ID: <20250715130817.586486772@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 22fc46cea91df3dce140a7dc6847c6fcf0354505 ]
+commit fc582cd26e888b0652bc1494f252329453fd3b23 upstream.
 
-atmarpd_dev_ops does not implement the send method, which may cause crash
-as bellow.
+syzbot reports that defer/local task_work adding via msg_ring can hit
+a request that has been freed:
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-PGD 0 P4D 0
-Oops: Oops: 0010 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5324 Comm: syz.0.0 Not tainted 6.15.0-rc6-syzkaller-00346-g5723cc3450bc #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:0x0
-Code: Unable to access opcode bytes at 0xffffffffffffffd6.
-RSP: 0018:ffffc9000d3cf778 EFLAGS: 00010246
-RAX: 1ffffffff1910dd1 RBX: 00000000000000c0 RCX: dffffc0000000000
-RDX: ffffc9000dc82000 RSI: ffff88803e4c4640 RDI: ffff888052cd0000
-RBP: ffffc9000d3cf8d0 R08: ffff888052c9143f R09: 1ffff1100a592287
-R10: dffffc0000000000 R11: 0000000000000000 R12: 1ffff92001a79f00
-R13: ffff888052cd0000 R14: ffff88803e4c4640 R15: ffffffff8c886e88
-FS:  00007fbc762566c0(0000) GS:ffff88808d6c2000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffd6 CR3: 0000000041f1b000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+CPU: 1 UID: 0 PID: 19356 Comm: iou-wrk-19354 Not tainted 6.16.0-rc4-syzkaller-00108-g17bbde2e1716 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
 Call Trace:
  <TASK>
- vcc_sendmsg+0xa10/0xc50 net/atm/common.c:644
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x219/0x270 net/socket.c:727
- ____sys_sendmsg+0x52d/0x830 net/socket.c:2566
- ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2620
- __sys_sendmmsg+0x227/0x430 net/socket.c:2709
- __do_sys_sendmmsg net/socket.c:2736 [inline]
- __se_sys_sendmmsg net/socket.c:2733 [inline]
- __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2733
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf6/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0xd2/0x2b0 mm/kasan/report.c:521
+ kasan_report+0x118/0x150 mm/kasan/report.c:634
+ io_req_local_work_add io_uring/io_uring.c:1184 [inline]
+ __io_req_task_work_add+0x589/0x950 io_uring/io_uring.c:1252
+ io_msg_remote_post io_uring/msg_ring.c:103 [inline]
+ io_msg_data_remote io_uring/msg_ring.c:133 [inline]
+ __io_msg_ring_data+0x820/0xaa0 io_uring/msg_ring.c:151
+ io_msg_ring_data io_uring/msg_ring.c:173 [inline]
+ io_msg_ring+0x134/0xa00 io_uring/msg_ring.c:314
+ __io_issue_sqe+0x17e/0x4b0 io_uring/io_uring.c:1739
+ io_issue_sqe+0x165/0xfd0 io_uring/io_uring.c:1762
+ io_wq_submit_work+0x6e9/0xb90 io_uring/io_uring.c:1874
+ io_worker_handle_work+0x7cd/0x1180 io_uring/io-wq.c:642
+ io_wq_worker+0x42f/0xeb0 io_uring/io-wq.c:696
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+e34e5e6b5eddb0014def@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/682f82d5.a70a0220.1765ec.0143.GAE@google.com/T
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250705085228.329202-1-yuehaibing@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+which is supposed to be safe with how requests are allocated. But msg
+ring requests alloc and free on their own, and hence must defer freeing
+to a sane time.
+
+Add an rcu_head and use kfree_rcu() in both spots where requests are
+freed. Only the one in io_msg_tw_complete() is strictly required as it
+has been visible on the other ring, but use it consistently in the other
+spot as well.
+
+This should not cause any other issues outside of KASAN rightfully
+complaining about it.
+
+Link: https://lore.kernel.org/io-uring/686cd2ea.a00a0220.338033.0007.GAE@google.com/
+Reported-by: syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Fixes: 0617bb500bfa ("io_uring/msg_ring: improve handling of target CQE posting")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/atm/clip.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/linux/io_uring_types.h |    2 ++
+ io_uring/msg_ring.c            |    4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 936b9558be4b9..53d62361ae460 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -632,8 +632,16 @@ static void atmarpd_close(struct atm_vcc *vcc)
- 	module_put(THIS_MODULE);
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -701,6 +701,8 @@ struct io_kiocb {
+ 		struct hlist_node	hash_node;
+ 		/* For IOPOLL setup queues, with hybrid polling */
+ 		u64                     iopoll_start;
++		/* for private io_kiocb freeing */
++		struct rcu_head		rcu_head;
+ 	};
+ 	/* internal polling, see IORING_FEAT_FAST_POLL */
+ 	struct async_poll		*apoll;
+--- a/io_uring/msg_ring.c
++++ b/io_uring/msg_ring.c
+@@ -82,7 +82,7 @@ static void io_msg_tw_complete(struct io
+ 		spin_unlock(&ctx->msg_lock);
+ 	}
+ 	if (req)
+-		kmem_cache_free(req_cachep, req);
++		kfree_rcu(req, rcu_head);
+ 	percpu_ref_put(&ctx->refs);
  }
  
-+static int atmarpd_send(struct atm_vcc *vcc, struct sk_buff *skb)
-+{
-+	atm_return_tx(vcc, skb);
-+	dev_kfree_skb_any(skb);
-+	return 0;
-+}
-+
- static const struct atmdev_ops atmarpd_dev_ops = {
--	.close = atmarpd_close
-+	.close = atmarpd_close,
-+	.send = atmarpd_send
- };
- 
- 
--- 
-2.39.5
-
+@@ -90,7 +90,7 @@ static int io_msg_remote_post(struct io_
+ 			      int res, u32 cflags, u64 user_data)
+ {
+ 	if (!READ_ONCE(ctx->submitter_task)) {
+-		kmem_cache_free(req_cachep, req);
++		kfree_rcu(req, rcu_head);
+ 		return -EOWNERDEAD;
+ 	}
+ 	req->opcode = IORING_OP_NOP;
 
 
 
