@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-162315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4A5B05D1C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:41:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A19CB05EA7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B994188EF49
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE8E34E79EC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5BC2E8E18;
-	Tue, 15 Jul 2025 13:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCB0192D8A;
+	Tue, 15 Jul 2025 13:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2jWbHLz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tezsGdj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3992E54BB;
-	Tue, 15 Jul 2025 13:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7AA26D4F2;
+	Tue, 15 Jul 2025 13:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586232; cv=none; b=sy5ILQlIwNRluCmKGmY+Q+mAW+FmUlFQBJ/QRqIy2v3tPGwjpv4K4SsuBAkggYdWcu6OuAOcS8ug/ahrJxbeNZL1yLyfzWrj6T4XlUQhFWSR3nPSMaJ66Wa3huD0Is56FwV/lVfyRRlQTHOurZOvTqElreACT0oUK95CXFLiVE8=
+	t=1752586979; cv=none; b=B7xRr1ZvcA6R2wgcA7hMq1EkE/pDZdsBSUY6mL6mO4eDtbvh8KNOrZ9udX4Pg7+zZf4CJemtKDehYnMrbTxwuB+aI4RMvfKqLbJdoWsxBt64ez8CW71Ml8O3YV12xK3zeQMQ8Km5Wm0Komc+ovQGD9Wrb8O1gLGKMIWZnMLWCSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586232; c=relaxed/simple;
-	bh=JbC3kwtG/Lw9pQyDjUC5IprlUeBW5JuOJo8pGOQArRM=;
+	s=arc-20240116; t=1752586979; c=relaxed/simple;
+	bh=dzAD5IRDnweDKX7utVEkexM2eEOIPdWp0Jo6C1sUI4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nK+ENeLIA5b6xTF+5nFyMaa3wBvmayaPwEYpjWWIxe8AghfXJuJkJ29YoQKc7D/3OppZXVFDqPwHWCT6Drgmhouf1Bd7RdoLxlnzJC5phnuJcK1SfTuOwXvKVg6l4VHMi4KOvst+DtOZ0uls6BG0FURQzQdqzLyJduM64xrLX3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2jWbHLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9139DC4CEE3;
-	Tue, 15 Jul 2025 13:30:31 +0000 (UTC)
+	 MIME-Version; b=cE/n4uOM2uQe3ZM4t25kQKKSkb2uoIOtd94NoYHgG5yVFU0bwRa+igsUg12Gks7bgmlhD5l5MPp2RjAhtkYpxqvNmrV40mF/uKfTe/uofIvY/8ceIeJYJSMqLoxCqi/AUxh0Zd3+uUOA6OSr0gW54O1c2IOFXzIw86yFjLyj0+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tezsGdj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB89C4CEE3;
+	Tue, 15 Jul 2025 13:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586231;
-	bh=JbC3kwtG/Lw9pQyDjUC5IprlUeBW5JuOJo8pGOQArRM=;
+	s=korg; t=1752586978;
+	bh=dzAD5IRDnweDKX7utVEkexM2eEOIPdWp0Jo6C1sUI4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2jWbHLzzU8pbUnFdSB+Me+juY4rIb4vBExVlEtgVTeBMnN0n/+JpupVzBZFoBU7w
-	 mW68dLeyqqx6TqfFDGSS0Td/5tIlegi4Rz51TlhAu0Q9iWdcD8yV6fmpTdqF0Dk9Hd
-	 EPTT/m2vhoFO4lXBI0BCic92cAxWy+0uI8TU1w98=
+	b=tezsGdj/4J3FSeT3w7rJGnd8S3KNMDME4rCt4Kj8Qscx9Jzj/PbnvkpC0iARGsuO0
+	 dx7S6oW++MzrAMvfrqaBF+jXNjXzGwlN6+O9pWtE9mFrM92RH2x/pgS9Iok2ISfw9N
+	 97L0Lk2ntfiSYXec3D2ZkBisKtGHGWB5d1N/KAbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 34/77] Revert "ACPI: battery: negate current when discharging"
-Date: Tue, 15 Jul 2025 15:13:33 +0200
-Message-ID: <20250715130753.078005817@linuxfoundation.org>
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	Stefan Metzmacher <metze@samba.org>
+Subject: [PATCH 6.15 119/192] smb: server: make use of rdma_destroy_qp()
+Date: Tue, 15 Jul 2025 15:13:34 +0200
+Message-ID: <20250715130819.665683443@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +66,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit de1675de39aa945bad5937d1fde4df3682670639 upstream.
+commit 0c2b53997e8f5e2ec9e0fbd17ac0436466b65488 upstream.
 
-Revert commit 234f71555019 ("ACPI: battery: negate current when
-discharging") breaks not one but several userspace implementations
-of battery monitoring: Steam and MangoHud. Perhaps it breaks more,
-but those are the two that have been tested.
+The qp is created by rdma_create_qp() as t->cm_id->qp
+and t->qp is just a shortcut.
 
-Reported-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Closes: https://lore.kernel.org/linux-acpi/87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+rdma_destroy_qp() also calls ib_destroy_qp(cm_id->qp) internally,
+but it is protected by a mutex, clears the cm_id and also calls
+trace_cm_qp_destroy().
+
+This should make the tracing more useful as both
+rdma_create_qp() and rdma_destroy_qp() are traces and it makes
+the code look more sane as functions from the same layer are used
+for the specific qp object.
+
+trace-cmd stream -e rdma_cma:cm_qp_create -e rdma_cma:cm_qp_destroy
+shows this now while doing a mount and unmount from a client:
+
+  <...>-80   [002] 378.514182: cm_qp_create:  cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 pd.id=0 qp_type=RC send_wr=867 recv_wr=255 qp_num=1 rc=0
+  <...>-6283 [001] 381.686172: cm_qp_destroy: cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 qp_num=1
+
+Before we only saw the first line.
+
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <stfrench@microsoft.com>
+Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Cc: Hyunchul Lee <hyc.lee@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c |   19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ fs/smb/server/transport_rdma.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -250,23 +250,10 @@ static int acpi_battery_get_property(str
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
- 			ret = -ENODEV;
--			break;
--		}
--
--		val->intval = battery->rate_now * 1000;
--		/*
--		 * When discharging, the current should be reported as a
--		 * negative number as per the power supply class interface
--		 * definition.
--		 */
--		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
--		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
--		    acpi_battery_handle_discharging(battery)
--				== POWER_SUPPLY_STATUS_DISCHARGING)
--			val->intval = -val->intval;
--
-+		else
-+			val->intval = battery->rate_now * 1000;
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -433,7 +433,8 @@ static void free_transport(struct smb_di
+ 	if (t->qp) {
+ 		ib_drain_qp(t->qp);
+ 		ib_mr_pool_destroy(t->qp, &t->qp->rdma_mrs);
+-		ib_destroy_qp(t->qp);
++		t->qp = NULL;
++		rdma_destroy_qp(t->cm_id);
+ 	}
+ 
+ 	ksmbd_debug(RDMA, "drain the reassembly queue\n");
+@@ -1940,8 +1941,8 @@ static int smb_direct_create_qpair(struc
+ 	return 0;
+ err:
+ 	if (t->qp) {
+-		ib_destroy_qp(t->qp);
+ 		t->qp = NULL;
++		rdma_destroy_qp(t->cm_id);
+ 	}
+ 	if (t->recv_cq) {
+ 		ib_destroy_cq(t->recv_cq);
 
 
 
