@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC8AB05C77
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF0AB05D0C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8ECC7AD000
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 482A41C26838
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D55C2E975E;
-	Tue, 15 Jul 2025 13:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30D82E6D1C;
+	Tue, 15 Jul 2025 13:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaxUU9Fb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmA8DJPf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA392E972D;
-	Tue, 15 Jul 2025 13:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9258F2E889C;
+	Tue, 15 Jul 2025 13:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586020; cv=none; b=IG2OxNM8rSwH0TskF5ePBgft+nwTOBz+aHo3b3F29TquEVX4kabDeeYnNYk1gbSGdv/r2F5IEYdKFNZQTLlgvm6b7TTy1256hsVVyiueqnz7Xb96G8Ni71H1JBRKyzAKLb9wPidyhNVpjQzfZT5Se2x+0vKJ6/BfXci5zzIJok4=
+	t=1752586197; cv=none; b=j0tqOABthAX3gx/QnZm2Gp7Z67hnQ6PGFlhPhmQquwUF24aJulU4KdyeI7bEhmbYK98c+VauUJQTW/1xRNbJO4oS1lfFKZfthDqjdI5O/wrUoEpGsNXr8Zdcyetj2Ms2sp0VIJkUwnBNhrQg4D1TbPUTayMbEWryD8wnjoEk1ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586020; c=relaxed/simple;
-	bh=gCm3piKnCrD3uPpBlyHVhWDkkTes+FmZXC0JC1ycirw=;
+	s=arc-20240116; t=1752586197; c=relaxed/simple;
+	bh=5MmRCZAMrJhYZBfXEVoa9YvLJWIWH6YJCFXQ33PDgfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InO6bdNv7HutNXK9BY3yUJmDaDlpHEHrqXjMKJFVgnIqJVsAngxeZKV2gIbCOGCT2HL8xTXCWfuTW9o1ksj40n8rwZ7/2m+zYC4Uio7MMGS6K65G3NqBsJhCRkbuuyDzeDVQfW3ntM3NumKYNKGecjRnvGO/Je8zxnvyopPAk5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaxUU9Fb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87FAC4CEE3;
-	Tue, 15 Jul 2025 13:26:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jsGA2UFEL8GwjaKy/FGl8bfLzXxeoPunAZQ0trvVsfnjngyJVl+BhB5zzmTM3Rn1qO7Pw0JW9oa6v0k0id+AxDCBcQs2bh07Fe79gxR9VSlueN+3Gn49JS3tQh526HZq5ZnMDE4JmKE+bz5M0v54gPDQ4S6b9EATwM+vE6Db1YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmA8DJPf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203A6C4CEE3;
+	Tue, 15 Jul 2025 13:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586020;
-	bh=gCm3piKnCrD3uPpBlyHVhWDkkTes+FmZXC0JC1ycirw=;
+	s=korg; t=1752586197;
+	bh=5MmRCZAMrJhYZBfXEVoa9YvLJWIWH6YJCFXQ33PDgfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HaxUU9FbYaOgB+xfuHXzbRtVSF3W91tFNO7GZ0g4bjzT1qEDm/bdvp6jQMj+HFPoO
-	 7NhcSD5F7zVabR1vcshShACCUICD5ny1BhfbtGnX2XhU+p+fUh2fyhTCnzoqr+RIab
-	 oen2kxCISIXYGEmpvnUzKzTN3nRsowYf+AGj5g8s=
+	b=gmA8DJPfuNEh/2REsGSmmMXNXRBh2+C1Dmjlhs4UD8STRvA2Bk3huYCEEJKkC450g
+	 GenW31flsf2IjQVWWbeF8xDSK1O5ep+ytb3ZGkPTf96XSNdHOx35gFawtShDTXjClI
+	 sAEePVV/BrJVoLtyszk9weXohP6dhZ9CkXjoNOAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuzuru <yuzuru_10@proton.me>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/109] ASoC: amd: yc: add quirk for Acer Nitro ANV15-41 internal mic
+Subject: [PATCH 5.15 52/77] dma-buf: fix timeout handling in dma_resv_wait_timeout v2
 Date: Tue, 15 Jul 2025 15:13:51 +0200
-Message-ID: <20250715130802.687389250@linuxfoundation.org>
+Message-ID: <20250715130753.816338149@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuzuru10 <yuzuru_10@proton.me>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 7186b81807b4a08f8bf834b6bdc72d6ed8ba1587 ]
+[ Upstream commit 2b95a7db6e0f75587bffddbb490399cbb87e4985 ]
 
-This patch adds DMI-based quirk for the Acer Nitro ANV15-41,
-allowing the internal microphone to be detected correctly on
-machines with "RB" as board vendor.
+Even the kerneldoc says that with a zero timeout the function should not
+wait for anything, but still return 1 to indicate that the fences are
+signaled now.
 
-Signed-off-by: Yuzuru <yuzuru_10@proton.me>
-Link: https://patch.msgid.link/20250622225754.20856-1-yuzuru_10@proton.me
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Unfortunately that isn't what was implemented, instead of only returning
+1 we also waited for at least one jiffies.
+
+Fix that by adjusting the handling to what the function is actually
+documented to do.
+
+v2: improve code readability
+
+Reported-by: Marek Olšák <marek.olsak@amd.com>
+Reported-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20250129105841.1806-1-christian.koenig@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/dma-buf/dma-resv.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 429e61d47ffbb..66ef8f4fd02cd 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -346,6 +346,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "RB"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Nitro ANV15-41"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/drivers/dma-buf/dma-resv.c b/drivers/dma-buf/dma-resv.c
+index 8db368c7d35c3..cafaa54c3d9f1 100644
+--- a/drivers/dma-buf/dma-resv.c
++++ b/drivers/dma-buf/dma-resv.c
+@@ -619,11 +619,13 @@ long dma_resv_wait_timeout(struct dma_resv *obj, bool wait_all, bool intr,
+ 	dma_resv_iter_begin(&cursor, obj, wait_all);
+ 	dma_resv_for_each_fence_unlocked(&cursor, fence) {
+ 
+-		ret = dma_fence_wait_timeout(fence, intr, ret);
+-		if (ret <= 0) {
+-			dma_resv_iter_end(&cursor);
+-			return ret;
+-		}
++		ret = dma_fence_wait_timeout(fence, intr, timeout);
++		if (ret <= 0)
++			break;
++
++		/* Even for zero timeout the return value is 1 */
++		if (timeout)
++			timeout = ret;
+ 	}
+ 	dma_resv_iter_end(&cursor);
+ 
 -- 
 2.39.5
 
