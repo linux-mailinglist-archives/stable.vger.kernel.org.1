@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-162255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B76AB05CD1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C5A3B05EE6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2198A3AEB9F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B29FB7B897F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB3D2EA146;
-	Tue, 15 Jul 2025 13:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17AE2E7BB3;
+	Tue, 15 Jul 2025 13:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc6nUs9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MP2d4hrh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62862E7BC7;
-	Tue, 15 Jul 2025 13:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A032D2E62D3;
+	Tue, 15 Jul 2025 13:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586073; cv=none; b=jvlRfRGLz7myyNOG2Szk94/D268ABjEXZcxiv095cfdC58lhUXAt4bIe8csEkz/s9E7INhcASJjRTdj3xtAEqSWXDyfVcMPfbwFN3nUy8DBM/skFuK2ubxSLxkTPJtoUPZ1rlB1yT1B9HGVn0IPSF5gzjH1PiE+8GvYqmKdSlvo=
+	t=1752587245; cv=none; b=e4w2W+0TZb2AYsxt4lhOp9dMyuvjicZFT/RfHIFlGC1sjBVxcnlHAOVKyCq1/i3JZHhrHiMES9jonvj9AkMDtvlVCO9CKQsOfMVt6ov7dIUrnH6ToAlM5ri+PiAY7ispGVJI/hKW7JbO2dGaTmQJ5UZD+DytVId1MMeu6Uk1HPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586073; c=relaxed/simple;
-	bh=jXhHlPEiYb9IClA6cWVvt4BNBXcbs4tqndbGr8qtk+o=;
+	s=arc-20240116; t=1752587245; c=relaxed/simple;
+	bh=VjsOsWEEEDCfdF7/m0GQ3RZO7aIHFyWlAE7CIvhhtLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8vmIU5wXPfyzI5zbEcinQggL5Xcs9LNpW6y7JEeQjBRAbJk9+9Rzlb1sN/Tn2YjE0pARFrgx0CmDNHFSnT9xmIG/IcRhpOlWNlU7/q5zXw1sn+lYRtUjrt1cM3GwHaZ39kX1gDweHv7VvH0bwBIjrfszOH50sNb5pyyB/azaLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tc6nUs9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C958C4CEE3;
-	Tue, 15 Jul 2025 13:27:53 +0000 (UTC)
+	 MIME-Version; b=Zly48sYptS66C46B8ELxLSJpyClbNeUGmTC2orMVZkcbm099xmQQRCfBooYKusAwa08KUbQbUvrjKkx127DhVj9Hu/CVuYe6xdbVrZpsP0zChOe7oWQNLX2pq1H3bFYwClAUFghbTfIYvoHvJGbAkWSpg9nMPr2ijbu1MRjWaLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MP2d4hrh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21477C4CEE3;
+	Tue, 15 Jul 2025 13:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586073;
-	bh=jXhHlPEiYb9IClA6cWVvt4BNBXcbs4tqndbGr8qtk+o=;
+	s=korg; t=1752587245;
+	bh=VjsOsWEEEDCfdF7/m0GQ3RZO7aIHFyWlAE7CIvhhtLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tc6nUs9oTWCTbrikHI/fGMunNMWDjwRLg9K/3LBjUsnnWXfL/izLFJWd+zhG1TXaH
-	 2IypoitR72sQgZF/qLWujx3pC3uKmZlY1/njuXicUW7/p9w3W2ZiZ14eC6YIp4HITf
-	 KPuXY+EXW/ZezsTOE1gh+I8axSlZLahqYn2RYa3M=
+	b=MP2d4hrh46rc9Vee98+FLvK+S7GsoQ4F3gZj96hSyKO1Ffn9AtPwAKtLD/bOdQkZ9
+	 JACaAmMG72cJoJZQpy78TdHVa6AhKFqaCEZvEDwU8990kCYDxJBZGbt4rECsryiKmZ
+	 UHMvfY7TZfHD5AEnuwMPWAM+HiYAv6K4Wzc5U0bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 108/109] kasan: remove kasan_find_vm_area() to prevent possible deadlock
+	Aiden Yang <ling@moedove.com>,
+	Gary Guo <gary@garyguo.net>,
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 28/88] gre: Fix IPv6 multicast route creation.
 Date: Tue, 15 Jul 2025 15:14:04 +0200
-Message-ID: <20250715130803.200687993@linuxfoundation.org>
+Message-ID: <20250715130755.648368535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,76 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-commit 6ee9b3d84775944fb8c8a447961cd01274ac671c upstream.
+commit 4e914ef063de40397e25a025c70d9737a9e45a8c upstream.
 
-find_vm_area() couldn't be called in atomic_context.  If find_vm_area() is
-called to reports vm area information, kasan can trigger deadlock like:
+Use addrconf_add_dev() instead of ipv6_find_idev() in
+addrconf_gre_config() so that we don't just get the inet6_dev, but also
+install the default ff00::/8 multicast route.
 
-CPU0                                CPU1
-vmalloc();
- alloc_vmap_area();
-  spin_lock(&vn->busy.lock)
-                                    spin_lock_bh(&some_lock);
-   <interrupt occurs>
-   <in softirq>
-   spin_lock(&some_lock);
-                                    <access invalid address>
-                                    kasan_report();
-                                     print_report();
-                                      print_address_description();
-                                       kasan_find_vm_area();
-                                        find_vm_area();
-                                         spin_lock(&vn->busy.lock) // deadlock!
+Before commit 3e6a0243ff00 ("gre: Fix again IPv6 link-local address
+generation."), the multicast route was created at the end of the
+function by addrconf_add_mroute(). But this code path is now only taken
+in one particular case (gre devices not bound to a local IP address and
+in EUI64 mode). For all other cases, the function exits early and
+addrconf_add_mroute() is not called anymore.
 
-To prevent possible deadlock while kasan reports, remove kasan_find_vm_area().
+Using addrconf_add_dev() instead of ipv6_find_idev() in
+addrconf_gre_config(), fixes the problem as it will create the default
+multicast route for all gre devices. This also brings
+addrconf_gre_config() a bit closer to the normal netdevice IPv6
+configuration code (addrconf_dev_config()).
 
-Link: https://lkml.kernel.org/r/20250703181018.580833-1-yeoreum.yun@arm.com
-Fixes: c056a364e954 ("kasan: print virtual mapping info in reports")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reported-by: Yunseong Kim <ysk@kzalloc.com>
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 3e6a0243ff00 ("gre: Fix again IPv6 link-local address generation.")
+Reported-by: Aiden Yang <ling@moedove.com>
+Closes: https://lore.kernel.org/netdev/CANR=AhRM7YHHXVxJ4DmrTNMeuEOY87K2mLmo9KMed1JMr20p6g@mail.gmail.com/
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Tested-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/027a923dcb550ad115e6d93ee8bb7d310378bd01.1752070620.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kasan/report.c |   13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ net/ipv6/addrconf.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/mm/kasan/report.c
-+++ b/mm/kasan/report.c
-@@ -385,17 +385,8 @@ static void print_address_description(vo
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3472,11 +3472,9 @@ static void addrconf_gre_config(struct n
+ 
+ 	ASSERT_RTNL();
+ 
+-	idev = ipv6_find_idev(dev);
+-	if (IS_ERR(idev)) {
+-		pr_debug("%s: add_dev failed\n", __func__);
++	idev = addrconf_add_dev(dev);
++	if (IS_ERR(idev))
+ 		return;
+-	}
+ 
+ 	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
+ 	 * unless we have an IPv4 GRE device not bound to an IP address and
+@@ -3490,9 +3488,6 @@ static void addrconf_gre_config(struct n
  	}
  
- 	if (is_vmalloc_addr(addr)) {
--		struct vm_struct *va = find_vm_area(addr);
+ 	add_v4_addrs(idev);
 -
--		if (va) {
--			pr_err("The buggy address belongs to the virtual mapping at\n"
--			       " [%px, %px) created by:\n"
--			       " %pS\n",
--			       va->addr, va->addr + va->size, va->caller);
--			pr_err("\n");
--
--			page = vmalloc_to_page(addr);
--		}
-+		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
-+		page = vmalloc_to_page(addr);
- 	}
+-	if (dev->flags & IFF_POINTOPOINT)
+-		addrconf_add_mroute(dev);
+ }
+ #endif
  
- 	if (page) {
 
 
 
