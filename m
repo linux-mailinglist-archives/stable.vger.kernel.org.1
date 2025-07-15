@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31781B05E2F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E208FB05B2E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 879D716A1D7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7171565593
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7412E5431;
-	Tue, 15 Jul 2025 13:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A1B1A23AF;
+	Tue, 15 Jul 2025 13:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHPIMA4r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYiVp5Sv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18562E499D;
-	Tue, 15 Jul 2025 13:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0A819066B;
+	Tue, 15 Jul 2025 13:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586735; cv=none; b=KvecGEM15iPizAzWmlvMe+92+ebLWhq75PkgWorKDsszsdjFOmkl2nu6fIF9lhyJ0zYRxYMu1H3jknGVT7K7TIhCmjsLoF/DeXL6fswL4ofsV+ii67Vu41Zw5GErcslQ+faiiiljlMvT0QR4jAh7QxvfDTrm4SYEtk0XnUZRz8k=
+	t=1752585463; cv=none; b=YHONL2AbAws5eGIp4YpKs+7Xn/cNEUoYVQkZeS0kqOOS/a8cJDedrJ2l77zY0T9FZo/9m4PfuKlLMXJPJAH+DlX6aikXas+xIJfO9vl03WKXg0LiKVC7KUSHEmIvbpUYhp1o9uQmbiYWiG7J8/cGBD3JeFNxtaBuUZDT44iYFr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586735; c=relaxed/simple;
-	bh=pWh2azQe3VoM8ovsN2AO+viudn1PdVIzOT6XQzsR5qo=;
+	s=arc-20240116; t=1752585463; c=relaxed/simple;
+	bh=sIBx72P2wlQq/YkZpR6hbbK2I58Ulsms5R07glKwVpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ol1CGi2Ov5osULGXiAy61W+STEljoK1cyWR4luehqrMBtB1amKitErooP+8jhiQVBZuAWGvj74blgbtQ6GsHpp0uuCoho5ExGx2eZMZxkCZaeVrzzoym3+MI9QMqkVp9/Ju8zrQb+xMcd9Hyvap+RuQtxo5xoXlmCOKqquEFXVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHPIMA4r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CADC4CEE3;
-	Tue, 15 Jul 2025 13:38:54 +0000 (UTC)
+	 MIME-Version; b=I2aqttsZVUKgpPDFC0lv2IG0j8Qs0ovhesShWbkLy7PCRD+Egzs+UnQmBxGm6jLzkQURw9VIrQHWEmhF0OjyB5s7ZAsh9xbwZOZxD+lg36QyysJ8vI278uIhNaCbe5PsWGKBhUfhJIyR3wVkXfs1HHcWOdcGOjmzF5w/YvtaH7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYiVp5Sv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D59EC4CEE3;
+	Tue, 15 Jul 2025 13:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586735;
-	bh=pWh2azQe3VoM8ovsN2AO+viudn1PdVIzOT6XQzsR5qo=;
+	s=korg; t=1752585462;
+	bh=sIBx72P2wlQq/YkZpR6hbbK2I58Ulsms5R07glKwVpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AHPIMA4rCHCsAhoEUrERHpDjMh1/p1DPRhmtoG3dZ0DMwXZWa8c2+mkebifEpowvN
-	 ljFpaKGwu9mJBsFk01vBQOKKtQPI7M1eRe6cNjqaD4CHb+FoPkB/6SZMfncjeG5hWQ
-	 BARs5HZRhE2S01osSBIlEGYjWjcX0xBxeHk9kgr8=
+	b=ZYiVp5SvaBY53zmfTdeNnZvbmgM8Vxz/BYOi8ETAeb1skMK9Xb7GZWxTA50XLHnAI
+	 yH5T5sH+GNgziqJUOX+4TYhmWuac/IcMJwN14+sKQF73tw9V9fDkSeCE7Cb+GsHbWz
+	 QUA5tcbEU9RUcuAucUhI1RkjODal8fq7U9A+cLoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@brown.name>,
-	Christian Brauner <brauner@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 021/192] fix proc_sys_compare() handling of in-lookup dentries
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Corey Minyard <corey@minyard.net>,
+	Brendan Jackman <jackmanb@google.com>
+Subject: [PATCH 6.12 048/163] ipmi:msghandler: Fix potential memory corruption in ipmi_create_user()
 Date: Tue, 15 Jul 2025 15:11:56 +0200
-Message-ID: <20250715130815.713979082@linuxfoundation.org>
+Message-ID: <20250715130810.688321528@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b969f9614885c20f903e1d1f9445611daf161d6d ]
+commit fa332f5dc6fc662ad7d3200048772c96b861cf6b upstream.
 
-There's one case where ->d_compare() can be called for an in-lookup
-dentry; usually that's nothing special from ->d_compare() point of
-view, but... proc_sys_compare() is weird.
+The "intf" list iterator is an invalid pointer if the correct
+"intf->intf_num" is not found.  Calling atomic_dec(&intf->nr_users) on
+and invalid pointer will lead to memory corruption.
 
-The thing is, /proc/sys subdirectories can look differently for
-different processes.  Up to and including having the same name
-resolve to different dentries - all of them hashed.
+We don't really need to call atomic_dec() if we haven't called
+atomic_add_return() so update the if (intf->in_shutdown) path as well.
 
-The way it's done is ->d_compare() refusing to admit a match unless
-this dentry is supposed to be visible to this caller.  The information
-needed to discriminate between them is stored in inode; it is set
-during proc_sys_lookup() and until it's done d_splice_alias() we really
-can't tell who should that dentry be visible for.
-
-Normally there's no negative dentries in /proc/sys; we can run into
-a dying dentry in RCU dcache lookup, but those can be safely rejected.
-
-However, ->d_compare() is also called for in-lookup dentries, before
-they get positive - or hashed, for that matter.  In case of match
-we will wait until dentry leaves in-lookup state and repeat ->d_compare()
-afterwards.  In other words, the right behaviour is to treat the
-name match as sufficient for in-lookup dentries; if dentry is not
-for us, we'll see that when we recheck once proc_sys_lookup() is
-done with it.
-
-While we are at it, fix the misspelled READ_ONCE and WRITE_ONCE there.
-
-Fixes: d9171b934526 ("parallel lookups machinery, part 4 (and last)")
-Reported-by: NeilBrown <neilb@brown.name>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Message-ID: <aBjMZ8RYrOt6NOgi@stanley.mountain>
+Signed-off-by: Corey Minyard <corey@minyard.net>
+[ - Dropped change to the `if (intf->in_shutdown)` block since that logic
+    doesn't exist yet.
+  - Modified out_unlock to release the srcu lock instead of the mutex
+    since we don't have the mutex here yet. ]
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/inode.c       |  2 +-
- fs/proc/proc_sysctl.c | 18 +++++++++++-------
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/char/ipmi/ipmi_msghandler.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index a3eb3b740f766..3604b616311c2 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -42,7 +42,7 @@ static void proc_evict_inode(struct inode *inode)
- 
- 	head = ei->sysctl;
- 	if (head) {
--		RCU_INIT_POINTER(ei->sysctl, NULL);
-+		WRITE_ONCE(ei->sysctl, NULL);
- 		proc_sys_evict_inode(inode, head);
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -1241,7 +1241,7 @@ int ipmi_create_user(unsigned int
  	}
- }
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index cc9d74a06ff03..08b78150cdde1 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -918,17 +918,21 @@ static int proc_sys_compare(const struct dentry *dentry,
- 	struct ctl_table_header *head;
- 	struct inode *inode;
+ 	/* Not found, return an error */
+ 	rv = -EINVAL;
+-	goto out_kfree;
++	goto out_unlock;
  
--	/* Although proc doesn't have negative dentries, rcu-walk means
--	 * that inode here can be NULL */
--	/* AV: can it, indeed? */
--	inode = d_inode_rcu(dentry);
--	if (!inode)
--		return 1;
- 	if (name->len != len)
- 		return 1;
- 	if (memcmp(name->name, str, len))
- 		return 1;
--	head = rcu_dereference(PROC_I(inode)->sysctl);
-+
-+	// false positive is fine here - we'll recheck anyway
-+	if (d_in_lookup(dentry))
-+		return 0;
-+
-+	inode = d_inode_rcu(dentry);
-+	// we just might have run into dentry in the middle of __dentry_kill()
-+	if (!inode)
-+		return 1;
-+
-+	head = READ_ONCE(PROC_I(inode)->sysctl);
- 	return !head || !sysctl_is_seen(head);
- }
+  found:
+ 	if (atomic_add_return(1, &intf->nr_users) > max_users) {
+@@ -1283,6 +1283,7 @@ int ipmi_create_user(unsigned int
  
--- 
-2.39.5
-
+ out_kfree:
+ 	atomic_dec(&intf->nr_users);
++out_unlock:
+ 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
+ 	vfree(new_user);
+ 	return rv;
 
 
 
