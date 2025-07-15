@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-162402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29ABAB05DBF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DC8B05CD6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94C8B500B49
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E8B23AF9AF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CDD2E54C5;
-	Tue, 15 Jul 2025 13:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75EA52E4278;
+	Tue, 15 Jul 2025 13:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f36/urlj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOI4NjeX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65FF2E54B7;
-	Tue, 15 Jul 2025 13:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252172E338F;
+	Tue, 15 Jul 2025 13:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586462; cv=none; b=anjG2QhzMLXxTsxEvJIdVIzFJZheA6oRofK5+uQsbn8NxN8KY2DmpadnXSEJdoRxoCbhFuKXl2df+pnISNb2G0l3P0Pb/jsUbBff2F6zv1dV8J9FYDISJZa9lCf/5Dvkn76CA1c0UG1So4qZiP0s1AkjsN7qiDrO+GJmOWmzGqs=
+	t=1752586084; cv=none; b=i1V14lPbrKeZpj4k6CS7sEKKaTKVdt6u/YA9JKudZuduUb52ROJxNM+HNCsWCCgWrA7L+v6h+s9fbZpsZH9wCPDjAlMdMhJIZXqHUucfR+RmSR1m2SK4OEcZp4nzdq5kwHFGY6z1uH2OweyIKDGxyRhLYClCmGtB+RHgM/G68hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586462; c=relaxed/simple;
-	bh=VYa9cuxf8SK4g+LyRyvgJQyq6nKd6bd6KM24orC7YH4=;
+	s=arc-20240116; t=1752586084; c=relaxed/simple;
+	bh=zOnBbp5rsUDLICaB81lPfGmFX+CramSE4HzI6WTiPa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HibuFBlV3bqy5UKVfUgNoPHySAJpGsVtIDeUFR8t3R1CUgBEl14VtWHqc323UWzMdxk6MGuXdRqMV9hRkWObJUKRacEcNDrOoZEzOH60dYspjbWg/+F2NRvNhrH1QqYA8LqzfiIlv7uaulBKLvUJUI4n0kKUAAJE9WlhCTnCThs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f36/urlj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B70AC4CEE3;
-	Tue, 15 Jul 2025 13:34:22 +0000 (UTC)
+	 MIME-Version; b=MDsYrOPig20BtPzI5D+TCR7enf/DTIiEl83yrIKVIqpNOjhQ5XuTngMcKs34ZHNHbmeC9Y8bVbvJf0Fy7Vl7vOGuRomJp8WoNy5yGTOziYsgq8FSqKQLtZ4B0MU8EcbzMnQ81NiF25UEVKRT4WNWniPddcsks2/lpRgsuFORrFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOI4NjeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EA3C4CEE3;
+	Tue, 15 Jul 2025 13:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586462;
-	bh=VYa9cuxf8SK4g+LyRyvgJQyq6nKd6bd6KM24orC7YH4=;
+	s=korg; t=1752586084;
+	bh=zOnBbp5rsUDLICaB81lPfGmFX+CramSE4HzI6WTiPa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f36/urljMgNVUAMqHuAWWoiGZ6LegRj2w255wNA26Kos0KpSeac6PIowk2T8XPNAr
-	 3+kvMwXqij81Hey0GhnHxPKBIAStBAUY4t5KsvjPViIhsSoh5Id2+0p3LjxCOtZnKB
-	 oeRATxNjZHxMH+IcZW82OXMWn9KUlLH79/G/On0A=
+	b=bOI4NjeXKZotlCZYRzF3QAVqJekDMYqP43gxyW3Ana3l+PhXHRdf1ouYBywo0eUS3
+	 O4ZBQGNCsd4ZWPkWbd1D7zNyyTg2rlx4CNqip4IxoIh2XuN+IyPxL4DdGCe3PLFntH
+	 ymlIFO8za1MWOLLSdnkbgbl35r5SZnX3jMtXjsVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andre Edich <andre.edich@microchip.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 067/148] lib: test_objagg: Set error message in check_expect_hints_stats()
+Subject: [PATCH 5.15 10/77] net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
 Date: Tue, 15 Jul 2025 15:13:09 +0200
-Message-ID: <20250715130803.010502404@linuxfoundation.org>
+Message-ID: <20250715130752.105599366@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit e6ed134a4ef592fe1fd0cafac9683813b3c8f3e8 ]
+[ Upstream commit a141af8eb2272ab0f677a7f2653874840bc9b214 ]
 
-Smatch complains that the error message isn't set in the caller:
+Correct the Auto-MDIX configuration to ensure userspace settings are
+respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
 
-    lib/test_objagg.c:923 test_hints_case2()
-    error: uninitialized symbol 'errmsg'.
+The LAN9500 PHY allows its default MDI-X mode to be configured via a
+hardware strap. If this strap sets the default to "MDI-X off", the
+driver was previously unable to enable Auto-MDIX from userspace.
 
-This static checker warning only showed up after a recent refactoring
-but the bug dates back to when the code was originally added.  This
-likely doesn't affect anything in real life.
+When handling the ETH_TP_MDI_AUTO case, the driver would set the
+SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
+SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
+falls back to its hardware strap default, ignoring the software request.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202506281403.DsuyHFTZ-lkp@intel.com/
-Fixes: 0a020d416d0a ("lib: introduce initial implementation of object aggregation manager")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/8548f423-2e3b-4bb7-b816-5041de2762aa@sabinyo.mountain
+This patch corrects the behavior by also setting the override bit when
+enabling Auto-MDIX. This ensures that the userspace configuration takes
+precedence over the hardware strap, allowing Auto-MDIX to be enabled
+correctly in all scenarios.
+
+Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andre Edich <andre.edich@microchip.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250703114941.3243890-2-o.rempel@pengutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_objagg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/phy/smsc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/lib/test_objagg.c b/lib/test_objagg.c
-index da137939a4100..78d25ab19a960 100644
---- a/lib/test_objagg.c
-+++ b/lib/test_objagg.c
-@@ -899,8 +899,10 @@ static int check_expect_hints_stats(struct objagg_hints *objagg_hints,
- 	int err;
- 
- 	stats = objagg_hints_stats_get(objagg_hints);
--	if (IS_ERR(stats))
-+	if (IS_ERR(stats)) {
-+		*errmsg = "objagg_hints_stats_get() failed.";
- 		return PTR_ERR(stats);
-+	}
- 	err = __check_expect_stats(stats, expect_stats, errmsg);
- 	objagg_stats_put(stats);
- 	return err;
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index 36dcf6c7f445d..6d9069a53db1d 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -155,7 +155,8 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
+ 			SPECIAL_CTRL_STS_AMDIX_STATE_;
+ 		break;
+ 	case ETH_TP_MDI_AUTO:
+-		val = SPECIAL_CTRL_STS_AMDIX_ENABLE_;
++		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
++			SPECIAL_CTRL_STS_AMDIX_ENABLE_;
+ 		break;
+ 	default:
+ 		return genphy_config_aneg(phydev);
 -- 
 2.39.5
 
