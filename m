@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AF8B05BBD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBAEAB05EC5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219051C2024B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA461501704
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BB42E2F17;
-	Tue, 15 Jul 2025 13:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9972E8DE8;
+	Tue, 15 Jul 2025 13:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjlfiFU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPkz2HFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD632E3363;
-	Tue, 15 Jul 2025 13:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF1F1B4231;
+	Tue, 15 Jul 2025 13:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585769; cv=none; b=UB/y35suQA78Yy6s0BIXsmVJB/3FiGtEnDxvHrUvZbdsY81nkGT2//F0mojudwU0YpztAC259NjYE8aHN6XjcYreoJOfuLfW42R5MWDuzfWnPv1H51IGRVx1GlX067+BJkkzjPFgwUmw29/q6ZdDtmG1IPjtusMOgUW0YXK9GdA=
+	t=1752587076; cv=none; b=ewXYqHScKxe+NcKwAque0cWKH2tq9vGf/3JBTSFLkttP1WlnqgKg8aT96riWawuTKACGUTY7WEUz3eFsCO8bQoWJBkNAzn7fEHARDSQLeZcl9xUQk+YqtVnhFLL97mgrcR505ghWziT7Tl7kO3S5m4/9lM/kBm1KY1gNwHRTZiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585769; c=relaxed/simple;
-	bh=DjWN0oWnNn+MVV72Kj9mpZHsOayiSgudZ2/B+vTNxno=;
+	s=arc-20240116; t=1752587076; c=relaxed/simple;
+	bh=HzW4GP9vfuzH/LfHvkfbqswRorR/KWLjBLCOOz4JocY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHBGGciYJVmvLGdBWnaUOSg3RtBjgKOwbplUj4kqjwmyclMTopQV1eJrCP9ax9OlZ72B5AgzchixAdV6zkw5nt/8udhl7vps46Xi34XRZg+mSeaQ+oDVIE99KTvCm6m+2UGheSUg04jD5kU30TPRZHhnZrIRjPL6/nzaWm08abU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjlfiFU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9775C4CEE3;
-	Tue, 15 Jul 2025 13:22:48 +0000 (UTC)
+	 MIME-Version; b=ltGv+j1cskfEG+B1JD+pXGqtXaXD5M+j1VRqLsvrEBRTaQbGfjrp/l9RJjGm2OTIGwobmB9vaTXE3c8hlBVomZcOzCowqeiNe1+kQnQSTFGz24hbl+E+7plBsKmSUpCY2Fbulw4jvjP9k2A52V7oD/NNVOxQJceYEOSnU/ibSNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPkz2HFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2951C4CEF6;
+	Tue, 15 Jul 2025 13:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585769;
-	bh=DjWN0oWnNn+MVV72Kj9mpZHsOayiSgudZ2/B+vTNxno=;
+	s=korg; t=1752587076;
+	bh=HzW4GP9vfuzH/LfHvkfbqswRorR/KWLjBLCOOz4JocY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjlfiFU08p/EM6zt/eHCzrcpni4nYvTC5mLQlAzF6gyjd0PMwGXnF4zKLgpT9f4IV
-	 9ah9nwH8TpOv0ramc/QBixhbVq+3HMVSMaByVV473SJ6FkMNALMqseBbdvgbKT/vYL
-	 kq3URAw3omelVAmyJXUlMkiw5qEe/SOWZxbDQWuA=
+	b=jPkz2HFyVy6taf57M71s5icfrM/oSpfl/wiA0epTPWtnB1zNYaDcGz3Iwi3BW8XcT
+	 lfuIGDgljbbbDfiQ/NZyi6qXoOqbhktNcnvtnt64vbU2eTsNhoe3V7DlD515i1R5nX
+	 xGzYfEoVEHk9XmkZ45qxfTskeiJkjrs8aZ1rl0xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/163] bpf: Adjust free target to avoid global starvation of LRU map
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 126/192] netlink: make sure we allow at least one dump skb
 Date: Tue, 15 Jul 2025 15:13:41 +0200
-Message-ID: <20250715130814.979303046@linuxfoundation.org>
+Message-ID: <20250715130819.953919366@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,316 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit d4adf1c9ee7722545450608bcb095fb31512f0c6 ]
+commit a215b5723922f8099078478122f02100e489cb80 upstream.
 
-BPF_MAP_TYPE_LRU_HASH can recycle most recent elements well before the
-map is full, due to percpu reservations and force shrink before
-neighbor stealing. Once a CPU is unable to borrow from the global map,
-it will once steal one elem from a neighbor and after that each time
-flush this one element to the global list and immediately recycle it.
+Commit under Fixes tightened up the memory accounting for Netlink
+sockets. Looks like the accounting is too strict for some existing
+use cases, Marek reported issues with nl80211 / WiFi iw CLI.
 
-Batch value LOCAL_FREE_TARGET (128) will exhaust a 10K element map
-with 79 CPUs. CPU 79 will observe this behavior even while its
-neighbors hold 78 * 127 + 1 * 15 == 9921 free elements (99%).
+To reduce number of iterations Netlink dumps try to allocate
+messages based on the size of the buffer passed to previous
+recvmsg() calls. If user space uses a larger buffer in recvmsg()
+than sk_rcvbuf we will allocate an skb we won't be able to queue.
 
-CPUs need not be active concurrently. The issue can appear with
-affinity migration, e.g., irqbalance. Each CPU can reserve and then
-hold onto its 128 elements indefinitely.
+Make sure we always allow at least one skb to be queued.
+Same workaround is already present in netlink_attachskb().
+Alternative would be to cap the allocation size to
+  rcvbuf - rmem_alloc
+but as I said, the workaround is already present in other places.
 
-Avoid global list exhaustion by limiting aggregate percpu caches to
-half of map size, by adjusting LOCAL_FREE_TARGET based on cpu count.
-This change has no effect on sufficiently large tables.
-
-Similar to LOCAL_NR_SCANS and lru->nr_scans, introduce a map variable
-lru->free_target. The extra field fits in a hole in struct bpf_lru.
-The cacheline is already warm where read in the hot path. The field is
-only accessed with the lru lock held.
-
-Tested-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://lore.kernel.org/r/20250618215803.3587312-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/9794af18-4905-46c6-b12c-365ea2f05858@samsung.com
+Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250711001121.3649033-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/bpf/map_hash.rst             |  8 ++-
- Documentation/bpf/map_lru_hash_update.dot  |  6 +-
- kernel/bpf/bpf_lru_list.c                  |  9 ++-
- kernel/bpf/bpf_lru_list.h                  |  1 +
- tools/testing/selftests/bpf/test_lru_map.c | 72 +++++++++++-----------
- 5 files changed, 52 insertions(+), 44 deletions(-)
+ net/netlink/af_netlink.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/bpf/map_hash.rst b/Documentation/bpf/map_hash.rst
-index d2343952f2cbd..8606bf958a8cf 100644
---- a/Documentation/bpf/map_hash.rst
-+++ b/Documentation/bpf/map_hash.rst
-@@ -233,10 +233,16 @@ attempts in order to enforce the LRU property which have increasing impacts on
- other CPUs involved in the following operation attempts:
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2258,11 +2258,11 @@ static int netlink_dump(struct sock *sk,
+ 	struct netlink_ext_ack extack = {};
+ 	struct netlink_callback *cb;
+ 	struct sk_buff *skb = NULL;
++	unsigned int rmem, rcvbuf;
+ 	size_t max_recvmsg_len;
+ 	struct module *module;
+ 	int err = -ENOBUFS;
+ 	int alloc_min_size;
+-	unsigned int rmem;
+ 	int alloc_size;
  
- - Attempt to use CPU-local state to batch operations
--- Attempt to fetch free nodes from global lists
-+- Attempt to fetch ``target_free`` free nodes from global lists
- - Attempt to pull any node from a global list and remove it from the hashmap
- - Attempt to pull any node from any CPU's list and remove it from the hashmap
+ 	if (!lock_taken)
+@@ -2294,8 +2294,9 @@ static int netlink_dump(struct sock *sk,
+ 	if (!skb)
+ 		goto errout_skb;
  
-+The number of nodes to borrow from the global list in a batch, ``target_free``,
-+depends on the size of the map. Larger batch size reduces lock contention, but
-+may also exhaust the global structure. The value is computed at map init to
-+avoid exhaustion, by limiting aggregate reservation by all CPUs to half the map
-+size. With a minimum of a single element and maximum budget of 128 at a time.
-+
- This algorithm is described visually in the following diagram. See the
- description in commit 3a08c2fd7634 ("bpf: LRU List") for a full explanation of
- the corresponding operations:
-diff --git a/Documentation/bpf/map_lru_hash_update.dot b/Documentation/bpf/map_lru_hash_update.dot
-index a0fee349d29c2..ab10058f5b79f 100644
---- a/Documentation/bpf/map_lru_hash_update.dot
-+++ b/Documentation/bpf/map_lru_hash_update.dot
-@@ -35,18 +35,18 @@ digraph {
-   fn_bpf_lru_list_pop_free_to_local [shape=rectangle,fillcolor=2,
-     label="Flush local pending,
-     Rotate Global list, move
--    LOCAL_FREE_TARGET
-+    target_free
-     from global -> local"]
-   // Also corresponds to:
-   // fn__local_list_flush()
-   // fn_bpf_lru_list_rotate()
-   fn___bpf_lru_node_move_to_free[shape=diamond,fillcolor=2,
--    label="Able to free\nLOCAL_FREE_TARGET\nnodes?"]
-+    label="Able to free\ntarget_free\nnodes?"]
- 
-   fn___bpf_lru_list_shrink_inactive [shape=rectangle,fillcolor=3,
-     label="Shrink inactive list
-       up to remaining
--      LOCAL_FREE_TARGET
-+      target_free
-       (global LRU -> local)"]
-   fn___bpf_lru_list_shrink [shape=diamond,fillcolor=2,
-     label="> 0 entries in\nlocal free list?"]
-diff --git a/kernel/bpf/bpf_lru_list.c b/kernel/bpf/bpf_lru_list.c
-index 3dabdd137d102..2d6e1c98d8adc 100644
---- a/kernel/bpf/bpf_lru_list.c
-+++ b/kernel/bpf/bpf_lru_list.c
-@@ -337,12 +337,12 @@ static void bpf_lru_list_pop_free_to_local(struct bpf_lru *lru,
- 				 list) {
- 		__bpf_lru_node_move_to_free(l, node, local_free_list(loc_l),
- 					    BPF_LRU_LOCAL_LIST_T_FREE);
--		if (++nfree == LOCAL_FREE_TARGET)
-+		if (++nfree == lru->target_free)
- 			break;
++	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+ 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+-	if (rmem >= READ_ONCE(sk->sk_rcvbuf)) {
++	if (rmem != skb->truesize && rmem >= rcvbuf) {
+ 		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
+ 		goto errout_skb;
  	}
- 
--	if (nfree < LOCAL_FREE_TARGET)
--		__bpf_lru_list_shrink(lru, l, LOCAL_FREE_TARGET - nfree,
-+	if (nfree < lru->target_free)
-+		__bpf_lru_list_shrink(lru, l, lru->target_free - nfree,
- 				      local_free_list(loc_l),
- 				      BPF_LRU_LOCAL_LIST_T_FREE);
- 
-@@ -577,6 +577,9 @@ static void bpf_common_lru_populate(struct bpf_lru *lru, void *buf,
- 		list_add(&node->list, &l->lists[BPF_LRU_LIST_T_FREE]);
- 		buf += elem_size;
- 	}
-+
-+	lru->target_free = clamp((nr_elems / num_possible_cpus()) / 2,
-+				 1, LOCAL_FREE_TARGET);
- }
- 
- static void bpf_percpu_lru_populate(struct bpf_lru *lru, void *buf,
-diff --git a/kernel/bpf/bpf_lru_list.h b/kernel/bpf/bpf_lru_list.h
-index cbd8d3720c2bb..fe2661a58ea94 100644
---- a/kernel/bpf/bpf_lru_list.h
-+++ b/kernel/bpf/bpf_lru_list.h
-@@ -58,6 +58,7 @@ struct bpf_lru {
- 	del_from_htab_func del_from_htab;
- 	void *del_arg;
- 	unsigned int hash_offset;
-+	unsigned int target_free;
- 	unsigned int nr_scans;
- 	bool percpu;
- };
-diff --git a/tools/testing/selftests/bpf/test_lru_map.c b/tools/testing/selftests/bpf/test_lru_map.c
-index fda7589c50236..4ae83f4b7fc7e 100644
---- a/tools/testing/selftests/bpf/test_lru_map.c
-+++ b/tools/testing/selftests/bpf/test_lru_map.c
-@@ -138,6 +138,12 @@ static int sched_next_online(int pid, int *next_to_try)
- 	return ret;
- }
- 
-+/* Inverse of how bpf_common_lru_populate derives target_free from map_size. */
-+static unsigned int __map_size(unsigned int tgt_free)
-+{
-+	return tgt_free * nr_cpus * 2;
-+}
-+
- /* Size of the LRU map is 2
-  * Add key=1 (+1 key)
-  * Add key=2 (+1 key)
-@@ -231,11 +237,11 @@ static void test_lru_sanity0(int map_type, int map_flags)
- 	printf("Pass\n");
- }
- 
--/* Size of the LRU map is 1.5*tgt_free
-- * Insert 1 to tgt_free (+tgt_free keys)
-- * Lookup 1 to tgt_free/2
-- * Insert 1+tgt_free to 2*tgt_free (+tgt_free keys)
-- * => 1+tgt_free/2 to LOCALFREE_TARGET will be removed by LRU
-+/* Verify that unreferenced elements are recycled before referenced ones.
-+ * Insert elements.
-+ * Reference a subset of these.
-+ * Insert more, enough to trigger recycling.
-+ * Verify that unreferenced are recycled.
-  */
- static void test_lru_sanity1(int map_type, int map_flags, unsigned int tgt_free)
- {
-@@ -257,7 +263,7 @@ static void test_lru_sanity1(int map_type, int map_flags, unsigned int tgt_free)
- 	batch_size = tgt_free / 2;
- 	assert(batch_size * 2 == tgt_free);
- 
--	map_size = tgt_free + batch_size;
-+	map_size = __map_size(tgt_free) + batch_size;
- 	lru_map_fd = create_map(map_type, map_flags, map_size);
- 	assert(lru_map_fd != -1);
- 
-@@ -266,13 +272,13 @@ static void test_lru_sanity1(int map_type, int map_flags, unsigned int tgt_free)
- 
- 	value[0] = 1234;
- 
--	/* Insert 1 to tgt_free (+tgt_free keys) */
--	end_key = 1 + tgt_free;
-+	/* Insert map_size - batch_size keys */
-+	end_key = 1 + __map_size(tgt_free);
- 	for (key = 1; key < end_key; key++)
- 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
- 					    BPF_NOEXIST));
- 
--	/* Lookup 1 to tgt_free/2 */
-+	/* Lookup 1 to batch_size */
- 	end_key = 1 + batch_size;
- 	for (key = 1; key < end_key; key++) {
- 		assert(!bpf_map_lookup_elem_with_ref_bit(lru_map_fd, key, value));
-@@ -280,12 +286,13 @@ static void test_lru_sanity1(int map_type, int map_flags, unsigned int tgt_free)
- 					    BPF_NOEXIST));
- 	}
- 
--	/* Insert 1+tgt_free to 2*tgt_free
--	 * => 1+tgt_free/2 to LOCALFREE_TARGET will be
-+	/* Insert another map_size - batch_size keys
-+	 * Map will contain 1 to batch_size plus these latest, i.e.,
-+	 * => previous 1+batch_size to map_size - batch_size will have been
- 	 * removed by LRU
- 	 */
--	key = 1 + tgt_free;
--	end_key = key + tgt_free;
-+	key = 1 + __map_size(tgt_free);
-+	end_key = key + __map_size(tgt_free);
- 	for (; key < end_key; key++) {
- 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
- 					    BPF_NOEXIST));
-@@ -301,17 +308,8 @@ static void test_lru_sanity1(int map_type, int map_flags, unsigned int tgt_free)
- 	printf("Pass\n");
- }
- 
--/* Size of the LRU map 1.5 * tgt_free
-- * Insert 1 to tgt_free (+tgt_free keys)
-- * Update 1 to tgt_free/2
-- *   => The original 1 to tgt_free/2 will be removed due to
-- *      the LRU shrink process
-- * Re-insert 1 to tgt_free/2 again and do a lookup immeidately
-- * Insert 1+tgt_free to tgt_free*3/2
-- * Insert 1+tgt_free*3/2 to tgt_free*5/2
-- *   => Key 1+tgt_free to tgt_free*3/2
-- *      will be removed from LRU because it has never
-- *      been lookup and ref bit is not set
-+/* Verify that insertions exceeding map size will recycle the oldest.
-+ * Verify that unreferenced elements are recycled before referenced.
-  */
- static void test_lru_sanity2(int map_type, int map_flags, unsigned int tgt_free)
- {
-@@ -334,7 +332,7 @@ static void test_lru_sanity2(int map_type, int map_flags, unsigned int tgt_free)
- 	batch_size = tgt_free / 2;
- 	assert(batch_size * 2 == tgt_free);
- 
--	map_size = tgt_free + batch_size;
-+	map_size = __map_size(tgt_free) + batch_size;
- 	lru_map_fd = create_map(map_type, map_flags, map_size);
- 	assert(lru_map_fd != -1);
- 
-@@ -343,8 +341,8 @@ static void test_lru_sanity2(int map_type, int map_flags, unsigned int tgt_free)
- 
- 	value[0] = 1234;
- 
--	/* Insert 1 to tgt_free (+tgt_free keys) */
--	end_key = 1 + tgt_free;
-+	/* Insert map_size - batch_size keys */
-+	end_key = 1 + __map_size(tgt_free);
- 	for (key = 1; key < end_key; key++)
- 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
- 					    BPF_NOEXIST));
-@@ -357,8 +355,7 @@ static void test_lru_sanity2(int map_type, int map_flags, unsigned int tgt_free)
- 	 * shrink the inactive list to get tgt_free
- 	 * number of free nodes.
- 	 *
--	 * Hence, the oldest key 1 to tgt_free/2
--	 * are removed from the LRU list.
-+	 * Hence, the oldest key is removed from the LRU list.
- 	 */
- 	key = 1;
- 	if (map_type == BPF_MAP_TYPE_LRU_PERCPU_HASH) {
-@@ -370,8 +367,7 @@ static void test_lru_sanity2(int map_type, int map_flags, unsigned int tgt_free)
- 					   BPF_EXIST));
- 	}
- 
--	/* Re-insert 1 to tgt_free/2 again and do a lookup
--	 * immeidately.
-+	/* Re-insert 1 to batch_size again and do a lookup immediately.
- 	 */
- 	end_key = 1 + batch_size;
- 	value[0] = 4321;
-@@ -387,17 +383,18 @@ static void test_lru_sanity2(int map_type, int map_flags, unsigned int tgt_free)
- 
- 	value[0] = 1234;
- 
--	/* Insert 1+tgt_free to tgt_free*3/2 */
--	end_key = 1 + tgt_free + batch_size;
--	for (key = 1 + tgt_free; key < end_key; key++)
-+	/* Insert batch_size new elements */
-+	key = 1 + __map_size(tgt_free);
-+	end_key = key + batch_size;
-+	for (; key < end_key; key++)
- 		/* These newly added but not referenced keys will be
- 		 * gone during the next LRU shrink.
- 		 */
- 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
- 					    BPF_NOEXIST));
- 
--	/* Insert 1+tgt_free*3/2 to  tgt_free*5/2 */
--	end_key = key + tgt_free;
-+	/* Insert map_size - batch_size elements */
-+	end_key += __map_size(tgt_free);
- 	for (; key < end_key; key++) {
- 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
- 					    BPF_NOEXIST));
-@@ -500,7 +497,8 @@ static void test_lru_sanity4(int map_type, int map_flags, unsigned int tgt_free)
- 		lru_map_fd = create_map(map_type, map_flags,
- 					3 * tgt_free * nr_cpus);
- 	else
--		lru_map_fd = create_map(map_type, map_flags, 3 * tgt_free);
-+		lru_map_fd = create_map(map_type, map_flags,
-+					3 * __map_size(tgt_free));
- 	assert(lru_map_fd != -1);
- 
- 	expected_map_fd = create_map(BPF_MAP_TYPE_HASH, 0,
--- 
-2.39.5
-
 
 
 
