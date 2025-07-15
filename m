@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-162065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E306B05B50
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F9FB05E52
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19460188F1ED
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0439216813E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD902D5426;
-	Tue, 15 Jul 2025 13:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BA22EA49B;
+	Tue, 15 Jul 2025 13:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUr58hT9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvvzX2+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBF019D09C;
-	Tue, 15 Jul 2025 13:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAA12EA49C;
+	Tue, 15 Jul 2025 13:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585580; cv=none; b=noEt8ZPks9OqPIQQtWbeBRoEpKJW8Q4dxYUy5ppRmdeAURprSak9p0FnrXpV4an0YoPWqay8scrS4QP2kF1YWuX1s4UAzzHymW4VvyhEV0pibgNFFnGgjLc5VWWBKZQ3udAXr7fN+DufyJ6izcQUu7YamDUS110mH5NU6jRXWDM=
+	t=1752586836; cv=none; b=rKmk2qKb47AOemcb/TSZeE06GftMpiwtorgMiWhYLGzgBMhOsS/7XpysX+pEwkulLNrnldVLmc8WM/A1sfxwYEFedA0YHRGmJl122uv0f5YaHuvHINZEOSHeOR8IQyTZ5iOHZ76YEvquVuFTI5WR4Rd4oqjAZDrGxhhiHb2WdSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585580; c=relaxed/simple;
-	bh=UMUy+pVoj8xLnSsGvtQhvO6Pe+AbjIvklv7YTFlGbrs=;
+	s=arc-20240116; t=1752586836; c=relaxed/simple;
+	bh=wg+dlCNc3yovJ4uBRPNQ/z6oo1OkwKCW65dKxMst+RQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6f6NUIHKLtXxKBNmiwERKRCui4XWLLueQToUie1N+rJ7+rY7VD8BxwJaKVN49IBIuoL8StRJQ3VsODUdD2Xq6J3uPT6S/36qoFt2LryDimB5aKNPPoTH00DnVC/WHx3UcT2Xu5aaL9uNAEDLo8vbVJSfr+IO1meR6rBYbcXSuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUr58hT9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34014C4CEE3;
-	Tue, 15 Jul 2025 13:19:40 +0000 (UTC)
+	 MIME-Version; b=XAvdPfSIRpJ7Fi/c99ljZSKARvco6Epei8IKm2ZAPUz7dV+QfzlVPkUXTaLPj3gt2RAxRdS6PfFcwCpR3BVbFIL7iBSWYTCMzNBjUtaAhXAa3vp10dt6QYvmqJrHcPy3G3DM6j9ZhCLeiJxWhmTC3KvmdOxvx707cPJUNZsglMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvvzX2+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCAFC4CEE3;
+	Tue, 15 Jul 2025 13:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585580;
-	bh=UMUy+pVoj8xLnSsGvtQhvO6Pe+AbjIvklv7YTFlGbrs=;
+	s=korg; t=1752586835;
+	bh=wg+dlCNc3yovJ4uBRPNQ/z6oo1OkwKCW65dKxMst+RQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUr58hT9HSNfrpeUtdrWbU8Kyca4lKUr0dCBiA+k85gqIdWOddtCcg3RONL+KgE5V
-	 0JEBOwUP26p2ubD8S2W4LI58KuxJ9BKcWzHLZjHn00y2syhLiKNgVA92msBZe2heot
-	 1wh0xjQI6RPWZWh0zuJFakMkrjlFLLK/pe2HT/vE=
+	b=uvvzX2+uKxER33AjsaySHQ9Ihnatx31pz6pOrLDgsKX36Bc+czz3lg2X74mq+nd3Q
+	 XtyRozATCbENws1MZLRNQ1qTkBgI77pjmjP1/BoduSTQ91kdtX4H5pEZISBgvSFcog
+	 oBMeWoMGzPjmcTf0TXvGB2YMkyu0w3GTB+7sl7L8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <lossin@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 094/163] rust: init: allow `dead_code` warnings for Rust >= 1.89.0
+	Aiden Yang <ling@moedove.com>,
+	Gary Guo <gary@garyguo.net>,
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 067/192] gre: Fix IPv6 multicast route creation.
 Date: Tue, 15 Jul 2025 15:12:42 +0200
-Message-ID: <20250715130812.639666869@linuxfoundation.org>
+Message-ID: <20250715130817.627318973@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Guillaume Nault <gnault@redhat.com>
 
-Starting with Rust 1.89.0 (expected 2025-08-07), the Rust compiler
-may warn:
+commit 4e914ef063de40397e25a025c70d9737a9e45a8c upstream.
 
-    error: trait `MustNotImplDrop` is never used
-       --> rust/kernel/init/macros.rs:927:15
-        |
-    927 |         trait MustNotImplDrop {}
-        |               ^^^^^^^^^^^^^^^
-        |
-       ::: rust/kernel/sync/arc.rs:133:1
-        |
-    133 | #[pin_data]
-        | ----------- in this procedural macro expansion
-        |
-        = note: `-D dead-code` implied by `-D warnings`
-        = help: to override `-D warnings` add `#[allow(dead_code)]`
-        = note: this error originates in the macro `$crate::__pin_data`
-                which comes from the expansion of the attribute macro
-                `pin_data` (in Nightly builds, run with
-                -Z macro-backtrace for more info)
+Use addrconf_add_dev() instead of ipv6_find_idev() in
+addrconf_gre_config() so that we don't just get the inet6_dev, but also
+install the default ff00::/8 multicast route.
 
-Thus `allow` it to clean it up.
+Before commit 3e6a0243ff00 ("gre: Fix again IPv6 link-local address
+generation."), the multicast route was created at the end of the
+function by addrconf_add_mroute(). But this code path is now only taken
+in one particular case (gre devices not bound to a local IP address and
+in EUI64 mode). For all other cases, the function exits early and
+addrconf_add_mroute() is not called anymore.
 
-This does not happen in mainline nor 6.15.y, because there the macro was
-moved out of the `kernel` crate, and `dead_code` warnings are not
-emitted if the macro is foreign to the crate. Thus this patch is
-directly sent to stable and intended for 6.12.y only.
+Using addrconf_add_dev() instead of ipv6_find_idev() in
+addrconf_gre_config(), fixes the problem as it will create the default
+multicast route for all gre devices. This also brings
+addrconf_gre_config() a bit closer to the normal netdevice IPv6
+configuration code (addrconf_dev_config()).
 
-Similarly, it is not needed in previous LTSs, because there the Rust
-version is pinned.
-
-Acked-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3e6a0243ff00 ("gre: Fix again IPv6 link-local address generation.")
+Reported-by: Aiden Yang <ling@moedove.com>
+Closes: https://lore.kernel.org/netdev/CANR=AhRM7YHHXVxJ4DmrTNMeuEOY87K2mLmo9KMed1JMr20p6g@mail.gmail.com/
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Tested-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/027a923dcb550ad115e6d93ee8bb7d310378bd01.1752070620.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/init/macros.rs |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/addrconf.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -924,6 +924,7 @@ macro_rules! __pin_data {
-         // We prevent this by creating a trait that will be implemented for all types implementing
-         // `Drop`. Additionally we will implement this trait for the struct leading to a conflict,
-         // if it also implements `Drop`
-+        #[allow(dead_code)]
-         trait MustNotImplDrop {}
-         #[expect(drop_bounds)]
-         impl<T: ::core::ops::Drop> MustNotImplDrop for T {}
-@@ -932,6 +933,7 @@ macro_rules! __pin_data {
-         // We also take care to prevent users from writing a useless `PinnedDrop` implementation.
-         // They might implement `PinnedDrop` correctly for the struct, but forget to give
-         // `PinnedDrop` as the parameter to `#[pin_data]`.
-+        #[allow(dead_code)]
-         #[expect(non_camel_case_types)]
-         trait UselessPinnedDropImpl_you_need_to_specify_PinnedDrop {}
-         impl<T: $crate::init::PinnedDrop>
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3525,11 +3525,9 @@ static void addrconf_gre_config(struct n
+ 
+ 	ASSERT_RTNL();
+ 
+-	idev = ipv6_find_idev(dev);
+-	if (IS_ERR(idev)) {
+-		pr_debug("%s: add_dev failed\n", __func__);
++	idev = addrconf_add_dev(dev);
++	if (IS_ERR(idev))
+ 		return;
+-	}
+ 
+ 	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
+ 	 * unless we have an IPv4 GRE device not bound to an IP address and
+@@ -3543,9 +3541,6 @@ static void addrconf_gre_config(struct n
+ 	}
+ 
+ 	add_v4_addrs(idev);
+-
+-	if (dev->flags & IFF_POINTOPOINT)
+-		addrconf_add_mroute(dev);
+ }
+ #endif
+ 
 
 
 
