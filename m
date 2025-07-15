@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6940AB05D58
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 182B4B05B46
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 972973A60A5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37102177AEA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793B62E92B2;
-	Tue, 15 Jul 2025 13:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1036819066B;
+	Tue, 15 Jul 2025 13:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihVvYqdw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NA9nvHK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352742E7BA7;
-	Tue, 15 Jul 2025 13:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41822566;
+	Tue, 15 Jul 2025 13:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586298; cv=none; b=lLndV6YMPn6BenQvbYh4thPuEutASV/8NtU0enAhKhqYn+US0kK3Tr0lVl8xGeANpjjYPGgH3E4CyhjSobTqP8+rYm5PXi1mNinaoPtY59r3eKNr13zwwTd85GtEVlxUdTKNfBcahUoa+VMuErK1TZUY54v78ZoOpqzZNePiGSU=
+	t=1752585508; cv=none; b=j/alqWbgqdn4LizJJXMLScs+GcQ5N9gY7dGj+ypHKXpdvzR56+VzXZq6Rj2RhVI0qI/mE7xqa4GYo+alvdlYr1WE6BGb1pRnollZ8VlTxxgcfg+ndBgTVn2rM9CR2ueZ2s40phTMKIBk/8BmKB9yR2qv2kIhLPHOBCcaq9h9jRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586298; c=relaxed/simple;
-	bh=eDDOV86ZnwPV0PgRM5gnaVedB5OXWcHzDS2R+lzkrlk=;
+	s=arc-20240116; t=1752585508; c=relaxed/simple;
+	bh=kZxvYFR46O2xkYDOMUogCqNV0FX3ta0YE6wtE/ZYN04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qd4jOpp4W77/FswBV8PWhut7Cv3piDPjgYHLdId1NrhVXeNJIFUChYyCgpT/n3p74bsQOrkRYXAJll6XKpefPxKL0i338LT8ktv6/44czV87zgr1imx8+m3nTzSbyfPLE1JEEYycyNh74UHq9kNtDiXJy5jWu8JLcYKRkMcImKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihVvYqdw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D65C4CEE3;
-	Tue, 15 Jul 2025 13:31:37 +0000 (UTC)
+	 MIME-Version; b=OFfKLf7QWQH8RGaBr9i4AWWn+IdTzLpxBTwAZm75mrAn5ev+xYQvSIyIJPF1Wo9LqMiJLWkJQyqAFDoBg/APPahlJF9PyvBMetoxrB2Vc80UGgXUtkgDEDfxoiSmQYZB5/5CTBvzqc4cWGRUu7TNOI1uqHv3/Io8jEwo4xbGnlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NA9nvHK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0668CC4CEE3;
+	Tue, 15 Jul 2025 13:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586298;
-	bh=eDDOV86ZnwPV0PgRM5gnaVedB5OXWcHzDS2R+lzkrlk=;
+	s=korg; t=1752585508;
+	bh=kZxvYFR46O2xkYDOMUogCqNV0FX3ta0YE6wtE/ZYN04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihVvYqdwmD1LBh4c19AIvrqsauvpTQwjJQi1EU7hUrqNqQWfI7cwRFIadUJyrQh4o
-	 PZND0kLgLfjpRfE9AyZU+dqYe+Mf/lBsW4Qx43bHZeQp6CWtt3psgF+PXv5hjkJ0b5
-	 IUwx5MiJ0Cu37yHehbH407QqX6fvgKiCvBM80Eho=
+	b=NA9nvHK2IkbAt88bCE3EXWymu/q6SjWQXoeDt+basNx26Jrd+5d0SO13jyFzi7UoZ
+	 cs3VsKOTewUhB37M+UPwYMvcs5PGPztdeYSrYTchR86yZ0ye23mFovHdhBKiirwJZW
+	 ZtigSvG4tYOQzKXkFh8DgTey9hU0Soh5iyaP1CB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Kandybka <d.kandybka@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 013/148] ceph: fix possible integer overflow in ceph_zero_objects()
+	Vitor Soares <vitor.soares@toradex.com>,
+	Jeff Chen <jeff.chen_1@nxp.con>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 067/163] wifi: mwifiex: discard erroneous disassoc frames on STA interface
 Date: Tue, 15 Jul 2025 15:12:15 +0200
-Message-ID: <20250715130800.836266870@linuxfoundation.org>
+Message-ID: <20250715130811.432918869@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Kandybka <d.kandybka@gmail.com>
+From: Vitor Soares <vitor.soares@toradex.com>
 
-[ Upstream commit 0abd87942e0c93964e93224836944712feba1d91 ]
+commit 3b602ddc0df723992721b0d286c90c9bdd755b34 upstream.
 
-In 'ceph_zero_objects', promote 'object_size' to 'u64' to avoid possible
-integer overflow.
+When operating in concurrent STA/AP mode with host MLME enabled,
+the firmware incorrectly sends disassociation frames to the STA
+interface when clients disconnect from the AP interface.
+This causes kernel warnings as the STA interface processes
+disconnect events that don't apply to it:
 
-Compile tested only.
+[ 1303.240540] WARNING: CPU: 0 PID: 513 at net/wireless/mlme.c:141 cfg80211_process_disassoc+0x78/0xec [cfg80211]
+[ 1303.250861] Modules linked in: 8021q garp stp mrp llc rfcomm bnep btnxpuart nls_iso8859_1 nls_cp437 onboard_us
+[ 1303.327651] CPU: 0 UID: 0 PID: 513 Comm: kworker/u9:2 Not tainted 6.16.0-rc1+ #3 PREEMPT
+[ 1303.335937] Hardware name: Toradex Verdin AM62 WB on Verdin Development Board (DT)
+[ 1303.343588] Workqueue: MWIFIEX_RX_WORK_QUEUE mwifiex_rx_work_queue [mwifiex]
+[ 1303.350856] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 1303.357904] pc : cfg80211_process_disassoc+0x78/0xec [cfg80211]
+[ 1303.364065] lr : cfg80211_process_disassoc+0x70/0xec [cfg80211]
+[ 1303.370221] sp : ffff800083053be0
+[ 1303.373590] x29: ffff800083053be0 x28: 0000000000000000 x27: 0000000000000000
+[ 1303.380855] x26: 0000000000000000 x25: 00000000ffffffff x24: ffff000002c5b8ae
+[ 1303.388120] x23: ffff000002c5b884 x22: 0000000000000001 x21: 0000000000000008
+[ 1303.395382] x20: ffff000002c5b8ae x19: ffff0000064dd408 x18: 0000000000000006
+[ 1303.402646] x17: 3a36333a61623a30 x16: 32206d6f72662063 x15: ffff800080bfe048
+[ 1303.409910] x14: ffff000003625300 x13: 0000000000000001 x12: 0000000000000000
+[ 1303.417173] x11: 0000000000000002 x10: ffff000003958600 x9 : ffff000003625300
+[ 1303.424434] x8 : ffff00003fd9ef40 x7 : ffff0000039fc280 x6 : 0000000000000002
+[ 1303.431695] x5 : ffff0000038976d4 x4 : 0000000000000000 x3 : 0000000000003186
+[ 1303.438956] x2 : 000000004836ba20 x1 : 0000000000006986 x0 : 00000000d00479de
+[ 1303.446221] Call trace:
+[ 1303.448722]  cfg80211_process_disassoc+0x78/0xec [cfg80211] (P)
+[ 1303.454894]  cfg80211_rx_mlme_mgmt+0x64/0xf8 [cfg80211]
+[ 1303.460362]  mwifiex_process_mgmt_packet+0x1ec/0x460 [mwifiex]
+[ 1303.466380]  mwifiex_process_sta_rx_packet+0x1bc/0x2a0 [mwifiex]
+[ 1303.472573]  mwifiex_handle_rx_packet+0xb4/0x13c [mwifiex]
+[ 1303.478243]  mwifiex_rx_work_queue+0x158/0x198 [mwifiex]
+[ 1303.483734]  process_one_work+0x14c/0x28c
+[ 1303.487845]  worker_thread+0x2cc/0x3d4
+[ 1303.491680]  kthread+0x12c/0x208
+[ 1303.495014]  ret_from_fork+0x10/0x20
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Add validation in the STA receive path to verify that disassoc/deauth
+frames originate from the connected AP. Frames that fail this check
+are discarded early, preventing them from reaching the MLME layer and
+triggering WARN_ON().
 
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This filtering logic is similar with that used in the
+ieee80211_rx_mgmt_disassoc() function in mac80211, which drops
+disassoc frames that don't match the current BSSID
+(!ether_addr_equal(mgmt->bssid, sdata->vif.cfg.ap_addr)), ensuring
+only relevant frames are processed.
+
+Tested on:
+- 8997 with FW 16.68.1.p197
+
+Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.con>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://patch.msgid.link/20250701142643.658990-1-ivitro@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/util.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ceph/file.c b/fs/ceph/file.c
-index 83122fc5f8130..9b10de2276c6f 100644
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -1749,7 +1749,7 @@ static int ceph_zero_objects(struct inode *inode, loff_t offset, loff_t length)
- 	s32 stripe_unit = ci->i_layout.stripe_unit;
- 	s32 stripe_count = ci->i_layout.stripe_count;
- 	s32 object_size = ci->i_layout.object_size;
--	u64 object_set_size = object_size * stripe_count;
-+	u64 object_set_size = (u64) object_size * stripe_count;
- 	u64 nearly, t;
+--- a/drivers/net/wireless/marvell/mwifiex/util.c
++++ b/drivers/net/wireless/marvell/mwifiex/util.c
+@@ -477,7 +477,9 @@ mwifiex_process_mgmt_packet(struct mwifi
+ 				    "auth: receive authentication from %pM\n",
+ 				    ieee_hdr->addr3);
+ 		} else {
+-			if (!priv->wdev.connected)
++			if (!priv->wdev.connected ||
++			    !ether_addr_equal(ieee_hdr->addr3,
++					      priv->curr_bss_params.bss_descriptor.mac_address))
+ 				return 0;
  
- 	/* round offset up to next period boundary */
--- 
-2.39.5
-
+ 			if (ieee80211_is_deauth(ieee_hdr->frame_control)) {
 
 
 
