@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-162829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16604B0602B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:13:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AA6B05FEA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:10:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D7161C46611
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:04:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DA97586A56
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F33C2E7651;
-	Tue, 15 Jul 2025 13:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58FE2E7638;
+	Tue, 15 Jul 2025 13:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ia0WjK7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iyezz+AI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAE92E7654;
-	Tue, 15 Jul 2025 13:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEB02E762F;
+	Tue, 15 Jul 2025 13:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587586; cv=none; b=bsICV6EzFnvm3nM3sP33XKrsKGPCXTu+IqnFNTogdkhHNJsMvLWiOJlYVq3sPdP+8zqiOVvO0EhBTz8ZjdBhSi89HO5Y2H9FYpOzdzdwpTZr/MaMcXkgf8TJ+WzBCTWl9EkO0f6qPA+aU/cB6XHrWiJ/1DBGBNyBW1sUX2rmP1o=
+	t=1752587498; cv=none; b=kkrM2v4fBVoA4i5VFExLwA/NDl7A96KJmny9bYeBCp8dkhYqcv13+Ly1PXUJ5pAbWAP9PIFib/la2y6vUbwNfg3JThZUTeAOO3RDZTwlFjSV9DT6GVhN2LwIm2TV/yQ/gE6XMv45nqL5oOHXc5w+e9BHB7uqrByvNMHePWYxXRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587586; c=relaxed/simple;
-	bh=Z5pivog5AZqZZChm3Hdeioid7BBKSvQfufK6ucpzyQs=;
+	s=arc-20240116; t=1752587498; c=relaxed/simple;
+	bh=rX8ZceD1IH0KW2xb3jCcaGaa5GGl6ex1b14Pnq5w1W4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oU+bx7EHf5E0aNuEpWCJ9bV8QKEWTzgXtbdfi0c9QRZsHsFvL4W5QQeV5F2QUnDSfBRb0UmzMzakgRGGpRN6EyAzV/IY2Lbw4g6i6Gonhh4Ohhs2A9/RT5XyJM/bBuFqYiu8cKKIwQye6QlQ0dG2ys5iFVGOdv+iP8sQIYryxAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ia0WjK7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB387C4CEE3;
-	Tue, 15 Jul 2025 13:53:05 +0000 (UTC)
+	 MIME-Version; b=o6gStQXHeK8NvmvIaFwJueROqy3weVfChEs3tXP6VHKOAgO8v7yDDfpV4r3xOJNDiSGmOHvu95HYmTvdLaBNlx12a95I2w+/c4HBUhG4OIbqwjwmKLlBwClClrfDYVQ6SeTq35kh1Tf7ifliyfbZ/0L/xIISOAppjtLJGJknp/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iyezz+AI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF86C4CEE3;
+	Tue, 15 Jul 2025 13:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587586;
-	bh=Z5pivog5AZqZZChm3Hdeioid7BBKSvQfufK6ucpzyQs=;
+	s=korg; t=1752587498;
+	bh=rX8ZceD1IH0KW2xb3jCcaGaa5GGl6ex1b14Pnq5w1W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ia0WjK7vZbNTc6z17vFVD8mu3BnMJmNiKWO4yLim94sFJiyBTTg+QHSRA+Fw7y4Y/
-	 r5gs06DL4H2chZfdwy0D0WROKXIzxwdrfXm8iY7/FSjM1B3NRzhJX9RHjRAp5hjXVq
-	 gQyH7SmWQn3claariTICoJV7C6uWIP1y8+hjaoqs=
+	b=Iyezz+AI3F/rjdfXkJk4NaSP5AotTxSM5aIRTKJRjjWEyWeV0NQXbwUTA+Nno9soz
+	 KGGxj9j+jdVrVAN9LG7b0Wd9x5yl7CnCfA1LjjNUOO75hZqpLX1I4rVmVCuFDu/I2J
+	 B+oOPgicaUH//b6nM7J0OR3KS3DwOuuB+qL6DANA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Junlin Yang <yangjunlin@yulong.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 026/208] usb: typec: tcpci_maxim: Fix uninitialized return variable
-Date: Tue, 15 Jul 2025 15:12:15 +0200
-Message-ID: <20250715130811.882294532@linuxfoundation.org>
+Subject: [PATCH 5.10 027/208] usb: typec: tcpci_maxim: remove redundant assignment
+Date: Tue, 15 Jul 2025 15:12:16 +0200
+Message-ID: <20250715130811.921024867@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -67,50 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Junlin Yang <yangjunlin@yulong.com>
 
-[ Upstream commit 7695cae24b29edd2dbd3b3a77a7264cd6d9ca67a ]
+[ Upstream commit a63b53e19bdffd9338fab4536e8bc422ea812b4d ]
 
-New smatch warnings:
-drivers/usb/typec/tcpm/tcpci_maxim.c:324 max_tcpci_irq() error: uninitialized symbol 'irq_return'.
-drivers/usb/typec/tcpm/tcpci_maxim.c:407 max_tcpci_probe() warn: passing zero to 'PTR_ERR'
+PTR_ERR(chip->tcpci) has been used as a return value,
+it is not necessary to assign it to ret, so remove it.
 
-The change fixes the above warnings by initializing irq_return
-and replacing IS_ERR_OR_NULL with IS_ERR.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Link: https://lore.kernel.org/r/20201029063138.1429760-11-badhri@google.com
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Junlin Yang <yangjunlin@yulong.com>
+Link: https://lore.kernel.org/r/20210124143853.1630-1-angkery@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: 0736299d090f ("usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci_maxim.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpci_maxim.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/usb/typec/tcpm/tcpci_maxim.c b/drivers/usb/typec/tcpm/tcpci_maxim.c
-index 723d7dd38f75b..6bf0d1ebc1fae 100644
+index 6bf0d1ebc1fae..57c5c073139a9 100644
 --- a/drivers/usb/typec/tcpm/tcpci_maxim.c
 +++ b/drivers/usb/typec/tcpm/tcpci_maxim.c
-@@ -344,7 +344,7 @@ static irqreturn_t max_tcpci_irq(int irq, void *dev_id)
- {
- 	struct max_tcpci_chip *chip = dev_id;
- 	u16 status;
--	irqreturn_t irq_return;
-+	irqreturn_t irq_return = IRQ_HANDLED;
- 	int ret;
- 
- 	if (!chip->port)
-@@ -444,7 +444,7 @@ static int max_tcpci_probe(struct i2c_client *client, const struct i2c_device_id
- 
- 	max_tcpci_init_regs(chip);
+@@ -446,7 +446,6 @@ static int max_tcpci_probe(struct i2c_client *client, const struct i2c_device_id
  	chip->tcpci = tcpci_register_port(chip->dev, &chip->data);
--	if (IS_ERR_OR_NULL(chip->tcpci)) {
-+	if (IS_ERR(chip->tcpci)) {
+ 	if (IS_ERR(chip->tcpci)) {
  		dev_err(&client->dev, "TCPCI port registration failed");
- 		ret = PTR_ERR(chip->tcpci);
+-		ret = PTR_ERR(chip->tcpci);
  		return PTR_ERR(chip->tcpci);
+ 	}
+ 	chip->port = tcpci_get_tcpm_port(chip->tcpci);
 -- 
 2.39.5
 
