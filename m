@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C0A1B05FBE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B667EB0609D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1425F1C44AD4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 778AE4E2FD3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE0E2E54B0;
-	Tue, 15 Jul 2025 13:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14622EA17C;
+	Tue, 15 Jul 2025 13:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwMZlm8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LfwTUFJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC8E2D8778;
-	Tue, 15 Jul 2025 13:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60ECC2E2F0C;
+	Tue, 15 Jul 2025 13:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587342; cv=none; b=pQ/m9yIt152MELmPhnpjquLqwFbqjkC3cKvLGXXxZUk8BOI3oxSNAClcUegMt7ioCmqUyXRd/ZqlZ7Ol5/EdIShbUB+lcMgECgFMSiNe4YBd9M7I1eG8t4L4HpNDWgV8WWVQlWbcmN2sPYQiQbcZ6+36VLxFVzpTSQQRhjL72xg=
+	t=1752587947; cv=none; b=oo84kCNvii7JgvqMk6Yv0BdxZUHve05VtpUV1bl82tAl5duwCuMMQ7gRxE7iAFpb/17x+PwM6Gm0DjfrrWTSlze4231HIrPofgkrL9LGCTF4830Xhd0DXlrfuaAPGd8i6KzxUbfj7jre3+3OBP4CQ3/1md2kL4geP0e0KYi2B4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587342; c=relaxed/simple;
-	bh=ExTUCf+FVGc9XJzvZdbUo9ukFVM1vnHAR7jKWStG7PM=;
+	s=arc-20240116; t=1752587947; c=relaxed/simple;
+	bh=3mt6CqxdgRQOpzAffdaOKrnVNUjTC9HofbHxpkOBIgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2nbIEGlSLmYe1YfE1FFIUuowkot2UpfTHUmHuiFymrnAwZY+Jc1C4lk8wZd0hRe8A26z1jsoDwHRhoTK853TIS/CF6VYksmI4GEdyNtXNGn+QNJptWTIixbIuaalT/YcMbVZ16sftp8htiLBNecw/00QLHMw75m5JVvnU3nx/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwMZlm8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9E0C4CEE3;
-	Tue, 15 Jul 2025 13:49:01 +0000 (UTC)
+	 MIME-Version; b=Cn/vefICPLtJI0snrRuTJVPtucLseBrN9vLr8I/wb8IiDn1V88yJ2uqp2AX2ej1B7wqF0zN3qORVAjJt1LHDlDw8Xeny4VuVjM47NF42gF4edxSInJ4NZLWvFagYHqinX5c43Y/U6WAhfOnHoUBWT2DxRmWI1yvpE1WLhaQ4tFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LfwTUFJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFA9C4CEE3;
+	Tue, 15 Jul 2025 13:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587342;
-	bh=ExTUCf+FVGc9XJzvZdbUo9ukFVM1vnHAR7jKWStG7PM=;
+	s=korg; t=1752587947;
+	bh=3mt6CqxdgRQOpzAffdaOKrnVNUjTC9HofbHxpkOBIgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SwMZlm8Ks1tNqW2LFTNSwJhS7cWpt6iTriq3IBVtcFlzQHC8C/C+wgivHZKW/Tifh
-	 ju5/X0slt56rQlIZJWR0fhekvBsTlQn6iK8pHeE41arY30S1fxGKyjsw4VWpDOKH22
-	 e4WK/EMFb7cYDRkrIsG9tpGtYVGeFmBc3vZkcG5k=
+	b=LfwTUFJ5U1suiunLCstfXXa6QPJmGEnZNuxVMTKYxu2fZ3sRX0h08Cw3KktFW6AGr
+	 njixhwwyPVMeF0KugFeQCr8DcPnQ+8UoINUvXSvkxWBvUFpfIKOuLI9e7Kh0/m4Clr
+	 hC1rau1ofrhibeEd2icoT3lI0PekKEx9orYafOy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 64/88] erofs: fix to add missing tracepoint in erofs_read_folio()
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.10 171/208] x86/mce/amd: Fix threshold limit reset
 Date: Tue, 15 Jul 2025 15:14:40 +0200
-Message-ID: <20250715130757.138280012@linuxfoundation.org>
+Message-ID: <20250715130817.827478217@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 99f7619a77a0a2e3e2bcae676d0f301769167754 ]
+commit 5f6e3b720694ad771911f637a51930f511427ce1 upstream.
 
-Commit 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
-converts to use iomap interface, it removed trace_erofs_readpage()
-tracepoint in the meantime, let's add it back.
+The MCA threshold limit must be reset after servicing the interrupt.
 
-Fixes: 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250708111942.3120926-1-chao@kernel.org
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently, the restart function doesn't have an explicit check for this.  It
+makes some assumptions based on the current limit and what's in the registers.
+These assumptions don't always hold, so the limit won't be reset in some
+cases.
+
+Make the reset condition explicit. Either an interrupt/overflow has occurred
+or the bank is being initialized.
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-4-236dd74f645f@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/data.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/cpu/mce/amd.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/fs/erofs/data.c b/fs/erofs/data.c
-index 5c2e6fbb70a3e..7b648bec61fd0 100644
---- a/fs/erofs/data.c
-+++ b/fs/erofs/data.c
-@@ -354,6 +354,8 @@ int erofs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
-  */
- static int erofs_read_folio(struct file *file, struct folio *folio)
- {
-+	trace_erofs_read_folio(folio, true);
-+
- 	return iomap_read_folio(folio, &erofs_iomap_ops);
- }
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -297,7 +297,6 @@ static void smca_configure(unsigned int
  
--- 
-2.39.5
-
+ struct thresh_restart {
+ 	struct threshold_block	*b;
+-	int			reset;
+ 	int			set_lvt_off;
+ 	int			lvt_off;
+ 	u16			old_limit;
+@@ -392,13 +391,13 @@ static void threshold_restart_bank(void
+ 
+ 	rdmsr(tr->b->address, lo, hi);
+ 
+-	if (tr->b->threshold_limit < (hi & THRESHOLD_MAX))
+-		tr->reset = 1;	/* limit cannot be lower than err count */
+-
+-	if (tr->reset) {		/* reset err count and overflow bit */
+-		hi =
+-		    (hi & ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI)) |
+-		    (THRESHOLD_MAX - tr->b->threshold_limit);
++	/*
++	 * Reset error count and overflow bit.
++	 * This is done during init or after handling an interrupt.
++	 */
++	if (hi & MASK_OVERFLOW_HI || tr->set_lvt_off) {
++		hi &= ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI);
++		hi |= THRESHOLD_MAX - tr->b->threshold_limit;
+ 	} else if (tr->old_limit) {	/* change limit w/o reset */
+ 		int new_count = (hi & THRESHOLD_MAX) +
+ 		    (tr->old_limit - tr->b->threshold_limit);
 
 
 
