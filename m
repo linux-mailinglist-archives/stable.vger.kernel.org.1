@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135A7B05BA5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3849B05DD3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 775811C201DB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 954AA4A00C9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041592E2F12;
-	Tue, 15 Jul 2025 13:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAEA2E6100;
+	Tue, 15 Jul 2025 13:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBnDZDcd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auI9nSC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B362E175C;
-	Tue, 15 Jul 2025 13:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBE32E6105;
+	Tue, 15 Jul 2025 13:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585738; cv=none; b=a6tr0mM7aW0JRHmUxEUEX9y17Ggp5kASS+0/EkgC2zXHN7w87ddXTImitJ4oTRVe3Xs2u2K7u94nBaa1IZYzvUsyHoLzQ0vNly4FP/3rs9apIqTMnAP29PvFHVwELeg460dhkkQA6m/0jEBAyQBVsABlfmnmW30rU3tsmZYsJZ8=
+	t=1752586491; cv=none; b=jszIOdNrtw1SP8FM0Oe0Sodq8T6Bm5/AM3uhNmUpe128SWDwGbLafE0yidQJyGsiNmJvxMShCYjH/jrrEYH1arOXVjauzVC9Z5l8RoCWVzNElgFmpWIhmELrGZUHaXIO1zcXeQwFXG8fKd2D7ha6xpB3Z/q/G8Tkd+eLjO7tmYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585738; c=relaxed/simple;
-	bh=mTV7CdBa4w+ZhNCO386NAZ25W3KBxOLLKa0hPeWEYTE=;
+	s=arc-20240116; t=1752586491; c=relaxed/simple;
+	bh=hBxkCd4THdEidijs+YdWJZQCNaBlGhqARtSQ8ZbUMiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Smb20ooDAvzUHsQ+7OXNxbomi1bBbhGEjEf7Mgx7yA9buKn0RQzzYgWR2iPBrxipjtmMzd7OSIGWc6Eyq1hhaIyM3jt0z9Emr8TAF4EO9l1YBV+kjdRDlz5yrAavEvYTvnFb1EWz+REvGI21yLC7vAfLDEc3HSI+gNKCYkNVWME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBnDZDcd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2A8C4CEE3;
-	Tue, 15 Jul 2025 13:22:18 +0000 (UTC)
+	 MIME-Version; b=Vr7UqPjV6y8yUAiOMS1Ehc/n0ID1nbEEnZLywN2gzM49fQLB6CoB+p0GTHmCoOaQON2RsF+ikRZdZZUSfnd1Cziinhc+NeUurE0xNBrvJbTS37fEUfSZx99uticVTzd6b0852abNdAqMCcOnkVTE6c97lVk+sqXsMrKM5qKXZ50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auI9nSC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51110C4CEF1;
+	Tue, 15 Jul 2025 13:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585738;
-	bh=mTV7CdBa4w+ZhNCO386NAZ25W3KBxOLLKa0hPeWEYTE=;
+	s=korg; t=1752586491;
+	bh=hBxkCd4THdEidijs+YdWJZQCNaBlGhqARtSQ8ZbUMiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBnDZDcdYQfw22wbsJW2kCs67Bj1g4Pba1lw2ROzzmKL+LqxhZbseoqrOeNYuaJDb
-	 8VjmVRtvGlu+HNLCrhCCLbeFh1kiyfTOo6xm4xuPQ0YFKsnDmwuQEpI9mG16Vj5L0G
-	 412d3pegmSxpLOphLJk+ff6/e86UyR8z6x7o8SyU=
+	b=auI9nSC7tCp0LZW83kLwNP8yLL5Y6jxDmna+5Mo3ZDTZUEVP5JeKkmim9J9Oaaugo
+	 1xolI/aTM0ILjPV//zpYlhXn/0FM8Di01t0hLss24wRWk1XtGubWiIVI6VhdAIErhE
+	 4XftcSLmNECgIo11lRKwUkLRECOiqKOz+xRcQoD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/163] erofs: refine readahead tracepoint
+Subject: [PATCH 5.4 068/148] amd-xgbe: align CL37 AN sequence as per databook
 Date: Tue, 15 Jul 2025 15:13:10 +0200
-Message-ID: <20250715130813.745505183@linuxfoundation.org>
+Message-ID: <20250715130803.048601934@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 4eb56b0761e75034dd35067a81da4c280c178262 ]
+[ Upstream commit 42fd432fe6d320323215ebdf4de4d0d7e56e6792 ]
 
- - trace_erofs_readpages => trace_erofs_readahead;
+Update the Clause 37 Auto-Negotiation implementation to properly align
+with the PCS hardware specifications:
+- Fix incorrect bit settings in Link Status and Link Duplex fields
+- Implement missing sequence steps 2 and 7
 
- - Rename a redundant statement `nrpages = readahead_count(rac);`;
+These changes ensure CL37 auto-negotiation protocol follows the exact
+sequence patterns as specified in the hardware databook.
 
- - Move the tracepoint to the beginning of z_erofs_readahead().
-
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Link: https://lore.kernel.org/r/20250514120820.2739288-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Stable-dep-of: d53238b614e0 ("erofs: fix to add missing tracepoint in erofs_readahead()")
+Fixes: 1bf40ada6290 ("amd-xgbe: Add support for clause 37 auto-negotiation")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Link: https://patch.msgid.link/20250630192636.3838291-1-Raju.Rangoju@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/fileio.c            | 2 +-
- fs/erofs/zdata.c             | 5 ++---
- include/trace/events/erofs.h | 2 +-
- 3 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-common.h | 2 ++
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c   | 9 +++++++++
+ drivers/net/ethernet/amd/xgbe/xgbe.h        | 4 ++--
+ 3 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
-index c8805bc732c6b..c865a7a610306 100644
---- a/fs/erofs/fileio.c
-+++ b/fs/erofs/fileio.c
-@@ -180,7 +180,7 @@ static void erofs_fileio_readahead(struct readahead_control *rac)
- 	struct folio *folio;
- 	int err;
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-common.h b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
+index 533b8519ec352..c5dc23906a78d 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-common.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
+@@ -1355,6 +1355,8 @@
+ #define MDIO_VEND2_CTRL1_SS13		BIT(13)
+ #endif
  
--	trace_erofs_readpages(inode, readahead_index(rac),
-+	trace_erofs_readahead(inode, readahead_index(rac),
- 			      readahead_count(rac), true);
- 	while ((folio = readahead_folio(rac))) {
- 		err = erofs_fileio_scan_folio(&io, folio);
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index f13052c3532ab..94c1e2d64df96 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1869,13 +1869,12 @@ static void z_erofs_readahead(struct readahead_control *rac)
- {
- 	struct inode *const inode = rac->mapping->host;
- 	Z_EROFS_DEFINE_FRONTEND(f, inode, readahead_pos(rac));
--	struct folio *head = NULL, *folio;
- 	unsigned int nrpages = readahead_count(rac);
-+	struct folio *head = NULL, *folio;
- 	int err;
++#define XGBE_VEND2_MAC_AUTO_SW		BIT(9)
++
+ /* MDIO mask values */
+ #define XGBE_AN_CL73_INT_CMPLT		BIT(0)
+ #define XGBE_AN_CL73_INC_LINK		BIT(1)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+index 0e552022e659a..3819b23c927d5 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+@@ -363,6 +363,10 @@ static void xgbe_an37_set(struct xgbe_prv_data *pdata, bool enable,
+ 		reg |= MDIO_VEND2_CTRL1_AN_RESTART;
  
-+	trace_erofs_readahead(inode, readahead_index(rac), nrpages, false);
- 	z_erofs_pcluster_readmore(&f, rac, true);
--	nrpages = readahead_count(rac);
--	trace_erofs_readpages(inode, readahead_index(rac), nrpages, false);
- 	while ((folio = readahead_folio(rac))) {
- 		folio->private = head;
- 		head = folio;
-diff --git a/include/trace/events/erofs.h b/include/trace/events/erofs.h
-index ad79f1ca4fb5a..198a0c644bea1 100644
---- a/include/trace/events/erofs.h
-+++ b/include/trace/events/erofs.h
-@@ -113,7 +113,7 @@ TRACE_EVENT(erofs_read_folio,
- 		__entry->raw)
- );
+ 	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_CTRL1, reg);
++
++	reg = XMDIO_READ(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL);
++	reg |= XGBE_VEND2_MAC_AUTO_SW;
++	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL, reg);
+ }
  
--TRACE_EVENT(erofs_readpages,
-+TRACE_EVENT(erofs_readahead,
+ static void xgbe_an37_restart(struct xgbe_prv_data *pdata)
+@@ -991,6 +995,11 @@ static void xgbe_an37_init(struct xgbe_prv_data *pdata)
  
- 	TP_PROTO(struct inode *inode, pgoff_t start, unsigned int nrpage,
- 		bool raw),
+ 	netif_dbg(pdata, link, pdata->netdev, "CL37 AN (%s) initialized\n",
+ 		  (pdata->an_mode == XGBE_AN_MODE_CL37) ? "BaseX" : "SGMII");
++
++	reg = XMDIO_READ(pdata, MDIO_MMD_AN, MDIO_CTRL1);
++	reg &= ~MDIO_AN_CTRL1_ENABLE;
++	XMDIO_WRITE(pdata, MDIO_MMD_AN, MDIO_CTRL1, reg);
++
+ }
+ 
+ static void xgbe_an73_init(struct xgbe_prv_data *pdata)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
+index a27979ef7b1cc..536c8495d6afc 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
+@@ -292,11 +292,11 @@
+ #define XGBE_LINK_TIMEOUT		5
+ #define XGBE_KR_TRAINING_WAIT_ITER	50
+ 
+-#define XGBE_SGMII_AN_LINK_STATUS	BIT(1)
++#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(1)
+ #define XGBE_SGMII_AN_LINK_SPEED	(BIT(2) | BIT(3))
+ #define XGBE_SGMII_AN_LINK_SPEED_100	0x04
+ #define XGBE_SGMII_AN_LINK_SPEED_1000	0x08
+-#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(4)
++#define XGBE_SGMII_AN_LINK_STATUS	BIT(4)
+ 
+ /* ECC correctable error notification window (seconds) */
+ #define XGBE_ECC_LIMIT			60
 -- 
 2.39.5
 
