@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43203B05DBC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:46:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE356B05C09
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 760261C24528
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A65F745347
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B6C2E5435;
-	Tue, 15 Jul 2025 13:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8D42E338F;
+	Tue, 15 Jul 2025 13:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J7Omy30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqlVgHRL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DFD2E041E;
-	Tue, 15 Jul 2025 13:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C28B2566;
+	Tue, 15 Jul 2025 13:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586446; cv=none; b=s1qOdpmK10gPmAEzia3v1jfm2dg2OJ6oTfT84pSIWXhwnM1/Qin3mrAgqaPJ3HCB3eKJ4KpAPGd6xj+jb4bcSMPYTdlGOmb4nj1X1GzUh7JJcc0hYk5sWMHFv/OHa9COBlaXaxnfehe5oaWxk74s34aVtKkViy8t9gTpciDDRYY=
+	t=1752585827; cv=none; b=LN5qm0WQeFTAphIXU/08GE/Sn/P9rxn4z4vd5Rw8ljVTYti/OOT7ahoturYMKqGrfR1p0oT31LrvqL0QOpH/Ut8kJUHi5y3U6y372LkqtEpShnvC7pkXaKkzkDtXJZi+HvIQv41qlOyNRPTcI8xxnZHXe4k75yN8FJx8bIomsRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586446; c=relaxed/simple;
-	bh=DQrYxRDIBfTNDkapwrswo7zl8TFrRiRX0slQ1cn9MEM=;
+	s=arc-20240116; t=1752585827; c=relaxed/simple;
+	bh=+ZOpCyhHPdIrD6Ef4ayvAlBu9iO5vo/fTW6xeJtiDNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTafz4uL94B93KgndMUDiFUqQ/doB5xQZcJUq4mxT3soWFJTS6xYH/DNcqr3ZMBYbDxkXhsMsKNjdtngqw8gVrZSHOMGC33xLTX7ZVsjhZLvVfYRo2kRWQNv3oAsquzRE7dtzcP6mQjouRih0BnMT/NObc8G40OpNK2e2WsOEG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J7Omy30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E9EC4CEE3;
-	Tue, 15 Jul 2025 13:34:06 +0000 (UTC)
+	 MIME-Version; b=D6JsSRsVJrSUuUe8YqKwwQ2vhQHKrj47vIg6j3fbO8Uh74gOR4hTy/nUY9giXIRvQXPkdZAogVMFWBn397Yb35RuXE77ZNl68UP0/+YgSJYWxQ85SKPVtjXqKzIIJUVxo/FFK2KeBYd9pcfCntZxvxfRWs/RMG4Da3LiLNvljmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqlVgHRL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F50FC4CEE3;
+	Tue, 15 Jul 2025 13:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586446;
-	bh=DQrYxRDIBfTNDkapwrswo7zl8TFrRiRX0slQ1cn9MEM=;
+	s=korg; t=1752585827;
+	bh=+ZOpCyhHPdIrD6Ef4ayvAlBu9iO5vo/fTW6xeJtiDNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1J7Omy30ziHnQ07M/ILLRDKR3imQ6Qj3WXHiE6ID0DKtGE6++NbQK89WYBngt2eTb
-	 Af500Lj1bkjcGal4CGwOnYrEc7DRm5QdUAl9/CWVxEerA7y+AcAKes1uPO1MrR+9ff
-	 rbS7jAwiop0aO5y4TginPNSoNEQwSJ+yoQUAgWyA=
+	b=UqlVgHRLy08xQA0err5yVSW+HM8hgOQzorX/JVT1Jfdt8ffUaJJukKBiv4fmpZ9uK
+	 C46CZ4U1wMCFH3VAH4GZnZ55uPUyA/vV029o496AbRgMSltfeTCn7Z1OM086E6BZzM
+	 ba9IeP9oTorjMe21u/bXWtuS2k92TieeRTonr/Pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youngjun Lee <yjjuny.lee@samsung.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 037/148] ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()
+Subject: [PATCH 6.6 023/109] atm: clip: Fix memory leak of struct clip_vcc.
 Date: Tue, 15 Jul 2025 15:12:39 +0200
-Message-ID: <20250715130801.799865829@linuxfoundation.org>
+Message-ID: <20250715130759.808769641@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youngjun Lee <yjjuny.lee@samsung.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit fb4e2a6e8f28a3c0ad382e363aeb9cd822007b8a ]
+[ Upstream commit 62dba28275a9a3104d4e33595c7b3328d4032d8d ]
 
-In snd_usb_get_audioformat_uac3(), the length value returned from
-snd_usb_ctl_msg() is used directly for memory allocation without
-validation. This length is controlled by the USB device.
+ioctl(ATMARP_MKIP) allocates struct clip_vcc and set it to
+vcc->user_back.
 
-The allocated buffer is cast to a uac3_cluster_header_descriptor
-and its fields are accessed without verifying that the buffer
-is large enough. If the device returns a smaller than expected
-length, this leads to an out-of-bounds read.
+The code assumes that vcc_destroy_socket() passes NULL skb
+to vcc->push() when the socket is close()d, and then clip_push()
+frees clip_vcc.
 
-Add a length check to ensure the buffer is large enough for
-uac3_cluster_header_descriptor.
+However, ioctl(ATMARPD_CTRL) sets NULL to vcc->push() in
+atm_init_atmarp(), resulting in memory leak.
 
-Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
-Link: https://patch.msgid.link/20250623-uac3-oob-fix-v1-1-527303eaf40a@samsung.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Let's serialise two ioctl() by lock_sock() and check vcc->push()
+in atm_init_atmarp() to prevent memleak.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250704062416.1613927-3-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/stream.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/atm/clip.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/sound/usb/stream.c b/sound/usb/stream.c
-index 1c4ff57993240..d698b609fe524 100644
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -979,6 +979,8 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
- 	 * and request Cluster Descriptor
- 	 */
- 	wLength = le16_to_cpu(hc_header.wLength);
-+	if (wLength < sizeof(cluster))
-+		return NULL;
- 	cluster = kzalloc(wLength, GFP_KERNEL);
- 	if (!cluster)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index 8059b7d1fb931..14b485f725d0c 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -645,6 +645,9 @@ static struct atm_dev atmarpd_dev = {
+ 
+ static int atm_init_atmarp(struct atm_vcc *vcc)
+ {
++	if (vcc->push == clip_push)
++		return -EINVAL;
++
+ 	mutex_lock(&atmarpd_lock);
+ 	if (atmarpd) {
+ 		mutex_unlock(&atmarpd_lock);
+@@ -669,6 +672,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
+ static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ {
+ 	struct atm_vcc *vcc = ATM_SD(sock);
++	struct sock *sk = sock->sk;
+ 	int err = 0;
+ 
+ 	switch (cmd) {
+@@ -689,14 +693,18 @@ static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 		err = clip_create(arg);
+ 		break;
+ 	case ATMARPD_CTRL:
++		lock_sock(sk);
+ 		err = atm_init_atmarp(vcc);
+ 		if (!err) {
+ 			sock->state = SS_CONNECTED;
+ 			__module_get(THIS_MODULE);
+ 		}
++		release_sock(sk);
+ 		break;
+ 	case ATMARP_MKIP:
++		lock_sock(sk);
+ 		err = clip_mkip(vcc, arg);
++		release_sock(sk);
+ 		break;
+ 	case ATMARP_SETENTRY:
+ 		err = clip_setentry(vcc, (__force __be32)arg);
 -- 
 2.39.5
 
