@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-162108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E69EB05BA4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02429B05CB0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1F1856635E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20172169EB1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58AB2E2F1E;
-	Tue, 15 Jul 2025 13:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727DD2E5430;
+	Tue, 15 Jul 2025 13:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTWrLg73"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPJoQydv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925C02E1C69;
-	Tue, 15 Jul 2025 13:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F04F2E2EEF;
+	Tue, 15 Jul 2025 13:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585693; cv=none; b=Da4/Y8KS2urZskB2CeR25yoWKjg9sVDLGfBwAKHD7jMqakvN6iHvcNDCLA0GoT4DR23KNUGg4pndIqxL2YngvVq5akDIuwDTlN5KgbfJ86XQSKGAf/ApAgOABx9wGZScWVNq57L4ZaOBmqmY0/ZOxx+A+mFmuXHHuFFo3iDPhxs=
+	t=1752586126; cv=none; b=jpV1zOy8PdWQu0bb2z0jkF0AUoZEqf2wlyf4o9olTbVFYb0Xbl39ItFJ3rOZjagZM/Qx18yc9PUL506/+wdswVeNhQu0kaSqzkLhcyzCOrFDoeKZvNlw7v7zGhgE4Djue1S0DXqvmqJoZbIm42T24M4FLNuQLkm4s4WUDUUFz84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585693; c=relaxed/simple;
-	bh=xzWIsrchLNdQGmaimcV/l1rsAe04EUuPgXsdXsC6QVU=;
+	s=arc-20240116; t=1752586126; c=relaxed/simple;
+	bh=3kgYPQZwVbWbnHUhjpFfzBskQD5CRIE/AqMaZwzpdQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KejB+lEqT9Xa0We0XamXvcCNGaTpjjadhansDt19LwZlxVBJIaH6odx7eDzG/zAsJtuyfcAbKEqEQNsc+jHW7nMW1xYftZpLC3NieRAhNdAlhw1hFAHxxmFVqeC6BeGRNqyRvaN7Ydw5bXEQa3nwTZNVt4GnddLSqJ+Rp2hfKhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTWrLg73; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CB1C4CEE3;
-	Tue, 15 Jul 2025 13:21:32 +0000 (UTC)
+	 MIME-Version; b=tRs4cmqhanMo1Jlx3eVw0x43/BSeAHDIwFFCmTXXdGv8bmQ6blz3FLj1WjMRoODW7u+yzBFUgPWyLtCcOxhXq/mNgMQeIZ7da/1AKtXRdl1w9AaGGiaYYtAbYt6nj/uI+ik+gi57UcnZ7xyRWGKnRxN73OnnGQiViHsS7KD80sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPJoQydv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D6BC4CEE3;
+	Tue, 15 Jul 2025 13:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585693;
-	bh=xzWIsrchLNdQGmaimcV/l1rsAe04EUuPgXsdXsC6QVU=;
+	s=korg; t=1752586126;
+	bh=3kgYPQZwVbWbnHUhjpFfzBskQD5CRIE/AqMaZwzpdQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LTWrLg73/AlKh7AVxzAdSMEVVjVoteM92d62Dxt9dXmpKPp4B4r2ik4axGcOcQeYZ
-	 ktfPpPqIBkaXtEHuxMB5+Ne3P1yVzy+wQvSg1jzr7MAnSpKQ4gg3sfJRzD3LFSe0N8
-	 f9XzmxlvpaO11ihtA38g5ESxVu4y1QvYqoTnz4Wg=
+	b=HPJoQydvaMhJ1C3MrAWC6LnhG+a0Gsei6twMtftE7rv19B3D2tjjsvD92R8UzQyEC
+	 lcQT9XRKOARQBpJa+RejO7IhzvXLrBxAKCPPLBs8BqNOOob/dDmSGHupGw+THYwaXB
+	 KgkzXzuleG1Sa+gibiW+43k3Te+HviUxhdKl22hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-	Shravya KN <shravya.k-n@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/163] bnxt_en: Fix DCB ETS validation
+	kernel test robot <lkp@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Teddy Astie <teddy.astie@vates.tech>
+Subject: [PATCH 5.15 25/77] xen: replace xen_remap() with memremap()
 Date: Tue, 15 Jul 2025 15:13:24 +0200
-Message-ID: <20250715130814.293976975@linuxfoundation.org>
+Message-ID: <20250715130752.716454036@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shravya KN <shravya.k-n@broadcom.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit b74c2a2e9cc471e847abd87e50a2354c07e02040 ]
+commit 41925b105e345ebc84cedb64f59d20cb14a62613 upstream.
 
-In bnxt_ets_validate(), the code incorrectly loops over all possible
-traffic classes to check and add the ETS settings.  Fix it to loop
-over the configured traffic classes only.
+xen_remap() is used to establish mappings for frames not under direct
+control of the kernel: for Xenstore and console ring pages, and for
+grant pages of non-PV guests.
 
-The unconfigured traffic classes will default to TSA_ETS with 0
-bandwidth.  Looping over these unconfigured traffic classes may
-cause the validation to fail and trigger this error message:
+Today xen_remap() is defined to use ioremap() on x86 (doing uncached
+mappings), and ioremap_cache() on Arm (doing cached mappings).
 
-"rejecting ETS config starving a TC\n"
+Uncached mappings for those use cases are bad for performance, so they
+should be avoided if possible. As all use cases of xen_remap() don't
+require uncached mappings (the mapped area is always physical RAM),
+a mapping using the standard WB cache mode is fine.
 
-The .ieee_setets() will then fail.
+As sparse is flagging some of the xen_remap() use cases to be not
+appropriate for iomem(), as the result is not annotated with the
+__iomem modifier, eliminate xen_remap() completely and replace all
+use cases with memremap() specifying the MEMREMAP_WB caching mode.
 
-Fixes: 7df4ae9fe855 ("bnxt_en: Implement DCBNL to support host-based DCBX.")
-Reviewed-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
-Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250710213938.1959625-2-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+xen_unmap() can be replaced with memunmap().
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+Link: https://lore.kernel.org/r/20220530082634.6339-1-jgross@suse.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Teddy Astie <teddy.astie@vates.tech> [backport to 5.15.y]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/xen/page.h   |    3 ---
+ drivers/tty/hvc/hvc_xen.c         |    2 +-
+ drivers/xen/grant-table.c         |    6 +++---
+ drivers/xen/xenbus/xenbus_probe.c |    3 +--
+ include/xen/arm/page.h            |    3 ---
+ 5 files changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-index 0dbb880a7aa0e..71e14be2507e1 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-@@ -487,7 +487,9 @@ static int bnxt_ets_validate(struct bnxt *bp, struct ieee_ets *ets, u8 *tc)
+--- a/arch/x86/include/asm/xen/page.h
++++ b/arch/x86/include/asm/xen/page.h
+@@ -355,9 +355,6 @@ unsigned long arbitrary_virt_to_mfn(void
+ void make_lowmem_page_readonly(void *vaddr);
+ void make_lowmem_page_readwrite(void *vaddr);
  
- 		if ((ets->tc_tx_bw[i] || ets->tc_tsa[i]) && i > bp->max_tc)
- 			return -EINVAL;
-+	}
+-#define xen_remap(cookie, size) ioremap((cookie), (size))
+-#define xen_unmap(cookie) iounmap((cookie))
+-
+ static inline bool xen_arch_need_swiotlb(struct device *dev,
+ 					 phys_addr_t phys,
+ 					 dma_addr_t dev_addr)
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -270,7 +270,7 @@ static int xen_hvm_console_init(void)
+ 	if (r < 0 || v == 0)
+ 		goto err;
+ 	gfn = v;
+-	info->intf = xen_remap(gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE);
++	info->intf = memremap(gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE, MEMREMAP_WB);
+ 	if (info->intf == NULL)
+ 		goto err;
+ 	info->vtermno = HVC_COOKIE;
+--- a/drivers/xen/grant-table.c
++++ b/drivers/xen/grant-table.c
+@@ -743,7 +743,7 @@ int gnttab_setup_auto_xlat_frames(phys_a
+ 	if (xen_auto_xlat_grant_frames.count)
+ 		return -EINVAL;
  
-+	for (i = 0; i < max_tc; i++) {
- 		switch (ets->tc_tsa[i]) {
- 		case IEEE_8021QAZ_TSA_STRICT:
- 			break;
--- 
-2.39.5
-
+-	vaddr = xen_remap(addr, XEN_PAGE_SIZE * max_nr_gframes);
++	vaddr = memremap(addr, XEN_PAGE_SIZE * max_nr_gframes, MEMREMAP_WB);
+ 	if (vaddr == NULL) {
+ 		pr_warn("Failed to ioremap gnttab share frames (addr=%pa)!\n",
+ 			&addr);
+@@ -751,7 +751,7 @@ int gnttab_setup_auto_xlat_frames(phys_a
+ 	}
+ 	pfn = kcalloc(max_nr_gframes, sizeof(pfn[0]), GFP_KERNEL);
+ 	if (!pfn) {
+-		xen_unmap(vaddr);
++		memunmap(vaddr);
+ 		return -ENOMEM;
+ 	}
+ 	for (i = 0; i < max_nr_gframes; i++)
+@@ -770,7 +770,7 @@ void gnttab_free_auto_xlat_frames(void)
+ 	if (!xen_auto_xlat_grant_frames.count)
+ 		return;
+ 	kfree(xen_auto_xlat_grant_frames.pfn);
+-	xen_unmap(xen_auto_xlat_grant_frames.vaddr);
++	memunmap(xen_auto_xlat_grant_frames.vaddr);
+ 
+ 	xen_auto_xlat_grant_frames.pfn = NULL;
+ 	xen_auto_xlat_grant_frames.count = 0;
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -982,8 +982,7 @@ static int __init xenbus_init(void)
+ #endif
+ 		xen_store_gfn = (unsigned long)v;
+ 		xen_store_interface =
+-			xen_remap(xen_store_gfn << XEN_PAGE_SHIFT,
+-				  XEN_PAGE_SIZE);
++			memremap(xen_store_gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE, MEMREMAP_WB);
+ 		break;
+ 	default:
+ 		pr_warn("Xenstore state unknown\n");
+--- a/include/xen/arm/page.h
++++ b/include/xen/arm/page.h
+@@ -109,9 +109,6 @@ static inline bool set_phys_to_machine(u
+ 	return __set_phys_to_machine(pfn, mfn);
+ }
+ 
+-#define xen_remap(cookie, size) ioremap_cache((cookie), (size))
+-#define xen_unmap(cookie) iounmap((cookie))
+-
+ bool xen_arch_need_swiotlb(struct device *dev,
+ 			   phys_addr_t phys,
+ 			   dma_addr_t dev_addr);
 
 
 
