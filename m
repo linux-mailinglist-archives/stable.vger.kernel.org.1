@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BF3DB05F9A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D9DB06004
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C1E61C4455F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F136D4A7B6F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2814D2E7F0B;
-	Tue, 15 Jul 2025 13:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5702E3371;
+	Tue, 15 Jul 2025 13:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umVZLuE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jm5W24ad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7B72E06E6;
-	Tue, 15 Jul 2025 13:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8842E1757;
+	Tue, 15 Jul 2025 13:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587277; cv=none; b=LqVnbAl/s4m/BXv3DFfQvlNqKm4R/pu4w+WEOa7Vt/Ss8iDKP1QPhVhAforsb3iKsf3crxbmQbkMi0+aTQSxpukvmsegBNFKVEMRALuak7WYiwJG1KyNnAw8jL8u4zTMWHESwBgz1kIB9ICzEzdd33EW9bR+ilw6yXeR0zqZINU=
+	t=1752587719; cv=none; b=AUafsgow4Ld45fmcLqFpbW/RZY3poDPT6lrt93gadUbcdgD8coKPHjqgYvFz2v6KzcG4iNOcrvd7E+DSofwXLDamqa14ms5HG9Rzeaw8Q3VENWR1F8yGS3UD61+x4pMUH5iC/XFpY5vo8XAT3WDoy/JRUX6xmEzz2D5EOrOz5fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587277; c=relaxed/simple;
-	bh=I8/mrIaA5lGHdKU/LIMCZkUxPwjyZQ5zAznE2KbOAWY=;
+	s=arc-20240116; t=1752587719; c=relaxed/simple;
+	bh=hteh+4LL9Zo4NDh7aId+yVo0hXxxszvDiOCxobURe58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MF3+tbXFDgL8WvO/Abw1vq4kkrzRn6ojpLpvyY9cJC+lPoCjyCrlVnaH5phZ8QUpZEav8AkT8Ja2b10kzWfTT2qPlPi6XV4+iMWC73Cm2J0bbxl07y9na9fOauDpmMEHK+g5UvWHbQcnpWuYagrAgxKc+Axaoo8PHS+OwWPrBZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umVZLuE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66823C4CEE3;
-	Tue, 15 Jul 2025 13:47:57 +0000 (UTC)
+	 MIME-Version; b=nhvhcK85KpWAtQsGu8o6oZ52sjgN2Osq8Nsr1MS+P70Oi78OIahgaAdWziNQy6GsECKEAvloGUVHwp6glzJvrkjQyE62vSNH4kGe0RbDIUCapz/JwcTHVLyhAX1DXApPQ0HR7fNBQSfhfMEu0K303s7rdzd+2wZ8FIQ26QC4r6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jm5W24ad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B2DC4CEE3;
+	Tue, 15 Jul 2025 13:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587277;
-	bh=I8/mrIaA5lGHdKU/LIMCZkUxPwjyZQ5zAznE2KbOAWY=;
+	s=korg; t=1752587719;
+	bh=hteh+4LL9Zo4NDh7aId+yVo0hXxxszvDiOCxobURe58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umVZLuE6s9wDPEfRo5d5hvgRkPY8NfZSJlXxBswMAZ6maQ/PDdDryCd7wJijTk9dr
-	 ErxF7z3mVnT2G8fV3UDCSE+J8B2UbbY+HmIPKn3SNhkjYuhOzYkqg9fiQuXiuHXhdv
-	 +jaIVldLA+FbqEDqhb17LW+EtFQfKQtGg9DA4c1M=
+	b=Jm5W24adYplSoMxe5fgduXIzf9in1GSpuvx3sKc6zQ34dp6HeP5qj5QBvOHeBWewB
+	 Nn5bmF74tfcdWDdG08QuJZ3Cwc7Z/8Qcx1cTlKMZnaKO701sATh3Nm19zHsDHDZYd7
+	 pfE6PLX2TD+ndGRpJwEsQGCMwu6y5vftf1alE36I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 10/88] vsock: Fix transport_* TOCTOU
+Subject: [PATCH 5.10 117/208] btrfs: propagate last_unlink_trans earlier when doing a rmdir
 Date: Tue, 15 Jul 2025 15:13:46 +0200
-Message-ID: <20250715130754.920824732@linuxfoundation.org>
+Message-ID: <20250715130815.634095227@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 687aa0c5581b8d4aa87fd92973e4ee576b550cdf ]
+[ Upstream commit c466e33e729a0ee017d10d919cba18f503853c60 ]
 
-Transport assignment may race with module unload. Protect new_transport
-from becoming a stale pointer.
+In case the removed directory had a snapshot that was deleted, we are
+propagating its inode's last_unlink_trans to the parent directory after
+we removed the entry from the parent directory. This leaves a small race
+window where someone can log the parent directory after we removed the
+entry and before we updated last_unlink_trans, and as a result if we ever
+try to replay such a log tree, we will fail since we will attempt to
+remove a snapshot during log replay, which is currently not possible and
+results in the log replay (and mount) to fail. This is the type of failure
+described in commit 1ec9a1ae1e30 ("Btrfs: fix unreplayable log after
+snapshot delete + parent dir fsync").
 
-This also takes care of an insecure call in vsock_use_local_transport();
-add a lockdep assert.
+So fix this by propagating the last_unlink_trans to the parent directory
+before we remove the entry from it.
 
-BUG: unable to handle page fault for address: fffffbfff8056000
-Oops: Oops: 0000 [#1] SMP KASAN
-RIP: 0010:vsock_assign_transport+0x366/0x600
-Call Trace:
- vsock_connect+0x59c/0xc40
- __sys_connect+0xe8/0x100
- __x64_sys_connect+0x6e/0xc0
- do_syscall_64+0x92/0x1c0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-2-98f0eb530747@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ fs/btrfs/inode.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 42b5ff148d80b..060e971299873 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -403,6 +403,8 @@ EXPORT_SYMBOL_GPL(vsock_enqueue_accept);
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 8d7ca8a21525a..94a338de3a8e9 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4150,7 +4150,6 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	int err = 0;
+ 	struct btrfs_root *root = BTRFS_I(dir)->root;
+ 	struct btrfs_trans_handle *trans;
+-	u64 last_unlink_trans;
  
- static bool vsock_use_local_transport(unsigned int remote_cid)
- {
-+	lockdep_assert_held(&vsock_register_mutex);
-+
- 	if (!transport_local)
- 		return false;
+ 	if (inode->i_size > BTRFS_EMPTY_DIR_SIZE)
+ 		return -ENOTEMPTY;
+@@ -4161,6 +4160,23 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	if (IS_ERR(trans))
+ 		return PTR_ERR(trans);
  
-@@ -460,6 +462,8 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 
- 	remote_flags = vsk->remote_addr.svm_flags;
- 
-+	mutex_lock(&vsock_register_mutex);
-+
- 	switch (sk->sk_type) {
- 	case SOCK_DGRAM:
- 		new_transport = transport_dgram;
-@@ -475,12 +479,15 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 			new_transport = transport_h2g;
- 		break;
- 	default:
--		return -ESOCKTNOSUPPORT;
-+		ret = -ESOCKTNOSUPPORT;
-+		goto err;
- 	}
- 
- 	if (vsk->transport) {
--		if (vsk->transport == new_transport)
--			return 0;
-+		if (vsk->transport == new_transport) {
-+			ret = 0;
-+			goto err;
-+		}
- 
- 		/* transport->release() must be called with sock lock acquired.
- 		 * This path can only be taken during vsock_connect(), where we
-@@ -504,8 +511,16 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 	/* We increase the module refcnt to prevent the transport unloading
- 	 * while there are open sockets assigned to it.
- 	 */
--	if (!new_transport || !try_module_get(new_transport->module))
--		return -ENODEV;
-+	if (!new_transport || !try_module_get(new_transport->module)) {
-+		ret = -ENODEV;
-+		goto err;
-+	}
-+
-+	/* It's safe to release the mutex after a successful try_module_get().
-+	 * Whichever transport `new_transport` points at, it won't go away until
-+	 * the last module_put() below or in vsock_deassign_transport().
++	/*
++	 * Propagate the last_unlink_trans value of the deleted dir to its
++	 * parent directory. This is to prevent an unrecoverable log tree in the
++	 * case we do something like this:
++	 * 1) create dir foo
++	 * 2) create snapshot under dir foo
++	 * 3) delete the snapshot
++	 * 4) rmdir foo
++	 * 5) mkdir foo
++	 * 6) fsync foo or some file inside foo
++	 *
++	 * This is because we can't unlink other roots when replaying the dir
++	 * deletes for directory foo.
 +	 */
-+	mutex_unlock(&vsock_register_mutex);
++	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
++		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
++
+ 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
+ 		err = btrfs_unlink_subvol(trans, dir, dentry);
+ 		goto out;
+@@ -4170,28 +4186,12 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	if (err)
+ 		goto out;
  
- 	if (sk->sk_type == SOCK_SEQPACKET) {
- 		if (!new_transport->seqpacket_allow ||
-@@ -524,6 +539,9 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 	vsk->transport = new_transport;
- 
- 	return 0;
-+err:
-+	mutex_unlock(&vsock_register_mutex);
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(vsock_assign_transport);
- 
+-	last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
+-
+ 	/* now the directory is empty */
+ 	err = btrfs_unlink_inode(trans, root, BTRFS_I(dir),
+ 			BTRFS_I(d_inode(dentry)), dentry->d_name.name,
+ 			dentry->d_name.len);
+-	if (!err) {
++	if (!err)
+ 		btrfs_i_size_write(BTRFS_I(inode), 0);
+-		/*
+-		 * Propagate the last_unlink_trans value of the deleted dir to
+-		 * its parent directory. This is to prevent an unrecoverable
+-		 * log tree in the case we do something like this:
+-		 * 1) create dir foo
+-		 * 2) create snapshot under dir foo
+-		 * 3) delete the snapshot
+-		 * 4) rmdir foo
+-		 * 5) mkdir foo
+-		 * 6) fsync foo or some file inside foo
+-		 */
+-		if (last_unlink_trans >= trans->transid)
+-			BTRFS_I(dir)->last_unlink_trans = last_unlink_trans;
+-	}
+ out:
+ 	btrfs_end_transaction(trans);
+ 	btrfs_btree_balance_dirty(root->fs_info);
 -- 
 2.39.5
 
