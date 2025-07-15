@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE485B05C87
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1799FB05F6C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 780761675B2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 281CE5850BB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280602E2F12;
-	Tue, 15 Jul 2025 13:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813E32E49A0;
+	Tue, 15 Jul 2025 13:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlCKvt7Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3kuWUhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5E12D5426;
-	Tue, 15 Jul 2025 13:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E96B2E4997;
+	Tue, 15 Jul 2025 13:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586046; cv=none; b=s8FUz/SJwwY1rbZ0QBbzks+hZ4EDHO7lG/P1iCJs1ixDqnCEfLSKAE3SB2zzxIbEKB9x/Wf9zqcn9D22qSeVLn8NoVK806q4Q5OLWWYkesD8UvJayvgitDGkrCBkv1UA3wZ5b2rxGPMgfou84++HBlu9KDqiLS5Aptxw4QeACTQ=
+	t=1752587235; cv=none; b=mqnf6K7w4UUHdS08D8s49bVWn98VSARzGr/ORIRUGCD2vWLPi+uZM6ZBfeY9yKe4+mNgaOvLBoxDkVdkjTVfG/ffS88Gu4LxS5OCXYYYhH5BFIUeBdhmuovyw6MX7aczfr56niZI8h3SiRPSzjT5ffYQGIKY6A5aRtKKxtPkzXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586046; c=relaxed/simple;
-	bh=2kzOfcqn/6cO21Uu9nKMWsLX4LkcCtUWn6XgPwG8o0A=;
+	s=arc-20240116; t=1752587235; c=relaxed/simple;
+	bh=H+vhgr9XCq+lBpwRoKu0SoGG73WVTwRWDkFA7+WqcYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6mkkGLnvot8/MJSistlW4kO/F/bWQ6KZbKkOtHiM+YqZj1px7AcBeZDQpP8F0KpQb/zfK+Td9yja9PIjxvQqwTiq70m/59B6+r0/44sM29TMEiJ0fBdO4mgqnQMMMUkq58nid7Vc/YAGhQCPyr+YyAyNIAl2Ws+DOvYFhTnc9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlCKvt7Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716D2C4CEE3;
-	Tue, 15 Jul 2025 13:27:26 +0000 (UTC)
+	 MIME-Version; b=Pusiai4JHFMGY+FGrCLgpugJzm9AuheJgt3T0+3kSaZa5aGfiDQDSpmtvcEjV1+HURCTR+uro+DFJJ/gvGAOFqVB1atGwiDVqtXrNry4eyTp/MXD5tWZFd7lZvJZMMJkm9J9tGkXVGFUbaZZJ5jzQkZMTGEkWOd2oRXKaV4W9nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3kuWUhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6F0C4CEF6;
+	Tue, 15 Jul 2025 13:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586046;
-	bh=2kzOfcqn/6cO21Uu9nKMWsLX4LkcCtUWn6XgPwG8o0A=;
+	s=korg; t=1752587234;
+	bh=H+vhgr9XCq+lBpwRoKu0SoGG73WVTwRWDkFA7+WqcYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RlCKvt7Z73AI/esAVS/EJMX11h5//+0STutByJZKClZrH+JMocK/LWsloexHdA0GK
-	 cr81PMpxVbpIkk3jFc2TH5p421ZllrAfrktG9sZec8JOddHnZALE5C6e4oohb7Mnqj
-	 DJakfuFoSY2uG9PkQdd7dLNKtt1/K6tVbvfdjDzk=
+	b=v3kuWUhHsHEMSTHBZrX3P+HVdewS7G5iTz4oJViQDfOGD++E2D2jHMQpDaEsZU2vD
+	 wDH6T6kUErcnMyLtXOjq0oUZO5ALGQ0xAcMyFmBDYhFeWf3QBqqjp0g5N9vlMGBbpH
+	 5OhfQMdEfhngtDx+ustBxW0v5Kp4ejjCCxZHQqzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/109] HID: quirks: Add quirk for 2 Chicony Electronics HP 5MP Cameras
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>
+Subject: [PATCH 6.1 24/88] x86/mce: Dont remove sysfs if thresholding sysfs init fails
 Date: Tue, 15 Jul 2025 15:14:00 +0200
-Message-ID: <20250715130803.043975194@linuxfoundation.org>
+Message-ID: <20250715130755.484905320@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 54bae4c17c11688339eb73a04fd24203bb6e7494 ]
+commit 4c113a5b28bfd589e2010b5fc8867578b0135ed7 upstream.
 
-The Chicony Electronics HP 5MP Cameras (USB ID 04F2:B824 & 04F2:B82C)
-report a HID sensor interface that is not actually implemented.
-Attempting to access this non-functional sensor via iio_info causes
-system hangs as runtime PM tries to wake up an unresponsive sensor.
+Currently, the MCE subsystem sysfs interface will be removed if the
+thresholding sysfs interface fails to be created. A common failure is due to
+new MCA bank types that are not recognized and don't have a short name set.
 
-Add these 2 devices to the HID ignore list since the sensor interface is
-non-functional by design and should not be exposed to userspace.
+The MCA thresholding feature is optional and should not break the common MCE
+sysfs interface. Also, new MCA bank types are occasionally introduced, and
+updates will be needed to recognize them. But likewise, this should not break
+the common sysfs interface.
 
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Keep the MCE sysfs interface regardless of the status of the thresholding
+sysfs interface.
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Tony Luck <tony.luck@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-1-236dd74f645f@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h    | 2 ++
- drivers/hid/hid-quirks.c | 2 ++
- 2 files changed, 4 insertions(+)
+ arch/x86/kernel/cpu/mce/core.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index f344df00db03a..0d1d7162814f3 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -305,6 +305,8 @@
- #define USB_DEVICE_ID_ASUS_AK1D		0x1125
- #define USB_DEVICE_ID_CHICONY_TOSHIBA_WT10A	0x1408
- #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2707,15 +2707,9 @@ static int mce_cpu_dead(unsigned int cpu
+ static int mce_cpu_online(unsigned int cpu)
+ {
+ 	struct timer_list *t = this_cpu_ptr(&mce_timer);
+-	int ret;
  
- #define USB_VENDOR_ID_CHUNGHWAT		0x2247
- #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index e4d80307b898c..80372342c176a 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -747,6 +747,8 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AVERMEDIA, USB_DEVICE_ID_AVER_FM_MR800) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AXENTIA, USB_DEVICE_ID_AXENTIA_FM_RADIO) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
--- 
-2.39.5
-
+ 	mce_device_create(cpu);
+-
+-	ret = mce_threshold_create_device(cpu);
+-	if (ret) {
+-		mce_device_remove(cpu);
+-		return ret;
+-	}
++	mce_threshold_create_device(cpu);
+ 	mce_reenable_cpu();
+ 	mce_start_timer(t);
+ 	return 0;
 
 
 
