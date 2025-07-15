@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E54B05FA1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF46B06033
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 131141680F4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E1337B9455
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08712E541E;
-	Tue, 15 Jul 2025 13:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727CE2F3649;
+	Tue, 15 Jul 2025 13:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqN5HA3E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gciWXnH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB7D2E266C;
-	Tue, 15 Jul 2025 13:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A4D2F3642;
+	Tue, 15 Jul 2025 13:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587326; cv=none; b=DDuZOI/JQnNBYx3wBXIk2KVzhm4xh01pJsUmljsqsKaUjEYyW/BKnCbdkfubHGjHk14dyEl7oAxGfpjuoj/5YrcY88vodzcuNupr5JpLkZRAtLpdiC8yODHn9N6AR0AuTTRFNs2yjLEfXjO+v9WhiQHwXNROVJT1agpD7SAhg+o=
+	t=1752587934; cv=none; b=BgpoOpuf/Ju/bGXGns3tw/CVgJYcxdLCnnEheNt4B3y0B8fsTG3JI7L0ceSOCXj44LG18ZuvntJ3BnpSCfbvyIOLP8qeR2QwNlopNBIzUMGAn9EDyd+GhMKwozNv82lPoIY6YjY4rRrNH7wWmgyGuPfEkboXOxQcf2Xn10Hh598=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587326; c=relaxed/simple;
-	bh=/petlgwQttnelgHT2uX+AmaB4Tn5dqu6fuZf+7CLhFE=;
+	s=arc-20240116; t=1752587934; c=relaxed/simple;
+	bh=n46J8EFdoppx2a0QADv45T8IyAoiZS0GBLSzXTHWzpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sac4MXFg9W3IAGNpzuFV16/OpTsDe/WFgAeJvKNpnUr2/TxmRJQwQ84auBBQ8H2nTkjTAmep/vI+GTKMQTZB1YDr2JiyWNlzqTbKyfcG0ANZwx25rKoD7XdFlXwulUGUa61AJ4RLHyeS+fq62GBQDmpdnyAowvC4MAst9SfKK+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqN5HA3E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F81C4CEF1;
-	Tue, 15 Jul 2025 13:48:45 +0000 (UTC)
+	 MIME-Version; b=nrcatMJDUyINeGDLeuHWqgmZAaB53yXn5NSxfH/3udLAXFmF/ViOP42kmgNnGjWrYUpkmAk0uYumVJ4o43QS1LOBXTmJmAM8qNnRypYX5XSU9hXYffVRqU34E/F6ASEK7IgrgMbTFq5MROtezNgOy0V3U4IcJ00sUCS4xUYm9Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gciWXnH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B9FC4CEF1;
+	Tue, 15 Jul 2025 13:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587326;
-	bh=/petlgwQttnelgHT2uX+AmaB4Tn5dqu6fuZf+7CLhFE=;
+	s=korg; t=1752587934;
+	bh=n46J8EFdoppx2a0QADv45T8IyAoiZS0GBLSzXTHWzpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqN5HA3EmS4DeJafqFqpR0u4POmkGLcanoNSuur8fibcA6D5RMTaqzf+OyHcfmo6G
-	 mGyy4vy367rckKHSTJEWdzcHZTKG2ilF9OobFNG8OlqWEcIoDty626PEMCJbyszwHM
-	 kXN4+qLo07c+5jaKvyMaV6no5bUrciWCdZLuiEjQ=
+	b=gciWXnH/N00QpnxtslqZqKCPAf52pHZNUfJSfm7Bu3TWpOxn7uHbBRO4Ym3UUtLkI
+	 fxelIzeUTHv+BLO/DqROEWgVrlsukWG2lvLniTPQLuI5usJwblLGc+RQzoxVFGKRq5
+	 WD7aVilagaNDvMomcdy8dNagF8EGZ9eLRS+TRrfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+48240bab47e705c53126@syzkaller.appspotmail.com,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 58/88] nbd: fix uaf in nbd_genl_connect() error path
-Date: Tue, 15 Jul 2025 15:14:34 +0200
-Message-ID: <20250715130756.892366290@linuxfoundation.org>
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 5.10 166/208] x86/its: Add "vmexit" option to skip mitigation on some CPUs
+Date: Tue, 15 Jul 2025 15:14:35 +0200
+Message-ID: <20250715130817.629024802@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit aa9552438ebf015fc5f9f890dbfe39f0c53cf37e ]
+commit 2665281a07e19550944e8354a2024635a7b2714a upstream.
 
-There is a use-after-free issue in nbd:
+Ice Lake generation CPUs are not affected by guest/host isolation part of
+ITS. If a user is only concerned about KVM guests, they can now choose a
+new cmdline option "vmexit" that will not deploy the ITS mitigation when
+CPU is not affected by guest/host isolation. This saves the performance
+overhead of ITS mitigation on Ice Lake gen CPUs.
 
-block nbd6: Receive control failed (result -104)
-block nbd6: shutting down sockets
-==================================================================
-BUG: KASAN: slab-use-after-free in recv_work+0x694/0xa80 drivers/block/nbd.c:1022
-Write of size 4 at addr ffff8880295de478 by task kworker/u33:0/67
+When "vmexit" option selected, if the CPU is affected by ITS guest/host
+isolation, the default ITS mitigation is deployed.
 
-CPU: 2 UID: 0 PID: 67 Comm: kworker/u33:0 Not tainted 6.15.0-rc5-syzkaller-00123-g2c89c1b655c0 #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: nbd6-recv recv_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- check_region_inline mm/kasan/generic.c:183 [inline]
- kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
- instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
- atomic_dec include/linux/atomic/atomic-instrumented.h:592 [inline]
- recv_work+0x694/0xa80 drivers/block/nbd.c:1022
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:464
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-nbd_genl_connect() does not properly stop the device on certain
-error paths after nbd_start_device() has been called. This causes
-the error path to put nbd->config while recv_work continue to use
-the config after putting it, leading to use-after-free in recv_work.
-
-This patch moves nbd_start_device() after the backend file creation.
-
-Reported-by: syzbot+48240bab47e705c53126@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68227a04.050a0220.f2294.00b5.GAE@google.com/T/
-Fixes: 6497ef8df568 ("nbd: provide a way for userspace processes to identify device backends")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250612132405.364904-1-zhengqixing@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/nbd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |    2 ++
+ arch/x86/include/asm/cpufeatures.h              |    1 +
+ arch/x86/kernel/cpu/bugs.c                      |   11 +++++++++++
+ arch/x86/kernel/cpu/common.c                    |   19 ++++++++++++-------
+ 4 files changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 7f6ef0a2b4a5c..120b75ee703d1 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -2089,9 +2089,7 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
- 				goto out;
- 		}
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -1859,6 +1859,8 @@
+ 			off:    Disable mitigation.
+ 			force:	Force the ITS bug and deploy default
+ 				mitigation.
++			vmexit: Only deploy mitigation if CPU is affected by
++				guest/host isolation part of ITS.
+ 
+ 			For details see:
+ 			Documentation/admin-guide/hw-vuln/indirect-target-selection.rst
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -460,4 +460,5 @@
+ #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
+ #define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
+ #define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
++#define X86_BUG_ITS_NATIVE_ONLY		X86_BUG(1*32 + 6) /* CPU is affected by ITS, VMX is not affected */
+ #endif /* _ASM_X86_CPUFEATURES_H */
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1127,15 +1127,18 @@ do_cmd_auto:
+ enum its_mitigation_cmd {
+ 	ITS_CMD_OFF,
+ 	ITS_CMD_ON,
++	ITS_CMD_VMEXIT,
+ };
+ 
+ enum its_mitigation {
+ 	ITS_MITIGATION_OFF,
++	ITS_MITIGATION_VMEXIT_ONLY,
+ 	ITS_MITIGATION_ALIGNED_THUNKS,
+ };
+ 
+ static const char * const its_strings[] = {
+ 	[ITS_MITIGATION_OFF]			= "Vulnerable",
++	[ITS_MITIGATION_VMEXIT_ONLY]		= "Mitigation: Vulnerable, KVM: Not affected",
+ 	[ITS_MITIGATION_ALIGNED_THUNKS]		= "Mitigation: Aligned branch/return thunks",
+ };
+ 
+@@ -1161,6 +1164,8 @@ static int __init its_parse_cmdline(char
+ 	} else if (!strcmp(str, "force")) {
+ 		its_cmd = ITS_CMD_ON;
+ 		setup_force_cpu_bug(X86_BUG_ITS);
++	} else if (!strcmp(str, "vmexit")) {
++		its_cmd = ITS_CMD_VMEXIT;
+ 	} else {
+ 		pr_err("Ignoring unknown indirect_target_selection option (%s).", str);
  	}
--	ret = nbd_start_device(nbd);
--	if (ret)
--		goto out;
-+
- 	if (info->attrs[NBD_ATTR_BACKEND_IDENTIFIER]) {
- 		nbd->backend = nla_strdup(info->attrs[NBD_ATTR_BACKEND_IDENTIFIER],
- 					  GFP_KERNEL);
-@@ -2107,6 +2105,8 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
- 		goto out;
- 	}
- 	set_bit(NBD_RT_HAS_BACKEND_FILE, &config->runtime_flags);
-+
-+	ret = nbd_start_device(nbd);
- out:
- 	mutex_unlock(&nbd->config_lock);
- 	if (!ret) {
--- 
-2.39.5
-
+@@ -1208,6 +1213,12 @@ static void __init its_select_mitigation
+ 	case ITS_CMD_OFF:
+ 		its_mitigation = ITS_MITIGATION_OFF;
+ 		break;
++	case ITS_CMD_VMEXIT:
++		if (boot_cpu_has_bug(X86_BUG_ITS_NATIVE_ONLY)) {
++			its_mitigation = ITS_MITIGATION_VMEXIT_ONLY;
++			goto out;
++		}
++		fallthrough;
+ 	case ITS_CMD_ON:
+ 		its_mitigation = ITS_MITIGATION_ALIGNED_THUNKS;
+ 		if (!boot_cpu_has(X86_FEATURE_RETPOLINE))
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1137,6 +1137,8 @@ static const __initconst struct x86_cpu_
+ #define RFDS		BIT(7)
+ /* CPU is affected by Indirect Target Selection */
+ #define ITS		BIT(8)
++/* CPU is affected by Indirect Target Selection, but guest-host isolation is not affected */
++#define ITS_NATIVE_ONLY	BIT(9)
+ 
+ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
+ 	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
+@@ -1157,16 +1159,16 @@ static const struct x86_cpu_id cpu_vuln_
+ 	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
+ 	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS | ITS_NATIVE_ONLY),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS | ITS_NATIVE_ONLY),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS | ITS_NATIVE_ONLY),
+ 	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
+ 	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
+-	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS),
+-	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS | ITS_NATIVE_ONLY),
++	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS | ITS_NATIVE_ONLY),
+ 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS | ITS_NATIVE_ONLY),
+ 	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
+ 	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
+ 	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
+@@ -1370,8 +1372,11 @@ static void __init cpu_set_bug_bits(stru
+ 	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
+ 		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
+ 
+-	if (vulnerable_to_its(ia32_cap))
++	if (vulnerable_to_its(ia32_cap)) {
+ 		setup_force_cpu_bug(X86_BUG_ITS);
++		if (cpu_matches(cpu_vuln_blacklist, ITS_NATIVE_ONLY))
++			setup_force_cpu_bug(X86_BUG_ITS_NATIVE_ONLY);
++	}
+ 
+ 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
+ 		return;
 
 
 
