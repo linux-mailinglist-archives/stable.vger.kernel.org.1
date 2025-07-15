@@ -1,145 +1,177 @@
-Return-Path: <stable+bounces-161949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6F4B055CB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 11:05:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCF0B055F2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 11:11:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC481188DEE7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 09:05:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954BA1AA66AC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 09:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DB52D4B7A;
-	Tue, 15 Jul 2025 09:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE75238C1B;
+	Tue, 15 Jul 2025 09:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kj0voNdk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxebXu42"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608E9275B03;
-	Tue, 15 Jul 2025 09:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C530526F45D;
+	Tue, 15 Jul 2025 09:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752570311; cv=none; b=jp7j6aG9JVVItw4P6C12Lwmukz3yd+CMlX5b2USA1R9sT/rkQmgbVdXIVGwfHh0BvM+o2j25lnHyCpgBkjxGsed5vFY50g9xyjxmm8rZmnaciqlB/C/UQ/hwJv/G3wXfRh0FvzUPJSOC5zU42tsFzpOJ6qJYya48SksmsAcs5Rs=
+	t=1752570692; cv=none; b=OpVdcjouVFmNWdQXIS1THF2uyfF/ObvCdFgmrr1mamx0h2zh8ZsxgbnqvfKO0zZ/NXZILS4XA7j7BUUQfyBBIJVnRqMEyyjVaatjeWaZ9JZcXrawxfb+uU7iDn4hRXmnwguoDFwHbEhH3wmDgDbJ7XrtLsJHNZZxMtjssL1Ds6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752570311; c=relaxed/simple;
-	bh=thKBkCXzV9KuJW7F0B1WOX2ZVw+tt/tQ2I7VYlgi6Vg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=czHYi3TmpAq+6c5LBHMyeoGPKU5lOBrK2X2373vO9D8FRqrTYmqUqmdTY1xGqRvmtVxUWRrck++TeqAC/9qk/5arRRDpCr4hVfab/FPaD0u28a/wluPEgsBJrRTVqN2eBxXY/rPtvDUEs6VmeBd8qDUbGfVy9vW6pIWTkfWAVlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kj0voNdk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8F4C4CEF6;
-	Tue, 15 Jul 2025 09:05:07 +0000 (UTC)
+	s=arc-20240116; t=1752570692; c=relaxed/simple;
+	bh=dA3vtbmlttdZvCGMv8d9ESUIzy2yXosr7aHy1zK5CiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KonOQQZWtGSu/aDLr8numxXhbAX+0E9aYp+PY2DSW8CWArsBbUZmY3RAK+3UJYhBlrmym7mwnysJbTzC940UDIeeW3CKl8JjfacXlZ/n+bYRaeZ3YohajvagrnObHtcGkHndn5GTczGa17spbLIqBh3JlgzfQLRMACcMec0NI1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxebXu42; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF63C4CEE3;
+	Tue, 15 Jul 2025 09:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752570311;
-	bh=thKBkCXzV9KuJW7F0B1WOX2ZVw+tt/tQ2I7VYlgi6Vg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Kj0voNdk37BYd/tZUcOhqKAXQC9VqpiDgoEC1z3eJ8cB3kXgoQ3VlO4RUzn8lXQ0U
-	 XRDld5q6OAkXtEBkLiPKfpvvRfSzOHqroAiQbfRXfz98dZb7kJR6sKpJPRS0RZAURX
-	 vbF9bYuUKOxra6MIvNYJjYwC8tKPsILoIUoCXdsdC4ezY9sv/Qamh4GNgQdNJa86vU
-	 1X7KlZCEFLBtbwFq4kZa21tEl/jWM6JOtSEcZTTODFOHNKsEkvCQUuVKmEvmGXAQkt
-	 ISp/fMOf2lP/9nmvy0dig0OjLlAacd/UPu+JsgYGXD6r6s9Lc+DQLwzUYTCiPJP6sx
-	 osVYVckua9UwQ==
-Message-ID: <2903c507-7419-4097-8166-999746319a8e@kernel.org>
-Date: Tue, 15 Jul 2025 11:05:05 +0200
+	s=k20201202; t=1752570692;
+	bh=dA3vtbmlttdZvCGMv8d9ESUIzy2yXosr7aHy1zK5CiI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IxebXu42e3BWhhhayhaKwQypECLIVDfNz7bzt+rMxXn5vd1IjB70gu+oeaX+E53XG
+	 vUs9V6AX94CB2DdMzehafN/x8JDjQWKJRtxNLH/ilzY5pDwai5XdzwniJYUQT4wCdf
+	 OxC0gyYTeecm7ockLqzOfuhqwFG4gBDMaZB3zL8myuTxOVUs+CCHBCXJR6xlpcGQHV
+	 Pm8swbFx7m5BZ7m6m/+qDykTrscJjhpgu/SqLUZethNpdXAOINRaGrKJd/RHXDjGLn
+	 DSJpiM7M3k46J2biwOVMgZqLN79ddZdjZtzF26ZKBFEQONQgpMN9Yub3TfWqlokCJO
+	 vJqx/qPCeTFIw==
+Date: Tue, 15 Jul 2025 14:41:23 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] PCI: qcom: Switch to bus notifier for enabling ASPM
+ of PCI devices
+Message-ID: <yqot334mqik74bb7rmoj27kfppwfb4fvfk2ziuczwsylsff4ll@oqaozypwpwa2>
+References: <20250714-aspm_fix-v1-0-7d04b8c140c8@oss.qualcomm.com>
+ <20250714-aspm_fix-v1-1-7d04b8c140c8@oss.qualcomm.com>
+ <aHYHzrl0DE2HV86S@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 0/2] selftests: mptcp: connect: cover alt modes
-Content-Language: en-GB, fr-BE
-To: netdev@vger.kernel.org
-Cc: Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
- mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, Christoph Paasch <cpaasch@apple.com>,
- Davide Caratti <dcaratti@redhat.com>
-References: <20250714-net-mptcp-sft-connect-alt-v1-0-bf1c5abbe575@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20250714-net-mptcp-sft-connect-alt-v1-0-bf1c5abbe575@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aHYHzrl0DE2HV86S@hovoldconsulting.com>
 
-Hello,
-
-On 14/07/2025 17:52, Matthieu Baerts (NGI0) wrote:
-> mptcp_connect.sh can be executed manually with "-m <MODE>" and "-C" to
-> make sure everything works as expected when using "mmap" and "sendfile"
-> modes instead of "poll", and with the MPTCP checksum support.
+On Tue, Jul 15, 2025 at 09:48:30AM GMT, Johan Hovold wrote:
+> On Mon, Jul 14, 2025 at 11:31:04PM +0530, Manivannan Sadhasivam wrote:
+> > Commit 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0
+> > ops") allowed the Qcom controller driver to enable ASPM for all PCI devices
+> > enumerated at the time of the controller driver probe. It proved to be
+> > useful for devices already powered on by the bootloader as it allowed
+> > devices to enter ASPM without user intervention.
+> > 
+> > However, it could not enable ASPM for the hotplug capable devices i.e.,
+> > devices enumerated *after* the controller driver probe. This limitation
+> > mostly went unnoticed as the Qcom PCI controllers are not hotplug capable
+> > and also the bootloader has been enabling the PCI devices before Linux
+> > Kernel boots (mostly on the Qcom compute platforms which users use on a
+> > daily basis).
+> > 
+> > But with the advent of the commit b458ff7e8176 ("PCI/pwrctl: Ensure that
+> > pwrctl drivers are probed before PCI client drivers"), the pwrctrl driver
+> > started to block the PCI device enumeration until it had been probed.
+> > Though, the intention of the commit was to avoid race between the pwrctrl
+> > driver and PCI client driver, it also meant that the pwrctrl controlled PCI
+> > devices may get probed after the controller driver and will no longer have
+> > ASPM enabled. So users started noticing high runtime power consumption with
+> > WLAN chipsets on Qcom compute platforms like Thinkpad X13s, and Thinkpad
+> > T14s, etc...
+> > 
+> > Obviously, it is the pwrctrl change that caused regression, but it
+> > ultimately uncovered a flaw in the ASPM enablement logic of the controller
+> > driver. So to address the actual issue, switch to the bus notifier for
+> > enabling ASPM of the PCI devices. The notifier will notify the controller
+> > driver when a PCI device is attached to the bus, thereby allowing it to
+> > enable ASPM more reliably. It should be noted that the
+> > 'pci_dev::link_state', which is required for enabling ASPM by the
+> > pci_enable_link_state_locked() API, is only set by the time of
+> > BUS_NOTIFY_BIND_DRIVER stage of the notification. So we cannot enable ASPM
+> > during BUS_NOTIFY_ADD_DEVICE stage.
 > 
-> These modes should be validated, but they are not when the selftests are
-> executed via the kselftest helpers. It means that most CIs validating
-> these selftests, like NIPA for the net development trees and LKFT for
-> the stable ones, are not covering these modes.
+> A problem with this approach is that ASPM will never be enabled (and
+> power consumption will be higher) in case an endpoint driver is missing.
 > 
-> To fix that, new test programs have been added, simply calling
-> mptcp_connect.sh with the right parameters.
 
-I just noticed these new tests print nested TAP output containing
-subtest results with the same content as the mptcp_connect.sh test. In
-other words, NIPA or other CIs will think the exact same tests are now
-executed 4 times, e.g.
+I'm aware of this limiation. But I don't think we should really worry about that
+scenario. No one is going to run an OS intentionally with a PCI device and
+without the relevant driver. If that happens, it might be due to some issue in
+driver loading or the user is doing it intentionally. Such scenarios are short
+lived IMO.
 
-  # ok 2 - mptcp_connect: ping tests # time=2887ms
+> I think that's something we should try to avoid.
+> 
 
-I will force new tests' prefixes to have different test names.
+I would've fancied a bus notifier post device addition, but there is none
+available and I don't see a real incentive in adding one. The other option
+would be to add an ops to 'struct pci_host_bridge', but I really try not to
+introduce such thing unless really manadatory.
 
-pw-bot: cr
+> > So with this, we can also get rid of the controller driver specific
+> > 'qcom_pcie_ops::host_post_init' callback.
+> > 
+> > Cc: stable@vger.kernel.org # v6.7
+> > Fixes: 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0 ops")
+> > Reported-by: Johan Hovold <johan@kernel.org>
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> 
+> Note that the patch fails to apply to 6.16-rc6 due to changes in
+> linux-next. Depending on how fast we can come up with a fix it may be
+> better to target 6.16.
+> 
 
-Cheers,
-Matt
+I rebased this series on top of pci/controller/qcom branch, where we have some
+dependency. But I could spin an independent fix if Bjorn is OK to take it for
+the 6.16-rcS.
+
+> > -static int qcom_pcie_enable_aspm(struct pci_dev *pdev, void *userdata)
+> > -{
+> > -	/*
+> > -	 * Downstream devices need to be in D0 state before enabling PCI PM
+> > -	 * substates.
+> > -	 */
+> > -	pci_set_power_state_locked(pdev, PCI_D0);
+> > -	pci_enable_link_state_locked(pdev, PCIE_LINK_STATE_ALL);
+> > -
+> > -	return 0;
+> > -}
+> 
+> I think you should consider leaving this helper in place here to keep
+> the size of the diff down (e.g. as you intend to backport this).
+> 
+
+Ok.
+
+> > +static int qcom_pcie_enable_aspm(struct pci_dev *pdev)
+> > +{
+> > +	/*
+> > +	 * Downstream devices need to be in D0 state before enabling PCI PM
+> > +	 * substates.
+> > +	 */
+> > +	pci_set_power_state_locked(pdev, PCI_D0);
+> > +	pci_enable_link_state_locked(pdev, PCIE_LINK_STATE_ALL);
+> 
+> You need to use the non-locked helpers here since you no longer hold the
+> bus semaphore (e.g. as reported by lockdep).
+> 
+
+Good catch!
+
+- Mani
+
 -- 
-Sponsored by the NGI0 Core fund.
-
+மணிவண்ணன் சதாசிவம்
 
