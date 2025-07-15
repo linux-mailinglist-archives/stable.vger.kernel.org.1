@@ -1,59 +1,77 @@
-Return-Path: <stable+bounces-162759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECB7B05F3F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:03:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 189B1B05C7B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C816E7BBAAC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA88D7B8F65
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338742E612B;
-	Tue, 15 Jul 2025 13:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E593A2E5428;
+	Tue, 15 Jul 2025 13:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RF61V+H8"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="b1VUHq9Z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E508184A35;
-	Tue, 15 Jul 2025 13:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587403; cv=none; b=CymSKsYK+pY050DPaauKoWOLwCCTGRLwO55WK3NpHdQ/frPEAqcK+YOqg0DQSwbVpWlw1TnRc3tQmdBtyLNlOmdVPl4WiP4fS6tFyangZtnSIRME3Xd+sW0pgk7Q+EzHWd2oaV69chQSs9aFaLQdIgLY1aTylxTFsYnOYUWY0bI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587403; c=relaxed/simple;
-	bh=o0DzsOQ5wCV8w6oH8caDudynJfDvEgNtFsmfoz8gCq0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQY8gMLvg6VoMPPbAEGpskk92ifsoLtWQvfA6enS7wbxJME5qsube753mYMq6hz5VvTpOiOmFDJucmSQ6VU/iF7CkIGRAZkzfGonQ8iBVQ7q1eUgiCihOH7S7MdBuQcCuI9lbsYNJuYVuhhvzQW7jQA/CaBAc9Tc/MWvx1S+Lw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RF61V+H8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6DBC4CEE3;
-	Tue, 15 Jul 2025 13:50:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587402;
-	bh=o0DzsOQ5wCV8w6oH8caDudynJfDvEgNtFsmfoz8gCq0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RF61V+H86BtlUUrwuAfu/w/BELgJ9xQ9MLIlouS3e3PG1wx+wKOma93YEMOIJqh3a
-	 +xmtuJ1Us1/x/Za13JPQ8k2vsQ0A6NkrDBaS/lBjatvRSp4FOp0kTKowWy9EM3lenr
-	 WB62UtEBS95bK7dvh3dYFYkDustLq4LHepbFvIV4=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Ziyan Xu <research@securitygossip.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 88/88] ksmbd: fix potential use-after-free in oplock/lease break ack
-Date: Tue, 15 Jul 2025 15:15:04 +0200
-Message-ID: <20250715130758.101283916@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806EB2D8790;
+	Tue, 15 Jul 2025 13:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752585948; cv=pass; b=SnkOC1kvhmQP/lmEBf3rV7E+2fuMSj/+5krtE6eUWvbxEuimwmZHiK3A7z/jHHABzthDoMBsBMulqey8JOJBC+dSjNIGHxm3cy3c/s7KaY1VlLbrUKyZH2TPUSntIA+Jl7gi+Sf3sbH9JaoDozl31f7bKUr+JeNUuDrBQ4HAXXk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752585948; c=relaxed/simple;
+	bh=2zJRQ+ItpFJo3jrAD8g74nIQYMU7RF/5aDiGKgW0sD0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jxMzlOH5Czy//0kNEmm9DZI/Cy/z7RDCwVzGeip+2L25yWKhsmDqzqU/7rluUDA93sLDkgAeMIiUO8kZOu55pHLmFimC2vGV/mPlfjwnoq9bIDIapKjEVeWFiHdHOh6t4y0Cfq5yABX4q2QWuiGHCme4ifH8tIhjfPcfrt/7s/w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=b1VUHq9Z; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1752585847; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ZVG2fuf9IkoShLnMJ+0FksgGRRohYKjrlPa30aqFmRitabW7R2nYYmsCwDJjC54xAaf0rmrqRRPz50UiDJdUGcwL7mJqMB1XW6LT3Ui5t5acdCTeU7sxm6sBxMex5Sli76K5JABMUigTEu/zuOt1LiEP8qn08+ty2y4xz7MG0dc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752585847; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=yDPjmv3LEWDCBb9fA78/k0Uz/0ozwN9L8y+fFs46MNU=; 
+	b=OU8dCDgwZT1HsjCe3ad9QPeWr6zUmuOPv1c83KvsLVKBBo5stH+tEycJGEVr1nNl9MAOUdJqPSaT6GXz9xCDqaVaLCDHkweHPLc1AV7CwTM6HVl4ugxQQ1pNgNTZkTZhsJusoK33kWqYxaRoJdvtM0XXpAhw/dpcBrL0hafL/3w=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass header.from=<usama.anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752585847;
+	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=yDPjmv3LEWDCBb9fA78/k0Uz/0ozwN9L8y+fFs46MNU=;
+	b=b1VUHq9Z909pI6HmnxYCx+SQ8VQCp663xgQ6zTE/pJxicvsyUdnEzm1B36tmlwJG
+	zk6pH0PCH9MvUhd/ubbjWbWUkpqLgCsVv+xQTKwokQWYeXzqnPjNLYPDWS18LHD3vH4
+	pMgxYD9pohvpKufEpnOutmzhYWwAUuTWFmpMNQD4=
+Received: by mx.zohomail.com with SMTPS id 1752585844627311.6253288130798;
+	Tue, 15 Jul 2025 06:24:04 -0700 (PDT)
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+To: Jeff Johnson <jjohnson@kernel.org>,
+	kbuild test robot <lkp@intel.com>,
+	Ganesh Sesetti <gseset@codeaurora.org>,
+	Maharaja Kennadyrajan <quic_mkenna@quicinc.com>,
+	Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+	Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	kernel@collabora.com,
+	stable@vger.kernel.org,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Sriram R <quic_srirrama@quicinc.com>,
+	Rajkumar Manoharan <rmanohar@codeaurora.org>,
+	Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+	Bhagavathi Perumal S <bperumal@codeaurora.org>,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] wifi: ath11k: HAL SRNG: don't deinitialize and re-initialize again
+Date: Tue, 15 Jul 2025 18:23:50 +0500
+Message-Id: <20250715132351.2641289-1-usama.anjum@collabora.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,96 +79,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+Don't deinitialize and reinitialize the HAL helpers. The dma memory is
+deallocated and there is high possibility that we'll not be able to get
+the same memory allocated from dma when there is high memory pressure.
 
-------------------
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
 
-From: Namjae Jeon <linkinjeon@kernel.org>
-
-commit 50f930db22365738d9387c974416f38a06e8057e upstream.
-
-If ksmbd_iov_pin_rsp return error, use-after-free can happen by
-accessing opinfo->state and opinfo_put and ksmbd_fd_put could
-called twice.
-
-Reported-by: Ziyan Xu <research@securitygossip.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org
+Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 ---
- fs/smb/server/smb2pdu.c |   29 +++++++++--------------------
- 1 file changed, 9 insertions(+), 20 deletions(-)
+Changes since v1:
+- Cc stable and fix tested on tag
+- Clear essential fields as they may have stale data
+---
+ drivers/net/wireless/ath/ath11k/core.c |  6 +-----
+ drivers/net/wireless/ath/ath11k/hal.c  | 12 ++++++++++++
+ drivers/net/wireless/ath/ath11k/hal.h  |  1 +
+ 3 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -8144,11 +8144,6 @@ static void smb20_oplock_break_ack(struc
- 		goto err_out;
- 	}
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 4488e4cdc5e9e..34b27711ed00f 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -2213,14 +2213,10 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
+ 	mutex_unlock(&ab->core_lock);
  
--	opinfo->op_state = OPLOCK_STATE_NONE;
--	wake_up_interruptible_all(&opinfo->oplock_q);
--	opinfo_put(opinfo);
--	ksmbd_fd_put(work, fp);
+ 	ath11k_dp_free(ab);
+-	ath11k_hal_srng_deinit(ab);
++	ath11k_hal_srng_clear(ab);
+ 
+ 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
+ 
+-	ret = ath11k_hal_srng_init(ab);
+-	if (ret)
+-		return ret;
 -
- 	rsp->StructureSize = cpu_to_le16(24);
- 	rsp->OplockLevel = rsp_oplevel;
- 	rsp->Reserved = 0;
-@@ -8156,16 +8151,15 @@ static void smb20_oplock_break_ack(struc
- 	rsp->VolatileFid = volatile_id;
- 	rsp->PersistentFid = persistent_id;
- 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_oplock_break));
--	if (!ret)
--		return;
--
-+	if (ret) {
- err_out:
-+		smb2_set_err_rsp(work);
-+	}
-+
- 	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
--
- 	opinfo_put(opinfo);
- 	ksmbd_fd_put(work, fp);
--	smb2_set_err_rsp(work);
+ 	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
+ 
+ 	ret = ath11k_core_qmi_firmware_ready(ab);
+diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+index b32de563d453a..dafa9bdbb3d32 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1359,6 +1359,18 @@ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
  }
+ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
  
- static int check_lease_state(struct lease *lease, __le32 req_state)
-@@ -8295,11 +8289,6 @@ static void smb21_lease_break_ack(struct
- 	}
- 
- 	lease_state = lease->state;
--	opinfo->op_state = OPLOCK_STATE_NONE;
--	wake_up_interruptible_all(&opinfo->oplock_q);
--	atomic_dec(&opinfo->breaking_cnt);
--	wake_up_interruptible_all(&opinfo->oplock_brk);
--	opinfo_put(opinfo);
- 
- 	rsp->StructureSize = cpu_to_le16(36);
- 	rsp->Reserved = 0;
-@@ -8308,16 +8297,16 @@ static void smb21_lease_break_ack(struct
- 	rsp->LeaseState = lease_state;
- 	rsp->LeaseDuration = 0;
- 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_lease_ack));
--	if (!ret)
--		return;
--
-+	if (ret) {
- err_out:
-+		smb2_set_err_rsp(work);
-+	}
++void ath11k_hal_srng_clear(struct ath11k_base *ab)
++{
++	memset(ab->hal.srng_list, 0,
++	       sizeof(ab->hal.srng_list));
++	memset(ab->hal.shadow_reg_addr, 0,
++	       sizeof(ab->hal.shadow_reg_addr));
++	ab->hal.avail_blk_resource = 0;
++	ab->hal.current_blk_index = 0;
++	ab->hal.num_shadow_reg_configured = 0;
++}
++EXPORT_SYMBOL(ath11k_hal_srng_clear);
 +
-+	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
- 	atomic_dec(&opinfo->breaking_cnt);
- 	wake_up_interruptible_all(&opinfo->oplock_brk);
--
- 	opinfo_put(opinfo);
--	smb2_set_err_rsp(work);
- }
- 
- /**
-
+ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
+ {
+ 	struct hal_srng *srng;
+diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
+index 601542410c752..839095af9267e 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.h
++++ b/drivers/net/wireless/ath/ath11k/hal.h
+@@ -965,6 +965,7 @@ int ath11k_hal_srng_setup(struct ath11k_base *ab, enum hal_ring_type type,
+ 			  struct hal_srng_params *params);
+ int ath11k_hal_srng_init(struct ath11k_base *ath11k);
+ void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
++void ath11k_hal_srng_clear(struct ath11k_base *ab);
+ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
+ void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
+ 				       u32 **cfg, u32 *len);
+-- 
+2.39.5
 
 
