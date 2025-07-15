@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-162779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52D5B06018
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940AFB05F98
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA4D71C4619E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D35B3A7115
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8A02E6D32;
-	Tue, 15 Jul 2025 13:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5D02E62D0;
+	Tue, 15 Jul 2025 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2YsNJq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pr+lNBej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1A02D29C2;
-	Tue, 15 Jul 2025 13:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ADA2E2F04;
+	Tue, 15 Jul 2025 13:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587455; cv=none; b=Jem5By21TxRjMVyRWEoug4hkeD8aQqSjCi3XmpSUWfjk7VheMB+joVb+W1p3bJZa8+X+cXMxysbigMPA/bTCnoYoKDgRr+jYa9QaiXmJCbIN3KrPv8CrC+U1bAl3a32DZ3MfdvuX1mTr8WBuNcxqLOnjd2/sh2Cy20dGoz7AvIc=
+	t=1752587463; cv=none; b=d4ut6eHhbWq6diKyPCfWxM5GFcvrKs/n7NlnBNTQRfJeLEg7OT4oiEhIlYrSlE/ao/8ze2TUtRt7VAtKnBu6I8zZtdRC/1U6K4cF2IdwVK4UqgyuG8wBwAuPafa3bUGzbuaov2Umn2Y+is0keXPQ10hr/p2KhdPzmzhW03u1xH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587455; c=relaxed/simple;
-	bh=pmwzrcfNMr8tv6E5PYz0y1J1tcbfud6Hrp4mdM/TomM=;
+	s=arc-20240116; t=1752587463; c=relaxed/simple;
+	bh=6NLiLdNptYnlHtts9qZdknzyh0fqpXgf29vmWlkBq9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzgYCDBBIWT5zMidWYDK5lEWWpQ40h9914CxkMmtueKNwokL7nirgWKERoyucRbuV5b9f2XqyxwQ7Sndnl885izWSRTSmM5flR9xSHB6/JvGZ3Vdtm5tdt0bSWiErDtJkxzgkXHOG1lXURSXbRno4CYfPo3uz7I52Ga74BOgq8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2YsNJq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20421C4CEE3;
-	Tue, 15 Jul 2025 13:50:54 +0000 (UTC)
+	 MIME-Version; b=nQ3HuDFrPRsN4+rqPkwPvY+6mi0uLXqN3aki9fVASWD8TAj0xla/IrsOUSb87wiX5e69rtPN/ggvJ/1o7b9IiOnK8viPhvGIDkpRz1dmrh7g/+tlHjGUwFUU3dSi8LeFNBnTg/95Jnnmjudk/k9RK753PkTBTxfr47lx5SwJ7E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pr+lNBej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5901CC4CEE3;
+	Tue, 15 Jul 2025 13:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587455;
-	bh=pmwzrcfNMr8tv6E5PYz0y1J1tcbfud6Hrp4mdM/TomM=;
+	s=korg; t=1752587463;
+	bh=6NLiLdNptYnlHtts9qZdknzyh0fqpXgf29vmWlkBq9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2YsNJq0knN6mO4thSo/FRkgxPUEQ9cxqD7qOgkZ0xi2SOeLLtDr3PiITxoiioMt0
-	 KrfWzggjlZmCyEQAQGEqw1EG4gKGSHLsKZuUhXkozYLiHP1atxlJcfcznVCU4Cn0yF
-	 ZHPP2GOZP1JeWYzadxEuQ9cnuzgKdeTGrwSL8IDY=
+	b=Pr+lNBejWhAV5AJ6EuTc9h8NX5pMVPaf7okXPyfefwP/JH/zVaJWjjy7CC+QCOIig
+	 FaMpMpkEO+UlWbHHytijoh8P6UwF8YFgRc+4bj/9xyiYXn6CcxKiZy7Zdfs7KRSSkl
+	 Uu18eTPTzrHElJKjr4jAqsUOEWlxaRIueG+iTWcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Kandybka <d.kandybka@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Jian-Wei Wu <jian-wei_wu@keysight.com>,
+	Guido Kiener <guido.kiener@rohde-schwarz.com>,
+	Dave Penkler <dpenkler@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 019/208] ceph: fix possible integer overflow in ceph_zero_objects()
-Date: Tue, 15 Jul 2025 15:12:08 +0200
-Message-ID: <20250715130811.602185075@linuxfoundation.org>
+Subject: [PATCH 5.10 021/208] USB: usbtmc: Fix reading stale status byte
+Date: Tue, 15 Jul 2025 15:12:10 +0200
+Message-ID: <20250715130811.685355098@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -67,38 +67,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Kandybka <d.kandybka@gmail.com>
+From: Dave Penkler <dpenkler@gmail.com>
 
-[ Upstream commit 0abd87942e0c93964e93224836944712feba1d91 ]
+[ Upstream commit 3c1037e2b6a94898f81ed1a68bea146a9db750a5 ]
 
-In 'ceph_zero_objects', promote 'object_size' to 'u64' to avoid possible
-integer overflow.
+The ioctl USBTMC488_IOCTL_READ_STB either returns a cached status byte
+(STB) sent by the device due to a service request (SRQ) condition or
+the STB obtained from a query to the device with a READ_STATUS_BYTE
+control message.
 
-Compile tested only.
+When the query is interrupted by an SRQ message on the interrupt pipe,
+the ioctl still returns the requested STB while the STB of the
+out-of-band SRQ message is cached for the next call of this
+ioctl. However the cached SRQ STB represents a state that was previous
+to the last returned STB.  Furthermore the cached SRQ STB can be stale
+and not reflect the current state of the device.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The fixed ioctl now always reads the STB from the device and if the
+associated file descriptor has the srq_asserted bit set it ors in the
+RQS bit to the returned STB and clears the srq_asserted bit conformant
+to subclass USB488 devices.
 
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Tested-by: Jian-Wei Wu <jian-wei_wu@keysight.com>
+Reviewed-by: Guido Kiener <guido.kiener@rohde-schwarz.com>
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20201215155621.9592-2-dpenkler@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: acb3dac2805d ("usb: usbtmc: Fix read_stb function and get_stb ioctl")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/class/usbtmc.c | 46 +++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 21 deletions(-)
 
-diff --git a/fs/ceph/file.c b/fs/ceph/file.c
-index d4974c652e8e4..c1eafff45b194 100644
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -2034,7 +2034,7 @@ static int ceph_zero_objects(struct inode *inode, loff_t offset, loff_t length)
- 	s32 stripe_unit = ci->i_layout.stripe_unit;
- 	s32 stripe_count = ci->i_layout.stripe_count;
- 	s32 object_size = ci->i_layout.object_size;
--	u64 object_set_size = object_size * stripe_count;
-+	u64 object_set_size = (u64) object_size * stripe_count;
- 	u64 nearly, t;
+diff --git a/drivers/usb/class/usbtmc.c b/drivers/usb/class/usbtmc.c
+index ff706f48e0ada..bfd99d461f813 100644
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -475,15 +475,12 @@ static int usbtmc_ioctl_abort_bulk_out(struct usbtmc_device_data *data)
+ 	return usbtmc_ioctl_abort_bulk_out_tag(data, data->bTag_last_write);
+ }
  
- 	/* round offset up to next period boundary */
+-static int usbtmc488_ioctl_read_stb(struct usbtmc_file_data *file_data,
+-				void __user *arg)
++static int usbtmc_get_stb(struct usbtmc_file_data *file_data, __u8 *stb)
+ {
+ 	struct usbtmc_device_data *data = file_data->data;
+ 	struct device *dev = &data->intf->dev;
+-	int srq_asserted = 0;
+ 	u8 *buffer;
+ 	u8 tag;
+-	__u8 stb;
+ 	int rv;
+ 	long wait_rv;
+ 	unsigned long expire;
+@@ -491,19 +488,6 @@ static int usbtmc488_ioctl_read_stb(struct usbtmc_file_data *file_data,
+ 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
+ 		data->iin_ep_present);
+ 
+-	spin_lock_irq(&data->dev_lock);
+-	srq_asserted = atomic_xchg(&file_data->srq_asserted, srq_asserted);
+-	if (srq_asserted) {
+-		/* a STB with SRQ is already received */
+-		stb = file_data->srq_byte;
+-		spin_unlock_irq(&data->dev_lock);
+-		rv = put_user(stb, (__u8 __user *)arg);
+-		dev_dbg(dev, "stb:0x%02x with srq received %d\n",
+-			(unsigned int)stb, rv);
+-		return rv;
+-	}
+-	spin_unlock_irq(&data->dev_lock);
+-
+ 	buffer = kmalloc(8, GFP_KERNEL);
+ 	if (!buffer)
+ 		return -ENOMEM;
+@@ -552,13 +536,12 @@ static int usbtmc488_ioctl_read_stb(struct usbtmc_file_data *file_data,
+ 				data->iin_bTag, tag);
+ 		}
+ 
+-		stb = data->bNotify2;
++		*stb = data->bNotify2;
+ 	} else {
+-		stb = buffer[2];
++		*stb = buffer[2];
+ 	}
+ 
+-	rv = put_user(stb, (__u8 __user *)arg);
+-	dev_dbg(dev, "stb:0x%02x received %d\n", (unsigned int)stb, rv);
++	dev_dbg(dev, "stb:0x%02x received %d\n", (unsigned int)*stb, rv);
+ 
+ 	rv = 0;
+ 
+@@ -573,6 +556,27 @@ static int usbtmc488_ioctl_read_stb(struct usbtmc_file_data *file_data,
+ 	return rv;
+ }
+ 
++static int usbtmc488_ioctl_read_stb(struct usbtmc_file_data *file_data,
++				void __user *arg)
++{
++	int srq_asserted = 0;
++	__u8 stb;
++	int rv;
++
++	rv = usbtmc_get_stb(file_data, &stb);
++
++	if (rv > 0) {
++		srq_asserted = atomic_xchg(&file_data->srq_asserted,
++					srq_asserted);
++		if (srq_asserted)
++			stb |= 0x40; /* Set RQS bit */
++
++		rv = put_user(stb, (__u8 __user *)arg);
++	}
++	return rv;
++
++}
++
+ static int usbtmc488_ioctl_wait_srq(struct usbtmc_file_data *file_data,
+ 				    __u32 __user *arg)
+ {
 -- 
 2.39.5
 
