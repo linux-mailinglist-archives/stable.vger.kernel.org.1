@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBE0B05C11
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:27:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 799A2B05CCB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A43AF7B8FA0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBF8016A84B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EAC2E175C;
-	Tue, 15 Jul 2025 13:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D0F2EB5A1;
+	Tue, 15 Jul 2025 13:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTa1kpBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+THsbRV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C921B2C327B;
-	Tue, 15 Jul 2025 13:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFBF2EAD1E;
+	Tue, 15 Jul 2025 13:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585706; cv=none; b=fc8exUyitvNPQr4DSpuv3DwY/9Da0mwuoBhbNUES2f9SE6tuaz1cicjyVi2E0OW/smVu7RQzpkvDi2e7IHPMhaKHGDBmVwt5iGUirRLuBfkhlibM0OS69/etTXiW1f7NgkKzmi+8/5JMzO09BSTkzpV4nzPAfvbIy+9xVf8OeXI=
+	t=1752586160; cv=none; b=dxOKhxw448LWnaoljkvmnuXZ/pI0M5adHSnmikYSiZawaqVNcqNmmIAgx0W/w0v0HvA/v91wNjhrkgHQNNqOWzWm8WzpAqzGX8YDcJ9Sd2dJmPkDRo3iI4W94/AmP3PJecRhco4NBvmSWEo2Pg3o3csH1x0QGa0CGGlLzb9Ggrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585706; c=relaxed/simple;
-	bh=cdtII8mPTyjyR/+qiSjKhGxB7Rvm+CYI/2Q8oEvVj1U=;
+	s=arc-20240116; t=1752586160; c=relaxed/simple;
+	bh=YSRcABzWaCrJYVGyr1NbV3kSK5Lv6BvGDJXNlDDU1wY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPUel+0kbwHbNpusjURXBhWn0ZmtvEJdZq7tScuFUDwK0F80UQM5eJXEPdBJPXYNVZF+dUDR7klx1GPt2Q1AlKu0CYG4rrcMifJxAgMTz1xWa5wsJxXzydU8TO+UhHORsngLbv70nKKCZq/TDZqXe/wKqwmISVr4QNqTHhX35Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTa1kpBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D193C4CEE3;
-	Tue, 15 Jul 2025 13:21:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oyE93q3ems+DHLyXdBKagu+xlELuLePpPWIxq3mMlP6wrH7x8e/VBIpryPdW85LmtOI0aQ3I5W7pcP5DWlFhh9ftirc49ovFfVZI3ZgjAgm2gSbHSvvoowvs/3gLP/0yX5ff9k7SEdabaevpxKgIMIUd+pvX8DyLMzwl922QMjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+THsbRV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8E3C4CEE3;
+	Tue, 15 Jul 2025 13:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585706;
-	bh=cdtII8mPTyjyR/+qiSjKhGxB7Rvm+CYI/2Q8oEvVj1U=;
+	s=korg; t=1752586160;
+	bh=YSRcABzWaCrJYVGyr1NbV3kSK5Lv6BvGDJXNlDDU1wY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bTa1kpBFqUKi4iseBSyltLkZKmKnXDXoQMDCizgTFI00ax4xEm3/Rid/dz+5bIjuJ
-	 06KZJFeTJxF9Xa0U4F9Ir3QK3kl1uuS6+3P58DHQ3CMTpOJZ4CFv+jdJ3fBEZk9o6Y
-	 JRsL60InhxcHDXKt+5bFImUu1vuLpkmrq1IZV0XM=
+	b=Y+THsbRVhdcKTVVhi1/9fyCEBS/VvK5JvkAEUcgJpXSfWXax7nPiIa/eK0wOEjmCO
+	 pTZ87OqRj1rnXBsGPF+KChsVD9jGd3zxlJ6UPscz5pQhZMJtGh/9zvrGtqrnREn15j
+	 ud4XqT+FvsZkbwCIAp4bNaN1GW8oJb8Lm64OtrgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamura Dai <kirinode0@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 141/163] ASoC: SOF: Intel: hda: Use devm_kstrdup() to avoid memleak.
-Date: Tue, 15 Jul 2025 15:13:29 +0200
-Message-ID: <20250715130814.491095808@linuxfoundation.org>
+	Matthew Brost <matthew.brost@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: [PATCH 5.15 31/77] drm/sched: Increment job count before swapping tail spsc queue
+Date: Tue, 15 Jul 2025 15:13:30 +0200
+Message-ID: <20250715130752.958059087@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamura Dai <kirinode0@gmail.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 6c038b58a2dc5a008c7e7a1297f5aaa4deaaaa7e ]
+commit 8af39ec5cf2be522c8eb43a3d8005ed59e4daaee upstream.
 
-sof_pdata->tplg_filename can have address allocated by kstrdup()
-and can be overwritten. Memory leak was detected with kmemleak:
+A small race exists between spsc_queue_push and the run-job worker, in
+which spsc_queue_push may return not-first while the run-job worker has
+already idled due to the job count being zero. If this race occurs, job
+scheduling stops, leading to hangs while waiting on the job’s DMA
+fences.
 
-unreferenced object 0xffff88812391ff60 (size 16):
-  comm "kworker/4:1", pid 161, jiffies 4294802931
-  hex dump (first 16 bytes):
-    73 6f 66 2d 68 64 61 2d 67 65 6e 65 72 69 63 00  sof-hda-generic.
-  backtrace (crc 4bf1675c):
-    __kmalloc_node_track_caller_noprof+0x49c/0x6b0
-    kstrdup+0x46/0xc0
-    hda_machine_select.cold+0x1de/0x12cf [snd_sof_intel_hda_generic]
-    sof_init_environment+0x16f/0xb50 [snd_sof]
-    sof_probe_continue+0x45/0x7c0 [snd_sof]
-    sof_probe_work+0x1e/0x40 [snd_sof]
-    process_one_work+0x894/0x14b0
-    worker_thread+0x5e5/0xfb0
-    kthread+0x39d/0x760
-    ret_from_fork+0x31/0x70
-    ret_from_fork_asm+0x1a/0x30
+Seal this race by incrementing the job count before appending to the
+SPSC queue.
 
-Signed-off-by: Tamura Dai <kirinode0@gmail.com>
-Link: https://patch.msgid.link/20250615235548.8591-1-kirinode0@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This race was observed on a drm-tip 6.16-rc1 build with the Xe driver in
+an SVM test case.
+
+Fixes: 1b1f42d8fde4 ("drm: move amd_gpu_scheduler into common location")
+Fixes: 27105db6c63a ("drm/amdgpu: Add SPSC queue to scheduler.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://lore.kernel.org/r/20250613212013.719312-1-matthew.brost@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/intel/hda.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/drm/spsc_queue.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
-index 9c8f79e55ec5d..624598c9e2df8 100644
---- a/sound/soc/sof/intel/hda.c
-+++ b/sound/soc/sof/intel/hda.c
-@@ -1209,11 +1209,11 @@ static int check_tplg_quirk_mask(struct snd_soc_acpi_mach *mach)
- 	return 0;
- }
+--- a/include/drm/spsc_queue.h
++++ b/include/drm/spsc_queue.h
+@@ -70,9 +70,11 @@ static inline bool spsc_queue_push(struc
  
--static char *remove_file_ext(const char *tplg_filename)
-+static char *remove_file_ext(struct device *dev, const char *tplg_filename)
- {
- 	char *filename, *tmp;
+ 	preempt_disable();
  
--	filename = kstrdup(tplg_filename, GFP_KERNEL);
-+	filename = devm_kstrdup(dev, tplg_filename, GFP_KERNEL);
- 	if (!filename)
- 		return NULL;
++	atomic_inc(&queue->job_count);
++	smp_mb__after_atomic();
++
+ 	tail = (struct spsc_node **)atomic_long_xchg(&queue->tail, (long)&node->next);
+ 	WRITE_ONCE(*tail, node);
+-	atomic_inc(&queue->job_count);
  
-@@ -1297,7 +1297,7 @@ struct snd_soc_acpi_mach *hda_machine_select(struct snd_sof_dev *sdev)
- 		 */
- 		if (!sof_pdata->tplg_filename) {
- 			/* remove file extension if it exists */
--			tplg_filename = remove_file_ext(mach->sof_tplg_filename);
-+			tplg_filename = remove_file_ext(sdev->dev, mach->sof_tplg_filename);
- 			if (!tplg_filename)
- 				return NULL;
- 
--- 
-2.39.5
-
+ 	/*
+ 	 * In case of first element verify new node will be visible to the consumer
 
 
 
