@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-162584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF755B05EDF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4C4B05BA8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EA2B1897746
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 734091C2012D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987182EBDD0;
-	Tue, 15 Jul 2025 13:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2EC2E175D;
+	Tue, 15 Jul 2025 13:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DspTENol"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kqx5fH+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568AA2EBDCA;
-	Tue, 15 Jul 2025 13:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB2D2E041E;
+	Tue, 15 Jul 2025 13:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586941; cv=none; b=I+3iTwJPu83K515WY3vvhh48+SyTVYXX8vgfRM3fGattKLExC1dN3MMyP3VDsHToyaAson3sdrdw3Fe5wh41/DkIDSnifALuwja+b4cPsurloeHlfpsh/cWkLTTLin9cYcx8/y7fjIyK4Bji96rQ4thQ7omgOvqTIzY9cMg6d9E=
+	t=1752585749; cv=none; b=t/NnUWxfQQKQG+vM7hJ6TofBI6wYDQMX8GwO6TvOcGCS7X7KmBYgRhqYBch0sWaxBINPmfvhSOWe+h1xJ1+18wBidIkNhRE+IGqGN/UoGYuF4bG5IaOR472vyoByfdzEiwiFzVJ7QBAqtxAIuqGeI4ViXVRbtVvMVCRgjsbMsEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586941; c=relaxed/simple;
-	bh=Fz68Na8SOYc4FtOAPkOox6yqsbiXrLJez2DqChRPGbk=;
+	s=arc-20240116; t=1752585749; c=relaxed/simple;
+	bh=4jmm+g81anQBTCqMzfawFKIPIGRVAQ5PfbLtXNzQVG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tnj7wz/X6A6J8K/QsTRviQAA7meACvEzTxeYt3MGEVzANYoxpCFH5YI0f30OW1EPe+ULCWUoQq0h5qBd8dBlhulZmtxgTLtTv/UmErpr2ROM81CyjvumlNPkUwaKv2COma6BqCochCYMDdg9fX8Kmc/DSML7dP0E2lo6uOMV4Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DspTENol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF94C4CEE3;
-	Tue, 15 Jul 2025 13:42:20 +0000 (UTC)
+	 MIME-Version; b=UQ/FUWnf7EGwn5Qi2t+aFUnFkM/Ghxn0MjeK7pOYfvL6H4TPEhNJsmCtN5S/2p7oi755k+O3me3mzcEcdXhOtiYdALOp8wGdpsYK8hBVWv4qup2FYHymo9S1gbJyuEHMYp4XjaIVRJ/zGKlSWCuRAOz7dTOj6oXa/TfBAFcwFhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kqx5fH+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6048C4CEE3;
+	Tue, 15 Jul 2025 13:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586941;
-	bh=Fz68Na8SOYc4FtOAPkOox6yqsbiXrLJez2DqChRPGbk=;
+	s=korg; t=1752585749;
+	bh=4jmm+g81anQBTCqMzfawFKIPIGRVAQ5PfbLtXNzQVG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DspTENollMyph+9E2JQDhvBjFbybhl6gl5P4mdANs81UsFWore/caf1BpAAFpZMve
-	 VGsYb7DnQkBWCO58/n8AU9cGuFGykRv4eXdQObg43SLvWmLMDGY9dJSz+Sp1aw6rdZ
-	 8E+STQ6/YzMKG/m/aJVC6ZVRsoXm7Q2MgX+SHNH8=
+	b=0kqx5fH+w6TdNI51lvqsvjA72uzBrlA6U8eZlcutO/Adw29mCJAzdDJqe67B6R7Oy
+	 izjQ9wHhfFT6Jm1kzwRhIsrYXG1sMHWUOHi8wV/sczVCUTwqD1YQdFSpLYz5RpK8DS
+	 IP7EFtKVzsLYJXosLavEETkEol+ANcDDpXZdNr/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Akshata Jahagirdar <akshata.jahagirdar@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.15 089/192] drm/xe/bmg: fix compressed VRAM handling
+	Henry Martin <bsdhenryma@tencent.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 116/163] wifi: mt76: mt7925: Fix null-ptr-deref in mt7925_thermal_init()
 Date: Tue, 15 Jul 2025 15:13:04 +0200
-Message-ID: <20250715130818.480576520@linuxfoundation.org>
+Message-ID: <20250715130813.507099782@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-commit fee58ca135a7b979c8b75e6d2eac60d695f9209b upstream.
+[ Upstream commit 03ee8f73801a8f46d83dfc2bf73fb9ffa5a21602 ]
 
-There looks to be an issue in our compression handling when the BO pages
-are very fragmented, where we choose to skip the identity map and
-instead fall back to emitting the PTEs by hand when migrating memory,
-such that we can hopefully do more work per blit operation. However in
-such a case we need to ensure the src PTEs are correctly tagged with a
-compression enabled PAT index on dgpu xe2+, otherwise the copy will
-simply treat the src memory as uncompressed, leading to corruption if
-the memory was compressed by the user.
+devm_kasprintf() returns NULL on error. Currently, mt7925_thermal_init()
+does not check for this case, which results in a NULL pointer
+dereference.
 
-To fix this pass along use_comp_pat into emit_pte() on the src side, to
-indicate that compression should be considered.
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-v2 (Jonathan): tweak the commit message
-
-Fixes: 523f191cc0c7 ("drm/xe/xe_migrate: Handle migration logic for xe2+ dgfx")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Cc: <stable@vger.kernel.org> # v6.12+
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://lore.kernel.org/r/20250701103949.83116-2-matthew.auld@intel.com
-(cherry picked from commit f7a2fd776e57bd6468644bdecd91ab3aba57ba58)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 396e41a74a88 ("wifi: mt76: mt7925: support temperature sensor")
+Signed-off-by: Henry Martin <bsdhenryma@tencent.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20250625124901.1839832-1-bsdhenryma@tencent.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_migrate.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_migrate.c
-+++ b/drivers/gpu/drm/xe/xe_migrate.c
-@@ -860,7 +860,7 @@ struct dma_fence *xe_migrate_copy(struct
- 		if (src_is_vram && xe_migrate_allow_identity(src_L0, &src_it))
- 			xe_res_next(&src_it, src_L0);
- 		else
--			emit_pte(m, bb, src_L0_pt, src_is_vram, copy_system_ccs,
-+			emit_pte(m, bb, src_L0_pt, src_is_vram, copy_system_ccs || use_comp_pat,
- 				 &src_it, src_L0, src);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+index 14553dcc61c57..02899320da5c1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+@@ -52,6 +52,8 @@ static int mt7925_thermal_init(struct mt792x_phy *phy)
  
- 		if (dst_is_vram && xe_migrate_allow_identity(src_L0, &dst_it))
+ 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7925_%s",
+ 			      wiphy_name(wiphy));
++	if (!name)
++		return -ENOMEM;
+ 
+ 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
+ 						       mt7925_hwmon_groups);
+-- 
+2.39.5
+
 
 
 
