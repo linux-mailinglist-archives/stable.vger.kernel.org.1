@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F7DB05D69
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D71B05EBB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 993B1165745
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7E13188376B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA952EAB79;
-	Tue, 15 Jul 2025 13:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047E92EACF7;
+	Tue, 15 Jul 2025 13:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlknICqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pv6vsqFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE762E54B7;
-	Tue, 15 Jul 2025 13:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B0D26D4F2;
+	Tue, 15 Jul 2025 13:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586470; cv=none; b=RV/ZWkM7Qb4TFyCdWrL8bLnt6P6YUPiGJgvdVSpIlUas/iur+9r6j73wmGmRDHtNPjGCa6Fxlc3yUSQd4XqKVIgAnmqLq1JLUkl2HdOF+6+wtTeDlSIxKidY0BkMJR7s1kt9FanhkQJqvmYb7eSOtAgh15+Z1F8ZE2PaPX9xWmU=
+	t=1752586938; cv=none; b=hcq1+7czsLu7ivuX36MCC1cbpqG7BWVaZwC679pO1rSeEeGjA8dD7ZmHMi6KAvfkVP5OG6pIUF3LIeBHsf3Fph/K/cadhat/BnlpERO6/xgZY5xWMKtUaXQU5TEa80pdl9pkimXaCYNg+FeFs6iWLu/PUkeB/NW6IDhuzH/Hyis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586470; c=relaxed/simple;
-	bh=MgXbfIzUIzNaGcouThsfFenj1XUtoDulWABCesBIf7Q=;
+	s=arc-20240116; t=1752586938; c=relaxed/simple;
+	bh=Uz9ARDR3tAgGhvBfjC0kzwgTfMo8ytARQ6YeCcW2lfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J841M+xiZFrDyj11hcCXRxKRWAbfC7eN5r14UPH7zZqPTC7qKakGPany7Kzqil/VJ8yaOOlgI29IppVe3EKK1EEkmow01RYThYuTLBec+UunO4KgcTnFKYcmsmeGDr13XsgFva7UR+ZDDO0zGPWh4ivCPCa9IDeA1g+TZ1wu/Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlknICqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECABC4CEE3;
-	Tue, 15 Jul 2025 13:34:29 +0000 (UTC)
+	 MIME-Version; b=mM3qwTiqeFZT/ylpMHItjK9PkxfCL5s0QsqPzWrj8UaxbyqxLElsJZj4aehE28iUIhl9vJPQHxwirZp/1b6aVM3MoA98kpc3C8H4zznGuF6avELMc0Ik1hYfUbC/L5ImnUpYO7xzgLlyWs+gfxuns03M9fheQr5508A2maeol+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pv6vsqFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A17DC4CEE3;
+	Tue, 15 Jul 2025 13:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586470;
-	bh=MgXbfIzUIzNaGcouThsfFenj1XUtoDulWABCesBIf7Q=;
+	s=korg; t=1752586938;
+	bh=Uz9ARDR3tAgGhvBfjC0kzwgTfMo8ytARQ6YeCcW2lfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlknICqp8CykK0GxHkJsuW8aCNqC3D4MKMNg63KsHyKY/rOjndzLwIUL8yhbwZUhm
-	 W6JGiw0G0RZ8mbgaezUE/xgjvcRHOfuTXUMQqQ540+p6WmaRNwXR0x9O2YyLVsAxka
-	 g0lUkIlh0j1WpGTf1SrT8bv2etnzzxhAHnhMSoZg=
+	b=Pv6vsqFPUbe91qk8Tefth2Hu4frl6399euI8fhOaMWHWCZg4PFrphIxJ2vXyik4iQ
+	 1SrQ+HM0r7o6HGSMlC3QOwWopLjtn7Lf6VedN6aiZc2v3QItzZIvJETKweieuy83Mg
+	 8dhZHiHpoSLmGhNaN26d+gJ8BL6vKFdC1p+n0FjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 078/148] rcu: Return early if callback is not specified
-Date: Tue, 15 Jul 2025 15:13:20 +0200
-Message-ID: <20250715130803.445522542@linuxfoundation.org>
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 106/192] mm/vmalloc: leave lazy MMU mode on PTE mapping error
+Date: Tue, 15 Jul 2025 15:13:21 +0200
+Message-ID: <20250715130819.143609927@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uladzislau Rezki (Sony) <urezki@gmail.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit 33b6a1f155d627f5bd80c7485c598ce45428f74f ]
+commit fea18c686320a53fce7ad62a87a3e1d10ad02f31 upstream.
 
-Currently the call_rcu() API does not check whether a callback
-pointer is NULL. If NULL is passed, rcu_core() will try to invoke
-it, resulting in NULL pointer dereference and a kernel crash.
+vmap_pages_pte_range() enters the lazy MMU mode, but fails to leave it in
+case an error is encountered.
 
-To prevent this and improve debuggability, this patch adds a check
-for NULL and emits a kernel stack trace to help identify a faulty
-caller.
-
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250623075721.2817094-1-agordeev@linux.ibm.com
+Fixes: 2ba3e6947aed ("mm/vmalloc: track which page-table levels were modified")
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202506132017.T1l1l6ME-lkp@intel.com/
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/rcu/tree.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/vmalloc.c |   22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 615283404d9dc..562c1ff452837 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -2568,6 +2568,10 @@ __call_rcu(struct rcu_head *head, rcu_callback_t func, bool lazy)
- 	/* Misaligned rcu_head! */
- 	WARN_ON_ONCE((unsigned long)head & (sizeof(void *) - 1));
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -487,6 +487,7 @@ static int vmap_pages_pte_range(pmd_t *p
+ 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+ 		pgtbl_mod_mask *mask)
+ {
++	int err = 0;
+ 	pte_t *pte;
  
-+	/* Avoid NULL dereference if callback is NULL. */
-+	if (WARN_ON_ONCE(!func))
-+		return;
+ 	/*
+@@ -500,18 +501,25 @@ static int vmap_pages_pte_range(pmd_t *p
+ 	do {
+ 		struct page *page = pages[*nr];
+ 
+-		if (WARN_ON(!pte_none(ptep_get(pte))))
+-			return -EBUSY;
+-		if (WARN_ON(!page))
+-			return -ENOMEM;
+-		if (WARN_ON(!pfn_valid(page_to_pfn(page))))
+-			return -EINVAL;
++		if (WARN_ON(!pte_none(ptep_get(pte)))) {
++			err = -EBUSY;
++			break;
++		}
++		if (WARN_ON(!page)) {
++			err = -ENOMEM;
++			break;
++		}
++		if (WARN_ON(!pfn_valid(page_to_pfn(page)))) {
++			err = -EINVAL;
++			break;
++		}
+ 
+ 		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
+ 		(*nr)++;
+ 	} while (pte++, addr += PAGE_SIZE, addr != end);
+ 	*mask |= PGTBL_PTE_MODIFIED;
+-	return 0;
 +
- 	if (debug_rcu_head_queue(head)) {
- 		/*
- 		 * Probable double call_rcu(), so leak the callback.
--- 
-2.39.5
-
++	return err;
+ }
+ 
+ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
 
 
 
