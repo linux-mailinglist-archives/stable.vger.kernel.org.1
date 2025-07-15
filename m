@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-162027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7D6B05B42
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4230AB05B11
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE49B7B5F1F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:16:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64F161AA6738
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53ADE2E3366;
-	Tue, 15 Jul 2025 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54FF2DE6F9;
+	Tue, 15 Jul 2025 13:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaQYTg2A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H01fjd0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DB72E2F18;
-	Tue, 15 Jul 2025 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7168E2E1C69;
+	Tue, 15 Jul 2025 13:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585479; cv=none; b=bajIu5sdTxYHISk3F3HI0SJUjOKEhbeeWX3lvn27EtMFyjyt9u6+82ivt0gx8FlonM+ls/ZooiLo6o7ZNddsyzjzHCuWknHm2/qf0+LMZh6Fps/RAl/ezBY5yl/WeOf/mGHYljQ6/ZM1Qao/gK3ftqPPq2LciEcqrGvhMNYm7xo=
+	t=1752585396; cv=none; b=k5LQpIDkVhyOPhv5JhVjztn40VZlYXO3mpbj1jYYnwTb4BUDkHQrww+3IAtnoPz1Ob7kGHL5JsM2j894LCg0LNrdw0t0/aBKhzU5spwBKr3QqfQXvVDrdK7FMQ1kQrhTuE3y50Me3dfwEhjgOms97CKXv27EXDPgxwTU9/aexGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585479; c=relaxed/simple;
-	bh=ilanji4JxLLPsNH6bwK8YW8hJ37sFHzSh7e+l4uIf7g=;
+	s=arc-20240116; t=1752585396; c=relaxed/simple;
+	bh=ulpNRUsYrRdGtzaOy/nNZIutoHvwnyeccWx6pNeO11s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snVWlFtXHXxtU04SsYIaNjsWcBFVORI5VJ/B9N5pRkvEZax+RPId8+myuBgPkPRtac+7c4R0y8yCh8g+BE/gy0ONKbEDyFS8fCyL5umNC72Ms6cw0Onv+shzAxlxbv3DJPR2yZ+fah+p9U1QsPHSa8EkeADo/H9Glys/SS6JeQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GaQYTg2A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3B9C4CEE3;
-	Tue, 15 Jul 2025 13:17:58 +0000 (UTC)
+	 MIME-Version; b=qHPo3S7Fq4dwM9wmbHQVJHK+c0Vg2oDoBmjRIi93T+LqJ8sQtJS9NrMWq1dmSPAqlavWsjoNQlSxbP3J9oBskBP+vlMC6D4Vc2khTS0zo00d/gGmoT1DpXSX+VYBQ72bbV98dqTfB0WFxnmYimfJwjOMV+m5/DRIIT+jyK9asz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H01fjd0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056A3C4CEF1;
+	Tue, 15 Jul 2025 13:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585478;
-	bh=ilanji4JxLLPsNH6bwK8YW8hJ37sFHzSh7e+l4uIf7g=;
+	s=korg; t=1752585396;
+	bh=ulpNRUsYrRdGtzaOy/nNZIutoHvwnyeccWx6pNeO11s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GaQYTg2Ar431a/VVey++9IVuGf2uxlv/YS2XVn3IBQT/L8xb1tCLKTR3CWBOc0Xs9
-	 ao2NICN96fezMdfeOLcSn0GG/V/clBmHYaCDpYZoc99EBf6tbrCrmJC5zDurUv3P9U
-	 5CRfOXKUb56fUB5yEJAO2B1ohvmr+Sb+QitveMbk=
+	b=H01fjd0f0DPOcoGvURG/4lcpF1NBa6M400qGrkZBpDU2RDkV87A5eupTvsLqYfpyn
+	 wfUI+4ch298duv7m2A1R9xdH0GCMWP1Ud0pxiHzhYHw5xwkj1zq1j2N4PjBS7c6I0q
+	 bxl7zBhq0MkLH6irefFFoHfIdYEX+58ELOKctWT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	John Stultz <jstultz@google.com>,
-	kuyo chang <kuyo.chang@mediatek.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	Jason Xing <kernelxing@tencent.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/163] sched/deadline: Fix dl_server runtime calculation formula
-Date: Tue, 15 Jul 2025 15:11:32 +0200
-Message-ID: <20250715130809.733467670@linuxfoundation.org>
+Subject: [PATCH 6.12 025/163] bnxt_en: eliminate the compile warning in bnxt_request_irq due to CONFIG_RFS_ACCEL
+Date: Tue, 15 Jul 2025 15:11:33 +0200
+Message-ID: <20250715130809.770993303@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
 References: <20250715130808.777350091@linuxfoundation.org>
@@ -68,92 +68,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: kuyo chang <kuyo.chang@mediatek.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit fc975cfb36393db1db517fbbe366e550bcdcff14 ]
+[ Upstream commit b9fd9888a5654e59f6c6249337e36c53c1faa329 ]
 
-In our testing with 6.12 based kernel on a big.LITTLE system, we were
-seeing instances of RT tasks being blocked from running on the LITTLE
-cpus for multiple seconds of time, apparently by the dl_server. This
-far exceeds the default configured 50ms per second runtime.
+I received a kernel-test-bot report[1] that shows the
+[-Wunused-but-set-variable] warning. Since the previous commit I made, as
+the 'Fixes' tag shows, gives users an option to turn on and off the
+CONFIG_RFS_ACCEL, the issue then can be discovered and reproduced with
+GCC specifically.
 
-This is due to the fair dl_server runtime calculation being scaled
-for frequency & capacity of the cpu.
+Like Simon and Jakub suggested, use fewer #ifdefs which leads to fewer
+bugs.
 
-Consider the following case under a Big.LITTLE architecture:
-Assume the runtime is: 50,000,000 ns, and Frequency/capacity
-scale-invariance defined as below:
-Frequency scale-invariance: 100
-Capacity scale-invariance: 50
-First by Frequency scale-invariance,
-the runtime is scaled to 50,000,000 * 100 >> 10 = 4,882,812
-Then by capacity scale-invariance,
-it is further scaled to 4,882,812 * 50 >> 10 = 238,418.
-So it will scaled to 238,418 ns.
+[1]
+All warnings (new ones prefixed by >>):
 
-This smaller "accounted runtime" value is what ends up being
-subtracted against the fair-server's runtime for the current period.
-Thus after 50ms of real time, we've only accounted ~238us against the
-fair servers runtime. This 209:1 ratio in this example means that on
-the smaller cpu the fair server is allowed to continue running,
-blocking RT tasks, for over 10 seconds before it exhausts its supposed
-50ms of runtime.  And on other hardware configurations it can be even
-worse.
+   drivers/net/ethernet/broadcom/bnxt/bnxt.c: In function 'bnxt_request_irq':
+>> drivers/net/ethernet/broadcom/bnxt/bnxt.c:10703:9: warning: variable 'j' set but not used [-Wunused-but-set-variable]
+   10703 |  int i, j, rc = 0;
+         |         ^
 
-For the fair deadline_server, to prevent realtime tasks from being
-unexpectedly delayed, we really do want to use fixed time, and not
-scaled time for smaller capacity/frequency cpus. So remove the scaling
-from the fair server's accounting to fix this.
-
-Fixes: a110a81c52a9 ("sched/deadline: Deferrable dl server")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Suggested-by: John Stultz <jstultz@google.com>
-Signed-off-by: kuyo chang <kuyo.chang@mediatek.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Acked-by: John Stultz <jstultz@google.com>
-Tested-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/r/20250702021440.2594736-1-kuyo.chang@mediatek.com
+Fixes: 9b6a30febddf ("net: allow rps/rfs related configs to be switched")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506282102.x1tXt0qz-lkp@intel.com/
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 5e7ae404c8d2a..0a47e5155897c 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1485,7 +1485,9 @@ static void update_curr_dl_se(struct rq *rq, struct sched_dl_entity *dl_se, s64
- 	if (dl_entity_is_special(dl_se))
- 		return;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index ad4aec522f4f8..f4bafc71a7399 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11061,11 +11061,9 @@ static void bnxt_free_irq(struct bnxt *bp)
  
--	scaled_delta_exec = dl_scaled_delta_exec(rq, dl_se, delta_exec);
-+	scaled_delta_exec = delta_exec;
-+	if (!dl_server(dl_se))
-+		scaled_delta_exec = dl_scaled_delta_exec(rq, dl_se, delta_exec);
- 
- 	dl_se->runtime -= scaled_delta_exec;
- 
-@@ -1592,7 +1594,7 @@ static void update_curr_dl_se(struct rq *rq, struct sched_dl_entity *dl_se, s64
-  */
- void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
+ static int bnxt_request_irq(struct bnxt *bp)
  {
--	s64 delta_exec, scaled_delta_exec;
-+	s64 delta_exec;
++	struct cpu_rmap *rmap = NULL;
+ 	int i, j, rc = 0;
+ 	unsigned long flags = 0;
+-#ifdef CONFIG_RFS_ACCEL
+-	struct cpu_rmap *rmap;
+-#endif
  
- 	if (!rq->fair_server.dl_defer)
- 		return;
-@@ -1605,9 +1607,7 @@ void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
- 	if (delta_exec < 0)
- 		return;
+ 	rc = bnxt_setup_int_mode(bp);
+ 	if (rc) {
+@@ -11080,15 +11078,15 @@ static int bnxt_request_irq(struct bnxt *bp)
+ 		int map_idx = bnxt_cp_num_to_irq_num(bp, i);
+ 		struct bnxt_irq *irq = &bp->irq_tbl[map_idx];
  
--	scaled_delta_exec = dl_scaled_delta_exec(rq, &rq->fair_server, delta_exec);
--
--	rq->fair_server.runtime -= scaled_delta_exec;
-+	rq->fair_server.runtime -= delta_exec;
- 
- 	if (rq->fair_server.runtime < 0) {
- 		rq->fair_server.dl_defer_running = 0;
+-#ifdef CONFIG_RFS_ACCEL
+-		if (rmap && bp->bnapi[i]->rx_ring) {
++		if (IS_ENABLED(CONFIG_RFS_ACCEL) &&
++		    rmap && bp->bnapi[i]->rx_ring) {
+ 			rc = irq_cpu_rmap_add(rmap, irq->vector);
+ 			if (rc)
+ 				netdev_warn(bp->dev, "failed adding irq rmap for ring %d\n",
+ 					    j);
+ 			j++;
+ 		}
+-#endif
++
+ 		rc = request_irq(irq->vector, irq->handler, flags, irq->name,
+ 				 bp->bnapi[i]);
+ 		if (rc)
 -- 
 2.39.5
 
