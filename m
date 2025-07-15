@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B42B06074
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:17:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F89B05F92
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606881894971
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D59C51C42424
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D768B2EE5E7;
-	Tue, 15 Jul 2025 13:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BAE2E3390;
+	Tue, 15 Jul 2025 13:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xyy+NR/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpT/6154"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D972ECE9A;
-	Tue, 15 Jul 2025 13:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FD42E337B;
+	Tue, 15 Jul 2025 13:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587748; cv=none; b=B22jjTBmrN+wbHK1Lx07ode2BKzHEf5wSsvJytJ9ebaDOWvHv2kSbmmRQEJLWfZ0n7HyN9h4j7bsa3wFHEEuIDrkkZAzoMc9t8MoyY+FwbvNQuu7U17aEJody5m+MQ5KllxyhjTpBpIMyOtPbHhPK/qbG1fuz4mtrAVYAOey/No=
+	t=1752587224; cv=none; b=ZkwJpCbQw5ItYdkZQmwRxufIEPu7jkjwtIHEqQ5UxGewUek1LPqE+tI65xMmWTAi2+rf90rk0I+T/qd36R3N5cdIGuQyY4RzgIemLKsrtTa4YmZoSNvkRZc5Yjw0V8GZZGfF4oTJUa2kJKnno9lCCv+X2VJ4Cvmpqqgab409V+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587748; c=relaxed/simple;
-	bh=rYLujJI18M4ryX9FVQ9Zcfn7ES5Y/YtD9D3QyU8t/hE=;
+	s=arc-20240116; t=1752587224; c=relaxed/simple;
+	bh=mmkLNBEUpTRHg3fp3rn6vTTt8CPTx7YnN0rW7+Qhu7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dnGghnSXdF/9OShWVyuXI3lwnGcr+lqcO9B6LJ3xqkZY8elF6l3aTYb2RadlBfyUSxP20iauve94lf3a8cwJcjRH4aH0VdfOV6WSW11XwdrG/4lhh0xcL71dwkyj2aLfMT2M7Xx82YhM3DiWAJ3yqad4Gnxt0HhOFuQdlxN3T7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xyy+NR/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1C5C4CEE3;
-	Tue, 15 Jul 2025 13:55:47 +0000 (UTC)
+	 MIME-Version; b=S6hIquOT5e4ZFRSl/PBLhI2NzuZBufrCr4hn26IAEKV9F7YxU16XlSGf1SpK2hbupXskfRWf6CgUGLEOBpcspxbh6p0IoXYDrouKa9aznC7ZH99a5deGIM6LSAuNwpfJ/l8azXHglMav1L8Ndgz3QBIQjwf2jHGmOCssMXZ7l/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpT/6154; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2E2C4CEE3;
+	Tue, 15 Jul 2025 13:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587748;
-	bh=rYLujJI18M4ryX9FVQ9Zcfn7ES5Y/YtD9D3QyU8t/hE=;
+	s=korg; t=1752587224;
+	bh=mmkLNBEUpTRHg3fp3rn6vTTt8CPTx7YnN0rW7+Qhu7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xyy+NR/hisz8/YGHNKSMm+o6l5JdGugACo/m73Nzl1S4fOqe8F1f/JC4/bzncSoGh
-	 6pHWuRZi9VwwvhpzheYQM7AZD0bDWRRHVBDzHe62eI3NmFvyDzX/UpNhk7x2PrstHy
-	 SrXpJR+NWDoeTdo/UghGNO7zadVj5k6tsAQHgr+Y=
+	b=OpT/61547hQ2/CHcHzTmjexBjMex6YRAVukRtIsFf3xc8/RCrT+hX+suUB2uoQgrT
+	 JQES2tuZ5H3V7CN/0KhueDtuL94367nw9pMayYtJxtuBvC554nciPEmXwLk2/j95qq
+	 lfUDu74XAwbGROiq9n3ZzJYPKi6y0sHiqiSx+XsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.10 127/208] usb: typec: displayport: Fix potential deadlock
-Date: Tue, 15 Jul 2025 15:13:56 +0200
-Message-ID: <20250715130816.030126812@linuxfoundation.org>
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	Borislav Petkov <bp@alien8.de>
+Subject: [PATCH 6.1 21/88] x86/boot: Compile boot code with -std=gnu11 too
+Date: Tue, 15 Jul 2025 15:13:57 +0200
+Message-ID: <20250715130755.366749918@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Alexey Dobriyan <adobriyan@gmail.com>
 
-commit 099cf1fbb8afc3771f408109f62bdec66f85160e upstream.
+commit b3bee1e7c3f2b1b77182302c7b2131c804175870 upstream.
 
-The deadlock can occur due to a recursive lock acquisition of
-`cros_typec_altmode_data::mutex`.
-The call chain is as follows:
-1. cros_typec_altmode_work() acquires the mutex
-2. typec_altmode_vdm() -> dp_altmode_vdm() ->
-3. typec_altmode_exit() -> cros_typec_altmode_exit()
-4. cros_typec_altmode_exit() attempts to acquire the mutex again
+Use -std=gnu11 for consistency with main kernel code.
 
-To prevent this, defer the `typec_altmode_exit()` call by scheduling
-it rather than calling it directly from within the mutex-protected
-context.
+It doesn't seem to change anything in vmlinux.
 
-Cc: stable <stable@kernel.org>
-Fixes: b4b38ffb38c9 ("usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250624133246.3936737-1-akuchynski@chromium.org
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Link: https://lore.kernel.org/r/2058761e-12a4-4b2f-9690-3c3c1c9902a5@p183
+Cc: Borislav Petkov <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -305,8 +305,7 @@ static int dp_altmode_vdm(struct typec_a
- 	case CMDT_RSP_NAK:
- 		switch (cmd) {
- 		case DP_CMD_STATUS_UPDATE:
--			if (typec_altmode_exit(alt))
--				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
-+			dp->state = DP_STATE_EXIT;
- 			break;
- 		case DP_CMD_CONFIGURE:
- 			dp->data.conf = 0;
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -43,7 +43,7 @@ endif
+ 
+ # How to compile the 16-bit code.  Note we always compile for -march=i386;
+ # that way we can complain to the user if the CPU is insufficient.
+-REALMODE_CFLAGS	:= -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
++REALMODE_CFLAGS	:= -std=gnu11 -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
+ 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
+ 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
+ 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
 
 
 
