@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-162016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031ADB05B2B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:17:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4B8B05B37
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:18:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC5DC565479
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 594534E78DE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE59274FDB;
-	Tue, 15 Jul 2025 13:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688352E2EE9;
+	Tue, 15 Jul 2025 13:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaH+NFLi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfZ6tWdB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A8F2472AE;
-	Tue, 15 Jul 2025 13:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262692D839A;
+	Tue, 15 Jul 2025 13:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585449; cv=none; b=itm59iqpI+s7P9DUnAqNdlZKPxqkDRvaDWoBJ7VB7lNx37nVOlDlY4+Oz9QbEz9CGV1jEXGyLPFWyLisQ53raI6Qt5H7mExP4v71gjVoAMDHM0QOZtGD+7w3EpqdrCHwU31M99BwO7qGd9woPgF4D7BZOEb8NWDSk5S9JQ8yfPI=
+	t=1752585455; cv=none; b=GI2+fNG2Nuyjdz7YzfXcu0nfMGU/9Xr7dm5HLfuf5047v6mC5Wx/x4gjRPtioRe3fGuL+1XH5HN8qkY/TsnK7g9mm/1sV9+U2paXzWbO7pJyaPKqMoh8Ukh3QnF8tsxofhC18tDaYJ+MsQ9cmE1lxHJyQnkTn5vyrT+oYCkoy3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585449; c=relaxed/simple;
-	bh=tZba4MvOLuRi7Pysc3V0IoTv5lrJz0KiN+sH1O+BCgM=;
+	s=arc-20240116; t=1752585455; c=relaxed/simple;
+	bh=aahn4r1aFAs+PDoZO0mvf5VJx5T27tcQOlUCyY/TQdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPDLBV0xbH6DyiRot8VSCoT/VfsDL+a59zLWrmYxU+eyZJJf8ywwPaUH9sbxOU2VILpHXzqESwOdZ2/N3D45ytkgR+V41aKYUYK1jO1JITkd4iXhNBic/4/GZ7ws7ppW8BD3thkLNe5HPua0wbj4NfL+Vpc447QSyTHmSHg7KIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaH+NFLi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF101C4CEE3;
-	Tue, 15 Jul 2025 13:17:28 +0000 (UTC)
+	 MIME-Version; b=evA/JmWm9ZuEIYUWQmlrsrzbuWV9wSxGHOGsJ+Zr3XlbPks+VnCgqCnt1xHlZR+dKXquKcpGMG2xCqIp4nVX5t2Fqa6WdnV33rrXQQDK+Oc4/8N/8s0V+GRge2vm7D4Dk+otMCmwzVu46aK3izsDs9wMcnjB/mGvH2q2H+5MLw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfZ6tWdB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DA3C4CEE3;
+	Tue, 15 Jul 2025 13:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585449;
-	bh=tZba4MvOLuRi7Pysc3V0IoTv5lrJz0KiN+sH1O+BCgM=;
+	s=korg; t=1752585454;
+	bh=aahn4r1aFAs+PDoZO0mvf5VJx5T27tcQOlUCyY/TQdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eaH+NFLizSI7OXHIYmBGbPH/8u5pTPiw/TbtfM0yKpL9Sj5jJfFpIu/Q/xevjYHXR
-	 a9rg3OzJefjEYYB/mkeOSVL3ivAZgNsgEI3on96zTSB3w7f++/UYbDyzslBHm9GLC0
-	 SfSMYG4dznf3CfLZChI6lifaK+pF6IaQKjeTAvq4=
+	b=RfZ6tWdBH5ePykcs9JydErhzCiQJrG8Cin1jCvFTpw3MHEpTyjISqT3XEgjw3gfTJ
+	 unDtc6Z5yy93wC5nZMatXgR5+fpXHF0iWDzUnQ9jcNfQV6vnxIuwFOSPp4fIZR7Plo
+	 y6wuW1Scf91gV8ZTSzWMSIlFHsa0TdHZI48XkUH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Chintan Vankar <c-vankar@ti.com>,
+	syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com,
+	syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com,
+	syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com,
+	syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com,
+	syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 044/163] net: ethernet: ti: am65-cpsw-nuss: Fix skb size by accounting for skb_shared_info
-Date: Tue, 15 Jul 2025 15:11:52 +0200
-Message-ID: <20250715130810.530076799@linuxfoundation.org>
+Subject: [PATCH 6.12 045/163] net/sched: Abort __tc_modify_qdisc if parent class does not exist
+Date: Tue, 15 Jul 2025 15:11:53 +0200
+Message-ID: <20250715130810.571205028@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
 References: <20250715130808.777350091@linuxfoundation.org>
@@ -67,48 +73,119 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chintan Vankar <c-vankar@ti.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit 02c4d6c26f1f662da8885b299c224ca6628ad232 ]
+[ Upstream commit ffdde7bf5a439aaa1955ebd581f5c64ab1533963 ]
 
-While transitioning from netdev_alloc_ip_align() to build_skb(), memory
-for the "skb_shared_info" member of an "skb" was not allocated. Fix this
-by allocating "PAGE_SIZE" as the skb length, accounting for the packet
-length, headroom and tailroom, thereby including the required memory space
-for skb_shared_info.
+Lion's patch [1] revealed an ancient bug in the qdisc API.
+Whenever a user creates/modifies a qdisc specifying as a parent another
+qdisc, the qdisc API will, during grafting, detect that the user is
+not trying to attach to a class and reject. However grafting is
+performed after qdisc_create (and thus the qdiscs' init callback) is
+executed. In qdiscs that eventually call qdisc_tree_reduce_backlog
+during init or change (such as fq, hhf, choke, etc), an issue
+arises. For example, executing the following commands:
 
-Fixes: 8acacc40f733 ("net: ethernet: ti: am65-cpsw: Add minimal XDP support")
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Chintan Vankar <c-vankar@ti.com>
-Link: https://patch.msgid.link/20250707085201.1898818-1-c-vankar@ti.com
+sudo tc qdisc add dev lo root handle a: htb default 2
+sudo tc qdisc add dev lo parent a: handle beef fq
+
+Qdiscs such as fq, hhf, choke, etc unconditionally invoke
+qdisc_tree_reduce_backlog() in their control path init() or change() which
+then causes a failure to find the child class; however, that does not stop
+the unconditional invocation of the assumed child qdisc's qlen_notify with
+a null class. All these qdiscs make the assumption that class is non-null.
+
+The solution is ensure that qdisc_leaf() which looks up the parent
+class, and is invoked prior to qdisc_create(), should return failure on
+not finding the class.
+In this patch, we leverage qdisc_leaf to return ERR_PTRs whenever the
+parentid doesn't correspond to a class, so that we can detect it
+earlier on and abort before qdisc_create is called.
+
+[1] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
+
+Fixes: 5e50da01d0ce ("[NET_SCHED]: Fix endless loops (part 2): "simple" qdiscs")
+Reported-by: syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68663c93.a70a0220.5d25f.0857.GAE@google.com/
+Reported-by: syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68663c94.a70a0220.5d25f.0858.GAE@google.com/
+Reported-by: syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0013.GAE@google.com/
+Reported-by: syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0014.GAE@google.com/
+Reported-by: syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68679e81.a70a0220.29cf51.0016.GAE@google.com/
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250707210801.372995-1-victor@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/sched/sch_api.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 393cc5192e90d..6b5cff087686e 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -612,8 +612,6 @@ static struct sk_buff *am65_cpsw_build_skb(void *page_addr,
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 26378eac1bd08..c56a01992cb28 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -334,17 +334,22 @@ struct Qdisc *qdisc_lookup_rcu(struct net_device *dev, u32 handle)
+ 	return q;
+ }
+ 
+-static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid)
++static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid,
++				struct netlink_ext_ack *extack)
  {
- 	struct sk_buff *skb;
+ 	unsigned long cl;
+ 	const struct Qdisc_class_ops *cops = p->ops->cl_ops;
  
--	len += AM65_CPSW_HEADROOM;
--
- 	skb = build_skb(page_addr, len);
- 	if (unlikely(!skb))
- 		return NULL;
-@@ -1217,7 +1215,7 @@ static int am65_cpsw_nuss_rx_packets(struct am65_cpsw_rx_flow *flow,
- 	}
+-	if (cops == NULL)
+-		return NULL;
++	if (cops == NULL) {
++		NL_SET_ERR_MSG(extack, "Parent qdisc is not classful");
++		return ERR_PTR(-EOPNOTSUPP);
++	}
+ 	cl = cops->find(p, classid);
  
- 	skb = am65_cpsw_build_skb(page_addr, ndev,
--				  AM65_CPSW_MAX_PACKET_SIZE, headroom);
-+				  PAGE_SIZE, headroom);
- 	if (unlikely(!skb)) {
- 		new_page = page;
- 		goto requeue;
+-	if (cl == 0)
+-		return NULL;
++	if (cl == 0) {
++		NL_SET_ERR_MSG(extack, "Specified class not found");
++		return ERR_PTR(-ENOENT);
++	}
+ 	return cops->leaf(p, cl);
+ }
+ 
+@@ -1526,7 +1531,7 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Failed to find qdisc with specified classid");
+ 					return -ENOENT;
+ 				}
+-				q = qdisc_leaf(p, clid);
++				q = qdisc_leaf(p, clid, extack);
+ 			} else if (dev_ingress_queue(dev)) {
+ 				q = rtnl_dereference(dev_ingress_queue(dev)->qdisc_sleeping);
+ 			}
+@@ -1537,6 +1542,8 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 			NL_SET_ERR_MSG(extack, "Cannot find specified qdisc on specified device");
+ 			return -ENOENT;
+ 		}
++		if (IS_ERR(q))
++			return PTR_ERR(q);
+ 
+ 		if (tcm->tcm_handle && q->handle != tcm->tcm_handle) {
+ 			NL_SET_ERR_MSG(extack, "Invalid handle");
+@@ -1630,7 +1637,9 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Failed to find specified qdisc");
+ 					return -ENOENT;
+ 				}
+-				q = qdisc_leaf(p, clid);
++				q = qdisc_leaf(p, clid, extack);
++				if (IS_ERR(q))
++					return PTR_ERR(q);
+ 			} else if (dev_ingress_queue_create(dev)) {
+ 				q = rtnl_dereference(dev_ingress_queue(dev)->qdisc_sleeping);
+ 			}
 -- 
 2.39.5
 
