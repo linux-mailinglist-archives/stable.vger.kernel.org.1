@@ -1,52 +1,57 @@
-Return-Path: <stable+bounces-162806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65C0B05FDF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:10:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1A3B05F8A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04C835A0248
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:02:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBD2C7BDE96
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F0F2E7658;
-	Tue, 15 Jul 2025 13:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB245BA42;
+	Tue, 15 Jul 2025 13:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvFF3Urb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7qpovsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A912E3AF9;
-	Tue, 15 Jul 2025 13:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666B32E7646;
+	Tue, 15 Jul 2025 13:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587524; cv=none; b=cYfrY8i1rhdXTNssurwP8IFEkXfRLr3/oRHPfTQgyyKXGY/+3pb/+IpWimpki95k/ZlD6FKMdsgo2hQ0detSldF/ucsfUHYXoVSLvnrOUF963i15yI13ZOxsddIhx49JadANeVrevBK6ofNXVRR4i9O/KovQrBdQgca/z1Thl0w=
+	t=1752587532; cv=none; b=UQERQqKtnXE0vGRgGc8VRlZJaRPIFJjso77izwnVDl/aPrBk5D+Zemp7ZQmghKO9/yqWKpV8JJv/Kg7djtDnm6WTyZlilVrDwft6mM/FX37yTs11HGP/VmuLf/4ZXlPR05s/z7XHKWQiReM2mpiLFVwkxewnfE7YECrtHoO/ud4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587524; c=relaxed/simple;
-	bh=xJDFIGUR/gsKTPI0YLllTrUcI1urx4XSphu+cvlLUK4=;
+	s=arc-20240116; t=1752587532; c=relaxed/simple;
+	bh=EEsIx2fX3Iv+j2gWhcpIg7BK1fTJDSp6H/Dwb07JwAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g13RSEoEFhWfApOCgKrW6sHih4cZvStl8NGwCaruUiozCgcExRjlRWcd6ZL7G2GpCVDppeUt7wERjiT2MNQlulfqnJA6GTRmJE3d5z3c3kf/QVPKx1j/vddGBl01ezIbqnrPPxiGdN0H96rqk+jamm60UwlXFflLvOFvSmX9Ttg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvFF3Urb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD43C4CEE3;
-	Tue, 15 Jul 2025 13:52:04 +0000 (UTC)
+	 MIME-Version; b=WL/++C+7gMxiPE2sOliGM/JiRUz/S5CX2TZsKSI3dQXMrRVfI8BJ/z5iF97vz6aaFljOHoNWDWXNJWTrYifTXbWIm+ZkdpFsCzzc1jUZpTh9cPwfT2VSuFQ7BFZLnIdjMFATp9NYwQxGU8Sd7gLwatgoWA4rBMnh7WStuQ/QQGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7qpovsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E15C4CEE3;
+	Tue, 15 Jul 2025 13:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587524;
-	bh=xJDFIGUR/gsKTPI0YLllTrUcI1urx4XSphu+cvlLUK4=;
+	s=korg; t=1752587532;
+	bh=EEsIx2fX3Iv+j2gWhcpIg7BK1fTJDSp6H/Dwb07JwAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvFF3Urb3xkq5UPC1TDpD5YuEL8X7QBQBh/u5nyKRe+IR3YA93lXv6vbeUkMgBtEB
-	 Ivc4Ah80hMVJ0jerxVl3qPime6NLFwrtKXInMakv4nI9/QCN9VmiNyb1FqopZR71Fk
-	 Robd7ylKhDgTiiE0YfepjUxS57cWweljlY/O0CnY=
+	b=t7qpovsvEcs/+dDt4KBhIOcrnZB1l8wPsFICGvr0hFQI0FpNaNNAafXSSTBpB2HAy
+	 DnEleCfLGXwcBvKmsYOBKLAqmsuFnKKikoeYzDNVckIpXCIMbRVMGI1JeP1x/ZKYyQ
+	 NTMW+DboHmwkLxlNENhF4Juw4+d+oAWOexFv5W3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.10 045/208] i2c: tiny-usb: disable zero-length read messages
-Date: Tue, 15 Jul 2025 15:12:34 +0200
-Message-ID: <20250715130812.760296696@linuxfoundation.org>
+	syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Gengming Liu <l.dmxcsnsbh@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 047/208] atm: clip: prevent NULL deref in clip_push()
+Date: Tue, 15 Jul 2025 15:12:36 +0200
+Message-ID: <20250715130812.839795972@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -65,48 +70,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit cbdb25ccf7566eee0c2b945e35cb98baf9ed0aa6 upstream.
+[ Upstream commit b993ea46b3b601915ceaaf3c802adf11e7d6bac6 ]
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+Blamed commit missed that vcc_destroy_socket() calls
+clip_push() with a NULL skb.
 
-Fixes: e8c76eed2ecd ("i2c: New i2c-tiny-usb bus driver")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: <stable@vger.kernel.org> # v2.6.22+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250522064349.3823-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If clip_devs is NULL, clip_push() then crashes when reading
+skb->truesize.
+
+Fixes: 93a2014afbac ("atm: fix a UAF in lec_arp_clear_vccs()")
+Reported-by: syzbot+1316233c4c6803382a8b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68556f59.a00a0220.137b3.004e.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Gengming Liu <l.dmxcsnsbh@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-tiny-usb.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/atm/clip.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/i2c/busses/i2c-tiny-usb.c
-+++ b/drivers/i2c/busses/i2c-tiny-usb.c
-@@ -140,6 +140,11 @@ out:
- 	return ret;
- }
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index 294cb9efe3d38..511467bb7fe40 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -193,12 +193,6 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
  
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks usb_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
+ 	pr_debug("\n");
+ 
+-	if (!clip_devs) {
+-		atm_return(vcc, skb->truesize);
+-		kfree_skb(skb);
+-		return;
+-	}
+-
+ 	if (!skb) {
+ 		pr_debug("removing VCC %p\n", clip_vcc);
+ 		if (clip_vcc->entry)
+@@ -208,6 +202,11 @@ static void clip_push(struct atm_vcc *vcc, struct sk_buff *skb)
+ 		return;
+ 	}
+ 	atm_return(vcc, skb->truesize);
++	if (!clip_devs) {
++		kfree_skb(skb);
++		return;
++	}
 +
- /* This is the actual algorithm we define */
- static const struct i2c_algorithm usb_algorithm = {
- 	.master_xfer	= usb_xfer,
-@@ -244,6 +249,7 @@ static int i2c_tiny_usb_probe(struct usb
- 	/* setup i2c adapter description */
- 	dev->adapter.owner = THIS_MODULE;
- 	dev->adapter.class = I2C_CLASS_HWMON;
-+	dev->adapter.quirks = &usb_quirks;
- 	dev->adapter.algo = &usb_algorithm;
- 	dev->adapter.algo_data = dev;
- 	snprintf(dev->adapter.name, sizeof(dev->adapter.name),
+ 	skb->dev = clip_vcc->entry ? clip_vcc->entry->neigh->dev : clip_devs;
+ 	/* clip_vcc->entry == NULL if we don't have an IP address yet */
+ 	if (!skb->dev) {
+-- 
+2.39.5
+
 
 
 
