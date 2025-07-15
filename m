@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D05AB05CE5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:37:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9ABB05B95
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3896F163C51
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 313B11C20009
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F0D28937D;
-	Tue, 15 Jul 2025 13:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945D22D5426;
+	Tue, 15 Jul 2025 13:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JkvdoFQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/EyBvk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A0A1B4231;
-	Tue, 15 Jul 2025 13:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521A327584E;
+	Tue, 15 Jul 2025 13:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586219; cv=none; b=kWQzPxSObT+wFPa4JLyNNunP1l3Ch2ea1j1QbJn3ZSl9DPK/3iMS8i60FHsif0xL/77dr2kW8zAUNqwJg8v1v8TovHpBAnfQdojx32f/kmwtLqedt2SSy43IUBSE3mXa7q0YeNWz764uXNXa8OixjyDNX3lYSFtCWPO6DrMOotE=
+	t=1752585717; cv=none; b=buvEAo+ZLaI3fYbgW/83snKE4fIDq3vy9ajUcVtxs774vp/xlNvaXHgnBbbGLvr+xaSZvkD+AwGIajJdyzU2RuP09r7q9AGkV2i2DLZhMPDlLSDEEvffyhNgknjdtFNLJUt8KUn+0vpw2H+Oi1IuZsPwQb3PfTmxVUYTkdwMbQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586219; c=relaxed/simple;
-	bh=g27ymKmGVlGV4h9k28ih/pK8lqhJ3IHutalOMG/e4KI=;
+	s=arc-20240116; t=1752585717; c=relaxed/simple;
+	bh=UijHOgt2lpTZU252Smt/Gu9JX2oRv8X+rVDVHJpJejA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLme59/yObejG4XOeTLXLAcfWj9Cp1pV3NVCbsz/Shf935vS9GsgpFdf5VeTpQU2jvN7lxDwkIXwabHbJ5v7q+FOrqzmoXwo7+wPyZOLLbMkMvqb9WiQTD7SpcrnI2oQ9u5X0dEG6cx9gyg0jsZokUiFwT87ZoSIBb/DamtabAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JkvdoFQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785C5C4CEE3;
-	Tue, 15 Jul 2025 13:30:18 +0000 (UTC)
+	 MIME-Version; b=NVcXjPHEN6YVV3Py4k0Mfuj3YV1gAvB73yBQfDJT5R4FFRV2JhBuUryGhnHNXD+zsnnpgSxodeGHp4Rc/8ibbUecyDg2DRdLnNltrp1TyFE6a0kjQaCe+HmNjMyA9ZGVVJ8tmsXbRMzHAmlSNS+wKSr1w0x9daD305wACwc0QHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/EyBvk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA85EC4CEE3;
+	Tue, 15 Jul 2025 13:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586218;
-	bh=g27ymKmGVlGV4h9k28ih/pK8lqhJ3IHutalOMG/e4KI=;
+	s=korg; t=1752585717;
+	bh=UijHOgt2lpTZU252Smt/Gu9JX2oRv8X+rVDVHJpJejA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JkvdoFQ2Y5GxqTog92eyYej2SBqojwY928oHj4IzOJggGXl/flDRn+dR5sz6mKJz/
-	 EanDVC9oRHzl7X1K+72guH3KLdxb05E8FDz6dUPJ/bee5WnBRNaHE8IkskUE/9dXNE
-	 Ew/YL22BoQwD0PqqMeVSacDn9yPcbTQhFUH/73DU=
+	b=w/EyBvk2zMAg+4zg2sUWK/Hmo0nZFh9+MVrf7LXsedqL2xZlf90rtJioyeXQCTri2
+	 qj0zFmQoduu8iOkxzR4HyuHSlcsM9zML6vKJSSYmSLgLZasYkOGRsb+yCl3zytMHbk
+	 GwGrPdsl8PhQnOwhZMXszBiNuD2vc2x68MwvxkUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 5.15 33/77] usb: gadget: u_serial: Fix race condition in TTY wakeup
-Date: Tue, 15 Jul 2025 15:13:32 +0200
-Message-ID: <20250715130753.035907965@linuxfoundation.org>
+	Yasmin Fitzgerald <sunoflife1.git@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 145/163] ALSA: hda/realtek - Enable mute LED on HP Pavilion Laptop 15-eg100
+Date: Tue, 15 Jul 2025 15:13:33 +0200
+Message-ID: <20250715130814.650767417@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Yasmin Fitzgerald <sunoflife1.git@gmail.com>
 
-commit c529c3730bd09115684644e26bf01ecbd7e2c2c9 upstream.
+[ Upstream commit 68cc9d3c8e44afe90e43cbbd2960da15c2f31e23 ]
 
-A race condition occurs when gs_start_io() calls either gs_start_rx() or
-gs_start_tx(), as those functions briefly drop the port_lock for
-usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
-port.tty and port_usb, respectively.
+The HP Pavilion Laptop 15-eg100 has Realtek HDA codec ALC287.
+It needs the ALC287_FIXUP_HP_GPIO_LED quirk to enable the mute LED.
 
-Use the null-safe TTY Port helper function to wake up TTY.
-
-Example
-  CPU1:			      CPU2:
-  gserial_connect() // lock
-  			      gs_close() // await lock
-  gs_start_rx()     // unlock
-  usb_ep_queue()
-  			      gs_close() // lock, reset port.tty and unlock
-  gs_start_rx()     // lock
-  tty_wakeup()      // NPE
-
-Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/linux-usb/20240116141801.396398-1-khtsai@google.com/
-Link: https://lore.kernel.org/r/20250617050844.1848232-2-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yasmin Fitzgerald <sunoflife1.git@gmail.com>
+Link: https://patch.msgid.link/20250621053832.52950-1-sunoflife1.git@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -290,8 +290,8 @@ __acquires(&port->port_lock)
- 			break;
- 	}
- 
--	if (do_tty_wake && port->port.tty)
--		tty_wakeup(port->port.tty);
-+	if (do_tty_wake)
-+		tty_port_tty_wakeup(&port->port);
- 	return status;
- }
- 
-@@ -568,7 +568,7 @@ static int gs_start_io(struct gs_port *p
- 		gs_start_tx(port);
- 		/* Unblock any pending writes into our circular buffer, in case
- 		 * we didn't in gs_start_tx() */
--		tty_wakeup(port->port.tty);
-+		tty_port_tty_wakeup(&port->port);
- 	} else {
- 		/* Free reqs only if we are still connected */
- 		if (port->port_usb) {
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 57f17ddaf7860..0bc59b6f1b9a6 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10655,6 +10655,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8975, "HP EliteBook x360 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x897d, "HP mt440 Mobile Thin Client U74", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8981, "HP Elite Dragonfly G3", ALC245_FIXUP_CS35L41_SPI_4),
++	SND_PCI_QUIRK(0x103c, 0x898a, "HP Pavilion 15-eg100", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x898e, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x898f, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8991, "HP EliteBook 845 G9", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+-- 
+2.39.5
+
 
 
 
