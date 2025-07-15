@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E28AB05EB8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD3DB05D21
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C93216C1B1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E86318907DD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC232E7189;
-	Tue, 15 Jul 2025 13:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911CB2E3B13;
+	Tue, 15 Jul 2025 13:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8kro404"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzrCspcg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3692E7186;
-	Tue, 15 Jul 2025 13:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50ABA2E3AE2;
+	Tue, 15 Jul 2025 13:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587055; cv=none; b=ZeU3tsni8LTtDK/YYr0gQAD6FCLjpr/of74BVYFrqzIwD9F4EJk8QXgRdfPHlh39ZpsraplMFk3NBGGTUUQ7eEwHfv6HS99Vf40rWqU9vfVp7S/8q7SBarIVGNlCQ1M9wkjAP23KJdkw/djL5iE19Hi/HR2F+ZxcZmci1yu26ns=
+	t=1752586250; cv=none; b=i4AiyqLeq1d2XFswtgvx8YKzLcluArHm/zfFCw4vDj2ksdNaDsVlyHWZM5j7/Q2liwSnIq2nEGOzhlMnNuPYscPkSMBAIDMIvQ3W/N41sPmDWuPbanIbYqjVgHrEjKpf6WLVocYxMUYrUMkuvHHxavWyx/+d10nyyd8C53V5qHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587055; c=relaxed/simple;
-	bh=jI1bcSY3Tob9dwHMXCeAjepimVlcV5L3z2R0pH+Hf6E=;
+	s=arc-20240116; t=1752586250; c=relaxed/simple;
+	bh=efBhIwKPPjOGmGL+kT1nntAUbHmbRusXO3um3qSNySk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAkjBW2rrE+Ie2kKuULxfsvA9wXNFqek60EARzburCHWgFeBHs/MpIzEdzl2y+6QWSJI9b1PA33ztKMD8aRxEHFJIkif5mcsJsy7RHwv75X+ukiOpK6qp/M1WURg/VUkL5I6845p4Pz8OkptS0GppMJR+w3HY81SL3pY+8kCF1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8kro404; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83A5C4CEE3;
-	Tue, 15 Jul 2025 13:44:14 +0000 (UTC)
+	 MIME-Version; b=sn7pvw9Ckh60mhDZyxl24F739vdh+jgqDTtJZuvvVJamlgIznCiJE/q1km16rlpOImVbUdBZeJshB30/FQhEoFQ8bbHUDrymosUMPeukroiwoFRTsnPDhkNCb3o2t7uv4Ekl/FcvRwAM4xw0MPlxLtoVhdrsvhpBJtxdlyJnZX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzrCspcg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB943C4CEE3;
+	Tue, 15 Jul 2025 13:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587055;
-	bh=jI1bcSY3Tob9dwHMXCeAjepimVlcV5L3z2R0pH+Hf6E=;
+	s=korg; t=1752586250;
+	bh=efBhIwKPPjOGmGL+kT1nntAUbHmbRusXO3um3qSNySk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T8kro404rqDOnFRd9ElYEc7+H3inGahGYJdq0qeIALtLTyQpBeC2glN6/FDH0DR5l
-	 OPrlinOdavQq3U1BId8xTDAOGkF2m2DDIv/i/nZCOSa7togS6s48vedA0RjFUrOGsu
-	 +Bfh3DQYNQifXuJD9Afq6ecvFvFOwjN18vDnvzaA=
+	b=QzrCspcgWzZmVErnoV20hU0wv5Otjijg2vsrfFnOufBsr29VdOFMRIFchRgk5rfm7
+	 hl2Ig4LEVT2oks8S3yQZu3hG7iHoot714117UggzkQT4C2wHd5X3gAUhNbByu/lnEk
+	 joJx8gyekFtOjEvz0mueBMWzUEpLY/oqXdN8pxTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	Shravya KN <shravya.k-n@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 149/192] erofs: fix to add missing tracepoint in erofs_readahead()
+Subject: [PATCH 5.15 65/77] bnxt_en: Fix DCB ETS validation
 Date: Tue, 15 Jul 2025 15:14:04 +0200
-Message-ID: <20250715130820.890777412@linuxfoundation.org>
+Message-ID: <20250715130754.336288188@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Shravya KN <shravya.k-n@broadcom.com>
 
-[ Upstream commit d53238b614e01266a3d36b417b60a502e0698504 ]
+[ Upstream commit b74c2a2e9cc471e847abd87e50a2354c07e02040 ]
 
-Commit 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
-converts to use iomap interface, it removed trace_erofs_readahead()
-tracepoint in the meantime, let's add it back.
+In bnxt_ets_validate(), the code incorrectly loops over all possible
+traffic classes to check and add the ETS settings.  Fix it to loop
+over the configured traffic classes only.
 
-Fixes: 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250707084832.2725677-1-chao@kernel.org
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+The unconfigured traffic classes will default to TSA_ETS with 0
+bandwidth.  Looping over these unconfigured traffic classes may
+cause the validation to fail and trigger this error message:
+
+"rejecting ETS config starving a TC\n"
+
+The .ieee_setets() will then fail.
+
+Fixes: 7df4ae9fe855 ("bnxt_en: Implement DCBNL to support host-based DCBX.")
+Reviewed-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250710213938.1959625-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/data.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/erofs/data.c b/fs/erofs/data.c
-index 0ab0e8ec70d03..33cb0a7330d23 100644
---- a/fs/erofs/data.c
-+++ b/fs/erofs/data.c
-@@ -363,6 +363,9 @@ static int erofs_read_folio(struct file *file, struct folio *folio)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
+index 228a5db7e1434..596513ffdfd9c 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
+@@ -479,7 +479,9 @@ static int bnxt_ets_validate(struct bnxt *bp, struct ieee_ets *ets, u8 *tc)
  
- static void erofs_readahead(struct readahead_control *rac)
- {
-+	trace_erofs_readahead(rac->mapping->host, readahead_index(rac),
-+					readahead_count(rac), true);
-+
- 	return iomap_readahead(rac, &erofs_iomap_ops);
- }
+ 		if ((ets->tc_tx_bw[i] || ets->tc_tsa[i]) && i > bp->max_tc)
+ 			return -EINVAL;
++	}
  
++	for (i = 0; i < max_tc; i++) {
+ 		switch (ets->tc_tsa[i]) {
+ 		case IEEE_8021QAZ_TSA_STRICT:
+ 			break;
 -- 
 2.39.5
 
