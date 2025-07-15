@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-162690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03ECEB05EE5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD43B05C80
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD9D47B8A0E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:56:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DE2317BC00
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416102E4272;
-	Tue, 15 Jul 2025 13:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3D62E765D;
+	Tue, 15 Jul 2025 13:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLl6aM+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgmUZWH6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23852E424E;
-	Tue, 15 Jul 2025 13:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7752E764E;
+	Tue, 15 Jul 2025 13:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587219; cv=none; b=OJvs4laL4SHoKJF7NJOrTvNdG6F1gUSznLPtLyLCFjGcDvwCTVjQZMDyGR0HmErKrJFheoruxqXC+Kp6nAyP2J33yA9waOaixk68ESZsQVcyBtCOUtdUinm+8F05MI1/FjnXkueCol1l+i8FqTlrSmrXITNUxtWRXglUTOvVpak=
+	t=1752586030; cv=none; b=Zp70+T5PqFduWRXIdUh+RPuaJTYC6NaWsateQuHTn3RUwLW68QMgOkHuLW99e0IaOryLuBJ9wvPa1YWY3yz2nmE4YRyYDLmXHkXdOjaHObgcJlCWlZn3gJvDg7isoc4pxfaHNt5TcMKD3GsuJ5wOOmfsBAIpVZGEDNcidnxbJYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587219; c=relaxed/simple;
-	bh=BJc2oKrBiFyExis0PhbWzGfELvL9FaE4Dwc+SbOUSVk=;
+	s=arc-20240116; t=1752586030; c=relaxed/simple;
+	bh=WNt4QEGVOENKcdFM2p3W9zSvD+TRmnEzf79/iaqVxCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9TOsF8AJh3FEGRCZP/Ecp3mLL67QvVZQUFMj5xiXateWSIzTO0WgYg8hXS0P6c0uDGWhEGbjTNd7zgVE5joSxfAulF/MXV6QqKw1JRh9FugcyVeCBHhFnVGx5jCPwy225nNjNiNNxLssy6puonOn2NtuwE9WER0UlvTBNNLDWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLl6aM+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA06C4CEE3;
-	Tue, 15 Jul 2025 13:46:58 +0000 (UTC)
+	 MIME-Version; b=UIZ80nr9OoXpBl/frksAhx91B+mV/nb7W17kwT6MaA/J+eADVyH7jfOmm0mew1ZnpmJ73aDGf1LaD6imd/K7sUt4Sczf1l5M13Ltj5FzAATYpwz/MDeXsSPeDSWtmCMzONPpxfzJx+Sy0qi2k86UiMg/IX0VKWPTic2R68h8YBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgmUZWH6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60447C4CEE3;
+	Tue, 15 Jul 2025 13:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587218;
-	bh=BJc2oKrBiFyExis0PhbWzGfELvL9FaE4Dwc+SbOUSVk=;
+	s=korg; t=1752586030;
+	bh=WNt4QEGVOENKcdFM2p3W9zSvD+TRmnEzf79/iaqVxCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLl6aM+NStAhRmZMCMSdbvHSDk/wCMhmsvv8LjLshQSmQo7F1z8Irc80M6jSXsy3/
-	 9K/GYKnAVeFlc73zfs38RGpkmI2ugjohjYzs9R7q2HmhBokVmcAiMiWPHwsTd/46mj
-	 J0EGJaqPhnCmiYZjAWhk09Qv5xDIoqkwdCFcet+8=
+	b=CgmUZWH62q/NFhNORqy9RHRfmJ78S4Z2efxGnAFioIelI0np6as1UP1hraX+BkCDP
+	 8o2kYwNXjmE4HbQ1kCH4xFYb5V8sBLcY3ROBjZenJh/Cjy+SqEEJPZWhR0MSKYNWfS
+	 2jPJt7BZY3Bn/DWePs2//Z71clPtFjhB4UjOuLZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
-	Hailong Liu <hailong.liu@oppo.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"zhangpeng.00@bytedance.com" <zhangpeng.00@bytedance.com>,
-	Steve Kang <Steve.Kang@unisoc.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 19/88] maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
+	Long Li <longli@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 099/109] net: mana: Record doorbell physical address in PF mode
 Date: Tue, 15 Jul 2025 15:13:55 +0200
-Message-ID: <20250715130755.283873893@linuxfoundation.org>
+Message-ID: <20250715130802.845767438@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Long Li <longli@microsoft.com>
 
-commit fba46a5d83ca8decb338722fb4899026d8d9ead2 upstream.
+[ Upstream commit e0fca6f2cebff539e9317a15a37dcf432e3b851a ]
 
-Temporarily clear the preallocation flag when explicitly requesting
-allocations.  Pre-existing allocations are already counted against the
-request through mas_node_count_gfp(), but the allocations will not happen
-if the MA_STATE_PREALLOC flag is set.  This flag is meant to avoid
-re-allocating in bulk allocation mode, and to detect issues with
-preallocation calculations.
+MANA supports RDMA in PF mode. The driver should record the doorbell
+physical address when in PF mode.
 
-The MA_STATE_PREALLOC flag should also always be set on zero allocations
-so that detection of underflow allocations will print a WARN_ON() during
-consumption.
+The doorbell physical address is used by the RDMA driver to map
+doorbell pages of the device to user-mode applications through RDMA
+verbs interface. In the past, they have been mapped to user-mode while
+the device is in VF mode. With the support for PF mode implemented,
+also expose those pages in PF mode.
 
-User visible effect of this flaw is a WARN_ON() followed by a null pointer
-dereference when subsequent requests for larger number of nodes is
-ignored, such as the vma merge retry in mmap_region() caused by drivers
-altering the vma flags (which happens in v6.6, at least)
+Support for PF mode is implemented in
+290e5d3c49f6 ("net: mana: Add support for Multi Vports on Bare metal")
 
-Link: https://lkml.kernel.org/r/20250616184521.3382795-3-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reported-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Reported-by: Hailong Liu <hailong.liu@oppo.com>
-Link: https://lore.kernel.org/all/1652f7eb-a51b-4fee-8058-c73af63bacd1@oppo.com/
-Link: https://lore.kernel.org/all/20250428184058.1416274-1-Liam.Howlett@oracle.com/
-Link: https://lore.kernel.org/all/20250429014754.1479118-1-Liam.Howlett@oracle.com/
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Hailong Liu <hailong.liu@oppo.com>
-Cc: zhangpeng.00@bytedance.com <zhangpeng.00@bytedance.com>
-Cc: Steve Kang <Steve.Kang@unisoc.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1750210606-12167-1-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/microsoft/mana/gdma_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5802,10 +5802,12 @@ int mas_preallocate(struct ma_state *mas
- {
- 	int ret;
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index 9ed965d61e355..d3c9a3020fbf6 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -28,6 +28,9 @@ static void mana_gd_init_pf_regs(struct pci_dev *pdev)
+ 	gc->db_page_base = gc->bar0_va +
+ 				mana_gd_r64(gc, GDMA_PF_REG_DB_PAGE_OFF);
  
-+	mas->mas_flags &= ~MA_STATE_PREALLOC;
- 	mas_node_count_gfp(mas, 1 + mas_mt_height(mas) * 3, gfp);
--	mas->mas_flags |= MA_STATE_PREALLOC;
--	if (likely(!mas_is_err(mas)))
-+	if (likely(!mas_is_err(mas))) {
-+		mas->mas_flags |= MA_STATE_PREALLOC;
- 		return 0;
-+	}
++	gc->phys_db_page_base = gc->bar0_pa +
++				mana_gd_r64(gc, GDMA_PF_REG_DB_PAGE_OFF);
++
+ 	sriov_base_off = mana_gd_r64(gc, GDMA_SRIOV_REG_CFG_BASE_OFF);
  
- 	mas_set_alloc_req(mas, 0);
- 	ret = xa_err(mas->node);
+ 	sriov_base_va = gc->bar0_va + sriov_base_off;
+-- 
+2.39.5
+
 
 
 
