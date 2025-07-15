@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30DE4B05F53
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E61FB05D3E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA22E7BE385
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 326A27BD3F5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252EF2EAD0D;
-	Tue, 15 Jul 2025 13:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDBF2EA745;
+	Tue, 15 Jul 2025 13:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ye2LUGKz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3QaOlK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55B42E92C2;
-	Tue, 15 Jul 2025 13:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1042E49AC;
+	Tue, 15 Jul 2025 13:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587545; cv=none; b=oAXyK0InV1wuLQDfZPSdtkZLk3boJ1PjpzpJvkw9c4RdT7KZIdIal4H3d0c6Eh41TXBtoOYNPFWOVooS9n4V1Frlm3bECsM62TodYTri0RLk1AxZ+hNw00ADMycEINLsawWXqUp8TLnni6VqVfa/5HXERxZPEHE/V0Eskp6Xv8o=
+	t=1752586452; cv=none; b=hzQUg1AIXvuWalI7ZUEf6PrFx/8xTFXjw/q9GS3htFXcjAA1mA1YgfZweAFCmXGg55d0g2RLrnE6MwlKE8MIKbM5B+f7Bs/dVGXRvSvAMW0vT30zw5aOywHyDt5dufhtDYx3qf+pWAcjZkkCG08+36rhsjdRj7K2gm4jBFLflho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587545; c=relaxed/simple;
-	bh=fX4aUcGKHfWt9i0UM+HwPV62ayXXJKcmbwOp8KSZYww=;
+	s=arc-20240116; t=1752586452; c=relaxed/simple;
+	bh=PcwxdcZYuuu8gBaf/LM7AJqaEywm/63OLW+5iF8tBoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FoO93eImudnFBiWFzxQ2apzBKSrrxda4DUqQgY6jNp4KrHQNvOqu1XNSgGUegu8MwuvG5Fuj/yA4hMmycfxCeSK3WTdbhPxOhJ7P1NGs0mDu6ZzLVUFxNhoLBHMP/DdJVG+FACUxM4wBeLEUCHOBHdqllSPAJ4LT+i6o6nmOaI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ye2LUGKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C7DC4CEF1;
-	Tue, 15 Jul 2025 13:52:24 +0000 (UTC)
+	 MIME-Version; b=ME272THiH0YG7mqu5fr0V6va+1QExbH/gvxEucL9AJGi9AQk738AAUSV6bOCpS9e1AiM4IuzwjmXv3Z6vhO1QAigUqsL+NwwqpnkYeMcwkM4CU7FKjrWVbc2QUL5kVKWK+twU5Osj80XRX6Z/91SHufPDAQh7XHPdkaCXnMuVPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3QaOlK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FC2C4CEE3;
+	Tue, 15 Jul 2025 13:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587545;
-	bh=fX4aUcGKHfWt9i0UM+HwPV62ayXXJKcmbwOp8KSZYww=;
+	s=korg; t=1752586452;
+	bh=PcwxdcZYuuu8gBaf/LM7AJqaEywm/63OLW+5iF8tBoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ye2LUGKzJhdJhFb0bEcKcDFjhIt4kGR7lz+f74SQx/12EXL4RW8KTcbCKzFZUMUV4
-	 F6ptlmXYn5YjzfAS+UU1iVFyQ+bESgPcLucFa6kIEdvUH1SOAmIikQVfxHAuBk64pI
-	 qWm/VOy6YiJcbTi2F/iK2+/Sx8Sldc+UQXeOorvQ=
+	b=O3QaOlK21UBCaCYTSK0aBJVbjowZSdcEgarbNDPU6qN5STf9GWxZtRutH1ScraFMU
+	 xzeC0dVEZugCksmjHdUy1baWvNJx64ewkQjnO1RCZ+4ijjDDZMXqUKWiEGgrpx954q
+	 h7PIJEE5aTadTj84V0M3udU40RFja37H81DE3+UA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daan De Meyer <daan.j.demeyer@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 052/208] vsock/uapi: fix linux/vm_sockets.h userspace compilation errors
+Subject: [PATCH 5.4 039/148] wifi: mac80211: fix beacon interval calculation overflow
 Date: Tue, 15 Jul 2025 15:12:41 +0200
-Message-ID: <20250715130813.036269900@linuxfoundation.org>
+Message-ID: <20250715130801.880791758@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-[ Upstream commit 22bbc1dcd0d6785fb390c41f0dd5b5e218d23bdd ]
+[ Upstream commit 7a3750ff0f2e8fee338a9c168f429f6c37f0e820 ]
 
-If a userspace application just include <linux/vm_sockets.h> will fail
-to build with the following errors:
+As we are converting from TU to usecs, a beacon interval of
+100*1024 usecs will lead to integer wrapping. To fix change
+to use a u32.
 
-    /usr/include/linux/vm_sockets.h:182:39: error: invalid application of ‘sizeof’ to incomplete type ‘struct sockaddr’
-      182 |         unsigned char svm_zero[sizeof(struct sockaddr) -
-          |                                       ^~~~~~
-    /usr/include/linux/vm_sockets.h:183:39: error: ‘sa_family_t’ undeclared here (not in a function)
-      183 |                                sizeof(sa_family_t) -
-          |
-
-Include <sys/socket.h> for userspace (guarded by ifndef __KERNEL__)
-where `struct sockaddr` and `sa_family_t` are defined.
-We already do something similar in <linux/mptcp.h> and <linux/if.h>.
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Reported-by: Daan De Meyer <daan.j.demeyer@gmail.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250623100053.40979-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 057d5f4ba1e4 ("mac80211: sync dtim_count to TSF")
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250621123209.511796-1-lachlan.hodges@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/vm_sockets.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/mac80211/util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/vm_sockets.h b/include/uapi/linux/vm_sockets.h
-index fd0ed7221645d..67e3938e86bd0 100644
---- a/include/uapi/linux/vm_sockets.h
-+++ b/include/uapi/linux/vm_sockets.h
-@@ -17,6 +17,10 @@
- #ifndef _UAPI_VM_SOCKETS_H
- #define _UAPI_VM_SOCKETS_H
- 
-+#ifndef __KERNEL__
-+#include <sys/socket.h>        /* for struct sockaddr and sa_family_t */
-+#endif
-+
- #include <linux/socket.h>
- 
- /* Option name for STREAM socket buffer size.  Use as the option name in
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 515fe1d539b49..415cd7f50815f 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -3807,7 +3807,7 @@ void ieee80211_recalc_dtim(struct ieee80211_local *local,
+ {
+ 	u64 tsf = drv_get_tsf(local, sdata);
+ 	u64 dtim_count = 0;
+-	u16 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
++	u32 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
+ 	u8 dtim_period = sdata->vif.bss_conf.dtim_period;
+ 	struct ps_data *ps;
+ 	u8 bcns_from_dtim;
 -- 
 2.39.5
 
