@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F32B060C5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A43DB05FCE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 046C81891118
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:12:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D2A41C426DC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44902E9EA5;
-	Tue, 15 Jul 2025 13:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389132E542E;
+	Tue, 15 Jul 2025 13:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMn1HVBu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lsis1anx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735852E9EC6;
-	Tue, 15 Jul 2025 13:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80652D8778;
+	Tue, 15 Jul 2025 13:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587939; cv=none; b=DYOkXfU7yiQBhxJm+YMr5AtGtDdYxzOJxJ5kdHEHJfWXxA+LIHTm4YfrafeiCiQy/qV5+HkW8lE3MTRC+M8QGgMR6TXBkFBx7Y6cZQ9a3LU52IEZaY7xMfBHFEqr07s3L92B5j0yObIfV8rG8EYIyzNLsvufCc5591f2UdWXK4k=
+	t=1752587337; cv=none; b=jptmz6ILXXUgUW396MPJ/kvx37h5Nb8XoMAd48RAfvgECBsDlxUv+dGBHwD3KHGzg8hnfEvMhygZngRQynCN7kK1/eNGr+ULOZOTQj3eQ29zC/R8fXc35kbC48VkR7xC2iKmcWThhLOmQb27MhREu/F5+ZKtAS81iGRoscdT/1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587939; c=relaxed/simple;
-	bh=51A3/pc5/XnA/LtQL6GMItecOMTDnjOhoEvNDIgE9tk=;
+	s=arc-20240116; t=1752587337; c=relaxed/simple;
+	bh=rKQVyzLZNhHVUMLqc9YlXFyPnAU72w/XE4IeT/eK5HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hYSOGdjeTS6NvJ7/Xk8I2WCmwt3Lx9xTmvyHPfSH8GV5GpHlTCPGOl0C1CwdWuOQDvyJsqUID+bnAk0cT+7QLJ8Yl9Eyx6gt1XPORmZFMv7bqM1+Vfu/zSTPQl+c17/JXebueCEJV43Cg9orrc7La6dXXja+q4L0LpSReTzJFp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMn1HVBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E04C4CEE3;
-	Tue, 15 Jul 2025 13:58:58 +0000 (UTC)
+	 MIME-Version; b=YlzkBXYQ7uXWr6XA6SFIOrRFh5GAlz2xo8ua1ps3CA2s2dn9xgwo9YK86EPn8qnzMqRhaEP27QxsyOCXtmZVNG5zdpyfN3x1dEqyRU0s6GVTpvHMjr2CXRDZ6KtQBRlWWxgh+4yuQmrbRBt9wQcgSJgMGhsqD/2uCRmtrDq+MSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lsis1anx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C05C4CEE3;
+	Tue, 15 Jul 2025 13:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587939;
-	bh=51A3/pc5/XnA/LtQL6GMItecOMTDnjOhoEvNDIgE9tk=;
+	s=korg; t=1752587336;
+	bh=rKQVyzLZNhHVUMLqc9YlXFyPnAU72w/XE4IeT/eK5HE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMn1HVBuI1zf1mJLrT2ab0ghh9ny6ACkRfUwigcinULghFnrvTPcEnpzCZCac5SGm
-	 37kxZ6/kq2Rq22egOwEv5YfykVgd1/HtImzgWXBjLcAfRS9VrlK1J3fwhSbFC6Y8+R
-	 r2ycqPL6SI9kE6hYMXU8EoFMk48twJJcfZoNF2EM=
+	b=Lsis1anxVZx5bDbUvFbwI3Kq+B/RVbdfUkh76HH89rl1YaVkA0MRWmpmn5EPT5o4K
+	 F4aAOFAwPoyjM1l7wo7OV1hJVm21h6Xjp7HcodtQPveyVU3sKOS1bUHlPIGwbX8fCx
+	 2G75fwvfknXnP4OEgLJdZlbzzjoZP08sKG9IKRjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.10 168/208] x86/its: Use dynamic thunks for indirect branches
-Date: Tue, 15 Jul 2025 15:14:37 +0200
-Message-ID: <20250715130817.712727942@linuxfoundation.org>
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Yue Hu <huyue2@coolpad.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 62/88] erofs: avoid on-stack pagepool directly passed by arguments
+Date: Tue, 15 Jul 2025 15:14:38 +0200
+Message-ID: <20250715130757.057582033@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,267 +62,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 872df34d7c51a79523820ea6a14860398c639b87 upstream.
+[ Upstream commit 6ab5eed6002edc5a29b683285e90459a7df6ce2b ]
 
-ITS mitigation moves the unsafe indirect branches to a safe thunk. This
-could degrade the prediction accuracy as the source address of indirect
-branches becomes same for different execution paths.
+On-stack pagepool is used so that short-lived temporary pages could be
+shared within a single I/O request (e.g. among multiple pclusters).
 
-To improve the predictions, and hence the performance, assign a separate
-thunk for each indirect callsite. This is also a defense-in-depth measure
-to avoid indirect branches aliasing with each other.
+Moving the remaining frontend-related uses into
+z_erofs_decompress_frontend to avoid too many arguments.
 
-As an example, 5000 dynamic thunks would utilize around 16 bits of the
-address space, thereby gaining entropy. For a BTB that uses
-32 bits for indexing, dynamic thunks could provide better prediction
-accuracy over fixed thunks.
-
-Have ITS thunks be variable sized and use EXECMEM_MODULE_TEXT such that
-they are both more flexible (got to extend them later) and live in 2M TLBs,
-just like kernel code, avoiding undue TLB pressure.
-
-  [ pawan: CONFIG_EXECMEM and CONFIG_EXECMEM_ROX are not supported on
-	   backport kernel, made changes to use module_alloc() and
-	   set_memory_*() for dynamic thunks. ]
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Link: https://lore.kernel.org/r/20230526201459.128169-3-hsiangkao@linux.alibaba.com
+Stable-dep-of: 99f7619a77a0 ("erofs: fix to add missing tracepoint in erofs_read_folio()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/alternative.h |   10 ++
- arch/x86/kernel/alternative.c      |  133 ++++++++++++++++++++++++++++++++++++-
- arch/x86/kernel/module.c           |    6 +
- include/linux/module.h             |    5 +
- 4 files changed, 151 insertions(+), 3 deletions(-)
+ fs/erofs/zdata.c | 64 +++++++++++++++++++++++-------------------------
+ 1 file changed, 30 insertions(+), 34 deletions(-)
 
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -80,6 +80,16 @@ extern void apply_returns(s32 *start, s3
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index ff82610eb14c9..ac8c082798512 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -236,13 +236,14 @@ static void z_erofs_bvec_iter_begin(struct z_erofs_bvec_iter *iter,
  
- struct module;
- 
-+#ifdef CONFIG_MITIGATION_ITS
-+extern void its_init_mod(struct module *mod);
-+extern void its_fini_mod(struct module *mod);
-+extern void its_free_mod(struct module *mod);
-+#else /* CONFIG_MITIGATION_ITS */
-+static inline void its_init_mod(struct module *mod) { }
-+static inline void its_fini_mod(struct module *mod) { }
-+static inline void its_free_mod(struct module *mod) { }
-+#endif
-+
- #if defined(CONFIG_RETHUNK) && defined(CONFIG_STACK_VALIDATION)
- extern bool cpu_wants_rethunk(void);
- extern bool cpu_wants_rethunk_at(void *addr);
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -18,6 +18,7 @@
- #include <linux/mmu_context.h>
- #include <linux/bsearch.h>
- #include <linux/sync_core.h>
-+#include <linux/moduleloader.h>
- #include <asm/text-patching.h>
- #include <asm/alternative.h>
- #include <asm/sections.h>
-@@ -29,6 +30,7 @@
- #include <asm/io.h>
- #include <asm/fixmap.h>
- #include <asm/asm-prototypes.h>
-+#include <asm/set_memory.h>
- 
- int __read_mostly alternatives_patched;
- 
-@@ -552,6 +554,127 @@ static int emit_indirect(int op, int reg
- 
- #ifdef CONFIG_MITIGATION_ITS
- 
-+static struct module *its_mod;
-+static void *its_page;
-+static unsigned int its_offset;
-+
-+/* Initialize a thunk with the "jmp *reg; int3" instructions. */
-+static void *its_init_thunk(void *thunk, int reg)
-+{
-+	u8 *bytes = thunk;
-+	int i = 0;
-+
-+	if (reg >= 8) {
-+		bytes[i++] = 0x41; /* REX.B prefix */
-+		reg -= 8;
-+	}
-+	bytes[i++] = 0xff;
-+	bytes[i++] = 0xe0 + reg; /* jmp *reg */
-+	bytes[i++] = 0xcc;
-+
-+	return thunk;
-+}
-+
-+void its_init_mod(struct module *mod)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
-+		return;
-+
-+	mutex_lock(&text_mutex);
-+	its_mod = mod;
-+	its_page = NULL;
-+}
-+
-+void its_fini_mod(struct module *mod)
-+{
-+	int i;
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
-+		return;
-+
-+	WARN_ON_ONCE(its_mod != mod);
-+
-+	its_mod = NULL;
-+	its_page = NULL;
-+	mutex_unlock(&text_mutex);
-+
-+	for (i = 0; i < mod->its_num_pages; i++) {
-+		void *page = mod->its_page_array[i];
-+		set_memory_ro((unsigned long)page, 1);
-+		set_memory_x((unsigned long)page, 1);
-+	}
-+}
-+
-+void its_free_mod(struct module *mod)
-+{
-+	int i;
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
-+		return;
-+
-+	for (i = 0; i < mod->its_num_pages; i++) {
-+		void *page = mod->its_page_array[i];
-+		module_memfree(page);
-+	}
-+	kfree(mod->its_page_array);
-+}
-+
-+static void *its_alloc(void)
-+{
-+	void *page = module_alloc(PAGE_SIZE);
-+
-+	if (!page)
-+		return NULL;
-+
-+	if (its_mod) {
-+		void *tmp = krealloc(its_mod->its_page_array,
-+				     (its_mod->its_num_pages+1) * sizeof(void *),
-+				     GFP_KERNEL);
-+		if (!tmp) {
-+			module_memfree(page);
-+			return NULL;
-+		}
-+
-+		its_mod->its_page_array = tmp;
-+		its_mod->its_page_array[its_mod->its_num_pages++] = page;
-+	}
-+
-+	return page;
-+}
-+
-+static void *its_allocate_thunk(int reg)
-+{
-+	int size = 3 + (reg / 8);
-+	void *thunk;
-+
-+	if (!its_page || (its_offset + size - 1) >= PAGE_SIZE) {
-+		its_page = its_alloc();
-+		if (!its_page) {
-+			pr_err("ITS page allocation failed\n");
-+			return NULL;
-+		}
-+		memset(its_page, INT3_INSN_OPCODE, PAGE_SIZE);
-+		its_offset = 32;
-+	}
-+
-+	/*
-+	 * If the indirect branch instruction will be in the lower half
-+	 * of a cacheline, then update the offset to reach the upper half.
-+	 */
-+	if ((its_offset + size - 1) % 64 < 32)
-+		its_offset = ((its_offset - 1) | 0x3F) + 33;
-+
-+	thunk = its_page + its_offset;
-+	its_offset += size;
-+
-+	set_memory_rw((unsigned long)its_page, 1);
-+	thunk = its_init_thunk(thunk, reg);
-+	set_memory_ro((unsigned long)its_page, 1);
-+	set_memory_x((unsigned long)its_page, 1);
-+
-+	return thunk;
-+}
-+
- static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
- 			     void *call_dest, void *jmp_dest)
+ static int z_erofs_bvec_enqueue(struct z_erofs_bvec_iter *iter,
+ 				struct z_erofs_bvec *bvec,
+-				struct page **candidate_bvpage)
++				struct page **candidate_bvpage,
++				struct page **pagepool)
  {
-@@ -599,9 +722,13 @@ clang_jcc:
+ 	if (iter->cur >= iter->nr) {
+ 		struct page *nextpage = *candidate_bvpage;
  
- static int emit_its_trampoline(void *addr, struct insn *insn, int reg, u8 *bytes)
- {
--	return __emit_trampoline(addr, insn, bytes,
--				 __x86_indirect_its_thunk_array[reg],
--				 __x86_indirect_its_thunk_array[reg]);
-+	u8 *thunk = __x86_indirect_its_thunk_array[reg];
-+	u8 *tmp = its_allocate_thunk(reg);
-+
-+	if (tmp)
-+		thunk = tmp;
-+
-+	return __emit_trampoline(addr, insn, bytes, thunk, thunk);
+ 		if (!nextpage) {
+-			nextpage = alloc_page(GFP_NOFS);
++			nextpage = erofs_allocpage(pagepool, GFP_NOFS);
+ 			if (!nextpage)
+ 				return -ENOMEM;
+ 			set_page_private(nextpage, Z_EROFS_SHORTLIVED_PAGE);
+@@ -406,6 +407,7 @@ struct z_erofs_decompress_frontend {
+ 	struct erofs_map_blocks map;
+ 	struct z_erofs_bvec_iter biter;
+ 
++	struct page *pagepool;
+ 	struct page *candidate_bvpage;
+ 	struct z_erofs_pcluster *pcl;
+ 	z_erofs_next_pcluster_t owned_head;
+@@ -440,8 +442,7 @@ static bool z_erofs_should_alloc_cache(struct z_erofs_decompress_frontend *fe)
+ 	return false;
  }
  
- /* Check if an indirect branch is at ITS-unsafe address */
---- a/arch/x86/kernel/module.c
-+++ b/arch/x86/kernel/module.c
-@@ -274,10 +274,15 @@ int module_finalize(const Elf_Ehdr *hdr,
- 			returns = s;
- 	}
- 
-+	its_init_mod(me);
-+
- 	if (retpolines) {
- 		void *rseg = (void *)retpolines->sh_addr;
- 		apply_retpolines(rseg, rseg + retpolines->sh_size);
- 	}
-+
-+	its_fini_mod(me);
-+
- 	if (returns) {
- 		void *rseg = (void *)returns->sh_addr;
- 		apply_returns(rseg, rseg + returns->sh_size);
-@@ -313,4 +318,5 @@ int module_finalize(const Elf_Ehdr *hdr,
- void module_arch_cleanup(struct module *mod)
+-static void z_erofs_bind_cache(struct z_erofs_decompress_frontend *fe,
+-			       struct page **pagepool)
++static void z_erofs_bind_cache(struct z_erofs_decompress_frontend *fe)
  {
- 	alternatives_smp_module_del(mod);
-+	its_free_mod(mod);
- }
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -524,6 +524,11 @@ struct module {
- 	atomic_t refcnt;
- #endif
+ 	struct address_space *mc = MNGD_MAPPING(EROFS_I_SB(fe->inode));
+ 	struct z_erofs_pcluster *pcl = fe->pcl;
+@@ -482,7 +483,7 @@ static void z_erofs_bind_cache(struct z_erofs_decompress_frontend *fe,
+ 			 * succeeds or fallback to in-place I/O instead
+ 			 * to avoid any direct reclaim.
+ 			 */
+-			newpage = erofs_allocpage(pagepool, gfp);
++			newpage = erofs_allocpage(&fe->pagepool, gfp);
+ 			if (!newpage)
+ 				continue;
+ 			set_page_private(newpage, Z_EROFS_PREALLOCATED_PAGE);
+@@ -495,7 +496,7 @@ static void z_erofs_bind_cache(struct z_erofs_decompress_frontend *fe,
+ 		if (page)
+ 			put_page(page);
+ 		else if (newpage)
+-			erofs_pagepool_add(pagepool, newpage);
++			erofs_pagepool_add(&fe->pagepool, newpage);
+ 	}
  
-+#ifdef CONFIG_MITIGATION_ITS
-+	int its_num_pages;
-+	void **its_page_array;
-+#endif
-+
- #ifdef CONFIG_CONSTRUCTORS
- 	/* Constructor functions. */
- 	ctor_fn_t *ctors;
+ 	/*
+@@ -593,7 +594,8 @@ static int z_erofs_attach_page(struct z_erofs_decompress_frontend *fe,
+ 		    !fe->candidate_bvpage)
+ 			fe->candidate_bvpage = bvec->page;
+ 	}
+-	ret = z_erofs_bvec_enqueue(&fe->biter, bvec, &fe->candidate_bvpage);
++	ret = z_erofs_bvec_enqueue(&fe->biter, bvec, &fe->candidate_bvpage,
++				   &fe->pagepool);
+ 	fe->pcl->vcnt += (ret >= 0);
+ 	return ret;
+ }
+@@ -797,7 +799,7 @@ static int z_erofs_read_fragment(struct inode *inode, erofs_off_t pos,
+ }
+ 
+ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
+-				struct page *page, struct page **pagepool)
++				struct page *page)
+ {
+ 	struct inode *const inode = fe->inode;
+ 	struct erofs_map_blocks *const map = &fe->map;
+@@ -858,7 +860,7 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
+ 		fe->mode = Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE;
+ 	} else {
+ 		/* bind cache first when cached decompression is preferred */
+-		z_erofs_bind_cache(fe, pagepool);
++		z_erofs_bind_cache(fe);
+ 	}
+ hitted:
+ 	/*
+@@ -1470,7 +1472,6 @@ static void z_erofs_decompressqueue_endio(struct bio *bio)
+ }
+ 
+ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+-				 struct page **pagepool,
+ 				 struct z_erofs_decompressqueue *fgq,
+ 				 bool *force_fg, bool readahead)
+ {
+@@ -1528,8 +1529,8 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 		do {
+ 			struct page *page;
+ 
+-			page = pickup_page_for_submission(pcl, i++, pagepool,
+-							  mc);
++			page = pickup_page_for_submission(pcl, i++,
++					&f->pagepool, mc);
+ 			if (!page)
+ 				continue;
+ 
+@@ -1594,16 +1595,16 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ }
+ 
+ static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
+-			     struct page **pagepool, bool force_fg, bool ra)
++			     bool force_fg, bool ra)
+ {
+ 	struct z_erofs_decompressqueue io[NR_JOBQUEUES];
+ 
+ 	if (f->owned_head == Z_EROFS_PCLUSTER_TAIL)
+ 		return;
+-	z_erofs_submit_queue(f, pagepool, io, &force_fg, ra);
++	z_erofs_submit_queue(f, io, &force_fg, ra);
+ 
+ 	/* handle bypass queue (no i/o pclusters) immediately */
+-	z_erofs_decompress_queue(&io[JQ_BYPASS], pagepool);
++	z_erofs_decompress_queue(&io[JQ_BYPASS], &f->pagepool);
+ 
+ 	if (!force_fg)
+ 		return;
+@@ -1612,7 +1613,7 @@ static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
+ 	wait_for_completion_io(&io[JQ_SUBMIT].u.done);
+ 
+ 	/* handle synchronous decompress queue in the caller context */
+-	z_erofs_decompress_queue(&io[JQ_SUBMIT], pagepool);
++	z_erofs_decompress_queue(&io[JQ_SUBMIT], &f->pagepool);
+ }
+ 
+ /*
+@@ -1620,8 +1621,7 @@ static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
+  * approximate readmore strategies as a start.
+  */
+ static void z_erofs_pcluster_readmore(struct z_erofs_decompress_frontend *f,
+-				      struct readahead_control *rac,
+-				      struct page **pagepool, bool backmost)
++		struct readahead_control *rac, bool backmost)
+ {
+ 	struct inode *inode = f->inode;
+ 	struct erofs_map_blocks *map = &f->map;
+@@ -1663,7 +1663,7 @@ static void z_erofs_pcluster_readmore(struct z_erofs_decompress_frontend *f,
+ 			if (PageUptodate(page)) {
+ 				unlock_page(page);
+ 			} else {
+-				err = z_erofs_do_read_page(f, page, pagepool);
++				err = z_erofs_do_read_page(f, page);
+ 				if (err)
+ 					erofs_err(inode->i_sb,
+ 						  "readmore error at page %lu @ nid %llu",
+@@ -1684,27 +1684,24 @@ static int z_erofs_read_folio(struct file *file, struct folio *folio)
+ 	struct inode *const inode = page->mapping->host;
+ 	struct erofs_sb_info *const sbi = EROFS_I_SB(inode);
+ 	struct z_erofs_decompress_frontend f = DECOMPRESS_FRONTEND_INIT(inode);
+-	struct page *pagepool = NULL;
+ 	int err;
+ 
+ 	trace_erofs_readpage(page, false);
+ 	f.headoffset = (erofs_off_t)page->index << PAGE_SHIFT;
+ 
+-	z_erofs_pcluster_readmore(&f, NULL, &pagepool, true);
+-	err = z_erofs_do_read_page(&f, page, &pagepool);
+-	z_erofs_pcluster_readmore(&f, NULL, &pagepool, false);
+-
++	z_erofs_pcluster_readmore(&f, NULL, true);
++	err = z_erofs_do_read_page(&f, page);
++	z_erofs_pcluster_readmore(&f, NULL, false);
+ 	(void)z_erofs_collector_end(&f);
+ 
+ 	/* if some compressed cluster ready, need submit them anyway */
+-	z_erofs_runqueue(&f, &pagepool, z_erofs_is_sync_decompress(sbi, 0),
+-			 false);
++	z_erofs_runqueue(&f, z_erofs_is_sync_decompress(sbi, 0), false);
+ 
+ 	if (err)
+ 		erofs_err(inode->i_sb, "failed to read, err [%d]", err);
+ 
+ 	erofs_put_metabuf(&f.map.buf);
+-	erofs_release_pages(&pagepool);
++	erofs_release_pages(&f.pagepool);
+ 	return err;
+ }
+ 
+@@ -1713,12 +1710,12 @@ static void z_erofs_readahead(struct readahead_control *rac)
+ 	struct inode *const inode = rac->mapping->host;
+ 	struct erofs_sb_info *const sbi = EROFS_I_SB(inode);
+ 	struct z_erofs_decompress_frontend f = DECOMPRESS_FRONTEND_INIT(inode);
+-	struct page *pagepool = NULL, *head = NULL, *page;
++	struct page *head = NULL, *page;
+ 	unsigned int nr_pages;
+ 
+ 	f.headoffset = readahead_pos(rac);
+ 
+-	z_erofs_pcluster_readmore(&f, rac, &pagepool, true);
++	z_erofs_pcluster_readmore(&f, rac, true);
+ 	nr_pages = readahead_count(rac);
+ 	trace_erofs_readpages(inode, readahead_index(rac), nr_pages, false);
+ 
+@@ -1734,20 +1731,19 @@ static void z_erofs_readahead(struct readahead_control *rac)
+ 		/* traversal in reverse order */
+ 		head = (void *)page_private(page);
+ 
+-		err = z_erofs_do_read_page(&f, page, &pagepool);
++		err = z_erofs_do_read_page(&f, page);
+ 		if (err)
+ 			erofs_err(inode->i_sb,
+ 				  "readahead error at page %lu @ nid %llu",
+ 				  page->index, EROFS_I(inode)->nid);
+ 		put_page(page);
+ 	}
+-	z_erofs_pcluster_readmore(&f, rac, &pagepool, false);
++	z_erofs_pcluster_readmore(&f, rac, false);
+ 	(void)z_erofs_collector_end(&f);
+ 
+-	z_erofs_runqueue(&f, &pagepool,
+-			 z_erofs_is_sync_decompress(sbi, nr_pages), true);
++	z_erofs_runqueue(&f, z_erofs_is_sync_decompress(sbi, nr_pages), true);
+ 	erofs_put_metabuf(&f.map.buf);
+-	erofs_release_pages(&pagepool);
++	erofs_release_pages(&f.pagepool);
+ }
+ 
+ const struct address_space_operations z_erofs_aops = {
+-- 
+2.39.5
+
 
 
 
