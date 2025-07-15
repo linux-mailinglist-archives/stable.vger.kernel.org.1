@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-162262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FBBB05CB6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7697EB05BE2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57C327B900B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB1C43B1C3A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D9E2E4997;
-	Tue, 15 Jul 2025 13:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BC22E1C69;
+	Tue, 15 Jul 2025 13:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCPK1iII"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBC+Ag0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E532E338F;
-	Tue, 15 Jul 2025 13:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6FA27584E;
+	Tue, 15 Jul 2025 13:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586092; cv=none; b=ZWoAyEaVm5gbmRf+y42bWMS7n0L9lofoK7Luo62n7JesR05bwSfesuOmMNKW1T4LapQt37QHOuTqFf0+XpW3H5AVF1QL8arsC3Hb8HQ6K7ImGq/ARdgx6G/zvN/wlJp5CqPHB/UrGiFNMYGkKLsgtjZbjoKVAYNa9KoO8vIux3U=
+	t=1752585744; cv=none; b=k1aMhqyp9UAl4Kf6xb+xQ0DvMeRoRj58pcNVc2mNWH/lh15oEdJpammRLZgQANN1capI1QcQhmT+OLkbBkF98sU3oRBtwsEUqdYxtZQJGAL1Ayge367gT46jg3l5ZDEzjegkLyC6lhzj/2rp7fYrwJw0U0Pzhz8T6NoQmPbx3fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586092; c=relaxed/simple;
-	bh=tbI8+AEwP1g5NQAILQyiAI2R3DQq3v5tYqTmjoyftxQ=;
+	s=arc-20240116; t=1752585744; c=relaxed/simple;
+	bh=WKHP1MqZU0vZgb82fMUPcCy5lD1WECw4FcTrcH+bIX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVTMz9w8XRtwJBfy3bVewWzUK9UNTd1EtqpqhX1f0M+KJT6Hh2OSUzQVTRFTBeDnr8VJhVkeHWkkSQ3kkyNJ1NTiz+aFFKXbmTWjGAJQ/9lXb0RINMWrulprR2hsqDRJLwPI2DSPA0z1gt3zu8HRBPoeJi4tPg4h9laqo8qpBSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCPK1iII; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B37C4CEE3;
-	Tue, 15 Jul 2025 13:28:11 +0000 (UTC)
+	 MIME-Version; b=M+RRcqWt2l4gyF4QOrvPB0sYH5ntwCCBrUk6gseku4BuyzaMW1MUjDTCBZRKkh3w7rquD3mueYd1QFTUpXZA9ZPQrXBOkxvgw/XdoqQCmhMLI4RNuIXxRINv7CJ4hzn9VbD2oLykpqbqCn7dA3aOW/LtC6ee9So5bm1DA5IyaFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBC+Ag0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5049C4CEE3;
+	Tue, 15 Jul 2025 13:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586091;
-	bh=tbI8+AEwP1g5NQAILQyiAI2R3DQq3v5tYqTmjoyftxQ=;
+	s=korg; t=1752585744;
+	bh=WKHP1MqZU0vZgb82fMUPcCy5lD1WECw4FcTrcH+bIX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hCPK1iII89mwsJ0tJbiaotTBlwmW2oyaeAeph1Zq8UJAJHXDqHWZMOK/z9M7zqkPU
-	 xW1uOz4XkADTU8wN1Y7XZbLD4If0DO2aJRaq9kFpPf8vvyEE82Op3mmObqXxAeq5nS
-	 rLNcdD0y8rnnV2fOSDvmbVXTJYrYKLekAcMORAdI=
+	b=JBC+Ag0Mq89JCJwJuMOjzn2k/Xd/szRLq8qGupUMKW1lMfZZuw7hjaClNgFVTYqGI
+	 H8h4+4y1PX4hXRCsU5PVsnxYkZkcT3JIWFjuLlQZwOyvH9/shYl5neTFOogJtQpR9r
+	 ojNvrKBWgfE/HUXB3tP2qHHT8yv+J2y3U/TCxKYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
+	syzbot+bf6ed459397e307c3ad2@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/77] atm: clip: Fix memory leak of struct clip_vcc.
+Subject: [PATCH 6.12 124/163] netfilter: flowtable: account for Ethernet header in nf_flow_pppoe_proto()
 Date: Tue, 15 Jul 2025 15:13:12 +0200
-Message-ID: <20250715130752.226674199@linuxfoundation.org>
+Message-ID: <20250715130813.823193162@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 62dba28275a9a3104d4e33595c7b3328d4032d8d ]
+[ Upstream commit 18cdb3d982da8976b28d57691eb256ec5688fad2 ]
 
-ioctl(ATMARP_MKIP) allocates struct clip_vcc and set it to
-vcc->user_back.
+syzbot found a potential access to uninit-value in nf_flow_pppoe_proto()
 
-The code assumes that vcc_destroy_socket() passes NULL skb
-to vcc->push() when the socket is close()d, and then clip_push()
-frees clip_vcc.
+Blamed commit forgot the Ethernet header.
 
-However, ioctl(ATMARPD_CTRL) sets NULL to vcc->push() in
-atm_init_atmarp(), resulting in memory leak.
+BUG: KMSAN: uninit-value in nf_flow_offload_inet_hook+0x7e4/0x940 net/netfilter/nf_flow_table_inet.c:27
+  nf_flow_offload_inet_hook+0x7e4/0x940 net/netfilter/nf_flow_table_inet.c:27
+  nf_hook_entry_hookfn include/linux/netfilter.h:157 [inline]
+  nf_hook_slow+0xe1/0x3d0 net/netfilter/core.c:623
+  nf_hook_ingress include/linux/netfilter_netdev.h:34 [inline]
+  nf_ingress net/core/dev.c:5742 [inline]
+  __netif_receive_skb_core+0x4aff/0x70c0 net/core/dev.c:5837
+  __netif_receive_skb_one_core net/core/dev.c:5975 [inline]
+  __netif_receive_skb+0xcc/0xac0 net/core/dev.c:6090
+  netif_receive_skb_internal net/core/dev.c:6176 [inline]
+  netif_receive_skb+0x57/0x630 net/core/dev.c:6235
+  tun_rx_batched+0x1df/0x980 drivers/net/tun.c:1485
+  tun_get_user+0x4ee0/0x6b40 drivers/net/tun.c:1938
+  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1984
+  new_sync_write fs/read_write.c:593 [inline]
+  vfs_write+0xb4b/0x1580 fs/read_write.c:686
+  ksys_write fs/read_write.c:738 [inline]
+  __do_sys_write fs/read_write.c:749 [inline]
 
-Let's serialise two ioctl() by lock_sock() and check vcc->push()
-in atm_init_atmarp() to prevent memleak.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250704062416.1613927-3-kuniyu@google.com
+Reported-by: syzbot+bf6ed459397e307c3ad2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686bc073.a00a0220.c7b3.0086.GAE@google.com/T/#u
+Fixes: 87b3593bed18 ("netfilter: flowtable: validate pppoe header")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/20250707124517.614489-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/clip.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/net/netfilter/nf_flow_table.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 8059b7d1fb931..14b485f725d0c 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -645,6 +645,9 @@ static struct atm_dev atmarpd_dev = {
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index b63d53bb9dd6d..1a6fca0131653 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -369,7 +369,7 @@ static inline __be16 __nf_flow_pppoe_proto(const struct sk_buff *skb)
  
- static int atm_init_atmarp(struct atm_vcc *vcc)
+ static inline bool nf_flow_pppoe_proto(struct sk_buff *skb, __be16 *inner_proto)
  {
-+	if (vcc->push == clip_push)
-+		return -EINVAL;
-+
- 	mutex_lock(&atmarpd_lock);
- 	if (atmarpd) {
- 		mutex_unlock(&atmarpd_lock);
-@@ -669,6 +672,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
- static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- {
- 	struct atm_vcc *vcc = ATM_SD(sock);
-+	struct sock *sk = sock->sk;
- 	int err = 0;
+-	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
++	if (!pskb_may_pull(skb, ETH_HLEN + PPPOE_SES_HLEN))
+ 		return false;
  
- 	switch (cmd) {
-@@ -689,14 +693,18 @@ static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		err = clip_create(arg);
- 		break;
- 	case ATMARPD_CTRL:
-+		lock_sock(sk);
- 		err = atm_init_atmarp(vcc);
- 		if (!err) {
- 			sock->state = SS_CONNECTED;
- 			__module_get(THIS_MODULE);
- 		}
-+		release_sock(sk);
- 		break;
- 	case ATMARP_MKIP:
-+		lock_sock(sk);
- 		err = clip_mkip(vcc, arg);
-+		release_sock(sk);
- 		break;
- 	case ATMARP_SETENTRY:
- 		err = clip_setentry(vcc, (__force __be32)arg);
+ 	*inner_proto = __nf_flow_pppoe_proto(skb);
 -- 
 2.39.5
 
