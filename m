@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 389B5B05B73
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C20DFB05ED5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7F177B11E1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A682718942A4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBB52E1734;
-	Tue, 15 Jul 2025 13:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE482E54D1;
+	Tue, 15 Jul 2025 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQRZHLxh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnjA97FH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE671A23AF;
-	Tue, 15 Jul 2025 13:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C712E2EE7;
+	Tue, 15 Jul 2025 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585575; cv=none; b=DF9e8OGh71vtas/5T6e76yOk/VFxrHxTRl6QR324VJyivD4G4az26+yBU3V+E93tLztpy/RoJlyNUKKoqMqSN1kvUI2r0f9Y0QRcLdIwmP8mqVlei6Ub7ZOWa2r3DLPmvsi2vlpRb+r2wZAZHHElI8Nxv6NBAZb/p7AprJC3T00=
+	t=1752586894; cv=none; b=lWDtJCIaOkCf7HpW9h011fFfqgTW5Oq+T1tjVcYXqt9GIY8Ng5tbTLDdchlNl5OcFq4aznZGa8DBtTiIelRB7K5nSe5QQfNZLTpom/2wFA8IYYpf8UBV65vuQRS2VxVcwVB0SDwVfRCrl0/MHemtuQ19zbfANrBsZmL4ySP8GQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585575; c=relaxed/simple;
-	bh=A4X9PBZM2V+5W1N/Js8uXsGgt8xYdWd5K084bOM64Kw=;
+	s=arc-20240116; t=1752586894; c=relaxed/simple;
+	bh=OLmrBTIUoWqWQImsFNLwMIGiUv1RXEibLu6XTkk7yRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HrS+wHY8z3g+oSTzC0SMYk7KkDu8N8nFKnxRkOQyiKY8ORpX0VK8tmZAUdj7tZRjPEp4ktRLsPK6xU8G2GJ0rEAisjUotT4cKxmit62u9qTIlAw+yytAPZkCnfgZQAY5a8M2EN9TzA0ib/moJbFYz1ZNV+tM2Bm5nk/4zXFc07c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQRZHLxh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6331C4CEE3;
-	Tue, 15 Jul 2025 13:19:34 +0000 (UTC)
+	 MIME-Version; b=R3r0PoguCmh3tM3lhR2Shx+hjsM2edqvlrC7+a5GYKWbG5r9oOa4TzbisZIXQ4t9Cf62HV75r4oraQ2v4/nUUV7FYL1DtTewFVJ0CRGg/pPpqjtPtgXk1ORmd4yuR1Fg28BFp8q1h6HuAOid2+gAbxd00X8yH4MhP75APzNwldI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnjA97FH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7B6C4CEE3;
+	Tue, 15 Jul 2025 13:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585575;
-	bh=A4X9PBZM2V+5W1N/Js8uXsGgt8xYdWd5K084bOM64Kw=;
+	s=korg; t=1752586894;
+	bh=OLmrBTIUoWqWQImsFNLwMIGiUv1RXEibLu6XTkk7yRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQRZHLxhXzwWIq9sfqZd1hbFxfBrCVHzomjjij5ByfNCygEiEPIHtXRPr0rgBMynU
-	 P5aQupGH9DTf7aDzRKSvfSZOnOFpMYTZYOo3rfmWGK5VdeblJyV851WOYIli4H3NKG
-	 wg6bEgnWnweGxkbIOWcbA5bqPUy0E0N0ior9rCSU=
+	b=mnjA97FHSCVsSmY8F584LkmxgS4nrN8cdm1bLiQDgsb+3kxV576Zwqk8m2c82u56z
+	 NOO4Hvwt0SJAlCJA48p5mvGXS9fcwn2/tZvgHBLHHCGGTcKJnzJ//jxRSJyvDKf3cY
+	 JXOIsVhoMe7tBHlVyDWr0/WH/CFgEUJEIQ9SQdyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 084/163] Revert "ACPI: battery: negate current when discharging"
-Date: Tue, 15 Jul 2025 15:12:32 +0200
-Message-ID: <20250715130812.097920304@linuxfoundation.org>
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Vaishali Thakkar <vaishali.thakkar@suse.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.15 058/192] KVM: SVM: Add missing member in SNP_LAUNCH_START command structure
+Date: Tue, 15 Jul 2025 15:12:33 +0200
+Message-ID: <20250715130817.165985328@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Nikunj A Dadhania <nikunj@amd.com>
 
-commit de1675de39aa945bad5937d1fde4df3682670639 upstream.
+commit 51a4273dcab39dd1e850870945ccec664352d383 upstream.
 
-Revert commit 234f71555019 ("ACPI: battery: negate current when
-discharging") breaks not one but several userspace implementations
-of battery monitoring: Steam and MangoHud. Perhaps it breaks more,
-but those are the two that have been tested.
+The sev_data_snp_launch_start structure should include a 4-byte
+desired_tsc_khz field before the gosvw field, which was missed in the
+initial implementation. As a result, the structure is 4 bytes shorter than
+expected by the firmware, causing the gosvw field to start 4 bytes early.
+Fix this by adding the missing 4-byte member for the desired TSC frequency.
 
-Reported-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Closes: https://lore.kernel.org/linux-acpi/87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
+Cc: stable@vger.kernel.org
+Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Tested-by: Vaishali Thakkar <vaishali.thakkar@suse.com>
+Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+Link: https://lore.kernel.org/r/20250408093213.57962-3-nikunj@amd.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c |   19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ include/linux/psp-sev.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -243,23 +243,10 @@ static int acpi_battery_get_property(str
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
- 			ret = -ENODEV;
--			break;
--		}
--
--		val->intval = battery->rate_now * 1000;
--		/*
--		 * When discharging, the current should be reported as a
--		 * negative number as per the power supply class interface
--		 * definition.
--		 */
--		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
--		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
--		    acpi_battery_handle_discharging(battery)
--				== POWER_SUPPLY_STATUS_DISCHARGING)
--			val->intval = -val->intval;
--
-+		else
-+			val->intval = battery->rate_now * 1000;
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
+--- a/include/linux/psp-sev.h
++++ b/include/linux/psp-sev.h
+@@ -594,6 +594,7 @@ struct sev_data_snp_addr {
+  * @imi_en: launch flow is launching an IMI (Incoming Migration Image) for the
+  *          purpose of guest-assisted migration.
+  * @rsvd: reserved
++ * @desired_tsc_khz: hypervisor desired mean TSC freq in kHz of the guest
+  * @gosvw: guest OS-visible workarounds, as defined by hypervisor
+  */
+ struct sev_data_snp_launch_start {
+@@ -603,6 +604,7 @@ struct sev_data_snp_launch_start {
+ 	u32 ma_en:1;				/* In */
+ 	u32 imi_en:1;				/* In */
+ 	u32 rsvd:30;
++	u32 desired_tsc_khz;			/* In */
+ 	u8 gosvw[16];				/* In */
+ } __packed;
+ 
 
 
 
