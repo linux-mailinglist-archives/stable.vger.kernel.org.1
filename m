@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3599B05B52
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DC9B05C14
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E6227B5C05
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A09C31C215A9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5A62DE6F9;
-	Tue, 15 Jul 2025 13:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9A08633F;
+	Tue, 15 Jul 2025 13:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YudKiSdn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LT9i2YTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F842D9EFF;
-	Tue, 15 Jul 2025 13:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F171EF09D;
+	Tue, 15 Jul 2025 13:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585524; cv=none; b=Cctl2PutzhC0fNQho1Oxh0lGgyU2rqsIN4J6cxa386QZJVPW6ExLsPsBna74o61rDWlTl4ZE0Tt4Lz/DJzlI1Ha1SVeIJmYCX2udmLU5/Pkg51hQlRq003qnPnUzMgCZax26K351BJh4IKaFcOHhQcLPQEyTloY95D6Lxuw8U3E=
+	t=1752585886; cv=none; b=VPVCr70RgRTgTU3UJqxa6orGR4tt3oixTw2GeMK9gecF680y4xJUSVFKfQqFikGismbc5NigEJfxdh6kvwca4kcttfMVDm70b/a22fzSi3sY4u/I11GF/UJlczCvG7jxrLdpFXrvZEJSr68chrP8NnXFidd8ZuCh6MjoQKCnU7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585524; c=relaxed/simple;
-	bh=8MnSN0BKKEw/sutcZZGIsP1HwVeno5Bv3fy8qeZq6FQ=;
+	s=arc-20240116; t=1752585886; c=relaxed/simple;
+	bh=rf3Wu7cFXRgYWy+iU30fa/71tY5W834uBQWCvuuxwQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKH450bTUk/6T4wcaGpx6RN6/0CWoPFE0DbDqPg1hmOYZxSOZ/en+5RUuvMXejyMI3TRGiKlUiViTyWmvFckEQZFDLGctdO4GLv0FF9NEJTDAOP6HbJCfZlmBiEB516kMTd7ra4Boc7Qzlhgh2wpLuCgVo2/BVTiSaEGAsIgopg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YudKiSdn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC156C4CEE3;
-	Tue, 15 Jul 2025 13:18:43 +0000 (UTC)
+	 MIME-Version; b=AtcqNTOOasZSyBsXoXE3NqLZRweQLmNH+HZL1FRuqV7+kGkpQzEUy6OuZZWBR1HVmSO6Y30P6jtOiyh1vl2FfLI427LCP3rjglmGwgB911rjxSXJXUqW3ezN8T2dqidkovmKweQeUV+KMhB7iwFhqc1aXynZLKKaex3QOY8pJ88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LT9i2YTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC2AC4CEF1;
+	Tue, 15 Jul 2025 13:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585524;
-	bh=8MnSN0BKKEw/sutcZZGIsP1HwVeno5Bv3fy8qeZq6FQ=;
+	s=korg; t=1752585885;
+	bh=rf3Wu7cFXRgYWy+iU30fa/71tY5W834uBQWCvuuxwQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YudKiSdnDQAJ3umh4iIVPEgXl7PY2UlN1mtMhltLKLcsZNnEvcUMh3jkweCXfou5x
-	 /gRdtuHpVV4VLqVXO5yWZnRQhqwgXMPOI+XWhcpRLgxFyLfLIVvRSL9upY/cw9s2df
-	 PlHO6P8B/pebIcb5UlByIUGk9JoLR3Bk9na6zAqA=
+	b=LT9i2YTtCRwjWzDI9oOWPwAazcb4AegO+HePdzyabahqAkyZekLRZq3mLLFxNtXr0
+	 4u0aenzYJ4U/k1Pj43rTMUgEU70xdcCt2jPPv5mqpIQIQrZ8m25PnC0Dts0aw2juhA
+	 ZpVYzTHp+l0MwBpsjl7wo3/COYBAlotZcahFULYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessio Belle <alessio.belle@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>
-Subject: [PATCH 6.12 072/163] drm/imagination: Fix kernel crash when hard resetting the GPU
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 004/109] perf/core: Fix the WARN_ON_ONCE is out of lock protected region
 Date: Tue, 15 Jul 2025 15:12:20 +0200
-Message-ID: <20250715130811.628113044@linuxfoundation.org>
+Message-ID: <20250715130759.049565376@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessio Belle <alessio.belle@imgtec.com>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-commit d38376b3ee48d073c64e75e150510d7e6b4b04f7 upstream.
+[ Upstream commit 7b4c5a37544ba22c6ebe72c0d4ea56c953459fa5 ]
 
-The GPU hard reset sequence calls pm_runtime_force_suspend() and
-pm_runtime_force_resume(), which according to their documentation should
-only be used during system-wide PM transitions to sleep states.
+commit 3172fb986666 ("perf/core: Fix WARN in perf_cgroup_switch()") try to
+fix a concurrency problem between perf_cgroup_switch and
+perf_cgroup_event_disable. But it does not to move the WARN_ON_ONCE into
+lock-protected region, so the warning is still be triggered.
 
-The main issue though is that depending on some internal runtime PM
-state as seen by pm_runtime_force_suspend() (whether the usage count is
-<= 1), pm_runtime_force_resume() might not resume the device unless
-needed. If that happens, the runtime PM resume callback
-pvr_power_device_resume() is not called, the GPU clocks are not
-re-enabled, and the kernel crashes on the next attempt to access GPU
-registers as part of the power-on sequence.
-
-Replace calls to pm_runtime_force_suspend() and
-pm_runtime_force_resume() with direct calls to the driver's runtime PM
-callbacks, pvr_power_device_suspend() and pvr_power_device_resume(),
-to ensure clocks are re-enabled and avoid the kernel crash.
-
-Fixes: cc1aeedb98ad ("drm/imagination: Implement firmware infrastructure and META FW support")
-Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
-Reviewed-by: Matt Coster <matt.coster@imgtec.com>
-Link: https://lore.kernel.org/r/20250624-fix-kernel-crash-gpu-hard-reset-v1-1-6d24810d72a6@imgtec.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3172fb986666 ("perf/core: Fix WARN in perf_cgroup_switch()")
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250626135403.2454105-1-luogengkun@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imagination/pvr_power.c |    4 ++--
+ kernel/events/core.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/imagination/pvr_power.c
-+++ b/drivers/gpu/drm/imagination/pvr_power.c
-@@ -363,13 +363,13 @@ pvr_power_reset(struct pvr_device *pvr_d
- 		if (!err) {
- 			if (hard_reset) {
- 				pvr_dev->fw_dev.booted = false;
--				WARN_ON(pm_runtime_force_suspend(from_pvr_device(pvr_dev)->dev));
-+				WARN_ON(pvr_power_device_suspend(from_pvr_device(pvr_dev)->dev));
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 873b17545717c..5c6da8bd03b10 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -873,8 +873,6 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 	if (READ_ONCE(cpuctx->cgrp) == NULL)
+ 		return;
  
- 				err = pvr_fw_hard_reset(pvr_dev);
- 				if (err)
- 					goto err_device_lost;
+-	WARN_ON_ONCE(cpuctx->ctx.nr_cgroups == 0);
+-
+ 	cgrp = perf_cgroup_from_task(task, NULL);
+ 	if (READ_ONCE(cpuctx->cgrp) == cgrp)
+ 		return;
+@@ -886,6 +884,8 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 	if (READ_ONCE(cpuctx->cgrp) == NULL)
+ 		return;
  
--				err = pm_runtime_force_resume(from_pvr_device(pvr_dev)->dev);
-+				err = pvr_power_device_resume(from_pvr_device(pvr_dev)->dev);
- 				pvr_dev->fw_dev.booted = true;
- 				if (err)
- 					goto err_device_lost;
++	WARN_ON_ONCE(cpuctx->ctx.nr_cgroups == 0);
++
+ 	perf_ctx_disable(&cpuctx->ctx, true);
+ 
+ 	ctx_sched_out(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
+-- 
+2.39.5
+
 
 
 
