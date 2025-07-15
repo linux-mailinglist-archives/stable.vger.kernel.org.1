@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3FFBB05BC8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BDCB05E6E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 282541C20383
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:24:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C70C17B759
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0C22E337B;
-	Tue, 15 Jul 2025 13:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9D92EAB85;
+	Tue, 15 Jul 2025 13:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/7xslWT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTtHoPZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3382566;
-	Tue, 15 Jul 2025 13:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E662EAB90;
+	Tue, 15 Jul 2025 13:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585820; cv=none; b=qtjSCO011EhqMNxKciQpSjGbS0a8pPFZ7DB6q271jauobjaLJm33JVQs6ASwSJ2TNnne8d0qFp/syMoi8M4Zz0TDNXY89bAu3R0cxU2Ny646bFEqli4oLR2n5L5ByBbiWZX9Wnp+k5NGaOoE+yVBNsS/JmbQxTowHjliWqXP6mk=
+	t=1752586902; cv=none; b=ld7O1FgarYSVWOX5/yPSDmd0RuqSs9lg5ezf2O5jMYO9FPZUIM3SF7CTjhfs6VYKCJQLazlwMuZh9hc90oYmaoZP7uFz6+W5D33hB0NBsGPV0V2ygnOU5yNkHIBL9+bBEttvOVAmbpsg1x+Q40B+hX78Spo8edCsHpuDi7NbASc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585820; c=relaxed/simple;
-	bh=diXtkfvgq7nB15JI+kan0Ak7hPFvx8cocrkKowgJAss=;
+	s=arc-20240116; t=1752586902; c=relaxed/simple;
+	bh=GfLeVbhOn/NuxstkbXtVRbWvjD/SnmGF5xmutByLpZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzFQgo9ShUUyQ+bRAjMz0vFlApxq9Bmn1kt0XgADuF8ufzcG692VfVh7IHHt2ciQSvoxmJ0ZtZ5K6QjlGJSeUkBmPe5LrCwRio4ajRZ/nq6EYLuzeDHYjsyhGL27K7cWd9Gf28BQ5QtDrn7GnfbrPJfv+YKV70ivbrolOHZWwK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/7xslWT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD3DC4CEE3;
-	Tue, 15 Jul 2025 13:23:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EUPkuTLdbrU985hYFVXpQ1emwRYqb+kw13JufFNSofFA3U3s2sLIsmD/MiBsTbRwpAIKf+M5wwWoyhXzNnpnNXhMS7uplFcK6TELSL9ydMzp9kwOmMi0BnN7GFYKYFOBc+byk0d2lhWmhHvDJKvrLsyJgcHTMkN8tp0gaSC1PTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTtHoPZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD43C4CEE3;
+	Tue, 15 Jul 2025 13:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585819;
-	bh=diXtkfvgq7nB15JI+kan0Ak7hPFvx8cocrkKowgJAss=;
+	s=korg; t=1752586901;
+	bh=GfLeVbhOn/NuxstkbXtVRbWvjD/SnmGF5xmutByLpZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/7xslWTQExmGywFqmz+ZOqRFp3x1DI4eqz/sbz+aFMTRMS8nyEgRets9hXHIV8el
-	 iFz78edGnxGpO3Tp7/1iECWCOqDp5nyvoic8RlHAnPCdVGX6EVn67K7ojDCTfKyckT
-	 PvG2LtGOovsZP++OFuLEsWF9a2QuwipeK0fCBJUQ=
+	b=oTtHoPZNyQMGpJGf9mn6FzwrA0fImHtbcUZxY2tcM2XfRuuCfcBcoDArPR5a3uNtg
+	 RbxLo8CeBPfEJ5PlAOZgFOSh1CZO1F0TvFlv9dOTidErbgrJy+OKvY0hDSNMCUfF5Q
+	 CnnyJfxoHryB28/k5L5MN1aBfzG59m9zmpnbaRrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andre Edich <andre.edich@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/109] net: phy: smsc: Force predictable MDI-X state on LAN87xx
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>
+Subject: [PATCH 6.15 061/192] sched: Fix preemption string of preempt_dynamic_none
 Date: Tue, 15 Jul 2025 15:12:36 +0200
-Message-ID: <20250715130759.692194278@linuxfoundation.org>
+Message-ID: <20250715130817.391080978@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 0713e55533c88a20edb53eea6517dc56786a0078 ]
+commit 3ebb1b6522392f64902b4e96954e35927354aa27 upstream.
 
-Override the hardware strap configuration for MDI-X mode to ensure a
-predictable initial state for the driver. The initial mode of the LAN87xx
-PHY is determined by the AUTOMDIX_EN strap pin, but the driver has no
-documented way to read its latched status.
+Zero is a valid value for "preempt_dynamic_mode", namely
+"preempt_dynamic_none".
 
-This unpredictability means the driver cannot know if the PHY has
-initialized with Auto-MDIX enabled or disabled, preventing it from
-providing a reliable interface to the user.
+Fix the off-by-one in preempt_model_str(), so that "preempty_dynamic_none"
+is correctly formatted as PREEMPT(none) instead of PREEMPT(undef).
 
-This patch introduces a `config_init` hook that forces the PHY into a
-known state by explicitly enabling Auto-MDIX.
-
-Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andre Edich <andre.edich@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250703114941.3243890-3-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8bdc5daaa01e ("sched: Add a generic function to return the preemption string")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250626-preempt-str-none-v2-1-526213b70a89@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/smsc.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ kernel/sched/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index b7f9c4649652b..1ce0ca8048ac6 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -262,6 +262,33 @@ int lan87xx_read_status(struct phy_device *phydev)
- }
- EXPORT_SYMBOL_GPL(lan87xx_read_status);
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7695,7 +7695,7 @@ const char *preempt_model_str(void)
  
-+static int lan87xx_phy_config_init(struct phy_device *phydev)
-+{
-+	int rc;
-+
-+	/* The LAN87xx PHY's initial MDI-X mode is determined by the AUTOMDIX_EN
-+	 * hardware strap, but the driver cannot read the strap's status. This
-+	 * creates an unpredictable initial state.
-+	 *
-+	 * To ensure consistent and reliable behavior across all boards,
-+	 * override the strap configuration on initialization and force the PHY
-+	 * into a known state with Auto-MDIX enabled, which is the expected
-+	 * default for modern hardware.
-+	 */
-+	rc = phy_modify(phydev, SPECIAL_CTRL_STS,
-+			SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
-+			SPECIAL_CTRL_STS_AMDIX_ENABLE_ |
-+			SPECIAL_CTRL_STS_AMDIX_STATE_,
-+			SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
-+			SPECIAL_CTRL_STS_AMDIX_ENABLE_);
-+	if (rc < 0)
-+		return rc;
-+
-+	phydev->mdix_ctrl = ETH_TP_MDI_AUTO;
-+
-+	return smsc_phy_config_init(phydev);
-+}
-+
- static int lan874x_phy_config_init(struct phy_device *phydev)
- {
- 	u16 val;
-@@ -697,7 +724,7 @@ static struct phy_driver smsc_phy_driver[] = {
- 
- 	/* basic functions */
- 	.read_status	= lan87xx_read_status,
--	.config_init	= smsc_phy_config_init,
-+	.config_init	= lan87xx_phy_config_init,
- 	.soft_reset	= smsc_phy_reset,
- 	.config_aneg	= lan87xx_config_aneg,
- 
--- 
-2.39.5
-
+ 		if (IS_ENABLED(CONFIG_PREEMPT_DYNAMIC)) {
+ 			seq_buf_printf(&s, "(%s)%s",
+-				       preempt_dynamic_mode > 0 ?
++				       preempt_dynamic_mode >= 0 ?
+ 				       preempt_modes[preempt_dynamic_mode] : "undef",
+ 				       brace ? "}" : "");
+ 			return seq_buf_str(&s);
 
 
 
