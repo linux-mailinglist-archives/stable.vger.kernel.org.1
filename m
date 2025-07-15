@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-162447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0115BB05DFE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16511B05CED
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A7165010E2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 811071699D4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030A42701B8;
-	Tue, 15 Jul 2025 13:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087932EBDCC;
+	Tue, 15 Jul 2025 13:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucMoniK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/ZkrnZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17B92E339B;
-	Tue, 15 Jul 2025 13:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB9A2EBDD0;
+	Tue, 15 Jul 2025 13:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586578; cv=none; b=O9fdj+BqEetnYFYK0zF9R7yET+4IOSauBbBA4T2WynadHeEYWrk5uAWG22fMNle74Pzrh4RSuIPzs+/TsJfDt1/QWcsyyvl/fGC1RvSbqy8aXcvHgwfxKOWHQlIDKC9EUwJSA2LkHuhNbK3h86RQ8/mGq36I7Ou9Rr8W7wM4EPk=
+	t=1752586226; cv=none; b=fpItI1y/g0Rz1pz9pK3anpGVuHT87l41HKBEDbB0crH3wENV57glXWfW6qnRbypmdNtlKKX8T60O2ppzzcETEePwdhowMDKIzB7ejscU4C+qWNUd0b1Pl/V6zZRG4tiPJS+Ku7cbPcIVtIR2AEgaJNtqU6/rzwDBF+T3kfDzB5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586578; c=relaxed/simple;
-	bh=hIAcD5wfmAGWRMfkeEHurxwhk/KrLmzRSqYP7v7FL+c=;
+	s=arc-20240116; t=1752586226; c=relaxed/simple;
+	bh=kza+D16VwraYJe4gCusiD70rUdC7MF4RPnQuqBIk0GE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMc7pnZFvFb+yJoWTc/6oAPq3gQ2mpW0DAzMlTHbdVN8WmbdRC8bdaf3+FddSrIbtPkDzJenMj1wDTRFJYxKsBeGuFvhcgh2g524TBnYrYVWV8Ddyc+Ssd54h2qvR401rxVmx169Z53NVtqDC+1cHwkfO2UPFY5L4G9qpWgGYAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucMoniK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AE4C4CEE3;
-	Tue, 15 Jul 2025 13:36:18 +0000 (UTC)
+	 MIME-Version; b=hbkkDIW/qC7yX8GWcMTkrBug2uOgQjLl65b1ZiXrqdh3WGCXF9DJnu7jKSzLtyCX8J7RDmrjHxnKP9bv1zWmLdXNT5hZPksHJQxJ4G66jZD2E56ZA3VuXN8QEi0J217dKdUhdt5E7tBOt8rw0ORWjECdaP7vCilnuMilpQYFU8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/ZkrnZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3AAC4CEE3;
+	Tue, 15 Jul 2025 13:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586578;
-	bh=hIAcD5wfmAGWRMfkeEHurxwhk/KrLmzRSqYP7v7FL+c=;
+	s=korg; t=1752586226;
+	bh=kza+D16VwraYJe4gCusiD70rUdC7MF4RPnQuqBIk0GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ucMoniK3YX++owF/LAkBs65gmh7Obqg+BKpra/sKM2ZEzU7+J7rsD6BGNAIwqkSAD
-	 e93pVOc0dlw16cEjcG+BtxrnhVOQikIQl0KKZSsoX95jFZ8DnBjcDVBYPSK6No+XCV
-	 ScABvbigRgOr7mQLO6KKwkfE4Sc8TI6OYjE++l/0=
+	b=V/ZkrnZVxrMZ7TmM+cTPxBhjAUFqpsFY+IC2BeeCDk7Pshd+h1kw7O+yr70fNPpv0
+	 OYVkzwWeLm1/XkI4OFGBy4PeqcPNPfMXZwwb0TrYZXKcf/TqbedqeyPrJeMXfEdW+h
+	 Mp4rhtfh/shShelj0oazLDl4sd9mZ/B/5zFNU7mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aijay Adams <aijay@meta.com>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	stable@kernel.org
-Subject: [PATCH 5.4 119/148] x86/mce: Make sure CMCI banks are cleared during shutdown on Intel
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 62/77] net: phy: microchip: limit 100M workaround to link-down events on LAN88xx
 Date: Tue, 15 Jul 2025 15:14:01 +0200
-Message-ID: <20250715130805.066673256@linuxfoundation.org>
+Message-ID: <20250715130754.217038242@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Kobryn <inwardvessel@gmail.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 30ad231a5029bfa16e46ce868497b1a5cdd3c24d upstream.
+[ Upstream commit dd4360c0e8504f2f7639c7f5d07c93cfd6a98333 ]
 
-CMCI banks are not cleared during shutdown on Intel CPUs. As a side effect,
-when a kexec is performed, CPUs coming back online are unable to
-rediscover/claim these occupied banks which breaks MCE reporting.
+Restrict the 100Mbit forced-mode workaround to link-down transitions
+only, to prevent repeated link reset cycles in certain configurations.
 
-Clear the CPU ownership during shutdown via cmci_clear() so the banks can
-be reclaimed and MCE reporting will become functional once more.
+The workaround was originally introduced to improve signal reliability
+when switching cables between long and short distances. It temporarily
+forces the PHY into 10 Mbps before returning to 100 Mbps.
 
-  [ bp: Massage commit message. ]
+However, when used with autonegotiating link partners (e.g., Intel i350),
+executing this workaround on every link change can confuse the partner
+and cause constant renegotiation loops. This results in repeated link
+down/up transitions and the PHY never reaching a stable state.
 
-Reported-by: Aijay Adams <aijay@meta.com>
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250627174935.95194-1-inwardvessel@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Limit the workaround to only run during the PHY_NOLINK state. This ensures
+it is triggered only once per link drop, avoiding disruptive toggling
+while still preserving its intended effect.
+
+Note: I am not able to reproduce the original issue that this workaround
+addresses. I can only confirm that 100 Mbit mode works correctly in my
+test setup. Based on code inspection, I assume the workaround aims to
+reset some internal state machine or signal block by toggling speeds.
+However, a PHY reset is already performed earlier in the function via
+phy_init_hw(), which may achieve a similar effect. Without a reproducer,
+I conservatively keep the workaround but restrict its conditions.
+
+Fixes: e57cf3639c32 ("net: lan78xx: fix accessing the LAN7800's internal phy specific registers from the MAC driver")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250709130753.3994461-3-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/intel.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/microchip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/mce/intel.c
-+++ b/arch/x86/kernel/cpu/mce/intel.c
-@@ -516,4 +516,5 @@ void mce_intel_feature_init(struct cpuin
- void mce_intel_feature_clear(struct cpuinfo_x86 *c)
- {
- 	intel_clear_lmce();
-+	cmci_clear();
- }
+diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
+index 230f2fcf9c46a..f2860ec7ac17e 100644
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -351,7 +351,7 @@ static void lan88xx_link_change_notify(struct phy_device *phydev)
+ 	 * As workaround, set to 10 before setting to 100
+ 	 * at forced 100 F/H mode.
+ 	 */
+-	if (!phydev->autoneg && phydev->speed == 100) {
++	if (phydev->state == PHY_NOLINK && !phydev->autoneg && phydev->speed == 100) {
+ 		/* disable phy interrupt */
+ 		temp = phy_read(phydev, LAN88XX_INT_MASK);
+ 		temp &= ~LAN88XX_INT_MASK_MDINTPIN_EN_;
+-- 
+2.39.5
+
 
 
 
