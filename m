@@ -1,135 +1,95 @@
-Return-Path: <stable+bounces-163041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E90B068D1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 23:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3C5B06926
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 00:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4CEB5036F4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 21:49:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E17743A8B80
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 22:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA45E2749EC;
-	Tue, 15 Jul 2025 21:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C45A26FD8E;
+	Tue, 15 Jul 2025 22:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="j/Ls23FQ"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ayvFkGj1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9509726AD9;
-	Tue, 15 Jul 2025 21:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47ABD7262D;
+	Tue, 15 Jul 2025 22:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752616173; cv=none; b=gyFtM1E3gzcBdsVtbb9mqJ9QpVHF/7GAd8+Rf74ULf1sNkHRGqvoF9KHDePT4UuN7tg5sYDpLOkNZNg1s+cTZAbf3ih7V6l5XailNAVVW6nFirfZfchVDnB6jfa7AIOaatnJZ5XvY8gFah1u0o1yNIdmaIHXv6Km+02Tf+ewvxw=
+	t=1752617800; cv=none; b=nbxz8q4ElgkBM/H+KkYI8k6+75mp7IhubysHVGfzHdlwmB/hzCBBriO2h9kdAiIc/BJIJrWNIUsr2HfomNgyG3bgE8DR8RM4c8IcAu5HhXk81BK18L/0xnYNE1nIRWCszCFCzGhkVRaadO+QVuIu5rKYhlI+jw/lRtE2qY8/3Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752616173; c=relaxed/simple;
-	bh=Y6Kwqw2XBwaFF9GeOQDluWNxZchC3R6QjKcFLzYDC3g=;
-	h=Date:To:From:Subject:Message-Id; b=rMDWfuEtRgXyL2or+UOoTYuRehuGay4Hw3087qEaOZW8Gf85AieYwV/pCV/ejLI6epyh36yGZNfrH9IO+xs8N/wUM/h2IVxRQp7pymErlmOTNJw0Es2Lz+xIradhZSyA9pssuA8xUCWUIhBRju8nXVsyrdNxJgtZIi3WI0S0/TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=j/Ls23FQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CA4C4CEE3;
-	Tue, 15 Jul 2025 21:49:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752616173;
-	bh=Y6Kwqw2XBwaFF9GeOQDluWNxZchC3R6QjKcFLzYDC3g=;
-	h=Date:To:From:Subject:From;
-	b=j/Ls23FQlJT0KJ4+lDW5gCj5JF7I6EDOZT2OpxHEp41Uc7KEbCsHnWkZaSdSX2Qr3
-	 wK5a2Uzkpo+DK6IFZtNy8Dx995sVVAelp6pEkONc2ZrCzNb5keBQU6flMAqmmNo+8k
-	 vskHPQt8t8PwIF8eXo6z50qTgZBPcnq4aucpvtFU=
-Date: Tue, 15 Jul 2025 14:49:32 -0700
-To: mm-commits@vger.kernel.org,xu.xin16@zte.com.cn,stable@vger.kernel.org,shr@devkernel.io,david@redhat.com,chengming.zhou@linux.dev,nathan@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-ksm-fix-wsometimes-uninitialized-from-clang-21-in-advisor_mode_show.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250715214933.25CA4C4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1752617800; c=relaxed/simple;
+	bh=NDKijB756KRCojBHCczogSV0ALKNJPhNjqneQFx7dB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VuYZNJk6Vqo0xRLLI/6HZDOW2x2OzrjWxNdkPo6YQrZqgVh3i+CeOF/DpLXK3gP1o5K4T/fCBRUGVT7neUYZG6CkevmkIuERU6WA/e72QHPo+zp6fL1B0eo66mokIr+/BAPxSOam6fxSF8xRuadqihL4hgwgXv4N4QotpuRGkkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ayvFkGj1; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id BD92B14C2D3;
+	Wed, 16 Jul 2025 00:07:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1752617226;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fcicRAVTosrwNetBK/+Wxhodz+er90LBLPeuYSMkH7k=;
+	b=ayvFkGj182aOJCmmvm5xRZwkgfjdvjxjt4ogIEExZHQhbDT0jouQNaCr1omtgjppIr4U0G
+	A0QbUpt2Ws5KVtnMeI8YqvMCf2jIKH4j4s8IzuY9iUd4+FmoTn4AuF0BC7YtNJUHnZUeJp
+	xcByGnqoOsLibsCVw9O5Q4Dv7gZ1ZNUC5g9HXIMmSiG7QOSItv5XrngxEs44sqYDK2B75K
+	jPxhlmJQopoRRcY2twc3doHL9k0fmTd2sSBiRiFJ0AqPR08W+D8rP1s5da1W6w4PBgSphI
+	DsiD4e3EW+BNWRWamA9/WHTzx3nKMS0YTwQf12OKq4Xz8+UbuZkkeqD8z3PidQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 140a1308;
+	Tue, 15 Jul 2025 22:07:00 +0000 (UTC)
+Date: Wed, 16 Jul 2025 07:06:45 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/209] 5.10.240-rc3 review
+Message-ID: <aHbQ9VB2OvHcVd15@codewreck.org>
+References: <20250715163613.640534312@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250715163613.640534312@linuxfoundation.org>
 
+Greg Kroah-Hartman wrote on Tue, Jul 15, 2025 at 06:36:46PM +0200:
+> This is the start of the stable review cycle for the 5.10.240 release.
+> There are 209 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 17 Jul 2025 16:35:35 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.240-rc3.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-The patch titled
-     Subject: mm/ksm: fix -Wsometimes-uninitialized from clang-21 in advisor_mode_show()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-ksm-fix-wsometimes-uninitialized-from-clang-21-in-advisor_mode_show.patch
+Tested 2067ea3274d0 ("Linux 5.10.240-rc3") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-ksm-fix-wsometimes-uninitialized-from-clang-21-in-advisor_mode_show.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Nathan Chancellor <nathan@kernel.org>
-Subject: mm/ksm: fix -Wsometimes-uninitialized from clang-21 in advisor_mode_show()
-Date: Tue, 15 Jul 2025 12:56:16 -0700
-
-After a recent change in clang to expose uninitialized warnings from const
-variables [1], there is a false positive warning from the if statement in
-advisor_mode_show().
-
-  mm/ksm.c:3687:11: error: variable 'output' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
-   3687 |         else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
-        |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  mm/ksm.c:3690:33: note: uninitialized use occurs here
-   3690 |         return sysfs_emit(buf, "%s\n", output);
-        |                                        ^~~~~~
-
-Rewrite the if statement to implicitly make KSM_ADVISOR_NONE the else
-branch so that it is obvious to the compiler that ksm_advisor can only be
-KSM_ADVISOR_NONE or KSM_ADVISOR_SCAN_TIME due to the assignments in
-advisor_mode_store().
-
-Link: https://lkml.kernel.org/r/20250715-ksm-fix-clang-21-uninit-warning-v1-1-f443feb4bfc4@kernel.org
-Fixes: 66790e9a735b ("mm/ksm: add sysfs knobs for advisor")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2100
-Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Stefan Roesch <shr@devkernel.io>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/ksm.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
---- a/mm/ksm.c~mm-ksm-fix-wsometimes-uninitialized-from-clang-21-in-advisor_mode_show
-+++ a/mm/ksm.c
-@@ -3669,10 +3669,10 @@ static ssize_t advisor_mode_show(struct
- {
- 	const char *output;
- 
--	if (ksm_advisor == KSM_ADVISOR_NONE)
--		output = "[none] scan-time";
--	else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
-+	if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
- 		output = "none [scan-time]";
-+	else
-+		output = "[none] scan-time";
- 
- 	return sysfs_emit(buf, "%s\n", output);
- }
-_
-
-Patches currently in -mm which might be from nathan@kernel.org are
-
-mm-ksm-fix-wsometimes-uninitialized-from-clang-21-in-advisor_mode_show.patch
-panic-add-panic_sys_info-sysctl-to-take-human-readable-string-parameter-fix.patch
-
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+-- 
+Dominique Martinet
 
