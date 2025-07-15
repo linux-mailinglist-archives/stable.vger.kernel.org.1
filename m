@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-162743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2AEB05F76
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B956EB0604D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A92474E013E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 211661C21676
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314982EA72C;
-	Tue, 15 Jul 2025 13:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AF22EE977;
+	Tue, 15 Jul 2025 13:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcYs09wX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7agBmVu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E074619D8A7;
-	Tue, 15 Jul 2025 13:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F43D2EE96F;
+	Tue, 15 Jul 2025 13:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587361; cv=none; b=gG0L6YF9zUzLwHwvotj3aVqJ6i1K3LiUo5p46YGb/OM7Pdcial/pdM7kZnf5HdVDItfa/Ykd7TF6Ptz5Tetap0+FFbKTaaaYseaeMJQMvIZGEpVszNoypijoeVWBj7THQkfHpht7Wk4OuN39BG6XVb2Cb8APzKmoaFcomA0vzpQ=
+	t=1752587796; cv=none; b=fuO91bY6+HULM1k35DOlPY8Z999FUxzPewX3/5k9C/fvB3BZ6EP8gJGMiW/f8tv487YXMWUxyfUj7IBxR1h7nsQP0YkrQBZfAEb+y9OkvKkpBJjMT72WRw5AGWid7PW8rL5cuZZY0lJDFHBQmW6m4RHwOcHXM1DZ9cZa0MDTO9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587361; c=relaxed/simple;
-	bh=tPIJmQVeCnRtQ/4kdhRpxVucpMfSZnW6pVxvJNi9NV8=;
+	s=arc-20240116; t=1752587796; c=relaxed/simple;
+	bh=8jbbk6U5wj/H5D8g9eUUfF+NCc96j9wdK3L3VvA2P9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEZ/WaGCn0W/0L3rwN7FCOGUn6f98JKun8ka6kvGzhJeS1UyKT9fAoeR3c54U27HvI3FqyV2NEEy9AfNApEGL+e/LpoWvfY4fD+Kpyw9KIa51Zor3Ow5U19HpWv1E61kYBRioQtL6rK9KADyf02FwYby86NHLblKZsq1d2Cq+nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcYs09wX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7625DC4CEE3;
-	Tue, 15 Jul 2025 13:49:20 +0000 (UTC)
+	 MIME-Version; b=QIyqzO+LozD0Zb5TPJngprig2kz+hjivEse809AAi05RsDKvsaYlTgmTJtX9s81RhawKbnDtWGle1f1Hws7sQF/C8qoCZPu+qFdaUl2ojJjAhTF3OG6sAUm8wWKPKUgTco66Ik5XHJrbSjybrsJGoCw111okgqDSPL1mHjX3ysw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7agBmVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83ECC4CEFA;
+	Tue, 15 Jul 2025 13:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587360;
-	bh=tPIJmQVeCnRtQ/4kdhRpxVucpMfSZnW6pVxvJNi9NV8=;
+	s=korg; t=1752587796;
+	bh=8jbbk6U5wj/H5D8g9eUUfF+NCc96j9wdK3L3VvA2P9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcYs09wXlJKI/fBbdLjezOdx7Px7P1VQBdG4/nBGSsXZr/huL7Fj8x35Ie7AwKwyp
-	 vBJHnfhXDV8slBR7dn3/9TLAB9GWb5hlYxQxh/5sytGS69FEj26futkDVFSfLDLHQD
-	 VwAooeG6RU2BuqQwLTj14Yv9iuSkhGXB/bS96RUQ=
+	b=T7agBmVudbqXxbvxBfEkJe2sG/NEB4Y1tbtPZm4H1WnNqwRNGT9OOyrvAwHt7JXXv
+	 5XaCOMLnNuLwCxJfwLlI90m87SJz5c+JRudLlZ+n5rYgAXnum349QR+nXOcOLot9Z2
+	 5Ic4CliHQpbudYwZH4mOq0V6nmTe+O7yaJJRDhYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Stefan Metzmacher <metze@samba.org>
-Subject: [PATCH 6.1 40/88] smb: server: make use of rdma_destroy_qp()
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andre Edich <andre.edich@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 147/208] net: phy: smsc: Fix link failure in forced mode with Auto-MDIX
 Date: Tue, 15 Jul 2025 15:14:16 +0200
-Message-ID: <20250715130756.131830664@linuxfoundation.org>
+Message-ID: <20250715130816.807546127@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 0c2b53997e8f5e2ec9e0fbd17ac0436466b65488 upstream.
+[ Upstream commit 9dfe110cc0f6ef42af8e81ce52aef34a647d0b8a ]
 
-The qp is created by rdma_create_qp() as t->cm_id->qp
-and t->qp is just a shortcut.
+Force a fixed MDI-X mode when auto-negotiation is disabled to prevent
+link instability.
 
-rdma_destroy_qp() also calls ib_destroy_qp(cm_id->qp) internally,
-but it is protected by a mutex, clears the cm_id and also calls
-trace_cm_qp_destroy().
+When forcing the link speed and duplex on a LAN9500 PHY (e.g., with
+`ethtool -s eth0 autoneg off ...`) while leaving MDI-X control in auto
+mode, the PHY fails to establish a stable link. This occurs because the
+PHY's Auto-MDIX algorithm is not designed to operate when
+auto-negotiation is disabled. In this state, the PHY continuously
+toggles the TX/RX signal pairs, which prevents the link partner from
+synchronizing.
 
-This should make the tracing more useful as both
-rdma_create_qp() and rdma_destroy_qp() are traces and it makes
-the code look more sane as functions from the same layer are used
-for the specific qp object.
+This patch resolves the issue by detecting when auto-negotiation is
+disabled. If the MDI-X control mode is set to 'auto', the driver now
+forces a specific, stable mode (ETH_TP_MDI) to prevent the pair
+toggling. This choice of a fixed MDI mode mirrors the behavior the
+hardware would exhibit if the AUTOMDIX_EN strap were configured for a
+fixed MDI connection.
 
-trace-cmd stream -e rdma_cma:cm_qp_create -e rdma_cma:cm_qp_destroy
-shows this now while doing a mount and unmount from a client:
-
-  <...>-80   [002] 378.514182: cm_qp_create:  cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 pd.id=0 qp_type=RC send_wr=867 recv_wr=255 qp_num=1 rc=0
-  <...>-6283 [001] 381.686172: cm_qp_destroy: cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 qp_num=1
-
-Before we only saw the first line.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <stfrench@microsoft.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andre Edich <andre.edich@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250703114941.3243890-4-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/phy/smsc.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -426,7 +426,8 @@ static void free_transport(struct smb_di
- 	if (t->qp) {
- 		ib_drain_qp(t->qp);
- 		ib_mr_pool_destroy(t->qp, &t->qp->rdma_mrs);
--		ib_destroy_qp(t->qp);
-+		t->qp = NULL;
-+		rdma_destroy_qp(t->cm_id);
- 	}
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index 9ec2485df645e..d860a2626b13b 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -120,10 +120,29 @@ static int lan911x_config_init(struct phy_device *phydev)
  
- 	ksmbd_debug(RDMA, "drain the reassembly queue\n");
-@@ -1934,8 +1935,8 @@ static int smb_direct_create_qpair(struc
- 	return 0;
- err:
- 	if (t->qp) {
--		ib_destroy_qp(t->qp);
- 		t->qp = NULL;
-+		rdma_destroy_qp(t->cm_id);
- 	}
- 	if (t->recv_cq) {
- 		ib_destroy_cq(t->recv_cq);
+ static int lan87xx_config_aneg(struct phy_device *phydev)
+ {
+-	int rc;
++	u8 mdix_ctrl;
+ 	int val;
++	int rc;
++
++	/* When auto-negotiation is disabled (forced mode), the PHY's
++	 * Auto-MDIX will continue toggling the TX/RX pairs.
++	 *
++	 * To establish a stable link, we must select a fixed MDI mode.
++	 * If the user has not specified a fixed MDI mode (i.e., mdix_ctrl is
++	 * 'auto'), we default to ETH_TP_MDI. This choice of a ETH_TP_MDI mode
++	 * mirrors the behavior the hardware would exhibit if the AUTOMDIX_EN
++	 * strap were configured for a fixed MDI connection.
++	 */
++	if (phydev->autoneg == AUTONEG_DISABLE) {
++		if (phydev->mdix_ctrl == ETH_TP_MDI_AUTO)
++			mdix_ctrl = ETH_TP_MDI;
++		else
++			mdix_ctrl = phydev->mdix_ctrl;
++	} else {
++		mdix_ctrl = phydev->mdix_ctrl;
++	}
+ 
+-	switch (phydev->mdix_ctrl) {
++	switch (mdix_ctrl) {
+ 	case ETH_TP_MDI:
+ 		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_;
+ 		break;
+@@ -149,7 +168,7 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
+ 	rc |= val;
+ 	phy_write(phydev, SPECIAL_CTRL_STS, rc);
+ 
+-	phydev->mdix = phydev->mdix_ctrl;
++	phydev->mdix = mdix_ctrl;
+ 	return genphy_config_aneg(phydev);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
