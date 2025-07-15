@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F043B05E1B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C457DB05C7F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D8021C4019D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7FCF5666DF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22B62E62BB;
-	Tue, 15 Jul 2025 13:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713C82E9EAE;
+	Tue, 15 Jul 2025 13:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7Xqw6Mc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUtJpeGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914DA2DEA72;
-	Tue, 15 Jul 2025 13:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D05C2E1747;
+	Tue, 15 Jul 2025 13:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586560; cv=none; b=ELm3pbP2D/WA58rq4E20BmOlMLHK4EMX9C8wmNJWUaQO+0gqpRbznvC8EIc8F0s8LrH3Lza2NwkVKwijyy4m0++ndBvqm5VSF4kjK/3Hpc8XmDrm66oDKvAFkMcvvYD/Naqi+ZzBqFFeTWiUybgedgPe0IVT6UmZm9BEWtuMoFw=
+	t=1752586028; cv=none; b=BOPo3368pANpddtTW507eWxUHgkDegspT9JKCFVaFnGnncC6lwZaaHXTMUcYaVGfZIdAn83YEO5bkKKeNt0PdZPEGff9vF3eUO8YSLUh/Yhcx2HrsyvB66agW/BZ/mOWct3FtLGqHLDL+8OihQ/juI8GZwR1kBHrr/dIHpV9uEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586560; c=relaxed/simple;
-	bh=SquwxXBbskAzv65iCS6xNQaz1KcGmljvYkFGwsM9CL8=;
+	s=arc-20240116; t=1752586028; c=relaxed/simple;
+	bh=4CVH6uh8H1ZvmvEjpfj6Fqiz9zECbn8RV6tfQ34bMOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZQTLNhKoiYAy8RZTSPHVsyoucuxazMGHO+k4W/VXcbcXggeIy4GBqVcraix66IjAA8VWdwBfsqrFfRiCLEkwt/CbUGTJ3UJI9D8875rgT4G/1tpLhJNmtk4LX/1+73oj+0UZl9eAMlK/trzaeJMz9mKGxLG7q8J4gU15noNrF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7Xqw6Mc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FB7C4CEE3;
-	Tue, 15 Jul 2025 13:35:59 +0000 (UTC)
+	 MIME-Version; b=XIJHWMmMP5QDaBaHnIxOzgCzlPssGpo7XZJyOf/8ySzvevo8+NTYYPPLjWhgRVCOKkuoLLNwiHr29PGJp/x24Dr2Zsw5T7vGJszrA7c1jcAiusN6fJmF+CS5URpwsc/+L/Gd4gE+u+5zWHZbP5CoCcYg8El5pfh1MSZgCOOaFpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUtJpeGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6989C4CEE3;
+	Tue, 15 Jul 2025 13:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586560;
-	bh=SquwxXBbskAzv65iCS6xNQaz1KcGmljvYkFGwsM9CL8=;
+	s=korg; t=1752586028;
+	bh=4CVH6uh8H1ZvmvEjpfj6Fqiz9zECbn8RV6tfQ34bMOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7Xqw6McVjzTtwQ2MEi8vISz5xrXIwnbMUsd1NxnQ55hK48DfY1zk+CIGUIrLG4Fa
-	 xAuhr8TyDcQ1YgStUyC5EiABi2uCK99FBBYIiBcncf18UVgK8C62OvB4KK9ih2G+5E
-	 s5L5NWyVIh6kM2h7UUmhXTUgK5gCuNkC/7qj7uYY=
+	b=dUtJpeGxbs20ZU+wdr6hNMGVZAAx/dg9GeOLLZTSLFPonDK4NKDOkCuMxOnuXd1jD
+	 onhRwFv/ne1pgmmiVGGXaSBcQdWkUESAodHOrtOlMycc95/Znn1O4wDRl011/K1HVR
+	 FyvEVeEaH3bvQ7HIZ+oxsHQavpgsDSZL7nMLvIa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Akira Inoue <niyarium@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/148] atm: clip: Fix memory leak of struct clip_vcc.
+Subject: [PATCH 6.6 098/109] HID: lenovo: Add support for ThinkPad X1 Tablet Thin Keyboard Gen2
 Date: Tue, 15 Jul 2025 15:13:54 +0200
-Message-ID: <20250715130804.793448853@linuxfoundation.org>
+Message-ID: <20250715130802.807579959@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Akira Inoue <niyarium@gmail.com>
 
-[ Upstream commit 62dba28275a9a3104d4e33595c7b3328d4032d8d ]
+[ Upstream commit a8905238c3bbe13db90065ed74682418f23830c3 ]
 
-ioctl(ATMARP_MKIP) allocates struct clip_vcc and set it to
-vcc->user_back.
+Add "Thinkpad X1 Tablet Gen 2 Keyboard" PID to hid-lenovo driver to fix trackpoint not working issue.
 
-The code assumes that vcc_destroy_socket() passes NULL skb
-to vcc->push() when the socket is close()d, and then clip_push()
-frees clip_vcc.
-
-However, ioctl(ATMARPD_CTRL) sets NULL to vcc->push() in
-atm_init_atmarp(), resulting in memory leak.
-
-Let's serialise two ioctl() by lock_sock() and check vcc->push()
-in atm_init_atmarp() to prevent memleak.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250704062416.1613927-3-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Akira Inoue <niyarium@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/clip.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-lenovo.c     | 8 ++++++++
+ drivers/hid/hid-multitouch.c | 8 +++++++-
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index d5363ae5296ad..8415ac2805474 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -646,6 +646,9 @@ static struct atm_dev atmarpd_dev = {
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index a8665d57094b2..c0ce11393f0fb 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -807,6 +807,7 @@
+ #define USB_DEVICE_ID_LENOVO_TPPRODOCK	0x6067
+ #define USB_DEVICE_ID_LENOVO_X1_COVER	0x6085
+ #define USB_DEVICE_ID_LENOVO_X1_TAB	0x60a3
++#define USB_DEVICE_ID_LENOVO_X1_TAB2	0x60a4
+ #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
+ #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
+ #define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
+diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+index ee65da98c7d5b..32cb2e75228c4 100644
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -473,6 +473,7 @@ static int lenovo_input_mapping(struct hid_device *hdev,
+ 		return lenovo_input_mapping_tp10_ultrabook_kbd(hdev, hi, field,
+ 							       usage, bit, max);
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		return lenovo_input_mapping_x1_tab_kbd(hdev, hi, field, usage, bit, max);
+ 	default:
+@@ -587,6 +588,7 @@ static ssize_t attr_fn_lock_store(struct device *dev,
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_led_set_tp10ubkbd(hdev, TP10UBKBD_FN_LOCK_LED, value);
+ 		if (ret)
+@@ -782,6 +784,7 @@ static int lenovo_event(struct hid_device *hdev, struct hid_field *field,
+ 		return lenovo_event_cptkbd(hdev, field, usage, value);
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		return lenovo_event_tp10ubkbd(hdev, field, usage, value);
+ 	default:
+@@ -1065,6 +1068,7 @@ static int lenovo_led_brightness_set(struct led_classdev *led_cdev,
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_led_set_tp10ubkbd(hdev, tp10ubkbd_led[led_nr], value);
+ 		break;
+@@ -1296,6 +1300,7 @@ static int lenovo_probe(struct hid_device *hdev,
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_probe_tp10ubkbd(hdev);
+ 		break;
+@@ -1383,6 +1388,7 @@ static void lenovo_remove(struct hid_device *hdev)
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		lenovo_remove_tp10ubkbd(hdev);
+ 		break;
+@@ -1433,6 +1439,8 @@ static const struct hid_device_id lenovo_devices[] = {
+ 	 */
+ 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
+ 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB) },
++	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
++		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB2) },
+ 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
+ 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB3) },
+ 	{ }
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 6386043aab0bb..becd4c1ccf93c 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2110,12 +2110,18 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_GENERIC,
+ 			USB_VENDOR_ID_LG, I2C_DEVICE_ID_LG_7010) },
  
- static int atm_init_atmarp(struct atm_vcc *vcc)
- {
-+	if (vcc->push == clip_push)
-+		return -EINVAL;
+-	/* Lenovo X1 TAB Gen 2 */
++	/* Lenovo X1 TAB Gen 1 */
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
+ 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
+ 			   USB_VENDOR_ID_LENOVO,
+ 			   USB_DEVICE_ID_LENOVO_X1_TAB) },
+ 
++	/* Lenovo X1 TAB Gen 2 */
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
++		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++			   USB_VENDOR_ID_LENOVO,
++			   USB_DEVICE_ID_LENOVO_X1_TAB2) },
 +
- 	mutex_lock(&atmarpd_lock);
- 	if (atmarpd) {
- 		mutex_unlock(&atmarpd_lock);
-@@ -670,6 +673,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
- static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- {
- 	struct atm_vcc *vcc = ATM_SD(sock);
-+	struct sock *sk = sock->sk;
- 	int err = 0;
- 
- 	switch (cmd) {
-@@ -690,14 +694,18 @@ static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		err = clip_create(arg);
- 		break;
- 	case ATMARPD_CTRL:
-+		lock_sock(sk);
- 		err = atm_init_atmarp(vcc);
- 		if (!err) {
- 			sock->state = SS_CONNECTED;
- 			__module_get(THIS_MODULE);
- 		}
-+		release_sock(sk);
- 		break;
- 	case ATMARP_MKIP:
-+		lock_sock(sk);
- 		err = clip_mkip(vcc, arg);
-+		release_sock(sk);
- 		break;
- 	case ATMARP_SETENTRY:
- 		err = clip_setentry(vcc, (__force __be32)arg);
+ 	/* Lenovo X1 TAB Gen 3 */
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
+ 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
 -- 
 2.39.5
 
