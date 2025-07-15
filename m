@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2FCB05E37
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:51:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCEBB05D68
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BBA6163491
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7655A4E49DF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3322E7BD2;
-	Tue, 15 Jul 2025 13:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC1F2E4275;
+	Tue, 15 Jul 2025 13:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2JR+4WO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpkpLpks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9962E7BC0;
-	Tue, 15 Jul 2025 13:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7991E2D028A;
+	Tue, 15 Jul 2025 13:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586746; cv=none; b=J8EOOZJYk4kQu5e3HqIOQNDtnpDUAn2YUS4ygjMSCRqJVn0wMMMllaGuEEZdPAgSfTOBd7qnVz9BQyUnKFyzNKpHJe09iZG8+3h8w6GV05Qq314EG6L8kD47RNkl940v+EPpuiSzZp42u1fJKOWX7NgzTLUFUqlHE0LS5niV2ro=
+	t=1752586359; cv=none; b=epbEIs9HowgCOjEYjmJYHvK6RDgdKPcE0FjWuNu18aMuoHfnU9LD+GmEVgFfzESjCwkngo8tmENAJUv6odG3w0JyUAd4V7V1+EPXcz8B4E0lpi3fJlpT7H1IFnovTQC0ifsyrN7X4jCbOhuseWZr2ALpT7R2nk/5AJgBa1aBwrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586746; c=relaxed/simple;
-	bh=kMsbMUBD8y4hG/y2gcTrE4sPJMx+8oEK2fWhtmU5Lx8=;
+	s=arc-20240116; t=1752586359; c=relaxed/simple;
+	bh=kKG2DY2H8TgvkgiSKX6AVFz6B61s/Myccwb/woumm64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gHJp1+IioiCSZGrnx7LAx9faUR8FxzTwcyd/jUlOlWlDfqcLFNOGEu0kZb0qMODlX5gttRdkPs189F93b9P9Qf6QT/aeVKTkHUHREaeKb4ZUKbCjvzTBhCUdRcisELvXNgQhaDuJdDXC2hD3oCizj+ln9+DIiE5HEB0hxVcuO6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2JR+4WO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E1EC4CEE3;
-	Tue, 15 Jul 2025 13:39:05 +0000 (UTC)
+	 MIME-Version; b=cCFkXSIpGGO0lqc02reqveP3U0282WV/uKopzHjMaxBQFoRl5Evbrp/WMnOwDM3n5tKVNRkYzCe0zIZnF43R+z/lJM9LfeDp/hfqQBWTSi6t17JSyTYFhNdOlBADe23ZcNzQW2CVZCkj1XK89oLyVPKtFZ6ibCfQgGO1Ahgg7wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpkpLpks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAD1C4CEE3;
+	Tue, 15 Jul 2025 13:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586746;
-	bh=kMsbMUBD8y4hG/y2gcTrE4sPJMx+8oEK2fWhtmU5Lx8=;
+	s=korg; t=1752586359;
+	bh=kKG2DY2H8TgvkgiSKX6AVFz6B61s/Myccwb/woumm64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O2JR+4WOHaY5TYwgEwfV/1Y8qXVgnoGYZAWURKXV24szJeXPirCIW+uyV1IgcydfE
-	 oIjFH802oxzhSUr5kswJdmKqIY6u1Dy4QMr6lkdmf0NDHXtcCQMbToBTDXKGVA/sBn
-	 kV7WFxH01WEkSmFz/6vI+1c15dBVcn2pYmBZyj1w=
+	b=mpkpLpksGTrZ9sx1sIPCCWWOD7vf4gLs0SxX0G/f4TT3QIMhWFdVIMJoXVeoZxdxS
+	 QW5qFWmwFfuKKdtNGzWXH/G9uSGN5CDwcCkBEdO566bpoc1onC/rB4xfLBtzdqAC52
+	 CywJlxqS67+A8OsXjwNNXxK5kr3o8Phr+jdb0Pj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 033/192] vsock: Fix transport_* TOCTOU
+Subject: [PATCH 5.4 006/148] iio: pressure: zpa2326: Use aligned_s64 for the timestamp
 Date: Tue, 15 Jul 2025 15:12:08 +0200
-Message-ID: <20250715130816.187855725@linuxfoundation.org>
+Message-ID: <20250715130800.554250505@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 687aa0c5581b8d4aa87fd92973e4ee576b550cdf ]
+[ Upstream commit 886a446b76afddfad307488e95e87f23a08ffd51 ]
 
-Transport assignment may race with module unload. Protect new_transport
-from becoming a stale pointer.
+On x86_32 s64 fields are only 32-bit aligned.  Hence force the alignment of
+the field and padding in the structure by using aligned_s64 instead.
 
-This also takes care of an insecure call in vsock_use_local_transport();
-add a lockdep assert.
-
-BUG: unable to handle page fault for address: fffffbfff8056000
-Oops: Oops: 0000 [#1] SMP KASAN
-RIP: 0010:vsock_assign_transport+0x366/0x600
-Call Trace:
- vsock_connect+0x59c/0xc40
- __sys_connect+0xe8/0x100
- __x64_sys_connect+0x6e/0xc0
- do_syscall_64+0x92/0x1c0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-2-98f0eb530747@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250413103443.2420727-19-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ drivers/iio/pressure/zpa2326.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 43be340233dae..f947ab8787899 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -407,6 +407,8 @@ EXPORT_SYMBOL_GPL(vsock_enqueue_accept);
- 
- static bool vsock_use_local_transport(unsigned int remote_cid)
- {
-+	lockdep_assert_held(&vsock_register_mutex);
-+
- 	if (!transport_local)
- 		return false;
- 
-@@ -464,6 +466,8 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 
- 	remote_flags = vsk->remote_addr.svm_flags;
- 
-+	mutex_lock(&vsock_register_mutex);
-+
- 	switch (sk->sk_type) {
- 	case SOCK_DGRAM:
- 		new_transport = transport_dgram;
-@@ -479,12 +483,15 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 			new_transport = transport_h2g;
- 		break;
- 	default:
--		return -ESOCKTNOSUPPORT;
-+		ret = -ESOCKTNOSUPPORT;
-+		goto err;
- 	}
- 
- 	if (vsk->transport) {
--		if (vsk->transport == new_transport)
--			return 0;
-+		if (vsk->transport == new_transport) {
-+			ret = 0;
-+			goto err;
-+		}
- 
- 		/* transport->release() must be called with sock lock acquired.
- 		 * This path can only be taken during vsock_connect(), where we
-@@ -508,8 +515,16 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 	/* We increase the module refcnt to prevent the transport unloading
- 	 * while there are open sockets assigned to it.
- 	 */
--	if (!new_transport || !try_module_get(new_transport->module))
--		return -ENODEV;
-+	if (!new_transport || !try_module_get(new_transport->module)) {
-+		ret = -ENODEV;
-+		goto err;
-+	}
-+
-+	/* It's safe to release the mutex after a successful try_module_get().
-+	 * Whichever transport `new_transport` points at, it won't go away until
-+	 * the last module_put() below or in vsock_deassign_transport().
-+	 */
-+	mutex_unlock(&vsock_register_mutex);
- 
- 	if (sk->sk_type == SOCK_SEQPACKET) {
- 		if (!new_transport->seqpacket_allow ||
-@@ -528,6 +543,9 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 	vsk->transport = new_transport;
- 
- 	return 0;
-+err:
-+	mutex_unlock(&vsock_register_mutex);
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(vsock_assign_transport);
+diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+index df60b3d91dad4..85ca48f2fe665 100644
+--- a/drivers/iio/pressure/zpa2326.c
++++ b/drivers/iio/pressure/zpa2326.c
+@@ -581,7 +581,7 @@ static int zpa2326_fill_sample_buffer(struct iio_dev               *indio_dev,
+ 	struct {
+ 		u32 pressure;
+ 		u16 temperature;
+-		u64 timestamp;
++		aligned_s64 timestamp;
+ 	}   sample;
+ 	int err;
  
 -- 
 2.39.5
