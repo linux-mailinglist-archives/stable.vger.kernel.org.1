@@ -1,128 +1,106 @@
-Return-Path: <stable+bounces-163027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF7BB06753
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 21:56:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491E0B067A6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 22:19:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B014E80EA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 19:56:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 488B64E842E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 20:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC8526FD8E;
-	Tue, 15 Jul 2025 19:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D1426C39E;
+	Tue, 15 Jul 2025 20:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tgzB3jOL"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Vq4TlHUz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA60B26FA62;
-	Tue, 15 Jul 2025 19:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D3A17BA1;
+	Tue, 15 Jul 2025 20:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752609388; cv=none; b=sMNZeMG/KWvZgQ9dNlHWCbvJpoLeCxlxTsg33be12g1EecZmDOJNShH2DzqQ0CgZPriSd4UOtTn5ykFvoNFCUgbRcXpJMyYwRGjzgGecrZPI/CyQRQ0ksBbuKNjhn6PQb5LiUuuDGadi1Ax2wgQ9iLl9ok4E73sz72rKI2NMQtY=
+	t=1752610755; cv=none; b=VnSQdQoZtSrmtNz5neH8YiN2cEaCASRBZ8oiMCvj4rlEyRqM/j5snu5WH9LpsvsjAptv5KBdRtPm+LqYugSvSz8BTl3zq3GuG5yF3eah7e1T1xDJibHDYvrVowPAfQjACHuNRhUQwjrdwAsuT5t6xMeQliIyo0eTB+Zwn+J7AfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752609388; c=relaxed/simple;
-	bh=oAy6A6mELtflf/ApVsSLfMjrB+jaFLQJRW6V2oKwI9w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=S2LpNOXd5UvMTlBUMNy0pu7Dj8YMVZmmq/zX000JCeGubUcY2NGiFCTsDOyHim/XbImLNC/vHmuigohvKJMctIGWVHHHBzWkII8Sk5jzR0HmTGTwftSmDwMTOQAnSeXXYGfWGhcLNDA2cCrgWFEyLwbUWvLZIo9p5wGQKqx3JCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tgzB3jOL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01F3C4CEF6;
-	Tue, 15 Jul 2025 19:56:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752609387;
-	bh=oAy6A6mELtflf/ApVsSLfMjrB+jaFLQJRW6V2oKwI9w=;
-	h=From:Date:Subject:To:Cc:From;
-	b=tgzB3jOLILsMd5Nq1+AeB7fzwTKZbi2dG5oK9hGRT+f5vSZ7FOKVd8+H4JnjaycgS
-	 yVGnhLH6vPLSKJO4CcaJEpmHdMbZbAgfAVFHyv+E6GkhnbzOf+YnFGuYIfN2ZwoNVw
-	 OyvRR1sD5aUlwcUtxn0AsolDXfijyGLkH00x/rXVRsk3i+JUgowH2DbQeO/xgaCz2s
-	 sZec0lJl3UPyobGz7l41emiZZYJwIQur5mygIw0nCcA41KoCQcwehlYAzOUv3NARQr
-	 UQMNkkprofauGKv8ki3WHsr/nt1fdyLGJwKyPm/2QpRc1JRRemF9HmeQg/eq6X2jTo
-	 UvydW2T4/HH8A==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 15 Jul 2025 12:56:16 -0700
-Subject: [PATCH] mm/ksm: Fix -Wsometimes-uninitialized from clang-21 in
- advisor_mode_show()
+	s=arc-20240116; t=1752610755; c=relaxed/simple;
+	bh=M21qr5y7Z0Wl+XEBa90r3aQQQKQmisfjLJQLPvhdlaQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IZxmxN7Qeu0bM3u4/lNRddmE0Gr1ukAarF0rXDLLodq0k9aLZDonE+bup7qS1U3pd8qKh/GMm2hfpHvEZa6+0uWAFIEcClsf4DV0FF056B/LF5voyPtGOs/b95r+mJ0yX3+CBx4T2nfVZQrnG9yUzEMKO1T0iMlnlcTa5oa3W84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Vq4TlHUz; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 66EF210397286;
+	Tue, 15 Jul 2025 22:18:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1752610744; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=VJAfMqyjyX37znxXL4xbV0iHrWclS8WxWXqLLY0rogU=;
+	b=Vq4TlHUz6f83RIH3m8HunDZ28nACuUQ7nKqUOPGohRnlADznGxgY8rgTLL1FCOv+dkwKAE
+	DdId97hPzk7lg1bbP+ke3dOj5MSGzoaD5FjAuzaHFhgqVZwR0GNzZ4ls3ROiX8zXpcDYCs
+	RW3lRQjYE9qIpaKcwEEzNWkrJ01Bm05M5mt+RO1cIyeNvZwozAWtPxaDeuiS2e7VtZb2V+
+	FVw/p7Q2ExUxpb5e0ZrjuSGajSlQRUdRb1Pg1ZUQ/vdvEFUndNhsBEcpJ3TV2MqegTDYzd
+	3fLqyB3GhZqISnpsj3FhSXuGmElllkh+vmxOcuczxtYN/mP/8Z2TV0t6eI7hWQ==
+Date: Tue, 15 Jul 2025 22:18:55 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/209] 5.10.240-rc3 review
+Message-ID: <aHa3r7rPD+Yllze4@duo.ucw.cz>
+References: <20250715163613.640534312@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250715-ksm-fix-clang-21-uninit-warning-v1-1-f443feb4bfc4@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAF+ydmgC/x2NSwqAMAxEryJZG7CFqngVcVFr1KBWaf2BeHeDu
- 3nMY+aBSIEpQpU8EOjkyKsXUGkCbrR+IOROGHSmTVYog1NcsOcb3SwtaoWHZ887XjZIGLAla2z
- elmXuCGRlCyT6/1A37/sBzADgAnEAAAA=
-X-Change-ID: 20250715-ksm-fix-clang-21-uninit-warning-bea5a6b886ce
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
- Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Stefan Roesch <shr@devkernel.io>, linux-mm@kvack.org, 
- llvm@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1922; i=nathan@kernel.org;
- h=from:subject:message-id; bh=oAy6A6mELtflf/ApVsSLfMjrB+jaFLQJRW6V2oKwI9w=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDBllmzIz57sqnMziE1A98Fp66YRVHkU7okRCwluTPI4Kz
- zxq3juno5SFQYyLQVZMkaX6sepxQ8M5ZxlvnJoEM4eVCWQIAxenAExkyzGG3yxLets5X3ExBGYX
- aT6U8IovseB75PP+lLDu1A2X52nzBzMyPObz322U2x/5at2J+w37W/muCzrzvNj+o+Mfi1nOxQV
- 63AA=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Ge5yhp2dN5KI9qRk"
+Content-Disposition: inline
+In-Reply-To: <20250715163613.640534312@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-After a recent change in clang to expose uninitialized warnings from
-const variables [1], there is a warning from the if statement in
-advisor_mode_show().
 
-  mm/ksm.c:3687:11: error: variable 'output' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
-   3687 |         else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
-        |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  mm/ksm.c:3690:33: note: uninitialized use occurs here
-   3690 |         return sysfs_emit(buf, "%s\n", output);
-        |                                        ^~~~~~
+--Ge5yhp2dN5KI9qRk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Rewrite the if statement to implicitly make KSM_ADVISOR_NONE the else
-branch so that it is obvious to the compiler that ksm_advisor can only
-be KSM_ADVISOR_NONE or KSM_ADVISOR_SCAN_TIME due to the assignments in
-advisor_mode_store().
+Hi!
 
-Cc: stable@vger.kernel.org
-Fixes: 66790e9a735b ("mm/ksm: add sysfs knobs for advisor")
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2100
-Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- mm/ksm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> This is the start of the stable review cycle for the 5.10.240 release.
+> There are 209 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 2b0210d41c55..160787bb121c 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -3682,10 +3682,10 @@ static ssize_t advisor_mode_show(struct kobject *kobj,
- {
- 	const char *output;
- 
--	if (ksm_advisor == KSM_ADVISOR_NONE)
--		output = "[none] scan-time";
--	else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
-+	if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
- 		output = "none [scan-time]";
-+	else
-+		output = "[none] scan-time";
- 
- 	return sysfs_emit(buf, "%s\n", output);
- }
+CIP testing did not find any problems here:
 
----
-base-commit: fed48693bdfeca666f7536ba88a05e9a4e5523b6
-change-id: 20250715-ksm-fix-clang-21-uninit-warning-bea5a6b886ce
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+5.10.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
 Best regards,
---  
-Nathan Chancellor <nathan@kernel.org>
+                                                                Pavel
+--=20
+In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
+Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
+--Ge5yhp2dN5KI9qRk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaHa3rwAKCRAw5/Bqldv6
+8sDrAJ9FZUwMs5GHEIkZWPg8AgBNI/dm1QCgi9N1KUrswml1w/1yQjQlvlkN6X0=
+=aj6C
+-----END PGP SIGNATURE-----
+
+--Ge5yhp2dN5KI9qRk--
 
