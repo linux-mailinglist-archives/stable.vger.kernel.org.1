@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-162485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881BFB05DE5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C295FB05F20
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AC14177F69
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:44:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E390E5614CB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787D32E7648;
-	Tue, 15 Jul 2025 13:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AF92ECE89;
+	Tue, 15 Jul 2025 13:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wk0qtef7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7SPde1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B942E62C3;
-	Tue, 15 Jul 2025 13:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D152ECD31;
+	Tue, 15 Jul 2025 13:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586680; cv=none; b=I3gsijLqragGoeCQhvK8OHGSEJCePei0zddm/jUP0zCjXP7dhHSZeofZ6v/MlXR9adkNT9Xz0wKVuX480jeOD8iXSVPnU2xERp63nV1pL/Jw/AbKIDpWXw3hbbyJuRnvHyJ7VhHztAZ20cHv6B8JwHy55yPq4OsI7j5zv8FpwhM=
+	t=1752587169; cv=none; b=TWSeyLVJ+3SJ8+1I/V1ttSE9VnyGzWwdNl65ycSsXkEsmarGlroco3H3e89QP6+KxtaQOdob3FCapcbnCNcIiB1YqPnjbiKeFoA2yq2vO12tzFaLY7IdSx6aMEE+Gp+5XwdRFNf3NOvdvoctXdwKSzPdCZCrWFWRO6oihImSIjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586680; c=relaxed/simple;
-	bh=3T0ghl6RRiT1/pHxjEwtnTHHZqfcc/sg5O7o4pwvKDg=;
+	s=arc-20240116; t=1752587169; c=relaxed/simple;
+	bh=30ND6ap1T1LWGER9JY8kDkj3vSi/PMuFs82t3IGipd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdLYKfOonLs/NBE0w5S3QWc1Bmu2oA8RID71ykniCU4MLWm8S4NgQwXWcYcHR6KWJ462ZgvZHSdU6ce09bZYkowPQc4e0i5qALJejwIjjxkDlYXse3UNyi9CdoRhZXeQBpEe1mU2bWMpYBgrdL/veNTg2D9cBA7t7CC3DrL2WHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wk0qtef7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A76C4CEE3;
-	Tue, 15 Jul 2025 13:37:59 +0000 (UTC)
+	 MIME-Version; b=L8l2a/cC8m4tecWZXZO4xfA1762BtHcayuDw0PrlK0mea2EKAjr94i7n09Tdw2bBxczSZiaAejik4mP8MGMCcZzfQH10FVwnDDKefE1eQ9+Ww9XSZ2NPA/tQ5cdqeYC0VizeIg+jWcecN//g61ymeNhGmwj1f3qEIiIuK1+6MlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7SPde1o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9C7C4CEF1;
+	Tue, 15 Jul 2025 13:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586679;
-	bh=3T0ghl6RRiT1/pHxjEwtnTHHZqfcc/sg5O7o4pwvKDg=;
+	s=korg; t=1752587168;
+	bh=30ND6ap1T1LWGER9JY8kDkj3vSi/PMuFs82t3IGipd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wk0qtef7G38Kpn1mt1fzproljb3/lzieX7IvFiQ7uzgZNsbDqp2ZaUYtH18IInAwS
-	 xFvl1CD3YuS7nJtLcc8L2SuGTbeKlCK+emtmMDJHOsjw0z2kgS+/1v0hWPC3hNfsyb
-	 neOJ3Gd8u9Jn+N0cQZfaQ4PZ6O9FJfDT+P92tpMk=
+	b=M7SPde1olYOlRlQZ/4BFHujSHYjbZoGF2nz3sU3Q5fOyYa8AnxtASi1I78KwvP5K6
+	 iZeD1qp9HsB48Y/RHzpdB1lqU/n6Kq13K6NiGQcxAGMht5FUhyxnPy2V40tRhDrH8e
+	 7/exHf7GryRO5fcktV78PnPwuI4czarX0fg7PBVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 134/148] wifi: zd1211rw: Fix potential NULL pointer dereference in zd_mac_tx_to_dev()
+Subject: [PATCH 6.15 161/192] net/mlx5e: Fix race between DIM disable and net_dim()
 Date: Tue, 15 Jul 2025 15:14:16 +0200
-Message-ID: <20250715130805.653694443@linuxfoundation.org>
+Message-ID: <20250715130821.374377790@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +65,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 74b1ec9f5d627d2bdd5e5b6f3f81c23317657023 ]
+[ Upstream commit eb41a264a3a576dc040ee37c3d9d6b7e2d9be968 ]
 
-There is a potential NULL pointer dereference in zd_mac_tx_to_dev(). For
-example, the following is possible:
+There's a race between disabling DIM and NAPI callbacks using the dim
+pointer on the RQ or SQ.
 
-    	T0			    		T1
-zd_mac_tx_to_dev()
-  /* len == skb_queue_len(q) */
-  while (len > ZD_MAC_MAX_ACK_WAITERS) {
+If NAPI checks the DIM state bit and sees it still set, it assumes
+`rq->dim` or `sq->dim` is valid. But if DIM gets disabled right after
+that check, the pointer might already be set to NULL, leading to a NULL
+pointer dereference in net_dim().
 
-					  filter_ack()
-					    spin_lock_irqsave(&q->lock, flags);
-					    /* position == skb_queue_len(q) */
-					    for (i=1; i<position; i++)
-				    	      skb = __skb_dequeue(q)
+Fix this by calling `synchronize_net()` before freeing the DIM context.
+This ensures all in-progress NAPI callbacks are finished before the
+pointer is cleared.
 
-					    if (mac->type == NL80211_IFTYPE_AP)
-					      skb = __skb_dequeue(q);
-					    spin_unlock_irqrestore(&q->lock, flags);
+Kernel log:
 
-    skb_dequeue() -> NULL
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+...
+RIP: 0010:net_dim+0x23/0x190
+...
+Call Trace:
+ <TASK>
+ ? __die+0x20/0x60
+ ? page_fault_oops+0x150/0x3e0
+ ? common_interrupt+0xf/0xa0
+ ? sysvec_call_function_single+0xb/0x90
+ ? exc_page_fault+0x74/0x130
+ ? asm_exc_page_fault+0x22/0x30
+ ? net_dim+0x23/0x190
+ ? mlx5e_poll_ico_cq+0x41/0x6f0 [mlx5_core]
+ ? sysvec_apic_timer_interrupt+0xb/0x90
+ mlx5e_handle_rx_dim+0x92/0xd0 [mlx5_core]
+ mlx5e_napi_poll+0x2cd/0xac0 [mlx5_core]
+ ? mlx5e_poll_ico_cq+0xe5/0x6f0 [mlx5_core]
+ busy_poll_stop+0xa2/0x200
+ ? mlx5e_napi_poll+0x1d9/0xac0 [mlx5_core]
+ ? mlx5e_trigger_irq+0x130/0x130 [mlx5_core]
+ __napi_busy_loop+0x345/0x3b0
+ ? sysvec_call_function_single+0xb/0x90
+ ? asm_sysvec_call_function_single+0x16/0x20
+ ? sysvec_apic_timer_interrupt+0xb/0x90
+ ? pcpu_free_area+0x1e4/0x2e0
+ napi_busy_loop+0x11/0x20
+ xsk_recvmsg+0x10c/0x130
+ sock_recvmsg+0x44/0x70
+ __sys_recvfrom+0xbc/0x130
+ ? __schedule+0x398/0x890
+ __x64_sys_recvfrom+0x20/0x30
+ do_syscall_64+0x4c/0x100
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+...
+---[ end trace 0000000000000000 ]---
+...
+---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
 
-Since there is a small gap between checking skb queue length and skb being
-unconditionally dequeued in zd_mac_tx_to_dev(), skb_dequeue() can return NULL.
-Then the pointer is passed to zd_mac_tx_status() where it is dereferenced.
-
-In order to avoid potential NULL pointer dereference due to situations like
-above, check if skb is not NULL before passing it to zd_mac_tx_status().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 459c51ad6e1f ("zd1211rw: port to mac80211")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Link: https://patch.msgid.link/20250626114619.172631-1-d.dulov@aladdin.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 445a25f6e1a2 ("net/mlx5e: Support updating coalescing configuration without resetting channels")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/1752155624-24095-3-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/zydas/zd1211rw/zd_mac.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dim.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
-index a9999d10ae81f..bff6e796fde0d 100644
---- a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
-+++ b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
-@@ -584,7 +584,11 @@ void zd_mac_tx_to_dev(struct sk_buff *skb, int error)
- 
- 		skb_queue_tail(q, skb);
- 		while (skb_queue_len(q) > ZD_MAC_MAX_ACK_WAITERS) {
--			zd_mac_tx_status(hw, skb_dequeue(q),
-+			skb = skb_dequeue(q);
-+			if (!skb)
-+				break;
-+
-+			zd_mac_tx_status(hw, skb,
- 					 mac->ack_pending ? mac->ack_signal : 0,
- 					 NULL);
- 			mac->ack_pending = 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c
+index 298bb74ec5e94..d1d629697e285 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c
+@@ -113,7 +113,7 @@ int mlx5e_dim_rx_change(struct mlx5e_rq *rq, bool enable)
+ 		__set_bit(MLX5E_RQ_STATE_DIM, &rq->state);
+ 	} else {
+ 		__clear_bit(MLX5E_RQ_STATE_DIM, &rq->state);
+-
++		synchronize_net();
+ 		mlx5e_dim_disable(rq->dim);
+ 		rq->dim = NULL;
+ 	}
+@@ -140,7 +140,7 @@ int mlx5e_dim_tx_change(struct mlx5e_txqsq *sq, bool enable)
+ 		__set_bit(MLX5E_SQ_STATE_DIM, &sq->state);
+ 	} else {
+ 		__clear_bit(MLX5E_SQ_STATE_DIM, &sq->state);
+-
++		synchronize_net();
+ 		mlx5e_dim_disable(sq->dim);
+ 		sq->dim = NULL;
+ 	}
 -- 
 2.39.5
 
