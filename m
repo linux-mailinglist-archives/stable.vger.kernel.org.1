@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-162444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955ACB05DF7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64751B05D2E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB8031C40242
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0725D3B23E6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514922E6D07;
-	Tue, 15 Jul 2025 13:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927082E6D26;
+	Tue, 15 Jul 2025 13:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abljTGdF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11BXq4b9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5D52E6D00;
-	Tue, 15 Jul 2025 13:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA422E267F;
+	Tue, 15 Jul 2025 13:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586571; cv=none; b=WV9cO3Df3Mjc7Ts0lzSv2/K7Aj3yIkKiMi/NApHJkAREIYWZzv/YQC6xwAb3lolrewepshOEcyyzVwjMrqAEeDStH17zSLvox/rZPMYTx0YJAQRRf7KVlKvnqIkqGvWL1664lcE6bsPBzrfp+uSCv9AHiHLncw7cvfFo1ztcGZc=
+	t=1752586216; cv=none; b=FNTFuPV9y3QisqlDuBuTozj5XrpLmj/IX7Fh6PHtVSxVs1BuhsWRYUPDw6uo7sXjVs/1ptIQWliJHnbNhQqnS555K3mzOtREgIrnqBfc6D7HkAqTxDF2J0TWJuHV8ORgvPUop+6M97Ujz9AoFwD7LlDuVlS9sYKfTO1PRoRbTPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586571; c=relaxed/simple;
-	bh=3vxas5e5u8UrAkm/YflkWF9+Q+DxO9y6mBW3EgDLgNg=;
+	s=arc-20240116; t=1752586216; c=relaxed/simple;
+	bh=ofkntiCQivDgf8MoXVnTcearlwWwg6C9Y+ivGCOmRJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LIzscHB5VoO7/nRwSVAHN2PEQodGrRchW3Gsy+SqSgwUa3PV0KhdMx9/AqXgVrWZrG37q9Wm0T9hXAeBQLPhnIvxpMq6/MJIiuNaUwM9KxBP2kbdE5nXKTNbmf9bH8uKFxNnlCHncQmVx8SeGbIdqMBMsXNAVB/bYYeyLKbwjGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abljTGdF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84536C4CEE3;
-	Tue, 15 Jul 2025 13:36:10 +0000 (UTC)
+	 MIME-Version; b=sytPEfHyd0jexSbOFEGqumpy5RNLBoObx2FbskAXlxFPkg/w/xiXP3ufrXkY07oImDn3QUiWd3eCVFTPdDgPf8monc2MLZzvQWkCjYYc4vpboAH8iTVi8/HKoNG6BN+oDD3nr5BFJeUzOJPenlN9PN9pq3s6lil4Ud/t3QjNkv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11BXq4b9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD548C4CEE3;
+	Tue, 15 Jul 2025 13:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586570;
-	bh=3vxas5e5u8UrAkm/YflkWF9+Q+DxO9y6mBW3EgDLgNg=;
+	s=korg; t=1752586216;
+	bh=ofkntiCQivDgf8MoXVnTcearlwWwg6C9Y+ivGCOmRJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=abljTGdFBV3HmTQ+wKS1nsqlR48KdrOq73Q/utSQ8vr2jZ09zrtHApKYquWVqrXDx
-	 L6LCtHHb4kK59qwr/iaIGwuktYPpwopCAPb/r65S347M5sehVHE7l0HCzf2g2NLxHo
-	 4kecJft+BT//APPXcl3AMtmR251r5K3ZqS7eUGQM=
+	b=11BXq4b9Y5Y3IBGxoJZ8dwfwzdln2jaam5/Jigkr+aX/otHCTNHV0LRrbuT/mevp9
+	 SGTUld8VjQMKNoH2EmAyPygY2vgE/4nrG0GiRx3imcCsI59EtK2+AXFd+rYpG79qPF
+	 MAp9sBDvtDsOfr7C066ehv97q5g9pOC1FnPt+K9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	David Howells <dhowells@redhat.com>,
-	LePremierHomme <kwqcheii@proton.me>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Willy Tarreau <w@1wt.eu>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 116/148] rxrpc: Fix oops due to non-existence of prealloc backlog struct
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 59/77] ksmbd: fix a mount write count leak in ksmbd_vfs_kern_path_locked()
 Date: Tue, 15 Jul 2025 15:13:58 +0200
-Message-ID: <20250715130804.950057173@linuxfoundation.org>
+Message-ID: <20250715130754.095185055@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,49 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 880a88f318cf1d2a0f4c0a7ff7b07e2062b434a4 upstream.
+[ Upstream commit 277627b431a0a6401635c416a21b2a0f77a77347 ]
 
-If an AF_RXRPC service socket is opened and bound, but calls are
-preallocated, then rxrpc_alloc_incoming_call() will oops because the
-rxrpc_backlog struct doesn't get allocated until the first preallocation is
-made.
+If the call of ksmbd_vfs_lock_parent() fails, we drop the parent_path
+references and return an error.  We need to drop the write access we
+just got on parent_path->mnt before we drop the mount reference - callers
+assume that ksmbd_vfs_kern_path_locked() returns with mount write
+access grabbed if and only if it has returned 0.
 
-Fix this by returning NULL from rxrpc_alloc_incoming_call() if there is no
-backlog struct.  This will cause the incoming call to be aborted.
-
-Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Suggested-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: LePremierHomme <kwqcheii@proton.me>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Willy Tarreau <w@1wt.eu>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/20250708211506.2699012-3-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 864fb5d37163 ("ksmbd: fix possible deadlock in smb2_open")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/call_accept.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ksmbd/vfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/rxrpc/call_accept.c
-+++ b/net/rxrpc/call_accept.c
-@@ -281,6 +281,9 @@ static struct rxrpc_call *rxrpc_alloc_in
- 	unsigned short call_tail, conn_tail, peer_tail;
- 	unsigned short call_count, conn_count;
+diff --git a/fs/ksmbd/vfs.c b/fs/ksmbd/vfs.c
+index 7afb2412c4d43..4804976c0c13f 100644
+--- a/fs/ksmbd/vfs.c
++++ b/fs/ksmbd/vfs.c
+@@ -1280,6 +1280,7 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
  
-+	if (!b)
-+		return NULL;
-+
- 	/* #calls >= #conns >= #peers must hold true. */
- 	call_head = smp_load_acquire(&b->call_backlog_head);
- 	call_tail = b->call_backlog_tail;
+ 		err = ksmbd_vfs_lock_parent(parent_path->dentry, path->dentry);
+ 		if (err) {
++			mnt_drop_write(parent_path->mnt);
+ 			path_put(path);
+ 			path_put(parent_path);
+ 		}
+-- 
+2.39.5
+
 
 
 
