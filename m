@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-162807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4697B05F73
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43EB4B0600F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2C887BDE62
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E00168EC6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F032E8DF8;
-	Tue, 15 Jul 2025 13:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705EA2EAD12;
+	Tue, 15 Jul 2025 13:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QB/+Sa1O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCfG6oyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D012E7646;
-	Tue, 15 Jul 2025 13:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3282DEA96;
+	Tue, 15 Jul 2025 13:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587527; cv=none; b=NxTDXyQ7TPoM4tNAkw/jnCLS/rBzLZM5lZXi0DWBGtzKAgzWIkQoxZa7UwWozmA2WovstP/EmxVlsRpkIc4qo5YmmyRh8lYxMy8ygsE5SggROTlfG/k+yq7f9F6lg0mAvCepAP3uC5e900G0uIFga/fJpYXpaP92t4+m7Uqn9sY=
+	t=1752587556; cv=none; b=KSHYgUXBJAzg0uLODuxPbe4Hge3UqvqWAhAcPU2J+Os54ddTmyBUHauDw3gy+5kD0O4I1PiuNFAMxsLY5aEkEjzeX7YQQSTU+IRrxKciHM6dm3td+ttIimeOsFhbFEeFSzLMpGFPfnYpT6mHxwPKofupi3ZklNDDvZMzQ+lEYmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587527; c=relaxed/simple;
-	bh=1qvy5hDV9KPTFFhm/eA0TYZgSnkHEz9vQNctN7PJSyY=;
+	s=arc-20240116; t=1752587556; c=relaxed/simple;
+	bh=yT4oCVJHMGQfC6D1/ObxZeEdnNaUDqSHXC/Dknz6NvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wo3cFEl1ndFLlta624HsK1Fokcc9suOGJYa6UqMgr8WzGF6y96OmQb/q4ZmipLuud+x/pPP72Lb7mfeCS41OP931iKBWq8Zd7WDuABkjE186nDsMKAOWZyciTmbKkYAkNx8xFgf3ThHyEp2yodT6+l6Zkto48zv4D6kiTGh664E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QB/+Sa1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6568C4CEE3;
-	Tue, 15 Jul 2025 13:52:06 +0000 (UTC)
+	 MIME-Version; b=i8Tap30io6lFvCugK7Seh8XIIyxRj+WC0Bxo7+87hJj1n9pG5+j/EdYgqSg9mZ2xOCcKMZjeV4b2Kmhir8aJZsXI6yz8taHg0wQYdolXuxxbqoO1ATL7Q7IWBNuGrp6sllQNq6DLtPz6zURBR4HUAKQDEhrSIZqvY+lxiZ6Lljk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCfG6oyL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7F1C4CEE3;
+	Tue, 15 Jul 2025 13:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587527;
-	bh=1qvy5hDV9KPTFFhm/eA0TYZgSnkHEz9vQNctN7PJSyY=;
+	s=korg; t=1752587556;
+	bh=yT4oCVJHMGQfC6D1/ObxZeEdnNaUDqSHXC/Dknz6NvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QB/+Sa1O98hhzK8vgUeQk2wMDS6v9XfMbVp4c9oPJlpMsXibh3USs6zABN5SLpiLG
-	 yAVZdDl9iNo+ozAq4Va0o1v8nAMvte88L0Ks5BmfNSv1qpf+mGwtir87g/bVUHTim7
-	 A9RQm4hA+wsac9Czxx1ISHVORigFMouTLyhv1bHc=
+	b=hCfG6oyL44cQ2vrVGA20SbBfkccm/xsp57cg7ofIEv8LP4vd4QvWhWKkXw7NmDqVD
+	 fhXzaO2Yx/hY2+8tH51UCW97khvOHpWx1oqwnTYDARsplVJ8Bf4uAzM4Ibad3hMIEr
+	 uc7CA5mno60eIC4xp5oKVJhspOQDT8bGJlwB4etA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Junlin Yang <yangjunlin@yulong.com>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Kyle Tso <kyletso@google.com>,
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 028/208] usb: typec: tcpci_maxim: add terminating newlines to logging
-Date: Tue, 15 Jul 2025 15:12:17 +0200
-Message-ID: <20250715130811.961269302@linuxfoundation.org>
+Subject: [PATCH 5.10 029/208] usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()
+Date: Tue, 15 Jul 2025 15:12:18 +0200
+Message-ID: <20250715130812.000666093@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -66,78 +69,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junlin Yang <yangjunlin@yulong.com>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit 7cbcd008e104d16849e5054e69f0a3d55eaeb664 ]
+[ Upstream commit 0736299d090f5c6a1032678705c4bc0a9511a3db ]
 
-Add terminating '\n' to the formats where missed.
+Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Junlin Yang <yangjunlin@yulong.com>
-Link: https://lore.kernel.org/r/20210124143947.1688-1-angkery@163.com
+  PD message (pending read) size + 1 Byte for Frame Type (SOP*)
+
+This is validated against the max PD message (`struct pd_message`) size
+without accounting for the extra byte for the frame type. Note that the
+struct pd_message does not contain a field for the frame_type. This
+results in false negatives when the "PD message (pending read)" is equal
+to the max PD message size.
+
+Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Kyle Tso <kyletso@google.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/stable/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d%40google.com
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 0736299d090f ("usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci_maxim.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/usb/typec/tcpm/tcpci_maxim.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/usb/typec/tcpm/tcpci_maxim.c b/drivers/usb/typec/tcpm/tcpci_maxim.c
-index 57c5c073139a9..df5887db46946 100644
+index df5887db46946..d694094084f85 100644
 --- a/drivers/usb/typec/tcpm/tcpci_maxim.c
 +++ b/drivers/usb/typec/tcpm/tcpci_maxim.c
-@@ -151,7 +151,7 @@ static void process_rx(struct max_tcpci_chip *chip, u16 status)
- 	 */
- 	ret = regmap_raw_read(chip->data.regmap, TCPC_RX_BYTE_CNT, rx_buf, 2);
- 	if (ret < 0) {
--		dev_err(chip->dev, "TCPC_RX_BYTE_CNT read failed ret:%d", ret);
-+		dev_err(chip->dev, "TCPC_RX_BYTE_CNT read failed ret:%d\n", ret);
+@@ -165,7 +165,8 @@ static void process_rx(struct max_tcpci_chip *chip, u16 status)
  		return;
  	}
  
-@@ -160,13 +160,13 @@ static void process_rx(struct max_tcpci_chip *chip, u16 status)
- 
- 	if (count == 0 || frame_type != TCPC_RX_BUF_FRAME_TYPE_SOP) {
- 		max_tcpci_write16(chip, TCPC_ALERT, TCPC_ALERT_RX_STATUS);
--		dev_err(chip->dev, "%s", count ==  0 ? "error: count is 0" :
-+		dev_err(chip->dev, "%s\n", count ==  0 ? "error: count is 0" :
- 			"error frame_type is not SOP");
+-	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
++	if (count > sizeof(struct pd_message) + 1 ||
++	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
+ 		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
  		return;
  	}
- 
- 	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
--		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d", count);
-+		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
- 		return;
- 	}
- 
-@@ -177,7 +177,7 @@ static void process_rx(struct max_tcpci_chip *chip, u16 status)
- 	count += 1;
- 	ret = regmap_raw_read(chip->data.regmap, TCPC_RX_BYTE_CNT, rx_buf, count);
- 	if (ret < 0) {
--		dev_err(chip->dev, "Error: TCPC_RX_BYTE_CNT read failed: %d", ret);
-+		dev_err(chip->dev, "Error: TCPC_RX_BYTE_CNT read failed: %d\n", ret);
- 		return;
- 	}
- 
-@@ -311,7 +311,7 @@ static irqreturn_t _max_tcpci_irq(struct max_tcpci_chip *chip, u16 status)
- 			return ret;
- 
- 		if (reg_status & TCPC_SINK_FAST_ROLE_SWAP) {
--			dev_info(chip->dev, "FRS Signal");
-+			dev_info(chip->dev, "FRS Signal\n");
- 			tcpm_sink_frs(chip->port);
- 		}
- 	}
-@@ -445,7 +445,7 @@ static int max_tcpci_probe(struct i2c_client *client, const struct i2c_device_id
- 	max_tcpci_init_regs(chip);
- 	chip->tcpci = tcpci_register_port(chip->dev, &chip->data);
- 	if (IS_ERR(chip->tcpci)) {
--		dev_err(&client->dev, "TCPCI port registration failed");
-+		dev_err(&client->dev, "TCPCI port registration failed\n");
- 		return PTR_ERR(chip->tcpci);
- 	}
- 	chip->port = tcpci_get_tcpm_port(chip->tcpci);
 -- 
 2.39.5
 
