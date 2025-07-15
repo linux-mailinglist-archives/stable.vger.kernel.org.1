@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923AFB05D92
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 697E9B05BC7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9C4E580F15
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEDBD7A96C9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8E42EAD0B;
-	Tue, 15 Jul 2025 13:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4432E1758;
+	Tue, 15 Jul 2025 13:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0B8f4e9O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMizBpW0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AED02E2EFF;
-	Tue, 15 Jul 2025 13:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9EA2C327B;
+	Tue, 15 Jul 2025 13:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586521; cv=none; b=Io5XcyqA+fYvtnKGiFEDpDNbiKTOF0xzehyosKELjGLlD3EoRO3nmqNA+pwvnfIEFM7kLd94ty42cCNuAyq9nl90SW6FWLrQ+8GJkrViJ+5Se+/trDaZK7ORXUUMU23J6XKZD6CffUDrIp6Obz6i6+Uy3H5iq5IUOcHIh4ir96M=
+	t=1752585741; cv=none; b=lGmPzZAk9PQhhZLlEY7WRaDLpuJAPbUqoPjuN7bBcAAAdLVO482SI0I/4gNZo9eyY0XOZiTC9A3SwDAAW4an/RLBusnSediQQEMbuxI4t83ujiGZs2mkNdJ/ASvwxYGxr6dkna8OgQSHO8vTePr0Wm+ETwGvgvuTs8NCmt/iXa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586521; c=relaxed/simple;
-	bh=Gz4Sh3pl2uEfgWc94iDxgcpHLIyiChKdOODFQTpJg8Q=;
+	s=arc-20240116; t=1752585741; c=relaxed/simple;
+	bh=148ksKIhFhcUaFoaSLYq47gHSA9tDatwC8RKuBe/MDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TCDEfX+36U8ZubgDFbcW+yPQuUVN38dQVzX7W8v8P6ogEVZCbbnDpEH9aSpX0qg5a6EIljsHPgb/tbRzVYv7x6oCJVJU99S5o7exbSrZ3rIE6Zb7B6fH7/G0kuD/nZ4RlU21OF2CQB4ySuPnNHslfkTKGq/Tt6KUcNuUZrothf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0B8f4e9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADA0C4CEE3;
-	Tue, 15 Jul 2025 13:35:20 +0000 (UTC)
+	 MIME-Version; b=j/v3gPKGkVYhEY6pivyEzjNP0yZ6ml4TUANABRrLhIXR43cNhl70E5AUmr9J0u0RuulOw9N6AltSehtsvhofkRut4tNNJThkG8+9BAogqixeFMfqvfXzEceXFe5yUXJaR1OxciJyGBpGEFpHZSjLbb2QsjSadUYEQrJFQJDIvIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMizBpW0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAC1C4CEE3;
+	Tue, 15 Jul 2025 13:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586520;
-	bh=Gz4Sh3pl2uEfgWc94iDxgcpHLIyiChKdOODFQTpJg8Q=;
+	s=korg; t=1752585741;
+	bh=148ksKIhFhcUaFoaSLYq47gHSA9tDatwC8RKuBe/MDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0B8f4e9OPO6cToNH6mvV09LTfHk4s1Y462YrLKf4M9Ouc0vmhdBSEfqZzQ7C3v+9d
-	 3uqCggxi65JjU5+tr7fptt9hs30dY87NaYQwrES5/xscZ5GyH/gkbU93R0EpEeQEVk
-	 +L/zMyizQnGleuN/gTreUtpZ5ZImICzpcnw717FM=
+	b=yMizBpW0F9AlIZ+/EbkbxxxkLid+vzCLbiYOHw7oQlbAavG2VDaAlMi1n0NWsysDw
+	 O9WJ5NATUYC3uozhzQTl/YvKx8CnwCsPvkiZPcJ9iMI/f7GPLjpY+vIa624kNdbTTm
+	 4inVbJX14GnbChk0Wxb4JGWm6fVXxLu0MZSqPZm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	John Daley <johndale@cisco.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 069/148] enic: fix incorrect MTU comparison in enic_change_mtu()
+Subject: [PATCH 6.12 123/163] erofs: fix to add missing tracepoint in erofs_readahead()
 Date: Tue, 15 Jul 2025 15:13:11 +0200
-Message-ID: <20250715130803.087935435@linuxfoundation.org>
+Message-ID: <20250715130813.784133529@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit aaf2b2480375099c022a82023e1cd772bf1c6a5d ]
+[ Upstream commit d53238b614e01266a3d36b417b60a502e0698504 ]
 
-The comparison in enic_change_mtu() incorrectly used the current
-netdev->mtu instead of the new new_mtu value when warning about
-an MTU exceeding the port MTU. This could suppress valid warnings
-or issue incorrect ones.
+Commit 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
+converts to use iomap interface, it removed trace_erofs_readahead()
+tracepoint in the meantime, let's add it back.
 
-Fix the condition and log to properly reflect the new_mtu.
-
-Fixes: ab123fe071c9 ("enic: handle mtu change for vf properly")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Acked-by: John Daley <johndale@cisco.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250628145612.476096-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250707084832.2725677-1-chao@kernel.org
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cisco/enic/enic_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/erofs/data.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index 892c4b5ff3036..1101f1416d076 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -2093,10 +2093,10 @@ static int enic_change_mtu(struct net_device *netdev, int new_mtu)
- 	if (enic_is_dynamic(enic) || enic_is_sriov_vf(enic))
- 		return -EOPNOTSUPP;
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index a2ab92ceb9325..91182d5e3a66c 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -391,6 +391,9 @@ static int erofs_read_folio(struct file *file, struct folio *folio)
  
--	if (netdev->mtu > enic->port_mtu)
-+	if (new_mtu > enic->port_mtu)
- 		netdev_warn(netdev,
- 			    "interface MTU (%d) set higher than port MTU (%d)\n",
--			    netdev->mtu, enic->port_mtu);
-+			    new_mtu, enic->port_mtu);
- 
- 	return _enic_change_mtu(netdev, new_mtu);
+ static void erofs_readahead(struct readahead_control *rac)
+ {
++	trace_erofs_readahead(rac->mapping->host, readahead_index(rac),
++					readahead_count(rac), true);
++
+ 	return iomap_readahead(rac, &erofs_iomap_ops);
  }
+ 
 -- 
 2.39.5
 
