@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283F6B05BA6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C57CFB05E81
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DC4274264E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCA635010F5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6512E3AFE;
-	Tue, 15 Jul 2025 13:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D672E54D0;
+	Tue, 15 Jul 2025 13:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNYqyS9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1xnvtuf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C8F2E3AFB;
-	Tue, 15 Jul 2025 13:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969A72EA73B;
+	Tue, 15 Jul 2025 13:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585627; cv=none; b=WYYkE8hJWREdb0X7iiipkCi6uYIr8oW0obBvYXo7kv7ysvZOYrFokqypvJLJ8A8kuhHfqwjqqUdKw+H9Z8DV82hghQS8HTmaK8+gyF3eFfg6/x33tLDaYwau2Xibq95CFzNoOUsuDMUUzC+Cr6Cz9ErgsPFbw1R/iL5Gi9yulwk=
+	t=1752586886; cv=none; b=TKnXXlIlVmBnQxrj2dagrXSR3GU3jF+JSXXElqf/goDPW5RwUdPid9bn18FSaKiDM2HHjb9GGpnyp6xeqsORXeU6pVvhoRw6KvAQV2fYyGVStQP2eC9DN14IIHv9k06cadM0wsj0GMzN2lvgx19xGa0QINInSoBvtfyJvL7UFVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585627; c=relaxed/simple;
-	bh=SeVpBYho0YkZhbG/IcW7AHKsPxURe5Asgm24oH0qRF8=;
+	s=arc-20240116; t=1752586886; c=relaxed/simple;
+	bh=HtMwZfVwUk4pN47tEyf6a43vJ1ICAkEJBBm82jH8daU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TSvZTLlHmWntwEm978W9f74kBIxsjjr/fp4ShTRWKxLCxFzp0QTE5Ci6snh+GZ+Q9iLNR0fGxShG57IiTSKZfZ50AnO3941pRSKAvqobAGha7c+KB+YxzFajJ+VvrD7am6AmsMo5Byj35mzvnjL8N2O8vSZX1L3h0gQVVNfLFS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNYqyS9V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA1CC4CEF7;
-	Tue, 15 Jul 2025 13:20:27 +0000 (UTC)
+	 MIME-Version; b=hh8ScEMBYMKZ/t+OqoyAJoFrGtd24wbS6jlEHtIQqq5KKW6eI22EEBqxAUYEFN9bzKUrfezShhN+lzeW2TVfnDc8+o7fhkWXUXa8UCoryZ6so5ki2Y9TDdJrWWbhc9of32lXY4qjU8sb276AHf1RsMJNktqm8yBt4DpIniDOQbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1xnvtuf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD5DC4CEF8;
+	Tue, 15 Jul 2025 13:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585627;
-	bh=SeVpBYho0YkZhbG/IcW7AHKsPxURe5Asgm24oH0qRF8=;
+	s=korg; t=1752586886;
+	bh=HtMwZfVwUk4pN47tEyf6a43vJ1ICAkEJBBm82jH8daU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jNYqyS9VQV1MeKH+EIT9buqXviEZ9mWeKBCCovQAcemTWSZLoIKVXGlcaGYPe4UCv
-	 fTM2pAsLYwHJVJq/f9nsa1vLmI/qAFbyltMq9pty64Nex2QuCibqs6q7Mkpf4e2rLk
-	 m7BLJ4tb6PKuD91KbDCO74E+TeXeoopKvKX99NNs=
+	b=q1xnvtuf0eaTDdi+3Mt/9B8JAxs0BW4Jy5c9nXIN9h8qXxldwQ6QUeyjWCgfW/CWN
+	 hGZjT5cX/Oqp7MIr/u1MhMdEhAjDFvvIgWBuHdeILNEq5KKZkCZqQs6jOi5jcKd1y9
+	 18wAdGws3a4G8mMlYoH/mX7nebzASJNI4yLW0Ex8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nigel Croxon <ncroxon@redhat.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/163] raid10: cleanup memleak at raid10_make_request
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Johl Brown <johlbrown@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 084/192] drm/amdkfd: add hqd_sdma_get_doorbell callbacks for gfx7/8
 Date: Tue, 15 Jul 2025 15:12:59 +0200
-Message-ID: <20250715130813.308939945@linuxfoundation.org>
+Message-ID: <20250715130818.289491027@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nigel Croxon <ncroxon@redhat.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 43806c3d5b9bb7d74ba4e33a6a8a41ac988bde24 ]
+commit 34659c1a1f4fd4c148ab13e13b11fd64df01ffcd upstream.
 
-If raid10_read_request or raid10_write_request registers a new
-request and the REQ_NOWAIT flag is set, the code does not
-free the malloc from the mempool.
+These were missed when support was added for other generations.
+The callbacks are called unconditionally so we need to make
+sure all generations have them.
 
-unreferenced object 0xffff8884802c3200 (size 192):
-   comm "fio", pid 9197, jiffies 4298078271
-   hex dump (first 32 bytes):
-     00 00 00 00 00 00 00 00 88 41 02 00 00 00 00 00  .........A......
-     08 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-   backtrace (crc c1a049a2):
-     __kmalloc+0x2bb/0x450
-     mempool_alloc+0x11b/0x320
-     raid10_make_request+0x19e/0x650 [raid10]
-     md_handle_request+0x3b3/0x9e0
-     __submit_bio+0x394/0x560
-     __submit_bio_noacct+0x145/0x530
-     submit_bio_noacct_nocheck+0x682/0x830
-     __blkdev_direct_IO_async+0x4dc/0x6b0
-     blkdev_read_iter+0x1e5/0x3b0
-     __io_read+0x230/0x1110
-     io_read+0x13/0x30
-     io_issue_sqe+0x134/0x1180
-     io_submit_sqes+0x48c/0xe90
-     __do_sys_io_uring_enter+0x574/0x8b0
-     do_syscall_64+0x5c/0xe0
-     entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-V4: changing backing tree to see if CKI tests will pass.
-The patch code has not changed between any versions.
-
-Fixes: c9aa889b035f ("md: raid10 add nowait support")
-Signed-off-by: Nigel Croxon <ncroxon@redhat.com>
-Link: https://lore.kernel.org/linux-raid/c0787379-9caa-42f3-b5fc-369aed784400@redhat.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4304
+Link: https://github.com/ROCm/ROCm/issues/4965
+Fixes: bac38ca8c475 ("drm/amdkfd: implement per queue sdma reset for gfx 9.4+")
+Cc: Jonathan Kim <jonathan.kim@amd.com>
+Reported-by: Johl Brown <johlbrown@gmail.com>
+Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1e9d17a5dcf1242e9518e461d8e63ad35240e49e)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c |    8 ++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v8.c |    8 ++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index cc194f6ec18da..5cdc599fcad3c 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1181,8 +1181,11 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- 		}
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c
+@@ -561,6 +561,13 @@ static uint32_t read_vmid_from_vmfault_r
+ 	return REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS, VMID);
+ }
  
--	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors))
-+	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
-+		raid_end_bio_io(r10_bio);
- 		return;
-+	}
++static uint32_t kgd_hqd_sdma_get_doorbell(struct amdgpu_device *adev,
++					  int engine, int queue)
 +
- 	rdev = read_balance(conf, r10_bio, &max_sectors);
- 	if (!rdev) {
- 		if (err_rdev) {
-@@ -1368,8 +1371,11 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
- 	}
++{
++	return 0;
++}
++
+ const struct kfd2kgd_calls gfx_v7_kfd2kgd = {
+ 	.program_sh_mem_settings = kgd_program_sh_mem_settings,
+ 	.set_pasid_vmid_mapping = kgd_set_pasid_vmid_mapping,
+@@ -578,4 +585,5 @@ const struct kfd2kgd_calls gfx_v7_kfd2kg
+ 	.set_scratch_backing_va = set_scratch_backing_va,
+ 	.set_vm_context_page_table_base = set_vm_context_page_table_base,
+ 	.read_vmid_from_vmfault_reg = read_vmid_from_vmfault_reg,
++	.hqd_sdma_get_doorbell = kgd_hqd_sdma_get_doorbell,
+ };
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v8.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v8.c
+@@ -582,6 +582,13 @@ static void set_vm_context_page_table_ba
+ 			lower_32_bits(page_table_base));
+ }
  
- 	sectors = r10_bio->sectors;
--	if (!regular_request_wait(mddev, conf, bio, sectors))
-+	if (!regular_request_wait(mddev, conf, bio, sectors)) {
-+		raid_end_bio_io(r10_bio);
- 		return;
-+	}
++static uint32_t kgd_hqd_sdma_get_doorbell(struct amdgpu_device *adev,
++					  int engine, int queue)
 +
- 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery) &&
- 	    (mddev->reshape_backwards
- 	     ? (bio->bi_iter.bi_sector < conf->reshape_safe &&
--- 
-2.39.5
-
++{
++	return 0;
++}
++
+ const struct kfd2kgd_calls gfx_v8_kfd2kgd = {
+ 	.program_sh_mem_settings = kgd_program_sh_mem_settings,
+ 	.set_pasid_vmid_mapping = kgd_set_pasid_vmid_mapping,
+@@ -599,4 +606,5 @@ const struct kfd2kgd_calls gfx_v8_kfd2kg
+ 			get_atc_vmid_pasid_mapping_info,
+ 	.set_scratch_backing_va = set_scratch_backing_va,
+ 	.set_vm_context_page_table_base = set_vm_context_page_table_base,
++	.hqd_sdma_get_doorbell = kgd_hqd_sdma_get_doorbell,
+ };
 
 
 
