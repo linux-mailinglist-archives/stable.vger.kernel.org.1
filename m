@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-162922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D901B060AA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB760B0606A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:16:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E50091C42467
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BABA31C47DF7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BE22EF67D;
-	Tue, 15 Jul 2025 13:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01161BE4A;
+	Tue, 15 Jul 2025 13:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4YROtma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0q3mBBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5192EF671;
-	Tue, 15 Jul 2025 13:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5482EF9A1;
+	Tue, 15 Jul 2025 13:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587825; cv=none; b=P+MeCw+NEtC6CtebfM+++5uAzS8FSkG1qyvC5zBKA39/K5W4ZMEUmeJsj3ONbH6PUcSz8p7eOQFcedeYwHbkAzA8S4RlUmLG5SPiGVw+ht5PIOrKgXAs82kyuHNOXnODk/Y3uVAyeF/NdRwhyItn6GHPpLi4cIjxgn53/PTkU7Y=
+	t=1752587830; cv=none; b=GpSve3wTbUddcwHc7ce81sBr0+djT9ZT7jy8Su+DTP03YPH2edy4xHWcX8GuwiAVSY6YLFmD9dq9Z5cRWSbNLfUhvJZ5d7seqSoKSieH6rm9Xjyxp2hyAmfAUuALvYRCPQJ+KF8ud3TmZLP2RKlUgAQcFF5zZgGQFQtRq9v+Ge0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587825; c=relaxed/simple;
-	bh=7Rjdix3IkE9yvn0154AdZFhilbUZV0xeUQhO2S4XWm0=;
+	s=arc-20240116; t=1752587830; c=relaxed/simple;
+	bh=XgdI4DG8FrywYjxtcXKUzJJrvg9+17CE7I9gC5aAer8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhjfSn5LPEY0NWza2HQ/8o2+fGSFa0qk8fApFnJMeT+GY/OOcvBp5Gbs2P/2hpUW1ofxlGZ9wQCdzZ6UxeIPFkYZb5rciP9ngl81ZSZXKC1n9KJpci3TQm3eWyhpm+pG//BvLhDldPgG11rYe5rJfEyedQP4V9TbrjFAWKiKaHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4YROtma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023C0C4CEE3;
-	Tue, 15 Jul 2025 13:57:04 +0000 (UTC)
+	 MIME-Version; b=qf6aSZFsYwDfscXM4tBjFOxwURKhetakAHWnEX8v4e0cIpotqFpqm/i/1GYHqVNz3l8APHb2F40XVlXwSeCrrcbv/XrHocyhNipJzpoEPwO7j++ctlP4MsOJkzXBPQ86If6fcuoXvr8YGnGzXUkMA1ZH7sP0eT4acJ90bEZCxaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0q3mBBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40168C4CEF1;
+	Tue, 15 Jul 2025 13:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587825;
-	bh=7Rjdix3IkE9yvn0154AdZFhilbUZV0xeUQhO2S4XWm0=;
+	s=korg; t=1752587830;
+	bh=XgdI4DG8FrywYjxtcXKUzJJrvg9+17CE7I9gC5aAer8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4YROtmaHU7qamuovkpZgtkpJ6LXLqlgaMZ1aSD0iWWrueQZnl0pFZ5HSVRDatYIg
-	 P8UicBGH8+MVEzmckqjZIl0aU8k2SNj09BS09FITHu/GC5nzAaNg1+nw5BjiauYX0g
-	 8YOfdcdV75pr2tWsSu9xjg4PIWVpV2KfPIYYtLCg=
+	b=Q0q3mBBJu/RJ8OGFopGNOdsrgyqJok8lVL/9Zj9sV0tJ1KOYK+k74bBfUjI8V4uzc
+	 LivI7nxQ8Q9YVEo8bZgWWwNLF/qB8SBfvlP3c/iWEIo0l06p1Cfd0EcbcJ9UYlaluR
+	 ZuCckdYD4rtlcYMgrQif1/M9p1aMdAJWUxxnGghs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
 	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.10 157/208] x86/its: Enumerate Indirect Target Selection (ITS) bug
-Date: Tue, 15 Jul 2025 15:14:26 +0200
-Message-ID: <20250715130817.194898868@linuxfoundation.org>
+Subject: [PATCH 5.10 158/208] x86/alternatives: Introduce int3_emulate_jcc()
+Date: Tue, 15 Jul 2025 15:14:27 +0200
+Message-ID: <20250715130817.233603724@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -67,165 +68,134 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 159013a7ca18c271ff64192deb62a689b622d860 upstream.
+commit db7adcfd1cec4e95155e37bc066fddab302c6340 upstream.
 
-ITS bug in some pre-Alderlake Intel CPUs may allow indirect branches in the
-first half of a cache line get predicted to a target of a branch located in
-the second half of the cache line.
+Move the kprobe Jcc emulation into int3_emulate_jcc() so it can be
+used by more code -- specifically static_call() will need this.
 
-Set X86_BUG_ITS on affected CPUs. Mitigation to follow in later commits.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20230123210607.057678245@infradead.org
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeatures.h |    1 
- arch/x86/include/asm/msr-index.h   |    8 +++++
- arch/x86/kernel/cpu/common.c       |   58 +++++++++++++++++++++++++++++--------
- arch/x86/kvm/x86.c                 |    4 +-
- 4 files changed, 58 insertions(+), 13 deletions(-)
+ arch/x86/include/asm/text-patching.h |   31 ++++++++++++++++++++++++++++
+ arch/x86/kernel/kprobes/core.c       |   38 +++++++----------------------------
+ 2 files changed, 39 insertions(+), 30 deletions(-)
 
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -459,4 +459,5 @@
- #define X86_BUG_RFDS			X86_BUG(1*32 + 2) /* CPU is vulnerable to Register File Data Sampling */
- #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
- #define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
-+#define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
- #endif /* _ASM_X86_CPUFEATURES_H */
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -179,6 +179,14 @@
- 						 * VERW clears CPU Register
- 						 * File.
- 						 */
-+#define ARCH_CAP_ITS_NO			BIT_ULL(62) /*
-+						     * Not susceptible to
-+						     * Indirect Target Selection.
-+						     * This bit is not set by
-+						     * HW, but is synthesized by
-+						     * VMMs for guests to know
-+						     * their affected status.
-+						     */
- 
- #define MSR_IA32_FLUSH_CMD		0x0000010b
- #define L1D_FLUSH			BIT(0)	/*
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1135,6 +1135,8 @@ static const __initconst struct x86_cpu_
- #define GDS		BIT(6)
- /* CPU is affected by Register File Data Sampling */
- #define RFDS		BIT(7)
-+/* CPU is affected by Indirect Target Selection */
-+#define ITS		BIT(8)
- 
- static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
-@@ -1146,22 +1148,25 @@ static const struct x86_cpu_id cpu_vuln_
- 	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
- 	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
- 	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPINGS(0x0, 0x5),	MMIO | RETBLEED | GDS),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
- 	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPINGS(0x0, 0xb),	MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS),
--	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED),
--	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS),
--	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
-+	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
--	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
-+	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
-@@ -1225,6 +1230,32 @@ static bool __init vulnerable_to_rfds(u6
- 	return cpu_matches(cpu_vuln_blacklist, RFDS);
+--- a/arch/x86/include/asm/text-patching.h
++++ b/arch/x86/include/asm/text-patching.h
+@@ -181,6 +181,37 @@ void int3_emulate_ret(struct pt_regs *re
+ 	unsigned long ip = int3_emulate_pop(regs);
+ 	int3_emulate_jmp(regs, ip);
  }
- 
-+static bool __init vulnerable_to_its(u64 x86_arch_cap_msr)
++
++static __always_inline
++void int3_emulate_jcc(struct pt_regs *regs, u8 cc, unsigned long ip, unsigned long disp)
 +{
-+	/* The "immunity" bit trumps everything else: */
-+	if (x86_arch_cap_msr & ARCH_CAP_ITS_NO)
-+		return false;
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
-+		return false;
++	static const unsigned long jcc_mask[6] = {
++		[0] = X86_EFLAGS_OF,
++		[1] = X86_EFLAGS_CF,
++		[2] = X86_EFLAGS_ZF,
++		[3] = X86_EFLAGS_CF | X86_EFLAGS_ZF,
++		[4] = X86_EFLAGS_SF,
++		[5] = X86_EFLAGS_PF,
++	};
 +
-+	/* None of the affected CPUs have BHI_CTRL */
-+	if (boot_cpu_has(X86_FEATURE_BHI_CTRL))
-+		return false;
++	bool invert = cc & 1;
++	bool match;
 +
-+	/*
-+	 * If a VMM did not expose ITS_NO, assume that a guest could
-+	 * be running on a vulnerable hardware or may migrate to such
-+	 * hardware.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
-+		return true;
++	if (cc < 0xc) {
++		match = regs->flags & jcc_mask[cc >> 1];
++	} else {
++		match = ((regs->flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
++			((regs->flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
++		if (cc >= 0xe)
++			match = match || (regs->flags & X86_EFLAGS_ZF);
++	}
 +
-+	if (cpu_matches(cpu_vuln_blacklist, ITS))
-+		return true;
++	if ((match && !invert) || (!match && invert))
++		ip += disp;
 +
-+	return false;
++	int3_emulate_jmp(regs, ip);
 +}
 +
- static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
+ #endif /* !CONFIG_UML_X86 */
+ 
+ #endif /* _ASM_X86_TEXT_PATCHING_H */
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -462,50 +462,26 @@ static void kprobe_emulate_call(struct k
+ }
+ NOKPROBE_SYMBOL(kprobe_emulate_call);
+ 
+-static nokprobe_inline
+-void __kprobe_emulate_jmp(struct kprobe *p, struct pt_regs *regs, bool cond)
++static void kprobe_emulate_jmp(struct kprobe *p, struct pt_regs *regs)
  {
- 	u64 ia32_cap = x86_read_arch_cap_msr();
-@@ -1339,6 +1370,9 @@ static void __init cpu_set_bug_bits(stru
- 	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
- 		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
+ 	unsigned long ip = regs->ip - INT3_INSN_SIZE + p->ainsn.size;
  
-+	if (vulnerable_to_its(ia32_cap))
-+		setup_force_cpu_bug(X86_BUG_ITS);
-+
- 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
- 		return;
+-	if (cond)
+-		ip += p->ainsn.rel32;
++	ip += p->ainsn.rel32;
+ 	int3_emulate_jmp(regs, ip);
+ }
+-
+-static void kprobe_emulate_jmp(struct kprobe *p, struct pt_regs *regs)
+-{
+-	__kprobe_emulate_jmp(p, regs, true);
+-}
+ NOKPROBE_SYMBOL(kprobe_emulate_jmp);
  
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1390,7 +1390,7 @@ static unsigned int num_msr_based_featur
- 	 ARCH_CAP_PSCHANGE_MC_NO | ARCH_CAP_TSX_CTRL_MSR | ARCH_CAP_TAA_NO | \
- 	 ARCH_CAP_SBDR_SSDP_NO | ARCH_CAP_FBSDP_NO | ARCH_CAP_PSDP_NO | \
- 	 ARCH_CAP_FB_CLEAR | ARCH_CAP_RRSBA | ARCH_CAP_PBRSB_NO | ARCH_CAP_GDS_NO | \
--	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR)
-+	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR | ARCH_CAP_ITS_NO)
- 
- static u64 kvm_get_arch_capabilities(void)
+-static const unsigned long jcc_mask[6] = {
+-	[0] = X86_EFLAGS_OF,
+-	[1] = X86_EFLAGS_CF,
+-	[2] = X86_EFLAGS_ZF,
+-	[3] = X86_EFLAGS_CF | X86_EFLAGS_ZF,
+-	[4] = X86_EFLAGS_SF,
+-	[5] = X86_EFLAGS_PF,
+-};
+-
+ static void kprobe_emulate_jcc(struct kprobe *p, struct pt_regs *regs)
  {
-@@ -1429,6 +1429,8 @@ static u64 kvm_get_arch_capabilities(voi
- 		data |= ARCH_CAP_MDS_NO;
- 	if (!boot_cpu_has_bug(X86_BUG_RFDS))
- 		data |= ARCH_CAP_RFDS_NO;
-+	if (!boot_cpu_has_bug(X86_BUG_ITS))
-+		data |= ARCH_CAP_ITS_NO;
+-	bool invert = p->ainsn.jcc.type & 1;
+-	bool match;
++	unsigned long ip = regs->ip - INT3_INSN_SIZE + p->ainsn.size;
  
- 	if (!boot_cpu_has(X86_FEATURE_RTM)) {
- 		/*
+-	if (p->ainsn.jcc.type < 0xc) {
+-		match = regs->flags & jcc_mask[p->ainsn.jcc.type >> 1];
+-	} else {
+-		match = ((regs->flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
+-			((regs->flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
+-		if (p->ainsn.jcc.type >= 0xe)
+-			match = match || (regs->flags & X86_EFLAGS_ZF);
+-	}
+-	__kprobe_emulate_jmp(p, regs, (match && !invert) || (!match && invert));
++	int3_emulate_jcc(regs, p->ainsn.jcc.type, ip, p->ainsn.rel32);
+ }
+ NOKPROBE_SYMBOL(kprobe_emulate_jcc);
+ 
+ static void kprobe_emulate_loop(struct kprobe *p, struct pt_regs *regs)
+ {
++	unsigned long ip = regs->ip - INT3_INSN_SIZE + p->ainsn.size;
+ 	bool match;
+ 
+ 	if (p->ainsn.loop.type != 3) {	/* LOOP* */
+@@ -533,7 +509,9 @@ static void kprobe_emulate_loop(struct k
+ 	else if (p->ainsn.loop.type == 1)	/* LOOPE */
+ 		match = match && (regs->flags & X86_EFLAGS_ZF);
+ 
+-	__kprobe_emulate_jmp(p, regs, match);
++	if (match)
++		ip += p->ainsn.rel32;
++	int3_emulate_jmp(regs, ip);
+ }
+ NOKPROBE_SYMBOL(kprobe_emulate_loop);
+ 
 
 
 
