@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3393FB05D0A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:40:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F568B05BAE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 579FC188490F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8BEB1C20019
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3894F2EBBB1;
-	Tue, 15 Jul 2025 13:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0972E2F10;
+	Tue, 15 Jul 2025 13:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWAkcxHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mn7Fm5N1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D522E8893;
-	Tue, 15 Jul 2025 13:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADC92E1C69;
+	Tue, 15 Jul 2025 13:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586195; cv=none; b=T6E5qTa7hXL4pXZ1T67k2TDx/XoggdMxVEoK93cXAtmNr02/zVmky2lq2YaMK3xCvCAdbzABi8u1gsCEzKiGq310VLBWa+X+Qd8wdgotC8/DxXYhGcu+4QU6tL71qt0OguxXoo5nfKq66X7hHf0vy/Qv2ayNRK3AmDCfKBBfhjA=
+	t=1752585761; cv=none; b=RwoLy5ArtLWrSDPpcqzexL7Bk9ikyQfHlm8Va9RuJanOPYgOy5yT8Ukg2309RCbEMw3uhn9HZqsc77ljYiSflB9i7C5GwRXCpzDWSAvELaQy62yiNXtlQluAcJ6iVV5I5bdTxxoJ2rhirOjx5Urw17GiOWPotetBGIdHIeQU6yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586195; c=relaxed/simple;
-	bh=beeD5m0tCqm/1iHKlhJxxKaSZiV9vWlafxiX+rcY1Ao=;
+	s=arc-20240116; t=1752585761; c=relaxed/simple;
+	bh=hI70LW6VPGMVv2cD2AtJ1OKEGHeQEeveeyb8HGHoAzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FDQVm6DB4gsmT5dZDwHl3hZX+Xa7P6g3cU4Hbe5t1ODBoV34hgtizVoD0fz+l2unYi+h+fqemSSwBWf4dhakra2LaUABzCxhxMJYLHOaEO3k5i6ERIbz25Z0QZB3e0mBpnKIQ9fOHNsmLCl8HxFGBfa0/0FnYf3wh6tdbrPTFBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWAkcxHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A867C4CEF8;
-	Tue, 15 Jul 2025 13:29:54 +0000 (UTC)
+	 MIME-Version; b=DJaHtkxbi5dUQCXPa3+dDXy4S2Vj2PKk6dXyHgPS+w9gCqHJwNx5IQrVfyl9evDfcKp9fH4zJdbRfPvg9PrJUe0lX8akUP9rs71wOQOjcM1iJHJ+BwlVLbZ6OJBA9dOXM/34gGtqZ2hQp+1Ri0I5XBJo1Ru7/e8BHeS1D5cDBhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mn7Fm5N1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5E9C4CEFE;
+	Tue, 15 Jul 2025 13:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586194;
-	bh=beeD5m0tCqm/1iHKlhJxxKaSZiV9vWlafxiX+rcY1Ao=;
+	s=korg; t=1752585761;
+	bh=hI70LW6VPGMVv2cD2AtJ1OKEGHeQEeveeyb8HGHoAzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWAkcxHeGxBoJz1odkizLispnh5IF3KECsadf675G/9S6ry0NIbiTAcLyItF+6zTI
-	 I/Gd2Caif7zwqWTZLd3QQDIwl8yDW8Cazsdkhz+Nw/QgwysGZ7AxD7MX40Qhad08Y2
-	 /dxOOK5LSg4z6r4RVfeyIQzluyIFZlGWxg81uTuQ=
+	b=mn7Fm5N1TnAUxU9OAeRIf/Tq5gAkc21qI0utqjLWhn5N5OsDfjp8E8wOWaDrdYZ4h
+	 qXC9YOZ3V9zNe22GBVZ13e4ycYupY/L4mS6dLnlniSIxizAfvK61j6lywAoq8fsVAp
+	 Jnrp0uH8r4mpFSwyYqgKyZzFXkcWW1heaKBw3dA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 51/77] dma-buf: use new iterator in dma_resv_wait_timeout
+	Ziyan Xu <research@securitygossip.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 162/163] ksmbd: fix potential use-after-free in oplock/lease break ack
 Date: Tue, 15 Jul 2025 15:13:50 +0200
-Message-ID: <20250715130753.774312356@linuxfoundation.org>
+Message-ID: <20250715130815.331268960@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,119 +60,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit ada5c48b11a3df814701daa9cd11305a75a5f1a5 ]
+commit 50f930db22365738d9387c974416f38a06e8057e upstream.
 
-This makes the function much simpler since the complex
-retry logic is now handled elsewhere.
+If ksmbd_iov_pin_rsp return error, use-after-free can happen by
+accessing opinfo->state and opinfo_put and ksmbd_fd_put could
+called twice.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20211005113742.1101-7-christian.koenig@amd.com
-Stable-dep-of: 2b95a7db6e0f ("dma-buf: fix timeout handling in dma_resv_wait_timeout v2")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Ziyan Xu <research@securitygossip.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/dma-resv.c | 69 +++++---------------------------------
- 1 file changed, 8 insertions(+), 61 deletions(-)
+ fs/smb/server/smb2pdu.c |   29 +++++++++--------------------
+ 1 file changed, 9 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/dma-buf/dma-resv.c b/drivers/dma-buf/dma-resv.c
-index c747b19c3be16..8db368c7d35c3 100644
---- a/drivers/dma-buf/dma-resv.c
-+++ b/drivers/dma-buf/dma-resv.c
-@@ -613,74 +613,21 @@ long dma_resv_wait_timeout(struct dma_resv *obj, bool wait_all, bool intr,
- 			   unsigned long timeout)
- {
- 	long ret = timeout ? timeout : 1;
--	unsigned int seq, shared_count;
-+	struct dma_resv_iter cursor;
- 	struct dma_fence *fence;
--	int i;
- 
--retry:
--	shared_count = 0;
--	seq = read_seqcount_begin(&obj->seq);
--	rcu_read_lock();
--	i = -1;
--
--	fence = dma_resv_excl_fence(obj);
--	if (fence && !test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags)) {
--		if (!dma_fence_get_rcu(fence))
--			goto unlock_retry;
--
--		if (dma_fence_is_signaled(fence)) {
--			dma_fence_put(fence);
--			fence = NULL;
--		}
--
--	} else {
--		fence = NULL;
--	}
--
--	if (wait_all) {
--		struct dma_resv_list *fobj = dma_resv_shared_list(obj);
--
--		if (fobj)
--			shared_count = fobj->shared_count;
--
--		for (i = 0; !fence && i < shared_count; ++i) {
--			struct dma_fence *lfence;
--
--			lfence = rcu_dereference(fobj->shared[i]);
--			if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
--				     &lfence->flags))
--				continue;
--
--			if (!dma_fence_get_rcu(lfence))
--				goto unlock_retry;
--
--			if (dma_fence_is_signaled(lfence)) {
--				dma_fence_put(lfence);
--				continue;
--			}
-+	dma_resv_iter_begin(&cursor, obj, wait_all);
-+	dma_resv_for_each_fence_unlocked(&cursor, fence) {
- 
--			fence = lfence;
--			break;
-+		ret = dma_fence_wait_timeout(fence, intr, ret);
-+		if (ret <= 0) {
-+			dma_resv_iter_end(&cursor);
-+			return ret;
- 		}
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -8517,11 +8517,6 @@ static void smb20_oplock_break_ack(struc
+ 		goto err_out;
  	}
-+	dma_resv_iter_end(&cursor);
  
--	rcu_read_unlock();
--	if (fence) {
--		if (read_seqcount_retry(&obj->seq, seq)) {
--			dma_fence_put(fence);
--			goto retry;
--		}
+-	opinfo->op_state = OPLOCK_STATE_NONE;
+-	wake_up_interruptible_all(&opinfo->oplock_q);
+-	opinfo_put(opinfo);
+-	ksmbd_fd_put(work, fp);
 -
--		ret = dma_fence_wait_timeout(fence, intr, ret);
--		dma_fence_put(fence);
--		if (ret > 0 && wait_all && (i + 1 < shared_count))
--			goto retry;
--	}
- 	return ret;
+ 	rsp->StructureSize = cpu_to_le16(24);
+ 	rsp->OplockLevel = rsp_oplevel;
+ 	rsp->Reserved = 0;
+@@ -8529,16 +8524,15 @@ static void smb20_oplock_break_ack(struc
+ 	rsp->VolatileFid = volatile_id;
+ 	rsp->PersistentFid = persistent_id;
+ 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_oplock_break));
+-	if (!ret)
+-		return;
 -
--unlock_retry:
--	rcu_read_unlock();
--	goto retry;
++	if (ret) {
+ err_out:
++		smb2_set_err_rsp(work);
++	}
++
+ 	opinfo->op_state = OPLOCK_STATE_NONE;
+ 	wake_up_interruptible_all(&opinfo->oplock_q);
+-
+ 	opinfo_put(opinfo);
+ 	ksmbd_fd_put(work, fp);
+-	smb2_set_err_rsp(work);
  }
- EXPORT_SYMBOL_GPL(dma_resv_wait_timeout);
  
--- 
-2.39.5
-
+ static int check_lease_state(struct lease *lease, __le32 req_state)
+@@ -8668,11 +8662,6 @@ static void smb21_lease_break_ack(struct
+ 	}
+ 
+ 	lease_state = lease->state;
+-	opinfo->op_state = OPLOCK_STATE_NONE;
+-	wake_up_interruptible_all(&opinfo->oplock_q);
+-	atomic_dec(&opinfo->breaking_cnt);
+-	wake_up_interruptible_all(&opinfo->oplock_brk);
+-	opinfo_put(opinfo);
+ 
+ 	rsp->StructureSize = cpu_to_le16(36);
+ 	rsp->Reserved = 0;
+@@ -8681,16 +8670,16 @@ static void smb21_lease_break_ack(struct
+ 	rsp->LeaseState = lease_state;
+ 	rsp->LeaseDuration = 0;
+ 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_lease_ack));
+-	if (!ret)
+-		return;
+-
++	if (ret) {
+ err_out:
++		smb2_set_err_rsp(work);
++	}
++
++	opinfo->op_state = OPLOCK_STATE_NONE;
+ 	wake_up_interruptible_all(&opinfo->oplock_q);
+ 	atomic_dec(&opinfo->breaking_cnt);
+ 	wake_up_interruptible_all(&opinfo->oplock_brk);
+-
+ 	opinfo_put(opinfo);
+-	smb2_set_err_rsp(work);
+ }
+ 
+ /**
 
 
 
