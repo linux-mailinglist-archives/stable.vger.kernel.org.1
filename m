@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-162460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939BCB05E07
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD70B05F0A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B8C4A7E09
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A4951C2420C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E712E88AC;
-	Tue, 15 Jul 2025 13:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961552ED856;
+	Tue, 15 Jul 2025 13:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYm6os/Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Otds1ck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842FC2E62DD;
-	Tue, 15 Jul 2025 13:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BBD2ED842;
+	Tue, 15 Jul 2025 13:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586614; cv=none; b=YEypylKK2Ck/vr2CsHD4FKhR+mG9ouXp6WmdesdurdlGbn/LlDoGLzN5RUuKwEPlNaCqQYxrUY1+utQ5nahpLH35kW5HpWbfMhReiJP1In/xiv0uK/M6V/uWnv2A3l5Z4k2l6HPCom2XHAhFzCxI8pHH+tLw4nlFaWlBiPtvI/Q=
+	t=1752587121; cv=none; b=c6RzV8UD1sPuicSDeZXs39MeW7JvAs7IufHPm3lVENjGF0YSJO18g9xCRXDOBINAYS8jQaOHeibvvTgUfl/kzGruYbmmYlb1ji4P8ragds2dlQoPlrDv7d7++Ruyl9uHfoKJpGjElHI2lcVCKKKYz1841k8fLsxND38kOOtKh3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586614; c=relaxed/simple;
-	bh=EVMNlXZyiXBkrJ0P/2OArQOcU0NeXEug4fcXFOccmFI=;
+	s=arc-20240116; t=1752587121; c=relaxed/simple;
+	bh=+g0egLZsHVyqR78vnv4VvzupLX5M6zar+55aDG6/X2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P66TBpW3Mmy0z+2HCugbalHPsnLPHNZiWVEkp03G2MbBJi0cM/CiVDYBjlETCmLqKMr4S6PProzOlQMALeGFoRWipzl/hHwOOpoWJHMYgvS3FxO9IafKDz5PT9v9NkNYH+j/UpSve7caZheQyQJyEOiB46YQixh1b+mEKAHPJSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYm6os/Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0335C4CEF1;
-	Tue, 15 Jul 2025 13:36:52 +0000 (UTC)
+	 MIME-Version; b=ZjzPz2BW/NTrrwrBXGAPzpNoyaMVljdYf5GiMEMaZ1V46xyEffHDPOZeJw3BhJ5zjQH1vXuCXXb5lVCmJkT40Iyxy+nTjyRpqvYdCS9IpTFhieLaX34Z5YfuComrbCwYtuOCs5jEkUOGdBhik9kEUujYr9PtoEmcCvpQweAAZiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Otds1ck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16A6C4CEF6;
+	Tue, 15 Jul 2025 13:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586613;
-	bh=EVMNlXZyiXBkrJ0P/2OArQOcU0NeXEug4fcXFOccmFI=;
+	s=korg; t=1752587121;
+	bh=+g0egLZsHVyqR78vnv4VvzupLX5M6zar+55aDG6/X2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sYm6os/YgJ6p2/ZvnRVuhFXSTUwqufh8rmXtAtFnWyfHxuFZ+gOud1ECMmDCB+cUY
-	 X9Dh7tWkBoo0OwG92HmhLrd6j00uNzo3ejXKU42AG8uI7vIi/qrK/8XmnyMO0oRN4S
-	 W8UOW+/WsYsxWuDBP7RQZclCwFbiom1RUhwvfiUQ=
+	b=2Otds1ckCqiFwxLx59viVlQcmzGrJ8ji+bojbVnR6v540MZnAOeA3WN3XAM0ap6VT
+	 j8a3E/v2Ei2SkR+yrozra36mndZHVugEh9NA70SuGFQlPfr/8B82KC8dHA6vSUtHam
+	 soj6xuPwTGRcM5f4/r/4uAtQBz3sdfq6Vm3R8n9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Reynolds <mattreynolds@chromium.org>,
-	Harry Cutts <hcutts@chromium.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 130/148] Input: xpad - add support for Amazon Game Controller
+Subject: [PATCH 6.15 157/192] drm/xe/pm: Restore display pm if there is error after display suspend
 Date: Tue, 15 Jul 2025 15:14:12 +0200
-Message-ID: <20250715130805.498635303@linuxfoundation.org>
+Message-ID: <20250715130821.219207321@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +66,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Reynolds <mattreynolds@chromium.org>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 05665cef4b745cb46b1d1b8e96deaa25464092d3 ]
+[ Upstream commit 6d33df611a39a1b4ad9f2b609ded5d6efa04d97e ]
 
-The Amazon Luna controller (product name "Amazon Game Controller") behaves
-like an Xbox 360 controller when connected over USB.
+xe_bo_evict_all() is called after xe_display_pm_suspend(). So if there
+is error with xe_bo_evict_all(), display pm should be restored.
 
-Signed-off-by: Matt Reynolds <mattreynolds@chromium.org>
-Reviewed-by: Harry Cutts <hcutts@chromium.org>
-Link: https://lore.kernel.org/r/20210429103548.1.If5f9a44cb81e25b9350f7c6c0b3c88b4ecd81166@changeid
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Stable-dep-of: 22c69d786ef8 ("Input: xpad - support Acer NGR 200 Controller")
+Fixes: 51462211f4a9 ("drm/xe/pxp: add PXP PM support")
+Fixes: cb8f81c17531 ("drm/xe/display: Make display suspend/resume work on discrete")
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Link: https://lore.kernel.org/r/20250708035424.3608190-2-shuicheng.lin@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 83dcee17855c4e5af037ae3262809036de127903)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/xe/xe_pm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 00b973e0f79ff..fb714004641b7 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -275,6 +275,7 @@ static const struct xpad_device {
- 	{ 0x1689, 0xfd00, "Razer Onza Tournament Edition", 0, XTYPE_XBOX360 },
- 	{ 0x1689, 0xfd01, "Razer Onza Classic Edition", 0, XTYPE_XBOX360 },
- 	{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-+	{ 0x1949, 0x041a, "Amazon Game Controller", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0002, "Harmonix Rock Band Guitar", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0003, "Harmonix Rock Band Drumkit", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0130, "Ion Drum Rocker", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
-@@ -462,6 +463,7 @@ static const struct usb_device_id xpad_table[] = {
- 	XPAD_XBOX360_VENDOR(0x15e4),		/* Numark X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x162e),		/* Joytech X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x1689),		/* Razer Onza */
-+	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
- 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harminix Rock Band Guitar and Drums */
- 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA Controllers */
- 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA Controllers */
+diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+index 7b6b754ad6eb7..c499c86382858 100644
+--- a/drivers/gpu/drm/xe/xe_pm.c
++++ b/drivers/gpu/drm/xe/xe_pm.c
+@@ -135,7 +135,7 @@ int xe_pm_suspend(struct xe_device *xe)
+ 	/* FIXME: Super racey... */
+ 	err = xe_bo_evict_all(xe);
+ 	if (err)
+-		goto err_pxp;
++		goto err_display;
+ 
+ 	for_each_gt(gt, xe, id) {
+ 		err = xe_gt_suspend(gt);
+@@ -152,7 +152,6 @@ int xe_pm_suspend(struct xe_device *xe)
+ 
+ err_display:
+ 	xe_display_pm_resume(xe);
+-err_pxp:
+ 	xe_pxp_pm_resume(xe->pxp);
+ err:
+ 	drm_dbg(&xe->drm, "Device suspend failed %d\n", err);
 -- 
 2.39.5
 
