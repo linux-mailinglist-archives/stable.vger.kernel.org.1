@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34510B05B8F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9F4B05CC3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CB531C20155
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 621191C257C2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69492E2EE7;
-	Tue, 15 Jul 2025 13:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEBE2E49B7;
+	Tue, 15 Jul 2025 13:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aiWKXq/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ll0MWr4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E3027584E;
-	Tue, 15 Jul 2025 13:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F46263F52;
+	Tue, 15 Jul 2025 13:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585688; cv=none; b=JoMEtu+/qiMxg4iiui/FimSOr4RE5MXf28+jriekAC2nWKq5ugPH8ZZaILyPy4V5+9afnwoHJV95X3Y5+juT/pHekorotC3xB8n/11Uok2L5lQNyk+zc5o9juT2wRaelBkBHkj+KtNKd6q5ko3Pv5RhL3JnHei//edYbVnW3dPU=
+	t=1752586123; cv=none; b=TLQCJMy1InzuJt0HFuNjnlOFbq4C2ePJtpv7+guzJAVC4FS4zuUBeks9TwzYdhrA7fGsnPa/f6DFw9V+Jwii7OunvlbUr7rd6GUzUPclC8Gh13BOAn/UduRgzASFpvP10Jl9snY8C+i7yIOEueBlNKBbnr9rKgPRGviYjiOY1cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585688; c=relaxed/simple;
-	bh=Mp3Fld91axa9a8CJwVTgA6j4S9PQwPwZ4oPYR45d/rE=;
+	s=arc-20240116; t=1752586123; c=relaxed/simple;
+	bh=Mzi1aspxwvSJXJ8Pt1E7wpxFmtCM4C9lofwZvvc5kFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inQMja0kJ7d7gUhNb4mqBOCvHGT526ntgDsREOOuHR/VJoUADNYzMDlDiP3UB1QN0NWLxcr+yFFo8tTXaAFgvi8CgxDsl26BxB0rMAVONrpk7/VcFU7SkaqV6cUgO4dyaHdzcyWO351GLTaV5/r66y7YQQUxpliMGxXpVE7LiMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aiWKXq/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCA6C4CEE3;
-	Tue, 15 Jul 2025 13:21:27 +0000 (UTC)
+	 MIME-Version; b=QHjE4KhjfrxR9Drrbeapsp1gvna94ePGJVgyqILtUSY5uWfNOcrYRIUZLlwwZ7LFY9meEZH5J2PFPaDsXXexJUO9WprucGny+7uinUHNqd0177xcNpIbOACzV2dxdN/1UObbDxW5028amcqiPB+98ljWxObP1RwLgrW+4S2evnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ll0MWr4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB21C4CEE3;
+	Tue, 15 Jul 2025 13:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585688;
-	bh=Mp3Fld91axa9a8CJwVTgA6j4S9PQwPwZ4oPYR45d/rE=;
+	s=korg; t=1752586123;
+	bh=Mzi1aspxwvSJXJ8Pt1E7wpxFmtCM4C9lofwZvvc5kFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aiWKXq/O9UqdJ8/M22gV61WbnNcWMnSksEbtXZTPgpkA0EE1zFqQkHjYoJKlk078J
-	 b5dMaW/jRfOcwxq6wdGQmOyfdoqvxOxS/TpaXRIeD9tPdUgOqo+Z1T92wAuCbBReGP
-	 3ZGeN1QDACy7Z9JAxR/wPsF7aOUym0jxl0IrTNtQ=
+	b=Ll0MWr4IsrmHGuwWAJ+pgY6oopMh36JRr+89cC+e3DitNod9SknZ8RFdFa82cHvtW
+	 oq12TUYAl2aJR4sC3V5FaG6ADuWMC5X9Wi+oWq9ibnOGQWrSW4qBYgASfgBX4MFd+f
+	 RBGktqUnXjps/hDO5yamz/AO+f+H9td5NAFs12R8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/163] net: ll_temac: Fix missing tx_pending check in ethtools_set_ringparam()
+	syzbot+bba84aef3a26fb93deb9@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Aditya Dutt <duttaditya18@gmail.com>
+Subject: [PATCH 5.15 24/77] jfs: fix null ptr deref in dtInsertEntry
 Date: Tue, 15 Jul 2025 15:13:23 +0200
-Message-ID: <20250715130814.255195040@linuxfoundation.org>
+Message-ID: <20250715130752.673321389@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit e81750b4e3826fedce7362dad839cb40384d60ae ]
+commit ce6dede912f064a855acf6f04a04cbb2c25b8c8c upstream.
 
-The function ll_temac_ethtools_set_ringparam() incorrectly checked
-rx_pending twice, once correctly for RX and once mistakenly in place
-of tx_pending. This caused tx_pending to be left unchecked against
-TX_BD_NUM_MAX.
-As a result, invalid TX ring sizes may have been accepted or valid
-ones wrongly rejected based on the RX limit, leading to potential
-misconfiguration or unexpected results.
+[syzbot reported]
+general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 0 PID: 5061 Comm: syz-executor404 Not tainted 6.8.0-syzkaller-08951-gfe46a7dd189e #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+RIP: 0010:dtInsertEntry+0xd0c/0x1780 fs/jfs/jfs_dtree.c:3713
+...
+[Analyze]
+In dtInsertEntry(), when the pointer h has the same value as p, after writing
+name in UniStrncpy_to_le(), p->header.flag will be cleared. This will cause the
+previously true judgment "p->header.flag & BT-LEAF" to change to no after writing
+the name operation, this leads to entering an incorrect branch and accessing the
+uninitialized object ih when judging this condition for the second time.
 
-This patch corrects the condition to properly validate tx_pending.
+[Fix]
+After got the page, check freelist first, if freelist == 0 then exit dtInsert()
+and return -EINVAL.
 
-Fixes: f7b261bfc35e ("net: ll_temac: Make RX/TX ring sizes configurable")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250710180621.2383000-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+bba84aef3a26fb93deb9@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/ll_temac_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_dtree.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
-index 1072e2210aed3..6b93418224e7e 100644
---- a/drivers/net/ethernet/xilinx/ll_temac_main.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
-@@ -1309,7 +1309,7 @@ ll_temac_ethtools_set_ringparam(struct net_device *ndev,
- 	if (ering->rx_pending > RX_BD_NUM_MAX ||
- 	    ering->rx_mini_pending ||
- 	    ering->rx_jumbo_pending ||
--	    ering->rx_pending > TX_BD_NUM_MAX)
-+	    ering->tx_pending > TX_BD_NUM_MAX)
- 		return -EINVAL;
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -835,6 +835,8 @@ int dtInsert(tid_t tid, struct inode *ip
+ 	 * the full page.
+ 	 */
+ 	DT_GETSEARCH(ip, btstack->top, bn, mp, p, index);
++	if (p->header.freelist == 0)
++		return -EINVAL;
  
- 	if (netif_running(ndev))
--- 
-2.39.5
-
+ 	/*
+ 	 *	insert entry for new key
 
 
 
