@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78723B05CEF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:38:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D3EB05BDC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF9AF16A170
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D91233ABB67
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412EF2D839A;
-	Tue, 15 Jul 2025 13:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA7E27584E;
+	Tue, 15 Jul 2025 13:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4Sl2S7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2JI3MpY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EF52E54BB;
-	Tue, 15 Jul 2025 13:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0AF2E175C;
+	Tue, 15 Jul 2025 13:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586235; cv=none; b=ljuy30vyPUfONC/2/RVQBU2j1d89weY8UczPpvsMKcyPqrVhLBRLpErs8OzUE0//aoIWLIZHsJhUm4H9/jZlwUQVADUetYUn8qBJBTYV60HvU6E+EnjDSzvuj5WhGgAqtGXlkuy9f1Us6aeuM/5lyC2bOM+Cz5z6w3f3/WHAm2k=
+	t=1752585722; cv=none; b=fkGEOD+Whl+yZ/9qQ9ggELO7cOAya2CHD+EIxu21+x4jYvGoIkGfBgRA+M7yl9eBDHhctn+j1+bWZb8LoVOVxVBrGwKpfRDB63bwjZM0gUHtLXAgGUJWM3GXGpv1aAVTPKFN48LeDwa4dYMULWJ+tCDFt4kksqstNODUty384hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586235; c=relaxed/simple;
-	bh=Fptg0aXQ0JMwsu42umfPm/2plK0E6lYZ5FYDiber4m4=;
+	s=arc-20240116; t=1752585722; c=relaxed/simple;
+	bh=0hDyPhJNJJyH5je0dtfGfq1CRFvB9FERxtVsd66Rr0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E6DFQh1Evml9iURro/1BY57cKaDRwY3ccY3FJtElF5BXTVJqmbJyJBJNxFzrhy4CTyXrtIQLsmgc2n4j80IvxNdhQwLZJnf+BpWXF4ZfE88PDIFb8Opyze9Ntv64YDcELwaWiGgglYsoqyr5l8mSOQ0MRV9zByAoj2JbsnDWV90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4Sl2S7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F53C4CEE3;
-	Tue, 15 Jul 2025 13:30:34 +0000 (UTC)
+	 MIME-Version; b=XEQWnTcV4X9A9dr89FB0v3lm54YRHdE7V4vqiutuZFRUpWJPH0Tu+waBywvaiNMqfjgrFqrhkJtmYWKICXHrYNPD3LF9aYpePB9ss2nIUXR/IyYf4XM0KeBrtKkjoReg4EpjnfbBNqgBZ6ep3yuP8e5Y6ZzfyUDibYhQGc/Tlc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2JI3MpY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7B5C4CEE3;
+	Tue, 15 Jul 2025 13:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586234;
-	bh=Fptg0aXQ0JMwsu42umfPm/2plK0E6lYZ5FYDiber4m4=;
+	s=korg; t=1752585722;
+	bh=0hDyPhJNJJyH5je0dtfGfq1CRFvB9FERxtVsd66Rr0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4Sl2S7FJmOb/rbwZO/dAKJzqrrVDBA1TMfeYa1hZ7t1UWRpCkKoFB9CUqZ0SuqEy
-	 6XgBEZS6q0dOHNwD67Ad1dwIQ/B0mjjfkpTAYLSCoSANTqHJv1XfEX1MTjuzemsPL/
-	 Y00xj8JRkhgLduf7+leNHoC/o43j50Xxvyq4YjA4=
+	b=X2JI3MpYqzeMEFZPDgZ/pMC+yIf0iJ34NAvkHyNECCj+v3ZeByFMIlF6XiFCX8A+z
+	 isfwMgr/eGmMSkaiH6S7rGwQMnEjWg3U0RCYGW17OgtkISUSswupCmuPRFYe5jEFlf
+	 PZnZVmyNF62pUh29l0cF4/bLYFh6E4a/nz52tobk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Tim Crawford <tcrawford@system76.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/77] btrfs: propagate last_unlink_trans earlier when doing a rmdir
+Subject: [PATCH 6.12 146/163] ALSA: hda/realtek: Add quirks for some Clevo laptops
 Date: Tue, 15 Jul 2025 15:13:34 +0200
-Message-ID: <20250715130753.117094590@linuxfoundation.org>
+Message-ID: <20250715130814.690106928@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Tim Crawford <tcrawford@system76.com>
 
-[ Upstream commit c466e33e729a0ee017d10d919cba18f503853c60 ]
+[ Upstream commit e41687b511d5e5437db5d2151e23c115dba30411 ]
 
-In case the removed directory had a snapshot that was deleted, we are
-propagating its inode's last_unlink_trans to the parent directory after
-we removed the entry from the parent directory. This leaves a small race
-window where someone can log the parent directory after we removed the
-entry and before we updated last_unlink_trans, and as a result if we ever
-try to replay such a log tree, we will fail since we will attempt to
-remove a snapshot during log replay, which is currently not possible and
-results in the log replay (and mount) to fail. This is the type of failure
-described in commit 1ec9a1ae1e30 ("Btrfs: fix unreplayable log after
-snapshot delete + parent dir fsync").
+Add audio quirks to fix speaker output and headset detection on the
+following Clevo models:
 
-So fix this by propagating the last_unlink_trans to the parent directory
-before we remove the entry from it.
+- V350ENC
+- V350WNPQ
+- V540TU
+- X560WNR
+- X580WNS
 
-Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Tim Crawford <tcrawford@system76.com>
+Link: https://patch.msgid.link/20250620204329.35878-1-tcrawford@system76.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ sound/pci/hda/patch_realtek.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index e3e5bd4fb477a..60079099e24b9 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4655,7 +4655,6 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	struct inode *inode = d_inode(dentry);
- 	int err = 0;
- 	struct btrfs_trans_handle *trans;
--	u64 last_unlink_trans;
- 
- 	if (inode->i_size > BTRFS_EMPTY_DIR_SIZE)
- 		return -ENOTEMPTY;
-@@ -4666,6 +4665,23 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	if (IS_ERR(trans))
- 		return PTR_ERR(trans);
- 
-+	/*
-+	 * Propagate the last_unlink_trans value of the deleted dir to its
-+	 * parent directory. This is to prevent an unrecoverable log tree in the
-+	 * case we do something like this:
-+	 * 1) create dir foo
-+	 * 2) create snapshot under dir foo
-+	 * 3) delete the snapshot
-+	 * 4) rmdir foo
-+	 * 5) mkdir foo
-+	 * 6) fsync foo or some file inside foo
-+	 *
-+	 * This is because we can't unlink other roots when replaying the dir
-+	 * deletes for directory foo.
-+	 */
-+	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
-+		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
-+
- 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
- 		err = btrfs_unlink_subvol(trans, dir, dentry);
- 		goto out;
-@@ -4675,28 +4691,12 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	if (err)
- 		goto out;
- 
--	last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
--
- 	/* now the directory is empty */
- 	err = btrfs_unlink_inode(trans, BTRFS_I(dir),
- 			BTRFS_I(d_inode(dentry)), dentry->d_name.name,
- 			dentry->d_name.len);
--	if (!err) {
-+	if (!err)
- 		btrfs_i_size_write(BTRFS_I(inode), 0);
--		/*
--		 * Propagate the last_unlink_trans value of the deleted dir to
--		 * its parent directory. This is to prevent an unrecoverable
--		 * log tree in the case we do something like this:
--		 * 1) create dir foo
--		 * 2) create snapshot under dir foo
--		 * 3) delete the snapshot
--		 * 4) rmdir foo
--		 * 5) mkdir foo
--		 * 6) fsync foo or some file inside foo
--		 */
--		if (last_unlink_trans >= trans->transid)
--			BTRFS_I(dir)->last_unlink_trans = last_unlink_trans;
--	}
- out:
- 	btrfs_end_transaction(trans);
- 	btrfs_btree_balance_dirty(BTRFS_I(dir)->root->fs_info);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 0bc59b6f1b9a6..e98823bd3634f 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -2658,6 +2658,7 @@ static const struct hda_quirk alc882_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x147b, 0x107a, "Abit AW9D-MAX", ALC882_FIXUP_ABIT_AW9D_MAX),
+ 	SND_PCI_QUIRK(0x1558, 0x3702, "Clevo X370SN[VW]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+ 	SND_PCI_QUIRK(0x1558, 0x50d3, "Clevo PC50[ER][CDF]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
++	SND_PCI_QUIRK(0x1558, 0x5802, "Clevo X58[05]WN[RST]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+ 	SND_PCI_QUIRK(0x1558, 0x65d1, "Clevo PB51[ER][CDF]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+ 	SND_PCI_QUIRK(0x1558, 0x65d2, "Clevo PB51R[CDF]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+ 	SND_PCI_QUIRK(0x1558, 0x65e1, "Clevo PB51[ED][DF]", ALC1220_FIXUP_CLEVO_PB51ED_PINS),
+@@ -11046,6 +11047,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1558, 0x14a1, "Clevo L141MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x2624, "Clevo L240TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x28c1, "Clevo V370VND", ALC2XX_FIXUP_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1558, 0x35a1, "Clevo V3[56]0EN[CDE]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0x35b1, "Clevo V3[57]0WN[MNP]Q", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4018, "Clevo NV40M[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4019, "Clevo NV40MZ", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4020, "Clevo NV40MB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+@@ -11073,6 +11076,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1558, 0x51b1, "Clevo NS50AU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x51b3, "Clevo NS70AU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x5630, "Clevo NP50RNJS", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0x5700, "Clevo X560WN[RST]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x70a1, "Clevo NB70T[HJK]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x70b3, "Clevo NK70SB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x70f2, "Clevo NH79EPY", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+@@ -11112,6 +11116,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1558, 0xa650, "Clevo NP[567]0SN[CD]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa671, "Clevo NP70SN[CDE]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xa741, "Clevo V54x_6x_TNE", ALC245_FIXUP_CLEVO_NOISY_MIC),
++	SND_PCI_QUIRK(0x1558, 0xa743, "Clevo V54x_6x_TU", ALC245_FIXUP_CLEVO_NOISY_MIC),
+ 	SND_PCI_QUIRK(0x1558, 0xa763, "Clevo V54x_6x_TU", ALC245_FIXUP_CLEVO_NOISY_MIC),
+ 	SND_PCI_QUIRK(0x1558, 0xb018, "Clevo NP50D[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0xb019, "Clevo NH77D[BE]Q", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 -- 
 2.39.5
 
