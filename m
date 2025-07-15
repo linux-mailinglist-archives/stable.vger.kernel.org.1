@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E713BB05D85
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0953EB05EC7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B63E4A2541
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 113BE1C2725A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17A72E7BDA;
-	Tue, 15 Jul 2025 13:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C692E3391;
+	Tue, 15 Jul 2025 13:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5AquWh4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G81OlmRV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCCA2E49B2;
-	Tue, 15 Jul 2025 13:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65BFC2E2F0F;
+	Tue, 15 Jul 2025 13:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586393; cv=none; b=iB0uzZ3nSl9sxp0MJKR/0+Uc693YZeY460+WPLAGDozacCtsNYwLA3mCrYr6uYGTGPjvuXyoR0n4751FmigH8TvmPfi2PjjoZPBB9cs6/iirwzBPSkbwhaiW2BPW+qGBdRqhtTIbT/y1DMjwqRkBvmE90RNQj7RyjDO6vOogMqY=
+	t=1752586862; cv=none; b=frIeAvkA5z3T/+0GK4It5lBHXsjSe1ALVDq3y9aidKqmVpF7SKeIcXWlxcrfzjHO5KisRInJy2ccDRFlngpzJR8I28GRjZfeBSK1OiM0krsrvZkjvelXK4zf81oNrULvQrX5KsmmFKwEgZBIJen7mqLLswsV0zvr3ydYrOX+rB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586393; c=relaxed/simple;
-	bh=9AD283jRlP3kS607I47+sy9TlTMNeCRTAChiBlCEeiw=;
+	s=arc-20240116; t=1752586862; c=relaxed/simple;
+	bh=IuiXhAV0QYSjB4X7wXYuiYTGJ9r59XucWxxvPs8VCHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mTV0DEcdFT9baF8E8vAztkQApjG9zxEAYKF3eOtkjXZVIKkSNNEps0m+5rMYJ5EP+7JM3GmwOgTuhpgfW2mxw9kqXSnNGlj+xQPNoOtxQ04SpE0sRAMwR9LgCXIBwcXpaBblXh8ptUgm43k3bB/afMoWuIxOpYDmzf16G5QR9Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5AquWh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F2BC4CEE3;
-	Tue, 15 Jul 2025 13:33:13 +0000 (UTC)
+	 MIME-Version; b=FIXtICqqQQ7caCBWtzjzDXYWgoM6Mtp/E00SBkRw43K/csRo6iP90Bze0rkE+Pi2t2IBY29X/KTPLHHOQFAX04tR3yDMlHUGyvj16y6IAY+xPsWU0VgciqtLEhYHtGVHpuQcXeyYnDqADaU3F9LZSYKOiAOUmTjdwywWEAkIXKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G81OlmRV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFDBC4CEE3;
+	Tue, 15 Jul 2025 13:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586393;
-	bh=9AD283jRlP3kS607I47+sy9TlTMNeCRTAChiBlCEeiw=;
+	s=korg; t=1752586862;
+	bh=IuiXhAV0QYSjB4X7wXYuiYTGJ9r59XucWxxvPs8VCHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5AquWh4g9EU/duJxVV7A83DQOHKn45pn0UT01ewl6oyf4aTknPBSQcCf9lBzCYrF
-	 V+lEJLNB8iYnUHziDMsp2vvr6G6ic+rj1IjU5V8h5PVwjCSGWJNB6tWQ9CWX5exAfE
-	 mLQZR6Z7fjC4Oen0XCCWBHwk5N8UuyD2vi37FD/Q=
+	b=G81OlmRVXxHbS0QHWhOu1C2arUv0gAvdSItn0J7n6HiEPdQBfD+QyA3auICOfc1DY
+	 F8jUrLEtBJp9v3Fk4gV2etOESEILOctvqpdmiQFdGZNRCLeKvDOkkkZoUR0VefyKrm
+	 AZYbua6gSdss5KYmlAnnvO7WHrhYHelxF58e4Ny0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 5.4 049/148] drm/tegra: Assign plane type before registration
+	Vitor Soares <vitor.soares@toradex.com>,
+	Jeff Chen <jeff.chen_1@nxp.con>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.15 076/192] wifi: mwifiex: discard erroneous disassoc frames on STA interface
 Date: Tue, 15 Jul 2025 15:12:51 +0200
-Message-ID: <20250715130802.283492667@linuxfoundation.org>
+Message-ID: <20250715130817.978375554@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <treding@nvidia.com>
+From: Vitor Soares <vitor.soares@toradex.com>
 
-commit 9ff4fdf4f44b69237c0afc1d3a8dac916ce66f3e upstream.
+commit 3b602ddc0df723992721b0d286c90c9bdd755b34 upstream.
 
-Changes to a plane's type after it has been registered aren't propagated
-to userspace automatically. This could possibly be achieved by updating
-the property, but since we can already determine which type this should
-be before the registration, passing in the right type from the start is
-a much better solution.
+When operating in concurrent STA/AP mode with host MLME enabled,
+the firmware incorrectly sends disassociation frames to the STA
+interface when clients disconnect from the AP interface.
+This causes kernel warnings as the STA interface processes
+disconnect events that don't apply to it:
 
-Suggested-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+[ 1303.240540] WARNING: CPU: 0 PID: 513 at net/wireless/mlme.c:141 cfg80211_process_disassoc+0x78/0xec [cfg80211]
+[ 1303.250861] Modules linked in: 8021q garp stp mrp llc rfcomm bnep btnxpuart nls_iso8859_1 nls_cp437 onboard_us
+[ 1303.327651] CPU: 0 UID: 0 PID: 513 Comm: kworker/u9:2 Not tainted 6.16.0-rc1+ #3 PREEMPT
+[ 1303.335937] Hardware name: Toradex Verdin AM62 WB on Verdin Development Board (DT)
+[ 1303.343588] Workqueue: MWIFIEX_RX_WORK_QUEUE mwifiex_rx_work_queue [mwifiex]
+[ 1303.350856] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 1303.357904] pc : cfg80211_process_disassoc+0x78/0xec [cfg80211]
+[ 1303.364065] lr : cfg80211_process_disassoc+0x70/0xec [cfg80211]
+[ 1303.370221] sp : ffff800083053be0
+[ 1303.373590] x29: ffff800083053be0 x28: 0000000000000000 x27: 0000000000000000
+[ 1303.380855] x26: 0000000000000000 x25: 00000000ffffffff x24: ffff000002c5b8ae
+[ 1303.388120] x23: ffff000002c5b884 x22: 0000000000000001 x21: 0000000000000008
+[ 1303.395382] x20: ffff000002c5b8ae x19: ffff0000064dd408 x18: 0000000000000006
+[ 1303.402646] x17: 3a36333a61623a30 x16: 32206d6f72662063 x15: ffff800080bfe048
+[ 1303.409910] x14: ffff000003625300 x13: 0000000000000001 x12: 0000000000000000
+[ 1303.417173] x11: 0000000000000002 x10: ffff000003958600 x9 : ffff000003625300
+[ 1303.424434] x8 : ffff00003fd9ef40 x7 : ffff0000039fc280 x6 : 0000000000000002
+[ 1303.431695] x5 : ffff0000038976d4 x4 : 0000000000000000 x3 : 0000000000003186
+[ 1303.438956] x2 : 000000004836ba20 x1 : 0000000000006986 x0 : 00000000d00479de
+[ 1303.446221] Call trace:
+[ 1303.448722]  cfg80211_process_disassoc+0x78/0xec [cfg80211] (P)
+[ 1303.454894]  cfg80211_rx_mlme_mgmt+0x64/0xf8 [cfg80211]
+[ 1303.460362]  mwifiex_process_mgmt_packet+0x1ec/0x460 [mwifiex]
+[ 1303.466380]  mwifiex_process_sta_rx_packet+0x1bc/0x2a0 [mwifiex]
+[ 1303.472573]  mwifiex_handle_rx_packet+0xb4/0x13c [mwifiex]
+[ 1303.478243]  mwifiex_rx_work_queue+0x158/0x198 [mwifiex]
+[ 1303.483734]  process_one_work+0x14c/0x28c
+[ 1303.487845]  worker_thread+0x2cc/0x3d4
+[ 1303.491680]  kthread+0x12c/0x208
+[ 1303.495014]  ret_from_fork+0x10/0x20
+
+Add validation in the STA receive path to verify that disassoc/deauth
+frames originate from the connected AP. Frames that fail this check
+are discarded early, preventing them from reaching the MLME layer and
+triggering WARN_ON().
+
+This filtering logic is similar with that used in the
+ieee80211_rx_mgmt_disassoc() function in mac80211, which drops
+disassoc frames that don't match the current BSSID
+(!ether_addr_equal(mgmt->bssid, sdata->vif.cfg.ap_addr)), ensuring
+only relevant frames are processed.
+
+Tested on:
+- 8997 with FW 16.68.1.p197
+
+Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
 Cc: stable@vger.kernel.org
-Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com
+Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.con>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://patch.msgid.link/20250701142643.658990-1-ivitro@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/dc.c  |   12 ++++++++----
- drivers/gpu/drm/tegra/hub.c |    4 ++--
- drivers/gpu/drm/tegra/hub.h |    3 ++-
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/util.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -1103,10 +1103,16 @@ static struct drm_plane *tegra_dc_add_sh
- 		if (wgrp->dc == dc->pipe) {
- 			for (j = 0; j < wgrp->num_windows; j++) {
- 				unsigned int index = wgrp->windows[j];
-+				enum drm_plane_type type;
-+
-+				if (primary)
-+					type = DRM_PLANE_TYPE_OVERLAY;
-+				else
-+					type = DRM_PLANE_TYPE_PRIMARY;
+--- a/drivers/net/wireless/marvell/mwifiex/util.c
++++ b/drivers/net/wireless/marvell/mwifiex/util.c
+@@ -477,7 +477,9 @@ mwifiex_process_mgmt_packet(struct mwifi
+ 				    "auth: receive authentication from %pM\n",
+ 				    ieee_hdr->addr3);
+ 		} else {
+-			if (!priv->wdev.connected)
++			if (!priv->wdev.connected ||
++			    !ether_addr_equal(ieee_hdr->addr3,
++					      priv->curr_bss_params.bss_descriptor.mac_address))
+ 				return 0;
  
- 				plane = tegra_shared_plane_create(drm, dc,
- 								  wgrp->index,
--								  index);
-+								  index, type);
- 				if (IS_ERR(plane))
- 					return plane;
- 
-@@ -1114,10 +1120,8 @@ static struct drm_plane *tegra_dc_add_sh
- 				 * Choose the first shared plane owned by this
- 				 * head as the primary plane.
- 				 */
--				if (!primary) {
--					plane->type = DRM_PLANE_TYPE_PRIMARY;
-+				if (!primary)
- 					primary = plane;
--				}
- 			}
- 		}
- 	}
---- a/drivers/gpu/drm/tegra/hub.c
-+++ b/drivers/gpu/drm/tegra/hub.c
-@@ -533,9 +533,9 @@ static const struct drm_plane_helper_fun
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index)
-+					    unsigned int index,
-+					    enum drm_plane_type type)
- {
--	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
- 	struct tegra_drm *tegra = drm->dev_private;
- 	struct tegra_display_hub *hub = tegra->hub;
- 	/* planes can be assigned to arbitrary CRTCs */
---- a/drivers/gpu/drm/tegra/hub.h
-+++ b/drivers/gpu/drm/tegra/hub.h
-@@ -81,7 +81,8 @@ void tegra_display_hub_cleanup(struct te
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index);
-+					    unsigned int index,
-+					    enum drm_plane_type type);
- 
- int tegra_display_hub_atomic_check(struct drm_device *drm,
- 				   struct drm_atomic_state *state);
+ 			if (ieee80211_is_deauth(ieee_hdr->frame_control)) {
 
 
 
