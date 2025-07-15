@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-162583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D71B05EBB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCD8B05BC3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7E13188376B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E28B3A5122
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047E92EACF7;
-	Tue, 15 Jul 2025 13:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650542E2EFF;
+	Tue, 15 Jul 2025 13:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pv6vsqFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1S3WZsqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B0D26D4F2;
-	Tue, 15 Jul 2025 13:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221421F4CB3;
+	Tue, 15 Jul 2025 13:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586938; cv=none; b=hcq1+7czsLu7ivuX36MCC1cbpqG7BWVaZwC679pO1rSeEeGjA8dD7ZmHMi6KAvfkVP5OG6pIUF3LIeBHsf3Fph/K/cadhat/BnlpERO6/xgZY5xWMKtUaXQU5TEa80pdl9pkimXaCYNg+FeFs6iWLu/PUkeB/NW6IDhuzH/Hyis=
+	t=1752585683; cv=none; b=NM1m0iNe6Ge0KXXNnvCycXtWPAEg8K4NEejcwMlMgaOG5bU6pz2AJnzY+ZYS8AgMJUz0L7lY6ar1gZz4U6yP1OYpmUVq3DRhPVk85RdmzwgHs5CzBoma4wq+KGaKEbPlaNuFcCGhFUNC6PdB6IvgGKoKZ4HdtOJfIhMaVt10lVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586938; c=relaxed/simple;
-	bh=Uz9ARDR3tAgGhvBfjC0kzwgTfMo8ytARQ6YeCcW2lfU=;
+	s=arc-20240116; t=1752585683; c=relaxed/simple;
+	bh=/CPFyCLGUwSkw5+dq0MBEpimVB1VDq7eQ2bnxCVisNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mM3qwTiqeFZT/ylpMHItjK9PkxfCL5s0QsqPzWrj8UaxbyqxLElsJZj4aehE28iUIhl9vJPQHxwirZp/1b6aVM3MoA98kpc3C8H4zznGuF6avELMc0Ik1hYfUbC/L5ImnUpYO7xzgLlyWs+gfxuns03M9fheQr5508A2maeol+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pv6vsqFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A17DC4CEE3;
-	Tue, 15 Jul 2025 13:42:18 +0000 (UTC)
+	 MIME-Version; b=J7zQ4Z9IPvp/fGPW0IprE+qrMXUTiVEIDhdAiyfmbyggIlFmgxdSNOLYXfEeCONDXI9X0hELsxIogY6bPAl5W/ewsaw0421j7FA2r7e37iszbv4aSOtM678eiEqzt+P4FWR5f8tmsF5hcAEwDE2JfPFFnzRxDNU9p6zfGrZmj4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1S3WZsqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D3BC4CEE3;
+	Tue, 15 Jul 2025 13:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586938;
-	bh=Uz9ARDR3tAgGhvBfjC0kzwgTfMo8ytARQ6YeCcW2lfU=;
+	s=korg; t=1752585683;
+	bh=/CPFyCLGUwSkw5+dq0MBEpimVB1VDq7eQ2bnxCVisNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pv6vsqFPUbe91qk8Tefth2Hu4frl6399euI8fhOaMWHWCZg4PFrphIxJ2vXyik4iQ
-	 1SrQ+HM0r7o6HGSMlC3QOwWopLjtn7Lf6VedN6aiZc2v3QItzZIvJETKweieuy83Mg
-	 8dhZHiHpoSLmGhNaN26d+gJ8BL6vKFdC1p+n0FjE=
+	b=1S3WZsqMX42ZosYAiUGeGEKhQ7tuzzxOzs4wNEARkb9EY8+crXuqgwPfpbXPUJI28
+	 8EaigcX2xz5SZBAFZHRYqluxOqTF05DBsFHJJFcJqtwcXx6ty8El/pB7MEYWffpwPl
+	 vy55demMFue/QkbirN5YCf/nmaOGMmYnm7jE+m3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 106/192] mm/vmalloc: leave lazy MMU mode on PTE mapping error
+	Carolina Jubran <cjubran@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 133/163] net/mlx5e: Fix race between DIM disable and net_dim()
 Date: Tue, 15 Jul 2025 15:13:21 +0200
-Message-ID: <20250715130819.143609927@linuxfoundation.org>
+Message-ID: <20250715130814.175331415@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +65,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-commit fea18c686320a53fce7ad62a87a3e1d10ad02f31 upstream.
+[ Upstream commit eb41a264a3a576dc040ee37c3d9d6b7e2d9be968 ]
 
-vmap_pages_pte_range() enters the lazy MMU mode, but fails to leave it in
-case an error is encountered.
+There's a race between disabling DIM and NAPI callbacks using the dim
+pointer on the RQ or SQ.
 
-Link: https://lkml.kernel.org/r/20250623075721.2817094-1-agordeev@linux.ibm.com
-Fixes: 2ba3e6947aed ("mm/vmalloc: track which page-table levels were modified")
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202506132017.T1l1l6ME-lkp@intel.com/
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If NAPI checks the DIM state bit and sees it still set, it assumes
+`rq->dim` or `sq->dim` is valid. But if DIM gets disabled right after
+that check, the pointer might already be set to NULL, leading to a NULL
+pointer dereference in net_dim().
+
+Fix this by calling `synchronize_net()` before freeing the DIM context.
+This ensures all in-progress NAPI callbacks are finished before the
+pointer is cleared.
+
+Kernel log:
+
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+...
+RIP: 0010:net_dim+0x23/0x190
+...
+Call Trace:
+ <TASK>
+ ? __die+0x20/0x60
+ ? page_fault_oops+0x150/0x3e0
+ ? common_interrupt+0xf/0xa0
+ ? sysvec_call_function_single+0xb/0x90
+ ? exc_page_fault+0x74/0x130
+ ? asm_exc_page_fault+0x22/0x30
+ ? net_dim+0x23/0x190
+ ? mlx5e_poll_ico_cq+0x41/0x6f0 [mlx5_core]
+ ? sysvec_apic_timer_interrupt+0xb/0x90
+ mlx5e_handle_rx_dim+0x92/0xd0 [mlx5_core]
+ mlx5e_napi_poll+0x2cd/0xac0 [mlx5_core]
+ ? mlx5e_poll_ico_cq+0xe5/0x6f0 [mlx5_core]
+ busy_poll_stop+0xa2/0x200
+ ? mlx5e_napi_poll+0x1d9/0xac0 [mlx5_core]
+ ? mlx5e_trigger_irq+0x130/0x130 [mlx5_core]
+ __napi_busy_loop+0x345/0x3b0
+ ? sysvec_call_function_single+0xb/0x90
+ ? asm_sysvec_call_function_single+0x16/0x20
+ ? sysvec_apic_timer_interrupt+0xb/0x90
+ ? pcpu_free_area+0x1e4/0x2e0
+ napi_busy_loop+0x11/0x20
+ xsk_recvmsg+0x10c/0x130
+ sock_recvmsg+0x44/0x70
+ __sys_recvfrom+0xbc/0x130
+ ? __schedule+0x398/0x890
+ __x64_sys_recvfrom+0x20/0x30
+ do_syscall_64+0x4c/0x100
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+...
+---[ end trace 0000000000000000 ]---
+...
+---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+
+Fixes: 445a25f6e1a2 ("net/mlx5e: Support updating coalescing configuration without resetting channels")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/1752155624-24095-3-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmalloc.c |   22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dim.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -487,6 +487,7 @@ static int vmap_pages_pte_range(pmd_t *p
- 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
- 		pgtbl_mod_mask *mask)
- {
-+	int err = 0;
- 	pte_t *pte;
- 
- 	/*
-@@ -500,18 +501,25 @@ static int vmap_pages_pte_range(pmd_t *p
- 	do {
- 		struct page *page = pages[*nr];
- 
--		if (WARN_ON(!pte_none(ptep_get(pte))))
--			return -EBUSY;
--		if (WARN_ON(!page))
--			return -ENOMEM;
--		if (WARN_ON(!pfn_valid(page_to_pfn(page))))
--			return -EINVAL;
-+		if (WARN_ON(!pte_none(ptep_get(pte)))) {
-+			err = -EBUSY;
-+			break;
-+		}
-+		if (WARN_ON(!page)) {
-+			err = -ENOMEM;
-+			break;
-+		}
-+		if (WARN_ON(!pfn_valid(page_to_pfn(page)))) {
-+			err = -EINVAL;
-+			break;
-+		}
- 
- 		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
- 		(*nr)++;
- 	} while (pte++, addr += PAGE_SIZE, addr != end);
- 	*mask |= PGTBL_PTE_MODIFIED;
--	return 0;
-+
-+	return err;
- }
- 
- static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c
+index 298bb74ec5e94..d1d629697e285 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c
+@@ -113,7 +113,7 @@ int mlx5e_dim_rx_change(struct mlx5e_rq *rq, bool enable)
+ 		__set_bit(MLX5E_RQ_STATE_DIM, &rq->state);
+ 	} else {
+ 		__clear_bit(MLX5E_RQ_STATE_DIM, &rq->state);
+-
++		synchronize_net();
+ 		mlx5e_dim_disable(rq->dim);
+ 		rq->dim = NULL;
+ 	}
+@@ -140,7 +140,7 @@ int mlx5e_dim_tx_change(struct mlx5e_txqsq *sq, bool enable)
+ 		__set_bit(MLX5E_SQ_STATE_DIM, &sq->state);
+ 	} else {
+ 		__clear_bit(MLX5E_SQ_STATE_DIM, &sq->state);
+-
++		synchronize_net();
+ 		mlx5e_dim_disable(sq->dim);
+ 		sq->dim = NULL;
+ 	}
+-- 
+2.39.5
+
 
 
 
