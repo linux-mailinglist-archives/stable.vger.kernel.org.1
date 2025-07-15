@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-162322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD3DB05D21
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:41:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B76AB05CD1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E86318907DD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2198A3AEB9F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911CB2E3B13;
-	Tue, 15 Jul 2025 13:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB3D2EA146;
+	Tue, 15 Jul 2025 13:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzrCspcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc6nUs9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50ABA2E3AE2;
-	Tue, 15 Jul 2025 13:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62862E7BC7;
+	Tue, 15 Jul 2025 13:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586250; cv=none; b=i4AiyqLeq1d2XFswtgvx8YKzLcluArHm/zfFCw4vDj2ksdNaDsVlyHWZM5j7/Q2liwSnIq2nEGOzhlMnNuPYscPkSMBAIDMIvQ3W/N41sPmDWuPbanIbYqjVgHrEjKpf6WLVocYxMUYrUMkuvHHxavWyx/+d10nyyd8C53V5qHo=
+	t=1752586073; cv=none; b=jvlRfRGLz7myyNOG2Szk94/D268ABjEXZcxiv095cfdC58lhUXAt4bIe8csEkz/s9E7INhcASJjRTdj3xtAEqSWXDyfVcMPfbwFN3nUy8DBM/skFuK2ubxSLxkTPJtoUPZ1rlB1yT1B9HGVn0IPSF5gzjH1PiE+8GvYqmKdSlvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586250; c=relaxed/simple;
-	bh=efBhIwKPPjOGmGL+kT1nntAUbHmbRusXO3um3qSNySk=;
+	s=arc-20240116; t=1752586073; c=relaxed/simple;
+	bh=jXhHlPEiYb9IClA6cWVvt4BNBXcbs4tqndbGr8qtk+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sn7pvw9Ckh60mhDZyxl24F739vdh+jgqDTtJZuvvVJamlgIznCiJE/q1km16rlpOImVbUdBZeJshB30/FQhEoFQ8bbHUDrymosUMPeukroiwoFRTsnPDhkNCb3o2t7uv4Ekl/FcvRwAM4xw0MPlxLtoVhdrsvhpBJtxdlyJnZX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzrCspcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB943C4CEE3;
-	Tue, 15 Jul 2025 13:30:49 +0000 (UTC)
+	 MIME-Version; b=F8vmIU5wXPfyzI5zbEcinQggL5Xcs9LNpW6y7JEeQjBRAbJk9+9Rzlb1sN/Tn2YjE0pARFrgx0CmDNHFSnT9xmIG/IcRhpOlWNlU7/q5zXw1sn+lYRtUjrt1cM3GwHaZ39kX1gDweHv7VvH0bwBIjrfszOH50sNb5pyyB/azaLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tc6nUs9o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C958C4CEE3;
+	Tue, 15 Jul 2025 13:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586250;
-	bh=efBhIwKPPjOGmGL+kT1nntAUbHmbRusXO3um3qSNySk=;
+	s=korg; t=1752586073;
+	bh=jXhHlPEiYb9IClA6cWVvt4BNBXcbs4tqndbGr8qtk+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzrCspcgWzZmVErnoV20hU0wv5Otjijg2vsrfFnOufBsr29VdOFMRIFchRgk5rfm7
-	 hl2Ig4LEVT2oks8S3yQZu3hG7iHoot714117UggzkQT4C2wHd5X3gAUhNbByu/lnEk
-	 joJx8gyekFtOjEvz0mueBMWzUEpLY/oqXdN8pxTI=
+	b=tc6nUs9oTWCTbrikHI/fGMunNMWDjwRLg9K/3LBjUsnnWXfL/izLFJWd+zhG1TXaH
+	 2IypoitR72sQgZF/qLWujx3pC3uKmZlY1/njuXicUW7/p9w3W2ZiZ14eC6YIp4HITf
+	 KPuXY+EXW/ZezsTOE1gh+I8axSlZLahqYn2RYa3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-	Shravya KN <shravya.k-n@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 65/77] bnxt_en: Fix DCB ETS validation
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Yunseong Kim <ysk@kzalloc.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 108/109] kasan: remove kasan_find_vm_area() to prevent possible deadlock
 Date: Tue, 15 Jul 2025 15:14:04 +0200
-Message-ID: <20250715130754.336288188@linuxfoundation.org>
+Message-ID: <20250715130803.200687993@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +70,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shravya KN <shravya.k-n@broadcom.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit b74c2a2e9cc471e847abd87e50a2354c07e02040 ]
+commit 6ee9b3d84775944fb8c8a447961cd01274ac671c upstream.
 
-In bnxt_ets_validate(), the code incorrectly loops over all possible
-traffic classes to check and add the ETS settings.  Fix it to loop
-over the configured traffic classes only.
+find_vm_area() couldn't be called in atomic_context.  If find_vm_area() is
+called to reports vm area information, kasan can trigger deadlock like:
 
-The unconfigured traffic classes will default to TSA_ETS with 0
-bandwidth.  Looping over these unconfigured traffic classes may
-cause the validation to fail and trigger this error message:
+CPU0                                CPU1
+vmalloc();
+ alloc_vmap_area();
+  spin_lock(&vn->busy.lock)
+                                    spin_lock_bh(&some_lock);
+   <interrupt occurs>
+   <in softirq>
+   spin_lock(&some_lock);
+                                    <access invalid address>
+                                    kasan_report();
+                                     print_report();
+                                      print_address_description();
+                                       kasan_find_vm_area();
+                                        find_vm_area();
+                                         spin_lock(&vn->busy.lock) // deadlock!
 
-"rejecting ETS config starving a TC\n"
+To prevent possible deadlock while kasan reports, remove kasan_find_vm_area().
 
-The .ieee_setets() will then fail.
-
-Fixes: 7df4ae9fe855 ("bnxt_en: Implement DCBNL to support host-based DCBX.")
-Reviewed-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
-Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250710213938.1959625-2-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250703181018.580833-1-yeoreum.yun@arm.com
+Fixes: c056a364e954 ("kasan: print virtual mapping info in reports")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
+Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/kasan/report.c |   13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-index 228a5db7e1434..596513ffdfd9c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-@@ -479,7 +479,9 @@ static int bnxt_ets_validate(struct bnxt *bp, struct ieee_ets *ets, u8 *tc)
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -385,17 +385,8 @@ static void print_address_description(vo
+ 	}
  
- 		if ((ets->tc_tx_bw[i] || ets->tc_tsa[i]) && i > bp->max_tc)
- 			return -EINVAL;
-+	}
+ 	if (is_vmalloc_addr(addr)) {
+-		struct vm_struct *va = find_vm_area(addr);
+-
+-		if (va) {
+-			pr_err("The buggy address belongs to the virtual mapping at\n"
+-			       " [%px, %px) created by:\n"
+-			       " %pS\n",
+-			       va->addr, va->addr + va->size, va->caller);
+-			pr_err("\n");
+-
+-			page = vmalloc_to_page(addr);
+-		}
++		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
++		page = vmalloc_to_page(addr);
+ 	}
  
-+	for (i = 0; i < max_tc; i++) {
- 		switch (ets->tc_tsa[i]) {
- 		case IEEE_8021QAZ_TSA_STRICT:
- 			break;
--- 
-2.39.5
-
+ 	if (page) {
 
 
 
