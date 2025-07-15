@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9ABB05B95
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D62B05DE7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 313B11C20009
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A57F83B3B41
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945D22D5426;
-	Tue, 15 Jul 2025 13:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DF82ECD26;
+	Tue, 15 Jul 2025 13:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/EyBvk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzpjVLhA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521A327584E;
-	Tue, 15 Jul 2025 13:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0091C2E611E;
+	Tue, 15 Jul 2025 13:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585717; cv=none; b=buvEAo+ZLaI3fYbgW/83snKE4fIDq3vy9ajUcVtxs774vp/xlNvaXHgnBbbGLvr+xaSZvkD+AwGIajJdyzU2RuP09r7q9AGkV2i2DLZhMPDlLSDEEvffyhNgknjdtFNLJUt8KUn+0vpw2H+Oi1IuZsPwQb3PfTmxVUYTkdwMbQE=
+	t=1752586508; cv=none; b=hOUq0E8l4QzUeRAWDSY+3e/vnlrW1naG5s18aLnnUrBYSR4mp0ei4hcloVpmXq9C0k/JqVTMO0hVQ78zQBaOph8K0VDyuR7WegBxCpXB//FqTXW5niqRkKYAh+g0NtMEOQ0Jbw7OWX+UCAx4mNlLmF6he6eOWOGiimjThJXp28k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585717; c=relaxed/simple;
-	bh=UijHOgt2lpTZU252Smt/Gu9JX2oRv8X+rVDVHJpJejA=;
+	s=arc-20240116; t=1752586508; c=relaxed/simple;
+	bh=BPC3oOJk7OgsQeXQJOrEjNoJ/EN6KUR1lO+vWf3qfJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVcXjPHEN6YVV3Py4k0Mfuj3YV1gAvB73yBQfDJT5R4FFRV2JhBuUryGhnHNXD+zsnnpgSxodeGHp4Rc/8ibbUecyDg2DRdLnNltrp1TyFE6a0kjQaCe+HmNjMyA9ZGVVJ8tmsXbRMzHAmlSNS+wKSr1w0x9daD305wACwc0QHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/EyBvk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA85EC4CEE3;
-	Tue, 15 Jul 2025 13:21:56 +0000 (UTC)
+	 MIME-Version; b=RcygVKOTqchzl83O7evuqstzBO8WceSM4t+7P90JdnwXJsbmcCsx4b6RX5b3hXYYwpGwIJUEh4CSQnaBhyCeMprzeeS1/9jAXgPDSnMLyLvVwSoyP9cCyLE9XceQVPeqCPPS8jgoCaLeG/COj5l+ylOWsMS9H5kwBRphZREcFx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzpjVLhA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34981C4CEE3;
+	Tue, 15 Jul 2025 13:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585717;
-	bh=UijHOgt2lpTZU252Smt/Gu9JX2oRv8X+rVDVHJpJejA=;
+	s=korg; t=1752586507;
+	bh=BPC3oOJk7OgsQeXQJOrEjNoJ/EN6KUR1lO+vWf3qfJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w/EyBvk2zMAg+4zg2sUWK/Hmo0nZFh9+MVrf7LXsedqL2xZlf90rtJioyeXQCTri2
-	 qj0zFmQoduu8iOkxzR4HyuHSlcsM9zML6vKJSSYmSLgLZasYkOGRsb+yCl3zytMHbk
-	 GwGrPdsl8PhQnOwhZMXszBiNuD2vc2x68MwvxkUg=
+	b=TzpjVLhAnOqXIJzfTzzrgOLY7uVWHeIXRkeT85PBDDMi+hA1+PieRtG0Ds/iIPYdT
+	 dNJ5iMewvBouEGO0+wgduFfLL/FRXe3N5Lw10b1+xXBMKL0iVoM6ag1XgsVr5BU8ci
+	 amSrURh+v/1sNu7UmlPTA5NGROIbtqieAt1q+9b4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yasmin Fitzgerald <sunoflife1.git@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Fushuai Wang <wangfushuai@baidu.com>,
+	Simon Horman <horms@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 145/163] ALSA: hda/realtek - Enable mute LED on HP Pavilion Laptop 15-eg100
+Subject: [PATCH 5.4 091/148] dpaa2-eth: fix xdp_rxq_info leak
 Date: Tue, 15 Jul 2025 15:13:33 +0200
-Message-ID: <20250715130814.650767417@linuxfoundation.org>
+Message-ID: <20250715130803.958621246@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yasmin Fitzgerald <sunoflife1.git@gmail.com>
+From: Fushuai Wang <wangfushuai@baidu.com>
 
-[ Upstream commit 68cc9d3c8e44afe90e43cbbd2960da15c2f31e23 ]
+[ Upstream commit 2def09ead4ad5907988b655d1e1454003aaf8297 ]
 
-The HP Pavilion Laptop 15-eg100 has Realtek HDA codec ALC287.
-It needs the ALC287_FIXUP_HP_GPIO_LED quirk to enable the mute LED.
+The driver registered xdp_rxq_info structures via xdp_rxq_info_reg()
+but failed to properly unregister them in error paths and during
+removal.
 
-Signed-off-by: Yasmin Fitzgerald <sunoflife1.git@gmail.com>
-Link: https://patch.msgid.link/20250621053832.52950-1-sunoflife1.git@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: d678be1dc1ec ("dpaa2-eth: add XDP_REDIRECT support")
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://patch.msgid.link/20250626133003.80136-1-wangfushuai@baidu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../net/ethernet/freescale/dpaa2/dpaa2-eth.c  | 26 +++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 57f17ddaf7860..0bc59b6f1b9a6 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10655,6 +10655,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8975, "HP EliteBook x360 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x897d, "HP mt440 Mobile Thin Client U74", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8981, "HP Elite Dragonfly G3", ALC245_FIXUP_CS35L41_SPI_4),
-+	SND_PCI_QUIRK(0x103c, 0x898a, "HP Pavilion 15-eg100", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x898e, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x898f, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8991, "HP EliteBook 845 G9", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index 5f5766b1f3b70..8649578b54c1e 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -2725,6 +2725,7 @@ static int setup_rx_flow(struct dpaa2_eth_priv *priv,
+ 					 MEM_TYPE_PAGE_ORDER0, NULL);
+ 	if (err) {
+ 		dev_err(dev, "xdp_rxq_info_reg_mem_model failed\n");
++		xdp_rxq_info_unreg(&fq->channel->xdp_rxq);
+ 		return err;
+ 	}
+ 
+@@ -3153,17 +3154,25 @@ static int bind_dpni(struct dpaa2_eth_priv *priv)
+ 			return -EINVAL;
+ 		}
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
+ 
+ 	err = dpni_get_qdid(priv->mc_io, 0, priv->mc_token,
+ 			    DPNI_QUEUE_TX, &priv->tx_qdid);
+ 	if (err) {
+ 		dev_err(dev, "dpni_get_qdid() failed\n");
+-		return err;
++		goto out;
+ 	}
+ 
+ 	return 0;
++
++out:
++	while (i--) {
++		if (priv->fq[i].type == DPAA2_RX_FQ &&
++		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
++			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
++	}
++	return err;
+ }
+ 
+ /* Allocate rings for storing incoming frame descriptors */
+@@ -3445,6 +3454,17 @@ static void del_ch_napi(struct dpaa2_eth_priv *priv)
+ 	}
+ }
+ 
++static void dpaa2_eth_free_rx_xdp_rxq(struct dpaa2_eth_priv *priv)
++{
++	int i;
++
++	for (i = 0; i < priv->num_fqs; i++) {
++		if (priv->fq[i].type == DPAA2_RX_FQ &&
++		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
++			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
++	}
++}
++
+ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+ {
+ 	struct device *dev;
+@@ -3574,6 +3594,7 @@ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+ 	free_percpu(priv->percpu_stats);
+ err_alloc_percpu_stats:
+ 	del_ch_napi(priv);
++	dpaa2_eth_free_rx_xdp_rxq(priv);
+ err_bind:
+ 	free_dpbp(priv);
+ err_dpbp_setup:
+@@ -3614,6 +3635,7 @@ static int dpaa2_eth_remove(struct fsl_mc_device *ls_dev)
+ 	free_percpu(priv->percpu_extras);
+ 
+ 	del_ch_napi(priv);
++	dpaa2_eth_free_rx_xdp_rxq(priv);
+ 	free_dpbp(priv);
+ 	free_dpio(priv);
+ 	free_dpni(priv);
 -- 
 2.39.5
 
