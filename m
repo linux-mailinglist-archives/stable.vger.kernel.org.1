@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-162475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A3CB05DD0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D5FB05EF2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3798616CB09
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4E3D500ED3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACAB2E6D2E;
-	Tue, 15 Jul 2025 13:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81482EBB98;
+	Tue, 15 Jul 2025 13:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObRBc5av"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KP6K1zFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189422E6D39;
-	Tue, 15 Jul 2025 13:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66B72EBB84;
+	Tue, 15 Jul 2025 13:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586653; cv=none; b=CKoJ8T46Rw6gbJJE0F+Mzld+NugqEQAdJrWKCBJQjXmgKge/cT8iTN6nqC7R7TPExIt/Af1TJRahgbGvAnBArrQ493dEd4wL1ytAGv0y2F71sKeHfiHUbEqnCmOvpUhk+OqrVvpLOU6HDRmY5oL7xAiydba20AdbLtpTG6pqjZk=
+	t=1752587118; cv=none; b=tI/IG7s1K5kY/RvDU+z09SUKVNbtMce5Q5ACrtO4X6Gzhvc2WOcgWNyR8wNxHLdFevDvgZ+jIjNNX0wPLhS4mY75TsWiPZJiKMgDUfJe3LIopKv1DLxdia6sp4FuhjiwstpHT1toAmWevvtr3/2ILPgpDIk/4zisMVZBNS6TyX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586653; c=relaxed/simple;
-	bh=9CK2+zFKizaYrEW57RsU41FypOOFANN1nboMRVJWRUA=;
+	s=arc-20240116; t=1752587118; c=relaxed/simple;
+	bh=E1tV42f+spZ+8sN8JgA4oZbCX0Ka5SD1kWNoPtFrYsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nJrB4pUtQX96bY0uni3Hr0cQ0aNtsYn0jtXWffZqkiJD7aJtyjidkZobLFYPuy0x/TAz1oLXxaoYwz7jKRSSVJhtgXDeXusUDoZHCm7zroXdRviG2Z9mQNXVEjBc8l3eL5V2MkIPTSEcxR+HwTlCaedfDNYMDWGTIbnol/vZ4a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObRBc5av; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05ACC4CEE3;
-	Tue, 15 Jul 2025 13:37:32 +0000 (UTC)
+	 MIME-Version; b=ceHhh64wmVrGrTab1PHe20UvFlFqwKHYhFArCy5bLGJjgc4x4gmAcQnlJF+Pff4iy0DahUBoQ9Imx4zMaF31MaI5SwAFBTEtulm/KLFbZM4iR8tXtN07kgGmpasBzPJdSjS7UZX7WvpKJ0VsTLIElhYUYvtROwzlo9lhqF5NkEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KP6K1zFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3969FC4CEE3;
+	Tue, 15 Jul 2025 13:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586653;
-	bh=9CK2+zFKizaYrEW57RsU41FypOOFANN1nboMRVJWRUA=;
+	s=korg; t=1752587118;
+	bh=E1tV42f+spZ+8sN8JgA4oZbCX0Ka5SD1kWNoPtFrYsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObRBc5avbcpUJKjynOtMyWiMozJZ40qGa76ArNhFZQxANkYSeXOAEE788Qv12Vt1Y
-	 Oo1Qp3kknVMZF81Pc06gnzWrXxVetd7RtsMn49Z3G3cI5/Yw1ihfPp9KloHr1nf74m
-	 yefK5jpPB/boNun/qgNyfHUy4+PaevduTJnDET+M=
+	b=KP6K1zFV2iurrjjGEm15bZCPRKxZgSsBqd+MiH1Dc5vMS2eF4g9UwSHjbYzsgZuY9
+	 o0c7Cp53heNKL54HwaatHCw6mTK1n+jqD1LF4MmyyepFELBa8Dfo96z/RAKJ8mjomd
+	 eyTuR/x60eWxC1qfUPiD5xGzlPEppG/L/nNHUmxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Jann Horn <jannh@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH 5.4 147/148] x86/mm: Disable hugetlb page table sharing on 32-bit
+	Fengnan Chang <changfengnan@bytedance.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 174/192] io_uring: make fallocate be hashed work
 Date: Tue, 15 Jul 2025 15:14:29 +0200
-Message-ID: <20250715130806.160071141@linuxfoundation.org>
+Message-ID: <20250715130821.896150648@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Fengnan Chang <changfengnan@bytedance.com>
 
-commit 76303ee8d54bff6d9a6d55997acd88a6c2ba63cf upstream.
+[ Upstream commit 88a80066af1617fab444776135d840467414beb6 ]
 
-Only select ARCH_WANT_HUGE_PMD_SHARE on 64-bit x86.
-Page table sharing requires at least three levels because it involves
-shared references to PMD tables; 32-bit x86 has either two-level paging
-(without PAE) or three-level paging (with PAE), but even with
-three-level paging, having a dedicated PGD entry for hugetlb is only
-barely possible (because the PGD only has four entries), and it seems
-unlikely anyone's actually using PMD sharing on 32-bit.
+Like ftruncate and write, fallocate operations on the same file cannot
+be executed in parallel, so it is better to make fallocate be hashed
+work.
 
-Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
-has 2-level paging) became particularly problematic after commit
-59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
-since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
-the `pt_share_count` (for PMDs) share the same union storage - and with
-2-level paging, PMDs are PGDs.
-
-(For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
-configuration of page tables such that it is never enabled with 2-level
-paging.)
-
-Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
-Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
-Reported-by: Vitaly Chikunov <vt@altlinux.org>
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Vitaly Chikunov <vt@altlinux.org>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250702-x86-2level-hugetlb-v2-1-1a98096edf92%40google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fengnan Chang <changfengnan@bytedance.com>
+Link: https://lore.kernel.org/r/20250623110218.61490-1-changfengnan@bytedance.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/opdef.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -95,7 +95,7 @@ config X86
- 	select ARCH_USE_QUEUED_SPINLOCKS
- 	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
- 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
--	select ARCH_WANT_HUGE_PMD_SHARE
-+	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
- 	select ARCH_WANTS_THP_SWAP		if X86_64
- 	select BUILDTIME_EXTABLE_SORT
- 	select CLKEVT_I8253
+diff --git a/io_uring/opdef.c b/io_uring/opdef.c
+index 489384c0438bd..78ef5976bf003 100644
+--- a/io_uring/opdef.c
++++ b/io_uring/opdef.c
+@@ -216,6 +216,7 @@ const struct io_issue_def io_issue_defs[] = {
+ 	},
+ 	[IORING_OP_FALLOCATE] = {
+ 		.needs_file		= 1,
++		.hash_reg_file          = 1,
+ 		.prep			= io_fallocate_prep,
+ 		.issue			= io_fallocate,
+ 	},
+-- 
+2.39.5
+
 
 
 
