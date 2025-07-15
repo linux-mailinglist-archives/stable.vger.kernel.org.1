@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8324B05F04
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:59:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C7B0B05F5E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:05:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821771C2361B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0F96583DA0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDF42E3B13;
-	Tue, 15 Jul 2025 13:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB512E498F;
+	Tue, 15 Jul 2025 13:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxjztqYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRes3F0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9472D839A;
-	Tue, 15 Jul 2025 13:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE252E4980;
+	Tue, 15 Jul 2025 13:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587039; cv=none; b=k16gKuE+8ffqqC8vhmUcndFOm6RqBF6nEEw8LIAceX/TjbPACtft2lcO9kIEg65jNx2GJdQDbWN9My14fc9s88PR9IFHLz7qP92Vg+qFQVCi5zPZlF694EApLiphObke5oAlFoynXl9Q5HuRalMHNezHs84Ciwo2TPa+c826Vw4=
+	t=1752587232; cv=none; b=UENozcnjvgwvGUaxyW+EWEnG9QAxKR6uKSYUVaQJmdu2mmBHG0GPWO6LkBlHDkowqXrcYmxq5YI02ciG2DAS8SZhd8cI8RNjfBf/PEHUqjBv0KzcK3I6XyjrnsloBnMozN+Tplj5KRHKilnM43Nzp+4Thur3f9l5M0+VcQ7aJ2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587039; c=relaxed/simple;
-	bh=PF9MFtWHT3LRBuMg+J/liMJBxwJJhBmxlM0jaf26lrE=;
+	s=arc-20240116; t=1752587232; c=relaxed/simple;
+	bh=ePWh2TEsBTukSARBuGy/KsYw0/CBvI1IN9T0SCqrSTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qajc0XT/ulH/m2HfqxXJTvzJbngQuHFCa15mgFokhi5LUDezB3je5EI3oaJpA1GjGeCfcTJGfuKNRP1C+VJaJ0/3Eis4hr9TBDbeBPMhpxve0sktO/V0E+YS41FEhK8l+KIqAu0mcoPVpzhd20YeKY81CGM+qWF5GdBJc6Mfovk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxjztqYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00001C4CEE3;
-	Tue, 15 Jul 2025 13:43:58 +0000 (UTC)
+	 MIME-Version; b=CkehiMxLvrCo8iN9K0w1o7yTAtUwwFbrRrE5xeLiRwsVJHT6oeF8HXzVKEwRlsaXU7FKudp0iHdDB5s6OTP2jwtboKkcxVtmgLUw9KXPvAWcGuJ0RDqm3AnUlF5BxhJS4RTHnJJuV0pDAE0nVYcsS4vMG7lnNxbGICGeBv3ZaY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRes3F0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF03C4CEE3;
+	Tue, 15 Jul 2025 13:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587039;
-	bh=PF9MFtWHT3LRBuMg+J/liMJBxwJJhBmxlM0jaf26lrE=;
+	s=korg; t=1752587232;
+	bh=ePWh2TEsBTukSARBuGy/KsYw0/CBvI1IN9T0SCqrSTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CxjztqYkGVG5ySgQ81gGTonITbFkIX64pBB8/1OxUgD+1Y8YNzl7S9z58pxOYhpO0
-	 03lUtctk70QOGMx5hYUQ5/d1EkDy5lSZuZJ2U5EtwXg/bAbgq7ZBBv4bBVftWOfXAX
-	 hIUCPMXtrd78xf+cYm0oyFXszSPFqGKtLrk3/buE=
+	b=pRes3F0rGTugzhOszG6L7c5l8RFGEgjVdJJD/SXss2J9WAKD1Uf20LBYFys9LkHmy
+	 LYdNDMO0z/NMCq5ARv0I8GO9lGXbqvOfC5v5d/bBjKcbdlQgZzTJG8oG4CyUrtEriC
+	 ssoJ/AGWnukzzXWI6uoKCzl628jHVkRKIwTbjctQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ben Greear <greearb@candelatech.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 143/192] wifi: mt76: Remove RCU section in mt7996_mac_sta_rc_work()
-Date: Tue, 15 Jul 2025 15:13:58 +0200
-Message-ID: <20250715130820.644465893@linuxfoundation.org>
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 23/88] x86/mce/amd: Fix threshold limit reset
+Date: Tue, 15 Jul 2025 15:13:59 +0200
+Message-ID: <20250715130755.445442540@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 71532576f41e5b0ec967a82ed49d5dfb1027ccdb ]
+commit 5f6e3b720694ad771911f637a51930f511427ce1 upstream.
 
-Since mt7996_mcu_add_rate_ctrl() and mt7996_mcu_set_fixed_field() can't
-run in atomic context, move RCU critical section in
-mt7996_mcu_add_rate_ctrl() and mt7996_mcu_set_fixed_field(). This patch
-fixes a 'sleep while atomic' issue in mt7996_mac_sta_rc_work().
+The MCA threshold limit must be reset after servicing the interrupt.
 
-Fixes: 0762bdd30279 ("wifi: mt76: mt7996: rework mt7996_mac_sta_rc_work to support MLO")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Tested-by: Ben Greear <greearb@candelatech.com>
-Link: https://patch.msgid.link/20250605-mt7996-sleep-while-atomic-v1-5-d46d15f9203c@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently, the restart function doesn't have an explicit check for this.  It
+makes some assumptions based on the current limit and what's in the registers.
+These assumptions don't always hold, so the limit won't be reset in some
+cases.
+
+Make the reset condition explicit. Either an interrupt/overflow has occurred
+or the bank is being initialized.
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-4-236dd74f645f@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 35 ++++---------------
- 1 file changed, 7 insertions(+), 28 deletions(-)
+ arch/x86/kernel/cpu/mce/amd.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 20a201e336759..3646806088e9a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -2318,19 +2318,12 @@ void mt7996_mac_update_stats(struct mt7996_phy *phy)
- void mt7996_mac_sta_rc_work(struct work_struct *work)
- {
- 	struct mt7996_dev *dev = container_of(work, struct mt7996_dev, rc_work);
--	struct ieee80211_bss_conf *link_conf;
--	struct ieee80211_link_sta *link_sta;
- 	struct mt7996_sta_link *msta_link;
--	struct mt76_vif_link *mlink;
--	struct ieee80211_sta *sta;
- 	struct ieee80211_vif *vif;
--	struct mt7996_sta *msta;
- 	struct mt7996_vif *mvif;
- 	LIST_HEAD(list);
- 	u32 changed;
--	u8 link_id;
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -333,7 +333,6 @@ static void smca_configure(unsigned int
  
--	rcu_read_lock();
- 	spin_lock_bh(&dev->mt76.sta_poll_lock);
- 	list_splice_init(&dev->sta_rc_list, &list);
+ struct thresh_restart {
+ 	struct threshold_block	*b;
+-	int			reset;
+ 	int			set_lvt_off;
+ 	int			lvt_off;
+ 	u16			old_limit;
+@@ -428,13 +427,13 @@ static void threshold_restart_bank(void
  
-@@ -2341,24 +2334,9 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
+ 	rdmsr(tr->b->address, lo, hi);
  
- 		changed = msta_link->changed;
- 		msta_link->changed = 0;
+-	if (tr->b->threshold_limit < (hi & THRESHOLD_MAX))
+-		tr->reset = 1;	/* limit cannot be lower than err count */
 -
--		sta = wcid_to_sta(&msta_link->wcid);
--		link_id = msta_link->wcid.link_id;
--		msta = msta_link->sta;
--		mvif = msta->vif;
--		vif = container_of((void *)mvif, struct ieee80211_vif, drv_priv);
--
--		mlink = rcu_dereference(mvif->mt76.link[link_id]);
--		if (!mlink)
--			continue;
--
--		link_sta = rcu_dereference(sta->link[link_id]);
--		if (!link_sta)
--			continue;
--
--		link_conf = rcu_dereference(vif->link_conf[link_id]);
--		if (!link_conf)
--			continue;
-+		mvif = msta_link->sta->vif;
-+		vif = container_of((void *)mvif, struct ieee80211_vif,
-+				   drv_priv);
- 
- 		spin_unlock_bh(&dev->mt76.sta_poll_lock);
- 
-@@ -2366,17 +2344,18 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
- 			       IEEE80211_RC_NSS_CHANGED |
- 			       IEEE80211_RC_BW_CHANGED))
- 			mt7996_mcu_add_rate_ctrl(dev, msta_link->sta, vif,
--						 link_id, true);
-+						 msta_link->wcid.link_id,
-+						 true);
- 
- 		if (changed & IEEE80211_RC_SMPS_CHANGED)
--			mt7996_mcu_set_fixed_field(dev, msta, NULL, link_id,
-+			mt7996_mcu_set_fixed_field(dev, msta_link->sta, NULL,
-+						   msta_link->wcid.link_id,
- 						   RATE_PARAM_MMPS_UPDATE);
- 
- 		spin_lock_bh(&dev->mt76.sta_poll_lock);
- 	}
- 
- 	spin_unlock_bh(&dev->mt76.sta_poll_lock);
--	rcu_read_unlock();
- }
- 
- void mt7996_mac_work(struct work_struct *work)
--- 
-2.39.5
-
+-	if (tr->reset) {		/* reset err count and overflow bit */
+-		hi =
+-		    (hi & ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI)) |
+-		    (THRESHOLD_MAX - tr->b->threshold_limit);
++	/*
++	 * Reset error count and overflow bit.
++	 * This is done during init or after handling an interrupt.
++	 */
++	if (hi & MASK_OVERFLOW_HI || tr->set_lvt_off) {
++		hi &= ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI);
++		hi |= THRESHOLD_MAX - tr->b->threshold_limit;
+ 	} else if (tr->old_limit) {	/* change limit w/o reset */
+ 		int new_count = (hi & THRESHOLD_MAX) +
+ 		    (tr->old_limit - tr->b->threshold_limit);
 
 
 
