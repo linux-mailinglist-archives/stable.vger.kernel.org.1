@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79247B05D3A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6FDBB05E86
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFCAD7AE5A6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:36:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 534491C26F94
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AD52E7635;
-	Tue, 15 Jul 2025 13:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685C12EA482;
+	Tue, 15 Jul 2025 13:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIfJB/eM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+0ugZ/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E829F2D6402;
-	Tue, 15 Jul 2025 13:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259322E49B3;
+	Tue, 15 Jul 2025 13:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586317; cv=none; b=efWRSSTisVeUFhBQLDuvIajqa2LUgHJX1rPLpB/+ssxbdUfWb5Ep3DhggiiKxtJ1Se4aERw9il1O09URw3QnWKsZMtFKb7jROG1cPDpm00u5+qFjywh3/MJTTGtrBSTY8lB+SzeQI4RQGkIr4TC9zR7y0fY7jjSLT+D9vkJaaxo=
+	t=1752586820; cv=none; b=Y6uln6kk/mHqMN1nG8ZA+5jjJ0DKHwER3a4EKGDOIG86XKMgz60DxITaPwRvQUOMA382jvO0KPO3oNe8mA0k9uU4FYOT/UqiP5DmnAmf8uf2YDpS580w38eYlJfsEW5HeWpZJf73LoRCcd6J4s9HQw8YOeh1qMHbEHhXeZ+jLFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586317; c=relaxed/simple;
-	bh=344FI2j1Uw6yv9QHByEET6XU+zhPEMsAIRZCnfRP8yY=;
+	s=arc-20240116; t=1752586820; c=relaxed/simple;
+	bh=Mh339nMFlqfqIZPNLVVJ/yTbBIH+8urxHtQbVWKO6qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lwtpG6Hb6CiiNvtkZKaYkOJa18OhGHa0mMCcI8cMsvChuF6Cy1fs+HFh2ObCJqY1Bg3BIiU3poEVXsWDxs+cWtgigDvXEkRdjKgFN9Q5iffafDwhBMIkP5qMV19ehQh+trZ6ssIye3EjTxbR+vxcPX0XRE4FGoLgNd30JpxjP6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIfJB/eM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF66C4CEE3;
-	Tue, 15 Jul 2025 13:31:56 +0000 (UTC)
+	 MIME-Version; b=jkT+Dv0n4RNBEP6DaNx8JXMkVkGKvjNpcFwUlEWe/ujHzxwjeO6ZqE7SE47HIjYK/5UT/x2S0N/YzxmJoKs2HnxTxJ0CnBLFwIH63SEMy4ssWOEBCwT6qp4vQhb4h48WG90jX+7RYxYN7cGu7+ZsXver36jnnL2IAPgAhvkBESc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+0ugZ/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3032C4CEE3;
+	Tue, 15 Jul 2025 13:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586316;
-	bh=344FI2j1Uw6yv9QHByEET6XU+zhPEMsAIRZCnfRP8yY=;
+	s=korg; t=1752586820;
+	bh=Mh339nMFlqfqIZPNLVVJ/yTbBIH+8urxHtQbVWKO6qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIfJB/eMfbWkXnC0jnZ7gpAVfD+t3W5QFdyipBiw2SJJsA/toMdZXoXO2IGJvpv0H
-	 f72O860JYXkEBLHk6gx8DXkhAHCIs/lwAPGjtu87v4qV8VDo0+1eV+p2CREydnqBs+
-	 jm4LIe+FukXs/8grzGN07iws5FuGx0pSZQFqRMAQ=
+	b=c+0ugZ/IjaAYoq6OdKYiQuuFz5pROBW9gqFz+98DNFZ419FBCJ2fouik3Uu3qRxvg
+	 beXbRREDl4Ad4WRAM6PuNvkw8eK0Frl5WWcUfgrcCiPLE2H16pKpCRU37zLzDyvp0Z
+	 tbHdSIAeQXtM4VoiPhQ9IDLvFmTIYMt36zhcSlVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 002/148] mailbox: Not protect module_put with spin_lock_irqsave
+Subject: [PATCH 6.15 029/192] vsock: fix `vsock_proto` declaration
 Date: Tue, 15 Jul 2025 15:12:04 +0200
-Message-ID: <20250715130800.395507290@linuxfoundation.org>
+Message-ID: <20250715130816.030028882@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit dddbd233e67e792bb0a3f9694a4707e6be29b2c6 ]
+[ Upstream commit 1e3b66e326015f77bc4b36976bebeedc2ac0f588 ]
 
-&chan->lock is not supposed to protect 'chan->mbox'.
-And in __mbox_bind_client, try_module_get is also not protected
-by &chan->lock. So move module_put out of the lock protected
-region.
+>From commit 634f1a7110b4 ("vsock: support sockmap"), `struct proto
+vsock_proto`, defined in af_vsock.c, is not static anymore, since it's
+used by vsock_bpf.c.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+If CONFIG_BPF_SYSCALL is not defined, `make C=2` will print a warning:
+    $ make O=build C=2 W=1 net/vmw_vsock/
+      ...
+      CC [M]  net/vmw_vsock/af_vsock.o
+      CHECK   ../net/vmw_vsock/af_vsock.c
+    ../net/vmw_vsock/af_vsock.c:123:14: warning: symbol 'vsock_proto' was not declared. Should it be static?
+
+Declare `vsock_proto` regardless of CONFIG_BPF_SYSCALL, since it's defined
+in af_vsock.c, which is built regardless of CONFIG_BPF_SYSCALL.
+
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20250703112329.28365-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 2 +-
+ include/net/af_vsock.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 6f54501dc7762..cb31ad917b352 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -459,8 +459,8 @@ void mbox_free_channel(struct mbox_chan *chan)
- 	if (chan->txdone_method == TXDONE_BY_ACK)
- 		chan->txdone_method = TXDONE_BY_POLL;
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index 9e85424c83435..70302c92d329f 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -242,8 +242,8 @@ int __vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
+ int vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
+ 			size_t len, int flags);
  
--	module_put(chan->mbox->dev->driver->owner);
- 	spin_unlock_irqrestore(&chan->lock, flags);
-+	module_put(chan->mbox->dev->driver->owner);
- }
- EXPORT_SYMBOL_GPL(mbox_free_channel);
- 
+-#ifdef CONFIG_BPF_SYSCALL
+ extern struct proto vsock_proto;
++#ifdef CONFIG_BPF_SYSCALL
+ int vsock_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore);
+ void __init vsock_bpf_build_proto(void);
+ #else
 -- 
 2.39.5
 
