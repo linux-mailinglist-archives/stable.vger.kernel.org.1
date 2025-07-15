@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08457B05E7A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D78B05C44
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C9FF4A0680
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2288316EB08
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C5F2EA731;
-	Tue, 15 Jul 2025 13:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A932E54AB;
+	Tue, 15 Jul 2025 13:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOXh9nzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYIa0YIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78962E5413;
-	Tue, 15 Jul 2025 13:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843112E5428;
+	Tue, 15 Jul 2025 13:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586876; cv=none; b=nvUUaSSKksoAlFMj6PzbQrSliQT8ym4Hl7Cq2f5eTzneNrsNvAJbrj9r75IMtOR9A6an2YT4dYec03pjY02Saf0dzXV5VNlBbM2k1QvFQDmQS2juGlE8MYD6KoAuxX1YILSCH3B51Kc4V4IRZTILBZfAYvByYLXUYFED7fSP62c=
+	t=1752585946; cv=none; b=eN5rXznzvngNRas5NSD1ebQIZw75AhZEqFNGtnON02lxDlMl28znjbNryyOmVfXOvcrwmStomJFA12MH9UOTRjY7XzsXDLzm5UjfiNgUJusyJ2uXwtxtGIweczFB9m6chljwmM9gVXi0QmrkX6TxXr4BUTpaohqD3ONrDBq389E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586876; c=relaxed/simple;
-	bh=eFhymE0mb0Sx7KkVe3Hs0tAXYJvaIlEsSA6f+IXEY6A=;
+	s=arc-20240116; t=1752585946; c=relaxed/simple;
+	bh=QjmFWsz56SOOi7EEtw7D6jdNjGTSJu3Jn91RFDsfMuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClOLqcE5ZiEYbwOqhu0z8LoZ4PoR2l0fAjindWrb/mzkqAlxVlYAK42/cORfofOaYC9MGzcqIHSKRxlPJES/5tzgVD6zyCQ9mtJuTevvTHfYROeqauurzhCgPFA0oET7v9tIYMnS1J1cdVtvp/xD25KScc9fa+b5OPWMOoMlym4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOXh9nzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDCBC4CEE3;
-	Tue, 15 Jul 2025 13:41:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=slut7NqelD3uCgNc/+z00yEw3//IibGcv+StrcZ69UBu2mtNWq5ifNvWPHIniWrLd05LgiY7SEV9mQ0s5ngLmmloRXqymEAE7+/eMGBvQtnLRmbCQzlHo69AV6dSiZuffkTSs81jeoxEXn5RF3oMoJtRqZxV8NRyHGi1wvmX6t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYIa0YIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1765CC4CEE3;
+	Tue, 15 Jul 2025 13:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586875;
-	bh=eFhymE0mb0Sx7KkVe3Hs0tAXYJvaIlEsSA6f+IXEY6A=;
+	s=korg; t=1752585946;
+	bh=QjmFWsz56SOOi7EEtw7D6jdNjGTSJu3Jn91RFDsfMuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gOXh9nzXyxvixwn2e2SoY2FXby5gTFmFwcSY/EtfXkHTFLavX599CJp6bce3CVQm7
-	 CI3uiMLC6FMvkm6BlLbFu/f7UmrGm0ZXDbyBi0PCw0z6lLZWpD7dWtK0iFRiiyS1F3
-	 mp/vukUu6lCLuagUXeCYkdTo4Frbc1sxPQnvHPMg=
+	b=EYIa0YIio0nqG+hdS23SvXD4dOp+c82+btNJtL4WoOwvzraE/zil/NlGSEqDhEkDu
+	 V0xTjzVcGSStHjHacP43DsZKRNmjrbExnGqgIhOFtQmY4ejpSp0x11c4FpiUEPMhga
+	 RkcD/3G2RlzbNLPZUGbBQH64MnOq+mtFUuPzDnS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessio Belle <alessio.belle@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>
-Subject: [PATCH 6.15 081/192] drm/imagination: Fix kernel crash when hard resetting the GPU
+	Gerald Gibson <gerald.gibson@oracle.com>,
+	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+	Yu Kuai <yukuai3@huawei.com>
+Subject: [PATCH 6.6 040/109] md/md-bitmap: fix GPF in bitmap_get_stats()
 Date: Tue, 15 Jul 2025 15:12:56 +0200
-Message-ID: <20250715130818.172892934@linuxfoundation.org>
+Message-ID: <20250715130800.485095030@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessio Belle <alessio.belle@imgtec.com>
+From: Håkon Bugge <haakon.bugge@oracle.com>
 
-commit d38376b3ee48d073c64e75e150510d7e6b4b04f7 upstream.
+commit c17fb542dbd1db745c9feac15617056506dd7195 upstream.
 
-The GPU hard reset sequence calls pm_runtime_force_suspend() and
-pm_runtime_force_resume(), which according to their documentation should
-only be used during system-wide PM transitions to sleep states.
+The commit message of commit 6ec1f0239485 ("md/md-bitmap: fix stats
+collection for external bitmaps") states:
 
-The main issue though is that depending on some internal runtime PM
-state as seen by pm_runtime_force_suspend() (whether the usage count is
-<= 1), pm_runtime_force_resume() might not resume the device unless
-needed. If that happens, the runtime PM resume callback
-pvr_power_device_resume() is not called, the GPU clocks are not
-re-enabled, and the kernel crashes on the next attempt to access GPU
-registers as part of the power-on sequence.
+    Remove the external bitmap check as the statistics should be
+    available regardless of bitmap storage location.
 
-Replace calls to pm_runtime_force_suspend() and
-pm_runtime_force_resume() with direct calls to the driver's runtime PM
-callbacks, pvr_power_device_suspend() and pvr_power_device_resume(),
-to ensure clocks are re-enabled and avoid the kernel crash.
+    Return -EINVAL only for invalid bitmap with no storage (neither in
+    superblock nor in external file).
 
-Fixes: cc1aeedb98ad ("drm/imagination: Implement firmware infrastructure and META FW support")
-Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
-Reviewed-by: Matt Coster <matt.coster@imgtec.com>
-Link: https://lore.kernel.org/r/20250624-fix-kernel-crash-gpu-hard-reset-v1-1-6d24810d72a6@imgtec.com
+But, the code does not adhere to the above, as it does only check for
+a valid super-block for "internal" bitmaps. Hence, we observe:
+
+Oops: GPF, probably for non-canonical address 0x1cd66f1f40000028
+RIP: 0010:bitmap_get_stats+0x45/0xd0
+Call Trace:
+
+ seq_read_iter+0x2b9/0x46a
+ seq_read+0x12f/0x180
+ proc_reg_read+0x57/0xb0
+ vfs_read+0xf6/0x380
+ ksys_read+0x6d/0xf0
+ do_syscall_64+0x8c/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+We fix this by checking the existence of a super-block for both the
+internal and external case.
+
+Fixes: 6ec1f0239485 ("md/md-bitmap: fix stats collection for external bitmaps")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Reported-by: Gerald Gibson <gerald.gibson@oracle.com>
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Link: https://lore.kernel.org/linux-raid/20250702091035.2061312-1-haakon.bugge@oracle.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imagination/pvr_power.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/md-bitmap.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/imagination/pvr_power.c
-+++ b/drivers/gpu/drm/imagination/pvr_power.c
-@@ -363,13 +363,13 @@ pvr_power_reset(struct pvr_device *pvr_d
- 		if (!err) {
- 			if (hard_reset) {
- 				pvr_dev->fw_dev.booted = false;
--				WARN_ON(pm_runtime_force_suspend(from_pvr_device(pvr_dev)->dev));
-+				WARN_ON(pvr_power_device_suspend(from_pvr_device(pvr_dev)->dev));
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2119,8 +2119,7 @@ int md_bitmap_get_stats(struct bitmap *b
  
- 				err = pvr_fw_hard_reset(pvr_dev);
- 				if (err)
- 					goto err_device_lost;
- 
--				err = pm_runtime_force_resume(from_pvr_device(pvr_dev)->dev);
-+				err = pvr_power_device_resume(from_pvr_device(pvr_dev)->dev);
- 				pvr_dev->fw_dev.booted = true;
- 				if (err)
- 					goto err_device_lost;
+ 	if (!bitmap)
+ 		return -ENOENT;
+-	if (!bitmap->mddev->bitmap_info.external &&
+-	    !bitmap->storage.sb_page)
++	if (!bitmap->storage.sb_page)
+ 		return -EINVAL;
+ 	sb = kmap_local_page(bitmap->storage.sb_page);
+ 	stats->sync_size = le64_to_cpu(sb->sync_size);
 
 
 
