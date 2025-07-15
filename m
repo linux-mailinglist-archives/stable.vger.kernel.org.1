@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-162818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43EB4B0600F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB6DB05F86
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E00168EC6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:03:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B2C57BE6EA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705EA2EAD12;
-	Tue, 15 Jul 2025 13:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C11D2EB5AD;
+	Tue, 15 Jul 2025 13:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCfG6oyL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZV0W1aOZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3282DEA96;
-	Tue, 15 Jul 2025 13:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5F52E7651;
+	Tue, 15 Jul 2025 13:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587556; cv=none; b=KSHYgUXBJAzg0uLODuxPbe4Hge3UqvqWAhAcPU2J+Os54ddTmyBUHauDw3gy+5kD0O4I1PiuNFAMxsLY5aEkEjzeX7YQQSTU+IRrxKciHM6dm3td+ttIimeOsFhbFEeFSzLMpGFPfnYpT6mHxwPKofupi3ZklNDDvZMzQ+lEYmI=
+	t=1752587570; cv=none; b=RNcgThtOMLxqutN9OzuOBAQNx7WQT+hFTwkLo/QCopVIs38R0rYPvW7ETa9hZVbQH9DrkE2GSA6fcTV431gxsPLmR1HCVEVlh5RB36Jkz9rQNWr7hs+Tj+a8hH9q0H0eNHdr3EQklJ1JWdwZ7mWQJk2YOp+rgIUa9b8zBAmyLBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587556; c=relaxed/simple;
-	bh=yT4oCVJHMGQfC6D1/ObxZeEdnNaUDqSHXC/Dknz6NvQ=;
+	s=arc-20240116; t=1752587570; c=relaxed/simple;
+	bh=eTD3ISTDCWmM5N2ffSFkPwUMIhgHksAhjBexzjl8Wy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8Tap30io6lFvCugK7Seh8XIIyxRj+WC0Bxo7+87hJj1n9pG5+j/EdYgqSg9mZ2xOCcKMZjeV4b2Kmhir8aJZsXI6yz8taHg0wQYdolXuxxbqoO1ATL7Q7IWBNuGrp6sllQNq6DLtPz6zURBR4HUAKQDEhrSIZqvY+lxiZ6Lljk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCfG6oyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7F1C4CEE3;
-	Tue, 15 Jul 2025 13:52:35 +0000 (UTC)
+	 MIME-Version; b=NyCI8l558bOi6mdTWp0vtwLMKJs/5dJFZ/royFDgJ6UF3D18sOwcKUEAApc/si/HBLqDb+M1GK+38o6wJpvB9PcwNbVb1pIYcLsPzflZF5ryfYtQ5LHqs/DRIM/FuKK6AIbiYBGD7WboORsvAJqPyofcnHrR2PmiTno040c3/64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZV0W1aOZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B668C4CEE3;
+	Tue, 15 Jul 2025 13:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587556;
-	bh=yT4oCVJHMGQfC6D1/ObxZeEdnNaUDqSHXC/Dknz6NvQ=;
+	s=korg; t=1752587569;
+	bh=eTD3ISTDCWmM5N2ffSFkPwUMIhgHksAhjBexzjl8Wy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hCfG6oyL44cQ2vrVGA20SbBfkccm/xsp57cg7ofIEv8LP4vd4QvWhWKkXw7NmDqVD
-	 fhXzaO2Yx/hY2+8tH51UCW97khvOHpWx1oqwnTYDARsplVJ8Bf4uAzM4Ibad3hMIEr
-	 uc7CA5mno60eIC4xp5oKVJhspOQDT8bGJlwB4etA=
+	b=ZV0W1aOZSNiUH3SPtUw4JSFJEAqmn40jCOIL/opGzjbTeSt11zaiCGE6rdCi1L6KP
+	 TkmxNwJH6pAKMFIvGyQWiSbOPQ/X84Fae0FGJEmwtSb5QUBkM948YZ6OQyja1BWQLG
+	 /F8PhT4j1qW6IIAlwtAcpNMefETWB6uJeENEfQxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Kyle Tso <kyletso@google.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 029/208] usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()
-Date: Tue, 15 Jul 2025 15:12:18 +0200
-Message-ID: <20250715130812.000666093@linuxfoundation.org>
+Subject: [PATCH 5.10 030/208] fs/jfs: consolidate sanity checking in dbMount
+Date: Tue, 15 Jul 2025 15:12:19 +0200
+Message-ID: <20250715130812.039695847@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -69,47 +65,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
 
-[ Upstream commit 0736299d090f5c6a1032678705c4bc0a9511a3db ]
+[ Upstream commit 0d250b1c52484d489e31df2cf9118b7c4bd49d31 ]
 
-Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
+Sanity checks have been added to dbMount as individual if clauses with
+identical error handling. Move these all into one clause.
 
-  PD message (pending read) size + 1 Byte for Frame Type (SOP*)
-
-This is validated against the max PD message (`struct pd_message`) size
-without accounting for the extra byte for the frame type. Note that the
-struct pd_message does not contain a field for the frame_type. This
-results in false negatives when the "PD message (pending read)" is equal
-to the max PD message size.
-
-Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Kyle Tso <kyletso@google.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/stable/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d%40google.com
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Stable-dep-of: 37bfb464ddca ("jfs: validate AG parameters in dbMount() to prevent crashes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci_maxim.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c | 37 +++++++++----------------------------
+ 1 file changed, 9 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpci_maxim.c b/drivers/usb/typec/tcpm/tcpci_maxim.c
-index df5887db46946..d694094084f85 100644
---- a/drivers/usb/typec/tcpm/tcpci_maxim.c
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim.c
-@@ -165,7 +165,8 @@ static void process_rx(struct max_tcpci_chip *chip, u16 status)
- 		return;
- 	}
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 9dccebbee55ad..ba60e24b30a45 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -178,45 +178,26 @@ int dbMount(struct inode *ipbmap)
+ 	dbmp_le = (struct dbmap_disk *) mp->data;
+ 	bmp->db_mapsize = le64_to_cpu(dbmp_le->dn_mapsize);
+ 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
+-
+ 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
+-	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE ||
+-		bmp->db_l2nbperpage < 0) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+-
+ 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
+-	if (!bmp->db_numag || bmp->db_numag > MAXAG) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+-
+ 	bmp->db_maxlevel = le32_to_cpu(dbmp_le->dn_maxlevel);
+ 	bmp->db_maxag = le32_to_cpu(dbmp_le->dn_maxag);
+ 	bmp->db_agpref = le32_to_cpu(dbmp_le->dn_agpref);
+-	if (bmp->db_maxag >= MAXAG || bmp->db_maxag < 0 ||
+-		bmp->db_agpref >= MAXAG || bmp->db_agpref < 0) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+-
+ 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
+ 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
+ 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
+-	if (!bmp->db_agwidth) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
+ 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
+ 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
+-	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
+-	    bmp->db_agl2size < 0) {
+-		err = -EINVAL;
+-		goto err_release_metapage;
+-	}
  
--	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
-+	if (count > sizeof(struct pd_message) + 1 ||
-+	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
- 		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
- 		return;
+-	if (((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
++	if ((bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) ||
++	    (bmp->db_l2nbperpage < 0) ||
++	    !bmp->db_numag || (bmp->db_numag > MAXAG) ||
++	    (bmp->db_maxag >= MAXAG) || (bmp->db_maxag < 0) ||
++	    (bmp->db_agpref >= MAXAG) || (bmp->db_agpref < 0) ||
++	    !bmp->db_agwidth ||
++	    (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG) ||
++	    (bmp->db_agl2size < 0) ||
++	    ((bmp->db_mapsize - 1) >> bmp->db_agl2size) > MAXAG) {
+ 		err = -EINVAL;
+ 		goto err_release_metapage;
  	}
 -- 
 2.39.5
