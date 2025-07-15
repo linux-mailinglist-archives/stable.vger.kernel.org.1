@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-162704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7473B05F4F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A97B05EED
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 792013B3A8A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 278061C420E9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4992E7BD1;
-	Tue, 15 Jul 2025 13:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88522E7620;
+	Tue, 15 Jul 2025 13:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TY6dYkkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqUvU7/s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A39C2561AE;
-	Tue, 15 Jul 2025 13:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BF22E62B4;
+	Tue, 15 Jul 2025 13:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587256; cv=none; b=VeXZFf2DZusOxaEcJdASAMs6ojAtcygmLHbvJNc/e2iUH/mwE1V1hQ5OBmnCREwYXh/v/twpjh6YDW1XjcoNYtXq/k3g5ZfITAyQsyqDTL6UKInztfJtpifQR6Q0va8WXk686AK65eanVP8ixItQAXAQRx9PY3SiVg6J7o4G8CM=
+	t=1752587068; cv=none; b=bxVWLEIv7jXi9Fv+e3M/vr8L8UmR+OTgEvoQWohEitmQIEpEpI+upmR0SQn9G02h8MUH5ROKzUTNkc5gtfqerGvXyWM41Dl9M166moAHlj9g+WqOXKQIrUrxfG/3aTMvz6aP9dR7gFgh3PFXgdRFAEXKm29UxtVs5Plr7UJ7NVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587256; c=relaxed/simple;
-	bh=80yQSDd7E9CnXnMFS9t3LDRlRXwxY3XR3WVgcbSaetQ=;
+	s=arc-20240116; t=1752587068; c=relaxed/simple;
+	bh=dqfV6IXA3S5uY53MhP6gjTl87RffaBdrryIwgViZ++c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lKYVl+zT05IGHKp416s2JyWitomHHdBTqQG/uxJUeQeQC/nSd5DcEdA0HDzXAdz/EFY2pwKeTAL1Kn4uq3qV0+CQ7XGO6Bdd32yDFMWlWW01gjxJE3TrS4yFgSjZxSphT28LCJ+5Z20IjIDs5ySl6eU+yBPZpBJoI6bSU/6OvAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TY6dYkkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE88C4CEE3;
-	Tue, 15 Jul 2025 13:47:35 +0000 (UTC)
+	 MIME-Version; b=RvM8VnMPWF8Pq8h/cDiymUNkA2PDfSd6SryIIuocEUZUJxnNJpAdfkyXs05xdL0pAg1NJWrMRjTlGHhPORmCPB2tsjo2hpVF9cJzFBRoGyPJtVvDnZmnXIgizRET4SmcTgBKvAX0/C4ZQ9i2joypnt0dI2yF25joIKy3dZmnZ5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqUvU7/s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E8DC4CEE3;
+	Tue, 15 Jul 2025 13:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587256;
-	bh=80yQSDd7E9CnXnMFS9t3LDRlRXwxY3XR3WVgcbSaetQ=;
+	s=korg; t=1752587068;
+	bh=dqfV6IXA3S5uY53MhP6gjTl87RffaBdrryIwgViZ++c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TY6dYkkYxE061PjuiAVkCPTbGduWalkqBvTqZfwLS7qP2zVWh+L8qD9RZr1eDwLiP
-	 MjYaNjRFQN2Gse4rTGWD4l9QBrrG1hBWScL+iG3+qqpJj7StDUyDHlTiSE9PYe6+0y
-	 jrKtZ3yrqQD+q6zmrWKhbZc7a58BTUQRF57k4Zj0=
+	b=SqUvU7/spHvymzJvCbrxtFQU/ASIkEjWj3gD5f+/Gt0WmjeReXjSYIbIb2dsfudgy
+	 iH1PacBiFhrdm0dIJLiEKbR4q+TnfytH/1C9ijLlYXgJfi3sZUiSzGQszSxjWEmQpZ
+	 9uT552oDsDOh5Kx+qbv2jjwNrsMjPjrazmIloftQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>
-Subject: [PATCH 6.1 32/88] drm/sched: Increment job count before swapping tail spsc queue
+	Mingming Cao <mmc@linux.ibm.com>,
+	Dave Marquardt <davemarq@linux.ibm.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 153/192] ibmvnic: Fix hardcoded NUM_RX_STATS/NUM_TX_STATS with dynamic sizeof
 Date: Tue, 15 Jul 2025 15:14:08 +0200
-Message-ID: <20250715130755.810746527@linuxfoundation.org>
+Message-ID: <20250715130821.053427303@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +63,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Mingming Cao <mmc@linux.ibm.com>
 
-commit 8af39ec5cf2be522c8eb43a3d8005ed59e4daaee upstream.
+[ Upstream commit 01b8114b432d7baaa5e51ab229c12c4f36b8e2c6 ]
 
-A small race exists between spsc_queue_push and the run-job worker, in
-which spsc_queue_push may return not-first while the run-job worker has
-already idled due to the job count being zero. If this race occurs, job
-scheduling stops, leading to hangs while waiting on the job’s DMA
-fences.
+The previous hardcoded definitions of NUM_RX_STATS and
+NUM_TX_STATS were not updated when new fields were added
+to the ibmvnic_{rx,tx}_queue_stats structures. Specifically,
+commit 2ee73c54a615 ("ibmvnic: Add stat for tx direct vs tx
+batched") added a fourth TX stat, but NUM_TX_STATS remained 3,
+leading to a mismatch.
 
-Seal this race by incrementing the job count before appending to the
-SPSC queue.
+This patch replaces the static defines with dynamic sizeof-based
+calculations to ensure the stat arrays are correctly sized.
+This fixes incorrect indexing and prevents incomplete stat
+reporting in tools like ethtool.
 
-This race was observed on a drm-tip 6.16-rc1 build with the Xe driver in
-an SVM test case.
-
-Fixes: 1b1f42d8fde4 ("drm: move amd_gpu_scheduler into common location")
-Fixes: 27105db6c63a ("drm/amdgpu: Add SPSC queue to scheduler.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://lore.kernel.org/r/20250613212013.719312-1-matthew.brost@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2ee73c54a615 ("ibmvnic: Add stat for tx direct vs tx batched")
+Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+Reviewed-by: Haren Myneni <haren@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250709153332.73892-1-mmc@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/spsc_queue.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ibm/ibmvnic.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/include/drm/spsc_queue.h
-+++ b/include/drm/spsc_queue.h
-@@ -70,9 +70,11 @@ static inline bool spsc_queue_push(struc
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
+index a189038d88df0..246ddce753f92 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.h
++++ b/drivers/net/ethernet/ibm/ibmvnic.h
+@@ -211,7 +211,6 @@ struct ibmvnic_statistics {
+ 	u8 reserved[72];
+ } __packed __aligned(8);
  
- 	preempt_disable();
+-#define NUM_TX_STATS 3
+ struct ibmvnic_tx_queue_stats {
+ 	u64 batched_packets;
+ 	u64 direct_packets;
+@@ -219,13 +218,18 @@ struct ibmvnic_tx_queue_stats {
+ 	u64 dropped_packets;
+ };
  
-+	atomic_inc(&queue->job_count);
-+	smp_mb__after_atomic();
+-#define NUM_RX_STATS 3
++#define NUM_TX_STATS \
++	(sizeof(struct ibmvnic_tx_queue_stats) / sizeof(u64))
 +
- 	tail = (struct spsc_node **)atomic_long_xchg(&queue->tail, (long)&node->next);
- 	WRITE_ONCE(*tail, node);
--	atomic_inc(&queue->job_count);
+ struct ibmvnic_rx_queue_stats {
+ 	u64 packets;
+ 	u64 bytes;
+ 	u64 interrupts;
+ };
  
- 	/*
- 	 * In case of first element verify new node will be visible to the consumer
++#define NUM_RX_STATS \
++	(sizeof(struct ibmvnic_rx_queue_stats) / sizeof(u64))
++
+ struct ibmvnic_acl_buffer {
+ 	__be32 len;
+ 	__be32 version;
+-- 
+2.39.5
+
 
 
 
