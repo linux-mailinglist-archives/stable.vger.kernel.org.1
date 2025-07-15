@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A63F7B06090
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:18:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35119B05F7E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F151659EF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:11:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DE5F4E4F2D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA162F2C5E;
-	Tue, 15 Jul 2025 13:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6C01EEA5D;
+	Tue, 15 Jul 2025 13:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrGVKHGg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUWgg7bo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0C72F2C54;
-	Tue, 15 Jul 2025 13:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD8B2D8363;
+	Tue, 15 Jul 2025 13:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587915; cv=none; b=Fae7cABPGiMo7SPPr0WbLBWUuKSHLYOivGc6y8oU9PoCpznfsyzP+Icm8MVAsPcRq7wemwurJ2+D6+JcS/IUBEo3gjxTkJeiEK5QK7DmyTgx59xlR85eEmnhMhOl6mLGdA4MYB5xsyQhU015t1lWQsSYF71QzN4dFS3rha2rzSg=
+	t=1752587390; cv=none; b=euG458cLG4quZWhmxFclAKi8RtNzDGIpmMNJi3AI7HwTFJDt2fqH1RZUHt7zp92PqIWxRW0MQkLzrJoLUyIBeXOmkhM6gzdtWhK6WvswYdmJLIUpYImi9fmU23B+tO3sKbpycs1JNBpIqjIyjXHHUgkd6ozJfKRut13BXJxziWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587915; c=relaxed/simple;
-	bh=0cS7Qvtka5M1gD+Tzk+1y/r74bbeIBU5CMyQTH/9P+U=;
+	s=arc-20240116; t=1752587390; c=relaxed/simple;
+	bh=DqYeUxWmp3A4/Kno/s/aZe/gZf1nlOV9ZWDDvt0/iPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlzgoUCR7oGu6nNk0SJvj0PRS7p1tlQEIi06O1/ZSc/GY9x/YuFxFPa5/Ic9gdvGPyKSgeEuCgbHc6XDQMwLRsGZiR7MLObzlJX1420bSE0RyBnwpmOzIvGCCEfbcVzgtlvVoWy71/gCmr7iGZzxVyVIzQU9TC71J0KLpxxHmV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrGVKHGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61919C4CEF1;
-	Tue, 15 Jul 2025 13:58:35 +0000 (UTC)
+	 MIME-Version; b=tE86S75C6UJRXYK5LDVfO9+5npncUowNoH3ZV0ZldDH7ko9dhGIej0eZdXtfBGKRJuRNIn3/8EjI1bf3ei8HklaC1LT6XOXzhtFuuSrIMUXcn0dTMTXZFnYBOVYQ+8oA2QOFrEbA3r6cR3Somgd5VJeZJ0NErqjP3pnJED4949c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUWgg7bo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A49C4CEE3;
+	Tue, 15 Jul 2025 13:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587915;
-	bh=0cS7Qvtka5M1gD+Tzk+1y/r74bbeIBU5CMyQTH/9P+U=;
+	s=korg; t=1752587389;
+	bh=DqYeUxWmp3A4/Kno/s/aZe/gZf1nlOV9ZWDDvt0/iPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hrGVKHGgpwBkFsDvSWznbh5j9vMntLkhKAxtXSyfxOS/hnGcgoZsdV0Rnd+dcrNXq
-	 7mezVhaV4YggGFYCgLqGq3LWlcAPSNRW4yGwgLWAKFgNMz1DilqfsDINaNYWrIsh3E
-	 WqXRR7XZadUdQZdGcV5A0RLrCgF/MbNg7mM/N2VM=
+	b=mUWgg7boq1/FH1KbV4p/XXQGx/E966uRw1fiRBdMxN5n8/TLRtsv92MYGuX6XKOXK
+	 STTVwzAKzJ1pJMm6Pt4BV4Kstq4QlG26WCQroygTtk2ob8yASjb+U662NxX4lU0AwX
+	 PDku0HyzfQkPT7lL5cz5g+v+LhZtcEpyY1RlfJSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 190/208] net: phy: microchip: limit 100M workaround to link-down events on LAN88xx
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Wang Hai <wanghai38@huawei.com>
+Subject: [PATCH 6.1 83/88] Input: atkbd - do not skip atkbd_deactivate() when skipping ATKBD_CMD_GETID
 Date: Tue, 15 Jul 2025 15:14:59 +0200
-Message-ID: <20250715130818.559109743@linuxfoundation.org>
+Message-ID: <20250715130757.903144709@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit dd4360c0e8504f2f7639c7f5d07c93cfd6a98333 ]
+commit 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 upstream.
 
-Restrict the 100Mbit forced-mode workaround to link-down transitions
-only, to prevent repeated link reset cycles in certain configurations.
+After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
+translated mode") not only the getid command is skipped, but also
+the de-activating of the keyboard at the end of atkbd_probe(), potentially
+re-introducing the problem fixed by commit be2d7e4233a4 ("Input: atkbd -
+fix multi-byte scancode handling on reconnect").
 
-The workaround was originally introduced to improve signal reliability
-when switching cables between long and short distances. It temporarily
-forces the PHY into 10 Mbps before returning to 100 Mbps.
+Make sure multi-byte scancode handling on reconnect is still handled
+correctly by not skipping the atkbd_deactivate() call.
 
-However, when used with autonegotiating link partners (e.g., Intel i350),
-executing this workaround on every link change can confuse the partner
-and cause constant renegotiation loops. This results in repeated link
-down/up transitions and the PHY never reaching a stable state.
-
-Limit the workaround to only run during the PHY_NOLINK state. This ensures
-it is triggered only once per link drop, avoiding disruptive toggling
-while still preserving its intended effect.
-
-Note: I am not able to reproduce the original issue that this workaround
-addresses. I can only confirm that 100 Mbit mode works correctly in my
-test setup. Based on code inspection, I assume the workaround aims to
-reset some internal state machine or signal block by toggling speeds.
-However, a PHY reset is already performed earlier in the function via
-phy_init_hw(), which may achieve a similar effect. Without a reproducer,
-I conservatively keep the workaround but restrict its conditions.
-
-Fixes: e57cf3639c32 ("net: lan78xx: fix accessing the LAN7800's internal phy specific registers from the MAC driver")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250709130753.3994461-3-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240126160724.13278-3-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/microchip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/keyboard/atkbd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index 375bbd60b38af..e6ad7d29a0559 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -335,7 +335,7 @@ static void lan88xx_link_change_notify(struct phy_device *phydev)
- 	 * As workaround, set to 10 before setting to 100
- 	 * at forced 100 F/H mode.
- 	 */
--	if (!phydev->autoneg && phydev->speed == 100) {
-+	if (phydev->state == PHY_NOLINK && !phydev->autoneg && phydev->speed == 100) {
- 		/* disable phy interrupt */
- 		temp = phy_read(phydev, LAN88XX_INT_MASK);
- 		temp &= ~LAN88XX_INT_MASK_MDINTPIN_EN_;
--- 
-2.39.5
-
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -807,7 +807,7 @@ static int atkbd_probe(struct atkbd *atk
+ 
+ 	if (atkbd_skip_getid(atkbd)) {
+ 		atkbd->id = 0xab83;
+-		return 0;
++		goto deactivate_kbd;
+ 	}
+ 
+ /*
+@@ -844,6 +844,7 @@ static int atkbd_probe(struct atkbd *atk
+ 		return -1;
+ 	}
+ 
++deactivate_kbd:
+ /*
+  * Make sure nothing is coming from the keyboard and disturbs our
+  * internal state.
 
 
 
