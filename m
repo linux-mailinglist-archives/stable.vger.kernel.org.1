@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-162278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE42AB05D00
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:39:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9D3B05BA7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F28E7BA228
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:32:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A575663CB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAC22E54AB;
-	Tue, 15 Jul 2025 13:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEFF82E266C;
+	Tue, 15 Jul 2025 13:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewqohawn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmJ9KFWZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B60E2C327B;
-	Tue, 15 Jul 2025 13:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA8A2E11D3;
+	Tue, 15 Jul 2025 13:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586134; cv=none; b=Byt80naSsPz300rQwkUGBHqIJ155IZkYjSdYfZOFzypYNNgVa7eMy1qKf7Rek44kfCX3kxOiuEs7NjMgV5HrZXoto3QRnYTXngk0ARq4Gy2d2xpdLOfU1anLjhqxE/DjY3Kwy/bL1TvUY1ehKmufObXj8a9vtwR6iVbbCfqJ+6o=
+	t=1752585701; cv=none; b=a4g4OiKI20XC1u6XPmg4Z3ZQkjI/oRzpimdxYtOYerNekNNXyMw2k08yn9sIt6NkWd+gr13nPHF6J2dYh+1tfykjK1nkpOAk2G4btiyjXYb/ttgpkKSE5MvLUSdGG3VTZjwUdrT4YAPfoH1Thtz+4R1iKnR9dylDR+jonp+n2lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586134; c=relaxed/simple;
-	bh=RmbVBn3KRMX7xnGdbfqmDiRhymKUlPRrY0U3JFx+xwc=;
+	s=arc-20240116; t=1752585701; c=relaxed/simple;
+	bh=aCHgjo4Ex6jVBSVaD+oONOOgqG0i9Yl8skkyEJlqCJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKPmyJz7rb4yWpebQSkJmeE5gWfUwoT+Fxj6qcA7bQ0nTUDL/kIJoZqPyLQkOTjX8T8aqv6T5Yh/7catBtM1fNUhNQXZdZ4WJTxXzrigNQeGDK4wtmzx2MRKqtVrxCTcQqnAK1kgIK3LG59tF3uoE45i+uE91EbZsTIcB/yyBcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewqohawn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1316C4CEE3;
-	Tue, 15 Jul 2025 13:28:53 +0000 (UTC)
+	 MIME-Version; b=CYpnLap0o4ryiUaZ+KKIbD7ylNoUmehkEOKanESkTQKYq/fghLr+rKyy4xWKd2j0tO3OR8Temc3ONqF89b9x21pXAB9wlOaQHKK6c9LWfINxXKs3inMpUE5OOpnxcUQ++Ddv4KjXKwoJfjrJmeLxwPBB3OENnfYZLns/7GhTGsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmJ9KFWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEA1C4CEE3;
+	Tue, 15 Jul 2025 13:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586134;
-	bh=RmbVBn3KRMX7xnGdbfqmDiRhymKUlPRrY0U3JFx+xwc=;
+	s=korg; t=1752585701;
+	bh=aCHgjo4Ex6jVBSVaD+oONOOgqG0i9Yl8skkyEJlqCJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewqohawnpG7c9ziBe+wOXnRwgk5dkqd8QzXw/+vVDNwSlMT917DuMommxM51YkOEt
-	 cmYFMOtxx6qjQJDMoYxUtDhkQF4rwIOwQhnz8K8qzj+0WvD7mvNYlTyluWQu97tlLl
-	 9MvzRG6GKwOIePxv3TNlNM4ZRSomiv8Wx+9NONiE=
+	b=lmJ9KFWZ3NEXg63u3AGN4nSTAk+ya1H1eJ28jpLgtcP45Id/0hF8yPxBTJpdliWA6
+	 y8oUR2p1dLLq+kOXR2ya4KAtIH8npfZWLR4RtvKP355UyfO8c/gQGm450Q8Y+LCRTQ
+	 AIz/nVWQgWSBnqNx0/InqpuyaAoGo+5wfA0f+fXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aijay Adams <aijay@meta.com>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	stable@kernel.org
-Subject: [PATCH 5.15 28/77] x86/mce: Make sure CMCI banks are cleared during shutdown on Intel
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 139/163] atm: idt77252: Add missing `dma_map_error()`
 Date: Tue, 15 Jul 2025 15:13:27 +0200
-Message-ID: <20250715130752.837504020@linuxfoundation.org>
+Message-ID: <20250715130814.413051821@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Kobryn <inwardvessel@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 30ad231a5029bfa16e46ce868497b1a5cdd3c24d upstream.
+[ Upstream commit c4890963350dcf4e9a909bae23665921fba4ad27 ]
 
-CMCI banks are not cleared during shutdown on Intel CPUs. As a side effect,
-when a kexec is performed, CPUs coming back online are unable to
-rediscover/claim these occupied banks which breaks MCE reporting.
+The DMA map functions can fail and should be tested for errors.
 
-Clear the CPU ownership during shutdown via cmci_clear() so the banks can
-be reclaimed and MCE reporting will become functional once more.
-
-  [ bp: Massage commit message. ]
-
-Reported-by: Aijay Adams <aijay@meta.com>
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250627174935.95194-1-inwardvessel@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250624064148.12815-3-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/intel.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/atm/idt77252.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/x86/kernel/cpu/mce/intel.c
-+++ b/arch/x86/kernel/cpu/mce/intel.c
-@@ -542,6 +542,7 @@ void mce_intel_feature_init(struct cpuin
- void mce_intel_feature_clear(struct cpuinfo_x86 *c)
- {
- 	intel_clear_lmce();
-+	cmci_clear();
- }
+diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
+index a876024d8a05f..63d41320cd5cf 100644
+--- a/drivers/atm/idt77252.c
++++ b/drivers/atm/idt77252.c
+@@ -852,6 +852,8 @@ queue_skb(struct idt77252_dev *card, struct vc_map *vc,
  
- bool intel_filter_mce(struct mce *m)
+ 	IDT77252_PRV_PADDR(skb) = dma_map_single(&card->pcidev->dev, skb->data,
+ 						 skb->len, DMA_TO_DEVICE);
++	if (dma_mapping_error(&card->pcidev->dev, IDT77252_PRV_PADDR(skb)))
++		return -ENOMEM;
+ 
+ 	error = -EINVAL;
+ 
+@@ -1857,6 +1859,8 @@ add_rx_skb(struct idt77252_dev *card, int queue,
+ 		paddr = dma_map_single(&card->pcidev->dev, skb->data,
+ 				       skb_end_pointer(skb) - skb->data,
+ 				       DMA_FROM_DEVICE);
++		if (dma_mapping_error(&card->pcidev->dev, paddr))
++			goto outpoolrm;
+ 		IDT77252_PRV_PADDR(skb) = paddr;
+ 
+ 		if (push_rx_skb(card, skb, queue)) {
+@@ -1871,6 +1875,7 @@ add_rx_skb(struct idt77252_dev *card, int queue,
+ 	dma_unmap_single(&card->pcidev->dev, IDT77252_PRV_PADDR(skb),
+ 			 skb_end_pointer(skb) - skb->data, DMA_FROM_DEVICE);
+ 
++outpoolrm:
+ 	handle = IDT77252_PRV_POOL(skb);
+ 	card->sbpool[POOL_QUEUE(handle)].skb[POOL_INDEX(handle)] = NULL;
+ 
+-- 
+2.39.5
+
 
 
 
