@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A616B05B41
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2FCB05E37
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B63A47B5454
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BBA6163491
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EC12E2EEE;
-	Tue, 15 Jul 2025 13:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3322E7BD2;
+	Tue, 15 Jul 2025 13:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PvdMhni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2JR+4WO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25483192D8A;
-	Tue, 15 Jul 2025 13:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9962E7BC0;
+	Tue, 15 Jul 2025 13:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585490; cv=none; b=EFdH9PgF9nh/fjOsN9VbcaKQ7JV0AJoMsIZhQutz/fiII4x62iyydZ/ZidIN5vuf8CoesBQiHso6cf0P6SrPTisCHg84+4cuUCD1slSDWl0+8cGKtO/nrGG1AcKJoHuLsHkeORRI2nJvgFAly34+zqj6Y9QUtS7GB24ZUpcf+eM=
+	t=1752586746; cv=none; b=J8EOOZJYk4kQu5e3HqIOQNDtnpDUAn2YUS4ygjMSCRqJVn0wMMMllaGuEEZdPAgSfTOBd7qnVz9BQyUnKFyzNKpHJe09iZG8+3h8w6GV05Qq314EG6L8kD47RNkl940v+EPpuiSzZp42u1fJKOWX7NgzTLUFUqlHE0LS5niV2ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585490; c=relaxed/simple;
-	bh=8s4TGRXqJ9LKxsysdS18fjxidhX3Ds/sWkP3RLGZYSk=;
+	s=arc-20240116; t=1752586746; c=relaxed/simple;
+	bh=kMsbMUBD8y4hG/y2gcTrE4sPJMx+8oEK2fWhtmU5Lx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pmp8RCocciaKiUS+1iuU1FEqS/yLo4s5I7DFefBTIwONaRgiloHyXpAhudLxb3f80FKnuS/++JPrgvr5thbHMfP2CVbk8wuOgfsFfw7yPKgdwCGPp+ISET+EzW2+WSGCJJ2Z5kOYznpSzjzikLsscU0vfMq4VFwKo0MB/1YXl/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PvdMhni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33313C4CEE3;
-	Tue, 15 Jul 2025 13:18:09 +0000 (UTC)
+	 MIME-Version; b=gHJp1+IioiCSZGrnx7LAx9faUR8FxzTwcyd/jUlOlWlDfqcLFNOGEu0kZb0qMODlX5gttRdkPs189F93b9P9Qf6QT/aeVKTkHUHREaeKb4ZUKbCjvzTBhCUdRcisELvXNgQhaDuJdDXC2hD3oCizj+ln9+DIiE5HEB0hxVcuO6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2JR+4WO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E1EC4CEE3;
+	Tue, 15 Jul 2025 13:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585489;
-	bh=8s4TGRXqJ9LKxsysdS18fjxidhX3Ds/sWkP3RLGZYSk=;
+	s=korg; t=1752586746;
+	bh=kMsbMUBD8y4hG/y2gcTrE4sPJMx+8oEK2fWhtmU5Lx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2PvdMhniEzUJ5jY0q8j5pmLbVby/sUpCVfPMM305/8fppkIwDC/lYZTuXc9ktxUih
-	 J2jxRY2Qhy5RcXcJy8rdHc0UW6SfUfh1inWZbbKcLaxp4Zv8Uw1bN+yBHv91zRiwEK
-	 ebIyJEPbRL2zlG7y+nH84TFPj8IkjiwIEY3/IaFg=
+	b=O2JR+4WOHaY5TYwgEwfV/1Y8qXVgnoGYZAWURKXV24szJeXPirCIW+uyV1IgcydfE
+	 oIjFH802oxzhSUr5kswJdmKqIY6u1Dy4QMr6lkdmf0NDHXtcCQMbToBTDXKGVA/sBn
+	 kV7WFxH01WEkSmFz/6vI+1c15dBVcn2pYmBZyj1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aiden Yang <ling@moedove.com>,
-	Gary Guo <gary@garyguo.net>,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 060/163] gre: Fix IPv6 multicast route creation.
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 033/192] vsock: Fix transport_* TOCTOU
 Date: Tue, 15 Jul 2025 15:12:08 +0200
-Message-ID: <20250715130811.157949907@linuxfoundation.org>
+Message-ID: <20250715130816.187855725@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit 4e914ef063de40397e25a025c70d9737a9e45a8c upstream.
+[ Upstream commit 687aa0c5581b8d4aa87fd92973e4ee576b550cdf ]
 
-Use addrconf_add_dev() instead of ipv6_find_idev() in
-addrconf_gre_config() so that we don't just get the inet6_dev, but also
-install the default ff00::/8 multicast route.
+Transport assignment may race with module unload. Protect new_transport
+from becoming a stale pointer.
 
-Before commit 3e6a0243ff00 ("gre: Fix again IPv6 link-local address
-generation."), the multicast route was created at the end of the
-function by addrconf_add_mroute(). But this code path is now only taken
-in one particular case (gre devices not bound to a local IP address and
-in EUI64 mode). For all other cases, the function exits early and
-addrconf_add_mroute() is not called anymore.
+This also takes care of an insecure call in vsock_use_local_transport();
+add a lockdep assert.
 
-Using addrconf_add_dev() instead of ipv6_find_idev() in
-addrconf_gre_config(), fixes the problem as it will create the default
-multicast route for all gre devices. This also brings
-addrconf_gre_config() a bit closer to the normal netdevice IPv6
-configuration code (addrconf_dev_config()).
+BUG: unable to handle page fault for address: fffffbfff8056000
+Oops: Oops: 0000 [#1] SMP KASAN
+RIP: 0010:vsock_assign_transport+0x366/0x600
+Call Trace:
+ vsock_connect+0x59c/0xc40
+ __sys_connect+0xe8/0x100
+ __x64_sys_connect+0x6e/0xc0
+ do_syscall_64+0x92/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-Cc: stable@vger.kernel.org
-Fixes: 3e6a0243ff00 ("gre: Fix again IPv6 link-local address generation.")
-Reported-by: Aiden Yang <ling@moedove.com>
-Closes: https://lore.kernel.org/netdev/CANR=AhRM7YHHXVxJ4DmrTNMeuEOY87K2mLmo9KMed1JMr20p6g@mail.gmail.com/
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Tested-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/027a923dcb550ad115e6d93ee8bb7d310378bd01.1752070620.git.gnault@redhat.com
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-2-98f0eb530747@rbox.co
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ net/vmw_vsock/af_vsock.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -3548,11 +3548,9 @@ static void addrconf_gre_config(struct n
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 43be340233dae..f947ab8787899 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -407,6 +407,8 @@ EXPORT_SYMBOL_GPL(vsock_enqueue_accept);
  
- 	ASSERT_RTNL();
+ static bool vsock_use_local_transport(unsigned int remote_cid)
+ {
++	lockdep_assert_held(&vsock_register_mutex);
++
+ 	if (!transport_local)
+ 		return false;
  
--	idev = ipv6_find_idev(dev);
--	if (IS_ERR(idev)) {
--		pr_debug("%s: add_dev failed\n", __func__);
-+	idev = addrconf_add_dev(dev);
-+	if (IS_ERR(idev))
- 		return;
--	}
+@@ -464,6 +466,8 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
  
- 	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
- 	 * unless we have an IPv4 GRE device not bound to an IP address and
-@@ -3566,9 +3564,6 @@ static void addrconf_gre_config(struct n
+ 	remote_flags = vsk->remote_addr.svm_flags;
+ 
++	mutex_lock(&vsock_register_mutex);
++
+ 	switch (sk->sk_type) {
+ 	case SOCK_DGRAM:
+ 		new_transport = transport_dgram;
+@@ -479,12 +483,15 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ 			new_transport = transport_h2g;
+ 		break;
+ 	default:
+-		return -ESOCKTNOSUPPORT;
++		ret = -ESOCKTNOSUPPORT;
++		goto err;
  	}
  
- 	add_v4_addrs(idev);
--
--	if (dev->flags & IFF_POINTOPOINT)
--		addrconf_add_mroute(dev);
- }
- #endif
+ 	if (vsk->transport) {
+-		if (vsk->transport == new_transport)
+-			return 0;
++		if (vsk->transport == new_transport) {
++			ret = 0;
++			goto err;
++		}
  
+ 		/* transport->release() must be called with sock lock acquired.
+ 		 * This path can only be taken during vsock_connect(), where we
+@@ -508,8 +515,16 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ 	/* We increase the module refcnt to prevent the transport unloading
+ 	 * while there are open sockets assigned to it.
+ 	 */
+-	if (!new_transport || !try_module_get(new_transport->module))
+-		return -ENODEV;
++	if (!new_transport || !try_module_get(new_transport->module)) {
++		ret = -ENODEV;
++		goto err;
++	}
++
++	/* It's safe to release the mutex after a successful try_module_get().
++	 * Whichever transport `new_transport` points at, it won't go away until
++	 * the last module_put() below or in vsock_deassign_transport().
++	 */
++	mutex_unlock(&vsock_register_mutex);
+ 
+ 	if (sk->sk_type == SOCK_SEQPACKET) {
+ 		if (!new_transport->seqpacket_allow ||
+@@ -528,6 +543,9 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ 	vsk->transport = new_transport;
+ 
+ 	return 0;
++err:
++	mutex_unlock(&vsock_register_mutex);
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(vsock_assign_transport);
+ 
+-- 
+2.39.5
+
 
 
 
