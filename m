@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-162308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2ACAB05D11
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FEFDB05ED3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 272F81C269E2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37EFE1C40CE0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD45B2E8DE8;
-	Tue, 15 Jul 2025 13:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6752E2F10;
+	Tue, 15 Jul 2025 13:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxutz4zZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMMX4RhC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F092E8DED;
-	Tue, 15 Jul 2025 13:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15BC2E611D;
+	Tue, 15 Jul 2025 13:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586213; cv=none; b=b/m1x0p83fqoJV1Qz5MOMx15M7c1WKNAjpLUq2tWUJri7wVVeDG6nsHU7Ed6yDmWvAeXUBRbRyGmGGJ4iUNKOX3L7xZQ/oOirrybpmGCr1CSASFVbKzl0V+N2Z4O7/I9lbKmRvy8kcAKni4l6efpF+UsS2iihO8U7MXG88Scthk=
+	t=1752587036; cv=none; b=oGpoIkefrkvCit5NLvnPsGGoos+YcuVvZrbFR+CZL4V/fPhnjZ6SJ+S4JQKEgj7RLejK4G/1PVm2/sqJkNhx0JU+FrmHo8uXHO/XuxuJB3x3AxqN2c8odJRpjtyQP/B2ZS09cn2IYRbCGQPEyiJ+zfmkn4zy/4y97c6vj2SZcRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586213; c=relaxed/simple;
-	bh=07p/tU9vqJ6zMZ4aA0BxmG0TwquGFfGfmrFSId/XYok=;
+	s=arc-20240116; t=1752587036; c=relaxed/simple;
+	bh=GDZhZ+Eoh5d6SdtUJguc6WEM2GTV7oKYdHZPWAA8pVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8SasUbN6MCmnXB/EBaK4SIP6Y+lspIEkzEQjwZnEZBRyXqV4FLSvBEy6JUe5b4zevElKPOtfXj+RIPjWddnqcJ6ue9sLj5i4r8nj834dUvWwDgIpfhxhqaqT5PLwHuxpKMTidLk9ukkZFSzyll7Dq0+hD5TDEsY/YArr/YRTJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxutz4zZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2983AC4CEF1;
-	Tue, 15 Jul 2025 13:30:12 +0000 (UTC)
+	 MIME-Version; b=DUT65pMBq2I0nxxwJ2NPzQSpj4LwyYXxz9cVkbauY+AAxRg/JQuHev2737VS5TnVTkWMQ4KebduD4xSydRBgZLVMUbSuZ0QPNTFeE6iVT+FKJuHLypjn+ZYEXozRhBU7atO5Qfv2y8lF9QLQ8d7q/jdm2te4vUALMg7KyOE8EhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMMX4RhC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5626FC4CEE3;
+	Tue, 15 Jul 2025 13:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586213;
-	bh=07p/tU9vqJ6zMZ4aA0BxmG0TwquGFfGfmrFSId/XYok=;
+	s=korg; t=1752587036;
+	bh=GDZhZ+Eoh5d6SdtUJguc6WEM2GTV7oKYdHZPWAA8pVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bxutz4zZv39og93gdAMKftODnarAsMJ3nVixBEkJ371YYn4lgMCStiDEn/wwq75x9
-	 25K7rKiT0KBWLYjOeTUmyMSb9Jhj7UcShwwwxnUzhnTDlP6NQdzh4RLQfNxd2I/5Z2
-	 LKrmYwPkMS2dQt7qSDcX9O9pvagX+SVvYk0k6dKs=
+	b=gMMX4RhCpKSjMrbTbBJcqOOXjSU/h8AUxVoB87pCsGBFONcSj+Pi0c9aifCkgFX7+
+	 Y5DK44IMsjxU0uBOqj3UgQPRotSu7qrN9j7ENhZ/oAqCvm75oVvozZuVgzS/dCXLGR
+	 vugxz/JDcPDrI6DIClgfRI10XgdBRT+4K5nfyJY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Stefan Metzmacher <metze@samba.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 58/77] smb: server: make use of rdma_destroy_qp()
+Subject: [PATCH 6.15 142/192] wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl()
 Date: Tue, 15 Jul 2025 15:13:57 +0200
-Message-ID: <20250715130754.055823553@linuxfoundation.org>
+Message-ID: <20250715130820.603289584@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,74 +62,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 0c2b53997e8f5e2ec9e0fbd17ac0436466b65488 ]
+[ Upstream commit 3dd6f67c669c860b93ff533f790f23ee1cb36f25 ]
 
-The qp is created by rdma_create_qp() as t->cm_id->qp
-and t->qp is just a shortcut.
+Since mt76_mcu_skb_send_msg() routine can't be executed in atomic context,
+move RCU section in mt7996_mcu_add_rate_ctrl() and execute
+mt76_mcu_skb_send_msg() in non-atomic context. This is a preliminary
+patch to fix a 'sleep while atomic' issue in mt7996_mac_sta_rc_work().
 
-rdma_destroy_qp() also calls ib_destroy_qp(cm_id->qp) internally,
-but it is protected by a mutex, clears the cm_id and also calls
-trace_cm_qp_destroy().
-
-This should make the tracing more useful as both
-rdma_create_qp() and rdma_destroy_qp() are traces and it makes
-the code look more sane as functions from the same layer are used
-for the specific qp object.
-
-trace-cmd stream -e rdma_cma:cm_qp_create -e rdma_cma:cm_qp_destroy
-shows this now while doing a mount and unmount from a client:
-
-  <...>-80   [002] 378.514182: cm_qp_create:  cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 pd.id=0 qp_type=RC send_wr=867 recv_wr=255 qp_num=1 rc=0
-  <...>-6283 [001] 381.686172: cm_qp_destroy: cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 qp_num=1
-
-Before we only saw the first line.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <stfrench@microsoft.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 0762bdd30279 ("wifi: mt76: mt7996: rework mt7996_mac_sta_rc_work to support MLO")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250605-mt7996-sleep-while-atomic-v1-4-d46d15f9203c@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/transport_rdma.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   |  6 +--
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  6 +--
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 50 +++++++++++++++----
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    | 10 ++--
+ 4 files changed, 45 insertions(+), 27 deletions(-)
 
-diff --git a/fs/ksmbd/transport_rdma.c b/fs/ksmbd/transport_rdma.c
-index 355673f2830be..91e663d5d5bc1 100644
---- a/fs/ksmbd/transport_rdma.c
-+++ b/fs/ksmbd/transport_rdma.c
-@@ -426,7 +426,8 @@ static void free_transport(struct smb_direct_transport *t)
- 	if (t->qp) {
- 		ib_drain_qp(t->qp);
- 		ib_mr_pool_destroy(t->qp, &t->qp->rdma_mrs);
--		ib_destroy_qp(t->qp);
-+		t->qp = NULL;
-+		rdma_destroy_qp(t->cm_id);
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 5cf2d6669ee68..20a201e336759 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -2321,7 +2321,6 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
+ 	struct ieee80211_bss_conf *link_conf;
+ 	struct ieee80211_link_sta *link_sta;
+ 	struct mt7996_sta_link *msta_link;
+-	struct mt7996_vif_link *link;
+ 	struct mt76_vif_link *mlink;
+ 	struct ieee80211_sta *sta;
+ 	struct ieee80211_vif *vif;
+@@ -2363,13 +2362,10 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
  
- 	ksmbd_debug(RDMA, "drain the reassembly queue\n");
-@@ -1934,8 +1935,8 @@ static int smb_direct_create_qpair(struct smb_direct_transport *t,
- 	return 0;
- err:
- 	if (t->qp) {
--		ib_destroy_qp(t->qp);
- 		t->qp = NULL;
-+		rdma_destroy_qp(t->cm_id);
- 	}
- 	if (t->recv_cq) {
- 		ib_destroy_cq(t->recv_cq);
+ 		spin_unlock_bh(&dev->mt76.sta_poll_lock);
+ 
+-		link = (struct mt7996_vif_link *)mlink;
+-
+ 		if (changed & (IEEE80211_RC_SUPP_RATES_CHANGED |
+ 			       IEEE80211_RC_NSS_CHANGED |
+ 			       IEEE80211_RC_BW_CHANGED))
+-			mt7996_mcu_add_rate_ctrl(dev, vif, link_conf,
+-						 link_sta, link, msta_link,
++			mt7996_mcu_add_rate_ctrl(dev, msta_link->sta, vif,
+ 						 link_id, true);
+ 
+ 		if (changed & IEEE80211_RC_SMPS_CHANGED)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index bb2eef6b934b5..5584bea9e2a3f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1112,10 +1112,8 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 			if (err)
+ 				return err;
+ 
+-			err = mt7996_mcu_add_rate_ctrl(dev, vif, link_conf,
+-						       link_sta, link,
+-						       msta_link, link_id,
+-						       false);
++			err = mt7996_mcu_add_rate_ctrl(dev, msta_link->sta, vif,
++						       link_id, false);
+ 			if (err)
+ 				return err;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 6c2b258ce4ff6..63dc6df20c3e4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2179,23 +2179,44 @@ mt7996_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7996_dev *dev,
+ 	memset(ra->rx_rcpi, INIT_RCPI, sizeof(ra->rx_rcpi));
+ }
+ 
+-int mt7996_mcu_add_rate_ctrl(struct mt7996_dev *dev,
+-			     struct ieee80211_vif *vif,
+-			     struct ieee80211_bss_conf *link_conf,
+-			     struct ieee80211_link_sta *link_sta,
+-			     struct mt7996_vif_link *link,
+-			     struct mt7996_sta_link *msta_link,
+-			     u8 link_id, bool changed)
++int mt7996_mcu_add_rate_ctrl(struct mt7996_dev *dev, struct mt7996_sta *msta,
++			     struct ieee80211_vif *vif, u8 link_id,
++			     bool changed)
+ {
+-	struct mt7996_sta *msta = msta_link->sta;
++	struct ieee80211_bss_conf *link_conf;
++	struct ieee80211_link_sta *link_sta;
++	struct mt7996_sta_link *msta_link;
++	struct mt7996_vif_link *link;
++	struct ieee80211_sta *sta;
+ 	struct sk_buff *skb;
+-	int ret;
++	int ret = -ENODEV;
++
++	rcu_read_lock();
++
++	link = mt7996_vif_link(dev, vif, link_id);
++	if (!link)
++		goto error_unlock;
++
++	msta_link = rcu_dereference(msta->link[link_id]);
++	if (!msta_link)
++		goto error_unlock;
++
++	sta = wcid_to_sta(&msta_link->wcid);
++	link_sta = rcu_dereference(sta->link[link_id]);
++	if (!link_sta)
++		goto error_unlock;
++
++	link_conf = rcu_dereference(vif->link_conf[link_id]);
++	if (!link_conf)
++		goto error_unlock;
+ 
+ 	skb = __mt76_connac_mcu_alloc_sta_req(&dev->mt76, &link->mt76,
+ 					      &msta_link->wcid,
+ 					      MT7996_STA_UPDATE_MAX_SIZE);
+-	if (IS_ERR(skb))
+-		return PTR_ERR(skb);
++	if (IS_ERR(skb)) {
++		ret = PTR_ERR(skb);
++		goto error_unlock;
++	}
+ 
+ 	/* firmware rc algorithm refers to sta_rec_he for HE control.
+ 	 * once dev->rc_work changes the settings driver should also
+@@ -2209,12 +2230,19 @@ int mt7996_mcu_add_rate_ctrl(struct mt7996_dev *dev,
+ 	 */
+ 	mt7996_mcu_sta_rate_ctrl_tlv(skb, dev, vif, link_conf, link_sta, link);
+ 
++	rcu_read_unlock();
++
+ 	ret = mt76_mcu_skb_send_msg(&dev->mt76, skb,
+ 				    MCU_WMWA_UNI_CMD(STA_REC_UPDATE), true);
+ 	if (ret)
+ 		return ret;
+ 
+ 	return mt7996_mcu_add_rate_ctrl_fixed(dev, msta, vif, link_id);
++
++error_unlock:
++	rcu_read_unlock();
++
++	return ret;
+ }
+ 
+ static int
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 16a4a465b9b27..8220a7310f285 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -604,13 +604,9 @@ int mt7996_mcu_beacon_inband_discov(struct mt7996_dev *dev,
+ int mt7996_mcu_add_obss_spr(struct mt7996_phy *phy,
+ 			    struct mt7996_vif_link *link,
+ 			    struct ieee80211_he_obss_pd *he_obss_pd);
+-int mt7996_mcu_add_rate_ctrl(struct mt7996_dev *dev,
+-			     struct ieee80211_vif *vif,
+-			     struct ieee80211_bss_conf *link_conf,
+-			     struct ieee80211_link_sta *link_sta,
+-			     struct mt7996_vif_link *link,
+-			     struct mt7996_sta_link *msta_link,
+-			     u8 link_id, bool changed);
++int mt7996_mcu_add_rate_ctrl(struct mt7996_dev *dev, struct mt7996_sta *msta,
++			     struct ieee80211_vif *vif, u8 link_id,
++			     bool changed);
+ int mt7996_set_channel(struct mt76_phy *mphy);
+ int mt7996_mcu_set_chan_info(struct mt7996_phy *phy, u16 tag);
+ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif,
 -- 
 2.39.5
 
