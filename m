@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F310B05DA3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B73B05E33
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA303581175
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 822F77B661D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199992E62CB;
-	Tue, 15 Jul 2025 13:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3442D29C2;
+	Tue, 15 Jul 2025 13:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/P2gC9F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXgrE94q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB24192D8A;
-	Tue, 15 Jul 2025 13:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB28F2E6D2B;
+	Tue, 15 Jul 2025 13:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586557; cv=none; b=Im7R/KAQtEuGg4ItyZbMWx4yMCldE7fzj7Jn6uYUNrOwJsgouohjmmempdYAU2R5WkPQ6qPgEEetyWIerfcgoubrXgk2B6zKG/GuCePd4fIkwZ0G3VslAnM1hOsFN5EbbwS8S4OXTt0JRNwVD/wQa+A1hP4rbV8GqGb1EVY7+dQ=
+	t=1752587023; cv=none; b=QRiW7mtH/hiLbddL2LROflhRnboFRHT3QBI7piEFNy+hp2va+k7IJIzXU+XVOQPoCr1t+vFgtKuxnHJy1LRtKhMcVa+1jQtkxxDHT/ff7HbKmjfmuHlguR90BtTwWptBF5vvQXzIukjYtg7HA5STiGtu5q4koLiLpRUr64DpqnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586557; c=relaxed/simple;
-	bh=fDHcaNgX1d0t1dEbJU6XhP3XZWT14GfGQAgTQrPgvDU=;
+	s=arc-20240116; t=1752587023; c=relaxed/simple;
+	bh=v+ly67Eq2NDrKwgpcwKUMnwt2hq2EjjUgnrBVsTxdss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUdTmBrCOcwJIt+eZ7pHNiIuHihhrZ3QKUohKqFFZn0J0ykE4NKgkMFRubJ5DierZ0n497pg/8JifO7q+p9jq2BFkYRhHDhm+ibMgxw4zd4INyvI+hEyrJnlvdfyBrQGGvncPhTAZZvTRfzpkTC5P9Xuh2Y/sSkiAYrKOgDTEk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/P2gC9F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC71C4CEE3;
-	Tue, 15 Jul 2025 13:35:57 +0000 (UTC)
+	 MIME-Version; b=LHv6KvD2vr6PZXROVnC94067oN+PF3DItHMbFzKwJK+2ONz6K85aLFUXqXcnMjwTxwvDm37NRpNmPU653ywotH241QxDEPEJQKpqR05oQmyT3JZRB446x8PnKf7S1DRb4o9k6sLqQ+IjPaly/fgwGrBVq66zguQNnp8WdBWRZpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXgrE94q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5A9C4CEE3;
+	Tue, 15 Jul 2025 13:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586557;
-	bh=fDHcaNgX1d0t1dEbJU6XhP3XZWT14GfGQAgTQrPgvDU=;
+	s=korg; t=1752587023;
+	bh=v+ly67Eq2NDrKwgpcwKUMnwt2hq2EjjUgnrBVsTxdss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/P2gC9Fsn3nI5cTnfpUc4+7vGt22qxs02MJnXRxP/i116s1CNXud1XCfJDZZhPfI
-	 1sB0bqtW8L5keBG9AtT5WfUaTyO3cM5bRvjIIExYRVn4CHowB3MCvB0ktRIvsUdT/f
-	 zZj6A6iJQ3Q/S7wAIqxJgA/1z5hz2YdQE8j4t4gU=
+	b=TXgrE94qnDU7DVvZWkL52MfpxJG2utTPyKWWOc4VimP3N1z5P4YbVGYWpUSi3kiDt
+	 GY073Gc/EtQrIS7yQI+2uC7b9eUSoTJHm58NMoARQlhIU0H3SCVGpuo5WZcDVI8QFn
+	 Ridw/Vjj5yYbidbLG3Wmj+VFpA9hDEY8tClmR7as=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Ben Skeggs <bskeggs@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 111/148] atm: clip: Fix potential null-ptr-deref in to_atmarpd().
+Subject: [PATCH 6.15 138/192] drm/nouveau/gsp: fix potential leak of memory used during acpi init
 Date: Tue, 15 Jul 2025 15:13:53 +0200
-Message-ID: <20250715130804.755214284@linuxfoundation.org>
+Message-ID: <20250715130820.441589958@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,136 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Ben Skeggs <bskeggs@nvidia.com>
 
-[ Upstream commit 706cc36477139c1616a9b2b96610a8bb520b7119 ]
+[ Upstream commit d133036a0b23d3ef781d067ccdea6bbfb381e0cf ]
 
-atmarpd is protected by RTNL since commit f3a0592b37b8 ("[ATM]: clip
-causes unregister hang").
+If any of the ACPI calls fail, memory allocated for the input buffer
+would be leaked.  Fix failure paths to free allocated memory.
 
-However, it is not enough because to_atmarpd() is called without RTNL,
-especially clip_neigh_solicit() / neigh_ops->solicit() is unsleepable.
+Also add checks to ensure the allocations succeeded in the first place.
 
-Also, there is no RTNL dependency around atmarpd.
-
-Let's use a private mutex and RCU to protect access to atmarpd in
-to_atmarpd().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250704062416.1613927-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
+Signed-off-by: Ben Skeggs <bskeggs@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20250617040036.2932-1-bskeggs@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/clip.c | 44 +++++++++++++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 15 deletions(-)
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/r535.c    | 20 +++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 294cb9efe3d38..d5363ae5296ad 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -45,7 +45,8 @@
- #include <net/atmclip.h>
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+index 53a4af0010392..d220c68bfe914 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+@@ -1047,7 +1047,6 @@ r535_gsp_acpi_caps(acpi_handle handle, CAPS_METHOD_DATA *caps)
+ 	union acpi_object argv4 = {
+ 		.buffer.type    = ACPI_TYPE_BUFFER,
+ 		.buffer.length  = 4,
+-		.buffer.pointer = kmalloc(argv4.buffer.length, GFP_KERNEL),
+ 	}, *obj;
  
- static struct net_device *clip_devs;
--static struct atm_vcc *atmarpd;
-+static struct atm_vcc __rcu *atmarpd;
-+static DEFINE_MUTEX(atmarpd_lock);
- static struct timer_list idle_timer;
- static const struct neigh_ops clip_neigh_ops;
+ 	caps->status = 0xffff;
+@@ -1055,17 +1054,22 @@ r535_gsp_acpi_caps(acpi_handle handle, CAPS_METHOD_DATA *caps)
+ 	if (!acpi_check_dsm(handle, &NVOP_DSM_GUID, NVOP_DSM_REV, BIT_ULL(0x1a)))
+ 		return;
  
-@@ -53,24 +54,35 @@ static int to_atmarpd(enum atmarp_ctrl_type type, int itf, __be32 ip)
- {
- 	struct sock *sk;
- 	struct atmarp_ctrl *ctrl;
-+	struct atm_vcc *vcc;
- 	struct sk_buff *skb;
-+	int err = 0;
- 
- 	pr_debug("(%d)\n", type);
--	if (!atmarpd)
--		return -EUNATCH;
++	argv4.buffer.pointer = kmalloc(argv4.buffer.length, GFP_KERNEL);
++	if (!argv4.buffer.pointer)
++		return;
 +
-+	rcu_read_lock();
-+	vcc = rcu_dereference(atmarpd);
-+	if (!vcc) {
-+		err = -EUNATCH;
-+		goto unlock;
-+	}
- 	skb = alloc_skb(sizeof(struct atmarp_ctrl), GFP_ATOMIC);
--	if (!skb)
--		return -ENOMEM;
-+	if (!skb) {
-+		err = -ENOMEM;
-+		goto unlock;
-+	}
- 	ctrl = skb_put(skb, sizeof(struct atmarp_ctrl));
- 	ctrl->type = type;
- 	ctrl->itf_num = itf;
- 	ctrl->ip = ip;
--	atm_force_charge(atmarpd, skb->truesize);
-+	atm_force_charge(vcc, skb->truesize);
+ 	obj = acpi_evaluate_dsm(handle, &NVOP_DSM_GUID, NVOP_DSM_REV, 0x1a, &argv4);
+ 	if (!obj)
+-		return;
++		goto done;
  
--	sk = sk_atm(atmarpd);
-+	sk = sk_atm(vcc);
- 	skb_queue_tail(&sk->sk_receive_queue, skb);
- 	sk->sk_data_ready(sk);
--	return 0;
-+unlock:
-+	rcu_read_unlock();
-+	return err;
- }
+ 	if (WARN_ON(obj->type != ACPI_TYPE_BUFFER) ||
+ 	    WARN_ON(obj->buffer.length != 4))
+-		return;
++		goto done;
  
- static void link_vcc(struct clip_vcc *clip_vcc, struct atmarp_entry *entry)
-@@ -608,10 +620,12 @@ static void atmarpd_close(struct atm_vcc *vcc)
- {
- 	pr_debug("\n");
+ 	caps->status = 0;
+ 	caps->optimusCaps = *(u32 *)obj->buffer.pointer;
  
--	rtnl_lock();
--	atmarpd = NULL;
-+	mutex_lock(&atmarpd_lock);
-+	RCU_INIT_POINTER(atmarpd, NULL);
-+	mutex_unlock(&atmarpd_lock);
++done:
+ 	ACPI_FREE(obj);
+ 
+ 	kfree(argv4.buffer.pointer);
+@@ -1082,24 +1086,28 @@ r535_gsp_acpi_jt(acpi_handle handle, JT_METHOD_DATA *jt)
+ 	union acpi_object argv4 = {
+ 		.buffer.type    = ACPI_TYPE_BUFFER,
+ 		.buffer.length  = sizeof(caps),
+-		.buffer.pointer = kmalloc(argv4.buffer.length, GFP_KERNEL),
+ 	}, *obj;
+ 
+ 	jt->status = 0xffff;
+ 
++	argv4.buffer.pointer = kmalloc(argv4.buffer.length, GFP_KERNEL);
++	if (!argv4.buffer.pointer)
++		return;
 +
-+	synchronize_rcu();
- 	skb_queue_purge(&sk_atm(vcc)->sk_receive_queue);
--	rtnl_unlock();
+ 	obj = acpi_evaluate_dsm(handle, &JT_DSM_GUID, JT_DSM_REV, 0x1, &argv4);
+ 	if (!obj)
+-		return;
++		goto done;
  
- 	pr_debug("(done)\n");
- 	module_put(THIS_MODULE);
-@@ -632,15 +646,15 @@ static struct atm_dev atmarpd_dev = {
+ 	if (WARN_ON(obj->type != ACPI_TYPE_BUFFER) ||
+ 	    WARN_ON(obj->buffer.length != 4))
+-		return;
++		goto done;
  
- static int atm_init_atmarp(struct atm_vcc *vcc)
- {
--	rtnl_lock();
-+	mutex_lock(&atmarpd_lock);
- 	if (atmarpd) {
--		rtnl_unlock();
-+		mutex_unlock(&atmarpd_lock);
- 		return -EADDRINUSE;
- 	}
+ 	jt->status = 0;
+ 	jt->jtCaps = *(u32 *)obj->buffer.pointer;
+ 	jt->jtRevId = (jt->jtCaps & 0xfff00000) >> 20;
+ 	jt->bSBIOSCaps = 0;
  
- 	mod_timer(&idle_timer, jiffies + CLIP_CHECK_INTERVAL * HZ);
++done:
+ 	ACPI_FREE(obj);
  
--	atmarpd = vcc;
-+	rcu_assign_pointer(atmarpd, vcc);
- 	set_bit(ATM_VF_META, &vcc->flags);
- 	set_bit(ATM_VF_READY, &vcc->flags);
- 	    /* allow replies and avoid getting closed if signaling dies */
-@@ -649,7 +663,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
- 	vcc->push = NULL;
- 	vcc->pop = NULL; /* crash */
- 	vcc->push_oam = NULL; /* crash */
--	rtnl_unlock();
-+	mutex_unlock(&atmarpd_lock);
- 	return 0;
- }
- 
+ 	kfree(argv4.buffer.pointer);
 -- 
 2.39.5
 
