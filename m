@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F071B05CF2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:38:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C4CB05D78
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B257316D561
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4262D4A0BC0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0470E2E7172;
-	Tue, 15 Jul 2025 13:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488BA2EAB93;
+	Tue, 15 Jul 2025 13:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueQPCjP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMLQ0VGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B738F70831;
-	Tue, 15 Jul 2025 13:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FE12E2657;
+	Tue, 15 Jul 2025 13:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586247; cv=none; b=uZ7E+dSb2N70Ycq6sSgxk8lrCgIg2wshy24AVCJd7S7pjpYl/LdzeT4XU25yFZXuM+HGtZyOtGmpieeY77PCPmTQ4HiMoNWlxwU5SIwALdb4tB+ofX3AjGCuoNqKrHVDKUCYMztJ0PM1u4GfWrd9BiC6tAVIfOmYJvecXHs08vs=
+	t=1752586497; cv=none; b=Om+UbU/VLEcZ3N+O4aNH7+4qG1xpKyetqn1UHj8Q+fpAXNXd/msI21Xa+RuM9v9CFGN0s922TWwEuu4RMq4ZycShpYvBiNok183WVsIrvfNH14SUhK05cwb/PwGm1qOSuTvXWiJAWYPtm/M0pqDys5qJqjI2zOLRUr0pl3vvp1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586247; c=relaxed/simple;
-	bh=0QgCp1kb0GKCM7ptgm4dZIDPr0bwSsa3dLjE1DWrmkE=;
+	s=arc-20240116; t=1752586497; c=relaxed/simple;
+	bh=ePAyti1bMynPuZxhvPhx/xEhEmLnx2KHJgXMdY4BHho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJKI3SeorbGRFHpYQ6EGuLMBwBJ12sTC5X9qMQ/vmeF7eVM/x+qtSPRB1g3VJzJFjUHC4i8KMg7rGjuXAW3t6bVuebw2u+q8n6I2b6V0JieMxooTdImeX33vC8h/OSKGqCU2OtpwaEuFtcYiddADoCGC9DR9shwwaWZVZC3+RjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueQPCjP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6B2C4CEE3;
-	Tue, 15 Jul 2025 13:30:47 +0000 (UTC)
+	 MIME-Version; b=RpC34zzqBsg2EruhFCnuVxeXB9buo7dInSnQsrPfC4Wal+n8pI+F0tEmBc/PxIGBJNLeXrguSBAkndzMsDSz0O+QozwiRl9Z68rIzz1vSJRX9xyBmwAngk9Nm+lEzdZRU+UMxI5CWNBJXAi4EJ12G7W1f9AvWPjmwapNPLScliw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMLQ0VGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D34AC4CEE3;
+	Tue, 15 Jul 2025 13:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586247;
-	bh=0QgCp1kb0GKCM7ptgm4dZIDPr0bwSsa3dLjE1DWrmkE=;
+	s=korg; t=1752586496;
+	bh=ePAyti1bMynPuZxhvPhx/xEhEmLnx2KHJgXMdY4BHho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ueQPCjP3DinFoXa60Zm63GRvj0We8EtnshhKta9yDFvhMAyfaleANIOvvlBapsGO/
-	 PretQgIK7yvzgpCH5XCU0tUcP8EUuw0q3ZFICLSdI2KS3Zj2icZesMW3Pm4kqk2BPy
-	 HjOg2fJV4I3yBiYEl6zeWLLFD8KXfFiQyir+oVwo=
+	b=WMLQ0VGzWDerdk/cAwHsxNm5srQ/dHE8joLxMEzuNHVR7lPaHh+hRHjWwvNbSdY+Y
+	 U5U3D/kxuQRAuVVG2I8Swj68CpW0seQ6yh1ridZJqSLkvw0LAgPY0mM2Ss/teuIZuM
+	 p2O3CCMVc3eQrSjUgVJkV/9AL11W5S1G6RgeFsGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.15 30/77] pinctrl: qcom: msm: mark certain pins as invalid for interrupts
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 087/148] RDMA/mlx5: Fix CC counters query for MPV
 Date: Tue, 15 Jul 2025 15:13:29 +0200
-Message-ID: <20250715130752.918483767@linuxfoundation.org>
+Message-ID: <20250715130803.800482837@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-commit 93712205ce2f1fb047739494c0399a26ea4f0890 upstream.
+[ Upstream commit acd245b1e33fc4b9d0f2e3372021d632f7ee0652 ]
 
-On some platforms, the UFS-reset pin has no interrupt logic in TLMM but
-is nevertheless registered as a GPIO in the kernel. This enables the
-user-space to trigger a BUG() in the pinctrl-msm driver by running, for
-example: `gpiomon -c 0 113` on RB2.
+In case, CC counters are querying for the second port use the correct
+core device for the query instead of always using the master core device.
 
-The exact culprit is requesting pins whose intr_detection_width setting
-is not 1 or 2 for interrupts. This hits a BUG() in
-msm_gpio_irq_set_type(). Potentially crashing the kernel due to an
-invalid request from user-space is not optimal, so let's go through the
-pins and mark those that would fail the check as invalid for the irq chip
-as we should not even register them as available irqs.
-
-This function can be extended if we determine that there are more
-corner-cases like this.
-
-Fixes: f365be092572 ("pinctrl: Add Qualcomm TLMM driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/20250612091448.41546-1-brgl@bgdev.pl
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aac4492ef23a ("IB/mlx5: Update counter implementation for dual port RoCE")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/9cace74dcf106116118bebfa9146d40d4166c6b0.1750064969.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-msm.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/infiniband/hw/mlx5/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -949,6 +949,25 @@ static bool msm_gpio_needs_dual_edge_par
- 	       test_bit(d->hwirq, pctrl->skip_wake_irqs);
- }
- 
-+static void msm_gpio_irq_init_valid_mask(struct gpio_chip *gc,
-+					 unsigned long *valid_mask,
-+					 unsigned int ngpios)
-+{
-+	struct msm_pinctrl *pctrl = gpiochip_get_data(gc);
-+	const struct msm_pingroup *g;
-+	int i;
-+
-+	bitmap_fill(valid_mask, ngpios);
-+
-+	for (i = 0; i < ngpios; i++) {
-+		g = &pctrl->soc->groups[i];
-+
-+		if (g->intr_detection_width != 1 &&
-+		    g->intr_detection_width != 2)
-+			clear_bit(i, valid_mask);
-+	}
-+}
-+
- static int msm_gpio_irq_set_type(struct irq_data *d, unsigned int type)
- {
- 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
-@@ -1305,6 +1324,7 @@ static int msm_gpio_init(struct msm_pinc
- 	girq->default_type = IRQ_TYPE_NONE;
- 	girq->handler = handle_bad_irq;
- 	girq->parents[0] = pctrl->irq;
-+	girq->init_valid_mask = msm_gpio_irq_init_valid_mask;
- 
- 	ret = gpiochip_add_data(&pctrl->chip, pctrl);
- 	if (ret) {
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index d30c37688bdac..1b880b555412f 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -5615,7 +5615,7 @@ static int mlx5_ib_get_hw_stats(struct ib_device *ibdev,
+ 			 */
+ 			goto done;
+ 		}
+-		ret = mlx5_lag_query_cong_counters(dev->mdev,
++		ret = mlx5_lag_query_cong_counters(mdev,
+ 						   stats->value +
+ 						   cnts->num_q_counters,
+ 						   cnts->num_cong_counters,
+-- 
+2.39.5
+
 
 
 
