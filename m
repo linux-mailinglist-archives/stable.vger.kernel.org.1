@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3233B05E84
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A2FB05C67
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6620F1C4365F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 501E33B5DAB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E302E7F05;
-	Tue, 15 Jul 2025 13:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359172E7BBD;
+	Tue, 15 Jul 2025 13:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0pRl57G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SRUNFcY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AB32566;
-	Tue, 15 Jul 2025 13:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E8D2E7BB8;
+	Tue, 15 Jul 2025 13:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586788; cv=none; b=A2DT7iu9sdzNVE+1FW80p1WKjJC6+zMef9cCApVAXkIOqnHHChgvnZNWtSZ3Oap0KlBnYf6SZxn5rgLU/OVxmQRPm9SaDbwuNTF2TjKZhtB0USm3TxJX9UDkMrmhlPgvI1So6ZTw/q5x6KC2mHPnzNPU6Q9YxdfUUd2RiyWlC+8=
+	t=1752585861; cv=none; b=nzAvWblxQzCuAyMsA3iS83ZQiKf0qjpoCzKlt3Thyko4stC7SzTw9JyNT6V3qg4cL7e2hzrFfZM9JuuVObgHbiqY8279sLJxM5HPo0EaN600iV/E7VI2HS/7TLsuUKAO0w9KBClFLBwpdRU4jxCb1MZwkGsnZYZKrdTSGzTRtlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586788; c=relaxed/simple;
-	bh=GHR2e8tIutqTmGox+H86iakggXIlwepgRiUQt8H6WXc=;
+	s=arc-20240116; t=1752585861; c=relaxed/simple;
+	bh=kdZNjm9O3eCpEBKHrVvwhLTr1xodz5z+XCUL9Cq7PTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrID7l4khEip1++ipI1WrpUtLp0cZk77bSzYPuxmgYZquo8l/rKmyajipMwBAFUt4LF/otMdp37IDAXemXe5EZLuYiEGfJMX8c6HoRUF2dr+xkaOxL5ataKb3c236mP4mU100D1MXOfn/3BJd2o4hu/mSefwKQ0r2eJRiFWp5LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0pRl57G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB59C4CEE3;
-	Tue, 15 Jul 2025 13:39:47 +0000 (UTC)
+	 MIME-Version; b=nbFesmn/RixdFEI4lx6Lhbz4lPmMqFvJZmkuWjSjris7CKg7nfWblG5eeSB9hhhJO6ZobW2f4G3u/4kmt3HzndNvJjnAgzYg+qg+4thlT8r3IQSSOwOxvn+AG/QjD0wIkVXe2hobDnJ5cmU7cbh6S2pqoIKOKZVL14mE3uAUfjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SRUNFcY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D43C4CEF6;
+	Tue, 15 Jul 2025 13:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586788;
-	bh=GHR2e8tIutqTmGox+H86iakggXIlwepgRiUQt8H6WXc=;
+	s=korg; t=1752585859;
+	bh=kdZNjm9O3eCpEBKHrVvwhLTr1xodz5z+XCUL9Cq7PTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0pRl57G05+yIoPsXPXDHjh6Khizieq07KqiCqM1YDQErohYd0h6Ve0/waAoiKTfX
-	 3seJw8EIJb77HXiAUfQrO4gHYqdRB7rCHswxs9sHkbdyPk4bs5b9ccDPOwpC0QXflo
-	 +QX98LvphDJpXLj0zH+QM5V5XH1G4HoIEzjejXK4=
+	b=2SRUNFcYJrA/VjvU4FEwAO4h80+JL2uJ4/EL0rh6nxEmIcg6afvjAPvv2+AquaZy2
+	 baWMULaBcVEDYPsgh2WIBhURx2PEkm5Dy4doNR7+66mPeOFVQ8KVXb/ZrpOhuJ+u7z
+	 62E/V7gxbxvI7yAYso+uHgDBP/ZGFtSnC+KXyd+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.15 048/192] crypto: s390/sha - Fix uninitialized variable in SHA-1 and SHA-2
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 007/109] Bluetooth: hci_sync: Fix not disabling advertising instance
 Date: Tue, 15 Jul 2025 15:12:23 +0200
-Message-ID: <20250715130816.776441012@linuxfoundation.org>
+Message-ID: <20250715130759.168929441@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 68279380266a5fa70e664de754503338e2ec3f43 upstream.
+[ Upstream commit ef9675b0ef030d135413e8638989f3a7d1f3217a ]
 
-Commit 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
-added the field s390_sha_ctx::first_message_part and made it be used by
-s390_sha_update() (now s390_sha_update_blocks()).  At the time,
-s390_sha_update() was used by all the s390 SHA-1, SHA-2, and SHA-3
-algorithms.  However, only the initialization functions for SHA-3 were
-updated, leaving SHA-1 and SHA-2 using first_message_part uninitialized.
+As the code comments on hci_setup_ext_adv_instance_sync suggests the
+advertising instance needs to be disabled in order to update its
+parameters, but it was wrongly checking that !adv->pending.
 
-This could cause e.g. the function code CPACF_KIMD_SHA_512 |
-CPACF_KIMD_NIP to be used instead of just CPACF_KIMD_SHA_512.  This
-apparently was harmless, as the SHA-1 and SHA-2 function codes ignore
-CPACF_KIMD_NIP; it is recognized only by the SHA-3 function codes
-(https://lore.kernel.org/r/73477fe9-a1dc-4e38-98a6-eba9921e8afa@linux.ibm.com/).
-Therefore, this bug was found only when first_message_part was later
-converted to a boolean and UBSAN detected its uninitialized use.
-Regardless, let's fix this by just initializing to zero.
-
-Note: in 6.16, we need to patch SHA-1, SHA-384, and SHA-512.  In 6.15
-and earlier, we'll also need to patch SHA-224 and SHA-256, as they
-hadn't yet been librarified (which incidentally fixed this bug).
-
-Fixes: 88c02b3f79a6 ("s390/sha3: Support sha3 performance enhancements")
-Cc: stable@vger.kernel.org
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Closes: https://lore.kernel.org/r/12740696-595c-4604-873e-aefe8b405fbf@linux.ibm.com
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250703172316.7914-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cba6b758711c ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 2")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/crypto/sha1_s390.c   |    2 ++
- arch/s390/crypto/sha256_s390.c |    3 +++
- arch/s390/crypto/sha512_s390.c |    3 +++
- 3 files changed, 8 insertions(+)
+ net/bluetooth/hci_sync.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/crypto/sha1_s390.c
-+++ b/arch/s390/crypto/sha1_s390.c
-@@ -38,6 +38,7 @@ static int s390_sha1_init(struct shash_d
- 	sctx->state[4] = SHA1_H4;
- 	sctx->count = 0;
- 	sctx->func = CPACF_KIMD_SHA_1;
-+	sctx->first_message_part = 0;
- 
- 	return 0;
- }
-@@ -62,6 +63,7 @@ static int s390_sha1_import(struct shash
- 	memcpy(sctx->state, ictx->state, sizeof(ictx->state));
- 	memcpy(sctx->buf, ictx->buffer, sizeof(ictx->buffer));
- 	sctx->func = CPACF_KIMD_SHA_1;
-+	sctx->first_message_part = 0;
- 	return 0;
- }
- 
---- a/arch/s390/crypto/sha256_s390.c
-+++ b/arch/s390/crypto/sha256_s390.c
-@@ -31,6 +31,7 @@ static int s390_sha256_init(struct shash
- 	sctx->state[7] = SHA256_H7;
- 	sctx->count = 0;
- 	sctx->func = CPACF_KIMD_SHA_256;
-+	sctx->first_message_part = 0;
- 
- 	return 0;
- }
-@@ -55,6 +56,7 @@ static int sha256_import(struct shash_de
- 	memcpy(sctx->state, ictx->state, sizeof(ictx->state));
- 	memcpy(sctx->buf, ictx->buf, sizeof(ictx->buf));
- 	sctx->func = CPACF_KIMD_SHA_256;
-+	sctx->first_message_part = 0;
- 	return 0;
- }
- 
-@@ -90,6 +92,7 @@ static int s390_sha224_init(struct shash
- 	sctx->state[7] = SHA224_H7;
- 	sctx->count = 0;
- 	sctx->func = CPACF_KIMD_SHA_256;
-+	sctx->first_message_part = 0;
- 
- 	return 0;
- }
---- a/arch/s390/crypto/sha512_s390.c
-+++ b/arch/s390/crypto/sha512_s390.c
-@@ -32,6 +32,7 @@ static int sha512_init(struct shash_desc
- 	*(__u64 *)&ctx->state[14] = SHA512_H7;
- 	ctx->count = 0;
- 	ctx->func = CPACF_KIMD_SHA_512;
-+	ctx->first_message_part = 0;
- 
- 	return 0;
- }
-@@ -60,6 +61,7 @@ static int sha512_import(struct shash_de
- 	memcpy(sctx->state, ictx->state, sizeof(ictx->state));
- 	memcpy(sctx->buf, ictx->buf, sizeof(ictx->buf));
- 	sctx->func = CPACF_KIMD_SHA_512;
-+	sctx->first_message_part = 0;
- 	return 0;
- }
- 
-@@ -97,6 +99,7 @@ static int sha384_init(struct shash_desc
- 	*(__u64 *)&ctx->state[14] = SHA384_H7;
- 	ctx->count = 0;
- 	ctx->func = CPACF_KIMD_SHA_512;
-+	ctx->first_message_part = 0;
- 
- 	return 0;
- }
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index d602e9d8eff45..71736537cc6e3 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -1247,7 +1247,7 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
+ 	 * Command Disallowed error, so we must first disable the
+ 	 * instance if it is active.
+ 	 */
+-	if (adv && !adv->pending) {
++	if (adv) {
+ 		err = hci_disable_ext_adv_instance_sync(hdev, instance);
+ 		if (err)
+ 			return err;
+-- 
+2.39.5
+
 
 
 
