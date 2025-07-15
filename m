@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEB2B05B88
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F56B05DF5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24FE1744FF2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A54227B5F34
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944B02472AE;
-	Tue, 15 Jul 2025 13:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6193E2E49AE;
+	Tue, 15 Jul 2025 13:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7yBSPXr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0me23V74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5326519D09C;
-	Tue, 15 Jul 2025 13:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCC92E2EEF;
+	Tue, 15 Jul 2025 13:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585596; cv=none; b=kbAicDNWkwky6/ajMOhNKmL3goyvDfq1ruE9kZ4XB6lIjptjhsGd+/WwDhNXEkutoFUL2I57GL64H+iToa1hcBJgLGT2jFVCvXgwfrq2Fq0QW2nGjdsYRpjPSB6/xO1GM1F5coB7iH7rST3tNgBuEDD5ceT3tTaqCjTXRxLy7Y4=
+	t=1752586852; cv=none; b=bpe8ufzAzr0NXWajrEil9oTbNwoFD4YW1e8pSuMjGHYEMEWy4oD8FreMIx7RutIiE0As0Fl7FDO9aoPCaBGy4i+5VI5YQI1tr7W2VDqiI5J7ndFy/pin5QVufb5cxtCpPNG/zUHHH1hKxwIhw/I3+oIP9yaQFH7AqKxXojkza1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585596; c=relaxed/simple;
-	bh=gYASytF/SowT5hfTjtOlhmofQnD98sP4Nv3iBZMQR8s=;
+	s=arc-20240116; t=1752586852; c=relaxed/simple;
+	bh=W27qVyyEBtHONF/cg5+PxUMtPXe0KZnKu3nhinSAeiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTecKTNzwkYFVwb3DUUou2NmQ4IfNPo5DE+48wBTDRh9o8nb6JHBJ9YxbTTRDaNv6mBc5X/R/aXnZGGxCSiocvoRaZ33cm8cT7638dyqAaQ3T0V1EY+jxKCdvR3Mk2itb87a9JXWw2VCTwSd4gzAJBMzHEWtQjAGd3ve0ZMhGUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7yBSPXr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC234C4CEF1;
-	Tue, 15 Jul 2025 13:19:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qsjur0IdYgppPq1YzCzgOCZhInlo3vH+OVs1R5gYORtLGcrUSwh86Jg1jhM3eMgFbZ9AU+Tsxlvt5lLvz071xZ/AmCec6FTB8GPWAXkn3jamBp2G7fgu0AD6CIAg7LU5pqUdnoFigLGSLfzqI4uIZrpPVwWfu6ZfTSUU4ucf1m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0me23V74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410E6C4CEE3;
+	Tue, 15 Jul 2025 13:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585596;
-	bh=gYASytF/SowT5hfTjtOlhmofQnD98sP4Nv3iBZMQR8s=;
+	s=korg; t=1752586851;
+	bh=W27qVyyEBtHONF/cg5+PxUMtPXe0KZnKu3nhinSAeiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B7yBSPXr7GK+EjBOcnsf5YkTsLjvscvQppAF5IfaZTnkDjZJk75JCMYbeEXWV3sJq
-	 xIRZIg9Gld9a+ljH90AQJ2A7b+LO5drI5LapKi/qcKJRae2hRQ13QvSlsqFfIGjK+P
-	 AchpgXaL5JlFfMIeYnKR55KDhZn+unA+RtXBnID4=
+	b=0me23V74CpdzSH7ClzzMsGPYtKvHbnovcksrsglx9FoY8pHLHk+Xw89NUI1DgIRs4
+	 Cm4VBhbbqfAW+D/K475xNJZ7BmFtOX5x2bIctouegbP1qMeE2D1HYUhYD4EHSd/rja
+	 hphNrwCLhndqiNimrDx/KL19EeHnCstj60/yDCG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 100/163] ksmbd: fix a mount write count leak in ksmbd_vfs_kern_path_locked()
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.15 073/192] pwm: Fix invalid state detection
 Date: Tue, 15 Jul 2025 15:12:48 +0200
-Message-ID: <20250715130812.873522720@linuxfoundation.org>
+Message-ID: <20250715130817.863024242@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit 277627b431a0a6401635c416a21b2a0f77a77347 upstream.
+commit 9ee124caae1b0defd0e02c65686f539845a3ac9b upstream.
 
-If the call of ksmbd_vfs_lock_parent() fails, we drop the parent_path
-references and return an error.  We need to drop the write access we
-just got on parent_path->mnt before we drop the mount reference - callers
-assume that ksmbd_vfs_kern_path_locked() returns with mount write
-access grabbed if and only if it has returned 0.
+Commit 9dd42d019e63 ("pwm: Allow pwm state transitions from an invalid
+state") intended to allow some state transitions that were not allowed
+before. The idea is sane and back then I also got the code comment
+right, but the check for enabled is bogus. This resulted in state
+transitions for enabled states to be allowed to have invalid duty/period
+settings and thus it can happen that low-level drivers get requests for
+invalid states🙄.
 
-Fixes: 864fb5d37163 ("ksmbd: fix possible deadlock in smb2_open")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Invert the check to allow state transitions for disabled states only.
+
+Fixes: 9dd42d019e63 ("pwm: Allow pwm state transitions from an invalid state")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250704172416.626433-2-u.kleine-koenig@baylibre.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/pwm/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1298,6 +1298,7 @@ out1:
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -549,7 +549,7 @@ static bool pwm_state_valid(const struct
+ 	 * and supposed to be ignored. So also ignore any strange values and
+ 	 * consider the state ok.
+ 	 */
+-	if (state->enabled)
++	if (!state->enabled)
+ 		return true;
  
- 		err = ksmbd_vfs_lock_parent(parent_path->dentry, path->dentry);
- 		if (err) {
-+			mnt_drop_write(parent_path->mnt);
- 			path_put(path);
- 			path_put(parent_path);
- 		}
+ 	if (!state->period)
 
 
 
