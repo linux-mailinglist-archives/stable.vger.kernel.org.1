@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC38B05DEF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C12B05E75
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AB7C4A3DCE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 494B917CD4B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95F12E6136;
-	Tue, 15 Jul 2025 13:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065502EAB93;
+	Tue, 15 Jul 2025 13:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff0KAzcj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeI/zfla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7828F2D8790;
-	Tue, 15 Jul 2025 13:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A6E2E6100;
+	Tue, 15 Jul 2025 13:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586534; cv=none; b=mcoZH6Xu1VhEZnMhcb0O5rYxx15CcY2VEW5pTygukf281Zzb+9N7bUwtap0hy2V9PY/NL5l0E+RUCJMRDtojiM59gAFuceQCnu2g6cZKF5nkXbcU9j0YuFD/G1iBo7zd2kybE5MhrBFLeRs/BalXQE8VURrZ5SW9d8RMH/iiCu8=
+	t=1752586917; cv=none; b=EUWWEFFG45xVa8bxuhlfBHRwnoH2bM9l7v8+0CWcPLwDves1OWxJD1ZF076TzcOxQSiWj9EKS1n/YY4hBAN2y3/od8XiS6PDUM5AnhZ4L1bRawPNoxK14o6X1F6AqXzbT5gpAypR6XXGrgPnB29aXQ7Slf31aco419/LSppW2Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586534; c=relaxed/simple;
-	bh=zDFXphxbnPxHCVK/Urke7dMFxqdtdgBXeIpH+8Qf5Lw=;
+	s=arc-20240116; t=1752586917; c=relaxed/simple;
+	bh=AobKhIJOOcobIKHaHVfGPaLQlP7XDeSkY+oN1ygrZpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1xCtYcOaovcZKvFsAd63m3zRTRu5c/GTovNU37Mxr/UkY+SKF1V1PeyOy6AeatQ+cKV++/sh/wF6NfGEews+uIP96mSy5SttjrVzC/f3hr4muTH8Pi62//6TNqXmxct34Atc07rAeRF2g/rtyj+ouzNFnOQEiJNhecB/yu3PJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff0KAzcj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44F7C4CEE3;
-	Tue, 15 Jul 2025 13:35:33 +0000 (UTC)
+	 MIME-Version; b=Q0OM9aWWYv49Q7llliemP3DUnv/qMs7coP0GlGi1aFlnyO9oQ+IzTwxVJIQbenezM/fz66u2msdwSGmVZ37iLizZn6CCjdCTEIgUjE4mOv/g9LU3tpalmamShozajrjSIB5uPsD08W4BiSo52U/q5ClwPa/13tEcWCUyvztIEGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeI/zfla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB8CC4CEE3;
+	Tue, 15 Jul 2025 13:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586534;
-	bh=zDFXphxbnPxHCVK/Urke7dMFxqdtdgBXeIpH+8Qf5Lw=;
+	s=korg; t=1752586917;
+	bh=AobKhIJOOcobIKHaHVfGPaLQlP7XDeSkY+oN1ygrZpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ff0KAzcjmDb182zluDRX4Cza1c9j5cZhooJpbxinEbLdHlP1ewo0l2X9LZhFV1QBi
-	 9+3WSxHOZHq2McGE0lHze9XGZGpJVvzzPoSeZh+oEup4egiQYYifQ0WU0mB1s+q18I
-	 d3AaKy56CrxM55dVIZD2Nj9gnZ48iEAFRdT7jELk=
+	b=IeI/zfla+P1nEbNkqcbyfm6pWhGN762zB6VSC2e/6E0w9VmG97hybrnHLo2oqLNLo
+	 CefrtpyeAhs75T1do/yb9AY50p71xgLPVG/ULKZ28bSdAut4q02bgRl+rC9DKod7k3
+	 JVlNp6L+tTOgWyJUplqOPVKTqsYnfd+TpKI8lvbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 070/148] nui: Fix dma_mapping_error() check
-Date: Tue, 15 Jul 2025 15:13:12 +0200
-Message-ID: <20250715130803.126940378@linuxfoundation.org>
+	Achill Gilgenast <fossdd@pwned.life>,
+	Luis Henriques <luis@igalia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 098/192] kallsyms: fix build without execinfo
+Date: Tue, 15 Jul 2025 15:13:13 +0200
+Message-ID: <20250715130818.828653969@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Achill Gilgenast <fossdd@pwned.life>
 
-[ Upstream commit 561aa0e22b70a5e7246b73d62a824b3aef3fc375 ]
+commit a95743b53031b015e8949e845a9f6fdfb2656347 upstream.
 
-dma_map_XXX() functions return values DMA_MAPPING_ERROR as error values
-which is often ~0.  The error value should be tested with
-dma_mapping_error().
+Some libc's like musl libc don't provide execinfo.h since it's not part of
+POSIX.  In order to fix compilation on musl, only include execinfo.h if
+available (HAVE_BACKTRACE_SUPPORT)
 
-This patch creates a new function in niu_ops to test if the mapping
-failed.  The test is fixed in niu_rbr_add_page(), added in
-niu_start_xmit() and the successfully mapped pages are unmaped upon error.
+This was discovered with c104c16073b7 ("Kunit to check the longest symbol
+length") which starts to include linux/kallsyms.h with Alpine Linux'
+configs.
 
-Fixes: ec2deec1f352 ("niu: Fix to check for dma mapping errors.")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250622014608.448718-1-fossdd@pwned.life
+Fixes: c104c16073b7 ("Kunit to check the longest symbol length")
+Signed-off-by: Achill Gilgenast <fossdd@pwned.life>
+Cc: Luis Henriques <luis@igalia.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/sun/niu.c | 31 ++++++++++++++++++++++++++++++-
- drivers/net/ethernet/sun/niu.h |  4 ++++
- 2 files changed, 34 insertions(+), 1 deletion(-)
+ tools/include/linux/kallsyms.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
-index e659415c62bd7..ca991bcb2e512 100644
---- a/drivers/net/ethernet/sun/niu.c
-+++ b/drivers/net/ethernet/sun/niu.c
-@@ -3317,7 +3317,7 @@ static int niu_rbr_add_page(struct niu *np, struct rx_ring_info *rp,
- 
- 	addr = np->ops->map_page(np->device, page, 0,
- 				 PAGE_SIZE, DMA_FROM_DEVICE);
--	if (!addr) {
-+	if (np->ops->mapping_error(np->device, addr)) {
- 		__free_page(page);
- 		return -ENOMEM;
- 	}
-@@ -6654,6 +6654,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
- 	len = skb_headlen(skb);
- 	mapping = np->ops->map_single(np->device, skb->data,
- 				      len, DMA_TO_DEVICE);
-+	if (np->ops->mapping_error(np->device, mapping))
-+		goto out_drop;
- 
- 	prod = rp->prod;
- 
-@@ -6695,6 +6697,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
- 		mapping = np->ops->map_page(np->device, skb_frag_page(frag),
- 					    skb_frag_off(frag), len,
- 					    DMA_TO_DEVICE);
-+		if (np->ops->mapping_error(np->device, mapping))
-+			goto out_unmap;
- 
- 		rp->tx_buffs[prod].skb = NULL;
- 		rp->tx_buffs[prod].mapping = mapping;
-@@ -6719,6 +6723,19 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
- out:
- 	return NETDEV_TX_OK;
- 
-+out_unmap:
-+	while (i--) {
-+		const skb_frag_t *frag;
-+
-+		prod = PREVIOUS_TX(rp, prod);
-+		frag = &skb_shinfo(skb)->frags[i];
-+		np->ops->unmap_page(np->device, rp->tx_buffs[prod].mapping,
-+				    skb_frag_size(frag), DMA_TO_DEVICE);
-+	}
-+
-+	np->ops->unmap_single(np->device, rp->tx_buffs[rp->prod].mapping,
-+			      skb_headlen(skb), DMA_TO_DEVICE);
-+
- out_drop:
- 	rp->tx_errors++;
- 	kfree_skb(skb);
-@@ -9612,6 +9629,11 @@ static void niu_pci_unmap_single(struct device *dev, u64 dma_address,
- 	dma_unmap_single(dev, dma_address, size, direction);
+--- a/tools/include/linux/kallsyms.h
++++ b/tools/include/linux/kallsyms.h
+@@ -18,6 +18,7 @@ static inline const char *kallsyms_looku
+ 	return NULL;
  }
  
-+static int niu_pci_mapping_error(struct device *dev, u64 addr)
-+{
-+	return dma_mapping_error(dev, addr);
-+}
-+
- static const struct niu_ops niu_pci_ops = {
- 	.alloc_coherent	= niu_pci_alloc_coherent,
- 	.free_coherent	= niu_pci_free_coherent,
-@@ -9619,6 +9641,7 @@ static const struct niu_ops niu_pci_ops = {
- 	.unmap_page	= niu_pci_unmap_page,
- 	.map_single	= niu_pci_map_single,
- 	.unmap_single	= niu_pci_unmap_single,
-+	.mapping_error	= niu_pci_mapping_error,
- };
++#ifdef HAVE_BACKTRACE_SUPPORT
+ #include <execinfo.h>
+ #include <stdlib.h>
+ static inline void print_ip_sym(const char *loglvl, unsigned long ip)
+@@ -30,5 +31,8 @@ static inline void print_ip_sym(const ch
  
- static void niu_driver_version(void)
-@@ -9996,6 +10019,11 @@ static void niu_phys_unmap_single(struct device *dev, u64 dma_address,
- 	/* Nothing to do.  */
+ 	free(name);
  }
++#else
++static inline void print_ip_sym(const char *loglvl, unsigned long ip) {}
++#endif
  
-+static int niu_phys_mapping_error(struct device *dev, u64 dma_address)
-+{
-+	return false;
-+}
-+
- static const struct niu_ops niu_phys_ops = {
- 	.alloc_coherent	= niu_phys_alloc_coherent,
- 	.free_coherent	= niu_phys_free_coherent,
-@@ -10003,6 +10031,7 @@ static const struct niu_ops niu_phys_ops = {
- 	.unmap_page	= niu_phys_unmap_page,
- 	.map_single	= niu_phys_map_single,
- 	.unmap_single	= niu_phys_unmap_single,
-+	.mapping_error	= niu_phys_mapping_error,
- };
- 
- static int niu_of_probe(struct platform_device *op)
-diff --git a/drivers/net/ethernet/sun/niu.h b/drivers/net/ethernet/sun/niu.h
-index 04c215f91fc08..0b169c08b0f2d 100644
---- a/drivers/net/ethernet/sun/niu.h
-+++ b/drivers/net/ethernet/sun/niu.h
-@@ -2879,6 +2879,9 @@ struct tx_ring_info {
- #define NEXT_TX(tp, index) \
- 	(((index) + 1) < (tp)->pending ? ((index) + 1) : 0)
- 
-+#define PREVIOUS_TX(tp, index) \
-+	(((index) - 1) >= 0 ? ((index) - 1) : (((tp)->pending) - 1))
-+
- static inline u32 niu_tx_avail(struct tx_ring_info *tp)
- {
- 	return (tp->pending -
-@@ -3140,6 +3143,7 @@ struct niu_ops {
- 			  enum dma_data_direction direction);
- 	void (*unmap_single)(struct device *dev, u64 dma_address,
- 			     size_t size, enum dma_data_direction direction);
-+	int (*mapping_error)(struct device *dev, u64 dma_address);
- };
- 
- struct niu_link_config {
--- 
-2.39.5
-
+ #endif
 
 
 
