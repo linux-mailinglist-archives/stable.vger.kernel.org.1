@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106B4B05F60
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1EBB05F01
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07F791891F82
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50C751C4459D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BAFF2EF9D5;
-	Tue, 15 Jul 2025 13:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A5328937D;
+	Tue, 15 Jul 2025 13:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9PQjF0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFbPrTv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254CB2EF9D2;
-	Tue, 15 Jul 2025 13:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C292E62D8;
+	Tue, 15 Jul 2025 13:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587203; cv=none; b=KfR9N1rjMNFmEHwnNkO+feXbswuJuY3uTVDbkwYW5QxsOH4HLxfmjGDyBi9yiA5PPK9UTWD8gODHuvXpqMr55maSpWBltrAbDtiPvzIFxFWZ2D8WWN+9zFNIr7Gfgcw6QjGu+cMpn9uIKVHlORZPai9O8pztT7tuIIYefHl6nQI=
+	t=1752587013; cv=none; b=L/uRtbo8hWy1syaeFil4QA7qSXJJml0CS26g6QGOIxRRu5FE0uD54ZAp1Uz6hna32j4J/A0owtLhaF7seKzy+WJ7TmX6M2R4KEyulN+M6dPwaBgr7Ha/CpqdGJxNf43GVhEIA2WcK6heBrmwnH3sw5PkQQlaAgSGJtnosgLNooo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587203; c=relaxed/simple;
-	bh=RF1Wk2DAxh7Pu2waJgfxr7q6wR/rRohNNRM7MnVvSF0=;
+	s=arc-20240116; t=1752587013; c=relaxed/simple;
+	bh=2gXvh7B3Eire2lSTEmL3iRyvSpxZsGN8fTuDCPav+1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMPBPweGH0kUdm5Csk/xjoAKdXQO6SqpTlPU2szZZo+FJ/USG0pzj0CYpqPid6D+BV6O02OyhX27pCP6PSBX3LxXwTzpsGloOezZ94zGg6eCDk5C9x++7EaoXUlGrs6POBfnyklGq5hg802PlRt/0X4r8LtSNtH6RieQoNFgA9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9PQjF0k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5D3C4CEE3;
-	Tue, 15 Jul 2025 13:46:42 +0000 (UTC)
+	 MIME-Version; b=ShBm2MB+hSQO7eAj8Tt4AVOmME8h4WEJqP3cryXIXz/pcVx0utwtPOn4mT8NfjubH+eenKlDXIMRRVApt4l/8k2t9yKiRt42uJHOu/EkTazxwpo25PnJh6Hpiz971cTmqMay61zzabJqaQfOYUQWNbyAK3++uheH2eTrgWwvMgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFbPrTv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA92C4CEE3;
+	Tue, 15 Jul 2025 13:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587203;
-	bh=RF1Wk2DAxh7Pu2waJgfxr7q6wR/rRohNNRM7MnVvSF0=;
+	s=korg; t=1752587013;
+	bh=2gXvh7B3Eire2lSTEmL3iRyvSpxZsGN8fTuDCPav+1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c9PQjF0ki/foU833V9NcQKv5zMGEWvQSK+gLBXi7ulHd+ebsyrcgBR0EpeVGIypTy
-	 hsYjJOVM6gSy3cz99E+1Cj7LJtyFJhg6LCtGYWia0OBgHY1KYlYCis/RwwjSnyu5KE
-	 qN4PtFvtXNRwyGWFRlLtceq8P9fiWdZeObW6XZ1s=
+	b=cFbPrTv2lULGosZx75N3zIcyrhlCjE1Luq3t1iUGmxsRCUGDB1wqsuWyJ2Sk7G7e8
+	 bdxvCUL+hakzSXQiUPgZS7y/zePa5RIstX22Pf9MtHg448HWASZ54uDwW0FSAfxLwf
+	 6TQEwajxqxH1Q3/hK9OrKYHYTCdjeDzauSOoayPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andre Edich <andre.edich@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael-CY Lee <michael-cy.lee@mediatek.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 13/88] net: phy: smsc: Fix link failure in forced mode with Auto-MDIX
+Subject: [PATCH 6.15 134/192] wifi: mac80211: fix non-transmitted BSSID profile search
 Date: Tue, 15 Jul 2025 15:13:49 +0200
-Message-ID: <20250715130755.041678507@linuxfoundation.org>
+Message-ID: <20250715130820.277444787@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 9dfe110cc0f6ef42af8e81ce52aef34a647d0b8a ]
+[ Upstream commit e1e6ebf490e55fee1ae573aa443c1d4aea5e4a40 ]
 
-Force a fixed MDI-X mode when auto-negotiation is disabled to prevent
-link instability.
+When the non-transmitted BSSID profile is found, immediately return
+from the search to not return the wrong profile_len when the profile
+is found in a multiple BSSID element that isn't the last one in the
+frame.
 
-When forcing the link speed and duplex on a LAN9500 PHY (e.g., with
-`ethtool -s eth0 autoneg off ...`) while leaving MDI-X control in auto
-mode, the PHY fails to establish a stable link. This occurs because the
-PHY's Auto-MDIX algorithm is not designed to operate when
-auto-negotiation is disabled. In this state, the PHY continuously
-toggles the TX/RX signal pairs, which prevents the link partner from
-synchronizing.
-
-This patch resolves the issue by detecting when auto-negotiation is
-disabled. If the MDI-X control mode is set to 'auto', the driver now
-forces a specific, stable mode (ETH_TP_MDI) to prevent the pair
-toggling. This choice of a fixed MDI mode mirrors the behavior the
-hardware would exhibit if the AUTOMDIX_EN strap were configured for a
-fixed MDI connection.
-
-Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andre Edich <andre.edich@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250703114941.3243890-4-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5023b14cf4df ("mac80211: support profile split between elements")
+Reported-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
+Link: https://patch.msgid.link/20250630154501.f26cd45a0ecd.I28e0525d06e8a99e555707301bca29265cf20dc8@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/smsc.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ net/mac80211/parse.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index 8726619466858..5186cc97c6557 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -136,10 +136,29 @@ static int smsc_phy_reset(struct phy_device *phydev)
- 
- static int lan87xx_config_aneg(struct phy_device *phydev)
+diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
+index 6da39c864f45b..922ea9a6e2412 100644
+--- a/net/mac80211/parse.c
++++ b/net/mac80211/parse.c
+@@ -758,7 +758,6 @@ static size_t ieee802_11_find_bssid_profile(const u8 *start, size_t len,
  {
--	int rc;
-+	u8 mdix_ctrl;
- 	int val;
-+	int rc;
-+
-+	/* When auto-negotiation is disabled (forced mode), the PHY's
-+	 * Auto-MDIX will continue toggling the TX/RX pairs.
-+	 *
-+	 * To establish a stable link, we must select a fixed MDI mode.
-+	 * If the user has not specified a fixed MDI mode (i.e., mdix_ctrl is
-+	 * 'auto'), we default to ETH_TP_MDI. This choice of a ETH_TP_MDI mode
-+	 * mirrors the behavior the hardware would exhibit if the AUTOMDIX_EN
-+	 * strap were configured for a fixed MDI connection.
-+	 */
-+	if (phydev->autoneg == AUTONEG_DISABLE) {
-+		if (phydev->mdix_ctrl == ETH_TP_MDI_AUTO)
-+			mdix_ctrl = ETH_TP_MDI;
-+		else
-+			mdix_ctrl = phydev->mdix_ctrl;
-+	} else {
-+		mdix_ctrl = phydev->mdix_ctrl;
-+	}
+ 	const struct element *elem, *sub;
+ 	size_t profile_len = 0;
+-	bool found = false;
  
--	switch (phydev->mdix_ctrl) {
-+	switch (mdix_ctrl) {
- 	case ETH_TP_MDI:
- 		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_;
- 		break;
-@@ -165,7 +184,7 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
- 	rc |= val;
- 	phy_write(phydev, SPECIAL_CTRL_STS, rc);
+ 	if (!bss || !bss->transmitted_bss)
+ 		return profile_len;
+@@ -809,15 +808,14 @@ static size_t ieee802_11_find_bssid_profile(const u8 *start, size_t len,
+ 					       index[2],
+ 					       new_bssid);
+ 			if (ether_addr_equal(new_bssid, bss->bssid)) {
+-				found = true;
+ 				elems->bssid_index_len = index[1];
+ 				elems->bssid_index = (void *)&index[2];
+-				break;
++				return profile_len;
+ 			}
+ 		}
+ 	}
  
--	phydev->mdix = phydev->mdix_ctrl;
-+	phydev->mdix = mdix_ctrl;
- 	return genphy_config_aneg(phydev);
+-	return found ? profile_len : 0;
++	return 0;
  }
  
+ static void
 -- 
 2.39.5
 
