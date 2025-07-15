@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D799B05B9B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C8DFB05C48
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80DDB745357
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 990CA1882A7C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9592E266C;
-	Tue, 15 Jul 2025 13:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC58F2E6122;
+	Tue, 15 Jul 2025 13:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmmNICff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+wN9Ezu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC8427584E;
-	Tue, 15 Jul 2025 13:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DE12E54C1;
+	Tue, 15 Jul 2025 13:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585622; cv=none; b=sDl5xvg6jCQhzT5G3/Ml5ygRbGPhTVIN1a1Zooy9nZlv9h5y1GyvFatUXNof/bRV6RDFPAYlMumBQ7MhS0UQFbWbuqiNMokSdV2iCWY/RiqnexWa+PZIAOaHOKEZ+oQoCl0cYvj0TE+WG/ESYRvtJbjvZ+cFBTQpYaQr/dsOFn8=
+	t=1752585959; cv=none; b=Vfr7ShN+5rXx7h3Gj89E371hPI4UABlvxpjHFYxVgoYNoOrF8gUoKg6FvuCmEY+2/8Uruq5MX9mXbBhElLqWy0EtWzkWn9hxOqJPsaNK3ey10WFBW2QIHvRJXNkLskTVI5XQvOa+9NIoDFo5bMgK7TTOfAC/c+w7VDqsuV7mjuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585622; c=relaxed/simple;
-	bh=A5UIK3mYuk3drWGV7K/TDumquz3ZcnwyXmf2Ye7hmhs=;
+	s=arc-20240116; t=1752585959; c=relaxed/simple;
+	bh=jthzPBQwlVeviJ5+gHXiTbwNIkrTy4QQwRR99gxUQ08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFVZOJyquZzMJL3rhIDxidIKaoq6zOSt38kNHYrJYt3cZbc44P4N0YY7zDb6DedGDdALokJP5HyBxjHtFfR75GjZIjcts24MqvzCaMPLcq7/M72ylSJvF+9bWiztRM1AfSG5yAPGcmdu/LuWwVplrBp3yWhRknO9/Nie4sKtB10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmmNICff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F857C4CEE3;
-	Tue, 15 Jul 2025 13:20:21 +0000 (UTC)
+	 MIME-Version; b=MnwEf1hzWTmwPHAmXP788ouJLpXjuqJjazoyCCQI53ADnxJMpmhE13g0C0xs+c8R9N5x5/7ggEg3Dt8ATFU97iPTCDruWoMQLTw0S9ztwrDgQET0AT2DRkfaLUFSz1jYn5plb9KZiux0BKVixH5w5F/EMRpyBLtGCYx2S4WccfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+wN9Ezu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD29C4CEE3;
+	Tue, 15 Jul 2025 13:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585622;
-	bh=A5UIK3mYuk3drWGV7K/TDumquz3ZcnwyXmf2Ye7hmhs=;
+	s=korg; t=1752585959;
+	bh=jthzPBQwlVeviJ5+gHXiTbwNIkrTy4QQwRR99gxUQ08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LmmNICff77aVk36+CzdAuFLh8quTSrpyGddk9ekPUedhS0iY2fXxOdMtt5kvlDpBD
-	 B9RnvrXhXOdtN/Zpps7LtjW+yLbHAwI0WqRdMuM6EVVaTXLBxted+DVDT29EhFZY/X
-	 QrTdnSvvutzU001F6chWdJN9oUE7kP7tAthORKuc=
+	b=0+wN9EzuuAGPj0jBNo/LBnVROwIn+bOXpoIgW06PvQ5fu5UapO6rHz6dhc2EokQgc
+	 byURFL2RijESlEEowu0UWJmgMh5nvoVA4XSUSr0IT76WJ/E4GcKnsQ1jbv84/Jxjhw
+	 BAt6QgSeV9Jhl3EMIHOdNE+46OSNyHJc+DXM2JpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/163] drm/tegra: nvdec: Fix dma_alloc_coherent error check
+	Bjorn Andersson <andersson@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.6 041/109] pinctrl: qcom: msm: mark certain pins as invalid for interrupts
 Date: Tue, 15 Jul 2025 15:12:57 +0200
-Message-ID: <20250715130813.230427132@linuxfoundation.org>
+Message-ID: <20250715130800.524420202@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 44306a684cd1699b8562a54945ddc43e2abc9eab ]
+commit 93712205ce2f1fb047739494c0399a26ea4f0890 upstream.
 
-Check for NULL return value with dma_alloc_coherent, in line with
-Robin's fix for vic.c in 'drm/tegra: vic: Fix DMA API misuse'.
+On some platforms, the UFS-reset pin has no interrupt logic in TLMM but
+is nevertheless registered as a GPIO in the kernel. This enables the
+user-space to trigger a BUG() in the pinctrl-msm driver by running, for
+example: `gpiomon -c 0 113` on RB2.
 
-Fixes: 46f226c93d35 ("drm/tegra: Add NVDEC driver")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250702-nvdec-dma-error-check-v1-1-c388b402c53a@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The exact culprit is requesting pins whose intr_detection_width setting
+is not 1 or 2 for interrupts. This hits a BUG() in
+msm_gpio_irq_set_type(). Potentially crashing the kernel due to an
+invalid request from user-space is not optimal, so let's go through the
+pins and mark those that would fail the check as invalid for the irq chip
+as we should not even register them as available irqs.
+
+This function can be extended if we determine that there are more
+corner-cases like this.
+
+Fixes: f365be092572 ("pinctrl: Add Qualcomm TLMM driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/20250612091448.41546-1-brgl@bgdev.pl
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/nvdec.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-msm.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/gpu/drm/tegra/nvdec.c b/drivers/gpu/drm/tegra/nvdec.c
-index 4860790666af5..14ef61b44f47c 100644
---- a/drivers/gpu/drm/tegra/nvdec.c
-+++ b/drivers/gpu/drm/tegra/nvdec.c
-@@ -261,10 +261,8 @@ static int nvdec_load_falcon_firmware(struct nvdec *nvdec)
+--- a/drivers/pinctrl/qcom/pinctrl-msm.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm.c
+@@ -1031,6 +1031,25 @@ static bool msm_gpio_needs_dual_edge_par
+ 	       test_bit(d->hwirq, pctrl->skip_wake_irqs);
+ }
  
- 	if (!client->group) {
- 		virt = dma_alloc_coherent(nvdec->dev, size, &iova, GFP_KERNEL);
--
--		err = dma_mapping_error(nvdec->dev, iova);
--		if (err < 0)
--			return err;
-+		if (!virt)
-+			return -ENOMEM;
- 	} else {
- 		virt = tegra_drm_alloc(tegra, size, &iova);
- 		if (IS_ERR(virt))
--- 
-2.39.5
-
++static void msm_gpio_irq_init_valid_mask(struct gpio_chip *gc,
++					 unsigned long *valid_mask,
++					 unsigned int ngpios)
++{
++	struct msm_pinctrl *pctrl = gpiochip_get_data(gc);
++	const struct msm_pingroup *g;
++	int i;
++
++	bitmap_fill(valid_mask, ngpios);
++
++	for (i = 0; i < ngpios; i++) {
++		g = &pctrl->soc->groups[i];
++
++		if (g->intr_detection_width != 1 &&
++		    g->intr_detection_width != 2)
++			clear_bit(i, valid_mask);
++	}
++}
++
+ static int msm_gpio_irq_set_type(struct irq_data *d, unsigned int type)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+@@ -1392,6 +1411,7 @@ static int msm_gpio_init(struct msm_pinc
+ 	girq->default_type = IRQ_TYPE_NONE;
+ 	girq->handler = handle_bad_irq;
+ 	girq->parents[0] = pctrl->irq;
++	girq->init_valid_mask = msm_gpio_irq_init_valid_mask;
+ 
+ 	ret = gpiochip_add_data(&pctrl->chip, pctrl);
+ 	if (ret) {
 
 
 
