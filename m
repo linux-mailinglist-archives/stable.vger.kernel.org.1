@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-162169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B15BB05C15
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:27:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1598CB05BB2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B56E1563E74
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:26:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF2277B7B31
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE0B2E7628;
-	Tue, 15 Jul 2025 13:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3812E175D;
+	Tue, 15 Jul 2025 13:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BE4CmWHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz86ixuP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4B92E719B;
-	Tue, 15 Jul 2025 13:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28A119D09C;
+	Tue, 15 Jul 2025 13:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585857; cv=none; b=Th1YP/gVIUQbk32iHRpPO2wf06RWaPdNsqTmJQdq+QGi/HTU4/xcFka85SPQu/kijQNSuSjhZPvHjLOL+LRcDWzz4Qdm88aRGmYv51X2945ZFokNc8s0kX2VUTbcGpltvXuClHDVvA5Ssjp1YCpOE+PD4gtQ3aiEIBES+LI2Hz0=
+	t=1752585599; cv=none; b=kgheuRE4NCbX1CzYwy4WhbD0U4c3HYC9buqv1D2s0PWZfob8mIs0Biv481uazZwz6nHpfUnaC+fcCOBehAN35O/OnvflHm3A3CEQ5IeEF1EvYsyajKNi9Pqb9YyX+wXff243ZF7Mi3cARVRm0YlGRaqUqhfVa/aqBA7+ax30hCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585857; c=relaxed/simple;
-	bh=w/VZsHOY3ANV6VmvxTyncQ6W7jkBP6i4c3UYXU5oUrY=;
+	s=arc-20240116; t=1752585599; c=relaxed/simple;
+	bh=70HYWFoEIvEN/DpNUHiBvl3ocrDiWf8zxJhvfd5aBm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzrguPkJ56q7XmT5nAcH+l1d9iX1u9tNkU9Q+Zh1oDZ485ENe94sDM+0V+2Soog/ZFhKRXuWgFkJs8aQHlztEUUUpMMZFo6HIr2vHoPQeG4dkSMyzFcWVftQ6nxk6PfG5aVybQmUNzpN59jseGOy5j7Jt8Qi01kqVo+1EZlnOpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BE4CmWHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E24DC4CEF1;
-	Tue, 15 Jul 2025 13:24:16 +0000 (UTC)
+	 MIME-Version; b=sQy5MZp0GeYc5AjvWRZvsSwyrP/u/t8yrdsSRfb7YP1tNNy8JH+Ul3puNH+AMmLAQzmNQxW7Oh5KlPsAA72pS8GeOszksVlckEOSQJeq4PH0FippY7rSYBktpE4fGc0snWk5zO1rGHLAUeVREvMVDZvxm+1ybh1oABLaFwD75xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz86ixuP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E67C4CEE3;
+	Tue, 15 Jul 2025 13:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585857;
-	bh=w/VZsHOY3ANV6VmvxTyncQ6W7jkBP6i4c3UYXU5oUrY=;
+	s=korg; t=1752585598;
+	bh=70HYWFoEIvEN/DpNUHiBvl3ocrDiWf8zxJhvfd5aBm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BE4CmWHYvj/UPKhYlktMQO4t8y/M9Otlo82167Mz0KB8qqwghHYz8Z812/QvCRE7e
-	 9uxpefniQ5E78B0bOHur3di1gAufIczjel2xpQbVFz+2rzVuhTKtCJp9BiAyRMTpBk
-	 pHuNWiSvLAezxbFti1YOLpjBmgBew6ZD/3NeqP6k=
+	b=xz86ixuPpgEVoy8EyKuIBZ0ak0sOSQ3ZYFZ5vV4c/+D7C7OS9aaqgMaC9fI3Zhubq
+	 oPU21HgpdlZvGdeGJ2+caOCx1W0FJGfI8LdbutekBZOYSZNyOmCJizZq3AVr2Gw0fP
+	 hBmqcRmbZNaDWNpRsFhLJ9vNd0VtHPy9JRGyns+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 033/109] x86/mce/amd: Add default names for MCA banks and blocks
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.12 101/163] erofs: fix to add missing tracepoint in erofs_read_folio()
 Date: Tue, 15 Jul 2025 15:12:49 +0200
-Message-ID: <20250715130800.210903685@linuxfoundation.org>
+Message-ID: <20250715130812.913680007@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Chao Yu <chao@kernel.org>
 
-commit d66e1e90b16055d2f0ee76e5384e3f119c3c2773 upstream.
+commit 99f7619a77a0a2e3e2bcae676d0f301769167754 upstream.
 
-Ensure that sysfs init doesn't fail for new/unrecognized bank types or if
-a bank has additional blocks available.
+Commit 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
+converts to use iomap interface, it removed trace_erofs_readpage()
+tracepoint in the meantime, let's add it back.
 
-Most MCA banks have a single thresholding block, so the block takes the same
-name as the bank.
-
-Unified Memory Controllers (UMCs) are a special case where there are two
-blocks and each has a unique name.
-
-However, the microarchitecture allows for five blocks. Any new MCA bank types
-with more than one block will be missing names for the extra blocks. The MCE
-sysfs will fail to initialize in this case.
-
-Fixes: 87a6d4091bd7 ("x86/mce/AMD: Update sysfs bank names for SMCA systems")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com
+Fixes: 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250708111942.3120926-1-chao@kernel.org
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mce/amd.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/erofs/data.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -1049,13 +1049,20 @@ static const char *get_name(unsigned int
- 	}
- 
- 	bank_type = smca_get_bank_type(cpu, bank);
--	if (bank_type >= N_SMCA_BANK_TYPES)
--		return NULL;
- 
- 	if (b && (bank_type == SMCA_UMC || bank_type == SMCA_UMC_V2)) {
- 		if (b->block < ARRAY_SIZE(smca_umc_block_names))
- 			return smca_umc_block_names[b->block];
--		return NULL;
-+	}
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -378,6 +378,8 @@ int erofs_fiemap(struct inode *inode, st
+  */
+ static int erofs_read_folio(struct file *file, struct folio *folio)
+ {
++	trace_erofs_read_folio(folio, true);
 +
-+	if (b && b->block) {
-+		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_block_%u", b->block);
-+		return buf_mcatype;
-+	}
-+
-+	if (bank_type >= N_SMCA_BANK_TYPES) {
-+		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_bank_%u", bank);
-+		return buf_mcatype;
- 	}
+ 	return iomap_read_folio(folio, &erofs_iomap_ops);
+ }
  
- 	if (per_cpu(smca_bank_counts, cpu)[bank_type] == 1)
 
 
 
