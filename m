@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-162775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2416B05F94
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 922B4B05FE3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:10:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADC154E7736
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 191A6586B6C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CEDE23D2B1;
-	Tue, 15 Jul 2025 13:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C902E6D2F;
+	Tue, 15 Jul 2025 13:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IldoYgL8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuXtIhVQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED16D2D29D9;
-	Tue, 15 Jul 2025 13:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DA82D29D9;
+	Tue, 15 Jul 2025 13:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587445; cv=none; b=IoniJSlY1eETB3iFlGt29OHeZ7pcrJXgFpnMgDrHegmq2j5YgiVL3dQjSmjOkl8FkzyeabF0tzZvzvxk+NmZ3p9JRPj1IEXugMHGBGjRz6UvKEGnPDlyHaY+KcvJNZtKvaMGyxjgsahCrC6ZYTC1hWEJcakBu6VIuXAGZ4+xfoo=
+	t=1752587450; cv=none; b=ek34/eiCG10juttHn1Fh1O3WmLvBg4j39SsdX/3CJ2KB9c5LW04HU/lfXkqn6YfZAkOHK7fdTpBEAJXAQciBS6FwVSfse0/ZXw5lEGMvCO3NRCgtuVBvBWXu/r8kU3twvSYeNp4F14c2QebSrJzIzgiFYu63bx5tHqxNvebvRfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587445; c=relaxed/simple;
-	bh=fzINfOt8nbDPLh0P96i5jyFzobIqkZxl2YS++dQBudE=;
+	s=arc-20240116; t=1752587450; c=relaxed/simple;
+	bh=5w7i37qnMkS/iZcVo+vjxllUJ6pUCLMIrXqQwWD6fqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbVpPz+O/8helv2Io30GUr3jwZya8VJALAahbeJGnb/I3lMuUx39JQbsKrtLFfjOA6ppBybhMnsHzcXXf8fjE/o3wh+oRAhgwxe0qol3ll+LYww0ylT86b/AQRCqdDMkjzaJuK6NYK0F/AIcWVDzrPmPJiLLJNe4iANomv7QUF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IldoYgL8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778A0C4CEF7;
-	Tue, 15 Jul 2025 13:50:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SDl44Wvt5SmoJN3GceJE+/FrvZ+RommUZVxlm5A5YFhqsjzPyWFpc3QNrVkV9C/tEJkv1k25FHMrRlfKVEM7pBi/JfI0pJbhaJYz0NpoOTCdNPZBXiHR3hTJQRRmAgGiVMD7ouD1sjC9TD9gZS1/kJ7LFJNyBE4ZfUL4tNnf9nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuXtIhVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD57C4CEE3;
+	Tue, 15 Jul 2025 13:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587444;
-	bh=fzINfOt8nbDPLh0P96i5jyFzobIqkZxl2YS++dQBudE=;
+	s=korg; t=1752587450;
+	bh=5w7i37qnMkS/iZcVo+vjxllUJ6pUCLMIrXqQwWD6fqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IldoYgL8nodUBOYIPRcz9J/LKDRfOz8hCKBYoQn/WYLbm/NaevVxLKuLsHE+kvS+S
-	 7peGFnkLj/ael4to1sLLMnpHC5tOaAnUKJxdm+ytPJKrbq0SzonFB6JbTBp4b1Q9wF
-	 muAWwdgqQwxn4Bocpai2VzuyUbGqXV/s1iiPvpCU=
+	b=QuXtIhVQRqAKUwrpiU1fVfTxS9Xro59s5upYmbLYsPx/YhwHe4Rui7fq2coA5d8Ca
+	 eENwVfjfsabvApzHhFVc424+31VXjKmf0QxB6TBDLN7rJF+gPdnfUll9qx+1rcytkm
+	 yQO6AS7JKepVBm4Hkfuqnqjx6uMBaO6ejhscrkew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Hodaszi <robert.hodaszi@digi.com>,
-	Oliver Neukum <oneukum@suse.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 015/208] usb: cdc-wdm: avoid setting WDM_READ for ZLP-s
-Date: Tue, 15 Jul 2025 15:12:04 +0200
-Message-ID: <20250715130811.445422626@linuxfoundation.org>
+Subject: [PATCH 5.10 017/208] ALSA: hda: Ignore unsol events for cards being shut down
+Date: Tue, 15 Jul 2025 15:12:06 +0200
+Message-ID: <20250715130811.523119915@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -60,118 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Hodaszi <robert.hodaszi@digi.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 387602d8a75574fafb451b7a8215e78dfd67ee63 ]
+[ Upstream commit 3f100f524e75586537e337b34d18c8d604b398e7 ]
 
-Don't set WDM_READ flag in wdm_in_callback() for ZLP-s, otherwise when
-userspace tries to poll for available data, it might - incorrectly -
-believe there is something available, and when it tries to non-blocking
-read it, it might get stuck in the read loop.
+For the classic snd_hda_intel driver, codec->card and bus->card point to
+the exact same thing. When snd_card_diconnect() fires, bus->shutdown is
+set thanks to azx_dev_disconnect(). card->shutdown is already set when
+that happens but both provide basically the same functionality.
 
-For example this is what glib does for non-blocking read (briefly):
+For the DSP snd_soc_avs driver where multiple codecs are located on
+multiple cards, bus->shutdown 'shortcut' is not sufficient. One codec
+card may be unregistered while other codecs are still operational.
+Proper check in form of card->shutdown must be used to verify whether
+the codec's card is being shut down.
 
-  1. poll()
-  2. if poll returns with non-zero, starts a read data loop:
-    a. loop on poll() (EINTR disabled)
-    b. if revents was set, reads data
-      I. if read returns with EINTR or EAGAIN, goto 2.a.
-      II. otherwise return with data
-
-So if ZLP sets WDM_READ (#1), we expect data, and try to read it (#2).
-But as that was a ZLP, and we are doing non-blocking read, wdm_read()
-returns with EAGAIN (#2.b.I), so loop again, and try to read again
-(#2.a.).
-
-With glib, we might stuck in this loop forever, as EINTR is disabled
-(#2.a).
-
-Signed-off-by: Robert Hodaszi <robert.hodaszi@digi.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250403144004.3889125-1-robert.hodaszi@digi.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530141309.2943404-1-cezary.rojewski@intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-wdm.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ sound/pci/hda/hda_bind.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/class/cdc-wdm.c b/drivers/usb/class/cdc-wdm.c
-index aa91d561a0ace..26a59443d25f3 100644
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -89,7 +89,6 @@ struct wdm_device {
- 	u16			wMaxCommand;
- 	u16			wMaxPacketSize;
- 	__le16			inum;
--	int			reslength;
- 	int			length;
- 	int			read;
- 	int			count;
-@@ -201,6 +200,11 @@ static void wdm_in_callback(struct urb *urb)
- 	if (desc->rerr == 0 && status != -EPIPE)
- 		desc->rerr = status;
+diff --git a/sound/pci/hda/hda_bind.c b/sound/pci/hda/hda_bind.c
+index 0a83afa5f373c..6625643f333e8 100644
+--- a/sound/pci/hda/hda_bind.c
++++ b/sound/pci/hda/hda_bind.c
+@@ -44,7 +44,7 @@ static void hda_codec_unsol_event(struct hdac_device *dev, unsigned int ev)
+ 	struct hda_codec *codec = container_of(dev, struct hda_codec, core);
  
-+	if (length == 0) {
-+		dev_dbg(&desc->intf->dev, "received ZLP\n");
-+		goto skip_zlp;
-+	}
-+
- 	if (length + desc->length > desc->wMaxCommand) {
- 		/* The buffer would overflow */
- 		set_bit(WDM_OVERFLOW, &desc->flags);
-@@ -209,18 +213,18 @@ static void wdm_in_callback(struct urb *urb)
- 		if (!test_bit(WDM_OVERFLOW, &desc->flags)) {
- 			memmove(desc->ubuf + desc->length, desc->inbuf, length);
- 			desc->length += length;
--			desc->reslength = length;
- 		}
- 	}
- skip_error:
+ 	/* ignore unsol events during shutdown */
+-	if (codec->bus->shutdown)
++	if (codec->card->shutdown || codec->bus->shutdown)
+ 		return;
  
- 	if (desc->rerr) {
- 		/*
--		 * Since there was an error, userspace may decide to not read
--		 * any data after poll'ing.
-+		 * If there was a ZLP or an error, userspace may decide to not
-+		 * read any data after poll'ing.
- 		 * We should respond to further attempts from the device to send
- 		 * data, so that we can get unstuck.
- 		 */
-+skip_zlp:
- 		schedule_work(&desc->service_outs_intr);
- 	} else {
- 		set_bit(WDM_READ, &desc->flags);
-@@ -571,15 +575,6 @@ static ssize_t wdm_read
- 			goto retry;
- 		}
- 
--		if (!desc->reslength) { /* zero length read */
--			dev_dbg(&desc->intf->dev, "zero length - clearing WDM_READ\n");
--			clear_bit(WDM_READ, &desc->flags);
--			rv = service_outstanding_interrupt(desc);
--			spin_unlock_irq(&desc->iuspin);
--			if (rv < 0)
--				goto err;
--			goto retry;
--		}
- 		cntr = desc->length;
- 		spin_unlock_irq(&desc->iuspin);
- 	}
-@@ -839,7 +834,7 @@ static void service_interrupt_work(struct work_struct *work)
- 
- 	spin_lock_irq(&desc->iuspin);
- 	service_outstanding_interrupt(desc);
--	if (!desc->resp_count) {
-+	if (!desc->resp_count && (desc->length || desc->rerr)) {
- 		set_bit(WDM_READ, &desc->flags);
- 		wake_up(&desc->wait);
- 	}
+ 	/* ignore unsol events during system suspend/resume */
 -- 
 2.39.5
 
