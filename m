@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-162934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B41DB06066
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:16:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A027DB06092
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7CE24A15C6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4D9C1C474E5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8208C2EFDAA;
-	Tue, 15 Jul 2025 13:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083162ECD2A;
+	Tue, 15 Jul 2025 13:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XthqX88d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjgOpJEF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC5D2ECE90;
-	Tue, 15 Jul 2025 13:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD9E1531E8;
+	Tue, 15 Jul 2025 13:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587857; cv=none; b=Q1Oh+0IU8RoHsVS0QJnXauF6p0nK3Hfr4CVYUjIUUArq4KcCs7YNZWgJ3g0sZ3cH7DpSiH7emvQrLcc74uWhqjq+4aPrrwNQAnu/JehWPCNUa1YO0tLsw/qwhnwe7B28Zz9m//GOd6lbtNyX62JJ8/4Il/awSHrFHZ7OR8DqG4E=
+	t=1752587769; cv=none; b=kL0pD5PPiCwnUUqRX0MiZjnyMMbsSMPxDzo0zzgrdPMiPSX+3u17nV9DXcXc8zQhOOUThP6wiVurFW7EUympe603NSIvGuw+mpYs866b/odVgTI5GrjdKt3On92Yd0BxWIbc0jNMHcRbcYFu/wj725PImFp8XE6DWj6Za/phRGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587857; c=relaxed/simple;
-	bh=CvKuNePCOiSkDGvQNbMmqTSZrwlDXtZwOFsTR3h+xY0=;
+	s=arc-20240116; t=1752587769; c=relaxed/simple;
+	bh=gQZj7yo1QvvzJGGgESfCoo12k2x1wr5+gZCBl+gXa3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Megi+wZ4yDyEb3mP2lYYktKefoalrF9aj/Ehtxu1OFKFQQYHa5Up7jC6hCwbVAXQrYlnE5euT75V+afa4TTKeV0HkxSFBubz7IOVpD22NVUecF+tMb7fgJT9zRT2xb//4tGMeqGciuJYtvSV+5IcBWWMeeQ6rKlsc3v9La6TQGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XthqX88d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC91C4CEE3;
-	Tue, 15 Jul 2025 13:57:36 +0000 (UTC)
+	 MIME-Version; b=lYybxf474RYK/7X4nkVw1QFaM485xBVnwdsvhXPaK1Z9eK8mE2tUUG1iyh2hD4eIQ0oXk6JGV8RGN+rZ3KSZE8y3txH2G/EdGs0GU7On4RZdTevWigIw72v8bdpv+7FFUYDOXtKRICmMTKEExvhJKMx/YOpRVtIYUcKsBhuwOzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjgOpJEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB84C4CEE3;
+	Tue, 15 Jul 2025 13:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587857;
-	bh=CvKuNePCOiSkDGvQNbMmqTSZrwlDXtZwOFsTR3h+xY0=;
+	s=korg; t=1752587769;
+	bh=gQZj7yo1QvvzJGGgESfCoo12k2x1wr5+gZCBl+gXa3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XthqX88db0b3pGkFhsTD/nlksSjKDxs6z1ySvqdttoNrMTGcNXhVeFAJ4OFPUu1TZ
-	 /KXZiKzj0oPtNcRN8wTidf2AtdLgmj5/UB1BMV9Fd0LoeNE4kAzUVUnxgBEj9kyo4L
-	 8YrcOHGAGLSTr9FUOWmD82QgrvppB5SUvJesvm+g=
+	b=zjgOpJEFMEzpiDxmW0G6h8nk85cjs4dugyi89iCSxPBSkHFShoMRWVAUmR7kqRDB3
+	 h/Yv5rD8iaEkSd8t5xOEGV+34XJosdaOCnEQC7aqF2/vfvNg+8b30g/bno0AE0V6ch
+	 aJ3Zhw3/tWoySPVCNxM2odac2OwZvdf7He7+o3zE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seiji Nishikawa <snishika@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 5.10 128/208] ACPI: PAD: fix crash in exit_round_robin()
-Date: Tue, 15 Jul 2025 15:13:57 +0200
-Message-ID: <20250715130816.069220324@linuxfoundation.org>
+	stable@kernel.org,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 129/208] media: uvcvideo: Return the number of processed controls
+Date: Tue, 15 Jul 2025 15:13:58 +0200
+Message-ID: <20250715130816.108222038@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -66,94 +68,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Seiji Nishikawa <snishika@redhat.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 0a2ed70a549e61c5181bad5db418d223b68ae932 upstream.
+commit ba4fafb02ad6a4eb2e00f861893b5db42ba54369 upstream.
 
-The kernel occasionally crashes in cpumask_clear_cpu(), which is called
-within exit_round_robin(), because when executing clear_bit(nr, addr) with
-nr set to 0xffffffff, the address calculation may cause misalignment within
-the memory, leading to access to an invalid memory address.
+If we let know our callers that we have not done anything, they will be
+able to optimize their decisions.
 
-----------
-BUG: unable to handle kernel paging request at ffffffffe0740618
-        ...
-CPU: 3 PID: 2919323 Comm: acpi_pad/14 Kdump: loaded Tainted: G           OE  X --------- -  - 4.18.0-425.19.2.el8_7.x86_64 #1
-        ...
-RIP: 0010:power_saving_thread+0x313/0x411 [acpi_pad]
-Code: 89 cd 48 89 d3 eb d1 48 c7 c7 55 70 72 c0 e8 64 86 b0 e4 c6 05 0d a1 02 00 01 e9 bc fd ff ff 45 89 e4 42 8b 04 a5 20 82 72 c0 <f0> 48 0f b3 05 f4 9c 01 00 42 c7 04 a5 20 82 72 c0 ff ff ff ff 31
-RSP: 0018:ff72a5d51fa77ec8 EFLAGS: 00010202
-RAX: 00000000ffffffff RBX: ff462981e5d8cb80 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000246 RDI: 0000000000000246
-RBP: ff46297556959d80 R08: 0000000000000382 R09: ff46297c8d0f38d8
-R10: 0000000000000000 R11: 0000000000000001 R12: 000000000000000e
-R13: 0000000000000000 R14: ffffffffffffffff R15: 000000000000000e
-FS:  0000000000000000(0000) GS:ff46297a800c0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffe0740618 CR3: 0000007e20410004 CR4: 0000000000771ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- ? acpi_pad_add+0x120/0x120 [acpi_pad]
- kthread+0x10b/0x130
- ? set_kthread_struct+0x50/0x50
- ret_from_fork+0x1f/0x40
-        ...
-CR2: ffffffffe0740618
-
-crash> dis -lr ffffffffc0726923
-        ...
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 114
-0xffffffffc0726918 <power_saving_thread+776>:	mov    %r12d,%r12d
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 325
-0xffffffffc072691b <power_saving_thread+779>:	mov    -0x3f8d7de0(,%r12,4),%eax
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./arch/x86/include/asm/bitops.h: 80
-0xffffffffc0726923 <power_saving_thread+787>:	lock btr %rax,0x19cf4(%rip)        # 0xffffffffc0740620 <pad_busy_cpus_bits>
-
-crash> px tsk_in_cpu[14]
-$66 = 0xffffffff
-
-crash> px 0xffffffffc072692c+0x19cf4
-$99 = 0xffffffffc0740620
-
-crash> sym 0xffffffffc0740620
-ffffffffc0740620 (b) pad_busy_cpus_bits [acpi_pad]
-
-crash> px pad_busy_cpus_bits[0]
-$42 = 0xfffc0
-----------
-
-To fix this, ensure that tsk_in_cpu[tsk_index] != -1 before calling
-cpumask_clear_cpu() in exit_round_robin(), just as it is done in
-round_robin_cpu().
-
-Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
-Link: https://patch.msgid.link/20240825141352.25280-1-snishika@redhat.com
-[ rjw: Subject edit, avoid updates to the same value ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
+Cc: stable@kernel.org
+Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-1-de993ed9823b@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_pad.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/acpi_pad.c
-+++ b/drivers/acpi/acpi_pad.c
-@@ -128,8 +128,11 @@ static void round_robin_cpu(unsigned int
- static void exit_round_robin(unsigned int tsk_index)
- {
- 	struct cpumask *pad_busy_cpus = to_cpumask(pad_busy_cpus_bits);
--	cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
--	tsk_in_cpu[tsk_index] = -1;
-+
-+	if (tsk_in_cpu[tsk_index] != -1) {
-+		cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
-+		tsk_in_cpu[tsk_index] = -1;
-+	}
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1560,11 +1560,16 @@ int uvc_ctrl_begin(struct uvc_video_chai
+ 	return mutex_lock_interruptible(&chain->ctrl_mutex) ? -ERESTARTSYS : 0;
  }
  
- static unsigned int idle_pct = 5; /* percentage */
++/*
++ * Returns the number of uvc controls that have been correctly set, or a
++ * negative number if there has been an error.
++ */
+ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 				  struct uvc_fh *handle,
+ 				  struct uvc_entity *entity,
+ 				  int rollback)
+ {
++	unsigned int processed_ctrls = 0;
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+ 	int ret;
+@@ -1598,6 +1603,9 @@ static int uvc_ctrl_commit_entity(struct
+ 		else
+ 			ret = 0;
+ 
++		if (!ret)
++			processed_ctrls++;
++
+ 		if (rollback || ret < 0)
+ 			memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+ 			       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_BACKUP),
+@@ -1613,7 +1621,7 @@ static int uvc_ctrl_commit_entity(struct
+ 			uvc_ctrl_set_handle(handle, ctrl, handle);
+ 	}
+ 
+-	return 0;
++	return processed_ctrls;
+ }
+ 
+ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
+@@ -1634,6 +1642,7 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ 
+ 	if (!rollback)
+ 		uvc_ctrl_send_events(handle, xctrls, xctrls_count);
++	ret = 0;
+ done:
+ 	mutex_unlock(&chain->ctrl_mutex);
+ 	return ret;
 
 
 
