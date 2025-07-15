@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1EBB05F01
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:58:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70B6B05CB1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50C751C4459D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D66413AA8A7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A5328937D;
-	Tue, 15 Jul 2025 13:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5BB2E9722;
+	Tue, 15 Jul 2025 13:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFbPrTv2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kq45qfM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C292E62D8;
-	Tue, 15 Jul 2025 13:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174262E92D9;
+	Tue, 15 Jul 2025 13:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587013; cv=none; b=L/uRtbo8hWy1syaeFil4QA7qSXJJml0CS26g6QGOIxRRu5FE0uD54ZAp1Uz6hna32j4J/A0owtLhaF7seKzy+WJ7TmX6M2R4KEyulN+M6dPwaBgr7Ha/CpqdGJxNf43GVhEIA2WcK6heBrmwnH3sw5PkQQlaAgSGJtnosgLNooo=
+	t=1752586015; cv=none; b=Y6/0s3YYv0CF9WhCYNuy2tDCVunY1ClUIxTfnnSlxvUrb6Iv7bhuDTDYO0LnAdSqoYJqHRhYuqZazQ6um6rIsZEbdBV9cG28gkFK/o6j1UADq1u2/eYY1oYLUz5eFC2KUQ9pW8gA5hisWDWvZy7rQftOu8xP3OB2aWJvFLrZY98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587013; c=relaxed/simple;
-	bh=2gXvh7B3Eire2lSTEmL3iRyvSpxZsGN8fTuDCPav+1k=;
+	s=arc-20240116; t=1752586015; c=relaxed/simple;
+	bh=yI0rfjG1DJ72IsAfAeNjBeONHmAybhz7inxfGUMAaC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShBm2MB+hSQO7eAj8Tt4AVOmME8h4WEJqP3cryXIXz/pcVx0utwtPOn4mT8NfjubH+eenKlDXIMRRVApt4l/8k2t9yKiRt42uJHOu/EkTazxwpo25PnJh6Hpiz971cTmqMay61zzabJqaQfOYUQWNbyAK3++uheH2eTrgWwvMgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFbPrTv2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA92C4CEE3;
-	Tue, 15 Jul 2025 13:43:32 +0000 (UTC)
+	 MIME-Version; b=eVLfqJUlRzOl3X+a0o9+SNm1LHqSsX5NK+IS6WOYwpYpvEeaqU/DKtL5fZ6K/OTfJyikqHstWaIoJxg9TF3sYkkJxCWN1kRc4DTE45XUkBfz9R2zSzQUgVpG9ptFx5uvlqBjzfOeh4X1RBcR923wJiNbGYaEtK8npgpMC2B0frQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kq45qfM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AB0C19423;
+	Tue, 15 Jul 2025 13:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587013;
-	bh=2gXvh7B3Eire2lSTEmL3iRyvSpxZsGN8fTuDCPav+1k=;
+	s=korg; t=1752586015;
+	bh=yI0rfjG1DJ72IsAfAeNjBeONHmAybhz7inxfGUMAaC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cFbPrTv2lULGosZx75N3zIcyrhlCjE1Luq3t1iUGmxsRCUGDB1wqsuWyJ2Sk7G7e8
-	 bdxvCUL+hakzSXQiUPgZS7y/zePa5RIstX22Pf9MtHg448HWASZ54uDwW0FSAfxLwf
-	 6TQEwajxqxH1Q3/hK9OrKYHYTCdjeDzauSOoayPo=
+	b=kq45qfM94NBaPqsoSLjk/sCPWK1fwLpzRWXj7wnXbdd7EnWkdkG+iC1St4cJk/dfR
+	 xWKzYCRtKvGOUbovOURgJ16M7JyP6AvaYD6TtigAlulmPw7fdZqME9qOCr9XR93fRX
+	 OkN6Ld1eaYRr6I+ZJUpOoyuKvIRstH0Au1HBY2gA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael-CY Lee <michael-cy.lee@mediatek.com>,
+	kernel test robot <lkp@intel.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 134/192] wifi: mac80211: fix non-transmitted BSSID profile search
+Subject: [PATCH 6.6 093/109] um: vector: Reduce stack usage in vector_eth_configure()
 Date: Tue, 15 Jul 2025 15:13:49 +0200
-Message-ID: <20250715130820.277444787@linuxfoundation.org>
+Message-ID: <20250715130802.608039202@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit e1e6ebf490e55fee1ae573aa443c1d4aea5e4a40 ]
+[ Upstream commit 2d65fc13be85c336c56af7077f08ccd3a3a15a4a ]
 
-When the non-transmitted BSSID profile is found, immediately return
-from the search to not return the wrong profile_len when the profile
-is found in a multiple BSSID element that isn't the last one in the
-frame.
+When compiling with clang (19.1.7), initializing *vp using a compound
+literal may result in excessive stack usage. Fix it by initializing the
+required fields of *vp individually.
 
-Fixes: 5023b14cf4df ("mac80211: support profile split between elements")
-Reported-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
-Link: https://patch.msgid.link/20250630154501.f26cd45a0ecd.I28e0525d06e8a99e555707301bca29265cf20dc8@changeid
+Without this patch:
+
+$ objdump -d arch/um/drivers/vector_kern.o | ./scripts/checkstack.pl x86_64 0
+...
+0x0000000000000540 vector_eth_configure [vector_kern.o]:1472
+...
+
+With this patch:
+
+$ objdump -d arch/um/drivers/vector_kern.o | ./scripts/checkstack.pl x86_64 0
+...
+0x0000000000000540 vector_eth_configure [vector_kern.o]:208
+...
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506221017.WtB7Usua-lkp@intel.com/
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250623110829.314864-1-tiwei.btw@antgroup.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/parse.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/um/drivers/vector_kern.c | 42 +++++++++++------------------------
+ 1 file changed, 13 insertions(+), 29 deletions(-)
 
-diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 6da39c864f45b..922ea9a6e2412 100644
---- a/net/mac80211/parse.c
-+++ b/net/mac80211/parse.c
-@@ -758,7 +758,6 @@ static size_t ieee802_11_find_bssid_profile(const u8 *start, size_t len,
- {
- 	const struct element *elem, *sub;
- 	size_t profile_len = 0;
--	bool found = false;
+diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+index 2baa8d4a33ed3..1a068859a4185 100644
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -1600,35 +1600,19 @@ static void vector_eth_configure(
  
- 	if (!bss || !bss->transmitted_bss)
- 		return profile_len;
-@@ -809,15 +808,14 @@ static size_t ieee802_11_find_bssid_profile(const u8 *start, size_t len,
- 					       index[2],
- 					       new_bssid);
- 			if (ether_addr_equal(new_bssid, bss->bssid)) {
--				found = true;
- 				elems->bssid_index_len = index[1];
- 				elems->bssid_index = (void *)&index[2];
--				break;
-+				return profile_len;
- 			}
- 		}
- 	}
+ 	device->dev = dev;
  
--	return found ? profile_len : 0;
-+	return 0;
- }
+-	*vp = ((struct vector_private)
+-		{
+-		.list			= LIST_HEAD_INIT(vp->list),
+-		.dev			= dev,
+-		.unit			= n,
+-		.options		= get_transport_options(def),
+-		.rx_irq			= 0,
+-		.tx_irq			= 0,
+-		.parsed			= def,
+-		.max_packet		= get_mtu(def) + ETH_HEADER_OTHER,
+-		/* TODO - we need to calculate headroom so that ip header
+-		 * is 16 byte aligned all the time
+-		 */
+-		.headroom		= get_headroom(def),
+-		.form_header		= NULL,
+-		.verify_header		= NULL,
+-		.header_rxbuffer	= NULL,
+-		.header_txbuffer	= NULL,
+-		.header_size		= 0,
+-		.rx_header_size		= 0,
+-		.rexmit_scheduled	= false,
+-		.opened			= false,
+-		.transport_data		= NULL,
+-		.in_write_poll		= false,
+-		.coalesce		= 2,
+-		.req_size		= get_req_size(def),
+-		.in_error		= false,
+-		.bpf			= NULL
+-	});
++	INIT_LIST_HEAD(&vp->list);
++	vp->dev		= dev;
++	vp->unit	= n;
++	vp->options	= get_transport_options(def);
++	vp->parsed	= def;
++	vp->max_packet	= get_mtu(def) + ETH_HEADER_OTHER;
++	/*
++	 * TODO - we need to calculate headroom so that ip header
++	 * is 16 byte aligned all the time
++	 */
++	vp->headroom	= get_headroom(def);
++	vp->coalesce	= 2;
++	vp->req_size	= get_req_size(def);
  
- static void
+ 	dev->features = dev->hw_features = (NETIF_F_SG | NETIF_F_FRAGLIST);
+ 	INIT_WORK(&vp->reset_tx, vector_reset_tx);
 -- 
 2.39.5
 
