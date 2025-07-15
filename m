@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873CAB05E02
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAA7B05D4A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 549414A086F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 095534A7944
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915EA2E8884;
-	Tue, 15 Jul 2025 13:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ACC12E718E;
+	Tue, 15 Jul 2025 13:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwoG0VC/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qwr5o3Fe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF462E339B;
-	Tue, 15 Jul 2025 13:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C498F70831;
+	Tue, 15 Jul 2025 13:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586592; cv=none; b=uDrU5WPUFDugmRQs1Gok/vBjpfPXHBY02nQR3an8Qq8k6o6LblnQ3cHHvMyd6IBcAU/whl3cDVEe+rnBhxkiDTtbzCicnaKwoAOxZnqN3mYafaipvu5OvhEs2a88Zh/2U7FqPusQXG+euOrMyd7Z53j2kwCn2jTGYsIufYdTbTw=
+	t=1752586263; cv=none; b=XeC3zxKDaEJ4DTW2cuCSKKGmjG2AbJmsD5KbpEDT5/zM02tSCfxtMSlh7q3zamC/8RpjvoBQ0kf4jN7/8biu7KNStlukeaEMf/Ljo1+n8SLaOcqGIrr6iWrzI0Re4Kh9ml+jxtDf2nvUoeo5sw2yfCR2bqpXwQtxah+uA0TarZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586592; c=relaxed/simple;
-	bh=V0oE5t0O/P5yvLIwTKJPfrYDJisbQ4JVEpQOcoP3dyQ=;
+	s=arc-20240116; t=1752586263; c=relaxed/simple;
+	bh=Tk1X99FDD/yWIz12o1Pp2VqnfWUJ+BGNFjBgekO9e6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZOHIdx4QIbKHd7DICzA70VHnYCaUcz4KUeiYOGjhlhFFVT4NwQh69xSNL9lb4bw/lE4rYkgjOd6npaAIGEiiCg67FZf7G3bvWp4gXShB65ZwkAVF22JEI/iEH3lm1jQ9/1ogf1wM7SJgg70nnQ4MxowsCoWjIbPwN3wXuFWOwkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwoG0VC/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F75C4CEE3;
-	Tue, 15 Jul 2025 13:36:31 +0000 (UTC)
+	 MIME-Version; b=le6b+sVblWfOZPpquF5qzGCQXNMZVP/M/plL4bWRzmT0eCU4DvRYQBvCFwbuHJ3c/D/JxuaEwlY6U5D9RIqoUMQWfWQDMKe1POKSQTctYCyxn7omX7ezdAkpR9jYEFseu2aa6lamANjYK/rtJ9vgH+eVoh1AHrrrfEqx/3I2u74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qwr5o3Fe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5969AC4CEE3;
+	Tue, 15 Jul 2025 13:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586591;
-	bh=V0oE5t0O/P5yvLIwTKJPfrYDJisbQ4JVEpQOcoP3dyQ=;
+	s=korg; t=1752586263;
+	bh=Tk1X99FDD/yWIz12o1Pp2VqnfWUJ+BGNFjBgekO9e6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwoG0VC/SV1yKWml+23tgiQ94gCYWRMMdxFVaClkqLYgBm9jNRAS/VvixlL6xja37
-	 /EEmu9kdd5PicfZtmE+PR1zYYUl29Y2PRq3bapsjuytHMfndtRDTuixzWm1y6xXfUZ
-	 nF6HIVfnKB7A5sP9+MU7UQSf9Orum4dZgnL4Krks=
+	b=Qwr5o3Fe8w8ivfI4YVSSp+R9DTk9RepjKcep86mHHs2/NbEHdyeJxebbka8Pnph5l
+	 7yxa9aJw0NDsIfoxaDNKFTTlPRQfbtuZIuana1tZUTQBFljFhS9SdXoAi19VYl2Aw3
+	 2PISVYqwfFHh7441bWJSJPdw8IzLrMDPr+CGk8wE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 123/148] Revert "ACPI: battery: negate current when discharging"
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 66/77] bnxt_en: Set DMA unmap len correctly for XDP_REDIRECT
 Date: Tue, 15 Jul 2025 15:14:05 +0200
-Message-ID: <20250715130805.224395958@linuxfoundation.org>
+Message-ID: <20250715130754.376733352@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-commit de1675de39aa945bad5937d1fde4df3682670639 upstream.
+[ Upstream commit 3cdf199d4755d477972ee87110b2aebc88b3cfad ]
 
-Revert commit 234f71555019 ("ACPI: battery: negate current when
-discharging") breaks not one but several userspace implementations
-of battery monitoring: Steam and MangoHud. Perhaps it breaks more,
-but those are the two that have been tested.
+When transmitting an XDP_REDIRECT packet, call dma_unmap_len_set()
+with the proper length instead of 0.  This bug triggers this warning
+on a system with IOMMU enabled:
 
-Reported-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Closes: https://lore.kernel.org/linux-acpi/87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+WARNING: CPU: 36 PID: 0 at drivers/iommu/dma-iommu.c:842 __iommu_dma_unmap+0x159/0x170
+RIP: 0010:__iommu_dma_unmap+0x159/0x170
+Code: a8 00 00 00 00 48 c7 45 b0 00 00 00 00 48 c7 45 c8 00 00 00 00 48 c7 45 a0 ff ff ff ff 4c 89 45
+b8 4c 89 45 c0 e9 77 ff ff ff <0f> 0b e9 60 ff ff ff e8 8b bf 6a 00 66 66 2e 0f 1f 84 00 00 00 00
+RSP: 0018:ff22d31181150c88 EFLAGS: 00010206
+RAX: 0000000000002000 RBX: 00000000e13a0000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ff22d31181150cf0 R08: ff22d31181150ca8 R09: 0000000000000000
+R10: 0000000000000000 R11: ff22d311d36c9d80 R12: 0000000000001000
+R13: ff13544d10645010 R14: ff22d31181150c90 R15: ff13544d0b2bac00
+FS: 0000000000000000(0000) GS:ff13550908a00000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005be909dacff8 CR3: 0008000173408003 CR4: 0000000000f71ef0
+PKRU: 55555554
+Call Trace:
+<IRQ>
+? show_regs+0x6d/0x80
+? __warn+0x89/0x160
+? __iommu_dma_unmap+0x159/0x170
+? report_bug+0x17e/0x1b0
+? handle_bug+0x46/0x90
+? exc_invalid_op+0x18/0x80
+? asm_exc_invalid_op+0x1b/0x20
+? __iommu_dma_unmap+0x159/0x170
+? __iommu_dma_unmap+0xb3/0x170
+iommu_dma_unmap_page+0x4f/0x100
+dma_unmap_page_attrs+0x52/0x220
+? srso_alias_return_thunk+0x5/0xfbef5
+? xdp_return_frame+0x2e/0xd0
+bnxt_tx_int_xdp+0xdf/0x440 [bnxt_en]
+__bnxt_poll_work_done+0x81/0x1e0 [bnxt_en]
+bnxt_poll+0xd3/0x1e0 [bnxt_en]
+
+Fixes: f18c2b77b2e4 ("bnxt_en: optimized XDP_REDIRECT support")
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250710213938.1959625-4-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/battery.c |   19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -266,23 +266,10 @@ static int acpi_battery_get_property(str
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
- 			ret = -ENODEV;
--			break;
--		}
--
--		val->intval = battery->rate_now * 1000;
--		/*
--		 * When discharging, the current should be reported as a
--		 * negative number as per the power supply class interface
--		 * definition.
--		 */
--		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
--		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
--		    acpi_battery_handle_discharging(battery)
--				== POWER_SUPPLY_STATUS_DISCHARGING)
--			val->intval = -val->intval;
--
-+		else
-+			val->intval = battery->rate_now * 1000;
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+index 148b58f3468b3..8a5009e66a134 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+@@ -67,7 +67,7 @@ static void __bnxt_xmit_xdp_redirect(struct bnxt *bp,
+ 	tx_buf->action = XDP_REDIRECT;
+ 	tx_buf->xdpf = xdpf;
+ 	dma_unmap_addr_set(tx_buf, mapping, mapping);
+-	dma_unmap_len_set(tx_buf, len, 0);
++	dma_unmap_len_set(tx_buf, len, len);
+ }
+ 
+ void bnxt_tx_int_xdp(struct bnxt *bp, struct bnxt_napi *bnapi, int nr_pkts)
+-- 
+2.39.5
+
 
 
 
