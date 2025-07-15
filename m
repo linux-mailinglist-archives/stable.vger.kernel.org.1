@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A4FB05D62
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 445B5B05F4A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60D163A3EE1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAB657BDB72
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4112397BF;
-	Tue, 15 Jul 2025 13:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F5B2E8DEB;
+	Tue, 15 Jul 2025 13:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJGyIUqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeyuV92u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C572E3AE5;
-	Tue, 15 Jul 2025 13:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3CE2E88BB;
+	Tue, 15 Jul 2025 13:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586333; cv=none; b=iEu+Cxnc8YbDwqW86zdMTFJ2gxvKlmHazfhHxuMOGkPMG9NTvP5h4Hq+o6ZAvxa1xaeZnSHGndqhX2bmhMYTFnmLO8bjlAC7SRtXrfGY1MHrAgenpcxSSIf1UgWOwsX4xJIf/uCPVs4vzJ5XRsa3raZdk04eiP6MC58BHZ9G6sg=
+	t=1752587506; cv=none; b=JHSl+gfHAKzshWGUOIC//kQAb4j/dJwqdrqDPLr45KpKXQ3vcKMAsyzaQCanDR/eSc1MwYfMNyOZSpeP13u09vqpUE9kJ/9oN62tYsVl2Y/lB4sN/tb0XUOT4lO91z5MCbdc7Bd2YM6/E2GT5OY83jOM97Q8TdSI2tSqU20Ik8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586333; c=relaxed/simple;
-	bh=No43g16yquKWyxuaS8aQ4VnwcyQuKrTywxQqqVOfsXk=;
+	s=arc-20240116; t=1752587506; c=relaxed/simple;
+	bh=3OqYNCT1/f9Oj5IWfCXn2yQlv+jF20n4z6PlubnkjDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejw8dgXDWTZdchgNVL+FpNpwugrn+vPk3/TOinFBsNXmV0Pgy74Rx4DC9/RwYIkZ3kYL3oj39FXTAVG6kSb0VwQ/6kJDVcRTOWDIehoDodo2llkeAnyTPIe5JOE+woJsGdI8DKLH3DcCFirLQ3pa2HHC4bA/8ssf0zSudDs0fy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJGyIUqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5C2C4CEE3;
-	Tue, 15 Jul 2025 13:32:12 +0000 (UTC)
+	 MIME-Version; b=gAFqXhkp4pNCLLcOns2k7c2b66LzniEEng6HHprGl9HgarJBrkIFnjPRI1ymL1v2hP3QAxKxGdoW4M5YFY+3Nw/Fryqn8NNpJi/ao6vhDvMC3N5mlLY9W5UfwaLeGG8+gEyZVcUj3SMSkNmwJwNF8t2UiNOVg8/jQA4vlf+0CH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeyuV92u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A15C4CEE3;
+	Tue, 15 Jul 2025 13:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586332;
-	bh=No43g16yquKWyxuaS8aQ4VnwcyQuKrTywxQqqVOfsXk=;
+	s=korg; t=1752587506;
+	bh=3OqYNCT1/f9Oj5IWfCXn2yQlv+jF20n4z6PlubnkjDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJGyIUqwWWaKdNVA2o7cy34u7uLR7fdw8xUE3CAV2fcaLE6gUx44O8BPo4NiOGmh4
-	 vYmrcfriLEa2VT2TrUrsQKF9MT1luiL/ywQck157Y41wntEuy9Wh6t7GCAijWCFPOo
-	 H4lxypddk+8r44Qwimbde+OboSGJKHUt9oKABKTo=
+	b=CeyuV92u+3HNVwmA7Ht4ZV133NOCwG2HfNtt2Ta6EF3N8j5Wn0zJmVisLJrm+brK7
+	 PJuDrdTxe+wrhuT+QD0Hjo+PamPhWP86PzXBAR3UUdKWQ8ftqBWrueWhDLsG/diZoD
+	 hAxzgn7yhT3c/B4B0R438umwnmn90Sx+98MTLNvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Rowand <frowand.list@gmail.com>,
-	Rob Herring <robh@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/148] of: Add of_property_present() helper
+Subject: [PATCH 5.10 038/208] Drivers: hv: vmbus: Fix duplicate CPU assignments within a device
 Date: Tue, 15 Jul 2025 15:12:27 +0200
-Message-ID: <20250715130801.326099907@linuxfoundation.org>
+Message-ID: <20250715130812.486705615@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,211 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit 9cbad37ce8122de32a1529e394b468bc101c9e7f ]
+[ Upstream commit 7c9ff3deeee61b253715dcf968a6307af148c9b2 ]
 
-Add an of_property_present() function similar to
-fwnode_property_present(). of_property_read_bool() could be used
-directly, but it is cleaner to not use it on non-boolean properties.
+The vmbus module uses a rotational algorithm to assign target CPUs to
+a device's channels. Depending on the timing of different device's channel
+offers, different channels of a device may be assigned to the same CPU.
 
-Reviewed-by: Frank Rowand <frowand.list@gmail.com>
-Tested-by: Frank Rowand <frowand.list@gmail.com>
-Link: https://lore.kernel.org/all/20230215215547.691573-1-robh@kernel.org/
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 171eb6f71e9e ("ASoC: meson: meson-card-utils: use of_property_present() for DT parsing")
+For example on a VM with 2 CPUs, if NIC A and B's channels are offered
+in the following order, NIC A will have both channels on CPU0, and
+NIC B will have both channels on CPU1 -- see below. This kind of
+assignment causes RSS load that is spreading across different channels
+to end up on the same CPU.
+
+Timing of channel offers:
+NIC A channel 0
+NIC B channel 0
+NIC A channel 1
+NIC B channel 1
+
+VMBUS ID 14: Class_ID = {f8615163-df3e-46c5-913f-f2d2f965ed0e} - Synthetic network adapter
+        Device_ID = {cab064cd-1f31-47d5-a8b4-9d57e320cccd}
+        Sysfs path: /sys/bus/vmbus/devices/cab064cd-1f31-47d5-a8b4-9d57e320cccd
+        Rel_ID=14, target_cpu=0
+        Rel_ID=17, target_cpu=0
+
+VMBUS ID 16: Class_ID = {f8615163-df3e-46c5-913f-f2d2f965ed0e} - Synthetic network adapter
+        Device_ID = {244225ca-743e-4020-a17d-d7baa13d6cea}
+        Sysfs path: /sys/bus/vmbus/devices/244225ca-743e-4020-a17d-d7baa13d6cea
+        Rel_ID=16, target_cpu=1
+        Rel_ID=18, target_cpu=1
+
+Update the vmbus CPU assignment algorithm to avoid duplicate CPU
+assignments within a device.
+
+The new algorithm iterates num_online_cpus + 1 times.
+The existing rotational algorithm to find "next NUMA & CPU" is still here.
+But if the resulting CPU is already used by the same device, it will try
+the next CPU.
+In the last iteration, it assigns the channel to the next available CPU
+like the existing algorithm. This is not normally expected, because
+during device probe, we limit the number of channels of a device to
+be <= number of online CPUs.
+
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Tested-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/1626459673-17420-1-git-send-email-haiyangz@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Stable-dep-of: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/of.h | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/hv/channel_mgmt.c | 96 ++++++++++++++++++++++++++-------------
+ 1 file changed, 64 insertions(+), 32 deletions(-)
 
-diff --git a/include/linux/of.h b/include/linux/of.h
-index ec6b8a1af73cf..728b9df20a521 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -1044,7 +1044,8 @@ static inline int of_property_read_string_index(const struct device_node *np,
-  * @np:		device node from which the property value is to be read.
-  * @propname:	name of the property to be searched.
-  *
-- * Search for a property in a device node.
-+ * Search for a boolean property in a device node. Usage on non-boolean
-+ * property types is deprecated.
-  *
-  * Return: true if the property exists false otherwise.
-  */
-@@ -1056,6 +1057,20 @@ static inline bool of_property_read_bool(const struct device_node *np,
- 	return prop ? true : false;
+diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+index 0c6c54061088e..9da36d87ee2c7 100644
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -579,6 +579,17 @@ static void vmbus_process_offer(struct vmbus_channel *newchannel)
+ 	 */
+ 	mutex_lock(&vmbus_connection.channel_mutex);
+ 
++	list_for_each_entry(channel, &vmbus_connection.chn_list, listentry) {
++		if (guid_equal(&channel->offermsg.offer.if_type,
++			       &newchannel->offermsg.offer.if_type) &&
++		    guid_equal(&channel->offermsg.offer.if_instance,
++			       &newchannel->offermsg.offer.if_instance)) {
++			fnew = false;
++			newchannel->primary_channel = channel;
++			break;
++		}
++	}
++
+ 	init_vp_index(newchannel);
+ 
+ 	/* Remember the channels that should be cleaned up upon suspend. */
+@@ -591,16 +602,6 @@ static void vmbus_process_offer(struct vmbus_channel *newchannel)
+ 	 */
+ 	atomic_dec(&vmbus_connection.offer_in_progress);
+ 
+-	list_for_each_entry(channel, &vmbus_connection.chn_list, listentry) {
+-		if (guid_equal(&channel->offermsg.offer.if_type,
+-			       &newchannel->offermsg.offer.if_type) &&
+-		    guid_equal(&channel->offermsg.offer.if_instance,
+-			       &newchannel->offermsg.offer.if_instance)) {
+-			fnew = false;
+-			break;
+-		}
+-	}
+-
+ 	if (fnew) {
+ 		list_add_tail(&newchannel->listentry,
+ 			      &vmbus_connection.chn_list);
+@@ -622,7 +623,6 @@ static void vmbus_process_offer(struct vmbus_channel *newchannel)
+ 		/*
+ 		 * Process the sub-channel.
+ 		 */
+-		newchannel->primary_channel = channel;
+ 		list_add_tail(&newchannel->sc_list, &channel->sc_list);
+ 	}
+ 
+@@ -658,6 +658,30 @@ static void vmbus_process_offer(struct vmbus_channel *newchannel)
+ 	queue_work(wq, &newchannel->add_channel_work);
  }
  
-+/**
-+ * of_property_present - Test if a property is present in a node
-+ * @np:		device node to search for the property.
-+ * @propname:	name of the property to be searched.
-+ *
-+ * Test for a property present in a device node.
-+ *
-+ * Return: true if the property exists false otherwise.
++/*
++ * Check if CPUs used by other channels of the same device.
++ * It should only be called by init_vp_index().
 + */
-+static inline bool of_property_present(const struct device_node *np, const char *propname)
++static bool hv_cpuself_used(u32 cpu, struct vmbus_channel *chn)
 +{
-+	return of_property_read_bool(np, propname);
++	struct vmbus_channel *primary = chn->primary_channel;
++	struct vmbus_channel *sc;
++
++	lockdep_assert_held(&vmbus_connection.channel_mutex);
++
++	if (!primary)
++		return false;
++
++	if (primary->target_cpu == cpu)
++		return true;
++
++	list_for_each_entry(sc, &primary->sc_list, sc_list)
++		if (sc != chn && sc->target_cpu == cpu)
++			return true;
++
++	return false;
 +}
 +
- /**
-  * of_property_read_u8_array - Find and read an array of u8 from a property.
-  *
+ /*
+  * We use this state to statically distribute the channel interrupt load.
+  */
+@@ -677,6 +701,7 @@ static int next_numa_node_id;
+ static void init_vp_index(struct vmbus_channel *channel)
+ {
+ 	bool perf_chn = hv_is_perf_channel(channel);
++	u32 i, ncpu = num_online_cpus();
+ 	cpumask_var_t available_mask;
+ 	struct cpumask *alloced_mask;
+ 	u32 target_cpu;
+@@ -699,31 +724,38 @@ static void init_vp_index(struct vmbus_channel *channel)
+ 		return;
+ 	}
+ 
+-	while (true) {
+-		numa_node = next_numa_node_id++;
+-		if (numa_node == nr_node_ids) {
+-			next_numa_node_id = 0;
+-			continue;
++	for (i = 1; i <= ncpu + 1; i++) {
++		while (true) {
++			numa_node = next_numa_node_id++;
++			if (numa_node == nr_node_ids) {
++				next_numa_node_id = 0;
++				continue;
++			}
++			if (cpumask_empty(cpumask_of_node(numa_node)))
++				continue;
++			break;
+ 		}
+-		if (cpumask_empty(cpumask_of_node(numa_node)))
+-			continue;
+-		break;
+-	}
+-	alloced_mask = &hv_context.hv_numa_map[numa_node];
++		alloced_mask = &hv_context.hv_numa_map[numa_node];
+ 
+-	if (cpumask_weight(alloced_mask) ==
+-	    cpumask_weight(cpumask_of_node(numa_node))) {
+-		/*
+-		 * We have cycled through all the CPUs in the node;
+-		 * reset the alloced map.
+-		 */
+-		cpumask_clear(alloced_mask);
+-	}
++		if (cpumask_weight(alloced_mask) ==
++		    cpumask_weight(cpumask_of_node(numa_node))) {
++			/*
++			 * We have cycled through all the CPUs in the node;
++			 * reset the alloced map.
++			 */
++			cpumask_clear(alloced_mask);
++		}
+ 
+-	cpumask_xor(available_mask, alloced_mask, cpumask_of_node(numa_node));
++		cpumask_xor(available_mask, alloced_mask,
++			    cpumask_of_node(numa_node));
+ 
+-	target_cpu = cpumask_first(available_mask);
+-	cpumask_set_cpu(target_cpu, alloced_mask);
++		target_cpu = cpumask_first(available_mask);
++		cpumask_set_cpu(target_cpu, alloced_mask);
++
++		if (channel->offermsg.offer.sub_channel_index >= ncpu ||
++		    i > ncpu || !hv_cpuself_used(target_cpu, channel))
++			break;
++	}
+ 
+ 	channel->target_cpu = target_cpu;
+ 
 -- 
 2.39.5
 
