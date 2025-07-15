@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83EBB05E0F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E6DB05EAF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3DD93A643E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69CB64A199E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0052E2EEA;
-	Tue, 15 Jul 2025 13:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D022E6D2D;
+	Tue, 15 Jul 2025 13:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCZnXKma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpPFWcfj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C752D3732;
-	Tue, 15 Jul 2025 13:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603132E5421;
+	Tue, 15 Jul 2025 13:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586626; cv=none; b=XH5b5UaCCfOa5W6esbzcQMuGn4l63bNmLOkemlGU0bc0iCwlPoLy4iwl8ietTVL92jfl56wtentidivg4EbSlBQepIcY9geXwhQQ/8XlX03ONl4KydOVxoY8u0YHC1OxSBNAMRRLQIJS9PUlgn4IF+LRg1Pt6xK+yuMWVr1025s=
+	t=1752587010; cv=none; b=plLfZhPE7xHELzW28y2nzl4LAjswmykw0GxfDyMf3qM1Wy4FpwKe/5ozlyj7wlEb89OlUkT9ce4nSbAA3rWvhklGTSmBF0QUr0e8xJUbn6ZhUE/Mf9W8/SEpA/H571eEqq5v4hlbL7Tum4roOTHWbecrE3xSWRZ+ltUO2A0tqYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586626; c=relaxed/simple;
-	bh=mX/8AxrU5l/0XlM0Zn/9jdcwshefwIweQOu9tb752wQ=;
+	s=arc-20240116; t=1752587010; c=relaxed/simple;
+	bh=sXmazfYvaXLrkuls3EL6I0b8NijK37six/FWdVTxQA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BR3cGDlMG5rGI5q3JXmZlj9RY82+NEpM2YNtcoljxq1thp5IeKK8ViFpzBSAY+7t7tI2zLm/fesjAvOUSQeiQnNEg+Eb4gDgsBD1oDYQrZTYRn+ktVNl7mkzIYPYSpAr8scKHHUFHw3rA4MuMA8x9veDpa1m0NIZ9qwmBCvbeB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCZnXKma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3D0C4CEF6;
-	Tue, 15 Jul 2025 13:37:05 +0000 (UTC)
+	 MIME-Version; b=sgCxMvWkpemTxuGI8wpcT3gjZo3tIfIZW/yu+b7Vb64PoMPLBETX3GSfhLGEOj+YEUXPqJoeUI8issV6rHrTxGRuW5eZa8XO3j/JEvQ2HFQIKwNpeQcA26DshcfZr6WR2IJhjmBTGhWZPu1FzOO/Mo7dCe6O4CdxBshS2wGEjHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpPFWcfj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A5EC4CEF1;
+	Tue, 15 Jul 2025 13:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586626;
-	bh=mX/8AxrU5l/0XlM0Zn/9jdcwshefwIweQOu9tb752wQ=;
+	s=korg; t=1752587010;
+	bh=sXmazfYvaXLrkuls3EL6I0b8NijK37six/FWdVTxQA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oCZnXKma2WuO2kY7TliaeKiimiVfOETGepK7XzuQlEUbIpSFAyxd4EjgpM2+F1fpQ
-	 Kkruob2fZpuXiUGV1EGUDvoRN6eW8/6EkS2wxBwQ9MF/a8YrI0k9FsKPW65BTubuxJ
-	 KKivDrZFR/YFu1n4snepIjp9BMs02jfA5RnoxniU=
+	b=OpPFWcfja5dLCmhYXUF9oU56MWezCXOWUvueqASglTOjRl+sCts/G8iO4vSfyMkME
+	 zTxRMVZUz6EZdJZoDdtItNZZ/PRnTrbvie6vihsjNSlfM+qGBuEWjX+FuTZ0Of8+fj
+	 klvUwz/3GAmpFeelz1N1xfU2RkBrlDj8yRAwjwPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 5.4 105/148] staging: rtl8723bs: Avoid memset() in aes_cipher() and aes_decipher()
-Date: Tue, 15 Jul 2025 15:13:47 +0200
-Message-ID: <20250715130804.515824480@linuxfoundation.org>
+	Simon Wadsworth <simon@morsemicro.com>,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 133/192] wifi: mac80211: correctly identify S1G short beacon
+Date: Tue, 15 Jul 2025 15:13:48 +0200
+Message-ID: <20250715130820.238640053@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,145 +63,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-commit a55bc4ffc06d8c965a7d6f0a01ed0ed41380df28 upstream.
+[ Upstream commit c5fd399a24c8e2865524361f7dc4d4a6899be4f4 ]
 
-After commit 6f110a5e4f99 ("Disable SLUB_TINY for build testing"), which
-causes CONFIG_KASAN to be enabled in allmodconfig again, arm64
-allmodconfig builds with older versions of clang (15 through 17) show an
-instance of -Wframe-larger-than (which breaks the build with
-CONFIG_WERROR=y):
+mac80211 identifies a short beacon by the presence of the next
+TBTT field, however the standard actually doesn't explicitly state that
+the next TBTT can't be in a long beacon or even that it is required in
+a short beacon - and as a result this validation does not work for all
+vendor implementations.
 
-  drivers/staging/rtl8723bs/core/rtw_security.c:1287:5: error: stack frame size (2208) exceeds limit (2048) in 'rtw_aes_decrypt' [-Werror,-Wframe-larger-than]
-   1287 | u32 rtw_aes_decrypt(struct adapter *padapter, u8 *precvframe)
-        |     ^
+The standard explicitly states that an S1G long beacon shall contain
+the S1G beacon compatibility element as the first element in a beacon
+transmitted at a TBTT that is not a TSBTT (Target Short Beacon
+Transmission Time) as per IEEE80211-2024 11.1.3.10.1. This is validated
+by 9.3.4.3 Table 9-76 which states that the S1G beacon compatibility
+element is only allowed in the full set and is not allowed in the
+minimum set of elements permitted for use within short beacons.
 
-This comes from aes_decipher() being inlined in rtw_aes_decrypt().
-Running the same build with CONFIG_FRAME_WARN=128 shows aes_cipher()
-also uses a decent amount of stack, just under the limit of 2048:
+Correctly identify short beacons by the lack of an S1G beacon
+compatibility element as the first element in an S1G beacon frame.
 
-  drivers/staging/rtl8723bs/core/rtw_security.c:864:19: warning: stack frame size (1952) exceeds limit (128) in 'aes_cipher' [-Wframe-larger-than]
-    864 | static signed int aes_cipher(u8 *key, uint      hdrlen,
-        |                   ^
-
--Rpass-analysis=stack-frame-layout only shows one large structure on the
-stack, which is the ctx variable inlined from aes128k128d(). A good
-number of the other variables come from the additional checks of
-fortified string routines, which are present in memset(), which both
-aes_cipher() and aes_decipher() use to initialize some temporary
-buffers. In this case, since the size is known at compile time, these
-additional checks should not result in any code generation changes but
-allmodconfig has several sanitizers enabled, which may make it harder
-for the compiler to eliminate the compile time checks and the variables
-that come about from them.
-
-The memset() calls are just initializing these buffers to zero, so use
-'= {}' instead, which is used all over the kernel and does the exact
-same thing as memset() without the fortify checks, which drops the stack
-usage of these functions by a few hundred kilobytes.
-
-  drivers/staging/rtl8723bs/core/rtw_security.c:864:19: warning: stack frame size (1584) exceeds limit (128) in 'aes_cipher' [-Wframe-larger-than]
-    864 | static signed int aes_cipher(u8 *key, uint      hdrlen,
-        |                   ^
-  drivers/staging/rtl8723bs/core/rtw_security.c:1271:5: warning: stack frame size (1456) exceeds limit (128) in 'rtw_aes_decrypt' [-Wframe-larger-than]
-   1271 | u32 rtw_aes_decrypt(struct adapter *padapter, u8 *precvframe)
-        |     ^
-
-Cc: stable@vger.kernel.org
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20250609-rtl8723bs-fix-clang-arm64-wflt-v1-1-e2accba43def@kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9eaffe5078ca ("cfg80211: convert S1G beacon to scan results")
+Signed-off-by: Simon Wadsworth <simon@morsemicro.com>
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250701075541.162619-1-lachlan.hodges@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_security.c |   46 +++++++-------------------
- 1 file changed, 14 insertions(+), 32 deletions(-)
+ include/linux/ieee80211.h | 45 ++++++++++++++++++++++++++++-----------
+ net/mac80211/mlme.c       |  7 ++++--
+ 2 files changed, 38 insertions(+), 14 deletions(-)
 
---- a/drivers/staging/rtl8723bs/core/rtw_security.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_security.c
-@@ -1333,30 +1333,21 @@ static sint aes_cipher(u8 *key, uint	hdr
- 		num_blocks, payload_index;
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 7edc3fb0641cb..f16a073928e9f 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -662,18 +662,6 @@ static inline bool ieee80211_s1g_has_cssid(__le16 fc)
+ 		(fc & cpu_to_le16(IEEE80211_S1G_BCN_CSSID));
+ }
  
- 	u8 pn_vector[6];
--	u8 mic_iv[16];
--	u8 mic_header1[16];
--	u8 mic_header2[16];
--	u8 ctr_preload[16];
-+	u8 mic_iv[16] = {};
-+	u8 mic_header1[16] = {};
-+	u8 mic_header2[16] = {};
-+	u8 ctr_preload[16] = {};
- 
- 	/* Intermediate Buffers */
--	u8 chain_buffer[16];
--	u8 aes_out[16];
--	u8 padded_buffer[16];
-+	u8 chain_buffer[16] = {};
-+	u8 aes_out[16] = {};
-+	u8 padded_buffer[16] = {};
- 	u8 mic[8];
- 	uint	frtype  = GetFrameType(pframe);
- 	uint	frsubtype  = GetFrameSubType(pframe);
- 
- 	frsubtype = frsubtype>>4;
- 
+-/**
+- * ieee80211_is_s1g_short_beacon - check if frame is an S1G short beacon
+- * @fc: frame control bytes in little-endian byteorder
+- * Return: whether or not the frame is an S1G short beacon,
+- *	i.e. it is an S1G beacon with 'next TBTT' flag set
+- */
+-static inline bool ieee80211_is_s1g_short_beacon(__le16 fc)
+-{
+-	return ieee80211_is_s1g_beacon(fc) &&
+-		(fc & cpu_to_le16(IEEE80211_S1G_BCN_NEXT_TBTT));
+-}
 -
--	memset((void *)mic_iv, 0, 16);
--	memset((void *)mic_header1, 0, 16);
--	memset((void *)mic_header2, 0, 16);
--	memset((void *)ctr_preload, 0, 16);
--	memset((void *)chain_buffer, 0, 16);
--	memset((void *)aes_out, 0, 16);
--	memset((void *)padded_buffer, 0, 16);
--
- 	if ((hdrlen == WLAN_HDR_A3_LEN) || (hdrlen ==  WLAN_HDR_A3_QOS_LEN))
- 		a4_exists = 0;
- 	else
-@@ -1581,15 +1572,15 @@ static sint aes_decipher(u8 *key, uint	h
- 			num_blocks, payload_index;
- 	sint res = _SUCCESS;
- 	u8 pn_vector[6];
--	u8 mic_iv[16];
--	u8 mic_header1[16];
--	u8 mic_header2[16];
--	u8 ctr_preload[16];
-+	u8 mic_iv[16] = {};
-+	u8 mic_header1[16] = {};
-+	u8 mic_header2[16] = {};
-+	u8 ctr_preload[16] = {};
+ /**
+  * ieee80211_is_atim - check if IEEE80211_FTYPE_MGMT && IEEE80211_STYPE_ATIM
+  * @fc: frame control bytes in little-endian byteorder
+@@ -4897,6 +4885,39 @@ static inline bool ieee80211_is_ftm(struct sk_buff *skb)
+ 	return false;
+ }
  
- 		/* Intermediate Buffers */
--	u8 chain_buffer[16];
--	u8 aes_out[16];
--	u8 padded_buffer[16];
-+	u8 chain_buffer[16] = {};
-+	u8 aes_out[16] = {};
-+	u8 padded_buffer[16] = {};
- 	u8 mic[8];
++/**
++ * ieee80211_is_s1g_short_beacon - check if frame is an S1G short beacon
++ * @fc: frame control bytes in little-endian byteorder
++ * @variable: pointer to the beacon frame elements
++ * @variable_len: length of the frame elements
++ * Return: whether or not the frame is an S1G short beacon. As per
++ *	IEEE80211-2024 11.1.3.10.1, The S1G beacon compatibility element shall
++ *	always be present as the first element in beacon frames generated at a
++ *	TBTT (Target Beacon Transmission Time), so any frame not containing
++ *	this element must have been generated at a TSBTT (Target Short Beacon
++ *	Transmission Time) that is not a TBTT. Additionally, short beacons are
++ *	prohibited from containing the S1G beacon compatibility element as per
++ *	IEEE80211-2024 9.3.4.3 Table 9-76, so if we have an S1G beacon with
++ *	either no elements or the first element is not the beacon compatibility
++ *	element, we have a short beacon.
++ */
++static inline bool ieee80211_is_s1g_short_beacon(__le16 fc, const u8 *variable,
++						 size_t variable_len)
++{
++	if (!ieee80211_is_s1g_beacon(fc))
++		return false;
++
++	/*
++	 * If the frame does not contain at least 1 element (this is perfectly
++	 * valid in a short beacon) and is an S1G beacon, we have a short
++	 * beacon.
++	 */
++	if (variable_len < 2)
++		return true;
++
++	return variable[0] != WLAN_EID_S1G_BCN_COMPAT;
++}
++
+ struct element {
+ 	u8 id;
+ 	u8 datalen;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 53d5ffad87be8..dc8df3129c007 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7194,6 +7194,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 	struct ieee80211_bss_conf *bss_conf = link->conf;
+ 	struct ieee80211_vif_cfg *vif_cfg = &sdata->vif.cfg;
+ 	struct ieee80211_mgmt *mgmt = (void *) hdr;
++	struct ieee80211_ext *ext = NULL;
+ 	size_t baselen;
+ 	struct ieee802_11_elems *elems;
+ 	struct ieee80211_local *local = sdata->local;
+@@ -7219,7 +7220,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 	/* Process beacon from the current BSS */
+ 	bssid = ieee80211_get_bssid(hdr, len, sdata->vif.type);
+ 	if (ieee80211_is_s1g_beacon(mgmt->frame_control)) {
+-		struct ieee80211_ext *ext = (void *) mgmt;
++		ext = (void *)mgmt;
+ 		variable = ext->u.s1g_beacon.variable +
+ 			   ieee80211_s1g_optional_len(ext->frame_control);
+ 	}
+@@ -7406,7 +7407,9 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 	}
  
- 
-@@ -1599,15 +1590,6 @@ static sint aes_decipher(u8 *key, uint	h
- 
- 	frsubtype = frsubtype>>4;
- 
--
--	memset((void *)mic_iv, 0, 16);
--	memset((void *)mic_header1, 0, 16);
--	memset((void *)mic_header2, 0, 16);
--	memset((void *)ctr_preload, 0, 16);
--	memset((void *)chain_buffer, 0, 16);
--	memset((void *)aes_out, 0, 16);
--	memset((void *)padded_buffer, 0, 16);
--
- 	/* start to decrypt the payload */
- 
- 	num_blocks = (plen-8) / 16; /* plen including LLC, payload_length and mic) */
+ 	if ((ncrc == link->u.mgd.beacon_crc && link->u.mgd.beacon_crc_valid) ||
+-	    ieee80211_is_s1g_short_beacon(mgmt->frame_control))
++	    (ext && ieee80211_is_s1g_short_beacon(ext->frame_control,
++						  parse_params.start,
++						  parse_params.len)))
+ 		goto free;
+ 	link->u.mgd.beacon_crc = ncrc;
+ 	link->u.mgd.beacon_crc_valid = true;
+-- 
+2.39.5
+
 
 
 
