@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD717B05C37
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:29:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2414AB05B8B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 678F17B8A07
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B63167450A3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F332E2F1E;
-	Tue, 15 Jul 2025 13:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D9E2E2EE7;
+	Tue, 15 Jul 2025 13:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BANZFi8h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inVCbUew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80FA2E041E;
-	Tue, 15 Jul 2025 13:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A812D5426;
+	Tue, 15 Jul 2025 13:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585811; cv=none; b=ZzZSns/dlifGD4efnToNsNHfLaHD1hdZrHArI/JTePf+D4gqSX0h2Kv7cQEXKW41WcP56OlWcuZsFLdMigrHGUPD4ZlL/rCDh/yebyDS7hFsHaGU4SJW49kEIBWYp/H2nzCzxVk8qwm703N88HvgIVv1E7Bq2EEzphHpz39N60c=
+	t=1752585604; cv=none; b=G7stUtJsfBsDReszB/0+ggPPUkleIZt4E/BrSkRt2zifFlUfPj9J5Er503gCUVc/lRV9z6eA+d1wgEtJh5HPPB5ci/7Vgy8tJq99Yr5mAGEGZoGg9ASJC3Ul77PQTVJEWsAOooamJukmrvZ/FkZeyn+MybiYu8/ef5dttB2STP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585811; c=relaxed/simple;
-	bh=vQf3riLDBKjyaGTPaAet7OWwUKfrIF3/wXhlwHoSqRY=;
+	s=arc-20240116; t=1752585604; c=relaxed/simple;
+	bh=xjNn9+f6jBLCixohlqUpNBLOYlr1WycG29ZIa43HkEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isJQtjR+50b5einh1aSq5erpKt6cyMvlPR77AhtaVrsE1gtkKquI0l4yRyse3cqDCbrQcRfGiqldf3hQv/86UOvvgNX3ZSyaVRs/n//c5VFwM5hil/lAM+qZEYmNb6LbdgK8LbTA4uJKkK8uz7QQl/vvngLBRpH7hLu4gaf2p5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BANZFi8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7AAC4CEE3;
-	Tue, 15 Jul 2025 13:23:31 +0000 (UTC)
+	 MIME-Version; b=JiKYlB4p+KtUolKDYbkW/ZqgU67QmYsgVvW1W3MRC4Hmwu8ZEKCmFV+uBGOh6iAjYh/TuCIRgaDyfVPU6/zBtCmtsp2GvFbgtKVZ6nAFBjnD4fU+NEHV4pRodvwajjHtPSj7LuJNVv5FuO/AbIG6BTLO0iJyl6qVpfQVa/2ck6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inVCbUew; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF58AC4CEE3;
+	Tue, 15 Jul 2025 13:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585811;
-	bh=vQf3riLDBKjyaGTPaAet7OWwUKfrIF3/wXhlwHoSqRY=;
+	s=korg; t=1752585604;
+	bh=xjNn9+f6jBLCixohlqUpNBLOYlr1WycG29ZIa43HkEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BANZFi8hd19vKrmaf5ZCTqzQmxhbc4+uhatQ+a6VHGcTgeTH/YSYU2omvAP2vLiPA
-	 TR0n0/fbeuRLgfRpJDBGtEVlzwtD2FK/XUAuj+3WWDtBL9HejgvvCPyrg4+J5ZFzRN
-	 +nGdq9y3Wm4IBDqIl8Xo3rjg7oS5OCys7dGD2dEc=
+	b=inVCbUewNgP0tplr8S6Cf4NF+AROM+/rebTcbWutF3iOz0xTG69RiYowNFG1Tgi5h
+	 PULzRCEg4wHfHfRM9GkfvoM7WfVulaj+sXGfjgY3wd0Jz6Dv8IeUdOB4MsudLUknFr
+	 L0/pXrGAOr/6r/HWgQ38yV4mIjnzfPrZSyaeVeIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/109] vsock: Fix IOCTL_VM_SOCKETS_GET_LOCAL_CID to check also `transport_local`
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Zhe Qiao <qiaozhe@iscas.ac.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 085/163] Revert "PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()"
 Date: Tue, 15 Jul 2025 15:12:33 +0200
-Message-ID: <20250715130759.569934062@linuxfoundation.org>
+Message-ID: <20250715130812.138171258@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Zhe Qiao <qiaozhe@iscas.ac.cn>
 
-[ Upstream commit 1e7d9df379a04ccd0c2f82f39fbb69d482e864cc ]
+commit 2b8be57fa0c88ac824a906f29c04d728f9f6047a upstream.
 
-Support returning VMADDR_CID_LOCAL in case no other vsock transport is
-available.
+This reverts commit 631b2af2f357 ("PCI/ACPI: Fix allocated memory release
+on error in pci_acpi_scan_root()").
 
-Fixes: 0e12190578d0 ("vsock: add local transport support in the vsock core")
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-3-98f0eb530747@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reverted patch causes the 'ri->cfg' and 'root_ops' resources to be
+released multiple times.
+
+When acpi_pci_root_create() fails, these resources have already been
+released internally by the __acpi_pci_root_release_info() function.
+
+Releasing them again in pci_acpi_scan_root() leads to incorrect behavior
+and potential memory issues.
+
+We plan to resolve the issue using a more appropriate fix.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/aEmdnuw715btq7Q5@stanley.mountain/
+Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
+Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20250619072608.2075475-1-qiaozhe@iscas.ac.cn
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/pci-acpi.c |   23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 58b7404a0da05..f20b117e5255e 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -2436,6 +2436,8 @@ static long vsock_dev_do_ioctl(struct file *filp,
- 		cid = vsock_registered_transport_cid(&transport_g2h);
- 		if (cid == VMADDR_CID_ANY)
- 			cid = vsock_registered_transport_cid(&transport_h2g);
-+		if (cid == VMADDR_CID_ANY)
-+			cid = vsock_registered_transport_cid(&transport_local);
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -1676,19 +1676,24 @@ struct pci_bus *pci_acpi_scan_root(struc
+ 		return NULL;
  
- 		if (put_user(cid, p) != 0)
- 			retval = -EFAULT;
--- 
-2.39.5
-
+ 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
+-	if (!root_ops)
+-		goto free_ri;
++	if (!root_ops) {
++		kfree(ri);
++		return NULL;
++	}
+ 
+ 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
+-	if (!ri->cfg)
+-		goto free_root_ops;
++	if (!ri->cfg) {
++		kfree(ri);
++		kfree(root_ops);
++		return NULL;
++	}
+ 
+ 	root_ops->release_info = pci_acpi_generic_release_info;
+ 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
+ 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
+ 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
+ 	if (!bus)
+-		goto free_cfg;
++		return NULL;
+ 
+ 	/* If we must preserve the resource configuration, claim now */
+ 	host = pci_find_host_bridge(bus);
+@@ -1705,14 +1710,6 @@ struct pci_bus *pci_acpi_scan_root(struc
+ 		pcie_bus_configure_settings(child);
+ 
+ 	return bus;
+-
+-free_cfg:
+-	pci_ecam_free(ri->cfg);
+-free_root_ops:
+-	kfree(root_ops);
+-free_ri:
+-	kfree(ri);
+-	return NULL;
+ }
+ 
+ void pcibios_add_bus(struct pci_bus *bus)
 
 
 
