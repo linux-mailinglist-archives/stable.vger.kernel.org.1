@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445B5B05F4A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E36AAB05C20
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAB657BDB72
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 402494A1442
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F5B2E8DEB;
-	Tue, 15 Jul 2025 13:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4425E2E3B00;
+	Tue, 15 Jul 2025 13:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeyuV92u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H75jRAm9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3CE2E88BB;
-	Tue, 15 Jul 2025 13:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035B61EF09D;
+	Tue, 15 Jul 2025 13:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587506; cv=none; b=JHSl+gfHAKzshWGUOIC//kQAb4j/dJwqdrqDPLr45KpKXQ3vcKMAsyzaQCanDR/eSc1MwYfMNyOZSpeP13u09vqpUE9kJ/9oN62tYsVl2Y/lB4sN/tb0XUOT4lO91z5MCbdc7Bd2YM6/E2GT5OY83jOM97Q8TdSI2tSqU20Ik8c=
+	t=1752585878; cv=none; b=khd1tQfW7XdtxKrJcPuuUCiT8Jzc+oPfp+fisWl+Cm6W+riYNeU21YyQ+Seuis02kROtwZDRz1gPb3Dy0xpEYy4jjZUZj0KcZalSAMf+pIyjmXzVdo6PRrFGJ3c7j2cWwPAOOWQYC9oz3Iotx+5L4YOkv7EHSOa9zA8cUIA3Mp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587506; c=relaxed/simple;
-	bh=3OqYNCT1/f9Oj5IWfCXn2yQlv+jF20n4z6PlubnkjDY=;
+	s=arc-20240116; t=1752585878; c=relaxed/simple;
+	bh=shjX2y2BxWDOIoVmpL2OZGwD2T9U2a6oCT4e4G3PveU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gAFqXhkp4pNCLLcOns2k7c2b66LzniEEng6HHprGl9HgarJBrkIFnjPRI1ymL1v2hP3QAxKxGdoW4M5YFY+3Nw/Fryqn8NNpJi/ao6vhDvMC3N5mlLY9W5UfwaLeGG8+gEyZVcUj3SMSkNmwJwNF8t2UiNOVg8/jQA4vlf+0CH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeyuV92u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A15C4CEE3;
-	Tue, 15 Jul 2025 13:51:45 +0000 (UTC)
+	 MIME-Version; b=aPsLb3Sa6p1MBgMpHj+PjYRexJ6dZC2TMQHnxMCOuuzB+dU9P/ERD3+lFtVevRn6CmOiVIPuZgRo2uNVofRGN24mPc/zTw3z9glyDz8RqOcBoTaJOLx5rhb1V4SlXpwTDhJZWOlp7j9qJvTi0DXW+WGo/KsRPMHgUMis3vdzW8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H75jRAm9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC5BC4CEE3;
+	Tue, 15 Jul 2025 13:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587506;
-	bh=3OqYNCT1/f9Oj5IWfCXn2yQlv+jF20n4z6PlubnkjDY=;
+	s=korg; t=1752585877;
+	bh=shjX2y2BxWDOIoVmpL2OZGwD2T9U2a6oCT4e4G3PveU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CeyuV92u+3HNVwmA7Ht4ZV133NOCwG2HfNtt2Ta6EF3N8j5Wn0zJmVisLJrm+brK7
-	 PJuDrdTxe+wrhuT+QD0Hjo+PamPhWP86PzXBAR3UUdKWQ8ftqBWrueWhDLsG/diZoD
-	 hAxzgn7yhT3c/B4B0R438umwnmn90Sx+98MTLNvk=
+	b=H75jRAm9qgWrR9lIMpWXb6xg6414+seoMQY8K3Ikb8d8bwpdkvymggBcvVbMobKbB
+	 4jPvKBWI/lst/9hw3pCjXlxmRZC19MwzJqVsvQVJyVTMzVT7l5at1CcwJxCkHCWaxl
+	 Nc5FTP+oMbkLzK3Jq9ICNhLOS3Jyy7y59Dlk/QaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Jason Baron <jbaron@akamai.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 038/208] Drivers: hv: vmbus: Fix duplicate CPU assignments within a device
+Subject: [PATCH 6.6 011/109] netlink: Fix wraparounds of sk->sk_rmem_alloc.
 Date: Tue, 15 Jul 2025 15:12:27 +0200
-Message-ID: <20250715130812.486705615@linuxfoundation.org>
+Message-ID: <20250715130759.331705790@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,211 +63,202 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 7c9ff3deeee61b253715dcf968a6307af148c9b2 ]
+[ Upstream commit ae8f160e7eb24240a2a79fc4c815c6a0d4ee16cc ]
 
-The vmbus module uses a rotational algorithm to assign target CPUs to
-a device's channels. Depending on the timing of different device's channel
-offers, different channels of a device may be assigned to the same CPU.
+Netlink has this pattern in some places
 
-For example on a VM with 2 CPUs, if NIC A and B's channels are offered
-in the following order, NIC A will have both channels on CPU0, and
-NIC B will have both channels on CPU1 -- see below. This kind of
-assignment causes RSS load that is spreading across different channels
-to end up on the same CPU.
+  if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
+  	atomic_add(skb->truesize, &sk->sk_rmem_alloc);
 
-Timing of channel offers:
-NIC A channel 0
-NIC B channel 0
-NIC A channel 1
-NIC B channel 1
+, which has the same problem fixed by commit 5a465a0da13e ("udp:
+Fix multiple wraparounds of sk->sk_rmem_alloc.").
 
-VMBUS ID 14: Class_ID = {f8615163-df3e-46c5-913f-f2d2f965ed0e} - Synthetic network adapter
-        Device_ID = {cab064cd-1f31-47d5-a8b4-9d57e320cccd}
-        Sysfs path: /sys/bus/vmbus/devices/cab064cd-1f31-47d5-a8b4-9d57e320cccd
-        Rel_ID=14, target_cpu=0
-        Rel_ID=17, target_cpu=0
+For example, if we set INT_MAX to SO_RCVBUFFORCE, the condition
+is always false as the two operands are of int.
 
-VMBUS ID 16: Class_ID = {f8615163-df3e-46c5-913f-f2d2f965ed0e} - Synthetic network adapter
-        Device_ID = {244225ca-743e-4020-a17d-d7baa13d6cea}
-        Sysfs path: /sys/bus/vmbus/devices/244225ca-743e-4020-a17d-d7baa13d6cea
-        Rel_ID=16, target_cpu=1
-        Rel_ID=18, target_cpu=1
+Then, a single socket can eat as many skb as possible until OOM
+happens, and we can see multiple wraparounds of sk->sk_rmem_alloc.
 
-Update the vmbus CPU assignment algorithm to avoid duplicate CPU
-assignments within a device.
+Let's fix it by using atomic_add_return() and comparing the two
+variables as unsigned int.
 
-The new algorithm iterates num_online_cpus + 1 times.
-The existing rotational algorithm to find "next NUMA & CPU" is still here.
-But if the resulting CPU is already used by the same device, it will try
-the next CPU.
-In the last iteration, it assigns the channel to the next available CPU
-like the existing algorithm. This is not normally expected, because
-during device probe, we limit the number of channels of a device to
-be <= number of online CPUs.
+Before:
+  [root@fedora ~]# ss -f netlink
+  Recv-Q      Send-Q Local Address:Port                Peer Address:Port
+  -1668710080 0               rtnl:nl_wraparound/293               *
 
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Tested-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/1626459673-17420-1-git-send-email-haiyangz@microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Stable-dep-of: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
+After:
+  [root@fedora ~]# ss -f netlink
+  Recv-Q     Send-Q Local Address:Port                Peer Address:Port
+  2147483072 0               rtnl:nl_wraparound/290               *
+  ^
+  `--- INT_MAX - 576
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Jason Baron <jbaron@akamai.com>
+Closes: https://lore.kernel.org/netdev/cover.1750285100.git.jbaron@akamai.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250704054824.1580222-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/channel_mgmt.c | 96 ++++++++++++++++++++++++++-------------
- 1 file changed, 64 insertions(+), 32 deletions(-)
+ net/netlink/af_netlink.c | 81 ++++++++++++++++++++++++----------------
+ 1 file changed, 49 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
-index 0c6c54061088e..9da36d87ee2c7 100644
---- a/drivers/hv/channel_mgmt.c
-+++ b/drivers/hv/channel_mgmt.c
-@@ -579,6 +579,17 @@ static void vmbus_process_offer(struct vmbus_channel *newchannel)
- 	 */
- 	mutex_lock(&vmbus_connection.channel_mutex);
- 
-+	list_for_each_entry(channel, &vmbus_connection.chn_list, listentry) {
-+		if (guid_equal(&channel->offermsg.offer.if_type,
-+			       &newchannel->offermsg.offer.if_type) &&
-+		    guid_equal(&channel->offermsg.offer.if_instance,
-+			       &newchannel->offermsg.offer.if_instance)) {
-+			fnew = false;
-+			newchannel->primary_channel = channel;
-+			break;
-+		}
-+	}
-+
- 	init_vp_index(newchannel);
- 
- 	/* Remember the channels that should be cleaned up upon suspend. */
-@@ -591,16 +602,6 @@ static void vmbus_process_offer(struct vmbus_channel *newchannel)
- 	 */
- 	atomic_dec(&vmbus_connection.offer_in_progress);
- 
--	list_for_each_entry(channel, &vmbus_connection.chn_list, listentry) {
--		if (guid_equal(&channel->offermsg.offer.if_type,
--			       &newchannel->offermsg.offer.if_type) &&
--		    guid_equal(&channel->offermsg.offer.if_instance,
--			       &newchannel->offermsg.offer.if_instance)) {
--			fnew = false;
--			break;
--		}
--	}
--
- 	if (fnew) {
- 		list_add_tail(&newchannel->listentry,
- 			      &vmbus_connection.chn_list);
-@@ -622,7 +623,6 @@ static void vmbus_process_offer(struct vmbus_channel *newchannel)
- 		/*
- 		 * Process the sub-channel.
- 		 */
--		newchannel->primary_channel = channel;
- 		list_add_tail(&newchannel->sc_list, &channel->sc_list);
- 	}
- 
-@@ -658,6 +658,30 @@ static void vmbus_process_offer(struct vmbus_channel *newchannel)
- 	queue_work(wq, &newchannel->add_channel_work);
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 4aa2cbe9d6fa6..6476640b6b1ec 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -387,7 +387,6 @@ static void netlink_skb_set_owner_r(struct sk_buff *skb, struct sock *sk)
+ 	WARN_ON(skb->sk != NULL);
+ 	skb->sk = sk;
+ 	skb->destructor = netlink_skb_destructor;
+-	atomic_add(skb->truesize, &sk->sk_rmem_alloc);
+ 	sk_mem_charge(sk, skb->truesize);
  }
  
-+/*
-+ * Check if CPUs used by other channels of the same device.
-+ * It should only be called by init_vp_index().
-+ */
-+static bool hv_cpuself_used(u32 cpu, struct vmbus_channel *chn)
-+{
-+	struct vmbus_channel *primary = chn->primary_channel;
-+	struct vmbus_channel *sc;
-+
-+	lockdep_assert_held(&vmbus_connection.channel_mutex);
-+
-+	if (!primary)
-+		return false;
-+
-+	if (primary->target_cpu == cpu)
-+		return true;
-+
-+	list_for_each_entry(sc, &primary->sc_list, sc_list)
-+		if (sc != chn && sc->target_cpu == cpu)
-+			return true;
-+
-+	return false;
-+}
-+
- /*
-  * We use this state to statically distribute the channel interrupt load.
-  */
-@@ -677,6 +701,7 @@ static int next_numa_node_id;
- static void init_vp_index(struct vmbus_channel *channel)
+@@ -1223,41 +1222,48 @@ static struct sk_buff *netlink_alloc_large_skb(unsigned int size,
+ int netlink_attachskb(struct sock *sk, struct sk_buff *skb,
+ 		      long *timeo, struct sock *ssk)
  {
- 	bool perf_chn = hv_is_perf_channel(channel);
-+	u32 i, ncpu = num_online_cpus();
- 	cpumask_var_t available_mask;
- 	struct cpumask *alloced_mask;
- 	u32 target_cpu;
-@@ -699,31 +724,38 @@ static void init_vp_index(struct vmbus_channel *channel)
- 		return;
- 	}
++	DECLARE_WAITQUEUE(wait, current);
+ 	struct netlink_sock *nlk;
++	unsigned int rmem;
  
--	while (true) {
--		numa_node = next_numa_node_id++;
--		if (numa_node == nr_node_ids) {
--			next_numa_node_id = 0;
--			continue;
-+	for (i = 1; i <= ncpu + 1; i++) {
-+		while (true) {
-+			numa_node = next_numa_node_id++;
-+			if (numa_node == nr_node_ids) {
-+				next_numa_node_id = 0;
-+				continue;
-+			}
-+			if (cpumask_empty(cpumask_of_node(numa_node)))
-+				continue;
-+			break;
- 		}
--		if (cpumask_empty(cpumask_of_node(numa_node)))
--			continue;
--		break;
--	}
--	alloced_mask = &hv_context.hv_numa_map[numa_node];
-+		alloced_mask = &hv_context.hv_numa_map[numa_node];
+ 	nlk = nlk_sk(sk);
++	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
  
--	if (cpumask_weight(alloced_mask) ==
--	    cpumask_weight(cpumask_of_node(numa_node))) {
--		/*
--		 * We have cycled through all the CPUs in the node;
--		 * reset the alloced map.
--		 */
--		cpumask_clear(alloced_mask);
--	}
-+		if (cpumask_weight(alloced_mask) ==
-+		    cpumask_weight(cpumask_of_node(numa_node))) {
-+			/*
-+			 * We have cycled through all the CPUs in the node;
-+			 * reset the alloced map.
-+			 */
-+			cpumask_clear(alloced_mask);
-+		}
- 
--	cpumask_xor(available_mask, alloced_mask, cpumask_of_node(numa_node));
-+		cpumask_xor(available_mask, alloced_mask,
-+			    cpumask_of_node(numa_node));
- 
--	target_cpu = cpumask_first(available_mask);
--	cpumask_set_cpu(target_cpu, alloced_mask);
-+		target_cpu = cpumask_first(available_mask);
-+		cpumask_set_cpu(target_cpu, alloced_mask);
-+
-+		if (channel->offermsg.offer.sub_channel_index >= ncpu ||
-+		    i > ncpu || !hv_cpuself_used(target_cpu, channel))
-+			break;
+-	if ((atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
+-	     test_bit(NETLINK_S_CONGESTED, &nlk->state))) {
+-		DECLARE_WAITQUEUE(wait, current);
+-		if (!*timeo) {
+-			if (!ssk || netlink_is_kernel(ssk))
+-				netlink_overrun(sk);
+-			sock_put(sk);
+-			kfree_skb(skb);
+-			return -EAGAIN;
+-		}
+-
+-		__set_current_state(TASK_INTERRUPTIBLE);
+-		add_wait_queue(&nlk->wait, &wait);
++	if ((rmem == skb->truesize || rmem < READ_ONCE(sk->sk_rcvbuf)) &&
++	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
++		netlink_skb_set_owner_r(skb, sk);
++		return 0;
 +	}
  
- 	channel->target_cpu = target_cpu;
+-		if ((atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
+-		     test_bit(NETLINK_S_CONGESTED, &nlk->state)) &&
+-		    !sock_flag(sk, SOCK_DEAD))
+-			*timeo = schedule_timeout(*timeo);
++	atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
  
+-		__set_current_state(TASK_RUNNING);
+-		remove_wait_queue(&nlk->wait, &wait);
++	if (!*timeo) {
++		if (!ssk || netlink_is_kernel(ssk))
++			netlink_overrun(sk);
+ 		sock_put(sk);
++		kfree_skb(skb);
++		return -EAGAIN;
++	}
+ 
+-		if (signal_pending(current)) {
+-			kfree_skb(skb);
+-			return sock_intr_errno(*timeo);
+-		}
+-		return 1;
++	__set_current_state(TASK_INTERRUPTIBLE);
++	add_wait_queue(&nlk->wait, &wait);
++	rmem = atomic_read(&sk->sk_rmem_alloc);
++
++	if (((rmem && rmem + skb->truesize > READ_ONCE(sk->sk_rcvbuf)) ||
++	     test_bit(NETLINK_S_CONGESTED, &nlk->state)) &&
++	    !sock_flag(sk, SOCK_DEAD))
++		*timeo = schedule_timeout(*timeo);
++
++	__set_current_state(TASK_RUNNING);
++	remove_wait_queue(&nlk->wait, &wait);
++	sock_put(sk);
++
++	if (signal_pending(current)) {
++		kfree_skb(skb);
++		return sock_intr_errno(*timeo);
+ 	}
+-	netlink_skb_set_owner_r(skb, sk);
+-	return 0;
++
++	return 1;
+ }
+ 
+ static int __netlink_sendskb(struct sock *sk, struct sk_buff *skb)
+@@ -1317,6 +1323,7 @@ static int netlink_unicast_kernel(struct sock *sk, struct sk_buff *skb,
+ 	ret = -ECONNREFUSED;
+ 	if (nlk->netlink_rcv != NULL) {
+ 		ret = skb->len;
++		atomic_add(skb->truesize, &sk->sk_rmem_alloc);
+ 		netlink_skb_set_owner_r(skb, sk);
+ 		NETLINK_CB(skb).sk = ssk;
+ 		netlink_deliver_tap_kernel(sk, ssk, skb);
+@@ -1393,13 +1400,19 @@ EXPORT_SYMBOL_GPL(netlink_strict_get_check);
+ static int netlink_broadcast_deliver(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct netlink_sock *nlk = nlk_sk(sk);
++	unsigned int rmem, rcvbuf;
+ 
+-	if (atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf &&
++	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
++	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
++
++	if ((rmem != skb->truesize || rmem <= rcvbuf) &&
+ 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
+ 		netlink_skb_set_owner_r(skb, sk);
+ 		__netlink_sendskb(sk, skb);
+-		return atomic_read(&sk->sk_rmem_alloc) > (sk->sk_rcvbuf >> 1);
++		return rmem > (rcvbuf >> 1);
+ 	}
++
++	atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
+ 	return -1;
+ }
+ 
+@@ -2190,6 +2203,7 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
+ 	struct module *module;
+ 	int err = -ENOBUFS;
+ 	int alloc_min_size;
++	unsigned int rmem;
+ 	int alloc_size;
+ 
+ 	if (!lock_taken)
+@@ -2199,9 +2213,6 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
+ 		goto errout_skb;
+ 	}
+ 
+-	if (atomic_read(&sk->sk_rmem_alloc) >= sk->sk_rcvbuf)
+-		goto errout_skb;
+-
+ 	/* NLMSG_GOODSIZE is small to avoid high order allocations being
+ 	 * required, but it makes sense to _attempt_ a 16K bytes allocation
+ 	 * to reduce number of system calls on dump operations, if user
+@@ -2224,6 +2235,12 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
+ 	if (!skb)
+ 		goto errout_skb;
+ 
++	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
++	if (rmem >= READ_ONCE(sk->sk_rcvbuf)) {
++		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
++		goto errout_skb;
++	}
++
+ 	/* Trim skb to allocated size. User is expected to provide buffer as
+ 	 * large as max(min_dump_alloc, 16KiB (mac_recvmsg_len capped at
+ 	 * netlink_recvmsg())). dump will pack as many smaller messages as
 -- 
 2.39.5
 
