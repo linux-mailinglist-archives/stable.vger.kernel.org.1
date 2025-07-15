@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-161999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B822B05B15
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:17:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A3FB05E26
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2744189F139
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94274E7FFD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA9620487E;
-	Tue, 15 Jul 2025 13:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7FF2E54DD;
+	Tue, 15 Jul 2025 13:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjL0Wk/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiNGkPVm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E957261B;
-	Tue, 15 Jul 2025 13:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3402E3AF9;
+	Tue, 15 Jul 2025 13:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585404; cv=none; b=n86xb7o7pvsfKpYRdrh9q6UmP6gHW//pPjw0w1KStUfYGjr8r+oJ+jSZmdVEb+mdldP4Q5wWuIEhLQGSaDRBQ7FUMBcLDyMaUfvXwgk03nPAwOau0kbG2eW1dIsH4aueU2N0QqWSLUVnzFHF57HXjmVeAWUiKV//n2RDAH+sdsA=
+	t=1752586683; cv=none; b=qzaCjA7mjjszZYf+l1TfDDA/oNzEpJMdKVRdE2ErToLaSeW/3yzt5vj5ilP+/VhMVxTDhuL++7cA0LGqtijZtnK1rSr/UqAAWTiBNqeyDfktNV/kLGkZYLGU0qCFdpEUgamAz50NEDgsYKBaUkGHdKme7mGxt+daYCDqK2wjlZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585404; c=relaxed/simple;
-	bh=VTqa2kDPbCEyeF2Rm+nDA/drygvTTknTub0b28XBn5A=;
+	s=arc-20240116; t=1752586683; c=relaxed/simple;
+	bh=IffMIAgBKPGn7hqzCQBOKgaQEFtZUHklxpU00w6B9DM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPruM8zlchnfmiU0S3q/79JzXtcFgs4VgdZWLVlhAzO+cPZxV7XMMXGn1lxouWSeZYTQ9aWujpDQrTZae20LUxDLlOTAT5630u/nYtUm+THZkYC0c65HVom+RUegMD327WV5qelmKxAqczMVBUejtKt0tw5zos04ZIKpVww19K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjL0Wk/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0493C4CEE3;
-	Tue, 15 Jul 2025 13:16:43 +0000 (UTC)
+	 MIME-Version; b=s5xaWbsQm93CIAaKXLXbrWUZMEZPWd9ZaTK1F+RjXt/NgZxVXRqWUeNFBlpBpjZZ6zfmM5Osda0bTUlUbxYhX1Y2k/Lr0v2kg/8Ry3ibGttzzXJLy0F92Xc5Xz5pRI2nuWYIHKZtSNwh5N3zZHD133ew+pV9q2ZookNIiBWKWIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiNGkPVm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19496C4CEE3;
+	Tue, 15 Jul 2025 13:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585404;
-	bh=VTqa2kDPbCEyeF2Rm+nDA/drygvTTknTub0b28XBn5A=;
+	s=korg; t=1752586682;
+	bh=IffMIAgBKPGn7hqzCQBOKgaQEFtZUHklxpU00w6B9DM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bjL0Wk/t1aU+aRKfENY83E34T5ev6gaax4q76JqCB2aFIw3m097UVEM2umjdKyxHH
-	 3wxOZO1mzYoEKRYZQ3cZ7yWEz1RqFS3OgSOBd0bWQPHgWplc1NCXeAE6LBz7Z4xvyH
-	 cnMrwfo3oNC2U7XNRwhmubocgKUvKJCY83AWfhJE=
+	b=HiNGkPVmCYbXwn/SDv61HwmVhHdyvtTh4nj68ppom25AprFk4uUJpBFZMEY4IuFay
+	 htGQY1JPjXRCCi1a7GfUpiN8vODLbb5p9jpEIkwBORHw5omHE6CQwnzMj5zYfQZ/K3
+	 TlndCWXQiuf53C2ScupcvARRCgsPF567xDgcYLcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Jie <quic_luoj@quicinc.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/163] net: phy: qcom: qca808x: Fix WoL issue by utilizing at8031_set_wol()
+	Jann Horn <jannh@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.15 001/192] eventpoll: dont decrement ep refcount while still holding the ep mutex
 Date: Tue, 15 Jul 2025 15:11:36 +0200
-Message-ID: <20250715130809.886776381@linuxfoundation.org>
+Message-ID: <20250715130814.919965446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Jie <quic_luoj@quicinc.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 4ab9ada765b7acb5cd02fe27632ec2586b7868ee ]
+commit 8c2e52ebbe885c7eeaabd3b7ddcdc1246fc400d2 upstream.
 
-The previous commit unintentionally removed the code responsible for
-enabling WoL via MMD3 register 0x8012 BIT5. As a result, Wake-on-LAN
-(WoL) support for the QCA808X PHY is no longer functional.
+Jann Horn points out that epoll is decrementing the ep refcount and then
+doing a
 
-The WoL (Wake-on-LAN) feature for the QCA808X PHY is enabled via MMD3
-register 0x8012, BIT5. This implementation is aligned with the approach
-used in at8031_set_wol().
+    mutex_unlock(&ep->mtx);
 
-Fixes: e58f30246c35 ("net: phy: at803x: fix the wol setting functions")
-Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250704-qcom_phy_wol_support-v1-2-053342b1538d@quicinc.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+afterwards. That's very wrong, because it can lead to a use-after-free.
+
+That pattern is actually fine for the very last reference, because the
+code in question will delay the actual call to "ep_free(ep)" until after
+it has unlocked the mutex.
+
+But it's wrong for the much subtler "next to last" case when somebody
+*else* may also be dropping their reference and free the ep while we're
+still using the mutex.
+
+Note that this is true even if that other user is also using the same ep
+mutex: mutexes, unlike spinlocks, can not be used for object ownership,
+even if they guarantee mutual exclusion.
+
+A mutex "unlock" operation is not atomic, and as one user is still
+accessing the mutex as part of unlocking it, another user can come in
+and get the now released mutex and free the data structure while the
+first user is still cleaning up.
+
+See our mutex documentation in Documentation/locking/mutex-design.rst,
+in particular the section [1] about semantics:
+
+	"mutex_unlock() may access the mutex structure even after it has
+	 internally released the lock already - so it's not safe for
+	 another context to acquire the mutex and assume that the
+	 mutex_unlock() context is not using the structure anymore"
+
+So if we drop our ep ref before the mutex unlock, but we weren't the
+last one, we may then unlock the mutex, another user comes in, drops
+_their_ reference and releases the 'ep' as it now has no users - all
+while the mutex_unlock() is still accessing it.
+
+Fix this by simply moving the ep refcount dropping to outside the mutex:
+the refcount itself is atomic, and doesn't need mutex protection (that's
+the whole _point_ of refcounts: unlike mutexes, they are inherently
+about object lifetimes).
+
+Reported-by: Jann Horn <jannh@google.com>
+Link: https://docs.kernel.org/locking/mutex-design.html#semantics [1]
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/qcom/qca808x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/eventpoll.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/phy/qcom/qca808x.c b/drivers/net/phy/qcom/qca808x.c
-index 5048304ccc9e8..c3aad0e6b700a 100644
---- a/drivers/net/phy/qcom/qca808x.c
-+++ b/drivers/net/phy/qcom/qca808x.c
-@@ -633,7 +633,7 @@ static struct phy_driver qca808x_driver[] = {
- 	.handle_interrupt	= at803x_handle_interrupt,
- 	.get_tunable		= at803x_get_tunable,
- 	.set_tunable		= at803x_set_tunable,
--	.set_wol		= at803x_set_wol,
-+	.set_wol		= at8031_set_wol,
- 	.get_wol		= at803x_get_wol,
- 	.get_features		= qca808x_get_features,
- 	.config_aneg		= qca808x_config_aneg,
--- 
-2.39.5
-
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -883,7 +883,7 @@ static bool __ep_remove(struct eventpoll
+ 	kfree_rcu(epi, rcu);
+ 
+ 	percpu_counter_dec(&ep->user->epoll_watches);
+-	return ep_refcount_dec_and_test(ep);
++	return true;
+ }
+ 
+ /*
+@@ -891,14 +891,14 @@ static bool __ep_remove(struct eventpoll
+  */
+ static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
+ {
+-	WARN_ON_ONCE(__ep_remove(ep, epi, false));
++	if (__ep_remove(ep, epi, false))
++		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
+ }
+ 
+ static void ep_clear_and_put(struct eventpoll *ep)
+ {
+ 	struct rb_node *rbp, *next;
+ 	struct epitem *epi;
+-	bool dispose;
+ 
+ 	/* We need to release all tasks waiting for these file */
+ 	if (waitqueue_active(&ep->poll_wait))
+@@ -931,10 +931,8 @@ static void ep_clear_and_put(struct even
+ 		cond_resched();
+ 	}
+ 
+-	dispose = ep_refcount_dec_and_test(ep);
+ 	mutex_unlock(&ep->mtx);
+-
+-	if (dispose)
++	if (ep_refcount_dec_and_test(ep))
+ 		ep_free(ep);
+ }
+ 
+@@ -1137,7 +1135,7 @@ again:
+ 		dispose = __ep_remove(ep, epi, true);
+ 		mutex_unlock(&ep->mtx);
+ 
+-		if (dispose)
++		if (dispose && ep_refcount_dec_and_test(ep))
+ 			ep_free(ep);
+ 		goto again;
+ 	}
 
 
 
