@@ -1,57 +1,69 @@
-Return-Path: <stable+bounces-162202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31AEB05C35
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:29:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6738B05E7C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DD9C1C2223C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F325E17F98B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3283C2E2F0F;
-	Tue, 15 Jul 2025 13:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B392EBDDA;
+	Tue, 15 Jul 2025 13:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCKFDgqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vltIEt0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E573B2C327B;
-	Tue, 15 Jul 2025 13:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FDB2E2657;
+	Tue, 15 Jul 2025 13:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585944; cv=none; b=pNhxztbVenpXi1Z93djv77ax2jTFZ4tHGt02MUriCeOz+wnF4DpgE+qHy8g9lrmk7mUXAj5qpgv8HMSiZD5XCIbyCdODa1XMywbov5QNqsR7EJghhqsRn0shnbOzwreypVDK7/xXgfJ0IdyaGaLf9a3aOES3C1MwiWOD41pqsJk=
+	t=1752586944; cv=none; b=eGiZhe4/1d63WeQ9tiDx6HCP9LDjO1PFcSriIkAF0u9lev0lIqqbHpm1Dz7/3bgMiCE7qRaAANCLzsQDgkcnHX1ceslJuoilx8AZoNcyO116R4xdymeYsd/uBIucU5fhBnrGlBlHTSHzzH3SW6WHqQnhul9vAfk39R5F7B5Pdwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585944; c=relaxed/simple;
-	bh=F3Il8INoHh5usvaza2cNulgIpJ4ZyzDgPvVlAuUAIMU=;
+	s=arc-20240116; t=1752586944; c=relaxed/simple;
+	bh=BxmuLHxn/WE1J/xuOnhEa+utZlCF0gcYdFaTPF6loik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ge3lvIsTa7vFy1vpq+6sFPoYUapdWWCVadCHJk/4MTxCvhg6f4p9ScAayh/uPlal78N1rhgZ/nfTaNvmzRT9TZ6qAm/gCbWMHVEi+iJuZE9LJJALedJ8KcJrnWTpXl6STrE+UaHnvb1D8CKhqx4/2Q1NnUi+pP2fl8JJbdGyBqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCKFDgqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A9CC4CEE3;
-	Tue, 15 Jul 2025 13:25:43 +0000 (UTC)
+	 MIME-Version; b=cGeCEPPmTdzxVGjNluM66AT8kr0oyo8LgWi5gFlwzzEtLYdOExZiyoBaXwbZeLFxDHWORCevcbrPv92Toy0E5pXflAxRoNYg0lNtoHZ61gVo4NJ7q7GDNSmwpnFr6NOs8z6A9voJchFUcATmddlweunIs1KRpuW4RedKV+odWUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vltIEt0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F34C4CEE3;
+	Tue, 15 Jul 2025 13:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585943;
-	bh=F3Il8INoHh5usvaza2cNulgIpJ4ZyzDgPvVlAuUAIMU=;
+	s=korg; t=1752586943;
+	bh=BxmuLHxn/WE1J/xuOnhEa+utZlCF0gcYdFaTPF6loik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCKFDgqhZ3JW+xXG2VlNiKZkeUigiw3e+WlPtNxpRmXa5A13DKnz1B17P0FuuhGGA
-	 MMlxe0NW96xH+m2ICuT7/mzgdt9Hj7av8rYyJEfP0Xs0lkJYyEgWrFwVOjhkzLpbZH
-	 rQ5rmjQFVP8Dr4v1BEd59nkOZ3dwioPBwRqK0RHg=
+	b=vltIEt0/Yo8s0ZrDiRN5SI0jhNwKRqi8WIz+XgtDIcWAyETJuUBiKOIlJafICU7gx
+	 b8b0kwMQGqfNVcrOMQJi4nLo0GD+UUZxy+eBV9xcmXQLWXXZDon/SJqlpRzUJE1zx2
+	 7t2kXlg7NgTx87Zu0dNF1+COyhjTXIpalZ1CYq9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/109] btrfs: remove noinline from btrfs_update_inode()
+	Lance Yang <lance.yang@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chris Li <chrisl@kernel.org>,
+	"Huang, Ying" <huang.ying.caritas@gmail.com>,
+	Kairui Song <kasong@tencent.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Mingzhe Yang <mingzhe.yang@ly.com>,
+	Rik van Riel <riel@surriel.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Tangquan Zheng <zhengtangquan@oppo.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 107/192] mm/rmap: fix potential out-of-bounds page table access during batched unmap
 Date: Tue, 15 Jul 2025 15:13:22 +0200
-Message-ID: <20250715130801.526154531@linuxfoundation.org>
+Message-ID: <20250715130819.182840070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +75,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Lance Yang <lance.yang@linux.dev>
 
-[ Upstream commit cddaaacca9339d2f13599a822dc2f68be71d2e0d ]
+commit ddd05742b45b083975a0855ef6ebbf88cf1f532a upstream.
 
-The noinline attribute of btrfs_update_inode() is pointless as the
-function is exported and widely used, so remove it.
+As pointed out by David[1], the batched unmap logic in
+try_to_unmap_one() may read past the end of a PTE table when a large
+folio's PTE mappings are not fully contained within a single page
+table.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 5f61b961599a ("btrfs: fix inode lookup error handling during log replay")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While this scenario might be rare, an issue triggerable from userspace
+must be fixed regardless of its likelihood.  This patch fixes the
+out-of-bounds access by refactoring the logic into a new helper,
+folio_unmap_pte_batch().
+
+The new helper correctly calculates the safe batch size by capping the
+scan at both the VMA and PMD boundaries.  To simplify the code, it also
+supports partial batching (i.e., any number of pages from 1 up to the
+calculated safe maximum), as there is no strong reason to special-case
+for fully mapped folios.
+
+Link: https://lkml.kernel.org/r/20250701143100.6970-1-lance.yang@linux.dev
+Link: https://lkml.kernel.org/r/20250630011305.23754-1-lance.yang@linux.dev
+Link: https://lkml.kernel.org/r/20250627062319.84936-1-lance.yang@linux.dev
+Link: https://lore.kernel.org/linux-mm/a694398c-9f03-4737-81b9-7e49c857fcbe@redhat.com [1]
+Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Reported-by: David Hildenbrand <david@redhat.com>
+Closes: https://lore.kernel.org/linux-mm/a694398c-9f03-4737-81b9-7e49c857fcbe@redhat.com
+Suggested-by: Barry Song <baohua@kernel.org>
+Acked-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Mingzhe Yang <mingzhe.yang@ly.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Tangquan Zheng <zhengtangquan@oppo.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/rmap.c | 46 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 28 insertions(+), 18 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index e8e57abb032d7..c80c918485547 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4014,9 +4014,9 @@ static noinline int btrfs_update_inode_item(struct btrfs_trans_handle *trans,
- /*
-  * copy everything in the in-memory inode into the btree.
-  */
--noinline int btrfs_update_inode(struct btrfs_trans_handle *trans,
--				struct btrfs_root *root,
--				struct btrfs_inode *inode)
-+int btrfs_update_inode(struct btrfs_trans_handle *trans,
-+		       struct btrfs_root *root,
-+		       struct btrfs_inode *inode)
+diff --git a/mm/rmap.c b/mm/rmap.c
+index fb63d9256f09..1320b88fab74 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1845,23 +1845,32 @@ void folio_remove_rmap_pud(struct folio *folio, struct page *page,
+ #endif
+ }
+ 
+-/* We support batch unmapping of PTEs for lazyfree large folios */
+-static inline bool can_batch_unmap_folio_ptes(unsigned long addr,
+-			struct folio *folio, pte_t *ptep)
++static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
++			struct page_vma_mapped_walk *pvmw,
++			enum ttu_flags flags, pte_t pte)
  {
- 	struct btrfs_fs_info *fs_info = root->fs_info;
- 	int ret;
+ 	const fpb_t fpb_flags = FPB_IGNORE_DIRTY | FPB_IGNORE_SOFT_DIRTY;
+-	int max_nr = folio_nr_pages(folio);
+-	pte_t pte = ptep_get(ptep);
++	unsigned long end_addr, addr = pvmw->address;
++	struct vm_area_struct *vma = pvmw->vma;
++	unsigned int max_nr;
+ 
++	if (flags & TTU_HWPOISON)
++		return 1;
++	if (!folio_test_large(folio))
++		return 1;
++
++	/* We may only batch within a single VMA and a single page table. */
++	end_addr = pmd_addr_end(addr, vma->vm_end);
++	max_nr = (end_addr - addr) >> PAGE_SHIFT;
++
++	/* We only support lazyfree batching for now ... */
+ 	if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+-		return false;
++		return 1;
+ 	if (pte_unused(pte))
+-		return false;
+-	if (pte_pfn(pte) != folio_pfn(folio))
+-		return false;
++		return 1;
+ 
+-	return folio_pte_batch(folio, addr, ptep, pte, max_nr, fpb_flags, NULL,
+-			       NULL, NULL) == max_nr;
++	return folio_pte_batch(folio, addr, pvmw->pte, pte, max_nr, fpb_flags,
++			       NULL, NULL, NULL);
+ }
+ 
+ /*
+@@ -2024,9 +2033,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 			if (pte_dirty(pteval))
+ 				folio_mark_dirty(folio);
+ 		} else if (likely(pte_present(pteval))) {
+-			if (folio_test_large(folio) && !(flags & TTU_HWPOISON) &&
+-			    can_batch_unmap_folio_ptes(address, folio, pvmw.pte))
+-				nr_pages = folio_nr_pages(folio);
++			nr_pages = folio_unmap_pte_batch(folio, &pvmw, flags, pteval);
+ 			end_addr = address + nr_pages * PAGE_SIZE;
+ 			flush_cache_range(vma, address, end_addr);
+ 
+@@ -2206,13 +2213,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 			hugetlb_remove_rmap(folio);
+ 		} else {
+ 			folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
+-			folio_ref_sub(folio, nr_pages - 1);
+ 		}
+ 		if (vma->vm_flags & VM_LOCKED)
+ 			mlock_drain_local();
+-		folio_put(folio);
+-		/* We have already batched the entire folio */
+-		if (nr_pages > 1)
++		folio_put_refs(folio, nr_pages);
++
++		/*
++		 * If we are sure that we batched the entire folio and cleared
++		 * all PTEs, we can just optimize and stop right here.
++		 */
++		if (nr_pages == folio_nr_pages(folio))
+ 			goto walk_done;
+ 		continue;
+ walk_abort:
 -- 
-2.39.5
+2.50.1
 
 
 
