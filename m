@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-162899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD302B05FDE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 569F3B0600A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E3977BC02C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F2A77BDF45
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F0F2EE60A;
-	Tue, 15 Jul 2025 13:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958A42EE295;
+	Tue, 15 Jul 2025 13:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UitcQpE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BO4JtOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244F71531E8;
-	Tue, 15 Jul 2025 13:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541952ECD2F;
+	Tue, 15 Jul 2025 13:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587767; cv=none; b=XEUsJ80/HTxf+mNkoci/oFQbctFKbXW8e8hdpOKvDor4PDG2RXb/xubHApGFPmNbykphIOolk1YD+RMl8cui7SG7cn7+P3fTUefCcL6d4bhv6VA62BUlNjHrSuZuwAeS6ZyM2SSEvUg1kUopivdtlJaLx+DlHPYFrWkcQEzHBLM=
+	t=1752587679; cv=none; b=C5pqeV6PC8nS93khC/Wxe8OkpbdbzjhY8c9JJXY+M2MngNEl3ouVvAQTRUcki5Mh9u5AHvRnz7qKK/+WyRO+VERyF2FApFGdtkRiKNNaUh55vkfuB1d8yzZIlwqL/VoiZUEyO1GiDYOKSz4suWGhq2JKDL0woHpvtfonOLdpxNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587767; c=relaxed/simple;
-	bh=4Ks5zBmBSzp8Tsn4ePwaijoE9Xiz7h0spPPFKzbIYMU=;
+	s=arc-20240116; t=1752587679; c=relaxed/simple;
+	bh=6hyh6C4HJ34SYkKVwKzjpFAGpJ+J8WS+rG30vibuf9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r4Py4/x8HXY6Femh5dksMI6Do9TULW52cYhwu/14u2TdIMowE7ptJi4a2oPGsccFG6cqYLHEskYxHEpzdUgu/7y7PS1v6YFAFZiK3OEF0CgCxUe9mE6NMuFNUaBsraeTN3+sTGcWOinNvV4LcXw8pDtx6Lq7tBUx2UTeGLi+Xo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UitcQpE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9EEC4CEE3;
-	Tue, 15 Jul 2025 13:56:06 +0000 (UTC)
+	 MIME-Version; b=dtj7KyfHMyZCnfjICNhGZK4FKEZbhHiEXLPrrBk7hZQOy+zRjv90hb6Yc8V8TCJapy6la+Fjpdy8rCRFZQEECZ9wYuc1+aNbfRwkF92UL51dfcyedz4gDSoP3C29wwYELSxj9Lbmit4sfWsNVPbVpQ7rcMlN3fpcGMU+ZUaq6/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BO4JtOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5624C4CEE3;
+	Tue, 15 Jul 2025 13:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587767;
-	bh=4Ks5zBmBSzp8Tsn4ePwaijoE9Xiz7h0spPPFKzbIYMU=;
+	s=korg; t=1752587679;
+	bh=6hyh6C4HJ34SYkKVwKzjpFAGpJ+J8WS+rG30vibuf9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UitcQpE5A35fDH8b88JgaqelYrTwNV0MuSB++VIebmro3dHOCTdy/NNKJID83Af34
-	 kUcJQL3sN2Zxbp1hhbq/gN/1dS0q2uWLW/9vh+CbH4UgKCXGfeI9bLjfuY5i/riROk
-	 kAVhBRIxgLCbzrPeq+4Uld3yJ/wx7IU4gdql7Ff8=
+	b=2BO4JtOi+M8YHJvCtmTADlt5IQFsiFyr0CWG0/xtR+rB/+exL9MvJ4lQ1WU8Hgr9R
+	 P0FNXHm9et0pAub3+g+ONUG+H2+NgYejkBGzMh7szyy4BqgrYfEzXUwGfi/pFSD6S5
+	 0TiqRYpAs7ITJKGPJrp5YlQA7OwvSsXR2vJY7rWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 094/208] lib: test_objagg: Set error message in check_expect_hints_stats()
-Date: Tue, 15 Jul 2025 15:13:23 +0200
-Message-ID: <20250715130814.707785222@linuxfoundation.org>
+Subject: [PATCH 5.10 095/208] amd-xgbe: align CL37 AN sequence as per databook
+Date: Tue, 15 Jul 2025 15:13:24 +0200
+Message-ID: <20250715130814.747625910@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -69,48 +66,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit e6ed134a4ef592fe1fd0cafac9683813b3c8f3e8 ]
+[ Upstream commit 42fd432fe6d320323215ebdf4de4d0d7e56e6792 ]
 
-Smatch complains that the error message isn't set in the caller:
+Update the Clause 37 Auto-Negotiation implementation to properly align
+with the PCS hardware specifications:
+- Fix incorrect bit settings in Link Status and Link Duplex fields
+- Implement missing sequence steps 2 and 7
 
-    lib/test_objagg.c:923 test_hints_case2()
-    error: uninitialized symbol 'errmsg'.
+These changes ensure CL37 auto-negotiation protocol follows the exact
+sequence patterns as specified in the hardware databook.
 
-This static checker warning only showed up after a recent refactoring
-but the bug dates back to when the code was originally added.  This
-likely doesn't affect anything in real life.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202506281403.DsuyHFTZ-lkp@intel.com/
-Fixes: 0a020d416d0a ("lib: introduce initial implementation of object aggregation manager")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/8548f423-2e3b-4bb7-b816-5041de2762aa@sabinyo.mountain
+Fixes: 1bf40ada6290 ("amd-xgbe: Add support for clause 37 auto-negotiation")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Link: https://patch.msgid.link/20250630192636.3838291-1-Raju.Rangoju@amd.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_objagg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-common.h | 2 ++
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c   | 9 +++++++++
+ drivers/net/ethernet/amd/xgbe/xgbe.h        | 4 ++--
+ 3 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/lib/test_objagg.c b/lib/test_objagg.c
-index da137939a4100..78d25ab19a960 100644
---- a/lib/test_objagg.c
-+++ b/lib/test_objagg.c
-@@ -899,8 +899,10 @@ static int check_expect_hints_stats(struct objagg_hints *objagg_hints,
- 	int err;
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-common.h b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
+index 533b8519ec352..c5dc23906a78d 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-common.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
+@@ -1355,6 +1355,8 @@
+ #define MDIO_VEND2_CTRL1_SS13		BIT(13)
+ #endif
  
- 	stats = objagg_hints_stats_get(objagg_hints);
--	if (IS_ERR(stats))
-+	if (IS_ERR(stats)) {
-+		*errmsg = "objagg_hints_stats_get() failed.";
- 		return PTR_ERR(stats);
-+	}
- 	err = __check_expect_stats(stats, expect_stats, errmsg);
- 	objagg_stats_put(stats);
- 	return err;
++#define XGBE_VEND2_MAC_AUTO_SW		BIT(9)
++
+ /* MDIO mask values */
+ #define XGBE_AN_CL73_INT_CMPLT		BIT(0)
+ #define XGBE_AN_CL73_INC_LINK		BIT(1)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+index 60be836b294bb..19fed56b6ee3f 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+@@ -363,6 +363,10 @@ static void xgbe_an37_set(struct xgbe_prv_data *pdata, bool enable,
+ 		reg |= MDIO_VEND2_CTRL1_AN_RESTART;
+ 
+ 	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_CTRL1, reg);
++
++	reg = XMDIO_READ(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL);
++	reg |= XGBE_VEND2_MAC_AUTO_SW;
++	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL, reg);
+ }
+ 
+ static void xgbe_an37_restart(struct xgbe_prv_data *pdata)
+@@ -991,6 +995,11 @@ static void xgbe_an37_init(struct xgbe_prv_data *pdata)
+ 
+ 	netif_dbg(pdata, link, pdata->netdev, "CL37 AN (%s) initialized\n",
+ 		  (pdata->an_mode == XGBE_AN_MODE_CL37) ? "BaseX" : "SGMII");
++
++	reg = XMDIO_READ(pdata, MDIO_MMD_AN, MDIO_CTRL1);
++	reg &= ~MDIO_AN_CTRL1_ENABLE;
++	XMDIO_WRITE(pdata, MDIO_MMD_AN, MDIO_CTRL1, reg);
++
+ }
+ 
+ static void xgbe_an73_init(struct xgbe_prv_data *pdata)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
+index 0493de8ee545a..61f22462197ae 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
+@@ -291,11 +291,11 @@
+ #define XGBE_LINK_TIMEOUT		5
+ #define XGBE_KR_TRAINING_WAIT_ITER	50
+ 
+-#define XGBE_SGMII_AN_LINK_STATUS	BIT(1)
++#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(1)
+ #define XGBE_SGMII_AN_LINK_SPEED	(BIT(2) | BIT(3))
+ #define XGBE_SGMII_AN_LINK_SPEED_100	0x04
+ #define XGBE_SGMII_AN_LINK_SPEED_1000	0x08
+-#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(4)
++#define XGBE_SGMII_AN_LINK_STATUS	BIT(4)
+ 
+ /* ECC correctable error notification window (seconds) */
+ #define XGBE_ECC_LIMIT			60
 -- 
 2.39.5
 
