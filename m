@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAEAB05EC5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE40B05BC0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA461501704
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15C2B17CC84
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9972E8DE8;
-	Tue, 15 Jul 2025 13:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9622E1758;
+	Tue, 15 Jul 2025 13:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPkz2HFy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pM89mwT6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF1F1B4231;
-	Tue, 15 Jul 2025 13:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D57A2E11D3;
+	Tue, 15 Jul 2025 13:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587076; cv=none; b=ewXYqHScKxe+NcKwAque0cWKH2tq9vGf/3JBTSFLkttP1WlnqgKg8aT96riWawuTKACGUTY7WEUz3eFsCO8bQoWJBkNAzn7fEHARDSQLeZcl9xUQk+YqtVnhFLL97mgrcR505ghWziT7Tl7kO3S5m4/9lM/kBm1KY1gNwHRTZiI=
+	t=1752585772; cv=none; b=JX3u0clhwjR4aDgwjyfb+88N5m0TTrrVs/3kmcT1Qx1rjpUrqwpL2Y4TccVNpiHMHuQneEkY3hgzrFMHLRS9L05QjGX3m4shK17znZSHT/QPvVOdZXC19YlbR7f/V4kjXSkbHLVyyIwa0iN1uVwpKj2ggZLG9ko0tuZ6y+MnUj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587076; c=relaxed/simple;
-	bh=HzW4GP9vfuzH/LfHvkfbqswRorR/KWLjBLCOOz4JocY=;
+	s=arc-20240116; t=1752585772; c=relaxed/simple;
+	bh=0PVpjAh6clYMjCrGvbY3cQdPhkwtVsdykG05PRNOZes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltGv+j1cskfEG+B1JD+pXGqtXaXD5M+j1VRqLsvrEBRTaQbGfjrp/l9RJjGm2OTIGwobmB9vaTXE3c8hlBVomZcOzCowqeiNe1+kQnQSTFGz24hbl+E+7plBsKmSUpCY2Fbulw4jvjP9k2A52V7oD/NNVOxQJceYEOSnU/ibSNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPkz2HFy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2951C4CEF6;
-	Tue, 15 Jul 2025 13:44:35 +0000 (UTC)
+	 MIME-Version; b=d7o1smQl85Yhwx82k70wEQj+CS4o0evmXhlB7mTAaE4ZWzMXkrXNgVHXJnzZcCTPJpVuFlg5mkwca4dt/IOb19IfmwtFM3dlkLgaIVC6RlarUL4balPBriWaae38t3BeXyfQrmIQxmxh+XA49uQOiaUFhcW2u0q1uTOA30mG2N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pM89mwT6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734CFC4CEE3;
+	Tue, 15 Jul 2025 13:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587076;
-	bh=HzW4GP9vfuzH/LfHvkfbqswRorR/KWLjBLCOOz4JocY=;
+	s=korg; t=1752585771;
+	bh=0PVpjAh6clYMjCrGvbY3cQdPhkwtVsdykG05PRNOZes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jPkz2HFyVy6taf57M71s5icfrM/oSpfl/wiA0epTPWtnB1zNYaDcGz3Iwi3BW8XcT
-	 lfuIGDgljbbbDfiQ/NZyi6qXoOqbhktNcnvtnt64vbU2eTsNhoe3V7DlD515i1R5nX
-	 xGzYfEoVEHk9XmkZ45qxfTskeiJkjrs8aZ1rl0xk=
+	b=pM89mwT6HCwAbzXJbQI4SyXj74oqQzU5D1/LzGrxrOEaXdSyuE8GQltGloOOSVQOO
+	 PscA3WcQXpTYKo7ygMmacbzjFdCVlN39mT6s/qsEvDNF5lXEkQ+xRxhaOIJA5aT4bj
+	 q3HOmbfMgQ7sBqXcMvyDNK7cbkzUT9ZyC+CwQmXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 126/192] netlink: make sure we allow at least one dump skb
-Date: Tue, 15 Jul 2025 15:13:41 +0200
-Message-ID: <20250715130819.953919366@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Fangrui Song <i@maskray.me>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 154/163] riscv: vdso: Exclude .rodata from the PT_DYNAMIC segment
+Date: Tue, 15 Jul 2025 15:13:42 +0200
+Message-ID: <20250715130815.018083740@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Fangrui Song <i@maskray.me>
 
-commit a215b5723922f8099078478122f02100e489cb80 upstream.
+[ Upstream commit e0eb1b6b0cd29ca7793c501d5960fd36ba11f110 ]
 
-Commit under Fixes tightened up the memory accounting for Netlink
-sockets. Looks like the accounting is too strict for some existing
-use cases, Marek reported issues with nl80211 / WiFi iw CLI.
+.rodata is implicitly included in the PT_DYNAMIC segment due to
+inheriting the segment of the preceding .dynamic section (in both GNU ld
+and LLD).  When the .rodata section's size is not a multiple of 16
+bytes on riscv64, llvm-readelf will report a "PT_DYNAMIC dynamic table
+is invalid" warning.  Note: in the presence of the .dynamic section, GNU
+readelf and llvm-readelf's -d option decodes the dynamic section using
+the section.
 
-To reduce number of iterations Netlink dumps try to allocate
-messages based on the size of the buffer passed to previous
-recvmsg() calls. If user space uses a larger buffer in recvmsg()
-than sk_rcvbuf we will allocate an skb we won't be able to queue.
+This issue arose after commit 8f8c1ff879fab60f80f3a7aec3000f47e5b03ba9
+("riscv: vdso.lds.S: remove hardcoded 0x800 .text start addr"), which
+placed .rodata directly after .dynamic by removing .eh_frame.
 
-Make sure we always allow at least one skb to be queued.
-Same workaround is already present in netlink_attachskb().
-Alternative would be to cap the allocation size to
-  rcvbuf - rmem_alloc
-but as I said, the workaround is already present in other places.
+This patch resolves the implicit inclusion into PT_DYNAMIC by explicitly
+specifying the :text output section phdr.
 
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/9794af18-4905-46c6-b12c-365ea2f05858@samsung.com
-Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250711001121.3649033-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2093
+Signed-off-by: Fangrui Song <i@maskray.me>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250602-riscv-vdso-v1-1-0620cf63cff0@maskray.me
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/vdso/vdso.lds.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -2258,11 +2258,11 @@ static int netlink_dump(struct sock *sk,
- 	struct netlink_ext_ack extack = {};
- 	struct netlink_callback *cb;
- 	struct sk_buff *skb = NULL;
-+	unsigned int rmem, rcvbuf;
- 	size_t max_recvmsg_len;
- 	struct module *module;
- 	int err = -ENOBUFS;
- 	int alloc_min_size;
--	unsigned int rmem;
- 	int alloc_size;
+diff --git a/arch/riscv/kernel/vdso/vdso.lds.S b/arch/riscv/kernel/vdso/vdso.lds.S
+index cbe2a179331d2..99e51f7755393 100644
+--- a/arch/riscv/kernel/vdso/vdso.lds.S
++++ b/arch/riscv/kernel/vdso/vdso.lds.S
+@@ -31,7 +31,7 @@ SECTIONS
+ 		*(.data .data.* .gnu.linkonce.d.*)
+ 		*(.dynbss)
+ 		*(.bss .bss.* .gnu.linkonce.b.*)
+-	}
++	}						:text
  
- 	if (!lock_taken)
-@@ -2294,8 +2294,9 @@ static int netlink_dump(struct sock *sk,
- 	if (!skb)
- 		goto errout_skb;
+ 	.note		: { *(.note.*) }		:text	:note
  
-+	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
- 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
--	if (rmem >= READ_ONCE(sk->sk_rcvbuf)) {
-+	if (rmem != skb->truesize && rmem >= rcvbuf) {
- 		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
- 		goto errout_skb;
- 	}
+-- 
+2.39.5
+
 
 
 
