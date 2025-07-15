@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-162068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBE1B05B5A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E18DDB05D7F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7A11899F41
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E74ED1889574
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7062E2F18;
-	Tue, 15 Jul 2025 13:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522D02E9EC7;
+	Tue, 15 Jul 2025 13:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAaUJ4TK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVMfw7Hy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF09A2E2F0C;
-	Tue, 15 Jul 2025 13:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0581D2E7F04;
+	Tue, 15 Jul 2025 13:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585589; cv=none; b=QWRN7ygHuwbsTGXM5NZDp+M3dncbVPZth8e9Xz8CbLTX/M7GrPcEaw3lsscayJd23jmoailsOTYMmYShn5iUkRwxnxthziRsrKleRwsgVgtmQGIc9H+joTdcVHBZw9WCTb6+DgG3mhzy8v+HEabHY707i9fjFyITCdy+i7smQgY=
+	t=1752586378; cv=none; b=qDonKAIHTZfE/5Pix/zvyVE+EGVnDUihqqcD/6j6u5ynvVAi9YfpFVHn541xjYNoRRQy07KW2OjmgXpiJxu+2DbY3ogXErTtsQtA9G6GlYdHFMQ7hGfnFnqjPCrdAl47HGo0UOjEZj5w6wsumTvn53OoEnIk8zg1b9SHwtgv8uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585589; c=relaxed/simple;
-	bh=5dWFUewCwh4cQ2rxDt8SC+2Idluw1wcXJQMvxUmUJyY=;
+	s=arc-20240116; t=1752586378; c=relaxed/simple;
+	bh=bejBpjBEFSlyCiATKd8paEHKxYEg9wTCRoj7xoO/hgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMRG9+AxWPZQBSFd4TiAIOHmP8h/oUQNjBqz9xbL69woh9TrKghpUNX1fdL13KaxOzQsBZIJtpB7x0DQR/7o8ZRl85K4NOvrgX/hxT6YNHfpNX8/N3AOoSa3YyzljyNOw+4frGCQL/jVpI+goVauhWtRmre9Sbwg7dAzngd7E6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAaUJ4TK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21297C4CEE3;
-	Tue, 15 Jul 2025 13:19:47 +0000 (UTC)
+	 MIME-Version; b=R/yooIco5O88ADMtoe0fiTYL7BIBSQ3IgtjRJp4UGxV+Ve5AvR4KXTie92BUvsQqCOdMs0P85a223M9tFsdF7PeJPGhpYW7eQyXErUmWQPp6I3CeBKZcNHZo+beP0vAsIZQLXgjfpXWhts9MGzcn/3jKAGSaln7svA4MJszisXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVMfw7Hy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCE0C4CEE3;
+	Tue, 15 Jul 2025 13:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585588;
-	bh=5dWFUewCwh4cQ2rxDt8SC+2Idluw1wcXJQMvxUmUJyY=;
+	s=korg; t=1752586377;
+	bh=bejBpjBEFSlyCiATKd8paEHKxYEg9wTCRoj7xoO/hgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZAaUJ4TK7WcHEeFwUauzLyjisvDWMI1V96t7R6gp5/fED4a2BzP16WdZse/jgBTcb
-	 OrAC/hSDXyarGLBzrLAjYzxoXg1Q52C9DGswy1TAktp74upj0byhry1jQFVJH9660A
-	 3dczEdRCE6jyyofKyRtsjo1nN8VjC7h4v6r0XUQ8=
+	b=wVMfw7HyrLpIhpwKz+jEr+qNgGXRAhyFK5CT0hfRrAj8MHna/i4SgdTHoprezToCI
+	 qFs2KZvHZo1k3jSglL4M8bTv2RzElVTBbrQltHoVLQwBdVX1uO1a4dmuAhJlXenf/m
+	 zmUGQecdr8jM5/EzvWrHQXhmR2Qn0u8WsAKyHXyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Jann Horn <jannh@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH 6.12 097/163] x86/mm: Disable hugetlb page table sharing on 32-bit
+	syzbot+8bd335d2ad3b93e80715@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 043/148] atm: Release atm_dev_mutex after removing procfs in atm_dev_deregister().
 Date: Tue, 15 Jul 2025 15:12:45 +0200
-Message-ID: <20250715130812.758066100@linuxfoundation.org>
+Message-ID: <20250715130802.040724746@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 76303ee8d54bff6d9a6d55997acd88a6c2ba63cf upstream.
+[ Upstream commit a433791aeaea6e84df709e0b9584b9bbe040cd1c ]
 
-Only select ARCH_WANT_HUGE_PMD_SHARE on 64-bit x86.
-Page table sharing requires at least three levels because it involves
-shared references to PMD tables; 32-bit x86 has either two-level paging
-(without PAE) or three-level paging (with PAE), but even with
-three-level paging, having a dedicated PGD entry for hugetlb is only
-barely possible (because the PGD only has four entries), and it seems
-unlikely anyone's actually using PMD sharing on 32-bit.
+syzbot reported a warning below during atm_dev_register(). [0]
 
-Having ARCH_WANT_HUGE_PMD_SHARE enabled on non-PAE 32-bit X86 (which
-has 2-level paging) became particularly problematic after commit
-59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count"),
-since that changes `struct ptdesc` such that the `pt_mm` (for PGDs) and
-the `pt_share_count` (for PMDs) share the same union storage - and with
-2-level paging, PMDs are PGDs.
+Before creating a new device and procfs/sysfs for it, atm_dev_register()
+looks up a duplicated device by __atm_dev_lookup().  These operations are
+done under atm_dev_mutex.
 
-(For comparison, arm64 also gates ARCH_WANT_HUGE_PMD_SHARE on the
-configuration of page tables such that it is never enabled with 2-level
-paging.)
+However, when removing a device in atm_dev_deregister(), it releases the
+mutex just after removing the device from the list that __atm_dev_lookup()
+iterates over.
 
-Closes: https://lore.kernel.org/r/srhpjxlqfna67blvma5frmy3aa@altlinux.org
-Fixes: cfe28c5d63d8 ("x86: mm: Remove x86 version of huge_pmd_share.")
-Reported-by: Vitaly Chikunov <vt@altlinux.org>
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Vitaly Chikunov <vt@altlinux.org>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250702-x86-2level-hugetlb-v2-1-1a98096edf92%40google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So, there will be a small race window where the device does not exist on
+the device list but procfs/sysfs are still not removed, triggering the
+splat.
+
+Let's hold the mutex until procfs/sysfs are removed in
+atm_dev_deregister().
+
+[0]:
+proc_dir_entry 'atm/atmtcp:0' already registered
+WARNING: CPU: 0 PID: 5919 at fs/proc/generic.c:377 proc_register+0x455/0x5f0 fs/proc/generic.c:377
+Modules linked in:
+CPU: 0 UID: 0 PID: 5919 Comm: syz-executor284 Not tainted 6.16.0-rc2-syzkaller-00047-g52da431bf03b #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+RIP: 0010:proc_register+0x455/0x5f0 fs/proc/generic.c:377
+Code: 48 89 f9 48 c1 e9 03 80 3c 01 00 0f 85 a2 01 00 00 48 8b 44 24 10 48 c7 c7 20 c0 c2 8b 48 8b b0 d8 00 00 00 e8 0c 02 1c ff 90 <0f> 0b 90 90 48 c7 c7 80 f2 82 8e e8 0b de 23 09 48 8b 4c 24 28 48
+RSP: 0018:ffffc9000466fa30 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff817ae248
+RDX: ffff888026280000 RSI: ffffffff817ae255 RDI: 0000000000000001
+RBP: ffff8880232bed48 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: ffff888076ed2140
+R13: dffffc0000000000 R14: ffff888078a61340 R15: ffffed100edda444
+FS:  00007f38b3b0c6c0(0000) GS:ffff888124753000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f38b3bdf953 CR3: 0000000076d58000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ proc_create_data+0xbe/0x110 fs/proc/generic.c:585
+ atm_proc_dev_register+0x112/0x1e0 net/atm/proc.c:361
+ atm_dev_register+0x46d/0x890 net/atm/resources.c:113
+ atmtcp_create+0x77/0x210 drivers/atm/atmtcp.c:369
+ atmtcp_attach drivers/atm/atmtcp.c:403 [inline]
+ atmtcp_ioctl+0x2f9/0xd60 drivers/atm/atmtcp.c:464
+ do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
+ sock_do_ioctl+0x115/0x280 net/socket.c:1190
+ sock_ioctl+0x227/0x6b0 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl fs/ioctl.c:893 [inline]
+ __x64_sys_ioctl+0x18b/0x210 fs/ioctl.c:893
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f38b3b74459
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f38b3b0c198 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f38b3bfe318 RCX: 00007f38b3b74459
+RDX: 0000000000000000 RSI: 0000000000006180 RDI: 0000000000000005
+RBP: 00007f38b3bfe310 R08: 65732f636f72702f R09: 65732f636f72702f
+R10: 65732f636f72702f R11: 0000000000000246 R12: 00007f38b3bcb0ac
+R13: 00007f38b3b0c1a0 R14: 0000200000000200 R15: 00007f38b3bcb03b
+ </TASK>
+
+Fixes: 64bf69ddff76 ("[ATM]: deregistration removes device from atm_devs list immediately")
+Reported-by: syzbot+8bd335d2ad3b93e80715@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/685316de.050a0220.216029.0087.GAE@google.com/
+Tested-by: syzbot+8bd335d2ad3b93e80715@syzkaller.appspotmail.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250624214505.570679-1-kuni1840@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/atm/resources.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -137,7 +137,7 @@ config X86
- 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
- 	select ARCH_WANTS_NO_INSTR
- 	select ARCH_WANT_GENERAL_HUGETLB
--	select ARCH_WANT_HUGE_PMD_SHARE
-+	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
- 	select ARCH_WANT_LD_ORPHAN_WARN
- 	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if X86_64
- 	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
+--- a/net/atm/resources.c
++++ b/net/atm/resources.c
+@@ -148,11 +148,10 @@ void atm_dev_deregister(struct atm_dev *
+ 	 */
+ 	mutex_lock(&atm_dev_mutex);
+ 	list_del(&dev->dev_list);
+-	mutex_unlock(&atm_dev_mutex);
+-
+ 	atm_dev_release_vccs(dev);
+ 	atm_unregister_sysfs(dev);
+ 	atm_proc_dev_deregister(dev);
++	mutex_unlock(&atm_dev_mutex);
+ 
+ 	atm_dev_put(dev);
+ }
 
 
 
