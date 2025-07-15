@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-162123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B741B05BB3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82384B05C8A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7167C565F4A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC60F7B9A70
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949412E175D;
-	Tue, 15 Jul 2025 13:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376882E49B6;
+	Tue, 15 Jul 2025 13:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4XQY9eq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPWCLtHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D1F2C327B;
-	Tue, 15 Jul 2025 13:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA38C2E49A2;
+	Tue, 15 Jul 2025 13:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585733; cv=none; b=e4xsRJNU1ymzv+J+cody+SB/telwBaxvHaEjiqNt7BMqcnXR89Vz9Jg4kDJBLzgsnpZefhO61NtevQx/krj97p2+e/HomErPgwdn4ZNP3xhM/wLAox9G3knuMDk3kx+Rhp7MrGyk2kE4orK5Ft873egu0HqVRjWUDC+OKB3D9rY=
+	t=1752585907; cv=none; b=oW+AEl4hkCJcb3kCzeJq5p4MABCEHXqddy/eQKW3D2GCEgFjdpQbyp3sZQLKCg2Pbrax3gAaALij74h7C7N5W1/2ftmrGnh+KUobTQS/qeicEmkFSUwUxP6tC9Uc1KlQq3I3idkbpDGGNF4w7ZhHVVusEt03McRIYVeM/uMmqck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585733; c=relaxed/simple;
-	bh=LiALDdqN/BGK980H2S8JeP02RQN8hIr0nV8pmQihqBc=;
+	s=arc-20240116; t=1752585907; c=relaxed/simple;
+	bh=FGhNuLzjQFeW5xyCETe0ZASrHz0inICJ+MZ933ryonE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXDq81cO8lQt+wDjjGAByQiiUc6OktEbvNgzF4uzD3dSgtxm86TWilBphzqp94N79Yg4QhRns3HQFygoA2Msbytaj48nSOQN3mlTX8/XRwjOIhlTe1Aw6Mho+zAvDIk/TrZoc8jnvWgVnjHRMORDIuIKq+LDeQkn6G5gJqTT/Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4XQY9eq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5C1C4CEE3;
-	Tue, 15 Jul 2025 13:22:12 +0000 (UTC)
+	 MIME-Version; b=YOD2ip+c+tbEcivL923dPhOqtDphXRgnQDBcu9gaRhKELjsaMIzK4Riz0wAYQ73Fx1RK8SADoErQtAuz9spWYUrUYM9Rexc1E/962yYm7a8dsxsyQY1jf0yqOqjRu8gVssRi385hRtuH2Q93Xt/AczockL0ssy6uG8bip/HuFpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPWCLtHR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590BDC4CEE3;
+	Tue, 15 Jul 2025 13:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585733;
-	bh=LiALDdqN/BGK980H2S8JeP02RQN8hIr0nV8pmQihqBc=;
+	s=korg; t=1752585906;
+	bh=FGhNuLzjQFeW5xyCETe0ZASrHz0inICJ+MZ933ryonE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4XQY9eq9xkUeRqXYA9K1VpqWrGuz+uoI7rWW7fX553cL4zH7NyvPwTCEZ2C8poZh
-	 xLvs2pLW96YOUIT8BvgExp1zMWYm3h9quADR3P8Ij/4XZy6Mq8gXQZX0OHkX4oL1L+
-	 y7KBUlfyerFJpbEhBpy0uGywQ7W49/IB9F4ROhq0=
+	b=LPWCLtHRCHY/WTUD+DShvvAabEYQKa64nhG4NzNHRBfKRDHOhDiWNqabURf4kjDUw
+	 QOasSiSRm6VaLqx+Zi7dupbCyx6epN135o1jl/MPFq3domJ3bwNcyP3o3TB8t1WkPr
+	 1qPwY8IBoLJDfuerGPiZeLgDIr5IrYssFiwiEsQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/163] erofs: get rid of `z_erofs_next_pcluster_t`
-Date: Tue, 15 Jul 2025 15:13:08 +0200
-Message-ID: <20250715130813.666300115@linuxfoundation.org>
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 053/109] mm: fix the inaccurate memory statistics issue for users
+Date: Tue, 15 Jul 2025 15:13:09 +0200
+Message-ID: <20250715130800.996828254@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,248 +71,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-[ Upstream commit 5514d8478b8ef3f0ba1b77beaa65f05c12825143 ]
+commit 82241a83cd15aaaf28200a40ad1a8b480012edaf upstream.
 
-It was originally intended for tagged pointer reservation.
+On some large machines with a high number of CPUs running a 64K pagesize
+kernel, we found that the 'RES' field is always 0 displayed by the top
+command for some processes, which will cause a lot of confusion for users.
 
-Now all encoded data can be represented uniformally with
-`struct z_erofs_pcluster` as described in commit bf1aa03980f4
-("erofs: sunset `struct erofs_workgroup`"), let's drop it too.
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 875525 root      20   0   12480      0      0 R   0.3   0.0   0:00.08 top
+      1 root      20   0  172800      0      0 S   0.0   0.0   0:04.52 systemd
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250114034429.431408-2-hsiangkao@linux.alibaba.com
-Stable-dep-of: d53238b614e0 ("erofs: fix to add missing tracepoint in erofs_readahead()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The main reason is that the batch size of the percpu counter is quite
+large on these machines, caching a significant percpu value, since
+converting mm's rss stats into percpu_counter by commit f1a7941243c1 ("mm:
+convert mm's rss stats into percpu_counter").  Intuitively, the batch
+number should be optimized, but on some paths, performance may take
+precedence over statistical accuracy.  Therefore, introducing a new
+interface to add the percpu statistical count and display it to users,
+which can remove the confusion.  In addition, this change is not expected
+to be on a performance-critical path, so the modification should be
+acceptable.
+
+In addition, the 'mm->rss_stat' is updated by using add_mm_counter() and
+dec/inc_mm_counter(), which are all wrappers around
+percpu_counter_add_batch().  In percpu_counter_add_batch(), there is
+percpu batch caching to avoid 'fbc->lock' contention.  This patch changes
+task_mem() and task_statm() to get the accurate mm counters under the
+'fbc->lock', but this should not exacerbate kernel 'mm->rss_stat' lock
+contention due to the percpu batch caching of the mm counters.  The
+following test also confirm the theoretical analysis.
+
+I run the stress-ng that stresses anon page faults in 32 threads on my 32
+cores machine, while simultaneously running a script that starts 32
+threads to busy-loop pread each stress-ng thread's /proc/pid/status
+interface.  From the following data, I did not observe any obvious impact
+of this patch on the stress-ng tests.
+
+w/o patch:
+stress-ng: info:  [6848]          4,399,219,085,152 CPU Cycles          67.327 B/sec
+stress-ng: info:  [6848]          1,616,524,844,832 Instructions          24.740 B/sec (0.367 instr. per cycle)
+stress-ng: info:  [6848]          39,529,792 Page Faults Total           0.605 M/sec
+stress-ng: info:  [6848]          39,529,792 Page Faults Minor           0.605 M/sec
+
+w/patch:
+stress-ng: info:  [2485]          4,462,440,381,856 CPU Cycles          68.382 B/sec
+stress-ng: info:  [2485]          1,615,101,503,296 Instructions          24.750 B/sec (0.362 instr. per cycle)
+stress-ng: info:  [2485]          39,439,232 Page Faults Total           0.604 M/sec
+stress-ng: info:  [2485]          39,439,232 Page Faults Minor           0.604 M/sec
+
+On comparing a very simple app which just allocates & touches some
+memory against v6.1 (which doesn't have f1a7941243c1) and latest Linus
+tree (4c06e63b9203) I can see that on latest Linus tree the values for
+VmRSS, RssAnon and RssFile from /proc/self/status are all zeroes while
+they do report values on v6.1 and a Linus tree with this patch.
+
+Link: https://lkml.kernel.org/r/f4586b17f66f97c174f7fd1f8647374fdb53de1c.1749119050.git.baolin.wang@linux.alibaba.com
+Fixes: f1a7941243c1 ("mm: convert mm's rss stats into percpu_counter")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Tested-by Donet Tom <donettom@linux.ibm.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: SeongJae Park <sj@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zdata.c | 80 ++++++++++++++++++------------------------------
- 1 file changed, 29 insertions(+), 51 deletions(-)
+ fs/proc/task_mmu.c |   14 +++++++-------
+ include/linux/mm.h |    5 +++++
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 4d5a1fbd7e0ad..9e01b52ecad47 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -12,12 +12,6 @@
- #define Z_EROFS_PCLUSTER_MAX_PAGES	(Z_EROFS_PCLUSTER_MAX_SIZE / PAGE_SIZE)
- #define Z_EROFS_INLINE_BVECS		2
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -33,9 +33,9 @@ void task_mem(struct seq_file *m, struct
+ 	unsigned long text, lib, swap, anon, file, shmem;
+ 	unsigned long hiwater_vm, total_vm, hiwater_rss, total_rss;
  
--/*
-- * let's leave a type here in case of introducing
-- * another tagged pointer later.
-- */
--typedef void *z_erofs_next_pcluster_t;
--
- struct z_erofs_bvec {
- 	struct page *page;
- 	int offset;
-@@ -48,7 +42,7 @@ struct z_erofs_pcluster {
- 	struct lockref lockref;
+-	anon = get_mm_counter(mm, MM_ANONPAGES);
+-	file = get_mm_counter(mm, MM_FILEPAGES);
+-	shmem = get_mm_counter(mm, MM_SHMEMPAGES);
++	anon = get_mm_counter_sum(mm, MM_ANONPAGES);
++	file = get_mm_counter_sum(mm, MM_FILEPAGES);
++	shmem = get_mm_counter_sum(mm, MM_SHMEMPAGES);
  
- 	/* A: point to next chained pcluster or TAILs */
--	z_erofs_next_pcluster_t next;
-+	struct z_erofs_pcluster *next;
+ 	/*
+ 	 * Note: to minimize their overhead, mm maintains hiwater_vm and
+@@ -56,7 +56,7 @@ void task_mem(struct seq_file *m, struct
+ 	text = min(text, mm->exec_vm << PAGE_SHIFT);
+ 	lib = (mm->exec_vm << PAGE_SHIFT) - text;
  
- 	/* I: start block address of this pcluster */
- 	erofs_off_t index;
-@@ -91,12 +85,11 @@ struct z_erofs_pcluster {
- 
- /* the end of a chain of pclusters */
- #define Z_EROFS_PCLUSTER_TAIL           ((void *) 0x700 + POISON_POINTER_DELTA)
--#define Z_EROFS_PCLUSTER_NIL            (NULL)
- 
- struct z_erofs_decompressqueue {
- 	struct super_block *sb;
-+	struct z_erofs_pcluster *head;
- 	atomic_t pending_bios;
--	z_erofs_next_pcluster_t head;
- 
- 	union {
- 		struct completion done;
-@@ -491,8 +484,7 @@ struct z_erofs_decompress_frontend {
- 
- 	struct page *pagepool;
- 	struct page *candidate_bvpage;
--	struct z_erofs_pcluster *pcl;
--	z_erofs_next_pcluster_t owned_head;
-+	struct z_erofs_pcluster *pcl, *head;
- 	enum z_erofs_pclustermode mode;
- 
- 	erofs_off_t headoffset;
-@@ -502,7 +494,7 @@ struct z_erofs_decompress_frontend {
- };
- 
- #define DECOMPRESS_FRONTEND_INIT(__i) { \
--	.inode = __i, .owned_head = Z_EROFS_PCLUSTER_TAIL, \
-+	.inode = __i, .head = Z_EROFS_PCLUSTER_TAIL, \
- 	.mode = Z_EROFS_PCLUSTER_FOLLOWED }
- 
- static bool z_erofs_should_alloc_cache(struct z_erofs_decompress_frontend *fe)
-@@ -750,9 +742,7 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
- 	pcl->algorithmformat = map->m_algorithmformat;
- 	pcl->length = 0;
- 	pcl->partial = true;
--
--	/* new pclusters should be claimed as type 1, primary and followed */
--	pcl->next = fe->owned_head;
-+	pcl->next = fe->head;
- 	pcl->pageofs_out = map->m_la & ~PAGE_MASK;
- 	fe->mode = Z_EROFS_PCLUSTER_FOLLOWED;
- 
-@@ -788,8 +778,7 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
- 			goto err_out;
- 		}
- 	}
--	fe->owned_head = &pcl->next;
--	fe->pcl = pcl;
-+	fe->head = fe->pcl = pcl;
- 	return 0;
- 
- err_out:
-@@ -808,7 +797,7 @@ static int z_erofs_pcluster_begin(struct z_erofs_decompress_frontend *fe)
- 
- 	DBG_BUGON(fe->pcl);
- 	/* must be Z_EROFS_PCLUSTER_TAIL or pointed to previous pcluster */
--	DBG_BUGON(fe->owned_head == Z_EROFS_PCLUSTER_NIL);
-+	DBG_BUGON(!fe->head);
- 
- 	if (!(map->m_flags & EROFS_MAP_META)) {
- 		while (1) {
-@@ -836,10 +825,9 @@ static int z_erofs_pcluster_begin(struct z_erofs_decompress_frontend *fe)
- 	if (ret == -EEXIST) {
- 		mutex_lock(&fe->pcl->lock);
- 		/* check if this pcluster hasn't been linked into any chain. */
--		if (cmpxchg(&fe->pcl->next, Z_EROFS_PCLUSTER_NIL,
--			    fe->owned_head) == Z_EROFS_PCLUSTER_NIL) {
-+		if (!cmpxchg(&fe->pcl->next, NULL, fe->head)) {
- 			/* .. so it can be attached to our submission chain */
--			fe->owned_head = &fe->pcl->next;
-+			fe->head = fe->pcl;
- 			fe->mode = Z_EROFS_PCLUSTER_FOLLOWED;
- 		} else {	/* otherwise, it belongs to an inflight chain */
- 			fe->mode = Z_EROFS_PCLUSTER_INFLIGHT;
-@@ -1391,7 +1379,7 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
- 	pcl->vcnt = 0;
- 
- 	/* pcluster lock MUST be taken before the following line */
--	WRITE_ONCE(pcl->next, Z_EROFS_PCLUSTER_NIL);
-+	WRITE_ONCE(pcl->next, NULL);
- 	mutex_unlock(&pcl->lock);
- 
- 	if (z_erofs_is_inline_pcluster(pcl))
-@@ -1409,16 +1397,14 @@ static int z_erofs_decompress_queue(const struct z_erofs_decompressqueue *io,
- 		.pagepool = pagepool,
- 		.decompressed_secondary_bvecs =
- 			LIST_HEAD_INIT(be.decompressed_secondary_bvecs),
-+		.pcl = io->head,
- 	};
--	z_erofs_next_pcluster_t owned = io->head;
-+	struct z_erofs_pcluster *next;
- 	int err = io->eio ? -EIO : 0;
- 
--	while (owned != Z_EROFS_PCLUSTER_TAIL) {
--		DBG_BUGON(owned == Z_EROFS_PCLUSTER_NIL);
--
--		be.pcl = container_of(owned, struct z_erofs_pcluster, next);
--		owned = READ_ONCE(be.pcl->next);
--
-+	for (; be.pcl != Z_EROFS_PCLUSTER_TAIL; be.pcl = next) {
-+		DBG_BUGON(!be.pcl);
-+		next = READ_ONCE(be.pcl->next);
- 		err = z_erofs_decompress_pcluster(&be, err) ?: err;
- 	}
- 	return err;
-@@ -1628,18 +1614,13 @@ enum {
- 	NR_JOBQUEUES,
- };
- 
--static void move_to_bypass_jobqueue(struct z_erofs_pcluster *pcl,
--				    z_erofs_next_pcluster_t qtail[],
--				    z_erofs_next_pcluster_t owned_head)
-+static void z_erofs_move_to_bypass_queue(struct z_erofs_pcluster *pcl,
-+					 struct z_erofs_pcluster *next,
-+					 struct z_erofs_pcluster **qtail[])
+-	swap = get_mm_counter(mm, MM_SWAPENTS);
++	swap = get_mm_counter_sum(mm, MM_SWAPENTS);
+ 	SEQ_PUT_DEC("VmPeak:\t", hiwater_vm);
+ 	SEQ_PUT_DEC(" kB\nVmSize:\t", total_vm);
+ 	SEQ_PUT_DEC(" kB\nVmLck:\t", mm->locked_vm);
+@@ -89,12 +89,12 @@ unsigned long task_statm(struct mm_struc
+ 			 unsigned long *shared, unsigned long *text,
+ 			 unsigned long *data, unsigned long *resident)
  {
--	z_erofs_next_pcluster_t *const submit_qtail = qtail[JQ_SUBMIT];
--	z_erofs_next_pcluster_t *const bypass_qtail = qtail[JQ_BYPASS];
--
- 	WRITE_ONCE(pcl->next, Z_EROFS_PCLUSTER_TAIL);
--
--	WRITE_ONCE(*submit_qtail, owned_head);
--	WRITE_ONCE(*bypass_qtail, &pcl->next);
--
-+	WRITE_ONCE(*qtail[JQ_SUBMIT], next);
-+	WRITE_ONCE(*qtail[JQ_BYPASS], pcl);
- 	qtail[JQ_BYPASS] = &pcl->next;
+-	*shared = get_mm_counter(mm, MM_FILEPAGES) +
+-			get_mm_counter(mm, MM_SHMEMPAGES);
++	*shared = get_mm_counter_sum(mm, MM_FILEPAGES) +
++			get_mm_counter_sum(mm, MM_SHMEMPAGES);
+ 	*text = (PAGE_ALIGN(mm->end_code) - (mm->start_code & PAGE_MASK))
+ 								>> PAGE_SHIFT;
+ 	*data = mm->data_vm + mm->stack_vm;
+-	*resident = *shared + get_mm_counter(mm, MM_ANONPAGES);
++	*resident = *shared + get_mm_counter_sum(mm, MM_ANONPAGES);
+ 	return mm->total_vm;
  }
  
-@@ -1674,9 +1655,9 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- {
- 	struct super_block *sb = f->inode->i_sb;
- 	struct address_space *mc = MNGD_MAPPING(EROFS_SB(sb));
--	z_erofs_next_pcluster_t qtail[NR_JOBQUEUES];
-+	struct z_erofs_pcluster **qtail[NR_JOBQUEUES];
- 	struct z_erofs_decompressqueue *q[NR_JOBQUEUES];
--	z_erofs_next_pcluster_t owned_head = f->owned_head;
-+	struct z_erofs_pcluster *pcl, *next;
- 	/* bio is NULL initially, so no need to initialize last_{index,bdev} */
- 	erofs_off_t last_pa;
- 	unsigned int nr_bios = 0;
-@@ -1692,22 +1673,19 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 	qtail[JQ_SUBMIT] = &q[JQ_SUBMIT]->head;
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2551,6 +2551,11 @@ static inline unsigned long get_mm_count
+ 	return percpu_counter_read_positive(&mm->rss_stat[member]);
+ }
  
- 	/* by default, all need io submission */
--	q[JQ_SUBMIT]->head = owned_head;
-+	q[JQ_SUBMIT]->head = next = f->head;
++static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
++{
++	return percpu_counter_sum_positive(&mm->rss_stat[member]);
++}
++
+ void mm_trace_rss_stat(struct mm_struct *mm, int member);
  
- 	do {
- 		struct erofs_map_dev mdev;
--		struct z_erofs_pcluster *pcl;
- 		erofs_off_t cur, end;
- 		struct bio_vec bvec;
- 		unsigned int i = 0;
- 		bool bypass = true;
- 
--		DBG_BUGON(owned_head == Z_EROFS_PCLUSTER_NIL);
--		pcl = container_of(owned_head, struct z_erofs_pcluster, next);
--		owned_head = READ_ONCE(pcl->next);
--
-+		pcl = next;
-+		next = READ_ONCE(pcl->next);
- 		if (z_erofs_is_inline_pcluster(pcl)) {
--			move_to_bypass_jobqueue(pcl, qtail, owned_head);
-+			z_erofs_move_to_bypass_queue(pcl, next, qtail);
- 			continue;
- 		}
- 
-@@ -1779,8 +1757,8 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 		if (!bypass)
- 			qtail[JQ_SUBMIT] = &pcl->next;
- 		else
--			move_to_bypass_jobqueue(pcl, qtail, owned_head);
--	} while (owned_head != Z_EROFS_PCLUSTER_TAIL);
-+			z_erofs_move_to_bypass_queue(pcl, next, qtail);
-+	} while (next != Z_EROFS_PCLUSTER_TAIL);
- 
- 	if (bio) {
- 		if (erofs_is_fileio_mode(EROFS_SB(sb)))
-@@ -1812,7 +1790,7 @@ static int z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
- 	bool force_fg = z_erofs_is_sync_decompress(sbi, ra_folios);
- 	int err;
- 
--	if (f->owned_head == Z_EROFS_PCLUSTER_TAIL)
-+	if (f->head == Z_EROFS_PCLUSTER_TAIL)
- 		return 0;
- 	z_erofs_submit_queue(f, io, &force_fg, !!ra_folios);
- 
--- 
-2.39.5
-
+ static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
 
 
 
