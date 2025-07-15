@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7255B05E3D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:51:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F34B05D44
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9490516FA51
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 101A51898B00
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4060A2E7BDE;
-	Tue, 15 Jul 2025 13:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A84A2E7BBA;
+	Tue, 15 Jul 2025 13:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvTTVOgd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uiyu3Oqa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7C6BE4A;
-	Tue, 15 Jul 2025 13:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582762E7635;
+	Tue, 15 Jul 2025 13:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586775; cv=none; b=rHHWhB+PNwH0LK0oRxd0GeiD0FECklodGqy2/xHECaI0aa7RU9FbIP0jIL6/SrIZ/A2S56yBLYsPgla6EKk7QK2OGfEhQi8ORUTDWSfLQTHMGz82J8IG+MlcEAdjxDVlW+Z0O1IJ+sADMpPPAHIB+CjGdIQhR6/ozlcV3m49TEc=
+	t=1752586306; cv=none; b=AqaVx23787Bl3taggK+TdtVX0t7v52wP79htcRfetopkzLhF2QQ4Cl625vqIGwa5al/qHj2+SJG5BoTWptl24nUO5MPn/orvEuWXba4rzzq4s0Nf1CHjQhBSxztCcb1NICWF3nEApbh6hy0qzcmRX1Aup716lhgoLa1/Nlq2thM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586775; c=relaxed/simple;
-	bh=iTj16RiZS9DWkPaDB1DMO4ry1JJaOX/CqyYFEW8NKk0=;
+	s=arc-20240116; t=1752586306; c=relaxed/simple;
+	bh=rIbOb0H7sHjmvGVpWqrSs8bZhYGqTyuDApaFNuxSSmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNy1pyYNkNENa5K1MJzbzOTmeSCZt18kye61wzVnKZPxNNj/sQmhl6Cmcpu8UIgAzX0VSvoPf2TO8mkS3cMMkf7f1AI3UjwqE8pt9XRde9GLpyWAoA71mnq4a0NTmdankaQcWdmr3zcw1KYj+OcKva1pd6cOZnIxbG5u3YoWzow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvTTVOgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83779C4CEE3;
-	Tue, 15 Jul 2025 13:39:34 +0000 (UTC)
+	 MIME-Version; b=Tig30kXB2VHYXtLyIks1TOp7U/S/ITA4uuhsB/wnGY19Tv2UHCj4ZcbxM5LHJLR5aPC6K/36MYe4MZ3u72C1Wcr6KxeH+0UjD5hwzALur9sgBzfzmojXocMg1GB0767ivRksTVxhKoPFsaVNiyd4CLwLcFmpjdjmqVhPiwgyT34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uiyu3Oqa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0982C4CEE3;
+	Tue, 15 Jul 2025 13:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586774;
-	bh=iTj16RiZS9DWkPaDB1DMO4ry1JJaOX/CqyYFEW8NKk0=;
+	s=korg; t=1752586306;
+	bh=rIbOb0H7sHjmvGVpWqrSs8bZhYGqTyuDApaFNuxSSmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvTTVOgdBqHGSEDvOvQEgZ4Oia4we3BKeNJ0PgOm835UfHan6vcyRpUUvCHWKXrZ0
-	 fii5Kk0TR/5l8+g6Mzcub1gPfRKj6I0DBdFBZUuCJLbJOC/mXmkhss5rQOh67rdJ8a
-	 t4eNfdAiOWzOY56ICl3ws3Zz2ILUAe1tyWsc+whY=
+	b=Uiyu3Oqakjizpu98hdeCIqP/vF7ZfowtMquN+YKymwLtv7kh82BZKMjMvwe5TZRC6
+	 6EBhmookwc6jR53wMKU6lRw3B9v/K/AppTNevHe6hdu3ra4XBVas2byjxVthqWL5TI
+	 a+D0Ifb2m56N1ywHq2B/rfrTVjjyPxS5sC15TV2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0c77cccd6b7cd917b35a@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jian-Wei Wu <jian-wei_wu@keysight.com>,
+	Guido Kiener <guido.kiener@rohde-schwarz.com>,
+	Dave Penkler <dpenkler@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 043/192] atm: clip: Fix infinite recursive call of clip_push().
+Subject: [PATCH 5.4 016/148] USB: usbtmc: Add USBTMC_IOCTL_GET_STB
 Date: Tue, 15 Jul 2025 15:12:18 +0200
-Message-ID: <20250715130816.580576060@linuxfoundation.org>
+Message-ID: <20250715130800.957606221@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Dave Penkler <dpenkler@gmail.com>
 
-[ Upstream commit c489f3283dbfc0f3c00c312149cae90d27552c45 ]
+[ Upstream commit c9784e23c1020e63d6dba5e10ca8bf3d8b85c19c ]
 
-syzbot reported the splat below. [0]
+This new ioctl reads the status byte (STB) from the device and returns
+the STB unmodified to the application. The srq_asserted bit is not taken
+into account and not changed.
 
-This happens if we call ioctl(ATMARP_MKIP) more than once.
+This ioctl is useful to support non USBTMC-488 compliant devices.
 
-During the first call, clip_mkip() sets clip_push() to vcc->push(),
-and the second call copies it to clip_vcc->old_push().
-
-Later, when the socket is close()d, vcc_destroy_socket() passes
-NULL skb to clip_push(), which calls clip_vcc->old_push(),
-triggering the infinite recursion.
-
-Let's prevent the second ioctl(ATMARP_MKIP) by checking
-vcc->user_back, which is allocated by the first call as clip_vcc.
-
-Note also that we use lock_sock() to prevent racy calls.
-
-[0]:
-BUG: TASK stack guard page was hit at ffffc9000d66fff8 (stack is ffffc9000d670000..ffffc9000d678000)
-Oops: stack guard page: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5322 Comm: syz.0.0 Not tainted 6.16.0-rc4-syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:clip_push+0x5/0x720 net/atm/clip.c:191
-Code: e0 8f aa 8c e8 1c ad 5b fa eb ae 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 55 <41> 57 41 56 41 55 41 54 53 48 83 ec 20 48 89 f3 49 89 fd 48 bd 00
-RSP: 0018:ffffc9000d670000 EFLAGS: 00010246
-RAX: 1ffff1100235a4a5 RBX: ffff888011ad2508 RCX: ffff8880003c0000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888037f01000
-RBP: dffffc0000000000 R08: ffffffff8fa104f7 R09: 1ffffffff1f4209e
-R10: dffffc0000000000 R11: ffffffff8a99b300 R12: ffffffff8a99b300
-R13: ffff888037f01000 R14: ffff888011ad2500 R15: ffff888037f01578
-FS:  000055557ab6d500(0000) GS:ffff88808d250000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffc9000d66fff8 CR3: 0000000043172000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- clip_push+0x6dc/0x720 net/atm/clip.c:200
- clip_push+0x6dc/0x720 net/atm/clip.c:200
- clip_push+0x6dc/0x720 net/atm/clip.c:200
-...
- clip_push+0x6dc/0x720 net/atm/clip.c:200
- clip_push+0x6dc/0x720 net/atm/clip.c:200
- clip_push+0x6dc/0x720 net/atm/clip.c:200
- vcc_destroy_socket net/atm/common.c:183 [inline]
- vcc_release+0x157/0x460 net/atm/common.c:205
- __sock_release net/socket.c:647 [inline]
- sock_close+0xc0/0x240 net/socket.c:1391
- __fput+0x449/0xa70 fs/file_table.c:465
- task_work_run+0x1d1/0x260 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop+0xec/0x110 kernel/entry/common.c:114
- exit_to_user_mode_prepare include/linux/entry-common.h:330 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:414 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:449 [inline]
- do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff31c98e929
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fffb5aa1f78 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
-RAX: 0000000000000000 RBX: 0000000000012747 RCX: 00007ff31c98e929
-RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
-RBP: 00007ff31cbb7ba0 R08: 0000000000000001 R09: 0000000db5aa226f
-R10: 00007ff31c7ff030 R11: 0000000000000246 R12: 00007ff31cbb608c
-R13: 00007ff31cbb6080 R14: ffffffffffffffff R15: 00007fffb5aa2090
- </TASK>
-Modules linked in:
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+0c77cccd6b7cd917b35a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2371d94d248d126c1eb1
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250704062416.1613927-4-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Jian-Wei Wu <jian-wei_wu@keysight.com>
+Reviewed-by: Guido Kiener <guido.kiener@rohde-schwarz.com>
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20201215155621.9592-3-dpenkler@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: acb3dac2805d ("usb: usbtmc: Fix read_stb function and get_stb ioctl")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/clip.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/class/usbtmc.c   | 6 ++++++
+ include/uapi/linux/usb/tmc.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 9c9c6c3d98861..a30c5a2705455 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -429,6 +429,8 @@ static int clip_mkip(struct atm_vcc *vcc, int timeout)
+diff --git a/drivers/usb/class/usbtmc.c b/drivers/usb/class/usbtmc.c
+index d47ec01d29778..738ef160109bf 100644
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -2173,6 +2173,12 @@ static long usbtmc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 			file_data->auto_abort = !!tmp_byte;
+ 		break;
  
- 	if (!vcc->push)
- 		return -EBADFD;
-+	if (vcc->user_back)
-+		return -EINVAL;
- 	clip_vcc = kmalloc(sizeof(struct clip_vcc), GFP_KERNEL);
- 	if (!clip_vcc)
- 		return -ENOMEM;
++	case USBTMC_IOCTL_GET_STB:
++		retval = usbtmc_get_stb(file_data, &tmp_byte);
++		if (retval > 0)
++			retval = put_user(tmp_byte, (__u8 __user *)arg);
++		break;
++
+ 	case USBTMC_IOCTL_CANCEL_IO:
+ 		retval = usbtmc_ioctl_cancel_io(file_data);
+ 		break;
+diff --git a/include/uapi/linux/usb/tmc.h b/include/uapi/linux/usb/tmc.h
+index fdd4d88a7b95d..1e7878fe591f4 100644
+--- a/include/uapi/linux/usb/tmc.h
++++ b/include/uapi/linux/usb/tmc.h
+@@ -102,6 +102,8 @@ struct usbtmc_message {
+ #define USBTMC_IOCTL_MSG_IN_ATTR	_IOR(USBTMC_IOC_NR, 24, __u8)
+ #define USBTMC_IOCTL_AUTO_ABORT		_IOW(USBTMC_IOC_NR, 25, __u8)
+ 
++#define USBTMC_IOCTL_GET_STB            _IOR(USBTMC_IOC_NR, 26, __u8)
++
+ /* Cancel and cleanup asynchronous calls */
+ #define USBTMC_IOCTL_CANCEL_IO		_IO(USBTMC_IOC_NR, 35)
+ #define USBTMC_IOCTL_CLEANUP_IO		_IO(USBTMC_IOC_NR, 36)
 -- 
 2.39.5
 
