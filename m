@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2777B05FA5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F32B060C5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:22:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D520017B20E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 046C81891118
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB76A2E5430;
-	Tue, 15 Jul 2025 13:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44902E9EA5;
+	Tue, 15 Jul 2025 13:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9STAHJ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMn1HVBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82B52D8778;
-	Tue, 15 Jul 2025 13:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735852E9EC6;
+	Tue, 15 Jul 2025 13:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587331; cv=none; b=l65SPVhNbq/xMrm/Lvk9AY00TvM3NeVAe799pUwRNhrxGTEHWe6vCTq8NpAMgZSu5/Xj37xJqUHGotuW95q5yePqZQGtsX7axafuRunfjCN9IWXee+viUniZV4aQMemMZPEI1+4s75YF4AqPGrNJB1aGLtCs7HQEoPYK/5z3QGw=
+	t=1752587939; cv=none; b=DYOkXfU7yiQBhxJm+YMr5AtGtDdYxzOJxJ5kdHEHJfWXxA+LIHTm4YfrafeiCiQy/qV5+HkW8lE3MTRC+M8QGgMR6TXBkFBx7Y6cZQ9a3LU52IEZaY7xMfBHFEqr07s3L92B5j0yObIfV8rG8EYIyzNLsvufCc5591f2UdWXK4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587331; c=relaxed/simple;
-	bh=SGZD6oWQHjkkVGsnY4VEud5XPQNx+CuZUDlVlMOlMKA=;
+	s=arc-20240116; t=1752587939; c=relaxed/simple;
+	bh=51A3/pc5/XnA/LtQL6GMItecOMTDnjOhoEvNDIgE9tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tVXhSYvs4jABeYlcrwQ1xEAE5iB5HptFLcOWEZ5QllS/ah7461PSpsJplpxIzUt5MinmJO5bqcTJLW7xOyE2LOPsOFg5tONd5SuTjj3FSYxQHP2yvkmpqCCRetwdaB4Sm56tw4vgU3OGOsmxtRVphheDPhKNxrzXEEzdbYT5BgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9STAHJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0B1C4CEE3;
-	Tue, 15 Jul 2025 13:48:51 +0000 (UTC)
+	 MIME-Version; b=hYSOGdjeTS6NvJ7/Xk8I2WCmwt3Lx9xTmvyHPfSH8GV5GpHlTCPGOl0C1CwdWuOQDvyJsqUID+bnAk0cT+7QLJ8Yl9Eyx6gt1XPORmZFMv7bqM1+Vfu/zSTPQl+c17/JXebueCEJV43Cg9orrc7La6dXXja+q4L0LpSReTzJFp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMn1HVBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E04C4CEE3;
+	Tue, 15 Jul 2025 13:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587331;
-	bh=SGZD6oWQHjkkVGsnY4VEud5XPQNx+CuZUDlVlMOlMKA=;
+	s=korg; t=1752587939;
+	bh=51A3/pc5/XnA/LtQL6GMItecOMTDnjOhoEvNDIgE9tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c9STAHJ33RWy0JXKWRaoBbpGerzQV8XkgOURFlIFoP4WqP6vscpbs/7m74M4WJTbd
-	 J58TRlOdnQ38mpj26/AxnI5yJVhLyzkPVYngMKh11g2a5fOGO1huVNZg3cgnVgnn74
-	 wTOsasy9AZeHcR0KfWhEkm2Uc7aLCQnBXHqNEbyI=
+	b=sMn1HVBuI1zf1mJLrT2ab0ghh9ny6ACkRfUwigcinULghFnrvTPcEnpzCZCac5SGm
+	 37kxZ6/kq2Rq22egOwEv5YfykVgd1/HtImzgWXBjLcAfRS9VrlK1J3fwhSbFC6Y8+R
+	 r2ycqPL6SI9kE6hYMXU8EoFMk48twJJcfZoNF2EM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Hu <huyue2@coolpad.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 60/88] erofs: clean up z_erofs_pcluster_readmore()
-Date: Tue, 15 Jul 2025 15:14:36 +0200
-Message-ID: <20250715130756.976195288@linuxfoundation.org>
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 5.10 168/208] x86/its: Use dynamic thunks for indirect branches
+Date: Tue, 15 Jul 2025 15:14:37 +0200
+Message-ID: <20250715130817.712727942@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +63,267 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Hu <huyue2@coolpad.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 796e9149a2fcdba5543e247abd8d911a399bb9a6 ]
+commit 872df34d7c51a79523820ea6a14860398c639b87 upstream.
 
-`end` parameter is no needed since it's pointless for !backmost, we can
-handle it with backmost internally.  And we only expand the trailing
-edge, so the newstart can be replaced with ->headoffset.
+ITS mitigation moves the unsafe indirect branches to a safe thunk. This
+could degrade the prediction accuracy as the source address of indirect
+branches becomes same for different execution paths.
 
-Also, remove linux/prefetch.h inclusion since that is not used anymore
-after commit 386292919c25 ("erofs: introduce readmore decompression
-strategy").
+To improve the predictions, and hence the performance, assign a separate
+thunk for each indirect callsite. This is also a defense-in-depth measure
+to avoid indirect branches aliasing with each other.
 
-Signed-off-by: Yue Hu <huyue2@coolpad.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230525072605.17857-1-zbestahu@gmail.com
-[ Gao Xiang: update commit description. ]
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Stable-dep-of: 99f7619a77a0 ("erofs: fix to add missing tracepoint in erofs_read_folio()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As an example, 5000 dynamic thunks would utilize around 16 bits of the
+address space, thereby gaining entropy. For a BTB that uses
+32 bits for indexing, dynamic thunks could provide better prediction
+accuracy over fixed thunks.
+
+Have ITS thunks be variable sized and use EXECMEM_MODULE_TEXT such that
+they are both more flexible (got to extend them later) and live in 2M TLBs,
+just like kernel code, avoiding undue TLB pressure.
+
+  [ pawan: CONFIG_EXECMEM and CONFIG_EXECMEM_ROX are not supported on
+	   backport kernel, made changes to use module_alloc() and
+	   set_memory_*() for dynamic thunks. ]
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zdata.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ arch/x86/include/asm/alternative.h |   10 ++
+ arch/x86/kernel/alternative.c      |  133 ++++++++++++++++++++++++++++++++++++-
+ arch/x86/kernel/module.c           |    6 +
+ include/linux/module.h             |    5 +
+ 4 files changed, 151 insertions(+), 3 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 8018f31d2dbca..50dd104dbaabf 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -5,7 +5,6 @@
-  * Copyright (C) 2022 Alibaba Cloud
-  */
- #include "compress.h"
--#include <linux/prefetch.h>
- #include <linux/psi.h>
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -80,6 +80,16 @@ extern void apply_returns(s32 *start, s3
  
- #include <trace/events/erofs.h>
-@@ -1630,28 +1629,28 @@ static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
-  */
- static void z_erofs_pcluster_readmore(struct z_erofs_decompress_frontend *f,
- 				      struct readahead_control *rac,
--				      erofs_off_t end,
--				      struct page **pagepool,
--				      bool backmost)
-+				      struct page **pagepool, bool backmost)
+ struct module;
+ 
++#ifdef CONFIG_MITIGATION_ITS
++extern void its_init_mod(struct module *mod);
++extern void its_fini_mod(struct module *mod);
++extern void its_free_mod(struct module *mod);
++#else /* CONFIG_MITIGATION_ITS */
++static inline void its_init_mod(struct module *mod) { }
++static inline void its_fini_mod(struct module *mod) { }
++static inline void its_free_mod(struct module *mod) { }
++#endif
++
+ #if defined(CONFIG_RETHUNK) && defined(CONFIG_STACK_VALIDATION)
+ extern bool cpu_wants_rethunk(void);
+ extern bool cpu_wants_rethunk_at(void *addr);
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -18,6 +18,7 @@
+ #include <linux/mmu_context.h>
+ #include <linux/bsearch.h>
+ #include <linux/sync_core.h>
++#include <linux/moduleloader.h>
+ #include <asm/text-patching.h>
+ #include <asm/alternative.h>
+ #include <asm/sections.h>
+@@ -29,6 +30,7 @@
+ #include <asm/io.h>
+ #include <asm/fixmap.h>
+ #include <asm/asm-prototypes.h>
++#include <asm/set_memory.h>
+ 
+ int __read_mostly alternatives_patched;
+ 
+@@ -552,6 +554,127 @@ static int emit_indirect(int op, int reg
+ 
+ #ifdef CONFIG_MITIGATION_ITS
+ 
++static struct module *its_mod;
++static void *its_page;
++static unsigned int its_offset;
++
++/* Initialize a thunk with the "jmp *reg; int3" instructions. */
++static void *its_init_thunk(void *thunk, int reg)
++{
++	u8 *bytes = thunk;
++	int i = 0;
++
++	if (reg >= 8) {
++		bytes[i++] = 0x41; /* REX.B prefix */
++		reg -= 8;
++	}
++	bytes[i++] = 0xff;
++	bytes[i++] = 0xe0 + reg; /* jmp *reg */
++	bytes[i++] = 0xcc;
++
++	return thunk;
++}
++
++void its_init_mod(struct module *mod)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
++		return;
++
++	mutex_lock(&text_mutex);
++	its_mod = mod;
++	its_page = NULL;
++}
++
++void its_fini_mod(struct module *mod)
++{
++	int i;
++
++	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
++		return;
++
++	WARN_ON_ONCE(its_mod != mod);
++
++	its_mod = NULL;
++	its_page = NULL;
++	mutex_unlock(&text_mutex);
++
++	for (i = 0; i < mod->its_num_pages; i++) {
++		void *page = mod->its_page_array[i];
++		set_memory_ro((unsigned long)page, 1);
++		set_memory_x((unsigned long)page, 1);
++	}
++}
++
++void its_free_mod(struct module *mod)
++{
++	int i;
++
++	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
++		return;
++
++	for (i = 0; i < mod->its_num_pages; i++) {
++		void *page = mod->its_page_array[i];
++		module_memfree(page);
++	}
++	kfree(mod->its_page_array);
++}
++
++static void *its_alloc(void)
++{
++	void *page = module_alloc(PAGE_SIZE);
++
++	if (!page)
++		return NULL;
++
++	if (its_mod) {
++		void *tmp = krealloc(its_mod->its_page_array,
++				     (its_mod->its_num_pages+1) * sizeof(void *),
++				     GFP_KERNEL);
++		if (!tmp) {
++			module_memfree(page);
++			return NULL;
++		}
++
++		its_mod->its_page_array = tmp;
++		its_mod->its_page_array[its_mod->its_num_pages++] = page;
++	}
++
++	return page;
++}
++
++static void *its_allocate_thunk(int reg)
++{
++	int size = 3 + (reg / 8);
++	void *thunk;
++
++	if (!its_page || (its_offset + size - 1) >= PAGE_SIZE) {
++		its_page = its_alloc();
++		if (!its_page) {
++			pr_err("ITS page allocation failed\n");
++			return NULL;
++		}
++		memset(its_page, INT3_INSN_OPCODE, PAGE_SIZE);
++		its_offset = 32;
++	}
++
++	/*
++	 * If the indirect branch instruction will be in the lower half
++	 * of a cacheline, then update the offset to reach the upper half.
++	 */
++	if ((its_offset + size - 1) % 64 < 32)
++		its_offset = ((its_offset - 1) | 0x3F) + 33;
++
++	thunk = its_page + its_offset;
++	its_offset += size;
++
++	set_memory_rw((unsigned long)its_page, 1);
++	thunk = its_init_thunk(thunk, reg);
++	set_memory_ro((unsigned long)its_page, 1);
++	set_memory_x((unsigned long)its_page, 1);
++
++	return thunk;
++}
++
+ static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
+ 			     void *call_dest, void *jmp_dest)
  {
- 	struct inode *inode = f->inode;
- 	struct erofs_map_blocks *map = &f->map;
--	erofs_off_t cur;
-+	erofs_off_t cur, end, headoffset = f->headoffset;
- 	int err;
+@@ -599,9 +722,13 @@ clang_jcc:
  
- 	if (backmost) {
-+		if (rac)
-+			end = headoffset + readahead_length(rac) - 1;
-+		else
-+			end = headoffset + PAGE_SIZE - 1;
- 		map->m_la = end;
- 		err = z_erofs_map_blocks_iter(inode, map,
- 					      EROFS_GET_BLOCKS_READMORE);
- 		if (err)
- 			return;
+ static int emit_its_trampoline(void *addr, struct insn *insn, int reg, u8 *bytes)
+ {
+-	return __emit_trampoline(addr, insn, bytes,
+-				 __x86_indirect_its_thunk_array[reg],
+-				 __x86_indirect_its_thunk_array[reg]);
++	u8 *thunk = __x86_indirect_its_thunk_array[reg];
++	u8 *tmp = its_allocate_thunk(reg);
++
++	if (tmp)
++		thunk = tmp;
++
++	return __emit_trampoline(addr, insn, bytes, thunk, thunk);
+ }
  
--		/* expend ra for the trailing edge if readahead */
-+		/* expand ra for the trailing edge if readahead */
- 		if (rac) {
--			loff_t newstart = readahead_pos(rac);
--
- 			cur = round_up(map->m_la + map->m_llen, PAGE_SIZE);
--			readahead_expand(rac, newstart, cur - newstart);
-+			readahead_expand(rac, headoffset, cur - headoffset);
- 			return;
- 		}
- 		end = round_up(end, PAGE_SIZE);
-@@ -1699,10 +1698,9 @@ static int z_erofs_read_folio(struct file *file, struct folio *folio)
- 	trace_erofs_readpage(page, false);
- 	f.headoffset = (erofs_off_t)page->index << PAGE_SHIFT;
- 
--	z_erofs_pcluster_readmore(&f, NULL, f.headoffset + PAGE_SIZE - 1,
--				  &pagepool, true);
-+	z_erofs_pcluster_readmore(&f, NULL, &pagepool, true);
- 	err = z_erofs_do_read_page(&f, page, &pagepool);
--	z_erofs_pcluster_readmore(&f, NULL, 0, &pagepool, false);
-+	z_erofs_pcluster_readmore(&f, NULL, &pagepool, false);
- 
- 	(void)z_erofs_collector_end(&f);
- 
-@@ -1728,8 +1726,7 @@ static void z_erofs_readahead(struct readahead_control *rac)
- 
- 	f.headoffset = readahead_pos(rac);
- 
--	z_erofs_pcluster_readmore(&f, rac, f.headoffset +
--				  readahead_length(rac) - 1, &pagepool, true);
-+	z_erofs_pcluster_readmore(&f, rac, &pagepool, true);
- 	nr_pages = readahead_count(rac);
- 	trace_erofs_readpages(inode, readahead_index(rac), nr_pages, false);
- 
-@@ -1752,7 +1749,7 @@ static void z_erofs_readahead(struct readahead_control *rac)
- 				  page->index, EROFS_I(inode)->nid);
- 		put_page(page);
+ /* Check if an indirect branch is at ITS-unsafe address */
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -274,10 +274,15 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 			returns = s;
  	}
--	z_erofs_pcluster_readmore(&f, rac, 0, &pagepool, false);
-+	z_erofs_pcluster_readmore(&f, rac, &pagepool, false);
- 	(void)z_erofs_collector_end(&f);
  
- 	z_erofs_runqueue(&f, &pagepool,
--- 
-2.39.5
-
++	its_init_mod(me);
++
+ 	if (retpolines) {
+ 		void *rseg = (void *)retpolines->sh_addr;
+ 		apply_retpolines(rseg, rseg + retpolines->sh_size);
+ 	}
++
++	its_fini_mod(me);
++
+ 	if (returns) {
+ 		void *rseg = (void *)returns->sh_addr;
+ 		apply_returns(rseg, rseg + returns->sh_size);
+@@ -313,4 +318,5 @@ int module_finalize(const Elf_Ehdr *hdr,
+ void module_arch_cleanup(struct module *mod)
+ {
+ 	alternatives_smp_module_del(mod);
++	its_free_mod(mod);
+ }
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -524,6 +524,11 @@ struct module {
+ 	atomic_t refcnt;
+ #endif
+ 
++#ifdef CONFIG_MITIGATION_ITS
++	int its_num_pages;
++	void **its_page_array;
++#endif
++
+ #ifdef CONFIG_CONSTRUCTORS
+ 	/* Constructor functions. */
+ 	ctor_fn_t *ctors;
 
 
 
