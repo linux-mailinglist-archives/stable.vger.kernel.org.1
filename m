@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-162738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E84B05FBB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE764B05FC0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0628A188CB56
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F91B7AA038
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68E02E54CF;
-	Tue, 15 Jul 2025 13:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BEA2EE96A;
+	Tue, 15 Jul 2025 13:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPs2T/Q0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q804T2NY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49F92E041E;
-	Tue, 15 Jul 2025 13:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BD82EE966;
+	Tue, 15 Jul 2025 13:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587347; cv=none; b=mbPS/e026/zAkZakE9FbA3oXO1y7ktPMbDXbrPExlsMjLBP2ScBLKq0L9F44t4BUL01JWmAoezUORlwUBepaCYfpwqwFvFRLCU121ryBCB5BImmPnsUFoaBTi/cfD/CMdQe02UNsG7ItsDFKtSHiRMxVVkD6mNd8JQQL+kE7msQ=
+	t=1752587793; cv=none; b=KO4Wz2lwIQGoeSevcd0LLJiZTcDdQ//V2g3UPiYdJKNNQ6nFgiDmBQUKv7Ho6qFo/cOVWYKLzjkKZdueb3oW/XrJ0rXNnOl/8GfZSwe6AUxwPpty9wxB9JvQye7/xiXWRECJjvAaCqZqAaHXnL5vtmNLayfJMgiDU2CovD0K5Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587347; c=relaxed/simple;
-	bh=0mt7s2vfPyT5zuQJ0eGA30rIQCam/wE5V5ZK6atnBX0=;
+	s=arc-20240116; t=1752587793; c=relaxed/simple;
+	bh=5A6gsO95BpzLu/9tZt73GkXtmlor0NgIZr4jpv7DOIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xio68Teq3iCq4vBYBDVJ7KCC3hxKSN+YQO6OiTrdyBrk+eOzYScEky5P6awwANNdiJ8WgeYomz+Xa3F0/946ER4ELloV9V9mZbI6xVnk7YbRZ8fs9oJ0R2QE3/ew3hwLLoMusceDboGY6QhglwzZMZ1ZMCBZN1h1v6hCEpNUmGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPs2T/Q0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360F3C4CEE3;
-	Tue, 15 Jul 2025 13:49:07 +0000 (UTC)
+	 MIME-Version; b=pPyJAcViXYwcYixqbAu24Wqj0+Shh3APChfMrdidWxpsfJkLWONEFChWDSbxtGh/hDi/EOpRuU2/2Mi9ReSDURmCKyI2VKvOq1FGMmPbXyakkLs8qNCOIVAI7fgO8fd2Zgl+MBbhrY9ooyREOM2QGiK0WTSZOf8/0hqEFKPll7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q804T2NY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31261C4CEF1;
+	Tue, 15 Jul 2025 13:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587347;
-	bh=0mt7s2vfPyT5zuQJ0eGA30rIQCam/wE5V5ZK6atnBX0=;
+	s=korg; t=1752587793;
+	bh=5A6gsO95BpzLu/9tZt73GkXtmlor0NgIZr4jpv7DOIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPs2T/Q0mrv54mK6wySFKaBQ5BX2soXhf8h/EwHiKgn6OoXJoellMEwQ1r9fZvQ+x
-	 /kwZg1iAvasccMK47mp28I4vBJDaIBe8wwmpZPx9H6z2C2n/PQYi2EzbZ4ZgJJGoqS
-	 yC1i3WDW+lCNa54wbt2KdOnEQ1l+b/gS+srbzMOk=
+	b=q804T2NYP0K1vXBvmuYLIo/yyLQQmRTLbbqeuwqGt9hq1Pp57utjJsr/83SX3kUFl
+	 7iuOTe363ItA0TgO73OQ05k9XAZR1U2wjazMG3nusxyXsFWtnr7C+BEmoxBwVO7zXs
+	 RT4grSHHPMwxdWMBw5H315+W1tjXGYirBiAW0qv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.1 39/88] pwm: mediatek: Ensure to disable clocks in error path
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andre Edich <andre.edich@microchip.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 146/208] net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
 Date: Tue, 15 Jul 2025 15:14:15 +0200
-Message-ID: <20250715130756.091153581@linuxfoundation.org>
+Message-ID: <20250715130816.768386585@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,71 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 505b730ede7f5c4083ff212aa955155b5b92e574 upstream.
+[ Upstream commit a141af8eb2272ab0f677a7f2653874840bc9b214 ]
 
-After enabling the clocks each error path must disable the clocks again.
-One of them failed to do so. Unify the error paths to use goto to make it
-harder for future changes to add a similar bug.
+Correct the Auto-MDIX configuration to ensure userspace settings are
+respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
 
-Fixes: 7ca59947b5fc ("pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250704172728.626815-2-u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-[ukleinek: backported to 6.6.y]
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The LAN9500 PHY allows its default MDI-X mode to be configured via a
+hardware strap. If this strap sets the default to "MDI-X off", the
+driver was previously unable to enable Auto-MDIX from userspace.
+
+When handling the ETH_TP_MDI_AUTO case, the driver would set the
+SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
+SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
+falls back to its hardware strap default, ignoring the software request.
+
+This patch corrects the behavior by also setting the override bit when
+enabling Auto-MDIX. This ensures that the userspace configuration takes
+precedence over the hardware strap, allowing Auto-MDIX to be enabled
+correctly in all scenarios.
+
+Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andre Edich <andre.edich@microchip.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250703114941.3243890-2-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mediatek.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/phy/smsc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -129,8 +129,10 @@ static int pwm_mediatek_config(struct pw
- 		return ret;
- 
- 	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
--	if (!clk_rate)
--		return -EINVAL;
-+	if (!clk_rate) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
- 
- 	/* Make sure we use the bus clock and not the 26MHz clock */
- 	if (pc->soc->has_ck_26m_sel)
-@@ -149,9 +151,9 @@ static int pwm_mediatek_config(struct pw
- 	}
- 
- 	if (clkdiv > PWM_CLK_DIV_MAX) {
--		pwm_mediatek_clk_disable(chip, pwm);
- 		dev_err(chip->dev, "period of %d ns not supported\n", period_ns);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto out;
- 	}
- 
- 	if (pc->soc->pwm45_fixup && pwm->hwpwm > 2) {
-@@ -168,9 +170,10 @@ static int pwm_mediatek_config(struct pw
- 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
- 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
- 
-+out:
- 	pwm_mediatek_clk_disable(chip, pwm);
- 
--	return 0;
-+	return ret;
- }
- 
- static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index b67de3f9ef186..9ec2485df645e 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -132,7 +132,8 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
+ 			SPECIAL_CTRL_STS_AMDIX_STATE_;
+ 		break;
+ 	case ETH_TP_MDI_AUTO:
+-		val = SPECIAL_CTRL_STS_AMDIX_ENABLE_;
++		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
++			SPECIAL_CTRL_STS_AMDIX_ENABLE_;
+ 		break;
+ 	default:
+ 		return genphy_config_aneg(phydev);
+-- 
+2.39.5
+
 
 
 
