@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98819B05B6D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E713BB05D85
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FE4917BFE6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B63E4A2541
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDF42E2EEE;
-	Tue, 15 Jul 2025 13:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17A72E7BDA;
+	Tue, 15 Jul 2025 13:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEZicZsi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5AquWh4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD4B274FDB;
-	Tue, 15 Jul 2025 13:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCCA2E49B2;
+	Tue, 15 Jul 2025 13:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585606; cv=none; b=XMTDR2sahXt4COZkl9fQq+eLpHTG2JpSGGiovvshhCgbKt09EF1vDofRKMM31uoQ7o79NEqTUYQUYJSJDOI4trFBrFHlcT3c+T0QmBpHJHeLjVQVFXIJ3j8sotNvoHcyKp8ZspAjxQr+g/0xAWzcyXfZNUs9y6blvIl+fPbfon4=
+	t=1752586393; cv=none; b=iB0uzZ3nSl9sxp0MJKR/0+Uc693YZeY460+WPLAGDozacCtsNYwLA3mCrYr6uYGTGPjvuXyoR0n4751FmigH8TvmPfi2PjjoZPBB9cs6/iirwzBPSkbwhaiW2BPW+qGBdRqhtTIbT/y1DMjwqRkBvmE90RNQj7RyjDO6vOogMqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585606; c=relaxed/simple;
-	bh=9kJC49LgX0qrLZlepf+waZ5NeCMO+j/l8EMMEtm6V/M=;
+	s=arc-20240116; t=1752586393; c=relaxed/simple;
+	bh=9AD283jRlP3kS607I47+sy9TlTMNeCRTAChiBlCEeiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCgO7gJkJwe/p/M/vRjmMzq6GBwUIQxuZS33iXMFv6eSCA0/9stcRyz/JNKYYTfRuTPFTaAnKbVWDdFN1eoL1tu7FcEkWApWdlT7TPCF1jzqUnqjY46jufm07j3VJb3DzGDkZvOF3dNSXzrDqMcGZQKFsTL5M2pnHA/phph9YCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEZicZsi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512BEC4CEE3;
-	Tue, 15 Jul 2025 13:20:06 +0000 (UTC)
+	 MIME-Version; b=mTV0DEcdFT9baF8E8vAztkQApjG9zxEAYKF3eOtkjXZVIKkSNNEps0m+5rMYJ5EP+7JM3GmwOgTuhpgfW2mxw9kqXSnNGlj+xQPNoOtxQ04SpE0sRAMwR9LgCXIBwcXpaBblXh8ptUgm43k3bB/afMoWuIxOpYDmzf16G5QR9Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5AquWh4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F2BC4CEE3;
+	Tue, 15 Jul 2025 13:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585606;
-	bh=9kJC49LgX0qrLZlepf+waZ5NeCMO+j/l8EMMEtm6V/M=;
+	s=korg; t=1752586393;
+	bh=9AD283jRlP3kS607I47+sy9TlTMNeCRTAChiBlCEeiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEZicZsiNvz1QQ7R1tswgTpGj75aH+gMxogzvBZFg/hSQig+RdELNS/lV3BIWlvn2
-	 bQ2aoxANoGK8mjfRL3coPbYJsx2+oMEWlYmCqLjaOmlUDrgQhcNSknmwN2p6AFRDaj
-	 k7USNcgsYPWOQv3sKOP84xlyn61Yg7YDgkGqLCpg=
+	b=G5AquWh4g9EU/duJxVV7A83DQOHKn45pn0UT01ewl6oyf4aTknPBSQcCf9lBzCYrF
+	 V+lEJLNB8iYnUHziDMsp2vvr6G6ic+rj1IjU5V8h5PVwjCSGWJNB6tWQ9CWX5exAfE
+	 mLQZR6Z7fjC4Oen0XCCWBHwk5N8UuyD2vi37FD/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 103/163] ASoC: Intel: sof-function-topology-lib: Print out the unsupported dmic count
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 5.4 049/148] drm/tegra: Assign plane type before registration
 Date: Tue, 15 Jul 2025 15:12:51 +0200
-Message-ID: <20250715130812.991931552@linuxfoundation.org>
+Message-ID: <20250715130802.283492667@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Thierry Reding <treding@nvidia.com>
 
-commit 16ea4666bbb7f5bd1130fa2d75631ccf8b62362e upstream.
+commit 9ff4fdf4f44b69237c0afc1d3a8dac916ce66f3e upstream.
 
-It is better to print out the non supported num_dmics than printing that
-it is not matching with 2 or 4.
+Changes to a plane's type after it has been registered aren't propagated
+to userspace automatically. This could possibly be achieved by updating
+the property, but since we can already determine which type this should
+be before the registration, passing in the right type from the start is
+a much better solution.
 
-Fixes: 2fbeff33381c ("ASoC: Intel: add sof_sdw_get_tplg_files ops")
+Suggested-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Link: https://patch.msgid.link/20250619104705.26057-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/common/sof-function-topology-lib.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tegra/dc.c  |   12 ++++++++----
+ drivers/gpu/drm/tegra/hub.c |    4 ++--
+ drivers/gpu/drm/tegra/hub.h |    3 ++-
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
---- a/sound/soc/intel/common/sof-function-topology-lib.c
-+++ b/sound/soc/intel/common/sof-function-topology-lib.c
-@@ -73,7 +73,8 @@ int sof_sdw_get_tplg_files(struct snd_so
- 				break;
- 			default:
- 				dev_warn(card->dev,
--					 "only -2ch and -4ch are supported for dmic\n");
-+					 "unsupported number of dmics: %d\n",
-+					 mach_params.dmic_num);
- 				continue;
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1103,10 +1103,16 @@ static struct drm_plane *tegra_dc_add_sh
+ 		if (wgrp->dc == dc->pipe) {
+ 			for (j = 0; j < wgrp->num_windows; j++) {
+ 				unsigned int index = wgrp->windows[j];
++				enum drm_plane_type type;
++
++				if (primary)
++					type = DRM_PLANE_TYPE_OVERLAY;
++				else
++					type = DRM_PLANE_TYPE_PRIMARY;
+ 
+ 				plane = tegra_shared_plane_create(drm, dc,
+ 								  wgrp->index,
+-								  index);
++								  index, type);
+ 				if (IS_ERR(plane))
+ 					return plane;
+ 
+@@ -1114,10 +1120,8 @@ static struct drm_plane *tegra_dc_add_sh
+ 				 * Choose the first shared plane owned by this
+ 				 * head as the primary plane.
+ 				 */
+-				if (!primary) {
+-					plane->type = DRM_PLANE_TYPE_PRIMARY;
++				if (!primary)
+ 					primary = plane;
+-				}
  			}
- 			tplg_dev = TPLG_DEVICE_INTEL_PCH_DMIC;
+ 		}
+ 	}
+--- a/drivers/gpu/drm/tegra/hub.c
++++ b/drivers/gpu/drm/tegra/hub.c
+@@ -533,9 +533,9 @@ static const struct drm_plane_helper_fun
+ struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
+ 					    struct tegra_dc *dc,
+ 					    unsigned int wgrp,
+-					    unsigned int index)
++					    unsigned int index,
++					    enum drm_plane_type type)
+ {
+-	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
+ 	struct tegra_drm *tegra = drm->dev_private;
+ 	struct tegra_display_hub *hub = tegra->hub;
+ 	/* planes can be assigned to arbitrary CRTCs */
+--- a/drivers/gpu/drm/tegra/hub.h
++++ b/drivers/gpu/drm/tegra/hub.h
+@@ -81,7 +81,8 @@ void tegra_display_hub_cleanup(struct te
+ struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
+ 					    struct tegra_dc *dc,
+ 					    unsigned int wgrp,
+-					    unsigned int index);
++					    unsigned int index,
++					    enum drm_plane_type type);
+ 
+ int tegra_display_hub_atomic_check(struct drm_device *drm,
+ 				   struct drm_atomic_state *state);
 
 
 
