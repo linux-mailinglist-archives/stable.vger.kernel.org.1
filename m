@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E81AB05EBF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D10F5B05D03
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A62DD16F178
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80CCF7BC4DD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832F42E8E0D;
-	Tue, 15 Jul 2025 13:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082A62E92AC;
+	Tue, 15 Jul 2025 13:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xS5uLP7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkGpLFlN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EE72E8E04;
-	Tue, 15 Jul 2025 13:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A442E6D23;
+	Tue, 15 Jul 2025 13:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587079; cv=none; b=slaMnKyyXYW5R9ThbZhcoyijFnUK/ZfxduWMINZYN9tsSgAmMjhCn79R6YCgFeGi2EpBYlEvWhxsAajRyXnIg4WzqJbFlW17CFwgzplcDJ3tonuaagHx1AEhIEXDOrC56G+kdRST2MG9han+PU0HwiBk4Dexmyqy87vMusLgV+A=
+	t=1752585993; cv=none; b=PgTR9uhDiDsCUi22X49f1kAjDf5+oAzo5b67HvZzujCgP2muXogtEQc7HreS5QmeFPPTZhhsBolOeI1siOEnhgUxzh+yWaH9ap0934eJsWjNhL2HuuDl6+e8mQP5KBngmry9HmG1//nQkFwzhtO4zPQ8nLFT2YnXe7LRo6o2CJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587079; c=relaxed/simple;
-	bh=QWQT3QKdNeSBTE88Q3r5OCucxCl0MbeayFQEBOJOyBs=;
+	s=arc-20240116; t=1752585993; c=relaxed/simple;
+	bh=gSZ39iimQMuvoccptXIWiVn0mQgjJWAoiQKFlAWs1OY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltvQU2KHJYstore2tEdJnwbYNGeNgP/tq8ZF7EkrHDIPyuDAzIGlhaqt7zscJrDNR5/qB/W8vXS4AYFR5UdYZ7u7m1qW6mhlEVWY6EuwoOnX9nBk+kG+/d0znfJe99RBDSsA4LtZVMnOBCtmnxYmlXshK0mbPwUnPOZC60yN0/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xS5uLP7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BA4C4CEE3;
-	Tue, 15 Jul 2025 13:44:38 +0000 (UTC)
+	 MIME-Version; b=FVCxIE0eYhA7z/4gFPADxld6wGbVLVq4MAoQ9leud+1HRGKecDJaEwCEE2ySRjkcQqt25uxg81Op/gofgCN7fIc4SFMjXFzSIVoukXlY62Ysydxx3ypdowqvVobvaXUSmqvXaakBibxJuhLhqPztEfZVOhSCfhj27uL3MowPii4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkGpLFlN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2C7C4CEE3;
+	Tue, 15 Jul 2025 13:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587078;
-	bh=QWQT3QKdNeSBTE88Q3r5OCucxCl0MbeayFQEBOJOyBs=;
+	s=korg; t=1752585993;
+	bh=gSZ39iimQMuvoccptXIWiVn0mQgjJWAoiQKFlAWs1OY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1xS5uLP7SoNEcipiMenqkuMRabD6FOwMUj7bAZez3bVJFmoqkDyNmNu1yvsr6fiGb
-	 TPSY0Uc7SEWu5iHhmy24MXj49m6anRk3c4qi/mX9ctOIqikC11bRAtoo7sUsRwF+pw
-	 3A9+5/hsH1ZgrGlJl2uyxuD//caE0rvVUffHYnFw=
+	b=HkGpLFlNoO4pOggkjlkPsaGqOPaJv59rKAsSAWIp6VLG4/HO5pF/kd+nECHG5T3bA
+	 Cm8za8n9Fq6bWe015RBus4lANmAqWq7TnbllE5pwDukUl1uJUo2j1lv3ph6H4Kr4Hj
+	 K/p0ow6FyWcA9Yu/D7859nwnDLzW4NLQC/B43aeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 127/192] wifi: cfg80211: fix S1G beacon head validation in nl80211
+Subject: [PATCH 6.6 086/109] net: phy: microchip: limit 100M workaround to link-down events on LAN88xx
 Date: Tue, 15 Jul 2025 15:13:42 +0200
-Message-ID: <20250715130819.993024429@linuxfoundation.org>
+Message-ID: <20250715130802.325216923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 1fe44a86ff0ff483aa1f1332f2b08f431fa51ce8 ]
+[ Upstream commit dd4360c0e8504f2f7639c7f5d07c93cfd6a98333 ]
 
-S1G beacons contain fixed length optional fields that precede the
-variable length elements, ensure we take this into account when
-validating the beacon. This particular case was missed in
-1e1f706fc2ce ("wifi: cfg80211/mac80211: correctly parse S1G
-beacon optional elements").
+Restrict the 100Mbit forced-mode workaround to link-down transitions
+only, to prevent repeated link reset cycles in certain configurations.
 
-Fixes: 1d47f1198d58 ("nl80211: correctly validate S1G beacon head")
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Link: https://patch.msgid.link/20250626115118.68660-1-lachlan.hodges@morsemicro.com
-[shorten/reword subject]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The workaround was originally introduced to improve signal reliability
+when switching cables between long and short distances. It temporarily
+forces the PHY into 10 Mbps before returning to 100 Mbps.
+
+However, when used with autonegotiating link partners (e.g., Intel i350),
+executing this workaround on every link change can confuse the partner
+and cause constant renegotiation loops. This results in repeated link
+down/up transitions and the PHY never reaching a stable state.
+
+Limit the workaround to only run during the PHY_NOLINK state. This ensures
+it is triggered only once per link drop, avoiding disruptive toggling
+while still preserving its intended effect.
+
+Note: I am not able to reproduce the original issue that this workaround
+addresses. I can only confirm that 100 Mbit mode works correctly in my
+test setup. Based on code inspection, I assume the workaround aims to
+reset some internal state machine or signal block by toggling speeds.
+However, a PHY reset is already performed earlier in the function via
+phy_init_hw(), which may achieve a similar effect. Without a reproducer,
+I conservatively keep the workaround but restrict its conditions.
+
+Fixes: e57cf3639c32 ("net: lan78xx: fix accessing the LAN7800's internal phy specific registers from the MAC driver")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250709130753.3994461-3-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/phy/microchip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index f039a7d0d6f73..0c7e8389bc49e 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -229,6 +229,7 @@ static int validate_beacon_head(const struct nlattr *attr,
- 	unsigned int len = nla_len(attr);
- 	const struct element *elem;
- 	const struct ieee80211_mgmt *mgmt = (void *)data;
-+	const struct ieee80211_ext *ext;
- 	unsigned int fixedlen, hdrlen;
- 	bool s1g_bcn;
- 
-@@ -237,8 +238,10 @@ static int validate_beacon_head(const struct nlattr *attr,
- 
- 	s1g_bcn = ieee80211_is_s1g_beacon(mgmt->frame_control);
- 	if (s1g_bcn) {
--		fixedlen = offsetof(struct ieee80211_ext,
--				    u.s1g_beacon.variable);
-+		ext = (struct ieee80211_ext *)mgmt;
-+		fixedlen =
-+			offsetof(struct ieee80211_ext, u.s1g_beacon.variable) +
-+			ieee80211_s1g_optional_len(ext->frame_control);
- 		hdrlen = offsetof(struct ieee80211_ext, u.s1g_beacon);
- 	} else {
- 		fixedlen = offsetof(struct ieee80211_mgmt,
+diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
+index 623607fd2cefd..cb8306cd98260 100644
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -310,7 +310,7 @@ static void lan88xx_link_change_notify(struct phy_device *phydev)
+ 	 * As workaround, set to 10 before setting to 100
+ 	 * at forced 100 F/H mode.
+ 	 */
+-	if (!phydev->autoneg && phydev->speed == 100) {
++	if (phydev->state == PHY_NOLINK && !phydev->autoneg && phydev->speed == 100) {
+ 		/* disable phy interrupt */
+ 		temp = phy_read(phydev, LAN88XX_INT_MASK);
+ 		temp &= ~LAN88XX_INT_MASK_MDINTPIN_EN_;
 -- 
 2.39.5
 
