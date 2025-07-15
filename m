@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-162500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7AFB05E5E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26505B05B27
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26C581C431BC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4D9F3B21EB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191892E4272;
-	Tue, 15 Jul 2025 13:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5222C2E2EEB;
+	Tue, 15 Jul 2025 13:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9XMEd1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UB6G4mnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C3B2E338F;
-	Tue, 15 Jul 2025 13:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A176193077;
+	Tue, 15 Jul 2025 13:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586719; cv=none; b=G1sxCBVBFno19gleTYAVodx8iXWofLZTJeId4KMy6h86vq3y15UCmagpXZ939pWkNbJwfnX5D8JU44tCqNO/aYaNyjjKkZX82m2HOp22pwDfhO0tsq89FMtSKqKiFSVqv65K9xn9T+vHeAuq26dhRxKX7/tMeicoBG7bWIDcq2s=
+	t=1752585415; cv=none; b=CdjIkqED1EsCC544xhbnc2b4+bdyFOAGBLEualg00t2w7sNWNag5iNowV4m1my5hnyjvBpyO0hv9opLmcbQ2RgpmR+9vlhYhqF9Up4lC0QAH+o1H0VNHz565hgPt57sZOxJE8cPLpz422T2sD+lfntyAvDQ2KVTcNAWjMU1j9Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586719; c=relaxed/simple;
-	bh=DXwzxJuO1vGV/IjyZtzGma2S1Ewr/KrUIq9GTwh2vLE=;
+	s=arc-20240116; t=1752585415; c=relaxed/simple;
+	bh=qFiy0VxXJTaNE0zswaaVLt2WliJhECdxGPgl9ktVQIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pBBiwb/coLucVSl8gUueChVKD37tLQJr8QaJonwHAfJSUq8qaQdgdY67v6lp9kiZrVkY2+qveFN8yqUesEYdqypk4siF2FSHeWHM0zb3QJ0mlowdCjXHVnqjQZb2eAnvSNzjDmZcLUOj1kO7pl92qspUbJwEPa0sblzHDlfV790=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9XMEd1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C34EC4CEE3;
-	Tue, 15 Jul 2025 13:38:38 +0000 (UTC)
+	 MIME-Version; b=utkZ3qWSrNq1oxEDuRJj934Uq8q0zParQhfa43/enlfvOOprQntt9896DESIBFHNzuhR6p2R78cOlJiMs+KTvTcTO6bCoSWwCBdgAPQMSGTshkS2BdjvrTw9mJQGsolhJ2cfDi41y+r/1esUbhhqX6/tO5p4myFH/42opGqNiNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UB6G4mnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0C1C4CEE3;
+	Tue, 15 Jul 2025 13:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586719;
-	bh=DXwzxJuO1vGV/IjyZtzGma2S1Ewr/KrUIq9GTwh2vLE=;
+	s=korg; t=1752585414;
+	bh=qFiy0VxXJTaNE0zswaaVLt2WliJhECdxGPgl9ktVQIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9XMEd1/j2zawXvkkzyVRad5FsMqgf1gt9OtQ/uzvHiR6ek90668ExpUbiJiIXNum
-	 wIV9UnJLVZctvAw5Mem1SciNCpp4EMLo1FOjb3mWBC6jYPwzGPPzrtmiPuKWt3yFnV
-	 FT0OsKVpEDTikIXOWkAtFg/A1MzQWMWoGK7BBn8k=
+	b=UB6G4mnlF5+7VPUn97nrP5Pzsaq+C70BSTxHWjXzUtKPRtLWUZ5IFgCdh/BgU5/NN
+	 Pw5ZABeGLcGP+Ehb7SYT+yIQTykNpBnZKonC2Z6UrQJQMEtuexHJFUdWp6jNG6v4d+
+	 Xcd6S0lkIRux6uWNsjXX2JJ+AFddTxnU5NEVUDK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+de6565462ab540f50e47@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	David Howells <dhowells@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 005/192] ASoC: soc-acpi: add get_function_tplg_files ops
+Subject: [PATCH 6.12 032/163] tcp: Correct signedness in skb remaining space calculation
 Date: Tue, 15 Jul 2025 15:11:40 +0200
-Message-ID: <20250715130815.075781051@linuxfoundation.org>
+Message-ID: <20250715130810.044028736@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit d1e70eed0b30bd2b15fc6c93b5701be564bbe353 ]
+[ Upstream commit d3a5f2871adc0c61c61869f37f3e697d97f03d8c ]
 
-We always use a single topology that contains all PCM devices belonging
-to a machine configuration.
-However, with SDCA, we want to be able to load function topologies based
-on the supported device functions. This change is in preparation for
-loading those function topologies.
+Syzkaller reported a bug [1] where sk->sk_forward_alloc can overflow.
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250414063239.85200-4-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a7528e9beadb ("ASoC: Intel: soc-acpi: arl: Correct order of cs42l43 matches")
+When we send data, if an skb exists at the tail of the write queue, the
+kernel will attempt to append the new data to that skb. However, the code
+that checks for available space in the skb is flawed:
+'''
+copy = size_goal - skb->len
+'''
+
+The types of the variables involved are:
+'''
+copy: ssize_t (s64 on 64-bit systems)
+size_goal: int
+skb->len: unsigned int
+'''
+
+Due to C's type promotion rules, the signed size_goal is converted to an
+unsigned int to match skb->len before the subtraction. The result is an
+unsigned int.
+
+When this unsigned int result is then assigned to the s64 copy variable,
+it is zero-extended, preserving its non-negative value. Consequently, copy
+is always >= 0.
+
+Assume we are sending 2GB of data and size_goal has been adjusted to a
+value smaller than skb->len. The subtraction will result in copy holding a
+very large positive integer. In the subsequent logic, this large value is
+used to update sk->sk_forward_alloc, which can easily cause it to overflow.
+
+The syzkaller reproducer uses TCP_REPAIR to reliably create this
+condition. However, this can also occur in real-world scenarios. The
+tcp_bound_to_half_wnd() function can also reduce size_goal to a small
+value. This would cause the subsequent tcp_wmem_schedule() to set
+sk->sk_forward_alloc to a value close to INT_MAX. Further memory
+allocation requests would then cause sk_forward_alloc to wrap around and
+become negative.
+
+[1]: https://syzkaller.appspot.com/bug?extid=de6565462ab540f50e47
+
+Reported-by: syzbot+de6565462ab540f50e47@syzkaller.appspotmail.com
+Fixes: 270a1c3de47e ("tcp: Support MSG_SPLICE_PAGES")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20250707054112.101081-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc-acpi.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/ipv4/tcp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/sound/soc-acpi.h b/include/sound/soc-acpi.h
-index 72e371a217676..b8af309c2683f 100644
---- a/include/sound/soc-acpi.h
-+++ b/include/sound/soc-acpi.h
-@@ -10,6 +10,7 @@
- #include <linux/acpi.h>
- #include <linux/mod_devicetable.h>
- #include <linux/soundwire/sdw.h>
-+#include <sound/soc.h>
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b731a4a8f2b0d..156da81bce068 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1145,7 +1145,7 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 		goto do_error;
  
- struct snd_soc_acpi_package_context {
- 	char *name;           /* package name */
-@@ -193,6 +194,15 @@ struct snd_soc_acpi_link_adr {
-  *  is not constant since this field may be updated at run-time
-  * @sof_tplg_filename: Sound Open Firmware topology file name, if enabled
-  * @tplg_quirk_mask: quirks to select different topology files dynamically
-+ * @get_function_tplg_files: This is an optional callback, if specified then instead of
-+ *	the single sof_tplg_filename the callback will return the list of function topology
-+ *	files to be loaded.
-+ *	Return value: The number of the files or negative ERRNO. 0 means that the single topology
-+ *		      file should be used, no function topology split can be used on the machine.
-+ *	@card: the pointer of the card
-+ *	@mach: the pointer of the machine driver
-+ *	@prefix: the prefix of the topology file name. Typically, it is the path.
-+ *	@tplg_files: the pointer of the array of the topology file names.
-  */
- /* Descriptor for SST ASoC machine driver */
- struct snd_soc_acpi_mach {
-@@ -212,6 +222,9 @@ struct snd_soc_acpi_mach {
- 	struct snd_soc_acpi_mach_params mach_params;
- 	const char *sof_tplg_filename;
- 	const u32 tplg_quirk_mask;
-+	int (*get_function_tplg_files)(struct snd_soc_card *card,
-+				       const struct snd_soc_acpi_mach *mach,
-+				       const char *prefix, const char ***tplg_files);
- };
+ 	while (msg_data_left(msg)) {
+-		ssize_t copy = 0;
++		int copy = 0;
  
- #define SND_SOC_ACPI_MAX_CODECS 3
+ 		skb = tcp_write_queue_tail(sk);
+ 		if (skb)
 -- 
 2.39.5
 
