@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-162105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4437EB05BA2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5990BB05CC1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15F12566313
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 223881C2579C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0062C2E2F0F;
-	Tue, 15 Jul 2025 13:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C11F2EA742;
+	Tue, 15 Jul 2025 13:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uU3FbBAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFlQLsX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13A927584E;
-	Tue, 15 Jul 2025 13:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B07A2EA73C;
+	Tue, 15 Jul 2025 13:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585685; cv=none; b=gocTDuBioogHEszWsazseyY0OQtzwilb7bGeitNYUk+lhPb57Xm1YcsGG/ErvW/+lOW+hOgXXJVf/4MCKFDDBH8t1s1Jll5xg+xHWGx6cYRf/+8+6GSO67U+DGUqEGpd1Xz5F134cOYKv64C0qtzUU/lMqwiRPg782SgJ49jMwg=
+	t=1752586121; cv=none; b=JnBOcHV/m5DZvkWPOIIqz0xg+DBeevE7A+H+kIBQsamCHLoyuX3AxufGE9EggeiBhu1fc4UkdPHO0dIL02cL6uCryLAUaDtYcjHG/xU/j8sA5VxwVdhQz4v3nJ5tvWzZzSsEUHI/PkZ7xZF0FNdktmw5OZY3J67JWaTrNLCnDyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585685; c=relaxed/simple;
-	bh=RUX0gb3/8DJjwtNJr+31GBrpJsIX7ePRjLFZ66HaPRY=;
+	s=arc-20240116; t=1752586121; c=relaxed/simple;
+	bh=tThc9zRo53nLQRrGFMzY51P4UREHg52vuNGhn6dM1Cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xll+4NObvTAnAO1r8f44BsVAe+Nr15+//owfPjYt3SrvggtbUXXl8+0X0DOiFtK6jZVFvcnn5alndOrGxWSOHKm4qV52qD1d0qcb+rs2ugGqWeyVzZppIlBAzyjvMmHATE+Z/wRKA/2FYBhu+q537JyHYYHJyAIuCcrraQ7b4dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uU3FbBAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45197C4CEE3;
-	Tue, 15 Jul 2025 13:21:25 +0000 (UTC)
+	 MIME-Version; b=mcatFR9Qmru/K07sybEVBHTX55CGyY3DZ1VDJb8mSNbPdiUNeBkSdc46/GorV5FYTtZdn2N8T2ekXgeJT2ei0j54LYu6jVlBmto3V4PRXYXpERBjI+WZj0cO5Q7QjGMovup6votO7pNl+KQDgUJv8SsK6IO+XD+9BBsC1vNIbG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFlQLsX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7147BC4CEE3;
+	Tue, 15 Jul 2025 13:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585685;
-	bh=RUX0gb3/8DJjwtNJr+31GBrpJsIX7ePRjLFZ66HaPRY=;
+	s=korg; t=1752586120;
+	bh=tThc9zRo53nLQRrGFMzY51P4UREHg52vuNGhn6dM1Cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uU3FbBAqToQ+pPd1sQGHDoBMnphoSuhNc9axZ5obyJFwHxMA4Jqz8aaOsu9GMCqsC
-	 lQWno/OVNRHiBOZxNBDKBVpz2stCzA4HE57tH+KvlqycEvCujlQeHSZ88B/3t0RMwN
-	 ih5yFZYhOFa7UXKVw/2ep9sYdyLjMPq2jfwH8ePc=
+	b=hFlQLsX2CglAJgZMGPxeHmKgXNZ1NL1WXc+mq1/TPDG84FzA4LVbqf8P9dlZSJ2m7
+	 B7TJxPFyZht/VwjQPTyq+3gS/W7jcup7DOvU03so5ejdCNgr94FlbP59NWX558vDbF
+	 a65deEjV6Wya0DMD7kkn7u8njf4qNLNI11XEoxwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 134/163] net/mlx5e: Add new prio for promiscuous mode
+	Jiri Olsa <jolsa@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Xu Kuohai <xukuohai@huawei.com>,
+	Pranav Tyagi <pranav.tyagi03@gmail.com>
+Subject: [PATCH 5.15 23/77] bpf, sockmap: Fix skb refcnt race after locking changes
 Date: Tue, 15 Jul 2025 15:13:22 +0200
-Message-ID: <20250715130814.215272933@linuxfoundation.org>
+Message-ID: <20250715130752.632132891@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: John Fastabend <john.fastabend@gmail.com>
 
-[ Upstream commit 4c9fce56fa702059bbc5ab737265b68f79cbaac4 ]
+commit a454d84ee20baf7bd7be90721b9821f73c7d23d9 upstream.
 
-An optimization for promiscuous mode adds a high-priority steering
-table with a single catch-all rule to steer all traffic directly to
-the TTC table.
+There is a race where skb's from the sk_psock_backlog can be referenced
+after userspace side has already skb_consumed() the sk_buff and its refcnt
+dropped to zer0 causing use after free.
 
-However, a gap exists between the creation of this table and the
-insertion of the catch-all rule. Packets arriving in this brief window
-would miss as no rule was inserted yet, unnecessarily incrementing the
-'rx_steer_missed_packets' counter and dropped.
+The flow is the following:
 
-This patch resolves the issue by introducing a new prio for this
-table, placing it between MLX5E_TC_PRIO and MLX5E_NIC_PRIO. By doing
-so, packets arriving during the window now fall through to the next
-prio (at MLX5E_NIC_PRIO) instead of being dropped.
+  while ((skb = skb_peek(&psock->ingress_skb))
+    sk_psock_handle_Skb(psock, skb, ..., ingress)
+    if (!ingress) ...
+    sk_psock_skb_ingress
+       sk_psock_skb_ingress_enqueue(skb)
+          msg->skb = skb
+          sk_psock_queue_msg(psock, msg)
+    skb_dequeue(&psock->ingress_skb)
 
-Fixes: 1c46d7409f30 ("net/mlx5e: Optimize promiscuous mode")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/1752155624-24095-4-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The sk_psock_queue_msg() puts the msg on the ingress_msg queue. This is
+what the application reads when recvmsg() is called. An application can
+read this anytime after the msg is placed on the queue. The recvmsg hook
+will also read msg->skb and then after user space reads the msg will call
+consume_skb(skb) on it effectively free'ing it.
+
+But, the race is in above where backlog queue still has a reference to
+the skb and calls skb_dequeue(). If the skb_dequeue happens after the
+user reads and free's the skb we have a use after free.
+
+The !ingress case does not suffer from this problem because it uses
+sendmsg_*(sk, msg) which does not pass the sk_buff further down the
+stack.
+
+The following splat was observed with 'test_progs -t sockmap_listen':
+
+  [ 1022.710250][ T2556] general protection fault, ...
+  [...]
+  [ 1022.712830][ T2556] Workqueue: events sk_psock_backlog
+  [ 1022.713262][ T2556] RIP: 0010:skb_dequeue+0x4c/0x80
+  [ 1022.713653][ T2556] Code: ...
+  [...]
+  [ 1022.720699][ T2556] Call Trace:
+  [ 1022.720984][ T2556]  <TASK>
+  [ 1022.721254][ T2556]  ? die_addr+0x32/0x80^M
+  [ 1022.721589][ T2556]  ? exc_general_protection+0x25a/0x4b0
+  [ 1022.722026][ T2556]  ? asm_exc_general_protection+0x22/0x30
+  [ 1022.722489][ T2556]  ? skb_dequeue+0x4c/0x80
+  [ 1022.722854][ T2556]  sk_psock_backlog+0x27a/0x300
+  [ 1022.723243][ T2556]  process_one_work+0x2a7/0x5b0
+  [ 1022.723633][ T2556]  worker_thread+0x4f/0x3a0
+  [ 1022.723998][ T2556]  ? __pfx_worker_thread+0x10/0x10
+  [ 1022.724386][ T2556]  kthread+0xfd/0x130
+  [ 1022.724709][ T2556]  ? __pfx_kthread+0x10/0x10
+  [ 1022.725066][ T2556]  ret_from_fork+0x2d/0x50
+  [ 1022.725409][ T2556]  ? __pfx_kthread+0x10/0x10
+  [ 1022.725799][ T2556]  ret_from_fork_asm+0x1b/0x30
+  [ 1022.726201][ T2556]  </TASK>
+
+To fix we add an skb_get() before passing the skb to be enqueued in the
+engress queue. This bumps the skb->users refcnt so that consume_skb()
+and kfree_skb will not immediately free the sk_buff. With this we can
+be sure the skb is still around when we do the dequeue. Then we just
+need to decrement the refcnt or free the skb in the backlog case which
+we do by calling kfree_skb() on the ingress case as well as the sendmsg
+case.
+
+Before locking change from fixes tag we had the sock locked so we
+couldn't race with user and there was no issue here.
+
+Fixes: 799aa7f98d53e ("skmsg: Avoid lock_sock() in sk_psock_backlog()")
+Reported-by: Jiri Olsa  <jolsa@kernel.org>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Xu Kuohai <xukuohai@huawei.com>
+Tested-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20230901202137.214666-1-john.fastabend@gmail.com
+Signed-off-by: Pranav Tyagi <pranav.tyagi03@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/fs.h   |  9 +++++++--
- drivers/net/ethernet/mellanox/mlx5/core/en_fs.c   |  2 +-
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 13 +++++++++----
- 3 files changed, 17 insertions(+), 7 deletions(-)
+ net/core/skmsg.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-index 1e8b7d3307014..b5aac0e1a68ec 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-@@ -18,7 +18,8 @@ enum {
- 
- enum {
- 	MLX5E_TC_PRIO = 0,
--	MLX5E_NIC_PRIO
-+	MLX5E_PROMISC_PRIO,
-+	MLX5E_NIC_PRIO,
- };
- 
- struct mlx5e_flow_table {
-@@ -68,9 +69,13 @@ struct mlx5e_l2_table {
- 				 MLX5_HASH_FIELD_SEL_DST_IP   |\
- 				 MLX5_HASH_FIELD_SEL_IPSEC_SPI)
- 
--/* NIC prio FTS */
-+/* NIC promisc FT level */
- enum {
- 	MLX5E_PROMISC_FT_LEVEL,
-+};
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -608,12 +608,18 @@ static int sk_psock_skb_ingress_self(str
+ static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
+ 			       u32 off, u32 len, bool ingress)
+ {
++	int err = 0;
 +
-+/* NIC prio FTS */
-+enum {
- 	MLX5E_VLAN_FT_LEVEL,
- 	MLX5E_L2_FT_LEVEL,
- 	MLX5E_TTC_FT_LEVEL,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-index 05058710d2c79..537e732085b22 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-@@ -776,7 +776,7 @@ static int mlx5e_create_promisc_table(struct mlx5e_flow_steering *fs)
- 	ft_attr.max_fte = MLX5E_PROMISC_TABLE_SIZE;
- 	ft_attr.autogroup.max_num_groups = 1;
- 	ft_attr.level = MLX5E_PROMISC_FT_LEVEL;
--	ft_attr.prio = MLX5E_NIC_PRIO;
-+	ft_attr.prio = MLX5E_PROMISC_PRIO;
+ 	if (!ingress) {
+ 		if (!sock_writeable(psock->sk))
+ 			return -EAGAIN;
+ 		return skb_send_sock(psock->sk, skb, off, len);
+ 	}
+-	return sk_psock_skb_ingress(psock, skb, off, len);
++	skb_get(skb);
++	err = sk_psock_skb_ingress(psock, skb, off, len);
++	if (err < 0)
++		kfree_skb(skb);
++	return err;
+ }
  
- 	ft->t = mlx5_create_auto_grouped_flow_table(fs->ns, &ft_attr);
- 	if (IS_ERR(ft->t)) {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 1bc88743d2dfa..7ef0a4af89e48 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -113,13 +113,16 @@
- #define ETHTOOL_PRIO_NUM_LEVELS 1
- #define ETHTOOL_NUM_PRIOS 11
- #define ETHTOOL_MIN_LEVEL (KERNEL_MIN_LEVEL + ETHTOOL_NUM_PRIOS)
--/* Promiscuous, Vlan, mac, ttc, inner ttc, {UDP/ANY/aRFS/accel/{esp, esp_err}}, IPsec policy,
-+/* Vlan, mac, ttc, inner ttc, {UDP/ANY/aRFS/accel/{esp, esp_err}}, IPsec policy,
-  * {IPsec RoCE MPV,Alias table},IPsec RoCE policy
-  */
--#define KERNEL_NIC_PRIO_NUM_LEVELS 11
-+#define KERNEL_NIC_PRIO_NUM_LEVELS 10
- #define KERNEL_NIC_NUM_PRIOS 1
--/* One more level for tc */
--#define KERNEL_MIN_LEVEL (KERNEL_NIC_PRIO_NUM_LEVELS + 1)
-+/* One more level for tc, and one more for promisc */
-+#define KERNEL_MIN_LEVEL (KERNEL_NIC_PRIO_NUM_LEVELS + 2)
-+
-+#define KERNEL_NIC_PROMISC_NUM_PRIOS 1
-+#define KERNEL_NIC_PROMISC_NUM_LEVELS 1
- 
- #define KERNEL_NIC_TC_NUM_PRIOS  1
- #define KERNEL_NIC_TC_NUM_LEVELS 3
-@@ -187,6 +190,8 @@ static struct init_tree_node {
- 			   ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
- 				  ADD_MULTIPLE_PRIO(KERNEL_NIC_TC_NUM_PRIOS,
- 						    KERNEL_NIC_TC_NUM_LEVELS),
-+				  ADD_MULTIPLE_PRIO(KERNEL_NIC_PROMISC_NUM_PRIOS,
-+						    KERNEL_NIC_PROMISC_NUM_LEVELS),
- 				  ADD_MULTIPLE_PRIO(KERNEL_NIC_NUM_PRIOS,
- 						    KERNEL_NIC_PRIO_NUM_LEVELS))),
- 		  ADD_PRIO(0, BY_PASS_MIN_LEVEL, 0, FS_CHAINING_CAPS,
--- 
-2.39.5
-
+ static void sk_psock_skb_state(struct sk_psock *psock,
+@@ -693,9 +699,7 @@ static void sk_psock_backlog(struct work
+ 		/* The entire skb sent, clear state */
+ 		sk_psock_skb_state(psock, state, 0, 0);
+ 		skb = skb_dequeue(&psock->ingress_skb);
+-		if (!ingress) {
+-			kfree_skb(skb);
+-		}
++		kfree_skb(skb);
+ 	}
+ end:
+ 	mutex_unlock(&psock->work_mutex);
 
 
 
