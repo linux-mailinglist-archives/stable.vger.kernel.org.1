@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6FDBB05E86
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DA31B05F3A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:03:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 534491C26F94
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4DFC7BA707
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685C12EA482;
-	Tue, 15 Jul 2025 13:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0112E2EEA;
+	Tue, 15 Jul 2025 13:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+0ugZ/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZHBXz9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259322E49B3;
-	Tue, 15 Jul 2025 13:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A2128937D;
+	Tue, 15 Jul 2025 13:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586820; cv=none; b=Y6uln6kk/mHqMN1nG8ZA+5jjJ0DKHwER3a4EKGDOIG86XKMgz60DxITaPwRvQUOMA382jvO0KPO3oNe8mA0k9uU4FYOT/UqiP5DmnAmf8uf2YDpS580w38eYlJfsEW5HeWpZJf73LoRCcd6J4s9HQw8YOeh1qMHbEHhXeZ+jLFk=
+	t=1752587447; cv=none; b=jJNNQdcaAYlQExiJx31OQQVmea6aP5v3asj3EXfqNBO7CrryLzaljv+tTFoTFzO2WYaleFzIpndLrxGqp8c9jmxyHxeBdB6k9osfepo5Zc4DTzL1mlywLJDnxeAUYoGokoLASxjp6qwyYL8/qZCC2gHxerT8MTJAYHwHxj9dPmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586820; c=relaxed/simple;
-	bh=Mh339nMFlqfqIZPNLVVJ/yTbBIH+8urxHtQbVWKO6qE=;
+	s=arc-20240116; t=1752587447; c=relaxed/simple;
+	bh=opGpRGvyR+JlfypA7dxlHib92NfC/S1gMYOFSxPpfrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jkT+Dv0n4RNBEP6DaNx8JXMkVkGKvjNpcFwUlEWe/ujHzxwjeO6ZqE7SE47HIjYK/5UT/x2S0N/YzxmJoKs2HnxTxJ0CnBLFwIH63SEMy4ssWOEBCwT6qp4vQhb4h48WG90jX+7RYxYN7cGu7+ZsXver36jnnL2IAPgAhvkBESc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+0ugZ/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3032C4CEE3;
-	Tue, 15 Jul 2025 13:40:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gqikwE1qfP0i2BKLDrDBNdP3qusq2g3H7GFCUloJClPgEmWEBnTqz6PchNYXlxUs5qRyOt1aE+MMVDwiX7oIai4PU3pQPAgz9MOLO74thu67sSrlMRIsho3bRxj+du0hdNPvmx/xNx6+DNScG1EXNlhtuXi9J4vVm6Yit60Lrpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZHBXz9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1957DC4CEE3;
+	Tue, 15 Jul 2025 13:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586820;
-	bh=Mh339nMFlqfqIZPNLVVJ/yTbBIH+8urxHtQbVWKO6qE=;
+	s=korg; t=1752587447;
+	bh=opGpRGvyR+JlfypA7dxlHib92NfC/S1gMYOFSxPpfrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+0ugZ/IjaAYoq6OdKYiQuuFz5pROBW9gqFz+98DNFZ419FBCJ2fouik3Uu3qRxvg
-	 beXbRREDl4Ad4WRAM6PuNvkw8eK0Frl5WWcUfgrcCiPLE2H16pKpCRU37zLzDyvp0Z
-	 tbHdSIAeQXtM4VoiPhQ9IDLvFmTIYMt36zhcSlVQ=
+	b=CZHBXz9Ncv0dXFZ7IiZvKeG/k3BOadOcaHjmOdz5MiPSEK9loq2zyDv9v51z2e1Sf
+	 bA3Fxu0ciRGmLnTWzHBe6FvnuhiIcic1IbYYzc11ECIUBgpxFAtuR6qJH4bX2RC89d
+	 Fnm1h0UCoRdEXvclstyr58ptg+EyYRQ5TlPcqEis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jos Wang <joswang@lenovo.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 029/192] vsock: fix `vsock_proto` declaration
-Date: Tue, 15 Jul 2025 15:12:04 +0200
-Message-ID: <20250715130816.030028882@linuxfoundation.org>
+Subject: [PATCH 5.10 016/208] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
+Date: Tue, 15 Jul 2025 15:12:05 +0200
+Message-ID: <20250715130811.483920643@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Jos Wang <joswang@lenovo.com>
 
-[ Upstream commit 1e3b66e326015f77bc4b36976bebeedc2ac0f588 ]
+[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
 
->From commit 634f1a7110b4 ("vsock: support sockmap"), `struct proto
-vsock_proto`, defined in af_vsock.c, is not static anymore, since it's
-used by vsock_bpf.c.
+Although some Type-C DRD devices that do not support the DP Sink
+function (such as Huawei Mate 40Pro), the Source Port initiates
+Enter Mode CMD, but the device responds to Enter Mode ACK, the
+Source port then initiates DP Status Update CMD, and the device
+responds to DP Status Update NAK.
 
-If CONFIG_BPF_SYSCALL is not defined, `make C=2` will print a warning:
-    $ make O=build C=2 W=1 net/vmw_vsock/
-      ...
-      CC [M]  net/vmw_vsock/af_vsock.o
-      CHECK   ../net/vmw_vsock/af_vsock.c
-    ../net/vmw_vsock/af_vsock.c:123:14: warning: symbol 'vsock_proto' was not declared. Should it be static?
+As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
+Shall Not be sent during Modal Operation between the Port Partners.
+At this time, the source port initiates DR_Swap message through the
+"echo device > /sys/class/typec/port0/data_role" command to switch
+the data role from host to device. The device will initiate a Hard
+Reset for recovery, resulting in the failure of data role swap.
 
-Declare `vsock_proto` regardless of CONFIG_BPF_SYSCALL, since it's defined
-in af_vsock.c, which is built regardless of CONFIG_BPF_SYSCALL.
+Therefore, when DP Status Update NAK is received, Exit Mode CMD is
+initiated to exit the currently entered DP altmode.
 
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20250703112329.28365-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jos Wang <joswang@lenovo.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_vsock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/altmodes/displayport.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 9e85424c83435..70302c92d329f 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -242,8 +242,8 @@ int __vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
- int vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
- 			size_t len, int flags);
- 
--#ifdef CONFIG_BPF_SYSCALL
- extern struct proto vsock_proto;
-+#ifdef CONFIG_BPF_SYSCALL
- int vsock_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore);
- void __init vsock_bpf_build_proto(void);
- #else
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index e0456e5e10b68..a577db01e67e1 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -304,6 +304,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
+ 		break;
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
++		case DP_CMD_STATUS_UPDATE:
++			if (typec_altmode_exit(alt))
++				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
+ 			ret = dp_altmode_configured(dp);
 -- 
 2.39.5
 
