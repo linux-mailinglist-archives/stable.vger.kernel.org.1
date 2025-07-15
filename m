@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D58B05FC3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5040AB06086
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECEE05864A0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E936D3A9B16
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86ED2E6115;
-	Tue, 15 Jul 2025 13:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797982E7BC0;
+	Tue, 15 Jul 2025 13:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdz2uWrd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCTYvwNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641302E54BF;
-	Tue, 15 Jul 2025 13:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F962E3AF6;
+	Tue, 15 Jul 2025 13:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587387; cv=none; b=Ms54EpEgoIhGAUqtGg5TTqUO/QfVYT8zDV9S1gsYo7SPQ8HwDUhNeWqc13x4KAwzomNVdqF3HXf2N3gM+MwYZSpuYoOF1AoN/ghnzB65+VUU42vG9R7kntVYH49KJgH6JHbl/1eoXj1mel7oC9YyVf8zgppzv/8H9rwvtd9bLJE=
+	t=1752587913; cv=none; b=YYRshyjixh9iZFKbTMScheJji7a4C4dUMUHQrFCtXFtjXGSPTNpfJuV0JID9UfpgoOTryoT8cjFtpG5F3DaHz2xWvrlv6N/Wn2sTGsBNwaXYJYk1m12MK6VFPOj6SZWMlVTvVpLE9P/HmcyECW/C6N2vk0hCPAU5nTif38w/EYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587387; c=relaxed/simple;
-	bh=WnBjYR7NO/E9jJgzbGi1N76BJpF1tljTjhAZC8IWGJ0=;
+	s=arc-20240116; t=1752587913; c=relaxed/simple;
+	bh=oSA7ksryMzP7Hij9MPknDjIBlbgG41TKJIUIUieAbMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBLO+FIBtg4PHSYQX0/kOZ8kHdI2LHZJCymMkZW1siwhMxq4D8FV7fAxkbvCaiDEgJSXxYlizE9bDGgXzD4PPtYQ8vJk9FUkUz0xzdSqVjs894zjmTXfDPYJAgb6j2Dm7756lnG98QEB03B0kKjf5EhNqOfC4czXSe42zwTyZRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdz2uWrd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7F3C4CEE3;
-	Tue, 15 Jul 2025 13:49:46 +0000 (UTC)
+	 MIME-Version; b=hdXhe9UcoM5G9f8kJPunUGpvON+91ThQQM3PdZ7/trqTNbn5K2oljKDxAMfS82u0BopG4P+UYQiAuRkahr4sHqIWayOYhKptV2pP2pnRauqLHL09YsIS3Gw9No5AzZVe366gbYbVuzOvlVKw0AusMJbOzi3Tw6uHlDMryuH9dk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCTYvwNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA02C4CEF1;
+	Tue, 15 Jul 2025 13:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587387;
-	bh=WnBjYR7NO/E9jJgzbGi1N76BJpF1tljTjhAZC8IWGJ0=;
+	s=korg; t=1752587913;
+	bh=oSA7ksryMzP7Hij9MPknDjIBlbgG41TKJIUIUieAbMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdz2uWrd/SQqfHm3YIUO1AAxOxYz957s9ToQO7Xr0WGQYL6u/AbqFWxdKimyF3jSr
-	 tZJijhZ/LoLNhKVME92hD50ZbtpPwGEtdv4REfO+LCSzUnfoduNHpZdFcMACnK8jDg
-	 oySMRKedshho7Dxaxd/g5v9acidAV72hqmDaTSCc=
+	b=UCTYvwNAF7HB5oSrm9JqlnUl7yJdfkkcPrM/xEoi/ESNwKyhUgILrFXoLySUuzrjW
+	 BqOlxDkgawz01KRlEGOVdHOFs+SLv087K19Dalz7juLOgqxxoDNT1xkQBSU+gAtw3u
+	 aTVe1dDzraU2IUIsPpZzZc2bIQ/+BYyPpGawpuMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Kito Xu <veritas501@foxmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 82/88] HID: quirks: Add quirk for 2 Chicony Electronics HP 5MP Cameras
+Subject: [PATCH 5.10 189/208] net: appletalk: Fix device refcount leak in atrtr_create()
 Date: Tue, 15 Jul 2025 15:14:58 +0200
-Message-ID: <20250715130757.863501480@linuxfoundation.org>
+Message-ID: <20250715130818.519682422@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+From: Kito Xu <veritas501@foxmail.com>
 
-[ Upstream commit 54bae4c17c11688339eb73a04fd24203bb6e7494 ]
+[ Upstream commit 711c80f7d8b163d3ecd463cd96f07230f488e750 ]
 
-The Chicony Electronics HP 5MP Cameras (USB ID 04F2:B824 & 04F2:B82C)
-report a HID sensor interface that is not actually implemented.
-Attempting to access this non-functional sensor via iio_info causes
-system hangs as runtime PM tries to wake up an unresponsive sensor.
+When updating an existing route entry in atrtr_create(), the old device
+reference was not being released before assigning the new device,
+leading to a device refcount leak. Fix this by calling dev_put() to
+release the old device reference before holding the new one.
 
-Add these 2 devices to the HID ignore list since the sensor interface is
-non-functional by design and should not be exposed to userspace.
-
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: c7f905f0f6d4 ("[ATALK]: Add missing dev_hold() to atrtr_create().")
+Signed-off-by: Kito Xu <veritas501@foxmail.com>
+Link: https://patch.msgid.link/tencent_E1A26771CDAB389A0396D1681A90A49E5D09@qq.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 2 ++
- drivers/hid/hid-quirks.c | 2 ++
- 2 files changed, 4 insertions(+)
+ net/appletalk/ddp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 21e0660179ee9..0bbba80d6c51c 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -297,6 +297,8 @@
- #define USB_DEVICE_ID_ASUS_AK1D		0x1125
- #define USB_DEVICE_ID_CHICONY_TOSHIBA_WT10A	0x1408
- #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
+diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+index 46adb8cefccf2..c9edfca153c99 100644
+--- a/net/appletalk/ddp.c
++++ b/net/appletalk/ddp.c
+@@ -563,6 +563,7 @@ static int atrtr_create(struct rtentry *r, struct net_device *devhint)
  
- #define USB_VENDOR_ID_CHUNGHWAT		0x2247
- #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 7fca632ceea79..b37927f909412 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -738,6 +738,8 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AVERMEDIA, USB_DEVICE_ID_AVER_FM_MR800) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AXENTIA, USB_DEVICE_ID_AXENTIA_FM_RADIO) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
+ 	/* Fill in the routing entry */
+ 	rt->target  = ta->sat_addr;
++	dev_put(rt->dev); /* Release old device */
+ 	dev_hold(devhint);
+ 	rt->dev     = devhint;
+ 	rt->flags   = r->rt_flags;
 -- 
 2.39.5
 
