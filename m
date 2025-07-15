@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C703B060AD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:20:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DF8B05FB9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAC075A3008
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:10:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99EB8188688B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6204D2F237A;
-	Tue, 15 Jul 2025 13:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018ED192D8A;
+	Tue, 15 Jul 2025 13:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BmI+6Il"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xia2WyF5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ADF2E973B;
-	Tue, 15 Jul 2025 13:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49042E62A6;
+	Tue, 15 Jul 2025 13:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587898; cv=none; b=Xy49FYOR/2Lrfn2w6ec/5iHCvuJGDB37u7JIvmDG4ThVG+xfvr/WyxVC8L0ngj9oMbAtmAZXiaLflo16eOV10zRqaPv3ypMqnpWi6IA+YP0gVhGQgWFcBIXEqztdvuK3hy5SKfnCRkjlbbLM9TtOdfQimmZJnZAXLGOyq18nik8=
+	t=1752587418; cv=none; b=scyi7M+D1ZLqeYHPpuhhgpQDsKtuxJREwHAP8MxsDWW78YhznqJEUsGTvTwwxsv6I/ZgozmtQTSFKCuKcGLSucRGCKM13/b6A6Tw6P5Z5rNv8wbZg+u8r/gavsT5+/E6fr+C85w/eBjz64FckhaILLSUE+L+kSC9oi8bErzTsrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587898; c=relaxed/simple;
-	bh=OvDTiN3voCXujY/1+Sie3+ii/YXcBfy5ZXgxzpXob/0=;
+	s=arc-20240116; t=1752587418; c=relaxed/simple;
+	bh=P67P4vUziQsPgxXFelmK2ibQRYuc4jm5OEl9D2q7H44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llye1OiE5/u1McfQN13D0McQKciWkcYzQRL9T7PcoVCD3Fk3aC31gUZ1BVG7QtANvHA4eVmzap7GRyIs8G8mwSN88pJFVfCIEMiAPdmN8SSyYg3vzhwQrHRPQdBXZRmHMDNwUFjmH+4WqwYAmvDnl1YuW9XBzY2dAXNqsospo4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BmI+6Il; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B45C4CEE3;
-	Tue, 15 Jul 2025 13:58:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jL7yJxbMoHF96UjuqQCvlHAIKQpzb2sAQ9FgsfUcM81mWPqDKcNICicnzawuMyNDhNIG86+3Sguc3ivVPvvQCrmdoLU7UkV1NSfDBGT+aEMMbEK84emCKUoQVRSsvIkxo1mcjOvfSJG5MxSA0R3liPIdvsm5TCW0ZaMqKKqG1Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xia2WyF5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426D7C4CEE3;
+	Tue, 15 Jul 2025 13:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587898;
-	bh=OvDTiN3voCXujY/1+Sie3+ii/YXcBfy5ZXgxzpXob/0=;
+	s=korg; t=1752587418;
+	bh=P67P4vUziQsPgxXFelmK2ibQRYuc4jm5OEl9D2q7H44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BmI+6IldDKpfa2fhutpKi/YlOeTQbgRNaDiNXPQmkWQVzpGoQmLYasKP19CmjpAq
-	 DFe7u5u4FQADQa5j0xKSoZdkmWKKKTXUW9a6Rrs8vZQE+5LyKeU3MoTABKtqVZ7HbJ
-	 o/RqwIDW2URawnagsO7OrbX3SOIooPwR/diGARow=
+	b=xia2WyF5JX9Mx4SUYEAwGWz0hcFlp0zVzSkUmc7acscZFNhv/ucM9tyNhEULvai8m
+	 qgBm60HI0vpcEUpbQ0nQ7Y1bZXIXXJktcZ1Sj1b88z1yV2RU6POb5gVwYfR8rbYbXM
+	 k1doixL8Q0k7kED++4wUEXisXLr+z/KzqtHao2G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Xiaowei Li <xiaowei.li@simcom.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 184/208] Input: xpad - add VID for Turtle Beach controllers
+Subject: [PATCH 6.1 77/88] net: usb: qmi_wwan: add SIMCom 8230C composition
 Date: Tue, 15 Jul 2025 15:14:53 +0200
-Message-ID: <20250715130818.325824178@linuxfoundation.org>
+Message-ID: <20250715130757.664095062@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Xiaowei Li <xiaowei.li@simcom.com>
 
-[ Upstream commit 1999a6b12a3b5c8953fc9ec74863ebc75a1b851d ]
+[ Upstream commit 0b39b055b5b48cbbdf5746a1ca6e3f6b0221e537 ]
 
-This adds support for the Turtle Beach REACT-R and Recon Xbox controllers
+Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
+0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet
+T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1e0e ProdID=9071 Rev= 5.15
+S:  Manufacturer=SIMCOM
+S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
+S:  SerialNumber=0123456789ABCDEF
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=none
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20230225012147.276489-4-vi@endrift.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Stable-dep-of: 22c69d786ef8 ("Input: xpad - support Acer NGR 200 Controller")
+Signed-off-by: Xiaowei Li <xiaowei.li@simcom.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Link: https://patch.msgid.link/tencent_21D781FAA4969FEACA6ABB460362B52C9409@qq.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 1 +
+ drivers/net/usb/qmi_wwan.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index fb714004641b7..21a4bf8b1f58e 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -452,6 +452,7 @@ static const struct usb_device_id xpad_table[] = {
- 	XPAD_XBOX360_VENDOR(0x0f0d),		/* Hori Controllers */
- 	XPAD_XBOXONE_VENDOR(0x0f0d),		/* Hori Controllers */
- 	XPAD_XBOX360_VENDOR(0x1038),		/* SteelSeries Controllers */
-+	XPAD_XBOXONE_VENDOR(0x10f5),		/* Turtle Beach Controllers */
- 	XPAD_XBOX360_VENDOR(0x11c9),		/* Nacon GC100XF */
- 	XPAD_XBOX360_VENDOR(0x11ff),		/* PXN V900 */
- 	XPAD_XBOX360_VENDOR(0x1209),		/* Ardwiino Controllers */
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index b4c0413c6522a..96656e56e809f 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1431,6 +1431,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x22de, 0x9051, 2)}, /* Hucom Wireless HM-211S/K */
+ 	{QMI_FIXED_INTF(0x22de, 0x9061, 3)},	/* WeTelecom WPD-600N */
+ 	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9001, 5)},	/* SIMCom 7100E, 7230E, 7600E ++ */
++	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9071, 3)},	/* SIMCom 8230C ++ */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0121, 4)},	/* Quectel EC21 Mini PCIe */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
 -- 
 2.39.5
 
