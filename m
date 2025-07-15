@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A068B05ECA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA6EB05CBC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 467881C2398D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99B6F3BB4F6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A962E88B7;
-	Tue, 15 Jul 2025 13:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1092E7659;
+	Tue, 15 Jul 2025 13:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIc2bcjx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6AGtA1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60252E6D35;
-	Tue, 15 Jul 2025 13:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98F52E1747;
+	Tue, 15 Jul 2025 13:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587028; cv=none; b=QdHUiyUzSWQhcvxFbe7DgYJ7cHsb8TdRvl4amSPEcx0iVbB1LTPKL4auKPv++EoeSpad+NAOCvyElw+VTofUM9P/r0iWLkr0isdS1Z1GmS5tzbneIChXDQq5N6KNYqSr2n3FUDUrZa5bK676J/FoqACVBnNgGzGhA/4AY6fM4g8=
+	t=1752586033; cv=none; b=GLxt7OePEo6K9hd0sbf7BsLZxORqUij3bYBDhbDi36iw3+xawuwNmlKuX3b4a9yMfs/Saty6Yjj/8E65zokmfv/wkwXKCyGoTfisCDN43i3S6rWxeK4KQsMOhS5yT36jny07rBTn2jxcixULKHFdOahX+TFZvw0dX7xjJr4ayM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587028; c=relaxed/simple;
-	bh=kRBbFmqkr9IBia0hhb1tknX32x+K0I+MOENhc8JiDzE=;
+	s=arc-20240116; t=1752586033; c=relaxed/simple;
+	bh=RVBf0xqgtBR7wewRJP8jDT/kfy7WzpOcMd5jdSmg3Us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=si/3/aq9yPwjsG5PkyG5atSi4iURGPGZBxH25zuNjdiW+0ViZRrVl8xMloXZVgVj8ucgPKhacrBkg7u1ToKwP36YCnt92bSTI3rVO+aAgf/jzX/CKIT0eMVu/S3axO2ZfBe1EI76TvxRHNetcSLA7lnBDralPLRAfLc8Sa6hdI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIc2bcjx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699AAC4CEE3;
-	Tue, 15 Jul 2025 13:43:48 +0000 (UTC)
+	 MIME-Version; b=Ma3ueUPUUABBQTGM4fOqzIKojMDEIrYdvOp9NqHYwqShgiiL3d/ZbxmMfQc632uVO2GYhVyPR9DUk+/14cT1YR54MN9v+O0tZk6sh4T5U8k6bwyro9dzv5HEOV2bFR2z1pi4TfFRfX4yo47qrryvgfMnshnj47fK0kTSnWT2CFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6AGtA1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5C8C4CEE3;
+	Tue, 15 Jul 2025 13:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587028;
-	bh=kRBbFmqkr9IBia0hhb1tknX32x+K0I+MOENhc8JiDzE=;
+	s=korg; t=1752586033;
+	bh=RVBf0xqgtBR7wewRJP8jDT/kfy7WzpOcMd5jdSmg3Us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIc2bcjxI2fioujitgkDukbWnypq1h1GA0SyxKl/tAi8FGMW95krNk75RpXqAiZoh
-	 hVrdtcnWOrbg/A05a0Co9JEhkKIwtWKCXfWsMGAup2FgzBfpQMG6+J8f84CArkE13/
-	 mr/5DYX6ZcgVGDBdoavkasIcp0mAKXlSdLQIrxgY=
+	b=B6AGtA1nbcB40GVWEn1z5HS+IxoNoFavQ5ORuqQdRARCBCbOQGPt0XlRiQUUh+qu8
+	 zrhBCx3eiX8DMgqYUAbVwuWl3fPjKBMnVesF+Wb7LUYLmmVScbWCfPO9eWG+UKoDZL
+	 hf+SD2XaCD6u7ipBtLBgjAIpOjK9eIXeNjfiZL+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	syzbot+36fae25c35159a763a2a@syzkaller.appspotmail.com,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 140/192] wifi: mt76: Move RCU section in mt7996_mcu_set_fixed_field()
-Date: Tue, 15 Jul 2025 15:13:55 +0200
-Message-ID: <20250715130820.521426782@linuxfoundation.org>
+Subject: [PATCH 6.6 100/109] btrfs: fix assertion when building free space tree
+Date: Tue, 15 Jul 2025 15:13:56 +0200
+Message-ID: <20250715130802.885340978@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,237 +64,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit c772cd726eea6fe8fb81d2aeeacb18cecff73a7b ]
+[ Upstream commit 1961d20f6fa8903266ed9bd77c691924c22c8f02 ]
 
-Since mt76_mcu_skb_send_msg() routine can't be executed in atomic context,
-move RCU section in mt7996_mcu_set_fixed_field() and execute
-mt76_mcu_skb_send_msg() in non-atomic context. This is a preliminary
-patch to fix a 'sleep while atomic' issue in mt7996_mac_sta_rc_work().
+When building the free space tree with the block group tree feature
+enabled, we can hit an assertion failure like this:
 
-Fixes: 0762bdd30279 ("wifi: mt76: mt7996: rework mt7996_mac_sta_rc_work to support MLO")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250605-mt7996-sleep-while-atomic-v1-2-d46d15f9203c@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+  BTRFS info (device loop0 state M): rebuilding free space tree
+  assertion failed: ret == 0, in fs/btrfs/free-space-tree.c:1102
+  ------------[ cut here ]------------
+  kernel BUG at fs/btrfs/free-space-tree.c:1102!
+  Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 6592 Comm: syz-executor322 Not tainted 6.15.0-rc7-syzkaller-gd7fa1af5b33e #0 PREEMPT
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+  pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : populate_free_space_tree+0x514/0x518 fs/btrfs/free-space-tree.c:1102
+  lr : populate_free_space_tree+0x514/0x518 fs/btrfs/free-space-tree.c:1102
+  sp : ffff8000a4ce7600
+  x29: ffff8000a4ce76e0 x28: ffff0000c9bc6000 x27: ffff0000ddfff3d8
+  x26: ffff0000ddfff378 x25: dfff800000000000 x24: 0000000000000001
+  x23: ffff8000a4ce7660 x22: ffff70001499cecc x21: ffff0000e1d8c160
+  x20: ffff0000e1cb7800 x19: ffff0000e1d8c0b0 x18: 00000000ffffffff
+  x17: ffff800092f39000 x16: ffff80008ad27e48 x15: ffff700011e740c0
+  x14: 1ffff00011e740c0 x13: 0000000000000004 x12: ffffffffffffffff
+  x11: ffff700011e740c0 x10: 0000000000ff0100 x9 : 94ef24f55d2dbc00
+  x8 : 94ef24f55d2dbc00 x7 : 0000000000000001 x6 : 0000000000000001
+  x5 : ffff8000a4ce6f98 x4 : ffff80008f415ba0 x3 : ffff800080548ef0
+  x2 : 0000000000000000 x1 : 0000000100000000 x0 : 000000000000003e
+  Call trace:
+   populate_free_space_tree+0x514/0x518 fs/btrfs/free-space-tree.c:1102 (P)
+   btrfs_rebuild_free_space_tree+0x14c/0x54c fs/btrfs/free-space-tree.c:1337
+   btrfs_start_pre_rw_mount+0xa78/0xe10 fs/btrfs/disk-io.c:3074
+   btrfs_remount_rw fs/btrfs/super.c:1319 [inline]
+   btrfs_reconfigure+0x828/0x2418 fs/btrfs/super.c:1543
+   reconfigure_super+0x1d4/0x6f0 fs/super.c:1083
+   do_remount fs/namespace.c:3365 [inline]
+   path_mount+0xb34/0xde0 fs/namespace.c:4200
+   do_mount fs/namespace.c:4221 [inline]
+   __do_sys_mount fs/namespace.c:4432 [inline]
+   __se_sys_mount fs/namespace.c:4409 [inline]
+   __arm64_sys_mount+0x3e8/0x468 fs/namespace.c:4409
+   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+   invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+   el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+   do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+   el0_svc+0x58/0x17c arch/arm64/kernel/entry-common.c:767
+   el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:786
+   el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+  Code: f0047182 91178042 528089c3 9771d47b (d4210000)
+  ---[ end trace 0000000000000000 ]---
+
+This happens because we are processing an empty block group, which has
+no extents allocated from it, there are no items for this block group,
+including the block group item since block group items are stored in a
+dedicated tree when using the block group tree feature. It also means
+this is the block group with the highest start offset, so there are no
+higher keys in the extent root, hence btrfs_search_slot_for_read()
+returns 1 (no higher key found).
+
+Fix this by asserting 'ret' is 0 only if the block group tree feature
+is not enabled, in which case we should find a block group item for
+the block group since it's stored in the extent root and block group
+item keys are greater than extent item keys (the value for
+BTRFS_BLOCK_GROUP_ITEM_KEY is 192 and for BTRFS_EXTENT_ITEM_KEY and
+BTRFS_METADATA_ITEM_KEY the values are 168 and 169 respectively).
+In case 'ret' is 1, we just need to add a record to the free space
+tree which spans the whole block group, and we can achieve this by
+making 'ret == 0' as the while loop's condition.
+
+Reported-by: syzbot+36fae25c35159a763a2a@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/6841dca8.a00a0220.d4325.0020.GAE@google.com/
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mac.c   |  5 +-
- .../net/wireless/mediatek/mt76/mt7996/main.c  |  3 +-
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 68 +++++++++++++------
- .../wireless/mediatek/mt76/mt7996/mt7996.h    | 10 ++-
- 4 files changed, 57 insertions(+), 29 deletions(-)
+ fs/btrfs/free-space-tree.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 2108361543a0c..5cf2d6669ee68 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -2370,11 +2370,10 @@ void mt7996_mac_sta_rc_work(struct work_struct *work)
- 			       IEEE80211_RC_BW_CHANGED))
- 			mt7996_mcu_add_rate_ctrl(dev, vif, link_conf,
- 						 link_sta, link, msta_link,
--						 true);
-+						 link_id, true);
+diff --git a/fs/btrfs/free-space-tree.c b/fs/btrfs/free-space-tree.c
+index a0d8160b53757..300ee0b68b498 100644
+--- a/fs/btrfs/free-space-tree.c
++++ b/fs/btrfs/free-space-tree.c
+@@ -1104,11 +1104,21 @@ static int populate_free_space_tree(struct btrfs_trans_handle *trans,
+ 	ret = btrfs_search_slot_for_read(extent_root, &key, path, 1, 0);
+ 	if (ret < 0)
+ 		goto out_locked;
+-	ASSERT(ret == 0);
++	/*
++	 * If ret is 1 (no key found), it means this is an empty block group,
++	 * without any extents allocated from it and there's no block group
++	 * item (key BTRFS_BLOCK_GROUP_ITEM_KEY) located in the extent tree
++	 * because we are using the block group tree feature, so block group
++	 * items are stored in the block group tree. It also means there are no
++	 * extents allocated for block groups with a start offset beyond this
++	 * block group's end offset (this is the last, highest, block group).
++	 */
++	if (!btrfs_fs_compat_ro(trans->fs_info, BLOCK_GROUP_TREE))
++		ASSERT(ret == 0);
  
- 		if (changed & IEEE80211_RC_SMPS_CHANGED)
--			mt7996_mcu_set_fixed_field(dev, link_sta, link,
--						   msta_link, NULL,
-+			mt7996_mcu_set_fixed_field(dev, msta, NULL, link_id,
- 						   RATE_PARAM_MMPS_UPDATE);
+ 	start = block_group->start;
+ 	end = block_group->start + block_group->length;
+-	while (1) {
++	while (ret == 0) {
+ 		btrfs_item_key_to_cpu(path->nodes[0], &key, path->slots[0]);
  
- 		spin_lock_bh(&dev->mt76.sta_poll_lock);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index b11dd3dd5c46f..bb2eef6b934b5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1114,7 +1114,8 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 
- 			err = mt7996_mcu_add_rate_ctrl(dev, vif, link_conf,
- 						       link_sta, link,
--						       msta_link, false);
-+						       msta_link, link_id,
-+						       false);
- 			if (err)
- 				return err;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index ddd555942c738..d67ed58d7126d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1883,22 +1883,35 @@ int mt7996_mcu_set_fixed_rate_ctrl(struct mt7996_dev *dev,
- 				     MCU_WM_UNI_CMD(RA), true);
- }
- 
--int mt7996_mcu_set_fixed_field(struct mt7996_dev *dev,
--			       struct ieee80211_link_sta *link_sta,
--			       struct mt7996_vif_link *link,
--			       struct mt7996_sta_link *msta_link,
--			       void *data, u32 field)
-+int mt7996_mcu_set_fixed_field(struct mt7996_dev *dev, struct mt7996_sta *msta,
-+			       void *data, u8 link_id, u32 field)
- {
--	struct sta_phy_uni *phy = data;
-+	struct mt7996_vif *mvif = msta->vif;
-+	struct mt7996_sta_link *msta_link;
- 	struct sta_rec_ra_fixed_uni *ra;
-+	struct sta_phy_uni *phy = data;
-+	struct mt76_vif_link *mlink;
- 	struct sk_buff *skb;
-+	int err = -ENODEV;
- 	struct tlv *tlv;
- 
--	skb = __mt76_connac_mcu_alloc_sta_req(&dev->mt76, &link->mt76,
-+	rcu_read_lock();
-+
-+	mlink = rcu_dereference(mvif->mt76.link[link_id]);
-+	if (!mlink)
-+		goto error_unlock;
-+
-+	msta_link = rcu_dereference(msta->link[link_id]);
-+	if (!msta_link)
-+		goto error_unlock;
-+
-+	skb = __mt76_connac_mcu_alloc_sta_req(&dev->mt76, mlink,
- 					      &msta_link->wcid,
- 					      MT7996_STA_UPDATE_MAX_SIZE);
--	if (IS_ERR(skb))
--		return PTR_ERR(skb);
-+	if (IS_ERR(skb)) {
-+		err = PTR_ERR(skb);
-+		goto error_unlock;
-+	}
- 
- 	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_RA_UPDATE, sizeof(*ra));
- 	ra = (struct sta_rec_ra_fixed_uni *)tlv;
-@@ -1913,27 +1926,45 @@ int mt7996_mcu_set_fixed_field(struct mt7996_dev *dev,
- 		if (phy)
- 			ra->phy = *phy;
- 		break;
--	case RATE_PARAM_MMPS_UPDATE:
-+	case RATE_PARAM_MMPS_UPDATE: {
-+		struct ieee80211_sta *sta = wcid_to_sta(&msta_link->wcid);
-+		struct ieee80211_link_sta *link_sta;
-+
-+		link_sta = rcu_dereference(sta->link[link_id]);
-+		if (!link_sta) {
-+			dev_kfree_skb(skb);
-+			goto error_unlock;
-+		}
-+
- 		ra->mmps_mode = mt7996_mcu_get_mmps_mode(link_sta->smps_mode);
- 		break;
-+	}
- 	default:
- 		break;
+ 		if (key.type == BTRFS_EXTENT_ITEM_KEY ||
+@@ -1138,8 +1148,6 @@ static int populate_free_space_tree(struct btrfs_trans_handle *trans,
+ 		ret = btrfs_next_item(extent_root, path);
+ 		if (ret < 0)
+ 			goto out_locked;
+-		if (ret)
+-			break;
  	}
- 	ra->field = cpu_to_le32(field);
- 
-+	rcu_read_unlock();
-+
- 	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
- 				     MCU_WMWA_UNI_CMD(STA_REC_UPDATE), true);
-+error_unlock:
-+	rcu_read_unlock();
-+
-+	return err;
- }
- 
- static int
- mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev,
- 			       struct ieee80211_link_sta *link_sta,
- 			       struct mt7996_vif_link *link,
--			       struct mt7996_sta_link *msta_link)
-+			       struct mt7996_sta_link *msta_link,
-+			       u8 link_id)
- {
- 	struct cfg80211_chan_def *chandef = &link->phy->mt76->chandef;
- 	struct cfg80211_bitrate_mask *mask = &link->bitrate_mask;
- 	enum nl80211_band band = chandef->chan->band;
-+	struct mt7996_sta *msta = msta_link->sta;
- 	struct sta_phy_uni phy = {};
- 	int ret, nrates = 0;
- 
-@@ -1974,8 +2005,7 @@ mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev,
- 
- 	/* fixed single rate */
- 	if (nrates == 1) {
--		ret = mt7996_mcu_set_fixed_field(dev, link_sta, link,
--						 msta_link, &phy,
-+		ret = mt7996_mcu_set_fixed_field(dev, msta, &phy, link_id,
- 						 RATE_PARAM_FIXED_MCS);
- 		if (ret)
- 			return ret;
-@@ -1996,8 +2026,7 @@ mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev,
- 		else
- 			mt76_rmw_field(dev, addr, GENMASK(15, 12), phy.sgi);
- 
--		ret = mt7996_mcu_set_fixed_field(dev, link_sta, link,
--						 msta_link, &phy,
-+		ret = mt7996_mcu_set_fixed_field(dev, msta, &phy, link_id,
- 						 RATE_PARAM_FIXED_GI);
- 		if (ret)
- 			return ret;
-@@ -2005,8 +2034,7 @@ mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev,
- 
- 	/* fixed HE_LTF */
- 	if (mask->control[band].he_ltf != GENMASK(7, 0)) {
--		ret = mt7996_mcu_set_fixed_field(dev, link_sta, link,
--						 msta_link, &phy,
-+		ret = mt7996_mcu_set_fixed_field(dev, msta, &phy, link_id,
- 						 RATE_PARAM_FIXED_HE_LTF);
- 		if (ret)
- 			return ret;
-@@ -2128,7 +2156,8 @@ int mt7996_mcu_add_rate_ctrl(struct mt7996_dev *dev,
- 			     struct ieee80211_bss_conf *link_conf,
- 			     struct ieee80211_link_sta *link_sta,
- 			     struct mt7996_vif_link *link,
--			     struct mt7996_sta_link *msta_link, bool changed)
-+			     struct mt7996_sta_link *msta_link,
-+			     u8 link_id, bool changed)
- {
- 	struct sk_buff *skb;
- 	int ret;
-@@ -2156,7 +2185,8 @@ int mt7996_mcu_add_rate_ctrl(struct mt7996_dev *dev,
- 	if (ret)
- 		return ret;
- 
--	return mt7996_mcu_add_rate_ctrl_fixed(dev, link_sta, link, msta_link);
-+	return mt7996_mcu_add_rate_ctrl_fixed(dev, link_sta, link, msta_link,
-+					      link_id);
- }
- 
- static int
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 77605403b3966..16a4a465b9b27 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -609,18 +609,16 @@ int mt7996_mcu_add_rate_ctrl(struct mt7996_dev *dev,
- 			     struct ieee80211_bss_conf *link_conf,
- 			     struct ieee80211_link_sta *link_sta,
- 			     struct mt7996_vif_link *link,
--			     struct mt7996_sta_link *msta_link, bool changed);
-+			     struct mt7996_sta_link *msta_link,
-+			     u8 link_id, bool changed);
- int mt7996_set_channel(struct mt76_phy *mphy);
- int mt7996_mcu_set_chan_info(struct mt7996_phy *phy, u16 tag);
- int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 		      struct ieee80211_bss_conf *link_conf);
- int mt7996_mcu_set_fixed_rate_ctrl(struct mt7996_dev *dev,
- 				   void *data, u16 version);
--int mt7996_mcu_set_fixed_field(struct mt7996_dev *dev,
--			       struct ieee80211_link_sta *link_sta,
--			       struct mt7996_vif_link *link,
--			       struct mt7996_sta_link *msta_link,
--			       void *data, u32 field);
-+int mt7996_mcu_set_fixed_field(struct mt7996_dev *dev, struct mt7996_sta *msta,
-+			       void *data, u8 link_id, u32 field);
- int mt7996_mcu_set_eeprom(struct mt7996_dev *dev);
- int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len);
- int mt7996_mcu_get_eeprom_free_block(struct mt7996_dev *dev, u8 *block_num);
+ 	if (start < end) {
+ 		ret = __add_to_free_space_tree(trans, block_group, path2,
 -- 
 2.39.5
 
