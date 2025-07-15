@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-162895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F93B0603C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:14:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C721B06013
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17BED175001
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70FBF4E10C0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3AD2EE607;
-	Tue, 15 Jul 2025 13:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DFD2ECE9B;
+	Tue, 15 Jul 2025 13:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fm/N+T2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="csjX3xiV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B88226D4F2;
-	Tue, 15 Jul 2025 13:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B3F26D4F2;
+	Tue, 15 Jul 2025 13:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587756; cv=none; b=d3JHh3iUPaW+5SzdpDk6VdNSoZUXjxkHZ62QF2+tfG1m8ELFlym0yJxzqCoBE3e0KWOGHDbboDmKiBTaGA6vbzWbe0DPwDMlWKzijHwomDRwQV3BKosybCsOnqYNlhutffL0shMnLfooTt2lfDxvG/OTZWD5QCsKbRQ6VFg0790=
+	t=1752587759; cv=none; b=GsXZSXAem5Jb0gTCtZxofOInA1wh0ZyCW+ATachXVK2rsX4hI0d70Gw7XFT8s7V71Wgau3wu1MLkmL676ZsxST46UMKFAzH9+XeaExWVsDZ5OoiK5BmeRR4ytOm6tvG1cS20hNsiV8k5xspK+ZKCvIW0eobpwCf52aOdFaLK0Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587756; c=relaxed/simple;
-	bh=w9JKB826QfNjgYFCVnzh3iC6C7vt4U9pfRCc5lqs3rk=;
+	s=arc-20240116; t=1752587759; c=relaxed/simple;
+	bh=DcEWBCange9VNDLruRKZqWQN+ukuH89//JKwxz6MR0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIaDSbtStrvqh4R8AE3b8pVUS6ShSo9lFDb7eirfxvif/TD9jAE/qbSOWj8TKekTd4vUmT8pkLshWDd+QkJlrNSHVNPRDXLglocQ5flUbUl67Jh1uJ4XYkREmiF52k0CnWGWi6nfKWo17w62ikNEq0B/+kX96aa32ksrO5VLu5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fm/N+T2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DCDC4CEE3;
-	Tue, 15 Jul 2025 13:55:55 +0000 (UTC)
+	 MIME-Version; b=o5VHZidNIr4wcmBK7lGZaKYvra1hAK6Rfuf2ItIZQ+oJ6HR5EsoLjNqzjIgkp9xjAXGzgXx91gPi9V0S6uNxQ85wQe5YgMGpbn7fgeBCQwqd6SP/HgUdmoSWQDAJxa71e9wt62diqjx8tzIf3vDJIFugEHaNUZNhyg2JkxGJPp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=csjX3xiV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AB0C4CEE3;
+	Tue, 15 Jul 2025 13:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587756;
-	bh=w9JKB826QfNjgYFCVnzh3iC6C7vt4U9pfRCc5lqs3rk=;
+	s=korg; t=1752587759;
+	bh=DcEWBCange9VNDLruRKZqWQN+ukuH89//JKwxz6MR0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fm/N+T2PnRJ2uFSO7Hrvu4sYV/RV849JbK4WfKibX54Z2EEGxmgZUWDdf/dEKduPL
-	 HfFdEbUFGO1zrT49iR8j8m3LOYk4obCMXwOauc772sI6KBGW5Y2y1qXEN9f5fFzMRb
-	 I+h/cVJ9u1S1R+xvNwLE0SiDOzL/yydX67Uq6xRA=
+	b=csjX3xiVq9XXzKHPxlXERbXYUFrgI9JTf3k9vXVMifmlxLbzBmRD0S1SgUoayChBs
+	 Zak19rKklxyf+8Fb1hTc9sbsiMRxuyLZBVhdZ9ol7SNc1ddQAUvu0hPlvmL4sqXiQD
+	 zfvjVXlE5cuvhoCa/zwXv6GWmsW2oIo/mqyQjmKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lion Ackermann <nnamrec@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/208] net/sched: Always pass notifications when child class becomes empty
-Date: Tue, 15 Jul 2025 15:13:29 +0200
-Message-ID: <20250715130814.953801434@linuxfoundation.org>
+Subject: [PATCH 5.10 101/208] ALSA: sb: Force to disable DMAs once when DMA mode is changed
+Date: Tue, 15 Jul 2025 15:13:30 +0200
+Message-ID: <20250715130814.994752134@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -68,107 +65,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lion Ackermann <nnamrec@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 103406b38c600fec1fe375a77b27d87e314aea09 ]
+[ Upstream commit 4c267ae2ef349639b4d9ebf00dd28586a82fdbe6 ]
 
-Certain classful qdiscs may invoke their classes' dequeue handler on an
-enqueue operation. This may unexpectedly empty the child qdisc and thus
-make an in-flight class passive via qlen_notify(). Most qdiscs do not
-expect such behaviour at this point in time and may re-activate the
-class eventually anyways which will lead to a use-after-free.
+When the DMA mode is changed on the (still real!) SB AWE32 after
+playing a stream and closing, the previous DMA setup was still
+silently kept, and it can confuse the hardware, resulting in the
+unexpected noises.  As a workaround, enforce the disablement of DMA
+setups when the DMA setup is changed by the kcontrol.
 
-The referenced fix commit attempted to fix this behavior for the HFSC
-case by moving the backlog accounting around, though this turned out to
-be incomplete since the parent's parent may run into the issue too.
-The following reproducer demonstrates this use-after-free:
-
-    tc qdisc add dev lo root handle 1: drr
-    tc filter add dev lo parent 1: basic classid 1:1
-    tc class add dev lo parent 1: classid 1:1 drr
-    tc qdisc add dev lo parent 1:1 handle 2: hfsc def 1
-    tc class add dev lo parent 2: classid 2:1 hfsc rt m1 8 d 1 m2 0
-    tc qdisc add dev lo parent 2:1 handle 3: netem
-    tc qdisc add dev lo parent 3:1 handle 4: blackhole
-
-    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
-    tc class delete dev lo classid 1:1
-    echo 1 | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888
-
-Since backlog accounting issues leading to a use-after-frees on stale
-class pointers is a recurring pattern at this point, this patch takes
-a different approach. Instead of trying to fix the accounting, the patch
-ensures that qdisc_tree_reduce_backlog always calls qlen_notify when
-the child qdisc is empty. This solves the problem because deletion of
-qdiscs always involves a call to qdisc_reset() and / or
-qdisc_purge_queue() which ultimately resets its qlen to 0 thus causing
-the following qdisc_tree_reduce_backlog() to report to the parent. Note
-that this may call qlen_notify on passive classes multiple times. This
-is not a problem after the recent patch series that made all the
-classful qdiscs qlen_notify() handlers idempotent.
-
-Fixes: 3f981138109f ("sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()")
-Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+https://bugzilla.kernel.org/show_bug.cgi?id=218185
+Link: https://patch.msgid.link/20250610064322.26787-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ sound/isa/sb/sb16_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index b8fb94bfa9606..7fd4c94d6f464 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -768,15 +768,12 @@ static u32 qdisc_alloc_handle(struct net_device *dev)
+diff --git a/sound/isa/sb/sb16_main.c b/sound/isa/sb/sb16_main.c
+index aa48705310231..19804d3fd98c4 100644
+--- a/sound/isa/sb/sb16_main.c
++++ b/sound/isa/sb/sb16_main.c
+@@ -710,6 +710,10 @@ static int snd_sb16_dma_control_put(struct snd_kcontrol *kcontrol, struct snd_ct
+ 	change = nval != oval;
+ 	snd_sb16_set_dma_mode(chip, nval);
+ 	spin_unlock_irqrestore(&chip->reg_lock, flags);
++	if (change) {
++		snd_dma_disable(chip->dma8);
++		snd_dma_disable(chip->dma16);
++	}
+ 	return change;
+ }
  
- void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
- {
--	bool qdisc_is_offloaded = sch->flags & TCQ_F_OFFLOADED;
- 	const struct Qdisc_class_ops *cops;
- 	unsigned long cl;
- 	u32 parentid;
- 	bool notify;
- 	int drops;
- 
--	if (n == 0 && len == 0)
--		return;
- 	drops = max_t(int, n, 0);
- 	rcu_read_lock();
- 	while ((parentid = sch->parent)) {
-@@ -785,17 +782,8 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
- 
- 		if (sch->flags & TCQ_F_NOPARENT)
- 			break;
--		/* Notify parent qdisc only if child qdisc becomes empty.
--		 *
--		 * If child was empty even before update then backlog
--		 * counter is screwed and we skip notification because
--		 * parent class is already passive.
--		 *
--		 * If the original child was offloaded then it is allowed
--		 * to be seem as empty, so the parent is notified anyway.
--		 */
--		notify = !sch->q.qlen && !WARN_ON_ONCE(!n &&
--						       !qdisc_is_offloaded);
-+		/* Notify parent qdisc only if child qdisc becomes empty. */
-+		notify = !sch->q.qlen;
- 		/* TODO: perform the search on a per txq basis */
- 		sch = qdisc_lookup(qdisc_dev(sch), TC_H_MAJ(parentid));
- 		if (sch == NULL) {
-@@ -804,6 +792,9 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
- 		}
- 		cops = sch->ops->cl_ops;
- 		if (notify && cops->qlen_notify) {
-+			/* Note that qlen_notify must be idempotent as it may get called
-+			 * multiple times.
-+			 */
- 			cl = cops->find(sch, parentid);
- 			cops->qlen_notify(sch, cl);
- 		}
 -- 
 2.39.5
 
