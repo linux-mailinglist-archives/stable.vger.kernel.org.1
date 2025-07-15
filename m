@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9458FB05BC2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 115DBB05DBE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF217164007
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56044164FFB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4192E2F06;
-	Tue, 15 Jul 2025 13:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D482E339C;
+	Tue, 15 Jul 2025 13:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F881U6Dv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vA/cGV7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DFD2E041E;
-	Tue, 15 Jul 2025 13:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B532D3732;
+	Tue, 15 Jul 2025 13:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585782; cv=none; b=KPnBwadcWoy4290EeMljwuVzAYQSouOf92p1QD7lNjEcZaEVBpH2FzIcixq1c3htGo8GRcBw4DfZbPl6zO+VGy4Y9zg8SoPysXOiGwboOjbt+I3MfdEYS000rnKx+EfdZMWn9fpAVTqGJsQZCHcLu8oMh/nkSPWcLHTXTWzGFk4=
+	t=1752586623; cv=none; b=TCncrbDzT3eYVnBpfrjqr9FMWPFB3Q2p5DxCUDJW+WxuKl+O5aQTRaPppZDHROogKA0sTgoZZzycI2LgIZTFi9tsMdyBAEYh3gZlK4hE5UskO1OBFNYH0fGYfM5yWEh0NO1iUVZSLlN7Nn7a3TAd7uuc1tD9LHP6lN75eXbAyPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585782; c=relaxed/simple;
-	bh=tfQyQ2TgKosci/UIfNV8tCmTBnJ4SQ8LpATOTYWze8Q=;
+	s=arc-20240116; t=1752586623; c=relaxed/simple;
+	bh=oyABSZCfX16jrXEfHeDx//T+sV1n1Ps4NgVOBeUDYfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTlWOvZ3cE3lwtCeEjJmW/UmS/BXS7VN3JK4ZHfkauFkwwDk53hmOSmuY/uNSW3LbJ25ekox2/1tauNpsB9qn2Lm/Yz3f50vUtNCKty5fiNpY0X+ZPU20/9wksO07G+B/gZMQ5nhjuTU9+Er6aLJZePJ53122sfO3B0ROYsvasI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F881U6Dv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF111C4CEF1;
-	Tue, 15 Jul 2025 13:23:01 +0000 (UTC)
+	 MIME-Version; b=i/PjvrJVXkaLLiRWd0zfblm49/f4b6QFEOHJF9Q4Cgj6+OlInmrQxZpRTHcwmYSWXIn2+WqojmE6YS4p4Z9iRpcqt3Z8jZwLzhfyQXQXN8VCGTxxHtlM/CPrb7CZeNz29qPjk7vft3ELPNSjapnuniZqopUdhO61sAZ0Gb1GM+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vA/cGV7/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353EDC4CEE3;
+	Tue, 15 Jul 2025 13:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585782;
-	bh=tfQyQ2TgKosci/UIfNV8tCmTBnJ4SQ8LpATOTYWze8Q=;
+	s=korg; t=1752586623;
+	bh=oyABSZCfX16jrXEfHeDx//T+sV1n1Ps4NgVOBeUDYfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F881U6DvOQ2VHXjq3gVe+jUdq2hr1RxUEVOBU3kqcuIqoQHgR9npYIUSvJiYkUO7R
-	 /Dr/vl2t+TYPI74lQQU8rzpzw2a29P/GmAZrMq9U0kOyQ6PP+FstxRSo4tsG8Am/+B
-	 cF4w14eC5lUD6Z1ydPmb/UW8TKO8TF+I9zFUvXPU=
+	b=vA/cGV7/tilC0nNHBt4CrnCodd4HMyDpk2P08BV6XiK22uGL3IkFdLZtBI5Oth7Qc
+	 iNv+nPjVVujaeW2z18DbSRe2ZHZt7C3bpVRi4E2HvJzXeS/4vrnEeqxwMRQKFGR4gV
+	 LkJakpCKOF/HCZ3HVLZZdCFH8r4Nr2Auq3lhDxaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.12 158/163] selftests/bpf: adapt one more case in test_lru_map to the new target_free
+	stable@kernel.org,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 104/148] media: uvcvideo: Rollback non processed entities on error
 Date: Tue, 15 Jul 2025 15:13:46 +0200
-Message-ID: <20250715130815.172872572@linuxfoundation.org>
+Message-ID: <20250715130804.477540852@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 5e9388f7984a9cc7e659a105113f6ccf0aebedd0 upstream.
+commit a70705d3c020d0d5c3ab6a5cc93e011ac35e7d48 upstream.
 
-The below commit that updated BPF_MAP_TYPE_LRU_HASH free target,
-also updated tools/testing/selftests/bpf/test_lru_map to match.
+If we fail to commit an entity, we need to restore the
+UVC_CTRL_DATA_BACKUP for the other uncommitted entities. Otherwise the
+control cache and the device would be out of sync.
 
-But that missed one case that passes with 4 cores, but fails at
-higher cpu counts.
-
-Update test_lru_sanity3 to also adjust its expectation of target_free.
-
-This time tested with 1, 4, 16, 64 and 384 cpu count.
-
-Fixes: d4adf1c9ee77 ("bpf: Adjust free target to avoid global starvation of LRU map")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20250625210412.2732970-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Cc: stable@kernel.org
+Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Closes: https://lore.kernel.org/linux-media/fe845e04-9fde-46ee-9763-a6f00867929a@redhat.com/
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-3-de993ed9823b@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/test_lru_map.c |   33 +++++++++++++++--------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |   42 ++++++++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
---- a/tools/testing/selftests/bpf/test_lru_map.c
-+++ b/tools/testing/selftests/bpf/test_lru_map.c
-@@ -138,6 +138,12 @@ static int sched_next_online(int pid, in
- 	return ret;
- }
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1577,7 +1577,7 @@ static int uvc_ctrl_commit_entity(struct
+ 	unsigned int processed_ctrls = 0;
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+-	int ret;
++	int ret = 0;
  
-+/* Derive target_free from map_size, same as bpf_common_lru_populate */
-+static unsigned int __tgt_size(unsigned int map_size)
-+{
-+	return (map_size / nr_cpus) / 2;
-+}
+ 	if (entity == NULL)
+ 		return 0;
+@@ -1605,8 +1605,6 @@ static int uvc_ctrl_commit_entity(struct
+ 				dev->intfnum, ctrl->info.selector,
+ 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+ 				ctrl->info.size);
+-		else
+-			ret = 0;
+ 
+ 		if (!ret)
+ 			processed_ctrls++;
+@@ -1618,14 +1616,22 @@ static int uvc_ctrl_commit_entity(struct
+ 
+ 		ctrl->dirty = 0;
+ 
+-		if (ret < 0)
+-			return ret;
+-
+-		if (!rollback && handle &&
++		if (!rollback && handle && !ret &&
+ 		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+ 			uvc_ctrl_set_handle(handle, ctrl, handle);
 +
- /* Inverse of how bpf_common_lru_populate derives target_free from map_size. */
- static unsigned int __map_size(unsigned int tgt_free)
- {
-@@ -410,12 +416,12 @@ static void test_lru_sanity2(int map_typ
- 	printf("Pass\n");
- }
- 
--/* Size of the LRU map is 2*tgt_free
-- * It is to test the active/inactive list rotation
-- * Insert 1 to 2*tgt_free (+2*tgt_free keys)
-- * Lookup key 1 to tgt_free*3/2
-- * Add 1+2*tgt_free to tgt_free*5/2 (+tgt_free/2 keys)
-- *  => key 1+tgt_free*3/2 to 2*tgt_free are removed from LRU
-+/* Test the active/inactive list rotation
-+ *
-+ * Fill the whole map, deplete the free list.
-+ * Reference all except the last lru->target_free elements.
-+ * Insert lru->target_free new elements. This triggers one shrink.
-+ * Verify that the non-referenced elements are replaced.
-  */
- static void test_lru_sanity3(int map_type, int map_flags, unsigned int tgt_free)
- {
-@@ -434,8 +440,7 @@ static void test_lru_sanity3(int map_typ
- 
- 	assert(sched_next_online(0, &next_cpu) != -1);
- 
--	batch_size = tgt_free / 2;
--	assert(batch_size * 2 == tgt_free);
-+	batch_size = __tgt_size(tgt_free);
- 
- 	map_size = tgt_free * 2;
- 	lru_map_fd = create_map(map_type, map_flags, map_size);
-@@ -446,23 +451,21 @@ static void test_lru_sanity3(int map_typ
- 
- 	value[0] = 1234;
- 
--	/* Insert 1 to 2*tgt_free (+2*tgt_free keys) */
--	end_key = 1 + (2 * tgt_free);
-+	/* Fill the map */
-+	end_key = 1 + map_size;
- 	for (key = 1; key < end_key; key++)
- 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
- 					    BPF_NOEXIST));
- 
--	/* Lookup key 1 to tgt_free*3/2 */
--	end_key = tgt_free + batch_size;
-+	/* Reference all but the last batch_size */
-+	end_key = 1 + map_size - batch_size;
- 	for (key = 1; key < end_key; key++) {
- 		assert(!bpf_map_lookup_elem_with_ref_bit(lru_map_fd, key, value));
- 		assert(!bpf_map_update_elem(expected_map_fd, &key, value,
- 					    BPF_NOEXIST));
++		if (ret < 0 && !rollback) {
++			/*
++			 * If we fail to set a control, we need to rollback
++			 * the next ones.
++			 */
++			rollback = 1;
++		}
  	}
  
--	/* Add 1+2*tgt_free to tgt_free*5/2
--	 * (+tgt_free/2 keys)
--	 */
-+	/* Insert new batch_size: replaces the non-referenced elements */
- 	key = 2 * tgt_free + 1;
- 	end_key = key + batch_size;
- 	for (; key < end_key; key++) {
++	if (ret)
++		return ret;
++
+ 	return processed_ctrls;
+ }
+ 
+@@ -1635,23 +1641,31 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ {
+ 	struct uvc_video_chain *chain = handle->chain;
+ 	struct uvc_entity *entity;
+-	int ret = 0;
++	int ret_out = 0;
++	int ret;
+ 
+ 	/* Find the control. */
+ 	list_for_each_entry(entity, &chain->entities, chain) {
+ 		ret = uvc_ctrl_commit_entity(chain->dev, handle, entity,
+ 					     rollback);
+-		if (ret < 0)
+-			goto done;
+-		else if (ret > 0 && !rollback)
++		if (ret < 0) {
++			/*
++			 * When we fail to commit an entity, we need to
++			 * restore the UVC_CTRL_DATA_BACKUP for all the
++			 * controls in the other entities, otherwise our cache
++			 * and the hardware will be out of sync.
++			 */
++			rollback = 1;
++
++			ret_out = ret;
++		} else if (ret > 0 && !rollback) {
+ 			uvc_ctrl_send_events(handle, entity, xctrls,
+ 					     xctrls_count);
++		}
+ 	}
+ 
+-	ret = 0;
+-done:
+ 	mutex_unlock(&chain->ctrl_mutex);
+-	return ret;
++	return ret_out;
+ }
+ 
+ int uvc_ctrl_get(struct uvc_video_chain *chain,
 
 
 
