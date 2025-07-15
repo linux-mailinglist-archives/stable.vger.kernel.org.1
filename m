@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-162173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3005B05C1D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B831BB05B64
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0D9B176EA1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:27:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BEFC1AA7D18
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD6E2E3AFF;
-	Tue, 15 Jul 2025 13:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED1B2DE6F9;
+	Tue, 15 Jul 2025 13:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dexzafS2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPWK2vYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3762E3378;
-	Tue, 15 Jul 2025 13:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6452472AE;
+	Tue, 15 Jul 2025 13:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585867; cv=none; b=bWXBFNtHZtJl8D9Tx4ha+kAe3ULxLzL2IUSE56fnp6NxSrvi5VQrNp8YMgXym+ho7nTC1puuXsFTq6KT1xD6NRPICHjdMCkc9y206pNutePCjh0yg1jxh/PWQDe6Le//qsJgIJpkHXORNefczK0BijH/1HYsZU20ZgPA3FV5NJQ=
+	t=1752585609; cv=none; b=SEHoaCKZYJgroWzwqFA4YtQqDUlegwzeZdWZznJAu0MxgJvhrvL1kh8FAoFBjwO6NNMeTSM30Iz91VK3Sf++I/0/TApSDYJRa/bcQCc6N6XD7xPnsNulHd9xuHxrizMrFZNMtDCe62azP6XHS8O8bowkY4MsO61l3SvQxkDjWqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585867; c=relaxed/simple;
-	bh=Rcpcaha7vHuaSYqFmPHsFudI7ztp3iVmcp3jqjMEV04=;
+	s=arc-20240116; t=1752585609; c=relaxed/simple;
+	bh=svep4TRvTCJFUpV6/op7dIlowU1foafecS0s9B77HVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=szVUrSqhgWCdSYhfSnj5AQ7vykhEreg01WHp6BhmyNE4ERcnMnFCAo+CyA1orZCk2gtEWhoJlKnEGT37W35ErwR5/4Z9cpvqhdHuI45QU/Lq19uhAeIL/0PDU4ymLWkYb1ZgCd9OtXyt2imL3q+CEMLAnMiSRSa/QnS9I+Vlmn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dexzafS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8E6C4CEF1;
-	Tue, 15 Jul 2025 13:24:26 +0000 (UTC)
+	 MIME-Version; b=DJApgs34iXBNabV7qd3T+nYFDc4JCiMxF3BEVwHfa3Yi7aqOkIYy5kueS+xoRPavYbUa2rXbzKEgtFNSHDFyFQliRq0hr6KZ6TGJtEEUavnYAjYI3flL1cOo6x+SZ4H6m66A4bdm9e095mYVdyd3QRpSKJlHXtY1K5wn2o3k0j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPWK2vYP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58A0C4CEF8;
+	Tue, 15 Jul 2025 13:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585867;
-	bh=Rcpcaha7vHuaSYqFmPHsFudI7ztp3iVmcp3jqjMEV04=;
+	s=korg; t=1752585609;
+	bh=svep4TRvTCJFUpV6/op7dIlowU1foafecS0s9B77HVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dexzafS26guIdBB17lu7x4cYjiMfh3jyz2Z5tFqFMR0G40bDG5PS2Jf1iklcuOvsb
-	 SqexNR7/CvG4zncxdDe8EFAPz7RgV36IJFCuBFoL+SAwTTYutHCFcingx4tud7DnGj
-	 4nW5E8ujL+Xce0hi0jeEiGyePxV2s2kSNUisoonw=
+	b=kPWK2vYPdNkaqAmOWAEIlK9QZSwvQCyMwZP4G8+EZsWIsVB3hUCLhKFWbcygqMPHs
+	 QvyNAwJPBzBl9nstmzm0Q4UZrOaTPtC+T3jGEiG8L6YLuQ1BIrjwLz3StzLnQL1P9x
+	 FHDRpFXPoe1dGlHKvkrZV3LDhp1gJSen3facdm7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aijay Adams <aijay@meta.com>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.6 036/109] x86/mce: Make sure CMCI banks are cleared during shutdown on Intel
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 104/163] netlink: Fix rmem check in netlink_broadcast_deliver().
 Date: Tue, 15 Jul 2025 15:12:52 +0200
-Message-ID: <20250715130800.326700632@linuxfoundation.org>
+Message-ID: <20250715130813.034518051@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Kobryn <inwardvessel@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 30ad231a5029bfa16e46ce868497b1a5cdd3c24d upstream.
+commit a3c4a125ec725cefb40047eb05ff9eafd57830b4 upstream.
 
-CMCI banks are not cleared during shutdown on Intel CPUs. As a side effect,
-when a kexec is performed, CPUs coming back online are unable to
-rediscover/claim these occupied banks which breaks MCE reporting.
+We need to allow queuing at least one skb even when skb is
+larger than sk->sk_rcvbuf.
 
-Clear the CPU ownership during shutdown via cmci_clear() so the banks can
-be reclaimed and MCE reporting will become functional once more.
+The cited commit made a mistake while converting a condition
+in netlink_broadcast_deliver().
 
-  [ bp: Massage commit message. ]
+Let's correct the rmem check for the allow-one-skb rule.
 
-Reported-by: Aijay Adams <aijay@meta.com>
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250627174935.95194-1-inwardvessel@gmail.com
+Fixes: ae8f160e7eb24 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250711053208.2965945-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mce/intel.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/netlink/af_netlink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/mce/intel.c
-+++ b/arch/x86/kernel/cpu/mce/intel.c
-@@ -517,6 +517,7 @@ void mce_intel_feature_init(struct cpuin
- void mce_intel_feature_clear(struct cpuinfo_x86 *c)
- {
- 	intel_clear_lmce();
-+	cmci_clear();
- }
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1398,7 +1398,7 @@ static int netlink_broadcast_deliver(str
+ 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+ 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
  
- bool intel_filter_mce(struct mce *m)
+-	if ((rmem != skb->truesize || rmem <= rcvbuf) &&
++	if ((rmem == skb->truesize || rmem <= rcvbuf) &&
+ 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
+ 		netlink_skb_set_owner_r(skb, sk);
+ 		__netlink_sendskb(sk, skb);
 
 
 
