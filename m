@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FB5B05E0E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DD0B05C9B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 382F518837F7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 280544A3084
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2154D2E613D;
-	Tue, 15 Jul 2025 13:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFED2E8DF8;
+	Tue, 15 Jul 2025 13:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hojrtj19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IThuZROE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29412E2EFF;
-	Tue, 15 Jul 2025 13:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0662E8DEA;
+	Tue, 15 Jul 2025 13:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586528; cv=none; b=M84LhdQApjfJtmTKnxjXAIqZg/MiRaybpl713ktPtM3vhWZBJao9zYQWCAYfeNdkcJw2e8Ea7/uOwtjX8zoEy54BTQuGFTdey5fP2qETYBcJaPaY3nNtP4x+GKMujrwuC5P7PeELoVr92QVJE559NFrGaR1GpQispaH+8qls+5g=
+	t=1752585988; cv=none; b=vEiZZFKP0busc44mLf4C2ddeMPTSBENjE9imK6Lwsgcr+hDBrywr4HfY+YF2t/HK0y82kAYI7Fvjeq/ksdGxBQ59YMt6+DDTEndZioPA3BpysrkSAmuJ0Vf3z9edku9+UJExPMmaIUhB16JV0R6h7UuE74SqO80D7ZS3ILx4HPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586528; c=relaxed/simple;
-	bh=FFBOhoB+oQLuP9QaYuSpt2PpAR+Ld1yZ5Oz/69BH89s=;
+	s=arc-20240116; t=1752585988; c=relaxed/simple;
+	bh=E55kbhzvuRT5cT7aEJXor8VajOZ/GAx6W+7kpaXBw00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZGs+V+ko+oymKCZEoyPq3UKeZWZ8/rwtkWCL8zsWp36kBgVJlhhIMUd7ZeX7RsMzi6Qvac7lu9wpmz+O0Y0foTrpLD87jlzreF1fdVEIsMIKiTzScTrWrnDpta1wYqcBKfVhnIxqZvHSPmufHDAjUc/pe2V0EKZgSt9jhnDbQnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hojrtj19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66535C4CEF6;
-	Tue, 15 Jul 2025 13:35:28 +0000 (UTC)
+	 MIME-Version; b=p4dwh4EWyZlPOYYV/17DFvRDNduow+pWR/Ekr+Q1zQva2AQ8h46NiepnWOGJSwml/bGMIvREjbZMxwqKvSM/YOE3YCqdE9BgCBCfTEC6pHjZZjkAefLwnAxRFQMXkyczUbu4gZBnLV1uEwjPUouck05o78sIKFuARu5I58sIfg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IThuZROE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D247C4CEE3;
+	Tue, 15 Jul 2025 13:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586528;
-	bh=FFBOhoB+oQLuP9QaYuSpt2PpAR+Ld1yZ5Oz/69BH89s=;
+	s=korg; t=1752585988;
+	bh=E55kbhzvuRT5cT7aEJXor8VajOZ/GAx6W+7kpaXBw00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hojrtj19o+N4a/izBR76Pi4sia+umTzeZp/BBrGw9KN3/q3kKZqC9sAer/IA3TOXS
-	 h4p+k1+NuG7Inxfz4oeuSM7KJCXL0aPIXvZ+yUSWtVFGiISjQFq0gBM9oBq7zX4Cvm
-	 oTZ6EKYA8oz8fzPl9sdst0rRJxk6sH/oMrudAc64=
+	b=IThuZROEQwE8EGNRkMbyLz6kztUZbdR2mAtwR3ikqHSwNayrsCENyqFw/+Z/1r51B
+	 t6d5c5jhR/k3cQQ4SoiW9FEnQMUHnnURD0OVkWKnEGqI+AzKbdnXLjaXO5iSI6D+tB
+	 E7kgc1oDrBBBlTcA4HlU8Hc7XG39Qh1wiB6NcZQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com,
-	Kohei Enju <enjuk@amazon.com>,
-	Simon Horman <horms@kernel.org>,
+	Kito Xu <veritas501@foxmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 098/148] rose: fix dangling neighbour pointers in rose_rt_device_down()
+Subject: [PATCH 6.6 084/109] net: appletalk: Fix device refcount leak in atrtr_create()
 Date: Tue, 15 Jul 2025 15:13:40 +0200
-Message-ID: <20250715130804.241130667@linuxfoundation.org>
+Message-ID: <20250715130802.243529271@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Kito Xu <veritas501@foxmail.com>
 
-[ Upstream commit 34a500caf48c47d5171f4aa1f237da39b07c6157 ]
+[ Upstream commit 711c80f7d8b163d3ecd463cd96f07230f488e750 ]
 
-There are two bugs in rose_rt_device_down() that can cause
-use-after-free:
+When updating an existing route entry in atrtr_create(), the old device
+reference was not being released before assigning the new device,
+leading to a device refcount leak. Fix this by calling dev_put() to
+release the old device reference before holding the new one.
 
-1. The loop bound `t->count` is modified within the loop, which can
-   cause the loop to terminate early and miss some entries.
-
-2. When removing an entry from the neighbour array, the subsequent entries
-   are moved up to fill the gap, but the loop index `i` is still
-   incremented, causing the next entry to be skipped.
-
-For example, if a node has three neighbours (A, A, B) with count=3 and A
-is being removed, the second A is not checked.
-
-    i=0: (A, A, B) -> (A, B) with count=2
-          ^ checked
-    i=1: (A, B)    -> (A, B) with count=2
-             ^ checked (B, not A!)
-    i=2: (doesn't occur because i < count is false)
-
-This leaves the second A in the array with count=2, but the rose_neigh
-structure has been freed. Code that accesses these entries assumes that
-the first `count` entries are valid pointers, causing a use-after-free
-when it accesses the dangling pointer.
-
-Fix both issues by iterating over the array in reverse order with a fixed
-loop bound. This ensures that all entries are examined and that the removal
-of an entry doesn't affect subsequent iterations.
-
-Reported-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e04e2c007ba2c80476cb
-Tested-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250629030833.6680-1-enjuk@amazon.com
+Fixes: c7f905f0f6d4 ("[ATALK]: Add missing dev_hold() to atrtr_create().")
+Signed-off-by: Kito Xu <veritas501@foxmail.com>
+Link: https://patch.msgid.link/tencent_E1A26771CDAB389A0396D1681A90A49E5D09@qq.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/rose_route.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ net/appletalk/ddp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index 49a0e7d5a7684..91855d11ad15d 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -497,22 +497,15 @@ void rose_rt_device_down(struct net_device *dev)
- 			t         = rose_node;
- 			rose_node = rose_node->next;
+diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+index b070a89912000..febb1617e1a6a 100644
+--- a/net/appletalk/ddp.c
++++ b/net/appletalk/ddp.c
+@@ -563,6 +563,7 @@ static int atrtr_create(struct rtentry *r, struct net_device *devhint)
  
--			for (i = 0; i < t->count; i++) {
-+			for (i = t->count - 1; i >= 0; i--) {
- 				if (t->neighbour[i] != s)
- 					continue;
- 
- 				t->count--;
- 
--				switch (i) {
--				case 0:
--					t->neighbour[0] = t->neighbour[1];
--					/* fall through */
--				case 1:
--					t->neighbour[1] = t->neighbour[2];
--					break;
--				case 2:
--					break;
--				}
-+				memmove(&t->neighbour[i], &t->neighbour[i + 1],
-+					sizeof(t->neighbour[0]) *
-+						(t->count - i));
- 			}
- 
- 			if (t->count <= 0)
+ 	/* Fill in the routing entry */
+ 	rt->target  = ta->sat_addr;
++	dev_put(rt->dev); /* Release old device */
+ 	dev_hold(devhint);
+ 	rt->dev     = devhint;
+ 	rt->flags   = r->rt_flags;
 -- 
 2.39.5
 
