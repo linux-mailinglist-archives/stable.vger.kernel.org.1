@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-162191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A315FB05C27
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC38B05DEF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 040D51C21E9C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AB7C4A3DCE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2527B2E49A2;
-	Tue, 15 Jul 2025 13:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95F12E6136;
+	Tue, 15 Jul 2025 13:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJKi2mhv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff0KAzcj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80982E2EEF;
-	Tue, 15 Jul 2025 13:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7828F2D8790;
+	Tue, 15 Jul 2025 13:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585914; cv=none; b=G4khB8WTQmVLtFQavFe7pD+YhpY1LPZf7lsmzYXEpDYBDY2LaAxXV9I2U4EfleIDpU5VorulvJGDIJOqr137/7WtayUNyDdlCbCr4/pa3HrDInstqmbThLOdWaf6HM6N+Es1ESoY7LEkYyTlnD4zueDseSEfW+OsfEpmnyykJ/E=
+	t=1752586534; cv=none; b=mcoZH6Xu1VhEZnMhcb0O5rYxx15CcY2VEW5pTygukf281Zzb+9N7bUwtap0hy2V9PY/NL5l0E+RUCJMRDtojiM59gAFuceQCnu2g6cZKF5nkXbcU9j0YuFD/G1iBo7zd2kybE5MhrBFLeRs/BalXQE8VURrZ5SW9d8RMH/iiCu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585914; c=relaxed/simple;
-	bh=2CmwxPA8gf/OHBZPZdoa4L8YaDYKwCV4Wztfg/6xKV0=;
+	s=arc-20240116; t=1752586534; c=relaxed/simple;
+	bh=zDFXphxbnPxHCVK/Urke7dMFxqdtdgBXeIpH+8Qf5Lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lx7xC0B3uk5ZssOilumKY1jO2YN5TM57XjSaH0pc0Utns5rg+5UtbwSA9qrj6jwtUE/+D/BvV6lKYwov85WFEG3RIR+ji708EahQ08rObTwXPXDrg+lpwThioc5YDOR6ZwEI2CXBTSGRxsqzGq9s0ch1Wu+6xzbJExs4TZ2c1XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJKi2mhv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E900C4CEE3;
-	Tue, 15 Jul 2025 13:25:14 +0000 (UTC)
+	 MIME-Version; b=O1xCtYcOaovcZKvFsAd63m3zRTRu5c/GTovNU37Mxr/UkY+SKF1V1PeyOy6AeatQ+cKV++/sh/wF6NfGEews+uIP96mSy5SttjrVzC/f3hr4muTH8Pi62//6TNqXmxct34Atc07rAeRF2g/rtyj+ouzNFnOQEiJNhecB/yu3PJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff0KAzcj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44F7C4CEE3;
+	Tue, 15 Jul 2025 13:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585914;
-	bh=2CmwxPA8gf/OHBZPZdoa4L8YaDYKwCV4Wztfg/6xKV0=;
+	s=korg; t=1752586534;
+	bh=zDFXphxbnPxHCVK/Urke7dMFxqdtdgBXeIpH+8Qf5Lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eJKi2mhvMZevK01JjpWvRhqn+bkWC/6pFh1kXcZeN9iNP6o3pvL5aVfaN9DjV4dL9
-	 xK5ZQm2c27X/4AcsVzg9AAuVTvNiWM5NZ7hqjtIZZ+eSvG6pWcJzz81akaWp7vuKfp
-	 lGCubaW8562r5kmohKR73g7mpnVMaK1/erL3iWyI=
+	b=Ff0KAzcjmDb182zluDRX4Cza1c9j5cZhooJpbxinEbLdHlP1ewo0l2X9LZhFV1QBi
+	 9+3WSxHOZHq2McGE0lHze9XGZGpJVvzzPoSeZh+oEup4egiQYYifQ0WU0mB1s+q18I
+	 d3AaKy56CrxM55dVIZD2Nj9gnZ48iEAFRdT7jELk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 056/109] scripts/gdb: fix interrupts.py after maple tree conversion
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 070/148] nui: Fix dma_mapping_error() check
 Date: Tue, 15 Jul 2025 15:13:12 +0200
-Message-ID: <20250715130801.119544596@linuxfoundation.org>
+Message-ID: <20250715130803.126940378@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,394 +63,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit a02b0cde8ee515ee0c8efd33e7fbe6830c282e69 upstream.
+[ Upstream commit 561aa0e22b70a5e7246b73d62a824b3aef3fc375 ]
 
-In commit 721255b9826b ("genirq: Use a maple tree for interrupt descriptor
-management"), the irq_desc_tree was replaced with a sparse_irqs tree using
-a maple tree structure.  Since the script looked for the irq_desc_tree
-symbol which is no longer available, no interrupts would be printed and
-the script output would not be useful anymore.
+dma_map_XXX() functions return values DMA_MAPPING_ERROR as error values
+which is often ~0.  The error value should be tested with
+dma_mapping_error().
 
-In addition to looking up the correct symbol (sparse_irqs), a new module
-(mapletree.py) is added whose mtree_load() implementation is largely
-copied after the C version and uses the same variable and intermediate
-function names wherever possible to ensure that both the C and Python
-version be updated in the future.
+This patch creates a new function in niu_ops to test if the mapping
+failed.  The test is fixed in niu_rbr_add_page(), added in
+niu_start_xmit() and the successfully mapped pages are unmaped upon error.
 
-This restores the scripts' output to match that of /proc/interrupts.
-
-Link: https://lkml.kernel.org/r/20250625021020.1056930-1-florian.fainelli@broadcom.com
-Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: Shanker Donthineni <sdonthineni@nvidia.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ec2deec1f352 ("niu: Fix to check for dma mapping errors.")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gdb/linux/constants.py.in |    7 +
- scripts/gdb/linux/interrupts.py   |   12 -
- scripts/gdb/linux/mapletree.py    |  252 ++++++++++++++++++++++++++++++++++++++
- scripts/gdb/linux/xarray.py       |   28 ++++
- 4 files changed, 293 insertions(+), 6 deletions(-)
- create mode 100644 scripts/gdb/linux/mapletree.py
- create mode 100644 scripts/gdb/linux/xarray.py
+ drivers/net/ethernet/sun/niu.c | 31 ++++++++++++++++++++++++++++++-
+ drivers/net/ethernet/sun/niu.h |  4 ++++
+ 2 files changed, 34 insertions(+), 1 deletion(-)
 
---- a/scripts/gdb/linux/constants.py.in
-+++ b/scripts/gdb/linux/constants.py.in
-@@ -20,6 +20,7 @@
- #include <linux/of_fdt.h>
- #include <linux/page_ext.h>
- #include <linux/radix-tree.h>
-+#include <linux/maple_tree.h>
- #include <linux/slab.h>
- #include <linux/threads.h>
- #include <linux/vmalloc.h>
-@@ -93,6 +94,12 @@ LX_GDBPARSED(RADIX_TREE_MAP_SIZE)
- LX_GDBPARSED(RADIX_TREE_MAP_SHIFT)
- LX_GDBPARSED(RADIX_TREE_MAP_MASK)
+diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
+index e659415c62bd7..ca991bcb2e512 100644
+--- a/drivers/net/ethernet/sun/niu.c
++++ b/drivers/net/ethernet/sun/niu.c
+@@ -3317,7 +3317,7 @@ static int niu_rbr_add_page(struct niu *np, struct rx_ring_info *rp,
  
-+/* linux/maple_tree.h */
-+LX_VALUE(MAPLE_NODE_SLOTS)
-+LX_VALUE(MAPLE_RANGE64_SLOTS)
-+LX_VALUE(MAPLE_ARANGE64_SLOTS)
-+LX_GDBPARSED(MAPLE_NODE_MASK)
-+
- /* linux/vmalloc.h */
- LX_VALUE(VM_IOREMAP)
- LX_VALUE(VM_ALLOC)
---- a/scripts/gdb/linux/interrupts.py
-+++ b/scripts/gdb/linux/interrupts.py
-@@ -7,7 +7,7 @@ import gdb
- from linux import constants
- from linux import cpus
- from linux import utils
--from linux import radixtree
-+from linux import mapletree
+ 	addr = np->ops->map_page(np->device, page, 0,
+ 				 PAGE_SIZE, DMA_FROM_DEVICE);
+-	if (!addr) {
++	if (np->ops->mapping_error(np->device, addr)) {
+ 		__free_page(page);
+ 		return -ENOMEM;
+ 	}
+@@ -6654,6 +6654,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ 	len = skb_headlen(skb);
+ 	mapping = np->ops->map_single(np->device, skb->data,
+ 				      len, DMA_TO_DEVICE);
++	if (np->ops->mapping_error(np->device, mapping))
++		goto out_drop;
  
- irq_desc_type = utils.CachedType("struct irq_desc")
+ 	prod = rp->prod;
  
-@@ -23,12 +23,12 @@ def irqd_is_level(desc):
- def show_irq_desc(prec, irq):
-     text = ""
+@@ -6695,6 +6697,8 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ 		mapping = np->ops->map_page(np->device, skb_frag_page(frag),
+ 					    skb_frag_off(frag), len,
+ 					    DMA_TO_DEVICE);
++		if (np->ops->mapping_error(np->device, mapping))
++			goto out_unmap;
  
--    desc = radixtree.lookup(gdb.parse_and_eval("&irq_desc_tree"), irq)
-+    desc = mapletree.mtree_load(gdb.parse_and_eval("&sparse_irqs"), irq)
-     if desc is None:
-         return text
+ 		rp->tx_buffs[prod].skb = NULL;
+ 		rp->tx_buffs[prod].mapping = mapping;
+@@ -6719,6 +6723,19 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
+ out:
+ 	return NETDEV_TX_OK;
  
--    desc = desc.cast(irq_desc_type.get_type())
--    if desc is None:
-+    desc = desc.cast(irq_desc_type.get_type().pointer())
-+    if desc == 0:
-         return text
++out_unmap:
++	while (i--) {
++		const skb_frag_t *frag;
++
++		prod = PREVIOUS_TX(rp, prod);
++		frag = &skb_shinfo(skb)->frags[i];
++		np->ops->unmap_page(np->device, rp->tx_buffs[prod].mapping,
++				    skb_frag_size(frag), DMA_TO_DEVICE);
++	}
++
++	np->ops->unmap_single(np->device, rp->tx_buffs[rp->prod].mapping,
++			      skb_headlen(skb), DMA_TO_DEVICE);
++
+ out_drop:
+ 	rp->tx_errors++;
+ 	kfree_skb(skb);
+@@ -9612,6 +9629,11 @@ static void niu_pci_unmap_single(struct device *dev, u64 dma_address,
+ 	dma_unmap_single(dev, dma_address, size, direction);
+ }
  
-     if irq_settings_is_hidden(desc):
-@@ -221,8 +221,8 @@ class LxInterruptList(gdb.Command):
-             gdb.write("CPU%-8d" % cpu)
-         gdb.write("\n")
++static int niu_pci_mapping_error(struct device *dev, u64 addr)
++{
++	return dma_mapping_error(dev, addr);
++}
++
+ static const struct niu_ops niu_pci_ops = {
+ 	.alloc_coherent	= niu_pci_alloc_coherent,
+ 	.free_coherent	= niu_pci_free_coherent,
+@@ -9619,6 +9641,7 @@ static const struct niu_ops niu_pci_ops = {
+ 	.unmap_page	= niu_pci_unmap_page,
+ 	.map_single	= niu_pci_map_single,
+ 	.unmap_single	= niu_pci_unmap_single,
++	.mapping_error	= niu_pci_mapping_error,
+ };
  
--        if utils.gdb_eval_or_none("&irq_desc_tree") is None:
--            return
-+        if utils.gdb_eval_or_none("&sparse_irqs") is None:
-+            raise gdb.GdbError("Unable to find the sparse IRQ tree, is CONFIG_SPARSE_IRQ enabled?")
+ static void niu_driver_version(void)
+@@ -9996,6 +10019,11 @@ static void niu_phys_unmap_single(struct device *dev, u64 dma_address,
+ 	/* Nothing to do.  */
+ }
  
-         for irq in range(nr_irqs):
-             gdb.write(show_irq_desc(prec, irq))
---- /dev/null
-+++ b/scripts/gdb/linux/mapletree.py
-@@ -0,0 +1,252 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+#  Maple tree helpers
-+#
-+# Copyright (c) 2025 Broadcom
-+#
-+# Authors:
-+#  Florian Fainelli <florian.fainelli@broadcom.com>
++static int niu_phys_mapping_error(struct device *dev, u64 dma_address)
++{
++	return false;
++}
 +
-+import gdb
+ static const struct niu_ops niu_phys_ops = {
+ 	.alloc_coherent	= niu_phys_alloc_coherent,
+ 	.free_coherent	= niu_phys_free_coherent,
+@@ -10003,6 +10031,7 @@ static const struct niu_ops niu_phys_ops = {
+ 	.unmap_page	= niu_phys_unmap_page,
+ 	.map_single	= niu_phys_map_single,
+ 	.unmap_single	= niu_phys_unmap_single,
++	.mapping_error	= niu_phys_mapping_error,
+ };
+ 
+ static int niu_of_probe(struct platform_device *op)
+diff --git a/drivers/net/ethernet/sun/niu.h b/drivers/net/ethernet/sun/niu.h
+index 04c215f91fc08..0b169c08b0f2d 100644
+--- a/drivers/net/ethernet/sun/niu.h
++++ b/drivers/net/ethernet/sun/niu.h
+@@ -2879,6 +2879,9 @@ struct tx_ring_info {
+ #define NEXT_TX(tp, index) \
+ 	(((index) + 1) < (tp)->pending ? ((index) + 1) : 0)
+ 
++#define PREVIOUS_TX(tp, index) \
++	(((index) - 1) >= 0 ? ((index) - 1) : (((tp)->pending) - 1))
 +
-+from linux import utils
-+from linux import constants
-+from linux import xarray
-+
-+maple_tree_root_type = utils.CachedType("struct maple_tree")
-+maple_node_type = utils.CachedType("struct maple_node")
-+maple_enode_type = utils.CachedType("void")
-+
-+maple_dense = 0
-+maple_leaf_64 = 1
-+maple_range_64 = 2
-+maple_arange_64 = 3
-+
-+class Mas(object):
-+    ma_active = 0
-+    ma_start = 1
-+    ma_root = 2
-+    ma_none = 3
-+    ma_pause = 4
-+    ma_overflow = 5
-+    ma_underflow = 6
-+    ma_error = 7
-+
-+    def __init__(self, mt, first, end):
-+        if mt.type == maple_tree_root_type.get_type().pointer():
-+            self.tree = mt.dereference()
-+        elif mt.type != maple_tree_root_type.get_type():
-+            raise gdb.GdbError("must be {} not {}"
-+                               .format(maple_tree_root_type.get_type().pointer(), mt.type))
-+        self.tree = mt
-+        self.index = first
-+        self.last = end
-+        self.node = None
-+        self.status = self.ma_start
-+        self.min = 0
-+        self.max = -1
-+
-+    def is_start(self):
-+        # mas_is_start()
-+        return self.status == self.ma_start
-+
-+    def is_ptr(self):
-+        # mas_is_ptr()
-+        return self.status == self.ma_root
-+
-+    def is_none(self):
-+        # mas_is_none()
-+        return self.status == self.ma_none
-+
-+    def root(self):
-+        # mas_root()
-+        return self.tree['ma_root'].cast(maple_enode_type.get_type().pointer())
-+
-+    def start(self):
-+        # mas_start()
-+        if self.is_start() is False:
-+            return None
-+
-+        self.min = 0
-+        self.max = ~0
-+
-+        while True:
-+            self.depth = 0
-+            root = self.root()
-+            if xarray.xa_is_node(root):
-+                self.depth = 0
-+                self.status = self.ma_active
-+                self.node = mte_safe_root(root)
-+                self.offset = 0
-+                if mte_dead_node(self.node) is True:
-+                    continue
-+
-+                return None
-+
-+            self.node = None
-+            # Empty tree
-+            if root is None:
-+                self.status = self.ma_none
-+                self.offset = constants.LX_MAPLE_NODE_SLOTS
-+                return None
-+
-+            # Single entry tree
-+            self.status = self.ma_root
-+            self.offset = constants.LX_MAPLE_NODE_SLOTS
-+
-+            if self.index != 0:
-+                return None
-+
-+            return root
-+
-+        return None
-+
-+    def reset(self):
-+        # mas_reset()
-+        self.status = self.ma_start
-+        self.node = None
-+
-+def mte_safe_root(node):
-+    if node.type != maple_enode_type.get_type().pointer():
-+        raise gdb.GdbError("{} must be {} not {}"
-+                           .format(mte_safe_root.__name__, maple_enode_type.get_type().pointer(), node.type))
-+    ulong_type = utils.get_ulong_type()
-+    indirect_ptr = node.cast(ulong_type) & ~0x2
-+    val = indirect_ptr.cast(maple_enode_type.get_type().pointer())
-+    return val
-+
-+def mte_node_type(entry):
-+    ulong_type = utils.get_ulong_type()
-+    val = None
-+    if entry.type == maple_enode_type.get_type().pointer():
-+        val = entry.cast(ulong_type)
-+    elif entry.type == ulong_type:
-+        val = entry
-+    else:
-+        raise gdb.GdbError("{} must be {} not {}"
-+                           .format(mte_node_type.__name__, maple_enode_type.get_type().pointer(), entry.type))
-+    return (val >> 0x3) & 0xf
-+
-+def ma_dead_node(node):
-+    if node.type != maple_node_type.get_type().pointer():
-+        raise gdb.GdbError("{} must be {} not {}"
-+                           .format(ma_dead_node.__name__, maple_node_type.get_type().pointer(), node.type))
-+    ulong_type = utils.get_ulong_type()
-+    parent = node['parent']
-+    indirect_ptr = node['parent'].cast(ulong_type) & ~constants.LX_MAPLE_NODE_MASK
-+    return indirect_ptr == node
-+
-+def mte_to_node(enode):
-+    ulong_type = utils.get_ulong_type()
-+    if enode.type == maple_enode_type.get_type().pointer():
-+        indirect_ptr = enode.cast(ulong_type)
-+    elif enode.type == ulong_type:
-+        indirect_ptr = enode
-+    else:
-+        raise gdb.GdbError("{} must be {} not {}"
-+                           .format(mte_to_node.__name__, maple_enode_type.get_type().pointer(), enode.type))
-+    indirect_ptr = indirect_ptr & ~constants.LX_MAPLE_NODE_MASK
-+    return indirect_ptr.cast(maple_node_type.get_type().pointer())
-+
-+def mte_dead_node(enode):
-+    if enode.type != maple_enode_type.get_type().pointer():
-+        raise gdb.GdbError("{} must be {} not {}"
-+                           .format(mte_dead_node.__name__, maple_enode_type.get_type().pointer(), enode.type))
-+    node = mte_to_node(enode)
-+    return ma_dead_node(node)
-+
-+def ma_is_leaf(tp):
-+    result = tp < maple_range_64
-+    return tp < maple_range_64
-+
-+def mt_pivots(t):
-+    if t == maple_dense:
-+        return 0
-+    elif t == maple_leaf_64 or t == maple_range_64:
-+        return constants.LX_MAPLE_RANGE64_SLOTS - 1
-+    elif t == maple_arange_64:
-+        return constants.LX_MAPLE_ARANGE64_SLOTS - 1
-+
-+def ma_pivots(node, t):
-+    if node.type != maple_node_type.get_type().pointer():
-+        raise gdb.GdbError("{}: must be {} not {}"
-+                           .format(ma_pivots.__name__, maple_node_type.get_type().pointer(), node.type))
-+    if t == maple_arange_64:
-+        return node['ma64']['pivot']
-+    elif t == maple_leaf_64 or t == maple_range_64:
-+        return node['mr64']['pivot']
-+    else:
-+        return None
-+
-+def ma_slots(node, tp):
-+    if node.type != maple_node_type.get_type().pointer():
-+        raise gdb.GdbError("{}: must be {} not {}"
-+                           .format(ma_slots.__name__, maple_node_type.get_type().pointer(), node.type))
-+    if tp == maple_arange_64:
-+        return node['ma64']['slot']
-+    elif tp == maple_range_64 or tp == maple_leaf_64:
-+        return node['mr64']['slot']
-+    elif tp == maple_dense:
-+        return node['slot']
-+    else:
-+        return None
-+
-+def mt_slot(mt, slots, offset):
-+    ulong_type = utils.get_ulong_type()
-+    return slots[offset].cast(ulong_type)
-+
-+def mtree_lookup_walk(mas):
-+    ulong_type = utils.get_ulong_type()
-+    n = mas.node
-+
-+    while True:
-+        node = mte_to_node(n)
-+        tp = mte_node_type(n)
-+        pivots = ma_pivots(node, tp)
-+        end = mt_pivots(tp)
-+        offset = 0
-+        while True:
-+            if pivots[offset] >= mas.index:
-+                break
-+            if offset >= end:
-+                break
-+            offset += 1
-+
-+        slots = ma_slots(node, tp)
-+        n = mt_slot(mas.tree, slots, offset)
-+        if ma_dead_node(node) is True:
-+            mas.reset()
-+            return None
-+            break
-+
-+        if ma_is_leaf(tp) is True:
-+            break
-+
-+    return n
-+
-+def mtree_load(mt, index):
-+    ulong_type = utils.get_ulong_type()
-+    # MT_STATE(...)
-+    mas = Mas(mt, index, index)
-+    entry = None
-+
-+    while True:
-+        entry = mas.start()
-+        if mas.is_none():
-+            return None
-+
-+        if mas.is_ptr():
-+            if index != 0:
-+                entry = None
-+            return entry
-+
-+        entry = mtree_lookup_walk(mas)
-+        if entry is None and mas.is_start():
-+            continue
-+        else:
-+            break
-+
-+    if xarray.xa_is_zero(entry):
-+        return None
-+
-+    return entry
---- /dev/null
-+++ b/scripts/gdb/linux/xarray.py
-@@ -0,0 +1,28 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+#  Xarray helpers
-+#
-+# Copyright (c) 2025 Broadcom
-+#
-+# Authors:
-+#  Florian Fainelli <florian.fainelli@broadcom.com>
-+
-+import gdb
-+
-+from linux import utils
-+from linux import constants
-+
-+def xa_is_internal(entry):
-+    ulong_type = utils.get_ulong_type()
-+    return ((entry.cast(ulong_type) & 3) == 2)
-+
-+def xa_mk_internal(v):
-+    return ((v << 2) | 2)
-+
-+def xa_is_zero(entry):
-+    ulong_type = utils.get_ulong_type()
-+    return entry.cast(ulong_type) == xa_mk_internal(257)
-+
-+def xa_is_node(entry):
-+    ulong_type = utils.get_ulong_type()
-+    return xa_is_internal(entry) and (entry.cast(ulong_type) > 4096)
+ static inline u32 niu_tx_avail(struct tx_ring_info *tp)
+ {
+ 	return (tp->pending -
+@@ -3140,6 +3143,7 @@ struct niu_ops {
+ 			  enum dma_data_direction direction);
+ 	void (*unmap_single)(struct device *dev, u64 dma_address,
+ 			     size_t size, enum dma_data_direction direction);
++	int (*mapping_error)(struct device *dev, u64 dma_address);
+ };
+ 
+ struct niu_link_config {
+-- 
+2.39.5
+
 
 
 
