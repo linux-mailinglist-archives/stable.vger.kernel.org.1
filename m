@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-162067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A86B05B76
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A609FB05C0F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:27:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 396D87B703F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFB113AE790
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C5E2E1C69;
-	Tue, 15 Jul 2025 13:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD482E4249;
+	Tue, 15 Jul 2025 13:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpL6hRrx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvDfbY0t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287EC2E11D3;
-	Tue, 15 Jul 2025 13:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812802E3B16;
+	Tue, 15 Jul 2025 13:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585586; cv=none; b=qMv41lZzpGg2gQlQgAdqWevVQQssRpuPCJVVl4BGLsr6FodmBO9HcBxLLYnSmiMz3NdRh+yLbaPewA8AALYjA8JV8uKaTQayYo+zU7Ur/KIb4yzLW+5xZ5pjZZnx6K26mlN5PYoJlZ9/0NLd5H+EXQNKFDleyl+ybzBFyE3hFuo=
+	t=1752585843; cv=none; b=orhBsJ/VtGofKEC4dER7WmpuCQp6BImRl4yZs18JmQjJ4fpOCtT6JF2hLOuyfqz0ZlcI4OxSWg4nBFhUSULIp5RSZAVp7Bjohuz6eJ7euPV/goRnLaXo7E5uveDepe0JH6qMCBcmc8vt7zrlJ40rrgu7BoYNp0N+Q3PUoU9o96Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585586; c=relaxed/simple;
-	bh=lVkYEgGHvjV+nCe0ndlPN1TJQ4v5quCmEgQzjDj2y5A=;
+	s=arc-20240116; t=1752585843; c=relaxed/simple;
+	bh=R3Q/ISxcRTxJcY8BjVz3zuaEynW9q//vMosG9UP/i2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCwl/ncVifSOkQAmU6i+xGebgapDgqhy8rDxPugYjIgZ74JkehBUgJVaZzlMLZz7SCtHuszlw81C5LfyR/9S3DKOeR2LUpnXVa6dRoJEEot29RfMw2bSziIZqHrRIVVh743OQXMPpdLkTPUhvaXYpPcxq80h88fq7b/Ems+jLLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IpL6hRrx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7854FC4CEE3;
-	Tue, 15 Jul 2025 13:19:45 +0000 (UTC)
+	 MIME-Version; b=pEdknLC/QdnrSGutzMhqu3jUQ9zxMHOLRi0jDrJs+oo2kTlHGTh3KqYy6T9M6hL7Ix3dUEthExVWFNkzfZDAtVA87BxzJNONdRFPAox81OkTyPYASMZHHqav4ywBy+3oQLmqiLApaGG0pIiFojWcFgCe8kmBmN04YqclSYN+Zzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvDfbY0t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF31C4AF09;
+	Tue, 15 Jul 2025 13:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585585;
-	bh=lVkYEgGHvjV+nCe0ndlPN1TJQ4v5quCmEgQzjDj2y5A=;
+	s=korg; t=1752585843;
+	bh=R3Q/ISxcRTxJcY8BjVz3zuaEynW9q//vMosG9UP/i2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IpL6hRrxkwABzODfbEITxWISJUMfmPZB/h6pbY8sxKGnp2Sm5F6s3beYt/O9pcK8S
-	 eFZj5uOAW5ZxaCq+ijv/Wj2asYnKkOJDPIHgYfcjFIgMRiDC0kZMIU552Red5485Dk
-	 FLPRMSR4xYp2mijYsD6yH2hpI8h2pIFsg9WtU+ZA=
+	b=MvDfbY0tCeRAlgTnWm7CZ83MU5NzLWTl0B6BUgnqvg/c8Ok740cYr8tkduUDr9Lze
+	 W4poxm+yBcMPQ/ZOoPPn25CmzrYz9RXrM6DrEJdD9/nlYt0DE2w6KuA3MTRRxX+DX0
+	 p3VJM92ytHNLbOkWm0vTR1W61bhl0FwJaAj2tjLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Paulyshka <me@mixaill.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.12 096/163] x86/rdrand: Disable RDSEED on AMD Cyan Skillfish
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Hailong Liu <hailong.liu@oppo.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"zhangpeng.00@bytedance.com" <zhangpeng.00@bytedance.com>,
+	Steve Kang <Steve.Kang@unisoc.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 028/109] maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
 Date: Tue, 15 Jul 2025 15:12:44 +0200
-Message-ID: <20250715130812.718506640@linuxfoundation.org>
+Message-ID: <20250715130800.010231825@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +69,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Paulyshka <me@mixaill.net>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-commit 5b937a1ed64ebeba8876e398110a5790ad77407c upstream.
+commit fba46a5d83ca8decb338722fb4899026d8d9ead2 upstream.
 
-AMD Cyan Skillfish (Family 17h, Model 47h, Stepping 0h) has an error that
-causes RDSEED to always return 0xffffffff, while RDRAND works correctly.
+Temporarily clear the preallocation flag when explicitly requesting
+allocations.  Pre-existing allocations are already counted against the
+request through mas_node_count_gfp(), but the allocations will not happen
+if the MA_STATE_PREALLOC flag is set.  This flag is meant to avoid
+re-allocating in bulk allocation mode, and to detect issues with
+preallocation calculations.
 
-Mask the RDSEED cap for this CPU so that both /proc/cpuinfo and direct CPUID
-read report RDSEED as unavailable.
+The MA_STATE_PREALLOC flag should also always be set on zero allocations
+so that detection of underflow allocations will print a WARN_ON() during
+consumption.
 
-  [ bp: Move to amd.c, massage. ]
+User visible effect of this flaw is a WARN_ON() followed by a null pointer
+dereference when subsequent requests for larger number of nodes is
+ignored, such as the vma merge retry in mmap_region() caused by drivers
+altering the vma flags (which happens in v6.6, at least)
 
-Signed-off-by: Mikhail Paulyshka <me@mixaill.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250524145319.209075-1-me@mixaill.net
+Link: https://lkml.kernel.org/r/20250616184521.3382795-3-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Reported-by: Hailong Liu <hailong.liu@oppo.com>
+Link: https://lore.kernel.org/all/1652f7eb-a51b-4fee-8058-c73af63bacd1@oppo.com/
+Link: https://lore.kernel.org/all/20250428184058.1416274-1-Liam.Howlett@oracle.com/
+Link: https://lore.kernel.org/all/20250429014754.1479118-1-Liam.Howlett@oracle.com/
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Hailong Liu <hailong.liu@oppo.com>
+Cc: zhangpeng.00@bytedance.com <zhangpeng.00@bytedance.com>
+Cc: Steve Kang <Steve.Kang@unisoc.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/msr-index.h       |    1 +
- arch/x86/kernel/cpu/amd.c              |    7 +++++++
- tools/arch/x86/include/asm/msr-index.h |    1 +
- 3 files changed, 9 insertions(+)
+ lib/maple_tree.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -621,6 +621,7 @@
- #define MSR_AMD64_OSVW_STATUS		0xc0010141
- #define MSR_AMD_PPIN_CTL		0xc00102f0
- #define MSR_AMD_PPIN			0xc00102f1
-+#define MSR_AMD64_CPUID_FN_7		0xc0011002
- #define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_LS_CFG		0xc0011020
- #define MSR_AMD64_DC_CFG		0xc0011022
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -977,6 +977,13 @@ static void init_amd_zen2(struct cpuinfo
- 	init_spectral_chicken(c);
- 	fix_erratum_1386(c);
- 	zen2_zenbleed_check(c);
-+
-+	/* Disable RDSEED on AMD Cyan Skillfish because of an error. */
-+	if (c->x86_model == 0x47 && c->x86_stepping == 0x0) {
-+		clear_cpu_cap(c, X86_FEATURE_RDSEED);
-+		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
-+		pr_emerg("RDSEED is not reliable on this platform; disabling.\n");
-+	}
- }
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -5497,7 +5497,7 @@ int mas_preallocate(struct ma_state *mas
+ 	/* At this point, we are at the leaf node that needs to be altered. */
+ 	/* Exact fit, no nodes needed. */
+ 	if (wr_mas.r_min == mas->index && wr_mas.r_max == mas->last)
+-		return 0;
++		goto set_flag;
  
- static void init_amd_zen3(struct cpuinfo_x86 *c)
---- a/tools/arch/x86/include/asm/msr-index.h
-+++ b/tools/arch/x86/include/asm/msr-index.h
-@@ -612,6 +612,7 @@
- #define MSR_AMD64_OSVW_STATUS		0xc0010141
- #define MSR_AMD_PPIN_CTL		0xc00102f0
- #define MSR_AMD_PPIN			0xc00102f1
-+#define MSR_AMD64_CPUID_FN_7		0xc0011002
- #define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_LS_CFG		0xc0011020
- #define MSR_AMD64_DC_CFG		0xc0011022
+ 	mas_wr_end_piv(&wr_mas);
+ 	node_size = mas_wr_new_end(&wr_mas);
+@@ -5506,10 +5506,10 @@ int mas_preallocate(struct ma_state *mas
+ 	if (node_size == wr_mas.node_end) {
+ 		/* reuse node */
+ 		if (!mt_in_rcu(mas->tree))
+-			return 0;
++			goto set_flag;
+ 		/* shifting boundary */
+ 		if (wr_mas.offset_end - mas->offset == 1)
+-			return 0;
++			goto set_flag;
+ 	}
+ 
+ 	if (node_size >= mt_slots[wr_mas.type]) {
+@@ -5528,10 +5528,13 @@ int mas_preallocate(struct ma_state *mas
+ 
+ 	/* node store, slot store needs one node */
+ ask_now:
++	mas->mas_flags &= ~MA_STATE_PREALLOC;
+ 	mas_node_count_gfp(mas, request, gfp);
+-	mas->mas_flags |= MA_STATE_PREALLOC;
+-	if (likely(!mas_is_err(mas)))
++	if (likely(!mas_is_err(mas))) {
++set_flag:
++		mas->mas_flags |= MA_STATE_PREALLOC;
+ 		return 0;
++	}
+ 
+ 	mas_set_alloc_req(mas, 0);
+ 	ret = xa_err(mas->node);
 
 
 
