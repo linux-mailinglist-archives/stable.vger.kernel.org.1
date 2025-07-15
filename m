@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-162590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E4CB05E8A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0568B05CE0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:37:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B336E4A147F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7551F7BE24C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6872EAD05;
-	Tue, 15 Jul 2025 13:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C2B2E337E;
+	Tue, 15 Jul 2025 13:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jITSNOO8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHJa0Boz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D12C2E339A;
-	Tue, 15 Jul 2025 13:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC6E2E2F06;
+	Tue, 15 Jul 2025 13:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586957; cv=none; b=m425M162XETruRQuMw1Wb4D4/EdzwzBj7I7M3EOQ6dmaqka6cxZpj9TUJOHZVuULt+TujD0t/J+rVnb8FGoJeTaetsF1v1FAWiBRDW1bEmz3GoEobTTCD+OOjPgLKlASjU/clDkaOhzF2Yms4HwNhXBrjo1JDOpuXSaNuuux3yk=
+	t=1752586066; cv=none; b=WAfAlxH8AFbiOA6DxOi0V4zriV5x9LTYS4x1qgUU4zhUU1Xqqz7LGCTFRwT/2abgIDQ9wMCf8KnPcAYLscFSLdVPJ80oPtGVp5bsEXtgrhVTpwuPZEWawxKBB5FvZsMHi8fJ8jbBbEa9Q2GJcrm1TvVUshavDy8KuY9fwkI+5+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586957; c=relaxed/simple;
-	bh=gcnrZw7F0Enpr/gFJSVTYAKUhDGtHcoasBBaKqsulmk=;
+	s=arc-20240116; t=1752586066; c=relaxed/simple;
+	bh=v8IiM5v5f/VTVIp9Zlc/g39e8oOYZVRKmA30Tz55T1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DO22L6r4axZs5Te03Vo0jlI0JNPfMcs57wshmPfCFYI1tzkbiO2BdKwJzhGzW/L1UFEtlSRfYBO8T9F5hznSMNZBCUokaAWLElotWR74+OWEIcVXyMZzK0rJp3kNDCb20auWNV7biUsCXjz5XtahLW2vkW3WJooU0wUAJwK3P7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jITSNOO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5697C4CEE3;
-	Tue, 15 Jul 2025 13:42:36 +0000 (UTC)
+	 MIME-Version; b=d7m5/ggKKCKDkNVE5i0D4mD+86nL6P8QT6LkUUaqZKh067B08XrWBmVkQDX8sGr2CzglMEvf4uxalbJGLB/orv3gmL7N0pckz/eyK0KHEE0UTG4uplLK44CbqBE3b1zGzxotw6BaekL5eimw68trC5vLdc4cuBuwA9cDO2IqwgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHJa0Boz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DD2C4CEE3;
+	Tue, 15 Jul 2025 13:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586957;
-	bh=gcnrZw7F0Enpr/gFJSVTYAKUhDGtHcoasBBaKqsulmk=;
+	s=korg; t=1752586065;
+	bh=v8IiM5v5f/VTVIp9Zlc/g39e8oOYZVRKmA30Tz55T1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jITSNOO8ogc9+OQSP19/TcgXSHoCtog7zX3P/zHDRy3VblUcaz/sg2nVK9mz8+oKo
-	 0RaQkfm80Ip4e0EeaOztwhvd9fBaVnOkdhiFO3DuM3LbAj+Mi40pASnTyEntNEZogR
-	 tKSHezn06RsFNZAZaOukqQx09rfxzA7PECT88X/c=
+	b=RHJa0BozAXdonD5VcIR2kqSZQVlFZgU2eyK6Ol50isfTEtNjjIe54CnVjJIUnN7At
+	 eC1NxanC5H02cqagV+91LasqpOHPP/WMMOcKyxhxMm2adWBAN7qDc9tpe9FSXs5NBp
+	 YIdT3Ee6V/bfKONAh7ujeRhjTO8nGTyfALziDK6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Yoo <harry.yoo@oracle.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Raghavendra K T <raghavendra.kt@amd.com>,
-	Casey Chen <cachen@purestorage.com>,
-	David Wang <00107082@163.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Yuanyuan Zhong <yzhong@purestorage.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 112/192] lib/alloc_tag: do not acquire non-existent lock in alloc_tag_top_users()
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 071/109] usb:cdnsp: remove TRB_FLUSH_ENDPOINT command
 Date: Tue, 15 Jul 2025 15:13:27 +0200
-Message-ID: <20250715130819.383929497@linuxfoundation.org>
+Message-ID: <20250715130801.726968410@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,105 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Yoo <harry.yoo@oracle.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit 99af22cd34688cc0d535a1919e0bea4cbc6c1ea1 upstream.
+[ Upstream commit 2998874736bca1031ca84b0a3235a2cd09dfa426 ]
 
-alloc_tag_top_users() attempts to lock alloc_tag_cttype->mod_lock even
-when the alloc_tag_cttype is not allocated because:
+Patch removes TRB_FLUSH_ENDPOINT command from driver.
+This command is not supported by controller and
+USBSSP returns TRB Error completion code for it.
 
-  1) alloc tagging is disabled because mem profiling is disabled
-     (!alloc_tag_cttype)
-  2) alloc tagging is enabled, but not yet initialized (!alloc_tag_cttype)
-  3) alloc tagging is enabled, but failed initialization
-     (!alloc_tag_cttype or IS_ERR(alloc_tag_cttype))
-
-In all cases, alloc_tag_cttype is not allocated, and therefore
-alloc_tag_top_users() should not attempt to acquire the semaphore.
-
-This leads to a crash on memory allocation failure by attempting to
-acquire a non-existent semaphore:
-
-  Oops: general protection fault, probably for non-canonical address 0xdffffc000000001b: 0000 [#3] SMP KASAN NOPTI
-  KASAN: null-ptr-deref in range [0x00000000000000d8-0x00000000000000df]
-  CPU: 2 UID: 0 PID: 1 Comm: systemd Tainted: G      D             6.16.0-rc2 #1 VOLUNTARY
-  Tainted: [D]=DIE
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-  RIP: 0010:down_read_trylock+0xaa/0x3b0
-  Code: d0 7c 08 84 d2 0f 85 a0 02 00 00 8b 0d df 31 dd 04 85 c9 75 29 48 b8 00 00 00 00 00 fc ff df 48 8d 6b 68 48 89 ea 48 c1 ea 03 <80> 3c 02 00 0f 85 88 02 00 00 48 3b 5b 68 0f 85 53 01 00 00 65 ff
-  RSP: 0000:ffff8881002ce9b8 EFLAGS: 00010016
-  RAX: dffffc0000000000 RBX: 0000000000000070 RCX: 0000000000000000
-  RDX: 000000000000001b RSI: 000000000000000a RDI: 0000000000000070
-  RBP: 00000000000000d8 R08: 0000000000000001 R09: ffffed107dde49d1
-  R10: ffff8883eef24e8b R11: ffff8881002cec20 R12: 1ffff11020059d37
-  R13: 00000000003fff7b R14: ffff8881002cec20 R15: dffffc0000000000
-  FS:  00007f963f21d940(0000) GS:ffff888458ca6000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f963f5edf71 CR3: 000000010672c000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   codetag_trylock_module_list+0xd/0x20
-   alloc_tag_top_users+0x369/0x4b0
-   __show_mem+0x1cd/0x6e0
-   warn_alloc+0x2b1/0x390
-   __alloc_frozen_pages_noprof+0x12b9/0x21a0
-   alloc_pages_mpol+0x135/0x3e0
-   alloc_slab_page+0x82/0xe0
-   new_slab+0x212/0x240
-   ___slab_alloc+0x82a/0xe00
-   </TASK>
-
-As David Wang points out, this issue became easier to trigger after commit
-780138b12381 ("alloc_tag: check mem_profiling_support in alloc_tag_init").
-
-Before the commit, the issue occurred only when it failed to allocate and
-initialize alloc_tag_cttype or if a memory allocation fails before
-alloc_tag_init() is called.  After the commit, it can be easily triggered
-when memory profiling is compiled but disabled at boot.
-
-To properly determine whether alloc_tag_init() has been called and its
-data structures initialized, verify that alloc_tag_cttype is a valid
-pointer before acquiring the semaphore.  If the variable is NULL or an
-error value, it has not been properly initialized.  In such a case, just
-skip and do not attempt to acquire the semaphore.
-
-[harry.yoo@oracle.com: v3]
-  Link: https://lkml.kernel.org/r/20250624072513.84219-1-harry.yoo@oracle.com
-Link: https://lkml.kernel.org/r/20250620195305.1115151-1-harry.yoo@oracle.com
-Fixes: 780138b12381 ("alloc_tag: check mem_profiling_support in alloc_tag_init")
-Fixes: 1438d349d16b ("lib: add memory allocations report in show_mem()")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202506181351.bba867dd-lkp@intel.com
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Tested-by: Raghavendra K T <raghavendra.kt@amd.com>
-Cc: Casey Chen <cachen@purestorage.com>
-Cc: David Wang <00107082@163.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Yuanyuan Zhong <yzhong@purestorage.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20231026073737.165450-1-pawell@cadence.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2831a81077f5 ("usb: cdnsp: Fix issue with CV Bad Descriptor test")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/alloc_tag.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/cdns3/cdnsp-debug.h  |  3 ---
+ drivers/usb/cdns3/cdnsp-gadget.c |  6 +-----
+ drivers/usb/cdns3/cdnsp-gadget.h |  5 -----
+ drivers/usb/cdns3/cdnsp-ring.c   | 24 ------------------------
+ 4 files changed, 1 insertion(+), 37 deletions(-)
 
---- a/lib/alloc_tag.c
-+++ b/lib/alloc_tag.c
-@@ -134,6 +134,9 @@ size_t alloc_tag_top_users(struct codeta
- 	struct codetag_bytes n;
- 	unsigned int i, nr = 0;
+diff --git a/drivers/usb/cdns3/cdnsp-debug.h b/drivers/usb/cdns3/cdnsp-debug.h
+index f0ca865cce2a0..ad617b7455b9c 100644
+--- a/drivers/usb/cdns3/cdnsp-debug.h
++++ b/drivers/usb/cdns3/cdnsp-debug.h
+@@ -131,8 +131,6 @@ static inline const char *cdnsp_trb_type_string(u8 type)
+ 		return "Endpoint Not ready";
+ 	case TRB_HALT_ENDPOINT:
+ 		return "Halt Endpoint";
+-	case TRB_FLUSH_ENDPOINT:
+-		return "FLush Endpoint";
+ 	default:
+ 		return "UNKNOWN";
+ 	}
+@@ -328,7 +326,6 @@ static inline const char *cdnsp_decode_trb(char *str, size_t size, u32 field0,
+ 		break;
+ 	case TRB_RESET_EP:
+ 	case TRB_HALT_ENDPOINT:
+-	case TRB_FLUSH_ENDPOINT:
+ 		ret = snprintf(str, size,
+ 			       "%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
+ 			       cdnsp_trb_type_string(type),
+diff --git a/drivers/usb/cdns3/cdnsp-gadget.c b/drivers/usb/cdns3/cdnsp-gadget.c
+index 132885fbb98f6..38e693cd3efc0 100644
+--- a/drivers/usb/cdns3/cdnsp-gadget.c
++++ b/drivers/usb/cdns3/cdnsp-gadget.c
+@@ -1061,10 +1061,8 @@ static int cdnsp_gadget_ep_disable(struct usb_ep *ep)
+ 	pep->ep_state |= EP_DIS_IN_RROGRESS;
  
-+	if (IS_ERR_OR_NULL(alloc_tag_cttype))
-+		return 0;
-+
- 	if (can_sleep)
- 		codetag_lock_module_list(alloc_tag_cttype, true);
- 	else if (!codetag_trylock_module_list(alloc_tag_cttype))
+ 	/* Endpoint was unconfigured by Reset Device command. */
+-	if (!(pep->ep_state & EP_UNCONFIGURED)) {
++	if (!(pep->ep_state & EP_UNCONFIGURED))
+ 		cdnsp_cmd_stop_ep(pdev, pep);
+-		cdnsp_cmd_flush_ep(pdev, pep);
+-	}
+ 
+ 	/* Remove all queued USB requests. */
+ 	while (!list_empty(&pep->pending_list)) {
+@@ -1461,8 +1459,6 @@ static void cdnsp_stop(struct cdnsp_device *pdev)
+ {
+ 	u32 temp;
+ 
+-	cdnsp_cmd_flush_ep(pdev, &pdev->eps[0]);
+-
+ 	/* Remove internally queued request for ep0. */
+ 	if (!list_empty(&pdev->eps[0].pending_list)) {
+ 		struct cdnsp_request *req;
+diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
+index 909cee01772a7..2afa3e558f85c 100644
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -1138,8 +1138,6 @@ union cdnsp_trb {
+ #define TRB_HALT_ENDPOINT	54
+ /* Doorbell Overflow Event. */
+ #define TRB_DRB_OVERFLOW	57
+-/* Flush Endpoint Command. */
+-#define TRB_FLUSH_ENDPOINT	58
+ 
+ #define TRB_TYPE_LINK(x)	(((x) & TRB_TYPE_BITMASK) == TRB_TYPE(TRB_LINK))
+ #define TRB_TYPE_LINK_LE32(x)	(((x) & cpu_to_le32(TRB_TYPE_BITMASK)) == \
+@@ -1552,8 +1550,6 @@ void cdnsp_queue_configure_endpoint(struct cdnsp_device *pdev,
+ void cdnsp_queue_reset_ep(struct cdnsp_device *pdev, unsigned int ep_index);
+ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev,
+ 			       unsigned int ep_index);
+-void cdnsp_queue_flush_endpoint(struct cdnsp_device *pdev,
+-				unsigned int ep_index);
+ void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num);
+ void cdnsp_queue_reset_device(struct cdnsp_device *pdev);
+ void cdnsp_queue_new_dequeue_state(struct cdnsp_device *pdev,
+@@ -1587,7 +1583,6 @@ void cdnsp_irq_reset(struct cdnsp_device *pdev);
+ int cdnsp_halt_endpoint(struct cdnsp_device *pdev,
+ 			struct cdnsp_ep *pep, int value);
+ int cdnsp_cmd_stop_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep);
+-int cdnsp_cmd_flush_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep);
+ void cdnsp_setup_analyze(struct cdnsp_device *pdev);
+ int cdnsp_status_stage(struct cdnsp_device *pdev);
+ int cdnsp_reset_device(struct cdnsp_device *pdev);
+diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
+index 3b17d9e4b07d8..757fdd918286d 100644
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -2159,19 +2159,6 @@ int cdnsp_cmd_stop_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep)
+ 	return ret;
+ }
+ 
+-int cdnsp_cmd_flush_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep)
+-{
+-	int ret;
+-
+-	cdnsp_queue_flush_endpoint(pdev, pep->idx);
+-	cdnsp_ring_cmd_db(pdev);
+-	ret = cdnsp_wait_for_cmd_compl(pdev);
+-
+-	trace_cdnsp_handle_cmd_flush_ep(pep->out_ctx);
+-
+-	return ret;
+-}
+-
+ /*
+  * The transfer burst count field of the isochronous TRB defines the number of
+  * bursts that are required to move all packets in this TD. Only SuperSpeed
+@@ -2501,17 +2488,6 @@ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev, unsigned int ep_index)
+ 			    EP_ID_FOR_TRB(ep_index));
+ }
+ 
+-/*
+- * Queue a flush endpoint request on the command ring.
+- */
+-void  cdnsp_queue_flush_endpoint(struct cdnsp_device *pdev,
+-				 unsigned int ep_index)
+-{
+-	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_FLUSH_ENDPOINT) |
+-			    SLOT_ID_FOR_TRB(pdev->slot_id) |
+-			    EP_ID_FOR_TRB(ep_index));
+-}
+-
+ void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
+ {
+ 	u32 lo, mid;
+-- 
+2.39.5
+
 
 
 
