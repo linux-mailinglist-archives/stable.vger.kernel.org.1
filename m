@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81487B05D8A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32924B05CC8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5809580B5D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 069653A73DA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8232B2EACFC;
-	Tue, 15 Jul 2025 13:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0770B26CE27;
+	Tue, 15 Jul 2025 13:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kR9Y6fqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcitySYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D182E2EFF;
-	Tue, 15 Jul 2025 13:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9762E3AFF;
+	Tue, 15 Jul 2025 13:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586510; cv=none; b=FKEKu3BHk49mY30yIqQzssZsJH0WXThioUu7JJFBob0cSxmszvHSgrtm7MMiIya/rOzfNDZv8rbxVSO4rJsWsxqAd98en+HKbVh0y5xMfd+UDlAX62/nt+uuSL8gIlf/8y96YegB9EyOAwp4wFGOPUhR+ehUh6GY/E7B0dS2MJY=
+	t=1752586057; cv=none; b=PLjqf8cQqSXF1BdmHgdII4bTV/bYixY8xmDZkp7X8LFXqZU8ZQQ2i2Xn0dLIfy1iYU2TScPeSghSae0Sjm3WWRV2AvvCkcJ1oF365crpmBAbo8Z8aipg103HomMg9vFVCRSxNZNcc7WxUdXlhZDVFAbn7g8T9sKSOnItF5EP6i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586510; c=relaxed/simple;
-	bh=b9KepwfolTcVZNsk9HbUbi84mDb/1ZQSyYtE0Qu2wGs=;
+	s=arc-20240116; t=1752586057; c=relaxed/simple;
+	bh=3WchZIK0yDR6Li5PBrbQuvKq1FogV0ZdyUOIULy8pEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCCA9qU4tlIS6ef2fXc565ml7q69jfSJp/4g6lyouaehxDIagLY/BYcMSKkI04Uay2knngLObrcQ80EG9iO68hsdBehRim3q9RYzzcpzhqJlfXH9ctD7cprzfR6yE9p5y1kH/+Gpu18wRiE0icCLvBz88jec5pn5OJ/UiXy+ITs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kR9Y6fqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CB9C4CEE3;
-	Tue, 15 Jul 2025 13:35:09 +0000 (UTC)
+	 MIME-Version; b=bgXV/RZ/ueetmAmEIwBT+UWrCAHiV9Epd2nfpc9FTqwVx1zIkuqF87GYr3jqN/5aUq4Y/tyLFwP63ARWfy6daQdJqg70Cfj1UQ6TsPhNkO5+deLvAxEs1/4B5M86kat2NYn4EeFbJEYN7aNRnHu0QlrR7NZ6xGbxfAxnaoBQ6wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcitySYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4FAC4CEE3;
+	Tue, 15 Jul 2025 13:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586510;
-	bh=b9KepwfolTcVZNsk9HbUbi84mDb/1ZQSyYtE0Qu2wGs=;
+	s=korg; t=1752586057;
+	bh=3WchZIK0yDR6Li5PBrbQuvKq1FogV0ZdyUOIULy8pEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kR9Y6fqCWGPkEDEcKrp3PwnbIqZZErvOgTOVIwRfGGyJvB5lP9V9BiU5go+66Snuv
-	 CWAi0q7sL68FOPR+c8zMHj8Efvz2CVE9VkyHXxiWXzXPl5ER3HkHZLtWFbEKAWFjn/
-	 pr+mvq4dFrSdZ2oJv3wDR/WTCwqct4S6Wvr9CgC0=
+	b=LcitySYq6W8kpwU1N7Az7/kBXIJ7PNbeXNbLb1ii3I4sdHBnG3EZKDRlK2J2+DdGn
+	 WEJhbf9e/HIy+ge0wpOEO6lrceXM9GzPib+MH15acrxEkvf7Ez9BJpQTurILF4Bcaa
+	 d3qP4uSJMy0zFTam9KSBkAjOq4rfWz4IZK7Zecxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 092/148] spi: spi-fsl-dspi: Rename fifo_{read,write} and {tx,cmd}_fifo_write
+Subject: [PATCH 6.6 078/109] wifi: zd1211rw: Fix potential NULL pointer dereference in zd_mac_tx_to_dev()
 Date: Tue, 15 Jul 2025 15:13:34 +0200
-Message-ID: <20250715130803.997444990@linuxfoundation.org>
+Message-ID: <20250715130802.005419827@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 547248fbed23f3cd2f6a5937b44fad60993640c4 ]
+[ Upstream commit 74b1ec9f5d627d2bdd5e5b6f3f81c23317657023 ]
 
-These function names are very generic and it is easy to get confused.
-Rename them after the hardware register that they are accessing.
+There is a potential NULL pointer dereference in zd_mac_tx_to_dev(). For
+example, the following is possible:
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20200304220044.11193-6-olteanv@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: fa60c094c19b ("spi: spi-fsl-dspi: Clear completion counter before initiating transfer")
+    	T0			    		T1
+zd_mac_tx_to_dev()
+  /* len == skb_queue_len(q) */
+  while (len > ZD_MAC_MAX_ACK_WAITERS) {
+
+					  filter_ack()
+					    spin_lock_irqsave(&q->lock, flags);
+					    /* position == skb_queue_len(q) */
+					    for (i=1; i<position; i++)
+				    	      skb = __skb_dequeue(q)
+
+					    if (mac->type == NL80211_IFTYPE_AP)
+					      skb = __skb_dequeue(q);
+					    spin_unlock_irqrestore(&q->lock, flags);
+
+    skb_dequeue() -> NULL
+
+Since there is a small gap between checking skb queue length and skb being
+unconditionally dequeued in zd_mac_tx_to_dev(), skb_dequeue() can return NULL.
+Then the pointer is passed to zd_mac_tx_status() where it is dereferenced.
+
+In order to avoid potential NULL pointer dereference due to situations like
+above, check if skb is not NULL before passing it to zd_mac_tx_status().
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 459c51ad6e1f ("zd1211rw: port to mac80211")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Link: https://patch.msgid.link/20250626114619.172631-1-d.dulov@aladdin.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/wireless/zydas/zd1211rw/zd_mac.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 1d94fc89602f2..99d048acca29e 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -560,12 +560,12 @@ static void ns_delay_scale(char *psc, char *sc, int delay_ns,
- 	}
- }
+diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+index 5d534e15a844f..278875c02f41f 100644
+--- a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
++++ b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+@@ -583,7 +583,11 @@ void zd_mac_tx_to_dev(struct sk_buff *skb, int error)
  
--static void fifo_write(struct fsl_dspi *dspi)
-+static void dspi_pushr_write(struct fsl_dspi *dspi)
- {
- 	regmap_write(dspi->regmap, SPI_PUSHR, dspi_pop_tx_pushr(dspi));
- }
- 
--static void cmd_fifo_write(struct fsl_dspi *dspi)
-+static void dspi_pushr_cmd_write(struct fsl_dspi *dspi)
- {
- 	u16 cmd = dspi->tx_cmd;
- 
-@@ -574,7 +574,7 @@ static void cmd_fifo_write(struct fsl_dspi *dspi)
- 	regmap_write(dspi->regmap_pushr, PUSHR_CMD, cmd);
- }
- 
--static void tx_fifo_write(struct fsl_dspi *dspi, u16 txdata)
-+static void dspi_pushr_txdata_write(struct fsl_dspi *dspi, u16 txdata)
- {
- 	regmap_write(dspi->regmap_pushr, PUSHR_TX, txdata);
- }
-@@ -590,18 +590,18 @@ static void dspi_tcfq_write(struct fsl_dspi *dspi)
- 		 */
- 		u32 data = dspi_pop_tx(dspi);
- 
--		cmd_fifo_write(dspi);
--		tx_fifo_write(dspi, data & 0xFFFF);
--		tx_fifo_write(dspi, data >> 16);
-+		dspi_pushr_cmd_write(dspi);
-+		dspi_pushr_txdata_write(dspi, data & 0xFFFF);
-+		dspi_pushr_txdata_write(dspi, data >> 16);
- 	} else {
- 		/* Write one entry to both TX FIFO and CMD FIFO
- 		 * simultaneously.
- 		 */
--		fifo_write(dspi);
-+		dspi_pushr_write(dspi);
- 	}
- }
- 
--static u32 fifo_read(struct fsl_dspi *dspi)
-+static u32 dspi_popr_read(struct fsl_dspi *dspi)
- {
- 	u32 rxdata = 0;
- 
-@@ -611,7 +611,7 @@ static u32 fifo_read(struct fsl_dspi *dspi)
- 
- static void dspi_tcfq_read(struct fsl_dspi *dspi)
- {
--	dspi_push_rx(dspi, fifo_read(dspi));
-+	dspi_push_rx(dspi, dspi_popr_read(dspi));
- }
- 
- static void dspi_eoq_write(struct fsl_dspi *dspi)
-@@ -629,7 +629,7 @@ static void dspi_eoq_write(struct fsl_dspi *dspi)
- 		if (fifo_size == (DSPI_FIFO_SIZE - 1))
- 			dspi->tx_cmd |= SPI_PUSHR_CMD_CTCNT;
- 		/* Write combined TX FIFO and CMD FIFO entry */
--		fifo_write(dspi);
-+		dspi_pushr_write(dspi);
- 	}
- }
- 
-@@ -639,7 +639,7 @@ static void dspi_eoq_read(struct fsl_dspi *dspi)
- 
- 	/* Read one FIFO entry and push to rx buffer */
- 	while ((dspi->rx < dspi->rx_end) && fifo_size--)
--		dspi_push_rx(dspi, fifo_read(dspi));
-+		dspi_push_rx(dspi, dspi_popr_read(dspi));
- }
- 
- static int dspi_rxtx(struct fsl_dspi *dspi)
+ 		skb_queue_tail(q, skb);
+ 		while (skb_queue_len(q) > ZD_MAC_MAX_ACK_WAITERS) {
+-			zd_mac_tx_status(hw, skb_dequeue(q),
++			skb = skb_dequeue(q);
++			if (!skb)
++				break;
++
++			zd_mac_tx_status(hw, skb,
+ 					 mac->ack_pending ? mac->ack_signal : 0,
+ 					 NULL);
+ 			mac->ack_pending = 0;
 -- 
 2.39.5
 
