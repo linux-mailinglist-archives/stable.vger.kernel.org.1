@@ -1,180 +1,100 @@
-Return-Path: <stable+bounces-161975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9E2B05AB0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:58:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3C8B05AB9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE8F61AA5B7B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 12:58:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DCB73B3D06
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA622DE6E7;
-	Tue, 15 Jul 2025 12:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489731A2387;
+	Tue, 15 Jul 2025 13:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sf7bZYQ9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eSMLzsEO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wa4lt46h"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F082627FC;
-	Tue, 15 Jul 2025 12:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0429A2566;
+	Tue, 15 Jul 2025 13:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752584312; cv=none; b=ScWMAoxiP7vwH3HLwJZsxuVf/MAArt8y231qSdZIGSPkW2eWabJ5R9ggfj9GIqjdXUeBMGmpx4aWw+2DiCXob46oNV4ZIxgmBU5NNBwryPZvgJVJ+jBIALRsxdukKdZ0KpKGNKrjWFmXqYWl2ct/ipkh8oocHKlvLZJjcRYt/bQ=
+	t=1752584533; cv=none; b=amY0ranz3ZYhitCQqYhHpTor+MKIHGb49gUmRAdTpgOOBamvVG+9N/XrRJ6JZg6hPWjl9SrzCukfjh7y0xpYAx+NJzddvfFrxbC2w5wBJ9t0kh+7hVws236n2iqweY+sdmVundtFqaGZSXSwfuNO0Qes00TCH5kX20z67JgPpcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752584312; c=relaxed/simple;
-	bh=6SCddfOTDHHGObCBwebbZIS9WbD3aNhWQRhtOi2Ux8g=;
+	s=arc-20240116; t=1752584533; c=relaxed/simple;
+	bh=bOJ8SJUmwY1xIJRqQBze5bezXdl7AQhRGfQSUOpqANE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rD3TtzwdrV6fCBoYf1jedyoOVBNjsng2FQf7JdX+sGed2+Q2Win5H0ljZjj4vRsXQhqbK+VsEDG+Y2xpmhJ7lmFTk9/rJO3ac4VW/YzoF3I/PO94TaEf03j5u7Ux5htboVddbyls3yU1zUJKM2Fc51rHfBLt1VwPbmUhLlZhlyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sf7bZYQ9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eSMLzsEO; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 15 Jul 2025 14:58:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1752584308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/B9TLRBtxUDCJxsWBE7GcJCQaPVHwv80Fiu3ht2Nt6I=;
-	b=sf7bZYQ9ZiWk8RvGDCHDL5F8ixwxhN0UkvRoxyuTukIbBSsEU5PzrZOjeWZQYp48EFpWkg
-	2MAY3rRSagVDoMRaqQnLWkcV+KBXWbfiLIXodnP4cSabUINmn/LdWr5WCB0XkAPhHim+yc
-	wYyoC4xYPDTXbKQNr8l29WxulcFT1ro2IgYZ9tiyUH397IvTxTjpXM8nuA5oVZKywjewOH
-	ECsLT2IXIEaRXeuhPaZLf9SvyA+dsHd9Zryu42MjCjReF68glSLY3u/CaW59YUn5t0n713
-	YaoDdwkyDwSusJtCHbB77Nh12PYJTArvZDMAMY2d/B8VzFIqeHNaXNCek7KU4A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1752584308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/B9TLRBtxUDCJxsWBE7GcJCQaPVHwv80Fiu3ht2Nt6I=;
-	b=eSMLzsEOm6CDkh/rn6rfN0u0+4XWy5ZXnYN77a0NBMn1Yx6NruYwZ37rJqm2+2cocS5fjg
-	eItyNbeObWf/6VCg==
-From: Nam Cao <namcao@linutronix.de>
-To: Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	John Ogness <john.ogness@linutronix.de>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-rt-users@vger.kernel.org, Joe Damato <jdamato@fastly.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	Jens Axboe <axboe@kernel.dk>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/1] eventpoll: Replace rwlock with spinlock
-Message-ID: <20250715125827.SpZa8hHS@linutronix.de>
-References: <cover.1752581388.git.namcao@linutronix.de>
- <ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=mh2UPNLAlPlV+MTFMzFymTOzLGWh5YySL/K5qdsHxPtELOAVIuPRYpYWD8ZFqgp+0qOrQ5A+wMxvI5krBH3pXhHlGZrpDJ8o/cS7pWLhWbQwxkUHkRPWMKsFGHxGc/mcJ/mbLu/C9PW9Op8PhB8k4RBVdNTQzWoHTB5yGHKIbi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wa4lt46h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54820C4CEE3;
+	Tue, 15 Jul 2025 13:02:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752584532;
+	bh=bOJ8SJUmwY1xIJRqQBze5bezXdl7AQhRGfQSUOpqANE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wa4lt46hR9M+XTqb16d4GClW13D8t4MOlHF6PRtU4lkV9lxJg4UJz5RXmx+HxJl3V
+	 8K46nZJmPk+x3imGfk5hPBGmobGtu9CCb+NiQ2uQpUVgF2oRdFMRShjwpuR13Ge3eW
+	 UbBBj2HJNu8ob4wQ6+wlQLQGEopVzZwgkpFWwdBdLvS5N0VWW2uZUoxiyY9FZa/urS
+	 ymbVgNWPSPphkHmaYXhQybks1By5OfK+8LUmxMNbmB8jbxbIwrWf3JL9pfpFkicAc6
+	 62BBTk6Qua+FrIQ1ohAWfo1d7mLyHfOusS8KrFQUChhA2GMRg7JvenidfcwG0SRY5B
+	 If0dYrsAXXwmQ==
+Date: Tue, 15 Jul 2025 14:02:08 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, stable@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Yury Khrustalev <yury.khrustalev@arm.com>
+Subject: Re: [PATCH 6.12.y] arm64: Filter out SME hwcaps when FEAT_SME isn't
+ implemented
+Message-ID: <c586f05c-a077-4865-8529-08aaf16b8bd6@sirena.org.uk>
+References: <20250715-stable-6-12-sme-feat-filt-v1-1-4c1d9c0336f6@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3fAbC77fD/JeM77s"
+Content-Disposition: inline
+In-Reply-To: <20250715-stable-6-12-sme-feat-filt-v1-1-4c1d9c0336f6@kernel.org>
+X-Cookie: Your own mileage may vary.
+
+
+--3fAbC77fD/JeM77s
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de>
 
-On Tue, Jul 15, 2025 at 02:46:34PM +0200, Nam Cao wrote:
-> The ready event list of an epoll object is protected by read-write
-> semaphore:
-> 
->   - The consumer (waiter) acquires the write lock and takes items.
->   - the producer (waker) takes the read lock and adds items.
-> 
-> The point of this design is enabling epoll to scale well with large number
-> of producers, as multiple producers can hold the read lock at the same
-> time.
-> 
-> Unfortunately, this implementation may cause scheduling priority inversion
-> problem. Suppose the consumer has higher scheduling priority than the
-> producer. The consumer needs to acquire the write lock, but may be blocked
-> by the producer holding the read lock. Since read-write semaphore does not
-> support priority-boosting for the readers (even with CONFIG_PREEMPT_RT=y),
-> we have a case of priority inversion: a higher priority consumer is blocked
-> by a lower priority producer. This problem was reported in [1].
-> 
-> Furthermore, this could also cause stall problem, as described in [2].
-> 
-> Fix this problem by replacing rwlock with spinlock.
-> 
-> This reduces the event bandwidth, as the producers now have to contend with
-> each other for the spinlock. According to the benchmark from
-> https://github.com/rouming/test-tools/blob/master/stress-epoll.c:
-> 
->     On 12 x86 CPUs:
->                   Before     After        Diff
->         threads  events/ms  events/ms
->               8       7162       4956     -31%
->              16       8733       5383     -38%
->              32       7968       5572     -30%
->              64      10652       5739     -46%
->             128      11236       5931     -47%
-> 
->     On 4 riscv CPUs:
->                   Before     After        Diff
->         threads  events/ms  events/ms
->               8       2958       2833      -4%
->              16       3323       3097      -7%
->              32       3451       3240      -6%
->              64       3554       3178     -11%
->             128       3601       3235     -10%
-> 
-> Although the numbers look bad, it should be noted that this benchmark
-> creates multiple threads who do nothing except constantly generating new
-> epoll events, thus contention on the spinlock is high. For real workload,
-> the event rate is likely much lower, and the performance drop is not as
-> bad.
-> 
-> Using another benchmark (perf bench epoll wait) where spinlock contention
-> is lower, improvement is even observed on x86:
-> 
->     On 12 x86 CPUs:
->         Before: Averaged 110279 operations/sec (+- 1.09%), total secs = 8
->         After:  Averaged 114577 operations/sec (+- 2.25%), total secs = 8
-> 
->     On 4 riscv CPUs:
->         Before: Averaged 175767 operations/sec (+- 0.62%), total secs = 8
->         After:  Averaged 167396 operations/sec (+- 0.23%), total secs = 8
-> 
-> In conclusion, no one is likely to be upset over this change. After all,
-> spinlock was used originally for years, and the commit which converted to
-> rwlock didn't mention a real workload, just that the benchmark numbers are
-> nice.
-> 
-> This patch is not exactly the revert of commit a218cc491420 ("epoll: use
-> rwlock in order to reduce ep_poll_callback() contention"), because git
-> revert conflicts in some places which are not obvious on the resolution.
-> This patch is intended to be backported, therefore go with the obvious
-> approach:
-> 
->   - Replace rwlock_t with spinlock_t one to one
-> 
->   - Delete list_add_tail_lockless() and chain_epi_lockless(). These were
->     introduced to allow producers to concurrently add items to the list.
->     But now that spinlock no longer allows producers to touch the event
->     list concurrently, these two functions are not necessary anymore.
-> 
-> Fixes: a218cc491420 ("epoll: use rwlock in order to reduce ep_poll_callback() contention")
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
+On Tue, Jul 15, 2025 at 01:49:23PM +0100, Mark Brown wrote:
+
+> Fixes: 5e64b862c482 ("arm64/sme: Basic enumeration support")
+> Reported-by: Yury Khrustalev <yury.khrustalev@arm.com>
+> Signed-off-by: Mark Brown <broonie@kernel.org>
 > Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/r/20250620-arm64-sme-filter-hwcaps-v1-1-02b9d3c2d8ef@kernel.org
+> Signed-off-by: Will Deacon <will@kernel.org>
+> ---
 
-I forgot to add:
+This needs an additional signoff from me, sorry - I didn't register due
+there being a signoff from me further up the chain.
 
-Reported-by: Frederic Weisbecker <frederic@kernel.org>
-Closes: https://lore.kernel.org/linux-rt-users/20210825132754.GA895675@lothringen/ [1]
-Reported-by: Valentin Schneider <vschneid@redhat.com>
-Closes: https://lore.kernel.org/linux-rt-users/xhsmhttqvnall.mognet@vschneid.remote.csb/ [2]
+--3fAbC77fD/JeM77s
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Christian, do you mind adding those for me, if/when you apply the patch?
+-----BEGIN PGP SIGNATURE-----
 
-Nam
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmh2UU8ACgkQJNaLcl1U
+h9AkyAf8CTyXRFAOmA2UW5KB9lyNRiQUjIEy8ntNvLDc1wUCqr7h9VwSjNVeKEo5
+i0SAWtzT04UMrFordXykPqRJ8ZC07MEDEnMTJ0JRG/wVVc+MwYm8OzGRSAh8EX3o
+EymAqKldtvgc27fX/8btlgLLv5y7UNJBQKYEYNJvUBlo5Mpw7QerBrJGRVKK3XFO
+/xGtPDGtutdnLqM62sM7kGHqVx9nusATF32e3Tp0TiExCS6IguGmAA20T61zU/Mc
+NIGl7dEfQm71BZkHYACpzrOsjQvXT2nSrsslBzj5nDSp69hfxoZtXsjHDybWymw+
+5eiwwbHDdXiE5kOhTHoV1nYPAwgs7w==
+=ijxT
+-----END PGP SIGNATURE-----
+
+--3fAbC77fD/JeM77s--
 
