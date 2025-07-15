@@ -1,103 +1,106 @@
-Return-Path: <stable+bounces-161966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B469B05A34
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:31:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954E8B05A5C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:37:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0633C3AFECE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 12:30:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE2694A2FA2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 12:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CEB2E03E1;
-	Tue, 15 Jul 2025 12:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D310A2E03E6;
+	Tue, 15 Jul 2025 12:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYCsxBJn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SRa0+51G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85274274670;
-	Tue, 15 Jul 2025 12:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CA5274670
+	for <stable@vger.kernel.org>; Tue, 15 Jul 2025 12:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752582670; cv=none; b=MkIrlABGU+snZHanwZcQljpsnpyBNOeGohCyM/sPzG/i9Gpc212VQ6btg6q9IqSjrgSp6QK8jWrfxTVnDpWfaVg3cZEOSyFoUJYtshPXzJIpFRHDzY52LIsVNGFLmXPkMy1SG+SPbdC0h7vggUtcPmpFlCethNGT8P5Vg9eE6ic=
+	t=1752583073; cv=none; b=Um/MgQIgnKWxyhIn/ngdBYiw23EIt3iwu3FnuP19Hz5HZDO1pSPKXRAA0PEuyZKwCA05QE4GfQbBZWVsCZmtGAdTf4qyepsHDtfn2hPYIQ+f++UZrtOwYfsIyhg91T6U1p9A5M9mxHHYgVVogROGW+PVwbLT2lSKLW/g3RsAnXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752582670; c=relaxed/simple;
-	bh=T1kRkbMbFy0pFWhOLhwbNykdfC7wFmv/WTrdLgvck6M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sJp62oIsYqgT5NhwBakhbnpykfHNixuLSgjpUAql8gxWdBQM3YLmAr8UdPTZGA/Dnbg+E0cXhNOo3nWSqpjuArGhQsUUJwkLFKSFZEaI+7w3ysI82z0K8g3/8VHEukWxJAqhQcGI6GHtNlaXEcQogBknbvazxYBSWnklF/fCVnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYCsxBJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67478C4CEE3;
-	Tue, 15 Jul 2025 12:31:10 +0000 (UTC)
+	s=arc-20240116; t=1752583073; c=relaxed/simple;
+	bh=IqsQI2EDdxDscLPQe3iVqKTFkx4b0uUUo+q9QU/mFhw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=n1zi1UCWMUdKPoDagCqF8AAAlHVJl3urDHfmaNvUohT1zHtDi1hc5MRf7myOqTTnktsS+OWWK9SIg6XfSXDr8JJB54t6nGhHkhVKtiySgud6euniovKhsMp0eIiQhZOOB6E3ubQN6hhV1gN2KA7l1bEfWZiMphf4HyebnHb+X5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SRa0+51G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF2BC4CEE3;
+	Tue, 15 Jul 2025 12:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752582670;
-	bh=T1kRkbMbFy0pFWhOLhwbNykdfC7wFmv/WTrdLgvck6M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eYCsxBJnRHRyFfKAR8IQhOrM0qHfEma/BetdIk8M7+tTmfgLrdxy9lT9q7832Ntxb
-	 v2sJeaIHduxsNo6IzD/wYzP+hKnmvoYbGYXpywOQuvsLxH393WIQBB8k3jlqwzgiXh
-	 DnQhXpneYjrYLyqs5cQUumvShn01SFjp3PDJMPNnLhGGluh00oBIqpLkOwem65yARi
-	 QXfCB0RYPr3AyolFWWY8v9W9Rttp0FKbfB4m8KEXT5cLm8drqUeF2nMCtQE5XBtTdH
-	 r2Lia5gLtLfOLk+n/bf+ofjkw39hmqEGRiuDrtExVszp6TLtXdE13iDDunu4B6Ay3U
-	 jIslcbRKdC56g==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1ubeoL-000000008Eb-3LCP;
-	Tue, 15 Jul 2025 14:31:06 +0200
-Date: Tue, 15 Jul 2025 14:31:05 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] PCI: qcom: Switch to bus notifier for enabling ASPM
- of PCI devices
-Message-ID: <aHZKCXNu6k0hZbVg@hovoldconsulting.com>
-References: <20250714-aspm_fix-v1-0-7d04b8c140c8@oss.qualcomm.com>
- <20250714-aspm_fix-v1-1-7d04b8c140c8@oss.qualcomm.com>
- <aHYHzrl0DE2HV86S@hovoldconsulting.com>
- <yqot334mqik74bb7rmoj27kfppwfb4fvfk2ziuczwsylsff4ll@oqaozypwpwa2>
- <aHYgXKkoYbdIYCOE@hovoldconsulting.com>
- <jmj2aeuguitas75xxos4wbhqjoaniur7psoccfxqniask7yxcu@3azibftfflch>
+	s=k20201202; t=1752583073;
+	bh=IqsQI2EDdxDscLPQe3iVqKTFkx4b0uUUo+q9QU/mFhw=;
+	h=From:To:Subject:Date:From;
+	b=SRa0+51GlB0MK67o7LDIp8nLSzHHAY9YXwXDJ0dXqxvS+BFr+JaESz5sOiZckh9aF
+	 aKtgG21GWK5vAZwyCsS0N/SxrT3DEcz5zGGtuXX47uX4N8g9DPcCaNAe3mWbLdqcQl
+	 iQxcADBN1bATfJ3KIDPZPDot3xJWt+FnC0BO7EAU1eQY/2NyswGFnvD27t3Bu8bGRo
+	 xykW/c3RUmDop9kGHxvHlFbK5NZFoVKGdY0yNdCvmc7MY6VmTh1K7sorLoXd4PskUU
+	 QWrQ+v6G+8SDRKGs1QvRDztTXoXfu+Od5/f01zNwSLEk/sarh0SIM8/elYfWpWFRJf
+	 Y0fQb4+T6lAKA==
+From: Borislav Petkov <bp@kernel.org>
+To: <stable@vger.kernel.org>
+Subject: [PATCH 0/5] TSA 5.10 backport
+Date: Tue, 15 Jul 2025 14:37:44 +0200
+Message-ID: <20250715123749.4610-1-bp@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <jmj2aeuguitas75xxos4wbhqjoaniur7psoccfxqniask7yxcu@3azibftfflch>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 15, 2025 at 03:57:12PM +0530, Manivannan Sadhasivam wrote:
-> On Tue, Jul 15, 2025 at 11:33:16AM GMT, Johan Hovold wrote:
-> > On Tue, Jul 15, 2025 at 02:41:23PM +0530, Manivannan Sadhasivam wrote:
-> > > On Tue, Jul 15, 2025 at 09:48:30AM GMT, Johan Hovold wrote:
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-> > > > A problem with this approach is that ASPM will never be enabled (and
-> > > > power consumption will be higher) in case an endpoint driver is missing.
-> > > 
-> > > I'm aware of this limiation. But I don't think we should really worry about that
-> > > scenario. No one is going to run an OS intentionally with a PCI device and
-> > > without the relevant driver. If that happens, it might be due to some issue in
-> > > driver loading or the user is doing it intentionally. Such scenarios are short
-> > > lived IMO.
-> > 
-> > There may not even be a driver (yet). A user could plug in whatever
-> > device in a free slot. I can also imagine someone wanting to blacklist
-> > a driver temporarily for whatever reason.
-> 
-> Yes, that's why I said these scenarios are 'shortlived'.
+Hi,
 
-My point is the opposite; that you should not make such assumptions
-(e.g. hardware not supported by linux or drivers disabled due to
-stability or security concerns).
+this is a 5.10 backport of the AMD TSA mitigation.
 
-Johan
+It has been tested with the corresponding *upstream* qemu patches here:
+
+https://lore.kernel.org/r/12881b2c03fa351316057ddc5f39c011074b4549.1752176771.git.babu.moger@amd.com
+
+Thx.
+
+Borislav Petkov (AMD) (4):
+  x86/bugs: Rename MDS machinery to something more generic
+  x86/bugs: Add a Transient Scheduler Attacks mitigation
+  KVM: SVM: Advertise TSA CPUID bits to guests
+  x86/process: Move the buffer clearing before MONITOR
+
+Paolo Bonzini (1):
+  KVM: x86: add support for CPUID leaf 0x80000021
+
+ .../ABI/testing/sysfs-devices-system-cpu      |   1 +
+ .../hw-vuln/processor_mmio_stale_data.rst     |   4 +-
+ .../admin-guide/kernel-parameters.txt         |  13 ++
+ arch/x86/Kconfig                              |   9 ++
+ arch/x86/entry/entry.S                        |   8 +-
+ arch/x86/include/asm/cpu.h                    |  13 ++
+ arch/x86/include/asm/cpufeature.h             |   5 +-
+ arch/x86/include/asm/cpufeatures.h            |   8 +-
+ arch/x86/include/asm/disabled-features.h      |   2 +-
+ arch/x86/include/asm/irqflags.h               |   4 +-
+ arch/x86/include/asm/mwait.h                  |  19 ++-
+ arch/x86/include/asm/nospec-branch.h          |  39 ++---
+ arch/x86/include/asm/required-features.h      |   2 +-
+ arch/x86/kernel/cpu/amd.c                     |  58 ++++++++
+ arch/x86/kernel/cpu/bugs.c                    | 133 +++++++++++++++++-
+ arch/x86/kernel/cpu/common.c                  |  14 +-
+ arch/x86/kernel/process.c                     |  15 +-
+ arch/x86/kvm/cpuid.c                          |  31 +++-
+ arch/x86/kvm/cpuid.h                          |   1 +
+ arch/x86/kvm/svm/vmenter.S                    |   3 +
+ arch/x86/kvm/vmx/vmx.c                        |   2 +-
+ drivers/base/cpu.c                            |   2 +
+ include/linux/cpu.h                           |   1 +
+ 23 files changed, 339 insertions(+), 48 deletions(-)
+
+-- 
+2.43.0
+
 
