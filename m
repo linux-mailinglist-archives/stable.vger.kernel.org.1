@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B962FB060C7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB496B05FFD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:11:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECCB01C45E8C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:11:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5F721C44F9F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6236C2F237F;
-	Tue, 15 Jul 2025 13:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631912E62A9;
+	Tue, 15 Jul 2025 13:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZQsc4wn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKRPHwVa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211562F2376;
-	Tue, 15 Jul 2025 13:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224FA2E612F;
+	Tue, 15 Jul 2025 13:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587895; cv=none; b=BgqaMUQ7PHmIYvt4o+HUJOZYWtc/oBlaGuZjjdlcmnNdDXsCn9LKmSUoh4SVf/FNsLGEPlDvE/fLDm1oTbQaS/0slCJHnK1wHqbmNximSHoythMGQQP+vkuEUV9i1TMiAwbHJFdE5ioIT8X3u8S6kgG2XFGJHWrOVReUZl2G4XI=
+	t=1752587416; cv=none; b=Mz48BjAT8yaE7VOZY+XMmA7htn6Xa9EaAp9bwP6CIAHeXNfccXbL6XYD6ucTsQlj+A7IIH4OGOWnaZVLQjzP+VskvjAYvVmOOJbLOAusqSCW4leLZuxhhD11XRqgavZFHWpXa0iUEPWIJSt9Qn28PzhCYF3sqPfRN1JVhUa255k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587895; c=relaxed/simple;
-	bh=PIuXTNMY3XDdy6Sw+a29uu5UoMKab7YHxKQbH692GqM=;
+	s=arc-20240116; t=1752587416; c=relaxed/simple;
+	bh=zusDbiQOFW4tjxWb2qd2jpBL6DfxaGqt1zV6or37DN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBObLessCsbP91QEp7dhQZMyMFU/Lnr5U22eZVDxdahj0tmjWepIxb759nmr28VHTcHTxRv2ZYQa+vFppk6ekp0EKT9i9agzPmCJPZq18PycwCwzxgaiBLdhZ3uic3OcMlITInIVRpTplkf4QuRJmRR5+Diw3BKZAV+TbnBC4fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZQsc4wn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A902CC4CEE3;
-	Tue, 15 Jul 2025 13:58:14 +0000 (UTC)
+	 MIME-Version; b=c//uRpH2U+oHQr3P7WPZRgy64DPA/NPdGJUZOCgn2lNEa7uZQZmDBRUob801cUpn8rZdjZ2HmLJiqJ5dzB1HlRcgiZKPR3KkU5T/ROLagsg9ZNpotRERYXSLFHgVb762Ljfu7f2dlVtpNooxwY3qK83fF6kwvUV0/35y7TUAiNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKRPHwVa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F13C4CEF7;
+	Tue, 15 Jul 2025 13:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587895;
-	bh=PIuXTNMY3XDdy6Sw+a29uu5UoMKab7YHxKQbH692GqM=;
+	s=korg; t=1752587416;
+	bh=zusDbiQOFW4tjxWb2qd2jpBL6DfxaGqt1zV6or37DN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZQsc4wnDF9xvOLHTbk7WXy1eAdHkj934VeLf6xPYnOZElrQSVrA9ZJvLAz52Kt12
-	 00suPnLbMOzVYmBE9pkHlhSu0I3lQp+yESc8z7kCJEzSKbctgDd79r8VSWuS+7vcYe
-	 EvbQ36nMZJSL4S8Cc2hO11imn5BxICWSuJ3aZuUU=
+	b=tKRPHwVaE8I5Hs2bCwgcu45N/vDrpfIg4Ly/o+jbnahSzlJCqIeXw5xjGE5dbaP8B
+	 50tWBhPGesqHQc2N5nYOJjGjA3C5lmpK1bgb3OCIqq9ldxcmnRFO0QBRcjX1Rj+Zj+
+	 ZNi0y4c9/aPodHHsFzueaH7s6GnZ+auHoo4G9MQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Reynolds <mattreynolds@chromium.org>,
-	Harry Cutts <hcutts@chromium.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Yasmin Fitzgerald <sunoflife1.git@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 183/208] Input: xpad - add support for Amazon Game Controller
+Subject: [PATCH 6.1 76/88] ALSA: hda/realtek - Enable mute LED on HP Pavilion Laptop 15-eg100
 Date: Tue, 15 Jul 2025 15:14:52 +0200
-Message-ID: <20250715130818.287724169@linuxfoundation.org>
+Message-ID: <20250715130757.623967767@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Reynolds <mattreynolds@chromium.org>
+From: Yasmin Fitzgerald <sunoflife1.git@gmail.com>
 
-[ Upstream commit 05665cef4b745cb46b1d1b8e96deaa25464092d3 ]
+[ Upstream commit 68cc9d3c8e44afe90e43cbbd2960da15c2f31e23 ]
 
-The Amazon Luna controller (product name "Amazon Game Controller") behaves
-like an Xbox 360 controller when connected over USB.
+The HP Pavilion Laptop 15-eg100 has Realtek HDA codec ALC287.
+It needs the ALC287_FIXUP_HP_GPIO_LED quirk to enable the mute LED.
 
-Signed-off-by: Matt Reynolds <mattreynolds@chromium.org>
-Reviewed-by: Harry Cutts <hcutts@chromium.org>
-Link: https://lore.kernel.org/r/20210429103548.1.If5f9a44cb81e25b9350f7c6c0b3c88b4ecd81166@changeid
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Stable-dep-of: 22c69d786ef8 ("Input: xpad - support Acer NGR 200 Controller")
+Signed-off-by: Yasmin Fitzgerald <sunoflife1.git@gmail.com>
+Link: https://patch.msgid.link/20250621053832.52950-1-sunoflife1.git@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 00b973e0f79ff..fb714004641b7 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -275,6 +275,7 @@ static const struct xpad_device {
- 	{ 0x1689, 0xfd00, "Razer Onza Tournament Edition", 0, XTYPE_XBOX360 },
- 	{ 0x1689, 0xfd01, "Razer Onza Classic Edition", 0, XTYPE_XBOX360 },
- 	{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-+	{ 0x1949, 0x041a, "Amazon Game Controller", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0002, "Harmonix Rock Band Guitar", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0003, "Harmonix Rock Band Drumkit", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0130, "Ion Drum Rocker", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
-@@ -462,6 +463,7 @@ static const struct usb_device_id xpad_table[] = {
- 	XPAD_XBOX360_VENDOR(0x15e4),		/* Numark X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x162e),		/* Joytech X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x1689),		/* Razer Onza */
-+	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
- 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harminix Rock Band Guitar and Drums */
- 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA Controllers */
- 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA Controllers */
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 13b3ec78010a0..f0c67b6af33ae 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9995,6 +9995,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8975, "HP EliteBook x360 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x897d, "HP mt440 Mobile Thin Client U74", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8981, "HP Elite Dragonfly G3", ALC245_FIXUP_CS35L41_SPI_4),
++	SND_PCI_QUIRK(0x103c, 0x898a, "HP Pavilion 15-eg100", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x898e, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x898f, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8991, "HP EliteBook 845 G9", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
 -- 
 2.39.5
 
