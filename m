@@ -1,140 +1,119 @@
-Return-Path: <stable+bounces-162984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72204B0621D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:58:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C02CB06246
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 17:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62F711AA475B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:54:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 316E3586461
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A538D1F5828;
-	Tue, 15 Jul 2025 14:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507BF211A19;
+	Tue, 15 Jul 2025 14:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="qVmTgbDu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QjrROioe"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF1A1EEA5D;
-	Tue, 15 Jul 2025 14:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C762063F3;
+	Tue, 15 Jul 2025 14:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752591228; cv=none; b=tQkreqkDEWuoWRvff/rqFojBCoPD8dpS333GvQyDNPhQjgA6vuTmwEBEiCtoEXLda/IdfxVb58eIJV+DpXNIh07E2qRwvBk02eFxv8kuKmRZOjnKk3sDmUCdPO5+UcbZ4VUwfxyAGUf8Q4q30A5eP9N2y+uOv6VnpdArUCGh5ek=
+	t=1752591272; cv=none; b=IWTl+ZAlvk+XOLPpG3lgjXWpHPXvTTmSIQ3JpvIZovv5BevBpHNbYyoKvmi1qaDW8SUYOdUriwDw2LTzRhNi5RpG1apUYW6T0WwucIrWFfvD9ERWsWlFrgYHWccP/M56KbYfaIPN0ZYFBjrdgx7iYtTy1zKR/eE3gUo5wVXQ2RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752591228; c=relaxed/simple;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aFUJEJsi8QurDYztZlI3dlEAGLEYu+pe0SA92LgSXrQJPSWrN7ZEMofjr9QxY5kzxBlgZZ8Vr1vLW622KOuTuHsVGwyflsmEaHAAHCH+S1Oa4usMmiCiGkzbuW3SbcSJ80BZs14Na3WxaECv5t3ihcx1jhXkz50OfMWVXTlA/rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=qVmTgbDu; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1752591202; x=1753196002; i=rwarsow@gmx.de;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=qVmTgbDuDLfRGMXvO6kMV+4jLXvA28eQZNBmnLG+PjUozTVpPDB4v7Ctf/Jyz+30
-	 rdkFsRW8huJXfkfBWAao4RhmcD9tlp0VijCXSaSh7vvgGGXKjW0Uh7tFmKYO2HAHC
-	 SRIylFZfReNpIkt3e0V7Co0RcU5PuWE+eTe7C+NXuu+zYZXEwziGKW1qxzDIb2xOB
-	 zdziDY10Cr4XPTie6+NcoDOYLGajZNI0O2nrmxd7Msj0hPsne/cz9WUKceusfgHTp
-	 2piiooZiVnj3m5Kvkga/y4xVZP51wTHFr/s80Rx26syPTynRWPD71PUql4ksuzBij
-	 e9hvMvdYDSP49D9ZFA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.32.22]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M26vL-1ue9sG14Kf-00G6dp; Tue, 15
- Jul 2025 16:53:21 +0200
-Message-ID: <de05944d-7775-43da-8b90-54161e35b785@gmx.de>
-Date: Tue, 15 Jul 2025 16:53:19 +0200
+	s=arc-20240116; t=1752591272; c=relaxed/simple;
+	bh=MN/yJ7MAHbvlr/l+bA2ZmJcwc9TCpbXzc1yDPL5SQEc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TsaMc28wmGgZh25T7yRbS/G/rzbnO7AChlqXFxKZS53dz7SN7Z6gaH/9Mvslp72jR0J4MMbVkFkPqoW2+VvoKv/MCU12KB6QgHhU6cFH4oJ4VBpEHK6x0OtfLTHCwTawejZEQe3ox+3BejrYgtjRvjClWqz5cDqaHSVYekyjF3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QjrROioe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96E1C4CEF8;
+	Tue, 15 Jul 2025 14:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752591271;
+	bh=MN/yJ7MAHbvlr/l+bA2ZmJcwc9TCpbXzc1yDPL5SQEc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=QjrROioebKQog5Qmy1xuXqSqqA6HwSEQs2YpRHEI7QjJCerihsmRBPNUQqTwF1EvD
+	 y3/8IV4+M9bsJ+Rh7xK/hKYtDVdW/ClP6bTcO9FgZ/Mi7oZF1G2RlcthCo9Xuzoo2x
+	 9vYsb2qJBNnESXl8hiX8rnIHa52wY34qcHw9WoVMTslYelvJedHv9vqT8OXgKO0mMi
+	 cUq3dd3/0mMcJdBThfWhcTDSjqfb5TfvHfEnlBSEXdferx1X4HvKxRpzTzunGmbTH4
+	 jcIgZu2tZoHE/G537KhLuuXowUJAyubFpYK36jEkBE5t7rtwAQDx94wsCVZt3nbv6u
+	 U2DE1OyNcgbhg==
+From: Vinod Koul <vkoul@kernel.org>
+To: Mark Brown <broonie@kernel.org>, 
+ Mohammad Rafi Shaik <quic_mohs@quicinc.com>, 
+ Srinivas Kandagatla <srini@kernel.org>, 
+ Bard Liao <yung-chuan.liao@linux.intel.com>, 
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+ Sanyog Kale <sanyog.r.kale@intel.com>, 
+ Dan Carpenter <dan.carpenter@linaro.org>, 
+ Yongqin Liu <yongqin.liu@linaro.org>, Jie Gan <jie.gan@oss.qualcomm.com>, 
+ Amit Pundir <amit.pundir@linaro.org>
+Cc: linux-arm-msm <linux-arm-msm@vger.kernel.org>, 
+ linux-sound <linux-sound@vger.kernel.org>, 
+ lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+In-Reply-To: <20250709174949.8541-1-amit.pundir@linaro.org>
+References: <20250709174949.8541-1-amit.pundir@linaro.org>
+Subject: Re: [PATCH] Revert "soundwire: qcom: Add set_channel_map api
+ support"
+Message-Id: <175259126744.517280.1761573363863267576.b4-ty@kernel.org>
+Date: Tue, 15 Jul 2025 20:24:27 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.15 000/192] 6.15.7-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250715130814.854109770@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:fD558cLm1hehTFRcs1Mip0yH4zvJ5cqwcBVwGAZPGCUclqWIM4H
- FKx9Ba14wTDwOeVQkjuPeXrryALSS5ZsjTNOhaVpAUMO3lGJRySVwIWXVGPUCNlyo7dZOTU
- Kk4MdKyCGrnH1Hx1vZfQ23XLi7MMhIMJBxn3/WVq/xEEhMh0TKrRKu+9f+YE9wVsRxERPTg
- 5+CQ5vaI6inNPO1wvdhNw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:FqgNm0QlxSk=;oIb0jJIitS3v4JK8vW3eTSCeTMd
- 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
- NMjeCUMBSAskoWUpeA6kd14=
+X-Mailer: b4 0.13.0
 
-Hi
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+On Wed, 09 Jul 2025 23:19:49 +0530, Amit Pundir wrote:
+> This reverts commit 7796c97df6b1b2206681a07f3c80f6023a6593d5.
+> 
+> This patch broke Dragonboard 845c (sdm845). I see:
+> 
+>     Unexpected kernel BRK exception at EL1
+>     Internal error: BRK handler: 00000000f20003e8 [#1]  SMP
+>     pc : qcom_swrm_set_channel_map+0x7c/0x80 [soundwire_qcom]
+>     lr : snd_soc_dai_set_channel_map+0x34/0x78
+>     Call trace:
+>      qcom_swrm_set_channel_map+0x7c/0x80 [soundwire_qcom] (P)
+>      sdm845_dai_init+0x18c/0x2e0 [snd_soc_sdm845]
+>      snd_soc_link_init+0x28/0x6c
+>      snd_soc_bind_card+0x5f4/0xb0c
+>      snd_soc_register_card+0x148/0x1a4
+>      devm_snd_soc_register_card+0x50/0xb0
+>      sdm845_snd_platform_probe+0x124/0x148 [snd_soc_sdm845]
+>      platform_probe+0x6c/0xd0
+>      really_probe+0xc0/0x2a4
+>      __driver_probe_device+0x7c/0x130
+>      driver_probe_device+0x40/0x118
+>      __device_attach_driver+0xc4/0x108
+>      bus_for_each_drv+0x8c/0xf0
+>      __device_attach+0xa4/0x198
+>      device_initial_probe+0x18/0x28
+>      bus_probe_device+0xb8/0xbc
+>      deferred_probe_work_func+0xac/0xfc
+>      process_one_work+0x244/0x658
+>      worker_thread+0x1b4/0x360
+>      kthread+0x148/0x228
+>      ret_from_fork+0x10/0x20
+>     Kernel panic - not syncing: BRK handler: Fatal exception
+> 
+> [...]
 
-Thanks
+Applied, thanks!
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+[1/1] Revert "soundwire: qcom: Add set_channel_map api support"
+      commit: 834bce6a715ae9a9c4dce7892454a19adf22b013
+
+Best regards,
+-- 
+~Vinod
+
 
 
