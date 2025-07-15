@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-162214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CDB1B05C53
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:30:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD3EB05ED0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2AFF188CFB5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C6691C440A4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F9E2E612F;
-	Tue, 15 Jul 2025 13:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BD0BE4A;
+	Tue, 15 Jul 2025 13:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAgShpdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3/NGXrJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10A92E339B;
-	Tue, 15 Jul 2025 13:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F44E2E6100;
+	Tue, 15 Jul 2025 13:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585972; cv=none; b=Fs+wf5o51O7CqpUmVSNNM7YY1rl4Qw6zLQVdEKyvsNRY2zz2d3/NfLalnp9R5QoUcws5Z+tKif3xnGuBCALxJWeQoDSh9QVSifES4TfY56nBLUWtY7EP/Z71cUSOA6vNhFCOAABTmLpNKw9rKCQgflqWHPn2Ywjb/YN7jwTxXqs=
+	t=1752586912; cv=none; b=SB7mzPtRdNek4EuL+nCI77nfI86LLclzv7C8x/ThB+MRqkDZD4BE6wxVRI0SBEPXbOsxvZAy1xfiT+War8ak4wjvtlt0XW4qVsqiHOQwQBJQjfX5RAef1JVsZMmRITh7+Ber1oMPNE783TfyXTkajgU9CjV4MXWlLq5oseKWcyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585972; c=relaxed/simple;
-	bh=vFZoa+Qx1reLnjENFXkS6mU4BK9H4GnXEipGWrQl/IM=;
+	s=arc-20240116; t=1752586912; c=relaxed/simple;
+	bh=wk5/ktV2JNgcdI0S4Qq3iqXNRxMKujFaQZ/NmLCdz9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gK7cL4DdSgeWTdtlyP8hO7lvluii3h6WiMQhrSPD3rXn5kHzLcp8OiiPBvHZUXlqeVQSCFpx4wBBqtLTJxVG1dxE5WpDskASRqUtE1C7uk7q8ZMaJArwQRwKKia01WYuO0chs/eUAe/Kx1/wIYsl9pLu0q7J+b0MSw/9ZbIRl9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAgShpdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BBFC4CEE3;
-	Tue, 15 Jul 2025 13:26:12 +0000 (UTC)
+	 MIME-Version; b=OLcjnixf456ZKJXxsYgfWqlVh5WXZfM8lDFGeBxDE512XsCccTDiqJ4ggcU6CQ8Rm+9G12fDfSwK4RuyLJ7YONOuZDF6vWjkpB96L2SptefpW6YA7j2vTgY4xkrZfg9Bv3LwuGYTsuWlD46FGOoF1p3f+Yl0xhlkgDLplK52Qi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3/NGXrJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10902C4CEF6;
+	Tue, 15 Jul 2025 13:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585972;
-	bh=vFZoa+Qx1reLnjENFXkS6mU4BK9H4GnXEipGWrQl/IM=;
+	s=korg; t=1752586912;
+	bh=wk5/ktV2JNgcdI0S4Qq3iqXNRxMKujFaQZ/NmLCdz9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xAgShpdxvNZ82uWU0pP/pk8OgwtbreynuUEjp4FDbDCF56gnSDWma85lr6iUjnhKR
-	 wsnNXNI3lhtCWZ1YzLNdBdOD1YEQmXqmqaXMRcpLHJmCxLWFQNAcKfobrRUV9fSGAi
-	 9wh8/W60tpR4SUbeh9UuhY//7RDsG6hHBjEQRBaU=
+	b=N3/NGXrJJ+qcbybFz7AHAzLpkXAMnyXZYl8KSrcwxtj5tJo5s046TzeopZ2RjzU7E
+	 FCXkPQZdnNA4U4NTA8YVI2Koj6DamK35MLCGYzfEn13FS5mFcfkwWRGWo7PyE+HJJz
+	 9LFohlZq16sGFJ0o/cJZraGBYiLzrlA3csCtcL4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simona Vetter <simona@ffwll.ch>,
 	Simona Vetter <simona.vetter@intel.com>,
 	Simona Vetter <simona.vetter@ffwll.ch>
-Subject: [PATCH 6.6 046/109] drm/gem: Fix race in drm_gem_handle_create_tail()
-Date: Tue, 15 Jul 2025 15:13:02 +0200
-Message-ID: <20250715130800.722604808@linuxfoundation.org>
+Subject: [PATCH 6.15 088/192] drm/gem: Fix race in drm_gem_handle_create_tail()
+Date: Tue, 15 Jul 2025 15:13:03 +0200
+Message-ID: <20250715130818.442423231@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -163,7 +163,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/gpu/drm/drm_gem.c
 +++ b/drivers/gpu/drm/drm_gem.c
-@@ -289,6 +289,9 @@ drm_gem_object_release_handle(int id, vo
+@@ -315,6 +315,9 @@ drm_gem_object_release_handle(int id, vo
  	struct drm_file *file_priv = data;
  	struct drm_gem_object *obj = ptr;
  
@@ -173,7 +173,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	if (obj->funcs->close)
  		obj->funcs->close(obj, file_priv);
  
-@@ -409,7 +412,7 @@ drm_gem_handle_create_tail(struct drm_fi
+@@ -435,7 +438,7 @@ drm_gem_handle_create_tail(struct drm_fi
  	idr_preload(GFP_KERNEL);
  	spin_lock(&file_priv->table_lock);
  
@@ -182,7 +182,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	spin_unlock(&file_priv->table_lock);
  	idr_preload_end();
-@@ -430,6 +433,11 @@ drm_gem_handle_create_tail(struct drm_fi
+@@ -456,6 +459,11 @@ drm_gem_handle_create_tail(struct drm_fi
  			goto err_revoke;
  	}
  
@@ -196,7 +196,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
 --- a/include/drm/drm_file.h
 +++ b/include/drm/drm_file.h
-@@ -302,6 +302,9 @@ struct drm_file {
+@@ -300,6 +300,9 @@ struct drm_file {
  	 *
  	 * Mapping of mm object handles to object pointers. Used by the GEM
  	 * subsystem. Protected by @table_lock.
