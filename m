@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-162479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED35B05D88
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0EF1B05F19
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77E8B7AD0D3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DEF51C42450
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0E32E7184;
-	Tue, 15 Jul 2025 13:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE052E92BC;
+	Tue, 15 Jul 2025 13:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8bYJ3dv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cuLoTIku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F692E6D39;
-	Tue, 15 Jul 2025 13:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629252E54DD;
+	Tue, 15 Jul 2025 13:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586664; cv=none; b=o05DdwMniuIryW0hwz4FTxbDkv7U2jQ6+3DmIs/+B6+P2rotdJUogE4iJOEr9/8JeDGenzhoVPwPNivFDeqRnKglreVJgn6IJSNY/0oVabc9Zpt7QIK5LDZv9eaVHKKD3s7+bO/QCQxcp0QxGZBNna8FVSR0FVhjwtaOMav7IA4=
+	t=1752587095; cv=none; b=DtB3zrPtqmIHFP5Ao4OEOfR2H1xZIxFDvysXFkuaYqEuCq1QTSwZIw/RckXMY8dzx3FcNuzs49lxb5UXvr4MnrG9Go9NH30/cwVUouDEG/G7C3ZYZse5qW6ncetqUnOyuLcDXGes9N7uYDKMjHe4ewMtOPCiBENU45ea7o/p06c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586664; c=relaxed/simple;
-	bh=6WeCW45QCG5zGoDB1A5A07PoQhnbTBGn/B1IkQLaxGc=;
+	s=arc-20240116; t=1752587095; c=relaxed/simple;
+	bh=V2djcu/xVcbASucHEpItgQy2DZnHKdbJUuuC0fnpClw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uywBhEIEPJ1B9xqiFgdBq3fsvPDK7Ipx8J2M5SmXKiNKHZ6gK52GZFBfuQWh8ZsqGWYuat75GWFB6ZGki50Df6vsCCq6hKziscEpvKa3AC0icT5w4qI1rR5vCn+H2dLVhnU5lDIxGWFv2uzDWWr3IBwxakSqUButIEnMKig6aRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8bYJ3dv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8A7C4CEF7;
-	Tue, 15 Jul 2025 13:37:43 +0000 (UTC)
+	 MIME-Version; b=JBD72hmrKUvPSkeMGPPkaNX5rLHGiSJgWFJH6cz4JQboL6KcJ0Y3fpSVtPeyizpC/Wh9AKwPhlGMBgcB9i4RvQcKTl68mxTyGKstUbU0nKipFoyipR0q0lTrcxLmTVRDiX4YeLPJ9LyfFh8UPxi3Sqq9VAgZAZzcEpPZCz4LJ9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuLoTIku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C238C4CEF1;
+	Tue, 15 Jul 2025 13:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586663;
-	bh=6WeCW45QCG5zGoDB1A5A07PoQhnbTBGn/B1IkQLaxGc=;
+	s=korg; t=1752587094;
+	bh=V2djcu/xVcbASucHEpItgQy2DZnHKdbJUuuC0fnpClw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s8bYJ3dvVKQrcDrG6JpYD8txy9pgHHcSJLl9qbKEk0tyYDjCoCD8J2LzhZWLSARX8
-	 CXcESHaddyy0XTx+nUli26yOjlpIGFAzOROc65I7JYqv791qIbgpnQW1pITUVailvO
-	 J+sCtXhcfh3iAjst0MTZQXK5BjZwzybdxnqVs2c4=
+	b=cuLoTIkuVHzuzED1UvoBxn/cPGT8IlM4LFdjlHCklmDFKi1id+JK8wInc40ycTsvT
+	 snLdX3t0iPF6uUxUHTFS6/iZxcDyZsOjYOnnkfzCYztcz0ZlaBjxh/3RH79VLDQNHZ
+	 xmKwcXB4YA7p1+A1cQgfxeVUI0JzcvVwZK/uDy40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Shruti Parab <shruti.parab@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 138/148] can: m_can: m_can_handle_lost_msg(): downgrade msg lost in rx message to debug level
+Subject: [PATCH 6.15 165/192] bnxt_en: Flush FW trace before copying to the coredump
 Date: Tue, 15 Jul 2025 15:14:20 +0200
-Message-ID: <20250715130805.810780460@linuxfoundation.org>
+Message-ID: <20250715130821.536974441@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Shruti Parab <shruti.parab@broadcom.com>
 
-[ Upstream commit 58805e9cbc6f6a28f35d90e740956e983a0e036e ]
+[ Upstream commit 100c08c89d173b7fdf953e7d9f9ca8f69f80d1c5 ]
 
-Downgrade the "msg lost in rx" message to debug level, to prevent
-flooding the kernel log with error messages.
+bnxt_fill_drv_seg_record() calls bnxt_dbg_hwrm_log_buffer_flush()
+to flush the FW trace buffer.  This needs to be done before we
+call bnxt_copy_ctx_mem() to copy the trace data.
 
-Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250711-mcan_ratelimit-v3-1-7413e8e21b84@geanix.com
-[mkl: enhance commit message]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Without this fix, the coredump may not contain all the FW
+traces.
+
+Fixes: 3c2179e66355 ("bnxt_en: Add FW trace coredump segments to the coredump")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Shruti Parab <shruti.parab@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250710213938.1959625-3-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/m_can/m_can.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/broadcom/bnxt/bnxt_coredump.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index 26f721664e761..123c87196a368 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -520,7 +520,7 @@ static int m_can_handle_lost_msg(struct net_device *dev)
- 	struct sk_buff *skb;
- 	struct can_frame *frame;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
+index a000d3f630bd3..187695af6611f 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
+@@ -368,23 +368,27 @@ static u32 bnxt_get_ctx_coredump(struct bnxt *bp, void *buf, u32 offset,
+ 		if (!ctxm->mem_valid || !seg_id)
+ 			continue;
  
--	netdev_err(dev, "msg lost in rxf0\n");
-+	netdev_dbg(dev, "msg lost in rxf0\n");
- 
- 	stats->rx_errors++;
- 	stats->rx_over_errors++;
+-		if (trace)
++		if (trace) {
+ 			extra_hlen = BNXT_SEG_RCD_LEN;
++			if (buf) {
++				u16 trace_type = bnxt_bstore_to_trace[type];
++
++				bnxt_fill_drv_seg_record(bp, &record, ctxm,
++							 trace_type);
++			}
++		}
++
+ 		if (buf)
+ 			data = buf + BNXT_SEG_HDR_LEN + extra_hlen;
++
+ 		seg_len = bnxt_copy_ctx_mem(bp, ctxm, data, 0) + extra_hlen;
+ 		if (buf) {
+ 			bnxt_fill_coredump_seg_hdr(bp, &seg_hdr, NULL, seg_len,
+ 						   0, 0, 0, comp_id, seg_id);
+ 			memcpy(buf, &seg_hdr, BNXT_SEG_HDR_LEN);
+ 			buf += BNXT_SEG_HDR_LEN;
+-			if (trace) {
+-				u16 trace_type = bnxt_bstore_to_trace[type];
+-
+-				bnxt_fill_drv_seg_record(bp, &record, ctxm,
+-							 trace_type);
++			if (trace)
+ 				memcpy(buf, &record, BNXT_SEG_RCD_LEN);
+-			}
+ 			buf += seg_len;
+ 		}
+ 		len += BNXT_SEG_HDR_LEN + seg_len;
 -- 
 2.39.5
 
