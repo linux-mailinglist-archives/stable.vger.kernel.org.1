@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-162144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E5EB05BF4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:25:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5D7B05B5E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE3293BF451
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07E897B5DED
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53D92E2F12;
-	Tue, 15 Jul 2025 13:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B8B2E1734;
+	Tue, 15 Jul 2025 13:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsJrYrCw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kh4dXUvG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21B02E1758;
-	Tue, 15 Jul 2025 13:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5873319F420;
+	Tue, 15 Jul 2025 13:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585790; cv=none; b=YIyFhlCwFan7wVcYbYVYvbFXY7XAtIm1oTOcKv+9ZTgHiN+1ezU1AVVtLYDIjoO2tM+7/dGtt9DX5W+aEPBSrQ3h8PQaPRmaHCam+qT/jwLR0zebynWWyWQuqVELWg4/XKuVbjAVXQ+wXvO3unjiCYRrBOOd11Za76ARtA5znME=
+	t=1752585516; cv=none; b=m5BpYHApukxpXEzwLYp9IF/sZMdh3jeaq4rr/6TbPemblF/I/zrdW3/ubt3LqlzFxWR8qcJD4q7uZs5GQLtELbumE+aUVWZRF1n0RsjjJCH28E18+2PDenVAFr7jsqyXfmNbsBbEhRQ1Q5AkmOgFnCKetVFLXndwmh/A01Q0zfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585790; c=relaxed/simple;
-	bh=GG2zvebY860dx7jt/hDDbm5vTUYR2aJxTq4azKupfqU=;
+	s=arc-20240116; t=1752585516; c=relaxed/simple;
+	bh=0w96zMfHMpa3APYAAqxMsEcdaLUnjtqnR5BxZikAPKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtqjlutX0Hj+IN+Ip1zqPQoPvH8TUnNbnUBAgYLBeNcNERGHFk+gqSy1FDj2rY+aPLMiczCAvUDEC0WaIfSyTOTqFmKYyftnzzlea8n9AGbNtylVPl3h90PmlpOtlOsvDIpO3mwuw6az9hRa1G1Q/XxN+c27n+u7KeZbw10VJIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsJrYrCw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8623C4CEE3;
-	Tue, 15 Jul 2025 13:23:09 +0000 (UTC)
+	 MIME-Version; b=GcnrHk4Z5HVgNWpf3W5auK/6o3gxCwuYRG14DH11AF/ds5J6vuOytgls5F5PQR4K+sI+5LA4MSOXBXUPe5UYbBth9MKwK09bR01Vm/YawHYT+2bszzcY5fKFDtCR6SRB+kzOH9vq+mdUNrfaHZVrIECVRpTWqdfm/T55q4UCm8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kh4dXUvG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3019C4CEE3;
+	Tue, 15 Jul 2025 13:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585790;
-	bh=GG2zvebY860dx7jt/hDDbm5vTUYR2aJxTq4azKupfqU=;
+	s=korg; t=1752585516;
+	bh=0w96zMfHMpa3APYAAqxMsEcdaLUnjtqnR5BxZikAPKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XsJrYrCwNzsFMZnQi6ljxUujjdg+wTWjKa6x0Czp/vpG1fSC414J8sO5KFVDJEDP6
-	 Az1VEu0Yaw4+tufNIArkRkazDSRRlWjMPIZOcWwgGl4wYckfjAHj5/i0wasljrGk3p
-	 E0A9MamUY0aEIcRr/moRwIxgxzdtcMdwSetUTPSk=
+	b=Kh4dXUvGWLNs4Uzv3HldM+GqCLdaZfRDNxTrCK8XzOiDvKs03GacBTsMg1sAdj0+v
+	 MUT/Tk0gT+gF9pFG/4KGGZSw19tBydRAC7TTq2UNlN9rGoOXIZzjtaVoUjrdwWHbF+
+	 KeT+kIEkTotihNbNC9Kl42WOo+F/F4v1lCjOAHt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 001/109] eventpoll: dont decrement ep refcount while still holding the ep mutex
+	Deren Wu <deren.wu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 069/163] wifi: mt76: mt7925: prevent NULL pointer dereference in mt7925_sta_set_decap_offload()
 Date: Tue, 15 Jul 2025 15:12:17 +0200
-Message-ID: <20250715130758.928745481@linuxfoundation.org>
+Message-ID: <20250715130811.509904813@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Deren Wu <deren.wu@mediatek.com>
 
-commit 8c2e52ebbe885c7eeaabd3b7ddcdc1246fc400d2 upstream.
+commit 35ad47c0b3da04b00b19a8b9ed5632e2f2520472 upstream.
 
-Jann Horn points out that epoll is decrementing the ep refcount and then
-doing a
+Add a NULL check for msta->vif before accessing its members to prevent
+a kernel panic in AP mode deployment. This also fix the issue reported
+in [1].
 
-    mutex_unlock(&ep->mtx);
+The crash occurs when this function is triggered before the station is
+fully initialized. The call trace shows a page fault at
+mt7925_sta_set_decap_offload() due to accessing resources when msta->vif
+is NULL.
 
-afterwards. That's very wrong, because it can lead to a use-after-free.
+Fix this by adding an early return if msta->vif is NULL and also check
+wcid.sta is ready. This ensures we only proceed with decap offload
+configuration when the station's state is properly initialized.
 
-That pattern is actually fine for the very last reference, because the
-code in question will delay the actual call to "ep_free(ep)" until after
-it has unlocked the mutex.
+[14739.655703] Unable to handle kernel paging request at virtual address ffffffffffffffa0
+[14739.811820] CPU: 0 UID: 0 PID: 895854 Comm: hostapd Tainted: G
+[14739.821394] Tainted: [C]=CRAP, [O]=OOT_MODULE
+[14739.825746] Hardware name: Raspberry Pi 4 Model B Rev 1.1 (DT)
+[14739.831577] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[14739.838538] pc : mt7925_sta_set_decap_offload+0xc0/0x1b8 [mt7925_common]
+[14739.845271] lr : mt7925_sta_set_decap_offload+0x58/0x1b8 [mt7925_common]
+[14739.851985] sp : ffffffc085efb500
+[14739.855295] x29: ffffffc085efb500 x28: 0000000000000000 x27: ffffff807803a158
+[14739.862436] x26: ffffff8041ececb8 x25: 0000000000000001 x24: 0000000000000001
+[14739.869577] x23: 0000000000000001 x22: 0000000000000008 x21: ffffff8041ecea88
+[14739.876715] x20: ffffff8041c19ca0 x19: ffffff8078031fe0 x18: 0000000000000000
+[14739.883853] x17: 0000000000000000 x16: ffffffe2aeac1110 x15: 000000559da48080
+[14739.890991] x14: 0000000000000001 x13: 0000000000000000 x12: 0000000000000000
+[14739.898130] x11: 0a10020001008e88 x10: 0000000000001a50 x9 : ffffffe26457bfa0
+[14739.905269] x8 : ffffff8042013bb0 x7 : ffffff807fb6cbf8 x6 : dead000000000100
+[14739.912407] x5 : dead000000000122 x4 : ffffff80780326c8 x3 : 0000000000000000
+[14739.919546] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffffff8041ececb8
+[14739.926686] Call trace:
+[14739.929130]  mt7925_sta_set_decap_offload+0xc0/0x1b8 [mt7925_common]
+[14739.935505]  ieee80211_check_fast_rx+0x19c/0x510 [mac80211]
+[14739.941344]  _sta_info_move_state+0xe4/0x510 [mac80211]
+[14739.946860]  sta_info_move_state+0x1c/0x30 [mac80211]
+[14739.952116]  sta_apply_auth_flags.constprop.0+0x90/0x1b0 [mac80211]
+[14739.958708]  sta_apply_parameters+0x234/0x5e0 [mac80211]
+[14739.964332]  ieee80211_add_station+0xdc/0x190 [mac80211]
+[14739.969950]  nl80211_new_station+0x46c/0x670 [cfg80211]
+[14739.975516]  genl_family_rcv_msg_doit+0xdc/0x150
+[14739.980158]  genl_rcv_msg+0x218/0x298
+[14739.983830]  netlink_rcv_skb+0x64/0x138
+[14739.987670]  genl_rcv+0x40/0x60
+[14739.990816]  netlink_unicast+0x314/0x380
+[14739.994742]  netlink_sendmsg+0x198/0x3f0
+[14739.998664]  __sock_sendmsg+0x64/0xc0
+[14740.002324]  ____sys_sendmsg+0x260/0x298
+[14740.006242]  ___sys_sendmsg+0xb4/0x110
 
-But it's wrong for the much subtler "next to last" case when somebody
-*else* may also be dropping their reference and free the ep while we're
-still using the mutex.
-
-Note that this is true even if that other user is also using the same ep
-mutex: mutexes, unlike spinlocks, can not be used for object ownership,
-even if they guarantee mutual exclusion.
-
-A mutex "unlock" operation is not atomic, and as one user is still
-accessing the mutex as part of unlocking it, another user can come in
-and get the now released mutex and free the data structure while the
-first user is still cleaning up.
-
-See our mutex documentation in Documentation/locking/mutex-design.rst,
-in particular the section [1] about semantics:
-
-	"mutex_unlock() may access the mutex structure even after it has
-	 internally released the lock already - so it's not safe for
-	 another context to acquire the mutex and assume that the
-	 mutex_unlock() context is not using the structure anymore"
-
-So if we drop our ep ref before the mutex unlock, but we weren't the
-last one, we may then unlock the mutex, another user comes in, drops
-_their_ reference and releases the 'ep' as it now has no users - all
-while the mutex_unlock() is still accessing it.
-
-Fix this by simply moving the ep refcount dropping to outside the mutex:
-the refcount itself is atomic, and doesn't need mutex protection (that's
-the whole _point_ of refcounts: unlike mutexes, they are inherently
-about object lifetimes).
-
-Reported-by: Jann Horn <jannh@google.com>
-Link: https://docs.kernel.org/locking/mutex-design.html#semantics [1]
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Link: https://github.com/morrownr/USB-WiFi/issues/603 [1]
+Fixes: b859ad65309a ("wifi: mt76: mt7925: add link handling in mt7925_sta_set_decap_offload")
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Link: https://patch.msgid.link/35aedbffa050e98939264300407a52ba4e236d52.1748149855.git.deren.wu@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/eventpoll.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -772,7 +772,7 @@ static bool __ep_remove(struct eventpoll
- 	call_rcu(&epi->rcu, epi_rcu_free);
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1565,6 +1565,9 @@ static void mt7925_sta_set_decap_offload
+ 	unsigned long valid = mvif->valid_links;
+ 	u8 i;
  
- 	percpu_counter_dec(&ep->user->epoll_watches);
--	return ep_refcount_dec_and_test(ep);
-+	return true;
- }
++	if (!msta->vif)
++		return;
++
+ 	mt792x_mutex_acquire(dev);
  
- /*
-@@ -780,14 +780,14 @@ static bool __ep_remove(struct eventpoll
-  */
- static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
- {
--	WARN_ON_ONCE(__ep_remove(ep, epi, false));
-+	if (__ep_remove(ep, epi, false))
-+		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
- }
+ 	valid = ieee80211_vif_is_mld(vif) ? mvif->valid_links : BIT(0);
+@@ -1579,6 +1582,9 @@ static void mt7925_sta_set_decap_offload
+ 		else
+ 			clear_bit(MT_WCID_FLAG_HDR_TRANS, &mlink->wcid.flags);
  
- static void ep_clear_and_put(struct eventpoll *ep)
- {
- 	struct rb_node *rbp, *next;
- 	struct epitem *epi;
--	bool dispose;
- 
- 	/* We need to release all tasks waiting for these file */
- 	if (waitqueue_active(&ep->poll_wait))
-@@ -820,10 +820,8 @@ static void ep_clear_and_put(struct even
- 		cond_resched();
++		if (!mlink->wcid.sta)
++			continue;
++
+ 		mt7925_mcu_wtbl_update_hdr_trans(dev, vif, sta, i);
  	}
  
--	dispose = ep_refcount_dec_and_test(ep);
- 	mutex_unlock(&ep->mtx);
--
--	if (dispose)
-+	if (ep_refcount_dec_and_test(ep))
- 		ep_free(ep);
- }
- 
-@@ -1003,7 +1001,7 @@ again:
- 		dispose = __ep_remove(ep, epi, true);
- 		mutex_unlock(&ep->mtx);
- 
--		if (dispose)
-+		if (dispose && ep_refcount_dec_and_test(ep))
- 			ep_free(ep);
- 		goto again;
- 	}
 
 
 
