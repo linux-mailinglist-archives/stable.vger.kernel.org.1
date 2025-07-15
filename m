@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF53B05CF3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D9BB05BCB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44BDD4A0C14
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:33:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D1673A75D1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3201D2EA745;
-	Tue, 15 Jul 2025 13:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8070D2E3364;
+	Tue, 15 Jul 2025 13:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCK5+hp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BaVrZ6aB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0F12E2F17;
-	Tue, 15 Jul 2025 13:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2DF2E2EE9;
+	Tue, 15 Jul 2025 13:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586129; cv=none; b=PGgFEpOczH2kfH3j5/j5YfnrgBZq/m6S+Ssd+ppDTKWqChOrERrMLHSxVehfvwdwkZ56jT7Fi9PkG3sYEARuewP05DQdinrOhIrAa2U0n8iEPss0bZzDDVyTXXO+lXTZCUKg/1WXWcBXzRKlLPveeSIyKwMUVg8bIeYphdO2n80=
+	t=1752585696; cv=none; b=hvRQg6nH2GV+ElGttqfYWzS+gNW+BcJgC2T8ZTTPY1sp/y9sV+64Av45nN9m9qK7UQXUZkNlXMKZKZLJTdoxITrC/wqjytfPo7HJzLmZRz/x5Wx1NB0NVZBop9s6q9/7DH6uUdOX4fwTxsKraVd9nkUZYOKvtA7NqmLWuxEpgfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586129; c=relaxed/simple;
-	bh=wacTsz3u7XFT99lYVhyp9NQ4CrPNC06OXucwJTpR4Tk=;
+	s=arc-20240116; t=1752585696; c=relaxed/simple;
+	bh=a8z7SNF9ggFbQEiZEznkh2JdSC2VJPOTAZXInai6VOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDG0G75fpoDxqq9TB8hooFUvW3cEkavTagZ9nDJvcM+X23dYFNjQD5HB6TVtK0imD7uf9OD/WPBfnbNsCJWF6aNsR/jihP5UymDnql3Ylw8Hj87GxjIA7uEJ53CT4j0RKdxUBLxHcTr5J7u89AqNSOcfEpC1zLC5rEKVf5LkLvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCK5+hp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B79DC4CEF1;
-	Tue, 15 Jul 2025 13:28:48 +0000 (UTC)
+	 MIME-Version; b=Ubgm50mT9W69GsEBDPQ+ooHwc3xFRYYPAjzMwpoauwAqhrL9IIJmL205xyUVNpi+c4H5KbW8hiSSGYg8Agg8B7mH7Xb70NhCKQPFeDH+XTB/pGqci7rQ6ynTANZSimcH/8gcOShKTv5ygY6Ha3GeNrMp01p7dePI73kp1iMExOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BaVrZ6aB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2901C4CEE3;
+	Tue, 15 Jul 2025 13:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586128;
-	bh=wacTsz3u7XFT99lYVhyp9NQ4CrPNC06OXucwJTpR4Tk=;
+	s=korg; t=1752585696;
+	bh=a8z7SNF9ggFbQEiZEznkh2JdSC2VJPOTAZXInai6VOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zCK5+hp3400Oa5pmhwXIhCQA47yoKXq6DB3sIo45c5kN9YoZwR635dJhvUTFmULXW
-	 8A0TNj4b/1/V7ESU6Ky6XwJxxfAyRO+qpUOmexTKuNJkUlynG5k+xMOBaUp144H+g3
-	 LrqcKxnrWQ9snv1epb6S9NeDvCSG9gsqLg164fvw=
+	b=BaVrZ6aBAhLbry6cTqsJRRMF1rToh8z97D8Q0NYSdE/5KJKQuL/ETmRIv644crfSi
+	 OBaTIrIeuso4iq61xQcnbvJmPl/wNfFZX3MkS7Ze4uxKd0f/d1+0YfzMsz+4FStOQd
+	 S3oTSgyOs2Z3d2OhIASevysOEoKHDbNKnsSxrSZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 26/77] x86/mce/amd: Fix threshold limit reset
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 137/163] bnxt_en: Set DMA unmap len correctly for XDP_REDIRECT
 Date: Tue, 15 Jul 2025 15:13:25 +0200
-Message-ID: <20250715130752.757392187@linuxfoundation.org>
+Message-ID: <20250715130814.334475098@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-commit 5f6e3b720694ad771911f637a51930f511427ce1 upstream.
+[ Upstream commit 3cdf199d4755d477972ee87110b2aebc88b3cfad ]
 
-The MCA threshold limit must be reset after servicing the interrupt.
+When transmitting an XDP_REDIRECT packet, call dma_unmap_len_set()
+with the proper length instead of 0.  This bug triggers this warning
+on a system with IOMMU enabled:
 
-Currently, the restart function doesn't have an explicit check for this.  It
-makes some assumptions based on the current limit and what's in the registers.
-These assumptions don't always hold, so the limit won't be reset in some
-cases.
+WARNING: CPU: 36 PID: 0 at drivers/iommu/dma-iommu.c:842 __iommu_dma_unmap+0x159/0x170
+RIP: 0010:__iommu_dma_unmap+0x159/0x170
+Code: a8 00 00 00 00 48 c7 45 b0 00 00 00 00 48 c7 45 c8 00 00 00 00 48 c7 45 a0 ff ff ff ff 4c 89 45
+b8 4c 89 45 c0 e9 77 ff ff ff <0f> 0b e9 60 ff ff ff e8 8b bf 6a 00 66 66 2e 0f 1f 84 00 00 00 00
+RSP: 0018:ff22d31181150c88 EFLAGS: 00010206
+RAX: 0000000000002000 RBX: 00000000e13a0000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ff22d31181150cf0 R08: ff22d31181150ca8 R09: 0000000000000000
+R10: 0000000000000000 R11: ff22d311d36c9d80 R12: 0000000000001000
+R13: ff13544d10645010 R14: ff22d31181150c90 R15: ff13544d0b2bac00
+FS: 0000000000000000(0000) GS:ff13550908a00000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005be909dacff8 CR3: 0008000173408003 CR4: 0000000000f71ef0
+PKRU: 55555554
+Call Trace:
+<IRQ>
+? show_regs+0x6d/0x80
+? __warn+0x89/0x160
+? __iommu_dma_unmap+0x159/0x170
+? report_bug+0x17e/0x1b0
+? handle_bug+0x46/0x90
+? exc_invalid_op+0x18/0x80
+? asm_exc_invalid_op+0x1b/0x20
+? __iommu_dma_unmap+0x159/0x170
+? __iommu_dma_unmap+0xb3/0x170
+iommu_dma_unmap_page+0x4f/0x100
+dma_unmap_page_attrs+0x52/0x220
+? srso_alias_return_thunk+0x5/0xfbef5
+? xdp_return_frame+0x2e/0xd0
+bnxt_tx_int_xdp+0xdf/0x440 [bnxt_en]
+__bnxt_poll_work_done+0x81/0x1e0 [bnxt_en]
+bnxt_poll+0xd3/0x1e0 [bnxt_en]
 
-Make the reset condition explicit. Either an interrupt/overflow has occurred
-or the bank is being initialized.
-
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-4-236dd74f645f@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f18c2b77b2e4 ("bnxt_en: optimized XDP_REDIRECT support")
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250710213938.1959625-4-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/amd.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -310,7 +310,6 @@ static void smca_configure(unsigned int
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+index 8726657f5cb9e..844812bd65363 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+@@ -115,7 +115,7 @@ static void __bnxt_xmit_xdp_redirect(struct bnxt *bp,
+ 	tx_buf->action = XDP_REDIRECT;
+ 	tx_buf->xdpf = xdpf;
+ 	dma_unmap_addr_set(tx_buf, mapping, mapping);
+-	dma_unmap_len_set(tx_buf, len, 0);
++	dma_unmap_len_set(tx_buf, len, len);
+ }
  
- struct thresh_restart {
- 	struct threshold_block	*b;
--	int			reset;
- 	int			set_lvt_off;
- 	int			lvt_off;
- 	u16			old_limit;
-@@ -405,13 +404,13 @@ static void threshold_restart_bank(void
- 
- 	rdmsr(tr->b->address, lo, hi);
- 
--	if (tr->b->threshold_limit < (hi & THRESHOLD_MAX))
--		tr->reset = 1;	/* limit cannot be lower than err count */
--
--	if (tr->reset) {		/* reset err count and overflow bit */
--		hi =
--		    (hi & ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI)) |
--		    (THRESHOLD_MAX - tr->b->threshold_limit);
-+	/*
-+	 * Reset error count and overflow bit.
-+	 * This is done during init or after handling an interrupt.
-+	 */
-+	if (hi & MASK_OVERFLOW_HI || tr->set_lvt_off) {
-+		hi &= ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI);
-+		hi |= THRESHOLD_MAX - tr->b->threshold_limit;
- 	} else if (tr->old_limit) {	/* change limit w/o reset */
- 		int new_count = (hi & THRESHOLD_MAX) +
- 		    (tr->old_limit - tr->b->threshold_limit);
+ void bnxt_tx_int_xdp(struct bnxt *bp, struct bnxt_napi *bnapi, int budget)
+-- 
+2.39.5
+
 
 
 
