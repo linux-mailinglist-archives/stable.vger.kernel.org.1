@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E2FB05E8E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FBE0B05C11
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE6EE4A5533
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A43AF7B8FA0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D14626F44C;
-	Tue, 15 Jul 2025 13:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EAC2E175C;
+	Tue, 15 Jul 2025 13:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+RVL5Vg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTa1kpBF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB2C2E6136;
-	Tue, 15 Jul 2025 13:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C921B2C327B;
+	Tue, 15 Jul 2025 13:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586963; cv=none; b=okvkvRK13nJj1elyHbu3y80zeot/gt3C1kvpMpdmFqpMqBPwHFMiziE3v3ZOfLhgSUn3Q3SQ7+lMCDMBT7iStgpx10tAq13b/twC+2wA1BEsdKenTjn//Czz7HQjC1o1reiGDKjzZXsZQUWY2ryQ9LuIosc7i8y3dMeam1/5HiE=
+	t=1752585706; cv=none; b=fc8exUyitvNPQr4DSpuv3DwY/9Da0mwuoBhbNUES2f9SE6tuaz1cicjyVi2E0OW/smVu7RQzpkvDi2e7IHPMhaKHGDBmVwt5iGUirRLuBfkhlibM0OS69/etTXiW1f7NgkKzmi+8/5JMzO09BSTkzpV4nzPAfvbIy+9xVf8OeXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586963; c=relaxed/simple;
-	bh=h+KliwEo/dXpQ88C7yIJfvZdcpR2pDWwfbn3aTR1r8I=;
+	s=arc-20240116; t=1752585706; c=relaxed/simple;
+	bh=cdtII8mPTyjyR/+qiSjKhGxB7Rvm+CYI/2Q8oEvVj1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TSAPIZUWV2bcRDNaf4oIRCj2M3v6uCfjd6x7Uy+yXdxic3BiJjAMoMchX0L1QP5nYC7ff50CMGtQs5ZIDi6nhBuuIFmkGj3UoDAg1adi+QiPFnhCEE4AVipx6Ol/W2vHAF7qmyh5U0hCfLNKZ6jh19PjvP2tAsYQhcKTsVhF+Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+RVL5Vg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B19C4CEE3;
-	Tue, 15 Jul 2025 13:42:42 +0000 (UTC)
+	 MIME-Version; b=EPUel+0kbwHbNpusjURXBhWn0ZmtvEJdZq7tScuFUDwK0F80UQM5eJXEPdBJPXYNVZF+dUDR7klx1GPt2Q1AlKu0CYG4rrcMifJxAgMTz1xWa5wsJxXzydU8TO+UhHORsngLbv70nKKCZq/TDZqXe/wKqwmISVr4QNqTHhX35Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTa1kpBF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D193C4CEE3;
+	Tue, 15 Jul 2025 13:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586963;
-	bh=h+KliwEo/dXpQ88C7yIJfvZdcpR2pDWwfbn3aTR1r8I=;
+	s=korg; t=1752585706;
+	bh=cdtII8mPTyjyR/+qiSjKhGxB7Rvm+CYI/2Q8oEvVj1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+RVL5VgkMLFKBpTc/es0X+6PXPw2MO7SjVwb07tPMxIHrV5epA+pk8nNJ+TF/BzY
-	 hrVzfRWLXD/Rx9qbnLNIfl/Kj2GymtW49ITwK71YNrhu+zuQs5J16atVA/d3+TBORp
-	 LFdBmKUgfeRMuJ9qx7VniE6VfCpT2Q+t+Dxi4Nk0=
+	b=bTa1kpBFqUKi4iseBSyltLkZKmKnXDXoQMDCizgTFI00ax4xEm3/Rid/dz+5bIjuJ
+	 06KZJFeTJxF9Xa0U4F9Ir3QK3kl1uuS6+3P58DHQ3CMTpOJZ4CFv+jdJ3fBEZk9o6Y
+	 JRsL60InhxcHDXKt+5bFImUu1vuLpkmrq1IZV0XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Paulyshka <me@mixaill.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.15 114/192] x86/rdrand: Disable RDSEED on AMD Cyan Skillfish
+	Tamura Dai <kirinode0@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 141/163] ASoC: SOF: Intel: hda: Use devm_kstrdup() to avoid memleak.
 Date: Tue, 15 Jul 2025 15:13:29 +0200
-Message-ID: <20250715130819.461718765@linuxfoundation.org>
+Message-ID: <20250715130814.491095808@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Paulyshka <me@mixaill.net>
+From: Tamura Dai <kirinode0@gmail.com>
 
-commit 5b937a1ed64ebeba8876e398110a5790ad77407c upstream.
+[ Upstream commit 6c038b58a2dc5a008c7e7a1297f5aaa4deaaaa7e ]
 
-AMD Cyan Skillfish (Family 17h, Model 47h, Stepping 0h) has an error that
-causes RDSEED to always return 0xffffffff, while RDRAND works correctly.
+sof_pdata->tplg_filename can have address allocated by kstrdup()
+and can be overwritten. Memory leak was detected with kmemleak:
 
-Mask the RDSEED cap for this CPU so that both /proc/cpuinfo and direct CPUID
-read report RDSEED as unavailable.
+unreferenced object 0xffff88812391ff60 (size 16):
+  comm "kworker/4:1", pid 161, jiffies 4294802931
+  hex dump (first 16 bytes):
+    73 6f 66 2d 68 64 61 2d 67 65 6e 65 72 69 63 00  sof-hda-generic.
+  backtrace (crc 4bf1675c):
+    __kmalloc_node_track_caller_noprof+0x49c/0x6b0
+    kstrdup+0x46/0xc0
+    hda_machine_select.cold+0x1de/0x12cf [snd_sof_intel_hda_generic]
+    sof_init_environment+0x16f/0xb50 [snd_sof]
+    sof_probe_continue+0x45/0x7c0 [snd_sof]
+    sof_probe_work+0x1e/0x40 [snd_sof]
+    process_one_work+0x894/0x14b0
+    worker_thread+0x5e5/0xfb0
+    kthread+0x39d/0x760
+    ret_from_fork+0x31/0x70
+    ret_from_fork_asm+0x1a/0x30
 
-  [ bp: Move to amd.c, massage. ]
-
-Signed-off-by: Mikhail Paulyshka <me@mixaill.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250524145319.209075-1-me@mixaill.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tamura Dai <kirinode0@gmail.com>
+Link: https://patch.msgid.link/20250615235548.8591-1-kirinode0@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/msr-index.h       |    1 +
- arch/x86/kernel/cpu/amd.c              |    7 +++++++
- tools/arch/x86/include/asm/msr-index.h |    1 +
- 3 files changed, 9 insertions(+)
+ sound/soc/sof/intel/hda.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -624,6 +624,7 @@
- #define MSR_AMD64_OSVW_STATUS		0xc0010141
- #define MSR_AMD_PPIN_CTL		0xc00102f0
- #define MSR_AMD_PPIN			0xc00102f1
-+#define MSR_AMD64_CPUID_FN_7		0xc0011002
- #define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_LS_CFG		0xc0011020
- #define MSR_AMD64_DC_CFG		0xc0011022
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -972,6 +972,13 @@ static void init_amd_zen2(struct cpuinfo
- 	init_spectral_chicken(c);
- 	fix_erratum_1386(c);
- 	zen2_zenbleed_check(c);
-+
-+	/* Disable RDSEED on AMD Cyan Skillfish because of an error. */
-+	if (c->x86_model == 0x47 && c->x86_stepping == 0x0) {
-+		clear_cpu_cap(c, X86_FEATURE_RDSEED);
-+		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
-+		pr_emerg("RDSEED is not reliable on this platform; disabling.\n");
-+	}
+diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+index 9c8f79e55ec5d..624598c9e2df8 100644
+--- a/sound/soc/sof/intel/hda.c
++++ b/sound/soc/sof/intel/hda.c
+@@ -1209,11 +1209,11 @@ static int check_tplg_quirk_mask(struct snd_soc_acpi_mach *mach)
+ 	return 0;
  }
  
- static void init_amd_zen3(struct cpuinfo_x86 *c)
---- a/tools/arch/x86/include/asm/msr-index.h
-+++ b/tools/arch/x86/include/asm/msr-index.h
-@@ -616,6 +616,7 @@
- #define MSR_AMD64_OSVW_STATUS		0xc0010141
- #define MSR_AMD_PPIN_CTL		0xc00102f0
- #define MSR_AMD_PPIN			0xc00102f1
-+#define MSR_AMD64_CPUID_FN_7		0xc0011002
- #define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_LS_CFG		0xc0011020
- #define MSR_AMD64_DC_CFG		0xc0011022
+-static char *remove_file_ext(const char *tplg_filename)
++static char *remove_file_ext(struct device *dev, const char *tplg_filename)
+ {
+ 	char *filename, *tmp;
+ 
+-	filename = kstrdup(tplg_filename, GFP_KERNEL);
++	filename = devm_kstrdup(dev, tplg_filename, GFP_KERNEL);
+ 	if (!filename)
+ 		return NULL;
+ 
+@@ -1297,7 +1297,7 @@ struct snd_soc_acpi_mach *hda_machine_select(struct snd_sof_dev *sdev)
+ 		 */
+ 		if (!sof_pdata->tplg_filename) {
+ 			/* remove file extension if it exists */
+-			tplg_filename = remove_file_ext(mach->sof_tplg_filename);
++			tplg_filename = remove_file_ext(sdev->dev, mach->sof_tplg_filename);
+ 			if (!tplg_filename)
+ 				return NULL;
+ 
+-- 
+2.39.5
+
 
 
 
