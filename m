@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-162382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649EDB05D89
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08457B05E7A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0308B18910EF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C9FF4A0680
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78782EA163;
-	Tue, 15 Jul 2025 13:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C5F2EA731;
+	Tue, 15 Jul 2025 13:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fsHyzUJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOXh9nzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B002E3391;
-	Tue, 15 Jul 2025 13:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78962E5413;
+	Tue, 15 Jul 2025 13:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586409; cv=none; b=V6S39OQD4JkOt8j+L04XwilWWMYW4/2HQcCfGokDSou0qJ2N1vExOh1lrLN/0PhcD/m6PHWDMUWIJ8YczniUAaBxR9rx1tJoGYy/urhD5fxBn7nopbx+8Ol+pYztO32a1CtiPkYN9+DFzS2LazpTtowtrV/4uIHhPxO2EZKcSIY=
+	t=1752586876; cv=none; b=nvUUaSSKksoAlFMj6PzbQrSliQT8ym4Hl7Cq2f5eTzneNrsNvAJbrj9r75IMtOR9A6an2YT4dYec03pjY02Saf0dzXV5VNlBbM2k1QvFQDmQS2juGlE8MYD6KoAuxX1YILSCH3B51Kc4V4IRZTILBZfAYvByYLXUYFED7fSP62c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586409; c=relaxed/simple;
-	bh=iQi5aQp08sYGwvY4eIk0UOK2xRm47q/X86P4v1LLoOQ=;
+	s=arc-20240116; t=1752586876; c=relaxed/simple;
+	bh=eFhymE0mb0Sx7KkVe3Hs0tAXYJvaIlEsSA6f+IXEY6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d7SnHog5tFnI70+LrGnxUeyHhfLV7B0QLT44j95dZhd3sqlM5cykUbXh1/imS7pPABdR5fhmaGInuonPTzuOQffT7vIq2Cc4frzfdb/QXFHmJB1D3d0K2cCKKXWY0sUwefMlXgxp3xR3CjWr89vBv4JGuv/FdrkxS8M9u/A95pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fsHyzUJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D33C4CEE3;
-	Tue, 15 Jul 2025 13:33:28 +0000 (UTC)
+	 MIME-Version; b=ClOLqcE5ZiEYbwOqhu0z8LoZ4PoR2l0fAjindWrb/mzkqAlxVlYAK42/cORfofOaYC9MGzcqIHSKRxlPJES/5tzgVD6zyCQ9mtJuTevvTHfYROeqauurzhCgPFA0oET7v9tIYMnS1J1cdVtvp/xD25KScc9fa+b5OPWMOoMlym4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOXh9nzX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDCBC4CEE3;
+	Tue, 15 Jul 2025 13:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586409;
-	bh=iQi5aQp08sYGwvY4eIk0UOK2xRm47q/X86P4v1LLoOQ=;
+	s=korg; t=1752586875;
+	bh=eFhymE0mb0Sx7KkVe3Hs0tAXYJvaIlEsSA6f+IXEY6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0fsHyzUJlsf+P6lhNbkCYbESxxQ/JpoOcpiq5SG6+P02Sx62VJBtJsWsQ1uaR2dlV
-	 +s3GiL74O4ZZdCiQOkjiC/WtcGd58FoS66OrndoINGdAjN22QhU9ELW2YJpDvgPPLV
-	 y4gqV1WC1idqXDdjDaGQmEyhOXHUEw9WH6CYZSpc=
+	b=gOXh9nzXyxvixwn2e2SoY2FXby5gTFmFwcSY/EtfXkHTFLavX599CJp6bce3CVQm7
+	 CI3uiMLC6FMvkm6BlLbFu/f7UmrGm0ZXDbyBi0PCw0z6lLZWpD7dWtK0iFRiiyS1F3
+	 mp/vukUu6lCLuagUXeCYkdTo4Frbc1sxPQnvHPMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.4 054/148] arm64: Restrict pagetable teardown to avoid false warning
+	Alessio Belle <alessio.belle@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>
+Subject: [PATCH 6.15 081/192] drm/imagination: Fix kernel crash when hard resetting the GPU
 Date: Tue, 15 Jul 2025 15:12:56 +0200
-Message-ID: <20250715130802.490153148@linuxfoundation.org>
+Message-ID: <20250715130818.172892934@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Alessio Belle <alessio.belle@imgtec.com>
 
-commit 650768c512faba8070bf4cfbb28c95eb5cd203f3 upstream.
+commit d38376b3ee48d073c64e75e150510d7e6b4b04f7 upstream.
 
-Commit 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from
-pXd_free_pYd_table()") removes the pxd_present() checks because the
-caller checks pxd_present(). But, in case of vmap_try_huge_pud(), the
-caller only checks pud_present(); pud_free_pmd_page() recurses on each
-pmd through pmd_free_pte_page(), wherein the pmd may be none. Thus it is
-possible to hit a warning in the latter, since pmd_none => !pmd_table().
-Thus, add a pmd_present() check in pud_free_pmd_page().
+The GPU hard reset sequence calls pm_runtime_force_suspend() and
+pm_runtime_force_resume(), which according to their documentation should
+only be used during system-wide PM transitions to sleep states.
 
-This problem was found by code inspection.
+The main issue though is that depending on some internal runtime PM
+state as seen by pm_runtime_force_suspend() (whether the usage count is
+<= 1), pm_runtime_force_resume() might not resume the device unless
+needed. If that happens, the runtime PM resume callback
+pvr_power_device_resume() is not called, the GPU clocks are not
+re-enabled, and the kernel crashes on the next attempt to access GPU
+registers as part of the power-on sequence.
 
-Fixes: 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
+Replace calls to pm_runtime_force_suspend() and
+pm_runtime_force_resume() with direct calls to the driver's runtime PM
+callbacks, pvr_power_device_suspend() and pvr_power_device_resume(),
+to ensure clocks are re-enabled and avoid the kernel crash.
+
+Fixes: cc1aeedb98ad ("drm/imagination: Implement firmware infrastructure and META FW support")
+Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://lore.kernel.org/r/20250624-fix-kernel-crash-gpu-hard-reset-v1-1-6d24810d72a6@imgtec.com
 Cc: stable@vger.kernel.org
-Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250527082633.61073-1-dev.jain@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/mmu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/imagination/pvr_power.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1041,7 +1041,8 @@ int pud_free_pmd_page(pud_t *pudp, unsig
- 	next = addr;
- 	end = addr + PUD_SIZE;
- 	do {
--		pmd_free_pte_page(pmdp, next);
-+		if (pmd_present(READ_ONCE(*pmdp)))
-+			pmd_free_pte_page(pmdp, next);
- 	} while (pmdp++, next += PMD_SIZE, next != end);
+--- a/drivers/gpu/drm/imagination/pvr_power.c
++++ b/drivers/gpu/drm/imagination/pvr_power.c
+@@ -363,13 +363,13 @@ pvr_power_reset(struct pvr_device *pvr_d
+ 		if (!err) {
+ 			if (hard_reset) {
+ 				pvr_dev->fw_dev.booted = false;
+-				WARN_ON(pm_runtime_force_suspend(from_pvr_device(pvr_dev)->dev));
++				WARN_ON(pvr_power_device_suspend(from_pvr_device(pvr_dev)->dev));
  
- 	pud_clear(pudp);
+ 				err = pvr_fw_hard_reset(pvr_dev);
+ 				if (err)
+ 					goto err_device_lost;
+ 
+-				err = pm_runtime_force_resume(from_pvr_device(pvr_dev)->dev);
++				err = pvr_power_device_resume(from_pvr_device(pvr_dev)->dev);
+ 				pvr_dev->fw_dev.booted = true;
+ 				if (err)
+ 					goto err_device_lost;
 
 
 
