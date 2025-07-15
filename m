@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-162603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3E6B05EAD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7087DB05C24
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C8FA4E7A13
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D66D7B9273
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEF32E6D11;
-	Tue, 15 Jul 2025 13:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF3C2E1C69;
+	Tue, 15 Jul 2025 13:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WM4etS/x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzoEsCBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E0326D4F2;
-	Tue, 15 Jul 2025 13:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3DD192D8A;
+	Tue, 15 Jul 2025 13:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586992; cv=none; b=LUEDxCXIveJM/8jRbrtjPc1UxDBX5sMPMi03x7wbbGc+njaQ9gbLDxy3o25U6iGwqEROP9/eRSZYyfyoj25Zg/76XXVljfkt0TQ0RWMkjF4QitKnEsMHdOEFFEeJF9kt20aExe6WO1Xhhf2UTPFqzdufeBW2B6jEm9RuiLZDd9Y=
+	t=1752585736; cv=none; b=DHFqQOr9dTtwO4BivBq3JEerE+1RFx8Vf4S9TEbT97SJsCTRVulpFkriBl5bnlI+klX0/Un+d6d5WWAj0PZbgY7uAW8mAke/PXi3OVw/HoZSS29BQnJJDamQ53cwZ+/G6n2z0QVMbgrOkJ5jMtyipsTU4+kv1A1ck/eMmXYUy+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586992; c=relaxed/simple;
-	bh=7YerTNqOXzIZgs1HpEXiEzXdESWh8PU4yrLhBIfwM38=;
+	s=arc-20240116; t=1752585736; c=relaxed/simple;
+	bh=b9IbN4tjVxp1KLWZKuJq5jzQDnXN4k0jdn0+MMjPjWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ewS1PFQapk0xq3mmgoTShoNx8JDCBCOJUKLZYnKaQeiDBSns8/B0fo8m2R5wsSJw/QiDcPqagEWGfjvlfT1ixin5P2WmG3d9C/empVO8vHaV/qzvjHLmqgJN+MI3pSP3+2O5FQQ4dDTKJCW/RI+9te8SYMGOeTN7QsUbS47tQ8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WM4etS/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B527C4CEE3;
-	Tue, 15 Jul 2025 13:43:11 +0000 (UTC)
+	 MIME-Version; b=Bs0MmE9Pb0dvKmlCLauW1qT0IH13o/DFes+ZEXOjIWH7ew1XgIbdkh0zYSucsayJChsTkjRFD7on1A7Lg9gsZta6m/u7cvbmru45HR3P0AzPwrI3rNYzVa1dyixPlSmacyAIpqKdwPgYZcZJD/Ho0e5u4x3ArbCDCmpf/UeBbJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzoEsCBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D168C4CEF1;
+	Tue, 15 Jul 2025 13:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586991;
-	bh=7YerTNqOXzIZgs1HpEXiEzXdESWh8PU4yrLhBIfwM38=;
+	s=korg; t=1752585735;
+	bh=b9IbN4tjVxp1KLWZKuJq5jzQDnXN4k0jdn0+MMjPjWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WM4etS/xGjrWpt4kTS6lYTj8XkFP+VgNminUnmZ5ss37sN3BRKSOEPSrStMMvmSM7
-	 ZkoReTfUGllM4yk88hRx0C6iIebMroXFtinF1ds05IJNwrW8rlJ79uTGilslsm8WQl
-	 Sa2u0NhhZ99OE4b4tq1LJLjXT71T3uBXw+3gj9UA=
+	b=NzoEsCBxaVUQTppjn1nQzSDk0yyKv8nlpiHIy234ysfdHn0mFNqEUXTi92yU27dAJ
+	 lfpe9dlFIlKaKPZpAvcAzQ1j4Mes9DHbJhejCcaN7wkY9nWONgq2ld6QEG+eiawqFg
+	 ee+qvvP6QYjbUMZxzM6OzQH+4rQhoTh8EPeK4GwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Bert Karwatzki <spasswolf@web.de>,
-	Mario Limonciello <superm1@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Anusha Srivatsa <asrivats@redhat.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org
-Subject: [PATCH 6.15 094/192] drm/framebuffer: Acquire internal references on GEM handles
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 121/163] erofs: tidy up zdata.c
 Date: Tue, 15 Jul 2025 15:13:09 +0200
-Message-ID: <20250715130818.676257162@linuxfoundation.org>
+Message-ID: <20250715130813.705754015@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,308 +60,361 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit f6bfc9afc7510cb5e6fbe0a17c507917b0120280 upstream.
+[ Upstream commit 6f435e94a19ad25b372bc61443afd0839b8a521c ]
 
-Acquire GEM handles in drm_framebuffer_init() and release them in
-the corresponding drm_framebuffer_cleanup(). Ties the handle's
-lifetime to the framebuffer. Not all GEM buffer objects have GEM
-handles. If not set, no refcounting takes place. This is the case
-for some fbdev emulation. This is not a problem as these GEM objects
-do not use dma-bufs and drivers will not release them while fbdev
-emulation is running. Framebuffer flags keep a bit per color plane
-of which the framebuffer holds a GEM handle reference.
+All small code style adjustments, no logic changes:
 
-As all drivers use drm_framebuffer_init(), they will now all hold
-dma-buf references as fixed in commit 5307dce878d4 ("drm/gem: Acquire
-references on GEM handles for framebuffers").
+ - z_erofs_decompress_frontend => z_erofs_frontend;
+ - z_erofs_decompress_backend => z_erofs_backend;
+ - Use Z_EROFS_DEFINE_FRONTEND() to replace DECOMPRESS_FRONTEND_INIT();
+ - `nr_folios` should be `nrpages` in z_erofs_readahead();
+ - Refine in-line comments.
 
-In the GEM framebuffer helpers, restore the original ref counting
-on buffer objects. As the helpers for handle refcounting are now
-no longer called from outside the DRM core, unexport the symbols.
-
-v3:
-- don't mix internal flags with mode flags (Christian)
-v2:
-- track framebuffer handle refs by flag
-- drop gma500 cleanup (Christian)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 5307dce878d4 ("drm/gem: Acquire references on GEM handles for framebuffers")
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/dri-devel/20250703115915.3096-1-spasswolf@web.de/
-Tested-by: Bert Karwatzki <spasswolf@web.de>
-Tested-by: Mario Limonciello <superm1@kernel.org>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Anusha Srivatsa <asrivats@redhat.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: linux-media@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linaro-mm-sig@lists.linaro.org
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250707131224.249496-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250114034429.431408-3-hsiangkao@linux.alibaba.com
+Stable-dep-of: d53238b614e0 ("erofs: fix to add missing tracepoint in erofs_readahead()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_framebuffer.c            |   31 ++++++++++++++++++++--
- drivers/gpu/drm/drm_gem.c                    |   38 +++++++++++++++++----------
- drivers/gpu/drm/drm_gem_framebuffer_helper.c |   16 ++++-------
- drivers/gpu/drm/drm_internal.h               |    2 -
- include/drm/drm_framebuffer.h                |    7 ++++
- 5 files changed, 68 insertions(+), 26 deletions(-)
+ fs/erofs/zdata.c | 111 ++++++++++++++++++-----------------------------
+ 1 file changed, 43 insertions(+), 68 deletions(-)
 
---- a/drivers/gpu/drm/drm_framebuffer.c
-+++ b/drivers/gpu/drm/drm_framebuffer.c
-@@ -862,11 +862,23 @@ EXPORT_SYMBOL_FOR_TESTS_ONLY(drm_framebu
- int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
- 			 const struct drm_framebuffer_funcs *funcs)
- {
-+	unsigned int i;
- 	int ret;
-+	bool exists;
- 
- 	if (WARN_ON_ONCE(fb->dev != dev || !fb->format))
- 		return -EINVAL;
- 
-+	for (i = 0; i < fb->format->num_planes; i++) {
-+		if (drm_WARN_ON_ONCE(dev, fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i)))
-+			fb->internal_flags &= ~DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
-+		if (fb->obj[i]) {
-+			exists = drm_gem_object_handle_get_if_exists_unlocked(fb->obj[i]);
-+			if (exists)
-+				fb->internal_flags |= DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
-+		}
-+	}
-+
- 	INIT_LIST_HEAD(&fb->filp_head);
- 
- 	fb->funcs = funcs;
-@@ -875,7 +887,7 @@ int drm_framebuffer_init(struct drm_devi
- 	ret = __drm_mode_object_add(dev, &fb->base, DRM_MODE_OBJECT_FB,
- 				    false, drm_framebuffer_free);
- 	if (ret)
--		goto out;
-+		goto err;
- 
- 	mutex_lock(&dev->mode_config.fb_lock);
- 	dev->mode_config.num_fb++;
-@@ -883,7 +895,16 @@ int drm_framebuffer_init(struct drm_devi
- 	mutex_unlock(&dev->mode_config.fb_lock);
- 
- 	drm_mode_object_register(dev, &fb->base);
--out:
-+
-+	return 0;
-+
-+err:
-+	for (i = 0; i < fb->format->num_planes; i++) {
-+		if (fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i)) {
-+			drm_gem_object_handle_put_unlocked(fb->obj[i]);
-+			fb->internal_flags &= ~DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
-+		}
-+	}
- 	return ret;
- }
- EXPORT_SYMBOL(drm_framebuffer_init);
-@@ -960,6 +981,12 @@ EXPORT_SYMBOL(drm_framebuffer_unregister
- void drm_framebuffer_cleanup(struct drm_framebuffer *fb)
- {
- 	struct drm_device *dev = fb->dev;
-+	unsigned int i;
-+
-+	for (i = 0; i < fb->format->num_planes; i++) {
-+		if (fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i))
-+			drm_gem_object_handle_put_unlocked(fb->obj[i]);
-+	}
- 
- 	mutex_lock(&dev->mode_config.fb_lock);
- 	list_del(&fb->head);
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -223,23 +223,34 @@ static void drm_gem_object_handle_get(st
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 9e01b52ecad47..f13052c3532ab 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -453,31 +453,25 @@ int __init z_erofs_init_subsystem(void)
  }
  
- /**
-- * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
-+ * drm_gem_object_handle_get_if_exists_unlocked - acquire reference on user-space handle, if any
-  * @obj: GEM object
-  *
-- * Acquires a reference on the GEM buffer object's handle. Required
-- * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
-- * to release the reference.
-+ * Acquires a reference on the GEM buffer object's handle. Required to keep
-+ * the GEM object alive. Call drm_gem_object_handle_put_if_exists_unlocked()
-+ * to release the reference. Does nothing if the buffer object has no handle.
-+ *
-+ * Returns:
-+ * True if a handle exists, or false otherwise
-  */
--void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
-+bool drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj)
- {
- 	struct drm_device *dev = obj->dev;
- 
- 	guard(mutex)(&dev->object_name_lock);
- 
--	drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
-+	/*
-+	 * First ref taken during GEM object creation, if any. Some
-+	 * drivers set up internal framebuffers with GEM objects that
-+	 * do not have a GEM handle. Hence, this counter can be zero.
-+	 */
-+	if (!obj->handle_count)
-+		return false;
-+
- 	drm_gem_object_handle_get(obj);
-+
-+	return true;
- }
--EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
- 
- /**
-  * drm_gem_object_handle_free - release resources bound to userspace handles
-@@ -272,7 +283,7 @@ static void drm_gem_object_exported_dma_
- }
- 
- /**
-- * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
-+ * drm_gem_object_handle_put_unlocked - releases reference on user-space handle
-  * @obj: GEM object
-  *
-  * Releases a reference on the GEM buffer object's handle. Possibly releases
-@@ -283,14 +294,14 @@ void drm_gem_object_handle_put_unlocked(
- 	struct drm_device *dev = obj->dev;
- 	bool final = false;
- 
--	if (WARN_ON(READ_ONCE(obj->handle_count) == 0))
-+	if (drm_WARN_ON(dev, READ_ONCE(obj->handle_count) == 0))
- 		return;
- 
+ enum z_erofs_pclustermode {
++	/* It has previously been linked into another processing chain */
+ 	Z_EROFS_PCLUSTER_INFLIGHT,
  	/*
--	* Must bump handle count first as this may be the last
--	* ref, in which case the object would disappear before we
--	* checked for a name
--	*/
-+	 * Must bump handle count first as this may be the last
-+	 * ref, in which case the object would disappear before
-+	 * we checked for a name.
-+	 */
- 
- 	mutex_lock(&dev->object_name_lock);
- 	if (--obj->handle_count == 0) {
-@@ -303,7 +314,6 @@ void drm_gem_object_handle_put_unlocked(
- 	if (final)
- 		drm_gem_object_put(obj);
- }
--EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
- 
- /*
-  * Called at device or object close to release the file's
---- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-+++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-@@ -99,7 +99,7 @@ void drm_gem_fb_destroy(struct drm_frame
- 	unsigned int i;
- 
- 	for (i = 0; i < fb->format->num_planes; i++)
--		drm_gem_object_handle_put_unlocked(fb->obj[i]);
-+		drm_gem_object_put(fb->obj[i]);
- 
- 	drm_framebuffer_cleanup(fb);
- 	kfree(fb);
-@@ -182,10 +182,8 @@ int drm_gem_fb_init_with_funcs(struct dr
- 		if (!objs[i]) {
- 			drm_dbg_kms(dev, "Failed to lookup GEM object\n");
- 			ret = -ENOENT;
--			goto err_gem_object_handle_put_unlocked;
-+			goto err_gem_object_put;
- 		}
--		drm_gem_object_handle_get_unlocked(objs[i]);
--		drm_gem_object_put(objs[i]);
- 
- 		min_size = (height - 1) * mode_cmd->pitches[i]
- 			 + drm_format_info_min_pitch(info, i, width)
-@@ -195,22 +193,22 @@ int drm_gem_fb_init_with_funcs(struct dr
- 			drm_dbg_kms(dev,
- 				    "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
- 				    objs[i]->size, min_size, i);
--			drm_gem_object_handle_put_unlocked(objs[i]);
-+			drm_gem_object_put(objs[i]);
- 			ret = -EINVAL;
--			goto err_gem_object_handle_put_unlocked;
-+			goto err_gem_object_put;
- 		}
- 	}
- 
- 	ret = drm_gem_fb_init(dev, fb, mode_cmd, objs, i, funcs);
- 	if (ret)
--		goto err_gem_object_handle_put_unlocked;
-+		goto err_gem_object_put;
- 
- 	return 0;
- 
--err_gem_object_handle_put_unlocked:
-+err_gem_object_put:
- 	while (i > 0) {
- 		--i;
--		drm_gem_object_handle_put_unlocked(objs[i]);
-+		drm_gem_object_put(objs[i]);
- 	}
- 	return ret;
- }
---- a/drivers/gpu/drm/drm_internal.h
-+++ b/drivers/gpu/drm/drm_internal.h
-@@ -161,7 +161,7 @@ void drm_sysfs_lease_event(struct drm_de
- 
- /* drm_gem.c */
- int drm_gem_init(struct drm_device *dev);
--void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
-+bool drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj);
- void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
- int drm_gem_handle_create_tail(struct drm_file *file_priv,
- 			       struct drm_gem_object *obj,
---- a/include/drm/drm_framebuffer.h
-+++ b/include/drm/drm_framebuffer.h
-@@ -23,6 +23,7 @@
- #ifndef __DRM_FRAMEBUFFER_H__
- #define __DRM_FRAMEBUFFER_H__
- 
-+#include <linux/bits.h>
- #include <linux/ctype.h>
- #include <linux/list.h>
- #include <linux/sched.h>
-@@ -100,6 +101,8 @@ struct drm_framebuffer_funcs {
- 		     unsigned num_clips);
+-	 * a weak form of Z_EROFS_PCLUSTER_FOLLOWED, the difference is that it
+-	 * could be dispatched into bypass queue later due to uptodated managed
+-	 * pages. All related online pages cannot be reused for inplace I/O (or
+-	 * bvpage) since it can be directly decoded without I/O submission.
++	 * A weaker form of Z_EROFS_PCLUSTER_FOLLOWED; the difference is that it
++	 * may be dispatched to the bypass queue later due to uptodated managed
++	 * folios.  All file-backed folios related to this pcluster cannot be
++	 * reused for in-place I/O (or bvpage) since the pcluster may be decoded
++	 * in a separate queue (and thus out of order).
+ 	 */
+ 	Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE,
+ 	/*
+-	 * The pcluster was just linked to a decompression chain by us.  It can
+-	 * also be linked with the remaining pclusters, which means if the
+-	 * processing page is the tail page of a pcluster, this pcluster can
+-	 * safely use the whole page (since the previous pcluster is within the
+-	 * same chain) for in-place I/O, as illustrated below:
+-	 *  ___________________________________________________
+-	 * |  tail (partial) page  |    head (partial) page    |
+-	 * |  (of the current pcl) |   (of the previous pcl)   |
+-	 * |___PCLUSTER_FOLLOWED___|_____PCLUSTER_FOLLOWED_____|
+-	 *
+-	 * [  (*) the page above can be used as inplace I/O.   ]
++	 * The pcluster has just been linked to our processing chain.
++	 * File-backed folios (except for the head page) related to it can be
++	 * used for in-place I/O (or bvpage).
+ 	 */
+ 	Z_EROFS_PCLUSTER_FOLLOWED,
  };
  
-+#define DRM_FRAMEBUFFER_HAS_HANDLE_REF(_i)	BIT(0u + (_i))
-+
- /**
-  * struct drm_framebuffer - frame buffer object
-  *
-@@ -189,6 +192,10 @@ struct drm_framebuffer {
- 	 */
- 	int flags;
- 	/**
-+	 * @internal_flags: Framebuffer flags like DRM_FRAMEBUFFER_HAS_HANDLE_REF.
-+	 */
-+	unsigned int internal_flags;
-+	/**
- 	 * @filp_head: Placed on &drm_file.fbs, protected by &drm_file.fbs_lock.
- 	 */
- 	struct list_head filp_head;
+-struct z_erofs_decompress_frontend {
++struct z_erofs_frontend {
+ 	struct inode *const inode;
+ 	struct erofs_map_blocks map;
+ 	struct z_erofs_bvec_iter biter;
+@@ -493,11 +487,11 @@ struct z_erofs_decompress_frontend {
+ 	unsigned int icur;
+ };
+ 
+-#define DECOMPRESS_FRONTEND_INIT(__i) { \
+-	.inode = __i, .head = Z_EROFS_PCLUSTER_TAIL, \
+-	.mode = Z_EROFS_PCLUSTER_FOLLOWED }
++#define Z_EROFS_DEFINE_FRONTEND(fe, i, ho) struct z_erofs_frontend fe = { \
++	.inode = i, .head = Z_EROFS_PCLUSTER_TAIL, \
++	.mode = Z_EROFS_PCLUSTER_FOLLOWED, .headoffset = ho }
+ 
+-static bool z_erofs_should_alloc_cache(struct z_erofs_decompress_frontend *fe)
++static bool z_erofs_should_alloc_cache(struct z_erofs_frontend *fe)
+ {
+ 	unsigned int cachestrategy = EROFS_I_SB(fe->inode)->opt.cache_strategy;
+ 
+@@ -514,7 +508,7 @@ static bool z_erofs_should_alloc_cache(struct z_erofs_decompress_frontend *fe)
+ 	return false;
+ }
+ 
+-static void z_erofs_bind_cache(struct z_erofs_decompress_frontend *fe)
++static void z_erofs_bind_cache(struct z_erofs_frontend *fe)
+ {
+ 	struct address_space *mc = MNGD_MAPPING(EROFS_I_SB(fe->inode));
+ 	struct z_erofs_pcluster *pcl = fe->pcl;
+@@ -671,7 +665,7 @@ int z_erofs_init_super(struct super_block *sb)
+ }
+ 
+ /* callers must be with pcluster lock held */
+-static int z_erofs_attach_page(struct z_erofs_decompress_frontend *fe,
++static int z_erofs_attach_page(struct z_erofs_frontend *fe,
+ 			       struct z_erofs_bvec *bvec, bool exclusive)
+ {
+ 	struct z_erofs_pcluster *pcl = fe->pcl;
+@@ -717,7 +711,7 @@ static bool z_erofs_get_pcluster(struct z_erofs_pcluster *pcl)
+ 	return true;
+ }
+ 
+-static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
++static int z_erofs_register_pcluster(struct z_erofs_frontend *fe)
+ {
+ 	struct erofs_map_blocks *map = &fe->map;
+ 	struct super_block *sb = fe->inode->i_sb;
+@@ -787,7 +781,7 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
+ 	return err;
+ }
+ 
+-static int z_erofs_pcluster_begin(struct z_erofs_decompress_frontend *fe)
++static int z_erofs_pcluster_begin(struct z_erofs_frontend *fe)
+ {
+ 	struct erofs_map_blocks *map = &fe->map;
+ 	struct super_block *sb = fe->inode->i_sb;
+@@ -860,14 +854,9 @@ static int z_erofs_pcluster_begin(struct z_erofs_decompress_frontend *fe)
+ 	return 0;
+ }
+ 
+-/*
+- * keep in mind that no referenced pclusters will be freed
+- * only after a RCU grace period.
+- */
+ static void z_erofs_rcu_callback(struct rcu_head *head)
+ {
+-	z_erofs_free_pcluster(container_of(head,
+-			struct z_erofs_pcluster, rcu));
++	z_erofs_free_pcluster(container_of(head, struct z_erofs_pcluster, rcu));
+ }
+ 
+ static bool __erofs_try_to_release_pcluster(struct erofs_sb_info *sbi,
+@@ -909,8 +898,7 @@ static bool erofs_try_to_release_pcluster(struct erofs_sb_info *sbi,
+ 	return free;
+ }
+ 
+-unsigned long z_erofs_shrink_scan(struct erofs_sb_info *sbi,
+-				  unsigned long nr_shrink)
++unsigned long z_erofs_shrink_scan(struct erofs_sb_info *sbi, unsigned long nr)
+ {
+ 	struct z_erofs_pcluster *pcl;
+ 	unsigned long index, freed = 0;
+@@ -923,7 +911,7 @@ unsigned long z_erofs_shrink_scan(struct erofs_sb_info *sbi,
+ 		xa_unlock(&sbi->managed_pslots);
+ 
+ 		++freed;
+-		if (!--nr_shrink)
++		if (!--nr)
+ 			return freed;
+ 		xa_lock(&sbi->managed_pslots);
+ 	}
+@@ -952,7 +940,7 @@ static void z_erofs_put_pcluster(struct erofs_sb_info *sbi,
+ 		call_rcu(&pcl->rcu, z_erofs_rcu_callback);
+ }
+ 
+-static void z_erofs_pcluster_end(struct z_erofs_decompress_frontend *fe)
++static void z_erofs_pcluster_end(struct z_erofs_frontend *fe)
+ {
+ 	struct z_erofs_pcluster *pcl = fe->pcl;
+ 
+@@ -965,13 +953,9 @@ static void z_erofs_pcluster_end(struct z_erofs_decompress_frontend *fe)
+ 	if (fe->candidate_bvpage)
+ 		fe->candidate_bvpage = NULL;
+ 
+-	/*
+-	 * if all pending pages are added, don't hold its reference
+-	 * any longer if the pcluster isn't hosted by ourselves.
+-	 */
++	/* Drop refcount if it doesn't belong to our processing chain */
+ 	if (fe->mode < Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE)
+ 		z_erofs_put_pcluster(EROFS_I_SB(fe->inode), pcl, false);
+-
+ 	fe->pcl = NULL;
+ }
+ 
+@@ -1000,7 +984,7 @@ static int z_erofs_read_fragment(struct super_block *sb, struct folio *folio,
+ 	return 0;
+ }
+ 
+-static int z_erofs_scan_folio(struct z_erofs_decompress_frontend *f,
++static int z_erofs_scan_folio(struct z_erofs_frontend *f,
+ 			      struct folio *folio, bool ra)
+ {
+ 	struct inode *const inode = f->inode;
+@@ -1113,7 +1097,7 @@ static bool z_erofs_page_is_invalidated(struct page *page)
+ 	return !page_folio(page)->mapping && !z_erofs_is_shortlived_page(page);
+ }
+ 
+-struct z_erofs_decompress_backend {
++struct z_erofs_backend {
+ 	struct page *onstack_pages[Z_EROFS_ONSTACK_PAGES];
+ 	struct super_block *sb;
+ 	struct z_erofs_pcluster *pcl;
+@@ -1134,7 +1118,7 @@ struct z_erofs_bvec_item {
+ 	struct list_head list;
+ };
+ 
+-static void z_erofs_do_decompressed_bvec(struct z_erofs_decompress_backend *be,
++static void z_erofs_do_decompressed_bvec(struct z_erofs_backend *be,
+ 					 struct z_erofs_bvec *bvec)
+ {
+ 	int poff = bvec->offset + be->pcl->pageofs_out;
+@@ -1159,8 +1143,7 @@ static void z_erofs_do_decompressed_bvec(struct z_erofs_decompress_backend *be,
+ 	list_add(&item->list, &be->decompressed_secondary_bvecs);
+ }
+ 
+-static void z_erofs_fill_other_copies(struct z_erofs_decompress_backend *be,
+-				      int err)
++static void z_erofs_fill_other_copies(struct z_erofs_backend *be, int err)
+ {
+ 	unsigned int off0 = be->pcl->pageofs_out;
+ 	struct list_head *p, *n;
+@@ -1201,7 +1184,7 @@ static void z_erofs_fill_other_copies(struct z_erofs_decompress_backend *be,
+ 	}
+ }
+ 
+-static void z_erofs_parse_out_bvecs(struct z_erofs_decompress_backend *be)
++static void z_erofs_parse_out_bvecs(struct z_erofs_backend *be)
+ {
+ 	struct z_erofs_pcluster *pcl = be->pcl;
+ 	struct z_erofs_bvec_iter biter;
+@@ -1226,8 +1209,7 @@ static void z_erofs_parse_out_bvecs(struct z_erofs_decompress_backend *be)
+ 		z_erofs_put_shortlivedpage(be->pagepool, old_bvpage);
+ }
+ 
+-static int z_erofs_parse_in_bvecs(struct z_erofs_decompress_backend *be,
+-				  bool *overlapped)
++static int z_erofs_parse_in_bvecs(struct z_erofs_backend *be, bool *overlapped)
+ {
+ 	struct z_erofs_pcluster *pcl = be->pcl;
+ 	unsigned int pclusterpages = z_erofs_pclusterpages(pcl);
+@@ -1262,8 +1244,7 @@ static int z_erofs_parse_in_bvecs(struct z_erofs_decompress_backend *be,
+ 	return err;
+ }
+ 
+-static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
+-				       int err)
++static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, int err)
+ {
+ 	struct erofs_sb_info *const sbi = EROFS_SB(be->sb);
+ 	struct z_erofs_pcluster *pcl = be->pcl;
+@@ -1392,7 +1373,7 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
+ static int z_erofs_decompress_queue(const struct z_erofs_decompressqueue *io,
+ 				    struct page **pagepool)
+ {
+-	struct z_erofs_decompress_backend be = {
++	struct z_erofs_backend be = {
+ 		.sb = io->sb,
+ 		.pagepool = pagepool,
+ 		.decompressed_secondary_bvecs =
+@@ -1470,7 +1451,7 @@ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
+ }
+ 
+ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+-				 struct z_erofs_decompress_frontend *f,
++				 struct z_erofs_frontend *f,
+ 				 struct z_erofs_pcluster *pcl,
+ 				 unsigned int nr,
+ 				 struct address_space *mc)
+@@ -1649,7 +1630,7 @@ static void z_erofs_endio(struct bio *bio)
+ 		bio_put(bio);
+ }
+ 
+-static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
++static void z_erofs_submit_queue(struct z_erofs_frontend *f,
+ 				 struct z_erofs_decompressqueue *fgq,
+ 				 bool *force_fg, bool readahead)
+ {
+@@ -1782,17 +1763,16 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 	z_erofs_decompress_kickoff(q[JQ_SUBMIT], nr_bios);
+ }
+ 
+-static int z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
+-			    unsigned int ra_folios)
++static int z_erofs_runqueue(struct z_erofs_frontend *f, unsigned int rapages)
+ {
+ 	struct z_erofs_decompressqueue io[NR_JOBQUEUES];
+ 	struct erofs_sb_info *sbi = EROFS_I_SB(f->inode);
+-	bool force_fg = z_erofs_is_sync_decompress(sbi, ra_folios);
++	bool force_fg = z_erofs_is_sync_decompress(sbi, rapages);
+ 	int err;
+ 
+ 	if (f->head == Z_EROFS_PCLUSTER_TAIL)
+ 		return 0;
+-	z_erofs_submit_queue(f, io, &force_fg, !!ra_folios);
++	z_erofs_submit_queue(f, io, &force_fg, !!rapages);
+ 
+ 	/* handle bypass queue (no i/o pclusters) immediately */
+ 	err = z_erofs_decompress_queue(&io[JQ_BYPASS], &f->pagepool);
+@@ -1810,7 +1790,7 @@ static int z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
+  * Since partial uptodate is still unimplemented for now, we have to use
+  * approximate readmore strategies as a start.
+  */
+-static void z_erofs_pcluster_readmore(struct z_erofs_decompress_frontend *f,
++static void z_erofs_pcluster_readmore(struct z_erofs_frontend *f,
+ 		struct readahead_control *rac, bool backmost)
+ {
+ 	struct inode *inode = f->inode;
+@@ -1865,12 +1845,10 @@ static void z_erofs_pcluster_readmore(struct z_erofs_decompress_frontend *f,
+ static int z_erofs_read_folio(struct file *file, struct folio *folio)
+ {
+ 	struct inode *const inode = folio->mapping->host;
+-	struct z_erofs_decompress_frontend f = DECOMPRESS_FRONTEND_INIT(inode);
++	Z_EROFS_DEFINE_FRONTEND(f, inode, folio_pos(folio));
+ 	int err;
+ 
+ 	trace_erofs_read_folio(folio, false);
+-	f.headoffset = (erofs_off_t)folio->index << PAGE_SHIFT;
+-
+ 	z_erofs_pcluster_readmore(&f, NULL, true);
+ 	err = z_erofs_scan_folio(&f, folio, false);
+ 	z_erofs_pcluster_readmore(&f, NULL, false);
+@@ -1890,17 +1868,14 @@ static int z_erofs_read_folio(struct file *file, struct folio *folio)
+ static void z_erofs_readahead(struct readahead_control *rac)
+ {
+ 	struct inode *const inode = rac->mapping->host;
+-	struct z_erofs_decompress_frontend f = DECOMPRESS_FRONTEND_INIT(inode);
++	Z_EROFS_DEFINE_FRONTEND(f, inode, readahead_pos(rac));
+ 	struct folio *head = NULL, *folio;
+-	unsigned int nr_folios;
++	unsigned int nrpages = readahead_count(rac);
+ 	int err;
+ 
+-	f.headoffset = readahead_pos(rac);
+-
+ 	z_erofs_pcluster_readmore(&f, rac, true);
+-	nr_folios = readahead_count(rac);
+-	trace_erofs_readpages(inode, readahead_index(rac), nr_folios, false);
+-
++	nrpages = readahead_count(rac);
++	trace_erofs_readpages(inode, readahead_index(rac), nrpages, false);
+ 	while ((folio = readahead_folio(rac))) {
+ 		folio->private = head;
+ 		head = folio;
+@@ -1919,7 +1894,7 @@ static void z_erofs_readahead(struct readahead_control *rac)
+ 	z_erofs_pcluster_readmore(&f, rac, false);
+ 	z_erofs_pcluster_end(&f);
+ 
+-	(void)z_erofs_runqueue(&f, nr_folios);
++	(void)z_erofs_runqueue(&f, nrpages);
+ 	erofs_put_metabuf(&f.map.buf);
+ 	erofs_release_pages(&f.pagepool);
+ }
+-- 
+2.39.5
+
 
 
 
