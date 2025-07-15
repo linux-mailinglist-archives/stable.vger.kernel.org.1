@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D361BB05BE5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA0CB05D54
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 298AB5661E5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:24:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EEC8169DA9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6772E3387;
-	Tue, 15 Jul 2025 13:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B9D2E49AE;
+	Tue, 15 Jul 2025 13:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zH5g48Xi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uORZBTwt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF3F2566;
-	Tue, 15 Jul 2025 13:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F458263F52;
+	Tue, 15 Jul 2025 13:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585824; cv=none; b=TkYQgT9NJL1GY+8IuuuMZakqHJ+N5XaoQGU6ZFBLFQhBjF6J+0cWy94LsuQErjxGTy/PbhD7Tgv0sNKeF8x3lWkL26Ece6hx9sU7dCif3fw/tvUulT1CT3yCRZj/FcKfPwwPPz+BO/ZjYS/2a9zhoxKMQ+YUXlL3Q/WPqZBjuZE=
+	t=1752586444; cv=none; b=iOo3N++XbmFba3MiQnXT+ZbjI73VSXbHq+dNnk6k59gAJcMsBnfvAkkAiWlon2M7IF51t/uSo9kJrOfdONCp95Yc5AsjwLVfXmeD+bxjfP/OVYZArIejyXC81OCmdnhLtZarmEEa8rTFTHdkaEPbiUy1XOxm9jyFgx5h3fY9Uso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585824; c=relaxed/simple;
-	bh=HJcoTHWiXeqfhbhiuR1ucu2glGakwNrbTHH+e0VB9t8=;
+	s=arc-20240116; t=1752586444; c=relaxed/simple;
+	bh=eMTpvC7zePaSRkrTxNWBuKY/oWoexqymR+N0vZ8UkBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxrmRkBsKyBhLfsh7MR6aAWtqGn63Gy4P9dJQ/qR+CFTSfD8B4X+mEJgMeAhdvuDC7+JYhJphMZ8udV0UrAfWrAfI1CFk/tPQ6SXVXm5EnZYWZWMWJ0r3oEWWhBWHk+YLePNL1VyFBLd94WbhdsVNnUycMjFJ4GVEb29NvRI8ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zH5g48Xi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63CEAC4CEE3;
-	Tue, 15 Jul 2025 13:23:44 +0000 (UTC)
+	 MIME-Version; b=iZ5PNl2Y03Gj8YgEcqyjSfRhl2zkMLzC273R0L0dX3UJUvh1mVKs17ltDDgufY8pwndI2AZAW8v+Fo4oLhiuxBKPnE9CowPrd6oz5UT4C6VJzmdlRVstkH7KWPPZr7NjTiZ4twMmy/72dsR83vR2JrhGaNTfBg9eM/2kFfLm/1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uORZBTwt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EDBC4CEE3;
+	Tue, 15 Jul 2025 13:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585824;
-	bh=HJcoTHWiXeqfhbhiuR1ucu2glGakwNrbTHH+e0VB9t8=;
+	s=korg; t=1752586444;
+	bh=eMTpvC7zePaSRkrTxNWBuKY/oWoexqymR+N0vZ8UkBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zH5g48Xi9EZPzlapEOHfl8REUY6kWPnrEihNJFxwx46oXRyoxgIaaqJUgNAUtYtsl
-	 jA8g8bJw2ID33MFA20vmU/cve478ATzIX1JPVN6YhsONGODjGewNMfBcIZhoJ2hwg3
-	 8se2LMnuT2g1aBjVrTWA3xclr1PPiodMYNXTHsl8=
+	b=uORZBTwtuP1TV7t7EFa2AIb14xkgRuH0PokdDCyjn9jy0e5PwgJ2Y3DIwJ28SxOyG
+	 D/5Lu7hxXis9iU4yhkN1LuEUzUEacZxgArr9YMwVrWxmntQB8OTwcrEsA/S8F6ul5k
+	 2umF9kEkFqhoHNJaHPdq555CTtWODeO9Ep6zgxj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/109] atm: clip: Fix potential null-ptr-deref in to_atmarpd().
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.4 036/148] i2c: robotfuzz-osif: disable zero-length read messages
 Date: Tue, 15 Jul 2025 15:12:38 +0200
-Message-ID: <20250715130759.769957896@linuxfoundation.org>
+Message-ID: <20250715130801.759943812@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 706cc36477139c1616a9b2b96610a8bb520b7119 ]
+commit 56ad91c1aa9c18064348edf69308080b03c9dc48 upstream.
 
-atmarpd is protected by RTNL since commit f3a0592b37b8 ("[ATM]: clip
-causes unregister hang").
+This driver passes the length of an i2c_msg directly to
+usb_control_msg(). If the message is now a read and of length 0, it
+violates the USB protocol and a warning will be printed. Enable the
+I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
+read messages altogether.
 
-However, it is not enough because to_atmarpd() is called without RTNL,
-especially clip_neigh_solicit() / neigh_ops->solicit() is unsleepable.
-
-Also, there is no RTNL dependency around atmarpd.
-
-Let's use a private mutex and RCU to protect access to atmarpd in
-to_atmarpd().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250704062416.1613927-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 83e53a8f120f ("i2c: Add bus driver for for OSIF USB i2c device.")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: <stable@vger.kernel.org> # v3.14+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250522064234.3721-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/atm/clip.c | 44 +++++++++++++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 15 deletions(-)
+ drivers/i2c/busses/i2c-robotfuzz-osif.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 511467bb7fe40..8059b7d1fb931 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -45,7 +45,8 @@
- #include <net/atmclip.h>
- 
- static struct net_device *clip_devs;
--static struct atm_vcc *atmarpd;
-+static struct atm_vcc __rcu *atmarpd;
-+static DEFINE_MUTEX(atmarpd_lock);
- static struct timer_list idle_timer;
- static const struct neigh_ops clip_neigh_ops;
- 
-@@ -53,24 +54,35 @@ static int to_atmarpd(enum atmarp_ctrl_type type, int itf, __be32 ip)
- {
- 	struct sock *sk;
- 	struct atmarp_ctrl *ctrl;
-+	struct atm_vcc *vcc;
- 	struct sk_buff *skb;
-+	int err = 0;
- 
- 	pr_debug("(%d)\n", type);
--	if (!atmarpd)
--		return -EUNATCH;
-+
-+	rcu_read_lock();
-+	vcc = rcu_dereference(atmarpd);
-+	if (!vcc) {
-+		err = -EUNATCH;
-+		goto unlock;
-+	}
- 	skb = alloc_skb(sizeof(struct atmarp_ctrl), GFP_ATOMIC);
--	if (!skb)
--		return -ENOMEM;
-+	if (!skb) {
-+		err = -ENOMEM;
-+		goto unlock;
-+	}
- 	ctrl = skb_put(skb, sizeof(struct atmarp_ctrl));
- 	ctrl->type = type;
- 	ctrl->itf_num = itf;
- 	ctrl->ip = ip;
--	atm_force_charge(atmarpd, skb->truesize);
-+	atm_force_charge(vcc, skb->truesize);
- 
--	sk = sk_atm(atmarpd);
-+	sk = sk_atm(vcc);
- 	skb_queue_tail(&sk->sk_receive_queue, skb);
- 	sk->sk_data_ready(sk);
--	return 0;
-+unlock:
-+	rcu_read_unlock();
-+	return err;
+--- a/drivers/i2c/busses/i2c-robotfuzz-osif.c
++++ b/drivers/i2c/busses/i2c-robotfuzz-osif.c
+@@ -111,6 +111,11 @@ static u32 osif_func(struct i2c_adapter
+ 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
  }
  
- static void link_vcc(struct clip_vcc *clip_vcc, struct atmarp_entry *entry)
-@@ -607,10 +619,12 @@ static void atmarpd_close(struct atm_vcc *vcc)
- {
- 	pr_debug("\n");
- 
--	rtnl_lock();
--	atmarpd = NULL;
-+	mutex_lock(&atmarpd_lock);
-+	RCU_INIT_POINTER(atmarpd, NULL);
-+	mutex_unlock(&atmarpd_lock);
++/* prevent invalid 0-length usb_control_msg */
++static const struct i2c_adapter_quirks osif_quirks = {
++	.flags = I2C_AQ_NO_ZERO_LEN_READ,
++};
 +
-+	synchronize_rcu();
- 	skb_queue_purge(&sk_atm(vcc)->sk_receive_queue);
--	rtnl_unlock();
+ static const struct i2c_algorithm osif_algorithm = {
+ 	.master_xfer	= osif_xfer,
+ 	.functionality	= osif_func,
+@@ -143,6 +148,7 @@ static int osif_probe(struct usb_interfa
  
- 	pr_debug("(done)\n");
- 	module_put(THIS_MODULE);
-@@ -631,15 +645,15 @@ static struct atm_dev atmarpd_dev = {
- 
- static int atm_init_atmarp(struct atm_vcc *vcc)
- {
--	rtnl_lock();
-+	mutex_lock(&atmarpd_lock);
- 	if (atmarpd) {
--		rtnl_unlock();
-+		mutex_unlock(&atmarpd_lock);
- 		return -EADDRINUSE;
- 	}
- 
- 	mod_timer(&idle_timer, jiffies + CLIP_CHECK_INTERVAL * HZ);
- 
--	atmarpd = vcc;
-+	rcu_assign_pointer(atmarpd, vcc);
- 	set_bit(ATM_VF_META, &vcc->flags);
- 	set_bit(ATM_VF_READY, &vcc->flags);
- 	    /* allow replies and avoid getting closed if signaling dies */
-@@ -648,7 +662,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
- 	vcc->push = NULL;
- 	vcc->pop = NULL; /* crash */
- 	vcc->push_oam = NULL; /* crash */
--	rtnl_unlock();
-+	mutex_unlock(&atmarpd_lock);
- 	return 0;
- }
- 
--- 
-2.39.5
-
+ 	priv->adapter.owner = THIS_MODULE;
+ 	priv->adapter.class = I2C_CLASS_HWMON;
++	priv->adapter.quirks = &osif_quirks;
+ 	priv->adapter.algo = &osif_algorithm;
+ 	priv->adapter.algo_data = priv;
+ 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
 
 
 
