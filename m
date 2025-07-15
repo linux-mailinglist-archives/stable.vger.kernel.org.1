@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1861EB05F4D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53CD1B05F55
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 232427BC928
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 083151C454CB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0D82EACE3;
-	Tue, 15 Jul 2025 13:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AA32ECEAB;
+	Tue, 15 Jul 2025 13:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMaKTY9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mj/tRcQ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889082E6D0E;
-	Tue, 15 Jul 2025 13:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C152EF65C;
+	Tue, 15 Jul 2025 13:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587426; cv=none; b=P7dJjGGcjglBY/fG3bXOBAWC+qRY/ioIUoxn/oMamS3HSsSzAvw5IO2qVfPUidFBlEQsImPErAUyl38TbJAxePbLn7+Klc2kp3JS9VruAb+UBNicetRMIsovsql1+gPd9xLbWY79gPdk75IKIxNuGS+AiR2LfHJAPom6LDoQA5w=
+	t=1752587187; cv=none; b=H2np/8Qu3P/7mhH1dVynW/xBPhiSvajwv+FaDZbxBQaSGbW0sRYYzSjhKNb++mQCmL9TnOsXyQ7Lgd3l1rrupXgzc008Tee4p4A9nfsAxotFj7zwcph9/MylxYP1g7RqiWlfIt/++f9c26rx5/BwpXauOL7T6mZcZepV5f6tFj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587426; c=relaxed/simple;
-	bh=5GFec4ugs8+uvSCnN+kfSuxzjdH0yWITrWK4GlZp2QI=;
+	s=arc-20240116; t=1752587187; c=relaxed/simple;
+	bh=rjQpVgcrU0aOojY2DtM5IBPQZPdMUtqCYSlZepI9XQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3vRIimPIkuztjHUlx4dmXTvfjvAFO0eocVDbQiiQBy9iVxsWduBxlSfBRnhNY2u8RS5mfe3ptIereqnp/URZhw8q08qwAcUc8sgDnze4jQCUfCvRfrWiybAIPGMVO8u9uiKg6p00Kv0HOjHexqxGoEWVRC/dSVTt7qX3Xz+l1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMaKTY9X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAB4C4CEE3;
-	Tue, 15 Jul 2025 13:50:25 +0000 (UTC)
+	 MIME-Version; b=sHLljJsCR1UDY0Vd0XijwrVLRpxDFOuAjrdoswyXJ8L5mjcgacL9/AorhOMy7wbQ7heiIA75HzbvRTWLIufbLvZWo1DwYLXZsvuAjdsYff9U1QAcbaEsQbIn6hkFi8Em8rhJirKkKtB7vxytU0YLHBOrbccWxP7BkJCgjHlQtP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mj/tRcQ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF292C4CEE3;
+	Tue, 15 Jul 2025 13:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587426;
-	bh=5GFec4ugs8+uvSCnN+kfSuxzjdH0yWITrWK4GlZp2QI=;
+	s=korg; t=1752587187;
+	bh=rjQpVgcrU0aOojY2DtM5IBPQZPdMUtqCYSlZepI9XQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMaKTY9XP/dm+97LmuqsTjf1GkHGbovDY/gY3Y/3/Ivbd/DrnroLvGiavZqjroxho
-	 L2GFwiiDUIDdvzGn64O6SpRkV21S96lONiDD4dDMZT8sAoPHi45Hc25KjMrqAo8IKj
-	 27w+5npYo9G19AQiaagkD+GuBDnVzvGi6pmGH8/o=
+	b=mj/tRcQ/zdudN05p/TlS/Xp/R00phNaihDwdjBlyQIZ6zkGhjMsupZ7WymcDmLQg2
+	 KUS+RuguhuCsTrtetioNce5JiHDHWZT3mixeYxWQj7CAGKkeI+1VXcpY/4yJ/c/Er/
+	 AmQpaCJbuXP9mq0XeYrSfOSwu76PqJ2uW1Jds7g4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 70/88] net: ll_temac: Fix missing tx_pending check in ethtools_set_ringparam()
-Date: Tue, 15 Jul 2025 15:14:46 +0200
-Message-ID: <20250715130757.380327109@linuxfoundation.org>
+	Ziyan Xu <research@securitygossip.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.15 192/192] ksmbd: fix potential use-after-free in oplock/lease break ack
+Date: Tue, 15 Jul 2025 15:14:47 +0200
+Message-ID: <20250715130822.629147906@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit e81750b4e3826fedce7362dad839cb40384d60ae ]
+commit 50f930db22365738d9387c974416f38a06e8057e upstream.
 
-The function ll_temac_ethtools_set_ringparam() incorrectly checked
-rx_pending twice, once correctly for RX and once mistakenly in place
-of tx_pending. This caused tx_pending to be left unchecked against
-TX_BD_NUM_MAX.
-As a result, invalid TX ring sizes may have been accepted or valid
-ones wrongly rejected based on the RX limit, leading to potential
-misconfiguration or unexpected results.
+If ksmbd_iov_pin_rsp return error, use-after-free can happen by
+accessing opinfo->state and opinfo_put and ksmbd_fd_put could
+called twice.
 
-This patch corrects the condition to properly validate tx_pending.
-
-Fixes: f7b261bfc35e ("net: ll_temac: Make RX/TX ring sizes configurable")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250710180621.2383000-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Ziyan Xu <research@securitygossip.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/ll_temac_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |   29 +++++++++--------------------
+ 1 file changed, 9 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
-index 08c45756b2181..d9b5c1c6ceaa2 100644
---- a/drivers/net/ethernet/xilinx/ll_temac_main.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
-@@ -1311,7 +1311,7 @@ ll_temac_ethtools_set_ringparam(struct net_device *ndev,
- 	if (ering->rx_pending > RX_BD_NUM_MAX ||
- 	    ering->rx_mini_pending ||
- 	    ering->rx_jumbo_pending ||
--	    ering->rx_pending > TX_BD_NUM_MAX)
-+	    ering->tx_pending > TX_BD_NUM_MAX)
- 		return -EINVAL;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -8535,11 +8535,6 @@ static void smb20_oplock_break_ack(struc
+ 		goto err_out;
+ 	}
  
- 	if (netif_running(ndev))
--- 
-2.39.5
-
+-	opinfo->op_state = OPLOCK_STATE_NONE;
+-	wake_up_interruptible_all(&opinfo->oplock_q);
+-	opinfo_put(opinfo);
+-	ksmbd_fd_put(work, fp);
+-
+ 	rsp->StructureSize = cpu_to_le16(24);
+ 	rsp->OplockLevel = rsp_oplevel;
+ 	rsp->Reserved = 0;
+@@ -8547,16 +8542,15 @@ static void smb20_oplock_break_ack(struc
+ 	rsp->VolatileFid = volatile_id;
+ 	rsp->PersistentFid = persistent_id;
+ 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_oplock_break));
+-	if (!ret)
+-		return;
+-
++	if (ret) {
+ err_out:
++		smb2_set_err_rsp(work);
++	}
++
+ 	opinfo->op_state = OPLOCK_STATE_NONE;
+ 	wake_up_interruptible_all(&opinfo->oplock_q);
+-
+ 	opinfo_put(opinfo);
+ 	ksmbd_fd_put(work, fp);
+-	smb2_set_err_rsp(work);
+ }
+ 
+ static int check_lease_state(struct lease *lease, __le32 req_state)
+@@ -8686,11 +8680,6 @@ static void smb21_lease_break_ack(struct
+ 	}
+ 
+ 	lease_state = lease->state;
+-	opinfo->op_state = OPLOCK_STATE_NONE;
+-	wake_up_interruptible_all(&opinfo->oplock_q);
+-	atomic_dec(&opinfo->breaking_cnt);
+-	wake_up_interruptible_all(&opinfo->oplock_brk);
+-	opinfo_put(opinfo);
+ 
+ 	rsp->StructureSize = cpu_to_le16(36);
+ 	rsp->Reserved = 0;
+@@ -8699,16 +8688,16 @@ static void smb21_lease_break_ack(struct
+ 	rsp->LeaseState = lease_state;
+ 	rsp->LeaseDuration = 0;
+ 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_lease_ack));
+-	if (!ret)
+-		return;
+-
++	if (ret) {
+ err_out:
++		smb2_set_err_rsp(work);
++	}
++
++	opinfo->op_state = OPLOCK_STATE_NONE;
+ 	wake_up_interruptible_all(&opinfo->oplock_q);
+ 	atomic_dec(&opinfo->breaking_cnt);
+ 	wake_up_interruptible_all(&opinfo->oplock_brk);
+-
+ 	opinfo_put(opinfo);
+-	smb2_set_err_rsp(work);
+ }
+ 
+ /**
 
 
 
