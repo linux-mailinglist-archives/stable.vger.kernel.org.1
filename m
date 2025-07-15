@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461B5B05B94
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E47B05EA8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5311C201B8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78C4C4E7732
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21D92E175D;
-	Tue, 15 Jul 2025 13:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D762E612F;
+	Tue, 15 Jul 2025 13:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDutsMLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6ShzhA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FDE2C327B;
-	Tue, 15 Jul 2025 13:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3362D29C2;
+	Tue, 15 Jul 2025 13:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585714; cv=none; b=Jsn5qzjqovaL/OAQbS+xEM0NKK5DOlRBavA+/CKGupa81pqqTGklFgTbG1JZvl5PEfL5aUMYgY/ebvMSC2Z8R1eYJ+mcQ2IRHuZmd4hwo1EVjCX1dahSD5XaTNeNQCaUMG9ZwuNczV4F6UcI+fPHhrY5eEv+ls+B2olmMUSZL0Q=
+	t=1752586973; cv=none; b=Vw768/mRT1W0oCVqXXLBydGo+dtDx2jeFmCzaRL36/hMxGonvCKaEsZjEfJnK4LikaBCWwQoDzj/bsLHfvpUmC/WdtQgok71RztUny38dEJIBEu1I1+oDaXwV4MB0gtrOIX97YkxoW+ApL5EHe8Eh1QG8W+dIq513cm2QIk7nkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585714; c=relaxed/simple;
-	bh=JNQIOTpAbKI1hKo5u5uf3tYolwTTNxKX0S7k2GDrVYk=;
+	s=arc-20240116; t=1752586973; c=relaxed/simple;
+	bh=hKg/aZabzfj8RR9wrRNhBokydPYxIUNTkmNEXvbS9sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTTPpQnV/ihbTu91O9fgQcAV3PJyX0P0PdQdEyugCCP9Npfg/F+moDh/ZOBLy9NYub+TNUfoX81s6jC/OSmFHEok7GBU1JrASryOf3thc/+XaRPpsfVUBrtLaVIRnMTT2jb+Ni1h/gEuxsIV1zgDknUfVUW1i3U07LrQ/273Kcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDutsMLx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447A6C4CEE3;
-	Tue, 15 Jul 2025 13:21:54 +0000 (UTC)
+	 MIME-Version; b=YsK1dcc5mhEqR/N61kNjSuWBl4/cCOkIRLrK1JMKXSBKvooooErlEGTElFf+5LkCzSn71zVpKnruA94NKiRodgmmOEinNh1gMYzpK8ekSoQbUThSoBwJbaZGS2TD7Ny3k8xVB7FYneXxm7KPIjdjJw+sa4YZmYAMbIKqNAYBH5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6ShzhA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FACFC4CEE3;
+	Tue, 15 Jul 2025 13:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585714;
-	bh=JNQIOTpAbKI1hKo5u5uf3tYolwTTNxKX0S7k2GDrVYk=;
+	s=korg; t=1752586973;
+	bh=hKg/aZabzfj8RR9wrRNhBokydPYxIUNTkmNEXvbS9sA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDutsMLxvWGkTSxAIEcozciZ6n8IRwM+nIq7C1dX6lLIIxAw2QUbpVSuNgzkveJ1+
-	 G96/gkslyd9NISp34xZulg9AdtMFI0DCO+f19e1sEMHUzsgZYMRLPzJ53DFKRBUb7k
-	 Vri3i+bLE7xRWnySudYvGtmVuQSBRECYmXyJBH3o=
+	b=v6ShzhA+bO0FsxlqlyKsbzaywrqxOUuXpORyvnjwF62CLT6QyZXqid72XuwTVaetj
+	 UbpmGRJpS3DPSK31sORm9dvPccs6pZHG8eyFz3Lw3ZO2b4zkubgfk4HkHzMbBg9TTa
+	 wD6RBgprHAxE9F2nmd+CwQPX6pPV55AlcKwQ9n68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuzuru <yuzuru_10@proton.me>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 144/163] ASoC: amd: yc: add quirk for Acer Nitro ANV15-41 internal mic
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Julien Massot <julien.massot@collabora.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.15 117/192] dt-bindings: clock: mediatek: Add #reset-cells property for MT8188
 Date: Tue, 15 Jul 2025 15:13:32 +0200
-Message-ID: <20250715130814.610645391@linuxfoundation.org>
+Message-ID: <20250715130819.583914581@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuzuru10 <yuzuru_10@proton.me>
+From: Julien Massot <julien.massot@collabora.com>
 
-[ Upstream commit 7186b81807b4a08f8bf834b6bdc72d6ed8ba1587 ]
+commit a42b4dcc4f9f309a23e6de5ae57a680b9fd2ea10 upstream.
 
-This patch adds DMI-based quirk for the Acer Nitro ANV15-41,
-allowing the internal microphone to be detected correctly on
-machines with "RB" as board vendor.
+The '#reset-cells' property is permitted for some of the MT8188
+clock controllers, but not listed as a valid property.
 
-Signed-off-by: Yuzuru <yuzuru_10@proton.me>
-Link: https://patch.msgid.link/20250622225754.20856-1-yuzuru_10@proton.me
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9a5cd59640ac ("dt-bindings: clock: mediatek: Add SMI LARBs reset for MT8188")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Julien Massot <julien.massot@collabora.com>
+Link: https://lore.kernel.org/r/20250516-dtb-check-mt8188-v2-1-fb60bef1b8e1@collabora.com
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../devicetree/bindings/clock/mediatek,mt8188-clock.yaml       | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 723cb7bc12851..1689b6b22598e 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -346,6 +346,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "RB"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Nitro ANV15-41"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/Documentation/devicetree/bindings/clock/mediatek,mt8188-clock.yaml b/Documentation/devicetree/bindings/clock/mediatek,mt8188-clock.yaml
+index 2985c8c717d7..5403242545ab 100644
+--- a/Documentation/devicetree/bindings/clock/mediatek,mt8188-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/mediatek,mt8188-clock.yaml
+@@ -52,6 +52,9 @@ properties:
+   '#clock-cells':
+     const: 1
+ 
++  '#reset-cells':
++    const: 1
++
+ required:
+   - compatible
+   - reg
 -- 
-2.39.5
+2.50.1
 
 
 
