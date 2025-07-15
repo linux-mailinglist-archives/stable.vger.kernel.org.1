@@ -1,192 +1,245 @@
-Return-Path: <stable+bounces-163043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CE5B0691F
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 00:13:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFEA1B06940
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 00:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8223A3B2B59
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 22:12:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE70117B8AB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 22:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDBA2C159E;
-	Tue, 15 Jul 2025 22:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B1B2C1780;
+	Tue, 15 Jul 2025 22:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iBj6oZO3"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CCd9qaGU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37B22C08A2;
-	Tue, 15 Jul 2025 22:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4092741BC;
+	Tue, 15 Jul 2025 22:27:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752617602; cv=none; b=YodCUKOruTa+u0/ahnMZNLjyB44RqxYlNS9fG0bgC99HU+VyAxECc0so6E6PyUff3/Dzjr7ghbmsy9iBbdquM9ej2YqLf5fV3nvXq4VXYUTJ1OwDXVVUO1nmnc1xfVooMIX/nTQS34L0I/JuvSqI1qqzYYw/S+2JBMY7TANbulE=
+	t=1752618479; cv=none; b=GYdk3Zlz/vXo9ZwZUbvzKikXngrtEzG7PNW3Rz5eL6xG5o7Wzzc6oZcZvSXE/lHry7w8IeXp2VaSRHgv7JQzUsbH5tzOhgjQ5RrHQgrwFgouh4KqGEUkvLWzNE47Wpl6UJPbiL0zCWkQU9sAQb525663z5+mammcD0XnsRuf0A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752617602; c=relaxed/simple;
-	bh=Fibqw7NKYELDKQtz72tP8YYOcVBwgtPgzVnymvMd7mM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MZEd4qJdn9biEH9XnVvo5FhOU8BEkALhbZsCte0u4sg7hyVudiy73r5nXygLPaBqQL0pqQllD7CVzlZysHfPHM5CCwNbBlsPY3dwovk24QFgGNApICWfuJZ+38xwyQWR4ofMvQGy3e0DeoAaa9aYvO1TsIzSmiXHGP84BcGS03M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iBj6oZO3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98E3C4CEE3;
-	Tue, 15 Jul 2025 22:13:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752617601;
-	bh=Fibqw7NKYELDKQtz72tP8YYOcVBwgtPgzVnymvMd7mM=;
-	h=From:Date:Subject:To:Cc:From;
-	b=iBj6oZO3pIXzFuaWEpWUH/0a/iYuiV4f4IoVpfnAj6bG/Lvvslhb0xim78aUSKXY9
-	 QtUg13/mZGzfNqdnFg3ynd7Ao/u9taJ56cPG/5EAiWPs+8qUTDJGejuktRSKNV8ykU
-	 L/JeUmrWlb6OnVEJEi4eYrfUEZuthawEnxCB//AsVchometCyiLDIeDeYcs9Lx7qx0
-	 To8wihsfcN8ta0qpjwSCK35dokeSZ4o90d7dWuLcwaPcokTQIu61ChrY0LvXcUF6Fi
-	 iaEQYjZ5S4y7LSJD+Kn1XLkBXndYnltXiLaGx+mbP51IIRTbgstnIYyCVgwYhz8lXv
-	 eIbt0Gv8LlJeA==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 15 Jul 2025 15:13:07 -0700
-Subject: [PATCH] media: s5p-mfc: Always pass NULL to
- s5p_mfc_cmd_host2risc_v6()
+	s=arc-20240116; t=1752618479; c=relaxed/simple;
+	bh=ocGQa01go6Kb79d/4JBGL0Wx9SVjLqUNyavQbgjutQ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oXt7K7XO2NiilnKTrc3Vj9Eo3e/nPR7TQy2Rl56a51/sYJsrNGN5xjoy3npKNjkbl2SL8MljsUuHFYf4vpcnfmNrfSje+dURQgjxMnslvxD++YW+N1or05NXcLsayGS2FDCoUB/L10Ed0+XxEUZ/kWBo1+/Drqr2t2z+qZVFn9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CCd9qaGU; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56FKXgqG019158;
+	Tue, 15 Jul 2025 22:27:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=gS+/tuQy976W+RVTHE95eqQhqHkfx
+	MKnoasXRQUdi/A=; b=CCd9qaGUWakMmuH+qe6vmOhX1N+Oh41rlrUAqVU788q42
+	cgGXazXnhbjDeam0+n4HhLIZgOTqVkaZO3wgcJxjDAWhIYex8xrXY0zZggga2VDS
+	KmwPdRlJrwBIuXhzXqvYUWgnXO0hWSxS3ZGKehml8IrE88tBvi0jmIL9E+KlJKSe
+	FrQsaZn9848Lrd9Bn6k2uBUXySJQ5eMwpnO6k+KrzoNxqVQUcPVXz9GVfKBMuHls
+	w8HwbAyvvJ6Kwf3AmDABK32NDz5DG1knLGmEy1LCp0lH/FlqjnZFN6/zl8OLOAQV
+	oCHCCTA1mYJK/zsKse3OdU1hz3v7zPWtU/+1jBnuQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47ujr0ypca-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 15 Jul 2025 22:27:51 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56FLJDDJ023939;
+	Tue, 15 Jul 2025 22:27:50 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47ue5akb1n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 15 Jul 2025 22:27:50 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56FMRn6a033852;
+	Tue, 15 Jul 2025 22:27:49 GMT
+Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 47ue5akb1d-1;
+	Tue, 15 Jul 2025 22:27:49 +0000
+From: Yifei Liu <yifei.l.liu@oracle.com>
+To: yonghong.song@linux.dev, ast@kernel.org
+Cc: yifei.l.liu@oracle.com, bpf@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH linux-6.12.y 1/2] selftests/bpf: Add a test for arena range tree algorithm
+Date: Tue, 15 Jul 2025 15:27:20 -0700
+Message-ID: <20250715222721.3483220-1-yifei.l.liu@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250715-media-s5p-mfc-fix-uninit-const-pointer-v1-1-4d52b58cafe9@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAHLSdmgC/x2NQQqDMBAAvyJ7dkElobRfKT0kcWP34CZkowji3
- w0eB4aZE5QKk8KnO6HQzspJGox9B+HvZCHkuTFMw2SH12hxpZkdqs24xoCRD9yEhSuGJFoxJ5Z
- KBYOPb2McGW88tFgu1Nxn9P1d1w13Dq1leAAAAA==
-X-Change-ID: 20250715-media-s5p-mfc-fix-uninit-const-pointer-cbf944ae4b4b
-To: Marek Szyprowski <m.szyprowski@samsung.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org, 
- llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5013; i=nathan@kernel.org;
- h=from:subject:message-id; bh=Fibqw7NKYELDKQtz72tP8YYOcVBwgtPgzVnymvMd7mM=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDBlll+q/LxG+ybC9k9FkTXmXg8HNNQkprkYPl/2RvpD27
- NivBT33OkpZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEPJ8wMvSuVV6ndu5qLtuq
- b7w1Fbruej94Xof1Lbnf9NKH3fzCyyyG/1ky7zNuWxb5bL2lph/u3CvnPbFpPTtzxmSd+dPYXab
- v5AAA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-15_05,2025-07-15_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
+ mlxlogscore=999 malwarescore=0 mlxscore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2507150207
+X-Authority-Analysis: v=2.4 cv=d9T1yQjE c=1 sm=1 tr=0 ts=6876d5e7 b=1 cx=c_pps a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8 a=EwfujYzQiyYeUg5ViUcA:9
+X-Proofpoint-ORIG-GUID: jjjHXd8M7urWXTbtXFX7Jiia9FZIedbq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE1MDIwOCBTYWx0ZWRfXxKhmx2KSa29I LZSLALgfx0wYTM9jCqDrsp4h0Ji+4dnLsztuTnKwWMrRt3X6XVRh7/SQgK4rooDN0RkxYudw8nl bCQ1nqwMZvGlIphH0NILOj0dzi8qyuj5dUY+iAab88j++NoAaUZID5FTJkWLlsE7aYJuH98sZXT
+ ZoOvdM2wHhpcDqdfFvnCzTXaNhw2g7Pm4bfOlGuDogENdR/fGF5sEGlN8x5Wzjb1V5/GUJmxCeW wlPdwUJOPQTksepIUMQ5+NRapGF/OiSiucV9/XjJQTfTrZpsZaU6PaiIklgCUWYXoMpFySOryqi T/9ZxoklmsnMomh71OjgXD+Pv1FPNF7+8lX1N1D/M2HdSoxvPB5KN3IbVvJIUvoGTzidXyzIwtu
+ Djd/JHboNwAlpXS86U85bDdiNvMPPsJFWqYsyWe+BpvcDMAHiWB8LKIJylMS6wmw6Gsi65Ja
+X-Proofpoint-GUID: jjjHXd8M7urWXTbtXFX7Jiia9FZIedbq
 
-A new warning in clang [1] points out a few places in s5p_mfc_cmd_v6.c
-where an uninitialized variable is passed as a const pointer:
+From: Alexei Starovoitov <ast@kernel.org>
 
-  drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:45:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-     45 |                                         &h2r_args);
-        |                                          ^~~~~~~~
-  drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:133:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-    133 |                                         &h2r_args);
-        |                                          ^~~~~~~~
-  drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:148:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-    148 |                                         &h2r_args);
-        |                                          ^~~~~~~~
+Add a test that verifies specific behavior of arena range tree
+algorithm and adjust existing big_alloc1 test due to use
+of global data in arena.
 
-The args parameter in s5p_mfc_cmd_host2risc_v6() is never actually used,
-so just pass NULL to it in the places where h2r_args is currently
-passed, clearing up the warning and not changing the functionality of
-the code.
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/bpf/20241108025616.17625-3-alexei.starovoitov@gmail.com
+(cherry picked from commit e58358afa84e8e271a296459d35d1715c7572013)
 
-Cc: stable@vger.kernel.org
-Fixes: f96f3cfa0bb8 ("[media] s5p-mfc: Update MFC v4l2 driver to support MFC6.x")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2103
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+[Yifei: This commit fixes the failure of verifier_arena_large test over 64k page size kernels.
+This commit also introduce some new tests targeting the new feature, arena range tree algorithm,
+which is not in linux-6.12.y, I just comment out the test headers so that it would not be run here.
+If this feature is introduced later, we can just uncomment those two lines.]
+
+Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
 ---
-From what I can tell, it seems like ->cmd_host2risc() is only ever
-called from v6 code, which always passes NULL? It seems like it should
-be possible to just drop .cmd_host2risc on the v5 side, then update
-.cmd_host2risc to only take two parameters? If so, I can send a follow
-up as a clean up, so that this can go back relatively conflict free.
----
- .../platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c      | 22 +++++-----------------
- 1 file changed, 5 insertions(+), 17 deletions(-)
+ .../bpf/progs/verifier_arena_large.c          | 110 +++++++++++++++++-
+ 1 file changed, 108 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
-index 47bc3014b5d8..735471c50dbb 100644
---- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
-+++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
-@@ -31,7 +31,6 @@ static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
- 
- static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
- {
--	struct s5p_mfc_cmd_args h2r_args;
- 	const struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
- 	int ret;
- 
-@@ -41,33 +40,23 @@ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
- 
- 	mfc_write(dev, dev->ctx_buf.dma, S5P_FIMV_CONTEXT_MEM_ADDR_V6);
- 	mfc_write(dev, buf_size->dev_ctx, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
--	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6,
--					&h2r_args);
-+	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6, NULL);
+diff --git a/tools/testing/selftests/bpf/progs/verifier_arena_large.c b/tools/testing/selftests/bpf/progs/verifier_arena_large.c
+index 6065f862d964..f318675814c6 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_arena_large.c
++++ b/tools/testing/selftests/bpf/progs/verifier_arena_large.c
+@@ -29,12 +29,12 @@ int big_alloc1(void *ctx)
+ 	if (!page1)
+ 		return 1;
+ 	*page1 = 1;
+-	page2 = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE - PAGE_SIZE,
++	page2 = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE - PAGE_SIZE * 2,
+ 				      1, NUMA_NO_NODE, 0);
+ 	if (!page2)
+ 		return 2;
+ 	*page2 = 2;
+-	no_page = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE,
++	no_page = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE - PAGE_SIZE,
+ 					1, NUMA_NO_NODE, 0);
+ 	if (no_page)
+ 		return 3;
+@@ -66,4 +66,110 @@ int big_alloc1(void *ctx)
+ #endif
+ 	return 0;
  }
- 
- static int s5p_mfc_sleep_cmd_v6(struct s5p_mfc_dev *dev)
- {
--	struct s5p_mfc_cmd_args h2r_args;
--
--	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
--	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6,
--			&h2r_args);
-+	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6, NULL);
- }
- 
- static int s5p_mfc_wakeup_cmd_v6(struct s5p_mfc_dev *dev)
- {
--	struct s5p_mfc_cmd_args h2r_args;
--
--	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
--	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6,
--					&h2r_args);
-+	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6, NULL);
- }
- 
- /* Open a new instance and get its number */
- static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
- {
- 	struct s5p_mfc_dev *dev = ctx->dev;
--	struct s5p_mfc_cmd_args h2r_args;
- 	int codec_type;
- 
- 	mfc_debug(2, "Requested codec mode: %d\n", ctx->codec_mode);
-@@ -130,14 +119,13 @@ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
- 	mfc_write(dev, 0, S5P_FIMV_D_CRC_CTRL_V6); /* no crc */
- 
- 	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6,
--					&h2r_args);
-+					NULL);
- }
- 
- /* Close instance */
- static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
- {
- 	struct s5p_mfc_dev *dev = ctx->dev;
--	struct s5p_mfc_cmd_args h2r_args;
- 	int ret = 0;
- 
- 	dev->curr_ctx = ctx->num;
-@@ -145,7 +133,7 @@ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
- 		mfc_write(dev, ctx->inst_no, S5P_FIMV_INSTANCE_ID_V6);
- 		ret = s5p_mfc_cmd_host2risc_v6(dev,
- 					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6,
--					&h2r_args);
-+					NULL);
- 	} else {
- 		ret = -EINVAL;
- 	}
-
----
-base-commit: 347e9f5043c89695b01e66b3ed111755afcf1911
-change-id: 20250715-media-s5p-mfc-fix-uninit-const-pointer-cbf944ae4b4b
-
-Best regards,
---  
-Nathan Chancellor <nathan@kernel.org>
++
++#if defined(__BPF_FEATURE_ADDR_SPACE_CAST)
++#define PAGE_CNT 100
++__u8 __arena * __arena page[PAGE_CNT]; /* occupies the first page */
++__u8 __arena *base;
++
++/*
++ * Check that arena's range_tree algorithm allocates pages sequentially
++ * on the first pass and then fills in all gaps on the second pass.
++ */
++__noinline int alloc_pages(int page_cnt, int pages_atonce, bool first_pass,
++		int max_idx, int step)
++{
++	__u8 __arena *pg;
++	int i, pg_idx;
++
++	for (i = 0; i < page_cnt; i++) {
++		pg = bpf_arena_alloc_pages(&arena, NULL, pages_atonce,
++					   NUMA_NO_NODE, 0);
++		if (!pg)
++			return step;
++		pg_idx = (pg - base) / PAGE_SIZE;
++		if (first_pass) {
++			/* Pages must be allocated sequentially */
++			if (pg_idx != i)
++				return step + 100;
++		} else {
++			/* Allocator must fill into gaps */
++			if (pg_idx >= max_idx || (pg_idx & 1))
++				return step + 200;
++		}
++		*pg = pg_idx;
++		page[pg_idx] = pg;
++		cond_break;
++	}
++	return 0;
++}
++
++//SEC("syscall")
++//__success __retval(0)
++int big_alloc2(void *ctx)
++{
++	__u8 __arena *pg;
++	int i, err;
++
++	base = bpf_arena_alloc_pages(&arena, NULL, 1, NUMA_NO_NODE, 0);
++	if (!base)
++		return 1;
++	bpf_arena_free_pages(&arena, (void __arena *)base, 1);
++
++	err = alloc_pages(PAGE_CNT, 1, true, PAGE_CNT, 2);
++	if (err)
++		return err;
++
++	/* Clear all even pages */
++	for (i = 0; i < PAGE_CNT; i += 2) {
++		pg = page[i];
++		if (*pg != i)
++			return 3;
++		bpf_arena_free_pages(&arena, (void __arena *)pg, 1);
++		page[i] = NULL;
++		cond_break;
++	}
++
++	/* Allocate into freed gaps */
++	err = alloc_pages(PAGE_CNT / 2, 1, false, PAGE_CNT, 4);
++	if (err)
++		return err;
++
++	/* Free pairs of pages */
++	for (i = 0; i < PAGE_CNT; i += 4) {
++		pg = page[i];
++		if (*pg != i)
++			return 5;
++		bpf_arena_free_pages(&arena, (void __arena *)pg, 2);
++		page[i] = NULL;
++		page[i + 1] = NULL;
++		cond_break;
++	}
++
++	/* Allocate 2 pages at a time into freed gaps */
++	err = alloc_pages(PAGE_CNT / 4, 2, false, PAGE_CNT, 6);
++	if (err)
++		return err;
++
++	/* Check pages without freeing */
++	for (i = 0; i < PAGE_CNT; i += 2) {
++		pg = page[i];
++		if (*pg != i)
++			return 7;
++		cond_break;
++	}
++
++	pg = bpf_arena_alloc_pages(&arena, NULL, 1, NUMA_NO_NODE, 0);
++
++	if (!pg)
++		return 8;
++	/*
++	 * The first PAGE_CNT pages are occupied. The new page
++	 * must be above.
++	 */
++	if ((pg - base) / PAGE_SIZE < PAGE_CNT)
++		return 9;
++	return 0;
++}
++#endif
+ char _license[] SEC("license") = "GPL";
+-- 
+2.46.0
 
 
