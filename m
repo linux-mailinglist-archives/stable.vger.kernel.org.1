@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D322B05C34
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83150B05E1D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19B64160AF6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD4667A103B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1CC2E499E;
-	Tue, 15 Jul 2025 13:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C0C2E62CB;
+	Tue, 15 Jul 2025 13:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/JeXfcb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FumPQ8sB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2BB2D6419;
-	Tue, 15 Jul 2025 13:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E282D8790;
+	Tue, 15 Jul 2025 13:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585899; cv=none; b=ljSZei0l77rw9EV64VjXSJ9qOisd9gDLJ47FAU1m0Dh4/aDaN8B2jfRKCEML1GwY1CztQaaqgoi9gM4KQAI1IFQ+bsTdBCaLTUGj0JyGPkKxJL5OIoSSB4VsNQad9twqWW0J9V+ahlIA9rfZVXzXgSyKB3z3tZBp1jDfYED3GEo=
+	t=1752586984; cv=none; b=iZFWun5TGqiuPEloTDMSqBh+WBIpPEVhZdBcETxHiG2sSfMkxfOqrMiUzlSQ06cRZAdAv40W2h3nx1LPOtKxy63B10bLwGh0RnhuiHtyfgdMnwE8IwyB+nXQiYxrBAclRJzidUUCYZWxZYYlsDMWjrYfaRaJwkGGgB5zPMqHIQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585899; c=relaxed/simple;
-	bh=ncbBdfLMk9PxPYWKbOboTVCazMPh/6cuRpF93sdgO1k=;
+	s=arc-20240116; t=1752586984; c=relaxed/simple;
+	bh=wNuOyJgAwOWCfGgZrlEbj3Mh0MwC8GLsXK6i0GVYsSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBKYtCfn8PBDrqL2jxdGxj7gk6phOoOMmW3FAsduANMQbp30rt6a/nvCdGvrfx7+3cPVzbOK+j/eShoany2LbXoqkZn5PkRXQEx4Clz3py7fIfPDVpWQde2ZV8TBoXqtX0lUrc1EvXZUGhOx4E0YTtOtxr+iyHmCUVGSpOQxht0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/JeXfcb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2815C4CEE3;
-	Tue, 15 Jul 2025 13:24:58 +0000 (UTC)
+	 MIME-Version; b=Xq9txjhIGyN52qX/k1TZFD/ysr99Ahm9QjydZ9Kap6sB47ulVEIaYkeyamaA6o/5fG7UegbHwCBng9xfksEvW7LaDHgcOVmk4cLidkwsaSN617uM94rcAYALGT1UXgCmWuzbSD/KA4gtvAVMarhLfXajIavIhFPYOijCiz+6Fjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FumPQ8sB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFE4C4CEF6;
+	Tue, 15 Jul 2025 13:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585899;
-	bh=ncbBdfLMk9PxPYWKbOboTVCazMPh/6cuRpF93sdgO1k=;
+	s=korg; t=1752586984;
+	bh=wNuOyJgAwOWCfGgZrlEbj3Mh0MwC8GLsXK6i0GVYsSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q/JeXfcbrnMOQF2ML9lz0uOZ6Uc6JxUv6wbcnxfcbCGOFvKfLDoKCVCFodF4ljJa9
-	 UtRxhuFbOq/ffByQBWMScyTqIc6jw5n0JnCKR3eAJQAErjWSTX2rqoXbo8XrhJv5dM
-	 S3lrRAOstkcKwpY0DbLXbm7wc80G3FqWRGXH/z6g=
+	b=FumPQ8sBB+0eak14Dy+4ZtWJQD+18jO4Awf01Kjiopz1EeaIlTRY6Rn6+0jxOlHRs
+	 X3Ur85vi/wSOma9f38yHgnl4SAl41rRIo2kz2zzGDm+U86dOyoe4ESMA26brk/2i01
+	 a/4T0vPZJGoNdgsQ5wTasK/xMXtV4vk6XJCFxdyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 050/109] Revert "ACPI: battery: negate current when discharging"
+	Aaron Thompson <dev@aaront.org>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.15 091/192] drm/nouveau: Do not fail module init on debugfs errors
 Date: Tue, 15 Jul 2025 15:13:06 +0200
-Message-ID: <20250715130800.878229913@linuxfoundation.org>
+Message-ID: <20250715130818.559574810@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Aaron Thompson <dev@aaront.org>
 
-commit de1675de39aa945bad5937d1fde4df3682670639 upstream.
+commit 78f88067d5c56d9aed69f27e238742841461cf67 upstream.
 
-Revert commit 234f71555019 ("ACPI: battery: negate current when
-discharging") breaks not one but several userspace implementations
-of battery monitoring: Steam and MangoHud. Perhaps it breaks more,
-but those are the two that have been tested.
+If CONFIG_DEBUG_FS is enabled, nouveau_drm_init() returns an error if it
+fails to create the "nouveau" directory in debugfs. One case where that
+will happen is when debugfs access is restricted by
+CONFIG_DEBUG_FS_ALLOW_NONE or by the boot parameter debugfs=off, which
+cause the debugfs APIs to return -EPERM.
 
-Reported-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Closes: https://lore.kernel.org/linux-acpi/87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+So just ignore errors from debugfs. Note that nouveau_debugfs_root may
+be an error now, but that is a standard pattern for debugfs. From
+include/linux/debugfs.h:
+
+"NOTE: it's expected that most callers should _ignore_ the errors
+returned by this function. Other debugfs functions handle the fact that
+the "dentry" passed to them could be an error and they don't crash in
+that case. Drivers should generally work fine even if debugfs fails to
+init anyway."
+
+Fixes: 97118a1816d2 ("drm/nouveau: create module debugfs root")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aaron Thompson <dev@aaront.org>
+Acked-by: Timur Tabi <ttabi@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20250703211949.9916-1-dev@aaront.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c |   19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_debugfs.c |    6 +-----
+ drivers/gpu/drm/nouveau/nouveau_debugfs.h |    5 ++---
+ drivers/gpu/drm/nouveau/nouveau_drm.c     |    4 +---
+ 3 files changed, 4 insertions(+), 11 deletions(-)
 
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -243,23 +243,10 @@ static int acpi_battery_get_property(str
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
- 			ret = -ENODEV;
--			break;
--		}
+--- a/drivers/gpu/drm/nouveau/nouveau_debugfs.c
++++ b/drivers/gpu/drm/nouveau/nouveau_debugfs.c
+@@ -314,14 +314,10 @@ nouveau_debugfs_fini(struct nouveau_drm
+ 	drm->debugfs = NULL;
+ }
+ 
+-int
++void
+ nouveau_module_debugfs_init(void)
+ {
+ 	nouveau_debugfs_root = debugfs_create_dir("nouveau", NULL);
+-	if (IS_ERR(nouveau_debugfs_root))
+-		return PTR_ERR(nouveau_debugfs_root);
 -
--		val->intval = battery->rate_now * 1000;
--		/*
--		 * When discharging, the current should be reported as a
--		 * negative number as per the power supply class interface
--		 * definition.
--		 */
--		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
--		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
--		    acpi_battery_handle_discharging(battery)
--				== POWER_SUPPLY_STATUS_DISCHARGING)
--			val->intval = -val->intval;
--
-+		else
-+			val->intval = battery->rate_now * 1000;
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
+-	return 0;
+ }
+ 
+ void
+--- a/drivers/gpu/drm/nouveau/nouveau_debugfs.h
++++ b/drivers/gpu/drm/nouveau/nouveau_debugfs.h
+@@ -24,7 +24,7 @@ extern void nouveau_debugfs_fini(struct
+ 
+ extern struct dentry *nouveau_debugfs_root;
+ 
+-int  nouveau_module_debugfs_init(void);
++void nouveau_module_debugfs_init(void);
+ void nouveau_module_debugfs_fini(void);
+ #else
+ static inline void
+@@ -42,10 +42,9 @@ nouveau_debugfs_fini(struct nouveau_drm
+ {
+ }
+ 
+-static inline int
++static inline void
+ nouveau_module_debugfs_init(void)
+ {
+-	return 0;
+ }
+ 
+ static inline void
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -1456,9 +1456,7 @@ nouveau_drm_init(void)
+ 	if (!nouveau_modeset)
+ 		return 0;
+ 
+-	ret = nouveau_module_debugfs_init();
+-	if (ret)
+-		return ret;
++	nouveau_module_debugfs_init();
+ 
+ #ifdef CONFIG_NOUVEAU_PLATFORM_DRIVER
+ 	platform_driver_register(&nouveau_platform_driver);
 
 
 
