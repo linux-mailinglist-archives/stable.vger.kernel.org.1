@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-162549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9932AB05E55
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A59E3B05C2F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFDA016AC31
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D31F23B9CDB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5032E2E5430;
-	Tue, 15 Jul 2025 13:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506612E54BE;
+	Tue, 15 Jul 2025 13:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0RDrTxx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1Wf4Ni+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3D92E3AEA;
-	Tue, 15 Jul 2025 13:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC782E612A;
+	Tue, 15 Jul 2025 13:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586849; cv=none; b=th2UMFpzeB2GGpanDCwSGTyXuhWNM1+oF4VEEdqI0YuDZDxVHfQuNGISa+KxRMGaD4CBXYkbaZ1T6pCIvkhHBgxZlqtiTheTLqZb1sLEb/tC4Q7zkXJnxs7jHtcQrSPSpIC5PEeGqc9y6LeQ6q0jgRzv5TvCYW+026VJxMQsl+Y=
+	t=1752585852; cv=none; b=r2y0VRuoT0rACtmNfNbjV7I1uF+IeotnxAxidDxHo069rhLNVmL1CWN9WRdbxveZaYpPIMERaQj/G422Opqww9s4deg/xgP4jk6kJ34aOvMawqaU5ZcYPKZR42JSxFivv0x5ZREijsAoeIibw8zXhQfNYxek3wVINUXkaQ1HzWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586849; c=relaxed/simple;
-	bh=XzKpX207VhSXziDz/xfrzYmXlufDhV32vrJmhaxRTRQ=;
+	s=arc-20240116; t=1752585852; c=relaxed/simple;
+	bh=sSDqYYaKYhnlV4hB9sy75A2WzR2NSgWzLYgMfBR+Vk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VoeNWwlYGtpPu12Fap281pepWsLoGmRN3bDA4m21cQkCVtUW+9C10Kanx0xmo3JBKcLs54RfCLHei6qTIu1WUWQAnvykcPqjN5wYoeypOX1s4VPVA12CRne/6xPv5jXoulqcg8zqbUyTtM7CTd8R1UobF3IyyHdmivT5sEquJ0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0RDrTxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9733FC4CEE3;
-	Tue, 15 Jul 2025 13:40:48 +0000 (UTC)
+	 MIME-Version; b=hCGzLjabb9Qc0trqYH+iMBtvD+vMMO956J8IZsmRQa/zchij9GW6nXq3k9P8nP3ILIUaprNRFUasWrX4cmQZ65/FIephQhjTfFvz+yUXbHbgKq7VzIDxRcMa6HuCQWAahemOc0G9oc8gQQdS9XEGkQaB0eEBL3x+Ayg+GhEdMbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1Wf4Ni+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B368C4CEF7;
+	Tue, 15 Jul 2025 13:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586848;
-	bh=XzKpX207VhSXziDz/xfrzYmXlufDhV32vrJmhaxRTRQ=;
+	s=korg; t=1752585851;
+	bh=sSDqYYaKYhnlV4hB9sy75A2WzR2NSgWzLYgMfBR+Vk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n0RDrTxxO+06sLx/LPGrpSKuHYGSegGcxi51ME7ugZs6fBl0Z7SE6gMBXnBL+sv7U
-	 shPsz/IveCaFa9J5sMsEjmodj4m948OrqgBtATs/0sQmrtVy1VFMnMCvxfDKfTvyyE
-	 jYL2lLLO6DQHZRxAc4QQhXsAbllcR46BA2hFpoKs=
+	b=o1Wf4Ni+iDuytVlikO8HqwFqP8z0w2n8rcd962B1xps1gb0qrC0Ty3dPJU4sPEzaV
+	 hsWFIETEhJw1WK01fE3vzbEMbGzpio96NgDFYJzNEG8osqyjexcrDGpXK8zcw5ucgN
+	 6gOeo5IWxk2BOJWGM5+V2gtw2XwpwUwvdnxHOCvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.15 072/192] pinctrl: qcom: msm: mark certain pins as invalid for interrupts
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	David Howells <dhowells@redhat.com>,
+	LePremierHomme <kwqcheii@proton.me>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Willy Tarreau <w@1wt.eu>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 031/109] rxrpc: Fix oops due to non-existence of prealloc backlog struct
 Date: Tue, 15 Jul 2025 15:12:47 +0200
-Message-ID: <20250715130817.824299798@linuxfoundation.org>
+Message-ID: <20250715130800.129611790@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +67,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: David Howells <dhowells@redhat.com>
 
-commit 93712205ce2f1fb047739494c0399a26ea4f0890 upstream.
+commit 880a88f318cf1d2a0f4c0a7ff7b07e2062b434a4 upstream.
 
-On some platforms, the UFS-reset pin has no interrupt logic in TLMM but
-is nevertheless registered as a GPIO in the kernel. This enables the
-user-space to trigger a BUG() in the pinctrl-msm driver by running, for
-example: `gpiomon -c 0 113` on RB2.
+If an AF_RXRPC service socket is opened and bound, but calls are
+preallocated, then rxrpc_alloc_incoming_call() will oops because the
+rxrpc_backlog struct doesn't get allocated until the first preallocation is
+made.
 
-The exact culprit is requesting pins whose intr_detection_width setting
-is not 1 or 2 for interrupts. This hits a BUG() in
-msm_gpio_irq_set_type(). Potentially crashing the kernel due to an
-invalid request from user-space is not optimal, so let's go through the
-pins and mark those that would fail the check as invalid for the irq chip
-as we should not even register them as available irqs.
+Fix this by returning NULL from rxrpc_alloc_incoming_call() if there is no
+backlog struct.  This will cause the incoming call to be aborted.
 
-This function can be extended if we determine that there are more
-corner-cases like this.
-
-Fixes: f365be092572 ("pinctrl: Add Qualcomm TLMM driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/20250612091448.41546-1-brgl@bgdev.pl
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Suggested-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: LePremierHomme <kwqcheii@proton.me>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Willy Tarreau <w@1wt.eu>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250708211506.2699012-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/qcom/pinctrl-msm.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ net/rxrpc/call_accept.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -1036,6 +1036,25 @@ static bool msm_gpio_needs_dual_edge_par
- 	       test_bit(d->hwirq, pctrl->skip_wake_irqs);
- }
+--- a/net/rxrpc/call_accept.c
++++ b/net/rxrpc/call_accept.c
+@@ -254,6 +254,9 @@ static struct rxrpc_call *rxrpc_alloc_in
+ 	unsigned short call_tail, conn_tail, peer_tail;
+ 	unsigned short call_count, conn_count;
  
-+static void msm_gpio_irq_init_valid_mask(struct gpio_chip *gc,
-+					 unsigned long *valid_mask,
-+					 unsigned int ngpios)
-+{
-+	struct msm_pinctrl *pctrl = gpiochip_get_data(gc);
-+	const struct msm_pingroup *g;
-+	int i;
++	if (!b)
++		return NULL;
 +
-+	bitmap_fill(valid_mask, ngpios);
-+
-+	for (i = 0; i < ngpios; i++) {
-+		g = &pctrl->soc->groups[i];
-+
-+		if (g->intr_detection_width != 1 &&
-+		    g->intr_detection_width != 2)
-+			clear_bit(i, valid_mask);
-+	}
-+}
-+
- static int msm_gpio_irq_set_type(struct irq_data *d, unsigned int type)
- {
- 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
-@@ -1439,6 +1458,7 @@ static int msm_gpio_init(struct msm_pinc
- 	girq->default_type = IRQ_TYPE_NONE;
- 	girq->handler = handle_bad_irq;
- 	girq->parents[0] = pctrl->irq;
-+	girq->init_valid_mask = msm_gpio_irq_init_valid_mask;
- 
- 	ret = gpiochip_add_data(&pctrl->chip, pctrl);
- 	if (ret) {
+ 	/* #calls >= #conns >= #peers must hold true. */
+ 	call_head = smp_load_acquire(&b->call_backlog_head);
+ 	call_tail = b->call_backlog_tail;
 
 
 
