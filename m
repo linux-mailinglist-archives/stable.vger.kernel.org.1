@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEAEB05DCD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12602B05F12
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:00:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6A6D16C388
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D9787BA3CE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9FB2E6D24;
-	Tue, 15 Jul 2025 13:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC782E9EC9;
+	Tue, 15 Jul 2025 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYDJ8JQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jahsBSJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA9B2D839A;
-	Tue, 15 Jul 2025 13:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEA22E266C;
+	Tue, 15 Jul 2025 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586647; cv=none; b=mZ1Ma89aFSuWMdmZ1AWpPVqvR02wnVT3DyN6at/FWiy5SMGdKnE1XdNQj0aBYRA5YsrTllgTziKVWJl946zQn4GLcR8KzBG87cdXY9p1x+zBsRI3vDDPI/QHivpNIl7gGMuNu5g2a8Tl9d5lWzH4T0cAOp/EkpFVbdxquNvEWf0=
+	t=1752587307; cv=none; b=rzMHOF/jnfRzAK8iqb+Me2he66WWqafEWJC/7lSU0PGjYMvouzdEzYG7FM/mjWicktMh8ieidJ23fhxPlYkktXAA8BM497C3UA1kvedEILWwtylxqLh60Tm6EER7axe6EbvptpGvpfCHnhJ1zRPbS0Ozv72O/gieqjqdcnw6J5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586647; c=relaxed/simple;
-	bh=DmQuB5vda5iWUJqxCUcyF5T1f0k/3vHYbODAFofbkjQ=;
+	s=arc-20240116; t=1752587307; c=relaxed/simple;
+	bh=dnGPe0RfXZnKa9rMXoVjXVSHv4qmLkbVrDug2hnTUEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHNSxUHrw3PCK+Ak7TokYVlMqvq/Sij97ABkAm6z3nTJ/qdcqhe1v++7PqP8R9RwmTCOjRZZfnrHBHOCuaiJTzbj5tLHymZ9NiSnzQdsjau7IVbCJP7Y7u+zUDp3rUSMF2mZRApl8H0Hl2DtnbRYEawekQm1N2H4Q94fmuvXacg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYDJ8JQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F95EC4CEE3;
-	Tue, 15 Jul 2025 13:37:27 +0000 (UTC)
+	 MIME-Version; b=t/Ax6THnIFMrI+vdvWixI2B02wCRYHIinJcb9Wfiv961eciskM/At35+X+Z9/l4/qi2Nxg5CAZBC7zFZLn56b4zrOzj//LOdaBnEMuIPBbLmLODe2VIiWzkQDLRjeni0zNcqor0mQ/CRPEIZLB//khtyN2yR2NeTGSuoMm3rsD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jahsBSJA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2152CC4CEE3;
+	Tue, 15 Jul 2025 13:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586647;
-	bh=DmQuB5vda5iWUJqxCUcyF5T1f0k/3vHYbODAFofbkjQ=;
+	s=korg; t=1752587307;
+	bh=dnGPe0RfXZnKa9rMXoVjXVSHv4qmLkbVrDug2hnTUEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BYDJ8JQn/qmKMfpxwTOKl37xSHZv2tSOEDjxDcdP76gHhkUUqdfL5b6cih39+LI+u
-	 HJaPzYBwl0j/+S+PVtC5Qvpa8oBhRVvHeIiywbo6hesaGB67RiFfKgSJfRqswwCym6
-	 6pos07MEYRFjb5Cso2VDjLvqZJw+V34Xo0ENZxPQ=
+	b=jahsBSJA3mnrhrKup2VkAlto7u1phARifulu8zTci2lKEuUIFeM4DuE2ulSfVqYcV
+	 2WBQqx9AB1qoAWrwBJzLeU4Op+30+JE86Mf/puz/qdDdtmhrkJCo7Oxq2rE7rmWqjf
+	 RPs1473k6qFXDz8V9Pq9iGeGJDgRUs1G4zHDIgHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Kuen-Han Tsai <khtsai@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 145/148] HID: quirks: Add quirk for 2 Chicony Electronics HP 5MP Cameras
-Date: Tue, 15 Jul 2025 15:14:27 +0200
-Message-ID: <20250715130806.081225120@linuxfoundation.org>
+Subject: [PATCH 6.1 52/88] usb: dwc3: Abort suspend on soft disconnect failure
+Date: Tue, 15 Jul 2025 15:14:28 +0200
+Message-ID: <20250715130756.643076020@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 54bae4c17c11688339eb73a04fd24203bb6e7494 ]
+[ Upstream commit 630a1dec3b0eba2a695b9063f1c205d585cbfec9 ]
 
-The Chicony Electronics HP 5MP Cameras (USB ID 04F2:B824 & 04F2:B82C)
-report a HID sensor interface that is not actually implemented.
-Attempting to access this non-functional sensor via iio_info causes
-system hangs as runtime PM tries to wake up an unresponsive sensor.
+When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
+going with the suspend, resulting in a period where the power domain is
+off, but the gadget driver remains connected.  Within this time frame,
+invoking vbus_event_work() will cause an error as it attempts to access
+DWC3 registers for endpoint disabling after the power domain has been
+completely shut down.
 
-Add these 2 devices to the HID ignore list since the sensor interface is
-non-functional by design and should not be exposed to userspace.
+Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
+controller and proceeds with a soft connect.
 
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
+Cc: stable <stable@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250528100315.2162699-1-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 2 ++
- drivers/hid/hid-quirks.c | 2 ++
- 2 files changed, 4 insertions(+)
+ drivers/usb/dwc3/core.c   |  9 +++++++--
+ drivers/usb/dwc3/gadget.c | 22 +++++++++-------------
+ 2 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 3787bd508b616..d2e355a9744a0 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -280,6 +280,8 @@
- #define USB_DEVICE_ID_ASUS_AK1D		0x1125
- #define USB_DEVICE_ID_CHICONY_TOSHIBA_WT10A	0x1408
- #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 324d7673e3c3d..70ae3246d8d5a 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2153,6 +2153,7 @@ static int dwc3_core_init_for_resume(struct dwc3 *dwc)
+ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ {
+ 	u32 reg;
++	int ret;
  
- #define USB_VENDOR_ID_CHUNGHWAT		0x2247
- #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 2cf58e3016e7b..d1cfd45f2585a 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -732,6 +732,8 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AVERMEDIA, USB_DEVICE_ID_AVER_FM_MR800) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AXENTIA, USB_DEVICE_ID_AXENTIA_FM_RADIO) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
+ 	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
+ 		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
+@@ -2171,7 +2172,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+ 		if (pm_runtime_suspended(dwc->dev))
+ 			break;
+-		dwc3_gadget_suspend(dwc);
++		ret = dwc3_gadget_suspend(dwc);
++		if (ret)
++			return ret;
+ 		synchronize_irq(dwc->irq_gadget);
+ 		dwc3_core_exit(dwc);
+ 		break;
+@@ -2202,7 +2205,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 			break;
+ 
+ 		if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
+-			dwc3_gadget_suspend(dwc);
++			ret = dwc3_gadget_suspend(dwc);
++			if (ret)
++				return ret;
+ 			synchronize_irq(dwc->irq_gadget);
+ 		}
+ 
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 3360a59c3d331..53a2675505208 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4641,26 +4641,22 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
+ 	int ret;
+ 
+ 	ret = dwc3_gadget_soft_disconnect(dwc);
+-	if (ret)
+-		goto err;
+-
+-	spin_lock_irqsave(&dwc->lock, flags);
+-	if (dwc->gadget_driver)
+-		dwc3_disconnect_gadget(dwc);
+-	spin_unlock_irqrestore(&dwc->lock, flags);
+-
+-	return 0;
+-
+-err:
+ 	/*
+ 	 * Attempt to reset the controller's state. Likely no
+ 	 * communication can be established until the host
+ 	 * performs a port reset.
+ 	 */
+-	if (dwc->softconnect)
++	if (ret && dwc->softconnect) {
+ 		dwc3_gadget_soft_connect(dwc);
++		return -EAGAIN;
++	}
+ 
+-	return ret;
++	spin_lock_irqsave(&dwc->lock, flags);
++	if (dwc->gadget_driver)
++		dwc3_disconnect_gadget(dwc);
++	spin_unlock_irqrestore(&dwc->lock, flags);
++
++	return 0;
+ }
+ 
+ int dwc3_gadget_resume(struct dwc3 *dwc)
 -- 
 2.39.5
 
