@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-162570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE5FB05E71
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16290B05C1C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67DF817BBEE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 481BE7B8AE2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B542EAB9A;
-	Tue, 15 Jul 2025 13:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FBB2E3380;
+	Tue, 15 Jul 2025 13:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbICwjdM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1afVpwW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82677263F52;
-	Tue, 15 Jul 2025 13:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370852566;
+	Tue, 15 Jul 2025 13:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586904; cv=none; b=sFrR8AYGBlNSI1pkUIZ3ESZgMi0xAYm9DCPOP9wYs9tUitj1DNVxd8O5f7/rYM04YjqmhFRQna4mNvEgfReSTQgEkdNJlWH3ziccjLrOp9WCS6YTuXu38Kc1tAG0yPZuahZfYCdE6V6AucZjWVgj8OMqsefJSHGC+cHcWeKTORc=
+	t=1752585822; cv=none; b=gcPuQuUjaab1u91kIzlpIJcFtieb5KfB3ORNvoc2NcHkX61aXG8wsl2VSH3lpOafllYmbMxpqcv0QDRTMO7y5gTYuQ5xeBfMdnbtJrW/C94pXanCuoUCWILQjpZhSUbEqTZ53crnY+1OP/cdNp5xw0FO/HgpQZzsDdmKMvW4gdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586904; c=relaxed/simple;
-	bh=l3D+XSbZtboFBJXLX3ywnpcAD5Zqh1TyAWu42y7KbzQ=;
+	s=arc-20240116; t=1752585822; c=relaxed/simple;
+	bh=/wxsJ3eMAaPRwIlbuuH0CWJdte5ejI/Arc1abLvo6bM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLp4FuWwm2yIto+wGS2hFoRHRoOk7p4vr5oETFtJP4bj6lVy7Yv7Erp490iB8djK7VzxXuEzquQkAYdFXI/gZDHHqRJkMUplFXNGRtC2YllVKh+0S5Y3WgOYi8m5SU0fd1i1c/pZeB46JQ2Fs2tLFkEE+1a2Za9IDAIuYi0ovWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbICwjdM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185BBC4CEE3;
-	Tue, 15 Jul 2025 13:41:43 +0000 (UTC)
+	 MIME-Version; b=B83Gd/aLL/jRJJTXmsnRCMjaUfT6Hic0GkY7cYTqC3W9ml5KTd3ai4TGgzso/OPsYjtplbjVlRY30gMNpNE+cFhzioDFl+EDKg7dMtUVjAlJkplj6+Qvw8IwMusyzZG9CEnifa/GkzhnYxdVtxclsI5dxV37Z7Aw7dqa4KpLchk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1afVpwW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C033CC4CEE3;
+	Tue, 15 Jul 2025 13:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586904;
-	bh=l3D+XSbZtboFBJXLX3ywnpcAD5Zqh1TyAWu42y7KbzQ=;
+	s=korg; t=1752585822;
+	bh=/wxsJ3eMAaPRwIlbuuH0CWJdte5ejI/Arc1abLvo6bM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbICwjdMuVldfmWAkez+IxVlzkPzkhHTs0pPp2vdflqhc7PqT5pahaWYJ0O5WTLV0
-	 zFbt5wodNJLMegOdys199sSjpHB5NrCyvEHfwFGn1bpvqa9Wo2vIlUCRL8LYsHKRug
-	 yyCyIJNa2ArWdX7pD6U7bsw9HRFNwfUXsfzgwcl4=
+	b=o1afVpwWnfMIgOJPHvHSZkWqGWR/JV8QG3bRsadwIpiL8p0WsqF1uoz+areihuhYv
+	 N7LjalxMK1JzysVKrjnzShNEUd49RJaaXTze31XQtXXEIPiMOL/IbbKwt2Bzf1a1Qz
+	 MABblCeXuwMMjmlhxu3nDEWeV/C89BhXjGdA5co8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.15 062/192] ALSA: ad1816a: Fix potential NULL pointer deref in snd_card_ad1816a_pnp()
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andre Edich <andre.edich@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 021/109] net: phy: smsc: Fix link failure in forced mode with Auto-MDIX
 Date: Tue, 15 Jul 2025 15:12:37 +0200
-Message-ID: <20250715130817.429993242@linuxfoundation.org>
+Message-ID: <20250715130759.730762414@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 043faef334a1f3d96ae88e1b7618bfa2b4946388 upstream.
+[ Upstream commit 9dfe110cc0f6ef42af8e81ce52aef34a647d0b8a ]
 
-Use pr_warn() instead of dev_warn() when 'pdev' is NULL to avoid a
-potential NULL pointer dereference.
+Force a fixed MDI-X mode when auto-negotiation is disabled to prevent
+link instability.
 
-Cc: stable@vger.kernel.org
-Fixes: 20869176d7a7 ("ALSA: ad1816a: Use standard print API")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20250703200616.304309-2-thorsten.blum@linux.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When forcing the link speed and duplex on a LAN9500 PHY (e.g., with
+`ethtool -s eth0 autoneg off ...`) while leaving MDI-X control in auto
+mode, the PHY fails to establish a stable link. This occurs because the
+PHY's Auto-MDIX algorithm is not designed to operate when
+auto-negotiation is disabled. In this state, the PHY continuously
+toggles the TX/RX signal pairs, which prevents the link partner from
+synchronizing.
+
+This patch resolves the issue by detecting when auto-negotiation is
+disabled. If the MDI-X control mode is set to 'auto', the driver now
+forces a specific, stable mode (ETH_TP_MDI) to prevent the pair
+toggling. This choice of a fixed MDI mode mirrors the behavior the
+hardware would exhibit if the AUTOMDIX_EN strap were configured for a
+fixed MDI connection.
+
+Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andre Edich <andre.edich@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250703114941.3243890-4-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/isa/ad1816a/ad1816a.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/smsc.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
---- a/sound/isa/ad1816a/ad1816a.c
-+++ b/sound/isa/ad1816a/ad1816a.c
-@@ -98,7 +98,7 @@ static int snd_card_ad1816a_pnp(int dev,
- 	pdev = pnp_request_card_device(card, id->devs[1].id, NULL);
- 	if (pdev == NULL) {
- 		mpu_port[dev] = -1;
--		dev_warn(&pdev->dev, "MPU401 device busy, skipping.\n");
-+		pr_warn("MPU401 device busy, skipping.\n");
- 		return 0;
- 	}
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index 1ce0ca8048ac6..4ca813c009476 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -155,10 +155,29 @@ static int smsc_phy_reset(struct phy_device *phydev)
  
+ static int lan87xx_config_aneg(struct phy_device *phydev)
+ {
+-	int rc;
++	u8 mdix_ctrl;
+ 	int val;
++	int rc;
++
++	/* When auto-negotiation is disabled (forced mode), the PHY's
++	 * Auto-MDIX will continue toggling the TX/RX pairs.
++	 *
++	 * To establish a stable link, we must select a fixed MDI mode.
++	 * If the user has not specified a fixed MDI mode (i.e., mdix_ctrl is
++	 * 'auto'), we default to ETH_TP_MDI. This choice of a ETH_TP_MDI mode
++	 * mirrors the behavior the hardware would exhibit if the AUTOMDIX_EN
++	 * strap were configured for a fixed MDI connection.
++	 */
++	if (phydev->autoneg == AUTONEG_DISABLE) {
++		if (phydev->mdix_ctrl == ETH_TP_MDI_AUTO)
++			mdix_ctrl = ETH_TP_MDI;
++		else
++			mdix_ctrl = phydev->mdix_ctrl;
++	} else {
++		mdix_ctrl = phydev->mdix_ctrl;
++	}
+ 
+-	switch (phydev->mdix_ctrl) {
++	switch (mdix_ctrl) {
+ 	case ETH_TP_MDI:
+ 		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_;
+ 		break;
+@@ -184,7 +203,7 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
+ 	rc |= val;
+ 	phy_write(phydev, SPECIAL_CTRL_STS, rc);
+ 
+-	phydev->mdix = phydev->mdix_ctrl;
++	phydev->mdix = mdix_ctrl;
+ 	return genphy_config_aneg(phydev);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
