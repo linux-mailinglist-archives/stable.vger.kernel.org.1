@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A045B05E22
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6FCB05EDD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C2084A1418
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:44:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3105E584EFE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39212E7173;
-	Tue, 15 Jul 2025 13:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EFA2EBB85;
+	Tue, 15 Jul 2025 13:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOZ7ing7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cu/1trDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAC42E54DD;
-	Tue, 15 Jul 2025 13:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EBF2E92C4;
+	Tue, 15 Jul 2025 13:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586674; cv=none; b=DF97aEnFvjB9ZczHt8i6z4bs3VYunVmuh2nJu5hs85NN+6HRiqYOV4Y47gdQxTOXRQ8tvnQEiU3NkjyHvx01Br2AN1X1kh8bITEIAZwPM377qAhtsL4ia8qjWn/Ybmjq0bcAaMZh6t0qqqSwalJQvIWJ3PGd5G497oRC7eUlllo=
+	t=1752587105; cv=none; b=ZQv9TMXU8Du8XyPB2lWClQXc8I9dsFIE6YPjatyvr2g6w/M1r74W7Ueolr9fLJ6MloCe2HhqBmNmGLatUzyfoPPG4fNiIARQYpzi3RS3Z57RuvN9jJrruwYJttcXHf6H6gd9ExQxfe1Ff7siHfjNJY9zr+kqcZYsvtDo1shI/9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586674; c=relaxed/simple;
-	bh=uz7+v1KbTWchTDqwgjeqlddo04l15Nivn+8kgIl4TAA=;
+	s=arc-20240116; t=1752587105; c=relaxed/simple;
+	bh=mWLPfEheqPr66I1D8p3FbBPT2OTHB8SlqcyNQwd8lSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YPXeJPqaiLlkTi6BcHWczoDPul9hJM0nFPYM3a84VOHq+6kATqHDrXqrTgeC/HuxlYKahW0FVhC4YXfUQMaaePHeXY2pM5A4IPaA27vj3RP/9fNXywA3xPgzZhmOYjlcshCfs5rSJ5hMhPwff5r6OOQvkATr199Go8r1FpNAiUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOZ7ing7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A121C4CEE3;
-	Tue, 15 Jul 2025 13:37:54 +0000 (UTC)
+	 MIME-Version; b=FiGGSFPugO6filbRerhOoWAuhE3ANLZ1xxP77OJ4AYSKKCEnwH1LVEKU2H3vVzWHwlNZB47OclXgXhCD+Se5qsWyqKDaKwJGEopwwhHrUcThBuwnAvD4nJhVRwPixvCFtEyRExNjvNLZAoquQEeJ66OgoOqdUmpJrwVpbpfOs7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cu/1trDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F13C4CEE3;
+	Tue, 15 Jul 2025 13:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586674;
-	bh=uz7+v1KbTWchTDqwgjeqlddo04l15Nivn+8kgIl4TAA=;
+	s=korg; t=1752587105;
+	bh=mWLPfEheqPr66I1D8p3FbBPT2OTHB8SlqcyNQwd8lSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOZ7ing73reTVmVtFHhmojjuiIWnmXnvKbq/X5pvlcTz0eLV3d6swE++9lEj41xeS
-	 ZV5DGSmlAdikBnjgv4kqwVqLdH/KDD1D6vnPhAOVDDF2kJ0fnJjAu+wy0hf3XMNhl5
-	 yI4jA+2TzZyFeXVjuPgtB+7B40T2vvnmGqyCncOs=
+	b=Cu/1trDBCVLElZKVWzPbEWSUWxOBwcrTm0IpaLDh07eI6HIgA7rrZxZsiymnXuHcZ
+	 icVXORGuKWnS8moYvxTEYf1Seo+/NaJqnKgnrOBWFh9r7buPKVr2pKsmYdN9xf3f5+
+	 ZIY7woqH6Wdm12wNXg7Y29sWxQ7sCLuBIfO828eY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaowei Li <xiaowei.li@simcom.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 142/148] net: usb: qmi_wwan: add SIMCom 8230C composition
+Subject: [PATCH 6.15 169/192] um: vector: Reduce stack usage in vector_eth_configure()
 Date: Tue, 15 Jul 2025 15:14:24 +0200
-Message-ID: <20250715130805.966201077@linuxfoundation.org>
+Message-ID: <20250715130821.695423189@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaowei Li <xiaowei.li@simcom.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 0b39b055b5b48cbbdf5746a1ca6e3f6b0221e537 ]
+[ Upstream commit 2d65fc13be85c336c56af7077f08ccd3a3a15a4a ]
 
-Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
-0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1e0e ProdID=9071 Rev= 5.15
-S:  Manufacturer=SIMCOM
-S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
-S:  SerialNumber=0123456789ABCDEF
-C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=none
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+When compiling with clang (19.1.7), initializing *vp using a compound
+literal may result in excessive stack usage. Fix it by initializing the
+required fields of *vp individually.
 
-Signed-off-by: Xiaowei Li <xiaowei.li@simcom.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://patch.msgid.link/tencent_21D781FAA4969FEACA6ABB460362B52C9409@qq.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Without this patch:
+
+$ objdump -d arch/um/drivers/vector_kern.o | ./scripts/checkstack.pl x86_64 0
+...
+0x0000000000000540 vector_eth_configure [vector_kern.o]:1472
+...
+
+With this patch:
+
+$ objdump -d arch/um/drivers/vector_kern.o | ./scripts/checkstack.pl x86_64 0
+...
+0x0000000000000540 vector_eth_configure [vector_kern.o]:208
+...
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506221017.WtB7Usua-lkp@intel.com/
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250623110829.314864-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/um/drivers/vector_kern.c | 42 +++++++++++------------------------
+ 1 file changed, 13 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index d0032db3e9f40..496cff5f3d0a3 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1382,6 +1382,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x03f0, 0x9d1d, 1)},	/* HP lt4120 Snapdragon X5 LTE */
- 	{QMI_FIXED_INTF(0x22de, 0x9061, 3)},	/* WeTelecom WPD-600N */
- 	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9001, 5)},	/* SIMCom 7100E, 7230E, 7600E ++ */
-+	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9071, 3)},	/* SIMCom 8230C ++ */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0121, 4)},	/* Quectel EC21 Mini PCIe */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
+diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+index b97bb52dd5626..70f8d7e87fb81 100644
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -1592,35 +1592,19 @@ static void vector_eth_configure(
+ 
+ 	device->dev = dev;
+ 
+-	*vp = ((struct vector_private)
+-		{
+-		.list			= LIST_HEAD_INIT(vp->list),
+-		.dev			= dev,
+-		.unit			= n,
+-		.options		= get_transport_options(def),
+-		.rx_irq			= 0,
+-		.tx_irq			= 0,
+-		.parsed			= def,
+-		.max_packet		= get_mtu(def) + ETH_HEADER_OTHER,
+-		/* TODO - we need to calculate headroom so that ip header
+-		 * is 16 byte aligned all the time
+-		 */
+-		.headroom		= get_headroom(def),
+-		.form_header		= NULL,
+-		.verify_header		= NULL,
+-		.header_rxbuffer	= NULL,
+-		.header_txbuffer	= NULL,
+-		.header_size		= 0,
+-		.rx_header_size		= 0,
+-		.rexmit_scheduled	= false,
+-		.opened			= false,
+-		.transport_data		= NULL,
+-		.in_write_poll		= false,
+-		.coalesce		= 2,
+-		.req_size		= get_req_size(def),
+-		.in_error		= false,
+-		.bpf			= NULL
+-	});
++	INIT_LIST_HEAD(&vp->list);
++	vp->dev		= dev;
++	vp->unit	= n;
++	vp->options	= get_transport_options(def);
++	vp->parsed	= def;
++	vp->max_packet	= get_mtu(def) + ETH_HEADER_OTHER;
++	/*
++	 * TODO - we need to calculate headroom so that ip header
++	 * is 16 byte aligned all the time
++	 */
++	vp->headroom	= get_headroom(def);
++	vp->coalesce	= 2;
++	vp->req_size	= get_req_size(def);
+ 
+ 	dev->features = dev->hw_features = (NETIF_F_SG | NETIF_F_FRAGLIST);
+ 	INIT_WORK(&vp->reset_tx, vector_reset_tx);
 -- 
 2.39.5
 
