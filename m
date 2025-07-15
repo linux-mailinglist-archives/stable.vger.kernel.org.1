@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-162145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BACB05BF7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:25:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D790CB05D5E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8B7B3BFC56
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB4AF4A8026
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CF32E11D3;
-	Tue, 15 Jul 2025 13:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3702E92C8;
+	Tue, 15 Jul 2025 13:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iQkL0I1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VS11ILsr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A942E2EE7;
-	Tue, 15 Jul 2025 13:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F350E2E7BBC;
+	Tue, 15 Jul 2025 13:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585793; cv=none; b=SPhIy+SJnG+2DhKkTzIcEln/5RYoSeMOxb/w9ophCa0+1zTUwaWPZaeF0+gjpzP0aO2ooQSq+iQR8UVLa75UuNNManSPnYvZ+LeJG4CMH1+m8dA3gY8VpKUYxuSY9v51oeu55Ajnrgn4UEtjyj3c0m3kjnGvE/T6fdJjkHeGdaA=
+	t=1752586309; cv=none; b=CeHwD8C+KcbCWySBX+HeqD6eC8jRQiZWPcP/dFIbJAJk5f4x8W22FDIfiaSzine3rQGS54Zic1CUoBcYXwmq4zJD8NEPhUqHWvS/Ji2qEgf/HesPCOMLrwaiCrO27RszjcPM4gVWdWvyNDC27aESKrt5kLQMWMgs0mjVwsQEdYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585793; c=relaxed/simple;
-	bh=It4EmhxqDAfwYjN/XDHDgihJmkOAf9retNXb9ILuR7w=;
+	s=arc-20240116; t=1752586309; c=relaxed/simple;
+	bh=Pqtly/oCySKYocrWwkE3DBcxcBw8SQM8e8mhxAzIyCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDBppsUFI6AFPtn08msFxk9p2XIW//tbaGIfDMvrHa7ITQR3TEQDIElvx5ke46nnkJ+8XMaelpUhxvWLOnO5wIaV5jQs5BEfmdQJreqSBQTpxRFrq74MUQXuFx4WdthN5yiSelawnGj/6jgNUDoeqIuTjK+rp+nOtDIhhmP7TC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iQkL0I1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995A5C4CEE3;
-	Tue, 15 Jul 2025 13:23:12 +0000 (UTC)
+	 MIME-Version; b=EbRHpCE3qfWWxneyTsUfvJmvkFsa4O9iFlBfJyvJI/c2FS8GoWM94jsvGRhgaxY5uxeBVocxaSbG9T/hJgx6dnFxzwsbPBTw4/o19in/Hl2uCToGkj1M3TuAvYJXG0m6gekDk9OE1RHUTXmkNNx6t4e+fbP4PoyLDid1VucbqqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VS11ILsr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBA6C4CEE3;
+	Tue, 15 Jul 2025 13:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585792;
-	bh=It4EmhxqDAfwYjN/XDHDgihJmkOAf9retNXb9ILuR7w=;
+	s=korg; t=1752586308;
+	bh=Pqtly/oCySKYocrWwkE3DBcxcBw8SQM8e8mhxAzIyCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iQkL0I1rQKQGoDyJSbxFH3aPaZT9d0rQoXL+maiZ8RLk9lTqOors9eRqvcaakFyD
-	 hZI1a+Xz/oNf3q1mZ/+H1UHCW3dvbwPXKJMIvj3QBpafFb/LxAhWTevzPJ8hPYdV9X
-	 ChdRykuEt0tNs9xUR1eEMO1SXMUWNqKw2QtRwgPw=
+	b=VS11ILsrZ5wzUd8dSnpmojY2jcJAlO6Uv+NvK9/U2Ri2C1CHx9aVK19KIW6ZSDSlg
+	 fgY8io/66BPI0cmAvS6DKP/vT+0s+++/K1w1fLh97DF0d66Fhdf/kKlWFMVkjJqUAM
+	 D+cS/wKjtwgT277jdC0j5XDNaczQ9G3stUGAN5Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Inki Dae <inki.dae@samsung.com>
-Subject: [PATCH 6.6 002/109] drm/exynos: exynos7_drm_decon: add vblank check in IRQ handling
-Date: Tue, 15 Jul 2025 15:12:18 +0200
-Message-ID: <20250715130758.969636112@linuxfoundation.org>
+	Dave Penkler <dpenkler@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 017/148] usb: usbtmc: Fix read_stb function and get_stb ioctl
+Date: Tue, 15 Jul 2025 15:12:19 +0200
+Message-ID: <20250715130800.996282267@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: Dave Penkler <dpenkler@gmail.com>
 
-commit b846350aa272de99bf6fecfa6b08e64ebfb13173 upstream.
+[ Upstream commit acb3dac2805d3342ded7dbbd164add32bbfdf21c ]
 
-If there's support for another console device (such as a TTY serial),
-the kernel occasionally panics during boot. The panic message and a
-relevant snippet of the call stack is as follows:
+The usbtmc488_ioctl_read_stb function relied on a positive return from
+usbtmc_get_stb to reset the srq condition in the driver. The
+USBTMC_IOCTL_GET_STB case tested for a positive return to return the stb
+to the user.
 
-  Unable to handle kernel NULL pointer dereference at virtual address 000000000000000
-  Call trace:
-    drm_crtc_handle_vblank+0x10/0x30 (P)
-    decon_irq_handler+0x88/0xb4
-    [...]
+Commit: <cac01bd178d6> ("usb: usbtmc: Fix erroneous get_stb ioctl
+error returns") changed the return value of usbtmc_get_stb to 0 on
+success instead of returning the value of usb_control_msg which is
+positive in the normal case. This change caused the function
+usbtmc488_ioctl_read_stb and the USBTMC_IOCTL_GET_STB ioctl to no
+longer function correctly.
 
-Otherwise, the panics don't happen. This indicates that it's some sort
-of race condition.
+Change the test in usbtmc488_ioctl_read_stb to test for failure
+first and return the failure code immediately.
+Change the test for the USBTMC_IOCTL_GET_STB ioctl to test for 0
+instead of a positive value.
 
-Add a check to validate if the drm device can handle vblanks before
-calling drm_crtc_handle_vblank() to avoid this.
-
+Fixes: cac01bd178d6 ("usb: usbtmc: Fix erroneous get_stb ioctl error returns")
 Cc: stable@vger.kernel.org
-Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250521121656.18174-3-dpenkler@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos7_drm_decon.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/class/usbtmc.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-+++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-@@ -601,6 +601,10 @@ static irqreturn_t decon_irq_handler(int
- 	if (!ctx->drm_dev)
- 		goto out;
+diff --git a/drivers/usb/class/usbtmc.c b/drivers/usb/class/usbtmc.c
+index 738ef160109bf..9f084058b1956 100644
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -565,14 +565,15 @@ static int usbtmc488_ioctl_read_stb(struct usbtmc_file_data *file_data,
  
-+	/* check if crtc and vblank have been initialized properly */
-+	if (!drm_dev_has_vblank(ctx->drm_dev))
-+		goto out;
+ 	rv = usbtmc_get_stb(file_data, &stb);
+ 
+-	if (rv > 0) {
+-		srq_asserted = atomic_xchg(&file_data->srq_asserted,
+-					srq_asserted);
+-		if (srq_asserted)
+-			stb |= 0x40; /* Set RQS bit */
++	if (rv < 0)
++		return rv;
 +
- 	if (!ctx->i80_if) {
- 		drm_crtc_handle_vblank(&ctx->crtc->base);
++	srq_asserted = atomic_xchg(&file_data->srq_asserted, srq_asserted);
++	if (srq_asserted)
++		stb |= 0x40; /* Set RQS bit */
++
++	rv = put_user(stb, (__u8 __user *)arg);
  
+-		rv = put_user(stb, (__u8 __user *)arg);
+-	}
+ 	return rv;
+ 
+ }
+@@ -2175,7 +2176,7 @@ static long usbtmc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 
+ 	case USBTMC_IOCTL_GET_STB:
+ 		retval = usbtmc_get_stb(file_data, &tmp_byte);
+-		if (retval > 0)
++		if (!retval)
+ 			retval = put_user(tmp_byte, (__u8 __user *)arg);
+ 		break;
+ 
+-- 
+2.39.5
+
 
 
 
