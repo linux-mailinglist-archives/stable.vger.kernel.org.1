@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60A8B0609C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:19:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0A1B05FBE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1009E506971
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:11:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1425F1C44AD4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7882EA173;
-	Tue, 15 Jul 2025 13:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE0E2E54B0;
+	Tue, 15 Jul 2025 13:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrPJx5Jk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwMZlm8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C149F2E2F0C;
-	Tue, 15 Jul 2025 13:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC8E2D8778;
+	Tue, 15 Jul 2025 13:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587944; cv=none; b=Y0FEUM2Lk641GJi+JDwKhUIypodgtcyO/kryMIcwQ9Bs+GXDZDJZ3qJs17PzEsyk9oENxg3zF5NRelKWDRG6IaNYP+DeUffgaUlqyl2Oto1ob0jMUwphpsofD7ZUhKLccGdCo1Z7TvQpOv8Alo/Qb9qPMxMUJDfyZzugUEfFYIg=
+	t=1752587342; cv=none; b=pQ/m9yIt152MELmPhnpjquLqwFbqjkC3cKvLGXXxZUk8BOI3oxSNAClcUegMt7ioCmqUyXRd/ZqlZ7Ol5/EdIShbUB+lcMgECgFMSiNe4YBd9M7I1eG8t4L4HpNDWgV8WWVQlWbcmN2sPYQiQbcZ6+36VLxFVzpTSQQRhjL72xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587944; c=relaxed/simple;
-	bh=OupeyO+rbGW+0f9uvmt0Rj2sMEVlBzKbcAP/81OLpkc=;
+	s=arc-20240116; t=1752587342; c=relaxed/simple;
+	bh=ExTUCf+FVGc9XJzvZdbUo9ukFVM1vnHAR7jKWStG7PM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LiqA65xRFH/C62RZLnyLNSA1Ecb7oUJqDS0gYvn/va7/Wbqf0YvuggyDDK3DtD0Swvi1o58C0fM6K6NjXygcwX5NTh6+62RPB9IXvhbKFMmi2PHzo/oaxHEWRdxv1HPFE1DvoatRWfG2eoAgRjSzxuQ0ezy6tjNxNuLcBbvwgbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrPJx5Jk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533E4C4CEE3;
-	Tue, 15 Jul 2025 13:59:04 +0000 (UTC)
+	 MIME-Version; b=N2nbIEGlSLmYe1YfE1FFIUuowkot2UpfTHUmHuiFymrnAwZY+Jc1C4lk8wZd0hRe8A26z1jsoDwHRhoTK853TIS/CF6VYksmI4GEdyNtXNGn+QNJptWTIixbIuaalT/YcMbVZ16sftp8htiLBNecw/00QLHMw75m5JVvnU3nx/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwMZlm8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9E0C4CEE3;
+	Tue, 15 Jul 2025 13:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587944;
-	bh=OupeyO+rbGW+0f9uvmt0Rj2sMEVlBzKbcAP/81OLpkc=;
+	s=korg; t=1752587342;
+	bh=ExTUCf+FVGc9XJzvZdbUo9ukFVM1vnHAR7jKWStG7PM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DrPJx5JkgG2F0RQZQp0e7XXDaZpxKfzArf8SOorRgJEhyNY9c95Pa0Il72EshN1DB
-	 t8+u0UMauue8IcOG2xaWscssQF004r6QDLDxXANblFI2U77XINpUMSivhjO7JJmvqL
-	 XK9PLeLvjyVW9dHFvg10dS7kZ34nrINTsZ/Rk1k4=
+	b=SwMZlm8Ks1tNqW2LFTNSwJhS7cWpt6iTriq3IBVtcFlzQHC8C/C+wgivHZKW/Tifh
+	 ju5/X0slt56rQlIZJWR0fhekvBsTlQn6iK8pHeE41arY30S1fxGKyjsw4VWpDOKH22
+	 e4WK/EMFb7cYDRkrIsG9tpGtYVGeFmBc3vZkcG5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.10 170/208] x86/its: FineIBT-paranoid vs ITS
-Date: Tue, 15 Jul 2025 15:14:39 +0200
-Message-ID: <20250715130817.789480077@linuxfoundation.org>
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 64/88] erofs: fix to add missing tracepoint in erofs_read_folio()
+Date: Tue, 15 Jul 2025 15:14:40 +0200
+Message-ID: <20250715130757.138280012@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,124 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Chao Yu <chao@kernel.org>
 
-commit e52c1dc7455d32c8a55f9949d300e5e87d011fa6 upstream.
+[ Upstream commit 99f7619a77a0a2e3e2bcae676d0f301769167754 ]
 
-FineIBT-paranoid was using the retpoline bytes for the paranoid check,
-disabling retpolines, because all parts that have IBT also have eIBRS
-and thus don't need no stinking retpolines.
+Commit 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
+converts to use iomap interface, it removed trace_erofs_readpage()
+tracepoint in the meantime, let's add it back.
 
-Except... ITS needs the retpolines for indirect calls must not be in
-the first half of a cacheline :-/
-
-So what was the paranoid call sequence:
-
-  <fineibt_paranoid_start>:
-   0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
-   6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
-   a:   4d 8d 5b <f0>           lea    -0x10(%r11), %r11
-   e:   75 fd                   jne    d <fineibt_paranoid_start+0xd>
-  10:   41 ff d3                call   *%r11
-  13:   90                      nop
-
-Now becomes:
-
-  <fineibt_paranoid_start>:
-   0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
-   6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
-   a:   4d 8d 5b f0             lea    -0x10(%r11), %r11
-   e:   2e e8 XX XX XX XX	cs call __x86_indirect_paranoid_thunk_r11
-
-  Where the paranoid_thunk looks like:
-
-   1d:  <ea>                    (bad)
-   __x86_indirect_paranoid_thunk_r11:
-   1e:  75 fd                   jne 1d
-   __x86_indirect_its_thunk_r11:
-   20:  41 ff eb                jmp *%r11
-   23:  cc                      int3
-
-[ dhansen: remove initialization to false ]
-
-[ pawan: move the its_static_thunk() definition to alternative.c. This is
-	 done to avoid a build failure due to circular dependency between
-	 kernel.h(asm-generic/bug.h) and asm/alternative.h which is
-	 needed for WARN_ONCE(). ]
-
-[ Just a portion of the original commit, in order to fix a build issue
-  in stable kernels due to backports ]
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
-Link: https://lore.kernel.org/r/20250514113952.GB16434@noisy.programming.kicks-ass.net
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250708111942.3120926-1-chao@kernel.org
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/alternative.h |    2 ++
- arch/x86/kernel/alternative.c      |   19 ++++++++++++++++++-
- arch/x86/net/bpf_jit_comp.c        |    2 +-
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ fs/erofs/data.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -80,6 +80,8 @@ extern void apply_returns(s32 *start, s3
- 
- struct module;
- 
-+extern u8 *its_static_thunk(int reg);
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index 5c2e6fbb70a3e..7b648bec61fd0 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -354,6 +354,8 @@ int erofs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+  */
+ static int erofs_read_folio(struct file *file, struct folio *folio)
+ {
++	trace_erofs_read_folio(folio, true);
 +
- #ifdef CONFIG_MITIGATION_ITS
- extern void its_init_mod(struct module *mod);
- extern void its_fini_mod(struct module *mod);
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -752,7 +752,24 @@ static bool cpu_wants_indirect_its_thunk
- 	/* Lower-half of the cacheline? */
- 	return !(addr & 0x20);
+ 	return iomap_read_folio(folio, &erofs_iomap_ops);
  }
--#endif
-+
-+u8 *its_static_thunk(int reg)
-+{
-+	u8 *thunk = __x86_indirect_its_thunk_array[reg];
-+
-+	return thunk;
-+}
-+
-+#else /* CONFIG_MITIGATION_ITS */
-+
-+u8 *its_static_thunk(int reg)
-+{
-+	WARN_ONCE(1, "ITS not compiled in");
-+
-+	return NULL;
-+}
-+
-+#endif /* CONFIG_MITIGATION_ITS */
  
- /*
-  * Rewrite the compiler generated retpoline thunk calls.
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -390,7 +390,7 @@ static void emit_indirect_jump(u8 **ppro
- 	if (IS_ENABLED(CONFIG_MITIGATION_ITS) &&
- 	    cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS)) {
- 		OPTIMIZER_HIDE_VAR(reg);
--		emit_jump(&prog, &__x86_indirect_its_thunk_array[reg], ip);
-+		emit_jump(&prog, its_static_thunk(reg), ip);
- 	} else if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
- 		EMIT_LFENCE();
- 		EMIT2(0xFF, 0xE0 + reg);
+-- 
+2.39.5
+
 
 
 
