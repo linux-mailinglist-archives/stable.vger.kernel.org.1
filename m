@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-162174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEE2B05CD3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C68B05B6E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7840A7BC7B0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:26:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56E467B61F8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22EE2397BF;
-	Tue, 15 Jul 2025 13:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AA42E11DF;
+	Tue, 15 Jul 2025 13:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbXkpBuY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwEEhLI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BD9271449;
-	Tue, 15 Jul 2025 13:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23391A23AF;
+	Tue, 15 Jul 2025 13:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585870; cv=none; b=GhZgNeh77iUVeWtxMjEvNydjbEHE2HlWjAFz9AnNrOb2GjHzd4LUMAcmFBwIZDVAf/khS9D0cn4N8hCmTJSP+IAnltA0uyUGxzjYcmIMF3zpyZITs/riQesu6K8bQBQbUXSrurfofbW4zGKPth+sEPovZXeIqAwrEq8aEDgPwik=
+	t=1752585535; cv=none; b=mxA0E1b/yF7v/+BTdtN319U2KYX6F59d3itk1GEOkjKaCS8j8ITaquOSqVWjWe3dNrFpEEuxVcKsIciyH+pqrGjYd7vR6FqlTuDn5UiUVhaF2iFN3ZwV2abHw0XxzVz+WnoXkAtD9ibCS3myy4KKpcnX/v+GmULavopfXzyd+mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585870; c=relaxed/simple;
-	bh=rijU3W4wOdbPxagQiPQBQhnSu1gwkT1j8NiEYvf7AZ0=;
+	s=arc-20240116; t=1752585535; c=relaxed/simple;
+	bh=ZrcEaCdMhXbVwMg9beEU/RkPJqoHSuNSxVkuTOWhxOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLOLTJxg+WuB7j+ugCBiL9D2G9ErJeuUqITthP6Ix1YVKes+zGQPVJ3qs5hrcbwor35dWBizchWPis7mR5OjrhCfBtC7Et1C24qb29rt0wv2pj/VORSlTZOUiiSfuqBkfCXTa3F0b/POXVUl5nNjcr0E21qVbijSCHpojX0y6gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbXkpBuY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC281C4CEF1;
-	Tue, 15 Jul 2025 13:24:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TSQeA6ainZlD9Nx76DKTqt/wXtmQfcbKq54Z1o5ZwTLiVtRbuxch0CPas3w93+469cN4ZYueg4tKhJC9aMnoYX7Fo4PL8Wk+mzNbpQO4uWCR9XnJvnFuQQve+xS+lysvwe8bA6XlI8lwr2mEVpVzr1aHYg7tdFDL3Xj/P6vDS9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwEEhLI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445F2C4CEE3;
+	Tue, 15 Jul 2025 13:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585870;
-	bh=rijU3W4wOdbPxagQiPQBQhnSu1gwkT1j8NiEYvf7AZ0=;
+	s=korg; t=1752585534;
+	bh=ZrcEaCdMhXbVwMg9beEU/RkPJqoHSuNSxVkuTOWhxOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbXkpBuYw6pdRn+os4aArShWoAl6Dth4vzZC/XYBu8EXjzncVsy/oDOOs2Uvp+J69
-	 QEHNN5Qu7/TsPZwIK6Srtq0jvWF+PP+IjVA6btLpZnpMv119F93ZlUBXPfuaCZ6v6m
-	 D5HRsQfsfss21Y7hePGsYhCn8dcRa8SDLprKBwSA=
+	b=KwEEhLI1jVUs3D0Q9bAs4EqgeCGwg8kCumdY6hsQPLDyvGQTnPEmiGZhnpiYWAG/7
+	 z9XoXx3EusXUOuCb4G9AJPNp8UiYTHPcOnhfSO0V7g7DLyTTYBTVIP5vdCS1vIhV9d
+	 iW7mwxRc2FjMmTM9wOBfLfyxja8s3XTJmki0Iytg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/109] Bluetooth: hci_event: Fix not marking Broadcast Sink BIS as connected
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Matthew Brost <matthew.brost@intel.com>
+Subject: [PATCH 6.12 076/163] drm/ttm: fix error handling in ttm_buffer_object_transfer
 Date: Tue, 15 Jul 2025 15:12:24 +0200
-Message-ID: <20250715130759.209834131@linuxfoundation.org>
+Message-ID: <20250715130811.785166911@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit c7349772c268ec3c91d83cbfbbcf63f1bd7c256c ]
+commit 97e000acf2e20a86a50a0ec8c2739f0846f37509 upstream.
 
-Upon receiving HCI_EVT_LE_BIG_SYNC_ESTABLISHED with status 0x00
-(success) the corresponding BIS hci_conn state shall be set to
-BT_CONNECTED otherwise they will be left with BT_OPEN which is invalid
-at that point, also create the debugfs and sysfs entries following the
-same logic as the likes of Broadcast Source BIS and CIS connections.
+Unlocking the resv object was missing in the error path, additionally to
+that we should move over the resource only after the fence slot was
+reserved.
 
-Fixes: f777d8827817 ("Bluetooth: ISO: Notify user space about failed bis connections")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Fixes: c8d4c18bfbc4a ("dma-buf/drivers: make reserving a shared slot mandatory v4")
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20250616130726.22863-3-christian.koenig@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/ttm/ttm_bo_util.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 4029330e29a99..8d4ab29e37946 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6916,7 +6916,10 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
- 		bis->iso_qos.bcast.in.sdu = le16_to_cpu(ev->max_pdu);
+--- a/drivers/gpu/drm/ttm/ttm_bo_util.c
++++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
+@@ -254,6 +254,13 @@ static int ttm_buffer_object_transfer(st
+ 	ret = dma_resv_trylock(&fbo->base.base._resv);
+ 	WARN_ON(!ret);
  
- 		if (!ev->status) {
-+			bis->state = BT_CONNECTED;
- 			set_bit(HCI_CONN_BIG_SYNC, &bis->flags);
-+			hci_debugfs_create_conn(bis);
-+			hci_conn_add_sysfs(bis);
- 			hci_iso_setup_path(bis);
- 		}
++	ret = dma_resv_reserve_fences(&fbo->base.base._resv, 1);
++	if (ret) {
++		dma_resv_unlock(&fbo->base.base._resv);
++		kfree(fbo);
++		return ret;
++	}
++
+ 	if (fbo->base.resource) {
+ 		ttm_resource_set_bo(fbo->base.resource, &fbo->base);
+ 		bo->resource = NULL;
+@@ -262,12 +269,6 @@ static int ttm_buffer_object_transfer(st
+ 		fbo->base.bulk_move = NULL;
  	}
--- 
-2.39.5
-
+ 
+-	ret = dma_resv_reserve_fences(&fbo->base.base._resv, 1);
+-	if (ret) {
+-		kfree(fbo);
+-		return ret;
+-	}
+-
+ 	ttm_bo_get(bo);
+ 	fbo->bo = bo;
+ 
 
 
 
