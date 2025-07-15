@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DC8B05CD6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 135A7B05BA5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E8B23AF9AF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:32:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 775811C201DB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75EA52E4278;
-	Tue, 15 Jul 2025 13:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041592E2F12;
+	Tue, 15 Jul 2025 13:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOI4NjeX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBnDZDcd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252172E338F;
-	Tue, 15 Jul 2025 13:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B362E175C;
+	Tue, 15 Jul 2025 13:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586084; cv=none; b=i1V14lPbrKeZpj4k6CS7sEKKaTKVdt6u/YA9JKudZuduUb52ROJxNM+HNCsWCCgWrA7L+v6h+s9fbZpsZH9wCPDjAlMdMhJIZXqHUucfR+RmSR1m2SK4OEcZp4nzdq5kwHFGY6z1uH2OweyIKDGxyRhLYClCmGtB+RHgM/G68hI=
+	t=1752585738; cv=none; b=a6tr0mM7aW0JRHmUxEUEX9y17Ggp5kASS+0/EkgC2zXHN7w87ddXTImitJ4oTRVe3Xs2u2K7u94nBaa1IZYzvUsyHoLzQ0vNly4FP/3rs9apIqTMnAP29PvFHVwELeg460dhkkQA6m/0jEBAyQBVsABlfmnmW30rU3tsmZYsJZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586084; c=relaxed/simple;
-	bh=zOnBbp5rsUDLICaB81lPfGmFX+CramSE4HzI6WTiPa4=;
+	s=arc-20240116; t=1752585738; c=relaxed/simple;
+	bh=mTV7CdBa4w+ZhNCO386NAZ25W3KBxOLLKa0hPeWEYTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDsYrOPig20BtPzI5D+TCR7enf/DTIiEl83yrIKVIqpNOjhQ5XuTngMcKs34ZHNHbmeC9Y8bVbvJf0Fy7Vl7vOGuRomJp8WoNy5yGTOziYsgq8FSqKQLtZ4B0MU8EcbzMnQ81NiF25UEVKRT4WNWniPddcsks2/lpRgsuFORrFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOI4NjeX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EA3C4CEE3;
-	Tue, 15 Jul 2025 13:28:03 +0000 (UTC)
+	 MIME-Version; b=Smb20ooDAvzUHsQ+7OXNxbomi1bBbhGEjEf7Mgx7yA9buKn0RQzzYgWR2iPBrxipjtmMzd7OSIGWc6Eyq1hhaIyM3jt0z9Emr8TAF4EO9l1YBV+kjdRDlz5yrAavEvYTvnFb1EWz+REvGI21yLC7vAfLDEc3HSI+gNKCYkNVWME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBnDZDcd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2A8C4CEE3;
+	Tue, 15 Jul 2025 13:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586084;
-	bh=zOnBbp5rsUDLICaB81lPfGmFX+CramSE4HzI6WTiPa4=;
+	s=korg; t=1752585738;
+	bh=mTV7CdBa4w+ZhNCO386NAZ25W3KBxOLLKa0hPeWEYTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOI4NjeXKZotlCZYRzF3QAVqJekDMYqP43gxyW3Ana3l+PhXHRdf1ouYBywo0eUS3
-	 O4ZBQGNCsd4ZWPkWbd1D7zNyyTg2rlx4CNqip4IxoIh2XuN+IyPxL4DdGCe3PLFntH
-	 ymlIFO8za1MWOLLSdnkbgbl35r5SZnX3jMtXjsVk=
+	b=oBnDZDcdYQfw22wbsJW2kCs67Bj1g4Pba1lw2ROzzmKL+LqxhZbseoqrOeNYuaJDb
+	 8VjmVRtvGlu+HNLCrhCCLbeFh1kiyfTOo6xm4xuPQ0YFKsnDmwuQEpI9mG16Vj5L0G
+	 412d3pegmSxpLOphLJk+ff6/e86UyR8z6x7o8SyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andre Edich <andre.edich@microchip.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 10/77] net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
-Date: Tue, 15 Jul 2025 15:13:09 +0200
-Message-ID: <20250715130752.105599366@linuxfoundation.org>
+Subject: [PATCH 6.12 122/163] erofs: refine readahead tracepoint
+Date: Tue, 15 Jul 2025 15:13:10 +0200
+Message-ID: <20250715130813.745505183@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit a141af8eb2272ab0f677a7f2653874840bc9b214 ]
+[ Upstream commit 4eb56b0761e75034dd35067a81da4c280c178262 ]
 
-Correct the Auto-MDIX configuration to ensure userspace settings are
-respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
+ - trace_erofs_readpages => trace_erofs_readahead;
 
-The LAN9500 PHY allows its default MDI-X mode to be configured via a
-hardware strap. If this strap sets the default to "MDI-X off", the
-driver was previously unable to enable Auto-MDIX from userspace.
+ - Rename a redundant statement `nrpages = readahead_count(rac);`;
 
-When handling the ETH_TP_MDI_AUTO case, the driver would set the
-SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
-SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
-falls back to its hardware strap default, ignoring the software request.
+ - Move the tracepoint to the beginning of z_erofs_readahead().
 
-This patch corrects the behavior by also setting the override bit when
-enabling Auto-MDIX. This ensures that the userspace configuration takes
-precedence over the hardware strap, allowing Auto-MDIX to be enabled
-correctly in all scenarios.
-
-Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andre Edich <andre.edich@microchip.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250703114941.3243890-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
+Link: https://lore.kernel.org/r/20250514120820.2739288-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Stable-dep-of: d53238b614e0 ("erofs: fix to add missing tracepoint in erofs_readahead()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/smsc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/erofs/fileio.c            | 2 +-
+ fs/erofs/zdata.c             | 5 ++---
+ include/trace/events/erofs.h | 2 +-
+ 3 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index 36dcf6c7f445d..6d9069a53db1d 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -155,7 +155,8 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
- 			SPECIAL_CTRL_STS_AMDIX_STATE_;
- 		break;
- 	case ETH_TP_MDI_AUTO:
--		val = SPECIAL_CTRL_STS_AMDIX_ENABLE_;
-+		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
-+			SPECIAL_CTRL_STS_AMDIX_ENABLE_;
- 		break;
- 	default:
- 		return genphy_config_aneg(phydev);
+diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
+index c8805bc732c6b..c865a7a610306 100644
+--- a/fs/erofs/fileio.c
++++ b/fs/erofs/fileio.c
+@@ -180,7 +180,7 @@ static void erofs_fileio_readahead(struct readahead_control *rac)
+ 	struct folio *folio;
+ 	int err;
+ 
+-	trace_erofs_readpages(inode, readahead_index(rac),
++	trace_erofs_readahead(inode, readahead_index(rac),
+ 			      readahead_count(rac), true);
+ 	while ((folio = readahead_folio(rac))) {
+ 		err = erofs_fileio_scan_folio(&io, folio);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index f13052c3532ab..94c1e2d64df96 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1869,13 +1869,12 @@ static void z_erofs_readahead(struct readahead_control *rac)
+ {
+ 	struct inode *const inode = rac->mapping->host;
+ 	Z_EROFS_DEFINE_FRONTEND(f, inode, readahead_pos(rac));
+-	struct folio *head = NULL, *folio;
+ 	unsigned int nrpages = readahead_count(rac);
++	struct folio *head = NULL, *folio;
+ 	int err;
+ 
++	trace_erofs_readahead(inode, readahead_index(rac), nrpages, false);
+ 	z_erofs_pcluster_readmore(&f, rac, true);
+-	nrpages = readahead_count(rac);
+-	trace_erofs_readpages(inode, readahead_index(rac), nrpages, false);
+ 	while ((folio = readahead_folio(rac))) {
+ 		folio->private = head;
+ 		head = folio;
+diff --git a/include/trace/events/erofs.h b/include/trace/events/erofs.h
+index ad79f1ca4fb5a..198a0c644bea1 100644
+--- a/include/trace/events/erofs.h
++++ b/include/trace/events/erofs.h
+@@ -113,7 +113,7 @@ TRACE_EVENT(erofs_read_folio,
+ 		__entry->raw)
+ );
+ 
+-TRACE_EVENT(erofs_readpages,
++TRACE_EVENT(erofs_readahead,
+ 
+ 	TP_PROTO(struct inode *inode, pgoff_t start, unsigned int nrpage,
+ 		bool raw),
 -- 
 2.39.5
 
