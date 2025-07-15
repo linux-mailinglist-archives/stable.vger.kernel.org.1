@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-162039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BA96B05B58
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E5EB05BF4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 739A43AA64E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE3293BF451
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE44B1A23AF;
-	Tue, 15 Jul 2025 13:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53D92E2F12;
+	Tue, 15 Jul 2025 13:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRqBkBLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsJrYrCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7E32472AE;
-	Tue, 15 Jul 2025 13:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21B02E1758;
+	Tue, 15 Jul 2025 13:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585511; cv=none; b=ZHYwMQzlqpv4Euy883Y68thaetRi9861yQKavzFYtdIflvwkTfjQnSniw3qphalenN8xTH2bOwXTJJq7gmW+PlV66jesJVx2MOyjYR1iI+gmmIGP5eOEgN+bqUs6bCP/IMKX5J12RDV0G3Gyjknx3XnHYuq72+5yIj23PM+zkVE=
+	t=1752585790; cv=none; b=YIyFhlCwFan7wVcYbYVYvbFXY7XAtIm1oTOcKv+9ZTgHiN+1ezU1AVVtLYDIjoO2tM+7/dGtt9DX5W+aEPBSrQ3h8PQaPRmaHCam+qT/jwLR0zebynWWyWQuqVELWg4/XKuVbjAVXQ+wXvO3unjiCYRrBOOd11Za76ARtA5znME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585511; c=relaxed/simple;
-	bh=5zDEnbQNzi3c44bVNuIShoUlRN56elzTXb0cwceIYFU=;
+	s=arc-20240116; t=1752585790; c=relaxed/simple;
+	bh=GG2zvebY860dx7jt/hDDbm5vTUYR2aJxTq4azKupfqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUG8LeTX27pPTS9AVz+wneQ/lbF1BqXCXAuaZOgkzH22Z1prJOVBxDLlY1eNYkGqSVNy0uX7nCwK3bP5KwM14Fan6QMd4l7tbtGnsSkVHrsS8h52eTz9j+uMhTn5B+NWZbRkyR0GaTrBwidon2MeuK0IM/qQlegjEun2VO4c/wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRqBkBLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58AAC4CEE3;
-	Tue, 15 Jul 2025 13:18:30 +0000 (UTC)
+	 MIME-Version; b=HtqjlutX0Hj+IN+Ip1zqPQoPvH8TUnNbnUBAgYLBeNcNERGHFk+gqSy1FDj2rY+aPLMiczCAvUDEC0WaIfSyTOTqFmKYyftnzzlea8n9AGbNtylVPl3h90PmlpOtlOsvDIpO3mwuw6az9hRa1G1Q/XxN+c27n+u7KeZbw10VJIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsJrYrCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8623C4CEE3;
+	Tue, 15 Jul 2025 13:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585511;
-	bh=5zDEnbQNzi3c44bVNuIShoUlRN56elzTXb0cwceIYFU=;
+	s=korg; t=1752585790;
+	bh=GG2zvebY860dx7jt/hDDbm5vTUYR2aJxTq4azKupfqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRqBkBLy2s/QpIcV7WKb0Va2uqiH838+601EVKF4Absjq9V/+4gAs/hiWeUBWQ4Xn
-	 Oy868cX+u2FK4AFr0GSPC2esQMNsOxag/Aw9UH8szPTy/5idpvAhVuOMD9dKum2wZL
-	 u435D//As37U7wnuhHgYwdBUJz26yzxUEMwMZIuQ=
+	b=XsJrYrCwNzsFMZnQi6ljxUujjdg+wTWjKa6x0Czp/vpG1fSC414J8sO5KFVDJEDP6
+	 Az1VEu0Yaw4+tufNIArkRkazDSRRlWjMPIZOcWwgGl4wYckfjAHj5/i0wasljrGk3p
+	 E0A9MamUY0aEIcRr/moRwIxgxzdtcMdwSetUTPSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deren Wu <deren.wu@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.12 068/163] wifi: mt76: mt7921: prevent decap offload config before STA initialization
-Date: Tue, 15 Jul 2025 15:12:16 +0200
-Message-ID: <20250715130811.471278926@linuxfoundation.org>
+	Jann Horn <jannh@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 001/109] eventpoll: dont decrement ep refcount while still holding the ep mutex
+Date: Tue, 15 Jul 2025 15:12:17 +0200
+Message-ID: <20250715130758.928745481@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 7035a082348acf1d43ffb9ff735899f8e3863f8f upstream.
+commit 8c2e52ebbe885c7eeaabd3b7ddcdc1246fc400d2 upstream.
 
-The decap offload configuration should only be applied after the STA has
-been successfully initialized. Attempting to configure it earlier can lead
-to corruption of the MAC configuration in the chip's hardware state.
+Jann Horn points out that epoll is decrementing the ep refcount and then
+doing a
 
-Add an early check for `msta->deflink.wcid.sta` to ensure the station peer
-is properly initialized before proceeding with decapsulation offload
-configuration.
+    mutex_unlock(&ep->mtx);
 
-Cc: stable@vger.kernel.org
-Fixes: 24299fc869f7 ("mt76: mt7921: enable rx header traslation offload")
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Link: https://patch.msgid.link/f23a72ba7a3c1ad38ba9e13bb54ef21d6ef44ffb.1748149855.git.deren.wu@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+afterwards. That's very wrong, because it can lead to a use-after-free.
+
+That pattern is actually fine for the very last reference, because the
+code in question will delay the actual call to "ep_free(ep)" until after
+it has unlocked the mutex.
+
+But it's wrong for the much subtler "next to last" case when somebody
+*else* may also be dropping their reference and free the ep while we're
+still using the mutex.
+
+Note that this is true even if that other user is also using the same ep
+mutex: mutexes, unlike spinlocks, can not be used for object ownership,
+even if they guarantee mutual exclusion.
+
+A mutex "unlock" operation is not atomic, and as one user is still
+accessing the mutex as part of unlocking it, another user can come in
+and get the now released mutex and free the data structure while the
+first user is still cleaning up.
+
+See our mutex documentation in Documentation/locking/mutex-design.rst,
+in particular the section [1] about semantics:
+
+	"mutex_unlock() may access the mutex structure even after it has
+	 internally released the lock already - so it's not safe for
+	 another context to acquire the mutex and assume that the
+	 mutex_unlock() context is not using the structure anymore"
+
+So if we drop our ep ref before the mutex unlock, but we weren't the
+last one, we may then unlock the mutex, another user comes in, drops
+_their_ reference and releases the 'ep' as it now has no users - all
+while the mutex_unlock() is still accessing it.
+
+Fix this by simply moving the ep refcount dropping to outside the mutex:
+the refcount itself is atomic, and doesn't need mutex protection (that's
+the whole _point_ of refcounts: unlike mutexes, they are inherently
+about object lifetimes).
+
+Reported-by: Jann Horn <jannh@google.com>
+Link: https://docs.kernel.org/locking/mutex-design.html#semantics [1]
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/eventpoll.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1173,6 +1173,9 @@ static void mt7921_sta_set_decap_offload
- 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -772,7 +772,7 @@ static bool __ep_remove(struct eventpoll
+ 	call_rcu(&epi->rcu, epi_rcu_free);
  
-+	if (!msta->deflink.wcid.sta)
-+		return;
-+
- 	mt792x_mutex_acquire(dev);
+ 	percpu_counter_dec(&ep->user->epoll_watches);
+-	return ep_refcount_dec_and_test(ep);
++	return true;
+ }
  
- 	if (enabled)
+ /*
+@@ -780,14 +780,14 @@ static bool __ep_remove(struct eventpoll
+  */
+ static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
+ {
+-	WARN_ON_ONCE(__ep_remove(ep, epi, false));
++	if (__ep_remove(ep, epi, false))
++		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
+ }
+ 
+ static void ep_clear_and_put(struct eventpoll *ep)
+ {
+ 	struct rb_node *rbp, *next;
+ 	struct epitem *epi;
+-	bool dispose;
+ 
+ 	/* We need to release all tasks waiting for these file */
+ 	if (waitqueue_active(&ep->poll_wait))
+@@ -820,10 +820,8 @@ static void ep_clear_and_put(struct even
+ 		cond_resched();
+ 	}
+ 
+-	dispose = ep_refcount_dec_and_test(ep);
+ 	mutex_unlock(&ep->mtx);
+-
+-	if (dispose)
++	if (ep_refcount_dec_and_test(ep))
+ 		ep_free(ep);
+ }
+ 
+@@ -1003,7 +1001,7 @@ again:
+ 		dispose = __ep_remove(ep, epi, true);
+ 		mutex_unlock(&ep->mtx);
+ 
+-		if (dispose)
++		if (dispose && ep_refcount_dec_and_test(ep))
+ 			ep_free(ep);
+ 		goto again;
+ 	}
 
 
 
