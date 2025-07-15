@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34BC4B05D87
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB43B05EA2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E2EA7AF467
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 515B61C43C62
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BD52D6419;
-	Tue, 15 Jul 2025 13:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D7D2E54AB;
+	Tue, 15 Jul 2025 13:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyE71Ufk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCyQ2t/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471322E4984;
-	Tue, 15 Jul 2025 13:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E565F2E2EEF;
+	Tue, 15 Jul 2025 13:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586386; cv=none; b=F8oaG5I4AmMcs0RE3nDg3gDbRiYHCCuTGTfX0l8RWOy/DF2Cv5bmHKmRjhG/SV2M3eRwvwP/XRDXJEABuB+TQVNu6Hsrche2PCeZsfZs/Cnedaacorw1e+w+PshR9rH3k3vum717hldJjD5mCynEwhF8JbBbXGJA9/x1oLkG3Pg=
+	t=1752586857; cv=none; b=JLDtugZ7rL57tx6MArZkKglAgqBgt07GE3cEBeOLJ9gAoefDFcTwS64nWPyttlZTaMLYyC9L+rvYa7pv85kqvqa+CV4Gg+Q4rBKYE/+3+kTzFU9RxbUa9kZk/wnyRapNJjIZa83N3A0m9eqMuRI7GshXecMHXkasGVoED4ON/Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586386; c=relaxed/simple;
-	bh=8t+pWfPMqycDaaPV7g3k+81f6Dwuqt3BlsLCa5ZPBVY=;
+	s=arc-20240116; t=1752586857; c=relaxed/simple;
+	bh=b9ZPXrdNa5wB32Q8GxpjOHmq9CshDNWVZbnRum3/Rwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqTIkakGGqFObdrTzA68kOGWXn8U64+ucSvU7gVHiE9AjrONyYhhAOKRtXN43xQve+ECvLiU5HM+OTWfPxHA7AuA++SFxskxnsmV1df2iCnsfNE4tvp8GHgCitAAA3fkE1Z3OJzif3Twlo1qpc+YF4lPHb9E7ga25P3iUSd9qdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyE71Ufk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7081DC4CEE3;
-	Tue, 15 Jul 2025 13:33:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DQUhqu8DXyStk38KtgNTKfPLcZiiedgyxIy1Tyc1Av88ZO0NV4VWXbtwNGvJQGz1hgPyd9u3/5kv94tQ1VUHvMWMjcRaNe90EpsiAW3JoPXm/BzXI9k4xEfESCwIlFJshf0WzZY6kXq15oN3kGf1sytp60dg8sMtT1Q8GoKNUIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCyQ2t/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABFAC4CEE3;
+	Tue, 15 Jul 2025 13:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586385;
-	bh=8t+pWfPMqycDaaPV7g3k+81f6Dwuqt3BlsLCa5ZPBVY=;
+	s=korg; t=1752586856;
+	bh=b9ZPXrdNa5wB32Q8GxpjOHmq9CshDNWVZbnRum3/Rwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wyE71UfkWcYVRXIZpqg9kTjmx3i7cnuTeXvMs+9ic0QRcNDu5m1NwJNFxjKoMSaDm
-	 8VyKluDHZfT1yTFwPgVemkmMcjOXCOhZqPTV4Gf+kOdf9+eb1AuBE6kw7/HiAfeG7f
-	 R/7sjnc2F4K/b2dQscGC8krbgAEbfpikibcKF9Vk=
+	b=CCyQ2t/ua2mfs4s6+8OCLSLX/KJQetiNVEed1BaxhpXIeEQoWw5y1OBB4tcbvfhrQ
+	 ywwbChDp3zGjzMs4gzwLM9LHiyb3c1b39Eknks4odz2/M6YIsKIWazWTnA1uQryLPH
+	 aIA7LmL3s+6Z148A9uAf/8ogGOLppYKmS4eFeJrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.4 046/148] HID: wacom: fix memory leak on kobject creation failure
-Date: Tue, 15 Jul 2025 15:12:48 +0200
-Message-ID: <20250715130802.162295835@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.15 074/192] pwm: mediatek: Ensure to disable clocks in error path
+Date: Tue, 15 Jul 2025 15:12:49 +0200
+Message-ID: <20250715130817.902186916@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit 5ae416c5b1e2e816aee7b3fc8347adf70afabb4c upstream.
+commit 505b730ede7f5c4083ff212aa955155b5b92e574 upstream.
 
-During wacom_initialize_remotes() a fifo buffer is allocated
-with kfifo_alloc() and later a cleanup action is registered
-during devm_add_action_or_reset() to clean it up.
+After enabling the clocks each error path must disable the clocks again.
+One of them failed to do so. Unify the error paths to use goto to make it
+harder for future changes to add a similar bug.
 
-However if the code fails to create a kobject and register it
-with sysfs the code simply returns -ENOMEM before the cleanup
-action is registered leading to a memory leak.
-
-Fix this by ensuring the fifo is freed when the kobject creation
-and registration process fails.
-
-Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Fixes: 7ca59947b5fc ("pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250704172728.626815-2-u.kleine-koenig@baylibre.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_sys.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-mediatek.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2020,8 +2020,10 @@ static int wacom_initialize_remotes(stru
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -130,8 +130,10 @@ static int pwm_mediatek_config(struct pw
+ 		return ret;
  
- 	remote->remote_dir = kobject_create_and_add("wacom_remote",
- 						    &wacom->hdev->dev.kobj);
--	if (!remote->remote_dir)
-+	if (!remote->remote_dir) {
-+		kfifo_free(&remote->remote_fifo);
- 		return -ENOMEM;
+ 	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
+-	if (!clk_rate)
+-		return -EINVAL;
++	if (!clk_rate) {
++		ret = -EINVAL;
++		goto out;
 +	}
  
- 	error = sysfs_create_files(remote->remote_dir, remote_unpair_attrs);
+ 	/* Make sure we use the bus clock and not the 26MHz clock */
+ 	if (pc->soc->has_ck_26m_sel)
+@@ -150,9 +152,9 @@ static int pwm_mediatek_config(struct pw
+ 	}
  
+ 	if (clkdiv > PWM_CLK_DIV_MAX) {
+-		pwm_mediatek_clk_disable(chip, pwm);
+ 		dev_err(pwmchip_parent(chip), "period of %d ns not supported\n", period_ns);
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto out;
+ 	}
+ 
+ 	if (pc->soc->pwm45_fixup && pwm->hwpwm > 2) {
+@@ -169,9 +171,10 @@ static int pwm_mediatek_config(struct pw
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
+ 
++out:
+ 	pwm_mediatek_clk_disable(chip, pwm);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
 
 
 
