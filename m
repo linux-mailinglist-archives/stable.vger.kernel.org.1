@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB97B05D4B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53CE4B05DD7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26DF57B660D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E3141C26F4D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1DA2E7BA9;
-	Tue, 15 Jul 2025 13:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493B42ECD03;
+	Tue, 15 Jul 2025 13:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVdQf9uq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pla+Pd3j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE40C2E3AED;
-	Tue, 15 Jul 2025 13:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075D42E339A;
+	Tue, 15 Jul 2025 13:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586050; cv=none; b=aWTAY/kgLXLMs0HFZGo2k5KDrRMlwiwziPy3CX3UxQBWFz3zbhjiVT5i1BEAfZOOUbuJ6A9CH3vjmj2B/OOkM93jqK2qHsR6mUZW2soO2tws1H7eUb4y+UjlNxgHRVtXDmTra4btLFGvFQrIHH2UMS4hY8keUYb/OZg33mf0nCI=
+	t=1752586505; cv=none; b=g5aykhdlV/Ed5K3G8d+hRKHv6KSsYVCbELXDhHAxUHWsN29JMYhLCJs1rcZJ+Zsf5wsn23kutd4aTTi8Bof8/vUHTVv3rGoXw/4dC8htDi+R5mm2Wq01WJ04Mfj3pHpqcuOd7HgidlHRG/s5OT5mJsmzp5RDJ02dqQkXojEnoRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586050; c=relaxed/simple;
-	bh=Urhc0WLito1KGueqNqdBS4Odv4ildhAqkrljrcoyk8Q=;
+	s=arc-20240116; t=1752586505; c=relaxed/simple;
+	bh=zSrsppKlAYafaPWIpYZ7e4vVmj1DtxMQuJNHZ2nz1ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JyfEBWP/fOpMhhvhZ7tgv+bnf2Yv2KPv/iHNqMfin91ut0UIixfxn+PkJ6SNkoPHLRLYOaGt5AOYqaFAMmzxKE6MOGiJpYMXlKcMHiYrYFmo/OL+LGQ4w9yHSlOo9XkSQvklWEsPgQyZ1+/1NZIvKJdiKtcVN+IFxv5rZkg66aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVdQf9uq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDC7C4CEE3;
-	Tue, 15 Jul 2025 13:27:28 +0000 (UTC)
+	 MIME-Version; b=rFyg/BeCnNzNoE6MA1GbZhQ6Er+lj5XG4LwE25zuXimbVqfzZFh3KXWKkoUNkyLa/1vy3k5lNLJRLp4/F5P0pGzFT8fjFOvvv9cVqVZh3sP/fRcnJR1Ab1pkmptK7uZqx/3+n9WqCY6CybgooEv1d9KB6/QytO1EitD0c+FhOso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pla+Pd3j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8BFC4CEF1;
+	Tue, 15 Jul 2025 13:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586049;
-	bh=Urhc0WLito1KGueqNqdBS4Odv4ildhAqkrljrcoyk8Q=;
+	s=korg; t=1752586504;
+	bh=zSrsppKlAYafaPWIpYZ7e4vVmj1DtxMQuJNHZ2nz1ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVdQf9uqHEs4Bd2n8/FGJcxbdxtWLqKBbegzyvwq36k8L7mXO3ocw2zw6ah/bmxgm
-	 0EhqHRVgioCtMKOUUYiINuaKjDwLtAR3jE+LRifYiRkQ7OUbvgqiXfjZpYiuaiZiux
-	 Fr7xU/ijtzVyOPlkpfIyGfombuzBSd98z3LhFCaw=
+	b=pla+Pd3j/rFLpCIKDcFWOmdw2l6Ss/qgrdMa9YSum5YHTRgOWru4WtRWjpFGx3Egq
+	 hcF1v1GZTO0+izeezAncOV1des+kBzt/AOEGR4iF25AmS+fv0+n/s39n+/Ny/TPd1s
+	 oIskqkkfd2sbRbO583ZnIci+mMnPldwuGV3s7SJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/109] smb: client: avoid unnecessary reconnects when refreshing referrals
-Date: Tue, 15 Jul 2025 15:13:31 +0200
-Message-ID: <20250715130801.886545460@linuxfoundation.org>
+Subject: [PATCH 5.4 090/148] ethernet: atl1: Add missing DMA mapping error checks and count errors
+Date: Tue, 15 Jul 2025 15:13:32 +0200
+Message-ID: <20250715130803.919068846@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,289 +62,214 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 242d23efc987151ecd34bc0cae4c0b737494fc40 ]
+[ Upstream commit d72411d20905180cdc452c553be17481b24463d2 ]
 
-Do not mark tcons for reconnect when current connection matches any of
-the targets returned by new referral even when there is no cached
-entry.
+The `dma_map_XXX()` functions can fail and must be checked using
+`dma_mapping_error()`.  This patch adds proper error handling for all
+DMA mapping calls.
 
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 74ebd02163fd ("cifs: all initializations for tcon should happen in tcon_info_alloc")
+In `atl1_alloc_rx_buffers()`, if DMA mapping fails, the buffer is
+deallocated and marked accordingly.
+
+In `atl1_tx_map()`, previously mapped buffers are unmapped and the
+packet is dropped on failure.
+
+If `atl1_xmit_frame()` drops the packet, increment the tx_error counter.
+
+Fixes: f3cc28c79760 ("Add Attansic L1 ethernet driver.")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20250625141629.114984-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/dfs_cache.c | 187 ++++++++++++++++++++++++--------------
- 1 file changed, 117 insertions(+), 70 deletions(-)
+ drivers/net/ethernet/atheros/atlx/atl1.c | 78 +++++++++++++++++-------
+ 1 file changed, 56 insertions(+), 22 deletions(-)
 
-diff --git a/fs/smb/client/dfs_cache.c b/fs/smb/client/dfs_cache.c
-index 11c8efecf7aa1..3cf7c88489be4 100644
---- a/fs/smb/client/dfs_cache.c
-+++ b/fs/smb/client/dfs_cache.c
-@@ -1095,16 +1095,18 @@ int dfs_cache_get_tgt_share(char *path, const struct dfs_cache_tgt_iterator *it,
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/atheros/atlx/atl1.c b/drivers/net/ethernet/atheros/atlx/atl1.c
+index b498fd6a47d0b..3e80b9659e3b4 100644
+--- a/drivers/net/ethernet/atheros/atlx/atl1.c
++++ b/drivers/net/ethernet/atheros/atlx/atl1.c
+@@ -1863,14 +1863,21 @@ static u16 atl1_alloc_rx_buffers(struct atl1_adapter *adapter)
+ 			break;
+ 		}
  
--static bool target_share_equal(struct TCP_Server_Info *server, const char *s1, const char *s2)
-+static bool target_share_equal(struct cifs_tcon *tcon, const char *s1)
- {
--	char unc[sizeof("\\\\") + SERVER_NAME_LENGTH] = {0};
-+	struct TCP_Server_Info *server = tcon->ses->server;
-+	struct sockaddr_storage ss;
- 	const char *host;
-+	const char *s2 = &tcon->tree_name[1];
- 	size_t hostlen;
--	struct sockaddr_storage ss;
-+	char unc[sizeof("\\\\") + SERVER_NAME_LENGTH] = {0};
- 	bool match;
- 	int rc;
- 
--	if (strcasecmp(s1, s2))
-+	if (strcasecmp(s2, s1))
- 		return false;
- 
- 	/*
-@@ -1128,34 +1130,6 @@ static bool target_share_equal(struct TCP_Server_Info *server, const char *s1, c
- 	return match;
- }
- 
--/*
-- * Mark dfs tcon for reconnecting when the currently connected tcon does not match any of the new
-- * target shares in @refs.
-- */
--static void mark_for_reconnect_if_needed(struct TCP_Server_Info *server,
--					 const char *path,
--					 struct dfs_cache_tgt_list *old_tl,
--					 struct dfs_cache_tgt_list *new_tl)
--{
--	struct dfs_cache_tgt_iterator *oit, *nit;
--
--	for (oit = dfs_cache_get_tgt_iterator(old_tl); oit;
--	     oit = dfs_cache_get_next_tgt(old_tl, oit)) {
--		for (nit = dfs_cache_get_tgt_iterator(new_tl); nit;
--		     nit = dfs_cache_get_next_tgt(new_tl, nit)) {
--			if (target_share_equal(server,
--					       dfs_cache_get_tgt_name(oit),
--					       dfs_cache_get_tgt_name(nit))) {
--				dfs_cache_noreq_update_tgthint(path, nit);
--				return;
--			}
--		}
--	}
--
--	cifs_dbg(FYI, "%s: no cached or matched targets. mark dfs share for reconnect.\n", __func__);
--	cifs_signal_cifsd_for_reconnect(server, true);
--}
--
- static bool is_ses_good(struct cifs_ses *ses)
- {
- 	struct TCP_Server_Info *server = ses->server;
-@@ -1172,41 +1146,35 @@ static bool is_ses_good(struct cifs_ses *ses)
- 	return ret;
- }
- 
--/* Refresh dfs referral of @ses and mark it for reconnect if needed */
--static void __refresh_ses_referral(struct cifs_ses *ses, bool force_refresh)
-+static char *get_ses_refpath(struct cifs_ses *ses)
- {
- 	struct TCP_Server_Info *server = ses->server;
--	DFS_CACHE_TGT_LIST(old_tl);
--	DFS_CACHE_TGT_LIST(new_tl);
--	bool needs_refresh = false;
--	struct cache_entry *ce;
--	unsigned int xid;
--	char *path = NULL;
--	int rc = 0;
--
--	xid = get_xid();
-+	char *path = ERR_PTR(-ENOENT);
- 
- 	mutex_lock(&server->refpath_lock);
- 	if (server->leaf_fullpath) {
- 		path = kstrdup(server->leaf_fullpath + 1, GFP_ATOMIC);
- 		if (!path)
--			rc = -ENOMEM;
-+			path = ERR_PTR(-ENOMEM);
- 	}
- 	mutex_unlock(&server->refpath_lock);
--	if (!path)
--		goto out;
-+	return path;
-+}
- 
--	down_read(&htable_rw_lock);
--	ce = lookup_cache_entry(path);
--	needs_refresh = force_refresh || IS_ERR(ce) || cache_entry_expired(ce);
--	if (!IS_ERR(ce)) {
--		rc = get_targets(ce, &old_tl);
--		cifs_dbg(FYI, "%s: get_targets: %d\n", __func__, rc);
--	}
--	up_read(&htable_rw_lock);
-+/* Refresh dfs referral of @ses */
-+static void refresh_ses_referral(struct cifs_ses *ses)
-+{
-+	struct cache_entry *ce;
-+	unsigned int xid;
-+	char *path;
-+	int rc = 0;
- 
--	if (!needs_refresh) {
--		rc = 0;
-+	xid = get_xid();
-+
-+	path = get_ses_refpath(ses);
-+	if (IS_ERR(path)) {
-+		rc = PTR_ERR(path);
-+		path = NULL;
- 		goto out;
- 	}
- 
-@@ -1217,29 +1185,106 @@ static void __refresh_ses_referral(struct cifs_ses *ses, bool force_refresh)
- 		goto out;
- 	}
- 
--	ce = cache_refresh_path(xid, ses, path, true);
--	if (!IS_ERR(ce)) {
--		rc = get_targets(ce, &new_tl);
-+	ce = cache_refresh_path(xid, ses, path, false);
-+	if (!IS_ERR(ce))
- 		up_read(&htable_rw_lock);
--		cifs_dbg(FYI, "%s: get_targets: %d\n", __func__, rc);
--		mark_for_reconnect_if_needed(server, path, &old_tl, &new_tl);
--	}
-+	else
-+		rc = PTR_ERR(ce);
- 
- out:
- 	free_xid(xid);
--	dfs_cache_free_tgts(&old_tl);
--	dfs_cache_free_tgts(&new_tl);
- 	kfree(path);
- }
- 
--static inline void refresh_ses_referral(struct cifs_ses *ses)
-+static int __refresh_tcon_referral(struct cifs_tcon *tcon,
-+				   const char *path,
-+				   struct dfs_info3_param *refs,
-+				   int numrefs, bool force_refresh)
- {
--	__refresh_ses_referral(ses, false);
-+	struct cache_entry *ce;
-+	bool reconnect = force_refresh;
-+	int rc = 0;
-+	int i;
-+
-+	if (unlikely(!numrefs))
-+		return 0;
-+
-+	if (force_refresh) {
-+		for (i = 0; i < numrefs; i++) {
-+			/* TODO: include prefix paths in the matching */
-+			if (target_share_equal(tcon, refs[i].node_name)) {
-+				reconnect = false;
-+				break;
-+			}
+-		buffer_info->alloced = 1;
+-		buffer_info->skb = skb;
+-		buffer_info->length = (u16) adapter->rx_buffer_len;
+ 		page = virt_to_page(skb->data);
+ 		offset = offset_in_page(skb->data);
+ 		buffer_info->dma = pci_map_page(pdev, page, offset,
+ 						adapter->rx_buffer_len,
+ 						PCI_DMA_FROMDEVICE);
++		if (pci_dma_mapping_error(pdev, buffer_info->dma)) {
++			kfree_skb(skb);
++			adapter->soft_stats.rx_dropped++;
++			break;
 +		}
-+	}
 +
-+	down_write(&htable_rw_lock);
-+	ce = lookup_cache_entry(path);
-+	if (!IS_ERR(ce)) {
-+		if (force_refresh || cache_entry_expired(ce))
-+			rc = update_cache_entry_locked(ce, refs, numrefs);
-+	} else if (PTR_ERR(ce) == -ENOENT) {
-+		ce = add_cache_entry_locked(refs, numrefs);
-+	}
-+	up_write(&htable_rw_lock);
++		buffer_info->alloced = 1;
++		buffer_info->skb = skb;
++		buffer_info->length = (u16)adapter->rx_buffer_len;
 +
-+	if (IS_ERR(ce))
-+		rc = PTR_ERR(ce);
-+	if (reconnect) {
-+		cifs_tcon_dbg(FYI, "%s: mark for reconnect\n", __func__);
-+		cifs_signal_cifsd_for_reconnect(tcon->ses->server, true);
-+	}
-+	return rc;
- }
- 
--static inline void force_refresh_ses_referral(struct cifs_ses *ses)
-+static void refresh_tcon_referral(struct cifs_tcon *tcon, bool force_refresh)
- {
--	__refresh_ses_referral(ses, true);
-+	struct dfs_info3_param *refs = NULL;
-+	struct cache_entry *ce;
-+	struct cifs_ses *ses;
-+	unsigned int xid;
-+	bool needs_refresh;
-+	char *path;
-+	int numrefs = 0;
-+	int rc = 0;
-+
-+	xid = get_xid();
-+	ses = tcon->ses;
-+
-+	path = get_ses_refpath(ses);
-+	if (IS_ERR(path)) {
-+		rc = PTR_ERR(path);
-+		path = NULL;
-+		goto out;
-+	}
-+
-+	down_read(&htable_rw_lock);
-+	ce = lookup_cache_entry(path);
-+	needs_refresh = force_refresh || IS_ERR(ce) || cache_entry_expired(ce);
-+	if (!needs_refresh) {
-+		up_read(&htable_rw_lock);
-+		goto out;
-+	}
-+	up_read(&htable_rw_lock);
-+
-+	ses = CIFS_DFS_ROOT_SES(ses);
-+	if (!is_ses_good(ses)) {
-+		cifs_dbg(FYI, "%s: skip cache refresh due to disconnected ipc\n",
-+			 __func__);
-+		goto out;
-+	}
-+
-+	rc = get_dfs_referral(xid, ses, path, &refs, &numrefs);
-+	if (!rc) {
-+		rc = __refresh_tcon_referral(tcon, path, refs,
-+					     numrefs, force_refresh);
-+	}
-+
-+out:
-+	free_xid(xid);
-+	kfree(path);
-+	free_dfs_info_array(refs, numrefs);
- }
- 
- /**
-@@ -1280,7 +1325,7 @@ int dfs_cache_remount_fs(struct cifs_sb_info *cifs_sb)
- 	 */
- 	cifs_sb->mnt_cifs_flags |= CIFS_MOUNT_USE_PREFIX_PATH;
- 
--	force_refresh_ses_referral(tcon->ses);
-+	refresh_tcon_referral(tcon, true);
+ 		rfd_desc->buffer_addr = cpu_to_le64(buffer_info->dma);
+ 		rfd_desc->buf_len = cpu_to_le16(adapter->rx_buffer_len);
+ 		rfd_desc->coalese = 0;
+@@ -2182,8 +2189,8 @@ static int atl1_tx_csum(struct atl1_adapter *adapter, struct sk_buff *skb,
  	return 0;
  }
  
-@@ -1291,9 +1336,11 @@ void dfs_cache_refresh(struct work_struct *work)
- 	struct cifs_ses *ses;
+-static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+-	struct tx_packet_desc *ptpd)
++static bool atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
++			struct tx_packet_desc *ptpd)
+ {
+ 	struct atl1_tpd_ring *tpd_ring = &adapter->tpd_ring;
+ 	struct atl1_buffer *buffer_info;
+@@ -2193,6 +2200,7 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 	unsigned int nr_frags;
+ 	unsigned int f;
+ 	int retval;
++	u16 first_mapped;
+ 	u16 next_to_use;
+ 	u16 data_len;
+ 	u8 hdr_len;
+@@ -2200,6 +2208,7 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 	buf_len -= skb->data_len;
+ 	nr_frags = skb_shinfo(skb)->nr_frags;
+ 	next_to_use = atomic_read(&tpd_ring->next_to_use);
++	first_mapped = next_to_use;
+ 	buffer_info = &tpd_ring->buffer_info[next_to_use];
+ 	BUG_ON(buffer_info->skb);
+ 	/* put skb in last TPD */
+@@ -2215,6 +2224,8 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 		buffer_info->dma = pci_map_page(adapter->pdev, page,
+ 						offset, hdr_len,
+ 						PCI_DMA_TODEVICE);
++		if (pci_dma_mapping_error(adapter->pdev, buffer_info->dma))
++			goto dma_err;
  
- 	tcon = container_of(work, struct cifs_tcon, dfs_cache_work.work);
-+	ses = tcon->ses->dfs_root_ses;
+ 		if (++next_to_use == tpd_ring->count)
+ 			next_to_use = 0;
+@@ -2240,6 +2251,9 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 				buffer_info->dma = pci_map_page(adapter->pdev,
+ 					page, offset, buffer_info->length,
+ 					PCI_DMA_TODEVICE);
++				if (pci_dma_mapping_error(adapter->pdev,
++						      buffer_info->dma))
++					goto dma_err;
+ 				if (++next_to_use == tpd_ring->count)
+ 					next_to_use = 0;
+ 			}
+@@ -2251,6 +2265,8 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 		offset = offset_in_page(skb->data);
+ 		buffer_info->dma = pci_map_page(adapter->pdev, page,
+ 			offset, buf_len, PCI_DMA_TODEVICE);
++		if (pci_dma_mapping_error(adapter->pdev, buffer_info->dma))
++			goto dma_err;
+ 		if (++next_to_use == tpd_ring->count)
+ 			next_to_use = 0;
+ 	}
+@@ -2274,6 +2290,9 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 			buffer_info->dma = skb_frag_dma_map(&adapter->pdev->dev,
+ 				frag, i * ATL1_MAX_TX_BUF_LEN,
+ 				buffer_info->length, DMA_TO_DEVICE);
++			if (dma_mapping_error(&adapter->pdev->dev,
++					      buffer_info->dma))
++				goto dma_err;
  
--	for (ses = tcon->ses; ses; ses = ses->dfs_root_ses)
-+	for (; ses; ses = ses->dfs_root_ses)
- 		refresh_ses_referral(ses);
-+	refresh_tcon_referral(tcon, false);
+ 			if (++next_to_use == tpd_ring->count)
+ 				next_to_use = 0;
+@@ -2282,6 +2301,22 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
  
- 	queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
- 			   atomic_read(&dfs_cache_ttl) * HZ);
+ 	/* last tpd's buffer-info */
+ 	buffer_info->skb = skb;
++
++	return true;
++
++ dma_err:
++	while (first_mapped != next_to_use) {
++		buffer_info = &tpd_ring->buffer_info[first_mapped];
++		pci_unmap_page(adapter->pdev,
++			       buffer_info->dma,
++			       buffer_info->length,
++			       PCI_DMA_TODEVICE);
++		buffer_info->dma = 0;
++
++		if (++first_mapped == tpd_ring->count)
++			first_mapped = 0;
++	}
++	return false;
+ }
+ 
+ static void atl1_tx_queue(struct atl1_adapter *adapter, u16 count,
+@@ -2352,10 +2387,8 @@ static netdev_tx_t atl1_xmit_frame(struct sk_buff *skb,
+ 
+ 	len = skb_headlen(skb);
+ 
+-	if (unlikely(skb->len <= 0)) {
+-		dev_kfree_skb_any(skb);
+-		return NETDEV_TX_OK;
+-	}
++	if (unlikely(skb->len <= 0))
++		goto drop_packet;
+ 
+ 	nr_frags = skb_shinfo(skb)->nr_frags;
+ 	for (f = 0; f < nr_frags; f++) {
+@@ -2369,10 +2402,8 @@ static netdev_tx_t atl1_xmit_frame(struct sk_buff *skb,
+ 		if (skb->protocol == htons(ETH_P_IP)) {
+ 			proto_hdr_len = (skb_transport_offset(skb) +
+ 					 tcp_hdrlen(skb));
+-			if (unlikely(proto_hdr_len > len)) {
+-				dev_kfree_skb_any(skb);
+-				return NETDEV_TX_OK;
+-			}
++			if (unlikely(proto_hdr_len > len))
++				goto drop_packet;
+ 			/* need additional TPD ? */
+ 			if (proto_hdr_len != len)
+ 				count += (len - proto_hdr_len +
+@@ -2404,23 +2435,26 @@ static netdev_tx_t atl1_xmit_frame(struct sk_buff *skb,
+ 	}
+ 
+ 	tso = atl1_tso(adapter, skb, ptpd);
+-	if (tso < 0) {
+-		dev_kfree_skb_any(skb);
+-		return NETDEV_TX_OK;
+-	}
++	if (tso < 0)
++		goto drop_packet;
+ 
+ 	if (!tso) {
+ 		ret_val = atl1_tx_csum(adapter, skb, ptpd);
+-		if (ret_val < 0) {
+-			dev_kfree_skb_any(skb);
+-			return NETDEV_TX_OK;
+-		}
++		if (ret_val < 0)
++			goto drop_packet;
+ 	}
+ 
+-	atl1_tx_map(adapter, skb, ptpd);
++	if (!atl1_tx_map(adapter, skb, ptpd))
++		goto drop_packet;
++
+ 	atl1_tx_queue(adapter, count, ptpd);
+ 	atl1_update_mailbox(adapter);
+ 	return NETDEV_TX_OK;
++
++drop_packet:
++	adapter->soft_stats.tx_errors++;
++	dev_kfree_skb_any(skb);
++	return NETDEV_TX_OK;
+ }
+ 
+ static int atl1_rings_clean(struct napi_struct *napi, int budget)
 -- 
 2.39.5
 
