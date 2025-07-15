@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-162670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD163B05E94
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 881BFB05DE5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FB647B19A7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:53:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AC14177F69
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D432ECE8A;
-	Tue, 15 Jul 2025 13:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787D32E7648;
+	Tue, 15 Jul 2025 13:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mvh/r8c/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wk0qtef7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6020A2ECD3C;
-	Tue, 15 Jul 2025 13:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B942E62C3;
+	Tue, 15 Jul 2025 13:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587166; cv=none; b=G390b5HBsg0YnKQtgl3BAhO8Ch+xxRuaEVGN4o17S87IzMxKA6dCJ4BrADz/m9tyA4FqQf3JdOWCJtOpR38vu9pqMQquR3kLObqkI+MXN9oc/WtWgp6X+Xo16LORA8O3KsoNYZEBF0AMuUJCWJ4aDYK/FJRa2iuOCpnG16T+qIU=
+	t=1752586680; cv=none; b=I3gsijLqragGoeCQhvK8OHGSEJCePei0zddm/jUP0zCjXP7dhHSZeofZ6v/MlXR9adkNT9Xz0wKVuX480jeOD8iXSVPnU2xERp63nV1pL/Jw/AbKIDpWXw3hbbyJuRnvHyJ7VhHztAZ20cHv6B8JwHy55yPq4OsI7j5zv8FpwhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587166; c=relaxed/simple;
-	bh=0SEdfAs6ifof6HjzPvS2lH58rtdH6uTpCGFD88HWzcs=;
+	s=arc-20240116; t=1752586680; c=relaxed/simple;
+	bh=3T0ghl6RRiT1/pHxjEwtnTHHZqfcc/sg5O7o4pwvKDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CafoLFqnvb6XVW4lMJFhrQ+sMiSpm0/T80wY4xJ8ZDN2xFmD8n6alL2x3fORUzYrUYjN6+v8dKXEjkCwICIqive2WugeRiez3JeDXVZnYCxLG174Zb1td/wgVzuXPIuGv/LvctqGgISOQdVmoxxJdewaX8tGpZ+tqEaqyAWL0BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mvh/r8c/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7698C4CEF1;
-	Tue, 15 Jul 2025 13:46:05 +0000 (UTC)
+	 MIME-Version; b=EdLYKfOonLs/NBE0w5S3QWc1Bmu2oA8RID71ykniCU4MLWm8S4NgQwXWcYcHR6KWJ462ZgvZHSdU6ce09bZYkowPQc4e0i5qALJejwIjjxkDlYXse3UNyi9CdoRhZXeQBpEe1mU2bWMpYBgrdL/veNTg2D9cBA7t7CC3DrL2WHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wk0qtef7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A76C4CEE3;
+	Tue, 15 Jul 2025 13:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587166;
-	bh=0SEdfAs6ifof6HjzPvS2lH58rtdH6uTpCGFD88HWzcs=;
+	s=korg; t=1752586679;
+	bh=3T0ghl6RRiT1/pHxjEwtnTHHZqfcc/sg5O7o4pwvKDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mvh/r8c/2QCCBkwGfRi4mXbxM6V+CTWQkl/W2NO6URIXmqTCERDSYkXzpM64PS05u
-	 B4i62As9zIbY670qtPrHluQGehsbMNdgAA5JxTPXoT6HpOj/UvCY8zW4YSgZBV0X1w
-	 d8MdDuzj3xKBBrogBAwzLMgnuG1ctDK9zQ7LquIM=
+	b=Wk0qtef7G38Kpn1mt1fzproljb3/lzieX7IvFiQ7uzgZNsbDqp2ZaUYtH18IInAwS
+	 xFvl1CD3YuS7nJtLcc8L2SuGTbeKlCK+emtmMDJHOsjw0z2kgS+/1v0hWPC3hNfsyb
+	 neOJ3Gd8u9Jn+N0cQZfaQ4PZ6O9FJfDT+P92tpMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 160/192] net/mlx5: Reset bw_share field when changing a nodes parent
-Date: Tue, 15 Jul 2025 15:14:15 +0200
-Message-ID: <20250715130821.336228882@linuxfoundation.org>
+Subject: [PATCH 5.4 134/148] wifi: zd1211rw: Fix potential NULL pointer dereference in zd_mac_tx_to_dev()
+Date: Tue, 15 Jul 2025 15:14:16 +0200
+Message-ID: <20250715130805.653694443@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit f7b76466894083c8f518cf29fef75fcd3ec670e5 ]
+[ Upstream commit 74b1ec9f5d627d2bdd5e5b6f3f81c23317657023 ]
 
-When changing a node's parent, its scheduling element is destroyed and
-re-created with bw_share 0. However, the node's bw_share field was not
-updated accordingly.
+There is a potential NULL pointer dereference in zd_mac_tx_to_dev(). For
+example, the following is possible:
 
-Set the node's bw_share to 0 after re-creation to keep the software
-state in sync with the firmware configuration.
+    	T0			    		T1
+zd_mac_tx_to_dev()
+  /* len == skb_queue_len(q) */
+  while (len > ZD_MAC_MAX_ACK_WAITERS) {
 
-Fixes: 9c7bbf4c3304 ("net/mlx5: Add support for setting parent of nodes")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/1752155624-24095-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+					  filter_ack()
+					    spin_lock_irqsave(&q->lock, flags);
+					    /* position == skb_queue_len(q) */
+					    for (i=1; i<position; i++)
+				    	      skb = __skb_dequeue(q)
+
+					    if (mac->type == NL80211_IFTYPE_AP)
+					      skb = __skb_dequeue(q);
+					    spin_unlock_irqrestore(&q->lock, flags);
+
+    skb_dequeue() -> NULL
+
+Since there is a small gap between checking skb queue length and skb being
+unconditionally dequeued in zd_mac_tx_to_dev(), skb_dequeue() can return NULL.
+Then the pointer is passed to zd_mac_tx_status() where it is dereferenced.
+
+In order to avoid potential NULL pointer dereference due to situations like
+above, check if skb is not NULL before passing it to zd_mac_tx_status().
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 459c51ad6e1f ("zd1211rw: port to mac80211")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Link: https://patch.msgid.link/20250626114619.172631-1-d.dulov@aladdin.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/zydas/zd1211rw/zd_mac.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-index b6ae384396b33..ad9f6fca9b6a2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-@@ -1076,6 +1076,7 @@ static int esw_qos_vports_node_update_parent(struct mlx5_esw_sched_node *node,
- 		return err;
- 	}
- 	esw_qos_node_set_parent(node, parent);
-+	node->bw_share = 0;
+diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+index a9999d10ae81f..bff6e796fde0d 100644
+--- a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
++++ b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+@@ -584,7 +584,11 @@ void zd_mac_tx_to_dev(struct sk_buff *skb, int error)
  
- 	return 0;
- }
+ 		skb_queue_tail(q, skb);
+ 		while (skb_queue_len(q) > ZD_MAC_MAX_ACK_WAITERS) {
+-			zd_mac_tx_status(hw, skb_dequeue(q),
++			skb = skb_dequeue(q);
++			if (!skb)
++				break;
++
++			zd_mac_tx_status(hw, skb,
+ 					 mac->ack_pending ? mac->ack_signal : 0,
+ 					 NULL);
+ 			mac->ack_pending = 0;
 -- 
 2.39.5
 
