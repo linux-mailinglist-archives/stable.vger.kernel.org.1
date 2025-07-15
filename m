@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BDCB05E6E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC89B05DB0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C70C17B759
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5231C23F93
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9D92EAB85;
-	Tue, 15 Jul 2025 13:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D672EBDD0;
+	Tue, 15 Jul 2025 13:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTtHoPZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiiwjWqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E662EAB90;
-	Tue, 15 Jul 2025 13:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F5D2E49B4;
+	Tue, 15 Jul 2025 13:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586902; cv=none; b=ld7O1FgarYSVWOX5/yPSDmd0RuqSs9lg5ezf2O5jMYO9FPZUIM3SF7CTjhfs6VYKCJQLazlwMuZh9hc90oYmaoZP7uFz6+W5D33hB0NBsGPV0V2ygnOU5yNkHIBL9+bBEttvOVAmbpsg1x+Q40B+hX78Spo8edCsHpuDi7NbASc=
+	t=1752586430; cv=none; b=bnZZiRt330izDAtZgjTYjRUsrpe1Oqpsftif5ZyLnRVQrRxUSD9tT3EMlFF2NxrW6G5T94cM9ZNp1G7NyBtOAwlC3KXIXY4UCKsj1NKLIkKVHUH/lO5X7Owk7OEl/fXGqrVwH+/pcnBWOh9mGV8+BKb67jEvC1lKiTc5Du9NTLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586902; c=relaxed/simple;
-	bh=GfLeVbhOn/NuxstkbXtVRbWvjD/SnmGF5xmutByLpZY=;
+	s=arc-20240116; t=1752586430; c=relaxed/simple;
+	bh=zKl22OltK0JT9SSHiC17w9Krc54dlmpkwCvLGkBRCiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EUPkuTLdbrU985hYFVXpQ1emwRYqb+kw13JufFNSofFA3U3s2sLIsmD/MiBsTbRwpAIKf+M5wwWoyhXzNnpnNXhMS7uplFcK6TELSL9ydMzp9kwOmMi0BnN7GFYKYFOBc+byk0d2lhWmhHvDJKvrLsyJgcHTMkN8tp0gaSC1PTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTtHoPZN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD43C4CEE3;
-	Tue, 15 Jul 2025 13:41:41 +0000 (UTC)
+	 MIME-Version; b=joDnTkF54Y1u+/nQolw8B9vkSRF1QMLNdsaCE9zcb52MWdDn2xDB4xKhQcMvxTlxIo7pp9WMZggUJWSHTSsG1YF9SjQGLYQozcp90jcvupgIYLaEnK4i7Rdhv+BnKIrR6Rg64V160M9bWlUW1dL13G/fYEBb/9sLlcy7ZwAHcY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiiwjWqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E77C4CEF7;
+	Tue, 15 Jul 2025 13:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586901;
-	bh=GfLeVbhOn/NuxstkbXtVRbWvjD/SnmGF5xmutByLpZY=;
+	s=korg; t=1752586430;
+	bh=zKl22OltK0JT9SSHiC17w9Krc54dlmpkwCvLGkBRCiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTtHoPZNyQMGpJGf9mn6FzwrA0fImHtbcUZxY2tcM2XfRuuCfcBcoDArPR5a3uNtg
-	 RbxLo8CeBPfEJ5PlAOZgFOSh1CZO1F0TvFlv9dOTidErbgrJy+OKvY0hDSNMCUfF5Q
-	 CnnyJfxoHryB28/k5L5MN1aBfzG59m9zmpnbaRrU=
+	b=yiiwjWqPF6bHZp4b8/6rPM2d7BQSckCMcoBYXZYmSMijC4XGXNibcWrV2ek+l1mGW
+	 gT1xKgkLLwWf6PJTzJtV6jx9Ja4pX0MYH7lVvECy+mFHFIT530bgjASyoE/Up6nBiv
+	 b0rMkCT4sBHESAUuFkv3jRrsiPApdvL8wjsm1Fus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: [PATCH 6.15 061/192] sched: Fix preemption string of preempt_dynamic_none
-Date: Tue, 15 Jul 2025 15:12:36 +0200
-Message-ID: <20250715130817.391080978@linuxfoundation.org>
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.4 035/148] i2c: tiny-usb: disable zero-length read messages
+Date: Tue, 15 Jul 2025 15:12:37 +0200
+Message-ID: <20250715130801.719606928@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +59,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 3ebb1b6522392f64902b4e96954e35927354aa27 upstream.
+commit cbdb25ccf7566eee0c2b945e35cb98baf9ed0aa6 upstream.
 
-Zero is a valid value for "preempt_dynamic_mode", namely
-"preempt_dynamic_none".
+This driver passes the length of an i2c_msg directly to
+usb_control_msg(). If the message is now a read and of length 0, it
+violates the USB protocol and a warning will be printed. Enable the
+I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
+read messages altogether.
 
-Fix the off-by-one in preempt_model_str(), so that "preempty_dynamic_none"
-is correctly formatted as PREEMPT(none) instead of PREEMPT(undef).
-
-Fixes: 8bdc5daaa01e ("sched: Add a generic function to return the preemption string")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250626-preempt-str-none-v2-1-526213b70a89@linutronix.de
+Fixes: e8c76eed2ecd ("i2c: New i2c-tiny-usb bus driver")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: <stable@vger.kernel.org> # v2.6.22+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250522064349.3823-2-wsa+renesas@sang-engineering.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-tiny-usb.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7695,7 +7695,7 @@ const char *preempt_model_str(void)
+--- a/drivers/i2c/busses/i2c-tiny-usb.c
++++ b/drivers/i2c/busses/i2c-tiny-usb.c
+@@ -140,6 +140,11 @@ out:
+ 	return ret;
+ }
  
- 		if (IS_ENABLED(CONFIG_PREEMPT_DYNAMIC)) {
- 			seq_buf_printf(&s, "(%s)%s",
--				       preempt_dynamic_mode > 0 ?
-+				       preempt_dynamic_mode >= 0 ?
- 				       preempt_modes[preempt_dynamic_mode] : "undef",
- 				       brace ? "}" : "");
- 			return seq_buf_str(&s);
++/* prevent invalid 0-length usb_control_msg */
++static const struct i2c_adapter_quirks usb_quirks = {
++	.flags = I2C_AQ_NO_ZERO_LEN_READ,
++};
++
+ /* This is the actual algorithm we define */
+ static const struct i2c_algorithm usb_algorithm = {
+ 	.master_xfer	= usb_xfer,
+@@ -246,6 +251,7 @@ static int i2c_tiny_usb_probe(struct usb
+ 	/* setup i2c adapter description */
+ 	dev->adapter.owner = THIS_MODULE;
+ 	dev->adapter.class = I2C_CLASS_HWMON;
++	dev->adapter.quirks = &usb_quirks;
+ 	dev->adapter.algo = &usb_algorithm;
+ 	dev->adapter.algo_data = dev;
+ 	snprintf(dev->adapter.name, sizeof(dev->adapter.name),
 
 
 
