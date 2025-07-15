@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-162598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A19CB05EA7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78723B05CEF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE8E34E79EC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF9AF16A170
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCB0192D8A;
-	Tue, 15 Jul 2025 13:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412EF2D839A;
+	Tue, 15 Jul 2025 13:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tezsGdj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4Sl2S7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7AA26D4F2;
-	Tue, 15 Jul 2025 13:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EF52E54BB;
+	Tue, 15 Jul 2025 13:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586979; cv=none; b=B7xRr1ZvcA6R2wgcA7hMq1EkE/pDZdsBSUY6mL6mO4eDtbvh8KNOrZ9udX4Pg7+zZf4CJemtKDehYnMrbTxwuB+aI4RMvfKqLbJdoWsxBt64ez8CW71Ml8O3YV12xK3zeQMQ8Km5Wm0Komc+ovQGD9Wrb8O1gLGKMIWZnMLWCSQ=
+	t=1752586235; cv=none; b=ljuy30vyPUfONC/2/RVQBU2j1d89weY8UczPpvsMKcyPqrVhLBRLpErs8OzUE0//aoIWLIZHsJhUm4H9/jZlwUQVADUetYUn8qBJBTYV60HvU6E+EnjDSzvuj5WhGgAqtGXlkuy9f1Us6aeuM/5lyC2bOM+Cz5z6w3f3/WHAm2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586979; c=relaxed/simple;
-	bh=dzAD5IRDnweDKX7utVEkexM2eEOIPdWp0Jo6C1sUI4Q=;
+	s=arc-20240116; t=1752586235; c=relaxed/simple;
+	bh=Fptg0aXQ0JMwsu42umfPm/2plK0E6lYZ5FYDiber4m4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cE/n4uOM2uQe3ZM4t25kQKKSkb2uoIOtd94NoYHgG5yVFU0bwRa+igsUg12Gks7bgmlhD5l5MPp2RjAhtkYpxqvNmrV40mF/uKfTe/uofIvY/8ceIeJYJSMqLoxCqi/AUxh0Zd3+uUOA6OSr0gW54O1c2IOFXzIw86yFjLyj0+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tezsGdj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB89C4CEE3;
-	Tue, 15 Jul 2025 13:42:58 +0000 (UTC)
+	 MIME-Version; b=E6DFQh1Evml9iURro/1BY57cKaDRwY3ccY3FJtElF5BXTVJqmbJyJBJNxFzrhy4CTyXrtIQLsmgc2n4j80IvxNdhQwLZJnf+BpWXF4ZfE88PDIFb8Opyze9Ntv64YDcELwaWiGgglYsoqyr5l8mSOQ0MRV9zByAoj2JbsnDWV90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4Sl2S7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F53C4CEE3;
+	Tue, 15 Jul 2025 13:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586978;
-	bh=dzAD5IRDnweDKX7utVEkexM2eEOIPdWp0Jo6C1sUI4Q=;
+	s=korg; t=1752586234;
+	bh=Fptg0aXQ0JMwsu42umfPm/2plK0E6lYZ5FYDiber4m4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tezsGdj/4J3FSeT3w7rJGnd8S3KNMDME4rCt4Kj8Qscx9Jzj/PbnvkpC0iARGsuO0
-	 dx7S6oW++MzrAMvfrqaBF+jXNjXzGwlN6+O9pWtE9mFrM92RH2x/pgS9Iok2ISfw9N
-	 97L0Lk2ntfiSYXec3D2ZkBisKtGHGWB5d1N/KAbo=
+	b=M4Sl2S7FJmOb/rbwZO/dAKJzqrrVDBA1TMfeYa1hZ7t1UWRpCkKoFB9CUqZ0SuqEy
+	 6XgBEZS6q0dOHNwD67Ad1dwIQ/B0mjjfkpTAYLSCoSANTqHJv1XfEX1MTjuzemsPL/
+	 Y00xj8JRkhgLduf7+leNHoC/o43j50Xxvyq4YjA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Stefan Metzmacher <metze@samba.org>
-Subject: [PATCH 6.15 119/192] smb: server: make use of rdma_destroy_qp()
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 35/77] btrfs: propagate last_unlink_trans earlier when doing a rmdir
 Date: Tue, 15 Jul 2025 15:13:34 +0200
-Message-ID: <20250715130819.665683443@linuxfoundation.org>
+Message-ID: <20250715130753.117094590@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 0c2b53997e8f5e2ec9e0fbd17ac0436466b65488 upstream.
+[ Upstream commit c466e33e729a0ee017d10d919cba18f503853c60 ]
 
-The qp is created by rdma_create_qp() as t->cm_id->qp
-and t->qp is just a shortcut.
+In case the removed directory had a snapshot that was deleted, we are
+propagating its inode's last_unlink_trans to the parent directory after
+we removed the entry from the parent directory. This leaves a small race
+window where someone can log the parent directory after we removed the
+entry and before we updated last_unlink_trans, and as a result if we ever
+try to replay such a log tree, we will fail since we will attempt to
+remove a snapshot during log replay, which is currently not possible and
+results in the log replay (and mount) to fail. This is the type of failure
+described in commit 1ec9a1ae1e30 ("Btrfs: fix unreplayable log after
+snapshot delete + parent dir fsync").
 
-rdma_destroy_qp() also calls ib_destroy_qp(cm_id->qp) internally,
-but it is protected by a mutex, clears the cm_id and also calls
-trace_cm_qp_destroy().
+So fix this by propagating the last_unlink_trans to the parent directory
+before we remove the entry from it.
 
-This should make the tracing more useful as both
-rdma_create_qp() and rdma_destroy_qp() are traces and it makes
-the code look more sane as functions from the same layer are used
-for the specific qp object.
-
-trace-cmd stream -e rdma_cma:cm_qp_create -e rdma_cma:cm_qp_destroy
-shows this now while doing a mount and unmount from a client:
-
-  <...>-80   [002] 378.514182: cm_qp_create:  cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 pd.id=0 qp_type=RC send_wr=867 recv_wr=255 qp_num=1 rc=0
-  <...>-6283 [001] 381.686172: cm_qp_destroy: cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 qp_num=1
-
-Before we only saw the first line.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <stfrench@microsoft.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 44f714dae50a ("Btrfs: improve performance on fsync against new inode after rename/unlink")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/inode.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -433,7 +433,8 @@ static void free_transport(struct smb_di
- 	if (t->qp) {
- 		ib_drain_qp(t->qp);
- 		ib_mr_pool_destroy(t->qp, &t->qp->rdma_mrs);
--		ib_destroy_qp(t->qp);
-+		t->qp = NULL;
-+		rdma_destroy_qp(t->cm_id);
- 	}
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index e3e5bd4fb477a..60079099e24b9 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4655,7 +4655,6 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	struct inode *inode = d_inode(dentry);
+ 	int err = 0;
+ 	struct btrfs_trans_handle *trans;
+-	u64 last_unlink_trans;
  
- 	ksmbd_debug(RDMA, "drain the reassembly queue\n");
-@@ -1940,8 +1941,8 @@ static int smb_direct_create_qpair(struc
- 	return 0;
- err:
- 	if (t->qp) {
--		ib_destroy_qp(t->qp);
- 		t->qp = NULL;
-+		rdma_destroy_qp(t->cm_id);
- 	}
- 	if (t->recv_cq) {
- 		ib_destroy_cq(t->recv_cq);
+ 	if (inode->i_size > BTRFS_EMPTY_DIR_SIZE)
+ 		return -ENOTEMPTY;
+@@ -4666,6 +4665,23 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	if (IS_ERR(trans))
+ 		return PTR_ERR(trans);
+ 
++	/*
++	 * Propagate the last_unlink_trans value of the deleted dir to its
++	 * parent directory. This is to prevent an unrecoverable log tree in the
++	 * case we do something like this:
++	 * 1) create dir foo
++	 * 2) create snapshot under dir foo
++	 * 3) delete the snapshot
++	 * 4) rmdir foo
++	 * 5) mkdir foo
++	 * 6) fsync foo or some file inside foo
++	 *
++	 * This is because we can't unlink other roots when replaying the dir
++	 * deletes for directory foo.
++	 */
++	if (BTRFS_I(inode)->last_unlink_trans >= trans->transid)
++		BTRFS_I(dir)->last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
++
+ 	if (unlikely(btrfs_ino(BTRFS_I(inode)) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID)) {
+ 		err = btrfs_unlink_subvol(trans, dir, dentry);
+ 		goto out;
+@@ -4675,28 +4691,12 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	if (err)
+ 		goto out;
+ 
+-	last_unlink_trans = BTRFS_I(inode)->last_unlink_trans;
+-
+ 	/* now the directory is empty */
+ 	err = btrfs_unlink_inode(trans, BTRFS_I(dir),
+ 			BTRFS_I(d_inode(dentry)), dentry->d_name.name,
+ 			dentry->d_name.len);
+-	if (!err) {
++	if (!err)
+ 		btrfs_i_size_write(BTRFS_I(inode), 0);
+-		/*
+-		 * Propagate the last_unlink_trans value of the deleted dir to
+-		 * its parent directory. This is to prevent an unrecoverable
+-		 * log tree in the case we do something like this:
+-		 * 1) create dir foo
+-		 * 2) create snapshot under dir foo
+-		 * 3) delete the snapshot
+-		 * 4) rmdir foo
+-		 * 5) mkdir foo
+-		 * 6) fsync foo or some file inside foo
+-		 */
+-		if (last_unlink_trans >= trans->transid)
+-			BTRFS_I(dir)->last_unlink_trans = last_unlink_trans;
+-	}
+ out:
+ 	btrfs_end_transaction(trans);
+ 	btrfs_btree_balance_dirty(BTRFS_I(dir)->root->fs_info);
+-- 
+2.39.5
+
 
 
 
