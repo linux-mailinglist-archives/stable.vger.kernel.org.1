@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A2BB05DA0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3880FB05C43
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B518D581F23
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA5E16A963
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63652EB5A3;
-	Tue, 15 Jul 2025 13:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2192E5422;
+	Tue, 15 Jul 2025 13:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gq9JiCwQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vc6pUFav"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750E12E49AC;
-	Tue, 15 Jul 2025 13:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72892E49AE;
+	Tue, 15 Jul 2025 13:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586547; cv=none; b=pfEFkZiUcfhaGrLTSLagRcYXXNphdgW9Oq+bq7WwpLHLHqyf+7cQOuBSvwvuHoq0Fd7mvoQs6RR9ZnANKA8XMZjpCu3W0k5LOhq9Riw48Fp4AeNd5TIcJSv2T1PHYN5hM1s1lxS7OMMlttRTPKAtQFr2rcf2HJ9vPLNb9fPXcTg=
+	t=1752585934; cv=none; b=QpiI57veQVD6BmjVVB6SgsnDTvGp1zCZqlCMLvMqdmnV+PqLtWnnjbZCWyk4N+dKxLqRIMdnUW65mgdAbClbmtQi7xlUdX/gCBpkC64gTyl6ObxZHqxE4fhN2+POMNPaWBJi8YIo5RgmdOHJc/lZVLZ8HuXkSoLLzEqPbppR/NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586547; c=relaxed/simple;
-	bh=h4icVeQJYDJn/pAkQ8l4s78yomGMq784o1j/tIwGDKU=;
+	s=arc-20240116; t=1752585934; c=relaxed/simple;
+	bh=n8uPNQKe8maV5A9TuufWy/3FLpDfMLFbyfzim/qFlRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nk6upWqqD/ExhuOhOCaljYG0/8kBZtU6hXXtiTTKhj/R07KdeIBE2TExEpPsqfkQn/kwlcjYlZRk0yFDh042BjlRQp6SApDIAmKDNzSzEoj3lsegWxhWqhP8qTjiZfwbtXJCNnvHbGmgPRfS7+Mdd8pQ+SpYGy3NP+ZV68b9AC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gq9JiCwQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB880C4CEE3;
-	Tue, 15 Jul 2025 13:35:46 +0000 (UTC)
+	 MIME-Version; b=cIfYCEfe3h0wZI0BmAfceleBfcaef0qEA2HfYZKh3PbP9O/Mi0fld/GnKOR+OPMttIXebMlNDxmdvtBua2wf6FSzv9gP65ja8OqcdAy9Zrczz5kfciG57sGSIJcTnIEC3hWZDnW/PKbieq2rV+k2Bjr/NfpECvTJaqyk+AslJa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vc6pUFav; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D2EC4CEE3;
+	Tue, 15 Jul 2025 13:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586547;
-	bh=h4icVeQJYDJn/pAkQ8l4s78yomGMq784o1j/tIwGDKU=;
+	s=korg; t=1752585933;
+	bh=n8uPNQKe8maV5A9TuufWy/3FLpDfMLFbyfzim/qFlRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gq9JiCwQ6En9fKjt1WnhIBfez3aXDXyzkfSZobYVta83c1ajPN75VUZJN9k/C3iIa
-	 CHns3acTYSAX8rFipC/rOcCY2xYHqcNhOXLJzSDcTTyJuePITmfsq9M7jUjbsm7OMr
-	 yKp3fhYtVmJ8PfZJQi3p4iZtBLy+gu87zkjal0mQ=
+	b=Vc6pUFavTwIniyeBJLQ6BrysHmw8jIi1Vf6aXulunfibcOfByP1ziK2xIPDnjLk/8
+	 ojYgAkzlxiz1k/s5B5RRw1W0eYYsF/z08ZQCwpu0a25XRhOouSqT4yuhU+mWBUljq1
+	 cntr5RJ3Kgk0eURk4UFst8dGT6NqQP8nQZmyUNNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 075/148] wifi: mac80211: drop invalid source address OCB frames
-Date: Tue, 15 Jul 2025 15:13:17 +0200
-Message-ID: <20250715130803.324868176@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 062/109] ksmbd: fix a mount write count leak in ksmbd_vfs_kern_path_locked()
+Date: Tue, 15 Jul 2025 15:13:18 +0200
+Message-ID: <20250715130801.367134117@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit d1b1a5eb27c4948e8811cf4dbb05aaf3eb10700c ]
+commit 277627b431a0a6401635c416a21b2a0f77a77347 upstream.
 
-In OCB, don't accept frames from invalid source addresses
-(and in particular don't try to create stations for them),
-drop the frames instead.
+If the call of ksmbd_vfs_lock_parent() fails, we drop the parent_path
+references and return an error.  We need to drop the write access we
+just got on parent_path->mnt before we drop the mount reference - callers
+assume that ksmbd_vfs_kern_path_locked() returns with mount write
+access grabbed if and only if it has returned 0.
 
-Reported-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/6788d2d9.050a0220.20d369.0028.GAE@google.com/
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Tested-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20250616171838.7433379cab5d.I47444d63c72a0bd58d2e2b67bb99e1fea37eec6f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 864fb5d37163 ("ksmbd: fix possible deadlock in smb2_open")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/rx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/server/vfs.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 99d5f8b58e92e..4c805530edfb6 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3982,6 +3982,10 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 		if (!multicast &&
- 		    !ether_addr_equal(sdata->dev->dev_addr, hdr->addr1))
- 			return false;
-+		/* reject invalid/our STA address */
-+		if (!is_valid_ether_addr(hdr->addr2) ||
-+		    ether_addr_equal(sdata->dev->dev_addr, hdr->addr2))
-+			return false;
- 		if (!rx->sta) {
- 			int rate_idx;
- 			if (status->encoding != RX_ENC_LEGACY)
--- 
-2.39.5
-
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1293,6 +1293,7 @@ out1:
+ 
+ 		err = ksmbd_vfs_lock_parent(parent_path->dentry, path->dentry);
+ 		if (err) {
++			mnt_drop_write(parent_path->mnt);
+ 			path_put(path);
+ 			path_put(parent_path);
+ 		}
 
 
 
