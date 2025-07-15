@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B7DB05F54
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3714AB05F41
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E3061C256C3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:55:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CC0F7B8FCF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F332ECD32;
-	Tue, 15 Jul 2025 13:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E2B2E54C9;
+	Tue, 15 Jul 2025 13:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulZuD4u8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkW48o9Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46152E7641;
-	Tue, 15 Jul 2025 13:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C7E8462;
+	Tue, 15 Jul 2025 13:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587155; cv=none; b=EKSJJrAAhyAnaJebytnL3ql1ZOAJjQ9+SmzoOnLJIu8VG/dEw+no0yihYpDWEqpv16eqBjshpVQX3G6AfD61eO775u7vVGcfbbfJmYmU0V346zlWxi29xswzcmGew1zdLRtWW6T07d/MM4cRQRsr0XYyTVZqlV8fnGR9jdSsUko=
+	t=1752587345; cv=none; b=nT/GmUMjS/jub5F1HpoZhuXZTPEF17jvdFdk1k0suCbW0jghFypcqGQbBH6XaP0hX0GLU+jE7B9Mpd1CnFCpmcQcj2kJnkycmb1+jLbZaV+ycOcbFx1Izj/uRLaZs2jaV11Kis5VFxEBuRZhv9SLFAUH/ajQMSnP6mQrdcNUtmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587155; c=relaxed/simple;
-	bh=G0mBA+q4pweg9EvI44fQZfbH0ihnhifscASyGE+eZjM=;
+	s=arc-20240116; t=1752587345; c=relaxed/simple;
+	bh=4yEQeyLQuFdVL0C0Ziqi/Rie5CmgNqsEfm3phoz9fzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PzRllPmwCTT5BRxZGXYcVtPpTpQWX3I4tXsbRgl/7mVzUWEmVYesK5pCKc9XilGRdmEiCaIi4jifCcUQ9miWRz7r5e1XyEuMD0yM+9jife/JfKap708Q2Ap73eY09vre6w1mPHnavjJLKo+pZJxMszK6sDguRirgT/6wXQPqb/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulZuD4u8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587E3C4CEF6;
-	Tue, 15 Jul 2025 13:45:55 +0000 (UTC)
+	 MIME-Version; b=rBmM97Q0jBzo7WAqs1l8cCLOYdaVi8njzyBucs1eDj7hHMLLPK/rp3JFoLH0ssC1Zh5AqAd+CRoVjhSUEPpCL0gcHKh31leG8Vjj+CG6L5BSQEct/I7GlKw/mqrBmLhIwXQnCJQZjcpEXE8097vMaKHLbsaQK8bVMIC6uNXKZ0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkW48o9Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FE1C4CEE3;
+	Tue, 15 Jul 2025 13:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587155;
-	bh=G0mBA+q4pweg9EvI44fQZfbH0ihnhifscASyGE+eZjM=;
+	s=korg; t=1752587344;
+	bh=4yEQeyLQuFdVL0C0Ziqi/Rie5CmgNqsEfm3phoz9fzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulZuD4u8wnC1yuwIc9YwBIlZDpAsN6NFze4lh5gZ0mljTsKNjPg8nQ0/JFOnb+p6q
-	 An4I/UiEO3xjRT9b4nDXxsBH2dz38ejDLf+YsTsCHQc0ot9mn3Fy7WQ5GDs3T6vIme
-	 jYCqfDqWVrwSa2SgV2ISBRISUln2Pv6HwczFbPyw=
+	b=rkW48o9QQ/55tkd62mtJZrC1oJigpHLcCS70EnkskW5efvkcZaUKk8d1V//nILC+F
+	 7JUGSTm6A316pZN87lmqBUSt5Y5FQe0IxpXgaS9o30KEoe+BxNIbz/b9GcVdU3h0zF
+	 7YdFjO0cFmn902V2z5+CTWdj+jy8RcSlTF46ksRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Jiri Kosina <jkosina@suse.com>,
+	syzbot+bf6ed459397e307c3ad2@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 186/192] HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY
+Subject: [PATCH 6.1 65/88] netfilter: flowtable: account for Ethernet header in nf_flow_pppoe_proto()
 Date: Tue, 15 Jul 2025 15:14:41 +0200
-Message-ID: <20250715130822.387081528@linuxfoundation.org>
+Message-ID: <20250715130757.179254332@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 1a8953f4f7746c6a515989774fe03047c522c613 ]
+[ Upstream commit 18cdb3d982da8976b28d57691eb256ec5688fad2 ]
 
-MARTLINKTECHNOLOGY is a microphone device, when the HID interface in an
-audio device is requested to get specific report id, the following error
-may occur.
+syzbot found a potential access to uninit-value in nf_flow_pppoe_proto()
 
-[  562.939373] usb 1-1.4.1.2: new full-speed USB device number 21 using xhci_hcd
-[  563.104908] usb 1-1.4.1.2: New USB device found, idVendor=4c4a, idProduct=4155, bcdDevice= 1.00
-[  563.104910] usb 1-1.4.1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  563.104911] usb 1-1.4.1.2: Product: USB Composite Device
-[  563.104912] usb 1-1.4.1.2: Manufacturer: SmartlinkTechnology
-[  563.104913] usb 1-1.4.1.2: SerialNumber: 20201111000001
-[  563.229499] input: SmartlinkTechnology USB Composite Device as /devices/pci0000:00/0000:00:07.1/0000:04:00.3/usb1/1-1/1-1.4/1-1.4.1/1-1.4.1.2/1-1.4.1.2:1.2/0003:4C4A:4155.000F/input/input35
-[  563.291505] hid-generic 0003:4C4A:4155.000F: input,hidraw2: USB HID v2.01 Keyboard [SmartlinkTechnology USB Composite Device] on usb-0000:04:00.3-1.4.1.2/input2
-[  563.291557] usbhid 1-1.4.1.2:1.3: couldn't find an input interrupt endpoint
-[  568.506654] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
-[  573.626656] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
-[  578.746657] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
-[  583.866655] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
-[  588.986657] usb 1-1.4.1.2: 1:1: usb_set_interface failed (-110)
+Blamed commit forgot the Ethernet header.
 
-Ignore HID interface. The device is working properly.
+BUG: KMSAN: uninit-value in nf_flow_offload_inet_hook+0x7e4/0x940 net/netfilter/nf_flow_table_inet.c:27
+  nf_flow_offload_inet_hook+0x7e4/0x940 net/netfilter/nf_flow_table_inet.c:27
+  nf_hook_entry_hookfn include/linux/netfilter.h:157 [inline]
+  nf_hook_slow+0xe1/0x3d0 net/netfilter/core.c:623
+  nf_hook_ingress include/linux/netfilter_netdev.h:34 [inline]
+  nf_ingress net/core/dev.c:5742 [inline]
+  __netif_receive_skb_core+0x4aff/0x70c0 net/core/dev.c:5837
+  __netif_receive_skb_one_core net/core/dev.c:5975 [inline]
+  __netif_receive_skb+0xcc/0xac0 net/core/dev.c:6090
+  netif_receive_skb_internal net/core/dev.c:6176 [inline]
+  netif_receive_skb+0x57/0x630 net/core/dev.c:6235
+  tun_rx_batched+0x1df/0x980 drivers/net/tun.c:1485
+  tun_get_user+0x4ee0/0x6b40 drivers/net/tun.c:1938
+  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1984
+  new_sync_write fs/read_write.c:593 [inline]
+  vfs_write+0xb4b/0x1580 fs/read_write.c:686
+  ksys_write fs/read_write.c:738 [inline]
+  __do_sys_write fs/read_write.c:749 [inline]
 
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reported-by: syzbot+bf6ed459397e307c3ad2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686bc073.a00a0220.c7b3.0086.GAE@google.com/T/#u
+Fixes: 87b3593bed18 ("netfilter: flowtable: validate pppoe header")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/20250707124517.614489-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ include/net/netfilter/nf_flow_table.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 898fe03074c64..116436be5e287 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1525,4 +1525,7 @@
- #define USB_VENDOR_ID_SIGNOTEC			0x2133
- #define USB_DEVICE_ID_SIGNOTEC_VIEWSONIC_PD1011	0x0018
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index df7775afb92b9..0097791e1eede 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -353,7 +353,7 @@ static inline __be16 __nf_flow_pppoe_proto(const struct sk_buff *skb)
  
-+#define USB_VENDOR_ID_SMARTLINKTECHNOLOGY              0x4c4a
-+#define USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155         0x4155
-+
- #endif
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 0731473cc9b1a..7a363fdf31edf 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -904,6 +904,7 @@ static const struct hid_device_id hid_ignore_list[] = {
- #endif
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_SMARTLINKTECHNOLOGY, USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155) },
- 	{ }
- };
+ static inline bool nf_flow_pppoe_proto(struct sk_buff *skb, __be16 *inner_proto)
+ {
+-	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
++	if (!pskb_may_pull(skb, ETH_HLEN + PPPOE_SES_HLEN))
+ 		return false;
  
+ 	*inner_proto = __nf_flow_pppoe_proto(skb);
 -- 
 2.39.5
 
