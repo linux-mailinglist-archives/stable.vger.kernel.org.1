@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F63AB05D8E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE7EB05BAA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A737580B8D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 756C417AEEE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D722EAD03;
-	Tue, 15 Jul 2025 13:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8612E1758;
+	Tue, 15 Jul 2025 13:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2K4+3RAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QClVpYQ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294912E2EFF;
-	Tue, 15 Jul 2025 13:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2462D5426;
+	Tue, 15 Jul 2025 13:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586513; cv=none; b=ZeHV2i35UuoBz4amGZU1gNdKbeIrRscpTcmsj4Tw35TPvjGL0kzSbuvxNFrs3WqBR1HKD2bLykGXIsufquv0bP7pqr2XrZWamMSL0YaaYD5+oYTRgO3iwvB7BcyzwI/l++AkkaZfqJbAoAq/qB83YMC0GhT5nSYOVxVX40fIIj8=
+	t=1752585725; cv=none; b=kM6XP5a8UZ1YS+tt6ZzAjgdQ1J1bvVGK4R8kpAFeEB+ua1q2RIlvQW4LqXETzdMNOQVp/mA0/2BP0zdQz7Arv1iW42JWmJMnYOCrCMR+STuxncPnxygyoyiPS1MG5Aw/wNJdNn8wDsvzx3VXFw9v264v+SNmYhGXPVdskHfbpSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586513; c=relaxed/simple;
-	bh=PeJo7r8J+DZ/TqByugAPEdeQWRZ9K9G1I645Hhesns8=;
+	s=arc-20240116; t=1752585725; c=relaxed/simple;
+	bh=LyoCZAwXzdM6TAbanR0T9U42vq+7pRn7zzDYQrkU29o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOXdgfRgVjZF1Hl+okKzrLXl1P6RASiTcYnYA+/eW8L0FGBTaApMdnX7O1bOLL+sArua3BE+q8SPovhcJdt03+p5sJ4P4hxb6rwp2uAqEW7WmSeXaL6lEGG2SwldohBWa6Y+In3XnttqxotgMmhPBu6zS7C4yiNpDmsBBYDdHJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2K4+3RAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B48C4CEE3;
-	Tue, 15 Jul 2025 13:35:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gPUTECShaX2qdikYaxKDUj64pXmxRLjyD19pGCOb5ulrUWnLRCP8Y+WuMVIGipUCZJIYOAMT4cgfIwRn5Mn7LfXlIQfiLuR5Yykc0OLFG5WB3pbkrsiR3rLSIRTfcmCj0F2lzMqD0Z/fzf38dRkHsSCSyUMhv9fpS3/h5GF2IKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QClVpYQ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48C1C4CEE3;
+	Tue, 15 Jul 2025 13:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586512;
-	bh=PeJo7r8J+DZ/TqByugAPEdeQWRZ9K9G1I645Hhesns8=;
+	s=korg; t=1752585725;
+	bh=LyoCZAwXzdM6TAbanR0T9U42vq+7pRn7zzDYQrkU29o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2K4+3RALYT0zCyEgAsfwA+6EIOqcQnwAcnsVjDUlZ7KcJ8RyfnlEIACq/W9I4uX3p
-	 V8QF7p8+efniCvFCNcbdEfytTWjnPSfl5cIMcnj+nBmRMo/Ju7H5jn91FZalcr9OL3
-	 Dox6tLFgjTxGjEGKVciFiWm4wr6djPi2ACx7Ost4=
+	b=QClVpYQ4JtNn4Cai7Fwz/bQcup85EkiiQgLkH6wY4vHeyJIECMDPLMgClqDVf1KO8
+	 5kXcrp8l6jiHBJQLWsz3E2mg4gvMz9XaxuQwMvmNGjXClrtRYHSX78sOjV1DzedEtj
+	 wzWPll3kXlddM1IgXjhfK9oqVDg7TpPxdUOf6OQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Michael Walle <michael@walle.cc>,
-	Mark Brown <broonie@kernel.org>,
+	Xiaowei Li <xiaowei.li@simcom.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 093/148] spi: spi-fsl-dspi: Fix interrupt-less DMA mode taking an XSPI code path
+Subject: [PATCH 6.12 147/163] net: usb: qmi_wwan: add SIMCom 8230C composition
 Date: Tue, 15 Jul 2025 15:13:35 +0200
-Message-ID: <20250715130804.037918285@linuxfoundation.org>
+Message-ID: <20250715130814.730800081@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Xiaowei Li <xiaowei.li@simcom.com>
 
-[ Upstream commit 826b3a6a34619b934cdc33eeb961fcb99ce92c09 ]
+[ Upstream commit 0b39b055b5b48cbbdf5746a1ca6e3f6b0221e537 ]
 
-Interrupts are not necessary for DMA functionality, since the completion
-event is provided by the DMA driver.
+Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
+0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet
+T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1e0e ProdID=9071 Rev= 5.15
+S:  Manufacturer=SIMCOM
+S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
+S:  SerialNumber=0123456789ABCDEF
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=none
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-But if the driver fails to request the IRQ defined in the device tree,
-it will call dspi_poll which would make the driver hang waiting for data
-to become available in the RX FIFO.
-
-Fixes: c55be3059159 ("spi: spi-fsl-dspi: Use poll mode in case the platform IRQ is missing")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Michael Walle <michael@walle.cc>
-Link: https://lore.kernel.org/r/20200318001603.9650-9-olteanv@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: fa60c094c19b ("spi: spi-fsl-dspi: Clear completion counter before initiating transfer")
+Signed-off-by: Xiaowei Li <xiaowei.li@simcom.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Link: https://patch.msgid.link/tencent_21D781FAA4969FEACA6ABB460362B52C9409@qq.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 99d048acca29e..7b62ecbe36321 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -793,13 +793,15 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 			goto out;
- 		}
- 
--		if (!dspi->irq) {
--			do {
--				status = dspi_poll(dspi);
--			} while (status == -EINPROGRESS);
--		} else if (trans_mode != DSPI_DMA_MODE) {
--			wait_for_completion(&dspi->xfer_done);
--			reinit_completion(&dspi->xfer_done);
-+		if (trans_mode != DSPI_DMA_MODE) {
-+			if (dspi->irq) {
-+				wait_for_completion(&dspi->xfer_done);
-+				reinit_completion(&dspi->xfer_done);
-+			} else {
-+				do {
-+					status = dspi_poll(dspi);
-+				} while (status == -EINPROGRESS);
-+			}
- 		}
- 
- 		if (transfer->delay_usecs)
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 944a33361dae5..7e0608f568353 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1426,6 +1426,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x22de, 0x9051, 2)}, /* Hucom Wireless HM-211S/K */
+ 	{QMI_FIXED_INTF(0x22de, 0x9061, 3)},	/* WeTelecom WPD-600N */
+ 	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9001, 5)},	/* SIMCom 7100E, 7230E, 7600E ++ */
++	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9071, 3)},	/* SIMCom 8230C ++ */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0121, 4)},	/* Quectel EC21 Mini PCIe */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
 -- 
 2.39.5
 
