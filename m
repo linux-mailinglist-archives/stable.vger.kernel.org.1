@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE604B05C2D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9097EB05E2D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DF347B8B5A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D1E67B666B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501AF2E041E;
-	Tue, 15 Jul 2025 13:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D2E2E339C;
+	Tue, 15 Jul 2025 13:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBzpS0rk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+y/pITx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9BC2C327B;
-	Tue, 15 Jul 2025 13:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70F828937D;
+	Tue, 15 Jul 2025 13:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585785; cv=none; b=mbWg7iikwqe+xSzbFT6jiqjyGTvJoD00PN0lIgKXXUpD0vQxMjM4M7LE8ZUv8BimkMLjtZkglUaJQvmAK8jveUF7aYuLlxZL55r7G322wUmlMYezm5lW6SOyEBmA0xnPj0vIVDEzAl2+ga560V4YqHa+s37+aD8hP4SDNN7o6lk=
+	t=1752587007; cv=none; b=ppdUlYT1BJHgvYTWXxVguu22LtQU4fNhIyp7dv4ByicwP+69TQTQ32fPUpFl+VQRvKRJt3XKWJiCt1jxq7oKPzqzBOjYyTqkgPhNIHt4KAgZBKKaKm53pg0EZBLfUxtocFtUy6nR7FYUcU/nV1Ef0VgEv2uvleFjqHamIG1XijU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585785; c=relaxed/simple;
-	bh=6UbF2ZpCBuekvfc3HYEJfMXU3RRQUtwLgADNkWMauUI=;
+	s=arc-20240116; t=1752587007; c=relaxed/simple;
+	bh=L0M4afixRbLolkrnyafjDwaYUm8jd8cdtSQy/y619FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSnD576+kIcPX019Hkm/0fjtuLAZbE4PCiB/7Q4E+XP4aw6teM86PDEpU6zE0PfuAvo8ux4Fl3gDfvfViONRFa4QICVL5tabojyJv7kuhU4vUUSNbC2V2iyFGulId0MFhVBAfBu7cJTrjLNjrOv7XkdQkoLdmzBBdDuCEtvRksA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBzpS0rk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F292C4CEE3;
-	Tue, 15 Jul 2025 13:23:04 +0000 (UTC)
+	 MIME-Version; b=N4GguFZk3AT9PDyd3egkZxJBb7ft/u4XTnhzxuHkqocnEVKziEKhrcIkkjkOrH+Eg75xsYP/GlGdp1aF0cVW4jx7/XpmQnLehBl2k/gaaoMnQx8Jaf0jFOLB+06ilFgmfm2yjznJSGyQVatHUDj6VM2WfbqtQF9fk/N0U8KeaFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+y/pITx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AFFC4CEE3;
+	Tue, 15 Jul 2025 13:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585784;
-	bh=6UbF2ZpCBuekvfc3HYEJfMXU3RRQUtwLgADNkWMauUI=;
+	s=korg; t=1752587007;
+	bh=L0M4afixRbLolkrnyafjDwaYUm8jd8cdtSQy/y619FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TBzpS0rkbeRcwgZurZeDDl8SD4Qa1yLqR6sBnWyGmPM8jQOcmxyGw2LAPM2AeMxA4
-	 1H4smOt7qIWifXpvrRVJg6tf4D7GDiNvdG526CBoHoRAwmqDKm3Lt3CvqZ9q+1LrSW
-	 vBdP6wYS9olpTHeUhXH+P+LIeSdG2KLtLR+vqztk=
+	b=m+y/pITxE8wQ+zqVZfo/ZAKjRCjAIqewj9gTrhUN5np9dXyQesrsHHC5i2TM7+0fM
+	 Alqp/FabfK+udnQNT9RKs18mfc4EftDB/7nsw4KjvDVjqvPg8CngPmQ7afbE5zP2Uk
+	 p2AJmtZA8MLFOTZ5rLuH57/t18CquJA2Na2V2AUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7ff87b095e7ca0c5ac39@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.12 159/163] erofs: fix rare pcluster memory leak after unmounting
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 132/192] md/raid1,raid10: strip REQ_NOWAIT from member bios
 Date: Tue, 15 Jul 2025 15:13:47 +0200
-Message-ID: <20250715130815.212731690@linuxfoundation.org>
+Message-ID: <20250715130820.196871588@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-commit b10a1e5643e505c367c7e16aa6d8a9a0dc07354b upstream.
+[ Upstream commit 5fa31c49928139fa948f078b094d80f12ed83f5f ]
 
-There may still exist some pcluster with valid reference counts
-during unmounting.  Instead of introducing another synchronization
-primitive, just try again as unmounting is relatively rare.  This
-approach is similar to z_erofs_cache_invalidate_folio().
+RAID layers don't implement proper non-blocking semantics for
+REQ_NOWAIT, making the flag potentially misleading when propagated
+to member disks.
 
-It was also reported by syzbot as a UAF due to commit f5ad9f9a603f
-("erofs: free pclusters if no cached folio is attached"):
+This patch clear REQ_NOWAIT from cloned bios in raid1/raid10. Retain
+original bio's REQ_NOWAIT flag for upper layer error handling.
 
-BUG: KASAN: slab-use-after-free in do_raw_spin_trylock+0x72/0x1f0 kernel/locking/spinlock_debug.c:123
-..
- queued_spin_trylock include/asm-generic/qspinlock.h:92 [inline]
- do_raw_spin_trylock+0x72/0x1f0 kernel/locking/spinlock_debug.c:123
- __raw_spin_trylock include/linux/spinlock_api_smp.h:89 [inline]
- _raw_spin_trylock+0x20/0x80 kernel/locking/spinlock.c:138
- spin_trylock include/linux/spinlock.h:361 [inline]
- z_erofs_put_pcluster fs/erofs/zdata.c:959 [inline]
- z_erofs_decompress_pcluster fs/erofs/zdata.c:1403 [inline]
- z_erofs_decompress_queue+0x3798/0x3ef0 fs/erofs/zdata.c:1425
- z_erofs_decompressqueue_work+0x99/0xe0 fs/erofs/zdata.c:1437
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xa68/0x1840 kernel/workqueue.c:3310
- worker_thread+0x870/0xd30 kernel/workqueue.c:3391
- kthread+0x2f2/0x390 kernel/kthread.c:389
- ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
+Maybe we can implement non-blocking I/O handling mechanisms within
+RAID in future work.
 
-However, it seems a long outstanding memory leak.  Fix it now.
-
-Fixes: f5ad9f9a603f ("erofs: free pclusters if no cached folio is attached")
-Reported-by: syzbot+7ff87b095e7ca0c5ac39@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/674c1235.050a0220.ad585.0032.GAE@google.com
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241203072821.1885740-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f346f7d4ea7 ("md/raid1,raid10: don't handle IO error for
+REQ_RAHEAD and REQ_NOWAIT")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Link: https://lore.kernel.org/linux-raid/20250702102341.1969154-1-zhengqixing@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zutil.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/md/raid1.c  | 3 ++-
+ drivers/md/raid10.c | 2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/erofs/zutil.c
-+++ b/fs/erofs/zutil.c
-@@ -230,9 +230,10 @@ void erofs_shrinker_unregister(struct su
- 	struct erofs_sb_info *const sbi = EROFS_SB(sb);
- 
- 	mutex_lock(&sbi->umount_mutex);
--	/* clean up all remaining pclusters in memory */
--	z_erofs_shrink_scan(sbi, ~0UL);
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 80efe737010b5..3d99a4e38e1c6 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1399,7 +1399,7 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
+ 	}
+ 	read_bio = bio_alloc_clone(mirror->rdev->bdev, bio, gfp,
+ 				   &mddev->bio_set);
 -
-+	while (!xa_empty(&sbi->managed_pslots)) {
-+		z_erofs_shrink_scan(sbi, ~0UL);
-+		cond_resched();
-+	}
- 	spin_lock(&erofs_sb_list_lock);
- 	list_del(&sbi->list);
- 	spin_unlock(&erofs_sb_list_lock);
++	read_bio->bi_opf &= ~REQ_NOWAIT;
+ 	r1_bio->bios[rdisk] = read_bio;
+ 
+ 	read_bio->bi_iter.bi_sector = r1_bio->sector +
+@@ -1649,6 +1649,7 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
+ 				wait_for_serialization(rdev, r1_bio);
+ 		}
+ 
++		mbio->bi_opf &= ~REQ_NOWAIT;
+ 		r1_bio->bios[i] = mbio;
+ 
+ 		mbio->bi_iter.bi_sector	= (r1_bio->sector + rdev->data_offset);
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 0443a479809f9..6a55374a6ba37 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1224,6 +1224,7 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+ 		r10_bio->master_bio = bio;
+ 	}
+ 	read_bio = bio_alloc_clone(rdev->bdev, bio, gfp, &mddev->bio_set);
++	read_bio->bi_opf &= ~REQ_NOWAIT;
+ 
+ 	r10_bio->devs[slot].bio = read_bio;
+ 	r10_bio->devs[slot].rdev = rdev;
+@@ -1259,6 +1260,7 @@ static void raid10_write_one_disk(struct mddev *mddev, struct r10bio *r10_bio,
+ 			     conf->mirrors[devnum].rdev;
+ 
+ 	mbio = bio_alloc_clone(rdev->bdev, bio, GFP_NOIO, &mddev->bio_set);
++	mbio->bi_opf &= ~REQ_NOWAIT;
+ 	if (replacement)
+ 		r10_bio->devs[n_copy].repl_bio = mbio;
+ 	else
+-- 
+2.39.5
+
 
 
 
