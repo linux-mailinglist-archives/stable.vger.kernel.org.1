@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2082EB06026
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:13:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D58B05FC3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB9F07A6195
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECEE05864A0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2832F2734;
-	Tue, 15 Jul 2025 13:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86ED2E6115;
+	Tue, 15 Jul 2025 13:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnDTfE27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdz2uWrd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374292E973D;
-	Tue, 15 Jul 2025 13:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641302E54BF;
+	Tue, 15 Jul 2025 13:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587910; cv=none; b=C/ADqmX+++zxV+NGSi7WUuxLadhov4+2xPEX2TEjg67XnLfNIONjCaTQl6lV9Rj7VIHFYRVNG+FOn8Cba+jLeASvIAwXAhOBYvwAy2C9wcPTHDC4zWMurCr6JmK9YvRYJ0MWGTURvbInpC8lShqQbafY76vGmTOJR6/cmT05Ypg=
+	t=1752587387; cv=none; b=Ms54EpEgoIhGAUqtGg5TTqUO/QfVYT8zDV9S1gsYo7SPQ8HwDUhNeWqc13x4KAwzomNVdqF3HXf2N3gM+MwYZSpuYoOF1AoN/ghnzB65+VUU42vG9R7kntVYH49KJgH6JHbl/1eoXj1mel7oC9YyVf8zgppzv/8H9rwvtd9bLJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587910; c=relaxed/simple;
-	bh=yuyKurA70QG32saSU8AU4FDgV23q3BgFlJyjJ6nTtnc=;
+	s=arc-20240116; t=1752587387; c=relaxed/simple;
+	bh=WnBjYR7NO/E9jJgzbGi1N76BJpF1tljTjhAZC8IWGJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbFfa0bcNfEDZYctzp5bSm7+eOgLjGJynO6hWsqFgiJDcdWKiPQbUrCbvm/gZp5rdDgD1TwgcT2Psa/KqeKgDuWAoF1E8q+ShP4RhwpbrpBCXuSZ/83/QpsDHAI0v4CcNIkdp9lSIMSetVSe6ClOm0ByL5AFBubLvJeu1svfBrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnDTfE27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02CAC4CEE3;
-	Tue, 15 Jul 2025 13:58:29 +0000 (UTC)
+	 MIME-Version; b=IBLO+FIBtg4PHSYQX0/kOZ8kHdI2LHZJCymMkZW1siwhMxq4D8FV7fAxkbvCaiDEgJSXxYlizE9bDGgXzD4PPtYQ8vJk9FUkUz0xzdSqVjs894zjmTXfDPYJAgb6j2Dm7756lnG98QEB03B0kKjf5EhNqOfC4czXSe42zwTyZRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdz2uWrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7F3C4CEE3;
+	Tue, 15 Jul 2025 13:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587910;
-	bh=yuyKurA70QG32saSU8AU4FDgV23q3BgFlJyjJ6nTtnc=;
+	s=korg; t=1752587387;
+	bh=WnBjYR7NO/E9jJgzbGi1N76BJpF1tljTjhAZC8IWGJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rnDTfE27bX4iOBa1hfri0pA2rImr6bflprT63IRIG3Z5o3Z7Noez8mpGbX8VUeXle
-	 /aULZVO/wYxNe/roVkUpQGDuh69Q4f/U/lOc903LiJCANPae1SJCHmwSi2cbERQt6w
-	 DdHDybuy4lOTvyIZw1qRwj88xhKAbEA7MfC+NNMM=
+	b=gdz2uWrd/SQqfHm3YIUO1AAxOxYz957s9ToQO7Xr0WGQYL6u/AbqFWxdKimyF3jSr
+	 tZJijhZ/LoLNhKVME92hD50ZbtpPwGEtdv4REfO+LCSzUnfoduNHpZdFcMACnK8jDg
+	 oySMRKedshho7Dxaxd/g5v9acidAV72hqmDaTSCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Jinchao <wangjinchao600@gmail.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 188/208] md/raid1: Fix stack memory use after return in raid1_reshape
-Date: Tue, 15 Jul 2025 15:14:57 +0200
-Message-ID: <20250715130818.482037660@linuxfoundation.org>
+Subject: [PATCH 6.1 82/88] HID: quirks: Add quirk for 2 Chicony Electronics HP 5MP Cameras
+Date: Tue, 15 Jul 2025 15:14:58 +0200
+Message-ID: <20250715130757.863501480@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jinchao <wangjinchao600@gmail.com>
+From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 
-[ Upstream commit d67ed2ccd2d1dcfda9292c0ea8697a9d0f2f0d98 ]
+[ Upstream commit 54bae4c17c11688339eb73a04fd24203bb6e7494 ]
 
-In the raid1_reshape function, newpool is
-allocated on the stack and assigned to conf->r1bio_pool.
-This results in conf->r1bio_pool.wait.head pointing
-to a stack address.
-Accessing this address later can lead to a kernel panic.
+The Chicony Electronics HP 5MP Cameras (USB ID 04F2:B824 & 04F2:B82C)
+report a HID sensor interface that is not actually implemented.
+Attempting to access this non-functional sensor via iio_info causes
+system hangs as runtime PM tries to wake up an unresponsive sensor.
 
-Example access path:
+Add these 2 devices to the HID ignore list since the sensor interface is
+non-functional by design and should not be exposed to userspace.
 
-raid1_reshape()
-{
-	// newpool is on the stack
-	mempool_t newpool, oldpool;
-	// initialize newpool.wait.head to stack address
-	mempool_init(&newpool, ...);
-	conf->r1bio_pool = newpool;
-}
-
-raid1_read_request() or raid1_write_request()
-{
-	alloc_r1bio()
-	{
-		mempool_alloc()
-		{
-			// if pool->alloc fails
-			remove_element()
-			{
-				--pool->curr_nr;
-			}
-		}
-	}
-}
-
-mempool_free()
-{
-	if (pool->curr_nr < pool->min_nr) {
-		// pool->wait.head is a stack address
-		// wake_up() will try to access this invalid address
-		// which leads to a kernel panic
-		return;
-		wake_up(&pool->wait);
-	}
-}
-
-Fix:
-reinit conf->r1bio_pool.wait after assigning newpool.
-
-Fixes: afeee514ce7f ("md: convert to bioset_init()/mempool_init()")
-Signed-off-by: Wang Jinchao <wangjinchao600@gmail.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250612112901.3023950-1-wangjinchao600@gmail.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-ids.h    | 2 ++
+ drivers/hid/hid-quirks.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index dada9b2258a61..51e05ea3f1373 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -3290,6 +3290,7 @@ static int raid1_reshape(struct mddev *mddev)
- 	/* ok, everything is stopped */
- 	oldpool = conf->r1bio_pool;
- 	conf->r1bio_pool = newpool;
-+	init_waitqueue_head(&conf->r1bio_pool.wait);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 21e0660179ee9..0bbba80d6c51c 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -297,6 +297,8 @@
+ #define USB_DEVICE_ID_ASUS_AK1D		0x1125
+ #define USB_DEVICE_ID_CHICONY_TOSHIBA_WT10A	0x1408
+ #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
++#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
++#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
  
- 	for (d = d2 = 0; d < conf->raid_disks; d++) {
- 		struct md_rdev *rdev = conf->mirrors[d].rdev;
+ #define USB_VENDOR_ID_CHUNGHWAT		0x2247
+ #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 7fca632ceea79..b37927f909412 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -738,6 +738,8 @@ static const struct hid_device_id hid_ignore_list[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AVERMEDIA, USB_DEVICE_ID_AVER_FM_MR800) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AXENTIA, USB_DEVICE_ID_AXENTIA_FM_RADIO) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
 -- 
 2.39.5
 
