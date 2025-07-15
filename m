@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583AFB05DA7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FCB4B05CD9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C06C3BC111
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DE74188B57D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A275B2E7F1D;
-	Tue, 15 Jul 2025 13:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8482EAB7E;
+	Tue, 15 Jul 2025 13:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bza/aYKk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0Zr6JhM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4632EA49D;
-	Tue, 15 Jul 2025 13:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0B52EAB77;
+	Tue, 15 Jul 2025 13:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586425; cv=none; b=W+tBAbBkPjhZ+YFUCkS5Mi4Cd01b4PmGWXUjG89J6XGv/gr0dD2sxajHsSH9/n0L9yjYlqK80XnnXtqa00rD3MBFHs/aNKOKJtK1He9fRq8nQxzKxQaIWL3q+z7/dBlb+weRLH+1PI7XNGY/pbReSsIGH1Y614Ozv70szrYYSEA=
+	t=1752586139; cv=none; b=hoLlGuRBtEqemwRHHjPOipNhVGpEFi30tWKMwNaEgMhpr4nPHW6AejUAj6fj8pqmW4fIxWuBW7lMj6lY/STQYNyIquCnYwHVMp8C/nBwH3nHKoQMQxquRnPbnrYTTXyKhkLotnDGr2cKSwWfilzSuAkx2hvN1aBxFhZ5Ep4wEIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586425; c=relaxed/simple;
-	bh=0780TFSUF+yoOwjcu0DyRH4POa02ut96nIXvuNEFTas=;
+	s=arc-20240116; t=1752586139; c=relaxed/simple;
+	bh=tvTynrO3TwpMOhPZfTQtndafADBmCbjUfi3I4PrnkpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b8Z2EIqYSHu4QWkjlE8i7Mi9SFZyxxxRSLedk29yLRahZDWXgrf3P87AJYnWTmj+EPVoRIqaa2YpgaAvZT7hVJvE3SC4KkcVa56Yxc22bwDxXeAxjc/NfJAkt0zdjNyznxfdW3KkoYFku+fcCnemBhiJkFP0n69BTf0TYq9tyE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bza/aYKk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6735C4CEE3;
-	Tue, 15 Jul 2025 13:33:44 +0000 (UTC)
+	 MIME-Version; b=Wad8Uhhjwe2FJH1YM24bLQq5OxaNkBelahcbksfNog7dZ4vhYEnxf45R8dWdeclwCg2YupHlVj2XPp9bjUCi0OW6RpaxxoopfbQse0aQgdnmOLghb9MepK19mBJFIoAtCYpaiMljN42EH3daaAgmWeuuN65hD6R0BMfNXtHktNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0Zr6JhM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92A1C4CEE3;
+	Tue, 15 Jul 2025 13:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586425;
-	bh=0780TFSUF+yoOwjcu0DyRH4POa02ut96nIXvuNEFTas=;
+	s=korg; t=1752586139;
+	bh=tvTynrO3TwpMOhPZfTQtndafADBmCbjUfi3I4PrnkpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bza/aYKke5XYTr4eYiSL+3kdd5ASQxSZsCmXvU2uz1kEiKDoh2BUxcFb984EpqiPU
-	 oxaM1UDsIz56/nt0DRD7Ll4r5jhYharm0zlWfSTVAb7cpSl8n5Ta0l9t/RxQIBvw+x
-	 KbobFPlAFbVU48IWYsl0sxrDBr7/ky6sfA3uT3qQ=
+	b=D0Zr6JhM1cMDqnmvSX1v2EpAJWo/rHO481qcFqpIdV2GPPDWS4ilWmm7BJqu0Unju
+	 1DLcZevmPSpb1LfS2/3JaxPUeZ5pGIvjrGjTdT9vkV7pvdjvrprbhbAQCz5PcjkkB6
+	 qIplsLy+InqP0Qlydvb8kdxcNMSpSsurYoKYWbCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 060/148] mtk-sd: Fix a pagefault in dma_unmap_sg() for not prepared data
+	Jann Horn <jannh@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 03/77] perf: Revert to requiring CAP_SYS_ADMIN for uprobes
 Date: Tue, 15 Jul 2025 15:13:02 +0200
-Message-ID: <20250715130802.731268651@linuxfoundation.org>
+Message-ID: <20250715130751.813981125@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 539d80575b810c7a5987c7ac8915e3bc99c03695 upstream.
+[ Upstream commit ba677dbe77af5ffe6204e0f3f547f3ba059c6302 ]
 
-When swiotlb buffer is full, the dma_map_sg() returns 0 to
-msdc_prepare_data(), but it does not check it and sets the
-MSDC_PREPARE_FLAG.
+Jann reports that uprobes can be used destructively when used in the
+middle of an instruction. The kernel only verifies there is a valid
+instruction at the requested offset, but due to variable instruction
+length cannot determine if this is an instruction as seen by the
+intended execution stream.
 
-swiotlb_tbl_map_single() /* prints "swiotlb buffer is full" */
-  <-swiotlb_map()
-    <-dma_direct_map_page()
-      <-dma_direct_map_sg()
-        <-__dma_map_sg_attrs()
-          <-dma_map_sg_attrs()
-            <-dma_map_sg()  /* returns 0 (pages mapped) */
-              <-msdc_prepare_data()
+Additionally, Mark Rutland notes that on architectures that mix data
+in the text segment (like arm64), a similar things can be done if the
+data word is 'mistaken' for an instruction.
 
-Then, the msdc_unprepare_data() checks MSDC_PREPARE_FLAG and calls
-dma_unmap_sg() with unmapped pages. It causes a page fault.
+As such, require CAP_SYS_ADMIN for uprobes.
 
-To fix this problem, Do not set MSDC_PREPARE_FLAG if dma_map_sg()
-fails because this is not prepared.
-
-Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/174908565814.4056588.769599127120955383.stgit@mhiramat.tok.corp.google.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c9e0924e5c2b ("perf/core: open access to probes for CAP_PERFMON privileged process")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/CAG48ez1n4520sq0XrWYDHKiKxE_+WCfAK+qt9qkY4ZiBGmL-5g@mail.gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/events/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -681,9 +681,10 @@ static void msdc_prepare_data(struct msd
- 	struct mmc_data *data = mrq->data;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index c7ae6b426de38..3e98d10293144 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -10225,7 +10225,7 @@ static int perf_uprobe_event_init(struct perf_event *event)
+ 	if (event->attr.type != perf_uprobe.type)
+ 		return -ENOENT;
  
- 	if (!(data->host_cookie & MSDC_PREPARE_FLAG)) {
--		data->host_cookie |= MSDC_PREPARE_FLAG;
- 		data->sg_count = dma_map_sg(host->dev, data->sg, data->sg_len,
- 					    mmc_get_dma_dir(data));
-+		if (data->sg_count)
-+			data->host_cookie |= MSDC_PREPARE_FLAG;
- 	}
- }
+-	if (!perfmon_capable())
++	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
  
+ 	/*
+-- 
+2.39.5
+
 
 
 
