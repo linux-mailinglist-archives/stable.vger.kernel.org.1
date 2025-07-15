@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B08B05E28
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583AFB05DA7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B612B7B6646
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C06C3BC111
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFD32E88A8;
-	Tue, 15 Jul 2025 13:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A275B2E7F1D;
+	Tue, 15 Jul 2025 13:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0gu0K2+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bza/aYKk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11382E8893;
-	Tue, 15 Jul 2025 13:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4632EA49D;
+	Tue, 15 Jul 2025 13:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586999; cv=none; b=Shl8JVOGNyrpIP1x48gbqDRD6flY1xtdLEUwIQdzRgYo+PalUp1bdi9qKvvC44MFhzn9gfiplLusbZJak6Rb+VeicsLeb03WtHaLNy1FZPNMw+l9RebjPt697ZNWF+BJxXxlefscaFlORC5CGlb/mvL/O4DABPGAottaKRFJwOk=
+	t=1752586425; cv=none; b=W+tBAbBkPjhZ+YFUCkS5Mi4Cd01b4PmGWXUjG89J6XGv/gr0dD2sxajHsSH9/n0L9yjYlqK80XnnXtqa00rD3MBFHs/aNKOKJtK1He9fRq8nQxzKxQaIWL3q+z7/dBlb+weRLH+1PI7XNGY/pbReSsIGH1Y614Ozv70szrYYSEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586999; c=relaxed/simple;
-	bh=60OKKbAlFVcInfm/FYRPWSsZiv5r7WaFRrNXgTTrVy0=;
+	s=arc-20240116; t=1752586425; c=relaxed/simple;
+	bh=0780TFSUF+yoOwjcu0DyRH4POa02ut96nIXvuNEFTas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h+ax6JQjSl4xlGoRAVRxz4UqRcDpvDSaO+cMVPcKUYGfsybsw9UXrGb6/zZT25MCtRhDWcFsgJ6MbBHKaTQc/8M7yLx+Z+XKhEalpKT74JDRr69HDRiZK8rD1l8u4NIdZ2zQNYjcI/Od4nC2KQ27i+TbvAXxjRV9YsQMeIQoPRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0gu0K2+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654CFC4CEE3;
-	Tue, 15 Jul 2025 13:43:19 +0000 (UTC)
+	 MIME-Version; b=b8Z2EIqYSHu4QWkjlE8i7Mi9SFZyxxxRSLedk29yLRahZDWXgrf3P87AJYnWTmj+EPVoRIqaa2YpgaAvZT7hVJvE3SC4KkcVa56Yxc22bwDxXeAxjc/NfJAkt0zdjNyznxfdW3KkoYFku+fcCnemBhiJkFP0n69BTf0TYq9tyE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bza/aYKk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6735C4CEE3;
+	Tue, 15 Jul 2025 13:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586999;
-	bh=60OKKbAlFVcInfm/FYRPWSsZiv5r7WaFRrNXgTTrVy0=;
+	s=korg; t=1752586425;
+	bh=0780TFSUF+yoOwjcu0DyRH4POa02ut96nIXvuNEFTas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N0gu0K2+PsVWp93UZ5dvFoqjilt19EkW5ZuFEEddjKoZcmTn8OaVnglLVfaKMezee
-	 7EbjUShD0Bdx0ddgfCwoYmg0BVi4uSNvaJ1VrejWNIzEZuBspEIACcqtORAxNnMR1r
-	 yhuTPPM4KpCa+VAH7xkqmr6OX//W2+YUrP4Zks0M=
+	b=bza/aYKke5XYTr4eYiSL+3kdd5ASQxSZsCmXvU2uz1kEiKDoh2BUxcFb984EpqiPU
+	 oxaM1UDsIz56/nt0DRD7Ll4r5jhYharm0zlWfSTVAb7cpSl8n5Ta0l9t/RxQIBvw+x
+	 KbobFPlAFbVU48IWYsl0sxrDBr7/ky6sfA3uT3qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH 6.15 087/192] drm/ttm: fix error handling in ttm_buffer_object_transfer
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 060/148] mtk-sd: Fix a pagefault in dma_unmap_sg() for not prepared data
 Date: Tue, 15 Jul 2025 15:13:02 +0200
-Message-ID: <20250715130818.404167893@linuxfoundation.org>
+Message-ID: <20250715130802.731268651@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,59 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 97e000acf2e20a86a50a0ec8c2739f0846f37509 upstream.
+commit 539d80575b810c7a5987c7ac8915e3bc99c03695 upstream.
 
-Unlocking the resv object was missing in the error path, additionally to
-that we should move over the resource only after the fence slot was
-reserved.
+When swiotlb buffer is full, the dma_map_sg() returns 0 to
+msdc_prepare_data(), but it does not check it and sets the
+MSDC_PREPARE_FLAG.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Fixes: c8d4c18bfbc4a ("dma-buf/drivers: make reserving a shared slot mandatory v4")
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20250616130726.22863-3-christian.koenig@amd.com
+swiotlb_tbl_map_single() /* prints "swiotlb buffer is full" */
+  <-swiotlb_map()
+    <-dma_direct_map_page()
+      <-dma_direct_map_sg()
+        <-__dma_map_sg_attrs()
+          <-dma_map_sg_attrs()
+            <-dma_map_sg()  /* returns 0 (pages mapped) */
+              <-msdc_prepare_data()
+
+Then, the msdc_unprepare_data() checks MSDC_PREPARE_FLAG and calls
+dma_unmap_sg() with unmapped pages. It causes a page fault.
+
+To fix this problem, Do not set MSDC_PREPARE_FLAG if dma_map_sg()
+fails because this is not prepared.
+
+Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/174908565814.4056588.769599127120955383.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo_util.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/mmc/host/mtk-sd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/ttm/ttm_bo_util.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
-@@ -254,6 +254,13 @@ static int ttm_buffer_object_transfer(st
- 	ret = dma_resv_trylock(&fbo->base.base._resv);
- 	WARN_ON(!ret);
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -681,9 +681,10 @@ static void msdc_prepare_data(struct msd
+ 	struct mmc_data *data = mrq->data;
  
-+	ret = dma_resv_reserve_fences(&fbo->base.base._resv, 1);
-+	if (ret) {
-+		dma_resv_unlock(&fbo->base.base._resv);
-+		kfree(fbo);
-+		return ret;
-+	}
-+
- 	if (fbo->base.resource) {
- 		ttm_resource_set_bo(fbo->base.resource, &fbo->base);
- 		bo->resource = NULL;
-@@ -262,12 +269,6 @@ static int ttm_buffer_object_transfer(st
- 		fbo->base.bulk_move = NULL;
+ 	if (!(data->host_cookie & MSDC_PREPARE_FLAG)) {
+-		data->host_cookie |= MSDC_PREPARE_FLAG;
+ 		data->sg_count = dma_map_sg(host->dev, data->sg, data->sg_len,
+ 					    mmc_get_dma_dir(data));
++		if (data->sg_count)
++			data->host_cookie |= MSDC_PREPARE_FLAG;
  	}
- 
--	ret = dma_resv_reserve_fences(&fbo->base.base._resv, 1);
--	if (ret) {
--		kfree(fbo);
--		return ret;
--	}
--
- 	ttm_bo_get(bo);
- 	fbo->bo = bo;
+ }
  
 
 
