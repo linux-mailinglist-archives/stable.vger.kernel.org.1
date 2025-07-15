@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F737B05ECE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FBBB05CB6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72E871C440C7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57C327B900B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F452E5433;
-	Tue, 15 Jul 2025 13:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D9E2E4997;
+	Tue, 15 Jul 2025 13:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGTfbsrh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCPK1iII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2652620F08C;
-	Tue, 15 Jul 2025 13:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E532E338F;
+	Tue, 15 Jul 2025 13:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586915; cv=none; b=pFTm21jY3O/zTKetLSMlz29nzFDYWaeraj1ojbrXajD0EXP822WmZgdFS8aS7vPSjZ5KGCnVP+T1NNrQobWx8N9xHhfbPiEMVE9Pc/H+rlaPamQa9vT//IPyR6B8Q7sl05mAT24fnCYHAQ7HeT/2MmwIiW0CfbAD2EnRq8Ip8G0=
+	t=1752586092; cv=none; b=ZWoAyEaVm5gbmRf+y42bWMS7n0L9lofoK7Luo62n7JesR05bwSfesuOmMNKW1T4LapQt37QHOuTqFf0+XpW3H5AVF1QL8arsC3Hb8HQ6K7ImGq/ARdgx6G/zvN/wlJp5CqPHB/UrGiFNMYGkKLsgtjZbjoKVAYNa9KoO8vIux3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586915; c=relaxed/simple;
-	bh=JiF4eNf0bHUvHJuO6IleC6Zy/IiOftiwMJJN66J5ga4=;
+	s=arc-20240116; t=1752586092; c=relaxed/simple;
+	bh=tbI8+AEwP1g5NQAILQyiAI2R3DQq3v5tYqTmjoyftxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PucQmMtKZwCDePS80KlFJ2KulQKMy38d9HyzER+7dCMlazCxs1TPXxdlKXKQzg9Xl4KtUaNAITHFza7BjTYWbZn5RaQZ0Pu3NvD1Yr0x9ZZJasDp1l+aKEgJ347cttWlVZqmYaNRGafT+rUd1oPUB90DVvhSSmH7Mqx0KgyXLWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGTfbsrh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9CDC4CEE3;
-	Tue, 15 Jul 2025 13:41:54 +0000 (UTC)
+	 MIME-Version; b=iVTMz9w8XRtwJBfy3bVewWzUK9UNTd1EtqpqhX1f0M+KJT6Hh2OSUzQVTRFTBeDnr8VJhVkeHWkkSQ3kkyNJ1NTiz+aFFKXbmTWjGAJQ/9lXb0RINMWrulprR2hsqDRJLwPI2DSPA0z1gt3zu8HRBPoeJi4tPg4h9laqo8qpBSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCPK1iII; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B37C4CEE3;
+	Tue, 15 Jul 2025 13:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586915;
-	bh=JiF4eNf0bHUvHJuO6IleC6Zy/IiOftiwMJJN66J5ga4=;
+	s=korg; t=1752586091;
+	bh=tbI8+AEwP1g5NQAILQyiAI2R3DQq3v5tYqTmjoyftxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGTfbsrhh5UwbaC66a7uhIcO/cld05cp2tDaxgs4cRchDmQP8xL7YOKegT+gBfr/I
-	 edU3csiKG0GY2bqm5eKF6Lt56tOBFQ4DTgQcU1YiKKYiiutNuMSRkSxLaM9Y9xTYtH
-	 2I2YEi3piSTyaNdMWQPC2pckowFZHXPMwgGxIZMk=
+	b=hCPK1iII89mwsJ0tJbiaotTBlwmW2oyaeAeph1Zq8UJAJHXDqHWZMOK/z9M7zqkPU
+	 xW1uOz4XkADTU8wN1Y7XZbLD4If0DO2aJRaq9kFpPf8vvyEE82Op3mmObqXxAeq5nS
+	 rLNcdD0y8rnnV2fOSDvmbVXTJYrYKLekAcMORAdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Zhe Qiao <qiaozhe@iscas.ac.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.15 097/192] Revert "PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()"
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 13/77] atm: clip: Fix memory leak of struct clip_vcc.
 Date: Tue, 15 Jul 2025 15:13:12 +0200
-Message-ID: <20250715130818.790304622@linuxfoundation.org>
+Message-ID: <20250715130752.226674199@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 2b8be57fa0c88ac824a906f29c04d728f9f6047a upstream.
+[ Upstream commit 62dba28275a9a3104d4e33595c7b3328d4032d8d ]
 
-This reverts commit 631b2af2f357 ("PCI/ACPI: Fix allocated memory release
-on error in pci_acpi_scan_root()").
+ioctl(ATMARP_MKIP) allocates struct clip_vcc and set it to
+vcc->user_back.
 
-The reverted patch causes the 'ri->cfg' and 'root_ops' resources to be
-released multiple times.
+The code assumes that vcc_destroy_socket() passes NULL skb
+to vcc->push() when the socket is close()d, and then clip_push()
+frees clip_vcc.
 
-When acpi_pci_root_create() fails, these resources have already been
-released internally by the __acpi_pci_root_release_info() function.
+However, ioctl(ATMARPD_CTRL) sets NULL to vcc->push() in
+atm_init_atmarp(), resulting in memory leak.
 
-Releasing them again in pci_acpi_scan_root() leads to incorrect behavior
-and potential memory issues.
+Let's serialise two ioctl() by lock_sock() and check vcc->push()
+in atm_init_atmarp() to prevent memleak.
 
-We plan to resolve the issue using a more appropriate fix.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aEmdnuw715btq7Q5@stanley.mountain/
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250619072608.2075475-1-qiaozhe@iscas.ac.cn
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250704062416.1613927-3-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-acpi.c |   23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ net/atm/clip.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1676,19 +1676,24 @@ struct pci_bus *pci_acpi_scan_root(struc
- 		return NULL;
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index 8059b7d1fb931..14b485f725d0c 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -645,6 +645,9 @@ static struct atm_dev atmarpd_dev = {
  
- 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
--	if (!root_ops)
--		goto free_ri;
-+	if (!root_ops) {
-+		kfree(ri);
-+		return NULL;
-+	}
+ static int atm_init_atmarp(struct atm_vcc *vcc)
+ {
++	if (vcc->push == clip_push)
++		return -EINVAL;
++
+ 	mutex_lock(&atmarpd_lock);
+ 	if (atmarpd) {
+ 		mutex_unlock(&atmarpd_lock);
+@@ -669,6 +672,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
+ static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ {
+ 	struct atm_vcc *vcc = ATM_SD(sock);
++	struct sock *sk = sock->sk;
+ 	int err = 0;
  
- 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
--	if (!ri->cfg)
--		goto free_root_ops;
-+	if (!ri->cfg) {
-+		kfree(ri);
-+		kfree(root_ops);
-+		return NULL;
-+	}
- 
- 	root_ops->release_info = pci_acpi_generic_release_info;
- 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
- 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
- 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
- 	if (!bus)
--		goto free_cfg;
-+		return NULL;
- 
- 	/* If we must preserve the resource configuration, claim now */
- 	host = pci_find_host_bridge(bus);
-@@ -1705,14 +1710,6 @@ struct pci_bus *pci_acpi_scan_root(struc
- 		pcie_bus_configure_settings(child);
- 
- 	return bus;
--
--free_cfg:
--	pci_ecam_free(ri->cfg);
--free_root_ops:
--	kfree(root_ops);
--free_ri:
--	kfree(ri);
--	return NULL;
- }
- 
- void pcibios_add_bus(struct pci_bus *bus)
+ 	switch (cmd) {
+@@ -689,14 +693,18 @@ static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 		err = clip_create(arg);
+ 		break;
+ 	case ATMARPD_CTRL:
++		lock_sock(sk);
+ 		err = atm_init_atmarp(vcc);
+ 		if (!err) {
+ 			sock->state = SS_CONNECTED;
+ 			__module_get(THIS_MODULE);
+ 		}
++		release_sock(sk);
+ 		break;
+ 	case ATMARP_MKIP:
++		lock_sock(sk);
+ 		err = clip_mkip(vcc, arg);
++		release_sock(sk);
+ 		break;
+ 	case ATMARP_SETENTRY:
+ 		err = clip_setentry(vcc, (__force __be32)arg);
+-- 
+2.39.5
+
 
 
 
