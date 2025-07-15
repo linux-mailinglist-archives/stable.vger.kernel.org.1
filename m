@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-162048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C68B05B6E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C445CB05C12
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:27:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56E467B61F8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5BB41C21984
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AA42E11DF;
-	Tue, 15 Jul 2025 13:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A9D2E3378;
+	Tue, 15 Jul 2025 13:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwEEhLI1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9stPkac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23391A23AF;
-	Tue, 15 Jul 2025 13:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52922E337E;
+	Tue, 15 Jul 2025 13:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585535; cv=none; b=mxA0E1b/yF7v/+BTdtN319U2KYX6F59d3itk1GEOkjKaCS8j8ITaquOSqVWjWe3dNrFpEEuxVcKsIciyH+pqrGjYd7vR6FqlTuDn5UiUVhaF2iFN3ZwV2abHw0XxzVz+WnoXkAtD9ibCS3myy4KKpcnX/v+GmULavopfXzyd+mc=
+	t=1752585872; cv=none; b=nlKHlA4/Cg6BYoooOm72sViLFRvWG34lsmQBk7j365GEoxQSFOQEJy1GvBsCLQZT+CaJui38B2RjI4HibzFk7CEBqyaHnYK0KUXkW+h/1khy0j2Dsv+uIfvxYtpu9f2lQrCG9T/D0iHL7XC+t6g70TMQoOR/XmKqqi4b1nW9tBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585535; c=relaxed/simple;
-	bh=ZrcEaCdMhXbVwMg9beEU/RkPJqoHSuNSxVkuTOWhxOY=;
+	s=arc-20240116; t=1752585872; c=relaxed/simple;
+	bh=Dp8NPdjm3Jq5IPm2DhbioNgTS+CH6S3RtgXH/vTCfro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TSQeA6ainZlD9Nx76DKTqt/wXtmQfcbKq54Z1o5ZwTLiVtRbuxch0CPas3w93+469cN4ZYueg4tKhJC9aMnoYX7Fo4PL8Wk+mzNbpQO4uWCR9XnJvnFuQQve+xS+lysvwe8bA6XlI8lwr2mEVpVzr1aHYg7tdFDL3Xj/P6vDS9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwEEhLI1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445F2C4CEE3;
-	Tue, 15 Jul 2025 13:18:54 +0000 (UTC)
+	 MIME-Version; b=AmvDW8TmiskwlUWz1i+jD9uE+SQAWsu+t6hXEKokKwFw2/qmbzn5HcKKtycXeur6gEpLg8hRlJx79vXyWYXknwJ/tYMaok3l/aSOpexUMo0tXiiyMd84Z/yDTynIZlAwwOJ9Vdpkgf8EMS3mxEs+Eg0mR8Nbgw3Nlq41gygmPXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9stPkac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA26C4CEF7;
+	Tue, 15 Jul 2025 13:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585534;
-	bh=ZrcEaCdMhXbVwMg9beEU/RkPJqoHSuNSxVkuTOWhxOY=;
+	s=korg; t=1752585872;
+	bh=Dp8NPdjm3Jq5IPm2DhbioNgTS+CH6S3RtgXH/vTCfro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KwEEhLI1jVUs3D0Q9bAs4EqgeCGwg8kCumdY6hsQPLDyvGQTnPEmiGZhnpiYWAG/7
-	 z9XoXx3EusXUOuCb4G9AJPNp8UiYTHPcOnhfSO0V7g7DLyTTYBTVIP5vdCS1vIhV9d
-	 iW7mwxRc2FjMmTM9wOBfLfyxja8s3XTJmki0Iytg=
+	b=C9stPkacl5Shbp7zgduSDTYcNhEncYERBs8RTFiQSEfVD1seYSr2R37CzxVxZqkU9
+	 YkYZr50XsYJtrmpSBHJlsQXFyldRawjpfIfyFmY+/MWodaHrrzeTa+VhFmf8u5PyyH
+	 htbK9glkbfUub5ATXf4zHw+S4M3k5F44uubDACFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH 6.12 076/163] drm/ttm: fix error handling in ttm_buffer_object_transfer
-Date: Tue, 15 Jul 2025 15:12:24 +0200
-Message-ID: <20250715130811.785166911@linuxfoundation.org>
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 009/109] pinctrl: amd: Clear GPIO debounce for suspend
+Date: Tue, 15 Jul 2025 15:12:25 +0200
+Message-ID: <20250715130759.252477221@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 97e000acf2e20a86a50a0ec8c2739f0846f37509 upstream.
+[ Upstream commit 8ff4fb276e2384a87ae7f65f3c28e1e139dbb3fe ]
 
-Unlocking the resv object was missing in the error path, additionally to
-that we should move over the resource only after the fence slot was
-reserved.
+soc-button-array hardcodes a debounce value by means of gpio_keys
+which uses pinctrl-amd as a backend to program debounce for a GPIO.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Fixes: c8d4c18bfbc4a ("dma-buf/drivers: make reserving a shared slot mandatory v4")
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20250616130726.22863-3-christian.koenig@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This hardcoded value doesn't match what the firmware intended to be
+programmed in _AEI. The hardcoded debounce leads to problems waking
+from suspend. There isn't appetite to conditionalize the behavior in
+soc-button-array or gpio-keys so clear it when the system suspends to
+avoid problems with being able to resume.
+
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Hans de Goede <hansg@kernel.org>
+Fixes: 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
+Link: https://lore.kernel.org/linux-input/mkgtrb5gt7miyg6kvqdlbu4nj3elym6ijudobpdi26gp4xxay5@rsa6ytrjvj2q/
+Link: https://lore.kernel.org/linux-input/20250625215813.3477840-1-superm1@kernel.org/
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/20250627150155.3311574-1-superm1@kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo_util.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/pinctrl/pinctrl-amd.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/ttm/ttm_bo_util.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
-@@ -254,6 +254,13 @@ static int ttm_buffer_object_transfer(st
- 	ret = dma_resv_trylock(&fbo->base.base._resv);
- 	WARN_ON(!ret);
+diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+index 75bff325a4251..ba38173d3ed3c 100644
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -933,6 +933,17 @@ static int amd_gpio_suspend_hibernate_common(struct device *dev, bool is_suspend
+ 				  pin, is_suspend ? "suspend" : "hibernate");
+ 		}
  
-+	ret = dma_resv_reserve_fences(&fbo->base.base._resv, 1);
-+	if (ret) {
-+		dma_resv_unlock(&fbo->base.base._resv);
-+		kfree(fbo);
-+		return ret;
-+	}
++		/*
++		 * debounce enabled over suspend has shown issues with a GPIO
++		 * being unable to wake the system, as we're only interested in
++		 * the actual wakeup event, clear it.
++		 */
++		if (gpio_dev->saved_regs[i] & (DB_CNTRl_MASK << DB_CNTRL_OFF)) {
++			amd_gpio_set_debounce(gpio_dev, pin, 0);
++			pm_pr_dbg("Clearing debounce for GPIO #%d during %s.\n",
++				  pin, is_suspend ? "suspend" : "hibernate");
++		}
 +
- 	if (fbo->base.resource) {
- 		ttm_resource_set_bo(fbo->base.resource, &fbo->base);
- 		bo->resource = NULL;
-@@ -262,12 +269,6 @@ static int ttm_buffer_object_transfer(st
- 		fbo->base.bulk_move = NULL;
+ 		raw_spin_unlock_irqrestore(&gpio_dev->lock, flags);
  	}
  
--	ret = dma_resv_reserve_fences(&fbo->base.base._resv, 1);
--	if (ret) {
--		kfree(fbo);
--		return ret;
--	}
--
- 	ttm_bo_get(bo);
- 	fbo->bo = bo;
- 
+-- 
+2.39.5
+
 
 
 
