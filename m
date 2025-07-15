@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F34B05D44
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BACB05BF7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 101A51898B00
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8B7B3BFC56
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A84A2E7BBA;
-	Tue, 15 Jul 2025 13:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CF32E11D3;
+	Tue, 15 Jul 2025 13:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uiyu3Oqa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iQkL0I1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582762E7635;
-	Tue, 15 Jul 2025 13:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A942E2EE7;
+	Tue, 15 Jul 2025 13:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586306; cv=none; b=AqaVx23787Bl3taggK+TdtVX0t7v52wP79htcRfetopkzLhF2QQ4Cl625vqIGwa5al/qHj2+SJG5BoTWptl24nUO5MPn/orvEuWXba4rzzq4s0Nf1CHjQhBSxztCcb1NICWF3nEApbh6hy0qzcmRX1Aup716lhgoLa1/Nlq2thM=
+	t=1752585793; cv=none; b=SPhIy+SJnG+2DhKkTzIcEln/5RYoSeMOxb/w9ophCa0+1zTUwaWPZaeF0+gjpzP0aO2ooQSq+iQR8UVLa75UuNNManSPnYvZ+LeJG4CMH1+m8dA3gY8VpKUYxuSY9v51oeu55Ajnrgn4UEtjyj3c0m3kjnGvE/T6fdJjkHeGdaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586306; c=relaxed/simple;
-	bh=rIbOb0H7sHjmvGVpWqrSs8bZhYGqTyuDApaFNuxSSmo=;
+	s=arc-20240116; t=1752585793; c=relaxed/simple;
+	bh=It4EmhxqDAfwYjN/XDHDgihJmkOAf9retNXb9ILuR7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tig30kXB2VHYXtLyIks1TOp7U/S/ITA4uuhsB/wnGY19Tv2UHCj4ZcbxM5LHJLR5aPC6K/36MYe4MZ3u72C1Wcr6KxeH+0UjD5hwzALur9sgBzfzmojXocMg1GB0767ivRksTVxhKoPFsaVNiyd4CLwLcFmpjdjmqVhPiwgyT34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uiyu3Oqa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0982C4CEE3;
-	Tue, 15 Jul 2025 13:31:45 +0000 (UTC)
+	 MIME-Version; b=aDBppsUFI6AFPtn08msFxk9p2XIW//tbaGIfDMvrHa7ITQR3TEQDIElvx5ke46nnkJ+8XMaelpUhxvWLOnO5wIaV5jQs5BEfmdQJreqSBQTpxRFrq74MUQXuFx4WdthN5yiSelawnGj/6jgNUDoeqIuTjK+rp+nOtDIhhmP7TC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iQkL0I1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995A5C4CEE3;
+	Tue, 15 Jul 2025 13:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586306;
-	bh=rIbOb0H7sHjmvGVpWqrSs8bZhYGqTyuDApaFNuxSSmo=;
+	s=korg; t=1752585792;
+	bh=It4EmhxqDAfwYjN/XDHDgihJmkOAf9retNXb9ILuR7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uiyu3Oqakjizpu98hdeCIqP/vF7ZfowtMquN+YKymwLtv7kh82BZKMjMvwe5TZRC6
-	 6EBhmookwc6jR53wMKU6lRw3B9v/K/AppTNevHe6hdu3ra4XBVas2byjxVthqWL5TI
-	 a+D0Ifb2m56N1ywHq2B/rfrTVjjyPxS5sC15TV2M=
+	b=2iQkL0I1rQKQGoDyJSbxFH3aPaZT9d0rQoXL+maiZ8RLk9lTqOors9eRqvcaakFyD
+	 hZI1a+Xz/oNf3q1mZ/+H1UHCW3dvbwPXKJMIvj3QBpafFb/LxAhWTevzPJ8hPYdV9X
+	 ChdRykuEt0tNs9xUR1eEMO1SXMUWNqKw2QtRwgPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian-Wei Wu <jian-wei_wu@keysight.com>,
-	Guido Kiener <guido.kiener@rohde-schwarz.com>,
-	Dave Penkler <dpenkler@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 016/148] USB: usbtmc: Add USBTMC_IOCTL_GET_STB
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 6.6 002/109] drm/exynos: exynos7_drm_decon: add vblank check in IRQ handling
 Date: Tue, 15 Jul 2025 15:12:18 +0200
-Message-ID: <20250715130800.957606221@linuxfoundation.org>
+Message-ID: <20250715130758.969636112@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit c9784e23c1020e63d6dba5e10ca8bf3d8b85c19c ]
+commit b846350aa272de99bf6fecfa6b08e64ebfb13173 upstream.
 
-This new ioctl reads the status byte (STB) from the device and returns
-the STB unmodified to the application. The srq_asserted bit is not taken
-into account and not changed.
+If there's support for another console device (such as a TTY serial),
+the kernel occasionally panics during boot. The panic message and a
+relevant snippet of the call stack is as follows:
 
-This ioctl is useful to support non USBTMC-488 compliant devices.
+  Unable to handle kernel NULL pointer dereference at virtual address 000000000000000
+  Call trace:
+    drm_crtc_handle_vblank+0x10/0x30 (P)
+    decon_irq_handler+0x88/0xb4
+    [...]
 
-Tested-by: Jian-Wei Wu <jian-wei_wu@keysight.com>
-Reviewed-by: Guido Kiener <guido.kiener@rohde-schwarz.com>
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20201215155621.9592-3-dpenkler@gmail.com
+Otherwise, the panics don't happen. This indicates that it's some sort
+of race condition.
+
+Add a check to validate if the drm device can handle vblanks before
+calling drm_crtc_handle_vblank() to avoid this.
+
+Cc: stable@vger.kernel.org
+Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: acb3dac2805d ("usb: usbtmc: Fix read_stb function and get_stb ioctl")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/usbtmc.c   | 6 ++++++
- include/uapi/linux/usb/tmc.h | 2 ++
- 2 files changed, 8 insertions(+)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/class/usbtmc.c b/drivers/usb/class/usbtmc.c
-index d47ec01d29778..738ef160109bf 100644
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -2173,6 +2173,12 @@ static long usbtmc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 			file_data->auto_abort = !!tmp_byte;
- 		break;
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -601,6 +601,10 @@ static irqreturn_t decon_irq_handler(int
+ 	if (!ctx->drm_dev)
+ 		goto out;
  
-+	case USBTMC_IOCTL_GET_STB:
-+		retval = usbtmc_get_stb(file_data, &tmp_byte);
-+		if (retval > 0)
-+			retval = put_user(tmp_byte, (__u8 __user *)arg);
-+		break;
++	/* check if crtc and vblank have been initialized properly */
++	if (!drm_dev_has_vblank(ctx->drm_dev))
++		goto out;
 +
- 	case USBTMC_IOCTL_CANCEL_IO:
- 		retval = usbtmc_ioctl_cancel_io(file_data);
- 		break;
-diff --git a/include/uapi/linux/usb/tmc.h b/include/uapi/linux/usb/tmc.h
-index fdd4d88a7b95d..1e7878fe591f4 100644
---- a/include/uapi/linux/usb/tmc.h
-+++ b/include/uapi/linux/usb/tmc.h
-@@ -102,6 +102,8 @@ struct usbtmc_message {
- #define USBTMC_IOCTL_MSG_IN_ATTR	_IOR(USBTMC_IOC_NR, 24, __u8)
- #define USBTMC_IOCTL_AUTO_ABORT		_IOW(USBTMC_IOC_NR, 25, __u8)
+ 	if (!ctx->i80_if) {
+ 		drm_crtc_handle_vblank(&ctx->crtc->base);
  
-+#define USBTMC_IOCTL_GET_STB            _IOR(USBTMC_IOC_NR, 26, __u8)
-+
- /* Cancel and cleanup asynchronous calls */
- #define USBTMC_IOCTL_CANCEL_IO		_IO(USBTMC_IOC_NR, 35)
- #define USBTMC_IOCTL_CLEANUP_IO		_IO(USBTMC_IOC_NR, 36)
--- 
-2.39.5
-
 
 
 
