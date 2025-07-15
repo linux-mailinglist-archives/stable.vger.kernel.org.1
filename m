@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B36B05BC6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 389B5B05B73
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34C151C20307
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:24:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7F177B11E1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1A42E2F0F;
-	Tue, 15 Jul 2025 13:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBB52E1734;
+	Tue, 15 Jul 2025 13:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkYPw3+g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQRZHLxh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C67D2E266C;
-	Tue, 15 Jul 2025 13:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE671A23AF;
+	Tue, 15 Jul 2025 13:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585809; cv=none; b=kFcVME152DyHS/v2vEOZFMXfnIisjJUngoOXSShSszItBvuXchHOCUq12iwlYGn2LyfNuibJLi7nLkjjYw72wYvkIP4s9hYYZCtDi7/9xjRyosszz5eSRq9MgYCSS/9yKIKrbN0k9DsA8LSKm46hvlXH7c/Lz9bgfnOVAP8OJKg=
+	t=1752585575; cv=none; b=DF9e8OGh71vtas/5T6e76yOk/VFxrHxTRl6QR324VJyivD4G4az26+yBU3V+E93tLztpy/RoJlyNUKKoqMqSN1kvUI2r0f9Y0QRcLdIwmP8mqVlei6Ub7ZOWa2r3DLPmvsi2vlpRb+r2wZAZHHElI8Nxv6NBAZb/p7AprJC3T00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585809; c=relaxed/simple;
-	bh=dWDPQVhl1Tru1KXdKBVpbkvqwHrWBBOOCliuG9Yq4+w=;
+	s=arc-20240116; t=1752585575; c=relaxed/simple;
+	bh=A4X9PBZM2V+5W1N/Js8uXsGgt8xYdWd5K084bOM64Kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIhRpub+Q0cEfJgv07zRm7GO9qQd4/4Iim2xGzBHf1kRiFdZINSn/SCWe+jY8QQ8xwkIGfdgi5PgZycxmngvmP09V2Ya2+zGJLbVdn43Q5+kPzBzeeKClH650x0MNtwFqUyVshq/LAPjCCLauhIkg3NDCkQyB6/NX+KlQvtuBKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkYPw3+g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5134C4CEE3;
-	Tue, 15 Jul 2025 13:23:28 +0000 (UTC)
+	 MIME-Version; b=HrS+wHY8z3g+oSTzC0SMYk7KkDu8N8nFKnxRkOQyiKY8ORpX0VK8tmZAUdj7tZRjPEp4ktRLsPK6xU8G2GJ0rEAisjUotT4cKxmit62u9qTIlAw+yytAPZkCnfgZQAY5a8M2EN9TzA0ib/moJbFYz1ZNV+tM2Bm5nk/4zXFc07c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQRZHLxh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6331C4CEE3;
+	Tue, 15 Jul 2025 13:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585809;
-	bh=dWDPQVhl1Tru1KXdKBVpbkvqwHrWBBOOCliuG9Yq4+w=;
+	s=korg; t=1752585575;
+	bh=A4X9PBZM2V+5W1N/Js8uXsGgt8xYdWd5K084bOM64Kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkYPw3+gGJL+NufZecur624NWq0ND3+a36dkcOy79qyOq5Bc6rek+seWdaVhua8TN
-	 0IJUVFmhznah84meNxwNxgrnyTbRMbN8jy5GoOd+dJVLuvlw4p1N21NGvSKmDhokyW
-	 ji3VdQ8lKOTsITXGPAdPHvghaFN8CGafLYTx/6sI=
+	b=MQRZHLxhXzwWIq9sfqZd1hbFxfBrCVHzomjjij5ByfNCygEiEPIHtXRPr0rgBMynU
+	 P5aQupGH9DTf7aDzRKSvfSZOnOFpMYTZYOo3rfmWGK5VdeblJyV851WOYIli4H3NKG
+	 wg6bEgnWnweGxkbIOWcbA5bqPUy0E0N0ior9rCSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/109] vsock: Fix transport_* TOCTOU
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 084/163] Revert "ACPI: battery: negate current when discharging"
 Date: Tue, 15 Jul 2025 15:12:32 +0200
-Message-ID: <20250715130759.529718667@linuxfoundation.org>
+Message-ID: <20250715130812.097920304@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 687aa0c5581b8d4aa87fd92973e4ee576b550cdf ]
+commit de1675de39aa945bad5937d1fde4df3682670639 upstream.
 
-Transport assignment may race with module unload. Protect new_transport
-from becoming a stale pointer.
+Revert commit 234f71555019 ("ACPI: battery: negate current when
+discharging") breaks not one but several userspace implementations
+of battery monitoring: Steam and MangoHud. Perhaps it breaks more,
+but those are the two that have been tested.
 
-This also takes care of an insecure call in vsock_use_local_transport();
-add a lockdep assert.
-
-BUG: unable to handle page fault for address: fffffbfff8056000
-Oops: Oops: 0000 [#1] SMP KASAN
-RIP: 0010:vsock_assign_transport+0x366/0x600
-Call Trace:
- vsock_connect+0x59c/0xc40
- __sys_connect+0xe8/0x100
- __x64_sys_connect+0x6e/0xc0
- do_syscall_64+0x92/0x1c0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-2-98f0eb530747@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Closes: https://lore.kernel.org/linux-acpi/87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev/
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ drivers/acpi/battery.c |   19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index dc62b30c0be5d..58b7404a0da05 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -406,6 +406,8 @@ EXPORT_SYMBOL_GPL(vsock_enqueue_accept);
- 
- static bool vsock_use_local_transport(unsigned int remote_cid)
- {
-+	lockdep_assert_held(&vsock_register_mutex);
-+
- 	if (!transport_local)
- 		return false;
- 
-@@ -463,6 +465,8 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 
- 	remote_flags = vsk->remote_addr.svm_flags;
- 
-+	mutex_lock(&vsock_register_mutex);
-+
- 	switch (sk->sk_type) {
- 	case SOCK_DGRAM:
- 		new_transport = transport_dgram;
-@@ -478,12 +482,15 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 			new_transport = transport_h2g;
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -243,23 +243,10 @@ static int acpi_battery_get_property(str
  		break;
- 	default:
--		return -ESOCKTNOSUPPORT;
-+		ret = -ESOCKTNOSUPPORT;
-+		goto err;
- 	}
- 
- 	if (vsk->transport) {
--		if (vsk->transport == new_transport)
--			return 0;
-+		if (vsk->transport == new_transport) {
-+			ret = 0;
-+			goto err;
-+		}
- 
- 		/* transport->release() must be called with sock lock acquired.
- 		 * This path can only be taken during vsock_connect(), where we
-@@ -507,8 +514,16 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 	/* We increase the module refcnt to prevent the transport unloading
- 	 * while there are open sockets assigned to it.
- 	 */
--	if (!new_transport || !try_module_get(new_transport->module))
--		return -ENODEV;
-+	if (!new_transport || !try_module_get(new_transport->module)) {
-+		ret = -ENODEV;
-+		goto err;
-+	}
-+
-+	/* It's safe to release the mutex after a successful try_module_get().
-+	 * Whichever transport `new_transport` points at, it won't go away until
-+	 * the last module_put() below or in vsock_deassign_transport().
-+	 */
-+	mutex_unlock(&vsock_register_mutex);
- 
- 	if (sk->sk_type == SOCK_SEQPACKET) {
- 		if (!new_transport->seqpacket_allow ||
-@@ -527,6 +542,9 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 	vsk->transport = new_transport;
- 
- 	return 0;
-+err:
-+	mutex_unlock(&vsock_register_mutex);
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(vsock_assign_transport);
- 
--- 
-2.39.5
-
+ 	case POWER_SUPPLY_PROP_CURRENT_NOW:
+ 	case POWER_SUPPLY_PROP_POWER_NOW:
+-		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
++		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
+ 			ret = -ENODEV;
+-			break;
+-		}
+-
+-		val->intval = battery->rate_now * 1000;
+-		/*
+-		 * When discharging, the current should be reported as a
+-		 * negative number as per the power supply class interface
+-		 * definition.
+-		 */
+-		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
+-		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
+-		    acpi_battery_handle_discharging(battery)
+-				== POWER_SUPPLY_STATUS_DISCHARGING)
+-			val->intval = -val->intval;
+-
++		else
++			val->intval = battery->rate_now * 1000;
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+ 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
 
 
 
