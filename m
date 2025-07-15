@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8412B05C31
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 976ADB05CF1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 925021C21E73
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DAE37BC9D8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176A52E54A3;
-	Tue, 15 Jul 2025 13:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089C72E5404;
+	Tue, 15 Jul 2025 13:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBQHIYup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUKiKWFN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B412E2F0F;
-	Tue, 15 Jul 2025 13:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5102E7F1D;
+	Tue, 15 Jul 2025 13:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585938; cv=none; b=RxhDcAlfaxLxHtP6dlOtaKZ5vMY1nFN7Cmq14hYD0aRLLnTnxvk72IlV396erJ8xAfTZS5SIAqiDHGoAjw01K9wB+TGj8MXJvLCi9MECSnb1xq63uglmDT4k5qT3Gh7qznmCTVc9YInOQr5PwjXiW9SWwe6sQXDQ3qFZxurC9GI=
+	t=1752586115; cv=none; b=thIvWomZ/9D/3p6Cf/Cl3gczxtcO2UaZkATl7oxhz/IWk/C4OSFJ8WHXGHVB0zQ3/DzkQvu5Msqruhan6z2dhZ/aOEW4jaTQxa+a7eb78Mz3fsUX4jyhEGl4zp67ICMsjFdUK0fu1qyMfcSH/iTg6ZPsTpSz2ir7+sUbKto/3bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585938; c=relaxed/simple;
-	bh=JSeZyytk3e0QH5tGfAHG8Dq3cHErNtIEErCPFdI63IQ=;
+	s=arc-20240116; t=1752586115; c=relaxed/simple;
+	bh=E2vT8tuYRNg4uZBodpZrv0e62W+D2rI0iE5gcnfmEXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NR1//Ju6si7GfcluQ08cp4n3s/mvAKoAe0MaYh9VfuERqXkoCqqOyFPJEdDtCz69+F/y0Yaeb7u2FClTW0YpMJ4vY24WdFF4GTzWhKvnenTwf0oJci2Fh916Vfbu/N5QtIuN/4Vyt/CeGiEChASTBqughvbuLUcHvnkzSeduVNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBQHIYup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33798C4CEE3;
-	Tue, 15 Jul 2025 13:25:38 +0000 (UTC)
+	 MIME-Version; b=Xdon+Wtm6pyvxCiO2x8TMRfna0w2kzS9pC6OZJ4jwCTlnaSGlhz30FcH01BKbm20bOkN0FH3CsZAXxySo/EqXlRO5X6H4q/tbHVZitKmx6Lbdl5FQ5yJdLpRP44ERcHBmBj9vJ0YMfhofXKFEU2VtwMoQnBYkUPQeqsO91clGek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUKiKWFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E276C4CEF7;
+	Tue, 15 Jul 2025 13:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585938;
-	bh=JSeZyytk3e0QH5tGfAHG8Dq3cHErNtIEErCPFdI63IQ=;
+	s=korg; t=1752586115;
+	bh=E2vT8tuYRNg4uZBodpZrv0e62W+D2rI0iE5gcnfmEXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBQHIYupCpj1qvKQ1YgiAhkbwW26P6v+QRjfX+slAxerwxTXLm+1tWDdlhw/oHCLz
-	 i6N5cfSyNwxnyvI3opqCWpZrfIIe7hMcVIhx4KHsofr03oqh3vOO9CzhOIEyFd650K
-	 JLDrWUQlQYTya75CZkeGl1OO/g/zWOGmvm7RA/ek=
+	b=mUKiKWFNfDoE1Tahc7iF33PIjOcps1xSeY3qu9N09OEWZpJyF7cCR0EbAzfciW5Se
+	 ql4EAKqttX88n/dCi+aCGMTQoyomyWDYk1sjy1kMijB5f4DJstJ4ChqlKTF9hVxmF7
+	 W6RIH+7v37XutWE0IR7lUtQsAEgE7PPOATFFkcIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 064/109] netlink: Fix rmem check in netlink_broadcast_deliver().
+	"Lee, Chun-Yi" <jlee@suse.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Larry Bassel <larry.bassel@oracle.com>
+Subject: [PATCH 5.15 21/77] thermal/int340x_thermal: handle data_vault when the value is ZERO_SIZE_PTR
 Date: Tue, 15 Jul 2025 15:13:20 +0200
-Message-ID: <20250715130801.446189457@linuxfoundation.org>
+Message-ID: <20250715130752.549224496@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Lee, Chun-Yi <joeyli.kernel@gmail.com>
 
-commit a3c4a125ec725cefb40047eb05ff9eafd57830b4 upstream.
+commit 7931e28098a4c1a2a6802510b0cbe57546d2049d upstream.
 
-We need to allow queuing at least one skb even when skb is
-larger than sk->sk_rcvbuf.
+In some case, the GDDV returns a package with a buffer which has
+zero length. It causes that kmemdup() returns ZERO_SIZE_PTR (0x10).
 
-The cited commit made a mistake while converting a condition
-in netlink_broadcast_deliver().
+Then the data_vault_read() got NULL point dereference problem when
+accessing the 0x10 value in data_vault.
 
-Let's correct the rmem check for the allow-one-skb rule.
+[   71.024560] BUG: kernel NULL pointer dereference, address:
+0000000000000010
 
-Fixes: ae8f160e7eb24 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250711053208.2965945-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This patch uses ZERO_OR_NULL_PTR() for checking ZERO_SIZE_PTR or
+NULL value in data_vault.
+
+Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ Larry: backport to 5.15.y. Minor conflict resolved due to missing commit 9e5d3d6be664
+  thermal: int340x: Consolidate freeing of acpi_buffer pointer ]
+Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/af_netlink.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/intel/int340x_thermal/int3400_thermal.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1405,7 +1405,7 @@ static int netlink_broadcast_deliver(str
- 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
- 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+--- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+@@ -469,7 +469,7 @@ static void int3400_setup_gddv(struct in
+ 	priv->data_vault = kmemdup(obj->package.elements[0].buffer.pointer,
+ 				   obj->package.elements[0].buffer.length,
+ 				   GFP_KERNEL);
+-	if (!priv->data_vault) {
++	if (ZERO_OR_NULL_PTR(priv->data_vault)) {
+ 		kfree(buffer.pointer);
+ 		return;
+ 	}
+@@ -540,7 +540,7 @@ static int int3400_thermal_probe(struct
+ 			goto free_imok;
+ 	}
  
--	if ((rmem != skb->truesize || rmem <= rcvbuf) &&
-+	if ((rmem == skb->truesize || rmem <= rcvbuf) &&
- 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
- 		netlink_skb_set_owner_r(skb, sk);
- 		__netlink_sendskb(sk, skb);
+-	if (priv->data_vault) {
++	if (!ZERO_OR_NULL_PTR(priv->data_vault)) {
+ 		result = sysfs_create_group(&pdev->dev.kobj,
+ 					    &data_attribute_group);
+ 		if (result)
+@@ -558,7 +558,8 @@ static int int3400_thermal_probe(struct
+ free_sysfs:
+ 	cleanup_odvp(priv);
+ 	if (priv->data_vault) {
+-		sysfs_remove_group(&pdev->dev.kobj, &data_attribute_group);
++		if (!ZERO_OR_NULL_PTR(priv->data_vault))
++			sysfs_remove_group(&pdev->dev.kobj, &data_attribute_group);
+ 		kfree(priv->data_vault);
+ 	}
+ free_uuid:
+@@ -590,7 +591,7 @@ static int int3400_thermal_remove(struct
+ 	if (!priv->rel_misc_dev_res)
+ 		acpi_thermal_rel_misc_device_remove(priv->adev->handle);
+ 
+-	if (priv->data_vault)
++	if (!ZERO_OR_NULL_PTR(priv->data_vault))
+ 		sysfs_remove_group(&pdev->dev.kobj, &data_attribute_group);
+ 	sysfs_remove_group(&pdev->dev.kobj, &uuid_attribute_group);
+ 	sysfs_remove_group(&pdev->dev.kobj, &imok_attribute_group);
 
 
 
