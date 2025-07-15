@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7057B05D06
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:39:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3599B05B52
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 200B61629D3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E6227B5C05
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E562E7BB1;
-	Tue, 15 Jul 2025 13:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5A62DE6F9;
+	Tue, 15 Jul 2025 13:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJiRR9xu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YudKiSdn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81AF2E92BF;
-	Tue, 15 Jul 2025 13:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F842D9EFF;
+	Tue, 15 Jul 2025 13:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586312; cv=none; b=uVyUo8sHaqFNMKqZc0xOlqCm5iG915MZLL18DM84x4tSGoZsfUAWHCm1PtSAW9nMCLhmxcPRLXKmXSXtGXALueA8T5+8Kar04kSptUMMuEr90zrI4eHMSK/ME/XJcRAzKCyWXBT4XU/OrZCeWyhvMdVE6oyi+lUMsmJIgUUgECY=
+	t=1752585524; cv=none; b=Cctl2PutzhC0fNQho1Oxh0lGgyU2rqsIN4J6cxa386QZJVPW6ExLsPsBna74o61rDWlTl4ZE0Tt4Lz/DJzlI1Ha1SVeIJmYCX2udmLU5/Pkg51hQlRq003qnPnUzMgCZax26K351BJh4IKaFcOHhQcLPQEyTloY95D6Lxuw8U3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586312; c=relaxed/simple;
-	bh=mLduRzYT9whOKJqz0P1lkHqLIN9v2PMeB/y6waeFVp8=;
+	s=arc-20240116; t=1752585524; c=relaxed/simple;
+	bh=8MnSN0BKKEw/sutcZZGIsP1HwVeno5Bv3fy8qeZq6FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOO2gtgrP3YT5ZFqpaprYI7ZQx2AcE2trypNFrmB9Smt9GQji9dn/pm+6IIiYRxMdYI/6hooPgj5+6+puGvggJixUvE3alqhOX7ZIuJEkOim7nmeP8fbg3y+yOTPs3nN5zv/EglPUB/PCS/bAf2nwdO3IF8wRBfiFLNCsxyia70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJiRR9xu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D1EC4CEE3;
-	Tue, 15 Jul 2025 13:31:50 +0000 (UTC)
+	 MIME-Version; b=kKH450bTUk/6T4wcaGpx6RN6/0CWoPFE0DbDqPg1hmOYZxSOZ/en+5RUuvMXejyMI3TRGiKlUiViTyWmvFckEQZFDLGctdO4GLv0FF9NEJTDAOP6HbJCfZlmBiEB516kMTd7ra4Boc7Qzlhgh2wpLuCgVo2/BVTiSaEGAsIgopg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YudKiSdn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC156C4CEE3;
+	Tue, 15 Jul 2025 13:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586311;
-	bh=mLduRzYT9whOKJqz0P1lkHqLIN9v2PMeB/y6waeFVp8=;
+	s=korg; t=1752585524;
+	bh=8MnSN0BKKEw/sutcZZGIsP1HwVeno5Bv3fy8qeZq6FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJiRR9xufyJ50EJBcPR0zZo5ArRFKNlDATfTJJh5eFGEdRsDk0NtvNE+RdlJGsGx8
-	 qbGqEFsbiXhHfCm+abTHVEQsuiNa0gJ1eiMQRMk35kMOI8ztIYGs8EHh8JKS3HtYDF
-	 6M3AIw6Sm7WdAxChhYCgIQiv7BtBtz0NpGUtSdQI=
+	b=YudKiSdnDQAJ3umh4iIVPEgXl7PY2UlN1mtMhltLKLcsZNnEvcUMh3jkweCXfou5x
+	 /gRdtuHpVV4VLqVXO5yWZnRQhqwgXMPOI+XWhcpRLgxFyLfLIVvRSL9upY/cw9s2df
+	 PlHO6P8B/pebIcb5UlByIUGk9JoLR3Bk9na6zAqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	George Kennedy <george.kennedy@oracle.com>,
-	Vishnu Dasa <vdasa@vmware.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 018/148] VMCI: check context->notify_page after call to get_user_pages_fast() to avoid GPF
+	Alessio Belle <alessio.belle@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>
+Subject: [PATCH 6.12 072/163] drm/imagination: Fix kernel crash when hard resetting the GPU
 Date: Tue, 15 Jul 2025 15:12:20 +0200
-Message-ID: <20250715130801.035622088@linuxfoundation.org>
+Message-ID: <20250715130811.628113044@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Kennedy <george.kennedy@oracle.com>
+From: Alessio Belle <alessio.belle@imgtec.com>
 
-[ Upstream commit 1a726cb47fd204109c767409fa9ca15a96328f14 ]
+commit d38376b3ee48d073c64e75e150510d7e6b4b04f7 upstream.
 
-The call to get_user_pages_fast() in vmci_host_setup_notify() can return
-NULL context->notify_page causing a GPF. To avoid GPF check if
-context->notify_page == NULL and return error if so.
+The GPU hard reset sequence calls pm_runtime_force_suspend() and
+pm_runtime_force_resume(), which according to their documentation should
+only be used during system-wide PM transitions to sleep states.
 
-general protection fault, probably for non-canonical address
-    0xe0009d1000000060: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: maybe wild-memory-access in range [0x0005088000000300-
-    0x0005088000000307]
-CPU: 2 PID: 26180 Comm: repro_34802241 Not tainted 6.1.0-rc4 #1
-Hardware name: Red Hat KVM, BIOS 1.15.0-2.module+el8.6.0 04/01/2014
-RIP: 0010:vmci_ctx_check_signal_notify+0x91/0xe0
-Call Trace:
- <TASK>
- vmci_host_unlocked_ioctl+0x362/0x1f40
- __x64_sys_ioctl+0x1a1/0x230
- do_syscall_64+0x3a/0x90
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+The main issue though is that depending on some internal runtime PM
+state as seen by pm_runtime_force_suspend() (whether the usage count is
+<= 1), pm_runtime_force_resume() might not resume the device unless
+needed. If that happens, the runtime PM resume callback
+pvr_power_device_resume() is not called, the GPU clocks are not
+re-enabled, and the kernel crashes on the next attempt to access GPU
+registers as part of the power-on sequence.
 
-Fixes: a1d88436d53a ("VMCI: Fix two UVA mapping bugs")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: George Kennedy <george.kennedy@oracle.com>
-Reviewed-by: Vishnu Dasa <vdasa@vmware.com>
-Link: https://lore.kernel.org/r/1669666705-24012-1-git-send-email-george.kennedy@oracle.com
+Replace calls to pm_runtime_force_suspend() and
+pm_runtime_force_resume() with direct calls to the driver's runtime PM
+callbacks, pvr_power_device_suspend() and pvr_power_device_resume(),
+to ensure clocks are re-enabled and avoid the kernel crash.
+
+Fixes: cc1aeedb98ad ("drm/imagination: Implement firmware infrastructure and META FW support")
+Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://lore.kernel.org/r/20250624-fix-kernel-crash-gpu-hard-reset-v1-1-6d24810d72a6@imgtec.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 1bd6406fb5f3 ("VMCI: fix race between vmci_host_setup_notify and vmci_ctx_unset_notify")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_host.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/imagination/pvr_power.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
-index 8ff8d649d9b3a..81ebdb1380f37 100644
---- a/drivers/misc/vmw_vmci/vmci_host.c
-+++ b/drivers/misc/vmw_vmci/vmci_host.c
-@@ -245,6 +245,8 @@ static int vmci_host_setup_notify(struct vmci_ctx *context,
- 		context->notify_page = NULL;
- 		return VMCI_ERROR_GENERIC;
- 	}
-+	if (context->notify_page == NULL)
-+		return VMCI_ERROR_UNAVAILABLE;
+--- a/drivers/gpu/drm/imagination/pvr_power.c
++++ b/drivers/gpu/drm/imagination/pvr_power.c
+@@ -363,13 +363,13 @@ pvr_power_reset(struct pvr_device *pvr_d
+ 		if (!err) {
+ 			if (hard_reset) {
+ 				pvr_dev->fw_dev.booted = false;
+-				WARN_ON(pm_runtime_force_suspend(from_pvr_device(pvr_dev)->dev));
++				WARN_ON(pvr_power_device_suspend(from_pvr_device(pvr_dev)->dev));
  
- 	/*
- 	 * Map the locked page and set up notify pointer.
--- 
-2.39.5
-
+ 				err = pvr_fw_hard_reset(pvr_dev);
+ 				if (err)
+ 					goto err_device_lost;
+ 
+-				err = pm_runtime_force_resume(from_pvr_device(pvr_dev)->dev);
++				err = pvr_power_device_resume(from_pvr_device(pvr_dev)->dev);
+ 				pvr_dev->fw_dev.booted = true;
+ 				if (err)
+ 					goto err_device_lost;
 
 
 
