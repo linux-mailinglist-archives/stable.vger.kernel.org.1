@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A410B05EC0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70230B05CD0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2D505001D5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CC023AEFB3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B972E7185;
-	Tue, 15 Jul 2025 13:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3533D2E4252;
+	Tue, 15 Jul 2025 13:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0Js711X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoFX4Mss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8003C2E6D2B;
-	Tue, 15 Jul 2025 13:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90582E3B19;
+	Tue, 15 Jul 2025 13:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587052; cv=none; b=n803OcTaDqaXfYqLjE/bKR1wMBdA2ZNNQuPlKVKoKh7ouLPxPjSMgrHyxT4vKwLz50XMNuYF8B+R7Lhba+EB2dhD1pNGlqiewK/RF0nj9tuekOQx0iDwv6cBRXj3xuCeHK2jjJE84cors78G0CYKu/Glaj4VvBGnGs3imFNkQVg=
+	t=1752586071; cv=none; b=Yzt7YoEvD7BHzo+X7YyXSvMrI8MSFnz0T0SLTIbtmULS4R/UyrEi3fNsdYnahNsBRhkTt/38/4j1JlkglLLlZtbnw+29FLrzYzi9tDWIHDY48iCtBYcuR7jZ9PticWkCilxGb+neFW5LqKiDGm5PGV7fkWaNzrrsXdQhXXZNNY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587052; c=relaxed/simple;
-	bh=9vTUqgJyRQX0It4WTZGkVMKsuyVZk8kHtaHISV5t7Uw=;
+	s=arc-20240116; t=1752586071; c=relaxed/simple;
+	bh=fJuZyCnHaBB5Qa9sP+27PPNuil/JeBR/KnCzI5vJ6GE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJqNXFg1TPcNsCKMJt7CkRjVVXGIVTonVq1wa3y2o9JxzFkLE/Ee7vgXP4B+OHAswVjhkX1h0Jk0Y2wAJq8ZGy2HOG4G3nztAj5NeIRZbpbIXyVbahl5gsd/HC7D0FdUZsFtQmP2YX+huF42tIj6L9jQGhX+DRij3k0chGV4ykE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0Js711X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13410C4CEE3;
-	Tue, 15 Jul 2025 13:44:11 +0000 (UTC)
+	 MIME-Version; b=dsx0MXv22H+jrcYiOaTBb8Yuz/Z2p6lj8e0PNQxq+xdSu1OK8g5E1AJaEyZNmilw6LdoOb8BJ7mIJdiWt5xKi9MGT4w4+zXZryfa2RQPi+6Wz8PgjUv0jQWhXdszFbXpR6wHHzxQ6w8b3p749xxhPkyzNe4xY7WOOPzsCspc3bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoFX4Mss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE63C4CEF1;
+	Tue, 15 Jul 2025 13:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587052;
-	bh=9vTUqgJyRQX0It4WTZGkVMKsuyVZk8kHtaHISV5t7Uw=;
+	s=korg; t=1752586070;
+	bh=fJuZyCnHaBB5Qa9sP+27PPNuil/JeBR/KnCzI5vJ6GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v0Js711XMmcyzfRotS1JD0uR9yFGUPQgP0hYsyXqG4CynrAv++hiu8hYbyI8z7tXV
-	 QdfBYiX0pr2cg1Oiz9hf8Tl4T42MT8ibgLj34IexygKO/u+o8bHvnsG6CdSTEzfSKh
-	 ++CUenM7UPYizS34bWd8Y6FzFzLb6dG4B9csSk9M=
+	b=UoFX4Mss8Pcy/9c9bxnzjjadYN17f2QSoZbctNdDLdx1WVJtO563IHfOiVHJ483uB
+	 u9FzIPzId05rMx6adunlG8SbtfdnMpve5Gg6sFa20Kqd6M1m0rwUN1lWjHUEXOTQxd
+	 IKxOzQSrdtVxwI1zYtfeXzEF8wiLHseuY5UwaEfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 148/192] erofs: refine readahead tracepoint
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 107/109] smb: client: fix potential race in cifs_put_tcon()
 Date: Tue, 15 Jul 2025 15:14:03 +0200
-Message-ID: <20250715130820.850885955@linuxfoundation.org>
+Message-ID: <20250715130803.161180233@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 4eb56b0761e75034dd35067a81da4c280c178262 ]
+commit c32b624fa4f7ca5a2ff217a0b1b2f1352bb4ec11 upstream.
 
- - trace_erofs_readpages => trace_erofs_readahead;
+dfs_cache_refresh() delayed worker could race with cifs_put_tcon(), so
+make sure to call list_replace_init() on @tcon->dfs_ses_list after
+kworker is cancelled or finished.
 
- - Rename a redundant statement `nrpages = readahead_count(rac);`;
-
- - Move the tracepoint to the beginning of z_erofs_readahead().
-
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Link: https://lore.kernel.org/r/20250514120820.2739288-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Stable-dep-of: d53238b614e0 ("erofs: fix to add missing tracepoint in erofs_readahead()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4f42a8b54b5c ("smb: client: fix DFS interlink failover")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/fileio.c            | 2 +-
- fs/erofs/zdata.c             | 5 ++---
- include/trace/events/erofs.h | 2 +-
- 3 files changed, 4 insertions(+), 5 deletions(-)
+ fs/smb/client/connect.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
-index 4cb4497b2767d..da1304a9bb435 100644
---- a/fs/erofs/fileio.c
-+++ b/fs/erofs/fileio.c
-@@ -180,7 +180,7 @@ static void erofs_fileio_readahead(struct readahead_control *rac)
- 	struct folio *folio;
- 	int err;
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -2557,9 +2557,6 @@ cifs_put_tcon(struct cifs_tcon *tcon, en
  
--	trace_erofs_readpages(inode, readahead_index(rac),
-+	trace_erofs_readahead(inode, readahead_index(rac),
- 			      readahead_count(rac), true);
- 	while ((folio = readahead_folio(rac))) {
- 		err = erofs_fileio_scan_folio(&io, folio);
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 8791ecebcdce7..d21ae4802c7f1 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1855,13 +1855,12 @@ static void z_erofs_readahead(struct readahead_control *rac)
- {
- 	struct inode *const inode = rac->mapping->host;
- 	Z_EROFS_DEFINE_FRONTEND(f, inode, readahead_pos(rac));
--	struct folio *head = NULL, *folio;
- 	unsigned int nrpages = readahead_count(rac);
-+	struct folio *head = NULL, *folio;
- 	int err;
+ 	list_del_init(&tcon->tcon_list);
+ 	tcon->status = TID_EXITING;
+-#ifdef CONFIG_CIFS_DFS_UPCALL
+-	list_replace_init(&tcon->dfs_ses_list, &ses_list);
+-#endif
+ 	spin_unlock(&tcon->tc_lock);
+ 	spin_unlock(&cifs_tcp_ses_lock);
  
-+	trace_erofs_readahead(inode, readahead_index(rac), nrpages, false);
- 	z_erofs_pcluster_readmore(&f, rac, true);
--	nrpages = readahead_count(rac);
--	trace_erofs_readpages(inode, readahead_index(rac), nrpages, false);
- 	while ((folio = readahead_folio(rac))) {
- 		folio->private = head;
- 		head = folio;
-diff --git a/include/trace/events/erofs.h b/include/trace/events/erofs.h
-index a71b19ed5d0cf..dad7360f42f95 100644
---- a/include/trace/events/erofs.h
-+++ b/include/trace/events/erofs.h
-@@ -113,7 +113,7 @@ TRACE_EVENT(erofs_read_folio,
- 		__entry->raw)
- );
+@@ -2567,6 +2564,7 @@ cifs_put_tcon(struct cifs_tcon *tcon, en
+ 	cancel_delayed_work_sync(&tcon->query_interfaces);
+ #ifdef CONFIG_CIFS_DFS_UPCALL
+ 	cancel_delayed_work_sync(&tcon->dfs_cache_work);
++	list_replace_init(&tcon->dfs_ses_list, &ses_list);
+ #endif
  
--TRACE_EVENT(erofs_readpages,
-+TRACE_EVENT(erofs_readahead,
- 
- 	TP_PROTO(struct inode *inode, pgoff_t start, unsigned int nrpage,
- 		bool raw),
--- 
-2.39.5
-
+ 	if (tcon->use_witness) {
 
 
 
