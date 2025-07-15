@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09D4B05E89
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CF3B05B1C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:17:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559961C2490C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8079A1AA6AAF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720142E4278;
-	Tue, 15 Jul 2025 13:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7152E1C69;
+	Tue, 15 Jul 2025 13:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NrqtQzKp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H32sTJuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309D02E338F;
-	Tue, 15 Jul 2025 13:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7392DE6F9;
+	Tue, 15 Jul 2025 13:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586730; cv=none; b=ql8fpw4IgB3U408eVwAX9HfYKvpg4Efju8uQ9q1w+AHhC6SSAL0vWt/7z0905/Kf/2gJfDU9znBNlnZwTEsdyqPvK5Ra+9ps7jW8xCHWNq0YHy9fFr+Vy+s3i3S//ZmUZkyNZarC8kSgbv5Pxs6ma2JnTtXlGAOBVwzlp83QIsg=
+	t=1752585428; cv=none; b=kH7R59QTu8IWah9wPpdZ5qRuEqRFfIQcfpoCLR/DTvPT6sAABd7iOEfpJMG2k44KG4ezcy9GcWo0FXSJJo4n65rkuSFwZpxFmiNiG/IylvYNzkxqlOMBoSTiJ/homZHEOwViefAG289aj22V/Ap4+REeS9A/wsKnKWL9I4xjFn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586730; c=relaxed/simple;
-	bh=+PdRjk7Hyoyd+VyX+xd5LNrNcA3dhrr92gyh8W7DEfs=;
+	s=arc-20240116; t=1752585428; c=relaxed/simple;
+	bh=qgyKvrxC/nIa2fZVcBVoNh9VizV1UoGJeocjL2dajMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jhpGHiTLJ5QCw+r01EFx7LchTNOSUG4GWwW5OMEMVskmsrrMlsjh1CFt6H7YOKDwASpkyVDaYTHXVa27nBMg5cujmX+IrM8bf5EVioHTmItmDGX5RyiomQqKIcclQVaZXuQKCRlPCOb6cj4Q8Hm+PLy3qp61jpiOiSbaMNU/z+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NrqtQzKp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7197C4CEE3;
-	Tue, 15 Jul 2025 13:38:49 +0000 (UTC)
+	 MIME-Version; b=WSz1uUX86NLE8+uiK6NKshK1bf+9eBzwbo/zVai+vX/FPTgCxb5kWLtRKJ2ELymfwLHS/nxZKYQBk5q9pTHhRxVJpxqPhN/mas2LLIKLUZuGWmetKKD7KkBv9hDGxJMT8wFSrGrGC3SOQODdHGwJDjr8iyRGe5ptEbIBAE92W88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H32sTJuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09F5C4CEF1;
+	Tue, 15 Jul 2025 13:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586730;
-	bh=+PdRjk7Hyoyd+VyX+xd5LNrNcA3dhrr92gyh8W7DEfs=;
+	s=korg; t=1752585428;
+	bh=qgyKvrxC/nIa2fZVcBVoNh9VizV1UoGJeocjL2dajMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NrqtQzKp93P2kBn/GW+e837PYYj4Sdhvk8if+BX4Jpuvz2No/2O4oeixavjwQq52B
-	 V9UqJCyX0v5USWeiz7f1Yrv1MXHn+ksxkavwAyX6OceVBRjXWDRpVBh88nbdhyRkVR
-	 ADpoR4IMWpyYyf3zqD+Og+LKdRPlhgWbRqlmAai4=
+	b=H32sTJuXhm5Kicsvh36c2i3zB1wdFDxS6XZ11qOWW+mCg9BLn9J+XnJybQ0C68hYw
+	 fWHmKqSoZuif6mDnla1sl50GZ1o770TbZBY1Zh79mfqin0zYRpop9msPWLCzjz0Njr
+	 5ZWTUkGL6DlgdAOzF0Nl1A4C6R/+gNDy++5Q61+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	EricChan <chenchuangyu@xiaomi.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 009/192] perf/core: Fix the WARN_ON_ONCE is out of lock protected region
+Subject: [PATCH 6.12 036/163] net: stmmac: Fix interrupt handling for level-triggered mode in DWC_XGMAC2
 Date: Tue, 15 Jul 2025 15:11:44 +0200
-Message-ID: <20250715130815.234114429@linuxfoundation.org>
+Message-ID: <20250715130810.203411368@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: EricChan <chenchuangyu@xiaomi.com>
 
-[ Upstream commit 7b4c5a37544ba22c6ebe72c0d4ea56c953459fa5 ]
+[ Upstream commit 78b7920a03351a8402de2f81914c1d2e2bdf24b7 ]
 
-commit 3172fb986666 ("perf/core: Fix WARN in perf_cgroup_switch()") try to
-fix a concurrency problem between perf_cgroup_switch and
-perf_cgroup_event_disable. But it does not to move the WARN_ON_ONCE into
-lock-protected region, so the warning is still be triggered.
+According to the Synopsys Controller IP XGMAC-10G Ethernet MAC Databook
+v3.30a (section 2.7.2), when the INTM bit in the DMA_Mode register is set
+to 2, the sbd_perch_tx_intr_o[] and sbd_perch_rx_intr_o[] signals operate
+in level-triggered mode. However, in this configuration, the DMA does not
+assert the XGMAC_NIS status bit for Rx or Tx interrupt events.
 
-Fixes: 3172fb986666 ("perf/core: Fix WARN in perf_cgroup_switch()")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250626135403.2454105-1-luogengkun@huaweicloud.com
+This creates a functional regression where the condition
+if (likely(intr_status & XGMAC_NIS)) in dwxgmac2_dma_interrupt() will
+never evaluate to true, preventing proper interrupt handling for
+level-triggered mode. The hardware specification explicitly states that
+"The DMA does not assert the NIS status bit for the Rx or Tx interrupt
+events" (Synopsys DWC_XGMAC2 Databook v3.30a, sec. 2.7.2).
+
+The fix ensures correct handling of both edge and level-triggered
+interrupts while maintaining backward compatibility with existing
+configurations. It has been tested on the hardware device (not publicly
+available), and it can properly trigger the RX and TX interrupt handling
+in both the INTM=0 and INTM=2 configurations.
+
+Fixes: d6ddfacd95c7 ("net: stmmac: Add DMA related callbacks for XGMAC2")
+Tested-by: EricChan <chenchuangyu@xiaomi.com>
+Signed-off-by: EricChan <chenchuangyu@xiaomi.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250703020449.105730-1-chenchuangyu@xiaomi.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../ethernet/stmicro/stmmac/dwxgmac2_dma.c    | 24 +++++++++----------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 2d1131e2cfc02..53d2457f5c08a 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -951,8 +951,6 @@ static void perf_cgroup_switch(struct task_struct *task)
- 	if (READ_ONCE(cpuctx->cgrp) == NULL)
- 		return;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+index 7840bc403788e..5dcc95bc0ad28 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+@@ -364,19 +364,17 @@ static int dwxgmac2_dma_interrupt(struct stmmac_priv *priv,
+ 	}
  
--	WARN_ON_ONCE(cpuctx->ctx.nr_cgroups == 0);
--
- 	cgrp = perf_cgroup_from_task(task, NULL);
- 	if (READ_ONCE(cpuctx->cgrp) == cgrp)
- 		return;
-@@ -964,6 +962,8 @@ static void perf_cgroup_switch(struct task_struct *task)
- 	if (READ_ONCE(cpuctx->cgrp) == NULL)
- 		return;
+ 	/* TX/RX NORMAL interrupts */
+-	if (likely(intr_status & XGMAC_NIS)) {
+-		if (likely(intr_status & XGMAC_RI)) {
+-			u64_stats_update_begin(&stats->syncp);
+-			u64_stats_inc(&stats->rx_normal_irq_n[chan]);
+-			u64_stats_update_end(&stats->syncp);
+-			ret |= handle_rx;
+-		}
+-		if (likely(intr_status & (XGMAC_TI | XGMAC_TBU))) {
+-			u64_stats_update_begin(&stats->syncp);
+-			u64_stats_inc(&stats->tx_normal_irq_n[chan]);
+-			u64_stats_update_end(&stats->syncp);
+-			ret |= handle_tx;
+-		}
++	if (likely(intr_status & XGMAC_RI)) {
++		u64_stats_update_begin(&stats->syncp);
++		u64_stats_inc(&stats->rx_normal_irq_n[chan]);
++		u64_stats_update_end(&stats->syncp);
++		ret |= handle_rx;
++	}
++	if (likely(intr_status & (XGMAC_TI | XGMAC_TBU))) {
++		u64_stats_update_begin(&stats->syncp);
++		u64_stats_inc(&stats->tx_normal_irq_n[chan]);
++		u64_stats_update_end(&stats->syncp);
++		ret |= handle_tx;
+ 	}
  
-+	WARN_ON_ONCE(cpuctx->ctx.nr_cgroups == 0);
-+
- 	perf_ctx_disable(&cpuctx->ctx, true);
- 
- 	ctx_sched_out(&cpuctx->ctx, NULL, EVENT_ALL|EVENT_CGROUP);
+ 	/* Clear interrupts */
 -- 
 2.39.5
 
