@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C8E4B05F0C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:59:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873CAB05E02
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D11581C4108D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 549414A086F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3868B2E718A;
-	Tue, 15 Jul 2025 13:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915EA2E8884;
+	Tue, 15 Jul 2025 13:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4EEp5Go"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwoG0VC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1162E717F;
-	Tue, 15 Jul 2025 13:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF462E339B;
+	Tue, 15 Jul 2025 13:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587058; cv=none; b=AMP+/fk3/JZJpj9lkY8rKMabj956YLbxM9Amgk2tflgmAVNy6Q37MQx3grOk5fF6eb76kVPlsDvEYYfnQ3tUhkeLo9MrWKtFyVZccsNMRWtmNXV8OYNz7ZdEYjgZfP6HZMqqxO3Inn5gFK3EkfiCf2pcBYutSFtFnMEtm38D4jM=
+	t=1752586592; cv=none; b=uDrU5WPUFDugmRQs1Gok/vBjpfPXHBY02nQR3an8Qq8k6o6LblnQ3cHHvMyd6IBcAU/whl3cDVEe+rnBhxkiDTtbzCicnaKwoAOxZnqN3mYafaipvu5OvhEs2a88Zh/2U7FqPusQXG+euOrMyd7Z53j2kwCn2jTGYsIufYdTbTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587058; c=relaxed/simple;
-	bh=brcNjlkOm2Owa0K2eziuACVeD9crF1RZbfztNdty6eA=;
+	s=arc-20240116; t=1752586592; c=relaxed/simple;
+	bh=V0oE5t0O/P5yvLIwTKJPfrYDJisbQ4JVEpQOcoP3dyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUN311rhG6O6U8DEJRH8Pk+c2Ha6YHdazlXFskYV3ZvMEgT9H8onUaF488H1Ti5H4v+QAef/q1g+++VjnhsNPURMGlqluCZvC8tjo1bfJzphxIEB7ROdo5NfH2kkWO8Y+gbdLP/djchYRgLh0zd/rloInctINz0Xf4SraojmMN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4EEp5Go; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FF3C4CEE3;
-	Tue, 15 Jul 2025 13:44:17 +0000 (UTC)
+	 MIME-Version; b=ZOHIdx4QIbKHd7DICzA70VHnYCaUcz4KUeiYOGjhlhFFVT4NwQh69xSNL9lb4bw/lE4rYkgjOd6npaAIGEiiCg67FZf7G3bvWp4gXShB65ZwkAVF22JEI/iEH3lm1jQ9/1ogf1wM7SJgg70nnQ4MxowsCoWjIbPwN3wXuFWOwkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwoG0VC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F75C4CEE3;
+	Tue, 15 Jul 2025 13:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587057;
-	bh=brcNjlkOm2Owa0K2eziuACVeD9crF1RZbfztNdty6eA=;
+	s=korg; t=1752586591;
+	bh=V0oE5t0O/P5yvLIwTKJPfrYDJisbQ4JVEpQOcoP3dyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4EEp5GoWccPFI7NK5M9pmaGg61/SPq7RQHwPQEALh8jZOrxYjFuFx/buO1OEPtXY
-	 Cv3+ovbvEhKTNdmo3dz6N1ZYG31qfAKI8gPKmbx7ObyQ0QUIQCf2+MgEAItWtrShnP
-	 aMcmAFaR5++iSXZ8bMKsxNcfe2rhHCA3a1FWQsEU=
+	b=kwoG0VC/SV1yKWml+23tgiQ94gCYWRMMdxFVaClkqLYgBm9jNRAS/VvixlL6xja37
+	 /EEmu9kdd5PicfZtmE+PR1zYYUl29Y2PRq3bapsjuytHMfndtRDTuixzWm1y6xXfUZ
+	 nF6HIVfnKB7A5sP9+MU7UQSf9Orum4dZgnL4Krks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 150/192] wifi: mac80211: add the virtual monitor after reconfig complete
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 123/148] Revert "ACPI: battery: negate current when discharging"
 Date: Tue, 15 Jul 2025 15:14:05 +0200
-Message-ID: <20250715130820.931243847@linuxfoundation.org>
+Message-ID: <20250715130805.224395958@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit c07981af55d3ba3ec3be880cfe4a0cc10f1f7138 ]
+commit de1675de39aa945bad5937d1fde4df3682670639 upstream.
 
-In reconfig we add the virtual monitor in 2 cases:
-1. If we are resuming (it was deleted on suspend)
-2. If it was added after an error but before the reconfig
-   (due to the last non-monitor interface removal).
+Revert commit 234f71555019 ("ACPI: battery: negate current when
+discharging") breaks not one but several userspace implementations
+of battery monitoring: Steam and MangoHud. Perhaps it breaks more,
+but those are the two that have been tested.
 
-In the second case, the removal of the non-monitor interface will succeed
-but the addition of the virtual monitor will fail, so we add it in the
-reconfig.
-
-The problem is that we mislead the driver to think that this is an existing
-interface that is getting re-added - while it is actually a completely new
-interface from the drivers' point of view.
-
-Some drivers act differently when a interface is re-added. For example, it
-might not initialize things because they were already initialized.
-Such drivers will - in this case - be left with a partialy initialized vif.
-
-To fix it, add the virtual monitor after reconfig_complete, so the
-driver will know that this is a completely new interface.
-
-Fixes: 3c3e21e7443b ("mac80211: destroy virtual monitor interface across suspend")
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250709233451.648d39b041e8.I2e37b68375278987e303d6c00cc5f3d8334d2f96@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Closes: https://lore.kernel.org/linux-acpi/87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev/
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/util.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/acpi/battery.c |   19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 82256eddd16bd..0fc3527e6fdd1 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2155,11 +2155,6 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		cfg80211_sched_scan_stopped_locked(local->hw.wiphy, 0);
- 
-  wake_up:
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -266,23 +266,10 @@ static int acpi_battery_get_property(str
+ 		break;
+ 	case POWER_SUPPLY_PROP_CURRENT_NOW:
+ 	case POWER_SUPPLY_PROP_POWER_NOW:
+-		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
++		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
+ 			ret = -ENODEV;
+-			break;
+-		}
 -
--	if (local->virt_monitors > 0 &&
--	    local->virt_monitors == local->open_count)
--		ieee80211_add_virtual_monitor(local);
+-		val->intval = battery->rate_now * 1000;
+-		/*
+-		 * When discharging, the current should be reported as a
+-		 * negative number as per the power supply class interface
+-		 * definition.
+-		 */
+-		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
+-		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
+-		    acpi_battery_handle_discharging(battery)
+-				== POWER_SUPPLY_STATUS_DISCHARGING)
+-			val->intval = -val->intval;
 -
- 	/*
- 	 * Clear the WLAN_STA_BLOCK_BA flag so new aggregation
- 	 * sessions can be established after a resume.
-@@ -2213,6 +2208,10 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		}
- 	}
- 
-+	if (local->virt_monitors > 0 &&
-+	    local->virt_monitors == local->open_count)
-+		ieee80211_add_virtual_monitor(local);
-+
- 	if (!suspended)
- 		return 0;
- 
--- 
-2.39.5
-
++		else
++			val->intval = battery->rate_now * 1000;
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+ 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
 
 
 
