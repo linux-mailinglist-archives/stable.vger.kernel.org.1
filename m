@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-162904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9357FB06019
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E5AB05FAD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05AB5502C51
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DB491C42052
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D5F2ECEBE;
-	Tue, 15 Jul 2025 13:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76702E7F15;
+	Tue, 15 Jul 2025 13:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQP3UN7E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZm88HwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FE12E424C;
-	Tue, 15 Jul 2025 13:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C4B2E7F08;
+	Tue, 15 Jul 2025 13:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587780; cv=none; b=rbdltxMaZDP5fiQa+d6RjIfttRlqOl9XJEDuOICjeeAp+MoF+gY54ubz7DeHa4PN1jAYZwRzVaUuPA2Uu5fhUotvd7W1yBV9gXBuaPV6ehwwisSX27ndLXoLcNWd/ikAoBr0JPMs4eocPx6Ug9Z5nmALPIGWFsZ+lKEX36lMe00=
+	t=1752587264; cv=none; b=HcFly3Zm+esb2uoxQkQQFh7cgw96ETH75Gri1/OA2jhv7dFkRhF/xvK0tC/J+Uswu8IAYXalX/K5nfvusJf2C1zC1+/2Wo6ayqiFW9BPQNlcIYGuKQsUU0UfZeEjRTTlXWLtRRO5AhQzaU5qxTACFrA1PlmNXXcbFbGTgNpUkFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587780; c=relaxed/simple;
-	bh=3oVxXjVuo4ePQQwnXoCX3UnERIGESwtGV4bO0BTBSLg=;
+	s=arc-20240116; t=1752587264; c=relaxed/simple;
+	bh=e/5kO3eX5SRwG7YWbCi4QXE0+PSEK5UxUmhtKyMIV9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HnlPBWlzYBmNo5TKpl/hqf9phVr5WzF4CUrM3Dd8+sKZMzIt4KT5giaUhby3Yr9GtveKGhID1RSDMxLvi0PaOCG/TraAdo9syaWyv0G0OhpLR+ZV3/2qMTbeS4DyORLAUEHhHciLyefQKlrtzxr0yWO3vGCJsQechXHb2tUBf+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQP3UN7E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A68C4CEE3;
-	Tue, 15 Jul 2025 13:56:19 +0000 (UTC)
+	 MIME-Version; b=elsnfXAyCRPCddFSmbS5K4DUEVQCpB1ndVOto5EJKg3Ttb3bDH/fuitUeL3Xj/F3T/HVwIFUQdwduocWQpekETQhim2i+Io0ncv3z0ZPvolT4QHDGrAT0yX09Kn+pSy4++XLE+fwGZHew4zP9qUnyYL0G/9+oJBanAoBZ2OJXgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZm88HwH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B02C4CEF1;
+	Tue, 15 Jul 2025 13:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587780;
-	bh=3oVxXjVuo4ePQQwnXoCX3UnERIGESwtGV4bO0BTBSLg=;
+	s=korg; t=1752587264;
+	bh=e/5kO3eX5SRwG7YWbCi4QXE0+PSEK5UxUmhtKyMIV9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQP3UN7EgU7tIzTKXLBlKzQZR3SUda0QfUvQahGhvoCerrrSGec+6juhqylum34l3
-	 mRz80Scaq2N0fL5HVOob9vCq1MW/G7ahUCIEXK9gMeWz6gfmbIAg8ckMj/ICtxWZHB
-	 lVAikmoyIypkVAR35hhNRNmu90P/1qAN2NaQ5gM4=
+	b=VZm88HwHOJlAWrjtV5hDXbHtFM7lHdFdK84H7SSNa8T344EpjGamGoLtRrRcodlJF
+	 S1uZu712nWKksycE00kg/eIBVsoLjK3jbaQfkCzCLIe+mh1kImZxbjLMpYBLq88WOf
+	 UjJf224XyYmkVCDDxo8bYnToiFWYc4HeDH2AF25E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andra Paraschiv <andraprs@amazon.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 141/208] vm_sockets: Add VMADDR_FLAG_TO_HOST vsock flag
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Simona Vetter <simona.vetter@intel.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>
+Subject: [PATCH 6.1 34/88] drm/gem: Fix race in drm_gem_handle_create_tail()
 Date: Tue, 15 Jul 2025 15:14:10 +0200
-Message-ID: <20250715130816.574701069@linuxfoundation.org>
+Message-ID: <20250715130755.890068305@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +67,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andra Paraschiv <andraprs@amazon.com>
+From: Simona Vetter <simona.vetter@ffwll.ch>
 
-[ Upstream commit caaf95e0f23f9ed240b02251aab0f6fdb652b33d ]
+commit bd46cece51a36ef088f22ef0416ac13b0a46d5b0 upstream.
 
-Add VMADDR_FLAG_TO_HOST vsock flag that is used to setup a vsock
-connection where all the packets are forwarded to the host.
+Object creation is a careful dance where we must guarantee that the
+object is fully constructed before it is visible to other threads, and
+GEM buffer objects are no difference.
 
-Then, using this type of vsock channel, vsock communication between
-sibling VMs can be built on top of it.
+Final publishing happens by calling drm_gem_handle_create(). After
+that the only allowed thing to do is call drm_gem_object_put() because
+a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
+(which is trivial since we have a linear allocator) can already tear
+down the object again.
 
-Changelog
+Luckily most drivers get this right, the very few exceptions I've
+pinged the relevant maintainers for. Unfortunately we also need
+drm_gem_handle_create() when creating additional handles for an
+already existing object (e.g. GETFB ioctl or the various bo import
+ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
+the only exported function to stop these issues from happening.
 
-v3 -> v4
+Now unfortunately the implementation of drm_gem_handle_create() isn't
+living up to standards: It does correctly finishe object
+initialization at the global level, and hence is safe against a
+concurrent tear down. But it also sets up the file-private aspects of
+the handle, and that part goes wrong: We fully register the object in
+the drm_file.object_idr before calling drm_vma_node_allow() or
+obj->funcs->open, which opens up races against concurrent removal of
+that handle in drm_gem_handle_delete().
 
-* Update the "VMADDR_FLAG_TO_HOST" value, as the size of the field has
-  been updated to 1 byte.
+Fix this with the usual two-stage approach of first reserving the
+handle id, and then only registering the object after we've completed
+the file-private setup.
 
-v2 -> v3
+Jacek reported this with a testcase of concurrently calling GEM_CLOSE
+on a freshly-created object (which also destroys the object), but it
+should be possible to hit this with just additional handles created
+through import or GETFB without completed destroying the underlying
+object with the concurrent GEM_CLOSE ioctl calls.
 
-* Update comments to mention when the flag is set in the connect and
-  listen paths.
+Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
+Release driver references to handle before making it available
+again"), which means a cool 9 years have passed until someone noticed
+that we need to make this symmetry or there's still gaps left :-/
+Without the 2-stage close approach we'd still have a race, therefore
+that's an integral part of this bugfix.
 
-v1 -> v2
+More importantly, this means we can have NULL pointers behind
+allocated id in our drm_file.object_idr. We need to check for that
+now:
 
-* New patch in v2, it was split from the first patch in the series.
-* Remove the default value for the vsock flags field.
-* Update the naming for the vsock flag to "VMADDR_FLAG_TO_HOST".
+- drm_gem_handle_delete() checks for ERR_OR_NULL already
 
-Signed-off-by: Andra Paraschiv <andraprs@amazon.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 687aa0c5581b ("vsock: Fix transport_* TOCTOU")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- drm_gem.c:object_lookup() also chekcs for NULL
+
+- drm_gem_release() should never be called if there's another thread
+  still existing that could call into an IOCTL that creates a new
+  handle, so cannot race. For paranoia I added a NULL check to
+  drm_gem_object_release_handle() though.
+
+- most drivers (etnaviv, i915, msm) are find because they use
+  idr_find(), which maps both ENOENT and NULL to NULL.
+
+- drivers using idr_for_each_entry() should also be fine, because
+  idr_get_next does filter out NULL entries and continues the
+  iteration.
+
+- The same holds for drm_show_memory_stats().
+
+v2: Use drm_WARN_ON (Thomas)
+
+Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Tested-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: stable@vger.kernel.org
+Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250707151814.603897-1-simona.vetter@ffwll.ch
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/vm_sockets.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/gpu/drm/drm_gem.c |   10 +++++++++-
+ include/drm/drm_file.h    |    3 +++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/vm_sockets.h b/include/uapi/linux/vm_sockets.h
-index 490ca99dcada1..4263c85593fa0 100644
---- a/include/uapi/linux/vm_sockets.h
-+++ b/include/uapi/linux/vm_sockets.h
-@@ -119,6 +119,26 @@
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -236,6 +236,9 @@ drm_gem_object_release_handle(int id, vo
+ 	struct drm_file *file_priv = data;
+ 	struct drm_gem_object *obj = ptr;
  
- #define VMADDR_CID_HOST 2
- 
-+/* The current default use case for the vsock channel is the following:
-+ * local vsock communication between guest and host and nested VMs setup.
-+ * In addition to this, implicitly, the vsock packets are forwarded to the host
-+ * if no host->guest vsock transport is set.
-+ *
-+ * Set this flag value in the sockaddr_vm corresponding field if the vsock
-+ * packets need to be always forwarded to the host. Using this behavior,
-+ * vsock communication between sibling VMs can be setup.
-+ *
-+ * This way can explicitly distinguish between vsock channels created for
-+ * different use cases, such as nested VMs (or local communication between
-+ * guest and host) and sibling VMs.
-+ *
-+ * The flag can be set in the connect logic in the user space application flow.
-+ * In the listen logic (from kernel space) the flag is set on the remote peer
-+ * address. This happens for an incoming connection when it is routed from the
-+ * host and comes from the guest (local CID and remote CID > VMADDR_CID_HOST).
-+ */
-+#define VMADDR_FLAG_TO_HOST 0x01
++	if (drm_WARN_ON(obj->dev, !data))
++		return 0;
 +
- /* Invalid vSockets version. */
+ 	if (obj->funcs->close)
+ 		obj->funcs->close(obj, file_priv);
  
- #define VM_SOCKETS_INVALID_VERSION -1U
--- 
-2.39.5
-
+@@ -363,7 +366,7 @@ drm_gem_handle_create_tail(struct drm_fi
+ 	idr_preload(GFP_KERNEL);
+ 	spin_lock(&file_priv->table_lock);
+ 
+-	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
++	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
+ 
+ 	spin_unlock(&file_priv->table_lock);
+ 	idr_preload_end();
+@@ -384,6 +387,11 @@ drm_gem_handle_create_tail(struct drm_fi
+ 			goto err_revoke;
+ 	}
+ 
++	/* mirrors drm_gem_handle_delete to avoid races */
++	spin_lock(&file_priv->table_lock);
++	obj = idr_replace(&file_priv->object_idr, obj, handle);
++	WARN_ON(obj != NULL);
++	spin_unlock(&file_priv->table_lock);
+ 	*handlep = handle;
+ 	return 0;
+ 
+--- a/include/drm/drm_file.h
++++ b/include/drm/drm_file.h
+@@ -273,6 +273,9 @@ struct drm_file {
+ 	 *
+ 	 * Mapping of mm object handles to object pointers. Used by the GEM
+ 	 * subsystem. Protected by @table_lock.
++	 *
++	 * Note that allocated entries might be NULL as a transient state when
++	 * creating or deleting a handle.
+ 	 */
+ 	struct idr object_idr;
+ 
 
 
 
