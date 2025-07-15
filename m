@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA8BB05ED9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9458FB05BC2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9BD7501924
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF217164007
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634442E765E;
-	Tue, 15 Jul 2025 13:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4192E2F06;
+	Tue, 15 Jul 2025 13:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCf8Oi9O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F881U6Dv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215EF2E1747;
-	Tue, 15 Jul 2025 13:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DFD2E041E;
+	Tue, 15 Jul 2025 13:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587087; cv=none; b=PTL+5FHFmwm9/FpBL91SfOIJwXldqvzq9xHYHY6YySJsu0TnZTOVXLzP15tJL4bAFWVo5k7lG6X5Yn2oAxPCLL+ydZtHp0bSTBjugBI/FKXxna9U9+dKE/sscdvQmqP7ToXOECL924WWdBaBuOOPDOwzz9mL42S+lEWguX5JaLs=
+	t=1752585782; cv=none; b=KPnBwadcWoy4290EeMljwuVzAYQSouOf92p1QD7lNjEcZaEVBpH2FzIcixq1c3htGo8GRcBw4DfZbPl6zO+VGy4Y9zg8SoPysXOiGwboOjbt+I3MfdEYS000rnKx+EfdZMWn9fpAVTqGJsQZCHcLu8oMh/nkSPWcLHTXTWzGFk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587087; c=relaxed/simple;
-	bh=33fOF0xmD4U+VcEURYIttzp95Kfu83igMDFpiKWCIDg=;
+	s=arc-20240116; t=1752585782; c=relaxed/simple;
+	bh=tfQyQ2TgKosci/UIfNV8tCmTBnJ4SQ8LpATOTYWze8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZobiLlIqEAjSfvTU0ZsFHmGEftOym2diGFrxhTf8Dl5czziDoOBUOZjNJCDOtAdsbB89VqVQejcUDTOn734Ahn75fbRpZ1c6Xs0kgyU98VypTuq7YXP0Jlow+y+K4U8LfmmId2c/O74+3xdL9It9XF87n/qROEZ7k2VqUYPEnFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCf8Oi9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6238EC4CEE3;
-	Tue, 15 Jul 2025 13:44:46 +0000 (UTC)
+	 MIME-Version; b=oTlWOvZ3cE3lwtCeEjJmW/UmS/BXS7VN3JK4ZHfkauFkwwDk53hmOSmuY/uNSW3LbJ25ekox2/1tauNpsB9qn2Lm/Yz3f50vUtNCKty5fiNpY0X+ZPU20/9wksO07G+B/gZMQ5nhjuTU9+Er6aLJZePJ53122sfO3B0ROYsvasI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F881U6Dv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF111C4CEF1;
+	Tue, 15 Jul 2025 13:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587086;
-	bh=33fOF0xmD4U+VcEURYIttzp95Kfu83igMDFpiKWCIDg=;
+	s=korg; t=1752585782;
+	bh=tfQyQ2TgKosci/UIfNV8tCmTBnJ4SQ8LpATOTYWze8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCf8Oi9O5cQCkmhkUMeD/atdCSlVUcwQ6ZNdpebE0HRJcIHgIxHW6bMYm2F9RvM8C
-	 X1tEoFc7SLYNa+JbNaeOue+rT7GpQPozGsqLDiB2T9R7JRWyNcdMXPJ0b2XN3bfeBo
-	 4kFz2yKyA82pzh/wIyi7K9RbDPkbq/0ZSD5XB7/I=
+	b=F881U6DvOQ2VHXjq3gVe+jUdq2hr1RxUEVOBU3kqcuIqoQHgR9npYIUSvJiYkUO7R
+	 /Dr/vl2t+TYPI74lQQU8rzpzw2a29P/GmAZrMq9U0kOyQ6PP+FstxRSo4tsG8Am/+B
+	 cF4w14eC5lUD6Z1ydPmb/UW8TKO8TF+I9zFUvXPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Jinchao <wangjinchao600@gmail.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 130/192] md/raid1: Fix stack memory use after return in raid1_reshape
-Date: Tue, 15 Jul 2025 15:13:45 +0200
-Message-ID: <20250715130820.115382604@linuxfoundation.org>
+	Willem de Bruijn <willemb@google.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.12 158/163] selftests/bpf: adapt one more case in test_lru_map to the new target_free
+Date: Tue, 15 Jul 2025 15:13:46 +0200
+Message-ID: <20250715130815.172872572@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +61,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jinchao <wangjinchao600@gmail.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit d67ed2ccd2d1dcfda9292c0ea8697a9d0f2f0d98 ]
+commit 5e9388f7984a9cc7e659a105113f6ccf0aebedd0 upstream.
 
-In the raid1_reshape function, newpool is
-allocated on the stack and assigned to conf->r1bio_pool.
-This results in conf->r1bio_pool.wait.head pointing
-to a stack address.
-Accessing this address later can lead to a kernel panic.
+The below commit that updated BPF_MAP_TYPE_LRU_HASH free target,
+also updated tools/testing/selftests/bpf/test_lru_map to match.
 
-Example access path:
+But that missed one case that passes with 4 cores, but fails at
+higher cpu counts.
 
-raid1_reshape()
-{
-	// newpool is on the stack
-	mempool_t newpool, oldpool;
-	// initialize newpool.wait.head to stack address
-	mempool_init(&newpool, ...);
-	conf->r1bio_pool = newpool;
-}
+Update test_lru_sanity3 to also adjust its expectation of target_free.
 
-raid1_read_request() or raid1_write_request()
-{
-	alloc_r1bio()
-	{
-		mempool_alloc()
-		{
-			// if pool->alloc fails
-			remove_element()
-			{
-				--pool->curr_nr;
-			}
-		}
-	}
-}
+This time tested with 1, 4, 16, 64 and 384 cpu count.
 
-mempool_free()
-{
-	if (pool->curr_nr < pool->min_nr) {
-		// pool->wait.head is a stack address
-		// wake_up() will try to access this invalid address
-		// which leads to a kernel panic
-		return;
-		wake_up(&pool->wait);
-	}
-}
-
-Fix:
-reinit conf->r1bio_pool.wait after assigning newpool.
-
-Fixes: afeee514ce7f ("md: convert to bioset_init()/mempool_init()")
-Signed-off-by: Wang Jinchao <wangjinchao600@gmail.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250612112901.3023950-1-wangjinchao600@gmail.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d4adf1c9ee77 ("bpf: Adjust free target to avoid global starvation of LRU map")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20250625210412.2732970-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid1.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/test_lru_map.c |   33 +++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 1fe645e630012..80efe737010b5 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -3431,6 +3431,7 @@ static int raid1_reshape(struct mddev *mddev)
- 	/* ok, everything is stopped */
- 	oldpool = conf->r1bio_pool;
- 	conf->r1bio_pool = newpool;
-+	init_waitqueue_head(&conf->r1bio_pool.wait);
+--- a/tools/testing/selftests/bpf/test_lru_map.c
++++ b/tools/testing/selftests/bpf/test_lru_map.c
+@@ -138,6 +138,12 @@ static int sched_next_online(int pid, in
+ 	return ret;
+ }
  
- 	for (d = d2 = 0; d < conf->raid_disks; d++) {
- 		struct md_rdev *rdev = conf->mirrors[d].rdev;
--- 
-2.39.5
-
++/* Derive target_free from map_size, same as bpf_common_lru_populate */
++static unsigned int __tgt_size(unsigned int map_size)
++{
++	return (map_size / nr_cpus) / 2;
++}
++
+ /* Inverse of how bpf_common_lru_populate derives target_free from map_size. */
+ static unsigned int __map_size(unsigned int tgt_free)
+ {
+@@ -410,12 +416,12 @@ static void test_lru_sanity2(int map_typ
+ 	printf("Pass\n");
+ }
+ 
+-/* Size of the LRU map is 2*tgt_free
+- * It is to test the active/inactive list rotation
+- * Insert 1 to 2*tgt_free (+2*tgt_free keys)
+- * Lookup key 1 to tgt_free*3/2
+- * Add 1+2*tgt_free to tgt_free*5/2 (+tgt_free/2 keys)
+- *  => key 1+tgt_free*3/2 to 2*tgt_free are removed from LRU
++/* Test the active/inactive list rotation
++ *
++ * Fill the whole map, deplete the free list.
++ * Reference all except the last lru->target_free elements.
++ * Insert lru->target_free new elements. This triggers one shrink.
++ * Verify that the non-referenced elements are replaced.
+  */
+ static void test_lru_sanity3(int map_type, int map_flags, unsigned int tgt_free)
+ {
+@@ -434,8 +440,7 @@ static void test_lru_sanity3(int map_typ
+ 
+ 	assert(sched_next_online(0, &next_cpu) != -1);
+ 
+-	batch_size = tgt_free / 2;
+-	assert(batch_size * 2 == tgt_free);
++	batch_size = __tgt_size(tgt_free);
+ 
+ 	map_size = tgt_free * 2;
+ 	lru_map_fd = create_map(map_type, map_flags, map_size);
+@@ -446,23 +451,21 @@ static void test_lru_sanity3(int map_typ
+ 
+ 	value[0] = 1234;
+ 
+-	/* Insert 1 to 2*tgt_free (+2*tgt_free keys) */
+-	end_key = 1 + (2 * tgt_free);
++	/* Fill the map */
++	end_key = 1 + map_size;
+ 	for (key = 1; key < end_key; key++)
+ 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
+ 					    BPF_NOEXIST));
+ 
+-	/* Lookup key 1 to tgt_free*3/2 */
+-	end_key = tgt_free + batch_size;
++	/* Reference all but the last batch_size */
++	end_key = 1 + map_size - batch_size;
+ 	for (key = 1; key < end_key; key++) {
+ 		assert(!bpf_map_lookup_elem_with_ref_bit(lru_map_fd, key, value));
+ 		assert(!bpf_map_update_elem(expected_map_fd, &key, value,
+ 					    BPF_NOEXIST));
+ 	}
+ 
+-	/* Add 1+2*tgt_free to tgt_free*5/2
+-	 * (+tgt_free/2 keys)
+-	 */
++	/* Insert new batch_size: replaces the non-referenced elements */
+ 	key = 2 * tgt_free + 1;
+ 	end_key = key + batch_size;
+ 	for (; key < end_key; key++) {
 
 
 
