@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3AEB05DE1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07595B05D64
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5251E7A2FE6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:46:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A69DB4A81EF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610A52E7BDC;
-	Tue, 15 Jul 2025 13:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9402E338D;
+	Tue, 15 Jul 2025 13:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s25TCSoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DR1qv3sM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FF02E49BB;
-	Tue, 15 Jul 2025 13:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6843A26CE27;
+	Tue, 15 Jul 2025 13:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586796; cv=none; b=TxnNUrZbsGUDOOin2b+dsFyrtEM3fnIhO/24g6KLbRlXvn35UOWNJXnta/FCDVlDQECeg+RLjDyGufOioK8O8CzNBSvW0Xfjstx0+lqSMviRM9KExlRHl1yfmkUy/fHAlNJyB/yzFofSQTL+CeJ3nQZeO7HEGU7OBob/a8Yl6yc=
+	t=1752586327; cv=none; b=E8loqyHe/VnrvFt7qpvTsVa86TauXnhPWWxOYjmvCE96Fc8isbKqwNCnJ2HPA2V6X6SzIkxV9+jEBTtfNNvV09sHF0k9fRm2khCiBJB3B+v/RycB9vmL6iPJ+QLmpCp3i3hvfUaLm6z3UIXdUhoj9ScSt6k/b1yBlrQL+zKO3KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586796; c=relaxed/simple;
-	bh=DQc1DcnWLySaXegNbBtcy+E/fjVU1k0z4VYVanKP1sw=;
+	s=arc-20240116; t=1752586327; c=relaxed/simple;
+	bh=IK5ZbOewQwQb0kAygMTys0tx3ZR09s4Fe7KgcjYhUSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YAI9FqklPC2ZpIqjj/cOm09NJ5g8SjyXcmI2noDbZNY+8okomamLeE1b3+Vglnw3R2gTAfBAGoMazNnxVyw9VZpZzLJ7hzkJvBcD6kKsRAfxOg0MnuFXvhht/KQ/oL5zjbsQ6IrVShTgrkbAfNJsdWnPQm+LEKM1K/OCCaqEY7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s25TCSoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3584C4CEF1;
-	Tue, 15 Jul 2025 13:39:55 +0000 (UTC)
+	 MIME-Version; b=k03m9u3bp7eiCL+Rrzvijc9kQTdcZH6L3O2SEIW7txIe7cXzqBGZfgLPXIJLWgXlMKg+z8geR8aFQ7fJApbxRvpCpJ+wa1CpTaJ2E3u46rLg8SRjGT0Og2Wv1kPNzND3DSeCfp6cCfWGOX2lk35q7Aep2cxylfX00pJj+YWk9kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DR1qv3sM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17E1C4CEE3;
+	Tue, 15 Jul 2025 13:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586796;
-	bh=DQc1DcnWLySaXegNbBtcy+E/fjVU1k0z4VYVanKP1sw=;
+	s=korg; t=1752586327;
+	bh=IK5ZbOewQwQb0kAygMTys0tx3ZR09s4Fe7KgcjYhUSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s25TCSoAkQ/osJxUHSkW+d57lsToctoMFzudWM9e/Uo/94lNwvzAym1+BAwyCA4Dq
-	 +Wp6Cjh+uAV0CwddqkcbKDFKn3AbWMIUsULIYBruD7pUPJJsF6mo2/08b/PXXHxiGC
-	 PUrfOoiiamzIip6PqOWFz7rY57Ot3ffiNFzy6mHc=
+	b=DR1qv3sMaT3n/Uo51P2gF1bRu9Q5k97U7Uu3LCA0eMmMvA5AWMS4LKy/kPs3A3U5A
+	 iEofbekj8bY2opNC6Yow+lb9M/QZCg4IqbN7qCrcq0U8H/NiRRHAylACp8qvi1bDVV
+	 WzC3oneshRqj/8JLHOqJY8oBhFRVCfvMZi9HaKMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Corey Minyard <corey@minyard.net>,
-	Brendan Jackman <jackmanb@google.com>
-Subject: [PATCH 6.15 050/192] ipmi:msghandler: Fix potential memory corruption in ipmi_create_user()
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 023/148] kbuild: hdrcheck: fix cross build with clang
 Date: Tue, 15 Jul 2025 15:12:25 +0200
-Message-ID: <20250715130816.854706537@linuxfoundation.org>
+Message-ID: <20250715130801.244123767@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit fa332f5dc6fc662ad7d3200048772c96b861cf6b upstream.
+[ Upstream commit 02e9a22ceef0227175e391902d8760425fa072c6 ]
 
-The "intf" list iterator is an invalid pointer if the correct
-"intf->intf_num" is not found.  Calling atomic_dec(&intf->nr_users) on
-and invalid pointer will lead to memory corruption.
+The headercheck tries to call clang with a mix of compiler arguments
+that don't include the target architecture. When building e.g. x86
+headers on arm64, this produces a warning like
 
-We don't really need to call atomic_dec() if we haven't called
-atomic_add_return() so update the if (intf->in_shutdown) path as well.
+   clang: warning: unknown platform, assuming -mfloat-abi=soft
 
-Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-ID: <aBjMZ8RYrOt6NOgi@stanley.mountain>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-[ - Dropped change to the `if (intf->in_shutdown)` block since that logic
-    doesn't exist yet.
-  - Modified out_unlock to release the srcu lock instead of the mutex
-    since we don't have the mutex here yet. ]
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add in the KBUILD_CPPFLAGS, which contain the target, in order to make it
+build properly.
+
+See also 1b71c2fb04e7 ("kbuild: userprogs: fix bitsize and target
+detection on clang").
+
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ usr/include/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -1241,7 +1241,7 @@ int ipmi_create_user(unsigned int
- 	}
- 	/* Not found, return an error */
- 	rv = -EINVAL;
--	goto out_kfree;
-+	goto out_unlock;
+diff --git a/usr/include/Makefile b/usr/include/Makefile
+index de6f9bffb01ed..293cccc01387e 100644
+--- a/usr/include/Makefile
++++ b/usr/include/Makefile
+@@ -10,7 +10,7 @@ UAPI_CFLAGS := -std=c90 -Wall -Werror=implicit-function-declaration
  
-  found:
- 	if (atomic_add_return(1, &intf->nr_users) > max_users) {
-@@ -1283,6 +1283,7 @@ int ipmi_create_user(unsigned int
+ # In theory, we do not care -m32 or -m64 for header compile tests.
+ # It is here just because CONFIG_CC_CAN_LINK is tested with -m32 or -m64.
+-UAPI_CFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
++UAPI_CFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
- out_kfree:
- 	atomic_dec(&intf->nr_users);
-+out_unlock:
- 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
- 	vfree(new_user);
- 	return rv;
+ override c_flags = $(UAPI_CFLAGS) -Wp,-MMD,$(depfile) -I$(objtree)/usr/include
+ 
+-- 
+2.39.5
+
 
 
 
