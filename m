@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-162089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96AECB05BB5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB28B05C06
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F7D37457E6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B48F74507A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E9A2E2657;
-	Tue, 15 Jul 2025 13:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385422E2F12;
+	Tue, 15 Jul 2025 13:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEkLZ2jR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nlBOR0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B892472AE;
-	Tue, 15 Jul 2025 13:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7A6137923;
+	Tue, 15 Jul 2025 13:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585643; cv=none; b=dMyacPTrDC7nEQN3M4f9fH/bubfQMNOvA4ZSywOY1oFRRpUQ0HYO8xmKDt/hv257/C48hLO3rvUN6iOfAY7/bobplazhx1lk22Rvhyv3CCabd0w7/Bq7pmiAjq2K9WO/T5hHXKSmzjZ8EM7EeCFSazmknvW+9H/5mjIzbMIWdXM=
+	t=1752585817; cv=none; b=Rqhg2TseHGngTtHoveGjl9jAXRqvYMaeW25mF3cO1H0G8T+5JZgjhmaNN2Cq0YeTT7u6fZmnK+B71zmS8dEBuwRnRhKPsBeXa2GgiaE+8G+hbKPpP3Gd3YJDQqPs17gAkI5KyT1usrMtceQLVHDbUsuKNtvhQr6TC7FPZZ5fhJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585643; c=relaxed/simple;
-	bh=5nbe3jQ/JAfpCwothgCGTCSEMVCwq34PoJt5XtjGXCs=;
+	s=arc-20240116; t=1752585817; c=relaxed/simple;
+	bh=TRH+Kt9ld09981792TzKffyBwOPjWv2/K69A1xaKFh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ti0z3FCu+4oJU30WE/lrAzqkaBN3LyaLK3KNZfLmlGn6QIC7NY7PUBZT7ARFkpWBJVx7cFXavfikRnUyLwaR5bURwxTdiDV8tsCjGV4Wnn/C7WNRrYEwBIejPvn4NuJlaL1KOeEOmfN8sTzbHw7lPZvcbEB8d4pyhrMKdLM0pCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEkLZ2jR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA4CC4CEE3;
-	Tue, 15 Jul 2025 13:20:43 +0000 (UTC)
+	 MIME-Version; b=X7sfTxKjOwsp8NGUyyF3CC0vLEdSE4tu7FshRl7j+5FG8DwVTshgi0Igj4HziJqzXP+4n6yrVUgqjx68in8j22WSSAg2XoyFF/bC41CJ+DEy77rHG7lScMGWo8P7FIulEos5CbXHKAwaMdEaqA0Qcg0Yaw/QGbULXoLS9cwkp9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nlBOR0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC21C4CEE3;
+	Tue, 15 Jul 2025 13:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585643;
-	bh=5nbe3jQ/JAfpCwothgCGTCSEMVCwq34PoJt5XtjGXCs=;
+	s=korg; t=1752585816;
+	bh=TRH+Kt9ld09981792TzKffyBwOPjWv2/K69A1xaKFh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEkLZ2jRXzl9PPerhap1bI7eJzBczKCWwhHzyj7hirUi3TAboMkQz+WOovp2ZH7HV
-	 PDidXzIvmjlRsYodg4YIhJCwjn00V8tYoNbidbjLzN6fm3G1nx8ulsvO/0mXcIZ11N
-	 XARJpDknbeZKD9OFKEIp4J2HKQlEtUPz/q6QabR4=
+	b=2nlBOR0rqx0wlPrqmbp1B2WJfbvhy8qzXMDT5gxQ6U2A33vuswSZRteTF17aVHjJJ
+	 0w1P/T9SXgzXH9buZaTUGZuhg+CxGesLL9jAAX3KibvEjAGpVzony/P2F59mPuGnHo
+	 7I0GLifVCqZHDbWdE7eFHfc4QjGqgrUhheY+/Gwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 087/163] maple_tree: fix mt_destroy_walk() on root leaf node
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andre Edich <andre.edich@microchip.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 019/109] net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
 Date: Tue, 15 Jul 2025 15:12:35 +0200
-Message-ID: <20250715130812.216350824@linuxfoundation.org>
+Message-ID: <20250715130759.651714434@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit ea9b77f98d94c4d5c1bd1ac1db078f78b40e8bf5 upstream.
+[ Upstream commit a141af8eb2272ab0f677a7f2653874840bc9b214 ]
 
-On destroy, we should set each node dead.  But current code miss this when
-the maple tree has only the root node.
+Correct the Auto-MDIX configuration to ensure userspace settings are
+respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
 
-The reason is mt_destroy_walk() leverage mte_destroy_descend() to set node
-dead, but this is skipped since the only root node is a leaf.
+The LAN9500 PHY allows its default MDI-X mode to be configured via a
+hardware strap. If this strap sets the default to "MDI-X off", the
+driver was previously unable to enable Auto-MDIX from userspace.
 
-Fixes this by setting the node dead if it is a leaf.
+When handling the ETH_TP_MDI_AUTO case, the driver would set the
+SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
+SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
+falls back to its hardware strap default, ignoring the software request.
 
-Link: https://lore.kernel.org/all/20250407231354.11771-1-richard.weiyang@gmail.com/
-Link: https://lkml.kernel.org/r/20250624191841.64682-1-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch corrects the behavior by also setting the override bit when
+enabling Auto-MDIX. This ensures that the userspace configuration takes
+precedence over the hardware strap, allowing Auto-MDIX to be enabled
+correctly in all scenarios.
+
+Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andre Edich <andre.edich@microchip.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250703114941.3243890-2-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/smsc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5335,6 +5335,7 @@ static void mt_destroy_walk(struct maple
- 	struct maple_enode *start;
- 
- 	if (mte_is_leaf(enode)) {
-+		mte_set_node_dead(enode);
- 		node->type = mte_node_type(enode);
- 		goto free_leaf;
- 	}
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index c88edb19d2e71..b7f9c4649652b 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -167,7 +167,8 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
+ 			SPECIAL_CTRL_STS_AMDIX_STATE_;
+ 		break;
+ 	case ETH_TP_MDI_AUTO:
+-		val = SPECIAL_CTRL_STS_AMDIX_ENABLE_;
++		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
++			SPECIAL_CTRL_STS_AMDIX_ENABLE_;
+ 		break;
+ 	default:
+ 		return genphy_config_aneg(phydev);
+-- 
+2.39.5
+
 
 
 
