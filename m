@@ -1,102 +1,128 @@
-Return-Path: <stable+bounces-163025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3075EB066BE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 21:25:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF7BB06753
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 21:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 826441AA5BFF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 19:25:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B014E80EA
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 19:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA6224169E;
-	Tue, 15 Jul 2025 19:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC8526FD8E;
+	Tue, 15 Jul 2025 19:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VuEt1pIl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tgzB3jOL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC6D8633F
-	for <stable@vger.kernel.org>; Tue, 15 Jul 2025 19:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA60B26FA62;
+	Tue, 15 Jul 2025 19:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752607504; cv=none; b=UTNIh2U6VjxCvSJXpjsBs5HhtNsHJBaD2QHkS/TJBypZs5N5HQlT6UszlMVvUjLhQv/xY29FmunATmG4p1XkzzoWPXbSU99+uIjMFfuFzrzgk+szZ+YyjCP8NAK76dse8kfRmwRBRcy0ULec2rMkiUI2fD5vsT80BIIZtSi3ZD0=
+	t=1752609388; cv=none; b=sMNZeMG/KWvZgQ9dNlHWCbvJpoLeCxlxTsg33be12g1EecZmDOJNShH2DzqQ0CgZPriSd4UOtTn5ykFvoNFCUgbRcXpJMyYwRGjzgGecrZPI/CyQRQ0ksBbuKNjhn6PQb5LiUuuDGadi1Ax2wgQ9iLl9ok4E73sz72rKI2NMQtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752607504; c=relaxed/simple;
-	bh=bvA1qHG3ABoeT8A5GTz5d6mDcR8a7zuwuuj6SpIDF4E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T7llM7RKXEzfhwmr/lqWbOZyOQEByg7nQH/1tLuJ+hR8G6BQTm6m6TmD16KDbK4uarURwxw0HIRqeg6ulWKOwrUp3lTDdg6EFrr+2OJ53I2c/cJHl9qEffB0diljWsA+bQcShY8RzZgBE/jl/1QGmr6ppcvIV7YXRt8pJybRB88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VuEt1pIl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BF6C4CEE3;
-	Tue, 15 Jul 2025 19:25:02 +0000 (UTC)
+	s=arc-20240116; t=1752609388; c=relaxed/simple;
+	bh=oAy6A6mELtflf/ApVsSLfMjrB+jaFLQJRW6V2oKwI9w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=S2LpNOXd5UvMTlBUMNy0pu7Dj8YMVZmmq/zX000JCeGubUcY2NGiFCTsDOyHim/XbImLNC/vHmuigohvKJMctIGWVHHHBzWkII8Sk5jzR0HmTGTwftSmDwMTOQAnSeXXYGfWGhcLNDA2cCrgWFEyLwbUWvLZIo9p5wGQKqx3JCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tgzB3jOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01F3C4CEF6;
+	Tue, 15 Jul 2025 19:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752607503;
-	bh=bvA1qHG3ABoeT8A5GTz5d6mDcR8a7zuwuuj6SpIDF4E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VuEt1pIlje8B+2NRC4/3InwdiCbk8lt3mCm0WtXCTCKh0HqpmF25UEf5MQ6RGSeQU
-	 5JcbN95Coltiu3jldwx37C1Tr1pR6uG110WBBgGioKpJq2bnAN9Oo+cMcJoz+b8JYE
-	 rWG9H+8Kt0hDQaBIzxD/02GwwLtsBZIZhbnQQ2/rHUBfI/SHnh/8hTIrH+9GVuq+wq
-	 7irFb5q80pYpwWp4YjQG2XlWCWMlekVSeTyBuVjjolEK825R3NEq0SYJ9y3gLqsPih
-	 ZUOQYrIh1bwMAenikUcD7STFGMb/1fnZpBbeaBTZyLosNMr3I8r4QPmj6nCXaoTfAR
-	 J0Dw1WNMkmH8A==
-From: Borislav Petkov <bp@kernel.org>
-To: <stable@vger.kernel.org>
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
-	Jinpu Wang <jinpu.wang@ionos.com>
-Subject: [PATCH 6.12] KVM: SVM: Set synthesized TSA CPUID flags
-Date: Tue, 15 Jul 2025 21:24:59 +0200
-Message-ID: <20250715192459.21804-1-bp@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=k20201202; t=1752609387;
+	bh=oAy6A6mELtflf/ApVsSLfMjrB+jaFLQJRW6V2oKwI9w=;
+	h=From:Date:Subject:To:Cc:From;
+	b=tgzB3jOLILsMd5Nq1+AeB7fzwTKZbi2dG5oK9hGRT+f5vSZ7FOKVd8+H4JnjaycgS
+	 yVGnhLH6vPLSKJO4CcaJEpmHdMbZbAgfAVFHyv+E6GkhnbzOf+YnFGuYIfN2ZwoNVw
+	 OyvRR1sD5aUlwcUtxn0AsolDXfijyGLkH00x/rXVRsk3i+JUgowH2DbQeO/xgaCz2s
+	 sZec0lJl3UPyobGz7l41emiZZYJwIQur5mygIw0nCcA41KoCQcwehlYAzOUv3NARQr
+	 UQMNkkprofauGKv8ki3WHsr/nt1fdyLGJwKyPm/2QpRc1JRRemF9HmeQg/eq6X2jTo
+	 UvydW2T4/HH8A==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 15 Jul 2025 12:56:16 -0700
+Subject: [PATCH] mm/ksm: Fix -Wsometimes-uninitialized from clang-21 in
+ advisor_mode_show()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250715-ksm-fix-clang-21-uninit-warning-v1-1-f443feb4bfc4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAF+ydmgC/x2NSwqAMAxEryJZG7CFqngVcVFr1KBWaf2BeHeDu
+ 3nMY+aBSIEpQpU8EOjkyKsXUGkCbrR+IOROGHSmTVYog1NcsOcb3SwtaoWHZ887XjZIGLAla2z
+ elmXuCGRlCyT6/1A37/sBzADgAnEAAAA=
+X-Change-ID: 20250715-ksm-fix-clang-21-uninit-warning-bea5a6b886ce
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+ Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Stefan Roesch <shr@devkernel.io>, linux-mm@kvack.org, 
+ llvm@lists.linux.dev, stable@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1922; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=oAy6A6mELtflf/ApVsSLfMjrB+jaFLQJRW6V2oKwI9w=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBllmzIz57sqnMziE1A98Fp66YRVHkU7okRCwluTPI4Kz
+ zxq3juno5SFQYyLQVZMkaX6sepxQ8M5ZxlvnJoEM4eVCWQIAxenAExkyzGG3yxLets5X3ExBGYX
+ aT6U8IovseB75PP+lLDu1A2X52nzBzMyPObz322U2x/5at2J+w37W/muCzrzvNj+o+Mfi1nOxQV
+ 63AA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+After a recent change in clang to expose uninitialized warnings from
+const variables [1], there is a warning from the if statement in
+advisor_mode_show().
 
-VERW_CLEAR is supposed to be set only by the hypervisor to denote TSA
-mitigation support to a guest. SQ_NO and L1_NO are both synthesizable,
-and are going to be set by hw CPUID on future machines.
+  mm/ksm.c:3687:11: error: variable 'output' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
+   3687 |         else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+        |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  mm/ksm.c:3690:33: note: uninitialized use occurs here
+   3690 |         return sysfs_emit(buf, "%s\n", output);
+        |                                        ^~~~~~
 
-So keep the kvm_cpu_cap_init_kvm_defined() invocation *and* set them
-when synthesized.
+Rewrite the if statement to implicitly make KSM_ADVISOR_NONE the else
+branch so that it is obvious to the compiler that ksm_advisor can only
+be KSM_ADVISOR_NONE or KSM_ADVISOR_SCAN_TIME due to the assignments in
+advisor_mode_store().
 
-This fix is stable-only.
-
-Co-developed-by: Jinpu Wang <jinpu.wang@ionos.com>
-Signed-off-by: Jinpu Wang <jinpu.wang@ionos.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Fixes: 66790e9a735b ("mm/ksm: add sysfs knobs for advisor")
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2100
+Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- arch/x86/kvm/cpuid.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/ksm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 02196db26a08..8f587c5bb6bc 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -822,6 +822,7 @@ void kvm_set_cpu_caps(void)
- 	kvm_cpu_cap_check_and_set(X86_FEATURE_SBPB);
- 	kvm_cpu_cap_check_and_set(X86_FEATURE_IBPB_BRTYPE);
- 	kvm_cpu_cap_check_and_set(X86_FEATURE_SRSO_NO);
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_VERW_CLEAR);
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 2b0210d41c55..160787bb121c 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -3682,10 +3682,10 @@ static ssize_t advisor_mode_show(struct kobject *kobj,
+ {
+ 	const char *output;
  
- 	kvm_cpu_cap_init_kvm_defined(CPUID_8000_0022_EAX,
- 		F(PERFMON_V2)
-@@ -831,6 +832,9 @@ void kvm_set_cpu_caps(void)
- 		F(TSA_SQ_NO) | F(TSA_L1_NO)
- 	);
+-	if (ksm_advisor == KSM_ADVISOR_NONE)
+-		output = "[none] scan-time";
+-	else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
++	if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+ 		output = "none [scan-time]";
++	else
++		output = "[none] scan-time";
  
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_TSA_SQ_NO);
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_TSA_L1_NO);
-+
- 	/*
- 	 * Synthesize "LFENCE is serializing" into the AMD-defined entry in
- 	 * KVM's supported CPUID if the feature is reported as supported by the
--- 
-2.43.0
+ 	return sysfs_emit(buf, "%s\n", output);
+ }
+
+---
+base-commit: fed48693bdfeca666f7536ba88a05e9a4e5523b6
+change-id: 20250715-ksm-fix-clang-21-uninit-warning-bea5a6b886ce
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
 
 
