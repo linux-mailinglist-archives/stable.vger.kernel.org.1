@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D988B05D40
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F75B05C94
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4189F4A76E6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AA281C241C8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332492E92A3;
-	Tue, 15 Jul 2025 13:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD6C2E337B;
+	Tue, 15 Jul 2025 13:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2iEscMR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0HNfq/z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57272E62AB;
-	Tue, 15 Jul 2025 13:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A40F2E3366;
+	Tue, 15 Jul 2025 13:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586240; cv=none; b=icZgKwC1nXhPtkAJdpMANWS9EbS4QBj7iUIDvJeNm5gBqHIgJB5zt6e382E7cHezbiyJYfbHcZVTGNdoTqhiX8iL0XRhZUtWlUOfY9jBjTsiT1NES+IYavyQwGiu3mKnbrFuds38vXjwgNkJ4dHi7psHQMykq/CSeEAVh+qxNyg=
+	t=1752586063; cv=none; b=ZR5hYXrFBXz7PH2VZrploVv8LMDcCVyOBewFAEB/M/MkOXimBTAEaQUYnNn6+Dx0qA2uubkw4HGpnKLE9gutR4OdwyY8rCh9ypgsbeknX8UrZ3Ot1BdAeyppu9O1gTDCTR0WmMvhcsuWGQv76JPAZkG3pyA8ZxjYDcaHIrYxlFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586240; c=relaxed/simple;
-	bh=RpRdTX4ISJVQpkAuOxrV3svgb2KVhhOenk4rp8nLyOE=;
+	s=arc-20240116; t=1752586063; c=relaxed/simple;
+	bh=wyal/KOZkAgOWKtAd5+mLFmbLT7LoYWUvRVWiW1kwp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3eb7PXjAZFKBgRPPTKoQbOLR/+YK4tVKLVdYRBmlOMSv/f+Z+ltVEGboq9wh7XdMCSfSsfbZnigiQsIS46TXlUXpQZMwpEKKq0r/IntrfGdZq0+Rue4v3R5J+rzpK2htbNXQHz+O2dng/7B2tp/8wF0MxKsgJotliP/hx67Hyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2iEscMR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78380C4CEF6;
-	Tue, 15 Jul 2025 13:30:39 +0000 (UTC)
+	 MIME-Version; b=AAaGhnWpEf5hw2HbjF3Jq7HGSzih3c8d5i6cHXnmn9c4wLpYNVrmV/Di05RopdQTwt1cU+5sTQ5DgWIl7vOp+m5JigwqIWqLXi/39fJgYmiWlXFoSSaYwgaXrKfECmtA4nou37K7X+rARYpLF+3Urc0WGA3IQJI06xVIisTEsDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0HNfq/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DB7C4CEE3;
+	Tue, 15 Jul 2025 13:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586239;
-	bh=RpRdTX4ISJVQpkAuOxrV3svgb2KVhhOenk4rp8nLyOE=;
+	s=korg; t=1752586062;
+	bh=wyal/KOZkAgOWKtAd5+mLFmbLT7LoYWUvRVWiW1kwp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2iEscMRGfMFcpwOZOZvdMtjDQBjGr7j06H6avbx5sOR9BZnOJjYD/ySYY7kOMNO3
-	 CaUfRReIBHpwoVCu/MXPnPP48v1Wp4mez5C6MOeuw3lco+7ULyoUnhpJlbAjdoyGWV
-	 hoIk/ymhyKmhxsJIEM5hD5HeKk4YFpZ+qFvXrhmU=
+	b=O0HNfq/zNC/s0pDXdF3w88rUcy+0ePvG7e1IyNnST6FDu/P6nArlKawcPQnmTDHPf
+	 xSIG+cGkcd4mOKqTnSxUxKHJzeclNrWYzLNapwftlZXY7E+pldpW5YiCPWWL/hnfZV
+	 nB3Sb5C6m5TVI9yusQTGi3SE8iSNCq8RYvi3nvQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Wang Jinchao <wangjinchao600@gmail.com>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/77] RDMA/mlx5: Fix vport loopback for MPV device
+Subject: [PATCH 6.6 080/109] md/raid1: Fix stack memory use after return in raid1_reshape
 Date: Tue, 15 Jul 2025 15:13:36 +0200
-Message-ID: <20250715130753.197688880@linuxfoundation.org>
+Message-ID: <20250715130802.084700816@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Wang Jinchao <wangjinchao600@gmail.com>
 
-[ Upstream commit a9a9e68954f29b1e197663f76289db4879fd51bb ]
+[ Upstream commit d67ed2ccd2d1dcfda9292c0ea8697a9d0f2f0d98 ]
 
-Always enable vport loopback for both MPV devices on driver start.
+In the raid1_reshape function, newpool is
+allocated on the stack and assigned to conf->r1bio_pool.
+This results in conf->r1bio_pool.wait.head pointing
+to a stack address.
+Accessing this address later can lead to a kernel panic.
 
-Previously in some cases related to MPV RoCE, packets weren't correctly
-executing loopback check at vport in FW, since it was disabled.
-Due to complexity of identifying such cases for MPV always enable vport
-loopback for both GVMIs when binding the slave to the master port.
+Example access path:
 
-Fixes: 0042f9e458a5 ("RDMA/mlx5: Enable vport loopback when user context or QP mandate")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/d4298f5ebb2197459e9e7221c51ecd6a34699847.1750064969.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+raid1_reshape()
+{
+	// newpool is on the stack
+	mempool_t newpool, oldpool;
+	// initialize newpool.wait.head to stack address
+	mempool_init(&newpool, ...);
+	conf->r1bio_pool = newpool;
+}
+
+raid1_read_request() or raid1_write_request()
+{
+	alloc_r1bio()
+	{
+		mempool_alloc()
+		{
+			// if pool->alloc fails
+			remove_element()
+			{
+				--pool->curr_nr;
+			}
+		}
+	}
+}
+
+mempool_free()
+{
+	if (pool->curr_nr < pool->min_nr) {
+		// pool->wait.head is a stack address
+		// wake_up() will try to access this invalid address
+		// which leads to a kernel panic
+		return;
+		wake_up(&pool->wait);
+	}
+}
+
+Fix:
+reinit conf->r1bio_pool.wait after assigning newpool.
+
+Fixes: afeee514ce7f ("md: convert to bioset_init()/mempool_init()")
+Signed-off-by: Wang Jinchao <wangjinchao600@gmail.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/linux-raid/20250612112901.3023950-1-wangjinchao600@gmail.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c | 33 +++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ drivers/md/raid1.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 2236c62a19807..e2f3369342c48 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -1680,6 +1680,33 @@ static void deallocate_uars(struct mlx5_ib_dev *dev,
- 			mlx5_cmd_free_uar(dev->mdev, bfregi->sys_pages[i]);
- }
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 8b25287c89ed6..4c1f86ca55208 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -3297,6 +3297,7 @@ static int raid1_reshape(struct mddev *mddev)
+ 	/* ok, everything is stopped */
+ 	oldpool = conf->r1bio_pool;
+ 	conf->r1bio_pool = newpool;
++	init_waitqueue_head(&conf->r1bio_pool.wait);
  
-+static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
-+				struct mlx5_core_dev *slave)
-+{
-+	int err;
-+
-+	err = mlx5_nic_vport_update_local_lb(master, true);
-+	if (err)
-+		return err;
-+
-+	err = mlx5_nic_vport_update_local_lb(slave, true);
-+	if (err)
-+		goto out;
-+
-+	return 0;
-+
-+out:
-+	mlx5_nic_vport_update_local_lb(master, false);
-+	return err;
-+}
-+
-+static void mlx5_ib_disable_lb_mp(struct mlx5_core_dev *master,
-+				  struct mlx5_core_dev *slave)
-+{
-+	mlx5_nic_vport_update_local_lb(slave, false);
-+	mlx5_nic_vport_update_local_lb(master, false);
-+}
-+
- int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
- {
- 	int err = 0;
-@@ -3147,6 +3174,8 @@ static void mlx5_ib_unbind_slave_port(struct mlx5_ib_dev *ibdev,
- 
- 	lockdep_assert_held(&mlx5_ib_multiport_mutex);
- 
-+	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev);
-+
- 	mlx5_ib_cleanup_cong_debugfs(ibdev, port_num);
- 
- 	spin_lock(&port->mp.mpi_lock);
-@@ -3231,6 +3260,10 @@ static bool mlx5_ib_bind_slave_port(struct mlx5_ib_dev *ibdev,
- 
- 	mlx5_ib_init_cong_debugfs(ibdev, port_num);
- 
-+	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev);
-+	if (err)
-+		goto unbind;
-+
- 	return true;
- 
- unbind:
+ 	for (d = d2 = 0; d < conf->raid_disks; d++) {
+ 		struct md_rdev *rdev = conf->mirrors[d].rdev;
 -- 
 2.39.5
 
