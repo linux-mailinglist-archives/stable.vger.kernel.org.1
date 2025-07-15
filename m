@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40512B05F8C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52981B0605B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87A5F5859B6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDC721C47F3C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48242EA173;
-	Tue, 15 Jul 2025 13:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E591A2EF9D4;
+	Tue, 15 Jul 2025 13:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVy0rn+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBRj2pDN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6184E2E7F05;
-	Tue, 15 Jul 2025 13:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A195C27470;
+	Tue, 15 Jul 2025 13:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587310; cv=none; b=auOzHGqv1zVyNl+Xq6o0qMsd+mR8ZJr2LWxqrPL1Ubmz8kHhTv9hZUMGZRM/8TU7BDlP1s9vxpIIkyr3tNSp/lSJcTl2UI8+veZGTqMLG5YFHAsl9wvUqKijZMn1htnfGdQ3RbT3gtqmbDXzSiWpv3nAPz/LG+fGKsK8OzPIoio=
+	t=1752587838; cv=none; b=A3F+Ockm4QOmfifrcjz/bRwlWDtOT+Jk0gkzQ/ue6WrumSwjoWOqTvj6XHc8P5ZE43RBwNgDiM4gZJQnGto14RtYlgl176IeTkg8mo+EGeBQy/zLH3+4rZqp+J0fbYlRFaIpnuZk65uGbiE9PgJ9VGfipXS8lvMT1tw7lnwk9Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587310; c=relaxed/simple;
-	bh=PSyYPcAsnAAwt+lNB3tFn0GEyW9NUVOI86VTIHLA8iI=;
+	s=arc-20240116; t=1752587838; c=relaxed/simple;
+	bh=cWoFGhsX3Drn12tLMnkbxHSzNAR9EJfONkqKeSRD7IE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QH9GVw6c2kJLbAGAZDLCRstKBHLsON0nmkMZPgGujMNePOuOLUjWPMq/OR+y4EfQLY2JLdqv1mAvluBqhK/K3iXM69tRz3nxDTsxsSQ8ZJLy5HF4b6p/YkW4mPVB7nNlCKgMuKKam07ZmiFMntVEvwgn1LqLXnFo4qgnBA/irXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVy0rn+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E319BC4CEF1;
-	Tue, 15 Jul 2025 13:48:29 +0000 (UTC)
+	 MIME-Version; b=bbqyhFQkNPC/VOKYzRFOMOr9EfgpZgIDJIkAo5fRUQ2m5Cd9nv9lsaYEFUSqWjBx/eW7gncNThQt8WoFf+NTRZW6hPvzm/tT3sZVQJ4emAlCIqWWzUI081kEYrmODx+N3NCWcxpH6mYQCs4b0ibzs6V7iW/ftcnNGWH5WDSKj84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBRj2pDN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E12DC4CEE3;
+	Tue, 15 Jul 2025 13:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587310;
-	bh=PSyYPcAsnAAwt+lNB3tFn0GEyW9NUVOI86VTIHLA8iI=;
+	s=korg; t=1752587838;
+	bh=cWoFGhsX3Drn12tLMnkbxHSzNAR9EJfONkqKeSRD7IE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVy0rn+N/6WcTyXEHxFZEUqPxRGupFusgx0Lzafbn2QvAfQP68cc3qji/l/g2eb7J
-	 k+AdlHRldP/g0VvsutgJa3wCJDjWlFAodXAkhfYOdeIIal7BG6N9mSYV4QKrFV6xrG
-	 7A75ZVvZJEOpebiJWXCpgkVXbI4J4v1gJj5sMHlc=
+	b=HBRj2pDNwmSwI21WtEhVi8+Y0OxfEufgh2pIFgNB6twgetOp0ojV3odVSoPSADQCY
+	 L7B4FnAMai7hCV5nUnZc/gOiVurwgFSiCBklccu9DkWekQClgH+vC6DzxnXZnyIgpV
+	 0YfXOe28u4q9cqYsJ5szHbxcgzbjMr6rxjG65Q5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Kurt Borja <kuurtb@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 53/88] platform/x86: think-lmi: Fix sysfs group cleanup
-Date: Tue, 15 Jul 2025 15:14:29 +0200
-Message-ID: <20250715130756.686654974@linuxfoundation.org>
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 5.10 161/208] x86/alternative: Optimize returns patching
+Date: Tue, 15 Jul 2025 15:14:30 +0200
+Message-ID: <20250715130817.431019615@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-[ Upstream commit 4f30f946f27b7f044cf8f3f1f353dee1dcd3517a ]
+commit d2408e043e7296017420aa5929b3bba4d5e61013 upstream.
 
-Many error paths in tlmi_sysfs_init() lead to sysfs groups being removed
-when they were not even created.
+Instead of decoding each instruction in the return sites range only to
+realize that that return site is a jump to the default return thunk
+which is needed - X86_FEATURE_RETHUNK is enabled - lift that check
+before the loop and get rid of that loop overhead.
 
-Fix this by letting the kobject core manage these groups through their
-kobj_type's defult_groups.
+Add comments about what gets patched, while at it.
 
-Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-3-ce4f81c9c481@gmail.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230512120952.7924-1-bp@alien8.de
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/intel_rapl_common.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ arch/x86/kernel/alternative.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index 26d00b1853b42..02787682b395e 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -21,6 +21,7 @@
- #include <linux/intel_rapl.h>
- #include <linux/processor.h>
- #include <linux/platform_device.h>
-+#include <linux/string_helpers.h>
- 
- #include <asm/iosf_mbi.h>
- #include <asm/cpu_device_id.h>
-@@ -227,17 +228,34 @@ static int find_nr_power_limit(struct rapl_domain *rd)
- static int set_domain_enable(struct powercap_zone *power_zone, bool mode)
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -775,13 +775,12 @@ static int patch_return(void *addr, stru
  {
- 	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
-+	u64 val;
-+	int ret;
+ 	int i = 0;
  
- 	if (rd->state & DOMAIN_STATE_BIOS_LOCKED)
- 		return -EACCES;
++	/* Patch the custom return thunks... */
+ 	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
+-		if (x86_return_thunk == __x86_return_thunk)
+-			return -1;
+-
+ 		i = JMP32_INSN_SIZE;
+ 		__text_gen_insn(bytes, JMP32_INSN_OPCODE, addr, x86_return_thunk, i);
+ 	} else {
++		/* ... or patch them out if not needed. */
+ 		bytes[i++] = RET_INSN_OPCODE;
+ 	}
  
- 	cpus_read_lock();
--	rapl_write_data_raw(rd, PL1_ENABLE, mode);
-+	ret = rapl_write_data_raw(rd, PL1_ENABLE, mode);
-+	if (ret)
-+		goto end;
-+
-+	ret = rapl_read_data_raw(rd, PL1_ENABLE, true, &val);
-+	if (ret)
-+		goto end;
-+
-+	if (mode != val) {
-+		pr_debug("%s cannot be %s\n", power_zone->name,
-+			 str_enabled_disabled(mode));
-+		goto end;
-+	}
-+
- 	if (rapl_defaults->set_floor_freq)
- 		rapl_defaults->set_floor_freq(rd, mode);
-+
-+end:
- 	cpus_read_unlock();
+@@ -794,6 +793,14 @@ void __init_or_module noinline apply_ret
+ {
+ 	s32 *s;
  
--	return 0;
-+	return ret;
- }
- 
- static int get_domain_enable(struct powercap_zone *power_zone, bool *mode)
--- 
-2.39.5
-
++	/*
++	 * Do not patch out the default return thunks if those needed are the
++	 * ones generated by the compiler.
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_RETHUNK) &&
++	    (x86_return_thunk == __x86_return_thunk))
++		return;
++
+ 	for (s = start; s < end; s++) {
+ 		void *dest = NULL, *addr = (void *)s + *s;
+ 		struct insn insn;
 
 
 
