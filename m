@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F75B05C94
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:33:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429DBB05BF6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AA281C241C8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:32:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6998D7B918B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD6C2E337B;
-	Tue, 15 Jul 2025 13:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BED2E175C;
+	Tue, 15 Jul 2025 13:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0HNfq/z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqjW5xb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A40F2E3366;
-	Tue, 15 Jul 2025 13:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148C72D5426;
+	Tue, 15 Jul 2025 13:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586063; cv=none; b=ZR5hYXrFBXz7PH2VZrploVv8LMDcCVyOBewFAEB/M/MkOXimBTAEaQUYnNn6+Dx0qA2uubkw4HGpnKLE9gutR4OdwyY8rCh9ypgsbeknX8UrZ3Ot1BdAeyppu9O1gTDCTR0WmMvhcsuWGQv76JPAZkG3pyA8ZxjYDcaHIrYxlFo=
+	t=1752585728; cv=none; b=nRCW4hOMP/45OFMsOgPPe5ro9l88/10y0FdnyqgfFkJgTQ8lX3Szjxacr4tnFxWXyRO8N3hqSn8eCy54u7e7ovxg0RBbySiJsP0vx5R3pzXw4QLQrHbLGToVazg/9epkqtvuCuexbYL+XAVu/pPTvs2vTHfvpHyc0kgMQoJyrzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586063; c=relaxed/simple;
-	bh=wyal/KOZkAgOWKtAd5+mLFmbLT7LoYWUvRVWiW1kwp8=;
+	s=arc-20240116; t=1752585728; c=relaxed/simple;
+	bh=gRj2AecfhSPzYrYRfsfyGQ5o8ltOw83OBRmU+1Vpdyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAaGhnWpEf5hw2HbjF3Jq7HGSzih3c8d5i6cHXnmn9c4wLpYNVrmV/Di05RopdQTwt1cU+5sTQ5DgWIl7vOp+m5JigwqIWqLXi/39fJgYmiWlXFoSSaYwgaXrKfECmtA4nou37K7X+rARYpLF+3Urc0WGA3IQJI06xVIisTEsDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0HNfq/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DB7C4CEE3;
-	Tue, 15 Jul 2025 13:27:42 +0000 (UTC)
+	 MIME-Version; b=YXM/6X5eyyvZxKaitiqWUJ+L9/FxsD3XQ5U6R9dpNpDjtS2FiB280iTs0xorjGe4xlkOe8o0LAFEqpUvV3p2qu/y0VwXVv25WiBoavIAGF7X5Fk5KHKfxYdaTv12Z7PhfH9i1MdTzTVtGZKKRs/AnqmlQgc0r2r7PRCo+1G362o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqjW5xb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFABC4CEE3;
+	Tue, 15 Jul 2025 13:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586062;
-	bh=wyal/KOZkAgOWKtAd5+mLFmbLT7LoYWUvRVWiW1kwp8=;
+	s=korg; t=1752585728;
+	bh=gRj2AecfhSPzYrYRfsfyGQ5o8ltOw83OBRmU+1Vpdyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0HNfq/zNC/s0pDXdF3w88rUcy+0ePvG7e1IyNnST6FDu/P6nArlKawcPQnmTDHPf
-	 xSIG+cGkcd4mOKqTnSxUxKHJzeclNrWYzLNapwftlZXY7E+pldpW5YiCPWWL/hnfZV
-	 nB3Sb5C6m5TVI9yusQTGi3SE8iSNCq8RYvi3nvQ8=
+	b=tqjW5xb6uGrPPOUKj7wsj+p6AV4UCDEShERjvBTDVL7UZ6eEpqC2jHh3Jgy3qkKVL
+	 4RQqcQGBCxVncGDyrTRv0W9CD+FaPEJvl6QNSVC+Ke3wKAdRliyHqjayRglAYwxHJy
+	 BOoJQ8xmTy3S0pyJ3LqmcLH6IqgWeyYEr5D9EyiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Jinchao <wangjinchao600@gmail.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Shuai Zhang <quic_shuaz@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/109] md/raid1: Fix stack memory use after return in raid1_reshape
+Subject: [PATCH 6.12 148/163] driver: bluetooth: hci_qca:fix unable to load the BT driver
 Date: Tue, 15 Jul 2025 15:13:36 +0200
-Message-ID: <20250715130802.084700816@linuxfoundation.org>
+Message-ID: <20250715130814.769798434@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jinchao <wangjinchao600@gmail.com>
+From: Shuai Zhang <quic_shuaz@quicinc.com>
 
-[ Upstream commit d67ed2ccd2d1dcfda9292c0ea8697a9d0f2f0d98 ]
+[ Upstream commit db0ff7e15923ffa7067874604ca275e92343f1b1 ]
 
-In the raid1_reshape function, newpool is
-allocated on the stack and assigned to conf->r1bio_pool.
-This results in conf->r1bio_pool.wait.head pointing
-to a stack address.
-Accessing this address later can lead to a kernel panic.
+Some modules have BT_EN enabled via a hardware pull-up,
+meaning it is not defined in the DTS and is not controlled
+through the power sequence. In such cases, fall through
+to follow the legacy flow.
 
-Example access path:
-
-raid1_reshape()
-{
-	// newpool is on the stack
-	mempool_t newpool, oldpool;
-	// initialize newpool.wait.head to stack address
-	mempool_init(&newpool, ...);
-	conf->r1bio_pool = newpool;
-}
-
-raid1_read_request() or raid1_write_request()
-{
-	alloc_r1bio()
-	{
-		mempool_alloc()
-		{
-			// if pool->alloc fails
-			remove_element()
-			{
-				--pool->curr_nr;
-			}
-		}
-	}
-}
-
-mempool_free()
-{
-	if (pool->curr_nr < pool->min_nr) {
-		// pool->wait.head is a stack address
-		// wake_up() will try to access this invalid address
-		// which leads to a kernel panic
-		return;
-		wake_up(&pool->wait);
-	}
-}
-
-Fix:
-reinit conf->r1bio_pool.wait after assigning newpool.
-
-Fixes: afeee514ce7f ("md: convert to bioset_init()/mempool_init()")
-Signed-off-by: Wang Jinchao <wangjinchao600@gmail.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250612112901.3023950-1-wangjinchao600@gmail.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/hci_qca.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 8b25287c89ed6..4c1f86ca55208 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -3297,6 +3297,7 @@ static int raid1_reshape(struct mddev *mddev)
- 	/* ok, everything is stopped */
- 	oldpool = conf->r1bio_pool;
- 	conf->r1bio_pool = newpool;
-+	init_waitqueue_head(&conf->r1bio_pool.wait);
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 025b9a07c0875..e6ad01d5e1d5d 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -2363,10 +2363,17 @@ static int qca_serdev_probe(struct serdev_device *serdev)
+ 			 */
+ 			qcadev->bt_power->pwrseq = devm_pwrseq_get(&serdev->dev,
+ 								   "bluetooth");
+-			if (IS_ERR(qcadev->bt_power->pwrseq))
+-				return PTR_ERR(qcadev->bt_power->pwrseq);
  
- 	for (d = d2 = 0; d < conf->raid_disks; d++) {
- 		struct md_rdev *rdev = conf->mirrors[d].rdev;
+-			break;
++			/*
++			 * Some modules have BT_EN enabled via a hardware pull-up,
++			 * meaning it is not defined in the DTS and is not controlled
++			 * through the power sequence. In such cases, fall through
++			 * to follow the legacy flow.
++			 */
++			if (IS_ERR(qcadev->bt_power->pwrseq))
++				qcadev->bt_power->pwrseq = NULL;
++			else
++				break;
+ 		}
+ 		fallthrough;
+ 	case QCA_WCN3988:
 -- 
 2.39.5
 
