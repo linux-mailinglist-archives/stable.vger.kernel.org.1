@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-162459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF2DB05E0C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1059CB05C71
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33FB71C215F8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEB2F167712
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDAE2E88A6;
-	Tue, 15 Jul 2025 13:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A43B2E7187;
+	Tue, 15 Jul 2025 13:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbjN6hmK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUsAmZv+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8882D3732;
-	Tue, 15 Jul 2025 13:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073F92E7184;
+	Tue, 15 Jul 2025 13:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586610; cv=none; b=VZYUtUCNuMmdGpNvgh+e/vessABWvLIsDehgfMvsTpXKx/dm+xWV9ncLmQBx/B8t00jOIHR3jxnmQCfvxAzfZjJooZXq62kybcNWRqQ0zjAsDCY/qU87neFqNRn/xDc3jWc3273H0Snai6c6AJ35oZEoJCny9cCDG/hLq0DuSuw=
+	t=1752586002; cv=none; b=ctH4P5LCN7AKMQD5i1yZ+UYtvAWhvCx1iKefUGt2boKXnmPLVe1om0fx0EM8LRnPF/kk6hgq5BYfKC8cRzInGbwTtPOAX4Hp2AkHhXIY4TJhVW9C9tVBCr6KuNoZ1+I6iMcaXtNq+vGdwZKgQ8rH4b2bw3xmnH1CxD3q2FVJg2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586610; c=relaxed/simple;
-	bh=q9XqB8NX5V35turgtSVrQI/JWc9lW1K4uk3JdJ/prBM=;
+	s=arc-20240116; t=1752586002; c=relaxed/simple;
+	bh=ypl+4mQcb9vzYFwsGSDxmPZ49SBhWhsNRQVYuTsM47A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCjoQlhxJmEIEzF5xEDveGr7KFu+avHk7xL738K2p1qCuyOUt51WAOJM2yELS1EVI62/2BoWiAxGjzqqccKqYYN2Jn/SyXDx8nQOlus1LcPSREtysV+Vd8FcPTIV0YPlH5dIBAaUVnl6wTsCX6orjcriqVaPtnxScECBlAZBKng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbjN6hmK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C1DC4CEE3;
-	Tue, 15 Jul 2025 13:36:49 +0000 (UTC)
+	 MIME-Version; b=JkbXINLTOtuoNvKaT8l4bxawnvVK17Hts5q+yzqbZmvve/jNMmQI5NzTYH4B5ZFfmhgrs+MbCZs43yhzXDLpEdx8l2oSWz7EokolY0aYVmR0qOTHkBIqbykyUEVFSerU92xzWouKjgp0LBGfCnXpxUjcTF4JjE8dqRNEETVebQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUsAmZv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA79C4CEF8;
+	Tue, 15 Jul 2025 13:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586610;
-	bh=q9XqB8NX5V35turgtSVrQI/JWc9lW1K4uk3JdJ/prBM=;
+	s=korg; t=1752586001;
+	bh=ypl+4mQcb9vzYFwsGSDxmPZ49SBhWhsNRQVYuTsM47A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BbjN6hmKrlP4+0BOlFp9gmKtRLvsbNVGTqO1jAflfTvaQNJHigxKSP/d32HuEOnke
-	 vowpiMC0QCG4teg7Z4Ey39N/M/j8bcNdFyIMOfW4+mdHizLdjiF/vULEz7dyOEp8SQ
-	 wwlrIEI0Z7XJNys+40BdeZOA4f+l9JXhNwtfxWzc=
+	b=vUsAmZv+nYIqwteJ/RLV1YMCFC8judJ7C8leHclsHY4GP39whQ6FSsFJIbwNh+X+0
+	 g+Ix1X2xt80oJ8jCDSLeAnmhQhhQ30yUDpfpQULrF/RM0mPxCzTc68muyu6PKODQnn
+	 aO/F0aw0ePGfXYIFFmASdbnISYg5tvDcxw3z2zoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 103/148] media: uvcvideo: Send control events for partial succeeds
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	Shravya KN <shravya.k-n@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 089/109] bnxt_en: Fix DCB ETS validation
 Date: Tue, 15 Jul 2025 15:13:45 +0200
-Message-ID: <20250715130804.438435909@linuxfoundation.org>
+Message-ID: <20250715130802.446955563@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Shravya KN <shravya.k-n@broadcom.com>
 
-commit 5c791467aea6277430da5f089b9b6c2a9d8a4af7 upstream.
+[ Upstream commit b74c2a2e9cc471e847abd87e50a2354c07e02040 ]
 
-Today, when we are applying a change to entities A, B. If A succeeds and B
-fails the events for A are not sent.
+In bnxt_ets_validate(), the code incorrectly loops over all possible
+traffic classes to check and add the ETS settings.  Fix it to loop
+over the configured traffic classes only.
 
-This change changes the code so the events for A are send right after
-they happen.
+The unconfigured traffic classes will default to TSA_ETS with 0
+bandwidth.  Looping over these unconfigured traffic classes may
+cause the validation to fail and trigger this error message:
 
-Cc: stable@kernel.org
-Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-2-de993ed9823b@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+"rejecting ETS config starving a TC\n"
+
+The .ieee_setets() will then fail.
+
+Fixes: 7df4ae9fe855 ("bnxt_en: Implement DCBNL to support host-based DCBX.")
+Reviewed-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250710213938.1959625-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1429,7 +1429,9 @@ static bool uvc_ctrl_xctrls_has_control(
- }
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
+index 63e0670383852..1727e9bb1479d 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
+@@ -487,7 +487,9 @@ static int bnxt_ets_validate(struct bnxt *bp, struct ieee_ets *ets, u8 *tc)
  
- static void uvc_ctrl_send_events(struct uvc_fh *handle,
--	const struct v4l2_ext_control *xctrls, unsigned int xctrls_count)
-+				 struct uvc_entity *entity,
-+				 const struct v4l2_ext_control *xctrls,
-+				 unsigned int xctrls_count)
- {
- 	struct uvc_control_mapping *mapping;
- 	struct uvc_control *ctrl;
-@@ -1440,6 +1442,9 @@ static void uvc_ctrl_send_events(struct
- 		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
+ 		if ((ets->tc_tx_bw[i] || ets->tc_tsa[i]) && i > bp->max_tc)
+ 			return -EINVAL;
++	}
  
- 		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
-+		if (ctrl->entity != entity)
-+			continue;
-+
- 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
- 			/* Notification will be sent from an Interrupt event. */
- 			continue;
-@@ -1638,10 +1643,11 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 					     rollback);
- 		if (ret < 0)
- 			goto done;
-+		else if (ret > 0 && !rollback)
-+			uvc_ctrl_send_events(handle, entity, xctrls,
-+					     xctrls_count);
- 	}
- 
--	if (!rollback)
--		uvc_ctrl_send_events(handle, xctrls, xctrls_count);
- 	ret = 0;
- done:
- 	mutex_unlock(&chain->ctrl_mutex);
++	for (i = 0; i < max_tc; i++) {
+ 		switch (ets->tc_tsa[i]) {
+ 		case IEEE_8021QAZ_TSA_STRICT:
+ 			break;
+-- 
+2.39.5
+
 
 
 
