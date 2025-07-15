@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CC2B05E04
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93027B05EC2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 980BF3B396A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 576124A290C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F242A2D29D9;
-	Tue, 15 Jul 2025 13:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE6C2E7629;
+	Tue, 15 Jul 2025 13:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDsE6jrT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoLKs4+X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03C62E339B;
-	Tue, 15 Jul 2025 13:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE042E6D2B;
+	Tue, 15 Jul 2025 13:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586594; cv=none; b=r51NdbOsFKb1LT3O+wMms1c34JquF8GK3mYOsEIfIc2P2E/Vs9KSPconr3IFdw1xwFjeB831qtj+dCYB9POZnBPntq1kAJllqbgZdJGxPaeQtzf27kiPcJehKpeIHImFzcwvXNGvLvdtwfsJPn7y7m1uxijPWaHkz3BcqkhsQ1k=
+	t=1752587066; cv=none; b=UMhn7W1BJSLU3uKVWjbfwIN4Y30qRydn7ZKZIx+hcrAER8GVLdZZT3x0im1kvrVE8gqqShllqOiXd8ri5eNevR6Q/f02yBcgEbiAao9Kfh3rKey0NRqbX4C5aGpykCFIH+omes3DxQOhmg4u6W5Pn2tGALi91VqqNYizcx0/efM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586594; c=relaxed/simple;
-	bh=XhuFar+czKwtrq5n5FX4r44OQk0bq1tC6Im/TeeKOWs=;
+	s=arc-20240116; t=1752587066; c=relaxed/simple;
+	bh=r5Sp3KX0QqbpWlTkdM6QFp/dwTkcsMvejn1T+MFBcSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iCRU8qTKF8Z3aBx9n1tcYxwb1HU+WiQEf8AVOgXu+NqGBzRduoE1o3ofbuAdcggP34SdHbL26M8yoAQo/tGt1/htFSPvJROdjY8BgBUdM0oPvqxYsfwbGs+x28YRpaStBZ612rncSX4/Fwwfy0Az6geQgeKbq5UMs4Bb2vl2Nk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDsE6jrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396DDC4CEE3;
-	Tue, 15 Jul 2025 13:36:34 +0000 (UTC)
+	 MIME-Version; b=rfX/FEj7Inge1ot6Df6ocYtKSywUPFcdGM5j0ZqBfNTumDQH1eIsuF+U7I52eNNthPAU4771NiFoQXZwHRmaTZdHs4wSQkwuC7PFqsomEwGHW0qjlPHxh/0DDIIPtKNi4WRwNle7zY9AEM3w4UXgErKidjjPxIPqHQ43mBw2hNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoLKs4+X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71908C4CEE3;
+	Tue, 15 Jul 2025 13:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586594;
-	bh=XhuFar+czKwtrq5n5FX4r44OQk0bq1tC6Im/TeeKOWs=;
+	s=korg; t=1752587065;
+	bh=r5Sp3KX0QqbpWlTkdM6QFp/dwTkcsMvejn1T+MFBcSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDsE6jrTnsKDw+Azac5TVgOSjNOE96Q0mX3cyC89wL/0j5mBD1DlgzYtrAfnh8s18
-	 961JFDqCQoBD2raGGz2hm7rtJOey0MbJAIVAuWp9TWwZ72+tXf72krqN9Cklv+d8Fx
-	 Y8TpWA67EvVGX9g89jqDGkK1XFwQoQxX0dWylZG8=
+	b=EoLKs4+XKTaTLgXEsAJC9YSpWcHWnmztyeUb/5ueCTdIh5d0Nn5YJu7PySu/kyo1G
+	 TMHkJkpNfdaa7niTmomTicjf3UmssM8/IuYeqQ89rPTaMjmksDqwouC5TwAtFbeFIi
+	 4+hcN20QHEvjHxjwrOwwTp0QZqetucZtT3qjKxEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 5.4 124/148] pwm: mediatek: Ensure to disable clocks in error path
-Date: Tue, 15 Jul 2025 15:14:06 +0200
-Message-ID: <20250715130805.262630586@linuxfoundation.org>
+	Kito Xu <veritas501@foxmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 152/192] net: appletalk: Fix device refcount leak in atrtr_create()
+Date: Tue, 15 Jul 2025 15:14:07 +0200
+Message-ID: <20250715130821.011750066@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,72 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Kito Xu <veritas501@foxmail.com>
 
-commit 505b730ede7f5c4083ff212aa955155b5b92e574 upstream.
+[ Upstream commit 711c80f7d8b163d3ecd463cd96f07230f488e750 ]
 
-After enabling the clocks each error path must disable the clocks again.
-One of them failed to do so. Unify the error paths to use goto to make it
-harder for future changes to add a similar bug.
+When updating an existing route entry in atrtr_create(), the old device
+reference was not being released before assigning the new device,
+leading to a device refcount leak. Fix this by calling dev_put() to
+release the old device reference before holding the new one.
 
-Fixes: 7ca59947b5fc ("pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250704172728.626815-2-u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-[ukleinek: backported to 5.15.y]
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c7f905f0f6d4 ("[ATALK]: Add missing dev_hold() to atrtr_create().")
+Signed-off-by: Kito Xu <veritas501@foxmail.com>
+Link: https://patch.msgid.link/tencent_E1A26771CDAB389A0396D1681A90A49E5D09@qq.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mediatek.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ net/appletalk/ddp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -134,8 +134,10 @@ static int pwm_mediatek_config(struct pw
- 		return ret;
+diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+index b068651984fe3..fa7f002b14fa3 100644
+--- a/net/appletalk/ddp.c
++++ b/net/appletalk/ddp.c
+@@ -576,6 +576,7 @@ static int atrtr_create(struct rtentry *r, struct net_device *devhint)
  
- 	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
--	if (!clk_rate)
--		return -EINVAL;
-+	if (!clk_rate) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
- 
- 	/* Make sure we use the bus clock and not the 26MHz clock */
- 	if (pc->soc->has_ck_26m_sel)
-@@ -154,9 +156,9 @@ static int pwm_mediatek_config(struct pw
- 	}
- 
- 	if (clkdiv > PWM_CLK_DIV_MAX) {
--		pwm_mediatek_clk_disable(chip, pwm);
--		dev_err(chip->dev, "period %d not supported\n", period_ns);
--		return -EINVAL;
-+		dev_err(chip->dev, "period of %d ns not supported\n", period_ns);
-+		ret = -EINVAL;
-+		goto out;
- 	}
- 
- 	if (pc->soc->pwm45_fixup && pwm->hwpwm > 2) {
-@@ -173,9 +175,10 @@ static int pwm_mediatek_config(struct pw
- 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
- 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
- 
-+out:
- 	pwm_mediatek_clk_disable(chip, pwm);
- 
--	return 0;
-+	return ret;
- }
- 
- static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	/* Fill in the routing entry */
+ 	rt->target  = ta->sat_addr;
++	dev_put(rt->dev); /* Release old device */
+ 	dev_hold(devhint);
+ 	rt->dev     = devhint;
+ 	rt->flags   = r->rt_flags;
+-- 
+2.39.5
+
 
 
 
