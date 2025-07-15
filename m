@@ -1,92 +1,186 @@
-Return-Path: <stable+bounces-161944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A31B05292
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 09:18:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFA8B0539C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 09:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F0483B23EA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 07:17:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EDEA4A2941
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 07:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675E0275118;
-	Tue, 15 Jul 2025 07:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EB82747B;
+	Tue, 15 Jul 2025 07:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IujMx2tD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93416270EB0;
-	Tue, 15 Jul 2025 07:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A981FCFE7;
+	Tue, 15 Jul 2025 07:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752563765; cv=none; b=lMLH1mpNdqS45bELoZOskWytT1+9hIU0z0Gl/eWjlecdR5yJY1q0H6rb1ljrZZbQWrmrhXw4J4ueAsU0O4rwS4mJaqOhMQsyhVA+OGrQ9xZS8C8Q2WincjVovsv8+Na/DyyPWgvnIkl4Eb50Pn1vz5oQjOW8KMFmav/kH0y1nr4=
+	t=1752565715; cv=none; b=D2wXCeonL2VqU6CVc/W5zlr73DxqhomlRWBm8yDlLpxjJiItThzJhghDVZtBEPi18N0mcUtmh2yJAHCR9/PwbWKsLp2bv/xT5UEzvw3VzPicTNHpxzSNIriJ+T0DTcow0ngKTZhkUBqrrgIoB/KlBcAlFredhzLrt9Zu9uTORuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752563765; c=relaxed/simple;
-	bh=Lyytan91LGxiGOiz6/sBkllxKJCm/8j0ZtObVauBKEA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=t5qkQyd2xRcUW7TYaQMKuUl/E5BjvQ1IH+/MKXkcGuJQjntt/OQp3tSx2Rt/kuS13bm2F8zse/p6J3mrEJ4Qt2HTIsljwl3K9eDc4OAXmm09I3SrO5Lcz1lkYJB999Nitq2NLplAaHPCtjMxgfZDQzep+qSu15f5Nv7CjYLqwsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
- (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Tue, 15 Jul
- 2025 09:15:52 +0200
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%6]) with mapi id
- 15.01.2507.057; Tue, 15 Jul 2025 09:15:52 +0200
-From: John Ernberg <john.ernberg@actia.se>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Ming Lei <ming.lei@canonical.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
- event
-Thread-Topic: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
- event
-Thread-Index: AQHb8Xe2qza52xx55UmGbnkg6Pc/lrQyK2OAgACAvYA=
-Date: Tue, 15 Jul 2025 07:15:51 +0000
-Message-ID: <74a87648-bc02-4edb-9e6a-102cb6621547@actia.se>
-References: <20250710085028.1070922-1-john.ernberg@actia.se>
- <20250714163505.44876e62@kernel.org>
-In-Reply-To: <20250714163505.44876e62@kernel.org>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-esetresult: clean, is OK
-x-esetid: 37303A2956B14450647564
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2368C8D7F7F3C84C9856F28BFA337566@actia.se>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1752565715; c=relaxed/simple;
+	bh=8IZw6C/De6dakx9xAilap331+SFJiu/Fzpfs3jm/iXM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J0PJNMnsmxWu19s0fzQoVdK+m/6hAUOcQX0KU51ihaf+dP00AiygcuOSVXKGACezRGOb8mwI7oSGECQ5fbgcXHjB46SBtecIWa2hd1b1Z7LpNkaZhg+Y27Wuw4uQvizKeBnW9EnAda1TW5Lw+HeSBYxRwSGaVeGrigOQgyEVLxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IujMx2tD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C81C4CEE3;
+	Tue, 15 Jul 2025 07:48:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752565714;
+	bh=8IZw6C/De6dakx9xAilap331+SFJiu/Fzpfs3jm/iXM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IujMx2tDnehjf8dlyyA/zZSt93i5CX1ytyp423HSEsFXh4Tb0rlLDC7Jc0laL6ogO
+	 JzhUhMZ+JwPHW4GJXEWIXJiry9mCLGTxOYoehzqCbE9vreeNl2pa2Ue3HGK8erKKxU
+	 FsJpuebZZUVApC34IMrcfaYKcDKUWnDxxW/zZeRDtXUJoorm0V2xL4V9S3uf2+aCF4
+	 +fM3+uhkIUCRH5omjEykO9NbwZ59QpsqL3qgGNNRQJtUK7cooXT2ZJcTltEacoIdRU
+	 JbRWTGksPpuTaEugbGcyIfBO2j7P5QsDL/2trmkwDuy6HKsNBvbeHay2Q3e6IKhLvI
+	 HA6GTogyaqJEg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1ubaOs-000000002aI-09Td;
+	Tue, 15 Jul 2025 09:48:30 +0200
+Date: Tue, 15 Jul 2025 09:48:30 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] PCI: qcom: Switch to bus notifier for enabling ASPM
+ of PCI devices
+Message-ID: <aHYHzrl0DE2HV86S@hovoldconsulting.com>
+References: <20250714-aspm_fix-v1-0-7d04b8c140c8@oss.qualcomm.com>
+ <20250714-aspm_fix-v1-1-7d04b8c140c8@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250714-aspm_fix-v1-1-7d04b8c140c8@oss.qualcomm.com>
 
-SGkgSmFrdWIsDQoNCk9uIDcvMTUvMjUgMTozNSBBTSwgSmFrdWIgS2ljaW5za2kgd3JvdGU6DQo+
-IE9uIFRodSwgMTAgSnVsIDIwMjUgMDg6NTA6NDAgKzAwMDAgSm9obiBFcm5iZXJnIHdyb3RlOg0K
-Pj4gSGF2aW5nIGEgR2VtYWx0byBDaW50ZXJpb24gUExTODMtVyBtb2RlbSBhdHRhY2hlZCB0byBV
-U0IgYW5kIGFjdGl2YXRpbmcgdGhlDQo+PiBjZWxsdWxhciBkYXRhIGxpbmsgd291bGQgc29tZXRp
-bWVzIHlpZWxkIHRoZSBmb2xsb3dpbmcgUkNVIHN0YWxsLCBsZWFkaW5nDQo+PiB0byBhIHN5c3Rl
-bSBmcmVlemU6DQo+IA0KPiBEbyB5b3Uga25vdyB3aGljaCBzdWItZHJpdmVyIGl0J3MgdXNpbmc/
-DQoNClRoZSBtb2RlbSB1c2VzIGNkY19ldGhlciAoYW5kIG9wdGlvbiBmb3IgdGhlIFRUWXMpLg0K
-DQo+IEknbSB3b3JyaWVkIHRoYXQgdGhpcyBpcyBzdGlsbCByYWN5Lg0KPiBTaW5jZSB1c2JuZXRf
-YmggY2hlY2tzIGlmIGNhcnJpZXIgaXMgb2sgYW5kIF9faGFuZGxlX2xpbmtfY2hhbmdlKCkNCj4g
-Y2hlY2tzIHRoZSBvcHBvc2l0ZSBzb21ldGhpbmcgbXVzdCBiZSBvdXQgb2Ygc3luYyBpZiBib3Ro
-IHJ1bi4NCj4gTW9zdCBsaWtlbHkgc29tZXRoaW5nIHJlc3RvcmVkIHRoZSBjYXJyaWVyIHdoaWxl
-IHdlJ3JlIHN0aWxsIGhhbmRsaW5nDQo+IHRoZSBwcmV2aW91cyBjYXJyaWVyIGxvc3MuDQoNClRo
-ZXJlIGNvdWxkIGRlZmluaXRlbHkgYmUgb3RoZXIgZmFjdG9ycywgSSdsbCB0cnkgdG8gZGlnIHNv
-bWUgaW4gDQpjZGNfZXRoZXIgYW5kIHNlZSBpZiBzb21ldGhpbmcgdGhlcmUgY291bGQgYmUgY2F1
-c2luZyBwcm9ibGVtcyBmb3IgdGhlIA0KdXNibmV0IGNvcmUuDQpJIGhvbmVzdGx5IGtpbmRhIHN0
-b3BwZWQgZGlnZ2luZyB3aGVuIEkgZm91bmQgdW5saW5rX3VyYnMoKSBiZWluZyANCndyYXBwZWQg
-d2l0aCBhIHBhdXNlL3VucGF1c2UgYXQgYW5vdGhlciBwbGFjZSB0aWVkIHRvIGEgY29tbWl0IHNl
-ZWluZyBhIA0Kc2ltaWxhciBpc3N1ZS4NCg0KVGhhbmtzISAvLyBKb2huIEVybmJlcmc=
+On Mon, Jul 14, 2025 at 11:31:04PM +0530, Manivannan Sadhasivam wrote:
+> Commit 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0
+> ops") allowed the Qcom controller driver to enable ASPM for all PCI devices
+> enumerated at the time of the controller driver probe. It proved to be
+> useful for devices already powered on by the bootloader as it allowed
+> devices to enter ASPM without user intervention.
+> 
+> However, it could not enable ASPM for the hotplug capable devices i.e.,
+> devices enumerated *after* the controller driver probe. This limitation
+> mostly went unnoticed as the Qcom PCI controllers are not hotplug capable
+> and also the bootloader has been enabling the PCI devices before Linux
+> Kernel boots (mostly on the Qcom compute platforms which users use on a
+> daily basis).
+> 
+> But with the advent of the commit b458ff7e8176 ("PCI/pwrctl: Ensure that
+> pwrctl drivers are probed before PCI client drivers"), the pwrctrl driver
+> started to block the PCI device enumeration until it had been probed.
+> Though, the intention of the commit was to avoid race between the pwrctrl
+> driver and PCI client driver, it also meant that the pwrctrl controlled PCI
+> devices may get probed after the controller driver and will no longer have
+> ASPM enabled. So users started noticing high runtime power consumption with
+> WLAN chipsets on Qcom compute platforms like Thinkpad X13s, and Thinkpad
+> T14s, etc...
+> 
+> Obviously, it is the pwrctrl change that caused regression, but it
+> ultimately uncovered a flaw in the ASPM enablement logic of the controller
+> driver. So to address the actual issue, switch to the bus notifier for
+> enabling ASPM of the PCI devices. The notifier will notify the controller
+> driver when a PCI device is attached to the bus, thereby allowing it to
+> enable ASPM more reliably. It should be noted that the
+> 'pci_dev::link_state', which is required for enabling ASPM by the
+> pci_enable_link_state_locked() API, is only set by the time of
+> BUS_NOTIFY_BIND_DRIVER stage of the notification. So we cannot enable ASPM
+> during BUS_NOTIFY_ADD_DEVICE stage.
+
+A problem with this approach is that ASPM will never be enabled (and
+power consumption will be higher) in case an endpoint driver is missing.
+
+I think that's something we should try to avoid.
+
+> So with this, we can also get rid of the controller driver specific
+> 'qcom_pcie_ops::host_post_init' callback.
+> 
+> Cc: stable@vger.kernel.org # v6.7
+> Fixes: 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0 ops")
+> Reported-by: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+
+Note that the patch fails to apply to 6.16-rc6 due to changes in
+linux-next. Depending on how fast we can come up with a fix it may be
+better to target 6.16.
+
+> -static int qcom_pcie_enable_aspm(struct pci_dev *pdev, void *userdata)
+> -{
+> -	/*
+> -	 * Downstream devices need to be in D0 state before enabling PCI PM
+> -	 * substates.
+> -	 */
+> -	pci_set_power_state_locked(pdev, PCI_D0);
+> -	pci_enable_link_state_locked(pdev, PCIE_LINK_STATE_ALL);
+> -
+> -	return 0;
+> -}
+
+I think you should consider leaving this helper in place here to keep
+the size of the diff down (e.g. as you intend to backport this).
+
+> +static int qcom_pcie_enable_aspm(struct pci_dev *pdev)
+> +{
+> +	/*
+> +	 * Downstream devices need to be in D0 state before enabling PCI PM
+> +	 * substates.
+> +	 */
+> +	pci_set_power_state_locked(pdev, PCI_D0);
+> +	pci_enable_link_state_locked(pdev, PCIE_LINK_STATE_ALL);
+
+You need to use the non-locked helpers here since you no longer hold the
+bus semaphore (e.g. as reported by lockdep).
+
+Maybe this makes the previous comment about not moving the helper moot.
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int pcie_qcom_notify(struct notifier_block *nb, unsigned long action,
+> +			      void *data)
+> +{
+> +	struct qcom_pcie *pcie = container_of(nb, struct qcom_pcie, nb);
+
+This results in an unused variable warning (presumably until the next
+patch in the series is applied).
+
+> +	struct device *dev = data;
+> +	struct pci_dev *pdev = to_pci_dev(dev);
+> +
+> +	switch (action) {
+> +	case BUS_NOTIFY_BIND_DRIVER:
+> +		qcom_pcie_enable_aspm(pdev);
+> +		break;
+> +	}
+> +
+> +	return NOTIFY_DONE;
+> +}
+
+Missing newline.
+
+>  static int qcom_pcie_probe(struct platform_device *pdev)
+>  {
+>  	const struct qcom_pcie_cfg *pcie_cfg;
+
+Johan
 
