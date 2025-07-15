@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8820B05DFF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D5AB05D55
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B87C87B6073
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDAD11C2150C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25DB2EA736;
-	Tue, 15 Jul 2025 13:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BF52E425F;
+	Tue, 15 Jul 2025 13:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtMmQzZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jy9fZzog"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2708462;
-	Tue, 15 Jul 2025 13:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37D32D028A;
+	Tue, 15 Jul 2025 13:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586883; cv=none; b=dJEAAWBjIk3NA19zkM+WDTMlXl9tIiAFAelYxLfQXHNq0ZFbUtXttYtEBf1wCc4+h5i18q3PVrdJhya8UcQwZox6rbb0UgItOtIO3/9c5c6bcjDkRnmJ39HguUxz4pG+VQsQbUmb9/x3c/RYYn3y3YjGRe3qyhoH/oPit9DfxO8=
+	t=1752586348; cv=none; b=cdmvhTqZvlptek/VJsc+4FovN1AWgwEuBOewnVt8Yz53jBGAe6Oj3lFGTdYcsVBTYnfjcYQmcDOGlEqihGbBQHsfsfBP37N9SjqgIHYuWPEbbPamwCoky4Edjb2dBuudvqIl3d3zufwy14fgR+oo63Xm9LE+ZAvikPmu4xeUw8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586883; c=relaxed/simple;
-	bh=9s3m8t/Wayix23M8FY05Zj6J8H6EQ9z9e/d20AoI4OE=;
+	s=arc-20240116; t=1752586348; c=relaxed/simple;
+	bh=WqZw3pLo4oAGeBxxnd/yHvLTxDqKQllXD/R0dEOjhXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IfJTGeG27Vp20GgpyWw/syciDkOw437AEyllPdvK3gB//yKw0JWAbKd3A+V9m96a8RRI4KZXyR8kFkOyDQLTqjXkICIS5cmVLVXJ8dyzloD2nHY3teFykutRzjLrPUvSdXBMYIv3BT1lAaYzIMnjadz3tjZhglPSueSBRKbBPbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtMmQzZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B11FC4CEE3;
-	Tue, 15 Jul 2025 13:41:23 +0000 (UTC)
+	 MIME-Version; b=aaLsqMzilneexHKsVXz5O3PIfxSGgTkLv5lk5X0d0s7RN964lh6u4cGT6DO9AxXgoS7X1JXnvoFCz5lna09QrPfVufRDCV1nhOSxbl4s9B/9t48KO8iLLkQM5sKVPJxe6chRQl3eQBJusk7zQDVgDG3YM6Y2seM/cLbdV9eYCek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jy9fZzog; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF9BC4CEE3;
+	Tue, 15 Jul 2025 13:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586883;
-	bh=9s3m8t/Wayix23M8FY05Zj6J8H6EQ9z9e/d20AoI4OE=;
+	s=korg; t=1752586348;
+	bh=WqZw3pLo4oAGeBxxnd/yHvLTxDqKQllXD/R0dEOjhXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtMmQzZydFo+aUVJv2znlCvRX2bAFvhQpAzAaoQRQUdrz3mT45yD0ZXVF+hFkU7/6
-	 lbm5omtsGLt+Ja7bParZeIlB3gIi1KF+Kl3tHsz0D6P6W4YIpNPcuvZugVaJpFb1rQ
-	 NUmdkEku3KkV1bv2IL12pIJ5EfleV/WFocyjFhI4=
+	b=Jy9fZzogfFG3DqmIAJoUejnB3mM7tWaFMF2BwwTbcOJYNBXuIxzMGBt02CudEIN43
+	 wp5+Ke1C7rl+7cVlZLKXUhIl//nMc4k9Azozg+7Ft2wnkh/zhjC6IVDqtsS/ZK8oZA
+	 uu2n95liJa2YSQm/9G70CIcicriYOHGZOH+96En4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manuel Andreas <manuel.andreas@tum.de>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.15 057/192] KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB flush
+	syzbot+526bd95c0ec629993bf3@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 030/148] media: cxusb: no longer judge rbuf when the write fails
 Date: Tue, 15 Jul 2025 15:12:32 +0200
-Message-ID: <20250715130817.126618818@linuxfoundation.org>
+Message-ID: <20250715130801.521410502@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manuel Andreas <manuel.andreas@tum.de>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit fa787ac07b3ceb56dd88a62d1866038498e96230 upstream.
+[ Upstream commit 73fb3b92da84637e3817580fa205d48065924e15 ]
 
-In KVM guests with Hyper-V hypercalls enabled, the hypercalls
-HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST and HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST_EX
-allow a guest to request invalidation of portions of a virtual TLB.
-For this, the hypercall parameter includes a list of GVAs that are supposed
-to be invalidated.
+syzbot reported a uninit-value in cxusb_i2c_xfer. [1]
 
-However, when non-canonical GVAs are passed, there is currently no
-filtering in place and they are eventually passed to checked invocations of
-INVVPID on Intel / INVLPGA on AMD.  While AMD's INVLPGA silently ignores
-non-canonical addresses (effectively a no-op), Intel's INVVPID explicitly
-signals VM-Fail and ultimately triggers the WARN_ONCE in invvpid_error():
+Only when the write operation of usb_bulk_msg() in dvb_usb_generic_rw()
+succeeds and rlen is greater than 0, the read operation of usb_bulk_msg()
+will be executed to read rlen bytes of data from the dvb device into the
+rbuf.
 
-  invvpid failed: ext=0x0 vpid=1 gva=0xaaaaaaaaaaaaa000
-  WARNING: CPU: 6 PID: 326 at arch/x86/kvm/vmx/vmx.c:482
-  invvpid_error+0x91/0xa0 [kvm_intel]
-  Modules linked in: kvm_intel kvm 9pnet_virtio irqbypass fuse
-  CPU: 6 UID: 0 PID: 326 Comm: kvm-vm Not tainted 6.15.0 #14 PREEMPT(voluntary)
-  RIP: 0010:invvpid_error+0x91/0xa0 [kvm_intel]
-  Call Trace:
-    vmx_flush_tlb_gva+0x320/0x490 [kvm_intel]
-    kvm_hv_vcpu_flush_tlb+0x24f/0x4f0 [kvm]
-    kvm_arch_vcpu_ioctl_run+0x3013/0x5810 [kvm]
+In this case, although rlen is 1, the write operation failed which resulted
+in the dvb read operation not being executed, and ultimately variable i was
+not initialized.
 
-Hyper-V documents that invalid GVAs (those that are beyond a partition's
-GVA space) are to be ignored.  While not completely clear whether this
-ruling also applies to non-canonical GVAs, it is likely fine to make that
-assumption, and manual testing on Azure confirms "real" Hyper-V interprets
-the specification in the same way.
+[1]
+BUG: KMSAN: uninit-value in cxusb_gpio_tuner drivers/media/usb/dvb-usb/cxusb.c:124 [inline]
+BUG: KMSAN: uninit-value in cxusb_i2c_xfer+0x153a/0x1a60 drivers/media/usb/dvb-usb/cxusb.c:196
+ cxusb_gpio_tuner drivers/media/usb/dvb-usb/cxusb.c:124 [inline]
+ cxusb_i2c_xfer+0x153a/0x1a60 drivers/media/usb/dvb-usb/cxusb.c:196
+ __i2c_transfer+0xe25/0x3150 drivers/i2c/i2c-core-base.c:-1
+ i2c_transfer+0x317/0x4a0 drivers/i2c/i2c-core-base.c:2315
+ i2c_transfer_buffer_flags+0x125/0x1e0 drivers/i2c/i2c-core-base.c:2343
+ i2c_master_send include/linux/i2c.h:109 [inline]
+ i2cdev_write+0x210/0x280 drivers/i2c/i2c-dev.c:183
+ do_loop_readv_writev fs/read_write.c:848 [inline]
+ vfs_writev+0x963/0x14e0 fs/read_write.c:1057
+ do_writev+0x247/0x5c0 fs/read_write.c:1101
+ __do_sys_writev fs/read_write.c:1169 [inline]
+ __se_sys_writev fs/read_write.c:1166 [inline]
+ __x64_sys_writev+0x98/0xe0 fs/read_write.c:1166
+ x64_sys_call+0x2229/0x3c80 arch/x86/include/generated/asm/syscalls_64.h:21
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x1e0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Skip non-canonical GVAs when processing the list of address to avoid
-tripping the INVVPID failure.  Alternatively, KVM could filter out "bad"
-GVAs before inserting into the FIFO, but practically speaking the only
-downside of pushing validation to the final processing is that doing so
-is suboptimal for the guest, and no well-behaved guest will request TLB
-flushes for non-canonical addresses.
-
-Fixes: 260970862c88 ("KVM: x86: hyper-v: Handle HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST{,EX} calls gently")
+Reported-by: syzbot+526bd95c0ec629993bf3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=526bd95c0ec629993bf3
+Tested-by: syzbot+526bd95c0ec629993bf3@syzkaller.appspotmail.com
+Fixes: 22c6d93a7310 ("[PATCH] dvb: usb: support Medion hybrid USB2.0 DVB-T/analogue box")
 Cc: stable@vger.kernel.org
-Signed-off-by: Manuel Andreas <manuel.andreas@tum.de>
-Suggested-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/c090efb3-ef82-499f-a5e0-360fc8420fb7@tum.de
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/hyperv.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/usb/dvb-usb/cxusb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -1979,6 +1979,9 @@ int kvm_hv_vcpu_flush_tlb(struct kvm_vcp
- 		if (entries[i] == KVM_HV_TLB_FLUSHALL_ENTRY)
- 			goto out_flush_all;
+diff --git a/drivers/media/usb/dvb-usb/cxusb.c b/drivers/media/usb/dvb-usb/cxusb.c
+index 5a15a6ec204f3..6beed13702d34 100644
+--- a/drivers/media/usb/dvb-usb/cxusb.c
++++ b/drivers/media/usb/dvb-usb/cxusb.c
+@@ -119,9 +119,8 @@ static void cxusb_gpio_tuner(struct dvb_usb_device *d, int onoff)
  
-+		if (is_noncanonical_invlpg_address(entries[i], vcpu))
-+			continue;
-+
- 		/*
- 		 * Lower 12 bits of 'address' encode the number of additional
- 		 * pages to flush.
+ 	o[0] = GPIO_TUNER;
+ 	o[1] = onoff;
+-	cxusb_ctrl_msg(d, CMD_GPIO_WRITE, o, 2, &i, 1);
+ 
+-	if (i != 0x01)
++	if (!cxusb_ctrl_msg(d, CMD_GPIO_WRITE, o, 2, &i, 1) && i != 0x01)
+ 		dev_info(&d->udev->dev, "gpio_write failed.\n");
+ 
+ 	st->gpio_write_state[GPIO_TUNER] = onoff;
+-- 
+2.39.5
+
 
 
 
