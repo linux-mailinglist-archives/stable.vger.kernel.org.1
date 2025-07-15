@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B716B06057
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:15:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1202AB05FA6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D346F504200
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6B0917AC9C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768502F0032;
-	Tue, 15 Jul 2025 13:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21BBD2E49AE;
+	Tue, 15 Jul 2025 13:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTRJc4h0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTNte0ps"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349532F0028;
-	Tue, 15 Jul 2025 13:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34642E266C;
+	Tue, 15 Jul 2025 13:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587860; cv=none; b=SAyVD7NEIFSWYpdTQlpkwh/JHC4TGA/yEjSHWNpg+Nc5V66bK0ajIiAYdAxGU02/Cqp/f4rsXLIGya3Lmvw1Tg4QZl2pA9s4HwiJSzyklYYTFoCVzCWKNNY0ebqqvn8qTA9bRaqRyT9qMgfrVu9a1ydbsNIJoo7v9AH6vaVY6HM=
+	t=1752587323; cv=none; b=mtJZ4NbS7gnefIifly6gzdDwz5ql09BCPvc/ceUQyoZmYr8/W7GDolnMB0QNcHUagq7vkOIre1sC2nn4VRUlv0MbwoACPhy3pXJ5QMigQMxrKAkiT20ph5fmVgVhpzGx3X/+XOzGsKYfwLRb83Sh1PzJ+wzHkdGvQKiiz84SIY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587860; c=relaxed/simple;
-	bh=TdHPsmQeBp3tZF5JEJSSLBJwTFKfjvo52PSRzG2C4vU=;
+	s=arc-20240116; t=1752587323; c=relaxed/simple;
+	bh=4hp19hlSRpfEXiPysapcxBEziC+y6fCf0HjP4SB6+eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bku+zg8gItbrkFwvuM2ESDdJCYdcpLByCN9N6Ochd6tkxzkVk087ePJu+QMnVWpf7ip3gvfWUseSEnSa0i6WIS3LPwr1NRflj4hQQAaCUIq37Q5dVEw1NlYGSXV5OZ139mfgYxDSPN0bssB0mkNQZmTMf0fxgSevjmcRTLpp2cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTRJc4h0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5967DC4CEFF;
-	Tue, 15 Jul 2025 13:57:39 +0000 (UTC)
+	 MIME-Version; b=Hl2EX4uk9J8Gl7/LySvaOVBkpcgKFw9/H9mNysXoSam0N26QXmaA3/RfYPC01vz/OnEdmEyg/AYB5RwBVnWzEGNiQMYw6deTsGj6gsGf8A59MqRbPFTblFl6537IgwVNYSaLkSLKg1WhQLK6b7BhW8y/8vpQHdNSUq4QuwOWPDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTNte0ps; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606B6C4CEE3;
+	Tue, 15 Jul 2025 13:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587859;
-	bh=TdHPsmQeBp3tZF5JEJSSLBJwTFKfjvo52PSRzG2C4vU=;
+	s=korg; t=1752587323;
+	bh=4hp19hlSRpfEXiPysapcxBEziC+y6fCf0HjP4SB6+eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lTRJc4h0wWmXHA/5xeFkHy0qrNI+VbCZdvAIRmepD+6pLknIN6sHkHZJuD/EscR6E
-	 d3ubQJCeVMzSrQve6HKqrvhWoK54MysP1aFq/BpjFNCUipwqiHYGrUh7d4ZKxRNSB7
-	 1y0MTbRxDZrfHsBLlW5I/vRZ4Og+c1AQkiA2s3Vw=
+	b=pTNte0pstJI6m5zerr085iN58velGnR2IkjKCca2RvS16mmreeDHsQYWpiTLs5z+f
+	 tYOtMDDadwCXQruXsbkPK/cKoh3hznOVUSeyC2GSQEaNmNS2T33Xul+95yPkTsBpMt
+	 xi9XlkHhdGDoZTiNjR7ZQ32/35/VgsvakOWkOBE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.10 163/208] x86/its: Add support for ITS-safe return thunk
-Date: Tue, 15 Jul 2025 15:14:32 +0200
-Message-ID: <20250715130817.507930689@linuxfoundation.org>
+	Nigel Croxon <ncroxon@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 57/88] raid10: cleanup memleak at raid10_make_request
+Date: Tue, 15 Jul 2025 15:14:33 +0200
+Message-ID: <20250715130756.852071505@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Nigel Croxon <ncroxon@redhat.com>
 
-commit a75bf27fe41abe658c53276a0c486c4bf9adecfc upstream.
+[ Upstream commit 43806c3d5b9bb7d74ba4e33a6a8a41ac988bde24 ]
 
-RETs in the lower half of cacheline may be affected by ITS bug,
-specifically when the RSB-underflows. Use ITS-safe return thunk for such
-RETs.
+If raid10_read_request or raid10_write_request registers a new
+request and the REQ_NOWAIT flag is set, the code does not
+free the malloc from the mempool.
 
-RETs that are not patched:
+unreferenced object 0xffff8884802c3200 (size 192):
+   comm "fio", pid 9197, jiffies 4298078271
+   hex dump (first 32 bytes):
+     00 00 00 00 00 00 00 00 88 41 02 00 00 00 00 00  .........A......
+     08 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+   backtrace (crc c1a049a2):
+     __kmalloc+0x2bb/0x450
+     mempool_alloc+0x11b/0x320
+     raid10_make_request+0x19e/0x650 [raid10]
+     md_handle_request+0x3b3/0x9e0
+     __submit_bio+0x394/0x560
+     __submit_bio_noacct+0x145/0x530
+     submit_bio_noacct_nocheck+0x682/0x830
+     __blkdev_direct_IO_async+0x4dc/0x6b0
+     blkdev_read_iter+0x1e5/0x3b0
+     __io_read+0x230/0x1110
+     io_read+0x13/0x30
+     io_issue_sqe+0x134/0x1180
+     io_submit_sqes+0x48c/0xe90
+     __do_sys_io_uring_enter+0x574/0x8b0
+     do_syscall_64+0x5c/0xe0
+     entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-- RET in retpoline sequence does not need to be patched, because the
-  sequence itself fills an RSB before RET.
-- RETs in .init section are not reachable after init.
-- RETs that are explicitly marked safe with ANNOTATE_UNRET_SAFE.
+V4: changing backing tree to see if CKI tests will pass.
+The patch code has not changed between any versions.
 
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c9aa889b035f ("md: raid10 add nowait support")
+Signed-off-by: Nigel Croxon <ncroxon@redhat.com>
+Link: https://lore.kernel.org/linux-raid/c0787379-9caa-42f3-b5fc-369aed784400@redhat.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/alternative.h   |   14 ++++++++++++++
- arch/x86/include/asm/nospec-branch.h |    6 ++++++
- arch/x86/kernel/alternative.c        |   17 ++++++++++++++++-
- arch/x86/kernel/ftrace.c             |    2 +-
- arch/x86/kernel/static_call.c        |    2 +-
- arch/x86/kernel/vmlinux.lds.S        |    2 ++
- arch/x86/lib/retpoline.S             |   13 ++++++++++++-
- arch/x86/net/bpf_jit_comp.c          |    2 +-
- 8 files changed, 53 insertions(+), 5 deletions(-)
+ drivers/md/raid10.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -80,6 +80,20 @@ extern void apply_returns(s32 *start, s3
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 24427eddf61bc..2ae68b7b79598 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1210,8 +1210,11 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+ 		rcu_read_unlock();
+ 	}
  
- struct module;
- 
-+#ifdef CONFIG_RETHUNK
-+extern bool cpu_wants_rethunk(void);
-+extern bool cpu_wants_rethunk_at(void *addr);
-+#else
-+static __always_inline bool cpu_wants_rethunk(void)
-+{
-+	return false;
-+}
-+static __always_inline bool cpu_wants_rethunk_at(void *addr)
-+{
-+	return false;
-+}
-+#endif
+-	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors))
++	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
++		raid_end_bio_io(r10_bio);
+ 		return;
++	}
 +
- #ifdef CONFIG_SMP
- extern void alternatives_smp_module_add(struct module *mod, char *name,
- 					void *locks, void *locks_end,
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -226,6 +226,12 @@ extern void __x86_return_thunk(void);
- static inline void __x86_return_thunk(void) {}
- #endif
+ 	rdev = read_balance(conf, r10_bio, &max_sectors);
+ 	if (!rdev) {
+ 		if (err_rdev) {
+@@ -1432,8 +1435,11 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 	}
  
-+#ifdef CONFIG_MITIGATION_ITS
-+extern void its_return_thunk(void);
-+#else
-+static inline void its_return_thunk(void) {}
-+#endif
+ 	sectors = r10_bio->sectors;
+-	if (!regular_request_wait(mddev, conf, bio, sectors))
++	if (!regular_request_wait(mddev, conf, bio, sectors)) {
++		raid_end_bio_io(r10_bio);
+ 		return;
++	}
 +
- extern void retbleed_return_thunk(void);
- extern void srso_return_thunk(void);
- extern void srso_alias_return_thunk(void);
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -760,6 +760,21 @@ void __init_or_module noinline apply_ret
- 
- #ifdef CONFIG_RETHUNK
- 
-+bool cpu_wants_rethunk(void)
-+{
-+	return cpu_feature_enabled(X86_FEATURE_RETHUNK);
-+}
-+
-+bool cpu_wants_rethunk_at(void *addr)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_RETHUNK))
-+		return false;
-+	if (x86_return_thunk != its_return_thunk)
-+		return true;
-+
-+	return !((unsigned long)addr & 0x20);
-+}
-+
- /*
-  * Rewrite the compiler generated return thunk tail-calls.
-  *
-@@ -776,7 +791,7 @@ static int patch_return(void *addr, stru
- 	int i = 0;
- 
- 	/* Patch the custom return thunks... */
--	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
-+	if (cpu_wants_rethunk_at(addr)) {
- 		i = JMP32_INSN_SIZE;
- 		__text_gen_insn(bytes, JMP32_INSN_OPCODE, addr, x86_return_thunk, i);
- 	} else {
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -367,7 +367,7 @@ create_trampoline(struct ftrace_ops *ops
- 		goto fail;
- 
- 	ip = trampoline + size;
--	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
-+	if (cpu_wants_rethunk_at(ip))
- 		__text_gen_insn(ip, JMP32_INSN_OPCODE, ip, x86_return_thunk, JMP32_INSN_SIZE);
- 	else
- 		memcpy(ip, retq, sizeof(retq));
---- a/arch/x86/kernel/static_call.c
-+++ b/arch/x86/kernel/static_call.c
-@@ -41,7 +41,7 @@ static void __ref __static_call_transfor
- 		break;
- 
- 	case RET:
--		if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
-+		if (cpu_wants_rethunk_at(insn))
- 			code = text_gen_insn(JMP32_INSN_OPCODE, insn, x86_return_thunk);
- 		else
- 			code = &retinsn;
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -542,6 +542,8 @@ INIT_PER_CPU(irq_stack_backing_store);
- . = ASSERT(__x86_indirect_its_thunk_rax & 0x20, "__x86_indirect_thunk_rax not in second half of cacheline");
- . = ASSERT(((__x86_indirect_its_thunk_rcx - __x86_indirect_its_thunk_rax) % 64) == 0, "Indirect thunks are not cacheline apart");
- . = ASSERT(__x86_indirect_its_thunk_array == __x86_indirect_its_thunk_rax, "Gap in ITS thunk array");
-+
-+. = ASSERT(its_return_thunk & 0x20, "its_return_thunk not in second half of cacheline");
- #endif
- 
- #endif /* CONFIG_X86_32 */
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -281,7 +281,18 @@ SYM_CODE_START(__x86_indirect_its_thunk_
- 	.align 64, 0xcc
- SYM_CODE_END(__x86_indirect_its_thunk_array)
- 
--#endif
-+.align 64, 0xcc
-+.skip 32, 0xcc
-+SYM_CODE_START(its_return_thunk)
-+	UNWIND_HINT_FUNC
-+	ANNOTATE_NOENDBR
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
-+SYM_CODE_END(its_return_thunk)
-+EXPORT_SYMBOL(its_return_thunk)
-+
-+#endif /* CONFIG_MITIGATION_ITS */
- 
- SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -408,7 +408,7 @@ static void emit_return(u8 **pprog, u8 *
- 	u8 *prog = *pprog;
- 	int cnt = 0;
- 
--	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
-+	if (cpu_wants_rethunk()) {
- 		emit_jump(&prog, x86_return_thunk, ip);
- 	} else {
- 		EMIT1(0xC3);		/* ret */
+ 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery) &&
+ 	    (mddev->reshape_backwards
+ 	     ? (bio->bi_iter.bi_sector < conf->reshape_safe &&
+-- 
+2.39.5
+
 
 
 
