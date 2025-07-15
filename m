@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-162307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D95B05D0E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:40:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66721B05DA5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 367731C26987
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D590B581FED
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203582E88AF;
-	Tue, 15 Jul 2025 13:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C4C2E3363;
+	Tue, 15 Jul 2025 13:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xh8LMx6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vHU1jfb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D259D2E8DE0;
-	Tue, 15 Jul 2025 13:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629742E62C9;
+	Tue, 15 Jul 2025 13:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586210; cv=none; b=NKVtAKxTu7Txf+hKJl9bi+6K1gSqOMc+71dl7S5Tt8l50wLq3q6TujiaqZ+DX3ScrzOUmQI9nrWC1MdC9++bEfi2i+MCU7CyvbH85fOW5nevyzMpJNrIjyF/AAHc07i6XSGFwvlup/FZDqrEUDCHPNYbgSh3jCDNcPwq0wrmDRI=
+	t=1752586568; cv=none; b=KXYB9GbFFCO8hezfTv++d0enHMc4yszPK9UWnQLd4huzkwSUxfLFYlOedBPBwoykxYsVVoUrE5QmucjwQpSnD8E63e7u5Cbci5+tBAibuEMl9Er+izwlyyStsm8rhRhqyHEeXA2w0DmYuRsJpjjXLvsx2VvdIKFBQaaks4Ykzag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586210; c=relaxed/simple;
-	bh=gSsJ3aBGF+ytd/OnoDDE1CesBwWVESRDJo6rbNqLii4=;
+	s=arc-20240116; t=1752586568; c=relaxed/simple;
+	bh=ilf7NJw6FRBI4IltBnBmHy+AUgP5pkUUtN6J14ZsVgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSvXsWrcHpPelmZp9x2JBD0owuIA3A7xp8hn6YZMqPMIWbtiGtBdAT77wh6+YTtosZRXNz2nv0PcNvFcZKcUSWQZhCSm/7JDAgdll+AFh38YCesshr8UCa9/XzJ9ZetaonuaOlwx/eYdUbk67tYjpoWZPyv+e+vFzf2i06Ee6rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xh8LMx6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FEAC4CEF1;
-	Tue, 15 Jul 2025 13:30:10 +0000 (UTC)
+	 MIME-Version; b=sb+IgdU3fOqzFE6Sgx6hEVIcJYjDacG0ojdaKu15xeBiiN7WvYLkLWCRlx5k0BCYezBjCnXRElWt9N25pYVMExlEk7XS0gptG7QaTr08lo2J3lpa0c50XE6Bscc0Pb2s7xrWFSCRU6+89VPXLjJqxYPPmDKBn0ylvTzE5jJHEuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vHU1jfb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3587C4CEE3;
+	Tue, 15 Jul 2025 13:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586210;
-	bh=gSsJ3aBGF+ytd/OnoDDE1CesBwWVESRDJo6rbNqLii4=;
+	s=korg; t=1752586568;
+	bh=ilf7NJw6FRBI4IltBnBmHy+AUgP5pkUUtN6J14ZsVgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xh8LMx6pklayzBCNHLQmMJobLC7IPbbc7rzdzuz5m4hLfjdi2hViEjhsPflILwF5M
-	 AgqLzFyIdqNA8JbSgP04XL4kUHgt67Mt7fD2OMU9YPL9CwOYDyZE78HxkS02QydSO/
-	 YIcBKNxH614TU3z8NOzaUnUkn0l8WPFfv4LV67tE=
+	b=0vHU1jfbayEJTsWYPTMmLuoqvSu2T7niY+DPSbBQq+vtCiu+FF+mI/4g7vB3XgHPY
+	 zkl2nox2GlIaTAxC+wZQaDOOIlAQScWnxA6iVaQvdlC+sHadxWWo7eqMXuqTvyGvAH
+	 w+Hrw68MXA3XDcl9QFdgYZYJiOTTBDxE0UfeRyro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+48240bab47e705c53126@syzkaller.appspotmail.com,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com,
+	syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com,
+	syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com,
+	syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com,
+	syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 57/77] nbd: fix uaf in nbd_genl_connect() error path
-Date: Tue, 15 Jul 2025 15:13:56 +0200
-Message-ID: <20250715130754.017311647@linuxfoundation.org>
+Subject: [PATCH 5.4 115/148] net/sched: Abort __tc_modify_qdisc if parent class does not exist
+Date: Tue, 15 Jul 2025 15:13:57 +0200
+Message-ID: <20250715130804.911326537@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +69,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit aa9552438ebf015fc5f9f890dbfe39f0c53cf37e ]
+[ Upstream commit ffdde7bf5a439aaa1955ebd581f5c64ab1533963 ]
 
-There is a use-after-free issue in nbd:
+Lion's patch [1] revealed an ancient bug in the qdisc API.
+Whenever a user creates/modifies a qdisc specifying as a parent another
+qdisc, the qdisc API will, during grafting, detect that the user is
+not trying to attach to a class and reject. However grafting is
+performed after qdisc_create (and thus the qdiscs' init callback) is
+executed. In qdiscs that eventually call qdisc_tree_reduce_backlog
+during init or change (such as fq, hhf, choke, etc), an issue
+arises. For example, executing the following commands:
 
-block nbd6: Receive control failed (result -104)
-block nbd6: shutting down sockets
-==================================================================
-BUG: KASAN: slab-use-after-free in recv_work+0x694/0xa80 drivers/block/nbd.c:1022
-Write of size 4 at addr ffff8880295de478 by task kworker/u33:0/67
+sudo tc qdisc add dev lo root handle a: htb default 2
+sudo tc qdisc add dev lo parent a: handle beef fq
 
-CPU: 2 UID: 0 PID: 67 Comm: kworker/u33:0 Not tainted 6.15.0-rc5-syzkaller-00123-g2c89c1b655c0 #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: nbd6-recv recv_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- check_region_inline mm/kasan/generic.c:183 [inline]
- kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
- instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
- atomic_dec include/linux/atomic/atomic-instrumented.h:592 [inline]
- recv_work+0x694/0xa80 drivers/block/nbd.c:1022
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:464
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+Qdiscs such as fq, hhf, choke, etc unconditionally invoke
+qdisc_tree_reduce_backlog() in their control path init() or change() which
+then causes a failure to find the child class; however, that does not stop
+the unconditional invocation of the assumed child qdisc's qlen_notify with
+a null class. All these qdiscs make the assumption that class is non-null.
 
-nbd_genl_connect() does not properly stop the device on certain
-error paths after nbd_start_device() has been called. This causes
-the error path to put nbd->config while recv_work continue to use
-the config after putting it, leading to use-after-free in recv_work.
+The solution is ensure that qdisc_leaf() which looks up the parent
+class, and is invoked prior to qdisc_create(), should return failure on
+not finding the class.
+In this patch, we leverage qdisc_leaf to return ERR_PTRs whenever the
+parentid doesn't correspond to a class, so that we can detect it
+earlier on and abort before qdisc_create is called.
 
-This patch moves nbd_start_device() after the backend file creation.
+[1] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
 
-Reported-by: syzbot+48240bab47e705c53126@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68227a04.050a0220.f2294.00b5.GAE@google.com/T/
-Fixes: 6497ef8df568 ("nbd: provide a way for userspace processes to identify device backends")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250612132405.364904-1-zhengqixing@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 5e50da01d0ce ("[NET_SCHED]: Fix endless loops (part 2): "simple" qdiscs")
+Reported-by: syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68663c93.a70a0220.5d25f.0857.GAE@google.com/
+Reported-by: syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68663c94.a70a0220.5d25f.0858.GAE@google.com/
+Reported-by: syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0013.GAE@google.com/
+Reported-by: syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0014.GAE@google.com/
+Reported-by: syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68679e81.a70a0220.29cf51.0016.GAE@google.com/
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250707210801.372995-1-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sched/sch_api.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 1b04fd7c6b98a..eca713f87614f 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -2011,9 +2011,7 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
- 				goto out;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index fe3808cc6eb82..7c91f29f69c1d 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -328,17 +328,22 @@ struct Qdisc *qdisc_lookup_rcu(struct net_device *dev, u32 handle)
+ 	return q;
+ }
+ 
+-static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid)
++static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid,
++				struct netlink_ext_ack *extack)
+ {
+ 	unsigned long cl;
+ 	const struct Qdisc_class_ops *cops = p->ops->cl_ops;
+ 
+-	if (cops == NULL)
+-		return NULL;
++	if (cops == NULL) {
++		NL_SET_ERR_MSG(extack, "Parent qdisc is not classful");
++		return ERR_PTR(-EOPNOTSUPP);
++	}
+ 	cl = cops->find(p, classid);
+ 
+-	if (cl == 0)
+-		return NULL;
++	if (cl == 0) {
++		NL_SET_ERR_MSG(extack, "Specified class not found");
++		return ERR_PTR(-ENOENT);
++	}
+ 	return cops->leaf(p, cl);
+ }
+ 
+@@ -1452,7 +1457,7 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Failed to find qdisc with specified classid");
+ 					return -ENOENT;
+ 				}
+-				q = qdisc_leaf(p, clid);
++				q = qdisc_leaf(p, clid, extack);
+ 			} else if (dev_ingress_queue(dev)) {
+ 				q = dev_ingress_queue(dev)->qdisc_sleeping;
+ 			}
+@@ -1463,6 +1468,8 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 			NL_SET_ERR_MSG(extack, "Cannot find specified qdisc on specified device");
+ 			return -ENOENT;
  		}
- 	}
--	ret = nbd_start_device(nbd);
--	if (ret)
--		goto out;
-+
- 	if (info->attrs[NBD_ATTR_BACKEND_IDENTIFIER]) {
- 		nbd->backend = nla_strdup(info->attrs[NBD_ATTR_BACKEND_IDENTIFIER],
- 					  GFP_KERNEL);
-@@ -2029,6 +2027,8 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
- 		goto out;
- 	}
- 	set_bit(NBD_RT_HAS_BACKEND_FILE, &config->runtime_flags);
-+
-+	ret = nbd_start_device(nbd);
- out:
- 	mutex_unlock(&nbd->config_lock);
- 	if (!ret) {
++		if (IS_ERR(q))
++			return PTR_ERR(q);
+ 
+ 		if (tcm->tcm_handle && q->handle != tcm->tcm_handle) {
+ 			NL_SET_ERR_MSG(extack, "Invalid handle");
+@@ -1559,7 +1566,9 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Failed to find specified qdisc");
+ 					return -ENOENT;
+ 				}
+-				q = qdisc_leaf(p, clid);
++				q = qdisc_leaf(p, clid, extack);
++				if (IS_ERR(q))
++					return PTR_ERR(q);
+ 			} else if (dev_ingress_queue_create(dev)) {
+ 				q = dev_ingress_queue(dev)->qdisc_sleeping;
+ 			}
 -- 
 2.39.5
 
