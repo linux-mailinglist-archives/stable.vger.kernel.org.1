@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-162064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3DABB05B7C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B91B05C0B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:27:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F5353BB0A1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 361413B76DC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A93A24679C;
-	Tue, 15 Jul 2025 13:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B102E2F18;
+	Tue, 15 Jul 2025 13:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFqMUUOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTd8pTxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090A119D09C;
-	Tue, 15 Jul 2025 13:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38B12E2EFF;
+	Tue, 15 Jul 2025 13:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585578; cv=none; b=kfZh1rYYvR3mH+pAGc4Dv03Xj7djvkWHwiMIgIw47uqFEkgC/ZRqq6sqtgMN+M5vrN+zn7Fzp0fn9M2/YDssTQ9uC4PDp/zhGP4K0z0FSmVDMlmmx3Pmfv66mmCA5KMCK9Ugg8aZvLUn+tyv5bIGkpBlFP9NnHkH+jQWm1TaA1Q=
+	t=1752585838; cv=none; b=aO5wx+FbNJaBLkhSL5UqbaQGP6z6tRYXHhnqJDxu0UMe8elaoPjvZQrJqoSbFcnB/NLsCxr4ILNS9Dy1wwg3aVlSBIBGP5DUhAT+GDTVSPd0MH310gejvjeCv9cG1yM+OeX2TLJRxoHe3CDk9ktB0bO5KChX2FVE8u2K+jA91eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585578; c=relaxed/simple;
-	bh=43RqOH0vDyP4We00MaWJduNehIjGYYlIcpxYMQwmDgo=;
+	s=arc-20240116; t=1752585838; c=relaxed/simple;
+	bh=Xwe4hpn68hHjAnqHARbKcDI4OpMrl4tVqEUyxYLo1nU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SQ9MQVqYmigVxOTTH9vpYJJVhdm3jqoGHCTflDnzwQxcwvT4eUmo7RJCTO/xrIkDyEVWqrUKdcC4Pejg6F2/U2lu2iQTlysdnFidmFoPfVNvzEsB1LhMh5Yn6XLkOuZK7jP2Ymhx3JRg0ki199rgBzkU9EPrV0NefTkdkkee/IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFqMUUOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8F5C4CEE3;
-	Tue, 15 Jul 2025 13:19:37 +0000 (UTC)
+	 MIME-Version; b=hOjishYTX1/x3md3ojTS97VQSiwwiRGyRseyb2WBjAxz65fPfrn1kmYxogw3DSQNkdEgG/2eL/7tdVG1kFXQe59YUAfBwiHrHTG3xjApQpWgI54RSOQrDVFmZd/RshMmMhYfXPFRRlsYST8NxnhAL8PFaBn/WljTlGmIOD1bQe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTd8pTxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C271C4CEF6;
+	Tue, 15 Jul 2025 13:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585577;
-	bh=43RqOH0vDyP4We00MaWJduNehIjGYYlIcpxYMQwmDgo=;
+	s=korg; t=1752585837;
+	bh=Xwe4hpn68hHjAnqHARbKcDI4OpMrl4tVqEUyxYLo1nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WFqMUUODL24Mmv8dH64OpGefe3WlTHtzcU/Xnm5afNQY3evXML2MTrH5hgAsE90uA
-	 TZ4UWsGK4l3jR6qsOd1K4IFZQVqjVHfVMF1RrEKhZqhTJ54TllquiQ26+q1OjHd66d
-	 r4eBdBMIkSSXJ11ExKYLn54kv9phnimMBT91ueWM=
+	b=GTd8pTxN3I37267k2+Ul7gCR3NKT2KERTPtmpYXy+CmqE6xsHkKieu/+Ve8MJO/In
+	 /sAK9viqDyOw8ZHJJmBtJWvGuByH22S6yQD0l/AZb3HZiy5SOQIsF8ZYnDj6XhVSsP
+	 9zEFFccQqc3mN7hd//IIGNEMFm8UE55i2esuvZK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Yoo <harry.yoo@oracle.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Raghavendra K T <raghavendra.kt@amd.com>,
-	Casey Chen <cachen@purestorage.com>,
-	David Wang <00107082@163.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Yuanyuan Zhong <yzhong@purestorage.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 093/163] lib/alloc_tag: do not acquire non-existent lock in alloc_tag_top_users()
-Date: Tue, 15 Jul 2025 15:12:41 +0200
-Message-ID: <20250715130812.602175056@linuxfoundation.org>
+	syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com,
+	syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com,
+	syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com,
+	syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com,
+	syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 026/109] net/sched: Abort __tc_modify_qdisc if parent class does not exist
+Date: Tue, 15 Jul 2025 15:12:42 +0200
+Message-ID: <20250715130759.928982510@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,105 +69,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Yoo <harry.yoo@oracle.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-commit 99af22cd34688cc0d535a1919e0bea4cbc6c1ea1 upstream.
+[ Upstream commit ffdde7bf5a439aaa1955ebd581f5c64ab1533963 ]
 
-alloc_tag_top_users() attempts to lock alloc_tag_cttype->mod_lock even
-when the alloc_tag_cttype is not allocated because:
+Lion's patch [1] revealed an ancient bug in the qdisc API.
+Whenever a user creates/modifies a qdisc specifying as a parent another
+qdisc, the qdisc API will, during grafting, detect that the user is
+not trying to attach to a class and reject. However grafting is
+performed after qdisc_create (and thus the qdiscs' init callback) is
+executed. In qdiscs that eventually call qdisc_tree_reduce_backlog
+during init or change (such as fq, hhf, choke, etc), an issue
+arises. For example, executing the following commands:
 
-  1) alloc tagging is disabled because mem profiling is disabled
-     (!alloc_tag_cttype)
-  2) alloc tagging is enabled, but not yet initialized (!alloc_tag_cttype)
-  3) alloc tagging is enabled, but failed initialization
-     (!alloc_tag_cttype or IS_ERR(alloc_tag_cttype))
+sudo tc qdisc add dev lo root handle a: htb default 2
+sudo tc qdisc add dev lo parent a: handle beef fq
 
-In all cases, alloc_tag_cttype is not allocated, and therefore
-alloc_tag_top_users() should not attempt to acquire the semaphore.
+Qdiscs such as fq, hhf, choke, etc unconditionally invoke
+qdisc_tree_reduce_backlog() in their control path init() or change() which
+then causes a failure to find the child class; however, that does not stop
+the unconditional invocation of the assumed child qdisc's qlen_notify with
+a null class. All these qdiscs make the assumption that class is non-null.
 
-This leads to a crash on memory allocation failure by attempting to
-acquire a non-existent semaphore:
+The solution is ensure that qdisc_leaf() which looks up the parent
+class, and is invoked prior to qdisc_create(), should return failure on
+not finding the class.
+In this patch, we leverage qdisc_leaf to return ERR_PTRs whenever the
+parentid doesn't correspond to a class, so that we can detect it
+earlier on and abort before qdisc_create is called.
 
-  Oops: general protection fault, probably for non-canonical address 0xdffffc000000001b: 0000 [#3] SMP KASAN NOPTI
-  KASAN: null-ptr-deref in range [0x00000000000000d8-0x00000000000000df]
-  CPU: 2 UID: 0 PID: 1 Comm: systemd Tainted: G      D             6.16.0-rc2 #1 VOLUNTARY
-  Tainted: [D]=DIE
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-  RIP: 0010:down_read_trylock+0xaa/0x3b0
-  Code: d0 7c 08 84 d2 0f 85 a0 02 00 00 8b 0d df 31 dd 04 85 c9 75 29 48 b8 00 00 00 00 00 fc ff df 48 8d 6b 68 48 89 ea 48 c1 ea 03 <80> 3c 02 00 0f 85 88 02 00 00 48 3b 5b 68 0f 85 53 01 00 00 65 ff
-  RSP: 0000:ffff8881002ce9b8 EFLAGS: 00010016
-  RAX: dffffc0000000000 RBX: 0000000000000070 RCX: 0000000000000000
-  RDX: 000000000000001b RSI: 000000000000000a RDI: 0000000000000070
-  RBP: 00000000000000d8 R08: 0000000000000001 R09: ffffed107dde49d1
-  R10: ffff8883eef24e8b R11: ffff8881002cec20 R12: 1ffff11020059d37
-  R13: 00000000003fff7b R14: ffff8881002cec20 R15: dffffc0000000000
-  FS:  00007f963f21d940(0000) GS:ffff888458ca6000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f963f5edf71 CR3: 000000010672c000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   codetag_trylock_module_list+0xd/0x20
-   alloc_tag_top_users+0x369/0x4b0
-   __show_mem+0x1cd/0x6e0
-   warn_alloc+0x2b1/0x390
-   __alloc_frozen_pages_noprof+0x12b9/0x21a0
-   alloc_pages_mpol+0x135/0x3e0
-   alloc_slab_page+0x82/0xe0
-   new_slab+0x212/0x240
-   ___slab_alloc+0x82a/0xe00
-   </TASK>
+[1] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
 
-As David Wang points out, this issue became easier to trigger after commit
-780138b12381 ("alloc_tag: check mem_profiling_support in alloc_tag_init").
-
-Before the commit, the issue occurred only when it failed to allocate and
-initialize alloc_tag_cttype or if a memory allocation fails before
-alloc_tag_init() is called.  After the commit, it can be easily triggered
-when memory profiling is compiled but disabled at boot.
-
-To properly determine whether alloc_tag_init() has been called and its
-data structures initialized, verify that alloc_tag_cttype is a valid
-pointer before acquiring the semaphore.  If the variable is NULL or an
-error value, it has not been properly initialized.  In such a case, just
-skip and do not attempt to acquire the semaphore.
-
-[harry.yoo@oracle.com: v3]
-  Link: https://lkml.kernel.org/r/20250624072513.84219-1-harry.yoo@oracle.com
-Link: https://lkml.kernel.org/r/20250620195305.1115151-1-harry.yoo@oracle.com
-Fixes: 780138b12381 ("alloc_tag: check mem_profiling_support in alloc_tag_init")
-Fixes: 1438d349d16b ("lib: add memory allocations report in show_mem()")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202506181351.bba867dd-lkp@intel.com
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Tested-by: Raghavendra K T <raghavendra.kt@amd.com>
-Cc: Casey Chen <cachen@purestorage.com>
-Cc: David Wang <00107082@163.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Yuanyuan Zhong <yzhong@purestorage.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5e50da01d0ce ("[NET_SCHED]: Fix endless loops (part 2): "simple" qdiscs")
+Reported-by: syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68663c93.a70a0220.5d25f.0857.GAE@google.com/
+Reported-by: syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68663c94.a70a0220.5d25f.0858.GAE@google.com/
+Reported-by: syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0013.GAE@google.com/
+Reported-by: syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0014.GAE@google.com/
+Reported-by: syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68679e81.a70a0220.29cf51.0016.GAE@google.com/
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250707210801.372995-1-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/alloc_tag.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/sch_api.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/lib/alloc_tag.c
-+++ b/lib/alloc_tag.c
-@@ -113,6 +113,9 @@ size_t alloc_tag_top_users(struct codeta
- 	struct codetag_bytes n;
- 	unsigned int i, nr = 0;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 282423106f15d..a300e8c1b53aa 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -334,17 +334,22 @@ struct Qdisc *qdisc_lookup_rcu(struct net_device *dev, u32 handle)
+ 	return q;
+ }
  
-+	if (IS_ERR_OR_NULL(alloc_tag_cttype))
-+		return 0;
-+
- 	if (can_sleep)
- 		codetag_lock_module_list(alloc_tag_cttype, true);
- 	else if (!codetag_trylock_module_list(alloc_tag_cttype))
+-static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid)
++static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid,
++				struct netlink_ext_ack *extack)
+ {
+ 	unsigned long cl;
+ 	const struct Qdisc_class_ops *cops = p->ops->cl_ops;
+ 
+-	if (cops == NULL)
+-		return NULL;
++	if (cops == NULL) {
++		NL_SET_ERR_MSG(extack, "Parent qdisc is not classful");
++		return ERR_PTR(-EOPNOTSUPP);
++	}
+ 	cl = cops->find(p, classid);
+ 
+-	if (cl == 0)
+-		return NULL;
++	if (cl == 0) {
++		NL_SET_ERR_MSG(extack, "Specified class not found");
++		return ERR_PTR(-ENOENT);
++	}
+ 	return cops->leaf(p, cl);
+ }
+ 
+@@ -1497,7 +1502,7 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Failed to find qdisc with specified classid");
+ 					return -ENOENT;
+ 				}
+-				q = qdisc_leaf(p, clid);
++				q = qdisc_leaf(p, clid, extack);
+ 			} else if (dev_ingress_queue(dev)) {
+ 				q = rtnl_dereference(dev_ingress_queue(dev)->qdisc_sleeping);
+ 			}
+@@ -1508,6 +1513,8 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 			NL_SET_ERR_MSG(extack, "Cannot find specified qdisc on specified device");
+ 			return -ENOENT;
+ 		}
++		if (IS_ERR(q))
++			return PTR_ERR(q);
+ 
+ 		if (tcm->tcm_handle && q->handle != tcm->tcm_handle) {
+ 			NL_SET_ERR_MSG(extack, "Invalid handle");
+@@ -1601,7 +1608,9 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Failed to find specified qdisc");
+ 					return -ENOENT;
+ 				}
+-				q = qdisc_leaf(p, clid);
++				q = qdisc_leaf(p, clid, extack);
++				if (IS_ERR(q))
++					return PTR_ERR(q);
+ 			} else if (dev_ingress_queue_create(dev)) {
+ 				q = rtnl_dereference(dev_ingress_queue(dev)->qdisc_sleeping);
+ 			}
+-- 
+2.39.5
+
 
 
 
