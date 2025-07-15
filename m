@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-162392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF08B05DB4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:46:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F57B05C2B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E0713B0CDF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1A14566BB3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6562E5430;
-	Tue, 15 Jul 2025 13:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DB22E4991;
+	Tue, 15 Jul 2025 13:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwkz5hcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEAEwkvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CC02E2657;
-	Tue, 15 Jul 2025 13:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACA82E3382;
+	Tue, 15 Jul 2025 13:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586436; cv=none; b=Csxo0/k3kXE+2sHOJSGyQjTMxQ/25MIoLJMeoH3Imwsv5Qi2gJEPp6/8omQiVrTFBGVdaQpZP9w7KhRfBfnouNfhwCkhUyeFbzRhemYoqu4rXAxuSMJrTY326niICHxu6UhOGShhI75TOaKKm/p3i7WxwPR5eWevgfEqb3gYOJ0=
+	t=1752585896; cv=none; b=EKRvLLATM0+33kd2aLkmRBlearUQioiqOntO+zgYq1f59kQXzcUKxUFwM9memy0q4ZzPO5ntzr4l5WJjiL8KXfvW76aGJ2+p70J6O5A4LzdpzfaWkb9uEcLyhsYuCm/uSPUMygzPHp2fRkmX1BEw9qAu84EPDwZJmHXEO1iJuhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586436; c=relaxed/simple;
-	bh=KvEvJ34IzOcdcP19eBCsf01HHgKgx9VbiEW+L3wqgeM=;
+	s=arc-20240116; t=1752585896; c=relaxed/simple;
+	bh=JJduVbsTrD4UwIdCLXwCmMALGCtioinwKQGoVV9+j3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3oeuIXYAtb6MNDIqllHc51Nrxslaq3qdw1VtHilZVDIqmSRW2W2SSrdjLikcXk6OiFqF1g4N4hsnsXgirVladj1sdw41ErGqSKeXpRlnIj0xcQJ6n4G01DsvKpOHeOxfXIz2fMhaTwfy4VChALUx0IdsCc2JoKx5mnLmiXBAS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwkz5hcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E75C4CEF1;
-	Tue, 15 Jul 2025 13:33:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EuoR4vxO8c6DdG8HeSgtzxge89YQffYbrHrJ6ab6qzefZgOdrmpHXPVtiKeWGkkIRPDmCCX85Rb2hrBLaYGdHBpo2ItUUxZ24j1QELiKz835qLx5NSjCkwVanJ5ZZESaN9DZI6vhIqBf2Dv+1IOzgWjS1Y6R803GnjMnwqF2Qk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEAEwkvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BA0C4CEE3;
+	Tue, 15 Jul 2025 13:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586436;
-	bh=KvEvJ34IzOcdcP19eBCsf01HHgKgx9VbiEW+L3wqgeM=;
+	s=korg; t=1752585896;
+	bh=JJduVbsTrD4UwIdCLXwCmMALGCtioinwKQGoVV9+j3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwkz5hcs8NCmKZ/ZzV5R53futEOZdgR7PKJgEfI9Vx0Av/RQG5Mb8PpWD8UmZZV+E
-	 1Ymcjkp7rNBk+Da6CL5Fb6g1CEs3NHHqJ55YUEt0jD6UG6vcB8KxOTgWDeP4kbOMn3
-	 ycq1XB9pJmjY6g6ZQqe2ggVeGyGjTiNLKdgrImb4=
+	b=hEAEwkvYOQAtr1LDcsQW0FA9TI8DpYZhn8SB9IdvXVp26vsimyR7rHqNgjgd2M9mF
+	 qoEMCAkp6zRXIRDui4y6EYQ4NzaGxVpdlwGT8wGxwjbHVmLnK0PVAxlb2WUXiRU2Us
+	 r7HfPKhRwpR3Bf6hwflWZmEbybS7d1GW8sv2wCtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 063/148] nfs: Clean up /proc/net/rpc/nfs when nfs_fs_proc_net_init() fails.
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Mario Limonciello <superm1@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Anusha Srivatsa <asrivats@redhat.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: [PATCH 6.6 049/109] drm/framebuffer: Acquire internal references on GEM handles
 Date: Tue, 15 Jul 2025 15:13:05 +0200
-Message-ID: <20250715130802.852166976@linuxfoundation.org>
+Message-ID: <20250715130800.838187407@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,146 +69,308 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit e8d6f3ab59468e230f3253efe5cb63efa35289f7 ]
+commit f6bfc9afc7510cb5e6fbe0a17c507917b0120280 upstream.
 
-syzbot reported a warning below [1] following a fault injection in
-nfs_fs_proc_net_init(). [0]
+Acquire GEM handles in drm_framebuffer_init() and release them in
+the corresponding drm_framebuffer_cleanup(). Ties the handle's
+lifetime to the framebuffer. Not all GEM buffer objects have GEM
+handles. If not set, no refcounting takes place. This is the case
+for some fbdev emulation. This is not a problem as these GEM objects
+do not use dma-bufs and drivers will not release them while fbdev
+emulation is running. Framebuffer flags keep a bit per color plane
+of which the framebuffer holds a GEM handle reference.
 
-When nfs_fs_proc_net_init() fails, /proc/net/rpc/nfs is not removed.
+As all drivers use drm_framebuffer_init(), they will now all hold
+dma-buf references as fixed in commit 5307dce878d4 ("drm/gem: Acquire
+references on GEM handles for framebuffers").
 
-Later, rpc_proc_exit() tries to remove /proc/net/rpc, and the warning
-is logged as the directory is not empty.
+In the GEM framebuffer helpers, restore the original ref counting
+on buffer objects. As the helpers for handle refcounting are now
+no longer called from outside the DRM core, unexport the symbols.
 
-Let's handle the error of nfs_fs_proc_net_init() properly.
+v3:
+- don't mix internal flags with mode flags (Christian)
+v2:
+- track framebuffer handle refs by flag
+- drop gma500 cleanup (Christian)
 
-[0]:
-FAULT_INJECTION: forcing a failure.
-name failslab, interval 1, probability 0, space 0, times 0
-CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
-  dump_stack_lvl (lib/dump_stack.c:123)
- should_fail_ex (lib/fault-inject.c:73 lib/fault-inject.c:174)
- should_failslab (mm/failslab.c:46)
- kmem_cache_alloc_noprof (mm/slub.c:4178 mm/slub.c:4204)
- __proc_create (fs/proc/generic.c:427)
- proc_create_reg (fs/proc/generic.c:554)
- proc_create_net_data (fs/proc/proc_net.c:120)
- nfs_fs_proc_net_init (fs/nfs/client.c:1409)
- nfs_net_init (fs/nfs/inode.c:2600)
- ops_init (net/core/net_namespace.c:138)
- setup_net (net/core/net_namespace.c:443)
- copy_net_ns (net/core/net_namespace.c:576)
- create_new_namespaces (kernel/nsproxy.c:110)
- unshare_nsproxy_namespaces (kernel/nsproxy.c:218 (discriminator 4))
- ksys_unshare (kernel/fork.c:3123)
- __x64_sys_unshare (kernel/fork.c:3190)
- do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
- </TASK>
-
-[1]:
-remove_proc_entry: removing non-empty directory 'net/rpc', leaking at least 'nfs'
- WARNING: CPU: 1 PID: 6120 at fs/proc/generic.c:727 remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
-Modules linked in:
-CPU: 1 UID: 0 PID: 6120 Comm: syz.2.27 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
- RIP: 0010:remove_proc_entry+0x45e/0x530 fs/proc/generic.c:727
-Code: 3c 02 00 0f 85 85 00 00 00 48 8b 93 d8 00 00 00 4d 89 f0 4c 89 e9 48 c7 c6 40 ba a2 8b 48 c7 c7 60 b9 a2 8b e8 33 81 1d ff 90 <0f> 0b 90 90 e9 5f fe ff ff e8 04 69 5e ff 90 48 b8 00 00 00 00 00
-RSP: 0018:ffffc90003637b08 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff88805f534140 RCX: ffffffff817a92c8
-RDX: ffff88807da99e00 RSI: ffffffff817a92d5 RDI: 0000000000000001
-RBP: ffff888033431ac0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff888033431a00
-R13: ffff888033431ae4 R14: ffff888033184724 R15: dffffc0000000000
-FS:  0000555580328500(0000) GS:ffff888124a62000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f71733743e0 CR3: 000000007f618000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  sunrpc_exit_net+0x46/0x90 net/sunrpc/sunrpc_syms.c:76
-  ops_exit_list net/core/net_namespace.c:200 [inline]
-  ops_undo_list+0x2eb/0xab0 net/core/net_namespace.c:253
-  setup_net+0x2e1/0x510 net/core/net_namespace.c:457
-  copy_net_ns+0x2a6/0x5f0 net/core/net_namespace.c:574
-  create_new_namespaces+0x3ea/0xa90 kernel/nsproxy.c:110
-  unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:218
-  ksys_unshare+0x45b/0xa40 kernel/fork.c:3121
-  __do_sys_unshare kernel/fork.c:3192 [inline]
-  __se_sys_unshare kernel/fork.c:3190 [inline]
-  __x64_sys_unshare+0x31/0x40 kernel/fork.c:3190
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xcd/0x490 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa1a6b8e929
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff3a090368 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 00007fa1a6db5fa0 RCX: 00007fa1a6b8e929
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040000080
-RBP: 00007fa1a6c10b39 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa1a6db5fa0 R14: 00007fa1a6db5fa0 R15: 0000000000000001
- </TASK>
-
-Fixes: d47151b79e32 ("nfs: expose /proc/net/sunrpc/nfs in net namespaces")
-Reported-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a4cc4ac22daa4a71b87c
-Tested-by: syzbot+a4cc4ac22daa4a71b87c@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 5307dce878d4 ("drm/gem: Acquire references on GEM handles for framebuffers")
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/dri-devel/20250703115915.3096-1-spasswolf@web.de/
+Tested-by: Bert Karwatzki <spasswolf@web.de>
+Tested-by: Mario Limonciello <superm1@kernel.org>
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Anusha Srivatsa <asrivats@redhat.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: linux-media@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linaro-mm-sig@lists.linaro.org
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250707131224.249496-1-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/inode.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_framebuffer.c            |   31 ++++++++++++++++++++--
+ drivers/gpu/drm/drm_gem.c                    |   38 +++++++++++++++++----------
+ drivers/gpu/drm/drm_gem_framebuffer_helper.c |   16 ++++-------
+ drivers/gpu/drm/drm_internal.h               |    2 -
+ include/drm/drm_framebuffer.h                |    7 ++++
+ 5 files changed, 68 insertions(+), 26 deletions(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 251f45fee53ca..0dc53732b5c98 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2180,15 +2180,26 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
- static int nfs_net_init(struct net *net)
+--- a/drivers/gpu/drm/drm_framebuffer.c
++++ b/drivers/gpu/drm/drm_framebuffer.c
+@@ -844,11 +844,23 @@ void drm_framebuffer_free(struct kref *k
+ int drm_framebuffer_init(struct drm_device *dev, struct drm_framebuffer *fb,
+ 			 const struct drm_framebuffer_funcs *funcs)
  {
- 	struct nfs_net *nn = net_generic(net, nfs_net_id);
-+	int err;
++	unsigned int i;
+ 	int ret;
++	bool exists;
  
- 	nfs_clients_init(net);
+ 	if (WARN_ON_ONCE(fb->dev != dev || !fb->format))
+ 		return -EINVAL;
  
- 	if (!rpc_proc_register(net, &nn->rpcstats)) {
--		nfs_clients_exit(net);
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto err_proc_rpc;
- 	}
++	for (i = 0; i < fb->format->num_planes; i++) {
++		if (drm_WARN_ON_ONCE(dev, fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i)))
++			fb->internal_flags &= ~DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
++		if (fb->obj[i]) {
++			exists = drm_gem_object_handle_get_if_exists_unlocked(fb->obj[i]);
++			if (exists)
++				fb->internal_flags |= DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
++		}
++	}
++
+ 	INIT_LIST_HEAD(&fb->filp_head);
  
--	return nfs_fs_proc_net_init(net);
-+	err = nfs_fs_proc_net_init(net);
-+	if (err)
-+		goto err_proc_nfs;
+ 	fb->funcs = funcs;
+@@ -857,7 +869,7 @@ int drm_framebuffer_init(struct drm_devi
+ 	ret = __drm_mode_object_add(dev, &fb->base, DRM_MODE_OBJECT_FB,
+ 				    false, drm_framebuffer_free);
+ 	if (ret)
+-		goto out;
++		goto err;
+ 
+ 	mutex_lock(&dev->mode_config.fb_lock);
+ 	dev->mode_config.num_fb++;
+@@ -865,7 +877,16 @@ int drm_framebuffer_init(struct drm_devi
+ 	mutex_unlock(&dev->mode_config.fb_lock);
+ 
+ 	drm_mode_object_register(dev, &fb->base);
+-out:
 +
 +	return 0;
 +
-+err_proc_nfs:
-+	rpc_proc_unregister(net, "nfs");
-+err_proc_rpc:
-+	nfs_clients_exit(net);
-+	return err;
++err:
++	for (i = 0; i < fb->format->num_planes; i++) {
++		if (fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i)) {
++			drm_gem_object_handle_put_unlocked(fb->obj[i]);
++			fb->internal_flags &= ~DRM_FRAMEBUFFER_HAS_HANDLE_REF(i);
++		}
++	}
+ 	return ret;
+ }
+ EXPORT_SYMBOL(drm_framebuffer_init);
+@@ -942,6 +963,12 @@ EXPORT_SYMBOL(drm_framebuffer_unregister
+ void drm_framebuffer_cleanup(struct drm_framebuffer *fb)
+ {
+ 	struct drm_device *dev = fb->dev;
++	unsigned int i;
++
++	for (i = 0; i < fb->format->num_planes; i++) {
++		if (fb->internal_flags & DRM_FRAMEBUFFER_HAS_HANDLE_REF(i))
++			drm_gem_object_handle_put_unlocked(fb->obj[i]);
++	}
+ 
+ 	mutex_lock(&dev->mode_config.fb_lock);
+ 	list_del(&fb->head);
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -197,23 +197,34 @@ static void drm_gem_object_handle_get(st
  }
  
- static void nfs_net_exit(struct net *net)
--- 
-2.39.5
-
+ /**
+- * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
++ * drm_gem_object_handle_get_if_exists_unlocked - acquire reference on user-space handle, if any
+  * @obj: GEM object
+  *
+- * Acquires a reference on the GEM buffer object's handle. Required
+- * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
+- * to release the reference.
++ * Acquires a reference on the GEM buffer object's handle. Required to keep
++ * the GEM object alive. Call drm_gem_object_handle_put_if_exists_unlocked()
++ * to release the reference. Does nothing if the buffer object has no handle.
++ *
++ * Returns:
++ * True if a handle exists, or false otherwise
+  */
+-void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
++bool drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj)
+ {
+ 	struct drm_device *dev = obj->dev;
+ 
+ 	guard(mutex)(&dev->object_name_lock);
+ 
+-	drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
++	/*
++	 * First ref taken during GEM object creation, if any. Some
++	 * drivers set up internal framebuffers with GEM objects that
++	 * do not have a GEM handle. Hence, this counter can be zero.
++	 */
++	if (!obj->handle_count)
++		return false;
++
+ 	drm_gem_object_handle_get(obj);
++
++	return true;
+ }
+-EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
+ 
+ /**
+  * drm_gem_object_handle_free - release resources bound to userspace handles
+@@ -246,7 +257,7 @@ static void drm_gem_object_exported_dma_
+ }
+ 
+ /**
+- * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
++ * drm_gem_object_handle_put_unlocked - releases reference on user-space handle
+  * @obj: GEM object
+  *
+  * Releases a reference on the GEM buffer object's handle. Possibly releases
+@@ -257,14 +268,14 @@ void drm_gem_object_handle_put_unlocked(
+ 	struct drm_device *dev = obj->dev;
+ 	bool final = false;
+ 
+-	if (WARN_ON(READ_ONCE(obj->handle_count) == 0))
++	if (drm_WARN_ON(dev, READ_ONCE(obj->handle_count) == 0))
+ 		return;
+ 
+ 	/*
+-	* Must bump handle count first as this may be the last
+-	* ref, in which case the object would disappear before we
+-	* checked for a name
+-	*/
++	 * Must bump handle count first as this may be the last
++	 * ref, in which case the object would disappear before
++	 * we checked for a name.
++	 */
+ 
+ 	mutex_lock(&dev->object_name_lock);
+ 	if (--obj->handle_count == 0) {
+@@ -277,7 +288,6 @@ void drm_gem_object_handle_put_unlocked(
+ 	if (final)
+ 		drm_gem_object_put(obj);
+ }
+-EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
+ 
+ /*
+  * Called at device or object close to release the file's
+--- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
++++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+@@ -99,7 +99,7 @@ void drm_gem_fb_destroy(struct drm_frame
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < fb->format->num_planes; i++)
+-		drm_gem_object_handle_put_unlocked(fb->obj[i]);
++		drm_gem_object_put(fb->obj[i]);
+ 
+ 	drm_framebuffer_cleanup(fb);
+ 	kfree(fb);
+@@ -182,10 +182,8 @@ int drm_gem_fb_init_with_funcs(struct dr
+ 		if (!objs[i]) {
+ 			drm_dbg_kms(dev, "Failed to lookup GEM object\n");
+ 			ret = -ENOENT;
+-			goto err_gem_object_handle_put_unlocked;
++			goto err_gem_object_put;
+ 		}
+-		drm_gem_object_handle_get_unlocked(objs[i]);
+-		drm_gem_object_put(objs[i]);
+ 
+ 		min_size = (height - 1) * mode_cmd->pitches[i]
+ 			 + drm_format_info_min_pitch(info, i, width)
+@@ -195,22 +193,22 @@ int drm_gem_fb_init_with_funcs(struct dr
+ 			drm_dbg_kms(dev,
+ 				    "GEM object size (%zu) smaller than minimum size (%u) for plane %d\n",
+ 				    objs[i]->size, min_size, i);
+-			drm_gem_object_handle_put_unlocked(objs[i]);
++			drm_gem_object_put(objs[i]);
+ 			ret = -EINVAL;
+-			goto err_gem_object_handle_put_unlocked;
++			goto err_gem_object_put;
+ 		}
+ 	}
+ 
+ 	ret = drm_gem_fb_init(dev, fb, mode_cmd, objs, i, funcs);
+ 	if (ret)
+-		goto err_gem_object_handle_put_unlocked;
++		goto err_gem_object_put;
+ 
+ 	return 0;
+ 
+-err_gem_object_handle_put_unlocked:
++err_gem_object_put:
+ 	while (i > 0) {
+ 		--i;
+-		drm_gem_object_handle_put_unlocked(objs[i]);
++		drm_gem_object_put(objs[i]);
+ 	}
+ 	return ret;
+ }
+--- a/drivers/gpu/drm/drm_internal.h
++++ b/drivers/gpu/drm/drm_internal.h
+@@ -155,7 +155,7 @@ void drm_sysfs_lease_event(struct drm_de
+ 
+ /* drm_gem.c */
+ int drm_gem_init(struct drm_device *dev);
+-void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
++bool drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj);
+ void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
+ int drm_gem_handle_create_tail(struct drm_file *file_priv,
+ 			       struct drm_gem_object *obj,
+--- a/include/drm/drm_framebuffer.h
++++ b/include/drm/drm_framebuffer.h
+@@ -23,6 +23,7 @@
+ #ifndef __DRM_FRAMEBUFFER_H__
+ #define __DRM_FRAMEBUFFER_H__
+ 
++#include <linux/bits.h>
+ #include <linux/ctype.h>
+ #include <linux/list.h>
+ #include <linux/sched.h>
+@@ -100,6 +101,8 @@ struct drm_framebuffer_funcs {
+ 		     unsigned num_clips);
+ };
+ 
++#define DRM_FRAMEBUFFER_HAS_HANDLE_REF(_i)	BIT(0u + (_i))
++
+ /**
+  * struct drm_framebuffer - frame buffer object
+  *
+@@ -189,6 +192,10 @@ struct drm_framebuffer {
+ 	 */
+ 	int flags;
+ 	/**
++	 * @internal_flags: Framebuffer flags like DRM_FRAMEBUFFER_HAS_HANDLE_REF.
++	 */
++	unsigned int internal_flags;
++	/**
+ 	 * @hot_x: X coordinate of the cursor hotspot. Used by the legacy cursor
+ 	 * IOCTL when the driver supports cursor through a DRM_PLANE_TYPE_CURSOR
+ 	 * universal plane.
 
 
 
