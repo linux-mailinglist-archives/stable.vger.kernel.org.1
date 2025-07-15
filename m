@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D62B05DE7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AA7B05C93
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A57F83B3B41
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21A3D1898573
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DF82ECD26;
-	Tue, 15 Jul 2025 13:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FEC2E3AEE;
+	Tue, 15 Jul 2025 13:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzpjVLhA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMbFhSu6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0091C2E611E;
-	Tue, 15 Jul 2025 13:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E59B26CE27;
+	Tue, 15 Jul 2025 13:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586508; cv=none; b=hOUq0E8l4QzUeRAWDSY+3e/vnlrW1naG5s18aLnnUrBYSR4mp0ei4hcloVpmXq9C0k/JqVTMO0hVQ78zQBaOph8K0VDyuR7WegBxCpXB//FqTXW5niqRkKYAh+g0NtMEOQ0Jbw7OWX+UCAx4mNlLmF6he6eOWOGiimjThJXp28k=
+	t=1752586055; cv=none; b=YT3FeBIbSAel/pU3kX8U86tabpoXc73zzp3X5kAGGgnP1YSTqVCghq5b8LBGVQjZ8zVE0FrGBaVCqCRd4GUnPjWHQAIEo49XiuMkOyB/csdvJtyyUZhFue5DlTNmwNcrUBbToYUJcPaUX7/Uqn/O2Y3+oFQRZuffec/pjSyXRKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586508; c=relaxed/simple;
-	bh=BPC3oOJk7OgsQeXQJOrEjNoJ/EN6KUR1lO+vWf3qfJk=;
+	s=arc-20240116; t=1752586055; c=relaxed/simple;
+	bh=6129G5mgFGCVq9DINgmpiOQ0zllzGZpk9wTRNTHiRr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcygVKOTqchzl83O7evuqstzBO8WceSM4t+7P90JdnwXJsbmcCsx4b6RX5b3hXYYwpGwIJUEh4CSQnaBhyCeMprzeeS1/9jAXgPDSnMLyLvVwSoyP9cCyLE9XceQVPeqCPPS8jgoCaLeG/COj5l+ylOWsMS9H5kwBRphZREcFx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzpjVLhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34981C4CEE3;
-	Tue, 15 Jul 2025 13:35:07 +0000 (UTC)
+	 MIME-Version; b=UQ1CXgjqzLjJ1u+5FLYGR7N18gEHR3m61hWscHLa6kD5yZETt4jbZTOHB8r1TLnO8lbHZTVXYanunVLgVcle5CqWmER+U8Vnqqm32aNDIBnXnP7ye75WFdrmmOgibBrYc7Pd4n1W8kZGJujS1rCmqnIYpkmEgqIZrREWOCng3kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMbFhSu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A3CC4CEF7;
+	Tue, 15 Jul 2025 13:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586507;
-	bh=BPC3oOJk7OgsQeXQJOrEjNoJ/EN6KUR1lO+vWf3qfJk=;
+	s=korg; t=1752586055;
+	bh=6129G5mgFGCVq9DINgmpiOQ0zllzGZpk9wTRNTHiRr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TzpjVLhAnOqXIJzfTzzrgOLY7uVWHeIXRkeT85PBDDMi+hA1+PieRtG0Ds/iIPYdT
-	 dNJ5iMewvBouEGO0+wgduFfLL/FRXe3N5Lw10b1+xXBMKL0iVoM6ag1XgsVr5BU8ci
-	 amSrURh+v/1sNu7UmlPTA5NGROIbtqieAt1q+9b4=
+	b=qMbFhSu6As6K1ompjaJpfYTz+s5at/U0YG3FkMJ7+dHz5RifMCeqBbUcfAOciXoir
+	 Ws1cj14AX9fOS4TCsYO2JKEB6RwgmYjOT7HitBQgLvEiNOYko5munCpbzOXgUwDA2A
+	 LLJbsXtmJ43ZErVIXqyHglmcLCKozSu2Uvgd/Exs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Simon Horman <horms@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 091/148] dpaa2-eth: fix xdp_rxq_info leak
+Subject: [PATCH 6.6 077/109] cifs: all initializations for tcon should happen in tcon_info_alloc
 Date: Tue, 15 Jul 2025 15:13:33 +0200
-Message-ID: <20250715130803.958621246@linuxfoundation.org>
+Message-ID: <20250715130801.966652822@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fushuai Wang <wangfushuai@baidu.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 2def09ead4ad5907988b655d1e1454003aaf8297 ]
+[ Upstream commit 74ebd02163fde05baa23129e06dde4b8f0f2377a ]
 
-The driver registered xdp_rxq_info structures via xdp_rxq_info_reg()
-but failed to properly unregister them in error paths and during
-removal.
+Today, a few work structs inside tcon are initialized inside
+cifs_get_tcon and not in tcon_info_alloc. As a result, if a tcon
+is obtained from tcon_info_alloc, but not called as a part of
+cifs_get_tcon, we may trip over.
 
-Fixes: d678be1dc1ec ("dpaa2-eth: add XDP_REDIRECT support")
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://patch.msgid.link/20250626133003.80136-1-wangfushuai@baidu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/freescale/dpaa2/dpaa2-eth.c  | 26 +++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ fs/smb/client/cifsproto.h | 1 +
+ fs/smb/client/connect.c   | 8 +-------
+ fs/smb/client/misc.c      | 6 ++++++
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index 5f5766b1f3b70..8649578b54c1e 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -2725,6 +2725,7 @@ static int setup_rx_flow(struct dpaa2_eth_priv *priv,
- 					 MEM_TYPE_PAGE_ORDER0, NULL);
- 	if (err) {
- 		dev_err(dev, "xdp_rxq_info_reg_mem_model failed\n");
-+		xdp_rxq_info_unreg(&fq->channel->xdp_rxq);
- 		return err;
- 	}
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index 8edb6fe89a97c..5ab877e480abc 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -136,6 +136,7 @@ extern int SendReceiveBlockingLock(const unsigned int xid,
+ 			struct smb_hdr *out_buf,
+ 			int *bytes_returned);
  
-@@ -3153,17 +3154,25 @@ static int bind_dpni(struct dpaa2_eth_priv *priv)
- 			return -EINVAL;
- 		}
- 		if (err)
--			return err;
-+			goto out;
- 	}
- 
- 	err = dpni_get_qdid(priv->mc_io, 0, priv->mc_token,
- 			    DPNI_QUEUE_TX, &priv->tx_qdid);
- 	if (err) {
- 		dev_err(dev, "dpni_get_qdid() failed\n");
--		return err;
-+		goto out;
- 	}
- 
- 	return 0;
-+
-+out:
-+	while (i--) {
-+		if (priv->fq[i].type == DPAA2_RX_FQ &&
-+		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
-+			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
-+	}
-+	return err;
++void smb2_query_server_interfaces(struct work_struct *work);
+ void
+ cifs_signal_cifsd_for_reconnect(struct TCP_Server_Info *server,
+ 				      bool all_channels);
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 14be8822d23a2..33a292dabdb87 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -113,7 +113,7 @@ static int reconn_set_ipaddr_from_hostname(struct TCP_Server_Info *server)
+ 	return rc;
  }
  
- /* Allocate rings for storing incoming frame descriptors */
-@@ -3445,6 +3454,17 @@ static void del_ch_napi(struct dpaa2_eth_priv *priv)
- 	}
- }
- 
-+static void dpaa2_eth_free_rx_xdp_rxq(struct dpaa2_eth_priv *priv)
-+{
-+	int i;
-+
-+	for (i = 0; i < priv->num_fqs; i++) {
-+		if (priv->fq[i].type == DPAA2_RX_FQ &&
-+		    xdp_rxq_info_is_reg(&priv->fq[i].channel->xdp_rxq))
-+			xdp_rxq_info_unreg(&priv->fq[i].channel->xdp_rxq);
-+	}
-+}
-+
- static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+-static void smb2_query_server_interfaces(struct work_struct *work)
++void smb2_query_server_interfaces(struct work_struct *work)
  {
- 	struct device *dev;
-@@ -3574,6 +3594,7 @@ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
- 	free_percpu(priv->percpu_stats);
- err_alloc_percpu_stats:
- 	del_ch_napi(priv);
-+	dpaa2_eth_free_rx_xdp_rxq(priv);
- err_bind:
- 	free_dpbp(priv);
- err_dpbp_setup:
-@@ -3614,6 +3635,7 @@ static int dpaa2_eth_remove(struct fsl_mc_device *ls_dev)
- 	free_percpu(priv->percpu_extras);
+ 	int rc;
+ 	int xid;
+@@ -2818,20 +2818,14 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+ 	tcon->max_cached_dirs = ctx->max_cached_dirs;
+ 	tcon->nodelete = ctx->nodelete;
+ 	tcon->local_lease = ctx->local_lease;
+-	INIT_LIST_HEAD(&tcon->pending_opens);
+ 	tcon->status = TID_GOOD;
  
- 	del_ch_napi(priv);
-+	dpaa2_eth_free_rx_xdp_rxq(priv);
- 	free_dpbp(priv);
- 	free_dpio(priv);
- 	free_dpni(priv);
+-	INIT_DELAYED_WORK(&tcon->query_interfaces,
+-			  smb2_query_server_interfaces);
+ 	if (ses->server->dialect >= SMB30_PROT_ID &&
+ 	    (ses->server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
+ 		/* schedule query interfaces poll */
+ 		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
+ 				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
+ 	}
+-#ifdef CONFIG_CIFS_DFS_UPCALL
+-	INIT_DELAYED_WORK(&tcon->dfs_cache_work, dfs_cache_refresh);
+-#endif
+ 	spin_lock(&cifs_tcp_ses_lock);
+ 	list_add(&tcon->tcon_list, &ses->tcon_list);
+ 	spin_unlock(&cifs_tcp_ses_lock);
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index 2e9a14e28e466..bbbe48447765d 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -148,6 +148,12 @@ tcon_info_alloc(bool dir_leases_enabled, enum smb3_tcon_ref_trace trace)
+ #ifdef CONFIG_CIFS_DFS_UPCALL
+ 	INIT_LIST_HEAD(&ret_buf->dfs_ses_list);
+ #endif
++	INIT_LIST_HEAD(&ret_buf->pending_opens);
++	INIT_DELAYED_WORK(&ret_buf->query_interfaces,
++			  smb2_query_server_interfaces);
++#ifdef CONFIG_CIFS_DFS_UPCALL
++	INIT_DELAYED_WORK(&ret_buf->dfs_cache_work, dfs_cache_refresh);
++#endif
+ 
+ 	return ret_buf;
+ }
 -- 
 2.39.5
 
