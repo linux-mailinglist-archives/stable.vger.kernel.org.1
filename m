@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-162789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3218CB05FD8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:10:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD88B05FF7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:11:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A62175807A6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB931188F504
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D682C2E7188;
-	Tue, 15 Jul 2025 13:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8385C2E7195;
+	Tue, 15 Jul 2025 13:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEDyRqdB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqfUDlQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960042E3AE9;
-	Tue, 15 Jul 2025 13:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AC12E7187;
+	Tue, 15 Jul 2025 13:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587479; cv=none; b=gzRKXOgWvCtKhM7cvIAsGmeJgOmsRMwTZFDB431llbl/6XqaCsXFa/dhuUW6t8WifUrv5MeYa3TV+Lctuf/S2uBUIUp0Bf6j0HbQnEyDKaaCquBzNV9RhkZ9aYwqEOpGS9ZggISetKnidNof6K6u8kXkMMxsCHL7zBglzXHY8IA=
+	t=1752587482; cv=none; b=HO8oOXb2De4ThH3OEgGamIo6S8pvNbTm2aPpaJG9Be29eHYv4QpSZVMFHiv1E29fg2dGPzC/dd+KL4gUpiTsKWTHikvnoWTh3HwkZXvEf2DLQvlTu2kwecaMpqOPIuTZjMtru2pIyqUX76cUPCPcxPD2xxQDJqnxCideofrBE8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587479; c=relaxed/simple;
-	bh=iBsN+hQi2r7+Mvgm6b7n9RSVk00hYCZi0KRhaBhfl6I=;
+	s=arc-20240116; t=1752587482; c=relaxed/simple;
+	bh=68sYT2WPYje+pjvbrQeotPe+DSMsLoV24YZOD3gA54s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvU953TMrTcfKVvHBHFIWda+RZ8S/tELH39JVNVLH6dnuOvPR90kRPEmAP7gnvnMfSBcJakNcjcmI2WtuXucm7ylF9LDUf49rJ3fwgdF3/LPx5iJy7UDHdt4DLRZAW51vhRVUTLijnuzVlajjd2mtpp3vwQj2EI5d0V4rPnHVhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEDyRqdB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C47C4CEE3;
-	Tue, 15 Jul 2025 13:51:19 +0000 (UTC)
+	 MIME-Version; b=HV240xMta7F3aOzbVT5TSbsjeM5pVcQnr34Ivy1kYbI7qO+bi55o1Pt9VZZaSjt+IX63ZTQ3bsXRrV6A0lElmeZez5VWLEKxEBbGxRaMJ+vTfeaCaq+NIO8mBrtSnR1H674PQLcvxlKnhqis6KphdN/LBOhef5ABb/30A1ywca8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqfUDlQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C683EC4CEE3;
+	Tue, 15 Jul 2025 13:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587479;
-	bh=iBsN+hQi2r7+Mvgm6b7n9RSVk00hYCZi0KRhaBhfl6I=;
+	s=korg; t=1752587482;
+	bh=68sYT2WPYje+pjvbrQeotPe+DSMsLoV24YZOD3gA54s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cEDyRqdBWWCdbFMee7t63P1TKfVooXNQ5U1loc4AZjeA207dms46B7uQG2gVkfCgL
-	 m8zkvk+0kIPGfnzctcrczBOyG+9SurI6Q8+22Prr8CjhurKk4X/dPBiE5KXOprZcfY
-	 t6Nk6i4TtnjR+Fs2QLQvqSyI/pZyb0HZjffgMroc=
+	b=yqfUDlQq1rJceAxIYJP1U6aT1xoZHphC0JfkMUYnNTCcVdxc2Jm3Bcz48mTsZpPUD
+	 wT2p0lR87Axv3ZtWnivxXGilvoKB5tZwQ73e34U41W2ChOUszA0yl+kes8GpIaf1L/
+	 fnc35Ob9opzOM6ubkRymtHZbHsYPFJZ0jCxP2xhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	Tobias Deiminger <tobias.deiminger@linutronix.de>,
+	Sven Schuchmann <schuchmann@schleissheimer.de>,
+	Sven Schwermer <sven.schwermer@disruptive-technologies.com>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 004/208] mfd: max14577: Fix wakeup source leaks on device unbind
-Date: Tue, 15 Jul 2025 15:11:53 +0200
-Message-ID: <20250715130811.012778653@linuxfoundation.org>
+Subject: [PATCH 5.10 005/208] leds: multicolor: Fix intensity setting while SW blinking
+Date: Tue, 15 Jul 2025 15:11:54 +0200
+Message-ID: <20250715130811.051928496@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -66,33 +70,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Sven Schwermer <sven.schwermer@disruptive-technologies.com>
 
-[ Upstream commit d905d06e64b0eb3da43af6186c132f5282197998 ]
+[ Upstream commit e35ca991a777ef513040cbb36bc8245a031a2633 ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+When writing to the multi_intensity file, don't unconditionally call
+led_set_brightness. By only doing this if blinking is inactive we
+prevent blinking from stopping if the blinking is in its off phase while
+the file is written.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406-mfd-device-wakekup-leak-v1-3-318e14bdba0a@linaro.org
+Instead, if blinking is active, the changed intensity values are applied
+upon the next blink. This is consistent with changing the brightness on
+monochrome LEDs with active blinking.
+
+Suggested-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Acked-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Acked-by: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Tobias Deiminger <tobias.deiminger@linutronix.de>
+Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+Signed-off-by: Sven Schwermer <sven.schwermer@disruptive-technologies.com>
+Link: https://lore.kernel.org/r/20250404184043.227116-1-sven@svenschwermer.de
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/max14577.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/leds/led-class-multicolor.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
-index be185e9d5f16b..c9e56145b08bd 100644
---- a/drivers/mfd/max14577.c
-+++ b/drivers/mfd/max14577.c
-@@ -467,6 +467,7 @@ static int max14577_i2c_remove(struct i2c_client *i2c)
- {
- 	struct max14577 *max14577 = i2c_get_clientdata(i2c);
+diff --git a/drivers/leds/led-class-multicolor.c b/drivers/leds/led-class-multicolor.c
+index e317408583df9..5b1479b5d32ca 100644
+--- a/drivers/leds/led-class-multicolor.c
++++ b/drivers/leds/led-class-multicolor.c
+@@ -59,7 +59,8 @@ static ssize_t multi_intensity_store(struct device *dev,
+ 	for (i = 0; i < mcled_cdev->num_colors; i++)
+ 		mcled_cdev->subled_info[i].intensity = intensity_value[i];
  
-+	device_init_wakeup(max14577->dev, false);
- 	mfd_remove_devices(max14577->dev);
- 	regmap_del_irq_chip(max14577->irq, max14577->irq_data);
- 	if (max14577->dev_type == MAXIM_DEVICE_TYPE_MAX77836)
+-	led_set_brightness(led_cdev, led_cdev->brightness);
++	if (!test_bit(LED_BLINK_SW, &led_cdev->work_flags))
++		led_set_brightness(led_cdev, led_cdev->brightness);
+ 	ret = size;
+ err_out:
+ 	mutex_unlock(&led_cdev->led_access);
 -- 
 2.39.5
 
