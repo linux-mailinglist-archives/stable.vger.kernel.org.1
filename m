@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E6CB05BC9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286DAB05B5F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 193671664FB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBA403ACAD3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9722E266C;
-	Tue, 15 Jul 2025 13:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF37B26D4F2;
+	Tue, 15 Jul 2025 13:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNsycmj0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ka4iXUwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4152C327B;
-	Tue, 15 Jul 2025 13:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F1C1A23AF;
+	Tue, 15 Jul 2025 13:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585796; cv=none; b=HozaSFin0LZfSrda+4Yy9hSxnCxF/iioaZU6loFyz7dXQCk3t9tugkmTs0cdL80QsiH9VRuhI4OpOqKCNzYpPuRyK5jUZW2b3jJ5rh0W3FG/UURrFzNG8Bt+AjtBB/QWdRdHfEZXGgxt7GIMuLr87Z8kWVw7jQGsR6TEVGewlts=
+	t=1752585521; cv=none; b=A++q7hUGWAOQRly0dn90CTGbxWD3uX2VB7C5Tx+ByUbB4jaCjSlriWZZM5AZH90yiV2Wauwo+pbKooR/+ZUHypS8CTgAN4yHVWcCJaoZl5v2ux4wJktPWOhj2zGkLXStRK9wQntNW41RfHg4c7OgG+gwcSVfa9XZ28U0QdwEnbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585796; c=relaxed/simple;
-	bh=DVyT0VRiT5iu9AX0dqRVlPg47rY+8E7+jYO9gp5TTsE=;
+	s=arc-20240116; t=1752585521; c=relaxed/simple;
+	bh=w9EHeDbFB/tBbgQBkwGZ2AmS+aZ9/XolJkrM1oJcus8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlXWV3Ls1xOAvlIpe28R/NTVzz0vnEmb8gkjQNNobatAhhZTChmzSqBVtjA5ufpKy9/cduz/BK0wcZdIQqmpfBoRtH2vHjFyy9pFNrvDNpnUuJve9l3rjzZ/EhQSM/vCVpv0l34+VCATB+XIIqIb+CxLPQdapEPVtkrCirEXEdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNsycmj0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33ABFC4CEE3;
-	Tue, 15 Jul 2025 13:23:15 +0000 (UTC)
+	 MIME-Version; b=fryvLKufBQ2PLYi7Bbft5mYYpbSGcYWeEHpOT80DOj0lEd0eyLk5GVMRGdGF4PpSjfvKQUetYniJdu1q0UzOk1vFP2Vgx3SzCHOLdafVLOWacQeYDYQcZporFaN6fR7g/v0mDe6j6107fmjUsyKdDOljVK4P2mlNDopUOiCBgMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ka4iXUwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4F8C4CEE3;
+	Tue, 15 Jul 2025 13:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585795;
-	bh=DVyT0VRiT5iu9AX0dqRVlPg47rY+8E7+jYO9gp5TTsE=;
+	s=korg; t=1752585521;
+	bh=w9EHeDbFB/tBbgQBkwGZ2AmS+aZ9/XolJkrM1oJcus8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNsycmj0QrL1YqyIg0IIp/U7E1LXekWxh7RiETHqOln2L8N7onJjevrPLHc2lXae3
-	 pzk4AVfMJTMOqnOQ95QTwx445ataRH9GDyQcWd0oLOXk7IyPAoGAwYq8VsvHPlotFL
-	 9jY/YXQj7L0T2OoD1SqAALiWUnyM/LLRkXhTL+Gg=
+	b=ka4iXUwghEiYo3VvNNwiOes3douyypxAdHC/BgcGTMUFX/rj/GUO34oz9LcpEF84N
+	 jvsAK0uxFhMNt0kg0PZc3aTZtQ3ofda/6kXOpGI13hE4eaeseT6edVHkRLRyfZ0T6U
+	 goN8V0/Z5zmexsseULO2zJdUAfV+jmSlQ8mITTsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/109] ASoC: fsl_asrc: use internal measured ratio for non-ideal ratio mode
+	Michael Lo <michael.lo@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 071/163] wifi: mt76: mt7925: fix invalid array index in ssid assignment during hw scan
 Date: Tue, 15 Jul 2025 15:12:19 +0200
-Message-ID: <20250715130759.009040923@linuxfoundation.org>
+Message-ID: <20250715130811.587128055@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Michael Lo <michael.lo@mediatek.com>
 
-[ Upstream commit cbe876121633dadb2b0ce52711985328638e9aab ]
+commit c701574c54121af2720648572efbfe77564652d1 upstream.
 
-When USRC=0, there is underrun issue for the non-ideal ratio mode;
-according to the reference mannual, the internal measured ratio can be
-used with USRC=1 and IDRC=0.
+Update the destination index to use 'n_ssids', which is incremented only
+when a valid SSID is present. Previously, both mt76_connac_mcu_hw_scan()
+and mt7925_mcu_hw_scan() used the loop index 'i' for the destination
+array, potentially leaving gaps if any source SSIDs had zero length.
 
-Fixes: d0250cf4f2ab ("ASoC: fsl_asrc: Add an option to select internal ratio mode")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/20250625020504.2728161-1-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Michael Lo <michael.lo@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250612062046.160598-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_asrc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |    4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c      |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-index b793263291dc8..72dc23c994bcd 100644
---- a/sound/soc/fsl/fsl_asrc.c
-+++ b/sound/soc/fsl/fsl_asrc.c
-@@ -517,7 +517,8 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair, bool use_ideal_rate)
- 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
- 			   ASRCTR_ATSi_MASK(index), ASRCTR_ATS(index));
- 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
--			   ASRCTR_USRi_MASK(index), 0);
-+			   ASRCTR_IDRi_MASK(index) | ASRCTR_USRi_MASK(index),
-+			   ASRCTR_USR(index));
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1696,8 +1696,8 @@ int mt76_connac_mcu_hw_scan(struct mt76_
+ 		if (!sreq->ssids[i].ssid_len)
+ 			continue;
  
- 	/* Set the input and output clock sources */
- 	regmap_update_bits(asrc->regmap, REG_ASRCSR,
--- 
-2.39.5
-
+-		req->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
+-		memcpy(req->ssids[i].ssid, sreq->ssids[i].ssid,
++		req->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
++		memcpy(req->ssids[n_ssids].ssid, sreq->ssids[i].ssid,
+ 		       sreq->ssids[i].ssid_len);
+ 		n_ssids++;
+ 	}
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2823,8 +2823,8 @@ int mt7925_mcu_hw_scan(struct mt76_phy *
+ 		if (!sreq->ssids[i].ssid_len)
+ 			continue;
+ 
+-		ssid->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
+-		memcpy(ssid->ssids[i].ssid, sreq->ssids[i].ssid,
++		ssid->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
++		memcpy(ssid->ssids[n_ssids].ssid, sreq->ssids[i].ssid,
+ 		       sreq->ssids[i].ssid_len);
+ 		n_ssids++;
+ 	}
 
 
 
