@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AABB05C83
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6574EB05ECD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B481E3B9F08
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F66E1C43D26
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68BE2E5400;
-	Tue, 15 Jul 2025 13:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4152E54B0;
+	Tue, 15 Jul 2025 13:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3rRUsCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbIsDbmw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D952E3B13;
-	Tue, 15 Jul 2025 13:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDC52E041E;
+	Tue, 15 Jul 2025 13:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585917; cv=none; b=mCqdif4A/rOFZzXGh4UlEIrMdVz1Px5bQYty8U9OT43+RigEIEV1//loGYULq1eahVAyCZsB68zZxPcdgYhOSMMpUX19ne35hA1H7O1N5tr++eppcJKeEkuEDWis7S1CZbz9uOnAol3IZr0oyM2U3xJbu95p/Q4i6zuUEAnJz1k=
+	t=1752586873; cv=none; b=N9d2wEP5rhcyuehg8cWm9GCHahTp190LP+TO46teZvo8P5YQJKMpzpPQKRyyoMoILUxyWXQhhNfBoZnre0AtrHMnxiEunpkZ/RfAjtAimc6OVjBob0uQ8d0Cwy52zJL3Mc1zwRXkqDxGobvanu0EuLStaeOVFZyukHW8o1ZXJrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585917; c=relaxed/simple;
-	bh=xXztFy2HL5t+zg8g64xsDF6oBMbkRf85xfr6Cav2kWM=;
+	s=arc-20240116; t=1752586873; c=relaxed/simple;
+	bh=c0WaRU+vKTU2M09OE65CgzjphAIlr6Ab9r40/ldJQqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkMrYOroHuHIBibx2xrELPqkezu8d6fsJDrtm7H9gEED0XVPmnByLPKvE/z2KVOqCh5S7S0InHLyTGduKyga8eSRgk0hu5uu5qFAye7K++KeBGNkf07LeNX1IQNXbkv3fxQgCEaFqScfJjZU0D4uI9IY1WQWkWteQxuUNXon7Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3rRUsCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329B7C4CEE3;
-	Tue, 15 Jul 2025 13:25:17 +0000 (UTC)
+	 MIME-Version; b=XPBRwL45gTis035yWxRN5eyjR50Hb4weMYyVW8u6sLiJkSVWub6fe6oKNMlwybYjext4/KFGX1TxcOG4WIhcRfDsI5fI3Eo9FyigKqOqz3AVPmoSZ0il7J1TO1DpXCnrXjvCpavB2Yun/iDh0s6HKDC7Wh5wD8gfP2enAaH29Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbIsDbmw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2F0C4CEE3;
+	Tue, 15 Jul 2025 13:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585917;
-	bh=xXztFy2HL5t+zg8g64xsDF6oBMbkRf85xfr6Cav2kWM=;
+	s=korg; t=1752586872;
+	bh=c0WaRU+vKTU2M09OE65CgzjphAIlr6Ab9r40/ldJQqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3rRUsCaJnGYdrworzJ+HuXxj4JDe9y7WxCpW57PSdIXZ1gZKfBs/G+VhnRmKeAas
-	 kFUZ+6MDsv9feq8Z1JdD597PHf4wWJ+DBxwAohtqIrpSub8p/xyikZXwNiCW0u5Gfd
-	 hcvD5NElSA5A85y6GAw8xLzbKrnSwRHEO2UWFS40=
+	b=AbIsDbmwnL5if2N+CgfuFRYhhCEkQG4FRj93USTbzaWi2cNZpPLNdseX8bfLG2nS5
+	 dji/cKzaoTavzZuydH0TVzS3Gh5DKYaNq3WOU3KtVgF2kVFBkYRUdcvL2C7Xzq2ndy
+	 qaJXDk7KZ8S1JGUiU3OefR+aT4NY4jFYTgVlKIyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aiden Yang <ling@moedove.com>,
-	Gary Guo <gary@garyguo.net>,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 039/109] gre: Fix IPv6 multicast route creation.
+	Michael Lo <michael.lo@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.15 080/192] wifi: mt76: mt7925: fix invalid array index in ssid assignment during hw scan
 Date: Tue, 15 Jul 2025 15:12:55 +0200
-Message-ID: <20250715130800.445562551@linuxfoundation.org>
+Message-ID: <20250715130818.133897881@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Michael Lo <michael.lo@mediatek.com>
 
-commit 4e914ef063de40397e25a025c70d9737a9e45a8c upstream.
+commit c701574c54121af2720648572efbfe77564652d1 upstream.
 
-Use addrconf_add_dev() instead of ipv6_find_idev() in
-addrconf_gre_config() so that we don't just get the inet6_dev, but also
-install the default ff00::/8 multicast route.
-
-Before commit 3e6a0243ff00 ("gre: Fix again IPv6 link-local address
-generation."), the multicast route was created at the end of the
-function by addrconf_add_mroute(). But this code path is now only taken
-in one particular case (gre devices not bound to a local IP address and
-in EUI64 mode). For all other cases, the function exits early and
-addrconf_add_mroute() is not called anymore.
-
-Using addrconf_add_dev() instead of ipv6_find_idev() in
-addrconf_gre_config(), fixes the problem as it will create the default
-multicast route for all gre devices. This also brings
-addrconf_gre_config() a bit closer to the normal netdevice IPv6
-configuration code (addrconf_dev_config()).
+Update the destination index to use 'n_ssids', which is incremented only
+when a valid SSID is present. Previously, both mt76_connac_mcu_hw_scan()
+and mt7925_mcu_hw_scan() used the loop index 'i' for the destination
+array, potentially leaving gaps if any source SSIDs had zero length.
 
 Cc: stable@vger.kernel.org
-Fixes: 3e6a0243ff00 ("gre: Fix again IPv6 link-local address generation.")
-Reported-by: Aiden Yang <ling@moedove.com>
-Closes: https://lore.kernel.org/netdev/CANR=AhRM7YHHXVxJ4DmrTNMeuEOY87K2mLmo9KMed1JMr20p6g@mail.gmail.com/
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Tested-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/027a923dcb550ad115e6d93ee8bb7d310378bd01.1752070620.git.gnault@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Michael Lo <michael.lo@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250612062046.160598-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |    4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c      |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -3499,11 +3499,9 @@ static void addrconf_gre_config(struct n
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1703,8 +1703,8 @@ int mt76_connac_mcu_hw_scan(struct mt76_
+ 		if (!sreq->ssids[i].ssid_len)
+ 			continue;
  
- 	ASSERT_RTNL();
- 
--	idev = ipv6_find_idev(dev);
--	if (IS_ERR(idev)) {
--		pr_debug("%s: add_dev failed\n", __func__);
-+	idev = addrconf_add_dev(dev);
-+	if (IS_ERR(idev))
- 		return;
--	}
- 
- 	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
- 	 * unless we have an IPv4 GRE device not bound to an IP address and
-@@ -3517,9 +3515,6 @@ static void addrconf_gre_config(struct n
+-		req->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
+-		memcpy(req->ssids[i].ssid, sreq->ssids[i].ssid,
++		req->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
++		memcpy(req->ssids[n_ssids].ssid, sreq->ssids[i].ssid,
+ 		       sreq->ssids[i].ssid_len);
+ 		n_ssids++;
  	}
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2834,8 +2834,8 @@ int mt7925_mcu_hw_scan(struct mt76_phy *
+ 		if (!sreq->ssids[i].ssid_len)
+ 			continue;
  
- 	add_v4_addrs(idev);
--
--	if (dev->flags & IFF_POINTOPOINT)
--		addrconf_add_mroute(dev);
- }
- #endif
- 
+-		ssid->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
+-		memcpy(ssid->ssids[i].ssid, sreq->ssids[i].ssid,
++		ssid->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
++		memcpy(ssid->ssids[n_ssids].ssid, sreq->ssids[i].ssid,
+ 		       sreq->ssids[i].ssid_len);
+ 		n_ssids++;
+ 	}
 
 
 
