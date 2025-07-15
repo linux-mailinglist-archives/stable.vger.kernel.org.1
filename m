@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADBA0B05F7C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EA9B06006
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F09DA585609
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EC167BD15A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E863A2E7F12;
-	Tue, 15 Jul 2025 13:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832AA2ECE92;
+	Tue, 15 Jul 2025 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9nrrhOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZ8NdyGH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D382561AE;
-	Tue, 15 Jul 2025 13:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410C12ECE87;
+	Tue, 15 Jul 2025 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587283; cv=none; b=mlLq4holxkrifWBNr/PEb0AVF53SWtV3mBonTCEwWC5xac6IdqkFtuEiy/s+SKC+i8ZOvzzcMUk9JHkaxwWAWvJZwgcPo52EX2Rc28+++InNOdbhgx2OZKniJhyYq5C2Baxgg5Qggm0xiNNUxPU8nighlebEIrqeovAPo05HMUM=
+	t=1752587727; cv=none; b=ipSH0br1kVJULnUInEqL4Q16wIw7GBjLCnGVGCNyXrvswnd2p4DODWSieRBAaiY6JB+gRR4ny8Cq3XYA3NmzDyINBt3yM25SAvAHockrONPXTJ203T7W3lOeAvMkg6CiA4sy/TeqbSrpS1e09CZp4LEFZc6nXVNPtzHVEndcSt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587283; c=relaxed/simple;
-	bh=A/rxr6PrC72lSGxn5hPRHdKrAqAJH7YJPtYKMlw+XuI=;
+	s=arc-20240116; t=1752587727; c=relaxed/simple;
+	bh=e/UqlI1oWbYHDiHS7FKOBPh8C+iFNmjTBpTwiPDsGG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCu4CswPwSBKnVARAhM4yb6q7oZNZdo1Oq2QyhkL9B0vWU7xoRmpVnJPYzOTU37IsBu0Ti6PBrBwfvyW0EMixRsBtXuuAiHwSwBENHcapFSUgezh/dt3xLmh8/9uD2fehKXkN/22aEdOddEogG7OdeyjlKJvir89BuMM+giEnYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9nrrhOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B01C4CEE3;
-	Tue, 15 Jul 2025 13:48:03 +0000 (UTC)
+	 MIME-Version; b=c/5PWh4kQ1COtOVmxToR8Uwg2F4F2oKbyaXogs5M5qhe5y+SNnnpeaOniZUob+X7Rd0syTC9mvvjFUIXWh7nNXBALybODHC8wgDjeCepU1La8QSDm+RXocvrFiqVoxH8Y3g8yFD9g+ZytDKlDg9axoZfsHuOfEsqq6Ke+8LP45s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZ8NdyGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0E9C4CEE3;
+	Tue, 15 Jul 2025 13:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587283;
-	bh=A/rxr6PrC72lSGxn5hPRHdKrAqAJH7YJPtYKMlw+XuI=;
+	s=korg; t=1752587727;
+	bh=e/UqlI1oWbYHDiHS7FKOBPh8C+iFNmjTBpTwiPDsGG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9nrrhOwdhA+9HYjeR2JgXZ60CkUcAwgt7EcuWky7OPmYjhiaUabL9vQSRrJzTEGG
-	 D+6kbktARc0KbMBW/voluukATbiyFe/nIn7GstBFeU2jWe4sLDUiDmsVRnzd0k0qAJ
-	 ApewYkDzrg2uGCQJQTrtbDSS4k9qPnuyUkNsJYKU=
+	b=CZ8NdyGHQBUoexX17o1rMBfWxnu5gG1VcjDYvQeIG1fPXkuVO1Q3ooM6Vu95A14Eu
+	 EhEnOjwxWy4HKMqfSKTL0qC0jP1beaAvLqILdnkByaoZOxptQcfN9wvYp4qzXeOiw2
+	 b4Nz3j7IqT78mLrO0L5FQJTQ3xF4CJNYdkNvcJp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andre Edich <andre.edich@microchip.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Radu Bulie <radu-andrei.bulie@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 12/88] net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
-Date: Tue, 15 Jul 2025 15:13:48 +0200
-Message-ID: <20250715130754.999650393@linuxfoundation.org>
+Subject: [PATCH 5.10 120/208] dpaa2-eth: Update dpni_get_single_step_cfg command
+Date: Tue, 15 Jul 2025 15:13:49 +0200
+Message-ID: <20250715130815.751585825@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Radu Bulie <radu-andrei.bulie@nxp.com>
 
-[ Upstream commit a141af8eb2272ab0f677a7f2653874840bc9b214 ]
+[ Upstream commit 9572594ecf027a2b1828e42c26fb55cbd3219708 ]
 
-Correct the Auto-MDIX configuration to ensure userspace settings are
-respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
+dpni_get_single_step_cfg is an MC firmware command used for
+retrieving the contents of SINGLE_STEP 1588 register available
+in a DPMAC.
 
-The LAN9500 PHY allows its default MDI-X mode to be configured via a
-hardware strap. If this strap sets the default to "MDI-X off", the
-driver was previously unable to enable Auto-MDIX from userspace.
+This patch adds a new version of this command that returns as an extra
+argument the physical base address of the aforementioned register.
+The address will be used to directly modify the contents of the
+SINGLE_STEP register instead of invoking the MC command
+dpni_set_single_step_cgf. The former approach introduced huge delays on
+the TX datapath when one step PTP events were transmitted. This led to low
+throughput and high latencies observed in the PTP correction field.
 
-When handling the ETH_TP_MDI_AUTO case, the driver would set the
-SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
-SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
-falls back to its hardware strap default, ignoring the software request.
-
-This patch corrects the behavior by also setting the override bit when
-enabling Auto-MDIX. This ensures that the userspace configuration takes
-precedence over the hardware strap, allowing Auto-MDIX to be enabled
-correctly in all scenarios.
-
-Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andre Edich <andre.edich@microchip.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250703114941.3243890-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Radu Bulie <radu-andrei.bulie@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 2def09ead4ad ("dpaa2-eth: fix xdp_rxq_info leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/smsc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/dpaa2/dpni-cmd.h | 6 +++++-
+ drivers/net/ethernet/freescale/dpaa2/dpni.c     | 2 ++
+ drivers/net/ethernet/freescale/dpaa2/dpni.h     | 6 ++++++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index df2c5435c5c49..8726619466858 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -148,7 +148,8 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
- 			SPECIAL_CTRL_STS_AMDIX_STATE_;
- 		break;
- 	case ETH_TP_MDI_AUTO:
--		val = SPECIAL_CTRL_STS_AMDIX_ENABLE_;
-+		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
-+			SPECIAL_CTRL_STS_AMDIX_ENABLE_;
- 		break;
- 	default:
- 		return genphy_config_aneg(phydev);
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpni-cmd.h b/drivers/net/ethernet/freescale/dpaa2/dpni-cmd.h
+index 90453dc7baefe..a0dfd25c6bd4a 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpni-cmd.h
++++ b/drivers/net/ethernet/freescale/dpaa2/dpni-cmd.h
+@@ -94,7 +94,7 @@
+ #define DPNI_CMDID_GET_LINK_CFG				DPNI_CMD(0x278)
+ 
+ #define DPNI_CMDID_SET_SINGLE_STEP_CFG			DPNI_CMD(0x279)
+-#define DPNI_CMDID_GET_SINGLE_STEP_CFG			DPNI_CMD(0x27a)
++#define DPNI_CMDID_GET_SINGLE_STEP_CFG			DPNI_CMD_V2(0x27a)
+ 
+ /* Macros for accessing command fields smaller than 1byte */
+ #define DPNI_MASK(field)	\
+@@ -654,12 +654,16 @@ struct dpni_cmd_single_step_cfg {
+ 	__le16 flags;
+ 	__le16 offset;
+ 	__le32 peer_delay;
++	__le32 ptp_onestep_reg_base;
++	__le32 pad0;
+ };
+ 
+ struct dpni_rsp_single_step_cfg {
+ 	__le16 flags;
+ 	__le16 offset;
+ 	__le32 peer_delay;
++	__le32 ptp_onestep_reg_base;
++	__le32 pad0;
+ };
+ 
+ #endif /* _FSL_DPNI_CMD_H */
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpni.c b/drivers/net/ethernet/freescale/dpaa2/dpni.c
+index 6ea7db66a6322..d248a40fbc3f8 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpni.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpni.c
+@@ -2037,6 +2037,8 @@ int dpni_get_single_step_cfg(struct fsl_mc_io *mc_io,
+ 	ptp_cfg->ch_update = dpni_get_field(le16_to_cpu(rsp_params->flags),
+ 					    PTP_CH_UPDATE) ? 1 : 0;
+ 	ptp_cfg->peer_delay = le32_to_cpu(rsp_params->peer_delay);
++	ptp_cfg->ptp_onestep_reg_base =
++				  le32_to_cpu(rsp_params->ptp_onestep_reg_base);
+ 
+ 	return err;
+ }
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpni.h b/drivers/net/ethernet/freescale/dpaa2/dpni.h
+index e7b9e195b534b..f854450983983 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpni.h
++++ b/drivers/net/ethernet/freescale/dpaa2/dpni.h
+@@ -1096,12 +1096,18 @@ int dpni_set_tx_shaping(struct fsl_mc_io *mc_io,
+  * @peer_delay:	For peer-to-peer transparent clocks add this value to the
+  *		correction field in addition to the transient time update.
+  *		The value expresses nanoseconds.
++ * @ptp_onestep_reg_base: 1588 SINGLE_STEP register base address. This address
++ *			  is used to update directly the register contents.
++ *			  User has to create an address mapping for it.
++ *
++ *
+  */
+ struct dpni_single_step_cfg {
+ 	u8	en;
+ 	u8	ch_update;
+ 	u16	offset;
+ 	u32	peer_delay;
++	u32	ptp_onestep_reg_base;
+ };
+ 
+ int dpni_set_single_step_cfg(struct fsl_mc_io *mc_io,
 -- 
 2.39.5
 
