@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-162693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69806B05F56
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 955ACB05DF7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 519F51C415EA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB8031C40242
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94BE2E427C;
-	Tue, 15 Jul 2025 13:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514922E6D07;
+	Tue, 15 Jul 2025 13:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V11XtMZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abljTGdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667E62E337B;
-	Tue, 15 Jul 2025 13:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5D52E6D00;
+	Tue, 15 Jul 2025 13:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587227; cv=none; b=XQWohx5IIyLt3M5nVqq5YWP8LwbDVgCYsH/KjGVVOHjwaFRbd3GIhnXJDm9XwdTZtW4IXW6g+XW+SgWWuAqf6vcOenctO2tz3b76D6L6cJ2yoGX4K+LySPTt2EVJkYuTM3XFIQOFNAl+ohPySqwEbYxWAOYNee6Q8gbr5DIXCXE=
+	t=1752586571; cv=none; b=WV9cO3Df3Mjc7Ts0lzSv2/K7Aj3yIkKiMi/NApHJkAREIYWZzv/YQC6xwAb3lolrewepshOEcyyzVwjMrqAEeDStH17zSLvox/rZPMYTx0YJAQRRf7KVlKvnqIkqGvWL1664lcE6bsPBzrfp+uSCv9AHiHLncw7cvfFo1ztcGZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587227; c=relaxed/simple;
-	bh=XvoVb+oNm2iWh93ScbduYY7mvcy9OkmRTY/hbPDkif8=;
+	s=arc-20240116; t=1752586571; c=relaxed/simple;
+	bh=3vxas5e5u8UrAkm/YflkWF9+Q+DxO9y6mBW3EgDLgNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAj6L9ZL0O0Idxm0WPCOFdRvAFxIYnYmanjC/8eLBq8RO0BvEBcJpQuVsHQ+LB6GsOSDAeOT0gR05+fq2QZpz6JGWSlcI7E9Xj8mt7AO/SI33G304QZ2WiYfT1ldxHtSZfPhUnRiCR63NII9UsHaHsiH5ebKricyLES0PS5kBJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V11XtMZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F09C4CEF7;
-	Tue, 15 Jul 2025 13:47:06 +0000 (UTC)
+	 MIME-Version; b=LIzscHB5VoO7/nRwSVAHN2PEQodGrRchW3Gsy+SqSgwUa3PV0KhdMx9/AqXgVrWZrG37q9Wm0T9hXAeBQLPhnIvxpMq6/MJIiuNaUwM9KxBP2kbdE5nXKTNbmf9bH8uKFxNnlCHncQmVx8SeGbIdqMBMsXNAVB/bYYeyLKbwjGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abljTGdF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84536C4CEE3;
+	Tue, 15 Jul 2025 13:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587226;
-	bh=XvoVb+oNm2iWh93ScbduYY7mvcy9OkmRTY/hbPDkif8=;
+	s=korg; t=1752586570;
+	bh=3vxas5e5u8UrAkm/YflkWF9+Q+DxO9y6mBW3EgDLgNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V11XtMZ6RnFxf5VR9p/L1+hLVCXqjGCn8laUNduaUD+3lhoTKntmwa/sVt/Z7NYYV
-	 KEHO1qNrmJDh6krMrM8dG5HnnSixhsOFITZfq+O/MIr33OYy2gO1B424gvTF8klvym
-	 o/2d6cjCoyArcwwFI1Im4rcOSYhnSOSWr8IEUzJw=
+	b=abljTGdFBV3HmTQ+wKS1nsqlR48KdrOq73Q/utSQ8vr2jZ09zrtHApKYquWVqrXDx
+	 L6LCtHHb4kK59qwr/iaIGwuktYPpwopCAPb/r65S347M5sehVHE7l0HCzf2g2NLxHo
+	 4kecJft+BT//APPXcl3AMtmR251r5K3ZqS7eUGQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Corey Minyard <corey@minyard.net>,
-	Brendan Jackman <jackmanb@google.com>
-Subject: [PATCH 6.1 22/88] ipmi:msghandler: Fix potential memory corruption in ipmi_create_user()
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	David Howells <dhowells@redhat.com>,
+	LePremierHomme <kwqcheii@proton.me>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Willy Tarreau <w@1wt.eu>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 116/148] rxrpc: Fix oops due to non-existence of prealloc backlog struct
 Date: Tue, 15 Jul 2025 15:13:58 +0200
-Message-ID: <20250715130755.405588993@linuxfoundation.org>
+Message-ID: <20250715130804.950057173@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +67,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: David Howells <dhowells@redhat.com>
 
-commit fa332f5dc6fc662ad7d3200048772c96b861cf6b upstream.
+commit 880a88f318cf1d2a0f4c0a7ff7b07e2062b434a4 upstream.
 
-The "intf" list iterator is an invalid pointer if the correct
-"intf->intf_num" is not found.  Calling atomic_dec(&intf->nr_users) on
-and invalid pointer will lead to memory corruption.
+If an AF_RXRPC service socket is opened and bound, but calls are
+preallocated, then rxrpc_alloc_incoming_call() will oops because the
+rxrpc_backlog struct doesn't get allocated until the first preallocation is
+made.
 
-We don't really need to call atomic_dec() if we haven't called
-atomic_add_return() so update the if (intf->in_shutdown) path as well.
+Fix this by returning NULL from rxrpc_alloc_incoming_call() if there is no
+backlog struct.  This will cause the incoming call to be aborted.
 
-Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-ID: <aBjMZ8RYrOt6NOgi@stanley.mountain>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-[ - Dropped change to the `if (intf->in_shutdown)` block since that logic
-    doesn't exist yet.
-  - Modified out_unlock to release the srcu lock instead of the mutex
-    since we don't have the mutex here yet. ]
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Suggested-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: LePremierHomme <kwqcheii@proton.me>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Willy Tarreau <w@1wt.eu>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250708211506.2699012-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/rxrpc/call_accept.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -1241,7 +1241,7 @@ int ipmi_create_user(unsigned int
- 	}
- 	/* Not found, return an error */
- 	rv = -EINVAL;
--	goto out_kfree;
-+	goto out_unlock;
+--- a/net/rxrpc/call_accept.c
++++ b/net/rxrpc/call_accept.c
+@@ -281,6 +281,9 @@ static struct rxrpc_call *rxrpc_alloc_in
+ 	unsigned short call_tail, conn_tail, peer_tail;
+ 	unsigned short call_count, conn_count;
  
-  found:
- 	if (atomic_add_return(1, &intf->nr_users) > max_users) {
-@@ -1283,6 +1283,7 @@ int ipmi_create_user(unsigned int
- 
- out_kfree:
- 	atomic_dec(&intf->nr_users);
-+out_unlock:
- 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
- 	vfree(new_user);
- 	return rv;
++	if (!b)
++		return NULL;
++
+ 	/* #calls >= #conns >= #peers must hold true. */
+ 	call_head = smp_load_acquire(&b->call_backlog_head);
+ 	call_tail = b->call_backlog_tail;
 
 
 
