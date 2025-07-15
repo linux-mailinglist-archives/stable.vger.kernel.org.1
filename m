@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-162183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21116B05C19
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF755B05EDF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81EEE1C21A9F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EA2B1897746
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCE32E4986;
-	Tue, 15 Jul 2025 13:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987182EBDD0;
+	Tue, 15 Jul 2025 13:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gkV1yZtr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DspTENol"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C60A2E4984;
-	Tue, 15 Jul 2025 13:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568AA2EBDCA;
+	Tue, 15 Jul 2025 13:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585894; cv=none; b=KvIfEIc+LCTcDkZM5HlZlg8a2JmyEYaudhTjieosXhbv7NUw4AKpSGwM5X9yG5uR6GY8cqRqiIVtG7pBCeFwJs3Zdix0aatVZ5WO1xPNqIKhPEdD1C9hamxGcZ2gQMzHnKF+JC9/luovEEZIiUIjRB3ZE4wAdDeUVX76b+cJQzU=
+	t=1752586941; cv=none; b=I+3iTwJPu83K515WY3vvhh48+SyTVYXX8vgfRM3fGattKLExC1dN3MMyP3VDsHToyaAson3sdrdw3Fe5wh41/DkIDSnifALuwja+b4cPsurloeHlfpsh/cWkLTTLin9cYcx8/y7fjIyK4Bji96rQ4thQ7omgOvqTIzY9cMg6d9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585894; c=relaxed/simple;
-	bh=CxlemCWH6nzzt2Gsva6eA7CkTGpbtJgkp9Ro0wR8cpc=;
+	s=arc-20240116; t=1752586941; c=relaxed/simple;
+	bh=Fz68Na8SOYc4FtOAPkOox6yqsbiXrLJez2DqChRPGbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AcdwrzC+wkcBQbmUf+naIz5AhKp74O9RaQZbhEDKMn67Euj1Q3TyWnYhRCbDaxure5V+2XpQ8b/pPaPhByZ9q1gixfI+yPjjgRVJqKtaFmYVcLhlREX4D538ZU1PHRmj/VaNfalHR6OujkhIyNHbg7+vH6YXxYa5UXamkwV/NLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkV1yZtr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FA7C4CEE3;
-	Tue, 15 Jul 2025 13:24:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tnj7wz/X6A6J8K/QsTRviQAA7meACvEzTxeYt3MGEVzANYoxpCFH5YI0f30OW1EPe+ULCWUoQq0h5qBd8dBlhulZmtxgTLtTv/UmErpr2ROM81CyjvumlNPkUwaKv2COma6BqCochCYMDdg9fX8Kmc/DSML7dP0E2lo6uOMV4Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DspTENol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF94C4CEE3;
+	Tue, 15 Jul 2025 13:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585893;
-	bh=CxlemCWH6nzzt2Gsva6eA7CkTGpbtJgkp9Ro0wR8cpc=;
+	s=korg; t=1752586941;
+	bh=Fz68Na8SOYc4FtOAPkOox6yqsbiXrLJez2DqChRPGbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gkV1yZtreclyljWsXiqcOFfS14Twob+7fo4qDjJf8GYlnOUuNlUkYpEps+U55KvZv
-	 myQt2yaKd/ozGDi1YvXVWaXWZGzg/k0vF0q2R8e3X4+QAXoIJtm+g/HZ3+gJrENHHj
-	 kS4i7HsMSi0vJYd2tsdXs0126VOGHUHWxZznUsTE=
+	b=DspTENollMyph+9E2JQDhvBjFbybhl6gl5P4mdANs81UsFWore/caf1BpAAFpZMve
+	 VGsYb7DnQkBWCO58/n8AU9cGuFGykRv4eXdQObg43SLvWmLMDGY9dJSz+Sp1aw6rdZ
+	 8E+STQ6/YzMKG/m/aJVC6ZVRsoXm7Q2MgX+SHNH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.6 048/109] Revert "usb: gadget: u_serial: Add null pointer check in gs_start_io"
+	Matthew Auld <matthew.auld@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Akshata Jahagirdar <akshata.jahagirdar@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.15 089/192] drm/xe/bmg: fix compressed VRAM handling
 Date: Tue, 15 Jul 2025 15:13:04 +0200
-Message-ID: <20250715130800.798395989@linuxfoundation.org>
+Message-ID: <20250715130818.480576520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +63,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit f6c7bc4a6823a0a959f40866a1efe99bd03c2c5b upstream.
+commit fee58ca135a7b979c8b75e6d2eac60d695f9209b upstream.
 
-This reverts commit ffd603f214237e250271162a5b325c6199a65382.
+There looks to be an issue in our compression handling when the BO pages
+are very fragmented, where we choose to skip the identity map and
+instead fall back to emitting the PTEs by hand when migrating memory,
+such that we can hopefully do more work per blit operation. However in
+such a case we need to ensure the src PTEs are correctly tagged with a
+compression enabled PAT index on dgpu xe2+, otherwise the copy will
+simply treat the src memory as uncompressed, leading to corruption if
+the memory was compressed by the user.
 
-Commit ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in
-gs_start_io") adds null pointer checks at the beginning of the
-gs_start_io() function to prevent a null pointer dereference. However,
-these checks are redundant because the function's comment already
-requires callers to hold the port_lock and ensure port.tty and port_usb
-are not null. All existing callers already follow these rules.
+To fix this pass along use_comp_pat into emit_pte() on the src side, to
+indicate that compression should be considered.
 
-The true cause of the null pointer dereference is a race condition. When
-gs_start_io() calls either gs_start_rx() or gs_start_tx(), the port_lock
-is temporarily released for usb_ep_queue(). This allows port.tty and
-port_usb to be cleared.
+v2 (Jonathan): tweak the commit message
 
-Fixes: ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in gs_start_io")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250617050844.1848232-1-khtsai@google.com
+Fixes: 523f191cc0c7 ("drm/xe/xe_migrate: Handle migration logic for xe2+ dgfx")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Cc: <stable@vger.kernel.org> # v6.12+
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://lore.kernel.org/r/20250701103949.83116-2-matthew.auld@intel.com
+(cherry picked from commit f7a2fd776e57bd6468644bdecd91ab3aba57ba58)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/xe/xe_migrate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -539,20 +539,16 @@ static int gs_alloc_requests(struct usb_
- static int gs_start_io(struct gs_port *port)
- {
- 	struct list_head	*head = &port->read_pool;
--	struct usb_ep		*ep;
-+	struct usb_ep		*ep = port->port_usb->out;
- 	int			status;
- 	unsigned		started;
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -860,7 +860,7 @@ struct dma_fence *xe_migrate_copy(struct
+ 		if (src_is_vram && xe_migrate_allow_identity(src_L0, &src_it))
+ 			xe_res_next(&src_it, src_L0);
+ 		else
+-			emit_pte(m, bb, src_L0_pt, src_is_vram, copy_system_ccs,
++			emit_pte(m, bb, src_L0_pt, src_is_vram, copy_system_ccs || use_comp_pat,
+ 				 &src_it, src_L0, src);
  
--	if (!port->port_usb || !port->port.tty)
--		return -EIO;
--
- 	/* Allocate RX and TX I/O buffers.  We can't easily do this much
- 	 * earlier (with GFP_KERNEL) because the requests are coupled to
- 	 * endpoints, as are the packet sizes we'll be using.  Different
- 	 * configurations may use different endpoints with a given port;
- 	 * and high speed vs full speed changes packet sizes too.
- 	 */
--	ep = port->port_usb->out;
- 	status = gs_alloc_requests(ep, head, gs_read_complete,
- 		&port->read_allocated);
- 	if (status)
+ 		if (dst_is_vram && xe_migrate_allow_identity(src_L0, &dst_it))
 
 
 
