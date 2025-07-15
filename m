@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57CFB05E81
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 782BBB05DA6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCA635010F5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274741894F31
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D672E54D0;
-	Tue, 15 Jul 2025 13:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41622EA46B;
+	Tue, 15 Jul 2025 13:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1xnvtuf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shvuVlLW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969A72EA73B;
-	Tue, 15 Jul 2025 13:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1B723ABAF;
+	Tue, 15 Jul 2025 13:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586886; cv=none; b=TKnXXlIlVmBnQxrj2dagrXSR3GU3jF+JSXXElqf/goDPW5RwUdPid9bn18FSaKiDM2HHjb9GGpnyp6xeqsORXeU6pVvhoRw6KvAQV2fYyGVStQP2eC9DN14IIHv9k06cadM0wsj0GMzN2lvgx19xGa0QINInSoBvtfyJvL7UFVs=
+	t=1752586417; cv=none; b=fGAbb2v27drOYTA/XM0kWwQ+1IcPn+qPKS7ldIXcGbOVrC5nzOMvf+Zxus54iOVk3cptB5CHmY9eW6AQMCoi7eAvOVnBjVa8p4HgHpjLKP6HwSocl0ODOlaAvNzJ31iy1tboSigsSR2pGskCJD7q8UnMku2FFBYSGUlBJd7xvVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586886; c=relaxed/simple;
-	bh=HtMwZfVwUk4pN47tEyf6a43vJ1ICAkEJBBm82jH8daU=;
+	s=arc-20240116; t=1752586417; c=relaxed/simple;
+	bh=vQMxG+dtStwQWd3JoOoTDMvuu+YEWnj8bAEsu3NaAyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hh8ScEMBYMKZ/t+OqoyAJoFrGtd24wbS6jlEHtIQqq5KKW6eI22EEBqxAUYEFN9bzKUrfezShhN+lzeW2TVfnDc8+o7fhkWXUXa8UCoryZ6so5ki2Y9TDdJrWWbhc9of32lXY4qjU8sb276AHf1RsMJNktqm8yBt4DpIniDOQbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1xnvtuf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD5DC4CEF8;
-	Tue, 15 Jul 2025 13:41:25 +0000 (UTC)
+	 MIME-Version; b=WY0RbgakdrwyztF1IWgMVDPi2AGeFF3GaZXlNSbiLhQQd08ROqENi0SMlvQx5KDp4zCL/J18r2fIwM1gPhJEK0aWLeMZjch9+vvhAP8N6VlZXuHXOJYfzrVgX7cdAQoMYFit9cLl4+z+br+/QAz6stUULuW6Iu+8wddag8t66DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shvuVlLW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78EDC4CEE3;
+	Tue, 15 Jul 2025 13:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586886;
-	bh=HtMwZfVwUk4pN47tEyf6a43vJ1ICAkEJBBm82jH8daU=;
+	s=korg; t=1752586417;
+	bh=vQMxG+dtStwQWd3JoOoTDMvuu+YEWnj8bAEsu3NaAyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q1xnvtuf0eaTDdi+3Mt/9B8JAxs0BW4Jy5c9nXIN9h8qXxldwQ6QUeyjWCgfW/CWN
-	 hGZjT5cX/Oqp7MIr/u1MhMdEhAjDFvvIgWBuHdeILNEq5KKZkCZqQs6jOi5jcKd1y9
-	 18wAdGws3a4G8mMlYoH/mX7nebzASJNI4yLW0Ex8=
+	b=shvuVlLWGMJzvHd05JX0KbPXJ/4HUC62Verl/qAjOwlJ+qGPpC9+EPmPj7FmPE7J2
+	 WZwMPq0IlLqX2cHyI0e7Yk2c2P4p5OHHaPa4zSZwMUJ4VpuRESsgs3/ODOGuQB5gfQ
+	 xbRn6p6Yw9SBLObqH8pjkCBKICSWc/36yOuRA5bM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Johl Brown <johlbrown@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.15 084/192] drm/amdkfd: add hqd_sdma_get_doorbell callbacks for gfx7/8
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 057/148] mmc: sdhci: Add a helper function for dump register in dynamic debug mode
 Date: Tue, 15 Jul 2025 15:12:59 +0200
-Message-ID: <20250715130818.289491027@linuxfoundation.org>
+Message-ID: <20250715130802.610804014@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit 34659c1a1f4fd4c148ab13e13b11fd64df01ffcd upstream.
+commit 2881ba9af073faa8ee7408a8d1e0575e50eb3f6c upstream.
 
-These were missed when support was added for other generations.
-The callbacks are called unconditionally so we need to make
-sure all generations have them.
+Add a helper function for dump register in dynamic debug mode.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4304
-Link: https://github.com/ROCm/ROCm/issues/4965
-Fixes: bac38ca8c475 ("drm/amdkfd: implement per queue sdma reset for gfx 9.4+")
-Cc: Jonathan Kim <jonathan.kim@amd.com>
-Reported-by: Johl Brown <johlbrown@gmail.com>
-Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1e9d17a5dcf1242e9518e461d8e63ad35240e49e)
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250606110121.96314-3-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c |    8 ++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v8.c |    8 ++++++++
- 2 files changed, 16 insertions(+)
+ drivers/mmc/host/sdhci.h |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c
-@@ -561,6 +561,13 @@ static uint32_t read_vmid_from_vmfault_r
- 	return REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS, VMID);
- }
+--- a/drivers/mmc/host/sdhci.h
++++ b/drivers/mmc/host/sdhci.h
+@@ -801,4 +801,20 @@ void sdhci_abort_tuning(struct sdhci_hos
+ void sdhci_set_data_timeout_irq(struct sdhci_host *host, bool enable);
+ void __sdhci_set_timeout(struct sdhci_host *host, struct mmc_command *cmd);
  
-+static uint32_t kgd_hqd_sdma_get_doorbell(struct amdgpu_device *adev,
-+					  int engine, int queue)
++#if defined(CONFIG_DYNAMIC_DEBUG) || \
++	(defined(CONFIG_DYNAMIC_DEBUG_CORE) && defined(DYNAMIC_DEBUG_MODULE))
++#define SDHCI_DBG_ANYWAY 0
++#elif defined(DEBUG)
++#define SDHCI_DBG_ANYWAY 1
++#else
++#define SDHCI_DBG_ANYWAY 0
++#endif
 +
-+{
-+	return 0;
-+}
++#define sdhci_dbg_dumpregs(host, fmt)					\
++do {									\
++	DEFINE_DYNAMIC_DEBUG_METADATA(descriptor, fmt);			\
++	if (DYNAMIC_DEBUG_BRANCH(descriptor) ||	SDHCI_DBG_ANYWAY)	\
++		sdhci_dumpregs(host);					\
++} while (0)
 +
- const struct kfd2kgd_calls gfx_v7_kfd2kgd = {
- 	.program_sh_mem_settings = kgd_program_sh_mem_settings,
- 	.set_pasid_vmid_mapping = kgd_set_pasid_vmid_mapping,
-@@ -578,4 +585,5 @@ const struct kfd2kgd_calls gfx_v7_kfd2kg
- 	.set_scratch_backing_va = set_scratch_backing_va,
- 	.set_vm_context_page_table_base = set_vm_context_page_table_base,
- 	.read_vmid_from_vmfault_reg = read_vmid_from_vmfault_reg,
-+	.hqd_sdma_get_doorbell = kgd_hqd_sdma_get_doorbell,
- };
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v8.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v8.c
-@@ -582,6 +582,13 @@ static void set_vm_context_page_table_ba
- 			lower_32_bits(page_table_base));
- }
- 
-+static uint32_t kgd_hqd_sdma_get_doorbell(struct amdgpu_device *adev,
-+					  int engine, int queue)
-+
-+{
-+	return 0;
-+}
-+
- const struct kfd2kgd_calls gfx_v8_kfd2kgd = {
- 	.program_sh_mem_settings = kgd_program_sh_mem_settings,
- 	.set_pasid_vmid_mapping = kgd_set_pasid_vmid_mapping,
-@@ -599,4 +606,5 @@ const struct kfd2kgd_calls gfx_v8_kfd2kg
- 			get_atc_vmid_pasid_mapping_info,
- 	.set_scratch_backing_va = set_scratch_backing_va,
- 	.set_vm_context_page_table_base = set_vm_context_page_table_base,
-+	.hqd_sdma_get_doorbell = kgd_hqd_sdma_get_doorbell,
- };
+ #endif /* __SDHCI_HW_H */
 
 
 
