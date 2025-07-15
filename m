@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7EC0B05C0A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A88B05B66
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70C274543E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE9F63B7613
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA792E2F0C;
-	Tue, 15 Jul 2025 13:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5704C19066B;
+	Tue, 15 Jul 2025 13:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRX9HEGQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amID4KTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A34F1F4CB3;
-	Tue, 15 Jul 2025 13:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B872E2657;
+	Tue, 15 Jul 2025 13:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585830; cv=none; b=EvK9TLeREmCehtlnxFm48Og+NjJftMrf9NbJ3HAZlYlAqe0HTnKZdr3Qny+XFkuFArrILqNdbM5O+DGPQDazlFc0IaQnr0Ain2iZlLxtcyvSThVLv6K+WhF2UTLzHm7lmH46ESYQQ9nRLGJe0wXkraKNJNxeIEdGjw0qEnAWd3c=
+	t=1752585532; cv=none; b=RBAz03R1BQeZ0noT3z/uYPMgWV8bDL6BoLi7xV4R+KeLevpfqqYSbu9LbYReOPfXX/NRRkIWWPfJBvlpOAqp8fuYnZovf4fkCgVuuBqHYFQDd2CkPQ8RLoRgdZedO+OCX/uLKasxcF9VWUQ2g+jW8xIeuJsy+aCmdWMoGO4LIg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585830; c=relaxed/simple;
-	bh=d0IZcdwCqx4w+9iku7gGUaXgAIeNW+EY1mzJMlF4q44=;
+	s=arc-20240116; t=1752585532; c=relaxed/simple;
+	bh=hdRqsUUBUDy3+qD+imm0FxMlaCMTR6siVMoIC4GBpiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6VRXYlLOipH/wYq/PTNFL6UPJC/p1Y9Bju9tnAZi0Rc4kTw47ftDqwFEp4XFEo4oFhiOB0mFrSo5zffMEzkAq6wZjjSS/YhAMlLuPpvObsfAREpeJO0/zeSGrCA8RYDRDE9NvaRjRdyB0Js6vELzMw7bpU3/FK0X9Hg7z+mD0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRX9HEGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4544C4CEE3;
-	Tue, 15 Jul 2025 13:23:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tKl0gF/nihIUlsBHIgONtsjfE3L0sxND+MTVQkl/aAvyjbb0GqaXtAMJ9XMPWN39G/lzVmTidm3bvmYEO58bka/pLreOWCRokn7IOSw+T3lMk3Z9YwkvxBEKyW9c05EwIYegnrBrBlKqi6qhICI9gzc0o9SPxOUbCmbJf+m8gMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amID4KTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8F2C4CEE3;
+	Tue, 15 Jul 2025 13:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585830;
-	bh=d0IZcdwCqx4w+9iku7gGUaXgAIeNW+EY1mzJMlF4q44=;
+	s=korg; t=1752585532;
+	bh=hdRqsUUBUDy3+qD+imm0FxMlaCMTR6siVMoIC4GBpiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRX9HEGQnuuMKYyGW8tdwOeD6a5a82zpYh+CTM9RinCTqO+5wTwAHlleO4D349Knc
-	 BJLk86M92TfUnb04kX9EoEqiw600J+r+5IYbSnW2dZ1ibbxhH4+7ElX6xPNOCFuwxm
-	 taTgYq1gGbBksU4yXaC7JlYhTHTrLr7RUN/m8J4g=
+	b=amID4KTQJeHe+gwEBSHI1sWrR+LkWdUYY+S+CzTdFILmqsW59sbtGqqvbeF/+X39G
+	 qgIyo4m3CqIinZfeYC0yDO/ReDyb/XrPMBKJV8+uQxMnX+c0DXSp7GcDKFJpVoKJbz
+	 wdEnt2HpeR0o9jlLrgRvqXZjsyW7Pf82E/Kaj7/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/109] ASoC: cs35l56: probe() should fail if the device ID is not recognized
-Date: Tue, 15 Jul 2025 15:12:22 +0200
-Message-ID: <20250715130759.129329241@linuxfoundation.org>
+	Matthew Brost <matthew.brost@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: [PATCH 6.12 075/163] drm/sched: Increment job count before swapping tail spsc queue
+Date: Tue, 15 Jul 2025 15:12:23 +0200
+Message-ID: <20250715130811.744934235@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 3b3312f28ee2d9c386602f8521e419cfc69f4823 ]
+commit 8af39ec5cf2be522c8eb43a3d8005ed59e4daaee upstream.
 
-Return an error from driver probe if the DEVID read from the chip is not
-one supported by this driver.
+A small race exists between spsc_queue_push and the run-job worker, in
+which spsc_queue_push may return not-first while the run-job worker has
+already idled due to the job count being zero. If this race occurs, job
+scheduling stops, leading to hangs while waiting on the job’s DMA
+fences.
 
-In cs35l56_hw_init() there is a check for valid DEVID, but the invalid
-case was returning the value of ret. At this point in the code ret == 0
-so the caller would think that cs35l56_hw_init() was successful.
+Seal this race by incrementing the job count before appending to the
+SPSC queue.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 84851aa055c8 ("ASoC: cs35l56: Move part of cs35l56_init() to shared library")
-Link: https://patch.msgid.link/20250703102521.54204-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This race was observed on a drm-tip 6.16-rc1 build with the Xe driver in
+an SVM test case.
+
+Fixes: 1b1f42d8fde4 ("drm: move amd_gpu_scheduler into common location")
+Fixes: 27105db6c63a ("drm/amdgpu: Add SPSC queue to scheduler.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://lore.kernel.org/r/20250613212013.719312-1-matthew.brost@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs35l56-shared.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/drm/spsc_queue.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
-index d3db89c93b331..25ee7477709e7 100644
---- a/sound/soc/codecs/cs35l56-shared.c
-+++ b/sound/soc/codecs/cs35l56-shared.c
-@@ -661,7 +661,7 @@ int cs35l56_hw_init(struct cs35l56_base *cs35l56_base)
- 		break;
- 	default:
- 		dev_err(cs35l56_base->dev, "Unknown device %x\n", devid);
--		return ret;
-+		return -ENODEV;
- 	}
+--- a/include/drm/spsc_queue.h
++++ b/include/drm/spsc_queue.h
+@@ -70,9 +70,11 @@ static inline bool spsc_queue_push(struc
  
- 	ret = regmap_read(cs35l56_base->regmap, CS35L56_DSP_RESTRICT_STS1, &secured);
--- 
-2.39.5
-
+ 	preempt_disable();
+ 
++	atomic_inc(&queue->job_count);
++	smp_mb__after_atomic();
++
+ 	tail = (struct spsc_node **)atomic_long_xchg(&queue->tail, (long)&node->next);
+ 	WRITE_ONCE(*tail, node);
+-	atomic_inc(&queue->job_count);
+ 
+ 	/*
+ 	 * In case of first element verify new node will be visible to the consumer
 
 
 
