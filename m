@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-162403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009A8B05D67
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6486B05CAF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3782416F164
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 843B31888B00
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF2F2E54CB;
-	Tue, 15 Jul 2025 13:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BAA2EA48C;
+	Tue, 15 Jul 2025 13:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjbRzfCw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vrou8X7j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5A71A5B9D;
-	Tue, 15 Jul 2025 13:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154192E7BD8;
+	Tue, 15 Jul 2025 13:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586465; cv=none; b=Jhy/b+6RPk0rw9RRP3bGEpguIaUHJIgYHlWJseSu18M3emQ+fxzhT260gh0Ku0Vj62inTuYQeTrTp/+3gldGduIu2UaCsnP6OJc5NTmkcyVWbSx1XF9BrUVoEVrULLCRP+ZHu3ZefVYZjzDLiPCdEJZcwuAHuWHbO0ycFo4GVfk=
+	t=1752586108; cv=none; b=PtAVJagwuEkoBRfKWeS+AsRrftBn8UMhLxZx/3/XX4jWxo4eHgXKFJrkPfQqJe1tJkEvq1157h6VSgXIGiq9J4iI5txgONFKd/v5Dg5EL6YUQZoPU+GhTFJUPFHY7qcTcPr8sissgfeEr4wUYRxsFFZ1HZbqsW2P/6H/RdAFYSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586465; c=relaxed/simple;
-	bh=YB5kjyKU8lgmbrwkYaiO8MSWNbrbcpZaL7PIQ/36abk=;
+	s=arc-20240116; t=1752586108; c=relaxed/simple;
+	bh=GRm7+1Ht4lEGa2QuOD3NnmFqiGSQzYy09FRvhT3QX6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5TiP13JnjLyTUGPpWR+dLAT3h/AlYQlAZSzkL+7XrjKCVGCIjBiIVotrd7K1gNfByDO/zcGGFKtgU6RlwgE2ef+8vQDuqcYf5ARAGTRSTWhv6Avs6vZkgEKzXUZU95v60sMDCfsTNv1z0wkCOs5OM5qYcsG4dbKfcuUa7IKieM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjbRzfCw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4AD4C4CEE3;
-	Tue, 15 Jul 2025 13:34:24 +0000 (UTC)
+	 MIME-Version; b=ucfK4rY/WNsrm0Mmws9mA/akcEiBSXAkQDZP8fhdb03n5m4FiCJgdSnBgtvpPjk1i5cCpZ07xTy0tqHWa9Oa0mqiWVZLnvDcPmXrGIOK2hqowW7/KA0MjyRnT4ydn9tTphs0chSy6jGzgmNNYPbvVipeLg0VUByWtP+GL8m0Fmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vrou8X7j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD21C4CEE3;
+	Tue, 15 Jul 2025 13:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586465;
-	bh=YB5kjyKU8lgmbrwkYaiO8MSWNbrbcpZaL7PIQ/36abk=;
+	s=korg; t=1752586107;
+	bh=GRm7+1Ht4lEGa2QuOD3NnmFqiGSQzYy09FRvhT3QX6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XjbRzfCwP67GLp2UDv+c+2dT6zTbblfn1+slMqNGiuCSYBElDACRM61pLrrI7/U5/
-	 EUKheCUl1CMdthYHL/jDNdjxIfvZQSV4Q+fUlHVVBEW6UCgSXOOKi0sfYSzjU86FHG
-	 gxBG46PaE0c2wHrWJKicGwSjFq14dAMqNXW00u+g=
+	b=Vrou8X7jphksJwCSpUXM4UgHmr/VYPZbz8JHsbgTlQwpbgNTYzxmKUTNA06VYkh0f
+	 hHvzYc22LNDic852uHNkBLuMHgCVDfFGX8zEjVOMzrHveKAHnOh/qJpb5KGHmHwdLo
+	 F7j/rmIsPRj7J6Sa9MbmRKulHxHHdVoroZnlcIGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 076/148] wifi: ath6kl: remove WARN on bad firmware input
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	David Howells <dhowells@redhat.com>,
+	LePremierHomme <kwqcheii@proton.me>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Willy Tarreau <w@1wt.eu>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 19/77] rxrpc: Fix oops due to non-existence of prealloc backlog struct
 Date: Tue, 15 Jul 2025 15:13:18 +0200
-Message-ID: <20250715130803.364392736@linuxfoundation.org>
+Message-ID: <20250715130752.469960378@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +67,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit e7417421d89358da071fd2930f91e67c7128fbff ]
+commit 880a88f318cf1d2a0f4c0a7ff7b07e2062b434a4 upstream.
 
-If the firmware gives bad input, that's nothing to do with
-the driver's stack at this point etc., so the WARN_ON()
-doesn't add any value. Additionally, this is one of the
-top syzbot reports now. Just print a message, and as an
-added bonus, print the sizes too.
+If an AF_RXRPC service socket is opened and bound, but calls are
+preallocated, then rxrpc_alloc_incoming_call() will oops because the
+rxrpc_backlog struct doesn't get allocated until the first preallocation is
+made.
 
-Reported-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
-Tested-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
-Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250617114529.031a677a348e.I58bf1eb4ac16a82c546725ff010f3f0d2b0cca49@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by returning NULL from rxrpc_alloc_incoming_call() if there is no
+backlog struct.  This will cause the incoming call to be aborted.
+
+Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Suggested-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: LePremierHomme <kwqcheii@proton.me>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Willy Tarreau <w@1wt.eu>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250708211506.2699012-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath6kl/bmi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/rxrpc/call_accept.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
-index af98e871199d3..5a9e93fd1ef42 100644
---- a/drivers/net/wireless/ath/ath6kl/bmi.c
-+++ b/drivers/net/wireless/ath/ath6kl/bmi.c
-@@ -87,7 +87,9 @@ int ath6kl_bmi_get_target_info(struct ath6kl *ar,
- 		 * We need to do some backwards compatibility to make this work.
- 		 */
- 		if (le32_to_cpu(targ_info->byte_count) != sizeof(*targ_info)) {
--			WARN_ON(1);
-+			ath6kl_err("mismatched byte count %d vs. expected %zd\n",
-+				   le32_to_cpu(targ_info->byte_count),
-+				   sizeof(*targ_info));
- 			return -EINVAL;
- 		}
+--- a/net/rxrpc/call_accept.c
++++ b/net/rxrpc/call_accept.c
+@@ -270,6 +270,9 @@ static struct rxrpc_call *rxrpc_alloc_in
+ 	unsigned short call_tail, conn_tail, peer_tail;
+ 	unsigned short call_count, conn_count;
  
--- 
-2.39.5
-
++	if (!b)
++		return NULL;
++
+ 	/* #calls >= #conns >= #peers must hold true. */
+ 	call_head = smp_load_acquire(&b->call_backlog_head);
+ 	call_tail = b->call_backlog_tail;
 
 
 
