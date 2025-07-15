@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-162019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6010FB05B2D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:18:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A10CB05B39
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88A6256477E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD6FD743199
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE6C2D839A;
-	Tue, 15 Jul 2025 13:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627B42E2EF9;
+	Tue, 15 Jul 2025 13:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/ecTeHI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZNFMYFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7883419066B;
-	Tue, 15 Jul 2025 13:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E62E193077;
+	Tue, 15 Jul 2025 13:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585457; cv=none; b=GhO4blIVvrPT3bN3m5pmwOqJh+cskC4yjPOYfQ0ohOkdrkmZtJz+G/EPyEgy8mjeKZxtqeEmIOc9kmQNxdwdZlTpy4inu6u3tlJ/fIQsKh/i3C40QtlL/mvEvZ8ePSi55HScTVty3UkZ/FsUjobwstaKzK9yUefKT3Ne64cVypc=
+	t=1752585460; cv=none; b=S7hGSdzq91BMlEs1yJ3RP1crk0cn86n6z1hHUCyZo99q4ki5miIYST+34j5mUzcKvloZFubmI8sRoTH2+9w1j4EOZrsTMwuFknzk9hkmB5PpFegFHVJ3oNLS2LMT4VVcpuXuhhuUqJoY1vgfh2/zzIip3GhTN23mW3GUgYjKY5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585457; c=relaxed/simple;
-	bh=IfN5R86DNDo1ubNRS7VGmtmLFjRs06lT0kVf35qQgFI=;
+	s=arc-20240116; t=1752585460; c=relaxed/simple;
+	bh=IsXvnjg8nsimW3pshumVTAPgTDOO8ycJhNDEB5ltTZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O18K7dZWmVeV9fCi92MRSnNvmolUUFKlaFMI+msqFVzuziwxAyGDiFq400+FMPYT+B4riKrmjTUWfCkEQFVQ9ebnApNIKDOYJnMHN5X+gpo7R0ISsJjfv0yayVi3T4KrnP5aJIcALZgVc6KyofNxoPlrYxIk/DtrBDYGjkQNa0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/ecTeHI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B560C4CEE3;
-	Tue, 15 Jul 2025 13:17:36 +0000 (UTC)
+	 MIME-Version; b=t+LJVCx/WiVeeCk10visBShhXvaSEkeIXTa4l08iS0ybRjnAQqG5lePb2uCOdlpqIiMqKfihpyJGDiS4mjJIJxbGZseHSMGsHG3yOsEFIQ46SGehyMFRkL9JBd6Fc/Qs/IiwVdwK+CiNKhzGXBWJNU+QOG6PY4wNWCUAnlDukko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZNFMYFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53EEC4CEE3;
+	Tue, 15 Jul 2025 13:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585457;
-	bh=IfN5R86DNDo1ubNRS7VGmtmLFjRs06lT0kVf35qQgFI=;
+	s=korg; t=1752585460;
+	bh=IsXvnjg8nsimW3pshumVTAPgTDOO8ycJhNDEB5ltTZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/ecTeHIoEIKLdKB5DO8jduAqj8TezEv/U229sOtuDPUc9EDmbn5njwdQsKXnWoGK
-	 SCMPkM1dbRB6yBIlwvzTeyCaM/gWM6SMlf6wd9gdBNA8BrfZhkU0fVyOdV5n56X2K9
-	 iSI9IUAyDiv4vahjyURCp1gnOv+rfx9SIvscv1X8=
+	b=FZNFMYFU/UhSVG3w/ZZ0/AqgybTRwMeI0DoyHODoEDzInsgM8o/wOgpjt6n4h/PzI
+	 IGG3fJgTUIHz1YfiADyBBgR2CRV6TC1M4PLyp49xfHREavAegT5yfg9rkLbzOcdxQf
+	 FYXxGafiBmJOEklveXnamM0Yt4oNaMLch4bzVY4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,13 +46,13 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Howells <dhowells@redhat.com>,
 	LePremierHomme <kwqcheii@proton.me>,
 	Marc Dionne <marc.dionne@auristor.com>,
+	Willy Tarreau <w@1wt.eu>,
 	Simon Horman <horms@kernel.org>,
 	linux-afs@lists.infradead.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/163] rxrpc: Fix bug due to prealloc collision
-Date: Tue, 15 Jul 2025 15:11:54 +0200
-Message-ID: <20250715130810.611460083@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 047/163] rxrpc: Fix oops due to non-existence of prealloc backlog struct
+Date: Tue, 15 Jul 2025 15:11:55 +0200
+Message-ID: <20250715130810.650040389@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
 References: <20250715130808.777350091@linuxfoundation.org>
@@ -73,56 +73,43 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 69e4186773c6445b258fb45b6e1df18df831ec45 ]
+commit 880a88f318cf1d2a0f4c0a7ff7b07e2062b434a4 upstream.
 
-When userspace is using AF_RXRPC to provide a server, it has to preallocate
-incoming calls and assign to them call IDs that will be used to thread
-related recvmsg() and sendmsg() together.  The preallocated call IDs will
-automatically be attached to calls as they come in until the pool is empty.
+If an AF_RXRPC service socket is opened and bound, but calls are
+preallocated, then rxrpc_alloc_incoming_call() will oops because the
+rxrpc_backlog struct doesn't get allocated until the first preallocation is
+made.
 
-To the kernel, the call IDs are just arbitrary numbers, but userspace can
-use the call ID to hold a pointer to prepared structs.  In any case, the
-user isn't permitted to create two calls with the same call ID (call IDs
-become available again when the call ends) and EBADSLT should result from
-sendmsg() if an attempt is made to preallocate a call with an in-use call
-ID.
+Fix this by returning NULL from rxrpc_alloc_incoming_call() if there is no
+backlog struct.  This will cause the incoming call to be aborted.
 
-However, the cleanup in the error handling will trigger both assertions in
-rxrpc_cleanup_call() because the call isn't marked complete and isn't
-marked as having been released.
-
-Fix this by setting the call state in rxrpc_service_prealloc_one() and then
-marking it as being released before calling the cleanup function.
-
-Fixes: 00e907127e6f ("rxrpc: Preallocate peers, conns and calls for incoming service requests")
 Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Suggested-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: LePremierHomme <kwqcheii@proton.me>
 cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Willy Tarreau <w@1wt.eu>
 cc: Simon Horman <horms@kernel.org>
 cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/20250708211506.2699012-2-dhowells@redhat.com
+Link: https://patch.msgid.link/20250708211506.2699012-3-dhowells@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/call_accept.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/rxrpc/call_accept.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
-index 0f5a1d77b890f..65ef58ab7aa0c 100644
 --- a/net/rxrpc/call_accept.c
 +++ b/net/rxrpc/call_accept.c
-@@ -149,6 +149,7 @@ static int rxrpc_service_prealloc_one(struct rxrpc_sock *rx,
+@@ -254,6 +254,9 @@ static struct rxrpc_call *rxrpc_alloc_in
+ 	unsigned short call_tail, conn_tail, peer_tail;
+ 	unsigned short call_count, conn_count;
  
- id_in_use:
- 	write_unlock(&rx->call_lock);
-+	rxrpc_prefail_call(call, RXRPC_CALL_LOCAL_ERROR, -EBADSLT);
- 	rxrpc_cleanup_call(call);
- 	_leave(" = -EBADSLT");
- 	return -EBADSLT;
--- 
-2.39.5
-
++	if (!b)
++		return NULL;
++
+ 	/* #calls >= #conns >= #peers must hold true. */
+ 	call_head = smp_load_acquire(&b->call_backlog_head);
+ 	call_tail = b->call_backlog_tail;
 
 
 
