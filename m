@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599E5B05C13
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:27:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8D6B05E42
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:51:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 173EC1C219C3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFFA3172F8D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7A42E3B08;
-	Tue, 15 Jul 2025 13:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5274D2E9EDF;
+	Tue, 15 Jul 2025 13:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvjK7iH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r52BkJHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE0C2E3AF9;
-	Tue, 15 Jul 2025 13:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C962E2F0C;
+	Tue, 15 Jul 2025 13:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585880; cv=none; b=e7FraSYetIMYQNGcdhIsDXonXRw5avYEAJ3lsc0YwpZZRS8y4dL7kV6AniiIvA0IejpVPa1JKf8CxKYU4JrUnfuybFf265tYu3Y5kJkwsJIhMvLFgOUXwSbRClbXkKCluzSZ4IYBiCAp9ml2B4hMraq+YtmPGXfKZIpqLZMZcxM=
+	t=1752586804; cv=none; b=Ec1zwXSyj0TZlpUw7XvQgdtvVb+ziDhGCiUmnqXRwsbAmRyfwC0YgYkbUfk+yECBT1I8C3sbBt+9MRdENdYr48tmJ3mQTl5bNBkDFQFMLlIXaAKxv/whUSll04lSloeBIoT2VH7u6oNdZJLb+0RvMjPp0wEFaY8LTDd55OfPHGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585880; c=relaxed/simple;
-	bh=cEJgvMiUzXVtoJnDBZZsuB40cgX3M/O4aBVqCGWag7w=;
+	s=arc-20240116; t=1752586804; c=relaxed/simple;
+	bh=g7pNUjqqG4drXZZdTqvwNPb/Yv/7cTY+q3cQYCRw4NY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbmP02zEssAe6YCja9mJLEQ17LYzlXn+ucTp2QESxoXmZ2FIAPNRo4DZk04sDWwHvg2IC226xeQfB62a3d9fKh7vRyGd6VPWJG9+VnbiZAaqBe5YD1wZQeXBV4c9y40ERGKOC5cDfHSoPtXheZmulBrdEK+gDqDcX2/ECB1D5VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvjK7iH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32DB9C4CEE3;
-	Tue, 15 Jul 2025 13:24:40 +0000 (UTC)
+	 MIME-Version; b=nIGQiLBIoSGMWfHHdN7jldvo9eXc/L9wK3LRzgiDxEgjwvZi0owiCdYwQGelhkqtirSFa5mPWkbxsLeh1f5RItgj90O0XTBTCCNc+V7AidD2BJuNCiJok6o54WOZdjYe8uYYMsOrskf7OwKwp/JDKyt4SYLpsLQiwYfrs4k/0+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r52BkJHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ACFC4CEE3;
+	Tue, 15 Jul 2025 13:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585880;
-	bh=cEJgvMiUzXVtoJnDBZZsuB40cgX3M/O4aBVqCGWag7w=;
+	s=korg; t=1752586803;
+	bh=g7pNUjqqG4drXZZdTqvwNPb/Yv/7cTY+q3cQYCRw4NY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvjK7iH4H+7ZWuX/0xJia3nouq66XZFFZ5ZHYx01/OlY3Id5gp+w3w8oK/AeSpNws
-	 /xw6dfpiz01Wq+peOEx/yqoZntYWuvGYmLHS00ChzOla2TW6mGgQ2tbXec6Dx/0WLu
-	 MhlNYt9ewmo8BA0copit8ZL7+CdmhYOUIJ+gswUk=
+	b=r52BkJHJDHFh0h2il8JtKClJTF9tZrG1vrVhBzKzvs8Q1kYe+rXUfwiNFkg1i8s1W
+	 WMLDPCwTcP/UVa0yR0OrW1jn/+zfQFBiV7ssRq8FIne3SJ/q+vPO2djnV+czwKA3C1
+	 6SvdAJqyM+ZCtaKIpLmJJwvcgTgFWQI1KWFjT4K0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/109] vsock: fix `vsock_proto` declaration
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>
+Subject: [PATCH 6.15 053/192] x86/mce: Dont remove sysfs if thresholding sysfs init fails
 Date: Tue, 15 Jul 2025 15:12:28 +0200
-Message-ID: <20250715130759.372770819@linuxfoundation.org>
+Message-ID: <20250715130816.971382789@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 1e3b66e326015f77bc4b36976bebeedc2ac0f588 ]
+commit 4c113a5b28bfd589e2010b5fc8867578b0135ed7 upstream.
 
->From commit 634f1a7110b4 ("vsock: support sockmap"), `struct proto
-vsock_proto`, defined in af_vsock.c, is not static anymore, since it's
-used by vsock_bpf.c.
+Currently, the MCE subsystem sysfs interface will be removed if the
+thresholding sysfs interface fails to be created. A common failure is due to
+new MCA bank types that are not recognized and don't have a short name set.
 
-If CONFIG_BPF_SYSCALL is not defined, `make C=2` will print a warning:
-    $ make O=build C=2 W=1 net/vmw_vsock/
-      ...
-      CC [M]  net/vmw_vsock/af_vsock.o
-      CHECK   ../net/vmw_vsock/af_vsock.c
-    ../net/vmw_vsock/af_vsock.c:123:14: warning: symbol 'vsock_proto' was not declared. Should it be static?
+The MCA thresholding feature is optional and should not break the common MCE
+sysfs interface. Also, new MCA bank types are occasionally introduced, and
+updates will be needed to recognize them. But likewise, this should not break
+the common sysfs interface.
 
-Declare `vsock_proto` regardless of CONFIG_BPF_SYSCALL, since it's defined
-in af_vsock.c, which is built regardless of CONFIG_BPF_SYSCALL.
+Keep the MCE sysfs interface regardless of the status of the thresholding
+sysfs interface.
 
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20250703112329.28365-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Tony Luck <tony.luck@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-1-236dd74f645f@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/af_vsock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/core.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index f8b09a82f62e1..1820b87b8b7ff 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -236,8 +236,8 @@ int __vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
- int vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
- 			size_t len, int flags);
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2801,15 +2801,9 @@ static int mce_cpu_dead(unsigned int cpu
+ static int mce_cpu_online(unsigned int cpu)
+ {
+ 	struct timer_list *t = this_cpu_ptr(&mce_timer);
+-	int ret;
  
--#ifdef CONFIG_BPF_SYSCALL
- extern struct proto vsock_proto;
-+#ifdef CONFIG_BPF_SYSCALL
- int vsock_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore);
- void __init vsock_bpf_build_proto(void);
- #else
--- 
-2.39.5
-
+ 	mce_device_create(cpu);
+-
+-	ret = mce_threshold_create_device(cpu);
+-	if (ret) {
+-		mce_device_remove(cpu);
+-		return ret;
+-	}
++	mce_threshold_create_device(cpu);
+ 	mce_reenable_cpu();
+ 	mce_start_timer(t);
+ 	return 0;
 
 
 
