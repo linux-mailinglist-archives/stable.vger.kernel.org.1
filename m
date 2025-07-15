@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-161985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438C1B05B05
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:16:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E43FCB05B3B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 688817A6068
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:14:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63689164BE5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8430D1A23AF;
-	Tue, 15 Jul 2025 13:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB832E3380;
+	Tue, 15 Jul 2025 13:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGMvthgd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MysEzh5X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4217819066B;
-	Tue, 15 Jul 2025 13:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6B52E2F03;
+	Tue, 15 Jul 2025 13:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585367; cv=none; b=SQzLyb+qnnroqdGN3AYDhpFplfIfbmpGv/M8rFGuweKi1nAM110MSYrozOz1GuIAuJjWBtgDFgBKK2n8+ZLtt2ExbStxSjy0I67rfd4TsSXBNdu9R56BSYmW5uYHCvDxrtujNd09bk5KoBRFYb0G+C0nAu0oP8xZYVW5C6mcf60=
+	t=1752585481; cv=none; b=IfVqIUv1Lb/EKI9dSGQhcF4LgnTBCL2/45l1YiQ4fU1kDN/qY1p1jczCaW5Z7gI0XmehNVf0Ch+z+0e8s55UKoDZtLF2yXKZOfajONZkPyynW2Tle4860IKC8oI1B+nG+iUefwGOA0xmTvUhcL9M618X+jT1wxXWMjSJ7A7lBCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585367; c=relaxed/simple;
-	bh=0aRSjdDffhwHIBHUm2MNvC0Rt21qopTmCLnmH7CzQWw=;
+	s=arc-20240116; t=1752585481; c=relaxed/simple;
+	bh=H9TlCFTGi0j8dkaUS88U6jlwngGh5pEyo978ZTrOwhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZbt57QaWPZ+zPSqK3NgqxU/+8/GQxzsUeToX2YSEgyeCGZAEX9dRo6Sn++jFc9E0rmtkzRxei/1ciuPc8+4zspmsOjkK2O1uwgmaKaejQpEPE+6bYaxOBjX5YcAAWMvLXflvgt8VxQ/NQ5HP16uVzfscqxEJVnooDyzFvTf3AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGMvthgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85DCC4CEE3;
-	Tue, 15 Jul 2025 13:16:06 +0000 (UTC)
+	 MIME-Version; b=UGId6Gm+4d9M12uo9EJmRb50M+oxZixzQuAAQdw6q1H7lZXgSL2YNRtadorO7NO6LX79ojLUHMed2vFT9oQ+k6AuUtxh03aYoqY2pFYQ53cFIiVrFEsL3KLIvcHctK+o8x/l8UcTVhsy4TXdoctdGaKnjopj2WwEJALN/K45mBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MysEzh5X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D559C4CEE3;
+	Tue, 15 Jul 2025 13:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585367;
-	bh=0aRSjdDffhwHIBHUm2MNvC0Rt21qopTmCLnmH7CzQWw=;
+	s=korg; t=1752585481;
+	bh=H9TlCFTGi0j8dkaUS88U6jlwngGh5pEyo978ZTrOwhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dGMvthgdn1vUYZKIMimC1NACp/0msYjgP04cCRhzWKyPP3eDkTbkRqLAvbc/zyPj+
-	 UcetuVJfMLqmO0f1/wbeDujEEXhov9KTawN03IewIOZFRHGFt0ZbHObmx9BwoXS6F6
-	 +BEy7yjNOJhkE4Y1LqJf1KRQoNq44QcgOx738YsY=
+	b=MysEzh5XSN6emD6SwkvUGq53J3TjHud/DkWUnZBRtM53C9DP/XyOQAT6OjBCh9HCk
+	 zGID9GLKh56HP3fquxQJTjMdb3H5iuPaD7JftPiixQtzyaDCeMN2R2y9An/ZPrvyth
+	 lKP/XOI4CetjeOLbzhOiENx170tOYzfc7CyQ0l98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/163] ASoC: Intel: soc-acpi: arl: Correct order of cs42l43 matches
-Date: Tue, 15 Jul 2025 15:11:22 +0200
-Message-ID: <20250715130809.346910664@linuxfoundation.org>
+Subject: [PATCH 6.12 015/163] perf/core: Fix the WARN_ON_ONCE is out of lock protected region
+Date: Tue, 15 Jul 2025 15:11:23 +0200
+Message-ID: <20250715130809.384836464@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
 References: <20250715130808.777350091@linuxfoundation.org>
@@ -66,50 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-[ Upstream commit a7528e9beadbddcec21b394ce5fa8dc4e5cdaa24 ]
+[ Upstream commit 7b4c5a37544ba22c6ebe72c0d4ea56c953459fa5 ]
 
-Matches should go from more specific to less specific, correct the
-ordering of two cs42l43 entries.
+commit 3172fb986666 ("perf/core: Fix WARN in perf_cgroup_switch()") try to
+fix a concurrency problem between perf_cgroup_switch and
+perf_cgroup_event_disable. But it does not to move the WARN_ON_ONCE into
+lock-protected region, so the warning is still be triggered.
 
-Fixes: c0524067653d ("ASoC: Intel: soc-acpi: arl: Add match entries for new cs42l43 laptops")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250626141841.77780-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 3172fb986666 ("perf/core: Fix WARN in perf_cgroup_switch()")
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250626135403.2454105-1-luogengkun@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-arl-match.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/events/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-arl-match.c b/sound/soc/intel/common/soc-acpi-intel-arl-match.c
-index 73e581e937554..1ad704ca2c5f2 100644
---- a/sound/soc/intel/common/soc-acpi-intel-arl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-arl-match.c
-@@ -468,17 +468,17 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[] = {
- 		.get_function_tplg_files = sof_sdw_get_tplg_files,
- 	},
- 	{
--		.link_mask = BIT(2),
--		.links = arl_cs42l43_l2,
-+		.link_mask = BIT(2) | BIT(3),
-+		.links = arl_cs42l43_l2_cs35l56_l3,
- 		.drv_name = "sof_sdw",
--		.sof_tplg_filename = "sof-arl-cs42l43-l2.tplg",
-+		.sof_tplg_filename = "sof-arl-cs42l43-l2-cs35l56-l3.tplg",
- 		.get_function_tplg_files = sof_sdw_get_tplg_files,
- 	},
- 	{
--		.link_mask = BIT(2) | BIT(3),
--		.links = arl_cs42l43_l2_cs35l56_l3,
-+		.link_mask = BIT(2),
-+		.links = arl_cs42l43_l2,
- 		.drv_name = "sof_sdw",
--		.sof_tplg_filename = "sof-arl-cs42l43-l2-cs35l56-l3.tplg",
-+		.sof_tplg_filename = "sof-arl-cs42l43-l2.tplg",
- 		.get_function_tplg_files = sof_sdw_get_tplg_files,
- 	},
- 	{
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 7210104b3345c..55c19a0d3a814 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -905,8 +905,6 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 	if (READ_ONCE(cpuctx->cgrp) == NULL)
+ 		return;
+ 
+-	WARN_ON_ONCE(cpuctx->ctx.nr_cgroups == 0);
+-
+ 	cgrp = perf_cgroup_from_task(task, NULL);
+ 	if (READ_ONCE(cpuctx->cgrp) == cgrp)
+ 		return;
+@@ -918,6 +916,8 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 	if (READ_ONCE(cpuctx->cgrp) == NULL)
+ 		return;
+ 
++	WARN_ON_ONCE(cpuctx->ctx.nr_cgroups == 0);
++
+ 	perf_ctx_disable(&cpuctx->ctx, true);
+ 
+ 	ctx_sched_out(&cpuctx->ctx, NULL, EVENT_ALL|EVENT_CGROUP);
 -- 
 2.39.5
 
