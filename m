@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0A8B05C29
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 566E2B05BB4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E856B566923
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ECB43A61D6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDD22E3380;
-	Tue, 15 Jul 2025 13:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCAE2E2F0C;
+	Tue, 15 Jul 2025 13:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNU/oY8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNxWx28g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBEB2E4983;
-	Tue, 15 Jul 2025 13:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4E72E2657;
+	Tue, 15 Jul 2025 13:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585891; cv=none; b=fCoL3u02+D/hyK/nwEf0ElMPTPNQs413VcFUffi1gmMWwPp9Y3kMtg3Cu8EvK1LrMBcpEFNYh7/hMwxxTLRUTUQlVxYra+L6mwzCLA8Lvw+cr+ZvZhnFi2IPor0k7+RLF33sHiME/piPvRde2BZ40tT7IqhxbYHzTcPHxg+x6cA=
+	t=1752585641; cv=none; b=Ms05ZdRb4fuZyMM3Atlc2CVkhY2B+yiZHEKY+AWQPP+8B6Zxe2Gc1iCJ4joxcVOaN/3E31S1Q2GsmELESjCaDrr+c4nFCtsM3Qz4rWPLlUQG6LxbpuClxhtSM6d4v9Vwxx6F6lOdtlMYytokpBBrjzwiyQq7wj75+fGGqA1BqL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585891; c=relaxed/simple;
-	bh=4XIBXDkf+jJ/26wff/hF2V18T1H5Pwy+97cJ0FshLzI=;
+	s=arc-20240116; t=1752585641; c=relaxed/simple;
+	bh=m2v2wEfusWAqA5yW+rhm4PBoCdTPP5wIVeu3fezLreE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EW+syV0QsNucNM/pMaxZI1WkGKFtBSvIoDe9kMVQoJH9Q9PEOoc2Vq4eqNNTO2ow98YpOfpU/DAI5JxGvNNY5iSQgv+IplTaV1oSl33U2VAz58q0fWucO22xsH0CIHDhK3bsoamx6IEgnDbeUX6lLV+WvNSFO2yvgXmvrR+H1XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNU/oY8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0186AC4CEF1;
-	Tue, 15 Jul 2025 13:24:50 +0000 (UTC)
+	 MIME-Version; b=OU5CNlhFWCtAXagBW9falveFunkCiusI46AwA6qVCuW77Ms7Jgo5hm/BrcHpudoANBq21l/vyblZxHNLCIOc+JykzDQ+adFDxOhaBdnmdOneu+8HPYyImJP4rZA8OKu8SbxDPDf4N/SKvyZOM28Uz7AMUq4y4Ulgvt/hpPU4wxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNxWx28g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877A7C4CEE3;
+	Tue, 15 Jul 2025 13:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585891;
-	bh=4XIBXDkf+jJ/26wff/hF2V18T1H5Pwy+97cJ0FshLzI=;
+	s=korg; t=1752585641;
+	bh=m2v2wEfusWAqA5yW+rhm4PBoCdTPP5wIVeu3fezLreE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WNU/oY8PSvIJ77AJjsIAmlLJuk5Ps56kNEtx+OJdyZBaatcz5ciVvXoMhndbyRfzS
-	 qlu5ZQPld/zytmWrMIVant6YEbV84vJLUY56i9j56muP+jDP7zfpQ+G5SX+xfofEqx
-	 ocHdMOvxygKmJQi+gnHWb4vRozfEZ8BIhzsxribI=
+	b=rNxWx28gskxPVXAkUXLBbuPLIz9ttg17wZbJ7RA6oK13IR7TSAf7M5qlOS8zfjIf1
+	 Pls8JREf97o2UAIc7teuVA1rhLHJ6n8gG5CrxTQSACAkXjJW3+NRhGlvvi8+7VYpMU
+	 bem7H7QnpyyQgXjm4F+5Fj6G2LogsG8uBEnAknV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.6 047/109] usb: gadget: u_serial: Fix race condition in TTY wakeup
+	Danilo Krummrich <dakr@kernel.org>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 115/163] drm/nouveau/gsp: fix potential leak of memory used during acpi init
 Date: Tue, 15 Jul 2025 15:13:03 +0200
-Message-ID: <20250715130800.760454059@linuxfoundation.org>
+Message-ID: <20250715130813.467720941@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Ben Skeggs <bskeggs@nvidia.com>
 
-commit c529c3730bd09115684644e26bf01ecbd7e2c2c9 upstream.
+[ Upstream commit d133036a0b23d3ef781d067ccdea6bbfb381e0cf ]
 
-A race condition occurs when gs_start_io() calls either gs_start_rx() or
-gs_start_tx(), as those functions briefly drop the port_lock for
-usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
-port.tty and port_usb, respectively.
+If any of the ACPI calls fail, memory allocated for the input buffer
+would be leaked.  Fix failure paths to free allocated memory.
 
-Use the null-safe TTY Port helper function to wake up TTY.
+Also add checks to ensure the allocations succeeded in the first place.
 
-Example
-  CPU1:			      CPU2:
-  gserial_connect() // lock
-  			      gs_close() // await lock
-  gs_start_rx()     // unlock
-  usb_ep_queue()
-  			      gs_close() // lock, reset port.tty and unlock
-  gs_start_rx()     // lock
-  tty_wakeup()      // NPE
-
-Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/linux-usb/20240116141801.396398-1-khtsai@google.com/
-Link: https://lore.kernel.org/r/20250617050844.1848232-2-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
+Signed-off-by: Ben Skeggs <bskeggs@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/20250617040036.2932-1-bskeggs@nvidia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/r535.c    | 20 +++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -291,8 +291,8 @@ __acquires(&port->port_lock)
- 			break;
- 	}
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+index fc84ca214f247..3ad4f6e9a8ac2 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+@@ -1454,7 +1454,6 @@ r535_gsp_acpi_caps(acpi_handle handle, CAPS_METHOD_DATA *caps)
+ 	union acpi_object argv4 = {
+ 		.buffer.type    = ACPI_TYPE_BUFFER,
+ 		.buffer.length  = 4,
+-		.buffer.pointer = kmalloc(argv4.buffer.length, GFP_KERNEL),
+ 	}, *obj;
  
--	if (do_tty_wake && port->port.tty)
--		tty_wakeup(port->port.tty);
-+	if (do_tty_wake)
-+		tty_port_tty_wakeup(&port->port);
- 	return status;
- }
+ 	caps->status = 0xffff;
+@@ -1462,17 +1461,22 @@ r535_gsp_acpi_caps(acpi_handle handle, CAPS_METHOD_DATA *caps)
+ 	if (!acpi_check_dsm(handle, &NVOP_DSM_GUID, NVOP_DSM_REV, BIT_ULL(0x1a)))
+ 		return;
  
-@@ -573,7 +573,7 @@ static int gs_start_io(struct gs_port *p
- 		gs_start_tx(port);
- 		/* Unblock any pending writes into our circular buffer, in case
- 		 * we didn't in gs_start_tx() */
--		tty_wakeup(port->port.tty);
-+		tty_port_tty_wakeup(&port->port);
- 	} else {
- 		/* Free reqs only if we are still connected */
- 		if (port->port_usb) {
++	argv4.buffer.pointer = kmalloc(argv4.buffer.length, GFP_KERNEL);
++	if (!argv4.buffer.pointer)
++		return;
++
+ 	obj = acpi_evaluate_dsm(handle, &NVOP_DSM_GUID, NVOP_DSM_REV, 0x1a, &argv4);
+ 	if (!obj)
+-		return;
++		goto done;
+ 
+ 	if (WARN_ON(obj->type != ACPI_TYPE_BUFFER) ||
+ 	    WARN_ON(obj->buffer.length != 4))
+-		return;
++		goto done;
+ 
+ 	caps->status = 0;
+ 	caps->optimusCaps = *(u32 *)obj->buffer.pointer;
+ 
++done:
+ 	ACPI_FREE(obj);
+ 
+ 	kfree(argv4.buffer.pointer);
+@@ -1489,24 +1493,28 @@ r535_gsp_acpi_jt(acpi_handle handle, JT_METHOD_DATA *jt)
+ 	union acpi_object argv4 = {
+ 		.buffer.type    = ACPI_TYPE_BUFFER,
+ 		.buffer.length  = sizeof(caps),
+-		.buffer.pointer = kmalloc(argv4.buffer.length, GFP_KERNEL),
+ 	}, *obj;
+ 
+ 	jt->status = 0xffff;
+ 
++	argv4.buffer.pointer = kmalloc(argv4.buffer.length, GFP_KERNEL);
++	if (!argv4.buffer.pointer)
++		return;
++
+ 	obj = acpi_evaluate_dsm(handle, &JT_DSM_GUID, JT_DSM_REV, 0x1, &argv4);
+ 	if (!obj)
+-		return;
++		goto done;
+ 
+ 	if (WARN_ON(obj->type != ACPI_TYPE_BUFFER) ||
+ 	    WARN_ON(obj->buffer.length != 4))
+-		return;
++		goto done;
+ 
+ 	jt->status = 0;
+ 	jt->jtCaps = *(u32 *)obj->buffer.pointer;
+ 	jt->jtRevId = (jt->jtCaps & 0xfff00000) >> 20;
+ 	jt->bSBIOSCaps = 0;
+ 
++done:
+ 	ACPI_FREE(obj);
+ 
+ 	kfree(argv4.buffer.pointer);
+-- 
+2.39.5
+
 
 
 
