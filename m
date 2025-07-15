@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1221B05B49
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0398FB05D07
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC2A34A49CC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B5C9162DDB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FB919066B;
-	Tue, 15 Jul 2025 13:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56CD2E7BBD;
+	Tue, 15 Jul 2025 13:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQVDrV6y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7vQ+WAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB991F0E26;
-	Tue, 15 Jul 2025 13:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706102E7BBC;
+	Tue, 15 Jul 2025 13:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585527; cv=none; b=d+1DZBsbkYc5DXq7OQVB9RMUZeyMeIq8A1+NgkJYKxcCQtYgNeeCFRbjCeS46Bhzy7pWddHessJqMGw6Usekc+Q2h3uQHHCchrPVVBgBEcx73fn4k2f+5IiY119zOiJxb/G7zIltCFxNKyzMdK9A8JEZHSQXz0HgmcCv2m2JUhQ=
+	t=1752586314; cv=none; b=jKGm8BkgUOYQJrQtkSvu7gtcIInQ4hsNIDNbXtAVDxvFMJzEmcB55C8QmCVQEp4hbxwdf4naqjpuBwzmkWZRH39TX6i017NxVzah5ncGs4lDO8sMCxfMLFD2Q3bbhpie+Cbvh0Fd0yn0uZ0hbSx1xL++TYp8I609gR9qD6vS55o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585527; c=relaxed/simple;
-	bh=KMXYQfXMcG1RRFsvtYmy7Q1IoCEg6+ZBKoZQVYgJdGY=;
+	s=arc-20240116; t=1752586314; c=relaxed/simple;
+	bh=KhGpcDYlEhKVwA+RAIHFfU7hw3vVqEd45y7R5qCMXHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/2Fad/entyE5bGqi40unwEvwRnich6aVpaVbP7tlyjR3HLu1Chb2n9zEEJtjnNoGl7+lm0MXokONCRoWTcefhQq+CzXSa2Lv3rMBudN+ugxQWSR58ykGxcykXAf8oBcTlwmA28ywSREa+IIVH7bR14zEkV9oxs1H6VIsxJeDzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQVDrV6y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72836C4CEE3;
-	Tue, 15 Jul 2025 13:18:46 +0000 (UTC)
+	 MIME-Version; b=ErF+h5tEicClH6V3ri25jsWzYPQDEl9yUtH08Yy2kNvLZd5hgie+HIC5C2p7EVn+XJstZBDxF/VFreOr3X57qpvQXlEWaVvxRV76B8gEzS4vwhL87d/921GGOYK8BQyUWVXbImIiEYmMRAPTyedfsymeP13nPpDjQ73ZOyKgqU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7vQ+WAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76D1C4CEE3;
+	Tue, 15 Jul 2025 13:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585526;
-	bh=KMXYQfXMcG1RRFsvtYmy7Q1IoCEg6+ZBKoZQVYgJdGY=;
+	s=korg; t=1752586314;
+	bh=KhGpcDYlEhKVwA+RAIHFfU7hw3vVqEd45y7R5qCMXHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQVDrV6yga2M6y/QveddnvI+9rjJwDZVs+5sslJX7Y1oFmvUrtU6s2MRy2k6697z2
-	 q40lyzYDKxbmQ790SBKdU0Yclct+H3fKFVkn5ONB+YZrRkB6eUiciDJVyO3aN2HsVi
-	 HyMxXB3a2A+l1XAg+2NqEfJgEsoeUe0I7faiYQ28=
+	b=h7vQ+WARr+uYxPDdVN2H/mG4SdwZzPzoXMDYF0ExIH8pE7DQAtock76zIBCDR73Ez
+	 7QIFD/jC3fuiO9RSlQMwbaVZX0j+Wj4loV1R+TsIGDIiSZFijBNmD/Ik7T/p31cF3t
+	 hHrJEc3NZMhnSSfZMQZIefxgV+GWw2h7wMu6Buwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 073/163] drm/amdkfd: Dont call mmput from MMU notifier callback
+	stable <stable@kernel.org>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 019/148] VMCI: fix race between vmci_host_setup_notify and vmci_ctx_unset_notify
 Date: Tue, 15 Jul 2025 15:12:21 +0200
-Message-ID: <20250715130811.667068938@linuxfoundation.org>
+Message-ID: <20250715130801.081813165@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,190 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Wupeng Ma <mawupeng1@huawei.com>
 
-commit cf234231fcbc7d391e2135b9518613218cc5347f upstream.
+[ Upstream commit 1bd6406fb5f36c2bb1e96e27d4c3e9f4d09edde4 ]
 
-If the process is exiting, the mmput inside mmu notifier callback from
-compactd or fork or numa balancing could release the last reference
-of mm struct to call exit_mmap and free_pgtable, this triggers deadlock
-with below backtrace.
+During our test, it is found that a warning can be trigger in try_grab_folio
+as follow:
 
-The deadlock will leak kfd process as mmu notifier release is not called
-and cause VRAM leaking.
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 1678 at mm/gup.c:147 try_grab_folio+0x106/0x130
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 1678 Comm: syz.3.31 Not tainted 6.15.0-rc5 #163 PREEMPT(undef)
+  RIP: 0010:try_grab_folio+0x106/0x130
+  Call Trace:
+   <TASK>
+   follow_huge_pmd+0x240/0x8e0
+   follow_pmd_mask.constprop.0.isra.0+0x40b/0x5c0
+   follow_pud_mask.constprop.0.isra.0+0x14a/0x170
+   follow_page_mask+0x1c2/0x1f0
+   __get_user_pages+0x176/0x950
+   __gup_longterm_locked+0x15b/0x1060
+   ? gup_fast+0x120/0x1f0
+   gup_fast_fallback+0x17e/0x230
+   get_user_pages_fast+0x5f/0x80
+   vmci_host_unlocked_ioctl+0x21c/0xf80
+  RIP: 0033:0x54d2cd
+  ---[ end trace 0000000000000000 ]---
 
-The fix is to take mm reference mmget_non_zero when adding prange to the
-deferred list to pair with mmput in deferred list work.
+Digging into the source, context->notify_page may init by get_user_pages_fast
+and can be seen in vmci_ctx_unset_notify which will try to put_page. However
+get_user_pages_fast is not finished here and lead to following
+try_grab_folio warning. The race condition is shown as follow:
 
-If prange split and add into pchild list, the pchild work_item.mm is not
-used, so remove the mm parameter from svm_range_unmap_split and
-svm_range_add_child.
+cpu0			cpu1
+vmci_host_do_set_notify
+vmci_host_setup_notify
+get_user_pages_fast(uva, 1, FOLL_WRITE, &context->notify_page);
+lockless_pages_from_mm
+gup_pgd_range
+gup_huge_pmd  // update &context->notify_page
+			vmci_host_do_set_notify
+			vmci_ctx_unset_notify
+			notify_page = context->notify_page;
+			if (notify_page)
+			put_page(notify_page);	// page is freed
+__gup_longterm_locked
+__get_user_pages
+follow_trans_huge_pmd
+try_grab_folio // warn here
 
-The backtrace of hung task:
+To slove this, use local variable page to make notify_page can be seen
+after finish get_user_pages_fast.
 
- INFO: task python:348105 blocked for more than 64512 seconds.
- Call Trace:
-  __schedule+0x1c3/0x550
-  schedule+0x46/0xb0
-  rwsem_down_write_slowpath+0x24b/0x4c0
-  unlink_anon_vmas+0xb1/0x1c0
-  free_pgtables+0xa9/0x130
-  exit_mmap+0xbc/0x1a0
-  mmput+0x5a/0x140
-  svm_range_cpu_invalidate_pagetables+0x2b/0x40 [amdgpu]
-  mn_itree_invalidate+0x72/0xc0
-  __mmu_notifier_invalidate_range_start+0x48/0x60
-  try_to_unmap_one+0x10fa/0x1400
-  rmap_walk_anon+0x196/0x460
-  try_to_unmap+0xbb/0x210
-  migrate_page_unmap+0x54d/0x7e0
-  migrate_pages_batch+0x1c3/0xae0
-  migrate_pages_sync+0x98/0x240
-  migrate_pages+0x25c/0x520
-  compact_zone+0x29d/0x590
-  compact_zone_order+0xb6/0xf0
-  try_to_compact_pages+0xbe/0x220
-  __alloc_pages_direct_compact+0x96/0x1a0
-  __alloc_pages_slowpath+0x410/0x930
-  __alloc_pages_nodemask+0x3a9/0x3e0
-  do_huge_pmd_anonymous_page+0xd7/0x3e0
-  __handle_mm_fault+0x5e3/0x5f0
-  handle_mm_fault+0xf7/0x2e0
-  hmm_vma_fault.isra.0+0x4d/0xa0
-  walk_pmd_range.isra.0+0xa8/0x310
-  walk_pud_range+0x167/0x240
-  walk_pgd_range+0x55/0x100
-  __walk_page_range+0x87/0x90
-  walk_page_range+0xf6/0x160
-  hmm_range_fault+0x4f/0x90
-  amdgpu_hmm_range_get_pages+0x123/0x230 [amdgpu]
-  amdgpu_ttm_tt_get_user_pages+0xb1/0x150 [amdgpu]
-  init_user_pages+0xb1/0x2a0 [amdgpu]
-  amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x543/0x7d0 [amdgpu]
-  kfd_ioctl_alloc_memory_of_gpu+0x24c/0x4e0 [amdgpu]
-  kfd_ioctl+0x29d/0x500 [amdgpu]
-
-Fixes: fa582c6f3684 ("drm/amdkfd: Use mmget_not_zero in MMU notifier")
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a29e067bd38946f752b0ef855f3dfff87e77bec7)
-Cc: stable@vger.kernel.org
+Fixes: a1d88436d53a ("VMCI: Fix two UVA mapping bugs")
+Cc: stable <stable@kernel.org>
+Closes: https://lore.kernel.org/all/e91da589-ad57-3969-d979-879bbd10dddd@huawei.com/
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+Link: https://lore.kernel.org/r/20250510033040.901582-1-mawupeng1@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c |   43 ++++++++++++++++-------------------
- 1 file changed, 20 insertions(+), 23 deletions(-)
+ drivers/misc/vmw_vmci/vmci_host.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -1170,13 +1170,12 @@ svm_range_split_head(struct svm_range *p
- }
- 
- static void
--svm_range_add_child(struct svm_range *prange, struct mm_struct *mm,
--		    struct svm_range *pchild, enum svm_work_list_ops op)
-+svm_range_add_child(struct svm_range *prange, struct svm_range *pchild, enum svm_work_list_ops op)
+diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
+index 81ebdb1380f37..6eddb805642e0 100644
+--- a/drivers/misc/vmw_vmci/vmci_host.c
++++ b/drivers/misc/vmw_vmci/vmci_host.c
+@@ -222,6 +222,7 @@ static int drv_cp_harray_to_user(void __user *user_buf_uva,
+ static int vmci_host_setup_notify(struct vmci_ctx *context,
+ 				  unsigned long uva)
  {
- 	pr_debug("add child 0x%p [0x%lx 0x%lx] to prange 0x%p child list %d\n",
- 		 pchild, pchild->start, pchild->last, prange, op);
++	struct page *page;
+ 	int retval;
  
--	pchild->work_item.mm = mm;
-+	pchild->work_item.mm = NULL;
- 	pchild->work_item.op = op;
- 	list_add_tail(&pchild->child_list, &prange->child_list);
- }
-@@ -2384,15 +2383,17 @@ svm_range_add_list_work(struct svm_range
- 		    prange->work_item.op != SVM_OP_UNMAP_RANGE)
- 			prange->work_item.op = op;
- 	} else {
--		prange->work_item.op = op;
--
--		/* Pairs with mmput in deferred_list_work */
--		mmget(mm);
--		prange->work_item.mm = mm;
--		list_add_tail(&prange->deferred_list,
--			      &prange->svms->deferred_range_list);
--		pr_debug("add prange 0x%p [0x%lx 0x%lx] to work list op %d\n",
--			 prange, prange->start, prange->last, op);
-+		/* Pairs with mmput in deferred_list_work.
-+		 * If process is exiting and mm is gone, don't update mmu notifier.
-+		 */
-+		if (mmget_not_zero(mm)) {
-+			prange->work_item.mm = mm;
-+			prange->work_item.op = op;
-+			list_add_tail(&prange->deferred_list,
-+				      &prange->svms->deferred_range_list);
-+			pr_debug("add prange 0x%p [0x%lx 0x%lx] to work list op %d\n",
-+				 prange, prange->start, prange->last, op);
-+		}
- 	}
- 	spin_unlock(&svms->deferred_list_lock);
- }
-@@ -2406,8 +2407,7 @@ void schedule_deferred_list_work(struct
- }
+ 	if (context->notify_page) {
+@@ -240,13 +241,11 @@ static int vmci_host_setup_notify(struct vmci_ctx *context,
+ 	/*
+ 	 * Lock physical page backing a given user VA.
+ 	 */
+-	retval = get_user_pages_fast(uva, 1, FOLL_WRITE, &context->notify_page);
+-	if (retval != 1) {
+-		context->notify_page = NULL;
++	retval = get_user_pages_fast(uva, 1, FOLL_WRITE, &page);
++	if (retval != 1)
+ 		return VMCI_ERROR_GENERIC;
+-	}
+-	if (context->notify_page == NULL)
+-		return VMCI_ERROR_UNAVAILABLE;
++
++	context->notify_page = page;
  
- static void
--svm_range_unmap_split(struct mm_struct *mm, struct svm_range *parent,
--		      struct svm_range *prange, unsigned long start,
-+svm_range_unmap_split(struct svm_range *parent, struct svm_range *prange, unsigned long start,
- 		      unsigned long last)
- {
- 	struct svm_range *head;
-@@ -2428,12 +2428,12 @@ svm_range_unmap_split(struct mm_struct *
- 		svm_range_split(tail, last + 1, tail->last, &head);
- 
- 	if (head != prange && tail != prange) {
--		svm_range_add_child(parent, mm, head, SVM_OP_UNMAP_RANGE);
--		svm_range_add_child(parent, mm, tail, SVM_OP_ADD_RANGE);
-+		svm_range_add_child(parent, head, SVM_OP_UNMAP_RANGE);
-+		svm_range_add_child(parent, tail, SVM_OP_ADD_RANGE);
- 	} else if (tail != prange) {
--		svm_range_add_child(parent, mm, tail, SVM_OP_UNMAP_RANGE);
-+		svm_range_add_child(parent, tail, SVM_OP_UNMAP_RANGE);
- 	} else if (head != prange) {
--		svm_range_add_child(parent, mm, head, SVM_OP_UNMAP_RANGE);
-+		svm_range_add_child(parent, head, SVM_OP_UNMAP_RANGE);
- 	} else if (parent != prange) {
- 		prange->work_item.op = SVM_OP_UNMAP_RANGE;
- 	}
-@@ -2510,14 +2510,14 @@ svm_range_unmap_from_cpu(struct mm_struc
- 		l = min(last, pchild->last);
- 		if (l >= s)
- 			svm_range_unmap_from_gpus(pchild, s, l, trigger);
--		svm_range_unmap_split(mm, prange, pchild, start, last);
-+		svm_range_unmap_split(prange, pchild, start, last);
- 		mutex_unlock(&pchild->lock);
- 	}
- 	s = max(start, prange->start);
- 	l = min(last, prange->last);
- 	if (l >= s)
- 		svm_range_unmap_from_gpus(prange, s, l, trigger);
--	svm_range_unmap_split(mm, prange, prange, start, last);
-+	svm_range_unmap_split(prange, prange, start, last);
- 
- 	if (unmap_parent)
- 		svm_range_add_list_work(svms, prange, mm, SVM_OP_UNMAP_RANGE);
-@@ -2560,8 +2560,6 @@ svm_range_cpu_invalidate_pagetables(stru
- 
- 	if (range->event == MMU_NOTIFY_RELEASE)
- 		return true;
--	if (!mmget_not_zero(mni->mm))
--		return true;
- 
- 	start = mni->interval_tree.start;
- 	last = mni->interval_tree.last;
-@@ -2588,7 +2586,6 @@ svm_range_cpu_invalidate_pagetables(stru
- 	}
- 
- 	svm_range_unlock(prange);
--	mmput(mni->mm);
- 
- 	return true;
- }
+ 	/*
+ 	 * Map the locked page and set up notify pointer.
+-- 
+2.39.5
+
 
 
 
