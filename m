@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-162283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA390B05CC0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCC9B05EA5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E553316205E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4171C4A0A4A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A7A2E6103;
-	Tue, 15 Jul 2025 13:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4282E62A4;
+	Tue, 15 Jul 2025 13:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPS/w5GF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saKHlHC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F392E54C6;
-	Tue, 15 Jul 2025 13:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4482E3B15;
+	Tue, 15 Jul 2025 13:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586147; cv=none; b=uqcbFjrxqT8Mky0Hg9Zj+gifa1TLbNVSoGsPZVl1OAvemLvVCx7xHrGJc7IdxV8Anp1q2M39DUuFf7fU79Ex3sfSBuKM2PH0EUL5EFGWFdV/qFUY2lE7eL0hRGmKAPJ53gnN/RREdNd3Ik8kUqvcDmelyMDlbBhbN7/VjK5cFAM=
+	t=1752586971; cv=none; b=rmlrGNNJ04WxnaiLO5gKHPfgwrQFNcbuVicaYQDlBv6lmd2lwRiYREL0q3g2MTIi4FlzA8+4OBiZeP/nmlTXw4ldyTQUzVqDYL+5O7L/W7AFUttITaR1c/lW8zT9TU4X1lwxBEHFQ0QF24Qo0o8WcCaSWkStvyRZvBbnMzybYhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586147; c=relaxed/simple;
-	bh=8Jhl9JshabiuBAvz8xIVwETYgeEtu3R1378o3t1/mBs=;
+	s=arc-20240116; t=1752586971; c=relaxed/simple;
+	bh=a2Xty2b/4V1PyQijERpuK9J90ZEn/o+rN4WlXWPn/oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STc7rkQGbhEnPuSrn9nUyMbcdm5EPqSfwb9wT+hqxp3Si0PHqA99G5/A807NEB778z0iL4nUvNSjdTXTfpgZNwECHNUIE2vQxm6Tsm9QfxLH9uhiJgm+Z9PA/lly2JlzN8yk2Dwaw/a4ihUCF9Vfmg3RGXynN0668WGBwOWzIew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPS/w5GF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F92CC4CEE3;
-	Tue, 15 Jul 2025 13:29:06 +0000 (UTC)
+	 MIME-Version; b=uYTeq/+OkOsl9UMRPxG4M7hSpjcBfU0+xisrYx/PwGWwB8tc3oENvyTqw7bG94JJH1WxZqN7REOvh1a/AicXTI32CO5yhMbDyQ4kdQDKkfmA0oi+hFsfjhoBoXwxB2HMIO5k5m4dg994kYssutuBDiL+uV6h/MdG4o1qn6ztPEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saKHlHC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927B5C4CEE3;
+	Tue, 15 Jul 2025 13:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586147;
-	bh=8Jhl9JshabiuBAvz8xIVwETYgeEtu3R1378o3t1/mBs=;
+	s=korg; t=1752586970;
+	bh=a2Xty2b/4V1PyQijERpuK9J90ZEn/o+rN4WlXWPn/oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPS/w5GFRIfccft3nVNnjZ52ftd6n/YShHw7BtixUE0MNxByq43LGE+/bEqGIfHNK
-	 z5NqT51drzrsVfVe9Z49nfpU1goz4D1kzAnIaV6vpmzB7bPe/AdiodAZ4bCJZ52z+p
-	 vm970EChb2MVigM9DemposKegI0Mfs4ov3nI31LI=
+	b=saKHlHC8tgHmMXCLucB1vgg6ijQRDNslCqr2bRlW09PISzDJs13peWE6i3iZT59nD
+	 iZisMZ1LC2mrGOu83T12FA4nMczBpY+voXfxINGjYppE9DCqfdlYQdgyZlLvwWUIAl
+	 OuQ8m0Z5ZxbB/lXUjmWf7Ao8YqCISRitza5CtOFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d333febcf8f4bc5f6110@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 06/77] tipc: Fix use-after-free in tipc_conn_close().
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.15 090/192] Revert "drm/xe/xe2: Enable Indirect Ring State support for Xe2"
 Date: Tue, 15 Jul 2025 15:13:05 +0200
-Message-ID: <20250715130751.937373833@linuxfoundation.org>
+Message-ID: <20250715130818.520611756@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 667eeab4999e981c96b447a4df5f20bdf5c26f13 ]
+commit daa099fed50a39256feb37d3fac146bf0d74152f upstream.
 
-syzbot reported a null-ptr-deref in tipc_conn_close() during netns
-dismantle. [0]
+This reverts commit fe0154cf8222d9e38c60ccc124adb2f9b5272371.
 
-tipc_topsrv_stop() iterates tipc_net(net)->topsrv->conn_idr and calls
-tipc_conn_close() for each tipc_conn.
+Seeing some unexplained random failures during LRC context switches with
+indirect ring state enabled. The failures were always there, but the
+repro rate increased with the addition of WA BB as a separate BO.
+Commit 3a1edef8f4b5 ("drm/xe: Make WA BB part of LRC BO") helped to
+reduce the issues in the context switches, but didn't eliminate them
+completely.
 
-The problem is that tipc_conn_close() is called after releasing the
-IDR lock.
+Indirect ring state is not required for any current features, so disable
+for now until failures can be root caused.
 
-At the same time, there might be tipc_conn_recv_work() running and it
-could call tipc_conn_close() for the same tipc_conn and release its
-last ->kref.
-
-Once we release the IDR lock in tipc_topsrv_stop(), there is no
-guarantee that the tipc_conn is alive.
-
-Let's hold the ref before releasing the lock and put the ref after
-tipc_conn_close() in tipc_topsrv_stop().
-
-[0]:
-BUG: KASAN: use-after-free in tipc_conn_close+0x122/0x140 net/tipc/topsrv.c:165
-Read of size 8 at addr ffff888099305a08 by task kworker/u4:3/435
-
-CPU: 0 PID: 435 Comm: kworker/u4:3 Not tainted 4.19.204-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: netns cleanup_net
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x1fc/0x2ef lib/dump_stack.c:118
- print_address_description.cold+0x54/0x219 mm/kasan/report.c:256
- kasan_report_error.cold+0x8a/0x1b9 mm/kasan/report.c:354
- kasan_report mm/kasan/report.c:412 [inline]
- __asan_report_load8_noabort+0x88/0x90 mm/kasan/report.c:433
- tipc_conn_close+0x122/0x140 net/tipc/topsrv.c:165
- tipc_topsrv_stop net/tipc/topsrv.c:701 [inline]
- tipc_topsrv_exit_net+0x27b/0x5c0 net/tipc/topsrv.c:722
- ops_exit_list+0xa5/0x150 net/core/net_namespace.c:153
- cleanup_net+0x3b4/0x8b0 net/core/net_namespace.c:553
- process_one_work+0x864/0x1570 kernel/workqueue.c:2153
- worker_thread+0x64c/0x1130 kernel/workqueue.c:2296
- kthread+0x33f/0x460 kernel/kthread.c:259
- ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:415
-
-Allocated by task 23:
- kmem_cache_alloc_trace+0x12f/0x380 mm/slab.c:3625
- kmalloc include/linux/slab.h:515 [inline]
- kzalloc include/linux/slab.h:709 [inline]
- tipc_conn_alloc+0x43/0x4f0 net/tipc/topsrv.c:192
- tipc_topsrv_accept+0x1b5/0x280 net/tipc/topsrv.c:470
- process_one_work+0x864/0x1570 kernel/workqueue.c:2153
- worker_thread+0x64c/0x1130 kernel/workqueue.c:2296
- kthread+0x33f/0x460 kernel/kthread.c:259
- ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:415
-
-Freed by task 23:
- __cache_free mm/slab.c:3503 [inline]
- kfree+0xcc/0x210 mm/slab.c:3822
- tipc_conn_kref_release net/tipc/topsrv.c:150 [inline]
- kref_put include/linux/kref.h:70 [inline]
- conn_put+0x2cd/0x3a0 net/tipc/topsrv.c:155
- process_one_work+0x864/0x1570 kernel/workqueue.c:2153
- worker_thread+0x64c/0x1130 kernel/workqueue.c:2296
- kthread+0x33f/0x460 kernel/kthread.c:259
- ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:415
-
-The buggy address belongs to the object at ffff888099305a00
- which belongs to the cache kmalloc-512 of size 512
-The buggy address is located 8 bytes inside of
- 512-byte region [ffff888099305a00, ffff888099305c00)
-The buggy address belongs to the page:
-page:ffffea000264c140 count:1 mapcount:0 mapping:ffff88813bff0940 index:0x0
-flags: 0xfff00000000100(slab)
-raw: 00fff00000000100 ffffea00028b6b88 ffffea0002cd2b08 ffff88813bff0940
-raw: 0000000000000000 ffff888099305000 0000000100000006 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff888099305900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888099305980: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff888099305a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                      ^
- ffff888099305a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888099305b00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-
-Fixes: c5fa7b3cf3cb ("tipc: introduce new TIPC server infrastructure")
-Reported-by: syzbot+d333febcf8f4bc5f6110@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=27169a847a70550d17be
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250702014350.692213-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: fe0154cf8222 ("drm/xe/xe2: Enable Indirect Ring State support for Xe2")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20250702035846.3178344-1-matthew.brost@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 03d85ab36bcbcbe9dc962fccd3f8e54d7bb93b35)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/topsrv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/xe/xe_pci.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
-index e3b427a703980..4292c0f1e3daa 100644
---- a/net/tipc/topsrv.c
-+++ b/net/tipc/topsrv.c
-@@ -699,8 +699,10 @@ static void tipc_topsrv_stop(struct net *net)
- 	for (id = 0; srv->idr_in_use; id++) {
- 		con = idr_find(&srv->conn_idr, id);
- 		if (con) {
-+			conn_get(con);
- 			spin_unlock_bh(&srv->idr_lock);
- 			tipc_conn_close(con);
-+			conn_put(con);
- 			spin_lock_bh(&srv->idr_lock);
- 		}
- 	}
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/xe/xe_pci.c
++++ b/drivers/gpu/drm/xe/xe_pci.c
+@@ -137,7 +137,6 @@ static const struct xe_graphics_desc gra
+ 	.has_asid = 1, \
+ 	.has_atomic_enable_pte_bit = 1, \
+ 	.has_flat_ccs = 1, \
+-	.has_indirect_ring_state = 1, \
+ 	.has_range_tlb_invalidation = 1, \
+ 	.has_usm = 1, \
+ 	.has_64bit_timestamp = 1, \
 
 
 
