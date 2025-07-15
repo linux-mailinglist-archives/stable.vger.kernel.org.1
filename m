@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-162020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A10CB05B39
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:18:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B68B05E4F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD6FD743199
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45489162825
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627B42E2EF9;
-	Tue, 15 Jul 2025 13:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255A32EA48B;
+	Tue, 15 Jul 2025 13:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZNFMYFU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hL6ByHIV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E62E193077;
-	Tue, 15 Jul 2025 13:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CBC2E498B;
+	Tue, 15 Jul 2025 13:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585460; cv=none; b=S7hGSdzq91BMlEs1yJ3RP1crk0cn86n6z1hHUCyZo99q4ki5miIYST+34j5mUzcKvloZFubmI8sRoTH2+9w1j4EOZrsTMwuFknzk9hkmB5PpFegFHVJ3oNLS2LMT4VVcpuXuhhuUqJoY1vgfh2/zzIip3GhTN23mW3GUgYjKY5U=
+	t=1752586822; cv=none; b=tGtAfrWGhlQ1p8P7JnCXMAQ3BX/Hvy4lY2PoS1a23g0g0rUGvmd9EcW/tqZ+iJA95WK2+yjIt5bl1zIOJCsphGuePSKH7F901GTyhTYyn6KCo46+0vUj360wy1Y1wjtIm7i/3P9gEVLXY++CjSEa+/TWS0JiWPbr/Rr6oqOEorQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585460; c=relaxed/simple;
-	bh=IsXvnjg8nsimW3pshumVTAPgTDOO8ycJhNDEB5ltTZ8=;
+	s=arc-20240116; t=1752586822; c=relaxed/simple;
+	bh=EkTxdINWGfb5A5jVWlmWJsmqAqFnEghR9gL/3Ti9mw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+LJVCx/WiVeeCk10visBShhXvaSEkeIXTa4l08iS0ybRjnAQqG5lePb2uCOdlpqIiMqKfihpyJGDiS4mjJIJxbGZseHSMGsHG3yOsEFIQ46SGehyMFRkL9JBd6Fc/Qs/IiwVdwK+CiNKhzGXBWJNU+QOG6PY4wNWCUAnlDukko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZNFMYFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53EEC4CEE3;
-	Tue, 15 Jul 2025 13:17:39 +0000 (UTC)
+	 MIME-Version; b=quJW8iSxc/toNmbq5JylsODavxzL4Zu4OTmpP+EhuAZrRaMl5YMTDhAO0YmGmBQv6erDp15BhZOTBwCNv4cw0fYUYodEUIfxJv9RaNh8RnJPqadg0DQkIg/bfNVr4D6NQ0vCcG0FdT1rqjIN3H8qdCB6O3F7aI/jOPbWLly+qSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hL6ByHIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7DCC4CEE3;
+	Tue, 15 Jul 2025 13:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585460;
-	bh=IsXvnjg8nsimW3pshumVTAPgTDOO8ycJhNDEB5ltTZ8=;
+	s=korg; t=1752586822;
+	bh=EkTxdINWGfb5A5jVWlmWJsmqAqFnEghR9gL/3Ti9mw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZNFMYFU/UhSVG3w/ZZ0/AqgybTRwMeI0DoyHODoEDzInsgM8o/wOgpjt6n4h/PzI
-	 IGG3fJgTUIHz1YfiADyBBgR2CRV6TC1M4PLyp49xfHREavAegT5yfg9rkLbzOcdxQf
-	 FYXxGafiBmJOEklveXnamM0Yt4oNaMLch4bzVY4g=
+	b=hL6ByHIVRZab6Clq2Ap2upwrikGh3+AAbCuGnL38ywDLxsf+YWNHglVcwdPud/qJD
+	 4JynYLewTdZkFJtLODToWZ/4MpGa8vjlZjvxx6X9ny6mEZ6RscnC4aS74tHwDbw9D4
+	 AI9OgY8z/inlSMkYpNbU/UdWv8CKRwIQrUhvr1Sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	David Howells <dhowells@redhat.com>,
-	LePremierHomme <kwqcheii@proton.me>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Willy Tarreau <w@1wt.eu>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 047/163] rxrpc: Fix oops due to non-existence of prealloc backlog struct
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 020/192] pinctrl: amd: Clear GPIO debounce for suspend
 Date: Tue, 15 Jul 2025 15:11:55 +0200
-Message-ID: <20250715130810.650040389@linuxfoundation.org>
+Message-ID: <20250715130815.675517915@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,49 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 880a88f318cf1d2a0f4c0a7ff7b07e2062b434a4 upstream.
+[ Upstream commit 8ff4fb276e2384a87ae7f65f3c28e1e139dbb3fe ]
 
-If an AF_RXRPC service socket is opened and bound, but calls are
-preallocated, then rxrpc_alloc_incoming_call() will oops because the
-rxrpc_backlog struct doesn't get allocated until the first preallocation is
-made.
+soc-button-array hardcodes a debounce value by means of gpio_keys
+which uses pinctrl-amd as a backend to program debounce for a GPIO.
 
-Fix this by returning NULL from rxrpc_alloc_incoming_call() if there is no
-backlog struct.  This will cause the incoming call to be aborted.
+This hardcoded value doesn't match what the firmware intended to be
+programmed in _AEI. The hardcoded debounce leads to problems waking
+from suspend. There isn't appetite to conditionalize the behavior in
+soc-button-array or gpio-keys so clear it when the system suspends to
+avoid problems with being able to resume.
 
-Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Suggested-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: LePremierHomme <kwqcheii@proton.me>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Willy Tarreau <w@1wt.eu>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/20250708211506.2699012-3-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Hans de Goede <hansg@kernel.org>
+Fixes: 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
+Link: https://lore.kernel.org/linux-input/mkgtrb5gt7miyg6kvqdlbu4nj3elym6ijudobpdi26gp4xxay5@rsa6ytrjvj2q/
+Link: https://lore.kernel.org/linux-input/20250625215813.3477840-1-superm1@kernel.org/
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/20250627150155.3311574-1-superm1@kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/call_accept.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/pinctrl-amd.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/net/rxrpc/call_accept.c
-+++ b/net/rxrpc/call_accept.c
-@@ -254,6 +254,9 @@ static struct rxrpc_call *rxrpc_alloc_in
- 	unsigned short call_tail, conn_tail, peer_tail;
- 	unsigned short call_count, conn_count;
+diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+index 1d7fdcdec4c85..bf55d1b4db67b 100644
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -934,6 +934,17 @@ static int amd_gpio_suspend_hibernate_common(struct device *dev, bool is_suspend
+ 				  pin, is_suspend ? "suspend" : "hibernate");
+ 		}
  
-+	if (!b)
-+		return NULL;
++		/*
++		 * debounce enabled over suspend has shown issues with a GPIO
++		 * being unable to wake the system, as we're only interested in
++		 * the actual wakeup event, clear it.
++		 */
++		if (gpio_dev->saved_regs[i] & (DB_CNTRl_MASK << DB_CNTRL_OFF)) {
++			amd_gpio_set_debounce(gpio_dev, pin, 0);
++			pm_pr_dbg("Clearing debounce for GPIO #%d during %s.\n",
++				  pin, is_suspend ? "suspend" : "hibernate");
++		}
 +
- 	/* #calls >= #conns >= #peers must hold true. */
- 	call_head = smp_load_acquire(&b->call_backlog_head);
- 	call_tail = b->call_backlog_tail;
+ 		raw_spin_unlock_irqrestore(&gpio_dev->lock, flags);
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
