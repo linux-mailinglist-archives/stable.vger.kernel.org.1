@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-162573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD3EB05ED0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA05B05DA8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C6691C440A4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F291AA41A0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BD0BE4A;
-	Tue, 15 Jul 2025 13:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594BD2EA726;
+	Tue, 15 Jul 2025 13:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3/NGXrJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWcycriV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F44E2E6100;
-	Tue, 15 Jul 2025 13:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D542EA725;
+	Tue, 15 Jul 2025 13:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586912; cv=none; b=SB7mzPtRdNek4EuL+nCI77nfI86LLclzv7C8x/ThB+MRqkDZD4BE6wxVRI0SBEPXbOsxvZAy1xfiT+War8ak4wjvtlt0XW4qVsqiHOQwQBJQjfX5RAef1JVsZMmRITh7+Ber1oMPNE783TfyXTkajgU9CjV4MXWlLq5oseKWcyc=
+	t=1752586428; cv=none; b=SNMmceLhPMveyTpffaSJ51BJdHX/2DtnpjvOM2PEqVly3+TQnIXCVyxxc00okB4picuorP85Xmo6cO+XuJ2sr7wmb0Ya8MstHSgU7RHIavPACqiav5asRsyIxAnM3jXdyO64Y/ryyPHI+/Tb72sWHMSuiRPuJI8QoEwhu4Gwenk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586912; c=relaxed/simple;
-	bh=wk5/ktV2JNgcdI0S4Qq3iqXNRxMKujFaQZ/NmLCdz9k=;
+	s=arc-20240116; t=1752586428; c=relaxed/simple;
+	bh=lU6q9H0Y4MbP65UaYM92aC1vTe/eLZV92fHWcVXzQkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLcjnixf456ZKJXxsYgfWqlVh5WXZfM8lDFGeBxDE512XsCccTDiqJ4ggcU6CQ8Rm+9G12fDfSwK4RuyLJ7YONOuZDF6vWjkpB96L2SptefpW6YA7j2vTgY4xkrZfg9Bv3LwuGYTsuWlD46FGOoF1p3f+Yl0xhlkgDLplK52Qi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3/NGXrJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10902C4CEF6;
-	Tue, 15 Jul 2025 13:41:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XdC98UlBcE8x2Hw7rz7nVnmu0aHF362qdHWDzIfMRcJFudC/2OQpDQozqXPLGKc1NTLWVeWqHZnITAOP36Ntxe1ptorltohY7mKa1iFKIrT/8Ypk3BSvOF4vS6pX0By0P8IEDvxQEoJfZ89ODKGH9aS60X7nCTMjJDsAFANI1Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWcycriV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F480C4CEE3;
+	Tue, 15 Jul 2025 13:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586912;
-	bh=wk5/ktV2JNgcdI0S4Qq3iqXNRxMKujFaQZ/NmLCdz9k=;
+	s=korg; t=1752586427;
+	bh=lU6q9H0Y4MbP65UaYM92aC1vTe/eLZV92fHWcVXzQkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N3/NGXrJJ+qcbybFz7AHAzLpkXAMnyXZYl8KSrcwxtj5tJo5s046TzeopZ2RjzU7E
-	 FCXkPQZdnNA4U4NTA8YVI2Koj6DamK35MLCGYzfEn13FS5mFcfkwWRGWo7PyE+HJJz
-	 9LFohlZq16sGFJ0o/cJZraGBYiLzrlA3csCtcL4s=
+	b=ZWcycriVH41wR/YyN5yIBdzoMCdoXzps74CicEy+SgHK4Q71jBn0kMk/aR9Bpxo3j
+	 SiasOn0qlY92hiXy+m6/u+ewsdzywVpz2O8uH+VYoINOHVQMc8rpjJ1sqpb/AhRluT
+	 gPQc6U3QP/x0KQIqpkKpo1fOUNcEtyRSghB1NQfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Simona Vetter <simona.vetter@intel.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>
-Subject: [PATCH 6.15 088/192] drm/gem: Fix race in drm_gem_handle_create_tail()
+	kernel test robot <lkp@intel.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 061/148] platform/mellanox: mlxbf-tmfifo: fix vring_desc.len assignment
 Date: Tue, 15 Jul 2025 15:13:03 +0200
-Message-ID: <20250715130818.442423231@linuxfoundation.org>
+Message-ID: <20250715130802.773986020@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,147 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simona Vetter <simona.vetter@ffwll.ch>
+From: David Thompson <davthompson@nvidia.com>
 
-commit bd46cece51a36ef088f22ef0416ac13b0a46d5b0 upstream.
+[ Upstream commit 109f4d29dade8ae5b4ac6325af9d1bc24b4230f8 ]
 
-Object creation is a careful dance where we must guarantee that the
-object is fully constructed before it is visible to other threads, and
-GEM buffer objects are no difference.
+Fix warnings reported by sparse, related to incorrect type:
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38: warning: incorrect type in assignment (different base types)
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    expected restricted __virtio32 [usertype] len
+drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    got unsigned long
 
-Final publishing happens by calling drm_gem_handle_create(). After
-that the only allowed thing to do is call drm_gem_object_put() because
-a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
-(which is trivial since we have a linear allocator) can already tear
-down the object again.
-
-Luckily most drivers get this right, the very few exceptions I've
-pinged the relevant maintainers for. Unfortunately we also need
-drm_gem_handle_create() when creating additional handles for an
-already existing object (e.g. GETFB ioctl or the various bo import
-ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
-the only exported function to stop these issues from happening.
-
-Now unfortunately the implementation of drm_gem_handle_create() isn't
-living up to standards: It does correctly finishe object
-initialization at the global level, and hence is safe against a
-concurrent tear down. But it also sets up the file-private aspects of
-the handle, and that part goes wrong: We fully register the object in
-the drm_file.object_idr before calling drm_vma_node_allow() or
-obj->funcs->open, which opens up races against concurrent removal of
-that handle in drm_gem_handle_delete().
-
-Fix this with the usual two-stage approach of first reserving the
-handle id, and then only registering the object after we've completed
-the file-private setup.
-
-Jacek reported this with a testcase of concurrently calling GEM_CLOSE
-on a freshly-created object (which also destroys the object), but it
-should be possible to hit this with just additional handles created
-through import or GETFB without completed destroying the underlying
-object with the concurrent GEM_CLOSE ioctl calls.
-
-Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
-Release driver references to handle before making it available
-again"), which means a cool 9 years have passed until someone noticed
-that we need to make this symmetry or there's still gaps left :-/
-Without the 2-stage close approach we'd still have a race, therefore
-that's an integral part of this bugfix.
-
-More importantly, this means we can have NULL pointers behind
-allocated id in our drm_file.object_idr. We need to check for that
-now:
-
-- drm_gem_handle_delete() checks for ERR_OR_NULL already
-
-- drm_gem.c:object_lookup() also chekcs for NULL
-
-- drm_gem_release() should never be called if there's another thread
-  still existing that could call into an IOCTL that creates a new
-  handle, so cannot race. For paranoia I added a NULL check to
-  drm_gem_object_release_handle() though.
-
-- most drivers (etnaviv, i915, msm) are find because they use
-  idr_find(), which maps both ENOENT and NULL to NULL.
-
-- drivers using idr_for_each_entry() should also be fine, because
-  idr_get_next does filter out NULL entries and continues the
-  iteration.
-
-- The same holds for drm_show_memory_stats().
-
-v2: Use drm_WARN_ON (Thomas)
-
-Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Tested-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: stable@vger.kernel.org
-Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250707151814.603897-1-simona.vetter@ffwll.ch
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404040339.S7CUIgf3-lkp@intel.com/
+Fixes: 78034cbece79 ("platform/mellanox: mlxbf-tmfifo: Drop the Rx packet if no more descriptors")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20250613214608.2250130-1-davthompson@nvidia.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_gem.c |   10 +++++++++-
- include/drm/drm_file.h    |    3 +++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -315,6 +315,9 @@ drm_gem_object_release_handle(int id, vo
- 	struct drm_file *file_priv = data;
- 	struct drm_gem_object *obj = ptr;
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index 767f4406e55f1..1eb7f4eb1156c 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -253,7 +253,8 @@ static int mlxbf_tmfifo_alloc_vrings(struct mlxbf_tmfifo *fifo,
+ 		vring->align = SMP_CACHE_BYTES;
+ 		vring->index = i;
+ 		vring->vdev_id = tm_vdev->vdev.id.device;
+-		vring->drop_desc.len = VRING_DROP_DESC_MAX_LEN;
++		vring->drop_desc.len = cpu_to_virtio32(&tm_vdev->vdev,
++						       VRING_DROP_DESC_MAX_LEN);
+ 		dev = &tm_vdev->vdev.dev;
  
-+	if (drm_WARN_ON(obj->dev, !data))
-+		return 0;
-+
- 	if (obj->funcs->close)
- 		obj->funcs->close(obj, file_priv);
- 
-@@ -435,7 +438,7 @@ drm_gem_handle_create_tail(struct drm_fi
- 	idr_preload(GFP_KERNEL);
- 	spin_lock(&file_priv->table_lock);
- 
--	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
-+	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
- 
- 	spin_unlock(&file_priv->table_lock);
- 	idr_preload_end();
-@@ -456,6 +459,11 @@ drm_gem_handle_create_tail(struct drm_fi
- 			goto err_revoke;
- 	}
- 
-+	/* mirrors drm_gem_handle_delete to avoid races */
-+	spin_lock(&file_priv->table_lock);
-+	obj = idr_replace(&file_priv->object_idr, obj, handle);
-+	WARN_ON(obj != NULL);
-+	spin_unlock(&file_priv->table_lock);
- 	*handlep = handle;
- 	return 0;
- 
---- a/include/drm/drm_file.h
-+++ b/include/drm/drm_file.h
-@@ -300,6 +300,9 @@ struct drm_file {
- 	 *
- 	 * Mapping of mm object handles to object pointers. Used by the GEM
- 	 * subsystem. Protected by @table_lock.
-+	 *
-+	 * Note that allocated entries might be NULL as a transient state when
-+	 * creating or deleting a handle.
- 	 */
- 	struct idr object_idr;
- 
+ 		size = vring_size(vring->num, vring->align);
+-- 
+2.39.5
+
 
 
 
