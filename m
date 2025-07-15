@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-161980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E41AB05AFF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:15:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FADB05B04
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6587D18908F4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:16:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A4BC562D68
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C28F192D8A;
-	Tue, 15 Jul 2025 13:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C00B193077;
+	Tue, 15 Jul 2025 13:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2iLDSRn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TpL8fksV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8CA3BBF2;
-	Tue, 15 Jul 2025 13:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D063BBF2;
+	Tue, 15 Jul 2025 13:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585353; cv=none; b=c6kkMMUxe86WawdR4KdFi3yK1qHfO7DrV2ymBJezZa7Zczl/xVZdMw5djmv81xZ8bVRuHbZSCSfV78IYMK3x4eMf2gWSQgj8cmZpRIFQwzzu2J6HuruIQH8YJyhUdUZYfbeIbujlDgsMSSe4cNf1uXeZcT+dT8V/Uuwijwmiv1U=
+	t=1752585370; cv=none; b=e9PjWa0jAhxh3Has7zh+0TjAWWpJSaXeSsHlKsUERP+1m2ZcfHzPwMildC1aqZXmDScNWZGcl3XUK/odG1B8SRHfkd+Ukmq1yC1lhPxpa6sJUi29/Wbejf3hBhzs9HzrFxEIKW+ZFZoI4s/tGzZEaHDWwp2tNV/0GQfqQHKvnsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585353; c=relaxed/simple;
-	bh=uqaohZq1krO6o9c/Jdq/RquVoJt2M1AsRyNzHy+dUng=;
+	s=arc-20240116; t=1752585370; c=relaxed/simple;
+	bh=lGwf51EaPc3Q/c+CePCOn1pjxXtrehejRHw+JFMRgH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+4NBi6PMJehd82o/k/CuY6okshipi6G11RvyPr7ysgjgwJJnNQC/JWNCEZCbFtIybf6Fh6xM3mVKYbl0Zl5YfkSPuMMVqOeBnVdnHJWcnZErhf5WyngyrCPFog9hnbxTC1ltXnlRZ9Q66uL9vIXI3dypd9N0itRYgp00KS22ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2iLDSRn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0A9C4CEE3;
-	Tue, 15 Jul 2025 13:15:52 +0000 (UTC)
+	 MIME-Version; b=NjbcrGjFIw0bF7h9rGfYDvDzWUWpFKmHhFEK7BzlGNCjJmxMWNVLeiPEnkOpCpeW3r6DPAjVLBRteQLheGqcK+DQpKvpWvTQMLT1HvKfg2GrpP4fRfweiI0wHgcaT/KINNwSLTb6TgPVg3welPA1oEl4Wz9aplmWD19wif+p2C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpL8fksV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549E6C4CEE3;
+	Tue, 15 Jul 2025 13:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585353;
-	bh=uqaohZq1krO6o9c/Jdq/RquVoJt2M1AsRyNzHy+dUng=;
+	s=korg; t=1752585369;
+	bh=lGwf51EaPc3Q/c+CePCOn1pjxXtrehejRHw+JFMRgH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2iLDSRnPq3T9hfS8jjrLcjYv+O4Gcp7bRogIeg//NHwx3b+emBoLl9Wo3mAW8Oyf
-	 ogaNrTQr5D6F8JQNOaCf95CJpJF98nZsLcQU0ED6uWWRizt+Ce4Z1xDKSuzZO0P32O
-	 xkuX9MjXgJun89xW4msRyjm5lNiKiuZqeYdwhOUc=
+	b=TpL8fksVlAXlgK1+u3/Bo0FHFjgWPuJ4wgLUIv3jopqKsnpdyYGyk5pSgubcVHwRL
+	 LLLZNL01saRbTadVAXdA2BvUqQnNpRghcCMiaFRS+H81eAHT1uln9l/1f7kuVKlIHz
+	 ne8LxdtEyFwFWaqTFrmsLndQIlUx6ozdm6coxNq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.12 001/163] eventpoll: dont decrement ep refcount while still holding the ep mutex
-Date: Tue, 15 Jul 2025 15:11:09 +0200
-Message-ID: <20250715130808.840375086@linuxfoundation.org>
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 6.12 002/163] drm/exynos: exynos7_drm_decon: add vblank check in IRQ handling
+Date: Tue, 15 Jul 2025 15:11:10 +0200
+Message-ID: <20250715130808.879336420@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
 References: <20250715130808.777350091@linuxfoundation.org>
@@ -68,112 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-commit 8c2e52ebbe885c7eeaabd3b7ddcdc1246fc400d2 upstream.
+commit b846350aa272de99bf6fecfa6b08e64ebfb13173 upstream.
 
-Jann Horn points out that epoll is decrementing the ep refcount and then
-doing a
+If there's support for another console device (such as a TTY serial),
+the kernel occasionally panics during boot. The panic message and a
+relevant snippet of the call stack is as follows:
 
-    mutex_unlock(&ep->mtx);
+  Unable to handle kernel NULL pointer dereference at virtual address 000000000000000
+  Call trace:
+    drm_crtc_handle_vblank+0x10/0x30 (P)
+    decon_irq_handler+0x88/0xb4
+    [...]
 
-afterwards. That's very wrong, because it can lead to a use-after-free.
+Otherwise, the panics don't happen. This indicates that it's some sort
+of race condition.
 
-That pattern is actually fine for the very last reference, because the
-code in question will delay the actual call to "ep_free(ep)" until after
-it has unlocked the mutex.
+Add a check to validate if the drm device can handle vblanks before
+calling drm_crtc_handle_vblank() to avoid this.
 
-But it's wrong for the much subtler "next to last" case when somebody
-*else* may also be dropping their reference and free the ep while we're
-still using the mutex.
-
-Note that this is true even if that other user is also using the same ep
-mutex: mutexes, unlike spinlocks, can not be used for object ownership,
-even if they guarantee mutual exclusion.
-
-A mutex "unlock" operation is not atomic, and as one user is still
-accessing the mutex as part of unlocking it, another user can come in
-and get the now released mutex and free the data structure while the
-first user is still cleaning up.
-
-See our mutex documentation in Documentation/locking/mutex-design.rst,
-in particular the section [1] about semantics:
-
-	"mutex_unlock() may access the mutex structure even after it has
-	 internally released the lock already - so it's not safe for
-	 another context to acquire the mutex and assume that the
-	 mutex_unlock() context is not using the structure anymore"
-
-So if we drop our ep ref before the mutex unlock, but we weren't the
-last one, we may then unlock the mutex, another user comes in, drops
-_their_ reference and releases the 'ep' as it now has no users - all
-while the mutex_unlock() is still accessing it.
-
-Fix this by simply moving the ep refcount dropping to outside the mutex:
-the refcount itself is atomic, and doesn't need mutex protection (that's
-the whole _point_ of refcounts: unlike mutexes, they are inherently
-about object lifetimes).
-
-Reported-by: Jann Horn <jannh@google.com>
-Link: https://docs.kernel.org/locking/mutex-design.html#semantics [1]
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/eventpoll.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -854,7 +854,7 @@ static bool __ep_remove(struct eventpoll
- 	kfree_rcu(epi, rcu);
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -601,6 +601,10 @@ static irqreturn_t decon_irq_handler(int
+ 	if (!ctx->drm_dev)
+ 		goto out;
  
- 	percpu_counter_dec(&ep->user->epoll_watches);
--	return ep_refcount_dec_and_test(ep);
-+	return true;
- }
++	/* check if crtc and vblank have been initialized properly */
++	if (!drm_dev_has_vblank(ctx->drm_dev))
++		goto out;
++
+ 	if (!ctx->i80_if) {
+ 		drm_crtc_handle_vblank(&ctx->crtc->base);
  
- /*
-@@ -862,14 +862,14 @@ static bool __ep_remove(struct eventpoll
-  */
- static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
- {
--	WARN_ON_ONCE(__ep_remove(ep, epi, false));
-+	if (__ep_remove(ep, epi, false))
-+		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
- }
- 
- static void ep_clear_and_put(struct eventpoll *ep)
- {
- 	struct rb_node *rbp, *next;
- 	struct epitem *epi;
--	bool dispose;
- 
- 	/* We need to release all tasks waiting for these file */
- 	if (waitqueue_active(&ep->poll_wait))
-@@ -902,10 +902,8 @@ static void ep_clear_and_put(struct even
- 		cond_resched();
- 	}
- 
--	dispose = ep_refcount_dec_and_test(ep);
- 	mutex_unlock(&ep->mtx);
--
--	if (dispose)
-+	if (ep_refcount_dec_and_test(ep))
- 		ep_free(ep);
- }
- 
-@@ -1108,7 +1106,7 @@ again:
- 		dispose = __ep_remove(ep, epi, true);
- 		mutex_unlock(&ep->mtx);
- 
--		if (dispose)
-+		if (dispose && ep_refcount_dec_and_test(ep))
- 			ep_free(ep);
- 		goto again;
- 	}
 
 
 
