@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-162780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6440BB05F96
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3218CB05FD8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FC21500378
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A62175807A6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D7E2E611D;
-	Tue, 15 Jul 2025 13:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D682C2E7188;
+	Tue, 15 Jul 2025 13:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgDLbWr9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEDyRqdB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333FF2E3AE1;
-	Tue, 15 Jul 2025 13:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960042E3AE9;
+	Tue, 15 Jul 2025 13:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587458; cv=none; b=SrtAndy77oSUPx24YfXkD8150crPJvHB10hbWmfHaD31/aJvu2EmBMCIHo3wksXuF9AHvTpqZUsvMGh7d8wSIAucxpNUB35J3Da4LGS6g7SsGtVvGFn+uUhQVR02/AU3rCzeVFKuLdcNpKgk2VURHnqa9sR4NCbr6bykAF2+J2Y=
+	t=1752587479; cv=none; b=gzRKXOgWvCtKhM7cvIAsGmeJgOmsRMwTZFDB431llbl/6XqaCsXFa/dhuUW6t8WifUrv5MeYa3TV+Lctuf/S2uBUIUp0Bf6j0HbQnEyDKaaCquBzNV9RhkZ9aYwqEOpGS9ZggISetKnidNof6K6u8kXkMMxsCHL7zBglzXHY8IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587458; c=relaxed/simple;
-	bh=YER0xUEPTE5LGhvK+AAcZd2ugifezz6EMBcpMRKXuig=;
+	s=arc-20240116; t=1752587479; c=relaxed/simple;
+	bh=iBsN+hQi2r7+Mvgm6b7n9RSVk00hYCZi0KRhaBhfl6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHaZMdbp77T60SYe/Zq4E5V4FuJLd0mCIos27wR6h3N0wt3qzVfUUO3ytCJ82t6rnsqIh6ZOVK6x8wfV9b+/1lqO42jmKk/cOakPMQVRtBav/ifeXhxwzBwb0qfJaSqXAIu5W6Xcl/Yh46T6goqjH6F+8EDYg+JqfaFche5tCA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgDLbWr9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA172C4CEE3;
-	Tue, 15 Jul 2025 13:50:57 +0000 (UTC)
+	 MIME-Version; b=FvU953TMrTcfKVvHBHFIWda+RZ8S/tELH39JVNVLH6dnuOvPR90kRPEmAP7gnvnMfSBcJakNcjcmI2WtuXucm7ylF9LDUf49rJ3fwgdF3/LPx5iJy7UDHdt4DLRZAW51vhRVUTLijnuzVlajjd2mtpp3vwQj2EI5d0V4rPnHVhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEDyRqdB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C47C4CEE3;
+	Tue, 15 Jul 2025 13:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587458;
-	bh=YER0xUEPTE5LGhvK+AAcZd2ugifezz6EMBcpMRKXuig=;
+	s=korg; t=1752587479;
+	bh=iBsN+hQi2r7+Mvgm6b7n9RSVk00hYCZi0KRhaBhfl6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgDLbWr9tzoacAaAKzjekzrUgaWw8PqD6Yk/4+88Ir6VwvgLWRBh9gsqSgFdU1AZ9
-	 4n+vIIVFBHSWS0TqawHnxqytn0CaA60kLYTF02vYAuyfpmycYHUc7W8vmsXVFHqev7
-	 5fK2LzjilcfAsAaCC2SMxFk0lPrCm4XPTp3SI30Y=
+	b=cEDyRqdBWWCdbFMee7t63P1TKfVooXNQ5U1loc4AZjeA207dms46B7uQG2gVkfCgL
+	 m8zkvk+0kIPGfnzctcrczBOyG+9SurI6Q8+22Prr8CjhurKk4X/dPBiE5KXOprZcfY
+	 t6Nk6i4TtnjR+Fs2QLQvqSyI/pZyb0HZjffgMroc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/208] NFSv4.2: fix listxattr to return selinux security label
-Date: Tue, 15 Jul 2025 15:11:51 +0200
-Message-ID: <20250715130810.932383721@linuxfoundation.org>
+Subject: [PATCH 5.10 004/208] mfd: max14577: Fix wakeup source leaks on device unbind
+Date: Tue, 15 Jul 2025 15:11:53 +0200
+Message-ID: <20250715130811.012778653@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -66,54 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 243fea134633ba3d64aceb4c16129c59541ea2c6 ]
+[ Upstream commit d905d06e64b0eb3da43af6186c132f5282197998 ]
 
-Currently, when NFS is queried for all the labels present on the
-file via a command example "getfattr -d -m . /mnt/testfile", it
-does not return the security label. Yet when asked specifically for
-the label (getfattr -n security.selinux) it will be returned.
-Include the security label when all attributes are queried.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250406-mfd-device-wakekup-leak-v1-3-318e14bdba0a@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/mfd/max14577.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 1005ecf7c250b..77cc1c4219e15 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -10378,7 +10378,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
- 
- static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
+index be185e9d5f16b..c9e56145b08bd 100644
+--- a/drivers/mfd/max14577.c
++++ b/drivers/mfd/max14577.c
+@@ -467,6 +467,7 @@ static int max14577_i2c_remove(struct i2c_client *i2c)
  {
--	ssize_t error, error2, error3;
-+	ssize_t error, error2, error3, error4;
- 	size_t left = size;
+ 	struct max14577 *max14577 = i2c_get_clientdata(i2c);
  
- 	error = generic_listxattr(dentry, list, left);
-@@ -10401,8 +10401,16 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
- 	error3 = nfs4_listxattr_nfs4_user(d_inode(dentry), list, left);
- 	if (error3 < 0)
- 		return error3;
-+	if (list) {
-+		list += error3;
-+		left -= error3;
-+	}
-+
-+	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
-+	if (error4 < 0)
-+		return error4;
- 
--	error += error2 + error3;
-+	error += error2 + error3 + error4;
- 	if (size && error > size)
- 		return -ERANGE;
- 	return error;
++	device_init_wakeup(max14577->dev, false);
+ 	mfd_remove_devices(max14577->dev);
+ 	regmap_del_irq_chip(max14577->irq, max14577->irq_data);
+ 	if (max14577->dev_type == MAXIM_DEVICE_TYPE_MAX77836)
 -- 
 2.39.5
 
