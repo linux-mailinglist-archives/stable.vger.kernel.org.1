@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1059CB05C71
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:31:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22561B05CFF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEB2F167712
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 875481C2492B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A43B2E7187;
-	Tue, 15 Jul 2025 13:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D2E2E6D00;
+	Tue, 15 Jul 2025 13:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUsAmZv+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyPPeDM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073F92E7184;
-	Tue, 15 Jul 2025 13:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2520B2E339B;
+	Tue, 15 Jul 2025 13:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586002; cv=none; b=ctH4P5LCN7AKMQD5i1yZ+UYtvAWhvCx1iKefUGt2boKXnmPLVe1om0fx0EM8LRnPF/kk6hgq5BYfKC8cRzInGbwTtPOAX4Hp2AkHhXIY4TJhVW9C9tVBCr6KuNoZ1+I6iMcaXtNq+vGdwZKgQ8rH4b2bw3xmnH1CxD3q2FVJg2c=
+	t=1752586179; cv=none; b=mNNNcM3+7TEVUXrq9yvOv2lF/HXKlhas+CJ6eGv4R1aeNQJeJNpZ1NMaWPyi9dbgkRtdEHTSMolJT48/ayNmErOHaKsvobV+KiFN31Hux3Vpjz6Z5DBmTJvfa/quVC8lo1APpzVfURCZY2j72IiFSTsnD6mijYMau/HVn/njvyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586002; c=relaxed/simple;
-	bh=ypl+4mQcb9vzYFwsGSDxmPZ49SBhWhsNRQVYuTsM47A=;
+	s=arc-20240116; t=1752586179; c=relaxed/simple;
+	bh=VttGYL4QBLjj7feE3SQgIjGGG/HZwbTT2IC/BKcEHh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkbXINLTOtuoNvKaT8l4bxawnvVK17Hts5q+yzqbZmvve/jNMmQI5NzTYH4B5ZFfmhgrs+MbCZs43yhzXDLpEdx8l2oSWz7EokolY0aYVmR0qOTHkBIqbykyUEVFSerU92xzWouKjgp0LBGfCnXpxUjcTF4JjE8dqRNEETVebQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUsAmZv+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA79C4CEF8;
-	Tue, 15 Jul 2025 13:26:41 +0000 (UTC)
+	 MIME-Version; b=t7Z3EXc/8Q4Iaq9DP/t4+R89/DpgSHaPd/VoBxtUO53pCSIMcLjn6ZBE/MdNNX0gMS2PC9PFtF+hBNcUnb+wzFPemEtmkE29zwd/mRdGrmYaYG4JTxP/IBtGkqHpA/ClUqs02umCo3DcQhJzhAGQ1Pt2u/dyid38I4emM/jD/2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyPPeDM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9EDC4CEE3;
+	Tue, 15 Jul 2025 13:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586001;
-	bh=ypl+4mQcb9vzYFwsGSDxmPZ49SBhWhsNRQVYuTsM47A=;
+	s=korg; t=1752586179;
+	bh=VttGYL4QBLjj7feE3SQgIjGGG/HZwbTT2IC/BKcEHh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUsAmZv+nYIqwteJ/RLV1YMCFC8judJ7C8leHclsHY4GP39whQ6FSsFJIbwNh+X+0
-	 g+Ix1X2xt80oJ8jCDSLeAnmhQhhQ30yUDpfpQULrF/RM0mPxCzTc68muyu6PKODQnn
-	 aO/F0aw0ePGfXYIFFmASdbnISYg5tvDcxw3z2zoU=
+	b=FyPPeDM+jvgPHyT+GKm9DmaKwpx5MlM9EiHgCcL8w6jABQczJYKjDYAjALlExOXp8
+	 nhFptUot9C+qUyM6fflNmcpD0L9cLY4cUUtTjAZGvVG98eJv7aBv9tCYWyBMSSj0QG
+	 3LkPiESYHjwk0TeZKTpBtpL4NRcBaOZBwFoPTPdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-	Shravya KN <shravya.k-n@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/109] bnxt_en: Fix DCB ETS validation
+Subject: [PATCH 5.15 46/77] usb:cdnsp: remove TRB_FLUSH_ENDPOINT command
 Date: Tue, 15 Jul 2025 15:13:45 +0200
-Message-ID: <20250715130802.446955563@linuxfoundation.org>
+Message-ID: <20250715130753.561929393@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shravya KN <shravya.k-n@broadcom.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-[ Upstream commit b74c2a2e9cc471e847abd87e50a2354c07e02040 ]
+[ Upstream commit 2998874736bca1031ca84b0a3235a2cd09dfa426 ]
 
-In bnxt_ets_validate(), the code incorrectly loops over all possible
-traffic classes to check and add the ETS settings.  Fix it to loop
-over the configured traffic classes only.
+Patch removes TRB_FLUSH_ENDPOINT command from driver.
+This command is not supported by controller and
+USBSSP returns TRB Error completion code for it.
 
-The unconfigured traffic classes will default to TSA_ETS with 0
-bandwidth.  Looping over these unconfigured traffic classes may
-cause the validation to fail and trigger this error message:
-
-"rejecting ETS config starving a TC\n"
-
-The .ieee_setets() will then fail.
-
-Fixes: 7df4ae9fe855 ("bnxt_en: Implement DCBNL to support host-based DCBX.")
-Reviewed-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
-Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250710213938.1959625-2-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20231026073737.165450-1-pawell@cadence.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2831a81077f5 ("usb: cdnsp: Fix issue with CV Bad Descriptor test")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/cdns3/cdnsp-debug.h  |  3 ---
+ drivers/usb/cdns3/cdnsp-gadget.c |  6 +-----
+ drivers/usb/cdns3/cdnsp-gadget.h |  5 -----
+ drivers/usb/cdns3/cdnsp-ring.c   | 24 ------------------------
+ 4 files changed, 1 insertion(+), 37 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-index 63e0670383852..1727e9bb1479d 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-@@ -487,7 +487,9 @@ static int bnxt_ets_validate(struct bnxt *bp, struct ieee_ets *ets, u8 *tc)
+diff --git a/drivers/usb/cdns3/cdnsp-debug.h b/drivers/usb/cdns3/cdnsp-debug.h
+index f0ca865cce2a0..ad617b7455b9c 100644
+--- a/drivers/usb/cdns3/cdnsp-debug.h
++++ b/drivers/usb/cdns3/cdnsp-debug.h
+@@ -131,8 +131,6 @@ static inline const char *cdnsp_trb_type_string(u8 type)
+ 		return "Endpoint Not ready";
+ 	case TRB_HALT_ENDPOINT:
+ 		return "Halt Endpoint";
+-	case TRB_FLUSH_ENDPOINT:
+-		return "FLush Endpoint";
+ 	default:
+ 		return "UNKNOWN";
+ 	}
+@@ -328,7 +326,6 @@ static inline const char *cdnsp_decode_trb(char *str, size_t size, u32 field0,
+ 		break;
+ 	case TRB_RESET_EP:
+ 	case TRB_HALT_ENDPOINT:
+-	case TRB_FLUSH_ENDPOINT:
+ 		ret = snprintf(str, size,
+ 			       "%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
+ 			       cdnsp_trb_type_string(type),
+diff --git a/drivers/usb/cdns3/cdnsp-gadget.c b/drivers/usb/cdns3/cdnsp-gadget.c
+index 1e9aee824eb7d..1de82fb9dcb48 100644
+--- a/drivers/usb/cdns3/cdnsp-gadget.c
++++ b/drivers/usb/cdns3/cdnsp-gadget.c
+@@ -1061,10 +1061,8 @@ static int cdnsp_gadget_ep_disable(struct usb_ep *ep)
+ 	pep->ep_state |= EP_DIS_IN_RROGRESS;
  
- 		if ((ets->tc_tx_bw[i] || ets->tc_tsa[i]) && i > bp->max_tc)
- 			return -EINVAL;
-+	}
+ 	/* Endpoint was unconfigured by Reset Device command. */
+-	if (!(pep->ep_state & EP_UNCONFIGURED)) {
++	if (!(pep->ep_state & EP_UNCONFIGURED))
+ 		cdnsp_cmd_stop_ep(pdev, pep);
+-		cdnsp_cmd_flush_ep(pdev, pep);
+-	}
  
-+	for (i = 0; i < max_tc; i++) {
- 		switch (ets->tc_tsa[i]) {
- 		case IEEE_8021QAZ_TSA_STRICT:
- 			break;
+ 	/* Remove all queued USB requests. */
+ 	while (!list_empty(&pep->pending_list)) {
+@@ -1464,8 +1462,6 @@ static void cdnsp_stop(struct cdnsp_device *pdev)
+ {
+ 	u32 temp;
+ 
+-	cdnsp_cmd_flush_ep(pdev, &pdev->eps[0]);
+-
+ 	/* Remove internally queued request for ep0. */
+ 	if (!list_empty(&pdev->eps[0].pending_list)) {
+ 		struct cdnsp_request *req;
+diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
+index 2998548177aba..48336e121ed6f 100644
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -1138,8 +1138,6 @@ union cdnsp_trb {
+ #define TRB_HALT_ENDPOINT	54
+ /* Doorbell Overflow Event. */
+ #define TRB_DRB_OVERFLOW	57
+-/* Flush Endpoint Command. */
+-#define TRB_FLUSH_ENDPOINT	58
+ 
+ #define TRB_TYPE_LINK(x)	(((x) & TRB_TYPE_BITMASK) == TRB_TYPE(TRB_LINK))
+ #define TRB_TYPE_LINK_LE32(x)	(((x) & cpu_to_le32(TRB_TYPE_BITMASK)) == \
+@@ -1552,8 +1550,6 @@ void cdnsp_queue_configure_endpoint(struct cdnsp_device *pdev,
+ void cdnsp_queue_reset_ep(struct cdnsp_device *pdev, unsigned int ep_index);
+ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev,
+ 			       unsigned int ep_index);
+-void cdnsp_queue_flush_endpoint(struct cdnsp_device *pdev,
+-				unsigned int ep_index);
+ void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num);
+ void cdnsp_queue_reset_device(struct cdnsp_device *pdev);
+ void cdnsp_queue_new_dequeue_state(struct cdnsp_device *pdev,
+@@ -1587,7 +1583,6 @@ void cdnsp_irq_reset(struct cdnsp_device *pdev);
+ int cdnsp_halt_endpoint(struct cdnsp_device *pdev,
+ 			struct cdnsp_ep *pep, int value);
+ int cdnsp_cmd_stop_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep);
+-int cdnsp_cmd_flush_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep);
+ void cdnsp_setup_analyze(struct cdnsp_device *pdev);
+ int cdnsp_status_stage(struct cdnsp_device *pdev);
+ int cdnsp_reset_device(struct cdnsp_device *pdev);
+diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
+index c9ad4280f4ba2..795668435c77e 100644
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -2157,19 +2157,6 @@ int cdnsp_cmd_stop_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep)
+ 	return ret;
+ }
+ 
+-int cdnsp_cmd_flush_ep(struct cdnsp_device *pdev, struct cdnsp_ep *pep)
+-{
+-	int ret;
+-
+-	cdnsp_queue_flush_endpoint(pdev, pep->idx);
+-	cdnsp_ring_cmd_db(pdev);
+-	ret = cdnsp_wait_for_cmd_compl(pdev);
+-
+-	trace_cdnsp_handle_cmd_flush_ep(pep->out_ctx);
+-
+-	return ret;
+-}
+-
+ /*
+  * The transfer burst count field of the isochronous TRB defines the number of
+  * bursts that are required to move all packets in this TD. Only SuperSpeed
+@@ -2491,17 +2478,6 @@ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev, unsigned int ep_index)
+ 			    EP_ID_FOR_TRB(ep_index));
+ }
+ 
+-/*
+- * Queue a flush endpoint request on the command ring.
+- */
+-void  cdnsp_queue_flush_endpoint(struct cdnsp_device *pdev,
+-				 unsigned int ep_index)
+-{
+-	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_FLUSH_ENDPOINT) |
+-			    SLOT_ID_FOR_TRB(pdev->slot_id) |
+-			    EP_ID_FOR_TRB(ep_index));
+-}
+-
+ void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
+ {
+ 	u32 lo, mid;
 -- 
 2.39.5
 
