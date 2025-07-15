@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232E9B05EE1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D988B05D40
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C18A4E1ED9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4189F4A76E6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C792EBDCE;
-	Tue, 15 Jul 2025 13:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332492E92A3;
+	Tue, 15 Jul 2025 13:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zm3Kd5tK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2iEscMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBADD2EB5D2;
-	Tue, 15 Jul 2025 13:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57272E62AB;
+	Tue, 15 Jul 2025 13:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587089; cv=none; b=I7j9PItzef5l3QWEGvZiaCodYUA/RLo6EJchF9VFQcTrHohylcIPmZQ7MHin0z4a4nb4mqq6Yp+nCwswk4S/KSqe3m5Ca4Hda/unyQB57BhUkhXvJGqalwIjayRPiYtCbvVcIOuE1zH3Wd9TLaAK7RRKMLyvTRHLjjmGv4uGZcc=
+	t=1752586240; cv=none; b=icZgKwC1nXhPtkAJdpMANWS9EbS4QBj7iUIDvJeNm5gBqHIgJB5zt6e382E7cHezbiyJYfbHcZVTGNdoTqhiX8iL0XRhZUtWlUOfY9jBjTsiT1NES+IYavyQwGiu3mKnbrFuds38vXjwgNkJ4dHi7psHQMykq/CSeEAVh+qxNyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587089; c=relaxed/simple;
-	bh=syL/pDX4A19sTKMRiOM4fPaytMInNoFiW/CBU6jy28U=;
+	s=arc-20240116; t=1752586240; c=relaxed/simple;
+	bh=RpRdTX4ISJVQpkAuOxrV3svgb2KVhhOenk4rp8nLyOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ssyVExB6SsZJeeliSzU+iRqCJdP+nwWaga1Hg+ZVHp50qcd9zc1C2vz4HT3pTwmOvBv3XmAnBwEpnUB0bmwQtWcPkqH2SUf1lNNfZV3CxPLUPo25W418v7D6+3TQYZMVU/MBWb6OtV39sQ1+B3gLKYa1t3C7Guy3cpHHnbAFGhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zm3Kd5tK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B29C4CEE3;
-	Tue, 15 Jul 2025 13:44:48 +0000 (UTC)
+	 MIME-Version; b=l3eb7PXjAZFKBgRPPTKoQbOLR/+YK4tVKLVdYRBmlOMSv/f+Z+ltVEGboq9wh7XdMCSfSsfbZnigiQsIS46TXlUXpQZMwpEKKq0r/IntrfGdZq0+Rue4v3R5J+rzpK2htbNXQHz+O2dng/7B2tp/8wF0MxKsgJotliP/hx67Hyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2iEscMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78380C4CEF6;
+	Tue, 15 Jul 2025 13:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587089;
-	bh=syL/pDX4A19sTKMRiOM4fPaytMInNoFiW/CBU6jy28U=;
+	s=korg; t=1752586239;
+	bh=RpRdTX4ISJVQpkAuOxrV3svgb2KVhhOenk4rp8nLyOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zm3Kd5tKByrURgsbQ6LoJ/dDUXCCTJcOF03dXzjU+6nd7cN0qrj4eHHSro8yTgk7Y
-	 fKgPJrm0NI10Zd9jgYDmHM3qVLWbCkTmq4DiTC7rRTKcddqJNzDTviNtoaWIzVE/Tt
-	 nsmkc/qbwo+Y4s8l45l1watwbcaypZMGYqiIngA0=
+	b=a2iEscMRGfMFcpwOZOZvdMtjDQBjGr7j06H6avbx5sOR9BZnOJjYD/ySYY7kOMNO3
+	 CaUfRReIBHpwoVCu/MXPnPP48v1Wp4mez5C6MOeuw3lco+7ULyoUnhpJlbAjdoyGWV
+	 hoIk/ymhyKmhxsJIEM5hD5HeKk4YFpZ+qFvXrhmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.15 121/192] erofs: fix to add missing tracepoint in erofs_read_folio()
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 37/77] RDMA/mlx5: Fix vport loopback for MPV device
 Date: Tue, 15 Jul 2025 15:13:36 +0200
-Message-ID: <20250715130819.745771386@linuxfoundation.org>
+Message-ID: <20250715130753.197688880@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-commit 99f7619a77a0a2e3e2bcae676d0f301769167754 upstream.
+[ Upstream commit a9a9e68954f29b1e197663f76289db4879fd51bb ]
 
-Commit 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
-converts to use iomap interface, it removed trace_erofs_readpage()
-tracepoint in the meantime, let's add it back.
+Always enable vport loopback for both MPV devices on driver start.
 
-Fixes: 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250708111942.3120926-1-chao@kernel.org
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Previously in some cases related to MPV RoCE, packets weren't correctly
+executing loopback check at vport in FW, since it was disabled.
+Due to complexity of identifying such cases for MPV always enable vport
+loopback for both GVMIs when binding the slave to the master port.
+
+Fixes: 0042f9e458a5 ("RDMA/mlx5: Enable vport loopback when user context or QP mandate")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/d4298f5ebb2197459e9e7221c51ecd6a34699847.1750064969.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/data.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/mlx5/main.c | 33 +++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
---- a/fs/erofs/data.c
-+++ b/fs/erofs/data.c
-@@ -350,6 +350,8 @@ int erofs_fiemap(struct inode *inode, st
-  */
- static int erofs_read_folio(struct file *file, struct folio *folio)
- {
-+	trace_erofs_read_folio(folio, true);
-+
- 	return iomap_read_folio(folio, &erofs_iomap_ops);
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 2236c62a19807..e2f3369342c48 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -1680,6 +1680,33 @@ static void deallocate_uars(struct mlx5_ib_dev *dev,
+ 			mlx5_cmd_free_uar(dev->mdev, bfregi->sys_pages[i]);
  }
  
++static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
++				struct mlx5_core_dev *slave)
++{
++	int err;
++
++	err = mlx5_nic_vport_update_local_lb(master, true);
++	if (err)
++		return err;
++
++	err = mlx5_nic_vport_update_local_lb(slave, true);
++	if (err)
++		goto out;
++
++	return 0;
++
++out:
++	mlx5_nic_vport_update_local_lb(master, false);
++	return err;
++}
++
++static void mlx5_ib_disable_lb_mp(struct mlx5_core_dev *master,
++				  struct mlx5_core_dev *slave)
++{
++	mlx5_nic_vport_update_local_lb(slave, false);
++	mlx5_nic_vport_update_local_lb(master, false);
++}
++
+ int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
+ {
+ 	int err = 0;
+@@ -3147,6 +3174,8 @@ static void mlx5_ib_unbind_slave_port(struct mlx5_ib_dev *ibdev,
+ 
+ 	lockdep_assert_held(&mlx5_ib_multiport_mutex);
+ 
++	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev);
++
+ 	mlx5_ib_cleanup_cong_debugfs(ibdev, port_num);
+ 
+ 	spin_lock(&port->mp.mpi_lock);
+@@ -3231,6 +3260,10 @@ static bool mlx5_ib_bind_slave_port(struct mlx5_ib_dev *ibdev,
+ 
+ 	mlx5_ib_init_cong_debugfs(ibdev, port_num);
+ 
++	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev);
++	if (err)
++		goto unbind;
++
+ 	return true;
+ 
+ unbind:
+-- 
+2.39.5
+
 
 
 
