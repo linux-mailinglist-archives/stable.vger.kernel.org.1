@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-162107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97BAB05BA3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7DAB05CC2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A00566335
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5765A163357
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAC42E2EF9;
-	Tue, 15 Jul 2025 13:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A54E2EACE2;
+	Tue, 15 Jul 2025 13:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wH8C4tQP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5eXfJ+8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED14527584E;
-	Tue, 15 Jul 2025 13:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E5A2E6104;
+	Tue, 15 Jul 2025 13:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585691; cv=none; b=cmERPTDuaH2Ckvl5aeLBa6usWgUXuzmRTCWNBNKpKmCP19YhnAymQTi5MFy68HS3bUtUkc1H3DjMil0ktf9AkctRWgx01y5x1i7FgGWIjoiOkVBWSi0psoxIboPRWdoKsoN/UL6LZd9DtImhi6PACUhPP7NDTu76ix5kGUNEnPA=
+	t=1752586150; cv=none; b=Zix5FKyCCt5HUAVv2vc4OKQB8XXeBYKUte1UBhrrBRP4caO1nUm5GWNRpIaTH8bXuooYf9E331ZFftD7ys68hUECaHMdSYHns3TFXKggqP5nZaYuqOr2ArrZnFu1I2xp5sX6pSI+HTk+hKJeYTcOEwXM45FCB2gpBRdsSF1WPq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585691; c=relaxed/simple;
-	bh=tSB/C6wS0FNQdVPKNQBXoiVQSmypmBWegOWBhRzFHQY=;
+	s=arc-20240116; t=1752586150; c=relaxed/simple;
+	bh=cYUXvULT8WpNXRXCx5mUqS2VqvCwjPNaMC18THSnqTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l35/tyK52DK7QwP53tCZ+JPNHN8rtNgDAd1MPOtRuxQIoACC0u3xHpGgSmnQDE2BFWn/MLQvVrS2MJsmUw6adb+qNpSNYtiU8SwIWuDcjqiFvrQfcco0iOBAcrHAsdnax+pGWFYqfredHTgp1HE/eQOCwUGkRxn3a7hm3tssy9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wH8C4tQP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81942C4CEE3;
-	Tue, 15 Jul 2025 13:21:30 +0000 (UTC)
+	 MIME-Version; b=DMJt4Zn5bk66oLXtjL/jIy85gOvkBlex5knabWFucW2TU2QWJ6/gjUqVYfzAyE56NgTcJezUTBFMBQWi1OML6PzLljG7ifU+cTlKBTXd9fwEsji+eJSCUJaFkN4Pa/mjvqo3i0C8AEIPqyfB2D5ZZaZPuOe+lxUlslmrewNDNVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5eXfJ+8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1084C4CEF1;
+	Tue, 15 Jul 2025 13:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585690;
-	bh=tSB/C6wS0FNQdVPKNQBXoiVQSmypmBWegOWBhRzFHQY=;
+	s=korg; t=1752586150;
+	bh=cYUXvULT8WpNXRXCx5mUqS2VqvCwjPNaMC18THSnqTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wH8C4tQPZ1tjOMbDMDpx7wI6sknY4qh+720+19P7ZoLhDYu0ZKriWghB4gVchfyN9
-	 /b0F0ATSZ21lvfPsucvBK75Ty7HJRvSyBP28R+/EXXhYMT5jzhelHuJsfH8dwohIaq
-	 V61IiK7oOsur4lUQ+s/wUM85TG+QH6wozfLWiTyQ=
+	b=V5eXfJ+8T/mBOmDQ83AR4Hr86jJlQqu8fXsZUvAk+SdgeKkdVjfgRgb1GdrWKPD0w
+	 2g8VbJkRlpZwE3MaU2Hv73vIyxsfhqeYEEwQyDy/+NvLEmHB516wCmQcGFe1O+Sb+H
+	 6KGyZmHPOiuB6njafrMmZLIQpr5GMdHjLKLHSqbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	Lukasz Laguna <lukasz.laguna@intel.com>,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/163] drm/xe/pf: Clear all LMTT pages on alloc
+Subject: [PATCH 5.15 07/77] vsock: Fix transport_{g2h,h2g} TOCTOU
 Date: Tue, 15 Jul 2025 15:13:06 +0200
-Message-ID: <20250715130813.585693434@linuxfoundation.org>
+Message-ID: <20250715130751.980216600@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +61,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 705a412a367f383430fa34bada387af2e52eb043 ]
+[ Upstream commit 209fd720838aaf1420416494c5505096478156b4 ]
 
-Our LMEM buffer objects are not cleared by default on alloc
-and during VF provisioning we only setup LMTT PTEs for the
-actually provisioned LMEM range. But beyond that valid range
-we might leave some stale data that could either point to some
-other VFs allocations or even to the PF pages.
+vsock_find_cid() and vsock_dev_do_ioctl() may race with module unload.
+transport_{g2h,h2g} may become NULL after the NULL check.
 
-Explicitly clear all new LMTT page to avoid the risk that a
-malicious VF would try to exploit that gap.
+Introduce vsock_transport_local_cid() to protect from a potential
+null-ptr-deref.
 
-While around add asserts to catch any undesired PTE overwrites
-and low-level debug traces to track LMTT PT life-cycle.
+KASAN: null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
+RIP: 0010:vsock_find_cid+0x47/0x90
+Call Trace:
+ __vsock_bind+0x4b2/0x720
+ vsock_bind+0x90/0xe0
+ __sys_bind+0x14d/0x1e0
+ __x64_sys_bind+0x6e/0xc0
+ do_syscall_64+0x92/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-Fixes: b1d204058218 ("drm/xe/pf: Introduce Local Memory Translation Table")
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Michał Winiarski <michal.winiarski@intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Reviewed-by: Michał Winiarski <michal.winiarski@intel.com>
-Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Link: https://lore.kernel.org/r/20250701220052.1612-1-michal.wajdeczko@intel.com
-(cherry picked from commit 3fae6918a3e27cce20ded2551f863fb05d4bef8d)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+KASAN: null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
+RIP: 0010:vsock_dev_do_ioctl.isra.0+0x58/0xf0
+Call Trace:
+ __x64_sys_ioctl+0x12d/0x190
+ do_syscall_64+0x92/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250703-vsock-transports-toctou-v4-1-98f0eb530747@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_lmtt.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/vmw_vsock/af_vsock.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_lmtt.c b/drivers/gpu/drm/xe/xe_lmtt.c
-index 8999ac511555f..485658f69fba8 100644
---- a/drivers/gpu/drm/xe/xe_lmtt.c
-+++ b/drivers/gpu/drm/xe/xe_lmtt.c
-@@ -78,6 +78,9 @@ static struct xe_lmtt_pt *lmtt_pt_alloc(struct xe_lmtt *lmtt, unsigned int level
- 	}
- 
- 	lmtt_assert(lmtt, xe_bo_is_vram(bo));
-+	lmtt_debug(lmtt, "level=%u addr=%#llx\n", level, (u64)xe_bo_main_addr(bo, XE_PAGE_SIZE));
-+
-+	xe_map_memset(lmtt_to_xe(lmtt), &bo->vmap, 0, 0, bo->size);
- 
- 	pt->level = level;
- 	pt->bo = bo;
-@@ -91,6 +94,9 @@ static struct xe_lmtt_pt *lmtt_pt_alloc(struct xe_lmtt *lmtt, unsigned int level
- 
- static void lmtt_pt_free(struct xe_lmtt_pt *pt)
- {
-+	lmtt_debug(&pt->bo->tile->sriov.pf.lmtt, "level=%u addr=%llx\n",
-+		   pt->level, (u64)xe_bo_main_addr(pt->bo, XE_PAGE_SIZE));
-+
- 	xe_bo_unpin_map_no_vm(pt->bo);
- 	kfree(pt);
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 036bdcc9d5c51..9a1788bd5c789 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -524,9 +524,25 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
  }
-@@ -226,9 +232,14 @@ static void lmtt_write_pte(struct xe_lmtt *lmtt, struct xe_lmtt_pt *pt,
+ EXPORT_SYMBOL_GPL(vsock_assign_transport);
  
- 	switch (lmtt->ops->lmtt_pte_size(level)) {
- 	case sizeof(u32):
-+		lmtt_assert(lmtt, !overflows_type(pte, u32));
-+		lmtt_assert(lmtt, !pte || !iosys_map_rd(&pt->bo->vmap, idx * sizeof(u32), u32));
++/*
++ * Provide safe access to static transport_{h2g,g2h,dgram,local} callbacks.
++ * Otherwise we may race with module removal. Do not use on `vsk->transport`.
++ */
++static u32 vsock_registered_transport_cid(const struct vsock_transport **transport)
++{
++	u32 cid = VMADDR_CID_ANY;
 +
- 		xe_map_wr(lmtt_to_xe(lmtt), &pt->bo->vmap, idx * sizeof(u32), u32, pte);
- 		break;
- 	case sizeof(u64):
-+		lmtt_assert(lmtt, !pte || !iosys_map_rd(&pt->bo->vmap, idx * sizeof(u64), u64));
++	mutex_lock(&vsock_register_mutex);
++	if (*transport)
++		cid = (*transport)->get_local_cid();
++	mutex_unlock(&vsock_register_mutex);
 +
- 		xe_map_wr(lmtt_to_xe(lmtt), &pt->bo->vmap, idx * sizeof(u64), u64, pte);
- 		break;
- 	default:
++	return cid;
++}
++
+ bool vsock_find_cid(unsigned int cid)
+ {
+-	if (transport_g2h && cid == transport_g2h->get_local_cid())
++	if (cid == vsock_registered_transport_cid(&transport_g2h))
+ 		return true;
+ 
+ 	if (transport_h2g && cid == VMADDR_CID_HOST)
+@@ -2293,18 +2309,17 @@ static long vsock_dev_do_ioctl(struct file *filp,
+ 			       unsigned int cmd, void __user *ptr)
+ {
+ 	u32 __user *p = ptr;
+-	u32 cid = VMADDR_CID_ANY;
+ 	int retval = 0;
++	u32 cid;
+ 
+ 	switch (cmd) {
+ 	case IOCTL_VM_SOCKETS_GET_LOCAL_CID:
+ 		/* To be compatible with the VMCI behavior, we prioritize the
+ 		 * guest CID instead of well-know host CID (VMADDR_CID_HOST).
+ 		 */
+-		if (transport_g2h)
+-			cid = transport_g2h->get_local_cid();
+-		else if (transport_h2g)
+-			cid = transport_h2g->get_local_cid();
++		cid = vsock_registered_transport_cid(&transport_g2h);
++		if (cid == VMADDR_CID_ANY)
++			cid = vsock_registered_transport_cid(&transport_h2g);
+ 
+ 		if (put_user(cid, p) != 0)
+ 			retval = -EFAULT;
 -- 
 2.39.5
 
