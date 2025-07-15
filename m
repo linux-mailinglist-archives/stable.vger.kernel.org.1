@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AFFFB05D27
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF57B05CB8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13FEA4A69E2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:36:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B96593B9954
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639D92E88A5;
-	Tue, 15 Jul 2025 13:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2542E9EBD;
+	Tue, 15 Jul 2025 13:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhtshD+I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PwtN1mn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2213E2E889C;
-	Tue, 15 Jul 2025 13:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0672E7173;
+	Tue, 15 Jul 2025 13:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586200; cv=none; b=MBqIVpJ+QGXD7UUl5ffVPXvbwQDbgaFTTHnsQEJLEwST3IdTJgUE71+KCQO3Olv7BuqY1Wd55Dr+1yrCAP9JnJz84Jft3A5/iqKXNMuCWJXZzgPfI++RovvUQGXubpcvqWBc4PC0qNsTUTmYw4GkomrXmzRSfMVpIcvDPRwzKfQ=
+	t=1752586025; cv=none; b=Z+YtGLGjpL1VqD6ImqHvmGssb6drDjN3f7032EM5AaZjMXzX0+1s68sAIgcFCU+yyC/ZTtJSRvmD6/f+VJfCcQDAUeHMDwvCVEOwnR6zdbbpuoK3T11ALBOAv5TaDZhwTh1h3q1QsjbU7pd8jvVcY7f2FEJCVkZgXQxuZAWUI/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586200; c=relaxed/simple;
-	bh=z6ngKh2GItpMosxdnUfC7m3GnQrHmIKChS/BafY8Qtg=;
+	s=arc-20240116; t=1752586025; c=relaxed/simple;
+	bh=Cdbkrim4lLyeD2CwvWf1Jh/86eNi7MhFtAvKym2QV4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=efHbRp7EVh1pDOlSPwzzscNentmUGGCRNaH+ePuiN1u6AyZyjFezLm/Gtp5n5smg3yiJpWqTCEgakvJps30QOCTGUK5F3f8B+lIM6mJkCipPS+nKbvJrdUCzWRwROTH/A1FfDDaGr4JZHTFXh5YdMSpF5v0+mCUanoKnPLqRcHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhtshD+I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA64AC4CEF1;
-	Tue, 15 Jul 2025 13:29:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GwZq/SVx2WdX26QMizouz+sOktfbNYIp1UpT15JKVXcH5/asPlJvRxSS6mQVd0BhLUHa3jz16VR0NnrTzwJj7CCM7Uh+q9jAzTKnQhHxVMP/VR36rR0+5mEUcA3I+qIQNbFlDDut+A+okhrIo3qO3XsH9OJTUg+NxwIrCbHoN0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PwtN1mn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2485AC4CEF6;
+	Tue, 15 Jul 2025 13:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586200;
-	bh=z6ngKh2GItpMosxdnUfC7m3GnQrHmIKChS/BafY8Qtg=;
+	s=korg; t=1752586025;
+	bh=Cdbkrim4lLyeD2CwvWf1Jh/86eNi7MhFtAvKym2QV4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhtshD+IQNbXnC1aKd+7udIfhpsimtDovhBWlgJLbzoCob8Vzh0LLaI7uXqgbqWdR
-	 QYTqK0VPtqi+v12hZh5uQ/9Bqs6YMl/Q8usXHZDa4+kIGsfc2e0Vid0QsiV1jnmfWV
-	 Sb5+7/f7vgUjr0dt3ljxv8RkU15Hhv51ZzmLJbqM=
+	b=0PwtN1mnXmD/o+ZzPcVXavxhTGSmxRYYgojJ6SpQwU3wzZJ/7d3LX6vjJKLbDzazi
+	 V3G34jchMgTJEqfCK0P8leGwXokUf7eS7YRgiAulpOrMiAhPKCLlEIUbRHPmpb9J4+
+	 +N4VFjiSSxIZ5G4szNcK8GwxMEnIIDXzBWBJMhGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Kurt Borja <kuurtb@gmail.com>,
+	Xiaowei Li <xiaowei.li@simcom.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 53/77] platform/x86: think-lmi: Fix sysfs group cleanup
-Date: Tue, 15 Jul 2025 15:13:52 +0200
-Message-ID: <20250715130753.855799519@linuxfoundation.org>
+Subject: [PATCH 6.6 097/109] net: usb: qmi_wwan: add SIMCom 8230C composition
+Date: Tue, 15 Jul 2025 15:13:53 +0200
+Message-ID: <20250715130802.768303558@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +64,62 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Xiaowei Li <xiaowei.li@simcom.com>
 
-[ Upstream commit 4f30f946f27b7f044cf8f3f1f353dee1dcd3517a ]
+[ Upstream commit 0b39b055b5b48cbbdf5746a1ca6e3f6b0221e537 ]
 
-Many error paths in tlmi_sysfs_init() lead to sysfs groups being removed
-when they were not even created.
+Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
+0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet
+T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1e0e ProdID=9071 Rev= 5.15
+S:  Manufacturer=SIMCOM
+S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
+S:  SerialNumber=0123456789ABCDEF
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=none
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fix this by letting the kobject core manage these groups through their
-kobj_type's defult_groups.
-
-Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-3-ce4f81c9c481@gmail.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Xiaowei Li <xiaowei.li@simcom.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Link: https://patch.msgid.link/tencent_21D781FAA4969FEACA6ABB460362B52C9409@qq.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/think-lmi.c | 35 +++++++++-----------------------
- 1 file changed, 10 insertions(+), 25 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index 36ff64a7b6847..cc46aa5f1da2c 100644
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -491,6 +491,7 @@ static struct attribute *auth_attrs[] = {
- static const struct attribute_group auth_attr_group = {
- 	.attrs = auth_attrs,
- };
-+__ATTRIBUTE_GROUPS(auth_attr);
- 
- /* ---- Attributes sysfs --------------------------------------------------------- */
- static ssize_t display_name_show(struct kobject *kobj, struct kobj_attribute *attr,
-@@ -643,6 +644,7 @@ static const struct attribute_group tlmi_attr_group = {
- 	.is_visible = attr_is_visible,
- 	.attrs = tlmi_attrs,
- };
-+__ATTRIBUTE_GROUPS(tlmi_attr);
- 
- static ssize_t tlmi_attr_show(struct kobject *kobj, struct attribute *attr,
- 				    char *buf)
-@@ -688,12 +690,14 @@ static void tlmi_pwd_setting_release(struct kobject *kobj)
- 
- static struct kobj_type tlmi_attr_setting_ktype = {
- 	.release        = &tlmi_attr_setting_release,
--	.sysfs_ops	= &tlmi_kobj_sysfs_ops,
-+	.sysfs_ops	= &kobj_sysfs_ops,
-+	.default_groups = tlmi_attr_groups,
- };
- 
- static struct kobj_type tlmi_pwd_setting_ktype = {
- 	.release        = &tlmi_pwd_setting_release,
--	.sysfs_ops	= &tlmi_kobj_sysfs_ops,
-+	.sysfs_ops	= &kobj_sysfs_ops,
-+	.default_groups = auth_attr_groups,
- };
- 
- static ssize_t pending_reboot_show(struct kobject *kobj, struct kobj_attribute *attr,
-@@ -765,25 +769,18 @@ static struct kobj_attribute debug_cmd = __ATTR_WO(debug_cmd);
- /* ---- Initialisation --------------------------------------------------------- */
- static void tlmi_release_attr(void)
- {
--	int i;
-+	struct kobject *pos, *n;
- 
- 	/* Attribute structures */
--	for (i = 0; i < TLMI_SETTINGS_COUNT; i++) {
--		if (tlmi_priv.setting[i]) {
--			sysfs_remove_group(&tlmi_priv.setting[i]->kobj, &tlmi_attr_group);
--			kobject_put(&tlmi_priv.setting[i]->kobj);
--		}
--	}
- 	sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &pending_reboot.attr);
- 	if (tlmi_priv.can_debug_cmd && debug_support)
- 		sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &debug_cmd.attr);
- 	kset_unregister(tlmi_priv.attribute_kset);
- 
- 	/* Authentication structures */
--	sysfs_remove_group(&tlmi_priv.pwd_admin->kobj, &auth_attr_group);
--	kobject_put(&tlmi_priv.pwd_admin->kobj);
--	sysfs_remove_group(&tlmi_priv.pwd_power->kobj, &auth_attr_group);
--	kobject_put(&tlmi_priv.pwd_power->kobj);
-+	list_for_each_entry_safe(pos, n, &tlmi_priv.authentication_kset->list, entry)
-+		kobject_put(pos);
-+
- 	kset_unregister(tlmi_priv.authentication_kset);
- }
- 
-@@ -855,10 +852,6 @@ static int tlmi_sysfs_init(void)
- 				  "%s", tlmi_priv.setting[i]->display_name);
- 		if (ret)
- 			goto fail_create_attr;
--
--		ret = sysfs_create_group(&tlmi_priv.setting[i]->kobj, &tlmi_attr_group);
--		if (ret)
--			goto fail_create_attr;
- 	}
- 
- 	ret = sysfs_create_file(&tlmi_priv.attribute_kset->kobj, &pending_reboot.attr);
-@@ -876,19 +869,11 @@ static int tlmi_sysfs_init(void)
- 	if (ret)
- 		goto fail_create_attr;
- 
--	ret = sysfs_create_group(&tlmi_priv.pwd_admin->kobj, &auth_attr_group);
--	if (ret)
--		goto fail_create_attr;
--
- 	tlmi_priv.pwd_power->kobj.kset = tlmi_priv.authentication_kset;
- 	ret = kobject_add(&tlmi_priv.pwd_power->kobj, NULL, "%s", "System");
- 	if (ret)
- 		goto fail_create_attr;
- 
--	ret = sysfs_create_group(&tlmi_priv.pwd_power->kobj, &auth_attr_group);
--	if (ret)
--		goto fail_create_attr;
--
- 	return ret;
- 
- fail_create_attr:
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index dc84d9029c2c7..3976bc4295dd1 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1432,6 +1432,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x22de, 0x9051, 2)}, /* Hucom Wireless HM-211S/K */
+ 	{QMI_FIXED_INTF(0x22de, 0x9061, 3)},	/* WeTelecom WPD-600N */
+ 	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9001, 5)},	/* SIMCom 7100E, 7230E, 7600E ++ */
++	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9071, 3)},	/* SIMCom 8230C ++ */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0121, 4)},	/* Quectel EC21 Mini PCIe */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
 -- 
 2.39.5
 
