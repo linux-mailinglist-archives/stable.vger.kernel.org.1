@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2414AB05B8B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A2FB05D2B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B63167450A3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2035B7B92A1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D9E2E2EE7;
-	Tue, 15 Jul 2025 13:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B4D2E4268;
+	Tue, 15 Jul 2025 13:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inVCbUew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cU+zAAbw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A812D5426;
-	Tue, 15 Jul 2025 13:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615EA2D028A;
+	Tue, 15 Jul 2025 13:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585604; cv=none; b=G7stUtJsfBsDReszB/0+ggPPUkleIZt4E/BrSkRt2zifFlUfPj9J5Er503gCUVc/lRV9z6eA+d1wgEtJh5HPPB5ci/7Vgy8tJq99Yr5mAGEGZoGg9ASJC3Ul77PQTVJEWsAOooamJukmrvZ/FkZeyn+MybiYu8/ef5dttB2STP4=
+	t=1752586351; cv=none; b=Iqhb8ex4Ry/llDMSISrgxIdr5KlhHiwKdmtoE18i+Fyi+Xea267a5l0+4vrSayWraox19go0nz2G9fk50cuhaVo3BmKf29gS4pI/YhfAMleZlMfToVL7Xwskr1hxC3w8KmE5JDLKD+HSP8Lj5MA8c45XzpXSct+Sy4El33cQihU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585604; c=relaxed/simple;
-	bh=xjNn9+f6jBLCixohlqUpNBLOYlr1WycG29ZIa43HkEc=;
+	s=arc-20240116; t=1752586351; c=relaxed/simple;
+	bh=q35kI6LkWlCLueWntqhe+2kt58jKafhrB/gpDvIUp78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiKYlB4p+KtUolKDYbkW/ZqgU67QmYsgVvW1W3MRC4Hmwu8ZEKCmFV+uBGOh6iAjYh/TuCIRgaDyfVPU6/zBtCmtsp2GvFbgtKVZ6nAFBjnD4fU+NEHV4pRodvwajjHtPSj7LuJNVv5FuO/AbIG6BTLO0iJyl6qVpfQVa/2ck6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inVCbUew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF58AC4CEE3;
-	Tue, 15 Jul 2025 13:20:03 +0000 (UTC)
+	 MIME-Version; b=uZwQsXsuaVNCYAGFFXu4Vb57aK/vSbFIrhwMY0mcqvjGjC5QLhK6uS7fkRX8ckrdxCU5G+fTg+l/U/rpBSB7qwoSR7qZziTQN0E9f66g5vWlERj3kfCiEP2TQE3IqdHkdQ6v3AF8qobUvThMI9zA/nZ6gOPI/lx7WqzcXVQcoFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cU+zAAbw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABB7C4CEF6;
+	Tue, 15 Jul 2025 13:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585604;
-	bh=xjNn9+f6jBLCixohlqUpNBLOYlr1WycG29ZIa43HkEc=;
+	s=korg; t=1752586351;
+	bh=q35kI6LkWlCLueWntqhe+2kt58jKafhrB/gpDvIUp78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=inVCbUewNgP0tplr8S6Cf4NF+AROM+/rebTcbWutF3iOz0xTG69RiYowNFG1Tgi5h
-	 PULzRCEg4wHfHfRM9GkfvoM7WfVulaj+sXGfjgY3wd0Jz6Dv8IeUdOB4MsudLUknFr
-	 L0/pXrGAOr/6r/HWgQ38yV4mIjnzfPrZSyaeVeIs=
+	b=cU+zAAbw26+GB4RRos/SKDqlbx94wOWtyuYBbcPokKYBzNqt2dqRusRC+rx++NquE
+	 oOy/D0R8ZE8NIS47P4I4nYeiF6389Dz36NB/7PKJ6a/bGkiFngHI0a7rMbyZaUxvFn
+	 prkr3T4ch9Xwt+kciCbNzuuTysQWM4yDhvm/YOd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Zhe Qiao <qiaozhe@iscas.ac.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 085/163] Revert "PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()"
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 031/148] media: omap3isp: use sgtable-based scatterlist wrappers
 Date: Tue, 15 Jul 2025 15:12:33 +0200
-Message-ID: <20250715130812.138171258@linuxfoundation.org>
+Message-ID: <20250715130801.561291329@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit 2b8be57fa0c88ac824a906f29c04d728f9f6047a upstream.
+[ Upstream commit 3de572fe2189a4a0bd80295e1f478401e739498e ]
 
-This reverts commit 631b2af2f357 ("PCI/ACPI: Fix allocated memory release
-on error in pci_acpi_scan_root()").
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+functions have to be called with the number of elements originally passed
+to dma_map_sg_*() function, not the one returned in sgtable's nents.
 
-The reverted patch causes the 'ri->cfg' and 'root_ops' resources to be
-released multiple times.
-
-When acpi_pci_root_create() fails, these resources have already been
-released internally by the __acpi_pci_root_release_info() function.
-
-Releasing them again in pci_acpi_scan_root() leads to incorrect behavior
-and potential memory issues.
-
-We plan to resolve the issue using a more appropriate fix.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aEmdnuw715btq7Q5@stanley.mountain/
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250619072608.2075475-1-qiaozhe@iscas.ac.cn
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
+Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
+CC: stable@vger.kernel.org
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-acpi.c |   23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/media/platform/omap3isp/ispccdc.c | 8 ++++----
+ drivers/media/platform/omap3isp/ispstat.c | 6 ++----
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1676,19 +1676,24 @@ struct pci_bus *pci_acpi_scan_root(struc
- 		return NULL;
+diff --git a/drivers/media/platform/omap3isp/ispccdc.c b/drivers/media/platform/omap3isp/ispccdc.c
+index e2f336c715a4d..90fda694e0d3d 100644
+--- a/drivers/media/platform/omap3isp/ispccdc.c
++++ b/drivers/media/platform/omap3isp/ispccdc.c
+@@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
+ 		if (ret < 0)
+ 			goto done;
  
- 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
--	if (!root_ops)
--		goto free_ri;
-+	if (!root_ops) {
-+		kfree(ri);
-+		return NULL;
-+	}
+-		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
+-				    req->table.sgt.nents, DMA_TO_DEVICE);
++		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
++					 DMA_TO_DEVICE);
  
- 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
--	if (!ri->cfg)
--		goto free_root_ops;
-+	if (!ri->cfg) {
-+		kfree(ri);
-+		kfree(root_ops);
-+		return NULL;
-+	}
+ 		if (copy_from_user(req->table.addr, config->lsc,
+ 				   req->config.size)) {
+@@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
+ 			goto done;
+ 		}
  
- 	root_ops->release_info = pci_acpi_generic_release_info;
- 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
- 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
- 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
- 	if (!bus)
--		goto free_cfg;
-+		return NULL;
+-		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
+-				       req->table.sgt.nents, DMA_TO_DEVICE);
++		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
++					    DMA_TO_DEVICE);
+ 	}
  
- 	/* If we must preserve the resource configuration, claim now */
- 	host = pci_find_host_bridge(bus);
-@@ -1705,14 +1710,6 @@ struct pci_bus *pci_acpi_scan_root(struc
- 		pcie_bus_configure_settings(child);
+ 	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
+diff --git a/drivers/media/platform/omap3isp/ispstat.c b/drivers/media/platform/omap3isp/ispstat.c
+index 5b9b57f4d9bf8..e8a1837b1b74f 100644
+--- a/drivers/media/platform/omap3isp/ispstat.c
++++ b/drivers/media/platform/omap3isp/ispstat.c
+@@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device(struct ispstat *stat,
+ 	if (ISP_STAT_USES_DMAENGINE(stat))
+ 		return;
  
- 	return bus;
--
--free_cfg:
--	pci_ecam_free(ri->cfg);
--free_root_ops:
--	kfree(root_ops);
--free_ri:
--	kfree(ri);
--	return NULL;
+-	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
+-			       buf->sgt.nents, DMA_FROM_DEVICE);
++	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
  }
  
- void pcibios_add_bus(struct pci_bus *bus)
+ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
+@@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
+ 	if (ISP_STAT_USES_DMAENGINE(stat))
+ 		return;
+ 
+-	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
+-			    buf->sgt.nents, DMA_FROM_DEVICE);
++	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
+ }
+ 
+ static void isp_stat_buf_clear(struct ispstat *stat)
+-- 
+2.39.5
+
 
 
 
