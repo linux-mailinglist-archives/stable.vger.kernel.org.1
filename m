@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-162539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B68B05E4F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31781B05E2F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45489162825
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 879D716A1D7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255A32EA48B;
-	Tue, 15 Jul 2025 13:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7412E5431;
+	Tue, 15 Jul 2025 13:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hL6ByHIV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHPIMA4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CBC2E498B;
-	Tue, 15 Jul 2025 13:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18562E499D;
+	Tue, 15 Jul 2025 13:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586822; cv=none; b=tGtAfrWGhlQ1p8P7JnCXMAQ3BX/Hvy4lY2PoS1a23g0g0rUGvmd9EcW/tqZ+iJA95WK2+yjIt5bl1zIOJCsphGuePSKH7F901GTyhTYyn6KCo46+0vUj360wy1Y1wjtIm7i/3P9gEVLXY++CjSEa+/TWS0JiWPbr/Rr6oqOEorQ=
+	t=1752586735; cv=none; b=KvecGEM15iPizAzWmlvMe+92+ebLWhq75PkgWorKDsszsdjFOmkl2nu6fIF9lhyJ0zYRxYMu1H3jknGVT7K7TIhCmjsLoF/DeXL6fswL4ofsV+ii67Vu41Zw5GErcslQ+faiiiljlMvT0QR4jAh7QxvfDTrm4SYEtk0XnUZRz8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586822; c=relaxed/simple;
-	bh=EkTxdINWGfb5A5jVWlmWJsmqAqFnEghR9gL/3Ti9mw4=;
+	s=arc-20240116; t=1752586735; c=relaxed/simple;
+	bh=pWh2azQe3VoM8ovsN2AO+viudn1PdVIzOT6XQzsR5qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=quJW8iSxc/toNmbq5JylsODavxzL4Zu4OTmpP+EhuAZrRaMl5YMTDhAO0YmGmBQv6erDp15BhZOTBwCNv4cw0fYUYodEUIfxJv9RaNh8RnJPqadg0DQkIg/bfNVr4D6NQ0vCcG0FdT1rqjIN3H8qdCB6O3F7aI/jOPbWLly+qSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hL6ByHIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7DCC4CEE3;
-	Tue, 15 Jul 2025 13:40:22 +0000 (UTC)
+	 MIME-Version; b=ol1CGi2Ov5osULGXiAy61W+STEljoK1cyWR4luehqrMBtB1amKitErooP+8jhiQVBZuAWGvj74blgbtQ6GsHpp0uuCoho5ExGx2eZMZxkCZaeVrzzoym3+MI9QMqkVp9/Ju8zrQb+xMcd9Hyvap+RuQtxo5xoXlmCOKqquEFXVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHPIMA4r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CADC4CEE3;
+	Tue, 15 Jul 2025 13:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586822;
-	bh=EkTxdINWGfb5A5jVWlmWJsmqAqFnEghR9gL/3Ti9mw4=;
+	s=korg; t=1752586735;
+	bh=pWh2azQe3VoM8ovsN2AO+viudn1PdVIzOT6XQzsR5qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hL6ByHIVRZab6Clq2Ap2upwrikGh3+AAbCuGnL38ywDLxsf+YWNHglVcwdPud/qJD
-	 4JynYLewTdZkFJtLODToWZ/4MpGa8vjlZjvxx6X9ny6mEZ6RscnC4aS74tHwDbw9D4
-	 AI9OgY8z/inlSMkYpNbU/UdWv8CKRwIQrUhvr1Sw=
+	b=AHPIMA4rCHCsAhoEUrERHpDjMh1/p1DPRhmtoG3dZ0DMwXZWa8c2+mkebifEpowvN
+	 ljFpaKGwu9mJBsFk01vBQOKKtQPI7M1eRe6cNjqaD4CHb+FoPkB/6SZMfncjeG5hWQ
+	 BARs5HZRhE2S01osSBIlEGYjWjcX0xBxeHk9kgr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	NeilBrown <neilb@brown.name>,
+	Christian Brauner <brauner@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 020/192] pinctrl: amd: Clear GPIO debounce for suspend
-Date: Tue, 15 Jul 2025 15:11:55 +0200
-Message-ID: <20250715130815.675517915@linuxfoundation.org>
+Subject: [PATCH 6.15 021/192] fix proc_sys_compare() handling of in-lookup dentries
+Date: Tue, 15 Jul 2025 15:11:56 +0200
+Message-ID: <20250715130815.713979082@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
 References: <20250715130814.854109770@linuxfoundation.org>
@@ -68,54 +68,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 8ff4fb276e2384a87ae7f65f3c28e1e139dbb3fe ]
+[ Upstream commit b969f9614885c20f903e1d1f9445611daf161d6d ]
 
-soc-button-array hardcodes a debounce value by means of gpio_keys
-which uses pinctrl-amd as a backend to program debounce for a GPIO.
+There's one case where ->d_compare() can be called for an in-lookup
+dentry; usually that's nothing special from ->d_compare() point of
+view, but... proc_sys_compare() is weird.
 
-This hardcoded value doesn't match what the firmware intended to be
-programmed in _AEI. The hardcoded debounce leads to problems waking
-from suspend. There isn't appetite to conditionalize the behavior in
-soc-button-array or gpio-keys so clear it when the system suspends to
-avoid problems with being able to resume.
+The thing is, /proc/sys subdirectories can look differently for
+different processes.  Up to and including having the same name
+resolve to different dentries - all of them hashed.
 
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Hans de Goede <hansg@kernel.org>
-Fixes: 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
-Link: https://lore.kernel.org/linux-input/mkgtrb5gt7miyg6kvqdlbu4nj3elym6ijudobpdi26gp4xxay5@rsa6ytrjvj2q/
-Link: https://lore.kernel.org/linux-input/20250625215813.3477840-1-superm1@kernel.org/
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/20250627150155.3311574-1-superm1@kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+The way it's done is ->d_compare() refusing to admit a match unless
+this dentry is supposed to be visible to this caller.  The information
+needed to discriminate between them is stored in inode; it is set
+during proc_sys_lookup() and until it's done d_splice_alias() we really
+can't tell who should that dentry be visible for.
+
+Normally there's no negative dentries in /proc/sys; we can run into
+a dying dentry in RCU dcache lookup, but those can be safely rejected.
+
+However, ->d_compare() is also called for in-lookup dentries, before
+they get positive - or hashed, for that matter.  In case of match
+we will wait until dentry leaves in-lookup state and repeat ->d_compare()
+afterwards.  In other words, the right behaviour is to treat the
+name match as sufficient for in-lookup dentries; if dentry is not
+for us, we'll see that when we recheck once proc_sys_lookup() is
+done with it.
+
+While we are at it, fix the misspelled READ_ONCE and WRITE_ONCE there.
+
+Fixes: d9171b934526 ("parallel lookups machinery, part 4 (and last)")
+Reported-by: NeilBrown <neilb@brown.name>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-amd.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/proc/inode.c       |  2 +-
+ fs/proc/proc_sysctl.c | 18 +++++++++++-------
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
-index 1d7fdcdec4c85..bf55d1b4db67b 100644
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -934,6 +934,17 @@ static int amd_gpio_suspend_hibernate_common(struct device *dev, bool is_suspend
- 				  pin, is_suspend ? "suspend" : "hibernate");
- 		}
+diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+index a3eb3b740f766..3604b616311c2 100644
+--- a/fs/proc/inode.c
++++ b/fs/proc/inode.c
+@@ -42,7 +42,7 @@ static void proc_evict_inode(struct inode *inode)
  
-+		/*
-+		 * debounce enabled over suspend has shown issues with a GPIO
-+		 * being unable to wake the system, as we're only interested in
-+		 * the actual wakeup event, clear it.
-+		 */
-+		if (gpio_dev->saved_regs[i] & (DB_CNTRl_MASK << DB_CNTRL_OFF)) {
-+			amd_gpio_set_debounce(gpio_dev, pin, 0);
-+			pm_pr_dbg("Clearing debounce for GPIO #%d during %s.\n",
-+				  pin, is_suspend ? "suspend" : "hibernate");
-+		}
-+
- 		raw_spin_unlock_irqrestore(&gpio_dev->lock, flags);
+ 	head = ei->sysctl;
+ 	if (head) {
+-		RCU_INIT_POINTER(ei->sysctl, NULL);
++		WRITE_ONCE(ei->sysctl, NULL);
+ 		proc_sys_evict_inode(inode, head);
  	}
+ }
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index cc9d74a06ff03..08b78150cdde1 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -918,17 +918,21 @@ static int proc_sys_compare(const struct dentry *dentry,
+ 	struct ctl_table_header *head;
+ 	struct inode *inode;
+ 
+-	/* Although proc doesn't have negative dentries, rcu-walk means
+-	 * that inode here can be NULL */
+-	/* AV: can it, indeed? */
+-	inode = d_inode_rcu(dentry);
+-	if (!inode)
+-		return 1;
+ 	if (name->len != len)
+ 		return 1;
+ 	if (memcmp(name->name, str, len))
+ 		return 1;
+-	head = rcu_dereference(PROC_I(inode)->sysctl);
++
++	// false positive is fine here - we'll recheck anyway
++	if (d_in_lookup(dentry))
++		return 0;
++
++	inode = d_inode_rcu(dentry);
++	// we just might have run into dentry in the middle of __dentry_kill()
++	if (!inode)
++		return 1;
++
++	head = READ_ONCE(PROC_I(inode)->sysctl);
+ 	return !head || !sysctl_is_seen(head);
+ }
  
 -- 
 2.39.5
