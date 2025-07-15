@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB83BB05B87
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:21:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B26BB05EB5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C4FA7B65CE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D85DD1C43AE0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9492E1734;
-	Tue, 15 Jul 2025 13:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D562E49B7;
+	Tue, 15 Jul 2025 13:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2H6vL0C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbGWInKs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496401A23AF;
-	Tue, 15 Jul 2025 13:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A710A2E3AEA;
+	Tue, 15 Jul 2025 13:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585583; cv=none; b=b2qK0LYedI7Dr8WD8WH1K3yYVGpvnnsRPLH0bvGp3cRwuRSTTYw1LpMaQmTc5yrWE/54wke4WvHPUIGE/l3j2SNiF53f2oQbeJtT5D9+vjZ2uKpyvLtx/O0P00H29gwJgNWBcnvQtZADOSLnqAuho6WYCVYVZiHbg8Wno8cjXKc=
+	t=1752586838; cv=none; b=XHUjplF0g/IN2XJrjpFfidcAlLoSkMfQAVtqgcF+pDoAVRXWC16+TOepFedLcMHJpRJW24TLHztoNrtgeuOkvGiN8nDFVBIffvdslXaN3SGRpUELqiQQDYrIqQpEKRZVmHDi600o1glNRcngVzlQszvr/e4Dy51KAOOQCMv7xGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585583; c=relaxed/simple;
-	bh=eEabLZeky6r3Dyz1ocpcANYj8rxIwkU+GZu9p0JgS8g=;
+	s=arc-20240116; t=1752586838; c=relaxed/simple;
+	bh=Jo328c2a7s3k8khT/HWvuHCRHSJQ2yt7KLqjI2+7UWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+/mwut8XscHzxRa/CRnY7HNjoVvkujPhGSS88hnI0Qv6ARkeimC+MbLTBDn24ZMkQfoTGG/1AFISusYfRoYNEjqX6Lk3FkBwe6kwM1sfqdK/f9Hh4gEpxrc4sDsqbCfIXtfcQzP+yJKcZXCSBRfE7zgxqZM/lFJLBx76Hy/S48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2H6vL0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D006AC4CEE3;
-	Tue, 15 Jul 2025 13:19:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fYLIZ2YklcyBu6o8WRDgVJIThjHKH/od8tznyYd0Ng6dZ7kcGoV4myU7QDUjjYh7KBa83IrPgeP4uvdCnrAdEQRot1vfBRu8uKAiTGBSxyca6D1rh5QOb8zgGKrsVEde2mz4WjfO4Dq/oCKOgvKfYwcIVpjjG9jCqwjmvUq5/u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PbGWInKs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB14C4CEE3;
+	Tue, 15 Jul 2025 13:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585583;
-	bh=eEabLZeky6r3Dyz1ocpcANYj8rxIwkU+GZu9p0JgS8g=;
+	s=korg; t=1752586838;
+	bh=Jo328c2a7s3k8khT/HWvuHCRHSJQ2yt7KLqjI2+7UWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2H6vL0CMA4i0Ft+ACakND6Fn+fXJ1k1CawnsK9ddS/8sfFfgba4pF9uvb0PWSgwv
-	 PfgSDwHCAtAbJ7wBMkm7oZJsz8VDX6PH39m+x3u0WRJwIFi2yI4pFeaCzpWkTFE9ac
-	 O45ofu19dpOLTbojZj6gmRgXFU+nnrkiqwjvgP3g=
+	b=PbGWInKsXTrq6bpeKzN5zpT6MZ6nxetu1HBPhPAI2gSi6MXjzmMQGp0Ec9OvkbjtO
+	 j2IUE0XhIfIHoqpvfaoD6gUtNbmw6WNW9ECHqdyrCNoZv3hSp9KMbg7lQk5wpZPAKu
+	 8G8HFaCexN6sNmmJHOJPh/AGNtL19HGcXsPogxAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.12 095/163] clk: imx: Fix an out-of-bounds access in dispmix_csr_clk_dev_data
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 068/192] net: ethernet: rtsn: Fix a null pointer dereference in rtsn_probe()
 Date: Tue, 15 Jul 2025 15:12:43 +0200
-Message-ID: <20250715130812.679383878@linuxfoundation.org>
+Message-ID: <20250715130817.667584469@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit aacc875a448d363332b9df0621dde6d3a225ea9f upstream.
+commit 95a234f6affbf51f06338383537ab80d637bb785 upstream.
 
-When num_parents is 4, __clk_register() occurs an out-of-bounds
-when accessing parent_names member. Use ARRAY_SIZE() instead of
-hardcode number here.
+Add check for the return value of rcar_gen4_ptp_alloc()
+to prevent potential null pointer dereference.
 
- BUG: KASAN: global-out-of-bounds in __clk_register+0x1844/0x20d8
- Read of size 8 at addr ffff800086988e78 by task kworker/u24:3/59
-  Hardware name: NXP i.MX95 19X19 board (DT)
-  Workqueue: events_unbound deferred_probe_work_func
-  Call trace:
-    dump_backtrace+0x94/0xec
-    show_stack+0x18/0x24
-    dump_stack_lvl+0x8c/0xcc
-    print_report+0x398/0x5fc
-    kasan_report+0xd4/0x114
-    __asan_report_load8_noabort+0x20/0x2c
-    __clk_register+0x1844/0x20d8
-    clk_hw_register+0x44/0x110
-    __clk_hw_register_mux+0x284/0x3a8
-    imx95_bc_probe+0x4f4/0xa70
-
-Fixes: 5224b189462f ("clk: imx: add i.MX95 BLK CTL clk driver")
+Fixes: b0d3969d2b4d ("net: ethernet: rtsn: Add support for Renesas Ethernet-TSN")
 Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Link: https://lore.kernel.org/r/20250619062108.2016511-1-xiaolei.wang@windriver.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://patch.msgid.link/20250703100109.2541018-1-haoxiang_li2024@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/imx/clk-imx95-blk-ctl.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/renesas/rtsn.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
-index 25974947ad0c..cc2ee2be1819 100644
---- a/drivers/clk/imx/clk-imx95-blk-ctl.c
-+++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
-@@ -219,11 +219,15 @@ static const struct imx95_blk_ctl_dev_data lvds_csr_dev_data = {
- 	.clk_reg_offset = 0,
- };
- 
-+static const char * const disp_engine_parents[] = {
-+	"videopll1", "dsi_pll", "ldb_pll_div7"
-+};
+--- a/drivers/net/ethernet/renesas/rtsn.c
++++ b/drivers/net/ethernet/renesas/rtsn.c
+@@ -1259,7 +1259,12 @@ static int rtsn_probe(struct platform_de
+ 	priv = netdev_priv(ndev);
+ 	priv->pdev = pdev;
+ 	priv->ndev = ndev;
 +
- static const struct imx95_blk_ctl_clk_dev_data dispmix_csr_clk_dev_data[] = {
- 	[IMX95_CLK_DISPMIX_ENG0_SEL] = {
- 		.name = "disp_engine0_sel",
--		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
--		.num_parents = 4,
-+		.parent_names = disp_engine_parents,
-+		.num_parents = ARRAY_SIZE(disp_engine_parents),
- 		.reg = 0,
- 		.bit_idx = 0,
- 		.bit_width = 2,
-@@ -232,8 +236,8 @@ static const struct imx95_blk_ctl_clk_dev_data dispmix_csr_clk_dev_data[] = {
- 	},
- 	[IMX95_CLK_DISPMIX_ENG1_SEL] = {
- 		.name = "disp_engine1_sel",
--		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
--		.num_parents = 4,
-+		.parent_names = disp_engine_parents,
-+		.num_parents = ARRAY_SIZE(disp_engine_parents),
- 		.reg = 0,
- 		.bit_idx = 2,
- 		.bit_width = 2,
--- 
-2.50.1
-
+ 	priv->ptp_priv = rcar_gen4_ptp_alloc(pdev);
++	if (!priv->ptp_priv) {
++		ret = -ENOMEM;
++		goto error_free;
++	}
+ 
+ 	spin_lock_init(&priv->lock);
+ 	platform_set_drvdata(pdev, priv);
 
 
 
