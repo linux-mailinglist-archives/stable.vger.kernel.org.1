@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3374CB05B4F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE35B05D6C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B71D4E3CE0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D2954E4344
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396F62D9EFF;
-	Tue, 15 Jul 2025 13:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145432E338F;
+	Tue, 15 Jul 2025 13:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6DLx+DH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOymY30k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7B227470;
-	Tue, 15 Jul 2025 13:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69C61A3142;
+	Tue, 15 Jul 2025 13:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585487; cv=none; b=tGbD8MWVQACcDxxI3iZsnjqRtJPKm420GeBpY4iFsY5w/yij5jVQFzt6mROsO0SKQ4xEyJxYBA/Vd6J1tVrnmhj5B/k9uuidR5SglsY3qfv+BzVaHqkwbsJLIvz/JYDSmwBH3z1xgf1PnCHSnresIwrZlImAbaLHTo8hs+ppHBA=
+	t=1752586356; cv=none; b=X8DzlMEEbXGZqk1zTN9HrXHfMojU1m70+v9UOMTpGhglmSfBCnlnQ4l115W1rQXXh3YpZZ/IWQ8M1aOceHDie+pPvWOs588wg6RiNW9YH12N5ZVAkML1MY2+lDp64wWdH55sJm2G+xNvtYg9KrpQqCb0+FbhkbQwGRfQt0njEkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585487; c=relaxed/simple;
-	bh=Qokx3mFJI/i+LNjYEWR1PgyeKpGMwQiZvD9sK4iVjN8=;
+	s=arc-20240116; t=1752586356; c=relaxed/simple;
+	bh=B8QJsYHFqByveVlI0nvk1FGESFnm+51uDe5y8LfG6rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvSWF8QNiDx15apcZLpfNlnxRGAA/ZZF7xQi8yotJ2lNqVZhAKpHaOgtbfv8eLE18eaIFhEbDSvU3QP0V6YnmaFcXR/3IPXnHV4EJe0TxlGq8eBB6wBcJSArFqXxlFjyY+WR/3LB85X+PVQ4VhVcUYek8QB0xh64mw3weJLDw6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6DLx+DH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9F5C4CEE3;
-	Tue, 15 Jul 2025 13:18:06 +0000 (UTC)
+	 MIME-Version; b=bKBp8QWLtx8ZZH9wrJmHjUaaNvP1KeuubYLgouUo1BwhIMBEo0eASbBBJEdoBoRSqv8zojPY3BGFDRk+T/D4vKkeinZdC3beKxReMgNupk1Kjl6Y4aPt+I9c7wSJU1j4c7WYsZSlcnlplkgfFR1kTtzphOcjN0tnCnJhu1iflxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOymY30k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E1DC4CEE3;
+	Tue, 15 Jul 2025 13:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585486;
-	bh=Qokx3mFJI/i+LNjYEWR1PgyeKpGMwQiZvD9sK4iVjN8=;
+	s=korg; t=1752586356;
+	bh=B8QJsYHFqByveVlI0nvk1FGESFnm+51uDe5y8LfG6rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6DLx+DHo0AfgMqcamQpfgIztkPVhzNUymoO6XWmy/j2wmJWrfO6Y/4zAQoE6/R/z
-	 lM8kVKKCWGE2x5Wzk+pRsQ76kIHAdlbZQj2nmquBjQZjcmNUeQYe4TwRVMpb0TGf7+
-	 2Lw2RsKl9djepF7WYymxzMD3plx79geCXl0JPxTg=
+	b=nOymY30kfv4cz8qqIZ9oOcAXs5++zpkfF7I7r0JGE6ImirtKSm3bj67M6x50o3hFl
+	 JCySOcFVL3MiOxOXjFWjreAhSI808xrqbRrja4xTF12x1swLmflpPaukzwDKVVvBKQ
+	 83IGn+xVMGsNAhSFlZNZIU4HJheTXIHGRD8cyVTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arun Raghavan <arun@asymptotic.io>,
-	Pieterjan Camerlynck <p.camerlynck@televic.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 059/163] ASoC: fsl_sai: Force a software reset when starting in consumer mode
+	Yu Kuai <yukuai3@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 005/148] md/md-bitmap: fix dm-raid max_write_behind setting
 Date: Tue, 15 Jul 2025 15:12:07 +0200
-Message-ID: <20250715130811.117285875@linuxfoundation.org>
+Message-ID: <20250715130800.514944934@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arun Raghavan <arun@asymptotic.io>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit dc78f7e59169d3f0e6c3c95d23dc8e55e95741e2 upstream.
+[ Upstream commit 2afe17794cfed5f80295b1b9facd66e6f65e5002 ]
 
-On an imx8mm platform with an external clock provider, when running the
-receiver (arecord) and triggering an xrun with xrun_injection, we see a
-channel swap/offset. This happens sometimes when running only the
-receiver, but occurs reliably if a transmitter (aplay) is also
-concurrently running.
+It's supposed to be COUNTER_MAX / 2, not COUNTER_MAX.
 
-It seems that the SAI loses track of frame sync during the trigger stop
--> trigger start cycle that occurs during an xrun. Doing just a FIFO
-reset in this case does not suffice, and only a software reset seems to
-get it back on track.
-
-This looks like the same h/w bug that is already handled for the
-producer case, so we now do the reset unconditionally on config disable.
-
-Signed-off-by: Arun Raghavan <arun@asymptotic.io>
-Reported-by: Pieterjan Camerlynck <p.camerlynck@televic.com>
-Fixes: 3e3f8bd56955 ("ASoC: fsl_sai: fix no frame clk in master mode")
-Cc: stable@vger.kernel.org
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Link: https://patch.msgid.link/20250626130858.163825-1-arun@arunraghavan.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-raid/20250524061320.370630-14-yukuai1@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/md/md-bitmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -771,13 +771,15 @@ static void fsl_sai_config_disable(struc
- 	 * anymore. Add software reset to fix this issue.
- 	 * This is a hardware bug, and will be fix in the
- 	 * next sai version.
-+	 *
-+	 * In consumer mode, this can happen even after a
-+	 * single open/close, especially if both tx and rx
-+	 * are running concurrently.
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 8fc85b6251e48..feff5b29d0985 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -549,7 +549,7 @@ static int md_bitmap_new_disk_sb(struct bitmap *bitmap)
+ 	 * is a good choice?  We choose COUNTER_MAX / 2 arbitrarily.
  	 */
--	if (!sai->is_consumer_mode[tx]) {
--		/* Software Reset */
--		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
--		/* Clear SR bit to finish the reset */
--		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
--	}
-+	/* Software Reset */
-+	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
-+	/* Clear SR bit to finish the reset */
-+	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
- }
- 
- static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
+ 	write_behind = bitmap->mddev->bitmap_info.max_write_behind;
+-	if (write_behind > COUNTER_MAX)
++	if (write_behind > COUNTER_MAX / 2)
+ 		write_behind = COUNTER_MAX / 2;
+ 	sb->write_behind = cpu_to_le32(write_behind);
+ 	bitmap->mddev->bitmap_info.max_write_behind = write_behind;
+-- 
+2.39.5
+
 
 
 
