@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC21B05F11
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:59:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AEAEB05DCD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C45D17B98AF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6A6D16C388
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EF42EA161;
-	Tue, 15 Jul 2025 13:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9FB2E6D24;
+	Tue, 15 Jul 2025 13:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYalLKcX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYDJ8JQn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AEC2EA159;
-	Tue, 15 Jul 2025 13:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA9B2D839A;
+	Tue, 15 Jul 2025 13:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587304; cv=none; b=UVOZ0mJXQYYSyHy2L6atDIP7jeMQ6XLRb7wuRhVqD6b+kUdrKVOu62e2KW9Nm0GAOvl89b6sEZWAnL5sW014mcDi5cNEEC1Afbpb0Ogom1PG93Km4/hGpzMKArfvMHCQJcs44XQEzhewEHH/a8tQxfMHh+I3/Xh/P0G4bhIP0V4=
+	t=1752586647; cv=none; b=mZ1Ma89aFSuWMdmZ1AWpPVqvR02wnVT3DyN6at/FWiy5SMGdKnE1XdNQj0aBYRA5YsrTllgTziKVWJl946zQn4GLcR8KzBG87cdXY9p1x+zBsRI3vDDPI/QHivpNIl7gGMuNu5g2a8Tl9d5lWzH4T0cAOp/EkpFVbdxquNvEWf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587304; c=relaxed/simple;
-	bh=67wJzHMO0u6RvpEJEhXWnmH0TUaj+rRWUjxfn46dsEI=;
+	s=arc-20240116; t=1752586647; c=relaxed/simple;
+	bh=DmQuB5vda5iWUJqxCUcyF5T1f0k/3vHYbODAFofbkjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bAw5fJ/kYqBYG0O/fqRNiGhL66zdFgkZlgrdHo7Jt+FvCrYqZGwNNz4mAAoR1/RYxAIXXBhhEflQNKk7rORRUbWZ3jZSfSTcgofHMmWMtCVeqve5Sgjy/vNpl7YUAgGRA+Ta4wB9nlz6EZYuXV22Dvqkb5bW2pJ25ZVFZ6YY1IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYalLKcX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60967C4CEE3;
-	Tue, 15 Jul 2025 13:48:24 +0000 (UTC)
+	 MIME-Version; b=YHNSxUHrw3PCK+Ak7TokYVlMqvq/Sij97ABkAm6z3nTJ/qdcqhe1v++7PqP8R9RwmTCOjRZZfnrHBHOCuaiJTzbj5tLHymZ9NiSnzQdsjau7IVbCJP7Y7u+zUDp3rUSMF2mZRApl8H0Hl2DtnbRYEawekQm1N2H4Q94fmuvXacg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYDJ8JQn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F95EC4CEE3;
+	Tue, 15 Jul 2025 13:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587304;
-	bh=67wJzHMO0u6RvpEJEhXWnmH0TUaj+rRWUjxfn46dsEI=;
+	s=korg; t=1752586647;
+	bh=DmQuB5vda5iWUJqxCUcyF5T1f0k/3vHYbODAFofbkjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYalLKcX+YgWiEZDn2kr6Fwh3YDdDsPWNazqqIEQiBRSryS+Ju+7Tk13MLd0JrTtd
-	 s/lkF/cI+fUikFMkJaAaFv+XAjapWm430rKJZiNsEUazMOf8SX5+Bia+glWcX1AuSG
-	 4rQyKTUt1LwDVNItnCWz7Cd7KM0EB98pSAXzhrG8=
+	b=BYDJ8JQn/qmKMfpxwTOKl37xSHZv2tSOEDjxDcdP76gHhkUUqdfL5b6cih39+LI+u
+	 HJaPzYBwl0j/+S+PVtC5Qvpa8oBhRVvHeIiywbo6hesaGB67RiFfKgSJfRqswwCym6
+	 6pos07MEYRFjb5Cso2VDjLvqZJw+V34Xo0ENZxPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 51/88] usb: cdnsp: Fix issue with CV Bad Descriptor test
+Subject: [PATCH 5.4 145/148] HID: quirks: Add quirk for 2 Chicony Electronics HP 5MP Cameras
 Date: Tue, 15 Jul 2025 15:14:27 +0200
-Message-ID: <20250715130756.600822338@linuxfoundation.org>
+Message-ID: <20250715130806.081225120@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 
-[ Upstream commit 2831a81077f5162f104ba5a97a7d886eb371c21c ]
+[ Upstream commit 54bae4c17c11688339eb73a04fd24203bb6e7494 ]
 
-The SSP2 controller has extra endpoint state preserve bit (ESP) which
-setting causes that endpoint state will be preserved during
-Halt Endpoint command. It is used only for EP0.
-Without this bit the Command Verifier "TD 9.10 Bad Descriptor Test"
-failed.
-Setting this bit doesn't have any impact for SSP controller.
+The Chicony Electronics HP 5MP Cameras (USB ID 04F2:B824 & 04F2:B82C)
+report a HID sensor interface that is not actually implemented.
+Attempting to access this non-functional sensor via iio_info causes
+system hangs as runtime PM tries to wake up an unresponsive sensor.
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB95382CCD50549DABAEFD6156DD7CA@PH7PR07MB9538.namprd07.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add these 2 devices to the HID ignore list since the sensor interface is
+non-functional by design and should not be exposed to userspace.
+
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdnsp-debug.h  |  5 +++--
- drivers/usb/cdns3/cdnsp-ep0.c    | 18 +++++++++++++++---
- drivers/usb/cdns3/cdnsp-gadget.h |  6 ++++++
- drivers/usb/cdns3/cdnsp-ring.c   |  3 ++-
- 4 files changed, 26 insertions(+), 6 deletions(-)
+ drivers/hid/hid-ids.h    | 2 ++
+ drivers/hid/hid-quirks.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/usb/cdns3/cdnsp-debug.h b/drivers/usb/cdns3/cdnsp-debug.h
-index cd138acdcce16..86860686d8363 100644
---- a/drivers/usb/cdns3/cdnsp-debug.h
-+++ b/drivers/usb/cdns3/cdnsp-debug.h
-@@ -327,12 +327,13 @@ static inline const char *cdnsp_decode_trb(char *str, size_t size, u32 field0,
- 	case TRB_RESET_EP:
- 	case TRB_HALT_ENDPOINT:
- 		ret = scnprintf(str, size,
--				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
-+				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c %c",
- 				cdnsp_trb_type_string(type),
- 				ep_num, ep_id % 2 ? "out" : "in",
- 				TRB_TO_EP_INDEX(field3), field1, field0,
- 				TRB_TO_SLOT_ID(field3),
--				field3 & TRB_CYCLE ? 'C' : 'c');
-+				field3 & TRB_CYCLE ? 'C' : 'c',
-+				field3 & TRB_ESP ? 'P' : 'p');
- 		break;
- 	case TRB_STOP_RING:
- 		ret = scnprintf(str, size,
-diff --git a/drivers/usb/cdns3/cdnsp-ep0.c b/drivers/usb/cdns3/cdnsp-ep0.c
-index f317d3c847810..5cd9b898ce971 100644
---- a/drivers/usb/cdns3/cdnsp-ep0.c
-+++ b/drivers/usb/cdns3/cdnsp-ep0.c
-@@ -414,6 +414,7 @@ static int cdnsp_ep0_std_request(struct cdnsp_device *pdev,
- void cdnsp_setup_analyze(struct cdnsp_device *pdev)
- {
- 	struct usb_ctrlrequest *ctrl = &pdev->setup;
-+	struct cdnsp_ep *pep;
- 	int ret = -EINVAL;
- 	u16 len;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 3787bd508b616..d2e355a9744a0 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -280,6 +280,8 @@
+ #define USB_DEVICE_ID_ASUS_AK1D		0x1125
+ #define USB_DEVICE_ID_CHICONY_TOSHIBA_WT10A	0x1408
+ #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
++#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
++#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
  
-@@ -427,10 +428,21 @@ void cdnsp_setup_analyze(struct cdnsp_device *pdev)
- 		goto out;
- 	}
- 
-+	pep = &pdev->eps[0];
-+
- 	/* Restore the ep0 to Stopped/Running state. */
--	if (pdev->eps[0].ep_state & EP_HALTED) {
--		trace_cdnsp_ep0_halted("Restore to normal state");
--		cdnsp_halt_endpoint(pdev, &pdev->eps[0], 0);
-+	if (pep->ep_state & EP_HALTED) {
-+		if (GET_EP_CTX_STATE(pep->out_ctx) == EP_STATE_HALTED)
-+			cdnsp_halt_endpoint(pdev, pep, 0);
-+
-+		/*
-+		 * Halt Endpoint Command for SSP2 for ep0 preserve current
-+		 * endpoint state and driver has to synchronize the
-+		 * software endpoint state with endpoint output context
-+		 * state.
-+		 */
-+		pep->ep_state &= ~EP_HALTED;
-+		pep->ep_state |= EP_STOPPED;
- 	}
- 
- 	/*
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
-index 48336e121ed6f..155fd770a8cd9 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.h
-+++ b/drivers/usb/cdns3/cdnsp-gadget.h
-@@ -987,6 +987,12 @@ enum cdnsp_setup_dev {
- #define STREAM_ID_FOR_TRB(p)		((((p)) << 16) & GENMASK(31, 16))
- #define SCT_FOR_TRB(p)			(((p) << 1) & 0x7)
- 
-+/*
-+ * Halt Endpoint Command TRB field.
-+ * The ESP bit only exists in the SSP2 controller.
-+ */
-+#define TRB_ESP				BIT(9)
-+
- /* Link TRB specific fields. */
- #define TRB_TC				BIT(1)
- 
-diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
-index 795668435c77e..42db256978bcc 100644
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -2475,7 +2475,8 @@ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev, unsigned int ep_index)
- {
- 	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_HALT_ENDPOINT) |
- 			    SLOT_ID_FOR_TRB(pdev->slot_id) |
--			    EP_ID_FOR_TRB(ep_index));
-+			    EP_ID_FOR_TRB(ep_index) |
-+			    (!ep_index ? TRB_ESP : 0));
- }
- 
- void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
+ #define USB_VENDOR_ID_CHUNGHWAT		0x2247
+ #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 2cf58e3016e7b..d1cfd45f2585a 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -732,6 +732,8 @@ static const struct hid_device_id hid_ignore_list[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AVERMEDIA, USB_DEVICE_ID_AVER_FM_MR800) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AXENTIA, USB_DEVICE_ID_AXENTIA_FM_RADIO) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
 -- 
 2.39.5
 
