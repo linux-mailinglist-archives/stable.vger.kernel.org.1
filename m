@@ -1,121 +1,140 @@
-Return-Path: <stable+bounces-161936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDAEB04EA4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 05:21:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A72AB04F16
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 05:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14B237B0462
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 03:19:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE4303BEB2A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 03:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D692D0C7A;
-	Tue, 15 Jul 2025 03:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD648288C34;
+	Tue, 15 Jul 2025 03:33:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C522D80B;
-	Tue, 15 Jul 2025 03:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136001487F4;
+	Tue, 15 Jul 2025 03:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752549665; cv=none; b=WLRRdCzzErUL0es78+hUzPabeeY6gxMtU0RnLkBDGWgX6DYfQrqtWTYwxbCjqwmKTMPs9pvnsep7K4DxT9tuharqsQtSU70hJtwaaA0OYFSri/K9ZSMy5AvwU+x+bXKgpIrSIDwcs7kpDdT6PeGrcL4MLXmV1l8fKcZAZKklC4g=
+	t=1752550385; cv=none; b=OITE2h3ugvnwUioPrLch9zhHB9aMVvRbFbujPRw5/Ilwydp8vDKeZi0rj52phH1KlM0QY/ruFVZQUshy01mjr+/wi9tKNmDe6McE9njlPMgr0wQC45I+zxZXdc6cnLh1XNNZh+WVtmpeQCpEpXHR0+lWy3se+Z4Klot5myviAFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752549665; c=relaxed/simple;
-	bh=fmod0BN4slJPrdP6KM3+uivPrMhYeM9MezPdMplt3F0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=l5Q6cLqDwZrVkUmikgQZkUmjL6FPRCgDlkk59SRjrZgQtiLKSKrbw9xBeCFYIt4VZuWuOlRTM/aedQX9mfTep3icKhKuRiPhUifemp298w4ZaJfhd7iCktaS8Izwef/YJmvCM98vyDQLSo+Vh10IPjYFQbbN4SJ3kWBuzJIZJPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+	s=arc-20240116; t=1752550385; c=relaxed/simple;
+	bh=UJ+ui+6YpbQeBXRY8FDN7OeI2IwWSgW+6ApfXKdlyAE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B94uOa8opq4N16gm481LKSGohmkq3bvZMNL3OtUe26Ir23qEvapOtOnsko6n9SBWyE+QIYCCGFalAxXf3uQTpKsgF+ct23e6tjeJVCrN5iTWXC5wSjSC2S9zrZUPT192QITGqEUn8mvcbnC6wQaXeN9TUnsOgT1wviWmSFRrfSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bh4Cj1XcHz2FbN5;
-	Tue, 15 Jul 2025 11:18:57 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6D837140156;
-	Tue, 15 Jul 2025 11:20:59 +0800 (CST)
-Received: from kwepemn100006.china.huawei.com (7.202.194.109) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 15 Jul 2025 11:20:59 +0800
-Received: from huawei.com (10.175.113.133) by kwepemn100006.china.huawei.com
- (7.202.194.109) with Microsoft SMTP Server (version=TLS1_2,
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bh4T84DfTz2TSvn;
+	Tue, 15 Jul 2025 11:30:36 +0800 (CST)
+Received: from kwepemo200008.china.huawei.com (unknown [7.202.195.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 461411400CB;
+	Tue, 15 Jul 2025 11:32:39 +0800 (CST)
+Received: from huawei.com (10.67.175.28) by kwepemo200008.china.huawei.com
+ (7.202.195.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 15 Jul
- 2025 11:20:58 +0800
-From: Wang Hai <wanghai38@huawei.com>
-To: <hdegoede@redhat.com>, <stable@vger.kernel.org>, <sashal@kernel.org>,
-	<gregkh@linuxfoundation.org>
-CC: <yesh25@mail2.sysu.edu.cn>, <mail@gurevit.ch>, <egori@altlinux.org>,
-	<anton@cpp.in>, <dmitry.torokhov@gmail.com>, <rrangel@chromium.org>,
-	<linux-input@vger.kernel.org>, <wanghai38@huawei.com>,
-	<zhangxiaoxu5@huawei.com>
-Subject: [PATCH 5.4/5.10/5.15/6.1/6.6] Input: atkbd - do not skip atkbd_deactivate() when skipping ATKBD_CMD_GETID
-Date: Tue, 15 Jul 2025 11:14:42 +0800
-Message-ID: <20250715031442.16528-1-wanghai38@huawei.com>
-X-Mailer: git-send-email 2.17.1
+ 2025 11:32:38 +0800
+From: Xinyu Zheng <zhengxinyu6@huawei.com>
+To: <mst@redhat.com>, <jasowang@redhat.com>, <pbonzini@redhat.com>,
+	<stefanha@redhat.com>, <virtualization@lists.linux-foundation.org>,
+	<kvm@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+	<stable@vger.kernel.org>
+CC: <zhengxinyu6@huawei.com>
+Subject: [PATCH v5.10 v2] vhost-scsi: protect vq->log_used with vq->mutex
+Date: Tue, 15 Jul 2025 03:21:03 +0000
+Message-ID: <20250715032103.1624084-1-zhengxinyu6@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemn100006.china.huawei.com (7.202.194.109)
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemo200008.china.huawei.com (7.202.195.61)
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-commit 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 upstream.
+[ Upstream commit f591cf9fce724e5075cc67488c43c6e39e8cbe27 ]
 
-After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
-translated mode") not only the getid command is skipped, but also
-the de-activating of the keyboard at the end of atkbd_probe(), potentially
-re-introducing the problem fixed by commit be2d7e4233a4 ("Input: atkbd -
-fix multi-byte scancode handling on reconnect").
+The vhost-scsi completion path may access vq->log_base when vq->log_used is
+already set to false.
 
-Make sure multi-byte scancode handling on reconnect is still handled
-correctly by not skipping the atkbd_deactivate() call.
+    vhost-thread                       QEMU-thread
 
-Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240126160724.13278-3-hdegoede@redhat.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
+vhost_scsi_complete_cmd_work()
+-> vhost_add_used()
+   -> vhost_add_used_n()
+      if (unlikely(vq->log_used))
+                                      QEMU disables vq->log_used
+                                      via VHOST_SET_VRING_ADDR.
+                                      mutex_lock(&vq->mutex);
+                                      vq->log_used = false now!
+                                      mutex_unlock(&vq->mutex);
+
+				      QEMU gfree(vq->log_base)
+        log_used()
+        -> log_write(vq->log_base)
+
+Assuming the VMM is QEMU. The vq->log_base is from QEMU userpace and can be
+reclaimed via gfree(). As a result, this causes invalid memory writes to
+QEMU userspace.
+
+The control queue path has the same issue.
+
+Cc: stable@vger.kernel.org#5.10.x
+Cc: gregkh@linuxfoundation.org
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20250403063028.16045-2-dongli.zhang@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Conflicts in drivers/vhost/scsi.c
+  bacause vhost_scsi_complete_cmd_work() has been refactored. ]
+Signed-off-by: Xinyu Zheng <zhengxinyu6@huawei.com>
 ---
- drivers/input/keyboard/atkbd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+V1 -> V2: Remove unnecessary CVE tag
+ 
+ drivers/vhost/scsi.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/keyboard/atkbd.c b/drivers/input/keyboard/atkbd.c
-index b3a856333d4e..de59fc1a24bc 100644
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -805,11 +805,11 @@ static int atkbd_probe(struct atkbd *atkbd)
- 				 "keyboard reset failed on %s\n",
- 				 ps2dev->serio->phys);
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index a23a65e7d828..fcde3752b4f1 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -579,8 +579,10 @@ static void vhost_scsi_complete_cmd_work(struct vhost_work *work)
+ 		ret = copy_to_iter(&v_rsp, sizeof(v_rsp), &iov_iter);
+ 		if (likely(ret == sizeof(v_rsp))) {
+ 			struct vhost_scsi_virtqueue *q;
+-			vhost_add_used(cmd->tvc_vq, cmd->tvc_vq_desc, 0);
+ 			q = container_of(cmd->tvc_vq, struct vhost_scsi_virtqueue, vq);
++			mutex_lock(&q->vq.mutex);
++			vhost_add_used(cmd->tvc_vq, cmd->tvc_vq_desc, 0);
++			mutex_unlock(&q->vq.mutex);
+ 			vq = q - vs->vqs;
+ 			__set_bit(vq, signal);
+ 		} else
+@@ -1193,8 +1195,11 @@ static void vhost_scsi_tmf_resp_work(struct vhost_work *work)
+ 	else
+ 		resp_code = VIRTIO_SCSI_S_FUNCTION_REJECTED;
  
- 	if (atkbd_skip_getid(atkbd)) {
- 		atkbd->id = 0xab83;
--		return 0;
-+		goto deactivate_kbd;
- 	}
++	mutex_lock(&tmf->svq->vq.mutex);
+ 	vhost_scsi_send_tmf_resp(tmf->vhost, &tmf->svq->vq, tmf->in_iovs,
+ 				 tmf->vq_desc, &tmf->resp_iov, resp_code);
++	mutex_unlock(&tmf->svq->vq.mutex);
++
+ 	vhost_scsi_release_tmf_res(tmf);
+ }
  
- /*
-  * Then we check the keyboard ID. We should get 0xab83 under normal conditions.
-  * Some keyboards report different values, but the first byte is always 0xab or
-@@ -842,10 +842,11 @@ static int atkbd_probe(struct atkbd *atkbd)
- 			"NCD terminal keyboards are only supported on non-translating controllers. "
- 			"Use i8042.direct=1 to disable translation.\n");
- 		return -1;
- 	}
- 
-+deactivate_kbd:
- /*
-  * Make sure nothing is coming from the keyboard and disturbs our
-  * internal state.
-  */
- 	if (!atkbd_skip_deactivate)
 -- 
-2.17.1
+2.34.1
 
 
