@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-162517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE85B05E6B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51656B05F44
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:03:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D90B21C43451
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 946737BC29C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5F02E7F1A;
-	Tue, 15 Jul 2025 13:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2612E7172;
+	Tue, 15 Jul 2025 13:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpcGCPZh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OD0zofyW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B0D2561AE;
-	Tue, 15 Jul 2025 13:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB252D8790;
+	Tue, 15 Jul 2025 13:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586764; cv=none; b=SRNqPQT3mymhEp4qFzujbxGbT7dLCb3reNbYRhAAx8aXRVh0a2I+F9L+nhY9ZXFQebRhfGPc19Wv04taKGgVEJ4dxAb3wrQ0oyJ9LhfZ/W+AMP/+oXqB4ThE+l0wBdS034n6RpwCE6oaocUN7WSmp++u3nbukYMyrIS72JyAQc4=
+	t=1752587490; cv=none; b=mtfK1tskKik3Th4iBoY1EO/6oolxd7YDL8vk5B0fJvkI9dedG8U43TXTfGGJQHrjiI1bTx3xnVv92VAQ2Fc1pcKW5skyIhLCm5B9HsH+NNnkHhkD3h+Qn4kzOZDKmB6C/ztQzBc+f46EYWPiUb9eUwneac26zIOppTD1RS/HYy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586764; c=relaxed/simple;
-	bh=YvT008b7+l0GifvLYBPe1WUO6NKLt3k4f4XQ7lpDDNA=;
+	s=arc-20240116; t=1752587490; c=relaxed/simple;
+	bh=iLeiJxZ1q1pvZypch2W2JzeQLzC/2scRPGTsbKpMugw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOtQYuaXQX9Csh+xxOggTC4G0idnd9QJkUtXau/tMajiVr6TJOC4BGRBJLHPs090HS5Ia7JRIX9CCzsoaUakkop9aNFBxU2f30JtVN0YnWHUD7/pJYXBGVLetpV8T6CnCHz0Lc6YhgcGApTkGxOVdV2ypR8CMop8cnG1QqpQ6cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpcGCPZh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD51C4CEE3;
-	Tue, 15 Jul 2025 13:39:23 +0000 (UTC)
+	 MIME-Version; b=uv5/bAqS7ZpW6h83lnbIPqkc4uaUvR2OvefD0fNP8g8ruKsxfqi0Ewa+Y/cECJTZt8l0K/KzFPmZBaPJja+pmrkMGlLkR0CAHoxgqwRmmawnGfqmYObAIRS26SaDhmSyCID7kuAVPzzGQB6X9HUeYUG5w1nw29hxaJc3XwCbTX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OD0zofyW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3994C4CEE3;
+	Tue, 15 Jul 2025 13:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586764;
-	bh=YvT008b7+l0GifvLYBPe1WUO6NKLt3k4f4XQ7lpDDNA=;
+	s=korg; t=1752587490;
+	bh=iLeiJxZ1q1pvZypch2W2JzeQLzC/2scRPGTsbKpMugw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpcGCPZhnfvRr+47brkaDxlRCgqKlYmmgvNaAckUy2IyFfav2rY205nmzK998I8IF
-	 qvp2d3nVxfaVMQ3qY2OCRYVgMDpMSX5/bjG0JnXh9EV78o/Qp7sRTaVQHxqliugKrF
-	 g+TfwRpQ54erX4C9mRzxMkuds9ikV2yA1b3juFMk=
+	b=OD0zofyWLdkWjSyloWQtW3eK/3a2Z7156VIMYPjcvW3MtX9X8m2jY00MNhe7g5J5v
+	 bO2tNPPbA6qbca2UFvpoxhMX4FeUpwOynFdeU2RMLvk9p93CTiy7N+d1UIAsTFu2H9
+	 2jjf1jrgWAl5EqMl1v5opIKarenro3XSLByJ4+/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	John Stultz <jstultz@google.com>,
-	kuyo chang <kuyo.chang@mediatek.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 022/192] sched/deadline: Fix dl_server runtime calculation formula
+Subject: [PATCH 5.10 008/208] md/md-bitmap: fix dm-raid max_write_behind setting
 Date: Tue, 15 Jul 2025 15:11:57 +0200
-Message-ID: <20250715130815.755238240@linuxfoundation.org>
+Message-ID: <20250715130811.170706504@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: kuyo chang <kuyo.chang@mediatek.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit fc975cfb36393db1db517fbbe366e550bcdcff14 ]
+[ Upstream commit 2afe17794cfed5f80295b1b9facd66e6f65e5002 ]
 
-In our testing with 6.12 based kernel on a big.LITTLE system, we were
-seeing instances of RT tasks being blocked from running on the LITTLE
-cpus for multiple seconds of time, apparently by the dl_server. This
-far exceeds the default configured 50ms per second runtime.
+It's supposed to be COUNTER_MAX / 2, not COUNTER_MAX.
 
-This is due to the fair dl_server runtime calculation being scaled
-for frequency & capacity of the cpu.
-
-Consider the following case under a Big.LITTLE architecture:
-Assume the runtime is: 50,000,000 ns, and Frequency/capacity
-scale-invariance defined as below:
-Frequency scale-invariance: 100
-Capacity scale-invariance: 50
-First by Frequency scale-invariance,
-the runtime is scaled to 50,000,000 * 100 >> 10 = 4,882,812
-Then by capacity scale-invariance,
-it is further scaled to 4,882,812 * 50 >> 10 = 238,418.
-So it will scaled to 238,418 ns.
-
-This smaller "accounted runtime" value is what ends up being
-subtracted against the fair-server's runtime for the current period.
-Thus after 50ms of real time, we've only accounted ~238us against the
-fair servers runtime. This 209:1 ratio in this example means that on
-the smaller cpu the fair server is allowed to continue running,
-blocking RT tasks, for over 10 seconds before it exhausts its supposed
-50ms of runtime.  And on other hardware configurations it can be even
-worse.
-
-For the fair deadline_server, to prevent realtime tasks from being
-unexpectedly delayed, we really do want to use fixed time, and not
-scaled time for smaller capacity/frequency cpus. So remove the scaling
-from the fair server's accounting to fix this.
-
-Fixes: a110a81c52a9 ("sched/deadline: Deferrable dl server")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Suggested-by: John Stultz <jstultz@google.com>
-Signed-off-by: kuyo chang <kuyo.chang@mediatek.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Acked-by: John Stultz <jstultz@google.com>
-Tested-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/r/20250702021440.2594736-1-kuyo.chang@mediatek.com
+Link: https://lore.kernel.org/linux-raid/20250524061320.370630-14-yukuai1@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/md/md-bitmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index ad45a8fea245e..89019a1408264 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1504,7 +1504,9 @@ static void update_curr_dl_se(struct rq *rq, struct sched_dl_entity *dl_se, s64
- 	if (dl_entity_is_special(dl_se))
- 		return;
- 
--	scaled_delta_exec = dl_scaled_delta_exec(rq, dl_se, delta_exec);
-+	scaled_delta_exec = delta_exec;
-+	if (!dl_server(dl_se))
-+		scaled_delta_exec = dl_scaled_delta_exec(rq, dl_se, delta_exec);
- 
- 	dl_se->runtime -= scaled_delta_exec;
- 
-@@ -1611,7 +1613,7 @@ static void update_curr_dl_se(struct rq *rq, struct sched_dl_entity *dl_se, s64
-  */
- void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
- {
--	s64 delta_exec, scaled_delta_exec;
-+	s64 delta_exec;
- 
- 	if (!rq->fair_server.dl_defer)
- 		return;
-@@ -1624,9 +1626,7 @@ void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
- 	if (delta_exec < 0)
- 		return;
- 
--	scaled_delta_exec = dl_scaled_delta_exec(rq, &rq->fair_server, delta_exec);
--
--	rq->fair_server.runtime -= scaled_delta_exec;
-+	rq->fair_server.runtime -= delta_exec;
- 
- 	if (rq->fair_server.runtime < 0) {
- 		rq->fair_server.dl_defer_running = 0;
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 91bc764a854c6..f2ba541ed89d4 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -546,7 +546,7 @@ static int md_bitmap_new_disk_sb(struct bitmap *bitmap)
+ 	 * is a good choice?  We choose COUNTER_MAX / 2 arbitrarily.
+ 	 */
+ 	write_behind = bitmap->mddev->bitmap_info.max_write_behind;
+-	if (write_behind > COUNTER_MAX)
++	if (write_behind > COUNTER_MAX / 2)
+ 		write_behind = COUNTER_MAX / 2;
+ 	sb->write_behind = cpu_to_le32(write_behind);
+ 	bitmap->mddev->bitmap_info.max_write_behind = write_behind;
 -- 
 2.39.5
 
