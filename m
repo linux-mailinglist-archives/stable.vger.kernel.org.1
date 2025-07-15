@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-162898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D22FB06068
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:16:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B1EB05FF8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE09F1C474CA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FBE17BF9D4
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AB72ECEAB;
-	Tue, 15 Jul 2025 13:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7822EE290;
+	Tue, 15 Jul 2025 13:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1xUAtks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZZRYT8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805D626D4F2;
-	Tue, 15 Jul 2025 13:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4AC2EBDCD;
+	Tue, 15 Jul 2025 13:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587764; cv=none; b=S3/IyKImBSTJsb+SgImSbXOj14njNW7Sb5hvGeS2PkJTcN3riuJuQc5yxClcPSQVy1N6ZK2oAWcYXwDH9PnkIeom4LMCwFSlK4WLSE8E3r2AUSR38GOFczVvT1+Oqh32FVnFbnirgWW0hm9jYK6kKiHIndVQo64G20zgF7uNp5E=
+	t=1752587682; cv=none; b=QLuPXTQpxk6wYfiy+58jcssZ+FHiaoZPxUJNdZ7bFiDhZ+hwmFvFLfGEZKTvJL3Ex5gAxGCI7AR2UQvvMe2GI5MmgZgjJSsitkP2irZAQ6xSGgsi9ZNWbvmDr1RWKUpp5KKLeuDgIaWx4sd7xmQ+dirOOU2puGqhq/G8c39H1oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587764; c=relaxed/simple;
-	bh=402+YQiFZZTu4DQjF19it5PQk95skh2WWHdIWpedYBU=;
+	s=arc-20240116; t=1752587682; c=relaxed/simple;
+	bh=K4DCsgSRRR4F8IP7rjio8Kum0JfxWXKOFpiIp4lkE70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtccV04jbEJFZqpIHbwCbKy5WofmBjWaahZva9dDNu10Xf/AnSOBXe/0/IudjQQc5enDzTByzsRzutzSk1Mz4uiV81VI29JX1N9qOlv4TgD6CeDhmwkCdwEvqfWMd8gVcmhmVfoon8Ej/rvgwjcxZGPTBm9++Ky5uUu0tgdnCoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1xUAtks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B75C4CEE3;
-	Tue, 15 Jul 2025 13:56:03 +0000 (UTC)
+	 MIME-Version; b=Qn7xt9e6jc1hp8LWyQB4IREISR7/XL6S29Nju4sP6EapzqQf+6JmkudqgHkJQ4FZS3MG8sk/P06y6jcZZ5MowyrPEepXsnUAIZ2jReByHOESbf3GfdoJBIiA0Vs1kU+E4m8BQEtCTbYPaNliTUYM09XTG7WaMN1u6acYiJDIyxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZZRYT8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C72C4CEE3;
+	Tue, 15 Jul 2025 13:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587764;
-	bh=402+YQiFZZTu4DQjF19it5PQk95skh2WWHdIWpedYBU=;
+	s=korg; t=1752587681;
+	bh=K4DCsgSRRR4F8IP7rjio8Kum0JfxWXKOFpiIp4lkE70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M1xUAtksZ0KiGhFct01zifb5VtFEe642TUfbnv8uyRxo6X1PC/fboLNDESrBNzjv1
-	 0MlHdUWXC1HVQd655W5jL16uQtqZxXYJOHKoqmAnFgogOxIP/gmYgo3h+ljHq6TJW3
-	 pwwm0SmyfAQP6W1SspUQ0wBDcW7EUZjSNzb7wx3A=
+	b=OZZRYT8hIjXEROg36UbxP0+T/hrnJUBorwg3FiXbGQ5hnE20aZVUPm3DJ5iasmQpV
+	 mtxuZEcBQLTpwoHwIXmjPAM/t/qUR22Rd/ECC5UlKmPcA1ARabBcDlviv3DBXJrlAI
+	 RxxJ6r4FSDxgNEl0zpcl9KBDOS2fxdWZenpsHCHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tulio Magno <tuliom@ascii.art.br>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 103/208] powerpc: Fix struct termio related ioctl macros
-Date: Tue, 15 Jul 2025 15:13:32 +0200
-Message-ID: <20250715130815.073249587@linuxfoundation.org>
+Subject: [PATCH 5.10 104/208] scsi: target: Fix NULL pointer dereference in core_scsi3_decode_spec_i_port()
+Date: Tue, 15 Jul 2025 15:13:33 +0200
+Message-ID: <20250715130815.114452147@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -69,56 +68,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit ab107276607af90b13a5994997e19b7b9731e251 ]
+[ Upstream commit d8ab68bdb294b09a761e967dad374f2965e1913f ]
 
-Since termio interface is now obsolete, include/uapi/asm/ioctls.h
-has some constant macros referring to "struct termio", this caused
-build failure at userspace.
+The function core_scsi3_decode_spec_i_port(), in its error code path,
+unconditionally calls core_scsi3_lunacl_undepend_item() passing the
+dest_se_deve pointer, which may be NULL.
 
-In file included from /usr/include/asm/ioctl.h:12,
-                 from /usr/include/asm/ioctls.h:5,
-                 from tst-ioctls.c:3:
-tst-ioctls.c: In function 'get_TCGETA':
-tst-ioctls.c:12:10: error: invalid application of 'sizeof' to incomplete type 'struct termio'
-   12 |   return TCGETA;
-      |          ^~~~~~
+This can lead to a NULL pointer dereference if dest_se_deve remains
+unset.
 
-Even though termios.h provides "struct termio", trying to juggle definitions around to
-make it compile could introduce regressions. So better to open code it.
+SPC-3 PR SPEC_I_PT: Unable to locate dest_tpg
+Unable to handle kernel paging request at virtual address dfff800000000012
+Call trace:
+  core_scsi3_lunacl_undepend_item+0x2c/0xf0 [target_core_mod] (P)
+  core_scsi3_decode_spec_i_port+0x120c/0x1c30 [target_core_mod]
+  core_scsi3_emulate_pro_register+0x6b8/0xcd8 [target_core_mod]
+  target_scsi3_emulate_pr_out+0x56c/0x840 [target_core_mod]
 
-Reported-by: Tulio Magno <tuliom@ascii.art.br>
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
-Closes: https://lore.kernel.org/linuxppc-dev/8734dji5wl.fsf@ascii.art.br/
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250517142237.156665-1-maddy@linux.ibm.com
+Fix this by adding a NULL check before calling
+core_scsi3_lunacl_undepend_item()
+
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Link: https://lore.kernel.org/r/20250612101556.24829-1-mlombard@redhat.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/uapi/asm/ioctls.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/target/target_core_pr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
-index 2c145da3b774a..b5211e413829a 100644
---- a/arch/powerpc/include/uapi/asm/ioctls.h
-+++ b/arch/powerpc/include/uapi/asm/ioctls.h
-@@ -23,10 +23,10 @@
- #define TCSETSW		_IOW('t', 21, struct termios)
- #define TCSETSF		_IOW('t', 22, struct termios)
+diff --git a/drivers/target/target_core_pr.c b/drivers/target/target_core_pr.c
+index b42193c554fb2..2bc849799739e 100644
+--- a/drivers/target/target_core_pr.c
++++ b/drivers/target/target_core_pr.c
+@@ -1858,7 +1858,9 @@ core_scsi3_decode_spec_i_port(
+ 		}
  
--#define TCGETA		_IOR('t', 23, struct termio)
--#define TCSETA		_IOW('t', 24, struct termio)
--#define TCSETAW		_IOW('t', 25, struct termio)
--#define TCSETAF		_IOW('t', 28, struct termio)
-+#define TCGETA		0x40147417 /* _IOR('t', 23, struct termio) */
-+#define TCSETA		0x80147418 /* _IOW('t', 24, struct termio) */
-+#define TCSETAW		0x80147419 /* _IOW('t', 25, struct termio) */
-+#define TCSETAF		0x8014741c /* _IOW('t', 28, struct termio) */
+ 		kmem_cache_free(t10_pr_reg_cache, dest_pr_reg);
+-		core_scsi3_lunacl_undepend_item(dest_se_deve);
++
++		if (dest_se_deve)
++			core_scsi3_lunacl_undepend_item(dest_se_deve);
  
- #define TCSBRK		_IO('t', 29)
- #define TCXONC		_IO('t', 30)
+ 		if (is_local)
+ 			continue;
 -- 
 2.39.5
 
