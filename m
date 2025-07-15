@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EEEB05D51
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32818B05B98
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0D53169727
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FE321C2014B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E13A2E543B;
-	Tue, 15 Jul 2025 13:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341C22E1734;
+	Tue, 15 Jul 2025 13:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3AfNmsG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BonH4qLd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF18A2E2657;
-	Tue, 15 Jul 2025 13:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59D8192D8A;
+	Tue, 15 Jul 2025 13:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586439; cv=none; b=Ul7EG2bFOVjm9Z2hxGxLA11CwNAAmeW3D1jLbRlWoN7K67Pw3Q7oM6WAQz6jGBjkRuKfzRlnYLtPafDeLPDIKbzAPGzMr+dlTLyV2M/xOtheFY7OZ5LF4Ip351XOVuMTfmjVD7VnqUzphwqSxTIDyDsLnmcClXRjk0wDSfo8pZs=
+	t=1752585720; cv=none; b=hVB83VRXoxoFlw5xBxO3KgSYxAYJzvNoZo40ZsYsIr4Naev6GU1OJIMX7ITsDZdj8B54tluo38o9ix4LmkI+oI/svWhC3FzuCaqaJztKtdNeeSR9ziA2p6plNM3jcnl35xXRtm7jZ87OGeOjAEsZWA2FcG8iTJqvSQn+e4Ao6WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586439; c=relaxed/simple;
-	bh=+XdO7MJOpkAY8mf2c88I/xyDfdZB0huNCR76UMOYj9w=;
+	s=arc-20240116; t=1752585720; c=relaxed/simple;
+	bh=CkiSwoVE4wJ9RULl6yiRDPwH1fA7v9yLMLPF/+p/QlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVlp4AokM64piQKkKlLSmaDxKrQI3oFqOUtlNKU+8IfAmFeMXx8LHtQjZWPJUd9Bz34CC1HMmTj/qXPKbUYecyHbWCtwmmDpogmKQ8XWHA0dILoReA9kK0pawW212BqTmVhUdCaA5C+eJuCVjVJwT1XPkYMLrvxM6cD2y6EX7SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3AfNmsG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83325C4CEE3;
-	Tue, 15 Jul 2025 13:33:58 +0000 (UTC)
+	 MIME-Version; b=BL7JJT+eCkFFvdtkFJheKFtcUljmfxNf2zyimMMFkfMnZtnjqh2xcGTOo4MjHrStS8n4n9RvlJLOQL+kZFYXsg/t0BJoNcFdD2B//nQnkg99h870a6npNGN4qXvnQTnFgYa9RfPzZLls3ynRE8Q+v8JEDBYAEQb4s4M8v+70ONc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BonH4qLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A405C4CEE3;
+	Tue, 15 Jul 2025 13:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586438;
-	bh=+XdO7MJOpkAY8mf2c88I/xyDfdZB0huNCR76UMOYj9w=;
+	s=korg; t=1752585719;
+	bh=CkiSwoVE4wJ9RULl6yiRDPwH1fA7v9yLMLPF/+p/QlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3AfNmsGEWb3gprmwGYnMfD7CY7TmgPKTUfCeK/sJAGOR6UgUPwrM3c8e+nY4SVeB
-	 KngwiW01IRkxZ9vQhROkA8N98MCSM+WjqmzKbsum16luviwV95sG1R8YO3BWDhkA78
-	 D5aTJMXXfTGb6sdXf7n3qcnfQsIBV1xVn18+6c8o=
+	b=BonH4qLdZfs96sJ/mrusnk05L7eVuesc34/FCX7Bk1FrlrTdk+ZT9YRLCiylJuMbS
+	 YUFCD/5kDwFaJcesVqtTkqknfiHdPn0iHj6Q3AsROuGY61NlJbdGJP3T0rPJTWopg5
+	 sDHcsPK19JjtOJZcz1SEd9YDDIZ+uR8ptgNm2tCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chunhai Guo <guochunhai@vivo.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 064/148] scsi: qla4xxx: Fix missing DMA mapping error in qla4xxx_alloc_pdu()
-Date: Tue, 15 Jul 2025 15:13:06 +0200
-Message-ID: <20250715130802.891900825@linuxfoundation.org>
+Subject: [PATCH 6.12 119/163] erofs: free pclusters if no cached folio is attached
+Date: Tue, 15 Jul 2025 15:13:07 +0200
+Message-ID: <20250715130813.625545173@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Chunhai Guo <guochunhai@vivo.com>
 
-[ Upstream commit 00f452a1b084efbe8dcb60a29860527944a002a1 ]
+[ Upstream commit f5ad9f9a603f829d11ca31a0a4049e16091e8c13 ]
 
-dma_map_XXX() can fail and should be tested for errors with
-dma_mapping_error().
+Once a pcluster is fully decompressed and there are no attached cached
+folios, its corresponding `struct z_erofs_pcluster` will be freed. This
+will significantly reduce the frequency of calls to erofs_shrink_scan()
+and the memory allocated for `struct z_erofs_pcluster`.
 
-Fixes: b3a271a94d00 ("[SCSI] qla4xxx: support iscsiadm session mgmt")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250618071742.21822-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The tables below show approximately a 96% reduction in the calls to
+erofs_shrink_scan() and in the memory allocated for `struct
+z_erofs_pcluster` after applying this patch. The results were obtained
+by performing a test to copy a 4.1GB partition on ARM64 Android devices
+running the 6.6 kernel with an 8-core CPU and 12GB of memory.
+
+1. The reduction in calls to erofs_shrink_scan():
++-----------------+-----------+----------+---------+
+|                 | w/o patch | w/ patch |  diff   |
++-----------------+-----------+----------+---------+
+| Average (times) |   11390   |   390    | -96.57% |
++-----------------+-----------+----------+---------+
+
+2. The reduction in memory released by erofs_shrink_scan():
++-----------------+-----------+----------+---------+
+|                 | w/o patch | w/ patch |  diff   |
++-----------------+-----------+----------+---------+
+| Average (Byte)  | 133612656 | 4434552  | -96.68% |
++-----------------+-----------+----------+---------+
+
+Signed-off-by: Chunhai Guo <guochunhai@vivo.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241112043235.546164-1-guochunhai@vivo.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Stable-dep-of: d53238b614e0 ("erofs: fix to add missing tracepoint in erofs_readahead()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla4xxx/ql4_os.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/erofs/zdata.c | 57 ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 38 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
-index ea15bbe0397fc..af1c45dd2f38a 100644
---- a/drivers/scsi/qla4xxx/ql4_os.c
-+++ b/drivers/scsi/qla4xxx/ql4_os.c
-@@ -3394,6 +3394,8 @@ static int qla4xxx_alloc_pdu(struct iscsi_task *task, uint8_t opcode)
- 		task_data->data_dma = dma_map_single(&ha->pdev->dev, task->data,
- 						     task->data_count,
- 						     DMA_TO_DEVICE);
-+		if (dma_mapping_error(&ha->pdev->dev, task_data->data_dma))
-+			return -ENOMEM;
- 	}
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 6b1d19d1d2f0c..4d5a1fbd7e0ad 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -882,14 +882,11 @@ static void z_erofs_rcu_callback(struct rcu_head *head)
+ 			struct z_erofs_pcluster, rcu));
+ }
  
- 	DEBUG2(ql4_printk(KERN_INFO, ha, "%s: MaxRecvLen %u, iscsi hrd %d\n",
+-static bool erofs_try_to_release_pcluster(struct erofs_sb_info *sbi,
++static bool __erofs_try_to_release_pcluster(struct erofs_sb_info *sbi,
+ 					  struct z_erofs_pcluster *pcl)
+ {
+-	int free = false;
+-
+-	spin_lock(&pcl->lockref.lock);
+ 	if (pcl->lockref.count)
+-		goto out;
++		return false;
+ 
+ 	/*
+ 	 * Note that all cached folios should be detached before deleted from
+@@ -897,7 +894,7 @@ static bool erofs_try_to_release_pcluster(struct erofs_sb_info *sbi,
+ 	 * orphan old pcluster when the new one is available in the tree.
+ 	 */
+ 	if (erofs_try_to_free_all_cached_folios(sbi, pcl))
+-		goto out;
++		return false;
+ 
+ 	/*
+ 	 * It's impossible to fail after the pcluster is freezed, but in order
+@@ -906,8 +903,16 @@ static bool erofs_try_to_release_pcluster(struct erofs_sb_info *sbi,
+ 	DBG_BUGON(__xa_erase(&sbi->managed_pslots, pcl->index) != pcl);
+ 
+ 	lockref_mark_dead(&pcl->lockref);
+-	free = true;
+-out:
++	return true;
++}
++
++static bool erofs_try_to_release_pcluster(struct erofs_sb_info *sbi,
++					  struct z_erofs_pcluster *pcl)
++{
++	bool free;
++
++	spin_lock(&pcl->lockref.lock);
++	free = __erofs_try_to_release_pcluster(sbi, pcl);
+ 	spin_unlock(&pcl->lockref.lock);
+ 	if (free) {
+ 		atomic_long_dec(&erofs_global_shrink_cnt);
+@@ -938,16 +943,25 @@ unsigned long z_erofs_shrink_scan(struct erofs_sb_info *sbi,
+ 	return freed;
+ }
+ 
+-static void z_erofs_put_pcluster(struct z_erofs_pcluster *pcl)
++static void z_erofs_put_pcluster(struct erofs_sb_info *sbi,
++		struct z_erofs_pcluster *pcl, bool try_free)
+ {
++	bool free = false;
++
+ 	if (lockref_put_or_lock(&pcl->lockref))
+ 		return;
+ 
+ 	DBG_BUGON(__lockref_is_dead(&pcl->lockref));
+-	if (pcl->lockref.count == 1)
+-		atomic_long_inc(&erofs_global_shrink_cnt);
+-	--pcl->lockref.count;
++	if (!--pcl->lockref.count) {
++		if (try_free && xa_trylock(&sbi->managed_pslots)) {
++			free = __erofs_try_to_release_pcluster(sbi, pcl);
++			xa_unlock(&sbi->managed_pslots);
++		}
++		atomic_long_add(!free, &erofs_global_shrink_cnt);
++	}
+ 	spin_unlock(&pcl->lockref.lock);
++	if (free)
++		call_rcu(&pcl->rcu, z_erofs_rcu_callback);
+ }
+ 
+ static void z_erofs_pcluster_end(struct z_erofs_decompress_frontend *fe)
+@@ -968,7 +982,7 @@ static void z_erofs_pcluster_end(struct z_erofs_decompress_frontend *fe)
+ 	 * any longer if the pcluster isn't hosted by ourselves.
+ 	 */
+ 	if (fe->mode < Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE)
+-		z_erofs_put_pcluster(pcl);
++		z_erofs_put_pcluster(EROFS_I_SB(fe->inode), pcl, false);
+ 
+ 	fe->pcl = NULL;
+ }
+@@ -1271,6 +1285,7 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
+ 	int i, j, jtop, err2;
+ 	struct page *page;
+ 	bool overlapped;
++	bool try_free = true;
+ 
+ 	mutex_lock(&pcl->lock);
+ 	be->nr_pages = PAGE_ALIGN(pcl->length + pcl->pageofs_out) >> PAGE_SHIFT;
+@@ -1328,9 +1343,12 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
+ 		/* managed folios are still left in compressed_bvecs[] */
+ 		for (i = 0; i < pclusterpages; ++i) {
+ 			page = be->compressed_pages[i];
+-			if (!page ||
+-			    erofs_folio_is_managed(sbi, page_folio(page)))
++			if (!page)
+ 				continue;
++			if (erofs_folio_is_managed(sbi, page_folio(page))) {
++				try_free = false;
++				continue;
++			}
+ 			(void)z_erofs_put_shortlivedpage(be->pagepool, page);
+ 			WRITE_ONCE(pcl->compressed_bvecs[i].page, NULL);
+ 		}
+@@ -1375,6 +1393,11 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
+ 	/* pcluster lock MUST be taken before the following line */
+ 	WRITE_ONCE(pcl->next, Z_EROFS_PCLUSTER_NIL);
+ 	mutex_unlock(&pcl->lock);
++
++	if (z_erofs_is_inline_pcluster(pcl))
++		z_erofs_free_pcluster(pcl);
++	else
++		z_erofs_put_pcluster(sbi, pcl, try_free);
+ 	return err;
+ }
+ 
+@@ -1397,10 +1420,6 @@ static int z_erofs_decompress_queue(const struct z_erofs_decompressqueue *io,
+ 		owned = READ_ONCE(be.pcl->next);
+ 
+ 		err = z_erofs_decompress_pcluster(&be, err) ?: err;
+-		if (z_erofs_is_inline_pcluster(be.pcl))
+-			z_erofs_free_pcluster(be.pcl);
+-		else
+-			z_erofs_put_pcluster(be.pcl);
+ 	}
+ 	return err;
+ }
 -- 
 2.39.5
 
