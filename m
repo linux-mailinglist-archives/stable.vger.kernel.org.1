@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-162445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031ECB05DAB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B67B05CE6
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79E69581256
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55C6016345A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113A02E6D15;
-	Tue, 15 Jul 2025 13:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68052E5421;
+	Tue, 15 Jul 2025 13:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVBlyctO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hni6CicD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43BF2E62DD;
-	Tue, 15 Jul 2025 13:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AFF2E2EEA;
+	Tue, 15 Jul 2025 13:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586573; cv=none; b=hRjah2Z7759+bta0NqKzSHFhcw3Hv5srV+88SVhfq9fXOCMjRBisnjBW9Nq8CwPzXxZtHAQyCYkdlxPl2sLc8yF3zU7IvL8aZs0FaVe4JYIJr6ahXCSSooK30F5JQ4HuDwadUvDrTJzhTH8C5Mk6aNtLd2IUUaA28b+K4o7szlo=
+	t=1752586221; cv=none; b=NXe5iltMNlc2/7W6L0V13KUW7W0Hof9RUjaZ29q5t/KVvH99MAJO4tzqPPEc2ahj8iZ6Ic3yM+MsjWUxC8RAV6sVzqc5jNfOd8bsC69RUvKGLk7naMOCS1ACtdHe223ypCYGbOtPUQDxgAKv3DAQsaD1xQjt6MYLlDxfZ7abLfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586573; c=relaxed/simple;
-	bh=zgMI8cndVLJFH5LzUjw6Qi+1gRs7AdN2rRWqX98gdUI=;
+	s=arc-20240116; t=1752586221; c=relaxed/simple;
+	bh=Dzbsx5CV+I+X1CuFGVhC8uAQ5kQ3iBmDlolgOlevlkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XGd7ua7Xm2CdDqfBe1BCkhdj8YF4Z2X314rElXBKnO5ZwCkZMMQ465cfxKli7DEcroim+kWJyPnXs2pKA/GgjweDs3wBopHNYWFEWEn2iPp8isM34ZoInJjUYpmylz88as03x9pfi1UY4nL/XtyjRQ63F727RnnP6pk8KF/l+vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVBlyctO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C9BC4CEE3;
-	Tue, 15 Jul 2025 13:36:12 +0000 (UTC)
+	 MIME-Version; b=rCE5DIgw891ays5ygokNI9KUW5ewSCa5E5uyECLHkwoA+qH3hYdivr2M+tDelax9QaSV13uqpe8fO4SjnguvvinDh9ctjl2WplUCgOER+3OwEjg8j7lc7ywoVoputRZOcBXmJvE55KiyBn0oK1YL53R93ZBLFxDQBFVOUfVslMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hni6CicD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6A8C4CEF1;
+	Tue, 15 Jul 2025 13:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586573;
-	bh=zgMI8cndVLJFH5LzUjw6Qi+1gRs7AdN2rRWqX98gdUI=;
+	s=korg; t=1752586221;
+	bh=Dzbsx5CV+I+X1CuFGVhC8uAQ5kQ3iBmDlolgOlevlkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rVBlyctOwf+7aLK4JCEjfgXV4uR1zA3P79HC1eqeQuGUcZgCWxrAAmkC8xrhgIlP3
-	 VjmvqCEZ6QLXiETztyxtpHvj/s3fI/0F0QB0bjLbw+3lGrjlxxlDlysYrzrlLGPpeX
-	 ToMCuxnjUHd41nT/g8v7DxLOnBCV2zqfHLwlRaFY=
+	b=Hni6CicDA00w+SIKE+NWxNreyI7Bq4LKrR5ExHs2UjIpjQzwMfgac0o34MR6muHhs
+	 piT4i/FWzdrjxU4XloZoTJ0v499U4W3yxeiwyufF3CoHk8O877V5addlr3k1I77O6G
+	 Fz7y4aEX3N5pNgd8bUccLJMAnbCudfrU/5b4kkgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.4 117/148] x86/mce/amd: Fix threshold limit reset
+	syzbot+bf6ed459397e307c3ad2@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 60/77] netfilter: flowtable: account for Ethernet header in nf_flow_pppoe_proto()
 Date: Tue, 15 Jul 2025 15:13:59 +0200
-Message-ID: <20250715130804.988444230@linuxfoundation.org>
+Message-ID: <20250715130754.136612222@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 5f6e3b720694ad771911f637a51930f511427ce1 upstream.
+[ Upstream commit 18cdb3d982da8976b28d57691eb256ec5688fad2 ]
 
-The MCA threshold limit must be reset after servicing the interrupt.
+syzbot found a potential access to uninit-value in nf_flow_pppoe_proto()
 
-Currently, the restart function doesn't have an explicit check for this.  It
-makes some assumptions based on the current limit and what's in the registers.
-These assumptions don't always hold, so the limit won't be reset in some
-cases.
+Blamed commit forgot the Ethernet header.
 
-Make the reset condition explicit. Either an interrupt/overflow has occurred
-or the bank is being initialized.
+BUG: KMSAN: uninit-value in nf_flow_offload_inet_hook+0x7e4/0x940 net/netfilter/nf_flow_table_inet.c:27
+  nf_flow_offload_inet_hook+0x7e4/0x940 net/netfilter/nf_flow_table_inet.c:27
+  nf_hook_entry_hookfn include/linux/netfilter.h:157 [inline]
+  nf_hook_slow+0xe1/0x3d0 net/netfilter/core.c:623
+  nf_hook_ingress include/linux/netfilter_netdev.h:34 [inline]
+  nf_ingress net/core/dev.c:5742 [inline]
+  __netif_receive_skb_core+0x4aff/0x70c0 net/core/dev.c:5837
+  __netif_receive_skb_one_core net/core/dev.c:5975 [inline]
+  __netif_receive_skb+0xcc/0xac0 net/core/dev.c:6090
+  netif_receive_skb_internal net/core/dev.c:6176 [inline]
+  netif_receive_skb+0x57/0x630 net/core/dev.c:6235
+  tun_rx_batched+0x1df/0x980 drivers/net/tun.c:1485
+  tun_get_user+0x4ee0/0x6b40 drivers/net/tun.c:1938
+  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1984
+  new_sync_write fs/read_write.c:593 [inline]
+  vfs_write+0xb4b/0x1580 fs/read_write.c:686
+  ksys_write fs/read_write.c:738 [inline]
+  __do_sys_write fs/read_write.c:749 [inline]
 
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-4-236dd74f645f@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+bf6ed459397e307c3ad2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686bc073.a00a0220.c7b3.0086.GAE@google.com/T/#u
+Fixes: 87b3593bed18 ("netfilter: flowtable: validate pppoe header")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/20250707124517.614489-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/amd.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ include/net/netfilter/nf_flow_table.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -290,7 +290,6 @@ static void smca_configure(unsigned int
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index 8e98fb8edff8d..664c3637e283c 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -336,7 +336,7 @@ static inline __be16 __nf_flow_pppoe_proto(const struct sk_buff *skb)
  
- struct thresh_restart {
- 	struct threshold_block	*b;
--	int			reset;
- 	int			set_lvt_off;
- 	int			lvt_off;
- 	u16			old_limit;
-@@ -381,13 +380,13 @@ static void threshold_restart_bank(void
+ static inline bool nf_flow_pppoe_proto(struct sk_buff *skb, __be16 *inner_proto)
+ {
+-	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
++	if (!pskb_may_pull(skb, ETH_HLEN + PPPOE_SES_HLEN))
+ 		return false;
  
- 	rdmsr(tr->b->address, lo, hi);
- 
--	if (tr->b->threshold_limit < (hi & THRESHOLD_MAX))
--		tr->reset = 1;	/* limit cannot be lower than err count */
--
--	if (tr->reset) {		/* reset err count and overflow bit */
--		hi =
--		    (hi & ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI)) |
--		    (THRESHOLD_MAX - tr->b->threshold_limit);
-+	/*
-+	 * Reset error count and overflow bit.
-+	 * This is done during init or after handling an interrupt.
-+	 */
-+	if (hi & MASK_OVERFLOW_HI || tr->set_lvt_off) {
-+		hi &= ~(MASK_ERR_COUNT_HI | MASK_OVERFLOW_HI);
-+		hi |= THRESHOLD_MAX - tr->b->threshold_limit;
- 	} else if (tr->old_limit) {	/* change limit w/o reset */
- 		int new_count = (hi & THRESHOLD_MAX) +
- 		    (tr->old_limit - tr->b->threshold_limit);
+ 	*inner_proto = __nf_flow_pppoe_proto(skb);
+-- 
+2.39.5
+
 
 
 
