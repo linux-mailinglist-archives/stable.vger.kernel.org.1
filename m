@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-162009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1069B05B2A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:17:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E833B05E3B
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:51:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C2953B8C66
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:16:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ABBC1C422E1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C722472AE;
-	Tue, 15 Jul 2025 13:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF642E7646;
+	Tue, 15 Jul 2025 13:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHrJs56U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2+9IHmU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D332719F420;
-	Tue, 15 Jul 2025 13:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2893FBE4A;
+	Tue, 15 Jul 2025 13:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585430; cv=none; b=cq6nq5IltDH/dgZYch1h9vPYx0FcRvdY06xkjrpdxSQXgNb+6X972lrnfBtUm9JDwQNVZKxQ9rIeUnQ7cPNPwqJMen4cONqMh5NEv/TyLY/DutKfYlbhIFgH5KOuLSu+cP/T9ABxFo17WOrndP+kljS3NsZUbzIsnIJwXg3Xarg=
+	t=1752586685; cv=none; b=kVpCQIcz1RlvICW5zkG0TgHNGLeYE8uUNri05kzFI4l9zzZBiUfG7FqiW/ufkw7Jn/WqWmSHbGwIBDU7o3VHFKfiWYo9pET0fWR1KOhB0n8eME0Pbavz6EhDlNuTJXRiiLDjbLiX7yYckHvzfxClDtrsissj+4E0wlXQZQNxpeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585430; c=relaxed/simple;
-	bh=YxtUF5IhwwxS8pvs2Y3upleyRoPK9fXRTWnhcY+/P7g=;
+	s=arc-20240116; t=1752586685; c=relaxed/simple;
+	bh=+LVFQh0Ztl2eEZrpu2z0qAj2USBvqOx0nxZVxvIuIrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEhYtBRHUOjosTqmagst5W9gPYDxuLTDuTA6dyWUuiYu1gEAcrygsIv+8Wsxu53FpfSoCe7hQ+y4x/1mose2lLfbdbKHXtIKbYvNMtB/aHTojKv6WXf0VkeVQ7tDTXZ/B7MBScnQh1V/4ufelP2QxRLwcNeudpe4i2CNqlKYaTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHrJs56U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E13C4CEE3;
-	Tue, 15 Jul 2025 13:17:10 +0000 (UTC)
+	 MIME-Version; b=Kd+9X5xoiUWjU6ciJMdq3eF/L+6M3rHoCMvbqarPYCkcJiaGX+eF79qrQdcPKnkKEuPPkUdZOJILTBpkmPmEz18wojrw0h492lEpi0MOHfOP01M8egBqtWOm+HxuB/qpQ0uzzQnClSrrchxFFjcVXhCyth5exwn/hLthWnmqon8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2+9IHmU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB4DC4CEF1;
+	Tue, 15 Jul 2025 13:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585430;
-	bh=YxtUF5IhwwxS8pvs2Y3upleyRoPK9fXRTWnhcY+/P7g=;
+	s=korg; t=1752586685;
+	bh=+LVFQh0Ztl2eEZrpu2z0qAj2USBvqOx0nxZVxvIuIrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHrJs56U0QWi73Y67OiHaTKyeUf4XnSthlWTN8F6/kJfg0pgD21Qrfjc51JnWO3UX
-	 iELPuceSYfSXkRV1gmil7GzJvo9DRsN63dB+85DpacNbSRcFbxHn62SkCUNkmTtd6O
-	 l9l96FIcyp7SkVZxepNfExxg2Ew9vGehqeQMK5rw=
+	b=q2+9IHmUCL1t2TxjuOF7FaJJXNyb/NJgJW0viA1NmVjaawS3bmp3W/Bs2uFYHgRQG
+	 ZgdpUpqrn+mEi6Jaca5cDM+wimA3EzKmB5vdTy+C9ojTQDO0XMjZTtlXGVJLK9Fdn2
+	 x0Nn9mk4B90CWgLKB5pwAPaltYZJg8zkuNGZ+rOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andre Edich <andre.edich@microchip.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/163] net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
+Subject: [PATCH 6.15 010/192] EDAC: Initialize EDAC features sysfs attributes
 Date: Tue, 15 Jul 2025 15:11:45 +0200
-Message-ID: <20250715130810.246139327@linuxfoundation.org>
+Message-ID: <20250715130815.273423010@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +65,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Shiju Jose <shiju.jose@huawei.com>
 
-[ Upstream commit a141af8eb2272ab0f677a7f2653874840bc9b214 ]
+[ Upstream commit 1e14ea901dc8d976d355ddc3e0de84ee86ef0596 ]
 
-Correct the Auto-MDIX configuration to ensure userspace settings are
-respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
+Fix the lockdep splat caused by missing sysfs_attr_init() calls for the
+recently added EDAC feature's sysfs attributes.
 
-The LAN9500 PHY allows its default MDI-X mode to be configured via a
-hardware strap. If this strap sets the default to "MDI-X off", the
-driver was previously unable to enable Auto-MDIX from userspace.
+In lockdep_init_map_type(), the check for the lock-class key if
+(!static_obj(key) && !is_dynamic_key(key)) causes the splat.
 
-When handling the ETH_TP_MDI_AUTO case, the driver would set the
-SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
-SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
-falls back to its hardware strap default, ignoring the software request.
+  Backtrace:
+  RIP: 0010:lockdep_init_map_type
+  Call Trace:
+   __kernfs_create_file
+  sysfs_add_file_mode_ns
+  internal_create_group
+  internal_create_groups
+  device_add
+  ? __init_waitqueue_head
+  edac_dev_register
+  devm_cxl_memdev_edac_register
+  ? lock_acquire
+  ? find_held_lock
+  ? cxl_mem_probe
+  ? cxl_mem_probe
+  ? lockdep_hardirqs_on
+  ? cxl_mem_probe
+  cxl_mem_probe
 
-This patch corrects the behavior by also setting the override bit when
-enabling Auto-MDIX. This ensures that the userspace configuration takes
-precedence over the hardware strap, allowing Auto-MDIX to be enabled
-correctly in all scenarios.
+  [ bp: Massage. ]
 
-Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andre Edich <andre.edich@microchip.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250703114941.3243890-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f90b738166fe ("EDAC: Add scrub control feature")
+Fixes: bcbd069b11b0 ("EDAC: Add a Error Check Scrub control feature")
+Fixes: 699ea5219c4b ("EDAC: Add a memory repair control feature")
+Reported-by: Dave Jiang <dave.jiang@intel.com>
+Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://lore.kernel.org/20250626101344.1726-1-shiju.jose@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/smsc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/edac/ecs.c        | 4 +++-
+ drivers/edac/mem_repair.c | 1 +
+ drivers/edac/scrub.c      | 1 +
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index 150aea7c9c367..871b7d42cdae7 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -167,7 +167,8 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
- 			SPECIAL_CTRL_STS_AMDIX_STATE_;
- 		break;
- 	case ETH_TP_MDI_AUTO:
--		val = SPECIAL_CTRL_STS_AMDIX_ENABLE_;
-+		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
-+			SPECIAL_CTRL_STS_AMDIX_ENABLE_;
- 		break;
- 	default:
- 		return genphy_config_aneg(phydev);
+diff --git a/drivers/edac/ecs.c b/drivers/edac/ecs.c
+index 1d51838a60c11..51c451c7f0f0b 100755
+--- a/drivers/edac/ecs.c
++++ b/drivers/edac/ecs.c
+@@ -170,8 +170,10 @@ static int ecs_create_desc(struct device *ecs_dev, const struct attribute_group
+ 		fru_ctx->dev_attr[ECS_RESET]		= EDAC_ECS_ATTR_WO(reset, fru);
+ 		fru_ctx->dev_attr[ECS_THRESHOLD]	= EDAC_ECS_ATTR_RW(threshold, fru);
+ 
+-		for (i = 0; i < ECS_MAX_ATTRS; i++)
++		for (i = 0; i < ECS_MAX_ATTRS; i++) {
++			sysfs_attr_init(&fru_ctx->dev_attr[i].dev_attr.attr);
+ 			fru_ctx->ecs_attrs[i] = &fru_ctx->dev_attr[i].dev_attr.attr;
++		}
+ 
+ 		sprintf(fru_ctx->name, "%s%d", EDAC_ECS_FRU_NAME, fru);
+ 		group->name = fru_ctx->name;
+diff --git a/drivers/edac/mem_repair.c b/drivers/edac/mem_repair.c
+index 3b1a845457b08..1df8957a8459a 100755
+--- a/drivers/edac/mem_repair.c
++++ b/drivers/edac/mem_repair.c
+@@ -324,6 +324,7 @@ static int mem_repair_create_desc(struct device *dev,
+ 	for (i = 0; i < MR_MAX_ATTRS; i++) {
+ 		memcpy(&ctx->mem_repair_dev_attr[i],
+ 		       &dev_attr[i], sizeof(dev_attr[i]));
++		sysfs_attr_init(&ctx->mem_repair_dev_attr[i].dev_attr.attr);
+ 		ctx->mem_repair_attrs[i] =
+ 			&ctx->mem_repair_dev_attr[i].dev_attr.attr;
+ 	}
+diff --git a/drivers/edac/scrub.c b/drivers/edac/scrub.c
+index e421d3ebd959f..f9d02af2fc3a2 100755
+--- a/drivers/edac/scrub.c
++++ b/drivers/edac/scrub.c
+@@ -176,6 +176,7 @@ static int scrub_create_desc(struct device *scrub_dev,
+ 	group = &scrub_ctx->group;
+ 	for (i = 0; i < SCRUB_MAX_ATTRS; i++) {
+ 		memcpy(&scrub_ctx->scrub_dev_attr[i], &dev_attr[i], sizeof(dev_attr[i]));
++		sysfs_attr_init(&scrub_ctx->scrub_dev_attr[i].dev_attr.attr);
+ 		scrub_ctx->scrub_attrs[i] = &scrub_ctx->scrub_dev_attr[i].dev_attr.attr;
+ 	}
+ 	sprintf(scrub_ctx->name, "%s%d", "scrub", instance);
 -- 
 2.39.5
 
