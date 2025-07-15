@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3849B05DD3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D46F2B05CB5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 954AA4A00C9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BADC87BE5F1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAEA2E6100;
-	Tue, 15 Jul 2025 13:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619A02E4980;
+	Tue, 15 Jul 2025 13:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auI9nSC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSrzZ6Ti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBE32E6105;
-	Tue, 15 Jul 2025 13:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFA01A3142;
+	Tue, 15 Jul 2025 13:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586491; cv=none; b=jszIOdNrtw1SP8FM0Oe0Sodq8T6Bm5/AM3uhNmUpe128SWDwGbLafE0yidQJyGsiNmJvxMShCYjH/jrrEYH1arOXVjauzVC9Z5l8RoCWVzNElgFmpWIhmELrGZUHaXIO1zcXeQwFXG8fKd2D7ha6xpB3Z/q/G8Tkd+eLjO7tmYQ=
+	t=1752586087; cv=none; b=Ticbi9eBCbFOr2lmLuVAOU5J8DrmBjP4fteaSWPZGEXVWTfWH4JaDh7J0WYlrZnQNXnDEn4W0e2uIGhRRIne/YO2QMEfFH+CSNnVQPpL48eM4Y8+GIYkXfW0pJ0Vk4DoKMk8EdnkYpquJaKtMnuvHGjpVOvZe1NjRdBI1UIGkpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586491; c=relaxed/simple;
-	bh=hBxkCd4THdEidijs+YdWJZQCNaBlGhqARtSQ8ZbUMiw=;
+	s=arc-20240116; t=1752586087; c=relaxed/simple;
+	bh=ZtQODZ5H+6aQ/JnaFUMcPbGRpPAlOtB0C5FfU/XDjv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vr7UqPjV6y8yUAiOMS1Ehc/n0ID1nbEEnZLywN2gzM49fQLB6CoB+p0GTHmCoOaQON2RsF+ikRZdZZUSfnd1Cziinhc+NeUurE0xNBrvJbTS37fEUfSZx99uticVTzd6b0852abNdAqMCcOnkVTE6c97lVk+sqXsMrKM5qKXZ50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auI9nSC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51110C4CEF1;
-	Tue, 15 Jul 2025 13:34:51 +0000 (UTC)
+	 MIME-Version; b=AcZTW37puPW746Ff9O3uTAnM5czO7y/0c8uGIFnnEJefdsWmBuM8QBw62wx2vMEN7KKiDcnvXEw/tBHAJM9Ate1PXJWSXGI1b7GJoHjFH8REuNyObYTPu8dEtQgL23QAxn513yrEVzbO+DHhlu9PdIkdMhigDkQlX76+KKMDwvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSrzZ6Ti; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3E5C4CEE3;
+	Tue, 15 Jul 2025 13:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586491;
-	bh=hBxkCd4THdEidijs+YdWJZQCNaBlGhqARtSQ8ZbUMiw=;
+	s=korg; t=1752586086;
+	bh=ZtQODZ5H+6aQ/JnaFUMcPbGRpPAlOtB0C5FfU/XDjv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auI9nSC7tCp0LZW83kLwNP8yLL5Y6jxDmna+5Mo3ZDTZUEVP5JeKkmim9J9Oaaugo
-	 1xolI/aTM0ILjPV//zpYlhXn/0FM8Di01t0hLss24wRWk1XtGubWiIVI6VhdAIErhE
-	 4XftcSLmNECgIo11lRKwUkLRECOiqKOz+xRcQoD4=
+	b=gSrzZ6TiKpaD/zEJ6n/NhpZ1waAMzHvaJiS8vKIxcqtzgLzBaiAdrXPbwyHR4V8gu
+	 D9Z8R2DE7G0wMSVrb1rsDrc1y+taa9Z2EQ6p8r/vONoMAjmNdx8UjQvne9u5qL8xiC
+	 AYugQ/sU2QuG0dDmKJajj7Xhuk0KQXHI6naGZTZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andre Edich <andre.edich@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 068/148] amd-xgbe: align CL37 AN sequence as per databook
+Subject: [PATCH 5.15 11/77] net: phy: smsc: Fix link failure in forced mode with Auto-MDIX
 Date: Tue, 15 Jul 2025 15:13:10 +0200
-Message-ID: <20250715130803.048601934@linuxfoundation.org>
+Message-ID: <20250715130752.147241292@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 42fd432fe6d320323215ebdf4de4d0d7e56e6792 ]
+[ Upstream commit 9dfe110cc0f6ef42af8e81ce52aef34a647d0b8a ]
 
-Update the Clause 37 Auto-Negotiation implementation to properly align
-with the PCS hardware specifications:
-- Fix incorrect bit settings in Link Status and Link Duplex fields
-- Implement missing sequence steps 2 and 7
+Force a fixed MDI-X mode when auto-negotiation is disabled to prevent
+link instability.
 
-These changes ensure CL37 auto-negotiation protocol follows the exact
-sequence patterns as specified in the hardware databook.
+When forcing the link speed and duplex on a LAN9500 PHY (e.g., with
+`ethtool -s eth0 autoneg off ...`) while leaving MDI-X control in auto
+mode, the PHY fails to establish a stable link. This occurs because the
+PHY's Auto-MDIX algorithm is not designed to operate when
+auto-negotiation is disabled. In this state, the PHY continuously
+toggles the TX/RX signal pairs, which prevents the link partner from
+synchronizing.
 
-Fixes: 1bf40ada6290 ("amd-xgbe: Add support for clause 37 auto-negotiation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20250630192636.3838291-1-Raju.Rangoju@amd.com
+This patch resolves the issue by detecting when auto-negotiation is
+disabled. If the MDI-X control mode is set to 'auto', the driver now
+forces a specific, stable mode (ETH_TP_MDI) to prevent the pair
+toggling. This choice of a fixed MDI mode mirrors the behavior the
+hardware would exhibit if the AUTOMDIX_EN strap were configured for a
+fixed MDI connection.
+
+Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andre Edich <andre.edich@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250703114941.3243890-4-o.rempel@pengutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-common.h | 2 ++
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c   | 9 +++++++++
- drivers/net/ethernet/amd/xgbe/xgbe.h        | 4 ++--
- 3 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/phy/smsc.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-common.h b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-index 533b8519ec352..c5dc23906a78d 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
-@@ -1355,6 +1355,8 @@
- #define MDIO_VEND2_CTRL1_SS13		BIT(13)
- #endif
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index 6d9069a53db1d..5c3ebb66fceb5 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -143,10 +143,29 @@ static int lan911x_config_init(struct phy_device *phydev)
  
-+#define XGBE_VEND2_MAC_AUTO_SW		BIT(9)
+ static int lan87xx_config_aneg(struct phy_device *phydev)
+ {
+-	int rc;
++	u8 mdix_ctrl;
+ 	int val;
++	int rc;
 +
- /* MDIO mask values */
- #define XGBE_AN_CL73_INT_CMPLT		BIT(0)
- #define XGBE_AN_CL73_INC_LINK		BIT(1)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 0e552022e659a..3819b23c927d5 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -363,6 +363,10 @@ static void xgbe_an37_set(struct xgbe_prv_data *pdata, bool enable,
- 		reg |= MDIO_VEND2_CTRL1_AN_RESTART;
++	/* When auto-negotiation is disabled (forced mode), the PHY's
++	 * Auto-MDIX will continue toggling the TX/RX pairs.
++	 *
++	 * To establish a stable link, we must select a fixed MDI mode.
++	 * If the user has not specified a fixed MDI mode (i.e., mdix_ctrl is
++	 * 'auto'), we default to ETH_TP_MDI. This choice of a ETH_TP_MDI mode
++	 * mirrors the behavior the hardware would exhibit if the AUTOMDIX_EN
++	 * strap were configured for a fixed MDI connection.
++	 */
++	if (phydev->autoneg == AUTONEG_DISABLE) {
++		if (phydev->mdix_ctrl == ETH_TP_MDI_AUTO)
++			mdix_ctrl = ETH_TP_MDI;
++		else
++			mdix_ctrl = phydev->mdix_ctrl;
++	} else {
++		mdix_ctrl = phydev->mdix_ctrl;
++	}
  
- 	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_CTRL1, reg);
-+
-+	reg = XMDIO_READ(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL);
-+	reg |= XGBE_VEND2_MAC_AUTO_SW;
-+	XMDIO_WRITE(pdata, MDIO_MMD_VEND2, MDIO_PCS_DIG_CTRL, reg);
+-	switch (phydev->mdix_ctrl) {
++	switch (mdix_ctrl) {
+ 	case ETH_TP_MDI:
+ 		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_;
+ 		break;
+@@ -172,7 +191,7 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
+ 	rc |= val;
+ 	phy_write(phydev, SPECIAL_CTRL_STS, rc);
+ 
+-	phydev->mdix = phydev->mdix_ctrl;
++	phydev->mdix = mdix_ctrl;
+ 	return genphy_config_aneg(phydev);
  }
  
- static void xgbe_an37_restart(struct xgbe_prv_data *pdata)
-@@ -991,6 +995,11 @@ static void xgbe_an37_init(struct xgbe_prv_data *pdata)
- 
- 	netif_dbg(pdata, link, pdata->netdev, "CL37 AN (%s) initialized\n",
- 		  (pdata->an_mode == XGBE_AN_MODE_CL37) ? "BaseX" : "SGMII");
-+
-+	reg = XMDIO_READ(pdata, MDIO_MMD_AN, MDIO_CTRL1);
-+	reg &= ~MDIO_AN_CTRL1_ENABLE;
-+	XMDIO_WRITE(pdata, MDIO_MMD_AN, MDIO_CTRL1, reg);
-+
- }
- 
- static void xgbe_an73_init(struct xgbe_prv_data *pdata)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index a27979ef7b1cc..536c8495d6afc 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -292,11 +292,11 @@
- #define XGBE_LINK_TIMEOUT		5
- #define XGBE_KR_TRAINING_WAIT_ITER	50
- 
--#define XGBE_SGMII_AN_LINK_STATUS	BIT(1)
-+#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(1)
- #define XGBE_SGMII_AN_LINK_SPEED	(BIT(2) | BIT(3))
- #define XGBE_SGMII_AN_LINK_SPEED_100	0x04
- #define XGBE_SGMII_AN_LINK_SPEED_1000	0x08
--#define XGBE_SGMII_AN_LINK_DUPLEX	BIT(4)
-+#define XGBE_SGMII_AN_LINK_STATUS	BIT(4)
- 
- /* ECC correctable error notification window (seconds) */
- #define XGBE_ECC_LIMIT			60
 -- 
 2.39.5
 
