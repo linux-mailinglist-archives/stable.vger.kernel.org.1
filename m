@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-162525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AF2B05DE0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7EC0B05C0A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C3DB7B4DFA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:46:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70C274543E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90A72E9ED5;
-	Tue, 15 Jul 2025 13:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA792E2F0C;
+	Tue, 15 Jul 2025 13:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXk8MGQ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRX9HEGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963152E7F0B;
-	Tue, 15 Jul 2025 13:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A34F1F4CB3;
+	Tue, 15 Jul 2025 13:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586785; cv=none; b=qr5XyXxytH4x39D4L/JQ4pBMgKYqyyE0CC8r/FmyPANKt+LG0sRcHgXYQPFOQpsd58PkrH4t4Ak6/kXPNZ7lwHu84qq099AcQYUkyh/aQezJrs5uPteCn3CAuqTYdmGhaqLgDTpl+R4PTHHxwhIGcb7j2rdc9jjekLInTevvTIc=
+	t=1752585830; cv=none; b=EvK9TLeREmCehtlnxFm48Og+NjJftMrf9NbJ3HAZlYlAqe0HTnKZdr3Qny+XFkuFArrILqNdbM5O+DGPQDazlFc0IaQnr0Ain2iZlLxtcyvSThVLv6K+WhF2UTLzHm7lmH46ESYQQ9nRLGJe0wXkraKNJNxeIEdGjw0qEnAWd3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586785; c=relaxed/simple;
-	bh=GE6M/xDtZ0B0kU/LeDKpBCNKLQADlUTvFUQYeZI+PHc=;
+	s=arc-20240116; t=1752585830; c=relaxed/simple;
+	bh=d0IZcdwCqx4w+9iku7gGUaXgAIeNW+EY1mzJMlF4q44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPri4EDT5Lbo6tMLKqiWaBvWwEvs3R0dvfJUw6M2I3VOE/zqw4GcpezA4peIv+xjEwTq5kWSKvI5e59D3wSlD2xl++h+GomIVOQDuU4tNTyIxnwxyi7CvIBZrifnRB0unCCfO5GxVNA788HdcW2wOOXLSxqTZwdGcs2h/jc+Wvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXk8MGQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284CCC4CEE3;
-	Tue, 15 Jul 2025 13:39:44 +0000 (UTC)
+	 MIME-Version; b=N6VRXYlLOipH/wYq/PTNFL6UPJC/p1Y9Bju9tnAZi0Rc4kTw47ftDqwFEp4XFEo4oFhiOB0mFrSo5zffMEzkAq6wZjjSS/YhAMlLuPpvObsfAREpeJO0/zeSGrCA8RYDRDE9NvaRjRdyB0Js6vELzMw7bpU3/FK0X9Hg7z+mD0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRX9HEGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4544C4CEE3;
+	Tue, 15 Jul 2025 13:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586785;
-	bh=GE6M/xDtZ0B0kU/LeDKpBCNKLQADlUTvFUQYeZI+PHc=;
+	s=korg; t=1752585830;
+	bh=d0IZcdwCqx4w+9iku7gGUaXgAIeNW+EY1mzJMlF4q44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXk8MGQ8fJ+0M1dX0ucVE7iobng8Ir1titU+wZFaD6enQZXESwMMaDjPAZamUesIs
-	 /JxfvVXoAn83m6C/seSyZTJfxcgIrdmreGrrKwLWMKnmHLJmtfLcZz74+WC4utXzCq
-	 3NjNZOI09p8te/a4jnT5oUrulZ2sP1bhxWJ8UXm4=
+	b=iRX9HEGQnuuMKYyGW8tdwOeD6a5a82zpYh+CTM9RinCTqO+5wTwAHlleO4D349Knc
+	 BJLk86M92TfUnb04kX9EoEqiw600J+r+5IYbSnW2dZ1ibbxhH4+7ElX6xPNOCFuwxm
+	 taTgYq1gGbBksU4yXaC7JlYhTHTrLr7RUN/m8J4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	David Howells <dhowells@redhat.com>,
-	LePremierHomme <kwqcheii@proton.me>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	Jakub Kicinski <kuba@kernel.org>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 047/192] rxrpc: Fix bug due to prealloc collision
+Subject: [PATCH 6.6 006/109] ASoC: cs35l56: probe() should fail if the device ID is not recognized
 Date: Tue, 15 Jul 2025 15:12:22 +0200
-Message-ID: <20250715130816.737308169@linuxfoundation.org>
+Message-ID: <20250715130759.129329241@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,59 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 69e4186773c6445b258fb45b6e1df18df831ec45 ]
+[ Upstream commit 3b3312f28ee2d9c386602f8521e419cfc69f4823 ]
 
-When userspace is using AF_RXRPC to provide a server, it has to preallocate
-incoming calls and assign to them call IDs that will be used to thread
-related recvmsg() and sendmsg() together.  The preallocated call IDs will
-automatically be attached to calls as they come in until the pool is empty.
+Return an error from driver probe if the DEVID read from the chip is not
+one supported by this driver.
 
-To the kernel, the call IDs are just arbitrary numbers, but userspace can
-use the call ID to hold a pointer to prepared structs.  In any case, the
-user isn't permitted to create two calls with the same call ID (call IDs
-become available again when the call ends) and EBADSLT should result from
-sendmsg() if an attempt is made to preallocate a call with an in-use call
-ID.
+In cs35l56_hw_init() there is a check for valid DEVID, but the invalid
+case was returning the value of ret. At this point in the code ret == 0
+so the caller would think that cs35l56_hw_init() was successful.
 
-However, the cleanup in the error handling will trigger both assertions in
-rxrpc_cleanup_call() because the call isn't marked complete and isn't
-marked as having been released.
-
-Fix this by setting the call state in rxrpc_service_prealloc_one() and then
-marking it as being released before calling the cleanup function.
-
-Fixes: 00e907127e6f ("rxrpc: Preallocate peers, conns and calls for incoming service requests")
-Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: LePremierHomme <kwqcheii@proton.me>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/20250708211506.2699012-2-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 84851aa055c8 ("ASoC: cs35l56: Move part of cs35l56_init() to shared library")
+Link: https://patch.msgid.link/20250703102521.54204-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/call_accept.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/cs35l56-shared.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
-index e685034ce4f7c..e862990c5b37c 100644
---- a/net/rxrpc/call_accept.c
-+++ b/net/rxrpc/call_accept.c
-@@ -149,6 +149,7 @@ static int rxrpc_service_prealloc_one(struct rxrpc_sock *rx,
+diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
+index d3db89c93b331..25ee7477709e7 100644
+--- a/sound/soc/codecs/cs35l56-shared.c
++++ b/sound/soc/codecs/cs35l56-shared.c
+@@ -661,7 +661,7 @@ int cs35l56_hw_init(struct cs35l56_base *cs35l56_base)
+ 		break;
+ 	default:
+ 		dev_err(cs35l56_base->dev, "Unknown device %x\n", devid);
+-		return ret;
++		return -ENODEV;
+ 	}
  
- id_in_use:
- 	write_unlock(&rx->call_lock);
-+	rxrpc_prefail_call(call, RXRPC_CALL_LOCAL_ERROR, -EBADSLT);
- 	rxrpc_cleanup_call(call);
- 	_leave(" = -EBADSLT");
- 	return -EBADSLT;
+ 	ret = regmap_read(cs35l56_base->regmap, CS35L56_DSP_RESTRICT_STS1, &secured);
 -- 
 2.39.5
 
