@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F56B05DF5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:48:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3EDB05C68
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A54227B5F34
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8028A7B99E7
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6193E2E49AE;
-	Tue, 15 Jul 2025 13:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BCA2E339C;
+	Tue, 15 Jul 2025 13:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0me23V74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wwi7fGTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCC92E2EEF;
-	Tue, 15 Jul 2025 13:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09802E6D23;
+	Tue, 15 Jul 2025 13:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586852; cv=none; b=bpe8ufzAzr0NXWajrEil9oTbNwoFD4YW1e8pSuMjGHYEMEWy4oD8FreMIx7RutIiE0As0Fl7FDO9aoPCaBGy4i+5VI5YQI1tr7W2VDqiI5J7ndFy/pin5QVufb5cxtCpPNG/zUHHH1hKxwIhw/I3+oIP9yaQFH7AqKxXojkza1k=
+	t=1752585854; cv=none; b=beg7aEzOTZ0bGK9KrUsrnwomeqwihdUT3oYHC8ds4e5tEE0jP6g2gPVS1U+nd5UXIkyd1q3r99CXjuyaMhCDEuP3F1bBSNnpUkFObTEEs97ZGyJDgOuT+jE/C7xiFC4yuaRN/ry8zcWtbzsMi7ppgvGTPsdemcEGsp3NWRnFNJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586852; c=relaxed/simple;
-	bh=W27qVyyEBtHONF/cg5+PxUMtPXe0KZnKu3nhinSAeiI=;
+	s=arc-20240116; t=1752585854; c=relaxed/simple;
+	bh=pGCBf+TtzAXRxe0ki5jKYZUkvHjpZ3LLsil4GrXuTmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qsjur0IdYgppPq1YzCzgOCZhInlo3vH+OVs1R5gYORtLGcrUSwh86Jg1jhM3eMgFbZ9AU+Tsxlvt5lLvz071xZ/AmCec6FTB8GPWAXkn3jamBp2G7fgu0AD6CIAg7LU5pqUdnoFigLGSLfzqI4uIZrpPVwWfu6ZfTSUU4ucf1m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0me23V74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410E6C4CEE3;
-	Tue, 15 Jul 2025 13:40:51 +0000 (UTC)
+	 MIME-Version; b=NTj6VvqD+d+1mwL0T8z9hkU6CG4YOuv/QBQXLjGyqpNVwEHs54qPte4sCeJgY+Hvke3bkgMrcwmAqN9AcWBsHsncCAeyLL6bs83JeH+0XUT7hLouGuI88UjO6hJGxhstk2/sXJNgSr5Fp467/WqcBw9QP034RB92yWG1K8xU9+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wwi7fGTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D848CC4CEFD;
+	Tue, 15 Jul 2025 13:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586851;
-	bh=W27qVyyEBtHONF/cg5+PxUMtPXe0KZnKu3nhinSAeiI=;
+	s=korg; t=1752585854;
+	bh=pGCBf+TtzAXRxe0ki5jKYZUkvHjpZ3LLsil4GrXuTmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0me23V74CpdzSH7ClzzMsGPYtKvHbnovcksrsglx9FoY8pHLHk+Xw89NUI1DgIRs4
-	 Cm4VBhbbqfAW+D/K475xNJZ7BmFtOX5x2bIctouegbP1qMeE2D1HYUhYD4EHSd/rja
-	 hphNrwCLhndqiNimrDx/KL19EeHnCstj60/yDCG4=
+	b=Wwi7fGTSVAa/AeZDwKcMHepuhzW5sRI4k4sU0Is4P39VA4Nv1e9cbosCe1gySxvYH
+	 hu9VlgVyjcVrdxHqc53JMS+wZuLlAY1ityB9dRNyIvqfz7Z0VD3c9WJ/M7rH3Bwuji
+	 3Zk+lcnzW6oXu89jHmk1pRADRa6iS9ExELhpls4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.15 073/192] pwm: Fix invalid state detection
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Corey Minyard <corey@minyard.net>,
+	Brendan Jackman <jackmanb@google.com>
+Subject: [PATCH 6.6 032/109] ipmi:msghandler: Fix potential memory corruption in ipmi_create_user()
 Date: Tue, 15 Jul 2025 15:12:48 +0200
-Message-ID: <20250715130817.863024242@linuxfoundation.org>
+Message-ID: <20250715130800.169958034@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 9ee124caae1b0defd0e02c65686f539845a3ac9b upstream.
+commit fa332f5dc6fc662ad7d3200048772c96b861cf6b upstream.
 
-Commit 9dd42d019e63 ("pwm: Allow pwm state transitions from an invalid
-state") intended to allow some state transitions that were not allowed
-before. The idea is sane and back then I also got the code comment
-right, but the check for enabled is bogus. This resulted in state
-transitions for enabled states to be allowed to have invalid duty/period
-settings and thus it can happen that low-level drivers get requests for
-invalid states🙄.
+The "intf" list iterator is an invalid pointer if the correct
+"intf->intf_num" is not found.  Calling atomic_dec(&intf->nr_users) on
+and invalid pointer will lead to memory corruption.
 
-Invert the check to allow state transitions for disabled states only.
+We don't really need to call atomic_dec() if we haven't called
+atomic_add_return() so update the if (intf->in_shutdown) path as well.
 
-Fixes: 9dd42d019e63 ("pwm: Allow pwm state transitions from an invalid state")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250704172416.626433-2-u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Message-ID: <aBjMZ8RYrOt6NOgi@stanley.mountain>
+Signed-off-by: Corey Minyard <corey@minyard.net>
+[ - Dropped change to the `if (intf->in_shutdown)` block since that logic
+    doesn't exist yet.
+  - Modified out_unlock to release the srcu lock instead of the mutex
+    since we don't have the mutex here yet. ]
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/ipmi/ipmi_msghandler.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -549,7 +549,7 @@ static bool pwm_state_valid(const struct
- 	 * and supposed to be ignored. So also ignore any strange values and
- 	 * consider the state ok.
- 	 */
--	if (state->enabled)
-+	if (!state->enabled)
- 		return true;
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -1241,7 +1241,7 @@ int ipmi_create_user(unsigned int
+ 	}
+ 	/* Not found, return an error */
+ 	rv = -EINVAL;
+-	goto out_kfree;
++	goto out_unlock;
  
- 	if (!state->period)
+  found:
+ 	if (atomic_add_return(1, &intf->nr_users) > max_users) {
+@@ -1283,6 +1283,7 @@ int ipmi_create_user(unsigned int
+ 
+ out_kfree:
+ 	atomic_dec(&intf->nr_users);
++out_unlock:
+ 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
+ 	vfree(new_user);
+ 	return rv;
 
 
 
