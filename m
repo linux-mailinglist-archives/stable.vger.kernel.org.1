@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-162901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827A9B06017
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC98BB05F74
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C51E73B2753
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:07:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7C81C412B1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65682E3B02;
-	Tue, 15 Jul 2025 13:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E8F2E7BCC;
+	Tue, 15 Jul 2025 13:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/+hYKfX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2p6j59cb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C2126D4F2;
-	Tue, 15 Jul 2025 13:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6243D2561AE;
+	Tue, 15 Jul 2025 13:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587772; cv=none; b=L0hhig9GrLlttgXB3EUESueYdpJ5KvJoD8DXGH6JyXvDISJIhKwdmeff65fAKlxrS1fJR2OwwhvaW7hihbH+G3m+4sP0akFoBzffBJmQs1vIM+pjxr3XIj7wwBR2+4Q8FBRIiA1mWpTiD/C/Q3C2JwOkXMnPc4HfcykbFFP8e7E=
+	t=1752587253; cv=none; b=YVgN+NxL4YXa8lhp5M3T2tGL8MEQe24vYdsRJjq04BcUXr6mIrWo1pd1gkWZfdVJw+SHwzcHCfNgjCLnYyWayQEWyF71Llv7BeZ3sO4Ed4g6NpLt+MiuWo6v4Syx+juVMs+jKRw2oc+LbDaazKwAfuTGf/Ghsh1bwgV7kMrc1XY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587772; c=relaxed/simple;
-	bh=WDqMVnM9EVJXgvwMYIDDqrvrl0PB7mKxkkxynGaQ+6s=;
+	s=arc-20240116; t=1752587253; c=relaxed/simple;
+	bh=M5UhIEY3Lqd3qV7eSxDjupJ49zVBh3x9nJvrSFHEM2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQy9qnvPmxzBU005leJMjOKueooyvzC0wQxPwxBTS9Fcx+3e7UcUAA+nW/QbNMMw91XNTJWx9iuF+cmiN7/1LA9HjBn9EacyfXZOJsEgUsATjQVzNz3XRUGWoiiREKvhucCnjFlaJq2R0OM/bzK+OObrDSQP17PC939GSpY3ugw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/+hYKfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB253C4CEF1;
-	Tue, 15 Jul 2025 13:56:11 +0000 (UTC)
+	 MIME-Version; b=gbKBYD5/nF2kdIIIrUpVkdQw8B7Qb5cyBnCyW9IthDWD1LRUeddBk9pajGL2qKz4OiHFDEEdd7Np0woAGZktxecsb7Ggwl9hOJ7Qt+mrrVRFXSoaGrqCJkCsFX82l1gn1Od17fH7REp2LOu1A5QprmjPacFk/cjY1Ala29GE/ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2p6j59cb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F35C4CEE3;
+	Tue, 15 Jul 2025 13:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587772;
-	bh=WDqMVnM9EVJXgvwMYIDDqrvrl0PB7mKxkkxynGaQ+6s=;
+	s=korg; t=1752587253;
+	bh=M5UhIEY3Lqd3qV7eSxDjupJ49zVBh3x9nJvrSFHEM2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B/+hYKfXO7eKmRIUCT+O6ZbP73vZafgG+CWzGbwMXXtffqVU2aEpEJ8I4hoaw6iHP
-	 V1J9tiU5vzM/yYmRNV9Cb8Yh+fHB7x3zzK9oOHu+7+uD/aDlxLxV314u+2pURBbILH
-	 qAITqLsl18keJTcYhBxAL0zBrsBBm20dKFNavoGw=
+	b=2p6j59cbv8sQkw/T3pBmyiMyKeRaKLH6X8frQIM82IVeWQAb6HrntTR7ah5fAKmAO
+	 qordF2pysw+wFuX1o7LcQE6ywWAPAL/GE6EyAooPlNzwaES36BHIOvEFa//N4lgVjY
+	 znk/x6d76F3Yene/m+/7Kh5mEM4V1vene56aOGrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d333febcf8f4bc5f6110@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 138/208] tipc: Fix use-after-free in tipc_conn_close().
+	Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 31/88] wifi: prevent A-MSDU attacks in mesh networks
 Date: Tue, 15 Jul 2025 15:14:07 +0200
-Message-ID: <20250715130816.458803791@linuxfoundation.org>
+Message-ID: <20250715130755.771080647@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
 
-[ Upstream commit 667eeab4999e981c96b447a4df5f20bdf5c26f13 ]
+commit 737bb912ebbe4571195c56eba557c4d7315b26fb upstream.
 
-syzbot reported a null-ptr-deref in tipc_conn_close() during netns
-dismantle. [0]
+This patch is a mitigation to prevent the A-MSDU spoofing vulnerability
+for mesh networks. The initial update to the IEEE 802.11 standard, in
+response to the FragAttacks, missed this case (CVE-2025-27558). It can
+be considered a variant of CVE-2020-24588 but for mesh networks.
 
-tipc_topsrv_stop() iterates tipc_net(net)->topsrv->conn_idr and calls
-tipc_conn_close() for each tipc_conn.
+This patch tries to detect if a standard MSDU was turned into an A-MSDU
+by an adversary. This is done by parsing a received A-MSDU as a standard
+MSDU, calculating the length of the Mesh Control header, and seeing if
+the 6 bytes after this header equal the start of an rfc1042 header. If
+equal, this is a strong indication of an ongoing attack attempt.
 
-The problem is that tipc_conn_close() is called after releasing the
-IDR lock.
+This defense was tested with mac80211_hwsim against a mesh network that
+uses an empty Mesh Address Extension field, i.e., when four addresses
+are used, and when using a 12-byte Mesh Address Extension field, i.e.,
+when six addresses are used. Functionality of normal MSDUs and A-MSDUs
+was also tested, and confirmed working, when using both an empty and
+12-byte Mesh Address Extension field.
 
-At the same time, there might be tipc_conn_recv_work() running and it
-could call tipc_conn_close() for the same tipc_conn and release its
-last ->kref.
+It was also tested with mac80211_hwsim that A-MSDU attacks in non-mesh
+networks keep being detected and prevented.
 
-Once we release the IDR lock in tipc_topsrv_stop(), there is no
-guarantee that the tipc_conn is alive.
+Note that the vulnerability being patched, and the defense being
+implemented, was also discussed in the following paper and in the
+following IEEE 802.11 presentation:
 
-Let's hold the ref before releasing the lock and put the ref after
-tipc_conn_close() in tipc_topsrv_stop().
+https://papers.mathyvanhoef.com/wisec2025.pdf
+https://mentor.ieee.org/802.11/dcn/25/11-25-0949-00-000m-a-msdu-mesh-spoof-protection.docx
 
-[0]:
-BUG: KASAN: use-after-free in tipc_conn_close+0x122/0x140 net/tipc/topsrv.c:165
-Read of size 8 at addr ffff888099305a08 by task kworker/u4:3/435
-
-CPU: 0 PID: 435 Comm: kworker/u4:3 Not tainted 4.19.204-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: netns cleanup_net
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x1fc/0x2ef lib/dump_stack.c:118
- print_address_description.cold+0x54/0x219 mm/kasan/report.c:256
- kasan_report_error.cold+0x8a/0x1b9 mm/kasan/report.c:354
- kasan_report mm/kasan/report.c:412 [inline]
- __asan_report_load8_noabort+0x88/0x90 mm/kasan/report.c:433
- tipc_conn_close+0x122/0x140 net/tipc/topsrv.c:165
- tipc_topsrv_stop net/tipc/topsrv.c:701 [inline]
- tipc_topsrv_exit_net+0x27b/0x5c0 net/tipc/topsrv.c:722
- ops_exit_list+0xa5/0x150 net/core/net_namespace.c:153
- cleanup_net+0x3b4/0x8b0 net/core/net_namespace.c:553
- process_one_work+0x864/0x1570 kernel/workqueue.c:2153
- worker_thread+0x64c/0x1130 kernel/workqueue.c:2296
- kthread+0x33f/0x460 kernel/kthread.c:259
- ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:415
-
-Allocated by task 23:
- kmem_cache_alloc_trace+0x12f/0x380 mm/slab.c:3625
- kmalloc include/linux/slab.h:515 [inline]
- kzalloc include/linux/slab.h:709 [inline]
- tipc_conn_alloc+0x43/0x4f0 net/tipc/topsrv.c:192
- tipc_topsrv_accept+0x1b5/0x280 net/tipc/topsrv.c:470
- process_one_work+0x864/0x1570 kernel/workqueue.c:2153
- worker_thread+0x64c/0x1130 kernel/workqueue.c:2296
- kthread+0x33f/0x460 kernel/kthread.c:259
- ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:415
-
-Freed by task 23:
- __cache_free mm/slab.c:3503 [inline]
- kfree+0xcc/0x210 mm/slab.c:3822
- tipc_conn_kref_release net/tipc/topsrv.c:150 [inline]
- kref_put include/linux/kref.h:70 [inline]
- conn_put+0x2cd/0x3a0 net/tipc/topsrv.c:155
- process_one_work+0x864/0x1570 kernel/workqueue.c:2153
- worker_thread+0x64c/0x1130 kernel/workqueue.c:2296
- kthread+0x33f/0x460 kernel/kthread.c:259
- ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:415
-
-The buggy address belongs to the object at ffff888099305a00
- which belongs to the cache kmalloc-512 of size 512
-The buggy address is located 8 bytes inside of
- 512-byte region [ffff888099305a00, ffff888099305c00)
-The buggy address belongs to the page:
-page:ffffea000264c140 count:1 mapcount:0 mapping:ffff88813bff0940 index:0x0
-flags: 0xfff00000000100(slab)
-raw: 00fff00000000100 ffffea00028b6b88 ffffea0002cd2b08 ffff88813bff0940
-raw: 0000000000000000 ffff888099305000 0000000100000006 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff888099305900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888099305980: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff888099305a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                      ^
- ffff888099305a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888099305b00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-
-Fixes: c5fa7b3cf3cb ("tipc: introduce new TIPC server infrastructure")
-Reported-by: syzbot+d333febcf8f4bc5f6110@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=27169a847a70550d17be
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250702014350.692213-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
+Link: https://patch.msgid.link/20250616004635.224344-1-Mathy.Vanhoef@kuleuven.be
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/topsrv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/wireless/util.c |   52 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 50 insertions(+), 2 deletions(-)
 
-diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
-index 89d8a2bd30cd0..d914c5eb25178 100644
---- a/net/tipc/topsrv.c
-+++ b/net/tipc/topsrv.c
-@@ -699,8 +699,10 @@ static void tipc_topsrv_stop(struct net *net)
- 	for (id = 0; srv->idr_in_use; id++) {
- 		con = idr_find(&srv->conn_idr, id);
- 		if (con) {
-+			conn_get(con);
- 			spin_unlock_bh(&srv->idr_lock);
- 			tipc_conn_close(con);
-+			conn_put(con);
- 			spin_lock_bh(&srv->idr_lock);
- 		}
- 	}
--- 
-2.39.5
-
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -813,6 +813,52 @@ bool ieee80211_is_valid_amsdu(struct sk_
+ }
+ EXPORT_SYMBOL(ieee80211_is_valid_amsdu);
+ 
++
++/*
++ * Detects if an MSDU frame was maliciously converted into an A-MSDU
++ * frame by an adversary. This is done by parsing the received frame
++ * as if it were a regular MSDU, even though the A-MSDU flag is set.
++ *
++ * For non-mesh interfaces, detection involves checking whether the
++ * payload, when interpreted as an MSDU, begins with a valid RFC1042
++ * header. This is done by comparing the A-MSDU subheader's destination
++ * address to the start of the RFC1042 header.
++ *
++ * For mesh interfaces, the MSDU includes a 6-byte Mesh Control field
++ * and an optional variable-length Mesh Address Extension field before
++ * the RFC1042 header. The position of the RFC1042 header must therefore
++ * be calculated based on the mesh header length.
++ *
++ * Since this function intentionally parses an A-MSDU frame as an MSDU,
++ * it only assumes that the A-MSDU subframe header is present, and
++ * beyond this it performs its own bounds checks under the assumption
++ * that the frame is instead parsed as a non-aggregated MSDU.
++ */
++static bool
++is_amsdu_aggregation_attack(struct ethhdr *eth, struct sk_buff *skb,
++			    enum nl80211_iftype iftype)
++{
++	int offset;
++
++	/* Non-mesh case can be directly compared */
++	if (iftype != NL80211_IFTYPE_MESH_POINT)
++		return ether_addr_equal(eth->h_dest, rfc1042_header);
++
++	offset = __ieee80211_get_mesh_hdrlen(eth->h_dest[0]);
++	if (offset == 6) {
++		/* Mesh case with empty address extension field */
++		return ether_addr_equal(eth->h_source, rfc1042_header);
++	} else if (offset + ETH_ALEN <= skb->len) {
++		/* Mesh case with non-empty address extension field */
++		u8 temp[ETH_ALEN];
++
++		skb_copy_bits(skb, offset, temp, ETH_ALEN);
++		return ether_addr_equal(temp, rfc1042_header);
++	}
++
++	return false;
++}
++
+ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
+ 			      const u8 *addr, enum nl80211_iftype iftype,
+ 			      const unsigned int extra_headroom,
+@@ -857,8 +903,10 @@ void ieee80211_amsdu_to_8023s(struct sk_
+ 		/* the last MSDU has no padding */
+ 		if (subframe_len > remaining)
+ 			goto purge;
+-		/* mitigate A-MSDU aggregation injection attacks */
+-		if (ether_addr_equal(hdr.eth.h_dest, rfc1042_header))
++		/* mitigate A-MSDU aggregation injection attacks, to be
++		 * checked when processing first subframe (offset == 0).
++		 */
++		if (offset == 0 && is_amsdu_aggregation_attack(&hdr.eth, skb, iftype))
+ 			goto purge;
+ 
+ 		offset += sizeof(struct ethhdr);
 
 
 
