@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92318B05D01
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:39:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81426B05DB2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDC6E3A9960
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:34:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AC034A4D38
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B862EACE1;
-	Tue, 15 Jul 2025 13:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFA72EA723;
+	Tue, 15 Jul 2025 13:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3ta5A1N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IR85sg7t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9BA2EAB80;
-	Tue, 15 Jul 2025 13:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9BB2EBDDD;
+	Tue, 15 Jul 2025 13:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586144; cv=none; b=EB22Q5lv/2WxOwc5cDqWblXrrA1Z2D1A+0UdNue+iABuIPJf8MBfmXpEzHfu2ERKebdhwb0FpwV9Z+Y7sKX7qDwRIjF6FNbpSvY9WOXKJfu8YKTRzPYUCDBuWD97iaZpzg86wP91BLiY5XosH457ZDk9DhUxDgOMjlnHAB7BY1Y=
+	t=1752586433; cv=none; b=Y0aIFBigmR/BWASMXz0ZQUzPod5vFZNqeoufRComZqv4DhZkc9Oe60gNq3Ir4c1WNPvR+2zdtB7LacCfDPyK+vKzYl4s7LffeEU1+2hd6sWfbX3pbM+NldMfapG45b6FiwZemHTGtgabS5IfCF335ax00PLPOOANjrvyxLGdAgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586144; c=relaxed/simple;
-	bh=L3pp5tCQEC6amA0FRUMKdj9IUZrJDaM1VKED/v5+k1Y=;
+	s=arc-20240116; t=1752586433; c=relaxed/simple;
+	bh=haXcTIdiKpqQMakem5NbWMGnxHpYr90ykTlDreiBGEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dBnX2rUvMox9IImVTNhy2J7tDck2wc0wsA8vbX6+nXgnryjUClkhL7Uo5xzhBwatwHD4zu3YVa/XiIcnYHtPTC1CMGR+OhFFwgnaaGUc2P02lqriN5GdNow8BRojZcu2cSHD+6JjDsiQWQ36V4eW6OGTj8xHkZFnBGhn5bLIo48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3ta5A1N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E478C4CEE3;
-	Tue, 15 Jul 2025 13:29:04 +0000 (UTC)
+	 MIME-Version; b=t0Yg8jDCb8Irug4NXKBsSpeXubonPDKwdEqaRQJ4+68a5NE0BbU2KrUM7L7Wm6RqlVDynSfQ/NUsKXMDT2p+TcJe7Oq96Co8F3wfXRr2CdB29RO6OBve61ozYUGt1b2fUf+XW1GUX95uolRih97YkXkD2+oUh2Z0cSgyPWm2qKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IR85sg7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B037C4CEE3;
+	Tue, 15 Jul 2025 13:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586144;
-	bh=L3pp5tCQEC6amA0FRUMKdj9IUZrJDaM1VKED/v5+k1Y=;
+	s=korg; t=1752586433;
+	bh=haXcTIdiKpqQMakem5NbWMGnxHpYr90ykTlDreiBGEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3ta5A1NS7ac5j2/UXLkaHPU/Q8K9Gr355mY1+9ufeOusBf6HudpNRS2hsoGg/b3h
-	 eECmjkiDcHYpvqYpB4FPXbucgdajwaH9VfGnl2j9jHfiRYUbfQIhjDmy9m9EaTZcSM
-	 9oIy9/BrbGdi9dqtImJO/lOWpgG8+nHyEj2s3q5Y=
+	b=IR85sg7tp8BvSWEiHWv47fKh9dmoTVbxEydt9WRYZUQEAOpPiDVhhw39rdjtQ+8zD
+	 lbZ4NFjMCCUpndEOu76LDfWWlUCZ8SZizqZpxeyCw9yB73mwR42PvBcnW5XIoh7NYd
+	 w013D4U+aSyYYuLidMHNo4wLllmsRJaUIOxleFiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Baron <jbaron@akamai.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 05/77] netlink: Fix wraparounds of sk->sk_rmem_alloc.
+Subject: [PATCH 5.4 062/148] RDMA/mlx5: Initialize obj_event->obj_sub_list before xa_insert
 Date: Tue, 15 Jul 2025 15:13:04 +0200
-Message-ID: <20250715130751.898988255@linuxfoundation.org>
+Message-ID: <20250715130802.812349458@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,202 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit ae8f160e7eb24240a2a79fc4c815c6a0d4ee16cc ]
+[ Upstream commit 8edab8a72d67742f87e9dc2e2b0cdfddda5dc29a ]
 
-Netlink has this pattern in some places
+The obj_event may be loaded immediately after inserted, then if the
+list_head is not initialized then we may get a poisonous pointer.  This
+fixes the crash below:
 
-  if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
-  	atomic_add(skb->truesize, &sk->sk_rmem_alloc);
+ mlx5_core 0000:03:00.0: MLX5E: StrdRq(1) RqSz(8) StrdSz(2048) RxCqeCmprss(0 enhanced)
+ mlx5_core.sf mlx5_core.sf.4: firmware version: 32.38.3056
+ mlx5_core 0000:03:00.0 en3f0pf0sf2002: renamed from eth0
+ mlx5_core.sf mlx5_core.sf.4: Rate limit: 127 rates are supported, range: 0Mbps to 195312Mbps
+ IPv6: ADDRCONF(NETDEV_CHANGE): en3f0pf0sf2002: link becomes ready
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000060
+ Mem abort info:
+   ESR = 0x96000006
+   EC = 0x25: DABT (current EL), IL = 32 bits
+   SET = 0, FnV = 0
+   EA = 0, S1PTW = 0
+ Data abort info:
+   ISV = 0, ISS = 0x00000006
+   CM = 0, WnR = 0
+ user pgtable: 4k pages, 48-bit VAs, pgdp=00000007760fb000
+ [0000000000000060] pgd=000000076f6d7003, p4d=000000076f6d7003, pud=0000000777841003, pmd=0000000000000000
+ Internal error: Oops: 96000006 [#1] SMP
+ Modules linked in: ipmb_host(OE) act_mirred(E) cls_flower(E) sch_ingress(E) mptcp_diag(E) udp_diag(E) raw_diag(E) unix_diag(E) tcp_diag(E) inet_diag(E) binfmt_misc(E) bonding(OE) rdma_ucm(OE) rdma_cm(OE) iw_cm(OE) ib_ipoib(OE) ib_cm(OE) isofs(E) cdrom(E) mst_pciconf(OE) ib_umad(OE) mlx5_ib(OE) ipmb_dev_int(OE) mlx5_core(OE) kpatch_15237886(OEK) mlxdevm(OE) auxiliary(OE) ib_uverbs(OE) ib_core(OE) psample(E) mlxfw(OE) tls(E) sunrpc(E) vfat(E) fat(E) crct10dif_ce(E) ghash_ce(E) sha1_ce(E) sbsa_gwdt(E) virtio_console(E) ext4(E) mbcache(E) jbd2(E) xfs(E) libcrc32c(E) mmc_block(E) virtio_net(E) net_failover(E) failover(E) sha2_ce(E) sha256_arm64(E) nvme(OE) nvme_core(OE) gpio_mlxbf3(OE) mlx_compat(OE) mlxbf_pmc(OE) i2c_mlxbf(OE) sdhci_of_dwcmshc(OE) pinctrl_mlxbf3(OE) mlxbf_pka(OE) gpio_generic(E) i2c_core(E) mmc_core(E) mlxbf_gige(OE) vitesse(E) pwr_mlxbf(OE) mlxbf_tmfifo(OE) micrel(E) mlxbf_bootctl(OE) virtio_ring(E) virtio(E) ipmi_devintf(E) ipmi_msghandler(E)
+  [last unloaded: mst_pci]
+ CPU: 11 PID: 20913 Comm: rte-worker-11 Kdump: loaded Tainted: G           OE K   5.10.134-13.1.an8.aarch64 #1
+ Hardware name: https://www.mellanox.com BlueField-3 SmartNIC Main Card/BlueField-3 SmartNIC Main Card, BIOS 4.2.2.12968 Oct 26 2023
+ pstate: a0400089 (NzCv daIf +PAN -UAO -TCO BTYPE=--)
+ pc : dispatch_event_fd+0x68/0x300 [mlx5_ib]
+ lr : devx_event_notifier+0xcc/0x228 [mlx5_ib]
+ sp : ffff80001005bcf0
+ x29: ffff80001005bcf0 x28: 0000000000000001
+ x27: ffff244e0740a1d8 x26: ffff244e0740a1d0
+ x25: ffffda56beff5ae0 x24: ffffda56bf911618
+ x23: ffff244e0596a480 x22: ffff244e0596a480
+ x21: ffff244d8312ad90 x20: ffff244e0596a480
+ x19: fffffffffffffff0 x18: 0000000000000000
+ x17: 0000000000000000 x16: ffffda56be66d620
+ x15: 0000000000000000 x14: 0000000000000000
+ x13: 0000000000000000 x12: 0000000000000000
+ x11: 0000000000000040 x10: ffffda56bfcafb50
+ x9 : ffffda5655c25f2c x8 : 0000000000000010
+ x7 : 0000000000000000 x6 : ffff24545a2e24b8
+ x5 : 0000000000000003 x4 : ffff80001005bd28
+ x3 : 0000000000000000 x2 : 0000000000000000
+ x1 : ffff244e0596a480 x0 : ffff244d8312ad90
+ Call trace:
+  dispatch_event_fd+0x68/0x300 [mlx5_ib]
+  devx_event_notifier+0xcc/0x228 [mlx5_ib]
+  atomic_notifier_call_chain+0x58/0x80
+  mlx5_eq_async_int+0x148/0x2b0 [mlx5_core]
+  atomic_notifier_call_chain+0x58/0x80
+  irq_int_handler+0x20/0x30 [mlx5_core]
+  __handle_irq_event_percpu+0x60/0x220
+  handle_irq_event_percpu+0x3c/0x90
+  handle_irq_event+0x58/0x158
+  handle_fasteoi_irq+0xfc/0x188
+  generic_handle_irq+0x34/0x48
+  ...
 
-, which has the same problem fixed by commit 5a465a0da13e ("udp:
-Fix multiple wraparounds of sk->sk_rmem_alloc.").
-
-For example, if we set INT_MAX to SO_RCVBUFFORCE, the condition
-is always false as the two operands are of int.
-
-Then, a single socket can eat as many skb as possible until OOM
-happens, and we can see multiple wraparounds of sk->sk_rmem_alloc.
-
-Let's fix it by using atomic_add_return() and comparing the two
-variables as unsigned int.
-
-Before:
-  [root@fedora ~]# ss -f netlink
-  Recv-Q      Send-Q Local Address:Port                Peer Address:Port
-  -1668710080 0               rtnl:nl_wraparound/293               *
-
-After:
-  [root@fedora ~]# ss -f netlink
-  Recv-Q     Send-Q Local Address:Port                Peer Address:Port
-  2147483072 0               rtnl:nl_wraparound/290               *
-  ^
-  `--- INT_MAX - 576
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Jason Baron <jbaron@akamai.com>
-Closes: https://lore.kernel.org/netdev/cover.1750285100.git.jbaron@akamai.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250704054824.1580222-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
+Link: https://patch.msgid.link/r/3ce7f20e0d1a03dc7de6e57494ec4b8eaf1f05c2.1750147949.git.leon@kernel.org
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 81 ++++++++++++++++++++++++----------------
- 1 file changed, 49 insertions(+), 32 deletions(-)
+ drivers/infiniband/hw/mlx5/devx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index d3852526ef52e..ae83e56478998 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -387,7 +387,6 @@ static void netlink_skb_set_owner_r(struct sk_buff *skb, struct sock *sk)
- 	WARN_ON(skb->sk != NULL);
- 	skb->sk = sk;
- 	skb->destructor = netlink_skb_destructor;
--	atomic_add(skb->truesize, &sk->sk_rmem_alloc);
- 	sk_mem_charge(sk, skb->truesize);
- }
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index 7a3b56c150799..ad8057bfd0c8b 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -1840,6 +1840,7 @@ subscribe_event_xa_alloc(struct mlx5_devx_event_table *devx_event_table,
+ 			/* Level1 is valid for future use, no need to free */
+ 			return -ENOMEM;
  
-@@ -1211,41 +1210,48 @@ static struct sk_buff *netlink_alloc_large_skb(unsigned int size,
- int netlink_attachskb(struct sock *sk, struct sk_buff *skb,
- 		      long *timeo, struct sock *ssk)
- {
-+	DECLARE_WAITQUEUE(wait, current);
- 	struct netlink_sock *nlk;
-+	unsigned int rmem;
- 
- 	nlk = nlk_sk(sk);
-+	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
- 
--	if ((atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
--	     test_bit(NETLINK_S_CONGESTED, &nlk->state))) {
--		DECLARE_WAITQUEUE(wait, current);
--		if (!*timeo) {
--			if (!ssk || netlink_is_kernel(ssk))
--				netlink_overrun(sk);
--			sock_put(sk);
--			kfree_skb(skb);
--			return -EAGAIN;
--		}
--
--		__set_current_state(TASK_INTERRUPTIBLE);
--		add_wait_queue(&nlk->wait, &wait);
-+	if ((rmem == skb->truesize || rmem < READ_ONCE(sk->sk_rcvbuf)) &&
-+	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
-+		netlink_skb_set_owner_r(skb, sk);
-+		return 0;
-+	}
- 
--		if ((atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
--		     test_bit(NETLINK_S_CONGESTED, &nlk->state)) &&
--		    !sock_flag(sk, SOCK_DEAD))
--			*timeo = schedule_timeout(*timeo);
-+	atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
- 
--		__set_current_state(TASK_RUNNING);
--		remove_wait_queue(&nlk->wait, &wait);
-+	if (!*timeo) {
-+		if (!ssk || netlink_is_kernel(ssk))
-+			netlink_overrun(sk);
- 		sock_put(sk);
-+		kfree_skb(skb);
-+		return -EAGAIN;
-+	}
- 
--		if (signal_pending(current)) {
--			kfree_skb(skb);
--			return sock_intr_errno(*timeo);
--		}
--		return 1;
-+	__set_current_state(TASK_INTERRUPTIBLE);
-+	add_wait_queue(&nlk->wait, &wait);
-+	rmem = atomic_read(&sk->sk_rmem_alloc);
-+
-+	if (((rmem && rmem + skb->truesize > READ_ONCE(sk->sk_rcvbuf)) ||
-+	     test_bit(NETLINK_S_CONGESTED, &nlk->state)) &&
-+	    !sock_flag(sk, SOCK_DEAD))
-+		*timeo = schedule_timeout(*timeo);
-+
-+	__set_current_state(TASK_RUNNING);
-+	remove_wait_queue(&nlk->wait, &wait);
-+	sock_put(sk);
-+
-+	if (signal_pending(current)) {
-+		kfree_skb(skb);
-+		return sock_intr_errno(*timeo);
- 	}
--	netlink_skb_set_owner_r(skb, sk);
--	return 0;
-+
-+	return 1;
- }
- 
- static int __netlink_sendskb(struct sock *sk, struct sk_buff *skb)
-@@ -1305,6 +1311,7 @@ static int netlink_unicast_kernel(struct sock *sk, struct sk_buff *skb,
- 	ret = -ECONNREFUSED;
- 	if (nlk->netlink_rcv != NULL) {
- 		ret = skb->len;
-+		atomic_add(skb->truesize, &sk->sk_rmem_alloc);
- 		netlink_skb_set_owner_r(skb, sk);
- 		NETLINK_CB(skb).sk = ssk;
- 		netlink_deliver_tap_kernel(sk, ssk, skb);
-@@ -1383,13 +1390,19 @@ EXPORT_SYMBOL_GPL(netlink_strict_get_check);
- static int netlink_broadcast_deliver(struct sock *sk, struct sk_buff *skb)
- {
- 	struct netlink_sock *nlk = nlk_sk(sk);
-+	unsigned int rmem, rcvbuf;
- 
--	if (atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf &&
-+	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
-+	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
-+
-+	if ((rmem != skb->truesize || rmem <= rcvbuf) &&
- 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
- 		netlink_skb_set_owner_r(skb, sk);
- 		__netlink_sendskb(sk, skb);
--		return atomic_read(&sk->sk_rmem_alloc) > (sk->sk_rcvbuf >> 1);
-+		return rmem > (rcvbuf >> 1);
- 	}
-+
-+	atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
- 	return -1;
- }
- 
-@@ -2206,6 +2219,7 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
- 	struct module *module;
- 	int err = -ENOBUFS;
- 	int alloc_min_size;
-+	unsigned int rmem;
- 	int alloc_size;
- 
- 	if (!lock_taken)
-@@ -2215,9 +2229,6 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
- 		goto errout_skb;
++		INIT_LIST_HEAD(&obj_event->obj_sub_list);
+ 		err = xa_insert(&event->object_ids,
+ 				key_level2,
+ 				obj_event,
+@@ -1848,7 +1849,6 @@ subscribe_event_xa_alloc(struct mlx5_devx_event_table *devx_event_table,
+ 			kfree(obj_event);
+ 			return err;
+ 		}
+-		INIT_LIST_HEAD(&obj_event->obj_sub_list);
  	}
  
--	if (atomic_read(&sk->sk_rmem_alloc) >= sk->sk_rcvbuf)
--		goto errout_skb;
--
- 	/* NLMSG_GOODSIZE is small to avoid high order allocations being
- 	 * required, but it makes sense to _attempt_ a 16K bytes allocation
- 	 * to reduce number of system calls on dump operations, if user
-@@ -2240,6 +2251,12 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
- 	if (!skb)
- 		goto errout_skb;
- 
-+	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
-+	if (rmem >= READ_ONCE(sk->sk_rcvbuf)) {
-+		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
-+		goto errout_skb;
-+	}
-+
- 	/* Trim skb to allocated size. User is expected to provide buffer as
- 	 * large as max(min_dump_alloc, 16KiB (mac_recvmsg_len capped at
- 	 * netlink_recvmsg())). dump will pack as many smaller messages as
+ 	return 0;
 -- 
 2.39.5
 
