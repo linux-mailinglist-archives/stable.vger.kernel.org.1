@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4C8B05FA7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8931AB06037
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76269179B88
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21ABD7A35B1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1E72E49BC;
-	Tue, 15 Jul 2025 13:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD922EA467;
+	Tue, 15 Jul 2025 13:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEoEn1Id"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vu5D85j8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77FA2E4993;
-	Tue, 15 Jul 2025 13:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099972EA176;
+	Tue, 15 Jul 2025 13:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587315; cv=none; b=k8qAHU22BXhvEIIU6N/2XovkvqZQYoyiaaUE3XW2UUgl8mtxLFT/U2tFGziGVlZpC+tlfdK4oSeD38SwHwGeyUP1jWZQg68usCLRZARUGec+WBPzCVVsjHyJXD9dFEvkqxGwWmyoWCyiZrqulZRkgCY7JxyxjzeGamM5A3ZBQ4A=
+	t=1752587950; cv=none; b=hJ/zY6Bi3Z5I9G4uzWDWTYTl9TK9mNy5l1w2xD6UrT484QUp5XMt4HgLkZPuqf47futg/a91TbGohqT78SdDOWdXu9XITgQ4/8/hOXOTyEiRvXcClmeYRgG7NVmZlrWVY2JrmstLj4DIRAp9lf0KYGNavXMljkfm37AFHyCuji0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587315; c=relaxed/simple;
-	bh=LOYcUfBHGE+iTy9zqduPJZA/Fp69vimZRwuwgDZYqxE=;
+	s=arc-20240116; t=1752587950; c=relaxed/simple;
+	bh=cDPUPZZY7D6gk99u48rLjo2M7v0MS1eovc847IceTfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+H1r8/5kTwymGHkDb6NbsAQY9Xe54E/lLrMkmqu3/gprFg3IC/hSO3UvnCkJOlLy72Noi49mZ/HxT4G3jar658Y04wdXJo7hhRCy0hAzcVNuQ4L2172G9L6kkpyEVjHVouNDNvea3UtSek8Uc7UH1tCdYvb0CvT34k245rNimc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEoEn1Id; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A41FC4CEE3;
-	Tue, 15 Jul 2025 13:48:35 +0000 (UTC)
+	 MIME-Version; b=j/uuCmbCgS8LHc2KFDySkSxfnVX55N5Nh5nNiGMcZS/kfImtWrorZiXiVHu8Sm2ilhMP4zwk6UFo0qIYHzz7qzA3S+vGHZWEnewntYOvzE8VN92hkCrJESzES7lsPbLFwJugBHLuvNPCI8hJSJH3MnAd4EfGkLs99aEo7WlSznM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vu5D85j8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E908C4CEE3;
+	Tue, 15 Jul 2025 13:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587315;
-	bh=LOYcUfBHGE+iTy9zqduPJZA/Fp69vimZRwuwgDZYqxE=;
+	s=korg; t=1752587949;
+	bh=cDPUPZZY7D6gk99u48rLjo2M7v0MS1eovc847IceTfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sEoEn1Idv5V4tTmVPDxqeVAy5D5OHOZRWEi8ae6g1hV4Wghy8n1InaYwdsBweKM38
-	 SenpTfiLAt3etjpqtiRiZqyr8SpuyU8AWRrA+YvshJAhM9k3qhZOH4mLZUoMXJXHYn
-	 T7RqN62VzlxcLVhDCpjWGkCveRdcS51GV2Cnb9nI=
+	b=Vu5D85j8ohfnMtQG0o/BkZ4x4P1Wb6bfIK80rQirjE0hmNGweX3k6JxIQMrsSTbCT
+	 5j8K3ZFLauark219QQ2j2KQycNy7PuEgVblzGfjQvEcEUqng5ptSZzFe0yDlyWG49K
+	 gzJRQJV7yo8grqZKy4vo5uKfi0yWT2DHDT6RS/kM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 55/88] drm/tegra: nvdec: Fix dma_alloc_coherent error check
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 5.10 162/208] x86/alternatives: Remove faulty optimization
 Date: Tue, 15 Jul 2025 15:14:31 +0200
-Message-ID: <20250715130756.769832325@linuxfoundation.org>
+Message-ID: <20250715130817.469187974@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 44306a684cd1699b8562a54945ddc43e2abc9eab ]
+commit 4ba89dd6ddeca2a733bdaed7c9a5cbe4e19d9124 upstream.
 
-Check for NULL return value with dma_alloc_coherent, in line with
-Robin's fix for vic.c in 'drm/tegra: vic: Fix DMA API misuse'.
+The following commit
 
-Fixes: 46f226c93d35 ("drm/tegra: Add NVDEC driver")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250702-nvdec-dma-error-check-v1-1-c388b402c53a@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  095b8303f383 ("x86/alternative: Make custom return thunk unconditional")
+
+made '__x86_return_thunk' a placeholder value.  All code setting
+X86_FEATURE_RETHUNK also changes the value of 'x86_return_thunk'.  So
+the optimization at the beginning of apply_returns() is dead code.
+
+Also, before the above-mentioned commit, the optimization actually had a
+bug It bypassed __static_call_fixup(), causing some raw returns to
+remain unpatched in static call trampolines.  Thus the 'Fixes' tag.
+
+Fixes: d2408e043e72 ("x86/alternative: Optimize returns patching")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/16d19d2249d4485d8380fb215ffaae81e6b8119e.1693889988.git.jpoimboe@kernel.org
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/nvdec.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/kernel/alternative.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/nvdec.c b/drivers/gpu/drm/tegra/nvdec.c
-index 276fe04727302..99ada87e25895 100644
---- a/drivers/gpu/drm/tegra/nvdec.c
-+++ b/drivers/gpu/drm/tegra/nvdec.c
-@@ -209,10 +209,8 @@ static int nvdec_load_firmware(struct nvdec *nvdec)
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -793,14 +793,6 @@ void __init_or_module noinline apply_ret
+ {
+ 	s32 *s;
  
- 	if (!client->group) {
- 		virt = dma_alloc_coherent(nvdec->dev, size, &iova, GFP_KERNEL);
+-	/*
+-	 * Do not patch out the default return thunks if those needed are the
+-	 * ones generated by the compiler.
+-	 */
+-	if (cpu_feature_enabled(X86_FEATURE_RETHUNK) &&
+-	    (x86_return_thunk == __x86_return_thunk))
+-		return;
 -
--		err = dma_mapping_error(nvdec->dev, iova);
--		if (err < 0)
--			return err;
-+		if (!virt)
-+			return -ENOMEM;
- 	} else {
- 		virt = tegra_drm_alloc(tegra, size, &iova);
- 	}
--- 
-2.39.5
-
+ 	for (s = start; s < end; s++) {
+ 		void *dest = NULL, *addr = (void *)s + *s;
+ 		struct insn insn;
 
 
 
