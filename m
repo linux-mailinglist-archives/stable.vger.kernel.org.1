@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D78B05C44
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:29:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 244DCB05B9A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2288316EB08
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D4AA7B6665
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A932E54AB;
-	Tue, 15 Jul 2025 13:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE0B2E3380;
+	Tue, 15 Jul 2025 13:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYIa0YIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7ZCqBsy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843112E5428;
-	Tue, 15 Jul 2025 13:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB192E1758;
+	Tue, 15 Jul 2025 13:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585946; cv=none; b=eN5rXznzvngNRas5NSD1ebQIZw75AhZEqFNGtnON02lxDlMl28znjbNryyOmVfXOvcrwmStomJFA12MH9UOTRjY7XzsXDLzm5UjfiNgUJusyJ2uXwtxtGIweczFB9m6chljwmM9gVXi0QmrkX6TxXr4BUTpaohqD3ONrDBq389E=
+	t=1752585620; cv=none; b=JJLOeYZeqoSFMq3yctotOeCvHvSYcMxgjZJ0YjonQSPeOEXIlL4rjq/LcrCt8t0tG1r/oGGpknj9CEZMv39TYpLDNpIdmEJs289Zwd7TqEaFBSw2G5UkDYzK0RKh+pLvbnkWr9Bzien3YANrRG/Ttp9hIytb+XICqh0Y/U8+JUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585946; c=relaxed/simple;
-	bh=QjmFWsz56SOOi7EEtw7D6jdNjGTSJu3Jn91RFDsfMuI=;
+	s=arc-20240116; t=1752585620; c=relaxed/simple;
+	bh=t9g6Vsb1mwm3ZGmktBPXFNE4sKgx/KqTI7oyUenp9hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=slut7NqelD3uCgNc/+z00yEw3//IibGcv+StrcZ69UBu2mtNWq5ifNvWPHIniWrLd05LgiY7SEV9mQ0s5ngLmmloRXqymEAE7+/eMGBvQtnLRmbCQzlHo69AV6dSiZuffkTSs81jeoxEXn5RF3oMoJtRqZxV8NRyHGi1wvmX6t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYIa0YIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1765CC4CEE3;
-	Tue, 15 Jul 2025 13:25:45 +0000 (UTC)
+	 MIME-Version; b=ZqXOhNCVoY/s0DieJN6a8SSnFFmXkakoehSfTscVvKErI0O0CVzwYpLz8Cuc46n9Hm+Mn4zWzwq7FLWcS/3VivIaWeoB32lukUgg8UA8NmpZGrLOnLFuHR7d7/LZMctW0hme0JyTQb4ypi0zxSXrvHdcflINpLIyNg5Kw/nn1nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7ZCqBsy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809CEC4CEE3;
+	Tue, 15 Jul 2025 13:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585946;
-	bh=QjmFWsz56SOOi7EEtw7D6jdNjGTSJu3Jn91RFDsfMuI=;
+	s=korg; t=1752585619;
+	bh=t9g6Vsb1mwm3ZGmktBPXFNE4sKgx/KqTI7oyUenp9hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYIa0YIio0nqG+hdS23SvXD4dOp+c82+btNJtL4WoOwvzraE/zil/NlGSEqDhEkDu
-	 V0xTjzVcGSStHjHacP43DsZKRNmjrbExnGqgIhOFtQmY4ejpSp0x11c4FpiUEPMhga
-	 RkcD/3G2RlzbNLPZUGbBQH64MnOq+mtFUuPzDnS4=
+	b=C7ZCqBsyI9vMOt1JoqDayX3591UbTAF1k86v9EsZ+Tw4RZKMRHuqVjK14mTWzFepN
+	 jTEZ34zFAJ0e7lYLn1iM1eycHC6JEcFDwayowehD36nqfwcoQne/avnz4oUIyluJDv
+	 05DptNeRq32GWu07XYQLoauG3ODMnvTqmeApqvio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Gibson <gerald.gibson@oracle.com>,
-	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-	Yu Kuai <yukuai3@huawei.com>
-Subject: [PATCH 6.6 040/109] md/md-bitmap: fix GPF in bitmap_get_stats()
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 108/163] wifi: zd1211rw: Fix potential NULL pointer dereference in zd_mac_tx_to_dev()
 Date: Tue, 15 Jul 2025 15:12:56 +0200
-Message-ID: <20250715130800.485095030@linuxfoundation.org>
+Message-ID: <20250715130813.191441449@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +60,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Håkon Bugge <haakon.bugge@oracle.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-commit c17fb542dbd1db745c9feac15617056506dd7195 upstream.
+[ Upstream commit 74b1ec9f5d627d2bdd5e5b6f3f81c23317657023 ]
 
-The commit message of commit 6ec1f0239485 ("md/md-bitmap: fix stats
-collection for external bitmaps") states:
+There is a potential NULL pointer dereference in zd_mac_tx_to_dev(). For
+example, the following is possible:
 
-    Remove the external bitmap check as the statistics should be
-    available regardless of bitmap storage location.
+    	T0			    		T1
+zd_mac_tx_to_dev()
+  /* len == skb_queue_len(q) */
+  while (len > ZD_MAC_MAX_ACK_WAITERS) {
 
-    Return -EINVAL only for invalid bitmap with no storage (neither in
-    superblock nor in external file).
+					  filter_ack()
+					    spin_lock_irqsave(&q->lock, flags);
+					    /* position == skb_queue_len(q) */
+					    for (i=1; i<position; i++)
+				    	      skb = __skb_dequeue(q)
 
-But, the code does not adhere to the above, as it does only check for
-a valid super-block for "internal" bitmaps. Hence, we observe:
+					    if (mac->type == NL80211_IFTYPE_AP)
+					      skb = __skb_dequeue(q);
+					    spin_unlock_irqrestore(&q->lock, flags);
 
-Oops: GPF, probably for non-canonical address 0x1cd66f1f40000028
-RIP: 0010:bitmap_get_stats+0x45/0xd0
-Call Trace:
+    skb_dequeue() -> NULL
 
- seq_read_iter+0x2b9/0x46a
- seq_read+0x12f/0x180
- proc_reg_read+0x57/0xb0
- vfs_read+0xf6/0x380
- ksys_read+0x6d/0xf0
- do_syscall_64+0x8c/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Since there is a small gap between checking skb queue length and skb being
+unconditionally dequeued in zd_mac_tx_to_dev(), skb_dequeue() can return NULL.
+Then the pointer is passed to zd_mac_tx_status() where it is dereferenced.
 
-We fix this by checking the existence of a super-block for both the
-internal and external case.
+In order to avoid potential NULL pointer dereference due to situations like
+above, check if skb is not NULL before passing it to zd_mac_tx_status().
 
-Fixes: 6ec1f0239485 ("md/md-bitmap: fix stats collection for external bitmaps")
-Cc: stable@vger.kernel.org
-Reported-by: Gerald Gibson <gerald.gibson@oracle.com>
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Link: https://lore.kernel.org/linux-raid/20250702091035.2061312-1-haakon.bugge@oracle.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 459c51ad6e1f ("zd1211rw: port to mac80211")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Link: https://patch.msgid.link/20250626114619.172631-1-d.dulov@aladdin.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/zydas/zd1211rw/zd_mac.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2119,8 +2119,7 @@ int md_bitmap_get_stats(struct bitmap *b
+diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+index f90c33d19b399..8fd7be37e209c 100644
+--- a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
++++ b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+@@ -583,7 +583,11 @@ void zd_mac_tx_to_dev(struct sk_buff *skb, int error)
  
- 	if (!bitmap)
- 		return -ENOENT;
--	if (!bitmap->mddev->bitmap_info.external &&
--	    !bitmap->storage.sb_page)
-+	if (!bitmap->storage.sb_page)
- 		return -EINVAL;
- 	sb = kmap_local_page(bitmap->storage.sb_page);
- 	stats->sync_size = le64_to_cpu(sb->sync_size);
+ 		skb_queue_tail(q, skb);
+ 		while (skb_queue_len(q) > ZD_MAC_MAX_ACK_WAITERS) {
+-			zd_mac_tx_status(hw, skb_dequeue(q),
++			skb = skb_dequeue(q);
++			if (!skb)
++				break;
++
++			zd_mac_tx_status(hw, skb,
+ 					 mac->ack_pending ? mac->ack_signal : 0,
+ 					 NULL);
+ 			mac->ack_pending = 0;
+-- 
+2.39.5
+
 
 
 
