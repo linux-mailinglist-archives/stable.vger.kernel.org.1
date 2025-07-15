@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F114AB05F09
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:59:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE485B05C87
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD0761C41A97
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 780761675B2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5805B2E62D0;
-	Tue, 15 Jul 2025 13:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280602E2F12;
+	Tue, 15 Jul 2025 13:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1fLyBsD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlCKvt7Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157BF2D839A;
-	Tue, 15 Jul 2025 13:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5E12D5426;
+	Tue, 15 Jul 2025 13:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587042; cv=none; b=iLYIV6zkQ9ZHBNG+ZBmhu5WMIieyoG/Cqo7AE5wzdvd1es/6Y+MRCKkQ1IVhV62JfXF9XUS0woJHiBUGB73tevp57ZfrO32HqkSH9OScmBGZhfFzegaeQtpCXFwOC5SVaEvWUq+P2wg4wpxPZKFVy7yFDJl1iIncaJ9KM41OE34=
+	t=1752586046; cv=none; b=s8FUz/SJwwY1rbZ0QBbzks+hZ4EDHO7lG/P1iCJs1ixDqnCEfLSKAE3SB2zzxIbEKB9x/Wf9zqcn9D22qSeVLn8NoVK806q4Q5OLWWYkesD8UvJayvgitDGkrCBkv1UA3wZ5b2rxGPMgfou84++HBlu9KDqiLS5Aptxw4QeACTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587042; c=relaxed/simple;
-	bh=yPd7QpBwAio6j1EI2MpvZI0CHt7Ft4plD5LRDVKnu7o=;
+	s=arc-20240116; t=1752586046; c=relaxed/simple;
+	bh=2kzOfcqn/6cO21Uu9nKMWsLX4LkcCtUWn6XgPwG8o0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzxKtX9TehilHluDfHfVjaGFZ3TNDYo7rQpDTaAvlK8Zz08aCdSe28SuI7XD2aSQc5aac4ETQ5683EXNzyqzWuoTMpOMkNld9xFIrxFLpevP8H69+7Y9vflSKF1aXyxnLNEak9pOhth/2Ncz+k5cGRHZbvBGtS48P+JjZkgBLlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1fLyBsD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDA1C4CEE3;
-	Tue, 15 Jul 2025 13:44:01 +0000 (UTC)
+	 MIME-Version; b=S6mkkGLnvot8/MJSistlW4kO/F/bWQ6KZbKkOtHiM+YqZj1px7AcBeZDQpP8F0KpQb/zfK+Td9yja9PIjxvQqwTiq70m/59B6+r0/44sM29TMEiJ0fBdO4mgqnQMMMUkq58nid7Vc/YAGhQCPyr+YyAyNIAl2Ws+DOvYFhTnc9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlCKvt7Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716D2C4CEE3;
+	Tue, 15 Jul 2025 13:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587042;
-	bh=yPd7QpBwAio6j1EI2MpvZI0CHt7Ft4plD5LRDVKnu7o=;
+	s=korg; t=1752586046;
+	bh=2kzOfcqn/6cO21Uu9nKMWsLX4LkcCtUWn6XgPwG8o0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h1fLyBsD1mS+NwTZSyUM0XED/FfTFAqdpabuVLp/yBwZsYDKNp/VRjaUOF9sWFHPv
-	 BTjygD7i0Ek8jDL3EEVXIvAwEbLIClLYEhtNT/c2wXa3uQDU6xJW5V40G3AvLi4hR2
-	 NshDZ2fytxgeqlkrvV7LFthtiWJfq/JdNF1+5r8A=
+	b=RlCKvt7Z73AI/esAVS/EJMX11h5//+0STutByJZKClZrH+JMocK/LWsloexHdA0GK
+	 cr81PMpxVbpIkk3jFc2TH5p421ZllrAfrktG9sZec8JOddHnZALE5C6e4oohb7Mnqj
+	 DJakfuFoSY2uG9PkQdd7dLNKtt1/K6tVbvfdjDzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenryma@tencent.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 144/192] wifi: mt76: mt7925: Fix null-ptr-deref in mt7925_thermal_init()
-Date: Tue, 15 Jul 2025 15:13:59 +0200
-Message-ID: <20250715130820.687288951@linuxfoundation.org>
+Subject: [PATCH 6.6 104/109] HID: quirks: Add quirk for 2 Chicony Electronics HP 5MP Cameras
+Date: Tue, 15 Jul 2025 15:14:00 +0200
+Message-ID: <20250715130803.043975194@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 
-[ Upstream commit 03ee8f73801a8f46d83dfc2bf73fb9ffa5a21602 ]
+[ Upstream commit 54bae4c17c11688339eb73a04fd24203bb6e7494 ]
 
-devm_kasprintf() returns NULL on error. Currently, mt7925_thermal_init()
-does not check for this case, which results in a NULL pointer
-dereference.
+The Chicony Electronics HP 5MP Cameras (USB ID 04F2:B824 & 04F2:B82C)
+report a HID sensor interface that is not actually implemented.
+Attempting to access this non-functional sensor via iio_info causes
+system hangs as runtime PM tries to wake up an unresponsive sensor.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+Add these 2 devices to the HID ignore list since the sensor interface is
+non-functional by design and should not be exposed to userspace.
 
-Fixes: 396e41a74a88 ("wifi: mt76: mt7925: support temperature sensor")
-Signed-off-by: Henry Martin <bsdhenryma@tencent.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20250625124901.1839832-1-bsdhenryma@tencent.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/init.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-ids.h    | 2 ++
+ drivers/hid/hid-quirks.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index 2a83ff59a968c..4249bad83c930 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -52,6 +52,8 @@ static int mt7925_thermal_init(struct mt792x_phy *phy)
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index f344df00db03a..0d1d7162814f3 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -305,6 +305,8 @@
+ #define USB_DEVICE_ID_ASUS_AK1D		0x1125
+ #define USB_DEVICE_ID_CHICONY_TOSHIBA_WT10A	0x1408
+ #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
++#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
++#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
  
- 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7925_%s",
- 			      wiphy_name(wiphy));
-+	if (!name)
-+		return -ENOMEM;
- 
- 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
- 						       mt7925_hwmon_groups);
+ #define USB_VENDOR_ID_CHUNGHWAT		0x2247
+ #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index e4d80307b898c..80372342c176a 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -747,6 +747,8 @@ static const struct hid_device_id hid_ignore_list[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AVERMEDIA, USB_DEVICE_ID_AVER_FM_MR800) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AXENTIA, USB_DEVICE_ID_AXENTIA_FM_RADIO) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
 -- 
 2.39.5
 
