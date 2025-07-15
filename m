@@ -1,69 +1,59 @@
-Return-Path: <stable+bounces-162585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6738B05E7C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4437EB05BA2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F325E17F98B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15F12566313
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B392EBDDA;
-	Tue, 15 Jul 2025 13:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0062C2E2F0F;
+	Tue, 15 Jul 2025 13:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vltIEt0/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uU3FbBAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FDB2E2657;
-	Tue, 15 Jul 2025 13:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13A927584E;
+	Tue, 15 Jul 2025 13:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586944; cv=none; b=eGiZhe4/1d63WeQ9tiDx6HCP9LDjO1PFcSriIkAF0u9lev0lIqqbHpm1Dz7/3bgMiCE7qRaAANCLzsQDgkcnHX1ceslJuoilx8AZoNcyO116R4xdymeYsd/uBIucU5fhBnrGlBlHTSHzzH3SW6WHqQnhul9vAfk39R5F7B5Pdwc=
+	t=1752585685; cv=none; b=gocTDuBioogHEszWsazseyY0OQtzwilb7bGeitNYUk+lhPb57Xm1YcsGG/ErvW/+lOW+hOgXXJVf/4MCKFDDBH8t1s1Jll5xg+xHWGx6cYRf/+8+6GSO67U+DGUqEGpd1Xz5F134cOYKv64C0qtzUU/lMqwiRPg782SgJ49jMwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586944; c=relaxed/simple;
-	bh=BxmuLHxn/WE1J/xuOnhEa+utZlCF0gcYdFaTPF6loik=;
+	s=arc-20240116; t=1752585685; c=relaxed/simple;
+	bh=RUX0gb3/8DJjwtNJr+31GBrpJsIX7ePRjLFZ66HaPRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGeCEPPmTdzxVGjNluM66AT8kr0oyo8LgWi5gFlwzzEtLYdOExZiyoBaXwbZeLFxDHWORCevcbrPv92Toy0E5pXflAxRoNYg0lNtoHZ61gVo4NJ7q7GDNSmwpnFr6NOs8z6A9voJchFUcATmddlweunIs1KRpuW4RedKV+odWUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vltIEt0/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F34C4CEE3;
-	Tue, 15 Jul 2025 13:42:23 +0000 (UTC)
+	 MIME-Version; b=Xll+4NObvTAnAO1r8f44BsVAe+Nr15+//owfPjYt3SrvggtbUXXl8+0X0DOiFtK6jZVFvcnn5alndOrGxWSOHKm4qV52qD1d0qcb+rs2ugGqWeyVzZppIlBAzyjvMmHATE+Z/wRKA/2FYBhu+q537JyHYYHJyAIuCcrraQ7b4dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uU3FbBAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45197C4CEE3;
+	Tue, 15 Jul 2025 13:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586943;
-	bh=BxmuLHxn/WE1J/xuOnhEa+utZlCF0gcYdFaTPF6loik=;
+	s=korg; t=1752585685;
+	bh=RUX0gb3/8DJjwtNJr+31GBrpJsIX7ePRjLFZ66HaPRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vltIEt0/Yo8s0ZrDiRN5SI0jhNwKRqi8WIz+XgtDIcWAyETJuUBiKOIlJafICU7gx
-	 b8b0kwMQGqfNVcrOMQJi4nLo0GD+UUZxy+eBV9xcmXQLWXXZDon/SJqlpRzUJE1zx2
-	 7t2kXlg7NgTx87Zu0dNF1+COyhjTXIpalZ1CYq9g=
+	b=uU3FbBAqToQ+pPd1sQGHDoBMnphoSuhNc9axZ5obyJFwHxMA4Jqz8aaOsu9GMCqsC
+	 lQWno/OVNRHiBOZxNBDKBVpz2stCzA4HE57tH+KvlqycEvCujlQeHSZ88B/3t0RMwN
+	 ih5yFZYhOFa7UXKVw/2ep9sYdyLjMPq2jfwH8ePc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Yang <lance.yang@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chris Li <chrisl@kernel.org>,
-	"Huang, Ying" <huang.ying.caritas@gmail.com>,
-	Kairui Song <kasong@tencent.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Mingzhe Yang <mingzhe.yang@ly.com>,
-	Rik van Riel <riel@surriel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Tangquan Zheng <zhengtangquan@oppo.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 107/192] mm/rmap: fix potential out-of-bounds page table access during batched unmap
+	Jianbo Liu <jianbol@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 134/163] net/mlx5e: Add new prio for promiscuous mode
 Date: Tue, 15 Jul 2025 15:13:22 +0200
-Message-ID: <20250715130819.182840070@linuxfoundation.org>
+Message-ID: <20250715130814.215272933@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,144 +65,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lance Yang <lance.yang@linux.dev>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit ddd05742b45b083975a0855ef6ebbf88cf1f532a upstream.
+[ Upstream commit 4c9fce56fa702059bbc5ab737265b68f79cbaac4 ]
 
-As pointed out by David[1], the batched unmap logic in
-try_to_unmap_one() may read past the end of a PTE table when a large
-folio's PTE mappings are not fully contained within a single page
-table.
+An optimization for promiscuous mode adds a high-priority steering
+table with a single catch-all rule to steer all traffic directly to
+the TTC table.
 
-While this scenario might be rare, an issue triggerable from userspace
-must be fixed regardless of its likelihood.  This patch fixes the
-out-of-bounds access by refactoring the logic into a new helper,
-folio_unmap_pte_batch().
+However, a gap exists between the creation of this table and the
+insertion of the catch-all rule. Packets arriving in this brief window
+would miss as no rule was inserted yet, unnecessarily incrementing the
+'rx_steer_missed_packets' counter and dropped.
 
-The new helper correctly calculates the safe batch size by capping the
-scan at both the VMA and PMD boundaries.  To simplify the code, it also
-supports partial batching (i.e., any number of pages from 1 up to the
-calculated safe maximum), as there is no strong reason to special-case
-for fully mapped folios.
+This patch resolves the issue by introducing a new prio for this
+table, placing it between MLX5E_TC_PRIO and MLX5E_NIC_PRIO. By doing
+so, packets arriving during the window now fall through to the next
+prio (at MLX5E_NIC_PRIO) instead of being dropped.
 
-Link: https://lkml.kernel.org/r/20250701143100.6970-1-lance.yang@linux.dev
-Link: https://lkml.kernel.org/r/20250630011305.23754-1-lance.yang@linux.dev
-Link: https://lkml.kernel.org/r/20250627062319.84936-1-lance.yang@linux.dev
-Link: https://lore.kernel.org/linux-mm/a694398c-9f03-4737-81b9-7e49c857fcbe@redhat.com [1]
-Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Reported-by: David Hildenbrand <david@redhat.com>
-Closes: https://lore.kernel.org/linux-mm/a694398c-9f03-4737-81b9-7e49c857fcbe@redhat.com
-Suggested-by: Barry Song <baohua@kernel.org>
-Acked-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Mingzhe Yang <mingzhe.yang@ly.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Tangquan Zheng <zhengtangquan@oppo.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1c46d7409f30 ("net/mlx5e: Optimize promiscuous mode")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/1752155624-24095-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/rmap.c | 46 ++++++++++++++++++++++++++++------------------
- 1 file changed, 28 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/fs.h   |  9 +++++++--
+ drivers/net/ethernet/mellanox/mlx5/core/en_fs.c   |  2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 13 +++++++++----
+ 3 files changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index fb63d9256f09..1320b88fab74 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1845,23 +1845,32 @@ void folio_remove_rmap_pud(struct folio *folio, struct page *page,
- #endif
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
+index 1e8b7d3307014..b5aac0e1a68ec 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
+@@ -18,7 +18,8 @@ enum {
  
--/* We support batch unmapping of PTEs for lazyfree large folios */
--static inline bool can_batch_unmap_folio_ptes(unsigned long addr,
--			struct folio *folio, pte_t *ptep)
-+static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
-+			struct page_vma_mapped_walk *pvmw,
-+			enum ttu_flags flags, pte_t pte)
- {
- 	const fpb_t fpb_flags = FPB_IGNORE_DIRTY | FPB_IGNORE_SOFT_DIRTY;
--	int max_nr = folio_nr_pages(folio);
--	pte_t pte = ptep_get(ptep);
-+	unsigned long end_addr, addr = pvmw->address;
-+	struct vm_area_struct *vma = pvmw->vma;
-+	unsigned int max_nr;
+ enum {
+ 	MLX5E_TC_PRIO = 0,
+-	MLX5E_NIC_PRIO
++	MLX5E_PROMISC_PRIO,
++	MLX5E_NIC_PRIO,
+ };
  
-+	if (flags & TTU_HWPOISON)
-+		return 1;
-+	if (!folio_test_large(folio))
-+		return 1;
+ struct mlx5e_flow_table {
+@@ -68,9 +69,13 @@ struct mlx5e_l2_table {
+ 				 MLX5_HASH_FIELD_SEL_DST_IP   |\
+ 				 MLX5_HASH_FIELD_SEL_IPSEC_SPI)
+ 
+-/* NIC prio FTS */
++/* NIC promisc FT level */
+ enum {
+ 	MLX5E_PROMISC_FT_LEVEL,
++};
 +
-+	/* We may only batch within a single VMA and a single page table. */
-+	end_addr = pmd_addr_end(addr, vma->vm_end);
-+	max_nr = (end_addr - addr) >> PAGE_SHIFT;
++/* NIC prio FTS */
++enum {
+ 	MLX5E_VLAN_FT_LEVEL,
+ 	MLX5E_L2_FT_LEVEL,
+ 	MLX5E_TTC_FT_LEVEL,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
+index 05058710d2c79..537e732085b22 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
+@@ -776,7 +776,7 @@ static int mlx5e_create_promisc_table(struct mlx5e_flow_steering *fs)
+ 	ft_attr.max_fte = MLX5E_PROMISC_TABLE_SIZE;
+ 	ft_attr.autogroup.max_num_groups = 1;
+ 	ft_attr.level = MLX5E_PROMISC_FT_LEVEL;
+-	ft_attr.prio = MLX5E_NIC_PRIO;
++	ft_attr.prio = MLX5E_PROMISC_PRIO;
+ 
+ 	ft->t = mlx5_create_auto_grouped_flow_table(fs->ns, &ft_attr);
+ 	if (IS_ERR(ft->t)) {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 1bc88743d2dfa..7ef0a4af89e48 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -113,13 +113,16 @@
+ #define ETHTOOL_PRIO_NUM_LEVELS 1
+ #define ETHTOOL_NUM_PRIOS 11
+ #define ETHTOOL_MIN_LEVEL (KERNEL_MIN_LEVEL + ETHTOOL_NUM_PRIOS)
+-/* Promiscuous, Vlan, mac, ttc, inner ttc, {UDP/ANY/aRFS/accel/{esp, esp_err}}, IPsec policy,
++/* Vlan, mac, ttc, inner ttc, {UDP/ANY/aRFS/accel/{esp, esp_err}}, IPsec policy,
+  * {IPsec RoCE MPV,Alias table},IPsec RoCE policy
+  */
+-#define KERNEL_NIC_PRIO_NUM_LEVELS 11
++#define KERNEL_NIC_PRIO_NUM_LEVELS 10
+ #define KERNEL_NIC_NUM_PRIOS 1
+-/* One more level for tc */
+-#define KERNEL_MIN_LEVEL (KERNEL_NIC_PRIO_NUM_LEVELS + 1)
++/* One more level for tc, and one more for promisc */
++#define KERNEL_MIN_LEVEL (KERNEL_NIC_PRIO_NUM_LEVELS + 2)
 +
-+	/* We only support lazyfree batching for now ... */
- 	if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
--		return false;
-+		return 1;
- 	if (pte_unused(pte))
--		return false;
--	if (pte_pfn(pte) != folio_pfn(folio))
--		return false;
-+		return 1;
++#define KERNEL_NIC_PROMISC_NUM_PRIOS 1
++#define KERNEL_NIC_PROMISC_NUM_LEVELS 1
  
--	return folio_pte_batch(folio, addr, ptep, pte, max_nr, fpb_flags, NULL,
--			       NULL, NULL) == max_nr;
-+	return folio_pte_batch(folio, addr, pvmw->pte, pte, max_nr, fpb_flags,
-+			       NULL, NULL, NULL);
- }
- 
- /*
-@@ -2024,9 +2033,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			if (pte_dirty(pteval))
- 				folio_mark_dirty(folio);
- 		} else if (likely(pte_present(pteval))) {
--			if (folio_test_large(folio) && !(flags & TTU_HWPOISON) &&
--			    can_batch_unmap_folio_ptes(address, folio, pvmw.pte))
--				nr_pages = folio_nr_pages(folio);
-+			nr_pages = folio_unmap_pte_batch(folio, &pvmw, flags, pteval);
- 			end_addr = address + nr_pages * PAGE_SIZE;
- 			flush_cache_range(vma, address, end_addr);
- 
-@@ -2206,13 +2213,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			hugetlb_remove_rmap(folio);
- 		} else {
- 			folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
--			folio_ref_sub(folio, nr_pages - 1);
- 		}
- 		if (vma->vm_flags & VM_LOCKED)
- 			mlock_drain_local();
--		folio_put(folio);
--		/* We have already batched the entire folio */
--		if (nr_pages > 1)
-+		folio_put_refs(folio, nr_pages);
-+
-+		/*
-+		 * If we are sure that we batched the entire folio and cleared
-+		 * all PTEs, we can just optimize and stop right here.
-+		 */
-+		if (nr_pages == folio_nr_pages(folio))
- 			goto walk_done;
- 		continue;
- walk_abort:
+ #define KERNEL_NIC_TC_NUM_PRIOS  1
+ #define KERNEL_NIC_TC_NUM_LEVELS 3
+@@ -187,6 +190,8 @@ static struct init_tree_node {
+ 			   ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
+ 				  ADD_MULTIPLE_PRIO(KERNEL_NIC_TC_NUM_PRIOS,
+ 						    KERNEL_NIC_TC_NUM_LEVELS),
++				  ADD_MULTIPLE_PRIO(KERNEL_NIC_PROMISC_NUM_PRIOS,
++						    KERNEL_NIC_PROMISC_NUM_LEVELS),
+ 				  ADD_MULTIPLE_PRIO(KERNEL_NIC_NUM_PRIOS,
+ 						    KERNEL_NIC_PRIO_NUM_LEVELS))),
+ 		  ADD_PRIO(0, BY_PASS_MIN_LEVEL, 0, FS_CHAINING_CAPS,
 -- 
-2.50.1
+2.39.5
 
 
 
