@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D62B05C30
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF2DB05E0C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5D9D7B9B7E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33FB71C215F8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5828B2E2657;
-	Tue, 15 Jul 2025 13:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDAE2E88A6;
+	Tue, 15 Jul 2025 13:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSJGTKrh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbjN6hmK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145E72D5426;
-	Tue, 15 Jul 2025 13:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8882D3732;
+	Tue, 15 Jul 2025 13:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585780; cv=none; b=lOZ7Elv885AaX/XBXHImGVi74XrKQN2UCY+RrTiYWMiEySvn590/totd0qyjShcidcIaftXUmv+ljqIP8hfNheDuqlXmPsVIIZSKmITp1eGCGwTPJvSs7TcXK+0X4M7TocKl+5pIZfKMx5317ypHk2k49zAXkdXoPvODxKRVGhY=
+	t=1752586610; cv=none; b=VZYUtUCNuMmdGpNvgh+e/vessABWvLIsDehgfMvsTpXKx/dm+xWV9ncLmQBx/B8t00jOIHR3jxnmQCfvxAzfZjJooZXq62kybcNWRqQ0zjAsDCY/qU87neFqNRn/xDc3jWc3273H0Snai6c6AJ35oZEoJCny9cCDG/hLq0DuSuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585780; c=relaxed/simple;
-	bh=L0vsRjS8lOZgSHKIWt3YrIzPZLq+SCowzWhWqlf5VOA=;
+	s=arc-20240116; t=1752586610; c=relaxed/simple;
+	bh=q9XqB8NX5V35turgtSVrQI/JWc9lW1K4uk3JdJ/prBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J77Yd79vWPsrLXgUlaEFIkLIUTv0m+mH5UJ2W1bpv7EFwL6lpPCZEX3JjKunPqzL/V0z9z87Eo5wl2MRydVzF88hsmMEVVVsrqtnwYSmgB5+7xikBHulz/B289eWmzsd4xjK0lLpdwrYLTHyzR+fuSu+zbo8cJux/2tTbo0FwXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSJGTKrh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A7EC4CEF1;
-	Tue, 15 Jul 2025 13:22:59 +0000 (UTC)
+	 MIME-Version; b=iCjoQlhxJmEIEzF5xEDveGr7KFu+avHk7xL738K2p1qCuyOUt51WAOJM2yELS1EVI62/2BoWiAxGjzqqccKqYYN2Jn/SyXDx8nQOlus1LcPSREtysV+Vd8FcPTIV0YPlH5dIBAaUVnl6wTsCX6orjcriqVaPtnxScECBlAZBKng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbjN6hmK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C1DC4CEE3;
+	Tue, 15 Jul 2025 13:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585779;
-	bh=L0vsRjS8lOZgSHKIWt3YrIzPZLq+SCowzWhWqlf5VOA=;
+	s=korg; t=1752586610;
+	bh=q9XqB8NX5V35turgtSVrQI/JWc9lW1K4uk3JdJ/prBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hSJGTKrhOTtLvKJbbd4cCVmLHdvoW2JOLpo4YTbU+3zTRyEKiAPTCb2h74PsVJNXZ
-	 aW1lbF/L/lZJdaVAc3AsKApkOGJzf6WrbVh7t+z4WRbhlxVhMlRw1i+G3WaUjm7mss
-	 m711TGMV1J6tv5II43wtWyTrrjWy+X16lRIVAC8Y=
+	b=BbjN6hmKrlP4+0BOlFp9gmKtRLvsbNVGTqO1jAflfTvaQNJHigxKSP/d32HuEOnke
+	 vowpiMC0QCG4teg7Z4Ey39N/M/j8bcNdFyIMOfW4+mdHizLdjiF/vULEz7dyOEp8SQ
+	 wwlrIEI0Z7XJNys+40BdeZOA4f+l9JXhNwtfxWzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Daniel J. Ogorchock" <djogorchock@gmail.com>,
-	Silvan Jegen <s.jegen@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/163] HID: nintendo: avoid bluetooth suspend/resume stalls
+	stable@kernel.org,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 103/148] media: uvcvideo: Send control events for partial succeeds
 Date: Tue, 15 Jul 2025 15:13:45 +0200
-Message-ID: <20250715130815.134774263@linuxfoundation.org>
+Message-ID: <20250715130804.438435909@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel J. Ogorchock <djogorchock@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 4a0381080397e77792a5168069f174d3e56175ff ]
+commit 5c791467aea6277430da5f089b9b6c2a9d8a4af7 upstream.
 
-Ensure we don't stall or panic the kernel when using bluetooth-connected
-controllers. This was reported as an issue on android devices using
-kernel 6.6 due to the resume hook which had been added for usb joycons.
+Today, when we are applying a change to entities A, B. If A succeeds and B
+fails the events for A are not sent.
 
-First, set a new state value to JOYCON_CTLR_STATE_SUSPENDED in a
-newly-added nintendo_hid_suspend. This makes sure we will not stall out
-the kernel waiting for input reports during led classdev suspend. The
-stalls could happen if connectivity is unreliable or lost to the
-controller prior to suspend.
+This change changes the code so the events for A are send right after
+they happen.
 
-Second, since we lose connectivity during suspend, do not try
-joycon_init() for bluetooth controllers in the nintendo_hid_resume path.
-
-Tested via multiple suspend/resume flows when using the controller both
-in USB and bluetooth modes.
-
-Signed-off-by: Daniel J. Ogorchock <djogorchock@gmail.com>
-Reviewed-by: Silvan Jegen <s.jegen@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-2-de993ed9823b@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-nintendo.c | 38 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-nintendo.c b/drivers/hid/hid-nintendo.c
-index 55153a2f79886..2a3ae1068739d 100644
---- a/drivers/hid/hid-nintendo.c
-+++ b/drivers/hid/hid-nintendo.c
-@@ -308,6 +308,7 @@ enum joycon_ctlr_state {
- 	JOYCON_CTLR_STATE_INIT,
- 	JOYCON_CTLR_STATE_READ,
- 	JOYCON_CTLR_STATE_REMOVED,
-+	JOYCON_CTLR_STATE_SUSPENDED,
- };
- 
- /* Controller type received as part of device info */
-@@ -2754,14 +2755,46 @@ static void nintendo_hid_remove(struct hid_device *hdev)
- 
- static int nintendo_hid_resume(struct hid_device *hdev)
- {
--	int ret = joycon_init(hdev);
-+	struct joycon_ctlr *ctlr = hid_get_drvdata(hdev);
-+	int ret;
-+
-+	hid_dbg(hdev, "resume\n");
-+	if (!joycon_using_usb(ctlr)) {
-+		hid_dbg(hdev, "no-op resume for bt ctlr\n");
-+		ctlr->ctlr_state = JOYCON_CTLR_STATE_READ;
-+		return 0;
-+	}
- 
-+	ret = joycon_init(hdev);
- 	if (ret)
--		hid_err(hdev, "Failed to restore controller after resume");
-+		hid_err(hdev,
-+			"Failed to restore controller after resume: %d\n",
-+			ret);
-+	else
-+		ctlr->ctlr_state = JOYCON_CTLR_STATE_READ;
- 
- 	return ret;
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1429,7 +1429,9 @@ static bool uvc_ctrl_xctrls_has_control(
  }
  
-+static int nintendo_hid_suspend(struct hid_device *hdev, pm_message_t message)
-+{
-+	struct joycon_ctlr *ctlr = hid_get_drvdata(hdev);
-+
-+	hid_dbg(hdev, "suspend: %d\n", message.event);
-+	/*
-+	 * Avoid any blocking loops in suspend/resume transitions.
-+	 *
-+	 * joycon_enforce_subcmd_rate() can result in repeated retries if for
-+	 * whatever reason the controller stops providing input reports.
-+	 *
-+	 * This has been observed with bluetooth controllers which lose
-+	 * connectivity prior to suspend (but not long enough to result in
-+	 * complete disconnection).
-+	 */
-+	ctlr->ctlr_state = JOYCON_CTLR_STATE_SUSPENDED;
-+	return 0;
-+}
-+
- #endif
+ static void uvc_ctrl_send_events(struct uvc_fh *handle,
+-	const struct v4l2_ext_control *xctrls, unsigned int xctrls_count)
++				 struct uvc_entity *entity,
++				 const struct v4l2_ext_control *xctrls,
++				 unsigned int xctrls_count)
+ {
+ 	struct uvc_control_mapping *mapping;
+ 	struct uvc_control *ctrl;
+@@ -1440,6 +1442,9 @@ static void uvc_ctrl_send_events(struct
+ 		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
  
- static const struct hid_device_id nintendo_hid_devices[] = {
-@@ -2800,6 +2833,7 @@ static struct hid_driver nintendo_hid_driver = {
+ 		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
++		if (ctrl->entity != entity)
++			continue;
++
+ 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+ 			/* Notification will be sent from an Interrupt event. */
+ 			continue;
+@@ -1638,10 +1643,11 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ 					     rollback);
+ 		if (ret < 0)
+ 			goto done;
++		else if (ret > 0 && !rollback)
++			uvc_ctrl_send_events(handle, entity, xctrls,
++					     xctrls_count);
+ 	}
  
- #ifdef CONFIG_PM
- 	.resume		= nintendo_hid_resume,
-+	.suspend	= nintendo_hid_suspend,
- #endif
- };
- static int __init nintendo_init(void)
--- 
-2.39.5
-
+-	if (!rollback)
+-		uvc_ctrl_send_events(handle, xctrls, xctrls_count);
+ 	ret = 0;
+ done:
+ 	mutex_unlock(&chain->ctrl_mutex);
 
 
 
