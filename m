@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-162911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B956EB0604D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:15:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED5EB06069
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:16:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 211661C21676
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:08:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E2635A1D5D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AF22EE977;
-	Tue, 15 Jul 2025 13:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F502EF295;
+	Tue, 15 Jul 2025 13:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7agBmVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipbds9/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F43D2EE96F;
-	Tue, 15 Jul 2025 13:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D0F2EF291;
+	Tue, 15 Jul 2025 13:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587796; cv=none; b=fuO91bY6+HULM1k35DOlPY8Z999FUxzPewX3/5k9C/fvB3BZ6EP8gJGMiW/f8tv487YXMWUxyfUj7IBxR1h7nsQP0YkrQBZfAEb+y9OkvKkpBJjMT72WRw5AGWid7PW8rL5cuZZY0lJDFHBQmW6m4RHwOcHXM1DZ9cZa0MDTO9w=
+	t=1752587801; cv=none; b=WF+89uOm36n+0FsdxGNB2bqzCzvn7QmORPKz+1u01O4DEXU/cPr0lN7Sugwhgh+GPDDKXCKBEthbtsf2+0p04fM23xSlaw2L3jj0ELEpYWXLw5Oehq1Kk4JZUOqaudoCQuHu9YkYg5EkW0J8QYck9LiOohFY03vgW76BvEKxTJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587796; c=relaxed/simple;
-	bh=8jbbk6U5wj/H5D8g9eUUfF+NCc96j9wdK3L3VvA2P9k=;
+	s=arc-20240116; t=1752587801; c=relaxed/simple;
+	bh=8nFs1wiEK7klG4U83V/f2ezfhQwzClToG8rP7rlHVJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIyqzO+LozD0Zb5TPJngprig2kz+hjivEse809AAi05RsDKvsaYlTgmTJtX9s81RhawKbnDtWGle1f1Hws7sQF/C8qoCZPu+qFdaUl2ojJjAhTF3OG6sAUm8wWKPKUgTco66Ik5XHJrbSjybrsJGoCw111okgqDSPL1mHjX3ysw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7agBmVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83ECC4CEFA;
-	Tue, 15 Jul 2025 13:56:35 +0000 (UTC)
+	 MIME-Version; b=rDje4NNorKmBsZezEs57luXjV7mDF4zCPM+XBYRdej1vFKjmcWsXgkHhvCPuMiYDjwiy0OoliUBvBOghU6d9nrhY2j53bdl5Oovoxdk30QegGf9dYkMZiAc+jaezTEd4mleTgNsipO7C2RdmlBHuQTCQKM3htvtCrol0+816aWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipbds9/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2140BC4CEE3;
+	Tue, 15 Jul 2025 13:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587796;
-	bh=8jbbk6U5wj/H5D8g9eUUfF+NCc96j9wdK3L3VvA2P9k=;
+	s=korg; t=1752587801;
+	bh=8nFs1wiEK7klG4U83V/f2ezfhQwzClToG8rP7rlHVJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7agBmVudbqXxbvxBfEkJe2sG/NEB4Y1tbtPZm4H1WnNqwRNGT9OOyrvAwHt7JXXv
-	 5XaCOMLnNuLwCxJfwLlI90m87SJz5c+JRudLlZ+n5rYgAXnum349QR+nXOcOLot9Z2
-	 5Ic4CliHQpbudYwZH4mOq0V6nmTe+O7yaJJRDhYM=
+	b=ipbds9/YWbR3BafgeclvzK8+sAy0gArUGBCGO1kOyP5G44phRa798LCQkPWUG8MPf
+	 DZY5cUT3Tmf3Dz4j+4qmDeYHVG8QvtmfnliRDyJLPKP33vzaVJLgWeHRbbVRgllao0
+	 yINGs+K9+8Jrpa1h+l/PRXcOY96R7BMKj+6iThQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andre Edich <andre.edich@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 147/208] net: phy: smsc: Fix link failure in forced mode with Auto-MDIX
-Date: Tue, 15 Jul 2025 15:14:16 +0200
-Message-ID: <20250715130816.807546127@linuxfoundation.org>
+Subject: [PATCH 5.10 148/208] atm: clip: Fix potential null-ptr-deref in to_atmarpd().
+Date: Tue, 15 Jul 2025 15:14:17 +0200
+Message-ID: <20250715130816.845521077@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -68,82 +67,130 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 9dfe110cc0f6ef42af8e81ce52aef34a647d0b8a ]
+[ Upstream commit 706cc36477139c1616a9b2b96610a8bb520b7119 ]
 
-Force a fixed MDI-X mode when auto-negotiation is disabled to prevent
-link instability.
+atmarpd is protected by RTNL since commit f3a0592b37b8 ("[ATM]: clip
+causes unregister hang").
 
-When forcing the link speed and duplex on a LAN9500 PHY (e.g., with
-`ethtool -s eth0 autoneg off ...`) while leaving MDI-X control in auto
-mode, the PHY fails to establish a stable link. This occurs because the
-PHY's Auto-MDIX algorithm is not designed to operate when
-auto-negotiation is disabled. In this state, the PHY continuously
-toggles the TX/RX signal pairs, which prevents the link partner from
-synchronizing.
+However, it is not enough because to_atmarpd() is called without RTNL,
+especially clip_neigh_solicit() / neigh_ops->solicit() is unsleepable.
 
-This patch resolves the issue by detecting when auto-negotiation is
-disabled. If the MDI-X control mode is set to 'auto', the driver now
-forces a specific, stable mode (ETH_TP_MDI) to prevent the pair
-toggling. This choice of a fixed MDI mode mirrors the behavior the
-hardware would exhibit if the AUTOMDIX_EN strap were configured for a
-fixed MDI connection.
+Also, there is no RTNL dependency around atmarpd.
 
-Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andre Edich <andre.edich@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250703114941.3243890-4-o.rempel@pengutronix.de
+Let's use a private mutex and RCU to protect access to atmarpd in
+to_atmarpd().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250704062416.1613927-2-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/smsc.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ net/atm/clip.c | 44 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index 9ec2485df645e..d860a2626b13b 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -120,10 +120,29 @@ static int lan911x_config_init(struct phy_device *phydev)
+diff --git a/net/atm/clip.c b/net/atm/clip.c
+index 511467bb7fe40..8059b7d1fb931 100644
+--- a/net/atm/clip.c
++++ b/net/atm/clip.c
+@@ -45,7 +45,8 @@
+ #include <net/atmclip.h>
  
- static int lan87xx_config_aneg(struct phy_device *phydev)
+ static struct net_device *clip_devs;
+-static struct atm_vcc *atmarpd;
++static struct atm_vcc __rcu *atmarpd;
++static DEFINE_MUTEX(atmarpd_lock);
+ static struct timer_list idle_timer;
+ static const struct neigh_ops clip_neigh_ops;
+ 
+@@ -53,24 +54,35 @@ static int to_atmarpd(enum atmarp_ctrl_type type, int itf, __be32 ip)
  {
--	int rc;
-+	u8 mdix_ctrl;
- 	int val;
-+	int rc;
+ 	struct sock *sk;
+ 	struct atmarp_ctrl *ctrl;
++	struct atm_vcc *vcc;
+ 	struct sk_buff *skb;
++	int err = 0;
+ 
+ 	pr_debug("(%d)\n", type);
+-	if (!atmarpd)
+-		return -EUNATCH;
 +
-+	/* When auto-negotiation is disabled (forced mode), the PHY's
-+	 * Auto-MDIX will continue toggling the TX/RX pairs.
-+	 *
-+	 * To establish a stable link, we must select a fixed MDI mode.
-+	 * If the user has not specified a fixed MDI mode (i.e., mdix_ctrl is
-+	 * 'auto'), we default to ETH_TP_MDI. This choice of a ETH_TP_MDI mode
-+	 * mirrors the behavior the hardware would exhibit if the AUTOMDIX_EN
-+	 * strap were configured for a fixed MDI connection.
-+	 */
-+	if (phydev->autoneg == AUTONEG_DISABLE) {
-+		if (phydev->mdix_ctrl == ETH_TP_MDI_AUTO)
-+			mdix_ctrl = ETH_TP_MDI;
-+		else
-+			mdix_ctrl = phydev->mdix_ctrl;
-+	} else {
-+		mdix_ctrl = phydev->mdix_ctrl;
++	rcu_read_lock();
++	vcc = rcu_dereference(atmarpd);
++	if (!vcc) {
++		err = -EUNATCH;
++		goto unlock;
 +	}
+ 	skb = alloc_skb(sizeof(struct atmarp_ctrl), GFP_ATOMIC);
+-	if (!skb)
+-		return -ENOMEM;
++	if (!skb) {
++		err = -ENOMEM;
++		goto unlock;
++	}
+ 	ctrl = skb_put(skb, sizeof(struct atmarp_ctrl));
+ 	ctrl->type = type;
+ 	ctrl->itf_num = itf;
+ 	ctrl->ip = ip;
+-	atm_force_charge(atmarpd, skb->truesize);
++	atm_force_charge(vcc, skb->truesize);
  
--	switch (phydev->mdix_ctrl) {
-+	switch (mdix_ctrl) {
- 	case ETH_TP_MDI:
- 		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_;
- 		break;
-@@ -149,7 +168,7 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
- 	rc |= val;
- 	phy_write(phydev, SPECIAL_CTRL_STS, rc);
+-	sk = sk_atm(atmarpd);
++	sk = sk_atm(vcc);
+ 	skb_queue_tail(&sk->sk_receive_queue, skb);
+ 	sk->sk_data_ready(sk);
+-	return 0;
++unlock:
++	rcu_read_unlock();
++	return err;
+ }
  
--	phydev->mdix = phydev->mdix_ctrl;
-+	phydev->mdix = mdix_ctrl;
- 	return genphy_config_aneg(phydev);
+ static void link_vcc(struct clip_vcc *clip_vcc, struct atmarp_entry *entry)
+@@ -607,10 +619,12 @@ static void atmarpd_close(struct atm_vcc *vcc)
+ {
+ 	pr_debug("\n");
+ 
+-	rtnl_lock();
+-	atmarpd = NULL;
++	mutex_lock(&atmarpd_lock);
++	RCU_INIT_POINTER(atmarpd, NULL);
++	mutex_unlock(&atmarpd_lock);
++
++	synchronize_rcu();
+ 	skb_queue_purge(&sk_atm(vcc)->sk_receive_queue);
+-	rtnl_unlock();
+ 
+ 	pr_debug("(done)\n");
+ 	module_put(THIS_MODULE);
+@@ -631,15 +645,15 @@ static struct atm_dev atmarpd_dev = {
+ 
+ static int atm_init_atmarp(struct atm_vcc *vcc)
+ {
+-	rtnl_lock();
++	mutex_lock(&atmarpd_lock);
+ 	if (atmarpd) {
+-		rtnl_unlock();
++		mutex_unlock(&atmarpd_lock);
+ 		return -EADDRINUSE;
+ 	}
+ 
+ 	mod_timer(&idle_timer, jiffies + CLIP_CHECK_INTERVAL * HZ);
+ 
+-	atmarpd = vcc;
++	rcu_assign_pointer(atmarpd, vcc);
+ 	set_bit(ATM_VF_META, &vcc->flags);
+ 	set_bit(ATM_VF_READY, &vcc->flags);
+ 	    /* allow replies and avoid getting closed if signaling dies */
+@@ -648,7 +662,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
+ 	vcc->push = NULL;
+ 	vcc->pop = NULL; /* crash */
+ 	vcc->push_oam = NULL; /* crash */
+-	rtnl_unlock();
++	mutex_unlock(&atmarpd_lock);
+ 	return 0;
  }
  
 -- 
