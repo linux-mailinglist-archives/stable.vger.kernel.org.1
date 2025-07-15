@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E86B05D7D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6B4B05E88
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA02D1888207
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:39:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4185B18974E3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BA52E975D;
-	Tue, 15 Jul 2025 13:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890AD2EA49C;
+	Tue, 15 Jul 2025 13:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKkrcKZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEIaJTR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621F82E7F08;
-	Tue, 15 Jul 2025 13:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470912E4241;
+	Tue, 15 Jul 2025 13:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586375; cv=none; b=PCaEtzkpQzsawaztTr+anHIaBrDa9566humWovQlAfAcJasZq4P1xXi4cYaPkCOuRFfg/PKGMRsadTpRoVFXNwUn8e6c/Dthkz0kYtcmxXQaeCi7lUpuO7qMDtzNQiHVQ9/lSbAzCzdF7SaNoLaiwjFKiHimy4WjJ2E1MRGMZJ8=
+	t=1752586841; cv=none; b=UALn0Bg13kzigb7q0fx02OfDOGc9zCVKb5jFomI2ZWVoLh7QXzHMNtm7yvBb1/niSJ/JU8mikePNZlVCjc7ja2i880TyhLhfnNOeGn+WFzlm2XaZdSi8GYEcR4SQvwtPWDcjQft8ksmYDSB13XCawrZC7vZ+HP1nTrDME1EAtiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586375; c=relaxed/simple;
-	bh=E3G4eWJ8K+mtq6fjo5knmWRO1YYEvzwJVyURro6J1cg=;
+	s=arc-20240116; t=1752586841; c=relaxed/simple;
+	bh=rIKNAOwgq5ShN917KHB/K9uCCAkoYnqgXPFrvVH3t3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNKpyaopx0vlr5Q4ha5W9UoFzT/wAitUWQEP9NVzrxOHrkBDeKkS2GgfwZFta0UL+sGbkIKpMabuJ6AajkJD7bslsFt930HvTPQMFyIteOr79RYpYSOmeHnR7Ac9nnaFcMZjNhThB8KEraA1kvYWNz6Fy6JtzMKODdIzUdtvPvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKkrcKZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E3AC4CEE3;
-	Tue, 15 Jul 2025 13:32:54 +0000 (UTC)
+	 MIME-Version; b=tK4qKC6Iu9Vfof9Q3NJYUwhC+ih3j7xY00cDvppKD8euqNph8kqaM8PPTsbhYEZb8XsVim00NxdVubOh3oa9NEkstovjjCkxF9y4pJgT/B50k8x+mZ1C8PEwaWTY/8BJ5KtxllGpk4pvx4FJGWqcz+CseZOV951YpSFzAy/Sgf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEIaJTR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D185DC4CEE3;
+	Tue, 15 Jul 2025 13:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586375;
-	bh=E3G4eWJ8K+mtq6fjo5knmWRO1YYEvzwJVyURro6J1cg=;
+	s=korg; t=1752586841;
+	bh=rIKNAOwgq5ShN917KHB/K9uCCAkoYnqgXPFrvVH3t3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZKkrcKZyHvCBV5lAmCWMYEpeY86tYi4I5d5YpkjF8pw49G8WkzmieIK9fId+7X735
-	 rKvuw/hA3xpKwdLDHgRneB+gthazOiFHOc6JOCPl7eLjd6Hor1xvb/u33s2jRFscpP
-	 Z2dUujSTv9mSIL7xsBVXC64eEMPuw4o2Ozkz/99U=
+	b=pEIaJTR/EaQqQbo95paWu9MpMFtlFsDvqr0dPe8kAMozTjwzZaqPMrbLASS+HB6Zo
+	 HybXfT6DCQDA5w1hh4bmgHEib/AURsjvq2IZ0AZ2/aZdOoZVPz9mpxJBBFZavl5poz
+	 +A6n7VX/MlXsdXFpB7fL09e0Yg7jiwF5UdKi7V4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 042/148] net: enetc: Correct endianness handling in _enetc_rd_reg64
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.15 069/192] gpiolib: fix performance regression when using gpio_chip_get_multiple()
 Date: Tue, 15 Jul 2025 15:12:44 +0200
-Message-ID: <20250715130802.000390010@linuxfoundation.org>
+Message-ID: <20250715130817.706739401@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 7b515f35a911fdc31fbde6531828dcd6ae9803d3 ]
+commit 30e0fd3c0273dc106320081793793a424f1f1950 upstream.
 
-enetc_hw.h provides two versions of _enetc_rd_reg64.
-One which simply calls ioread64() when available.
-And another that composes the 64-bit result from ioread32() calls.
+commit 74abd086d2ee ("gpiolib: sanitize the return value of
+gpio_chip::get_multiple()") altered the value returned by
+gc->get_multiple() in case it is positive (> 0), but failed to return
+for other cases (<= 0).
 
-In the second case the code appears to assume that each ioread32() call
-returns a little-endian value. However both the shift and logical or
-used to compose the return value would not work correctly on big endian
-systems if this were the case. Moreover, this is inconsistent with the
-first case where the return value of ioread64() is assumed to be in host
-byte order.
+This may result in the "if (gc->get)" block being executed and thus
+negates the performance gain that is normally obtained by using
+gc->get_multiple().
 
-It appears that the correct approach is for both versions to treat the
-return value of ioread*() functions as being in host byte order. And
-this patch corrects the ioread32()-based version to do so.
+Fix by returning the result of gc->get_multiple() if it is <= 0.
 
-This is a bug but would only manifest on big endian systems
-that make use of the ioread32-based implementation of _enetc_rd_reg64.
-While all in-tree users of this driver are little endian and
-make use of the ioread64-based implementation of _enetc_rd_reg64.
-Thus, no in-tree user of this driver is affected by this bug.
+Also move the "ret" variable to the scope where it is used, which as an
+added bonus fixes an indentation error introduced by the aforementioned
+commit.
 
-Flagged by Sparse.
-Compile tested only.
-
-Fixes: 16eb4c85c964 ("enetc: Add ethtool statistics")
-Closes: https://lore.kernel.org/all/AM9PR04MB850500D3FC24FE23DEFCEA158879A@AM9PR04MB8505.eurprd04.prod.outlook.com/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 74abd086d2ee ("gpiolib: sanitize the return value of gpio_chip::get_multiple()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20250703191829.2952986-1-hugo@hugovil.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_hw.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpiolib.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-index fac80831d5327..e99546b6a356c 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-@@ -319,7 +319,7 @@ static inline u64 enetc_rd_reg64(void __iomem *reg)
- 		tmp = ioread32(reg + 4);
- 	} while (high != tmp);
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -3277,14 +3277,15 @@ static int gpiod_get_raw_value_commit(co
+ static int gpio_chip_get_multiple(struct gpio_chip *gc,
+ 				  unsigned long *mask, unsigned long *bits)
+ {
+-	int ret;
+-	
+ 	lockdep_assert_held(&gc->gpiodev->srcu);
  
--	return le64_to_cpu((__le64)high << 32 | low);
-+	return (u64)high << 32 | low;
- }
- #endif
+ 	if (gc->get_multiple) {
++		int ret;
++
+ 		ret = gc->get_multiple(gc, mask, bits);
+ 		if (ret > 0)
+ 			return -EBADE;
++		return ret;
+ 	}
  
--- 
-2.39.5
-
+ 	if (gc->get) {
 
 
 
