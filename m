@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15731B05B65
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D717B05C55
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52B7F1AA7DEB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7177B188F787
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51AAF2E175D;
-	Tue, 15 Jul 2025 13:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A902E62CB;
+	Tue, 15 Jul 2025 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hj1YvU2N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glSMuIGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBE419D09C;
-	Tue, 15 Jul 2025 13:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6B416D4EF;
+	Tue, 15 Jul 2025 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585612; cv=none; b=sBPmuvbvofLbmHrGk6Y/UcqYJrG8AXZEgNSKHtp7oXgLIN3Stzc6HlotjrVko9VSF3+m3yL5kpsm567VSZ0ByqfjxKUV6QVhRS1f4U8sqx/UuHMnq4hLa9TguHwoA1ror5NOJsFWk37R2hfB1mEoCCyc6RyxrFkGKxTw7MtYxKA=
+	t=1752585975; cv=none; b=fe/YMLjMQNGMlSQUKVYRedsQfAKUfd6EeVWhmulMK3Irr0uipG3MVgJVCKqvhX7onEvDcYdS26Tc2yCKuxTSG1iCTTwdgrmL0ehlPyTBM6GLkLWpNWcxqwYMULPBTp0Box/EWH5qQYdh60xlr4W4iFeBv4PiiFrP4T6MLo1SNnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585612; c=relaxed/simple;
-	bh=FmprCZkWmru+slBW9qTebjqT7SrE4DQGU9epZ+Md5qk=;
+	s=arc-20240116; t=1752585975; c=relaxed/simple;
+	bh=5BqD2YRn8DjMdNBUyX4liFWoanXJNBgIdcsRTdBZfao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfAkTCJev9MiQyf833iRiqh2XXICBs873oSyssuV3t/soIp6GLGRubVmj8SUlV+7PEq4R4eYqkgPP6t3jOt32uj5aO5EmiNrn/ptpnx/N5ORvnGpFocGgEm1KNls3ixOBddq/6SAmEKBDAMpLtFZjubnjfpbsmcOiO+oAVA0p3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hj1YvU2N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2F8C4CEF8;
-	Tue, 15 Jul 2025 13:20:11 +0000 (UTC)
+	 MIME-Version; b=Bnbxy9Tbteax1iejjVNNvrYshL/w0wb8DTABElhDIDkKlVkCv/Mi/w9MetxmtgzSvlPhw9SXYS9tKsL+QqkK3Rkwhk58qdz1BdaHWlZubnRY/tlHJTxO8olZYebN3CFCZl//Ea8xcBpCvaXEKfsxUscC6uoeBduCVc0kThIxXTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glSMuIGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF74C4CEE3;
+	Tue, 15 Jul 2025 13:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585611;
-	bh=FmprCZkWmru+slBW9qTebjqT7SrE4DQGU9epZ+Md5qk=;
+	s=korg; t=1752585975;
+	bh=5BqD2YRn8DjMdNBUyX4liFWoanXJNBgIdcsRTdBZfao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hj1YvU2NfQyxxjVohbHOaHoRWJVIDcHQlB4yo1XRsrkHIrhuq/H1zcvkRjEofQ9UY
-	 TyuRlcceMjoaJ/1GEO7l0iw5HYvsmCLsG/XeI/KDLe7W7Ce2Uk7oRfdvHOh0vvJ2pc
-	 saRo4VjjxNOsfJoc+g0i84dYhElJT4wZgp7ZYP1E=
+	b=glSMuIGqpdyCk7Pl7ThdfLcY5hvNm0xPj8PRQkdZxli8EGyFTU0XMYhPcZMDfTPry
+	 Z4dDZZP6WeuKYlDYBTrCjGqagghMVjEP3iXPx8KXhqrGlQWo7vdrwYRe/nx5M0IkIe
+	 gNVPdHUkDzQz/v5MTkGU9o6YK0aKcjxYG2v2bwAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 105/163] netlink: make sure we allow at least one dump skb
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Paul Durrant <paul@xen.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 037/109] KVM: x86/xen: Allow out of range event channel ports in IRQ routing table.
 Date: Tue, 15 Jul 2025 15:12:53 +0200
-Message-ID: <20250715130813.073970731@linuxfoundation.org>
+Message-ID: <20250715130800.366223483@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit a215b5723922f8099078478122f02100e489cb80 upstream.
+commit a7f4dff21fd744d08fa956c243d2b1795f23cbf7 upstream.
 
-Commit under Fixes tightened up the memory accounting for Netlink
-sockets. Looks like the accounting is too strict for some existing
-use cases, Marek reported issues with nl80211 / WiFi iw CLI.
+To avoid imposing an ordering constraint on userspace, allow 'invalid'
+event channel targets to be configured in the IRQ routing table.
 
-To reduce number of iterations Netlink dumps try to allocate
-messages based on the size of the buffer passed to previous
-recvmsg() calls. If user space uses a larger buffer in recvmsg()
-than sk_rcvbuf we will allocate an skb we won't be able to queue.
+This is the same as accepting interrupts targeted at vCPUs which don't
+exist yet, which is already the case for both Xen event channels *and*
+for MSIs (which don't do any filtering of permitted APIC ID targets at
+all).
 
-Make sure we always allow at least one skb to be queued.
-Same workaround is already present in netlink_attachskb().
-Alternative would be to cap the allocation size to
-  rcvbuf - rmem_alloc
-but as I said, the workaround is already present in other places.
+If userspace actually *triggers* an IRQ with an invalid target, that
+will fail cleanly, as kvm_xen_set_evtchn_fast() also does the same range
+check.
 
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/9794af18-4905-46c6-b12c-365ea2f05858@samsung.com
-Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250711001121.3649033-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If KVM enforced that the IRQ target must be valid at the time it is
+*configured*, that would force userspace to create all vCPUs and do
+various other parts of setup (in this case, setting the Xen long_mode)
+before restoring the IRQ table.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Link: https://lore.kernel.org/r/e489252745ac4b53f1f7f50570b03fb416aa2065.camel@infradead.org
+[sean: massage comment]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/af_netlink.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/kvm/xen.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -2261,11 +2261,11 @@ static int netlink_dump(struct sock *sk,
- 	struct netlink_ext_ack extack = {};
- 	struct netlink_callback *cb;
- 	struct sk_buff *skb = NULL;
-+	unsigned int rmem, rcvbuf;
- 	size_t max_recvmsg_len;
- 	struct module *module;
- 	int err = -ENOBUFS;
- 	int alloc_min_size;
--	unsigned int rmem;
- 	int alloc_size;
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -1737,8 +1737,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm
+ {
+ 	struct kvm_vcpu *vcpu;
  
- 	if (!lock_taken)
-@@ -2297,8 +2297,9 @@ static int netlink_dump(struct sock *sk,
- 	if (!skb)
- 		goto errout_skb;
+-	if (ue->u.xen_evtchn.port >= max_evtchn_port(kvm))
+-		return -EINVAL;
++	/*
++	 * Don't check for the port being within range of max_evtchn_port().
++	 * Userspace can configure what ever targets it likes; events just won't
++	 * be delivered if/while the target is invalid, just like userspace can
++	 * configure MSIs which target non-existent APICs.
++	 *
++	 * This allow on Live Migration and Live Update, the IRQ routing table
++	 * can be restored *independently* of other things like creating vCPUs,
++	 * without imposing an ordering dependency on userspace.  In this
++	 * particular case, the problematic ordering would be with setting the
++	 * Xen 'long mode' flag, which changes max_evtchn_port() to allow 4096
++	 * instead of 1024 event channels.
++	 */
  
-+	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
- 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
--	if (rmem >= READ_ONCE(sk->sk_rcvbuf)) {
-+	if (rmem != skb->truesize && rmem >= rcvbuf) {
- 		atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
- 		goto errout_skb;
- 	}
+ 	/* We only support 2 level event channels for now */
+ 	if (ue->u.xen_evtchn.priority != KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL)
 
 
 
