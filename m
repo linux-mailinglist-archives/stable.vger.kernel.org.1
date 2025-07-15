@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CFEB05E93
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5E5B05C3E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB575168227
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 254C616644C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62612E6D06;
-	Tue, 15 Jul 2025 13:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF1F2E7F34;
+	Tue, 15 Jul 2025 13:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFPyD11v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCxBe8n2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657A72E62CF;
-	Tue, 15 Jul 2025 13:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C229E2E7F1F;
+	Tue, 15 Jul 2025 13:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586989; cv=none; b=BbLazTawVEISug5RTBtneDUGGa2a3PZ3e++xafAWcREEaaE81FO1nFd3yd8HA50la/hAqfgFl7t1v7j/WzkZGVcwkv3ypF5x11P1pvdVOKHrCa2zdvTnSvEbiBMf7XDBxHAo86SmBQWL/hLSH8gsNK6KIxckf+CfLOOyfjnv72c=
+	t=1752585904; cv=none; b=gnuNdKqQVFDFF/O2kvQHf6Opcg8NJ+4g5/SlMeqZQBRYbVUwbSZHN5AgEEP68BKDOo8MEKzRm7ex8j4LRGmD4pWSKL5anGA6bzsCem3RYOWxkC0bio5MV1GBnmuVySEqMjlsfSK/uUSho9kFbI9VyZabAz7psp13MAh5l6llwNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586989; c=relaxed/simple;
-	bh=JuFwPF0QMloIugKrWB5SDJBG7sFIIpd/RtFSQBrE0cg=;
+	s=arc-20240116; t=1752585904; c=relaxed/simple;
+	bh=lIFd+rYjQM2FJiqLmMoqOtCWQ157qs/ijgE0P2Q7o+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4Vf2J2NEKS7TRTWNhxOB4aaTo6eH7Z6OwudkXKd4EWs1LSLfnMQmlbriMJyxf9ZJelyVLXpI71+k3Pc31kRBbGo6mk857UAo1F8T1UlZrESrxm3GpTe1pjCj169NZTX0/NVi0SeuBHlqUGCCGldx5AZtc7lm0jrbMz+aYUT+as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFPyD11v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF28CC4CEE3;
-	Tue, 15 Jul 2025 13:43:08 +0000 (UTC)
+	 MIME-Version; b=afpHA5k3A/hJ47f5qSsY+A3mMjeBTFufCFUu/ChZm6NAC6Ll5ds8yc9zq/AdQEnnNVEtUx9SOcGZK+7PugQhR3EktZAwZSZxUCx7Rw9Q4ZFVI6FaoeKLvtyKeuicCm1QH8b2LTlRCOIPscufAPsn5YnlJaQ+4EgyeTH/orMNCLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCxBe8n2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F27C4CEFD;
+	Tue, 15 Jul 2025 13:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586989;
-	bh=JuFwPF0QMloIugKrWB5SDJBG7sFIIpd/RtFSQBrE0cg=;
+	s=korg; t=1752585904;
+	bh=lIFd+rYjQM2FJiqLmMoqOtCWQ157qs/ijgE0P2Q7o+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFPyD11vtaB8Zq4iP8rhZc4Kwg5sCZBBSw1/giihydek9jS6CC7OURzXUXjMI7ZdC
-	 Re2hu835jz6VwCw+yrDxVGgekRHhZ6H7/wWwPNkDozVus0O58dfiQnddhj/O7cH9n1
-	 xvwloY4VeQFNrlDCuYZUcNpyNxgpv4/geayvrsZk=
+	b=nCxBe8n27mUeQ6xrYp597MvzOU+2cYmB1rOWbZMXXIINy33ICYuZ95XgNa7mOYT6a
+	 hpUpGoPPO96I4fKHZtZR80d9osBsCFXVOnhFcq7jlLBvaoC5xkBoeClw8HUseTB5ut
+	 yi0phRqXLFkBA/8Nh41x/sXygZA47CWFZ4FQsuIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.15 093/192] Revert "usb: gadget: u_serial: Add null pointer check in gs_start_io"
+	Wei Yang <richard.weiyang@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 052/109] maple_tree: fix mt_destroy_walk() on root leaf node
 Date: Tue, 15 Jul 2025 15:13:08 +0200
-Message-ID: <20250715130818.636519643@linuxfoundation.org>
+Message-ID: <20250715130800.957748570@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-commit f6c7bc4a6823a0a959f40866a1efe99bd03c2c5b upstream.
+commit ea9b77f98d94c4d5c1bd1ac1db078f78b40e8bf5 upstream.
 
-This reverts commit ffd603f214237e250271162a5b325c6199a65382.
+On destroy, we should set each node dead.  But current code miss this when
+the maple tree has only the root node.
 
-Commit ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in
-gs_start_io") adds null pointer checks at the beginning of the
-gs_start_io() function to prevent a null pointer dereference. However,
-these checks are redundant because the function's comment already
-requires callers to hold the port_lock and ensure port.tty and port_usb
-are not null. All existing callers already follow these rules.
+The reason is mt_destroy_walk() leverage mte_destroy_descend() to set node
+dead, but this is skipped since the only root node is a leaf.
 
-The true cause of the null pointer dereference is a race condition. When
-gs_start_io() calls either gs_start_rx() or gs_start_tx(), the port_lock
-is temporarily released for usb_ep_queue(). This allows port.tty and
-port_usb to be cleared.
+Fixes this by setting the node dead if it is a leaf.
 
-Fixes: ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in gs_start_io")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250617050844.1848232-1-khtsai@google.com
+Link: https://lore.kernel.org/all/20250407231354.11771-1-richard.weiyang@gmail.com/
+Link: https://lkml.kernel.org/r/20250624191841.64682-1-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ lib/maple_tree.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -544,20 +544,16 @@ static int gs_alloc_requests(struct usb_
- static int gs_start_io(struct gs_port *port)
- {
- 	struct list_head	*head = &port->read_pool;
--	struct usb_ep		*ep;
-+	struct usb_ep		*ep = port->port_usb->out;
- 	int			status;
- 	unsigned		started;
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -5270,6 +5270,7 @@ static void mt_destroy_walk(struct maple
+ 	struct maple_enode *start;
  
--	if (!port->port_usb || !port->port.tty)
--		return -EIO;
--
- 	/* Allocate RX and TX I/O buffers.  We can't easily do this much
- 	 * earlier (with GFP_KERNEL) because the requests are coupled to
- 	 * endpoints, as are the packet sizes we'll be using.  Different
- 	 * configurations may use different endpoints with a given port;
- 	 * and high speed vs full speed changes packet sizes too.
- 	 */
--	ep = port->port_usb->out;
- 	status = gs_alloc_requests(ep, head, gs_read_complete,
- 		&port->read_allocated);
- 	if (status)
+ 	if (mte_is_leaf(enode)) {
++		mte_set_node_dead(enode);
+ 		node->type = mte_node_type(enode);
+ 		goto free_leaf;
+ 	}
 
 
 
