@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-162090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A09B05BB6
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:22:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3FFBB05BC8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0E69744A7E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:20:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 282541C20383
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0982E2F0F;
-	Tue, 15 Jul 2025 13:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0C22E337B;
+	Tue, 15 Jul 2025 13:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFb7Z3lx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/7xslWT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CE92472AE;
-	Tue, 15 Jul 2025 13:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3382566;
+	Tue, 15 Jul 2025 13:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585646; cv=none; b=DA+QvJhyCzn9F9zbw+G9ycj4tnRiP6z/L6GnLp3H6evFTcTzMF7dS2ffk/OZREkqOh2waG0TE83SSiBcvZCgYkYsILIgrAHejoZwk+UENu5VmET0I9oLLCFmyha4Cs7E0OOaK87WJXBE6mDDP+/9ShAPeG/4kVF8RHgNyxj33ss=
+	t=1752585820; cv=none; b=qtjSCO011EhqMNxKciQpSjGbS0a8pPFZ7DB6q271jauobjaLJm33JVQs6ASwSJ2TNnne8d0qFp/syMoi8M4Zz0TDNXY89bAu3R0cxU2Ny646bFEqli4oLR2n5L5ByBbiWZX9Wnp+k5NGaOoE+yVBNsS/JmbQxTowHjliWqXP6mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585646; c=relaxed/simple;
-	bh=NPgKDqokt3nTfJUKtOVZEfbBHbObSBE4XNtPBMLvpz0=;
+	s=arc-20240116; t=1752585820; c=relaxed/simple;
+	bh=diXtkfvgq7nB15JI+kan0Ak7hPFvx8cocrkKowgJAss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gq8a6nh2DdsgNoDK0+ev/vuCVJdZFbX2g/nIdAoqOd+kAir5lrdCttFfVSFqlEsB9g2bxwLS4gvT9z7/+3NU0o5r9riX+K0JxOhw5pUUXUCvpqYnMJo8G4zlg4OpWMfCIqVn5TPZMWnNYmMWAt3lzfZ2rRGYgw3+tgD3RT0NL74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFb7Z3lx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DCCC4CEE3;
-	Tue, 15 Jul 2025 13:20:45 +0000 (UTC)
+	 MIME-Version; b=CzFQgo9ShUUyQ+bRAjMz0vFlApxq9Bmn1kt0XgADuF8ufzcG692VfVh7IHHt2ciQSvoxmJ0ZtZ5K6QjlGJSeUkBmPe5LrCwRio4ajRZ/nq6EYLuzeDHYjsyhGL27K7cWd9Gf28BQ5QtDrn7GnfbrPJfv+YKV70ivbrolOHZWwK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/7xslWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD3DC4CEE3;
+	Tue, 15 Jul 2025 13:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585646;
-	bh=NPgKDqokt3nTfJUKtOVZEfbBHbObSBE4XNtPBMLvpz0=;
+	s=korg; t=1752585819;
+	bh=diXtkfvgq7nB15JI+kan0Ak7hPFvx8cocrkKowgJAss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LFb7Z3lxIF2qF/qFyKk9U8TPWSXqt6yO4xMHfF9ObZ7Vcc0FZ1b/6zxI0cSl1Ny8O
-	 cRDXA2hivrHBoJxphtNtKM3U8oqV3qWas2rxG5vwNrWZBHAMSXlEN8OjV3/OVhcbNw
-	 Oa0ahSkoq7HGGqHbsW+n38tSFfIxGPtm+QcGh3Nk=
+	b=b/7xslWTQExmGywFqmz+ZOqRFp3x1DI4eqz/sbz+aFMTRMS8nyEgRets9hXHIV8el
+	 iFz78edGnxGpO3Tp7/1iECWCOqDp5nyvoic8RlHAnPCdVGX6EVn67K7ojDCTfKyckT
+	 PvG2LtGOovsZP++OFuLEsWF9a2QuwipeK0fCBJUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 088/163] mm: fix the inaccurate memory statistics issue for users
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andre Edich <andre.edich@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 020/109] net: phy: smsc: Force predictable MDI-X state on LAN87xx
 Date: Tue, 15 Jul 2025 15:12:36 +0200
-Message-ID: <20250715130812.406744801@linuxfoundation.org>
+Message-ID: <20250715130759.692194278@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,143 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 82241a83cd15aaaf28200a40ad1a8b480012edaf upstream.
+[ Upstream commit 0713e55533c88a20edb53eea6517dc56786a0078 ]
 
-On some large machines with a high number of CPUs running a 64K pagesize
-kernel, we found that the 'RES' field is always 0 displayed by the top
-command for some processes, which will cause a lot of confusion for users.
+Override the hardware strap configuration for MDI-X mode to ensure a
+predictable initial state for the driver. The initial mode of the LAN87xx
+PHY is determined by the AUTOMDIX_EN strap pin, but the driver has no
+documented way to read its latched status.
 
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
- 875525 root      20   0   12480      0      0 R   0.3   0.0   0:00.08 top
-      1 root      20   0  172800      0      0 S   0.0   0.0   0:04.52 systemd
+This unpredictability means the driver cannot know if the PHY has
+initialized with Auto-MDIX enabled or disabled, preventing it from
+providing a reliable interface to the user.
 
-The main reason is that the batch size of the percpu counter is quite
-large on these machines, caching a significant percpu value, since
-converting mm's rss stats into percpu_counter by commit f1a7941243c1 ("mm:
-convert mm's rss stats into percpu_counter").  Intuitively, the batch
-number should be optimized, but on some paths, performance may take
-precedence over statistical accuracy.  Therefore, introducing a new
-interface to add the percpu statistical count and display it to users,
-which can remove the confusion.  In addition, this change is not expected
-to be on a performance-critical path, so the modification should be
-acceptable.
+This patch introduces a `config_init` hook that forces the PHY into a
+known state by explicitly enabling Auto-MDIX.
 
-In addition, the 'mm->rss_stat' is updated by using add_mm_counter() and
-dec/inc_mm_counter(), which are all wrappers around
-percpu_counter_add_batch().  In percpu_counter_add_batch(), there is
-percpu batch caching to avoid 'fbc->lock' contention.  This patch changes
-task_mem() and task_statm() to get the accurate mm counters under the
-'fbc->lock', but this should not exacerbate kernel 'mm->rss_stat' lock
-contention due to the percpu batch caching of the mm counters.  The
-following test also confirm the theoretical analysis.
-
-I run the stress-ng that stresses anon page faults in 32 threads on my 32
-cores machine, while simultaneously running a script that starts 32
-threads to busy-loop pread each stress-ng thread's /proc/pid/status
-interface.  From the following data, I did not observe any obvious impact
-of this patch on the stress-ng tests.
-
-w/o patch:
-stress-ng: info:  [6848]          4,399,219,085,152 CPU Cycles          67.327 B/sec
-stress-ng: info:  [6848]          1,616,524,844,832 Instructions          24.740 B/sec (0.367 instr. per cycle)
-stress-ng: info:  [6848]          39,529,792 Page Faults Total           0.605 M/sec
-stress-ng: info:  [6848]          39,529,792 Page Faults Minor           0.605 M/sec
-
-w/patch:
-stress-ng: info:  [2485]          4,462,440,381,856 CPU Cycles          68.382 B/sec
-stress-ng: info:  [2485]          1,615,101,503,296 Instructions          24.750 B/sec (0.362 instr. per cycle)
-stress-ng: info:  [2485]          39,439,232 Page Faults Total           0.604 M/sec
-stress-ng: info:  [2485]          39,439,232 Page Faults Minor           0.604 M/sec
-
-On comparing a very simple app which just allocates & touches some
-memory against v6.1 (which doesn't have f1a7941243c1) and latest Linus
-tree (4c06e63b9203) I can see that on latest Linus tree the values for
-VmRSS, RssAnon and RssFile from /proc/self/status are all zeroes while
-they do report values on v6.1 and a Linus tree with this patch.
-
-Link: https://lkml.kernel.org/r/f4586b17f66f97c174f7fd1f8647374fdb53de1c.1749119050.git.baolin.wang@linux.alibaba.com
-Fixes: f1a7941243c1 ("mm: convert mm's rss stats into percpu_counter")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Tested-by Donet Tom <donettom@linux.ibm.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: SeongJae Park <sj@kernel.org>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andre Edich <andre.edich@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250703114941.3243890-3-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/task_mmu.c |   14 +++++++-------
- include/linux/mm.h |    5 +++++
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/phy/smsc.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -36,9 +36,9 @@ void task_mem(struct seq_file *m, struct
- 	unsigned long text, lib, swap, anon, file, shmem;
- 	unsigned long hiwater_vm, total_vm, hiwater_rss, total_rss;
- 
--	anon = get_mm_counter(mm, MM_ANONPAGES);
--	file = get_mm_counter(mm, MM_FILEPAGES);
--	shmem = get_mm_counter(mm, MM_SHMEMPAGES);
-+	anon = get_mm_counter_sum(mm, MM_ANONPAGES);
-+	file = get_mm_counter_sum(mm, MM_FILEPAGES);
-+	shmem = get_mm_counter_sum(mm, MM_SHMEMPAGES);
- 
- 	/*
- 	 * Note: to minimize their overhead, mm maintains hiwater_vm and
-@@ -59,7 +59,7 @@ void task_mem(struct seq_file *m, struct
- 	text = min(text, mm->exec_vm << PAGE_SHIFT);
- 	lib = (mm->exec_vm << PAGE_SHIFT) - text;
- 
--	swap = get_mm_counter(mm, MM_SWAPENTS);
-+	swap = get_mm_counter_sum(mm, MM_SWAPENTS);
- 	SEQ_PUT_DEC("VmPeak:\t", hiwater_vm);
- 	SEQ_PUT_DEC(" kB\nVmSize:\t", total_vm);
- 	SEQ_PUT_DEC(" kB\nVmLck:\t", mm->locked_vm);
-@@ -92,12 +92,12 @@ unsigned long task_statm(struct mm_struc
- 			 unsigned long *shared, unsigned long *text,
- 			 unsigned long *data, unsigned long *resident)
- {
--	*shared = get_mm_counter(mm, MM_FILEPAGES) +
--			get_mm_counter(mm, MM_SHMEMPAGES);
-+	*shared = get_mm_counter_sum(mm, MM_FILEPAGES) +
-+			get_mm_counter_sum(mm, MM_SHMEMPAGES);
- 	*text = (PAGE_ALIGN(mm->end_code) - (mm->start_code & PAGE_MASK))
- 								>> PAGE_SHIFT;
- 	*data = mm->data_vm + mm->stack_vm;
--	*resident = *shared + get_mm_counter(mm, MM_ANONPAGES);
-+	*resident = *shared + get_mm_counter_sum(mm, MM_ANONPAGES);
- 	return mm->total_vm;
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index b7f9c4649652b..1ce0ca8048ac6 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -262,6 +262,33 @@ int lan87xx_read_status(struct phy_device *phydev)
  }
+ EXPORT_SYMBOL_GPL(lan87xx_read_status);
  
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2592,6 +2592,11 @@ static inline unsigned long get_mm_count
- 	return percpu_counter_read_positive(&mm->rss_stat[member]);
- }
- 
-+static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
++static int lan87xx_phy_config_init(struct phy_device *phydev)
 +{
-+	return percpu_counter_sum_positive(&mm->rss_stat[member]);
++	int rc;
++
++	/* The LAN87xx PHY's initial MDI-X mode is determined by the AUTOMDIX_EN
++	 * hardware strap, but the driver cannot read the strap's status. This
++	 * creates an unpredictable initial state.
++	 *
++	 * To ensure consistent and reliable behavior across all boards,
++	 * override the strap configuration on initialization and force the PHY
++	 * into a known state with Auto-MDIX enabled, which is the expected
++	 * default for modern hardware.
++	 */
++	rc = phy_modify(phydev, SPECIAL_CTRL_STS,
++			SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
++			SPECIAL_CTRL_STS_AMDIX_ENABLE_ |
++			SPECIAL_CTRL_STS_AMDIX_STATE_,
++			SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
++			SPECIAL_CTRL_STS_AMDIX_ENABLE_);
++	if (rc < 0)
++		return rc;
++
++	phydev->mdix_ctrl = ETH_TP_MDI_AUTO;
++
++	return smsc_phy_config_init(phydev);
 +}
 +
- void mm_trace_rss_stat(struct mm_struct *mm, int member);
+ static int lan874x_phy_config_init(struct phy_device *phydev)
+ {
+ 	u16 val;
+@@ -697,7 +724,7 @@ static struct phy_driver smsc_phy_driver[] = {
  
- static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
+ 	/* basic functions */
+ 	.read_status	= lan87xx_read_status,
+-	.config_init	= smsc_phy_config_init,
++	.config_init	= lan87xx_phy_config_init,
+ 	.soft_reset	= smsc_phy_reset,
+ 	.config_aneg	= lan87xx_config_aneg,
+ 
+-- 
+2.39.5
+
 
 
 
