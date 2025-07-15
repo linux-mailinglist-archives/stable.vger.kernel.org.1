@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-162915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC23FB0607D
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:18:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D780B05F79
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B6365A1DB4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:08:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90E944E1212
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFE82ED14C;
-	Tue, 15 Jul 2025 13:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E492EA737;
+	Tue, 15 Jul 2025 13:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVQDA813"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZuqN9lNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF252E92BE;
-	Tue, 15 Jul 2025 13:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421C02EA726;
+	Tue, 15 Jul 2025 13:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587806; cv=none; b=AoupB8TjY4Bprh8+0gsWp83HOGLVsM9o1yibuM8yNAABD29/dYeI8McnX27Zp2VRsL9UM3HAPSKYwdiFGlVq8x4j/aVFQhSZTnlmPoikAoD0qJ6pZBS2e8cvVyXG6CZvpCy3CK3N9bJBLyZyG7T35Dw8C8V7zUA4BG9uJYJ57cw=
+	t=1752587371; cv=none; b=GsL/kfip71327vLy1BWlLorSMHNu9x8qkFSyPc9ls2jDC+YxTV1h9x6V2Hvb4WLShh+QsqWs+BMs785eLsIkat76/5MU+RVfo84H/I+fj4HLUJdzHuNeRGvwaAyo0eA7SXuABXqn85/tcjKwE5Bk9QrUP1MfO33U5M1EUF9AZm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587806; c=relaxed/simple;
-	bh=rgZjyvGZoK8HRJiVMWLYZ6cEVhvcdtfdUT9PEq141eU=;
+	s=arc-20240116; t=1752587371; c=relaxed/simple;
+	bh=mratpHpOT+qmnEBUC7VAhyZSZ5dR0e3fPWnTWBcamcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKnuL7802qLGzjfWtrNUW3uBkvMM2UASbn2TPW642KzloS+zNFPKUmIsSduFmjLihnhIOhJcVYS3L4aY4mRdFOsFGI3+ezb5Omr75eIEFY+FMDU7Iist8AxTc1jgwirBBD8j7db/Cd1Oq39g0xbrU1d+9KOzslfi7AU1ThvcJQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVQDA813; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA46C4CEE3;
-	Tue, 15 Jul 2025 13:56:46 +0000 (UTC)
+	 MIME-Version; b=cNulMCroxVoL81e4Ungoghn5NasiHUBUshB0iA1y/Asw7VtAhumImVrpZ/oLjsUQ9O8LaO9CepnQkZhTPvbpPWJx5FanNTkXojVNd7sR1cFSPVAUAKmpzs9WlXJMHAy7FLEP89ENAIWLMICS7S5u1G+yIYRveEpfNXwhdQyXwWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZuqN9lNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CA6C4CEE3;
+	Tue, 15 Jul 2025 13:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587806;
-	bh=rgZjyvGZoK8HRJiVMWLYZ6cEVhvcdtfdUT9PEq141eU=;
+	s=korg; t=1752587371;
+	bh=mratpHpOT+qmnEBUC7VAhyZSZ5dR0e3fPWnTWBcamcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UVQDA813bsiU/frACrp3Pb5Kq0bbMMGOpIAaOQBNLiOVG5IQoFND/nIvotq/0JtXr
-	 +zgdb4uhpnulFuwmq7NSh3GZukYKH2ZdyDBB9D9dHDmTAkcb91Ey35yxYC0rU9ZJ5E
-	 auZL7TRY56d7N2lwqpfcYz9KBmsmRs0Pqg6CxW2M=
+	b=ZuqN9lNuA8mtYANqfufTFPU+CWywrkg7c8s0q05sQ8ekaNa286ZP1MhnpggJkCTvj
+	 Sr74F0s99bC2CGFLbjqtDjgpMd99KiNtNpJ6qmIr7mno+AVdj6u/jmRcxmwBN8UXq9
+	 +UPZ7JNE2VWmOhfcvnhGcC/3AcvgDrcXd6dNujMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0c77cccd6b7cd917b35a@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shivank Garg <shivankg@amd.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 150/208] atm: clip: Fix infinite recursive call of clip_push().
-Date: Tue, 15 Jul 2025 15:14:19 +0200
-Message-ID: <20250715130816.922401332@linuxfoundation.org>
+Subject: [PATCH 6.1 44/88] fs: export anon_inode_make_secure_inode() and fix secretmem LSM bypass
+Date: Tue, 15 Jul 2025 15:14:20 +0200
+Message-ID: <20250715130756.300047477@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +64,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Shivank Garg <shivankg@amd.com>
 
-[ Upstream commit c489f3283dbfc0f3c00c312149cae90d27552c45 ]
+[ Upstream commit cbe4134ea4bc493239786220bd69cb8a13493190 ]
 
-syzbot reported the splat below. [0]
+Export anon_inode_make_secure_inode() to allow KVM guest_memfd to create
+anonymous inodes with proper security context. This replaces the current
+pattern of calling alloc_anon_inode() followed by
+inode_init_security_anon() for creating security context manually.
 
-This happens if we call ioctl(ATMARP_MKIP) more than once.
+This change also fixes a security regression in secretmem where the
+S_PRIVATE flag was not cleared after alloc_anon_inode(), causing
+LSM/SELinux checks to be bypassed for secretmem file descriptors.
 
-During the first call, clip_mkip() sets clip_push() to vcc->push(),
-and the second call copies it to clip_vcc->old_push().
+As guest_memfd currently resides in the KVM module, we need to export this
+symbol for use outside the core kernel. In the future, guest_memfd might be
+moved to core-mm, at which point the symbols no longer would have to be
+exported. When/if that happens is still unclear.
 
-Later, when the socket is close()d, vcc_destroy_socket() passes
-NULL skb to clip_push(), which calls clip_vcc->old_push(),
-triggering the infinite recursion.
-
-Let's prevent the second ioctl(ATMARP_MKIP) by checking
-vcc->user_back, which is allocated by the first call as clip_vcc.
-
-Note also that we use lock_sock() to prevent racy calls.
-
-[0]:
-BUG: TASK stack guard page was hit at ffffc9000d66fff8 (stack is ffffc9000d670000..ffffc9000d678000)
-Oops: stack guard page: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5322 Comm: syz.0.0 Not tainted 6.16.0-rc4-syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:clip_push+0x5/0x720 net/atm/clip.c:191
-Code: e0 8f aa 8c e8 1c ad 5b fa eb ae 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 55 <41> 57 41 56 41 55 41 54 53 48 83 ec 20 48 89 f3 49 89 fd 48 bd 00
-RSP: 0018:ffffc9000d670000 EFLAGS: 00010246
-RAX: 1ffff1100235a4a5 RBX: ffff888011ad2508 RCX: ffff8880003c0000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888037f01000
-RBP: dffffc0000000000 R08: ffffffff8fa104f7 R09: 1ffffffff1f4209e
-R10: dffffc0000000000 R11: ffffffff8a99b300 R12: ffffffff8a99b300
-R13: ffff888037f01000 R14: ffff888011ad2500 R15: ffff888037f01578
-FS:  000055557ab6d500(0000) GS:ffff88808d250000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffc9000d66fff8 CR3: 0000000043172000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- clip_push+0x6dc/0x720 net/atm/clip.c:200
- clip_push+0x6dc/0x720 net/atm/clip.c:200
- clip_push+0x6dc/0x720 net/atm/clip.c:200
-...
- clip_push+0x6dc/0x720 net/atm/clip.c:200
- clip_push+0x6dc/0x720 net/atm/clip.c:200
- clip_push+0x6dc/0x720 net/atm/clip.c:200
- vcc_destroy_socket net/atm/common.c:183 [inline]
- vcc_release+0x157/0x460 net/atm/common.c:205
- __sock_release net/socket.c:647 [inline]
- sock_close+0xc0/0x240 net/socket.c:1391
- __fput+0x449/0xa70 fs/file_table.c:465
- task_work_run+0x1d1/0x260 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop+0xec/0x110 kernel/entry/common.c:114
- exit_to_user_mode_prepare include/linux/entry-common.h:330 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:414 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:449 [inline]
- do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff31c98e929
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fffb5aa1f78 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
-RAX: 0000000000000000 RBX: 0000000000012747 RCX: 00007ff31c98e929
-RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
-RBP: 00007ff31cbb7ba0 R08: 0000000000000001 R09: 0000000db5aa226f
-R10: 00007ff31c7ff030 R11: 0000000000000246 R12: 00007ff31cbb608c
-R13: 00007ff31cbb6080 R14: ffffffffffffffff R15: 00007fffb5aa2090
- </TASK>
-Modules linked in:
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+0c77cccd6b7cd917b35a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2371d94d248d126c1eb1
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250704062416.1613927-4-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2bfe15c52612 ("mm: create security context for memfd_secret inodes")
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Mike Rapoport <rppt@kernel.org>
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+Link: https://lore.kernel.org/20250620070328.803704-3-shivankg@amd.com
+Acked-by: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/clip.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/anon_inodes.c   | 23 ++++++++++++++++++-----
+ include/linux/fs.h |  2 ++
+ mm/secretmem.c     | 11 +----------
+ 3 files changed, 21 insertions(+), 15 deletions(-)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 14b485f725d0c..936b9558be4b9 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -429,6 +429,8 @@ static int clip_mkip(struct atm_vcc *vcc, int timeout)
+diff --git a/fs/anon_inodes.c b/fs/anon_inodes.c
+index 24192a7667edf..7a9b1ce9c98a1 100644
+--- a/fs/anon_inodes.c
++++ b/fs/anon_inodes.c
+@@ -55,15 +55,26 @@ static struct file_system_type anon_inode_fs_type = {
+ 	.kill_sb	= kill_anon_super,
+ };
  
- 	if (!vcc->push)
- 		return -EBADFD;
-+	if (vcc->user_back)
-+		return -EINVAL;
- 	clip_vcc = kmalloc(sizeof(struct clip_vcc), GFP_KERNEL);
- 	if (!clip_vcc)
- 		return -ENOMEM;
+-static struct inode *anon_inode_make_secure_inode(
+-	const char *name,
+-	const struct inode *context_inode)
++/**
++ * anon_inode_make_secure_inode - allocate an anonymous inode with security context
++ * @sb:		[in]	Superblock to allocate from
++ * @name:	[in]	Name of the class of the newfile (e.g., "secretmem")
++ * @context_inode:
++ *		[in]	Optional parent inode for security inheritance
++ *
++ * The function ensures proper security initialization through the LSM hook
++ * security_inode_init_security_anon().
++ *
++ * Return:	Pointer to new inode on success, ERR_PTR on failure.
++ */
++struct inode *anon_inode_make_secure_inode(struct super_block *sb, const char *name,
++					   const struct inode *context_inode)
+ {
+ 	struct inode *inode;
+ 	const struct qstr qname = QSTR_INIT(name, strlen(name));
+ 	int error;
+ 
+-	inode = alloc_anon_inode(anon_inode_mnt->mnt_sb);
++	inode = alloc_anon_inode(sb);
+ 	if (IS_ERR(inode))
+ 		return inode;
+ 	inode->i_flags &= ~S_PRIVATE;
+@@ -74,6 +85,7 @@ static struct inode *anon_inode_make_secure_inode(
+ 	}
+ 	return inode;
+ }
++EXPORT_SYMBOL_GPL(anon_inode_make_secure_inode);
+ 
+ static struct file *__anon_inode_getfile(const char *name,
+ 					 const struct file_operations *fops,
+@@ -88,7 +100,8 @@ static struct file *__anon_inode_getfile(const char *name,
+ 		return ERR_PTR(-ENOENT);
+ 
+ 	if (secure) {
+-		inode =	anon_inode_make_secure_inode(name, context_inode);
++		inode =	anon_inode_make_secure_inode(anon_inode_mnt->mnt_sb,
++						     name, context_inode);
+ 		if (IS_ERR(inode)) {
+ 			file = ERR_CAST(inode);
+ 			goto err;
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 08fba309ddc78..1a619b681bccb 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -3469,6 +3469,8 @@ extern int simple_write_begin(struct file *file, struct address_space *mapping,
+ extern const struct address_space_operations ram_aops;
+ extern int always_delete_dentry(const struct dentry *);
+ extern struct inode *alloc_anon_inode(struct super_block *);
++struct inode *anon_inode_make_secure_inode(struct super_block *sb, const char *name,
++					   const struct inode *context_inode);
+ extern int simple_nosetlease(struct file *, long, struct file_lock **, void **);
+ extern const struct dentry_operations simple_dentry_operations;
+ 
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index c6006d765bbd2..18954eae995fc 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -193,19 +193,10 @@ static struct file *secretmem_file_create(unsigned long flags)
+ 	struct file *file = ERR_PTR(-ENOMEM);
+ 	struct inode *inode;
+ 	const char *anon_name = "[secretmem]";
+-	const struct qstr qname = QSTR_INIT(anon_name, strlen(anon_name));
+-	int err;
+ 
+-	inode = alloc_anon_inode(secretmem_mnt->mnt_sb);
++	inode = anon_inode_make_secure_inode(secretmem_mnt->mnt_sb, anon_name, NULL);
+ 	if (IS_ERR(inode))
+ 		return ERR_CAST(inode);
+-
+-	err = security_inode_init_security_anon(inode, &qname, NULL);
+-	if (err) {
+-		file = ERR_PTR(err);
+-		goto err_free_inode;
+-	}
+-
+ 	file = alloc_file_pseudo(inode, secretmem_mnt, "secretmem",
+ 				 O_RDWR, &secretmem_fops);
+ 	if (IS_ERR(file))
 -- 
 2.39.5
 
