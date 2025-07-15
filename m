@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-162851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81C5B0604C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:15:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A21EB06054
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3F8C1C24398
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:05:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3FE35876D2
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2013B2ED16C;
-	Tue, 15 Jul 2025 13:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EDA82ECD16;
+	Tue, 15 Jul 2025 13:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TATeT4EH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZE+Uiujs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B092EBDC3;
-	Tue, 15 Jul 2025 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC4D2EE27E;
+	Tue, 15 Jul 2025 13:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587644; cv=none; b=sR0rKElgNMYTl/WebkAIHoHDkjAzbmG2BJrnOkGdE0zkn71c8EF4lxmgAsL34YcJfV06dDcTbjk/I+9zVvfRkKeOq3IWKjCChps52woVt7Pf8Yd0jMHxDZTtYtYVMw4UgvLPe9AI3K6zhsOLS6lBGshXP49TNVfJpiTiitWGL6g=
+	t=1752587650; cv=none; b=Fx7K2BpASoZTW2bow9IGsYVbF171wdr5IwHRkTZOHPTzhoZbJ5lx371IDApYSzXhpw9IIng7brX4z1t8MSHke3K7VbC1px4w4gkPMK89NHS+rpNRqp2nELwZfgC+QMjmIq53/Qj10lAUVr7G0FVhSGSIjGzE788ievzQ6aLr71w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587644; c=relaxed/simple;
-	bh=Yl7V3Y7bPXrq+DUc9G3u1sCbXKk7szKaWlfvWeT0VEY=;
+	s=arc-20240116; t=1752587650; c=relaxed/simple;
+	bh=QEMZHb1njrO6icsQy+/2ATwe8/lE2lB3uk/Xp3TIlM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=krXPewE70YOI2jVmKTgawtuZp9pZeyBpg1qsOLdKpJUFrWjDxOa3cSlXtMDMwdRq8ManKr1uVflYQhMDZ+fiJHryzZcj3kMKEjBCmkZqBUFx/7HPEe4rvOyLCyG8fYr7W7jC0NB5f0yQ3D5rMm1MTZpq1PKCj6LAL3/ElpnVv7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TATeT4EH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675C4C4CEF4;
-	Tue, 15 Jul 2025 13:54:04 +0000 (UTC)
+	 MIME-Version; b=YRy1GvTK4ZKTmTEp8nXmus4bsCMaxvXmgWx7lRHPcern0y6I8dwy+sVitJnTVIGXH6oACRO6/A1kd7c9vJc95CWelEBS7Si6TgDtulKYNmhvmxlDwEd+pZVQY7c3/NcOm9WqOKb1McDlPdHLQihV/2ZLR3BWY+nOjWkTXuV+Z1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZE+Uiujs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC7EC4CEE3;
+	Tue, 15 Jul 2025 13:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587644;
-	bh=Yl7V3Y7bPXrq+DUc9G3u1sCbXKk7szKaWlfvWeT0VEY=;
+	s=korg; t=1752587650;
+	bh=QEMZHb1njrO6icsQy+/2ATwe8/lE2lB3uk/Xp3TIlM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TATeT4EHapWBt94hLvcpb6Vd/nLe1+mK4JIhaGCT58sQPIP9vy97QMuICzyGTK6qY
-	 C4v1c5OuWEAuK/1Eu2xRHQtkE82eBojgIzFbY+O4JlEPDiDzesMnGGBT5ackH1Bl8U
-	 VTOYDJfyzlRknt3wTeE/d34IO5VYDcebrXzFFGVw=
+	b=ZE+Uiujsj/WUoqP0HHOzh43vNF8HmRUy16OdXC10KIrAtWmClIn0/GKdAFd1LPEAf
+	 eTKBDnVH2R5tWy085A5zLTLyUaFtad3jgGo7xLFO19ujReH4x+0iDT+db9z3hdhcuo
+	 2DsYgIrReUvi6ThjnIl1LlCdJW9VOU2Mabs94jbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/208] btrfs: fix missing error handling when searching for inode refs during log replay
-Date: Tue, 15 Jul 2025 15:13:18 +0200
-Message-ID: <20250715130814.507367160@linuxfoundation.org>
+Subject: [PATCH 5.10 090/208] drm/exynos: fimd: Guard display clock control with runtime PM calls
+Date: Tue, 15 Jul 2025 15:13:19 +0200
+Message-ID: <20250715130814.546063016@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
 References: <20250715130810.830580412@linuxfoundation.org>
@@ -68,42 +67,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 6561a40ceced9082f50c374a22d5966cf9fc5f5c ]
+[ Upstream commit 5d91394f236167ac624b823820faf4aa928b889e ]
 
-During log replay, at __add_inode_ref(), when we are searching for inode
-ref keys we totally ignore if btrfs_search_slot() returns an error. This
-may make a log replay succeed when there was an actual error and leave
-some metadata inconsistency in a subvolume tree. Fix this by checking if
-an error was returned from btrfs_search_slot() and if so, return it to
-the caller.
+Commit c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable
+and post-disable") changed the call sequence to the CRTC enable/disable
+and bridge pre_enable/post_disable methods, so those bridge methods are
+now called when CRTC is not yet enabled.
 
-Fixes: e02119d5a7b4 ("Btrfs: Add a write ahead tree log to optimize synchronous operations")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+This causes a lockup observed on Samsung Peach-Pit/Pi Chromebooks. The
+source of this lockup is a call to fimd_dp_clock_enable() function, when
+FIMD device is not yet runtime resumed. It worked before the mentioned
+commit only because the CRTC implemented by the FIMD driver was always
+enabled what guaranteed the FIMD device to be runtime resumed.
+
+This patch adds runtime PM guards to the fimd_dp_clock_enable() function
+to enable its proper operation also when the CRTC implemented by FIMD is
+not yet enabled.
+
+Fixes: 196e059a8a6a ("drm/exynos: convert clock_enable crtc callback to pipeline clock")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/exynos/exynos_drm_fimd.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 4ee6814293279..dd1c40019412c 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1005,7 +1005,9 @@ static inline int __add_inode_ref(struct btrfs_trans_handle *trans,
- 	search_key.type = BTRFS_INODE_REF_KEY;
- 	search_key.offset = parent_objectid;
- 	ret = btrfs_search_slot(NULL, root, &search_key, path, 0, 0);
--	if (ret == 0) {
-+	if (ret < 0) {
-+		return ret;
-+	} else if (ret == 0) {
- 		struct btrfs_inode_ref *victim_ref;
- 		unsigned long ptr;
- 		unsigned long ptr_end;
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimd.c b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
+index c045330f9c48f..3b89a8774db5a 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_fimd.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
+@@ -182,6 +182,7 @@ struct fimd_context {
+ 	u32				i80ifcon;
+ 	bool				i80_if;
+ 	bool				suspended;
++	bool				dp_clk_enabled;
+ 	wait_queue_head_t		wait_vsync_queue;
+ 	atomic_t			wait_vsync_event;
+ 	atomic_t			win_updated;
+@@ -1003,7 +1004,18 @@ static void fimd_dp_clock_enable(struct exynos_drm_clk *clk, bool enable)
+ 	struct fimd_context *ctx = container_of(clk, struct fimd_context,
+ 						dp_clk);
+ 	u32 val = enable ? DP_MIE_CLK_DP_ENABLE : DP_MIE_CLK_DISABLE;
++
++	if (enable == ctx->dp_clk_enabled)
++		return;
++
++	if (enable)
++		pm_runtime_resume_and_get(ctx->dev);
++
++	ctx->dp_clk_enabled = enable;
+ 	writel(val, ctx->regs + DP_MIE_CLKCON);
++
++	if (!enable)
++		pm_runtime_put(ctx->dev);
+ }
+ 
+ static const struct exynos_drm_crtc_ops fimd_crtc_ops = {
 -- 
 2.39.5
 
