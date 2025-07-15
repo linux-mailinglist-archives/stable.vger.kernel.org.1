@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD572B05CD2
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8E4B05F0C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:59:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47D333B2AEB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D11581C4108D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5562E4261;
-	Tue, 15 Jul 2025 13:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3868B2E718A;
+	Tue, 15 Jul 2025 13:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10plaN8a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4EEp5Go"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9FB2E4244;
-	Tue, 15 Jul 2025 13:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1162E717F;
+	Tue, 15 Jul 2025 13:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586076; cv=none; b=TrSex0Vz4WtpaQc58KOoCyOxDQMrMqlvANbCxBoQuX4Yxt4i4b6J8ZM6Nm4qDLghu4pktR8N1NVOpOJpm8MGvvWXsQYAiFaK5Jbk3h71itiDhzTrdNQaN+bC2qZ98Fdzc83MxW3HeODC2iNY0sH/AR1Vf5055hAZo53o26okSW4=
+	t=1752587058; cv=none; b=AMP+/fk3/JZJpj9lkY8rKMabj956YLbxM9Amgk2tflgmAVNy6Q37MQx3grOk5fF6eb76kVPlsDvEYYfnQ3tUhkeLo9MrWKtFyVZccsNMRWtmNXV8OYNz7ZdEYjgZfP6HZMqqxO3Inn5gFK3EkfiCf2pcBYutSFtFnMEtm38D4jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586076; c=relaxed/simple;
-	bh=5CpePBAMIE5gqGXq5RxVz+DXeU3vE+gd1+wh/qQWsFQ=;
+	s=arc-20240116; t=1752587058; c=relaxed/simple;
+	bh=brcNjlkOm2Owa0K2eziuACVeD9crF1RZbfztNdty6eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/FpUb5o7RfUhD7EriVamTM5U/PxEoqlkYerHK5KkLXEQeYSL9G9M5p3EKwWw87upXJCGF9S0MeJHY8dNNDmCchGka68Lg4gau2LqLvaR6/7hOI1LOhod8mLfR4Rtbu5M9TsdJY5dcgBM8LLFshgEyNYnj7Ggxt7XJjIemAmtUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10plaN8a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A7CC4CEF7;
-	Tue, 15 Jul 2025 13:27:55 +0000 (UTC)
+	 MIME-Version; b=HUN311rhG6O6U8DEJRH8Pk+c2Ha6YHdazlXFskYV3ZvMEgT9H8onUaF488H1Ti5H4v+QAef/q1g+++VjnhsNPURMGlqluCZvC8tjo1bfJzphxIEB7ROdo5NfH2kkWO8Y+gbdLP/djchYRgLh0zd/rloInctINz0Xf4SraojmMN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4EEp5Go; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FF3C4CEE3;
+	Tue, 15 Jul 2025 13:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586076;
-	bh=5CpePBAMIE5gqGXq5RxVz+DXeU3vE+gd1+wh/qQWsFQ=;
+	s=korg; t=1752587057;
+	bh=brcNjlkOm2Owa0K2eziuACVeD9crF1RZbfztNdty6eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10plaN8aZZQztT2orXmI5WQgoJkVFO9reFI81O/pwY5ABkr/unPp/SYtbUEeSpvVR
-	 RR/Td9udouwLC2qYB/hfT+oecG/1nBPT8YiyG9pQ6VLlfV0tnAPhCvbmWIgrvNrX+N
-	 hiJWlL23E4C6rBE0hCjKpIzt8V3ShMNGBLYGfpG8=
+	b=J4EEp5GoWccPFI7NK5M9pmaGg61/SPq7RQHwPQEALh8jZOrxYjFuFx/buO1OEPtXY
+	 Cv3+ovbvEhKTNdmo3dz6N1ZYG31qfAKI8gPKmbx7ObyQ0QUIQCf2+MgEAItWtrShnP
+	 aMcmAFaR5++iSXZ8bMKsxNcfe2rhHCA3a1FWQsEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyan Xu <research@securitygossip.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 109/109] ksmbd: fix potential use-after-free in oplock/lease break ack
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 150/192] wifi: mac80211: add the virtual monitor after reconfig complete
 Date: Tue, 15 Jul 2025 15:14:05 +0200
-Message-ID: <20250715130803.241825912@linuxfoundation.org>
+Message-ID: <20250715130820.931243847@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-commit 50f930db22365738d9387c974416f38a06e8057e upstream.
+[ Upstream commit c07981af55d3ba3ec3be880cfe4a0cc10f1f7138 ]
 
-If ksmbd_iov_pin_rsp return error, use-after-free can happen by
-accessing opinfo->state and opinfo_put and ksmbd_fd_put could
-called twice.
+In reconfig we add the virtual monitor in 2 cases:
+1. If we are resuming (it was deleted on suspend)
+2. If it was added after an error but before the reconfig
+   (due to the last non-monitor interface removal).
 
-Reported-by: Ziyan Xu <research@securitygossip.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the second case, the removal of the non-monitor interface will succeed
+but the addition of the virtual monitor will fail, so we add it in the
+reconfig.
+
+The problem is that we mislead the driver to think that this is an existing
+interface that is getting re-added - while it is actually a completely new
+interface from the drivers' point of view.
+
+Some drivers act differently when a interface is re-added. For example, it
+might not initialize things because they were already initialized.
+Such drivers will - in this case - be left with a partialy initialized vif.
+
+To fix it, add the virtual monitor after reconfig_complete, so the
+driver will know that this is a completely new interface.
+
+Fixes: 3c3e21e7443b ("mac80211: destroy virtual monitor interface across suspend")
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709233451.648d39b041e8.I2e37b68375278987e303d6c00cc5f3d8334d2f96@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   29 +++++++++--------------------
- 1 file changed, 9 insertions(+), 20 deletions(-)
+ net/mac80211/util.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -8503,11 +8503,6 @@ static void smb20_oplock_break_ack(struc
- 		goto err_out;
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 82256eddd16bd..0fc3527e6fdd1 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2155,11 +2155,6 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 		cfg80211_sched_scan_stopped_locked(local->hw.wiphy, 0);
+ 
+  wake_up:
+-
+-	if (local->virt_monitors > 0 &&
+-	    local->virt_monitors == local->open_count)
+-		ieee80211_add_virtual_monitor(local);
+-
+ 	/*
+ 	 * Clear the WLAN_STA_BLOCK_BA flag so new aggregation
+ 	 * sessions can be established after a resume.
+@@ -2213,6 +2208,10 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 		}
  	}
  
--	opinfo->op_state = OPLOCK_STATE_NONE;
--	wake_up_interruptible_all(&opinfo->oplock_q);
--	opinfo_put(opinfo);
--	ksmbd_fd_put(work, fp);
--
- 	rsp->StructureSize = cpu_to_le16(24);
- 	rsp->OplockLevel = rsp_oplevel;
- 	rsp->Reserved = 0;
-@@ -8515,16 +8510,15 @@ static void smb20_oplock_break_ack(struc
- 	rsp->VolatileFid = volatile_id;
- 	rsp->PersistentFid = persistent_id;
- 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_oplock_break));
--	if (!ret)
--		return;
--
-+	if (ret) {
- err_out:
-+		smb2_set_err_rsp(work);
-+	}
++	if (local->virt_monitors > 0 &&
++	    local->virt_monitors == local->open_count)
++		ieee80211_add_virtual_monitor(local);
 +
- 	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
--
- 	opinfo_put(opinfo);
- 	ksmbd_fd_put(work, fp);
--	smb2_set_err_rsp(work);
- }
+ 	if (!suspended)
+ 		return 0;
  
- static int check_lease_state(struct lease *lease, __le32 req_state)
-@@ -8654,11 +8648,6 @@ static void smb21_lease_break_ack(struct
- 	}
- 
- 	lease_state = lease->state;
--	opinfo->op_state = OPLOCK_STATE_NONE;
--	wake_up_interruptible_all(&opinfo->oplock_q);
--	atomic_dec(&opinfo->breaking_cnt);
--	wake_up_interruptible_all(&opinfo->oplock_brk);
--	opinfo_put(opinfo);
- 
- 	rsp->StructureSize = cpu_to_le16(36);
- 	rsp->Reserved = 0;
-@@ -8667,16 +8656,16 @@ static void smb21_lease_break_ack(struct
- 	rsp->LeaseState = lease_state;
- 	rsp->LeaseDuration = 0;
- 	ret = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_lease_ack));
--	if (!ret)
--		return;
--
-+	if (ret) {
- err_out:
-+		smb2_set_err_rsp(work);
-+	}
-+
-+	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
- 	atomic_dec(&opinfo->breaking_cnt);
- 	wake_up_interruptible_all(&opinfo->oplock_brk);
--
- 	opinfo_put(opinfo);
--	smb2_set_err_rsp(work);
- }
- 
- /**
+-- 
+2.39.5
+
 
 
 
