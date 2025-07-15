@@ -1,114 +1,138 @@
-Return-Path: <stable+bounces-161946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C96EB053DA
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 09:56:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC313B054BB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 10:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FD4A1891E70
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 07:57:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A221C22FFE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 08:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75383273D68;
-	Tue, 15 Jul 2025 07:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ED0274B26;
+	Tue, 15 Jul 2025 08:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iuhTcI6m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pum0PPVH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D37271466;
-	Tue, 15 Jul 2025 07:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7431825F973;
+	Tue, 15 Jul 2025 08:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752566194; cv=none; b=r7/BIYvFTuofbrYJbCgGECa0AeSm3/myt3W2S9q8Xl5GV6hMRT5VNgmMvctlqEjJ2fBjcxLoxYGps+9vKpGTdF+Go/3aLFKNeq/FTGq1g2wYP5VwBLzTo6yeKUdxy9jRok6LKq8SXYEWqqbPdlPOjeumw/BbwACNvJWiOr7KImQ=
+	t=1752567738; cv=none; b=Bty+QAvVU/BdJ5oqL4DMLK2ldRJczWdAkTCBgjH8a0yLEE9200YGybNgHhSCwqfHf05E3+axpnzn5kuYPBRrP7kmBZCCrX/iuHP4Rp/35DDY4MZ7rJISCYubjdDHKaTW6o6M2q5Zsatpps8dHOW5sg2ddMEs+XEJ/+dtNAqU9hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752566194; c=relaxed/simple;
-	bh=LtAzzkuDn0q+KeaheRVs0zl+lTKOWDSAl5NB82dIeuc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DqxjA1/fIn07iu8LhwZz5Y9PXBXrJ2j5VTrQaS3UfPDAZ0GNfnRaxXgwnVL3B+h2b8AgmMGe+TygU6JVyLtf3W2fR+t65dY4/KSlKxgt48FjO8eci0j+6Hz1x2dqyqTjxCNHCelCozXYPZ9KU5halFA6/FPTt7pwP2y5KaVL9v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iuhTcI6m; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752566193; x=1784102193;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LtAzzkuDn0q+KeaheRVs0zl+lTKOWDSAl5NB82dIeuc=;
-  b=iuhTcI6mxkRS6MpiYrFO7VAPrB1fbm9qNB38BiNtsVtaMcBIScOQ14x2
-   pmGkhGlRqFpY+ZsA4MkDrEittoYidE5kerfadVynnt36K0cpJ7CwffDvZ
-   gbKT8+2Kfcm3Y0OV2msOIB+ewtEGu1/RkFD7ZUuNdsrRveaHyyhRBVWDd
-   I14+dh2MzbelLYliNEaOvvPWaYcgIMO5kSNkJ6z99zAucc3gAUkUITD9k
-   k8Y5bRCylUlI2eIqPA+X32QFpL+pBQOAzndQ/hapQiM7nvzAgQrhA6E5y
-   lYfBsKpqC8TLgyiuiF7bGJI0nbXkqO0YB/b8cKYgrxlxV2is6bv6pBeeh
-   Q==;
-X-CSE-ConnectionGUID: LLyiLLbaSTuieSQ4nXt0Kw==
-X-CSE-MsgGUID: z+jHIo7oSI2eUwvWPx0xUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="72351712"
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="72351712"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 00:56:32 -0700
-X-CSE-ConnectionGUID: lUc3JbWwTC+bDmrkgejhiQ==
-X-CSE-MsgGUID: qLJO1e4KRLGeLqkQMTpEDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="194311579"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 00:56:28 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1ubaWX-0000000FabV-1G3P;
-	Tue, 15 Jul 2025 10:56:25 +0300
-Date: Tue, 15 Jul 2025 10:56:25 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: mchehab@kernel.org, ribalda@chromium.org, rafael.j.wysocki@intel.com,
-	dongcheng.yan@intel.com, gregkh@linuxfoundation.org,
-	peterz@infradead.org, wentong.wu@intel.com,
-	sakari.ailus@linux.intel.com, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] media: pci: intel: Balance device refcount when
- destroying devices
-Message-ID: <aHYJqbAgW2UX4TyB@smile.fi.intel.com>
-References: <20250714132526.3216569-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1752567738; c=relaxed/simple;
+	bh=ixQ9mMtHtEXEWtYqP7IwY09UZX4JccWhWRs8Whx7Gz8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nqyQlwIMwp25pVfIaRTl551xqxpMFTSfWbdKxB44y0gXtzQaBnGYxfRzNHt1h60By0epasz+/s4RHU67K8AagodmZsUd26fvRCX6AZMhiCKN4t+GCBNXJpCr0QCeWadJT9vlOU93JsXsn7WUwacT2OQ8OzuM7hbs2Z5cMgO/E5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pum0PPVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C00C4CEE3;
+	Tue, 15 Jul 2025 08:22:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752567738;
+	bh=ixQ9mMtHtEXEWtYqP7IwY09UZX4JccWhWRs8Whx7Gz8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Pum0PPVHzqk2gRjPff+d6C9rtkU7NMSqZiya/jrFKDKDUq9KFTYZVZZPql9yJSNAh
+	 dDnCgDney6g/MtPVKhh5QFTYAHTiJgCOrO1dFtV00NpMdYCyoWIMKKkfYETrWFQ+hO
+	 IZrg0sD5Nx5niYvM5xuF2OGMXh0Uc5Ar6k8e9mSOrZiBchzc+VgfZ7K0A+L11nm27C
+	 mUn05V7qiRrQY2M6I9WJUKbHcwaFGChn4r9VGNOAqOEsyLejz8lxoMAyThs2uWXuC8
+	 TX24hgkCyHfRKN/g3k8vZxZqkY3VsgjmyRVWFKnEtMDTygd4Z6GJgp32ZOBrRpyzZt
+	 eSNoUlH6nlf+Q==
+Message-ID: <f2ea8ba7-3866-4ee7-986e-d6924b440e15@kernel.org>
+Date: Tue, 15 Jul 2025 10:22:13 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250714132526.3216569-1-make24@iscas.ac.cn>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4/5.10/5.15/6.1/6.6] Input: atkbd - do not skip
+ atkbd_deactivate() when skipping ATKBD_CMD_GETID
+To: Wang Hai <wanghai38@huawei.com>, stable@vger.kernel.org,
+ sashal@kernel.org, gregkh@linuxfoundation.org
+Cc: yesh25@mail2.sysu.edu.cn, mail@gurevit.ch, egori@altlinux.org,
+ anton@cpp.in, dmitry.torokhov@gmail.com, rrangel@chromium.org,
+ linux-input@vger.kernel.org, zhangxiaoxu5@huawei.com
+References: <20250715031442.16528-1-wanghai38@huawei.com>
+Content-Language: en-US, nl
+From: Hans de Goede <hansg@kernel.org>
+In-Reply-To: <20250715031442.16528-1-wanghai38@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 14, 2025 at 09:25:26PM +0800, Ma Ke wrote:
-> Using ipu_bridge_get_ivsc_csi_dev() to locate the device could cause
-> an imbalance in the device's reference count.
-> ipu_bridge_get_ivsc_csi_dev() calls device_find_child_by_name() to
-> implement the localization, and device_find_child_by_name() calls an
-> implicit get_device() to increment the device's reference count before
-> returning the pointer. Throughout the entire implementation process,
-> no mechanism releases resources properly. This leads to a memory leak
-> because the reference count of the device is never decremented.
+Hi,
+
+On 15-Jul-25 5:14 AM, Wang Hai wrote:
+> From: Hans de Goede <hdegoede@redhat.com>
 > 
-> As the comment of device_find_child_by_name() says, 'NOTE: you will
-> need to drop the reference with put_device() after use'.
+> commit 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 upstream.
 > 
-> Found by code review.
+> After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
+> translated mode") not only the getid command is skipped, but also
+> the de-activating of the keyboard at the end of atkbd_probe(), potentially
+> re-introducing the problem fixed by commit be2d7e4233a4 ("Input: atkbd -
+> fix multi-byte scancode handling on reconnect").
+> 
+> Make sure multi-byte scancode handling on reconnect is still handled
+> correctly by not skipping the atkbd_deactivate() call.
+> 
+> Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
+> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Link: https://lore.kernel.org/r/20240126160724.13278-3-hdegoede@redhat.com
+> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Signed-off-by: Wang Hai <wanghai38@huawei.com>
 
-Okay, but have you check unregistering process? Does it have the put_device()
-for this or not?
+Thank you for backporting this.
 
-(The analysis is partial.)
+The backport looks good to me:
 
--- 
-With Best Regards,
-Andy Shevchenko
+Acked-by: Hans de Goede <hansg@kernel.org>
 
+Regards,
+
+Hans
+
+
+
+
+
+> ---
+>  drivers/input/keyboard/atkbd.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/input/keyboard/atkbd.c b/drivers/input/keyboard/atkbd.c
+> index b3a856333d4e..de59fc1a24bc 100644
+> --- a/drivers/input/keyboard/atkbd.c
+> +++ b/drivers/input/keyboard/atkbd.c
+> @@ -805,11 +805,11 @@ static int atkbd_probe(struct atkbd *atkbd)
+>  				 "keyboard reset failed on %s\n",
+>  				 ps2dev->serio->phys);
+>  
+>  	if (atkbd_skip_getid(atkbd)) {
+>  		atkbd->id = 0xab83;
+> -		return 0;
+> +		goto deactivate_kbd;
+>  	}
+>  
+>  /*
+>   * Then we check the keyboard ID. We should get 0xab83 under normal conditions.
+>   * Some keyboards report different values, but the first byte is always 0xab or
+> @@ -842,10 +842,11 @@ static int atkbd_probe(struct atkbd *atkbd)
+>  			"NCD terminal keyboards are only supported on non-translating controllers. "
+>  			"Use i8042.direct=1 to disable translation.\n");
+>  		return -1;
+>  	}
+>  
+> +deactivate_kbd:
+>  /*
+>   * Make sure nothing is coming from the keyboard and disturbs our
+>   * internal state.
+>   */
+>  	if (!atkbd_skip_deactivate)
 
 
