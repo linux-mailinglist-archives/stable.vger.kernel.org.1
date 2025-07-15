@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-162558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6574EB05ECD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 649EDB05D89
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F66E1C43D26
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0308B18910EF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4152E54B0;
-	Tue, 15 Jul 2025 13:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78782EA163;
+	Tue, 15 Jul 2025 13:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbIsDbmw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fsHyzUJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDC52E041E;
-	Tue, 15 Jul 2025 13:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B002E3391;
+	Tue, 15 Jul 2025 13:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586873; cv=none; b=N9d2wEP5rhcyuehg8cWm9GCHahTp190LP+TO46teZvo8P5YQJKMpzpPQKRyyoMoILUxyWXQhhNfBoZnre0AtrHMnxiEunpkZ/RfAjtAimc6OVjBob0uQ8d0Cwy52zJL3Mc1zwRXkqDxGobvanu0EuLStaeOVFZyukHW8o1ZXJrM=
+	t=1752586409; cv=none; b=V6S39OQD4JkOt8j+L04XwilWWMYW4/2HQcCfGokDSou0qJ2N1vExOh1lrLN/0PhcD/m6PHWDMUWIJ8YczniUAaBxR9rx1tJoGYy/urhD5fxBn7nopbx+8Ol+pYztO32a1CtiPkYN9+DFzS2LazpTtowtrV/4uIHhPxO2EZKcSIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586873; c=relaxed/simple;
-	bh=c0WaRU+vKTU2M09OE65CgzjphAIlr6Ab9r40/ldJQqY=;
+	s=arc-20240116; t=1752586409; c=relaxed/simple;
+	bh=iQi5aQp08sYGwvY4eIk0UOK2xRm47q/X86P4v1LLoOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPBRwL45gTis035yWxRN5eyjR50Hb4weMYyVW8u6sLiJkSVWub6fe6oKNMlwybYjext4/KFGX1TxcOG4WIhcRfDsI5fI3Eo9FyigKqOqz3AVPmoSZ0il7J1TO1DpXCnrXjvCpavB2Yun/iDh0s6HKDC7Wh5wD8gfP2enAaH29Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbIsDbmw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2F0C4CEE3;
-	Tue, 15 Jul 2025 13:41:12 +0000 (UTC)
+	 MIME-Version; b=d7SnHog5tFnI70+LrGnxUeyHhfLV7B0QLT44j95dZhd3sqlM5cykUbXh1/imS7pPABdR5fhmaGInuonPTzuOQffT7vIq2Cc4frzfdb/QXFHmJB1D3d0K2cCKKXWY0sUwefMlXgxp3xR3CjWr89vBv4JGuv/FdrkxS8M9u/A95pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fsHyzUJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D33C4CEE3;
+	Tue, 15 Jul 2025 13:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586872;
-	bh=c0WaRU+vKTU2M09OE65CgzjphAIlr6Ab9r40/ldJQqY=;
+	s=korg; t=1752586409;
+	bh=iQi5aQp08sYGwvY4eIk0UOK2xRm47q/X86P4v1LLoOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbIsDbmwnL5if2N+CgfuFRYhhCEkQG4FRj93USTbzaWi2cNZpPLNdseX8bfLG2nS5
-	 dji/cKzaoTavzZuydH0TVzS3Gh5DKYaNq3WOU3KtVgF2kVFBkYRUdcvL2C7Xzq2ndy
-	 qaJXDk7KZ8S1JGUiU3OefR+aT4NY4jFYTgVlKIyM=
+	b=0fsHyzUJlsf+P6lhNbkCYbESxxQ/JpoOcpiq5SG6+P02Sx62VJBtJsWsQ1uaR2dlV
+	 +s3GiL74O4ZZdCiQOkjiC/WtcGd58FoS66OrndoINGdAjN22QhU9ELW2YJpDvgPPLV
+	 y4gqV1WC1idqXDdjDaGQmEyhOXHUEw9WH6CYZSpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Lo <michael.lo@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.15 080/192] wifi: mt76: mt7925: fix invalid array index in ssid assignment during hw scan
-Date: Tue, 15 Jul 2025 15:12:55 +0200
-Message-ID: <20250715130818.133897881@linuxfoundation.org>
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.4 054/148] arm64: Restrict pagetable teardown to avoid false warning
+Date: Tue, 15 Jul 2025 15:12:56 +0200
+Message-ID: <20250715130802.490153148@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Lo <michael.lo@mediatek.com>
+From: Dev Jain <dev.jain@arm.com>
 
-commit c701574c54121af2720648572efbfe77564652d1 upstream.
+commit 650768c512faba8070bf4cfbb28c95eb5cd203f3 upstream.
 
-Update the destination index to use 'n_ssids', which is incremented only
-when a valid SSID is present. Previously, both mt76_connac_mcu_hw_scan()
-and mt7925_mcu_hw_scan() used the loop index 'i' for the destination
-array, potentially leaving gaps if any source SSIDs had zero length.
+Commit 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from
+pXd_free_pYd_table()") removes the pxd_present() checks because the
+caller checks pxd_present(). But, in case of vmap_try_huge_pud(), the
+caller only checks pud_present(); pud_free_pmd_page() recurses on each
+pmd through pmd_free_pte_page(), wherein the pmd may be none. Thus it is
+possible to hit a warning in the latter, since pmd_none => !pmd_table().
+Thus, add a pmd_present() check in pud_free_pmd_page().
 
+This problem was found by code inspection.
+
+Fixes: 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
 Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Michael Lo <michael.lo@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250612062046.160598-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reported-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20250527082633.61073-1-dev.jain@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |    4 ++--
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c      |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/mm/mmu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1703,8 +1703,8 @@ int mt76_connac_mcu_hw_scan(struct mt76_
- 		if (!sreq->ssids[i].ssid_len)
- 			continue;
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1041,7 +1041,8 @@ int pud_free_pmd_page(pud_t *pudp, unsig
+ 	next = addr;
+ 	end = addr + PUD_SIZE;
+ 	do {
+-		pmd_free_pte_page(pmdp, next);
++		if (pmd_present(READ_ONCE(*pmdp)))
++			pmd_free_pte_page(pmdp, next);
+ 	} while (pmdp++, next += PMD_SIZE, next != end);
  
--		req->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
--		memcpy(req->ssids[i].ssid, sreq->ssids[i].ssid,
-+		req->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
-+		memcpy(req->ssids[n_ssids].ssid, sreq->ssids[i].ssid,
- 		       sreq->ssids[i].ssid_len);
- 		n_ssids++;
- 	}
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -2834,8 +2834,8 @@ int mt7925_mcu_hw_scan(struct mt76_phy *
- 		if (!sreq->ssids[i].ssid_len)
- 			continue;
- 
--		ssid->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
--		memcpy(ssid->ssids[i].ssid, sreq->ssids[i].ssid,
-+		ssid->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
-+		memcpy(ssid->ssids[n_ssids].ssid, sreq->ssids[i].ssid,
- 		       sreq->ssids[i].ssid_len);
- 		n_ssids++;
- 	}
+ 	pud_clear(pudp);
 
 
 
