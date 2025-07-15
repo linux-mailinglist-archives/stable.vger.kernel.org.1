@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CF6B05D61
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FF3B05B51
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 700434A82E8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B6E817D5FB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B172E3B00;
-	Tue, 15 Jul 2025 13:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E102E2F1E;
+	Tue, 15 Jul 2025 13:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuDjj4zj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hm0J78jx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448EB2E2F06;
-	Tue, 15 Jul 2025 13:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C982E2F13;
+	Tue, 15 Jul 2025 13:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586335; cv=none; b=uxC/4MSqjpIwoM6sPeYfPLjUiRoRyaB0oVsFxwcfp5lhVptpi2R5nJXiEKmaez0z80Uv9xAgVBzIQ4N6tl9xqJ0DKZ9No96HUb85PThj2kAWpexZ8AudN5XHatz/f1tIfwUeskLbsk63MmjlbBdG/4JOVuIJ1EabxP1We3lNMs8=
+	t=1752585548; cv=none; b=p7KBGmPtK9U27B1jL7Xb4e78DsRw2uWOFjWuUiiyZTWAgY1yks96ZNb8/ZgVfYG1oughVe0m73ZDGicYGdi5iiR0gSylPnTRxk00f//2BLOSb4iOfKRp39PRRZjNh/FtSRbCsQa8CpsMo+YNOETnI4anubf3r3OSNYb7GLldBI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586335; c=relaxed/simple;
-	bh=gpKa8v//eCon/zzSPxrWywknJuMnslOpw8D2phbfGPk=;
+	s=arc-20240116; t=1752585548; c=relaxed/simple;
+	bh=OpkJ+0bYBKcd5oUUbpKWaq/8x7ixPgzh9jvUFWZRINQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dq1IsxLVMMVaIu2HZ0a/oLOkLtbpFllfLxIZxr6d6jUPREvxLTKvILpIuQeMYtckw5YJ4DLRX6FSFqQm9N8cy5pvJi1inkfLg6KVdn0ZeldCQgZ1AXBTiFELak8OMuGlRIsq9dN51MI4Fd+aOdtWA2+ztxPue/QtNZxIvULiSn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuDjj4zj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1C9C4CEE3;
-	Tue, 15 Jul 2025 13:32:14 +0000 (UTC)
+	 MIME-Version; b=tE1heEhkkIXohx1+qJ2M2IOx+Ea5sHFig85FL9ujXl+0Ww87R+pmAp0kTToRsRzU+AS9Mwcf+9wKS5/p+ByukRojk6JtC6lkQ+rA6FfUDkOqO5lGKI349pCnUbwNeviw/Kkb1ZF0TolSt5EaPWb8jqizbr9Ycbfuhlj1wnVxgdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hm0J78jx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1A9C4CEE3;
+	Tue, 15 Jul 2025 13:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586335;
-	bh=gpKa8v//eCon/zzSPxrWywknJuMnslOpw8D2phbfGPk=;
+	s=korg; t=1752585548;
+	bh=OpkJ+0bYBKcd5oUUbpKWaq/8x7ixPgzh9jvUFWZRINQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NuDjj4zjZ6smDSL0pHAaq93UNOYvKZ+AoIUsiRh4zSRwYVpLMYPeaU77HpEEbnV3b
-	 5gkjnnKnlf0TOA53DshlAuL9ZMJsUR+ObnaMQVyfzpmXOF0RMqNniU+f6QnKKcetDT
-	 zape1s44S40rEi8UUkj40eq084J+/NYcr8mDxBNs=
+	b=Hm0J78jxroGsQlbL5rNpZBKdEdMUhf/f3beJXdZnW3aHK/zQSKIyxAPgFKKeJekmq
+	 7/8NHYOatWC9ShJDH7B7YsLS5EVPl2GWAnsAN0d7+PoCX0xdOasBh3lsmJY3v71LF4
+	 G2lole7rbV6DvJYogvX7GvhUHvt3iyIsQueyvVb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 026/148] ASoC: meson: meson-card-utils: use of_property_present() for DT parsing
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Prashanth K <prashanth.k@oss.qualcomm.com>
+Subject: [PATCH 6.12 080/163] usb: gadget: u_serial: Fix race condition in TTY wakeup
 Date: Tue, 15 Jul 2025 15:12:28 +0200
-Message-ID: <20250715130801.365178230@linuxfoundation.org>
+Message-ID: <20250715130811.942020359@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 171eb6f71e9e3ba6a7410a1d93f3ac213f39dae2 ]
+commit c529c3730bd09115684644e26bf01ecbd7e2c2c9 upstream.
 
-Commit c141ecc3cecd ("of: Warn when of_property_read_bool() is used on
-non-boolean properties") added a warning when trying to parse a property
-with a value (boolean properties are defined as: absent = false, present
-without any value = true). This causes a warning from meson-card-utils.
+A race condition occurs when gs_start_io() calls either gs_start_rx() or
+gs_start_tx(), as those functions briefly drop the port_lock for
+usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
+port.tty and port_usb, respectively.
 
-meson-card-utils needs to know about the existence of the
-"audio-routing" and/or "audio-widgets" properties in order to properly
-parse them. Switch to of_property_present() in order to silence the
-following warning messages during boot:
-  OF: /sound: Read of boolean property 'audio-routing' with a value.
-  OF: /sound: Read of boolean property 'audio-widgets' with a value.
+Use the null-safe TTY Port helper function to wake up TTY.
 
-Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
-Tested-by: Christian Hewitt <christianshewitt@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://patch.msgid.link/20250419213448.59647-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Example
+  CPU1:			      CPU2:
+  gserial_connect() // lock
+  			      gs_close() // await lock
+  gs_start_rx()     // unlock
+  usb_ep_queue()
+  			      gs_close() // lock, reset port.tty and unlock
+  gs_start_rx()     // lock
+  tty_wakeup()      // NPE
+
+Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://lore.kernel.org/linux-usb/20240116141801.396398-1-khtsai@google.com/
+Link: https://lore.kernel.org/r/20250617050844.1848232-2-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/meson/meson-card-utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/function/u_serial.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/meson/meson-card-utils.c b/sound/soc/meson/meson-card-utils.c
-index a70d244ef88b6..f66a0c38c3037 100644
---- a/sound/soc/meson/meson-card-utils.c
-+++ b/sound/soc/meson/meson-card-utils.c
-@@ -244,7 +244,7 @@ static int meson_card_parse_of_optional(struct snd_soc_card *card,
- 						    const char *p))
- {
- 	/* If property is not provided, don't fail ... */
--	if (!of_property_read_bool(card->dev->of_node, propname))
-+	if (!of_property_present(card->dev->of_node, propname))
- 		return 0;
+--- a/drivers/usb/gadget/function/u_serial.c
++++ b/drivers/usb/gadget/function/u_serial.c
+@@ -294,8 +294,8 @@ __acquires(&port->port_lock)
+ 			break;
+ 	}
  
- 	/* ... but do fail if it is provided and the parsing fails */
--- 
-2.39.5
-
+-	if (do_tty_wake && port->port.tty)
+-		tty_wakeup(port->port.tty);
++	if (do_tty_wake)
++		tty_port_tty_wakeup(&port->port);
+ 	return status;
+ }
+ 
+@@ -577,7 +577,7 @@ static int gs_start_io(struct gs_port *p
+ 		gs_start_tx(port);
+ 		/* Unblock any pending writes into our circular buffer, in case
+ 		 * we didn't in gs_start_tx() */
+-		tty_wakeup(port->port.tty);
++		tty_port_tty_wakeup(&port->port);
+ 	} else {
+ 		/* Free reqs only if we are still connected */
+ 		if (port->port_usb) {
 
 
 
