@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC25BB05E70
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DE4B05F53
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981823BAABF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA22E7BE385
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7202EA48E;
-	Tue, 15 Jul 2025 13:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252EF2EAD0D;
+	Tue, 15 Jul 2025 13:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIps1ktP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ye2LUGKz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B812E498B;
-	Tue, 15 Jul 2025 13:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55B42E92C2;
+	Tue, 15 Jul 2025 13:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586833; cv=none; b=DVPIKXXHXlyCz9al+xlys7HeldINPZbSXW9fW/So7I8cRWbHLCY2WNvKTrfq/Kqar6rssTvIfL8pSCfRc4KANJRG6ECC8detU1uxBTT6juEN5fIv0vXvzqLwz+WuviOsvU/B3W6zo3w6NeUBgvmQJ66kBSaokhOAgfFSjc2TcXY=
+	t=1752587545; cv=none; b=oAXyK0InV1wuLQDfZPSdtkZLk3boJ1PjpzpJvkw9c4RdT7KZIdIal4H3d0c6Eh41TXBtoOYNPFWOVooS9n4V1Frlm3bECsM62TodYTri0RLk1AxZ+hNw00ADMycEINLsawWXqUp8TLnni6VqVfa/5HXERxZPEHE/V0Eskp6Xv8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586833; c=relaxed/simple;
-	bh=eL0CY1csAHfwSap++gtrqAZqmuopaLLy2I/OBAk4XTg=;
+	s=arc-20240116; t=1752587545; c=relaxed/simple;
+	bh=fX4aUcGKHfWt9i0UM+HwPV62ayXXJKcmbwOp8KSZYww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IQv3m+tzWlE63rXG3ZIv/FBl2xQkgMw8HsvUj6GoZ55rx4YTsoCkpV7jX9/QnVk5rTuNvjeDTP59qGU39oGxKUNKwxYgKK2vi8mruasNiE6iV47jOzrQbPghLYDAUzEm5sHwWnAPrBbwZEoT6V8lZnETePqeQ8/uYUoXtvyvgjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIps1ktP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B7DC4CEF1;
-	Tue, 15 Jul 2025 13:40:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FoO93eImudnFBiWFzxQ2apzBKSrrxda4DUqQgY6jNp4KrHQNvOqu1XNSgGUegu8MwuvG5Fuj/yA4hMmycfxCeSK3WTdbhPxOhJ7P1NGs0mDu6ZzLVUFxNhoLBHMP/DdJVG+FACUxM4wBeLEUCHOBHdqllSPAJ4LT+i6o6nmOaI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ye2LUGKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C7DC4CEF1;
+	Tue, 15 Jul 2025 13:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586833;
-	bh=eL0CY1csAHfwSap++gtrqAZqmuopaLLy2I/OBAk4XTg=;
+	s=korg; t=1752587545;
+	bh=fX4aUcGKHfWt9i0UM+HwPV62ayXXJKcmbwOp8KSZYww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FIps1ktPRrxFCkkZ4U1hBAboKa/nx4KyWh83TZzdbX7lHzQqzFCpIJkpVVS0vwMyf
-	 LYHX1I534pMzt51TzYiTNhgEa6i+mbp0AuStcOsgfMtPuPT7UZQvkdhDiKq+2705rv
-	 XVFjy8gU1WMocoMkcuYr4I+0EYtLwk/Eebu7qLRg=
+	b=ye2LUGKzJhdJhFb0bEcKcDFjhIt4kGR7lz+f74SQx/12EXL4RW8KTcbCKzFZUMUV4
+	 F6ptlmXYn5YjzfAS+UU1iVFyQ+bESgPcLucFa6kIEdvUH1SOAmIikQVfxHAuBk64pI
+	 qWm/VOy6YiJcbTi2F/iK2+/Sx8Sldc+UQXeOorvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 066/192] io_uring/msg_ring: ensure io_kiocb freeing is deferred for RCU
+	Daan De Meyer <daan.j.demeyer@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 052/208] vsock/uapi: fix linux/vm_sockets.h userspace compilation errors
 Date: Tue, 15 Jul 2025 15:12:41 +0200
-Message-ID: <20250715130817.586486772@linuxfoundation.org>
+Message-ID: <20250715130813.036269900@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,97 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit fc582cd26e888b0652bc1494f252329453fd3b23 upstream.
+[ Upstream commit 22bbc1dcd0d6785fb390c41f0dd5b5e218d23bdd ]
 
-syzbot reports that defer/local task_work adding via msg_ring can hit
-a request that has been freed:
+If a userspace application just include <linux/vm_sockets.h> will fail
+to build with the following errors:
 
-CPU: 1 UID: 0 PID: 19356 Comm: iou-wrk-19354 Not tainted 6.16.0-rc4-syzkaller-00108-g17bbde2e1716 #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xd2/0x2b0 mm/kasan/report.c:521
- kasan_report+0x118/0x150 mm/kasan/report.c:634
- io_req_local_work_add io_uring/io_uring.c:1184 [inline]
- __io_req_task_work_add+0x589/0x950 io_uring/io_uring.c:1252
- io_msg_remote_post io_uring/msg_ring.c:103 [inline]
- io_msg_data_remote io_uring/msg_ring.c:133 [inline]
- __io_msg_ring_data+0x820/0xaa0 io_uring/msg_ring.c:151
- io_msg_ring_data io_uring/msg_ring.c:173 [inline]
- io_msg_ring+0x134/0xa00 io_uring/msg_ring.c:314
- __io_issue_sqe+0x17e/0x4b0 io_uring/io_uring.c:1739
- io_issue_sqe+0x165/0xfd0 io_uring/io_uring.c:1762
- io_wq_submit_work+0x6e9/0xb90 io_uring/io_uring.c:1874
- io_worker_handle_work+0x7cd/0x1180 io_uring/io-wq.c:642
- io_wq_worker+0x42f/0xeb0 io_uring/io-wq.c:696
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+    /usr/include/linux/vm_sockets.h:182:39: error: invalid application of ‘sizeof’ to incomplete type ‘struct sockaddr’
+      182 |         unsigned char svm_zero[sizeof(struct sockaddr) -
+          |                                       ^~~~~~
+    /usr/include/linux/vm_sockets.h:183:39: error: ‘sa_family_t’ undeclared here (not in a function)
+      183 |                                sizeof(sa_family_t) -
+          |
 
-which is supposed to be safe with how requests are allocated. But msg
-ring requests alloc and free on their own, and hence must defer freeing
-to a sane time.
+Include <sys/socket.h> for userspace (guarded by ifndef __KERNEL__)
+where `struct sockaddr` and `sa_family_t` are defined.
+We already do something similar in <linux/mptcp.h> and <linux/if.h>.
 
-Add an rcu_head and use kfree_rcu() in both spots where requests are
-freed. Only the one in io_msg_tw_complete() is strictly required as it
-has been visible on the other ring, but use it consistently in the other
-spot as well.
-
-This should not cause any other issues outside of KASAN rightfully
-complaining about it.
-
-Link: https://lore.kernel.org/io-uring/686cd2ea.a00a0220.338033.0007.GAE@google.com/
-Reported-by: syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Fixes: 0617bb500bfa ("io_uring/msg_ring: improve handling of target CQE posting")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Reported-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250623100053.40979-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/io_uring_types.h |    2 ++
- io_uring/msg_ring.c            |    4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ include/uapi/linux/vm_sockets.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -701,6 +701,8 @@ struct io_kiocb {
- 		struct hlist_node	hash_node;
- 		/* For IOPOLL setup queues, with hybrid polling */
- 		u64                     iopoll_start;
-+		/* for private io_kiocb freeing */
-+		struct rcu_head		rcu_head;
- 	};
- 	/* internal polling, see IORING_FEAT_FAST_POLL */
- 	struct async_poll		*apoll;
---- a/io_uring/msg_ring.c
-+++ b/io_uring/msg_ring.c
-@@ -82,7 +82,7 @@ static void io_msg_tw_complete(struct io
- 		spin_unlock(&ctx->msg_lock);
- 	}
- 	if (req)
--		kmem_cache_free(req_cachep, req);
-+		kfree_rcu(req, rcu_head);
- 	percpu_ref_put(&ctx->refs);
- }
+diff --git a/include/uapi/linux/vm_sockets.h b/include/uapi/linux/vm_sockets.h
+index fd0ed7221645d..67e3938e86bd0 100644
+--- a/include/uapi/linux/vm_sockets.h
++++ b/include/uapi/linux/vm_sockets.h
+@@ -17,6 +17,10 @@
+ #ifndef _UAPI_VM_SOCKETS_H
+ #define _UAPI_VM_SOCKETS_H
  
-@@ -90,7 +90,7 @@ static int io_msg_remote_post(struct io_
- 			      int res, u32 cflags, u64 user_data)
- {
- 	if (!READ_ONCE(ctx->submitter_task)) {
--		kmem_cache_free(req_cachep, req);
-+		kfree_rcu(req, rcu_head);
- 		return -EOWNERDEAD;
- 	}
- 	req->opcode = IORING_OP_NOP;
++#ifndef __KERNEL__
++#include <sys/socket.h>        /* for struct sockaddr and sa_family_t */
++#endif
++
+ #include <linux/socket.h>
+ 
+ /* Option name for STREAM socket buffer size.  Use as the option name in
+-- 
+2.39.5
+
 
 
 
