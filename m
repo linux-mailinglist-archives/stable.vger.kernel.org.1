@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85B2B05B55
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C8EB05D33
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85BF43A905B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:18:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EB8F1C273BE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43922E1734;
-	Tue, 15 Jul 2025 13:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3AD2E7658;
+	Tue, 15 Jul 2025 13:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDzPMwsE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHori50y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDAD2701B8;
-	Tue, 15 Jul 2025 13:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4D62E7646;
+	Tue, 15 Jul 2025 13:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585503; cv=none; b=is0gKp1BupJYm5+n+6spcfJjrrnN2E/k3FcBHlgBA7pOel8EXAZdReT0aRjlZ6XAyIcXAilz4pXMZZP7XUwPEvznJTvcqqNhJ3CwiU/TIa2bmF7Y+AtpC2S+NoziHKWfB3zMvAJ5D4UtycqityWbl/M+R1OEmuMJyYSafskdGHk=
+	t=1752586292; cv=none; b=U70LhIPvIAJycvYOr0CRrZ2fd1Eztd2aD/NxQajT+nLyj/QIlJZiO02QFCtotaU39k2jEDxXR3A6cDT9uj0khBgM2V7oWCcF9P/79/0tDWiMkaRLb0jnQ1qXocYHn59tRMZ9sB5MAoETMmEaF6annrsVLKW3SUEOU6fno941HiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585503; c=relaxed/simple;
-	bh=ePFS/8QiOfZ/OXeZ50ngNHXm5ubIOS/GpyDcBUie4Ks=;
+	s=arc-20240116; t=1752586292; c=relaxed/simple;
+	bh=ODVdmA2hY0ky5GROX++6qb0rYl2fE97Pu+dsJ04CMlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RZLITrePYh1zhcsS5y//P+/YadZ92Tiv7xpH7HjlGrcLYBb1gB2WRVw6BDfbvicWsgsCNfp37nJ5ztyHJJBCDPqVdqSZtRVWPvG62StxwWe+24lr41SsZk2Fr9W5XR1Ivc6zvh8smq8FnDaMFvpi0Ez8cmBp3+H2a45Emx+kewQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDzPMwsE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CABC4CEE3;
-	Tue, 15 Jul 2025 13:18:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dV6/jDLnDlh0KIVkXh953lBL9tilkZAFDioZ+f+/wM767qMOJPw6ZmwuEB4+6iTzmT+tUeRtfd4qzCHTmNTmyRcEvH2nnR/FiWWzDKHklyyJGsLcBdkTr5kzSH7+8tzvLokPAsYVXYh6C5EFQA7D9iOL0BG3fQMHTfHwk1TlSuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHori50y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D34AC4CEE3;
+	Tue, 15 Jul 2025 13:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585503;
-	bh=ePFS/8QiOfZ/OXeZ50ngNHXm5ubIOS/GpyDcBUie4Ks=;
+	s=korg; t=1752586292;
+	bh=ODVdmA2hY0ky5GROX++6qb0rYl2fE97Pu+dsJ04CMlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDzPMwsEOdkVXPqrYks0jOZFjvy/RaZm0cABnnc9bYxrT/D+PkIAXumd/FqNsmKyy
-	 8Fu7n24lnEqzHmw1WjfFl7HHOaocAOZuQYgRKsH0nghoX6gnUQbdBfvupmDvnVsgpn
-	 wA4wwWCqXz72vKhRjmWreBMCy6XMXKCFcePbdqOM=
+	b=dHori50yJhngtOwE/DOhEE+9jdn4sjMiUkDdP+PEq33ZK/9xSRdBB9EUvC99PGNHV
+	 iyKZ2CmMCvM2PZ2vnjzvEtaSNVsUYW06drUwjjCznQOmxk40HozpH9OfjVa42WJ8D1
+	 ko60xhQF4omEzuCuDnzJIDadqRkdfw8sG7Cer230=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.12 065/163] pwm: mediatek: Ensure to disable clocks in error path
+	Jos Wang <joswang@lenovo.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 011/148] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
 Date: Tue, 15 Jul 2025 15:12:13 +0200
-Message-ID: <20250715130811.356495162@linuxfoundation.org>
+Message-ID: <20250715130800.756259356@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Jos Wang <joswang@lenovo.com>
 
-commit 505b730ede7f5c4083ff212aa955155b5b92e574 upstream.
+[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
 
-After enabling the clocks each error path must disable the clocks again.
-One of them failed to do so. Unify the error paths to use goto to make it
-harder for future changes to add a similar bug.
+Although some Type-C DRD devices that do not support the DP Sink
+function (such as Huawei Mate 40Pro), the Source Port initiates
+Enter Mode CMD, but the device responds to Enter Mode ACK, the
+Source port then initiates DP Status Update CMD, and the device
+responds to DP Status Update NAK.
 
-Fixes: 7ca59947b5fc ("pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250704172728.626815-2-u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
+Shall Not be sent during Modal Operation between the Port Partners.
+At this time, the source port initiates DR_Swap message through the
+"echo device > /sys/class/typec/port0/data_role" command to switch
+the data role from host to device. The device will initiate a Hard
+Reset for recovery, resulting in the failure of data role swap.
+
+Therefore, when DP Status Update NAK is received, Exit Mode CMD is
+initiated to exit the currently entered DP altmode.
+
+Signed-off-by: Jos Wang <joswang@lenovo.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mediatek.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -130,8 +130,10 @@ static int pwm_mediatek_config(struct pw
- 		return ret;
- 
- 	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
--	if (!clk_rate)
--		return -EINVAL;
-+	if (!clk_rate) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
- 
- 	/* Make sure we use the bus clock and not the 26MHz clock */
- 	if (pc->soc->has_ck_26m_sel)
-@@ -150,9 +152,9 @@ static int pwm_mediatek_config(struct pw
- 	}
- 
- 	if (clkdiv > PWM_CLK_DIV_MAX) {
--		pwm_mediatek_clk_disable(chip, pwm);
- 		dev_err(pwmchip_parent(chip), "period of %d ns not supported\n", period_ns);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto out;
- 	}
- 
- 	if (pc->soc->pwm45_fixup && pwm->hwpwm > 2) {
-@@ -169,9 +171,10 @@ static int pwm_mediatek_config(struct pw
- 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
- 	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
- 
-+out:
- 	pwm_mediatek_clk_disable(chip, pwm);
- 
--	return 0;
-+	return ret;
- }
- 
- static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index a2a1baabca933..35d7a4d40d9a4 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -288,6 +288,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
+ 		break;
+ 	case CMDT_RSP_NAK:
+ 		switch (cmd) {
++		case DP_CMD_STATUS_UPDATE:
++			if (typec_altmode_exit(alt))
++				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
++			break;
+ 		case DP_CMD_CONFIGURE:
+ 			dp->data.conf = 0;
+ 			ret = dp_altmode_configured(dp);
+-- 
+2.39.5
+
 
 
 
