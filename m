@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1855B05E14
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E252FB05CA0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:34:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E7827A62BB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CC8E1C24BA5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982BA2E611A;
-	Tue, 15 Jul 2025 13:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B932E7F0E;
+	Tue, 15 Jul 2025 13:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpedw/Qc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1bXTO06"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567582E6103;
-	Tue, 15 Jul 2025 13:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83E42E7F0B;
+	Tue, 15 Jul 2025 13:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586923; cv=none; b=SIYX5OW/pKdBQlLIxlF9srR7scnPaeDWiHaFfDV/zluyobpQTV3Uh+HybIvQ5W1+4Bq/AfFmTiBIbPZzYRjqgRDoyIdfn6DjMlTw2AMmoJyPnVadEFxgZHDPCtHGN7KqHqUgpgIOriQghU7L8rjlBBXC0207X/FL4ygB/uviA54=
+	t=1752586102; cv=none; b=FSanvG96vgJI9Fr3BfAQQZSDPFjWiH3uPpW/qkko+fHe5EadrNIIGfUB5ljhh1DBLE0uP+QYuVYFXke9aWEyQQ0XgXR1nH83vRiy/Ent/D4TVfqN//zQeLRECBm3eKTDVNP7oXHCMjYa4/rAmnsnhmZfru8VaQfqxMytwtfpGSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586923; c=relaxed/simple;
-	bh=+mv+U5m5AVfuyvzVoK/bdd7vIfVO0pBXZZWidzzznzM=;
+	s=arc-20240116; t=1752586102; c=relaxed/simple;
+	bh=J4EtmjRxzM017yu8YCKhyBKeNnt4fFq+6GO2sHkjFA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPlN2KXFKCa2c6BJgGY9VtQUfEFGeBM/NB4jsP6lvkwWKBeJqjiTX/EEKgwiTOS1azsKo6nbT9t3655PONBPj9qBZAmnj5IWArFxGdqNf+wm+dZYRk8ZCnHulppk+CfHk8MaszMQbD+IvKxH9wQihvtfJIU09ZbyiJWHnJCLQwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpedw/Qc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9105CC4CEE3;
-	Tue, 15 Jul 2025 13:42:02 +0000 (UTC)
+	 MIME-Version; b=s2E4Z2pZzksLqvlj+eutuvQKU07O59ELU5qWtWrSHPCgG17rYij/FYSHJunMj+GtX2dUPzAZLtEg73noSA+YIi/1JGWDgcd5cvUZf5GBZM0YAfzJTVj6KNKQJ2FHYv8oeZKYvUZ6ATmSE8ehmNMsGpdkF89FmPo2dTA0S5j/rHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1bXTO06; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED98C4CEE3;
+	Tue, 15 Jul 2025 13:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586922;
-	bh=+mv+U5m5AVfuyvzVoK/bdd7vIfVO0pBXZZWidzzznzM=;
+	s=korg; t=1752586102;
+	bh=J4EtmjRxzM017yu8YCKhyBKeNnt4fFq+6GO2sHkjFA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpedw/QcR8i8bjU1YhDoUZCRVRBdD/ODSPXAqOJCjOinGKSBoz0dC+frDbt2armj5
-	 gzyKyDiitY8IepJtlm63VSRXkpNEQ0DjhXEXwTSSHwIAtA337qtkUsPTZDR6cMkcDr
-	 JYLmFRINRmE1eZXBkQfVh5UOnrb2p9huEpZ+VhRw=
+	b=S1bXTO06sLBn1fL1DO80oQbdCB87v4Isw1NzG9eNUi0aUZem4jdkqq4l16HwmmlKh
+	 FYyeg0EjNl/m03pmAqQ8iG9+shw4lVtLrNPj5Q5s7/KBzgJ7/p1kVwTWS9Go4TjafE
+	 xx+/ddua5z2D0fhZx92nadqGM31y2AixrshLEM38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 100/192] maple_tree: fix mt_destroy_walk() on root leaf node
-Date: Tue, 15 Jul 2025 15:13:15 +0200
-Message-ID: <20250715130818.906098970@linuxfoundation.org>
+	Oleg Nesterov <oleg@redhat.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Maximilian Heyne <mheyne@amazon.de>
+Subject: [PATCH 5.15 17/77] fs/proc: do_task_stat: use __for_each_thread()
+Date: Tue, 15 Jul 2025 15:13:16 +0200
+Message-ID: <20250715130752.389295899@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit ea9b77f98d94c4d5c1bd1ac1db078f78b40e8bf5 upstream.
+commit 7904e53ed5a20fc678c01d5d1b07ec486425bb6a upstream.
 
-On destroy, we should set each node dead.  But current code miss this when
-the maple tree has only the root node.
+do/while_each_thread should be avoided when possible.
 
-The reason is mt_destroy_walk() leverage mte_destroy_descend() to set node
-dead, but this is skipped since the only root node is a leaf.
-
-Fixes this by setting the node dead if it is a leaf.
-
-Link: https://lore.kernel.org/all/20250407231354.11771-1-richard.weiyang@gmail.com/
-Link: https://lkml.kernel.org/r/20250624191841.64682-1-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20230909164501.GA11581@redhat.com
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7601df8031fd ("fs/proc: do_task_stat: use sig->stats_lock to gather the threads/children stats")
+Cc: stable@vger.kernel.org
+[ mheyne: adjusted context ]
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/maple_tree.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/proc/array.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5288,6 +5288,7 @@ static void mt_destroy_walk(struct maple
- 	struct maple_enode *start;
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -530,18 +530,18 @@ static int do_task_stat(struct seq_file
+ 		cgtime = sig->cgtime;
  
- 	if (mte_is_leaf(enode)) {
-+		mte_set_node_dead(enode);
- 		node->type = mte_node_type(enode);
- 		goto free_leaf;
- 	}
+ 		if (whole) {
+-			struct task_struct *t = task;
++			struct task_struct *t;
+ 
+ 			min_flt = sig->min_flt;
+ 			maj_flt = sig->maj_flt;
+ 			gtime = sig->gtime;
+ 
+ 			rcu_read_lock();
+-			do {
++			__for_each_thread(sig, t) {
+ 				min_flt += t->min_flt;
+ 				maj_flt += t->maj_flt;
+ 				gtime += task_gtime(t);
+-			} while_each_thread(task, t);
++			}
+ 			rcu_read_unlock();
+ 		}
+ 	} while (need_seqretry(&sig->stats_lock, seq));
 
 
 
