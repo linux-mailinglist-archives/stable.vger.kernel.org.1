@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124A1B05F8E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC14B06008
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:12:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCD7D1C44670
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEE7A4E0283
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038112F0E3F;
-	Tue, 15 Jul 2025 13:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EAF2ECE97;
+	Tue, 15 Jul 2025 13:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRqRQJPQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6mLGiEi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AE92F0C66;
-	Tue, 15 Jul 2025 13:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027C72E718E;
+	Tue, 15 Jul 2025 13:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587208; cv=none; b=meCx0sVv/Ig+4z6KiGbojjO/3Rg6/4FtSuXVzASllXN60O1PdVJPmSp8OsZHUdnJzJhIta+f6vcRT4AbcJA6Otxe3bUb+MytjBESI7SEbBII4TJPFZZv7USQ+pCgrZPtyCPLDs/T+PhOoLA+HUC0emNV4/TFQld9E2Jn3+yP9w0=
+	t=1752587733; cv=none; b=dm/n68ESIRmcfXdibNC+TuLjPcWoB6Ocp0cLB6Z2LSGKi7Ajq/2pY+mKOeFT9PuTIQiACP4Wv+fWwJJ2i0yjJL8Aep9JHDTzwz/8pEPjYPScGx4CEPMQ1/7alOxZE/TXDsZRx4Ehw2/9QDbnrQu4DJzz2otg3JUBHv0r3p2lckU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587208; c=relaxed/simple;
-	bh=7wl6WISG3Pj0w9TGWgoWqbUkzb6NUem+FmVkHXdKuNs=;
+	s=arc-20240116; t=1752587733; c=relaxed/simple;
+	bh=mZ8Of4uskfBsy5jY3JrtDlMpI2AOQXKb8tjB7WnKVbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PC2kdtbbJhFgqVPiiiQYD+e0NAk/daZeR/PrUObEnTYG6/XPGUkssU1a64KMmgX2vWIauJ1FgpJG2PUvux2vwmtcWR+oz4PZykefiNJX2WdfpVfPnjP/NJnnpn3yFYl2mGA7EdcpnNzXKjT1IzrHijI/mW+sA87P5e2IYtr2/lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRqRQJPQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0120C4CEF1;
-	Tue, 15 Jul 2025 13:46:47 +0000 (UTC)
+	 MIME-Version; b=FpkAlMlABd7HeAN3nHDFxgZx61AQIRR2lriwCJRYkdERhcfSzmBiBm86XTokSNRKE1sHayKqcxXdkKcyHj5Y5Y4CGxSPun1QOGRaXw8lCa7voExAIAnd9J5mMVSFNwrGf9q+xQN5sXaIzg7koT5o7Fehxb15lI3pR5DCkjjUTII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6mLGiEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E906C4CEE3;
+	Tue, 15 Jul 2025 13:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587208;
-	bh=7wl6WISG3Pj0w9TGWgoWqbUkzb6NUem+FmVkHXdKuNs=;
+	s=korg; t=1752587732;
+	bh=mZ8Of4uskfBsy5jY3JrtDlMpI2AOQXKb8tjB7WnKVbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRqRQJPQFQ8NRLDkdMFG3oYtdaaGn/y47/RhafyALXg151b/CMW4asEZPQwhLDgYw
-	 PQGaO9X4r1xN5IckboRT+m1YdUJVw5xc1Xvs5qTUaKUYR01BvF1ILzR+CUFFw+/1Tl
-	 Szrtp+65slC/1p+C5KjMgaNaK8VaZFsWZJ4xzgew=
+	b=V6mLGiEiqq1PhP4S/jCOyHyvVo3IHY8ruxgWeLZCmlprtUaj6PvRUWMPPc4T2kHk3
+	 9iIbCegHWTEWfhPVwEaGPVS0v0Cmcx/Hjo9Dab9ZdjfIh2U0A243YQKr7rFIFzlzCA
+	 KpU5BrY2jhaKMOQ574wXVBAtTKfnBu0MBJPub5GU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 15/88] atm: clip: Fix memory leak of struct clip_vcc.
+Subject: [PATCH 5.10 122/208] net: dpaa2-eth: rearrange variable in dpaa2_eth_get_ethtool_stats
 Date: Tue, 15 Jul 2025 15:13:51 +0200
-Message-ID: <20250715130755.125567525@linuxfoundation.org>
+Message-ID: <20250715130815.832203954@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit 62dba28275a9a3104d4e33595c7b3328d4032d8d ]
+[ Upstream commit 3313206827678f6f036eca601a51f6c4524b559a ]
 
-ioctl(ATMARP_MKIP) allocates struct clip_vcc and set it to
-vcc->user_back.
+Rearrange the variables in the dpaa2_eth_get_ethtool_stats() function so
+that we adhere to the reverse Christmas tree rule.
+Also, in the next patch we are adding more variables and I didn't know
+where to place them with the current ordering.
 
-The code assumes that vcc_destroy_socket() passes NULL skb
-to vcc->push() when the socket is close()d, and then clip_push()
-frees clip_vcc.
-
-However, ioctl(ATMARPD_CTRL) sets NULL to vcc->push() in
-atm_init_atmarp(), resulting in memory leak.
-
-Let's serialise two ioctl() by lock_sock() and check vcc->push()
-in atm_init_atmarp() to prevent memleak.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250704062416.1613927-3-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 2def09ead4ad ("dpaa2-eth: fix xdp_rxq_info leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/clip.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../ethernet/freescale/dpaa2/dpaa2-ethtool.c   | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/net/atm/clip.c b/net/atm/clip.c
-index 8059b7d1fb931..14b485f725d0c 100644
---- a/net/atm/clip.c
-+++ b/net/atm/clip.c
-@@ -645,6 +645,9 @@ static struct atm_dev atmarpd_dev = {
- 
- static int atm_init_atmarp(struct atm_vcc *vcc)
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
+index f981a523e13a4..d7de60049700f 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
+@@ -225,17 +225,8 @@ static void dpaa2_eth_get_ethtool_stats(struct net_device *net_dev,
+ 					struct ethtool_stats *stats,
+ 					u64 *data)
  {
-+	if (vcc->push == clip_push)
-+		return -EINVAL;
-+
- 	mutex_lock(&atmarpd_lock);
- 	if (atmarpd) {
- 		mutex_unlock(&atmarpd_lock);
-@@ -669,6 +672,7 @@ static int atm_init_atmarp(struct atm_vcc *vcc)
- static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- {
- 	struct atm_vcc *vcc = ATM_SD(sock);
-+	struct sock *sk = sock->sk;
- 	int err = 0;
+-	int i = 0;
+-	int j, k, err;
+-	int num_cnt;
+-	union dpni_statistics dpni_stats;
+-	u32 fcnt, bcnt;
+-	u32 fcnt_rx_total = 0, fcnt_tx_total = 0;
+-	u32 bcnt_rx_total = 0, bcnt_tx_total = 0;
+-	u32 buf_cnt;
+ 	struct dpaa2_eth_priv *priv = netdev_priv(net_dev);
+-	struct dpaa2_eth_drv_stats *extras;
+-	struct dpaa2_eth_ch_stats *ch_stats;
++	union dpni_statistics dpni_stats;
+ 	int dpni_stats_page_size[DPNI_STATISTICS_CNT] = {
+ 		sizeof(dpni_stats.page_0),
+ 		sizeof(dpni_stats.page_1),
+@@ -245,6 +236,13 @@ static void dpaa2_eth_get_ethtool_stats(struct net_device *net_dev,
+ 		sizeof(dpni_stats.page_5),
+ 		sizeof(dpni_stats.page_6),
+ 	};
++	u32 fcnt_rx_total = 0, fcnt_tx_total = 0;
++	u32 bcnt_rx_total = 0, bcnt_tx_total = 0;
++	struct dpaa2_eth_ch_stats *ch_stats;
++	struct dpaa2_eth_drv_stats *extras;
++	int j, k, err, num_cnt, i = 0;
++	u32 fcnt, bcnt;
++	u32 buf_cnt;
  
- 	switch (cmd) {
-@@ -689,14 +693,18 @@ static int clip_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		err = clip_create(arg);
- 		break;
- 	case ATMARPD_CTRL:
-+		lock_sock(sk);
- 		err = atm_init_atmarp(vcc);
- 		if (!err) {
- 			sock->state = SS_CONNECTED;
- 			__module_get(THIS_MODULE);
- 		}
-+		release_sock(sk);
- 		break;
- 	case ATMARP_MKIP:
-+		lock_sock(sk);
- 		err = clip_mkip(vcc, arg);
-+		release_sock(sk);
- 		break;
- 	case ATMARP_SETENTRY:
- 		err = clip_setentry(vcc, (__force __be32)arg);
+ 	memset(data, 0,
+ 	       sizeof(u64) * (DPAA2_ETH_NUM_STATS + DPAA2_ETH_NUM_EXTRA_STATS));
 -- 
 2.39.5
 
