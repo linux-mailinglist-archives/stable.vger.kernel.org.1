@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F99B05E2C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:50:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E28AB05EB8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 618341C40339
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C93216C1B1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0642EB5AD;
-	Tue, 15 Jul 2025 13:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC232E7189;
+	Tue, 15 Jul 2025 13:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aZOpKlX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8kro404"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CC92EB5A6;
-	Tue, 15 Jul 2025 13:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3692E7186;
+	Tue, 15 Jul 2025 13:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586589; cv=none; b=SnXp66M4LavG9nL+6POM3ETorEjturBangeV9OsI7X2TiOAyN9GZRHhQtgfrl/YvXzV1zzfsiRvnk/zopQ9nr3f11fctcpZGq6tD0KRymX/yWZ7bCwr3wDZ3xvMjygN2+T6KBsGPLO6ticazrGiFNAeLIe9eZAk0+CH11fsm7nE=
+	t=1752587055; cv=none; b=ZeU3tsni8LTtDK/YYr0gQAD6FCLjpr/of74BVYFrqzIwD9F4EJk8QXgRdfPHlh39ZpsraplMFk3NBGGTUUQ7eEwHfv6HS99Vf40rWqU9vfVp7S/8q7SBarIVGNlCQ1M9wkjAP23KJdkw/djL5iE19Hi/HR2F+ZxcZmci1yu26ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586589; c=relaxed/simple;
-	bh=1XLaTBSZZgHPe2uhaoBGsweHHQMr9asMCTADyBeGoAM=;
+	s=arc-20240116; t=1752587055; c=relaxed/simple;
+	bh=jI1bcSY3Tob9dwHMXCeAjepimVlcV5L3z2R0pH+Hf6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5Jaxuqifi2cXUU/Crs+WKFvsQUPqWJP+zxVPHnnU9HY7BfSGLl7UQGfSJrqnvtlblpSN/UeHXwHxjPwXnwg4koTcVikYPmJ3S0ewsLXSccoy5C/8EdpXyByC9ecK7/8g0dwuzng9V66d4s74heE9xN9MlDj2tzBM6dGHtaGiDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aZOpKlX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0A7C4CEE3;
-	Tue, 15 Jul 2025 13:36:28 +0000 (UTC)
+	 MIME-Version; b=ZAkjBW2rrE+Ie2kKuULxfsvA9wXNFqek60EARzburCHWgFeBHs/MpIzEdzl2y+6QWSJI9b1PA33ztKMD8aRxEHFJIkif5mcsJsy7RHwv75X+ukiOpK6qp/M1WURg/VUkL5I6845p4Pz8OkptS0GppMJR+w3HY81SL3pY+8kCF1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8kro404; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83A5C4CEE3;
+	Tue, 15 Jul 2025 13:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586589;
-	bh=1XLaTBSZZgHPe2uhaoBGsweHHQMr9asMCTADyBeGoAM=;
+	s=korg; t=1752587055;
+	bh=jI1bcSY3Tob9dwHMXCeAjepimVlcV5L3z2R0pH+Hf6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2aZOpKlXAZpYlMgJ++w2Byd75ZdWsp2IoRblAG0BOz+JVGuJzFuGquYQ/Z43/HHTz
-	 C2LyJQrK284cCIu68590BVMidAGanFRYdxxb35Fjcri+yhBp3ytvc6ZkIa4faesdll
-	 IW2EinVrbqpbgWzMxF3aPY2mVgvxsTynrwJ8RJso=
+	b=T8kro404rqDOnFRd9ElYEc7+H3inGahGYJdq0qeIALtLTyQpBeC2glN6/FDH0DR5l
+	 OPrlinOdavQq3U1BId8xTDAOGkF2m2DDIv/i/nZCOSa7togS6s48vedA0RjFUrOGsu
+	 +Bfh3DQYNQifXuJD9Afq6ecvFvFOwjN18vDnvzaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 5.4 122/148] usb: gadget: u_serial: Fix race condition in TTY wakeup
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 149/192] erofs: fix to add missing tracepoint in erofs_readahead()
 Date: Tue, 15 Jul 2025 15:14:04 +0200
-Message-ID: <20250715130805.184504920@linuxfoundation.org>
+Message-ID: <20250715130820.890777412@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Chao Yu <chao@kernel.org>
 
-commit c529c3730bd09115684644e26bf01ecbd7e2c2c9 upstream.
+[ Upstream commit d53238b614e01266a3d36b417b60a502e0698504 ]
 
-A race condition occurs when gs_start_io() calls either gs_start_rx() or
-gs_start_tx(), as those functions briefly drop the port_lock for
-usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
-port.tty and port_usb, respectively.
+Commit 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
+converts to use iomap interface, it removed trace_erofs_readahead()
+tracepoint in the meantime, let's add it back.
 
-Use the null-safe TTY Port helper function to wake up TTY.
-
-Example
-  CPU1:			      CPU2:
-  gserial_connect() // lock
-  			      gs_close() // await lock
-  gs_start_rx()     // unlock
-  usb_ep_queue()
-  			      gs_close() // lock, reset port.tty and unlock
-  gs_start_rx()     // lock
-  tty_wakeup()      // NPE
-
-Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/linux-usb/20240116141801.396398-1-khtsai@google.com/
-Link: https://lore.kernel.org/r/20250617050844.1848232-2-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 771c994ea51f ("erofs: convert all uncompressed cases to iomap")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250707084832.2725677-1-chao@kernel.org
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/erofs/data.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -286,8 +286,8 @@ __acquires(&port->port_lock)
- 			break;
- 	}
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index 0ab0e8ec70d03..33cb0a7330d23 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -363,6 +363,9 @@ static int erofs_read_folio(struct file *file, struct folio *folio)
  
--	if (do_tty_wake && port->port.tty)
--		tty_wakeup(port->port.tty);
-+	if (do_tty_wake)
-+		tty_port_tty_wakeup(&port->port);
- 	return status;
+ static void erofs_readahead(struct readahead_control *rac)
+ {
++	trace_erofs_readahead(rac->mapping->host, readahead_index(rac),
++					readahead_count(rac), true);
++
+ 	return iomap_readahead(rac, &erofs_iomap_ops);
  }
  
-@@ -564,7 +564,7 @@ static int gs_start_io(struct gs_port *p
- 		gs_start_tx(port);
- 		/* Unblock any pending writes into our circular buffer, in case
- 		 * we didn't in gs_start_tx() */
--		tty_wakeup(port->port.tty);
-+		tty_port_tty_wakeup(&port->port);
- 	} else {
- 		/* Free reqs only if we are still connected */
- 		if (port->port_usb) {
+-- 
+2.39.5
+
 
 
 
