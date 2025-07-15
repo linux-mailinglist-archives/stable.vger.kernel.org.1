@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-162434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F14FB05E15
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FEDB05ED1
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7F291C27666
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:43:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BF631C44114
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF7E2E62A6;
-	Tue, 15 Jul 2025 13:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF08F1EEA5D;
+	Tue, 15 Jul 2025 13:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mte+yEv3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpE/OgcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F462E49AC;
-	Tue, 15 Jul 2025 13:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C30A2EA468;
+	Tue, 15 Jul 2025 13:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586544; cv=none; b=EsbVEL6gEeRYhl+84uNPjRKPNg3eXA3UsLbBM/e+7EB1EHH4kfjEE3m79CdHfwt2UZHRnTxpiRKtikrnDH0ZWlphC6MaXYCqUXBN1LeJBWC0QrglmKmOY1t51WFsIzLg8tR6kUVbkJ6aWtHS/ztQmgmGJGAIwDP+a67I84GzPQs=
+	t=1752586925; cv=none; b=WSKPG3tHMSNiMljxjfav3kchmRGrjirPUbmmaVgET8TBdwu/RZKfZ9Z55sKEFuqiw24jNUN29pS0NgY11KpZzt14Iwhei6aLr8sAaulkQcjfxpiDBLqLiMx0zi85TIcMUXzn1az/f0UzlHU03SaY5D107WyfQGD4Y5PiBHty/8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586544; c=relaxed/simple;
-	bh=6Rf5HIlf1aV6RPo06XMjP0m55sLeEzViXxPbzDhPjwc=;
+	s=arc-20240116; t=1752586925; c=relaxed/simple;
+	bh=4wtXJwdMMzJdiH0dxmMBEcVAg6aHpyx3k/NndWVVpw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TLqFtMrm0KAbl92sOYzg4jZQ8jvoN2ONfcxuKLLuG1BZ8q1D5Nfou6adTJ0Wy8q5et7O0UQQOu5z/ZqS8UYI7dOODomqN+FOPI17pyXiax4yxNUxWsPcvru2r8NPFoQlBNrcW1CJxX/sduw8+C9Y9D+yZYMZmW/qNN7oICtFxeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mte+yEv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D64AC4CEE3;
-	Tue, 15 Jul 2025 13:35:43 +0000 (UTC)
+	 MIME-Version; b=MYrHDrB5gJ6P5g2oUBwx9qn9BNx7IFLu4Iiu5kplVdKtgv7OxAnEXxKeeeaof2l7WpbSJeHmjbOTBZQ9b731JR5N+53uvOD3jXGgBRTK6eHLYFWLqNj7dOB7x//5D8wxYu0FtbR0n5L7WojINdw84mlLpcOeiSf4YInlklKBYJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpE/OgcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05216C4CEE3;
+	Tue, 15 Jul 2025 13:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586544;
-	bh=6Rf5HIlf1aV6RPo06XMjP0m55sLeEzViXxPbzDhPjwc=;
+	s=korg; t=1752586925;
+	bh=4wtXJwdMMzJdiH0dxmMBEcVAg6aHpyx3k/NndWVVpw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mte+yEv3lZ5dEMAew7JDjVRplwts9ir+2YrUGC6MkoKAVSFRkL4i2ZZCTSVMstb8o
-	 aVp3VX+STTwXqA8AL+iRtzXysRKjskK4WKXKRmrSFQ+TgP1chEudEbLc53eJkuq+Ds
-	 Mh/3HsoklbRZTKDqBE5eLcVKx8MGjcc2SQEFBayQ=
+	b=hpE/OgcTa6uoS4cb0LRtVDMsalI9Ns4XFah5IFjqMRQkpDldD7pgriMwkll2xl2Wy
+	 zVqfP4FYAgfP5s/BGixXf/r1G7DQBc1nAQAtMF4S22/r3XGZZvzL2nfTnydHxVw1jd
+	 +EulMKkhOP3/DV2DSXluiz07Ni5M2D7zZr9QToEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tulio Magno <tuliom@ascii.art.br>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 074/148] powerpc: Fix struct termio related ioctl macros
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 101/192] mm: fix the inaccurate memory statistics issue for users
 Date: Tue, 15 Jul 2025 15:13:16 +0200
-Message-ID: <20250715130803.285571964@linuxfoundation.org>
+Message-ID: <20250715130818.946232866@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +71,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-[ Upstream commit ab107276607af90b13a5994997e19b7b9731e251 ]
+commit 82241a83cd15aaaf28200a40ad1a8b480012edaf upstream.
 
-Since termio interface is now obsolete, include/uapi/asm/ioctls.h
-has some constant macros referring to "struct termio", this caused
-build failure at userspace.
+On some large machines with a high number of CPUs running a 64K pagesize
+kernel, we found that the 'RES' field is always 0 displayed by the top
+command for some processes, which will cause a lot of confusion for users.
 
-In file included from /usr/include/asm/ioctl.h:12,
-                 from /usr/include/asm/ioctls.h:5,
-                 from tst-ioctls.c:3:
-tst-ioctls.c: In function 'get_TCGETA':
-tst-ioctls.c:12:10: error: invalid application of 'sizeof' to incomplete type 'struct termio'
-   12 |   return TCGETA;
-      |          ^~~~~~
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 875525 root      20   0   12480      0      0 R   0.3   0.0   0:00.08 top
+      1 root      20   0  172800      0      0 S   0.0   0.0   0:04.52 systemd
 
-Even though termios.h provides "struct termio", trying to juggle definitions around to
-make it compile could introduce regressions. So better to open code it.
+The main reason is that the batch size of the percpu counter is quite
+large on these machines, caching a significant percpu value, since
+converting mm's rss stats into percpu_counter by commit f1a7941243c1 ("mm:
+convert mm's rss stats into percpu_counter").  Intuitively, the batch
+number should be optimized, but on some paths, performance may take
+precedence over statistical accuracy.  Therefore, introducing a new
+interface to add the percpu statistical count and display it to users,
+which can remove the confusion.  In addition, this change is not expected
+to be on a performance-critical path, so the modification should be
+acceptable.
 
-Reported-by: Tulio Magno <tuliom@ascii.art.br>
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
-Closes: https://lore.kernel.org/linuxppc-dev/8734dji5wl.fsf@ascii.art.br/
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250517142237.156665-1-maddy@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In addition, the 'mm->rss_stat' is updated by using add_mm_counter() and
+dec/inc_mm_counter(), which are all wrappers around
+percpu_counter_add_batch().  In percpu_counter_add_batch(), there is
+percpu batch caching to avoid 'fbc->lock' contention.  This patch changes
+task_mem() and task_statm() to get the accurate mm counters under the
+'fbc->lock', but this should not exacerbate kernel 'mm->rss_stat' lock
+contention due to the percpu batch caching of the mm counters.  The
+following test also confirm the theoretical analysis.
+
+I run the stress-ng that stresses anon page faults in 32 threads on my 32
+cores machine, while simultaneously running a script that starts 32
+threads to busy-loop pread each stress-ng thread's /proc/pid/status
+interface.  From the following data, I did not observe any obvious impact
+of this patch on the stress-ng tests.
+
+w/o patch:
+stress-ng: info:  [6848]          4,399,219,085,152 CPU Cycles          67.327 B/sec
+stress-ng: info:  [6848]          1,616,524,844,832 Instructions          24.740 B/sec (0.367 instr. per cycle)
+stress-ng: info:  [6848]          39,529,792 Page Faults Total           0.605 M/sec
+stress-ng: info:  [6848]          39,529,792 Page Faults Minor           0.605 M/sec
+
+w/patch:
+stress-ng: info:  [2485]          4,462,440,381,856 CPU Cycles          68.382 B/sec
+stress-ng: info:  [2485]          1,615,101,503,296 Instructions          24.750 B/sec (0.362 instr. per cycle)
+stress-ng: info:  [2485]          39,439,232 Page Faults Total           0.604 M/sec
+stress-ng: info:  [2485]          39,439,232 Page Faults Minor           0.604 M/sec
+
+On comparing a very simple app which just allocates & touches some
+memory against v6.1 (which doesn't have f1a7941243c1) and latest Linus
+tree (4c06e63b9203) I can see that on latest Linus tree the values for
+VmRSS, RssAnon and RssFile from /proc/self/status are all zeroes while
+they do report values on v6.1 and a Linus tree with this patch.
+
+Link: https://lkml.kernel.org/r/f4586b17f66f97c174f7fd1f8647374fdb53de1c.1749119050.git.baolin.wang@linux.alibaba.com
+Fixes: f1a7941243c1 ("mm: convert mm's rss stats into percpu_counter")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Tested-by Donet Tom <donettom@linux.ibm.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: SeongJae Park <sj@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/uapi/asm/ioctls.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/proc/task_mmu.c |   14 +++++++-------
+ include/linux/mm.h |    5 +++++
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
-index 2c145da3b774a..b5211e413829a 100644
---- a/arch/powerpc/include/uapi/asm/ioctls.h
-+++ b/arch/powerpc/include/uapi/asm/ioctls.h
-@@ -23,10 +23,10 @@
- #define TCSETSW		_IOW('t', 21, struct termios)
- #define TCSETSF		_IOW('t', 22, struct termios)
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -36,9 +36,9 @@ void task_mem(struct seq_file *m, struct
+ 	unsigned long text, lib, swap, anon, file, shmem;
+ 	unsigned long hiwater_vm, total_vm, hiwater_rss, total_rss;
  
--#define TCGETA		_IOR('t', 23, struct termio)
--#define TCSETA		_IOW('t', 24, struct termio)
--#define TCSETAW		_IOW('t', 25, struct termio)
--#define TCSETAF		_IOW('t', 28, struct termio)
-+#define TCGETA		0x40147417 /* _IOR('t', 23, struct termio) */
-+#define TCSETA		0x80147418 /* _IOW('t', 24, struct termio) */
-+#define TCSETAW		0x80147419 /* _IOW('t', 25, struct termio) */
-+#define TCSETAF		0x8014741c /* _IOW('t', 28, struct termio) */
+-	anon = get_mm_counter(mm, MM_ANONPAGES);
+-	file = get_mm_counter(mm, MM_FILEPAGES);
+-	shmem = get_mm_counter(mm, MM_SHMEMPAGES);
++	anon = get_mm_counter_sum(mm, MM_ANONPAGES);
++	file = get_mm_counter_sum(mm, MM_FILEPAGES);
++	shmem = get_mm_counter_sum(mm, MM_SHMEMPAGES);
  
- #define TCSBRK		_IO('t', 29)
- #define TCXONC		_IO('t', 30)
--- 
-2.39.5
-
+ 	/*
+ 	 * Note: to minimize their overhead, mm maintains hiwater_vm and
+@@ -59,7 +59,7 @@ void task_mem(struct seq_file *m, struct
+ 	text = min(text, mm->exec_vm << PAGE_SHIFT);
+ 	lib = (mm->exec_vm << PAGE_SHIFT) - text;
+ 
+-	swap = get_mm_counter(mm, MM_SWAPENTS);
++	swap = get_mm_counter_sum(mm, MM_SWAPENTS);
+ 	SEQ_PUT_DEC("VmPeak:\t", hiwater_vm);
+ 	SEQ_PUT_DEC(" kB\nVmSize:\t", total_vm);
+ 	SEQ_PUT_DEC(" kB\nVmLck:\t", mm->locked_vm);
+@@ -92,12 +92,12 @@ unsigned long task_statm(struct mm_struc
+ 			 unsigned long *shared, unsigned long *text,
+ 			 unsigned long *data, unsigned long *resident)
+ {
+-	*shared = get_mm_counter(mm, MM_FILEPAGES) +
+-			get_mm_counter(mm, MM_SHMEMPAGES);
++	*shared = get_mm_counter_sum(mm, MM_FILEPAGES) +
++			get_mm_counter_sum(mm, MM_SHMEMPAGES);
+ 	*text = (PAGE_ALIGN(mm->end_code) - (mm->start_code & PAGE_MASK))
+ 								>> PAGE_SHIFT;
+ 	*data = mm->data_vm + mm->stack_vm;
+-	*resident = *shared + get_mm_counter(mm, MM_ANONPAGES);
++	*resident = *shared + get_mm_counter_sum(mm, MM_ANONPAGES);
+ 	return mm->total_vm;
+ }
+ 
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2708,6 +2708,11 @@ static inline unsigned long get_mm_count
+ 	return percpu_counter_read_positive(&mm->rss_stat[member]);
+ }
+ 
++static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
++{
++	return percpu_counter_sum_positive(&mm->rss_stat[member]);
++}
++
+ void mm_trace_rss_stat(struct mm_struct *mm, int member);
+ 
+ static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
 
 
 
