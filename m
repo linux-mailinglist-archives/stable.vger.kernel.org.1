@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-162909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE764B05FC0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2AEB05F76
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F91B7AA038
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A92474E013E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BEA2EE96A;
-	Tue, 15 Jul 2025 13:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314982EA72C;
+	Tue, 15 Jul 2025 13:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q804T2NY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcYs09wX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BD82EE966;
-	Tue, 15 Jul 2025 13:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E074619D8A7;
+	Tue, 15 Jul 2025 13:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587793; cv=none; b=KO4Wz2lwIQGoeSevcd0LLJiZTcDdQ//V2g3UPiYdJKNNQ6nFgiDmBQUKv7Ho6qFo/cOVWYKLzjkKZdueb3oW/XrJ0rXNnOl/8GfZSwe6AUxwPpty9wxB9JvQye7/xiXWRECJjvAaCqZqAaHXnL5vtmNLayfJMgiDU2CovD0K5Uo=
+	t=1752587361; cv=none; b=gG0L6YF9zUzLwHwvotj3aVqJ6i1K3LiUo5p46YGb/OM7Pdcial/pdM7kZnf5HdVDItfa/Ykd7TF6Ptz5Tetap0+FFbKTaaaYseaeMJQMvIZGEpVszNoypijoeVWBj7THQkfHpht7Wk4OuN39BG6XVb2Cb8APzKmoaFcomA0vzpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587793; c=relaxed/simple;
-	bh=5A6gsO95BpzLu/9tZt73GkXtmlor0NgIZr4jpv7DOIA=;
+	s=arc-20240116; t=1752587361; c=relaxed/simple;
+	bh=tPIJmQVeCnRtQ/4kdhRpxVucpMfSZnW6pVxvJNi9NV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pPyJAcViXYwcYixqbAu24Wqj0+Shh3APChfMrdidWxpsfJkLWONEFChWDSbxtGh/hDi/EOpRuU2/2Mi9ReSDURmCKyI2VKvOq1FGMmPbXyakkLs8qNCOIVAI7fgO8fd2Zgl+MBbhrY9ooyREOM2QGiK0WTSZOf8/0hqEFKPll7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q804T2NY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31261C4CEF1;
-	Tue, 15 Jul 2025 13:56:33 +0000 (UTC)
+	 MIME-Version; b=tEZ/WaGCn0W/0L3rwN7FCOGUn6f98JKun8ka6kvGzhJeS1UyKT9fAoeR3c54U27HvI3FqyV2NEEy9AfNApEGL+e/LpoWvfY4fD+Kpyw9KIa51Zor3Ow5U19HpWv1E61kYBRioQtL6rK9KADyf02FwYby86NHLblKZsq1d2Cq+nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcYs09wX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7625DC4CEE3;
+	Tue, 15 Jul 2025 13:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587793;
-	bh=5A6gsO95BpzLu/9tZt73GkXtmlor0NgIZr4jpv7DOIA=;
+	s=korg; t=1752587360;
+	bh=tPIJmQVeCnRtQ/4kdhRpxVucpMfSZnW6pVxvJNi9NV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q804T2NYP0K1vXBvmuYLIo/yyLQQmRTLbbqeuwqGt9hq1Pp57utjJsr/83SX3kUFl
-	 7iuOTe363ItA0TgO73OQ05k9XAZR1U2wjazMG3nusxyXsFWtnr7C+BEmoxBwVO7zXs
-	 RT4grSHHPMwxdWMBw5H315+W1tjXGYirBiAW0qv0=
+	b=KcYs09wXlJKI/fBbdLjezOdx7Px7P1VQBdG4/nBGSsXZr/huL7Fj8x35Ie7AwKwyp
+	 vBJHnfhXDV8slBR7dn3/9TLAB9GWb5hlYxQxh/5sytGS69FEj26futkDVFSfLDLHQD
+	 VwAooeG6RU2BuqQwLTj14Yv9iuSkhGXB/bS96RUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andre Edich <andre.edich@microchip.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 146/208] net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
-Date: Tue, 15 Jul 2025 15:14:15 +0200
-Message-ID: <20250715130816.768386585@linuxfoundation.org>
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	Stefan Metzmacher <metze@samba.org>
+Subject: [PATCH 6.1 40/88] smb: server: make use of rdma_destroy_qp()
+Date: Tue, 15 Jul 2025 15:14:16 +0200
+Message-ID: <20250715130756.131830664@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +66,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit a141af8eb2272ab0f677a7f2653874840bc9b214 ]
+commit 0c2b53997e8f5e2ec9e0fbd17ac0436466b65488 upstream.
 
-Correct the Auto-MDIX configuration to ensure userspace settings are
-respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
+The qp is created by rdma_create_qp() as t->cm_id->qp
+and t->qp is just a shortcut.
 
-The LAN9500 PHY allows its default MDI-X mode to be configured via a
-hardware strap. If this strap sets the default to "MDI-X off", the
-driver was previously unable to enable Auto-MDIX from userspace.
+rdma_destroy_qp() also calls ib_destroy_qp(cm_id->qp) internally,
+but it is protected by a mutex, clears the cm_id and also calls
+trace_cm_qp_destroy().
 
-When handling the ETH_TP_MDI_AUTO case, the driver would set the
-SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
-SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
-falls back to its hardware strap default, ignoring the software request.
+This should make the tracing more useful as both
+rdma_create_qp() and rdma_destroy_qp() are traces and it makes
+the code look more sane as functions from the same layer are used
+for the specific qp object.
 
-This patch corrects the behavior by also setting the override bit when
-enabling Auto-MDIX. This ensures that the userspace configuration takes
-precedence over the hardware strap, allowing Auto-MDIX to be enabled
-correctly in all scenarios.
+trace-cmd stream -e rdma_cma:cm_qp_create -e rdma_cma:cm_qp_destroy
+shows this now while doing a mount and unmount from a client:
 
-Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andre Edich <andre.edich@microchip.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250703114941.3243890-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  <...>-80   [002] 378.514182: cm_qp_create:  cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 pd.id=0 qp_type=RC send_wr=867 recv_wr=255 qp_num=1 rc=0
+  <...>-6283 [001] 381.686172: cm_qp_destroy: cm.id=1 src=172.31.9.167:5445 dst=172.31.9.166:37113 tos=0 qp_num=1
+
+Before we only saw the first line.
+
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <stfrench@microsoft.com>
+Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Cc: Hyunchul Lee <hyc.lee@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/smsc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/transport_rdma.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index b67de3f9ef186..9ec2485df645e 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -132,7 +132,8 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
- 			SPECIAL_CTRL_STS_AMDIX_STATE_;
- 		break;
- 	case ETH_TP_MDI_AUTO:
--		val = SPECIAL_CTRL_STS_AMDIX_ENABLE_;
-+		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
-+			SPECIAL_CTRL_STS_AMDIX_ENABLE_;
- 		break;
- 	default:
- 		return genphy_config_aneg(phydev);
--- 
-2.39.5
-
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -426,7 +426,8 @@ static void free_transport(struct smb_di
+ 	if (t->qp) {
+ 		ib_drain_qp(t->qp);
+ 		ib_mr_pool_destroy(t->qp, &t->qp->rdma_mrs);
+-		ib_destroy_qp(t->qp);
++		t->qp = NULL;
++		rdma_destroy_qp(t->cm_id);
+ 	}
+ 
+ 	ksmbd_debug(RDMA, "drain the reassembly queue\n");
+@@ -1934,8 +1935,8 @@ static int smb_direct_create_qpair(struc
+ 	return 0;
+ err:
+ 	if (t->qp) {
+-		ib_destroy_qp(t->qp);
+ 		t->qp = NULL;
++		rdma_destroy_qp(t->cm_id);
+ 	}
+ 	if (t->recv_cq) {
+ 		ib_destroy_cq(t->recv_cq);
 
 
 
