@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-162104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCD8B05BC3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:23:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A92EB05D6A
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E28B3A5122
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12862170652
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650542E2EFF;
-	Tue, 15 Jul 2025 13:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652062E54CE;
+	Tue, 15 Jul 2025 13:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1S3WZsqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Kgl8on2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221421F4CB3;
-	Tue, 15 Jul 2025 13:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250A72E54B7;
+	Tue, 15 Jul 2025 13:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585683; cv=none; b=NM1m0iNe6Ge0KXXNnvCycXtWPAEg8K4NEejcwMlMgaOG5bU6pz2AJnzY+ZYS8AgMJUz0L7lY6ar1gZz4U6yP1OYpmUVq3DRhPVk85RdmzwgHs5CzBoma4wq+KGaKEbPlaNuFcCGhFUNC6PdB6IvgGKoKZ4HdtOJfIhMaVt10lVA=
+	t=1752586473; cv=none; b=cg1WNXlUPb2bIr2bIzMumKaTX63NmLM1BhkeTbg4XaLiryfD0HLyZ2qRE7/QYvB32yoMaMLzg7uvg1p7G2OzrPwY6Or4a26lWfXsz+5gfSjo6+rUPIDJEy53tHIQUJQ/UNQJ8VGxPmc99qH8My8F3iI9/BD4DWkR+F7C0zoCmFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585683; c=relaxed/simple;
-	bh=/CPFyCLGUwSkw5+dq0MBEpimVB1VDq7eQ2bnxCVisNU=;
+	s=arc-20240116; t=1752586473; c=relaxed/simple;
+	bh=isEq5VTLqcxoU39yH5rWWejHgS5Q1DVG3F26F5Dhjbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7zQ4Z9IPvp/fGPW0IprE+qrMXUTiVEIDhdAiyfmbyggIlFmgxdSNOLYXfEeCONDXI9X0hELsxIogY6bPAl5W/ewsaw0421j7FA2r7e37iszbv4aSOtM678eiEqzt+P4FWR5f8tmsF5hcAEwDE2JfPFFnzRxDNU9p6zfGrZmj4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1S3WZsqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D3BC4CEE3;
-	Tue, 15 Jul 2025 13:21:22 +0000 (UTC)
+	 MIME-Version; b=HW+73soh2pGxz3VZuAV/cnPABu3WwZZ+brsA5B4rNi5Wn89flggcowpQaaC6TXfd02EttbYT3ypTPw8O2LAQysrpEOYDYuLK6+9Z/8SxNXZyTKN7ug8Oq17cBwdkD9+7jvQvbgfZ8bSStyhT/T8a059tThq1klrCS1icHril0Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Kgl8on2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF91C4CEE3;
+	Tue, 15 Jul 2025 13:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585683;
-	bh=/CPFyCLGUwSkw5+dq0MBEpimVB1VDq7eQ2bnxCVisNU=;
+	s=korg; t=1752586473;
+	bh=isEq5VTLqcxoU39yH5rWWejHgS5Q1DVG3F26F5Dhjbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1S3WZsqMX42ZosYAiUGeGEKhQ7tuzzxOzs4wNEARkb9EY8+crXuqgwPfpbXPUJI28
-	 8EaigcX2xz5SZBAFZHRYqluxOqTF05DBsFHJJFcJqtwcXx6ty8El/pB7MEYWffpwPl
-	 vy55demMFue/QkbirN5YCf/nmaOGMmYnm7jE+m3w=
+	b=0Kgl8on2F3kMl2VOlMqNHYA7QFQCA8YCmr+CY7rB6J9GEhIjrr41b+H9HdK4aExVX
+	 BASC45GmSA8gPJKtHcdsGd/2GEFaUVabP6uluEQ0+3/rqz5aj3DHM+ur6QOG9Irj7f
+	 QfQ9G+SQ5EujXg3QtbAifqV7esGOzhvKD8H9p9sY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jerome Neanne <jneanne@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/163] net/mlx5e: Fix race between DIM disable and net_dim()
+Subject: [PATCH 5.4 079/148] regulator: gpio: Add input_supply support in gpio_regulator_config
 Date: Tue, 15 Jul 2025 15:13:21 +0200
-Message-ID: <20250715130814.175331415@linuxfoundation.org>
+Message-ID: <20250715130803.485367760@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Jerome Neanne <jneanne@baylibre.com>
 
-[ Upstream commit eb41a264a3a576dc040ee37c3d9d6b7e2d9be968 ]
+[ Upstream commit adfdfcbdbd32b356323a3db6d3a683270051a7e6 ]
 
-There's a race between disabling DIM and NAPI callbacks using the dim
-pointer on the RQ or SQ.
+This is simillar as fixed-regulator.
+Used to extract regulator parent from the device tree.
 
-If NAPI checks the DIM state bit and sees it still set, it assumes
-`rq->dim` or `sq->dim` is valid. But if DIM gets disabled right after
-that check, the pointer might already be set to NULL, leading to a NULL
-pointer dereference in net_dim().
+Without that property used, the parent regulator can be shut down (if not an always on).
+Thus leading to inappropriate behavior:
+On am62-SP-SK this fix is required to avoid tps65219 ldo1 (SDMMC rail) to be shut down after boot completion.
 
-Fix this by calling `synchronize_net()` before freeing the DIM context.
-This ensures all in-progress NAPI callbacks are finished before the
-pointer is cleared.
-
-Kernel log:
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-...
-RIP: 0010:net_dim+0x23/0x190
-...
-Call Trace:
- <TASK>
- ? __die+0x20/0x60
- ? page_fault_oops+0x150/0x3e0
- ? common_interrupt+0xf/0xa0
- ? sysvec_call_function_single+0xb/0x90
- ? exc_page_fault+0x74/0x130
- ? asm_exc_page_fault+0x22/0x30
- ? net_dim+0x23/0x190
- ? mlx5e_poll_ico_cq+0x41/0x6f0 [mlx5_core]
- ? sysvec_apic_timer_interrupt+0xb/0x90
- mlx5e_handle_rx_dim+0x92/0xd0 [mlx5_core]
- mlx5e_napi_poll+0x2cd/0xac0 [mlx5_core]
- ? mlx5e_poll_ico_cq+0xe5/0x6f0 [mlx5_core]
- busy_poll_stop+0xa2/0x200
- ? mlx5e_napi_poll+0x1d9/0xac0 [mlx5_core]
- ? mlx5e_trigger_irq+0x130/0x130 [mlx5_core]
- __napi_busy_loop+0x345/0x3b0
- ? sysvec_call_function_single+0xb/0x90
- ? asm_sysvec_call_function_single+0x16/0x20
- ? sysvec_apic_timer_interrupt+0xb/0x90
- ? pcpu_free_area+0x1e4/0x2e0
- napi_busy_loop+0x11/0x20
- xsk_recvmsg+0x10c/0x130
- sock_recvmsg+0x44/0x70
- __sys_recvfrom+0xbc/0x130
- ? __schedule+0x398/0x890
- __x64_sys_recvfrom+0x20/0x30
- do_syscall_64+0x4c/0x100
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-...
----[ end trace 0000000000000000 ]---
-...
----[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
-
-Fixes: 445a25f6e1a2 ("net/mlx5e: Support updating coalescing configuration without resetting channels")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/1752155624-24095-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+Link: https://lore.kernel.org/r/20220929132526.29427-2-jneanne@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: c9764fd88bc7 ("regulator: gpio: Fix the out-of-bounds access to drvdata::gpiods")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_dim.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/regulator/gpio-regulator.c       | 15 +++++++++++++++
+ include/linux/regulator/gpio-regulator.h |  2 ++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c
-index 298bb74ec5e94..d1d629697e285 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dim.c
-@@ -113,7 +113,7 @@ int mlx5e_dim_rx_change(struct mlx5e_rq *rq, bool enable)
- 		__set_bit(MLX5E_RQ_STATE_DIM, &rq->state);
- 	} else {
- 		__clear_bit(MLX5E_RQ_STATE_DIM, &rq->state);
--
-+		synchronize_net();
- 		mlx5e_dim_disable(rq->dim);
- 		rq->dim = NULL;
+diff --git a/drivers/regulator/gpio-regulator.c b/drivers/regulator/gpio-regulator.c
+index 110ee6fe76c4c..e84fc9d724486 100644
+--- a/drivers/regulator/gpio-regulator.c
++++ b/drivers/regulator/gpio-regulator.c
+@@ -213,6 +213,9 @@ of_get_gpio_regulator_config(struct device *dev, struct device_node *np,
+ 				 regtype);
  	}
-@@ -140,7 +140,7 @@ int mlx5e_dim_tx_change(struct mlx5e_txqsq *sq, bool enable)
- 		__set_bit(MLX5E_SQ_STATE_DIM, &sq->state);
- 	} else {
- 		__clear_bit(MLX5E_SQ_STATE_DIM, &sq->state);
--
-+		synchronize_net();
- 		mlx5e_dim_disable(sq->dim);
- 		sq->dim = NULL;
- 	}
+ 
++	if (of_find_property(np, "vin-supply", NULL))
++		config->input_supply = "vin";
++
+ 	return config;
+ }
+ 
+@@ -252,6 +255,18 @@ static int gpio_regulator_probe(struct platform_device *pdev)
+ 
+ 	drvdata->gpiods = devm_kzalloc(dev, sizeof(struct gpio_desc *),
+ 				       GFP_KERNEL);
++
++	if (config->input_supply) {
++		drvdata->desc.supply_name = devm_kstrdup(&pdev->dev,
++							 config->input_supply,
++							 GFP_KERNEL);
++		if (!drvdata->desc.supply_name) {
++			dev_err(&pdev->dev,
++				"Failed to allocate input supply\n");
++			return -ENOMEM;
++		}
++	}
++
+ 	if (!drvdata->gpiods)
+ 		return -ENOMEM;
+ 	for (i = 0; i < config->ngpios; i++) {
+diff --git a/include/linux/regulator/gpio-regulator.h b/include/linux/regulator/gpio-regulator.h
+index fdeb312cdabdf..c223e50ff9f78 100644
+--- a/include/linux/regulator/gpio-regulator.h
++++ b/include/linux/regulator/gpio-regulator.h
+@@ -42,6 +42,7 @@ struct gpio_regulator_state {
+ /**
+  * struct gpio_regulator_config - config structure
+  * @supply_name:	Name of the regulator supply
++ * @input_supply:	Name of the input regulator supply
+  * @enabled_at_boot:	Whether regulator has been enabled at
+  *			boot or not. 1 = Yes, 0 = No
+  *			This is used to keep the regulator at
+@@ -62,6 +63,7 @@ struct gpio_regulator_state {
+  */
+ struct gpio_regulator_config {
+ 	const char *supply_name;
++	const char *input_supply;
+ 
+ 	unsigned enabled_at_boot:1;
+ 	unsigned startup_delay;
 -- 
 2.39.5
 
