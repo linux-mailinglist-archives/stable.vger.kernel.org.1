@@ -1,116 +1,125 @@
-Return-Path: <stable+bounces-162993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA2AB06384
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 17:53:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9478B0639D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 17:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 001E95805A1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42C357B7336
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B9424BBEE;
-	Tue, 15 Jul 2025 15:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E9D23A9AC;
+	Tue, 15 Jul 2025 15:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="m3HV9td4"
+	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="XQYyvOng"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188CE247DF9;
-	Tue, 15 Jul 2025 15:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFDC1F95C;
+	Tue, 15 Jul 2025 15:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752594798; cv=none; b=OXuZxz6FOxJT8Q+N0W0+ZEs1W+KoMlT4B23yDEjeYM8tYULuhesggVd3AXaXR5ak1tJBY7AMkIC/EedIdriol29MxmrJ6pN2rg/Py8cwUB5XPTFRVQtOKc0amqRqSOYTM4jDNaECLy6YG5HMoGzDeIWmIHfX6Z51Aark4bV817w=
+	t=1752595036; cv=none; b=Hr5LfIbuaprHsjKzTx0w4IJhmoQvUm1RmA+UTuJZYPCmn+Aa+zC04LmzWcF+rHpkasoVRhCtVP+Nvn3D6FxbfXzpDVGGYbHEtlJHuyykMNSeQ+5ci8zLL68JPXi6YfQa6Ar/yTl4IpCw+16pX49u3NsnvvUKT02DEwoctPa0OhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752594798; c=relaxed/simple;
-	bh=wU3e9HJeH/DY7sTOVhInQNEvtGjh+kj5oo/xKVxRTfU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ahzh7U75ceZQQ66QLs4h6Au+pRXurGHaotZKymEqTlpH4msHd9+xITTOgB+5bkYYqNbAkEx+HhdGLTa1i7VXkLeayir1uxZpT/u+Yof2iN9xU64iWpe7D9VTu4unbwTeDUn4WQToDXA4YsCrCApYKbUF+JT5tsPhUJ2760j0xew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=m3HV9td4; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56FFqgiW1035906
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 15 Jul 2025 08:52:45 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56FFqgiW1035906
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025062101; t=1752594766;
-	bh=SEcCsOO82E/DNVVnYdIJVwGaG0aOw/9Zah1U8zubMuc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=m3HV9td4PvA3VbMqe5VpDebvtgVYxf93FH1D9Ot/x3sxdkoWp3hEONsWsvzyFsSQA
-	 hcC8uV1mZDzn1A9uiciZf24GTfe46DuOQDXJnq+KyJjN4oWn7FkxhiGgAjE6Enb9ii
-	 rT3vaX9kKRBR4K/9jH3yGIClQa3xydfYFV273pVh8NmsJjffCrJZ2NfE7XVSZLfgBz
-	 lV5rU8H4TlpqP/CWRHSdpCAeMsSotw88JK4QeJXBqm6OZdzjgQ5YPRGC1tAnPfYd/c
-	 wpqmpyVvJMShVaBgVwHPK3l9FQEdaDkuRiyad9Rz7q9cuDlf+PnhG3Dip/XWAwkydQ
-	 ofB/cJQDla3qQ==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: linux-kernel@vger.kernel.org
-Cc: luto@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        jmill@asu.edu, peterz@infradead.org, andrew.cooper3@citrix.com,
-        stable@vger.kernel.org
-Subject: [PATCH v2 1/1] x86/fred: Remove ENDBR64 from FRED entry points
-Date: Tue, 15 Jul 2025 08:52:42 -0700
-Message-ID: <20250715155242.1035896-1-xin@zytor.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1752595036; c=relaxed/simple;
+	bh=RM/DyyvFCuoPR2G/1M3cnV1rKEC9pgRNGVd1be7JIwQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WOKVt5ztGIfV5++mrxXVMk9CNRruZMP6cKpFQQjH8RD8C3isoyL0adfEc4sTI6UOBJYcdhnF0g3y0WDWlbqbkYQqNH3mhnRMCOyWF6+1Us5HB/n1VxTNv4n9AlYkqoE34/nmFFjkfauzOOJdFAKxDtj5tB3VSwc4axPBBTd2xeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=XQYyvOng; arc=none smtp.client-ip=144.76.82.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
+	s=42; h=From:Cc:To:Date:Message-ID;
+	bh=doj9c5g/LNoQwpGFEmtof3iDbmFEpLN+TDB7ER9gFC8=; b=XQYyvOngYyoXQ77q6o2//O39YZ
+	lBi+/iPp/GzUge1LzhvV/XPl1Wt/AvZ9X7UaFL1H44JLFbZkmrltF1tsxKMWpYl1uJxvXTrnG7XRt
+	tC0tynTQDpW+loiHViK7PUvNgS7ARdUH+v2RlfsVyJE/UEoam1GnbmSU88phk9ELF+VF/Pha+XU/0
+	w0D9GMsQm0yJAojHI8Hm0IprUuotq7xsohOztr5ym0/2stYEQrwO9E9TLuCcOMuRMZrPgwW3SWRmb
+	KDcK8DEnFbbtdi4vrehRD3Rj/N30uDsUZxOfgAcMJuurXvb1eFbgHuXIXu5jbIE5qs/DSf4MWO51f
+	k8OIGWSH7/ykRcrhTOmTjFk+/REMQWqnWOjHfeFtqU995hNkI++Sjw7psQilpcb66RfYfCvgMZegR
+	cSpy5IcZhyKgymkcH0vF2GQYCnuftkWW2Zq5amqf7qDGUQ54SDOF1utZcrA6VimgluhTBAXMeCtSP
+	8Mf7IKFJqFYACRxTQRBFDP9s;
+Received: from [127.0.0.2] (localhost [127.0.0.1])
+	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__CHACHA20_POLY1305:256)
+	(Exim)
+	id 1ubi1m-00FUBc-1n;
+	Tue, 15 Jul 2025 15:57:10 +0000
+Message-ID: <28fde5eb-42d0-4e41-b048-d5b6f1593bcf@samba.org>
+Date: Tue, 15 Jul 2025 17:57:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "smb: client: make use of common
+ smbdirect_socket_parameters" has been added to the 6.12-stable tree
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, Stable <stable@vger.kernel.org>,
+ stable-commits@vger.kernel.org, Steve French <sfrench@samba.org>,
+ Paulo Alcantara <pc@manguebit.org>,
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+ Bharath SM <bharathsm@microsoft.com>, Steve French <smfrench@gmail.com>
+References: <20250629142801.1093341-1-sashal@kernel.org>
+ <e3d3d647-12a7-4e17-9206-25d03304ac65@samba.org>
+ <CAH2r5muFzLct62LPL-1rE35X9Ps+ghxGk=J0FQPfLXwQeTXc6w@mail.gmail.com>
+ <73624e22-5421-492c-8725-88284f976dc9@samba.org>
+ <2025070824-untreated-bouncing-deb0@gregkh>
+Content-Language: en-US
+From: Stefan Metzmacher <metze@samba.org>
+In-Reply-To: <2025070824-untreated-bouncing-deb0@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The FRED specification v9.0 states that there is no need for FRED
-event handlers to begin with ENDBR64, because in the presence of
-supervisor indirect branch tracking, FRED event delivery does not
-enter the WAIT_FOR_ENDBRANCH state.
+Hi Greg,
 
-As a result, remove ENDBR64 from FRED entry points.
+>> any reason why this is only backported to 6.12, but not 6.15?
+> 
+> Looks like Sasha's scripts missed them, thanks for catching.  We need to
+> run the "what patches are only in older trees" script again one of these
+> days to sweep all of these up...
+> 
+>> I'm looking at v6.15.5 and v6.12.36 and the following are missing
+>> from 6.15:
+>>
+>> bced02aca343 David Howells Wed Apr 2 20:27:26 2025 +0100 cifs: Fix reading into an ITER_FOLIOQ from the smbdirect code
+>> 87dcc7e33fc3 David Howells Wed Jun 25 14:15:04 2025 +0100 cifs: Fix the smbd_response slab to allow usercopy
+>> b8ddcca4391e Stefan Metzmacher Wed May 28 18:01:40 2025 +0200 smb: client: make use of common smbdirect_socket_parameters
+>> 69cafc413c2d Stefan Metzmacher Wed May 28 18:01:39 2025 +0200 smb: smbdirect: introduce smbdirect_socket_parameters
+>> c39639bc7723 Stefan Metzmacher Wed May 28 18:01:37 2025 +0200 smb: client: make use of common smbdirect_socket
+>> f4b05342c293 Stefan Metzmacher Wed May 28 18:01:36 2025 +0200 smb: smbdirect: add smbdirect_socket.h
+>> a6ec1fcafd41 Stefan Metzmacher Wed May 28 18:01:33 2025 +0200 smb: smbdirect: add smbdirect.h with public structures
+>> 6509de31b1b6 Stefan Metzmacher Wed May 28 18:01:31 2025 +0200 smb: client: make use of common smbdirect_pdu.h
+>> a9bb4006c4f3 Stefan Metzmacher Wed May 28 18:01:30 2025 +0200 smb: smbdirect: add smbdirect_pdu.h with protocol definitions
+>>
+>> With these being backported to 6.15 too, the following is missing in
+>> both:
+>>
+>> commit 1944f6ab4967db7ad8d4db527dceae8c77de76e9
+>> Author:     Stefan Metzmacher <metze@samba.org>
+>> AuthorDate: Wed Jun 25 10:16:38 2025 +0200
+>> Commit:     Steve French <stfrench@microsoft.com>
+>> CommitDate: Wed Jun 25 11:12:54 2025 -0500
+>>
+>>      smb: client: let smbd_post_send_iter() respect the peers max_send_size and transmit all data
+>>
+>> As it was marked as
+>> Cc: <stable+noautosel@kernel.org> # sp->max_send_size should be info->max_send_size in backports
+>>
+>> But now that the patches up to b8ddcca4391e are backported it can be cherry-picked just
+>> fine to both branches.
+> 
+> Ok, will do.  I think I might have dropped these from 6.15 previously as
+> the "noautosel" tag threw me...
 
-Then add ANNOTATE_NOENDBR to indicate that FRED entry points will
-never be used for indirect calls to suppress an objtool warning.
+Any idea when this will happen?
 
-This change implies that any indirect CALL/JMP to FRED entry points
-causes #CP in the presence of supervisor indirect branch tracking.
+Thanks!
+metze
 
-Credit goes to Jennifer Miller <jmill@asu.edu> and other contributors
-from Arizona State University whose work led to this change.
-
-Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
-Link: https://lore.kernel.org/linux-hardening/Z60NwR4w%2F28Z7XUa@ubun/
-Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Cc: Jennifer Miller <jmill@asu.edu>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: stable@vger.kernel.org # v6.9+
----
-
-Change in v2:
-*) CC stable and add a fixes tag (PeterZ).
----
- arch/x86/entry/entry_64_fred.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/entry/entry_64_fred.S b/arch/x86/entry/entry_64_fred.S
-index 29c5c32c16c3..907bd233c6c1 100644
---- a/arch/x86/entry/entry_64_fred.S
-+++ b/arch/x86/entry/entry_64_fred.S
-@@ -16,7 +16,7 @@
- 
- .macro FRED_ENTER
- 	UNWIND_HINT_END_OF_STACK
--	ENDBR
-+	ANNOTATE_NOENDBR
- 	PUSH_AND_CLEAR_REGS
- 	movq	%rsp, %rdi	/* %rdi -> pt_regs */
- .endm
--- 
-2.50.1
 
 
