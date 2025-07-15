@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-162326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2760EB05D48
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9ABB05F1F
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:01:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB8DD3BAD43
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DC28568318
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968F92E717F;
-	Tue, 15 Jul 2025 13:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2E12ECE8E;
+	Tue, 15 Jul 2025 13:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNFzQM6x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vf47KSJi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D7F70831;
-	Tue, 15 Jul 2025 13:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8122EBB83;
+	Tue, 15 Jul 2025 13:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586261; cv=none; b=nzmpi5wkgQ/luHmF3hgX0ITozaOCnfjwFZWFPC2/feWDpkvHCmxpb4nSRFIvpszzweqWT+XPFUIQFihGcOLUUFiz0HouFApwHYQU875A0I2q3LNGUJ6fvqj3k+FMaR0J1oSc0qONZQFKgqk/FlPk/BTIC+pKs7Vq+bWCxLiZm4k=
+	t=1752587171; cv=none; b=hPbaAUhgtsVhcxSM3lY8fRDVM7L9urmh/uun776PMkl7hVYADoxS+RUUTiqJeyUJ2pLdwSzB8nJR+r0Bg8De3lU+JQDh2O8iDL8GSTidcd+klcoU/CaE0xQCgv2eHdgbHhTuZF7Vko0u3UNY/hLtpz3ISnBDjFhsQUufM96qXLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586261; c=relaxed/simple;
-	bh=vHA9/itdejVmBjo5GQdAz/9cEqxZB2RYrId7atyRsao=;
+	s=arc-20240116; t=1752587171; c=relaxed/simple;
+	bh=/JgwvGRaYAUs++OiMyU9wpp0gbRZWPrLWAwuhNn8IrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5gHO7jbErxq+ST3WN3I3RWjoRdzE6XYvKZpEnVCniDwUaCqCUEZeKMW3UMKcaErn2ORxsK5OJAWPqUxQRyXrXL0uUzCwy43PoGOuuwPD+t3ukfDwSwHr5YZUqgAZBL0mK6G4DH44RbLUNyBMMcbQ/1zGNMi4/BrIr2AYQddCRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNFzQM6x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC79FC4CEE3;
-	Tue, 15 Jul 2025 13:31:00 +0000 (UTC)
+	 MIME-Version; b=X3tRPAeayiXttjGOVd0+AYWLS+oo7lB8bvqr6/h2JmYz+Oai3V8zrq4JnCVDMUztGs10kw3wAFD45nKEBrwrV35i7TUtCFq+lhFix3vMNmFs5HOI48nhzVqastqA0cAdEgkxOjtkc+cCscmQ5Wo3icwGFcxrz6+nqM/JSCMyROU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vf47KSJi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA5FC4CEE3;
+	Tue, 15 Jul 2025 13:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586261;
-	bh=vHA9/itdejVmBjo5GQdAz/9cEqxZB2RYrId7atyRsao=;
+	s=korg; t=1752587171;
+	bh=/JgwvGRaYAUs++OiMyU9wpp0gbRZWPrLWAwuhNn8IrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wNFzQM6x8ExmDT3M52Dte+Vjm5fCvAOKdtt6iK83QikIOhLacODBpZxtF0a5dNJA+
-	 KaRweZNOKOaMFJI8v2q85/knHBs0cbC45MSj7UXnsN6uXuIb8c7clGSJXhn6zGKzTt
-	 o2exo5b95MlaySnSfX+T2EMpfYknjvLnovpsX1vk=
+	b=vf47KSJiAQ4caZMG4XJZ4wDZK4dkkgG+/Q41QgdcMx4wuj2pBccL+gAEb02pmYiYp
+	 D6y/yyelTBPw6SKScTQqR0itwsRw0OAhsKIrctPzt0Cv3upzLOqBRghDfLcjQbiWLJ
+	 FZuIm1xvMdlySx2SJMBCiGPB/A4Stv23GycCIIE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Jack Wang <jinpu.wang@ionos.com>
-Subject: [PATCH 5.15 77/77] x86: Fix X86_FEATURE_VERW_CLEAR definition
-Date: Tue, 15 Jul 2025 15:14:16 +0200
-Message-ID: <20250715130754.820125815@linuxfoundation.org>
+	Jianbo Liu <jianbol@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 162/192] net/mlx5e: Add new prio for promiscuous mode
+Date: Tue, 15 Jul 2025 15:14:17 +0200
+Message-ID: <20250715130821.413654873@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +65,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-This is a mistake during backport.
-VERW_CLEAR is on bit 5, not bit 10.
+[ Upstream commit 4c9fce56fa702059bbc5ab737265b68f79cbaac4 ]
 
-Fixes: f2b75f1368af ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
+An optimization for promiscuous mode adds a high-priority steering
+table with a single catch-all rule to steer all traffic directly to
+the TTC table.
 
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, a gap exists between the creation of this table and the
+insertion of the catch-all rule. Packets arriving in this brief window
+would miss as no rule was inserted yet, unnecessarily incrementing the
+'rx_steer_missed_packets' counter and dropped.
+
+This patch resolves the issue by introducing a new prio for this
+table, placing it between MLX5E_TC_PRIO and MLX5E_NIC_PRIO. By doing
+so, packets arriving during the window now fall through to the next
+prio (at MLX5E_NIC_PRIO) instead of being dropped.
+
+Fixes: 1c46d7409f30 ("net/mlx5e: Optimize promiscuous mode")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/1752155624-24095-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/cpufeatures.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/fs.h   |  9 +++++++--
+ drivers/net/ethernet/mellanox/mlx5/core/en_fs.c   |  2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 13 +++++++++----
+ 3 files changed, 17 insertions(+), 7 deletions(-)
 
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -418,8 +418,8 @@
- #define X86_FEATURE_SEV_ES		(19*32+ 3) /* AMD Secure Encrypted Virtualization - Encrypted State */
- #define X86_FEATURE_SME_COHERENT	(19*32+10) /* "" AMD hardware-enforced cache coherency */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
+index b5c3a2a9d2a59..9560fcba643f5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
+@@ -18,7 +18,8 @@ enum {
  
-+#define X86_FEATURE_VERW_CLEAR		(20*32+ 5) /* "" The memory form of VERW mitigates TSA */
- #define X86_FEATURE_AUTOIBRS		(20*32+ 8) /* "" Automatic IBRS */
--#define X86_FEATURE_VERW_CLEAR		(20*32+ 10) /* "" The memory form of VERW mitigates TSA */
- #define X86_FEATURE_SBPB		(20*32+27) /* "" Selective Branch Prediction Barrier */
- #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* "" MSR_PRED_CMD[IBPB] flushes all branch type predictions */
- #define X86_FEATURE_SRSO_NO		(20*32+29) /* "" CPU is not affected by SRSO */
+ enum {
+ 	MLX5E_TC_PRIO = 0,
+-	MLX5E_NIC_PRIO
++	MLX5E_PROMISC_PRIO,
++	MLX5E_NIC_PRIO,
+ };
+ 
+ struct mlx5e_flow_table {
+@@ -68,9 +69,13 @@ struct mlx5e_l2_table {
+ 				 MLX5_HASH_FIELD_SEL_DST_IP   |\
+ 				 MLX5_HASH_FIELD_SEL_IPSEC_SPI)
+ 
+-/* NIC prio FTS */
++/* NIC promisc FT level */
+ enum {
+ 	MLX5E_PROMISC_FT_LEVEL,
++};
++
++/* NIC prio FTS */
++enum {
+ 	MLX5E_VLAN_FT_LEVEL,
+ 	MLX5E_L2_FT_LEVEL,
+ 	MLX5E_TTC_FT_LEVEL,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
+index 05058710d2c79..537e732085b22 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
+@@ -776,7 +776,7 @@ static int mlx5e_create_promisc_table(struct mlx5e_flow_steering *fs)
+ 	ft_attr.max_fte = MLX5E_PROMISC_TABLE_SIZE;
+ 	ft_attr.autogroup.max_num_groups = 1;
+ 	ft_attr.level = MLX5E_PROMISC_FT_LEVEL;
+-	ft_attr.prio = MLX5E_NIC_PRIO;
++	ft_attr.prio = MLX5E_PROMISC_PRIO;
+ 
+ 	ft->t = mlx5_create_auto_grouped_flow_table(fs->ns, &ft_attr);
+ 	if (IS_ERR(ft->t)) {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 445301ea70426..53c4eba9867df 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -113,13 +113,16 @@
+ #define ETHTOOL_PRIO_NUM_LEVELS 1
+ #define ETHTOOL_NUM_PRIOS 11
+ #define ETHTOOL_MIN_LEVEL (KERNEL_MIN_LEVEL + ETHTOOL_NUM_PRIOS)
+-/* Promiscuous, Vlan, mac, ttc, inner ttc, {UDP/ANY/aRFS/accel/{esp, esp_err}}, IPsec policy,
++/* Vlan, mac, ttc, inner ttc, {UDP/ANY/aRFS/accel/{esp, esp_err}}, IPsec policy,
+  * {IPsec RoCE MPV,Alias table},IPsec RoCE policy
+  */
+-#define KERNEL_NIC_PRIO_NUM_LEVELS 11
++#define KERNEL_NIC_PRIO_NUM_LEVELS 10
+ #define KERNEL_NIC_NUM_PRIOS 1
+-/* One more level for tc */
+-#define KERNEL_MIN_LEVEL (KERNEL_NIC_PRIO_NUM_LEVELS + 1)
++/* One more level for tc, and one more for promisc */
++#define KERNEL_MIN_LEVEL (KERNEL_NIC_PRIO_NUM_LEVELS + 2)
++
++#define KERNEL_NIC_PROMISC_NUM_PRIOS 1
++#define KERNEL_NIC_PROMISC_NUM_LEVELS 1
+ 
+ #define KERNEL_NIC_TC_NUM_PRIOS  1
+ #define KERNEL_NIC_TC_NUM_LEVELS 3
+@@ -187,6 +190,8 @@ static struct init_tree_node {
+ 			   ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
+ 				  ADD_MULTIPLE_PRIO(KERNEL_NIC_TC_NUM_PRIOS,
+ 						    KERNEL_NIC_TC_NUM_LEVELS),
++				  ADD_MULTIPLE_PRIO(KERNEL_NIC_PROMISC_NUM_PRIOS,
++						    KERNEL_NIC_PROMISC_NUM_LEVELS),
+ 				  ADD_MULTIPLE_PRIO(KERNEL_NIC_NUM_PRIOS,
+ 						    KERNEL_NIC_PRIO_NUM_LEVELS))),
+ 		  ADD_PRIO(0, BY_PASS_MIN_LEVEL, 0, FS_CHAINING_CAPS,
+-- 
+2.39.5
+
 
 
 
