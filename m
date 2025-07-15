@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-162195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAF0B05C2C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A1AB05CDC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 735841C21C6E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDCCC3ADC98
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2AE2E2657;
-	Tue, 15 Jul 2025 13:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255042EA142;
+	Tue, 15 Jul 2025 13:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cwu2zjp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/gyUZ4Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA45263F52;
-	Tue, 15 Jul 2025 13:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86CF2E4998;
+	Tue, 15 Jul 2025 13:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585925; cv=none; b=TKA7eQSi0nRoK19xRBX9K/UBCtk9rTFamuE2j+CBoFLUhIoyOvVkU+M1leU/T3mQS5YpVIj4gjK5lgTLI5snyGz6okEjCecojRRbyFCQ2cjtoY4LhqdQrPHA8tbWqF8yCPnfrIExPcpYRPOK8pVqRm/TA8tmPM0sCqzKkpBgRmc=
+	t=1752586099; cv=none; b=dW2kGBw9wQZS0ul6rHiwNFLxECLIr2DkvxrVIK2OoIcpduTrYcWRQtjYnA2j0eIrZ0tJp4++7c1+BvlpORXjqh3NwA4ZSw67hZnDlKvb68qmexxTWdn/zHJ7ZoKDctcXN4IUhdywMe7FZ7000BtFIpMYCZWY/DpIJQ69HBioGhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585925; c=relaxed/simple;
-	bh=ujiSiOJaB4UG3vplyPUwbwK1sY+TNgbx1ztkVTXn1Ck=;
+	s=arc-20240116; t=1752586099; c=relaxed/simple;
+	bh=oCemh69B/GTa80h8B+MpyDcURsw9Bj1mBcliYj6HSes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=liKakBzOJe8odkDFxlQTuXQP8nxaotruSRIyMKnQhxIeLOM8FvBDA155lM9acVfCeTMeaLtIPfH2qKg7jifCXIQXlwk1DZ6Tp8Ebd1usA90t0rVu78GBTlLOOmTR9oIvohrALRBQpoQDW0Dp5PuFx8a9fl7aV/5rMzJ4kEO7STg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cwu2zjp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147D5C4CEE3;
-	Tue, 15 Jul 2025 13:25:24 +0000 (UTC)
+	 MIME-Version; b=mpgnDSYVJhyiYPFycSqBH/hKAB6+vEvA3G9ZpR2W+K7PH1BCza4r9RXYS+1/NSx0U1D9k3tCJP204ETIHmz2c3UQ2g6sTofwS+vkVOwVOl0O5r3Aaffu3j3YEIF70vaoH7711a0nMpGjBIecn2LeDoiYMKCyUauaiGVCeR+sZg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/gyUZ4Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A78C4CEF1;
+	Tue, 15 Jul 2025 13:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585925;
-	bh=ujiSiOJaB4UG3vplyPUwbwK1sY+TNgbx1ztkVTXn1Ck=;
+	s=korg; t=1752586099;
+	bh=oCemh69B/GTa80h8B+MpyDcURsw9Bj1mBcliYj6HSes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0cwu2zjpUGlQq7mZxiRGOplvO0NmSmjnDvgAqwf0fCdv3sgc0x6xpgfbKmjyy9dmz
-	 dXbY+hpEh+QbLdvlNfeyMu900A767r95yisCVnEnqBVi/M2RAALsuQETWHimJYbtY9
-	 HTlxNOxd3PO3d9hmxfRQWbTc1ArcCoWOXzgWn6PM=
+	b=k/gyUZ4Zycp438kUZ/qzVoYyghrUss6CQaJ6+yjNNUO2CqRu3+MeMDGr4wWqt5DR4
+	 08dxWC7X9Ukseedx6EPaEEsFixaNel1p6f6xcJ1y7Y2kqx9ZYQTXKWYp+Ac4qpQztW
+	 T627ccjh65z6LdQ4mjNPURljE5xYXhCPFpbE0k50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Paulyshka <me@mixaill.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.6 059/109] x86/rdrand: Disable RDSEED on AMD Cyan Skillfish
+	syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com,
+	syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com,
+	syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com,
+	syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com,
+	syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 16/77] net/sched: Abort __tc_modify_qdisc if parent class does not exist
 Date: Tue, 15 Jul 2025 15:13:15 +0200
-Message-ID: <20250715130801.245074820@linuxfoundation.org>
+Message-ID: <20250715130752.347813492@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +69,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Paulyshka <me@mixaill.net>
+From: Victor Nogueira <victor@mojatatu.com>
 
-commit 5b937a1ed64ebeba8876e398110a5790ad77407c upstream.
+[ Upstream commit ffdde7bf5a439aaa1955ebd581f5c64ab1533963 ]
 
-AMD Cyan Skillfish (Family 17h, Model 47h, Stepping 0h) has an error that
-causes RDSEED to always return 0xffffffff, while RDRAND works correctly.
+Lion's patch [1] revealed an ancient bug in the qdisc API.
+Whenever a user creates/modifies a qdisc specifying as a parent another
+qdisc, the qdisc API will, during grafting, detect that the user is
+not trying to attach to a class and reject. However grafting is
+performed after qdisc_create (and thus the qdiscs' init callback) is
+executed. In qdiscs that eventually call qdisc_tree_reduce_backlog
+during init or change (such as fq, hhf, choke, etc), an issue
+arises. For example, executing the following commands:
 
-Mask the RDSEED cap for this CPU so that both /proc/cpuinfo and direct CPUID
-read report RDSEED as unavailable.
+sudo tc qdisc add dev lo root handle a: htb default 2
+sudo tc qdisc add dev lo parent a: handle beef fq
 
-  [ bp: Move to amd.c, massage. ]
+Qdiscs such as fq, hhf, choke, etc unconditionally invoke
+qdisc_tree_reduce_backlog() in their control path init() or change() which
+then causes a failure to find the child class; however, that does not stop
+the unconditional invocation of the assumed child qdisc's qlen_notify with
+a null class. All these qdiscs make the assumption that class is non-null.
 
-Signed-off-by: Mikhail Paulyshka <me@mixaill.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250524145319.209075-1-me@mixaill.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The solution is ensure that qdisc_leaf() which looks up the parent
+class, and is invoked prior to qdisc_create(), should return failure on
+not finding the class.
+In this patch, we leverage qdisc_leaf to return ERR_PTRs whenever the
+parentid doesn't correspond to a class, so that we can detect it
+earlier on and abort before qdisc_create is called.
+
+[1] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
+
+Fixes: 5e50da01d0ce ("[NET_SCHED]: Fix endless loops (part 2): "simple" qdiscs")
+Reported-by: syzbot+d8b58d7b0ad89a678a16@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68663c93.a70a0220.5d25f.0857.GAE@google.com/
+Reported-by: syzbot+5eccb463fa89309d8bdc@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68663c94.a70a0220.5d25f.0858.GAE@google.com/
+Reported-by: syzbot+1261670bbdefc5485a06@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0013.GAE@google.com/
+Reported-by: syzbot+15b96fc3aac35468fe77@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/686764a5.a00a0220.c7b3.0014.GAE@google.com/
+Reported-by: syzbot+4dadc5aecf80324d5a51@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68679e81.a70a0220.29cf51.0016.GAE@google.com/
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250707210801.372995-1-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/msr-index.h       |    1 +
- arch/x86/kernel/cpu/amd.c              |    7 +++++++
- tools/arch/x86/include/asm/msr-index.h |    1 +
- 3 files changed, 9 insertions(+)
+ net/sched/sch_api.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -575,6 +575,7 @@
- #define MSR_AMD64_OSVW_STATUS		0xc0010141
- #define MSR_AMD_PPIN_CTL		0xc00102f0
- #define MSR_AMD_PPIN			0xc00102f1
-+#define MSR_AMD64_CPUID_FN_7		0xc0011002
- #define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_LS_CFG		0xc0011020
- #define MSR_AMD64_DC_CFG		0xc0011022
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1154,6 +1154,13 @@ static void init_amd_zen2(struct cpuinfo
- {
- 	fix_erratum_1386(c);
- 	zen2_zenbleed_check(c);
-+
-+	/* Disable RDSEED on AMD Cyan Skillfish because of an error. */
-+	if (c->x86_model == 0x47 && c->x86_stepping == 0x0) {
-+		clear_cpu_cap(c, X86_FEATURE_RDSEED);
-+		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
-+		pr_emerg("RDSEED is not reliable on this platform; disabling.\n");
-+	}
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 222921b4751f3..d12e76cdbff6b 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -331,17 +331,22 @@ struct Qdisc *qdisc_lookup_rcu(struct net_device *dev, u32 handle)
+ 	return q;
  }
  
- static void init_amd_zen3(struct cpuinfo_x86 *c)
---- a/tools/arch/x86/include/asm/msr-index.h
-+++ b/tools/arch/x86/include/asm/msr-index.h
-@@ -550,6 +550,7 @@
- #define MSR_AMD64_OSVW_STATUS		0xc0010141
- #define MSR_AMD_PPIN_CTL		0xc00102f0
- #define MSR_AMD_PPIN			0xc00102f1
-+#define MSR_AMD64_CPUID_FN_7		0xc0011002
- #define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_LS_CFG		0xc0011020
- #define MSR_AMD64_DC_CFG		0xc0011022
+-static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid)
++static struct Qdisc *qdisc_leaf(struct Qdisc *p, u32 classid,
++				struct netlink_ext_ack *extack)
+ {
+ 	unsigned long cl;
+ 	const struct Qdisc_class_ops *cops = p->ops->cl_ops;
+ 
+-	if (cops == NULL)
+-		return NULL;
++	if (cops == NULL) {
++		NL_SET_ERR_MSG(extack, "Parent qdisc is not classful");
++		return ERR_PTR(-EOPNOTSUPP);
++	}
+ 	cl = cops->find(p, classid);
+ 
+-	if (cl == 0)
+-		return NULL;
++	if (cl == 0) {
++		NL_SET_ERR_MSG(extack, "Specified class not found");
++		return ERR_PTR(-ENOENT);
++	}
+ 	return cops->leaf(p, cl);
+ }
+ 
+@@ -1462,7 +1467,7 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Failed to find qdisc with specified classid");
+ 					return -ENOENT;
+ 				}
+-				q = qdisc_leaf(p, clid);
++				q = qdisc_leaf(p, clid, extack);
+ 			} else if (dev_ingress_queue(dev)) {
+ 				q = dev_ingress_queue(dev)->qdisc_sleeping;
+ 			}
+@@ -1473,6 +1478,8 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 			NL_SET_ERR_MSG(extack, "Cannot find specified qdisc on specified device");
+ 			return -ENOENT;
+ 		}
++		if (IS_ERR(q))
++			return PTR_ERR(q);
+ 
+ 		if (tcm->tcm_handle && q->handle != tcm->tcm_handle) {
+ 			NL_SET_ERR_MSG(extack, "Invalid handle");
+@@ -1569,7 +1576,9 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Failed to find specified qdisc");
+ 					return -ENOENT;
+ 				}
+-				q = qdisc_leaf(p, clid);
++				q = qdisc_leaf(p, clid, extack);
++				if (IS_ERR(q))
++					return PTR_ERR(q);
+ 			} else if (dev_ingress_queue_create(dev)) {
+ 				q = dev_ingress_queue(dev)->qdisc_sleeping;
+ 			}
+-- 
+2.39.5
+
 
 
 
