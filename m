@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE8EB05F91
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:07:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E91B05FFF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB8451C445DD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DD6B4A79FD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDE42E49B2;
-	Tue, 15 Jul 2025 13:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150942ECD39;
+	Tue, 15 Jul 2025 13:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LElbjs2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/4Etyw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE6A2561AE;
-	Tue, 15 Jul 2025 13:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C522D2E7BBD;
+	Tue, 15 Jul 2025 13:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587286; cv=none; b=hF9h0cGcq1xdak8u4PX+2Il4eomOXjq5WydUKjYIX2wu2ro2OXwpjMnuJbLYMQIdYOmueN+7JNoKgrAz/b3dUjKQ5gqKEkSymbJlIjEoUXwlysNmlN5g64gs1r+uFibg8lZgc/HokvQekP1hOIAulIivzPTHvARjg2ixWFeHKQI=
+	t=1752587697; cv=none; b=FeCbk66SMIiWEnNjLRKPpeS+/COpFYZtE43QFXpsfKRnHEqF1MsA9vWFdGPn3dnRDkuO22Z73tBKmqyH77CAl4EFhnNWkg5vYirNjcyG61ORFg7yK+aLKd0SPQ7V5qzd+LE5hCYB+lbiqLVkgtURWfVY57odamH6fZ3wAeHV+1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587286; c=relaxed/simple;
-	bh=nNp3/WzAuuQ37UbNOwoCD+7GxiEPZ/sll/Ew5RrRstA=;
+	s=arc-20240116; t=1752587697; c=relaxed/simple;
+	bh=ZzBm4Q7IJcFoxBCxICyH4K/AGoD05nsNBwf37xiSoLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FtyFtmovPg4a8L18GwwR3b+kQ6w+oq46OTVU1o6P7JaDvYxZ8CWqXqiSjXdD1px7LG/My+9Sa2aMIQDv5LFY5BFc7RyDXrequV6t47hnqnedj3ZYQHfhiNiXhhKYN+7zDCxvlsK4jIGnO2E1iLylrcJjYumClRLpoKSm+bXeMP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LElbjs2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EE7C4CEE3;
-	Tue, 15 Jul 2025 13:48:05 +0000 (UTC)
+	 MIME-Version; b=qNyKjGN4MCAhV2lVq+zlzDOXV2JIH+0tQ4GJSxFA2yQLFRHLqV0NaXY8v8DRlcpa8JuX4GSdTSN8bPc+Q8EmXAANL3m3Zk2OtjymdfqskmMUnzzwYqIW6k83KbANcoz9iGHJ4pLzg9y/IJFimLmaFNtkSbrf47UGDahASqRVO7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/4Etyw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59141C4CEE3;
+	Tue, 15 Jul 2025 13:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587286;
-	bh=nNp3/WzAuuQ37UbNOwoCD+7GxiEPZ/sll/Ew5RrRstA=;
+	s=korg; t=1752587697;
+	bh=ZzBm4Q7IJcFoxBCxICyH4K/AGoD05nsNBwf37xiSoLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LElbjs2F/TBtcWxVKGp8h80qDY6knm761DBrvhRMVOVR29RancBf45A2vanyPDfL4
-	 tWq4Nx1/bJSy2kz4gwVQ8Mz7VXFdynvZEy+4eZqYF6hYIkNq/PTto6lCEjfdwkjvvL
-	 rHHn1plOJyYe3neP48Kp1+aRg5ywO8+t+9HyLoS4=
+	b=1/4Etyw06ZMFz5RLcE4XnZRaRkiUy+KOsy6rAI/9cFef+HwY18EMS4B2iuPN+96mG
+	 mkDupeSEekG8hYE5aoUNKsk2TxRlmBL78w0LZDphWIASErSW4Er/IDT02eFzQM+POP
+	 bsNjCrJmNA5BwUxCpJb/DvSfy7i+noCSVU/yuXpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yue Hu <huyue2@yulong.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 03/88] ASoC: fsl_asrc: use internal measured ratio for non-ideal ratio mode
+Subject: [PATCH 5.10 110/208] mmc: mediatek: use data instead of mrq parameter from msdc_{un}prepare_data()
 Date: Tue, 15 Jul 2025 15:13:39 +0200
-Message-ID: <20250715130754.637799734@linuxfoundation.org>
+Message-ID: <20250715130815.356450284@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Yue Hu <huyue2@yulong.com>
 
-[ Upstream commit cbe876121633dadb2b0ce52711985328638e9aab ]
+[ Upstream commit 151071351bb6f3d1861e99a22c4cebadf81911a0 ]
 
-When USRC=0, there is underrun issue for the non-ideal ratio mode;
-according to the reference mannual, the internal measured ratio can be
-used with USRC=1 and IDRC=0.
+We already have 'mrq->data' before calling these two functions, no
+need to find it again via 'mrq->data' internally. Also remove local
+data variable accordingly.
 
-Fixes: d0250cf4f2ab ("ASoC: fsl_asrc: Add an option to select internal ratio mode")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/20250625020504.2728161-1-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Yue Hu <huyue2@yulong.com>
+Link: https://lore.kernel.org/r/20210517100900.1620-1-zbestahu@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: f5de469990f1 ("mtk-sd: Prevent memory corruption from DMA map failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_asrc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/host/mtk-sd.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-index e16e7b3fa96cc..c541e2a0202a6 100644
---- a/sound/soc/fsl/fsl_asrc.c
-+++ b/sound/soc/fsl/fsl_asrc.c
-@@ -517,7 +517,8 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair, bool use_ideal_rate)
- 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
- 			   ASRCTR_ATSi_MASK(index), ASRCTR_ATS(index));
- 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
--			   ASRCTR_USRi_MASK(index), 0);
-+			   ASRCTR_IDRi_MASK(index) | ASRCTR_USRi_MASK(index),
-+			   ASRCTR_USR(index));
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index 3f82e0f9dc057..f6bb3b45b37ff 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -708,10 +708,8 @@ static inline void msdc_dma_setup(struct msdc_host *host, struct msdc_dma *dma,
+ 	writel(lower_32_bits(dma->gpd_addr), host->base + MSDC_DMA_SA);
+ }
  
- 	/* Set the input and output clock sources */
- 	regmap_update_bits(asrc->regmap, REG_ASRCSR,
+-static void msdc_prepare_data(struct msdc_host *host, struct mmc_request *mrq)
++static void msdc_prepare_data(struct msdc_host *host, struct mmc_data *data)
+ {
+-	struct mmc_data *data = mrq->data;
+-
+ 	if (!(data->host_cookie & MSDC_PREPARE_FLAG)) {
+ 		data->sg_count = dma_map_sg(host->dev, data->sg, data->sg_len,
+ 					    mmc_get_dma_dir(data));
+@@ -720,10 +718,8 @@ static void msdc_prepare_data(struct msdc_host *host, struct mmc_request *mrq)
+ 	}
+ }
+ 
+-static void msdc_unprepare_data(struct msdc_host *host, struct mmc_request *mrq)
++static void msdc_unprepare_data(struct msdc_host *host, struct mmc_data *data)
+ {
+-	struct mmc_data *data = mrq->data;
+-
+ 	if (data->host_cookie & MSDC_ASYNC_FLAG)
+ 		return;
+ 
+@@ -1116,7 +1112,7 @@ static void msdc_request_done(struct msdc_host *host, struct mmc_request *mrq)
+ 
+ 	msdc_track_cmd_data(host, mrq->cmd, mrq->data);
+ 	if (mrq->data)
+-		msdc_unprepare_data(host, mrq);
++		msdc_unprepare_data(host, mrq->data);
+ 	if (host->error)
+ 		msdc_reset_hw(host);
+ 	mmc_request_done(mmc_from_priv(host), mrq);
+@@ -1287,7 +1283,7 @@ static void msdc_ops_request(struct mmc_host *mmc, struct mmc_request *mrq)
+ 	host->mrq = mrq;
+ 
+ 	if (mrq->data)
+-		msdc_prepare_data(host, mrq);
++		msdc_prepare_data(host, mrq->data);
+ 
+ 	/* if SBC is required, we have HW option and SW option.
+ 	 * if HW option is enabled, and SBC does not have "special" flags,
+@@ -1308,7 +1304,7 @@ static void msdc_pre_req(struct mmc_host *mmc, struct mmc_request *mrq)
+ 	if (!data)
+ 		return;
+ 
+-	msdc_prepare_data(host, mrq);
++	msdc_prepare_data(host, data);
+ 	data->host_cookie |= MSDC_ASYNC_FLAG;
+ }
+ 
+@@ -1316,14 +1312,14 @@ static void msdc_post_req(struct mmc_host *mmc, struct mmc_request *mrq,
+ 		int err)
+ {
+ 	struct msdc_host *host = mmc_priv(mmc);
+-	struct mmc_data *data;
++	struct mmc_data *data = mrq->data;
+ 
+-	data = mrq->data;
+ 	if (!data)
+ 		return;
++
+ 	if (data->host_cookie) {
+ 		data->host_cookie &= ~MSDC_ASYNC_FLAG;
+-		msdc_unprepare_data(host, mrq);
++		msdc_unprepare_data(host, data);
+ 	}
+ }
+ 
 -- 
 2.39.5
 
