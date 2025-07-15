@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-162338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C8EB05D33
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B092B05E58
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:53:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EB8F1C273BE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C09665020BF
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3AD2E7658;
-	Tue, 15 Jul 2025 13:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0E12E92BF;
+	Tue, 15 Jul 2025 13:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHori50y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdPgXtNX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4D62E7646;
-	Tue, 15 Jul 2025 13:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5942E2E3380;
+	Tue, 15 Jul 2025 13:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586292; cv=none; b=U70LhIPvIAJycvYOr0CRrZ2fd1Eztd2aD/NxQajT+nLyj/QIlJZiO02QFCtotaU39k2jEDxXR3A6cDT9uj0khBgM2V7oWCcF9P/79/0tDWiMkaRLb0jnQ1qXocYHn59tRMZ9sB5MAoETMmEaF6annrsVLKW3SUEOU6fno941HiA=
+	t=1752586759; cv=none; b=bG/EaDsv1cDuR6w1byh3aj2rnyKdF9YtUnoXSAfREdrosuNSgrEnVOin6etah78zcv2miR0TbP31Cybhcwo38FJxF3PEK78EAA+Y9+ziNjVt9sbrt8ga1ZZqlVAhqmCg2MSVxCTcLF9qrRTKoUfpvcvuKHlUB25y/Lx81DfzcZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586292; c=relaxed/simple;
-	bh=ODVdmA2hY0ky5GROX++6qb0rYl2fE97Pu+dsJ04CMlY=;
+	s=arc-20240116; t=1752586759; c=relaxed/simple;
+	bh=2nVVGQ2N12sDrrWcWTi4ZEfSqMjEz2S7mybEEgYnbkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dV6/jDLnDlh0KIVkXh953lBL9tilkZAFDioZ+f+/wM767qMOJPw6ZmwuEB4+6iTzmT+tUeRtfd4qzCHTmNTmyRcEvH2nnR/FiWWzDKHklyyJGsLcBdkTr5kzSH7+8tzvLokPAsYVXYh6C5EFQA7D9iOL0BG3fQMHTfHwk1TlSuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHori50y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D34AC4CEE3;
-	Tue, 15 Jul 2025 13:31:32 +0000 (UTC)
+	 MIME-Version; b=MpXmmaNYrf630MZ0LZeSl0O40ULVPu5XEYj3odcNNNlTQHn+stuVxTYEx/Z4AxmVIWkmRZcCKaXAH3JGikPyCXSjIX3+g4PIOuW6jbtQshQlgr99lsYztiA4nDNQeR1B6W4w88evOUaEGRVpBFmWFCQXGqYrlmGrMrGkP0xDLTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdPgXtNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6728C4CEE3;
+	Tue, 15 Jul 2025 13:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586292;
-	bh=ODVdmA2hY0ky5GROX++6qb0rYl2fE97Pu+dsJ04CMlY=;
+	s=korg; t=1752586759;
+	bh=2nVVGQ2N12sDrrWcWTi4ZEfSqMjEz2S7mybEEgYnbkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHori50yJhngtOwE/DOhEE+9jdn4sjMiUkDdP+PEq33ZK/9xSRdBB9EUvC99PGNHV
-	 iyKZ2CmMCvM2PZ2vnjzvEtaSNVsUYW06drUwjjCznQOmxk40HozpH9OfjVa42WJ8D1
-	 ko60xhQF4omEzuCuDnzJIDadqRkdfw8sG7Cer230=
+	b=fdPgXtNXpCprDQfy2TEiInGfA+l4GVKKm4quBSZ7VyB/7/mXnK/xdmSjpq1Wm1JLk
+	 WnwE3E1B+dTjC/zWBUhey1bseCvfsspQlUNp9ElQVRHFbYKT8wypAR8qTiyrq63Yzk
+	 IB2bKLUE6KJKpDBcWhaCpR5vFv4Zls5SVCs+nWT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jos Wang <joswang@lenovo.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andre Edich <andre.edich@microchip.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 011/148] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
+Subject: [PATCH 6.15 038/192] net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
 Date: Tue, 15 Jul 2025 15:12:13 +0200
-Message-ID: <20250715130800.756259356@linuxfoundation.org>
+Message-ID: <20250715130816.384592870@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jos Wang <joswang@lenovo.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
+[ Upstream commit a141af8eb2272ab0f677a7f2653874840bc9b214 ]
 
-Although some Type-C DRD devices that do not support the DP Sink
-function (such as Huawei Mate 40Pro), the Source Port initiates
-Enter Mode CMD, but the device responds to Enter Mode ACK, the
-Source port then initiates DP Status Update CMD, and the device
-responds to DP Status Update NAK.
+Correct the Auto-MDIX configuration to ensure userspace settings are
+respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
 
-As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
-Shall Not be sent during Modal Operation between the Port Partners.
-At this time, the source port initiates DR_Swap message through the
-"echo device > /sys/class/typec/port0/data_role" command to switch
-the data role from host to device. The device will initiate a Hard
-Reset for recovery, resulting in the failure of data role swap.
+The LAN9500 PHY allows its default MDI-X mode to be configured via a
+hardware strap. If this strap sets the default to "MDI-X off", the
+driver was previously unable to enable Auto-MDIX from userspace.
 
-Therefore, when DP Status Update NAK is received, Exit Mode CMD is
-initiated to exit the currently entered DP altmode.
+When handling the ETH_TP_MDI_AUTO case, the driver would set the
+SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
+SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
+falls back to its hardware strap default, ignoring the software request.
 
-Signed-off-by: Jos Wang <joswang@lenovo.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch corrects the behavior by also setting the override bit when
+enabling Auto-MDIX. This ensures that the userspace configuration takes
+precedence over the hardware strap, allowing Auto-MDIX to be enabled
+correctly in all scenarios.
+
+Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andre Edich <andre.edich@microchip.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250703114941.3243890-2-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/phy/smsc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index a2a1baabca933..35d7a4d40d9a4 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -288,6 +288,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index 31463b9e5697f..adf12d7108b5c 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -167,7 +167,8 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
+ 			SPECIAL_CTRL_STS_AMDIX_STATE_;
  		break;
- 	case CMDT_RSP_NAK:
- 		switch (cmd) {
-+		case DP_CMD_STATUS_UPDATE:
-+			if (typec_altmode_exit(alt))
-+				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
-+			break;
- 		case DP_CMD_CONFIGURE:
- 			dp->data.conf = 0;
- 			ret = dp_altmode_configured(dp);
+ 	case ETH_TP_MDI_AUTO:
+-		val = SPECIAL_CTRL_STS_AMDIX_ENABLE_;
++		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
++			SPECIAL_CTRL_STS_AMDIX_ENABLE_;
+ 		break;
+ 	default:
+ 		return genphy_config_aneg(phydev);
 -- 
 2.39.5
 
