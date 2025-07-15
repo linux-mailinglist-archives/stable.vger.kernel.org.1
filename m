@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-162271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976ADB05CF1
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:38:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9018DB05E9C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DAE37BC9D8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:32:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97F541C441A8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089C72E5404;
-	Tue, 15 Jul 2025 13:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61ABE84A35;
+	Tue, 15 Jul 2025 13:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUKiKWFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUlF6Gsa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5102E7F1D;
-	Tue, 15 Jul 2025 13:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A7B26D4F2;
+	Tue, 15 Jul 2025 13:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586115; cv=none; b=thIvWomZ/9D/3p6Cf/Cl3gczxtcO2UaZkATl7oxhz/IWk/C4OSFJ8WHXGHVB0zQ3/DzkQvu5Msqruhan6z2dhZ/aOEW4jaTQxa+a7eb78Mz3fsUX4jyhEGl4zp67ICMsjFdUK0fu1qyMfcSH/iTg6ZPsTpSz2ir7+sUbKto/3bs=
+	t=1752586936; cv=none; b=KkgE1DiMmpU2k+zRwH3g4VuU5OWqmUg90E6n3FoqLqMZEGWMcrh9nliK5U+3bs1MeD9RRcPJn5Qr2A7aikgiNlApgbBOpu50lhXCOLYn5uknj8ySeRd8lN1g34iUXGOeP9bzK6Us8j+XXBmD9meCxFK75FKG/JnOXzkVg5HvEuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586115; c=relaxed/simple;
-	bh=E2vT8tuYRNg4uZBodpZrv0e62W+D2rI0iE5gcnfmEXM=;
+	s=arc-20240116; t=1752586936; c=relaxed/simple;
+	bh=0ZBJDQqNzBd3Dzd3Va8LLPCN0oaR8JB7wzG86lfjCrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xdon+Wtm6pyvxCiO2x8TMRfna0w2kzS9pC6OZJ4jwCTlnaSGlhz30FcH01BKbm20bOkN0FH3CsZAXxySo/EqXlRO5X6H4q/tbHVZitKmx6Lbdl5FQ5yJdLpRP44ERcHBmBj9vJ0YMfhofXKFEU2VtwMoQnBYkUPQeqsO91clGek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUKiKWFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E276C4CEF7;
-	Tue, 15 Jul 2025 13:28:35 +0000 (UTC)
+	 MIME-Version; b=Jp7DpSF2TrwYiY2yle5tqtZ42gCw467gfKQKsEskHs8l1mAFufe4TieXeABqV9O+sppIR//XuM1H9mz7/DYgNZONc/oVb4OtWUtvUT5z7Q7aG4+/GsukO8S2Q01ND+9lABzkpif2vK8FZghihyzeCr2EuwmmnUeN6A29cxhYBz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUlF6Gsa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52CBC4CEF1;
+	Tue, 15 Jul 2025 13:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586115;
-	bh=E2vT8tuYRNg4uZBodpZrv0e62W+D2rI0iE5gcnfmEXM=;
+	s=korg; t=1752586936;
+	bh=0ZBJDQqNzBd3Dzd3Va8LLPCN0oaR8JB7wzG86lfjCrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUKiKWFNfDoE1Tahc7iF33PIjOcps1xSeY3qu9N09OEWZpJyF7cCR0EbAzfciW5Se
-	 ql4EAKqttX88n/dCi+aCGMTQoyomyWDYk1sjy1kMijB5f4DJstJ4ChqlKTF9hVxmF7
-	 W6RIH+7v37XutWE0IR7lUtQsAEgE7PPOATFFkcIA=
+	b=lUlF6Gsa2Vrk/SmEbrOE9v2GhjuoYKBA3LxYn6ciiYyDUvYC3/VgMRiPxEUbWmnpr
+	 902TkNd3HvRzk0b7nMVOzaEXfObSjMGEH3v0PUaCdmpVBKXssrYZzBroXXXPbT7Yuk
+	 6849GLMR/Sm/mE1SenSlRWV2ImfjAkGGO3mjCuGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lee, Chun-Yi" <jlee@suse.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Larry Bassel <larry.bassel@oracle.com>
-Subject: [PATCH 5.15 21/77] thermal/int340x_thermal: handle data_vault when the value is ZERO_SIZE_PTR
+	Illia Ostapyshyn <illia@yshyn.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 105/192] scripts: gdb: vfs: support external dentry names
 Date: Tue, 15 Jul 2025 15:13:20 +0200
-Message-ID: <20250715130752.549224496@linuxfoundation.org>
+Message-ID: <20250715130819.103733410@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +67,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee, Chun-Yi <joeyli.kernel@gmail.com>
+From: Illia Ostapyshyn <illia@yshyn.com>
 
-commit 7931e28098a4c1a2a6802510b0cbe57546d2049d upstream.
+commit e6d3e653b084f003977bf2e33820cb84d2e4541f upstream.
 
-In some case, the GDDV returns a package with a buffer which has
-zero length. It causes that kmemdup() returns ZERO_SIZE_PTR (0x10).
+d_shortname of struct dentry only reserves D_NAME_INLINE_LEN characters
+and contains garbage for longer names.  Use d_name instead, which always
+references the valid name.
 
-Then the data_vault_read() got NULL point dereference problem when
-accessing the 0x10 value in data_vault.
-
-[   71.024560] BUG: kernel NULL pointer dereference, address:
-0000000000000010
-
-This patch uses ZERO_OR_NULL_PTR() for checking ZERO_SIZE_PTR or
-NULL value in data_vault.
-
-Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[ Larry: backport to 5.15.y. Minor conflict resolved due to missing commit 9e5d3d6be664
-  thermal: int340x: Consolidate freeing of acpi_buffer pointer ]
-Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
+Link: https://lore.kernel.org/all/20250525213709.878287-2-illia@yshyn.com/
+Link: https://lkml.kernel.org/r/20250629003811.2420418-1-illia@yshyn.com
+Fixes: 79300ac805b6 ("scripts/gdb: fix dentry_name() lookup")
+Signed-off-by: Illia Ostapyshyn <illia@yshyn.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/intel/int340x_thermal/int3400_thermal.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ scripts/gdb/linux/vfs.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-@@ -469,7 +469,7 @@ static void int3400_setup_gddv(struct in
- 	priv->data_vault = kmemdup(obj->package.elements[0].buffer.pointer,
- 				   obj->package.elements[0].buffer.length,
- 				   GFP_KERNEL);
--	if (!priv->data_vault) {
-+	if (ZERO_OR_NULL_PTR(priv->data_vault)) {
- 		kfree(buffer.pointer);
- 		return;
- 	}
-@@ -540,7 +540,7 @@ static int int3400_thermal_probe(struct
- 			goto free_imok;
- 	}
+diff --git a/scripts/gdb/linux/vfs.py b/scripts/gdb/linux/vfs.py
+index b5fbb18ccb77..9e921b645a68 100644
+--- a/scripts/gdb/linux/vfs.py
++++ b/scripts/gdb/linux/vfs.py
+@@ -22,7 +22,7 @@ def dentry_name(d):
+     if parent == d or parent == 0:
+         return ""
+     p = dentry_name(d['d_parent']) + "/"
+-    return p + d['d_shortname']['string'].string()
++    return p + d['d_name']['name'].string()
  
--	if (priv->data_vault) {
-+	if (!ZERO_OR_NULL_PTR(priv->data_vault)) {
- 		result = sysfs_create_group(&pdev->dev.kobj,
- 					    &data_attribute_group);
- 		if (result)
-@@ -558,7 +558,8 @@ static int int3400_thermal_probe(struct
- free_sysfs:
- 	cleanup_odvp(priv);
- 	if (priv->data_vault) {
--		sysfs_remove_group(&pdev->dev.kobj, &data_attribute_group);
-+		if (!ZERO_OR_NULL_PTR(priv->data_vault))
-+			sysfs_remove_group(&pdev->dev.kobj, &data_attribute_group);
- 		kfree(priv->data_vault);
- 	}
- free_uuid:
-@@ -590,7 +591,7 @@ static int int3400_thermal_remove(struct
- 	if (!priv->rel_misc_dev_res)
- 		acpi_thermal_rel_misc_device_remove(priv->adev->handle);
- 
--	if (priv->data_vault)
-+	if (!ZERO_OR_NULL_PTR(priv->data_vault))
- 		sysfs_remove_group(&pdev->dev.kobj, &data_attribute_group);
- 	sysfs_remove_group(&pdev->dev.kobj, &uuid_attribute_group);
- 	sysfs_remove_group(&pdev->dev.kobj, &imok_attribute_group);
+ class DentryName(gdb.Function):
+     """Return string of the full path of a dentry.
+-- 
+2.50.1
+
 
 
 
