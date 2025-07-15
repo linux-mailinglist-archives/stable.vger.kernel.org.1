@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71D0B05C7E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E2FB05E8E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD1A01C24630
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE6EE4A5533
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C4C2E7176;
-	Tue, 15 Jul 2025 13:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D14626F44C;
+	Tue, 15 Jul 2025 13:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOUOmHbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+RVL5Vg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CC02E3AE1;
-	Tue, 15 Jul 2025 13:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB2C2E6136;
+	Tue, 15 Jul 2025 13:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586007; cv=none; b=It0qO8ffSCGUzunhGKltSotJxUnPD0djWblFvaIsKPKtK35+ELOWKoaIp3KBqgtfefv64+ZTVFLxs2EwEeX20IQTLU/n6nnM/b0iJzx7llUyOL+nieT7M4uZYzlUezL2AytqiL9S86IOW6z1xR6a6ngI6FYA0z1eZDoxJK9e7oo=
+	t=1752586963; cv=none; b=okvkvRK13nJj1elyHbu3y80zeot/gt3C1kvpMpdmFqpMqBPwHFMiziE3v3ZOfLhgSUn3Q3SQ7+lMCDMBT7iStgpx10tAq13b/twC+2wA1BEsdKenTjn//Czz7HQjC1o1reiGDKjzZXsZQUWY2ryQ9LuIosc7i8y3dMeam1/5HiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586007; c=relaxed/simple;
-	bh=imNpF4gE2D5Xqwd/h8AwtQuFng37gp48Nm+5JOoT+mY=;
+	s=arc-20240116; t=1752586963; c=relaxed/simple;
+	bh=h+KliwEo/dXpQ88C7yIJfvZdcpR2pDWwfbn3aTR1r8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USpMxo2Lm+FOnfUIPL4zK4czF1SHy5Di27MDEUJ0/Jd91EcCclrPnw1m3wYw8LGG1tTjqIZVodLG0gqB0DCqLQXIJ/19K/8GGePXH+208ZpSYhi7OnATFiGU4THJ5mMKRQGClEpMA959OPz7iK7XiH9uNRjfU8MqCo4cOan6UbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOUOmHbp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96291C4CEE3;
-	Tue, 15 Jul 2025 13:26:46 +0000 (UTC)
+	 MIME-Version; b=TSAPIZUWV2bcRDNaf4oIRCj2M3v6uCfjd6x7Uy+yXdxic3BiJjAMoMchX0L1QP5nYC7ff50CMGtQs5ZIDi6nhBuuIFmkGj3UoDAg1adi+QiPFnhCEE4AVipx6Ol/W2vHAF7qmyh5U0hCfLNKZ6jh19PjvP2tAsYQhcKTsVhF+Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+RVL5Vg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B19C4CEE3;
+	Tue, 15 Jul 2025 13:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586007;
-	bh=imNpF4gE2D5Xqwd/h8AwtQuFng37gp48Nm+5JOoT+mY=;
+	s=korg; t=1752586963;
+	bh=h+KliwEo/dXpQ88C7yIJfvZdcpR2pDWwfbn3aTR1r8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOUOmHbp0eaM3pBfUWH69qid0QAuK5NMBeSHk1XPpuTuO4UK5VhG86GYh4bugEEwf
-	 SImIilyWcFWo4t1b+pZcFxuuXG1OMxv5Un7pcF2fMpERtknrSLRdTRDldKX0aMdrVs
-	 QDJ1FtViRmz+EmWGMYp9zV2Knky5/BB7ApHX2KKA=
+	b=U+RVL5VgkMLFKBpTc/es0X+6PXPw2MO7SjVwb07tPMxIHrV5epA+pk8nNJ+TF/BzY
+	 hrVzfRWLXD/Rx9qbnLNIfl/Kj2GymtW49ITwK71YNrhu+zuQs5J16atVA/d3+TBORp
+	 LFdBmKUgfeRMuJ9qx7VniE6VfCpT2Q+t+Dxi4Nk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/109] usb: cdnsp: Fix issue with CV Bad Descriptor test
+	Mikhail Paulyshka <me@mixaill.net>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.15 114/192] x86/rdrand: Disable RDSEED on AMD Cyan Skillfish
 Date: Tue, 15 Jul 2025 15:13:29 +0200
-Message-ID: <20250715130801.805510203@linuxfoundation.org>
+Message-ID: <20250715130819.461718765@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Mikhail Paulyshka <me@mixaill.net>
 
-[ Upstream commit 2831a81077f5162f104ba5a97a7d886eb371c21c ]
+commit 5b937a1ed64ebeba8876e398110a5790ad77407c upstream.
 
-The SSP2 controller has extra endpoint state preserve bit (ESP) which
-setting causes that endpoint state will be preserved during
-Halt Endpoint command. It is used only for EP0.
-Without this bit the Command Verifier "TD 9.10 Bad Descriptor Test"
-failed.
-Setting this bit doesn't have any impact for SSP controller.
+AMD Cyan Skillfish (Family 17h, Model 47h, Stepping 0h) has an error that
+causes RDSEED to always return 0xffffffff, while RDRAND works correctly.
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB95382CCD50549DABAEFD6156DD7CA@PH7PR07MB9538.namprd07.prod.outlook.com
+Mask the RDSEED cap for this CPU so that both /proc/cpuinfo and direct CPUID
+read report RDSEED as unavailable.
+
+  [ bp: Move to amd.c, massage. ]
+
+Signed-off-by: Mikhail Paulyshka <me@mixaill.net>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/20250524145319.209075-1-me@mixaill.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdnsp-debug.h  |  5 +++--
- drivers/usb/cdns3/cdnsp-ep0.c    | 18 +++++++++++++++---
- drivers/usb/cdns3/cdnsp-gadget.h |  6 ++++++
- drivers/usb/cdns3/cdnsp-ring.c   |  3 ++-
- 4 files changed, 26 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/msr-index.h       |    1 +
+ arch/x86/kernel/cpu/amd.c              |    7 +++++++
+ tools/arch/x86/include/asm/msr-index.h |    1 +
+ 3 files changed, 9 insertions(+)
 
-diff --git a/drivers/usb/cdns3/cdnsp-debug.h b/drivers/usb/cdns3/cdnsp-debug.h
-index cd138acdcce16..86860686d8363 100644
---- a/drivers/usb/cdns3/cdnsp-debug.h
-+++ b/drivers/usb/cdns3/cdnsp-debug.h
-@@ -327,12 +327,13 @@ static inline const char *cdnsp_decode_trb(char *str, size_t size, u32 field0,
- 	case TRB_RESET_EP:
- 	case TRB_HALT_ENDPOINT:
- 		ret = scnprintf(str, size,
--				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
-+				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c %c",
- 				cdnsp_trb_type_string(type),
- 				ep_num, ep_id % 2 ? "out" : "in",
- 				TRB_TO_EP_INDEX(field3), field1, field0,
- 				TRB_TO_SLOT_ID(field3),
--				field3 & TRB_CYCLE ? 'C' : 'c');
-+				field3 & TRB_CYCLE ? 'C' : 'c',
-+				field3 & TRB_ESP ? 'P' : 'p');
- 		break;
- 	case TRB_STOP_RING:
- 		ret = scnprintf(str, size,
-diff --git a/drivers/usb/cdns3/cdnsp-ep0.c b/drivers/usb/cdns3/cdnsp-ep0.c
-index f317d3c847810..5cd9b898ce971 100644
---- a/drivers/usb/cdns3/cdnsp-ep0.c
-+++ b/drivers/usb/cdns3/cdnsp-ep0.c
-@@ -414,6 +414,7 @@ static int cdnsp_ep0_std_request(struct cdnsp_device *pdev,
- void cdnsp_setup_analyze(struct cdnsp_device *pdev)
- {
- 	struct usb_ctrlrequest *ctrl = &pdev->setup;
-+	struct cdnsp_ep *pep;
- 	int ret = -EINVAL;
- 	u16 len;
- 
-@@ -427,10 +428,21 @@ void cdnsp_setup_analyze(struct cdnsp_device *pdev)
- 		goto out;
- 	}
- 
-+	pep = &pdev->eps[0];
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -624,6 +624,7 @@
+ #define MSR_AMD64_OSVW_STATUS		0xc0010141
+ #define MSR_AMD_PPIN_CTL		0xc00102f0
+ #define MSR_AMD_PPIN			0xc00102f1
++#define MSR_AMD64_CPUID_FN_7		0xc0011002
+ #define MSR_AMD64_CPUID_FN_1		0xc0011004
+ #define MSR_AMD64_LS_CFG		0xc0011020
+ #define MSR_AMD64_DC_CFG		0xc0011022
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -972,6 +972,13 @@ static void init_amd_zen2(struct cpuinfo
+ 	init_spectral_chicken(c);
+ 	fix_erratum_1386(c);
+ 	zen2_zenbleed_check(c);
 +
- 	/* Restore the ep0 to Stopped/Running state. */
--	if (pdev->eps[0].ep_state & EP_HALTED) {
--		trace_cdnsp_ep0_halted("Restore to normal state");
--		cdnsp_halt_endpoint(pdev, &pdev->eps[0], 0);
-+	if (pep->ep_state & EP_HALTED) {
-+		if (GET_EP_CTX_STATE(pep->out_ctx) == EP_STATE_HALTED)
-+			cdnsp_halt_endpoint(pdev, pep, 0);
-+
-+		/*
-+		 * Halt Endpoint Command for SSP2 for ep0 preserve current
-+		 * endpoint state and driver has to synchronize the
-+		 * software endpoint state with endpoint output context
-+		 * state.
-+		 */
-+		pep->ep_state &= ~EP_HALTED;
-+		pep->ep_state |= EP_STOPPED;
- 	}
- 
- 	/*
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
-index 2afa3e558f85c..a91cca509db08 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.h
-+++ b/drivers/usb/cdns3/cdnsp-gadget.h
-@@ -987,6 +987,12 @@ enum cdnsp_setup_dev {
- #define STREAM_ID_FOR_TRB(p)		((((p)) << 16) & GENMASK(31, 16))
- #define SCT_FOR_TRB(p)			(((p) << 1) & 0x7)
- 
-+/*
-+ * Halt Endpoint Command TRB field.
-+ * The ESP bit only exists in the SSP2 controller.
-+ */
-+#define TRB_ESP				BIT(9)
-+
- /* Link TRB specific fields. */
- #define TRB_TC				BIT(1)
- 
-diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
-index 757fdd918286d..0758f171f73ec 100644
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -2485,7 +2485,8 @@ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev, unsigned int ep_index)
- {
- 	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_HALT_ENDPOINT) |
- 			    SLOT_ID_FOR_TRB(pdev->slot_id) |
--			    EP_ID_FOR_TRB(ep_index));
-+			    EP_ID_FOR_TRB(ep_index) |
-+			    (!ep_index ? TRB_ESP : 0));
++	/* Disable RDSEED on AMD Cyan Skillfish because of an error. */
++	if (c->x86_model == 0x47 && c->x86_stepping == 0x0) {
++		clear_cpu_cap(c, X86_FEATURE_RDSEED);
++		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
++		pr_emerg("RDSEED is not reliable on this platform; disabling.\n");
++	}
  }
  
- void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
--- 
-2.39.5
-
+ static void init_amd_zen3(struct cpuinfo_x86 *c)
+--- a/tools/arch/x86/include/asm/msr-index.h
++++ b/tools/arch/x86/include/asm/msr-index.h
+@@ -616,6 +616,7 @@
+ #define MSR_AMD64_OSVW_STATUS		0xc0010141
+ #define MSR_AMD_PPIN_CTL		0xc00102f0
+ #define MSR_AMD_PPIN			0xc00102f1
++#define MSR_AMD64_CPUID_FN_7		0xc0011002
+ #define MSR_AMD64_CPUID_FN_1		0xc0011004
+ #define MSR_AMD64_LS_CFG		0xc0011020
+ #define MSR_AMD64_DC_CFG		0xc0011022
 
 
 
