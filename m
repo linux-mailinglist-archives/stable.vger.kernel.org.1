@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8B2B05F1C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:00:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3953BB05F22
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C57EA7B98EC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB82E1C42FEC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546A72E3378;
-	Tue, 15 Jul 2025 13:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA7F2EE5E7;
+	Tue, 15 Jul 2025 13:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbQTUK+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCarY8a1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121C02E2EEF;
-	Tue, 15 Jul 2025 13:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6132EBDC7;
+	Tue, 15 Jul 2025 13:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587329; cv=none; b=PNGMCN7mNe95EG/FajNoNPvM8ViB/z6XsbEEVpJBB0VcJAZ7p6Hh9e+/QxqJoPurk31O6BS9vAI7IJ/u/KG8AMHbD7WSjsFbBxtCEVg2UfPa17C3f8ceRtSFNOsQ12Q8eFOFOi5pHHoLHwBBwzY1nVXitHUMzBcJrv0TzFa4czA=
+	t=1752587137; cv=none; b=g0XUgdD9QJYkmgoKSvKUntsYAemBxxk5bv1V90Bp0NtRaDI1/oJaKTcNt1HOex+4Yz7Bm2JIPYr/RrZQP3Ka86Q9rs6CWWWMTNsKfF7DGOT9pTgF4WYReDuww/H3wNK6Ln8KwzVjTyFxehKQ22A+b37lOBPF5rbmYiyxLJ9dTsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587329; c=relaxed/simple;
-	bh=7VQQBq1JxtiKGYS2xWFEpsi++KdibzHpjWNl7NCCFsQ=;
+	s=arc-20240116; t=1752587137; c=relaxed/simple;
+	bh=CBDD2qM/YwtloB1N3jGF2Qp1+bdf3ebs8ZWfbjtzwJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u//JJfyspAodDD0BQCYvIEUCzad4L0DVj4YJZaUoXo30Cl5WNodXVOIevqN45UlvpAxVlJRMqRGb56K+eEsuq2qnCWkwaJ2FqRySAibtiELl+CcKsfQ/8vFoGXgmgTxyn8WHz88P/x+gmmyfyopTJZtVeiMi65tsra7Ajsvh6Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbQTUK+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B799C4CEE3;
-	Tue, 15 Jul 2025 13:48:48 +0000 (UTC)
+	 MIME-Version; b=c57oyNyQOsrWERSU4MaXn1wWkk5wp1JYWCT4nDrH2YD6FU8ZjEMGP9HOpvgAfsO+VeRVQE8kdpViVtBExVX/HUsOUSv0uspKa8JQVqv6/FeLP99wnfZ+u5vC1lyeD1BquHiJhPQzm3PVZEsL+cavBV0qunhoie+Hn8Dv1iMk0oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCarY8a1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD52DC4CEE3;
+	Tue, 15 Jul 2025 13:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587329;
-	bh=7VQQBq1JxtiKGYS2xWFEpsi++KdibzHpjWNl7NCCFsQ=;
+	s=korg; t=1752587137;
+	bh=CBDD2qM/YwtloB1N3jGF2Qp1+bdf3ebs8ZWfbjtzwJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RbQTUK+PfeDEXOuI7jWw6f027n3yE44KVOSueTmSzaPN1ROocI9fh8OcpYYNnCiCB
-	 7FjYKK3jH5PoTSqSmaTqQJI59ivF/MgPNeLj3MUettDSS+CX1qVgvf8KSpR+7wWRLy
-	 K7521VE+dntPO4n6ORk8zLrvrLNg3RGqGqJoBTio=
+	b=UCarY8a1KYvBeCWIGXwWR4QCKBcjwvjOvtzyMzzdyZoLY3oec/gzAUW2ewAGn9t5Y
+	 RHS9x0PWA4DjXLExrKcC4ZUop4Wf8sDaswjj8w/NwnHp+Ewb3o+s3uPuBrPly5xqxG
+	 f26ZmzEmss8rCQVaLOKOSrqLt82Glv60aDIkoROQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Hu <huyue2@coolpad.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Akira Inoue <niyarium@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 59/88] erofs: remove the member readahead from struct z_erofs_decompress_frontend
+Subject: [PATCH 6.15 180/192] HID: lenovo: Add support for ThinkPad X1 Tablet Thin Keyboard Gen2
 Date: Tue, 15 Jul 2025 15:14:35 +0200
-Message-ID: <20250715130756.932211838@linuxfoundation.org>
+Message-ID: <20250715130822.135846561@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Hu <huyue2@coolpad.com>
+From: Akira Inoue <niyarium@gmail.com>
 
-[ Upstream commit ef4b4b46c6aaf8edeea9a79320627fe10993f153 ]
+[ Upstream commit a8905238c3bbe13db90065ed74682418f23830c3 ]
 
-The struct member is only used to add REQ_RAHEAD during I/O submission.
-So it is cleaner to pass it as a parameter than keep it in the struct.
+Add "Thinkpad X1 Tablet Gen 2 Keyboard" PID to hid-lenovo driver to fix trackpoint not working issue.
 
-Also, rename function z_erofs_get_sync_decompress_policy() to
-z_erofs_is_sync_decompress() for better clarity and conciseness.
-
-Signed-off-by: Yue Hu <huyue2@coolpad.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230524063944.1655-1-zbestahu@gmail.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Stable-dep-of: 99f7619a77a0 ("erofs: fix to add missing tracepoint in erofs_read_folio()")
+Signed-off-by: Akira Inoue <niyarium@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-lenovo.c     | 8 ++++++++
+ drivers/hid/hid-multitouch.c | 8 +++++++-
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 94e9e0bf3bbd1..8018f31d2dbca 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -407,7 +407,6 @@ struct z_erofs_decompress_frontend {
- 	z_erofs_next_pcluster_t owned_head;
- 	enum z_erofs_pclustermode mode;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 1062731315a2a..898fe03074c64 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -818,6 +818,7 @@
+ #define USB_DEVICE_ID_LENOVO_TPPRODOCK	0x6067
+ #define USB_DEVICE_ID_LENOVO_X1_COVER	0x6085
+ #define USB_DEVICE_ID_LENOVO_X1_TAB	0x60a3
++#define USB_DEVICE_ID_LENOVO_X1_TAB2	0x60a4
+ #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
+ #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
+ #define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
+diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+index a3c23a72316ac..b3121fa7a72d7 100644
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -492,6 +492,7 @@ static int lenovo_input_mapping(struct hid_device *hdev,
+ 	case USB_DEVICE_ID_LENOVO_X12_TAB:
+ 	case USB_DEVICE_ID_LENOVO_X12_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		return lenovo_input_mapping_x1_tab_kbd(hdev, hi, field, usage, bit, max);
+ 	default:
+@@ -608,6 +609,7 @@ static ssize_t attr_fn_lock_store(struct device *dev,
+ 	case USB_DEVICE_ID_LENOVO_X12_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_led_set_tp10ubkbd(hdev, TP10UBKBD_FN_LOCK_LED, value);
+ 		if (ret)
+@@ -864,6 +866,7 @@ static int lenovo_event(struct hid_device *hdev, struct hid_field *field,
+ 	case USB_DEVICE_ID_LENOVO_X12_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		return lenovo_event_tp10ubkbd(hdev, field, usage, value);
+ 	default:
+@@ -1147,6 +1150,7 @@ static int lenovo_led_brightness_set(struct led_classdev *led_cdev,
+ 	case USB_DEVICE_ID_LENOVO_X12_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_led_set_tp10ubkbd(hdev, tp10ubkbd_led[led_nr], value);
+ 		break;
+@@ -1387,6 +1391,7 @@ static int lenovo_probe(struct hid_device *hdev,
+ 	case USB_DEVICE_ID_LENOVO_X12_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_probe_tp10ubkbd(hdev);
+ 		break;
+@@ -1476,6 +1481,7 @@ static void lenovo_remove(struct hid_device *hdev)
+ 	case USB_DEVICE_ID_LENOVO_X12_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB2:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		lenovo_remove_tp10ubkbd(hdev);
+ 		break;
+@@ -1526,6 +1532,8 @@ static const struct hid_device_id lenovo_devices[] = {
+ 	 */
+ 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
+ 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB) },
++	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
++		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB2) },
+ 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
+ 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB3) },
+ 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 7ac8e16e61581..536a0a47518fa 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2122,12 +2122,18 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_GENERIC,
+ 			USB_VENDOR_ID_LG, I2C_DEVICE_ID_LG_7010) },
  
--	bool readahead;
- 	/* used for applying cache strategy on the fly */
- 	bool backmost;
- 	erofs_off_t headoffset;
-@@ -949,7 +948,7 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
- 	return err;
- }
+-	/* Lenovo X1 TAB Gen 2 */
++	/* Lenovo X1 TAB Gen 1 */
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
+ 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
+ 			   USB_VENDOR_ID_LENOVO,
+ 			   USB_DEVICE_ID_LENOVO_X1_TAB) },
  
--static bool z_erofs_get_sync_decompress_policy(struct erofs_sb_info *sbi,
-+static bool z_erofs_is_sync_decompress(struct erofs_sb_info *sbi,
- 				       unsigned int readahead_pages)
- {
- 	/* auto: enable for read_folio, disable for readahead */
-@@ -1482,7 +1481,7 @@ static void z_erofs_decompressqueue_endio(struct bio *bio)
- static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 				 struct page **pagepool,
- 				 struct z_erofs_decompressqueue *fgq,
--				 bool *force_fg)
-+				 bool *force_fg, bool readahead)
- {
- 	struct super_block *sb = f->inode->i_sb;
- 	struct address_space *mc = MNGD_MAPPING(EROFS_SB(sb));
-@@ -1568,7 +1567,7 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 				bio->bi_iter.bi_sector = (sector_t)cur <<
- 					(sb->s_blocksize_bits - 9);
- 				bio->bi_private = q[JQ_SUBMIT];
--				if (f->readahead)
-+				if (readahead)
- 					bio->bi_opf |= REQ_RAHEAD;
- 				++nr_bios;
- 			}
-@@ -1604,13 +1603,13 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- }
- 
- static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
--			     struct page **pagepool, bool force_fg)
-+			     struct page **pagepool, bool force_fg, bool ra)
- {
- 	struct z_erofs_decompressqueue io[NR_JOBQUEUES];
- 
- 	if (f->owned_head == Z_EROFS_PCLUSTER_TAIL)
- 		return;
--	z_erofs_submit_queue(f, pagepool, io, &force_fg);
-+	z_erofs_submit_queue(f, pagepool, io, &force_fg, ra);
- 
- 	/* handle bypass queue (no i/o pclusters) immediately */
- 	z_erofs_decompress_queue(&io[JQ_BYPASS], pagepool);
-@@ -1708,8 +1707,8 @@ static int z_erofs_read_folio(struct file *file, struct folio *folio)
- 	(void)z_erofs_collector_end(&f);
- 
- 	/* if some compressed cluster ready, need submit them anyway */
--	z_erofs_runqueue(&f, &pagepool,
--			 z_erofs_get_sync_decompress_policy(sbi, 0));
-+	z_erofs_runqueue(&f, &pagepool, z_erofs_is_sync_decompress(sbi, 0),
-+			 false);
- 
- 	if (err)
- 		erofs_err(inode->i_sb, "failed to read, err [%d]", err);
-@@ -1727,7 +1726,6 @@ static void z_erofs_readahead(struct readahead_control *rac)
- 	struct page *pagepool = NULL, *head = NULL, *page;
- 	unsigned int nr_pages;
- 
--	f.readahead = true;
- 	f.headoffset = readahead_pos(rac);
- 
- 	z_erofs_pcluster_readmore(&f, rac, f.headoffset +
-@@ -1758,7 +1756,7 @@ static void z_erofs_readahead(struct readahead_control *rac)
- 	(void)z_erofs_collector_end(&f);
- 
- 	z_erofs_runqueue(&f, &pagepool,
--			 z_erofs_get_sync_decompress_policy(sbi, nr_pages));
-+			 z_erofs_is_sync_decompress(sbi, nr_pages), true);
- 	erofs_put_metabuf(&f.map.buf);
- 	erofs_release_pages(&pagepool);
- }
++	/* Lenovo X1 TAB Gen 2 */
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
++		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++			   USB_VENDOR_ID_LENOVO,
++			   USB_DEVICE_ID_LENOVO_X1_TAB2) },
++
+ 	/* Lenovo X1 TAB Gen 3 */
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
+ 		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
 -- 
 2.39.5
 
