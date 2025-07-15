@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A60B05F29
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:01:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B51B05D29
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC0C7580861
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:55:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A14B1C271E9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A7D2EF64A;
-	Tue, 15 Jul 2025 13:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5901E2E7629;
+	Tue, 15 Jul 2025 13:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdZRZIFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzb4lJcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765C82ECE8D;
-	Tue, 15 Jul 2025 13:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150DF2E7181;
+	Tue, 15 Jul 2025 13:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587179; cv=none; b=jy6+hS2WxDJs9M7e04jV0n+Ic7DmG46/AsVqGH76bi8+4qyg69b/EWAPvg3baDpluJbvRUx2MWShmLrm0VsOKCIIQikARV1Bu+C7KOdvwC4wSAliRGa4BR1tFqfWQeZrMEDIVM0PXRbZMYnmupLE1Wv/oTjGzHdlwo/KZL+E7MM=
+	t=1752586277; cv=none; b=DXVFHn3rq0CyHDSaw9eOadIvzXuLufUvQZXBCWELwopUdw4Dydbvyr39PLEzuGWAOdz8qc5uRjgaz0QBoXkyo6Wb8FCG1q/CSnDju2+26FsxIOrVu/nsMIUxjzoFwujggF8eZkAe5umYwO/BeHMWG5AqgQI54VGVVfL5xJpDkgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587179; c=relaxed/simple;
-	bh=CwrnpYVnDQM6oFF00Sts2hUNSRkcXbGq2tzwzCUdAOU=;
+	s=arc-20240116; t=1752586277; c=relaxed/simple;
+	bh=nas2GMrfPR3214DI9ZaT00V403hEOTPsAMGPUlnqs6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rl23rjoHxu1unOGqx7b8LGMsBiDYiGv1E616UyC5lqlqqdXIv1ed86BRUYdup1RF8/HeeWHM7k3MNmMGggEi3IGZ0HY4ZLnBV7qeDiY8b2maRBo9YfjkpsbuWFdHx7N1pf1ag55Alg/+fBWyLRgFH6VI7wZSjOCdZ2iS4v7uWPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdZRZIFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0F9C4CEE3;
-	Tue, 15 Jul 2025 13:46:18 +0000 (UTC)
+	 MIME-Version; b=UyhbB90ZogmAyh3v7bS02rjJnt883IYP/plfqy392WVUWdIBFpEx77BY87mq/l6Ou5k7ZxFdG4zzTo1PhzCQ6qZYhKCkDPVJ/vnvfQXh5iC0cp5M9mJ8czdJOd4QgwfjDJSkERiAT9FdBXlhhDUTfI0XWt7iKY31sYXlM6Ej/j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzb4lJcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D78C4CEE3;
+	Tue, 15 Jul 2025 13:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587179;
-	bh=CwrnpYVnDQM6oFF00Sts2hUNSRkcXbGq2tzwzCUdAOU=;
+	s=korg; t=1752586277;
+	bh=nas2GMrfPR3214DI9ZaT00V403hEOTPsAMGPUlnqs6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdZRZIFNolShIQGHqlBN0clvCFgrvR8rTQ+tTCShl9RwFsxpeNN+DBYpcD8mFDJcm
-	 wvDXTPhaNhk7GIYxON6bW2Pdq+kHIw/UQXv27g/wHbjEGZEk2ine7GqHQJSfb5wD/b
-	 JskuQeyKljkLtcKUkgRcs++TT54rHWsscC4jbP9A=
+	b=bzb4lJcu4v8Yt4Xlqscg590VpAj935TliqoHZx+WYYEQYpk0xWfwBYrAmPuoE+0tF
+	 SfEC0GSQGYw6qAAC80fKBp/HaiLCW5bbZhkx3S7gb5BR9mA6uVIAjhxBRaiH8RHgmQ
+	 V+pgcc58LbZTYAXqb3v+IoD/Ys5C+12bn2JbG7oY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nicolas Pitre <npitre@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 155/192] net: phy: microchip: limit 100M workaround to link-down events on LAN88xx
+Subject: [PATCH 5.15 71/77] vt: add missing notification when switching back to text mode
 Date: Tue, 15 Jul 2025 15:14:10 +0200
-Message-ID: <20250715130821.135488063@linuxfoundation.org>
+Message-ID: <20250715130754.573879185@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
+References: <20250715130751.668489382@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Nicolas Pitre <npitre@baylibre.com>
 
-[ Upstream commit dd4360c0e8504f2f7639c7f5d07c93cfd6a98333 ]
+[ Upstream commit ff78538e07fa284ce08cbbcb0730daa91ed16722 ]
 
-Restrict the 100Mbit forced-mode workaround to link-down transitions
-only, to prevent repeated link reset cycles in certain configurations.
+Programs using poll() on /dev/vcsa to be notified when VT changes occur
+were missing one case: the switch from gfx to text mode.
 
-The workaround was originally introduced to improve signal reliability
-when switching cables between long and short distances. It temporarily
-forces the PHY into 10 Mbps before returning to 100 Mbps.
-
-However, when used with autonegotiating link partners (e.g., Intel i350),
-executing this workaround on every link change can confuse the partner
-and cause constant renegotiation loops. This results in repeated link
-down/up transitions and the PHY never reaching a stable state.
-
-Limit the workaround to only run during the PHY_NOLINK state. This ensures
-it is triggered only once per link drop, avoiding disruptive toggling
-while still preserving its intended effect.
-
-Note: I am not able to reproduce the original issue that this workaround
-addresses. I can only confirm that 100 Mbit mode works correctly in my
-test setup. Based on code inspection, I assume the workaround aims to
-reset some internal state machine or signal block by toggling speeds.
-However, a PHY reset is already performed earlier in the function via
-phy_init_hw(), which may achieve a similar effect. Without a reproducer,
-I conservatively keep the workaround but restrict its conditions.
-
-Fixes: e57cf3639c32 ("net: lan78xx: fix accessing the LAN7800's internal phy specific registers from the MAC driver")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250709130753.3994461-3-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Nicolas Pitre <npitre@baylibre.com>
+Link: https://lore.kernel.org/r/9o5ro928-0pp4-05rq-70p4-ro385n21n723@onlyvoer.pbz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/microchip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/vt/vt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index 5d1ca285d95ba..55822d36889c3 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -332,7 +332,7 @@ static void lan88xx_link_change_notify(struct phy_device *phydev)
- 	 * As workaround, set to 10 before setting to 100
- 	 * at forced 100 F/H mode.
- 	 */
--	if (!phydev->autoneg && phydev->speed == 100) {
-+	if (phydev->state == PHY_NOLINK && !phydev->autoneg && phydev->speed == 100) {
- 		/* disable phy interrupt */
- 		temp = phy_read(phydev, LAN88XX_INT_MASK);
- 		temp &= ~LAN88XX_INT_MASK_MDINTPIN_EN_;
+diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+index a6e0c803e96ec..a10b7ebbbe918 100644
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -4443,6 +4443,7 @@ void do_unblank_screen(int leaving_gfx)
+ 	set_palette(vc);
+ 	set_cursor(vc);
+ 	vt_event_post(VT_EVENT_UNBLANK, vc->vc_num, vc->vc_num);
++	notify_update(vc);
+ }
+ EXPORT_SYMBOL(do_unblank_screen);
+ 
 -- 
 2.39.5
 
