@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25866B05CCE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63BEFB05F49
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFD227BDA36
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:30:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 017553B11A5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5332E3366;
-	Tue, 15 Jul 2025 13:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9531D1A3142;
+	Tue, 15 Jul 2025 13:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvHsAOxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijy9CkLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C76A2397BF;
-	Tue, 15 Jul 2025 13:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557A52E4997;
+	Tue, 15 Jul 2025 13:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586068; cv=none; b=SnxYTtAw3ctzjsWpSPSwCxSUzasoFH6YHfMirfKpScaH9SKt4fdFgMAy3DdJQaDevPELkSpPaABEHG+ivIZiHgV9yk3UONjw97M9oNUJQyxDtdUdgKiTLjbKe6uIPApREiCKEeDXvlqutKrgd1g9FvO3FACzKHvsPs3HMwI3B2M=
+	t=1752587240; cv=none; b=ivpLvdA3SS1WdeVYJcd+IXeobqbrse2Ud58eAQz68SU4c6lBaREe1irYsfz3aU2JVRMeuDt3PM8Z3y6cfmJvNT59ukwILYxTuglo3VzN5RwHz6jE+6i120cV12v9ZAi4tB3GPcq3sl9KqT/NwNO3LlMgdJ4oym5O6+4DerIL0xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586068; c=relaxed/simple;
-	bh=XCwL5oyPD5FwSjoUH+SW0P+BDDlY3n/mWPhTd4xNPco=;
+	s=arc-20240116; t=1752587240; c=relaxed/simple;
+	bh=8vnVMC5V3k0eXBtpPVdZkrbr+gvMNxEgBwQDlWr3ULs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2hALBpqFKHkUj2B5La071Z9DC6CV+84TeBJcA9a2yecCaNM6KYFZ3NG1Twfw/71RMgGf3RxUXAfApEFhRNuPLCO5isdngXZ2LA9VMiim4G2cSKwn5PGTpuYeaRWoS5onvT7sdSPV7WigwZfxoGGzVulUIlP3jPlYQFG9/rSxdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvHsAOxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3E9C4CEE3;
-	Tue, 15 Jul 2025 13:27:47 +0000 (UTC)
+	 MIME-Version; b=K1JPYupM7jrwnYYUhcTtEh4t7w/Y5HnAcJBQRwVTWigGZTOE3nYd4mZI+n+rw8MpVywJC0PYVAd2jAlknSNDkhGAsyD7jLzHhYmk8zeKfY/9kWDULFr1Esz/pYhLdMQqLKTyuvD9opxJFQb8Q+Ckxg/yHabZdvb8DxtvpjhN7WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijy9CkLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE156C4CEE3;
+	Tue, 15 Jul 2025 13:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586068;
-	bh=XCwL5oyPD5FwSjoUH+SW0P+BDDlY3n/mWPhTd4xNPco=;
+	s=korg; t=1752587240;
+	bh=8vnVMC5V3k0eXBtpPVdZkrbr+gvMNxEgBwQDlWr3ULs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvHsAOxaVbopvGev58ldEsPOgazeT0TSWbdWswTXTCG49vwIUCVTG911ZweIZgQne
-	 r7m8mYm2YPp1PpcptWkt37d2IK1HD+QJlTBMbHrfcr0aWA6xGblLpbKcGPDzDhThWz
-	 bC8ovzWHFwXUv5ZyXR/nSJk/rBzMqvAcRraMGsxk=
+	b=ijy9CkLxJF17xPxzWg1OUUf8IKwMeVU48ZIYjEaS0FYCln4W5Wxgm+he0vl0xntFP
+	 9g6zfyUoW70B8JZ2b+YIfz/rNnKUAITnxi68ebwVPTPxNHho9eEgGOXjGQnVUf488d
+	 qEBeUoWTz+Z+ryfSjjneku1SOpEuSB3VfFqCfNBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 106/109] selftests/bpf: adapt one more case in test_lru_map to the new target_free
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Paul Durrant <paul@xen.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 26/88] KVM: x86/xen: Allow out of range event channel ports in IRQ routing table.
 Date: Tue, 15 Jul 2025 15:14:02 +0200
-Message-ID: <20250715130803.122515818@linuxfoundation.org>
+Message-ID: <20250715130755.565316821@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit 5e9388f7984a9cc7e659a105113f6ccf0aebedd0 upstream.
+commit a7f4dff21fd744d08fa956c243d2b1795f23cbf7 upstream.
 
-The below commit that updated BPF_MAP_TYPE_LRU_HASH free target,
-also updated tools/testing/selftests/bpf/test_lru_map to match.
+To avoid imposing an ordering constraint on userspace, allow 'invalid'
+event channel targets to be configured in the IRQ routing table.
 
-But that missed one case that passes with 4 cores, but fails at
-higher cpu counts.
+This is the same as accepting interrupts targeted at vCPUs which don't
+exist yet, which is already the case for both Xen event channels *and*
+for MSIs (which don't do any filtering of permitted APIC ID targets at
+all).
 
-Update test_lru_sanity3 to also adjust its expectation of target_free.
+If userspace actually *triggers* an IRQ with an invalid target, that
+will fail cleanly, as kvm_xen_set_evtchn_fast() also does the same range
+check.
 
-This time tested with 1, 4, 16, 64 and 384 cpu count.
+If KVM enforced that the IRQ target must be valid at the time it is
+*configured*, that would force userspace to create all vCPUs and do
+various other parts of setup (in this case, setting the Xen long_mode)
+before restoring the IRQ table.
 
-Fixes: d4adf1c9ee77 ("bpf: Adjust free target to avoid global starvation of LRU map")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20250625210412.2732970-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Link: https://lore.kernel.org/r/e489252745ac4b53f1f7f50570b03fb416aa2065.camel@infradead.org
+[sean: massage comment]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/test_lru_map.c |   33 +++++++++++++++--------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ arch/x86/kvm/xen.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/bpf/test_lru_map.c
-+++ b/tools/testing/selftests/bpf/test_lru_map.c
-@@ -138,6 +138,12 @@ static int sched_next_online(int pid, in
- 	return ret;
- }
- 
-+/* Derive target_free from map_size, same as bpf_common_lru_populate */
-+static unsigned int __tgt_size(unsigned int map_size)
-+{
-+	return (map_size / nr_cpus) / 2;
-+}
-+
- /* Inverse of how bpf_common_lru_populate derives target_free from map_size. */
- static unsigned int __map_size(unsigned int tgt_free)
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -1536,8 +1536,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm
  {
-@@ -410,12 +416,12 @@ static void test_lru_sanity2(int map_typ
- 	printf("Pass\n");
- }
+ 	struct kvm_vcpu *vcpu;
  
--/* Size of the LRU map is 2*tgt_free
-- * It is to test the active/inactive list rotation
-- * Insert 1 to 2*tgt_free (+2*tgt_free keys)
-- * Lookup key 1 to tgt_free*3/2
-- * Add 1+2*tgt_free to tgt_free*5/2 (+tgt_free/2 keys)
-- *  => key 1+tgt_free*3/2 to 2*tgt_free are removed from LRU
-+/* Test the active/inactive list rotation
-+ *
-+ * Fill the whole map, deplete the free list.
-+ * Reference all except the last lru->target_free elements.
-+ * Insert lru->target_free new elements. This triggers one shrink.
-+ * Verify that the non-referenced elements are replaced.
-  */
- static void test_lru_sanity3(int map_type, int map_flags, unsigned int tgt_free)
- {
-@@ -434,8 +440,7 @@ static void test_lru_sanity3(int map_typ
+-	if (ue->u.xen_evtchn.port >= max_evtchn_port(kvm))
+-		return -EINVAL;
++	/*
++	 * Don't check for the port being within range of max_evtchn_port().
++	 * Userspace can configure what ever targets it likes; events just won't
++	 * be delivered if/while the target is invalid, just like userspace can
++	 * configure MSIs which target non-existent APICs.
++	 *
++	 * This allow on Live Migration and Live Update, the IRQ routing table
++	 * can be restored *independently* of other things like creating vCPUs,
++	 * without imposing an ordering dependency on userspace.  In this
++	 * particular case, the problematic ordering would be with setting the
++	 * Xen 'long mode' flag, which changes max_evtchn_port() to allow 4096
++	 * instead of 1024 event channels.
++	 */
  
- 	assert(sched_next_online(0, &next_cpu) != -1);
- 
--	batch_size = tgt_free / 2;
--	assert(batch_size * 2 == tgt_free);
-+	batch_size = __tgt_size(tgt_free);
- 
- 	map_size = tgt_free * 2;
- 	lru_map_fd = create_map(map_type, map_flags, map_size);
-@@ -446,23 +451,21 @@ static void test_lru_sanity3(int map_typ
- 
- 	value[0] = 1234;
- 
--	/* Insert 1 to 2*tgt_free (+2*tgt_free keys) */
--	end_key = 1 + (2 * tgt_free);
-+	/* Fill the map */
-+	end_key = 1 + map_size;
- 	for (key = 1; key < end_key; key++)
- 		assert(!bpf_map_update_elem(lru_map_fd, &key, value,
- 					    BPF_NOEXIST));
- 
--	/* Lookup key 1 to tgt_free*3/2 */
--	end_key = tgt_free + batch_size;
-+	/* Reference all but the last batch_size */
-+	end_key = 1 + map_size - batch_size;
- 	for (key = 1; key < end_key; key++) {
- 		assert(!bpf_map_lookup_elem_with_ref_bit(lru_map_fd, key, value));
- 		assert(!bpf_map_update_elem(expected_map_fd, &key, value,
- 					    BPF_NOEXIST));
- 	}
- 
--	/* Add 1+2*tgt_free to tgt_free*5/2
--	 * (+tgt_free/2 keys)
--	 */
-+	/* Insert new batch_size: replaces the non-referenced elements */
- 	key = 2 * tgt_free + 1;
- 	end_key = key + batch_size;
- 	for (; key < end_key; key++) {
+ 	/* We only support 2 level event channels for now */
+ 	if (ue->u.xen_evtchn.priority != KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL)
 
 
 
