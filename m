@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DA2B05EAC
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3608CB05CC9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:36:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BDDA4A1460
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:49:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F9194A6C76
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE002E62C8;
-	Tue, 15 Jul 2025 13:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3962E1757;
+	Tue, 15 Jul 2025 13:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCbEK86B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmPsKLsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5D026D4F2;
-	Tue, 15 Jul 2025 13:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20B52397BF;
+	Tue, 15 Jul 2025 13:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586981; cv=none; b=o4N3P/77bvUPAedZ7ORkKSZURv9WPMN1pSYIg6ImLo9h/bymh11NTLyirLIwZ61fd9irm3Q+lZWbUogPOXyVr0Tv/iA1ZqSpE1c8p3h+qjDBnHx8pl/gieDQu1o/cOA3KR7p1kRgaq3dMi/LtEjkaDCmhNeNwmTb/3Hwinq7Ge8=
+	t=1752586060; cv=none; b=SkqWhx1Sb9Cnoh9rNHnhsFdawki15CFena0WnHY7Q1U9rrbz50EkoVTcORp1pqfxwVcs+CQ8XbWUvb6pRy/kG7vrQqHfPSzqCVmF+y6SiHl9NXjqpsZ+HYlCVUPaSE+g611pWg4W6L4RMdxdNzbLuEXqVWnCGlsh6OVb3fT3MqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586981; c=relaxed/simple;
-	bh=ciZ5tTOE/RRCVcTmEvg/0sIty5SGjH1x82wtQ7aU0kU=;
+	s=arc-20240116; t=1752586060; c=relaxed/simple;
+	bh=dz+3jQjyYfu54lG1kZPfYTUxohwTyeLg6ZMkPASc30M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2MOJg1KQtiZZ8LBt+6A/Vu8TWPShkUXmqouz7FUcJ1J0wX2jNIT4mZTd2Yr+WbrGAj3HlMpeZP80yNEWqhjjPXSdVMrKILrj9uit3m/rb8rnOo+MxFbb7DkQ2GFJmjMymB5V88cpayCWMUnJMgzARKEkWDVWQlndccepJGY/dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCbEK86B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B88C4CEE3;
-	Tue, 15 Jul 2025 13:43:00 +0000 (UTC)
+	 MIME-Version; b=LaqFhiU1EHUfIm4yI53nvGCT94Jh0LgSuw7pIE8Zw0WKEmMyJ+1Ca9W2GalyBB2huBS+BGIj4GAO/s4HfjDzb6RCTiQuAqrfC1DV7vXBg5nJmZyELfrFr1lqYYcdLURDQelwwGVxRUTiOCKEg454XWK0LcQh+SlYyKzLSLtE6WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmPsKLsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04E5C4CEE3;
+	Tue, 15 Jul 2025 13:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586981;
-	bh=ciZ5tTOE/RRCVcTmEvg/0sIty5SGjH1x82wtQ7aU0kU=;
+	s=korg; t=1752586060;
+	bh=dz+3jQjyYfu54lG1kZPfYTUxohwTyeLg6ZMkPASc30M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCbEK86BvlUjPQjru2/19W7eqay1ggy9kSy93yJNJDMJBOJP8qa3oEYyFheeA2sff
-	 SpBCl3hBlHbItaylg+/825+dYTPIsJ8ZO6X3ySFDxgCXpWHGe0OVKWl/Rds563wfe3
-	 9hfiPGemusg/zavcNrfSUqykW5F0d92QOGFU0TOw=
+	b=FmPsKLsLZChDIbLz5U4bUkA+a3J+2FsoQASF0o3DzRVm8tLerKhu0Dwh5sV/QJRQ/
+	 wedR05RYPHmzeAkWoBzcxg2nNvMxKQXE1+HTjhu2VFkyhLElGvcNJRhHHio+XvrsUD
+	 0MdqqLR4hmlGFoSwSuCkV9MzsZLOvFRGaxOHTKl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 120/192] ksmbd: fix a mount write count leak in ksmbd_vfs_kern_path_locked()
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 079/109] drm/tegra: nvdec: Fix dma_alloc_coherent error check
 Date: Tue, 15 Jul 2025 15:13:35 +0200
-Message-ID: <20250715130819.703460783@linuxfoundation.org>
+Message-ID: <20250715130802.043844264@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Mikko Perttunen <mperttunen@nvidia.com>
 
-commit 277627b431a0a6401635c416a21b2a0f77a77347 upstream.
+[ Upstream commit 44306a684cd1699b8562a54945ddc43e2abc9eab ]
 
-If the call of ksmbd_vfs_lock_parent() fails, we drop the parent_path
-references and return an error.  We need to drop the write access we
-just got on parent_path->mnt before we drop the mount reference - callers
-assume that ksmbd_vfs_kern_path_locked() returns with mount write
-access grabbed if and only if it has returned 0.
+Check for NULL return value with dma_alloc_coherent, in line with
+Robin's fix for vic.c in 'drm/tegra: vic: Fix DMA API misuse'.
 
-Fixes: 864fb5d37163 ("ksmbd: fix possible deadlock in smb2_open")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 46f226c93d35 ("drm/tegra: Add NVDEC driver")
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250702-nvdec-dma-error-check-v1-1-c388b402c53a@nvidia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/tegra/nvdec.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1280,6 +1280,7 @@ out1:
+diff --git a/drivers/gpu/drm/tegra/nvdec.c b/drivers/gpu/drm/tegra/nvdec.c
+index 4860790666af5..14ef61b44f47c 100644
+--- a/drivers/gpu/drm/tegra/nvdec.c
++++ b/drivers/gpu/drm/tegra/nvdec.c
+@@ -261,10 +261,8 @@ static int nvdec_load_falcon_firmware(struct nvdec *nvdec)
  
- 		err = ksmbd_vfs_lock_parent(parent_path->dentry, path->dentry);
- 		if (err) {
-+			mnt_drop_write(parent_path->mnt);
- 			path_put(path);
- 			path_put(parent_path);
- 		}
+ 	if (!client->group) {
+ 		virt = dma_alloc_coherent(nvdec->dev, size, &iova, GFP_KERNEL);
+-
+-		err = dma_mapping_error(nvdec->dev, iova);
+-		if (err < 0)
+-			return err;
++		if (!virt)
++			return -ENOMEM;
+ 	} else {
+ 		virt = tegra_drm_alloc(tegra, size, &iova);
+ 		if (IS_ERR(virt))
+-- 
+2.39.5
+
 
 
 
