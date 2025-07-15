@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-162168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3EDB05C68
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BC4B05D87
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8028A7B99E7
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:25:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E2EA7AF467
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BCA2E339C;
-	Tue, 15 Jul 2025 13:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BD52D6419;
+	Tue, 15 Jul 2025 13:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wwi7fGTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyE71Ufk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09802E6D23;
-	Tue, 15 Jul 2025 13:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471322E4984;
+	Tue, 15 Jul 2025 13:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585854; cv=none; b=beg7aEzOTZ0bGK9KrUsrnwomeqwihdUT3oYHC8ds4e5tEE0jP6g2gPVS1U+nd5UXIkyd1q3r99CXjuyaMhCDEuP3F1bBSNnpUkFObTEEs97ZGyJDgOuT+jE/C7xiFC4yuaRN/ry8zcWtbzsMi7ppgvGTPsdemcEGsp3NWRnFNJ4=
+	t=1752586386; cv=none; b=F8oaG5I4AmMcs0RE3nDg3gDbRiYHCCuTGTfX0l8RWOy/DF2Cv5bmHKmRjhG/SV2M3eRwvwP/XRDXJEABuB+TQVNu6Hsrche2PCeZsfZs/Cnedaacorw1e+w+PshR9rH3k3vum717hldJjD5mCynEwhF8JbBbXGJA9/x1oLkG3Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585854; c=relaxed/simple;
-	bh=pGCBf+TtzAXRxe0ki5jKYZUkvHjpZ3LLsil4GrXuTmE=;
+	s=arc-20240116; t=1752586386; c=relaxed/simple;
+	bh=8t+pWfPMqycDaaPV7g3k+81f6Dwuqt3BlsLCa5ZPBVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTj6VvqD+d+1mwL0T8z9hkU6CG4YOuv/QBQXLjGyqpNVwEHs54qPte4sCeJgY+Hvke3bkgMrcwmAqN9AcWBsHsncCAeyLL6bs83JeH+0XUT7hLouGuI88UjO6hJGxhstk2/sXJNgSr5Fp467/WqcBw9QP034RB92yWG1K8xU9+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wwi7fGTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D848CC4CEFD;
-	Tue, 15 Jul 2025 13:24:13 +0000 (UTC)
+	 MIME-Version; b=VqTIkakGGqFObdrTzA68kOGWXn8U64+ucSvU7gVHiE9AjrONyYhhAOKRtXN43xQve+ECvLiU5HM+OTWfPxHA7AuA++SFxskxnsmV1df2iCnsfNE4tvp8GHgCitAAA3fkE1Z3OJzif3Twlo1qpc+YF4lPHb9E7ga25P3iUSd9qdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyE71Ufk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7081DC4CEE3;
+	Tue, 15 Jul 2025 13:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585854;
-	bh=pGCBf+TtzAXRxe0ki5jKYZUkvHjpZ3LLsil4GrXuTmE=;
+	s=korg; t=1752586385;
+	bh=8t+pWfPMqycDaaPV7g3k+81f6Dwuqt3BlsLCa5ZPBVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wwi7fGTSVAa/AeZDwKcMHepuhzW5sRI4k4sU0Is4P39VA4Nv1e9cbosCe1gySxvYH
-	 hu9VlgVyjcVrdxHqc53JMS+wZuLlAY1ityB9dRNyIvqfz7Z0VD3c9WJ/M7rH3Bwuji
-	 3Zk+lcnzW6oXu89jHmk1pRADRa6iS9ExELhpls4Y=
+	b=wyE71UfkWcYVRXIZpqg9kTjmx3i7cnuTeXvMs+9ic0QRcNDu5m1NwJNFxjKoMSaDm
+	 8VyKluDHZfT1yTFwPgVemkmMcjOXCOhZqPTV4Gf+kOdf9+eb1AuBE6kw7/HiAfeG7f
+	 R/7sjnc2F4K/b2dQscGC8krbgAEbfpikibcKF9Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Corey Minyard <corey@minyard.net>,
-	Brendan Jackman <jackmanb@google.com>
-Subject: [PATCH 6.6 032/109] ipmi:msghandler: Fix potential memory corruption in ipmi_create_user()
+	Ping Cheng <ping.cheng@wacom.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.4 046/148] HID: wacom: fix memory leak on kobject creation failure
 Date: Tue, 15 Jul 2025 15:12:48 +0200
-Message-ID: <20250715130800.169958034@linuxfoundation.org>
+Message-ID: <20250715130802.162295835@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit fa332f5dc6fc662ad7d3200048772c96b861cf6b upstream.
+commit 5ae416c5b1e2e816aee7b3fc8347adf70afabb4c upstream.
 
-The "intf" list iterator is an invalid pointer if the correct
-"intf->intf_num" is not found.  Calling atomic_dec(&intf->nr_users) on
-and invalid pointer will lead to memory corruption.
+During wacom_initialize_remotes() a fifo buffer is allocated
+with kfifo_alloc() and later a cleanup action is registered
+during devm_add_action_or_reset() to clean it up.
 
-We don't really need to call atomic_dec() if we haven't called
-atomic_add_return() so update the if (intf->in_shutdown) path as well.
+However if the code fails to create a kobject and register it
+with sysfs the code simply returns -ENOMEM before the cleanup
+action is registered leading to a memory leak.
 
-Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-ID: <aBjMZ8RYrOt6NOgi@stanley.mountain>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-[ - Dropped change to the `if (intf->in_shutdown)` block since that logic
-    doesn't exist yet.
-  - Modified out_unlock to release the srcu lock instead of the mutex
-    since we don't have the mutex here yet. ]
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Fix this by ensuring the fifo is freed when the kobject creation
+and registration process fails.
+
+Fixes: 83e6b40e2de6 ("HID: wacom: EKR: have the wacom resources dynamically allocated")
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/wacom_sys.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -1241,7 +1241,7 @@ int ipmi_create_user(unsigned int
- 	}
- 	/* Not found, return an error */
- 	rv = -EINVAL;
--	goto out_kfree;
-+	goto out_unlock;
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2020,8 +2020,10 @@ static int wacom_initialize_remotes(stru
  
-  found:
- 	if (atomic_add_return(1, &intf->nr_users) > max_users) {
-@@ -1283,6 +1283,7 @@ int ipmi_create_user(unsigned int
+ 	remote->remote_dir = kobject_create_and_add("wacom_remote",
+ 						    &wacom->hdev->dev.kobj);
+-	if (!remote->remote_dir)
++	if (!remote->remote_dir) {
++		kfifo_free(&remote->remote_fifo);
+ 		return -ENOMEM;
++	}
  
- out_kfree:
- 	atomic_dec(&intf->nr_users);
-+out_unlock:
- 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
- 	vfree(new_user);
- 	return rv;
+ 	error = sysfs_create_files(remote->remote_dir, remote_unpair_attrs);
+ 
 
 
 
