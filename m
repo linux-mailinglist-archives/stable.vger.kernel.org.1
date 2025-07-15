@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-162708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327A2B05F72
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B0CB05FF9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:11:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 552A4165BDE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9A6A7BC93D
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBD42E7BDE;
-	Tue, 15 Jul 2025 13:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371A62E7176;
+	Tue, 15 Jul 2025 13:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzR7aHe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilju8XC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBE12E7F03;
-	Tue, 15 Jul 2025 13:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DD026D4F2;
+	Tue, 15 Jul 2025 13:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587267; cv=none; b=jkyl08G4NYHJxfEUP2GzUPVVzZ2kpCI8CXhw5DYh3KzORHbxJYDC2KoU6EwRcBIk49Xt6gS5cjnL6+N97YpfrNAeX8fjqA/7ffAgxP24TBFFxdu91ISbkrzU7QOhQR8V2Zm/w6oLvPBaFK+jkGM3sgZQCrnXPuxfUpPWb+1RPtc=
+	t=1752587783; cv=none; b=drFYLuVl3K8j/Id0SK8uLEyUprcVDsHVZmETdpvGPOvTpKHxol6j8Q0dZJceGY3Nz+4TNifGjo9leQkBiUK/8D3A6bm0glHX5EvhzJJeplX2v66f3igbhVqkQDm8LgmP0auinwyMAl4y9jk285fE4fiM81J2v71k8ZUhaK97VOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587267; c=relaxed/simple;
-	bh=6Z7rp4/zoQaICpC/rxnHfgIkvtSxYbVRz92FbZilUkk=;
+	s=arc-20240116; t=1752587783; c=relaxed/simple;
+	bh=IeaeEN+FukU5MilIC0bq5E+eu3LzqGG21iaroaBOeDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7LGAB6ot5Ri2GNmHKkfuwJEPRSe0TjMi4YR4iidbfVIpP6BzLqlWbVfihU4PlPx5cJVPin+lAXumVaVzfcQTwhCuQvuHeGRElA7c9b3eYepLHzP50fgT74xuiNTR1BmzPL0xTonByS5UcLJ9x1IOcvYRq6YnA7ieWzKG/yY/I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzR7aHe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AD7C4CEF1;
-	Tue, 15 Jul 2025 13:47:46 +0000 (UTC)
+	 MIME-Version; b=JGcoRGI1r+zgV+e/iJEkokf+72z/BNKefFeIHholeSa0vKO3uBLYhxVeEb2xMYnKb/2QK34WHKgo9CuuU417C+pIC4HMtOajFhCob3r8K/12BMzP9AptwpSGyudw+qVySZvHcW913THP6ORALvJ/SHPv3sEgSGfyjkXE2TlHjNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilju8XC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D789C4CEE3;
+	Tue, 15 Jul 2025 13:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587266;
-	bh=6Z7rp4/zoQaICpC/rxnHfgIkvtSxYbVRz92FbZilUkk=;
+	s=korg; t=1752587782;
+	bh=IeaeEN+FukU5MilIC0bq5E+eu3LzqGG21iaroaBOeDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mzR7aHe9pOMkZ/mlUypMnQVlQHHIYviK19c/u8voqvv6ch3rpy7V3IOxx4ksPwD9j
-	 KYun9wmxnyUFU6BBKKd1Xy4ndpgqgRc2bPIKYrAVpkQEqC/8mMTb6QGjcY5qk3w0U8
-	 PTZd9C3v8hNVMkY4birXZ0D22UMmjVneITLHguoE=
+	b=ilju8XC4MPJTxKkltb9os4rC7N91jQxBXq1xEeAVi7CV0DLNsMZiKZO9yPn1PdE9Y
+	 zPtfGUgG+gWmS7P6rUoJOmgcTLriOYsPx3rXdiD8eVbAhobREg+RT5S1ULFzrjmKj/
+	 hcKxoi4bl7Gx3uo0wPlAGnnQltD27FVD308UZt+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>
-Subject: [PATCH 6.1 35/88] usb: gadget: u_serial: Fix race condition in TTY wakeup
+	Andra Paraschiv <andraprs@amazon.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 142/208] af_vsock: Set VMADDR_FLAG_TO_HOST flag on the receive path
 Date: Tue, 15 Jul 2025 15:14:11 +0200
-Message-ID: <20250715130755.929787003@linuxfoundation.org>
+Message-ID: <20250715130816.612738309@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Andra Paraschiv <andraprs@amazon.com>
 
-commit c529c3730bd09115684644e26bf01ecbd7e2c2c9 upstream.
+[ Upstream commit 1b5f2ab98e7f99f1a83960b17c5596012a7c5e88 ]
 
-A race condition occurs when gs_start_io() calls either gs_start_rx() or
-gs_start_tx(), as those functions briefly drop the port_lock for
-usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
-port.tty and port_usb, respectively.
+The vsock flags can be set during the connect() setup logic, when
+initializing the vsock address data structure variable. Then the vsock
+transport is assigned, also considering this flags field.
 
-Use the null-safe TTY Port helper function to wake up TTY.
+The vsock transport is also assigned on the (listen) receive path. The
+flags field needs to be set considering the use case.
 
-Example
-  CPU1:			      CPU2:
-  gserial_connect() // lock
-  			      gs_close() // await lock
-  gs_start_rx()     // unlock
-  usb_ep_queue()
-  			      gs_close() // lock, reset port.tty and unlock
-  gs_start_rx()     // lock
-  tty_wakeup()      // NPE
+Set the value of the vsock flags of the remote address to the one
+targeted for packets forwarding to the host, if the following conditions
+are met:
 
-Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Link: https://lore.kernel.org/linux-usb/20240116141801.396398-1-khtsai@google.com/
-Link: https://lore.kernel.org/r/20250617050844.1848232-2-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+* The source CID of the packet is higher than VMADDR_CID_HOST.
+* The destination CID of the packet is higher than VMADDR_CID_HOST.
+
+Changelog
+
+v3 -> v4
+
+* No changes.
+
+v2 -> v3
+
+* No changes.
+
+v1 -> v2
+
+* Set the vsock flag on the receive path in the vsock transport
+  assignment logic.
+* Use bitwise operator for the vsock flag setup.
+* Use the updated "VMADDR_FLAG_TO_HOST" flag naming.
+
+Signed-off-by: Andra Paraschiv <andraprs@amazon.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 687aa0c5581b ("vsock: Fix transport_* TOCTOU")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/vmw_vsock/af_vsock.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -290,8 +290,8 @@ __acquires(&port->port_lock)
- 			break;
- 	}
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 5f82dfe50c123..8a6af90f2ff2c 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -441,6 +441,18 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ 	unsigned int remote_cid = vsk->remote_addr.svm_cid;
+ 	int ret;
  
--	if (do_tty_wake && port->port.tty)
--		tty_wakeup(port->port.tty);
-+	if (do_tty_wake)
-+		tty_port_tty_wakeup(&port->port);
- 	return status;
- }
- 
-@@ -568,7 +568,7 @@ static int gs_start_io(struct gs_port *p
- 		gs_start_tx(port);
- 		/* Unblock any pending writes into our circular buffer, in case
- 		 * we didn't in gs_start_tx() */
--		tty_wakeup(port->port.tty);
-+		tty_port_tty_wakeup(&port->port);
- 	} else {
- 		/* Free reqs only if we are still connected */
- 		if (port->port_usb) {
++	/* If the packet is coming with the source and destination CIDs higher
++	 * than VMADDR_CID_HOST, then a vsock channel where all the packets are
++	 * forwarded to the host should be established. Then the host will
++	 * need to forward the packets to the guest.
++	 *
++	 * The flag is set on the (listen) receive path (psk is not NULL). On
++	 * the connect path the flag can be set by the user space application.
++	 */
++	if (psk && vsk->local_addr.svm_cid > VMADDR_CID_HOST &&
++	    vsk->remote_addr.svm_cid > VMADDR_CID_HOST)
++		vsk->remote_addr.svm_flags |= VMADDR_FLAG_TO_HOST;
++
+ 	switch (sk->sk_type) {
+ 	case SOCK_DGRAM:
+ 		new_transport = transport_dgram;
+-- 
+2.39.5
+
 
 
 
