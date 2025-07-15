@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-162433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50D7B05D9E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1855B05E14
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F778164FC3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:42:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E7827A62BB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0502EAD0E;
-	Tue, 15 Jul 2025 13:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982BA2E611A;
+	Tue, 15 Jul 2025 13:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCtNJKpW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpedw/Qc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5FF72628;
-	Tue, 15 Jul 2025 13:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567582E6103;
+	Tue, 15 Jul 2025 13:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586542; cv=none; b=QDA/8a5+4QF4jdiU+AiufkkScrGKwJWHLlVORrpUoB4HGQ2EnD0xcMyrGia6Hw7tb721IwwSwFTGWazKnhB/7Phldy43SDNqlL3hb5YYusrvWSOQW34S1U3n6MT7ZctckIWjvVz+g1N1eLJse99QBpMr3QHwT88qkGSxlfN4aiw=
+	t=1752586923; cv=none; b=SIYX5OW/pKdBQlLIxlF9srR7scnPaeDWiHaFfDV/zluyobpQTV3Uh+HybIvQ5W1+4Bq/AfFmTiBIbPZzYRjqgRDoyIdfn6DjMlTw2AMmoJyPnVadEFxgZHDPCtHGN7KqHqUgpgIOriQghU7L8rjlBBXC0207X/FL4ygB/uviA54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586542; c=relaxed/simple;
-	bh=0ry/JJ90fo3cy0Eoz22zs0eou5H0s2Ml3ggi24aZSOs=;
+	s=arc-20240116; t=1752586923; c=relaxed/simple;
+	bh=+mv+U5m5AVfuyvzVoK/bdd7vIfVO0pBXZZWidzzznzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZLkWvMuJmw2s+2N3unQ3yoHjH2ACluDWRtRl6bTvq0b73+0rcvjBAKw+2B/zfdiH2JLyr1Xl5ntoKy1D92153Sgi2B8O8i9+8dkZC4PsrDau6KDzzxHt8mnx87EYMXE0u3zH6VY5bpLETyrHBmx7jonnwMlsJBaurtwwqwyIyK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCtNJKpW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E664C4CEE3;
-	Tue, 15 Jul 2025 13:35:41 +0000 (UTC)
+	 MIME-Version; b=LPlN2KXFKCa2c6BJgGY9VtQUfEFGeBM/NB4jsP6lvkwWKBeJqjiTX/EEKgwiTOS1azsKo6nbT9t3655PONBPj9qBZAmnj5IWArFxGdqNf+wm+dZYRk8ZCnHulppk+CfHk8MaszMQbD+IvKxH9wQihvtfJIU09ZbyiJWHnJCLQwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpedw/Qc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9105CC4CEE3;
+	Tue, 15 Jul 2025 13:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586541;
-	bh=0ry/JJ90fo3cy0Eoz22zs0eou5H0s2Ml3ggi24aZSOs=;
+	s=korg; t=1752586922;
+	bh=+mv+U5m5AVfuyvzVoK/bdd7vIfVO0pBXZZWidzzznzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GCtNJKpWTqqu8pEWorERROumPIycwylGy7pZGeuSEjqs4hZcyWEnO8aikiDBQJOF4
-	 xPiNtHMNgWAMbdFlwfAZ3meT3NXzVtcORYY4m8+TcRKSD9q7TGkP2QpNAnyG/oI3zy
-	 aXrrNT7AeExcw1k2Dw9SXV6JrM4rQP2GPm+Ce13k=
+	b=rpedw/QcR8i8bjU1YhDoUZCRVRBdD/ODSPXAqOJCjOinGKSBoz0dC+frDbt2armj5
+	 gzyKyDiitY8IepJtlm63VSRXkpNEQ0DjhXEXwTSSHwIAtA337qtkUsPTZDR6cMkcDr
+	 JYLmFRINRmE1eZXBkQfVh5UOnrb2p9huEpZ+VhRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 073/148] ata: pata_cs5536: fix build on 32-bit UML
+	Wei Yang <richard.weiyang@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 100/192] maple_tree: fix mt_destroy_walk() on root leaf node
 Date: Tue, 15 Jul 2025 15:13:15 +0200
-Message-ID: <20250715130803.247622344@linuxfoundation.org>
+Message-ID: <20250715130818.906098970@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
+References: <20250715130814.854109770@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-[ Upstream commit fe5b391fc56f77cf3c22a9dd4f0ce20db0e3533f ]
+commit ea9b77f98d94c4d5c1bd1ac1db078f78b40e8bf5 upstream.
 
-On 32-bit ARCH=um, CONFIG_X86_32 is still defined, so it
-doesn't indicate building on real X86 machines. There's
-no MSR on UML though, so add a check for CONFIG_X86.
+On destroy, we should set each node dead.  But current code miss this when
+the maple tree has only the root node.
 
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://lore.kernel.org/r/20250606090110.15784-2-johannes@sipsolutions.net
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reason is mt_destroy_walk() leverage mte_destroy_descend() to set node
+dead, but this is skipped since the only root node is a leaf.
+
+Fixes this by setting the node dead if it is a leaf.
+
+Link: https://lore.kernel.org/all/20250407231354.11771-1-richard.weiyang@gmail.com/
+Link: https://lkml.kernel.org/r/20250624191841.64682-1-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_cs5536.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/maple_tree.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/pata_cs5536.c b/drivers/ata/pata_cs5536.c
-index 760ac6e65216f..3737d1bf1539d 100644
---- a/drivers/ata/pata_cs5536.c
-+++ b/drivers/ata/pata_cs5536.c
-@@ -27,7 +27,7 @@
- #include <scsi/scsi_host.h>
- #include <linux/dmi.h>
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -5288,6 +5288,7 @@ static void mt_destroy_walk(struct maple
+ 	struct maple_enode *start;
  
--#ifdef CONFIG_X86_32
-+#if defined(CONFIG_X86) && defined(CONFIG_X86_32)
- #include <asm/msr.h>
- static int use_msr;
- module_param_named(msr, use_msr, int, 0644);
--- 
-2.39.5
-
+ 	if (mte_is_leaf(enode)) {
++		mte_set_node_dead(enode);
+ 		node->type = mte_node_type(enode);
+ 		goto free_leaf;
+ 	}
 
 
 
