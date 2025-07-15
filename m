@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-162750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45135B05FF5
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:11:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C21B05FC9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B45B7189B079
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE09A17EF48
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89342EA485;
-	Tue, 15 Jul 2025 13:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85A92E5B0C;
+	Tue, 15 Jul 2025 13:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBQmFm2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ni+cYdko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968482E54BB;
-	Tue, 15 Jul 2025 13:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8733984A35;
+	Tue, 15 Jul 2025 13:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587379; cv=none; b=C2m6ZL0Qf9TFj1iVPXRUsv/cFxsDTO82wJ5jY64cry79crA228Sie159BayPneMGWzvvp5b96nk3R3cgcOj1DUGDsvyWftwHZZXVHGqs5iDgkg3b6RHPpBHn5NXqrxc61wq1KkD16i41lEoT6rftLLzvfbD7x4AznEBtBZjzC7k=
+	t=1752587405; cv=none; b=X8+JYwkAIexcx0pt/DuZLviA5Al2rhoOm6RjdEbM3zX0+52DEORjG9r25jJXtmLbX7uFxTkbXtbSaprZIbsxECseQIuaWEw41Gi804ThU6X8Yr/67jmsXYeE3h5COHBHdtrF92V4rCEqEYcpFoEmXaI9g0yz9J2QutKK7rA47H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587379; c=relaxed/simple;
-	bh=2tEsJFgojdPM9h8cW+B9fVWaRklhJjuKrQ4AxG8dhas=;
+	s=arc-20240116; t=1752587405; c=relaxed/simple;
+	bh=Blnx3enhnLe3U0FfPoiA9XBEAyJxeehphAQgN9ztgbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLNLvQVrNKi/ZtC8ZvfrjWEtAUibRJMsceaJTMWUScN0CP58R1A46T0il8pRS/cDR1k2uS2TVtwutGJ3q7N9aG6mJ15E5AL9KmnxWkL/clkscxeYwrafk4f8QxvgdezkB4KEpDyxH3horflAuWHMmf9s4rpWx1qyCiS+Buu9iSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBQmFm2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FF4C4CEE3;
-	Tue, 15 Jul 2025 13:49:38 +0000 (UTC)
+	 MIME-Version; b=MQFH7htV3w8PU5iVS3rGH3Y4RTl0jsUM5pKBgB1jDIH6eBHMkKzPpEJJmi00x85wMEQ4UgoSbtBVWC7C6hkaFtnDod7DQedjjA2qTJpBtcYM0h89nb92t8LWHvop27cSkPYJvJ7UWpUPOic8g85DPcKdYlRS7W+MX+ySY4qaLt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ni+cYdko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA83C4CEE3;
+	Tue, 15 Jul 2025 13:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587379;
-	bh=2tEsJFgojdPM9h8cW+B9fVWaRklhJjuKrQ4AxG8dhas=;
+	s=korg; t=1752587405;
+	bh=Blnx3enhnLe3U0FfPoiA9XBEAyJxeehphAQgN9ztgbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBQmFm2vmsZkINVtY0w5uuLjt3a7PDiF98Bwpyu7px43mEB0IVQWg2j1vFkvPyvcU
-	 58tukzW0KF8zD/GgzP9+TJ/UQQ1QPU7gtIP5CUKIY4P6Ok523D4ikGh2JaXoZ+2dNK
-	 LZddqSkm7RRvB0MUfwV8NBohfVSrlPOJRy3Mk4ME=
+	b=Ni+cYdkoEPl84iZukwuqF4rieCEWlwtkrZLxFevLgPygvM4MuZ74vt2WziKCZfbwo
+	 bUBEn5ekAa8I9oUxVFX7oJEqwZbhrMxr5zDrVi543i0QWDshOlh5l/KFfFRHHsg0E2
+	 k8Nd+/UecGKbXvktFFsfu8s99ViVQDVV6qutJ+lA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-	Shravya KN <shravya.k-n@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
 	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 71/88] bnxt_en: Fix DCB ETS validation
-Date: Tue, 15 Jul 2025 15:14:47 +0200
-Message-ID: <20250715130757.421546568@linuxfoundation.org>
+Subject: [PATCH 6.1 72/88] bnxt_en: Set DMA unmap len correctly for XDP_REDIRECT
+Date: Tue, 15 Jul 2025 15:14:48 +0200
+Message-ID: <20250715130757.461711074@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
 References: <20250715130754.497128560@linuxfoundation.org>
@@ -68,47 +67,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shravya KN <shravya.k-n@broadcom.com>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-[ Upstream commit b74c2a2e9cc471e847abd87e50a2354c07e02040 ]
+[ Upstream commit 3cdf199d4755d477972ee87110b2aebc88b3cfad ]
 
-In bnxt_ets_validate(), the code incorrectly loops over all possible
-traffic classes to check and add the ETS settings.  Fix it to loop
-over the configured traffic classes only.
+When transmitting an XDP_REDIRECT packet, call dma_unmap_len_set()
+with the proper length instead of 0.  This bug triggers this warning
+on a system with IOMMU enabled:
 
-The unconfigured traffic classes will default to TSA_ETS with 0
-bandwidth.  Looping over these unconfigured traffic classes may
-cause the validation to fail and trigger this error message:
+WARNING: CPU: 36 PID: 0 at drivers/iommu/dma-iommu.c:842 __iommu_dma_unmap+0x159/0x170
+RIP: 0010:__iommu_dma_unmap+0x159/0x170
+Code: a8 00 00 00 00 48 c7 45 b0 00 00 00 00 48 c7 45 c8 00 00 00 00 48 c7 45 a0 ff ff ff ff 4c 89 45
+b8 4c 89 45 c0 e9 77 ff ff ff <0f> 0b e9 60 ff ff ff e8 8b bf 6a 00 66 66 2e 0f 1f 84 00 00 00 00
+RSP: 0018:ff22d31181150c88 EFLAGS: 00010206
+RAX: 0000000000002000 RBX: 00000000e13a0000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ff22d31181150cf0 R08: ff22d31181150ca8 R09: 0000000000000000
+R10: 0000000000000000 R11: ff22d311d36c9d80 R12: 0000000000001000
+R13: ff13544d10645010 R14: ff22d31181150c90 R15: ff13544d0b2bac00
+FS: 0000000000000000(0000) GS:ff13550908a00000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005be909dacff8 CR3: 0008000173408003 CR4: 0000000000f71ef0
+PKRU: 55555554
+Call Trace:
+<IRQ>
+? show_regs+0x6d/0x80
+? __warn+0x89/0x160
+? __iommu_dma_unmap+0x159/0x170
+? report_bug+0x17e/0x1b0
+? handle_bug+0x46/0x90
+? exc_invalid_op+0x18/0x80
+? asm_exc_invalid_op+0x1b/0x20
+? __iommu_dma_unmap+0x159/0x170
+? __iommu_dma_unmap+0xb3/0x170
+iommu_dma_unmap_page+0x4f/0x100
+dma_unmap_page_attrs+0x52/0x220
+? srso_alias_return_thunk+0x5/0xfbef5
+? xdp_return_frame+0x2e/0xd0
+bnxt_tx_int_xdp+0xdf/0x440 [bnxt_en]
+__bnxt_poll_work_done+0x81/0x1e0 [bnxt_en]
+bnxt_poll+0xd3/0x1e0 [bnxt_en]
 
-"rejecting ETS config starving a TC\n"
-
-The .ieee_setets() will then fail.
-
-Fixes: 7df4ae9fe855 ("bnxt_en: Implement DCBNL to support host-based DCBX.")
-Reviewed-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
-Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
+Fixes: f18c2b77b2e4 ("bnxt_en: optimized XDP_REDIRECT support")
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
 Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250710213938.1959625-2-michael.chan@broadcom.com
+Link: https://patch.msgid.link/20250710213938.1959625-4-michael.chan@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-index 63e0670383852..1727e9bb1479d 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_dcb.c
-@@ -487,7 +487,9 @@ static int bnxt_ets_validate(struct bnxt *bp, struct ieee_ets *ets, u8 *tc)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+index d9a7b85343a49..967a7fa291eae 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+@@ -122,7 +122,7 @@ static void __bnxt_xmit_xdp_redirect(struct bnxt *bp,
+ 	tx_buf->action = XDP_REDIRECT;
+ 	tx_buf->xdpf = xdpf;
+ 	dma_unmap_addr_set(tx_buf, mapping, mapping);
+-	dma_unmap_len_set(tx_buf, len, 0);
++	dma_unmap_len_set(tx_buf, len, len);
+ }
  
- 		if ((ets->tc_tx_bw[i] || ets->tc_tsa[i]) && i > bp->max_tc)
- 			return -EINVAL;
-+	}
- 
-+	for (i = 0; i < max_tc; i++) {
- 		switch (ets->tc_tsa[i]) {
- 		case IEEE_8021QAZ_TSA_STRICT:
- 			break;
+ void bnxt_tx_int_xdp(struct bnxt *bp, struct bnxt_napi *bnapi, int nr_pkts)
 -- 
 2.39.5
 
