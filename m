@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-162919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A35CB0608A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:18:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F772B05FA0
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FB951C47B35
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:08:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0C01C429AE
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290742ECEB5;
-	Tue, 15 Jul 2025 13:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FBB2E975D;
+	Tue, 15 Jul 2025 13:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cwV+ZvR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9r6L8tA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3DC2EF291;
-	Tue, 15 Jul 2025 13:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6DC2E7F3B;
+	Tue, 15 Jul 2025 13:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587817; cv=none; b=tPiLrvdPndXa7TNYVusYkGX/+yfpCoreyOg5GkVWDEfJ4dQ5w1uYp5+7XPY6fX05eqgwWdk8/67flLLy44mKb4Qgz34uWwgzwwZ4mlu7FOWkTSHBPH7WMaZB5wm8OULQlKF8/KsOi3NVpakhjk8GLUeehuklCP7AiPt7l6tP5aQ=
+	t=1752587294; cv=none; b=upifhQvaW19M6HJQAmZtc7P4hjUYolVjxsWFCR/kd2RNiMWz6n9ABK+AB+s2nDShOOhBWzUg23IrXZ4aSjLbicUlCp/AMwEnGdZx8rkDIjBF9QM7UbotzkXXusZm9fahv+taatTM+o5QDILe0fJaPVqrKCOMJ9rF+QlK/5+eskY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587817; c=relaxed/simple;
-	bh=eRxrCnbpodGym7ngIe7hF/KJWUIDVAJzbuFAwbHWzRo=;
+	s=arc-20240116; t=1752587294; c=relaxed/simple;
+	bh=SEGO+PvfOSvxtQlezGPbJCCs1vIair7UgU1zc+wKv5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KnCh3kWcHECvN3JT65cBJmievzNpTEs7VeaIzWw+2194K74wvAQQFYUtmuH1BDgX21i05oIXrfhCoB7D/04JNKliNkRNvNAm5B4ZV/UxysAlpX62i7WNo/iOKUWw8XxOdP7GFU0DaKzQEevZeZfkHbmGcDV6ip5ZnHkWNmG5ZPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cwV+ZvR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0696EC4CEE3;
-	Tue, 15 Jul 2025 13:56:56 +0000 (UTC)
+	 MIME-Version; b=Saxwnueua7WPH6TwiWmeuvAggQstU63U2r5Ku+SkRKRt6/baAZTZdoPdmBtjpQI4FAAehfBs60ptWL/1bn9/46hj0Zhy4QyjKpbkQp1FeVRgFH6mlsfOc4EBd9MMrSr7wAAd5mTUMqb4lTRIWma8TiWaWz/R/17Y6EAZI1Hn0Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9r6L8tA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F54C4CEE3;
+	Tue, 15 Jul 2025 13:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587817;
-	bh=eRxrCnbpodGym7ngIe7hF/KJWUIDVAJzbuFAwbHWzRo=;
+	s=korg; t=1752587294;
+	bh=SEGO+PvfOSvxtQlezGPbJCCs1vIair7UgU1zc+wKv5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2cwV+ZvR4FemAkYP3FhevYM8ZA4Tc4dPcWDOj6qBKYlKSsO2gbhocG9FXx3xxiUxX
-	 0PEbMpnuMKOXlqID5MjudT/Fa0hTzXmeXBVMNzE/MGZtSG2ctTrhoJ5WkpUOwLE5AS
-	 kANS5shK4xBoYTIeK3EjqJI/S/y/4Qc/QtTD+gFg=
+	b=m9r6L8tAEJopkmZNXJ/tN2IL3v94Vwsa3IVuhS0aqctDNUwN/cA2fk59I7+wa9L0V
+	 lYNA4zjTg7QAX6TEWLX1NnnteWslkeSSg9p17lytIE4U60vCxhgDvH70xV4F+3xCre
+	 AVeOwj4AtfipsCg56EVNBkLfiYPB4evJLNJytk1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	David Howells <dhowells@redhat.com>,
-	LePremierHomme <kwqcheii@proton.me>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Willy Tarreau <w@1wt.eu>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 154/208] rxrpc: Fix oops due to non-existence of prealloc backlog struct
+	stable <stable@kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 47/88] usb: xhci: quirk for data loss in ISOC transfers
 Date: Tue, 15 Jul 2025 15:14:23 +0200
-Message-ID: <20250715130817.078825642@linuxfoundation.org>
+Message-ID: <20250715130756.432796044@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,49 +63,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-commit 880a88f318cf1d2a0f4c0a7ff7b07e2062b434a4 upstream.
+[ Upstream commit cbc889ab0122366f6cdbe3c28d477c683ebcebc2 ]
 
-If an AF_RXRPC service socket is opened and bound, but calls are
-preallocated, then rxrpc_alloc_incoming_call() will oops because the
-rxrpc_backlog struct doesn't get allocated until the first preallocation is
-made.
+During the High-Speed Isochronous Audio transfers, xHCI
+controller on certain AMD platforms experiences momentary data
+loss. This results in Missed Service Errors (MSE) being
+generated by the xHCI.
 
-Fix this by returning NULL from rxrpc_alloc_incoming_call() if there is no
-backlog struct.  This will cause the incoming call to be aborted.
+The root cause of the MSE is attributed to the ISOC OUT endpoint
+being omitted from scheduling. This can happen when an IN
+endpoint with a 64ms service interval either is pre-scheduled
+prior to the ISOC OUT endpoint or the interval of the ISOC OUT
+endpoint is shorter than that of the IN endpoint. Consequently,
+the OUT service is neglected when an IN endpoint with a service
+interval exceeding 32ms is scheduled concurrently (every 64ms in
+this scenario).
 
-Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Suggested-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: LePremierHomme <kwqcheii@proton.me>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Willy Tarreau <w@1wt.eu>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/20250708211506.2699012-3-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This issue is particularly seen on certain older AMD platforms.
+To mitigate this problem, it is recommended to adjust the service
+interval of the IN endpoint to not exceed 32ms (interval 8). This
+adjustment ensures that the OUT endpoint will not be bypassed,
+even if a smaller interval value is utilized.
+
+Cc: stable <stable@kernel.org>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250627144127.3889714-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/call_accept.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/host/xhci-mem.c |  4 ++++
+ drivers/usb/host/xhci-pci.c | 25 +++++++++++++++++++++++++
+ drivers/usb/host/xhci.h     |  1 +
+ 3 files changed, 30 insertions(+)
 
---- a/net/rxrpc/call_accept.c
-+++ b/net/rxrpc/call_accept.c
-@@ -271,6 +271,9 @@ static struct rxrpc_call *rxrpc_alloc_in
- 	unsigned short call_tail, conn_tail, peer_tail;
- 	unsigned short call_count, conn_count;
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 09e7eabdb73f4..537a0bc0f5e1c 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1453,6 +1453,10 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
+ 	/* Periodic endpoint bInterval limit quirk */
+ 	if (usb_endpoint_xfer_int(&ep->desc) ||
+ 	    usb_endpoint_xfer_isoc(&ep->desc)) {
++		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
++		    interval >= 9) {
++			interval = 8;
++		}
+ 		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
+ 		    udev->speed >= USB_SPEED_HIGH &&
+ 		    interval >= 7) {
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 30b2188a3cf8a..7ad6d13d65ee9 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -65,12 +65,22 @@
+ #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_PCH_XHCI		0x51ed
+ #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_N_PCH_XHCI	0x54ed
  
-+	if (!b)
-+		return NULL;
++#define PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI		0x13ed
++#define PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI		0x13ee
++#define PCI_DEVICE_ID_AMD_STARSHIP_XHCI			0x148c
++#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI		0x15d4
++#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI		0x15d5
++#define PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI		0x15e0
++#define PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI		0x15e1
++#define PCI_DEVICE_ID_AMD_RAVEN2_XHCI			0x15e5
+ #define PCI_DEVICE_ID_AMD_RENOIR_XHCI			0x1639
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_2			0x43bb
+ #define PCI_DEVICE_ID_AMD_PROMONTORYA_1			0x43bc
+ 
++#define PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI		0x7316
 +
- 	/* #calls >= #conns >= #peers must hold true. */
- 	call_head = smp_load_acquire(&b->call_backlog_head);
- 	call_tail = b->call_backlog_tail;
+ #define PCI_DEVICE_ID_ASMEDIA_1042_XHCI			0x1042
+ #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
+ #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
+@@ -167,6 +177,21 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 	if (pdev->vendor == PCI_VENDOR_ID_NEC)
+ 		xhci->quirks |= XHCI_NEC_HOST;
+ 
++	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
++	    (pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_STARSHIP_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI ||
++	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN2_XHCI))
++		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++
++	if (pdev->vendor == PCI_VENDOR_ID_ATI &&
++	    pdev->device == PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI)
++		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version == 0x96)
+ 		xhci->quirks |= XHCI_AMD_0x96_HOST;
+ 
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index 542a4b7fd7ce4..fd095ff9fc8b9 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1663,6 +1663,7 @@ struct xhci_hcd {
+ #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
+ #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+ #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
++#define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(49)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
+-- 
+2.39.5
+
 
 
 
