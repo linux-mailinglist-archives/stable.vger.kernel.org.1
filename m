@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-162945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BEAB060A4
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:20:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61751B05FB8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 535AB5869ED
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:10:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ED30587DD5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090DA2E4997;
-	Tue, 15 Jul 2025 13:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62072E9739;
+	Tue, 15 Jul 2025 13:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KGY9NBP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZv7LHyR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFEF2E3382;
-	Tue, 15 Jul 2025 13:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763AC2E6106;
+	Tue, 15 Jul 2025 13:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587886; cv=none; b=Wx9G7OqTaSUaEKEDfEFvj14K7wxZvCaiEIQy3jRHimDNeZoScSpcL5GDYVsHXa0MjjVkGnjVsaD2wNbIIKyE2XStEFTKbt6f/PKFbEiiN6p7UaanGwxH6YYFRP8WqpMqxZE7yWoxKhTYIt0PrqOvLSbnW/wJt+OYUlExKw666tE=
+	t=1752587413; cv=none; b=aCnrSqVYGgTeX3TRmyUxMk6PHTu2xLSeVTOkj49HrPnfvGdbtda3acZ24HvsH8fBjAwYsnEKgzL7ztY6B7UhXFEiL2Fy/Qb0o06lXhd96WcWmqxt4628tRc8ETHLiG5m9ClDQIv0oXCVCRz/jPs9E+zMLx7z+9ONtvXT+mJZRLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587886; c=relaxed/simple;
-	bh=Vfp7Mf0ede5rPm34SGRd5nc0EGTUoCOumcJHsdBdTEY=;
+	s=arc-20240116; t=1752587413; c=relaxed/simple;
+	bh=5WgwFm+ZE1uQUr5bnpVpUQJP0wWJ6NlDt7zXGuh8eyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N40+B1fgETAounzB8BrBWN4m7LW3jRKS+YE8b1mp1xjqo0ducLYB+sKmlhuPn0yqJEJ/bInkDw9jR330c4SOXutck/+G1ThdH2JpNriZFZXCkc+XsWHBu00tO0f5xHH7dpVM6q9pjdPMW2rkoFiS+nhkyk0U2uLW8H4X+3UlZ08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KGY9NBP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3F7C4CEE3;
-	Tue, 15 Jul 2025 13:58:06 +0000 (UTC)
+	 MIME-Version; b=IX9ybh3PRIp7cn9ohWrfWg4cNCdQBEwwcPt9sK2pArSPZSPTm4BAi1v9ROfOp8T76jqB+EDNn02uKQzdeZ4BP05oSMPJuQlhS91HTtZJ33LTFxdZw2V5lR5Em3bMvyWqJCeByMfBXhv2rhrRC+sVU+H4gVBpHFjRyTkq0dCgscU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZv7LHyR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09510C4CEE3;
+	Tue, 15 Jul 2025 13:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587886;
-	bh=Vfp7Mf0ede5rPm34SGRd5nc0EGTUoCOumcJHsdBdTEY=;
+	s=korg; t=1752587413;
+	bh=5WgwFm+ZE1uQUr5bnpVpUQJP0wWJ6NlDt7zXGuh8eyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KGY9NBPs4t02s6cpDP5rtaNnlhZKKA5c84dw7KBp47bHT6mHvkGWUWYLuQjAYNUx
-	 EwH2Gk5cavmQeunRrbv08Tj5OxmQFIXR0I2d8jpVrVeZL5mEDYiTTSRz5ZEBNRng5d
-	 +r5MlBVkC3Ju0rwRQRAXiCDdXQ5ZbU134EQb53Mg=
+	b=wZv7LHyRYV+DWtGJFO+7Jgxu/jRJd70snZdsQlw5Cs4gks4UVcql/ArTkdwHVSxUp
+	 FpgdGA5ytEsrN5Jv47vNVDEDJ9yIPFBGPk/XsxBsp/2QOA3icM5AwVC7rvyT2IslkF
+	 PI3o0fLCskz55lcxt7lWBvOiMvBLK4FcUztvzViM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 181/208] netlink: Fix rmem check in netlink_broadcast_deliver().
-Date: Tue, 15 Jul 2025 15:14:50 +0200
-Message-ID: <20250715130818.211785698@linuxfoundation.org>
+	Yuzuru <yuzuru_10@proton.me>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 75/88] ASoC: amd: yc: add quirk for Acer Nitro ANV15-41 internal mic
+Date: Tue, 15 Jul 2025 15:14:51 +0200
+Message-ID: <20250715130757.584391396@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Yuzuru10 <yuzuru_10@proton.me>
 
-commit a3c4a125ec725cefb40047eb05ff9eafd57830b4 upstream.
+[ Upstream commit 7186b81807b4a08f8bf834b6bdc72d6ed8ba1587 ]
 
-We need to allow queuing at least one skb even when skb is
-larger than sk->sk_rcvbuf.
+This patch adds DMI-based quirk for the Acer Nitro ANV15-41,
+allowing the internal microphone to be detected correctly on
+machines with "RB" as board vendor.
 
-The cited commit made a mistake while converting a condition
-in netlink_broadcast_deliver().
-
-Let's correct the rmem check for the allow-one-skb rule.
-
-Fixes: ae8f160e7eb24 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250711053208.2965945-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yuzuru <yuzuru_10@proton.me>
+Link: https://patch.msgid.link/20250622225754.20856-1-yuzuru_10@proton.me
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1391,7 +1391,7 @@ static int netlink_broadcast_deliver(str
- 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
- 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
- 
--	if ((rmem != skb->truesize || rmem <= rcvbuf) &&
-+	if ((rmem == skb->truesize || rmem <= rcvbuf) &&
- 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
- 		netlink_skb_set_owner_r(skb, sk);
- 		__netlink_sendskb(sk, skb);
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index ecf4f4c0e6967..1f4c43bf817e4 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -339,6 +339,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "RB"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Nitro ANV15-41"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+-- 
+2.39.5
+
 
 
 
