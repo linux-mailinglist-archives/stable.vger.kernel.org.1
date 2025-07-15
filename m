@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-162767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47B0B05FBF
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D78BB060AB
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 694771C460B3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57FDA1C44B49
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A0E2EACF7;
-	Tue, 15 Jul 2025 13:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47652F272B;
+	Tue, 15 Jul 2025 13:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuORSONk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ATMtzHU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B6B2E62DF;
-	Tue, 15 Jul 2025 13:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938C92F271B;
+	Tue, 15 Jul 2025 13:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587424; cv=none; b=sHDvcdBJlELa1j7mqVPqBMwb9ZYbUzzlUFlYqdbvxXRqhpigi6xeEKT3HRDt5BuBDUeZasrJPQOxRCWBBXJ8Js7SgHNR9c0WyhVo8iMxvczzvq/RxsYNvGV6XfrDe3Z1uqDyazhMq0i7Y507q5KsSFPsd2Ap/gvhOCDgX2SLQY8=
+	t=1752587907; cv=none; b=W6fETzxGVnJiCWorgYbScTtEyBdW/Uj5AjljibGboWU5YeEVq/D+snOFtlPsfpCZPWAQ6PDcR4liE1g+qdCOSaEX4oVbVVO7oXYt0LuZO9zTibCh7ZwnyytAvNdGgBO7cUkI/zdNC/8l5SWKW2jYQ5ECQtA6cviTZa0lKHvYnxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587424; c=relaxed/simple;
-	bh=2DZwETiYajWXLaMo6AQd5mZNmcoJceQKJyurWAFENgA=;
+	s=arc-20240116; t=1752587907; c=relaxed/simple;
+	bh=1f1mpv7G6W4vUTTCfYCszmp42UJXV4lnlyAbBuub4U8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvLIxLqftSDdvi0RTqn88psFH/j9DAA0lveHOEanPXsOiC5wAA5SYc54+R7M9P376u4QQlNferJKlYflM3T7tYNxwMH+rZCYG/QhwW9EtQwOgO8zPCklCYso10jOTZbw4i5wQ7dbTTfoA/HfMopa7FqLh2y32tGSksKKYOqNYHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuORSONk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F67CC4CEF1;
-	Tue, 15 Jul 2025 13:50:23 +0000 (UTC)
+	 MIME-Version; b=PwzNkPq0bEwoasd2DyICB7ZU3t9Llneop0j6sdgCxaG7YchM6feLaCYuXZKLBZ9/8FVsm5xYOjw12D5f/ptnZcSEJuhDibIUkzNE4xh16TNrcIsu1jR7AjUbUkswHLdjLeEyBF0mWPKGVFrnlMc6Z51XQbjU6kPIOuGVB3mo2rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ATMtzHU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264C9C4CEF1;
+	Tue, 15 Jul 2025 13:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587423;
-	bh=2DZwETiYajWXLaMo6AQd5mZNmcoJceQKJyurWAFENgA=;
+	s=korg; t=1752587907;
+	bh=1f1mpv7G6W4vUTTCfYCszmp42UJXV4lnlyAbBuub4U8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XuORSONkW3pODIgWjbQfFtO4nlShjY9NJIEqfnvu81IKzxmFzpWJhQZHazb3G4e8V
-	 9Y9kcSIPSfqWeirOD5KNtlV3o9GgGHP/06IavxrJpvKmhst8/QOgouJ8FtvwBew87O
-	 KF/DObYP5pCzED1rcQ94x7l/j+dMV3v7/wjtS9W8=
+	b=0ATMtzHU+R6uFnm6Nut67eHhJ+m94Elnb3QmcE5lODZPceLLZhxozsXBCnxfyQ4D+
+	 BOl2L3yJ6w+87M6ikpH7hPvc6uh/QFVCRiSAVNunZagGOtHZEM2PIpLVhDxFlyMXf5
+	 4fv4WWhNanwAB0UiHaHbOHSnauuRLziRijAUXXPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+36fae25c35159a763a2a@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 79/88] btrfs: fix assertion when building free space tree
-Date: Tue, 15 Jul 2025 15:14:55 +0200
-Message-ID: <20250715130757.744429933@linuxfoundation.org>
+Subject: [PATCH 5.10 187/208] wifi: zd1211rw: Fix potential NULL pointer dereference in zd_mac_tx_to_dev()
+Date: Tue, 15 Jul 2025 15:14:56 +0200
+Message-ID: <20250715130818.444090210@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
-References: <20250715130754.497128560@linuxfoundation.org>
+In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
+References: <20250715130810.830580412@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 1961d20f6fa8903266ed9bd77c691924c22c8f02 ]
+[ Upstream commit 74b1ec9f5d627d2bdd5e5b6f3f81c23317657023 ]
 
-When building the free space tree with the block group tree feature
-enabled, we can hit an assertion failure like this:
+There is a potential NULL pointer dereference in zd_mac_tx_to_dev(). For
+example, the following is possible:
 
-  BTRFS info (device loop0 state M): rebuilding free space tree
-  assertion failed: ret == 0, in fs/btrfs/free-space-tree.c:1102
-  ------------[ cut here ]------------
-  kernel BUG at fs/btrfs/free-space-tree.c:1102!
-  Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-  Modules linked in:
-  CPU: 1 UID: 0 PID: 6592 Comm: syz-executor322 Not tainted 6.15.0-rc7-syzkaller-gd7fa1af5b33e #0 PREEMPT
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-  pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : populate_free_space_tree+0x514/0x518 fs/btrfs/free-space-tree.c:1102
-  lr : populate_free_space_tree+0x514/0x518 fs/btrfs/free-space-tree.c:1102
-  sp : ffff8000a4ce7600
-  x29: ffff8000a4ce76e0 x28: ffff0000c9bc6000 x27: ffff0000ddfff3d8
-  x26: ffff0000ddfff378 x25: dfff800000000000 x24: 0000000000000001
-  x23: ffff8000a4ce7660 x22: ffff70001499cecc x21: ffff0000e1d8c160
-  x20: ffff0000e1cb7800 x19: ffff0000e1d8c0b0 x18: 00000000ffffffff
-  x17: ffff800092f39000 x16: ffff80008ad27e48 x15: ffff700011e740c0
-  x14: 1ffff00011e740c0 x13: 0000000000000004 x12: ffffffffffffffff
-  x11: ffff700011e740c0 x10: 0000000000ff0100 x9 : 94ef24f55d2dbc00
-  x8 : 94ef24f55d2dbc00 x7 : 0000000000000001 x6 : 0000000000000001
-  x5 : ffff8000a4ce6f98 x4 : ffff80008f415ba0 x3 : ffff800080548ef0
-  x2 : 0000000000000000 x1 : 0000000100000000 x0 : 000000000000003e
-  Call trace:
-   populate_free_space_tree+0x514/0x518 fs/btrfs/free-space-tree.c:1102 (P)
-   btrfs_rebuild_free_space_tree+0x14c/0x54c fs/btrfs/free-space-tree.c:1337
-   btrfs_start_pre_rw_mount+0xa78/0xe10 fs/btrfs/disk-io.c:3074
-   btrfs_remount_rw fs/btrfs/super.c:1319 [inline]
-   btrfs_reconfigure+0x828/0x2418 fs/btrfs/super.c:1543
-   reconfigure_super+0x1d4/0x6f0 fs/super.c:1083
-   do_remount fs/namespace.c:3365 [inline]
-   path_mount+0xb34/0xde0 fs/namespace.c:4200
-   do_mount fs/namespace.c:4221 [inline]
-   __do_sys_mount fs/namespace.c:4432 [inline]
-   __se_sys_mount fs/namespace.c:4409 [inline]
-   __arm64_sys_mount+0x3e8/0x468 fs/namespace.c:4409
-   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
-   invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
-   el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
-   do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
-   el0_svc+0x58/0x17c arch/arm64/kernel/entry-common.c:767
-   el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:786
-   el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
-  Code: f0047182 91178042 528089c3 9771d47b (d4210000)
-  ---[ end trace 0000000000000000 ]---
+    	T0			    		T1
+zd_mac_tx_to_dev()
+  /* len == skb_queue_len(q) */
+  while (len > ZD_MAC_MAX_ACK_WAITERS) {
 
-This happens because we are processing an empty block group, which has
-no extents allocated from it, there are no items for this block group,
-including the block group item since block group items are stored in a
-dedicated tree when using the block group tree feature. It also means
-this is the block group with the highest start offset, so there are no
-higher keys in the extent root, hence btrfs_search_slot_for_read()
-returns 1 (no higher key found).
+					  filter_ack()
+					    spin_lock_irqsave(&q->lock, flags);
+					    /* position == skb_queue_len(q) */
+					    for (i=1; i<position; i++)
+				    	      skb = __skb_dequeue(q)
 
-Fix this by asserting 'ret' is 0 only if the block group tree feature
-is not enabled, in which case we should find a block group item for
-the block group since it's stored in the extent root and block group
-item keys are greater than extent item keys (the value for
-BTRFS_BLOCK_GROUP_ITEM_KEY is 192 and for BTRFS_EXTENT_ITEM_KEY and
-BTRFS_METADATA_ITEM_KEY the values are 168 and 169 respectively).
-In case 'ret' is 1, we just need to add a record to the free space
-tree which spans the whole block group, and we can achieve this by
-making 'ret == 0' as the while loop's condition.
+					    if (mac->type == NL80211_IFTYPE_AP)
+					      skb = __skb_dequeue(q);
+					    spin_unlock_irqrestore(&q->lock, flags);
 
-Reported-by: syzbot+36fae25c35159a763a2a@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/6841dca8.a00a0220.d4325.0020.GAE@google.com/
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+    skb_dequeue() -> NULL
+
+Since there is a small gap between checking skb queue length and skb being
+unconditionally dequeued in zd_mac_tx_to_dev(), skb_dequeue() can return NULL.
+Then the pointer is passed to zd_mac_tx_status() where it is dereferenced.
+
+In order to avoid potential NULL pointer dereference due to situations like
+above, check if skb is not NULL before passing it to zd_mac_tx_status().
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 459c51ad6e1f ("zd1211rw: port to mac80211")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Link: https://patch.msgid.link/20250626114619.172631-1-d.dulov@aladdin.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/free-space-tree.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/wireless/zydas/zd1211rw/zd_mac.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/free-space-tree.c b/fs/btrfs/free-space-tree.c
-index 6a44733a95e1c..14bdb241ff6bb 100644
---- a/fs/btrfs/free-space-tree.c
-+++ b/fs/btrfs/free-space-tree.c
-@@ -1098,11 +1098,21 @@ static int populate_free_space_tree(struct btrfs_trans_handle *trans,
- 	ret = btrfs_search_slot_for_read(extent_root, &key, path, 1, 0);
- 	if (ret < 0)
- 		goto out_locked;
--	ASSERT(ret == 0);
-+	/*
-+	 * If ret is 1 (no key found), it means this is an empty block group,
-+	 * without any extents allocated from it and there's no block group
-+	 * item (key BTRFS_BLOCK_GROUP_ITEM_KEY) located in the extent tree
-+	 * because we are using the block group tree feature, so block group
-+	 * items are stored in the block group tree. It also means there are no
-+	 * extents allocated for block groups with a start offset beyond this
-+	 * block group's end offset (this is the last, highest, block group).
-+	 */
-+	if (!btrfs_fs_compat_ro(trans->fs_info, BLOCK_GROUP_TREE))
-+		ASSERT(ret == 0);
+diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+index 3ef8533205f91..0a7f368f0d99c 100644
+--- a/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
++++ b/drivers/net/wireless/zydas/zd1211rw/zd_mac.c
+@@ -583,7 +583,11 @@ void zd_mac_tx_to_dev(struct sk_buff *skb, int error)
  
- 	start = block_group->start;
- 	end = block_group->start + block_group->length;
--	while (1) {
-+	while (ret == 0) {
- 		btrfs_item_key_to_cpu(path->nodes[0], &key, path->slots[0]);
- 
- 		if (key.type == BTRFS_EXTENT_ITEM_KEY ||
-@@ -1132,8 +1142,6 @@ static int populate_free_space_tree(struct btrfs_trans_handle *trans,
- 		ret = btrfs_next_item(extent_root, path);
- 		if (ret < 0)
- 			goto out_locked;
--		if (ret)
--			break;
- 	}
- 	if (start < end) {
- 		ret = __add_to_free_space_tree(trans, block_group, path2,
+ 		skb_queue_tail(q, skb);
+ 		while (skb_queue_len(q) > ZD_MAC_MAX_ACK_WAITERS) {
+-			zd_mac_tx_status(hw, skb_dequeue(q),
++			skb = skb_dequeue(q);
++			if (!skb)
++				break;
++
++			zd_mac_tx_status(hw, skb,
+ 					 mac->ack_pending ? mac->ack_signal : 0,
+ 					 NULL);
+ 			mac->ack_pending = 0;
 -- 
 2.39.5
 
