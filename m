@@ -1,138 +1,136 @@
-Return-Path: <stable+bounces-161947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-161948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC313B054BB
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 10:23:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F663B054E5
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 10:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A221C22FFE
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 08:23:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABB9F3A4705
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 08:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ED0274B26;
-	Tue, 15 Jul 2025 08:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39FD276026;
+	Tue, 15 Jul 2025 08:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pum0PPVH"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="L5HQIeta"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7431825F973;
-	Tue, 15 Jul 2025 08:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E9025D55D;
+	Tue, 15 Jul 2025 08:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752567738; cv=none; b=Bty+QAvVU/BdJ5oqL4DMLK2ldRJczWdAkTCBgjH8a0yLEE9200YGybNgHhSCwqfHf05E3+axpnzn5kuYPBRrP7kmBZCCrX/iuHP4Rp/35DDY4MZ7rJISCYubjdDHKaTW6o6M2q5Zsatpps8dHOW5sg2ddMEs+XEJ/+dtNAqU9hI=
+	t=1752568209; cv=none; b=G6DbZVQXoHrvEmZjP8CJGYFgA+mKb6/iTc/5+8P3Fc1LtHRJTjSk9ak1aIzhM5aSH/Fh8l0A9+uA9pUckkYimFH2zc+rAEgmDFnq4Y2eUrsdYKDyExv6BL/broAFwMXrNHGDeU6lEME8cdYRhNE255CGIWire3LGkK2VVmpw6lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752567738; c=relaxed/simple;
-	bh=ixQ9mMtHtEXEWtYqP7IwY09UZX4JccWhWRs8Whx7Gz8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nqyQlwIMwp25pVfIaRTl551xqxpMFTSfWbdKxB44y0gXtzQaBnGYxfRzNHt1h60By0epasz+/s4RHU67K8AagodmZsUd26fvRCX6AZMhiCKN4t+GCBNXJpCr0QCeWadJT9vlOU93JsXsn7WUwacT2OQ8OzuM7hbs2Z5cMgO/E5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pum0PPVH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C00C4CEE3;
-	Tue, 15 Jul 2025 08:22:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752567738;
-	bh=ixQ9mMtHtEXEWtYqP7IwY09UZX4JccWhWRs8Whx7Gz8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Pum0PPVHzqk2gRjPff+d6C9rtkU7NMSqZiya/jrFKDKDUq9KFTYZVZZPql9yJSNAh
-	 dDnCgDney6g/MtPVKhh5QFTYAHTiJgCOrO1dFtV00NpMdYCyoWIMKKkfYETrWFQ+hO
-	 IZrg0sD5Nx5niYvM5xuF2OGMXh0Uc5Ar6k8e9mSOrZiBchzc+VgfZ7K0A+L11nm27C
-	 mUn05V7qiRrQY2M6I9WJUKbHcwaFGChn4r9VGNOAqOEsyLejz8lxoMAyThs2uWXuC8
-	 TX24hgkCyHfRKN/g3k8vZxZqkY3VsgjmyRVWFKnEtMDTygd4Z6GJgp32ZOBrRpyzZt
-	 eSNoUlH6nlf+Q==
-Message-ID: <f2ea8ba7-3866-4ee7-986e-d6924b440e15@kernel.org>
-Date: Tue, 15 Jul 2025 10:22:13 +0200
+	s=arc-20240116; t=1752568209; c=relaxed/simple;
+	bh=7RChoxNZvIGW01objUPMp18lND3qP5swJI6Jly25b3o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VsszU1/7n2Rg3MXuRXXpVyRjaYz5GTHtxNhIXM7d1LgKP+bePa+Lrel9sA73xGxrN4uO77/sZQnJEt01dnYqnhq02pWg2ef1rzTzYNLCl8DPIbnKVHRFA5J8Be1VMEnLs9NCo+/g154NTqKKKowT9C7MbRTzUZDaRKfa9hdSa/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=L5HQIeta; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1752568198;
+	bh=PtRaWMoDptc1e8ypjYcAlmQHmognEHmmTZFTUdTg2kI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=L5HQIeta6qvSZpeDl6M/t7djawgykFC3xY6G9ivVl+fUVJ9V6DMVddkLBFGyAzkI8
+	 GJRvajG+WJmLLarnIuMgREHaf5NJpjNhwAKe36ytNsWfiBJELphXa/ncSOGQShVZN0
+	 b3TOrYHol5UCJsuzXraBDf5Qz0KznEt/vooZywFI=
+X-QQ-mid: zesmtpip2t1752568181tad22719b
+X-QQ-Originating-IP: 0GVQog9toGo4M4xXdTRBAEj46JRuzpoacgxAEvWriAM=
+Received: from avenger-e500 ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 15 Jul 2025 16:29:39 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 6392857298671382999
+EX-QQ-RecipientCnt: 13
+From: WangYuli <wangyuli@uniontech.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Georg Kohmann <geokohma@cisco.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 5.4] net: ipv6: Discard next-hop MTU less than minimum link MTU
+Date: Tue, 15 Jul 2025 16:29:32 +0800
+Message-ID: <46839B9D4350724B+20250715082932.430119-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4/5.10/5.15/6.1/6.6] Input: atkbd - do not skip
- atkbd_deactivate() when skipping ATKBD_CMD_GETID
-To: Wang Hai <wanghai38@huawei.com>, stable@vger.kernel.org,
- sashal@kernel.org, gregkh@linuxfoundation.org
-Cc: yesh25@mail2.sysu.edu.cn, mail@gurevit.ch, egori@altlinux.org,
- anton@cpp.in, dmitry.torokhov@gmail.com, rrangel@chromium.org,
- linux-input@vger.kernel.org, zhangxiaoxu5@huawei.com
-References: <20250715031442.16528-1-wanghai38@huawei.com>
-Content-Language: en-US, nl
-From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <20250715031442.16528-1-wanghai38@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: Ndw/mc8X39ObLYczeDAmBLa5Jfu/2I4d/3TRcrTDpKuFWUKQ3vMrOrVI
+	zUNGAQDkdaZLznAU2OFImTdP3Ps72RUcPrsnUw7nW6+E7oZeINAwv95+Vy8tf29/l8bSMrV
+	WUgGR7XiPoN3q29XHtLTsp4SR6302ZExOnwapPurnl9ESvEoEeXhqHoYmXLgcqJIges6iDo
+	lxo0ywkTRNTwz2i9qNKzeMteAMIiEcNCVmXExxmYKz9rSaMAM0kNn9eNpTuJW6l9/tDHHRj
+	GuaAG6X1Ge2Oh7b5bChj5XaE4tEsyw6Nu6rwF3fuoReZw0c/dmWgK8mhaHKdobhLozukXCP
+	s9wsSZ46OrjmTNTzm34HXswrEI2HNVC5tellRHYnYVqYrbaDDxjSR6+WjXSId0OjsaZVehT
+	rikQm4JePCfAdI4Npm3jCdc/Od0fD2oMn80K89TUmnSBYQoZKVS2zakJHCEYwV9jgqRFUFT
+	SB9WdNIiwTqxokpgdL/Xw1RBr//9bPW5LK20rd3VhEbJtft/QFEtfuI7AqTpYFIJadNCtQU
+	jIisGWDEee3oBPEiuUML6GD13Cce4QF19qMuEg0Td90KgKLPRyE3eefVVhsMoVJAqCWewQT
+	ebzGUpfwLyLMesc8BIWFLFfSWKv8qSiq3S/wxnSRcsol/pxhl1bkJocX2dfWLLeOP7tyvbV
+	//F9xY+EXr7mrs+BLXYF/A6ylB4fbFQrRQz+p51du+USRn/paBr68wwlTXdlQazFj7Q9Ae9
+	fQDS2KLZapjzyCsAVF80JOXpMuCiGfqOXMbAWJOJtGBLPqZ86dqJGfdz1Lq5DMcZoFfx1DR
+	wHwBC6QY/Sf7xe19EKKBpHnSs/hV4ZgxffnwswkuKaNEYy8V1TEy5RJEI7ZAni+p6wMNySE
+	USb6C28ofOH5QMeNJtyG+MmhpKu6wr9qYZLJByutz3rOPah2LdmhWEL7ABZTkLwjUxm6+rW
+	80M5NIS3tR9h2FX1jJrrAf6JKo5VCxXal8tH6uxovSj5cDd4trMTnu9UHpACMvUgtYw9r+s
+	4/K9UD+w==
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
 
-Hi,
+From: Georg Kohmann <geokohma@cisco.com>
 
-On 15-Jul-25 5:14 AM, Wang Hai wrote:
-> From: Hans de Goede <hdegoede@redhat.com>
-> 
-> commit 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 upstream.
-> 
-> After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
-> translated mode") not only the getid command is skipped, but also
-> the de-activating of the keyboard at the end of atkbd_probe(), potentially
-> re-introducing the problem fixed by commit be2d7e4233a4 ("Input: atkbd -
-> fix multi-byte scancode handling on reconnect").
-> 
-> Make sure multi-byte scancode handling on reconnect is still handled
-> correctly by not skipping the atkbd_deactivate() call.
-> 
-> Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
-> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> Link: https://lore.kernel.org/r/20240126160724.13278-3-hdegoede@redhat.com
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Signed-off-by: Wang Hai <wanghai38@huawei.com>
+[ Upstream commit 4a65dff81a04f874fa6915c7f069b4dc2c4010e4 ]
 
-Thank you for backporting this.
+When a ICMPV6_PKT_TOOBIG report a next-hop MTU that is less than the IPv6
+minimum link MTU, the estimated path MTU is reduced to the minimum link
+MTU. This behaviour breaks TAHI IPv6 Core Conformance Test v6LC4.1.6:
+Packet Too Big Less than IPv6 MTU.
 
-The backport looks good to me:
+Referring to RFC 8201 section 4: "If a node receives a Packet Too Big
+message reporting a next-hop MTU that is less than the IPv6 minimum link
+MTU, it must discard it. A node must not reduce its estimate of the Path
+MTU below the IPv6 minimum link MTU on receipt of a Packet Too Big
+message."
 
-Acked-by: Hans de Goede <hansg@kernel.org>
+Drop the path MTU update if reported MTU is less than the minimum link MTU.
 
-Regards,
+Signed-off-by: Georg Kohmann <geokohma@cisco.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+ net/ipv6/route.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Hans
-
-
-
-
-
-> ---
->  drivers/input/keyboard/atkbd.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/input/keyboard/atkbd.c b/drivers/input/keyboard/atkbd.c
-> index b3a856333d4e..de59fc1a24bc 100644
-> --- a/drivers/input/keyboard/atkbd.c
-> +++ b/drivers/input/keyboard/atkbd.c
-> @@ -805,11 +805,11 @@ static int atkbd_probe(struct atkbd *atkbd)
->  				 "keyboard reset failed on %s\n",
->  				 ps2dev->serio->phys);
->  
->  	if (atkbd_skip_getid(atkbd)) {
->  		atkbd->id = 0xab83;
-> -		return 0;
-> +		goto deactivate_kbd;
->  	}
->  
->  /*
->   * Then we check the keyboard ID. We should get 0xab83 under normal conditions.
->   * Some keyboards report different values, but the first byte is always 0xab or
-> @@ -842,10 +842,11 @@ static int atkbd_probe(struct atkbd *atkbd)
->  			"NCD terminal keyboards are only supported on non-translating controllers. "
->  			"Use i8042.direct=1 to disable translation.\n");
->  		return -1;
->  	}
->  
-> +deactivate_kbd:
->  /*
->   * Make sure nothing is coming from the keyboard and disturbs our
->   * internal state.
->   */
->  	if (!atkbd_skip_deactivate)
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index b321cec71127..93bae134e730 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -2765,7 +2765,8 @@ static void __ip6_rt_update_pmtu(struct dst_entry *dst, const struct sock *sk,
+ 	if (confirm_neigh)
+ 		dst_confirm_neigh(dst, daddr);
+ 
+-	mtu = max_t(u32, mtu, IPV6_MIN_MTU);
++	if (mtu < IPV6_MIN_MTU)
++		return;
+ 	if (mtu >= dst_mtu(dst))
+ 		return;
+ 
+-- 
+2.50.0
 
 
