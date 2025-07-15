@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6611B05E3E
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:51:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1BE2B05BF9
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10F28170373
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:47:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3E3F4E7A25
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC17239E63;
-	Tue, 15 Jul 2025 13:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81242E2F18;
+	Tue, 15 Jul 2025 13:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgMVG9Qy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsXlqFLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD51BE4A;
-	Tue, 15 Jul 2025 13:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B692E2F12;
+	Tue, 15 Jul 2025 13:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586780; cv=none; b=CUI7uEtIRWshttL4pVUPlcQixKbpUh+eYOByQS3cfpE5X2ZXrL61IqGif5uhj6bgbtByjIFlNjqhs2ThuN41HlWSug9mJvMsZJAAE8+tJ6xNi9jjjf/DCqVWv4kEzRffs4xKC5PeIzcKIIvrreCRsw6l0tU1jACOOpKFdX9JGg0=
+	t=1752585801; cv=none; b=D2Z2L9njCkqZMsFfOh2P+uj9A3zlubBvW96uCnv5ylo+P9+mBCHUZ+VE6f8GvRbBkV2Hd8tiR8eA8BeYvGvrC+NiEjP+xLGMGgktVcuEr8L1l+75EN3wjKwyRoWc2SFQ9voj3R8uvgk2T1okoM0UUqac40dp3GW+nB21QqiVefA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586780; c=relaxed/simple;
-	bh=Gg7j3qDLtIaVrpjcyeihsnfqJw363u8PQVwQWzt+ysI=;
+	s=arc-20240116; t=1752585801; c=relaxed/simple;
+	bh=4tG8BeZJRwgc4srZfG2aBSDD6KCiTFGErMaEPLWniZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsSfje+iF9PuXhTXYU2k/0C7A8C2Y4GgJNUPE7AOhf6rQ3KVXNkaBcnHS/XibD5KGoN7mfFCaxmHkDaSxw7q0Gwc2EqU+d9Qg3vkZmBtSadjuiIysZpzXUOHH+p5PU+LCxu1CDth63VmJYbSu9oooMhjwP4Vs/pv+S485Wl2H3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgMVG9Qy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD022C4CEE3;
-	Tue, 15 Jul 2025 13:39:39 +0000 (UTC)
+	 MIME-Version; b=EUWMO5RYPYHrMcFsqsQoPleNEYdOOQk+3Y0JzLn1Iudp00zX1lhk2LN/ca9tcMxcIEBley7OewYKsjEuuKp9ZrHkHny1mTpX2q2TtbqX6y3YtXHIZ9mCfQ44+0ltQziwnIi00Q76BX9+vJVNlxERuKcPBAiDS6zDPlxLk/HFwU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsXlqFLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCB3C4CEF1;
+	Tue, 15 Jul 2025 13:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586780;
-	bh=Gg7j3qDLtIaVrpjcyeihsnfqJw363u8PQVwQWzt+ysI=;
+	s=korg; t=1752585801;
+	bh=4tG8BeZJRwgc4srZfG2aBSDD6KCiTFGErMaEPLWniZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgMVG9QyxWxQ28/MAz91u+4Ndw4Pf8IGDWO1ol7Za6MRbW1lyjj8N+ccrCfT2ghfz
-	 AIWmlnNmCiaGE1EhlmATtmnsKhh6DKSwYsgWvyRVf3npvmcOtHNrwndH+pX53HWKPh
-	 Vv2SvyJfi4vumkOTIBk9MP0q2MkShyNQHjBAy5c0=
+	b=NsXlqFLxNZsaKHOpa341zch3IgSKeo9q35JfYxAGDDMmtpfbUvuhH2PQo2JXZWtLH
+	 d7CjeSHWRLVHyNJEK96CmKxfoCA8q0ZipNxNcHvYbYHtjCgjUfVLJc/aO2wNFadi1M
+	 R3SXstEKVqbZql7MeJm8oJ1qnmBsU4Q1owM787aY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Chintan Vankar <c-vankar@ti.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 045/192] net: ethernet: ti: am65-cpsw-nuss: Fix skb size by accounting for skb_shared_info
-Date: Tue, 15 Jul 2025 15:12:20 +0200
-Message-ID: <20250715130816.658361268@linuxfoundation.org>
+Subject: [PATCH 6.6 005/109] perf: Revert to requiring CAP_SYS_ADMIN for uprobes
+Date: Tue, 15 Jul 2025 15:12:21 +0200
+Message-ID: <20250715130759.090232478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chintan Vankar <c-vankar@ti.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 02c4d6c26f1f662da8885b299c224ca6628ad232 ]
+[ Upstream commit ba677dbe77af5ffe6204e0f3f547f3ba059c6302 ]
 
-While transitioning from netdev_alloc_ip_align() to build_skb(), memory
-for the "skb_shared_info" member of an "skb" was not allocated. Fix this
-by allocating "PAGE_SIZE" as the skb length, accounting for the packet
-length, headroom and tailroom, thereby including the required memory space
-for skb_shared_info.
+Jann reports that uprobes can be used destructively when used in the
+middle of an instruction. The kernel only verifies there is a valid
+instruction at the requested offset, but due to variable instruction
+length cannot determine if this is an instruction as seen by the
+intended execution stream.
 
-Fixes: 8acacc40f733 ("net: ethernet: ti: am65-cpsw: Add minimal XDP support")
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Chintan Vankar <c-vankar@ti.com>
-Link: https://patch.msgid.link/20250707085201.1898818-1-c-vankar@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Additionally, Mark Rutland notes that on architectures that mix data
+in the text segment (like arm64), a similar things can be done if the
+data word is 'mistaken' for an instruction.
+
+As such, require CAP_SYS_ADMIN for uprobes.
+
+Fixes: c9e0924e5c2b ("perf/core: open access to probes for CAP_PERFMON privileged process")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/CAG48ez1n4520sq0XrWYDHKiKxE_+WCfAK+qt9qkY4ZiBGmL-5g@mail.gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/events/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 4cec05e0e3d9b..10e8a8309a034 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -856,8 +856,6 @@ static struct sk_buff *am65_cpsw_build_skb(void *page_addr,
- {
- 	struct sk_buff *skb;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 5c6da8bd03b10..3a33d9c1b1b2b 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -10473,7 +10473,7 @@ static int perf_uprobe_event_init(struct perf_event *event)
+ 	if (event->attr.type != perf_uprobe.type)
+ 		return -ENOENT;
  
--	len += AM65_CPSW_HEADROOM;
--
- 	skb = build_skb(page_addr, len);
- 	if (unlikely(!skb))
- 		return NULL;
-@@ -1344,7 +1342,7 @@ static int am65_cpsw_nuss_rx_packets(struct am65_cpsw_rx_flow *flow,
- 	}
+-	if (!perfmon_capable())
++	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
  
- 	skb = am65_cpsw_build_skb(page_addr, ndev,
--				  AM65_CPSW_MAX_PACKET_SIZE, headroom);
-+				  PAGE_SIZE, headroom);
- 	if (unlikely(!skb)) {
- 		new_page = page;
- 		goto requeue;
+ 	/*
 -- 
 2.39.5
 
