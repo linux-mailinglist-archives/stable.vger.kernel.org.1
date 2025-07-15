@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-162176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8ABEB05C1F
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7CCB05B4E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2D516419A
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:27:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B70D47B67D3
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33842E3B06;
-	Tue, 15 Jul 2025 13:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39B819F420;
+	Tue, 15 Jul 2025 13:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcTvpTJh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1UORiT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632942E337E;
-	Tue, 15 Jul 2025 13:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CF41A23AF;
+	Tue, 15 Jul 2025 13:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585875; cv=none; b=KQtzRG8lxFUj47UXnP6ELNozuZ8bbOm0/9iwNNJUCBvDBgPli1jVL/929UhVjlxh8a/4/FCojC60cTZrYVCCNpILhb8LSeFt/yBZOtvb8HRc8wzK38wLTg4+pwzUz6IZ16tOvPNJz2tmvdDp+JKVn8RrdbXQoMESBOa87qAx84I=
+	t=1752585540; cv=none; b=qY9XJxu3MxPjPtYEtkv8O8xQp9KJC86W9CBCCkV1aV+mKqsM4x2oAvJNHFpPQh/DC/0OabGzZhDpSlxl4i6eIPnO9cq2wbxqai3SC6AYp8wgP3xHTii7RtCxRArh27CIUY1WKZCcEutRK4t2jDAchpexGk4tTLrcCrUfo426I+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585875; c=relaxed/simple;
-	bh=TbMmcDrdbzn0EPzZNPo3NygjIG9fBG/q6Tk1mVVJKw8=;
+	s=arc-20240116; t=1752585540; c=relaxed/simple;
+	bh=JlOZbVTyk3JxTd6vSnNPSEq0F01nCd9F0cJ44JbIEeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SgoFVkW80ABcu0R65VMQdoWVWuKcA95K1Ppk4oemQSJ/sRKX1E/notq7pxy7SzW2Bdznjc/JJpMUDE0xBI/MJHpuf1t+SUvg/orqKVqZU8+Z+e5fjpvoh0DiA5AcigdfrVjl9GwAbiH//APszZeOZFbr8KLQxOqqbVSsOSL1sr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcTvpTJh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE12C4CEE3;
-	Tue, 15 Jul 2025 13:24:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OeftVRc59vjYZmRsbU8fSuGUoeVgItOdAiLwvz6N3ryC+f0jMi3kFLqazZwZV18C40kT5uNFxwLs3QfDNZPFh2ZhiTvZ2FiIFqEWDBa1vCg0LwHmj7yoyrylWmeeLH2XWy8dg4ELD57m1G23y8oUfrw8rrl4k+xylGP/m9oiPiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1UORiT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990F2C4CEE3;
+	Tue, 15 Jul 2025 13:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585875;
-	bh=TbMmcDrdbzn0EPzZNPo3NygjIG9fBG/q6Tk1mVVJKw8=;
+	s=korg; t=1752585540;
+	bh=JlOZbVTyk3JxTd6vSnNPSEq0F01nCd9F0cJ44JbIEeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OcTvpTJhtFlzIYpuGOugMnTREqt5veuDvJcx6+bUSgstT+F0qD5hh0rHnecQAKJji
-	 r5H05AOccwEuvoG17s4SsQZvcsAeJGB1N4yULiaXCue946emBKHxAjzT3hMXPbp0CJ
-	 g0ZhE4ExbfPOmO33XG54L5k/V465As8V1vBOMjDE=
+	b=j1UORiT/kO1genn3U29ttf0sUZbdspRA10najjE2qGTGuw9zGh4zEKfTL2O/S6s1/
+	 xpIulpO6qHABGgnapLWSGhBB2Jzo1M31P0Pv6Cu9HRR7da2lkyjz2MIHZsf/4Q3jxN
+	 O48qMDDWfRNPSHSeeDeqPhuniTJXLmkBZw882r/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@brown.name>,
-	Christian Brauner <brauner@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/109] fix proc_sys_compare() handling of in-lookup dentries
+	Matthew Auld <matthew.auld@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Akshata Jahagirdar <akshata.jahagirdar@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.12 078/163] drm/xe/bmg: fix compressed VRAM handling
 Date: Tue, 15 Jul 2025 15:12:26 +0200
-Message-ID: <20250715130759.291538254@linuxfoundation.org>
+Message-ID: <20250715130811.862680701@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
-References: <20250715130758.864940641@linuxfoundation.org>
+In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
+References: <20250715130808.777350091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit b969f9614885c20f903e1d1f9445611daf161d6d ]
+commit fee58ca135a7b979c8b75e6d2eac60d695f9209b upstream.
 
-There's one case where ->d_compare() can be called for an in-lookup
-dentry; usually that's nothing special from ->d_compare() point of
-view, but... proc_sys_compare() is weird.
+There looks to be an issue in our compression handling when the BO pages
+are very fragmented, where we choose to skip the identity map and
+instead fall back to emitting the PTEs by hand when migrating memory,
+such that we can hopefully do more work per blit operation. However in
+such a case we need to ensure the src PTEs are correctly tagged with a
+compression enabled PAT index on dgpu xe2+, otherwise the copy will
+simply treat the src memory as uncompressed, leading to corruption if
+the memory was compressed by the user.
 
-The thing is, /proc/sys subdirectories can look differently for
-different processes.  Up to and including having the same name
-resolve to different dentries - all of them hashed.
+To fix this pass along use_comp_pat into emit_pte() on the src side, to
+indicate that compression should be considered.
 
-The way it's done is ->d_compare() refusing to admit a match unless
-this dentry is supposed to be visible to this caller.  The information
-needed to discriminate between them is stored in inode; it is set
-during proc_sys_lookup() and until it's done d_splice_alias() we really
-can't tell who should that dentry be visible for.
+v2 (Jonathan): tweak the commit message
 
-Normally there's no negative dentries in /proc/sys; we can run into
-a dying dentry in RCU dcache lookup, but those can be safely rejected.
-
-However, ->d_compare() is also called for in-lookup dentries, before
-they get positive - or hashed, for that matter.  In case of match
-we will wait until dentry leaves in-lookup state and repeat ->d_compare()
-afterwards.  In other words, the right behaviour is to treat the
-name match as sufficient for in-lookup dentries; if dentry is not
-for us, we'll see that when we recheck once proc_sys_lookup() is
-done with it.
-
-While we are at it, fix the misspelled READ_ONCE and WRITE_ONCE there.
-
-Fixes: d9171b934526 ("parallel lookups machinery, part 4 (and last)")
-Reported-by: NeilBrown <neilb@brown.name>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 523f191cc0c7 ("drm/xe/xe_migrate: Handle migration logic for xe2+ dgfx")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Cc: <stable@vger.kernel.org> # v6.12+
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://lore.kernel.org/r/20250701103949.83116-2-matthew.auld@intel.com
+(cherry picked from commit f7a2fd776e57bd6468644bdecd91ab3aba57ba58)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/inode.c       |  2 +-
- fs/proc/proc_sysctl.c | 18 +++++++++++-------
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/xe/xe_migrate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index 897c71077a0f7..4b3ae7e0def32 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -52,7 +52,7 @@ static void proc_evict_inode(struct inode *inode)
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -860,7 +860,7 @@ struct dma_fence *xe_migrate_copy(struct
+ 		if (src_is_vram && xe_migrate_allow_identity(src_L0, &src_it))
+ 			xe_res_next(&src_it, src_L0);
+ 		else
+-			emit_pte(m, bb, src_L0_pt, src_is_vram, copy_system_ccs,
++			emit_pte(m, bb, src_L0_pt, src_is_vram, copy_system_ccs || use_comp_pat,
+ 				 &src_it, src_L0, src);
  
- 	head = ei->sysctl;
- 	if (head) {
--		RCU_INIT_POINTER(ei->sysctl, NULL);
-+		WRITE_ONCE(ei->sysctl, NULL);
- 		proc_sys_evict_inode(inode, head);
- 	}
- }
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index 071a71eb1a2d4..b7d6bc5c1ce9a 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -920,17 +920,21 @@ static int proc_sys_compare(const struct dentry *dentry,
- 	struct ctl_table_header *head;
- 	struct inode *inode;
- 
--	/* Although proc doesn't have negative dentries, rcu-walk means
--	 * that inode here can be NULL */
--	/* AV: can it, indeed? */
--	inode = d_inode_rcu(dentry);
--	if (!inode)
--		return 1;
- 	if (name->len != len)
- 		return 1;
- 	if (memcmp(name->name, str, len))
- 		return 1;
--	head = rcu_dereference(PROC_I(inode)->sysctl);
-+
-+	// false positive is fine here - we'll recheck anyway
-+	if (d_in_lookup(dentry))
-+		return 0;
-+
-+	inode = d_inode_rcu(dentry);
-+	// we just might have run into dentry in the middle of __dentry_kill()
-+	if (!inode)
-+		return 1;
-+
-+	head = READ_ONCE(PROC_I(inode)->sysctl);
- 	return !head || !sysctl_is_seen(head);
- }
- 
--- 
-2.39.5
-
+ 		if (dst_is_vram && xe_migrate_allow_identity(src_L0, &dst_it))
 
 
 
