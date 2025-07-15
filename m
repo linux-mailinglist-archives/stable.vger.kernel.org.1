@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-162513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB8CB05DD9
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB5BB05D7E
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 900F47A6095
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:45:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B8257BCBC8
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A232E7F03;
-	Tue, 15 Jul 2025 13:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2082E7BC5;
+	Tue, 15 Jul 2025 13:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3IO3gCl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="As5vGvG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AFA2561AE;
-	Tue, 15 Jul 2025 13:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C3C2E3382;
+	Tue, 15 Jul 2025 13:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586754; cv=none; b=HCe0bkdY5kFXrBzAnpnVqPH6Bt94Q8saadBj1l5CezjWuRIALlXdzrRt7of+59vhJbeFhIk+DDmrTweG1Edp7L36/3qvX+4EK69EtAI5r3bhggoYvFZPgSzqKdlcyx8Mfky5SLPy89oFz56RF5K87DE2RYHuQ5s6Z+6fPKsJljg=
+	t=1752586367; cv=none; b=D0J7umI3mS5YP5B5l0d9yAaRR0rvPRAGJFs3MRC1niK05vZqDevLsp2NY/uG0hfQf1q4+Ls767NJ6BObRnpcP+Pc3AF3YM+IX6SrNxCsI++m85AJIUOGDu0zr7yWjSIE8sIoAJM/JRYLxF5SSnObInhs7MVFEnxcA/eRRknTdKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586754; c=relaxed/simple;
-	bh=bjB5TloB9pmY+wGxm+VNMinRJMHynef/qQdtKIdSA44=;
+	s=arc-20240116; t=1752586367; c=relaxed/simple;
+	bh=4MlSWjh7JitSy1QXqA+7y0AVOQwHuykeyHfV8CdDBog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lVamdBgh4Vx3/F918QID9zOzavD4w3h2r6nkYlRewMOnYeR4E6ihjsIXJ7TEhIK9ZrE71MbaYxEUq5C6o+94kISJAityPAgYm5dI/ayX7OvXGznPVMLhHD6A7HrccyxguERQ/ldspAAGtl/SBqqv8PMMnGGaOFe1jcWSy8+tikg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3IO3gCl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07A3C4CEE3;
-	Tue, 15 Jul 2025 13:39:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b+YZ2UszVToJTM3PQHNdvmSm25Kw70eHz06pM8wn+J5NFraoSkkg5t2FW95kAL0jM9tRq8w6AsDfqMl5EuAAxJlrrXc/GnCg3tbr4yt7Q6D2MUh3/8Be/BQ1KHSOp/5pmWJzyYCmOTT9lICma//I46NVZX0vOFJSxkdOZXAvHwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=As5vGvG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A85C4CEF1;
+	Tue, 15 Jul 2025 13:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586754;
-	bh=bjB5TloB9pmY+wGxm+VNMinRJMHynef/qQdtKIdSA44=;
+	s=korg; t=1752586367;
+	bh=4MlSWjh7JitSy1QXqA+7y0AVOQwHuykeyHfV8CdDBog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j3IO3gClNscMM8IrSziAY+kkWs/X9RnyGg9tCU7vTq1xrA7xkvcQPSVpMBNMHVHRv
-	 8aj0g6czJGd3QKbogfTq49Fp5bZooczmymyuSr7zJNwWjelG2Y7lRED0KQGDQ1bqBc
-	 tdTcQfxulf1NBwLV2ey+SUmDeepyPFtKkF19XSi8=
+	b=As5vGvG3C5R55Xym3GPM5pvthLvzVSEJBg83m7caB7QyAn6VcZiNrL7kXUFdFPssQ
+	 Nof/X83RT4DNaSOpT+V7MlkhZcplASr3T/61y34BLFT8yHG74EKyv17OLwFrTgXe5T
+	 uPN/YIh9iz3jWeg5PwzyLhnrfRgjzdMMsoCZbMlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 036/192] module: Fix memory deallocation on error path in move_module()
+Subject: [PATCH 5.4 009/148] usb: Add checks for snprintf() calls in usb_alloc_dev()
 Date: Tue, 15 Jul 2025 15:12:11 +0200
-Message-ID: <20250715130816.305559220@linuxfoundation.org>
+Message-ID: <20250715130800.676632290@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-References: <20250715130814.854109770@linuxfoundation.org>
+In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
+References: <20250715130800.293690950@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit ca3881f6fd8e9b6eb2d51e8718d07d3b8029d886 ]
+[ Upstream commit 82fe5107fa3d21d6c3fba091c9dbc50495588630 ]
 
-The function move_module() uses the variable t to track how many memory
-types it has allocated and consequently how many should be freed if an
-error occurs.
+When creating a device path in the driver the snprintf() takes
+up to 16 characters long argument along with the additional up to
+12 characters for the signed integer (as it can't see the actual limits)
+and tries to pack this into 16 bytes array. GCC complains about that
+when build with `make W=1`:
 
-The variable is initially set to 0 and is updated when a call to
-module_memory_alloc() fails. However, move_module() can fail for other
-reasons as well, in which case t remains set to 0 and no memory is freed.
+  drivers/usb/core/usb.c:705:25: note: ‘snprintf’ output between 3 and 28 bytes into a destination of size 16
 
-Fix the problem by initializing t to MOD_MEM_NUM_TYPES. Additionally, make
-the deallocation loop more robust by not relying on the mod_mem_type_t enum
-having a signed integer as its underlying type.
+Since everything works until now, let's just check for the potential
+buffer overflow and bail out. It is most likely a never happen situation,
+but at least it makes GCC happy.
 
-Fixes: c7ee8aebf6c0 ("module: add stop-grap sanity check on module memcpy()")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
-Link: https://lore.kernel.org/r/20250618122730.51324-2-petr.pavlu@suse.com
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Message-ID: <20250618122730.51324-2-petr.pavlu@suse.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250321164949.423957-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/module/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/core/usb.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 9861c2ac5fd50..9d8a845d94665 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -2615,7 +2615,7 @@ static int find_module_sections(struct module *mod, struct load_info *info)
- static int move_module(struct module *mod, struct load_info *info)
- {
- 	int i;
--	enum mod_mem_type t = 0;
-+	enum mod_mem_type t = MOD_MEM_NUM_TYPES;
- 	int ret = -ENOMEM;
- 	bool codetag_section_found = false;
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 502d911f71fa6..571ab8e0c7590 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -717,15 +717,16 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
+ 		dev_set_name(&dev->dev, "usb%d", bus->busnum);
+ 		root_hub = 1;
+ 	} else {
++		int n;
++
+ 		/* match any labeling on the hubs; it's one-based */
+ 		if (parent->devpath[0] == '0') {
+-			snprintf(dev->devpath, sizeof dev->devpath,
+-				"%d", port1);
++			n = snprintf(dev->devpath, sizeof(dev->devpath), "%d", port1);
+ 			/* Root ports are not counted in route string */
+ 			dev->route = 0;
+ 		} else {
+-			snprintf(dev->devpath, sizeof dev->devpath,
+-				"%s.%d", parent->devpath, port1);
++			n = snprintf(dev->devpath, sizeof(dev->devpath), "%s.%d",
++				     parent->devpath, port1);
+ 			/* Route string assumes hubs have less than 16 ports */
+ 			if (port1 < 15)
+ 				dev->route = parent->route +
+@@ -734,6 +735,11 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
+ 				dev->route = parent->route +
+ 					(15 << ((parent->level - 1)*4));
+ 		}
++		if (n >= sizeof(dev->devpath)) {
++			usb_put_hcd(bus_to_hcd(bus));
++			usb_put_dev(dev);
++			return NULL;
++		}
  
-@@ -2694,7 +2694,7 @@ static int move_module(struct module *mod, struct load_info *info)
- 	return 0;
- out_err:
- 	module_memory_restore_rox(mod);
--	for (t--; t >= 0; t--)
-+	while (t--)
- 		module_memory_free(mod, t);
- 	if (codetag_section_found)
- 		codetag_free_module_sections(mod);
+ 		dev->dev.parent = &parent->dev;
+ 		dev_set_name(&dev->dev, "%d-%s", bus->busnum, dev->devpath);
 -- 
 2.39.5
 
