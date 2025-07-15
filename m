@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-162929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D369B0608B
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:18:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C50FB05F83
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 16:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FFE25863A8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 14:09:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B16661C27DFC
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317EC2EFD91;
-	Tue, 15 Jul 2025 13:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4305A2E54B6;
+	Tue, 15 Jul 2025 13:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlwzGtw5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEcdkcut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CDF2EF9DC;
-	Tue, 15 Jul 2025 13:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05602E49AA;
+	Tue, 15 Jul 2025 13:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587844; cv=none; b=MSKhI6yFzsBtje1ZrAWWWWQFfwf7a+f7WjuMg+1pRV5iV7BZZ9QknInw54H/j193mNXLWxzcT+lfy/Wy1Vrn1oZENM+FL1FZVuucRqHUbP+DgINr7qANG5Ye0ifPzVM73qiKu4gt5ydU3oDv1iAcb3RtPGLHRzV+Ufc0pZRznnU=
+	t=1752587243; cv=none; b=d6CWvSijQMhXeuSayGIobcXQowNkXBdXsFTavJzzSOagKguIZSgGmHmHvwkZfg7T29UUziuJeQB53fUlHOFndQkQ4DhGmN//eHz8Q3n4mAhHbBiC8G+jfXv0mxa96dmgLGzrEnD5MBlX+/exlo9mDnDVOO6FXp5SiDdrR/+Rj8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587844; c=relaxed/simple;
-	bh=idr223G6iB8TGGs9rg9EiGW8Pvp2m4GpB9JIT0p0xNc=;
+	s=arc-20240116; t=1752587243; c=relaxed/simple;
+	bh=WTUyfY2CKtGpQJuF6M8Gv2sD5nO/X0jGGRxNt90UFcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWd5+SxEKA1inGu7X/5I1+1m5okpFxZlRniTkhyNqiH/uchmul2BbYJ0ChPex9MWwxzaqs3IgTWM+tmfjVemJttDUizzqio1afeSkrjUKL/8qBfV84B/hcskOzPJ2adN9MdqzSSB/ey6UdwHridZelARSbZIZdOgm3D4SMEMYWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlwzGtw5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F1FC4CEE3;
-	Tue, 15 Jul 2025 13:57:23 +0000 (UTC)
+	 MIME-Version; b=DfHvgcksaOnderxCmlpssMnu+rp5/tfx1G45SnhtoOlr6JEO4N83v3jyBOxGAj/tmiE7n/kmR4Ugz3kVJRtHH/9LkbD+7X6tkZ+cSM41nNQZCt7K8V85e/uS/vdDkbE83DW/cXcxIC0MvUL+e9laC0SAVhIlYdAe8tG0iDye8vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEcdkcut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83979C4CEE3;
+	Tue, 15 Jul 2025 13:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587843;
-	bh=idr223G6iB8TGGs9rg9EiGW8Pvp2m4GpB9JIT0p0xNc=;
+	s=korg; t=1752587242;
+	bh=WTUyfY2CKtGpQJuF6M8Gv2sD5nO/X0jGGRxNt90UFcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlwzGtw5P2shzBGk2hT6XmsTU8MmCB9jdJ5DHiOfRjjX88OamXAlpqXVWYlrlYKm4
-	 HUTli8tzg4tt6NMLMbupBrC9CdSj09gGEeAP6GQIt6YzVV3Z5D/9XWnLUdm91y/Jik
-	 qIm1H7Jenb5kJoUae5WsDmh+xJ84BXCjnH+zc0Lw=
+	b=vEcdkcutsHw/hZyAE96ggB+ogMZX7P+yKDzGecxshLh73Il2/SS5puuVkK/5be3n3
+	 ydnSathk/50mNzLQmZ4VaQ9lzFA3CIrJaE1nQOcqXU97NyYCgcss+MOikv9tDExuXD
+	 65C0/73TFPsu7hp1YJ7M5DpDsgBbb53anBsL6OhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Inki Dae <inki.dae@samsung.com>
-Subject: [PATCH 5.10 133/208] drm/exynos: exynos7_drm_decon: add vblank check in IRQ handling
-Date: Tue, 15 Jul 2025 15:14:02 +0200
-Message-ID: <20250715130816.264204662@linuxfoundation.org>
+	Alexander Potapenko <glider@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Peter Gonda <pgonda@google.com>,
+	Liam Merwick <liam.merwick@oracle.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 27/88] KVM: SVM: Reject SEV{-ES} intra host migration if vCPU creation is in-flight
+Date: Tue, 15 Jul 2025 15:14:03 +0200
+Message-ID: <20250715130755.604900171@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
+In-Reply-To: <20250715130754.497128560@linuxfoundation.org>
+References: <20250715130754.497128560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +64,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit b846350aa272de99bf6fecfa6b08e64ebfb13173 upstream.
+commit ecf371f8b02d5e31b9aa1da7f159f1b2107bdb01 upstream.
 
-If there's support for another console device (such as a TTY serial),
-the kernel occasionally panics during boot. The panic message and a
-relevant snippet of the call stack is as follows:
+Reject migration of SEV{-ES} state if either the source or destination VM
+is actively creating a vCPU, i.e. if kvm_vm_ioctl_create_vcpu() is in the
+section between incrementing created_vcpus and online_vcpus.  The bulk of
+vCPU creation runs _outside_ of kvm->lock to allow creating multiple vCPUs
+in parallel, and so sev_info.es_active can get toggled from false=>true in
+the destination VM after (or during) svm_vcpu_create(), resulting in an
+SEV{-ES} VM effectively having a non-SEV{-ES} vCPU.
 
-  Unable to handle kernel NULL pointer dereference at virtual address 000000000000000
-  Call trace:
-    drm_crtc_handle_vblank+0x10/0x30 (P)
-    decon_irq_handler+0x88/0xb4
-    [...]
+The issue manifests most visibly as a crash when trying to free a vCPU's
+NULL VMSA page in an SEV-ES VM, but any number of things can go wrong.
 
-Otherwise, the panics don't happen. This indicates that it's some sort
-of race condition.
+  BUG: unable to handle page fault for address: ffffebde00000000
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+  CPU: 227 UID: 0 PID: 64063 Comm: syz.5.60023 Tainted: G     U     O        6.15.0-smp-DEV #2 NONE
+  Tainted: [U]=USER, [O]=OOT_MODULE
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.52.0-0 10/28/2024
+  RIP: 0010:constant_test_bit arch/x86/include/asm/bitops.h:206 [inline]
+  RIP: 0010:arch_test_bit arch/x86/include/asm/bitops.h:238 [inline]
+  RIP: 0010:_test_bit include/asm-generic/bitops/instrumented-non-atomic.h:142 [inline]
+  RIP: 0010:PageHead include/linux/page-flags.h:866 [inline]
+  RIP: 0010:___free_pages+0x3e/0x120 mm/page_alloc.c:5067
+  Code: <49> f7 06 40 00 00 00 75 05 45 31 ff eb 0c 66 90 4c 89 f0 4c 39 f0
+  RSP: 0018:ffff8984551978d0 EFLAGS: 00010246
+  RAX: 0000777f80000001 RBX: 0000000000000000 RCX: ffffffff918aeb98
+  RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffffebde00000000
+  RBP: 0000000000000000 R08: ffffebde00000007 R09: 1ffffd7bc0000000
+  R10: dffffc0000000000 R11: fffff97bc0000001 R12: dffffc0000000000
+  R13: ffff8983e19751a8 R14: ffffebde00000000 R15: 1ffffd7bc0000000
+  FS:  0000000000000000(0000) GS:ffff89ee661d3000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: ffffebde00000000 CR3: 000000793ceaa000 CR4: 0000000000350ef0
+  DR0: 0000000000000000 DR1: 0000000000000b5f DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+  Call Trace:
+   <TASK>
+   sev_free_vcpu+0x413/0x630 arch/x86/kvm/svm/sev.c:3169
+   svm_vcpu_free+0x13a/0x2a0 arch/x86/kvm/svm/svm.c:1515
+   kvm_arch_vcpu_destroy+0x6a/0x1d0 arch/x86/kvm/x86.c:12396
+   kvm_vcpu_destroy virt/kvm/kvm_main.c:470 [inline]
+   kvm_destroy_vcpus+0xd1/0x300 virt/kvm/kvm_main.c:490
+   kvm_arch_destroy_vm+0x636/0x820 arch/x86/kvm/x86.c:12895
+   kvm_put_kvm+0xb8e/0xfb0 virt/kvm/kvm_main.c:1310
+   kvm_vm_release+0x48/0x60 virt/kvm/kvm_main.c:1369
+   __fput+0x3e4/0x9e0 fs/file_table.c:465
+   task_work_run+0x1a9/0x220 kernel/task_work.c:227
+   exit_task_work include/linux/task_work.h:40 [inline]
+   do_exit+0x7f0/0x25b0 kernel/exit.c:953
+   do_group_exit+0x203/0x2d0 kernel/exit.c:1102
+   get_signal+0x1357/0x1480 kernel/signal.c:3034
+   arch_do_signal_or_restart+0x40/0x690 arch/x86/kernel/signal.c:337
+   exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
+   exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+   __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+   syscall_exit_to_user_mode+0x67/0xb0 kernel/entry/common.c:218
+   do_syscall_64+0x7c/0x150 arch/x86/entry/syscall_64.c:100
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f87a898e969
+   </TASK>
+  Modules linked in: gq(O)
+  gsmi: Log Shutdown Reason 0x03
+  CR2: ffffebde00000000
+  ---[ end trace 0000000000000000 ]---
 
-Add a check to validate if the drm device can handle vblanks before
-calling drm_crtc_handle_vblank() to avoid this.
+Deliberately don't check for a NULL VMSA when freeing the vCPU, as crashing
+the host is likely desirable due to the VMSA being consumed by hardware.
+E.g. if KVM manages to allow VMRUN on the vCPU, hardware may read/write a
+bogus VMSA page.  Accessing PFN 0 is "fine"-ish now that it's sequestered
+away thanks to L1TF, but panicking in this scenario is preferable to
+potentially running with corrupted state.
 
+Reported-by: Alexander Potapenko <glider@google.com>
+Tested-by: Alexander Potapenko <glider@google.com>
+Fixes: 0b020f5af092 ("KVM: SEV: Add support for SEV-ES intra host migration")
+Fixes: b56639318bb2 ("KVM: SEV: Add support for SEV intra host migration")
 Cc: stable@vger.kernel.org
-Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Peter Gonda <pgonda@google.com>
+Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
+Tested-by: Liam Merwick <liam.merwick@oracle.com>
+Reviewed-by: James Houghton <jthoughton@google.com>
+Link: https://lore.kernel.org/r/20250602224459.41505-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/exynos/exynos7_drm_decon.c |    4 ++++
+ arch/x86/kvm/svm/sev.c |    4 ++++
  1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-+++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-@@ -595,6 +595,10 @@ static irqreturn_t decon_irq_handler(int
- 	if (!ctx->drm_dev)
- 		goto out;
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -1755,6 +1755,10 @@ static int sev_check_source_vcpus(struct
+ 	struct kvm_vcpu *src_vcpu;
+ 	unsigned long i;
  
-+	/* check if crtc and vblank have been initialized properly */
-+	if (!drm_dev_has_vblank(ctx->drm_dev))
-+		goto out;
++	if (src->created_vcpus != atomic_read(&src->online_vcpus) ||
++	    dst->created_vcpus != atomic_read(&dst->online_vcpus))
++		return -EBUSY;
 +
- 	if (!ctx->i80_if) {
- 		drm_crtc_handle_vblank(&ctx->crtc->base);
+ 	if (!sev_es_guest(src))
+ 		return 0;
  
 
 
