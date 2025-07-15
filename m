@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA05B05DA8
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:45:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B0A8B05C29
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F291AA41A0
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:40:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E856B566923
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594BD2EA726;
-	Tue, 15 Jul 2025 13:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDD22E3380;
+	Tue, 15 Jul 2025 13:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWcycriV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNU/oY8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D542EA725;
-	Tue, 15 Jul 2025 13:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBEB2E4983;
+	Tue, 15 Jul 2025 13:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586428; cv=none; b=SNMmceLhPMveyTpffaSJ51BJdHX/2DtnpjvOM2PEqVly3+TQnIXCVyxxc00okB4picuorP85Xmo6cO+XuJ2sr7wmb0Ya8MstHSgU7RHIavPACqiav5asRsyIxAnM3jXdyO64Y/ryyPHI+/Tb72sWHMSuiRPuJI8QoEwhu4Gwenk=
+	t=1752585891; cv=none; b=fCoL3u02+D/hyK/nwEf0ElMPTPNQs413VcFUffi1gmMWwPp9Y3kMtg3Cu8EvK1LrMBcpEFNYh7/hMwxxTLRUTUQlVxYra+L6mwzCLA8Lvw+cr+ZvZhnFi2IPor0k7+RLF33sHiME/piPvRde2BZ40tT7IqhxbYHzTcPHxg+x6cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586428; c=relaxed/simple;
-	bh=lU6q9H0Y4MbP65UaYM92aC1vTe/eLZV92fHWcVXzQkU=;
+	s=arc-20240116; t=1752585891; c=relaxed/simple;
+	bh=4XIBXDkf+jJ/26wff/hF2V18T1H5Pwy+97cJ0FshLzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XdC98UlBcE8x2Hw7rz7nVnmu0aHF362qdHWDzIfMRcJFudC/2OQpDQozqXPLGKc1NTLWVeWqHZnITAOP36Ntxe1ptorltohY7mKa1iFKIrT/8Ypk3BSvOF4vS6pX0By0P8IEDvxQEoJfZ89ODKGH9aS60X7nCTMjJDsAFANI1Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWcycriV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F480C4CEE3;
-	Tue, 15 Jul 2025 13:33:47 +0000 (UTC)
+	 MIME-Version; b=EW+syV0QsNucNM/pMaxZI1WkGKFtBSvIoDe9kMVQoJH9Q9PEOoc2Vq4eqNNTO2ow98YpOfpU/DAI5JxGvNNY5iSQgv+IplTaV1oSl33U2VAz58q0fWucO22xsH0CIHDhK3bsoamx6IEgnDbeUX6lLV+WvNSFO2yvgXmvrR+H1XY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNU/oY8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0186AC4CEF1;
+	Tue, 15 Jul 2025 13:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586427;
-	bh=lU6q9H0Y4MbP65UaYM92aC1vTe/eLZV92fHWcVXzQkU=;
+	s=korg; t=1752585891;
+	bh=4XIBXDkf+jJ/26wff/hF2V18T1H5Pwy+97cJ0FshLzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZWcycriVH41wR/YyN5yIBdzoMCdoXzps74CicEy+SgHK4Q71jBn0kMk/aR9Bpxo3j
-	 SiasOn0qlY92hiXy+m6/u+ewsdzywVpz2O8uH+VYoINOHVQMc8rpjJ1sqpb/AhRluT
-	 gPQc6U3QP/x0KQIqpkKpo1fOUNcEtyRSghB1NQfc=
+	b=WNU/oY8PSvIJ77AJjsIAmlLJuk5Ps56kNEtx+OJdyZBaatcz5ciVvXoMhndbyRfzS
+	 qlu5ZQPld/zytmWrMIVant6YEbV84vJLUY56i9j56muP+jDP7zfpQ+G5SX+xfofEqx
+	 ocHdMOvxygKmJQi+gnHWb4vRozfEZ8BIhzsxribI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	David Thompson <davthompson@nvidia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/148] platform/mellanox: mlxbf-tmfifo: fix vring_desc.len assignment
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Prashanth K <prashanth.k@oss.qualcomm.com>
+Subject: [PATCH 6.6 047/109] usb: gadget: u_serial: Fix race condition in TTY wakeup
 Date: Tue, 15 Jul 2025 15:13:03 +0200
-Message-ID: <20250715130802.773986020@linuxfoundation.org>
+Message-ID: <20250715130800.760454059@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 109f4d29dade8ae5b4ac6325af9d1bc24b4230f8 ]
+commit c529c3730bd09115684644e26bf01ecbd7e2c2c9 upstream.
 
-Fix warnings reported by sparse, related to incorrect type:
-drivers/platform/mellanox/mlxbf-tmfifo.c:284:38: warning: incorrect type in assignment (different base types)
-drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    expected restricted __virtio32 [usertype] len
-drivers/platform/mellanox/mlxbf-tmfifo.c:284:38:    got unsigned long
+A race condition occurs when gs_start_io() calls either gs_start_rx() or
+gs_start_tx(), as those functions briefly drop the port_lock for
+usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
+port.tty and port_usb, respectively.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202404040339.S7CUIgf3-lkp@intel.com/
-Fixes: 78034cbece79 ("platform/mellanox: mlxbf-tmfifo: Drop the Rx packet if no more descriptors")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Link: https://lore.kernel.org/r/20250613214608.2250130-1-davthompson@nvidia.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use the null-safe TTY Port helper function to wake up TTY.
+
+Example
+  CPU1:			      CPU2:
+  gserial_connect() // lock
+  			      gs_close() // await lock
+  gs_start_rx()     // unlock
+  usb_ep_queue()
+  			      gs_close() // lock, reset port.tty and unlock
+  gs_start_rx()     // lock
+  tty_wakeup()      // NPE
+
+Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Link: https://lore.kernel.org/linux-usb/20240116141801.396398-1-khtsai@google.com/
+Link: https://lore.kernel.org/r/20250617050844.1848232-2-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/mellanox/mlxbf-tmfifo.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/u_serial.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
-index 767f4406e55f1..1eb7f4eb1156c 100644
---- a/drivers/platform/mellanox/mlxbf-tmfifo.c
-+++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
-@@ -253,7 +253,8 @@ static int mlxbf_tmfifo_alloc_vrings(struct mlxbf_tmfifo *fifo,
- 		vring->align = SMP_CACHE_BYTES;
- 		vring->index = i;
- 		vring->vdev_id = tm_vdev->vdev.id.device;
--		vring->drop_desc.len = VRING_DROP_DESC_MAX_LEN;
-+		vring->drop_desc.len = cpu_to_virtio32(&tm_vdev->vdev,
-+						       VRING_DROP_DESC_MAX_LEN);
- 		dev = &tm_vdev->vdev.dev;
+--- a/drivers/usb/gadget/function/u_serial.c
++++ b/drivers/usb/gadget/function/u_serial.c
+@@ -291,8 +291,8 @@ __acquires(&port->port_lock)
+ 			break;
+ 	}
  
- 		size = vring_size(vring->num, vring->align);
--- 
-2.39.5
-
+-	if (do_tty_wake && port->port.tty)
+-		tty_wakeup(port->port.tty);
++	if (do_tty_wake)
++		tty_port_tty_wakeup(&port->port);
+ 	return status;
+ }
+ 
+@@ -573,7 +573,7 @@ static int gs_start_io(struct gs_port *p
+ 		gs_start_tx(port);
+ 		/* Unblock any pending writes into our circular buffer, in case
+ 		 * we didn't in gs_start_tx() */
+-		tty_wakeup(port->port.tty);
++		tty_port_tty_wakeup(&port->port);
+ 	} else {
+ 		/* Free reqs only if we are still connected */
+ 		if (port->port_usb) {
 
 
 
