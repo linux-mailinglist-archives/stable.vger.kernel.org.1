@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-162302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF0AB05D0C
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:40:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C964B05C7C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 482A41C26838
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:37:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56617564420
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30D82E6D1C;
-	Tue, 15 Jul 2025 13:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449492E764C;
+	Tue, 15 Jul 2025 13:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmA8DJPf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojUU98Z8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9258F2E889C;
-	Tue, 15 Jul 2025 13:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F268C2E763C;
+	Tue, 15 Jul 2025 13:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752586197; cv=none; b=j0tqOABthAX3gx/QnZm2Gp7Z67hnQ6PGFlhPhmQquwUF24aJulU4KdyeI7bEhmbYK98c+VauUJQTW/1xRNbJO4oS1lfFKZfthDqjdI5O/wrUoEpGsNXr8Zdcyetj2Ms2sp0VIJkUwnBNhrQg4D1TbPUTayMbEWryD8wnjoEk1ss=
+	t=1752586023; cv=none; b=Z4F0+lUyqDlckYx8x5NeldpWr43G1B7K9gCsKT/fHVv9P4QcI5wkmAy2HdqfFp3kI6I0LuOL0Qfxn3cp1uexHCmHaXKT0NF83CP7A13TjhoZp0tcBQt5RK9XpaP/hL4ZPQLDDTw9+1nBoS/xiZH9PM1igfcWNph3Hmp6oBYf6KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752586197; c=relaxed/simple;
-	bh=5MmRCZAMrJhYZBfXEVoa9YvLJWIWH6YJCFXQ33PDgfE=;
+	s=arc-20240116; t=1752586023; c=relaxed/simple;
+	bh=wgvLIe9R+rzu5nx+GDU6AcpVTdn1GWykXnfGnNTjhBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jsGA2UFEL8GwjaKy/FGl8bfLzXxeoPunAZQ0trvVsfnjngyJVl+BhB5zzmTM3Rn1qO7Pw0JW9oa6v0k0id+AxDCBcQs2bh07Fe79gxR9VSlueN+3Gn49JS3tQh526HZq5ZnMDE4JmKE+bz5M0v54gPDQ4S6b9EATwM+vE6Db1YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmA8DJPf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203A6C4CEE3;
-	Tue, 15 Jul 2025 13:29:56 +0000 (UTC)
+	 MIME-Version; b=A5Uc8ogtbjt+s3oIUwksMSk7057T7p720WFKX5M85Em6Z/+zNgaefQTF1wQVcrKSHw12RmcK7ylJM7M7+8CucgvlgKXSsYd4azHtOAiWCfUp76PJQEHDmqhE3uY4Fv0LzjBXhNxgHdxF4XVwb8u3oFKlsVaufMYd0n1xkHeeT8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojUU98Z8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FE8C4CEE3;
+	Tue, 15 Jul 2025 13:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752586197;
-	bh=5MmRCZAMrJhYZBfXEVoa9YvLJWIWH6YJCFXQ33PDgfE=;
+	s=korg; t=1752586022;
+	bh=wgvLIe9R+rzu5nx+GDU6AcpVTdn1GWykXnfGnNTjhBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmA8DJPfuNEh/2REsGSmmMXNXRBh2+C1Dmjlhs4UD8STRvA2Bk3huYCEEJKkC450g
-	 GenW31flsf2IjQVWWbeF8xDSK1O5ep+ytb3ZGkPTf96XSNdHOx35gFawtShDTXjClI
-	 sAEePVV/BrJVoLtyszk9weXohP6dhZ9CkXjoNOAE=
+	b=ojUU98Z8pFpofwTLZ5V+1ALwN1RxIjyMhxxru61G2pSYHYjDrAB03sakPkwWQq9AO
+	 HIZYrZhpeAdqrklPqXUh/MPcCN9fJW/QY1G+EqmruFZph1u56lQT+XIuwWuiD0QC0A
+	 4Nrv+1y0sBqMnNLNWXss9FxMyZsh5xFgvpfkKcd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Yasmin Fitzgerald <sunoflife1.git@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 52/77] dma-buf: fix timeout handling in dma_resv_wait_timeout v2
-Date: Tue, 15 Jul 2025 15:13:51 +0200
-Message-ID: <20250715130753.816338149@linuxfoundation.org>
+Subject: [PATCH 6.6 096/109] ALSA: hda/realtek - Enable mute LED on HP Pavilion Laptop 15-eg100
+Date: Tue, 15 Jul 2025 15:13:52 +0200
+Message-ID: <20250715130802.725719608@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130751.668489382@linuxfoundation.org>
-References: <20250715130751.668489382@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Yasmin Fitzgerald <sunoflife1.git@gmail.com>
 
-[ Upstream commit 2b95a7db6e0f75587bffddbb490399cbb87e4985 ]
+[ Upstream commit 68cc9d3c8e44afe90e43cbbd2960da15c2f31e23 ]
 
-Even the kerneldoc says that with a zero timeout the function should not
-wait for anything, but still return 1 to indicate that the fences are
-signaled now.
+The HP Pavilion Laptop 15-eg100 has Realtek HDA codec ALC287.
+It needs the ALC287_FIXUP_HP_GPIO_LED quirk to enable the mute LED.
 
-Unfortunately that isn't what was implemented, instead of only returning
-1 we also waited for at least one jiffies.
-
-Fix that by adjusting the handling to what the function is actually
-documented to do.
-
-v2: improve code readability
-
-Reported-by: Marek Olšák <marek.olsak@amd.com>
-Reported-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20250129105841.1806-1-christian.koenig@amd.com
+Signed-off-by: Yasmin Fitzgerald <sunoflife1.git@gmail.com>
+Link: https://patch.msgid.link/20250621053832.52950-1-sunoflife1.git@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/dma-resv.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma-buf/dma-resv.c b/drivers/dma-buf/dma-resv.c
-index 8db368c7d35c3..cafaa54c3d9f1 100644
---- a/drivers/dma-buf/dma-resv.c
-+++ b/drivers/dma-buf/dma-resv.c
-@@ -619,11 +619,13 @@ long dma_resv_wait_timeout(struct dma_resv *obj, bool wait_all, bool intr,
- 	dma_resv_iter_begin(&cursor, obj, wait_all);
- 	dma_resv_for_each_fence_unlocked(&cursor, fence) {
- 
--		ret = dma_fence_wait_timeout(fence, intr, ret);
--		if (ret <= 0) {
--			dma_resv_iter_end(&cursor);
--			return ret;
--		}
-+		ret = dma_fence_wait_timeout(fence, intr, timeout);
-+		if (ret <= 0)
-+			break;
-+
-+		/* Even for zero timeout the return value is 1 */
-+		if (timeout)
-+			timeout = ret;
- 	}
- 	dma_resv_iter_end(&cursor);
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 0d367cec03ade..1c2059e37fdab 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10151,6 +10151,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8975, "HP EliteBook x360 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x897d, "HP mt440 Mobile Thin Client U74", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8981, "HP Elite Dragonfly G3", ALC245_FIXUP_CS35L41_SPI_4),
++	SND_PCI_QUIRK(0x103c, 0x898a, "HP Pavilion 15-eg100", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x898e, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x898f, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8991, "HP EliteBook 845 G9", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
 -- 
 2.39.5
 
