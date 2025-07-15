@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-162114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-162240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1300EB05BD3
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D40DB05CBD
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 15:35:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50243A8DDD
-	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:21:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E01D64A5E3C
+	for <lists+stable@lfdr.de>; Tue, 15 Jul 2025 13:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D122E2EEF;
-	Tue, 15 Jul 2025 13:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BD92E62C3;
+	Tue, 15 Jul 2025 13:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8IVakdd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMKtp4zS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709C327584E;
-	Tue, 15 Jul 2025 13:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E2F2E2F12;
+	Tue, 15 Jul 2025 13:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585709; cv=none; b=nZuWb7eZwfjdf6XHQ2K6hqCKud7Y3ZOOOLjt8J+IdP8/if43zmRyB7aI4bfECpAorqIzUtAv2/6sG/SmpxYXf83Ga9rH9EKoac7Y3s+kX5CNa9VoV/6AiNEPeWI2IbJafdgzKYar9r2hOvm3DRnAoRgiKFzjK1R4gZeu4FSmNjY=
+	t=1752586036; cv=none; b=AdK87lhxuw2kvBR9uoIr70Qu5cRDQZloUhSjm2rWJEAjZV1UhedwLRdL5sOlmCmyHhe6oQHlWTf7H7lz8dJ5HySHy7brxvb4D4RajhaLn8FPBvge+ZR+xh4AXiasf/HQdVROECzWEw9SsaA13HTrFz/J2J1elBO2wzGYzQZqKAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585709; c=relaxed/simple;
-	bh=0C5d9i0U79G+W3nh0vbwg04ayUXIMIx1c6vIpVXeUJY=;
+	s=arc-20240116; t=1752586036; c=relaxed/simple;
+	bh=7jUrd3axxJGAYA4p5m1JvPV1jwnBvhzr4+CL6pZuV/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHSKs+MKV+7vq6GuJkO3VHpHAKU/e+mPsys23E/u/UBEtmyLPF0tN6HOrlagDBwuSRhJMz373ikUJakxfxob0If0ZnDPrNeg61WDAevpWgjFl+q+krE2Ou3e1HQI5UTruUf98HrJGvAk0JNkgQjBNhV9wQyAVGTDoLioEsOcTV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8IVakdd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00036C4CEE3;
-	Tue, 15 Jul 2025 13:21:48 +0000 (UTC)
+	 MIME-Version; b=G6INxAs76dYXU0hOnz8AKlpKCLoKw1iOQBV4+tyhXjStGCPyuYSeB3rN56xt1zX94fZdP4dDjlUF6oGfWkyqJnNN7n6lGTQVqYs59idfk1CdD5J5Ok6CXgj5VVU3U3ryibfrAPMn0G5wa7FzGqhydQAm7lA7aDDQ9P92LNgdWsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMKtp4zS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBC9C4CEE3;
+	Tue, 15 Jul 2025 13:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585709;
-	bh=0C5d9i0U79G+W3nh0vbwg04ayUXIMIx1c6vIpVXeUJY=;
+	s=korg; t=1752586035;
+	bh=7jUrd3axxJGAYA4p5m1JvPV1jwnBvhzr4+CL6pZuV/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i8IVakddjajISTnTksb/oNf+7VrxMB6xEiLjpB0ooVIs/sQdWpx0A08ZEugfwvGec
-	 qYOEdrbilTGnwXfxoSJzRx6WKkuGGTGxAslkyOU/wiGk8TfVLHpEZf7fhc8wM2y7Jh
-	 Ykw1cSGyxqMO85fp98/30BLc/x4K0uKn07BMk3yo=
+	b=mMKtp4zS8uLigOzvkv0wlil7vwD9F8z1Eg0a6pkFQ27J8CNUlNF+rfe2YyG5tltD7
+	 AW0u4BzwPvlGz5Cl5CqJKyNx6VVsKJOd4fZFDF0wLmf42BLT68wqLiyrx8Be07+BBo
+	 k9mt9+rU+6AKBge0gY0qxrYfFcpbmmfXD3iM5dUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Kuen-Han Tsai <khtsai@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 142/163] ALSA: hda/realtek: Add mic-mute LED setup for ASUS UM5606
+Subject: [PATCH 6.6 074/109] usb: dwc3: Abort suspend on soft disconnect failure
 Date: Tue, 15 Jul 2025 15:13:30 +0200
-Message-ID: <20250715130814.531167164@linuxfoundation.org>
+Message-ID: <20250715130801.846894060@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
+In-Reply-To: <20250715130758.864940641@linuxfoundation.org>
+References: <20250715130758.864940641@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 41c66461cb2e8d3934a5395f27e572ebe63696b4 ]
+[ Upstream commit 630a1dec3b0eba2a695b9063f1c205d585cbfec9 ]
 
-ASUS UM5606* models use the quirk to set up the bass speakers, but it
-missed the mic-mute LED configuration.  Other similar models have the
-AMD ACP dmic, and the mic-mute is set up for that, but those models
-don't have AMD ACP but rather built-in mics of Realtek codec, hence
-the Realtek driver should set it up, instead.
+When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
+going with the suspend, resulting in a period where the power domain is
+off, but the gadget driver remains connected.  Within this time frame,
+invoking vbus_event_work() will cause an error as it attempts to access
+DWC3 registers for endpoint disabling after the power domain has been
+completely shut down.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220125
-Link: https://patch.msgid.link/20250623151841.28810-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
+controller and proceeds with a soft connect.
+
+Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
+Cc: stable <stable@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250528100315.2162699-1-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/core.c   |  9 +++++++--
+ drivers/usb/dwc3/gadget.c | 22 +++++++++-------------
+ 2 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 30e9e26c5b2a7..57f17ddaf7860 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6611,6 +6611,7 @@ static void alc294_fixup_bass_speaker_15(struct hda_codec *codec,
- 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
- 		static const hda_nid_t conn[] = { 0x02, 0x03 };
- 		snd_hda_override_conn_list(codec, 0x15, ARRAY_SIZE(conn), conn);
-+		snd_hda_gen_add_micmute_led_cdev(codec, NULL);
- 	}
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 30404461ef7de..b7eaad099309c 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2128,6 +2128,7 @@ static int dwc3_core_init_for_resume(struct dwc3 *dwc)
+ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ {
+ 	u32 reg;
++	int ret;
+ 
+ 	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
+ 		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
+@@ -2146,7 +2147,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+ 		if (pm_runtime_suspended(dwc->dev))
+ 			break;
+-		dwc3_gadget_suspend(dwc);
++		ret = dwc3_gadget_suspend(dwc);
++		if (ret)
++			return ret;
+ 		synchronize_irq(dwc->irq_gadget);
+ 		dwc3_core_exit(dwc);
+ 		break;
+@@ -2177,7 +2180,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 			break;
+ 
+ 		if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
+-			dwc3_gadget_suspend(dwc);
++			ret = dwc3_gadget_suspend(dwc);
++			if (ret)
++				return ret;
+ 			synchronize_irq(dwc->irq_gadget);
+ 		}
+ 
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index f51d743bb3ecc..a17af4ab20a32 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4802,26 +4802,22 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
+ 	int ret;
+ 
+ 	ret = dwc3_gadget_soft_disconnect(dwc);
+-	if (ret)
+-		goto err;
+-
+-	spin_lock_irqsave(&dwc->lock, flags);
+-	if (dwc->gadget_driver)
+-		dwc3_disconnect_gadget(dwc);
+-	spin_unlock_irqrestore(&dwc->lock, flags);
+-
+-	return 0;
+-
+-err:
+ 	/*
+ 	 * Attempt to reset the controller's state. Likely no
+ 	 * communication can be established until the host
+ 	 * performs a port reset.
+ 	 */
+-	if (dwc->softconnect)
++	if (ret && dwc->softconnect) {
+ 		dwc3_gadget_soft_connect(dwc);
++		return -EAGAIN;
++	}
+ 
+-	return ret;
++	spin_lock_irqsave(&dwc->lock, flags);
++	if (dwc->gadget_driver)
++		dwc3_disconnect_gadget(dwc);
++	spin_unlock_irqrestore(&dwc->lock, flags);
++
++	return 0;
  }
  
+ int dwc3_gadget_resume(struct dwc3 *dwc)
 -- 
 2.39.5
 
