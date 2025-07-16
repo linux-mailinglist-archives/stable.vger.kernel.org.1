@@ -1,124 +1,223 @@
-Return-Path: <stable+bounces-163163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D552B078ED
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 17:01:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C2A1B078FB
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 17:04:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D9313AD950
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 15:01:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B9753B9F4D
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 15:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267502727E5;
-	Wed, 16 Jul 2025 15:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AE22641F9;
+	Wed, 16 Jul 2025 15:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhTr8Vin"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="UOmSn5TH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197BD1CAA7B
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 15:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05991DE4E5
+	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 15:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752678083; cv=none; b=EGGD4Z11KB8sVnLQ4PqJSoJql0BjEetYRMllAHpUgS0U35jj5GDaBXlC4G62xHUMy2WxM6/E+TdAFfJl0cOVzZf9FVLGrGbbHx2H0UT49SSlmgEstSn01IAqGVjb0Z8TBslYE0NvcAbjhZieXwLdauE07g+IX2SvahY0y4Abcxo=
+	t=1752678244; cv=none; b=MobMC3ZZqBkEW5eWLRIFO1LdhAGk7LwPxTQmyd9rfQkvYL6GoPt8tKtSy/dlu+wimLWIc27/9oo8ZFiN/9/kUbxc8jzaW563XdWFvlkV5NGRBRIlE2cgxVOXEVkPKm4SJaTgin62siGyvTkBpF1tNF5jUlfHXEJNXuvU7HMZkN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752678083; c=relaxed/simple;
-	bh=E8bua9ms2CAifgDQWPYLUARYXuLyT8TOKHOiWf9yyqY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s0QzWi2oCH4VMDGB5MEsAnyuaf/fGb8K16Ei60NXoOYY7fWu54ADuqZs+qgpmvIwqSGcWjEm6oitHAX7br+gCRupgjK3Btu01GrgeTG8NEqpDwq+lwc8tv69r5nYpxFE1nNAe7kFvYp8Qs6FMBhBB7EU1sWmg9ZRoMSogUnYtUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhTr8Vin; arc=none smtp.client-ip=209.85.166.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3de252f75d7so63167055ab.3
-        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 08:01:20 -0700 (PDT)
+	s=arc-20240116; t=1752678244; c=relaxed/simple;
+	bh=s9/XlPXLbG0c9eCELEw3bGC2XL99Ks63z3n9IxWDUCE=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BVYFbgRZe0MYpqrJzJjkNF0RJJwqnJJa4tweF67EdqXo72Z645rv67GAmemHK1Ax+h1K7dx9MqTN8pKGi1wEDz8uFlclOn+tkZTLcHl0vUGbYJam0uh0E43NihSRV1LwzJqywUQ1BMGpnr0y9baQRB9A6OoBiO7ULmS2BIWzQcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=UOmSn5TH; arc=none smtp.client-ip=99.78.197.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1752678080; x=1753282880; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/L6AVpaMRxQoagP/2U0TZvwKc8bT9msQKrHGder61Y0=;
-        b=EhTr8Vinw1U8IFreOONY/1Zj6h18DckqFKiIYTIeROGXGJ+UnEn8JHGcs0VO+fsKEM
-         +6GIzXmWiuQkIYGtntur+0NIh2oRpz7b2fRsl1WvJWMTH7qWIQUL1Mzb9niLlbk4OXpm
-         6wjtgSTqZA+V8+b2/20AEJ7oB3QLaIMIE3S3g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752678080; x=1753282880;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/L6AVpaMRxQoagP/2U0TZvwKc8bT9msQKrHGder61Y0=;
-        b=qxW+pdcE2piSTqseu1bVUiOP2cCoL+abghSp6IpOMpynAnp3+pFJvfufceyemnBFDt
-         eDzdJ0Qlxbdt+GLJanVjkoGB2KfU/G9O/ivovnpHywv0zF364OtTDw8u0+QH6AEbpAzP
-         4a3nTw7Uq1JrNRD1URc5lpfCFk6dJeLbe6fv5+c4+8OujLo2atzBfH5ogLojng5B4DrV
-         pQZ7kw9lXbN6sjSPjkwTmGuT16zZud1gulLtqDb8j2A5bCk0VqU9dMq5vb1/fbue1p+W
-         QuM1DaBl/i4EYTssr3wEysOpkJAexQ6ZjTvAvUE8SKQJWiKr9OgvDP2M7E3Mm8gUhQ7I
-         R1AQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX8Py/oLibWuOc0pGVv4vPCgkawN8xvW43+FKezm6uK3zzGB+oHifBnkxHcHxL+KGEPpIprvQo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3Q323OGsrT/eIhhw+K2uGjhhXm22P+SLZ0mYRqFPanSJBt6JY
-	+CS1IBgis9Icfex5r0f5/GfyTS9SjiX7KpJx7hJUXiX0SS04q3NnNDuksoMARvbmiAU=
-X-Gm-Gg: ASbGncswk5Zibig9+iBQoAuvEwwL1tzedpwbp3Gemmn3ivvonm4wQ6yQnm0yYhcxrp/
-	pR1L0+9HrZBrPys9Ipj2lNBG3oCxOJ8T0wgJtQX1E9bdOnIMxOls6oIToqiKx0cHfPZbyTGIzrX
-	c8NXg72fMKNXuIAkXDCSF+4Xu7dPrMyguotuc+0wYX3e1bTtiMRb5JgrT44XJz/HiJxpVwSlvPH
-	6okxhraQWhxmOKKQrdcZyY0txjyljnlb2dSMlHmkldn+rDsbz1/0obRNOoKYS9/JVGUzKflW2sI
-	2HeHcyrSIvwO+iIWUc7OvT5R6iJo8uDDUJFj2ByxFcz8A7Xq82jqc1Ng3N0+5+++kauOmjXFe9C
-	u9hivDOtIw7kFfyndtAs4ihhE2yW2hwgiBw==
-X-Google-Smtp-Source: AGHT+IHfZQtErGT+6TyVnEo5uXoQ7tA42hG0UFbluZUKT9wY/1GsEkt0bSHRzJHzmhjhK6e2Gk4vMg==
-X-Received: by 2002:a05:6e02:2288:b0:3df:47f1:bdb9 with SMTP id e9e14a558f8ab-3e282e8d3b9mr31378135ab.18.1752678080006;
-        Wed, 16 Jul 2025 08:01:20 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3e24611e84asm44726865ab.15.2025.07.16.08.01.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Jul 2025 08:01:19 -0700 (PDT)
-Message-ID: <a7205943-b3f2-46c9-a00b-0706eae9743e@linuxfoundation.org>
-Date: Wed, 16 Jul 2025 09:01:18 -0600
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1752678242; x=1784214242;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=84aWejT8YQCzdyoWBEmbysArm20YqRb+jZgR4EzU6MY=;
+  b=UOmSn5THSNBP8z61nrWRKhuCe/QhT5Ad2UnNJ64VMDnUE8WgOhAKztRo
+   YHWc0gOBw/4YzNpADq6kyTxmpMXemrJl8TF5Pvq3mxa9HgLoTokVUBRF/
+   l2i0B+ZDDJoM/yohMupzOEKX4Bwy7AQJNGtd/BNXma4+Wz5QR974eRq2J
+   b2q8i+ZjQQ78XxsgeLjfJ47Msx7XGFYmsPbaee5RBnkCrLv3DRrWteTf+
+   9zJzAaoV3Ojfy+GDv1U3qPpnEqolNIaeixXyvypUWLJ/b7ck28aBqEIeo
+   lanBARaX0uR1CPAILVQMbVzs6J5r2SXhD33b5uGglylsPQ5Kn4b1Madek
+   A==;
+X-IronPort-AV: E=Sophos;i="6.16,316,1744070400"; 
+   d="scan'208";a="215062476"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 15:04:01 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [10.0.43.254:44087]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.20.104:2525] with esmtp (Farcaster)
+ id 3880ee74-890d-4584-9e41-090da4e75020; Wed, 16 Jul 2025 15:04:00 +0000 (UTC)
+X-Farcaster-Flow-ID: 3880ee74-890d-4584-9e41-090da4e75020
+Received: from EX19D039EUC004.ant.amazon.com (10.252.61.190) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 16 Jul 2025 15:03:57 +0000
+Received: from dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com.amazon.de
+ (10.253.107.175) by EX19D039EUC004.ant.amazon.com (10.252.61.190) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Wed, 16 Jul 2025
+ 15:03:54 +0000
+From: Mahmoud Nagy Adam <mngyadam@amazon.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>, Maximilian Luz
+	<luzmaximilian@gmail.com>, Andy Shevchenko <andy.shevchenko@gmail.com>, "Hans
+ de Goede" <hdegoede@redhat.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 279/355] platform: Add Surface platform directory
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
+	<20250623130635.169604976@linuxfoundation.org>
+Date: Wed, 16 Jul 2025 17:03:51 +0200
+Message-ID: <lrkyqqzygch48.fsf@dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 000/148] 5.4.296-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20250715130800.293690950@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250715130800.293690950@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D041UWB001.ant.amazon.com (10.13.139.132) To
+ EX19D039EUC004.ant.amazon.com (10.252.61.190)
 
-On 7/15/25 07:12, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.296 release.
-> There are 148 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 17 Jul 2025 13:07:32 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.296-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
 
-Compiled and booted on my test system. No dmesg regressions.
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
+>
+> ------------------
+>
+> From: Maximilian Luz <luzmaximilian@gmail.com>
+>
+> [ Upstream commit 1e3a2bc89de44ec34153ab1c1056346b51def250 ]
+>
+> It may make sense to split the Microsoft Surface hardware platform
+> drivers out to a separate subdirectory, since some of it may be shared
+> between ARM and x86 in the future (regarding devices like the Surface
+> Pro X).
+>
+> Further, newer Surface devices will require additional platform drivers
+> for fundamental support (mostly regarding their embedded controller),
+> which may also warrant this split from a size perspective.
+>
+> This commit introduces a new platform/surface subdirectory for the
+> Surface device family, with subsequent commits moving existing Surface
+> drivers over from platform/x86.
+>
+> A new MAINTAINERS entry is added for this directory. Patches to files in
+> this directory will be taken up by the platform-drivers-x86 team (i.e.
+> Hans de Goede and Mark Gross) after they have been reviewed by
+> Maximilian Luz.
+>
+> Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Link: https://lore.kernel.org/r/20201009141128.683254-2-luzmaximilian@gmail.com
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Stable-dep-of: 61ce04601e0d ("platform/x86: dell_rbu: Fix list usage")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  MAINTAINERS                       |  9 +++++++++
+>  drivers/platform/Kconfig          |  2 ++
+>  drivers/platform/Makefile         |  1 +
+>  drivers/platform/surface/Kconfig  | 14 ++++++++++++++
+>  drivers/platform/surface/Makefile |  5 +++++
+>  5 files changed, 31 insertions(+)
+>  create mode 100644 drivers/platform/surface/Kconfig
+>  create mode 100644 drivers/platform/surface/Makefile
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index cdb5f1f22f4c4..beaa5f6294bd2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11633,6 +11633,15 @@ F:	drivers/scsi/smartpqi/smartpqi*.[ch]
+>  F:	include/linux/cciss*.h
+>  F:	include/uapi/linux/cciss*.h
+>  
+> +MICROSOFT SURFACE HARDWARE PLATFORM SUPPORT
+> +M:	Hans de Goede <hdegoede@redhat.com>
+> +M:	Mark Gross <mgross@linux.intel.com>
+> +M:	Maximilian Luz <luzmaximilian@gmail.com>
+> +L:	platform-driver-x86@vger.kernel.org
+> +S:	Maintained
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git
+> +F:	drivers/platform/surface/
+> +
+>  MICROSOFT SURFACE PRO 3 BUTTON DRIVER
+>  M:	Chen Yu <yu.c.chen@intel.com>
+>  L:	platform-driver-x86@vger.kernel.org
+> diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
+> index 971426bb4302c..18fc6a08569eb 100644
+> --- a/drivers/platform/Kconfig
+> +++ b/drivers/platform/Kconfig
+> @@ -13,3 +13,5 @@ source "drivers/platform/chrome/Kconfig"
+>  source "drivers/platform/mellanox/Kconfig"
+>  
+>  source "drivers/platform/olpc/Kconfig"
+> +
+> +source "drivers/platform/surface/Kconfig"
+> diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
+> index 6fda58c021ca4..4de08ef4ec9d0 100644
+> --- a/drivers/platform/Makefile
+> +++ b/drivers/platform/Makefile
+> @@ -9,3 +9,4 @@ obj-$(CONFIG_MIPS)		+= mips/
+>  obj-$(CONFIG_OLPC_EC)		+= olpc/
+>  obj-$(CONFIG_GOLDFISH)		+= goldfish/
+>  obj-$(CONFIG_CHROME_PLATFORMS)	+= chrome/
+> +obj-$(CONFIG_SURFACE_PLATFORMS)	+= surface/
+> diff --git a/drivers/platform/surface/Kconfig b/drivers/platform/surface/Kconfig
+> new file mode 100644
+> index 0000000000000..b67926ece95fb
+> --- /dev/null
+> +++ b/drivers/platform/surface/Kconfig
+> @@ -0,0 +1,14 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# Microsoft Surface Platform-Specific Drivers
+> +#
+> +
+> +menuconfig SURFACE_PLATFORMS
+> +	bool "Microsoft Surface Platform-Specific Device Drivers"
+> +	default y
+> +	help
+> +	  Say Y here to get to see options for platform-specific device drivers
+> +	  for Microsoft Surface devices. This option alone does not add any
+> +	  kernel code.
+> +
+> +	  If you say N, all options in this submenu will be skipped and disabled.
+> diff --git a/drivers/platform/surface/Makefile b/drivers/platform/surface/Makefile
+> new file mode 100644
+> index 0000000000000..3700f9e84299e
+> --- /dev/null
+> +++ b/drivers/platform/surface/Makefile
+> @@ -0,0 +1,5 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Makefile for linux/drivers/platform/surface
+> +# Microsoft Surface Platform-Specific Drivers
+> +#
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Hi Greg,
 
-thanks,
--- Shuah
+This patch adds a new configuration with new empty directory "surface",
+this was for the follow up patches in this series[0], there is no
+code/compilation effect by this patch alone, this afaict shouldn't be a
+dependency for 61ce04601e0d ("platform/x86: dell_rbu: Fix list
+usage"). Was this mistakenly backported as a false dependency?
+
+[0]: https://lore.kernel.org/all/20201009141128.683254-2-luzmaximilian@gmail.com/
+
+-MNAdam
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
