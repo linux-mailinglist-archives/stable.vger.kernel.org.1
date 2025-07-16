@@ -1,244 +1,163 @@
-Return-Path: <stable+bounces-163083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216CCB071B7
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 11:31:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD2CB071BB
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 11:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B29B1C2252F
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:32:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F7AA7B716A
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF57B28C872;
-	Wed, 16 Jul 2025 09:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E202F1FC2;
+	Wed, 16 Jul 2025 09:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EaQpLDdc"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Hlx14o4A"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E604D253356
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 09:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FCB2EF646
+	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 09:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752658306; cv=none; b=jPuDWskTBCimp4paDp3OKKexK6gVHW0kFqmkX3p0lDJjp3jbnAkJs2ue8Gc1jYJfX26Md0HTkL+8lwu7EMHO13cHQIWzwpZo5xe5fG1zt48gcE4oOVt1DOiiM2fgUf7cFg3M1QUBLqE135J/wyU8emIKhbVQCCNktA830k4amsw=
+	t=1752658327; cv=none; b=YM/ejytxhxsF3x6yyYHWRrLnq0T8sEyViKInTL7/LnfamMNk2XmxGRd55Wn4GqBlgI1rBqcw9lZX5dktTxdZYkKzRoC5JD8PfafZwYpPzB/3p8sGCdjHf41YPhEg8tyK3HeZWbVPRzxdaqGe94SB6Grk5+HtgdIBl4jXcVkBtw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752658306; c=relaxed/simple;
-	bh=LnZtHSBOfuaGiA0+J2QyiVh2FhpEgdY39u4ISd39VwQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TZ0AXf0dckaLnNQf0omGXtgpXP7d8ybCFZvvaZ7y9l7MD9R7iQE1F+GUappXHLOWZj2LEuG1us576sO9gZwg6du2JcJt7NNXubT+oORe1LARFGWV+LPImwWAewm1UrqFJHzExm8ggQTWRQEaQD+hn3QEnHut9zupbhRFCrzstbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EaQpLDdc; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-74ce477af25so4016763b3a.3
-        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 02:31:44 -0700 (PDT)
+	s=arc-20240116; t=1752658327; c=relaxed/simple;
+	bh=KoC0Gnw4tQwX09Mh2nGi8LKThqV4C12CyHgjb/vzF98=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lhJtpGScDFH3BbD7YFh1Nr8DlwlWXCFoSLMAerwF3bo7Nc/Ds0WMbGqIU6xz8UhfS9q641QI6aCwuWs9czoeI4vccX9vvGMkr7+MEl49ybRBQc0vmKXPSks4GfujJnsAcBga8Y6DiCaqbd2++EbiCh2Pp8AwKhX1OANCQaaCWjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Hlx14o4A; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a8244e897fso68898161cf.1
+        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 02:32:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752658304; x=1753263104; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4/TD0xwgjUcH0nigdFj6tR511cNw2GjnqML50p5eZPI=;
-        b=EaQpLDdcUOEBygoHpXE0Oe314SJaypW/oz5hUrhEqGvFlbu/B9UulOxOIFRbbgaYXn
-         j/vNQqqyfo3hbYhc8i5eiZhp0LKFXZrUyUNvCWhl62MBO0WkDDkUReG6rSDIwzkX3396
-         bUzxYPogs6uRu1Kj1vTb1ZH5IkQgsKzkVG62YrgYt+dIrpgHHov9900MwwAYAxuSwLgK
-         jAK0dVOLm+X/gIGP+Fud2enGirPmDq73GKSkeM9dGRD4DKluKFGrBpvxJ9c39AbFHuOW
-         IwczdEGqCLGlGAVdIGRXw9dj9Jd0QvnT0mxO8CTni21iKVglSoYYstWgNu+lDQXjqJdv
-         hDKg==
+        d=broadcom.com; s=google; t=1752658324; x=1753263124; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=wYGQ+EFxCY8Kqn3gT5PrXpdAsZ+hUnOgnFL6azab8Q0=;
+        b=Hlx14o4AaAzgxNDBo/s01E5I1FwRWVVIfVz5qmvLKS0ZTW7//tVgdsYMyNQi93eTcH
+         HJYYdTZqX3+LZtO1oVP2TA32YyuzTgf2fOaQ/Y7MgVgEyi7EQi9nmBeu51f5GkzG2sXz
+         F4qiYl2SPLGyayiU4HGuNxm0y52HvVMcyHpgQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752658304; x=1753263104;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4/TD0xwgjUcH0nigdFj6tR511cNw2GjnqML50p5eZPI=;
-        b=XgoBiWmFq/fVLMLShOEbRo13dvdpl8Lx0GeD0pnwKVEX9WQlWdw4kfmfogpSNQXVJD
-         dxuScb758O2zcxdwYU18ebK3FqZQzZ8iWxcAgz9POx9+veiTiB0/vsmMGwhXIGly3X8Y
-         +MXka4cKk1X40bqVxf8zyvaRW0gwjWcGVcrFCBp3R4ZdL3/hoH70LqwTGgLpxccSKaar
-         ys+GvU1UBBRDioGqS0HMaoGG88BwlAdp7FMuS3880+YNPlil36p7pCecpjyUZl6ZfGA8
-         Kl90l4D2RWNvZyKLJk4zvYKc5X3RabVC5DtQq9NDIhUrW/0e5BKawdex5kNvdgcHt5SJ
-         pDKg==
-X-Gm-Message-State: AOJu0YylwSgaox5lVmdCTv3SyS5N2EFb3+b/KJwW1icQ4icTTAdultmJ
-	NX0fotD7pUWhe6POEZm/gyZBduqM+YJ1GFI4pWK84tq+9Eun+6VIjvbH4FDTTPI75cZO07F9i7M
-	7psVc2x5uSVPaDmEl1/qPEJXDgzosoP3rXbavnSTosQ==
-X-Gm-Gg: ASbGncv2QLqIu6xO6hzXElD/g/6/IsB6m9Ct2xiz4XcfTbexaeQAERThbRGuD8KiPkQ
-	hS0XjYYowXq7akCM8l0lj9YabjlfY5oG0r+JxT4jaXHkV9HIYWbKggytPdy1mh28fEFog5BScTz
-	hYSueM03+KeW9GWb0VG9NxfyfF/b5qcGnr4+wkiiwi/feVuOG9t/WCVybLKiVPkmLdmMi9njCBG
-	hNqa+Lu9otktQ8JLWdHgsX6ZenwENDdedTc6HaumPNCwaFLPL0=
-X-Google-Smtp-Source: AGHT+IHHFBG42P6rU2Vz5RaFMP1ftBXPkAZqxVb12Un6mixuudNNh6AfVCr8p4OgBQ3GuE5bUiVIkw221QpnXt/jYX8=
-X-Received: by 2002:a17:90b:5385:b0:31a:bc78:7fe1 with SMTP id
- 98e67ed59e1d1-31c9f42ea51mr3362243a91.18.1752658304194; Wed, 16 Jul 2025
- 02:31:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752658324; x=1753263124;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wYGQ+EFxCY8Kqn3gT5PrXpdAsZ+hUnOgnFL6azab8Q0=;
+        b=TxpGs6fjBbfJKGXwQqybDtcLOMiJ4m/3ZvPbGjOywMa7sKQgKjTV3z8z8CTWwASvI3
+         utuW8w+BUllkNLfL0aL3vARW7tjU9v0AcVB24raHNUa8iMhsCiFSPlRtMccosbJX601Y
+         Jqu2ip5FppoRPIrOBG3vJAKKsP/6VY+XTxcJwAmB+SCqglZxSMfw1likOH8ylWmPD9Lt
+         7RJSl/F9WjrgIbx3GEgdHnPsgkfswho6pHtPPGJM8Glp84ayOp/fTEhawq7tXMJ9D6Z1
+         ECCqXH+FAPAraxWz4IkxctkwNtX4aIWACi81N0lCz+ARjhsPqnTp5h5lET/ZH+drgq5x
+         cbpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqXfVyZxJsylrsJ5bDnY2qtU4MxAN3AqkoaorP0G+v9bLhB8umaE1i8cK1uwp47Tqjx8eshs0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDKKrMQSWGNYstSWuhbC0L90ZjsDjl6XIH5dFs5HZtFO2IWCeX
+	e4rEm/ssIVH4VYmZJrzpIHu2nKihX9Z6YIdQk5LCYKufbFRaX+9lvC+BxyGljk0bBw==
+X-Gm-Gg: ASbGncvE/DtXMuWz2Y6d+7vXpEtHIRSyIcBBYxyegvRGGklTe4ql6/KC3WMGpvmgIUg
+	WYk1AtehxLSgxZC5CDr/v08XaLZ8oEhKePUkx6FhsCmm/VGotpI8eLxCFvFbt9fILDwUhFbhxlV
+	es2tF/oAJtFX/Yisjc2t876PReagdDW6yPqpbhxzJ69H0v3QG5dT55+MFo1g5UxFAN3B9Y3feXx
+	xVy5Y4LZE/75xOQuvA12gu8s0eC0EjDllDcpcmdQfEjgEkPQfO+JmF2uEqiR0Eot/uBJQHmraI+
+	w1apnRXlaNxAtGcp1ROsDWQ0IQjQAnPwsHnisvrjDGHZuW2XPhldueLkSD4yhArtvh6M/wWeSan
+	z/d/b1a0rNyzL5ZJ/eTxcPLj8d2tFCFWGhwc99Vmff/mTH0qaZDt2
+X-Google-Smtp-Source: AGHT+IFp5F4xszFRerdbJYejB3SFipyFazjaIzmM2lu+vwPOe+RMBqGUutuRN/hMwoxSJmKwSFPD7w==
+X-Received: by 2002:a05:622a:4a16:b0:4ab:63b8:32da with SMTP id d75a77b69052e-4ab90c8eb25mr35840481cf.45.1752658323928;
+        Wed, 16 Jul 2025 02:32:03 -0700 (PDT)
+Received: from [10.176.2.178] ([192.19.176.227])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ab85620d80sm14469101cf.61.2025.07.16.02.32.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Jul 2025 02:32:03 -0700 (PDT)
+Message-ID: <caaaa276-71fa-403a-9557-b8d3edadeb81@broadcom.com>
+Date: Wed, 16 Jul 2025 11:32:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250715130814.854109770@linuxfoundation.org>
-In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 16 Jul 2025 15:01:32 +0530
-X-Gm-Features: Ac12FXxSgVANGsV-qZo2T8nhVt654kQHynZ9ySnyMDGf6j4ZzdPO2yGy7ih9qPU
-Message-ID: <CA+G9fYvV0sx8g83QVOzjBhoZ77fyBWJfmLte-voa=AgLY7K4nw@mail.gmail.com>
-Subject: Re: [PATCH 6.15 000/192] 6.15.7-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: brcmsmac: Remove const from tbl_ptr parameter in
+ wlc_lcnphy_common_read_table()
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, llvm@lists.linux.dev,
+ patches@lists.linux.dev, stable@vger.kernel.org
+References: <20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 15 Jul 2025 at 19:08, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.15.7 release.
-> There are 192 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 17 Jul 2025 13:07:32 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.15.7-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 7/16/2025 4:45 AM, Nathan Chancellor wrote:
+> A new warning in clang [1] complains that diq_start in
+> wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
+> wlc_lcnphy_common_read_table():
+> 
+>    drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+>     2728 |                                                      &diq_start, 1, 16, 69);
+>          |                                                       ^~~~~~~~~
+> 
+> The table pointer passed to wlc_lcnphy_common_read_table() should not be
+> considered constant, as wlc_phy_read_table() is ultimately going to
+> update it. Remove the const qualifier from the tbl_ptr to clear up the
+> warning.
+> 
+> Cc: stable@vger.kernel.org
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
+> Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+> Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.15.7-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: e6001d5f79448ece8e204c0df46072a010b00f6c
-* git describe: v6.15.6-193-ge6001d5f7944
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.15.y/build/v6.15=
-.6-193-ge6001d5f7944
-
-## Test Regressions (compared to v6.15.5-179-gb283c37b8f14)
-
-## Metric Regressions (compared to v6.15.5-179-gb283c37b8f14)
-
-## Test Fixes (compared to v6.15.5-179-gb283c37b8f14)
-
-## Metric Fixes (compared to v6.15.5-179-gb283c37b8f14)
-
-## Test result summary
-total: 306856, pass: 279725, fail: 7552, skip: 19579, xfail: 0
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 138 passed, 1 failed
-* arm64: 57 total, 56 passed, 0 failed, 1 skipped
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 27 passed, 7 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 39 passed, 1 failed
-* riscv: 25 total, 25 passed, 0 failed
-* s390: 22 total, 22 passed, 0 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 49 passed, 0 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-rust
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* modules
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>> 
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
