@@ -1,173 +1,149 @@
-Return-Path: <stable+bounces-163189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CADB07CB0
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 20:21:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E24B07D0A
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 20:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34CD116A660
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:21:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82B691C284B1
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB0A29A9C3;
-	Wed, 16 Jul 2025 18:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80DC29B20C;
+	Wed, 16 Jul 2025 18:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BxgV31RK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hThoi0Bm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D575D28DEE0;
-	Wed, 16 Jul 2025 18:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52D7188A3A
+	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 18:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752690092; cv=none; b=B++epSzWGCwUMRSgz+5akP/VU/VrEuI1kiPdjFee9ORVd3ATsTglEKoSyiYjTuWFfWBbaVdnyjM+Ex1LzZzNJg4EdCmKKgKfK1u3fpiTkvuDyrTxfhda8pJNaIBvi61/gr7MMv9gkEBgaXPkVNrj8qmawpAeaWcRNPctQiYtdrE=
+	t=1752691247; cv=none; b=t1DRMVNBNevs/9R+3tZd6Ivps1Hut90dcWK3PQYwbnaAulG3KGYzqhyBsLwiNyo77RArdENv3u8g1QnDnBxs8asstBaA27fLQa80eTkNeG9EVS7RrQ+nL1as2+mXiOIMt+4xYw5fcCByVTYXTZ01ZYN1wkq5igMxQ7z252tGALw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752690092; c=relaxed/simple;
-	bh=ok3c5KMhFBYZDlSSRZJA+MwBVa91RHrRE2gQ1sQeZ8M=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ape4yyQZfKnRw3Cdw64YnQ0w11jKo7OrmuPJ6p4jwdySjRld5+adIdgQ5W/i1tG/PXzMWVA4zue1hqDGxORa83SaIrwPa0MN4Gyaf+W3ofnIM51c6yPjVPz/tovtemCFiGZajek8FZVaQkD6V92qBHgNoiAE15CDHGJhfrfnByE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BxgV31RK; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55511c3e203so151950e87.3;
-        Wed, 16 Jul 2025 11:21:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752690089; x=1753294889; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZnrCFtIVZL8hyVV2JzefY+gIDN+ezQ0AtgNK2sjo+OQ=;
-        b=BxgV31RKnRlLl0MzYggKqfveEGT+J/GJZi3VIkasOMDp56O3flLZwK1ya919gBguLD
-         bNE4geDbvVoVJG+eqe5fX5gcTQxqXnodoD7ycpf/38nmU5HCSazzHidukN0Tjd6PtUWC
-         P0itsOon68haHvAb4c7NC4AtyJOr7AE2KZbe7y8Zqq1lZC/TBMRDeBZ3R3O0aFwDDYyo
-         VlthEAbXGiiO+foLUjkpx7FyiZFVtQY9C+Oeew+zmeEhIW5jGSFr4XFtwpowGm/7lPaK
-         aTxfEbQKBS7dVWOlNi8yUydbSbDJyHZAp6eTeI9m8gXrhdhBSGyuzDH6IPw0gcl0o9hW
-         Vsow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752690089; x=1753294889;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZnrCFtIVZL8hyVV2JzefY+gIDN+ezQ0AtgNK2sjo+OQ=;
-        b=lVyqcu0iOEIomh9grMELQI3mV8zk47pzsvAiovlIMi0NgaAZuB9785fqzrba4+a1VI
-         CCD/5vnwaYZDfRKN2HdHeCb+B7Hv+5zKD6UuN3Z5yEzWeJWnhgRHD0l3zeeSGTG7lUTQ
-         2vj+E4LV3Eiaw3jwNyNl9t1P9j846vzpKMw8LCcoZiJpmzsxf4z/zHfVPm1CpUNc48p2
-         Sa20ZD4sHzmQdZri7r8CU4c61i9Ujlw80Gqo5Zpw6o9hQQV0wJqoaPB1UwLoJFNZBMRj
-         eNVzAf4WAhV16pLootH9hvKLxL59VpcRqryhVK3rEg6p67Y9D23nvZ0I1XZbUkB4h+mY
-         G/UA==
-X-Forwarded-Encrypted: i=1; AJvYcCVS92TIC8XGhg/L6zgenNPzilynitvZApVILrCEgH7TEjTvhCbs2NruRsT4G2Lk2uXFi99+Oy+RDbfgSAo=@vger.kernel.org, AJvYcCVk2XKyyhaj9Ilf6v/1yxT99pBwvBMvRV11FwW03ZbAGOEyOvjXeUjC8Jbt9BgcgKiCmotTXI9t@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ6jqVU5Or+ZHmPQu6XSCcqJRWSlhTk48YU0P8GdlJE/zQlL7W
-	n0+Q1bTajUKaFVBksH6K1MzO/bKwmvSWx7vI8HHri/88sKH3W1ZvJaDCYAD5q849
-X-Gm-Gg: ASbGncs5QflQuQtCmfKBvZgq0bdRFntXVU/8bf1pTvKbuXdLqDyTAB26EJ22Rc1XSPX
-	9WlnrKdjwuzVF9ARxJLccBYZ1N/NwNS2P3ewHRY4xW6gyH7ZOAvIcX60sZp2id1+jVp6IEmO0Rx
-	31tCAHWthRkH0qSog4r4uNJ7ha1RrQzVirhTPp6VbQ2OW96pRq18zMCaPPNpodXVPnxlHWkZ3V0
-	4IQvVYmjnmrDAvaPSIxGEcsenJvpXVoqs24q6XffdtM45vrWtEbrUO0Igu9GIuT8iBue7rVoz3K
-	OUXHNaRGYQLCP5znSZwXV3Hm377p/ynA1Z1qqd5qm0GIeTf04o8tsPn61uKHMw/Er6GmjqJuB/t
-	NgI6cVg9IGQHJAja/He0/mB3/LepCiVnl1TKH93la4q+i3JO2QaENqFW45Q==
-X-Google-Smtp-Source: AGHT+IEQz/zAiPjsnW5zYim84jDmcgUqNS4qYdyO0Gc0hROsmXxeu2rgPFlRY76a52RFnXIwzEU0fQ==
-X-Received: by 2002:a05:6512:61a1:b0:553:314e:81f7 with SMTP id 2adb3069b0e04-55a23ef4e8amr1113594e87.17.1752690088553;
-        Wed, 16 Jul 2025 11:21:28 -0700 (PDT)
-Received: from pc636 (host-95-203-27-91.mobileonline.telia.com. [95.203.27.91])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55943b6bb54sm2743150e87.179.2025.07.16.11.21.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 11:21:27 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Wed, 16 Jul 2025 20:21:25 +0200
-To: Marco Elver <elver@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Yeoreum Yun <yeoreum.yun@arm.com>, Yunseong Kim <ysk@kzalloc.com>,
+	s=arc-20240116; t=1752691247; c=relaxed/simple;
+	bh=lWnbiAf4ytPP2bVU4uh4Lj6VhtdMwzO6Ouf9JgwG01M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fiio5z82oWvPwBXggAosoz7eyoLWotNmEjqsow27f8FlnejcOVK0x+oOOnn6yiUY9+wWN5sAbjh87JWQVKFlFoQt+iyEzUDubWEJhmXq1snybAz2fcqjZLcnSBMUfd/cawikuDsBc6Nzf9qwl7W8YDtWmmW/3Bn9FXJii8gCuv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hThoi0Bm; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752691245; x=1784227245;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=lWnbiAf4ytPP2bVU4uh4Lj6VhtdMwzO6Ouf9JgwG01M=;
+  b=hThoi0BmUw+hOwh+oZk3XdoGADLwiLGrM9hPVbHP75BQiewnXM7BNQT0
+   e3C2Xt+annnUs42yFpEB31HV498eh497BIIflCiI6UVzGiCz9qqVktcek
+   +LbiCW6EtWX5a5mwJReVqPl833h2UxV+t8BncSXOTUrLC5xyveHXy/iGc
+   a2SSMMYLu9ZDWgSaE+epGhVHRUSNRx6ZIUVRwAREZsLbtsp8AxcolszMo
+   7Nl5lt2MPpwEFLBGVkKKm6NrH8eZcBxfuf16TDw3gllOXxek3bvvjSWNc
+   3k8lcdITzgsVWhlPaEMJ1/v2RLRWGS2iR29Ul1SUZIr69h9PrOWXOTqvO
+   g==;
+X-CSE-ConnectionGUID: kB3al30CSFySwObp03CLZw==
+X-CSE-MsgGUID: XpsuSF9xTMat2wDoNYY8tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="58760739"
+X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; 
+   d="scan'208";a="58760739"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 11:40:44 -0700
+X-CSE-ConnectionGUID: 5GCTy5J9QWCTb81s1XmyPA==
+X-CSE-MsgGUID: ts3VSS5/QoyIzOHJMpsHHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; 
+   d="scan'208";a="163210921"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO stinkbox) ([10.245.245.254])
+  by orviesa005.jf.intel.com with SMTP; 16 Jul 2025 11:40:42 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Wed, 16 Jul 2025 21:40:40 +0300
+Date: Wed, 16 Jul 2025 21:40:40 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Imre Deak <imre.deak@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] kasan: use vmalloc_dump_obj() for vmalloc error reports
-Message-ID: <aHftpSnSit__laMx@pc636>
-References: <20250716152448.3877201-1-elver@google.com>
+Subject: Re: [PATCH 1/7] drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x
+Message-ID: <aHfyKJ_NJL-i8B94@intel.com>
+References: <20250710201718.25310-1-ville.syrjala@linux.intel.com>
+ <20250710201718.25310-2-ville.syrjala@linux.intel.com>
+ <aHenHJLCSVjYDUKp@ideak-desk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250716152448.3877201-1-elver@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aHenHJLCSVjYDUKp@ideak-desk>
+X-Patchwork-Hint: comment
 
-On Wed, Jul 16, 2025 at 05:23:28PM +0200, Marco Elver wrote:
-> Since 6ee9b3d84775 ("kasan: remove kasan_find_vm_area() to prevent
-> possible deadlock"), more detailed info about the vmalloc mapping and
-> the origin was dropped due to potential deadlocks.
+On Wed, Jul 16, 2025 at 04:20:28PM +0300, Imre Deak wrote:
+> On Thu, Jul 10, 2025 at 11:17:12PM +0300, Ville Syrjala wrote:
+> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > 
+> > On g4x we currently use the 96MHz non-SSC refclk, which can't actually
+> > generate an exact 2.7 Gbps link rate. In practice we end up with 2.688
+> > Gbps which seems to be close enough to actually work, but link training
+> > is currently failing due to miscalculating the DP_LINK_BW value (we
+> > calcualte it directly from port_clock which reflects the actual PLL
+> > outpout frequency).
+> > 
+> > Ideas how to fix this:
+> > - nudge port_clock back up to 270000 during PLL computation/readout
+> > - track port_clock and the nominal link rate separately so they might
+> >   differ a bit
+> > - switch to the 100MHz refclk, but that one should be SSC so perhaps
+> >   not something we want
+> > 
+> > While we ponder about a better solution apply some band aid to the
+> > immediate issue of miscalculated DP_LINK_BW value. With this
+> > I can again use 2.7 Gbps link rate on g4x.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 665a7b04092c ("drm/i915: Feed the DPLL output freq back into crtc_state")
+> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> While fixing the deadlock is necessary, that patch was too quick in
-> killing an otherwise useful feature, and did no due-diligence in
-> understanding if an alternative option is available.
+> Reviewed-by: Imre Deak <imre.deak@intel.com>
 > 
-> Restore printing more helpful vmalloc allocation info in KASAN reports
-> with the help of vmalloc_dump_obj(). Example report:
+> IIUC, port_clock for g4x is ref * m / n / p, where for DP the fixed
+> ref=96000 and m/n/p values from g4x_dpll are used.
 > 
-> | BUG: KASAN: vmalloc-out-of-bounds in vmalloc_oob+0x4c9/0x610
-> | Read of size 1 at addr ffffc900002fd7f3 by task kunit_try_catch/493
-> |
-> | CPU: [...]
-> | Call Trace:
-> |  <TASK>
-> |  dump_stack_lvl+0xa8/0xf0
-> |  print_report+0x17e/0x810
-> |  kasan_report+0x155/0x190
-> |  vmalloc_oob+0x4c9/0x610
-> |  [...]
-> |
-> | The buggy address belongs to a 1-page vmalloc region starting at 0xffffc900002fd000 allocated at vmalloc_oob+0x36/0x610
-> | The buggy address belongs to the physical page:
-> | page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x126364
-> | flags: 0x200000000000000(node=0|zone=2)
-> | raw: 0200000000000000 0000000000000000 dead000000000122 0000000000000000
-> | raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-> | page dumped because: kasan: bad access detected
-> |
-> | [..]
-> 
-> Fixes: 6ee9b3d84775 ("kasan: remove kasan_find_vm_area() to prevent possible deadlock")
-> Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-> Cc: Alexander Potapenko <glider@google.com>
-> Cc: Andrey Konovalov <andreyknvl@gmail.com>
-> Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Cc: Yeoreum Yun <yeoreum.yun@arm.com>
-> Cc: Yunseong Kim <ysk@kzalloc.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
->  mm/kasan/report.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/kasan/report.c b/mm/kasan/report.c
-> index b0877035491f..62c01b4527eb 100644
-> --- a/mm/kasan/report.c
-> +++ b/mm/kasan/report.c
-> @@ -399,7 +399,9 @@ static void print_address_description(void *addr, u8 tag,
->  	}
->  
->  	if (is_vmalloc_addr(addr)) {
-> -		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
-> +		pr_err("The buggy address belongs to a");
-> +		if (!vmalloc_dump_obj(addr))
-> +			pr_cont(" vmalloc virtual mapping\n");
->  		page = vmalloc_to_page(addr);
->  	}
->  
-> -- 
-> 2.50.0.727.gbf7dc18ff4-goog
-> 
-Acked-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> Ftr, m = 135, n = 6, p = 8 would give port_clock = 270000, but there's
+> no intel_limit for DP, so can't know if these params are within range.
 
---
-Uladzislau Rezki
+The P divider can only be some multiple of 5.
+
+> 
+> > ---
+> >  drivers/gpu/drm/i915/display/intel_dp.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+> > index f48912f308df..7976fec88606 100644
+> > --- a/drivers/gpu/drm/i915/display/intel_dp.c
+> > +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+> > @@ -1606,6 +1606,12 @@ int intel_dp_rate_select(struct intel_dp *intel_dp, int rate)
+> >  void intel_dp_compute_rate(struct intel_dp *intel_dp, int port_clock,
+> >  			   u8 *link_bw, u8 *rate_select)
+> >  {
+> > +	struct intel_display *display = to_intel_display(intel_dp);
+> > +
+> > +	/* FIXME g4x can't generate an exact 2.7GHz with the 96MHz non-SSC refclk */
+> > +	if (display->platform.g4x && port_clock == 268800)
+> > +		port_clock = 270000;
+> > +
+> >  	/* eDP 1.4 rate select method. */
+> >  	if (intel_dp->use_rate_select) {
+> >  		*link_bw = 0;
+> > -- 
+> > 2.49.0
+> > 
+
+-- 
+Ville Syrjälä
+Intel
 
