@@ -1,171 +1,205 @@
-Return-Path: <stable+bounces-163174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42D6B07A9A
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:05:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1928EB07AB5
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25ECA1C23F72
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 16:05:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA29A566743
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 16:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96CD26E6FF;
-	Wed, 16 Jul 2025 16:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC372F5465;
+	Wed, 16 Jul 2025 16:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dntEMyKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ocrr4hnA"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F921A238C
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 16:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1E9266580;
+	Wed, 16 Jul 2025 16:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752681914; cv=none; b=e+ceumHNMqo/Ce4nBea2m15zK2GLT91zkeBcOTZIk76Xv98nn2NWhGJbSf6ANdHbox2UB9SWPENMYw1b8mf6nhYxnQxElFBoXXlI0DNDbQgPAvespckdtBTFrkhOQwUBvpSFDLJjuZ7NvlN1onQ41RPX4o/Skl9BAZKZlXEVqsE=
+	t=1752682130; cv=none; b=XCnCXV4w9+RGFNymvEtWcOWd6kFY3vm9QFP2Nnlh1x1qPSUjRVQk0QSFUBdYyD3oH5Go680Xs9EgLoIIsk1wPmPWIORmFPUVxvxM2fq/I8uUL9NFaDqVH/U2XnMAOiPTJo1cZnVQHQfY9XfBxw2PKjXzcqbWEaY8CtvIpHHQPKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752681914; c=relaxed/simple;
-	bh=wRRCUNbWnyKy2Hpmvrbgoq7o1QqOfvzi2Xqp++0fABY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XygxkKEffKHhtovCRjBUUoZLZjiLUJ2KJaa0brKAstQ4WRppjgqnSVWe6NiZEPzhi3YIXEXHaobMLoC8dFdCbrPnObZIXdu4TkKdD28nSkF7UHMOcgCfjJrUaYpt9y2mMxsVtJkXC3onvpceqZ87WddynK3Db1MIeb7haW5ZOOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dntEMyKB; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <9b41f9f5-396f-47e0-9a12-46c52087df6c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752681910;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gFkj+dcLTyPkcrHAQwjqQzmOpLBhzP4CPtROubMCqJs=;
-	b=dntEMyKBBID3TFof0pknd4Ktq8oRtqJ+eoEu7Tf6rZA7vlqDson7+VUi+LIt7Kv7eofIoV
-	42neJ6VYJYy1QIow5xFj2rWkSYQtRaq/8dHZTs6GpkEq/DSsKrgTZ21j0Ap5Y8Uc3DqALt
-	1MleAQRBvCcWo358aSpQIBdBAyDn7CM=
-Date: Wed, 16 Jul 2025 09:05:05 -0700
+	s=arc-20240116; t=1752682130; c=relaxed/simple;
+	bh=NNCCd57M3lE1fgMLw/UR/dK06HnYi/0UAC+ruDCd/SM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MEqEtYnNh+DWyY6kjrao2VOPI07LmkE/Qtg5EB+y5ZyAWzrBIQVBVjTiCIAQQGDYTD9nFRdwLjbDh6kKfQB0Ch1KDxmglMSjyuWqbKwzP7goJkaeILVM339Xnp/E2lvmPgwjuenl9+iy/JBSyOXnqy3QPlDwQuYLgx9fkf6x2WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ocrr4hnA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAE9C4CEE7;
+	Wed, 16 Jul 2025 16:08:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752682129;
+	bh=NNCCd57M3lE1fgMLw/UR/dK06HnYi/0UAC+ruDCd/SM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ocrr4hnA1LguJjlffn+fAkKtv/5PTHXFYIidp77Oo7nJCpnXjEEY74patWoohoGsF
+	 UKbijEq5i1XG8GY3KzAbUFpmrfpZRQDG2dOlLPdioyIRr0+SjlRSHCWEcf/GMVOFc4
+	 aP3gV+2spVdFMbk8un0Eos2Js/shKMwn1MZ5Qq+g=
+Date: Wed, 16 Jul 2025 18:08:47 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: accessrunner-general@lists.sourceforge.net, linux-usb@vger.kernel.org,
+	llvm@lists.linux.dev, patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: atm: cxacru: Zero initialize bp in
+ cxacru_heavy_init()
+Message-ID: <2025071648-punch-carrousel-2046@gregkh>
+References: <20250715-usb-cxacru-fix-clang-21-uninit-warning-v1-1-de6c652c3079@kernel.org>
+ <2025071618-jester-outing-7fed@gregkh>
+ <20250716052450.GA1892301@ax162>
+ <2025071616-flap-mundane-7627@gregkh>
+ <20250716154304.GA2740255@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next v5 2/2] selftests/bpf: Add tests with stack ptr
- register in conditional jmp
-Content-Language: en-GB
-To: Shung-Hsi Yu <shung-hsi.yu@suse.com>, Andrii Nakryiko <andrii@kernel.org>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, kernel-team@fb.com,
- Martin KaFai Lau <martin.lau@kernel.org>, stable@vger.kernel.org,
- Sasha Levin <sashal@kernel.org>
-References: <20250524041335.4046126-1-yonghong.song@linux.dev>
- <20250524041340.4046304-1-yonghong.song@linux.dev>
- <4goguotzo5jh4224ox7oaan5l4mh2mt4y54j2bpbeba45umzws@7is5vdizr6m3>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yonghong Song <yonghong.song@linux.dev>
-In-Reply-To: <4goguotzo5jh4224ox7oaan5l4mh2mt4y54j2bpbeba45umzws@7is5vdizr6m3>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250716154304.GA2740255@ax162>
+
+On Wed, Jul 16, 2025 at 08:43:04AM -0700, Nathan Chancellor wrote:
+> On Wed, Jul 16, 2025 at 10:00:10AM +0200, Greg Kroah-Hartman wrote:
+> > No, I take it back, it is unreasonable :)
+> > 
+> > At runtime, there never is a uninitialized use of this pointer, the
+> > first time it is used, it is intended to be filled in if this is a "boot
+> > rom patch":
+> > 	ret = cxacru_find_firmware(instance, "bp", &bp);
+> > 
+> > Then if that call fails, the function exits, great.
+> > 
+> > Then later on, this is called:
+> > 	cxacru_upload_firmware(instance, fw, bp);
+> > so either bp IS valid, or it's still uninitialized, fair enough.
+> > 
+> > But then cxacru_upload_firmware() does the same check for "is this a
+> > boot rom patch" and only then does it reference the variable.
+> 
+> Right but how would you know this if you were unable to look at what's
+> inside cxacru_upload_firmware()? That's basically what is happening with
+> clang, it is only able to look at cxacru_heavy_init().
+
+True, and it's also unable to look into cxacru_upload_firmware() :)
+
+> > And when it references it, it does NOT check if it is valid or not, so
+> > even if you do pre-initialize this to NULL, surely some other static
+> > checker is going to come along and say "Hey, you just dereferenced a
+> > NULL pointer, this needs to be fixed!" when that too is just not true at
+> > all.
+> 
+> If a static checker has the ability to see the NULL passed to
+> cxacru_upload_firmware() from cxacru_heavy_init(), I would expect it to
+> notice the identical conditions but point taken :)
 
 
 
-On 7/16/25 3:13 AM, Shung-Hsi Yu wrote:
-> Hi Andrii and Yonghong,
->
-> On Fri, May 23, 2025 at 09:13:40PM -0700, Yonghong Song wrote:
->> Add two tests:
->>    - one test has 'rX <op> r10' where rX is not r10, and
->>    - another test has 'rX <op> rY' where rX and rY are not r10
->>      but there is an early insn 'rX = r10'.
->>
->> Without previous verifier change, both tests will fail.
->>
->> Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
->> ---
->>   .../selftests/bpf/progs/verifier_precision.c  | 53 +++++++++++++++++++
->>   1 file changed, 53 insertions(+)
-> I was looking this commit (5ffb537e416e) since it was a BPF selftest
-> test for CVE-2025-38279, but upon looking I found that the commit
-> differs from the patch, there is an extra hunk that changed
-> kernel/bpf/verifier.c that wasn't found the Yonghong's original patch.
->
-> I suppose it was meant to be squashed into the previous commit
-> e2d2115e56c4 "bpf: Do not include stack ptr register in precision
-> backtracking bookkeeping"?
+> 
+> > So the logic here is all "safe" for now, and if you set this to NULL,
+> > you are just papering over the fact that it is right, AND setting us up
+> > to get another patch that actually does nothing, while feeling like the
+> > submitter just fixed a security bug, demanding a CVE for an impossible
+> > code path :)
+> 
+> Wouldn this be sufficient to avoid such a situation?
+> 
+> diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
+> index b7c3b224a759..fcff092fe826 100644
+> --- a/drivers/usb/atm/cxacru.c
+> +++ b/drivers/usb/atm/cxacru.c
+> @@ -1026,7 +1026,7 @@ static void cxacru_upload_firmware(struct cxacru_data *instance,
+>  	}
+>  
+>  	/* Boot ROM patch */
+> -	if (instance->modem_type->boot_rom_patch) {
+> +	if (instance->modem_type->boot_rom_patch && bp) {
+>  		usb_info(usbatm, "loading boot ROM patch\n");
+>  		ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, BR_ADDR, bp->data, bp->size);
+>  		if (ret) {
 
-Andrii made some change to my original patch for easy understanding.
-See
-   https://lore.kernel.org/bpf/20250524041335.4046126-1-yonghong.song@linux.dev
-Quoted below:
-"
-I've moved it inside the preceding if/else (twice), so it's more
-obvious that BPF_X deal with both src_reg and dst_reg, and BPF_K case
-deals only with BPF_K. The end result is the same, but I found this
-way a bit easier to follow. Applied to bpf-next, thanks.
+That's what a follow-on patch would generate thinking they were actually
+fixing a bug, but again, that's a pointless check!
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c index 
-831c2eff56e1..c9a372ca7830 100644 --- a/kernel/bpf/verifier.c +++ 
-b/kernel/bpf/verifier.c @@ -16471,6 +16471,8 @@ static int 
-check_cond_jmp_op(struct bpf_verifier_env *env,
+> > So let's leave this for now because:
+> > 
+> > > This type of warning
+> > > is off for GCC because of how unreliable it was when it is done in the
+> > > middle end with optimizations. Furthermore, it is my understanding based
+> > > on [1] that just the passing of an uninitialized variable in this manner
+> > > is UB.
+> > > 
+> > > [1]: https://lore.kernel.org/20220614214039.GA25951@gate.crashing.org/
+> > 
+> > As gcc can't handle this either, it seems that clang also can't handle
+> > it.  So turning this on for the kernel surely is going to trip it up in
+> > other places than just this one driver.
+> 
+> I turned this warning on in 5.3 in commit 3a61925e91ba ("kbuild: Enable
+> -Wuninitialized"), so it is already enabled and it has found many, many
+> legitimate instances in doing so, just go run 'git log
+> --grep=Wuninitialized' or 'git log --grep=Wsometimes-uninitialized' in
+> the kernel sources. While there have been other places in the kernel
+> where this warning has been falsely triggered such as here, I have
+> rarely received pushback from maintainers on fixes to silence them
+> because the majority of them are legitimate (and the false positive
+> fixes usually result in more robust code). For example, the
+> strengthening of the warning in clang-21 resulted in what I would
+> consider legitimate fixes:
+> 
+> https://lore.kernel.org/20250715-mt7996-fix-uninit-const-pointer-v1-1-b5d8d11d7b78@kernel.org/
+> https://lore.kernel.org/20250715-net-phonet-fix-uninit-const-pointer-v1-1-8efd1bd188b3@kernel.org/
+> https://lore.kernel.org/20250715-drm-msm-fix-const-uninit-warning-v1-1-d6a366fd9a32@kernel.org/
+> https://lore.kernel.org/20250715-riscv-uaccess-fix-self-init-val-v1-1-82b8e911f120@kernel.org/
+> https://lore.kernel.org/20250715-trace_probe-fix-const-uninit-warning-v1-1-98960f91dd04@kernel.org/
+> https://lore.kernel.org/20250715-sdca_interrupts-fix-const-uninit-warning-v1-1-cc031c913499@kernel.org/
+> 
+> > If you _really_ want to fix this, refactor the code to be more sane and
+> > obvious from a C parsing standpoint, but really, it isn't that complex
+> > for a human to read and understand, and I see why it was written this
+> > way.
+> 
+> Yes, I agree that it is not complex or hard to understand, so I would
+> rather not refactor it, but I do need this fixed so that allmodconfig
+> builds (which enable -Werror by default) with clang-21 do not break.
+> Won't Android eventually hit this when they get a newer compiler?
 
-                 if (src_reg->type == PTR_TO_STACK)
-                         insn_flags |= INSN_F_SRC_REG_STACK;
-+ if (dst_reg->type == PTR_TO_STACK) + insn_flags |= INSN_F_DST_REG_STACK;         } else {
-                 if (insn->src_reg != BPF_REG_0) {
-                         verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-@@ -16480,10 +16482,11 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
-                 memset(src_reg, 0, sizeof(*src_reg));
-                 src_reg->type = SCALAR_VALUE;
-                 __mark_reg_known(src_reg, insn->imm);
-+ + if (dst_reg->type == PTR_TO_STACK) + insn_flags |= 
-INSN_F_DST_REG_STACK;         }
+I have no idea what Android uses for their compiler.  Usually when they
+run into issues like this, for their 'allmodconfig' builds, they just
+apply a "CONFIG_BROKEN" patch to disable the old/unneeded driver
+entirely.
 
-- if (dst_reg->type == PTR_TO_STACK) - insn_flags |= INSN_F_DST_REG_STACK;         if (insn_flags) {
-                 err = push_insn_history(env, this_branch, insn_flags, 0);
-                 if (err)
-...
-"
+> > As for the UB argument, bah, I don't care, sane compilers will do the
+> > right thing, i.e. pass in the uninitialized value, or if we turned on
+> > the 0-fill stack option, will be NULL anyway, otherwise why do we have
+> > that option if not to "solve" the UB issue?).
+> 
+> As far as I understand it, clang adds "noundef" to function parameters
+> when lowering to LLVM IR, which codifies that passing an uninitialized
+> value is UB. I suspect that cxacru_upload_firmware() gets inlined so
+> that ends up not mattering in this case but it could in others.
+> 
+> While '-ftrivial-auto-var-init=zero' does "solve" the UB issue, I see it
+> more of a mitigation against missed initializations, not as a
+> replacement for ensuring variables are consistently initialized, as zero
+> might not be the expected initialization. Since that is the default for
+> the kernel when compilers support it, why not just take this patch with
+> that fixup above to make it consistent? I would be happy to send a v2 if
+> you would be okay with it.
 
->
-> Since stable backports got only e2d2115e56c4, but not the 5ffb537e416e
-> here with the extra change for kernel/bpf/verifier.c, I'd guess the
-> backtracking logic in the stable kernel isn't correct at the moment,
-> so I'll send 5ffb537e416e "selftests/bpf: Add tests with stack ptr
-> register in conditional jmp" to stable as well. Let me know if that's
-> not the right thing to do.
->
-> Shung-Hsi
->
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index 98c52829936e..a7d6e0c5928b 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -16456,6 +16456,8 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
->   
->   		if (src_reg->type == PTR_TO_STACK)
->   			insn_flags |= INSN_F_SRC_REG_STACK;
-> +		if (dst_reg->type == PTR_TO_STACK)
-> +			insn_flags |= INSN_F_DST_REG_STACK;
->   	} else {
->   		if (insn->src_reg != BPF_REG_0) {
->   			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-> @@ -16465,10 +16467,11 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
->   		memset(src_reg, 0, sizeof(*src_reg));
->   		src_reg->type = SCALAR_VALUE;
->   		__mark_reg_known(src_reg, insn->imm);
-> +
-> +		if (dst_reg->type == PTR_TO_STACK)
-> +			insn_flags |= INSN_F_DST_REG_STACK;
->   	}
->   
-> -	if (dst_reg->type == PTR_TO_STACK)
-> -		insn_flags |= INSN_F_DST_REG_STACK;
->   	if (insn_flags) {
->   		err = push_insn_history(env, this_branch, insn_flags, 0);
->   		if (err)
->
->> diff --git a/tools/testing/selftests/bpf/progs/verifier_precision.c b/tools/testing/selftests/bpf/progs/verifier_precision.c
-> ...
->
+I'm really loath to take it, sorry.  I'd prefer that if the compiler
+can't figure it out, we should rewrite it to make it more "obvious" as
+to what is going on here so that both people, and the compiler, can
+understand it easier.
 
+Just setting the variable to NULL does neither of those things, except
+to shut up a false-positive, not making it more obvious to the compiler
+as to what really is going on.
+
+thanks,
+
+greg k-h
 
