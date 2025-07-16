@@ -1,271 +1,166 @@
-Return-Path: <stable+bounces-163133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AB6B0751C
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 13:55:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159C3B0752D
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 13:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B63EC7B088D
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 11:53:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51C125836C5
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 11:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C1B2F5469;
-	Wed, 16 Jul 2025 11:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B776B2F4302;
+	Wed, 16 Jul 2025 11:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BPnV4TPO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d6+rBBYu"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0642F49F6
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 11:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AB42F0043;
+	Wed, 16 Jul 2025 11:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752666829; cv=none; b=Rh+it41VcDbpFxfXyTuXmCU8lTMPkr21gQ88AyzzF1vRTVOOH6uGY2tVBLRBaP3aEEqjEXWAz/zp0izRNALt2tfz+tJa3ASGtLrn9be+srtf8wGflvuSOs8oSnLzrlxJsuFOFeyhUj5b9iudwlKOiQjETMYXkS6poISEccQH738=
+	t=1752667050; cv=none; b=RU05maHn3AH4zH1oyPONOC03NmOZl917Umss/5TzJYOKQ+hw6A3Lxyg4vIOqSeA7/urLrqlw+hXjJRnl0izG/WgfOE6fXAETR55zRUuaDlp5G5slm3grCDX0RD0awVwA0ziQuyqGG4sQ8a9ATd8E3v3JII9YkQ5k6oRZbFzyCPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752666829; c=relaxed/simple;
-	bh=2KW2U/A4gk5SgRyGyeIXAj3+QH8TPX34JpTVHS++XsU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQCrAV6IVoxZ+qj95Taj3bP/4Mfk4s+QlYh057X7DNHeosfiOFGp1D5o9Hz5BHB3q7mj5VulGDQEgASX6ic1gbGge/2fMmDVXxPiGbTOPu2a7KNbebGqp7bRsuuVIlmYADsIjz/WViB1Rz1glScWI9od65jVyzPVKJYegtZ3mOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BPnV4TPO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752666826;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gTjUnh8vzEtgGLxjFhakJRJqQjzQoh5z0pfGHbTFfL8=;
-	b=BPnV4TPOfPPrUVN21yQcCFEgZMLursy8/xL8zcmR9BCLjdGiYBVxVc+PWaIVnEBFjHHAu/
-	ufIw6hbKWeYTfb3BlBmgdrIvaIazF7g/6Y/hDASc7iTNqCoCV2Bw3PICTdjfLdsU/LTD2c
-	WPAeC4pHGDssgtnVu12bL+AKPWn67ck=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-Av5-SLWRMbG6gvHGAc7-Ig-1; Wed,
- 16 Jul 2025 07:53:42 -0400
-X-MC-Unique: Av5-SLWRMbG6gvHGAc7-Ig-1
-X-Mimecast-MFC-AGG-ID: Av5-SLWRMbG6gvHGAc7-Ig_1752666821
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5B32419560AA;
-	Wed, 16 Jul 2025 11:53:41 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.2])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1E5DD195E772;
-	Wed, 16 Jul 2025 11:53:37 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net 5/5] rxrpc: Fix to use conn aborts for conn-wide failures
-Date: Wed, 16 Jul 2025 12:53:04 +0100
-Message-ID: <20250716115307.3572606-6-dhowells@redhat.com>
-In-Reply-To: <20250716115307.3572606-1-dhowells@redhat.com>
-References: <20250716115307.3572606-1-dhowells@redhat.com>
+	s=arc-20240116; t=1752667050; c=relaxed/simple;
+	bh=ahNvfh6VoJDlKv5Gqc6oO3rXFasM7n3WmOyQr7d6Gm0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Rb8IKEdJqPwCX8kc++YcwLyv82iadk1zU1mNkrmfKOtGMGkqVOIbXCOMS47Nun2dKhG/pHC5pzo7e4TA+MENlP0Zee135zYsQWdIJWtiBS7VR/MLrh1esUgRDQM6fIv3WVDGJVKMmc1ERFyrl86b+Sm9FioLVLWILrS2B3yf/aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d6+rBBYu; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-451d7b50815so42549565e9.2;
+        Wed, 16 Jul 2025 04:57:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752667047; x=1753271847; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sus59UsnbuGi6q2O4dZ/OSI0C7+7vrhcajwM1ATb9Ko=;
+        b=d6+rBBYufl4mTyf1pcQhLTxUw1UtvpaA5DAwPxY6MHMvzRIMV201FNEDTW7faJfbVF
+         p2rf27ibpBOJgctMcpm2tO/zFNaqjkEeE8+PwKiIlb1byF8B8kJIqmU6+YP9zFUQXf4S
+         2/ELbvBK77Jd9NRBGTGVliB1jXzMGGVC/5cIk31C7J9DtW96ZsfAAwfXjwqaf6reJbau
+         6DbFkd/AKzo4UyyKDFen1SvflsElMEU6OTHJdjzuNuxl1d8v2Ch/1JIM6THjZn/QjTKY
+         0DX6+21uOVGRUrkC4uFKwVQwMUm+G43gP3XtPyEAdyWyi8qEGuD7uDwOQDjPVqdYemsr
+         zy/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752667047; x=1753271847;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sus59UsnbuGi6q2O4dZ/OSI0C7+7vrhcajwM1ATb9Ko=;
+        b=Pk3xLn/lx92b8o0rdJKocVjsWHbNzOWJa+BbweX7l5bGiEoPWaYnELQ3TM788hF/qE
+         f9Y6mN+rvp3Rx7HLrLMEGhJ8Mb2jaIMzZ14k1BAUmsJHTw9yezZgoy+a+gWnQC1tFXRM
+         Ejw4ggdBXn4vPQvwNdzd8xq5NApLRPhBy2/FeEwkQ4waS1z8VobW4f5nKN7OCxe5mT7l
+         OoDbEoz+RHfVUU3YHpus0ZmX/l5aMILFS8ltwRaWBCsT0xWvVRY2UNMzqgqgSXWO5S43
+         meX8awTiZxjm7tlQ7RAqKVLUmDtQcDjDyQjUD3+NsseWVGWkY7n5XwO58aJgaa0SwoLI
+         OWFA==
+X-Forwarded-Encrypted: i=1; AJvYcCV0uda491jc1vjeBf17v1WmElYn5Br69RHPXZHDSvxyiEWAgpM1BiRGHpJXlFH7ZjYDT1gWrYTdV1SEcCw=@vger.kernel.org, AJvYcCXHcM4HwJ94F+8JXQZ3Fugl5elexwX+CMoOCOldKTNcLlCfZzF1qRu+htyRiecvsdX22NMii3lS@vger.kernel.org
+X-Gm-Message-State: AOJu0YwueQJjbUmEAzC6zJWM+fmszNN8Tv5ZeWvkzpbSKpwu4y8SkEGJ
+	br/vGgJc8BXPjdvTmRUqvswB5ojYTBxO600S362xw8XJSmnpFxtL3r5N
+X-Gm-Gg: ASbGnctLlTuaMzgXoMTCXDW6CXpyWkCNE+tD7yMIk/XgKfieS09mL6Zg2PWOkklJxcn
+	WjECR/H4SdgXnhi7PrnDT5ly7RDzEbFVSEvWn91EScHfdXtglEHd7+4IQuG0scgNe35PyY0DCaQ
+	mPwUGpWuOLn8wCpJ6gHwB2tcaSSF2WsLBvuOULtuMi0pn56GxCy+6sGjbzgmEqOv6mVhoe5FQFw
+	iCFLrkw4PnhzSABLedKkvq9XvkVIZFzkF2RFuGaggmdC9i1xl3vHA5mVAMg9e4yHil8hc9JmIVE
+	bCyxZohTH9eABGVarF8s8wQxzlkPLrn2kFwKWT6/ZRIWTjbqUq4vLoXRTl7PPr/zKcX8gH9Xrvz
+	VwuGS9jVtCOxtx78boiiU/e1cALVvPr4x15xUqDIMCkd5I8/MYWSnZ78opIuu
+X-Google-Smtp-Source: AGHT+IEO9Zt2BvzXTefjIV22N0YGVdjcWPFlq7BQGPADENKmKRWYWRGtIPb+nG6tBkrVVWdxVbs8sw==
+X-Received: by 2002:a05:600c:5492:b0:456:207e:fd83 with SMTP id 5b1f17b1804b1-4562e330ff3mr22640315e9.4.1752667046936;
+        Wed, 16 Jul 2025 04:57:26 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8bd1a2bsm17916359f8f.14.2025.07.16.04.57.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jul 2025 04:57:26 -0700 (PDT)
+Date: Wed, 16 Jul 2025 12:57:25 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Kevin
+ Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>, Jann Horn
+ <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>, Dave Hansen
+ <dave.hansen@intel.com>, Alistair Popple <apopple@nvidia.com>, Uladzislau
+ Rezki <urezki@gmail.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, "Tested-by : Yi Lai"
+ <yi1.lai@intel.com>, iommu@lists.linux.dev, security@kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+Message-ID: <20250716125725.37aa3f38@pumpkin>
+In-Reply-To: <20250710155319.GK1613633@noisy.programming.kicks-ass.net>
+References: <20250709062800.651521-1-baolu.lu@linux.intel.com>
+	<20250710135432.GO1613376@noisy.programming.kicks-ass.net>
+	<20250710155319.GK1613633@noisy.programming.kicks-ass.net>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Fix rxrpc to use connection-level aborts for things that affect the whole
-connection, such as the service ID not matching a local service.
+On Thu, 10 Jul 2025 17:53:19 +0200
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-Fixes: 57af281e5389 ("rxrpc: Tidy up abort generation infrastructure")
-Reported-by: Jeffrey Altman <jaltman@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@vger.kernel.org
----
- include/trace/events/rxrpc.h |  1 +
- net/rxrpc/ar-internal.h      |  3 +++
- net/rxrpc/call_accept.c      | 12 ++++++------
- net/rxrpc/io_thread.c        | 14 ++++++++++++++
- net/rxrpc/output.c           | 19 ++++++++++---------
- net/rxrpc/security.c         |  8 ++++----
- 6 files changed, 38 insertions(+), 19 deletions(-)
+> On Thu, Jul 10, 2025 at 03:54:32PM +0200, Peter Zijlstra wrote:
+> 
+> > > @@ -132,8 +136,15 @@ struct iommu_sva *iommu_sva_bind_device(struct device *dev, struct mm_struct *mm
+> > >  	if (ret)
+> > >  		goto out_free_domain;
+> > >  	domain->users = 1;
+> > > -	list_add(&domain->next, &mm->iommu_mm->sva_domains);
+> > >  
+> > > +	if (list_empty(&iommu_mm->sva_domains)) {
+> > > +		scoped_guard(spinlock_irqsave, &iommu_mms_lock) {
+> > > +			if (list_empty(&iommu_sva_mms))
+> > > +				static_branch_enable(&iommu_sva_present);
+> > > +			list_add(&iommu_mm->mm_list_elm, &iommu_sva_mms);
+> > > +		}
+> > > +	}
+> > > +	list_add(&domain->next, &iommu_mm->sva_domains);
+> > >  out:
+> > >  	refcount_set(&handle->users, 1);
+> > >  	mutex_unlock(&iommu_sva_lock);
+> > > @@ -175,6 +186,15 @@ void iommu_sva_unbind_device(struct iommu_sva *handle)
+> > >  		list_del(&domain->next);
+> > >  		iommu_domain_free(domain);
+> > >  	}
+> > > +
+> > > +	if (list_empty(&iommu_mm->sva_domains)) {
+> > > +		scoped_guard(spinlock_irqsave, &iommu_mms_lock) {
+> > > +			list_del(&iommu_mm->mm_list_elm);
+> > > +			if (list_empty(&iommu_sva_mms))
+> > > +				static_branch_disable(&iommu_sva_present);
+> > > +		}
+> > > +	}
+> > > +
+> > >  	mutex_unlock(&iommu_sva_lock);
+> > >  	kfree(handle);
+> > >  }  
+> > 
+> > This seems an odd coding style choice; why the extra unneeded
+> > indentation? That is, what's wrong with:
+> > 
+> > 	if (list_empty()) {
+> > 		guard(spinlock_irqsave)(&iommu_mms_lock);
+> > 		list_del();
+> > 		if (list_empty()
+> > 			static_branch_disable();
+> > 	}  
+> 
+> Well, for one, you can't do static_branch_{en,dis}able() from atomic
+> context...
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 8e5a73eb5268..de6f6d25767c 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -322,6 +322,7 @@
- 	EM(rxrpc_call_put_kernel,		"PUT kernel  ") \
- 	EM(rxrpc_call_put_poke,			"PUT poke    ") \
- 	EM(rxrpc_call_put_recvmsg,		"PUT recvmsg ") \
-+	EM(rxrpc_call_put_release_recvmsg_q,	"PUT rls-rcmq") \
- 	EM(rxrpc_call_put_release_sock,		"PUT rls-sock") \
- 	EM(rxrpc_call_put_release_sock_tba,	"PUT rls-sk-a") \
- 	EM(rxrpc_call_put_sendmsg,		"PUT sendmsg ") \
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index df1a618dbf7d..5b7342d43486 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -44,6 +44,7 @@ enum rxrpc_skb_mark {
- 	RXRPC_SKB_MARK_SERVICE_CONN_SECURED, /* Service connection response has been verified */
- 	RXRPC_SKB_MARK_REJECT_BUSY,	/* Reject with BUSY */
- 	RXRPC_SKB_MARK_REJECT_ABORT,	/* Reject with ABORT (code in skb->priority) */
-+	RXRPC_SKB_MARK_REJECT_CONN_ABORT, /* Reject with connection ABORT (code in skb->priority) */
- };
- 
- /*
-@@ -1253,6 +1254,8 @@ int rxrpc_encap_rcv(struct sock *, struct sk_buff *);
- void rxrpc_error_report(struct sock *);
- bool rxrpc_direct_abort(struct sk_buff *skb, enum rxrpc_abort_reason why,
- 			s32 abort_code, int err);
-+bool rxrpc_direct_conn_abort(struct sk_buff *skb, enum rxrpc_abort_reason why,
-+			     s32 abort_code, int err);
- int rxrpc_io_thread(void *data);
- void rxrpc_post_response(struct rxrpc_connection *conn, struct sk_buff *skb);
- static inline void rxrpc_wake_up_io_thread(struct rxrpc_local *local)
-diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
-index a4d76f2da684..00982a030744 100644
---- a/net/rxrpc/call_accept.c
-+++ b/net/rxrpc/call_accept.c
-@@ -374,8 +374,8 @@ bool rxrpc_new_incoming_call(struct rxrpc_local *local,
- 	spin_lock(&rx->incoming_lock);
- 	if (rx->sk.sk_state == RXRPC_SERVER_LISTEN_DISABLED ||
- 	    rx->sk.sk_state == RXRPC_CLOSE) {
--		rxrpc_direct_abort(skb, rxrpc_abort_shut_down,
--				   RX_INVALID_OPERATION, -ESHUTDOWN);
-+		rxrpc_direct_conn_abort(skb, rxrpc_abort_shut_down,
-+					RX_INVALID_OPERATION, -ESHUTDOWN);
- 		goto no_call;
- 	}
- 
-@@ -422,12 +422,12 @@ bool rxrpc_new_incoming_call(struct rxrpc_local *local,
- 
- unsupported_service:
- 	read_unlock_irq(&local->services_lock);
--	return rxrpc_direct_abort(skb, rxrpc_abort_service_not_offered,
--				  RX_INVALID_OPERATION, -EOPNOTSUPP);
-+	return rxrpc_direct_conn_abort(skb, rxrpc_abort_service_not_offered,
-+				       RX_INVALID_OPERATION, -EOPNOTSUPP);
- unsupported_security:
- 	read_unlock_irq(&local->services_lock);
--	return rxrpc_direct_abort(skb, rxrpc_abort_service_not_offered,
--				  RX_INVALID_OPERATION, -EKEYREJECTED);
-+	return rxrpc_direct_conn_abort(skb, rxrpc_abort_service_not_offered,
-+				       RX_INVALID_OPERATION, -EKEYREJECTED);
- no_call:
- 	spin_unlock(&rx->incoming_lock);
- 	read_unlock_irq(&local->services_lock);
-diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
-index 27b650d30f4d..e939ecf417c4 100644
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -97,6 +97,20 @@ bool rxrpc_direct_abort(struct sk_buff *skb, enum rxrpc_abort_reason why,
- 	return false;
- }
- 
-+/*
-+ * Directly produce a connection abort from a packet.
-+ */
-+bool rxrpc_direct_conn_abort(struct sk_buff *skb, enum rxrpc_abort_reason why,
-+			     s32 abort_code, int err)
-+{
-+	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+
-+	trace_rxrpc_abort(0, why, sp->hdr.cid, 0, sp->hdr.seq, abort_code, err);
-+	skb->mark = RXRPC_SKB_MARK_REJECT_CONN_ABORT;
-+	skb->priority = abort_code;
-+	return false;
-+}
-+
- static bool rxrpc_bad_message(struct sk_buff *skb, enum rxrpc_abort_reason why)
- {
- 	return rxrpc_direct_abort(skb, why, RX_PROTOCOL_ERROR, -EBADMSG);
-diff --git a/net/rxrpc/output.c b/net/rxrpc/output.c
-index 17c33b5cf7dd..8b5903b6e481 100644
---- a/net/rxrpc/output.c
-+++ b/net/rxrpc/output.c
-@@ -829,7 +829,13 @@ void rxrpc_reject_packet(struct rxrpc_local *local, struct sk_buff *skb)
- 	msg.msg_controllen = 0;
- 	msg.msg_flags = 0;
- 
--	memset(&whdr, 0, sizeof(whdr));
-+	whdr = (struct rxrpc_wire_header) {
-+		.epoch		= htonl(sp->hdr.epoch),
-+		.cid		= htonl(sp->hdr.cid),
-+		.callNumber	= htonl(sp->hdr.callNumber),
-+		.serviceId	= htons(sp->hdr.serviceId),
-+		.flags		= ~sp->hdr.flags & RXRPC_CLIENT_INITIATED,
-+	};
- 
- 	switch (skb->mark) {
- 	case RXRPC_SKB_MARK_REJECT_BUSY:
-@@ -837,6 +843,9 @@ void rxrpc_reject_packet(struct rxrpc_local *local, struct sk_buff *skb)
- 		size = sizeof(whdr);
- 		ioc = 1;
- 		break;
-+	case RXRPC_SKB_MARK_REJECT_CONN_ABORT:
-+		whdr.callNumber	= 0;
-+		fallthrough;
- 	case RXRPC_SKB_MARK_REJECT_ABORT:
- 		whdr.type = RXRPC_PACKET_TYPE_ABORT;
- 		code = htonl(skb->priority);
-@@ -850,14 +859,6 @@ void rxrpc_reject_packet(struct rxrpc_local *local, struct sk_buff *skb)
- 	if (rxrpc_extract_addr_from_skb(&srx, skb) == 0) {
- 		msg.msg_namelen = srx.transport_len;
- 
--		whdr.epoch	= htonl(sp->hdr.epoch);
--		whdr.cid	= htonl(sp->hdr.cid);
--		whdr.callNumber	= htonl(sp->hdr.callNumber);
--		whdr.serviceId	= htons(sp->hdr.serviceId);
--		whdr.flags	= sp->hdr.flags;
--		whdr.flags	^= RXRPC_CLIENT_INITIATED;
--		whdr.flags	&= RXRPC_CLIENT_INITIATED;
--
- 		iov_iter_kvec(&msg.msg_iter, WRITE, iov, ioc, size);
- 		ret = do_udp_sendmsg(local->socket, &msg, size);
- 		if (ret < 0)
-diff --git a/net/rxrpc/security.c b/net/rxrpc/security.c
-index 078d91a6b77f..2bfbf2b2bb37 100644
---- a/net/rxrpc/security.c
-+++ b/net/rxrpc/security.c
-@@ -140,15 +140,15 @@ const struct rxrpc_security *rxrpc_get_incoming_security(struct rxrpc_sock *rx,
- 
- 	sec = rxrpc_security_lookup(sp->hdr.securityIndex);
- 	if (!sec) {
--		rxrpc_direct_abort(skb, rxrpc_abort_unsupported_security,
--				   RX_INVALID_OPERATION, -EKEYREJECTED);
-+		rxrpc_direct_conn_abort(skb, rxrpc_abort_unsupported_security,
-+					RX_INVALID_OPERATION, -EKEYREJECTED);
- 		return NULL;
- 	}
- 
- 	if (sp->hdr.securityIndex != RXRPC_SECURITY_NONE &&
- 	    !rx->securities) {
--		rxrpc_direct_abort(skb, rxrpc_abort_no_service_key,
--				   sec->no_key_abort, -EKEYREJECTED);
-+		rxrpc_direct_conn_abort(skb, rxrpc_abort_no_service_key,
-+					sec->no_key_abort, -EKEYREJECTED);
- 		return NULL;
- 	}
- 
+Aren't they also somewhat expensive - so you really want to use them
+for configuration options which pretty much don't change.
+
+	David
+
+> 
+> Was this ever tested?
+> 
 
 
