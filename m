@@ -1,344 +1,179 @@
-Return-Path: <stable+bounces-163138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC83B07611
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 14:46:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76ADCB07624
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 14:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6859D58423A
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 12:46:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A1CCA411D9
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 12:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5985E1411EB;
-	Wed, 16 Jul 2025 12:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEBB1487D1;
+	Wed, 16 Jul 2025 12:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="pEfunAq+"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NsDPvCHP"
+X-Original-To: Stable@vger.kernel.org
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2055.outbound.protection.outlook.com [40.107.93.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D747B15E90
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 12:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752669994; cv=none; b=Lyn+79KRdBTqIOmNWWveNkjCqtp04u20eRubjCKl4tXIbB1BIOLCyas7q1KQ+Nxr/gcx9Ot+9ZtOmj+4ImKGzvM767V68oVcMe34bTsVVxbf3eWuqLynM4MYcFK6YB3JAvqwmtybLXoImADrTk6djSgDjAFv5wN3TRAdafKQczY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752669994; c=relaxed/simple;
-	bh=kldBMSjY+iw0RuNOsix21ynpw+7IPPHEZmi7n3jVZnk=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=YZ5RC3wTfjEbiVa3D+cnVjO6cHbUXdeycS00ryaxPmCYM5beswA56/H7wGAc3uQwZOVpBzqTkNffQ09pWuB18HY/lqDjDLAX6PG6XnQ+C5oeVUYdsRLK7cKk4gWECSsQVRzV87l91dFnK69Q1Y66Ibhs1F0HO4JrNIpPYKR7Wn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=pEfunAq+; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2ffa81b41d7so543176fac.0
-        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 05:46:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1752669991; x=1753274791; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kldBMSjY+iw0RuNOsix21ynpw+7IPPHEZmi7n3jVZnk=;
-        b=pEfunAq+Qab2PAOhB0fuh7IgU1FneE81n4P824zNBam8I8MT88vlJXiALeOmbHX2+E
-         mIhBE76a5tl9PNJ+VDeGsMWIvo33blLaP79PXO/cl1Fo5o/S6Q8ZF2d+skRAze3OUHen
-         8gos2n9iGxWMMQUrd2JfxYzqm7mrEo0u3zor8SJDJCBdKKeaGCnn0n1TmHCvnB2ZprTZ
-         l2VXgJ+eoRdsnA+OYo9fwpUjmoB14T7T/TpSqGgAbqMSPI9ybqZNt2ZOkcx97gPJoM0Z
-         5ajXdqNCUy+wH7cv/wG2sC77eXFL6wypX11F4AZIjBkORrJvrsmWmYI301mlLM9BRURo
-         gDwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752669991; x=1753274791;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=kldBMSjY+iw0RuNOsix21ynpw+7IPPHEZmi7n3jVZnk=;
-        b=Z4iq5XSLa21fgs0+EV9ab/bYTN+K49BPBX6VFHzHaO9oFSJtengbWUOeits3HLUTET
-         87i3j7t3jIkpHx5GuWLj7cvCc4hWuBtDUJCZR46I5TdsKK8nV8d9cHQTO0dTkEf5ayi0
-         54TtrCNvszBynY28DL9MngIxbrNxqnERXa8QYI/IDlagnJixNDjOq0y23nBSgzA9om6k
-         qyVIiJc6dXQZhp9X8xfk2HhNmL2Uc/rxQlKswyzw9DdZ1TsqzAom/+rgRUqN3oqMCnCv
-         qp06KhDnFHcej2tUiWh5xw+9b94uhi/fN0Ig50m772zavcnOhjrSiCzVOUtAbVeSDBDl
-         HR2g==
-X-Gm-Message-State: AOJu0Yx4w8tlB+c+Wy6K8i4FF+euh6YaRn8rAbzmG7J0NbhH6/a4xlTN
-	xuUd2DOl4YJ9uMV/jUJg5kplznjJtcM1OJAIEyhqKphY+vX+VTWOmy1/6WY5HCux1c0=
-X-Gm-Gg: ASbGnctM+iEDlrBOhXnQ5pjyXlZ/7NOG1ak0wAP/lDy3P7qByLe+UaiVvgkULEsOoq0
-	wZebRFsiwiNDEUqvjcDusaKtXIi8xIfLMVRDHinMloXBoW65OGv7BQ5Svazjlv/gD8UoJ6A2p2v
-	Cr3YXdZFq5E/ByOBRyRjU9k1A8wtKkWgI1ieBIwhxERFUFW4VSabM2amTOshVl3OJq3DMUAf9Zq
-	mUFwk0FfR3bYI0S2GlNw2k5Ma84AxHxOk4EFoKXRw/G5N2q5HRYUXFVNABnaE4/L+2DIpT3gmvQ
-	gDKdEE0uq9raNQD/aqiOQDsuNalaz7PBY24KnrcQxtGQ5gKFGVyCMJ895KN2ENkDQAkfKeKZmTd
-	Cb1/5dyrl652KKQ==
-X-Google-Smtp-Source: AGHT+IEHO1TIrEXrUqSudmJ4sZk4OU63htbIwTLzWjj+150bWGfTNJdjP6x0kDsq7FqU7BNIYw1xWw==
-X-Received: by 2002:a05:6870:44cc:b0:2ff:a7a8:faea with SMTP id 586e51a60fabf-2ffaeec2234mr2332344fac.0.1752669990630;
-        Wed, 16 Jul 2025 05:46:30 -0700 (PDT)
-Received: from poutine ([2804:1b3:a701:6ff9:81e1:aa01:e63a:53e3])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73e5fc7c942sm991336a34.31.2025.07.16.05.46.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 05:46:29 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415BE15E90
+	for <Stable@vger.kernel.org>; Wed, 16 Jul 2025 12:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752670175; cv=fail; b=RpqBltUBENkOdWFeUAE7UCdI2Qn5fsz0h4LJwD/DJlZcKp8ufKMNiRU882HDRFnOG2/aAUdG4oa8dopbP/hob2zDFOfeKWpCDGI3Wd4RJR742Ks4jB58s7CSH4iuYKkA9UbgZpBIWZ08a5gPLQY3JjcGCf3/epkWPSXIBO49i3w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752670175; c=relaxed/simple;
+	bh=TRGyVTpn+vwQGtTcFK4lPiOrGCLw0LoH6U41UqE/qxc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Ya9CCzGHBpCBEsaR6cjD4V5m6HFGV/Asadv/sGRHJySMPUnTsaSzy14UuutrIJVFp041jILXENQKBGuIxvfoCN521oHg89h+RxHjfRb5enmYPxzTTGZFc6DuE8rrKzFZNyIT6JrMLEWAqhbypo8AOqGqDFVnDkUzBB8B0r0oMT0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NsDPvCHP; arc=fail smtp.client-ip=40.107.93.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WqbmhTJvNdPpYe/hGgrMR7u+fchKtMsZ6R4GdlKEii/9n+vEDfPCFuLudtEFKakd4zJyyjLjNUG14ULOoM63Ak6dI4/8B9O4oPGi9FJ5Y/GGYUb8Om0vizzFs0ftfdrbtWVtoXNX7NaV1C6aL6fH39LNE5yjV8hTRzr0r7aiRqBcByhm007aEqm29yVCnR8ZGvzf4zuXiJHo39RSnfm2HwPWA0KMpMGAsARxcOGWjbq5dqMehMEmipfHDaKIKiZlX/EwenBR/vAerAx0vhP7qudbc/Lm3nXjPksPt0g1XkJBIrlyQxKT+m5Au8scj3E7E4xSO7pZT/fMZ0SDIaH4RQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lCLEi1vjPSOV7SHF4G0uZXo0hJ5ySuzdCxIGlNxDtKs=;
+ b=CQFwPgJoks9YURNTBvzonBJnzKp2j3AKm8mVxHlzIFdsRYpplw1ghThl4UTO1tUHY2TphbDuDHDbx4AKUuS2prqijqRrD2l0FGk+skWXSCZivR5kZKMYQfYnzt//Dih0ZQ4t7TQXkNckk0Aqv7vugclDJ1JIboBWwWtizJEN+2aGiWZU5E43/r/ChcS084Mqb3Jgp5UUAiEJMEvOAfZfsAaHWrThn5hHE1FUjOI6k0iaAfquLbeXuCOtjzopOIJxcrYS5Q43REJ0TIJ8Bq9IXhuVX9HBtS5lc9dfZFyj4UDfo2QwKp0+6aPCczqrJt2sJ6M/ubmdADTkYccCOS9WCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lCLEi1vjPSOV7SHF4G0uZXo0hJ5ySuzdCxIGlNxDtKs=;
+ b=NsDPvCHP4uK+Rwl8+DmJJD+AMISzxJnQpR44OH5UEYaVuTXCm9uCkVRw8ddQ8tsiXuTTGDdarwFRnZN6kFh1HgY8nc5g//qdo281Q24KKEnbRkXSXxFMtIjj+lWR4uZXlXw1ilERwZTakv43niG6XTtsXighhD2e1xrDATt4U2ea+1FxB8uNQVnTqUCcyFjKAMjSdBL7Yv88XHVf5e5mUMuRfnSBXIqyvx/dwZc+dLgCmLgVRQr3lO3ZcK28AwwWxU0D69xOyARc2y9R4JmWDmpX1OMq+7GtEuiur8CEvJbOGU+NZvqkscTFc0fmz75yrToFD4nvh0WkH5grFRqQyQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by IA0PR12MB8208.namprd12.prod.outlook.com (2603:10b6:208:409::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Wed, 16 Jul
+ 2025 12:49:31 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8901.033; Wed, 16 Jul 2025
+ 12:49:31 +0000
+Date: Wed, 16 Jul 2025 09:49:29 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>
+Cc: iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <jroedel@suse.de>,
+	Jerry Snitselaar <jsnitsel@redhat.com>, patches@lists.linux.dev,
+	Stable@vger.kernel.org,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Subject: Re: [PATCH v2] iommu/amd: Fix geometry.aperture_end for V2 tables
+Message-ID: <20250716124929.GA2138968@nvidia.com>
+References: <0-v2-0615cc99b88a+1ce-amdv2_geo_jgg@nvidia.com>
+ <16da73bf-647d-4373-bc07-343bfc44da57@amd.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <16da73bf-647d-4373-bc07-343bfc44da57@amd.com>
+X-ClientProxiedBy: BLAPR05CA0002.namprd05.prod.outlook.com
+ (2603:10b6:208:36e::12) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: [TEST REGRESSION] stable-rc/linux-6.12.y:
- kselftest.seccomp.seccomp_seccomp_benchmark_per-filter_last_2_diff_per-filter_filters_4
- on bcm2837-rpi-3-b-plus
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Wed, 16 Jul 2025 12:46:28 -0000
-Message-ID: <175266998670.2811448.3696380835897675982@poutine>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|IA0PR12MB8208:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40435631-a6c5-4bfc-b75d-08ddc467355d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?df+V+aMFovXcTbQzv3eRGswPcjAOK9npOiYgvUIcoNjPWAu9Q/YK9KXL1u2l?=
+ =?us-ascii?Q?Og34kgpRlRTQxJrdH+Ka2fKyYHXxfEpAHDlJI8VXFu7Mh6lXXlH+E1iOW53g?=
+ =?us-ascii?Q?+LQWgv2/spikx+4LnqyPWrNDMu+WpPLUtNqC/N3bLmk7ArppAQ2dgN8Qtc4A?=
+ =?us-ascii?Q?Bh0XaNaoKOuuI784jgDVOWjUevEKX5XT343Fz10qnHLpjxZIlwWv6nq5hXS+?=
+ =?us-ascii?Q?gRfR7/9fshpU4WFsz9/pGp3cX92IsM+/77UvdchCXqPX8YuqatRtCzetlBub?=
+ =?us-ascii?Q?P6VahWsS9sES6Jodpq1Si/M1mnITgbnHAbMYS7CHgrI/d8CkOJLPVajYA5dm?=
+ =?us-ascii?Q?BcwDtSMnZr7Z/56BZsuXmt9jZjJYcpG8ItKCIMTVYo/0ljmOlNzKIS1TdqwB?=
+ =?us-ascii?Q?4czW4YlQhI6QIdbjIJYE8G9q1jqRDg3F1HAfdSKiKkcEyTD/baQCLWNYl8cb?=
+ =?us-ascii?Q?pP7I9hA1Z0dNUGjtGi8WmkQmPXzNe3v1UCOXIwmdmHcWcYhhBLm9kYNNFEFw?=
+ =?us-ascii?Q?CBcKT+HXgk34HLNtToqDPce9Azh8zchc9DLYabBzD2rNc293l4veG3m9tccR?=
+ =?us-ascii?Q?ZnNNbSFtolNX+k0UeFHjA5JnHgyVPDMnlGBdlBG0BojieOh9uyQ3ecGqnSNR?=
+ =?us-ascii?Q?AKnbEZLRwATSB7+CLmPWp04yA8GRd7UFoDXb8CsDse3xytjFovQ1U/eL+0B3?=
+ =?us-ascii?Q?HU+7HiwMSD6lOpOA13Rzkc48I4+tN1YSNzoDL27Vhm41G2pY4vlnmmfXxgaI?=
+ =?us-ascii?Q?2jcyeXDkusgcczgCkl4maCALoZeU//pRRnAt9bmqi7pgk8wU2Ih7OH4vYBIb?=
+ =?us-ascii?Q?YcSrlWKhR1W7U1wqK1NNjDuxm415wecPvj8XpyuAVxQ7LUmyPyXH75om/2gz?=
+ =?us-ascii?Q?4tUYJ5DbgnfShqvEtYKAUfmCxde+8CjRWGjI+d/2Go2haeSPJ43B3ZrmmRr+?=
+ =?us-ascii?Q?yCgpOsVC4gZWsaFSO1a1V42YMWli7IXR/1uWIpq9FRHNH2s70hkX1vko4JEC?=
+ =?us-ascii?Q?HuwJcQGH7k3+MwC08lgOYxMn0Tum5t5Bn93Y1KIDiDP4viLyYnPk0ZI2aNsP?=
+ =?us-ascii?Q?+ewsP4oKChY9SD0IXK9PWmhAg1iPNYRxAl+cn5sVK2F9MLQ9DwHs1/UTjb06?=
+ =?us-ascii?Q?laRIeeXr+ZJadSFkH9sOTOoDg6XzuZUTrSUuDv1sxkStOo/mBaXtmaUVV3Y5?=
+ =?us-ascii?Q?29sgKrh0FsDpuNFoX4ltS3tQuWq1jAnyccLIPSV1mxo9fPRV74BOyBUMjGd8?=
+ =?us-ascii?Q?J1NkDbvhv3bLQcFWhd503abb2JKSYpIErsnJJAqfkL3FBHvog0EXmpDo2X6M?=
+ =?us-ascii?Q?B0Ly0uwpNbLE0CaUHFJ5PDhowjTyHEe5AD8lJBbYSkv8FHadLm9Fnc0CCTsY?=
+ =?us-ascii?Q?YdsiOuVrNTnevvhhDys0GZNh6q3EV6m3bACaSxnPXKYdLuw7rwl3YsNBJ8Ul?=
+ =?us-ascii?Q?BTURqqH/rDo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?laHHKdYs2c+Cv/GdkxWQtgQEPKoEtXZ25wBUQoy+v5RgYlj8iJG6mrersd8+?=
+ =?us-ascii?Q?yI8xCGdwswVS/j57+MBWFypiKFVII1piGWoQaaXtZK2IkKRf9wwS1soAr1ht?=
+ =?us-ascii?Q?l/DKekexhmWjwkb6UYl9sSi6i+E5hHKV6AkzX+wsxE8DlSyEsT1wPQY+M5aP?=
+ =?us-ascii?Q?11+8MvzOFfIRpjq4MAhyqCaT/5OadDYtLHUuJYVXhQUHZXU05nznzKlMIKj4?=
+ =?us-ascii?Q?prB/A1EC4rXONMdRQntVFfm8wh6/D5T3hzsUaB3syttFlT4sPiEXYyNZaqX/?=
+ =?us-ascii?Q?u6uUbL7uB1CHPKgFOaxeZgiMdpPKkpqEQxRGMECLag9Qf2Mt5HOFDFbOWbEM?=
+ =?us-ascii?Q?OM2T26/OxCc8LW0NSFtEaAe9PJpd7lQoY5IhwiB40Bl90mZ/n1onZ1E2nkgh?=
+ =?us-ascii?Q?WnrjzSac7qJZfP1E77o0wMriVoZCz94D6OA9qT2A2Rcb2zBIuMHyNJiVFN9i?=
+ =?us-ascii?Q?mUVj+KHXRxREvnNkWkzLse5dZXmdwJHKESRGWiifSCAq4KJYxHAL5+vUcoTP?=
+ =?us-ascii?Q?voNuDDR8VnLRtqei8NJLy38SKO3jvpV3ILkQgV1hO+kVhWjUOXpURAIIN1jR?=
+ =?us-ascii?Q?E4wOZkHH98se206p27oDEHuN81YTLZh3ZCQKCHWh86h9AHX2u7zFH+srDNSr?=
+ =?us-ascii?Q?8amV7nrEnEXEsOUiH4jMjTdvjzygZ2gn6ZT5v8C3RK5DhccawgZOmxgkWosN?=
+ =?us-ascii?Q?hvtC0LmNHC57U9diMmfZfzYXbY21nw6KXIyCSUxYCX9GugphSeX+0vJRWDQm?=
+ =?us-ascii?Q?G7Q8ctAPdsBcA4HnzvUaex46yNUgW0Z9Qc5wPAREHZ9zzlw4KoKkyZ3LQmQP?=
+ =?us-ascii?Q?wdW94N2NCFBx1zuaiUdp7uHC9qbQy0t6D5DVy3A77Q1c60vunUzjVAvPuEXE?=
+ =?us-ascii?Q?GeB5L+PCO/TGxBdagEKLxCOoIHYSRsKzhCx5JqPU1z8abIP0X4Z2vIew3+kp?=
+ =?us-ascii?Q?n12lF0lAdgfF48vMJmPBGiLA/0INzNjqINM9tQUDvUpeFAhsnpX68GaiAmjj?=
+ =?us-ascii?Q?jCS0SYdsbj2GsO2psCh+Eoo2Vv9oNpzgF0/Rz9wDLmK774N/wNmV+qZgu3Cs?=
+ =?us-ascii?Q?qGbIgtfAagpfc5cvVrjwrIqb9Ca8Y0IBy2DT7drAG/2DFlGWK5ursVXsiIwA?=
+ =?us-ascii?Q?kKK3/653YSYgtxfdl4DsLEizY2ZhHdzZM2BJnOAkO6GtGjvgv0Rg2Y1yfcR1?=
+ =?us-ascii?Q?ISFAO31x/KKuFeQuPluF6Np11M8Lg3r6wLU+r6SeI5ZfxHsgmmNWijMqWBkG?=
+ =?us-ascii?Q?IXKdaqdPYxVelwFK3pKH6+TiM8FNPnaX/jBp4D1w0MQGvrN5xPvpPdNIEcBd?=
+ =?us-ascii?Q?mAzUwcyZPfXyw2CRlNy8+0W0eFffif88veD25uLRNPj5Km/SgTedgW1YjwHq?=
+ =?us-ascii?Q?0Z0Dl5Ii10IKOK7BiTFGX9M47Nb0NJSylf+Vo/v/3IeTt9Jt1OySFwaPepsK?=
+ =?us-ascii?Q?91FKFWmod0wrhRLFrFspo7gwNkuYuZoMtgrtsD4XogroNfKqDGK+5oZrlOdZ?=
+ =?us-ascii?Q?+HIpSwo8GTSFTmbhIxivjVPq0610JDQEkRry+EOsbSjHOL45XjgX4Nj06Q6v?=
+ =?us-ascii?Q?FufLKcdGX8BTWjzCqaHvyxjG/ZpIu+uODzKrmH/3?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40435631-a6c5-4bfc-b75d-08ddc467355d
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 12:49:31.4818
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ewGIKGE4haeqzD6Xf5aasikEWlr9U50Qydkt4bKYmL3Eih88Nlzcew+3/mTsRnl1
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8208
 
+On Thu, Jun 12, 2025 at 10:54:00AM +0530, Vasant Hegde wrote:
+> > Adjust dma_max_address() to remove the top VA bit. It now returns:
+> > 
+> > 5 Level:
+> >   Before 0x1ffffffffffffff
+> >   After  0x0ffffffffffffff
+> > 4 Level:
+> >   Before 0xffffffffffff
+> >   After  0x7fffffffffff
+> > 
+> > Fixes: 11c439a19466 ("iommu/amd/pgtbl_v2: Fix domain max address")
+> > Link: https://lore.kernel.org/all/8858d4d6-d360-4ef0-935c-bfd13ea54f42@amd.com/
+> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> 
+> Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
 
+Will, can you pick this up please? It seems to have been overlooked
 
-
-Hello,
-
-New test failure found on stable-rc/linux-6.12.y:
-
-kselftest.seccomp.seccomp_seccomp_benchmark_per-filter_last_2_diff_per-filter_filters_4 running on bcm2837-rpi-3-b-plus
-
-giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-branch: linux-6.12.y
-commit HEAD: d50d16f002928cde05a54e0049ddc203323ae7ac
-
-
-test id: maestro:687779f42ce2c1874ed2365d
-status: FAIL
-timestamp: 2025-07-16 10:14:31.303039+00:00
-log: https://files.kernelci.org/kselftest-seccomp-6876c79234612746bbcf9a7e/log.txt.gz
-
-# Test details:
-- test path: kselftest.seccomp.seccomp_seccomp_benchmark_per-filter_last_2_diff_per-filter_filters_4
-- platform: bcm2837-rpi-3-b-plus
-- compatibles: raspberrypi,3-model-b-plus | rbrcm | bcm2837;
-- config: defconfig+arm64-chromebook+kselftest
-- architecture: arm64
-- compiler: gcc-12
-
-Dashboard: https://d.kernelci.org/t/maestro:687779f42ce2c1874ed2365d
-
-
-Log excerpt:
-=====================================================
-t_is_kill_inside pass
-seccomp_seccomp_bpf_global_unknown_ret_is_kill_above_allow pass
-seccomp_seccomp_bpf_global_KILL_all pass
-seccomp_seccomp_bpf_global_KILL_one pass
-seccomp_seccomp_bpf_global_KILL_one_arg_one pass
-seccomp_seccomp_bpf_global_KILL_one_arg_six pass
-seccomp_seccomp_bpf_global_KILL_thread pass
-seccomp_seccomp_bpf_global_KILL_process pass
-seccomp_seccomp_bpf_global_KILL_unknown pass
-seccomp_seccomp_bpf_global_arg_out_of_range pass
-seccomp_seccomp_bpf_global_ERRNO_valid pass
-seccomp_seccomp_bpf_global_ERRNO_zero pass
-seccomp_seccomp_bpf_global_ERRNO_capped pass
-seccomp_seccomp_bpf_global_ERRNO_order pass
-seccomp_seccomp_bpf_global_negative_ENOSYS pass
-seccomp_seccomp_bpf_global_seccomp_syscall pass
-seccomp_seccomp_bpf_global_seccomp_syscall_mode_lock pass
-seccomp_seccomp_bpf_global_detect_seccomp_filter_flags pass
-seccomp_seccomp_bpf_global_TSYNC_first pass
-seccomp_seccomp_bpf_global_syscall_restart pass
-seccomp_seccomp_bpf_global_filter_flag_log pass
-seccomp_seccomp_bpf_global_get_action_avail pass
-seccomp_seccomp_bpf_global_get_metadata_Kernel_does_not_support_PTRACE_SECCOMP_GET_METADATA_missing_CONFIG_CHECKPOINT_RESTORE skip
-seccomp_seccomp_bpf_global_user_notification_basic pass
-seccomp_seccomp_bpf_global_user_notification_with_tsync pass
-seccomp_seccomp_bpf_global_user_notification_kill_in_middle pass
-seccomp_seccomp_bpf_global_user_notification_signal pass
-seccomp_seccomp_bpf_global_user_notification_closed_listener pass
-seccomp_seccomp_bpf_global_user_notification_child_pid_ns pass
-seccomp_seccomp_bpf_global_user_notification_sibling_pid_ns pass
-seccomp_seccomp_bpf_global_user_notification_fault_recv pass
-seccomp_seccomp_bpf_global_seccomp_get_notif_sizes pass
-seccomp_seccomp_bpf_global_user_notification_continue pass
-seccomp_seccomp_bpf_global_user_notification_filter_empty pass
-seccomp_seccomp_bpf_global_user_ioctl_notification_filter_empty pass
-seccomp_seccomp_bpf_global_user_notification_filter_empty_threaded pass
-seccomp_seccomp_bpf_global_user_notification_addfd pass
-seccomp_seccomp_bpf_global_user_notification_addfd_rlimit pass
-seccomp_seccomp_bpf_global_user_notification_sync pass
-seccomp_seccomp_bpf_global_user_notification_fifo pass
-seccomp_seccomp_bpf_global_user_notification_wait_killable_pre_notification pass
-seccomp_seccomp_bpf_global_user_notification_wait_killable pass
-seccomp_seccomp_bpf_global_user_notification_wait_killable_fatal pass
-seccomp_seccomp_bpf_global_tsync_vs_dead_thread_leader pass
-seccomp_seccomp_bpf_TRAP_dfl pass
-seccomp_seccomp_bpf_TRAP_ign pass
-seccomp_seccomp_bpf_TRAP_handler pass
-seccomp_seccomp_bpf_precedence_allow_ok pass
-seccomp_seccomp_bpf_precedence_kill_is_highest pass
-seccomp_seccomp_bpf_precedence_kill_is_highest_in_any_order pass
-seccomp_seccomp_bpf_precedence_trap_is_second pass
-seccomp_seccomp_bpf_precedence_trap_is_second_in_any_order pass
-seccomp_seccomp_bpf_precedence_errno_is_third pass
-seccomp_seccomp_bpf_precedence_errno_is_third_in_any_order pass
-seccomp_seccomp_bpf_precedence_trace_is_fourth pass
-seccomp_seccomp_bpf_precedence_trace_is_fourth_in_any_order pass
-seccomp_seccomp_bpf_precedence_log_is_fifth pass
-seccomp_seccomp_bpf_precedence_log_is_fifth_in_any_order pass
-seccomp_seccomp_bpf_TRACE_poke_read_has_side_effects pass
-seccomp_seccomp_bpf_TRACE_poke_getpid_runs_normally pass
-seccomp_seccomp_bpf_TRACE_syscall_ptrace_negative_ENOSYS pass
-seccomp_seccomp_bpf_TRACE_syscall_ptrace_syscall_allowed pass
-seccomp_seccomp_bpf_TRACE_syscall_ptrace_syscall_redirected pass
-seccomp_seccomp_bpf_TRACE_syscall_ptrace_syscall_errno pass
-seccomp_seccomp_bpf_TRACE_syscall_ptrace_syscall_faked pass
-seccomp_seccomp_bpf_TRACE_syscall_ptrace_kill_immediate pass
-seccomp_seccomp_bpf_TRACE_syscall_ptrace_skip_after pass
-seccomp_seccomp_bpf_TRACE_syscall_ptrace_kill_after pass
-seccomp_seccomp_bpf_TRACE_syscall_seccomp_negative_ENOSYS pass
-seccomp_seccomp_bpf_TRACE_syscall_seccomp_syscall_allowed pass
-seccomp_seccomp_bpf_TRACE_syscall_seccomp_syscall_redirected pass
-seccomp_seccomp_bpf_TRACE_syscall_seccomp_syscall_errno pass
-seccomp_seccomp_bpf_TRACE_syscall_seccomp_syscall_faked pass
-seccomp_seccomp_bpf_TRACE_syscall_seccomp_kill_immediate pass
-seccomp_seccomp_bpf_TRACE_syscall_seccomp_skip_after pass
-seccomp_seccomp_bpf_TRACE_syscall_seccomp_kill_after pass
-seccomp_seccomp_bpf_TSYNC_siblings_fail_prctl pass
-seccomp_seccomp_bpf_TSYNC_two_siblings_with_ancestor pass
-seccomp_seccomp_bpf_TSYNC_two_sibling_want_nnp pass
-seccomp_seccomp_bpf_TSYNC_two_siblings_with_no_filter pass
-seccomp_seccomp_bpf_TSYNC_two_siblings_with_one_divergence pass
-seccomp_seccomp_bpf_TSYNC_two_siblings_with_one_divergence_no_tid_in_err pass
-seccomp_seccomp_bpf_TSYNC_two_siblings_not_under_filter pass
-seccomp_seccomp_bpf_O_SUSPEND_SECCOMP_setoptions_Kernel_does_not_support_PTRACE_O_SUSPEND_SECCOMP_missing_CONFIG_CHECKPOINT_RESTORE skip
-seccomp_seccomp_bpf_O_SUSPEND_SECCOMP_seize_Kernel_does_not_support_PTRACE_O_SUSPEND_SECCOMP_missing_CONFIG_CHECKPOINT_RESTORE skip
-seccomp_seccomp_bpf pass
-seccomp_seccomp_benchmark_native_1_bitmap pass
-seccomp_seccomp_benchmark_native_1_filter pass
-seccomp_seccomp_benchmark_per-filter_last_2_diff_per-filter_filters_4 fail
-seccomp_seccomp_benchmark_1_bitmapped_2_bitmapped pass
-seccomp_seccomp_benchmark_entry_1_bitmapped pass
-seccomp_seccomp_benchmark_entry_2_bitmapped pass
-seccomp_seccomp_benchmark_native_entry_per_filter_4_4_filters_total pass
-seccomp_seccomp_benchmark fail
-+ ../../utils/send-to-lava.sh ./output/result.txt
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=shardfile-seccomp RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_kcmp RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_mode_strict_support RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_mode_strict_cannot_call_prctl RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_no_new_privs_support RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_mode_filter_support RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_mode_filter_without_nnp RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_filter_size_limits RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_filter_chain_limits RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_mode_filter_cannot_move_to_strict RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_mode_filter_get_seccomp RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_ALLOW_all RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_empty_prog RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_log_all RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_unknown_ret_is_kill_inside RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_unknown_ret_is_kill_above_allow RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_KILL_all RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_KILL_one RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_KILL_one_arg_one RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_KILL_one_arg_six RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_KILL_thread RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_KILL_process RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_KILL_unknown RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_arg_out_of_range RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_ERRNO_valid RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_ERRNO_zero RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_ERRNO_capped RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_ERRNO_order RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_negative_ENOSYS RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_seccomp_syscall RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_seccomp_syscall_mode_lock RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_detect_seccomp_filter_flags RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_TSYNC_first RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_syscall_restart RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_filter_flag_log RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_get_action_avail RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_get_metadata_Kernel_does_not_support_PTRACE_SECCOMP_GET_METADATA_missing_CONFIG_CHECKPOINT_RESTORE RESULT=skip>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_basic RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_with_tsync RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_kill_in_middle RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_signal RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_closed_listener RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_child_pid_ns RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_sibling_pid_ns RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_fault_recv RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_seccomp_get_notif_sizes RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_continue RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_filter_empty RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_ioctl_notification_filter_empty RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_filter_empty_threaded RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_addfd RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_addfd_rlimit RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_sync RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_fifo RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_wait_killable_pre_notification RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_wait_killable RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_user_notification_wait_killable_fatal RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_global_tsync_vs_dead_thread_leader RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRAP_dfl RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRAP_ign RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRAP_handler RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_allow_ok RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_kill_is_highest RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_kill_is_highest_in_any_order RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_trap_is_second RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_trap_is_second_in_any_order RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_errno_is_third RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_errno_is_third_in_any_order RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_trace_is_fourth RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_trace_is_fourth_in_any_order RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_log_is_fifth RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_precedence_log_is_fifth_in_any_order RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_poke_read_has_side_effects RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_poke_getpid_runs_normally RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_ptrace_negative_ENOSYS RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_ptrace_syscall_allowed RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_ptrace_syscall_redirected RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_ptrace_syscall_errno RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_ptrace_syscall_faked RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_ptrace_kill_immediate RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_ptrace_skip_after RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_ptrace_kill_after RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_seccomp_negative_ENOSYS RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_seccomp_syscall_allowed RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_seccomp_syscall_redirected RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_seccomp_syscall_errno RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_seccomp_syscall_faked RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_seccomp_kill_immediate RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_seccomp_skip_after RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TRACE_syscall_seccomp_kill_after RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TSYNC_siblings_fail_prctl RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TSYNC_two_siblings_with_ancestor RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TSYNC_two_sibling_want_nnp RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TSYNC_two_siblings_with_no_filter RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TSYNC_two_siblings_with_one_divergence RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TSYNC_two_siblings_with_one_divergence_no_tid_in_err RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_TSYNC_two_siblings_not_under_filter RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_O_SUSPEND_SECCOMP_setoptions_Kernel_does_not_support_PTRACE_O_SUSPEND_SECCOMP_missing_CONFIG_CHECKPOINT_RESTORE RESULT=skip>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf_O_SUSPEND_SECCOMP_seize_Kernel_does_not_support_PTRACE_O_SUSPEND_SECCOMP_missing_CONFIG_CHECKPOINT_RESTORE RESULT=skip>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_bpf RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_benchmark_native_1_bitmap RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_benchmark_native_1_filter RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_benchmark_per-filter_last_2_diff_per-filter_filters_4 RESULT=fail>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_benchmark_1_bitmapped_2_bitmapped RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_benchmark_entry_1_bitmapped RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_benchmark_entry_2_bitmapped RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_benchmark_native_entry_per_filter_4_4_filters_total RESULT=pass>
-<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=seccomp_seccomp_benchmark RESULT=fail>
-+ set +x
-<LAVA_SIGNAL_ENDRUN 1_kselftest-seccomp 1575830_1.6.2.4.5>
-<LAVA_TEST_RUNNER EXIT>
-/ #
-
-=====================================================
-
-
-#kernelci test maestro:687779f42ce2c1874ed2365d
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Jason
 
