@@ -1,126 +1,262 @@
-Return-Path: <stable+bounces-163203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66426B07FBC
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 23:40:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14791B07FCC
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 23:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 854134A739E
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 21:40:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5788B4A723D
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 21:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409962ECD1E;
-	Wed, 16 Jul 2025 21:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF242ECD15;
+	Wed, 16 Jul 2025 21:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nM7HPF5f"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ADcZU4nX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C07FBF0;
-	Wed, 16 Jul 2025 21:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752702002; cv=none; b=lP5GwM1j+HImoziRzgXxE6PlUhA7aHYZN8jw+8cZy4bm1uVBjEu8fsXf0dqufjy+ZdTQSzaYIfZIFKJY3CqvLg+RGnH30GX2juq16ZX/lHSK5uNB1L5pdXSGufp+z9YIWiyIuu4WIkToYr/y2PQOirOqxxqc2o05uQRRREzjXmY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752702002; c=relaxed/simple;
-	bh=jGPLM5UMm6HRhpvpB1axC22mIwzUp6GFM1ylnmPR7AY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bRv1fUkujHSmLGCmOBJ6Emtl1Q47Jk7lHayFSuCTAMXE9zX9BxtgzQMefrRklApUe8NFfpfYS4bPMBAIfDpE29I9SDn7YvSI32ffQmJPZribbGRTKN5pF1reFV0vExwlCMiIbj+fjEnQLtyqYouBv80QoOG6aeRuAIj1TQTqAFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nM7HPF5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC97C4CEE7;
-	Wed, 16 Jul 2025 21:40:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752702000;
-	bh=jGPLM5UMm6HRhpvpB1axC22mIwzUp6GFM1ylnmPR7AY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nM7HPF5fEeW74Nmis2g5+7UXb/oK5Oh90W0ThPw8GTm2naHeiWOLm4oQW0xoD/Y2w
-	 ioVjUnhovsxIFi9bs5qk5whbu+GBt+SpW09yEQJLOYmY0rEJRrkgaQk4LzDDa+Qp9a
-	 mxuoDhGY9k7cJ+3+gkGBCGLROuFjdqmlyyUgkoNLqtBDr/fffeV4pQ/I5VpjL8u0+M
-	 ++oeT6EfGq9NQuaYWKekSRYeKrBsuRGw2OLbUMeRjauSZCPaPnrx1gZLqKP2wwbYNB
-	 8eecrCdtElgJSgRGoQfU0moX0V9C1ltzX3cbBML+nMixF4eusjOkMb503aebI2kf9K
-	 bZqsx6CG5JenA==
-Date: Wed, 16 Jul 2025 14:39:59 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: John Ernberg <john.ernberg@actia.se>
-Cc: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Ming Lei
- <ming.lei@canonical.com>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "linux-usb@vger.kernel.org"
- <linux-usb@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
- event
-Message-ID: <20250716143959.683df283@kernel.org>
-In-Reply-To: <fbd03180-cca0-4a0f-8fd9-4daf5ff28ff5@actia.se>
-References: <20250710085028.1070922-1-john.ernberg@actia.se>
-	<20250714163505.44876e62@kernel.org>
-	<74a87648-bc02-4edb-9e6a-102cb6621547@actia.se>
-	<20250715065403.641e4bd7@kernel.org>
-	<fbd03180-cca0-4a0f-8fd9-4daf5ff28ff5@actia.se>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746B52ECD09
+	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 21:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752702134; cv=fail; b=ucYDC/CIqdgbFh44cPesH0HyAS7nemSb6mSAD2wWntruavxrNN3C8iv13nx4uKYQDMp0Vq7UJB7tnvzS+pyrWT+bgl11O/C9fqubaw3FowSvlyKnWEquSCd/hUEPu8DCJJPRXyQD35QD1piIGsmWfT3S5aJu98lKn/oewq8kPNA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752702134; c=relaxed/simple;
+	bh=y2RcSiu8O44K36jVMUY5PqJ//jPkJzpknNVtqlk3XDc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Ct/yAm8xGUEjoa8x1YcaOBi1VgybZMQzmlmU7szjupsx7SmIgtjolfHKXoMrSoLkV3mRrdRL2iukmFIlCnJT4hfEL3gJIkBnmjISnh5QhuZRkMiYAIuHx9u8BcqLrUwqR1mIHq9ZRCobi2CA6Ll/DtstVzwAZ3eoSImjyZ4C61o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ADcZU4nX; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752702133; x=1784238133;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=y2RcSiu8O44K36jVMUY5PqJ//jPkJzpknNVtqlk3XDc=;
+  b=ADcZU4nXGci7UCmid9kjkUiCuibIjQbEoxP698Ecl3HCng5Fo96nyKpd
+   whbaPp1hoeRecDxrQlAeHgk2uyi304R7xP/u/rpowv7VkeeItBAVnh6+8
+   m/2hCY+6xNCXIrcevowKo+awyPykC3VaeYHkRgq2jP04EYzgV6HJws9VC
+   akIIRPO+nxGYmubdNUn13yibE303Axl+C1v112zIRLOqAcbSUZd6bHTIG
+   305YKH384rgq9Yqd0D8Di+/Ad89CGozY4o+2JkNYvNAwCB0niC8JN/5OK
+   Qz1RDVMjpdTkTCZJzJWef8HGr5cLNj0ihirwnWYtlUyZRFoyGgwGOvzRl
+   A==;
+X-CSE-ConnectionGUID: zh7Eo4QfTrqjeQKZF9ASLg==
+X-CSE-MsgGUID: b2Gzi3j4TXmunc5zvIKibg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54902067"
+X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; 
+   d="scan'208";a="54902067"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 14:42:10 -0700
+X-CSE-ConnectionGUID: 1AjEFPWeQ+eyUb25vXq/Bg==
+X-CSE-MsgGUID: x9Y4BwlsRlSMU8tEZ70X7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; 
+   d="scan'208";a="157018260"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 14:42:10 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Wed, 16 Jul 2025 14:42:09 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Wed, 16 Jul 2025 14:42:09 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.79)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Wed, 16 Jul 2025 14:42:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YTVIZv6h4ZN3NAjbhqJOXRfV7s5NhRs5NTNQoKmL0KO3Mm6bkc01h4nnrBG5drbrt7EcUEYmkmLHnnqxPr5wKabM5bXrV0f+LLc/6KNDfHBCY9gzpAtJ/Chp/xH4kFZOttplCLSWbsv7HSq9qyqcsiPz3Z2sKUEBrvpSYpHu0lV1mK/cTVtPTT9mK00w+X7V3sFNlyx5UZOWtvjUYOXDC3zgY9AY/4ZZPQ3m8Eazc60uANfwTByy/W6K44jkCLuXyv7R5bR1UZc6USUsIJ6/v7qAPD9w3UTD619kThmPzPbjcYhg15BEGtbntE1V6ucvMPQ+CsIQuyQzps/Ekr7PMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AcMdO7AdL67e6fEH1xp66xY4vWVM0KwKLdG5D675/4E=;
+ b=bHLVoq1SyC2MBCNoKJeZhYUMflsRkPiz8igUApf0YwKWHwEq0K2w9cnG0fxXyLwf6g2UZXzFMFiYSbsoY+c4S5dpYKgYjZLzdVxwvrn7eB/08w+iGnyAyn9qQVvwu0uA8lb0rBjxQQqR77kJ0sDcgCEDO+tfFu0QbP0weh4QEfqBlOoY+pBPhoAPMPR1Tz2XTI/O0zMMkMHotykS4VXD/1k3jNWhroRdawcZ12ynKR0bagjgG/809fBAugnWWaYLViSR8GyOa13HK+MPjO+hhUUuLMZri85DSu7KpQqWEkTDWjZ9/8MNgjwNV3uFiG6lgyF+kXa1EGyfNDV8FqoSBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
+ by BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.28; Wed, 16 Jul
+ 2025 21:41:38 +0000
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::8900:d137:e757:ac9f%6]) with mapi id 15.20.8922.028; Wed, 16 Jul 2025
+ 21:41:38 +0000
+Date: Thu, 17 Jul 2025 00:41:32 +0300
+From: Imre Deak <imre.deak@intel.com>
+To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+CC: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 1/7] drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x
+Message-ID: <aHgcjAMrjmzuIZPg@ideak-desk>
+Reply-To: <imre.deak@intel.com>
+References: <20250710201718.25310-1-ville.syrjala@linux.intel.com>
+ <20250710201718.25310-2-ville.syrjala@linux.intel.com>
+ <aHenHJLCSVjYDUKp@ideak-desk>
+ <aHfyKJ_NJL-i8B94@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aHfyKJ_NJL-i8B94@intel.com>
+X-ClientProxiedBy: DU6P191CA0016.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:10:540::10) To SJ0PR11MB4845.namprd11.prod.outlook.com
+ (2603:10b6:a03:2d1::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|BN9PR11MB5276:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67ebc89f-77ae-4893-4552-08ddc4b18b4a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|10070799003|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?qTRHIwnp8TMceJhwTQGo52DPZaQ/M4Z1oUXpRi5kHU0lrO9zyyfskwXCfw?=
+ =?iso-8859-1?Q?smcspcOyadj9fqAT9acSMG0ZFpwEND9jaxqCcXZo7Q8lZAflN4IOv2uxvd?=
+ =?iso-8859-1?Q?5uX4eHVJtL2eFnbzbRcUYnCSOK2nAEq8D3q3ZtsW5h5/Je5jAafepQntGP?=
+ =?iso-8859-1?Q?uPEN//uV9YB+FxGwIqC74JC+tyqu1c97QTOjiTzYi9QquJZ7dXlV7EceMS?=
+ =?iso-8859-1?Q?1dsAOa1Yn/g/Uub2fM/QQobpeTDmLGxa65+RZeCdGlrkM2jv0D/Jzi6xs/?=
+ =?iso-8859-1?Q?hA7itQP2A0mA0AT+XrapIof3dMJu0BJAEVpxR1X4CeIfRtqDfB2pVAqI4a?=
+ =?iso-8859-1?Q?9MFw9nPTXyHvqCRmZQJHdZ474ficN3y7ynbDehZtbIVpThOvRwQ/FVX+sR?=
+ =?iso-8859-1?Q?gM2wqfKpeqaHQdw3VKaaTLXDeBw3Yvj8xhsWz/HD7Mvlze3oXDieTuW42+?=
+ =?iso-8859-1?Q?7n69jdOyE0DR1DUWp2HIVEdNociOskKFj5snfO2zT2D3+Tfy4JtcL4/PR1?=
+ =?iso-8859-1?Q?uGf2z0D0uaSS1k2Em9sZGRFNZe/TxiFdvhNx/0Oog2v1BE0gaXSGTmSuje?=
+ =?iso-8859-1?Q?zKXCClCqOHIDTzQKTGdw3Sz6fpboia59rmbwOSuS8eDCGujOyxzvFqnpiG?=
+ =?iso-8859-1?Q?HSiyidwTSuYCh7cSS+TEwvEmHXm/n8YOCJ1tY7fE79DPAX1BXp6FkHVWRr?=
+ =?iso-8859-1?Q?FH/6POvWkrR4aEnUMyTEdxfdGfYbrQN+T8TVuFhsbDTCZYPbelBnhsO25/?=
+ =?iso-8859-1?Q?quLcuRD7bKy1EIcC65rZGqAMpwdNYgnTGfSlei0r+i/Iw7in7E7CTNlV1N?=
+ =?iso-8859-1?Q?SNcYyE5Z94HfP0M74R7zRqfPLSrlX6dxsmtg5N4J24L+FlgEFMheJJcJtA?=
+ =?iso-8859-1?Q?tpbg//zViS6Kq8gqs91U7FFu9eyWJrCAEeptWJ1m9T9A0gudUt5oJFJSQd?=
+ =?iso-8859-1?Q?/aD+KmGkjB37vRxqmvKr6JKvxU91tFPeVYl63EEnWC7hyGe6w2iAwe+qp6?=
+ =?iso-8859-1?Q?4FWDocFM1TJGNb6ilKrN62BRch9806gNlnf29MiCZKP7Lay36w7Lq3sbYp?=
+ =?iso-8859-1?Q?Nq7b8ckpDusurgRFEVTXIixNirN13t61IRkndyd0JqdIz2cvoaaBkCE5xX?=
+ =?iso-8859-1?Q?d7eO/wOktilqK4WCMWZug3wRh2jR8CInf19H6lU9fDnznGb9uqzOV9Zej7?=
+ =?iso-8859-1?Q?nJPcu2NMp+nSLqrsBFDbfu6MoUWS93pBg8ku/ojLvnhVFwSfZu5T3DJmt7?=
+ =?iso-8859-1?Q?bubaZWJFJtzCnpGY1KvHkc6oqP0sEPI2HQBY1w8FYVMqErBhIL2sOGBJWK?=
+ =?iso-8859-1?Q?FeW+h90HBfBWqyPUfBx1tCiJbMY8tth5irRUgLLtjSc0/Rat/fKcT5QQUf?=
+ =?iso-8859-1?Q?pV/7Nm21AdSrf2zEAud/gp5Zh7meVyU3Q/BgRcPX/dHiMs2j4aeEeZ5KZQ?=
+ =?iso-8859-1?Q?q4mVeV8llYC9PHfAVhJVCqBkn9ffBG2Q0mC19w=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?qE4kaxC4bzMLalyjc/WyAJb0Og7K6PvzzzYwttATLHzjkqmgQkfzKufcyp?=
+ =?iso-8859-1?Q?BU7rpER1E+LWPrS8m5Ajvr/VcFbwACde18DXfeArNxk5uE9QCZJ0SQAJOh?=
+ =?iso-8859-1?Q?pyt6tfiF9ASWxz58FLYI6Fbhy9tjU3LvZS2v76xrf//4afZ++vWIDWSAX/?=
+ =?iso-8859-1?Q?gEzRZtCKy/jSo0YYLCJ/kL4jZlbq9gKBxoeHzJ7jKwZ5ttH0hRNndUUyD7?=
+ =?iso-8859-1?Q?qr3Q2cGUq7ecc1K9N4RWRQ7Z4IiZRg1EvYPeps/PcIw+8Lxdwufqk+4I8K?=
+ =?iso-8859-1?Q?Pc0ZYjjk3QJRbnGBqRHQiwvKy6FC+xzD7Y8EKErE2bCx4vSSI4HXliiVos?=
+ =?iso-8859-1?Q?frlz9izn364puqdeqdRV98ZX5TyoYoh0Hl5CSSsUMY01yICU5L4WcsmfK5?=
+ =?iso-8859-1?Q?Zba8iydLGN6C/G0H5w/36ilVOY3CLKoPH+zujUFhlzuPv2BTZhZgS86xc9?=
+ =?iso-8859-1?Q?8z8rpbjz7FGjC6zjD9g/+ACniSKubkdRmTpdbCHX/6zaOrxb86Z9FQMG7u?=
+ =?iso-8859-1?Q?pvMVOo70kFM+f7igf3Bp4xK4lSSIBxRO2LEBix8rWg8mpZGzIZZ2ZWagup?=
+ =?iso-8859-1?Q?D80UFXv/WqF2ckW+/SaAC1xOmSfrJSCLYt21nPfiUdAyFh8VhuIyS8qVBg?=
+ =?iso-8859-1?Q?8pTEG+1IkJv7qO2z2qu1OcTQ/fv9vl7SCy6qOdU4lPonDaAPVtmx3tc8mr?=
+ =?iso-8859-1?Q?u7vIcTQ3uX9/sbZsNgvR6bLi074Zk4AUGPkFVNs3eKZgLK3n1Kx4wErQtb?=
+ =?iso-8859-1?Q?cbD71mezs1iv+oIFvSN9JsoX3mJmNa0db8V6TOdIE6fEFKu7PYiGXSSl78?=
+ =?iso-8859-1?Q?ENP2Gmu+V1mmqst7q5XCEgKKFDG8cOLZ1fJ0cLCo9fxx0CoD+G4hUhSPsJ?=
+ =?iso-8859-1?Q?tzGheTjM916FdYTDyk5rK7vPIH3/kwGZ2Q9fI3oGim1LOmmQW2mVN58H5I?=
+ =?iso-8859-1?Q?eZblbB3eHuD7uPuG2BrPknwN0gUKmmGMjUNkRknxJ2baEysjxx8l1kdOv2?=
+ =?iso-8859-1?Q?DU0hXHn9+57naoXmawF2BqwgNSZ2YDDyXu+Y9z/kVZO+JbXBoiSpTpso82?=
+ =?iso-8859-1?Q?XbJFGZOxyBud6h8bu2TrItOl2Oagkj5MWxnrrr4ZjEyuUlmz9+Y138Aft0?=
+ =?iso-8859-1?Q?W5L/UxNKCTZuKUCAZSmF/IdPoKgCV1vA5yK49eUdU3vYqNGYxynbufy6+y?=
+ =?iso-8859-1?Q?oi5Ddu4b3DMPhi8eBU/rtcpcQF92tRNQ8YpZbYu/N/2C/Nd0RevwcZ99gG?=
+ =?iso-8859-1?Q?u2tCpOOCSpu10Z9zKgvqITFlUrhuF1XubiIoBOJsOZsTQ/mSS/4CboPcTh?=
+ =?iso-8859-1?Q?mfDlMKW+FzC9C9ikYuMcwkK8NJ5aH1ErG1DeD9i0i43QKz+JTxUq7f9YIp?=
+ =?iso-8859-1?Q?ytw6pyTYcqy5Bh79IEhOObj4qkNZNFAXNKILf/MlIT9JcUqS2t6y1SDZ8R?=
+ =?iso-8859-1?Q?BfS3gyFtj1CgTgZU9LwYMSOywP/l8/fXNbi5TS1z7iqsP5jMtfL2pZrbDR?=
+ =?iso-8859-1?Q?SdE31aTQ7MM0OgD4vPm6IU4rWQsh6he4nTlVEpUBoVap1s2IX+QKkxKoT2?=
+ =?iso-8859-1?Q?M0gad8tNLSclN7XaW3DewQMQrcxa3245IBoah4/sjSI6HtSI5FBBbkeRWE?=
+ =?iso-8859-1?Q?roQlsSvxvyIvwRb7+YVMfis80AHlJLLiz1UoRxZdOde0vCR0RTWCWJn8V0?=
+ =?iso-8859-1?Q?Os6YgpT0nxNgt5Tgx2Y1NM2JOd5+zSbtIvGXPF6F?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67ebc89f-77ae-4893-4552-08ddc4b18b4a
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 21:41:38.5392
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 30KGzUbPIMVdUYHnmYsc5qMRWKQmZ6Ic0lqozgkRcd5cJ/7gOURJXMyryzoJ/nTZjbxtF0ezy+TCGfr9Z+Nlzw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5276
+X-OriginatorOrg: intel.com
 
-On Wed, 16 Jul 2025 14:54:46 +0000 John Ernberg wrote:
-> I ended up with the following log:
+On Wed, Jul 16, 2025 at 09:40:40PM +0300, Ville Syrjälä wrote:
+> On Wed, Jul 16, 2025 at 04:20:28PM +0300, Imre Deak wrote:
+> > On Thu, Jul 10, 2025 at 11:17:12PM +0300, Ville Syrjala wrote:
+> > > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > > 
+> > > On g4x we currently use the 96MHz non-SSC refclk, which can't actually
+> > > generate an exact 2.7 Gbps link rate. In practice we end up with 2.688
+> > > Gbps which seems to be close enough to actually work, but link training
+> > > is currently failing due to miscalculating the DP_LINK_BW value (we
+> > > calcualte it directly from port_clock which reflects the actual PLL
+> > > outpout frequency).
+> > > 
+> > > Ideas how to fix this:
+> > > - nudge port_clock back up to 270000 during PLL computation/readout
+> > > - track port_clock and the nominal link rate separately so they might
+> > >   differ a bit
+> > > - switch to the 100MHz refclk, but that one should be SSC so perhaps
+> > >   not something we want
+> > > 
+> > > While we ponder about a better solution apply some band aid to the
+> > > immediate issue of miscalculated DP_LINK_BW value. With this
+> > > I can again use 2.7 Gbps link rate on g4x.
+> > > 
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 665a7b04092c ("drm/i915: Feed the DPLL output freq back into crtc_state")
+> > > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > 
+> > Reviewed-by: Imre Deak <imre.deak@intel.com>
+> > 
+> > IIUC, port_clock for g4x is ref * m / n / p, where for DP the fixed
+> > ref=96000 and m/n/p values from g4x_dpll are used.
+> > 
+> > Ftr, m = 135, n = 6, p = 8 would give port_clock = 270000, but there's
+> > no intel_limit for DP, so can't know if these params are within range.
 > 
-> [   23.823289] cdc_ether 1-1.1:1.8 wwan0: network connection 0
-> [   23.830874] cdc_ether 1-1.1:1.8 wwan0: unlink urb start: 5 devflags=1880
-> [   23.840148] cdc_ether 1-1.1:1.8 wwan0: unlink urb counted 5
-> [   25.356741] cdc_ether 1-1.1:1.8 wwan0: network connection 1
-> [   25.364745] cdc_ether 1-1.1:1.8 wwan0: network connection 0
-> [   25.371106] cdc_ether 1-1.1:1.8 wwan0: unlink urb start: 5 devflags=880
-> [   25.378710] cdc_ether 1-1.1:1.8 wwan0: network connection 1
-> [   51.422757] rcu: INFO: rcu_sched self-detected stall on CPU
-> [   51.429081] rcu:     0-....: (6499 ticks this GP) 
-> idle=da7c/1/0x4000000000000000 softirq=2067/2067 fqs=2668
-> [   51.439717] rcu:              hardirqs   softirqs   csw/system
-> [   51.445897] rcu:      number:    62096      59017            0
-> [   51.452107] rcu:     cputime:        0      11397         1470   ==> 
-> 12996(ms)
-> [   51.459852] rcu:     (t=6500 jiffies g=2397 q=663 ncpus=2)
-> 
->  From a USB capture where the stall didn't happen I can see:
-> * A bunch of CDC_NETWORK_CONNECTION events with Disconnected state (0).
-> * Then a CDC_NETWORK_CONNECTION event with Connected state (1) once the 
-> WWAN interface is turned on by the modem.
-> * Followed by a Disconnected in the next USB INTR poll.
-> * Followed by a Connected in the next USB INTR poll.
-> (I'm not sure if I can achieve a different timing with enough captures 
-> or a faster system)
-> 
-> Which makes the off and on LINK_CHANGE events race on our system (ARM64 
-> based, iMX8QXP) as they cannot be handled fast enough. Nothing stops 
-> usbnet_link_change() from being called while the deferred work is running.
-> 
-> As Oliver points out usbnet_resume_rx() causes scheduling which seems 
-> unnecessary or maybe even inappropriate for all cases except when the 
-> carrier was turned on during the race.
-> 
-> I gave the ZTE modem quirk a go anyway, despite the comment explaining a 
-> different situation than what I am seeing, and it has no observable 
-> effect on this RCU stall.
-> 
-> Currently drawing a blank on what the correct fix would be.
+> The P divider can only be some multiple of 5.
 
-Thanks for the analysis, I think I may have misread the code.
-What I was saying is that we are restoring the carrier while
-we are still processing the previous carrier off event in
-the workqueue. My thinking was that if we deferred the
-netif_carrier_on() to the workqueue this race couldn't happen.
+Right, missed that, so with this ref clock setting an exact link rate
+doesn't seem to be possible indeed (within the VCO range used for all
+other output types on g4x).
 
-usbnet_bh() already checks netif_carrier_ok() - we're kinda duplicating
-the carrier state with this RX_PAUSED workaround.
-
-I don't feel strongly about this, but deferring the carrier_on()
-the the workqueue would be a cleaner solution IMO.
+> > > ---
+> > >  drivers/gpu/drm/i915/display/intel_dp.c | 6 ++++++
+> > >  1 file changed, 6 insertions(+)
+> > > 
+> > > diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+> > > index f48912f308df..7976fec88606 100644
+> > > --- a/drivers/gpu/drm/i915/display/intel_dp.c
+> > > +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+> > > @@ -1606,6 +1606,12 @@ int intel_dp_rate_select(struct intel_dp *intel_dp, int rate)
+> > >  void intel_dp_compute_rate(struct intel_dp *intel_dp, int port_clock,
+> > >  			   u8 *link_bw, u8 *rate_select)
+> > >  {
+> > > +	struct intel_display *display = to_intel_display(intel_dp);
+> > > +
+> > > +	/* FIXME g4x can't generate an exact 2.7GHz with the 96MHz non-SSC refclk */
+> > > +	if (display->platform.g4x && port_clock == 268800)
+> > > +		port_clock = 270000;
+> > > +
+> > >  	/* eDP 1.4 rate select method. */
+> > >  	if (intel_dp->use_rate_select) {
+> > >  		*link_bw = 0;
+> > > -- 
+> > > 2.49.0
+> > > 
+> 
+> -- 
+> Ville Syrjälä
+> Intel
 
