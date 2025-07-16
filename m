@@ -1,149 +1,169 @@
-Return-Path: <stable+bounces-163182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14B7B07B47
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:35:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B6CB07B58
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:40:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 016931C23DA6
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 16:35:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 507FDA408CF
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 16:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BACA2F50BC;
-	Wed, 16 Jul 2025 16:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAA22F3C3E;
+	Wed, 16 Jul 2025 16:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kU2tvkbr"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bMT+OiY4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9135433AC;
-	Wed, 16 Jul 2025 16:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD63825C810
+	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 16:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752683719; cv=none; b=hiCXVyuLSX3vCbICgfklJgF9u/0vY7EBOQxDQZM0c3OGg14k4GuZT5y+f9fcq0CVjKZLjAhz4HpO1oHJLp8bLDVu6dkbbmOrCckhEOiU+1HFrKshL6ORhDNjsFLwDIOUZl9Oo29jK7x16ShErzigaG/r9jKQybvbbqzoUGDrIZ4=
+	t=1752684054; cv=none; b=IZmAxmSO2sVTtzlbmGucbDMP5Ph7ayJjccpUb8R2AwrdqJR91KUVRk1m3cpnFcWHo4sy8Uu4BPPptye9vK2+ckJWCAw5/gdO2ge6p9GJgh8ZXcGL3i/AgwYASzmDhIb1rgS0vrDnvoNMPcYY9rA3YTUFNzNSIt9LG94wo7xLD9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752683719; c=relaxed/simple;
-	bh=fmClr32Q4msr69AXsHeosKKjatBXvD+V9yqILAzONGk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aoeTXK+LzuN4CPTSb5/LeloBOytMfgW0wD8A26pkoyatOTXR/WtF++mtmtIBReCka7Hn8zsm26BZWumSHYTW9478YLehqFC/dlU9kkxBYPRxJ7GD91LaJkHVNezarFy7rQN27olAsf5LaBpHNc8DLVXigVa/KFMOWruBtwFNZaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kU2tvkbr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850D5C4CEE7;
-	Wed, 16 Jul 2025 16:35:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752683717;
-	bh=fmClr32Q4msr69AXsHeosKKjatBXvD+V9yqILAzONGk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kU2tvkbrA58raN8cljGdVARUQniEUwtda+Zmqi7IbA+mS8FxlGcKi2KBox6SU+o7b
-	 tHCSzg3XWjarbBElfre0JDpV+fILOfYboXgkvGx2PaxWH9xyoCC/TOaZqOF/azGl8H
-	 8GrNCFdl4nTinSQ0A1TGmKPj9avPco8HAzpN5RquezleMSEvyAULRg5MaTj0et5CAp
-	 JhztAPtMEDSK7cUfECfoOuUQLxn0AXtT60vg+ll/Qc3MCQqf0KAtAwejBi3T7la45z
-	 KYJWMpUh8+pugutyGQU/20kZbL99TsCer929mlmMiX8lcIs6mnT+y1vaCmqgYNEL8K
-	 /2wCcYbqxGOSQ==
-Message-ID: <e46aadbf-51c6-4e09-bdaa-374698b406f3@kernel.org>
-Date: Wed, 16 Jul 2025 18:35:11 +0200
+	s=arc-20240116; t=1752684054; c=relaxed/simple;
+	bh=CbvY90bhc3awJD+x7JLrq/FPlnYJA1NgO71SEWJ9yPY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RjutWFz8ojiVZtY9y8++UPOm+qqJGDUrV/Ktsb2EwRiP8hxLSf7LylAHiiLC6/rUlX9nanfJmu4YPOeT4/pJ9/GQkau5iyNEUO7kUvGeeLIFp2/xvvkUOVIRtRI0YiaS9fPeD5YuIZ4cHfJHrMYV04IWBdHtyfolrXHiyp59/bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bMT+OiY4; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-23dd9ae5aacso192775ad.1
+        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 09:40:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752684052; x=1753288852; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BBVaXc10A4jRruPriSxBpOpyudYSZuIpQyGPNMCEI5A=;
+        b=bMT+OiY4ZwKwOHoKbo6HNa4WOL2HxC51sx2NAM4dPC3xfpjzPFWtWPYTs8JqWeCdwn
+         eosotO4KyvDAuXznqasHWWOSTcOxpXXvK5alYhVpLRoSELt/CEDhuVdwwJ72DFtpq0yj
+         209xp2R01numQsatcTu6geXnCAlGKa/bZDgEPcRvmzSMfiDKVpQ6iwv/kq0gj6Zm6XwK
+         pWzci5PZJ5G4rJYAG2BpiIdnKhIMNMJvNOIOa999IxVWh6l8tLzjc/fo5AZvNRI01Vy4
+         5qTJqt1aYAdVTywwrNFXoY0VOnKDy+7EvQZIJ56G/HN8f4ejX4+ofVZ7sn+9hqY7iMQU
+         IAVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752684052; x=1753288852;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BBVaXc10A4jRruPriSxBpOpyudYSZuIpQyGPNMCEI5A=;
+        b=nn9x7DdPlZEdwhUhqxzd42ttl0eXtgg4hPaZZ9WJl6QBXBCojBg6B1fppwsBXmFN0o
+         TdZSaCot7OxS5OePEpKojOpZxGDBzXjz/Hs1/k9bx2fz/VUFb/AOn2KOI2XippJtTAW/
+         qV7O7jMFaWgY8RbtPirHr+PGKssgV3EczXW3og2GB8ZjCOSb7G7Kz8hWX/CU6flJ9mJK
+         +a0x5G3FgBn1Xl33LXAJCG15aL/+HuTfWAfF+4Kna2KUOfGyWaPrSwumsGAKVI6pLDo9
+         70QQkRLZl9WDNMngttx/h9EZVsK0r1mUOTOKRNroBhLYTkr38fwmdViFP2gRC4rLKsDb
+         rrJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV6kzmSAJaqjZppNp5RfIHDxo5JavxVbKgubF/uDOVnzLN3F1kOztH8Aa+kKwLDatDEuH96uG0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt/WeO/nV8Fsh1F1+8XSmodEgfR74mhuDSas8eobzFB6/gLQvr
+	2rpPGe3g7wpuW4LkrIdTzoVuDLlsRQsJfcufFY4XZpQyAjjM4c5MegZGMfo+6MH1zqKPsNhrMmR
+	Saj9FBS04WiUyLTaaShdDdDKOUjyxW5i4bcmnTJt+
+X-Gm-Gg: ASbGncuFqQlTezhOGHdkLnaPSvFn2DVYf7GPy3pQzFT3k4/rPqbw18NuN7s3thz0ksD
+	/tnymbrUpfc+LXM2zOfDV5tVuaH8+3RhhkAQAVmeDINm/tV+1tE/VWjaYrERUOsLBagDUIc5swp
+	LPgTs1UJp9soGGLOt6xYdppHZS5N4KBMI/kquQhnRMI5sJs+kD3sgWcnRtRXNhTm+C9xKTkgAw+
+	/Fx/FKa8JurPvUj
+X-Google-Smtp-Source: AGHT+IHYQT5VXdCLT8hxrmg+0yfaXwrBL7UyuNaYscaOfd+9wb7KNDQaQqvXeihVJ+Iuuagh7P0Alzo8AVqhcyLotSs=
+X-Received: by 2002:a17:902:e5c2:b0:235:f298:cbbb with SMTP id
+ d9443c01a7336-23e2644036cmr3043915ad.26.1752684051728; Wed, 16 Jul 2025
+ 09:40:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net v2 0/2] selftests: mptcp: connect: cover alt modes
-Content-Language: en-GB, fr-BE
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Christoph Paasch <cpaasch@openai.com>, Davide Caratti <dcaratti@redhat.com>,
- Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250715-net-mptcp-sft-connect-alt-v2-0-8230ddd82454@kernel.org>
- <20250715185308.2ad30691@kernel.org> <20250716072602.386a8963@kernel.org>
- <ae6d333a-f3b2-4463-b930-b4caf56b39f8@kernel.org>
- <20250716083632.72854bd5@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20250716083632.72854bd5@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250716161753.231145-1-bgeffon@google.com> <CADnq5_P+a2g_YzKW7S4YSF5kQgXe+PNrMKEOAHuf9yhFg98pSQ@mail.gmail.com>
+In-Reply-To: <CADnq5_P+a2g_YzKW7S4YSF5kQgXe+PNrMKEOAHuf9yhFg98pSQ@mail.gmail.com>
+From: Brian Geffon <bgeffon@google.com>
+Date: Wed, 16 Jul 2025 12:40:15 -0400
+X-Gm-Features: Ac12FXyULN47EIoDp4OeB3JlE-FJDnHi4sIL1ptSRWoQg8L9yjUdgo_BV4vPoWI
+Message-ID: <CADyq12zB7+opz0vUgyAQSdbHcYMwbZrZp+qxKdYcqaeCeRVbCw@mail.gmail.com>
+Subject: Re: [PATCH] drm/amdgpu: Raven: don't allow mixing GTT and VRAM
+To: Alex Deucher <alexdeucher@gmail.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>, christian.koenig@amd.com, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, Yunxiang Li <Yunxiang.Li@amd.com>, 
+	Lijo Lazar <lijo.lazar@amd.com>, Prike Liang <Prike.Liang@amd.com>, 
+	Pratap Nirujogi <pratap.nirujogi@amd.com>, Luben Tuikov <luben.tuikov@amd.com>, 
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, Garrick Evans <garrick@google.com>, 
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 16/07/2025 17:36, Jakub Kicinski wrote:
-> On Wed, 16 Jul 2025 16:55:21 +0200 Matthieu Baerts wrote:
->>>> Looks like the failures that Paolo flagged yesterday:
->>>>
->>>> https://lore.kernel.org/all/a7a89aa2-7354-42c7-8219-99a3cafd3b33@redhat.com/
->>>>
->>>> are back as soon as this hit NIPA :(
->>>>
->>>> https://netdev.bots.linux.dev/contest.html?branch=net-next-2025-07-16--00-00&executor=vmksft-mptcp&pw-n=0&pass=0
->>>>
->>>> No idea why TBH, the tests run sequentially and connect.sh run before
->>>> any of the new ones.  
->>
->> And just to be sure, no CPU or IO overload at that moment? I didn't see
->> such errors reported by our CI, but I can try to reproduce them locally
->> in different conditions.
-> 
-> None that I can see. The test run ~10min after all the builds completed,
-> and we wait now for the CPU load to die down and writeback to finish
-> before we kick off VMs. The VMs for various tests are running at that
-> point, the CPU util averaged across cores is 66%.
+On Wed, Jul 16, 2025 at 12:33=E2=80=AFPM Alex Deucher <alexdeucher@gmail.co=
+m> wrote:
+>
+> On Wed, Jul 16, 2025 at 12:18=E2=80=AFPM Brian Geffon <bgeffon@google.com=
+> wrote:
+> >
+> > Commit 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v=
+2)")
+> > allowed for newer ASICs to mix GTT and VRAM, this change also noted tha=
+t
+> > some older boards, such as Stoney and Carrizo do not support this.
+> > It appears that at least one additional ASIC does not support this whic=
+h
+> > is Raven.
+> >
+> > We observed this issue when migrating a device from a 5.4 to 6.6 kernel
+> > and have confirmed that Raven also needs to be excluded from mixing GTT
+> > and VRAM.
+>
+> Can you elaborate a bit on what the problem is?  For carrizo and
+> stoney this is a hardware limitation (all display buffers need to be
+> in GTT or VRAM, but not both).  Raven and newer don't have this
+> limitation and we tested raven pretty extensively at the time.
 
-Thank you for having checked, and for the explanations!
+Thanks for taking the time to look. We have automated testing and a
+few igt gpu tools tests failed and after debugging we found that
+commit 81d0bcf99009 is what introduced the failures on this hardware
+on 6.1+ kernels. The specific tests that fail are kms_async_flips and
+kms_plane_alpha_blend, excluding Raven from this sharing of GTT and
+VRAM buffers resolves the issue.
 
-OK, so maybe running stress-ng in parallel to be able to reproduce the
-issue might not help. We will investigate.
+Brian
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+>
+>
+> Alex
+>
+> >
+> > Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v=
+2)")
+> > Cc: Luben Tuikov <luben.tuikov@amd.com>
+> > Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
+> > Cc: Alex Deucher <alexander.deucher@amd.com>
+> > Cc: stable@vger.kernel.org # 6.1+
+> > Tested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> > Signed-off-by: Brian Geffon <bgeffon@google.com>
+> > ---
+> >  drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/d=
+rm/amd/amdgpu/amdgpu_object.c
+> > index 73403744331a..5d7f13e25b7c 100644
+> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+> > @@ -1545,7 +1545,8 @@ uint32_t amdgpu_bo_get_preferred_domain(struct am=
+dgpu_device *adev,
+> >                                             uint32_t domain)
+> >  {
+> >         if ((domain =3D=3D (AMDGPU_GEM_DOMAIN_VRAM | AMDGPU_GEM_DOMAIN_=
+GTT)) &&
+> > -           ((adev->asic_type =3D=3D CHIP_CARRIZO) || (adev->asic_type =
+=3D=3D CHIP_STONEY))) {
+> > +           ((adev->asic_type =3D=3D CHIP_CARRIZO) || (adev->asic_type =
+=3D=3D CHIP_STONEY) ||
+> > +            (adev->asic_type =3D=3D CHIP_RAVEN))) {
+> >                 domain =3D AMDGPU_GEM_DOMAIN_VRAM;
+> >                 if (adev->gmc.real_vram_size <=3D AMDGPU_SG_THRESHOLD)
+> >                         domain =3D AMDGPU_GEM_DOMAIN_GTT;
+> > --
+> > 2.50.0.727.gbf7dc18ff4-goog
+> >
 
