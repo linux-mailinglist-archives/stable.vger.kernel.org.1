@@ -1,175 +1,101 @@
-Return-Path: <stable+bounces-163108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F52EB073A2
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 12:40:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D094B073A8
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 12:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB44A1AA368F
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 10:40:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17E103AE032
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 10:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F8A2C326D;
-	Wed, 16 Jul 2025 10:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CFD2F2729;
+	Wed, 16 Jul 2025 10:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ytNnNUZS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mury89Oz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAEC239E62
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 10:39:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E515E2BF017;
+	Wed, 16 Jul 2025 10:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752662394; cv=none; b=WyU+9XYzhP/Hbs7RdHwqkLOqivsMWTQQMWyLpEaUgVODw44cU5quT4L+dYsc5SZZqugTy8HUPrXVENV/L6PF2mgWjA0cDUkqk9CFn0UpAdh2xRqAH9SUJ0O2qFDgQw+MqXGY4MQ254wQDKDyVHfho5sRGGYQCEOGRKJF+Du9BmI=
+	t=1752662442; cv=none; b=HJo/alGZQtIZf7QDvxr6E+AtAQGTDxQEUuPdHqV99dDY3h6th1mIwwCB+YceGRQFbCWRML4rWgAeHjxv4LurLJVS5L+pBN3/1OE08Yqtkhvbt5Uojx76mVD5YV/WLSE6/fMACVc+SMkZbRS17XkRkyKKVnK3tBWcxU6x4gcYfy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752662394; c=relaxed/simple;
-	bh=F8wVUDm7p/zZnHJ/u8Gt2hH6CgWFmzDGXRIM+sGzbFA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tf/i9mWQYniSmTJApr3CkXczu90NO1kum2B7Yx7iHVcZJWzuLSamPC4au6Yy+1YMhMIq7+hTlzbSiqC3pA2v1NotXfhp5H1uJxg9M2S6UA8QvrJieDCHKW5LK52YCZZmh8+OTbdTnV2uelOutdAv1uvuGMoQ1zp6wssUsecDwNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ytNnNUZS; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-713fba639f3so56427257b3.1
-        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 03:39:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752662392; x=1753267192; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=spxFppZ565q58hNSB1wuY7WIKcmbQWfH+dTajO6FGEM=;
-        b=ytNnNUZSrzQj1UPfLZWF7h1gQ25H6Gn3sZA3P/ozMgJvngA9GlMK6DYxJqlZQoccZN
-         VMMwSwl1PEDZ20doSZaY2UEWCBmvO7aut/MAzahhySrISRCFgkfRNh6LXEiaItQPmnRc
-         Fj9sOfDLSWkUIatBGg0N8x/Ld4lSE/8oSJn+sTNUvKlPNeWRciLqMK2/7mrw+im2AoR0
-         VQlo4O5xZIAYpQHSW1v7I7+ntY0XR4zxSD4NHJSGIKjVlxonL32pF8GKktDZMJTHefnv
-         22Hyww4UmFdbTlb38cCbK9+PZeMLQpEQlz/Ja+FGZQVWe64o6r5YFRkwFWN06nfzJ3cC
-         JdKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752662392; x=1753267192;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=spxFppZ565q58hNSB1wuY7WIKcmbQWfH+dTajO6FGEM=;
-        b=VA/reKGdDdmwvyzTwBCc2QIa033sCKXv2CBSr/5uPCrGWquypy49Hmsj70buzVqDue
-         p3CkyN6LTRzAzpSN7vau7oMUhhmigFUpn2izxroTSGm8lzoCQemI0YTBlDayB9MSexO7
-         OzmXBAudnQRfbvhkaKPjTowPNleWmTgiIL8zeaU9QsmrwdlPzMJQmBXsmrFXvoh0zFU9
-         WW4uc8/Ln6x7Y+Ug/jy5NXSrduKYP/vepApzgH6y34lVbucoxQlHo9Mg2HnmHaF0/53t
-         0uIQxhZuGyNAKpO3SOG6u8GhNalz3QMJ8YOIcQqe2vwxVNX6jCH+QQsLyUPICql39/aB
-         Jufg==
-X-Forwarded-Encrypted: i=1; AJvYcCUL15sflgSUUuLFjoCj4k2PnC+x3juHKQykqJXNQ0QCnaG/R6LEyrSNZ0+1Jt9iXAnfswUGlWU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGvLFxq5UyO4CdEnV8mexOX5snoaagQhtpcFvxZxuFWe3e3CD0
-	xAdEAJDbsdDgtAksCPerIiyq4DHOpyXoLoh2k2nkpKfIMysPLbrqr0btnKZhzIQgaq8djHaCOn/
-	7ZusEI1UFHpVYiUi5XOpKopRPVxsrG1mnb67pU6P8eg==
-X-Gm-Gg: ASbGnctsI8PXWayLe+Xcu13n3gvUC9MI5YR+TDNH+AKE6ynEdOxx5R7bp22c/12H3uE
-	iWoqOEvKVOvxU0R6FCuCS/Gr5rsX1kwRjBmeEr72IkdcmcXB9cofCMIiM9+diWmjs+3R6PvYfuN
-	YLJFu9GGfgOpy3QMFtjTJ6dQyfs4rTrGBuImaiuK9ckpJJQLYmivb+lcM7sjh6uhHxfeqPUbQae
-	oX75i0Q
-X-Google-Smtp-Source: AGHT+IF0fbD9xXcmRbFab8+66c7b8WI4hPM/SlyXx9ZK29aUbT3fe6CoVipyvf7SMmS8ze5O7yHLCnWwytc7DSE8mss=
-X-Received: by 2002:a05:690c:4b06:b0:710:edf9:d940 with SMTP id
- 00721157ae682-7183517f055mr36324777b3.36.1752662391508; Wed, 16 Jul 2025
- 03:39:51 -0700 (PDT)
+	s=arc-20240116; t=1752662442; c=relaxed/simple;
+	bh=xCdt81aUKI8YyBuZv9UakAigjVuigu7AxbizcOBUdCg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HeyJxekaYu/iOPxCMT2qMydajnlqQUA/nZ0fhXhYVKkE43PvzPkDLvSAX4Z2WSqAvL2w3hidlIC2Vmq4n9JfidOkHeQ0F0iZ7tUO+yhh/MVC6l/LCjHpwsjU6eJP5FnU3jxFn6TXucFKJpHMvTawxZX+nJYfy8fvEimtcfFshOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mury89Oz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52065C4CEF0;
+	Wed, 16 Jul 2025 10:40:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752662441;
+	bh=xCdt81aUKI8YyBuZv9UakAigjVuigu7AxbizcOBUdCg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Mury89OzPV//rsFTOM3DOr6hLILlVJQfVl7rVuK3lNVsvmm6d7FbkJSxI9sVkTgr5
+	 bZ/kDKM8N9yef+phtwmTVcUEdTTKOA/2Dt5ro1xE2bnOlt6TpMvwlYE8jfUPwkLZjp
+	 Q2LVNvKmUjxuwtSzvN+aBNKfQIj6lSEd3Co6Ikpn+ycwvuLtOBVOGmxUWEa429ogz/
+	 w9WvB01TleRJYzr4MgXDzwEA9N3NB7ObfT1lba0MuBDMvaYniovLH4ut7qiqoVGvFh
+	 IT52mBZMl8GzPrlahGRDoaeJwS5zJfZ5I/2H32OVSbJ3cYKaHgfRGcxzwqX/5Bn9F0
+	 fHWRmYXalZerA==
+Date: Wed, 16 Jul 2025 11:40:34 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com,
+	Jann Horn <jannh@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH 6.6 000/111] 6.6.99-rc2 review
+Message-ID: <adfba2d7-5d79-4e79-ac12-04222597fad9@sirena.org.uk>
+References: <20250715163542.059429276@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250711140143.2105224-1-ricky_wu@realtek.com>
-In-Reply-To: <20250711140143.2105224-1-ricky_wu@realtek.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 16 Jul 2025 12:39:15 +0200
-X-Gm-Features: Ac12FXzAflLzV_PiWmkWi2BzOQOEd6W9JptnxrNdS1PY8_PEfhd7R2kkyB8Xxls
-Message-ID: <CAPDyKFpmt4eTfBOWphH3LtoW9jAujBs7oAFqqnxkJvP+r83tkw@mail.gmail.com>
-Subject: Re: [PATCH] misc: rtsx: usb: Ensure mmc child device is active when
- card is present
-To: Ricky Wu <ricky_wu@realtek.com>
-Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org, 
-	mingo@kernel.org, kai.heng.feng@canonical.com, stable@vger.kernel.org, 
-	Gavin Li <gfl3162@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oZtJ2YSO0FLvUQ9J"
+Content-Disposition: inline
+In-Reply-To: <20250715163542.059429276@linuxfoundation.org>
+X-Cookie: osteopornosis:
 
-+ Gavin
 
-On Fri, 11 Jul 2025 at 16:02, Ricky Wu <ricky_wu@realtek.com> wrote:
->
-> When a card is present in the reader, the driver currently defers
-> autosuspend by returning -EAGAIN during the suspend callback to
-> trigger USB remote wakeup signaling. However, this does not guarantee
-> that the mmc child device has been resumed, which may cause issues if
-> it remains suspended while the card is accessible.
-> This patch ensures that all child devices, including the mmc host
-> controller, are explicitly resumed before returning -EAGAIN. This
-> fixes a corner case introduced by earlier remote wakeup handling,
-> improving reliability of runtime PM when a card is inserted.
->
-> Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
+--oZtJ2YSO0FLvUQ9J
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This seems reasonable to me, but perhaps some of the USB maintainers
-should have a closer look to see if this makes sense. Nevertheless,
-feel free to add:
+On Tue, Jul 15, 2025 at 06:37:11PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.99 release.
+> There are 111 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Moreover, we had a related bug-report/fix posted for the
-rtsx_usb_sdmmc driver [1] not that long ago. Do you know if $subject
-patch solves this problem too? I have looped in Gavin, if he has some
-additional comments around this.
+--oZtJ2YSO0FLvUQ9J
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Kind regards
-Uffe
+-----BEGIN PGP SIGNATURE-----
 
-[1]
-https://lore.kernel.org/all/20250510031945.1004129-1-git@thegavinli.com/
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmh3gaEACgkQJNaLcl1U
+h9B+UAf8D4y6Gfn+IDqqFm3KN8gyM8OV9MrL4C675w3k9IryoaT+2Dr6XVYTZesc
+ahPXW441oa9gsOA4+bqttlK9v9K7WZPCMp5Y5CLEaLWnkOFzuCFAAk0I0beyQ97l
+k1rkrjQV7iQkeeBYgQ+zMX8wo9TQA1VxReXL42sDBv9KMAAM25I4/TbFNQgQV2UL
+58e/sk5gLFhOHemZv8r07WjlkbelG4f4V/smCWXOMChJmXwiaPYvzANLSpdnuUZP
+MPDEECHgIrpndSCQ7ZPJrXWdwH6Oy6C1ljkxd3mlNiAd0/hcS6sz0BZJzFSQIyfz
+bqzawZR9GFU2IB6GFWk4pQBuRZ8CTA==
+=8lLW
+-----END PGP SIGNATURE-----
 
-> ---
->  drivers/misc/cardreader/rtsx_usb.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/misc/cardreader/rtsx_usb.c b/drivers/misc/cardreader/rtsx_usb.c
-> index 148107a4547c..d007a4455ce5 100644
-> --- a/drivers/misc/cardreader/rtsx_usb.c
-> +++ b/drivers/misc/cardreader/rtsx_usb.c
-> @@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct usb_interface *intf)
->  }
->
->  #ifdef CONFIG_PM
-> +static int rtsx_usb_resume_child(struct device *dev, void *data)
-> +{
-> +       pm_request_resume(dev);
-> +       return 0;
-> +}
-> +
->  static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
->  {
->         struct rtsx_ucr *ucr =
-> @@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
->                         mutex_unlock(&ucr->dev_mutex);
->
->                         /* Defer the autosuspend if card exists */
-> -                       if (val & (SD_CD | MS_CD))
-> +                       if (val & (SD_CD | MS_CD)) {
-> +                               device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
->                                 return -EAGAIN;
-> +                       }
->                 } else {
->                         /* There is an ongoing operation*/
->                         return -EAGAIN;
-> @@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
->         return 0;
->  }
->
-> -static int rtsx_usb_resume_child(struct device *dev, void *data)
-> -{
-> -       pm_request_resume(dev);
-> -       return 0;
-> -}
-> -
->  static int rtsx_usb_resume(struct usb_interface *intf)
->  {
->         device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
-> --
-> 2.25.1
->
+--oZtJ2YSO0FLvUQ9J--
 
