@@ -1,339 +1,153 @@
-Return-Path: <stable+bounces-163077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD34AB06FC1
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:59:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCE9B06FC6
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 10:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AEA03B66E2
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 07:56:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF728189FB76
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 08:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0FE128ECF0;
-	Wed, 16 Jul 2025 07:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5923328F533;
+	Wed, 16 Jul 2025 08:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CFspYoFd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNiKB5aT"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2070.outbound.protection.outlook.com [40.107.101.70])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73B329B8C3
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 07:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752652462; cv=fail; b=hGJdm1hfbmn+MKqvpOrJfcPODZXGe6faDIs0vzGKnqRouAzVnVBt5E8zD9YCVFrgkjGNAQof+2A+AfMuM+sgjNBqvV0YETTfhrESJODclGENFbJghKt3SR489bYdUf2BrUo3qVZNihthI7OapOgFqBnwmj4rXae5hiF36WzajBE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752652462; c=relaxed/simple;
-	bh=AnL6F4R801gurUPN2GW6M1H881nGc7FygmiA5HbTqao=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ko+OoVJdp2BrdldH+D7Re4r0y49q66myAkn1O/mPJco4p3cmsE9c7iZiD8Pzodqj5xlBOtltSISQ6lzZmBGyYUyERlMClLUhzlcYAiYdy4U+ftSs9/aADbFcEmHE6nUn3TV8NYX2k96urL4LCRyrRTp+iwIabieIcNVEzEjOxEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CFspYoFd; arc=fail smtp.client-ip=40.107.101.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KFqMzR3SdqFfTl83jOY6EzvHwIozgZMEF5Vu2WqjmZ+RZcBd08E7NoD50o6CaAQU7V7EUFpwXi7E0tLviTK/EyWrMiZj4+A9cjHmeZnE5n2I+J8gtLWp586rOOF4CTTrCXseGyvcbpsq/VAy3WqwaDeDqj8vx7597dMVIl8gDKXZOOTd6yscXSu2UNL+wkIqQCFwDRTc+QFIHtCiTFr3Ead+bTURvHRpxGzFlE4v+g0PYQGlNGyE0UnMSmkWXkWnhBrFgW1UaTiFEQzQCp0ld3DUcbyUevKTsVLYnYMCUW4EZXioLoCscdVg6Ztodetnf3TSmS/6INKeFqJJ3MOncg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cFnQouIESrmapN08yQxgx94zAzTBjXLbs1ysBJcfRgY=;
- b=voOKfXcapDRRKTFvNy06TtV4NXlSMnA3ZWs5VKiTRBBwfPajIli1K3NFVkmySUYYiqpAMidLACh5sDIaLN0IS6hZI/Pqjf9CP+YKkQUgVdmL8mQ4KDGLpH23+Ek2sbhWPDCGSTJy+xehWE1yGKO+OlSCpBvFzPL95FowR6sDCRw+gkrnVDoeclfL06gR061XECNAU9HyUdC3qXQuM5QoYpn5Dtvc87OaqyjdLJIK5XnIqROkQn6HRHED3TOVURKCp3XKO06gMgHE8jHW5yT+2K9D8t/4YZNc3xUr5+1WQW0RoPqorvm9vm8YRTD3gpcYc2S5ZBrW1J64sYcO7LX1Xg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cFnQouIESrmapN08yQxgx94zAzTBjXLbs1ysBJcfRgY=;
- b=CFspYoFdLPWYouI5J7O8X7ds+S1ryRHMgrbrA9m/yujBe6Zb4mvpxD+EzVUDk7Am00kz6aoenVGGgGpJaJm8LhxtYfYyN1OdoWGIfGOW88GG0VpTFJqDe9HaM/Eq/zEE4229vZrvKoGxeVYzyPk2DUsda9hp2oWGwhA63RA0sBs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH8PR12MB7301.namprd12.prod.outlook.com (2603:10b6:510:222::12)
- by PH8PR12MB8431.namprd12.prod.outlook.com (2603:10b6:510:25a::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Wed, 16 Jul
- 2025 07:54:19 +0000
-Received: from PH8PR12MB7301.namprd12.prod.outlook.com
- ([fe80::a929:e8eb:ef22:6350]) by PH8PR12MB7301.namprd12.prod.outlook.com
- ([fe80::a929:e8eb:ef22:6350%4]) with mapi id 15.20.8901.033; Wed, 16 Jul 2025
- 07:54:06 +0000
-Message-ID: <84c5780d-e633-4b16-b62e-d78f058f869a@amd.com>
-Date: Wed, 16 Jul 2025 13:23:58 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] drm/amdgpu: Reset the clear flag in buddy during
- resume
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- matthew.auld@intel.com, matthew.brost@intel.com
-Cc: alexander.deucher@amd.com, stable@vger.kernel.org
-References: <20250716074127.240091-1-Arunpravin.PaneerSelvam@amd.com>
- <20250716074127.240091-2-Arunpravin.PaneerSelvam@amd.com>
- <78151115-2003-4adf-afa5-5e41667ee658@amd.com>
-Content-Language: en-US
-From: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>
-In-Reply-To: <78151115-2003-4adf-afa5-5e41667ee658@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN4P287CA0100.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:278::10) To PH8PR12MB7301.namprd12.prod.outlook.com
- (2603:10b6:510:222::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E050628D8CD;
+	Wed, 16 Jul 2025 08:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752652813; cv=none; b=PYM+TFhMmXrATlDX9LQLO8AA1F7ukZIb1XFdVr1FUBCk2IC6l5ftPNg0Tm+UKqzpHw0jJTmm2NyepR+Y7BGRN9sf0B4ZP3O+o/1IpYm4zoN1C4ZhaPC9i6DhqIY6v6/QthXlMg/PU5GIuHYjpfHpN868vbxxzc4e2yiuPh1roOU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752652813; c=relaxed/simple;
+	bh=8ezUyebd/+zk1M3qi3OCn5hHE2PAlIsXeL4mPMikVcg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e3c26XL4QZJjpAqXSKP3p9VK8CH6+tkgtdxdzlsvZpdpAzWQxPlI7RE25MJegDN9HAkbSdK5w8kV+StKCbqDBNaSeoQ2nVjNwjwHBf3ldjEaPkn/7KkdT7wstRFluOGdBQ1rtzAKFOWQYAcdML0wq8ecxSVbK61jE1D9A2NZTGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNiKB5aT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1996FC4CEF0;
+	Wed, 16 Jul 2025 08:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752652812;
+	bh=8ezUyebd/+zk1M3qi3OCn5hHE2PAlIsXeL4mPMikVcg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WNiKB5aTgXzKdw+PMKZx1ARZ3GAbmFhcS5FaAxL/Z06vrDiQ+qS+RQ3Y1BFq43gNe
+	 4KedC8w12Kk/qoZmcnB3yUqCOgR8rRz4GG9ZkU9hvBUZd/NTzm1EZLSRGzVhqc19I1
+	 eujLaQCZizKkEi/h/0UTApnet6WALWb9FwmNVDgk=
+Date: Wed, 16 Jul 2025 10:00:10 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: accessrunner-general@lists.sourceforge.net, linux-usb@vger.kernel.org,
+	llvm@lists.linux.dev, patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: atm: cxacru: Zero initialize bp in
+ cxacru_heavy_init()
+Message-ID: <2025071616-flap-mundane-7627@gregkh>
+References: <20250715-usb-cxacru-fix-clang-21-uninit-warning-v1-1-de6c652c3079@kernel.org>
+ <2025071618-jester-outing-7fed@gregkh>
+ <20250716052450.GA1892301@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7301:EE_|PH8PR12MB8431:EE_
-X-MS-Office365-Filtering-Correlation-Id: 50788455-1e58-40cb-1099-08ddc43df014
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dWI0UkNjZ24wdWw1c3Z3bTdka2MwdGFBODFZU2E0V3ZmdzZXN1hUUS9KRE1S?=
- =?utf-8?B?blpReFVqSWl6TDlXaUkzV2lVUnVxNUlqYXNvM1VkSkU3OXNHODNDT1lCUUd5?=
- =?utf-8?B?c0l0RXNURU1wd3BDWE5jaHlIcUQ3ZGdmRlNmYytCdFVZY2poeWlaVDdBaXhU?=
- =?utf-8?B?emZiMDFVRzUwNDExOVZhMnc3TWJVaUFjWW9MK0JrU1hWdUxoYzhBT3M1a3RV?=
- =?utf-8?B?bEhGRHlKNngwbTl5WCt5YVk2MnlrNEJQV2lUUnpUNS95KzRoTUZ4UUEvcnRq?=
- =?utf-8?B?N2lTN1M2Mll4N2U1QzFiS1FhTkZiWStNUTNmUEljTXUwV0JCL3FrZGRrZGNP?=
- =?utf-8?B?azJ6cDZHUEdaN2lNaGdiSXNIM0pqQ2ZoclRpV2J6WitvS3Z6VXhVeHN5S1Np?=
- =?utf-8?B?OTlqbG0vSFc0Z0REUWxaN2hBYmFMM3VkMjc5VWttYnF2enVwNDB4aVppTlor?=
- =?utf-8?B?c2RTRlNxQVZJbll0R0FVUlFlYlkzT1JDL1FMcEk0L0l3UXdCeVFQaG9Icms1?=
- =?utf-8?B?dVJsWDhtVC84aGpRT1I3K3oyYkJxSktQMjlkVyt3YXpjZTZibDlyUmtKZzZW?=
- =?utf-8?B?MVVVNUVzSXVsWERsVlFSb1FEZDJlOS84Lzltd1dnTk9KVERvS3YzWHpNcmJk?=
- =?utf-8?B?T01DSldLQnVsTEozdkcyVmNyaEh1TitSSkRSdm52UEw2SiticFEzblpkSVRD?=
- =?utf-8?B?UEN3UkxyZDZLTGlSSlBQdGk3SzRpejRvR2RMaDN4Z2ZhOGM0TEFVMEVTcTJH?=
- =?utf-8?B?cFVmWmJRR3JqZjE0bjd5TFl0eXh3TzhBMU9uNkh3UGgyR3duRjRWNHJjUVFs?=
- =?utf-8?B?UDQwVlJmTUJiNUFvS3NqcWFpWDhlN3JlM3VoczVvYUZRRFY0dGhVcDZ5N2ov?=
- =?utf-8?B?aTM0RVVqL2ZLdGxxdTJqdFdxYm1uUHN3QlVmQ0JaMnBlSll4Um9HdlB3WUo3?=
- =?utf-8?B?YkplbHVhbXY1dG54WUkzakdCUnZBY1VZSzVoM08rM0VBQjNtaVhZTi8rVkl3?=
- =?utf-8?B?NzVGS0JrNGd1SkNjaitDaEZHcWY4SnAxNkhTOW5UMXg3MWVkT3dGNTdsRWlH?=
- =?utf-8?B?Zk9jZ3NkcW5iWlZYTi85MEc5dE1UeUR1UWZDeE5ObTdxS3JKRzNBUS81RGdL?=
- =?utf-8?B?R3ZiWmppZ241bHN0SGJvcFV2cGNiYXJNelRxTUIxTDl1UlZlbGhYSUYxWlBu?=
- =?utf-8?B?TG9BTnVBditES3F0UkVuVHV5OUF5ZEJCdVdyREtNSVFVU0w1SXRMZTdXTTJt?=
- =?utf-8?B?dEhGbm9pUkNPUjZrV21UcjdqOHZ4NWdaQ1JQeDFYREdCNUh6MWd6L25KMDlM?=
- =?utf-8?B?ZEZFemU2RjdPRWxxQzJPSi9TSDJFNnQvcVArckhBallmVnVWRzk1b2RPU0JF?=
- =?utf-8?B?TjBET01GMVVBbGp4c3N1MG42VjJ5dFUrZ0g5amRTRTEzbTdrVVJQSWVlMkJj?=
- =?utf-8?B?R1hhOTRDWStmQkRaaTd0amZVUENOSE1QS3NUa1VyaEpvZDRJYzlaRFNEaXFB?=
- =?utf-8?B?L3lPelZlaCt4ZmxPZUpuVU5GM1hqUUsrbmt2bUtBWTVFd05DQ3JqNUUrS0tC?=
- =?utf-8?B?MFNOR3VLRVRpVlU4VkJ3aG5NdU1FRWRHcVlkaDJvaFdEVVNNcDg5Nk5IRVA2?=
- =?utf-8?B?djBlWWo5R3lGNE5HamJXVHNVU1NUWEhCOUJEZVNtaTVMV0s0bncwZDFMbU1S?=
- =?utf-8?B?cVpMSXNSM2libDZyeFdQdmVhYU5VVmdkbkNDZm01UC83Qlh0Y2VIY3U0ZzFk?=
- =?utf-8?B?Smw4bnUwTWxNSGQxYWIyaE0zUXFoMTlkK0M4eHp0NUszaHlZRlRoVU1ZcDdF?=
- =?utf-8?Q?bs7sDxDz6BY2hOmn20vHsklJPWXvKUD/XYD6c=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bUNvSGM5UkNNajFHbkNMMnZnTlNTc1hrYzZ4VHI1WXFob1ljZkhyTHg3anRu?=
- =?utf-8?B?a1M0Q2xueEErQWVYWjA2N0JPTDkyUkw2cGliaUo0Z251elNVMERDN1lGSEl3?=
- =?utf-8?B?Kzg0a3pmSHBzN0ltUG90K2xPdzdVNTBBNm1mWXdqL21jZlY4cXZ1OER3L0wz?=
- =?utf-8?B?Qk5GV0IrUnd6R2liMUIxMGE2bjFSSmFNZm5XNEJhUU1DTDdldUJneHBHTjA2?=
- =?utf-8?B?VE5ERnNHS0EwaklKSnNyeFVDUktvWTcvUnovaDZ3ZTFkeXFWYnN0SEZaNHBO?=
- =?utf-8?B?ZWN4WTBieC9TZ3RqbmpLb25zUG9jZ044Z1hTSW9mVkZRTXFRNU1QMkU1MDVF?=
- =?utf-8?B?YjU4WDFYN1JPYlVWM2VKVDFYYUFWckp5TFRqOGhGMFZjVDgwTkxvanhZcDhH?=
- =?utf-8?B?NURDWm9MUFFQa3ZxNWE2U1JkS2pETSt1Qll2ZkdCWFVPTVlQazVlMDByUFkw?=
- =?utf-8?B?TFQvcEhsZTVaV3VMRFRzUW1ZK2FoeGpIc1RqdEwxNXBFU3Z3R01ub2IvNzhn?=
- =?utf-8?B?NlR3YjR5OUtWZ0hmalMxMkloMFB5TWRIZFhLS1EwYzArNnVORG1WR3ZWdjc4?=
- =?utf-8?B?eHRQTyt2b3lxa09JTGM5YmdVVDNIN1RObnc3S2pSTE4zR3lveTQwOXhuRWtZ?=
- =?utf-8?B?MU44aWttT01IdzFGQkpqam1vMTFDWm1EeS9hbFg3MHZJSjliMFI3RWxIMnV1?=
- =?utf-8?B?bjY1MnNPeUNIdno0ME1Naytpem5tZUFiMTQ0eHRVbzJibzBUR2NMVWhJUjRD?=
- =?utf-8?B?aWZTRWQ0VjJIQlpPMkRJRzJCcE9VYm1pVWJTMlRUQk9pR3IyVFFRZDZBL2ZU?=
- =?utf-8?B?a2tyRElrMEVhcEhDVzEwc29XUGQxeEMvS3ZPTFEwUjJCMno3UXhHeVVjQThW?=
- =?utf-8?B?bHJoOVF1OXZ5TnZBcnJFK0xZWmQxbkVtL2xBdU1yUVdwOWdIZ2FCNlNnWlFi?=
- =?utf-8?B?VXA0bmVwa1NvaDk1RE1kb1VmVEF1QjRPRTRQM0xzbkhSUWIzT2FnUXBxZ2Vq?=
- =?utf-8?B?NWt3eEw5NjVXUzJmWXQyRk80eHdRWEpoVmR2ZEMvdjF3b2M1eHhnUVI1YUNB?=
- =?utf-8?B?T1A4ZWgwQXpBVW1MSENuVFpaQ2x5TFZqRTd1bURSdnBvbXBGVG50Wk1wcEQ1?=
- =?utf-8?B?YjBUZitxbXAyb3prUEdGdS9NM0tGWXlFZWNadkVTQ1JMQjZ2MU9OOEtyOUNQ?=
- =?utf-8?B?MGJyVlM0U295QnIramZ2bUxiTnl3MjdTbG1WczJKYmxFOWdWRlFDaTh6MXJQ?=
- =?utf-8?B?NC9adjJENm1Ndm9veFNQUHJuQk1XQzAyUmFNbUxvRjdnVG5jQ2d2SG4ybEJh?=
- =?utf-8?B?a2pBK0lIUTZzWWd0WTZtdUFSZGJZK3dOdnlVcHdZV2oxZ0ptR2dUbVJ0MTZh?=
- =?utf-8?B?c0ZtTjlxdTQyeVB3Wmh0VnVOZksxbklmM1RDYmxicjdHaU43K2pzMnYzR1RN?=
- =?utf-8?B?NkIyT1hxYndsMVllTks2UzA3bDJ4djVGa2dWVmQ3cXVjZjIyMWNjZVBQcy9P?=
- =?utf-8?B?OEkwZlk3WlBscEUxVWZSQ3ZySm94T2lIQytFcjJ0S29mTldIeFcvQk9FK21z?=
- =?utf-8?B?QU1vMXB6ZGtKWkRqa2NFdG5iWGlyUGtadDhrOEZENE90aW9ObUFLUFBZeGhw?=
- =?utf-8?B?dTFwc3AyaEZ1cVF1cU1qUE9paytYUGNlUEdrTTRUcktDeUJDb3Q3VUxhdENH?=
- =?utf-8?B?cWtCcXZXOHZRRVFNNkx1Wm1taThaWWVGZ0xpTmN0VTAxWnJkOWsrTnBMaVZO?=
- =?utf-8?B?NnhLaDc0aWFmMFIvWERnak0rV0pybnM1MkFkdEJDY3RZSGJFQVJQaEQ0OUdr?=
- =?utf-8?B?bUtjaTFYd01NN012K000amZPdlB5Um9UZzNBaVpxWUZQaVpyMGNBVm9RaVB0?=
- =?utf-8?B?RE1rckcrYVBWcFljVFZqQUdva2NHNVk0NDdFOEsySlZUUE9Ka3h1T0phejdY?=
- =?utf-8?B?NWhHdlRsWnVlZ1NLL2NXZWtwV0tWSk1UUWl4eC8ydjNqdmJrV0JVY0FyWFBX?=
- =?utf-8?B?ZXZiRDZoS24reGN3RjV4a3gveTVoL2VLSzd0VUZyNTZncTcyTG4wdHVzQ3k3?=
- =?utf-8?B?ZHlzU2I1cVhseEdiU1JPNjZlUWMrNDRLQ2FKS05wSDdHT2dWOTNQZVBDelkz?=
- =?utf-8?Q?xXopZSdgOl04fYopMp+bDSCIu?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50788455-1e58-40cb-1099-08ddc43df014
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7301.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 07:54:06.0394
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1i39dHQMWqQ5c7pruoyDWDff36NaV0kfHkZ+YPwUPCze+6NWOCEev8QnXLFpFj53t3RX1bBhR0eQMWaTYV5gLw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB8431
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250716052450.GA1892301@ax162>
 
+On Tue, Jul 15, 2025 at 10:24:50PM -0700, Nathan Chancellor wrote:
+> On Wed, Jul 16, 2025 at 07:06:50AM +0200, Greg Kroah-Hartman wrote:
+> > On Tue, Jul 15, 2025 at 01:33:32PM -0700, Nathan Chancellor wrote:
+> > > After a recent change in clang to expose uninitialized warnings from
+> > > const variables [1], there is a warning in cxacru_heavy_init():
+> > > 
+> > >   drivers/usb/atm/cxacru.c:1104:6: error: variable 'bp' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
+> > >    1104 |         if (instance->modem_type->boot_rom_patch) {
+> > >         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >   drivers/usb/atm/cxacru.c:1113:39: note: uninitialized use occurs here
+> > >    1113 |         cxacru_upload_firmware(instance, fw, bp);
+> > >         |                                              ^~
+> > >   drivers/usb/atm/cxacru.c:1104:2: note: remove the 'if' if its condition is always true
+> > >    1104 |         if (instance->modem_type->boot_rom_patch) {
+> > >         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >   drivers/usb/atm/cxacru.c:1095:32: note: initialize the variable 'bp' to silence this warning
+> > >    1095 |         const struct firmware *fw, *bp;
+> > >         |                                       ^
+> > >         |                                        = NULL
+> > > 
+> > > This warning occurs in clang's frontend before inlining occurs, so it
+> > > cannot notice that bp is only used within cxacru_upload_firmware() under
+> > > the same condition that initializes it in cxacru_heavy_init(). Just
+> > > initialize bp to NULL to silence the warning without functionally
+> > > changing the code, which is what happens with modern compilers when they
+> > > support '-ftrivial-auto-var-init=zero' (CONFIG_INIT_STACK_ALL_ZERO=y).
+> > 
+> > We generally do not want to paper over compiler bugs, when our code is
+> > correct, so why should we do that here?  Why not fix clang instead?
+> 
+> I would not really call this a compiler bug. It IS passed uninitialized
+> to this function and while the uninitialized value is not actually used,
+> clang has no way of knowing that at this point in its pipeline, so I
+> don't think warning in this case is unreasonable.
 
-On 7/16/2025 1:21 PM, Christian König wrote:
-> On 16.07.25 09:41, Arunpravin Paneer Selvam wrote:
->> - Added a handler in DRM buddy manager to reset the cleared
->>    flag for the blocks in the freelist.
->>
->> - This is necessary because, upon resuming, the VRAM becomes
->>    cluttered with BIOS data, yet the VRAM backend manager
->>    believes that everything has been cleared.
->>
->> v2:
->>    - Add lock before accessing drm_buddy_clear_reset_blocks()(Matthew Auld)
->>    - Force merge the two dirty blocks.(Matthew Auld)
->>    - Add a new unit test case for this issue.(Matthew Auld)
->>    - Having this function being able to flip the state either way would be
->>      good. (Matthew Brost)
->>
->> v3(Matthew Auld):
->>    - Do merge step first to avoid the use of extra reset flag.
-> You've lost me with that :)
+No, I take it back, it is unreasonable :)
 
-Just realized after sending this mail. Added in v5 :)
+At runtime, there never is a uninitialized use of this pointer, the
+first time it is used, it is intended to be filled in if this is a "boot
+rom patch":
+	ret = cxacru_find_firmware(instance, "bp", &bp);
 
-Thank you,
+Then if that call fails, the function exits, great.
 
-Arun.
+Then later on, this is called:
+	cxacru_upload_firmware(instance, fw, bp);
+so either bp IS valid, or it's still uninitialized, fair enough.
 
->
->> Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
->> Suggested-by: Christian König <christian.koenig@amd.com>
->> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: stable@vger.kernel.org
->> Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
->> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
-> Acked-by: Christian König <christian.koenig@amd.com>
->
->> ---
->>   drivers/gpu/drm/amd/amdgpu/amdgpu_device.c   |  2 +
->>   drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h      |  1 +
->>   drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 17 ++++++++
->>   drivers/gpu/drm/drm_buddy.c                  | 43 ++++++++++++++++++++
->>   include/drm/drm_buddy.h                      |  2 +
->>   5 files changed, 65 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
->> index 723ab95d8c48..ac92220f9fc3 100644
->> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
->> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
->> @@ -5327,6 +5327,8 @@ int amdgpu_device_resume(struct drm_device *dev, bool notify_clients)
->>   		dev->dev->power.disable_depth--;
->>   #endif
->>   	}
->> +
->> +	amdgpu_vram_mgr_clear_reset_blocks(adev);
->>   	adev->in_suspend = false;
->>   
->>   	if (amdgpu_acpi_smart_shift_update(dev, AMDGPU_SS_DEV_D0))
->> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
->> index 215c198e4aff..2309df3f68a9 100644
->> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
->> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
->> @@ -155,6 +155,7 @@ int amdgpu_vram_mgr_reserve_range(struct amdgpu_vram_mgr *mgr,
->>   				  uint64_t start, uint64_t size);
->>   int amdgpu_vram_mgr_query_page_status(struct amdgpu_vram_mgr *mgr,
->>   				      uint64_t start);
->> +void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev);
->>   
->>   bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
->>   			    struct ttm_resource *res);
->> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
->> index abdc52b0895a..07c936e90d8e 100644
->> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
->> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
->> @@ -782,6 +782,23 @@ uint64_t amdgpu_vram_mgr_vis_usage(struct amdgpu_vram_mgr *mgr)
->>   	return atomic64_read(&mgr->vis_usage);
->>   }
->>   
->> +/**
->> + * amdgpu_vram_mgr_clear_reset_blocks - reset clear blocks
->> + *
->> + * @adev: amdgpu device pointer
->> + *
->> + * Reset the cleared drm buddy blocks.
->> + */
->> +void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev)
->> +{
->> +	struct amdgpu_vram_mgr *mgr = &adev->mman.vram_mgr;
->> +	struct drm_buddy *mm = &mgr->mm;
->> +
->> +	mutex_lock(&mgr->lock);
->> +	drm_buddy_reset_clear(mm, false);
->> +	mutex_unlock(&mgr->lock);
->> +}
->> +
->>   /**
->>    * amdgpu_vram_mgr_intersects - test each drm buddy block for intersection
->>    *
->> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
->> index a1e652b7631d..a94061f373de 100644
->> --- a/drivers/gpu/drm/drm_buddy.c
->> +++ b/drivers/gpu/drm/drm_buddy.c
->> @@ -405,6 +405,49 @@ drm_get_buddy(struct drm_buddy_block *block)
->>   }
->>   EXPORT_SYMBOL(drm_get_buddy);
->>   
->> +/**
->> + * drm_buddy_reset_clear - reset blocks clear state
->> + *
->> + * @mm: DRM buddy manager
->> + * @is_clear: blocks clear state
->> + *
->> + * Reset the clear state based on @is_clear value for each block
->> + * in the freelist.
->> + */
->> +void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
->> +{
->> +	u64 root_size, size, start;
->> +	unsigned int order;
->> +	int i;
->> +
->> +	size = mm->size;
->> +	for (i = 0; i < mm->n_roots; ++i) {
->> +		order = ilog2(size) - ilog2(mm->chunk_size);
->> +		start = drm_buddy_block_offset(mm->roots[i]);
->> +		__force_merge(mm, start, start + size, order);
->> +
->> +		root_size = mm->chunk_size << order;
->> +		size -= root_size;
->> +	}
->> +
->> +	for (i = 0; i <= mm->max_order; ++i) {
->> +		struct drm_buddy_block *block;
->> +
->> +		list_for_each_entry_reverse(block, &mm->free_list[i], link) {
->> +			if (is_clear != drm_buddy_block_is_clear(block)) {
->> +				if (is_clear) {
->> +					mark_cleared(block);
->> +					mm->clear_avail += drm_buddy_block_size(mm, block);
->> +				} else {
->> +					clear_reset(block);
->> +					mm->clear_avail -= drm_buddy_block_size(mm, block);
->> +				}
->> +			}
->> +		}
->> +	}
->> +}
->> +EXPORT_SYMBOL(drm_buddy_reset_clear);
->> +
->>   /**
->>    * drm_buddy_free_block - free a block
->>    *
->> diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
->> index 9689a7c5dd36..513837632b7d 100644
->> --- a/include/drm/drm_buddy.h
->> +++ b/include/drm/drm_buddy.h
->> @@ -160,6 +160,8 @@ int drm_buddy_block_trim(struct drm_buddy *mm,
->>   			 u64 new_size,
->>   			 struct list_head *blocks);
->>   
->> +void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear);
->> +
->>   void drm_buddy_free_block(struct drm_buddy *mm, struct drm_buddy_block *block);
->>   
->>   void drm_buddy_free_list(struct drm_buddy *mm,
+But then cxacru_upload_firmware() does the same check for "is this a
+boot rom patch" and only then does it reference the variable.
+
+And when it references it, it does NOT check if it is valid or not, so
+even if you do pre-initialize this to NULL, surely some other static
+checker is going to come along and say "Hey, you just dereferenced a
+NULL pointer, this needs to be fixed!" when that too is just not true at
+all.
+
+So the logic here is all "safe" for now, and if you set this to NULL,
+you are just papering over the fact that it is right, AND setting us up
+to get another patch that actually does nothing, while feeling like the
+submitter just fixed a security bug, demanding a CVE for an impossible
+code path :)
+
+So let's leave this for now because:
+
+> This type of warning
+> is off for GCC because of how unreliable it was when it is done in the
+> middle end with optimizations. Furthermore, it is my understanding based
+> on [1] that just the passing of an uninitialized variable in this manner
+> is UB.
+> 
+> [1]: https://lore.kernel.org/20220614214039.GA25951@gate.crashing.org/
+
+As gcc can't handle this either, it seems that clang also can't handle
+it.  So turning this on for the kernel surely is going to trip it up in
+other places than just this one driver.
+
+If you _really_ want to fix this, refactor the code to be more sane and
+obvious from a C parsing standpoint, but really, it isn't that complex
+for a human to read and understand, and I see why it was written this
+way.
+
+As for the UB argument, bah, I don't care, sane compilers will do the
+right thing, i.e. pass in the uninitialized value, or if we turned on
+the 0-fill stack option, will be NULL anyway, otherwise why do we have
+that option if not to "solve" the UB issue?).
+
+thanks,
+
+greg k-h
 
