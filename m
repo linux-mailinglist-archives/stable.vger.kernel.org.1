@@ -1,163 +1,136 @@
-Return-Path: <stable+bounces-163084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD2CB071BB
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 11:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6AC2B071C3
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 11:34:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F7AA7B716A
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:30:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5642C7B7473
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E202F1FC2;
-	Wed, 16 Jul 2025 09:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6406323C50A;
+	Wed, 16 Jul 2025 09:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Hlx14o4A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LF0sUrre"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FCB2EF646
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 09:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AFC2EAB8D;
+	Wed, 16 Jul 2025 09:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752658327; cv=none; b=YM/ejytxhxsF3x6yyYHWRrLnq0T8sEyViKInTL7/LnfamMNk2XmxGRd55Wn4GqBlgI1rBqcw9lZX5dktTxdZYkKzRoC5JD8PfafZwYpPzB/3p8sGCdjHf41YPhEg8tyK3HeZWbVPRzxdaqGe94SB6Grk5+HtgdIBl4jXcVkBtw0=
+	t=1752658480; cv=none; b=gcb0ZGq7JTlolFJMzbIn3if8FkSNLkWX/PHZ42IwfjyMhjA6ZU110A9Zdg7c/8buNy8fcuN8F2fYZ6gEtyR2g6CqWnObpg0mpu2bllG+q4P9f2B5KvuQhTvgeQBDKl7rqJ7FLoiCgB83wfJ9xCFSlbXYl9wnIvYhbds1oeD1+90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752658327; c=relaxed/simple;
-	bh=KoC0Gnw4tQwX09Mh2nGi8LKThqV4C12CyHgjb/vzF98=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lhJtpGScDFH3BbD7YFh1Nr8DlwlWXCFoSLMAerwF3bo7Nc/Ds0WMbGqIU6xz8UhfS9q641QI6aCwuWs9czoeI4vccX9vvGMkr7+MEl49ybRBQc0vmKXPSks4GfujJnsAcBga8Y6DiCaqbd2++EbiCh2Pp8AwKhX1OANCQaaCWjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Hlx14o4A; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a8244e897fso68898161cf.1
-        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 02:32:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1752658324; x=1753263124; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=wYGQ+EFxCY8Kqn3gT5PrXpdAsZ+hUnOgnFL6azab8Q0=;
-        b=Hlx14o4AaAzgxNDBo/s01E5I1FwRWVVIfVz5qmvLKS0ZTW7//tVgdsYMyNQi93eTcH
-         HJYYdTZqX3+LZtO1oVP2TA32YyuzTgf2fOaQ/Y7MgVgEyi7EQi9nmBeu51f5GkzG2sXz
-         F4qiYl2SPLGyayiU4HGuNxm0y52HvVMcyHpgQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752658324; x=1753263124;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wYGQ+EFxCY8Kqn3gT5PrXpdAsZ+hUnOgnFL6azab8Q0=;
-        b=TxpGs6fjBbfJKGXwQqybDtcLOMiJ4m/3ZvPbGjOywMa7sKQgKjTV3z8z8CTWwASvI3
-         utuW8w+BUllkNLfL0aL3vARW7tjU9v0AcVB24raHNUa8iMhsCiFSPlRtMccosbJX601Y
-         Jqu2ip5FppoRPIrOBG3vJAKKsP/6VY+XTxcJwAmB+SCqglZxSMfw1likOH8ylWmPD9Lt
-         7RJSl/F9WjrgIbx3GEgdHnPsgkfswho6pHtPPGJM8Glp84ayOp/fTEhawq7tXMJ9D6Z1
-         ECCqXH+FAPAraxWz4IkxctkwNtX4aIWACi81N0lCz+ARjhsPqnTp5h5lET/ZH+drgq5x
-         cbpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqXfVyZxJsylrsJ5bDnY2qtU4MxAN3AqkoaorP0G+v9bLhB8umaE1i8cK1uwp47Tqjx8eshs0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDKKrMQSWGNYstSWuhbC0L90ZjsDjl6XIH5dFs5HZtFO2IWCeX
-	e4rEm/ssIVH4VYmZJrzpIHu2nKihX9Z6YIdQk5LCYKufbFRaX+9lvC+BxyGljk0bBw==
-X-Gm-Gg: ASbGncvE/DtXMuWz2Y6d+7vXpEtHIRSyIcBBYxyegvRGGklTe4ql6/KC3WMGpvmgIUg
-	WYk1AtehxLSgxZC5CDr/v08XaLZ8oEhKePUkx6FhsCmm/VGotpI8eLxCFvFbt9fILDwUhFbhxlV
-	es2tF/oAJtFX/Yisjc2t876PReagdDW6yPqpbhxzJ69H0v3QG5dT55+MFo1g5UxFAN3B9Y3feXx
-	xVy5Y4LZE/75xOQuvA12gu8s0eC0EjDllDcpcmdQfEjgEkPQfO+JmF2uEqiR0Eot/uBJQHmraI+
-	w1apnRXlaNxAtGcp1ROsDWQ0IQjQAnPwsHnisvrjDGHZuW2XPhldueLkSD4yhArtvh6M/wWeSan
-	z/d/b1a0rNyzL5ZJ/eTxcPLj8d2tFCFWGhwc99Vmff/mTH0qaZDt2
-X-Google-Smtp-Source: AGHT+IFp5F4xszFRerdbJYejB3SFipyFazjaIzmM2lu+vwPOe+RMBqGUutuRN/hMwoxSJmKwSFPD7w==
-X-Received: by 2002:a05:622a:4a16:b0:4ab:63b8:32da with SMTP id d75a77b69052e-4ab90c8eb25mr35840481cf.45.1752658323928;
-        Wed, 16 Jul 2025 02:32:03 -0700 (PDT)
-Received: from [10.176.2.178] ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ab85620d80sm14469101cf.61.2025.07.16.02.32.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Jul 2025 02:32:03 -0700 (PDT)
-Message-ID: <caaaa276-71fa-403a-9557-b8d3edadeb81@broadcom.com>
-Date: Wed, 16 Jul 2025 11:32:01 +0200
+	s=arc-20240116; t=1752658480; c=relaxed/simple;
+	bh=ONBSn5o1H6j3ORHZtSRjG3KCsfOjTLO1GjLY4HdgpRA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fdLjqcgpGPFd5HkOp9xjnleRAcXFuMkQLylYN08gZCyFAhiZgzlhyJYYVAH4QEgTN1gHGcSiEtcCBmYeNKzTh8OKN3WhkelChwVrNgz+q19K3bfFJw4QfqVQ9kCbvT1FpA9Cgyegy0uxZQ6enc1EnRJXivnAgZ4TzCHK2J6FzLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LF0sUrre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F66C4CEF0;
+	Wed, 16 Jul 2025 09:34:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752658479;
+	bh=ONBSn5o1H6j3ORHZtSRjG3KCsfOjTLO1GjLY4HdgpRA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LF0sUrrez2n0UX4P7X+6kWbZMKh3ESq/U1Am75RKjxzxra1B5w+qXkZ5js7JfJ+mK
+	 AOBBDMjMp9K59MfH/AFlSFr8wlS98u/e+Cvd0u8JUZX13UcJLp6hS2M98nVEbwsLey
+	 E0oHUDnGMr7R9Xn7nWZvDAdOrUhm+zTlZ9sAmFbk=
+Date: Wed, 16 Jul 2025 11:34:37 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Matthew Leung <quic_mattleun@quicinc.com>,
+	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Yan Zhen <yanzhen@vivo.com>, Sujeev Dias <sdias@codeaurora.org>,
+	Siddartha Mohanadoss <smohanad@codeaurora.org>, mhi@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel@collabora.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] bus: mhi: host: keep bhi buffer through suspend
+ cycle
+Message-ID: <2025071604-scandal-outpost-eb22@gregkh>
+References: <20250715132509.2643305-1-usama.anjum@collabora.com>
+ <20250715132509.2643305-2-usama.anjum@collabora.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: brcmsmac: Remove const from tbl_ptr parameter in
- wlc_lcnphy_common_read_table()
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, llvm@lists.linux.dev,
- patches@lists.linux.dev, stable@vger.kernel.org
-References: <20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250715132509.2643305-2-usama.anjum@collabora.com>
 
-On 7/16/2025 4:45 AM, Nathan Chancellor wrote:
-> A new warning in clang [1] complains that diq_start in
-> wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
-> wlc_lcnphy_common_read_table():
+On Tue, Jul 15, 2025 at 06:25:07PM +0500, Muhammad Usama Anjum wrote:
+> When there is memory pressure, at resume time dma_alloc_coherent()
+> returns error which in turn fails the loading of firmware and hence
+> the driver crashes:
 > 
->    drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
->     2728 |                                                      &diq_start, 1, 16, 69);
->          |                                                       ^~~~~~~~~
-> 
-> The table pointer passed to wlc_lcnphy_common_read_table() should not be
-> considered constant, as wlc_phy_read_table() is ultimately going to
-> update it. Remove the const qualifier from the tbl_ptr to clear up the
-> warning.
-> 
-> Cc: stable@vger.kernel.org
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
-> Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-> Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+> kernel: kworker/u33:5: page allocation failure: order:7,
+> mode:0xc04(GFP_NOIO|GFP_DMA32), nodemask=(null),cpuset=/,mems_allowed=0
+> kernel: CPU: 1 UID: 0 PID: 7693 Comm: kworker/u33:5 Not tainted 6.11.11-valve17-1-neptune-611-g027868a0ac03 #1 3843143b92e9da0fa2d3d5f21f51beaed15c7d59
+> kernel: Hardware name: Valve Galileo/Galileo, BIOS F7G0112 08/01/2024
+> kernel: Workqueue: mhi_hiprio_wq mhi_pm_st_worker [mhi]
+> kernel: Call Trace:
+> kernel:  <TASK>
+> kernel:  dump_stack_lvl+0x4e/0x70
+> kernel:  warn_alloc+0x164/0x190
+> kernel:  ? srso_return_thunk+0x5/0x5f
+> kernel:  ? __alloc_pages_direct_compact+0xaf/0x360
+> kernel:  __alloc_pages_slowpath.constprop.0+0xc75/0xd70
+> kernel:  __alloc_pages_noprof+0x321/0x350
+> kernel:  __dma_direct_alloc_pages.isra.0+0x14a/0x290
+> kernel:  dma_direct_alloc+0x70/0x270
+> kernel:  mhi_fw_load_handler+0x126/0x340 [mhi a96cb91daba500cc77f86bad60c1f332dc3babdf]
+> kernel:  mhi_pm_st_worker+0x5e8/0xac0 [mhi a96cb91daba500cc77f86bad60c1f332dc3babdf]
+> kernel:  ? srso_return_thunk+0x5/0x5f
+> kernel:  process_one_work+0x17e/0x330
+> kernel:  worker_thread+0x2ce/0x3f0
+> kernel:  ? __pfx_worker_thread+0x10/0x10
+> kernel:  kthread+0xd2/0x100
+> kernel:  ? __pfx_kthread+0x10/0x10
+> kernel:  ret_from_fork+0x34/0x50
+> kernel:  ? __pfx_kthread+0x10/0x10
+> kernel:  ret_from_fork_asm+0x1a/0x30
+> kernel:  </TASK>
+> kernel: Mem-Info:
+> kernel: active_anon:513809 inactive_anon:152 isolated_anon:0
+>     active_file:359315 inactive_file:2487001 isolated_file:0
+>     unevictable:637 dirty:19 writeback:0
+>     slab_reclaimable:160391 slab_unreclaimable:39729
+>     mapped:175836 shmem:51039 pagetables:4415
+>     sec_pagetables:0 bounce:0
+>     kernel_misc_reclaimable:0
+>     free:125666 free_pcp:0 free_cma:0
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>> 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+This is not a "crash", it is a warning that your huge memory allocation
+did not succeed.  Properly handle this issue (and if you know it's going
+to happen, turn the warning off in your allocation), and you should be
+fine.
+
+> In above example, if we sum all the consumed memory, it comes out
+> to be 15.5GB and free memory is ~ 500MB from a total of 16GB RAM.
+> Even though memory is present. But all of the dma memory has been
+> exhausted or fragmented.
+
+What caused that to happen?
+
+> Fix it by allocating it only once and then reuse the same allocated
+> memory. As we'll allocate this memory only once, this memory will stay
+> allocated.
+
+As others said, no, don't consume memory for no good reason, that just
+means that other devices will fail more frequently.  If all
+devices/drivers did this, you wouldn't have memory to work either.
+
+thanks,
+
+greg k-h
 
