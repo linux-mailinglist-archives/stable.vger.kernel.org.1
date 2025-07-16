@@ -1,86 +1,91 @@
-Return-Path: <stable+bounces-163196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2B1B07E54
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 21:45:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2EDB07ED2
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 22:24:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 634941C2727B
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 19:46:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAD9A7B5D8E
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 20:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A63C29CB54;
-	Wed, 16 Jul 2025 19:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAD92C031D;
+	Wed, 16 Jul 2025 20:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="P2e5PxYT"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="OtGbn+/m"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic314-20.consmr.mail.sg3.yahoo.com (sonic314-20.consmr.mail.sg3.yahoo.com [106.10.240.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D41629A9F9;
-	Wed, 16 Jul 2025 19:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E63927EFEF
+	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 20:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.240.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752695149; cv=none; b=VesUcSDsnZr2yAYNk5v6HkulzBU8T3M7F61sWSG5kmGL+MwaZ9QJWFFckmPbNl3VF9QtjBWIN0yKfsjVaKzj676j4lpdOEVugWzBaCnEQwZQU2Ww685D0j3gCTKiQ8DfHky4FMpRpyDqEZLmAqemUUfzUcy+9cQqIXirzpqN6IE=
+	t=1752697436; cv=none; b=dgmHg3dFjPL3L7GxC7FA5Vl47zzsAB1LOgN22I3wckAYr0fcs2+6fuH+FbQC0PGerbCbrS15ugUp6p3zaTVsex5bIU6KLdgsHQZdYFhOmPD0bzbaCQ/bF/pBC7lvx0RTvzpy1SOTfInuALdmNdrYNy94HiZQGclbC5SLhdUKK3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752695149; c=relaxed/simple;
-	bh=NQtTZkIvBOastxLKC5Q7RvR2xUBGdx/wgZ5cQzkQwUg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7VLy9qzM6yLkLg7awrLQoSE2yzRsQ62s/dSrGGd/PkpLEhn0leR0mb7OHdd1x5UOi+xw5baEYM1vPsJMYnCsfPFN5LAMyPMRqCeBlDIjGarmg9ae7Voqyrn3Q4gQhxUVHIREwZo63B0bUN/sRzf6inVLLid50vRPScewN0TWtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=P2e5PxYT; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56GH8vni011103;
-	Wed, 16 Jul 2025 19:45:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Y29BVFkUhPv1mwyCA
-	qjEKzTRIB2vGX3QxGjiUAJ79EQ=; b=P2e5PxYTrvwsgkrsth0Q1/unCziIwMxNC
-	wiJ304oWITvx71U3fJy2ETW3pLE5+UGStt5ZOA9x2KHaPWaUK5Tn4sVU7P+oCNiM
-	ICLRcAFHX2Nj7MEeAuMBp+ROhVtyMf6cqieJdBwqlnISwTD07qR1sHpeAn+I6HBg
-	CLE7IC31zfmK6bB5lm4clonVaxKdgf1TUDQJaTWiKCU4FfI/BvyW9GKswK/rupvt
-	4duQ+IJYVSgx3HF3LBcit2fyv7g2v3Qru3JEaeUjMS4hP7Ve/z2vXNLoBpi7iekW
-	FrcbfPl05hSDs7A9bOZHxMlwv9GLjw4e2VV23yrIUDXpRxjkV9vvw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47vdfmt4s0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Jul 2025 19:45:32 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56GIFGqx025987;
-	Wed, 16 Jul 2025 19:45:31 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47v31ps2ge-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Jul 2025 19:45:30 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56GJjQXq48103814
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Jul 2025 19:45:27 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DA4652004B;
-	Wed, 16 Jul 2025 19:45:26 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 64E9120040;
-	Wed, 16 Jul 2025 19:45:26 +0000 (GMT)
-Received: from heavy.lan (unknown [9.87.137.252])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 16 Jul 2025 19:45:26 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>
-Cc: bpf@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH 1/2] s390/bpf: Fix bpf_arch_text_poke() with new_addr == NULL again
-Date: Wed, 16 Jul 2025 21:35:06 +0200
-Message-ID: <20250716194524.48109-2-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250716194524.48109-1-iii@linux.ibm.com>
-References: <20250716194524.48109-1-iii@linux.ibm.com>
+	s=arc-20240116; t=1752697436; c=relaxed/simple;
+	bh=Jjf04ylop5U+a10qGcMbcucN7XqJczKEFJI/DCJMJzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=d9Ie1ajtgfptpAe9jvC0HiPut4EUP2J0HjDMHykOOAClHrj2CMsDdabjFl1mC+CduqCVtNqdjZl66nAQyykTHr1A81tqRFO7SxX1kBk7o4wCQM8YyMLEjJUX+1zrRWM0/WckCxIUBR7Lt2iv9bA5IoCbx9GQfB0qR02g+fqmI0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=OtGbn+/m; arc=none smtp.client-ip=106.10.240.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1752697432; bh=OEFAEz/+4pDWbItrpxD27vn6vT/LAF+wBo7eq5wNL80=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=OtGbn+/mFgVmGeCp05Kmf0wOF58TVeJkVr1E5azIFWDAAeFsLdN2REFJ9JUSwWNzdvYUNNr8FyL9RM/hgJg47CVJItSSSXEgeFy9OmO0FiXeBQg3YFsbOJfC+PFO0UaqlLCpoxRQvVYClnfU9CFij478p6HQUoDPAGZ0TBwdTbKNNMXns4M/1vSaHlmGFz54dD3ScfbCrz3lyIFMa+mgpYcW3NNMa5k2Bq2vvbHmA3L99BvDlLSYxW7BgbbiJvSwibnsgZS/74dB9ZMD9j0FCktVNp4jeKgOfMdk+oag20Z32CAX/jEDQJj5qRHSlOJ4i67zw8fF5RotTOl1YzzXig==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1752697432; bh=UZau9MKlSRseBRVkL0b4kHZM3fut+nhSvqUJ/LuIiYr=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=LHJTAobFYoHy5sX0WRxvGM3C4VuqTyYNaW6qn6UWqfjv0wUws+/Tocn/LkvUlq36WAAmYfnxNJm/LF6fpdtz6Nce3tGyruBq8EUrNqg8440JkINAcPLNeXHFLR+UbR0FQ9dT8uUE7zldAmqfgBSU8ISAQCdfjarepd+eQK6Vl1kzgQ38n8VqtiXcq7V3GR60ilQMJrPXlZfux4g5H93QnFYZn3aRmYPSCoHjcq/nHkp4FyVPTAmG+HxkBZnPm6QAzSR6LD+LKtlMXMUCFGCne5K0p7ctR7+24Z1EHYfHij/SbyrdioMPON3NJP81E/FxGvf94In+H93jJqCclhJzMA==
+X-YMail-OSG: 2opWEMUVM1lGbozH9.hAxN5SVx9WbZd2n1tFDDlQ3Jxk_jcHvK5kVqRdVbJ.Ium
+ QlRQw0NZzzxMuv_XW666t5DUfzxJdei2vePfUxGSRc3Gpt.YxZgwvsFIXKzDjOhX.XVQmb74.T1e
+ Dfvx5np9yDNurpvyIZxKUhzGKz_i0ICYVnEfOlXWq3AvwWP57csK_JJdcqGjmkGp5XSlsH9US6uN
+ U90_2WPuBjleeomGhWPTz70Gq8wfbCDLO8NCoPYtZFb0u.n15pXJKc9kbe84cisyT1umZK.x9JfB
+ jxzRdwG59BnzQCRoydEG9KQZKzamBPMzsnmPcb2aqoWQ6IU0cBZsizWZemm.cJpCThYswWvfacd0
+ 3Xi5_6em3tcs6_gDfxeHW7f7yAObEieyFz3.fA4rbCmTxBbOtlD4zJmLUaXFRSfRhLlD7UeikfOv
+ U4G5ydPD4HrIksJXtufxT5hWUY.Gr8HraFWq8JjcwK_364LBzMdNpvBEwp_uL9E8R0YdCkIoZHlO
+ Q6_y7BTowpMKqX8nPKNFga0GD9sOz90FzZqe8ol8AoFl8fHeDMr2g9MLtkgwXxHFeTYIp1Ah7fIH
+ Yc8ATyFs8YkJ.8cHjmA3IYSXmtpzwMosP4nDWsOiHmG7MXLArbzeyh1JGAHsJiTDfqMRVUQrbrzr
+ abRGnfqnjGDgPzfXgXhruICTAlxaMjRmbQNAa94tOHFo8dAMoEg1ZfLmPS46hMD3N0Zz54DiLdY.
+ aIiGLILc63IstVThBn1NPMvrEy_p4AOAc8PxgeZAC30x5.XNjGzxa1bgkRlT54GPDtTVFGwKZw5K
+ q3l8eLyapv1zgw6kkDWjcdRzfRLoSf7TJRIl_Lg.y9e7BVN0qhmlEQDl8tQBVf61NgzW577I0wx4
+ ljd_kt0_ldJh5PHUdnsWoXt2838Pn1Pk_FWt74ibelWb3qQMADGQlbA_IqSY0a.q1PB4PyRciY0W
+ R.w2e5ahAKoxhyPlOURgDa_UFE5lFjn8yPbgVnqlcbI.wl00noswOlRyhFGYojOy0yj.IMre.kc4
+ .86KNKJIYAqZJ.13iVfkbGaiCWpFriGubBgL.D.Q3ziLo66wbV5E6BmGgMRp_JtNzianQVtGa2TH
+ vtI.eoEjJkC.ips1jTfvMB3fhk5lRHmjGWrGWSxlsAgI8vfv4HEnjpwylbGZ4p70ELT8IXfS1FC6
+ fUlmBmd95WswQzhlbT00BW.sVNlzKrDYGFuChLu7OLqNaPO_8FV5crS.Jqtz45d.OIz68PvcVcyO
+ 8HD1V6uNL.EW6vQxMc3qSHxDE9wd80FoGk6Xf48pvvEfUbhbjITG0NebDF7.MbFvIMdPqO02wmYZ
+ z4F5ZQj.XHa5d8BSzNs3s04jyN7fv51bPJunltF3UHZ.4k4UCG4GylMm3FD.Zxt0p9nSf7Z_Xeh6
+ p2_Kheaea1S9FwlyrROLiAG_.ZP2vplU19hPAEIbKTHGv2d5ygikzOMHXDBJq0uSC6DelrSefiH2
+ 1a9O004SUXCluG2cAs5jFkLYomtyZxALjbP7bYLj2L.lxWMT56NZ0kzDvLfYclfeoxT1XuYNKJcm
+ _7K3b.u2UMvpqHFg0Q6TljvbKEZYuCGGQZD7LsQZ6ll9BETaW2G3s8Ompx317v4zjltwFIGF3r_j
+ PerJPVThjkYFsBj2ObCCf9K9v4aPpC9qAiBs4CnJJyZA7aZHrrD__R6NB31yf7eD.rotaBQSzYlL
+ CjHEFuStT53Z1V7dTKBL0A7V3CBRnbpDNLyr.Y_UimuY9W7bmbneMLD3QB8e.1yxJyqyq.Li1jQo
+ _ZPqNH5ZAG.bceg9aUKKuK4uKtBRTXn1Fn1fta0YGm6twnDFemNKOhsOhrix_URoZjZFq0EJOTJl
+ hB5VGbLuclrdLBORGznh.4huJu2L5PlqI3cZbOsJJ.jMakNKEKrt4M3_Obxwmx7R0NbTkvB_V5uV
+ RWDPMKtYEDM1vM5.YuDiufmaCWgNmicbUjiEmr0sqf2Dma0kbeG0pjN7v5A8zgkdZxvJDb9PhGge
+ 8uBp9bktKcnhmjrGfL83xc7qDdPCJTkuYB59xb_A2m6HApq.nuuaQ0ww4on7Ihy_qhvOMJN1Qpvy
+ gwknbQ7QTmsrMbhHHIWnFd3vLLAFK0o0OzChndJznrHO3T1Jn_sr6fsIZdOMnuWNIEDW7IJB.haG
+ e2HQqUxuxfQt8iGW7nMIIYgDsBGEFyI_shWjq22V4ZNxwnngZZR9gqxhVsMayhfMcOApOwRlD_Fz
+ 69cVFszy3XEJ30.iGJBJATLCa7qN94yebmWztdoBTznR501ST4wDGsH.H5V9jpzlk.E49TZS8iSV
+ BNvRqnzoo1tg-
+X-Sonic-MF: <sumanth.gavini@yahoo.com>
+X-Sonic-ID: 4685dbdc-3e7a-486d-bc86-377fa78c6e34
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.sg3.yahoo.com with HTTP; Wed, 16 Jul 2025 20:23:52 +0000
+Received: by hermes--production-ne1-9495dc4d7-dbtfw (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID a8c52d90f4f34e062d1d4f8f556dd2c9;
+          Wed, 16 Jul 2025 19:53:22 +0000 (UTC)
+From: Sumanth Gavini <sumanth.gavini@yahoo.com>
+To: skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	gupt21@gmail.com,
+	jikos@kernel.org,
+	benjamin.tissoires@redhat.com
+Cc: Sumanth Gavini <sumanth.gavini@yahoo.com>,
+	stable@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH 6.1] HID: mcp2221: Set driver data before I2C adapter add
+Date: Wed, 16 Jul 2025 14:53:13 -0500
+Message-ID: <20250716195316.176786-1-sumanth.gavini@yahoo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,59 +93,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: h6PgWwoveQNaYjY_jT_0f6J_WjI8sLSU
-X-Authority-Analysis: v=2.4 cv=JOI7s9Kb c=1 sm=1 tr=0 ts=6878015c cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=HvXbtDsurDdKXsHfnjQA:9
-X-Proofpoint-ORIG-GUID: h6PgWwoveQNaYjY_jT_0f6J_WjI8sLSU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE2MDE3NCBTYWx0ZWRfX9VcOhuLRTsZR vHEgyXNiHcOZhAzuVt++tEh8uEmTK8zp7PpwWrnmGxZNKmpfkpi5DGLp3UF9nJj5SEV6qLIL301 kcDAlZMURMzvzw9S7ZCBE8piYBpT4h+bgQC3MyXaYsHVpleuoLgGNtYfrinm29Pdc7D2cnyG2dz
- vgspdJh8XLP+hvhWTkHZzfCkLuB461wZrLqMd5VOeQyM8Lh9/7WRz86fI2973jRHj/bZCKGYQOW 28K87dk1icOD6N23XzquLC2EWEajVANe6HerYUZM7Cd+A+fDB5hihnPWCrD59RYeAHQgW2tc3UG tQs6ZM/SlXiSG5pcXziwTgb3y01fLW7JLCf+Q3bh1cLLMYmXSTQVO0Pb4NQoawE9H7ayG07DToE
- LRxoec3JxMaaLJ0MV85bDsQ5BSnzLpZ0rY+V8g34YsMGkZCJMQzW9zDdUTUSO02jXJBfNb2E
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-16_03,2025-07-16_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 mlxlogscore=999 malwarescore=0 clxscore=1011 bulkscore=0
- priorityscore=1501 mlxscore=0 spamscore=0 adultscore=0 impostorscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507160174
+References: <20250716195316.176786-1-sumanth.gavini.ref@yahoo.com>
 
-Commit 7ded842b356d ("s390/bpf: Fix bpf_plt pointer arithmetic") has
-accidentally removed the critical piece of commit c730fce7c70c
-("s390/bpf: Fix bpf_arch_text_poke() with new_addr == NULL"), causing
-intermittent kernel panics in e.g. perf's on_switch() prog to reappear.
+The process of adding an I2C adapter can invoke I2C accesses on that new
+adapter (see i2c_detect()).
 
-Restore the fix and add a comment.
+Ensure we have set the adapter's driver data to avoid null pointer
+dereferences in the xfer functions during the adapter add.
 
-Fixes: 7ded842b356d ("s390/bpf: Fix bpf_plt pointer arithmetic")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+This has been noted in the past and the same fix proposed but not
+completed. See:
+https://lore.kernel.org/lkml/ef597e73-ed71-168e-52af-0d19b03734ac@vigem.de/
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
 ---
- arch/s390/net/bpf_jit_comp.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/hid/hid-mcp2221.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index 8bb738f1b1b6..bb17efe29d65 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -576,7 +576,15 @@ static void bpf_jit_plt(struct bpf_plt *plt, void *ret, void *target)
- {
- 	memcpy(plt, &bpf_plt, sizeof(*plt));
- 	plt->ret = ret;
--	plt->target = target;
-+	/*
-+	 * (target == NULL) implies that the branch to this PLT entry was
-+	 * patched and became a no-op. However, some CPU could have jumped
-+	 * to this PLT entry before patching and may be still executing it.
-+	 *
-+	 * Since the intention in this case is to make the PLT entry a no-op,
-+	 * make the target point to the return label instead of NULL.
-+	 */
-+	plt->target = target ?: ret;
- }
+diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+index de52e9f7bb8c..9973545c1c4b 100644
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -873,12 +873,12 @@ static int mcp2221_probe(struct hid_device *hdev,
+ 			"MCP2221 usb-i2c bridge on hidraw%d",
+ 			((struct hidraw *)hdev->hidraw)->minor);
  
- /*
++	i2c_set_adapdata(&mcp->adapter, mcp);
+ 	ret = i2c_add_adapter(&mcp->adapter);
+ 	if (ret) {
+ 		hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
+ 		goto err_i2c;
+ 	}
+-	i2c_set_adapdata(&mcp->adapter, mcp);
+ 
+ 	/* Setup GPIO chip */
+ 	mcp->gc = devm_kzalloc(&hdev->dev, sizeof(*mcp->gc), GFP_KERNEL);
 -- 
-2.50.1
+2.43.0
 
 
