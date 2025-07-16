@@ -1,150 +1,126 @@
-Return-Path: <stable+bounces-163202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F0AB07FB1
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 23:33:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66426B07FBC
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 23:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F5F0A48261
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 21:33:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 854134A739E
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 21:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9CA2EBDDB;
-	Wed, 16 Jul 2025 21:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409962ECD1E;
+	Wed, 16 Jul 2025 21:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1UWIFd8o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nM7HPF5f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F632266F05;
-	Wed, 16 Jul 2025 21:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C07FBF0;
+	Wed, 16 Jul 2025 21:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752701611; cv=none; b=oNCMK6xOj/NXsCFp5aL9SrJvjE8pPKYJZKJtnKMiZWLyEljxi8nEyOEfYhQkqGG547CcJh96YZLO54fCSYLePz03mrplal0xrG7jrDArvvRVlYPp0IeGb7kdkBmVKUS6wzTzXiefDGUsY0qie+XHjdgLqnhjF7MJnBH/s4yxm9A=
+	t=1752702002; cv=none; b=lP5GwM1j+HImoziRzgXxE6PlUhA7aHYZN8jw+8cZy4bm1uVBjEu8fsXf0dqufjy+ZdTQSzaYIfZIFKJY3CqvLg+RGnH30GX2juq16ZX/lHSK5uNB1L5pdXSGufp+z9YIWiyIuu4WIkToYr/y2PQOirOqxxqc2o05uQRRREzjXmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752701611; c=relaxed/simple;
-	bh=4dhREyYvxWITPwcJlpKpuCkixJrjrTpEX3Z1DqcQpMU=;
-	h=Date:To:From:Subject:Message-Id; b=OCQeoOuLsYDUuTV1WRUsznoSjv/nI/xKmF5HPRoFJkILeEBCg8Cb5z/oegAmhIlmeThp6zGQ0/1xJLTzpj+CXYkO+io2tNg2Ndc5wnOOviGuhos30kNptapJ9x3sGuwHiNrBtVQcfiRFKsemKpynA2vxVgmZSGV6s8muOiXsa/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1UWIFd8o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E19EC4CEE7;
-	Wed, 16 Jul 2025 21:33:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752701610;
-	bh=4dhREyYvxWITPwcJlpKpuCkixJrjrTpEX3Z1DqcQpMU=;
-	h=Date:To:From:Subject:From;
-	b=1UWIFd8oo6DErpEipwK6chJ9LkOh43rvhjptcL8QXCA1IUfJfMAxTUWhE0GqgJN4k
-	 xI910LeGOl6P29OT6U6ybwelDE3BjU83dweJoChoQg2FadqJf2lV+/7qcQaxGtix9I
-	 6p2P753vnWbn8kfXRcG+9FswqOrZe9ehk42EQiMg=
-Date: Wed, 16 Jul 2025 14:33:29 -0700
-To: mm-commits@vger.kernel.org,ysk@kzalloc.com,yeoreum.yun@arm.com,urezki@gmail.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,bigeasy@linutronix.de,andreyknvl@gmail.com,elver@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kasan-use-vmalloc_dump_obj-for-vmalloc-error-reports.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250716213330.8E19EC4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1752702002; c=relaxed/simple;
+	bh=jGPLM5UMm6HRhpvpB1axC22mIwzUp6GFM1ylnmPR7AY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bRv1fUkujHSmLGCmOBJ6Emtl1Q47Jk7lHayFSuCTAMXE9zX9BxtgzQMefrRklApUe8NFfpfYS4bPMBAIfDpE29I9SDn7YvSI32ffQmJPZribbGRTKN5pF1reFV0vExwlCMiIbj+fjEnQLtyqYouBv80QoOG6aeRuAIj1TQTqAFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nM7HPF5f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC97C4CEE7;
+	Wed, 16 Jul 2025 21:40:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752702000;
+	bh=jGPLM5UMm6HRhpvpB1axC22mIwzUp6GFM1ylnmPR7AY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nM7HPF5fEeW74Nmis2g5+7UXb/oK5Oh90W0ThPw8GTm2naHeiWOLm4oQW0xoD/Y2w
+	 ioVjUnhovsxIFi9bs5qk5whbu+GBt+SpW09yEQJLOYmY0rEJRrkgaQk4LzDDa+Qp9a
+	 mxuoDhGY9k7cJ+3+gkGBCGLROuFjdqmlyyUgkoNLqtBDr/fffeV4pQ/I5VpjL8u0+M
+	 ++oeT6EfGq9NQuaYWKekSRYeKrBsuRGw2OLbUMeRjauSZCPaPnrx1gZLqKP2wwbYNB
+	 8eecrCdtElgJSgRGoQfU0moX0V9C1ltzX3cbBML+nMixF4eusjOkMb503aebI2kf9K
+	 bZqsx6CG5JenA==
+Date: Wed, 16 Jul 2025 14:39:59 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: John Ernberg <john.ernberg@actia.se>
+Cc: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Ming Lei
+ <ming.lei@canonical.com>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, "linux-usb@vger.kernel.org"
+ <linux-usb@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
+ event
+Message-ID: <20250716143959.683df283@kernel.org>
+In-Reply-To: <fbd03180-cca0-4a0f-8fd9-4daf5ff28ff5@actia.se>
+References: <20250710085028.1070922-1-john.ernberg@actia.se>
+	<20250714163505.44876e62@kernel.org>
+	<74a87648-bc02-4edb-9e6a-102cb6621547@actia.se>
+	<20250715065403.641e4bd7@kernel.org>
+	<fbd03180-cca0-4a0f-8fd9-4daf5ff28ff5@actia.se>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Wed, 16 Jul 2025 14:54:46 +0000 John Ernberg wrote:
+> I ended up with the following log:
+> 
+> [   23.823289] cdc_ether 1-1.1:1.8 wwan0: network connection 0
+> [   23.830874] cdc_ether 1-1.1:1.8 wwan0: unlink urb start: 5 devflags=1880
+> [   23.840148] cdc_ether 1-1.1:1.8 wwan0: unlink urb counted 5
+> [   25.356741] cdc_ether 1-1.1:1.8 wwan0: network connection 1
+> [   25.364745] cdc_ether 1-1.1:1.8 wwan0: network connection 0
+> [   25.371106] cdc_ether 1-1.1:1.8 wwan0: unlink urb start: 5 devflags=880
+> [   25.378710] cdc_ether 1-1.1:1.8 wwan0: network connection 1
+> [   51.422757] rcu: INFO: rcu_sched self-detected stall on CPU
+> [   51.429081] rcu:     0-....: (6499 ticks this GP) 
+> idle=da7c/1/0x4000000000000000 softirq=2067/2067 fqs=2668
+> [   51.439717] rcu:              hardirqs   softirqs   csw/system
+> [   51.445897] rcu:      number:    62096      59017            0
+> [   51.452107] rcu:     cputime:        0      11397         1470   ==> 
+> 12996(ms)
+> [   51.459852] rcu:     (t=6500 jiffies g=2397 q=663 ncpus=2)
+> 
+>  From a USB capture where the stall didn't happen I can see:
+> * A bunch of CDC_NETWORK_CONNECTION events with Disconnected state (0).
+> * Then a CDC_NETWORK_CONNECTION event with Connected state (1) once the 
+> WWAN interface is turned on by the modem.
+> * Followed by a Disconnected in the next USB INTR poll.
+> * Followed by a Connected in the next USB INTR poll.
+> (I'm not sure if I can achieve a different timing with enough captures 
+> or a faster system)
+> 
+> Which makes the off and on LINK_CHANGE events race on our system (ARM64 
+> based, iMX8QXP) as they cannot be handled fast enough. Nothing stops 
+> usbnet_link_change() from being called while the deferred work is running.
+> 
+> As Oliver points out usbnet_resume_rx() causes scheduling which seems 
+> unnecessary or maybe even inappropriate for all cases except when the 
+> carrier was turned on during the race.
+> 
+> I gave the ZTE modem quirk a go anyway, despite the comment explaining a 
+> different situation than what I am seeing, and it has no observable 
+> effect on this RCU stall.
+> 
+> Currently drawing a blank on what the correct fix would be.
 
-The patch titled
-     Subject: kasan: use vmalloc_dump_obj() for vmalloc error reports
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kasan-use-vmalloc_dump_obj-for-vmalloc-error-reports.patch
+Thanks for the analysis, I think I may have misread the code.
+What I was saying is that we are restoring the carrier while
+we are still processing the previous carrier off event in
+the workqueue. My thinking was that if we deferred the
+netif_carrier_on() to the workqueue this race couldn't happen.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-use-vmalloc_dump_obj-for-vmalloc-error-reports.patch
+usbnet_bh() already checks netif_carrier_ok() - we're kinda duplicating
+the carrier state with this RX_PAUSED workaround.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Marco Elver <elver@google.com>
-Subject: kasan: use vmalloc_dump_obj() for vmalloc error reports
-Date: Wed, 16 Jul 2025 17:23:28 +0200
-
-Since 6ee9b3d84775 ("kasan: remove kasan_find_vm_area() to prevent
-possible deadlock"), more detailed info about the vmalloc mapping and the
-origin was dropped due to potential deadlocks.
-
-While fixing the deadlock is necessary, that patch was too quick in
-killing an otherwise useful feature, and did no due-diligence in
-understanding if an alternative option is available.
-
-Restore printing more helpful vmalloc allocation info in KASAN reports
-with the help of vmalloc_dump_obj().  Example report:
-
-| BUG: KASAN: vmalloc-out-of-bounds in vmalloc_oob+0x4c9/0x610
-| Read of size 1 at addr ffffc900002fd7f3 by task kunit_try_catch/493
-|
-| CPU: [...]
-| Call Trace:
-|  <TASK>
-|  dump_stack_lvl+0xa8/0xf0
-|  print_report+0x17e/0x810
-|  kasan_report+0x155/0x190
-|  vmalloc_oob+0x4c9/0x610
-|  [...]
-|
-| The buggy address belongs to a 1-page vmalloc region starting at 0xffffc900002fd000 allocated at vmalloc_oob+0x36/0x610
-| The buggy address belongs to the physical page:
-| page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x126364
-| flags: 0x200000000000000(node=0|zone=2)
-| raw: 0200000000000000 0000000000000000 dead000000000122 0000000000000000
-| raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-| page dumped because: kasan: bad access detected
-|
-| [..]
-
-Link: https://lkml.kernel.org/r/20250716152448.3877201-1-elver@google.com
-Fixes: 6ee9b3d84775 ("kasan: remove kasan_find_vm_area() to prevent possible deadlock")
-Signed-off-by: Marco Elver <elver@google.com>
-Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-Acked-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Yunseong Kim <ysk@kzalloc.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/report.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
---- a/mm/kasan/report.c~kasan-use-vmalloc_dump_obj-for-vmalloc-error-reports
-+++ a/mm/kasan/report.c
-@@ -399,7 +399,9 @@ static void print_address_description(vo
- 	}
- 
- 	if (is_vmalloc_addr(addr)) {
--		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
-+		pr_err("The buggy address belongs to a");
-+		if (!vmalloc_dump_obj(addr))
-+			pr_cont(" vmalloc virtual mapping\n");
- 		page = vmalloc_to_page(addr);
- 	}
- 
-_
-
-Patches currently in -mm which might be from elver@google.com are
-
-kasan-use-vmalloc_dump_obj-for-vmalloc-error-reports.patch
-
+I don't feel strongly about this, but deferring the carrier_on()
+the the workqueue would be a cleaner solution IMO.
 
