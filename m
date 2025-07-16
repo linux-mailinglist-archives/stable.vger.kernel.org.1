@@ -1,150 +1,126 @@
-Return-Path: <stable+bounces-163127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FE6B074FB
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 13:46:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B46B07503
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 13:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38EE11AA71A3
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 11:46:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EDB5582179
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 11:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36435288C02;
-	Wed, 16 Jul 2025 11:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351582C08C8;
+	Wed, 16 Jul 2025 11:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q9v9Ybns"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UVCpynLs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB2920110B;
-	Wed, 16 Jul 2025 11:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69500286D4E;
+	Wed, 16 Jul 2025 11:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752666372; cv=none; b=DfrfEZBps0DEqT3WcknVMQRUHEJcwUZ7rYHzI8nYkTv0g5HERBcKYH0jMZNTSlb4kT7KLVQEz2xNbMJ8IZmeMeUBULLYhZtItaOtr36tMdq8oKw00ooG2BOeQfcbuSnRPolSTJ1nfkTbDkKawm6qaN8mcE8pKjskP3IgNBFNn4E=
+	t=1752666561; cv=none; b=ACD/z9Q1SaE4JLEmxZav6NkhHDZyEGmZW88OHTdKwcTo+RNfsBf0WPcXqLId9TFutCmAuE+EGgZzx87BdogsfCmBAYzg2X4wo+LgmVD/DWvga5Gw9uQBObqUak5IU4wue4Fl2e+rWeuYf+Ymlc5s+O15fgf2aOlZQjpRzvk8Xe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752666372; c=relaxed/simple;
-	bh=NXanfPZpH2ceGudSk2SUYSm9HbVf2NruYNTN6drDoyA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uJ13waeDax78FqcYr84IIkvVYmMMrwDTuahLH3SOLZg+4u36TyB+PdgNQrPH2AaajZKj3Z9kIGAEzmlUmWGyGDukq3uf49fjvg4fc9GZ6i9Hf2VLnoHguHjXDtf+q8tAGv2eeHHBWihoIxy84JR8OWqnSYkiNLT1tOjwjbEqNIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q9v9Ybns; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1752666561; c=relaxed/simple;
+	bh=EfIZ3AaNhUTMuhQh3gY9/eRnLi3OVX5M6gZKgoUL7yw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=IUCVLpIDIg/yaR3HC4iByPymw3DEMm1Ky4Wj2bkIl18dePJMCB1Tkfb9Wu9qpNSSOs0u3+t5EDpxL1ZRqQ+LZ1DOZoS2kyOdOhkQB8HKQnejXZkIDxol9TL052SYjCLjV21s+jWzFWhnvIoYgDonCHw6qtf4ZTyGqv6PGMelu1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UVCpynLs; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-454ac069223so5752005e9.1;
-        Wed, 16 Jul 2025 04:46:10 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45619d70c72so7287535e9.0;
+        Wed, 16 Jul 2025 04:49:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752666369; x=1753271169; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qRK0uTRJWMXudiGrHPLDeir9C8aaiiInPobNXttZUgA=;
-        b=Q9v9Ybnsh5pwDLyXr6+8URc/Cpn7f/FwoByU+hjXXm3CGlLJ4W15XHUSJ3Tt4paYP4
-         sY3kajQFRDnOYJ3kGFVwoy6q8Kylb+hd+zSb+58MaGIm/M3iper+9dE49tKaI7skh9xe
-         8N5ivx0PT87HUYOHthlRXgDzQ/A/kASeT3uPZ4/V8VTwab1vk1zfCxwt/PZdCgEfY56T
-         kxCZtTWnOyTOs4WrbjimmKpLM84nCQ7YES5dEbaT6ufnvvTjUPi0Hl6CydEpzQsBLTue
-         vU3ZilugujblXXclZHlme2aiHOfT/v8UmV3hvwy4iqRAAoN0IDu8C/Rqkl1bDDTcysRW
-         odqg==
+        d=gmail.com; s=20230601; t=1752666557; x=1753271357; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4mHwEr8aXM8Rm2WbnaOlMv2XTUB4hN6RMG5Qw6s+9Wk=;
+        b=UVCpynLsF3oZU6ID+C4IgBhf9ApvszfshuGqhaGiAQWMtiAd35+y7JSpZZdguBiuhQ
+         /15J3ujddPimwB6j9QLGW+hbbaez6gLE2Fld4SyTHk+lBeT8wqyiq8QMHuXPV5VxIub/
+         9Q4xr/goiZfYE0VO9MeKN5qppzSFpO1hdLxlCg9KXE0KjnyYStsWkJ6X9rhtGlaa7ZO7
+         3yb9Cbf+8HX4hf6rFCs4vDqZ3G7Vl2sJ2Y2T7OGGNCtszv6ELe5mAhC64sPULlifH9PM
+         tv+8ZLA+kNkOt6HiFpLzIkh6X6TPFHX58Hi2Khl3EpSYnRjP7YhI0sHWKXFY/mK93k6t
+         5B+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752666369; x=1753271169;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qRK0uTRJWMXudiGrHPLDeir9C8aaiiInPobNXttZUgA=;
-        b=h0TuDSkrui9RmfciqlwlboBK901By9VHtiVCbWNwXSGTKU77ZaFpAHZ4z87akrJhFb
-         KqzlbdEe6fI7mVWoQCy/cunhI0ZJapHMC45w4WzYHTiOq2JHELoXIAEmzVgAC2FYwbCL
-         htWV8KybyqfRQ8BCeWTgJktAqbMHh5y1q/MaaMBipQ59tVG770UtqUFjQgAR/S7vnUuz
-         lWCJm8joYxyA6TEeoQ8BiFWEoVPvvgYCqywn0Eb/9lxBePCQex0vbwDt+6IZ/shdFggh
-         n5CFmrv0geV/YfolRWFBuDj/MZPldLstnrDbrE9cJRLeFnk4lALdOn++IIFQaxc5WKoJ
-         YiSA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7Viy3eaK74nDDv4y8DCUWyvA9+f8wPdg6hjb4hAiLyXVoEACncn3Hnzj600FXEUMoIG0oq7xu@vger.kernel.org, AJvYcCX8vsYKzMJ8HCLibaZgwpC23H3sW99ExlL9NZE3RckJX0puTpannckQyBRZ6/78AxFI5t+DHOVEz31zU/U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4hLnObNL4s5kTYGH5V2W7V/Dqy6pqnWp045txuEg6ato9CGJp
-	fwAHRk9zsFNUGFp8SMLS+N7WbhFuw8hzh59QGHhRIXblu59a/TQvCNN9
-X-Gm-Gg: ASbGncu0qI7zkvQpbgQC+4jyY2PjZUE2hvhzl7TzdRzBxCEMi/opcwafZyTT9v21RX7
-	Sl2Vu7ycPqHJbUdjDAY9+ft89MnTcFQrAtdQs3qqrTsM41r6hkmX4MLhU/s/CkTwhvG0DbSoUT1
-	AmLYVVmMauPfH6f7nc0FBTl1tINsEQh9GcOqiB68zmZf8UrdO0dj7djh865+MWvE22JeE0z+Mu+
-	ZTsMrSm21Mj7wA9odnlpsw4tLva4hbAnsob0MRy58hyl6aRjetALShkTf/jgJLv5WTNk3Ga0XAP
-	4A8Yl3nFBgGc1FUXQN0b76aUUjgKF1iHtvFX5XxKUliyImU+yZyDdidKr/hl0D/6ReI+YuwJ7xn
-	nQOdP8mvWdCLLsDvd07qEIQZVZIMBJYt36enaCVIm9Bj/No9xXvvm1TV70rzl
-X-Google-Smtp-Source: AGHT+IGe9mrawVK8DME5xTxzobrY4snOPO/udcok/amD5IGmZSO+Gh8mRnJF9n9m5I8NmSps33RJrQ==
-X-Received: by 2002:a05:6000:144a:b0:3b5:e077:af52 with SMTP id ffacd0b85a97d-3b60dd7a1efmr2532215f8f.25.1752666368419;
-        Wed, 16 Jul 2025 04:46:08 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8e26938sm17491288f8f.89.2025.07.16.04.46.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 04:46:08 -0700 (PDT)
-Date: Wed, 16 Jul 2025 12:46:07 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: sashal@kernel.org, linux-kernel@vger.kernel.org, frederic@kernel.org,
- david@redhat.com, viro@zeniv.linux.org.uk, paulmck@kernel.org, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] kernel/fork: Increase minimum number of allowed threads
-Message-ID: <20250716124607.50fc5e34@pumpkin>
-In-Reply-To: <0e855c4f-2ff9-4007-854a-20955dec052b@hauke-m.de>
-References: <20250711230348.213841-1-hauke@hauke-m.de>
-	<0e855c4f-2ff9-4007-854a-20955dec052b@hauke-m.de>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20230601; t=1752666557; x=1753271357;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4mHwEr8aXM8Rm2WbnaOlMv2XTUB4hN6RMG5Qw6s+9Wk=;
+        b=mokVTCxzt4PH2re9IRQ5jZ7sDEhm1d3msWZYNkdwaiQybZAmsbY9AAwdvwg23Ymk9d
+         5JGXXHJEVtAX6fx0aRJvBuR14PnjB8K6yW0Ehtl2aBPiPNrkp/mOt3TWzejelJLenYLF
+         aJQfJQfURZ0oEBUpVzCleu483aI0d96kBQn700uuhUpdOvKLnWxGHaMpnyB42VhVhamg
+         dvQ2hHU4FwLfT2wUddFEBqUnnx36s7kChNSdR0IusfRu7U1UuG9M+bY56I5x9Vqc7od9
+         Q/0LJ4t9EyKX5z17aeGRvaeEtsL8ibdNWFZrYHiVYlZ32dCbN3R56KlsDn7X/E5Jo0Ta
+         VWQg==
+X-Forwarded-Encrypted: i=1; AJvYcCVEHGRynxd57wHfPqjd4J2naIIiRLCxfAvuj+pkSfR7F7/Vfjbb8fxb6UiHFbwPAz2vqxU462H9@vger.kernel.org, AJvYcCXcN/Bd6Ly0hzVw+4QYQsDmRfrgVj1hMSxpeUZQ+fgvQ60VFQlMJMhANzJZkfNQ2izu4seekxwR5/r40yQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUVirHU9NU1CoAt5QIgmmOOjKyQ27H8Yg8dX5SjAg6uk6+CaKo
+	HgpfgeYjCB5xIDMSeA1VkRS2lYfEbypnax0BDFukxIX1aGktHCgigVLN02UaIAcOoKjt60pKRLH
+	5nwFr7lv1pPK5LUEDIyBcU7/T51lngEkldhuqUcE6PT7D
+X-Gm-Gg: ASbGncvq6Rzn3kGBs/U3fbhrF3Xe3aa8xILRZQFDhULjjQLK1cca65sgE/UyQMz3PzC
+	ovzBSOHrpp2j9HEZWvKP1kJyFatW8J+ths0VgCbgfHaeGBTtZoA7mp3MC9FVRWgYJWsKgV9Uf1v
+	UCB/g5sfEYaGaFgiY59lICywr+goxLaERZIjYvywM30AszgKeG/yQcE1c8FQ/aBWeSxK72gA0nn
+	Gjb316KLaSjoOJ5Cwdl4fxlrJfb2fqtzAFU
+X-Google-Smtp-Source: AGHT+IHd1O90KF1+jH53EPUgdhgA0S+qM0ugf/xNYrgnYVrSa5To++qM+eBy8Mx+ZQrXxsG40EAjBGOx/NExfNplCY8=
+X-Received: by 2002:a05:600c:1d03:b0:456:1ab0:d566 with SMTP id
+ 5b1f17b1804b1-4562f825a5amr17037445e9.16.1752666556454; Wed, 16 Jul 2025
+ 04:49:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+From: Dileep malepu <dileep.debian@gmail.com>
+Date: Wed, 16 Jul 2025 17:19:05 +0530
+X-Gm-Features: Ac12FXzQIz-iQkdUtftKGgdOsL1jWnJIYTwWISRGw9PwtFZI6pam8h1KvOjDnwk
+Message-ID: <CAC-m1rots=Rz+_VRWQetOM25MGLnEnQ89EO6DQm7ZykP5TjsdA@mail.gmail.com>
+Subject: Re: [PATCH 6.15 000/192] 6.15.7-rc1 review
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org, broonie@kernel.org, conor@kernel.org, 
+	f.fainelli@gmail.com, hargar@microsoft.com, jonathanh@nvidia.com, 
+	linux-kernel@vger.kernel.org, linux@roeck-us.net, 
+	lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev, 
+	pavel@denx.de, rwarsow@gmx.de, shuah@kernel.org, srw@sladewatkins.net, 
+	stable@vger.kernel.org, sudipm.mukherjee@gmail.com, 
+	torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 12 Jul 2025 01:06:07 +0200
-Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> This is the start of the stable review cycle for the 6.15.7 release.
+> There are 192 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 17 Jul 2025 13:07:32 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.15.7-rc1.gz
+> or in the git tree and branch at:
+> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> On 7/12/25 01:03, Hauke Mehrtens wrote:
-> > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>  
-> 
-> Sorry this has the wrong from tag, will send a new patch.
-> 
-> Hauke>
-> > A modern Linux system creates much more than 20 threads at bootup.
-> > When I booted up OpenWrt in qemu the system sometimes failed to boot up
-> > when it wanted to create the 419th thread. The VM had 128MB RAM and the
-> > calculation in set_max_threads() calculated that max_threads should be
-> > set to 419. When the system booted up it tried to notify the user space
-> > about every device it created because CONFIG_UEVENT_HELPER was set and
-> > used. I counted 1299 calles to call_usermodehelper_setup(), all of
-> > them try to create a new thread and call the userspace hotplug script in
-> > it.
-> > 
-> > This fixes bootup of Linux on systems with low memory.
+Tested Linux kernel 6.15.7-rc1 on Fedora 37 (x86_64) with Intel i7-11800H.
+All major tests including boot, Wi-Fi, Bluetooth, audio, video, and USB
+mass storage detection passed successfully.
 
-I bet it doesn't - it is likely to fail somewhere else instead.
-While 20 is probably too low, the real issue seems to be that
-the hotplug notifications need rate limiting.
+Kernel Version    : 6.15.7-rc1
+Fedora Version    : 37 (Thirty Seven)
+Processor         : 11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz
+Build Architecture: x86_64
 
-	David
+Test Results:
+- Boot Test                      : PASS
+- Wi-Fi Test                     : PASS
+- Bluetooth Test               : PASS
+- Audio Test                     : PASS
+- Video Test                     : PASS
+- USB Mass Storage Drive Detect : PASS
 
-> > 
-> > I saw the problem with qemu 10.0.2 using these commands:
-> > qemu-system-aarch64 -machine virt -cpu cortex-a57 -nographic
-> > 
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> > ---
-> >   kernel/fork.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/kernel/fork.c b/kernel/fork.c
-> > index 7966c9a1c163..388299525f3c 100644
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -115,7 +115,7 @@
-> >   /*
-> >    * Minimum number of threads to boot the kernel
-> >    */
-> > -#define MIN_THREADS 20
-> > +#define MIN_THREADS 600
-> >   
-> >   /*
-> >    * Maximum number of threads  
-> 
-> 
-
+Tested-by: Dileep Malepu <dileep.debian@gmail.com>
 
