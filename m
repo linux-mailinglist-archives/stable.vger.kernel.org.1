@@ -1,109 +1,129 @@
-Return-Path: <stable+bounces-163069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD86CB06E20
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 08:40:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68756B06EB5
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D56D1A60A16
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 06:41:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BFD61A64CF1
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 07:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2002882D3;
-	Wed, 16 Jul 2025 06:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C8E28A727;
+	Wed, 16 Jul 2025 07:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQz0hnwI"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="hBxU0FI6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B79A10A1E;
-	Wed, 16 Jul 2025 06:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABAD381AF
+	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 07:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752648047; cv=none; b=d6CX8w1iszkSWzCXltc2zcBgXD+j8QIfKPG0Ko9OH6aK4bB1TJIMdzG4rBluNQLEa6u/jWxDv2sZud7oVqmPsFTRMkRDlcvUkhUfabuNNYUpo7HDBdD8ziH5dfYcQ8xprTUf+2wN3Av9kSDCp7CfJ1ExMVGvrGfSfeNB9x1SDf8=
+	t=1752650149; cv=none; b=LoajgccOqKQLSCmr4YDi+5U2alxYty1JNdgFly4pa9vqWI0/X0Dd3QeX3Mtxuk4S6izKlgpHzWillC+qc+kmzGkPQi8zEhlL/JNx1Z5QHPwYFdDmHa7ywccHvHXeGBZYgLGgt6PMHTGF3EHCbmdrm4MJGPKqa0Pm3LKd9FBmg4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752648047; c=relaxed/simple;
-	bh=M7wVgFYY5nzyttesPs5Sd9C3Qd0g3gqiZsDsfsHXoaQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=thhFaFR4Uj8zaGeKJFqLkpEDV9gkIbA97tt5wuKokJIbsTgdeme9YPh8UmhWo9jWaj2kVAxFCuzmIA3046cfOWivp1MMq052TLwHOZ5Uh2CdPEp2QzXzMeHr3mAzl8dbIu/SLOdqv6znJjXHXDEQLzINXVUGf6ZFsxc+tDlEul8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQz0hnwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6B8C4CEF0;
-	Wed, 16 Jul 2025 06:40:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752648046;
-	bh=M7wVgFYY5nzyttesPs5Sd9C3Qd0g3gqiZsDsfsHXoaQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iQz0hnwIkHSX8XGv2D3O4V/rf8xxwo1nmR5bXF61WJ+aLO7oH1++ArPMfdSTLueX5
-	 SGicY/Pa3Ft+XNxfNOuzmFW30kUXLNVx7d9O4hWVBkN9uSExF37d1zAsNCy6rjku0T
-	 HHKPFEl383w+6RIgW7uWrntk8g5oCUXqn9RjbrrTI7DJZZRqeIBPQYtTnl/hfCJLTw
-	 VuDIPB329cPi2xr4ga6UjQLTNmNsBHnlHKuCsDIR18T953jfwEBKaijbrT2sy4915S
-	 p8I3Sj3NWMS22GY/muVAEtNRD6sR2UtuyWYlVUu5DNrJqsjeg9G8ouz/Q3ciOgpIsv
-	 eOi+sBmCOYHzQ==
-Date: Wed, 16 Jul 2025 12:10:33 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Sumit Kumar <quic_sumk@quicinc.com>
-Cc: Alex Elder <elder@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, quic_krichai@quicinc.com, quic_akhvin@quicinc.com, 
-	quic_skananth@quicinc.com, quic_vbadigan@quicinc.com, Sumit Kumar <sumk@qti.qualcomm.com>, 
-	stable@vger.kernel.org, Akhil Vinod <akhvin@qti.qualcomm.com>
-Subject: Re: [PATCH] bus: mhi: ep: Fix chained transfer handling in read path
-Message-ID: <5aqtqicbtlkrqbiw2ba7kkgwrmsuqx2kjukh2tavfihm5hq5ry@gdeqegayfh77>
-References: <20250709-chained_transfer-v1-1-2326a4605c9c@quicinc.com>
+	s=arc-20240116; t=1752650149; c=relaxed/simple;
+	bh=24Tb/LcZcpuEpFKIVKeMZB7NBtNKQTvEKsUhXdnCMXk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=UVJpiWlP+byTDOik7Bgj5v+LWJI7WACqvJVW61ZFZ/ZbgfWqhxvgPTWu+UNnBbUVpvtZG+s8Td6rvS8/7yLGaSU/he/1nQXdMUUok0Cov3uGn1L+TCNYcD7/zwzJ1adpnO5QWvK9RdTT0Oxsnm9FO/bX6xXyHDvreDD6cq1bYmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=hBxU0FI6; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-60c60f7eeaaso9861995a12.0
+        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 00:15:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1752650146; x=1753254946; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YfsjryOJJcheH9NBkSyCY8ER+5hEKLpu3+/ZdvPKIxw=;
+        b=hBxU0FI6N4QyvB9ewq8YRKB58MORaqNgkMrhXYVmffHaIufzTUqBkT5pO9I8Vk7sVE
+         72DJEvKxWuMuruygEKXhPttCZprFXvvhq/onoRMHK+fYnYSdR6nPotsCmeUcjpu33+bd
+         SW28QC5rr8OhHWCFj3WjkAJEGVQuEzcaVWEhBawOZVZlR+TlMUybSl/eA9k/dkb7sQRp
+         vyD6PszlSyymICoMdafqoXUgi8embFU2wiMtp/1pOQPcBf2u9Tk23JVIss5JvzxQV6mt
+         KJUfr4UHgNhJfILhy5Y8HbMlMt+GiPBTPhOc2IfkdHjiCHrZcmqSCCKB6RzVlswHxfOU
+         Elyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752650146; x=1753254946;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YfsjryOJJcheH9NBkSyCY8ER+5hEKLpu3+/ZdvPKIxw=;
+        b=qaiqh0CqY4j+VLwIVdNbdr68K+yi0IZMKyq3GxOgntWoIM0KhgFZZ3UU494HL8UNvK
+         99wz2IIH8lnXF8aAvzHbXSzf7CgvcN/gaZdQ+jd3rQnziAeD+C7jPrBTHVt+ab5N9A+7
+         oz3YM5fFzvuZyUhzDWjdIC1DcpuARw5BlagFmxa7jMQjL7DJ3qwZ5d3wMJwmvQqX2jJt
+         Nm0ULpAF5sqxgG7P6vul8f3z84dczGT/fUgBI50siLs2SqwiaPuxC24DqhWcvXlz20Hq
+         FupCNEY8WWg6B/Z34T/jhGyfx0t8IWQug3poeF2CSN5qJsguHKLMZHzXuHALXlDzhPHJ
+         xGpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWj9JhtVTF09Akz1vcHtUTpg/pOSCkshBGcx4nA7F9CXy0c3jyTXmdvvIRlHV+mhWY+7FHNU3g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3lGpOHCXlAE1JtCNgJ4EyYyTuyx+yAk678Caa5CMMHl5ZyzCU
+	X4Hc6lCxp5C+/MdupjISE47TOo7hftbiGyXjAvVL17sNX7PDqJ/1fVrspuVkmi5KRrc=
+X-Gm-Gg: ASbGnctu+ThIKjuNdUsS3Eon6QZhFGLwv7V2pUn1yn5ZLjJVbmxdVcVKhK6oN2ACAbF
+	b57CvQGB41UQmh7Amw2gskd3hHBoMr8nqjO0SJesM9Au+YcmSBkqJADKIq9u+3zIWVnVmz9BDVf
+	w1OIbFMsq7sx/tbufpnSjEdKb/8Jw6IVyftS4tby/0gWHD7XmQBb8yhgzFoXorU7M0WLn0KXTtS
+	Akevpc+ZrSEC4avIwSMuF0YSl0iGVgRu+kr/X99X6xztlQ4VcRs1lDM0fBwPlbhNqdBVpLtc9mg
+	PXEeBXdng8yfAhG0JG5iKhIMoCS8Nw9QPkTb2qup2dy8xIK+qgsUFpg7wNcpyPohaACPa88UUgN
+	3qQb8fpCBPmEms9l1FnHD54D8m5oTx5Kw4S9YOIhGrYdl2TyI79ddo94=
+X-Google-Smtp-Source: AGHT+IHh6O0xWZNdSmDIs+XRRgBqO1v1bLel1oaIRd2A4zdKO7Ksr9kC4ZbOvvs8AVHwGMBGLMFLbg==
+X-Received: by 2002:a05:6402:2343:b0:606:9211:e293 with SMTP id 4fb4d7f45d1cf-61281ebe084mr1668193a12.9.1752650145562;
+        Wed, 16 Jul 2025 00:15:45 -0700 (PDT)
+Received: from localhost (212095005088.public.telering.at. [212.95.5.88])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-611c976ec04sm8197036a12.60.2025.07.16.00.15.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Jul 2025 00:15:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250709-chained_transfer-v1-1-2326a4605c9c@quicinc.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 16 Jul 2025 09:15:43 +0200
+Message-Id: <DBDAMGN9UQA0.J6KJJ48PLJ2L@fairphone.com>
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Luca Weiss" <luca.weiss@fairphone.com>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH 0/3] Fixes/improvements for SM6350 UFS
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250314-sm6350-ufs-things-v1-0-3600362cc52c@fairphone.com>
+In-Reply-To: <20250314-sm6350-ufs-things-v1-0-3600362cc52c@fairphone.com>
 
-On Wed, Jul 09, 2025 at 04:03:17PM GMT, Sumit Kumar wrote:
-> From: Sumit Kumar <sumk@qti.qualcomm.com>
-> 
-> The current implementation of mhi_ep_read_channel, in case of chained
-> transactions, assumes the End of Transfer(EOT) bit is received with the
-> doorbell. As a result, it may incorrectly advance mhi_chan->rd_offset
-> beyond wr_offset during host-to-device transfers when EOT has not yet
-> arrived. This can lead to access of unmapped host memory, causing
-> IOMMU faults and processing of stale TREs.
-> 
-> This change modifies the loop condition to ensure rd_offset remains behind
-> wr_offset, allowing the function to process only valid TREs up to the
-> current write pointer. This prevents premature reads and ensures safe
-> traversal of chained TREs.
-> 
-> Fixes: 5301258899773 ("bus: mhi: ep: Add support for reading from the host")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Akhil Vinod <akhvin@qti.qualcomm.com>
-> Signed-off-by: Akhil Vinod <akhvin@qti.qualcomm.com>
-> Signed-off-by: Sumit Kumar <sumk@qti.qualcomm.com>
+Hi Bjorn,
+
+On Fri Mar 14, 2025 at 10:17 AM CET, Luca Weiss wrote:
+> Fix the order of the freq-table-hz property, then convert to OPP tables
+> and add interconnect support for UFS for the SM6350 SoC.
+>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  drivers/bus/mhi/ep/main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
-> index b3eafcf2a2c50d95e3efd3afb27038ecf55552a5..2e134f44952d1070c62c24aeca9effc7fd325860 100644
-> --- a/drivers/bus/mhi/ep/main.c
-> +++ b/drivers/bus/mhi/ep/main.c
-> @@ -468,7 +468,7 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
->  
->  			mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
->  		}
-> -	} while (buf_left && !tr_done);
-> +	} while (buf_left && !tr_done && mhi_chan->rd_offset != ring->wr_offset);
+> Luca Weiss (3):
+>       arm64: dts: qcom: sm6350: Fix wrong order of freq-table-hz for UFS
+>       arm64: dts: qcom: sm6350: Add OPP table support to UFSHC
+>       arm64: dts: qcom: sm6350: Add interconnect support to UFS
 
-You should use mhi_ep_queue_is_empty() for checking the available elements to
-process. And with this check in place, the existing check in
-mhi_ep_process_ch_ring() becomes redundant.
+Could you please pick up this series? Konrad already gave his R-b a
+while ago.
 
-- Mani
+Regards
+Luca
 
--- 
-மணிவண்ணன் சதாசிவம்
+>
+>  arch/arm64/boot/dts/qcom/sm6350.dtsi | 49 ++++++++++++++++++++++++++++--=
+------
+>  1 file changed, 39 insertions(+), 10 deletions(-)
+> ---
+> base-commit: eea255893718268e1ab852fb52f70c613d109b99
+> change-id: 20250314-sm6350-ufs-things-53c5de9fec5e
+>
+> Best regards,
+
 
