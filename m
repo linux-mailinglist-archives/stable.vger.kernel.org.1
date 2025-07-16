@@ -1,131 +1,125 @@
-Return-Path: <stable+bounces-163176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0EDB07B01
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:20:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7734B07B02
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F147E1C41F57
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 16:19:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC1D03BA5E7
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 16:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC79D2F5C5F;
-	Wed, 16 Jul 2025 16:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271E52F5465;
+	Wed, 16 Jul 2025 16:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G8cLaHYl"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="bZikQeNn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FB32F5326
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 16:18:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5382E264602;
+	Wed, 16 Jul 2025 16:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752682683; cv=none; b=oSTmXkHy/PhobLuP3xCo43QrJ51x2sekQuZKibUvBdREkwT6M2l1Dyl5UYyP749y4cDAy3ZqYkoTHjNMjHH53ksmyW0UcLyGgPqY/D6SrAXbNYHTmmiV8KKh93SRShd0jwoBEUerJgReBfpXG164yroLGlYzE/kES1js+2/kbEo=
+	t=1752682765; cv=none; b=C4p92F4BpRojx5m2I7b2IFTw2s17ZSxk0Blkr/djK/8b5oodNkOVtTqc40z++h7EcJwrvpITGCbdW+8snBIsAScF7j3luLY0JRXtDkzDy0x7PCtxwoAnDB98cKOKezozY4m5aIdh7u7pPPkPnv8zP3vC/zIsPgeosIxCwBAu164=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752682683; c=relaxed/simple;
-	bh=PSBpWZvHiONB6XIHh8Lwy17sfK8030QTvaG6nhruCTc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nWKaI9XvEQufrpXCIWeEhyn4pLXGNOwhzRV3dQOOm5m5bZ0uV4e+2TQG6rKD1fQx22UeHULbuRjzKKGy9BoJU2Pc80gEJKLZ1OQci862oh+TZQddftBnQwCjMkRamAILhAK3/d9TUDmDWL0RHKw/WXc3wgG+1yN8z1tBF2BaqrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bgeffon.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G8cLaHYl; arc=none smtp.client-ip=209.85.160.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bgeffon.bounces.google.com
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-4ab856c0efeso1094521cf.3
-        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 09:18:00 -0700 (PDT)
+	s=arc-20240116; t=1752682765; c=relaxed/simple;
+	bh=8L4LG7VxNQXVKV54uJhPhTHvc9J9quvcGW5uC03hr1c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tXvBHFOHFjHYhgxnV3R5cdGuV3eUwKBPhAPTDVmRV6BsPMga6gm39JONNM624lxoBOmgioyPY7sahy01Jum2Pplrqu/BYCluv5smYcKjUGmRR1z2cot9xBP6QDbcvYJKrZ0wdGeCpingrsMdqHQW+5zrHRC4aC3BfHU8r5Jy6gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=bZikQeNn; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4561a4a8bf2so255425e9.1;
+        Wed, 16 Jul 2025 09:19:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752682680; x=1753287480; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ir9Dm1iVDlHTBwvNdOyXbTQs6IQAHDlj1oD0nETDHQY=;
-        b=G8cLaHYlzXG4kdCwcz7rt8tVC9h7GN1jcYa9lGixpAlbzP8BUUK18CXNloxdg4xWi1
-         6lJzszfK87m+u0KnrEsxWYOiKcII2OyLcDKc5zfMlxfPsvUfSM8vSrqINffiFWIuL5I2
-         pE91Kd1dz/QjERNZ4q380MA7jxQ1x8wD+rwYaUN5NTJlsw5umjiFr6z6dd7Y7fStCnLj
-         mu6H/VSSxicDfA7brkMnkmrzJoqWd/juOFkLfl31wWp8e/Kcqhu4qzYdYjJL7eNtoHVw
-         PR57z+mW2XdAWY9USgD5TFamj1fan8vDJctsC3Vr4VARJhYkWvo2Wq/u0QV+yTumBjxJ
-         pgHg==
+        d=googlemail.com; s=20230601; t=1752682762; x=1753287562; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=s4dkzLjjbhNvGJlyZbi1BiZarcYWuRg5LWjzLiHJJbs=;
+        b=bZikQeNnNuBmODXxNYdX3FLmHDXeP3i3ZqYndXH04Ppi9Uq8acbSS0mJBkUlO4CG+a
+         lnEK2XaesEmj8VIbo8XGi0YeLC6bJCN+qmiApKGS33cbGzNrxon4fQIW94vbQ9acXF4h
+         C2LXbocerd1r2L8XpT93X7o3s4BtVXiraQwRvMBNehWCSayzvBkgNRGBaY+pS0rP+1TU
+         lCHybZh+5AUq3T8lO7AmN/elGHOwgYpJS6BWDaO2EzEqqXL5uyWzsfn9fuFiop42VBOj
+         NLxSp9L5U7YXYg+J59KkAo7VkLYiuqLFs0UnijibKU4RwzKU9aIVFwSoEewbr5b5wb+l
+         WDVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752682680; x=1753287480;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ir9Dm1iVDlHTBwvNdOyXbTQs6IQAHDlj1oD0nETDHQY=;
-        b=QesAzIsenu22M/lBgHaeq2Aa2Fg33XanTli2pfGp9VJN7FkZMy95zN7FZrnF5RlHcs
-         LH93KU16vNewe9cBfEFMQVh3APHNknwzcCZliqR4yt0r+SCrw8plXNM1zNzWPmaMyzPJ
-         8XKuaaWQmVoKw7XQQ0Dwr1sp2RyevjqerHP2uBnj0142X8JYrRrYlRgcO/J5lbEWFoFC
-         qf9WU8zyWjZSXPen+aCtVajcmyRRIhfYykURITGAsDqQNlVvufHx2c4qz6WtUVJK+Vc7
-         rhzwFrSzR0Uxd7cPk1fOE2w53Re/HCeRqoAWhgY+PoTNPG3fSJK/owMVW3OoqhCW5ivQ
-         70BA==
-X-Forwarded-Encrypted: i=1; AJvYcCXuuI1GeYqaxI9X1zLoR4oYMghySizu/chgv72tvXc2Hl2itVAgcIkp1gW5UMlWZG3XiByap0Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAzi1BJwxEBLSyEmo10UX7qB5F5YWeKPybYHs8seokR3bdT0tl
-	xJzgLKvy5CoakboNdY12auxHbfYsRAIbwb85dAuQ+2YqiQsMt7hTjORjo3Uhh3atwGDPV9IRImD
-	/EkodAwwjqw==
-X-Google-Smtp-Source: AGHT+IG9kv7zcxxXhqHYD61hjoxEfyvcBYEDFuMJtskgL4tPmm+bSRk8+1YujdpUvyDf2JW2/N9qNordXZz0
-X-Received: from qts19.prod.google.com ([2002:a05:622a:a913:b0:4aa:bba4:8012])
- (user=bgeffon job=prod-delivery.src-stubby-dispatcher) by 2002:ac8:6f0a:0:b0:4ab:6964:7845
- with SMTP id d75a77b69052e-4ab93de8a60mr49263361cf.51.1752682679790; Wed, 16
- Jul 2025 09:17:59 -0700 (PDT)
-Date: Wed, 16 Jul 2025 16:17:53 +0000
+        d=1e100.net; s=20230601; t=1752682762; x=1753287562;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s4dkzLjjbhNvGJlyZbi1BiZarcYWuRg5LWjzLiHJJbs=;
+        b=EtU1TPF6SJKMu66Pg0Z4VI5gtLCSHGAMVF5Fj2j8L/Rz5l8x4wN8YNaHMFlZiywdAg
+         0CQT6Te/+uapqEB6B7Us9jSgweB6fGoEnvoy2j3x6lkDl1BRdNao+VYoadOSbnf6vjfS
+         ZUKwidmztLDrojx7toj7S0bA2LpzuwRaCpje37ZrtwVLg8y9AS8QAq24BPYzCHJ/TLRV
+         nSPzdKISB9LgdwG7VwkGRIQOI6T6AxwF/z4WPidlp7aeJTB4uiwiVE7KtUeJITGRwVgT
+         QR30EE2L5RuM29sJqG8eFzZQxMZ1dY3NO4EamkLhm0hX2A7gqbFTeGYHOaLPh09T2JHL
+         pYZA==
+X-Forwarded-Encrypted: i=1; AJvYcCV/8U6E8VSYcozYwAme8m7+oIOxIzhv5SE53g4y8mtpOdD/deqaTBOutXYhhbHgjrSdxWYYNaO7bCImxlw=@vger.kernel.org, AJvYcCWHSa/1UQze8Ldol4f+JEpOvbNu52hataWLrwOuIoGsE5U7tVBCd5BSIVz1T4w5BuEYndgu51gu@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUiI/QHtYA4Xu0ujv26gfAxhuLEau5v06NO5wvFrD7yJsILKum
+	Zp01V/1B9hjamOfBO6miMWRmVqYDNCxpf3uu/cFhz788IfbOa3nYqqA=
+X-Gm-Gg: ASbGncv4MPF0ql/Be33qEn5gu8gchDKvbZroRmxdyObS1zZ1tW8ce5xhTnAVeYazQ2z
+	1UM5xe9xoxUw4NHQLaG33sd9apb80B8wNNRpN6Ai1byIFncdqsQLxr3qDhrzAsQu9d72J/qa6Na
+	LyyLBpUi+HJQ1BSlhar9PgmG0uCVtdO3A+RvdvnaLQj24SXXos4H1jpyY6R97acGJ5P+GrvGH1L
+	MCSRX6m7gGLQ/VN9d24aVWW5UNHpKdF1Fn4e1xznpAf5sl/6IJkwjYRT50Q5F6g6HV90XyJMCCN
+	nFyhpnkzZYGzGXDPhrpsutAFVX+9njN31i28nFPBIeFKoRSeJwiYHZteldPJaDWTsiZsJCIh4ec
+	gQm9t4lVnHZHcpcTfz38CtQGjZzon2ylqlttTN88ZgSaSUrbu2ESlGz5QXNkYVZC6M6YmSoGaZG
+	hX
+X-Google-Smtp-Source: AGHT+IFjsCW/j+z9V+0qi3pXWCj1korkJ9Tpgx1scJIAt2ZMhEJkziqtQAOuMKyegU35oRlN7oHuGA==
+X-Received: by 2002:a05:600c:a00c:b0:455:de98:c504 with SMTP id 5b1f17b1804b1-4562e2bd5a8mr42946605e9.0.1752682762431;
+        Wed, 16 Jul 2025 09:19:22 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2ac571.dip0.t-ipconnect.de. [91.42.197.113])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4562e7f2e57sm25590115e9.6.2025.07.16.09.19.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Jul 2025 09:19:21 -0700 (PDT)
+Message-ID: <f188e72b-231d-4523-a804-92fbf539886a@googlemail.com>
+Date: Wed, 16 Jul 2025 18:19:20 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250716161753.231145-1-bgeffon@google.com>
-Subject: [PATCH] drm/amdgpu: Raven: don't allow mixing GTT and VRAM
-From: Brian Geffon <bgeffon@google.com>
-To: Alex Deucher <alexander.deucher@amd.com>, christian.koenig@amd.com
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, Yunxiang Li <Yunxiang.Li@amd.com>, 
-	Lijo Lazar <lijo.lazar@amd.com>, Prike Liang <Prike.Liang@amd.com>, 
-	Pratap Nirujogi <pratap.nirujogi@amd.com>, Luben Tuikov <luben.tuikov@amd.com>, 
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, Garrick Evans <garrick@google.com>, 
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, Brian Geffon <bgeffon@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/165] 6.12.39-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250715163544.327647627@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250715163544.327647627@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Commit 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
-allowed for newer ASICs to mix GTT and VRAM, this change also noted that
-some older boards, such as Stoney and Carrizo do not support this.
-It appears that at least one additional ASIC does not support this which
-is Raven.
+Am 15.07.2025 um 18:37 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.39 release.
+> There are 165 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-We observed this issue when migrating a device from a 5.4 to 6.6 kernel
-and have confirmed that Raven also needs to be excluded from mixing GTT
-and VRAM.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1+
-Tested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Brian Geffon <bgeffon@google.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/a=
-md/amdgpu/amdgpu_object.c
-index 73403744331a..5d7f13e25b7c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -1545,7 +1545,8 @@ uint32_t amdgpu_bo_get_preferred_domain(struct amdgpu=
-_device *adev,
- 					    uint32_t domain)
- {
- 	if ((domain =3D=3D (AMDGPU_GEM_DOMAIN_VRAM | AMDGPU_GEM_DOMAIN_GTT)) &&
--	    ((adev->asic_type =3D=3D CHIP_CARRIZO) || (adev->asic_type =3D=3D CHI=
-P_STONEY))) {
-+	    ((adev->asic_type =3D=3D CHIP_CARRIZO) || (adev->asic_type =3D=3D CHI=
-P_STONEY) ||
-+	     (adev->asic_type =3D=3D CHIP_RAVEN))) {
- 		domain =3D AMDGPU_GEM_DOMAIN_VRAM;
- 		if (adev->gmc.real_vram_size <=3D AMDGPU_SG_THRESHOLD)
- 			domain =3D AMDGPU_GEM_DOMAIN_GTT;
---=20
-2.50.0.727.gbf7dc18ff4-goog
 
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
