@@ -1,154 +1,120 @@
-Return-Path: <stable+bounces-163088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8322B07205
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 11:42:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1152CB07257
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 11:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0747B17CA57
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:42:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 789E6188D5FD
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3B32EF646;
-	Wed, 16 Jul 2025 09:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Al71AiLa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF142F1FF4;
+	Wed, 16 Jul 2025 09:59:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail02.rohde-schwarz.com (mail02.rohde-schwarz.com [80.246.32.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EF02701CE;
-	Wed, 16 Jul 2025 09:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91E7231A4D
+	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 09:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.246.32.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752658928; cv=none; b=EXKsG7VCYs30OyBQgWT6ki0DOdpgf4KmgT+ya3tG4CMhJ6KUHA7wa5BhJKOOaT9L8OVgkRX7FK38IZ1//z7x3FLyiXnlwsq4UcysA3HUiBqG2slCWGfxvKUVdmIMM3nxQfVfM5LMz3patAdfKLoMhysbiyh2eulWFQBYYbBeOMk=
+	t=1752659954; cv=none; b=KEE/2atk/yij5IKg8j7XjHlUoOuYQOAOMkIBXqisGH7pg3TOZU0j5MQJ+/Zk/CVP/D30tw4JRyT1/+dkC4fQHtHamkZ4dxkWVeiDfgRxpAjlLMgnERrOB93AK9XQ7AcCxP2BEZqzzMCFAXIgUjJz2w73nefXT/ORBcRFWueTRG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752658928; c=relaxed/simple;
-	bh=sn26vG9Lu7xSLIkMBif0HOVxMMvKjr4ApngzjQSu0Vk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R54nduzIvV4naAgbrevCOEX+R/gv1VVuN27DO/akd+Y38hTHMn71cD6TfBbAqQpwUEWoEq85ic5Ono/o+tKOhmE7iTtKOuUOzoSkPfbWZcaCp0xE0U6gRPeiXudPkBCg1eT8HwmtHmW23sYCDei8f0r58nTIfPm8X5uClfv91xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Al71AiLa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65AEC4CEF0;
-	Wed, 16 Jul 2025 09:42:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752658928;
-	bh=sn26vG9Lu7xSLIkMBif0HOVxMMvKjr4ApngzjQSu0Vk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Al71AiLaI/dpXeER9zPwY30mq0qNyAGHefX0OEvfJFBjNNKE4WmSEyVWgKckjuIVC
-	 srJxfiYeO+d6AoPSqqK6HyCsZuIUkokJaMZ1L3/VDbN92IJPTYtZvbQ1X5e5mXJ6Z+
-	 tUP2o9EwGzHBHGUOnow0nKfE+XNRyt5NwOIaF+Bk=
-Date: Wed, 16 Jul 2025 11:42:05 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Srinivas Kandagatla <srini@kernel.org>
-Cc: linux-kernel@vger.kernel.org, "Michael C. Pratt" <mcpratt@pm.me>,
-	INAGAKI Hiroshi <musashino.open@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] nvmem: layouts: u-boot-env: remove crc32 endianness
- conversion
-Message-ID: <2025071656-heap-student-9163@gregkh>
-References: <20250712181729.6495-1-srini@kernel.org>
- <20250712181729.6495-2-srini@kernel.org>
- <2025071308-upfront-romp-fa1e@gregkh>
- <2025071313-zippy-boneless-da1c@gregkh>
- <b25f83e8-7e5d-44f8-9f16-909cb005aadd@kernel.org>
+	s=arc-20240116; t=1752659954; c=relaxed/simple;
+	bh=S6e1RGFN7dzYH34T2XBmoV0KiK3EgqUAl+mp9sU6Xck=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ltd3GdKOPCP7YUAeM4zcMV3DIOKcMhS//sVYIUiS9VzQR4kWas9pbNjMfJHoFWK8omPFwbbqNwSIYSLDBt4uBlGOG/rL97vrlla6HxkPKxsUSHyJdzhL3Mo15HexTmHiTKwnizy5tP9PiZPk8QIugWmKQEyjquePmdWfi1nHvcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rohde-schwarz.com; spf=pass smtp.mailfrom=rohde-schwarz.com; arc=none smtp.client-ip=80.246.32.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rohde-schwarz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rohde-schwarz.com
+Received: from securemail-mu-h4.rohde-schwarz.com (10.0.19.146) by
+ mail02.rohde-schwarz.com (172.21.64.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Wed, 16 Jul 2025 11:59:11 +0200
+Received: from GMU451.rsint.net ([10.0.225.106])
+          by gmu812.rsint.net (Totemo SMTP Server) with SMTP ID 945;
+          Wed, 16 Jul 2025 09:59:10 +0000 (GMT)
+Received: from GMU506.rsint.net (10.0.225.38) by GMU451.rsint.net
+ (10.0.225.106) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Wed, 16 Jul
+ 2025 11:59:10 +0200
+Received: from GMU503.rsint.net (10.0.225.35) by GMU506.rsint.net
+ (10.0.225.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Wed, 16 Jul
+ 2025 11:59:08 +0200
+Received: from GMU503.rsint.net ([fe80::957e:76:e488:c60d]) by
+ GMU503.rsint.net ([fe80::957e:76:e488:c60d%4]) with mapi id 15.02.1748.026;
+ Wed, 16 Jul 2025 11:59:08 +0200
+From: Guido Kiener <Guido.Kiener@rohde-schwarz.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>, Jian-Wei Wu
+	<jian-wei_wu@keysight.com>, Dave Penkler <dpenkler@gmail.com>, Sasha Levin
+	<sashal@kernel.org>
+Subject: RE: [PATCH 5.10 022/208] USB: usbtmc: Add USBTMC_IOCTL_GET_STB
+Thread-Index: AQHb9jF7cp80q3sgfkWdVNz+k0hWE7Q0Yp8w
+Date: Wed, 16 Jul 2025 09:59:08 +0000
+Message-ID: <a35a4e1b6cd6484d893b71da487dd8b0@rohde-schwarz.com>
+References: <20250715130810.830580412@linuxfoundation.org>
+ <20250715130811.725344645@linuxfoundation.org>
+ <b7899ee9fddb4a39bce1349d7d1224ad@rohde-schwarz.com>
+ <2025071536-rummage-unlit-70d4@gregkh>
+ <faf41397ab4b4344af294bbb8c2e6030@rohde-schwarz.com>
+In-Reply-To: <faf41397ab4b4344af294bbb8c2e6030@rohde-schwarz.com>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b25f83e8-7e5d-44f8-9f16-909cb005aadd@kernel.org>
+X-IQAV: YES
+thread-topic: RE: [PATCH 5.10 022/208] USB: usbtmc: Add USBTMC_IOCTL_GET_STB /ur/
+X-rus_sensitivity: 10
+msip_labels: MSIP_Label_9764cdcd-3664-4d05-9615-7cbf65a4f0a8_Enabled=true; MSIP_Label_9764cdcd-3664-4d05-9615-7cbf65a4f0a8_SetDate=2025-07-16T11:59:09Z; MSIP_Label_9764cdcd-3664-4d05-9615-7cbf65a4f0a8_Method=Privileged; MSIP_Label_9764cdcd-3664-4d05-9615-7cbf65a4f0a8_Name=UNRESTRICTED; MSIP_Label_9764cdcd-3664-4d05-9615-7cbf65a4f0a8_SiteId=74bddbd9-705c-456e-aabd-99beb719a2b2; MSIP_Label_9764cdcd-3664-4d05-9615-7cbf65a4f0a8_ActionId=8b69e117-7756-4ef8-b52e-ebe0297deaf4; MSIP_Label_9764cdcd-3664-4d05-9615-7cbf65a4f0a8_ContentBits=1
+X-GBS-PROC: Tn4DSgVsKV6PS+va455PCJVXnKqXXT3mLDNQ8wwtU3idl2DDDPkxbMlQm0Ms/qIqMzWlLXt01x8LsuOuxYx66SdfLxY7Yzl8gcmU/wcs0+6BQCP5V0LQ2vky939bqCDB
+X-GBS-PROCJOB: ECnX0hWnvH9dL1EAl2+kxJqENmdgbFXUy5PIlDPculHH7N1Efe/xpSpRPz42hQhr
 
-On Tue, Jul 15, 2025 at 04:44:00PM +0100, Srinivas Kandagatla wrote:
-> 
-> 
-> On 7/13/25 4:42 PM, Greg KH wrote:
-> > On Sun, Jul 13, 2025 at 05:41:45PM +0200, Greg KH wrote:
-> >> On Sat, Jul 12, 2025 at 07:17:26PM +0100, srini@kernel.org wrote:
-> >>> From: "Michael C. Pratt" <mcpratt@pm.me>
-> >>>
-> >>> On 11 Oct 2022, it was reported that the crc32 verification
-> >>> of the u-boot environment failed only on big-endian systems
-> >>> for the u-boot-env nvmem layout driver with the following error.
-> >>>
-> >>>   Invalid calculated CRC32: 0x88cd6f09 (expected: 0x096fcd88)
-> >>>
-> >>> This problem has been present since the driver was introduced,
-> >>> and before it was made into a layout driver.
-> >>>
-> >>> The suggested fix at the time was to use further endianness
-> >>> conversion macros in order to have both the stored and calculated
-> >>> crc32 values to compare always represented in the system's endianness.
-> >>> This was not accepted due to sparse warnings
-> >>> and some disagreement on how to handle the situation.
-> >>> Later on in a newer revision of the patch, it was proposed to use
-> >>> cpu_to_le32() for both values to compare instead of le32_to_cpu()
-> >>> and store the values as __le32 type to remove compilation errors.
-> >>>
-> >>> The necessity of this is based on the assumption that the use of crc32()
-> >>> requires endianness conversion because the algorithm uses little-endian,
-> >>> however, this does not prove to be the case and the issue is unrelated.
-> >>>
-> >>> Upon inspecting the current kernel code,
-> >>> there already is an existing use of le32_to_cpu() in this driver,
-> >>> which suggests there already is special handling for big-endian systems,
-> >>> however, it is big-endian systems that have the problem.
-> >>>
-> >>> This, being the only functional difference between architectures
-> >>> in the driver combined with the fact that the suggested fix
-> >>> was to use the exact same endianness conversion for the values
-> >>> brings up the possibility that it was not necessary to begin with,
-> >>> as the same endianness conversion for two values expected to be the same
-> >>> is expected to be equivalent to no conversion at all.
-> >>>
-> >>> After inspecting the u-boot environment of devices of both endianness
-> >>> and trying to remove the existing endianness conversion,
-> >>> the problem is resolved in an equivalent way as the other suggested fixes.
-> >>>
-> >>> Ultimately, it seems that u-boot is agnostic to endianness
-> >>> at least for the purpose of environment variables.
-> >>> In other words, u-boot reads and writes the stored crc32 value
-> >>> with the same endianness that the crc32 value is calculated with
-> >>> in whichever endianness a certain architecture runs on.
-> >>>
-> >>> Therefore, the u-boot-env driver does not need to convert endianness.
-> >>> Remove the usage of endianness macros in the u-boot-env driver,
-> >>> and change the type of local variables to maintain the same return type.
-> >>>
-> >>> If there is a special situation in the case of endianness,
-> >>> it would be a corner case and should be handled by a unique "compatible".
-> >>>
-> >>> Even though it is not necessary to use endianness conversion macros here,
-> >>> it may be useful to use them in the future for consistent error printing.
-> >>>
-> >>> Fixes: d5542923f200 ("nvmem: add driver handling U-Boot environment variables")
-> >>
-> >> Note, this is a 6.1 commit id, but:
-> >>
-> >>> Reported-by: INAGAKI Hiroshi <musashino.open@gmail.com>
-> >>> Link: https://lore.kernel.org/all/20221011024928.1807-1-musashino.open@gmail.com
-> >>> Cc: stable@vger.kernel.org # 6.12.x
-> >>> Cc: stable@vger.kernel.org # 6.6.x: f4cf4e5: Revert "nvmem: add new config option"
-> >>> Cc: stable@vger.kernel.org # 6.6.x: 7f38b70: of: device: Export of_device_make_bus_id()
-> >>> Cc: stable@vger.kernel.org # 6.6.x: 4a1a402: nvmem: Move of_nvmem_layout_get_container() in another header
-> >>> Cc: stable@vger.kernel.org # 6.6.x: fc29fd8: nvmem: core: Rework layouts to become regular devices
-> >>> Cc: stable@vger.kernel.org # 6.6.x: 0331c61: nvmem: core: Expose cells through sysfs
-> >>> Cc: stable@vger.kernel.org # 6.6.x: 401df0d: nvmem: layouts: refactor .add_cells() callback arguments
-> >>> Cc: stable@vger.kernel.org # 6.6.x: 6d0ca4a: nvmem: layouts: store owner from modules with nvmem_layout_driver_register()
-> >>> Cc: stable@vger.kernel.org # 6.6.x: 5f15811: nvmem: layouts: add U-Boot env layout
-> >>> Cc: stable@vger.kernel.org # 6.6.x
-> >>
-> >> That's a load of (short) git ids for just 6.6.y?  What about 6.1.y?
-> > 
-> > And really, ALL of those commits are needed for this very tiny patch?
-> May be not, AFAIU  Fixes: d5542923f200 ("nvmem: add driver handling
-> U-Boot environment variables") should be enough.
-
-Great, can you fix this up and resend?
-
-thanks,
-
-greg k-h
+VXBkYXRlIHNlZSBiZWxvdzoNCg0KPiA+IEkgZ290IHRoZSBzZXJpZXMNCj4gPiBbUEFUQ0ggNS40
+IDAxNS8xNDhdIFVTQjogdXNidG1jOiBGaXggcmVhZGluZyBzdGFsZSBzdGF0dXMgYnl0ZSANCj4g
+PiBbUEFUQ0gNCj4gPiA1LjQgMDE2LzE0OF0gVVNCOiB1c2J0bWM6IEFkZCBVU0JUTUNfSU9DVExf
+R0VUX1NUQg0KPiANCj4gT2RkLCB0aGF0IHNlY29uZCBvbmUgc2hvdWRuJ3QgYmUgdGhlcmUsIHJp
+Z2h0Pw0KDQpZZXMsIHRoZXJlIGlzIG5vIG5lZWQgdG8gYWRkIGJvdGggcGF0Y2hlcy4NCjUuNC4y
+OTUgaXMgb2sgYW5kIHVzZXMgb2xkIGltcGxlbWVudGF0aW9uIG9mIHVzYnRtYzQ4OF9pb2N0bF9y
+ZWFkX3N0YiBJIGFzc3VtZSwgdGhlcmUgaXMgbm8gbmVlZCB0byBhZGQgW1BBVENIIDUuNCAwMTUv
+MTQ4XSBhbmQgW1BBVENIIDUuNCAwMTYvMTQ4XQ0KIA0KPiA+IFtQQVRDSCA1LjEwIDAyMS8yMDhd
+IFVTQjogdXNidG1jOiBGaXggcmVhZGluZyBzdGFsZSBzdGF0dXMgYnl0ZSANCj4gPiBbUEFUQ0gN
+Cj4gPiA1LjEwIDAyMi8yMDhdIFVTQjogdXNidG1jOiBBZGQgVVNCVE1DX0lPQ1RMX0dFVF9TVEIN
+Cj4gDQo+IFNhbWUgaGVyZT8NCg0KWWVzLCBzYW1lIGhlcmUuDQogDQo+ID4gQW5kIEkgYXNzdW1l
+IHdlIHNob3VsZCBhZGQgdGhlIG90aGVyIHR3byBjb21taXRzIGFzIHdlbGwgdG8gY29tcGxldGUg
+dGhlIHNlcmllczoNCj4gPiBVU0I6IHVzYnRtYzogQWRkIHNlcGFyYXRlIFVTQlRNQ19JT0NUTF9H
+RVRfU1JRX1NUQiAgKGNvbW1pdA0KPiA+IGQxZDlkZWZkYzZkNTgyMTE5ZDI5ZjVkODhmODEwYjcy
+YmIxODM3ZmEpDQo+ID4gVVNCOiB1c2J0bWM6IEJ1bXAgVVNCVE1DX0FQSV9WRVJTSU9OIHZhbHVl
+IChjb21taXQNCj4gPiA2MTRiMzg4YzM0MjY1OTQ4ZmJiM2M1ODAzYWQ3MmFhMTg5OGYyZjkzKQ0K
+PiANCj4gTm9wZSwgSSBkaWRuJ3QsIG1heWJlIEkgc2hvdWxkIGp1c3QgZHJvcCBib3RoIG9mIHRo
+ZSBhYm92ZSBvbmVzLCBhcyBpdCANCj4gZG9lc24ndCBtYWtlIG11Y2ggc2Vuc2UgdG8gaGF2ZSBv
+bmx5IHRoZSBvbmUsIHJpZ2h0Pw0KDQpUaGUgcGF0Y2ggIlVTQjogdXNidG1jOiBGaXggcmVhZGlu
+ZyBzdGFsZSBzdGF0dXMgYnl0ZSIgaXMgbm90IHJlcXVpcmVkIGluIDUuNCBhbmQgNS4xMCwgdG9v
+Lg0KVGhlIG5ldyBiZWhhdmlvciB0byByZWFkIHRoZSBzdGF0dXMgYnl0ZSBpbiBvbGQgYW5kIG5l
+dyBtYW5uZXIgd2FzIGludHJvZHVjZWQgaW4gNS4xMi4NClNvcnJ5LCBJIGNhbiBub3QgdmVyaWZ5
+IG15IGN1cnJlbnQgZmluZGluZ3MsIHNpbmNlIEkgZG8gbm90IGhhdmUgdGVzdCBzeXN0ZW1zIGZv
+ciBpdC4NClRvIGJlIHN1cmUgd2Ugc2hvdWxkIHdhaXQgZm9yIGEgY29tbWVudCBmcm9tIERhdmUu
+IEhlIGRpZCB0aGUgbGFzdCBwYXRjaGVzLg0KDQpVcGRhdGU6DQpOb3cgSSBzZWUgYSBwcm9ibGVt
+IGluIHRoZSBwYXRjaC01LjQuMjk1OiANCg0KQEAgLTU1Niw2ICs1NjAsOCBAQCBzdGF0aWMgaW50
+IHVzYnRtYzQ4OF9pb2N0bF9yZWFkX3N0YihzdHJ1Y3QgdXNidG1jX2ZpbGVfZGF0YSAqZmlsZV9k
+YXRhLA0KIAlydiA9IHB1dF91c2VyKHN0YiwgKF9fdTggX191c2VyICopYXJnKTsNCiAJZGV2X2Ri
+ZyhkZXYsICJzdGI6MHglMDJ4IHJlY2VpdmVkICVkXG4iLCAodW5zaWduZWQgaW50KXN0YiwgcnYp
+Ow0KIA0KKwlydiA9IDA7DQorDQogIGV4aXQ6DQogCS8qIGJ1bXAgaW50ZXJydXB0IGJUYWcgKi8N
+CiAJZGF0YS0+aWluX2JUYWcgKz0gMTsNCg0KV2Ugc2hvdWxkIG5vdCBzZXQgcmV2ID0gMCwgc2lu
+Y2UgDQoNCgljYXNlIFVTQlRNQzQ4OF9JT0NUTF9SRUFEX1NUQjoNCgkJcmV0dmFsID0gdXNidG1j
+NDg4X2lvY3RsX3JlYWRfc3RiKGZpbGVfZGF0YSwNCgkJCQkJCSAgKHZvaWQgX191c2VyICopYXJn
+KTsNCg0Kd2lsbCByZXR1cm4gMCBpbnN0ZWFkIG9mIDEgKHRoZSBhbW91bnQgb2YgcmV0dXJuZWQg
+Ynl0ZXMpLiANCg0KU2FtZSBpc3N1ZSBpbiBwYXRjaC01LjEwLjIzOS4NCg0KDQpHdWlkbw0KDQo=
 
