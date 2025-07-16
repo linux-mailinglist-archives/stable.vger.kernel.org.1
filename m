@@ -1,100 +1,159 @@
-Return-Path: <stable+bounces-163154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBF3B0783D
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 16:36:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D306B07857
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 16:42:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6917A3A37B7
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 14:35:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7741F165BF1
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 14:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34199253359;
-	Wed, 16 Jul 2025 14:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F27262FC5;
+	Wed, 16 Jul 2025 14:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="KCiLvom6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8jJt2At"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E38A21B9DE
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 14:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752676576; cv=pass; b=qF73k1EtnsNDMYixBXpGSmn//hBdyrS4PQENpEdJOMShTpjtiNHwXXP6g9Q0F7EyG3NPfGE0O/dBmSkaZH4U9TyaG4KKqN3PIyNgyLzUFk596tOrRwK23qZzmISQXypmC6O4F/q0xranHCCsXmH/4mls/OeKQ7dR4qFMLZbl0Oc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752676576; c=relaxed/simple;
-	bh=ODHL7ADV8mUyW3tmT7td/7ghxtPkZ47PmrQcii5eRB4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nMhivgM/Iwkwt/df0igvexD02P5CNGjBDclGBdx9sCrQsQ5fpIt8eZSEVJj6BN1hKgZxKOltOoNwn0+GDLDu1A51bVURlK3tw6rnfghVi+i2DsOD2C62PGNpZjlDjca3xygCfyz66eoua/oCOb+VbiQxQ9g2Tm17uzz/X+eI+wY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=KCiLvom6; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1752676567; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=QWk4GZ3BsNG+IoMYjF1v3dFGUpnT9vH7mpH0Dvr/n1qWaz7CsidJgM2zbBrpVkT9Cg8wKQo+AC2co9n68LC6Se4l2KwLsnYk0mIfYM5/EFeeZ5j2Jjyuf3P+ZQSVwDzn6Crr/wsKa7utYS0DMwyeJ+HQSY/yfjNhg/m4uegYsEU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1752676567; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ODHL7ADV8mUyW3tmT7td/7ghxtPkZ47PmrQcii5eRB4=; 
-	b=a4M8QPDcW12DLFEodfOOHxGAtOosATW6+AHMkKg/Uist1jQVjDr+MX8xEc05t/0vxtGcTepXCACATV0ZG+rJ9CfFI8hINypJh33ZZORdrdCphHurgvvQ0Zc6/l6+Scw5aP4KPbIyWYsktjc99lykR17mLxXpdQWjWLzM2y/9zeM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=gus@collabora.com;
-	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752676567;
-	s=zohomail; d=collabora.com; i=gus@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=ODHL7ADV8mUyW3tmT7td/7ghxtPkZ47PmrQcii5eRB4=;
-	b=KCiLvom6QYZ3uCuIlGMhwZfFvAjUEJfsu833IEPXryVpBGulx+BHmOr6bz5friaQ
-	xd8rHUz+dFu3iDusmKVYbnXz7Gg8ahK+M8Ulk+Odyx7xZgtK/+s5lC0YAxSoFoteIyc
-	ZVM0Rj9F+k24ENv7asa7oN/NrDvuStX6uzqEO7F8=
-Received: by mx.zohomail.com with SMTPS id 1752676566201838.0538823370508;
-	Wed, 16 Jul 2025 07:36:06 -0700 (PDT)
-Message-ID: <9899229dc635f4912615525b80642b82a14e1741.camel@collabora.com>
-Subject: Re: [TEST REGRESSION] stable-rc/linux-6.12.y:
- kselftest.seccomp.seccomp_seccomp_benchmark_per-filter_last_2_diff_per-filter_filters_4
- on bcm2837-rpi-3-b-plus
-From: Gustavo Padovan <gus@collabora.com>
-To: Mark Brown <broonie@kernel.org>, kernelci-results@groups.io, 
-	bot@kernelci.org
-Cc: stable@vger.kernel.org
-Date: Wed, 16 Jul 2025 11:36:02 -0300
-In-Reply-To: <bb9ea244-8d9f-4243-97cd-9506546a162f@sirena.org.uk>
-References: <175266998670.2811448.3696380835897675982@poutine>
-	 <bb9ea244-8d9f-4243-97cd-9506546a162f@sirena.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CEC26057A;
+	Wed, 16 Jul 2025 14:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752676937; cv=none; b=OaCUDCiYc+O0pCxsoz9sGmsbjJDUbD7zMwncAZR8zTssBKb8Kf/zG66piEO+Azt9QEcjsBQe0y+lihhPCgptE5cqzk5PAbd8D4Gf7Y7di/dW5ApguD4k2XYllYNUlgNAJnYai+/HB1HB5EaU4dea1MHsI/Mk3Sbyd7Cr6+794Ys=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752676937; c=relaxed/simple;
+	bh=F6z40T/vA8Ei0+4sNeywLtfPgjy3l6PcL0URr5IK4xc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VlAYsv51WoKJu3VZIZy1vRWdj8Ch9zYmO2cG1pQrx+9nXj9ZWPOnFB4bmWl7oZia4JZbeURwHzn6la3YJTmiGe/5fJFnWLaUlVoafHTmcg5mJyRXBcWb3Xzhlng/uo21/k/RBFbuBkYitF2gEgohruGvKz+/qmUYtiXpkJQjFSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O8jJt2At; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FF8C4CEF0;
+	Wed, 16 Jul 2025 14:42:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752676935;
+	bh=F6z40T/vA8Ei0+4sNeywLtfPgjy3l6PcL0URr5IK4xc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=O8jJt2At0i4PBZvisCUvJRjIrEeC3Vd8UUl/tLvreBieauXs0kiHMKbnB/y98DIoq
+	 Ivv1bUqi4/Ep5ZqfdZWxAKe+pBbILEP6Ad3953Xe2LLn3vk8F4ZEYYBQBdWupm2yHy
+	 r+iUdJC239xMctGos31QBdkAJJ+/Y+zhC24n053qDl/ogiAS0RKWh2OcDtyqYCImFn
+	 TK7vMQCTRKAxOVf+cooIaYp2QlAM0Y9p6oBZP7bss82jO1bkvERO6ZkV59OW6Ym7g5
+	 83nV8+ZvBpI2b7IWdAM6BlBM65aHahKabkxZQrV2h5VX7IAIJ8wmioTvvv3unJHRdZ
+	 6CSEvV5K2Giaw==
+From: srini@kernel.org
+To: gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	"Michael C. Pratt" <mcpratt@pm.me>,
+	INAGAKI Hiroshi <musashino.open@gmail.com>,
+	stable@vger.kernel.org,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH v2] nvmem: layouts: u-boot-env: remove crc32 endianness conversion
+Date: Wed, 16 Jul 2025 15:42:10 +0100
+Message-ID: <20250716144210.4804-1-srini@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2025-07-16 at 13:58 +0100, Mark Brown wrote:
-> On Wed, Jul 16, 2025 at 12:46:28PM -0000, KernelCI bot wrote:
->=20
-> > kselftest.seccomp.seccomp_seccomp_benchmark_per-
-> > filter_last_2_diff_per-filter_filters_4 running on bcm2837-rpi-3-b-
-> > plus
->=20
-> FWIW the seccomp benchmarks are very unstable on a fairly wide range
-> of
-> hardware.=C2=A0 We probably need some filtering on the tests that get
-> reported.
+From: "Michael C. Pratt" <mcpratt@pm.me>
 
-Indeed. However, for the previous 17 executions it passed 12 with 5
-infra issues unrelated to the test. That's is why we sent this report.
+On 11 Oct 2022, it was reported that the crc32 verification
+of the u-boot environment failed only on big-endian systems
+for the u-boot-env nvmem layout driver with the following error.
 
-But to your point, we really need clear understanding of patterns to
-flag something as regression vs it being an unstable test.
+  Invalid calculated CRC32: 0x88cd6f09 (expected: 0x096fcd88)
 
-Best,
+This problem has been present since the driver was introduced,
+and before it was made into a layout driver.
 
-- Gus
+The suggested fix at the time was to use further endianness
+conversion macros in order to have both the stored and calculated
+crc32 values to compare always represented in the system's endianness.
+This was not accepted due to sparse warnings
+and some disagreement on how to handle the situation.
+Later on in a newer revision of the patch, it was proposed to use
+cpu_to_le32() for both values to compare instead of le32_to_cpu()
+and store the values as __le32 type to remove compilation errors.
 
+The necessity of this is based on the assumption that the use of crc32()
+requires endianness conversion because the algorithm uses little-endian,
+however, this does not prove to be the case and the issue is unrelated.
+
+Upon inspecting the current kernel code,
+there already is an existing use of le32_to_cpu() in this driver,
+which suggests there already is special handling for big-endian systems,
+however, it is big-endian systems that have the problem.
+
+This, being the only functional difference between architectures
+in the driver combined with the fact that the suggested fix
+was to use the exact same endianness conversion for the values
+brings up the possibility that it was not necessary to begin with,
+as the same endianness conversion for two values expected to be the same
+is expected to be equivalent to no conversion at all.
+
+After inspecting the u-boot environment of devices of both endianness
+and trying to remove the existing endianness conversion,
+the problem is resolved in an equivalent way as the other suggested fixes.
+
+Ultimately, it seems that u-boot is agnostic to endianness
+at least for the purpose of environment variables.
+In other words, u-boot reads and writes the stored crc32 value
+with the same endianness that the crc32 value is calculated with
+in whichever endianness a certain architecture runs on.
+
+Therefore, the u-boot-env driver does not need to convert endianness.
+Remove the usage of endianness macros in the u-boot-env driver,
+and change the type of local variables to maintain the same return type.
+
+If there is a special situation in the case of endianness,
+it would be a corner case and should be handled by a unique "compatible".
+
+Even though it is not necessary to use endianness conversion macros here,
+it may be useful to use them in the future for consistent error printing.
+
+Fixes: d5542923f200 ("nvmem: add driver handling U-Boot environment variables")
+Reported-by: INAGAKI Hiroshi <musashino.open@gmail.com>
+Link: https://lore.kernel.org/all/20221011024928.1807-1-musashino.open@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael C. Pratt <mcpratt@pm.me>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+---
+Changes since v1:
+	- removed long list of short git ids as it was too much for
+	  small patch.
+
+ drivers/nvmem/layouts/u-boot-env.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/nvmem/layouts/u-boot-env.c b/drivers/nvmem/layouts/u-boot-env.c
+index 436426d4e8f9..8571aac56295 100644
+--- a/drivers/nvmem/layouts/u-boot-env.c
++++ b/drivers/nvmem/layouts/u-boot-env.c
+@@ -92,7 +92,7 @@ int u_boot_env_parse(struct device *dev, struct nvmem_device *nvmem,
+ 	size_t crc32_data_offset;
+ 	size_t crc32_data_len;
+ 	size_t crc32_offset;
+-	__le32 *crc32_addr;
++	uint32_t *crc32_addr;
+ 	size_t data_offset;
+ 	size_t data_len;
+ 	size_t dev_size;
+@@ -143,8 +143,8 @@ int u_boot_env_parse(struct device *dev, struct nvmem_device *nvmem,
+ 		goto err_kfree;
+ 	}
+ 
+-	crc32_addr = (__le32 *)(buf + crc32_offset);
+-	crc32 = le32_to_cpu(*crc32_addr);
++	crc32_addr = (uint32_t *)(buf + crc32_offset);
++	crc32 = *crc32_addr;
+ 	crc32_data_len = dev_size - crc32_data_offset;
+ 	data_len = dev_size - data_offset;
+ 
+-- 
+2.43.0
 
 
