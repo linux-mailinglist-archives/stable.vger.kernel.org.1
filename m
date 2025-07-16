@@ -1,181 +1,108 @@
-Return-Path: <stable+bounces-163073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C8DB06F4F
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:45:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC03EB06F50
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66CC03A73EF
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 07:45:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21DBC580A72
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 07:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C853A25F790;
-	Wed, 16 Jul 2025 07:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B59263F52;
+	Wed, 16 Jul 2025 07:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Z7XVGeUI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYSkubu8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D8F1482E8
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 07:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16ED17D2;
+	Wed, 16 Jul 2025 07:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752651946; cv=none; b=TGeHFGmKkYeolrZ8LJ71h/vjOknUXWVu8ALzybxOXSFHSK7Gwv/AheufFQl74jqAEuVSjTEhUVsYt8a+cx47IZ/UXAJoQPhT/lh4EkRPPxSVuQ4pTI8z9f+UQVZUDUTM923BFqri6jNejFH1jujbYMiM6LJGjQxuLIm97sDxz/A=
+	t=1752651951; cv=none; b=cBSLv0o00A1M+4sa8xF8oJZw6dPdraV5S762YVpfUhh8eQvEid9cV/wq/vzh/HVAJ7ovGa31dny9Q1/IKgAO2VA/tsd4rUTNNbZid15mXYsoFNrqldu27tdNlVYS3p2mGTj6O6dt6xXD700L9ro3DmzMj6rw1a1kH9CsPk+XCY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752651946; c=relaxed/simple;
-	bh=cWxNBZKYRYViHENsLqZ/fWKuMKxvGqr8Q20B8YIQBQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OPi5xST5tLAUc+plZaRoqG7qOFo7vK7NJdFN1zjpiTG9JoJoaedhGYv+QiFHDF/86ZCtryXB1r+SzcNXHMa27/SYztNRb4xhAR0FhOzAV28df73YDU5c8EAoHmF+bXeAhVG6PRpNam8QF9UynNDg62bArm4Q7O+xepK1H/yrAug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Z7XVGeUI; arc=none smtp.client-ip=209.85.221.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f68.google.com with SMTP id ffacd0b85a97d-3a503d9ef59so4496056f8f.3
-        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 00:45:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1752651941; x=1753256741; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/bM/E4zOsVzUWOeZInPj/1YIo/lBcqd5DiLZY+OsWZQ=;
-        b=Z7XVGeUIMnyDUKYb5XDhP916b5xVHsGmMSeQF/fw2Xlm6GR/rviVR+spAjFnv70S1g
-         oov/bgOIJbq55cwp1grOb1x62Fn42wFRmudC+heyfDVBmcUSwsEllhw4DZBPDc2/tbYO
-         Ew7wfzaX5czPXbSDLGJomhFahVxr0UwkcmL+QE+BtK3awEBd+2O3RWlqlaXV3gPtBxdB
-         TifFpmSaTF5N9UtJ6SHdh+OemFcFfIxSIUmy5mSpMqZ3+Bsm9Pn3dQDhHGWFMuTeT90V
-         WqGBqsBmNy8ZcRsXuHni0fIkVXtW3xMxnMtTIGNMqfN9XQT1Kcl3+KHsNREFkZT5Os6m
-         376w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752651941; x=1753256741;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/bM/E4zOsVzUWOeZInPj/1YIo/lBcqd5DiLZY+OsWZQ=;
-        b=L74348d/gYmeSK9h18alhowePAYLiHAraakatSEiuGnd+je5Umutj28vqmXIDuT5ah
-         xvv++ZRGZeo0AcHO7WJamjLfxPMAQjVedgIY7r36tgyQStePecqnv3luC35YddwkDRh9
-         yezY/AECT6ASTV3ALsgGhYmFh+uwX69r8vNPuBSMx291O0MutgZF2+lwiL2Eahvd2+/f
-         3U1n7lwdWK9zZcZZpcnMFD1NEr1PVAtNuSIkX7m1ntE43vAc7OfFwt3pYPBcUZYa8pMU
-         j/SfxHmQIwq9yHb5Tijp0zbvhcQU71XY+mIWVxHQe2foAOzOmqFNBM0j27xDFydIIO9E
-         5OSA==
-X-Gm-Message-State: AOJu0YyfbwKiOX0KmOlUs5o5yLldAvLuT825KfRKZMNmLu1jhMZc0UyM
-	edVjsqS7nhZ1pVSNt9UuYEFkXI/EK4mhQKv8FtyAQZJG8hVzOm6K8Jrh3EFj+3o1+5k4c1IKuCB
-	XbdSHq+mmqg==
-X-Gm-Gg: ASbGnctNQU8p0U3FoQeLm0dv9jAdQlNr0HU1uwCoNPAFKf2vHvnrC3+DRQs7MHkz2ZJ
-	hR23Yky660I6RTGJtGaQT/DaeEWP3RqbE6k3/UrkAxwneqrgkxehS9Oy/nI2miZUC0HgH8m4pVg
-	2VESYZJtu3hy73l8qDFdpKO2j3xqekT9wN5Z81kro62bntUquGFDmAHY8+RG1DIQf/MQCUGR8Ip
-	bs6VArvASwQO0Xua5gdqyBmLJIGUZvcl+B4a9z0etJ8kx2YvnBdFFF/fY+C+e6QO1ns24QVo0wS
-	qt0aLW7T7VJCO92xoPARGVK8RGR3rsMSX+rwz46o+Xh7aOhA9fGRZCZ+TbBgvigh5FNlXDxPfng
-	t1MarLZ08zGNZ5chk9urpKMXEC+5jPfHX6xuqj6dwMo/CNt8FlNmZTw==
-X-Google-Smtp-Source: AGHT+IHb4IKDFmmNt2CPuYE8Zsi/UM49Ex0Vn2qt/qj3xpSls3GVNTyfDIk9VwPSKOnKI0wVFWBmhA==
-X-Received: by 2002:a05:6000:4007:b0:3a5:2694:d75f with SMTP id ffacd0b85a97d-3b60e53ebc8mr962277f8f.52.1752651941399;
-        Wed, 16 Jul 2025 00:45:41 -0700 (PDT)
-Received: from localhost (114-140-120-56.adsl.fetnet.net. [114.140.120.56])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b5e8bd1776sm17293879f8f.12.2025.07.16.00.45.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 00:45:40 -0700 (PDT)
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: stable@vger.kernel.org
-Cc: Ihor Solodrai <ihor.solodrai@pm.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH stable 6.12] selftests/bpf: Set test path for token/obj_priv_implicit_token_envvar
-Date: Wed, 16 Jul 2025 15:45:24 +0800
-Message-ID: <20250716074526.139758-1-shung-hsi.yu@suse.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1752651951; c=relaxed/simple;
+	bh=tgb9bkAyOBE58G0OSthVzllzAxenikv1W1kmlRHDq9Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VUJQWev0NkImGFzbw5oTCYQcExmx4l2lEGVljSs+LxOXcrlLdJvkOmOCZQCBicJe3ibbwvz5yHSvJh6Cg064LzrpEeA72HN9wrMziZdpNCuXuydMGFWNA1FnhvA8e1O2OWJPXQGc6mZ1MAhQqi0BVYGqK+c+PtfV0LMYATe6pKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYSkubu8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABECC4CEF0;
+	Wed, 16 Jul 2025 07:45:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752651950;
+	bh=tgb9bkAyOBE58G0OSthVzllzAxenikv1W1kmlRHDq9Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TYSkubu8WZQCqjYCz1FEAgpnsXGTfnqVlAoa6mAqTX9EEdNI9IWcJX8UGosHtrc6g
+	 +WJ/XQJjap0nkgBFF3Van68mKHBCHUoR2mHUSJxGG/eRexyi90aHBw09yQ16x4T1Pt
+	 0jXO1RriFSDAofDRXIgnEEq3LKXrzv8Q66PbqjXA=
+Date: Wed, 16 Jul 2025 09:45:48 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: accessrunner-general@lists.sourceforge.net, linux-usb@vger.kernel.org,
+	llvm@lists.linux.dev, patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: atm: cxacru: Zero initialize bp in
+ cxacru_heavy_init()
+Message-ID: <2025071632-giggling-hatbox-22e4@gregkh>
+References: <20250715-usb-cxacru-fix-clang-21-uninit-warning-v1-1-de6c652c3079@kernel.org>
+ <2025071618-jester-outing-7fed@gregkh>
+ <20250716052450.GA1892301@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250716052450.GA1892301@ax162>
 
-From: Ihor Solodrai <ihor.solodrai@pm.me>
+On Tue, Jul 15, 2025 at 10:24:50PM -0700, Nathan Chancellor wrote:
+> On Wed, Jul 16, 2025 at 07:06:50AM +0200, Greg Kroah-Hartman wrote:
+> > On Tue, Jul 15, 2025 at 01:33:32PM -0700, Nathan Chancellor wrote:
+> > > After a recent change in clang to expose uninitialized warnings from
+> > > const variables [1], there is a warning in cxacru_heavy_init():
+> > > 
+> > >   drivers/usb/atm/cxacru.c:1104:6: error: variable 'bp' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
+> > >    1104 |         if (instance->modem_type->boot_rom_patch) {
+> > >         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >   drivers/usb/atm/cxacru.c:1113:39: note: uninitialized use occurs here
+> > >    1113 |         cxacru_upload_firmware(instance, fw, bp);
+> > >         |                                              ^~
+> > >   drivers/usb/atm/cxacru.c:1104:2: note: remove the 'if' if its condition is always true
+> > >    1104 |         if (instance->modem_type->boot_rom_patch) {
+> > >         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >   drivers/usb/atm/cxacru.c:1095:32: note: initialize the variable 'bp' to silence this warning
+> > >    1095 |         const struct firmware *fw, *bp;
+> > >         |                                       ^
+> > >         |                                        = NULL
+> > > 
+> > > This warning occurs in clang's frontend before inlining occurs, so it
+> > > cannot notice that bp is only used within cxacru_upload_firmware() under
+> > > the same condition that initializes it in cxacru_heavy_init(). Just
+> > > initialize bp to NULL to silence the warning without functionally
+> > > changing the code, which is what happens with modern compilers when they
+> > > support '-ftrivial-auto-var-init=zero' (CONFIG_INIT_STACK_ALL_ZERO=y).
+> > 
+> > We generally do not want to paper over compiler bugs, when our code is
+> > correct, so why should we do that here?  Why not fix clang instead?
+> 
+> I would not really call this a compiler bug. It IS passed uninitialized
+> to this function and while the uninitialized value is not actually used,
+> clang has no way of knowing that at this point in its pipeline, so I
+> don't think warning in this case is unreasonable. This type of warning
+> is off for GCC because of how unreliable it was when it is done in the
+> middle end with optimizations. Furthermore, it is my understanding based
+> on [1] that just the passing of an uninitialized variable in this manner
+> is UB.
+> 
+> [1]: https://lore.kernel.org/20220614214039.GA25951@gate.crashing.org/
 
-Commit f01750aecdfb8bfb02842f60af3d805a3ae7267a upstream.
+Ah, I see now what you are referring to, sorry.  I'll go queue this up
+now, thanks.
 
-token/obj_priv_implicit_token_envvar test may fail in an environment
-where the process executing tests can not write to the root path.
-
-Example:
-https://github.com/libbpf/libbpf/actions/runs/11844507007/job/33007897936
-
-Change default path used by the test to /tmp/bpf-token-fs, and make it
-runtime configurable via an environment variable.
-
-Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241115003853.864397-1-ihor.solodrai@pm.me
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
----
-Without this patch test_prog's token/obj_priv_implicit_token_envvar test
-will fail.
----
- .../testing/selftests/bpf/prog_tests/token.c  | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/token.c b/tools/testing/selftests/bpf/prog_tests/token.c
-index fe86e4fdb89c..c3ab9b6fb069 100644
---- a/tools/testing/selftests/bpf/prog_tests/token.c
-+++ b/tools/testing/selftests/bpf/prog_tests/token.c
-@@ -828,8 +828,12 @@ static int userns_obj_priv_btf_success(int mnt_fd, struct token_lsm *lsm_skel)
- 	return validate_struct_ops_load(mnt_fd, true /* should succeed */);
- }
- 
-+static const char *token_bpffs_custom_dir()
-+{
-+	return getenv("BPF_SELFTESTS_BPF_TOKEN_DIR") ?: "/tmp/bpf-token-fs";
-+}
-+
- #define TOKEN_ENVVAR "LIBBPF_BPF_TOKEN_PATH"
--#define TOKEN_BPFFS_CUSTOM "/bpf-token-fs"
- 
- static int userns_obj_priv_implicit_token(int mnt_fd, struct token_lsm *lsm_skel)
- {
-@@ -892,6 +896,7 @@ static int userns_obj_priv_implicit_token(int mnt_fd, struct token_lsm *lsm_skel
- 
- static int userns_obj_priv_implicit_token_envvar(int mnt_fd, struct token_lsm *lsm_skel)
- {
-+	const char *custom_dir = token_bpffs_custom_dir();
- 	LIBBPF_OPTS(bpf_object_open_opts, opts);
- 	struct dummy_st_ops_success *skel;
- 	int err;
-@@ -909,10 +914,10 @@ static int userns_obj_priv_implicit_token_envvar(int mnt_fd, struct token_lsm *l
- 	 * BPF token implicitly, unless pointed to it through
- 	 * LIBBPF_BPF_TOKEN_PATH envvar
- 	 */
--	rmdir(TOKEN_BPFFS_CUSTOM);
--	if (!ASSERT_OK(mkdir(TOKEN_BPFFS_CUSTOM, 0777), "mkdir_bpffs_custom"))
-+	rmdir(custom_dir);
-+	if (!ASSERT_OK(mkdir(custom_dir, 0777), "mkdir_bpffs_custom"))
- 		goto err_out;
--	err = sys_move_mount(mnt_fd, "", AT_FDCWD, TOKEN_BPFFS_CUSTOM, MOVE_MOUNT_F_EMPTY_PATH);
-+	err = sys_move_mount(mnt_fd, "", AT_FDCWD, custom_dir, MOVE_MOUNT_F_EMPTY_PATH);
- 	if (!ASSERT_OK(err, "move_mount_bpffs"))
- 		goto err_out;
- 
-@@ -925,7 +930,7 @@ static int userns_obj_priv_implicit_token_envvar(int mnt_fd, struct token_lsm *l
- 		goto err_out;
- 	}
- 
--	err = setenv(TOKEN_ENVVAR, TOKEN_BPFFS_CUSTOM, 1 /*overwrite*/);
-+	err = setenv(TOKEN_ENVVAR, custom_dir, 1 /*overwrite*/);
- 	if (!ASSERT_OK(err, "setenv_token_path"))
- 		goto err_out;
- 
-@@ -951,11 +956,11 @@ static int userns_obj_priv_implicit_token_envvar(int mnt_fd, struct token_lsm *l
- 	if (!ASSERT_ERR(err, "obj_empty_token_path_load"))
- 		goto err_out;
- 
--	rmdir(TOKEN_BPFFS_CUSTOM);
-+	rmdir(custom_dir);
- 	unsetenv(TOKEN_ENVVAR);
- 	return 0;
- err_out:
--	rmdir(TOKEN_BPFFS_CUSTOM);
-+	rmdir(custom_dir);
- 	unsetenv(TOKEN_ENVVAR);
- 	return -EINVAL;
- }
--- 
-2.50.1
-
+greg k-h
 
