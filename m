@@ -1,125 +1,181 @@
-Return-Path: <stable+bounces-163186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7692B07B9B
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:59:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1622B07BF9
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 19:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 721F64A7545
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 16:59:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 374607A8B43
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 17:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB712F5499;
-	Wed, 16 Jul 2025 16:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296BA2F5C55;
+	Wed, 16 Jul 2025 17:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="M145wDwD"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="O3hAp0Ci"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6A72F5C20;
-	Wed, 16 Jul 2025 16:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C57D1B394F;
+	Wed, 16 Jul 2025 17:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752685160; cv=none; b=Nm9eyhPvH0oJME/WJSlpKVUBRy5inXafdPhXs7D/yakoFpwkIhb2ZGCzycyu+UiqCD7GvdAFRZxUn2SiwwMKM1zBjz6UQRhm9dgMZA8vSRHBN+D28ElABT+ZpscVMnjleT++fgWmsWAO3GQg/ah7K1Vpcdnkg6wqoP68D4iru3k=
+	t=1752686858; cv=none; b=bdG/1kxS/UP7g3VubF8RaDBgRxmdh2RZ+wZFBMclaEI7wbZgw13u2gPHUvycwSokaWJApo1Mtti9Nm7nscBGsK1HvorGml9GCHmiXVUQuaZ1GjVGbB+kBoJw+rTTfjtIoBlQa5PjFZ3FHkP5ihEmW3g1tbui2brr7bhMrC9YRzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752685160; c=relaxed/simple;
-	bh=bgGIt5uwKo+8SRhGnRNrziln2a/zjnugSuIhacb/y3w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b4OSVrTwBvMD2bTkeTZP+wuRlXzHGh1feXQuq3nNqkcNz0Ziungbeh3duqrXh2ltnxtMAH4alOoWB0RSzgZWL7xyhYvLgzpCbS6Y7Cwt326g6d2Stwa/p8jyTErmNf0iCgEBY0hYV5VBbOVQ0orziykCinUfgvzVlviENRNNp70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=M145wDwD; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4561607166aso449695e9.2;
-        Wed, 16 Jul 2025 09:59:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1752685153; x=1753289953; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bCi+0zlUCZ4Yn1DhG0pTHwDWnxFzOiBeKQ3YUvqQbIo=;
-        b=M145wDwD7BU1nFDMevRRTpIR41TNWBVd/4FtD8bZDqB9jqaiV+VWfcwxDmcAO23Znu
-         aAL3Zu3GrjDg/Ei6RCzXjdolqFgD7uNdfZAsnCQgkPiY42mzi4V3D9Zj50nV309b2mrY
-         TxCAaEgQHV7ctCuoPoEMmG69vm0fG49EMfN+50O0RnGkJ2+OfehYK+dPnQvdu/oTfI5k
-         XBLHMjKJz8x7kGXkAoX0BOPqYWWH8oM+JJqcYLysbWtDc/hQZUoq8CDvGzlUl2OjZ+I3
-         cxRuZ63joJ/d+D0un1yUqjfEb8hdXoDdZJHcPudHwDvVy9XWiSPvRyQTLSQsBDqlKlEH
-         H8hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752685153; x=1753289953;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bCi+0zlUCZ4Yn1DhG0pTHwDWnxFzOiBeKQ3YUvqQbIo=;
-        b=YIsKwbEjcsxJotmXUbw0nCEg37wWXOHPBUZiRHwfgbIUNnXj67YgPw3isNbSv6zDFL
-         3QnF88+RRqPURPmD3+6YZNQ1BqBS0MR5XS0PuUFgXp8b5cf8E6xf95kQCCOoU17h1Y1e
-         qSTX2lrC7G86V9Z1nA9uVuDVaVav0SiTyfs4UhUA/1Lu3O04ZOOSEJS3Jiq+YCpIovPN
-         4dUyLsHgdHJnZocoVdUtWwEyaKQoP5PEr3ui1KwmPNn+JtNUp2MSDg7nCA7YOEjaUbCZ
-         a6m4KBXncKZ1usqbKFLoity4dRO8QjBoZbByoeLKoqSJZvpnw14705nEDCDPCuEuxKt8
-         ZOlA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxm78cxEwRz2ASf9Q157tN25X+4lm9zLpPnpwL8YoPNddEOy8Z9dQ/j42RtXooYA8IVXSDEZfs@vger.kernel.org, AJvYcCVFrAp8P32yKXTTTkHYxPJcfCW2cFsOwOcG8W8d3qvzO3rIaNLZNQi7qjM/rjkTmrhLv3CxEbAxs7wV3/g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzgD4iGzLk6AFO48QOjtI7Jx7J0AF2hJdvtcvGMMHVqR0MqNOQ
-	xPyyHXZhwfmCbZ79DqRWYjEsZ9mVp12za2mf9CdCj+HWUDhEKecYWfU=
-X-Gm-Gg: ASbGncsTza4jzeTCUJ9Flxj9/n8C8Z//Mi67uaatsh1KdQ77sk1eHKClrywIfnx91BN
-	9ZVe873PrVtCMPSXvtDQzj728hY4y3MCPwAwF3aY5GACmHWfYqp+PXmQzfhvPtT3LyjeFYh4fXn
-	JMYNeT4avU+Yk0JtWHcuNv5aonM5pzwrFsMtyIYFSovv0x7u27OVePjZ/M399EU47ac7w/nWd5L
-	g29n0CfScjBZtKbc3/IpXLfwLx96vXQspMk79ddcJ/6j7j3MBl5DFss4Agr7fa5D4XAEGv9eWt2
-	Ngqhhip1XApTIXdAfFYqcm+T++lTJamo6fUvHCAyYlg+oRvBXe+q20mnsCsd5yqhje+oxp0iICH
-	RHWCkJV0sa2Aky/yNNzdKVszEz7iLJ0IpfACyyQkjHEYb5DlDRj/seX08wtzQK1/zhdJqzlQmLN
-	Wu
-X-Google-Smtp-Source: AGHT+IH2fN99teaziIOWHGK7VxDqMgJou22bqD2enEg/CDdFsFnuRU01K01zYdPKcgsMarOaEboTeg==
-X-Received: by 2002:a05:6000:4805:b0:3a5:2182:bd17 with SMTP id ffacd0b85a97d-3b60dd6dc38mr2826716f8f.19.1752685153173;
-        Wed, 16 Jul 2025 09:59:13 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ac571.dip0.t-ipconnect.de. [91.42.197.113])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8e0d872sm18577119f8f.60.2025.07.16.09.59.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Jul 2025 09:59:12 -0700 (PDT)
-Message-ID: <04620255-73f0-4bf8-b7fe-4419e01b4022@googlemail.com>
-Date: Wed, 16 Jul 2025 18:59:11 +0200
+	s=arc-20240116; t=1752686858; c=relaxed/simple;
+	bh=m7HWsri4AR/rL9PRrA73dXiz7DSOs/HHIpXTIamRInk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p61vZ1/OLjtjOOe49FvEWoY9bCFN5pyKAGZCqEEATqW5EgbnW5BUW8a2Gy2e+dF9222WuvjHcgffJu0ssUAFeZeaulZbY/U2XAUskfZVyv7LgnFBBOlWZhh8XpiXq5Z0WczpWm5UFJNdrCtgzWcPWTrdhSHBGybxB599XdqQmzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=O3hAp0Ci; arc=none smtp.client-ip=212.227.126.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1752686843; x=1753291643; i=christian@heusel.eu;
+	bh=vMiPG79BaSZ4L1hLtwrRDyKYn96Armmq5Ph/ugdG+P4=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=O3hAp0CifQ/eTBlPNqTIXYqKCCZatysp5C04WaQwjcR/FbHaaiqOPCYqgTaZBsFL
+	 D19/Fv9Kum/PtSSyDDBT6wmtOAfUtHYrZRjSCz1DNDXHAvioJB8sabEhAnX05VOCM
+	 Ichs/TvnZ6aDbEf+qH2l5gr4rQFUZe9wGO6/myUP94SSa9XeIxFmy0AvbSijLQlyl
+	 ULoTSqPdI20VHL50awZKDl2c7/4jNqcBb/rhoAJqUfEKrcXHM/NLG1w1+YdrUhACC
+	 jA1jcQLwr7WanqJoaszkZvYXcBO83E+DQADLsT7cZTyghA56Trho/j4cbA1O1Ugvc
+	 WpFGYK3fwbkna7D8Bg==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([89.244.90.36]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1N8oKc-1uect32ncE-013Nfz; Wed, 16 Jul 2025 19:27:23 +0200
+Date: Wed, 16 Jul 2025 19:27:22 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, broonie@kernel.org, linux-nvme@lists.infradead.org
+Subject: Re: [PATCH 6.15 000/192] 6.15.7-rc1 review
+Message-ID: <2e4ed0b4-2842-4800-aa66-f61daef0b8f9@heusel.eu>
+References: <20250715130814.854109770@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.15 000/192] 6.15.7-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250715130814.854109770@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7sica6oli6b7agoc"
+Content-Disposition: inline
 In-Reply-To: <20250715130814.854109770@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:K6XnB3JWmNPX0QTV4zAROE7BZa14Co9A+1RIQI5s36x5KERsKud
+ D+u6I+gYRJyOodI3u2Gak/RMy8h+mAzNo/xhGKXj3xVMJZ2pAms4P4mtVbx2x83O6I28yFa
+ acAM8rCFQCyWR3m3LANEHCTjLFOV/+mGxvnpLgWsA6C46tbXycH8bp4ocTB8OLhTYbbFz7q
+ t++2iiE4+qVYNGKyOC1Ig==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:q2cKHfps5vY=;77Q1iHgHs+55l35VF827FJYriFE
+ U06oey8YgU20iuMtDTvsG8z2ej52dqCVWxpnq8+N54ZKJjszKG0PHMoqllnpwwJecSETH/ext
+ Y2Xj7xT/f2DUTQSX+fMnanlmfACreHydgpMc2gAlt62ZgQjJKBAl1MXPLxqA7k9xCxmCVQHff
+ atrOrcpAAH6HG6DqAitgZxNqVslFIbnLBXxMcX7Dm+3pZrUsINBaUpPX4HMCPuO85rQehYme2
+ nwtQ9Z/IEBvEDCzsgTg4N7gMlKrSXT33EvpuiXBEBWjCwOn4XDMjZe1eD1AemDK84sSopvFs5
+ eA1/Ps1d9JnYaD7uO9dED3wYEF66fex6Ac0Qsif4BoXr6Y+eGbfInxceY2y7pw/rrFYjQjWo3
+ P6qTgYj0aUTYw0Lx5BvQZFnnqw4BGAe1kQxIKIScmAPCu9q9elTgBOyYCteozLK7BJoKs69rA
+ Ys7oJGo7n5AlqG8HNpUHCndEmKbcUwCXhxs2W8BtJY4DpZy3TLNA5MF5c7XnHL+oknD7QBHjq
+ s5UsvtW0/+NxBwXbNLngJAKenqJrXi4/z4qxs6HqS+Vr8jo7INkaVVYehhU3IDt6m8vjAmkMr
+ BMWJaBALHF/vgcSrXlTbCfmr4pAhojfxUm17xCuqWEyk/nJR6S2cgBqVlAmdmsBzWnkvi0sAR
+ hDJYlRwwDSnDYNecKatpEsHC20Zk2TYLlc7oHRqe6bTE6nT+qP6PvgjHUPGq9Uw1b1vG/tHG/
+ Pi4xpx5WatVm+OYtIs2X8zyza3/8Yv2rMHRksM0d5NOjBNcIcPz69JkVRrny6OPO7VglhMZJW
+ 5cQ+HRRKSjbOUDXU/A+XZ/2berTOefSi6MGyc39QDELVl0j6ko+C0LDgcQFcYmXuNYcAV0HJy
+ ui3BeeWqXCW8osuQaKcRhcobpnFGukA+hDQmNaZb9x3YNrh58XQCRJiuLyld1hzqD1dMxwIx+
+ Z63ScXHSoxFZY9Yla9VzZPEDnqbttQAbDZuPmyne7Jrti/WLzULABOjFGNDSYQHDVScmyokiC
+ DubpyKdFIYli/3Cwx0dXN2br+BO6oGfE+tM4Pue/CbA3QdkzM4c53CazUhpnlA4gA+CGvF11S
+ XyU4d695wyQCTY4JhXDCEXlOXCdAo8tkgBSiGDV5rWofm2b+S/I6QBA/UvQaF1U3DXRW+5fwn
+ nwCepZg6Xge82m68fsVEA4dHChlBuUSodx/55wnIuGJnHDk5NduecL1IubsETphg1wuwwvOv5
+ PeXrec0iVKstkyzy1ZzWn2adGOo7HpRGFVXyfOuz9bXWiTFmVqcVj4vfBG5NEDVI6ICINGE0M
+ ijjmrtcnvGtSSpY+gxagRhioHpG2akSpzLwr7rGFb9Mihg7LfH0lr3uSkkMddoZ6KQt0RtuHA
+ NZnmUh8XbBjBE1mavlxkzYSs8i1LS0CRQlVbO42BeOKKH+3s7Ds+/2rzkVpIsOqOQeiFvQtsZ
+ w9THoldTDLWRaB+jr8gqTzh4O+s10t1TLk1hv0vD+lMTF3aJDuLdCYYpQ7V9ZurmN2DPKfQEI
+ XKLg8WYkNJF50nTxkXPC1s1AGVpXGFvZ0sMkeOzQRv9HJZ7o8vjBcod7x1PQvQ==
 
-Am 15.07.2025 um 15:11 schrieb Greg Kroah-Hartman:
+
+--7sica6oli6b7agoc
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 6.15 000/192] 6.15.7-rc1 review
+MIME-Version: 1.0
+
+On 25/07/15 03:11PM, Greg Kroah-Hartman wrote:
 > This is the start of the stable review cycle for the 6.15.7 release.
 > There are 192 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
+>=20
+> Responses should be made by Thu, 17 Jul 2025 13:07:32 +0000.
+> Anything received after that time might be too late.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+Tested-by: Christian Heusel <christian@heusel.eu>
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU.
 
+There was one oddity though, that under high IO pressure the following
+messages were emitted and I can't judge the severity of that:
 
-Beste Grüße,
-Peter Schneider
+[65524.312500] nvme nvme0: I/O tag 956 (f3bc) opcode 0x1 (Write) QID 11 tim=
+eout, aborting req_op:WRITE(1) size:8192
+[65524.312530] nvme nvme0: I/O tag 957 (e3bd) opcode 0x1 (Write) QID 11 tim=
+eout, aborting req_op:WRITE(1) size:4096
+[65524.312544] nvme nvme0: I/O tag 958 (d3be) opcode 0x1 (Write) QID 11 tim=
+eout, aborting req_op:WRITE(1) size:4096
+[65524.312556] nvme nvme0: I/O tag 959 (d3bf) opcode 0x1 (Write) QID 11 tim=
+eout, aborting req_op:WRITE(1) size:4096
+[65524.312568] nvme nvme0: I/O tag 960 (23c0) opcode 0x1 (Write) QID 11 tim=
+eout, aborting req_op:WRITE(1) size:4096
+[65524.312580] nvme nvme0: I/O tag 961 (73c1) opcode 0x1 (Write) QID 11 tim=
+eout, aborting req_op:WRITE(1) size:4096
+[65524.312592] nvme nvme0: I/O tag 962 (13c2) opcode 0x1 (Write) QID 11 tim=
+eout, aborting req_op:WRITE(1) size:4096
+[65524.312604] nvme nvme0: I/O tag 963 (13c3) opcode 0x1 (Write) QID 11 tim=
+eout, aborting req_op:WRITE(1) size:4096
+[65524.515650] nvme nvme0: Abort status: 0x0
+[65524.536423] nvme nvme0: Abort status: 0x0
+[65524.581238] nvme nvme0: Abort status: 0x0
+[65524.628017] nvme nvme0: Abort status: 0x0
+[65524.661905] nvme nvme0: Abort status: 0x0
+[65524.702179] nvme nvme0: Abort status: 0x0
+[65524.723759] nvme nvme0: Abort status: 0x0
+[65524.779577] nvme nvme0: Abort status: 0x0
+[65524.871981] nvme nvme0: I/O tag 2 (8002) opcode 0x1 (Write) QID 11 timeo=
+ut, aborting req_op:WRITE(1) size:16384
+[65525.019778] nvme nvme0: Abort status: 0x0
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+I'll loop in the NVME list that they can maybe judge this.
+I also double checked and the device has no SMART issues whatsoever.
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Cheers,
+Chris
+
+--7sica6oli6b7agoc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmh34PkACgkQwEfU8yi1
+JYULEQ//ceaDj9+CH3XzBg48rQqsXWWdGAGcISr2cvNeb4c00Kjv4/p3p3q2IH0y
+hRCrtVLwffRzReZiJgFual8AfBxcYvM4f4IwwQAV9lPkfggpSONPxXUoTyrG35K7
+jWcJ4XgoV1tGCnCb7iZOwgvvUgDexa3SRlcFwJinNGyRN529sIwUfvIDR4VxGjuz
+1Y26oWUUuvXq6Es5uWMsYm8rv1ouwbTtFBA4+QFdrhNZT6ShDprMWRWAOml6hI9C
+QtOwTGJx91Lq2wkDSzJ4csbC7C4JxZwpHL89vNM1VQGvD9X+Ar1lfQPAMvdKDYKS
+I5pBsvBWZa7AG8QnIGS8a+RbGd/l1DFwpr3k0ZfXnECIu+H8IfbWUcVgYV5lIe01
+OnsA36NwRlAWvfXk791A0p4lIFRIGtDjuoQsNi0fU/MlLssdvHHwY5CxaMHnADqm
+Q6mJout05zaMVL4t6QfNGziDmLkUJfWNBrDuCt9lrvS5oJBuX6m6VjSR+lNo0nWC
+XdUQo+thpggBV0F+hs1cZwDPaD9ehdlpI4BZ2T0xKSMRC5bhjdOX4hgdM59HLmzt
+MaXnfC7XUN+fe1pJS6RfrueJjkSmpXaISUaNnJ5hMsUBlEl+At2u6cEzyOA6njYi
+DSIKRSp2rY+rjvXUMKFjnJ/tuwRgkAwnc5/kzZqh6RRmtapQRhs=
+=/7Mt
+-----END PGP SIGNATURE-----
+
+--7sica6oli6b7agoc--
 
