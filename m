@@ -1,243 +1,160 @@
-Return-Path: <stable+bounces-163094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE55DB072DE
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 12:13:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B06B072E1
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 12:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 602D53A998E
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 10:12:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44E1018911AE
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 10:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E612F2C67;
-	Wed, 16 Jul 2025 10:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFDE2F1FF1;
+	Wed, 16 Jul 2025 10:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NS5tQ5rF"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="HvbrLASY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8C62BDC02
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 10:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29C01D5CED
+	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 10:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752660768; cv=none; b=JYM3bPFXisaneTvzD8ZAzVYUDCQ3GGfRnf9nB4AuF7vZCvgQj6ONBRN96Cxy2bFk6ETQS9emobhg3NnXYUS00cQW9k3Cm2MwRKDjz8wFe5iTzQxHmK9ONnXdzh6n052gQb9Q7cjr7mIGgeKA2LQcOi7fmkc+AOk/HBOidNx89Ig=
+	t=1752660820; cv=none; b=ETPs7k1fP9mOlSphKWWZf5kG3x7qnBL2aYY3lBRYl77u72vLgQxEF4/vpGd2ncF5hj0pG0vv+WUHQW1zvihyfJMCFSbfETLDfjw5U95RUwZh+wnWV+gQH/muVnyKhv5EuiLCU2S+VAMrz1pCZN81D2gmLy58aFRmWjJuDt3h8r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752660768; c=relaxed/simple;
-	bh=BWD7VdphZFHKjWplKHCzBxyRhgPY80wzhcSlGMcOMuk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CmZIlmWVbAJ1c5jzslv9hp49AyCfu91traydeLiGtLwedLqexsydv3UFLGx1EjKFa5OlwkBsxUqXnHObqjo/OznNRX/n+3c7TPIwipRZ2gFIVUvXZjShe2UJ053N9x2Fb6FVcF4IbbKDIjoDZ9+uf7FNVbPLY9xibVX1rpnaHyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NS5tQ5rF; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b390136ed88so4778867a12.2
-        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 03:12:46 -0700 (PDT)
+	s=arc-20240116; t=1752660820; c=relaxed/simple;
+	bh=viO8rwTsUKi5COCCYybRz82V9Iu+VK1O25yYaxUyd9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a15ZHPKf9YSzN8FhWLQSOdm1+nOSwCnkz6/8g/LnAf49I1ZTypDnJyj2pQntFSY/BOnl4cODrIR6RRvpyhkf8AavnOU2CV/1omzsY7y0gHE9l4MyzYJqcWP8Dz0Uk1bL5wmkah0Dyo9ANDw3eULMX/Q4swH283zbge/TnEua/10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=HvbrLASY; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a4f72cba73so473778f8f.1
+        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 03:13:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752660766; x=1753265566; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S/nyoacKNVKnvpDrNZJPu1NQrh/P0H/upYyJl85ifJE=;
-        b=NS5tQ5rFqCo8jU6cQ5S5s7dKTcslga6BQotMiAi64aDMzisn6B0cwLfgAi9nV+ZX/d
-         f+phXcxKRZihx+YUyfLASWPc31ZRgg7sOz4k73IfBHupCIonZrwPbHospi2ZTY55gxC8
-         AC8HtevVADDmx/vtAthEdut8K40Yzyl/Ydu5f1TPdHmKCqM37ILBRrzKV2nj2kZakFHr
-         pD8l6qBsJ51BbqtDFS2ignPriXaBTOkX5HpHqi3GqFJhA1WGmq97y3u6s9AQjToPvjgS
-         3MqDCNvdA+T+DMk5QPKbfQBR+epESzLD7v4APgtSvIN1ZMkmtZN9dUMyGbnQIN6hnDD4
-         0POQ==
+        d=suse.com; s=google; t=1752660817; x=1753265617; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fpt+9Qss+w8E1DAkR9uyV13yqefTDDIaUlADRRVU5Is=;
+        b=HvbrLASYEUwfMU5sI36ciEtwM8I9t8AOaYZ1Y8zyEWDP8PWELsQ3dEBFRTXQdRqp1U
+         D9Gff0gxtdPIUq9s0w0p9TyC+cxqR2HZ8CjB1ogNtkg08xzl4x4n7+ZypaETtW3PeMWF
+         I5orscw2AwDCpA04Pv36Vo4ZAWhf4QOD7Tk9bkF7RrvFDMuihSab0KISdn4iDuIwytni
+         p7FqZFM+C/UXiwntmiNTmUSa4jZlH4J6W3FZC3pZUtBiot2PNMGJ6zsGkA86/83SzVdE
+         pLNFWy+qa9fbEgsYf4CJhM6N5abmRseeVr8oVFelM5GhFE6yIuTm8WpptL68KZDUa1/7
+         +wQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752660766; x=1753265566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S/nyoacKNVKnvpDrNZJPu1NQrh/P0H/upYyJl85ifJE=;
-        b=eFEx5ENeJ5hfeLcRZqImVELUirXAYuAKdGzwsyqwuzH7cr9LuUSisL562ohMuLhmxv
-         Ym0o6K2uLjs2QT0Jhqna0YGDoZ6hYshB7UZG0AiBg0LbDFSYHXo0gtHSNbVwmYRdQXDB
-         /wLbVDAjJRfQBxjMOExKEaFIQa4rlaDKDjp94Ru6qfW6A8Gijyk/KHNc9/rlMkBClyZg
-         G/xe5qESd9mjgXXNsDlxADrI0f1T1iapx1+0BxihRNFVZKrtEFiwNC1VtpR+8ZNzkPBg
-         g9qGYSmoAPBHMmSMl+LZxD7hNRqM5OHk2rtP+jzJ9ke5MygT+1/4Qkx/EEeg3bUQ8esh
-         I0Wg==
-X-Gm-Message-State: AOJu0YyB+r45LEyY64Viv6Ns6QLgETwD4XuyPN4+uM/NS1A1OUakyrwx
-	WHw+iQRURnr0fSCG0vQRbCVMrTgKVUnZxfZ+qPNjAM0hfBLbMMkSdfi74SqnhgJ0lG198xxf4I4
-	3bjV3Mnrxt9rDhYIxKU9V9gK7WOA1LvOW7KJqlO10AGKImDYNm4HZyC0=
-X-Gm-Gg: ASbGnctRFxYu6sb57Zm+wU3tHBWHt9SZp72oP3MbRrl8AgpQeov/8ebz6DReNNfJCSB
-	aCNOCDesZVNaKPqqDJv+A/PyWRM1DGK3dS0JQW8v0UMsMBpvuqFKd3GTNK+wp4YzweYi+60XkcY
-	QNVBHWZ/6aZVv3bSMEBUucjorU5IECiIVYrkSJe0qICoYcqKgXeFMYQWsMTFE20aswdrJp2WQlg
-	x24nmKSM+HvmkTcxMYpLL5PHu9lPfkuyY1V/Rx2
-X-Google-Smtp-Source: AGHT+IHCb0k2dykBOSZ7iL2W5iDfYWIbDtl5cle0JXyRlnUFOcIwORjGAq1Aqe8xopL+PX/SJAo/C08ZtvLFCmyXFzA=
-X-Received: by 2002:a17:90b:5587:b0:313:28e7:af14 with SMTP id
- 98e67ed59e1d1-31c9e75a6demr3312358a91.19.1752660765786; Wed, 16 Jul 2025
- 03:12:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752660817; x=1753265617;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fpt+9Qss+w8E1DAkR9uyV13yqefTDDIaUlADRRVU5Is=;
+        b=ptunQUFsgcOYN4O40Bl/MC6rQapXnvt8iZhaNHj5UaxApQ6BNVsYG8JRdw9O+Cg7Uw
+         HfDMtBcf+KG15RK1LWLLVKd3N8ZXEOoeEAyEMq2BiWZUusHM6Zcmz7pCfnGgRV9pC0uG
+         aQcewu+j8RwkRqOPbVFICuUrjhuZzsfctEXqJWsGgcdlIVXgR4rX7LU5HbZfOthdBmUW
+         /pk4fDCAybqjtoRYvhrM5Rg+k4/y/MjvqVEYSGkp9nAioq6LJYVH+4KZspOeDUoKBPWx
+         4s6+2xwdBXD/9qtHLT1lSNpsCWsiiO9cJefbokzZpSpmqvKakwKvs9Y8sRxhlw5D2GJ4
+         O2Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCWxkcQRYUAePmfyzA7UgvBlr8qL0IzXtd1AcQX3c8bC96B2aXUgCuy7xEwTmSFo9nHvXTPLghI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7l6V9ftUZguIlGJ4CY3zw3fW1JlEaLLboUyACzTlSUhpAn1Bs
+	p3KfSwVvZSZ+WEon9v/2pMpXsBhlpIVRIeJu+oZNRzdqII6EsU8F+aIzZsfrRJCEVp8=
+X-Gm-Gg: ASbGnctcuD1FD4vtXv3bcAD91JGTNYcSTw3ZCnhqswQATK19ZQME8fMGEjehG1hlsPC
+	n49rWk+lu+vuPgH8aoKl/Q/Us6SeyOWz2xlzm/JhIGs3OQZSrBq8RU5s0qPncv2uEKFTBZVpGIC
+	A/3OR/vSQH/i01F9ht8JUjbVze/p5oz2WfE7c+61ak2XDtRFV1BZNhGoKtNTQFzfwkYVkf0ZSVn
+	0CrZ3b/s6wBlztmf6OrGTDqWDOnwNxzZAJz7Y1KvTaJGwCXdBliLP5UxW7BoOeZBJCSAKLkg/t4
+	rRu/9yeVRMarYa0gbw/GHCczacsoAWwzdki3M0DCkxH0h3cIW23P9i4BHVSW0iH2BQpC2pq0gnl
+	BZ5MYtHrDJJdiwnGhhRiZurPNKibLU1ZP2K3Yw9SQUHxD/w0=
+X-Google-Smtp-Source: AGHT+IHqe/AzSltctTUR8ILGEpGESU6BloFfOZH1jyFHxcaPp3B17lsKfauNv79LiMDN0igXk3HRpw==
+X-Received: by 2002:a5d:5d12:0:b0:3b6:99:5611 with SMTP id ffacd0b85a97d-3b60953f531mr6013335f8f.20.1752660817083;
+        Wed, 16 Jul 2025 03:13:37 -0700 (PDT)
+Received: from u94a (114-140-120-56.adsl.fetnet.net. [114.140.120.56])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8dc21e7sm17430699f8f.36.2025.07.16.03.13.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jul 2025 03:13:36 -0700 (PDT)
+Date: Wed, 16 Jul 2025 18:13:26 +0800
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: Andrii Nakryiko <andrii@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>
+Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, kernel-team@fb.com, Martin KaFai Lau <martin.lau@kernel.org>, 
+	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH bpf-next v5 2/2] selftests/bpf: Add tests with stack ptr
+ register in conditional jmp
+Message-ID: <4goguotzo5jh4224ox7oaan5l4mh2mt4y54j2bpbeba45umzws@7is5vdizr6m3>
+References: <20250524041335.4046126-1-yonghong.song@linux.dev>
+ <20250524041340.4046304-1-yonghong.song@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250715163544.327647627@linuxfoundation.org>
-In-Reply-To: <20250715163544.327647627@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 16 Jul 2025 15:42:34 +0530
-X-Gm-Features: Ac12FXwjod6LQ65gQdx5Ie_iLGC16oEaTsSpUdM10nJ-9OVQaXU9hzDA63_xjg8
-Message-ID: <CA+G9fYuDFgV--q+e+gZe0heZeGsc1+wxkXTV21dUR7dD6AByjg@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/165] 6.12.39-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250524041340.4046304-1-yonghong.song@linux.dev>
 
-On Tue, 15 Jul 2025 at 22:07, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.39 release.
-> There are 165 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 17 Jul 2025 16:35:06 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.39-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi Andrii and Yonghong,
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+On Fri, May 23, 2025 at 09:13:40PM -0700, Yonghong Song wrote:
+> Add two tests:
+>   - one test has 'rX <op> r10' where rX is not r10, and
+>   - another test has 'rX <op> rY' where rX and rY are not r10
+>     but there is an early insn 'rX = r10'.
+> 
+> Without previous verifier change, both tests will fail.
+> 
+> Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+> ---
+>  .../selftests/bpf/progs/verifier_precision.c  | 53 +++++++++++++++++++
+>  1 file changed, 53 insertions(+)
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+I was looking this commit (5ffb537e416e) since it was a BPF selftest
+test for CVE-2025-38279, but upon looking I found that the commit
+differs from the patch, there is an extra hunk that changed
+kernel/bpf/verifier.c that wasn't found the Yonghong's original patch.
 
-## Build
-* kernel: 6.12.39-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: d50d16f002928cde05a54e0049ddc203323ae7ac
-* git describe: v6.12.37-168-gd50d16f00292
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.37-168-gd50d16f00292
+I suppose it was meant to be squashed into the previous commit
+e2d2115e56c4 "bpf: Do not include stack ptr register in precision
+backtracking bookkeeping"?
 
-## Test Regressions (compared to v6.12.36-233-g3d503afbd029)
+Since stable backports got only e2d2115e56c4, but not the 5ffb537e416e
+here with the extra change for kernel/bpf/verifier.c, I'd guess the
+backtracking logic in the stable kernel isn't correct at the moment,
+so I'll send 5ffb537e416e "selftests/bpf: Add tests with stack ptr
+register in conditional jmp" to stable as well. Let me know if that's
+not the right thing to do.
 
-## Metric Regressions (compared to v6.12.36-233-g3d503afbd029)
+Shung-Hsi
 
-## Test Fixes (compared to v6.12.36-233-g3d503afbd029)
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 98c52829936e..a7d6e0c5928b 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -16456,6 +16456,8 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
+ 
+ 		if (src_reg->type == PTR_TO_STACK)
+ 			insn_flags |= INSN_F_SRC_REG_STACK;
++		if (dst_reg->type == PTR_TO_STACK)
++			insn_flags |= INSN_F_DST_REG_STACK;
+ 	} else {
+ 		if (insn->src_reg != BPF_REG_0) {
+ 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+@@ -16465,10 +16467,11 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
+ 		memset(src_reg, 0, sizeof(*src_reg));
+ 		src_reg->type = SCALAR_VALUE;
+ 		__mark_reg_known(src_reg, insn->imm);
++
++		if (dst_reg->type == PTR_TO_STACK)
++			insn_flags |= INSN_F_DST_REG_STACK;
+ 	}
+ 
+-	if (dst_reg->type == PTR_TO_STACK)
+-		insn_flags |= INSN_F_DST_REG_STACK;
+ 	if (insn_flags) {
+ 		err = push_insn_history(env, this_branch, insn_flags, 0);
+ 		if (err)
 
-## Metric Fixes (compared to v6.12.36-233-g3d503afbd029)
-
-## Test result summary
-total: 320456, pass: 294460, fail: 6894, skip: 18627, xfail: 475
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 137 passed, 2 failed
-* arm64: 57 total, 57 passed, 0 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 33 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 40 passed, 0 failed
-* riscv: 25 total, 23 passed, 2 failed
-* s390: 22 total, 21 passed, 1 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 49 passed, 0 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* modules
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
-
---
-Linaro LKFT
-https://lkft.linaro.org
+> diff --git a/tools/testing/selftests/bpf/progs/verifier_precision.c b/tools/testing/selftests/bpf/progs/verifier_precision.c
+...
 
