@@ -1,149 +1,161 @@
-Return-Path: <stable+bounces-163190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E24B07D0A
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 20:41:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3224B07D1A
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 20:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82B691C284B1
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:41:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 399A67A73C4
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 18:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80DC29B20C;
-	Wed, 16 Jul 2025 18:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BC184A3E;
+	Wed, 16 Jul 2025 18:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hThoi0Bm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lKquZlLo"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52D7188A3A
-	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 18:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5753D136347;
+	Wed, 16 Jul 2025 18:45:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752691247; cv=none; b=t1DRMVNBNevs/9R+3tZd6Ivps1Hut90dcWK3PQYwbnaAulG3KGYzqhyBsLwiNyo77RArdENv3u8g1QnDnBxs8asstBaA27fLQa80eTkNeG9EVS7RrQ+nL1as2+mXiOIMt+4xYw5fcCByVTYXTZ01ZYN1wkq5igMxQ7z252tGALw=
+	t=1752691523; cv=none; b=LZcrA228ex558pcxn9ujAM9RnE0xi2MT+jFD0fRJWbFWbbvQBYXiEfq2MU1hr5yulPw4NijWmy+CHzWyUpiJAYs3j053OSYoCT2YVcqdVnc+79f3qmVaICFUzB11X24sMYkaj7QSXzkJX0zwKGZqFGia0e6KHE8mdI7w311Qv/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752691247; c=relaxed/simple;
-	bh=lWnbiAf4ytPP2bVU4uh4Lj6VhtdMwzO6Ouf9JgwG01M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fiio5z82oWvPwBXggAosoz7eyoLWotNmEjqsow27f8FlnejcOVK0x+oOOnn6yiUY9+wWN5sAbjh87JWQVKFlFoQt+iyEzUDubWEJhmXq1snybAz2fcqjZLcnSBMUfd/cawikuDsBc6Nzf9qwl7W8YDtWmmW/3Bn9FXJii8gCuv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hThoi0Bm; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752691245; x=1784227245;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=lWnbiAf4ytPP2bVU4uh4Lj6VhtdMwzO6Ouf9JgwG01M=;
-  b=hThoi0BmUw+hOwh+oZk3XdoGADLwiLGrM9hPVbHP75BQiewnXM7BNQT0
-   e3C2Xt+annnUs42yFpEB31HV498eh497BIIflCiI6UVzGiCz9qqVktcek
-   +LbiCW6EtWX5a5mwJReVqPl833h2UxV+t8BncSXOTUrLC5xyveHXy/iGc
-   a2SSMMYLu9ZDWgSaE+epGhVHRUSNRx6ZIUVRwAREZsLbtsp8AxcolszMo
-   7Nl5lt2MPpwEFLBGVkKKm6NrH8eZcBxfuf16TDw3gllOXxek3bvvjSWNc
-   3k8lcdITzgsVWhlPaEMJ1/v2RLRWGS2iR29Ul1SUZIr69h9PrOWXOTqvO
-   g==;
-X-CSE-ConnectionGUID: kB3al30CSFySwObp03CLZw==
-X-CSE-MsgGUID: XpsuSF9xTMat2wDoNYY8tg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="58760739"
-X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; 
-   d="scan'208";a="58760739"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 11:40:44 -0700
-X-CSE-ConnectionGUID: 5GCTy5J9QWCTb81s1XmyPA==
-X-CSE-MsgGUID: ts3VSS5/QoyIzOHJMpsHHw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; 
-   d="scan'208";a="163210921"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO stinkbox) ([10.245.245.254])
-  by orviesa005.jf.intel.com with SMTP; 16 Jul 2025 11:40:42 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Wed, 16 Jul 2025 21:40:40 +0300
-Date: Wed, 16 Jul 2025 21:40:40 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Imre Deak <imre.deak@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/7] drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x
-Message-ID: <aHfyKJ_NJL-i8B94@intel.com>
-References: <20250710201718.25310-1-ville.syrjala@linux.intel.com>
- <20250710201718.25310-2-ville.syrjala@linux.intel.com>
- <aHenHJLCSVjYDUKp@ideak-desk>
+	s=arc-20240116; t=1752691523; c=relaxed/simple;
+	bh=byOw/hpxqtKlXpx7TvAFWsTV4fu6i3XD8UHZK1Mblxg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tm7z+VsDW5awnSNmewcCjRvQRS2HSOC7BvrqIphpUukpKDmWrBR346BDhQrWeS9FrfqWJ+RsIpX5SqodFe1Ut+2T3X+Wvbm3n9aOlBBZ5wJNnmO9QqIbPuFFYy9nQ/B9BETZP/Gj/Z5dwsoYX4/gYiv6MVePydZIvLadmsuPvj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lKquZlLo; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7e34399cdb2so12667885a.3;
+        Wed, 16 Jul 2025 11:45:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752691521; x=1753296321; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=T7Mtx/XdHMXjk5yktialtduM8swoAvbwJzzp+EvAyrQ=;
+        b=lKquZlLoJYqlVtx0gueUIpKyVdGtZYSdB8cLpvEL0UpKOoGiqYhbQ/q+XmBgmuYbj0
+         5nY11Cp5yNA3cHcvcx3IAo7lf26AKqiGDN3Xa6wK3dRLT9uGkVAnoH2UK7KA7egPVMMt
+         EMSDeX34YVXNWKOm+JJrzjwDvnCXxnhuBTAk99ieYaniegzgFueY7/xQ3g9ajzi+t/fz
+         tazKde0LI4FgpPhYZhXsIm5rIDzjttyMc28ua7fYYHHfIxHp7MhRcNzqRpHAhKbRjRKz
+         /6EQdnegwVkvRKW49D+QZWUgdnfTPHmRKn6SdLZPqoqAB0ygmG3Jp8negMFSOPvFagwo
+         5uhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752691521; x=1753296321;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T7Mtx/XdHMXjk5yktialtduM8swoAvbwJzzp+EvAyrQ=;
+        b=N53LQDrkichb3+fhZnGsaifcg6+WmOPMQKqrVDzWnqHNNGkVQ7bW7Hox95Njj+rzcS
+         hwC0TT6oAvCMQoPcrzdmGgmK1KXlS4yWkP1o9J77hIED+jUrIA+9G4UcX7VXxpu32+pH
+         l0NHn5Wi8iZbKqqWbGzzfNp8zH8RsueqT7xzDoJS/HvgwHR5DUSRajkMLbToxCmaTeTz
+         2SPKAK3Bqr45qU7zsDR7k1TLhk4TtjhdSP8OlrX20dnIWqE9cYpqN6zutpJT0/wtup6z
+         BEOwIVX/4qFt9gcxqmv4npJJMZN0NX8hLXOIYBZEZ/mml1KficV9I0mDk+P97oXdmCmD
+         VomA==
+X-Forwarded-Encrypted: i=1; AJvYcCWLKt7h1jPe0aekGI9b8pg6gHPhXhm8XI6VU+npel0ExXOX7xmOdRGfEFa67mcB/jTBF6LuTlWiXqZSxJ0=@vger.kernel.org, AJvYcCWyE91t0judiYq1M3ur3k4ZzvG3Kc2VCEbLN+DOVO6bXmlEEM6QYUzGfrYdOhIVvXayJUfLW2Mg@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZluPMOvELXhM93Fsh45r+lT1V9HNJo+M7p9NNr8Flc++2rWyy
+	LImtpTRFOGlFTO01xSZw/tl2oZfJUHaVYIaX4M4AmgG1mYhSFPFY/Lm7
+X-Gm-Gg: ASbGncuvBif0jlVRX2RWd/kAqXLFbgqhlexIaMjD+YwJtxliblm1Z47JR/1YjDOUL6/
+	wpwpzYCqk0xPbCtA32DM+O39o1IfoziWQbL29Q4FMOVuMXUVCRVI/cIDlnuIb5eMXEDbs3YH65h
+	VaGGd+9t5fpPTBBLTvk4cscFoXjsvDZppjzT79WyUXv6ocUDyoSQEcqbgHYBhxfRbL1m8mBT1Dl
+	nHQanNgeDeCOIa+XZ/O7J+cNKgcbSWA2eN6WVANHAYjfJhRhbsb44phzzaMW+sHxKu7gtarhZlT
+	Dn5Ow9pASO2iMMHaQA4pKHzfebUmFby4imE3g1LQZL41r3hyfwMbtFL0qYegHqrIZxv9/EBGxdY
+	v3k+zXALulYsZiimSdP/bgK38roeC0QDAoubLGfnSCE1vXfRdxQ==
+X-Google-Smtp-Source: AGHT+IFzSQ33OR3O3WHSIuVDvF2qc/J0H63sY67vb2W9Q7U2pQLCbk76JuDDLMKYhTG7U3oziAZvxw==
+X-Received: by 2002:a05:620a:468f:b0:7e3:2c22:6d33 with SMTP id af79cd13be357-7e342a604a7mr531113985a.11.1752691520910;
+        Wed, 16 Jul 2025 11:45:20 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e1bd9c895fsm472612985a.34.2025.07.16.11.45.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Jul 2025 11:45:20 -0700 (PDT)
+Message-ID: <eaa5a3b6-00a2-4c92-a02c-059577e16588@gmail.com>
+Date: Wed, 16 Jul 2025 11:45:09 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aHenHJLCSVjYDUKp@ideak-desk>
-X-Patchwork-Hint: comment
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/111] 6.6.99-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
+References: <20250715163542.059429276@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250715163542.059429276@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 16, 2025 at 04:20:28PM +0300, Imre Deak wrote:
-> On Thu, Jul 10, 2025 at 11:17:12PM +0300, Ville Syrjala wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > 
-> > On g4x we currently use the 96MHz non-SSC refclk, which can't actually
-> > generate an exact 2.7 Gbps link rate. In practice we end up with 2.688
-> > Gbps which seems to be close enough to actually work, but link training
-> > is currently failing due to miscalculating the DP_LINK_BW value (we
-> > calcualte it directly from port_clock which reflects the actual PLL
-> > outpout frequency).
-> > 
-> > Ideas how to fix this:
-> > - nudge port_clock back up to 270000 during PLL computation/readout
-> > - track port_clock and the nominal link rate separately so they might
-> >   differ a bit
-> > - switch to the 100MHz refclk, but that one should be SSC so perhaps
-> >   not something we want
-> > 
-> > While we ponder about a better solution apply some band aid to the
-> > immediate issue of miscalculated DP_LINK_BW value. With this
-> > I can again use 2.7 Gbps link rate on g4x.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 665a7b04092c ("drm/i915: Feed the DPLL output freq back into crtc_state")
-> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On 7/15/25 09:37, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.99 release.
+> There are 111 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Reviewed-by: Imre Deak <imre.deak@intel.com>
+> Responses should be made by Thu, 17 Jul 2025 16:35:12 +0000.
+> Anything received after that time might be too late.
 > 
-> IIUC, port_clock for g4x is ref * m / n / p, where for DP the fixed
-> ref=96000 and m/n/p values from g4x_dpll are used.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.99-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
 > 
-> Ftr, m = 135, n = 6, p = 8 would give port_clock = 270000, but there's
-> no intel_limit for DP, so can't know if these params are within range.
+> thanks,
+> 
+> greg k-h
 
-The P divider can only be some multiple of 5.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-> 
-> > ---
-> >  drivers/gpu/drm/i915/display/intel_dp.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-> > index f48912f308df..7976fec88606 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_dp.c
-> > +++ b/drivers/gpu/drm/i915/display/intel_dp.c
-> > @@ -1606,6 +1606,12 @@ int intel_dp_rate_select(struct intel_dp *intel_dp, int rate)
-> >  void intel_dp_compute_rate(struct intel_dp *intel_dp, int port_clock,
-> >  			   u8 *link_bw, u8 *rate_select)
-> >  {
-> > +	struct intel_display *display = to_intel_display(intel_dp);
-> > +
-> > +	/* FIXME g4x can't generate an exact 2.7GHz with the 96MHz non-SSC refclk */
-> > +	if (display->platform.g4x && port_clock == 268800)
-> > +		port_clock = 270000;
-> > +
-> >  	/* eDP 1.4 rate select method. */
-> >  	if (intel_dp->use_rate_select) {
-> >  		*link_bw = 0;
-> > -- 
-> > 2.49.0
-> > 
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Ville Syrjälä
-Intel
+Florian
 
