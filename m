@@ -1,234 +1,306 @@
-Return-Path: <stable+bounces-163071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79DAB06F2F
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:41:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7504BB06F39
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 09:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FA101656AA
-	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 07:41:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B09EC1A60507
+	for <lists+stable@lfdr.de>; Wed, 16 Jul 2025 07:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCE928CF5D;
-	Wed, 16 Jul 2025 07:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B7C28C00D;
+	Wed, 16 Jul 2025 07:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tD8cN2xN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q7sLjV2z"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pllafIlo"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2061.outbound.protection.outlook.com [40.107.236.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B42928C00D;
-	Wed, 16 Jul 2025 07:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752651676; cv=none; b=spLkT5e50rrGBJNIxQjaBDC+wma/upEpXAKEOnS3EJmgVMxXECupNj7HvnBPfpk0m8b6j8Pdehkz80LloMRR8QNeRFCEdgPochmv1WNJ7lfRD4Zz/0Xht6OVCg0urBPh/cVzKXwt4gXOY50eXsRA341fWitBBLu93f8Qf7ZIr3c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752651676; c=relaxed/simple;
-	bh=7tLvQT4ajAYz8L2kE7Rd//y+9tF8RvMJqJqaL8Qg1AI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HgPB/Z9D7Yh0zrug09E4n3Lub2kQXxfi+ylKT89Kzw4tCOvHwidzGziD0iD18O4Fc8Tzl3uMspvFqOawYz93gTB0WJ9dlWeZ3ntMiAGNOzG9ibLaxBrIK6ABALZlarxhGEiEdiZtF25RpGmBTUGKTISuxggkXzlc3uOxptpy5+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tD8cN2xN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q7sLjV2z; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 16 Jul 2025 09:41:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1752651672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kgwJrdiNOObJR6kCFcttJ7IUEoM+Yb14XVp75zVk58k=;
-	b=tD8cN2xNnCAqUZh5XcNaMwn+byVnz2K5nP5G3TYtrRlAkyADjGxw+rE0uBNf/kyFYDzFa1
-	bVZDvoOp3AJd9zVQ2UF6owcvmMTX0Jsh6tU992Y39wG/MG9o6EM3xma+sm21oKMznHqBIc
-	mZorfBGb1lphqH17+J9fSxZUYL8lhEtV1ySR1c8ZhlAaotLB7pUF2IteVGys3YBxSs+VjI
-	jF4by7tL7/hO7TAGhZG21xFEz0CsDnn4W0S4nMFyhyI8vkJt1oseSEhjoquWRkZUsrAETH
-	pyLihMBYv2PDEINi8Jyj+OvI6afWwcUUghOOMl/rYiqE1XhyWLyWXV+A+bt33Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1752651672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kgwJrdiNOObJR6kCFcttJ7IUEoM+Yb14XVp75zVk58k=;
-	b=Q7sLjV2z0D1AsbtLNbqAfLF4/7R9i0u8ircXmcQ8URApMlFJulJ16IcVCuG+i8DMFRGT95
-	ucI7vdlm9ebQKHDg==
-From: Nam Cao <namcao@linutronix.de>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christian Brauner <brauner@kernel.org>, Xi Ruoyao <xry111@xry111.site>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	John Ogness <john.ogness@linutronix.de>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-rt-users@vger.kernel.org, Joe Damato <jdamato@fastly.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/1] eventpoll: Replace rwlock with spinlock
-Message-ID: <20250716074110.AY8PBtBi@linutronix.de>
-References: <cover.1752581388.git.namcao@linutronix.de>
- <ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de>
- <CAHk-=wheHZRWPyNNoqXB8+ygw2PqEYjbyKQfSbYpirecg5K1Nw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3124E28C5AB
+	for <stable@vger.kernel.org>; Wed, 16 Jul 2025 07:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752651718; cv=fail; b=LJ/T7dRyBxDsPMOYSKPTAYWWsKXQ2vE+g+CwIGd5yAU7RCbgakKZNXx3eLooTSo8GmkxGSAI3+YiAinbyVn7KnPlXM6EKKbF2AXvhhZPcDEKtoPhXmYHfSbZtSyZiQhuq7yA+oiqnZP87X8tDCAAsHm+HdM8c8lG82imItsUDwQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752651718; c=relaxed/simple;
+	bh=o390V9sFDQqdK/UtCRJoBsHZhNXHpVcTLcvogbnFflU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Kd0X1H/zueGnQVfsdL1t+GOwp+KVCMVVhGxSmHFI0hwwWC31kURLPaOH//XvRg53SWPXM70UTQDf6UDKShc1WDKs6uFZIJDmXs/HOktwOEVX4UFk0DuvF/h9JFqcBjHV5OrrHn0JfKUoNzx8zEdA+KhjWfoi95T4xVPb/PHPK8Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pllafIlo; arc=fail smtp.client-ip=40.107.236.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ec3gRUlf7sLT+m22bxlYaEeIfZzd/M4nuUmc3JBaey59JYRd7UX7JLma0bNVwtrDa0V9Xd5A2fk/sbca3EtnoazjjgC7gqXtPR+tq/SC4jFdbyxNOG014aveXa8FMIzJkc9ERKEXLQ7yfsO9gmE3OAZqIoufBB/Gk+eLQuAHK/ZuE/4mpN8HBVvCgf7vutJ7TJOZO1/2zygRWpQG0PXxSkmL9MM08ciGmgRQgrbtVAKxf8cmOEnoKNOJiIzJBookh2ndZqjMibX6CsIsYWKLNFRIw3t8jqKrsdHN39fyYI8OjoMsH9E/T0y+E0TPEITzOruiLu92nI2e+FlAMWcHEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X55Z+/E/+Hw5FBhzr2LqytCyCsA65I31LzhBfdaIrug=;
+ b=OqdjUuuzl7fSwvGxrL2jz5s5ROekPY1IWl+IyipD0SbnI/LaC28X5j7UEEkrZlIAsyUv/sy8yl3Ggm61mWq1TShD11W/eHl5Ti7w1q+JVZXuSEExIHD7QrzxYLBIX9Le2p548Ju1azVFpfOkSIo5AhmPv09xSJKMN0d2gTFdHRWIyUdHmQu5zGPI5GFacS8sFkiqiMao+UduLF53H7mpVun458KR2ZaUxFOMBTQmR82pfo/nz6wOW8HOm+FlECYKX3ZiwfiBpcMXorcGXKbY7f4QiAQPsDV/Ec79v0lccoE47tcSXXJhrD6awpmgl3EqLKgkWCCvaUmndff3RLn1lA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X55Z+/E/+Hw5FBhzr2LqytCyCsA65I31LzhBfdaIrug=;
+ b=pllafIloZS1wNat0ZOVfi7TucNx/mW34HPkBo/cvIA5WWXrmNrQ+veq/41l9Ni6qFXfW8eFOR6Tx+RidY3R/WZ9I1iCS/yLXkSCdDZeFjkdLuPq5NinEs+DmTQfSXPJMDT4i4cjkDbNaq87gD3tK6ESTW4r1xZUoTLuhjAMjjQ8=
+Received: from BYAPR06CA0029.namprd06.prod.outlook.com (2603:10b6:a03:d4::42)
+ by MN6PR12MB8590.namprd12.prod.outlook.com (2603:10b6:208:47c::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.35; Wed, 16 Jul
+ 2025 07:41:51 +0000
+Received: from CO1PEPF000042A9.namprd03.prod.outlook.com
+ (2603:10b6:a03:d4:cafe::4f) by BYAPR06CA0029.outlook.office365.com
+ (2603:10b6:a03:d4::42) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.17 via Frontend Transport; Wed,
+ 16 Jul 2025 07:41:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000042A9.mail.protection.outlook.com (10.167.243.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8922.22 via Frontend Transport; Wed, 16 Jul 2025 07:41:50 +0000
+Received: from rtg-System-Product-Name.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 16 Jul 2025 02:41:47 -0500
+From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+To: <dri-devel@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>,
+	<christian.koenig@amd.com>, <matthew.auld@intel.com>,
+	<matthew.brost@intel.com>
+CC: <alexander.deucher@amd.com>, Arunpravin Paneer Selvam
+	<Arunpravin.PaneerSelvam@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH v4 2/3] drm/amdgpu: Reset the clear flag in buddy during resume
+Date: Wed, 16 Jul 2025 13:11:26 +0530
+Message-ID: <20250716074127.240091-2-Arunpravin.PaneerSelvam@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250716074127.240091-1-Arunpravin.PaneerSelvam@amd.com>
+References: <20250716074127.240091-1-Arunpravin.PaneerSelvam@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wheHZRWPyNNoqXB8+ygw2PqEYjbyKQfSbYpirecg5K1Nw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000042A9:EE_|MN6PR12MB8590:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40a5f062-79b9-410c-74f1-08ddc43c3a0e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bC82SVJhWVd1ZnVBY3NKR2xpQnJXVmJBeXJTTzRrN0FCMUR1V09PNFlmdFFX?=
+ =?utf-8?B?Z1FhdE0rVTMyRHYrTTRoM1hXRC9GZG4xRTBZOHV4QUdYNXJaZldTOENNeDhQ?=
+ =?utf-8?B?VnZseW00UUNzUmFOUFdsQ1ZLTW1YRmpTd3ZFbklid0E1TFZxaEh3bzlZSU9q?=
+ =?utf-8?B?RjRhYVJ1RGs1UE14S3pFREpQSUZGaEF1dVo1QnUvajdaa29pZktQUzlDMHY0?=
+ =?utf-8?B?UGY4WUFDZHZWMTIxZkZ5dG4xUjVUOUhBb1kxSW9jQ2huN1pTY3p4VHRxSWJM?=
+ =?utf-8?B?Njdtd0JVZ25RZUJKSFhYbXRVMnNTbFVWNU5weS9mN3gvR1FyNkQzSEhPU2Yz?=
+ =?utf-8?B?RUlGNkY1RGh5Q0kybWpySUlialAxakdPUDdSdHpKMDc3OG05elpLL0d0NXRN?=
+ =?utf-8?B?d1JONnZZTHUyMGVPdGlneTF2amdTN0x0T3FBT3poYXFXTnlUU01LUzN0dGI0?=
+ =?utf-8?B?ZUpIM2s5L0hMVGExT21raHBtYUNzWlJNa1VnWjNZeXFQaW9VRFVtZ1JGenho?=
+ =?utf-8?B?TlV4N2xPOTBaQ3dNWUlYWXJMQS9xdzZoTGl1WVg2eVVZaUJkeGNlRm41WVF5?=
+ =?utf-8?B?enZrVm1DRTVIODdGcmtqTXhOaUlXMlJlWHo4UGpkQXJWellVcVhlaHBmUlZM?=
+ =?utf-8?B?T0psRzlJa3pxVy9wZExJQWRBZWVLelJadm9qdDBRc1daTVdKL2dhakFLcFhm?=
+ =?utf-8?B?OCs4NVlJcGdTWU94V1REN0V3bGlPNXdxeU9oRDNSVEl2TThxLzlVeHlHSVJE?=
+ =?utf-8?B?ckF2UFl2UmRpdXRWZkNmUDNySFNqak5wZEw4RDViZGtyVWV6dHhOQ3dmL2F1?=
+ =?utf-8?B?K0dDN293UHBmZnkxbUw4YXJ5V09yYUU2MkJwOU42eTlIWDVQeVJBTG50T0Jk?=
+ =?utf-8?B?SHJocy8zdWZRSVdaZERNVE1xNWRwbEx3YnZ4Q1hjQTJteUFkWXVBeGdoTEJp?=
+ =?utf-8?B?L2VuRkFpY0lQMjY4TGIycEF5emdJZVNia21LWDRMVUZXTzV1R1M1eVVveE1J?=
+ =?utf-8?B?eWF2WWpRSlFnYytGSjI1MUIvVjIyRU5WR2NaZVFSc3RUamlVdTFyWGJSUlJG?=
+ =?utf-8?B?SmlUcUZSci9QWUtuY28zb0dnR285QWNKU3dOVWZBTnhrV3dxdXdoUlVIR0pl?=
+ =?utf-8?B?c2tNSWExLytpN0U5c3FFSXZwY1lDTzU5VXN6anNzM2hWeHNBUVZwWlJaR1FS?=
+ =?utf-8?B?Q0Y1MHoxK2hCa0tJWERJVVA3bkRJZFZ2K3EvVDBaM1dWY21wZkhUbWlhTi9t?=
+ =?utf-8?B?dllYelFPYUxIbEVBWko0Z1A5SDl0RElxTTRSbU1na3F3MUlGYVpZVmJ3NG5C?=
+ =?utf-8?B?MXl0TERrRTZjWGtFd1prNXk5cURXYVk2UHlselBhaG5FOUViT0tDNDh5TEtM?=
+ =?utf-8?B?d20xdGdoRVVwbmRkd01XUWJvYzhzYUpWcFNUQit6NmMzTVA0N3NxQldEaU4v?=
+ =?utf-8?B?NFdGQXBUeDlHNTVPMExUZDNadkFBR09PN2E5dkppKzJvS1NmT0lkenB0ZnBy?=
+ =?utf-8?B?aHlQb0UzaGs0MU5yUmorc2dCNVBTV2JjSzdYQ0JGWW1QSWV6QU5TSnhJOFFK?=
+ =?utf-8?B?cVkvN0F2RkltejE0V1hIU3hMRmc2NEJWTDljTG5mZjV3VmROZUlyMStrNENY?=
+ =?utf-8?B?WFpLc2taRmltL3hsSTg4L01YNlJDb3ZCTUVoczRmOU5LUXNyNUVPekphbStO?=
+ =?utf-8?B?L3pUQVg0dVV1VTQvWmp2UmFIcmJFZ01SZnhjK3NWMjVZaGJldk11UU1HaFhB?=
+ =?utf-8?B?N0FPazhycTVSWWxsQk9sUndoQm5LenpoelN4UWMzd0ZmUmFhYWpad3ZhRVF0?=
+ =?utf-8?B?ZjRLeW1nYWtWTngzSjVUUndMU1ByRW1OVXkvUjZBbUZqVi9YT0RBVjlCNmEr?=
+ =?utf-8?B?U3h4NmQvaDVtVzhKTUVXNTZpS2xrUnFoYW9EelEySkdkYkNYblhkaHFSWnpn?=
+ =?utf-8?B?MUR6dWJFOUNaN3hjajZZem5MY3QzMG42U0FXWVFCOEVMK0NkWE9GWnpvQkZT?=
+ =?utf-8?B?RW1sOFM2YzFRPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 07:41:50.6112
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40a5f062-79b9-410c-74f1-08ddc43c3a0e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000042A9.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8590
 
-On Tue, Jul 15, 2025 at 09:42:52AM -0700, Linus Torvalds wrote:
-> On Tue, 15 Jul 2025 at 05:47, Nam Cao <namcao@linutronix.de> wrote:
-> >
-> >  fs/eventpoll.c | 139 +++++++++----------------------------------------
-> >  1 file changed, 26 insertions(+), 113 deletions(-)
-> 
-> Yeah, this is more like the kind of diffstat I like to see for
-> eventpoll. Plus it makes things fundamentally simpler.
-> 
-> It might be worth looking at ep_poll_callback() - the only case that
-> had read_lock_irqsave() - and seeing if perhaps some of the tests
-> inside the lock might be done optimistically, or delayed to after the
-> lock.
-> 
-> For example, the whole wakeup sequence looks like it should be done
-> *after* the ep->lock has been released, because it uses its own lock
-> (ie the
-> 
->                 if (sync)
->                         wake_up_sync(&ep->wq);
->                 else
->                         wake_up(&ep->wq);
-> 
-> thing uses the wq lock, and there is nothing that ep->lock protects
-> there as far as I can tell.
-> 
-> So I think this has some potential for _simple_ optimizations, but I'm
-> not sure how worth it it is.
+- Added a handler in DRM buddy manager to reset the cleared
+  flag for the blocks in the freelist.
 
-Actually ep->lock does protect this part. Because ep_poll() touches ep->wq
-without holding the waitqueue's lock.
+- This is necessary because, upon resuming, the VRAM becomes
+  cluttered with BIOS data, yet the VRAM backend manager
+  believes that everything has been cleared.
 
-We could do something like the diff below. But things are not so simple
-anymore.
+v2:
+  - Add lock before accessing drm_buddy_clear_reset_blocks()(Matthew Auld)
+  - Force merge the two dirty blocks.(Matthew Auld)
+  - Add a new unit test case for this issue.(Matthew Auld)
+  - Having this function being able to flip the state either way would be
+    good. (Matthew Brost)
 
-Best regards,
-Nam
+v3(Matthew Auld):
+  - Do merge step first to avoid the use of extra reset flag.
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index a171f7e7dacc..5e6c7da606e7 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -1252,8 +1252,6 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 	unsigned long flags;
- 	int ewake = 0;
- 
--	spin_lock_irqsave(&ep->lock, flags);
--
- 	ep_set_busy_poll_napi_id(epi);
- 
- 	/*
-@@ -1263,7 +1261,7 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 	 * until the next EPOLL_CTL_MOD will be issued.
- 	 */
- 	if (!(epi->event.events & ~EP_PRIVATE_BITS))
--		goto out_unlock;
-+		goto out;
- 
- 	/*
- 	 * Check the events coming with the callback. At this stage, not
-@@ -1272,7 +1270,7 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 	 * test for "key" != NULL before the event match test.
- 	 */
- 	if (pollflags && !(pollflags & epi->event.events))
--		goto out_unlock;
-+		goto out;
- 
- 	/*
- 	 * If we are transferring events to userspace, we can hold no locks
-@@ -1280,6 +1278,8 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 	 * semantics). All the events that happen during that period of time are
- 	 * chained in ep->ovflist and requeued later on.
- 	 */
-+	spin_lock_irqsave(&ep->lock, flags);
-+
- 	if (READ_ONCE(ep->ovflist) != EP_UNACTIVE_PTR) {
- 		if (epi->next == EP_UNACTIVE_PTR) {
- 			epi->next = READ_ONCE(ep->ovflist);
-@@ -1292,9 +1292,14 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 		ep_pm_stay_awake_rcu(epi);
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c   |  2 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h      |  1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 17 ++++++++
+ drivers/gpu/drm/drm_buddy.c                  | 43 ++++++++++++++++++++
+ include/drm/drm_buddy.h                      |  2 +
+ 5 files changed, 65 insertions(+)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 723ab95d8c48..ac92220f9fc3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5327,6 +5327,8 @@ int amdgpu_device_resume(struct drm_device *dev, bool notify_clients)
+ 		dev->dev->power.disable_depth--;
+ #endif
  	}
- 
-+	spin_unlock_irqrestore(&ep->lock, flags);
 +
-+
- 	/*
- 	 * Wake up ( if active ) both the eventpoll wait list and the ->poll()
- 	 * wait list.
-+	 *
-+	 * Memory barrier for waitqueue_active() from spin_unlock_irqrestore().
- 	 */
- 	if (waitqueue_active(&ep->wq)) {
- 		if ((epi->event.events & EPOLLEXCLUSIVE) &&
-@@ -1321,9 +1326,7 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 	if (waitqueue_active(&ep->poll_wait))
- 		pwake++;
++	amdgpu_vram_mgr_clear_reset_blocks(adev);
+ 	adev->in_suspend = false;
  
--out_unlock:
--	spin_unlock_irqrestore(&ep->lock, flags);
--
-+out:
- 	/* We have to call this outside the lock */
- 	if (pwake)
- 		ep_poll_safewake(ep, epi, pollflags & EPOLL_URING_WAKE);
-@@ -2001,13 +2004,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 		init_wait(&wait);
- 		wait.func = ep_autoremove_wake_function;
+ 	if (amdgpu_acpi_smart_shift_update(dev, AMDGPU_SS_DEV_D0))
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+index 215c198e4aff..2309df3f68a9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+@@ -155,6 +155,7 @@ int amdgpu_vram_mgr_reserve_range(struct amdgpu_vram_mgr *mgr,
+ 				  uint64_t start, uint64_t size);
+ int amdgpu_vram_mgr_query_page_status(struct amdgpu_vram_mgr *mgr,
+ 				      uint64_t start);
++void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev);
  
--		spin_lock_irq(&ep->lock);
--		/*
--		 * Barrierless variant, waitqueue_active() is called under
--		 * the same lock on wakeup ep_poll_callback() side, so it
--		 * is safe to avoid an explicit barrier.
--		 */
--		__set_current_state(TASK_INTERRUPTIBLE);
-+		prepare_to_wait_exclusive(&ep->wq, &wait, TASK_INTERRUPTIBLE);
- 
- 		/*
- 		 * Do the final check under the lock. ep_start/done_scan()
-@@ -2016,10 +2013,8 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 		 * period of time although events are pending, so lock is
- 		 * important.
- 		 */
-+		spin_lock_irq(&ep->lock);
- 		eavail = ep_events_available(ep);
--		if (!eavail)
--			__add_wait_queue_exclusive(&ep->wq, &wait);
--
- 		spin_unlock_irq(&ep->lock);
- 
- 		if (!eavail)
-@@ -2036,7 +2031,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 		eavail = 1;
- 
- 		if (!list_empty_careful(&wait.entry)) {
--			spin_lock_irq(&ep->lock);
-+			spin_lock_irq(&ep->wq.lock);
- 			/*
- 			 * If the thread timed out and is not on the wait queue,
- 			 * it means that the thread was woken up after its
-@@ -2047,7 +2042,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 			if (timed_out)
- 				eavail = list_empty(&wait.entry);
- 			__remove_wait_queue(&ep->wq, &wait);
--			spin_unlock_irq(&ep->lock);
-+			spin_unlock_irq(&ep->wq.lock);
- 		}
- 	}
+ bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
+ 			    struct ttm_resource *res);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index abdc52b0895a..07c936e90d8e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -782,6 +782,23 @@ uint64_t amdgpu_vram_mgr_vis_usage(struct amdgpu_vram_mgr *mgr)
+ 	return atomic64_read(&mgr->vis_usage);
  }
+ 
++/**
++ * amdgpu_vram_mgr_clear_reset_blocks - reset clear blocks
++ *
++ * @adev: amdgpu device pointer
++ *
++ * Reset the cleared drm buddy blocks.
++ */
++void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev)
++{
++	struct amdgpu_vram_mgr *mgr = &adev->mman.vram_mgr;
++	struct drm_buddy *mm = &mgr->mm;
++
++	mutex_lock(&mgr->lock);
++	drm_buddy_reset_clear(mm, false);
++	mutex_unlock(&mgr->lock);
++}
++
+ /**
+  * amdgpu_vram_mgr_intersects - test each drm buddy block for intersection
+  *
+diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+index a1e652b7631d..a94061f373de 100644
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -405,6 +405,49 @@ drm_get_buddy(struct drm_buddy_block *block)
+ }
+ EXPORT_SYMBOL(drm_get_buddy);
+ 
++/**
++ * drm_buddy_reset_clear - reset blocks clear state
++ *
++ * @mm: DRM buddy manager
++ * @is_clear: blocks clear state
++ *
++ * Reset the clear state based on @is_clear value for each block
++ * in the freelist.
++ */
++void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
++{
++	u64 root_size, size, start;
++	unsigned int order;
++	int i;
++
++	size = mm->size;
++	for (i = 0; i < mm->n_roots; ++i) {
++		order = ilog2(size) - ilog2(mm->chunk_size);
++		start = drm_buddy_block_offset(mm->roots[i]);
++		__force_merge(mm, start, start + size, order);
++
++		root_size = mm->chunk_size << order;
++		size -= root_size;
++	}
++
++	for (i = 0; i <= mm->max_order; ++i) {
++		struct drm_buddy_block *block;
++
++		list_for_each_entry_reverse(block, &mm->free_list[i], link) {
++			if (is_clear != drm_buddy_block_is_clear(block)) {
++				if (is_clear) {
++					mark_cleared(block);
++					mm->clear_avail += drm_buddy_block_size(mm, block);
++				} else {
++					clear_reset(block);
++					mm->clear_avail -= drm_buddy_block_size(mm, block);
++				}
++			}
++		}
++	}
++}
++EXPORT_SYMBOL(drm_buddy_reset_clear);
++
+ /**
+  * drm_buddy_free_block - free a block
+  *
+diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
+index 9689a7c5dd36..513837632b7d 100644
+--- a/include/drm/drm_buddy.h
++++ b/include/drm/drm_buddy.h
+@@ -160,6 +160,8 @@ int drm_buddy_block_trim(struct drm_buddy *mm,
+ 			 u64 new_size,
+ 			 struct list_head *blocks);
+ 
++void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear);
++
+ void drm_buddy_free_block(struct drm_buddy *mm, struct drm_buddy_block *block);
+ 
+ void drm_buddy_free_list(struct drm_buddy *mm,
+-- 
+2.43.0
+
 
