@@ -1,218 +1,156 @@
-Return-Path: <stable+bounces-163217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B9BB0843F
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 07:23:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 691FFB08443
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 07:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 657E41C268A6
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 05:23:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8475B7B0E63
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 05:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146C01FCD1F;
-	Thu, 17 Jul 2025 05:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023C21FBE80;
+	Thu, 17 Jul 2025 05:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lpjNlwJb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bCOLYyYz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE111DE4C2
-	for <stable@vger.kernel.org>; Thu, 17 Jul 2025 05:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BB81DE4C2;
+	Thu, 17 Jul 2025 05:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752729805; cv=none; b=asfw1aiIYCPHZ+7Hsw+5BBmkw90W2cOqbnlDZyinRrZQiCzl+u0Q68eKa30QqcBaL5s4IliZXxBYCSnampf0yx79qxIKLAsbLwyG11mfrRmAP69F3BSNuyzfIg0tzfkSgR0jpDxvJdJcSZtJx+bRYtCi8CUH1mKcYffS1VWTOos=
+	t=1752730024; cv=none; b=tnlEnQdOM925rw0a7tBi5STlmdZttY4fk1sjRL7QPRNuoVCyznl4/nchj1L2EuWZTwKR/TCqh6OY2OxWgh6OuLunVK/voSIaxidGtQqhzQt8ljyhHveXkWLnqq4VX2Nx/DSouGRMaLovReUW213aWM5CgEwUcuO9+z9bxiWt6ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752729805; c=relaxed/simple;
-	bh=Go4DWykoSKJP1cS08Vxzg6QHAJO7yZfQSTkvC1QNlkU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vwe2s/7koYtQV7zAG7ouJzUGaPjPiAEv6ufYguiJLwJw/s/TkocE0EM/MFtD5eA78sWxpcWRg36TEy3qxq5+LKmYkrSei2wesrUoSjM5CbPX7ykpcAfqr9qbua1KMpQV8Y678vhk5jg+MbEcx756LcFYcUwt1R4nsvY5uGLAalU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lpjNlwJb; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-237311f5a54so3978235ad.2
-        for <stable@vger.kernel.org>; Wed, 16 Jul 2025 22:23:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752729803; x=1753334603; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pbNXNk8Bjt0C/jyZ3yLfvc663qoXwVQsDwn4FalQUM8=;
-        b=lpjNlwJb/Th0fjNPw5Wvbljb7mYS2MstkQAa+4JGr+yQCYf0E+uHfIidQ78h4AC1Jk
-         ZvFhhIuRUtDWEdohMkWJOktJYt3auFzHI4DeawTsuwt3H6J19/s6tFxAwoGPUvTNkGRg
-         fgU1ZH3f8SRcesNO8IMn7V9vh7xa4BLPxljZf/PXP30SqTl1tFpS2CL5Gcf2HS4aqrvG
-         MYsMmBnr5Db1GCELO4xEpz/RZOqUlT7ct2b9blQU5iZ1LEMhCxqwbC8DTM3xb9KGTGou
-         h28J6Lql6axv48pgDF7oyXj2A4ebBbRDntY8qxnL2o0CoXclolD0VgWZyNM4BNN4JiYQ
-         DSjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752729803; x=1753334603;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pbNXNk8Bjt0C/jyZ3yLfvc663qoXwVQsDwn4FalQUM8=;
-        b=Nya5fE6+6HUqEjSRgUHXQAAdm+tq1WD38EAaIqTxI34zFmVsF7sKcJTa7L/QZ2rGwg
-         /0hv0II1uWUUVNq3ZPpNtYJLzIM8RRfyVuIEqKfSo5+TIjX308oaqpCaJsMQNiUCuacA
-         GZJ86XRlypJRYYjERTnthsUz0tP1mjVhbvcceBcqFt2+G5WRry9aM2gsUV0XL2UQ0ReN
-         mf/EoHMuzCdMsmIrI7LQLh0xYp+Vi2UwNuOH998Hbxs97Esi2IuSasygPWdWQajSTG04
-         MgPtyVe+pxNIWmYiwycwlrxIgUZXGl1HCP1f1DndGOXqVECtbdx89y1lhi4S9x0MD0j6
-         dejg==
-X-Gm-Message-State: AOJu0Yz9H2s1bBWqUsH150knAtHq0GzCLM48nokMpi15/w8tBTfd1x0I
-	fk5hcgAUaaoz6TeND2IkYpRg5xQ7oTHR69XKEoX16ifW7UUNA1FGJrhcK/4GC7e3HeJYWTaa5eY
-	g5rubVYkN+GehVVd9F17EThNxT0STEJdzYdL4ZCVBDw==
-X-Gm-Gg: ASbGnctIyUsP8DZs/pdPt31bGp094E1LtclLxIe4Df6tzM0dKPAA+T2W/gjFX6BQ6mv
-	pf6lXPWMt+YDrCkCYK7cMZcH0HC0vXdTSwTalZyYxnTm5tE7k7k/J1MzQ8nFc3cNPMNCK/KmT1K
-	ZijVvwN3i2Yz0AR0C3CFBICAyK7BP9GGce1N8HimzoFoWKyQVPGmfI6W2W50XthWBW0cXJ7Vh1G
-	7FPJNlTrnm5ZKLLmbUFqYn45K2r6PRBxGIIU/75
-X-Google-Smtp-Source: AGHT+IGC1euAAA5dE+kok7mdUFeay68s6sXYaX1cEPylz7XLvI+8baa/hLQApw+98wrPtjBWn3XlSJUgjxrkBDbUHL4=
-X-Received: by 2002:a17:903:2446:b0:235:be0:db6b with SMTP id
- d9443c01a7336-23e2576c493mr78845715ad.45.1752729803488; Wed, 16 Jul 2025
- 22:23:23 -0700 (PDT)
+	s=arc-20240116; t=1752730024; c=relaxed/simple;
+	bh=WHynN3RVdKyk3zkts6sRyj9KOWiQ90DdnEukQI8ear4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RSqEOcIS810HRYCyrwSyrVoTMF97myYIXjNw3FI90ksHbFcdXhTFeRxnam3JWb+ZWp1GGU88gQCHvRpyZhtekLJmEIGrRHS9iB6/AgAjXeX16fmYr4lOOFEEgxDM7MkSCU26GoDX2Y4DYAZSGcUduIq91uQXVcNvIS0NgP1MrS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bCOLYyYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B810FC4CEE3;
+	Thu, 17 Jul 2025 05:27:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752730024;
+	bh=WHynN3RVdKyk3zkts6sRyj9KOWiQ90DdnEukQI8ear4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bCOLYyYzJ0BI5iXBrUIPsBz6zEdv1MW1P2boc7rYfEQl8Kq1mXZnPbvQq9E95QXth
+	 iZFCHycWLEA2ptKmdmjXc+eZwLJMjgy+BrDBdCtxbzXMTF6sHzYn+U8CW3URT+kBoq
+	 4M4HB+JjOdr7VTyvTjowTEM1Gb7UkiVE15DsQ2H2geR1+Vr8TqVHRclIUBEbqdQGVl
+	 DzNFfgGGePJe8MjqXjN69fDanp+Ebywa4ByfCalpPXVc5xH2tgPJDeRyBh1peqyaw1
+	 6gC9H76ha42V4ztBIepF/6IePHMcfTxOl80DKR8xxY0q+SyV7awljmiDryFAnrk3MH
+	 zGEpdv1UQkYCA==
+Message-ID: <48e6e92d-6b6a-4850-9396-f3afa327ca3a@kernel.org>
+Date: Thu, 17 Jul 2025 07:26:59 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250716141302.507854168@linuxfoundation.org>
-In-Reply-To: <20250716141302.507854168@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 17 Jul 2025 10:53:11 +0530
-X-Gm-Features: Ac12FXzq-Ju7B9DM2i3Uy_CU19Kl5aGcWdwTnWvRw2hksW63aQqP_uvej_ipHLE
-Message-ID: <CA+G9fYvwrnndRbDQA3y9Fy94_J0a1sixG6GfV+R1p1iN3+ATFw@mail.gmail.com>
-Subject: Re: [PATCH 5.4 000/144] 5.4.296-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] kernel/fork: Increase minimum number of allowed
+ threads
+To: Hauke Mehrtens <hauke@hauke-m.de>, sashal@kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: frederic@kernel.org, david@redhat.com, viro@zeniv.linux.org.uk,
+ paulmck@kernel.org, stable@vger.kernel.org,
+ David Laight <david.laight.linux@gmail.com>, Tejun Heo <tj@kernel.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ "Luis R . Rodriguez" <mcgrof@kernel.org>
+References: <20250711230829.214773-1-hauke@hauke-m.de>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20250711230829.214773-1-hauke@hauke-m.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 16 Jul 2025 at 19:44, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.4.296 release.
-> There are 144 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 18 Jul 2025 14:12:35 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.4.296-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Cc wqueue & umode helper folks
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+On 12. 07. 25, 1:08, Hauke Mehrtens wrote:
+> A modern Linux system creates much more than 20 threads at bootup.
+> When I booted up OpenWrt in qemu the system sometimes failed to boot up
+> when it wanted to create the 419th thread. The VM had 128MB RAM and the
+> calculation in set_max_threads() calculated that max_threads should be
+> set to 419. When the system booted up it tried to notify the user space
+> about every device it created because CONFIG_UEVENT_HELPER was set and
+> used. I counted 1299 calls to call_usermodehelper_setup(), all of
+> them try to create a new thread and call the userspace hotplug script in
+> it.
+> 
+> This fixes bootup of Linux on systems with low memory.
+> 
+> I saw the problem with qemu 10.0.2 using these commands:
+> qemu-system-aarch64 -machine virt -cpu cortex-a57 -nographic
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> ---
+>   kernel/fork.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 7966c9a1c163..388299525f3c 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -115,7 +115,7 @@
+>   /*
+>    * Minimum number of threads to boot the kernel
+>    */
+> -#define MIN_THREADS 20
+> +#define MIN_THREADS 600
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+As David noted, this is not the proper fix. It appears that usermode 
+helper should use limited thread pool. I.e. instead of 
+system_unbound_wq, alloc_workqueue("", WQ_UNBOUND, max_active) with 
+max_active set to max_threads divided by some arbitrary constant (3? 4?)?
 
-## Build
-* kernel: 5.4.296-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 6d1abaaa322ed206d965a1e36bd88e4ca921b85e
-* git describe: v5.4.295-145-g6d1abaaa322e
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
-95-145-g6d1abaaa322e
+regards,
+-- 
+js
+suse labs
 
-## Test Regressions (compared to v5.4.295-149-g32230c3fbb24)
-
-## Metric Regressions (compared to v5.4.295-149-g32230c3fbb24)
-
-## Test Fixes (compared to v5.4.295-149-g32230c3fbb24)
-
-## Metric Fixes (compared to v5.4.295-149-g32230c3fbb24)
-
-## Test result summary
-total: 31832, pass: 22716, fail: 1849, skip: 7132, xfail: 135
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 131 total, 131 passed, 0 failed
-* arm64: 31 total, 29 passed, 2 failed
-* i386: 18 total, 13 passed, 5 failed
-* mips: 25 total, 25 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 26 total, 26 passed, 0 failed
-* riscv: 9 total, 3 passed, 6 failed
-* s390: 6 total, 6 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 27 total, 27 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-exec
-* kselftest-fpu
-* kselftest-futex
-* kselftest-intel_pstate
-* kselftest-kcmp
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* lava
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-crypto
-* ltp-cve
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
