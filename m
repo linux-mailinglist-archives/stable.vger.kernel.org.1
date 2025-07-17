@@ -1,133 +1,112 @@
-Return-Path: <stable+bounces-163305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7B1B0970B
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 00:52:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7031B09718
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B62BF7AF622
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 22:51:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DB2E188C225
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 23:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F891225A35;
-	Thu, 17 Jul 2025 22:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D799D23F403;
+	Thu, 17 Jul 2025 23:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="1Iujcath"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jwEdpv4f"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42171547CC;
-	Thu, 17 Jul 2025 22:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5102C1A2541;
+	Thu, 17 Jul 2025 23:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752792764; cv=none; b=OrRQdQ211NlwLUyt30D8C9yZpYVJ/K9IADUZF1zlXfwahyDK8vU2ffUdcwo0NjvQTDwTK6ptZ9SOLotoemRSVhOrIA9GDJIHcBz8PxAK2RLZp30y8sQBHsE01AhQUUkiG/5S4+NqjlXxmIT5yAgLw2fDJwtJT9E6dBd0qP13Wec=
+	t=1752794076; cv=none; b=dLWWXduzBVzv0K4eefq+4T6eXzOQa8diATT6SKJIU9W3o9NXZfyAz/F3Xu3AlhBq+8PANVYDuSZyE1AkNKUK8LL8ndvxJsrQeucDskBMwpK2D0IyBkBt4iu7kUDOXfIjrB62xo3qWyBMCFlv6x1q3PG2+jHTWJzwFE9CJgS/ckU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752792764; c=relaxed/simple;
-	bh=iM7vGutXiV9jv9DBh78AMndt0vOp16U5gZNXCVl2QBU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pig/8VOAmMCIt/yHLOiKfItZ1D+AZ8d4kbSTfbmlszqPSLyt2dZyjb0SpYfVDXEd+ul0qbxSLkfB8zXsUqK7ggdXpth1a4l1Tn1n39xoo2l6CReaDkUu35vcj6ss0mn/AKl+uaFQqlDI1Eh3gX0kG1Pmnic2I16+Bo7CLEFGERk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=1Iujcath; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4bjp8w4XcHz9srm;
-	Fri, 18 Jul 2025 00:52:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
-	t=1752792752;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TG54JTZbO77Ve++1V/J2c8Zltjjd4U0RCUVFfO4a/sg=;
-	b=1IujcathHVcIU3FV57F1kYXy7LaNwFtJdJEk12dF3X3JmsUI+TmebIYUi+9XKD2pvVf1zw
-	cAeChUiYRa6mjwttdI1vYLdo6+12HNfhxkQrZCOxl3Eh0tF/AiUULOrW44/ZnSHJMNXxGp
-	lPjFl81KcQnkTANvpB0w9UQI9F32NsXuOonmRAJOqTDEfgA0+Y9aKac5LvDx/0+1BxA4kR
-	IN7ptPSLp1K0EyGTj0pl1yfIS+Gb31OC6tmsyArvxOyJorVZ2a0XyH3L05tRQCy6m7XVjQ
-	JiNaHMBkG/nQZQ3j3MvX+y2hbH6OabB3soUwqw64wJwqHGHLZYeMaS6WrFMPgQ==
-Message-ID: <576d1040-4238-4bf0-aa61-e1261a38d780@hauke-m.de>
-Date: Fri, 18 Jul 2025 00:52:30 +0200
+	s=arc-20240116; t=1752794076; c=relaxed/simple;
+	bh=Boz1NnANL68jZFSj5utovY8CrOn3qt7bAPUypNpOzTM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=XgW5CT1FXNbZjhEVxkqOMKgl4lLZo2bwt2OtRn2XJP6mCHldirTScMFKHTmyvJVO89G7XlklSssWZh7XkN7Z1HpGejXhQCXZRNXtPrfslrh4A4mZ0agydVgT01jVsDs8uSt8YEPF3FZJQ6voebYT+ft8DJ+DTsccs8fg3sROWOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jwEdpv4f; arc=none smtp.client-ip=209.85.210.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-74801bc6dc5so1702054b3a.1;
+        Thu, 17 Jul 2025 16:14:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752794074; x=1753398874; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Boz1NnANL68jZFSj5utovY8CrOn3qt7bAPUypNpOzTM=;
+        b=jwEdpv4fSp/9RTt7mTPsy0pb1hOLwHI1khg8fn4VvrX/pGe2LmaR6zZrXVwMVQfFqd
+         ZiN1vPn1OSm2PtOm75fAY5X7jVBTpTKYh7BKnpP2JPx3WR6B9OTxB6OjosFRoHkdhUGt
+         6Iyj8y2OWTN0BQoOE/BD0jhl7DFyQ7g58BvFgnqDOGBv0rvavVe/H3Yi2NhjnwRdZFVH
+         Yo/xqxHztYn3oYekVCTjiXE+stO4ahz5YmLuOTEwGOxh4z407yXR3yY8viRHLJBSBnlD
+         M55do4ga/MGKT7wbZZwzbhbquMeyTQYUr1czmBBoYfpApt7hdvOuIiCNipNDVop8Cndk
+         cMZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752794074; x=1753398874;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Boz1NnANL68jZFSj5utovY8CrOn3qt7bAPUypNpOzTM=;
+        b=ZWVrOrWFdff/ewEj3FMJ1+YXz7LmmGY5KUVf7z7aWxAMUOUinK9QlAECDFli+92wvq
+         /Q7vY2ai6DJQsM57QcfBfnsgWwKMbaSnf+gG3fFXve8BfK9VBZEUS4OSGI0xc509mENz
+         2tZorZjMNNRwk+eQ/qfwiaOseeW17cA0uW/5F09oTlZD24te0gk2G1xpXItwkwftdREq
+         yYDW2vd5aysVzJf6KxIUGL72cBIrg/UtAZOob+M6Ng9BJfo4yJURihwlcmNn0B8R1Fw7
+         NNAIwpnt7ppXpnW5pUl0mTPYCQSzu1uZqe7ebhf5liwoFnyESG9y4SAjqKaGzy2LTyT3
+         XgNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVC0uDrlBMVH2fUQ8D9J1BiPZN+7dqPhuqezIdOoEpl9VacVXxNljpB8rjMYh+3lq2ob0Ab6RHMLW7SlU7xGw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzn4M5O3jEGeKu3aAQRMZlYHcofJ+Jvg0SOUhJvBDLiGJJVK4AQ
+	GPef2dkhseOsTs3CQsU0ffxlvdVKVfJz3UwLD0QGfIh364QG4hOIRJKP
+X-Gm-Gg: ASbGncuLM0K9vpyMAMDenZ4l/ZIlg2LbKDRckhRVL9QIz/AahaM04DCqJkI7QHRVJ+q
+	3iGdDCbbBJFYxBNA12pJymkL+eD7mCUWlEi1H+ssCAwfDTlPkXCuz6oJRieJvhblFkTS/oQY/+U
+	/6UUZuF2oo2EIWE0lmuXiQLKxZCXAnncKEKa+N/YeeBzzLntLjAVxClOAxEmShuoraH3tXpNipc
+	ypdQiVu4CfV5dT8WIfzzIV2yV4vo5yQxeZmWkrtLkIMjCHA3GYu7aY5zLmZhlLF5Lm3MGIlNsSa
+	3L1cqNEYvyz6xPC3UH46z5s4NzZfb3GXiAmv2owE2GZyk5l56vB7h2fa74GGi1FqziNb1z8uvA4
+	jSJW4N1Hz4IenwQbEALGTItdn1+r2ffTy5lsBOaw=
+X-Google-Smtp-Source: AGHT+IGqxUgt2M7kl0/VxWjAcj+d9qWEHTt2Cy17UaLhAJdy0zmaf5a76BKuMYJ7ItuMr/jiUnopIw==
+X-Received: by 2002:a05:6a21:998b:b0:238:351a:f960 with SMTP id adf61e73a8af0-2390c84dd57mr8247735637.23.1752794074432;
+        Thu, 17 Jul 2025 16:14:34 -0700 (PDT)
+Received: from [127.0.0.1] ([116.206.223.147])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759cbc6c16esm81623b3a.149.2025.07.17.16.14.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Jul 2025 16:14:33 -0700 (PDT)
+Date: Fri, 18 Jul 2025 04:44:23 +0530
+From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+To: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+CC: stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5Bath10k=5D=5BQCA9377=5D_Firmware_crashes_on_Dell_I?=
+ =?US-ASCII?Q?nspiron_5567_=28IRQ_=2316=2C_all_modern_distro_kernels=29?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <690B1DB2-C9DC-4FAD-8063-4CED659B1701@gmail.com>
+References: <CAEmM+Qh=8tm55Ypa2w3ZtOFFrGXTpKqxue59mVAo_5TVy0RJ6g@mail.gmail.com> <CD81F065-CDDD-41F6-AECD-167B509F57C6@gmail.com> <2DC25FD4-0EA4-41CE-BA17-BFF84C1C5F7E@gmail.com> <690B1DB2-C9DC-4FAD-8063-4CED659B1701@gmail.com>
+Message-ID: <D048183F-E342-4505-9891-8F35D09812FA@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] kernel/fork: Increase minimum number of allowed
- threads
-To: David Laight <david.laight.linux@gmail.com>,
- Jiri Slaby <jirislaby@kernel.org>
-Cc: sashal@kernel.org, linux-kernel@vger.kernel.org, frederic@kernel.org,
- david@redhat.com, viro@zeniv.linux.org.uk, paulmck@kernel.org,
- stable@vger.kernel.org, Tejun Heo <tj@kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- "Luis R . Rodriguez" <mcgrof@kernel.org>
-References: <20250711230829.214773-1-hauke@hauke-m.de>
- <48e6e92d-6b6a-4850-9396-f3afa327ca3a@kernel.org>
- <20250717223432.2a74e870@pumpkin>
-Content-Language: en-US
-From: Hauke Mehrtens <hauke@hauke-m.de>
-In-Reply-To: <20250717223432.2a74e870@pumpkin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 7/17/25 23:34, David Laight wrote:
-> On Thu, 17 Jul 2025 07:26:59 +0200
-> Jiri Slaby <jirislaby@kernel.org> wrote:
-> 
->> Cc wqueue & umode helper folks
->>
->> On 12. 07. 25, 1:08, Hauke Mehrtens wrote:
->>> A modern Linux system creates much more than 20 threads at bootup.
->>> When I booted up OpenWrt in qemu the system sometimes failed to boot up
->>> when it wanted to create the 419th thread. The VM had 128MB RAM and the
->>> calculation in set_max_threads() calculated that max_threads should be
->>> set to 419. When the system booted up it tried to notify the user space
->>> about every device it created because CONFIG_UEVENT_HELPER was set and
->>> used. I counted 1299 calls to call_usermodehelper_setup(), all of
->>> them try to create a new thread and call the userspace hotplug script in
->>> it.
->>>
->>> This fixes bootup of Linux on systems with low memory.
->>>
->>> I saw the problem with qemu 10.0.2 using these commands:
->>> qemu-system-aarch64 -machine virt -cpu cortex-a57 -nographic
->>>
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->>> ---
->>>    kernel/fork.c | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/kernel/fork.c b/kernel/fork.c
->>> index 7966c9a1c163..388299525f3c 100644
->>> --- a/kernel/fork.c
->>> +++ b/kernel/fork.c
->>> @@ -115,7 +115,7 @@
->>>    /*
->>>     * Minimum number of threads to boot the kernel
->>>     */
->>> -#define MIN_THREADS 20
->>> +#define MIN_THREADS 600
->>
->> As David noted, this is not the proper fix. It appears that usermode
->> helper should use limited thread pool. I.e. instead of
->> system_unbound_wq, alloc_workqueue("", WQ_UNBOUND, max_active) with
->> max_active set to max_threads divided by some arbitrary constant (3? 4?)?
-> 
-> Or maybe just 1 ?
-> I'd guess all the threads either block in the same place or just block
-> each other??
+Hello everyone,
 
-I will reduce the number of threads. Maybe to max 5 or maybe just one.
+Sending this on the initial email thread to the ath10k mailing list=2E
 
-I think we should still increase the minimum number of threads, but 
-something like 60 to 100 should be fine. It is calculated based RAM size 
-128MB RAM resulted already in 419 max threads.
+I have built the kernel using Bjorn's patch=2E The kernel is still tainted=
+ but certain issues could be pinpointed (for example, ath10k_pci mishandlin=
+g write32)=2E
 
-Hauke
+Here it is:
+https://gist=2Egithubusercontent=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea4=
+3a1d832a16180/raw/07b34aa3fa19da5afa4bb161454e3cb2081b9880/journalctl%2520v=
+6=2E16-rc4-PATCH1
+
+It would be highly beneficial if the matter is looked into=2E
+
+Bandhan
 
