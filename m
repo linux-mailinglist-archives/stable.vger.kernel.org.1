@@ -1,208 +1,155 @@
-Return-Path: <stable+bounces-163299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA1C9B094EB
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 21:23:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DF5B09519
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 21:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A24E7BF269
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 19:21:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EE8B3ACF92
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 19:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB172FF467;
-	Thu, 17 Jul 2025 19:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD54C2FD592;
+	Thu, 17 Jul 2025 19:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IaWqBezb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RY/BBTxk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099792FD86F
-	for <stable@vger.kernel.org>; Thu, 17 Jul 2025 19:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76781CA4B
+	for <stable@vger.kernel.org>; Thu, 17 Jul 2025 19:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752780030; cv=none; b=SwB9TxEEQf9im7aTGEqkY+d4KByLvtPhm0NZunTLCAnI13AAMMy/nU4buWIxBE1raoe9y7a5EJQoYFm7bHkfA/M4Cyn0IfzVKYwhpWqaKi9JwnuU1ZdeQwe8ePoOXT3XJtXVPdjnlt3Ld51ZfCwmqEZrxzKbapo3fne4r9KisFo=
+	t=1752781222; cv=none; b=H43IaLFW5pqM6VKQGIjcf9Nv/hA7Xgq0OL/g0oIXcT8bKW3VJXLA79QTbnZypUiBVef1sBlg0WJeVnOXR7Hdj+pMs8VItRBaRxpa0drhrpuW/1FvilIqDSkDvgAK8tL3GyF7N+WFtvlIxWwGWz1UZ6J2hRZ4HA7NcOv2FhzsxL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752780030; c=relaxed/simple;
-	bh=qHNE6ZJsNsPHrMLOVMlNPJ1T9cDi7uaDRJUDA35BTb0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BRUkCCVK6gOnZCiKIMDI73TtYfAqCPy522d7OlAyldcA9/V+pvwl+OExDuaPMToq0XR+7g1ZAfqyQEnL/iESYO8Orxqnqa7rEbHCvQ6f/SrcZ0ZRxM88jmZWwHbNvH4qbEyLtSIMPyAA3FXN2sdQq7iykwz88Zvhuth7hQco7w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IaWqBezb; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-748fd21468cso1287776b3a.1
-        for <stable@vger.kernel.org>; Thu, 17 Jul 2025 12:20:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752780028; x=1753384828; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HR8MX3mhC9f/vMePEVzAQse8ycjHGoEB8XupYWNC4G4=;
-        b=IaWqBezbXIkLjDNaoGB+MlwdD1pruj2ZbzfmKZ2QiGS5h0VaJ3b0XdeWAJWdJYru22
-         6yoTT4tDf2k0ufGvFa+x7O9AW6pO+14NEQ+sLnx5SI1rVbzAcOsH4hytR6lH2RY96wwW
-         L8PPDGlbtOFcvsZyOnz4CVC801aBxgfbICL/wHYuUYkA13noBKhVtcwECP1rnZJEiqaC
-         FNetg/p8flCbis+oVAlmMOutQN9warI1JFqRGfu7iUMvqxPdmVgNNWY+wqsrPmoQryNk
-         pNiSHamVHUKClXyPcKuI33C7EYTpSjaBN9AOMn/2tG1vwa5col1nraiLlkt/basc/HSa
-         6bvg==
+	s=arc-20240116; t=1752781222; c=relaxed/simple;
+	bh=AliCz80P40/+u4uyNacd4d5aJesJDRNV1iyzNivQibw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=krrP2XwCAhL0Ys5Y5r7p7S2q0ZeG/5wT7lvJQUge6kh3U6uYWiaN2An2xkEQeiYpBprBSn5+2EqMzXcoF6zy7SlPM3jx8HzaTIDoRYJ8R4Y/c32r5eskzkmSXlmkcOE54WXdgc2bmi7NsJ+u690SHzi3oRLh4U6bpIK3uyhjUjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RY/BBTxk; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752781219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z/2+uUVHwQq1KQQUsEuaD+AV1NGVtRzgW4E0uexw5t0=;
+	b=RY/BBTxkGBRnxJ2vccJqRZMg1HdHGrUJ+YoT/++9YiOAzCjZjJAmraNIMKcqp/0i1iY77u
+	WMtgJs0r/rFq0BHwEgxyCs+tZoz+gth3w7gCzK76nrX+LQieuR+yVEXEvB1lR7VXAGKdiu
+	Z9xYp/248D1MbPCA57nwKOOZmEWMyBE=
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
+ [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-642-qRXqh8RLObaj9yRPJGHUnA-1; Thu, 17 Jul 2025 15:40:17 -0400
+X-MC-Unique: qRXqh8RLObaj9yRPJGHUnA-1
+X-Mimecast-MFC-AGG-ID: qRXqh8RLObaj9yRPJGHUnA_1752781217
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3df359a108bso3187715ab.3
+        for <stable@vger.kernel.org>; Thu, 17 Jul 2025 12:40:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752780028; x=1753384828;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HR8MX3mhC9f/vMePEVzAQse8ycjHGoEB8XupYWNC4G4=;
-        b=ROeI82D4xQwOzO9ifhOu843urwFz5yV+Pp9dS0bdT9ODqYcEOpxTIBc/dRQX1lPyjc
-         NzGG9gFviaPqwLZaaXlwHYJpyaPQ14FhxWwEbKUsc1md2KZmYJAePckhEgn4Kr2knSxr
-         uXX2iNOlWPvyMCbp4NjpBP/Earu6tRICxc2TTsNvBVwTC4t+i7PIGn05UC4wg4GIchN+
-         YRA6E4nWVmdBzz9Pu9lDQRrHJFWJNUXDTEfNcBGBTSiRebp0AcrndJgR3tuB76026wIV
-         0EDdL8KrkbvrXk1o1Iw0deuWVf0dKW74AFgQJNps61lDTmAINBvITxRiHg1uz/FV361g
-         GLRA==
-X-Forwarded-Encrypted: i=1; AJvYcCXufmf4nvkmtZ+WnynGqdNWP4Px6NQO1lvEZrEfq0irNa2qICjwcv6ytUnEWKmN8ym6wYGbqOw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtnT6RcqoZSqJjsgao5Z4MVt1ZrBon+2fdrt7M/i/2qs46AFKd
-	vFUn0uYvJZxaJkzVXKTAqNBnKpgC0Mi0YBTqov/g8VdlUwxHxdWTzjKFSt45tt0vE0JcZwfVL5y
-	wJ0/27k6pi0/K8J/EefzHM3EtnA==
-X-Google-Smtp-Source: AGHT+IEtBesc2N/Fs+i9lOTd8XbLy9wXA+Q1KV0da06KAym2OQZ4lDK2l1GvqB7GpOLTPoD+KcroaFJ0N6GKz0JNag==
-X-Received: from pfbki26.prod.google.com ([2002:a05:6a00:949a:b0:748:f3b0:4db2])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:985:b0:74d:247f:faf1 with SMTP id d2e1a72fcca58-756e819fa32mr11350357b3a.6.1752780028251;
- Thu, 17 Jul 2025 12:20:28 -0700 (PDT)
-Date: Thu, 17 Jul 2025 19:20:24 +0000
+        d=1e100.net; s=20230601; t=1752781217; x=1753386017;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z/2+uUVHwQq1KQQUsEuaD+AV1NGVtRzgW4E0uexw5t0=;
+        b=b2vbu8g7exycmfj5h9m8JIsQIW1cxRTmfLx41SFI1OSM9yVVeOJYDvGoFALHZYBBc6
+         lfQYSSdQiomCmlIPLVp7eYDx8GiCXrfS6a8M4S7tHLqGbQH2kFaeJHeovNonUCrgGtH7
+         6d4wJ3Fxk2EfpCM0TZkjyxJD8plM/f/nHxB3NZBd7OVltP6XjS/v/Wt76KGq/PQhjP8F
+         DpvZvQbsTqERnqDuRqvrlw9e1kWa9xlYScdJugz8y4s0dcGjvqtDwikskZ+0bJUhNWvf
+         WmhZFoM1bgPhbal3/QhNelIjPZcG8BX7Cm9v/2qQj7FrhUVIDZrUz9wdsE4ATp1FZ6Qn
+         2p+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVAJrNG3cwcg1k2amEzYC5Q7Mj2Gb31MubMnMkCIEvdOPflzXZbn0aqyN1JS7mKsmr/UEvdBtQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx56ok1ZI+jdh3tRy7wlt7bXG8yiDDFBihBQo/azc31MPUDqSI6
+	S5VVaBQ/oV0PBnk5wa7G6TopxMmH2H/Z79O21PbeIXQ0ouklKZ+uvhag7jn/FCukIIW8gF0b2BU
+	pIy3SltFqD0DwV2euDsNq9GvSuByCLiN1eT3zutG2Nr8Gsfahc7levGC3/A==
+X-Gm-Gg: ASbGncttMyKPhrk1+NLGUWL9BQ58ciO/WpOg2xiAWQ/BdzMKUuICzBRc4a5TO3mLfk2
+	nrQ2UxUD4SuziAffkZTpy/YBkqjDwpw+th/LMKOj71KfgkW/98KcqZvQr+2Kx9h+m8xEAdOgdBF
+	hUXedb/bzoq6S2FxmdoCVfZFH8yBYu8njUW29cgxboKJ40ItvXxlXrcmFya+Sy5REn5vV2TU0Uj
+	GxII29mejGxp9C1tFi+1GHcgwDPkUK3okWosypNjXVARDIn5RQeOLuAxGhUebeqRR/Z7ccBhNn9
+	f6tPvp/UW3QqlPJKWGfHGS49h03e/4vmrum74D6SLYg=
+X-Received: by 2002:a05:6e02:3113:b0:3dc:87c7:a5a5 with SMTP id e9e14a558f8ab-3e28245f8e8mr24903985ab.5.1752781216867;
+        Thu, 17 Jul 2025 12:40:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGV+0O7JW3kdwf9CMHiAKbvK9a8rLbbPPt/Na4CzthvG+duCf1EvXTna86WdjzvTwHw9uYkCw==
+X-Received: by 2002:a05:6e02:3113:b0:3dc:87c7:a5a5 with SMTP id e9e14a558f8ab-3e28245f8e8mr24903925ab.5.1752781216429;
+        Thu, 17 Jul 2025 12:40:16 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3e2462299c0sm53651965ab.48.2025.07.17.12.40.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Jul 2025 12:40:15 -0700 (PDT)
+Date: Thu, 17 Jul 2025 13:40:14 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal
+ <nikhil.agarwal@amd.com>, Pieter Jansen van Vuuren
+ <pieter.jansen-van-vuuren@amd.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] vfio: cdx: Fix missing GENERIC_MSI_IRQ on compile test
+Message-ID: <20250717134014.16b97da5.alex.williamson@redhat.com>
+In-Reply-To: <20250717091053.129175-2-krzysztof.kozlowski@linaro.org>
+References: <20250717091053.129175-2-krzysztof.kozlowski@linaro.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250717192024.1820931-1-hramamurthy@google.com>
-Subject: [PATCH net v2] gve: Fix stuck TX queue for DQ queue format
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: jeroendb@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	pkaligineedi@google.com, willemb@google.com, joshwash@google.com, 
-	ziweixiao@google.com, jfraker@google.com, awogbemila@google.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Tim Hostetler <thostet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Praveen Kaligineedi <pkaligineedi@google.com>
+On Thu, 17 Jul 2025 11:10:54 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-gve_tx_timeout was calculating missed completions in a way that is only
-relevant in the GQ queue format. Additionally, it was attempting to
-disable device interrupts, which is not needed in either GQ or DQ queue
-formats.
+> VFIO_CDX driver uses msi_domain_alloc_irqs() which is provided by
+> non-user-visible GENERIC_MSI_IRQ, thus it should select that option
+> directly.
+>=20
+> VFIO_CDX depends on CDX_BUS, which also will select GENERIC_MSI_IRQ
+> (separate fix), nevertheless driver should poll what is being used there
+> instead of relying on bus Kconfig.
 
-As a result, TX timeouts with the DQ queue format likely would have
-triggered early resets without kicking the queue at all.
+This seems like a recipe for an explosion of Kconfig noise.  If the bus
+fundamentally depends on a config option, as proposed in the separate
+fix, I don't see that a driver dependent on that bus needs to duplicate
+the config selections.  IMO this is sufficiently fixed updating
+drivers/cdx/{Kconfig,Makefile}.  Thanks,
 
-This patch drops the check for pending work altogether and always kicks
-the queue after validating the queue has not seen a TX timeout too
-recently.
-
-Cc: stable@vger.kernel.org
-Fixes: 87a7f321bb6a ("gve: Recover from queue stall due to missed IRQ")
-Co-developed-by: Tim Hostetler <thostet@google.com>
-Signed-off-by: Tim Hostetler <thostet@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
-Changes in v2:
--Refactor out gve_tx_timeout_try_q_kick to remove goto statements
- (Jakub Kicinski)
----
- drivers/net/ethernet/google/gve/gve_main.c | 67 ++++++++++++++++++++++++-------------------
- 1 file changed, 37 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index c3791cf23c87..2fdb58646132 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1916,49 +1916,56 @@ static void gve_turnup_and_check_status(struct gve_priv *priv)
- 	gve_handle_link_status(priv, GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
- }
- 
--static void gve_tx_timeout(struct net_device *dev, unsigned int txqueue)
-+static struct gve_notify_block *gve_get_tx_notify_block(struct gve_priv *priv,
-+							unsigned int txqueue)
- {
--	struct gve_notify_block *block;
--	struct gve_tx_ring *tx = NULL;
--	struct gve_priv *priv;
--	u32 last_nic_done;
--	u32 current_time;
- 	u32 ntfy_idx;
- 
--	netdev_info(dev, "Timeout on tx queue, %d", txqueue);
--	priv = netdev_priv(dev);
- 	if (txqueue > priv->tx_cfg.num_queues)
--		goto reset;
-+		return NULL;
- 
- 	ntfy_idx = gve_tx_idx_to_ntfy(priv, txqueue);
- 	if (ntfy_idx >= priv->num_ntfy_blks)
--		goto reset;
-+		return NULL;
-+
-+	return &priv->ntfy_blocks[ntfy_idx];
-+}
-+
-+static bool gve_tx_timeout_try_q_kick(struct gve_priv *priv,
-+				      unsigned int txqueue)
-+{
-+	struct gve_notify_block *block;
-+	u32 current_time;
- 
--	block = &priv->ntfy_blocks[ntfy_idx];
--	tx = block->tx;
-+	block = gve_get_tx_notify_block(priv, txqueue);
-+
-+	if (!block)
-+		return false;
- 
- 	current_time = jiffies_to_msecs(jiffies);
--	if (tx->last_kick_msec + MIN_TX_TIMEOUT_GAP > current_time)
--		goto reset;
-+	if (block->tx->last_kick_msec + MIN_TX_TIMEOUT_GAP > current_time)
-+		return false;
- 
--	/* Check to see if there are missed completions, which will allow us to
--	 * kick the queue.
--	 */
--	last_nic_done = gve_tx_load_event_counter(priv, tx);
--	if (last_nic_done - tx->done) {
--		netdev_info(dev, "Kicking queue %d", txqueue);
--		iowrite32be(GVE_IRQ_MASK, gve_irq_doorbell(priv, block));
--		napi_schedule(&block->napi);
--		tx->last_kick_msec = current_time;
--		goto out;
--	} // Else reset.
-+	netdev_info(priv->dev, "Kicking queue %d", txqueue);
-+	napi_schedule(&block->napi);
-+	block->tx->last_kick_msec = current_time;
-+	return true;
-+}
- 
--reset:
--	gve_schedule_reset(priv);
-+static void gve_tx_timeout(struct net_device *dev, unsigned int txqueue)
-+{
-+	struct gve_notify_block *block;
-+	struct gve_priv *priv;
- 
--out:
--	if (tx)
--		tx->queue_timeout++;
-+	netdev_info(dev, "Timeout on tx queue, %d", txqueue);
-+	priv = netdev_priv(dev);
-+
-+	if (!gve_tx_timeout_try_q_kick(priv, txqueue))
-+		gve_schedule_reset(priv);
-+
-+	block = gve_get_tx_notify_block(priv, txqueue);
-+	if (block)
-+		block->tx->queue_timeout++;
- 	priv->tx_timeo_cnt++;
- }
- 
--- 
-2.50.0.727.gbf7dc18ff4-goog
+Alex
+=20
+> Without the fix on CDX_BUS compile test fails:
+>=20
+>   drivers/vfio/cdx/intr.c: In function =E2=80=98vfio_cdx_msi_enable=E2=80=
+=99:
+>   drivers/vfio/cdx/intr.c:41:15: error: implicit declaration of function =
+=E2=80=98msi_domain_alloc_irqs=E2=80=99;
+>     did you mean =E2=80=98irq_domain_alloc_irqs=E2=80=99? [-Wimplicit-fun=
+ction-declaration]
+>=20
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Closes: https://lore.kernel.org/r/4a6fd102-f8e0-42f3-b789-6e3340897032@in=
+fradead.org/
+> Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  drivers/vfio/cdx/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/vfio/cdx/Kconfig b/drivers/vfio/cdx/Kconfig
+> index e6de0a0caa32..90cf3dee5dba 100644
+> --- a/drivers/vfio/cdx/Kconfig
+> +++ b/drivers/vfio/cdx/Kconfig
+> @@ -9,6 +9,7 @@ config VFIO_CDX
+>  	tristate "VFIO support for CDX bus devices"
+>  	depends on CDX_BUS
+>  	select EVENTFD
+> +	select GENERIC_MSI_IRQ
+>  	help
+>  	  Driver to enable VFIO support for the devices on CDX bus.
+>  	  This is required to make use of CDX devices present in
 
 
