@@ -1,165 +1,172 @@
-Return-Path: <stable+bounces-163245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D45B0897B
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 11:39:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09109B08A21
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 12:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74E2B18885CC
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 09:39:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 401BE171DC5
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 10:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4C028A1CB;
-	Thu, 17 Jul 2025 09:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA076298995;
+	Thu, 17 Jul 2025 10:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z8VaZxfN"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="V+SgF9fa"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DA728C022
-	for <stable@vger.kernel.org>; Thu, 17 Jul 2025 09:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752745165; cv=none; b=lhBTEG1J0X2H6zqSqFiS52Q7uI5zdcuPBJfRQiH1yefmoWbwj/2c2ChITkalcgQt4tuSxYDwliNkESEbFxaiP/53WbJxoA9EQgKpeGH6iW0VppXUvXSxvcwh9qUpcdox5JX7uwVsTaiR6tRDFO0wmA1GTMUtg/CufXAjSPIgOfE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752745165; c=relaxed/simple;
-	bh=dXeJz3vwBSLIWWCWuP+elspZU7SI9LsUKQsf9/I2RiU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rFbNgj4IIVmrIMMPgH67mZ9wl3ktSNE/G8/RlxOaVA+0DGkkoKY0lvwyIhPtZ9O5rA5cfTERGJA77h1roOltsoQwO9JOnLN6pWUSw/56Cp7EImrm1AL2QMS8TZkNikB1RsIQLVPoFtnnB2A6PN2+anFYETrX9lwR4E2fvgiVzdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z8VaZxfN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752745162;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lKvVQQJMq+hy7WZue3QcEAM5iltBaD3HiRA66HLusuo=;
-	b=Z8VaZxfNFkV1AGl5or+bB5GffslxDGGKuUH7zV2GdKS9KvDecs0b5BQYxGLvaCSu8ET5Ch
-	xOS6udZjE+wuSCEyoXPC/Its47UYN2mZf8EsAnc2eF//+Dh1+qN/yIIQtrQWv/E3DEgjnz
-	oDfFCjly88HDmxTNazUwcDorGIUmavA=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-96oHEH69M12rXYeNBExiBA-1; Thu, 17 Jul 2025 05:39:21 -0400
-X-MC-Unique: 96oHEH69M12rXYeNBExiBA-1
-X-Mimecast-MFC-AGG-ID: 96oHEH69M12rXYeNBExiBA_1752745160
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7e1aeab456cso87096485a.3
-        for <stable@vger.kernel.org>; Thu, 17 Jul 2025 02:39:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752745160; x=1753349960;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lKvVQQJMq+hy7WZue3QcEAM5iltBaD3HiRA66HLusuo=;
-        b=vpIFAzQ1aNvx1DuUYD3vk89mWFINUGskgGRGtZEhxGiuSa9SCVUZsfmza00Z7rU7Gk
-         jZQdcla8BXkQe7geUsWIxxV1A/IbAvFQQYT4WA4vpV4ikSEom7R78U4aemttqfuLj3y1
-         0g8nRXR5fsSSsZm5HKWY0ztineSQCwj6qShUsrs1Yse8v4yOI6nwBo0FECJ9SOCdtg90
-         JGi1GmgfwfUauZbN64If5+3O8LgVIuxRwjy0nyNbtbkjrU22FsuKzu+Irzhzv41hzbHt
-         R2lJcOyPF1C1TTtKSxg6YO+0EKN37ZxZ2bhnlZFTuykYSWeDLcbXdblw9roZc102siGs
-         FAxA==
-X-Forwarded-Encrypted: i=1; AJvYcCUDBN/JWCjLQvl8qGQjHAilJicZrDiQIP52iK+i+fNSqQT2Vp1fdrLdxOZ0UFa93lFBgmvZ5zs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMm+w1RxPLMBeqon8Cc0VD2+tX492orXMb3Ed7eSvAXt26dTgO
-	XjMhwphnBOOdERBlZ0vxAdjxzLuaGecx9u24eFLnPfV0DFMzBbrBxLqhEW6tdK/QOxYMM1PmWDU
-	X2g5/9IvyWIuyK64ap9MWFyCq0bVtFpZq5jZSMQ7g/+Rr1KCqtO3dEMfMSg==
-X-Gm-Gg: ASbGncusn4ZaDqun6Jsp9DdGQnuBpTWJmfPjCcWytw3X0mL9PCmbp/aPD3vGHLt/KG3
-	BAUrEgXsF4euymfbKZMbM25ePT5EJgkmYp7tYQDvFVzqRbQ2agvkI6BkN1k3wbUSEYOLVqfBXc7
-	EdApDo1GDvPEO2j+0fve5u6uN1miZ3XS1YNr5WOf0juAXAfjJ1lo8gVhiv98RTTJGiy7WLCaorh
-	sg5y0mkx7ILX+QS1b+OZ8vTBOfqSVWgSf6m4oeHPiFvBIbOWgzHLHjFyraPi+ecBnGeGFqc4f3q
-	VOnKmSheeh5AoX7IUWmHwP4BT0MmmNhyad6wAL3Qb3F+0JfQ2/ahu5hPkbKF0f/4IGLkiZ/1pfN
-	33Qmm72djl5S4rp0=
-X-Received: by 2002:a05:620a:6542:b0:7e3:4413:e494 with SMTP id af79cd13be357-7e34413e88dmr561234385a.60.1752745160464;
-        Thu, 17 Jul 2025 02:39:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGLjVGLBAruZTnyYcI3XjIk2LiSOrCmNEhnAfiMWz9ibsQjoRXzWcmxwJLI++dPE/3qhXbt3A==
-X-Received: by 2002:a05:620a:6542:b0:7e3:4413:e494 with SMTP id af79cd13be357-7e34413e88dmr561231885a.60.1752745159997;
-        Thu, 17 Jul 2025 02:39:19 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-45-205-118.retail.telecomitalia.it. [79.45.205.118])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e2635b0b2fsm519799085a.0.2025.07.17.02.39.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jul 2025 02:39:19 -0700 (PDT)
-Date: Thu, 17 Jul 2025 11:39:12 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Will Deacon <will@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Keir Fraser <keirf@google.com>, 
-	Steven Moreland <smoreland@google.com>, Frederick Mayle <fmayle@google.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	netdev@vger.kernel.org, virtualization@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v4 2/9] vsock/virtio: Validate length in packet header
- before skb_put()
-Message-ID: <y6taqbyskzr4k7tetixgkhdo2z2dgrionsor3jriuo4bxlqdfc@fjnq7tig4bik>
-References: <20250717090116.11987-1-will@kernel.org>
- <20250717090116.11987-3-will@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00EFC25A2BF;
+	Thu, 17 Jul 2025 10:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752746477; cv=pass; b=qc3IfbB8qYUfk9eh6GJKFW6z+zKCTF1GsKP9P2QgGEd/2DqwMD2HyGK9RUrnpDOmOjpHdDfFmyzrbHXC0S4odAasD9Oty0SU1GpUE6FaQuhp4VJWDkeMjA11Siwjzmd7Oxl0NXgRy/U0DqKn0G6DecUcRaUv3SsaNOPLbekXB3I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752746477; c=relaxed/simple;
+	bh=A4CRDg685F//yYSrUqQqky7GIERfvNnc+RXZM8ub2WM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=btRYnJDsAtghh1jNL2xJR4d1BQPD1I85BP3D/gzSaoDfbPoy7Nhw/Ya3Q6yWwl3Ly1JgJnjDWkHlWABYy+3LxaZJD/bDqYlt+ktK38/qlEKq5MOD1YTHfHJeyQJA7NHHM3FgTKJ/lFm8U7vRRR18jgd33ALZsUG73vNMZlZY7LM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=V+SgF9fa; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1752746413; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=gyH7vgth8vulqMfuV5YoGupIPpiiF7jggaEJL9a7pjty+8Kc7L4A4ut4x9GUrVolCWEYuB68SE/QjYnbEoYMT1JVc4/xsM0TJXyQRCDf3UntNiFTm2venzGA/scJEnGqBRXhZiGRziICsXI2C7cijO4iysobc8JxCl5M/zJc1Oo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752746413; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=xpwbIUfT7hBxYMkztCja+P7WoxLnSe5t8Pwu1UKpAmI=; 
+	b=SlUPz9aULDX45/5EAU753bUQv861ddfnMirls6u3IaMlAKVJavy8L24l+iWEd2e4ylMKc8vrkbdd5ONws59xIr7/TA6nPXkPuxYho75UfGy1KszrQP3LHQpqlBQRnvYFVPxfebMm06LIPGgnasbfwwl1IatI0KuAfAc/AJJAI3k=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass header.from=<usama.anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752746413;
+	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=xpwbIUfT7hBxYMkztCja+P7WoxLnSe5t8Pwu1UKpAmI=;
+	b=V+SgF9fa1ejoDakrmkZfYz09Ke+r7FB6tQd9qTu3a8etLJJyLl9Yr3JjzsbWacGu
+	UtYAfmcXUaDDZIYMmyjLSyBycFAKlGmX3iYt4wkIxCAARd8m5IuZPiUC0w+T0zwPyIL
+	q2QRs7CpmamJxuNMya/K+/i3ZIUNbcEBxI2cNHHo=
+Received: by mx.zohomail.com with SMTPS id 1752746411436245.64031892164712;
+	Thu, 17 Jul 2025 03:00:11 -0700 (PDT)
+Message-ID: <9c9d0302-bbb8-468f-8be5-5a3e0015528f@collabora.com>
+Date: Thu, 17 Jul 2025 15:00:14 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250717090116.11987-3-will@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] bus: mhi: host: keep bhi buffer through suspend
+ cycle
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+ Youssef Samir <quic_yabdulra@quicinc.com>,
+ Matthew Leung <quic_mattleun@quicinc.com>,
+ Alexander Wilhelm <alexander.wilhelm@westermo.com>,
+ Kunwu Chan <chentao@kylinos.cn>,
+ Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+ Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+ Yan Zhen <yanzhen@vivo.com>, Sujeev Dias <sdias@codeaurora.org>,
+ Siddartha Mohanadoss <smohanad@codeaurora.org>, mhi@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel@collabora.com, stable@vger.kernel.org
+References: <20250715132509.2643305-1-usama.anjum@collabora.com>
+ <20250715132509.2643305-2-usama.anjum@collabora.com>
+ <2025071604-scandal-outpost-eb22@gregkh>
+Content-Language: en-US
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <2025071604-scandal-outpost-eb22@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Thu, Jul 17, 2025 at 10:01:09AM +0100, Will Deacon wrote:
->When receiving a vsock packet in the guest, only the virtqueue buffer
->size is validated prior to virtio_vsock_skb_rx_put(). Unfortunately,
->virtio_vsock_skb_rx_put() uses the length from the packet header as the
->length argument to skb_put(), potentially resulting in SKB overflow if
->the host has gone wonky.
->
->Validate the length as advertised by the packet header before calling
->virtio_vsock_skb_rx_put().
->
->Cc: <stable@vger.kernel.org>
->Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
->Signed-off-by: Will Deacon <will@kernel.org>
->---
-> net/vmw_vsock/virtio_transport.c | 12 ++++++++++--
-> 1 file changed, 10 insertions(+), 2 deletions(-)
+Hi Greg,
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+On 7/16/25 2:34 PM, Greg Kroah-Hartman wrote:
+> On Tue, Jul 15, 2025 at 06:25:07PM +0500, Muhammad Usama Anjum wrote:
+>> When there is memory pressure, at resume time dma_alloc_coherent()
+>> returns error which in turn fails the loading of firmware and hence
+>> the driver crashes:
+>>
+>> kernel: kworker/u33:5: page allocation failure: order:7,
+>> mode:0xc04(GFP_NOIO|GFP_DMA32), nodemask=(null),cpuset=/,mems_allowed=0
+>> kernel: CPU: 1 UID: 0 PID: 7693 Comm: kworker/u33:5 Not tainted 6.11.11-valve17-1-neptune-611-g027868a0ac03 #1 3843143b92e9da0fa2d3d5f21f51beaed15c7d59
+>> kernel: Hardware name: Valve Galileo/Galileo, BIOS F7G0112 08/01/2024
+>> kernel: Workqueue: mhi_hiprio_wq mhi_pm_st_worker [mhi]
+>> kernel: Call Trace:
+>> kernel:  <TASK>
+>> kernel:  dump_stack_lvl+0x4e/0x70
+>> kernel:  warn_alloc+0x164/0x190
+>> kernel:  ? srso_return_thunk+0x5/0x5f
+>> kernel:  ? __alloc_pages_direct_compact+0xaf/0x360
+>> kernel:  __alloc_pages_slowpath.constprop.0+0xc75/0xd70
+>> kernel:  __alloc_pages_noprof+0x321/0x350
+>> kernel:  __dma_direct_alloc_pages.isra.0+0x14a/0x290
+>> kernel:  dma_direct_alloc+0x70/0x270
+>> kernel:  mhi_fw_load_handler+0x126/0x340 [mhi a96cb91daba500cc77f86bad60c1f332dc3babdf]
+>> kernel:  mhi_pm_st_worker+0x5e8/0xac0 [mhi a96cb91daba500cc77f86bad60c1f332dc3babdf]
+>> kernel:  ? srso_return_thunk+0x5/0x5f
+>> kernel:  process_one_work+0x17e/0x330
+>> kernel:  worker_thread+0x2ce/0x3f0
+>> kernel:  ? __pfx_worker_thread+0x10/0x10
+>> kernel:  kthread+0xd2/0x100
+>> kernel:  ? __pfx_kthread+0x10/0x10
+>> kernel:  ret_from_fork+0x34/0x50
+>> kernel:  ? __pfx_kthread+0x10/0x10
+>> kernel:  ret_from_fork_asm+0x1a/0x30
+>> kernel:  </TASK>
+>> kernel: Mem-Info:
+>> kernel: active_anon:513809 inactive_anon:152 isolated_anon:0
+>>     active_file:359315 inactive_file:2487001 isolated_file:0
+>>     unevictable:637 dirty:19 writeback:0
+>>     slab_reclaimable:160391 slab_unreclaimable:39729
+>>     mapped:175836 shmem:51039 pagetables:4415
+>>     sec_pagetables:0 bounce:0
+>>     kernel_misc_reclaimable:0
+>>     free:125666 free_pcp:0 free_cma:0
+> 
+> This is not a "crash", it is a warning that your huge memory allocation
+> did not succeed.  Properly handle this issue (and if you know it's going
+> to happen, turn the warning off in your allocation), and you should be
+> fine.
+Yes, the system is fine. But wifi/sound drivers fail to reinitialize.
 
->
->diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
->index f0e48e6911fc..eb08a393413d 100644
->--- a/net/vmw_vsock/virtio_transport.c
->+++ b/net/vmw_vsock/virtio_transport.c
->@@ -624,8 +624,9 @@ static void virtio_transport_rx_work(struct work_struct *work)
-> 	do {
-> 		virtqueue_disable_cb(vq);
-> 		for (;;) {
->+			unsigned int len, payload_len;
->+			struct virtio_vsock_hdr *hdr;
-> 			struct sk_buff *skb;
->-			unsigned int len;
->
-> 			if (!virtio_transport_more_replies(vsock)) {
-> 				/* Stop rx until the device processes already
->@@ -642,12 +643,19 @@ static void virtio_transport_rx_work(struct work_struct *work)
-> 			vsock->rx_buf_nr--;
->
-> 			/* Drop short/long packets */
->-			if (unlikely(len < sizeof(struct virtio_vsock_hdr) ||
->+			if (unlikely(len < sizeof(*hdr) ||
-> 				     len > virtio_vsock_skb_len(skb))) {
-> 				kfree_skb(skb);
-> 				continue;
-> 			}
->
->+			hdr = virtio_vsock_hdr(skb);
->+			payload_len = le32_to_cpu(hdr->len);
->+			if (unlikely(payload_len > len - sizeof(*hdr))) {
->+				kfree_skb(skb);
->+				continue;
->+			}
->+
-> 			virtio_vsock_skb_rx_put(skb);
-> 			virtio_transport_deliver_tap_pkt(skb);
-> 			virtio_transport_recv_pkt(&virtio_transport, skb);
->-- 
->2.50.0.727.gbf7dc18ff4-goog
->
+> 
+>> In above example, if we sum all the consumed memory, it comes out
+>> to be 15.5GB and free memory is ~ 500MB from a total of 16GB RAM.
+>> Even though memory is present. But all of the dma memory has been
+>> exhausted or fragmented.
+> 
+> What caused that to happen?
+Excessive use of the page cache occurs when user-space applications open
+and consume large amounts of file system memory, even if those files are
+no longer being actively read. I haven't found any documentation on limiting
+the size of the page cache or preventing it from occupying DMA-capable
+memory—perhaps the MM developers can provide more insight.
+
+I can reproduce this issue by running stress tests that create and
+sequentially read files. On a system with 16GB of RAM, the page cache can
+easily grow to 10–12GB. Since the kernel manages the page cache, it's unclear
+why it doesn't reclaim inactive cache more aggressively.
+
+> 
+>> Fix it by allocating it only once and then reuse the same allocated
+>> memory. As we'll allocate this memory only once, this memory will stay
+>> allocated.
+> 
+> As others said, no, don't consume memory for no good reason, that just
+> means that other devices will fail more frequently.  If all
+> devices/drivers did this, you wouldn't have memory to work either.
+Makes sense.
+
+> 
+> thanks,
+> 
+> greg k-h
 
 
