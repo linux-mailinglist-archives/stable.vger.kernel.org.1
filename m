@@ -1,159 +1,149 @@
-Return-Path: <stable+bounces-163238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EBEB088FD
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 11:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC87B08903
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 11:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7CD95666D7
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 09:10:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B16B56692B
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 09:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FA32853E3;
-	Thu, 17 Jul 2025 09:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071D7288C36;
+	Thu, 17 Jul 2025 09:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FIePWOfr"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UqJA9841"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692EA28850C
-	for <stable@vger.kernel.org>; Thu, 17 Jul 2025 09:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030324503B
+	for <stable@vger.kernel.org>; Thu, 17 Jul 2025 09:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752743427; cv=none; b=mOhdQ/TH2W5i57wQexDgkuP2p4MP07OHaA++4q5vPBDhhY9N7AfErtEd9S0pNB239liZbU4vNZvatmklqXBBn8kkrH497I9V74n9Oo7VnYtSAyD7M2yG4okJezM6oNXRBXdCxJSlQKo80/ZpA4rFw3h5jMMRE1objUj2ZgBrIHQ=
+	t=1752743465; cv=none; b=GPiCZ2SjmLbfpQorFP8LlCCPD1jh3GAFK9gWBIrAwD1eO6mq6+XM26h5xirk7gEEaKgM997RG6pNMqEg+wgfTCvv90iYTON2qjq7c5yus8+GrIe2R+1BzwAffq2m42SVPvwXl4vdsIvuPanqk1E7ua5W6I8iz1/+6g0pnptriKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752743427; c=relaxed/simple;
-	bh=529Qak/sfp59pYGiC/TZea5yPOltqRTolGUKXHD1UeE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MHjT82I3Mh53OhY/JuKnA8BBvNYhpV/i/58GhxQ0SEQvkQq3nSU55O1KMvAOjxCeOTGhCfkmq8ykkynEFrxCEnyxLdi0SdNEmib7oSmcDlN/J7ztixCBfAs1nLPEQMIlM7XhnuEMZudqONDB4RLCjtsPqGGBCyz4O48XWE6MM/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FIePWOfr; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752743424;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+Fw27KCFfE/h9klyh3V20croFMoBwa4Sovv5KHmr7cY=;
-	b=FIePWOfrJANXUw7Oeoc/k3lAW7KKP5XE2XTDconZ4p4RgURQLBKLggIKr4JHfQFxLanyT8
-	smx7ayWSEq5+KQzb1Xz1XZTv0xGKb+zCdWMPjeIAWQm16nssXeLqKNPHiCsLkCvwl7FlDy
-	tImndDOkAnPMlwiQY7lpaAs92bDBiMc=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-90-mPf1vYkePFOQjcpbIU4-iw-1; Thu, 17 Jul 2025 05:10:22 -0400
-X-MC-Unique: mPf1vYkePFOQjcpbIU4-iw-1
-X-Mimecast-MFC-AGG-ID: mPf1vYkePFOQjcpbIU4-iw_1752743422
-Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-5314c884472so278107e0c.1
-        for <stable@vger.kernel.org>; Thu, 17 Jul 2025 02:10:22 -0700 (PDT)
+	s=arc-20240116; t=1752743465; c=relaxed/simple;
+	bh=/8oQPYYz6cHSNYNwym9xwEu6RpZClPerPGm665iJk6s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=igFmXrFd5m3dfyLV0yAeRBpYRsTGS0O6Ki/7PD87dG1g0jWD/GQ/fZA93Zta6080q+uBI7Gh4JxnG2fvtXBF5nCqnpFtCuftGYlz/BikUxYA/aR9a0LG7gYEMu/XaFKeVJRdQLNAbxXNOtvTgUXL4CMG8APKqFtlpApBQ90YjV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UqJA9841; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a4e749d7b2so118628f8f.0
+        for <stable@vger.kernel.org>; Thu, 17 Jul 2025 02:11:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1752743462; x=1753348262; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HyhBoxrCNtsTMaq/ZkCXVp9e8dnMJwhtRa7CTroNyu4=;
+        b=UqJA9841YGmp3b1DmzBZMKxbCOn7lw/Alv6kqdBDhCNgl8crteibLLII7hHyFAi8A5
+         DdUUzBHTweeCYOA4JuFYJQnPeryjc6IGSxnUpg3Z7QlwDyGrCxatDcsE2CCV7XJevMGD
+         k7iAgIIpPwS+JvAd/0FuNvCz3RWY2UO3Lfs+9hVxyiARutTwtLFTVO/nSgmQcniv1QbA
+         HYhzZZkrxwbKWYSu5aw86NZ/pgIkmwXE9yUa0ceMsqlw5DqVKJaxMe3fQMkVwttO1Llz
+         lyN4ZrVvztoFH2DkZHYEZOr8Q7BJuR9hQK9te/geSMbUKR3DY3XkVjSj4ji7movJ/Cl3
+         +mjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752743422; x=1753348222;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+Fw27KCFfE/h9klyh3V20croFMoBwa4Sovv5KHmr7cY=;
-        b=Yv58ZJzqhFQjDEZlOeoM7oDwDqRw9LroYcXTdwFoozg1CYKhoBSERSwvy3oVUp2/kf
-         Hx1m09Oc8rxhSFA8t0gXQAEpYUCbZTq3pIEhsqtQo2ONci+njAIgQA/3dvcVNOE86cAl
-         WU3KeBX0c4a69q9lGJ1DFn0W+ufbCbq67JB2s3STw+2762kz9meVwJ/zFGj2hVenVjEu
-         4H61YwGgERP/2ZWGoQin736XtHh5SGyfUP13pmNIX57ezXZvSbjCGhPZT3A+BlNgqzso
-         YrGpf7IpO2Y2S9XoNHtenjxtq9pNbQnuc7POOvdDHpskedqj3DA6nu2fNLG08XmE0esy
-         7fIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVPdsSUEmMZwiJjxJLoWjeu46t162WP8Ka0Y0AMGEomq4QZd8AyEAzZSqnL2MnJd0LMUDmsrz8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+HD2uoSfGHdaZHyH15yxvAg7Tj6Uzdkc7ybChPoQlgwAvkJUx
-	YMh6yJdeH5Uh18UGiPmjJFlnG/DPKibRMMkFuLs+UCs+NEHyzTiS2MSQOsOqZCYS9TqikQ236J0
-	dxgjsbMzwtkVGb0ltj1gTDUII6s/kO8uV5AS2pgF3mJHGUBfDfnppsBEOQLDNNqpAwTQSQCOCHq
-	mCFh2I7LmaY3ep+DSsmqDOVeBRlQzruFoK
-X-Gm-Gg: ASbGnctLcQ4hCkTytWMrWdjAMxjsmZfndJ2drllkNRfO22c2l9Jk/RQSdbuybUGMgzP
-	2qqhH5pbLdgXHihjFg4lyMaL9na2Y2n1u5i2iKIdTIdMJUxvJLruP5OFG9jy/8PsALyu5vBjddZ
-	J9zCJvar2uSGt32UX6/src
-X-Received: by 2002:a05:6102:5127:b0:4eb:2eac:aaa0 with SMTP id ada2fe7eead31-4f89996cb49mr3005689137.19.1752743422240;
-        Thu, 17 Jul 2025 02:10:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECuZg4tnD3dbPOqkK7QLQFXVz6s0zEI1WL38YU/sbDVqoEGpcLhizaAQH/UfHtx1VrdY5RMF+LxyJoII3bJZE=
-X-Received: by 2002:a05:6102:5127:b0:4eb:2eac:aaa0 with SMTP id
- ada2fe7eead31-4f89996cb49mr3005681137.19.1752743421877; Thu, 17 Jul 2025
- 02:10:21 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752743462; x=1753348262;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HyhBoxrCNtsTMaq/ZkCXVp9e8dnMJwhtRa7CTroNyu4=;
+        b=k1lu8HLm8bBK/cSsxuE7hn+/j2HFm+OBwmbfRIkdqF3jykkunau9uLdOi6I0VJbT83
+         3UdQLJ7eREoNPPQwaP7Bb48zpt/wDeQGcQxZ6BaxtYpdh3iTsABrXGeUKYODhMUkRry/
+         4wwXYkDbJLamwTm+I7ajeLStwK1/6eipmfRAnwBE2kdqeqAwcJ9YOQvhSyZZ7hWRTbj4
+         Xvq27vZEtOOJ/GvXxlbEg4w/+g1u1tMiirFCVolaBRkgR6O7+alStiYMnvioSwVsNv38
+         nEiXRhNxnh4k3F0Z/qkTd7FdE8nno8920aWQh3Dbsvw/2TXGgQ04HNGKBSNBNqihJQ7j
+         bPiA==
+X-Forwarded-Encrypted: i=1; AJvYcCVcOybzbWSOXgrX6lTS0APEGgI4t7yHxZf1ggN8bWJfYxJpr0vvXauyp3FV/fow81auuJzGu0c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd/pIM2I9Xp7JcrGAGfBHcuSFNpIaW2hIeynK+SHATMi4FlWbP
+	D+RPU/j5SKV6Uw6FGb2jxUpJevOjwE1khiy7vpmdXhCblHH1OM52HMxk/Nr71HK/e0k=
+X-Gm-Gg: ASbGnctA07BODjfNo0j0ad4MLqA95jpjodObtiahivgRkTEv5mn2YsFcCu4Juk46wrO
+	LtgwMTpLTF9qRpBfbJXLVr20lDbSySivqJQ1IHB8+PBNxgJjn/RmXmnxguDgeEVH+Rg7tlbUAcn
+	GoURajg+XCnH/vdSN0RpELOUr/EpNT2sLKotElogbXry4qOm2ZBJbNfpnbKHs74g7Dg0kqhzGCR
+	YnqUenNmNdaPoQJdNuwCEQCbjYXu7IjcIWvOkUvtIYIkZ9AjwqaGyCBaCi3GNsVv4zD2HI1hWrp
+	JMwoBip2xgt106CerOAegVzYamdkGxRW+oPN34FRUVoR+s8kVxW5cCi/gO8RPZyxGh90ir2Lxo0
+	039RxqbrCPDI8lwuBrM8FbRi6RFGBwA0O
+X-Google-Smtp-Source: AGHT+IHrFGe3+kv5nwJd+XNeEujKS3DRWXLY9Byhf8ifVc9w27qoxH+x6Sv5cjsnKuMJ4OhTyD8jIg==
+X-Received: by 2002:a05:6000:2103:b0:3a3:584b:f5d7 with SMTP id ffacd0b85a97d-3b60dd52d9cmr1905603f8f.5.1752743462195;
+        Thu, 17 Jul 2025 02:11:02 -0700 (PDT)
+Received: from kuoka.. ([178.197.222.89])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8e1e8cfsm19737019f8f.80.2025.07.17.02.11.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Jul 2025 02:11:01 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] vfio: cdx: Fix missing GENERIC_MSI_IRQ on compile test
+Date: Thu, 17 Jul 2025 11:10:54 +0200
+Message-ID: <20250717091053.129175-2-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250717090116.11987-1-will@kernel.org> <20250717090116.11987-2-will@kernel.org>
-In-Reply-To: <20250717090116.11987-2-will@kernel.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 17 Jul 2025 17:10:07 +0800
-X-Gm-Features: Ac12FXwF3a40TcBiFPolR067u2ZE0YBPsrx96TsMziyQKG9t5JlhF_12qsJ9G6U
-Message-ID: <CACGkMEsoBj7aNXfCU7Zn=5yWnhvA7M8xhbucmt4fuPm31dQ1+w@mail.gmail.com>
-Subject: Re: [PATCH v4 1/9] vhost/vsock: Avoid allocating arbitrarily-sized SKBs
-To: Will Deacon <will@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Keir Fraser <keirf@google.com>, 
-	Steven Moreland <smoreland@google.com>, Frederick Mayle <fmayle@google.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1461; i=krzysztof.kozlowski@linaro.org;
+ h=from:subject; bh=/8oQPYYz6cHSNYNwym9xwEu6RpZClPerPGm665iJk6s=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoeL4d8/4TGosHV8mie+xfGtqZiciWrgzgpC30w
+ na+ERnoJQaJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaHi+HQAKCRDBN2bmhouD
+ 1/zjD/0cJyPefGWza0F69QVCLfsnnCijvT/geB45kgr+TLK3lnT9lyLubK2hUCjwlKCFtiH8tz8
+ wNeof8YKDcnPrBqyG4EGIOmfMhI+ijZ61jNFiTu4+gj7tVZ0dHqYx8MFtRjyDnjrTpdx0mBx0lg
+ rSyaosVWs629AWEV9j2AapeB9gtgNQJnfhCyyoigze5uc1x6qAz2FPuShy5yfnJYTaglvbToCsM
+ ncptmAomgrda477zTKNEmlvgdNnxNi86vmEZR0Vf6LWJHwj6gi/3vJKtj15M1OB4KCcT93QDlF9
+ SmXfiLUozswlyVsrUicJV3l8OI2LKFviq1Lj2h/PdbTTLmFVUVtmYAYBhYqUDtnL+5h7XFGXFar
+ 0J0x0ZyYrViyo8XnNUc9vG3bN1xTGKNXMmPcZdw0RIfTNnclNmxbtoIOWUl9FfhCTmjatxxQAjk
+ 0aLfWgBslzg0FDl8tux9KXwJ5Vn+gjN3NwFa/U4lQ8BzYP+pkOTmKJJCs1naLhXCsfvPXPjz4bm
+ lNvQEACOEtxjPDhc/2F1kdjetaBbmRtWhCf0iBR2K1pIFYSmrj20/jkSq5cuBpd4PDwRawqjNfA
+ AWHelP78g1MBkw48ndHMh93lNulCY8IB8SHMxoQ7meVMeykTZmhNixthKHVcJEnjnYkdP5/AhRg wo8dIEv8fqBUaqQ==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 17, 2025 at 5:01=E2=80=AFPM Will Deacon <will@kernel.org> wrote=
-:
->
-> vhost_vsock_alloc_skb() returns NULL for packets advertising a length
-> larger than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE in the packet header. However,
-> this is only checked once the SKB has been allocated and, if the length
-> in the packet header is zero, the SKB may not be freed immediately.
+VFIO_CDX driver uses msi_domain_alloc_irqs() which is provided by
+non-user-visible GENERIC_MSI_IRQ, thus it should select that option
+directly.
 
-Can this be triggered from the guest? (I guess yes) Did we need to
-consider it as a security issue?
+VFIO_CDX depends on CDX_BUS, which also will select GENERIC_MSI_IRQ
+(separate fix), nevertheless driver should poll what is being used there
+instead of relying on bus Kconfig.
 
->
-> Hoist the size check before the SKB allocation so that an iovec larger
-> than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + the header size is rejected
-> outright. The subsequent check on the length field in the header can
-> then simply check that the allocated SKB is indeed large enough to hold
-> the packet.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff=
-")
-> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-> Signed-off-by: Will Deacon <will@kernel.org>
-> ---
->  drivers/vhost/vsock.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index 802153e23073..66a0f060770e 100644
-> --- a/drivers/vhost/vsock.c
-> +++ b/drivers/vhost/vsock.c
-> @@ -344,6 +344,9 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
->
->         len =3D iov_length(vq->iov, out);
->
-> +       if (len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADRO=
-OM)
-> +               return NULL;
-> +
->         /* len contains both payload and hdr */
->         skb =3D virtio_vsock_alloc_skb(len, GFP_KERNEL);
->         if (!skb)
-> @@ -367,8 +370,7 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
->                 return skb;
->
->         /* The pkt is too big or the length in the header is invalid */
-> -       if (payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE ||
-> -           payload_len + sizeof(*hdr) > len) {
-> +       if (payload_len + sizeof(*hdr) > len) {
->                 kfree_skb(skb);
->                 return NULL;
->         }
-> --
-> 2.50.0.727.gbf7dc18ff4-goog
->
+Without the fix on CDX_BUS compile test fails:
 
-Thanks
+  drivers/vfio/cdx/intr.c: In function ‘vfio_cdx_msi_enable’:
+  drivers/vfio/cdx/intr.c:41:15: error: implicit declaration of function ‘msi_domain_alloc_irqs’;
+    did you mean ‘irq_domain_alloc_irqs’? [-Wimplicit-function-declaration]
+
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Closes: https://lore.kernel.org/r/4a6fd102-f8e0-42f3-b789-6e3340897032@infradead.org/
+Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ drivers/vfio/cdx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/vfio/cdx/Kconfig b/drivers/vfio/cdx/Kconfig
+index e6de0a0caa32..90cf3dee5dba 100644
+--- a/drivers/vfio/cdx/Kconfig
++++ b/drivers/vfio/cdx/Kconfig
+@@ -9,6 +9,7 @@ config VFIO_CDX
+ 	tristate "VFIO support for CDX bus devices"
+ 	depends on CDX_BUS
+ 	select EVENTFD
++	select GENERIC_MSI_IRQ
+ 	help
+ 	  Driver to enable VFIO support for the devices on CDX bus.
+ 	  This is required to make use of CDX devices present in
+-- 
+2.48.1
 
 
