@@ -1,193 +1,229 @@
-Return-Path: <stable+bounces-163273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C98B0908D
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 17:28:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F4B090F1
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 17:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAAB31633D2
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 15:28:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98EF4188B34E
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 15:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1EB2F85F6;
-	Thu, 17 Jul 2025 15:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F51B2F9496;
+	Thu, 17 Jul 2025 15:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="NbBSvXAI"
-X-Original-To: stable@vger.kernel.org
-Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zdXvcTHS"
+X-Original-To: Stable@vger.kernel.org
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2049.outbound.protection.outlook.com [40.107.236.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2188C237180
-	for <stable@vger.kernel.org>; Thu, 17 Jul 2025 15:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752766093; cv=none; b=ig/+mb2lfV0/uUVEUWzK09Dr1RYhi3oW7Ns65IPsYnMpn8sdFoVWEfMKk9AHOq3uu8zxytmGE1taO8WHyESoXMqWJ/wtQOZ1tGvGMfUCQxUZpWPXWpT0UE6wmemqslh23XumBeDE4lMUkDwlKmJ8D7dW8fJo1AgLqvr4FHlM5To=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752766093; c=relaxed/simple;
-	bh=yFZgLXJvIbeULoKkdmIakSizxFoRhpNxchjM/FKvA04=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LEh+LboInouZmfHwyvh0G2aqA0rou1ZGy8oo/1iddjJLPN+MOcLz/5Xwkfj029PwvspUjcLofxW86MUnqwFa+uLmmUUrOwspD/jeEF8+qfBF7nHjFYYzZOzCAlbmIQ5nEKGqdkAytG2WJko5CN+OZ+b5h0F6EkerxZGkv6lkM3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=NbBSvXAI; arc=none smtp.client-ip=185.136.64.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 20250717152802e0e4666c7689ba2867
-        for <stable@vger.kernel.org>;
-        Thu, 17 Jul 2025 17:28:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=qiwCF1Q0/dfbmH/h12rPJd3E/SUaGv51sALD25KqqZk=;
- b=NbBSvXAIUK+yejZE4f901rnzUou0mq+g7t2Qh6rawOr5d+iUhl/Nl3NTUb9yvGzWM3EQzY
- vox1EBk7tVrEZm0Dj6Ios/JxrLPDDIPRUjIjNj4MdfLZ8huMDvFLI3YaH7+pU6ljTR1RsiJK
- T/FX0w+BWBxgQdeaHajv2YC65VJfPkPrI8AQa4ebpwTRMVtxZ4i41ys5ePMdl/2CeqT4fqG4
- +A8A2CjWa8pzbp/abeUJJYs9s+N7yI+DH6bwFtYxov6WdKOR+xXwFDq+fcYM2/dfhO2Fagbf
- g1vNrPNfHSCr9LrzQ91Uz08rbbFKLJ94QFFUdmKtcsKUlWoi47Jc3BuQ==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: linux-omap@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Matthias Michel <matthias.michel@siemens.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ARM: AM33xx: Implement TI advisory 1.0.36 (EMU0/EMU1 pins state on reset)
-Date: Thu, 17 Jul 2025 17:27:03 +0200
-Message-ID: <20250717152708.487891-1-alexander.sverdlin@siemens.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602FB2F9482
+	for <Stable@vger.kernel.org>; Thu, 17 Jul 2025 15:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752767436; cv=fail; b=FRwemt5bU3Zo3Uny/3Wi74Vfr8X0h6pG5xrcUJ1dFln/z0yhCMwJnhf2bsm7z11r+A8EQoGpm/05inDzIjJTMv69s0h6Y27zm7RSA03NBIxYr5ef9QRjY4vGrcmtzGbiQm90huWBJ42VlhUu86PnfLRX479Q1ZW+FHWGtXz1bkA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752767436; c=relaxed/simple;
+	bh=yTfo9tA2WYc2x6okdKcgwe51coyrW2KeNY9gQHQFVoI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kUB4AglLo5TNqHBCzkSfa4t+3Tbmil/b7kgbqxKPKn7s1p2IlADQoc6J4tsUrZkg66u5yX5ZtAKDEcrydOkM/6/9LOgtGZRI5v1AWPjn64gyFvDPJN/+ln5zOLeb0OYzDMs/YrYmoz2e0NkIovh4DZkkr3cwu/3JOBc/ehmxMfY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zdXvcTHS; arc=fail smtp.client-ip=40.107.236.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q/HmLl3Gz3FJvcg/x+GaBLZYPr14hlbjzRt4cMrJSSS/ULToa8Y+y0iX/c648ViYkkDCHYkzmGQLpVf3KMCVJlxyzIOZKM8FE1ktu6fn+8e14notnNmCYfT0k4jLNGKGNGDHIiTPzrwnuqdFiQqwkowRk8ehmCE0IMuNygWEIboqk/w7yAx3xMcUeVCbZUygCZaEjscV94x7hK/stw07SUXpRC2wXrxYeBwimT/shKLNGUVPIry7H/Z7twAJ+Ikrlt9cDyvnhhunaD8C97q4iY/UDEvYcx9PDhXHOPscui0bnnQeoH4b/NkpY0RJQKYoVbR4ho0DoK3AlVg0SDIfsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kDASb57XLxegEUj57xmF+WK1UUg6vBsC7kHxhLdRWjU=;
+ b=Jf+ZAz9YyrefLZ52OnSI+QivHyRmtmWBIAas7htT4djya7cdprOlfgay8+5P0xIWas2Qykm7BcMqQ0ob7jQqWJgDm1TlNOuPaE6f9u01FBDJF94U84pf0yysuJxDo95n+Vi8ewVlK6wuc/SVNWr1Rj4HMMPyztkAQQgX/XB+4gJnmFEndB9lLY3xaAStt++FM6A6UXS21rf0Je7cmUYhagUoYvMK5bbyFg36Txg1RyPi+bWHkY0tAlwb36WHMCrEjgw2C4MpFG4FY74Z3KQy02QYXeQIFB/G5KrvPS97km11/KeyK/aqZg0ls8d1ECfRSnTngw+G+3PBOBwEUOU5+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kDASb57XLxegEUj57xmF+WK1UUg6vBsC7kHxhLdRWjU=;
+ b=zdXvcTHSKA7/GNB3lTxGxkffPrRdEH4Ap42MVr+nja8YWkehy5H1YKEck9RmbuTAqzr4HBv5KWO9ArFu1pZ5kuVHi8K2+6KMiZ60UX0MYiC7JkXGA2noskw0GIjRqPaqFpUdB4UKWm+Emhx8RbUbXPYb0B1H5jU5gt5/9UmCxfg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
+ BL1PR12MB5730.namprd12.prod.outlook.com (2603:10b6:208:385::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8922.39; Thu, 17 Jul 2025 15:50:32 +0000
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::6318:26e5:357a:74a5]) by DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::6318:26e5:357a:74a5%5]) with mapi id 15.20.8922.037; Thu, 17 Jul 2025
+ 15:50:31 +0000
+Message-ID: <f8496358-443c-4a16-aa05-5e3e166b1fc1@amd.com>
+Date: Thu, 17 Jul 2025 21:20:24 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iommu/amd: Fix geometry.aperture_end for V2 tables
+To: Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
+Cc: iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+ Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <jroedel@suse.de>,
+ Jerry Snitselaar <jsnitsel@redhat.com>, patches@lists.linux.dev,
+ Stable@vger.kernel.org, Suravee Suthikulpanit
+ <suravee.suthikulpanit@amd.com>, Ankit.Soni@amd.com
+References: <0-v2-0615cc99b88a+1ce-amdv2_geo_jgg@nvidia.com>
+ <16da73bf-647d-4373-bc07-343bfc44da57@amd.com>
+ <20250716124929.GA2138968@nvidia.com> <aHjKjDunWlpF_aSx@willie-the-truck>
+Content-Language: en-US
+From: Vasant Hegde <vasant.hegde@amd.com>
+In-Reply-To: <aHjKjDunWlpF_aSx@willie-the-truck>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4PR01CA0045.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:279::11) To DS7PR12MB6048.namprd12.prod.outlook.com
+ (2603:10b6:8:9f::5)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|BL1PR12MB5730:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4842e1f6-7da3-4fc6-2444-08ddc549a912
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NlNzQUc2dXdGZHlmMzFQcVFKbmtEdDhCemFNZzUvaDYxbUQvUWhkNGpnK1Vp?=
+ =?utf-8?B?SXkrK1JpNFNicmVydXRLNmcwQndpQmt3K1dTaFdTS2wrSCtFcjlUN2Z0L3Y0?=
+ =?utf-8?B?Y3Nlanhib0UxMVVPNE91SFdUQjBicVJFS0pUV1BPV3puRXhrQnhkNDBCK1Vz?=
+ =?utf-8?B?RUsvOHF2SXdkb0xDRURqa3NocFE0OThiUjdHNzJnakNHOEJ5WWZqZnV0WG4z?=
+ =?utf-8?B?c1FvQTN0MDNVNmpBeUtqTnZpTlRtUDZKbDZQczdubHVSY3lqaWtmMVg0dlhX?=
+ =?utf-8?B?QSs1WjErK0FLQXRQMThGY1dIYXJ3NGpxakhPSGFMYjVndjRJNGUzcEJ1S1JN?=
+ =?utf-8?B?NkhSNUs5dXRuUktuRkFGYkxXWGh0bzhJTjdZZUVjTDRlTFZoeStlWXpnRWtP?=
+ =?utf-8?B?SVhBRUtwU3RPYUVIaXVGQTNxNkdDWEdmb0pIcm51STFNZkgvdFhxUWNaWW9H?=
+ =?utf-8?B?Mk9qY2swVGhKM1lRcWtwelEyUG9tZHpZYjcyM29lL1F0Z1ZNT2dhNjh2WEIx?=
+ =?utf-8?B?bjR4b1JubkRnZmNnandLZjZtWnh5d3FHNmNDaElGc1RxbkFGS2lJOWJHVUlF?=
+ =?utf-8?B?N05zeUR0Yk16UU05UDhWUWJjZXBxNTRGbS90WldCRjBkN2M3TkJIWkJkMWhn?=
+ =?utf-8?B?MlR4VGZvR1VMUVBtN3c0dzdsbEIrSGIzOStMazd4M050Wm5PTXBuTVZ5S2ZP?=
+ =?utf-8?B?YkM1Vm5NcCtFdldoaW5WME9PeHBGMzArdWNSM1ZBZUl4RzMreUsyZzhtOEl0?=
+ =?utf-8?B?eVlCZWVHSFVRUTFrYXVJR2plcFpObnZOWG9jM29EWUpNa2N4cUgxYjZBNDBt?=
+ =?utf-8?B?M2ZRa0xlVUQvU0dJaFN1cW9OSS94N0psazJHSjJHR1lDZnFSWk96MXpZaFUy?=
+ =?utf-8?B?N3BpNTllWWxaVW50WnNiRDR2eXRidjI5RExicm8zUzE3cUo4Wk56U1hzZThz?=
+ =?utf-8?B?dWJxYTRSMlVQOEVGSkRWK1IrNkdUZHpJSXVnMUZpdGU4WTN4L01tK0xxVHM2?=
+ =?utf-8?B?NmxNS1BRYUdqUUdUdGhXZloxb1o0WWZwaEVJSHZmSC9hQ0pWQ0pPbExZUy9O?=
+ =?utf-8?B?QlgwUFdYeWRCVmdsb3VIREptbGpYWFZEUDd2QU11YUtUZ05NdXFIUm1kdVFo?=
+ =?utf-8?B?WGhjMXRKTVJnOEJXZUNKRGlRVkNxYTJsYlp2N2U4SS9IN1lwUGN3c05YNHc0?=
+ =?utf-8?B?UTF6c1R1Z25SdzNyazFPMHlUOE1Lb2ZRNmdMc2pGRHBqMDBFNW5ZVUpWYllK?=
+ =?utf-8?B?RE9VVUF0ckhMMWFTOUxJSitYdFVRcjlsNXF1RjM0SC9hZEVtME8rMEZXeXdh?=
+ =?utf-8?B?M0RRdE94WjFvUUJuTm9sTGVPUEtDN0hwZWNITzZrU3dLcEIySHl3dUFsWjNp?=
+ =?utf-8?B?aXFEMlB2VUdDcnhDM0tMTmcvOWU2NWVSNmM2NTlveUs1MjhmNjdjTlZaWlpw?=
+ =?utf-8?B?cW9aTk12cGpWRXM0T3V3QnM2Skd2YnRyQXE2WGQ5OXAwdGJBbnRBOVBhamVG?=
+ =?utf-8?B?dEE4ZmdDTEZGZUNyWGJ3b0dESlNzbnNOZjJLcHhpSVdONUpFUzhaWE4zSlh3?=
+ =?utf-8?B?LzE1cU56Vy8rY0xnclZWOXU3amNZQ3FrQ1VDQldwTFVuRldQTUQ4VmNBYUY3?=
+ =?utf-8?B?KzhWbjMrc2VZdHNnVnBkSjNHaUYwU0xod0JRK3JscEkyaXZGMGgwUEhKLytv?=
+ =?utf-8?B?bUM3T25QRXkyckRFYkRYMDIxTlpZOVM2b1dnYi9hQit1Y0FJQ1VoZGd0am5Q?=
+ =?utf-8?B?dGlyUGxoZlNPR01mTXdzS3BGNzhTVlZqMDRNK1JSQTVwQXVjRWxqZVVET3li?=
+ =?utf-8?B?VGtCdlBsT1NvSHBWc1ZTM1dhTG8yVklONDErK2poR0FuWWxWNkcrMkwxZkNQ?=
+ =?utf-8?B?MldBZzBUQVIyc09tZ2sycjBtaktIcDhiWFYrWkliZzcxTTBWbUg2RS92TVk2?=
+ =?utf-8?Q?89TZmRhK2NA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6048.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RXBWL2JNOTlIWEFmZWFGcUlDK1hpOTk4RGovS2lYTEZ2bmt6ZEZ1K1MrTktr?=
+ =?utf-8?B?RzZ4M2VBbGtzTEZwMklWV0wyVVVPbklZNytXTXlhZkkwakJDdVRpb3l4SVhr?=
+ =?utf-8?B?SmFvRE82YmUraU9WUmVET3hybDRORzVUQmlyMElwdjU1eVB1SUJvM0kySEJu?=
+ =?utf-8?B?bnk0WHNOdGJ6VXhPZG92WDhOMUVBSzZQaGRxQm96R2FSYlZxNjhBL3hzLzhU?=
+ =?utf-8?B?bEpWdEhVR0pZeFJzOXptYnFlZnVtTnZGN25lSWFORFhHcUFpSXR3V3BlQXdI?=
+ =?utf-8?B?NlhZUXRHWjVieHU1SnI1cVpJWW5EUDdOalFvblU0MkY1UlorbFFPbXV5M3Ev?=
+ =?utf-8?B?S09JT3pHSVg0aXRSTElOZmsrYmdwM1VGbExISDRacTRYQm1lUEoxZVdRclh5?=
+ =?utf-8?B?VUFjbHFZU3lFY3E5YVpvbGpRRE1YQnhkc1lxOUVMM2NmSXhDK0lkbVNRWXgz?=
+ =?utf-8?B?bFJpTUdsOG1VZ0JyTUROV2tDN21WU1R5NUF3REtIbnhiaDFuVzhTNDhMRVJF?=
+ =?utf-8?B?Q25FWW54YkRRTDNkS0lsNTExa213WCtuTmVBZXluM0k1M2dZR2swTkVYaUsr?=
+ =?utf-8?B?cnBRVzVVNFJGaE5aV2dEdytpWmNER2dCVnhuMVMvenFndy93UU9yWU9ZWDNM?=
+ =?utf-8?B?QjVKbmtFd2N1VXZwTmZ5M2gzckE2WGZwendCaGJvTllsUVZWcTlkMzFnQlNz?=
+ =?utf-8?B?V2V6VGtGSjV6NmtjbVdLR0FaTnl1Z2oyVUx5a1NrZTF6Qy9qYjNxRHZmTmJC?=
+ =?utf-8?B?Rmc3SDR4MytuM3FsZUJRRVZqOUJ3UU1MaElUK0xDTlRYNEpCekFJM3oyTkpm?=
+ =?utf-8?B?TmlYN3lOV1RvZUxHQXNSTFJVZ2ljeENvcld3bzJKLzVOQ2cwcG0yRERFZHlY?=
+ =?utf-8?B?ZVBvR0VwVWJ5QzF5TFBkamphZnR3aDNSQVVLYUFoVU9DUjVsTVJNeVl2VDMr?=
+ =?utf-8?B?Rm9nVzVkeEtROW1EU21pYnhXR3c2L0hvSitrNFA3bTFteGhNazlEUlpnV3lZ?=
+ =?utf-8?B?VU9Lck9nbTlXemNiQ0ovM2tiVVVRNXU2Z3ZrVW52N2pzTE5ZdVhtdTgyNHhG?=
+ =?utf-8?B?MVRzTko0eVFRTml3bnQyenRWU2IvYW1TWnI0VloxQlRLSDViWnhYc2N3L01m?=
+ =?utf-8?B?WXpUUDdLQjlraVoydVdjdjdlN2dmcFQ3dDBPSGFQL2ErL1RyOEhyczNCVUZm?=
+ =?utf-8?B?b0FpR3RTcDN3NlUxcnNJWThKcUFCZ0d3Yk5UaGVOeFpBV3crK3RVNmpzVDJW?=
+ =?utf-8?B?R2w0ZEJ0c1lzdDJpOGtWWVZtdGZsNlgrSGcwdUNCZXFXcU8wS01JSEt1a3VI?=
+ =?utf-8?B?bnZrOHVJRHdYNVErL1pNb0phU2dIbXlrcWV4ZjM2Z2xMSmR3dXNDdHhmS1lv?=
+ =?utf-8?B?amgybk0wcXBKR2VOdyttSC9lQUNSTzhMR0RjNk0vRGR3M0NNTVcycTlDSUl0?=
+ =?utf-8?B?dmxMYzA0SWRDc2VFenJQMlJVdkxYUDVXYlBNZGRPZHRyelVkM1FzVFc0YXRm?=
+ =?utf-8?B?VW9UQzRlclJTNXlQYnVoSmswcDM5K1hVWmlEZzk4WUlKVVY0V29zdFc5ckVO?=
+ =?utf-8?B?aXRycE9IS3d6NytuQmtLK29ySDBiNVpoQWRNQXA5cXJjUjdOVDZMOUsxeDkv?=
+ =?utf-8?B?QzRpMytzREwwTElQRmVONzd1d0tRM3NKQnlyUHU4SC90NVVuWVREVjZPcWZK?=
+ =?utf-8?B?M25VZ3dVZE0zMUQ3NnVWTXJ0NlFFN2lLc1UrRll1M3QzZ2t2Mjh0R2xJdUNH?=
+ =?utf-8?B?aGpvcGtJbDIwbTBEOVNSTzdCQmJtMUdpcjU4YzVzNHN3ck8wUFBuSFl0SDlB?=
+ =?utf-8?B?SE04aitLQmZiYlJiK0wwMWZUblgyNDF1UkRyYURtQVN3VGw3UjdMdnBkMjZp?=
+ =?utf-8?B?NytNMUJxcFA3N2pESDFEc1dQY051R0kvNXVvbGZFRXhPKzg4OTYxYWV5SjFK?=
+ =?utf-8?B?UU16WkZHaU1ZWklGZjdlMk9kUStsQi9uTHR3S2Z3RHlNV1F2cVRlcDNlWDNy?=
+ =?utf-8?B?VUZ6VU9FUm1va3ZDMXJqVmppMXpnOEFWT2l3S1BneE81SjltcUoraXVadVdT?=
+ =?utf-8?B?ZVhYMTNDMHlQVHZqeUlwOGphNnJvbk5HR2JwT2tVV0pnWGJoQU1rMm5ZeHN4?=
+ =?utf-8?Q?dFIe7w441ORwZeJJWoYwgBQff?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4842e1f6-7da3-4fc6-2444-08ddc549a912
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2025 15:50:31.8442
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8w4b6qTN2hpehfXFcBGDe9kZATi5bp49nu+dPRYL0OIcEnEQG+vzqSTDIdEItEgrlgJz3YB3aFxYIGEGbB3Wmw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5730
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Hi Will,
 
-There is an issue possible where TI AM33xx SoCs do not boot properly after
-a reset if EMU0/EMU1 pins were used as GPIO and have been driving low level
-actively prior to reset [1].
 
-"Advisory 1.0.36 EMU0 and EMU1: Terminals Must be Pulled High Before
-ICEPick Samples
+On 7/17/2025 3:33 PM, Will Deacon wrote:
+> Hi Jason, Vasant,
+> 
+> On Wed, Jul 16, 2025 at 09:49:29AM -0300, Jason Gunthorpe wrote:
+>> On Thu, Jun 12, 2025 at 10:54:00AM +0530, Vasant Hegde wrote:
+>>>> Adjust dma_max_address() to remove the top VA bit. It now returns:
+>>>>
+>>>> 5 Level:
+>>>>   Before 0x1ffffffffffffff
+>>>>   After  0x0ffffffffffffff
+>>>> 4 Level:
+>>>>   Before 0xffffffffffff
+>>>>   After  0x7fffffffffff
+>>>>
+>>>> Fixes: 11c439a19466 ("iommu/amd/pgtbl_v2: Fix domain max address")
+>>>> Link: https://lore.kernel.org/all/8858d4d6-d360-4ef0-935c-bfd13ea54f42@amd.com/
+>>>> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+>>>
+>>> Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+>>
+>> Will, can you pick this up please? It seems to have been overlooked
+> 
+> Thanks, I had missed this one (I only trawled the list for the two weeks
+> prior to Joerg going on holiday).
+> 
+> I'll pick it up, but please now that the preceding:
+> 
+> 	if (pgtable == PD_MODE_V1)
+> 
+> part now returns:
+> 
+> 	PM_LEVEL_SIZE(amd_iommu_hpt_level);
+> 
+> instead of:
+> 
+> 	~0ULL;
 
-The state of the EMU[1:0] terminals are latched during reset to determine
-ICEPick boot mode. For normal device operation, these terminals must be
-pulled up to a valid high logic level ( > VIH min) before ICEPick samples
-the state of these terminals, which occurs
-[five CLK_M_OSC clock cycles - 10 ns] after the falling edge of WARMRSTn.
+Right. Now it checks for supported level instead of assuming 64bit. This is correct.
 
-Many applications may not require the secondary GPIO function of the
-EMU[1:0] terminals. In this case, they would only be connected to pull-up
-resistors, which ensures they are always high when ICEPick samples.
-However, some applications may need to use these terminals as GPIO where
-they could be driven low before reset is asserted. This usage of the
-EMU[1:0] terminals may require special attention to ensure the terminals
-are allowed to return to a valid high-logic level before ICEPick samples
-the state of these terminals.
+> 
+> thanks to 025d1371cc8c ("iommu/amd: Add efr[HATS] max v1 page table
+> level"). I'm assuming that's fine because this change is about v2, but I
+> just wanted to highlight it in case there's a potential issue.
 
-When any device reset is asserted, the pin mux mode of EMU[1:0] terminals
-configured to operate as GPIO (mode 7) will change back to EMU input
-(mode 0) on the falling edge of WARMRSTn. This only provides a short period
-of time for the terminals to return high if driven low before reset is
-asserted...
+Thanks. I did verify the tree and it looks good.
 
-If the EMU[1:0] terminals are configured to operate as GPIO, the product
-should be designed such these terminals can be pulled to a valid high-logic
-level within 190 ns after the falling edge of WARMRSTn."
 
-We've noticed this problem with custom am335x hardware in combination with
-recently implemented cold reset method
-(commit 6521f6a195c70 ("ARM: AM33xx: PRM: Implement REBOOT_COLD")).
-It looks like the problem can affect other HW, for instance AM335x
-Chiliboard, because the latter has LEDs on GPIO3_7/GPIO3_8 as well.
-
-One option would be to check if the pins are in GPIO mode and either switch
-to output active high, or switch to input and poll until the external
-pull-ups have brought the pins to the desired high state. But fighting
-with GPIO driver for these pins is probably not the most straight forward
-approch in a reboot handler.
-
-Fortunately we can easily control pinmuxing here and rely on the external
-pull-ups. TI recommends 4k7 external pull up resistors [2] and even with
-quite conservative estimation for pin capacity (1 uF should never happen)
-the required delay shall not exceed 5ms.
-
-[1] Link: https://www.ti.com/lit/pdf/sprz360
-[2] Link: https://e2e.ti.com/support/processors-group/processors/f/processors-forum/866346/am3352-emu-1-0-questions
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
----
- arch/arm/mach-omap2/am33xx-restart.c | 36 ++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
-
-diff --git a/arch/arm/mach-omap2/am33xx-restart.c b/arch/arm/mach-omap2/am33xx-restart.c
-index fcf3d557aa786..3cdf223addcc2 100644
---- a/arch/arm/mach-omap2/am33xx-restart.c
-+++ b/arch/arm/mach-omap2/am33xx-restart.c
-@@ -2,12 +2,46 @@
- /*
-  * am33xx-restart.c - Code common to all AM33xx machines.
-  */
-+#include <dt-bindings/pinctrl/am33xx.h>
-+#include <linux/delay.h>
- #include <linux/kernel.h>
- #include <linux/reboot.h>
- 
- #include "common.h"
-+#include "control.h"
- #include "prm.h"
- 
-+/*
-+ * Advisory 1.0.36 EMU0 and EMU1: Terminals Must be Pulled High Before
-+ * ICEPick Samples
-+ *
-+ * If EMU0/EMU1 pins have been used as GPIO outputs and actively driving low
-+ * level, the device might not reboot in normal mode. We are in a bad position
-+ * to override GPIO state here, so just switch the pins into EMU input mode
-+ * (that's what reset will do anyway) and wait a bit, because the state will be
-+ * latched 190 ns after reset.
-+ */
-+static void am33xx_advisory_1_0_36(void)
-+{
-+	u32 emu0 = omap_ctrl_readl(AM335X_PIN_EMU0);
-+	u32 emu1 = omap_ctrl_readl(AM335X_PIN_EMU1);
-+
-+	/* If both pins are in EMU mode, nothing to do */
-+	if (!(emu0 & 7) && !(emu1 & 7))
-+		return;
-+
-+	/* Switch GPIO3_7/GPIO3_8 into EMU0/EMU1 modes respectively */
-+	omap_ctrl_writel(emu0 & ~7, AM335X_PIN_EMU0);
-+	omap_ctrl_writel(emu1 & ~7, AM335X_PIN_EMU1);
-+
-+	/*
-+	 * Give pull-ups time to load the pin/PCB trace capacity.
-+	 * 5 ms shall be enough to load 1 uF (would be huge capacity for these
-+	 * pins) with TI-recommended 4k7 external pull-ups.
-+	 */
-+	mdelay(5);
-+}
-+
- /**
-  * am33xx_restart - trigger a software restart of the SoC
-  * @mode: the "reboot mode", see arch/arm/kernel/{setup,process}.c
-@@ -18,6 +52,8 @@
-  */
- void am33xx_restart(enum reboot_mode mode, const char *cmd)
- {
-+	am33xx_advisory_1_0_36();
-+
- 	/* TODO: Handle cmd if necessary */
- 	prm_reboot_mode = mode;
- 
--- 
-2.50.1
+-Vasant
 
 
