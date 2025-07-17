@@ -1,66 +1,70 @@
-Return-Path: <stable+bounces-163236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1014B088C1
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 11:03:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52735B088D9
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 11:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A39253BDC9C
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 09:01:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61E597B1A36
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 09:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A323A28B3F7;
-	Thu, 17 Jul 2025 09:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GP5E/DxQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A196528C010;
+	Thu, 17 Jul 2025 09:04:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B8828A72A;
-	Thu, 17 Jul 2025 09:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D504428A725;
+	Thu, 17 Jul 2025 09:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752742889; cv=none; b=tBSZP7x3UJiFQ0OQhbuTm2WjPjS29Xw+H0bfgTSDStUFs4utf/umTBVlQovrmx9LKNuqH+Q90nucd2vwq59/bKLJHFVhBVGwRcBwjQRCS0wRA9CabBHzduj4XOt28bkX+hGivwRU5usQi4O0SDmJlUx89D3I/tWVhf4MuFiqKQI=
+	t=1752743049; cv=none; b=fPSlHO6wz4ZhjBwC84gsIBY61+lY9YEBe/o1IJ+EZT+eWtcixpYINQTZDPEZe0RXXYRw6vObTWtYqtExjl2/n3DfwHglejrv+KopblZOc1yjq2QHyYvthZeTdwdzazQmKpGZkGupat/DfcXyA0K1ua/NAkkLZLSflCuVkAIXZVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752742889; c=relaxed/simple;
-	bh=6D5cFK2vNGL2QsQ9IOnTKvvlTeWZ5xospOK0ukeQYVU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q19nnP0rsiUQbyCmwq50g69PeOpXRrnIFiMlSYY7uE+QXpoReLvDzuSU6/Eeh0NW87NZn/6clYzEa2ar8/+WXFQR21VNkeGxw5uPj9ixnLKr2NzXDFHRL1cs90qKKzEQnLxVXBW+bt1h+KP7a0i8yYuhDiugCX34MBB9Oz/pHOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GP5E/DxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BA9C4CEE3;
-	Thu, 17 Jul 2025 09:01:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752742888;
-	bh=6D5cFK2vNGL2QsQ9IOnTKvvlTeWZ5xospOK0ukeQYVU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GP5E/DxQaUSooC8bh5SMhxjNsoRAr9rMBHD3EOasY5iXkqtH1s2idUvtfEOyC0bmh
-	 2sK4QuCFPg19W91sta+1nYVZEK++8vc+lm+kekSdH7XnsM469sREHcj1N1a0lJ3juT
-	 o0rme5WVnSSrwwwQjFwhXWnATeJCc8OA78fX0JfwRA2OF48HFk+jib5j1KrEsJi6ii
-	 W/YUIX07mLcilOUVwkjoR/mXtEi0pcH4BpXYabOBU3ypE2fcof1WocPTaRwEXKG38n
-	 Zo/dYM7vq+INmEaUojmFmxLExwfPswbEpALx+RfAAaUSwgw3DCs73GbPmdg9wUfE9L
-	 pLCM6heF0g+8g==
-From: Will Deacon <will@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Will Deacon <will@kernel.org>,
-	Keir Fraser <keirf@google.com>,
-	Steven Moreland <smoreland@google.com>,
-	Frederick Mayle <fmayle@google.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v4 2/9] vsock/virtio: Validate length in packet header before skb_put()
-Date: Thu, 17 Jul 2025 10:01:09 +0100
-Message-Id: <20250717090116.11987-3-will@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250717090116.11987-1-will@kernel.org>
-References: <20250717090116.11987-1-will@kernel.org>
+	s=arc-20240116; t=1752743049; c=relaxed/simple;
+	bh=13BjuG7BfdJkyvV3ryAY94i4fWrWvzauQEq5igKyfLA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZFxjyG6RE20Y9+pKyOautOqu7voUurCik7//bKV1Tuy4acRuAOR632Ii1sY2OPFwhRUp97AM2r6crU+v2PKklB7LMrs1TT3tAR1baCHV/wjhJeOqcX9G2+uVukBfEqtGZj8+T8jI0PQWYl1W14Lp9HwGngZ/4dNINF0fQClnqjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+Received: from [2a0c:e303:0:7000:443b:adff:fe61:e05d] (port=41748 helo=auntie.gladserv.com)
+	by bregans-1.gladserv.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(envelope-from <bacs@librecast.net>)
+	id 1ucKWw-007pOE-2W;
+	Thu, 17 Jul 2025 09:03:54 +0000
+From: Brett A C Sheffield <bacs@librecast.net>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	brauner@kernel.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jack@suse.cz,
+	jannh@google.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	viro@zeniv.linux.org.uk,
+	Brett A C Sheffield <bacs@librecast.net>
+Subject: Re: [PATCH 6.6 000/111] 6.6.99-rc2 review
+Date: Thu, 17 Jul 2025 09:03:19 +0000
+Message-ID: <20250717090318.22708-2-bacs@librecast.net>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250715163542.059429276@linuxfoundation.org>
+References: <20250715163542.059429276@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,59 +73,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When receiving a vsock packet in the guest, only the virtqueue buffer
-size is validated prior to virtio_vsock_skb_rx_put(). Unfortunately,
-virtio_vsock_skb_rx_put() uses the length from the packet header as the
-length argument to skb_put(), potentially resulting in SKB overflow if
-the host has gone wonky.
+# Librecast Test Results
 
-Validate the length as advertised by the packet header before calling
-virtio_vsock_skb_rx_put().
+010/010 [ OK ] libmld
+119/120 [FAIL] liblibrecast
 
-Cc: <stable@vger.kernel.org>
-Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
-Signed-off-by: Will Deacon <will@kernel.org>
----
- net/vmw_vsock/virtio_transport.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+CPU/kernel: Linux auntie 6.6.99-rc2-gefb1c34bdf5c #17 SMP PREEMPT_DYNAMIC Thu Jul 17 08:51:06 -00 2025 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index f0e48e6911fc..eb08a393413d 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -624,8 +624,9 @@ static void virtio_transport_rx_work(struct work_struct *work)
- 	do {
- 		virtqueue_disable_cb(vq);
- 		for (;;) {
-+			unsigned int len, payload_len;
-+			struct virtio_vsock_hdr *hdr;
- 			struct sk_buff *skb;
--			unsigned int len;
- 
- 			if (!virtio_transport_more_replies(vsock)) {
- 				/* Stop rx until the device processes already
-@@ -642,12 +643,19 @@ static void virtio_transport_rx_work(struct work_struct *work)
- 			vsock->rx_buf_nr--;
- 
- 			/* Drop short/long packets */
--			if (unlikely(len < sizeof(struct virtio_vsock_hdr) ||
-+			if (unlikely(len < sizeof(*hdr) ||
- 				     len > virtio_vsock_skb_len(skb))) {
- 				kfree_skb(skb);
- 				continue;
- 			}
- 
-+			hdr = virtio_vsock_hdr(skb);
-+			payload_len = le32_to_cpu(hdr->len);
-+			if (unlikely(payload_len > len - sizeof(*hdr))) {
-+				kfree_skb(skb);
-+				continue;
-+			}
-+
- 			virtio_vsock_skb_rx_put(skb);
- 			virtio_transport_deliver_tap_pkt(skb);
- 			virtio_transport_recv_pkt(&virtio_transport, skb);
--- 
-2.50.0.727.gbf7dc18ff4-goog
+There is one failing test with the 6.6 series kernels that I started digging into yesterday, but as this fails on *all* 6.6 kernels right back to 6.6.0 this isn't a regression in this RC so there is no reason to delay 6.6.99 for this. Works fine in 6.5.0 and in more recent kernels > 6.8. Will report this separately when I have more information.
 
+Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
