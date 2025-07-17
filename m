@@ -1,156 +1,122 @@
-Return-Path: <stable+bounces-163218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691FFB08443
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 07:27:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65FFB0850D
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 08:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8475B7B0E63
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 05:25:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274C9566D84
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 06:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023C21FBE80;
-	Thu, 17 Jul 2025 05:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bCOLYyYz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23E71FFC6D;
+	Thu, 17 Jul 2025 06:37:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta004.cacentral1.a.cloudfilter.net (omta002.cacentral1.a.cloudfilter.net [3.97.99.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BB81DE4C2;
-	Thu, 17 Jul 2025 05:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2FA72635;
+	Thu, 17 Jul 2025 06:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.97.99.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752730024; cv=none; b=tnlEnQdOM925rw0a7tBi5STlmdZttY4fk1sjRL7QPRNuoVCyznl4/nchj1L2EuWZTwKR/TCqh6OY2OxWgh6OuLunVK/voSIaxidGtQqhzQt8ljyhHveXkWLnqq4VX2Nx/DSouGRMaLovReUW213aWM5CgEwUcuO9+z9bxiWt6ds=
+	t=1752734239; cv=none; b=Zbjsd39jN2mTldcmHj69FR2kTzCgDGBTZiGw8KIw37V5HrW+Uy/KYd2+oNxPfWLXWVHyU1/oIxu/vaszqqZopsm7ezgcXRtRkjXBiJBqhckTXTpLWWLvDlAB2I/SgqRse3QzqGd9HVoiaHFRtRXxMWekr1qKQF+aUuKH+3Wi2lI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752730024; c=relaxed/simple;
-	bh=WHynN3RVdKyk3zkts6sRyj9KOWiQ90DdnEukQI8ear4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RSqEOcIS810HRYCyrwSyrVoTMF97myYIXjNw3FI90ksHbFcdXhTFeRxnam3JWb+ZWp1GGU88gQCHvRpyZhtekLJmEIGrRHS9iB6/AgAjXeX16fmYr4lOOFEEgxDM7MkSCU26GoDX2Y4DYAZSGcUduIq91uQXVcNvIS0NgP1MrS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bCOLYyYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B810FC4CEE3;
-	Thu, 17 Jul 2025 05:27:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752730024;
-	bh=WHynN3RVdKyk3zkts6sRyj9KOWiQ90DdnEukQI8ear4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bCOLYyYzJ0BI5iXBrUIPsBz6zEdv1MW1P2boc7rYfEQl8Kq1mXZnPbvQq9E95QXth
-	 iZFCHycWLEA2ptKmdmjXc+eZwLJMjgy+BrDBdCtxbzXMTF6sHzYn+U8CW3URT+kBoq
-	 4M4HB+JjOdr7VTyvTjowTEM1Gb7UkiVE15DsQ2H2geR1+Vr8TqVHRclIUBEbqdQGVl
-	 DzNFfgGGePJe8MjqXjN69fDanp+Ebywa4ByfCalpPXVc5xH2tgPJDeRyBh1peqyaw1
-	 6gC9H76ha42V4ztBIepF/6IePHMcfTxOl80DKR8xxY0q+SyV7awljmiDryFAnrk3MH
-	 zGEpdv1UQkYCA==
-Message-ID: <48e6e92d-6b6a-4850-9396-f3afa327ca3a@kernel.org>
-Date: Thu, 17 Jul 2025 07:26:59 +0200
+	s=arc-20240116; t=1752734239; c=relaxed/simple;
+	bh=ODV4nJdX+2MsFScVMvC33dHwiLaFre1ZckRuBj+AoMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=doHzcgbIvO444zBW34XPCYU82vWuUgXz9QIzaw9gorkLeOpNBmktllFSfakIn8ONtDWJU+Y/p+THR9poG91uG1kI50qrhPM2oAY8wVZBqrGSvtvkhoIwdAQ+QCU11QjtGql2X1g9rKjSoNYGUWDmS2MJOIWTeBjgerKAEpvINaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dilger.ca; spf=pass smtp.mailfrom=dilger.ca; arc=none smtp.client-ip=3.97.99.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dilger.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dilger.ca
+Received: from shw-obgw-4002a.ext.cloudfilter.net ([10.228.9.250])
+	by cmsmtp with ESMTPS
+	id c7Owup9Sm5MqycIEwu9ZV0; Thu, 17 Jul 2025 06:37:10 +0000
+Received: from cabot.adilger.int ([70.77.200.158])
+	by cmsmtp with ESMTP
+	id cIEvuSZdbl5eGcIEvuPqtw; Thu, 17 Jul 2025 06:37:10 +0000
+X-Authority-Analysis: v=2.4 cv=EO6l0EZC c=1 sm=1 tr=0 ts=68789a16
+ a=0Thh8+fbYSyN3T2vM72L7A==:117 a=0Thh8+fbYSyN3T2vM72L7A==:17 a=ySfo2T4IAAAA:8
+ a=VwQbUJbxAAAA:8 a=lB0dNpNiAAAA:8 a=xm_l5cv5EaLj5gwVjToA:9
+ a=ZUkhVnNHqyo2at-WnAgH:22 a=c-ZiYqmG3AbHTdtsH08C:22
+From: Andreas Dilger <adilger@dilger.ca>
+To: tytso@mit.edu
+Cc: linux-ext4@vger.kernel.org,
+	Andreas Dilger <adilger@dilger.ca>,
+	stable@vger.kernel.org,
+	Andreas Dilger <adilger@whamcloud.com>,
+	Li Dongyang <dongyangli@ddn.com>,
+	Alex Zhuravlev <bzzz@whamcloud.com>,
+	Oleg Drokin <green@whamcloud.com>
+Subject: [PATCH] ext4: check fast symlink for ea_inode correctly
+Date: Wed, 16 Jul 2025 19:36:42 -0600
+Message-ID: <20250717063709.757077-1-adilger@dilger.ca>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] kernel/fork: Increase minimum number of allowed
- threads
-To: Hauke Mehrtens <hauke@hauke-m.de>, sashal@kernel.org,
- linux-kernel@vger.kernel.org
-Cc: frederic@kernel.org, david@redhat.com, viro@zeniv.linux.org.uk,
- paulmck@kernel.org, stable@vger.kernel.org,
- David Laight <david.laight.linux@gmail.com>, Tejun Heo <tj@kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- "Luis R . Rodriguez" <mcgrof@kernel.org>
-References: <20250711230829.214773-1-hauke@hauke-m.de>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20250711230829.214773-1-hauke@hauke-m.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfI2EipW+YCw82/5tUvBpg6PlosruTMEO03/zZi2iDazN3hBg5lFYgySuPoHuKnlUkOFCr0V1u21iOKFljLVgCC97uOLFM1SoJZnrYPYJapWmrB5hgoUF
+ D+AdDsQaPAArnitRlF3BpNnQ4HzS/kTwVvtmyrzVmqLaGFcRXDP9DlCu9H+pnlBXRQ+5fZJksJ+XZlYkr+xmoHKxiTZSzjbFzekvBD0GIcVqEEeMC67dXlep
+ bkXLEG7Nz8Ld8oOnTDriXBjPWdVhFZ/NZtiXS2w9iL5Y0IhUBSdm3WqmuJ6+ZERCveOYMoXpgvVMRFt/MwRUH+yVGHqN9s0pfoNEkEvD4u4zNK7JqW+2NFBn
+ 8vGUOcFAICq7zEMsU00X0FkwtJa2LAf9C8pYKus1rgSrCK//Pxk=
 
-Cc wqueue & umode helper folks
+The check for a fast symlink in the presence of only an
+external xattr inode is incorrect.  If a fast symlink does
+not have an xattr block (i_file_acl == 0), but does have
+an external xattr inode that increases inode i_blocks, then
+the check for a fast symlink will incorrectly fail and
+__ext4_iget()->ext4_ind_check_inode() will report the inode
+is corrupt when it "validates" i_data[] on the next read:
 
-On 12. 07. 25, 1:08, Hauke Mehrtens wrote:
-> A modern Linux system creates much more than 20 threads at bootup.
-> When I booted up OpenWrt in qemu the system sometimes failed to boot up
-> when it wanted to create the 419th thread. The VM had 128MB RAM and the
-> calculation in set_max_threads() calculated that max_threads should be
-> set to 419. When the system booted up it tried to notify the user space
-> about every device it created because CONFIG_UEVENT_HELPER was set and
-> used. I counted 1299 calls to call_usermodehelper_setup(), all of
-> them try to create a new thread and call the userspace hotplug script in
-> it.
-> 
-> This fixes bootup of Linux on systems with low memory.
-> 
-> I saw the problem with qemu 10.0.2 using these commands:
-> qemu-system-aarch64 -machine virt -cpu cortex-a57 -nographic
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> ---
->   kernel/fork.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 7966c9a1c163..388299525f3c 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -115,7 +115,7 @@
->   /*
->    * Minimum number of threads to boot the kernel
->    */
-> -#define MIN_THREADS 20
-> +#define MIN_THREADS 600
+    # ln -s foo /mnt/tmp/bar
+    # setfattr -h -n trusted.test \
+               -v "$(yes | head -n 4000)" /mnt/tmp/bar
+    # umount /mnt/tmp
+    # mount /mnt/tmp
+    # ls -l /mnt/tmp
+    ls: cannot access '/mnt/tmp/bar': Structure needs cleaning
+    total 4
+     ? l?????????? ? ?    ?        ?            ? bar
+    # dmesg | tail -1
+    EXT4-fs error (device dm-8): __ext4_iget:5098:
+        inode #24578: block 7303014: comm ls: invalid block
 
-As David noted, this is not the proper fix. It appears that usermode 
-helper should use limited thread pool. I.e. instead of 
-system_unbound_wq, alloc_workqueue("", WQ_UNBOUND, max_active) with 
-max_active set to max_threads divided by some arbitrary constant (3? 4?)?
+(note that "block 7303014" = 0x6f6f66 = "foo" in LE order).
 
-regards,
+ext4_inode_is_fast_symlink() should check the superblock
+EXT4_FEATURE_INCOMPAT_EA_INODE feature flag, not the inode
+EXT4_EA_INODE_FL, since the latter is only set on the xattr
+inode itself, and not on the inode that uses this xattr.
+
+Cc: stable@vger.kernel.org
+Fixes: fc82228a5e38 ("ext4: support fast symlinks from ext3 file systems")
+Signed-off-by: Andreas Dilger <adilger@whamcloud.com>
+Reviewed-by: Li Dongyang <dongyangli@ddn.com>
+Reviewed-by: Alex Zhuravlev <bzzz@whamcloud.com>
+Reviewed-by: Oleg Drokin <green@whamcloud.com>
+Reviewed-on: https://review.whamcloud.com/59879
+Lustre-bug-id: https://jira.whamcloud.com/browse/LU-19121
+---
+ fs/ext4/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index be9a4cba35fd..caca88521c75 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -146,7 +146,7 @@ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+  */
+ int ext4_inode_is_fast_symlink(struct inode *inode)
+ {
+-	if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++	if (!ext4_has_feature_ea_inode(inode->i_sb)) {
+ 		int ea_blocks = EXT4_I(inode)->i_file_acl ?
+ 				EXT4_CLUSTER_SIZE(inode->i_sb) >> 9 : 0;
+ 
 -- 
-js
-suse labs
+2.43.5
 
 
