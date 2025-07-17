@@ -1,172 +1,191 @@
-Return-Path: <stable+bounces-163242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF4DB0893A
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 11:25:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E9E2B08942
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 11:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABAC27AA270
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 09:23:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E10BF3BC696
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 09:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56111289E0F;
-	Thu, 17 Jul 2025 09:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98750289E2D;
+	Thu, 17 Jul 2025 09:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XValc/qT"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="FhzF4R/3"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40457288CBD
-	for <stable@vger.kernel.org>; Thu, 17 Jul 2025 09:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752744318; cv=none; b=mp9xitpbkR/czhQL+j4WeGxVQbIX1EWjpOpRGaznYNWjv++jUuR1ts5LFlufQknlkg3cxPSdv9t47rT4lkFwss1LwN8lkJ1EAEY0Xcd3kPBNO+BRGNIGiLIxL40rU4ZhScJ19HNBzZEgVNeW4eegBs7pVYf5py0Dj7DOdlvV19o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752744318; c=relaxed/simple;
-	bh=mUGblPwGliu3YzskON//m/UU7MFOS7s+Yue1Nej7KOI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z1XNyGizr1yfwSCCQSCfaRKJSXD1WzW17DVIlxVjz2T8WvSTPMy2Ocw+qQ/fnIGnRo8RXF+yp3MqhETfD4uBxhQdAR2Hsz7JQbvpossjc7gvRYwJVKGYnnQuVdOsUt3zV4qpfIutRyM1no339A8aiZK5EVIatOx4FNL/Pdp6ib8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XValc/qT; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752744315;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xqpFHXx++3EMATXriFPKJGfUd3A8yDTgA5DIK5OX6Jk=;
-	b=XValc/qTWpkX2E7uxQG3AlzOKtOF2CBNDM3MnB3pb9VdYtrKaqKOPsV9fzB7zxM5JQoCzY
-	qoVkyyfMSh/haUauqt/PkRmClZzCJtp2qRB6s+cZTTg3z9N7XucOTxKw8ZCrLe3/6qcoqn
-	6AydBeVfZzX5zia0W4pZPb9I8MI7f98=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-509-_ayQz-tpPAioKUVl-g5anw-1; Thu, 17 Jul 2025 05:25:13 -0400
-X-MC-Unique: _ayQz-tpPAioKUVl-g5anw-1
-X-Mimecast-MFC-AGG-ID: _ayQz-tpPAioKUVl-g5anw_1752744312
-Received: by mail-yb1-f199.google.com with SMTP id 3f1490d57ef6-e8bd1a7477bso1296628276.1
-        for <stable@vger.kernel.org>; Thu, 17 Jul 2025 02:25:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752744312; x=1753349112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xqpFHXx++3EMATXriFPKJGfUd3A8yDTgA5DIK5OX6Jk=;
-        b=Z4QDY+tH2PFaLeVR81Nxj73ySujB5/pcZrLcp4T7vu19kTGDPgpjfFqPRx6Np+cVdd
-         jpeZfDeCFyu5erBwhMe6AabQ9vFOl0qb8ULWBqKhd1yxp/bouB1E/e6NHnWNSuXNxgAd
-         M+i3o6+HN1l6aCei2vBDcj1jjRUzqnTW45X8yfG30nQHCCUYHaSC4hxzwzGUqWFLEgEz
-         Evr413N+DbrBjMwDqXu1MTQNMAHre6befl47+OW5CIOuI/KCJByeZP4Y/5mFA6XBwAg6
-         ECiZd8fL0qS50TvDSs5mmusHmf2hIxwp5Yvuu8U91y+Jat+m/k7prIN3qcv8ADhYZQHf
-         0ryg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGzEbjbKCg5hQAi6cWZcvSroPka2JX2tjbh5M6FYMXQC82W/yr85pJEL7fzifAcoBHkI1vUt0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVN40SzSlrJOsGVuRROhSZntH+i3A4yV7/Xb1IeDuBIYRRGugj
-	NOey1+JYYyLyzqZbxfjxWMp3oHGLHCdpwCYJDKmQ7/00lciOlVsWVbn5ceJxSrS8GJPkJp5Y9j6
-	l4arymR8Cmut8DTL0ZMSq4hXt7zWg+QBpnzcayCO0Jvnab7IA6Hy5gsBQzPSJZXT5copQCxYCIx
-	tIJXdl6dNbbTnDftAwYdC7Qvljpn8OXveM
-X-Gm-Gg: ASbGnctLyOd6kf+6t9Zw8Mh8y4znq+A4PZtqLg6xvxPWcA5IvI7WwHISc8u3viAkHRt
-	dhZmDf+yiWHsyLTuixD9I5/zULoyWFzIDsb/FA9KKO2CEPV9diF58oL5qBldb/KbSzYeno0ep4N
-	TCODAa4Hbo1UCL7SoWSHjM
-X-Received: by 2002:a05:6902:2582:b0:e8b:d0e7:3ae4 with SMTP id 3f1490d57ef6-e8bd0e73bdcmr5202986276.22.1752744312275;
-        Thu, 17 Jul 2025 02:25:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEsfTvkw1PSMXKHBxuokKzY5S7apDyUaHwD6BT79131/X481c8450D90mHNBs58p1agihhTtDodQFLemqkkQdo=
-X-Received: by 2002:a05:6902:2582:b0:e8b:d0e7:3ae4 with SMTP id
- 3f1490d57ef6-e8bd0e73bdcmr5202940276.22.1752744311654; Thu, 17 Jul 2025
- 02:25:11 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C87E289803;
+	Thu, 17 Jul 2025 09:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752744403; cv=pass; b=PnIX75gNzwdP2o9PYyHLyQtyRsJh1nz/4uLMus1qQAo2XxWKNbfIajSOO051Gnz6vbTsxAnn0c2Bp1btLAnGaeWdgWn1UuB2Gh/vkWl2j1uCzSsErZQRJhdCFCvJgBW8Jq9cTbM+BAmhgoIPb9BSAr9vIk55abG+3lisRkY1OKg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752744403; c=relaxed/simple;
+	bh=f+IM8ifVXCwWGyNHB1bGGaUoGRb4E5qB+YSUinFExkE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AVIGxn8jDYCEfKYTByc+PKpu6kYTwctgULosQNONPieb1+Z93vxergLFWlBqSDf0myfizt+u2M8iDYz9NnNrxKtzKDJn2EJ5AZJXJAc2I2ByJlaOM+ghRb0ryhunFFaXCr7+djXyN6I4JClsntWheoDqr2s1O60L9MpfUVU5Xc4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=FhzF4R/3; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1752744333; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=G+rPizvRlW5rcmE6CDCyf4ffA3Z0FKCeRnehUu3cx05zpHGjTR546+Hz1rS6hvGTPIKhqUkwALrBAkBMaKf5ASpZW//wDhgiLANieTtYgnJwTmm0yjLkZFs9I3tL5xu2S1O03ZPc9Simy3HfLBasSZR/hhekIX9mqFUTj9TVQsA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752744333; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=myrD4Oc5GjJnUJKj0O/5nUQsBQ9XKBlijpMkJOywH2Q=; 
+	b=BFSJrfuHL1RVypiJX4ghnXVEuc2VSeLLYdpjJlyW2uACH/Fn7h3qk7FgRrIVggfHPwadqqi3fnO461VgRKRN7zsi/6lN4NL4zj9vQGbsN9fZ4Xx3Q8QLSVf3rZllNoJrclX6T75rGN8HaHVHEZZ6FvBAWn2F/DkknDLuE0XWvlY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass header.from=<usama.anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752744333;
+	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=myrD4Oc5GjJnUJKj0O/5nUQsBQ9XKBlijpMkJOywH2Q=;
+	b=FhzF4R/3dKXmWFVrbFUw/WOBC09YOhBrtYs3UWiU7XcZwUeHA9LM9HMcgJZbEbGI
+	ziyCPElmJg04dGAKvZv9FzAQD+Hp7Wdatv8jcXsOGQ8nvLL035/Euisp+JewsUOfrpy
+	CkmWfhcp5+6A+3KRSBsSk402iU39IRYTCTqSdMjw=
+Received: by mx.zohomail.com with SMTPS id 1752744331135757.2706251805113;
+	Thu, 17 Jul 2025 02:25:31 -0700 (PDT)
+Message-ID: <656979d8-9ce8-4225-91dc-2236d9e1291f@collabora.com>
+Date: Thu, 17 Jul 2025 14:25:34 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250717090116.11987-1-will@kernel.org> <20250717090116.11987-2-will@kernel.org>
- <CACGkMEsoBj7aNXfCU7Zn=5yWnhvA7M8xhbucmt4fuPm31dQ1+w@mail.gmail.com>
-In-Reply-To: <CACGkMEsoBj7aNXfCU7Zn=5yWnhvA7M8xhbucmt4fuPm31dQ1+w@mail.gmail.com>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Thu, 17 Jul 2025 11:25:00 +0200
-X-Gm-Features: Ac12FXz6ffoOmDUY3dLdGfR0fllZrD7uhyzojK2JMGGErWflZ9rAZkbEOw8MTDA
-Message-ID: <CAGxU2F6jSBM-VKU6vaojvBF_4zTWndmaQ4rFvLxds6gOPjXpcA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/9] vhost/vsock: Avoid allocating arbitrarily-sized SKBs
-To: Jason Wang <jasowang@redhat.com>
-Cc: Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org, 
-	Keir Fraser <keirf@google.com>, Steven Moreland <smoreland@google.com>, 
-	Frederick Mayle <fmayle@google.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath11k: HAL SRNG: don't deinitialize and
+ re-initialize again
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+ Jeff Johnson <jjohnson@kernel.org>, kbuild test robot <lkp@intel.com>,
+ Ganesh Sesetti <gseset@codeaurora.org>,
+ Maharaja Kennadyrajan <quic_mkenna@quicinc.com>,
+ Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+ Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc: kernel@collabora.com, stable@vger.kernel.org,
+ Sriram R <quic_srirrama@quicinc.com>,
+ Rajkumar Manoharan <rmanohar@codeaurora.org>,
+ Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+ Bhagavathi Perumal S <bperumal@codeaurora.org>,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20250715132351.2641289-1-usama.anjum@collabora.com>
+ <7ecc1cfc-5033-4d74-9303-9ac58527113c@oss.qualcomm.com>
+Content-Language: en-US
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <7ecc1cfc-5033-4d74-9303-9ac58527113c@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-On Thu, 17 Jul 2025 at 11:10, Jason Wang <jasowang@redhat.com> wrote:
->
-> On Thu, Jul 17, 2025 at 5:01=E2=80=AFPM Will Deacon <will@kernel.org> wro=
-te:
-> >
-> > vhost_vsock_alloc_skb() returns NULL for packets advertising a length
-> > larger than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE in the packet header. However=
-,
-> > this is only checked once the SKB has been allocated and, if the length
-> > in the packet header is zero, the SKB may not be freed immediately.
->
-> Can this be triggered from the guest? (I guess yes) Did we need to
-> consider it as a security issue?
+On 7/16/25 8:10 AM, Baochen Qiang wrote:
+> 
+> 
+> On 7/15/2025 9:23 PM, Muhammad Usama Anjum wrote:
+>> Don't deinitialize and reinitialize the HAL helpers. The dma memory is
+>> deallocated and there is high possibility that we'll not be able to get
+>> the same memory allocated from dma when there is high memory pressure.
+>>
+>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+>>
+>> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+>> Cc: stable@vger.kernel.org
+>> Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>> ---
+>> Changes since v1:
+>> - Cc stable and fix tested on tag
+>> - Clear essential fields as they may have stale data
+>> ---
+>>  drivers/net/wireless/ath/ath11k/core.c |  6 +-----
+>>  drivers/net/wireless/ath/ath11k/hal.c  | 12 ++++++++++++
+>>  drivers/net/wireless/ath/ath11k/hal.h  |  1 +
+>>  3 files changed, 14 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+>> index 4488e4cdc5e9e..34b27711ed00f 100644
+>> --- a/drivers/net/wireless/ath/ath11k/core.c
+>> +++ b/drivers/net/wireless/ath/ath11k/core.c
+>> @@ -2213,14 +2213,10 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
+>>  	mutex_unlock(&ab->core_lock);
+>>  
+>>  	ath11k_dp_free(ab);
+>> -	ath11k_hal_srng_deinit(ab);
+>> +	ath11k_hal_srng_clear(ab);
+>>  
+>>  	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
+>>  
+>> -	ret = ath11k_hal_srng_init(ab);
+>> -	if (ret)
+>> -		return ret;
+>> -
+>>  	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
+>>  
+>>  	ret = ath11k_core_qmi_firmware_ready(ab);
+>> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+>> index b32de563d453a..dafa9bdbb3d32 100644
+>> --- a/drivers/net/wireless/ath/ath11k/hal.c
+>> +++ b/drivers/net/wireless/ath/ath11k/hal.c
+>> @@ -1359,6 +1359,18 @@ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
+>>  }
+>>  EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+>>  
+>> +void ath11k_hal_srng_clear(struct ath11k_base *ab)
+>> +{
+>> +	memset(ab->hal.srng_list, 0,
+>> +	       sizeof(ab->hal.srng_list));
+>> +	memset(ab->hal.shadow_reg_addr, 0,
+>> +	       sizeof(ab->hal.shadow_reg_addr));
+> 
+> nit: I would add comment here that no need to memset rdp and wrp memory since each
+> individual segment would get cleared when
+> 
+> ath11k_hal_srng_src_hw_init()
+> 	*srng->u.src_ring.tp_addr = 0;
+> 
+> and
+> ath11k_hal_srng_dst_hw_init()
+> 	*srng->u.dst_ring.hp_addr = 0;
+I'll add:
+	/* No need to memset rdp and wrp memory since each individual
+	 * segment would get cleared ath11k_hal_srng_src_hw_init() and
+	 * ath11k_hal_srng_dst_hw_init().
+	 */
 
-Yep, but then the packet would still be discarded later, and the
-memory released, so it can only increase the pressure on allocation,
-but the guest can still do so by sending packets for example on an
-unopened port.
+> 
+>> +	ab->hal.avail_blk_resource = 0;
+>> +	ab->hal.current_blk_index = 0;
+>> +	ab->hal.num_shadow_reg_configured = 0;
+>> +}
+>> +EXPORT_SYMBOL(ath11k_hal_srng_clear);
+>> +
+>>  void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
+>>  {
+>>  	struct hal_srng *srng;
+>> diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
+>> index 601542410c752..839095af9267e 100644
+>> --- a/drivers/net/wireless/ath/ath11k/hal.h
+>> +++ b/drivers/net/wireless/ath/ath11k/hal.h
+>> @@ -965,6 +965,7 @@ int ath11k_hal_srng_setup(struct ath11k_base *ab, enum hal_ring_type type,
+>>  			  struct hal_srng_params *params);
+>>  int ath11k_hal_srng_init(struct ath11k_base *ath11k);
+>>  void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
+>> +void ath11k_hal_srng_clear(struct ath11k_base *ab);
+>>  void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
+>>  void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
+>>  				       u32 **cfg, u32 *len);
+> 
+> other than the nit:
+> 
+> Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-Stefano
-
->
-> >
-> > Hoist the size check before the SKB allocation so that an iovec larger
-> > than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + the header size is rejected
-> > outright. The subsequent check on the length field in the header can
-> > then simply check that the allocated SKB is indeed large enough to hold
-> > the packet.
-> >
-> > Cc: <stable@vger.kernel.org>
-> > Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_bu=
-ff")
-> > Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-> > Signed-off-by: Will Deacon <will@kernel.org>
-> > ---
-> >  drivers/vhost/vsock.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> > index 802153e23073..66a0f060770e 100644
-> > --- a/drivers/vhost/vsock.c
-> > +++ b/drivers/vhost/vsock.c
-> > @@ -344,6 +344,9 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
-> >
-> >         len =3D iov_length(vq->iov, out);
-> >
-> > +       if (len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEAD=
-ROOM)
-> > +               return NULL;
-> > +
-> >         /* len contains both payload and hdr */
-> >         skb =3D virtio_vsock_alloc_skb(len, GFP_KERNEL);
-> >         if (!skb)
-> > @@ -367,8 +370,7 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
-> >                 return skb;
-> >
-> >         /* The pkt is too big or the length in the header is invalid */
-> > -       if (payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE ||
-> > -           payload_len + sizeof(*hdr) > len) {
-> > +       if (payload_len + sizeof(*hdr) > len) {
-> >                 kfree_skb(skb);
-> >                 return NULL;
-> >         }
-> > --
-> > 2.50.0.727.gbf7dc18ff4-goog
-> >
->
-> Thanks
->
+Thanks,
+Usama
 
 
