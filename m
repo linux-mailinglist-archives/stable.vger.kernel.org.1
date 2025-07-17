@@ -1,189 +1,129 @@
-Return-Path: <stable+bounces-163291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEDCAB092D1
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 19:11:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2B7B092F3
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 19:14:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7316D7BB6A8
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 17:08:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE9D81C4378C
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 17:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569962FE327;
-	Thu, 17 Jul 2025 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907A82FD5B9;
+	Thu, 17 Jul 2025 17:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wus+2daK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+6UfiwC"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7EF2FD89C
-	for <stable@vger.kernel.org>; Thu, 17 Jul 2025 17:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D402FCE3F;
+	Thu, 17 Jul 2025 17:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752772145; cv=none; b=IZUcQrut9fnl6RcvAjRnwn2D+GTKvXyT3UKLh/I3633XbjRYDcJ6j/3ODp6dxOoSMlA8Oo3CHLhijl9R1CgjlQx7kwQGH57tgxvlhkVkkG3DFt1QOsW6sfwxuubLzt2nRP7zDNQQ1fw0znxvFOcPhvECW/jTiy870FrxfOFba0A=
+	t=1752772476; cv=none; b=j4c05+iPGvxRLTxNcbbeTFQKd4PNsBj4h4ge29oyY9mziuki0Hsqj224rZ2hq8cSnKWBLkyJZIXdgJu3Gj6BAlCjFnfSYm3mn4Q00ddVeZMLoFWeXP9oAY1xRG/KzB8kfiLNh3A4svPdclJO80TbgRQ8C3hhVRf3AGouUVyvu+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752772145; c=relaxed/simple;
-	bh=8cnDzIJzgTRiwG8fdIIPSgdAcu9mXSKSEJFj9fWFySQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S97qy3a3kYHP1uBzP4SwYm96XMLLW7TUTC7oin7KT38QVKwAhNsx3mS+Ayd7+Q3Z8+UfRITFP2aP9QuxLCtKK1TUu3aKxVQLxGXM9VwKuaQtn1xWMzPArYz26yIZq6Rr3/7gGw9WONNol5H2xmguwsmeUqODw88+cjiY4Oc3NkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wus+2daK; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752772143; x=1784308143;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8cnDzIJzgTRiwG8fdIIPSgdAcu9mXSKSEJFj9fWFySQ=;
-  b=Wus+2daK8Q80HGxa6hNIZSoR0Nif85bv8lOuk3hpoL4L/ln/hCA1K33B
-   Dn9BJ/CwAYJkBAGqGl/SIWm9OLMNE85IwGGqTFJlx1EKDxltg/PiziJxS
-   6o5N+RcXjyfDjZyTCdLYlUAquNLykAuXqAOipug4MMhAi+/cgXFOTazcp
-   MyQD2Hy+nyXoSs5SVdHh2zd7e7JYZ2DnVXbFWZGPtYtEnX+wxRORDrzeJ
-   jH1cP2Sslv5+4n4gs+riFlMuSUr7qnAzTNSQ9/K/UvIN466aNK9Hk/tRr
-   ozVSJayqh1o8oRcuV2jNfo5qxkQUTqR4JfpHmF9NLWQ6DNmUIsqJxYdSO
-   A==;
-X-CSE-ConnectionGUID: ov208DO7TB+VlsmvHU02TA==
-X-CSE-MsgGUID: LOUYRRn8Rw638WrnS53q3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="66407738"
-X-IronPort-AV: E=Sophos;i="6.16,319,1744095600"; 
-   d="scan'208";a="66407738"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 10:09:02 -0700
-X-CSE-ConnectionGUID: oGXGu0n3RpqJB0VQfHk3jw==
-X-CSE-MsgGUID: yvSkEszkSjq9HF5GlCONsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,319,1744095600"; 
-   d="scan'208";a="163384075"
-Received: from silpixa00400314.ir.intel.com (HELO silpixa00400314.ger.corp.intel.com) ([10.237.223.204])
-  by fmviesa004.fm.intel.com with ESMTP; 17 Jul 2025 10:09:00 -0700
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	qat-linux@intel.com,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Damian Muszynski <damian.muszynski@intel.com>,
-	Tero Kristo <tero.kristo@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ahsan Atta <ahsan.atta@intel.com>
-Subject: [PATCH 6.1] crypto: qat - fix ring to service map for QAT GEN4
-Date: Thu, 17 Jul 2025 18:06:38 +0100
-Message-ID: <20250717170835.25211-1-giovanni.cabiddu@intel.com>
-X-Mailer: git-send-email 2.50.0
+	s=arc-20240116; t=1752772476; c=relaxed/simple;
+	bh=gPsTFWPofyzeCDanP9i0nnmFrp0vvZOOv01/QAIVnao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vBsQjjExc5LPR5RJrrsNBz4BAIkbbHjsxQy6bgoJMw2eozmjvyNCCwdt/hTNrwWPbHwVWLxByBxrnZDBLpT9dZ0m1AuDF6r0twB3Jn8k8/rydx2zrQ5PRyJ2E4Ni8qOclpPsjGEs3p8mCsYAatzwQPe1nV/aY1HZgqs/+z4lM5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+6UfiwC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D05C4CEE3;
+	Thu, 17 Jul 2025 17:14:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752772475;
+	bh=gPsTFWPofyzeCDanP9i0nnmFrp0vvZOOv01/QAIVnao=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D+6UfiwC32xr7W6UjsheTcLNcXAGHbCwp3l6+lTzM6Zww1FfYdYL7uY+sQhjcc1L9
+	 NRIIa9El+BxeFOgq7Yjljb8qEl87g48UFkBI4KrRtEa8Kg1WCrXZTF6hy2eSyVjP1d
+	 pt4aAn9UQp56a+3TGJDW/xHpLyP3dz4GxCXGp6o5GBr++iTNPXIemJZUngl3YK4uh2
+	 kso6S5XKOkrRvzOXq883vxyGVatzXKydybNQUyf3I/D7uS0ZxksTIzRH88LA9aJskF
+	 UqV3cuNTigZ3PGozy7vK38GoEufTd+MIAbbvL5OkQvqjlCVViGpSITztU47c41x/Kh
+	 tY2+30GyG2WDw==
+Date: Thu, 17 Jul 2025 22:44:26 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Akhil Vinod <quic_akhvin@quicinc.com>
+Cc: Sumit Kumar <quic_sumk@quicinc.com>, Alex Elder <elder@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, quic_krichai@quicinc.com, quic_skananth@quicinc.com, 
+	quic_vbadigan@quicinc.com, Sumit Kumar <sumk@qti.qualcomm.com>, stable@vger.kernel.org, 
+	Akhil Vinod <akhvin@qti.qualcomm.com>
+Subject: Re: [PATCH] bus: mhi: ep: Fix chained transfer handling in read path
+Message-ID: <5ij32zdni7pei3xfpxsq6fvaghb3pdfs2fznickutqjysip3k4@kldf7h6e3qc4>
+References: <20250709-chained_transfer-v1-1-2326a4605c9c@quicinc.com>
+ <5aqtqicbtlkrqbiw2ba7kkgwrmsuqx2kjukh2tavfihm5hq5ry@gdeqegayfh77>
+ <7c833565-0e7b-4004-b691-37bd07ce6abe@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <7c833565-0e7b-4004-b691-37bd07ce6abe@quicinc.com>
 
-[ Upstream commit a238487f7965d102794ed9f8aff0b667cd2ae886 ]
+On Thu, Jul 17, 2025 at 10:18:54PM GMT, Akhil Vinod wrote:
+> 
+> On 7/16/2025 12:10 PM, Manivannan Sadhasivam wrote:
+> > On Wed, Jul 09, 2025 at 04:03:17PM GMT, Sumit Kumar wrote:
+> > > From: Sumit Kumar <sumk@qti.qualcomm.com>
+> > > 
+> > > The current implementation of mhi_ep_read_channel, in case of chained
+> > > transactions, assumes the End of Transfer(EOT) bit is received with the
+> > > doorbell. As a result, it may incorrectly advance mhi_chan->rd_offset
+> > > beyond wr_offset during host-to-device transfers when EOT has not yet
+> > > arrived. This can lead to access of unmapped host memory, causing
+> > > IOMMU faults and processing of stale TREs.
+> > > 
+> > > This change modifies the loop condition to ensure rd_offset remains behind
+> > > wr_offset, allowing the function to process only valid TREs up to the
+> > > current write pointer. This prevents premature reads and ensures safe
+> > > traversal of chained TREs.
+> > > 
+> > > Fixes: 5301258899773 ("bus: mhi: ep: Add support for reading from the host")
+> > > Cc: stable@vger.kernel.org
+> > > Co-developed-by: Akhil Vinod <akhvin@qti.qualcomm.com>
+> > > Signed-off-by: Akhil Vinod <akhvin@qti.qualcomm.com>
+> > > Signed-off-by: Sumit Kumar <sumk@qti.qualcomm.com>
+> > > ---
+> > >   drivers/bus/mhi/ep/main.c | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
+> > > index b3eafcf2a2c50d95e3efd3afb27038ecf55552a5..2e134f44952d1070c62c24aeca9effc7fd325860 100644
+> > > --- a/drivers/bus/mhi/ep/main.c
+> > > +++ b/drivers/bus/mhi/ep/main.c
+> > > @@ -468,7 +468,7 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+> > >   			mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
+> > >   		}
+> > > -	} while (buf_left && !tr_done);
+> > > +	} while (buf_left && !tr_done && mhi_chan->rd_offset != ring->wr_offset);
+> > You should use mhi_ep_queue_is_empty() for checking the available elements to
+> > process. And with this check in place, the existing check in
+> > mhi_ep_process_ch_ring() becomes redundant.
+> > 
+> > - Mani
+> 
+> Yes, agreed that the check can be replaced with the mhi_ep_queue_is_empty, but the existing
+> check in mhi_ep_process_ch_ring() is still necessary because there can be a case where
+> there are multiple chained transactions in the ring.
+> 
+> Example: The ring at the time mhi_ep_read_channel is executing may look like:
+> chained | chained |  EOT#1 | chained | chained | EOT#2
+> If we remove the check from mhi_ep_process_ch_ring, we bail out of the first transaction itself
+> and the remaining packets won't be processed. mhi_ep_read_channel in its current form is designed
+> for a single MHI packet only.
+> 
 
-The 4xxx drivers hardcode the ring to service mapping. However, when
-additional configurations where added to the driver, the mappings were
-not updated. This implies that an incorrect mapping might be reported
-through pfvf for certain configurations.
+Then you should ignore the EOT flag by removing '!tr_done' check and just check
+for buf_left and mhi_ep_process_ch_ring(). Having the same check in caller and
+callee doesn't make sense.
 
-This is a backport of the upstream commit with modifications, as the
-original patch does not apply cleanly to kernel v6.1.x. The logic has
-been simplified to reflect the limited configurations of the QAT driver
-in this version: crypto-only and compression.
+- Mani
 
-Instead of dynamically computing the ring to service mappings, these are
-now hardcoded to simplify the backport.
-
-Fixes: 0cec19c761e5 ("crypto: qat - add support for compression for 4xxx")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
-Reviewed-by: Tero Kristo <tero.kristo@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: <stable@vger.kernel.org> # 6.1.x
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Tested-by: Ahsan Atta <ahsan.atta@intel.com>
----
- drivers/crypto/qat/qat_4xxx/adf_4xxx_hw_data.c    | 13 +++++++++++++
- drivers/crypto/qat/qat_common/adf_accel_devices.h |  1 +
- drivers/crypto/qat/qat_common/adf_gen4_hw_data.h  |  6 ++++++
- drivers/crypto/qat/qat_common/adf_init.c          |  3 +++
- 4 files changed, 23 insertions(+)
-
-diff --git a/drivers/crypto/qat/qat_4xxx/adf_4xxx_hw_data.c b/drivers/crypto/qat/qat_4xxx/adf_4xxx_hw_data.c
-index fda5f699ff57..65b52c692add 100644
---- a/drivers/crypto/qat/qat_4xxx/adf_4xxx_hw_data.c
-+++ b/drivers/crypto/qat/qat_4xxx/adf_4xxx_hw_data.c
-@@ -297,6 +297,18 @@ static char *uof_get_name(struct adf_accel_dev *accel_dev, u32 obj_num)
- 	return NULL;
- }
- 
-+static u16 get_ring_to_svc_map(struct adf_accel_dev *accel_dev)
-+{
-+	switch (get_service_enabled(accel_dev)) {
-+	case SVC_CY:
-+		return ADF_GEN4_DEFAULT_RING_TO_SRV_MAP;
-+	case SVC_DC:
-+		return ADF_GEN4_DEFAULT_RING_TO_SRV_MAP_DC;
-+	}
-+
-+	return 0;
-+}
-+
- static u32 uof_get_ae_mask(struct adf_accel_dev *accel_dev, u32 obj_num)
- {
- 	switch (get_service_enabled(accel_dev)) {
-@@ -353,6 +365,7 @@ void adf_init_hw_data_4xxx(struct adf_hw_device_data *hw_data)
- 	hw_data->uof_get_ae_mask = uof_get_ae_mask;
- 	hw_data->set_msix_rttable = set_msix_default_rttable;
- 	hw_data->set_ssm_wdtimer = adf_gen4_set_ssm_wdtimer;
-+	hw_data->get_ring_to_svc_map = get_ring_to_svc_map;
- 	hw_data->disable_iov = adf_disable_sriov;
- 	hw_data->ring_pair_reset = adf_gen4_ring_pair_reset;
- 	hw_data->enable_pm = adf_gen4_enable_pm;
-diff --git a/drivers/crypto/qat/qat_common/adf_accel_devices.h b/drivers/crypto/qat/qat_common/adf_accel_devices.h
-index ad01d99e6e2b..7993d0f82dea 100644
---- a/drivers/crypto/qat/qat_common/adf_accel_devices.h
-+++ b/drivers/crypto/qat/qat_common/adf_accel_devices.h
-@@ -176,6 +176,7 @@ struct adf_hw_device_data {
- 	void (*get_arb_info)(struct arb_info *arb_csrs_info);
- 	void (*get_admin_info)(struct admin_info *admin_csrs_info);
- 	enum dev_sku_info (*get_sku)(struct adf_hw_device_data *self);
-+	u16 (*get_ring_to_svc_map)(struct adf_accel_dev *accel_dev);
- 	int (*alloc_irq)(struct adf_accel_dev *accel_dev);
- 	void (*free_irq)(struct adf_accel_dev *accel_dev);
- 	void (*enable_error_correction)(struct adf_accel_dev *accel_dev);
-diff --git a/drivers/crypto/qat/qat_common/adf_gen4_hw_data.h b/drivers/crypto/qat/qat_common/adf_gen4_hw_data.h
-index 4fb4b3df5a18..5e653ec755e6 100644
---- a/drivers/crypto/qat/qat_common/adf_gen4_hw_data.h
-+++ b/drivers/crypto/qat/qat_common/adf_gen4_hw_data.h
-@@ -95,6 +95,12 @@ do { \
- 		   ADF_RING_BUNDLE_SIZE * (bank) + \
- 		   ADF_RING_CSR_RING_SRV_ARB_EN, (value))
- 
-+#define ADF_GEN4_DEFAULT_RING_TO_SRV_MAP_DC \
-+	(COMP << ADF_CFG_SERV_RING_PAIR_0_SHIFT | \
-+	 COMP << ADF_CFG_SERV_RING_PAIR_1_SHIFT | \
-+	 COMP << ADF_CFG_SERV_RING_PAIR_2_SHIFT | \
-+	 COMP << ADF_CFG_SERV_RING_PAIR_3_SHIFT)
-+
- /* Default ring mapping */
- #define ADF_GEN4_DEFAULT_RING_TO_SRV_MAP \
- 	(ASYM << ADF_CFG_SERV_RING_PAIR_0_SHIFT | \
-diff --git a/drivers/crypto/qat/qat_common/adf_init.c b/drivers/crypto/qat/qat_common/adf_init.c
-index 2e3481270c4b..49f07584f8c9 100644
---- a/drivers/crypto/qat/qat_common/adf_init.c
-+++ b/drivers/crypto/qat/qat_common/adf_init.c
-@@ -95,6 +95,9 @@ int adf_dev_init(struct adf_accel_dev *accel_dev)
- 		return -EFAULT;
- 	}
- 
-+	if (hw_data->get_ring_to_svc_map)
-+		hw_data->ring_to_svc_map = hw_data->get_ring_to_svc_map(accel_dev);
-+
- 	if (adf_ae_init(accel_dev)) {
- 		dev_err(&GET_DEV(accel_dev),
- 			"Failed to initialise Acceleration Engine\n");
 -- 
-2.50.0
-
+மணிவண்ணன் சதாசிவம்
 
