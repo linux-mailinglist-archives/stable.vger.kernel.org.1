@@ -1,80 +1,78 @@
-Return-Path: <stable+bounces-163233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C18B0882F
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 10:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8837B088AA
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 11:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C963A1A671B7
-	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 08:49:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93B021A67A7A
+	for <lists+stable@lfdr.de>; Thu, 17 Jul 2025 08:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A80283C82;
-	Thu, 17 Jul 2025 08:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E722877E4;
+	Thu, 17 Jul 2025 08:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cl930Ym7"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3181D7984;
-	Thu, 17 Jul 2025 08:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1DC28726C;
+	Thu, 17 Jul 2025 08:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752742136; cv=none; b=nofkbDLZfNa2BwepFfipSwU+K4e0N4MoGCvp1yyi5PjfltWeWIG3iv0FKVlVdo/8XQ3tqGrrsXDq9gkm3WAlulCJ9YX20fJhd05+60butxwgWCI1coZwqetwueXXvmizy2QLpGPomnOR1r7vaqtxVAOh/BiwceFc4chhVoy8af4=
+	t=1752742740; cv=none; b=Q+ZUpzTybjNpzRgE52HBBAJCDa4GJM6Tmm+hTUXmHdbxgEtDQADyfHMypMsB2Pp0eplMyIs7JmDLiT6bUZFSjz4AKPuRQcUiIyhKTfU9RBJtDZcEo9wBIM/7/BAGNkl+UdKHqLbsMl1Y8LGYvZgMdNrAAXAHySpAlYWfaEKGz/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752742136; c=relaxed/simple;
-	bh=yrPYDV0hP8sXAgTiBGFx5Bu/wY21WNuSvLjYTNOHBf8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFafGwI3WQTCyPVmnTdPTk6Gps8qmnpedrPuUsfVCO3P559cVtkCBSiJsZCGvmrGOSE2Jw1eBksxqnEHuO5fPXuM/iyGxwuYa4YYdxY7WiJVV5YPc0dZxqZlmgKS9qQg7NTHkUtLf0kLsiDGAZBq4xRCepEvw6qBOQ/FaeLdkss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-Received: from [2a0c:e303:0:7000:443b:adff:fe61:e05d] (port=47022 helo=auntie.gladserv.com)
-	by bregans-1.gladserv.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(envelope-from <bacs@librecast.net>)
-	id 1ucKI6-007pN0-1v;
-	Thu, 17 Jul 2025 08:48:34 +0000
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	srw@sladewatkins.net,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.12 000/165] 6.12.39-rc2 review
-Date: Thu, 17 Jul 2025 08:48:17 +0000
-Message-ID: <20250717084816.22325-2-bacs@librecast.net>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250715163544.327647627@linuxfoundation.org>
-References: <20250715163544.327647627@linuxfoundation.org>
+	s=arc-20240116; t=1752742740; c=relaxed/simple;
+	bh=4CagP9M6knXLPKRo0OcPicICvYa6TZbRe3hckB/efcs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q4E5385WQhnSXDwoYPu2iAzvAdy3chj2rOVDdaEyrbGAJBw39O3hP8Z74PUwN9NaC3aEyDqYFu7e7ZJaPIchWRZIc7ENdzjuZfrKXz3J15PZ/neeuG7eX9GUC2X0rTVf8vRVqOfbEWGjUXO5e4MGa+jYsJQYy0Ge5J/Fap3q5Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cl930Ym7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3F0C4CEE3;
+	Thu, 17 Jul 2025 08:58:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752742739;
+	bh=4CagP9M6knXLPKRo0OcPicICvYa6TZbRe3hckB/efcs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cl930Ym7X4+HpDxHAV7RlD0Kg5gfmTqHt2RtKQE6abdhnAKLKBmkADY1cX/FZiD0V
+	 yX/NTh3lPp1/yH/jPi9wwOwo0F2AzUFai8iUWZyE42r7KMsXpTTJ1Jm8XQcZqIkX8h
+	 kEIr6UipZYy+ugH+m0uVjkjCbcBOq1tOWVDdRzg0=
+Date: Thu, 17 Jul 2025 10:58:56 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mahmoud Nagy Adam <mngyadam@amazon.de>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 279/355] platform: Add Surface platform directory
+Message-ID: <2025071731-legal-cinch-37cc@gregkh>
+References: <20250623130626.716971725@linuxfoundation.org>
+ <20250623130635.169604976@linuxfoundation.org>
+ <lrkyqqzygch48.fsf@dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <lrkyqqzygch48.fsf@dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com>
 
-# Librecast Test Results
+On Wed, Jul 16, 2025 at 05:03:51PM +0200, Mahmoud Nagy Adam wrote:
+> This patch adds a new configuration with new empty directory "surface",
+> this was for the follow up patches in this series[0], there is no
+> code/compilation effect by this patch alone, this afaict shouldn't be a
+> dependency for 61ce04601e0d ("platform/x86: dell_rbu: Fix list
+> usage"). Was this mistakenly backported as a false dependency?
+> 
+> [0]: https://lore.kernel.org/all/20201009141128.683254-2-luzmaximilian@gmail.com/
 
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+It might have, if you revert it does it all still work properly?
 
-CPU/kernel: Linux auntie 6.12.39-rc2-gd50d16f00292 #16 SMP PREEMPT_DYNAMIC Thu Jul 17 08:33:12 -00 2025 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+thanks,
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+greg k-h
 
