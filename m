@@ -1,100 +1,208 @@
-Return-Path: <stable+bounces-163341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2FCB09E1E
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9C0B09E33
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB2E11AA2F66
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:36:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 370C61AA0E26
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F47628C5CF;
-	Fri, 18 Jul 2025 08:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C42294A02;
+	Fri, 18 Jul 2025 08:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nL1JbOgd"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hqz89RGu"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68646EEDE
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 08:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F79D2192EA
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 08:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752827742; cv=none; b=cu+7ijgdDToqQKw/xsOrxxBw4nsD4HTF1sJWC2U3CcH+M0URPBRPyFvIxTBJNKgeaDgEzRXS6Qimjmj3kJdY+fNVNw5jAq5oGsIaA/jbh+/lIyUXpCUa331CQzo7GEkfEsPZDCxXR+AzjeiY9EwHTv7GToxtzW2WV2E5+RkQp/I=
+	t=1752827949; cv=none; b=IJXqIzFn0I9zA8pYIR6oifX8cv65c6uwxRRyXTzXbM/F4rQZTx1Ao+9spWa1jOPPLacoqwAxx3O5+i9y3i2ffTlnVKnwMuhUe75Q5BT97zp0FH6cd4oMPEUF1p+oGq0wfxlPtbfCkP/IpJIRgsFbIvIx+l2wg/9megP7s9uwn3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752827742; c=relaxed/simple;
-	bh=TWsknORm3ZLeHfMxdHLg3cJ0/9KGjglk6P5ewhVgjZ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=DUD7W5/SJ7gIpyKk8qWJN38DBj9n6vLINoU19GMSNGs0jRdc2zZQGDXjE4wCeh6N1xvaZi0POe3QtkEoi3QL7vSaaQcadUSJ407retm10Vw0C/s81LDtSSICdCQJ/K/6Pi/F/8LjHf0pACyya+AOfMpiZcnRcOM3zTsMRY5HCb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nL1JbOgd; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752827740; x=1784363740;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=TWsknORm3ZLeHfMxdHLg3cJ0/9KGjglk6P5ewhVgjZ0=;
-  b=nL1JbOgd9bg+ozzKQBPB8jTT3nfk5yPrtt5Y++/vlRSF5h97iBZD+TR4
-   nTWltj0eXkx+lSbGu9x/bAb273PtjSLTkK5vaMDZh2uhG9kwMbz7SvB/s
-   2I8sgvqJI090fiTafrp9QbYFmk9cA7+Lyow9DpgilK71E49KTRi8LtJ1f
-   4vPNnKOSZ23gMmrD8ckLoMyGEW1APv1S1ZQdQki9EI88c1xUai5ZfEol0
-   zdCsAm3cJlT/649HgoRPF9Kp2Ru/feOFjyfBTqg/RJOm3Ftaf7Ybq9bei
-   kb9uIIA49TsRq6cJlrkHofZbV+p/8egif50Z8hTTSFTYj7KXqdMNvEsyS
-   Q==;
-X-CSE-ConnectionGUID: nQDB2pVVTVGTiRX1VAFhpQ==
-X-CSE-MsgGUID: 4gTbc8u3RSm5I/yriDG46g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="66566329"
-X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; 
-   d="scan'208";a="66566329"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 01:35:40 -0700
-X-CSE-ConnectionGUID: f5Fa1VqLTlS8RFlvr4vT1A==
-X-CSE-MsgGUID: jCoibxkvTU2AogCR9HR76Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; 
-   d="scan'208";a="158573617"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 18 Jul 2025 01:35:39 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ucgZ6-000ERz-2Z;
-	Fri, 18 Jul 2025 08:35:36 +0000
-Date: Fri, 18 Jul 2025 16:34:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Macpaul Lin <macpaul.lin@mediatek.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 4/4] arm64: defconfig: Enable UFS support for MediaTek
- Genio 1200 EVK UFS board
-Message-ID: <aHoHKqXboY5WIXGy@c1a0ab53bc35>
+	s=arc-20240116; t=1752827949; c=relaxed/simple;
+	bh=HV3mPl6MSYbW9XmYhqL0JUwYQluuDEhKVGZbLd7tbSg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pkTjknhoNd8cZFRaPpVZhXsDrcXeYUGs8AF5IQQMwvNN0V/ktW+FGcmAds/fmVjZ7i6WCDmJW00dumv8biSHXy7Q4usBTe7Zd71SrquxmtuuU6wygoRQoChudJCldKXBGbDXSdclhiWKzTmkssRRXcXL9bu6WweTh2t0518mzwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hqz89RGu; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4ab3ad4c61fso383281cf.0
+        for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:39:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752827945; x=1753432745; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=udrYzqsG6zKD6Rhq5jUrYPXE4BiEAdJOTycG7GhLQII=;
+        b=Hqz89RGuZzHtgoSGE0C2o/r7a2QPvNrH6QeHhYgAoP0xAud5ybplO1qSUCxNLBalwQ
+         pg8E+JD4/inzjLF2C/sRb6U1b/ddTXvrc93Lw5x1E8eDdOXb06wFdLtdIlq/W9yLUJos
+         On4JrQVSwo+kOmPrygJSvfCTmpRIE2u989OVoR51KICPlJ7qFHjHL5mHbIDFpmOMcRBN
+         iVJMDp4uzg9rQoFNoILxflbqh2y1mq4/RLnphtiu+24tNYVvJhObmzPXRO7cMJR2aP/R
+         mSx9IY/m3LBl95Si9EGoU/YfV/SjPPTC1VZ+P1nztduAgqfMJ+31NccE2K/JraxGsvnN
+         0UeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752827945; x=1753432745;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=udrYzqsG6zKD6Rhq5jUrYPXE4BiEAdJOTycG7GhLQII=;
+        b=jyChKO1iHGBW5z49uaSmZYW95LY7T0Bk6nNPYvw7lLGJzYOsB9ipxqUMO/N2cFV64W
+         vSBdXeAnzVoViIxKiKsEBGHL2AQIO0Ub45cZ3IJ807PcazRiqYtGb+VpmsGdmc5iuSiU
+         0gewN8l+QN6Z3It1RFtu37P2RVFSQ25j9ow6ow2lKwEpjg5AatRJJdzZd2AwMJW0crDv
+         9aqp9dE1YOVt6XUdIL66fjUaaAyzqY+M8anybokh1fXqMjpxpgJNktKm2B9ciEMsKfIM
+         S6fmeJYTWYpOUKC1UEAuUzjH82O4M+xjPik7tcLL3BEx8amj8q4W0n7vtRz1sta7nDI7
+         Rnxg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKhddQpHNm870L2O4vLvEvJgWcIWuwvtWu1pZBC9ZJLGf6y++zB6RMDgaIDaJi+A6STWO1DrQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2Bx8U+26598zfNtNPG+QJArLfM7uJyGmhXfWJOSUrQtJOckl1
+	m72oQu78YObkUZL1ix/xhFo/ikbtmCQweIYQALxyPbEWIyGqTf/ZhHRxlq6+1WS1LP9tq75DtO9
+	Hwt5LGFNXHj7uEENIy5jRvKZohurZlurfTQzictQq
+X-Gm-Gg: ASbGnctIjd7mRP780uor12I34vCH8kw5q5tiyX7Tqdsfw1Q3TZUYl0zdISwoGR6s448
+	gRclzOLZ6bGJ1Oybnvg5ug3R2zpOULiDLeSpjO7SCmUiYGj+hMz0nYACtVLXGr6iVEjnyStwNHP
+	ay3gGxXjDJoG1Uktm62AvHQshRNLGAnuFGpGiGzEZtUGeG7wAVsIiMspkYXJVwLkD7fuag+Kq2E
+	4uAGkQRjCl2y0TSz6AbLeekDJIQsU+H2wzJdw==
+X-Google-Smtp-Source: AGHT+IFZWhzx20M9Gw8trywQy21X6aj6Ujnf+GXyOsXwiCt5Tl0RmCoH6sEvHzscHL3TaCOr5PVWkjpGBEYykqUGK0g=
+X-Received: by 2002:a05:622a:4a87:b0:4a8:19d5:e9bb with SMTP id
+ d75a77b69052e-4abb13dfdf4mr4200641cf.13.1752827944683; Fri, 18 Jul 2025
+ 01:39:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250718083202.654568-4-macpaul.lin@mediatek.com>
+References: <cover.1752824628.git.namcao@linutronix.de> <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
+In-Reply-To: <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
+From: Soheil Hassas Yeganeh <soheil@google.com>
+Date: Fri, 18 Jul 2025 09:38:27 +0100
+X-Gm-Features: Ac12FXzgn06jDeUNMyDy69uNTY69aPVmkscuVzoPHZoBvxff8P-gX2NCfWFyWn0
+Message-ID: <CACSApvZT5F4F36jLWEc5v_AbqZVQpmH1W7UK21tB9nPu=OtmBA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] eventpoll: Fix epoll_wait() report false negative
+To: Nam Cao <namcao@linutronix.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Shuah Khan <shuah@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Khazhismel Kumykov <khazhy@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Eric Dumazet <edumazet@google.com>, Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Fri, Jul 18, 2025 at 8:52=E2=80=AFAM Nam Cao <namcao@linutronix.de> wrot=
+e:
+>
+> ep_events_available() checks for available events by looking at ep->rdlli=
+st
+> and ep->ovflist. However, this is done without a lock, therefore the
+> returned value is not reliable. Because it is possible that both checks o=
+n
+> ep->rdllist and ep->ovflist are false while ep_start_scan() or
+> ep_done_scan() is being executed on other CPUs, despite events are
+> available.
+>
+> This bug can be observed by:
+>
+>   1. Create an eventpoll with at least one ready level-triggered event
+>
+>   2. Create multiple threads who do epoll_wait() with zero timeout. The
+>      threads do not consume the events, therefore all epoll_wait() should
+>      return at least one event.
+>
+> If one thread is executing ep_events_available() while another thread is
+> executing ep_start_scan() or ep_done_scan(), epoll_wait() may wrongly
+> return no event for the former thread.
 
-Thanks for your patch.
+That is the whole point of epoll_wait with a zero timeout.  We would want t=
+o
+opportunistically poll without much overhead, which will have more
+false positives.
+A caller that calls with a zero timeout should retry later, and will
+at some point
+observe the event.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+I'm not sure if we would want to add much more overheads, for higher precis=
+ion.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Thanks,
+Soheil
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 4/4] arm64: defconfig: Enable UFS support for MediaTek Genio 1200 EVK UFS board
-Link: https://lore.kernel.org/stable/20250718083202.654568-4-macpaul.lin%40mediatek.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+> This reproducer is implemented as TEST(epoll65) in
+> tools/testing/selftests/filesystems/epoll/epoll_wakeup_test.c
+>
+> Fix it by skipping ep_events_available(), just call ep_try_send_events()
+> directly.
+>
+> epoll_sendevents() (io_uring) suffers the same problem, fix that as well.
+>
+> There is still ep_busy_loop() who uses ep_events_available() without lock=
+,
+> but it is probably okay (?) for busy-polling.
+>
+> Fixes: c5a282e9635e ("fs/epoll: reduce the scope of wq lock in epoll_wait=
+()")
+> Fixes: e59d3c64cba6 ("epoll: eliminate unnecessary lock for zero timeout"=
+)
+> Fixes: ae3a4f1fdc2c ("eventpoll: add epoll_sendevents() helper")
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Cc: stable@vger.kernel.org
+> ---
+>  fs/eventpoll.c | 16 ++--------------
+>  1 file changed, 2 insertions(+), 14 deletions(-)
+>
+> diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+> index 0fbf5dfedb24..541481eafc20 100644
+> --- a/fs/eventpoll.c
+> +++ b/fs/eventpoll.c
+> @@ -2022,7 +2022,7 @@ static int ep_schedule_timeout(ktime_t *to)
+>  static int ep_poll(struct eventpoll *ep, struct epoll_event __user *even=
+ts,
+>                    int maxevents, struct timespec64 *timeout)
+>  {
+> -       int res, eavail, timed_out =3D 0;
+> +       int res, eavail =3D 1, timed_out =3D 0;
+>         u64 slack =3D 0;
+>         wait_queue_entry_t wait;
+>         ktime_t expires, *to =3D NULL;
+> @@ -2041,16 +2041,6 @@ static int ep_poll(struct eventpoll *ep, struct ep=
+oll_event __user *events,
+>                 timed_out =3D 1;
+>         }
+>
+> -       /*
+> -        * This call is racy: We may or may not see events that are being=
+ added
+> -        * to the ready list under the lock (e.g., in IRQ callbacks). For=
+ cases
+> -        * with a non-zero timeout, this thread will check the ready list=
+ under
+> -        * lock and will add to the wait queue.  For cases with a zero
+> -        * timeout, the user by definition should not care and will have =
+to
+> -        * recheck again.
+> -        */
+> -       eavail =3D ep_events_available(ep);
+> -
+>         while (1) {
+>                 if (eavail) {
+>                         res =3D ep_try_send_events(ep, events, maxevents)=
+;
+> @@ -2496,9 +2486,7 @@ int epoll_sendevents(struct file *file, struct epol=
+l_event __user *events,
+>          * Racy call, but that's ok - it should get retried based on
+>          * poll readiness anyway.
+>          */
+> -       if (ep_events_available(ep))
+> -               return ep_try_send_events(ep, events, maxevents);
+> -       return 0;
+> +       return ep_try_send_events(ep, events, maxevents);
+>  }
+>
+>  /*
+> --
+> 2.39.5
+>
 
