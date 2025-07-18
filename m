@@ -1,148 +1,100 @@
-Return-Path: <stable+bounces-163334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C5BB09DF0
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6804BB09DFD
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86C2A562498
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:28:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F191117D172
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D16B221557;
-	Fri, 18 Jul 2025 08:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3BF293B7F;
+	Fri, 18 Jul 2025 08:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="qRIAxUZR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f9ijO7S8"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E851B224244;
-	Fri, 18 Jul 2025 08:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CC0224891
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 08:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752827302; cv=none; b=pZUragNjUeIwds5VkK/TjaG++N8/NZ3dhuDT2seiOIuTbUsp6eouYc6gtgjgvewZPkC30vUQaMp9OK1ksEaB1HMQ69nHG8Fo6Oh3DcHTHJDT1omSA0L3CyfSO6UEJuAhF2vZBTvSwW9sa8amfNgxbGQBPy6/wKwrjqUCuyaNzIQ=
+	t=1752827441; cv=none; b=Msjq3Bt7YODB/YWhdEMz51KT4UUKXWzee6+i1mTk3CUBbSPkzi980pQADKItOUB/WdhCfRfja4g4w8L8LUy4w+0u2veReZeqHOpDorw+1u1kBTg+UFhfFbYriilGip5qL3StIAiScaAWTnetSS0kSimg3YQJMrIp4qcYhx8tT5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752827302; c=relaxed/simple;
-	bh=/DR9yS+KLp30aqF0cUnSG3uJhf2+LBf/ATFKS9NeWrU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D6EybGW4m57O7DB4hfNpt43Kp42wJAGjnlflnpZoZIt7jfO12RH0jJMxJWR3DXzC8065+iGBAYGDhwIZ6N1lhf+76suEnnF89IL5rLk9mf+4lsKGenRmYaah4VtQ3AO1ih2N0lqIjjsu+6qDjQkrQpJgzkr+GRh/7zAJvCSXDbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=qRIAxUZR; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 25205f7c63b111f0b33aeb1e7f16c2b6-20250718
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=i1serjV4kH1/wTwHKRcE1GEbwr2ev0ug7m/0IdNMSBs=;
-	b=qRIAxUZRgwMG/qwDw7fSuP+FjMoebPX2eyVxaCFURXMBUdtQIzo7ENZdg9QyDFeD4Ocgm3cQGjj5olzjx//m40/6PdB/ttmy377qzconSAy2OL5grCUdXbZ6vEGT2TiZAp81v5CcyfUdOCrgytYrx8m0Rj/e0w2/QV7hvIO6Byc=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.2,REQID:643bbc30-2fd2-4eb2-ab57-4dfb01c200cb,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:9eb4ff7,CLOUDID:5cf89484-a7ec-4748-8ac1-dca5703e241f,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0|50,EDM:-3
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 25205f7c63b111f0b33aeb1e7f16c2b6-20250718
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
-	(envelope-from <macpaul.lin@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1599903196; Fri, 18 Jul 2025 16:28:13 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Fri, 18 Jul 2025 16:28:11 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Fri, 18 Jul 2025 16:28:11 +0800
-From: Macpaul Lin <macpaul.lin@mediatek.com>
-To: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Peter Wang
-	<peter.wang@mediatek.com>, Stanley Jhu <chu.stanley@gmail.com>, "James E . J
- . Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K . Petersen"
-	<martin.petersen@oracle.com>, <linux-scsi@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
-	<openembedded-core@lists.openembedded.org>, <patches@lists.linux.dev>,
-	<stable@vger.kernel.org>
-CC: Bear Wang <bear.wang@mediatek.com>, Pablo Sun <pablo.sun@mediatek.com>,
-	Ramax Lo <ramax.lo@mediatek.com>, Macpaul Lin <macpaul.lin@mediatek.com>,
-	Macpaul Lin <macpaul@gmail.com>, MediaTek Chromebook Upstream
-	<Project_Global_Chrome_Upstream_Group@mediatek.com>, Rice Lee
-	<ot_riceyj.lee@mediatek.com>, Eric Lin <ht.lin@mediatek.com>
-Subject: [PATCH 3/3] arm64: dts: mediatek: mt8195: add UFSHCI node
-Date: Fri, 18 Jul 2025 16:27:18 +0800
-Message-ID: <20250718082719.653228-3-macpaul.lin@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250718082719.653228-1-macpaul.lin@mediatek.com>
-References: <20250718082719.653228-1-macpaul.lin@mediatek.com>
+	s=arc-20240116; t=1752827441; c=relaxed/simple;
+	bh=VIOyea15uP6Bo32Qvnm7JomSOma2QMB7RwxQQLut0B4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=qWVoGEMoPcbpOPJCCpu0E/XD2bvBSqjnrc3eqDAbqqTS0iCC2Z+I/wRAyDgpvkLvGRYPme7qHVE7pRxnk95PYwcUV/Trkm63cUuNcqkp5nQWsG5KerCtNuAHbijzPe/9KTxQ5FDf8Z2VUkY9YWOikBrSr4A9LqLuw0xiKlnVet0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f9ijO7S8; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752827440; x=1784363440;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=VIOyea15uP6Bo32Qvnm7JomSOma2QMB7RwxQQLut0B4=;
+  b=f9ijO7S8esmTSp7B9czxEnzwnZ4XL++9YJHwri+xXddHbf0lGNzldGQv
+   xEKc1TYitc1N+zlVE+58hJ9eXZeq8mK5nh7P9p6Uf4b4LgB1hWee8KFZ5
+   tElXyqi+PWwKp0qES2H6zooTnTS6x2Txi3D6Aky9StKJrDCMmEMHtLFW6
+   GIkrlevEE3Cij/+loDSCIFiCNqOOTZYWj366tQ6YeKp6Zr+2clCM+M4q4
+   e3ZfK2NcvfqrFaUT+3F7eHbvqBByoQcomJTx+bwhj2sVd+7zTcfXMqFnQ
+   in/z8DHAFktQsI8N6pXFVP7ZvM9STysdCSfkj7Ovtv+2raeftJSfOv+w1
+   w==;
+X-CSE-ConnectionGUID: kKA5oKpUT+2LyBRCJ+f2+A==
+X-CSE-MsgGUID: zoHSwOU2Sk+CDV3QGVKKKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="66566019"
+X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; 
+   d="scan'208";a="66566019"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 01:30:39 -0700
+X-CSE-ConnectionGUID: +AY4YLU6TaeMQlOZc+VJeQ==
+X-CSE-MsgGUID: ouEqaQghS929NUmG3316UQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; 
+   d="scan'208";a="158573131"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 18 Jul 2025 01:30:38 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ucgUG-000ERd-19;
+	Fri, 18 Jul 2025 08:30:36 +0000
+Date: Fri, 18 Jul 2025 16:29:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Macpaul Lin <macpaul.lin@mediatek.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/3] dt-bindings: ufs: mediatek,ufs: add MT8195
+ compatible and update clock nodes
+Message-ID: <aHoGBmNFD4FZqJf4@c1a0ab53bc35>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250718082719.653228-2-macpaul.lin@mediatek.com>
 
-From: Rice Lee <ot_riceyj.lee@mediatek.com>
+Hi,
 
-Add a UFS host controller interface (UFSHCI) node to mt8195.dtsi.
-Introduce the 'mediatek,ufs-disable-mcq' property to allow disabling
-Multiple Circular Queue (MCQ) support.
+Thanks for your patch.
 
-Signed-off-by: Rice Lee <ot_riceyj.lee@mediatek.com>
-Signed-off-by: Eric Lin <ht.lin@mediatek.com>
-Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
----
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 25 ++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index dd065b1bf94a..8877953ce292 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -1430,6 +1430,31 @@ mmc2: mmc@11250000 {
- 			status = "disabled";
- 		};
- 
-+		ufshci: ufshci@11270000 {
-+			compatible = "mediatek,mt8195-ufshci";
-+			reg = <0 0x11270000 0 0x2300>;
-+			interrupts = <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH 0>;
-+			phys = <&ufsphy>;
-+			clocks = <&infracfg_ao CLK_INFRA_AO_AES_UFSFDE>,
-+				 <&infracfg_ao CLK_INFRA_AO_AES>,
-+				 <&infracfg_ao CLK_INFRA_AO_UFS_TICK>,
-+				 <&infracfg_ao CLK_INFRA_AO_UNIPRO_SYS>,
-+				 <&infracfg_ao CLK_INFRA_AO_UNIPRO_TICK>,
-+				 <&infracfg_ao CLK_INFRA_AO_UFS_MP_SAP_B>,
-+				 <&infracfg_ao CLK_INFRA_AO_UFS_TX_SYMBOL>,
-+				 <&infracfg_ao CLK_INFRA_AO_PERI_UFS_MEM_SUB>;
-+			clock-names = "ufs", "ufs_aes", "ufs_tick",
-+					"unipro_sysclk", "unipro_tick",
-+					"unipro_mp_bclk", "ufs_tx_symbol",
-+					"ufs_mem_sub";
-+			freq-table-hz = <0 0>, <0 0>, <0 0>,
-+					<0 0>, <0 0>, <0 0>,
-+					<0 0>, <0 0>;
-+
-+			mediatek,ufs-disable-mcq;
-+			status = "disabled";
-+		};
-+
- 		lvts_mcu: thermal-sensor@11278000 {
- 			compatible = "mediatek,mt8195-lvts-mcu";
- 			reg = <0 0x11278000 0 0x1000>;
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 2/3] dt-bindings: ufs: mediatek,ufs: add MT8195 compatible and update clock nodes
+Link: https://lore.kernel.org/stable/20250718082719.653228-2-macpaul.lin%40mediatek.com
+
 -- 
-2.45.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
