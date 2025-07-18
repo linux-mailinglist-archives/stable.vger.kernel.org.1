@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-163314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B82B09937
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:34:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EEBB09938
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FB2E17F415
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:34:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7E72188DF31
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A311581EE;
-	Fri, 18 Jul 2025 01:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02D213C9C4;
+	Fri, 18 Jul 2025 01:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VrBdlBdC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dGDcXFMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23323398B
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8002513DDAE
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752802479; cv=none; b=uZkIqPVJB8FAU+mMAdMHFJ/n7l7Aq2y7SESjZGqB4G/sQrB+MfqcX7iOAcL4pejeoWUNoCKtdt6LdelHIBd33vsHatPFVDDAyFmZ/DvRiJ31IVggGR7esmdCfLoIsNWHWULsaUOyTVUwPN9ybrHRGCEb9C38mkPPAexX4DmNsgo=
+	t=1752802482; cv=none; b=Ic/3MBMbFDbv5kRcaJyYsszDZd+uIgbe7xHbW23CYyeG44xgferuLGFkO/lCoKL0opYKfwTAMS//gq0jU7ntL/bRZCbWpbCIfD39oL9b7nBIrWPH9Ml1IP8Q6+wCAQquGV3wbJlUHBOhf7mBQ5pWmxkX00bRhAfq4ty+2jX+ou8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752802479; c=relaxed/simple;
-	bh=E62KsOzzfxMa5qTU3lUAqf6/UAV1UElYo2yGHME6rFU=;
+	s=arc-20240116; t=1752802482; c=relaxed/simple;
+	bh=1erUDSM1vxZP8NFoFlsF3ODclsLwJFks1oRRflLBu7U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KU9+wqI6EYXEavgspABno+Bt7wmz+0tU9mwlzgZzxZ59blad1/vs5AQRCXXPwFgmbH7qOUPVFOd9YER6ui3hGmskDFRwyv92xKzDwjIR1lV0KN06dtGaywO/t6MUO74T60kxW/RnnjgNTLAGt9DesLoNFxIQtfghiQP943/d2p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VrBdlBdC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8711CC4CEE3;
-	Fri, 18 Jul 2025 01:34:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kbxco43a+bXSK9HPqmVtYojXdj8RzW8hX2Gxm1ZC3ybJB7RtGHLJR8btXjK+d4bs87kYmAJCDBOH140LFhlsJE5Ir5sVmK/h7vZDofMonCmP/ILGrDgRMerLg5ouZWO19fJGm9hzkGy2DcWFeijxi8O0YHy8K4Qjdw1FHub9+Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dGDcXFMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70BBEC4CEE3;
+	Fri, 18 Jul 2025 01:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752802479;
-	bh=E62KsOzzfxMa5qTU3lUAqf6/UAV1UElYo2yGHME6rFU=;
+	s=k20201202; t=1752802482;
+	bh=1erUDSM1vxZP8NFoFlsF3ODclsLwJFks1oRRflLBu7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VrBdlBdCjFtoTSusRRTnVU9C+uQ/KALoA6rms1WyXRsTxqeo/1tv8EEjNBNDRVctB
-	 mDIzie0wJRKLFGp2UBFGAmyrJAGqbOu/iFvAdF/lgQW6+CQSmiP7PcjsIb7uBs30lh
-	 Ddbdpt6GBunej/G3Sc7k3b+D+PuaHQTrkMDho/J936f3uuDanPqu8PCXSFneYyl40f
-	 bY+ewcSRLACQC10nZr8pvy7drn5uPAaI2oMYadCOo3+qdX2S36gBAwfj01VTowqDk2
-	 Hz2eiocpCIhpmzOuZEyp7xG8lqnwD9v+p1Yseh0ie4I/GKO5vIJUJCpTDBo51GADDY
-	 tamoT+3kJHJkg==
+	b=dGDcXFMnMEpbmWer/wmIHVAe8iYHea+OJodGv36Aw9YJLsmaQy5CcZCxfXDAjEccZ
+	 pA8dFIBjiP1oSxYEnoGcyKgdmziSn+VJuO3maJ+7s3zonFkzWUBfqsA6hLYI6mGerA
+	 tpTzgqIz1UCCW1PwOlMCVPTOPiwSzh3a14mUx+cEzvP2SG8DWi7LRZdwe8JrRRwFus
+	 ++tAGl9io9HZc0wsaynVOsEbdkMjg3zP6Gz4KhqwxPFR4boze7ZeGmN3wry+fR8VnI
+	 hnoukWd2XZ6HicFvSRP/4eT4IHTs2bli2uO9Gn4Dn21iIOQb1tvDfgILIg/651CUZx
+	 tGpMN35p7mWXw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	giovanni.cabiddu@intel.com
+To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] crypto: qat - fix ring to service map for QAT GEN4
-Date: Thu, 17 Jul 2025 21:34:36 -0400
-Message-Id: <1752795908-8533c229@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y 4/6] net_sched: sch_sfq: use a temporary work area for validating configuration
+Date: Thu, 17 Jul 2025 21:34:39 -0400
+Message-Id: <1752797234-2f11d75d@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250717170835.25211-1-giovanni.cabiddu@intel.com>
+In-Reply-To: <20250717124556.589696-5-harshit.m.mogalapalli@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,29 +63,18 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: a238487f7965d102794ed9f8aff0b667cd2ae886
+The upstream commit SHA1 provided is correct: 8c0cea59d40cf6dd13c2950437631dd614fbade6
 
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 82e4aa18bb6d)
-
-Found fixes commits:
-df018f82002a crypto: qat - fix ring to service map for dcc in 4xxx
-
-Note: The patch differs from the upstream commit:
----
-1:  a238487f7965 < -:  ------------ crypto: qat - fix ring to service map for QAT GEN4
--:  ------------ > 1:  1c3a13c46a06 crypto: qat - fix ring to service map for QAT GEN4
-
----
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Commit author: Octavian Purdila <tavip@google.com>
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| origin/linux-6.1.y        | Success     | Success    |
+| 5.4                       | Success     | Success    |
 
