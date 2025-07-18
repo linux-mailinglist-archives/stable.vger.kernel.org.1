@@ -1,151 +1,190 @@
-Return-Path: <stable+bounces-163320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29382B09A0C
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 05:07:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E943B099ED
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 04:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A94318899C9
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:07:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C4023B7755
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 02:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE9917A2E3;
-	Fri, 18 Jul 2025 03:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031701C5F14;
+	Fri, 18 Jul 2025 02:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="GhqCM4OK"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qSYBk9ri"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic306-21.consmr.mail.sg3.yahoo.com (sonic306-21.consmr.mail.sg3.yahoo.com [106.10.241.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2043.outbound.protection.outlook.com [40.107.223.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B727C1400C
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 03:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.241.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752808032; cv=none; b=CYxy0k3X2kPywIaZ4MIKaNQC0cZ5nTBI8PKAcBF4wA6hUX89hZgciD9NQPUPh7TZsFKCdzkpN/fEwCfNbfLmrrKz97OhMbRxzyTjSYeOrc9BqNCjaNYBlRO2bUrus8E9sdU59QuHZ/sfI985cOMGhmAPlQaBLW4AVkgkyBsgUow=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752808032; c=relaxed/simple;
-	bh=n35W0xE1KRwyXbLo/I23QujB27Prt4ZJPQ458DzJTjc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qu6vFlSM09XhsBFMMZOrE6evnUK0CYJbQyksKwv5XzjihFovJWdHR/tcWuF7DkL4NLFGeEDgc8DJJXbVSfMyhFOCEGkNjVyV7xbOMBl5X8tp2H5ZsnN+tm/GhAyntRWjltlxbLff4iNtGhxD/Ra6/Maog8P/U1o82bagzm4IzyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=GhqCM4OK; arc=none smtp.client-ip=106.10.241.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1752808028; bh=KnfypI/4lpZjtaqAfDlUQ6peA6y22hadDc71Xj3e8Rw=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=GhqCM4OKYOY1blLM/zA0U1Po6WGwaMlMINV3aHRbsTvT7OoIf1J6U8tyDStk/ICNvxZPWetlMqqHxnc+sDlkJa9ca1xDCadS3PllDEBJdWqm5XbpLGBX1BPim9cv6rBLEOyy9tI6l+A+tLw/hXh+O5xRGx68lAnlQY4pmczw/HEs+rBUTCA2xBpo9rvcs1wePp4OGr8Y7CRUVDuEBD4cmLhew7nwzzOILwjkcSNP4Ng+UYsRQIVQRdBzOEBRaRcqZq7SRObJmlJ777m254FjTmvPmR1Jatn04FRCEFJVv8nr03ebPPceYXILFps337VZLcvwxlLzAV7zmT3UFs/hoA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1752808028; bh=JrlNTxZQef+KFkz6+Vv1s3hmVOqaKjy2ex76gzU75P1=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=sK2iwuAZCujucS8LGfsdu0V22vFlMTKyCzrXhwizwNlHWDbFoWLvEXY2O6p0x2C3/JH1gP4SA6X+xdbzfQ1f2fCVfKxGQwm+vfTAagXsJzNKAgZQrcxOWVyeQWaUh+GrGxr72OHQnID9K2bXrsCcoNLPzxdQUmrRmuldUx22/jlTolDwJqo18gd0jrUwveuOuS9EpdSW6yQt4rvcsP5PigMJ/FdhGKSacHEPjJIZbmyxjCDtb8rQawytwPpB+YdnJgLcW8B17ReRlyAO7x0U72JNnMDjIfaLbUcUrhbtd0zug/tJxNEkitnwxvXS2xO+2+e0wcgtBkmtuwzz9tqWDg==
-X-YMail-OSG: 2DGhbhsVM1lnLzolCVXTUzdG.kL95lj2huabQ0kB4HVBiPj4VS4R_rWrkP.3HTj
- LBL_sx36hwN2jq5lygyH1685LZSqKvnG7hzPraOVkU_ZktsY04frlpK54nWDQDk8ISxTCXliwFak
- vpLWese3_nBwizWCcjrDxhWsKcyxmUFnW0IOcitBdj5EURN6sRtPdc0ihWymTkOPoppOKK4i_vWE
- B5xo5tnYv5NQb7.yVXOYw6kjMrVTAzzifQlUGiNNEyfAALRDugWDr82ppqxgBnUHXRC.aSCKtqoj
- _owERHpdvF7hSXR7RcvBPplxgFobMoePMAnabxdIxhR211.E7ygWTdCSFI29_oATzdLd4gYoMv2J
- LJC64g8EpDDU.ME5KD1woyTMWW_chVqy2sYHlG504f.74zpqSoPvl43p0rR.4oAdD.wwvjI2e4Xd
- 2TDWZKSb6b8emwL0kCTJvVgndISdsaFPTb5ga4kEkYxk8j9DNN6NKaC9M9hPDSMZ1IVbKG4x.IFa
- uz6k_R7ZRu0F9leFY7C82U1RY60YIDq9GgOtLHvRul2mbLckCienprIYW9bgwOQ5_iOrBN2sVT1C
- uVH9SdcqubaCw5cHzsHDhcDgBEsplVCDRQBCfrBb9uvPlhUat0kAUfOfpeh4K_oGkHk9b7QRRoox
- L2gnUIRYC2qD.7TaoOywwSp1WEk_mQYavA0sYZHFCU48Hm3U_2xYkQJaWpNhxNqco21FyP2acDyH
- O4NgZIkOdlaeZTddJvFtwaSXtUgR9.Op2fvI99asorbhe58JmmI4vi5xzqAZ6pAghIYzwVSgDEMV
- TgwquREho8TMfid.Ye346zwMmK6DQwqr0TBG3faN6XPFfe5spfwCsgbb5gMjq7xd6xtpmAZfYslj
- pkq3cJHudcwQUrOdVoga2oiNA.ZFL5LCxMAA_Fp91X3.cCgAA1oh7tPlazs_.rkDK7_7TKXYM5nM
- wOs2TH60EV_g5rPVTQy_vA39Dv3KTLm8YDkpv.DqBKhqhKYVDXM83epbxAOHXb7HYqdbcKrjZKph
- e4ZzGnr2SQ0UoJzd0RhAOWfpA1VgkQEsOnVZMNGF5Tj4v5RHgeUdxw6R2.x80EsZF5RZsllnK4wL
- yXYzIkHS1hcyBicSiGir78jqo0OUGhtRnEzYYADenq7co2srrKC.hiYLtelatzexnaTgKLoqryaK
- 9KkV0R9_BUdxFHmRvl6ClpF38Rt06yv0Mqe454u7tVrCQXOd6sowJo1J47tQ3aB6ptof.2mkhzHW
- JUJ75xQ9l24zXcr81ZNLz1GLIht9DEBcSXW1qzwAy5T5WgN6W3fOYNDqkBisnDNwSbOjpM.ThSGe
- w7Xp.0ViqJJITfMTwylZLH5VPUXXXmS3QPSCBYI20tKBunCTWUw4FxyqsgeGE94YuZEr2BRBe62T
- Q2jEViez9UerJlqvXli4tuArNwf92b2JiycCUDsrpi7IEHazos_6Dc3wz7CyTPnfEXfCaBSpn8TG
- veoihmxujTIuJaikGYtveoll3LBPVNjSoifl0Xnb3wKUJ3pwgqGx2LzJplTfjXyx.NgOFEJmbduG
- SCScmYnSxTsFWkeUZAak1AQKwHwoXWn6Z02rUA8d6NW6arq_8.cpmFBGO1cart.pke.xf_TZZPfy
- EAvqak6PE7H1ICS2r3N8fMgpyWGNIEfsgeII3_titQsOoaJ6TENbVjcSa87jZY6UP3NiyM6JXHtJ
- lsJujrCogPePQ7hHzKgssS9io55wf4EGG3qZdRKOKsht.a9r4Q_LnNHhtE64zWH0Wc.6oJ2ssqq2
- 16bRV87Sfn9CE2ii3dPAoAVM8ce2J6vTG4x2f1vie1_5XjERSoeDQnLoBsiUnUJ_btFdSK7Da5vN
- _ii97yGGR74bGZblXHFdQZufy5qNArQ2pl_2Nf2uPYXrwJm4UVopSgFmOIBP.tb6XWLv86Qq4m4.
- gQ_m4tlvbBbyb.wMhBt8NdQ39noGGPGoeaMj2MkytVcym565j7D4YZEQ_aRSE0pBJ8rKBWgyF.Sb
- J6RENjjyuRP41IaDVx4GxH6aOXft.daYQzKWPKddE0kmOSaCi1Ds19O7iFMfW5KsBe3AtCmXsj0A
- SzhHZM0ipNn7cvVExVJH7j2tBYmoTdLK1ByZMYPYODEH5gGGolstYqdgNshzAlfS13.v0YOBaQZf
- YIyo_Iwin72X2sRw6m6iUwg4rdKGcDvjQPWj8NRJViu9jwODe3DQ0ao6Dvl5ZumnceZmm.gcrUbB
- mQl3r_yF6XkBGkzx_GtS9ndUJr6kuHdUs3LLwrdLEE6Giswi8FBg17P5USTE9sn8KrC85olKJCBb
- mG2N7k3BBjmpyriuFackYk4comaZ9gkoO9yE62Sws
-X-Sonic-MF: <sumanth.gavini@yahoo.com>
-X-Sonic-ID: 2a6f5cea-ec48-451f-b092-f4c6414def04
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.sg3.yahoo.com with HTTP; Fri, 18 Jul 2025 03:07:08 +0000
-Received: by hermes--production-ne1-9495dc4d7-4hxbl (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 658c3deb5093bc2afee7b1ac10fa70e9;
-          Fri, 18 Jul 2025 02:36:38 +0000 (UTC)
-From: Sumanth Gavini <sumanth.gavini@yahoo.com>
-To: lkp@intel.com,
-	gupt21@gmail.com,
-	jikos@kernel.org,
-	benjamin.tissoires@redhat.com,
-	sashal@kernel.org
-Cc: Sumanth Gavini <sumanth.gavini@yahoo.com>,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	stable@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	oe-kbuild-all@lists.linux.dev,
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-	Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH v3 6.1] HID: mcp2221: Set driver data before I2C adapter add
-Date: Thu, 17 Jul 2025 21:36:33 -0500
-Message-ID: <20250718023634.267341-1-sumanth.gavini@yahoo.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <1752798271-200317d7@stable.kernel.org>
-References: <1752798271-200317d7@stable.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AF2189906;
+	Fri, 18 Jul 2025 02:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752806779; cv=fail; b=lzziF4MELX1BuC8ZWyssoxp/JoiuuJ2f2xqnDZMpq+d231mIKe46al0flhWuXiJMUn4RRPhOs8Y+b7OxExBGmmExaVasKJQ/fk0ES7vdCdIKAoqOwRcf3wQpNvxMBTkAe9TOcgIEhKwSBWMk+feE2a1U33oOB3p1m0ypd/e+YNs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752806779; c=relaxed/simple;
+	bh=s3zhjWVK89Vq3ztI/frYrZD4vVt+W36lNeVd82u8yXU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TaaOMkDFByCW0qRnzefITVAhMxFghukX3N+RqtFX0MhbSSt/HWiylfDor1vbI8vVbpBlIKXhVnLTkbIiaEQ4Dijy81lwhXFByMBilDi3C0VteVdUUNmrjPA1zvBV1eX9yrtykfU7/9QRtMcoF0To5Ma4z6mEoefkrjbkLSY89wI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qSYBk9ri; arc=fail smtp.client-ip=40.107.223.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KN0+RfsF2uhlPm99t0B5kVCfULgZbl9TBiMS8PNXc30yOp68YpnEv3OFwpWw5MmJcMATBzc/Pi2zYnfap9aDtD9PLYaJ/zP1IxGMFd+J9GTwSgq866BpbKV4HwCHeXZN0GUnhQsrsIILLP60Cjt91Mo+/7vqaRyKjTuaRtfEr+QmbLQc73/Q6pA4jWpkkQZ225zz1yMjdw8Agwuue/40pQQkODnA7zU0ph3z51NaB35TPIIz/oIVLomL6KdfOpTAteOYr2hSxjuXI37qt0QQ2D8BOPyVjGC6o8DSnKsZGxURRoqfzHCmjL7LD79cJhMfc0peB6jYx2Lw/mzxDJThOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WXVyvQsBCmUjIjt8itUCvxkt2b1xHkmM/8/7q6iBnPA=;
+ b=pMm1A5AjRVfN7kLq0gyfQw7KPlwBdLE+jztQeDghjJnBaHz3cGxjSo1uoH6itODsnkKC0trCUj/7BzI3XCAEQd58uyFRtof1p/0WuHmCj+M0Pb11xeZYWkEG3Pzq4f59Rq5UksBM1FzZ6iFTpIA9TlxEXKW3EBms3UTZOidab2vzz0yyY0jx2uYfGCreaItPb21NT1wQaHL2933/N7tz0ct7NwYs21jbhY9i1Icr8yEejET0E8e36YgLxwrx/oYQU+tWVF1eezzlpi5pwf0L6tlVlizWh3gSrMahvO9wxOXylvitniF+CqPZYxIwIGPmmJGAAv8oShhGzTQzt4YTLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WXVyvQsBCmUjIjt8itUCvxkt2b1xHkmM/8/7q6iBnPA=;
+ b=qSYBk9ri0qOrqe/GfEw8tCxW4maJw4wu9nP1vlV6MdNOHMEt87GgWBLgJXDLU9IUInRqherj0zg14iCj6UUu2qbCCoQTpOm/jZ9kL88r6dY/tfRB61o/H3QKZwfNGnD7WyPIFewNRwdSutQ8qMFaGh+TnFNSCIJvoY2wz6gd4FkIbsqSsZOgnAO98D0CdbBUv1Fku3N4Cwp3ieFctqIzbqlzXN6Hjl9N9VICbU2w4gUrTjpSx4jUIIoLBmBPagqHfenxD/1zIjWpkJDP4L9w6SiuFxrXx61Cbn/lr/RhI2ZoW131s6bKZNPmoJqsqICMdMNqb+HT+3JRviPEtNDSaw==
+Received: from MW4PR04CA0375.namprd04.prod.outlook.com (2603:10b6:303:81::20)
+ by BL1PR12MB5946.namprd12.prod.outlook.com (2603:10b6:208:399::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Fri, 18 Jul
+ 2025 02:46:13 +0000
+Received: from SJ1PEPF000026C5.namprd04.prod.outlook.com
+ (2603:10b6:303:81:cafe::d8) by MW4PR04CA0375.outlook.office365.com
+ (2603:10b6:303:81::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.21 via Frontend Transport; Fri,
+ 18 Jul 2025 02:46:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ1PEPF000026C5.mail.protection.outlook.com (10.167.244.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8943.21 via Frontend Transport; Fri, 18 Jul 2025 02:46:13 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 17 Jul
+ 2025 19:45:48 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 17 Jul
+ 2025 19:45:47 -0700
+Received: from Asurada-Nvidia (10.127.8.10) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Thu, 17 Jul 2025 19:45:46 -0700
+Date: Thu, 17 Jul 2025 19:45:45 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+CC: <iommu@lists.linux.dev>, Joerg Roedel <joro@8bytes.org>, Kevin Tian
+	<kevin.tian@intel.com>, <linux-kselftest@vger.kernel.org>, Robin Murphy
+	<robin.murphy@arm.com>, Shuah Khan <shuah@kernel.org>, Will Deacon
+	<will@kernel.org>, Lixiao Yang <lixiao.yang@intel.com>, Matthew Rosato
+	<mjrosato@linux.ibm.com>, <patches@lists.linux.dev>,
+	<stable@vger.kernel.org>,
+	<syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com>, Yi Liu
+	<yi.l.liu@intel.com>
+Subject: Re: [PATCH 2/2] iommufd/selftest: Test reserved regions near
+ ULONG_MAX
+Message-ID: <aHm1WRAGgk/6HZMC@Asurada-Nvidia>
+References: <0-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com>
+ <2-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <2-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com>
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000026C5:EE_|BL1PR12MB5946:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01b503fc-ca8c-4a03-0790-08ddc5a54283
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|7416014|82310400026|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?/HUT/Ezk2VjVRzuRvKHF2LR6gg5fnyVnQCvYyh/v6CFzOQHaLKpfzNrXa9QO?=
+ =?us-ascii?Q?wLZzQk53PnchUINJAylbLQ7rd7HnINvLyZFweewjQ9b1vLpmwUSbA0UUHWIA?=
+ =?us-ascii?Q?UEdBwg3oW494CcBsT6SPDeNTqigV3mIv003aanyXR7UxTbC1xuBPJIczpHpB?=
+ =?us-ascii?Q?46Sk4GbomGsHExHJAyIGu4fbzxA3ev15d1X0xOb/cYx06UFNTa38her9ai5P?=
+ =?us-ascii?Q?KzTQX6agDU2nVSycVjqPZ2TI5NQ+h5d6Z5PLBjF9eFbUR6RYeoC31vQvaM5n?=
+ =?us-ascii?Q?AgQgF7LUn4KCX7JcV/cV8y7IuofnGjEcFK2Krg3RMl8uBvMAbo/8b1aqs0M4?=
+ =?us-ascii?Q?8eYMN56FZVwRaSvkQ9o9RZ0/4Wt6ECDoWmLO39NQaxpyDlgoQfFjASYgn42P?=
+ =?us-ascii?Q?+mW2agG15YDgEC+CX/AbEJdTkIl+D1BmAxuFVQjJ0850RPhtqxxfjwzS/38T?=
+ =?us-ascii?Q?77Oyo+QQMTfwWSxDPMF3755OqL7IobIKdkW4By2mZnsdKykIEOLzkzYaxmwE?=
+ =?us-ascii?Q?imRHUYTKTv6CRCaJQNHaWLmzHLSNufktwEJHpBFBq5dPUcR17PsdMxnO4m2a?=
+ =?us-ascii?Q?dcp6VgGVvqkvnB/VFfvaWQZnh36qiAKapzN0MmJxliozLv7KtYLkPHWDVuXn?=
+ =?us-ascii?Q?P/EQJ6bIVCqmTb3ZObg3ITmI7pTT4ryuD7/5QJxyoib0fE4sapycZlcCPYtl?=
+ =?us-ascii?Q?xJUXps9HdzlF1SIP8rEr/SQVPOCZaE+t2b+ANv+EHcvlDP8eMTncRIrArswV?=
+ =?us-ascii?Q?rBJGh0w+zzkW9yNsOiuYbcSlAvMxSlogpWakOzpRooraedswxU4SxXIcANX0?=
+ =?us-ascii?Q?bCvFVm4CtLgv6w1SFMLz0/kTI3KeWU8bvX+qJ5X2X07dvvGTMFSzS5R4hLOA?=
+ =?us-ascii?Q?SUWGoEH/iDSkTeF8BnK0LEy53ImZwdMk0jygtZIWHD2kJf1nEEq0hlsk6m5V?=
+ =?us-ascii?Q?bkTSrymml/DnggsKnjwibR+j0v/TMlvE1AqwwHprlSw88JjMAlT20nveTIy/?=
+ =?us-ascii?Q?PFafv6eoDFYTsD59Oe0xMS7KvpnuBcnNPKhYqIfullEdq719tRSY2cdU3jmB?=
+ =?us-ascii?Q?P4kmo7iIi2Tl09sVa0hVahyEalxSAvBgc7YJTavk+95HEBaqADAPVclijGRL?=
+ =?us-ascii?Q?kkwKbAccXwrpogqLpZaEwBLd/43ZWMgK/13roevO9U2BuqQ9GZtOpf3KUSz/?=
+ =?us-ascii?Q?CE32+H7gnneF7//MnKTRn7P9RaaLds1cjulunO3LdNlVLIPbK/MTT0e/jtsu?=
+ =?us-ascii?Q?WezLi1GET/2A31GHsrfxSXlo15VcrJHAkCbs4CKS95WvcP6wUX8ZMOUw/tLs?=
+ =?us-ascii?Q?qNCYGDDikbC4mTLZDEKbDSpN2p/QBZFrGKZbzSIW7ecQsulDBxvuYnDdzgbt?=
+ =?us-ascii?Q?XyRTNz03zh80HIOllQk7HPmcRih6beJvsz8nmEEjZR00Peo8klGRj7HrTh+5?=
+ =?us-ascii?Q?jI6lnlQ8kviqvcy2ju691MMHfIZB6bqGI8SDNhzaMDl+evOBscZsXBpZBOK/?=
+ =?us-ascii?Q?2Yr+6l9zmjdEBukXJKRJptIG2v2QL3QXRG9P?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(82310400026)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2025 02:46:13.2001
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01b503fc-ca8c-4a03-0790-08ddc5a54283
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000026C5.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5946
 
-commit f2d4a5834638bbc967371b9168c0b481519f7c5e upstream.
+On Thu, Jul 17, 2025 at 04:15:09PM -0300, Jason Gunthorpe wrote:
 
-The process of adding an I2C adapter can invoke I2C accesses on that new
-adapter (see i2c_detect()).
+> +TEST_F(iommufd_ioas, reserved_overflow)
+> +{
+> +	struct iommu_test_cmd test_cmd = {
+> +		.size = sizeof(test_cmd),
+> +		.op = IOMMU_TEST_OP_ADD_RESERVED,
+> +		.id = self->ioas_id,
+> +		.add_reserved = { .start = 6,
+> +				  .length = 0xffffffffffff8001 },
+> +	};
+> +	__u64 iova;
+> +
+> +	ASSERT_EQ(0,
+> +		  ioctl(self->fd, _IOMMU_TEST_CMD(IOMMU_TEST_OP_ADD_RESERVED),
+> +			&test_cmd));
+> +	test_err_ioctl_ioas_map(ENOSPC, buffer, 0x5000, &iova);
 
-Ensure we have set the adapter's driver data to avoid null pointer
-dereferences in the xfer functions during the adapter add.
+When:
+PAGE_SIZE=SZ_64K = 0x10000
+MOCK_PAGE_SIZE = PAGE_SIZE / 2 = 0x8000
 
-This has been noted in the past and the same fix proposed but not
-completed. See:
-https://lore.kernel.org/lkml/ef597e73-ed71-168e-52af-0d19b03734ac@vigem.de/
+This likely fails the alignment test, returning -EINVAL instead:
 
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
----
-changes in v3:
-- No code changes
-- Corrected the upstream commit ID
-changes in v2:
-- No code changes
-- Link to v1:https://lore.kernel.org/stable/20250716195316.176786-1-sumanth.gavini@yahoo.com/
-- Updated the upstream commit ID in the log
----
- drivers/hid/hid-mcp2221.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+# iommufd.c:988:reserved_overflow:Expected 28 (28) == errno (22)
+# reserved_overflow: Test failed
+#          FAIL  iommufd_ioas.mock_domain_limit.reserved_overflow
 
-diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
-index de52e9f7bb8c..9973545c1c4b 100644
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -873,12 +873,12 @@ static int mcp2221_probe(struct hid_device *hdev,
- 			"MCP2221 usb-i2c bridge on hidraw%d",
- 			((struct hidraw *)hdev->hidraw)->minor);
- 
-+	i2c_set_adapdata(&mcp->adapter, mcp);
- 	ret = i2c_add_adapter(&mcp->adapter);
- 	if (ret) {
- 		hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
- 		goto err_i2c;
- 	}
--	i2c_set_adapdata(&mcp->adapter, mcp);
- 
- 	/* Setup GPIO chip */
- 	mcp->gc = devm_kzalloc(&hdev->dev, sizeof(*mcp->gc), GFP_KERNEL);
--- 
-2.43.0
+So, I think we'd have to pick a number aligned to MOCK_PAGE_SIZE?
+e.g. changing to 0x18000 for example can pass.
 
+Thanks
+Nicolin
 
