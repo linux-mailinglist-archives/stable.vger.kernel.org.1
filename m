@@ -1,178 +1,128 @@
-Return-Path: <stable+bounces-163330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4CCB09D93
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:17:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30309B09DCC
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADE7C189C5C3
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:17:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C6E67BDB8D
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2647F1FBC90;
-	Fri, 18 Jul 2025 08:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ajr6kXGu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69A4221557;
+	Fri, 18 Jul 2025 08:22:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2086.outbound.protection.outlook.com [40.107.243.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E12F1F95C;
-	Fri, 18 Jul 2025 08:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752826624; cv=fail; b=YCwESyVkUBqa8mT307JG/2gbfh6SSK59ZWckSOlvHM+KRyBiOtzLvUZIkH+UqM0xEgv9KOPSmvBdMr9dwUqcJDzH76xOel1suJDiE5IDWWxnLBBpwJMSuVoNm8Iug5gvuas3qnfA7x4F5KNJno/26sLRIjeEa5TqsU691FZmvh4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752826624; c=relaxed/simple;
-	bh=A16MMOeH8eVddNha29Ul/mMcjB81dI7ABVh8wbm688w=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PPj1pWdDd21LogA/GJqMG9DTM/3z8zCNXQnbLwwgnMtpvzPnjGNO5PJo+8P0+5IVlnwfSwvcw7HkS1+/1/MN6a1ufx70WNrd0IIL4MwYTCQkX7yroi3ZiZ+zswcwDCYuYzDqs+sSnTSNv3D0G4UNKUHlmiSzujBlzYZM0//A2IA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ajr6kXGu; arc=fail smtp.client-ip=40.107.243.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nQNfkBhNjUus6MOIRP+WDxhubpcpLQS0F7lA8nOC/WLrEkN+IFvAczYi7Vp7IiQi7GBj/8/uDoIjxkCDXxTca+VfC5hmDZBAWV+ClMuWM1h3vLXFPj6sLFUTKxqZLgcmhUJEJjYiPKopmz9T196FzC1UwqiN21LnUziYzIyIXf1BA532jdFMpslPkoO68pDrdy3imE4bVKNSbW1q0Ep09TwlR87Zy6ILp2U9yF/yHUpEjBGC8MDr47dKPQSOcHKYqKGA/9TESPTCV6FpeQmq0lar7wnjaqfMk5pyViIJCSklUIa/zQp2EN3pZeaPvKVh5qdYzRXh+Pu7sNdUlycO+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nCscc1Mj8zW5D6KeX+rSYnw+j9uwJ3K3JthqD8Ei4fs=;
- b=bX+uMub+IPKv6F2OjCjd/Esr6n9ISwHwGZUFOLRMiNn0AJORPaGZuEJMR2VXUlWw4vVzzulc8Ice5WxmM7qeXxT/jycLBGgcK8k7IkwDk2wC+SWlUGB+kcFUWB+E0/knr5VRVW5CV/m826hRYWn1C2kWupQ5xlaRO2RgTlKrmZ4aYAE+rL+wFeckMtGvnxsRa9mg3A9f8S016H4rBeiRhi3zcb56uzNgMyn6NCfYd4cxsvK5g/EB42TXHT+FZl/wqDX7WuF8Fb1S2mqf0/efRHScxJ5VOY4wC85p5k5w6RZ9B0HVRC3rE2D140gRtb6Wp69guZvwNeKSFwuSm6xdNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nCscc1Mj8zW5D6KeX+rSYnw+j9uwJ3K3JthqD8Ei4fs=;
- b=Ajr6kXGuMlexwWVBKYBbuw5ybGMrQWB0Nn9iWabBZug/Cl/RVrcblZpxb0nzQOOXIM55zSGSr6QZmDyORsumxeSmkQ+3iFdNstGeGrhSV6Y4Ma3//I47XL4hjtRPepXJ7C55OzZoiM/hhVtkhitq5Komkqy+46S0e1kRsuP9CGs2N7QCPw1tTUmx+aC9R7+UA+xcyV2wXuNNWK5VReZkr0uYrxCDOgHi+KotPyS+NG1sqwK4jDbItUF3sDF4SLgmPgTM9zYSfaKHQKoF2B7APEfg1aSu+xfqnD62zOHg4w0SEUDrLBIRkv/eKlUnSMWhx2Ggotq4mN7kGQSzOK3lKA==
-Received: from BN9PR03CA0988.namprd03.prod.outlook.com (2603:10b6:408:109::33)
- by LV2PR12MB5893.namprd12.prod.outlook.com (2603:10b6:408:175::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Fri, 18 Jul
- 2025 08:16:58 +0000
-Received: from BL6PEPF0001AB71.namprd02.prod.outlook.com
- (2603:10b6:408:109:cafe::16) by BN9PR03CA0988.outlook.office365.com
- (2603:10b6:408:109::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.23 via Frontend Transport; Fri,
- 18 Jul 2025 08:16:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF0001AB71.mail.protection.outlook.com (10.167.242.164) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8943.21 via Frontend Transport; Fri, 18 Jul 2025 08:16:58 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 18 Jul
- 2025 01:16:40 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 18 Jul
- 2025 01:16:40 -0700
-Received: from Asurada-Nvidia (10.127.8.10) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Fri, 18 Jul 2025 01:16:39 -0700
-Date: Fri, 18 Jul 2025 01:16:37 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: <iommu@lists.linux.dev>, Joerg Roedel <joro@8bytes.org>, Kevin Tian
-	<kevin.tian@intel.com>, <linux-kselftest@vger.kernel.org>, Robin Murphy
-	<robin.murphy@arm.com>, Shuah Khan <shuah@kernel.org>, Will Deacon
-	<will@kernel.org>, Lixiao Yang <lixiao.yang@intel.com>, Matthew Rosato
-	<mjrosato@linux.ibm.com>, <patches@lists.linux.dev>,
-	<stable@vger.kernel.org>,
-	<syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com>, Yi Liu
-	<yi.l.liu@intel.com>
-Subject: Re: [PATCH 1/2] iommufd: Prevent ALIGN() overflow
-Message-ID: <aHoC5c/PSLSZfVXG@Asurada-Nvidia>
-References: <0-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com>
- <1-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B348292B42;
+	Fri, 18 Jul 2025 08:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752826977; cv=none; b=Kb0qCdU1jwrytQMxvARrMdOIiIPhknXTi/6pKSBeA0LF/Vq1auf8LYkGsk36K3bgZltVVMm7I0eHg3sDhAjTGLfY94XbrdMqEmagpJ8CwMDJbPWpIJ6v2Ll2ozAClyWDC5Ij34nse4g1+v9koixfPSSd2sx7SuJukiqB0iwDQQ4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752826977; c=relaxed/simple;
+	bh=dIxQv9AtZEsjxl9mVLC6wMDHglO4W89UwiGmgJxhBFo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=t5JfK4URghOfHJd/Nd5iNadlKn+LBcd+sC+5/9N3+ut3q5w4E+S5PYEiY9NnlyJYIW+T2zxpeMqyxt/vVCFn2crwsl3/rXAmbdf7KxlgNOX2E6drqQXW0cry+PSOhuccMnhi1ut+Lu1dpA1IyWA0SMyv50Nwq7a8W02CmLCZI00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [211.71.28.34])
+	by APP-01 (Coremail) with SMTP id qwCowAB3oKROBHpo+xghBQ--.35899S2;
+	Fri, 18 Jul 2025 16:22:47 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: axboe@kernel.dk,
+	sln@onemain.com,
+	Jim.Quigley@oracle.com,
+	liam.merwick@oracle.com,
+	aaron.young@oracle.com,
+	alexandre.chartre@oracle.com
+Cc: akpm@linux-foundation.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] sunvdc: Balance device refcount in vdc_port_mpgroup_check
+Date: Fri, 18 Jul 2025 16:22:36 +0800
+Message-Id: <20250718082236.3400483-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <1-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB71:EE_|LV2PR12MB5893:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0322bea-359f-4a11-cdf6-08ddc5d37751
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?eftON92hKnMCTA2dESyIZO15Zi0kMfo8wFHDYnCR/qBEvQg4B8mggtlSPiOD?=
- =?us-ascii?Q?RxBoObDn9xQe8CqlFscZbCaANtw0GbATz1VgI0ZdenSzUiYeKvtvIGaavNlW?=
- =?us-ascii?Q?vs2N1mBYSpVXVqUEdE+ENkNzoD2nVvCmlqsFO6rPUAXIzf1Wqc4uYGJU5TiC?=
- =?us-ascii?Q?AJ2lGfsM2s1syv6duihjhOczOk0oiSrn+6Q0GiiB10F062SzRTx7W1U0+rby?=
- =?us-ascii?Q?xz163CVH8/U5rF8BV8yB8eNDI7tLqa47WjeESGig8lkFwtQLUOzvyFxpCCdn?=
- =?us-ascii?Q?1A+wpGpC5xrmJ5iodlKW4awJtehD5oWepeeVQWk13VugsmeNp/PXQwe+mJbL?=
- =?us-ascii?Q?AJYNnxcMylzVnCFZDWlbW6HujFz7YyQeNnhtKYq3mRFxY7sfr0FrDCpciTv7?=
- =?us-ascii?Q?SDtTh7u0cG6NpdCQExW79rQSa0sPXy6hX9fNSSMBuZTIjIpVm5SjyKtU2fJd?=
- =?us-ascii?Q?9e/P53I8px02eBd3jCkjQgM2QKXW1iQ4feWVjDWq33da861zEg+RXM6TF9H4?=
- =?us-ascii?Q?R9oEyhnuCTWjSnhtCSYMTH5PFzIpUyBP99MaK5FfTDYs4dBLgWbxIP0ASfuE?=
- =?us-ascii?Q?sJFzRhdC3gWR26fARaxVrhbTJP64cBkisLnm9Tri3jf7ywRwxXCLktvAlDMF?=
- =?us-ascii?Q?b3HDn3qrEL7m2+Wu9gVtT0ccOmY3TsE/ObFK4e595pKulk7kRB5HNwCq3mWD?=
- =?us-ascii?Q?/eJmfnRrlIMaBQPv3devjGSHPL8JbYrv+9wRr82ortLm1hKizUKGEgD+Bt2Y?=
- =?us-ascii?Q?4refx2nUeiKymecmKz1n/2x4triw1XcVPM6Hqd4VM1aofR9/qZtdoAshy8r4?=
- =?us-ascii?Q?EOOiE4Du/6KEO/L36jDgxotU8mceurN++YssQHnpf4RqidqzcMOkp4duK2Cs?=
- =?us-ascii?Q?Mbexw1QLjN5n3MxUMpb3ru/jz04cihpUJ6lyxhfPkKbLcGnY0LqowdVca6It?=
- =?us-ascii?Q?eXATu6MWf8nRhYaFK03mdxhlmph2QVrCjH0+Jw0/x95fWQGS5ztLO6YELDio?=
- =?us-ascii?Q?ojMPVJnjvy7GddC6I190Deo/rW2MpogSIqfW8aGJQXl8Vx12OrJ7NdsSkdpL?=
- =?us-ascii?Q?Z5ymH1DlGvpj7996VFJ0KeKT4hXRIOSmFdbkbry+EkcyB2IT9DJBwjZ9FdeX?=
- =?us-ascii?Q?hJxtCOXP35k0nyYUlAKVjyzy7ZyyBYT9zPMwjN7zntGjQ2ovs6vNTEcRg1RZ?=
- =?us-ascii?Q?q6lp7UzlPMK5DUrHVV8ZRmiHLVoVwsFxz2bGlqWSBV93M6VEv8E77NJiyaaF?=
- =?us-ascii?Q?xAk+T7z5w+m9GRHJt5J+q+fOSixdwHp0TWNSj9bnpClnsPrlaiJc8YsNZ4HN?=
- =?us-ascii?Q?UMMHjrz2Iw0Va40c12JjYWw8vsEq2Ur7XK/EY6Y9ZtnDICg4C3OT1TZ6eeMk?=
- =?us-ascii?Q?Lg1olsxDesDBw5KxHFe0boszwRzT6p+kmQjor05MHFfQdi4A03QCNtKfXuQD?=
- =?us-ascii?Q?by735sGbP0Jy7zLdp6xr9+c4BvyOgxMeABtx4+XD4J4OxmDnVm0BybRDuy/w?=
- =?us-ascii?Q?FqTcW3ty6rQmMwXhKRnKpt946NjilL/P8xPSf3WwmnyjRIXxXarOhe+mpw?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2025 08:16:58.5026
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0322bea-359f-4a11-cdf6-08ddc5d37751
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB71.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5893
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAB3oKROBHpo+xghBQ--.35899S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tryDZw1xAr1kGFykXryrZwb_yoW8WF48pa
+	1DCa45XrW3GF17Kr48XayUZF1FkFy0v34SgFW8Aw1Fkr93XrWIyrWUt34j9w1UJF93JFWD
+	JF17ta48JFWUXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
+	v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
+	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
+	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
+	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
+	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUeYLvDUUU
+	U
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Thu, Jul 17, 2025 at 04:15:08PM -0300, Jason Gunthorpe wrote:
-> When allocating IOVA the candidate range gets aligned to the target
-> alignment. If the range is close to ULONG_MAX then the ALIGN() can
-> wrap resulting in a corrupted iova.
-> 
-> Open code the ALIGN() using get_add_overflow() to prevent this.
-> This simplifies the checks as we don't need to check for length earlier
-> either.
-> 
-> Consolidate the two copies of this code under a single helper.
-> 
-> This bug would allow userspace to create a mapping that overlaps with some
-> other mapping or a reserved range.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
-> Reported-by: syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/r/685af644.a00a0220.2e5631.0094.GAE@google.com
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Using device_find_child() to locate a probed virtual-device-port node
+causes a device refcount imbalance, as device_find_child() internally
+calls get_device() to increment the device’s reference count before
+returning its pointer. vdc_port_mpgroup_check() directly returns true
+upon finding a matching device without releasing the reference via
+put_device(). We should call put_device() to decrement refcount.
+
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/block/sunvdc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/block/sunvdc.c b/drivers/block/sunvdc.c
+index b5727dea15bd..b6dbd5dd2723 100644
+--- a/drivers/block/sunvdc.c
++++ b/drivers/block/sunvdc.c
+@@ -950,6 +950,7 @@ static bool vdc_port_mpgroup_check(struct vio_dev *vdev)
+ {
+ 	struct vdc_check_port_data port_data;
+ 	struct device *dev;
++	bool found = false;
  
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+ 	port_data.dev_no = vdev->dev_no;
+ 	port_data.type = (char *)&vdev->type;
+@@ -957,10 +958,12 @@ static bool vdc_port_mpgroup_check(struct vio_dev *vdev)
+ 	dev = device_find_child(vdev->dev.parent, &port_data,
+ 				vdc_device_probed);
+ 
+-	if (dev)
+-		return true;
++	if (dev) {
++		found = true;
++		put_device(dev);
++	}
+ 
+-	return false;
++	return found;
+ }
+ 
+ static int vdc_port_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+-- 
+2.25.1
+
 
