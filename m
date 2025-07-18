@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-163312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4958B09935
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:34:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEADEB09936
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB9F9176B19
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:34:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0F2E17367B
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377EF3398B;
-	Fri, 18 Jul 2025 01:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1970F13C9C4;
+	Fri, 18 Jul 2025 01:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwV5vPu4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2YJ2c9d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BD82C187
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF402AF14
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752802474; cv=none; b=pDvaw4aC412dDaFM7BmINtDaNDieT+JRwIok4Jna9Y07xpjB4eEodiJ/F1PU3TTDCFHOAum/LQBoqzo9mwK+oKm2phAHFf1lY/AJS/dljKbPWOWF3QnEZNGGLNYIalMdgYchn0TfTd+iRHUDta6cp4H9F64QyQ+y8F8dC1mJqvo=
+	t=1752802477; cv=none; b=nP1nTbUsoJk9yX9gfseEH1Z1L0tdt196iZibYnejh3LrH6rcITEiekaZ/LQW9ZeRfQvmB1HLz3LwusfHM2wzjIaI/DPVksQkktJkmAeQtMja8h/6//u7jm1mv8t4yNQ0dsrVVFI9g+qq1axmwCaJqwa+7fGxsbtldMLtxWDO2ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752802474; c=relaxed/simple;
-	bh=HcM+RXMzcA2SJ6Nqstb8uIvY+FzqyD9zskkKIR7eFY8=;
+	s=arc-20240116; t=1752802477; c=relaxed/simple;
+	bh=N4tS0VJIcn7+sPABwd8CmdAXwGvPxWE2IKgTl3SOqBc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FgdqiSEU4TDliCsdBdN/SXHiR3OoHGrV+cCE4JStWdWSb30UUZzy67giwyo43KLP9ntcwC687oMI9ahG926UOLgXzHVtx39pK49KBbM/kV7eVZeG9DiO7s2+y0r5aNa5M6jPmDRgTTMSjCTE3Dhso2BtMtD5oorotW9KxKXIeSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwV5vPu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A905C4CEE3;
-	Fri, 18 Jul 2025 01:34:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bISFvacXuL4ocWldW9EE5r1xpUMKMqVO6sB1Plpm5we0Y7I2KhPDsAW1o+Kz/3nLQY3DLCJOmPvwqAyE3Gc5vpWyjw7O3QdKiVuSFI4EYOZcmN65MRj1DmT51kuH2vV+szEz6D80HP/ZHOHrqAhrmlqFTWqy9jocqYoGFyXBpjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2YJ2c9d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C35C4CEE3;
+	Fri, 18 Jul 2025 01:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752802473;
-	bh=HcM+RXMzcA2SJ6Nqstb8uIvY+FzqyD9zskkKIR7eFY8=;
+	s=k20201202; t=1752802476;
+	bh=N4tS0VJIcn7+sPABwd8CmdAXwGvPxWE2IKgTl3SOqBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwV5vPu4Wd1MJpminiT/KsQGV6hRudf9zFGEDmRBut20hhFkeidWH7kKSKdnxS+jq
-	 I4WDuAgJjEimFafDzDKgfZBSZn8pyW7atetwVPiPU1dm+0840gSu30FEguM+i41qZ+
-	 k4l5jpqly4+i3h/+FsglQ6sGyuLbf7qeQc78uz1otGxCeCvAUbjbnmILHDis0+HLC8
-	 Rx3OpGl3S+9YNC2Fc3MMbz1lwTWbdaK9gkuMfYlSbwTEGqq3o4iYS7dzn2I+FAS4fe
-	 jfFxAh7XAWto1DAj6uDPDCm+nFTlxsXoM3+G2jDDzl2Kx5OPnzM/0CR4RUYHDcw6gL
-	 Dh2U2k+iQryKA==
+	b=K2YJ2c9dKi5m/tO8zi8qsMbsG2F/kNDp3oEf/bnCwqdRpJh7JBsuyGFfVowPxPmGM
+	 KP+Ll5Vq6jhVhmKeyirh5dRgU+Uq3KiD/uU70omOCjesbvyWmYDQyzMWwuJ5XFQPef
+	 gAP29KOdK6MwZo+Gl5VX5TRU6j+DqnBka2gZAFc1YbRlZsxH8ilNPbymnYjNaABR/Z
+	 XtMjoU64CRGO/8Eci8Fhx7PdonP7K5K+ttrQcUy6x6y2uR+FRH5Dd5OIW3cbVaIpRd
+	 fM5rRb+ZesuFW10YqaA1QDEyNY/uQWcTzRRQrd3puP0I6q3gJWNO/mv+IldLelWBUH
+	 trTUIhd4tJriA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y 2/6] net_sched: sch_sfq: handle bigger packets
-Date: Thu, 17 Jul 2025 21:34:30 -0400
-Message-Id: <1752797234-97c617e8@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y 3/6] net_sched: sch_sfq: don't allow 1 packet limit
+Date: Thu, 17 Jul 2025 21:34:34 -0400
+Message-Id: <1752797234-e3b45d71@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250717124556.589696-3-harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20250717124556.589696-4-harshit.m.mogalapalli@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,11 +66,11 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: e4650d7ae4252f67e997a632adfae0dd74d3a99a
+The upstream commit SHA1 provided is correct: 10685681bafce6febb39770f3387621bf5d67d0b
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Commit author: Eric Dumazet <edumazet@google.com>
+Commit author: Octavian Purdila <tavip@google.com>
 
 Results of testing on various branches:
 
