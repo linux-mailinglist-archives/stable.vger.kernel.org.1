@@ -1,95 +1,169 @@
-Return-Path: <stable+bounces-163357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAA0B0A0D3
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 12:40:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2178B0A181
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 13:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E81381C42A9D
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:40:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6380A170440
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 11:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4162BCF47;
-	Fri, 18 Jul 2025 10:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31022BE7B3;
+	Fri, 18 Jul 2025 11:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ySj7+q5o";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ikBbKC7O"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="Hg/k6Xe4"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D01629B218;
-	Fri, 18 Jul 2025 10:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9195229B78C;
+	Fri, 18 Jul 2025 11:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752835224; cv=none; b=VvKjXI2BVsBWJZ780zgpD76QdrR4zygWtxddUHtPCFRviNeh4Bi9AwI/Z8X8hsRZz++690nADntCSrpKYsK+RQ7LXgn9pF9EGitZ9FVtjfRzFODwjqhcFVLBEFcY4zgfo101NOiwTiu7hpdv9U98pnPCbaffDCqV+ITXaDu6g98=
+	t=1752836678; cv=none; b=pvCZMSKva/At86TO3pMEuAagGrscqsu788tZLEu4LkFca2HeqDv3QpV1ecf17KWBxFRSJoQA2OG2pphel2Xdm/dp23JZH20jkfIO+1rgwXTDGXKR5FWNooGQrZqjLwwuQgts+jXK9tUFJa9zkq8LJ9Ahg4Yf85NnoCyv3tgdu5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752835224; c=relaxed/simple;
-	bh=EfctGBqA+tFsqy1MQgf/QW8ed9cdtao3pVhWdvVteAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tMRDlLI5B0C43//a6l2WcQv4i47FxQAiDocEBJe+WAm40OrRh2F3aCemhzRWS8gxGrHBJejb+eN97pceBrUoR/6r5TQdPTWeHiB3YNebRm3rsa8H+ACEetE4ylS+nI496Ar7rz7F+WBkURM9qVh0AtXd2o71qKQ7xoYmMstaGHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ySj7+q5o; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ikBbKC7O; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 18 Jul 2025 12:40:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1752835219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PDMVrdweoF/EUIrbyPjq3jBCHKVn3HSx2l+SgvFzmxQ=;
-	b=ySj7+q5ow5+w92BYYOB2ovSU4z0PU2DZ20fHF1fAgSnBLoj7qbPWlWXo8/O/QoKrPaEJdj
-	NjRYz1nat+RUFP6Cj1wDKO9LHzeusqkqmh0jrQMso4PI95dwonefBsDOF20+ni3wShxLgg
-	Z5FdOdjSdj2U8+d5BtfYQUxjYLwLQZRQeGDfMShbnQbkIxpz8v6NWWIWMxIX+RH73/7qhf
-	CMXDUnQtj0KJsCXpeZ+Qrq5bJHyfH+5vUunJUctYSUmm+Cgv10hvpbIDSJHOznRPlCQg/F
-	4cjwv0qpEwe/KfXwdl8BLtcoKXN+mjt+D9ddaYRGvid7y3D+AuY/zNw2MUXIxw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1752835219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PDMVrdweoF/EUIrbyPjq3jBCHKVn3HSx2l+SgvFzmxQ=;
-	b=ikBbKC7OOeVaD8woVi3vZXQH7tbu4GqgUCWyWXVQF05wLLF1e9ujZB1g/AZfF2OLWbUPNZ
-	jY/lWNj6vio0XwBw==
-From: Nam Cao <namcao@linutronix.de>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] rv: Ensure containers are registered first
-Message-ID: <20250718104018.lyupqBnR@linutronix.de>
-References: <20250718091850.2057864-1-namcao@linutronix.de>
- <2025071835-enjoying-darn-f5d8@gregkh>
+	s=arc-20240116; t=1752836678; c=relaxed/simple;
+	bh=cFORY9gb0sfHAI5NO7xSZ6xnWnAfgmRgOLUsTQ179wQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iMiQRorro7Z2kI+QOcSk51Dg3C+tReVwSs5RWlgRC1EhSvVWgnq3gtr4PPNPq8TkzrXiUJIYt9DthTpmOq97+J6VyhdKr8QO6UNN1E9Q2YDjQQzzJye9rJchfYG9t5fjRpb3KD87FOuaKlV7yrV8swN4b+KUVSzwhYFEBV+7WaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=Hg/k6Xe4; arc=none smtp.client-ip=178.154.239.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:4291:0:640:5ba1:0])
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 01F6CC1324;
+	Fri, 18 Jul 2025 14:04:30 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6bf:8080:56e::1:20])
+	by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id C4MJsn1G4eA0-22dOx9QF;
+	Fri, 18 Jul 2025 14:04:29 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1752836669;
+	bh=2qalnWYlQY+v6tyEg1CW//D2TKZDTcBnHEPVSwiWO/A=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=Hg/k6Xe4zn/33viN5WiQsuyi+GvR3boPyW3beCibPRrnN9PeNfOjcaMEITbrG2QnV
+	 BMYj8L68OOlljHdI7jRvNfOgS5hpLhkVV4oAoQ+TasSL/KqJ8Zy9ooZ7eDELWGShQs
+	 dB0e0QBbGTTCGiOH/v+X/rvIKBL7iZU6feUQpL7E=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	stable@vger.kernel.org,
+	Andrey Ryabinin <arbn@yandex-team.com>,
+	Andrey Smetanin <asmetanin@yandex-team.ru>
+Subject: [PATCH v2] vhost/net: Replace wait_queue with completion in ubufs reference
+Date: Fri, 18 Jul 2025 14:03:55 +0300
+Message-Id: <20250718110355.1550454-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025071835-enjoying-darn-f5d8@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 18, 2025 at 12:27:14PM +0200, Greg KH wrote:
-> On Fri, Jul 18, 2025 at 11:18:50AM +0200, Nam Cao wrote:
-> > If rv_register_monitor() is called with a non-NULL parent pointer (i.e. by
-> > monitors inside a container), it is expected that the parent (a.k.a
-> > container) is already registered.
-> > 
-> > The containers seem to always be registered first. I suspect because of the
-> > order in Makefile. But nothing guarantees this.
-> 
-> Yes, linking order matters, and it does guarantee this.  We rely on
-> linking order in the kernel in many places.
+When operating on struct vhost_net_ubuf_ref, the following execution
+sequence is theoretically possible:
+CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
+                             // &ubufs->refcount == 2
+vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
+                                                     vhost_net_ubuf_put_and_wait()
+                                                       vhost_net_ubuf_put()
+                                                         int r = atomic_sub_return(1, &ubufs->refcount);
+                                                         // r = 1
+int r = atomic_sub_return(1, &ubufs->refcount);
+// r = 0
+                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
+                                                      // no wait occurs here because condition is already true
+                                                    kfree(ubufs);
+if (unlikely(!r))
+  wake_up(&ubufs->wait);  // use-after-free
 
-Hmm, I thought this is just how the linker happens to behave, but not a
-guarantee.
+This leads to use-after-free on ubufs access. This happens because CPU1
+skips waiting for wake_up() when refcount is already zero.
 
-Let's discard this patch then.
+To prevent that use a completion instead of wait_queue as the ubufs
+notification mechanism. wait_for_completion() guarantees that there will
+be complete() call prior to its return.
 
-Nam
+We also need to reinit completion in vhost_net_flush(), because
+refcnt == 0 does not mean freeing in that case.
+
+Cc: stable@vger.kernel.org
+Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
+Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
+Suggested-by: Andrey Smetanin <asmetanin@yandex-team.ru>
+Suggested-by: Hillf Danton <hdanton@sina.com>
+Tested-by: Lei Yang <leiyang@redhat.com> (v1)
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+---
+v2:
+* move reinit_completion() into vhost_net_flush(), thanks
+  to Hillf Danton
+* add Tested-by: Lei Yang
+* check that usages of put_and_wait() are consistent across
+  LTS kernels
+
+ drivers/vhost/net.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 7cbfc7d718b3..69e1bfb9627e 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -94,7 +94,7 @@ struct vhost_net_ubuf_ref {
+ 	 * >1: outstanding ubufs
+ 	 */
+ 	atomic_t refcount;
+-	wait_queue_head_t wait;
++	struct completion wait;
+ 	struct vhost_virtqueue *vq;
+ };
+ 
+@@ -240,7 +240,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
+ 	if (!ubufs)
+ 		return ERR_PTR(-ENOMEM);
+ 	atomic_set(&ubufs->refcount, 1);
+-	init_waitqueue_head(&ubufs->wait);
++	init_completion(&ubufs->wait);
+ 	ubufs->vq = vq;
+ 	return ubufs;
+ }
+@@ -249,14 +249,14 @@ static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
+ {
+ 	int r = atomic_sub_return(1, &ubufs->refcount);
+ 	if (unlikely(!r))
+-		wake_up(&ubufs->wait);
++		complete_all(&ubufs->wait);
+ 	return r;
+ }
+ 
+ static void vhost_net_ubuf_put_and_wait(struct vhost_net_ubuf_ref *ubufs)
+ {
+ 	vhost_net_ubuf_put(ubufs);
+-	wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
++	wait_for_completion(&ubufs->wait);
+ }
+ 
+ static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
+@@ -1381,6 +1381,7 @@ static void vhost_net_flush(struct vhost_net *n)
+ 		mutex_lock(&n->vqs[VHOST_NET_VQ_TX].vq.mutex);
+ 		n->tx_flush = false;
+ 		atomic_set(&n->vqs[VHOST_NET_VQ_TX].ubufs->refcount, 1);
++		reinit_completion(&n->vqs[VHOST_NET_VQ_TX].ubufs->wait);
+ 		mutex_unlock(&n->vqs[VHOST_NET_VQ_TX].vq.mutex);
+ 	}
+ }
+-- 
+2.34.1
+
 
