@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8AA1B09931
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:34:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBA4B09934
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E04E171DAD
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:34:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6878D1886FBA
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5E1153BD9;
-	Fri, 18 Jul 2025 01:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC42B157A72;
+	Fri, 18 Jul 2025 01:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0kWGcVH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z3cKR/ah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2492C187
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD093398B
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752802462; cv=none; b=npTH6tj25dw0JhdJFDyZcIxCPxGGcrPf1wj7Z5vycJz4vRvSD9yuzjWWvZsDePtjpHTqbdUrsW2yrj3L1Y164pPAwdtYO1CC9tyWvmltsBDy/IMobxujMv8vR/EAmv36O6A7vV3NXHWK0QzmqUq2N/BHcD7liQbdTSqo8l0lRuY=
+	t=1752802465; cv=none; b=JZyvpRYRKky7BmRGm6wLTiK+Tm4QNrBOvbEBonrebfwQjJJbXc8mznFr1qBzm/zcdHU1zaTCgO9iZeoxjq0rNzzTAmVMOofLpV/q9MZIdcFj5QlHLhUp8+dAyCBIyiVvjXoXYtD6FbPOEtEeOdPjfuu/bvyo8VkGV4fD8YiDTN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752802462; c=relaxed/simple;
-	bh=BYICcxVBmocgjMUPD0iB323R2DsCBp2MF3YO0vFj24c=;
+	s=arc-20240116; t=1752802465; c=relaxed/simple;
+	bh=zOKISdUsHZ9Vy4ox+08/M6EY9J3fDTywP7z6gtiKcAA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hSBLyZj4/bMbUGC3WwFTYJ1Qe3Kp5aiiea5YgBiUgS3EUPhzAsBzrra0zRYU7dPnYBk4obcKuvHYjvKbfHOkBZNFdshgiYNQ3fYvp00sR2jPOw+tpOH211Of3qLqUTVLM4xMO6LT8SEnPENpKqUzb1jjv5AITmHfFo7qpCZP3Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0kWGcVH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7ABAC4CEE3;
-	Fri, 18 Jul 2025 01:34:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XijI6eUFvwGrnR9ODBbBQo4yA58U0ZI1+JOBdKn8BMeJyaltjBuk/N32KNl2FsF2T5TSnTqk63nnYqC0DwV6bII2VWHPrKMdWZZCZhB5CyaoUFhP1v7Ct30b50cycm2qba625IuV2/x8gWND9kw0MRPHTaEFCjiQIvqF9jVoPG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z3cKR/ah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103F0C4CEE3;
+	Fri, 18 Jul 2025 01:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752802461;
-	bh=BYICcxVBmocgjMUPD0iB323R2DsCBp2MF3YO0vFj24c=;
+	s=k20201202; t=1752802464;
+	bh=zOKISdUsHZ9Vy4ox+08/M6EY9J3fDTywP7z6gtiKcAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0kWGcVHig4Tyrwds9UthNYVKpl4JN3/qQFRGX2Lz9vZZCJEEj8AkXpvx3V+lLXBo
-	 Cv+E6ivoPbrAWq+UAqTi5CPyIgZIjXKfDjgUmZqZnmdkml5Vl8/5KEneCOEJPeX8zw
-	 tVjIPKEYUYWhP4cPx/xp11qworn17mq6+ngfhTcvE/0ZFCl0I6fMR/HPeICrIiVTTQ
-	 qUZgHIlyF43XSkqlpoQd0VVFXLIeZqElR31fRMc4vElD8omGmtD1rxUeSqKNQTuX7o
-	 AIRLsynbU0Vzo2tuQVqhecHxqMDoXstsaMNaZVCyyEjn2gSWBuwiM9oL0dnJ4R9eXw
-	 nJ9HVY4go+iJg==
+	b=Z3cKR/ah6SJJj5TvW5ZlM2Vy4D6HGliQalA4t/L+LzRghpPdjXsFK5q29nr2PZl3A
+	 QHpNnw1vXtO9U8lYk1MgHT+JxGh/sShqgWbtkCiAPoLTehjmdoHhKsWtAM6IOrEwIN
+	 K3Y8fBKfnDqXiNWS2T75FAWNtNszrm2qz644N9b2cVgHd2G6OOgnFYh0SE2iJ9VYfP
+	 PnX5ooHOTAJE+x3lCN9QQED1Hb9e0pZh6PqbKSVsGOI4TriFq7k3A4iskhI5A3cOjd
+	 UNX3B7hVJgaF+ECSeAWkwOULPzmdBQVDO9gaEYoZxXJVEvmIEwScPFr0v+rN1SdEbS
+	 OCB9mPlUkvSEg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	sumanth.gavini@yahoo.com
+	shung-hsi.yu@suse.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH V2 6.1] HID: mcp2221: Set driver data before I2C adapter add
-Date: Thu, 17 Jul 2025 21:34:18 -0400
-Message-Id: <1752798271-200317d7@stable.kernel.org>
+Subject: Re: [PATCH stable 6.6 2/2] Revert "selftests/bpf: dummy_st_ops should reject 0 for non-nullable params"
+Date: Thu, 17 Jul 2025 21:34:22 -0400
+Message-Id: <1752798028-8ce3e42b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250717000151.183803-1-sumanth.gavini@yahoo.com>
+In-Reply-To: <20250717080928.221475-3-shung-hsi.yu@suse.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,29 +65,17 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-❌ Patch application failures detected
-⚠️ Provided upstream commit SHA1 does not match found commit
+ℹ️ This is part 2/2 of a series
+⚠️ Could not find matching upstream commit
 
-The claimed upstream commit SHA1 (f1228f4d4254dfad837f1a1e4c69930417798047) was not found.
-However, I found a matching commit: f2d4a5834638bbc967371b9168c0b481519f7c5e
+No upstream commit was identified. Using temporary commit for testing.
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: Sumanth Gavini <sumanth.gavini@yahoo.com>
-Commit author: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 2afe67cfe8f1)
-
-Note: Could not generate a diff with upstream commit:
----
-Note: Could not generate diff - patch failed to apply for comparison
----
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| origin/linux-6.1.y        | Failed      | N/A        |
+| 6.6                       | Success     | Success    |
 
