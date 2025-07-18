@@ -1,56 +1,97 @@
-Return-Path: <stable+bounces-163318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58484B099C2
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 04:30:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29382B09A0C
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 05:07:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E4C567F7C
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 02:30:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A94318899C9
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC2C1A23B9;
-	Fri, 18 Jul 2025 02:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE9917A2E3;
+	Fri, 18 Jul 2025 03:07:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="GhqCM4OK"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from sonic306-21.consmr.mail.sg3.yahoo.com (sonic306-21.consmr.mail.sg3.yahoo.com [106.10.241.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3223B7A8;
-	Fri, 18 Jul 2025 02:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B727C1400C
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 03:07:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.241.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752805812; cv=none; b=Gmg5cpNHv8mhCEhiOU3DAlB8aPCzElBsD0KmJ/7PbM7G9c6EH2r2MuzFFIrnNM/Z2DWQIog8ADHqEGPj+zVP6VFyGCdWv8FP4zN/zgLxPbkKSp3TEXevszCk8duQJRzCact1C+7k2bxxYSkfwEh016UyngfIC2QzFDKqOUuaoyo=
+	t=1752808032; cv=none; b=CYxy0k3X2kPywIaZ4MIKaNQC0cZ5nTBI8PKAcBF4wA6hUX89hZgciD9NQPUPh7TZsFKCdzkpN/fEwCfNbfLmrrKz97OhMbRxzyTjSYeOrc9BqNCjaNYBlRO2bUrus8E9sdU59QuHZ/sfI985cOMGhmAPlQaBLW4AVkgkyBsgUow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752805812; c=relaxed/simple;
-	bh=HOMcPasnzSidNrBnIyvuMBKorMhvBQvbHP88kZYZI54=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LO28IWDC+5LwJZlIh1hfUh75COa1hvORIwtTQn58dcyWYWI17wkyUAJ+PH+eiAKbDClaxvPjYtu/S/OOFNWj9yQprEdcJcCWC8weAP3/xFobmYhhPbkueHPQMpxxV8QfrssviKTsVWkAb6JJr+cZRgCf80TRFul1wUbGtLfaq/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [211.71.28.34])
-	by APP-05 (Coremail) with SMTP id zQCowACHGVqVsXloxIL+BA--.29413S2;
-	Fri, 18 Jul 2025 10:29:53 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	dan.j.williams@intel.com,
-	rrichter@amd.com,
-	ming.li@zohomail.com,
-	bwidawsk@kernel.org
-Cc: linux-cxl@vger.kernel.org,
+	s=arc-20240116; t=1752808032; c=relaxed/simple;
+	bh=n35W0xE1KRwyXbLo/I23QujB27Prt4ZJPQ458DzJTjc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qu6vFlSM09XhsBFMMZOrE6evnUK0CYJbQyksKwv5XzjihFovJWdHR/tcWuF7DkL4NLFGeEDgc8DJJXbVSfMyhFOCEGkNjVyV7xbOMBl5X8tp2H5ZsnN+tm/GhAyntRWjltlxbLff4iNtGhxD/Ra6/Maog8P/U1o82bagzm4IzyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=GhqCM4OK; arc=none smtp.client-ip=106.10.241.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1752808028; bh=KnfypI/4lpZjtaqAfDlUQ6peA6y22hadDc71Xj3e8Rw=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=GhqCM4OKYOY1blLM/zA0U1Po6WGwaMlMINV3aHRbsTvT7OoIf1J6U8tyDStk/ICNvxZPWetlMqqHxnc+sDlkJa9ca1xDCadS3PllDEBJdWqm5XbpLGBX1BPim9cv6rBLEOyy9tI6l+A+tLw/hXh+O5xRGx68lAnlQY4pmczw/HEs+rBUTCA2xBpo9rvcs1wePp4OGr8Y7CRUVDuEBD4cmLhew7nwzzOILwjkcSNP4Ng+UYsRQIVQRdBzOEBRaRcqZq7SRObJmlJ777m254FjTmvPmR1Jatn04FRCEFJVv8nr03ebPPceYXILFps337VZLcvwxlLzAV7zmT3UFs/hoA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1752808028; bh=JrlNTxZQef+KFkz6+Vv1s3hmVOqaKjy2ex76gzU75P1=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=sK2iwuAZCujucS8LGfsdu0V22vFlMTKyCzrXhwizwNlHWDbFoWLvEXY2O6p0x2C3/JH1gP4SA6X+xdbzfQ1f2fCVfKxGQwm+vfTAagXsJzNKAgZQrcxOWVyeQWaUh+GrGxr72OHQnID9K2bXrsCcoNLPzxdQUmrRmuldUx22/jlTolDwJqo18gd0jrUwveuOuS9EpdSW6yQt4rvcsP5PigMJ/FdhGKSacHEPjJIZbmyxjCDtb8rQawytwPpB+YdnJgLcW8B17ReRlyAO7x0U72JNnMDjIfaLbUcUrhbtd0zug/tJxNEkitnwxvXS2xO+2+e0wcgtBkmtuwzz9tqWDg==
+X-YMail-OSG: 2DGhbhsVM1lnLzolCVXTUzdG.kL95lj2huabQ0kB4HVBiPj4VS4R_rWrkP.3HTj
+ LBL_sx36hwN2jq5lygyH1685LZSqKvnG7hzPraOVkU_ZktsY04frlpK54nWDQDk8ISxTCXliwFak
+ vpLWese3_nBwizWCcjrDxhWsKcyxmUFnW0IOcitBdj5EURN6sRtPdc0ihWymTkOPoppOKK4i_vWE
+ B5xo5tnYv5NQb7.yVXOYw6kjMrVTAzzifQlUGiNNEyfAALRDugWDr82ppqxgBnUHXRC.aSCKtqoj
+ _owERHpdvF7hSXR7RcvBPplxgFobMoePMAnabxdIxhR211.E7ygWTdCSFI29_oATzdLd4gYoMv2J
+ LJC64g8EpDDU.ME5KD1woyTMWW_chVqy2sYHlG504f.74zpqSoPvl43p0rR.4oAdD.wwvjI2e4Xd
+ 2TDWZKSb6b8emwL0kCTJvVgndISdsaFPTb5ga4kEkYxk8j9DNN6NKaC9M9hPDSMZ1IVbKG4x.IFa
+ uz6k_R7ZRu0F9leFY7C82U1RY60YIDq9GgOtLHvRul2mbLckCienprIYW9bgwOQ5_iOrBN2sVT1C
+ uVH9SdcqubaCw5cHzsHDhcDgBEsplVCDRQBCfrBb9uvPlhUat0kAUfOfpeh4K_oGkHk9b7QRRoox
+ L2gnUIRYC2qD.7TaoOywwSp1WEk_mQYavA0sYZHFCU48Hm3U_2xYkQJaWpNhxNqco21FyP2acDyH
+ O4NgZIkOdlaeZTddJvFtwaSXtUgR9.Op2fvI99asorbhe58JmmI4vi5xzqAZ6pAghIYzwVSgDEMV
+ TgwquREho8TMfid.Ye346zwMmK6DQwqr0TBG3faN6XPFfe5spfwCsgbb5gMjq7xd6xtpmAZfYslj
+ pkq3cJHudcwQUrOdVoga2oiNA.ZFL5LCxMAA_Fp91X3.cCgAA1oh7tPlazs_.rkDK7_7TKXYM5nM
+ wOs2TH60EV_g5rPVTQy_vA39Dv3KTLm8YDkpv.DqBKhqhKYVDXM83epbxAOHXb7HYqdbcKrjZKph
+ e4ZzGnr2SQ0UoJzd0RhAOWfpA1VgkQEsOnVZMNGF5Tj4v5RHgeUdxw6R2.x80EsZF5RZsllnK4wL
+ yXYzIkHS1hcyBicSiGir78jqo0OUGhtRnEzYYADenq7co2srrKC.hiYLtelatzexnaTgKLoqryaK
+ 9KkV0R9_BUdxFHmRvl6ClpF38Rt06yv0Mqe454u7tVrCQXOd6sowJo1J47tQ3aB6ptof.2mkhzHW
+ JUJ75xQ9l24zXcr81ZNLz1GLIht9DEBcSXW1qzwAy5T5WgN6W3fOYNDqkBisnDNwSbOjpM.ThSGe
+ w7Xp.0ViqJJITfMTwylZLH5VPUXXXmS3QPSCBYI20tKBunCTWUw4FxyqsgeGE94YuZEr2BRBe62T
+ Q2jEViez9UerJlqvXli4tuArNwf92b2JiycCUDsrpi7IEHazos_6Dc3wz7CyTPnfEXfCaBSpn8TG
+ veoihmxujTIuJaikGYtveoll3LBPVNjSoifl0Xnb3wKUJ3pwgqGx2LzJplTfjXyx.NgOFEJmbduG
+ SCScmYnSxTsFWkeUZAak1AQKwHwoXWn6Z02rUA8d6NW6arq_8.cpmFBGO1cart.pke.xf_TZZPfy
+ EAvqak6PE7H1ICS2r3N8fMgpyWGNIEfsgeII3_titQsOoaJ6TENbVjcSa87jZY6UP3NiyM6JXHtJ
+ lsJujrCogPePQ7hHzKgssS9io55wf4EGG3qZdRKOKsht.a9r4Q_LnNHhtE64zWH0Wc.6oJ2ssqq2
+ 16bRV87Sfn9CE2ii3dPAoAVM8ce2J6vTG4x2f1vie1_5XjERSoeDQnLoBsiUnUJ_btFdSK7Da5vN
+ _ii97yGGR74bGZblXHFdQZufy5qNArQ2pl_2Nf2uPYXrwJm4UVopSgFmOIBP.tb6XWLv86Qq4m4.
+ gQ_m4tlvbBbyb.wMhBt8NdQ39noGGPGoeaMj2MkytVcym565j7D4YZEQ_aRSE0pBJ8rKBWgyF.Sb
+ J6RENjjyuRP41IaDVx4GxH6aOXft.daYQzKWPKddE0kmOSaCi1Ds19O7iFMfW5KsBe3AtCmXsj0A
+ SzhHZM0ipNn7cvVExVJH7j2tBYmoTdLK1ByZMYPYODEH5gGGolstYqdgNshzAlfS13.v0YOBaQZf
+ YIyo_Iwin72X2sRw6m6iUwg4rdKGcDvjQPWj8NRJViu9jwODe3DQ0ao6Dvl5ZumnceZmm.gcrUbB
+ mQl3r_yF6XkBGkzx_GtS9ndUJr6kuHdUs3LLwrdLEE6Giswi8FBg17P5USTE9sn8KrC85olKJCBb
+ mG2N7k3BBjmpyriuFackYk4comaZ9gkoO9yE62Sws
+X-Sonic-MF: <sumanth.gavini@yahoo.com>
+X-Sonic-ID: 2a6f5cea-ec48-451f-b092-f4c6414def04
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.sg3.yahoo.com with HTTP; Fri, 18 Jul 2025 03:07:08 +0000
+Received: by hermes--production-ne1-9495dc4d7-4hxbl (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 658c3deb5093bc2afee7b1ac10fa70e9;
+          Fri, 18 Jul 2025 02:36:38 +0000 (UTC)
+From: Sumanth Gavini <sumanth.gavini@yahoo.com>
+To: lkp@intel.com,
+	gupt21@gmail.com,
+	jikos@kernel.org,
+	benjamin.tissoires@redhat.com,
+	sashal@kernel.org
+Cc: Sumanth Gavini <sumanth.gavini@yahoo.com>,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	stable@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-input@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] cxl/region: Fix potential double free of region device in delete_region_store
-Date: Fri, 18 Jul 2025 10:29:40 +0800
-Message-Id: <20250718022940.3387882-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	oe-kbuild-all@lists.linux.dev,
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH v3 6.1] HID: mcp2221: Set driver data before I2C adapter add
+Date: Thu, 17 Jul 2025 21:36:33 -0500
+Message-ID: <20250718023634.267341-1-sumanth.gavini@yahoo.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <1752798271-200317d7@stable.kernel.org>
+References: <1752798271-200317d7@stable.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,64 +99,53 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACHGVqVsXloxIL+BA--.29413S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tw4xJryxXFWrWr4ktr4DXFb_yoW8Wry7p3
-	yUCa4aqrWrG34I9rn8ZrWkZr98uF4qy34rCrs7Gw10krs5XryFyrW8ta4UtFy5A3s7Ar1U
-	X343trWrCay5A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
-	AK6r4UMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU1FAp5UU
-	UUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-cxl_find_region_by_name() uses device_find_child_by_name() to locate a
-region device by name. This function implicitly increments the
-device's reference count before returning the pointer by calling
-device_find_child(). However, in delete_region_store(), after calling
-devm_release_action() which synchronously executes
-unregister_region(), an additional explicit put_device() is invoked.
-The unregister_region() callback already contains a put_device() call
-to decrement the reference count. This results in two consecutive
-decrements of the same device's reference count. First decrement
-occurs in unregister_region() via its put_device() call. Second
-decrement occurs in delete_region_store() via the explicit
-put_device(). We should remove the additional put_device().
+commit f2d4a5834638bbc967371b9168c0b481519f7c5e upstream.
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
+The process of adding an I2C adapter can invoke I2C accesses on that new
+adapter (see i2c_detect()).
 
-Found by code review.
+Ensure we have set the adapter's driver data to avoid null pointer
+dereferences in the xfer functions during the adapter add.
 
-Cc: stable@vger.kernel.org
-Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+This has been noted in the past and the same fix proposed but not
+completed. See:
+https://lore.kernel.org/lkml/ef597e73-ed71-168e-52af-0d19b03734ac@vigem.de/
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
 ---
- drivers/cxl/core/region.c | 1 -
- 1 file changed, 1 deletion(-)
+changes in v3:
+- No code changes
+- Corrected the upstream commit ID
+changes in v2:
+- No code changes
+- Link to v1:https://lore.kernel.org/stable/20250716195316.176786-1-sumanth.gavini@yahoo.com/
+- Updated the upstream commit ID in the log
+---
+ drivers/hid/hid-mcp2221.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 6e5e1460068d..eacf726cf463 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -2672,7 +2672,6 @@ static ssize_t delete_region_store(struct device *dev,
- 		return PTR_ERR(cxlr);
+diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+index de52e9f7bb8c..9973545c1c4b 100644
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -873,12 +873,12 @@ static int mcp2221_probe(struct hid_device *hdev,
+ 			"MCP2221 usb-i2c bridge on hidraw%d",
+ 			((struct hidraw *)hdev->hidraw)->minor);
  
- 	devm_release_action(port->uport_dev, unregister_region, cxlr);
--	put_device(&cxlr->dev);
++	i2c_set_adapdata(&mcp->adapter, mcp);
+ 	ret = i2c_add_adapter(&mcp->adapter);
+ 	if (ret) {
+ 		hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
+ 		goto err_i2c;
+ 	}
+-	i2c_set_adapdata(&mcp->adapter, mcp);
  
- 	return len;
- }
+ 	/* Setup GPIO chip */
+ 	mcp->gc = devm_kzalloc(&hdev->dev, sizeof(*mcp->gc), GFP_KERNEL);
 -- 
-2.25.1
+2.43.0
 
 
