@@ -1,116 +1,112 @@
-Return-Path: <stable+bounces-163360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061D5B0A1B8
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 13:13:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F7EB0A3E0
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 14:12:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF57316F697
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 11:13:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2018D7B357E
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 12:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C21B2BE7C8;
-	Fri, 18 Jul 2025 11:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F38D2D9498;
+	Fri, 18 Jul 2025 12:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="UKK2fcgW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bu1XiidS"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4617C2BF012;
-	Fri, 18 Jul 2025 11:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DB1215F42
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 12:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752837197; cv=none; b=oq6WFnUzH+quKqmX0MJmTUEpSAGQql9jJtuWmGrmLUBlV+07MToVxAiZODXI9Ih0OizQmYF4pAABYLMEPunNHVrTsHQbqBKScVZCAvZNL68ome805oxN8U76/bgiOdtpOHLvffwaEKLQ7HgUUngz8qOBan3zOfe2gtCqgprxLrk=
+	t=1752840719; cv=none; b=BPOBKm7jGy3DaVkRG/lu/mIEXwCsmBvyEKOJpbrJH49M/ms8CaVaaPHG9ClT9vAhuH/lWLitEosVLFfP/11d1FyfcwHXJZfrJjTdscN9WfjUxVM29WXl1zWJYTf3lVWE3iyLZIOEaumcbJ6sXWnfEnptvKLqO6wiY+WsKaBHoVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752837197; c=relaxed/simple;
-	bh=TqKyTBjFtQ3f36uvZI29BwG1FQzvYrSqzIvXDaAbO6U=;
+	s=arc-20240116; t=1752840719; c=relaxed/simple;
+	bh=H5ulg1D2PmncouZNIkGRBL1+pMnm+it1GrK3QReAB1Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j2P87eBfszgR8GQgTWo/2j0L6hqQxypR0s1g7OkUm8JC+4n4YEu2eRBPvSKnYAniS2sMw7wssVrp4dMI9J5B06Ak3QO96U8TLeR7ZVVnLqHqFgKA1GgU+1tWcN/42vpCH43/ivQJEvl6njWb4y0gfj/qLwbU4z99ZZzusm+L/IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=UKK2fcgW; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=bnmhsuxiBErW87nw0PaWsg41tpb0/3MqhNgyKWbDaKM=; b=UKK2fcgWSeaGOTul9H6D9DEQRl
-	nsp7hckwzEgcrHsNpyzYGVKlGUURT+/eHe49iuici7ACwYbg6/laSIDpDJcjtE87Z2fkF1IqZxMya
-	HjBoWwFnltt2GcwTW+k4KUl2jI1TglhJ3nzJZlSnAel0vvlGDs5R4WaH4WtskPx1yMuLWc+GCmb1e
-	2Ov0Ww18W8t7JcevuUwTmCuW4tKOulavEQDw6V+Glgdu+KMSwbpoAvNKUOrX4ojrrJZUmxWlrVV2h
-	zhA+khC3vLPsiLeV6GL/Rc2ADXwJE4ZU8+KuvqhpFZwbKr/klV2WSi78OhZCFvM+32DfvdJwWgvPj
-	WWBa1EHA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1ucimB-007ynL-0v;
-	Fri, 18 Jul 2025 19:13:12 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 18 Jul 2025 21:13:11 +1000
-Date: Fri, 18 Jul 2025 21:13:11 +1000
-From: Herbert Xu <herbert@gondor.apana.org.au>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dCP5cKmFCEVVLZWgqF7NZFZanGa/orJpae0mPeaZRXSYL6nkWPGG1Xpn4vw1OOuk6mH4JKM4Fym6YsmDCWRYfIse3aOWbYqjv1K32rSLc95q+FTK+lirUtjNtR+Bcbep6XC8mNIMqIhy2hAhsv22gLHGkugDAhH3/thN7osf7bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bu1XiidS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6A3C4CEEB;
+	Fri, 18 Jul 2025 12:11:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752840718;
+	bh=H5ulg1D2PmncouZNIkGRBL1+pMnm+it1GrK3QReAB1Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bu1XiidSZ4QUlYJJV9Wnh20gSobcZ5Muca6GZbLuNdSVuTO1r6++hjWiP4zXVf54R
+	 +bEYxLZwk/z797SflIcDOsqgICVj5+8kP0eSOQN3PI2xStyRv8YqagcU7Mi1meWPjm
+	 mnqaiWD3ftPkgr//zwgeSgewIvMUbolt0vrMLEZzpb9Cy0eZihzoTooiHVc7BqXfP1
+	 jj1jTeBJdruW7e6vdT3JnVrxV/DgDsB9ZdnpK0ZC1UHqxkUgDCnhKerkNAYLB50B7U
+	 CvFfSN9gI6OXQAZWANxrxzCIHqnhXrgOAvAH2NnsduVOlPNgJBmVw1uKFaeu5ZATUt
+	 7FtbLp5JnN3/g==
+Date: Fri, 18 Jul 2025 08:11:56 -0400
+From: Sasha Levin <sashal@kernel.org>
 To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Cc: linux-crypto@vger.kernel.org, qat-linux@intel.com,
-	stable@vger.kernel.org, Ahsan Atta <ahsan.atta@intel.com>
-Subject: Re: [PATCH] crypto: qat - flush misc workqueue during device shutdown
-Message-ID: <aHosRzM4UO63weHf@gondor.apana.org.au>
-References: <20250711122753.9824-2-giovanni.cabiddu@intel.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 6.1] crypto: qat - fix ring to service map for QAT GEN4
+Message-ID: <aHo6DEwZHkedlwZE@lappy>
+References: <20250717170835.25211-1-giovanni.cabiddu@intel.com>
+ <1752795908-8533c229@stable.kernel.org>
+ <aHnvq5RvK/UC7h15@gcabiddu-mobl.ger.corp.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250711122753.9824-2-giovanni.cabiddu@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aHnvq5RvK/UC7h15@gcabiddu-mobl.ger.corp.intel.com>
 
-On Fri, Jul 11, 2025 at 01:27:43PM +0100, Giovanni Cabiddu wrote:
-> Repeated loading and unloading of a device specific QAT driver, for
-> example qat_4xxx, in a tight loop can lead to a crash due to a
-> use-after-free scenario. This occurs when a power management (PM)
-> interrupt triggers just before the device-specific driver (e.g.,
-> qat_4xxx.ko) is unloaded, while the core driver (intel_qat.ko) remains
-> loaded.
-> 
-> Since the driver uses a shared workqueue (`qat_misc_wq`) across all
-> devices and owned by intel_qat.ko, a deferred routine from the
-> device-specific driver may still be pending in the queue. If this
-> routine executes after the driver is unloaded, it can dereference freed
-> memory, resulting in a page fault and kernel crash like the following:
-> 
->     BUG: unable to handle page fault for address: ffa000002e50a01c
->     #PF: supervisor read access in kernel mode
->     RIP: 0010:pm_bh_handler+0x1d2/0x250 [intel_qat]
->     Call Trace:
->       pm_bh_handler+0x1d2/0x250 [intel_qat]
->       process_one_work+0x171/0x340
->       worker_thread+0x277/0x3a0
->       kthread+0xf0/0x120
->       ret_from_fork+0x2d/0x50
-> 
-> To prevent this, flush the misc workqueue during device shutdown to
-> ensure that all pending work items are completed before the driver is
-> unloaded.
-> 
-> Note: This approach may slightly increase shutdown latency if the
-> workqueue contains jobs from other devices, but it ensures correctness
-> and stability.
-> 
-> Fixes: e5745f34113b ("crypto: qat - enable power management for QAT GEN4")
-> Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-> ---
->  drivers/crypto/intel/qat/qat_common/adf_common_drv.h | 1 +
->  drivers/crypto/intel/qat/qat_common/adf_init.c       | 1 +
->  drivers/crypto/intel/qat/qat_common/adf_isr.c        | 5 +++++
->  3 files changed, 7 insertions(+)
+On Fri, Jul 18, 2025 at 07:54:35AM +0100, Giovanni Cabiddu wrote:
+>Hi Sasha,
+>
+>On Thu, Jul 17, 2025 at 09:34:36PM -0400, Sasha Levin wrote:
+>> [ Sasha's backport helper bot ]
+>>
+>> Hi,
+>>
+>> Summary of potential issues:
+>> ⚠️ Found follow-up fixes in mainline
+>>
+>> The upstream commit SHA1 provided is correct: a238487f7965d102794ed9f8aff0b667cd2ae886
+>>
+>> Status in newer kernel trees:
+>> 6.15.y | Present (exact SHA1)
+>> 6.12.y | Present (exact SHA1)
+>> 6.6.y | Present (different SHA1: 82e4aa18bb6d)
+>
+>This patch applies only to the v6.1.y kernel, as it is already present
+>in the other long-term stable branches.
 
-Patch applied.  Thanks.
+Yup - this part just verifies that the patch exists in all never trees.
+
+>> Found fixes commits:
+>> df018f82002a crypto: qat - fix ring to service map for dcc in 4xxx
+>
+>Regarding the follow-up fix:
+>
+>  df018f82002a crypto: qat - fix ring to service map for dcc in 4xxx
+>
+>Not sending this to stable is intentional.
+>
+>The QAT driver in v6.1 does not support the DCC (data compression
+>chaining) service, which was introduced later in kernel v6.7 with commit
+>37b14f2dfa79 crypto: qat - enable dc chaining service.
+>
+>The original fix (a238487f7965 crypto: qat - fix ring to service map for
+>QAT GEN4) was supposed to address the problem also for DCC (as it landed
+>after the introduction of that service), but did not. Therefore the
+>follow-up fix df018f82002a was merged in kernel v6.9.
+>
+>Hope this clarifies.
+
+That helps, thanks!
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Thanks,
+Sasha
 
