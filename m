@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-163309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCBA4B09934
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:34:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9EABB09932
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6878D1886FBA
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:34:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71F9560C73
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC42B157A72;
-	Fri, 18 Jul 2025 01:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEFE153BD9;
+	Fri, 18 Jul 2025 01:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z3cKR/ah"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U72wZm6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD093398B
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4461145FE0
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752802465; cv=none; b=JZyvpRYRKky7BmRGm6wLTiK+Tm4QNrBOvbEBonrebfwQjJJbXc8mznFr1qBzm/zcdHU1zaTCgO9iZeoxjq0rNzzTAmVMOofLpV/q9MZIdcFj5QlHLhUp8+dAyCBIyiVvjXoXYtD6FbPOEtEeOdPjfuu/bvyo8VkGV4fD8YiDTN0=
+	t=1752802467; cv=none; b=QoBpfse7a+/U4sno7GUJKXgpbe4iBRHO43a9sZyZXy8QYObF4FxEFMFzMXOVFeHNg2yhgIotBzm7cAQDMjDp2tr9EqD/5cYgmtKJxaxi/mS9FGyXvpoUiH/n+kMyGW1FCVHmEbWzRtaXXCc4dbe6j+J6Zh2VkV12CQt0S+YItDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752802465; c=relaxed/simple;
-	bh=zOKISdUsHZ9Vy4ox+08/M6EY9J3fDTywP7z6gtiKcAA=;
+	s=arc-20240116; t=1752802467; c=relaxed/simple;
+	bh=+I86k4Xg2l1VcN/IEgkXUFVbhL+KE2pvbu5wOec7xAI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XijI6eUFvwGrnR9ODBbBQo4yA58U0ZI1+JOBdKn8BMeJyaltjBuk/N32KNl2FsF2T5TSnTqk63nnYqC0DwV6bII2VWHPrKMdWZZCZhB5CyaoUFhP1v7Ct30b50cycm2qba625IuV2/x8gWND9kw0MRPHTaEFCjiQIvqF9jVoPG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z3cKR/ah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103F0C4CEE3;
-	Fri, 18 Jul 2025 01:34:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ecSb2FEMWr7BB9wG36Ssr1XmiSim5X4CkkohYo+h7Ae5/BmPS0I/y5WyfN2eokToDf/c0c2XR8UJM+i80dQWRpKRvZG84BYN2JqfnwOpGHEqB2Ztx2mgtfB2JbMASPsdNaDy9Dhw2GYpVywu4wWZO27Fw5VARPQ7IqcDYzVra5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U72wZm6S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5C8C4CEE3;
+	Fri, 18 Jul 2025 01:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752802464;
-	bh=zOKISdUsHZ9Vy4ox+08/M6EY9J3fDTywP7z6gtiKcAA=;
+	s=k20201202; t=1752802467;
+	bh=+I86k4Xg2l1VcN/IEgkXUFVbhL+KE2pvbu5wOec7xAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3cKR/ah6SJJj5TvW5ZlM2Vy4D6HGliQalA4t/L+LzRghpPdjXsFK5q29nr2PZl3A
-	 QHpNnw1vXtO9U8lYk1MgHT+JxGh/sShqgWbtkCiAPoLTehjmdoHhKsWtAM6IOrEwIN
-	 K3Y8fBKfnDqXiNWS2T75FAWNtNszrm2qz644N9b2cVgHd2G6OOgnFYh0SE2iJ9VYfP
-	 PnX5ooHOTAJE+x3lCN9QQED1Hb9e0pZh6PqbKSVsGOI4TriFq7k3A4iskhI5A3cOjd
-	 UNX3B7hVJgaF+ECSeAWkwOULPzmdBQVDO9gaEYoZxXJVEvmIEwScPFr0v+rN1SdEbS
-	 OCB9mPlUkvSEg==
+	b=U72wZm6SqgEjwRKirCwbB8H9DTRcO7PRUI1smBYj8lugkYzDJdQpA4nn0EPX0cwu+
+	 8g4+IiX3Gvh8+u8zGyRrtcVuogVo0xjPnEOYIlpcSqQ9FT/wm+UGnvgV7/WE2xyHQE
+	 jpu2UAdVIonixigFH4SVcFChfh6XfqDLfMui8Cq7FyIUPjdtkV+88OQi0nWPnWXyb4
+	 ebxqhjteBP/7s1YCPgZr1CmZJ9sPj9BBh8eR1K3a2j9Kvq+iUOo34VYViPlrnPz4LN
+	 629FMl3/x0pIUB+9bpovIg0CT14MetOujnKUpL2E6nOB0T9yoeJdElirVC0DclW5tg
+	 Z6nRIgyVvU8jQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	shung-hsi.yu@suse.com
+To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.6 2/2] Revert "selftests/bpf: dummy_st_ops should reject 0 for non-nullable params"
-Date: Thu, 17 Jul 2025 21:34:22 -0400
-Message-Id: <1752798028-8ce3e42b@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y 1/6] net_sched: sch_sfq: annotate data-races around q->perturb_period
+Date: Thu, 17 Jul 2025 21:34:25 -0400
+Message-Id: <1752797234-fbbf60f9@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250717080928.221475-3-shung-hsi.yu@suse.com>
+In-Reply-To: <20250717124556.589696-2-harshit.m.mogalapalli@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,18 +63,18 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ This is part 2/2 of a series
-⚠️ Could not find matching upstream commit
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-No upstream commit was identified. Using temporary commit for testing.
+The upstream commit SHA1 provided is correct: a17ef9e6c2c1cf0fc6cd6ca6a9ce525c67d1da7f
 
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Commit author: Eric Dumazet <edumazet@google.com>
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| 6.6                       | Success     | Success    |
+| 5.4                       | Success     | Success    |
 
