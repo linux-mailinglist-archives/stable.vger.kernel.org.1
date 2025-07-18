@@ -1,71 +1,58 @@
-Return-Path: <stable+bounces-163377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD66B0A66E
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 16:36:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F8CB0A677
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 16:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37F621C427A7
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 14:36:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DD7C580EA3
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 14:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5DD2DBF43;
-	Fri, 18 Jul 2025 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5E82DC35E;
+	Fri, 18 Jul 2025 14:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b="ipPcvZM3";
-	dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b="XJuhlFvi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZlyUV3CB"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B35217B425
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 14:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45602BD590;
+	Fri, 18 Jul 2025 14:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752849390; cv=none; b=QN68M/6nBTPjvIBXeUcTK/3PVhlJgNFbfExr3WUzrKoIoNWnNZnbrxyhou95yn2xA5z6qHwwX6AQDNcw2wWCj6RGnfeOE6A/rbi+NIgixMUQVpxICzP1BHPLvv2f78agqPJTF7h74cBHsHtF7IKXm/cAe+Cm1Y7QCzp4fFvwVT0=
+	t=1752849568; cv=none; b=p2XwGdI7cmwRVdeafr16O+lGKXvhjBGvSNnsdO3vzO0FEDUfcass3mZODUldH4xlE4pA/jXAmdOEwzSbpT+A9ee2BSWJd06W7Pu5wCcqKwTFHhFCMwODSlffN+ouruXFGaEs2rzJ/u7XWgCZRTY/933et+Lu/9lGMhVo5xHGFbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752849390; c=relaxed/simple;
-	bh=mCJTMl6hmU/t/n7RMrAexSGMCuHAoxTnyKTXuygkquM=;
+	s=arc-20240116; t=1752849568; c=relaxed/simple;
+	bh=eSe3PaphIUbFUY2NxCmQgAMvVeWuC8wFj75ybbFp9e8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qu4tpm4OTOW2e7fLjLhc3NlVvEIEmRZahSLM1ldkgsN7W77eJQC6s0FLSoq9MMB1L9jfPoQfkAOjxlRmp0ZhuyRTaOoEKKC/HtDaUm8QGtexdinVNyrcwkaWupjF+nQW7tSilzMTDG1Cxg6M1P7BW00BFosl3qfxPqIuO3x1Iuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hacktheplanet.fi; spf=pass smtp.mailfrom=hacktheplanet.fi; dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b=ipPcvZM3; dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b=XJuhlFvi; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hacktheplanet.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hacktheplanet.fi
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=gibson; bh=mCJTMl6hmU/t/
-	n7RMrAexSGMCuHAoxTnyKTXuygkquM=; h=in-reply-to:references:subject:cc:
-	to:from:date; d=hacktheplanet.fi; b=ipPcvZM3bpMRJzxRS0cot5qFHDc+uFbNh/
-	hJrhoxcKvc68HaecB44RlKS7zlclhqvmPniNnPsgpormEgUYIVt6FDOowL7BvGrzRvlvjN
-	otPTSFQUyLVli7gPNsRtNMZlz9J2nvVjLHpcDvUn2N9IQhYfUx3uh57SqfMgMRkc3bsOH0
-	YXVuBwLGfTW5mwbyxFuTVNwfs/r6vkgDRihTr+MeGUrCO0Q9wT1Y264pYbO5NiR2Ub5/I7
-	je7NJ2i8fwnZOy9YJkZMXLdWZrsX6ja4gVfP5V8KpCcUZxmIEfvG0a0vaTnNky58NwqVaR
-	yO13azxNMKaq2ZkNDH/eVRUdb84A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hacktheplanet.fi;
-	s=key1; t=1752849384;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U4fWzDUDVjTYg2bPTnEOawxX6k0jS8mMVyArseOI0Ro=;
-	b=XJuhlFvinkI3yznxCnIYv2c0XaEPy6pnW/s+axNlivjtyGr1LBuHtl9DMslPWcbGJOEUI2
-	NJKOpBr6bVvFxOtkeDf2x/i1lqyo0h3D0fk3h7GvAnkI189C++7fCwsBPCcd9+1beaeaKk
-	vlBmjvmrd1fG82LdTsqNjDR1Up5AZepcwFD/6XEcyCn9TvbQK1pJSJeAQa37bOZYEUTNR1
-	6+fC2dKgKnu+70i+2Hrdy5ajG6SUg59oPhq9YuuImiVhC5735Mcz7oLPX06Y/ywteZK77h
-	AbGzTzFLwmQqmBtfqA28gVhfve6tglukDQQ+EnkyfN4seCDrbWcNjhknLAcDxg==
-Date: Fri, 18 Jul 2025 23:36:17 +0900
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lauri Tirkkonen <lauri@hacktheplanet.fi>
-To: Mario Limonciello <superm1@kernel.org>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
-	amd-gfx@lists.freedesktop.org,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [REGRESSION] drm/amd/display: backlight brightness set to 0 at
- amdgpu initialization
-Message-ID: <aHpb4ZTZ5FoOBUrZ@hacktheplanet.fi>
-References: <aHn33vgj8bM4s073@hacktheplanet.fi>
- <d92458bf-fc2b-47bf-b664-9609a3978646@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=OchWp75O16ie8NeOl4xmapPPzzPyFNSQoL0ZhKeVMrTGwl3rWvpSk0e2kyP3gLogvd7CLa+XmzmlVL3iGiUhpriJ230YJmQwXgEcoNTC01nlHUYebthVcuT/beVDzO6bhb7aBa8epojkxyWUFaDLu97bMa6s1TXRoiN6cWIu778=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZlyUV3CB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0593CC4CEEB;
+	Fri, 18 Jul 2025 14:39:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752849568;
+	bh=eSe3PaphIUbFUY2NxCmQgAMvVeWuC8wFj75ybbFp9e8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZlyUV3CBq0Hchso6K0ioH3KWGr8XLmM91ibw6mAxKgRJNwP+sKkTfFWkeVP6XRudq
+	 qp5+KckZBfOin2SvKAI/Q2oOTRT0kqkrAH04Y3aTDwNfMzqi7kc/oGBMGSKtudWPYJ
+	 z7E832cCR3shkTWk7Rz6uL+abokA3dC6E/J3Q3OFEdMaYGmhBgS0DXaQCCUtjW0zyx
+	 fJbY+dmvqlExOvXWMIcoFkk1RPFdKn1umivUYqpXN/ASrjUnc6kAaAOvb4H+cMxssC
+	 fte4Q2/2ebiibde8AYF72AF/iw+4WOMttr+tmGVail7ncX3+Hx6G+v5vizc6cmLT4f
+	 qzYqeEPzXw31A==
+Date: Fri, 18 Jul 2025 15:39:23 +0100
+From: Simon Horman <horms@kernel.org>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: ioana.ciornei@nxp.com, davem@davemloft.net, andrew+netdev@lunn.ch,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, stable@vger.kernel.org,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: Re: [PATCH net v2 1/3] bus: fsl-mc: Fix potential double device
+ reference in fsl_mc_get_endpoint()
+Message-ID: <20250718143923.GF2459@horms.kernel.org>
+References: <20250717022309.3339976-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,24 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d92458bf-fc2b-47bf-b664-9609a3978646@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20250717022309.3339976-1-make24@iscas.ac.cn>
 
-On Fri, Jul 18 2025 08:10:06 -0500, Mario Limonciello wrote:
-> Do you by chance have an OLED panel?  I believe what's going on is that
-> userspace is writing zero or near zero and on OLED panels with older kernels
-> this means non-visible.
+On Thu, Jul 17, 2025 at 10:23:07AM +0800, Ma Ke wrote:
+> The fsl_mc_get_endpoint() function may call fsl_mc_device_lookup() 
+> twice, which would increment the device's reference count twice if 
+> both lookups find a device. This could lead to a reference count leak.
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 1ac210d128ef ("bus: fsl-mc: add the fsl_mc_get_endpoint function")
 
-Yes, this is an OLED panel. But I don't believe it's userspace writing
-anything at this point in the boot; before the bisected commit,
-brightness was set to 32 (out of max 255) on this hardware when I
-checked from the initramfs rescue shell. At the bisected commit, it's 0
-(out of max 255).
+I think this should be:
 
-> There is another commit that fixes the behavior that is probably missing.
+Fixes: 8567494cebe5 ("bus: fsl-mc: rescan devices if endpoint not found")
 
-Which commit is that? It's not in 6.15.7?
+I've CCed Laurentiu, the author of that commit.
 
--- 
-Lauri Tirkkonen | lotheac @ IRCnet
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+
+Suggested-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+> ---
+>  drivers/bus/fsl-mc/fsl-mc-bus.c | 19 +++++++++----------
+>  1 file changed, 9 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+> index 7671bd158545..c1c0a4759c7e 100644
+> --- a/drivers/bus/fsl-mc/fsl-mc-bus.c
+> +++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+> @@ -943,6 +943,7 @@ struct fsl_mc_device *fsl_mc_get_endpoint(struct fsl_mc_device *mc_dev,
+>  	struct fsl_mc_obj_desc endpoint_desc = {{ 0 }};
+>  	struct dprc_endpoint endpoint1 = {{ 0 }};
+>  	struct dprc_endpoint endpoint2 = {{ 0 }};
+> +	struct fsl_mc_bus *mc_bus;
+>  	int state, err;
+>  
+>  	mc_bus_dev = to_fsl_mc_device(mc_dev->dev.parent);
+> @@ -966,6 +967,8 @@ struct fsl_mc_device *fsl_mc_get_endpoint(struct fsl_mc_device *mc_dev,
+>  	strcpy(endpoint_desc.type, endpoint2.type);
+>  	endpoint_desc.id = endpoint2.id;
+>  	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
+> +	if (endpoint)
+> +		return endpoint;
+>  
+>  	/*
+>  	 * We know that the device has an endpoint because we verified by
+> @@ -973,17 +976,13 @@ struct fsl_mc_device *fsl_mc_get_endpoint(struct fsl_mc_device *mc_dev,
+>  	 * yet discovered by the fsl-mc bus, thus the lookup returned NULL.
+>  	 * Force a rescan of the devices in this container and retry the lookup.
+>  	 */
+> -	if (!endpoint) {
+> -		struct fsl_mc_bus *mc_bus = to_fsl_mc_bus(mc_bus_dev);
+> -
+> -		if (mutex_trylock(&mc_bus->scan_mutex)) {
+> -			err = dprc_scan_objects(mc_bus_dev, true);
+> -			mutex_unlock(&mc_bus->scan_mutex);
+> -		}
+> -
+> -		if (err < 0)
+> -			return ERR_PTR(err);
+> +	mc_bus = to_fsl_mc_bus(mc_bus_dev);
+> +	if (mutex_trylock(&mc_bus->scan_mutex)) {
+> +		err = dprc_scan_objects(mc_bus_dev, true);
+> +		mutex_unlock(&mc_bus->scan_mutex);
+>  	}
+> +	if (err < 0)
+> +		return ERR_PTR(err);
+>  
+>  	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
+>  	/*
+> -- 
+> 2.25.1
+> 
 
