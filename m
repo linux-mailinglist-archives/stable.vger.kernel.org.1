@@ -1,169 +1,89 @@
-Return-Path: <stable+bounces-163358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2178B0A181
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 13:04:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4BAB0A1A1
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 13:12:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6380A170440
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 11:04:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 046701C803F1
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 11:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31022BE7B3;
-	Fri, 18 Jul 2025 11:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BF02BEC20;
+	Fri, 18 Jul 2025 11:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="Hg/k6Xe4"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="r7zcNSLk"
 X-Original-To: stable@vger.kernel.org
-Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9195229B78C;
-	Fri, 18 Jul 2025 11:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D05B28B41A;
+	Fri, 18 Jul 2025 11:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752836678; cv=none; b=pvCZMSKva/At86TO3pMEuAagGrscqsu788tZLEu4LkFca2HeqDv3QpV1ecf17KWBxFRSJoQA2OG2pphel2Xdm/dp23JZH20jkfIO+1rgwXTDGXKR5FWNooGQrZqjLwwuQgts+jXK9tUFJa9zkq8LJ9Ahg4Yf85NnoCyv3tgdu5E=
+	t=1752837134; cv=none; b=p22N0utvBjaS02IK9anVOOdkeB1B3lcrL8YPPME3AIifpNcYORqlD7RT/P+d4XwTQJJvdW6wv/ndDkqFdxhv015lSJ91ndvbou9drfnyIgipPsGzQpwS3T+rBMEf5OWq8XlllJX8JwG0PBfBTGAAFnCFaxVvWZkS3HPqFaZuZV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752836678; c=relaxed/simple;
-	bh=cFORY9gb0sfHAI5NO7xSZ6xnWnAfgmRgOLUsTQ179wQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iMiQRorro7Z2kI+QOcSk51Dg3C+tReVwSs5RWlgRC1EhSvVWgnq3gtr4PPNPq8TkzrXiUJIYt9DthTpmOq97+J6VyhdKr8QO6UNN1E9Q2YDjQQzzJye9rJchfYG9t5fjRpb3KD87FOuaKlV7yrV8swN4b+KUVSzwhYFEBV+7WaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=Hg/k6Xe4; arc=none smtp.client-ip=178.154.239.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:4291:0:640:5ba1:0])
-	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 01F6CC1324;
-	Fri, 18 Jul 2025 14:04:30 +0300 (MSK)
-Received: from kniv-nix.yandex-team.ru (unknown [2a02:6bf:8080:56e::1:20])
-	by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id C4MJsn1G4eA0-22dOx9QF;
-	Fri, 18 Jul 2025 14:04:29 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1752836669;
-	bh=2qalnWYlQY+v6tyEg1CW//D2TKZDTcBnHEPVSwiWO/A=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=Hg/k6Xe4zn/33viN5WiQsuyi+GvR3boPyW3beCibPRrnN9PeNfOjcaMEITbrG2QnV
-	 BMYj8L68OOlljHdI7jRvNfOgS5hpLhkVV4oAoQ+TasSL/KqJ8Zy9ooZ7eDELWGShQs
-	 dB0e0QBbGTTCGiOH/v+X/rvIKBL7iZU6feUQpL7E=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Nikolay Kuratov <kniv@yandex-team.ru>
-To: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	stable@vger.kernel.org,
-	Andrey Ryabinin <arbn@yandex-team.com>,
-	Andrey Smetanin <asmetanin@yandex-team.ru>
-Subject: [PATCH v2] vhost/net: Replace wait_queue with completion in ubufs reference
-Date: Fri, 18 Jul 2025 14:03:55 +0300
-Message-Id: <20250718110355.1550454-1-kniv@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1752837134; c=relaxed/simple;
+	bh=N2XLZDCRYGtexR/9tdoFJGwoiacEHtXF7ymricM12dM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=aj30lBWbSDJAYqNXX5+wxFo7ZuMBbb6gjUc/I9VWmCCa79BU1tubnYpdpKdTEN7/b+YGkCIxntXIFhrdVy+1U5MUftCTlqhHa3UOUj6Gr+8Dz/zvwTA+u0jWfQu8vIQea4j22/rlOnbV5M4G6l+72K+XOXisRVwx4gMl+9Lxo6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=r7zcNSLk; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:
+	From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=EbJtC/SQmRLjsz0TAS+IJf7R78OwujIoAj2DCleQcPI=; b=r7zcNSLk/m27HaYfyXStkiLVIx
+	0aGboDrqa8LHa6T0k1RSXR+mqvjqcWiKFWWI5ehv4eAa4A1jBR6ww+oj7aioC4kYkfXDkhvsXTtgw
+	3EmINwHNsiWvD1nOlD2fmh3X8UUXJdmoHSA47CRF/gfnwyhkwm2cBRLSdiKupEWkAC3pFh0pGSuBB
+	r6RLXkcdiNQgQK4qfaqh9cI1+JLP+OQSMqUcvpV++t0j5hXcaEZ2cfiNaSoxfdtURhUNkFWOSLx5a
+	UdYlDpcC62jZ96LW60lyBtxkwgI0IkOC586DoPc038MzOPYtttlhkXEIrwMS3IsB33/vcYSvHB47L
+	flj7b2bw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1ucil5-007ymV-2o;
+	Fri, 18 Jul 2025 19:12:05 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 18 Jul 2025 21:12:04 +1000
+Date: Fri, 18 Jul 2025 21:12:04 +1000
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	suman.kumar.chakraborty@intel.com, ebiggers@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: acomp - Fix CFI failure due to type punning
+Message-ID: <aHosBA15RgslSFui@gondor.apana.org.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250709005954.155842-1-ebiggers@kernel.org>
+X-Newsgroups: apana.lists.os.linux.cryptoapi,apana.lists.os.linux.kernel
 
-When operating on struct vhost_net_ubuf_ref, the following execution
-sequence is theoretically possible:
-CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
-                             // &ubufs->refcount == 2
-vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
-                                                     vhost_net_ubuf_put_and_wait()
-                                                       vhost_net_ubuf_put()
-                                                         int r = atomic_sub_return(1, &ubufs->refcount);
-                                                         // r = 1
-int r = atomic_sub_return(1, &ubufs->refcount);
-// r = 0
-                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
-                                                      // no wait occurs here because condition is already true
-                                                    kfree(ubufs);
-if (unlikely(!r))
-  wake_up(&ubufs->wait);  // use-after-free
+Eric Biggers <ebiggers@kernel.org> wrote:
+> To avoid a crash when control flow integrity is enabled, make the
+> workspace ("stream") free function use a consistent type, and call it
+> through a function pointer that has that same type.
+> 
+> Fixes: 42d9f6c77479 ("crypto: acomp - Move scomp stream allocation code into acomp")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+> crypto/deflate.c                    | 7 ++++++-
+> crypto/zstd.c                       | 7 ++++++-
+> include/crypto/internal/acompress.h | 5 +----
+> 3 files changed, 13 insertions(+), 6 deletions(-)
 
-This leads to use-after-free on ubufs access. This happens because CPU1
-skips waiting for wake_up() when refcount is already zero.
-
-To prevent that use a completion instead of wait_queue as the ubufs
-notification mechanism. wait_for_completion() guarantees that there will
-be complete() call prior to its return.
-
-We also need to reinit completion in vhost_net_flush(), because
-refcnt == 0 does not mean freeing in that case.
-
-Cc: stable@vger.kernel.org
-Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
-Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
-Suggested-by: Andrey Smetanin <asmetanin@yandex-team.ru>
-Suggested-by: Hillf Danton <hdanton@sina.com>
-Tested-by: Lei Yang <leiyang@redhat.com> (v1)
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
----
-v2:
-* move reinit_completion() into vhost_net_flush(), thanks
-  to Hillf Danton
-* add Tested-by: Lei Yang
-* check that usages of put_and_wait() are consistent across
-  LTS kernels
-
- drivers/vhost/net.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 7cbfc7d718b3..69e1bfb9627e 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -94,7 +94,7 @@ struct vhost_net_ubuf_ref {
- 	 * >1: outstanding ubufs
- 	 */
- 	atomic_t refcount;
--	wait_queue_head_t wait;
-+	struct completion wait;
- 	struct vhost_virtqueue *vq;
- };
- 
-@@ -240,7 +240,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
- 	if (!ubufs)
- 		return ERR_PTR(-ENOMEM);
- 	atomic_set(&ubufs->refcount, 1);
--	init_waitqueue_head(&ubufs->wait);
-+	init_completion(&ubufs->wait);
- 	ubufs->vq = vq;
- 	return ubufs;
- }
-@@ -249,14 +249,14 @@ static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
- {
- 	int r = atomic_sub_return(1, &ubufs->refcount);
- 	if (unlikely(!r))
--		wake_up(&ubufs->wait);
-+		complete_all(&ubufs->wait);
- 	return r;
- }
- 
- static void vhost_net_ubuf_put_and_wait(struct vhost_net_ubuf_ref *ubufs)
- {
- 	vhost_net_ubuf_put(ubufs);
--	wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
-+	wait_for_completion(&ubufs->wait);
- }
- 
- static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
-@@ -1381,6 +1381,7 @@ static void vhost_net_flush(struct vhost_net *n)
- 		mutex_lock(&n->vqs[VHOST_NET_VQ_TX].vq.mutex);
- 		n->tx_flush = false;
- 		atomic_set(&n->vqs[VHOST_NET_VQ_TX].ubufs->refcount, 1);
-+		reinit_completion(&n->vqs[VHOST_NET_VQ_TX].ubufs->wait);
- 		mutex_unlock(&n->vqs[VHOST_NET_VQ_TX].vq.mutex);
- 	}
- }
+Patch applied.  Thanks.
 -- 
-2.34.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
