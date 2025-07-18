@@ -1,251 +1,151 @@
-Return-Path: <stable+bounces-163381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D61B0A6FC
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 17:20:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE02B0A7D6
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 17:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 617091C452EC
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 15:21:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E0BB188359D
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 15:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDF71C8610;
-	Fri, 18 Jul 2025 15:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6DC2E0409;
+	Fri, 18 Jul 2025 15:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="h6hrfj24"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ia6fB74B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C711D6AA
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 15:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FED62DECC4;
+	Fri, 18 Jul 2025 15:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752852053; cv=none; b=RwEYpOA3/a9Cq8qvy4klKr7g+wUZAe/0jqbNZ7kE8NRehhShT3UTfEEJwqF5a7c8WckPnUHErII+KrA8NlWDiRb2Xng3zkANzAaDr/jPV42ryeMyEmepmHIwodb71NVicskkdZYYUbNS0AqEtJ+hVBIsegeGT2wzWld3bvAop3A=
+	t=1752853440; cv=none; b=Jdz1Gc5GwLTJRWu1Xxu3KKJkuymU4JD0dOcQwfm3oLlzH7Tj8Q+Mwess19zUrxzB6yxozDIUq42pEKNzePIWe1Fd+qZtCyFDuHl+4uh4CQ14Uqr18ZUB/obB+cCAAz/yFEtCTEceKPTwHfnazj+UoA7HErVp5ME35+U5+3od600=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752852053; c=relaxed/simple;
-	bh=W22QNFlT9cO0iyVYgql62b8k0K9WDUNp8XceCjFP1bQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lczEw8flpjx4XeEtYluwLfaKL2Wy/qTQPg6E3k1d3ye0Mvb//ft4+jtJwgXvARPkVr2vubirvSQN+rkCaXHph+zmSY2LEER3D/oztpPBOkKbBqc5XyjnILEfj8T0PfzQ3CrRXsW2p45tYHbb5neN2Zk0giHL5xdlpeuYRdAxWz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=h6hrfj24; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7494999de5cso1629515b3a.3
-        for <stable@vger.kernel.org>; Fri, 18 Jul 2025 08:20:51 -0700 (PDT)
+	s=arc-20240116; t=1752853440; c=relaxed/simple;
+	bh=mJCwGeAMlBeq7zLQGnl6f/i475VDz879qhHSIBsABO0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q76usBNa3m93ycuAleBVcwHljKs7jU7g6dEMOx9zL3yFTulihJl7gqwUSNLlqoYQF9XHEXLEMsI9NtMP5N4ztWX1KLWSK6fJya+Nm8W2S6YqMrPWjWjT38BmuVYfTqyH+P9gRWa698P+L9sAvFIgh13aR5/9rnhBRlNeBhr9cec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ia6fB74B; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-32f18065b70so2333761fa.1;
+        Fri, 18 Jul 2025 08:43:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1752852048; x=1753456848; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kwe3p1qor/XYL1F45tt7pYoZyFpjoxAKetD8WTum46M=;
-        b=h6hrfj24xw+8INYv5hcH419lu97YydK9eRwBkL7EmOGG+8L11XYGijzc+tgWKzabHu
-         dTNr0rK7qt8UwPn5Lt2MHvILDBUpTy4a5K2K59I1CzO6FqDc8Z3UD0kpcaBq1cjTdN3B
-         V6MLa0Cd841uFdFbLOa+sl8kTVdt348gjJ1lk=
+        d=gmail.com; s=20230601; t=1752853437; x=1753458237; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hJ3ROjwqD3CLXG2IiheiI0iDXPqsbWX3BCQXRvH9p54=;
+        b=Ia6fB74Bx/VPtiP+dIWPBfa7q2GLjEcU4nX8AtWjveovRIsv+Qe4UApA81kbNEWclJ
+         2Kwj8rHvxrd2NXeZZIYc2r01at4DXZnOWXh5cyO+0pMJpOOI+CQ/yb8a+2l1uQlBtbVV
+         6nFT4qAj8MmMmDbmFoXBHBXXlcWCj6MNFvhA6Qdc6o9gF+GfCO5R9SsiyaG0lIExk87U
+         4y8I7u6yBtJL3KBmDc4Jb1rgFQK7ugaINhRwHELMaBDMWVXL50m2tdbp6WbaqUhhssmX
+         og3pPDw9qTqP0jLZygZbGfaO5xO1ciJVmJLpScQVd+l3TYiQKCev9R7rqp5S1n3FDk3g
+         uXLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752852048; x=1753456848;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kwe3p1qor/XYL1F45tt7pYoZyFpjoxAKetD8WTum46M=;
-        b=GQcV44w7pdCs0RK19k3Os4cvaDMeIXLi4oWS1HOa+xnWmX/SYTLRNqLs/GMLHegKGT
-         0TGuId43wWyYzSFU1sqSfYa6ETRgdnuAwJOecl4ol+YojA92zpKwXNNDSMg0ItoJ6L7X
-         6Oup3iYYtNNMY4UV3/NsaIqm6IKeuS+Lyo2VYlGpbtlntLZ6UET1MzsfzUwywu7qx3hG
-         t5HxazpwiIHGXcbHhypymj5FS02g/aUAa8fnDsdN6VQdA1LzOkqxwepIOWQD7iPyqlvp
-         GwtNhBIdag/frOYfnppFNjfUNcdIzMk9LQh48e4YOXHzFgj6t+PUIlDCZQ0T1AaCtHBS
-         Ic1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWeGVxAhwc+kJIh1e6xqNzArFYmRUl+6Aur6AGLw0wKHcOCGU67WrZrYupVOQa6aMZVwoioqN4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBNpJIoH1d3kguBDGLGMYxS9dDVKPne7Net93pAadBI3bwNOYB
-	wBqnyL/bGhJQmeobEf5EPvgmjKm0maFsH4t6bCkciXlP7UrUWCwS/yEQtgGNq0oITDhZXL1CRyG
-	ZCBU=
-X-Gm-Gg: ASbGncudEHpwG60ABkDOHwpWo+bWpPZ/FpqKtqZp1rk2ZIa+Ytrpjt1qksctrJxJevn
-	g+2TgvB+kk3ObNWzXw6KM9AF27nASucqLPHa2ZkdKpMgjqu8cd5ugfkkVVQIU6qFcYSUTXq+RJS
-	QsryYLoo+oFz9m94HRuglpOEQ9P6TgCTV9kSLReIsxNs9CDj9uhLPHFZEF56aYnON4PUyUL/PEd
-	Jhq0jq+aWvhdbfHnM0+35x88QDEu64NZNfchPXeAziNampbR9RVRrdDCVzrksbyoqA8DnORpvyB
-	XojyxuBoR1oGnHW66O0SW+Z9J9yj+oApZKDr81LNuRalkCUGxp+Q7kYsRSf/fSDjDlZZyvC2693
-	2vD8XayZ6M+I8Slqe9L14xB6IzVRLmWeDo88gFnTWQ46F+K8cWSTxeQo2uhYvFXzx0DLpuO6q
-X-Google-Smtp-Source: AGHT+IEVvWXY+bP4XLCfgjV0EJLWcLBMpb+2mTgLEZprNcZW7wZsCnXQuZiS4Jk7VcjWRGx8uBBGqA==
-X-Received: by 2002:a05:6a20:160f:b0:21f:751a:dd41 with SMTP id adf61e73a8af0-237d896b159mr19483879637.40.1752852047934;
-        Fri, 18 Jul 2025 08:20:47 -0700 (PDT)
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com. [209.85.216.47])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c8acafb4sm1436047b3a.57.2025.07.18.08.20.45
-        for <stable@vger.kernel.org>
+        d=1e100.net; s=20230601; t=1752853437; x=1753458237;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hJ3ROjwqD3CLXG2IiheiI0iDXPqsbWX3BCQXRvH9p54=;
+        b=VhCRwNAfJcOJXSFbHschGEU8c+aYmezGdgj4GwM0NzgvqmrXueLrLwBeOLczVRu5KH
+         wpTeaxfx96ycbMDg6HtvunGO5AEzGd0eSetlrbx1y+1E8oiMEPq6KZDQ1QJdRwNhoVYW
+         oLz7rRDhghjILUMrl2tNeB1mV0Zcbg/LDyCc5hHJqESFpzwbpOfoaqSOTPK4ZuA5n8Kp
+         UR7aO6KkWrAaCF4cM5rJRswTVi6ogiz+ucVeS/Us3Nv0P68u6BQ2oAbTJ90KM6ZVEZsf
+         zq+ohbIgXJ9Ev8pheAxnwDDOT664/wFFuN7HcqlDKapT9VWlKhqJN5vuhpynvZW2Lg3u
+         yq/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUD5otqcl2595UESCpTtxU5w3CHS82YSk2ABDjVEnnoe7IluQvpKwCJedhYrbMN1eN3MfwwhoBrxheMW+0=@vger.kernel.org, AJvYcCW89V7QGFELbuAmzOhiG4qE72okLHMkYbidkkiTvWryAaZcegivIGGHKgSQVSmn0b9ZUk+2076U@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNBydb4c15jgQbg5hEp8hiJU7tNdE+QQXB4h2kzlgp3WSy0Usk
+	0Ng7mJ/hXWXdgLhOtPkTqBuyO2WLwo//cBE5j6QS5ZUoXjwWLY4kF5q8
+X-Gm-Gg: ASbGncsnsv2icwSR0uQ8CVXHDH4qgTCDxSpLTi9HQQvue9cbxQVKu6HQ3Hy20AsRZbA
+	LOtgwU3kMf9IFy1JsDgPSs5gbgUiDPTUmDD6+TpZf/K6jgbjvtoUr01GaJmLnPrjvojLmf1Egws
+	ERwqZa0vYpE33wlUNtMYeqQbYMo8EJIbcayxunubOVbIitTRNdTCYg+eug7SA/OXhPFsEcs9n4S
+	1yuC4qkE1ZiT9ftSmPXl81A0qdTB4HDd1/msABFoS9YpIDVMgZg1TsOpPJuHnx7XxdRglAk0NJX
+	vwvZjewMh+a78qFfgPPeOmcE7RIvNcAkZf3J8TfKEXn9Lb7N7omRQoSGFggjXyOBB/3sQTVEBbV
+	n0YS0vii05jCOtOqwwx/h+JRnU01F
+X-Google-Smtp-Source: AGHT+IHuDciecE4/7Mw37ftoaXpLaruOdcnYTZ+5ZmmnuTgI8TgOpSp8IT4jSI8HtwvRnaLKI1Zjpg==
+X-Received: by 2002:a05:6512:128a:b0:545:ece:82d5 with SMTP id 2adb3069b0e04-55a233a28b1mr1360799e87.13.1752853436956;
+        Fri, 18 Jul 2025 08:43:56 -0700 (PDT)
+Received: from [10.214.35.248] ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55a31d7c777sm299394e87.116.2025.07.18.08.43.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Jul 2025 08:20:45 -0700 (PDT)
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3137c2021a0so1816032a91.3
-        for <stable@vger.kernel.org>; Fri, 18 Jul 2025 08:20:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVlaiZ3yKavDImX+bE9jnNzu4fctc0RwHyYaDbNz1jk7gltzStT7lGKk7oiioTpxonX8cDNDqw=@vger.kernel.org
-X-Received: by 2002:a17:90b:50c7:b0:315:aa28:9501 with SMTP id
- 98e67ed59e1d1-31c9e7707e5mr16601949a91.24.1752852044700; Fri, 18 Jul 2025
- 08:20:44 -0700 (PDT)
+        Fri, 18 Jul 2025 08:43:55 -0700 (PDT)
+Message-ID: <0004f2ed-ac2b-4d93-8a4d-d01cbede94a2@gmail.com>
+Date: Fri, 18 Jul 2025 17:43:37 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610092135.28738-1-cuiyunhui@bytedance.com>
- <20250610092135.28738-3-cuiyunhui@bytedance.com> <CAEEQ3w=pUPEVOM4fG6wr06eOD_uO6_ZBzORaG1zhtPswD8HLNQ@mail.gmail.com>
- <84cyauq2nc.fsf@jogness.linutronix.de> <CAEEQ3w==dO2i+ZSsRZG0L1S+ccHSJQ-aUa9KE638MwnBM4+Jvw@mail.gmail.com>
- <84ikjqaoqi.fsf@jogness.linutronix.de>
-In-Reply-To: <84ikjqaoqi.fsf@jogness.linutronix.de>
-From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 18 Jul 2025 08:20:32 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=VmYK5PeGXUcbJrnwnhdyfbNJLdRjwhbj7JCN5s-JmTAw@mail.gmail.com>
-X-Gm-Features: Ac12FXzOFOb-NbS_iV3QrEjhDiPv2Bc0pKC7N9uN5sAU0uoh5RMhscF-UsJKoOY
-Message-ID: <CAD=FV=VmYK5PeGXUcbJrnwnhdyfbNJLdRjwhbj7JCN5s-JmTAw@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v9 2/4] serial: 8250_dw: fix PSLVERR on RX_TIMEOUT
-To: John Ogness <john.ogness@linutronix.de>
-Cc: yunhui cui <cuiyunhui@bytedance.com>, arnd@arndb.de, 
-	andriy.shevchenko@linux.intel.com, benjamin.larsson@genexis.eu, 
-	gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com, 
-	ilpo.jarvinen@linux.intel.com, jirislaby@kernel.org, 
-	jkeeping@inmusicbrands.com, linux-kernel@vger.kernel.org, 
-	linux-serial@vger.kernel.org, markus.mayer@linaro.org, matt.porter@linaro.org, 
-	namcao@linutronix.de, paulmck@kernel.org, pmladek@suse.com, 
-	schnelle@linux.ibm.com, sunilvl@ventanamicro.com, tim.kryger@linaro.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kasan: use vmalloc_dump_obj() for vmalloc error reports
+To: Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Potapenko <glider@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, Yunseong Kim <ysk@kzalloc.com>,
+ stable@vger.kernel.org
+References: <20250716152448.3877201-1-elver@google.com>
+Content-Language: en-US
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <20250716152448.3877201-1-elver@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
 
-On Thu, Jul 17, 2025 at 7:14=E2=80=AFAM John Ogness <john.ogness@linutronix=
-.de> wrote:
->
-> Added Douglas Anderson, author of commit 424d79183af0 ("serial: 8250_dw:
-> Avoid "too much work" from bogus rx timeout interrupt").
->
-> On 2025-07-11, yunhui cui <cuiyunhui@bytedance.com> wrote:
-> >> On 2025-06-23, yunhui cui <cuiyunhui@bytedance.com> wrote:
-> >> >> The DW UART may trigger the RX_TIMEOUT interrupt without data
-> >> >> present and remain stuck in this state indefinitely. The
-> >> >> dw8250_handle_irq() function detects this condition by checking
-> >> >> if the UART_LSR_DR bit is not set when RX_TIMEOUT occurs. When
-> >> >> detected, it performs a "dummy read" to recover the DW UART from
-> >> >> this state.
-> >> >>
-> >> >> When the PSLVERR_RESP_EN parameter is set to 1, reading the UART_RX
-> >> >> while the FIFO is enabled and UART_LSR_DR is not set will generate =
-a
-> >> >> PSLVERR error, which may lead to a system panic. There are two meth=
-ods
-> >> >> to prevent PSLVERR: one is to check if UART_LSR_DR is set before re=
-ading
-> >> >> UART_RX when the FIFO is enabled, and the other is to read UART_RX =
-when
-> >> >> the FIFO is disabled.
-> >> >>
-> >> >> Given these two scenarios, the FIFO must be disabled before the
-> >> >> "dummy read" operation and re-enabled afterward to maintain normal
-> >> >> UART functionality.
-> >> >>
-> >> >> Fixes: 424d79183af0 ("serial: 8250_dw: Avoid "too much work" from b=
-ogus rx timeout interrupt")
-> >> >> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> >> >> Cc: stable@vger.kernel.org
-> >> >> ---
-> >> >>  drivers/tty/serial/8250/8250_dw.c | 10 +++++++++-
-> >> >>  1 file changed, 9 insertions(+), 1 deletion(-)
-> >> >>
-> >> >> diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial=
-/8250/8250_dw.c
-> >> >> index 1902f29444a1c..082b7fcf251db 100644
-> >> >> --- a/drivers/tty/serial/8250/8250_dw.c
-> >> >> +++ b/drivers/tty/serial/8250/8250_dw.c
-> >> >> @@ -297,9 +297,17 @@ static int dw8250_handle_irq(struct uart_port =
-*p)
-> >> >>                 uart_port_lock_irqsave(p, &flags);
-> >> >>                 status =3D serial_lsr_in(up);
-> >> >>
-> >> >> -               if (!(status & (UART_LSR_DR | UART_LSR_BI)))
-> >> >> +               if (!(status & (UART_LSR_DR | UART_LSR_BI))) {
-> >> >> +                       /* To avoid PSLVERR, disable the FIFO first=
-. */
-> >> >> +                       if (up->fcr & UART_FCR_ENABLE_FIFO)
-> >> >> +                               serial_out(up, UART_FCR, 0);
-> >> >> +
-> >> >>                         serial_port_in(p, UART_RX);
-> >> >>
-> >> >> +                       if (up->fcr & UART_FCR_ENABLE_FIFO)
-> >> >> +                               serial_out(up, UART_FCR, up->fcr);
-> >> >> +               }
-> >> >> +
-> >> >>                 uart_port_unlock_irqrestore(p, flags);
-> >> >>         }
-> >>
-> >> I do not know enough about the hardware. Is a dummy read really the on=
-ly
-> >> way to exit the RX_TIMEOUT state?
-> >>
-> >> What if there are bytes in the TX-FIFO. Are they in danger of being
-> >> cleared?
-> >>
-> >> From [0] I see:
-> >>
-> >> "Writing a "0" to bit 0 will disable the FIFOs, in essence turning the
-> >>  UART into 8250 compatibility mode. In effect this also renders the re=
-st
-> >>  of the settings in this register to become useless. If you write a "0=
-"
-> >>  here it will also stop the FIFOs from sending or receiving data, so a=
-ny
-> >>  data that is sent through the serial data port may be scrambled after
-> >>  this setting has been changed. It would be recommended to disable FIF=
-Os
-> >>  only if you are trying to reset the serial communication protocol and
-> >>  clearing any working buffers you may have in your application
-> >>  software. Some documentation suggests that setting this bit to "0" al=
-so
-> >>  clears the FIFO buffers, but I would recommend explicit buffer cleari=
-ng
-> >>  instead using bits 1 and 2."
-> >>
-> >> Have you performed tests where you fill the TX-FIFO and then
-> >> disable/enable the FIFO to see if the TX-bytes survive?
-> >
-> > Sorry, I haven't conducted relevant tests. The reason I made this
-> > modification is that it clearly contradicts the logic of avoiding
-> > PSLVERR. Disabling the FIFO can at least prevent the Panic() caused by
-> > PSVERR.
->
-> I am just wondering if there is some other way to avoid this. But since
-> we are talking about a hardware quirk and it is only related to
-> suspend/resume, maybe it is acceptable to risk data corruption in this
-> case. (?)
->
-> I am hoping Douglas can chime in.
->
-> John Ogness
->
-> >> [0] https://en.wikibooks.org/wiki/Serial_Programming/8250_UART_Program=
-ming
 
-I'm not sure I have too much to add here. :( I did the investigation
-and wrote the original patch over 8 years ago and I no longer have
-access to the hardware where the problem first reproduced. I vaguely
-remember the problem, but only because I re-read the commit message I
-wrote 8 years ago. :-P
+On 7/16/25 5:23 PM, Marco Elver wrote:
+> Since 6ee9b3d84775 ("kasan: remove kasan_find_vm_area() to prevent
+> possible deadlock"), more detailed info about the vmalloc mapping and
+> the origin was dropped due to potential deadlocks.
+> 
+> While fixing the deadlock is necessary, that patch was too quick in
+> killing an otherwise useful feature, and did no due-diligence in
+> understanding if an alternative option is available.
+> 
+> Restore printing more helpful vmalloc allocation info in KASAN reports
+> with the help of vmalloc_dump_obj(). Example report:
+> 
+> | BUG: KASAN: vmalloc-out-of-bounds in vmalloc_oob+0x4c9/0x610
+> | Read of size 1 at addr ffffc900002fd7f3 by task kunit_try_catch/493
+> |
+> | CPU: [...]
+> | Call Trace:
+> |  <TASK>
+> |  dump_stack_lvl+0xa8/0xf0
+> |  print_report+0x17e/0x810
+> |  kasan_report+0x155/0x190
+> |  vmalloc_oob+0x4c9/0x610
+> |  [...]
+> |
+> | The buggy address belongs to a 1-page vmalloc region starting at 0xffffc900002fd000 allocated at vmalloc_oob+0x36/0x610
+> | The buggy address belongs to the physical page:
+> | page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x126364
+> | flags: 0x200000000000000(node=0|zone=2)
+> | raw: 0200000000000000 0000000000000000 dead000000000122 0000000000000000
+> | raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+> | page dumped because: kasan: bad access detected
+> |
+> | [..]
+> 
+> Fixes: 6ee9b3d84775 ("kasan: remove kasan_find_vm_area() to prevent possible deadlock")
+> Suggested-by: Uladzislau Rezki <urezki@gmail.com>
+> Cc: Alexander Potapenko <glider@google.com>
+> Cc: Andrey Konovalov <andreyknvl@gmail.com>
+> Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Cc: Yeoreum Yun <yeoreum.yun@arm.com>
+> Cc: Yunseong Kim <ysk@kzalloc.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Marco Elver <elver@google.com>
 
-I will say that for the hardware I was working with, it wouldn't have
-been the end of the world if there was a tiny bit of UART corruption
-around suspend / resume. Of course, nothing about the workaround
-specifically checks for suspend/resume, that was just how we were
-reproducing problems. If there is ever any other way to get a "RX
-timeout with no data" then we'd also potentially cause corruption with
-the new patch. Still better than an interrupt storm or a panic,
-though...
 
-Not to say that I'm NAKing anything (since I'm a bit of a bystander in
-this case), but I wonder if there's anything you could do better?
-Ideas, maybe?
-
-1. Could the PSLVERR be ignored in this case?
-
-2. Could we temporarily disable generation of the PSLVERR for this read?
-
-3. Could we detect when PSLVERR_RESP_EN=3D1 and only do the FIFO
-disable/enable dance in that case?
-
--Doug
+Acked-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 
