@@ -1,127 +1,100 @@
-Return-Path: <stable+bounces-163338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F1DB09E0D
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:32:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2FCB09E1E
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1806B58200D
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:32:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB2E11AA2F66
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88EC294A10;
-	Fri, 18 Jul 2025 08:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F47628C5CF;
+	Fri, 18 Jul 2025 08:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Pt57KYSV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nL1JbOgd"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB03292B30;
-	Fri, 18 Jul 2025 08:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68646EEDE
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 08:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752827540; cv=none; b=ek14BadPNPHqVrQp42h0skInfoLNw7LXd5YuoLEa2wczV1HdSrMo1jmaFIZxgmgYmQEHtEjYyeUIVgIqFNgL77e4xeIxmpTtebmZ02evWeT0oskhrcliV2gu0eFEZuLT2r0hpCX20Y2isYHL/tt1z6QwcM/28YOn/f/a/4Sev7U=
+	t=1752827742; cv=none; b=cu+7ijgdDToqQKw/xsOrxxBw4nsD4HTF1sJWC2U3CcH+M0URPBRPyFvIxTBJNKgeaDgEzRXS6Qimjmj3kJdY+fNVNw5jAq5oGsIaA/jbh+/lIyUXpCUa331CQzo7GEkfEsPZDCxXR+AzjeiY9EwHTv7GToxtzW2WV2E5+RkQp/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752827540; c=relaxed/simple;
-	bh=8mI/CryjuPW53XG2803NV0fHo7AQCd/bUli3ZC81q1c=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K9ik3CaFzhzhkwZ3NQXXV0A9XEZHRN6sjS/m7mHkK7o5uSyQsrrx7RhOBc4spi4YyEggPkzqKq4btw4i9mS5kamaj/KMddXPF7da4DKOLUFZhalSymPTqeXQJoPaZt8Ff/nsZsdt3nhTr7Mrmz9Pbes6+yDptxVaubT1u+CdEcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Pt57KYSV; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: b4936da263b111f0b33aeb1e7f16c2b6-20250718
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=bWPvaQQMd5CLHEhX9CTA9EMlFSg+oaAeIgUHdvoTJg8=;
-	b=Pt57KYSVNWGSYHHbBtvprelHId5flsfP8Lr2NVamWPz5hft9yXCPn9EKdJJl2JZuDBrZse2gQ9eNA7VmpAeu6r9RoRzYr6MwXlzRGQo7sqWRnTcIqChjcTltkBDadJ1F+W0cE3W5OGHuas49mk8AyQlNzahDC+yONq95V+rmr0c=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.2,REQID:f2473818-d145-4f75-b242-e301ffeb6fd9,IP:0,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:9eb4ff7,CLOUDID:a786049a-32fc-44a3-90ac-aa371853f23f,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0|50,EDM:-3
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: b4936da263b111f0b33aeb1e7f16c2b6-20250718
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
-	(envelope-from <macpaul.lin@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 677885912; Fri, 18 Jul 2025 16:32:13 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Fri, 18 Jul 2025 16:32:12 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Fri, 18 Jul 2025 16:32:12 +0800
-From: Macpaul Lin <macpaul.lin@mediatek.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Sean Wang
-	<sean.wang@mediatek.com>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>,
-	<openembedded-core@lists.openembedded.org>, <patches@lists.linux.dev>,
-	<stable@vger.kernel.org>
-CC: Bear Wang <bear.wang@mediatek.com>, Pablo Sun <pablo.sun@mediatek.com>,
-	Ramax Lo <ramax.lo@mediatek.com>, Macpaul Lin <macpaul.lin@mediatek.com>,
-	Macpaul Lin <macpaul@gmail.com>, MediaTek Chromebook Upstream
-	<Project_Global_Chrome_Upstream_Group@mediatek.com>
-Subject: [PATCH 4/4] arm64: defconfig: Enable UFS support for MediaTek Genio 1200 EVK UFS board
-Date: Fri, 18 Jul 2025 16:32:02 +0800
-Message-ID: <20250718083202.654568-4-macpaul.lin@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250718083202.654568-1-macpaul.lin@mediatek.com>
-References: <20250718083202.654568-1-macpaul.lin@mediatek.com>
+	s=arc-20240116; t=1752827742; c=relaxed/simple;
+	bh=TWsknORm3ZLeHfMxdHLg3cJ0/9KGjglk6P5ewhVgjZ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=DUD7W5/SJ7gIpyKk8qWJN38DBj9n6vLINoU19GMSNGs0jRdc2zZQGDXjE4wCeh6N1xvaZi0POe3QtkEoi3QL7vSaaQcadUSJ407retm10Vw0C/s81LDtSSICdCQJ/K/6Pi/F/8LjHf0pACyya+AOfMpiZcnRcOM3zTsMRY5HCb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nL1JbOgd; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752827740; x=1784363740;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=TWsknORm3ZLeHfMxdHLg3cJ0/9KGjglk6P5ewhVgjZ0=;
+  b=nL1JbOgd9bg+ozzKQBPB8jTT3nfk5yPrtt5Y++/vlRSF5h97iBZD+TR4
+   nTWltj0eXkx+lSbGu9x/bAb273PtjSLTkK5vaMDZh2uhG9kwMbz7SvB/s
+   2I8sgvqJI090fiTafrp9QbYFmk9cA7+Lyow9DpgilK71E49KTRi8LtJ1f
+   4vPNnKOSZ23gMmrD8ckLoMyGEW1APv1S1ZQdQki9EI88c1xUai5ZfEol0
+   zdCsAm3cJlT/649HgoRPF9Kp2Ru/feOFjyfBTqg/RJOm3Ftaf7Ybq9bei
+   kb9uIIA49TsRq6cJlrkHofZbV+p/8egif50Z8hTTSFTYj7KXqdMNvEsyS
+   Q==;
+X-CSE-ConnectionGUID: nQDB2pVVTVGTiRX1VAFhpQ==
+X-CSE-MsgGUID: 4gTbc8u3RSm5I/yriDG46g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="66566329"
+X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; 
+   d="scan'208";a="66566329"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 01:35:40 -0700
+X-CSE-ConnectionGUID: f5Fa1VqLTlS8RFlvr4vT1A==
+X-CSE-MsgGUID: jCoibxkvTU2AogCR9HR76Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; 
+   d="scan'208";a="158573617"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 18 Jul 2025 01:35:39 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ucgZ6-000ERz-2Z;
+	Fri, 18 Jul 2025 08:35:36 +0000
+Date: Fri, 18 Jul 2025 16:34:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Macpaul Lin <macpaul.lin@mediatek.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 4/4] arm64: defconfig: Enable UFS support for MediaTek
+ Genio 1200 EVK UFS board
+Message-ID: <aHoHKqXboY5WIXGy@c1a0ab53bc35>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250718083202.654568-4-macpaul.lin@mediatek.com>
 
-Enable the UFS related settings to support Genio 1200 EVK UFS board.
-This board uses UFS as the boot device and also the main storage.
-This includes support for:
- - CONFIG_PHY_MTK_UFS
- - CONFIG_SCSI_UFS_MEDIATEK
+Hi,
 
-Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
----
- arch/arm64/configs/defconfig | 2 ++
- 1 file changed, 2 insertions(+)
+Thanks for your patch.
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 7e04a2905ce4..c7ca08ed1bf1 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -1208,6 +1208,7 @@ CONFIG_SCSI_UFS_BSG=y
- CONFIG_SCSI_UFSHCD_PLATFORM=y
- CONFIG_SCSI_UFS_CDNS_PLATFORM=m
- CONFIG_SCSI_UFS_QCOM=m
-+CONFIG_SCSI_UFS_MEDIATEK=m
- CONFIG_SCSI_UFS_HISI=y
- CONFIG_SCSI_UFS_RENESAS=m
- CONFIG_SCSI_UFS_TI_J721E=m
-@@ -1591,6 +1592,7 @@ CONFIG_PHY_HISI_INNO_USB2=y
- CONFIG_PHY_MVEBU_CP110_COMPHY=y
- CONFIG_PHY_MTK_PCIE=m
- CONFIG_PHY_MTK_TPHY=y
-+CONFIG_PHY_MTK_UFS=m
- CONFIG_PHY_MTK_HDMI=m
- CONFIG_PHY_MTK_MIPI_DSI=m
- CONFIG_PHY_MTK_DP=m
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 4/4] arm64: defconfig: Enable UFS support for MediaTek Genio 1200 EVK UFS board
+Link: https://lore.kernel.org/stable/20250718083202.654568-4-macpaul.lin%40mediatek.com
+
 -- 
-2.45.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
