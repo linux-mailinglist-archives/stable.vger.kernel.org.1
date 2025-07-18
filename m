@@ -1,367 +1,138 @@
-Return-Path: <stable+bounces-163345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D48DB09F17
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 11:19:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2FAFB09F34
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 11:21:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 787A97B71AF
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 09:17:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F9DA83ACD
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 09:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD9A2989B2;
-	Fri, 18 Jul 2025 09:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE792989A5;
+	Fri, 18 Jul 2025 09:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tJXDeyvK";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7BPAH80o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwBTvzZG"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CD12980C4;
-	Fri, 18 Jul 2025 09:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8339E1514E4;
+	Fri, 18 Jul 2025 09:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752830344; cv=none; b=VyPNz0Ll/L3OHIsP4/fuTBVmmLHdYPFLMdGFvf2kjiryuyJOnQYERayoKRISCKwO3ElyXrfoYB7fPokNzbEPbfDmxTNi4J+TUrF092+g+hewVgkQRy2fiG7zzOl7yHCxbVAHc7L4Z8SQ0IK5H/kEytjkZjbae6qV+cItwgvpMvs=
+	t=1752830451; cv=none; b=fdaLWDPw2p5ot+EVt4g3lE9s/weJQ8iUrtAGER+tE+bk975EOwSBgW4EpBNLd1G1Lg4d4AcPiDrcdptiCKzvywMBAZZcZiZ3ruOH4N4hW12zrIkIYeWBgdcFMmPSGHFxLqj0xe8OtozNMwVB/EDI+zA5yHtwJkVbXURXpbdWwEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752830344; c=relaxed/simple;
-	bh=i11Lfb9jCcjCdnZzfqCChhy3nAJnLHKNA7wmTDd5CRU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HRgFDjlYOW3sy3V8/GftqZvJ5VR/ALLEs0v138MRaMtI70hg71YmbpU3Dg2krsXa3sxv9OgfoeoJi1zzySr2ubyHprYLyne8I2snqM1nRI91039/QqMoJpk0vL2PJVyJ9YCtZuC/RHFQTPZF/EWoHEx2y6GfXYuyR8iMjuYZstI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tJXDeyvK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7BPAH80o; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1752830339;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=svrawDf7a534xUP7RG0/R6u1J/lCaMllrkc3HWnuPMk=;
-	b=tJXDeyvKZL1QpMmjYpeNNIqmIYVFMiwpv6WXNzvKDMALvlcwn4LwFl4NeBFWBoy0QQJ55w
-	zHFPJX6OyL39BjlRZd+IC8bEvUKEA8mcOhabKEXGes8MQ90ZZ8JckQvpDPH/DqFYC2jkzr
-	9OrBnGZvUE/UMqRl7vOBUShxxAqGElZHWwo7KkWR4zNBdTWpYMIYz7i/RxmbllCbOWUPTj
-	zIJiUGecAlH5yK75XoawB2x5CAwwqSHZo7NQa/CT2CsAWdr4HWpaIUOu7zHJF1CgZQcfo2
-	0vLZjK4tjWiyOumzlWX47Xp+V9wj7R5o+/lUJKRQcLKZ/lwSNI6noT6ccgpCQA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1752830339;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=svrawDf7a534xUP7RG0/R6u1J/lCaMllrkc3HWnuPMk=;
-	b=7BPAH80o/Ga/20wVy34va8eGtxoeeVLJPVgGACfdLy6ApNeXKA5D/RQth2onhTLnd3+dAw
-	NWC1TT1jseZV+RDg==
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	linux-trace-kernel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Nam Cao <namcao@linutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH] rv: Ensure containers are registered first
-Date: Fri, 18 Jul 2025 11:18:50 +0200
-Message-Id: <20250718091850.2057864-1-namcao@linutronix.de>
+	s=arc-20240116; t=1752830451; c=relaxed/simple;
+	bh=k9/CVv+4i9ptFeZXg2rA+oUA16dyOUucS52Y1ENUYkI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g/m8/8aFqIuAOQd7COoAl57HpSogWlsyWisddjYiREor7ajG2oybFAntee9ca+fjsyrIToDFt43eQkh7Z4OeUZMVbtfkl5AfqShp4pzHLx6SmIMPAa73EfecCMXhRGN+S+8AoXsZ4fmrs2w131o85uSsLr7NXLppuGXX/coMJT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwBTvzZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7699CC4CEF7;
+	Fri, 18 Jul 2025 09:20:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752830451;
+	bh=k9/CVv+4i9ptFeZXg2rA+oUA16dyOUucS52Y1ENUYkI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YwBTvzZGOh4QkjjUYmc5a5vBzA6ZV+TinoXzyAH+wFOzYzLrHR+wzKI/ULUrIexMC
+	 0bBcplRx1Bjux7wwmKvIdbw6MRwzTNOScubWSVLBphYzhZMLsnF2TvSp19hL72uGtz
+	 u5L5T+WRlvK+9nhsO015Qr3jnpmQdHhTBG0FgaA3Q09l6r12o+v43Mnt98O9I2Ljsr
+	 bD8XP5TMQytAPb7/ne1SJ3c38Lpc5QG/x/Lqo8c6kI5nVWppTKxKnydBfXKD2KaZKq
+	 6FH70t5pk/rAQFT3+xcVcFVPmhxhTo0CNkSVMAiUog0NU/UOHM+W78iRNluInGNuab
+	 urbhrYDQIGnSA==
+Message-ID: <f91a7542-e0a6-4237-9dd3-db14508199f2@kernel.org>
+Date: Fri, 18 Jul 2025 11:20:44 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] arm64: dts: mediatek: mt8395-genio-1200-evk: Move
+ common parts to dtsi
+To: Macpaul Lin <macpaul.lin@mediatek.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Sean Wang <sean.wang@mediatek.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org,
+ openembedded-core@lists.openembedded.org, patches@lists.linux.dev,
+ stable@vger.kernel.org
+Cc: Bear Wang <bear.wang@mediatek.com>, Pablo Sun <pablo.sun@mediatek.com>,
+ Ramax Lo <ramax.lo@mediatek.com>, Macpaul Lin <macpaul@gmail.com>,
+ MediaTek Chromebook Upstream
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>
+References: <20250718083202.654568-1-macpaul.lin@mediatek.com>
+ <20250718083202.654568-2-macpaul.lin@mediatek.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250718083202.654568-2-macpaul.lin@mediatek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-If rv_register_monitor() is called with a non-NULL parent pointer (i.e. by
-monitors inside a container), it is expected that the parent (a.k.a
-container) is already registered.
+On 18/07/2025 10:32, Macpaul Lin wrote:
+> In preparation for introducing the Genio 1200 EVK UFS board support, split
+> mt8395-genio-1200-evk.dts file in two to create mt8395-genio-common.dtsi
+> file, containing common definitions for both boards.
+> 
+> Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+> ---
+>  .../dts/mediatek/mt8395-genio-1200-evk.dts    | 1133 +---------------
+>  .../dts/mediatek/mt8395-genio-common.dtsi     | 1198 +++++++++++++++++
+>  2 files changed, 1199 insertions(+), 1132 deletions(-)
+>  create mode 100644 arch/arm64/boot/dts/mediatek/mt8395-genio-common.dtsi
+> 
 
-The containers seem to always be registered first. I suspect because of the
-order in Makefile. But nothing guarantees this.
+This is impossible to review. Use proper -M/-C/-B arguments for
+format-patch.
 
-If this registering order is changed, "strange" things happen. For example,
-if the container is registered last, rv_is_container_monitor() incorrectly
-says this is NOT a container. .enable() is then called, which is NULL for
-container, thus we have a NULL pointer deref crash.
-
-Guarantee that containers are registered first.
-
-Fixes: cb85c660fcd4 ("rv: Add option for nested monitors and include sched")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
----
- include/linux/rv.h                                        | 5 +++++
- kernel/trace/rv/monitors/pagefault/pagefault.c            | 4 ++--
- kernel/trace/rv/monitors/rtapp/rtapp.c                    | 4 ++--
- kernel/trace/rv/monitors/sched/sched.c                    | 4 ++--
- kernel/trace/rv/monitors/sco/sco.c                        | 4 ++--
- kernel/trace/rv/monitors/scpd/scpd.c                      | 4 ++--
- kernel/trace/rv/monitors/sleep/sleep.c                    | 4 ++--
- kernel/trace/rv/monitors/sncid/sncid.c                    | 4 ++--
- kernel/trace/rv/monitors/snep/snep.c                      | 4 ++--
- kernel/trace/rv/monitors/snroc/snroc.c                    | 4 ++--
- kernel/trace/rv/monitors/tss/tss.c                        | 4 ++--
- kernel/trace/rv/monitors/wip/wip.c                        | 4 ++--
- kernel/trace/rv/monitors/wwnr/wwnr.c                      | 4 ++--
- tools/verification/rvgen/rvgen/templates/container/main.c | 4 ++--
- tools/verification/rvgen/rvgen/templates/dot2k/main.c     | 4 ++--
- tools/verification/rvgen/rvgen/templates/ltl2k/main.c     | 4 ++--
- 16 files changed, 35 insertions(+), 30 deletions(-)
-
-diff --git a/include/linux/rv.h b/include/linux/rv.h
-index 97baf58d88b2..094c9f62389c 100644
---- a/include/linux/rv.h
-+++ b/include/linux/rv.h
-@@ -119,5 +119,10 @@ static inline bool rv_reacting_on(void)
- }
- #endif /* CONFIG_RV_REACTORS */
-=20
-+#define rv_container_init device_initcall
-+#define rv_container_exit __exitcall
-+#define rv_monitor_init late_initcall
-+#define rv_monitor_exit __exitcall
-+
- #endif /* CONFIG_RV */
- #endif /* _LINUX_RV_H */
-diff --git a/kernel/trace/rv/monitors/pagefault/pagefault.c b/kernel/trace/=
-rv/monitors/pagefault/pagefault.c
-index 9fe6123b2200..2b226d27ddff 100644
---- a/kernel/trace/rv/monitors/pagefault/pagefault.c
-+++ b/kernel/trace/rv/monitors/pagefault/pagefault.c
-@@ -80,8 +80,8 @@ static void __exit unregister_pagefault(void)
- 	rv_unregister_monitor(&rv_pagefault);
- }
-=20
--module_init(register_pagefault);
--module_exit(unregister_pagefault);
-+rv_monitor_init(register_pagefault);
-+rv_monitor_exit(unregister_pagefault);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Nam Cao <namcao@linutronix.de>");
-diff --git a/kernel/trace/rv/monitors/rtapp/rtapp.c b/kernel/trace/rv/monit=
-ors/rtapp/rtapp.c
-index fd75fc927d65..b078327e71bf 100644
---- a/kernel/trace/rv/monitors/rtapp/rtapp.c
-+++ b/kernel/trace/rv/monitors/rtapp/rtapp.c
-@@ -25,8 +25,8 @@ static void __exit unregister_rtapp(void)
- 	rv_unregister_monitor(&rv_rtapp);
- }
-=20
--module_init(register_rtapp);
--module_exit(unregister_rtapp);
-+rv_container_init(register_rtapp);
-+rv_container_exit(unregister_rtapp);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Nam Cao <namcao@linutronix.de>");
-diff --git a/kernel/trace/rv/monitors/sched/sched.c b/kernel/trace/rv/monit=
-ors/sched/sched.c
-index 905e03c3c934..e89e193bd8e0 100644
---- a/kernel/trace/rv/monitors/sched/sched.c
-+++ b/kernel/trace/rv/monitors/sched/sched.c
-@@ -30,8 +30,8 @@ static void __exit unregister_sched(void)
- 	rv_unregister_monitor(&rv_sched);
- }
-=20
--module_init(register_sched);
--module_exit(unregister_sched);
-+rv_container_init(register_sched);
-+rv_container_exit(unregister_sched);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Gabriele Monaco <gmonaco@redhat.com>");
-diff --git a/kernel/trace/rv/monitors/sco/sco.c b/kernel/trace/rv/monitors/=
-sco/sco.c
-index 4cff59220bfc..b96e09e64a2f 100644
---- a/kernel/trace/rv/monitors/sco/sco.c
-+++ b/kernel/trace/rv/monitors/sco/sco.c
-@@ -80,8 +80,8 @@ static void __exit unregister_sco(void)
- 	rv_unregister_monitor(&rv_sco);
- }
-=20
--module_init(register_sco);
--module_exit(unregister_sco);
-+rv_monitor_init(register_sco);
-+rv_monitor_exit(unregister_sco);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Gabriele Monaco <gmonaco@redhat.com>");
-diff --git a/kernel/trace/rv/monitors/scpd/scpd.c b/kernel/trace/rv/monitor=
-s/scpd/scpd.c
-index cbdd6a5f8d7f..a4c8e78fa768 100644
---- a/kernel/trace/rv/monitors/scpd/scpd.c
-+++ b/kernel/trace/rv/monitors/scpd/scpd.c
-@@ -88,8 +88,8 @@ static void __exit unregister_scpd(void)
- 	rv_unregister_monitor(&rv_scpd);
- }
-=20
--module_init(register_scpd);
--module_exit(unregister_scpd);
-+rv_monitor_init(register_scpd);
-+rv_monitor_exit(unregister_scpd);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Gabriele Monaco <gmonaco@redhat.com>");
-diff --git a/kernel/trace/rv/monitors/sleep/sleep.c b/kernel/trace/rv/monit=
-ors/sleep/sleep.c
-index eea447b06907..6980f8de725d 100644
---- a/kernel/trace/rv/monitors/sleep/sleep.c
-+++ b/kernel/trace/rv/monitors/sleep/sleep.c
-@@ -229,8 +229,8 @@ static void __exit unregister_sleep(void)
- 	rv_unregister_monitor(&rv_sleep);
- }
-=20
--module_init(register_sleep);
--module_exit(unregister_sleep);
-+rv_monitor_init(register_sleep);
-+rv_monitor_exit(unregister_sleep);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Nam Cao <namcao@linutronix.de>");
-diff --git a/kernel/trace/rv/monitors/sncid/sncid.c b/kernel/trace/rv/monit=
-ors/sncid/sncid.c
-index f5037cd6214c..97a126c6083a 100644
---- a/kernel/trace/rv/monitors/sncid/sncid.c
-+++ b/kernel/trace/rv/monitors/sncid/sncid.c
-@@ -88,8 +88,8 @@ static void __exit unregister_sncid(void)
- 	rv_unregister_monitor(&rv_sncid);
- }
-=20
--module_init(register_sncid);
--module_exit(unregister_sncid);
-+rv_monitor_init(register_sncid);
-+rv_monitor_exit(unregister_sncid);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Gabriele Monaco <gmonaco@redhat.com>");
-diff --git a/kernel/trace/rv/monitors/snep/snep.c b/kernel/trace/rv/monitor=
-s/snep/snep.c
-index 0076ba6d7ea4..376a856ebffa 100644
---- a/kernel/trace/rv/monitors/snep/snep.c
-+++ b/kernel/trace/rv/monitors/snep/snep.c
-@@ -88,8 +88,8 @@ static void __exit unregister_snep(void)
- 	rv_unregister_monitor(&rv_snep);
- }
-=20
--module_init(register_snep);
--module_exit(unregister_snep);
-+rv_monitor_init(register_snep);
-+rv_monitor_exit(unregister_snep);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Gabriele Monaco <gmonaco@redhat.com>");
-diff --git a/kernel/trace/rv/monitors/snroc/snroc.c b/kernel/trace/rv/monit=
-ors/snroc/snroc.c
-index bb1f60d55296..e4439605b4b6 100644
---- a/kernel/trace/rv/monitors/snroc/snroc.c
-+++ b/kernel/trace/rv/monitors/snroc/snroc.c
-@@ -77,8 +77,8 @@ static void __exit unregister_snroc(void)
- 	rv_unregister_monitor(&rv_snroc);
- }
-=20
--module_init(register_snroc);
--module_exit(unregister_snroc);
-+rv_monitor_init(register_snroc);
-+rv_monitor_exit(unregister_snroc);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Gabriele Monaco <gmonaco@redhat.com>");
-diff --git a/kernel/trace/rv/monitors/tss/tss.c b/kernel/trace/rv/monitors/=
-tss/tss.c
-index 542787e6524f..8f960c9fe0ff 100644
---- a/kernel/trace/rv/monitors/tss/tss.c
-+++ b/kernel/trace/rv/monitors/tss/tss.c
-@@ -83,8 +83,8 @@ static void __exit unregister_tss(void)
- 	rv_unregister_monitor(&rv_tss);
- }
-=20
--module_init(register_tss);
--module_exit(unregister_tss);
-+rv_monitor_init(register_tss);
-+rv_monitor_exit(unregister_tss);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Gabriele Monaco <gmonaco@redhat.com>");
-diff --git a/kernel/trace/rv/monitors/wip/wip.c b/kernel/trace/rv/monitors/=
-wip/wip.c
-index ed758fec8608..5c39c6074bd3 100644
---- a/kernel/trace/rv/monitors/wip/wip.c
-+++ b/kernel/trace/rv/monitors/wip/wip.c
-@@ -80,8 +80,8 @@ static void __exit unregister_wip(void)
- 	rv_unregister_monitor(&rv_wip);
- }
-=20
--module_init(register_wip);
--module_exit(unregister_wip);
-+rv_monitor_init(register_wip);
-+rv_monitor_exit(unregister_wip);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Daniel Bristot de Oliveira <bristot@kernel.org>");
-diff --git a/kernel/trace/rv/monitors/wwnr/wwnr.c b/kernel/trace/rv/monitor=
-s/wwnr/wwnr.c
-index 172f31c4b0f3..ec671546f571 100644
---- a/kernel/trace/rv/monitors/wwnr/wwnr.c
-+++ b/kernel/trace/rv/monitors/wwnr/wwnr.c
-@@ -79,8 +79,8 @@ static void __exit unregister_wwnr(void)
- 	rv_unregister_monitor(&rv_wwnr);
- }
-=20
--module_init(register_wwnr);
--module_exit(unregister_wwnr);
-+rv_monitor_init(register_wwnr);
-+rv_monitor_exit(unregister_wwnr);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Daniel Bristot de Oliveira <bristot@kernel.org>");
-diff --git a/tools/verification/rvgen/rvgen/templates/container/main.c b/to=
-ols/verification/rvgen/rvgen/templates/container/main.c
-index 89fc17cf8958..5820c9705d0f 100644
---- a/tools/verification/rvgen/rvgen/templates/container/main.c
-+++ b/tools/verification/rvgen/rvgen/templates/container/main.c
-@@ -30,8 +30,8 @@ static void __exit unregister_%%MODEL_NAME%%(void)
- 	rv_unregister_monitor(&rv_%%MODEL_NAME%%);
- }
-=20
--module_init(register_%%MODEL_NAME%%);
--module_exit(unregister_%%MODEL_NAME%%);
-+rv_container_init(register_%%MODEL_NAME%%);
-+rv_container_exit(unregister_%%MODEL_NAME%%);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("dot2k: auto-generated");
-diff --git a/tools/verification/rvgen/rvgen/templates/dot2k/main.c b/tools/=
-verification/rvgen/rvgen/templates/dot2k/main.c
-index 83044a20c89a..d6bd248aba9c 100644
---- a/tools/verification/rvgen/rvgen/templates/dot2k/main.c
-+++ b/tools/verification/rvgen/rvgen/templates/dot2k/main.c
-@@ -83,8 +83,8 @@ static void __exit unregister_%%MODEL_NAME%%(void)
- 	rv_unregister_monitor(&rv_%%MODEL_NAME%%);
- }
-=20
--module_init(register_%%MODEL_NAME%%);
--module_exit(unregister_%%MODEL_NAME%%);
-+rv_monitor_init(register_%%MODEL_NAME%%);
-+rv_monitor_exit(unregister_%%MODEL_NAME%%);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("dot2k: auto-generated");
-diff --git a/tools/verification/rvgen/rvgen/templates/ltl2k/main.c b/tools/=
-verification/rvgen/rvgen/templates/ltl2k/main.c
-index f85d076fbf78..2069a7a0f1ae 100644
---- a/tools/verification/rvgen/rvgen/templates/ltl2k/main.c
-+++ b/tools/verification/rvgen/rvgen/templates/ltl2k/main.c
-@@ -94,8 +94,8 @@ static void __exit unregister_%%MODEL_NAME%%(void)
- 	rv_unregister_monitor(&rv_%%MODEL_NAME%%);
- }
-=20
--module_init(register_%%MODEL_NAME%%);
--module_exit(unregister_%%MODEL_NAME%%);
-+rv_monitor_init(register_%%MODEL_NAME%%);
-+rv_monitor_exit(unregister_%%MODEL_NAME%%);
-=20
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR(/* TODO */);
---=20
-2.39.5
-
+Best regards,
+Krzysztof
 
