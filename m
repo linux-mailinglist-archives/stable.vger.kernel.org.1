@@ -1,225 +1,135 @@
-Return-Path: <stable+bounces-163387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE475B0A8F6
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 18:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E40B0A954
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 19:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9364C3B4145
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 16:57:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 908093AC2C7
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 17:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743521C862C;
-	Fri, 18 Jul 2025 16:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024B02E612D;
+	Fri, 18 Jul 2025 17:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D9kR2Z0S"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b="amSJp3bZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mta-201a.earthlink-vadesecure.net (mta-201b.earthlink-vadesecure.net [51.81.229.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639932E5B1F
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 16:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54924503B;
+	Fri, 18 Jul 2025 17:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.229.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752857877; cv=none; b=VRQoOnImVX7ui/W6e/i4/QEWOrYLkb1uDrqyA3ZmCdxr99Ws0qT48l9oQqwZH0FgMSRUnHZsxO+eiJAaRUgrIDAzrPlXJAzd0DNNFW6p7CdDtTdi3T7sbKQHWQwLa9phOGeLoYzwADJDPnVteMefWYFXBSdkeK9Ol3pKgnAr9Sc=
+	t=1752859465; cv=none; b=FqbBD240OE2Yrjr7nqZhiHWGYbi+3wZXJ+JR1u310KXk4Ilnx1nWilC3NqD4FW7xyE+PILHjpzKcxModvwRpFO8y/RPJTs2gKkJsR+xo8aUJuXQFlSdOdjgoXT2NfIBHDdap9SOue7nbkC480RyF8jFwzKt8tRtpWQHbePiks20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752857877; c=relaxed/simple;
-	bh=HFE0w/88w1Lyl/K2smHXTTk3UtGuRTe8feXkgJ+2eSc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oExlYwiG98HaqNbwWmDorDjqAPXCl0P/8wzMBCXa/oS/6coU85A1rXK9fykq+jbTo6qjj3ZZnptxprvRBCfm8fj5c7D0IwY3n5JMSf/KYoQl4jO3qSjad8CVoj6NNhc8WjH0qh7T+ZElgRPttQINrTyRQTG6ZK9tcwd5CMypDRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D9kR2Z0S; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2365ab89b52so21293625ad.2
-        for <stable@vger.kernel.org>; Fri, 18 Jul 2025 09:57:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752857874; x=1753462674; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=a8JmAFoZFmFF4VrncsXMPRkgu6iDWk7fhLl780SkJ+c=;
-        b=D9kR2Z0SyVzKS4u22m8ZGDVCXqJtGjtcXM9vX0M/KCus153itQsYi5eu3C8c2goFUc
-         CFTs7ASFR1YHrGH2UeL/7eZfMPeXqRdUQiW4PtYwF8DACnxeoW3xlbVv7xeap1Nz/z2b
-         TXg2FW8SUGjHehI1BWABvt3wrZd0s6sbxPhZxU7rVuPu00ZTxq2xC0Z0lDVglsZmP23s
-         +zgQ33eXMPOF2oi6l11vjhTQJC3hufrm1wZ8mLJ0IKoAHTH6CrOM23y6QOTuIFhu9CqT
-         Ht+40KpO1sC5kaVe3zdv395qJoEGE8TO0vB9heFueyw82BaNMp1IrTTow2PmTFpovkPK
-         cBnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752857874; x=1753462674;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a8JmAFoZFmFF4VrncsXMPRkgu6iDWk7fhLl780SkJ+c=;
-        b=AglyeXCAO/CMWJ2CBN5LvjVL93jQfT/uyyjvSemnha/JL0HlRi22Jid/87HXvcgCje
-         YeUIVO7jRUf0Z2yyOJJHYU+ea8iP1/Uc3dlmUZDx0TXTFNLaM+nPWynYqU1yXCeiIOHX
-         qy9hgD3jZ2xsIdcUnwlb/BefpWWzxBOhemlo1YCkMPE9EO9CP7BtBbX8BPMkWU36XmFl
-         NFB9vj4hXTWiW1O13S92fEDsuwiaZA0Y6mnpHxu7N1+45LSdoEZ2HZ0Ucoe5eU7rOIMX
-         FoI4xkDMHS1z/zVIVlHbnwrpiMd6oETxVG64OeCVdJejnkijOLgbVwkfyKc57oqjgXPM
-         OaUw==
-X-Forwarded-Encrypted: i=1; AJvYcCXnR2qHiSgLYWPzIn9caFaLm3MD13dNqIFKN1b/Y3QeX9Zx/QxqtHxlTPejEo2PGxoYFiWfxnI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+YQiw5H/Ikg2RdE109bwBEN64S55elpfSwObiiv9cPfVoCTM+
-	omNyuklwhTIMP9aeJ//R1OsD1TnL6qqx2Iob++p77wjlz+ytv0oPeL5dQB/8cZPx10bO18swlL5
-	Hctkx1Q==
-X-Google-Smtp-Source: AGHT+IF7xn00jpbk8G2lQKjDoF2AXEZJ1VQJGfmVYlK0/PKYwzHv3a1zuyVCPoIwNei98xvSRwV+sSXMHSM=
-X-Received: from pjyr8.prod.google.com ([2002:a17:90a:e188:b0:311:4bc2:3093])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:84c:b0:23e:3c33:6be8
- with SMTP id d9443c01a7336-23e3c336f4bmr36340205ad.8.1752857873730; Fri, 18
- Jul 2025 09:57:53 -0700 (PDT)
-Date: Fri, 18 Jul 2025 09:57:52 -0700
-In-Reply-To: <2d787a83-8440-adb1-acbd-0a68358e817d@amd.com>
+	s=arc-20240116; t=1752859465; c=relaxed/simple;
+	bh=otYy1UEiVgHf4LIkzboerdXtBrlHV0PWRH/XrvpCLFo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DwWN+51JtdtvKdQPWWccqkO0cTBVDL3+/LJOHdRX3+bjHFePynEBp8Bq0aoG5tNzuEBpO6motDkIUd6fN0n71cJmWFZtQe4O8a4hIiJ9LBet7Vq5zQIC4TvE9NPecc2pSKLyAcB7Fof/120Svsanax6riOfjMM3oC/Usv7g/ke8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com; spf=pass smtp.mailfrom=onemain.com; dkim=pass (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b=amSJp3bZ; arc=none smtp.client-ip=51.81.229.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onemain.com
+Authentication-Results: earthlink-vadesecure.net;
+ auth=pass smtp.auth=svnelson@teleport.com smtp.mailfrom=sln@onemain.com;
+DKIM-Signature: v=1; a=rsa-sha256; bh=twYr9tRj/eoAzQJKd8YiYgLFQ6ZpKavDsDx8C+
+ bNt9Q=; c=relaxed/relaxed; d=earthlink.net; h=from:reply-to:subject:
+ date:to:cc:resent-date:resent-from:resent-to:resent-cc:in-reply-to:
+ references:list-id:list-help:list-unsubscribe:list-unsubscribe-post:
+ list-subscribe:list-post:list-owner:list-archive; q=dns/txt;
+ s=dk12062016; t=1752858544; x=1753463344; b=amSJp3bZhnpUrxsHCIE2Of8bWii
+ iepbZSqOgSjEHmCTNufrZfF7HYidLklFsMupwh/EkpJzHU9GkMNEdgBN4rT4MpQvFHOViBD
+ PdxxAQqH3E71xYna3cYlwOqqNbWP4/fAukXQyAwU0MOwUkNYSpUs5aPZWL0iuOaFaEwd2DB
+ IUkgc0pFZOiS63+geH1aD6prX82xve801DNK8MBJhRW/yWK/sTWWMCRYub7r92iEOsf6jdl
+ L1ppyRm6aAsp/mnkiv+weKovir8wZdzbzAZg+OFsOJD3vgRs/karzoPpsoM9Lxu/JlixrCw
+ ko0GHzAqPSN23clwg0KmV98KxJR0oAw==
+Received: from [192.168.0.23] ([50.47.159.51])
+ by vsel2nmtao01p.internal.vadesecure.com with ngmta
+ id 1028f515-1853678ea2cc4994; Fri, 18 Jul 2025 17:09:04 +0000
+Message-ID: <20af2368-beb4-4b99-bf53-a773aee92744@onemain.com>
+Date: Fri, 18 Jul 2025 10:09:01 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250716055604.2229864-1-nikunj@amd.com> <2d787a83-8440-adb1-acbd-0a68358e817d@amd.com>
-Message-ID: <aHp9EGExmlq9Kx9T@google.com>
-Subject: Re: [PATCH v2] KVM: SEV: Enforce minimum GHCB version requirement for
- SEV-SNP guests
-From: Sean Christopherson <seanjc@google.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Nikunj A Dadhania <nikunj@amd.com>, pbonzini@redhat.com, kvm@vger.kernel.org, 
-	santosh.shukla@amd.com, bp@alien8.de, Michael Roth <michael.roth@amd.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] sunvdc: Balance device refcount in vdc_port_mpgroup_check
+To: Ma Ke <make24@iscas.ac.cn>, axboe@kernel.dk, Jim.Quigley@oracle.com,
+ liam.merwick@oracle.com, aaron.young@oracle.com, alexandre.chartre@oracle.com
+Cc: akpm@linux-foundation.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250718082236.3400483-1-make24@iscas.ac.cn>
+Content-Language: en-US
+From: Shannon Nelson <sln@onemain.com>
+In-Reply-To: <20250718082236.3400483-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 16, 2025, Tom Lendacky wrote:
-> On 7/16/25 00:56, Nikunj A Dadhania wrote:
-> > ---
-> >  arch/x86/kvm/svm/sev.c | 8 ++++++--
-> >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > index 95668e84ab86..fdc1309c68cb 100644
-> > --- a/arch/x86/kvm/svm/sev.c
-> > +++ b/arch/x86/kvm/svm/sev.c
-> > @@ -406,6 +406,7 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
-> >  	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
-> >  	struct sev_platform_init_args init_args = {0};
-> >  	bool es_active = vm_type != KVM_X86_SEV_VM;
-> > +	bool snp_active = vm_type == KVM_X86_SNP_VM;
-> >  	u64 valid_vmsa_features = es_active ? sev_supported_vmsa_features : 0;
-> >  	int ret;
-> >  
-> > @@ -424,6 +425,9 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
-> >  	if (unlikely(sev->active))
-> >  		return -EINVAL;
-> >  
-> > +	if (snp_active && data->ghcb_version && data->ghcb_version < 2)
-> > +		return -EINVAL;
-> > +
-> 
-> Would it make sense to move this up a little bit so that it follows the
-> other ghcb_version check? This way the checks are grouped.
+On 7/18/25 1:22 AM, Ma Ke wrote:
+> Using device_find_child() to locate a probed virtual-device-port node
+> causes a device refcount imbalance, as device_find_child() internally
+> calls get_device() to increment the device’s reference count before
+> returning its pointer. vdc_port_mpgroup_check() directly returns true
+> upon finding a matching device without releasing the reference via
+> put_device(). We should call put_device() to decrement refcount.
+>
+> As comment of device_find_child() says, 'NOTE: you will need to drop
+> the reference with put_device() after use'.
+>
+> Found by code review.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>   drivers/block/sunvdc.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/block/sunvdc.c b/drivers/block/sunvdc.c
+> index b5727dea15bd..b6dbd5dd2723 100644
+> --- a/drivers/block/sunvdc.c
+> +++ b/drivers/block/sunvdc.c
+> @@ -950,6 +950,7 @@ static bool vdc_port_mpgroup_check(struct vio_dev *vdev)
+>   {
+>   	struct vdc_check_port_data port_data;
+>   	struct device *dev;
+> +	bool found = false;
+>   
+>   	port_data.dev_no = vdev->dev_no;
+>   	port_data.type = (char *)&vdev->type;
+> @@ -957,10 +958,12 @@ static bool vdc_port_mpgroup_check(struct vio_dev *vdev)
+>   	dev = device_find_child(vdev->dev.parent, &port_data,
+>   				vdc_device_probed);
+>   
+> -	if (dev)
+> -		return true;
+> +	if (dev) {
+> +		found = true;
+> +		put_device(dev);
+> +	}
+>   
+> -	return false;
+> +	return found;
 
-Yes, because there's a lot going on here, and this:
+Don't bother with adding the extra bits just to get a single point of 
+exit: keep with the existing style and keep the change simple.
 
-  data->ghcb_version && data->ghcb_version < 2
+if (dev) {
+     put_device(dev);
+     return true;
+}
 
-is an unnecesarily bizarre way of writing
+(and why am I getting copied on a block device change?)
 
-  data->ghcb_version == 1
+sln
 
-And *that* is super confusing because it begs the question of why version 0 is
-ok, but version 1 is not.  And then further down I see this: 
 
-	/*
-	 * Currently KVM supports the full range of mandatory features defined
-	 * by version 2 of the GHCB protocol, so default to that for SEV-ES
-	 * guests created via KVM_SEV_INIT2.
-	 */
-	if (sev->es_active && !sev->ghcb_version)
-		sev->ghcb_version = GHCB_VERSION_DEFAULT;
 
-Rather than have a funky sequence with odd logic, set data->ghcb_version before
-the SNP check.  We should also tweak the comment, because "Currently" implies
-that KVM might *drop* support for mandatory features, and that definitely isn't
-going to happen.  And because the reader shouldn't have to go look at sev_guest_init()
-to understand what's special about KVM_SEV_INIT2.
+>   }
+>   
+>   static int vdc_port_probe(struct vio_dev *vdev, const struct vio_device_id *id)
 
-Lastly, I think we should open code '2' and drop GHCB_VERSION_DEFAULT, because:
-
- - it's a conditional default
- - is not enumerated to userspace
- - changing GHCB_VERSION_DEFAULT will impact ABI and could break existing setups
- - will result in a stale if GHCB_VERSION_DEFAULT is modified
- - this new check makes me want to assert GHCB_VERSION_DEFAULT > 2
-
-As a result, if we combine all of the above, then we effectively end up with:
-
-	if (es_active && !data->ghcb_version)
-		data->ghcb_version = GHCB_VERSION_DEFAULT;
-
-	BUILD_BUG_ON(GHCB_VERSION_DEFAULT != 2);
-
-which is quite silly.
-
-So this?  Completely untested, and should probably be split over 2-3 patches.
-
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 2fbdebf79fbb..f068cd466ae3 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -37,7 +37,6 @@
- #include "trace.h"
- 
- #define GHCB_VERSION_MAX       2ULL
--#define GHCB_VERSION_DEFAULT   2ULL
- #define GHCB_VERSION_MIN       1ULL
- 
- #define GHCB_HV_FT_SUPPORTED   (GHCB_HV_FT_SNP | GHCB_HV_FT_SNP_AP_CREATION)
-@@ -405,6 +404,7 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
- {
-        struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
-        struct sev_platform_init_args init_args = {0};
-+       bool snp_active = vm_type == KVM_X86_SNP_VM;
-        bool es_active = vm_type != KVM_X86_SEV_VM;
-        u64 valid_vmsa_features = es_active ? sev_supported_vmsa_features : 0;
-        int ret;
-@@ -418,7 +418,18 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
-        if (data->vmsa_features & ~valid_vmsa_features)
-                return -EINVAL;
- 
--       if (data->ghcb_version > GHCB_VERSION_MAX || (!es_active && data->ghcb_version))
-+       if (!es_active && data->ghcb_version)
-+               return -EINVAL;
-+
-+       /*
-+        * KVM supports the full range of mandatory features defined by version
-+        * 2 of the GHCB protocol, so default to that for SEV-ES guests created
-+        * via KVM_SEV_INIT2 (KVM_SEV_INIT forces version 1).
-+        */
-+       if (es_active && !data->ghcb_version)
-+               data->ghcb_version = 2;
-+
-+       if (snp_active && data->ghcb_version < 2)
-                return -EINVAL;
- 
-        if (unlikely(sev->active))
-@@ -429,15 +440,7 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
-        sev->vmsa_features = data->vmsa_features;
-        sev->ghcb_version = data->ghcb_version;
- 
--       /*
--        * Currently KVM supports the full range of mandatory features defined
--        * by version 2 of the GHCB protocol, so default to that for SEV-ES
--        * guests created via KVM_SEV_INIT2.
--        */
--       if (sev->es_active && !sev->ghcb_version)
--               sev->ghcb_version = GHCB_VERSION_DEFAULT;
--
--       if (vm_type == KVM_X86_SNP_VM)
-+       if (snp_active)
-                sev->vmsa_features |= SVM_SEV_FEAT_SNP_ACTIVE;
- 
-        ret = sev_asid_new(sev);
-@@ -455,7 +458,7 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
-        }
- 
-        /* This needs to happen after SEV/SNP firmware initialization. */
--       if (vm_type == KVM_X86_SNP_VM) {
-+       if (snp_active) {
-                ret = snp_guest_req_init(kvm);
-                if (ret)
-                        goto e_free;
 
