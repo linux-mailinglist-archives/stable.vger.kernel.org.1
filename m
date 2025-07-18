@@ -1,54 +1,48 @@
-Return-Path: <stable+bounces-163389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E40B0A954
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 19:24:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58914B0A934
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 19:13:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 908093AC2C7
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 17:24:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E80911C47145
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 17:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024B02E612D;
-	Fri, 18 Jul 2025 17:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773992E6D2C;
+	Fri, 18 Jul 2025 17:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b="amSJp3bZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mQGamUG3"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-201a.earthlink-vadesecure.net (mta-201b.earthlink-vadesecure.net [51.81.229.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54924503B;
-	Fri, 18 Jul 2025 17:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.229.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327342DEA74;
+	Fri, 18 Jul 2025 17:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752859465; cv=none; b=FqbBD240OE2Yrjr7nqZhiHWGYbi+3wZXJ+JR1u310KXk4Ilnx1nWilC3NqD4FW7xyE+PILHjpzKcxModvwRpFO8y/RPJTs2gKkJsR+xo8aUJuXQFlSdOdjgoXT2NfIBHDdap9SOue7nbkC480RyF8jFwzKt8tRtpWQHbePiks20=
+	t=1752858813; cv=none; b=EkMAKu2sia3zubLKzf6s5c0bnIknvyQ5pbyg0zKD00u6GdEK+RG18A5jrROH4Ef7Z7TdaCiJZJzaU9qYq4TCiikfLNXgkCBxCN84eM0O210nmfGYckjLzqNORVxKsNve3yphnmot0h0SAzuj7aAVjm6DQej+zV+K81aRKxN1qRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752859465; c=relaxed/simple;
-	bh=otYy1UEiVgHf4LIkzboerdXtBrlHV0PWRH/XrvpCLFo=;
+	s=arc-20240116; t=1752858813; c=relaxed/simple;
+	bh=2pMGWRUOR5c7ZDdNY06BPXHKdFbDc8dujXWYjj01bJw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DwWN+51JtdtvKdQPWWccqkO0cTBVDL3+/LJOHdRX3+bjHFePynEBp8Bq0aoG5tNzuEBpO6motDkIUd6fN0n71cJmWFZtQe4O8a4hIiJ9LBet7Vq5zQIC4TvE9NPecc2pSKLyAcB7Fof/120Svsanax6riOfjMM3oC/Usv7g/ke8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com; spf=pass smtp.mailfrom=onemain.com; dkim=pass (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b=amSJp3bZ; arc=none smtp.client-ip=51.81.229.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onemain.com
-Authentication-Results: earthlink-vadesecure.net;
- auth=pass smtp.auth=svnelson@teleport.com smtp.mailfrom=sln@onemain.com;
-DKIM-Signature: v=1; a=rsa-sha256; bh=twYr9tRj/eoAzQJKd8YiYgLFQ6ZpKavDsDx8C+
- bNt9Q=; c=relaxed/relaxed; d=earthlink.net; h=from:reply-to:subject:
- date:to:cc:resent-date:resent-from:resent-to:resent-cc:in-reply-to:
- references:list-id:list-help:list-unsubscribe:list-unsubscribe-post:
- list-subscribe:list-post:list-owner:list-archive; q=dns/txt;
- s=dk12062016; t=1752858544; x=1753463344; b=amSJp3bZhnpUrxsHCIE2Of8bWii
- iepbZSqOgSjEHmCTNufrZfF7HYidLklFsMupwh/EkpJzHU9GkMNEdgBN4rT4MpQvFHOViBD
- PdxxAQqH3E71xYna3cYlwOqqNbWP4/fAukXQyAwU0MOwUkNYSpUs5aPZWL0iuOaFaEwd2DB
- IUkgc0pFZOiS63+geH1aD6prX82xve801DNK8MBJhRW/yWK/sTWWMCRYub7r92iEOsf6jdl
- L1ppyRm6aAsp/mnkiv+weKovir8wZdzbzAZg+OFsOJD3vgRs/karzoPpsoM9Lxu/JlixrCw
- ko0GHzAqPSN23clwg0KmV98KxJR0oAw==
-Received: from [192.168.0.23] ([50.47.159.51])
- by vsel2nmtao01p.internal.vadesecure.com with ngmta
- id 1028f515-1853678ea2cc4994; Fri, 18 Jul 2025 17:09:04 +0000
-Message-ID: <20af2368-beb4-4b99-bf53-a773aee92744@onemain.com>
-Date: Fri, 18 Jul 2025 10:09:01 -0700
+	 In-Reply-To:Content-Type; b=PIITH1apfe9QUI9lpbovxgANUgsYJ9x7ZY+EIUl9VZS+coWEaSzNQe+QBKPpY1/jhtPJaji+CZrWynUF6TIr/EvBg9dgV7hiWnAwb8MHsjAFXcKye4Bkrcw4I3RvcsjfWAJNMN12/iMxxd+PpDq/FwU2SVZmFDOPU5Jm10Tg0Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mQGamUG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06757C4CEEB;
+	Fri, 18 Jul 2025 17:13:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752858812;
+	bh=2pMGWRUOR5c7ZDdNY06BPXHKdFbDc8dujXWYjj01bJw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mQGamUG3MbPPT3I1fdY9Esh2CwwC9tagkypvGkQlqv0/Vc/1oVyZyY0CqQGYCIggq
+	 fQS/4Hg4dFpwa7v6OTh0V2mhoq6AUM1Z8WuFOCey4/CC1pRu2Mtuw5MrUoVOh9e6rH
+	 D15hgvG2aPdwnAWfkJcG8VTRmtWmBErgGe4Fyvq6td77p5j5zaAVeoL4dhOzvtdH7t
+	 ML06TOWq18T5fWrwrXWFUdiCbagnZ/8uEKz0r1Wugg7Hcc+L3NDF4zPqRIL8LcbDaT
+	 3+HwpqWSGUBz2wzuYphpJUA7YKXTzaQHsA3/WX2HdzU5Qx+2vloxgySMKR5kET9lZd
+	 lAw6rTVHS5T0Q==
+Message-ID: <46de4f2a-8836-42cd-a621-ae3e782bf253@kernel.org>
+Date: Fri, 18 Jul 2025 12:13:30 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,80 +50,41 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] sunvdc: Balance device refcount in vdc_port_mpgroup_check
-To: Ma Ke <make24@iscas.ac.cn>, axboe@kernel.dk, Jim.Quigley@oracle.com,
- liam.merwick@oracle.com, aaron.young@oracle.com, alexandre.chartre@oracle.com
-Cc: akpm@linux-foundation.org, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250718082236.3400483-1-make24@iscas.ac.cn>
+Subject: Re: [REGRESSION] drm/amd/display: backlight brightness set to 0 at
+ amdgpu initialization
+To: Lauri Tirkkonen <lauri@hacktheplanet.fi>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ amd-gfx@lists.freedesktop.org, Wayne Lin <wayne.lin@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <aHn33vgj8bM4s073@hacktheplanet.fi>
+ <d92458bf-fc2b-47bf-b664-9609a3978646@kernel.org>
+ <aHpb4ZTZ5FoOBUrZ@hacktheplanet.fi>
 Content-Language: en-US
-From: Shannon Nelson <sln@onemain.com>
-In-Reply-To: <20250718082236.3400483-1-make24@iscas.ac.cn>
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <aHpb4ZTZ5FoOBUrZ@hacktheplanet.fi>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 7/18/25 1:22 AM, Ma Ke wrote:
-> Using device_find_child() to locate a probed virtual-device-port node
-> causes a device refcount imbalance, as device_find_child() internally
-> calls get_device() to increment the device’s reference count before
-> returning its pointer. vdc_port_mpgroup_check() directly returns true
-> upon finding a matching device without releasing the reference via
-> put_device(). We should call put_device() to decrement refcount.
->
-> As comment of device_find_child() says, 'NOTE: you will need to drop
-> the reference with put_device() after use'.
->
-> Found by code review.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->   drivers/block/sunvdc.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/block/sunvdc.c b/drivers/block/sunvdc.c
-> index b5727dea15bd..b6dbd5dd2723 100644
-> --- a/drivers/block/sunvdc.c
-> +++ b/drivers/block/sunvdc.c
-> @@ -950,6 +950,7 @@ static bool vdc_port_mpgroup_check(struct vio_dev *vdev)
->   {
->   	struct vdc_check_port_data port_data;
->   	struct device *dev;
-> +	bool found = false;
->   
->   	port_data.dev_no = vdev->dev_no;
->   	port_data.type = (char *)&vdev->type;
-> @@ -957,10 +958,12 @@ static bool vdc_port_mpgroup_check(struct vio_dev *vdev)
->   	dev = device_find_child(vdev->dev.parent, &port_data,
->   				vdc_device_probed);
->   
-> -	if (dev)
-> -		return true;
-> +	if (dev) {
-> +		found = true;
-> +		put_device(dev);
-> +	}
->   
-> -	return false;
-> +	return found;
+On 7/18/2025 9:36 AM, Lauri Tirkkonen wrote:
+> On Fri, Jul 18 2025 08:10:06 -0500, Mario Limonciello wrote:
+>> Do you by chance have an OLED panel?  I believe what's going on is that
+>> userspace is writing zero or near zero and on OLED panels with older kernels
+>> this means non-visible.
+> 
+> Yes, this is an OLED panel. But I don't believe it's userspace writing
+> anything at this point in the boot; before the bisected commit,
+> brightness was set to 32 (out of max 255) on this hardware when I
+> checked from the initramfs rescue shell. At the bisected commit, it's 0
+> (out of max 255).
+> 
+>> There is another commit that fixes the behavior that is probably missing.
+> 
+> Which commit is that? It's not in 6.15.7?
+> 
 
-Don't bother with adding the extra bits just to get a single point of 
-exit: keep with the existing style and keep the change simple.
+https://github.com/torvalds/linux/commit/39d81457ad3417a98ac826161f9ca0e642677661
 
-if (dev) {
-     put_device(dev);
-     return true;
-}
-
-(and why am I getting copied on a block device change?)
-
-sln
-
-
-
->   }
->   
->   static int vdc_port_probe(struct vio_dev *vdev, const struct vio_device_id *id)
-
+No; it's not currently backported.  Assuming it helps your issue I think 
+it's a good argument to backport.
 
