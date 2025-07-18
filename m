@@ -1,266 +1,177 @@
-Return-Path: <stable+bounces-163326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA6FB09BCA
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B38DB09C9C
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 09:32:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6FA35A0256
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 06:54:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 373AC1628C1
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 07:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81D22045B6;
-	Fri, 18 Jul 2025 06:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D065C213E74;
+	Fri, 18 Jul 2025 07:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NcYV5BlT"
+	dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b="a7+PYmKf";
+	dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b="tknHJYvL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F5A191F91
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 06:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752821695; cv=fail; b=f6Fh33OvSd/JTm+To3GkUHe77MDDfsZDAflGyhAYmqe7IrqVJb3csnqRold9MVYVx9BfgZTXLvbhxgNHJOaudF7Cwmbr+rL1lgzMMWNgRj1iaHK9D5M7peAAQ7GXJGcIH2Dh7Rv+vnOClABwroh6OYrwadAQrEFyhE2T9P8h6uE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752821695; c=relaxed/simple;
-	bh=YJfsDnH5ywnnwQNLoJKs33rBim8X04Wh4z8Dlry/TrM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AZ3HmR/jcPYVPXpxzMfsE8iPlr5vTEAQh5RTsv4J2VKmYs28GedLxYCBWdX9x/tB7ImPJfQN3zjU2b57HfQWOcs/RjEQRmS5+W6HJGFBbZXRUBjAYPI7ZHBTEoRZwczlczKzlPp4VqkaSTO5u1S4/omUWSjnK/iftSDslQ4h5UQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NcYV5BlT; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752821695; x=1784357695;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=YJfsDnH5ywnnwQNLoJKs33rBim8X04Wh4z8Dlry/TrM=;
-  b=NcYV5BlTb/T84BrIWebBbfubyayDcVrEd0aUB7AvX56YBtTnk4cmGuFq
-   ogXP7JKr6g7zBF1i2mEHQX0iL+9wvTIVmDXV5VuYGzwNf7ZUZIfFYhtR5
-   PvwoIJhqKfX9FcwS4uVK3mxLi5hUq3uroshyaj5F1QleaupeByEl7unwR
-   VBGcYKwLba3wJSaJXDq8/HH7tSW6M22GB5ESiSQ2XXurvlN5UTYOo2ZF/
-   N20oiswwXoKsUvmCNmoIUjaXrM3kWfh9caeLaJnZ7y6pbaFIYtyRN/L65
-   QYzlnW3kB77E+op0p0WEBS9qU1Fs9+sS4vM4kJVfyj4k6/2tHtz2SwbWJ
-   g==;
-X-CSE-ConnectionGUID: Kb1BJ48ZRU63DKeXT1o5XA==
-X-CSE-MsgGUID: Kre6r0o2Sm+pTKJ9oR86dQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="72561527"
-X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; 
-   d="scan'208";a="72561527"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 23:54:54 -0700
-X-CSE-ConnectionGUID: wy6b79/PT2S1fdF8sDfXIw==
-X-CSE-MsgGUID: 0ExUAo0LRs6bLzxKR+Ki3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; 
-   d="scan'208";a="158100951"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 23:54:52 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Thu, 17 Jul 2025 23:54:52 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Thu, 17 Jul 2025 23:54:52 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.76)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Thu, 17 Jul 2025 23:54:51 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WYTMsVap1uJ7yaU/FLU46wfpkH5R0OFZeYfLBTCQWV0GnQ/xN45iPwnyLvrd6aHSfhCGvclH3SHx/u3pTm7wFpK2daJCNamlbF46PLb+pS/AE1cCuae17Wyj3xjqRpEwSdrLIg30+IOzPQoTSYS4Tx4lcHYCzKA9bZCF+dcUg9+f8+83CgUtiz0ZzVxiOw3CMNULISl2WiACFrpq0Tt3qpG5ArBlOdmMX86GXbBG6PMfagXeTvXJB2VSIfo2u71X4SNJHkBa0y0T5nK9Ufpyw0qSC7c+NQDjFV41G0Zfg3wn/gaqywsJ9AsS7xbRjugDtASoekffxavwG2Nkbe96ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pq8E6cM6h0JbO2DFA17el2t/QKtmuyU5TUjesFRnpZs=;
- b=aCkQDgWq2jLCeo8uhH89BhpupXu6yhimEPd9hF9mCjlZGyuHs4vt+MaDWZVzMbkxApszILvVMAwm8e56v13+tdQ4Bjy9TvIZsMCjxbtdm/FIuBIpt5xFlAX1REpoVEB1ls7cpzmFWPOEfmGfk4kE3uylcdCgJQAkbwH5W8wSsR9Eia9ctw1firs6OScvZqtkwnM9cnKbgdXUjkyh90lVOIWN3eTswC241HuF3aNgMZMWIBH74hQiIFzTHJ2BxJ1tWAvbdW1jv6d3tc2SljRUH1sKNjqousT8fnj9KMrOuINfwkgZb9/6jesHBHcaw3pJvbCN0Tz6WUpWAsPRbwZ6qg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6366.namprd11.prod.outlook.com (2603:10b6:930:3a::8)
- by SN7PR11MB6875.namprd11.prod.outlook.com (2603:10b6:806:2a6::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Fri, 18 Jul
- 2025 06:54:44 +0000
-Received: from CY5PR11MB6366.namprd11.prod.outlook.com
- ([fe80::6826:6928:9e6:d778]) by CY5PR11MB6366.namprd11.prod.outlook.com
- ([fe80::6826:6928:9e6:d778%5]) with mapi id 15.20.8901.033; Fri, 18 Jul 2025
- 06:54:44 +0000
-Date: Fri, 18 Jul 2025 07:54:35 +0100
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-To: Sasha Levin <sashal@kernel.org>
-CC: <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.1] crypto: qat - fix ring to service map for QAT GEN4
-Message-ID: <aHnvq5RvK/UC7h15@gcabiddu-mobl.ger.corp.intel.com>
-References: <20250717170835.25211-1-giovanni.cabiddu@intel.com>
- <1752795908-8533c229@stable.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1752795908-8533c229@stable.kernel.org>
-Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 -
- Collinstown Industrial Park, Leixlip, County Kildare - Ireland
-X-ClientProxiedBy: WA1P291CA0003.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:19::6) To CY5PR11MB6366.namprd11.prod.outlook.com
- (2603:10b6:930:3a::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F090A2192FA
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 07:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752823798; cv=none; b=jCBlflc8hIKHFH7Ij9a/vMPncLzo1rJC8lmLCQdD2nHQSvuV/vrSz6tEmGJniiXbcrMDEbI/k32b/L2ow75mLC6KScL/PRv+CvqWl0IjKOL4FHTSeA0th3JhNVR2ury2thLlScVFirRC+8uRAki/DCTUh42ttywPb5XlLDpRC8s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752823798; c=relaxed/simple;
+	bh=73mtiu+STtAofJ48KZx5LpXK+i6ebmLNIL3vWgzqJLY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=L9Mr8R1zEMzqHqIArG45zyTphQtUN7ihKmXWK8yKMTQVA+AtcnyltGJlMyhHJ3Po5xykUqJgzSubfIoys+iSeqvf2I/zy4chMiDbUPT+Wsl9v+qSppqs+Y7FyiFkgxq7ldaRDlQvs9wuiKG7RsXMZOKfjp9eKUSQD/gkC5JAFeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hacktheplanet.fi; spf=pass smtp.mailfrom=hacktheplanet.fi; dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b=a7+PYmKf; dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b=tknHJYvL; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hacktheplanet.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hacktheplanet.fi
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=gibson; bh=73mtiu+STtAof
+	J48KZx5LpXK+i6ebmLNIL3vWgzqJLY=; h=subject:cc:to:from:date;
+	d=hacktheplanet.fi; b=a7+PYmKf8EKl1hzrXSVa4Rv2HljxSXmckUz2WnfEvJbnaQu5
+	amJNJ4Q1qjlbYAxR1OFYuJj8AWncxLr6na28JiGbl6bC3Zgog/Z6ywhB0/v3hsJ/qbP8dg
+	iTec99VduSJytEbt4lclDhXSQ4AvbLZSVMHSPbjoupYF8xEGOuIG2F50o4UXt+FYN2Lb3U
+	9iJdsZJ77Bay9nKFbgUl9fD8x1XaUYQe/KLhTaV3uRx2Di/ZODs4k2DF8+q7njod/Ai24p
+	u86sVJMRaS3F3ooq8/SSBf8XyXkK1ZlgVvG015L3OFgf77UMyxlggkQp5XoBVMUfaQLOuN
+	c9oXjW3aRKty5g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hacktheplanet.fi;
+	s=key1; t=1752823782;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=naR/zISxdFD2IfX/9yHd+kaNh8ZX3NCQpAGgz3lCALA=;
+	b=tknHJYvLZXqQ0IL6jKStI7SHa6OsP3K6O9VMjw64cde4D24l5zbLP5hXaeTIEY164KJz62
+	+VftPSvMFZBEQZZb5Po9izwkraz9sliNePOfN1z5AwPApmu8jVnUoL0Nd2hxsOLhx8mu4H
+	dJXX0WQZtWTH2IotCPFYp3Ka1idrykSYLkIVWjeq7VAWHQhve+nqqiuhIYhs2PiS8T0El9
+	kLCy8bwCWqmwf3lbnx1BAjyRej5rnHUsbEx2sBwxn340HbD5ebPqZNF78NQWeZekNfjDKt
+	Yo69ay6XOMbwHhToP6YFxF/msP/qFq2ZC50TNNPna1+6rp6VhrtFsAoRSTddsw==
+Date: Fri, 18 Jul 2025 16:29:34 +0900
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lauri Tirkkonen <lauri@hacktheplanet.fi>
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, amd-gfx@lists.freedesktop.org,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [REGRESSION] drm/amd/display: backlight brightness set to 0 at
+ amdgpu initialization
+Message-ID: <aHn33vgj8bM4s073@hacktheplanet.fi>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6366:EE_|SN7PR11MB6875:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb798d9f-30fb-4f8c-a0ba-08ddc5c7fa02
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Zk1udjBJdHQ3VER6Q1gzVmZMZDM0L05PaHJkUnVOblIyaksxRFdMS3pYNkNu?=
- =?utf-8?B?VEtLWG5UdjArSDAySjN5Y3dVRnV1OGVXakhBQ1NYTU1sbDB3TDgvTDllNGl0?=
- =?utf-8?B?L2tpSm9VbEZ2TnJVYjdaSDI0RDZ2SnE5THp5Vm1TcEJ6OFlRbmlCQlVleitP?=
- =?utf-8?B?bGN0dGpYdTFMRkhOZkpIdmF6cCttcHcvUTI4b0lNQlNOOElPcExiVW92aXpO?=
- =?utf-8?B?TVprcjlOWlQ1aW9Mc1hjZktnZ1Mxb0piUG1uOWZVM0wvS2xXbCs5N1JlY0lx?=
- =?utf-8?B?TzhHQmMzMTZGWm80a0MzdkhJL2dMdVNFTnRTbEd0RS9BTGt1K0hpMG9IUGty?=
- =?utf-8?B?bm9IRGI2eWlmRTJrOFl1QUFhN2NrTHo3NElsWjlGa3JEVU5oVWxXRmZvSVlV?=
- =?utf-8?B?bkJsSTJMeURKRjV3cEUwN3FPMExGUXhqdzJOV2FOR21aYm9VbHBQZURXdnJq?=
- =?utf-8?B?a1I1TDhBQmhMWHVrMGx2UERtU2RWVFhTWWNjOTVwVUxBcSs3Rm14djVuczE1?=
- =?utf-8?B?SWJpUkNqelFnc0Yweko3REd6RExySXc0cVRPbnpPN2JBQ3BoMU9VdEZ2cjlt?=
- =?utf-8?B?OHZKcml4eFM3RkFTTVJrMWpPYWtMRHBFd1h1RUVGM3RMb01iQVdrb013VitR?=
- =?utf-8?B?eGx4WjhReWwrZGRzSWxtWlpJMkgxNDl5aW1DQmVoa01ocFNSWUJJNzhUNWJT?=
- =?utf-8?B?UlRTSElCZEk4L0lHWFRlQytDVEdwQkxsZ1JpYTlEQjFJSXBzakVGbFlBR1FQ?=
- =?utf-8?B?cm5WM2FXNlprYTEvYk1tU0ZkNFR5Q2d4MEhUMlRRZ1craU5YMXBaemhjVEZo?=
- =?utf-8?B?SlBHdUNSaDZjQkxSYXIvRjA5QVZpSk9xSDVnUUliRjdnQlExanZsZEo5SG5S?=
- =?utf-8?B?SUdyenhkQUtZZFJLL2RpT1V2a0svdXd4RXFhczhZQW5pU0FRL2wyOTRsNE5l?=
- =?utf-8?B?MjQ0NitZc1RKNHRjMWJ4YWtiTTJiV0xmY2VvencvNWJlNEl2RWVrb01IWHI5?=
- =?utf-8?B?bVJoWkd5WHVVcnUrbWtLdHF3aUVMSkhUSE5UdmZvSUptL2Myd0UyL3piSy9w?=
- =?utf-8?B?ZytDeFFQc1Fha3lwZ3Q2S1R0eU1sWi9WUlQyS05oRkxRdEZFNW9GQTVhMXdj?=
- =?utf-8?B?NEdaNHVJVjFXOHhzVzJVZncxdllyU2dGWm8rcUNiMlRWQXlTZ3FhUXBXUFNU?=
- =?utf-8?B?NnF0NmI2dFBoRWpVT2NILzgzS0szeHlKeDZoREllb2tZRElpYjVpb2FpVHox?=
- =?utf-8?B?KzFkUmhtaG1hYmFUK251OFNCbW4vM29xMUE4SVVPMzdockJFMk9sOG0vVkFP?=
- =?utf-8?B?TFBuQnFQNUNMeWpmRlZLWlhFd014aGhpU2E2eklUaHVReHJFOFRreWF4QVZJ?=
- =?utf-8?B?cFQ5U2lMdmRVa3hWd0JGSnNhQTE4WnExUThUeitaeVJ4OUljT2FQU2tsRHhL?=
- =?utf-8?B?bCtHY1pDWmlaRjVpdGhGMEdrd0JmSU40bWQreENPVE9YT05WVVk1VTNMeDNF?=
- =?utf-8?B?WXROaGhvT0c1a05wY2hlVEhxMjhPWjFBbU5nTmtmZk40NUhyS0xFNzh0ajlu?=
- =?utf-8?B?UzNLZVZsQW9OUjRPZTlhZDZZUUJvZjB0bTUxOGw3bTQ2TEVxSHp6SzZVOHlM?=
- =?utf-8?B?d3d3OXlYUEgrSUU2NUxXWmpKZ3huQkhKUFM0dFU0eWt5ZHhnM09zYVhtcmEv?=
- =?utf-8?B?YzkwS1o5QmFaeTJQL0ZITkJvcnladlczbFFuTzNmSTNnd01abTRWcHByazdX?=
- =?utf-8?B?MGdFK3IrVnRFNnNUTHR4YXhSeEU4cW9mT0grSjJUcllrVlZtZjJEeVRCZ2hq?=
- =?utf-8?B?cElNNHI0Vlo3NjBnSHM1QWRydFZiYktQN0xVSWw0TFZEV2I3VGhFOHZTUkpj?=
- =?utf-8?B?QlMzaFRnOEhCK2tKckZiNXhqQzJHekMyUWFOY0hmOWNWVWhQTmRQOFFMd3pC?=
- =?utf-8?Q?UIkrM4IIglA=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6366.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WE53TS9TYUFvZXgwNHd0VWF4dXRLTDkrbGtYc2o3bzc2bnhMd0QrTWUxdkJr?=
- =?utf-8?B?V2xmZGhkcE5valQ0TE1WQUpFaVlOdGE4dlhCajM2VytPYm1tTEhiSndSbmtK?=
- =?utf-8?B?bDEvUkN3eUEwL2I0bmg4U09JY21YdDExQlRnRHYrUEZlRlRNNXFlRE1HNjNp?=
- =?utf-8?B?ZEVLSldUaU5DRkk4dy9mVnQvM1ZjM2U3TjhmZnhvZUlRb0dtdTFocS9Uc2Yv?=
- =?utf-8?B?NGhEVGlhWGtabHdKeGNBRFN6ZEF5Q1NCTE02bW9ydjhmVGMzQU45UDE5bGp2?=
- =?utf-8?B?Ynd4aSsxODl0RUlhelJpZjNGQzdYclExZDYrMDhiczRhMnl3cDlrQWkrOWNN?=
- =?utf-8?B?ZkhXTlJLZ3pZcUNiSjdaUElyRHc4L1VKNitHTUpxTDBCelpYczFhMTAvQUIz?=
- =?utf-8?B?ZmJwZmdOMDlwMVg0Nnl4NUt4dGpHaUtOSCtxdGQzOFFrRmt2VkZsSHJaVCt6?=
- =?utf-8?B?YlJkV0hMdTBkZWJ3WEMyajVnRjhzM1czWi8vMUtTbUI1V1FqQWpYUHFPZW9h?=
- =?utf-8?B?eU9ia0xFVjhYV3MwSmNmdlUzWkIxNGl2L1FobEtiNUlEek1mK2h2QW5iYkY1?=
- =?utf-8?B?UEFFOE9leFYwNnRmSnBFellEelZTN0c5dE9xZ3dCZnd0a2tsTlV4ZDV2b0JL?=
- =?utf-8?B?UzVJc3FhSENSbWFWdlRycGhKKzhtTVZUSHltYUlKTHJsdnhYRWNPVTJBcnRI?=
- =?utf-8?B?d05JaVdmaFRrVUxPN01rWHdCTnVYaW1GL0tNQ0pCcFJlNmdzT3o2MW4rVi9C?=
- =?utf-8?B?Vk5zbXVNUUtlanQrdlZONm95cTluUjBPSkJ1b3RXT1l3MDNZKy9EWVYrV1N2?=
- =?utf-8?B?dlhyNndvb1diNHZ3NmZwcEUzUVA2dm1peUVBcFM3SUx4ZWRSK0NpeHJ3RFcy?=
- =?utf-8?B?THZMYlg3Q1VObmFqMTNtUWp1V1lSYVRXc2k5bVpSMnpWTjkxS0VhQ2Q0cVhk?=
- =?utf-8?B?NGw2YzVZVlU3K0VIT3kyVURxMHpVUSsyS0FzZ1NPN3N6eVRSVk5wL0ltZWYx?=
- =?utf-8?B?MS9HNk03S0JudWdseGRRSXZoNjBGTWJCWExlWU5Qb3oxYXh6VmM3ZGdWNVFJ?=
- =?utf-8?B?TjNRb0JNV0N1MEdQc2NBcW5JR3RrMU14NWRRUkxFUWFqQ21mSzYzNndFNk1V?=
- =?utf-8?B?eGJWTGtWK2U5NEZRQWlSN2laZzR2azU0UTFDeGVOVjBna1JlSy9UT3haWmNa?=
- =?utf-8?B?WmVkTm9QVkZpV2xqcDdPV3hNdVUrRG5BS1BmYkMyVDNlVjAra0JTbTZ0cEFW?=
- =?utf-8?B?eHN2OGpOZXJpTmRuRXpkbDhWcjRJS0plVVE1c1RkdlVESE53L0orM2t0SmFa?=
- =?utf-8?B?Q05HQlA1TUh0endmTzNvZ0tBamo2Y09IbXlKTE9BOWVqdk9DaW9uU2JQWE5v?=
- =?utf-8?B?bENCK21mN3A2TjBUOHNORFJFbW1mMmE0KzZiTkxaOXF4NFJkMnRmemNqcDFT?=
- =?utf-8?B?T3k3M0xEdzkreU1RckVtZW5JU2ZHYjh6R0tCa1JXV3N4YWJ6dDJkMVk4Y0oy?=
- =?utf-8?B?L2dabGMwYytrZElSb29haGd3bnVzbTA1TFNBZmV6TEp6L1ZYMWY3T0JUQ0Z0?=
- =?utf-8?B?QUk5VDFBeFY5YmV2QnJwaWFONWFmN3AxYWR3SzVGU0o2cTBtVFBTZE5PWGUv?=
- =?utf-8?B?RTk3aGNpRVV0VG9XQkhBTUVQbS8reURPbUsxRzVRSkFxVnNXV05GWXBINUZM?=
- =?utf-8?B?THlMaURzM2c3Nk5zM1Ira3VVRzJWK1lBL3B1aCtwbXRFZnkwWlFEVU9lMW1T?=
- =?utf-8?B?dm00NUZHVmEyeHk1WXRHaEZPTUU3cXdEUHgrMXhCb3NwdEJ0cEI3NUNyekVO?=
- =?utf-8?B?M29PRHE1cG5CeTQ5bmRmbTNGRzBTTjV6KzE5YXRvZUthTDBJM1cxWitZVzVn?=
- =?utf-8?B?cEFkVDd5VnhWWitHelhXYzRBVXEwN1hKZWJMeW5vVG13N3NVdmwrcUl1WHZm?=
- =?utf-8?B?bVdVRzdvNE0rL3RYYVBxaVpUMTVtejgyMHZET0tHQ25iRzU3QXBrc0EwYnI3?=
- =?utf-8?B?VjMxOFhnUTZCc2JudFhTRG9TWVd6eFRBSnZpRGFhTlNyMExGT0ZMTGhBRDZY?=
- =?utf-8?B?OG54ZkRxNmxSUFZaaXFVYUhNQTI0OGY3Rnd6M1lIRkdjKzI5aUt5MC93UWRs?=
- =?utf-8?B?K2NsVUtQajJ4cXR6d1JZRGZBNHBMdEN5QXhOejlSc0tvZGwrOVc5SnBHNTRI?=
- =?utf-8?B?SlE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb798d9f-30fb-4f8c-a0ba-08ddc5c7fa02
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6366.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2025 06:54:44.2425
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JuuhIyj/lNiOyMpkKOdCS/b5Iz0cOOL1yi/G40MSDTkcnBf4pXtJq6y658EGfyhJrrvu/s9VECWIK7MvEVBPJ0tJdS972z4NFB9JYD7Mk8Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6875
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Migadu-Flow: FLOW_OUT
 
-Hi Sasha,
+Hi,
 
-On Thu, Jul 17, 2025 at 09:34:36PM -0400, Sasha Levin wrote:
-> [ Sasha's backport helper bot ]
-> 
-> Hi,
-> 
-> Summary of potential issues:
-> ⚠️ Found follow-up fixes in mainline
-> 
-> The upstream commit SHA1 provided is correct: a238487f7965d102794ed9f8aff0b667cd2ae886
-> 
-> Status in newer kernel trees:
-> 6.15.y | Present (exact SHA1)
-> 6.12.y | Present (exact SHA1)
-> 6.6.y | Present (different SHA1: 82e4aa18bb6d)
+I hit this regression on the stable kernel on Alpine with a Lenovo Yoga
+Slim 7 Pro 17ACH5. During early boot, when the amdgpu module gets
+loaded, backlight brightness is set to zero, resulting in a black
+screen (and nothing in userspace is running yet to handle brightness
+keys; I need to use an external monitor or type in my rootfs passphrase
+blind).
 
-This patch applies only to the v6.1.y kernel, as it is already present
-in the other long-term stable branches.
+#regzbot introduced: 6c56c8ec6f9762c33bd22f31d43af4194d12da53
 
-> 
-> Found fixes commits:
-> df018f82002a crypto: qat - fix ring to service map for dcc in 4xxx
+bisect log:
 
-Regarding the follow-up fix:
+git bisect start
+# status: waiting for both good and bad commits
+# good: [e60eb441596d1c70e4a264d2bac726c6cd2da067] Linux 6.15.4
+git bisect good e60eb441596d1c70e4a264d2bac726c6cd2da067
+# status: waiting for bad commit, 1 good commit known
+# bad: [1562d948232546cfad45a1beddc70fe0c7b34950] Linux 6.15.6
+git bisect bad 1562d948232546cfad45a1beddc70fe0c7b34950
+# good: [5e10620cb8e76279fd86411536c3fa0f486cd634] drm/xe/vm: move rebind_work init earlier
+git bisect good 5e10620cb8e76279fd86411536c3fa0f486cd634
+# bad: [ece85751c3e46c0e3c4f772113f691b7aec81d5d] btrfs: record new subvolume in parent dir earlier to avoid dir logging races
+git bisect bad ece85751c3e46c0e3c4f772113f691b7aec81d5d
+# bad: [9f5d2487a9fad1d36bcf107d1f3b1ebc8b6796cf] iommufd/selftest: Add asserts testing global mfd
+git bisect bad 9f5d2487a9fad1d36bcf107d1f3b1ebc8b6796cf
+# good: [c0687ec5625b2261d48936d03c761e38657f4a4b] rust: completion: implement initial abstraction
+git bisect good c0687ec5625b2261d48936d03c761e38657f4a4b
+# bad: [889906e6eb5fab990c9b6b5fe8f1122b2416fc22] drm/amd/display: Export full brightness range to userspace
+git bisect bad 889906e6eb5fab990c9b6b5fe8f1122b2416fc22
+# good: [c7d15ba11c8561c5f325ffeb27ed8a4e82d4d322] io_uring/kbuf: flag partial buffer mappings
+git bisect good c7d15ba11c8561c5f325ffeb27ed8a4e82d4d322
+# good: [66089fa8c9ed162744037ab0375e38cc74c7f7ed] drm/amd/display: Add debugging message for brightness caps
+git bisect good 66089fa8c9ed162744037ab0375e38cc74c7f7ed
+# bad: [cd711c87c2862be5e71eee79901f94e1c943f9fc] drm/amd/display: Only read ACPI backlight caps once
+git bisect bad cd711c87c2862be5e71eee79901f94e1c943f9fc
+# bad: [6c56c8ec6f9762c33bd22f31d43af4194d12da53] drm/amd/display: Fix default DC and AC levels
+git bisect bad 6c56c8ec6f9762c33bd22f31d43af4194d12da53
+# first bad commit: [6c56c8ec6f9762c33bd22f31d43af4194d12da53] drm/amd/display: Fix default DC and AC levels
 
-  df018f82002a crypto: qat - fix ring to service map for dcc in 4xxx
+'dmesg|grep amd' on 6.15.7 on this machine:
 
-Not sending this to stable is intentional.
-
-The QAT driver in v6.1 does not support the DCC (data compression
-chaining) service, which was introduced later in kernel v6.7 with commit
-37b14f2dfa79 crypto: qat - enable dc chaining service.
-
-The original fix (a238487f7965 crypto: qat - fix ring to service map for
-QAT GEN4) was supposed to address the problem also for DCC (as it landed
-after the introduction of that service), but did not. Therefore the
-follow-up fix df018f82002a was merged in kernel v6.9.
-
-Hope this clarifies.
-
-> 
-> Note: The patch differs from the upstream commit:
-> ---
-> 1:  a238487f7965 < -:  ------------ crypto: qat - fix ring to service map for QAT GEN4
-> -:  ------------ > 1:  1c3a13c46a06 crypto: qat - fix ring to service map for QAT GEN4
-> 
-> ---
-> 
-> Results of testing on various branches:
-> 
-> | Branch                    | Patch Apply | Build Test |
-> |---------------------------|-------------|------------|
-> | origin/linux-6.1.y        | Success     | Success    |
-
-Regards,
+[    0.319726] perf/amd_iommu: Detected AMD IOMMU #0 (2 banks, 4 counters/bank).
+[    4.090573] [drm] amdgpu kernel modesetting enabled.
+[    4.094238] amdgpu: Virtual CRAT table created for CPU
+[    4.095389] amdgpu: Topology: Add CPU node
+[    4.096451] amdgpu 0000:03:00.0: enabling device (0006 -> 0007)
+[    4.174815] amdgpu 0000:03:00.0: amdgpu: detected ip block number 0 <soc15_common>
+[    4.176034] amdgpu 0000:03:00.0: amdgpu: detected ip block number 1 <gmc_v9_0>
+[    4.176992] amdgpu 0000:03:00.0: amdgpu: detected ip block number 2 <vega10_ih>
+[    4.177911] amdgpu 0000:03:00.0: amdgpu: detected ip block number 3 <psp>
+[    4.178799] amdgpu 0000:03:00.0: amdgpu: detected ip block number 4 <smu>
+[    4.179704] amdgpu 0000:03:00.0: amdgpu: detected ip block number 5 <dm>
+[    4.180594] amdgpu 0000:03:00.0: amdgpu: detected ip block number 6 <gfx_v9_0>
+[    4.181445] amdgpu 0000:03:00.0: amdgpu: detected ip block number 7 <sdma_v4_0>
+[    4.182299] amdgpu 0000:03:00.0: amdgpu: detected ip block number 8 <vcn_v2_0>
+[    4.183114] amdgpu 0000:03:00.0: amdgpu: detected ip block number 9 <jpeg_v2_0>
+[    4.183910] amdgpu 0000:03:00.0: amdgpu: Fetched VBIOS from VFCT
+[    4.184800] amdgpu: ATOM BIOS: 113-CEZANNE-017
+[    4.208484] amdgpu 0000:03:00.0: vgaarb: deactivate vga console
+[    4.208493] amdgpu 0000:03:00.0: amdgpu: Trusted Memory Zone (TMZ) feature enabled
+[    4.208509] amdgpu 0000:03:00.0: amdgpu: MODE2 reset
+[    4.209086] amdgpu 0000:03:00.0: amdgpu: VRAM: 2048M 0x000000F400000000 - 0x000000F47FFFFFFF (2048M used)
+[    4.209099] amdgpu 0000:03:00.0: amdgpu: GART: 1024M 0x0000000000000000 - 0x000000003FFFFFFF
+[    4.209376] [drm] amdgpu: 2048M of VRAM memory ready
+[    4.209386] [drm] amdgpu: 6912M of GTT memory ready.
+[    4.210517] amdgpu 0000:03:00.0: amdgpu: Found VCN firmware Version ENC: 1.24 DEC: 8 VEP: 0 Revision: 3
+[    4.927350] amdgpu 0000:03:00.0: amdgpu: reserve 0x400000 from 0xf47f400000 for PSP TMR
+[    5.010609] amdgpu 0000:03:00.0: amdgpu: RAS: optional ras ta ucode is not available
+[    5.021347] amdgpu 0000:03:00.0: amdgpu: RAP: optional rap ta ucode is not available
+[    5.021357] amdgpu 0000:03:00.0: amdgpu: SECUREDISPLAY: securedisplay ta ucode is not available
+[    5.021725] amdgpu 0000:03:00.0: amdgpu: SMU is initialized successfully!
+[    5.131949] amdgpu 0000:03:00.0: amdgpu: [drm] Using ACPI provided EDID for eDP-1
+[    5.385266] kfd kfd: amdgpu: Allocated 3969056 bytes on gart
+[    5.385286] kfd kfd: amdgpu: Total number of KFD nodes to be created: 1
+[    5.385435] amdgpu: Virtual CRAT table created for GPU
+[    5.385562] amdgpu: Topology: Add dGPU node [0x1638:0x1002]
+[    5.385569] kfd kfd: amdgpu: added device 1002:1638
+[    5.385582] amdgpu 0000:03:00.0: amdgpu: SE 1, SH per SE 1, CU per SH 8, active_cu_number 8
+[    5.385592] amdgpu 0000:03:00.0: amdgpu: ring gfx uses VM inv eng 0 on hub 0
+[    5.385598] amdgpu 0000:03:00.0: amdgpu: ring comp_1.0.0 uses VM inv eng 1 on hub 0
+[    5.385605] amdgpu 0000:03:00.0: amdgpu: ring comp_1.1.0 uses VM inv eng 4 on hub 0
+[    5.385612] amdgpu 0000:03:00.0: amdgpu: ring comp_1.2.0 uses VM inv eng 5 on hub 0
+[    5.385619] amdgpu 0000:03:00.0: amdgpu: ring comp_1.3.0 uses VM inv eng 6 on hub 0
+[    5.385625] amdgpu 0000:03:00.0: amdgpu: ring comp_1.0.1 uses VM inv eng 7 on hub 0
+[    5.385632] amdgpu 0000:03:00.0: amdgpu: ring comp_1.1.1 uses VM inv eng 8 on hub 0
+[    5.385639] amdgpu 0000:03:00.0: amdgpu: ring comp_1.2.1 uses VM inv eng 9 on hub 0
+[    5.385645] amdgpu 0000:03:00.0: amdgpu: ring comp_1.3.1 uses VM inv eng 10 on hub 0
+[    5.385652] amdgpu 0000:03:00.0: amdgpu: ring kiq_0.2.1.0 uses VM inv eng 11 on hub 0
+[    5.385659] amdgpu 0000:03:00.0: amdgpu: ring sdma0 uses VM inv eng 0 on hub 8
+[    5.385665] amdgpu 0000:03:00.0: amdgpu: ring vcn_dec uses VM inv eng 1 on hub 8
+[    5.385672] amdgpu 0000:03:00.0: amdgpu: ring vcn_enc0 uses VM inv eng 4 on hub 8
+[    5.385679] amdgpu 0000:03:00.0: amdgpu: ring vcn_enc1 uses VM inv eng 5 on hub 8
+[    5.385685] amdgpu 0000:03:00.0: amdgpu: ring jpeg_dec uses VM inv eng 6 on hub 8
+[    5.454665] amdgpu 0000:03:00.0: amdgpu: Runtime PM not available
+[    5.455003] amdgpu 0000:03:00.0: amdgpu: [drm] Using custom brightness curve
+[    5.455339] [drm] Initialized amdgpu 3.63.0 for 0000:03:00.0 on minor 1
+[    5.480731] fbcon: amdgpudrmfb (fb0) is primary device
+[    6.796057] amdgpu 0000:03:00.0: [drm] fb0: amdgpudrmfb frame buffer device
 
 -- 
-Giovanni
+Lauri Tirkkonen | lotheac @ IRCnet
 
