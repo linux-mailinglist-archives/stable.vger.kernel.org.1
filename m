@@ -1,233 +1,225 @@
-Return-Path: <stable+bounces-163386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACF7B0A8D8
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 18:47:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE475B0A8F6
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 18:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD411C83AE3
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 16:47:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9364C3B4145
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 16:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B24E2E8893;
-	Fri, 18 Jul 2025 16:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743521C862C;
+	Fri, 18 Jul 2025 16:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lpt1ptDj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D9kR2Z0S"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEE82E8884;
-	Fri, 18 Jul 2025 16:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752857073; cv=fail; b=dpj5OoGNFQZgz8WrbiHyr96xgVxwBowdKGZnEIrucV2CTQ7y9W5RIggdD1dYy7OJpo+XCeaEAaIgeWNTFirTHc10meu32iOllPBqqDOHF4i4Xa7AMAKnti9yJGgA5SqOiMg7abVX+t73IS9VZ9ooFpUQO7Vz6q1G+MSZ2M4L97M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752857073; c=relaxed/simple;
-	bh=nP4I8Gf8VanTRwC1n59qMyz+gOB4ILXqu7rbvzOVRAs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=I86dFw3nJnNRenNsuVWj8HCkAQMNuUaOt5mXZXOl+bdmJqVuK/5S1+cfxRGP4fR7VXKD7yPo0AM/hLn7QOkRtLq1WvNrhvvUJfq6tw9RA4hXfVFElR1Awb8D8Tn7qmkai3v6FRDQoCbD1iiR9nhH0nG2mTUqwck7hYREin8ZVSw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lpt1ptDj; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752857072; x=1784393072;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=nP4I8Gf8VanTRwC1n59qMyz+gOB4ILXqu7rbvzOVRAs=;
-  b=Lpt1ptDjguOxVtpOSDjM8Xe1LI9kIPcQrVbk7Io9rg8xsS6wAxAiAe1i
-   oP1fyh9v8GvpHq8shmmjg1TLp0Yr38zUDrDllYAestyntYcHRBMHvqfRD
-   HYKfkgnac/CwEoUSSLQ08OrtveiLRmLrH/R0C/XQ52h5xznMMf9t9M5Lh
-   AI8mGyjbUC/3uno9fHxfbIDgXN/Op9Hua8u9Nh6/SaXsnfSa7QiGHYkts
-   hJ5uRfHrgI+MXANrnt+f/Lo/LFh+og1yMjFM5h4m9A4ZDLFg5etfAKEPO
-   DKd191+bZiwFKmXxyULsl4S7GU/1kGk1JZzRTyKJNvLdjAaidJHJAInne
-   w==;
-X-CSE-ConnectionGUID: fB3j0h/qSoWnBDoB6/zFbA==
-X-CSE-MsgGUID: 2uxRT+OHQdWGQAfrvvgllw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11496"; a="54257009"
-X-IronPort-AV: E=Sophos;i="6.16,322,1744095600"; 
-   d="scan'208";a="54257009"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 09:44:31 -0700
-X-CSE-ConnectionGUID: Rm5tAIuaSmmCLQoviCguNg==
-X-CSE-MsgGUID: nR16s0TGTi24KZgbsBCVaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,322,1744095600"; 
-   d="scan'208";a="162414201"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 09:44:30 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 18 Jul 2025 09:44:29 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Fri, 18 Jul 2025 09:44:29 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.68)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 18 Jul 2025 09:44:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g5pr+iN0k5EuPDJGWfcVA/1UfqlyJc566r+W00ZTfV2Ns/39kMfxfHzqhAeD7xxcbG2QawzUMVKX8bGvC813Jp3vOFhBHGrK6aDKJx9QIyp+cFzlsfqNm1vb5STAELMcD5/o4Xxlq69iqi8ZbesghJ7hIyDBVHTHE9eQaceYXF/CoLYISMBmgJPAosEpbnrMurCMXJJd6JUGcpldPgUU6pbZ5UKEW0d+08HB7YnxcsjGlV9w/k8Cpq6atRm81+5+dmsb1dYy34iETpsVMMUtAnWPmjsuO8RuS0noTEA2AhkFXDW4I9cmj0XywFMN++a0PkMzqTNexBP1V93ztQvX4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nP4I8Gf8VanTRwC1n59qMyz+gOB4ILXqu7rbvzOVRAs=;
- b=RKhhv6wvPL/EtKD81rp5OeUe+ma10y/X/sgFgPs5PFTzQoMld9Pe/HPvOa+bveI+T8dLK+QqcrtVe3BY7OamYCc1RPEWS+dBnN3YZvohQ9bfINaOGbl4H4gt5oXZs2cEgeru/kMLMgoxN6EXwK4UGh5Wk0qPoIS6RrnZpXkXPM9pmyhv176VwABLbtUm7TQJQzwzJPgIziYQW9M8QhHU/89EQgolInAtHO88ce2rLXh+4z4mlvl8femz+sfIXM44IPiX6+aE0suWBhIZEVKTPD8yUcY/8h3NrwIjY0ArEfakV2oEGq5W8QX26QUEt9vlIvHOeasrxbQ+prCcH6DzSw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
- by LV3PR11MB8458.namprd11.prod.outlook.com (2603:10b6:408:1bb::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Fri, 18 Jul
- 2025 16:44:25 +0000
-Received: from IA1PR11MB6241.namprd11.prod.outlook.com
- ([fe80::7ac8:884c:5d56:9919]) by IA1PR11MB6241.namprd11.prod.outlook.com
- ([fe80::7ac8:884c:5d56:9919%6]) with mapi id 15.20.8901.024; Fri, 18 Jul 2025
- 16:44:25 +0000
-From: "Rinitha, SX" <sx.rinitha@intel.com>
-To: Haoxiang Li <haoxiang_li2024@163.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Michal Swiatkowski
-	<michal.swiatkowski@linux.intel.com>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH v2] ice: Fix a null pointer dereference
- in ice_copy_and_init_pkg()
-Thread-Topic: [Intel-wired-lan] [PATCH v2] ice: Fix a null pointer dereference
- in ice_copy_and_init_pkg()
-Thread-Index: AQHb7Abn4rGYmj9eY0SOQZPbECypmrQy0OlQ
-Date: Fri, 18 Jul 2025 16:44:25 +0000
-Message-ID: <IA1PR11MB6241087232621133ECB816E48B50A@IA1PR11MB6241.namprd11.prod.outlook.com>
-References: <20250703095232.2539006-1-haoxiang_li2024@163.com>
-In-Reply-To: <20250703095232.2539006-1-haoxiang_li2024@163.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|LV3PR11MB8458:EE_
-x-ms-office365-filtering-correlation-id: ec5f963f-ab80-4eae-cb11-08ddc61a5b12
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018|921020;
-x-microsoft-antispam-message-info: =?us-ascii?Q?5WLWWsOSNdJr+SIZMkLtuXYm/nptvMtpaSb3NQcd1rEe69orOG0sjvrXWaBy?=
- =?us-ascii?Q?oHykNcq+3HRG+/SbW5GcKz+82O4tM1A+yZmNKt8ZMk0tRXSy8+57SZ+N0+UI?=
- =?us-ascii?Q?2vV5W1vz/xbKdoXVsG+p+Vg+ayr034Jb94BHZMbarPuBZxbw4c/GGFeUz3dF?=
- =?us-ascii?Q?bcEhcJHPJlhG6tu2LnYgjqmteD15Moi7A628xmf3lK3wOCP4DtaCuMFWTiaw?=
- =?us-ascii?Q?NzbxdBjB09VKxt42kPdADJrxxFiCu+5sSGfc/DLYjmREAUgtvEaxeIqH7ohX?=
- =?us-ascii?Q?5aTh2lDTswPpaqWWdk6cV+b//RijmYqETuDQkIVuSlUslquUyDOqIDfoT55j?=
- =?us-ascii?Q?tZuB3UF3U6izUqGdBVAJ+FpwqZsQmoc8d32VBZRFWwC3kSazlvxOHyUMeeuY?=
- =?us-ascii?Q?tOkWi1u4yisJLEPrfOL2kVjJbs2Dv/abHzB4/wUhCXq+nOXZibSHTY/1upVX?=
- =?us-ascii?Q?22NiTOzcbGmSNoh4KiHXnyczJ28fbd0ReK97xZWb6MbBabh4svtofMNgMRUv?=
- =?us-ascii?Q?K15gM2QBAkYwT0MdQCOXwotsqZlc6a0Znw7EaPEEbGfPyeWyLGYyJwo01lsQ?=
- =?us-ascii?Q?uyczMNRClsOBtWbCG3CyhE/6WuP6+wxEX19lvFVyuQTSd1d5viC+MWQzNAWV?=
- =?us-ascii?Q?lKVEBo14+okJkYEr77eG1fXoJV34oFi5nWyRShrQWcjB6AC8p7hlqfUmMzq+?=
- =?us-ascii?Q?wkBK73cq5StewTjuTgwoLm3/rL0F7Pp/R/Dqhru/fRiT4NVziZxjE5RsjtzA?=
- =?us-ascii?Q?CieEaYp/gIIyeuJlXDBZLLE3G3v3aVaRAKyfuyqPeKUiZx8rx7cViTegeOT5?=
- =?us-ascii?Q?b0QeApjv+iFZSRjpvs9F7m+DdO6cv3KU6kEObfcKflY1wWNEv2hRNd2IkUab?=
- =?us-ascii?Q?XCh9sL8XjlBrMk0TDKd69bKkg8cfiGFDtb/MDA8EFCLWy+giF+sscxcO2uR7?=
- =?us-ascii?Q?QOs6yywWVYsAi1/GTR8Z7EyG+6DlvnqwIkfoJ978A2xxrz/fm3uPuy//geIT?=
- =?us-ascii?Q?y+sHdYKc0ohHz6B1xK2GPMDVxeZmXC/hDIMnvqr+LMdo5+BNf96cwkLHwxoF?=
- =?us-ascii?Q?rNMeMQU0HAImyTambUQgmUJz1z1KsrrvVA5epXvLbjqZk21GFDL9vImMAkyZ?=
- =?us-ascii?Q?LzMCjbpuvsGcXrM7G2FFpn05NXfV+yzs9u6M38MWrDJKjjhP2aO7xO9jLjpG?=
- =?us-ascii?Q?i51RefPIMLY8XjTQ+apjhzHBtt2M9TwbsRuuyrx4+FYeERcWL1dDfAswewS5?=
- =?us-ascii?Q?BqsL6HVlzJj3/Cg4Re1gWNUSYBY6+efDt1aoXjHunKCujrols5IE7HtRCiA1?=
- =?us-ascii?Q?Hrmv5CkPC5aOCHgOYwbI0+T1OfZs/wxk5i2lct4sZ5i9RbETufvFn8cyxjjG?=
- =?us-ascii?Q?6vbNU/buFxOgDS27UoTE0O3DXKa0rYp8u0fqybaMxj7azi9tifshhinsI3wh?=
- =?us-ascii?Q?n8BrWC9ScTa0QAJcTXlZ6sNLxawQ1hFu4FulnJoOKTjl9lMyo1I63Bw/bWA4?=
- =?us-ascii?Q?q/woWjeMVU1jvbk=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018)(921020);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?aJCfdgaft0FelkjI/7YzkIcStVweX3MrAV1jXuYPZahIOEVwVZcriaVeECHX?=
- =?us-ascii?Q?T33HuPigOiF/1EUa0lUA9Xoo0NF/b3IgkB4nkhP+BlXNjecRA+6pLsgZRiuF?=
- =?us-ascii?Q?U8ti+bN6WtnuJOvGv9GEFLEJtD0sa5BXVK5ScslLlXoRFfoKcJsahVSb7vUm?=
- =?us-ascii?Q?0XltDRyj36FvBBekTaErn28XpC8v4oI1ptxaiP3yUwDVpAOaXzww26gTWb0i?=
- =?us-ascii?Q?ZQnwN5ZpflTeOXJM2TOk4RpwNRbZESMJXm8XiYmuTLO2/QmVPE3cml6j3ESM?=
- =?us-ascii?Q?IRPURua/Cpi3aSgvQHY1zG5eRKfd6U92kknG/Rqr2G622FURbr+AnlB5S/oc?=
- =?us-ascii?Q?RXe4tIbPZ3hWgKoivnqVWcpBT8BAd0qVd02ntJVfJczrFoYsfDB/+Q7ie6JC?=
- =?us-ascii?Q?13XwInK72OrdetwZ9tCZdX1gcsu9hhSjxclCCHgKTx8nFp4OITE/GjQHbXGW?=
- =?us-ascii?Q?8hUsLNZID+4v/OW8MXnL8clgD5w0D3DRTfMUBxUbNwtYNG6z1ePjcQR0nRTS?=
- =?us-ascii?Q?6oAjeFu0iv4wObSyeNpWFTXJQYzuh1wr9ZgC8eo9UmEcDeexLqmEWYkcc8YK?=
- =?us-ascii?Q?Si43EEsU8LRiPg3zQ6HHW+JbUp8VxYtQPjenGgZv7yN5V0YwYbrHEpkgLxUm?=
- =?us-ascii?Q?eitZL9YkplcrT/jx2GPxsDZQbI7KpC3hSlZ1EX5ml4W8DtyL99vu4hMTKrOZ?=
- =?us-ascii?Q?XSrEj1AcP05EJDdE5J9AEJ6szRS7EH9i3FbzWv6x67rEQ1gxa+LE02JycEub?=
- =?us-ascii?Q?IwLytWlmEjG1RFmy8NWHTTSLXVn62jhpWs9lZLtBecKqQE2W89D3HOLpYCHP?=
- =?us-ascii?Q?UOjKA6Nd05YtndtL3R5sk0yDnXzSkCjIOkVesMnUeiONZQmGdqxpcY7P1pBO?=
- =?us-ascii?Q?/Kpaa0Jgi58n3Ac+Y6U87Cafgy3BjrfezCPmZQ5c6IFJ8yV6gyu6TMNkUMYF?=
- =?us-ascii?Q?dswijgE9mgFu+H3HiAztWye77v7nIm7RHsPfUHj8/oxRT5Wq44EKqh75idgL?=
- =?us-ascii?Q?DS3gSdNvvTAK2Cee4zh/ANeLeQF0nEPX81BbsvAbwQVtdovr4jNWmwX9aP/x?=
- =?us-ascii?Q?6VcUr10pF3Vo44mWgjw2s4KYXPSPUy0oAe1TgPd245p7EQDYSOCbUBFXufQ+?=
- =?us-ascii?Q?JzzPeflkv2w99kdYz0Gu35P+EAIKDlZkUSWAhs85oJJMZsT3Fcy7028I7hOK?=
- =?us-ascii?Q?TjMtIKiLhCQ2kefm93cNSCxth2Mdwyl1D+6V4JHYi4EBe5nV6vZmeoXSrGcm?=
- =?us-ascii?Q?alfgHmpcC2v8fXvxIbMIpAOjxZwgSRkcIkcTWC+s3tmyXM+dQNOM3LIJR9dN?=
- =?us-ascii?Q?TT9MyqLTIz+ZFHkx3UTjDpf1X6mHCs2jF1FhLzl77qtorN0a/MF6wZk0qnwK?=
- =?us-ascii?Q?YpjOuyxjaVE0oqqlZgyhQF/JSKetOUYl8O9vkXbm5h+fQLHjYk/ZTEL91efi?=
- =?us-ascii?Q?1A7pFNUs8KsEKWKX8HATudnE4jvYwiLsN73u2PJWoSasZIZXZljWj6MKjXEN?=
- =?us-ascii?Q?P9BLNiBfpHI2Msj9e393XyQAsuITmWVJ98+BedkDdrx4VAG2CG4b6NtnDK6c?=
- =?us-ascii?Q?hzVM1Kq0G7EUL7w4AKnQFHtuKZ6r8/2q2Eofz25h?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639932E5B1F
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 16:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752857877; cv=none; b=VRQoOnImVX7ui/W6e/i4/QEWOrYLkb1uDrqyA3ZmCdxr99Ws0qT48l9oQqwZH0FgMSRUnHZsxO+eiJAaRUgrIDAzrPlXJAzd0DNNFW6p7CdDtTdi3T7sbKQHWQwLa9phOGeLoYzwADJDPnVteMefWYFXBSdkeK9Ol3pKgnAr9Sc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752857877; c=relaxed/simple;
+	bh=HFE0w/88w1Lyl/K2smHXTTk3UtGuRTe8feXkgJ+2eSc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oExlYwiG98HaqNbwWmDorDjqAPXCl0P/8wzMBCXa/oS/6coU85A1rXK9fykq+jbTo6qjj3ZZnptxprvRBCfm8fj5c7D0IwY3n5JMSf/KYoQl4jO3qSjad8CVoj6NNhc8WjH0qh7T+ZElgRPttQINrTyRQTG6ZK9tcwd5CMypDRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D9kR2Z0S; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2365ab89b52so21293625ad.2
+        for <stable@vger.kernel.org>; Fri, 18 Jul 2025 09:57:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752857874; x=1753462674; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=a8JmAFoZFmFF4VrncsXMPRkgu6iDWk7fhLl780SkJ+c=;
+        b=D9kR2Z0SyVzKS4u22m8ZGDVCXqJtGjtcXM9vX0M/KCus153itQsYi5eu3C8c2goFUc
+         CFTs7ASFR1YHrGH2UeL/7eZfMPeXqRdUQiW4PtYwF8DACnxeoW3xlbVv7xeap1Nz/z2b
+         TXg2FW8SUGjHehI1BWABvt3wrZd0s6sbxPhZxU7rVuPu00ZTxq2xC0Z0lDVglsZmP23s
+         +zgQ33eXMPOF2oi6l11vjhTQJC3hufrm1wZ8mLJ0IKoAHTH6CrOM23y6QOTuIFhu9CqT
+         Ht+40KpO1sC5kaVe3zdv395qJoEGE8TO0vB9heFueyw82BaNMp1IrTTow2PmTFpovkPK
+         cBnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752857874; x=1753462674;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a8JmAFoZFmFF4VrncsXMPRkgu6iDWk7fhLl780SkJ+c=;
+        b=AglyeXCAO/CMWJ2CBN5LvjVL93jQfT/uyyjvSemnha/JL0HlRi22Jid/87HXvcgCje
+         YeUIVO7jRUf0Z2yyOJJHYU+ea8iP1/Uc3dlmUZDx0TXTFNLaM+nPWynYqU1yXCeiIOHX
+         qy9hgD3jZ2xsIdcUnwlb/BefpWWzxBOhemlo1YCkMPE9EO9CP7BtBbX8BPMkWU36XmFl
+         NFB9vj4hXTWiW1O13S92fEDsuwiaZA0Y6mnpHxu7N1+45LSdoEZ2HZ0Ucoe5eU7rOIMX
+         FoI4xkDMHS1z/zVIVlHbnwrpiMd6oETxVG64OeCVdJejnkijOLgbVwkfyKc57oqjgXPM
+         OaUw==
+X-Forwarded-Encrypted: i=1; AJvYcCXnR2qHiSgLYWPzIn9caFaLm3MD13dNqIFKN1b/Y3QeX9Zx/QxqtHxlTPejEo2PGxoYFiWfxnI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+YQiw5H/Ikg2RdE109bwBEN64S55elpfSwObiiv9cPfVoCTM+
+	omNyuklwhTIMP9aeJ//R1OsD1TnL6qqx2Iob++p77wjlz+ytv0oPeL5dQB/8cZPx10bO18swlL5
+	Hctkx1Q==
+X-Google-Smtp-Source: AGHT+IF7xn00jpbk8G2lQKjDoF2AXEZJ1VQJGfmVYlK0/PKYwzHv3a1zuyVCPoIwNei98xvSRwV+sSXMHSM=
+X-Received: from pjyr8.prod.google.com ([2002:a17:90a:e188:b0:311:4bc2:3093])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:84c:b0:23e:3c33:6be8
+ with SMTP id d9443c01a7336-23e3c336f4bmr36340205ad.8.1752857873730; Fri, 18
+ Jul 2025 09:57:53 -0700 (PDT)
+Date: Fri, 18 Jul 2025 09:57:52 -0700
+In-Reply-To: <2d787a83-8440-adb1-acbd-0a68358e817d@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec5f963f-ab80-4eae-cb11-08ddc61a5b12
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jul 2025 16:44:25.5578
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aGcsnBond/JtKhY9QsFOfKzkhDLbmWW63WLUiRHE3PCmUpRNaH9lrqH8QFo+rSvyLBGTvPtjVb3md6T7cSjM+w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8458
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+References: <20250716055604.2229864-1-nikunj@amd.com> <2d787a83-8440-adb1-acbd-0a68358e817d@amd.com>
+Message-ID: <aHp9EGExmlq9Kx9T@google.com>
+Subject: Re: [PATCH v2] KVM: SEV: Enforce minimum GHCB version requirement for
+ SEV-SNP guests
+From: Sean Christopherson <seanjc@google.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Nikunj A Dadhania <nikunj@amd.com>, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	santosh.shukla@amd.com, bp@alien8.de, Michael Roth <michael.roth@amd.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of H=
-aoxiang Li
-> Sent: 03 July 2025 15:23
-> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw <=
-przemyslaw.kitszel@intel.com>; andrew+netdev@lunn.ch; davem@davemloft.net; =
-edumazet@google.com; kuba@kernel.org; pabeni@redhat.com
-> Cc: intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org; linux-kerne=
-l@vger.kernel.org; Haoxiang Li <haoxiang_li2024@163.com>; stable@vger.kerne=
-l.org; Michal Swiatkowski <michal.swiatkowski@linux.intel.com>; Loktionov, =
-Aleksandr <aleksandr.loktionov@intel.com>
-> Subject: [Intel-wired-lan] [PATCH v2] ice: Fix a null pointer dereference=
- in ice_copy_and_init_pkg()
->
-> Add check for the return value of devm_kmemdup() to prevent potential nul=
-l pointer dereference.
->
-> Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization (DDP)=
- download")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> ---
-> Changes in v2:
-> - modify the Fixes commit number. Thanks, Michal!
-> ---
-> drivers/net/ethernet/intel/ice/ice_ddp.c | 2 ++
-> 1 file changed, 2 insertions(+)
->
+On Wed, Jul 16, 2025, Tom Lendacky wrote:
+> On 7/16/25 00:56, Nikunj A Dadhania wrote:
+> > ---
+> >  arch/x86/kvm/svm/sev.c | 8 ++++++--
+> >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > index 95668e84ab86..fdc1309c68cb 100644
+> > --- a/arch/x86/kvm/svm/sev.c
+> > +++ b/arch/x86/kvm/svm/sev.c
+> > @@ -406,6 +406,7 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+> >  	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
+> >  	struct sev_platform_init_args init_args = {0};
+> >  	bool es_active = vm_type != KVM_X86_SEV_VM;
+> > +	bool snp_active = vm_type == KVM_X86_SNP_VM;
+> >  	u64 valid_vmsa_features = es_active ? sev_supported_vmsa_features : 0;
+> >  	int ret;
+> >  
+> > @@ -424,6 +425,9 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+> >  	if (unlikely(sev->active))
+> >  		return -EINVAL;
+> >  
+> > +	if (snp_active && data->ghcb_version && data->ghcb_version < 2)
+> > +		return -EINVAL;
+> > +
+> 
+> Would it make sense to move this up a little bit so that it follows the
+> other ghcb_version check? This way the checks are grouped.
 
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Yes, because there's a lot going on here, and this:
+
+  data->ghcb_version && data->ghcb_version < 2
+
+is an unnecesarily bizarre way of writing
+
+  data->ghcb_version == 1
+
+And *that* is super confusing because it begs the question of why version 0 is
+ok, but version 1 is not.  And then further down I see this: 
+
+	/*
+	 * Currently KVM supports the full range of mandatory features defined
+	 * by version 2 of the GHCB protocol, so default to that for SEV-ES
+	 * guests created via KVM_SEV_INIT2.
+	 */
+	if (sev->es_active && !sev->ghcb_version)
+		sev->ghcb_version = GHCB_VERSION_DEFAULT;
+
+Rather than have a funky sequence with odd logic, set data->ghcb_version before
+the SNP check.  We should also tweak the comment, because "Currently" implies
+that KVM might *drop* support for mandatory features, and that definitely isn't
+going to happen.  And because the reader shouldn't have to go look at sev_guest_init()
+to understand what's special about KVM_SEV_INIT2.
+
+Lastly, I think we should open code '2' and drop GHCB_VERSION_DEFAULT, because:
+
+ - it's a conditional default
+ - is not enumerated to userspace
+ - changing GHCB_VERSION_DEFAULT will impact ABI and could break existing setups
+ - will result in a stale if GHCB_VERSION_DEFAULT is modified
+ - this new check makes me want to assert GHCB_VERSION_DEFAULT > 2
+
+As a result, if we combine all of the above, then we effectively end up with:
+
+	if (es_active && !data->ghcb_version)
+		data->ghcb_version = GHCB_VERSION_DEFAULT;
+
+	BUILD_BUG_ON(GHCB_VERSION_DEFAULT != 2);
+
+which is quite silly.
+
+So this?  Completely untested, and should probably be split over 2-3 patches.
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 2fbdebf79fbb..f068cd466ae3 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -37,7 +37,6 @@
+ #include "trace.h"
+ 
+ #define GHCB_VERSION_MAX       2ULL
+-#define GHCB_VERSION_DEFAULT   2ULL
+ #define GHCB_VERSION_MIN       1ULL
+ 
+ #define GHCB_HV_FT_SUPPORTED   (GHCB_HV_FT_SNP | GHCB_HV_FT_SNP_AP_CREATION)
+@@ -405,6 +404,7 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+ {
+        struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
+        struct sev_platform_init_args init_args = {0};
++       bool snp_active = vm_type == KVM_X86_SNP_VM;
+        bool es_active = vm_type != KVM_X86_SEV_VM;
+        u64 valid_vmsa_features = es_active ? sev_supported_vmsa_features : 0;
+        int ret;
+@@ -418,7 +418,18 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+        if (data->vmsa_features & ~valid_vmsa_features)
+                return -EINVAL;
+ 
+-       if (data->ghcb_version > GHCB_VERSION_MAX || (!es_active && data->ghcb_version))
++       if (!es_active && data->ghcb_version)
++               return -EINVAL;
++
++       /*
++        * KVM supports the full range of mandatory features defined by version
++        * 2 of the GHCB protocol, so default to that for SEV-ES guests created
++        * via KVM_SEV_INIT2 (KVM_SEV_INIT forces version 1).
++        */
++       if (es_active && !data->ghcb_version)
++               data->ghcb_version = 2;
++
++       if (snp_active && data->ghcb_version < 2)
+                return -EINVAL;
+ 
+        if (unlikely(sev->active))
+@@ -429,15 +440,7 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+        sev->vmsa_features = data->vmsa_features;
+        sev->ghcb_version = data->ghcb_version;
+ 
+-       /*
+-        * Currently KVM supports the full range of mandatory features defined
+-        * by version 2 of the GHCB protocol, so default to that for SEV-ES
+-        * guests created via KVM_SEV_INIT2.
+-        */
+-       if (sev->es_active && !sev->ghcb_version)
+-               sev->ghcb_version = GHCB_VERSION_DEFAULT;
+-
+-       if (vm_type == KVM_X86_SNP_VM)
++       if (snp_active)
+                sev->vmsa_features |= SVM_SEV_FEAT_SNP_ACTIVE;
+ 
+        ret = sev_asid_new(sev);
+@@ -455,7 +458,7 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+        }
+ 
+        /* This needs to happen after SEV/SNP firmware initialization. */
+-       if (vm_type == KVM_X86_SNP_VM) {
++       if (snp_active) {
+                ret = snp_guest_req_init(kvm);
+                if (ret)
+                        goto e_free;
 
