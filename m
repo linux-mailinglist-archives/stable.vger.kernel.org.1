@@ -1,208 +1,124 @@
-Return-Path: <stable+bounces-163342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC9C0B09E33
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D1AB09E87
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 11:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 370C61AA0E26
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:39:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D6D51C41857
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 09:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C42294A02;
-	Fri, 18 Jul 2025 08:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1892951BA;
+	Fri, 18 Jul 2025 09:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hqz89RGu"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e/f98m3P";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JktdbcIo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F79D2192EA
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 08:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D03293C71;
+	Fri, 18 Jul 2025 09:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752827949; cv=none; b=IJXqIzFn0I9zA8pYIR6oifX8cv65c6uwxRRyXTzXbM/F4rQZTx1Ao+9spWa1jOPPLacoqwAxx3O5+i9y3i2ffTlnVKnwMuhUe75Q5BT97zp0FH6cd4oMPEUF1p+oGq0wfxlPtbfCkP/IpJIRgsFbIvIx+l2wg/9megP7s9uwn3w=
+	t=1752829202; cv=none; b=jyGuYqL5+p6S96EoFxidacY5xxoQodXZsBLS8NS4bF+CS4lAAGSiQ4twRCJ12R4rlqtA+twwfHdbX0aZqO9HN43ACqFAy7oHjDs70JEA3KQ3/Ett0ul5GRFRNRAbMPfVw+wR/j3FhfeHFkBIoPiDh8Iuak9mwUthWvZmXGZBXhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752827949; c=relaxed/simple;
-	bh=HV3mPl6MSYbW9XmYhqL0JUwYQluuDEhKVGZbLd7tbSg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pkTjknhoNd8cZFRaPpVZhXsDrcXeYUGs8AF5IQQMwvNN0V/ktW+FGcmAds/fmVjZ7i6WCDmJW00dumv8biSHXy7Q4usBTe7Zd71SrquxmtuuU6wygoRQoChudJCldKXBGbDXSdclhiWKzTmkssRRXcXL9bu6WweTh2t0518mzwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hqz89RGu; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4ab3ad4c61fso383281cf.0
-        for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:39:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752827945; x=1753432745; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=udrYzqsG6zKD6Rhq5jUrYPXE4BiEAdJOTycG7GhLQII=;
-        b=Hqz89RGuZzHtgoSGE0C2o/r7a2QPvNrH6QeHhYgAoP0xAud5ybplO1qSUCxNLBalwQ
-         pg8E+JD4/inzjLF2C/sRb6U1b/ddTXvrc93Lw5x1E8eDdOXb06wFdLtdIlq/W9yLUJos
-         On4JrQVSwo+kOmPrygJSvfCTmpRIE2u989OVoR51KICPlJ7qFHjHL5mHbIDFpmOMcRBN
-         iVJMDp4uzg9rQoFNoILxflbqh2y1mq4/RLnphtiu+24tNYVvJhObmzPXRO7cMJR2aP/R
-         mSx9IY/m3LBl95Si9EGoU/YfV/SjPPTC1VZ+P1nztduAgqfMJ+31NccE2K/JraxGsvnN
-         0UeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752827945; x=1753432745;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=udrYzqsG6zKD6Rhq5jUrYPXE4BiEAdJOTycG7GhLQII=;
-        b=jyChKO1iHGBW5z49uaSmZYW95LY7T0Bk6nNPYvw7lLGJzYOsB9ipxqUMO/N2cFV64W
-         vSBdXeAnzVoViIxKiKsEBGHL2AQIO0Ub45cZ3IJ807PcazRiqYtGb+VpmsGdmc5iuSiU
-         0gewN8l+QN6Z3It1RFtu37P2RVFSQ25j9ow6ow2lKwEpjg5AatRJJdzZd2AwMJW0crDv
-         9aqp9dE1YOVt6XUdIL66fjUaaAyzqY+M8anybokh1fXqMjpxpgJNktKm2B9ciEMsKfIM
-         S6fmeJYTWYpOUKC1UEAuUzjH82O4M+xjPik7tcLL3BEx8amj8q4W0n7vtRz1sta7nDI7
-         Rnxg==
-X-Forwarded-Encrypted: i=1; AJvYcCVKhddQpHNm870L2O4vLvEvJgWcIWuwvtWu1pZBC9ZJLGf6y++zB6RMDgaIDaJi+A6STWO1DrQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2Bx8U+26598zfNtNPG+QJArLfM7uJyGmhXfWJOSUrQtJOckl1
-	m72oQu78YObkUZL1ix/xhFo/ikbtmCQweIYQALxyPbEWIyGqTf/ZhHRxlq6+1WS1LP9tq75DtO9
-	Hwt5LGFNXHj7uEENIy5jRvKZohurZlurfTQzictQq
-X-Gm-Gg: ASbGnctIjd7mRP780uor12I34vCH8kw5q5tiyX7Tqdsfw1Q3TZUYl0zdISwoGR6s448
-	gRclzOLZ6bGJ1Oybnvg5ug3R2zpOULiDLeSpjO7SCmUiYGj+hMz0nYACtVLXGr6iVEjnyStwNHP
-	ay3gGxXjDJoG1Uktm62AvHQshRNLGAnuFGpGiGzEZtUGeG7wAVsIiMspkYXJVwLkD7fuag+Kq2E
-	4uAGkQRjCl2y0TSz6AbLeekDJIQsU+H2wzJdw==
-X-Google-Smtp-Source: AGHT+IFZWhzx20M9Gw8trywQy21X6aj6Ujnf+GXyOsXwiCt5Tl0RmCoH6sEvHzscHL3TaCOr5PVWkjpGBEYykqUGK0g=
-X-Received: by 2002:a05:622a:4a87:b0:4a8:19d5:e9bb with SMTP id
- d75a77b69052e-4abb13dfdf4mr4200641cf.13.1752827944683; Fri, 18 Jul 2025
- 01:39:04 -0700 (PDT)
+	s=arc-20240116; t=1752829202; c=relaxed/simple;
+	bh=fo7dMDrlXW/r0/8HGLb408wpfQ2KlP61XOvxXanDXAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z28ya1w3veAyfZDqinIGk+CLSvzEo5S39HQ9f5AVahbfCzGw8+To2dgplZ8/qbSxXyyxpdbyvg4i2pJuxBNteJU4ZMpgfkFEZDa9EdRP8HEgKlADlMBPTPBwSLbqTZ/qJEDDmy3vmkiLgqQIg0wGvWPb0z6HopFmWYUWk8TnKUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e/f98m3P; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JktdbcIo; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 18 Jul 2025 10:59:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1752829192;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bWlxW6vXsjgEyOx30tgpd5N2CQfifCbYx17NMEBHLTA=;
+	b=e/f98m3P+mE1HzVOqsvi7eQujVelbnYqeMFOQGiW/mRHAIRSXvUTJRiehuOyv+OLNTQNLx
+	zRJBcu2OZj3s5UGjowiQiU+jv9ZAyDgNXxaV5YwgZX3cgaHZcTrt6cCRVHvV47SeP2RIZo
+	RbgSf2AhpJD2GE72uraNMTYhb7228sCVdY1gC0UTC9XFj09IeM6CPmYHpr4rEdAHo/JNKf
+	C4J5WzD+MS40GJrpKUXVuE/8JpL7/07daVZgnehT0Av5p3lS6rQLcrF1GZEqbceBkePh4j
+	1Rs7hWAM1UvIo5pOH3ZaDRfMjTagWftfstVIDnvGMmv9+EGOKvIHIdwKk9eZTg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1752829192;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bWlxW6vXsjgEyOx30tgpd5N2CQfifCbYx17NMEBHLTA=;
+	b=JktdbcIoEsmHbIxRkp7x/0QorIGj0IemDDdoPM415sgKzRbFFP/s4P1dytSNS6PcCjD1/n
+	LIJBTH8Yvqo2VbCw==
+From: Nam Cao <namcao@linutronix.de>
+To: Soheil Hassas Yeganeh <soheil@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Shuah Khan <shuah@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	Khazhismel Kumykov <khazhy@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>, Jens Axboe <axboe@kernel.dk>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] eventpoll: Fix epoll_wait() report false negative
+Message-ID: <20250718085948.3xXGcxeQ@linutronix.de>
+References: <cover.1752824628.git.namcao@linutronix.de>
+ <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
+ <CACSApvZT5F4F36jLWEc5v_AbqZVQpmH1W7UK21tB9nPu=OtmBA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1752824628.git.namcao@linutronix.de> <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
-In-Reply-To: <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
-From: Soheil Hassas Yeganeh <soheil@google.com>
-Date: Fri, 18 Jul 2025 09:38:27 +0100
-X-Gm-Features: Ac12FXzgn06jDeUNMyDy69uNTY69aPVmkscuVzoPHZoBvxff8P-gX2NCfWFyWn0
-Message-ID: <CACSApvZT5F4F36jLWEc5v_AbqZVQpmH1W7UK21tB9nPu=OtmBA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] eventpoll: Fix epoll_wait() report false negative
-To: Nam Cao <namcao@linutronix.de>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Shuah Khan <shuah@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Khazhismel Kumykov <khazhy@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Eric Dumazet <edumazet@google.com>, Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACSApvZT5F4F36jLWEc5v_AbqZVQpmH1W7UK21tB9nPu=OtmBA@mail.gmail.com>
 
-On Fri, Jul 18, 2025 at 8:52=E2=80=AFAM Nam Cao <namcao@linutronix.de> wrot=
-e:
->
-> ep_events_available() checks for available events by looking at ep->rdlli=
-st
-> and ep->ovflist. However, this is done without a lock, therefore the
-> returned value is not reliable. Because it is possible that both checks o=
-n
-> ep->rdllist and ep->ovflist are false while ep_start_scan() or
-> ep_done_scan() is being executed on other CPUs, despite events are
-> available.
->
-> This bug can be observed by:
->
->   1. Create an eventpoll with at least one ready level-triggered event
->
->   2. Create multiple threads who do epoll_wait() with zero timeout. The
->      threads do not consume the events, therefore all epoll_wait() should
->      return at least one event.
->
-> If one thread is executing ep_events_available() while another thread is
-> executing ep_start_scan() or ep_done_scan(), epoll_wait() may wrongly
-> return no event for the former thread.
+On Fri, Jul 18, 2025 at 09:38:27AM +0100, Soheil Hassas Yeganeh wrote:
+> On Fri, Jul 18, 2025 at 8:52 AM Nam Cao <namcao@linutronix.de> wrote:
+> >
+> > ep_events_available() checks for available events by looking at ep->rdllist
+> > and ep->ovflist. However, this is done without a lock, therefore the
+> > returned value is not reliable. Because it is possible that both checks on
+> > ep->rdllist and ep->ovflist are false while ep_start_scan() or
+> > ep_done_scan() is being executed on other CPUs, despite events are
+> > available.
+> >
+> > This bug can be observed by:
+> >
+> >   1. Create an eventpoll with at least one ready level-triggered event
+> >
+> >   2. Create multiple threads who do epoll_wait() with zero timeout. The
+> >      threads do not consume the events, therefore all epoll_wait() should
+> >      return at least one event.
+> >
+> > If one thread is executing ep_events_available() while another thread is
+> > executing ep_start_scan() or ep_done_scan(), epoll_wait() may wrongly
+> > return no event for the former thread.
+> 
+> That is the whole point of epoll_wait with a zero timeout. We would want to
+> opportunistically poll without much overhead, which will have more
+> false positives.
+> A caller that calls with a zero timeout should retry later, and will
+> at some point observe the event.
 
-That is the whole point of epoll_wait with a zero timeout.  We would want t=
-o
-opportunistically poll without much overhead, which will have more
-false positives.
-A caller that calls with a zero timeout should retry later, and will
-at some point
-observe the event.
+Is this a documented behavior that users expect? I do not see this in the
+man page.
 
-I'm not sure if we would want to add much more overheads, for higher precis=
-ion.
+It sounds completely broken to me that an event has been sitting there for
+some time, but epoll_wait() says there is nothing.
 
-Thanks,
-Soheil
+> I'm not sure if we would want to add much more overheads, for higher precision.
 
-> This reproducer is implemented as TEST(epoll65) in
-> tools/testing/selftests/filesystems/epoll/epoll_wakeup_test.c
->
-> Fix it by skipping ep_events_available(), just call ep_try_send_events()
-> directly.
->
-> epoll_sendevents() (io_uring) suffers the same problem, fix that as well.
->
-> There is still ep_busy_loop() who uses ep_events_available() without lock=
-,
-> but it is probably okay (?) for busy-polling.
->
-> Fixes: c5a282e9635e ("fs/epoll: reduce the scope of wq lock in epoll_wait=
-()")
-> Fixes: e59d3c64cba6 ("epoll: eliminate unnecessary lock for zero timeout"=
-)
-> Fixes: ae3a4f1fdc2c ("eventpoll: add epoll_sendevents() helper")
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Cc: stable@vger.kernel.org
-> ---
->  fs/eventpoll.c | 16 ++--------------
->  1 file changed, 2 insertions(+), 14 deletions(-)
->
-> diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-> index 0fbf5dfedb24..541481eafc20 100644
-> --- a/fs/eventpoll.c
-> +++ b/fs/eventpoll.c
-> @@ -2022,7 +2022,7 @@ static int ep_schedule_timeout(ktime_t *to)
->  static int ep_poll(struct eventpoll *ep, struct epoll_event __user *even=
-ts,
->                    int maxevents, struct timespec64 *timeout)
->  {
-> -       int res, eavail, timed_out =3D 0;
-> +       int res, eavail =3D 1, timed_out =3D 0;
->         u64 slack =3D 0;
->         wait_queue_entry_t wait;
->         ktime_t expires, *to =3D NULL;
-> @@ -2041,16 +2041,6 @@ static int ep_poll(struct eventpoll *ep, struct ep=
-oll_event __user *events,
->                 timed_out =3D 1;
->         }
->
-> -       /*
-> -        * This call is racy: We may or may not see events that are being=
- added
-> -        * to the ready list under the lock (e.g., in IRQ callbacks). For=
- cases
-> -        * with a non-zero timeout, this thread will check the ready list=
- under
-> -        * lock and will add to the wait queue.  For cases with a zero
-> -        * timeout, the user by definition should not care and will have =
-to
-> -        * recheck again.
-> -        */
-> -       eavail =3D ep_events_available(ep);
-> -
->         while (1) {
->                 if (eavail) {
->                         res =3D ep_try_send_events(ep, events, maxevents)=
-;
-> @@ -2496,9 +2486,7 @@ int epoll_sendevents(struct file *file, struct epol=
-l_event __user *events,
->          * Racy call, but that's ok - it should get retried based on
->          * poll readiness anyway.
->          */
-> -       if (ep_events_available(ep))
-> -               return ep_try_send_events(ep, events, maxevents);
-> -       return 0;
-> +       return ep_try_send_events(ep, events, maxevents);
->  }
->
->  /*
-> --
-> 2.39.5
->
+Correctness before performance please. And I'm not sure what you mean by
+"much more overheads". While this patch definitely adds some cycles in case
+there is no event, epoll_wait() still returns "instantly".
+
+Nam
 
