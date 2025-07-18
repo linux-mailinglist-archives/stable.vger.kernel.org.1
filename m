@@ -1,128 +1,117 @@
-Return-Path: <stable+bounces-163331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30309B09DCC
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A5AB09DEE
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 10:28:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C6E67BDB8D
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:21:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DCA67B6C60
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 08:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69A4221557;
-	Fri, 18 Jul 2025 08:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329F5293B48;
+	Fri, 18 Jul 2025 08:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="ufm+SFhk"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B348292B42;
-	Fri, 18 Jul 2025 08:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE0B21859A;
+	Fri, 18 Jul 2025 08:28:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752826977; cv=none; b=Kb0qCdU1jwrytQMxvARrMdOIiIPhknXTi/6pKSBeA0LF/Vq1auf8LYkGsk36K3bgZltVVMm7I0eHg3sDhAjTGLfY94XbrdMqEmagpJ8CwMDJbPWpIJ6v2Ll2ozAClyWDC5Ij34nse4g1+v9koixfPSSd2sx7SuJukiqB0iwDQQ4=
+	t=1752827302; cv=none; b=dgjeLN1S+bID1ytFNifFVKPVUXTAhTb9TYshr/lu+Z7Ki33JYpEwSSh1pY8wipCX45gTM6u2/uM04q6TtklJKg3btkAfRtkQVG5Hcqe4kqUHfUeDTBV+HaNnIZEPfm6uCWqpzzi4w8IvVlpjJ8375FjAPpoGLtCc5oEgsZUxais=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752826977; c=relaxed/simple;
-	bh=dIxQv9AtZEsjxl9mVLC6wMDHglO4W89UwiGmgJxhBFo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=t5JfK4URghOfHJd/Nd5iNadlKn+LBcd+sC+5/9N3+ut3q5w4E+S5PYEiY9NnlyJYIW+T2zxpeMqyxt/vVCFn2crwsl3/rXAmbdf7KxlgNOX2E6drqQXW0cry+PSOhuccMnhi1ut+Lu1dpA1IyWA0SMyv50Nwq7a8W02CmLCZI00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [211.71.28.34])
-	by APP-01 (Coremail) with SMTP id qwCowAB3oKROBHpo+xghBQ--.35899S2;
-	Fri, 18 Jul 2025 16:22:47 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: axboe@kernel.dk,
-	sln@onemain.com,
-	Jim.Quigley@oracle.com,
-	liam.merwick@oracle.com,
-	aaron.young@oracle.com,
-	alexandre.chartre@oracle.com
-Cc: akpm@linux-foundation.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] sunvdc: Balance device refcount in vdc_port_mpgroup_check
-Date: Fri, 18 Jul 2025 16:22:36 +0800
-Message-Id: <20250718082236.3400483-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1752827302; c=relaxed/simple;
+	bh=HbZBhh8aKvnhhix2oGCGJTp89m5dueVh/VgsyDh6rLI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jPFTeSFfAsHG0sTuQPOcxBZcRJ48z9ph4JitxlLKWF9HJu7o3iuZaiCFIYpaaAQH4f3/MffsDhYUabwzpZgrFbjjdY2yTzRvAiyzfwIeDoH1bgFauPKj6KCMWBUKNqWrxpbP4+Gcgjk0FkJN07LDqyA1eAAlUKizNWPQBA+Vjcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=ufm+SFhk; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 24f1958463b111f0b33aeb1e7f16c2b6-20250718
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=GPpm2gPg2nj0QzhFjf8hC7nhh7xr1REmHdo2vA7Y9Hs=;
+	b=ufm+SFhk52Dl4xbIp2INabMeaB8XUGraku5bsPaQytP8aPeqo+amRqWvhkBtPPmvwsfAVm5FAHGvYn96VALAQRh3lDiPnAsFlRJTMAk8q2jWu3xvKEYH1k+Ih35nozpQv8h6KzCO56KCyQX5vyFDEUUuCQ8QGFrPjiROYTMWHxo=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.2,REQID:da9e0b7a-f74c-4bd4-a871-1143ed360839,IP:0,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-5
+X-CID-META: VersionHash:9eb4ff7,CLOUDID:5bf89484-a7ec-4748-8ac1-dca5703e241f,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 24f1958463b111f0b33aeb1e7f16c2b6-20250718
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
+	(envelope-from <macpaul.lin@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 668366403; Fri, 18 Jul 2025 16:28:12 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Fri, 18 Jul 2025 16:28:11 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Fri, 18 Jul 2025 16:28:11 +0800
+From: Macpaul Lin <macpaul.lin@mediatek.com>
+To: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, Peter Wang
+	<peter.wang@mediatek.com>, Stanley Jhu <chu.stanley@gmail.com>, "James E . J
+ . Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K . Petersen"
+	<martin.petersen@oracle.com>, <linux-scsi@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	<openembedded-core@lists.openembedded.org>, <patches@lists.linux.dev>,
+	<stable@vger.kernel.org>
+CC: Bear Wang <bear.wang@mediatek.com>, Pablo Sun <pablo.sun@mediatek.com>,
+	Ramax Lo <ramax.lo@mediatek.com>, Macpaul Lin <macpaul.lin@mediatek.com>,
+	Macpaul Lin <macpaul@gmail.com>, MediaTek Chromebook Upstream
+	<Project_Global_Chrome_Upstream_Group@mediatek.com>
+Subject: [PATCH 1/3] scsi: ufs: ufs-mediatek: Add UFS host support for MT8195 SoC
+Date: Fri, 18 Jul 2025 16:27:16 +0800
+Message-ID: <20250718082719.653228-1-macpaul.lin@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAB3oKROBHpo+xghBQ--.35899S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tryDZw1xAr1kGFykXryrZwb_yoW8WF48pa
-	1DCa45XrW3GF17Kr48XayUZF1FkFy0v34SgFW8Aw1Fkr93XrWIyrWUt34j9w1UJF93JFWD
-	JF17ta48JFWUXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
-	v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
-	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
-	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
-	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
-	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUeYLvDUUU
-	U
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: text/plain
+X-MTK: N
 
-Using device_find_child() to locate a probed virtual-device-port node
-causes a device refcount imbalance, as device_find_child() internally
-calls get_device() to increment the device’s reference count before
-returning its pointer. vdc_port_mpgroup_check() directly returns true
-upon finding a matching device without releasing the reference via
-put_device(). We should call put_device() to decrement refcount.
+Add "mediatek,mt8195-ufshci" to the of_device_id table to enable
+support for MediaTek MT8195/MT8395 UFS host controller. This matches the
+device node entry in the MT8195/MT8395 device tree and allows proper driver
+binding.
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
-
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
 ---
- drivers/block/sunvdc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/ufs/host/ufs-mediatek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/block/sunvdc.c b/drivers/block/sunvdc.c
-index b5727dea15bd..b6dbd5dd2723 100644
---- a/drivers/block/sunvdc.c
-+++ b/drivers/block/sunvdc.c
-@@ -950,6 +950,7 @@ static bool vdc_port_mpgroup_check(struct vio_dev *vdev)
- {
- 	struct vdc_check_port_data port_data;
- 	struct device *dev;
-+	bool found = false;
+diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
+index 182f58d0c9db..e1dbf0231c5e 100644
+--- a/drivers/ufs/host/ufs-mediatek.c
++++ b/drivers/ufs/host/ufs-mediatek.c
+@@ -50,6 +50,7 @@ static const struct ufs_dev_quirk ufs_mtk_dev_fixups[] = {
  
- 	port_data.dev_no = vdev->dev_no;
- 	port_data.type = (char *)&vdev->type;
-@@ -957,10 +958,12 @@ static bool vdc_port_mpgroup_check(struct vio_dev *vdev)
- 	dev = device_find_child(vdev->dev.parent, &port_data,
- 				vdc_device_probed);
- 
--	if (dev)
--		return true;
-+	if (dev) {
-+		found = true;
-+		put_device(dev);
-+	}
- 
--	return false;
-+	return found;
- }
- 
- static int vdc_port_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ static const struct of_device_id ufs_mtk_of_match[] = {
+ 	{ .compatible = "mediatek,mt8183-ufshci" },
++	{ .compatible = "mediatek,mt8195-ufshci" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, ufs_mtk_of_match);
 -- 
-2.25.1
+2.45.2
 
 
