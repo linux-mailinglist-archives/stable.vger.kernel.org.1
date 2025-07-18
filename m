@@ -1,161 +1,164 @@
-Return-Path: <stable+bounces-163323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793D4B09A39
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 05:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A43B09A71
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 06:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBCCD5A35D0
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:40:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE4AF1764BC
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 04:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA9A1BD9CE;
-	Fri, 18 Jul 2025 03:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF011D8DFB;
+	Fri, 18 Jul 2025 04:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PU6pRLBG"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACA84A33;
-	Fri, 18 Jul 2025 03:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C0E1B4257;
+	Fri, 18 Jul 2025 04:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752810002; cv=none; b=Jg6sahH8ijfJSZzzGy/SH+NyqE83zsAg+HlK1KSw6XNv4jWzU0OGtth3BuuGyr992kNNi+C9J3IOhH4OrsL6Yg3f4i2ABeyLd3pHPDxQVNYUDtnyi+Rn5b50HhSnxurGE8ZwVorkl2YaEB5Dw68VSH2l48NCKvCpwPM3d/Xcvqk=
+	t=1752811850; cv=none; b=pDWTUJ/voM7kMV1UWIfa/42zpgkrZitTTqXFMOm3oCiwAqyq/P05V+8zq5C0WgpH3/1KvRRn2NBfeS7wVO6e0xqjLUqsLGRterPkRaLtp5l6nHKe9mM4X6cKUJT3Wtpanivxmb0xhc/FgkYRpTbwi53XOjeoSaaKEB+r0jbGtIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752810002; c=relaxed/simple;
-	bh=4Al64Mz9tQLlIK/bnrwE/T/sj32RszCoH4fQ1R70p2U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pj2KALjvCcCmqGuKbOxgWmrkPvnuNKC5+ZnhWYJ8vwM5r8FaVkEyAH63dYVLeuuB36lZZKu5214Dh8PwlUOiYApCv3I2KyCEKlgE+p/CqOxFrsN/w0QrNvyrEe95wTQWmZ5Omw4/R8gsF2E0EZlQRWZ/5HkA/SqSRNOg0o7WGV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [211.71.28.34])
-	by APP-01 (Coremail) with SMTP id qwCowACnl6tLwHloCD0OBQ--.25172S2;
-	Fri, 18 Jul 2025 11:32:36 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: chunkuang.hu@kernel.org,
-	p.zabel@pengutronix.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	nancy.lin@mediatek.com
-Cc: akpm@linux-foundation.org,
-	dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv
-Date: Fri, 18 Jul 2025 11:32:26 +0800
-Message-Id: <20250718033226.3390054-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1752811850; c=relaxed/simple;
+	bh=0kG+z2/LJCfSnSV7UBYxQFmnrO9me+wV/mZOX+SXjJw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hCqbdc2f5oZKkX3a0qssTR+PchQQhKA2821SSSGsa9DCh0sCmpB4UQjh80+dydS854ceLZVCDvQozg/Bx5f1hqh3UeZ1FWSq3MX3uBeddiYwXfmySHqB4ki6nVJ2kUMTGbNfC24UUSU2NhtrjUU39VjwbqKaeocq4i4Oy5n0MRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PU6pRLBG; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6fabb948e5aso18121156d6.1;
+        Thu, 17 Jul 2025 21:10:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752811848; x=1753416648; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6dRyzcJTSxiNH+JE+i8uz41OReOTdbs1ekB4pJU70Bs=;
+        b=PU6pRLBG2g40kww0cJOI3Pf5SWnO5GTtzdnrRo+MqNnWKuJa0+QZsQiopzmuv6JfYW
+         Rx0p/ZqWMp2MIOQQrqC6aR6EDeKl0j0njC04YC9y9rpFe7NYVWhJy4tYwCS532ECm6rF
+         9AGaN7T7ZwRIxllbpRNf/opsUy0uiuVBYtr/YQz4oUOXjc755OXDHCXQuKLWmDB7MDYS
+         adJBRCw/JdmzIEa+QuvI2mhBIySq3dLv+KzeYTwkipMqfj+mquvzPdh77DsCMiG4DKvc
+         5wMfpGAv6/z/DwSb2+KFPF5RCfT1lBffyJP9rLwuQA4RX6yLbQ9w7EDy2ZhgD2BMLs1Z
+         hHaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752811848; x=1753416648;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6dRyzcJTSxiNH+JE+i8uz41OReOTdbs1ekB4pJU70Bs=;
+        b=Y9gHu0+f5FKaYKPFVWwGmG4d92PHh1ifk6j/QIU2zhiSD1117uNxiOJvOW6z84jHvn
+         4VsPcu03ivFEB84tCtDRVurkgCTv9hfpHVWEJODInPzY0crD9Z2Ps++YonyGSGiEbwTK
+         8zHaMTzwzs5odmAvvYxUgkuiZGc0jszWgqOLMr1+D1C8dzTi0Oa/f/0jgs8bY0e8qRiJ
+         6fSzGyo2YmF1wshpa9ab9OlYLqmYibfQ0Khi+osqlYy9qTukVMzqoDL207bgdU4yyiZN
+         0twfU0LOdFpXsgUo3INZGcbn/9OvqZ/3R8ww1mymDavDJ3mBPFye4F6H5FDYss+TbFnc
+         tzqw==
+X-Forwarded-Encrypted: i=1; AJvYcCWW3O0mcVYR4PYRIGY/sCtA9bJn9EJdczFOtsTSNSSrtPWuwEznvHkRpy0t01dNzWnLdZ6YvD8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMSIqHmfAV6DU/gAMZ67oELcMYCberCUpJ74PIZx1rpEQ8osEb
+	hozWiFPEjUE4mgfH450ZLj6iBiWDxU75Q4ZcZw8LiG9mL4IARxWYqzYZ8g7EKjSgYFu2CEq7s1O
+	iSvHbxlEwHxOdENy5WjYYsrU+iBoD1Zk=
+X-Gm-Gg: ASbGncvElGPSf56/0YqNQ5PhYVb3/2o4drU6ps1knbiIYelF84VwFn17aN5xIcHSD9O
+	pNZFsAQQusccy5mYboUfRfn728DGU5yGxl3Te0NrMO62DxODWKXOFD7Vcih6SA7GdUIfIihTpvC
+	OLhvRvHdFsw3wBd3A5kXF00sVc1pQEMwqOeK8iRM8xk2rGMwdsHQng3BeSOdyXhmKJzaBayAggG
+	HJfW9aphzRYdA7079oIq+lY3xC7rm+m8P1iQmoD
+X-Google-Smtp-Source: AGHT+IET/V1XYF8JgnXMYmpFBHfWr+BbeRgOXfteBZls2NqtVBKQLyn1/NdCZshWfFdmZ2NvCk8Alek3+W2dry3SXC4=
+X-Received: by 2002:a05:6214:33c1:b0:704:7b9a:8515 with SMTP id
+ 6a1803df08f44-704f6b525bfmr165640006d6.38.1752811847523; Thu, 17 Jul 2025
+ 21:10:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACnl6tLwHloCD0OBQ--.25172S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF1rZFykAFyruw4fGFyDZFb_yoW5JFW7pF
-	4UGFWFvrW8KF4UKwn5tFW8AF15CF1Iya1fWFyIq343Cw1rZryYk34rt34avrykArWkAF1f
-	JwnxtFy8ur4jkFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
-	AK6r48MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjg4S5UU
-	UUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+References: <20250717120653.821375-1-sprasad@microsoft.com>
+In-Reply-To: <20250717120653.821375-1-sprasad@microsoft.com>
+From: Steve French <smfrench@gmail.com>
+Date: Thu, 17 Jul 2025 23:10:36 -0500
+X-Gm-Features: Ac12FXzDPGpi3fYiM_K-CMhTUptL_mqzq41-Qhi0Plvgn_IJWK_vXdJ8A_kWAFc
+Message-ID: <CAH2r5mt7O=e531xfLB8-7jyyoOm_Hj+7akzCHFX9EcOhQ_uyDA@mail.gmail.com>
+Subject: Re: [PATCH] cifs: reset iface weights when we cannot find a candidate
+To: nspmangalore@gmail.com
+Cc: linux-cifs@vger.kernel.org, bharathsm.hsk@gmail.com, 
+	meetakshisetiyaoss@gmail.com, pc@manguebit.com, 
+	Shyam Prasad N <sprasad@microsoft.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Using device_find_child() and of_find_device_by_node() to locate
-devices could cause an imbalance in the device's reference count.
-device_find_child() and of_find_device_by_node() both call
-get_device() to increment the reference count of the found device
-before returning the pointer. In mtk_drm_get_all_drm_priv(), these
-references are never released through put_device(), resulting in
-permanent reference count increments. Additionally, the
-for_each_child_of_node() iterator fails to release node references in
-all code paths. This leaks device node references when loop
-termination occurs before reaching MAX_CRTC. These reference count
-leaks may prevent device/node resources from being properly released
-during driver unbind operations.
+applied to cifs-2.6.git for-next pending additional testing and review
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
+On Thu, Jul 17, 2025 at 7:06=E2=80=AFAM <nspmangalore@gmail.com> wrote:
+>
+> From: Shyam Prasad N <sprasad@microsoft.com>
+>
+> We now do a weighted selection of server interfaces when allocating
+> new channels. The weights are decided based on the speed advertised.
+> The fulfilled weight for an interface is a counter that is used to
+> track the interface selection. It should be reset back to zero once
+> all interfaces fulfilling their weight.
+>
+> In cifs_chan_update_iface, this reset logic was missing. As a result
+> when the server interface list changes, the client may not be able
+> to find a new candidate for other channels after all interfaces have
+> been fulfilled.
+>
+> Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based o=
+n speed")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+> ---
+>  fs/smb/client/sess.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+> index 330bc3d25bad..0a8c2fcc9ded 100644
+> --- a/fs/smb/client/sess.c
+> +++ b/fs/smb/client/sess.c
+> @@ -332,6 +332,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct T=
+CP_Server_Info *server)
+>         struct cifs_server_iface *old_iface =3D NULL;
+>         struct cifs_server_iface *last_iface =3D NULL;
+>         struct sockaddr_storage ss;
+> +       int retry =3D 0;
+>
+>         spin_lock(&ses->chan_lock);
+>         chan_index =3D cifs_ses_get_chan_index(ses, server);
+> @@ -360,6 +361,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct T=
+CP_Server_Info *server)
+>                 return;
+>         }
+>
+> +try_again:
+>         last_iface =3D list_last_entry(&ses->iface_list, struct cifs_serv=
+er_iface,
+>                                      iface_head);
+>         iface_min_speed =3D last_iface->speed;
+> @@ -397,6 +399,13 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct =
+TCP_Server_Info *server)
+>         }
+>
+>         if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
+> +               list_for_each_entry(iface, &ses->iface_list, iface_head)
+> +                       iface->weight_fulfilled =3D 0;
+> +
+> +               /* see if it can be satisfied in second attempt */
+> +               if (!retry++)
+> +                       goto try_again;
+> +
+>                 iface =3D NULL;
+>                 cifs_dbg(FYI, "unable to find a suitable iface\n");
+>         }
+> --
+> 2.43.0
+>
 
-Found by code review.
 
-Cc: stable@vger.kernel.org
-Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 27 +++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+--=20
+Thanks,
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index 7c0c12dde488..c78186debd3e 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -388,19 +388,24 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
- 
- 		of_id = of_match_node(mtk_drm_of_ids, node);
- 		if (!of_id)
--			continue;
-+			goto next;
- 
- 		pdev = of_find_device_by_node(node);
- 		if (!pdev)
--			continue;
-+			goto next;
- 
- 		drm_dev = device_find_child(&pdev->dev, NULL, mtk_drm_match);
--		if (!drm_dev)
--			continue;
-+		if (!drm_dev) {
-+			put_device(&pdev->dev);
-+			goto next;
-+		}
- 
- 		temp_drm_priv = dev_get_drvdata(drm_dev);
--		if (!temp_drm_priv)
--			continue;
-+		if (!temp_drm_priv) {
-+			put_device(drm_dev);
-+			put_device(&pdev->dev);
-+			goto next;
-+		}
- 
- 		if (temp_drm_priv->data->main_len)
- 			all_drm_priv[CRTC_MAIN] = temp_drm_priv;
-@@ -412,10 +417,14 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
- 		if (temp_drm_priv->mtk_drm_bound)
- 			cnt++;
- 
--		if (cnt == MAX_CRTC) {
--			of_node_put(node);
-+		put_device(drm_dev);
-+		put_device(&pdev->dev);
-+
-+next:
-+		of_node_put(node);
-+
-+		if (cnt == MAX_CRTC)
- 			break;
--		}
- 	}
- 
- 	if (drm_priv->data->mmsys_dev_num == cnt) {
--- 
-2.25.1
-
+Steve
 
