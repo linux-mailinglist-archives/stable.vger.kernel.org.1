@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-163310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9EABB09932
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60CFDB09933
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 03:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71F9560C73
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:34:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9D91561BB2
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 01:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEFE153BD9;
-	Fri, 18 Jul 2025 01:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4152D17C220;
+	Fri, 18 Jul 2025 01:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U72wZm6S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oYfeTp13"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4461145FE0
-	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF99153BD9
+	for <stable@vger.kernel.org>; Fri, 18 Jul 2025 01:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752802467; cv=none; b=QoBpfse7a+/U4sno7GUJKXgpbe4iBRHO43a9sZyZXy8QYObF4FxEFMFzMXOVFeHNg2yhgIotBzm7cAQDMjDp2tr9EqD/5cYgmtKJxaxi/mS9FGyXvpoUiH/n+kMyGW1FCVHmEbWzRtaXXCc4dbe6j+J6Zh2VkV12CQt0S+YItDg=
+	t=1752802471; cv=none; b=RBDn2hN3GxKG9z88rErGHpUP6dTI3JoozYhZV7OMwzMTO1AxNzUX4dzFPNu4YT14h+ZLKnMqZYQrwgZeLfxB5Q9Vs5eJTX5jr9UKb9DCkuBOc/l4QlOY6BbpACFRVlUPdy6P+7cf/QmKvHv0WgaLzpyOwpe6XfMfOnEM2fyup5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752802467; c=relaxed/simple;
-	bh=+I86k4Xg2l1VcN/IEgkXUFVbhL+KE2pvbu5wOec7xAI=;
+	s=arc-20240116; t=1752802471; c=relaxed/simple;
+	bh=0oXCvbS70boowkDDWJqt+/mfmAUYUy+AFnNw4yWGFls=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ecSb2FEMWr7BB9wG36Ssr1XmiSim5X4CkkohYo+h7Ae5/BmPS0I/y5WyfN2eokToDf/c0c2XR8UJM+i80dQWRpKRvZG84BYN2JqfnwOpGHEqB2Ztx2mgtfB2JbMASPsdNaDy9Dhw2GYpVywu4wWZO27Fw5VARPQ7IqcDYzVra5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U72wZm6S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5C8C4CEE3;
-	Fri, 18 Jul 2025 01:34:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VSGazDO4YAXFfHzWStcJpEgRzWJ4aE53faLXKK5VkiDdOkByraLPL2dYaMJLE8giQR7Gvaxop600t1O4LbmJ3rPyOodzN++L9ScOdDI0UUD0bC8sX2JXDfY0VWAW9LPPYcnURB8DcuF3mwz7s/rBMOSgUktn50ODlShx2kq8bYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oYfeTp13; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011FDC4CEE3;
+	Fri, 18 Jul 2025 01:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752802467;
-	bh=+I86k4Xg2l1VcN/IEgkXUFVbhL+KE2pvbu5wOec7xAI=;
+	s=k20201202; t=1752802470;
+	bh=0oXCvbS70boowkDDWJqt+/mfmAUYUy+AFnNw4yWGFls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U72wZm6SqgEjwRKirCwbB8H9DTRcO7PRUI1smBYj8lugkYzDJdQpA4nn0EPX0cwu+
-	 8g4+IiX3Gvh8+u8zGyRrtcVuogVo0xjPnEOYIlpcSqQ9FT/wm+UGnvgV7/WE2xyHQE
-	 jpu2UAdVIonixigFH4SVcFChfh6XfqDLfMui8Cq7FyIUPjdtkV+88OQi0nWPnWXyb4
-	 ebxqhjteBP/7s1YCPgZr1CmZJ9sPj9BBh8eR1K3a2j9Kvq+iUOo34VYViPlrnPz4LN
-	 629FMl3/x0pIUB+9bpovIg0CT14MetOujnKUpL2E6nOB0T9yoeJdElirVC0DclW5tg
-	 Z6nRIgyVvU8jQ==
+	b=oYfeTp13pZvGiEFtkx3DybVHbo/W8AQqZrLet4PgT3GoWqIv5E+lchL2intJFuGRP
+	 3ZoIl0a1/+9fn0Z/DTYnXSTwNgg3khEB0NTVMriZvQx5cPxwOj3TEcCLqRuWiB6Pws
+	 WNejfGABGTLKEbS0V/08Hr8l891HRzib+5+LM0ERVKf/kkNQnTJM2CIDu7wO9kS88l
+	 zOJDGtg/85kvqRbFesipq+ZEb6rvsSPeqaJ1nLHm3JLjXdRhmdInMJIjG2lijoKgoa
+	 1OefJxl5XvwNEN2V3E4FFzuw1Af/P9FCWc8kq1ei3uJq/E6OmN3zDkGLw22ovVQa6J
+	 0dDsGWIyr2aJw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y 1/6] net_sched: sch_sfq: annotate data-races around q->perturb_period
-Date: Thu, 17 Jul 2025 21:34:25 -0400
-Message-Id: <1752797234-fbbf60f9@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y 6/6] net_sched: sch_sfq: reject invalid perturb period
+Date: Thu, 17 Jul 2025 21:34:28 -0400
+Message-Id: <1752797234-42b057ec@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250717124556.589696-2-harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20250717124556.589696-7-harshit.m.mogalapalli@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,7 +66,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: a17ef9e6c2c1cf0fc6cd6ca6a9ce525c67d1da7f
+The upstream commit SHA1 provided is correct: 7ca52541c05c832d32b112274f81a985101f9ba8
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
