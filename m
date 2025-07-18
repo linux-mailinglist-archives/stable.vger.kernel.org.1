@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-163359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4BAB0A1A1
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 13:12:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 061D5B0A1B8
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 13:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 046701C803F1
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 11:12:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF57316F697
+	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 11:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BF02BEC20;
-	Fri, 18 Jul 2025 11:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C21B2BE7C8;
+	Fri, 18 Jul 2025 11:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="r7zcNSLk"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="UKK2fcgW"
 X-Original-To: stable@vger.kernel.org
 Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D05B28B41A;
-	Fri, 18 Jul 2025 11:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4617C2BF012;
+	Fri, 18 Jul 2025 11:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752837134; cv=none; b=p22N0utvBjaS02IK9anVOOdkeB1B3lcrL8YPPME3AIifpNcYORqlD7RT/P+d4XwTQJJvdW6wv/ndDkqFdxhv015lSJ91ndvbou9drfnyIgipPsGzQpwS3T+rBMEf5OWq8XlllJX8JwG0PBfBTGAAFnCFaxVvWZkS3HPqFaZuZV4=
+	t=1752837197; cv=none; b=oq6WFnUzH+quKqmX0MJmTUEpSAGQql9jJtuWmGrmLUBlV+07MToVxAiZODXI9Ih0OizQmYF4pAABYLMEPunNHVrTsHQbqBKScVZCAvZNL68ome805oxN8U76/bgiOdtpOHLvffwaEKLQ7HgUUngz8qOBan3zOfe2gtCqgprxLrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752837134; c=relaxed/simple;
-	bh=N2XLZDCRYGtexR/9tdoFJGwoiacEHtXF7ymricM12dM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=aj30lBWbSDJAYqNXX5+wxFo7ZuMBbb6gjUc/I9VWmCCa79BU1tubnYpdpKdTEN7/b+YGkCIxntXIFhrdVy+1U5MUftCTlqhHa3UOUj6Gr+8Dz/zvwTA+u0jWfQu8vIQea4j22/rlOnbV5M4G6l+72K+XOXisRVwx4gMl+9Lxo6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=r7zcNSLk; arc=none smtp.client-ip=180.181.231.80
+	s=arc-20240116; t=1752837197; c=relaxed/simple;
+	bh=TqKyTBjFtQ3f36uvZI29BwG1FQzvYrSqzIvXDaAbO6U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j2P87eBfszgR8GQgTWo/2j0L6hqQxypR0s1g7OkUm8JC+4n4YEu2eRBPvSKnYAniS2sMw7wssVrp4dMI9J5B06Ak3QO96U8TLeR7ZVVnLqHqFgKA1GgU+1tWcN/42vpCH43/ivQJEvl6njWb4y0gfj/qLwbU4z99ZZzusm+L/IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=UKK2fcgW; arc=none smtp.client-ip=180.181.231.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:
-	From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=EbJtC/SQmRLjsz0TAS+IJf7R78OwujIoAj2DCleQcPI=; b=r7zcNSLk/m27HaYfyXStkiLVIx
-	0aGboDrqa8LHa6T0k1RSXR+mqvjqcWiKFWWI5ehv4eAa4A1jBR6ww+oj7aioC4kYkfXDkhvsXTtgw
-	3EmINwHNsiWvD1nOlD2fmh3X8UUXJdmoHSA47CRF/gfnwyhkwm2cBRLSdiKupEWkAC3pFh0pGSuBB
-	r6RLXkcdiNQgQK4qfaqh9cI1+JLP+OQSMqUcvpV++t0j5hXcaEZ2cfiNaSoxfdtURhUNkFWOSLx5a
-	UdYlDpcC62jZ96LW60lyBtxkwgI0IkOC586DoPc038MzOPYtttlhkXEIrwMS3IsB33/vcYSvHB47L
-	flj7b2bw==;
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=bnmhsuxiBErW87nw0PaWsg41tpb0/3MqhNgyKWbDaKM=; b=UKK2fcgWSeaGOTul9H6D9DEQRl
+	nsp7hckwzEgcrHsNpyzYGVKlGUURT+/eHe49iuici7ACwYbg6/laSIDpDJcjtE87Z2fkF1IqZxMya
+	HjBoWwFnltt2GcwTW+k4KUl2jI1TglhJ3nzJZlSnAel0vvlGDs5R4WaH4WtskPx1yMuLWc+GCmb1e
+	2Ov0Ww18W8t7JcevuUwTmCuW4tKOulavEQDw6V+Glgdu+KMSwbpoAvNKUOrX4ojrrJZUmxWlrVV2h
+	zhA+khC3vLPsiLeV6GL/Rc2ADXwJE4ZU8+KuvqhpFZwbKr/klV2WSi78OhZCFvM+32DfvdJwWgvPj
+	WWBa1EHA==;
 Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
 	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1ucil5-007ymV-2o;
-	Fri, 18 Jul 2025 19:12:05 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 18 Jul 2025 21:12:04 +1000
-Date: Fri, 18 Jul 2025 21:12:04 +1000
+	id 1ucimB-007ynL-0v;
+	Fri, 18 Jul 2025 19:13:12 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 18 Jul 2025 21:13:11 +1000
+Date: Fri, 18 Jul 2025 21:13:11 +1000
 From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	suman.kumar.chakraborty@intel.com, ebiggers@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: acomp - Fix CFI failure due to type punning
-Message-ID: <aHosBA15RgslSFui@gondor.apana.org.au>
+To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Cc: linux-crypto@vger.kernel.org, qat-linux@intel.com,
+	stable@vger.kernel.org, Ahsan Atta <ahsan.atta@intel.com>
+Subject: Re: [PATCH] crypto: qat - flush misc workqueue during device shutdown
+Message-ID: <aHosRzM4UO63weHf@gondor.apana.org.au>
+References: <20250711122753.9824-2-giovanni.cabiddu@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,22 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250709005954.155842-1-ebiggers@kernel.org>
-X-Newsgroups: apana.lists.os.linux.cryptoapi,apana.lists.os.linux.kernel
+In-Reply-To: <20250711122753.9824-2-giovanni.cabiddu@intel.com>
 
-Eric Biggers <ebiggers@kernel.org> wrote:
-> To avoid a crash when control flow integrity is enabled, make the
-> workspace ("stream") free function use a consistent type, and call it
-> through a function pointer that has that same type.
+On Fri, Jul 11, 2025 at 01:27:43PM +0100, Giovanni Cabiddu wrote:
+> Repeated loading and unloading of a device specific QAT driver, for
+> example qat_4xxx, in a tight loop can lead to a crash due to a
+> use-after-free scenario. This occurs when a power management (PM)
+> interrupt triggers just before the device-specific driver (e.g.,
+> qat_4xxx.ko) is unloaded, while the core driver (intel_qat.ko) remains
+> loaded.
 > 
-> Fixes: 42d9f6c77479 ("crypto: acomp - Move scomp stream allocation code into acomp")
+> Since the driver uses a shared workqueue (`qat_misc_wq`) across all
+> devices and owned by intel_qat.ko, a deferred routine from the
+> device-specific driver may still be pending in the queue. If this
+> routine executes after the driver is unloaded, it can dereference freed
+> memory, resulting in a page fault and kernel crash like the following:
+> 
+>     BUG: unable to handle page fault for address: ffa000002e50a01c
+>     #PF: supervisor read access in kernel mode
+>     RIP: 0010:pm_bh_handler+0x1d2/0x250 [intel_qat]
+>     Call Trace:
+>       pm_bh_handler+0x1d2/0x250 [intel_qat]
+>       process_one_work+0x171/0x340
+>       worker_thread+0x277/0x3a0
+>       kthread+0xf0/0x120
+>       ret_from_fork+0x2d/0x50
+> 
+> To prevent this, flush the misc workqueue during device shutdown to
+> ensure that all pending work items are completed before the driver is
+> unloaded.
+> 
+> Note: This approach may slightly increase shutdown latency if the
+> workqueue contains jobs from other devices, but it ensures correctness
+> and stability.
+> 
+> Fixes: e5745f34113b ("crypto: qat - enable power management for QAT GEN4")
+> Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
 > ---
-> crypto/deflate.c                    | 7 ++++++-
-> crypto/zstd.c                       | 7 ++++++-
-> include/crypto/internal/acompress.h | 5 +----
-> 3 files changed, 13 insertions(+), 6 deletions(-)
+>  drivers/crypto/intel/qat/qat_common/adf_common_drv.h | 1 +
+>  drivers/crypto/intel/qat/qat_common/adf_init.c       | 1 +
+>  drivers/crypto/intel/qat/qat_common/adf_isr.c        | 5 +++++
+>  3 files changed, 7 insertions(+)
 
 Patch applied.  Thanks.
 -- 
