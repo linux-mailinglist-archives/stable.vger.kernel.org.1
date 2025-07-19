@@ -1,120 +1,119 @@
-Return-Path: <stable+bounces-163420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0CBB0AE8B
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 10:00:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D93B0AE83
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 09:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11DBA1AA042F
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 08:00:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5D8E189AC64
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 07:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3B022FE08;
-	Sat, 19 Jul 2025 08:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSJPSror"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB83233128;
+	Sat, 19 Jul 2025 07:59:17 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E19320485B
-	for <Stable@vger.kernel.org>; Sat, 19 Jul 2025 08:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC71A1E9905;
+	Sat, 19 Jul 2025 07:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752912007; cv=none; b=jX2B/U6/2MbzhvmdcK6IdBXR7DGijB2bE4824QGyaUiCd4ytYTBwIzIwJyDsbLU6SkvA/OOFr5SRlmBSg8ejZT5hD8VvLiY2eWTyufb3VI+9tM/OfPZmJB+KQCBo1O3Ch9cAGqLk2xzf+rDqfMbsGQhkDCQEjEj/6vxE0c/0pRQ=
+	t=1752911957; cv=none; b=Yan/oN4IYXlWquj51/l6tzPxmuAtRzDnK4Mmq9/EHP735rWeZv6H8I2qpe6atb0oPldgm391vVmTTIp/SeneYcAmBD/5Tw4MX3puTZk0JBlGZUaH3AAakPjcgpthYXdrk6Da6gJGj/PGFF8+cmEcGgZmdWBsafwvjumMLJ9v66Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752912007; c=relaxed/simple;
-	bh=SbWV3dkN+6JrGiFhFxfQLmA/6ViUemH2WsRgB16IRlU=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=jTLtjunrvaptCamv0P3AmdLU2mIjXq4kRcuEDeSyV6Sjzw+xcfstWGElOt1zaDrD4VPU934y7ShGKlQNOEPkIjOCZXpa76r05ZI9S88bbm4g31jq9NqbOYO1BAUPvG9XLx82dF0HSYXsGNm5Er/XpbXzBVUOJdSbvVIZ0kWqof4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSJPSror; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E55DC4CEE3;
-	Sat, 19 Jul 2025 08:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752912007;
-	bh=SbWV3dkN+6JrGiFhFxfQLmA/6ViUemH2WsRgB16IRlU=;
-	h=Subject:To:From:Date:From;
-	b=rSJPSrorWXLWd25oA/B0oWkTDbubnxRiGGkLdWrXC+wswRK0L36SR1o7LQkoe0w6W
-	 cDRD+vzVpha6cQ5gagSAYO9mjnu43+lZPZFerZACwsLEZIWcGUFv8hXc0fGKFe/Shx
-	 MOAXA1sCZ8w6j3VbuDYmz3AZ4Wg8F5pZGDm7iTaU=
-Subject: patch "iio: adc: ad7173: fix setting ODR in probe" added to char-misc-testing
-To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
-From: <gregkh@linuxfoundation.org>
-Date: Sat, 19 Jul 2025 09:49:37 +0200
-Message-ID: <2025071937-blabber-latitude-a14f@gregkh>
+	s=arc-20240116; t=1752911957; c=relaxed/simple;
+	bh=CFyDh4S72NcYIkhbHgpug4yukC/Pb2g2Qpc43L+6ttw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=luLG25PWSBtahnkcuYDhUeGcsSPjsR8+HOaF0D1U9kNp8M7utwN6sPiwFltb2NGojLtBMEYCm0lOPWVijE5MqqKmjHzEekpeRGG9hGYUgQ5lrovjOUCEkDK0HgS3gBwggFMEGuvoY8dReEM7OLC0vNu1NYXieUTucBUKb6SExXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [211.71.28.34])
+	by APP-03 (Coremail) with SMTP id rQCowADXanxBUHtopMR8BQ--.10061S2;
+	Sat, 19 Jul 2025 15:59:08 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: axboe@kernel.dk,
+	Jim.Quigley@oracle.com,
+	davem@davemloft.net,
+	sln@onemain.com,
+	alexandre.chartre@oracle.com,
+	aaron.young@oracle.com
+Cc: akpm@linux-foundation.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] sunvdc: Balance device refcount in vdc_port_mpgroup_check
+Date: Sat, 19 Jul 2025 15:58:56 +0800
+Message-Id: <20250719075856.3447953-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowADXanxBUHtopMR8BQ--.10061S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tryDZw1xAr1kGFykXryrZwb_yoW8Jw4DpF
+	4DCa45ZrW5GF17Kr4kXa47ZryFka4jyryfWFWUAw1Yk3s3XryIyrWUt34jgw18JF93XFWD
+	JF12yayrGFWDuaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
+	AK6r4xMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
+	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbsmitUU
+	UUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
+Using device_find_child() to locate a probed virtual-device-port node
+causes a device refcount imbalance, as device_find_child() internally
+calls get_device() to increment the device’s reference count before
+returning its pointer. vdc_port_mpgroup_check() directly returns true
+upon finding a matching device without releasing the reference via
+put_device(). We should call put_device() to decrement refcount.
 
-This is a note to let you know that I've just added the patch titled
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
 
-    iio: adc: ad7173: fix setting ODR in probe
+Found by code review.
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
-
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
-
-If you have any questions about this process, please let me know.
-
-
-From 6fa908abd19cc35c205f343b79c67ff38dbc9b76 Mon Sep 17 00:00:00 2001
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 10 Jul 2025 15:43:40 -0500
-Subject: iio: adc: ad7173: fix setting ODR in probe
-
-Fix the setting of the ODR register value in the probe function for
-AD7177. The AD7177 chip has a different ODR value after reset than the
-other chips (0x7 vs. 0x0) and 0 is a reserved value on that chip.
-
-The driver already has this information available in odr_start_value
-and uses it when checking valid values when writing to the
-sampling_frequency attribute, but failed to set the correct initial
-value in the probe function.
-
-Fixes: 37ae8381ccda ("iio: adc: ad7173: add support for additional models")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250710-iio-adc-ad7173-fix-setting-odr-in-probe-v1-1-78a100fec998@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/iio/adc/ad7173.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Changes in v2:
+- keep the change style simple as suggestions.
+---
+ drivers/block/sunvdc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 2173455c0169..4413207be28f 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -1589,6 +1589,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		chan_st_priv->cfg.bipolar = false;
- 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
- 		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-+		chan_st_priv->cfg.odr = st->info->odr_start_value;
- 		chan_st_priv->cfg.openwire_comp_chan = -1;
- 		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
- 		if (st->info->data_reg_only_16bit)
-@@ -1655,7 +1656,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		chan->scan_index = chan_index;
- 		chan->channel = ain[0];
- 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
--		chan_st_priv->cfg.odr = 0;
-+		chan_st_priv->cfg.odr = st->info->odr_start_value;
- 		chan_st_priv->cfg.openwire_comp_chan = -1;
+diff --git a/drivers/block/sunvdc.c b/drivers/block/sunvdc.c
+index b5727dea15bd..7af21fe67671 100644
+--- a/drivers/block/sunvdc.c
++++ b/drivers/block/sunvdc.c
+@@ -957,8 +957,10 @@ static bool vdc_port_mpgroup_check(struct vio_dev *vdev)
+ 	dev = device_find_child(vdev->dev.parent, &port_data,
+ 				vdc_device_probed);
  
- 		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
+-	if (dev)
++	if (dev) {
++		put_device(dev);
+ 		return true;
++	}
+ 
+ 	return false;
+ }
 -- 
-2.50.1
-
+2.25.1
 
 
