@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-163418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56254B0AE89
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 10:00:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0CBB0AE8B
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 10:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 212A47AAC5B
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 07:58:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11DBA1AA042F
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 08:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6244922D4E2;
-	Sat, 19 Jul 2025 07:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3B022FE08;
+	Sat, 19 Jul 2025 08:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0StxtQpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSJPSror"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B453597C
-	for <Stable@vger.kernel.org>; Sat, 19 Jul 2025 07:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E19320485B
+	for <Stable@vger.kernel.org>; Sat, 19 Jul 2025 08:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752911997; cv=none; b=VgXg0A0nizTbd0x0uWOLU+nE7LIA+lf4i0DaoD+zeZ3Q2jBF2VBHi3LLateBODv9Y7DoceVOlPbQecSVmXZXBqGIZuQnEwR2wU6VML0/vvnmuDS3RprxjSD9x8JZ21vBp59Ah9Irzcd9ZxHPgNspXl18PwzDMRQGT9Nh8vn1MrI=
+	t=1752912007; cv=none; b=jX2B/U6/2MbzhvmdcK6IdBXR7DGijB2bE4824QGyaUiCd4ytYTBwIzIwJyDsbLU6SkvA/OOFr5SRlmBSg8ejZT5hD8VvLiY2eWTyufb3VI+9tM/OfPZmJB+KQCBo1O3Ch9cAGqLk2xzf+rDqfMbsGQhkDCQEjEj/6vxE0c/0pRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752911997; c=relaxed/simple;
-	bh=A29oeFLUuDJWLPfGDa21u1qnn+B3hKflohZr6P2XJ2M=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=ly4E9WWz6sdhGN7w1kLGVerNew7X0YxBKC0up3zlPmuSAtyuGO90PR60kbCP9FxVB6b7WzYa72SlsFu5Nif348l6+1TjZIzz5N542E/Wbm5BFHYoudRU2v6OZhgER/2xiZHG5xwFB9DNcE6EO2xVHknBxkjvc/R9SfAGke/wWOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0StxtQpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E12BC4CEE3;
-	Sat, 19 Jul 2025 07:59:56 +0000 (UTC)
+	s=arc-20240116; t=1752912007; c=relaxed/simple;
+	bh=SbWV3dkN+6JrGiFhFxfQLmA/6ViUemH2WsRgB16IRlU=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=jTLtjunrvaptCamv0P3AmdLU2mIjXq4kRcuEDeSyV6Sjzw+xcfstWGElOt1zaDrD4VPU934y7ShGKlQNOEPkIjOCZXpa76r05ZI9S88bbm4g31jq9NqbOYO1BAUPvG9XLx82dF0HSYXsGNm5Er/XpbXzBVUOJdSbvVIZ0kWqof4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSJPSror; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E55DC4CEE3;
+	Sat, 19 Jul 2025 08:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752911996;
-	bh=A29oeFLUuDJWLPfGDa21u1qnn+B3hKflohZr6P2XJ2M=;
+	s=korg; t=1752912007;
+	bh=SbWV3dkN+6JrGiFhFxfQLmA/6ViUemH2WsRgB16IRlU=;
 	h=Subject:To:From:Date:From;
-	b=0StxtQpTz7BMJ4Igj/UBJAZ79I6mv6+vq6mdFElBYIdBZhTTO8J62HJ0eXEShyn0D
-	 65KOlzsNjbRqTRUG+ZJHcPxqOE2bsRo607uhymWbxogAg9TlubQbQ8DJC1WIjgjq4u
-	 +eZuGozGfKfRvBNvNyUUtc6IbBQadhmMKfTrPPoQ=
-Subject: patch "iio: adc: ad7173: fix calibration channel" added to char-misc-testing
-To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,nuno.sa@analog.com
+	b=rSJPSrorWXLWd25oA/B0oWkTDbubnxRiGGkLdWrXC+wswRK0L36SR1o7LQkoe0w6W
+	 cDRD+vzVpha6cQ5gagSAYO9mjnu43+lZPZFerZACwsLEZIWcGUFv8hXc0fGKFe/Shx
+	 MOAXA1sCZ8w6j3VbuDYmz3AZ4Wg8F5pZGDm7iTaU=
+Subject: patch "iio: adc: ad7173: fix setting ODR in probe" added to char-misc-testing
+To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 19 Jul 2025 09:49:36 +0200
-Message-ID: <2025071936-limit-flogging-6cf0@gregkh>
+Date: Sat, 19 Jul 2025 09:49:37 +0200
+Message-ID: <2025071937-blabber-latitude-a14f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad7173: fix calibration channel
+    iio: adc: ad7173: fix setting ODR in probe
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,56 +69,50 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From 1d9a21ffb43b6fd326ead98f0d0afd6d104b739a Mon Sep 17 00:00:00 2001
+From 6fa908abd19cc35c205f343b79c67ff38dbc9b76 Mon Sep 17 00:00:00 2001
 From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 8 Jul 2025 20:38:33 -0500
-Subject: iio: adc: ad7173: fix calibration channel
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Thu, 10 Jul 2025 15:43:40 -0500
+Subject: iio: adc: ad7173: fix setting ODR in probe
 
-Fix the channel index values passed to ad_sd_calibrate() in
-ad7173_calibrate_all().
+Fix the setting of the ODR register value in the probe function for
+AD7177. The AD7177 chip has a different ODR value after reset than the
+other chips (0x7 vs. 0x0) and 0 is a reserved value on that chip.
 
-ad7173_calibrate_all() expects these values to be that of the CHANNELx
-register assigned to the channel, not the datasheet INPUTx number of the
-channel. The incorrect values were causing register writes to fail for
-some channels because they set the WEN bit that must always be 0 for
-register access and set the R/W bit to read instead of write. For other
-channels, the channel number was just wrong because the CHANNELx
-registers are generally assigned in reverse order and so almost never
-match the INPUTx numbers.
+The driver already has this information available in odr_start_value
+and uses it when checking valid values when writing to the
+sampling_frequency attribute, but failed to set the correct initial
+value in the probe function.
 
-Fixes: 031bdc8aee01 ("iio: adc: ad7173: add calibration support")
+Fixes: 37ae8381ccda ("iio: adc: ad7173: add support for additional models")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250708-iio-adc-ad7313-fix-calibration-channel-v1-1-e6174e2c7cbf@baylibre.com
+Link: https://patch.msgid.link/20250710-iio-adc-ad7173-fix-setting-odr-in-probe-v1-1-78a100fec998@baylibre.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7173.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad7173.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 1f9e91a2e3f9..2173455c0169 100644
+index 2173455c0169..4413207be28f 100644
 --- a/drivers/iio/adc/ad7173.c
 +++ b/drivers/iio/adc/ad7173.c
-@@ -391,13 +391,12 @@ static int ad7173_calibrate_all(struct ad7173_state *st, struct iio_dev *indio_d
- 		if (indio_dev->channels[i].type != IIO_VOLTAGE)
- 			continue;
+@@ -1589,6 +1589,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 		chan_st_priv->cfg.bipolar = false;
+ 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+ 		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
++		chan_st_priv->cfg.odr = st->info->odr_start_value;
+ 		chan_st_priv->cfg.openwire_comp_chan = -1;
+ 		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
+ 		if (st->info->data_reg_only_16bit)
+@@ -1655,7 +1656,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 		chan->scan_index = chan_index;
+ 		chan->channel = ain[0];
+ 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+-		chan_st_priv->cfg.odr = 0;
++		chan_st_priv->cfg.odr = st->info->odr_start_value;
+ 		chan_st_priv->cfg.openwire_comp_chan = -1;
  
--		ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_ZERO, st->channels[i].ain);
-+		ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_ZERO, i);
- 		if (ret < 0)
- 			return ret;
- 
- 		if (st->info->has_internal_fs_calibration) {
--			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_FULL,
--					      st->channels[i].ain);
-+			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_FULL, i);
- 			if (ret < 0)
- 				return ret;
- 		}
+ 		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
 -- 
 2.50.1
 
