@@ -1,88 +1,109 @@
-Return-Path: <stable+bounces-163433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B30B0B005
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 14:49:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C63C3B0B036
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 15:18:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87F2717610D
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 12:49:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B6AC1AA4469
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 13:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C3028726A;
-	Sat, 19 Jul 2025 12:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AgZK+PhL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A33D21B905;
+	Sat, 19 Jul 2025 13:18:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B3626B973;
-	Sat, 19 Jul 2025 12:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD5278F4A;
+	Sat, 19 Jul 2025 13:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752929351; cv=none; b=TvBAP8H7oaYdcOpK/sCRmeGXPKsp5RbDNNxKoLRG6JoibBcGxnU3xZ3F86nQhnbCAEi5N1UOL3lb8fPkbMUn3Rw5m1j+nqi8M3w6E6gkL8KutX3KaAUWI4ydSVIN0CGfCSrAgJPqxazLc23N3CqhYIjMvM4hmVSa8xdvaau7NHY=
+	t=1752931114; cv=none; b=SAwnZOzcFkXf2ub5d5Mfa6yrIPao7YBqOM9SRlE5l9hKgAkET2hYPknuBDKaSEow6Wt0RJYaz4WGVHelSivfrosRavVeBqlkD/8SIpr5VkzwFG72PMymwbryj8YjfUkEubVza2HbPo9WsfvWM/b9ByaMWhD9Ogzd6Ii6+UlEpPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752929351; c=relaxed/simple;
-	bh=JhG4cUlhKgYFQz3cgZNnjli9ESfpxaxEnJSPQZbW0Ig=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RH1PQHDE7QcO1esQMgVUCEFvCaOJmUmXWG7Vcv3QuWvl3RmivX1rmbw1atrrQlsfk6yv5yEgz9/5JM56PWDSGqSH03u91fQJTorx2dpVGu8Hf+ZetSMSATc9b8maFKHNbgcZLPwdsUoLr4BemR35wbBxKlbXF8lVvjDshTAuRAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AgZK+PhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCECCC4CEE3;
-	Sat, 19 Jul 2025 12:49:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752929350;
-	bh=JhG4cUlhKgYFQz3cgZNnjli9ESfpxaxEnJSPQZbW0Ig=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AgZK+PhL9KcwBlBqF6apnlNa9jTsn3quUdEnM1NNxcGjj7WCF1J3z92e4dN0sAC0j
-	 e/O5xo//Jx5pfrivRhHvDCqY/xFbG5X5Ff/uzMnBg5lMOjGBFCSHXTWDwAIBz/LgM+
-	 pAlyV8aNhc5OMFxT/tLpFMP2Zo46Lx6SKS7YCOyPAmL6n3m2H+LU80WB6g8NRbzQIr
-	 HZX1JMS4SoTk7FcMYFGlsc7e4OZv78ZlfKL4KbV7fg/X1cBQK9LC7M+H9YK9GMAEM3
-	 Fu/6O2P8t2eRnWbq5WWkDY2nFtssRp3/AQu4qgAvEVtePejIGNaDdv+iNgloeF7wii
-	 CZ68vIUfIdtXw==
-From: Sven Peter <sven@kernel.org>
-To: Janne Grunau <j@jannau.net>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Neal Gompa <neal@gompa.dev>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nick Chan <towinchenmi@gmail.com>
-Cc: Sven Peter <sven@kernel.org>,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1752931114; c=relaxed/simple;
+	bh=QIVADv+zCAQp7r0/sAmvKhzMjW5Og9xW3fTb692QlSg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kkEdzQDl3As66oDBzZde/LMIzkbrMXZBEaDPNvQN8MrBzRO7TvfNQKmFgEM8pJCyEMKjxCJu5u46NERgL5hmYz4Agi5yrILAlNN6Ubdvc3ZT8Cb/e9zN9lFM7eygfGYLiXQ2N+YTtwtg/5k1IKZDw6I6VawAe6JeMJ844zewjNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [211.71.28.34])
+	by APP-01 (Coremail) with SMTP id qwCowADnE6gIm3toLJmCBQ--.46045S2;
+	Sat, 19 Jul 2025 21:18:08 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: eli.billauer@gmail.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: apple: t8012-j132: Include touchbar framebuffer node
-Date: Sat, 19 Jul 2025 14:48:40 +0200
-Message-Id: <175292930372.11148.7080198294186970764.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250620-j132-fb-v2-1-65f100182085@gmail.com>
-References: <20250620-j132-fb-v2-1-65f100182085@gmail.com>
+Subject: [PATCH v4] char: xillybus: Fix error handling in xillybus_init_chrdev()
+Date: Sat, 19 Jul 2025 21:17:58 +0800
+Message-Id: <20250719131758.3458238-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADnE6gIm3toLJmCBQ--.46045S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ary8Ww1rZw4kur43Wr1xKrg_yoW8GFWrpF
+	ZrW3ZYkrWUGa1jy3Zrtan8uay3Ja9rXr9rur47K3srZw15Wa4xJFWrCFWUJFyDWw4rK3y2
+	yanxAF18JF4xZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9m14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7MxkF7I0En4kS14v26r126r1DMxkIecxEwVAFwVW5GwCF04k20xvY0x0EwIxGrwCFx2
+	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
+	6r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
+	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IY
+	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
+	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU4WlkUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Fri, 20 Jun 2025 18:35:36 +0800, Nick Chan wrote:
-> Apple T2 MacBookPro15,2 (j132) has a touchbar so include the framebuffer
-> node.
-> 
-> 
+Use cdev_del() instead of direct kobject_put() when cdev_add() fails.
+This aligns with standard kernel practice and maintains consistency
+within the driver's own error paths.
 
-Applied to git@github.com:AsahiLinux/linux.git (asahi-soc/for-next), thanks!
+Found by code review.
 
-[1/1] arm64: dts: apple: t8012-j132: Include touchbar framebuffer node
-      https://github.com/AsahiLinux/linux/commit/d1cf32949f9d
+Cc: stable@vger.kernel.org
+Fixes: 8cb5d216ab33 ("char: xillybus: Move class-related functions to new xillybus_class.c")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v4:
+- Apologize, due to the long time that has passed since the last v2 version, I was negligent when submitting v3. I have now corrected it;
+Changes in v3:
+- modified the patch description, centralized cdev cleanup through standard API and maintained symmetry with driver's existing error handling;
+Changes in v2:
+- modified the patch as suggestions to avoid UAF.
+---
+ drivers/char/xillybus/xillybus_class.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Best regards,
+diff --git a/drivers/char/xillybus/xillybus_class.c b/drivers/char/xillybus/xillybus_class.c
+index c92a628e389e..493bbed918c2 100644
+--- a/drivers/char/xillybus/xillybus_class.c
++++ b/drivers/char/xillybus/xillybus_class.c
+@@ -103,8 +103,7 @@ int xillybus_init_chrdev(struct device *dev,
+ 		      unit->num_nodes);
+ 	if (rc) {
+ 		dev_err(dev, "Failed to add cdev.\n");
+-		/* kobject_put() is normally done by cdev_del() */
+-		kobject_put(&unit->cdev->kobj);
++		cdev_del(unit->cdev);
+ 		goto unregister_chrdev;
+ 	}
+ 
 -- 
-Sven Peter <sven@kernel.org>
+2.25.1
 
 
