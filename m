@@ -1,119 +1,154 @@
-Return-Path: <stable+bounces-163414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D93B0AE83
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 09:59:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B58B0AE8E
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 10:12:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5D8E189AC64
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 07:59:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0C677A6ABC
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 08:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB83233128;
-	Sat, 19 Jul 2025 07:59:17 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EF31D9663;
+	Sat, 19 Jul 2025 08:12:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OtgQM2M"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC71A1E9905;
-	Sat, 19 Jul 2025 07:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B317A33EC
+	for <Stable@vger.kernel.org>; Sat, 19 Jul 2025 08:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752911957; cv=none; b=Yan/oN4IYXlWquj51/l6tzPxmuAtRzDnK4Mmq9/EHP735rWeZv6H8I2qpe6atb0oPldgm391vVmTTIp/SeneYcAmBD/5Tw4MX3puTZk0JBlGZUaH3AAakPjcgpthYXdrk6Da6gJGj/PGFF8+cmEcGgZmdWBsafwvjumMLJ9v66Y=
+	t=1752912721; cv=none; b=Clk2VhkNGaXx2hGCexQ6wMuSc/OBjPE+R5ZZF1auOlMf6wY/cJTrlwNjWGfqbx20j3/7XXS7ggSeuH+9NRWoEiwqhn7lxX04GOsoy9b91lm4cE0vNZgLLLjnmICejKua9mH4X5Vjmn0mEqrFvOoAkb65pyGXQzPzst6UEEVLM/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752911957; c=relaxed/simple;
-	bh=CFyDh4S72NcYIkhbHgpug4yukC/Pb2g2Qpc43L+6ttw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=luLG25PWSBtahnkcuYDhUeGcsSPjsR8+HOaF0D1U9kNp8M7utwN6sPiwFltb2NGojLtBMEYCm0lOPWVijE5MqqKmjHzEekpeRGG9hGYUgQ5lrovjOUCEkDK0HgS3gBwggFMEGuvoY8dReEM7OLC0vNu1NYXieUTucBUKb6SExXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [211.71.28.34])
-	by APP-03 (Coremail) with SMTP id rQCowADXanxBUHtopMR8BQ--.10061S2;
-	Sat, 19 Jul 2025 15:59:08 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: axboe@kernel.dk,
-	Jim.Quigley@oracle.com,
-	davem@davemloft.net,
-	sln@onemain.com,
-	alexandre.chartre@oracle.com,
-	aaron.young@oracle.com
-Cc: akpm@linux-foundation.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] sunvdc: Balance device refcount in vdc_port_mpgroup_check
-Date: Sat, 19 Jul 2025 15:58:56 +0800
-Message-Id: <20250719075856.3447953-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1752912721; c=relaxed/simple;
+	bh=x6wBqCrm5ft8OsOeHkL4Y1IeQJlGZFrGTcvDkKWoprE=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=LyqDd5IUwFsLJ9tqehztvJ5xomiRVK8LqEcvLJ1rtaEbMeNRyla0lmP07jhOHSO3wez3Yejyn+X/RxtGrO1tqeQMykZVWuWTVG8J0C6XoDS/zEdjoCu64Jv7D6UT+vXbYnXVFd0wlMsVqKTtUWXmJTB7/EZC1ofSgtpkT+9fB0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OtgQM2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA566C4CEE3;
+	Sat, 19 Jul 2025 08:12:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752912721;
+	bh=x6wBqCrm5ft8OsOeHkL4Y1IeQJlGZFrGTcvDkKWoprE=;
+	h=Subject:To:From:Date:From;
+	b=2OtgQM2MmxHBAwlogqSYWs0GZM8aUeZXPvEFBMnqGcKEWeSrJCUusxE89u6RX5iCE
+	 Y0zOHA6RrD8IEOHXlfxk9E5XWft+yrVdRqcraxFmC3tS3KKVZ9XAw1inAqh5c0iHHY
+	 oF1AWSTru6NX6k90JG82M9VbQUtKlkAWDPQeUPqQ=
+Subject: patch "iio: imu: bno055: fix OOB access of hw_xlate array" added to char-misc-next
+To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,lkp@intel.com
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 19 Jul 2025 09:51:38 +0200
+Message-ID: <2025071938-rummage-stinger-6afb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowADXanxBUHtopMR8BQ--.10061S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tryDZw1xAr1kGFykXryrZwb_yoW8Jw4DpF
-	4DCa45ZrW5GF17Kr4kXa47ZryFka4jyryfWFWUAw1Yk3s3XryIyrWUt34jgw18JF93XFWD
-	JF12yayrGFWDuaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
-	AK6r4xMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbsmitUU
-	UUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Using device_find_child() to locate a probed virtual-device-port node
-causes a device refcount imbalance, as device_find_child() internally
-calls get_device() to increment the device’s reference count before
-returning its pointer. vdc_port_mpgroup_check() directly returns true
-upon finding a matching device without releasing the reference via
-put_device(). We should call put_device() to decrement refcount.
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
+This is a note to let you know that I've just added the patch titled
 
-Found by code review.
+    iio: imu: bno055: fix OOB access of hw_xlate array
 
-Cc: stable@vger.kernel.org
-Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-next branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will also be merged in the next major kernel release
+during the merge window.
+
+If you have any questions about this process, please let me know.
+
+
+From 399b883ec828e436f1a721bf8551b4da8727e65b Mon Sep 17 00:00:00 2001
+From: David Lechner <dlechner@baylibre.com>
+Date: Wed, 9 Jul 2025 21:20:00 -0500
+Subject: iio: imu: bno055: fix OOB access of hw_xlate array
+
+Fix a potential out-of-bounds array access of the hw_xlate array in
+bno055.c.
+
+In bno055_get_regmask(), hw_xlate was iterated over the length of the
+vals array instead of the length of the hw_xlate array. In the case of
+bno055_gyr_scale, the vals array is larger than the hw_xlate array,
+so this could result in an out-of-bounds access. In practice, this
+shouldn't happen though because a match should always be found which
+breaks out of the for loop before it iterates beyond the end of the
+hw_xlate array.
+
+By adding a new hw_xlate_len field to the bno055_sysfs_attr, we can be
+sure we are iterating over the correct length.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507100510.rGt1YOOx-lkp@intel.com/
+Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250709-iio-const-data-19-v2-1-fb3fc9191251@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
-Changes in v2:
-- keep the change style simple as suggestions.
----
- drivers/block/sunvdc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/imu/bno055/bno055.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/sunvdc.c b/drivers/block/sunvdc.c
-index b5727dea15bd..7af21fe67671 100644
---- a/drivers/block/sunvdc.c
-+++ b/drivers/block/sunvdc.c
-@@ -957,8 +957,10 @@ static bool vdc_port_mpgroup_check(struct vio_dev *vdev)
- 	dev = device_find_child(vdev->dev.parent, &port_data,
- 				vdc_device_probed);
+diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
+index 3f4c18dc3ee9..0eb5e1334e55 100644
+--- a/drivers/iio/imu/bno055/bno055.c
++++ b/drivers/iio/imu/bno055/bno055.c
+@@ -118,6 +118,7 @@ struct bno055_sysfs_attr {
+ 	int len;
+ 	int *fusion_vals;
+ 	int *hw_xlate;
++	int hw_xlate_len;
+ 	int type;
+ };
  
--	if (dev)
-+	if (dev) {
-+		put_device(dev);
- 		return true;
-+	}
+@@ -170,20 +171,24 @@ static int bno055_gyr_scale_vals[] = {
+ 	1000, 1877467, 2000, 1877467,
+ };
  
- 	return false;
- }
++static int bno055_gyr_scale_hw_xlate[] = {0, 1, 2, 3, 4};
+ static struct bno055_sysfs_attr bno055_gyr_scale = {
+ 	.vals = bno055_gyr_scale_vals,
+ 	.len = ARRAY_SIZE(bno055_gyr_scale_vals),
+ 	.fusion_vals = (int[]){1, 900},
+-	.hw_xlate = (int[]){4, 3, 2, 1, 0},
++	.hw_xlate = bno055_gyr_scale_hw_xlate,
++	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_scale_hw_xlate),
+ 	.type = IIO_VAL_FRACTIONAL,
+ };
+ 
+ static int bno055_gyr_lpf_vals[] = {12, 23, 32, 47, 64, 116, 230, 523};
++static int bno055_gyr_lpf_hw_xlate[] = {5, 4, 7, 3, 6, 2, 1, 0};
+ static struct bno055_sysfs_attr bno055_gyr_lpf = {
+ 	.vals = bno055_gyr_lpf_vals,
+ 	.len = ARRAY_SIZE(bno055_gyr_lpf_vals),
+ 	.fusion_vals = (int[]){32},
+-	.hw_xlate = (int[]){5, 4, 7, 3, 6, 2, 1, 0},
++	.hw_xlate = bno055_gyr_lpf_hw_xlate,
++	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_lpf_hw_xlate),
+ 	.type = IIO_VAL_INT,
+ };
+ 
+@@ -561,7 +566,7 @@ static int bno055_get_regmask(struct bno055_priv *priv, int *val, int *val2,
+ 
+ 	idx = (hwval & mask) >> shift;
+ 	if (attr->hw_xlate)
+-		for (i = 0; i < attr->len; i++)
++		for (i = 0; i < attr->hw_xlate_len; i++)
+ 			if (attr->hw_xlate[i] == idx) {
+ 				idx = i;
+ 				break;
 -- 
-2.25.1
+2.50.1
+
 
 
