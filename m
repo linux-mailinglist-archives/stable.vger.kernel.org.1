@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-163421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B58B0AE8E
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 10:12:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39AFEB0AE90
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 10:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0C677A6ABC
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 08:10:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D33116BE9A
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 08:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EF31D9663;
-	Sat, 19 Jul 2025 08:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011C723314B;
+	Sat, 19 Jul 2025 08:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OtgQM2M"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9r2OQIx"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B317A33EC
-	for <Stable@vger.kernel.org>; Sat, 19 Jul 2025 08:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55F033EC
+	for <stable@vger.kernel.org>; Sat, 19 Jul 2025 08:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752912721; cv=none; b=Clk2VhkNGaXx2hGCexQ6wMuSc/OBjPE+R5ZZF1auOlMf6wY/cJTrlwNjWGfqbx20j3/7XXS7ggSeuH+9NRWoEiwqhn7lxX04GOsoy9b91lm4cE0vNZgLLLjnmICejKua9mH4X5Vjmn0mEqrFvOoAkb65pyGXQzPzst6UEEVLM/Q=
+	t=1752912757; cv=none; b=JEx92e2XmJqwmd2Dxo+BJa567EO3+3T4AGhiE7H/PGy9xlobvFzgXfZjNRzY4/DoNISQMX7fYT7orjLOI5UQBfs7V79Jct21uWh0XGWwFpr4e93NQ9SjuDHvDuEoOCYth4GR5zcE+/YyIQ99jMWsc68C9KFTGA7s2GTiqCrdJBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752912721; c=relaxed/simple;
-	bh=x6wBqCrm5ft8OsOeHkL4Y1IeQJlGZFrGTcvDkKWoprE=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=LyqDd5IUwFsLJ9tqehztvJ5xomiRVK8LqEcvLJ1rtaEbMeNRyla0lmP07jhOHSO3wez3Yejyn+X/RxtGrO1tqeQMykZVWuWTVG8J0C6XoDS/zEdjoCu64Jv7D6UT+vXbYnXVFd0wlMsVqKTtUWXmJTB7/EZC1ofSgtpkT+9fB0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OtgQM2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA566C4CEE3;
-	Sat, 19 Jul 2025 08:12:00 +0000 (UTC)
+	s=arc-20240116; t=1752912757; c=relaxed/simple;
+	bh=jXRt0wUprr6Mt1p+GMpcI1pu7SYnCeyhxPnXId62Mag=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=jx9a9qDaDn+2hO393nXEKhgJZ8fhoONSqCwjZx+wVvppYBevN9AV+z1PobnNKPWzY3Md8d1OU4/W5j3QiRIQxyrWRnYYebLWDc99uXsdbTNGLKPC5bNfx5kNzeklGClbbAEuU2AFdz+xUaL8fRG5oM6eq8YeQhQDP32mRnhYQUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9r2OQIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C045CC4CEE3;
+	Sat, 19 Jul 2025 08:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752912721;
-	bh=x6wBqCrm5ft8OsOeHkL4Y1IeQJlGZFrGTcvDkKWoprE=;
+	s=korg; t=1752912757;
+	bh=jXRt0wUprr6Mt1p+GMpcI1pu7SYnCeyhxPnXId62Mag=;
 	h=Subject:To:From:Date:From;
-	b=2OtgQM2MmxHBAwlogqSYWs0GZM8aUeZXPvEFBMnqGcKEWeSrJCUusxE89u6RX5iCE
-	 Y0zOHA6RrD8IEOHXlfxk9E5XWft+yrVdRqcraxFmC3tS3KKVZ9XAw1inAqh5c0iHHY
-	 oF1AWSTru6NX6k90JG82M9VbQUtKlkAWDPQeUPqQ=
-Subject: patch "iio: imu: bno055: fix OOB access of hw_xlate array" added to char-misc-next
-To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,lkp@intel.com
+	b=O9r2OQIxYV1tNwXihqndInLeMZSp/5CXUmdufTkUVRdFF8ItQBYIZ4tjIOh7/lOkg
+	 xgVC8KSIuL3MWYcvIOeNJYzJmIYviCzqGaMWbB0TnhD/wsB4wE6jPFaDhZzEjGKi4Q
+	 9iwL6Bxz7O5D7Xhzwy+XGpihJindSsTbbBMQEuOs=
+Subject: patch "iio: adc: ad_sigma_delta: change to buffer predisable" added to char-misc-next
+To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,nuno.sa@analog.com,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 19 Jul 2025 09:51:38 +0200
-Message-ID: <2025071938-rummage-stinger-6afb@gregkh>
+Date: Sat, 19 Jul 2025 09:51:42 +0200
+Message-ID: <2025071942-occultist-impurity-8fb5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: imu: bno055: fix OOB access of hw_xlate array
+    iio: adc: ad_sigma_delta: change to buffer predisable
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,84 +69,53 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From 399b883ec828e436f1a721bf8551b4da8727e65b Mon Sep 17 00:00:00 2001
+From 66d4374d97f85516b5a22418c5e798aed2606dec Mon Sep 17 00:00:00 2001
 From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 9 Jul 2025 21:20:00 -0500
-Subject: iio: imu: bno055: fix OOB access of hw_xlate array
+Date: Thu, 3 Jul 2025 16:07:44 -0500
+Subject: iio: adc: ad_sigma_delta: change to buffer predisable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Fix a potential out-of-bounds array access of the hw_xlate array in
-bno055.c.
+Change the buffer disable callback from postdisable to predisable.
+This balances the existing posteanble callback. Using postdisable
+with posteanble can be problematic, for example, if update_scan_mode
+fails, it would call postdisable without ever having called posteanble,
+so the drivers using this would be in an unexpected state when
+postdisable was called.
 
-In bno055_get_regmask(), hw_xlate was iterated over the length of the
-vals array instead of the length of the hw_xlate array. In the case of
-bno055_gyr_scale, the vals array is larger than the hw_xlate array,
-so this could result in an out-of-bounds access. In practice, this
-shouldn't happen though because a match should always be found which
-breaks out of the for loop before it iterates beyond the end of the
-hw_xlate array.
-
-By adding a new hw_xlate_len field to the bno055_sysfs_attr, we can be
-sure we are iterating over the correct length.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507100510.rGt1YOOx-lkp@intel.com/
-Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
+Fixes: af3008485ea0 ("iio:adc: Add common code for ADI Sigma Delta devices")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250709-iio-const-data-19-v2-1-fb3fc9191251@baylibre.com
-Cc: <Stable@vger.kernel.org>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250703-iio-adc-ad_sigma_delta-buffer-predisable-v1-1-f2ab85138f1f@baylibre.com
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/imu/bno055/bno055.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad_sigma_delta.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
-index 3f4c18dc3ee9..0eb5e1334e55 100644
---- a/drivers/iio/imu/bno055/bno055.c
-+++ b/drivers/iio/imu/bno055/bno055.c
-@@ -118,6 +118,7 @@ struct bno055_sysfs_attr {
- 	int len;
- 	int *fusion_vals;
- 	int *hw_xlate;
-+	int hw_xlate_len;
- 	int type;
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index 9d2dba0a0ee6..7852884703b0 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -582,7 +582,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
+ 	return ret;
+ }
+ 
+-static int ad_sd_buffer_postdisable(struct iio_dev *indio_dev)
++static int ad_sd_buffer_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
+ 
+@@ -682,7 +682,7 @@ static bool ad_sd_validate_scan_mask(struct iio_dev *indio_dev, const unsigned l
+ 
+ static const struct iio_buffer_setup_ops ad_sd_buffer_setup_ops = {
+ 	.postenable = &ad_sd_buffer_postenable,
+-	.postdisable = &ad_sd_buffer_postdisable,
++	.predisable = &ad_sd_buffer_predisable,
+ 	.validate_scan_mask = &ad_sd_validate_scan_mask,
  };
  
-@@ -170,20 +171,24 @@ static int bno055_gyr_scale_vals[] = {
- 	1000, 1877467, 2000, 1877467,
- };
- 
-+static int bno055_gyr_scale_hw_xlate[] = {0, 1, 2, 3, 4};
- static struct bno055_sysfs_attr bno055_gyr_scale = {
- 	.vals = bno055_gyr_scale_vals,
- 	.len = ARRAY_SIZE(bno055_gyr_scale_vals),
- 	.fusion_vals = (int[]){1, 900},
--	.hw_xlate = (int[]){4, 3, 2, 1, 0},
-+	.hw_xlate = bno055_gyr_scale_hw_xlate,
-+	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_scale_hw_xlate),
- 	.type = IIO_VAL_FRACTIONAL,
- };
- 
- static int bno055_gyr_lpf_vals[] = {12, 23, 32, 47, 64, 116, 230, 523};
-+static int bno055_gyr_lpf_hw_xlate[] = {5, 4, 7, 3, 6, 2, 1, 0};
- static struct bno055_sysfs_attr bno055_gyr_lpf = {
- 	.vals = bno055_gyr_lpf_vals,
- 	.len = ARRAY_SIZE(bno055_gyr_lpf_vals),
- 	.fusion_vals = (int[]){32},
--	.hw_xlate = (int[]){5, 4, 7, 3, 6, 2, 1, 0},
-+	.hw_xlate = bno055_gyr_lpf_hw_xlate,
-+	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_lpf_hw_xlate),
- 	.type = IIO_VAL_INT,
- };
- 
-@@ -561,7 +566,7 @@ static int bno055_get_regmask(struct bno055_priv *priv, int *val, int *val2,
- 
- 	idx = (hwval & mask) >> shift;
- 	if (attr->hw_xlate)
--		for (i = 0; i < attr->len; i++)
-+		for (i = 0; i < attr->hw_xlate_len; i++)
- 			if (attr->hw_xlate[i] == idx) {
- 				idx = i;
- 				break;
 -- 
 2.50.1
 
