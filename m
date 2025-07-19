@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-163423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39AFEB0AE90
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 10:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A57B0AE8F
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 10:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D33116BE9A
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 08:12:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BE8A16C3EF
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 08:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011C723314B;
-	Sat, 19 Jul 2025 08:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939A222069A;
+	Sat, 19 Jul 2025 08:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9r2OQIx"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzgKRj/K"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55F033EC
-	for <stable@vger.kernel.org>; Sat, 19 Jul 2025 08:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546B533EC
+	for <Stable@vger.kernel.org>; Sat, 19 Jul 2025 08:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752912757; cv=none; b=JEx92e2XmJqwmd2Dxo+BJa567EO3+3T4AGhiE7H/PGy9xlobvFzgXfZjNRzY4/DoNISQMX7fYT7orjLOI5UQBfs7V79Jct21uWh0XGWwFpr4e93NQ9SjuDHvDuEoOCYth4GR5zcE+/YyIQ99jMWsc68C9KFTGA7s2GTiqCrdJBE=
+	t=1752912754; cv=none; b=OY8JdSfk9WNJwnRiGV/CN1mnCXFOU2jg/ykkOhoTDivI83GnUDS3FBVnjJKIDSMPp9UD9HoplFP7T6fLXoc5FrPR1oQMjDcl2SQfFw0TlKb/LlAFYawofC9mcEZK9jbeWESk4VdtorhT4TWoyu+g/mnkcO//eQHj/w8C8Vq4nv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752912757; c=relaxed/simple;
-	bh=jXRt0wUprr6Mt1p+GMpcI1pu7SYnCeyhxPnXId62Mag=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=jx9a9qDaDn+2hO393nXEKhgJZ8fhoONSqCwjZx+wVvppYBevN9AV+z1PobnNKPWzY3Md8d1OU4/W5j3QiRIQxyrWRnYYebLWDc99uXsdbTNGLKPC5bNfx5kNzeklGClbbAEuU2AFdz+xUaL8fRG5oM6eq8YeQhQDP32mRnhYQUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9r2OQIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C045CC4CEE3;
-	Sat, 19 Jul 2025 08:12:36 +0000 (UTC)
+	s=arc-20240116; t=1752912754; c=relaxed/simple;
+	bh=HfJfM1N/ptwks5oHyfkSwcjpWxDH52dduGY+nka/ukc=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=hw1fG6pC2IoMis7/w+A5/aWHP1s1vAt14s9Qb6NlbZXgiTY9eK+1VwBB1H4CVT8khNrGACgVgm1EKtaVh1jbszOogNg/rSmktxftTeZhRg97t5qnGvJQGghzVd8hlnirGqz+AvFfaC1GsJWXENj9q4hW846TvBLx+8+V56sTLjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzgKRj/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7C2C4CEE3;
+	Sat, 19 Jul 2025 08:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752912757;
-	bh=jXRt0wUprr6Mt1p+GMpcI1pu7SYnCeyhxPnXId62Mag=;
+	s=korg; t=1752912753;
+	bh=HfJfM1N/ptwks5oHyfkSwcjpWxDH52dduGY+nka/ukc=;
 	h=Subject:To:From:Date:From;
-	b=O9r2OQIxYV1tNwXihqndInLeMZSp/5CXUmdufTkUVRdFF8ItQBYIZ4tjIOh7/lOkg
-	 xgVC8KSIuL3MWYcvIOeNJYzJmIYviCzqGaMWbB0TnhD/wsB4wE6jPFaDhZzEjGKi4Q
-	 9iwL6Bxz7O5D7Xhzwy+XGpihJindSsTbbBMQEuOs=
-Subject: patch "iio: adc: ad_sigma_delta: change to buffer predisable" added to char-misc-next
-To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,nuno.sa@analog.com,stable@vger.kernel.org
+	b=SzgKRj/KTzPonVE8xTlseOj0foY6SqIm7LocoecK6CFJjtYhgR6qphQiu9nPmfPEl
+	 +y8KAk7WxfhHu1L4CKVK2h/URT82SZHakt4g5y59tXXN8f0vCG+7Z2SPyY28Se9+ab
+	 fXbVKOe6Hcg5dCbvctXCdyyHlOzNnzfF79Kp3wN8=
+Subject: patch "iio: adc: ad7173: fix channels index for syscalib_mode" added to char-misc-next
+To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Sat, 19 Jul 2025 09:51:42 +0200
-Message-ID: <2025071942-occultist-impurity-8fb5@gregkh>
+Message-ID: <2025071942-dandy-swagger-f9d5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad_sigma_delta: change to buffer predisable
+    iio: adc: ad7173: fix channels index for syscalib_mode
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,53 +69,59 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From 66d4374d97f85516b5a22418c5e798aed2606dec Mon Sep 17 00:00:00 2001
+From 0eb8d7b25397330beab8ee62c681975b79f37223 Mon Sep 17 00:00:00 2001
 From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 3 Jul 2025 16:07:44 -0500
-Subject: iio: adc: ad_sigma_delta: change to buffer predisable
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Thu, 3 Jul 2025 14:51:17 -0500
+Subject: iio: adc: ad7173: fix channels index for syscalib_mode
 
-Change the buffer disable callback from postdisable to predisable.
-This balances the existing posteanble callback. Using postdisable
-with posteanble can be problematic, for example, if update_scan_mode
-fails, it would call postdisable without ever having called posteanble,
-so the drivers using this would be in an unexpected state when
-postdisable was called.
+Fix the index used to look up the channel when accessing the
+syscalib_mode attribute. The address field is a 0-based index (same
+as scan_index) that it used to access the channel in the
+ad7173_channels array throughout the driver. The channels field, on
+the other hand, may not match the address field depending on the
+channel configuration specified in the device tree and could result
+in an out-of-bounds access.
 
-Fixes: af3008485ea0 ("iio:adc: Add common code for ADI Sigma Delta devices")
+Fixes: 031bdc8aee01 ("iio: adc: ad7173: add calibration support")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250703-iio-adc-ad_sigma_delta-buffer-predisable-v1-1-f2ab85138f1f@baylibre.com
-Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250703-iio-adc-ad7173-fix-channels-index-for-syscalib_mode-v1-1-7fdaedb9cac0@baylibre.com
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad_sigma_delta.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7173.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 9d2dba0a0ee6..7852884703b0 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -582,7 +582,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
- 	return ret;
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index dd9fa35555c7..03412895f6dc 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -318,7 +318,7 @@ static int ad7173_set_syscalib_mode(struct iio_dev *indio_dev,
+ {
+ 	struct ad7173_state *st = iio_priv(indio_dev);
+ 
+-	st->channels[chan->channel].syscalib_mode = mode;
++	st->channels[chan->address].syscalib_mode = mode;
+ 
+ 	return 0;
+ }
+@@ -328,7 +328,7 @@ static int ad7173_get_syscalib_mode(struct iio_dev *indio_dev,
+ {
+ 	struct ad7173_state *st = iio_priv(indio_dev);
+ 
+-	return st->channels[chan->channel].syscalib_mode;
++	return st->channels[chan->address].syscalib_mode;
  }
  
--static int ad_sd_buffer_postdisable(struct iio_dev *indio_dev)
-+static int ad_sd_buffer_predisable(struct iio_dev *indio_dev)
- {
- 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
+ static ssize_t ad7173_write_syscalib(struct iio_dev *indio_dev,
+@@ -347,7 +347,7 @@ static ssize_t ad7173_write_syscalib(struct iio_dev *indio_dev,
+ 	if (!iio_device_claim_direct(indio_dev))
+ 		return -EBUSY;
  
-@@ -682,7 +682,7 @@ static bool ad_sd_validate_scan_mask(struct iio_dev *indio_dev, const unsigned l
- 
- static const struct iio_buffer_setup_ops ad_sd_buffer_setup_ops = {
- 	.postenable = &ad_sd_buffer_postenable,
--	.postdisable = &ad_sd_buffer_postdisable,
-+	.predisable = &ad_sd_buffer_predisable,
- 	.validate_scan_mask = &ad_sd_validate_scan_mask,
- };
- 
+-	mode = st->channels[chan->channel].syscalib_mode;
++	mode = st->channels[chan->address].syscalib_mode;
+ 	if (sys_calib) {
+ 		if (mode == AD7173_SYSCALIB_ZERO_SCALE)
+ 			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_SYS_ZERO,
 -- 
 2.50.1
 
