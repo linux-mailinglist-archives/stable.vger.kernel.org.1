@@ -1,114 +1,102 @@
-Return-Path: <stable+bounces-163408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D80B0AC81
-	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 01:18:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE07B0ACC3
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 02:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A33031C27E18
-	for <lists+stable@lfdr.de>; Fri, 18 Jul 2025 23:18:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4E893BC984
+	for <lists+stable@lfdr.de>; Sat, 19 Jul 2025 00:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4134B222597;
-	Fri, 18 Jul 2025 23:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5979125B2;
+	Sat, 19 Jul 2025 00:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="elM+aYqs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gaW/S/Z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE805A923;
-	Fri, 18 Jul 2025 23:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802AC10957;
+	Sat, 19 Jul 2025 00:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752880707; cv=none; b=ljwXV9OL95oHxWLFcbazlA1mKgjG3yu9vpO+GYR4AxeCE17oeBD36c9auohYUSE1r5UHKKx6+1Rdr1tyVImyfDN3lJolCgfXv0XFZupmcHvacaDCi8tisA5Bpm1GuEo/iMujS+pkNu8AYrZJEQuYpwcV94SyS1N0PHE6UBmglPg=
+	t=1752884393; cv=none; b=aUW7eF9QvcJLeflqfVlBB/XZONZ07K/EL5gnTCVLoFB7glj+OhB84tBneRlCtlM9uoXBK3Trchk7dIWeYY36JKqXPVUyajeFnIPkfqb5u8+DSVMPjk3Vv6kpwH/FtxLId4ubUp/zhBfBewebRhyqmWk3Z07wML6DUwwSn2XTRb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752880707; c=relaxed/simple;
-	bh=CZTZ9oUZTzhOy7CxW12Mv61GrBq1wGI/F8Msa4fG+HQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mZxlQr3Zuu6RRWF4Ww3WIGhQyDQhw+NRiH9ix9BNe9CXUpEaAkkp4eIBlGorfbFizPu2nqc8X/rF0i0AIwJL2/TVt6bYPcRN0lDDLB4UXDw8N3w2U/xKVdojiu6KW9cpXXudcjIEsJWOoEvzLpT5Tg90f3My4CzmnEGh1r6QRNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=elM+aYqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1088CC4CEEB;
-	Fri, 18 Jul 2025 23:18:26 +0000 (UTC)
+	s=arc-20240116; t=1752884393; c=relaxed/simple;
+	bh=E+17LaBUs6OjQnYqc0HJB1Ya5gyH9Km7O9Y5EqWdP40=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=L2zGQ2EK4puVfECcgbJtct9ms7sTStp6+JKm4ffFOcYjKNjM8t1n9E7P5dk8z7Z7kvwfuxCpY+otbV0MSyqj9DqEFOKsTg5+lXv6NrvZv4E6YnPNi0mPQeE8JjE1G+vRzQsfPlkvsmhYO8Q8381oSWJT895wxxjM4tuJiG0BA+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gaW/S/Z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E88EC4CEEB;
+	Sat, 19 Jul 2025 00:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752880706;
-	bh=CZTZ9oUZTzhOy7CxW12Mv61GrBq1wGI/F8Msa4fG+HQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=elM+aYqs9RSlCedFnBwaJyWquK+vFNZkIbVf2sd3KVRV+DKy3Huj9k4EQPP89AjRm
-	 1IUaSBELre8rOu8SpL3hD4Bq9Ja7pEqEkr+Oj9BfxWhy5RXLEKv3HuJg2Nz9F26JQj
-	 IgkW3x8BaM5uyBUPKiJ2HUHadjopPKat/cur32TIL5k0ipEteAGbTGp3jkqteBL+km
-	 eQ8fEjuEElCqWZdx9xS9GYhqS4hJk8AmtkGSDUe4xHfA550ya+URIMcPRiePeIA723
-	 uXXhwYB4OKLmtyCxzjOCgpsR760xHdhg/2REs0KNfozNSnrqfuuMmIJqn9ZKfUA3ZC
-	 ZgHFRmFh9oLmw==
-Date: Fri, 18 Jul 2025 16:18:25 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: John Ernberg <john.ernberg@actia.se>
-Cc: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Ming Lei
- <ming.lei@canonical.com>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "linux-usb@vger.kernel.org"
- <linux-usb@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
- event
-Message-ID: <20250718161825.65912e37@kernel.org>
-In-Reply-To: <55147f36-822b-4026-a091-33b909d1eea8@actia.se>
-References: <20250710085028.1070922-1-john.ernberg@actia.se>
-	<20250714163505.44876e62@kernel.org>
-	<74a87648-bc02-4edb-9e6a-102cb6621547@actia.se>
-	<20250715065403.641e4bd7@kernel.org>
-	<fbd03180-cca0-4a0f-8fd9-4daf5ff28ff5@actia.se>
-	<20250716143959.683df283@kernel.org>
-	<55147f36-822b-4026-a091-33b909d1eea8@actia.se>
+	s=k20201202; t=1752884393;
+	bh=E+17LaBUs6OjQnYqc0HJB1Ya5gyH9Km7O9Y5EqWdP40=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=gaW/S/Z1ReBuc0AAhjOyXSItcuij0h/+/kTM4vvgynYsPciI889oJpHyT7mJQusru
+	 90HJmh6cMeXNl0Mjick7CNJAuucv96GO3u7u73ugo1L+SUhIATTZRStqb8ir5hjMYx
+	 b0/Z7MSLf+UNmEAwwjFIsz37vx4DlYMmTf6M1ujvJ68SWWXMdtMdPAGOyzSu10i+pm
+	 +FtzsCfQtOn5Kz15hEHFXqjMnPcnWJ340o1bWxwGzZZhAaEZWF83JRoCfbYhmlb2Wr
+	 Cf8px6rJ3tgTymHb3yXd3YxgLgVyZ2Sed76jq11LrFbFTYHvyADrDaekGeSNaZjypC
+	 D5owAcx4J3FQw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33FAD383BA3C;
+	Sat, 19 Jul 2025 00:20:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 1/3] bus: fsl-mc: Fix potential double device
+ reference
+ in fsl_mc_get_endpoint()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175288441299.2833543.14707347919961717043.git-patchwork-notify@kernel.org>
+Date: Sat, 19 Jul 2025 00:20:12 +0000
+References: <20250717022309.3339976-1-make24@iscas.ac.cn>
+In-Reply-To: <20250717022309.3339976-1-make24@iscas.ac.cn>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: ioana.ciornei@nxp.com, davem@davemloft.net, andrew+netdev@lunn.ch,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, stable@vger.kernel.org
 
-On Fri, 18 Jul 2025 09:07:26 +0000 John Ernberg wrote:
-> > Thanks for the analysis, I think I may have misread the code.
-> > What I was saying is that we are restoring the carrier while
-> > we are still processing the previous carrier off event in
-> > the workqueue. My thinking was that if we deferred the
-> > netif_carrier_on() to the workqueue this race couldn't happen.
-> > 
-> > usbnet_bh() already checks netif_carrier_ok() - we're kinda duplicating
-> > the carrier state with this RX_PAUSED workaround.
-> > 
-> > I don't feel strongly about this, but deferring the carrier_on()
-> > the the workqueue would be a cleaner solution IMO.
-> >   
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 17 Jul 2025 10:23:07 +0800 you wrote:
+> The fsl_mc_get_endpoint() function may call fsl_mc_device_lookup()
+> twice, which would increment the device's reference count twice if
+> both lookups find a device. This could lead to a reference count leak.
 > 
-> I've been thinking about this idea, but I'm concerned for the opposite 
-> direction. I cannot think of a way to fully guarantee that the carrier 
-> isn't turned on again incorrectly if an off gets queued.
+> Found by code review.
 > 
-> The most I came up with was adding an extra flag bit to set carrier on, 
-> and then test_and_clear_bit() it in the __handle_link_change() function.
-> And also clear_bit() in the usbnet_link_change() function if an off 
-> arrives. I cannot convince myself that there isn't a way for that to go 
-> sideways. But perhaps that would be robust enough?
+> Cc: stable@vger.kernel.org
+> Fixes: 1ac210d128ef ("bus: fsl-mc: add the fsl_mc_get_endpoint function")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> 
+> [...]
 
-I think it should be robust enough.. Unless my grep skills are failing
-me - no drivers which call usbnet_link_change() twiddle the link state
-directly.
+Here is the summary with links:
+  - [net,v2,1/3] bus: fsl-mc: Fix potential double device reference in fsl_mc_get_endpoint()
+    https://git.kernel.org/netdev/net/c/bddbe13d36a0
+  - [net,v2,2/3] dpaa2-eth: Fix device reference count leak in MAC endpoint handling
+    https://git.kernel.org/netdev/net/c/ee9f3a81ab08
+  - [net,v2,3/3] dpaa2-switch: Fix device reference count leak in MAC endpoint handling
+    https://git.kernel.org/netdev/net/c/96e056ffba91
 
-Give it a go, if you think your initial patch is cleaner -- it's fine.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> I've also considered the possibility of just not re-submitting the INTR 
-> poll URB until the last one was fully processed when handling a link 
-> change. But that might cause havoc with ASIX and Sierra devices as they 
-> are calling usbnet_link_change() in other ways than through the 
-> .status-callback. I don't have any of these devices so I cannot test 
-> them for regressions. So this path feels quite dangerous.
-> With a sub-driver property to enable this behavior it might work out?
 
-Yeah, that seems more involved.
 
