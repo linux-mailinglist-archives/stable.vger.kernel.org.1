@@ -1,134 +1,125 @@
-Return-Path: <stable+bounces-163452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499C5B0B339
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 04:36:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6359B0B428
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 10:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01C6D1897A6E
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 02:36:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF9503BE02D
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 08:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2E017B4EC;
-	Sun, 20 Jul 2025 02:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6471B1D27B6;
+	Sun, 20 Jul 2025 08:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nHeRejHb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fdeVuf0j"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05D98F6C;
-	Sun, 20 Jul 2025 02:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896B617A30F;
+	Sun, 20 Jul 2025 08:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752978962; cv=none; b=FQvahb8GT8IDe29YoamcXk0Ibe1Twnqr8x0rg/74FQHQMwCqTMoWD8PTmLUyC/C6FYsO7BDCOyui2AJDL/WlLEmpmynxm/g6YgCp3MQ7tZSMSvT2x6xvv51GMJ+DS1jj5aNB407WadgbcYdO8oPT3/8LbpUYckTmMYpxTsVh6Sk=
+	t=1752998750; cv=none; b=iXnHeyugSaywTsYoge6G2tSU8EC75+qGC9bZTqUo94Y6HQmGueeKNmTOOnkt2duHwyiiIhXq1lp6RTDe5/n8R7N7WXsbQqoU5lvjN8T0oODbJK7Ntvcnw/ACOozDQ7xRE2EvceAGBW+9AUA3BMsEgeoNlnMoXiyEjgM2UBxUlIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752978962; c=relaxed/simple;
-	bh=u71PyHMzkLJiXGKlAF+hxR4QkLxXLuRTlcwaqa0jg+c=;
-	h=Date:To:From:Subject:Message-Id; b=dI+zKoBF5YY4IsxiY9m0yYZv2JS0pNuIZw4ZAI4g9E4FXkKYiXhyG39hFfHBBXP5aRcrOuchOMZr5hC4F0qryWPzqLCnn/A3AHuXGyDYoxnqzLEKYaHbC8AavZiSAhCU8+8JG1hHn2haPl14jNucy3nZECKeqp/EpSKbGAP65JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nHeRejHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCAAC4CEE3;
-	Sun, 20 Jul 2025 02:36:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752978962;
-	bh=u71PyHMzkLJiXGKlAF+hxR4QkLxXLuRTlcwaqa0jg+c=;
-	h=Date:To:From:Subject:From;
-	b=nHeRejHb6+mbuE/Pb6EsD7q9qY4AaA9sw8nO4iN/XL6UMGlmkbdFqr01JaDcvEZbo
-	 OHCnJbTdTr7q0i9/EeJif/EjyYM+Mr1q37v5mnislXZ7KNQcA1BjwgpmYOp2nZGmhs
-	 xYC3g24EHN7SiAWqHTUxt7dLFTHkctT71q1D7leE=
-Date: Sat, 19 Jul 2025 19:36:01 -0700
-To: mm-commits@vger.kernel.org,ysk@kzalloc.com,yeoreum.yun@arm.com,urezki@gmail.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,bigeasy@linutronix.de,andreyknvl@gmail.com,elver@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] kasan-use-vmalloc_dump_obj-for-vmalloc-error-reports.patch removed from -mm tree
-Message-Id: <20250720023602.1BCAAC4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1752998750; c=relaxed/simple;
+	bh=nBfUxGaO6llmDH/VJU09CFKoRpwqxviaZJVge2tryvU=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=mjzcWkD4jOkggJpRoKjVy74/M1wfm1eb39N9iZXih6JXrUqF+gmkH7it4AiMtEUJk1WM5Yz9KeDvXzHTYAfJaSXlV9MndQqnC1v8aQ/S7xqokPmb8YEwmM+ox3TpJvtRJn+67VUY75MWR937wIpLhjJdUjcXtAzy911UpSbDvD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fdeVuf0j; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-553b16a0e38so3034447e87.1;
+        Sun, 20 Jul 2025 01:05:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752998747; x=1753603547; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=W6POjTCMc5vFHm17LQlJiIP5lnqBte4hoCPNHHXBAMQ=;
+        b=fdeVuf0jUl0uArYT6HuSntBucebWJ1sTb5sezAMiUxYLkNxp96hJ2qSJwK9jBmbotU
+         s6ldeGFwgHc/viFpopX17BEDPakUs51hMqqwxpH+3GcknjQwfQW8o7vzHYl7daBL3air
+         piFAkknOaijnWpmIn7ss+Yu90ibzkhlv3Fu/uXH5lNF5eH3q/PmyoMkvMbE0MQWcoT59
+         +OSzbi9zzUq1yngOvrcRps/mImNb5f75BD+QkeKgq2wUYXi80UwmKtUtkeJqaeGYQivF
+         rSVnFJq91HSk0cL/boDqdZWRVVlluLr7SIf3BEvolzdNo3obmajeZLISJYqRh7Dz2KtA
+         PGJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752998747; x=1753603547;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W6POjTCMc5vFHm17LQlJiIP5lnqBte4hoCPNHHXBAMQ=;
+        b=LC5OFGaKtFjABOkfLFizqCvj6J5xgjUTrsKEhsLOUQcFv5NPi40ypucEWlXYoW0QZp
+         8dstx3jJ7lIBbiSFQ3IklnFr8jT0nr95J6RVPlWoPSmi2eRscOhRGNWLyUShFblKyUX4
+         cwFhRsUD+LvP4cgWR5ttd+G8TFGQlzlOr45C6ELzzYI0yu5aXylYigv+uHYXa7u1A3Ll
+         NWSuBKXc3UsrrfKzGyNVEYzUlUGlKXzjsTqZ2v78/oHh27Ao3a5Ha3uh3UMiKYKKK6jB
+         L+kferqx94t7KMV3JwNpof28L2jBTxMwqKCzYLH4Gs9tolNfAZdjt4P6K9LcL9ZGGw1z
+         5tow==
+X-Forwarded-Encrypted: i=1; AJvYcCXWGi6yd7L2slVr2bF71Rs9YH/jjV0fBYU9IQk7OL2mq1JDfdKX6TJ1x21ylYUplnBYNy2ndVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaTbHaHZoXSKSecja2cUWUMhGaBiJBv1PkMK4FwCj4zJFaxxGs
+	Pj7+6WzcsPT/DcR65JwHpgsaNUD4s8mPw5hR2xBoZKgzVAG1kJtrafgm
+X-Gm-Gg: ASbGnctNZ5S0A+ZkQ9OWflInQsrIQRa6bEQeMsGzRwD7nqFQCfBU1gMjcjfpKtUnmVH
+	HJ6qv7jwDOFzI8tAcZJrsW1I6CTUNU/4V5AY/+s5CsEx2qfOzgn7GeBiYlUiNOD9aZ+Io9PwLyS
+	fFc3jkaIfOSX5YuwM4bI36gYKGF73RSe+WO38Z6n6uMpxMi8S6Gq1TOOHYNAfic8hKhcsm78aX3
+	84uApf3poS00B+1FJ7gwRmr8jVbIrudC/zR8szmJe29ZFJXY8Jljd3DShkPXk4qy08+Wa5fkCwk
+	53bCxqLVp5kazz8DIygTIXlxlW9x/1lEH3HKX4++casygxZ9fJJmpDWWt81Ao0iTM3ZzMqSvddw
+	gtLkxTrOpBsQsWIIR3TU2JXWe32rt8Lj3+JyzttXpnZ2ddmorF4XE0oSz1A==
+X-Google-Smtp-Source: AGHT+IGc0DYxlnSyWcPXw+OO/pa2EPi8q0f7cbZXWr/l+AOdrxjGZ9PIUWhQyNBIyqeAqE4HYGtOGg==
+X-Received: by 2002:ac2:545b:0:b0:553:2868:6364 with SMTP id 2adb3069b0e04-55a3188e3admr1522359e87.33.1752998746133;
+        Sun, 20 Jul 2025 01:05:46 -0700 (PDT)
+Received: from [192.168.1.89] (c-85-228-54-30.bbcust.telenor.se. [85.228.54.30])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55a31a9bf3bsm1024636e87.40.2025.07.20.01.05.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 20 Jul 2025 01:05:45 -0700 (PDT)
+Message-ID: <7a86086f-5b3b-104c-f06d-4194464d84e3@outbound.gmail.com>
+Date: Sun, 20 Jul 2025 10:05:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+From: Eli Billauer <eli.billauer@gmail.com>
+Subject: Re: [PATCH v4] char: xillybus: Fix error handling in
+ xillybus_init_chrdev()
+To: Ma Ke <make24@iscas.ac.cn>, arnd@arndb.de, gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ stable@vger.kernel.org
+References: <20250719131758.3458238-1-make24@iscas.ac.cn>
+Content-Language: en-US
+In-Reply-To: <20250719131758.3458238-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+Hello,
 
-The quilt patch titled
-     Subject: kasan: use vmalloc_dump_obj() for vmalloc error reports
-has been removed from the -mm tree.  Its filename was
-     kasan-use-vmalloc_dump_obj-for-vmalloc-error-reports.patch
+On 19/07/2025 15:17, Ma Ke wrote:
+> Use cdev_del() instead of direct kobject_put() when cdev_add() fails.
+> This aligns with standard kernel practice and maintains consistency
+> within the driver's own error paths.
+> 
+Sorry, to the extent it matters, I'm not acknowledging this.
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+This is merely a code styling issue, and as far as I know, there is no 
+"standard kernel practice" on this matter. If such standard practice 
+exists, the correct way is to prepare a patchset of *all* occurrences of 
+kobject_put() used this way, and replace them all (e.g. fs/char_dev.c, 
+uio/uio.c and tty/tty_io.c). Should xillybus_class be included in this 
+patchset, I will of course ack it, not that it would matter much.
 
-------------------------------------------------------
-From: Marco Elver <elver@google.com>
-Subject: kasan: use vmalloc_dump_obj() for vmalloc error reports
-Date: Wed, 16 Jul 2025 17:23:28 +0200
+In my opinion, using cdev_del() is incorrect, as you can't delete 
+something that failed to be added. Practically this causes no problem, 
+but as a question of style, the kobject_put() call acts as the reversal 
+of cdev_alloc(). This is formally more accurate, and this is the reason 
+I chose to do it this way.
 
-Since 6ee9b3d84775 ("kasan: remove kasan_find_vm_area() to prevent
-possible deadlock"), more detailed info about the vmalloc mapping and the
-origin was dropped due to potential deadlocks.
+But more than anything, I find this patch pointless, unless someone 
+explains why it has any use. I'm open to new insights.
 
-While fixing the deadlock is necessary, that patch was too quick in
-killing an otherwise useful feature, and did no due-diligence in
-understanding if an alternative option is available.
-
-Restore printing more helpful vmalloc allocation info in KASAN reports
-with the help of vmalloc_dump_obj().  Example report:
-
-| BUG: KASAN: vmalloc-out-of-bounds in vmalloc_oob+0x4c9/0x610
-| Read of size 1 at addr ffffc900002fd7f3 by task kunit_try_catch/493
-|
-| CPU: [...]
-| Call Trace:
-|  <TASK>
-|  dump_stack_lvl+0xa8/0xf0
-|  print_report+0x17e/0x810
-|  kasan_report+0x155/0x190
-|  vmalloc_oob+0x4c9/0x610
-|  [...]
-|
-| The buggy address belongs to a 1-page vmalloc region starting at 0xffffc900002fd000 allocated at vmalloc_oob+0x36/0x610
-| The buggy address belongs to the physical page:
-| page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x126364
-| flags: 0x200000000000000(node=0|zone=2)
-| raw: 0200000000000000 0000000000000000 dead000000000122 0000000000000000
-| raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-| page dumped because: kasan: bad access detected
-|
-| [..]
-
-Link: https://lkml.kernel.org/r/20250716152448.3877201-1-elver@google.com
-Fixes: 6ee9b3d84775 ("kasan: remove kasan_find_vm_area() to prevent possible deadlock")
-Signed-off-by: Marco Elver <elver@google.com>
-Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-Acked-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Yunseong Kim <ysk@kzalloc.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/report.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
---- a/mm/kasan/report.c~kasan-use-vmalloc_dump_obj-for-vmalloc-error-reports
-+++ a/mm/kasan/report.c
-@@ -399,7 +399,9 @@ static void print_address_description(vo
- 	}
- 
- 	if (is_vmalloc_addr(addr)) {
--		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
-+		pr_err("The buggy address belongs to a");
-+		if (!vmalloc_dump_obj(addr))
-+			pr_cont(" vmalloc virtual mapping\n");
- 		page = vmalloc_to_page(addr);
- 	}
- 
-_
-
-Patches currently in -mm which might be from elver@google.com are
-
-
+Regards,
+    Eli
 
