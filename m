@@ -1,112 +1,110 @@
-Return-Path: <stable+bounces-163460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B1DB0B55F
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 13:10:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2512B0B597
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 13:33:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6B741743FC
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 11:10:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 111C63BD168
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 11:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7C91F03C9;
-	Sun, 20 Jul 2025 11:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3131DDC00;
+	Sun, 20 Jul 2025 11:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJxe0xae"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C1UPvIEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD253FE5;
-	Sun, 20 Jul 2025 11:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A334B29D0D;
+	Sun, 20 Jul 2025 11:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753009854; cv=none; b=UKbV7AMLvDUgGQsIvIU2gsVt73UZK3VrqCAsAEm489xDtMbkwSQjmdcAj3VdQIN7StAeWgQx2X+5hLiA4AmK3WM4va/ChiXe9FskTqME/gwvrxxhSUlWa2oyVxBa0dGQ8IahkVRzplyr5YzKm8UoXFuxCoLkApgO1f2gbS8R1jg=
+	t=1753011220; cv=none; b=MzkUd92fjRzHqtREzHD4AoLDHva149iL01MW66IAoaOn18fyEqqvr4d0/WbtzY1B0Z76hpadTGcPut5Z4WM1Zadtbqvwc5HrfmWxSUDWsjfG0Sbg8y4NVy3r9jlVuZhn7q6swXfPNTkNE+9Xt+DB9nCb1D6dtAOsWSHY+DfDL24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753009854; c=relaxed/simple;
-	bh=g6RN/P3+AMwSYEbq7xszkzjjlTYqV1BCTxY1zp2kC1c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MPC7fiKUySmFcyPVB18nvpY9Q1IK00AKA/4Wm+FLru8PFeoyUZhRXrx5zxucP4lnsGUBTN98bqMCqmkKEaPuXPS6sASbIJPLbnkhHYWr1SVas8WG853DxRJXSa0aZurWIa7ILqihJ0PLFdkfasTnzMzS4fxdM0THgU6CinOded0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJxe0xae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DD1C4CEE7;
-	Sun, 20 Jul 2025 11:10:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753009853;
-	bh=g6RN/P3+AMwSYEbq7xszkzjjlTYqV1BCTxY1zp2kC1c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZJxe0xaek+yG2RCDWC3DwPKw0qX4OEHwwj5EnajXHuO6vPin1SWH/WW2T6XH55vcm
-	 K4M6VKlDQXkahTKJ6dZDcojMXzuXPVuGFKch9Wtg1tshvv+bCZauvhcPltydPe72//
-	 Qcgh9CB0QP+o9AZdw0d8I3ay34mV0bhZ5Z0NJwVE=
-Date: Sun, 20 Jul 2025 13:10:48 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH V2] init: Handle bootloader identifier in kernel
- parameters
-Message-ID: <2025072056-gambling-ranger-5b0f@gregkh>
-References: <20250720105509.2914898-1-chenhuacai@loongson.cn>
+	s=arc-20240116; t=1753011220; c=relaxed/simple;
+	bh=aNlr1NlJcqoKmB1Eu5/pybwfz6dmNDQJXqvLOcxCBrc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mavfVAGZsI+tobmxk68kXuVe4ekHuTjF4q/7g9qrZx3rPMfgUzRbOYI67ewNBowCVRoyIIao7Fh4SjqG5WNtQuun/pr6QkzqiU1Br/0KUuLn5htSmSlx5XWbp65qaUyDRTIgD9dochIE5KNr3Z/dKqk5/GBKSm78gw8XRvJumFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C1UPvIEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27123C4CEE7;
+	Sun, 20 Jul 2025 11:33:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753011220;
+	bh=aNlr1NlJcqoKmB1Eu5/pybwfz6dmNDQJXqvLOcxCBrc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=C1UPvIEQqayCRFPawjxP7cgtxJAPCCspLaUs4JXUbYzPjyz//7D9InKvv4jZ0qD64
+	 E5FWar+nu7BFWAVPyDSvXPnAwRXfgqpAuv/8lJcCyRwPUxt5wlVn9EoIRu6cYDGTNW
+	 lNtSjnyOwmxsR208jOlUcRF+1icMyHHuoDubsFebBT5APeYhPJVpPsnn78akoiVHWH
+	 2Mp0Ci7Tc3pO7zotiHs6MGCIJHCOltzvj8oW6jhwXRrbmUQi+soETBo7ATrW3KLKsi
+	 uiUGAyuE6eTGm1ExTFX5KRIVqZS6aggwPujDi6nA+aADkU0TWgw3neJBUmHhDgToUj
+	 Okhd9toOBXRXw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1udSIU-00HIzF-1g;
+	Sun, 20 Jul 2025 12:33:38 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: arm64: Filter out HCR_EL2.VSE when running in hypervisor context
+Date: Sun, 20 Jul 2025 12:33:34 +0100
+Message-Id: <20250720113334.218099-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250720105509.2914898-1-chenhuacai@loongson.cn>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Sun, Jul 20, 2025 at 06:55:09PM +0800, Huacai Chen wrote:
-> BootLoader (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
-> /boot/vmlinuz-x.y.z" to kernel parameters. But these identifiers are not
-> recognized by the kernel itself so will be passed to user space. However
-> user space init program also doesn't recognized it.
-> 
-> KEXEC may also pass an identifier such as "kexec" on some architectures.
-> 
-> We cannot change BootLoader's behavior, because this behavior exists for
-> many years, and there are already user space programs search BOOT_IMAGE=
-> in /proc/cmdline to obtain the kernel image locations:
-> 
-> https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
-> (search getBootOptions)
-> https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
-> (search getKernelReleaseWithBootOption)
-> 
-> So the the best way is handle (ignore) it by the kernel itself, which
-> can avoid such boot warnings (if we use something like init=/bin/bash,
-> bootloader identifier can even cause a crash):
-> 
-> Kernel command line: BOOT_IMAGE=(hd0,1)/vmlinuz-6.x root=/dev/sda3 ro console=tty
-> Unknown kernel command line parameters "BOOT_IMAGE=(hd0,1)/vmlinuz-6.x", will be passed to user space.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
-> V2: Update comments and commit messages.
-> 
->  init/main.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/init/main.c b/init/main.c
-> index 225a58279acd..c53863e5ad82 100644
-> --- a/init/main.c
-> +++ b/init/main.c
-> @@ -545,6 +545,7 @@ static int __init unknown_bootoption(char *param, char *val,
->  				     const char *unused, void *arg)
->  {
->  	size_t len = strlen(param);
-> +	const char *bootloader[] = { "BOOT_IMAGE=", "kexec", NULL };
+HCR_EL2.VSE is delivering a virtual SError to the guest, and does not
+affect EL2 itself. However, when computing the host's HCR_EL2 value,
+we take the guest's view of HCR_EL2.VSE at face value, and apply it
+irrespective of the guest's exception level we are returning to.
 
-Where is this magic set of values now documented?  Each of these need to
-be strongly documented as to why we are ignoring them and who is adding
-them and why they can't be fixed for whatever reason.
+The result is that a L1 hypervisor injecting a virtual SError to an L2
+by setting its HCR_EL2.VSE to 1 results in itself getting the SError
+as if it was a physical one if it traps for any reason before returning
+to L2.
 
-thanks,
+Fix it by filtering HCR_EL2.VSE out when entering the L1 host context.
 
-greg k-h
+Fixes: 04ab519bb86df ("KVM: arm64: nv: Configure HCR_EL2 for FEAT_NV2")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ arch/arm64/kvm/hyp/vhe/switch.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+index 477f1580ffeaa..eddda649d9ee1 100644
+--- a/arch/arm64/kvm/hyp/vhe/switch.c
++++ b/arch/arm64/kvm/hyp/vhe/switch.c
+@@ -68,6 +68,9 @@ static u64 __compute_hcr(struct kvm_vcpu *vcpu)
+ 		if (!vcpu_el2_e2h_is_set(vcpu))
+ 			hcr |= HCR_NV1;
+ 
++		/* Virtual SErrors only apply to L2, not L1 */
++		guest_hcr &= ~HCR_VSE;
++
+ 		write_sysreg_s(vcpu->arch.ctxt.vncr_array, SYS_VNCR_EL2);
+ 	} else {
+ 		host_data_clear_flag(VCPU_IN_HYP_CONTEXT);
+-- 
+2.39.2
+
 
