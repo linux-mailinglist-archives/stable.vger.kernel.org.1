@@ -1,123 +1,119 @@
-Return-Path: <stable+bounces-163468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE228B0B771
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 19:39:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F28AB0B7D3
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 20:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FE883BC403
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 17:39:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F0241788F0
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 18:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB4D22172E;
-	Sun, 20 Jul 2025 17:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2912206B7;
+	Sun, 20 Jul 2025 18:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/YCS9sr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UWJyWLpy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1299F1CA81;
-	Sun, 20 Jul 2025 17:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E043382;
+	Sun, 20 Jul 2025 18:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753033182; cv=none; b=TXWmt98yRfI7uZaAtksLYbE8bMbWTTpMfSMyMx6fSqBZ3zP7RBZ8KRBtAiBl61XGLPiWmOCYSX1mlgEjD1gWHnroJXLJGQq4KsB5tapm2zysdILAVmY6yFqRek5Od9e+hLA0ptpOGEKnLgte/kEgVCVSedIFamCJVoVxXmC9GLs=
+	t=1753037907; cv=none; b=IrenaqEHHZ8FO56GrtOOqaOMzOEJuDVvl8VQcqbfywP1aI9dIsxKribFwtNE7y4+a14qR2Vj0D4vioePRy0ljZORdYfFJJHcHAwY28Rej5Lslw83PdWSg5rf2w87ytiVBkC1Y1c1HgVGHblGW6TFwp4FpgL9vxv+HhfdWNi7XeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753033182; c=relaxed/simple;
-	bh=kHdJnWMZ/uSXE2znXW0wKKZ9+EwYpTW2ogmdFfsxD/s=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=p9T0Yr993B59SYgT1MKRvXg67qj10hSa1GnvOm3rbfjyDrSBtgkFWQM6boYDzMdj/dJTbkQuLRAxKOs9L5bWKIwaxagvN3dNGcL81Z6dz6YENbK75PX2KbhWULObeHQm/bmEKWTW9OSGxD2+Mfel5vy4myOPxW73BhqN/Sj+DSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/YCS9sr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86834C4CEE7;
-	Sun, 20 Jul 2025 17:39:41 +0000 (UTC)
+	s=arc-20240116; t=1753037907; c=relaxed/simple;
+	bh=Z4K/L8iVI8412mIfKRLloP1W+n/XlOZFFt9DKKoURFg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BNmpT9CxMEf69sXiW8KwNeonTVLoiIRvV4Ew7xqyL1rqdklI0tFWWKR/Ei5Ag7a6MKCi2szbIFbSMUPQjeK76njTuzau9UFZnwWy9gsg/8nT76oIPfvhyf1p6m31PdYzZ70FtkWukVi/2cGT9+e5lD5G5pYPChD14rOcAxN1+hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UWJyWLpy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0169AC4CEE7;
+	Sun, 20 Jul 2025 18:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753033181;
-	bh=kHdJnWMZ/uSXE2znXW0wKKZ9+EwYpTW2ogmdFfsxD/s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=N/YCS9sr96beqAk3VqRCOHJ8lDgeb19X3LRh4clOUTA3bg1nh6Xglz5/7crHSwMLi
-	 l2eTe5SBAHQjB6gFSyF15O7Frw9DibTEuLntVliH3m0ij0Q95OrlTL8KFlLCaxPDbH
-	 yjhHylKFBaVnsdwLSmGWEYPwSfpkfURIF6qkvWtrSuw1K5/6ZT7+zOUDpOsvbws8Z6
-	 ZvjhRVQ1R+lwn5AzCwQDPT9FxN/D+WmFHhXuHzvID79QwFG49jgRwBJfeeUZSH+Epv
-	 a9ftMTp5KknEMwD0RjtYl/UMrMrTTgs56tQuST8fYIGevJSPXImkcRvGWUsbL/+cKg
-	 BUEkgiBGmlGQA==
-Received: from disco-boy.misterjones.org ([217.182.43.188] helo=www.loen.fr)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1udY0h-00HONo-4C;
-	Sun, 20 Jul 2025 18:39:39 +0100
+	s=k20201202; t=1753037907;
+	bh=Z4K/L8iVI8412mIfKRLloP1W+n/XlOZFFt9DKKoURFg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UWJyWLpyXtMe4KYH3Ztyry35J19Ro8R2rER8oyZh6JGgNMnlVXYl+OE2S7ggDWLg2
+	 z6ZmJjf2j4FW2J2mv83Lgll2m8yB4EcoxaQLyDclqT8HZtboSXYoLbTCd6tz6w/Ioa
+	 1qTLh0Fw9iRuYgVUlvCIEhW/U9IZy0cfWHgWCLCaXNLZa1gqS1nHd4qp0F2G9/2QJJ
+	 wm7xmqpzIkKQsxfCczGpGdcYYiMdfuRD+nt+3ND8bAbzwNjE61tj6PUkZ0U6Z1YWND
+	 4C7UYd5U5CE5qk1Jl0N/UkOA/bQnxhs+Tf7zr+R1Kst8YTKxP9QmACHFRER4PqR5cX
+	 zy9aRfDiA+7+Q==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Honggyu Kim <honggyu.kim@sk.com>,
+	Hyeongtak Ji <hyeongtak.ji@sk.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/damon/ops-common: ignore migration request to invalid nodes
+Date: Sun, 20 Jul 2025 11:58:22 -0700
+Message-Id: <20250720185822.1451-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 20 Jul 2025 18:39:38 +0100
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Cc: Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose
- <suzuki.poulose@arm.com>, Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu
- <yuzenghui@huawei.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Filter out HCR_EL2.VSE when running in
- hypervisor context
-In-Reply-To: <20250720113334.218099-1-maz@kernel.org>
-References: <20250720113334.218099-1-maz@kernel.org>
-User-Agent: Roundcube Webmail/1.4.15
-Message-ID: <7e78eca5652baa9f0fefd4242066c966@kernel.org>
-X-Sender: maz@kernel.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 217.182.43.188
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 8bit
 
-On 2025-07-20 12:33, Marc Zyngier wrote:
-> HCR_EL2.VSE is delivering a virtual SError to the guest, and does not
-> affect EL2 itself. However, when computing the host's HCR_EL2 value,
-> we take the guest's view of HCR_EL2.VSE at face value, and apply it
-> irrespective of the guest's exception level we are returning to.
-> 
-> The result is that a L1 hypervisor injecting a virtual SError to an L2
-> by setting its HCR_EL2.VSE to 1 results in itself getting the SError
-> as if it was a physical one if it traps for any reason before returning
-> to L2.
-> 
-> Fix it by filtering HCR_EL2.VSE out when entering the L1 host context.
-> 
-> Fixes: 04ab519bb86df ("KVM: arm64: nv: Configure HCR_EL2 for FEAT_NV2")
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Cc: stable@vger.kernel.org
-> ---
->  arch/arm64/kvm/hyp/vhe/switch.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/hyp/vhe/switch.c 
-> b/arch/arm64/kvm/hyp/vhe/switch.c
-> index 477f1580ffeaa..eddda649d9ee1 100644
-> --- a/arch/arm64/kvm/hyp/vhe/switch.c
-> +++ b/arch/arm64/kvm/hyp/vhe/switch.c
-> @@ -68,6 +68,9 @@ static u64 __compute_hcr(struct kvm_vcpu *vcpu)
->  		if (!vcpu_el2_e2h_is_set(vcpu))
->  			hcr |= HCR_NV1;
-> 
-> +		/* Virtual SErrors only apply to L2, not L1 */
-> +		guest_hcr &= ~HCR_VSE;
-> +
->  		write_sysreg_s(vcpu->arch.ctxt.vncr_array, SYS_VNCR_EL2);
->  	} else {
->  		host_data_clear_flag(VCPU_IN_HYP_CONTEXT);
+damon_migrate_pages() try migration even if the target node is invalid.
+If users mistakenly make such invalid requests via
+DAMOS_MIGRATE_{HOT,COLD} action, below kernel BUG can happen.
 
-Actually, a better fix would be just nuke any bit that doesn't affect
-the HYP context. And that's almost all of them, bar the RES1 bits.
+    [ 7831.883495] BUG: unable to handle page fault for address: 0000000000001f48
+    [ 7831.884160] #PF: supervisor read access in kernel mode
+    [ 7831.884681] #PF: error_code(0x0000) - not-present page
+    [ 7831.885203] PGD 0 P4D 0
+    [ 7831.885468] Oops: Oops: 0000 [#1] SMP PTI
+    [ 7831.885852] CPU: 31 UID: 0 PID: 94202 Comm: kdamond.0 Not tainted 6.16.0-rc5-mm-new-damon+ #93 PREEMPT(voluntary)
+    [ 7831.886913] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.el9 04/01/2014
+    [ 7831.887777] RIP: 0010:__alloc_frozen_pages_noprof (include/linux/mmzone.h:1724 include/linux/mmzone.h:1750 mm/page_alloc.c:4936 mm/page_alloc.c:5137)
+    [...]
+    [ 7831.895953] Call Trace:
+    [ 7831.896195]  <TASK>
+    [ 7831.896397] __folio_alloc_noprof (mm/page_alloc.c:5183 mm/page_alloc.c:5192)
+    [ 7831.896787] migrate_pages_batch (mm/migrate.c:1189 mm/migrate.c:1851)
+    [ 7831.897228] ? __pfx_alloc_migration_target (mm/migrate.c:2137)
+    [ 7831.897735] migrate_pages (mm/migrate.c:2078)
+    [ 7831.898141] ? __pfx_alloc_migration_target (mm/migrate.c:2137)
+    [ 7831.898664] damon_migrate_folio_list (mm/damon/ops-common.c:321 mm/damon/ops-common.c:354)
+    [ 7831.899140] damon_migrate_pages (mm/damon/ops-common.c:405)
+    [...]
 
-I'll repost something once I am done dealing with the rest of the RAS
-enabling stuff.
+Add a target node validity check in damon_migrate_pages().  The validity
+check is stolen from that of do_pages_move(), which is being used for
+move_pages() system call.
 
-         M.
+Fixes: b51820ebea65 ("mm/damon/paddr: introduce DAMOS_MIGRATE_COLD action for demotion") # 6.11.x
+Cc: stable@vger.kernel.org
+Cc: Honggyu Kim <honggyu.kim@sk.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/ops-common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 6a9797d1d7ff..99321ff5cb92 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -383,6 +383,10 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
+ 	if (list_empty(folio_list))
+ 		return nr_migrated;
+ 
++	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
++			!node_state(target_nid, N_MEMORY))
++		return nr_migrated;
++
+ 	noreclaim_flag = memalloc_noreclaim_save();
+ 
+ 	nid = folio_nid(lru_to_folio(folio_list));
+
+base-commit: e2c90d41402c324ea81fa3d9c2c1d0f61906c161
 -- 
-Jazz is not dead. It just smells funny...
+2.39.5
 
