@@ -1,109 +1,175 @@
-Return-Path: <stable+bounces-163464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF43B0B62E
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 14:49:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B46B2B0B680
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 16:46:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E71333BA865
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 12:49:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AB6A18976D9
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 14:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9391F2BBB;
-	Sun, 20 Jul 2025 12:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8BA7261F;
+	Sun, 20 Jul 2025 14:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GvzWUlFD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4uZ/BvJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CEE2F50;
-	Sun, 20 Jul 2025 12:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6EA2744D
+	for <stable@vger.kernel.org>; Sun, 20 Jul 2025 14:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753015792; cv=none; b=UcebZgLyA0Ff7VWP0JqRJMfI1nNFFFu1lR1oDgtiLxjQp60ssxuNHg4RY95J7+Ch8bSk8BKQJLm4UMJD2jCxEvgrxvv4okDN7f+LIZBGcMWTv4jF/By+30KGdKnViVsWzvAg3s/4NjvSRUGsyvvES22MiuOOI8ew6CHooRSgddM=
+	t=1753022765; cv=none; b=H3e6z8jWdeXFovDcDqkQFHKfFKTfzf35OnS/qcUQlYFFsnCm9I6XOxzVCDZ2IuU+xmX2ikM+wmuWVbtFE63+IiWULmmFLk648sOkY6SuMouH17eo5j5jVZAHdVycn/l2SfSFYyHePTk/AoWWmu7amvT+rxZzLqDH/wsvIGVo6Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753015792; c=relaxed/simple;
-	bh=oxFpdknoeX5Vw+UUVKkbtToVxydEtk2SgKvQHO4LClA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FgHcLw7L0lzeJeakZehX1J1GdO74neqbSP+a7+oN9kAOpC0SS1uzqODo/+hK8X/zcSxYf2e0OFtgaQw6Db2Xb4TK8VntKslwFV3GXlu4L1SArK+5I3fig8KluHVYeENo8zLFEdcf9pvkaFB/W65S7PDCj29EMK4knm+OfmOApNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GvzWUlFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B65C4CEE7;
-	Sun, 20 Jul 2025 12:49:51 +0000 (UTC)
+	s=arc-20240116; t=1753022765; c=relaxed/simple;
+	bh=b0GuWs9qeXc5uETWrYeJt0XBGAcTR4QBFMs2JwF6ABw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=HdpakN+NXEt5zUU7eSt9UrzMYdV6BlPwbeCmo8n5yW8o6j6MGlQS+uN6Rgdo6kHpaneJ/ag4IH2iAN1qVkBdWEjqbTOrIeOC5Y6p7aTzUImOvbblKjor9EqWVDB/Nqhhvj+kwSJqELZwMgp94lU2tvEbcfHgHvyC3+VIcZKUMis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4uZ/BvJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647E9C4CEE7;
+	Sun, 20 Jul 2025 14:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753015792;
-	bh=oxFpdknoeX5Vw+UUVKkbtToVxydEtk2SgKvQHO4LClA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GvzWUlFD5xtVgR4UOIIYcFPe2ZprorZ8ZGG+bXlshclLbKYjwp40Eg+C4sLajjrPF
-	 62cjZW0idnISxvQ1FVr8yi5SwGi8whd368XgEGRjERcAJpoda4/InBqp++bc+oiprP
-	 TUNIg4pzl2ymi4ELcsDptVd4Qwx6Qpx/8y4lzwxVqXpYBvKflp6UGoLqw/09r8NjF0
-	 3hrHJuRsZeCpJZKlMcDFamJD0HAcI5gPUdV77NNlGOJqhZ5U2QK0DVfUPBftiZCNz8
-	 +Bi7NqFynEo+emRFifeUKiBT7xs+qy0IzOV6Ey5Ktu/yVMF+342ZWb4fjfua438tja
-	 g7AqvYW8liYCw==
-Message-ID: <18a71fc3-dd01-4335-9655-716c87048530@kernel.org>
-Date: Sun, 20 Jul 2025 07:49:50 -0500
+	s=k20201202; t=1753022764;
+	bh=b0GuWs9qeXc5uETWrYeJt0XBGAcTR4QBFMs2JwF6ABw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=R4uZ/BvJBHGQ1ZaS9uU2Xw0B/JCdpm0XBH9gCtrePiMj0wdS0SqOYEpLRbn+tfQED
+	 j+8WUizZQYL9ksa5GsipnIPPbhhtGuRUsB2vYs0naASsB6jN7baOhwB+C/uTCpQRqu
+	 g+vwmmtv39RkUFHHua3gLbuQ0joRtyg/WsRpqkOOXRGZGAD939QC+Lk18JeDZAh18e
+	 q2XswrkfouF7OKdx2B710NvXbMygCk2qfbP0W2OFr+4/a8YkJ13FOmsS3jsZ9QQaOg
+	 stB6zSycdj+HEwOuJh1f+UY6UX34LxefCP5q3dVAN1yKX9LnhotnO4xSFsID2y7Yx5
+	 IIQhDF5QfimnQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4.y] virtio-net: ensure the received length does not exceed allocated size
+Date: Sun, 20 Jul 2025 10:45:54 -0400
+Message-Id: <20250720144554.542893-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025070649-freezing-truce-2745@gregkh>
+References: <2025070649-freezing-truce-2745@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] [PATCH] drm/amd/display: fix initial backlight
- brightness calculation
-To: Lauri Tirkkonen <lauri@hacktheplanet.fi>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
- amd-gfx@lists.freedesktop.org, Wayne Lin <wayne.lin@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <aHn33vgj8bM4s073@hacktheplanet.fi>
- <d92458bf-fc2b-47bf-b664-9609a3978646@kernel.org>
- <aHpb4ZTZ5FoOBUrZ@hacktheplanet.fi>
- <46de4f2a-8836-42cd-a621-ae3e782bf253@kernel.org>
- <aHru-sP7S2ufH7Im@hacktheplanet.fi>
- <664c5661-0fa8-41db-b55d-7f1f58e40142@kernel.org>
- <aHr--GxhKNj023fg@hacktheplanet.fi>
- <f12cfe85-3597-4cf7-9236-3e00f16c3c38@kernel.org>
- <cc7a41dc-066a-41c8-a271-7e4c92088d65@kernel.org>
- <aHy4Ols-BZ3_UgQQ@hacktheplanet.fi> <aHy4tohvbwd1HpxI@hacktheplanet.fi>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <aHy4tohvbwd1HpxI@hacktheplanet.fi>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
+[ Upstream commit 315dbdd7cdf6aa533829774caaf4d25f1fd20e73 ]
 
-On 7/20/25 4:36 AM, Lauri Tirkkonen wrote:
-> DIV_ROUND_CLOSEST(x, 100) returns either 0 or 1 if 0<x<=100, so the
-> division needs to be performed after the multiplication and not the
-> other way around, to properly scale the value.
-> 
-> Fixes: 6c56c8ec6f97 ("drm/amd/display: Fix default DC and AC levels")
-> Signed-off-by: Lauri Tirkkonen <lauri@hacktheplanet.fi>
-> ---
->   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> index f58fa5da7fe5..8a5b5dfad1ab 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> @@ -4941,9 +4941,9 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
->   	caps = &dm->backlight_caps[aconnector->bl_idx];
->   	if (get_brightness_range(caps, &min, &max)) {
->   		if (power_supply_is_system_supplied() > 0)
-> -			props.brightness = (max - min) * DIV_ROUND_CLOSEST(caps->ac_level, 100);
-> +			props.brightness = DIV_ROUND_CLOSEST((max - min) * caps->ac_level, 100);
->   		else
-> -			props.brightness = (max - min) * DIV_ROUND_CLOSEST(caps->dc_level, 100);
-> +			props.brightness = DIV_ROUND_CLOSEST((max - min) * caps->dc_level, 100);
->   		/* min is zero, so max needs to be adjusted */
->   		props.max_brightness = max - min;
->   		drm_dbg(drm, "Backlight caps: min: %d, max: %d, ac %d, dc %d\n", min, max,
+In xdp_linearize_page, when reading the following buffers from the ring,
+we forget to check the received length with the true allocate size. This
+can lead to an out-of-bound read. This commit adds that missing check.
 
-Thanks! The change makes sense.  Besides Greg's comments can you please 
-send out of the regression thread?  IMO This should be it's own patch 
-thread.
+Cc: <stable@vger.kernel.org>
+Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://patch.msgid.link/20250630144212.48471-2-minhquangbui99@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ adapted virtqueue_get_buf() to virtqueue_get_buf_ctx() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/virtio_net.c | 38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 215c546bf50a9..6f82338c617e1 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -394,6 +394,26 @@ static unsigned int mergeable_ctx_to_truesize(void *mrg_ctx)
+ 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
+ }
+ 
++static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
++			       unsigned int len)
++{
++	unsigned int headroom, tailroom, room, truesize;
++
++	truesize = mergeable_ctx_to_truesize(mrg_ctx);
++	headroom = mergeable_ctx_to_headroom(mrg_ctx);
++	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
++	room = SKB_DATA_ALIGN(headroom + tailroom);
++
++	if (len > truesize - room) {
++		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
++			 dev->name, len, (unsigned long)(truesize - room));
++		dev->stats.rx_length_errors++;
++		return -1;
++	}
++
++	return 0;
++}
++
+ /* Called from bottom half context */
+ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+ 				   struct receive_queue *rq,
+@@ -639,7 +659,8 @@ static unsigned int virtnet_get_headroom(struct virtnet_info *vi)
+  * across multiple buffers (num_buf > 1), and we make sure buffers
+  * have enough headroom.
+  */
+-static struct page *xdp_linearize_page(struct receive_queue *rq,
++static struct page *xdp_linearize_page(struct net_device *dev,
++				       struct receive_queue *rq,
+ 				       u16 *num_buf,
+ 				       struct page *p,
+ 				       int offset,
+@@ -659,18 +680,27 @@ static struct page *xdp_linearize_page(struct receive_queue *rq,
+ 	memcpy(page_address(page) + page_off, page_address(p) + offset, *len);
+ 	page_off += *len;
+ 
++	/* Only mergeable mode can go inside this while loop. In small mode,
++	 * *num_buf == 1, so it cannot go inside.
++	 */
+ 	while (--*num_buf) {
+ 		unsigned int buflen;
+ 		void *buf;
++		void *ctx;
+ 		int off;
+ 
+-		buf = virtqueue_get_buf(rq->vq, &buflen);
++		buf = virtqueue_get_buf_ctx(rq->vq, &buflen, &ctx);
+ 		if (unlikely(!buf))
+ 			goto err_buf;
+ 
+ 		p = virt_to_head_page(buf);
+ 		off = buf - page_address(p);
+ 
++		if (check_mergeable_len(dev, ctx, buflen)) {
++			put_page(p);
++			goto err_buf;
++		}
++
+ 		/* guard against a misconfigured or uncooperative backend that
+ 		 * is sending packet larger than the MTU.
+ 		 */
+@@ -745,7 +775,7 @@ static struct sk_buff *receive_small(struct net_device *dev,
+ 			headroom = vi->hdr_len + header_offset;
+ 			buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
+ 				 SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+-			xdp_page = xdp_linearize_page(rq, &num_buf, page,
++			xdp_page = xdp_linearize_page(dev, rq, &num_buf, page,
+ 						      offset, header_offset,
+ 						      &tlen);
+ 			if (!xdp_page)
+@@ -910,7 +940,7 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 		if (unlikely(num_buf > 1 ||
+ 			     headroom < virtnet_get_headroom(vi))) {
+ 			/* linearize data for XDP */
+-			xdp_page = xdp_linearize_page(rq, &num_buf,
++			xdp_page = xdp_linearize_page(dev, rq, &num_buf,
+ 						      page, offset,
+ 						      VIRTIO_XDP_HEADROOM,
+ 						      &len);
+-- 
+2.39.5
+
 
