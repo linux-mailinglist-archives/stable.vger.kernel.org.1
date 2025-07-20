@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F89B0B965
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 01:47:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8FCB0B966
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 01:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C910B3AD115
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 23:46:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 876AC188C95C
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 23:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D735F22FE10;
-	Sun, 20 Jul 2025 23:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E911E1DE5;
+	Sun, 20 Jul 2025 23:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSZ2x5a5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCiA3R+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989B1E55B
-	for <stable@vger.kernel.org>; Sun, 20 Jul 2025 23:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EF88BEE
+	for <stable@vger.kernel.org>; Sun, 20 Jul 2025 23:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753055243; cv=none; b=uT1wNSzUWFEu2ivmg94So/hK320EnSNfG7LpYuwzz1DjP+GgcUQuRe72vI6laEyb+OFYxTKmfwdWiLd9A0fwFExaEOutL+5Y694Ghw3R4LDy4i3kgo7KELQtRWQC5vt76z924BsWrLZJRAx3MqLjcfLo2u9WW4D0gTuGM+/AyYs=
+	t=1753055245; cv=none; b=lCRlF4VHqdOHyZy88Badpk/S8zPNPAmzT+8/OxUobMKJYME7fFubUPqGVLb8oxfA46ol/0InyLAHjEikNGbB6vx7DNBNlB9mWpzQM3cJKdU2oLrAkGE0b4foJWOZz6NzSLC8i7elwigEweC3WmhCgxHojoKOk5wqUlTjufZw+MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753055243; c=relaxed/simple;
-	bh=j3LxlwqDD1wL+A5o/2YPHhKpoYsKvxfYUSvlitY+OxU=;
+	s=arc-20240116; t=1753055245; c=relaxed/simple;
+	bh=yTTpEq/N7WgNqUvEj/3sM1kMYQxrw3zD4MGilsBslhc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VIUVg3v6u2OViwgOZOacbXMigQVlnPj51Xj/RMPubD/c61BXdzUBGbrf7HczZyYj/07wkFJzlAIwsmQTEytf8L0kPuZjUHl8ZPZj7y8NewGXJa2nZs1AkWN5GRVoXEMmods6xd6fwlN3RnrC3Cc2Idiyes53kwfUo7oSqQbPyO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSZ2x5a5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B753C4CEF6;
-	Sun, 20 Jul 2025 23:47:22 +0000 (UTC)
+	 MIME-Version; b=KT1leICxLTz6xU89cC/WeE4Wn/VsQ113c7CA752K5rOofAKgixh8WiRDxZkrC/e9SKErHfsKzipUIj8efH+FPOAKQHcxfE1cYnS+8heblqQZehhjn18kJnXbdTt+lpOJ7zVqGAMmufvTZzTAQ12kWE5uouRFRWbmPHSFZR11uIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCiA3R+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98C2C4CEF6;
+	Sun, 20 Jul 2025 23:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753055243;
-	bh=j3LxlwqDD1wL+A5o/2YPHhKpoYsKvxfYUSvlitY+OxU=;
+	s=k20201202; t=1753055244;
+	bh=yTTpEq/N7WgNqUvEj/3sM1kMYQxrw3zD4MGilsBslhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SSZ2x5a55wReKhli5b8FirRFYPDaRp0+70Ut2yguf5SeuAmBZ11oq/NIXwapFptZT
-	 LWGAb13kYXc+9HlAvlI88fMqF0v0pHf00OEhYo/kU9sOLXDZFg/h/NdYpxUmvx77tt
-	 bNjPmitNF0mZDPZRuEFdEDLr/C+fk53IQVCVnZvjnvV1WbQlqYPuOV3XnDryDTvwnL
-	 reBmMkbRVjLNtq91PYAnd7w+BGITSGO1R7OQcpUQFV6EehKKBbRmaJJlDnFF0mE82W
-	 ScIDUq5s3wBydQBvxnFiAh8rboE+HQZ1kJMeM/PTntL1Gv0tiZd4VE48ed3hjfdUlz
-	 pypshjJ6t26Ug==
+	b=RCiA3R+TZu+TtNt8Riz6WJsVINjwIrzuuRnw8VWCfBP5wguY4yve2p3DXRasX+May
+	 Avbrv1tUgNyecRQOClvOziCtp2UO/1pHLDtuVookTABQUElyRX54JLyz5sBTJ/1pta
+	 jv2GdH4qz5GAHb0p08VyGw9X5zgnAfiqfB+T0R0xWaXEG72D8IEdaiG7OwxaqqfGA5
+	 yYlFPSZ95T1YB1S6iMZm7unT77tQs5wJY0vaG7ymGLpkQY1GpblGcJmycobSJ28mLv
+	 JB+q+ZK/gc9e3KJkJCJRQNsUqn20AdvoX28LhbZ34aMajFD0Rec1xXDHY+NEXv05Ny
+	 iT+lOq8Spug7w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Zhang Rui <rui.zhang@intel.com>,
 	Wang Wendy <wendy.wang@intel.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 5/7] powercap: intel_rapl: Use bitmap for Power Limits
-Date: Sun, 20 Jul 2025 19:47:03 -0400
-Message-Id: <20250720234705.764310-5-sashal@kernel.org>
+Subject: [PATCH 6.1.y 6/7] powercap: intel_rapl: Cleanup Power Limits support
+Date: Sun, 20 Jul 2025 19:47:04 -0400
+Message-Id: <20250720234705.764310-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250720234705.764310-1-sashal@kernel.org>
 References: <2025070817-quaintly-lend-80a3@gregkh>
@@ -64,19 +64,23 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit a38f300bb23c896d2d132a4502086d4bfec2a25e ]
+[ Upstream commit 9050a9cd5e4c848e265915d6e7b1f731e6e1e0e6 ]
 
-Currently, a RAPL package is registered with the number of Power Limits
-supported in each RAPL domain. But this doesn't tell which Power Limits
-are available. Using the number of Power Limits supported to guess the
-availability of each Power Limit is fragile.
+The same set of operations are shared by different Powert Limits,
+including Power Limit get/set, Power Limit enable/disable, clamping
+enable/disable, time window get/set, and max power get/set, etc.
 
-Use bitmap to represent the availability of each Power Limit.
+But the same operation for different Power Limit has different
+primitives because they use different registers/register bits.
 
-Note that PL1 is mandatory thus it does not need to be set explicitly by
-the RAPL Interface drivers.
+A lot of dirty/duplicate code was introduced to handle this difference.
 
-No functional change intended.
+Introduce a universal way to issue Power Limit operations.
+Instead of using hardcoded primitive name directly, use Power Limit id
++ operation type, and hide all the Power Limit difference details in a
+central place, get_pl_prim(). Two helpers, rapl_read_pl_data() and
+rapl_write_pl_data(), are introduced at the same time to simplify the
+code for issuing Power Limit operations.
 
 Signed-off-by: Zhang Rui <rui.zhang@intel.com>
 Tested-by: Wang Wendy <wendy.wang@intel.com>
@@ -84,89 +88,564 @@ Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Stable-dep-of: 964209202ebe ("powercap: intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be changed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/intel_rapl_common.c               | 14 ++++++--------
- drivers/powercap/intel_rapl_msr.c                  |  6 +++---
- .../intel/int340x_thermal/processor_thermal_rapl.c |  4 ++--
- 3 files changed, 11 insertions(+), 13 deletions(-)
+ drivers/powercap/intel_rapl_common.c | 343 ++++++++++++---------------
+ include/linux/intel_rapl.h           |   1 -
+ 2 files changed, 146 insertions(+), 198 deletions(-)
 
 diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index 87023d6aebf9c..db0016c188f5f 100644
+index db0016c188f5f..cc51bd508ad15 100644
 --- a/drivers/powercap/intel_rapl_common.c
 +++ b/drivers/powercap/intel_rapl_common.c
-@@ -575,20 +575,18 @@ static void rapl_init_domains(struct rapl_package *rp)
- 				rapl_domain_names[i]);
+@@ -96,9 +96,67 @@ enum unit_type {
+ #define	DOMAIN_STATE_POWER_LIMIT_SET    BIT(1)
+ #define DOMAIN_STATE_BIOS_LOCKED        BIT(2)
  
- 		rd->id = i;
+-static const char pl1_name[] = "long_term";
+-static const char pl2_name[] = "short_term";
+-static const char pl4_name[] = "peak_power";
++static const char *pl_names[NR_POWER_LIMITS] = {
++	[POWER_LIMIT1] = "long_term",
++	[POWER_LIMIT2] = "short_term",
++	[POWER_LIMIT4] = "peak_power",
++};
 +
-+		/* PL1 is supported by default */
-+		rp->priv->limits[i] |= BIT(POWER_LIMIT1);
- 		rd->rpl[0].prim_id = PL1_ENABLE;
- 		rd->rpl[0].name = pl1_name;
++enum pl_prims {
++	PL_ENABLE,
++	PL_CLAMP,
++	PL_LIMIT,
++	PL_TIME_WINDOW,
++	PL_MAX_POWER,
++};
++
++static bool is_pl_valid(struct rapl_domain *rd, int pl)
++{
++	if (pl < POWER_LIMIT1 || pl > POWER_LIMIT4)
++		return false;
++	return rd->rpl[pl].name ? true : false;
++}
++
++static int get_pl_prim(int pl, enum pl_prims prim)
++{
++	switch (pl) {
++	case POWER_LIMIT1:
++		if (prim == PL_ENABLE)
++			return PL1_ENABLE;
++		if (prim == PL_CLAMP)
++			return PL1_CLAMP;
++		if (prim == PL_LIMIT)
++			return POWER_LIMIT1;
++		if (prim == PL_TIME_WINDOW)
++			return TIME_WINDOW1;
++		if (prim == PL_MAX_POWER)
++			return THERMAL_SPEC_POWER;
++		return -EINVAL;
++	case POWER_LIMIT2:
++		if (prim == PL_ENABLE)
++			return PL2_ENABLE;
++		if (prim == PL_CLAMP)
++			return PL2_CLAMP;
++		if (prim == PL_LIMIT)
++			return POWER_LIMIT2;
++		if (prim == PL_TIME_WINDOW)
++			return TIME_WINDOW2;
++		if (prim == PL_MAX_POWER)
++			return MAX_POWER;
++		return -EINVAL;
++	case POWER_LIMIT4:
++		if (prim == PL_LIMIT)
++			return POWER_LIMIT4;
++		if (prim == PL_ENABLE)
++			return PL4_ENABLE;
++		/* PL4 would be around two times PL2, use same prim as PL2. */
++		if (prim == PL_MAX_POWER)
++			return MAX_POWER;
++		return -EINVAL;
++	default:
++		return -EINVAL;
++	}
++}
  
--		/*
--		 * The PL2 power domain is applicable for limits two
--		 * and limits three
--		 */
--		if (rp->priv->limits[i] >= 2) {
-+		if (rp->priv->limits[i] & BIT(POWER_LIMIT2)) {
- 			rd->rpl[1].prim_id = PL2_ENABLE;
- 			rd->rpl[1].name = pl2_name;
- 		}
+ #define power_zone_to_rapl_domain(_zone) \
+ 	container_of(_zone, struct rapl_domain, power_zone)
+@@ -155,6 +213,12 @@ static int rapl_read_data_raw(struct rapl_domain *rd,
+ static int rapl_write_data_raw(struct rapl_domain *rd,
+ 			       enum rapl_primitives prim,
+ 			       unsigned long long value);
++static int rapl_read_pl_data(struct rapl_domain *rd, int pl,
++			      enum pl_prims pl_prim,
++			      bool xlate, u64 *data);
++static int rapl_write_pl_data(struct rapl_domain *rd, int pl,
++			       enum pl_prims pl_prim,
++			       unsigned long long value);
+ static u64 rapl_unit_xlate(struct rapl_domain *rd,
+ 			   enum unit_type type, u64 value, int to_raw);
+ static void package_power_limit_irq_save(struct rapl_package *rp);
+@@ -222,7 +286,7 @@ static int find_nr_power_limit(struct rapl_domain *rd)
+ 	int i, nr_pl = 0;
  
--		/* Enable PL4 domain if the total power limits are three */
--		if (rp->priv->limits[i] == 3) {
-+		if (rp->priv->limits[i] & BIT(POWER_LIMIT4)) {
- 			rd->rpl[2].prim_id = PL4_ENABLE;
- 			rd->rpl[2].name = pl4_name;
- 		}
-@@ -786,7 +784,7 @@ static int rapl_read_data_raw(struct rapl_domain *rd,
- 	cpu = rd->rp->lead_cpu;
- 
- 	/* domain with 2 limits has different bit */
--	if (prim == FW_LOCK && rd->rp->priv->limits[rd->id] == 2) {
-+	if (prim == FW_LOCK && (rd->rp->priv->limits[rd->id] & BIT(POWER_LIMIT2))) {
- 		rpi->mask = POWER_HIGH_LOCK;
- 		rpi->shift = 63;
+ 	for (i = 0; i < NR_POWER_LIMITS; i++) {
+-		if (rd->rpl[i].name)
++		if (is_pl_valid(rd, i))
+ 			nr_pl++;
  	}
-diff --git a/drivers/powercap/intel_rapl_msr.c b/drivers/powercap/intel_rapl_msr.c
-index e46a7641e42f6..1094b8fed2365 100644
---- a/drivers/powercap/intel_rapl_msr.c
-+++ b/drivers/powercap/intel_rapl_msr.c
-@@ -44,8 +44,8 @@ static struct rapl_if_priv rapl_msr_priv_intel = {
- 		MSR_DRAM_POWER_LIMIT, MSR_DRAM_ENERGY_STATUS, MSR_DRAM_PERF_STATUS, 0, MSR_DRAM_POWER_INFO },
- 	.regs[RAPL_DOMAIN_PLATFORM] = {
- 		MSR_PLATFORM_POWER_LIMIT, MSR_PLATFORM_ENERGY_STATUS, 0, 0, 0},
--	.limits[RAPL_DOMAIN_PACKAGE] = 2,
--	.limits[RAPL_DOMAIN_PLATFORM] = 2,
-+	.limits[RAPL_DOMAIN_PACKAGE] = BIT(POWER_LIMIT2),
-+	.limits[RAPL_DOMAIN_PLATFORM] = BIT(POWER_LIMIT2),
- };
  
- static struct rapl_if_priv rapl_msr_priv_amd = {
-@@ -166,7 +166,7 @@ static int rapl_msr_probe(struct platform_device *pdev)
- 	rapl_msr_priv->write_raw = rapl_msr_write_raw;
+@@ -233,37 +297,34 @@ static int set_domain_enable(struct powercap_zone *power_zone, bool mode)
+ {
+ 	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
+ 	struct rapl_defaults *defaults = get_defaults(rd->rp);
+-
+-	if (rd->state & DOMAIN_STATE_BIOS_LOCKED)
+-		return -EACCES;
++	int ret;
  
- 	if (id) {
--		rapl_msr_priv->limits[RAPL_DOMAIN_PACKAGE] = 3;
-+		rapl_msr_priv->limits[RAPL_DOMAIN_PACKAGE] |= BIT(POWER_LIMIT4);
- 		rapl_msr_priv->regs[RAPL_DOMAIN_PACKAGE][RAPL_DOMAIN_REG_PL4] =
- 			MSR_VR_CURRENT_CONFIG;
- 		pr_info("PL4 support detected.\n");
-diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-index a205221ec8df9..e070239106f58 100644
---- a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-+++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-@@ -15,8 +15,8 @@ static const struct rapl_mmio_regs rapl_mmio_default = {
- 	.reg_unit = 0x5938,
- 	.regs[RAPL_DOMAIN_PACKAGE] = { 0x59a0, 0x593c, 0x58f0, 0, 0x5930},
- 	.regs[RAPL_DOMAIN_DRAM] = { 0x58e0, 0x58e8, 0x58ec, 0, 0},
--	.limits[RAPL_DOMAIN_PACKAGE] = 2,
--	.limits[RAPL_DOMAIN_DRAM] = 2,
-+	.limits[RAPL_DOMAIN_PACKAGE] = BIT(POWER_LIMIT2),
-+	.limits[RAPL_DOMAIN_DRAM] = BIT(POWER_LIMIT2),
- };
+ 	cpus_read_lock();
+-	rapl_write_data_raw(rd, PL1_ENABLE, mode);
+-	if (defaults->set_floor_freq)
++	ret = rapl_write_pl_data(rd, POWER_LIMIT1, PL_ENABLE, mode);
++	if (!ret && defaults->set_floor_freq)
+ 		defaults->set_floor_freq(rd, mode);
+ 	cpus_read_unlock();
  
- static int rapl_mmio_cpu_online(unsigned int cpu)
+-	return 0;
++	return ret;
+ }
+ 
+ static int get_domain_enable(struct powercap_zone *power_zone, bool *mode)
+ {
+ 	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
+ 	u64 val;
++	int ret;
+ 
+ 	if (rd->state & DOMAIN_STATE_BIOS_LOCKED) {
+ 		*mode = false;
+ 		return 0;
+ 	}
+ 	cpus_read_lock();
+-	if (rapl_read_data_raw(rd, PL1_ENABLE, true, &val)) {
+-		cpus_read_unlock();
+-		return -EIO;
+-	}
+-	*mode = val;
++	ret = rapl_read_pl_data(rd, POWER_LIMIT1, PL_ENABLE, true, &val);
++	if (!ret)
++		*mode = val;
+ 	cpus_read_unlock();
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ /* per RAPL domain ops, in the order of rapl_domain_type */
+@@ -319,8 +380,8 @@ static int contraint_to_pl(struct rapl_domain *rd, int cid)
+ {
+ 	int i, j;
+ 
+-	for (i = 0, j = 0; i < NR_POWER_LIMITS; i++) {
+-		if ((rd->rpl[i].name) && j++ == cid) {
++	for (i = POWER_LIMIT1, j = 0; i < NR_POWER_LIMITS; i++) {
++		if (is_pl_valid(rd, i) && j++ == cid) {
+ 			pr_debug("%s: index %d\n", __func__, i);
+ 			return i;
+ 		}
+@@ -341,36 +402,11 @@ static int set_power_limit(struct powercap_zone *power_zone, int cid,
+ 	cpus_read_lock();
+ 	rd = power_zone_to_rapl_domain(power_zone);
+ 	id = contraint_to_pl(rd, cid);
+-	if (id < 0) {
+-		ret = id;
+-		goto set_exit;
+-	}
+-
+ 	rp = rd->rp;
+ 
+-	if (rd->state & DOMAIN_STATE_BIOS_LOCKED) {
+-		dev_warn(&power_zone->dev,
+-			 "%s locked by BIOS, monitoring only\n", rd->name);
+-		ret = -EACCES;
+-		goto set_exit;
+-	}
+-
+-	switch (rd->rpl[id].prim_id) {
+-	case PL1_ENABLE:
+-		rapl_write_data_raw(rd, POWER_LIMIT1, power_limit);
+-		break;
+-	case PL2_ENABLE:
+-		rapl_write_data_raw(rd, POWER_LIMIT2, power_limit);
+-		break;
+-	case PL4_ENABLE:
+-		rapl_write_data_raw(rd, POWER_LIMIT4, power_limit);
+-		break;
+-	default:
+-		ret = -EINVAL;
+-	}
++	ret = rapl_write_pl_data(rd, id, PL_LIMIT, power_limit);
+ 	if (!ret)
+ 		package_power_limit_irq_save(rp);
+-set_exit:
+ 	cpus_read_unlock();
+ 	return ret;
+ }
+@@ -380,38 +416,17 @@ static int get_current_power_limit(struct powercap_zone *power_zone, int cid,
+ {
+ 	struct rapl_domain *rd;
+ 	u64 val;
+-	int prim;
+ 	int ret = 0;
+ 	int id;
+ 
+ 	cpus_read_lock();
+ 	rd = power_zone_to_rapl_domain(power_zone);
+ 	id = contraint_to_pl(rd, cid);
+-	if (id < 0) {
+-		ret = id;
+-		goto get_exit;
+-	}
+ 
+-	switch (rd->rpl[id].prim_id) {
+-	case PL1_ENABLE:
+-		prim = POWER_LIMIT1;
+-		break;
+-	case PL2_ENABLE:
+-		prim = POWER_LIMIT2;
+-		break;
+-	case PL4_ENABLE:
+-		prim = POWER_LIMIT4;
+-		break;
+-	default:
+-		cpus_read_unlock();
+-		return -EINVAL;
+-	}
+-	if (rapl_read_data_raw(rd, prim, true, &val))
+-		ret = -EIO;
+-	else
++	ret = rapl_read_pl_data(rd, id, PL_LIMIT, true, &val);
++	if (!ret)
+ 		*data = val;
+ 
+-get_exit:
+ 	cpus_read_unlock();
+ 
+ 	return ret;
+@@ -427,23 +442,9 @@ static int set_time_window(struct powercap_zone *power_zone, int cid,
+ 	cpus_read_lock();
+ 	rd = power_zone_to_rapl_domain(power_zone);
+ 	id = contraint_to_pl(rd, cid);
+-	if (id < 0) {
+-		ret = id;
+-		goto set_time_exit;
+-	}
+ 
+-	switch (rd->rpl[id].prim_id) {
+-	case PL1_ENABLE:
+-		rapl_write_data_raw(rd, TIME_WINDOW1, window);
+-		break;
+-	case PL2_ENABLE:
+-		rapl_write_data_raw(rd, TIME_WINDOW2, window);
+-		break;
+-	default:
+-		ret = -EINVAL;
+-	}
++	ret = rapl_write_pl_data(rd, id, PL_TIME_WINDOW, window);
+ 
+-set_time_exit:
+ 	cpus_read_unlock();
+ 	return ret;
+ }
+@@ -459,33 +460,11 @@ static int get_time_window(struct powercap_zone *power_zone, int cid,
+ 	cpus_read_lock();
+ 	rd = power_zone_to_rapl_domain(power_zone);
+ 	id = contraint_to_pl(rd, cid);
+-	if (id < 0) {
+-		ret = id;
+-		goto get_time_exit;
+-	}
+ 
+-	switch (rd->rpl[id].prim_id) {
+-	case PL1_ENABLE:
+-		ret = rapl_read_data_raw(rd, TIME_WINDOW1, true, &val);
+-		break;
+-	case PL2_ENABLE:
+-		ret = rapl_read_data_raw(rd, TIME_WINDOW2, true, &val);
+-		break;
+-	case PL4_ENABLE:
+-		/*
+-		 * Time window parameter is not applicable for PL4 entry
+-		 * so assigining '0' as default value.
+-		 */
+-		val = 0;
+-		break;
+-	default:
+-		cpus_read_unlock();
+-		return -EINVAL;
+-	}
++	ret = rapl_read_pl_data(rd, id, PL_TIME_WINDOW, true, &val);
+ 	if (!ret)
+ 		*data = val;
+ 
+-get_time_exit:
+ 	cpus_read_unlock();
+ 
+ 	return ret;
+@@ -505,36 +484,23 @@ static const char *get_constraint_name(struct powercap_zone *power_zone,
+ 	return NULL;
+ }
+ 
+-static int get_max_power(struct powercap_zone *power_zone, int id, u64 *data)
++static int get_max_power(struct powercap_zone *power_zone, int cid, u64 *data)
+ {
+ 	struct rapl_domain *rd;
+ 	u64 val;
+-	int prim;
+ 	int ret = 0;
++	int id;
+ 
+ 	cpus_read_lock();
+ 	rd = power_zone_to_rapl_domain(power_zone);
+-	switch (rd->rpl[id].prim_id) {
+-	case PL1_ENABLE:
+-		prim = THERMAL_SPEC_POWER;
+-		break;
+-	case PL2_ENABLE:
+-		prim = MAX_POWER;
+-		break;
+-	case PL4_ENABLE:
+-		prim = MAX_POWER;
+-		break;
+-	default:
+-		cpus_read_unlock();
+-		return -EINVAL;
+-	}
+-	if (rapl_read_data_raw(rd, prim, true, &val))
+-		ret = -EIO;
+-	else
++	id = contraint_to_pl(rd, cid);
++
++	ret = rapl_read_pl_data(rd, id, PL_MAX_POWER, true, &val);
++	if (!ret)
+ 		*data = val;
+ 
+ 	/* As a generalization rule, PL4 would be around two times PL2. */
+-	if (rd->rpl[id].prim_id == PL4_ENABLE)
++	if (id == POWER_LIMIT4)
+ 		*data = *data * 2;
+ 
+ 	cpus_read_unlock();
+@@ -561,6 +527,7 @@ static void rapl_init_domains(struct rapl_package *rp)
+ 
+ 	for (i = 0; i < RAPL_DOMAIN_MAX; i++) {
+ 		unsigned int mask = rp->domain_map & (1 << i);
++		int t;
+ 
+ 		if (!mask)
+ 			continue;
+@@ -578,17 +545,10 @@ static void rapl_init_domains(struct rapl_package *rp)
+ 
+ 		/* PL1 is supported by default */
+ 		rp->priv->limits[i] |= BIT(POWER_LIMIT1);
+-		rd->rpl[0].prim_id = PL1_ENABLE;
+-		rd->rpl[0].name = pl1_name;
+-
+-		if (rp->priv->limits[i] & BIT(POWER_LIMIT2)) {
+-			rd->rpl[1].prim_id = PL2_ENABLE;
+-			rd->rpl[1].name = pl2_name;
+-		}
+ 
+-		if (rp->priv->limits[i] & BIT(POWER_LIMIT4)) {
+-			rd->rpl[2].prim_id = PL4_ENABLE;
+-			rd->rpl[2].name = pl4_name;
++		for (t = POWER_LIMIT1; t < NR_POWER_LIMITS; t++) {
++			if (rp->priv->limits[i] & BIT(t))
++				rd->rpl[t].name = pl_names[t];
+ 		}
+ 
+ 		for (j = 0; j < RAPL_DOMAIN_REG_MAX; j++)
+@@ -842,6 +802,33 @@ static int rapl_write_data_raw(struct rapl_domain *rd,
+ 	return ret;
+ }
+ 
++static int rapl_read_pl_data(struct rapl_domain *rd, int pl,
++			      enum pl_prims pl_prim, bool xlate, u64 *data)
++{
++	enum rapl_primitives prim = get_pl_prim(pl, pl_prim);
++
++	if (!is_pl_valid(rd, pl))
++		return -EINVAL;
++
++	return rapl_read_data_raw(rd, prim, xlate, data);
++}
++
++static int rapl_write_pl_data(struct rapl_domain *rd, int pl,
++			       enum pl_prims pl_prim,
++			       unsigned long long value)
++{
++	enum rapl_primitives prim = get_pl_prim(pl, pl_prim);
++
++	if (!is_pl_valid(rd, pl))
++		return -EINVAL;
++
++	if (rd->state & DOMAIN_STATE_BIOS_LOCKED) {
++		pr_warn("%s:%s:%s locked by BIOS\n", rd->rp->name, rd->name, pl_names[pl]);
++		return -EACCES;
++	}
++
++	return rapl_write_data_raw(rd, prim, value);
++}
+ /*
+  * Raw RAPL data stored in MSRs are in certain scales. We need to
+  * convert them into standard units based on the units reported in
+@@ -969,17 +956,16 @@ static void package_power_limit_irq_restore(struct rapl_package *rp)
+ 
+ static void set_floor_freq_default(struct rapl_domain *rd, bool mode)
+ {
+-	int nr_powerlimit = find_nr_power_limit(rd);
++	int i;
+ 
+ 	/* always enable clamp such that p-state can go below OS requested
+ 	 * range. power capping priority over guranteed frequency.
+ 	 */
+-	rapl_write_data_raw(rd, PL1_CLAMP, mode);
++	rapl_write_pl_data(rd, POWER_LIMIT1, PL_CLAMP, mode);
+ 
+-	/* some domains have pl2 */
+-	if (nr_powerlimit > 1) {
+-		rapl_write_data_raw(rd, PL2_ENABLE, mode);
+-		rapl_write_data_raw(rd, PL2_CLAMP, mode);
++	for (i = POWER_LIMIT2; i < NR_POWER_LIMITS; i++) {
++		rapl_write_pl_data(rd, i, PL_ENABLE, mode);
++		rapl_write_pl_data(rd, i, PL_CLAMP, mode);
+ 	}
+ }
+ 
+@@ -1306,11 +1292,10 @@ static void rapl_detect_powerlimit(struct rapl_domain *rd)
+ 			rd->state |= DOMAIN_STATE_BIOS_LOCKED;
+ 		}
+ 	}
+-	/* check if power limit MSR exists, otherwise domain is monitoring only */
+-	for (i = 0; i < NR_POWER_LIMITS; i++) {
+-		int prim = rd->rpl[i].prim_id;
+ 
+-		if (rapl_read_data_raw(rd, prim, false, &val64))
++	/* check if power limit exists, otherwise domain is monitoring only */
++	for (i = POWER_LIMIT1; i < NR_POWER_LIMITS; i++) {
++		if (rapl_read_pl_data(rd, i, PL_ENABLE, false, &val64))
+ 			rd->rpl[i].name = NULL;
+ 	}
+ }
+@@ -1358,13 +1343,13 @@ void rapl_remove_package(struct rapl_package *rp)
+ 	package_power_limit_irq_restore(rp);
+ 
+ 	for (rd = rp->domains; rd < rp->domains + rp->nr_domains; rd++) {
+-		rapl_write_data_raw(rd, PL1_ENABLE, 0);
+-		rapl_write_data_raw(rd, PL1_CLAMP, 0);
+-		if (find_nr_power_limit(rd) > 1) {
+-			rapl_write_data_raw(rd, PL2_ENABLE, 0);
+-			rapl_write_data_raw(rd, PL2_CLAMP, 0);
+-			rapl_write_data_raw(rd, PL4_ENABLE, 0);
++		int i;
++
++		for (i = POWER_LIMIT1; i < NR_POWER_LIMITS; i++) {
++			rapl_write_pl_data(rd, i, PL_ENABLE, 0);
++			rapl_write_pl_data(rd, i, PL_CLAMP, 0);
+ 		}
++
+ 		if (rd->id == RAPL_DOMAIN_PACKAGE) {
+ 			rd_package = rd;
+ 			continue;
+@@ -1451,38 +1436,18 @@ static void power_limit_state_save(void)
+ {
+ 	struct rapl_package *rp;
+ 	struct rapl_domain *rd;
+-	int nr_pl, ret, i;
++	int ret, i;
+ 
+ 	cpus_read_lock();
+ 	list_for_each_entry(rp, &rapl_packages, plist) {
+ 		if (!rp->power_zone)
+ 			continue;
+ 		rd = power_zone_to_rapl_domain(rp->power_zone);
+-		nr_pl = find_nr_power_limit(rd);
+-		for (i = 0; i < nr_pl; i++) {
+-			switch (rd->rpl[i].prim_id) {
+-			case PL1_ENABLE:
+-				ret = rapl_read_data_raw(rd,
+-						 POWER_LIMIT1, true,
++		for (i = POWER_LIMIT1; i < NR_POWER_LIMITS; i++) {
++			ret = rapl_read_pl_data(rd, i, PL_LIMIT, true,
+ 						 &rd->rpl[i].last_power_limit);
+-				if (ret)
+-					rd->rpl[i].last_power_limit = 0;
+-				break;
+-			case PL2_ENABLE:
+-				ret = rapl_read_data_raw(rd,
+-						 POWER_LIMIT2, true,
+-						 &rd->rpl[i].last_power_limit);
+-				if (ret)
+-					rd->rpl[i].last_power_limit = 0;
+-				break;
+-			case PL4_ENABLE:
+-				ret = rapl_read_data_raw(rd,
+-						 POWER_LIMIT4, true,
+-						 &rd->rpl[i].last_power_limit);
+-				if (ret)
+-					rd->rpl[i].last_power_limit = 0;
+-				break;
+-			}
++			if (ret)
++				rd->rpl[i].last_power_limit = 0;
+ 		}
+ 	}
+ 	cpus_read_unlock();
+@@ -1492,33 +1457,17 @@ static void power_limit_state_restore(void)
+ {
+ 	struct rapl_package *rp;
+ 	struct rapl_domain *rd;
+-	int nr_pl, i;
++	int i;
+ 
+ 	cpus_read_lock();
+ 	list_for_each_entry(rp, &rapl_packages, plist) {
+ 		if (!rp->power_zone)
+ 			continue;
+ 		rd = power_zone_to_rapl_domain(rp->power_zone);
+-		nr_pl = find_nr_power_limit(rd);
+-		for (i = 0; i < nr_pl; i++) {
+-			switch (rd->rpl[i].prim_id) {
+-			case PL1_ENABLE:
+-				if (rd->rpl[i].last_power_limit)
+-					rapl_write_data_raw(rd, POWER_LIMIT1,
+-					    rd->rpl[i].last_power_limit);
+-				break;
+-			case PL2_ENABLE:
+-				if (rd->rpl[i].last_power_limit)
+-					rapl_write_data_raw(rd, POWER_LIMIT2,
+-					    rd->rpl[i].last_power_limit);
+-				break;
+-			case PL4_ENABLE:
+-				if (rd->rpl[i].last_power_limit)
+-					rapl_write_data_raw(rd, POWER_LIMIT4,
+-					    rd->rpl[i].last_power_limit);
+-				break;
+-			}
+-		}
++		for (i = POWER_LIMIT1; i < NR_POWER_LIMITS; i++)
++			if (rd->rpl[i].last_power_limit)
++				rapl_write_pl_data(rd, i, PL_LIMIT,
++					       rd->rpl[i].last_power_limit);
+ 	}
+ 	cpus_read_unlock();
+ }
+diff --git a/include/linux/intel_rapl.h b/include/linux/intel_rapl.h
+index 50098e641181a..565992b2a079a 100644
+--- a/include/linux/intel_rapl.h
++++ b/include/linux/intel_rapl.h
+@@ -78,7 +78,6 @@ struct rapl_domain_data {
+ 
+ struct rapl_power_limit {
+ 	struct powercap_zone_constraint *constraint;
+-	int prim_id;		/* primitive ID used to enable */
+ 	struct rapl_domain *domain;
+ 	const char *name;
+ 	u64 last_power_limit;
 -- 
 2.39.5
 
