@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-163444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 366D4B0B31F
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 04:01:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0173FB0B320
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 04:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B70597AC42B
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 02:00:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21A5B17AF70
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 02:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660E91487C3;
-	Sun, 20 Jul 2025 02:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7737E14B086;
+	Sun, 20 Jul 2025 02:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="iAw9G0zg"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="k5of67dr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229AA208CA;
-	Sun, 20 Jul 2025 02:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382277DA6A;
+	Sun, 20 Jul 2025 02:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752976892; cv=none; b=Uu6SHo8CF58CFz7Vv2bRF5euAvDWiAWvsYFeJj56c/2BPL0mAudfS6nazy8VPMZeHiBhC4VXYXwlNZjWa3U/4xgQkMbUzYoK3EszbzUg4RlFvGp1VE25TdZTJLOaafHNVzQJI9paqEt4JHvZgoI3ufTg/+Q3TIucYmIV+GAteW4=
+	t=1752976924; cv=none; b=Y+jPH62ccuR3TJMOYbYTJePH1NVuT3NgsRGSMkc4AGj37HvGXhT8EX7X3S2GqR4dHM2zDydg9XLLo4Ha9nNLELDftsz2sgLeNlNGNOfIvBjUMDEbg1WGzU6cGqr7pbbOjSfcDbYb7HNtxZMSpgw2ImeB+RpjFdNa5zgBewCdV8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752976892; c=relaxed/simple;
-	bh=R6Q65nkhf9SMmJHRgUq22aqQR5FnPcJTj7ZXdz8VVJM=;
-	h=Date:To:From:Subject:Message-Id; b=rgTTb2PYmBBU9jELGUE3PqYQsobVA0NJDoL1NJEG0h70WTvZHADe5q5jhDuIzYf0DIoLwMYLezmDAK6QiWy0pJELg4Ccc2Vvk83ZxWN21F83zccKCgoJvR6w29pkNXRroK2ue/fQJGXaDxJ9KktcjD8AffoxsuYg7CCHHbYknbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=iAw9G0zg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8FBC4CEE3;
-	Sun, 20 Jul 2025 02:01:31 +0000 (UTC)
+	s=arc-20240116; t=1752976924; c=relaxed/simple;
+	bh=+TC7AhSX/YHo7W07SijnNW3U1hQo7WM26irAc/JT6xw=;
+	h=Date:To:From:Subject:Message-Id; b=ZgegjfuEeRtXUbrWpqpo0iDfxPOMLV+ZL1jho/q4FJ8Zz6iTePsAAVCM2/iRt7l2VDjFItKZr7jCurXIQbzTOqmLvzdHfQqls5IFM2P4RfJYKnChblIU+fzwvj/xN78JuYj+xV3XpLIEZ+eaiXQprCNosuWy4wDk5UG3PRR1Pjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=k5of67dr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD216C4CEE3;
+	Sun, 20 Jul 2025 02:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752976892;
-	bh=R6Q65nkhf9SMmJHRgUq22aqQR5FnPcJTj7ZXdz8VVJM=;
+	s=korg; t=1752976923;
+	bh=+TC7AhSX/YHo7W07SijnNW3U1hQo7WM26irAc/JT6xw=;
 	h=Date:To:From:Subject:From;
-	b=iAw9G0zgSoKqcKQyizpjGV0uzYhlIR3cmyyIVRo8CIU/aXPODhsNigYhJLOc8E1vq
-	 L34PcvIV8R5KrZFUS9NTnohCr7i2nihtCAkdsuLNMVX65s+LqMRJhpKZUEpSiTr3E0
-	 OzdjwfcMu5Fz66f7sTYFr6cnP9ZOnJ2ptKBfUfx0=
-Date: Sat, 19 Jul 2025 19:01:31 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,ravis.opensrc@micron.com,corbet@lwn.net,bijantabatab@micron.com,akpm@linux-foundation.org
+	b=k5of67drjYzAnKQ6+FjCV/qQGRDRP5WV+9XklsqDQCfJ6RaX/oWo/dISEUcEEl5sZ
+	 bGJU9YetiuDOmo3LSvkFEL+bXuWt6SmUADxyDfl4ulI3cj8iP2bglrhlP7Uia6hcgm
+	 B8MCTG5tJBBAhjZIIlRoyyj3haoxvwsprKesfAe0=
+Date: Sat, 19 Jul 2025 19:02:02 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nathan@kernel.org,morbo@google.com,leonro@nvidia.com,justinstitt@google.com,jglisse@redhat.com,apopple@nvidia.com,andriy.shevchenko@linux.intel.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-damon-core-commit-damos-target_nid.patch removed from -mm tree
-Message-Id: <20250720020131.EA8FBC4CEE3@smtp.kernel.org>
+Subject: [merged mm-stable] mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery.patch removed from -mm tree
+Message-Id: <20250720020203.AD216C4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,51 +50,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/damon/core: commit damos->target_nid
+     Subject: mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
 has been removed from the -mm tree.  Its filename was
-     mm-damon-core-commit-damos-target_nid.patch
+     mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Bijan Tabatabai <bijantabatab@micron.com>
-Subject: mm/damon/core: commit damos->target_nid
-Date: Tue, 8 Jul 2025 19:47:29 -0500
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
+Date: Thu, 10 Jul 2025 11:23:53 +0300
 
-When committing new scheme parameters from the sysfs, the target_nid field
-of the damos struct would not be copied.  This would result in the
-target_nid field to retain its original value, despite being updated in
-the sysfs interface.
+When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
+clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
 
-This patch fixes this issue by copying target_nid in damos_commit().
+  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
 
-Link: https://lkml.kernel.org/r/20250709004729.17252-1-bijan311@gmail.com
-Fixes: 83dc7bbaecae ("mm/damon/sysfs: use damon_commit_ctx()")
-Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Ravi Shankar Jonnalagadda <ravis.opensrc@micron.com>
+Fix this by moving the function to the respective existing ifdeffery
+for its the only user.
+
+See also:
+
+  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
+
+Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
+Fixes: 992de9a8b751 ("mm/hmm: allow to mirror vma of a file on a DAX backed filesystem")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Jerome Glisse <jglisse@redhat.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/hmm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/core.c~mm-damon-core-commit-damos-target_nid
-+++ a/mm/damon/core.c
-@@ -978,6 +978,7 @@ static int damos_commit(struct damos *ds
- 		return err;
+--- a/mm/hmm.c~mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery
++++ a/mm/hmm.c
+@@ -183,6 +183,7 @@ static inline unsigned long hmm_pfn_flag
+ 	return order << HMM_PFN_ORDER_SHIFT;
+ }
  
- 	dst->wmarks = src->wmarks;
-+	dst->target_nid = src->target_nid;
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ static inline unsigned long pmd_to_hmm_pfn_flags(struct hmm_range *range,
+ 						 pmd_t pmd)
+ {
+@@ -193,7 +194,6 @@ static inline unsigned long pmd_to_hmm_p
+ 	       hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
+ }
  
- 	err = damos_commit_filters(dst, src);
- 	return err;
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
+ 			      unsigned long end, unsigned long hmm_pfns[],
+ 			      pmd_t pmd)
 _
 
-Patches currently in -mm which might be from bijantabatab@micron.com are
+Patches currently in -mm which might be from andriy.shevchenko@linux.intel.com are
 
 
 
