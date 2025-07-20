@@ -1,175 +1,123 @@
-Return-Path: <stable+bounces-163467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CEE1B0B707
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 18:49:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE228B0B771
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 19:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BC0C1894004
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 16:50:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FE883BC403
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 17:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056FE20E718;
-	Sun, 20 Jul 2025 16:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB4D22172E;
+	Sun, 20 Jul 2025 17:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XeQ8XcS6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/YCS9sr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15851917F1
-	for <stable@vger.kernel.org>; Sun, 20 Jul 2025 16:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1299F1CA81;
+	Sun, 20 Jul 2025 17:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753030181; cv=none; b=hwe39KlW4/3uGQwoRp9iEHHk6bmTlwZRfCtRegHjKbWeN8YYehVO73SuIi35D49JBC7cdFrr5mZo0WnmgXc1TRdgElqio02+kmw/qS4nNiS27dgPOYF6VFUb2PR3oLOC1spGzpq51E3yxdcxeK7jVwiMQVNFOtbEj6WIQ1ChXFM=
+	t=1753033182; cv=none; b=TXWmt98yRfI7uZaAtksLYbE8bMbWTTpMfSMyMx6fSqBZ3zP7RBZ8KRBtAiBl61XGLPiWmOCYSX1mlgEjD1gWHnroJXLJGQq4KsB5tapm2zysdILAVmY6yFqRek5Od9e+hLA0ptpOGEKnLgte/kEgVCVSedIFamCJVoVxXmC9GLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753030181; c=relaxed/simple;
-	bh=TGt5VRNsSOq9eM2rIsMUTfp5nc9cnTUi8xCUr50huHU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q8jIkrMiI0S/6jU9eMOA+MTXMpZHlfxDUQlT4ZZgkRYtsajQ38b9xo2sizD5ouVR6Py7nWb99YY9hAHpQ43ttV8PNsQMTiT/0Qn58QY2A4Kq1iDPXyw9aQhwQi2dn6bP/NuwRypI/JeQNwFq8df8eaUtY9rogY/jwL3+JDbjKPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XeQ8XcS6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBCFC4CEF6;
-	Sun, 20 Jul 2025 16:49:40 +0000 (UTC)
+	s=arc-20240116; t=1753033182; c=relaxed/simple;
+	bh=kHdJnWMZ/uSXE2znXW0wKKZ9+EwYpTW2ogmdFfsxD/s=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=p9T0Yr993B59SYgT1MKRvXg67qj10hSa1GnvOm3rbfjyDrSBtgkFWQM6boYDzMdj/dJTbkQuLRAxKOs9L5bWKIwaxagvN3dNGcL81Z6dz6YENbK75PX2KbhWULObeHQm/bmEKWTW9OSGxD2+Mfel5vy4myOPxW73BhqN/Sj+DSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/YCS9sr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86834C4CEE7;
+	Sun, 20 Jul 2025 17:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753030181;
-	bh=TGt5VRNsSOq9eM2rIsMUTfp5nc9cnTUi8xCUr50huHU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XeQ8XcS6BLHy3MQAvitIxAA5S+cwBUngHPjCobRD/JKN2LSgfBeGnQF8agjTM5J2y
-	 4EqTYt23oH6+wAgDJj8++i5N1TFj0YQlOT9QZzu+UqS8/JfQdgk1jejyWYhP1nt9no
-	 6DixYZOv7AT3+3J6I0rWERDt0oVcKjyavGstzguw/qozkmAGgXws3uyL9CSsZZY6Ac
-	 WrpRiOrtwJ/UjnJV+Qm89JXYo0r2cgl0pU6x0WDZrUF8aD7ATp6Q9XE7Alo6cb40TP
-	 MZRJEpa7C/HmBIctcGJsxhguakUUI/CYLQzwXNRKc/petoYV1PI5k5AtAlyU93z2dZ
-	 jCCEclVyLGRGg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Bui Quang Minh <minhquangbui99@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] virtio-net: ensure the received length does not exceed allocated size
-Date: Sun, 20 Jul 2025 12:49:36 -0400
-Message-Id: <20250720164936.546824-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025070649-bauble-banish-de72@gregkh>
-References: <2025070649-bauble-banish-de72@gregkh>
+	s=k20201202; t=1753033181;
+	bh=kHdJnWMZ/uSXE2znXW0wKKZ9+EwYpTW2ogmdFfsxD/s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=N/YCS9sr96beqAk3VqRCOHJ8lDgeb19X3LRh4clOUTA3bg1nh6Xglz5/7crHSwMLi
+	 l2eTe5SBAHQjB6gFSyF15O7Frw9DibTEuLntVliH3m0ij0Q95OrlTL8KFlLCaxPDbH
+	 yjhHylKFBaVnsdwLSmGWEYPwSfpkfURIF6qkvWtrSuw1K5/6ZT7+zOUDpOsvbws8Z6
+	 ZvjhRVQ1R+lwn5AzCwQDPT9FxN/D+WmFHhXuHzvID79QwFG49jgRwBJfeeUZSH+Epv
+	 a9ftMTp5KknEMwD0RjtYl/UMrMrTTgs56tQuST8fYIGevJSPXImkcRvGWUsbL/+cKg
+	 BUEkgiBGmlGQA==
+Received: from disco-boy.misterjones.org ([217.182.43.188] helo=www.loen.fr)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1udY0h-00HONo-4C;
+	Sun, 20 Jul 2025 18:39:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Sun, 20 Jul 2025 18:39:38 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose
+ <suzuki.poulose@arm.com>, Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu
+ <yuzenghui@huawei.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: Filter out HCR_EL2.VSE when running in
+ hypervisor context
+In-Reply-To: <20250720113334.218099-1-maz@kernel.org>
+References: <20250720113334.218099-1-maz@kernel.org>
+User-Agent: Roundcube Webmail/1.4.15
+Message-ID: <7e78eca5652baa9f0fefd4242066c966@kernel.org>
+X-Sender: maz@kernel.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 217.182.43.188
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+On 2025-07-20 12:33, Marc Zyngier wrote:
+> HCR_EL2.VSE is delivering a virtual SError to the guest, and does not
+> affect EL2 itself. However, when computing the host's HCR_EL2 value,
+> we take the guest's view of HCR_EL2.VSE at face value, and apply it
+> irrespective of the guest's exception level we are returning to.
+> 
+> The result is that a L1 hypervisor injecting a virtual SError to an L2
+> by setting its HCR_EL2.VSE to 1 results in itself getting the SError
+> as if it was a physical one if it traps for any reason before returning
+> to L2.
+> 
+> Fix it by filtering HCR_EL2.VSE out when entering the L1 host context.
+> 
+> Fixes: 04ab519bb86df ("KVM: arm64: nv: Configure HCR_EL2 for FEAT_NV2")
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Cc: stable@vger.kernel.org
+> ---
+>  arch/arm64/kvm/hyp/vhe/switch.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/hyp/vhe/switch.c 
+> b/arch/arm64/kvm/hyp/vhe/switch.c
+> index 477f1580ffeaa..eddda649d9ee1 100644
+> --- a/arch/arm64/kvm/hyp/vhe/switch.c
+> +++ b/arch/arm64/kvm/hyp/vhe/switch.c
+> @@ -68,6 +68,9 @@ static u64 __compute_hcr(struct kvm_vcpu *vcpu)
+>  		if (!vcpu_el2_e2h_is_set(vcpu))
+>  			hcr |= HCR_NV1;
+> 
+> +		/* Virtual SErrors only apply to L2, not L1 */
+> +		guest_hcr &= ~HCR_VSE;
+> +
+>  		write_sysreg_s(vcpu->arch.ctxt.vncr_array, SYS_VNCR_EL2);
+>  	} else {
+>  		host_data_clear_flag(VCPU_IN_HYP_CONTEXT);
 
-[ Upstream commit 315dbdd7cdf6aa533829774caaf4d25f1fd20e73 ]
+Actually, a better fix would be just nuke any bit that doesn't affect
+the HYP context. And that's almost all of them, bar the RES1 bits.
 
-In xdp_linearize_page, when reading the following buffers from the ring,
-we forget to check the received length with the true allocate size. This
-can lead to an out-of-bound read. This commit adds that missing check.
+I'll repost something once I am done dealing with the rest of the RAS
+enabling stuff.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://patch.msgid.link/20250630144212.48471-2-minhquangbui99@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ adapted virtqueue_get_buf() to virtqueue_get_buf_ctx() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/virtio_net.c | 38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 99dea89b26788..5698683779eed 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -394,6 +394,26 @@ static unsigned int mergeable_ctx_to_truesize(void *mrg_ctx)
- 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
- }
- 
-+static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
-+			       unsigned int len)
-+{
-+	unsigned int headroom, tailroom, room, truesize;
-+
-+	truesize = mergeable_ctx_to_truesize(mrg_ctx);
-+	headroom = mergeable_ctx_to_headroom(mrg_ctx);
-+	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
-+	room = SKB_DATA_ALIGN(headroom + tailroom);
-+
-+	if (len > truesize - room) {
-+		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
-+			 dev->name, len, (unsigned long)(truesize - room));
-+		dev->stats.rx_length_errors++;
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
- /* Called from bottom half context */
- static struct sk_buff *page_to_skb(struct virtnet_info *vi,
- 				   struct receive_queue *rq,
-@@ -639,7 +659,8 @@ static unsigned int virtnet_get_headroom(struct virtnet_info *vi)
-  * across multiple buffers (num_buf > 1), and we make sure buffers
-  * have enough headroom.
-  */
--static struct page *xdp_linearize_page(struct receive_queue *rq,
-+static struct page *xdp_linearize_page(struct net_device *dev,
-+				       struct receive_queue *rq,
- 				       u16 *num_buf,
- 				       struct page *p,
- 				       int offset,
-@@ -659,18 +680,27 @@ static struct page *xdp_linearize_page(struct receive_queue *rq,
- 	memcpy(page_address(page) + page_off, page_address(p) + offset, *len);
- 	page_off += *len;
- 
-+	/* Only mergeable mode can go inside this while loop. In small mode,
-+	 * *num_buf == 1, so it cannot go inside.
-+	 */
- 	while (--*num_buf) {
- 		unsigned int buflen;
- 		void *buf;
-+		void *ctx;
- 		int off;
- 
--		buf = virtqueue_get_buf(rq->vq, &buflen);
-+		buf = virtqueue_get_buf_ctx(rq->vq, &buflen, &ctx);
- 		if (unlikely(!buf))
- 			goto err_buf;
- 
- 		p = virt_to_head_page(buf);
- 		off = buf - page_address(p);
- 
-+		if (check_mergeable_len(dev, ctx, buflen)) {
-+			put_page(p);
-+			goto err_buf;
-+		}
-+
- 		/* guard against a misconfigured or uncooperative backend that
- 		 * is sending packet larger than the MTU.
- 		 */
-@@ -745,7 +775,7 @@ static struct sk_buff *receive_small(struct net_device *dev,
- 			headroom = vi->hdr_len + header_offset;
- 			buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
- 				 SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--			xdp_page = xdp_linearize_page(rq, &num_buf, page,
-+			xdp_page = xdp_linearize_page(dev, rq, &num_buf, page,
- 						      offset, header_offset,
- 						      &tlen);
- 			if (!xdp_page)
-@@ -916,7 +946,7 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 		if (unlikely(num_buf > 1 ||
- 			     headroom < virtnet_get_headroom(vi))) {
- 			/* linearize data for XDP */
--			xdp_page = xdp_linearize_page(rq, &num_buf,
-+			xdp_page = xdp_linearize_page(dev, rq, &num_buf,
- 						      page, offset,
- 						      VIRTIO_XDP_HEADROOM,
- 						      &len);
+         M.
 -- 
-2.39.5
-
+Jazz is not dead. It just smells funny...
 
