@@ -1,117 +1,150 @@
-Return-Path: <stable+bounces-163445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0173FB0B320
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 04:02:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B0CB0B32E
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 04:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21A5B17AF70
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 02:02:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E83FC3A2CFC
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 02:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7737E14B086;
-	Sun, 20 Jul 2025 02:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC3416DEB3;
+	Sun, 20 Jul 2025 02:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="k5of67dr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ft3Q3eDt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382277DA6A;
-	Sun, 20 Jul 2025 02:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6937515687D
+	for <stable@vger.kernel.org>; Sun, 20 Jul 2025 02:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752976924; cv=none; b=Y+jPH62ccuR3TJMOYbYTJePH1NVuT3NgsRGSMkc4AGj37HvGXhT8EX7X3S2GqR4dHM2zDydg9XLLo4Ha9nNLELDftsz2sgLeNlNGNOfIvBjUMDEbg1WGzU6cGqr7pbbOjSfcDbYb7HNtxZMSpgw2ImeB+RpjFdNa5zgBewCdV8Q=
+	t=1752978387; cv=none; b=vDCzyiEj0Bd4xFnuhni6ipxzs9uepJ6oEkQsWaIpd4PM32XBVrVRSroLdKjsZ9Z/P8lGDQlCfuxbuGi3WxblfvETYyTiW6Qf+Saox6+9jC5J2ZDyeT+3RoQHmMJQsAzfnUNl17yFX6DnnHFAXQHPhZ0qxL7phmTZXVv+VQQRu9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752976924; c=relaxed/simple;
-	bh=+TC7AhSX/YHo7W07SijnNW3U1hQo7WM26irAc/JT6xw=;
-	h=Date:To:From:Subject:Message-Id; b=ZgegjfuEeRtXUbrWpqpo0iDfxPOMLV+ZL1jho/q4FJ8Zz6iTePsAAVCM2/iRt7l2VDjFItKZr7jCurXIQbzTOqmLvzdHfQqls5IFM2P4RfJYKnChblIU+fzwvj/xN78JuYj+xV3XpLIEZ+eaiXQprCNosuWy4wDk5UG3PRR1Pjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=k5of67dr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD216C4CEE3;
-	Sun, 20 Jul 2025 02:02:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1752976923;
-	bh=+TC7AhSX/YHo7W07SijnNW3U1hQo7WM26irAc/JT6xw=;
-	h=Date:To:From:Subject:From;
-	b=k5of67drjYzAnKQ6+FjCV/qQGRDRP5WV+9XklsqDQCfJ6RaX/oWo/dISEUcEEl5sZ
-	 bGJU9YetiuDOmo3LSvkFEL+bXuWt6SmUADxyDfl4ulI3cj8iP2bglrhlP7Uia6hcgm
-	 B8MCTG5tJBBAhjZIIlRoyyj3haoxvwsprKesfAe0=
-Date: Sat, 19 Jul 2025 19:02:02 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nathan@kernel.org,morbo@google.com,leonro@nvidia.com,justinstitt@google.com,jglisse@redhat.com,apopple@nvidia.com,andriy.shevchenko@linux.intel.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery.patch removed from -mm tree
-Message-Id: <20250720020203.AD216C4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1752978387; c=relaxed/simple;
+	bh=Hd7gue88Rk/fRxgT1hV0IcqNe0wgxxLH0peBNp9Pp9Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cvb8zqx2vUYlzOIqz1Nx2wBPfGS4qacn1Sg1attnO4vaWIWCWsV2QD5EyvNfkiu1fk0Q7qLHHg8Gt55+JUyDq4VW2y0Dl4niMX2zRl0gsSe4hTuWOWnh443lZkMb7aXFIsyrrC+o9t3eo2xiUU5k47A5IHFEC/KBTVwfdPIt0cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ft3Q3eDt; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b3220c39cffso3218680a12.0
+        for <stable@vger.kernel.org>; Sat, 19 Jul 2025 19:26:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752978386; x=1753583186; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KhyN6g213CxFBMoSnw4dVmnZkCbj4Ce0pW0dZgtLzbI=;
+        b=Ft3Q3eDt1SzOhyznSEueyRLP22C9hEmbUAEZ22wZU+RFp/y+FMjBfhPP5mVYIhO7Kn
+         4giLS16IBgLPHN74NxsslYuvbBxJWyVlWzVY2Y7evTSmsi7nWkYq8D4gNIi74lVJepc9
+         xNuwPQ23RhpJOs8t9e17bgl+hQtVLeem4VlWCtXxb9eN5R2r+KiKbDMJONqlALdeKFiY
+         leA16IzuDtoLhRjYNFu7cikvMZFqVjcBKYvWSL1XXQRHGc8BwZt+ajAd4NvvOgFmIk+6
+         TkAms41whvN9LgvIl4fDA09EdigoMwZHD/qjEMAV34bo9NFYxKcEeqzBc+capFEgPgOs
+         Q+Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752978386; x=1753583186;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KhyN6g213CxFBMoSnw4dVmnZkCbj4Ce0pW0dZgtLzbI=;
+        b=VdvnMxGxFFzLggGqdtK5/KkFXVqEdp5/F8XmHYwlLlmkMg7+k3mw5lbVAkASWxoEQi
+         dP6Re2mSqjERMyjIl3NANkXtgspX4WfkSfDhfg24QICxnlbNUu7dbeXzD1esWaZlfK03
+         DLZg1AjXagdMXOymXVBTdKrxsipg45cN8dfItQ+aBLQm7mClOINKF1fRjwbbfBnhI2/Q
+         muGHoqgmqnT3J3ToLLCcegTTJ2lVb0pSzppZWNOMBE0c2yxofIeu8fCSs5ngCh4DXrx+
+         P6L0r+JRHlN08DLV/caQ5778FUd1h+dVatugbXWpvM2/9U+6TdvAJXojQgGcb16rDrSB
+         t9CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXTHSsvBYOGlQKiaYXOXKDSma22FQ6krZQccQ8TsTbI9Cf0musutNFt2VjmrkJ/2T+xP40u38w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBBeUWP+WuPCBQ/SCcHfYmRisMuUCfFwVKCNOqf+0sKUULQt8N
+	a5H01wslpgF8EiRlsdf5lkmxduZepTHXTEDbpmw+aS7v895FLLGRTFWR
+X-Gm-Gg: ASbGncu7TH+nS3UWmLw4TPx/f7EvQiUIrSFv5k8RVhnsi7oGQv9zWQkhDzlez2nxjsh
+	/wvHsi74EOxtypbDSgaMqX2LUjmt09xPpC9JzYMhXYcDL3zYSuh0xwa7+Mh+hEoErvD+w55+Gzk
+	6EJxIaY7CHE2wxPWaV1zaO9wQdqOOeyux1LTQd8dWBT8lvb9vNl5fp/OxkYZVIGN9alo0Qzek+z
+	h4xeLZNTS5U0t2kf5wVQ9w6F+8qndpH1d2m2hOtLYW5EYwg6/pzieOmxTDs42LW2Whvdrlghbvu
+	2FyT2vTAYtfF9BwMdBiu5ELtxeMbfD4KUioisMUgknv3CGMUupanXFRdy8uC1kcpTBZhpv5yHbD
+	xQxSvQor1uRZYECytiCQUTxY=
+X-Google-Smtp-Source: AGHT+IGtHopAjgdeGilWUAH5UqAMctWU0gqXg8HnMlWj+6Gq2AnccRtvP/BCxpEyEWuVXdzADcsirQ==
+X-Received: by 2002:a05:6a21:33a7:b0:232:57c8:1bf4 with SMTP id adf61e73a8af0-23810d551bcmr26567045637.9.1752978385536;
+        Sat, 19 Jul 2025 19:26:25 -0700 (PDT)
+Received: from saturn01.. ([163.239.14.100])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c89cfb3dsm3405754b3a.34.2025.07.19.19.26.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Jul 2025 19:26:25 -0700 (PDT)
+From: Junhyeok Park <decargon123@gmail.com>
+X-Google-Original-From: Junhyeok Park <junttang@sogang.ac.kr>
+To: junttang@sogang.ac.kr
+Cc: Steve French <stfrench@microsoft.com>,
+	stable@vger.kernel.org,
+	Ralph Boehme <slow@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>
+Subject: [PATCH] Fix SMB311 posix special file creation to servers which do not advertise reparse support
+Date: Sun, 20 Jul 2025 02:26:12 +0000
+Message-Id: <20250720022612.3857405-1-junttang@sogang.ac.kr>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+From: Steve French <stfrench@microsoft.com>
 
-The quilt patch titled
-     Subject: mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
-has been removed from the -mm tree.  Its filename was
-     mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery.patch
+Some servers (including Samba), support the SMB3.1.1 POSIX Extensions (which use reparse
+points for handling special files) but do not properly advertise file system attribute
+FILE_SUPPORTS_REPARSE_POINTS.  Although we don't check for this attribute flag when
+querying special file information, we do check it when creating special files which
+causes them to fail unnecessarily.   If we have negotiated SMB3.1.1 POSIX Extensions
+with the server we can expect the server to support creating special files via
+reparse points, and even if the server fails the operation due to really forbidding
+creating special files, then it should be no problem and is more likely to return a
+more accurate rc in any case (e.g. EACCES instead of EOPNOTSUPP).
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Allow creating special files as long as the server supports either reparse points
+or the SMB3.1.1 POSIX Extensions (note that if the "sfu" mount option is specified
+it uses a different way of storing special files that does not rely on reparse points).
 
-------------------------------------------------------
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
-Date: Thu, 10 Jul 2025 11:23:53 +0300
-
-When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
-clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
-
-  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
-
-Fix this by moving the function to the respective existing ifdeffery
-for its the only user.
-
-See also:
-
-  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-
-Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
-Fixes: 992de9a8b751 ("mm/hmm: allow to mirror vma of a file on a DAX backed filesystem")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6c06be908ca19 ("cifs: Check if server supports reparse points before using them")
+Acked-by: Ralph Boehme <slow@samba.org>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
+ fs/smb/client/smb2inode.c | 3 ++-
+ fs/smb/client/smb2ops.c   | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
- mm/hmm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/hmm.c~mm-hmm-move-pmd_to_hmm_pfn_flags-to-the-respective-ifdeffery
-+++ a/mm/hmm.c
-@@ -183,6 +183,7 @@ static inline unsigned long hmm_pfn_flag
- 	return order << HMM_PFN_ORDER_SHIFT;
- }
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 2a3e46b8e15a..a11a2a693c51 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -1346,7 +1346,8 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 	 * empty object on the server.
+ 	 */
+ 	if (!(le32_to_cpu(tcon->fsAttrInfo.Attributes) & FILE_SUPPORTS_REPARSE_POINTS))
+-		return ERR_PTR(-EOPNOTSUPP);
++		if (!tcon->posix_extensions)
++			return ERR_PTR(-EOPNOTSUPP);
  
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline unsigned long pmd_to_hmm_pfn_flags(struct hmm_range *range,
- 						 pmd_t pmd)
- {
-@@ -193,7 +194,6 @@ static inline unsigned long pmd_to_hmm_p
- 	       hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
- }
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
- 			      unsigned long end, unsigned long hmm_pfns[],
- 			      pmd_t pmd)
-_
-
-Patches currently in -mm which might be from andriy.shevchenko@linux.intel.com are
-
+ 	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path,
+ 			     SYNCHRONIZE | DELETE |
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index cb659256d219..938a8a7c5d21 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -5260,7 +5260,8 @@ static int smb2_make_node(unsigned int xid, struct inode *inode,
+ 	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL) {
+ 		rc = cifs_sfu_make_node(xid, inode, dentry, tcon,
+ 					full_path, mode, dev);
+-	} else if (le32_to_cpu(tcon->fsAttrInfo.Attributes) & FILE_SUPPORTS_REPARSE_POINTS) {
++	} else if ((le32_to_cpu(tcon->fsAttrInfo.Attributes) & FILE_SUPPORTS_REPARSE_POINTS)
++		|| (tcon->posix_extensions)) {
+ 		rc = smb2_mknod_reparse(xid, inode, dentry, tcon,
+ 					full_path, mode, dev);
+ 	}
+-- 
+2.34.1
 
 
