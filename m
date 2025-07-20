@@ -1,117 +1,147 @@
-Return-Path: <stable+bounces-163456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465E4B0B499
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 11:37:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 316FDB0B4DE
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 12:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B832188C3E5
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 09:37:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D00E1791AD
+	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 10:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51ED31D5ACE;
-	Sun, 20 Jul 2025 09:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D08B1EEA5F;
+	Sun, 20 Jul 2025 10:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b="DPu8M6z0";
-	dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b="Y4D1PXcF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LR/nh38i"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911B61CBEAA
-	for <stable@vger.kernel.org>; Sun, 20 Jul 2025 09:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F8E3BB48;
+	Sun, 20 Jul 2025 10:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753004221; cv=none; b=Iq12pbC7/CdhnS5XD7nBg2KQitCaiq/+63CMYq+vUMWak+XwZ7KDrfsqZ9GnCwgJPLmPipVq2zZFWJV6ED2GEZtcGNzTsVYy6PltlMleDPnOstyZ5g0+I0VqU5z7KvFYHaSIWZsyhEtI9KTZ5FaS0puhl6VA+ZPjmeohiw1OH/A=
+	t=1753006961; cv=none; b=byP/GDh2KODUdnYLYQGnIw9Lzwq4VfqiefXxDUZZuuVPPRGfeihrPFuEVk7OwiALJPoSvrsWAzuzhCO0cI0nO/iXhgZisG91SSNbXEOKhTJd/hBFHFJMcL+fx0PC4mcF0O5ix99B82XWqW3Kbm2I2nEidWjqv9vutc5ScbMHCJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753004221; c=relaxed/simple;
-	bh=5WwKJC/pA+KQE9BiPxw7Jp5rJNjTu5pV2zon5c4Bf50=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q+ZFvqb+upQtjJj10n4u6ETFbLSqOYUKd24oHZNWGMAaS+3KwzZ5CHnQ9ECEWQwZAIoUvpw9+60n+tXQE7qdesvIIwZ67bA/4s1/84s56t6BcOIlTwoskqLDAKrrlWo6LuuRt7jkawHH6cTvA6Pk6yG+ZjifSN6Qpf1PCkgLfAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hacktheplanet.fi; spf=pass smtp.mailfrom=hacktheplanet.fi; dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b=DPu8M6z0; dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b=Y4D1PXcF; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hacktheplanet.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hacktheplanet.fi
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=gibson; bh=5WwKJC/pA+KQE
-	9BiPxw7Jp5rJNjTu5pV2zon5c4Bf50=; h=in-reply-to:references:subject:cc:
-	to:from:date; d=hacktheplanet.fi; b=DPu8M6z0aSs0JZFPMY4afnxF0+4rcCjiVw
-	nieiIlvDOzzxfcanBlP5+hDBF6r4EAVk4zllc3t4bOPwQblmsL4YGxSVU2oNg/CeYk+pu7
-	jPTlogFGo0QwntpYD9sUUMEqLeP6/oo63iHQY7h7AG6uqIAtjJpGzX7fdyUAkhSB5FZoPZ
-	JA4Nl1vP+13fDMLUYovGNwr7rkBuqEmUIHvVTJ8G3gAhApJTbUVtrXKqmwSU8OBBBd8KcR
-	yrxbxlsrseNU0OCuqJmigHHaEr9QpwBx4oLAr23KGzPbcZGHwfLcLO4aJ6jgm2+nx/QgPJ
-	C9BnrHGTOZE6u+uwsMtUf9rOmSOA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hacktheplanet.fi;
-	s=key1; t=1753004216;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uo3up7xHbQdZ4cTvJkUzgyG6dvFoOoIIwJEm7dCbrAM=;
-	b=Y4D1PXcFxzRDcd8LiwhteMWfO0QExe1YQtKrDtC8fs2Ia3XW4h2yA21d0i6lwaoFWPo1qX
-	yAq2vXYHkU2ZWw4lAwtGHBeXhFMHSt6bkc8vggn1dqcnw1kfyYT7dZaeuSbd8pz58CwsBF
-	81FuOCyE1CoxPKrUIj7EZAcqaJpEZeyVzXd+ka0DLdWYZREeMqjtuR4K5+tiVGLQkSNgrP
-	AUH/pK6t/GQbVODxsckUTdnTsrtd2k7fgfHC0RncVsbmL8jJwMXm1E94HeZDK9zKQ4pgv0
-	UsJw6blKmIlFM+HOnG9iYRez+VJeJTCk8QQ85BY448/MTSQn3Nj6Fwj7SH3dkw==
-Date: Sun, 20 Jul 2025 18:36:54 +0900
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lauri Tirkkonen <lauri@hacktheplanet.fi>
-To: Mario Limonciello <superm1@kernel.org>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
-	amd-gfx@lists.freedesktop.org, Wayne Lin <wayne.lin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [REGRESSION] [PATCH] drm/amd/display: fix initial backlight
- brightness calculation
-Message-ID: <aHy4tohvbwd1HpxI@hacktheplanet.fi>
-References: <aHn33vgj8bM4s073@hacktheplanet.fi>
- <d92458bf-fc2b-47bf-b664-9609a3978646@kernel.org>
- <aHpb4ZTZ5FoOBUrZ@hacktheplanet.fi>
- <46de4f2a-8836-42cd-a621-ae3e782bf253@kernel.org>
- <aHru-sP7S2ufH7Im@hacktheplanet.fi>
- <664c5661-0fa8-41db-b55d-7f1f58e40142@kernel.org>
- <aHr--GxhKNj023fg@hacktheplanet.fi>
- <f12cfe85-3597-4cf7-9236-3e00f16c3c38@kernel.org>
- <cc7a41dc-066a-41c8-a271-7e4c92088d65@kernel.org>
- <aHy4Ols-BZ3_UgQQ@hacktheplanet.fi>
+	s=arc-20240116; t=1753006961; c=relaxed/simple;
+	bh=VpZbHWYgkCPsYBiMifOdXB7lfxAfU+gfPFO1mJoJXAI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KssVlwQOjQx+VttBA3sdgWLyVS1rN87KDEYvPGj6ijjObxbGlVh41oVhcGDN3MFXL6MnyxOFE6EUp4dnhN+kQ6BWSC0ZpuoSl6iyuAIni/Da7DhYBpMgyUB99Tu1DplrIX4A58adVDD7IzCf2EkLjCanDK/mktKuRUYqJbY4++o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LR/nh38i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287A9C4CEE7;
+	Sun, 20 Jul 2025 10:22:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753006961;
+	bh=VpZbHWYgkCPsYBiMifOdXB7lfxAfU+gfPFO1mJoJXAI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LR/nh38iNvbpoq3ZhjVChs/kEPTbSrQ5C0G6YuoH0DL1QQhe4qvdPu1ZD3SXi7iSQ
+	 y0VWHkw+xBAv+JW3grp5ML+5y17yBTHFvw7Ps7Uhtgs6EK1pe5S8/eJWim+47Z8VRt
+	 dPFBPfM/AICssAE2YuHMStTczw60L0Rggqab1syQJc6BSMfiMn9j7sCaIxXqWYbYO0
+	 2btb6KBWCAXBv6C+c87q5FhC7zWq0jP1EWkjIKwLibcbBWSC1QZpcRgWFjGDjcrgmV
+	 2Ju9M+O7y8I2Ym8CPrfOQK5fBRWIgV3Jgv6U+cHbbOsJND5Ly5biQuc61VOP4LRYnj
+	 cLgI+kEaCueZw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1udRBm-00HIBV-Ox;
+	Sun, 20 Jul 2025 11:22:38 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: arm64: Check for SYSREGS_ON_CPU before accessing the CPU state
+Date: Sun, 20 Jul 2025 11:22:29 +0100
+Message-Id: <20250720102229.179114-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aHy4Ols-BZ3_UgQQ@hacktheplanet.fi>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, broonie@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-DIV_ROUND_CLOSEST(x, 100) returns either 0 or 1 if 0<x<=100, so the
-division needs to be performed after the multiplication and not the
-other way around, to properly scale the value.
+Mark Brown reports that since we commit to making exceptions
+visible without the vcpu being loaded, the external abort selftest
+fails.
 
-Fixes: 6c56c8ec6f97 ("drm/amd/display: Fix default DC and AC levels")
-Signed-off-by: Lauri Tirkkonen <lauri@hacktheplanet.fi>
+Upon investigation, it turns out that the code that makes registers
+affected by an exception visible to the guest is completely broken
+on VHE, as we don't check whether the system registers are loaded
+on the CPU at this point. We managed to get away with this so far,
+but that's obviously as bad as it gets,
+
+Add the required checksm and document the absolute need to check
+for the SYSREGS_ON_CPU flag before calling into any of the
+__vcpu_write_sys_reg_to_cpu()__vcpu_read_sys_reg_from_cpu() helpers.
+
+Reported-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/18535df8-e647-4643-af9a-bb780af03a70@sirena.org.uk
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/kvm_host.h | 4 ++++
+ arch/arm64/kvm/hyp/exception.c    | 6 ++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index f58fa5da7fe5..8a5b5dfad1ab 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4941,9 +4941,9 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
- 	caps = &dm->backlight_caps[aconnector->bl_idx];
- 	if (get_brightness_range(caps, &min, &max)) {
- 		if (power_supply_is_system_supplied() > 0)
--			props.brightness = (max - min) * DIV_ROUND_CLOSEST(caps->ac_level, 100);
-+			props.brightness = DIV_ROUND_CLOSEST((max - min) * caps->ac_level, 100);
- 		else
--			props.brightness = (max - min) * DIV_ROUND_CLOSEST(caps->dc_level, 100);
-+			props.brightness = DIV_ROUND_CLOSEST((max - min) * caps->dc_level, 100);
- 		/* min is zero, so max needs to be adjusted */
- 		props.max_brightness = max - min;
- 		drm_dbg(drm, "Backlight caps: min: %d, max: %d, ac %d, dc %d\n", min, max,
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index df9c1e1e52025..831cec0e1239e 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -1169,6 +1169,8 @@ static inline bool __vcpu_read_sys_reg_from_cpu(int reg, u64 *val)
+ 	 * System registers listed in the switch are not saved on every
+ 	 * exit from the guest but are only saved on vcpu_put.
+ 	 *
++	 * SYSREGS_ON_CPU *MUST* be checked before using this helper.
++	 *
+ 	 * Note that MPIDR_EL1 for the guest is set by KVM via VMPIDR_EL2 but
+ 	 * should never be listed below, because the guest cannot modify its
+ 	 * own MPIDR_EL1 and MPIDR_EL1 is accessed for VCPU A from VCPU B's
+@@ -1221,6 +1223,8 @@ static inline bool __vcpu_write_sys_reg_to_cpu(u64 val, int reg)
+ 	 * System registers listed in the switch are not restored on every
+ 	 * entry to the guest but are only restored on vcpu_load.
+ 	 *
++	 * SYSREGS_ON_CPU *MUST* be checked before using this helper.
++	 *
+ 	 * Note that MPIDR_EL1 for the guest is set by KVM via VMPIDR_EL2 but
+ 	 * should never be listed below, because the MPIDR should only be set
+ 	 * once, before running the VCPU, and never changed later.
+diff --git a/arch/arm64/kvm/hyp/exception.c b/arch/arm64/kvm/hyp/exception.c
+index 7dafd10e52e8c..95d186e0bf54f 100644
+--- a/arch/arm64/kvm/hyp/exception.c
++++ b/arch/arm64/kvm/hyp/exception.c
+@@ -26,7 +26,8 @@ static inline u64 __vcpu_read_sys_reg(const struct kvm_vcpu *vcpu, int reg)
+ 
+ 	if (unlikely(vcpu_has_nv(vcpu)))
+ 		return vcpu_read_sys_reg(vcpu, reg);
+-	else if (__vcpu_read_sys_reg_from_cpu(reg, &val))
++	else if (vcpu_get_flag(vcpu, SYSREGS_ON_CPU) &&
++		 __vcpu_read_sys_reg_from_cpu(reg, &val))
+ 		return val;
+ 
+ 	return __vcpu_sys_reg(vcpu, reg);
+@@ -36,7 +37,8 @@ static inline void __vcpu_write_sys_reg(struct kvm_vcpu *vcpu, u64 val, int reg)
+ {
+ 	if (unlikely(vcpu_has_nv(vcpu)))
+ 		vcpu_write_sys_reg(vcpu, val, reg);
+-	else if (!__vcpu_write_sys_reg_to_cpu(val, reg))
++	else if (!vcpu_get_flag(vcpu, SYSREGS_ON_CPU) ||
++		 !__vcpu_write_sys_reg_to_cpu(val, reg))
+ 		__vcpu_assign_sys_reg(vcpu, reg, val);
+ }
+ 
 -- 
-2.50.1
+2.39.2
 
--- 
-Lauri Tirkkonen | lotheac @ IRCnet
 
