@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-163595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF6DB0C5B1
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:59:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11841B0C5B2
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A8D2165D46
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:59:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F3743B25ED
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F277D2BE059;
-	Mon, 21 Jul 2025 13:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D053A2D9ED6;
+	Mon, 21 Jul 2025 13:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APtK5IuX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n69llYsR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DF519E826
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 13:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EBD19E826
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 13:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753106346; cv=none; b=EzuRgZMHir3aivc8CmiSrFsZBfgkIuIVc3+9f97Vz1RWmW1DQ8eEBE/yZ1w+yUprexOHfoMCXjj4vGhrHDDvUDPFjfYMyE+BNtkKFxKxrPjrN5CGDn3zO/UhvorhWodXoRL8WfnxW0poLm1ZISfD0pIt/0a0x6sXNKzv8J+4xJ8=
+	t=1753106349; cv=none; b=S91fEmQNYSUBazSIyMh5aM2dZcfuBUnmA1PVNlYUJPEgqqurpPhNgn78gYx9rB0V57+kW7UJhIE23HwpYkoPlzx1qkCQ3LNS61GH+f55sJ9QwvDWyrDPuYSqZWwIqGrIofdP3KAtdFPzdunENk03B8QlTF1IGKoH6f/KwdVA6+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753106346; c=relaxed/simple;
-	bh=1keuvO/X9Fr440IJd9XTO9H4QniJrHseG4GhIMu1cM0=;
+	s=arc-20240116; t=1753106349; c=relaxed/simple;
+	bh=Z//HDJrr9uje0d8mL8kYzNuWM60g2LvEyx8ST1apedw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d7zE6qCXp5k7djiGA3GVD9D+MEy7wmipqJJglAwutFMQHnVLgFNa9LmQdGFlPzyvSsBdP8lksc8GrBC4LYgAYRFZZSTO0Eecw7QI3GWstseqrg9IUBf9nzgaI3xhxcsbkS+ulK/09r7PXzXxQLaFyW1JoytBAX1P4vamtw/Vkl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APtK5IuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68E7C4CEED;
-	Mon, 21 Jul 2025 13:59:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UAC5JSTB6tfDYtLMjlHpVvGNa7QKeNp1u5nP35HZHIVAqqP/8y3msK6SLUDihiQUPb6S9ivdKpRMPRVBeUpysBr5KeuwdzqesMgUEL4n/WHJ0ud947/AV6oW6Cb3MiZf97XiGVFOAQAem0z/A1pMKqUnx1pDz1OIu7xR1aezgjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n69llYsR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901F8C4CEED;
+	Mon, 21 Jul 2025 13:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753106346;
-	bh=1keuvO/X9Fr440IJd9XTO9H4QniJrHseG4GhIMu1cM0=;
+	s=k20201202; t=1753106349;
+	bh=Z//HDJrr9uje0d8mL8kYzNuWM60g2LvEyx8ST1apedw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APtK5IuXoS4xkj7fIji+btSJwsp9vjMqF3iTD2Bt3NCXn80X3nsjMNGJAZAMRrNuh
-	 injGxpBVI3/4kXJzvndIx7S1ZFd1MpDG0dk5ckGmVdz5iwRX7xwfV+wwvtFRjyE0xW
-	 VcElfARu9Z5J+RXwsefh+h6Ur0WoTWw3N/9+DT1oIcAB3IO5PIEYcws2ZKrNdYmomW
-	 RgDWU+Or8Hfa3FMOEzZv/9SntkB61ufHm4LB+zrHt35OnObbxRpM5qWQzIgw+amSd+
-	 l93U7zQZas4QVLia7FMjJYoAd0I3rAjtjU3LA5ENtboDX1+kWSXAZwrEBJyutJcPq5
-	 ZjXfxz4o6BRDg==
+	b=n69llYsR2Y7FfBTt4kCv28zv4FgzEGUMJfYNW49xkZpFxtXqN5dTffYISPhBje/9s
+	 ZUmndNirx/J4ItoNBXeO6Hl38nY4IZQqa5EWq0NbBE3zRWZpKtMEA7J9hrhakCRcRB
+	 Cwyx407HUY3AZXOY0cGGhw28GoC1okIXtXmcvgtSoEp5QIth0gm+S9LrK2sUcr55Jc
+	 eK2VwlQjx2kNe+aGcNdNMILZSR20DTPH8VMENl16T5pNwwQK7PKyNtI5IOlOEKHVuh
+	 M3OfkyS0E6Pul8/9DWlNJoZx+5ZBOteQIn4RTOLRbAmYDsSG8WWL63WjIu74zw8lmO
+	 BD3aYlLDSVWKQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y 3/3] power: supply: bq24190: Fix use after free bug in bq24190_remove due to race condition
-Date: Mon, 21 Jul 2025 09:59:03 -0400
-Message-Id: <1753105151-494cf565@stable.kernel.org>
+Subject: Re: [PATCH stable 6.12 1/1] selftests/bpf: Add tests with stack ptr register in conditional jmp
+Date: Mon, 21 Jul 2025 09:59:06 -0400
+Message-Id: <1753105552-4ba14ead@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250721114846.1360952-4-skulkarni@mvista.com>
+In-Reply-To: <20250721084531.58557-1-shung-hsi.yu@suse.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,28 +66,46 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 47c29d69212911f50bdcdd0564b5999a559010d4
+The upstream commit SHA1 provided is correct: 5ffb537e416ee22dbfb3d552102e50da33fec7f6
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: <skulkarni@mvista.com>
-Commit author: Zheng Wang <zyytlz.wz@163.com>
+Backport author: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Commit author: Yonghong Song <yonghong.song@linux.dev>
 
 Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (different SHA1: 84bdb3b76b07)
-5.15.y | Present (different SHA1: 4ca3fd39c72e)
-5.10.y | Present (different SHA1: 2b346876b931)
+6.15.y | Not found
 
-Note: Could not generate a diff with upstream commit:
+Note: The patch differs from the upstream commit:
 ---
-Note: Could not generate diff - patch failed to apply for comparison
+1:  5ffb537e416e ! 1:  f5e86b1f0ca1 selftests/bpf: Add tests with stack ptr register in conditional jmp
+    @@ Metadata
+      ## Commit message ##
+         selftests/bpf: Add tests with stack ptr register in conditional jmp
+     
+    +    Commit 5ffb537e416ee22dbfb3d552102e50da33fec7f6 upstream.
+    +
+         Add two tests:
+           - one test has 'rX <op> r10' where rX is not r10, and
+           - another test has 'rX <op> rY' where rX and rY are not r10
+    @@ Commit message
+         Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+         Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+         Link: https://lore.kernel.org/bpf/20250524041340.4046304-1-yonghong.song@linux.dev
+    +    [ shung-hsi.yu: contains additional hunks for kernel/bpf/verifier.c that
+    +      should be part of the previous patch in the series, commit
+    +      e2d2115e56c4 "bpf: Do not include stack ptr register in precision
+    +      backtracking bookkeeping", which was incorporated since v6.12.37. ]
+    +    Link: https://lore.kernel.org/all/9b41f9f5-396f-47e0-9a12-46c52087df6c@linux.dev/
+    +    Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+     
+      ## kernel/bpf/verifier.c ##
+     @@ kernel/bpf/verifier.c: static int check_cond_jmp_op(struct bpf_verifier_env *env,
+
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| 5.4                       | Success     | Success    |
+| 6.12                      | Success     | Success    |
 
