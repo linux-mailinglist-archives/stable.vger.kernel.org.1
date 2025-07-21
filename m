@@ -1,106 +1,189 @@
-Return-Path: <stable+bounces-163489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20279B0B9AC
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 03:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CE9B0B9C6
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 03:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93BED7A3B48
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 00:58:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A9907A7CB8
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 01:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CB314D70E;
-	Mon, 21 Jul 2025 00:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECEDA923;
+	Mon, 21 Jul 2025 01:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b="uRC9ACyA";
-	dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b="fJKBMeER"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UcTrItwr"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBD47260A
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 00:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC4113B284
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 01:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753059597; cv=none; b=MhFjUqRPvF6KYxra10OM3tKfSVolP7amTNOKsKFaPYbPUsqYuRqu8bf3e2ODuPIyjWo4gB6U34yXGZ78pQYoKPwIo3wUnBuAaAO44Ktg22ooAmAgfLOav9NzkEqnaecnY1LXb38cpb8O2sK6RgYieL0Sb58ib1cbulcXQ+z8QT8=
+	t=1753061434; cv=none; b=VsmByeADVmQhBfK+Y+H2Egw5vORhvIaNwW5I1+E81igYJN3+BbVewWShN6OzY3Z32SyiOAEe3mvWSBJ2QUcNUGcqnt1ahXdIRFMF433Ohv6gmfz117ckZ8EoKWE72NrMJWOZEgwU1esaq5Rfj8Fe6i4GVBF+n7IwJgzi7Gbgcr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753059597; c=relaxed/simple;
-	bh=lufO/SfGrebt1Uvbo8PEo5A3P1gKInv82B1zFvN3hUo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=tEx1r/UmRAsZA7VYn8Lr+Tw5iZUkJ358478hSyVLf+r+cXGjXan8ihIgjGz9TgMiZKe7QnSSwImD5kPhbbUMZlU1WDJnxcg/ONfPijCadqIljUeKQLuDfYTrF6vv9NGR4MtwPTydmMdyop7q91UueSe07hKKg8xzpnh1BfJKty8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hacktheplanet.fi; spf=pass smtp.mailfrom=hacktheplanet.fi; dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b=uRC9ACyA; dkim=pass (2048-bit key) header.d=hacktheplanet.fi header.i=@hacktheplanet.fi header.b=fJKBMeER; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hacktheplanet.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hacktheplanet.fi
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=gibson; bh=lufO/SfGrebt1
-	Uvbo8PEo5A3P1gKInv82B1zFvN3hUo=; h=subject:cc:to:from:date;
-	d=hacktheplanet.fi; b=uRC9ACyAEhafmE4EN5ocUEoH4WADgLMkktPTudXKK3zuAatS
-	m3m++bZ718wNzXXJ3kZQVx4wyCprjiHquLB1NJJCB42gIRIKCw/SD/LCWDrMCK7+/B8cLQ
-	n02qwSMeoBOtPjDUMHKlZX98JIlwP+4aHKMquOO6HZ1tlDjj4KbHhtaJmeDzwIq7qBdJC9
-	vgNojPA+4u3XxYpKo9usAJPS2fsvVaHDtpD1FHlAG6PE03T1DkH+TzrBSjvlWl/xdNAh14
-	L6uZsV/gWzjSQ4DRQkkCjr7RCcqyIlUnTuQwAhPJEt5qLGMASPdGiKx/gvuwHz1APgJBcY
-	MpMDuyHmXqd6Fw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hacktheplanet.fi;
-	s=key1; t=1753059583;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=//RALJ2DG6eoPJ8kGoGEizkYKrZ/iIm2f0PKjGpS5XM=;
-	b=fJKBMeERTYdiWXnm6lLcp0iNaf+qL7mgXRqsi0b5iQdyRDzjnLX3x5ONU6ymnyShoYEe7q
-	/sb5x676LLe08M0Za0yROcqC/4VJGRwTdceUGfOdHA0cibJB1LqARvLukQ+zpZILjKmoKY
-	JhH83xpSq5sMu6RsvnaUvzWkBFgqTQDxTHOH0IneHSy6rxMeqj6+M/thUDn26D8+1w+YRh
-	whKGq00PBRcenrF2dUyETfhSN0RuYxAR3pcsBJUJ8NKLmTJJYo4McuwCj1X0T3GI5at0zK
-	wdxZzN/WkIcphMFE0sdi+dOhlWToFmSJh/5Gxx/4u11pbBoAZ2Uoyhw7EB1sHg==
-Date: Mon, 21 Jul 2025 09:59:40 +0900
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lauri Tirkkonen <lauri@hacktheplanet.fi>
-To: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org, Mario Limonciello <superm1@kernel.org>,
-	amd-gfx@lists.freedesktop.org, Wayne Lin <wayne.lin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [REGRESSION] [PATCH v2] drm/amd/display: fix initial backlight
- brightness calculation
-Message-ID: <aH2Q_HJvxKbW74vU@hacktheplanet.fi>
+	s=arc-20240116; t=1753061434; c=relaxed/simple;
+	bh=o27m1NRPrP2Yp5M3IZ4sa/1jaSYIB+O/LADFhhMDomE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WVLbke/l69zuDAQuOWlLaCgqdxoXLzMvAOBvSQ7HnWAb5LfqLt+RGrGzXdNja2pEkImfi5Q/IBSAHYrVWIMJLG6Q7Xr4/S/rN76pgsIQAF+DgAYRTjWhYeaRgYS/25Q6k3Y+LPre+GmMv9XTxZl44sQhPNeldEBcYCY8p0lAujA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UcTrItwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5CFC4CEE7;
+	Mon, 21 Jul 2025 01:30:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753061433;
+	bh=o27m1NRPrP2Yp5M3IZ4sa/1jaSYIB+O/LADFhhMDomE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UcTrItwr/tyZ5vI3vDPJySPFJpz8ywYnhIkZcQ3b10kmFwyXnsog0YSzfa8uWyqWj
+	 DSJ+Oh6oFKOSnTiGZt45bMRKI4Oei5WgX8sjoD4lNQ5ROXDhpJRQILK1XBqYm8tRfU
+	 t8lFbzWA3rxm8OqyE8+wVAwGUqPfqv6+HHe87rhJQiFRlWqO1w5AZmxMuKMv9lrsJY
+	 nieBbN9SoVmNO3WSAGP1tTZxwQmq1sWfrLh6Fb6o0jbt3f9jte1kAWwbFZGWkJFP8n
+	 /xR/2DIz1HxKofc0c5R11RxHJ/WgUedRoBH1KN+va/XDtslO/EJ0X2EcoogoDIYcqZ
+	 2U1WpBM4DibPA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kurt Borja <kuurtb@gmail.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] platform/x86: think-lmi: Fix kobject cleanup
+Date: Sun, 20 Jul 2025 21:30:26 -0400
+Message-Id: <20250721013026.777897-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025070812-scorpion-thicken-4f6f@gregkh>
+References: <2025070812-scorpion-thicken-4f6f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-DIV_ROUND_CLOSEST(x, 100) returns either 0 or 1 if 0<x<=100, so the
-division needs to be performed after the multiplication and not the
-other way around, to properly scale the value.
+From: Kurt Borja <kuurtb@gmail.com>
 
-Fixes: 8b5f3a229a70 ("drm/amd/display: Fix default DC and AC levels")
-Signed-off-by: Lauri Tirkkonen <lauri@hacktheplanet.fi>
+[ Upstream commit 9110056fe10b0519529bdbbac37311a5037ea0c2 ]
+
+In tlmi_analyze(), allocated structs with an embedded kobject are freed
+in error paths after the they were already initialized.
+
+Fix this by first by avoiding the initialization of kobjects in
+tlmi_analyze() and then by correctly cleaning them up in
+tlmi_release_attr() using their kset's kobject list.
+
+Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
+Fixes: 30e78435d3bf ("platform/x86: think-lmi: Split kobject_init() and kobject_add() calls")
 Cc: stable@vger.kernel.org
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250630-lmi-fix-v3-2-ce4f81c9c481@gmail.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+[ Adapted kobject cleanup to only pwd_admin and pwd_power password types present in 5.15. ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/think-lmi.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index f58fa5da7fe5..8a5b5dfad1ab 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4941,9 +4941,9 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
- 	caps = &dm->backlight_caps[aconnector->bl_idx];
- 	if (get_brightness_range(caps, &min, &max)) {
- 		if (power_supply_is_system_supplied() > 0)
--			props.brightness = (max - min) * DIV_ROUND_CLOSEST(caps->ac_level, 100);
-+			props.brightness = DIV_ROUND_CLOSEST((max - min) * caps->ac_level, 100);
- 		else
--			props.brightness = (max - min) * DIV_ROUND_CLOSEST(caps->dc_level, 100);
-+			props.brightness = DIV_ROUND_CLOSEST((max - min) * caps->dc_level, 100);
- 		/* min is zero, so max needs to be adjusted */
- 		props.max_brightness = max - min;
- 		drm_dbg(drm, "Backlight caps: min: %d, max: %d, ac %d, dc %d\n", min, max,
+diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
+index 36ff64a7b6847..dde7bb7e28226 100644
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -765,25 +765,31 @@ static struct kobj_attribute debug_cmd = __ATTR_WO(debug_cmd);
+ /* ---- Initialisation --------------------------------------------------------- */
+ static void tlmi_release_attr(void)
+ {
++	struct kobject *pos, *n;
+ 	int i;
+ 
+ 	/* Attribute structures */
+ 	for (i = 0; i < TLMI_SETTINGS_COUNT; i++) {
+ 		if (tlmi_priv.setting[i]) {
+ 			sysfs_remove_group(&tlmi_priv.setting[i]->kobj, &tlmi_attr_group);
+-			kobject_put(&tlmi_priv.setting[i]->kobj);
+ 		}
+ 	}
+ 	sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &pending_reboot.attr);
+ 	if (tlmi_priv.can_debug_cmd && debug_support)
+ 		sysfs_remove_file(&tlmi_priv.attribute_kset->kobj, &debug_cmd.attr);
++
++	list_for_each_entry_safe(pos, n, &tlmi_priv.attribute_kset->list, entry)
++		kobject_put(pos);
++
+ 	kset_unregister(tlmi_priv.attribute_kset);
+ 
+ 	/* Authentication structures */
+ 	sysfs_remove_group(&tlmi_priv.pwd_admin->kobj, &auth_attr_group);
+-	kobject_put(&tlmi_priv.pwd_admin->kobj);
+ 	sysfs_remove_group(&tlmi_priv.pwd_power->kobj, &auth_attr_group);
+-	kobject_put(&tlmi_priv.pwd_power->kobj);
++
++	list_for_each_entry_safe(pos, n, &tlmi_priv.authentication_kset->list, entry)
++		kobject_put(pos);
++
+ 	kset_unregister(tlmi_priv.authentication_kset);
+ }
+ 
+@@ -851,8 +857,8 @@ static int tlmi_sysfs_init(void)
+ 
+ 		/* Build attribute */
+ 		tlmi_priv.setting[i]->kobj.kset = tlmi_priv.attribute_kset;
+-		ret = kobject_add(&tlmi_priv.setting[i]->kobj, NULL,
+-				  "%s", tlmi_priv.setting[i]->display_name);
++		ret = kobject_init_and_add(&tlmi_priv.setting[i]->kobj, &tlmi_attr_setting_ktype,
++					   NULL, "%s", tlmi_priv.setting[i]->display_name);
+ 		if (ret)
+ 			goto fail_create_attr;
+ 
+@@ -872,7 +878,8 @@ static int tlmi_sysfs_init(void)
+ 	}
+ 	/* Create authentication entries */
+ 	tlmi_priv.pwd_admin->kobj.kset = tlmi_priv.authentication_kset;
+-	ret = kobject_add(&tlmi_priv.pwd_admin->kobj, NULL, "%s", "Admin");
++	ret = kobject_init_and_add(&tlmi_priv.pwd_admin->kobj, &tlmi_pwd_setting_ktype,
++				   NULL, "%s", "Admin");
+ 	if (ret)
+ 		goto fail_create_attr;
+ 
+@@ -881,7 +888,8 @@ static int tlmi_sysfs_init(void)
+ 		goto fail_create_attr;
+ 
+ 	tlmi_priv.pwd_power->kobj.kset = tlmi_priv.authentication_kset;
+-	ret = kobject_add(&tlmi_priv.pwd_power->kobj, NULL, "%s", "System");
++	ret = kobject_init_and_add(&tlmi_priv.pwd_power->kobj, &tlmi_pwd_setting_ktype,
++				   NULL, "%s", "Power-on");
+ 	if (ret)
+ 		goto fail_create_attr;
+ 
+@@ -995,7 +1003,6 @@ static int tlmi_analyze(void)
+ 		if (setting->possible_values)
+ 			strreplace(setting->possible_values, ',', ';');
+ 
+-		kobject_init(&setting->kobj, &tlmi_attr_setting_ktype);
+ 		tlmi_priv.setting[i] = setting;
+ 		kfree(item);
+ 	}
+@@ -1021,8 +1028,6 @@ static int tlmi_analyze(void)
+ 	if (pwdcfg.password_state & TLMI_PAP_PWD)
+ 		tlmi_priv.pwd_admin->valid = true;
+ 
+-	kobject_init(&tlmi_priv.pwd_admin->kobj, &tlmi_pwd_setting_ktype);
+-
+ 	tlmi_priv.pwd_power = kzalloc(sizeof(struct tlmi_pwd_setting), GFP_KERNEL);
+ 	if (!tlmi_priv.pwd_power) {
+ 		ret = -ENOMEM;
+@@ -1038,8 +1043,6 @@ static int tlmi_analyze(void)
+ 	if (pwdcfg.password_state & TLMI_POP_PWD)
+ 		tlmi_priv.pwd_power->valid = true;
+ 
+-	kobject_init(&tlmi_priv.pwd_power->kobj, &tlmi_pwd_setting_ktype);
+-
+ 	return 0;
+ 
+ fail_free_pwd_admin:
 -- 
-2.50.1
+2.39.5
 
--- 
-Lauri Tirkkonen | lotheac @ IRCnet
 
