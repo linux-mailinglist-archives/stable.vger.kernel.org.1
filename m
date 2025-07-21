@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-163594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AB4B0C5B0
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:59:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF6DB0C5B1
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D24FB167699
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:59:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A8D2165D46
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D582D8DD6;
-	Mon, 21 Jul 2025 13:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F277D2BE059;
+	Mon, 21 Jul 2025 13:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZZl2lGBA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APtK5IuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8566D19E826
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 13:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DF519E826
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 13:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753106343; cv=none; b=RW4N/X5RwKw17eIAJKWlYBgajDqkMauR2TqCJCPc/Bzc0fo18O47n+NDPkozoFoIM5Pe6yCftCxcBOHOQOjJrhdjMpCB9tzoeNNE4LyaWg7apJwudVgO/YvT5o+JkqPWxpp29cJIFdFCeGAuDHyTSH6TlIhUK9490jmifh7N67A=
+	t=1753106346; cv=none; b=EzuRgZMHir3aivc8CmiSrFsZBfgkIuIVc3+9f97Vz1RWmW1DQ8eEBE/yZ1w+yUprexOHfoMCXjj4vGhrHDDvUDPFjfYMyE+BNtkKFxKxrPjrN5CGDn3zO/UhvorhWodXoRL8WfnxW0poLm1ZISfD0pIt/0a0x6sXNKzv8J+4xJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753106343; c=relaxed/simple;
-	bh=HfG5Ey5dJXwLJ70Y9iv1lOHxXYt3I8kku4po52+wosw=;
+	s=arc-20240116; t=1753106346; c=relaxed/simple;
+	bh=1keuvO/X9Fr440IJd9XTO9H4QniJrHseG4GhIMu1cM0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NVv9Q0FQ59+8Q6bWJewOhZ5u258iEq5mFj6/wRA7x1QYPJHaUbjbkZDD02UT6/cQlN+t/ySknCJsY0fjuNfVQWddDyeHgnRuF0a4jUKeyKJK4BE9MFmsX5eW+q/lgvUdSllPIRQImCrHikPqAZ/yNzkZ8CzZ8+HG8yXnFNTAxWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZZl2lGBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6775FC4CEED;
-	Mon, 21 Jul 2025 13:59:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d7zE6qCXp5k7djiGA3GVD9D+MEy7wmipqJJglAwutFMQHnVLgFNa9LmQdGFlPzyvSsBdP8lksc8GrBC4LYgAYRFZZSTO0Eecw7QI3GWstseqrg9IUBf9nzgaI3xhxcsbkS+ulK/09r7PXzXxQLaFyW1JoytBAX1P4vamtw/Vkl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APtK5IuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68E7C4CEED;
+	Mon, 21 Jul 2025 13:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753106343;
-	bh=HfG5Ey5dJXwLJ70Y9iv1lOHxXYt3I8kku4po52+wosw=;
+	s=k20201202; t=1753106346;
+	bh=1keuvO/X9Fr440IJd9XTO9H4QniJrHseG4GhIMu1cM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZl2lGBAaQnXdyGkD8l/l/2WLzqULfVVZkfhnEttgYyf94c+k52zV65WdQkVExIBG
-	 oQvPKZAu9gFj+eHEi9O1npsX3Gw9QanCdhbebgRYxakfQT427xYymj7BH+tRYgXQ7U
-	 O6JMoi2GX4knWQF58vurPf0RSHphoBQ1TwjkwZpgSlMpwEHMlKCRkJVF3yhr5r0oGT
-	 ueM4QfdXkJxH6wQW68R2zprG7A6riZwFwVmS91HrMKwesMTFZkSkdqnLprDVR46ROt
-	 PXbxW+lWphsR34bgXXSZ2YV94kJbcHMGdB6ypqvThXU3YZc8Zoa88NPglWJIK1xGzX
-	 xHFePmEq2myBQ==
+	b=APtK5IuXoS4xkj7fIji+btSJwsp9vjMqF3iTD2Bt3NCXn80X3nsjMNGJAZAMRrNuh
+	 injGxpBVI3/4kXJzvndIx7S1ZFd1MpDG0dk5ckGmVdz5iwRX7xwfV+wwvtFRjyE0xW
+	 VcElfARu9Z5J+RXwsefh+h6Ur0WoTWw3N/9+DT1oIcAB3IO5PIEYcws2ZKrNdYmomW
+	 RgDWU+Or8Hfa3FMOEzZv/9SntkB61ufHm4LB+zrHt35OnObbxRpM5qWQzIgw+amSd+
+	 l93U7zQZas4QVLia7FMjJYoAd0I3rAjtjU3LA5ENtboDX1+kWSXAZwrEBJyutJcPq5
+	 ZjXfxz4o6BRDg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y 2/3] power: supply: bq24190_charger: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
-Date: Mon, 21 Jul 2025 09:59:00 -0400
-Message-Id: <1753105092-09735345@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y 3/3] power: supply: bq24190: Fix use after free bug in bq24190_remove due to race condition
+Date: Mon, 21 Jul 2025 09:59:03 -0400
+Message-Id: <1753105151-494cf565@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250721114846.1360952-3-skulkarni@mvista.com>
+In-Reply-To: <20250721114846.1360952-4-skulkarni@mvista.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,19 +66,19 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: d96a89407e5f682d1cb22569d91784506c784863
+The upstream commit SHA1 provided is correct: 47c29d69212911f50bdcdd0564b5999a559010d4
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: <skulkarni@mvista.com>
-Commit author: Minghao Chi <chi.minghao@zte.com.cn>
+Commit author: Zheng Wang <zyytlz.wz@163.com>
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
 6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (different SHA1: 10ce6db6253d)
-5.10.y | Present (different SHA1: 18359b8e30c4)
+6.1.y | Present (different SHA1: 84bdb3b76b07)
+5.15.y | Present (different SHA1: 4ca3fd39c72e)
+5.10.y | Present (different SHA1: 2b346876b931)
 
 Note: Could not generate a diff with upstream commit:
 ---
