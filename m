@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-163611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0213BB0C805
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 17:49:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB95B0C806
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 17:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB493189FA95
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:49:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BE373AF90A
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F642E03FB;
-	Mon, 21 Jul 2025 15:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12812DEA67;
+	Mon, 21 Jul 2025 15:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IyDuz0pc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwPcqFtY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259212E03F1
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 15:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6151D26ACC
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 15:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753112955; cv=none; b=nlp9lfr0JouY/AT6iB2+RiVkPldoZeIJp8uVStPXcnEqQ9fhHf5CKCQ8iR0glD7biurQURK0gfBcegZ01qOuVwn2UFRRMye3kTbRSffh13qwkt3ke6HIQTvOV1LFVGd3XtbGQQrmA6WPKvQ+lzbrYIPk2Mc5aSpWPXj7/L91XwU=
+	t=1753112996; cv=none; b=lYEw0G2QLZg67+CWDDDtGUDnquq3E+X3mJrAvAze3q667FHBdxCX4jZemUW+B2FE2DEYJ07+5RZ6cMoOlNmQ0Re9P5Yu9ZqSb98Fao0ywrpcjIeDeitTV95yYymAVqkLrllO8KipaqsNTztNoe9bbdaGkb5YV4mXohHbloEJElA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753112955; c=relaxed/simple;
-	bh=zH+Wbku+o5bKTkJjVN6pZrTe+T5eCu7LSg5feDrxtwE=;
+	s=arc-20240116; t=1753112996; c=relaxed/simple;
+	bh=iItfR/dIrxV/ZSC2n9Gxta0VoNvfkqKgor/emQXJ4HA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BeYC0E44zCy+/SX2hFV/+Ejw+jVPai5uSsZiaTktye7ntuCN7QVA5bXFEi051qe0IHi77xeCZYefOQ0TDYYsaxwrhuAM7U57f+C0i957Kvoxntz5vcubg8/Vq7TxgNyvGuH0cdUGc6fsrJtpdwkmWUj8euOSaADRyPLcd1K2Ua0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IyDuz0pc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FEC9C4CEF7;
-	Mon, 21 Jul 2025 15:49:13 +0000 (UTC)
+	 MIME-Version; b=cQpxN76rxNp1mncf7GwlP+YjeZTWRAgJQ2Q4cjNmgzly2U+Ii+J6/VAFdkSI9fqQcNypGIY6gIefEjLdGr+Z1x9wGZfIiUYU9sWdoZLHXv5Kt7f+jU+gclRD5Y/Hh1GerX67UN9p0119YyJMJ9JDkc6JndRTp9wIo+iXLPRn1eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwPcqFtY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F82C4CEED;
+	Mon, 21 Jul 2025 15:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753112954;
-	bh=zH+Wbku+o5bKTkJjVN6pZrTe+T5eCu7LSg5feDrxtwE=;
+	s=k20201202; t=1753112995;
+	bh=iItfR/dIrxV/ZSC2n9Gxta0VoNvfkqKgor/emQXJ4HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IyDuz0pcDYovGK3WSXF4PakJdcFFYWxlCD+FGKAJFbGuvxzsaui7I5EioxZxjTT9+
-	 TBW26MVWYN+P5976I0RYUsg5RMIdWAPEv2lUXi5NYywZ/HYV9gfJ/vliSifg4HkhJW
-	 UaxIIXTsO6qdy7apoC2WTeHCJSJoW8VMTyF1+OqwT3Z+vqHAv4jMFyRqZFfaQy8Z00
-	 5QxaQa3+D+V/UEZdTwvv6HcwT3pEakI6dmxrkPu/9cc9JqyjQ8Gl+gc9KQrwbInl0I
-	 O3DcR/Zf2RmPiuPyHeOR2fx9ywhk0TXv9S/1VWHcAK5AdP+1q0JkIZHyCQbiaMllZ9
-	 vldJd/6iSKdFw==
+	b=gwPcqFtY+yoOHvMUjjoRwgXOuTcRMGX+rLOdzSYB4qCMmumI+jfHwpRiNMytboLei
+	 WVnb9ULYLT1bpE34OqIScfpv/2RCIB5v9ynI1IveAcVcsjCiY+OFqDZfIuh1rixkXe
+	 N2ELXTqCwP1eXfjBj6B8XH2R6OXVJBF0Gzr8ikIdnBbLyKADsXon1f/WrmqLNNCGgZ
+	 1J4GtqttywAK1+OIS92DXPuhB1JAjdLEQ6A/TjojKY7WBIU7IMb5lktPRAhb5EGbYo
+	 KOoTKuKrL36XJI0hAQysLBR+OvtBiRwSxDq9V7OEjJkIKnlUMpfw7GXFx+BmXp2wJM
+	 pcoasmNWMlueA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
@@ -49,12 +49,12 @@ Cc: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] usb: dwc3: qcom: Don't leave BCR asserted
-Date: Mon, 21 Jul 2025 11:49:10 -0400
-Message-Id: <20250721154910.855391-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] usb: dwc3: qcom: Don't leave BCR asserted
+Date: Mon, 21 Jul 2025 11:49:51 -0400
+Message-Id: <20250721154951.855475-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025072116-vaporizer-frayed-e632@gregkh>
-References: <2025072116-vaporizer-frayed-e632@gregkh>
+In-Reply-To: <2025072117-tribesman-staleness-fcd2@gregkh>
+References: <2025072117-tribesman-staleness-fcd2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,10 +89,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
-index 93747ab2cf5b8..cdf114da31d8f 100644
+index db3559a102077..d013d774edc13 100644
 --- a/drivers/usb/dwc3/dwc3-qcom.c
 +++ b/drivers/usb/dwc3/dwc3-qcom.c
-@@ -856,13 +856,13 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+@@ -786,13 +786,13 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
  	ret = reset_control_deassert(qcom->resets);
  	if (ret) {
  		dev_err(&pdev->dev, "failed to deassert resets, err=%d\n", ret);
@@ -108,7 +108,7 @@ index 93747ab2cf5b8..cdf114da31d8f 100644
  	}
  
  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -966,8 +966,6 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+@@ -892,8 +892,6 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
  		clk_disable_unprepare(qcom->clks[i]);
  		clk_put(qcom->clks[i]);
  	}
@@ -117,7 +117,7 @@ index 93747ab2cf5b8..cdf114da31d8f 100644
  
  	return ret;
  }
-@@ -997,7 +995,6 @@ static int dwc3_qcom_remove(struct platform_device *pdev)
+@@ -921,7 +919,6 @@ static int dwc3_qcom_remove(struct platform_device *pdev)
  	qcom->num_clocks = 0;
  
  	dwc3_qcom_interconnect_exit(qcom);
