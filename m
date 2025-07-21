@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-163564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05B2B0C2DC
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:26:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11466B0C2DF
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:28:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD5165414D0
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 11:26:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 632CE3A1BF7
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 11:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A5229B782;
-	Mon, 21 Jul 2025 11:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F4A29B23B;
+	Mon, 21 Jul 2025 11:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5pNhTJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5tfphet"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526FD29B761
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 11:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5733E28DF33
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 11:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753097139; cv=none; b=i2Gmm6VaxErW5a+fNTep2qMA0jNlb/t7S4PvS6By+ayhaJl3sLn3AeNTGSCqsPvinXohWPYTNLbuW1Lbunn0yn1JUHPcUancUikehqHk1wOn9Szg0tA7DvRsiV3lnyvR5Wwm7QpMRcWsfMT+MoGOfA5hqsyGb+owQQeZDUhCUko=
+	t=1753097276; cv=none; b=OToFDClkIhWlOAsBLUU1W+ygUKQiGwX1zsKFQE1ySgwtv147PZYBFOQtS7iNku+lNMtxiNEbEB4J72tLm9kQLd9GQrxzPHZqTH0Ud+z2xc2FU8AFoc7rGdgtH4iTHA5mjC9+gCg2c4N3jEwcka/ilsDgjFT7GVsYMA7l7si8Pcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753097139; c=relaxed/simple;
-	bh=ZFCQo7fbYYPV2aokpU7gr1Ea7Gmuv9uuEtn7GGTXfIU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YscpTtF1mCG2E5cI/g5c+4r863YB892EudCPIxvMMGRmHy2GiElSKrxIct5Y/SpTHoHVusvjHvwb5FEmSFF2uXa2e2B7K+Iymmp6HznKekJ1Be8rr/otqHU7E0YgedXfLVDE0R1LXDpzKMbcE6hzfxR2e9KYdBD9j1PDmpu+lpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5pNhTJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636D8C4CEED;
-	Mon, 21 Jul 2025 11:25:36 +0000 (UTC)
+	s=arc-20240116; t=1753097276; c=relaxed/simple;
+	bh=SrMJC8BPqqyDFG5Bxo5DlDajVfaWr4TMGEq3bmWGz0E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F5bW2kp9UWm3Ygky+pI7zPTb/ePrt+VhaHaR5F3OL/wTI8zwt2XDefSCWtSXQ0gY+8F+2OBc11gAQ7ccLp7phqbqZ6xRty3q1EWJjHhQuACzkWbBnJibXsyGULaG1Pmt8Phl7c+icq1tl9x+ZOKp7bkwBZ1b0lGGuwqEYmZYb38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5tfphet; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06EDC4CEED;
+	Mon, 21 Jul 2025 11:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753097136;
-	bh=ZFCQo7fbYYPV2aokpU7gr1Ea7Gmuv9uuEtn7GGTXfIU=;
+	s=korg; t=1753097276;
+	bh=SrMJC8BPqqyDFG5Bxo5DlDajVfaWr4TMGEq3bmWGz0E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=v5pNhTJljQG77fVrjVNgqt7eAnmPDMozj4dqcmNZn5S0l3mpbPW6E5pa22V4TU3C5
-	 Q52rbLeFR+gcCHGeWH6JDBpxzOXbPLjdxmIMyCteFe5ECd5uljG3oM5KaU4wQjvOyl
-	 eyYzWiipXb2x2T0e0OmdsJDtuEOc5rZX+U/9A5U0=
-Subject: FAILED: patch "[PATCH] iio: accel: fxls8962af: Fix use after free in" failed to apply to 5.15-stable tree
-To: sean@geanix.com,Jonathan.Cameron@huawei.com,dlechner@baylibre.com
+	b=Q5tfphetXQQ58VV0U15LcrW7B2IGy8x7rGri86HrRaQF2hV+3kgGcCVw5KXzhHsZu
+	 X0fR4axuH7Ch7zIPDfz0yBA+4CvRsjRtx97o56OfjHcJH+W9sWu6vI8FyBm0jJnbwc
+	 92mokM4y9vhNERGXWNfED1ezAynyPhCWOHOTWxDA=
+Subject: FAILED: patch "[PATCH] comedi: comedi_test: Fix possible deletion of uninitialized" failed to apply to 6.12-stable tree
+To: abbotti@mev.co.uk,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Jul 2025 13:24:25 +0200
-Message-ID: <2025072125-spyglass-uncharted-ba31@gregkh>
+Date: Mon, 21 Jul 2025 13:27:53 +0200
+Message-ID: <2025072153-clerical-autograph-74d4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1fe16dc1a2f5057772e5391ec042ed7442966c9a
+git cherry-pick -x 1b98304c09a0192598d0767f1eb8c83d7e793091
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072125-spyglass-uncharted-ba31@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072153-clerical-autograph-74d4@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,48 +77,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1fe16dc1a2f5057772e5391ec042ed7442966c9a Mon Sep 17 00:00:00 2001
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Tue, 3 Jun 2025 14:25:44 +0200
-Subject: [PATCH] iio: accel: fxls8962af: Fix use after free in
- fxls8962af_fifo_flush
+From 1b98304c09a0192598d0767f1eb8c83d7e793091 Mon Sep 17 00:00:00 2001
+From: Ian Abbott <abbotti@mev.co.uk>
+Date: Tue, 8 Jul 2025 14:06:27 +0100
+Subject: [PATCH] comedi: comedi_test: Fix possible deletion of uninitialized
+ timers
 
-fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
-iio_for_each_active_channel()) without making sure the indio_dev
-stays in buffer mode.
-There is a race if indio_dev exits buffer mode in the middle of the
-interrupt that flushes the fifo. Fix this by calling
-synchronize_irq() to ensure that no interrupt is currently running when
-disabling buffer mode.
+In `waveform_common_attach()`, the two timers `&devpriv->ai_timer` and
+`&devpriv->ao_timer` are initialized after the allocation of the device
+private data by `comedi_alloc_devpriv()` and the subdevices by
+`comedi_alloc_subdevices()`.  The function may return with an error
+between those function calls.  In that case, `waveform_detach()` will be
+called by the Comedi core to clean up.  The check that
+`waveform_detach()` uses to decide whether to delete the timers is
+incorrect.  It only checks that the device private data was allocated,
+but that does not guarantee that the timers were initialized.  It also
+needs to check that the subdevices were allocated.  Fix it.
 
-Unable to handle kernel NULL pointer dereference at virtual address 00000000 when read
-[...]
-_find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
-fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
-fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
-irq_thread_fn from irq_thread+0x110/0x1f4
-irq_thread from kthread+0xe0/0xfc
-kthread from ret_from_fork+0x14/0x2c
+Fixes: 73e0e4dfed4c ("staging: comedi: comedi_test: fix timer lock-up")
+Cc: stable@vger.kernel.org # 6.15+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250708130627.21743-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
-Cc: stable@vger.kernel.org
-Suggested-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250603-fxlsrace-v2-1-5381b36ba1db@geanix.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index 12598feaa693..b10a30960e1e 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -877,6 +877,8 @@ static int fxls8962af_buffer_predisable(struct iio_dev *indio_dev)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/comedi/drivers/comedi_test.c b/drivers/comedi/drivers/comedi_test.c
+index 9747e6d1f6eb..7984950f0f99 100644
+--- a/drivers/comedi/drivers/comedi_test.c
++++ b/drivers/comedi/drivers/comedi_test.c
+@@ -792,7 +792,7 @@ static void waveform_detach(struct comedi_device *dev)
+ {
+ 	struct waveform_private *devpriv = dev->private;
  
-+	synchronize_irq(data->irq);
-+
- 	ret = __fxls8962af_fifo_set_mode(data, false);
- 
- 	if (data->enable_event)
+-	if (devpriv) {
++	if (devpriv && dev->n_subdevices) {
+ 		timer_delete_sync(&devpriv->ai_timer);
+ 		timer_delete_sync(&devpriv->ao_timer);
+ 	}
 
 
