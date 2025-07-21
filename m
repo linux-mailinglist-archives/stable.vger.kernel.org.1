@@ -1,92 +1,98 @@
-Return-Path: <stable+bounces-163629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DCFB0CD43
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 00:25:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38EB7B0CE65
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 01:50:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92E196C4893
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 22:24:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F6DF7AABFE
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 23:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC65A242925;
-	Mon, 21 Jul 2025 22:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33774246764;
+	Mon, 21 Jul 2025 23:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HZptrzZr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9/6YUAD"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA4B22173A
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 22:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DD912E7F;
+	Mon, 21 Jul 2025 23:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753136703; cv=none; b=ACH15m1f6pxMpOS9CUN59Fp1km7EShgmBl0SwSePME4+x2FvyYeWe6Nw/C+ILGSa6xF0xLOlEd6YON0m1hsUYnN2IPb6zc9zqVIfAtC4w3uyem5WAtISJLG67fUv7IF582ApGRHebzn113hxYLfpIXilOj9p6xjYPZeaQAeur18=
+	t=1753141793; cv=none; b=DMhV7UIrTCG+Cx6U1+yW2FZ1yBEuprcxja0vP8AN8REpXyXAW9yzLRz2q/Akp7RsDtXC+avTTZaHg8UmbDkEMFDLSYh2iyxJlR3z+K54QPzJwBytFxDcI3OGR2VPfGIWlBtDzh+H1qtFryGmg9LZT7TIfQdh/03mtNbFtLBZlps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753136703; c=relaxed/simple;
-	bh=F+ws2eLWfD2NkWojYPpMSKKKu95g8Nt03OBK7Uspbo0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WWUDl3pKNcdO3rL1mf4MPrR1Jt4uaAgZVb2madwny7etNlQPweK88XI0Y9RZBqtqbhHTYRR2at+oqDP7Qh9RufmHfb6RByKCP8obK72ZhhNHljrq0z3XOd3E9kmrYVjZXl3OBoFweutNRDA/p0l/X1NHr3DUy1nKCXC/eUsrdvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HZptrzZr; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753136698;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E0Swdc+rgZd6RYXOhWJTdQCOj/YJAeib/YMEr/j+xKM=;
-	b=HZptrzZrIHb7zDppmEpiXbGBgqebupTQ8pylKpzfG1WZ/EjdDd5SeiMXYBLDklKXGyITLi
-	8X+IcIKCMWgDj89IagWjCFxQnHacJ7CT8bZBk2TkoyPreH7B9QssECZFafwEcr3k17Kf+d
-	b0IyMm2aybdhaf6d8GJ8DTu8aeKfnxQ=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Check for SYSREGS_ON_CPU before accessing the CPU state
-Date: Mon, 21 Jul 2025 15:24:45 -0700
-Message-Id: <175313657127.2592298.3949452294355380877.b4-ty@linux.dev>
-In-Reply-To: <20250720102229.179114-1-maz@kernel.org>
-References: <20250720102229.179114-1-maz@kernel.org>
+	s=arc-20240116; t=1753141793; c=relaxed/simple;
+	bh=jA7cI6GljoyzvgPHlj6eXM0tNrqjohOQVZaogSq2M+Q=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=IWhvH+cwv2Y9vdVpjbaXLS03Q2JdOAXBjpwMNbzprbZoX5ZIANUjA5yVw29gmTq2MRjplgieFLvZjwUrmQ8IYsP/fmH2TrokYFYIxIIUTvmcgk0YvTPTOD45Cqmu32k4pfTjujuA+eKJGxlbM6ik/dA/uxJ1rwfwC/elhYFuEGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9/6YUAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4931CC4CEED;
+	Mon, 21 Jul 2025 23:49:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753141792;
+	bh=jA7cI6GljoyzvgPHlj6eXM0tNrqjohOQVZaogSq2M+Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=i9/6YUADIilWqRwmlBu5l2l1AOF9RhOVbn7cNYfUBbZwHgPzScyylsQO+/wmFh2Jj
+	 sZRYwq02TYgjo+3o+WADTRNGVRem3vnMfKivQBMUsD408P9WIsEw311UbwmhGwY8nU
+	 mRrkvjqPthbJQVADeHOhshQjUF6rXeYFdPUatF3adFDv5g4ldsL8M075nStjHkR47M
+	 NsHLl94qPNdby/X7mR53lAMdc7tBqLl002E5/zpkDTBmLKn+pfrPiHAsgd/awGwx3s
+	 jJqPBcljPZJ6rDaRYAQFC8vNtlbZWDGZpEjFOU8nsJZAWN+EUnvqjLhZq8YkLbIi0/
+	 3wPf9XxlrPOGg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B7D383B267;
+	Mon, 21 Jul 2025 23:50:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Subject: Re: [PATCH net v2 0/2] selftests: mptcp: connect: cover alt modes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175314181066.233941.7549258562829367580.git-patchwork-notify@kernel.org>
+Date: Mon, 21 Jul 2025 23:50:10 +0000
+References: <20250715-net-mptcp-sft-connect-alt-v2-0-8230ddd82454@kernel.org>
+In-Reply-To: <20250715-net-mptcp-sft-connect-alt-v2-0-8230ddd82454@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, cpaasch@openai.com, dcaratti@redhat.com,
+ fw@strlen.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
 
-On Sun, 20 Jul 2025 11:22:29 +0100, Marc Zyngier wrote:
-> Mark Brown reports that since we commit to making exceptions
-> visible without the vcpu being loaded, the external abort selftest
-> fails.
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 15 Jul 2025 20:43:27 +0200 you wrote:
+> mptcp_connect.sh can be executed manually with "-m <MODE>" and "-C" to
+> make sure everything works as expected when using "mmap" and "sendfile"
+> modes instead of "poll", and with the MPTCP checksum support.
 > 
-> Upon investigation, it turns out that the code that makes registers
-> affected by an exception visible to the guest is completely broken
-> on VHE, as we don't check whether the system registers are loaded
-> on the CPU at this point. We managed to get away with this so far,
-> but that's obviously as bad as it gets,
+> These modes should be validated, but they are not when the selftests are
+> executed via the kselftest helpers. It means that most CIs validating
+> these selftests, like NIPA for the net development trees and LKFT for
+> the stable ones, are not covering these modes.
 > 
 > [...]
 
-Applied to next, thanks!
+Here is the summary with links:
+  - [net,v2,1/2] selftests: mptcp: connect: also cover alt modes
+    https://git.kernel.org/netdev/net/c/37848a456fc3
+  - [net,v2,2/2] selftests: mptcp: connect: also cover checksum
+    https://git.kernel.org/netdev/net/c/fdf0f60a2bb0
 
-[1/1] KVM: arm64: Check for SYSREGS_ON_CPU before accessing the CPU state
-      https://git.kernel.org/kvmarm/kvmarm/c/c6e35dff58d3
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
---
-Best,
-Oliver
+
 
