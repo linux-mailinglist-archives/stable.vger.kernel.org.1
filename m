@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-163546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41096B0C139
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 12:25:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4EBDB0C1D3
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 12:56:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 875BD3BF9B9
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 10:24:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB16C18C328F
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 10:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2341F28F523;
-	Mon, 21 Jul 2025 10:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865D327FB05;
+	Mon, 21 Jul 2025 10:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYBRpu/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTV3RrwQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E6819DF62
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 10:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D0221A457
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 10:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753093507; cv=none; b=MtTm/G2gQ7eLhvJfUDYRI6NqOS9dE7SAMRDctLCbqXLRO5b/KNL0AlIXiVxqxjoPIEXdhkViRBorH9gZf9BBalmhdKiMiZ7ffMBPEu11PgPsU94pUvJSERikNqaR7gqNj4NU0M7pF3/sJ+a2XCnzFkfFIqNo9Xixs1DQBmYnFr4=
+	t=1753095277; cv=none; b=sUeRQR4BabL6Et8RCeFvMOFOxKqitnjXZpcHBZO4/ilVfuq/kwLC13sa0znvnaoiWW8HWdGg5L6FH8cXY9zby1ECeiQBU3PsvpDhgtLCABT0n7RUj/4Fs1UEUrJlZFHKXayWoSThWiWpWH0a8YYZ1T1+FCNh+FxjGeDktUDxw48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753093507; c=relaxed/simple;
-	bh=GeWpJdNeHYbQvbRH8lZLkC0hgz1jhS4WxqqdZXP64DY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jc/towiGsKPk8pVcE+EbjDLquNxWBG9j0gEkqQoYlIQxuxrxksdSujja3nvx7TWfd+WSr7XKuW0Y2E+TI03q4B7hddPle0O2RbR9aZWBmjUspuY6z7uoPRs2AK160y7+pQWG8dSwHKJMUzJo9lTYaVOIjF75LoRP0Vp+DL44yKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYBRpu/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4952AC4CEED;
-	Mon, 21 Jul 2025 10:25:07 +0000 (UTC)
+	s=arc-20240116; t=1753095277; c=relaxed/simple;
+	bh=c90N5gSf/59ExX0LOYNx+FGXNjLXY2Yoi59ILa1xzVk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=C9OcLl8t1aD4qpMWqwy3XZnq4mBPOAX8xKFG8c3rJvk9uBtRhm/LKlwpScezQSjvHt8qn1oiRGuwJS00ixzXLMFGAecJ3Rb1FRp+ArZb1OPkeZi287rrag7/mDaXgl+9J+d6WYpqJPj+LQkdLY80NhDaBkAewrM4KgX5hCgeBUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTV3RrwQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E14C4CEED;
+	Mon, 21 Jul 2025 10:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753093507;
-	bh=GeWpJdNeHYbQvbRH8lZLkC0hgz1jhS4WxqqdZXP64DY=;
+	s=korg; t=1753095276;
+	bh=c90N5gSf/59ExX0LOYNx+FGXNjLXY2Yoi59ILa1xzVk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uYBRpu/vX1HEp2tmhVM81KI5Z4yWffqfsIc11msyIz5saXq8784gUco7zhJmXJ/N6
-	 47lWI5ZMZ2rGMmrmZkF8WcmBiG1vVrFstGx+c38o9oFxOmwLqHeLy7sBqsUILWeCue
-	 LoQrSJHiH8E6VbnBa124ypSizsvjXTum8q+i8Ixc=
-Subject: FAILED: patch "[PATCH] drm/xe: Move page fault init after topology init" failed to apply to 6.12-stable tree
-To: matthew.brost@intel.com,jonathan.cavitt@intel.com,lucas.demarchi@intel.com,stuart.summers@intel.com
+	b=FTV3RrwQQKYiz//G6Wvd3WHeX4F94MMbz4QYm+HIn8f+ld4RtFhhy0sOUDYP1njYQ
+	 5gNx6FHoU/Bne1ADHY7jUPa+VF55LNYf4DXytuXgVhVtruF9rzMPphxX4vfOzl2B71
+	 0X2qVA3x33swTHF49rtJpLDC7O4pIIFyIhCEsFkY=
+Subject: FAILED: patch "[PATCH] sched/ext: Prevent update_locked_rq() calls with NULL rq" failed to apply to 6.15-stable tree
+To: leitao@debian.org,arighi@nvidia.com,peterz@infradead.org,tj@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Jul 2025 12:25:01 +0200
-Message-ID: <2025072101-drastic-gentile-dc59@gregkh>
+Date: Mon, 21 Jul 2025 12:54:33 +0200
+Message-ID: <2025072133-babble-buddhist-9fbe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3155ac89251dcb5e35a3ec2f60a74a6ed22c56fd
+git cherry-pick -x e14fd98c6d66cb76694b12c05768e4f9e8c95664
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072101-drastic-gentile-dc59@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072133-babble-buddhist-9fbe@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,48 +77,76 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3155ac89251dcb5e35a3ec2f60a74a6ed22c56fd Mon Sep 17 00:00:00 2001
-From: Matthew Brost <matthew.brost@intel.com>
-Date: Thu, 10 Jul 2025 12:12:08 -0700
-Subject: [PATCH] drm/xe: Move page fault init after topology init
+From e14fd98c6d66cb76694b12c05768e4f9e8c95664 Mon Sep 17 00:00:00 2001
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 16 Jul 2025 10:38:48 -0700
+Subject: [PATCH] sched/ext: Prevent update_locked_rq() calls with NULL rq
 
-We need the topology to determine GT page fault queue size, move page
-fault init after topology init.
+Avoid invoking update_locked_rq() when the runqueue (rq) pointer is NULL
+in the SCX_CALL_OP and SCX_CALL_OP_RET macros.
 
-Cc: stable@vger.kernel.org
-Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Link: https://lore.kernel.org/r/20250710191208.1040215-1-matthew.brost@intel.com
-(cherry picked from commit beb72acb5b38dbe670d8eb752d1ad7a32f9c4119)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Previously, calling update_locked_rq(NULL) with preemption enabled could
+trigger the following warning:
 
-diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
-index 9752a38c0162..d554a8cc565c 100644
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -632,10 +632,6 @@ int xe_gt_init(struct xe_gt *gt)
- 	if (err)
- 		return err;
+    BUG: using __this_cpu_write() in preemptible [00000000]
+
+This happens because __this_cpu_write() is unsafe to use in preemptible
+context.
+
+rq is NULL when an ops invoked from an unlocked context. In such cases, we
+don't need to store any rq, since the value should already be NULL
+(unlocked). Ensure that update_locked_rq() is only called when rq is
+non-NULL, preventing calling __this_cpu_write() on preemptible context.
+
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Fixes: 18853ba782bef ("sched_ext: Track currently locked rq")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org # v6.15
+
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index b498d867ba21..7dd5cbcb7a06 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -1272,7 +1272,8 @@ static inline struct rq *scx_locked_rq(void)
  
--	err = xe_gt_pagefault_init(gt);
--	if (err)
--		return err;
--
- 	err = xe_gt_sysfs_init(gt);
- 	if (err)
- 		return err;
-@@ -644,6 +640,10 @@ int xe_gt_init(struct xe_gt *gt)
- 	if (err)
- 		return err;
+ #define SCX_CALL_OP(sch, mask, op, rq, args...)					\
+ do {										\
+-	update_locked_rq(rq);							\
++	if (rq)									\
++		update_locked_rq(rq);						\
+ 	if (mask) {								\
+ 		scx_kf_allow(mask);						\
+ 		(sch)->ops.op(args);						\
+@@ -1280,14 +1281,16 @@ do {										\
+ 	} else {								\
+ 		(sch)->ops.op(args);						\
+ 	}									\
+-	update_locked_rq(NULL);							\
++	if (rq)									\
++		update_locked_rq(NULL);						\
+ } while (0)
  
-+	err = xe_gt_pagefault_init(gt);
-+	if (err)
-+		return err;
-+
- 	err = xe_gt_idle_init(&gt->gtidle);
- 	if (err)
- 		return err;
+ #define SCX_CALL_OP_RET(sch, mask, op, rq, args...)				\
+ ({										\
+ 	__typeof__((sch)->ops.op(args)) __ret;					\
+ 										\
+-	update_locked_rq(rq);							\
++	if (rq)									\
++		update_locked_rq(rq);						\
+ 	if (mask) {								\
+ 		scx_kf_allow(mask);						\
+ 		__ret = (sch)->ops.op(args);					\
+@@ -1295,7 +1298,8 @@ do {										\
+ 	} else {								\
+ 		__ret = (sch)->ops.op(args);					\
+ 	}									\
+-	update_locked_rq(NULL);							\
++	if (rq)									\
++		update_locked_rq(NULL);						\
+ 	__ret;									\
+ })
+ 
 
 
