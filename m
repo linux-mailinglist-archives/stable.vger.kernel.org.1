@@ -1,159 +1,111 @@
-Return-Path: <stable+bounces-163556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A6AB0C201
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 12:59:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD64B0C20F
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:01:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A51B317EB5D
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 10:58:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03DCB188AB46
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 11:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CB7291C01;
-	Mon, 21 Jul 2025 10:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB01A21421D;
+	Mon, 21 Jul 2025 11:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BgphFoUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eo2ibydY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F39E28DB77;
-	Mon, 21 Jul 2025 10:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5EF1925BC
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 11:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753095413; cv=none; b=SbUn9svZ75FLJ1cka8z1nQgYMQJYj6ntQex807VR1KV96tCBJwvVvMWiZtcjee5xx4269sREVIHxW6oR+/R1iDeZYNeymd/rKeuB1WwMXvl2aQgvoi8Ej13+43cZcku0p8dLr/cOKQMGSWHwRdE1kRXR5qw7YiRJQeA4ytX/kM4=
+	t=1753095700; cv=none; b=lm+1p0z9jPabiw9RxiWPqWYSzua36FKbFpEAUViCPmv+uYi8Ncw8QhHxnBpcBdQ8PgiO6p8poW4k82w0lh7aEmO8kRhE3IAh2K68efkFco5bQRKebpRX/nMMXeaZpfhaMs7c1aWvZ18A/p5I8HHq/bi0DG8ThAoIzXrWnXfxWWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753095413; c=relaxed/simple;
-	bh=Rg8LnypdqotxPvwOM27B1HNnAB93oL3zBoV9AsYSp5U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CXaYCifOHhOjmKbVIbQhLG0jDcwmDjhiJXG98/SHhwpQ1VUw8Sd+xYK4BMt7xQ4CY9iYoexyDH22eog0q9QL8V5YhYLzfXaqVuOVJGKhhmteZRcoAk99/M+8hLV3MhfjxxFYCDdPoZtLaPW1mOy0RKHxg4NxNv8Fd8zhLfTikb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BgphFoUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBD2C4CEED;
-	Mon, 21 Jul 2025 10:56:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753095412;
-	bh=Rg8LnypdqotxPvwOM27B1HNnAB93oL3zBoV9AsYSp5U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BgphFoUj1iEnlym93p6H1QrGMhQNltjgtYaa3i9ZVdkRXJDctq8tEb6jdAv8fVIrz
-	 uNeyXE/2l8JCbygDdvoawXb3TMSfVs1o0JhnYWQjYLCgVcjk/8QoSVWU203JCFj6Qn
-	 xUiu21cScsiI9RTkV9FHZo6LKZDmAH+nBSlQlqekAc8QXAMiSmZ6m0kUtoAiNy5Tm+
-	 nIE11JhM0qotQiriWQuxVG+lXDLyGy1IOuOx9+EjvhaDuIV/+0mTfeBqHGvKF1CHXi
-	 41oS0glfvIceZXBSxCufw3mPZlmX/CSgZqEBbR9dDSNSzP1J4keaJFheOzd9RfXK/B
-	 pwc+eTdcFTqYg==
-Date: Mon, 21 Jul 2025 16:26:41 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] PCI: qcom: Switch to bus notifier for enabling ASPM
- of PCI devices
-Message-ID: <rmltahsjvllae3or7jjk5kwvdkcqohj4bbjsfv4mnfbuq7376s@wtsha4zorf2p>
-References: <20250714-aspm_fix-v1-0-7d04b8c140c8@oss.qualcomm.com>
- <20250714-aspm_fix-v1-1-7d04b8c140c8@oss.qualcomm.com>
- <aH4JPBIk_GEoAezy@hovoldconsulting.com>
+	s=arc-20240116; t=1753095700; c=relaxed/simple;
+	bh=nmx9aX/lx/MQvyuyZnNtLntpmP/4Jh8ZEnZ5BUAbjSo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nlt/ayeNv2dRMclaKrPeQz6F4rvEjC6ZiFcVM8+FylSN43ZxPJ6MFlnXkqbWs7aSChrVL9CAc8/PW7hmAj/w/UMMBErRgyPuJH0w7794mG/faQafAcW/i5xqwpW58TPiWqtbb95Uj/h/ysqRKmiQ5OrwWJn8WEIyRFSViPP2vo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eo2ibydY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C441C4CEED;
+	Mon, 21 Jul 2025 11:01:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753095700;
+	bh=nmx9aX/lx/MQvyuyZnNtLntpmP/4Jh8ZEnZ5BUAbjSo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=eo2ibydYXSNXy+pujdflygeaURCyqGbRZbI1CyAhyBS/uvK4mLjOk/nJWFoTFFZqY
+	 e8zTq0aK/PPcIMOQDbS5iqtvJsMvva8TwHWPi/WGzejxyg+LM0XWMMguOlBa4+op2s
+	 OjkLBtaYBtAM6ZOmkQnnfauaubs6pftMaQxKL6FE=
+Subject: FAILED: patch "[PATCH] net: libwx: fix multicast packets received count" failed to apply to 6.15-stable tree
+To: jiawenwu@trustnetic.com,horms@kernel.org,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 21 Jul 2025 13:01:36 +0200
+Message-ID: <2025072136-steersman-voicing-574e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aH4JPBIk_GEoAezy@hovoldconsulting.com>
 
-On Mon, Jul 21, 2025 at 11:32:44AM GMT, Johan Hovold wrote:
-> On Mon, Jul 14, 2025 at 11:31:04PM +0530, Manivannan Sadhasivam wrote:
-> > Commit 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0
-> > ops") allowed the Qcom controller driver to enable ASPM for all PCI devices
-> > enumerated at the time of the controller driver probe. It proved to be
-> > useful for devices already powered on by the bootloader as it allowed
-> > devices to enter ASPM without user intervention.
-> > 
-> > However, it could not enable ASPM for the hotplug capable devices i.e.,
-> > devices enumerated *after* the controller driver probe. This limitation
-> > mostly went unnoticed as the Qcom PCI controllers are not hotplug capable
-> > and also the bootloader has been enabling the PCI devices before Linux
-> > Kernel boots (mostly on the Qcom compute platforms which users use on a
-> > daily basis).
-> > 
-> > But with the advent of the commit b458ff7e8176 ("PCI/pwrctl: Ensure that
-> > pwrctl drivers are probed before PCI client drivers"), the pwrctrl driver
-> > started to block the PCI device enumeration until it had been probed.
-> > Though, the intention of the commit was to avoid race between the pwrctrl
-> > driver and PCI client driver, it also meant that the pwrctrl controlled PCI
-> > devices may get probed after the controller driver and will no longer have
-> > ASPM enabled. So users started noticing high runtime power consumption with
-> > WLAN chipsets on Qcom compute platforms like Thinkpad X13s, and Thinkpad
-> > T14s, etc...
-> 
-> Note the ASPM regression for ath11k/ath12k only happened in 6.15, so
-> commit b458ff7e8176 ("PCI/pwrctl: Ensure that pwrctl drivers are probed
-> before PCI client drivers") in 6.13 does not seem to be the immediate
-> culprit here.
-> 
 
-This series was intented to fix the ASPM issue which exist even before the
-introduction of pwrctrl framework. But I also agree that the below commits made
-the issue more visible and caused regression on platforms where WLAN used to
-work.
+The patch below does not apply to the 6.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> Candidates from 6.15 include commits like
-> 
-> 	957f40d039a9 ("PCI/pwrctrl: Move creation of pwrctrl devices to pci_scan_device()")
-> 	2489eeb777af ("PCI/pwrctrl: Skip scanning for the device further if pwrctrl device is created")
-> 
-> This is probably related to the reports of these drivers sometimes
-> failing to probe with
-> 
-> 	ath12k_pci 0004:01:00.0: of_irq_parse_pci: failed with rc=134
-> 
-> after pwrctrl was merged, and which since 6.15 should instead result in
-> the drivers not probing at all (as we've discussed off list).
-> 
+To reproduce the conflict and resubmit, you may use the following commands:
 
-We discussed about the ASPM issue IIRC. The above mentioned of_irq_parse_pci
-could also be related to the fact that we are turning off the supplies after
-pci_dev destruction. For this issue, I guess the patch from Brian could be the
-fix:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072136-steersman-voicing-574e@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
 
-https://lore.kernel.org/linux-pci/20250711174332.1.I623f788178c1e4c5b1a41dbfc8c7fa55966373c0@changeid/
+Possible dependencies:
 
-> > Obviously, it is the pwrctrl change that caused regression, but it
-> > ultimately uncovered a flaw in the ASPM enablement logic of the controller
-> > driver. So to address the actual issue, switch to the bus notifier for
-> > enabling ASPM of the PCI devices. The notifier will notify the controller
-> > driver when a PCI device is attached to the bus, thereby allowing it to
-> > enable ASPM more reliably. It should be noted that the
-> > 'pci_dev::link_state', which is required for enabling ASPM by the
-> > pci_enable_link_state_locked() API, is only set by the time of
-> > BUS_NOTIFY_BIND_DRIVER stage of the notification. So we cannot enable ASPM
-> > during BUS_NOTIFY_ADD_DEVICE stage.
-> > 
-> > So with this, we can also get rid of the controller driver specific
-> > 'qcom_pcie_ops::host_post_init' callback.
-> > 
-> > Cc: stable@vger.kernel.org # v6.7
-> > Fixes: 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0 ops")
-> 
-> So whatever form this fix ends up taking it only needs to be backported
-> to 6.15.
-> 
-> As you mention above these platforms do not support hotplug, but even if
-> they were, enabling ASPM for hotplugged devices is arguably more of a
-> new features than a bug fix.
-> 
 
-FYI, I'm going to drop this series in favor this (with one yet-to-be-submitted
-patch on top):
-https://lore.kernel.org/linux-pci/20250720190140.2639200-1-david.e.box@linux.intel.com/
 
-- Mani
+thanks,
 
--- 
-மணிவண்ணன் சதாசிவம்
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77 Mon Sep 17 00:00:00 2001
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+Date: Mon, 14 Jul 2025 09:56:56 +0800
+Subject: [PATCH] net: libwx: fix multicast packets received count
+
+Multicast good packets received by PF rings that pass ethternet MAC
+address filtering are counted for rtnl_link_stats64.multicast. The
+counter is not cleared on read. Fix the duplicate counting on updating
+statistics.
+
+Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/DA229A4F58B70E51+20250714015656.91772-1-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 4cce07a69891..f0823aa1ede6 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -2777,6 +2777,8 @@ void wx_update_stats(struct wx *wx)
+ 		hwstats->fdirmiss += rd32(wx, WX_RDB_FDIR_MISS);
+ 	}
+ 
++	/* qmprc is not cleared on read, manual reset it */
++	hwstats->qmprc = 0;
+ 	for (i = wx->num_vfs * wx->num_rx_queues_per_pool;
+ 	     i < wx->mac.max_rx_queues; i++)
+ 		hwstats->qmprc += rd32(wx, WX_PX_MPRC(i));
+
 
