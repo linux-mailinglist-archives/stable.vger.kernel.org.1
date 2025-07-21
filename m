@@ -1,112 +1,129 @@
-Return-Path: <stable+bounces-163585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D4EB0C570
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:43:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2BCB0C57B
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BACA17EAE5
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:43:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AC6B1AA278B
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBCA21B9F5;
-	Mon, 21 Jul 2025 13:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A24C2D978C;
+	Mon, 21 Jul 2025 13:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="exvffVbL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNMhDQVz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2D22576
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 13:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1C62D949A;
+	Mon, 21 Jul 2025 13:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753105434; cv=none; b=dQLdQpWqxAcQKGiRZdxpSnO1JQaJVL9QwIxqi8UG7PLQGRplc/36Fq989e0O3hdcYaHWvQYaUy4jsIgst8RAANHACF1tvrhaOH7Pr/JQZbPaPxSeROHLeZ6+Z4Rj0LLpKknRRUT6HZjcUfenydOYWVM4SBXvePlfdkaZxSwrVMM=
+	t=1753105706; cv=none; b=MFWwzAW4l8n+xVMebZa7pyF5BPnEUEPA9PwOXaV001CdAesYYpkBl+0ZYpmacFKVcalQUeNHb2UoCHNn22QSdJNrjE+bpXOIUXD4c7QYLyCNWSpWes3v9uoug5DDwg5nRvIRwJdzFOwsnFIdxQ20PEHnICFehEwmQAJTMLOx5VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753105434; c=relaxed/simple;
-	bh=pro29KEPMRLoagSJ/fdxTVhSrn2ZnvtGDUaZZ6K9JMc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bTIteb6guay6RldAviLxEWdQbtD3fYSjX/iHjrBN0cVFcac7pAwxTSSazsx2l7PAHoMmghRrdok4511MZQwTnhbr7MTfyw8DuTnIXpa9J/rcd42TljZ7A80wyR2oamTZOFrwhP4sWBAKgwrQhNkT3c8+egf2O73JjiWlYMsKR1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exvffVbL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E5BC4CEED;
-	Mon, 21 Jul 2025 13:43:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753105434;
-	bh=pro29KEPMRLoagSJ/fdxTVhSrn2ZnvtGDUaZZ6K9JMc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=exvffVbLvOn/icKonyzlBO2iwXtKH6tcejjmx7keI7badUZ46ozVpvUZPnPMFMr4i
-	 2JS3uFQa78sYPlDGjfI87sbF4Sm9DBZAubuv3Ty37vO9NP5rTpH0BO5JFCPxy2TnTd
-	 h4+Nxn6ew3a08316GQIK+N9up06f/BnWtAk6Bj/CRRQZlcpFP8Zeon1HMJLiqkeUaS
-	 TnpBMIcRgJp+z2H0Ou7v4Sa6tlYHRLoAWrKTvP1m4E0t5tZM4Ns4ff90/yu+02kG6U
-	 ng+cXz0PmGaQbhS2I7lZUq8p9wMcOAm2LUpbxBk58gaz1WVM2BEl5m/qbP9CixHww9
-	 Fh/7eZaCIw/7A==
-From: Mario Limonciello <superm1@kernel.org>
-To: amd-gfx@lists.freedesktop.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] Revert "drm/amd/display: Fix AMDGPU_MAX_BL_LEVEL value"
-Date: Mon, 21 Jul 2025 08:43:50 -0500
-Message-ID: <20250721134350.4074047-1-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1753105706; c=relaxed/simple;
+	bh=RuuXVACjpr6OxTBTs3xZJKt8lhSYCQ+elVlHb9lJzTU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GDwygedTMLY/eV+4IqXADWFC6AlGIADs/7OsznqpISSYWfPuLs5M8XHI258Wy0GnLKKD6PSdDT/pKYL4gyuPjGDTaT0h69q/ik/Q5oFKzgfBLG7PzIdQz39OL/VqTVH3wtyciuBzONT2phe7IiXC2C0nbo1DDOQPac/xE/2jDB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNMhDQVz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4225C4CEED;
+	Mon, 21 Jul 2025 13:48:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753105705;
+	bh=RuuXVACjpr6OxTBTs3xZJKt8lhSYCQ+elVlHb9lJzTU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aNMhDQVzgfijhBLtLAuXhThMkYDoic7hTjxR+AwatNg7zjM39MAI6taMf3d7DYTcw
+	 QQJGAPYeXUgkwM0f91Z5xQYWXuFrJ7BqdRFTe33cIeKFzM0dQLyhspkeB8KwoZ7hmy
+	 K+PZRKyFNccBmT9TkfuCnGtKaC2fwtYdths/wEWU=
+Date: Mon, 21 Jul 2025 15:48:22 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.15 000/411] 5.15.186-rc1 review
+Message-ID: <2025072105-tactics-flail-4035@gregkh>
+References: <20250623130632.993849527@linuxfoundation.org>
+ <70823da1-a24d-4694-bf8a-68ca7f85e8a3@roeck-us.net>
+ <CAFBinCD8MKFbqzG2ge5PFgU74bgZVhmCwCXt+1UK8b=QDndVuw@mail.gmail.com>
+ <2025071238-decency-backboard-09dd@gregkh>
+ <CAFBinCANe9oajzfZ_OGHoA-TtGC-CQdOm_O5TG8ke8m_NNE5NQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFBinCANe9oajzfZ_OGHoA-TtGC-CQdOm_O5TG8ke8m_NNE5NQ@mail.gmail.com>
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+On Mon, Jul 14, 2025 at 09:56:11PM +0200, Martin Blumenstingl wrote:
+> Hi Greg,
+> 
+> On Sat, Jul 12, 2025 at 2:37 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Tue, Jul 08, 2025 at 06:05:14PM +0200, Martin Blumenstingl wrote:
+> > > Hi Guenter,
+> > >
+> > > On Mon, Jul 7, 2025 at 8:05 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > > >
+> > > > On Mon, Jun 23, 2025 at 03:02:24PM +0200, Greg Kroah-Hartman wrote:
+> > > > > This is the start of the stable review cycle for the 5.15.186 release.
+> > > > > There are 411 patches in this series, all will be posted as a response
+> > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > let me know.
+> > > > >
+> > > > > Responses should be made by Wed, 25 Jun 2025 13:05:51 +0000.
+> > > > > Anything received after that time might be too late.
+> > > > >
+> > > > ...
+> > > > > Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> > > > >     drm/meson: use unsigned long long / Hz for frequency types
+> > > > >
+> > > >
+> > > > This patch triggers:
+> > > >
+> > > > Building arm:allmodconfig ... failed
+> > > > --------------
+> > > > Error log:
+> > > > drivers/gpu/drm/meson/meson_vclk.c:399:17: error: this decimal constant is unsigned only in ISO C90 [-Werror]
+> > > >   399 |                 .pll_freq = 2970000000,
+> > > >
+> > > > and other similar problems. This is with gcc 13.4.0.
+> > > Sorry to hear that this is causing issues.
+> > > Are you only seeing this with the backport on top of 5.15 or also on
+> > > top of mainline or -next?
+> > >
+> > > If it's only for 5.15 then personally I'd be happy with just skipping
+> > > this patch (and the ones that depend on it).
+> >
+> > It's already merged, and I see these errors in the Android build reports
+> > now.  I think they've just disabled the driver entirely to get around it :(
+> Can you confirm that only 5.15 is affected - or do you also see
+> problems with other stable versions?
+> 
+> > > 5.15 is scheduled to be sunset in 16 months and I am not aware of many
+> > > people running Amlogic SoCs with mainline 5.15.
+> >
+> > Great, can we send a "CONFIG_BROKEN" patch for this then?
+> In my own words: you're asking for a patch for the next 5.15 release
+> which adds "depends on BROKEN" to the meson drm driver. Is this
+> correct?
 
-This reverts commit 66abb996999de0d440a02583a6e70c2c24deab45.
-This broke custom brightness curves but it wasn't obvious because
-of other related changes. Custom brightness curves are always
-from a 0-255 input signal. The correct fix was to fix the default
-value which was done by [1].
+Yes, given that it seems no one uses it there :)
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4412
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/amd-gfx/0f094c4b-d2a3-42cd-824c-dc2858a5618d@kernel.org/T/#m69f875a7e69aa22df3370b3e3a9e69f4a61fdaf2
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+thanks,
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 8e1405e9025ba..f3e407f31de11 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4740,16 +4740,16 @@ static int get_brightness_range(const struct amdgpu_dm_backlight_caps *caps,
- 	return 1;
- }
- 
--/* Rescale from [min..max] to [0..MAX_BACKLIGHT_LEVEL] */
-+/* Rescale from [min..max] to [0..AMDGPU_MAX_BL_LEVEL] */
- static inline u32 scale_input_to_fw(int min, int max, u64 input)
- {
--	return DIV_ROUND_CLOSEST_ULL(input * MAX_BACKLIGHT_LEVEL, max - min);
-+	return DIV_ROUND_CLOSEST_ULL(input * AMDGPU_MAX_BL_LEVEL, max - min);
- }
- 
--/* Rescale from [0..MAX_BACKLIGHT_LEVEL] to [min..max] */
-+/* Rescale from [0..AMDGPU_MAX_BL_LEVEL] to [min..max] */
- static inline u32 scale_fw_to_input(int min, int max, u64 input)
- {
--	return min + DIV_ROUND_CLOSEST_ULL(input * (max - min), MAX_BACKLIGHT_LEVEL);
-+	return min + DIV_ROUND_CLOSEST_ULL(input * (max - min), AMDGPU_MAX_BL_LEVEL);
- }
- 
- static void convert_custom_brightness(const struct amdgpu_dm_backlight_caps *caps,
-@@ -4977,7 +4977,7 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
- 		drm_dbg(drm, "Backlight caps: min: %d, max: %d, ac %d, dc %d\n", min, max,
- 			caps->ac_level, caps->dc_level);
- 	} else
--		props.brightness = props.max_brightness = MAX_BACKLIGHT_LEVEL;
-+		props.brightness = props.max_brightness = AMDGPU_MAX_BL_LEVEL;
- 
- 	if (caps->data_points && !(amdgpu_dc_debug_mask & DC_DISABLE_CUSTOM_BRIGHTNESS_CURVE))
- 		drm_info(drm, "Using custom brightness curve\n");
--- 
-2.43.0
-
+greg k-h
 
