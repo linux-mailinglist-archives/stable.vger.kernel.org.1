@@ -1,141 +1,124 @@
-Return-Path: <stable+bounces-163544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB17CB0C123
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 12:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7628EB0C138
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 12:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E23D189C04E
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 10:20:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43F22189D6E8
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 10:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4991B28DF2F;
-	Mon, 21 Jul 2025 10:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D5128F50F;
+	Mon, 21 Jul 2025 10:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHuxt4a9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jp7vGwDd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF63828DF14;
-	Mon, 21 Jul 2025 10:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646A519DF62
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 10:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753093208; cv=none; b=KCxIfsKaCUTwWHLpQD0IxFeJrviMrDR9DLprrBdT3yswjPLE7c+b6NMq1L7TgQjcaVVqBH4BhrT4tLSd7a5wXiDHYWlTBMVsLlAcOz0jl+LSD5uGQ41VW/pFk5HeHLSnp0h39GB7lJ8CQo+waRS282qhuDFEvlNbCk0hRXGiO7E=
+	t=1753093504; cv=none; b=hDWR7lz4bZ9e00eyUBDNeE2uaRowEl/AyYXEdHAAPpCuiLNxefbOHI/nro+td4nGc+xL7MWVkGPEh9UCBBEvYOV7xPPs2IWiRlxi4EcQT2pVVoGwiltjjpBN8WI8Zd8AUpfbv1JrJZijRXRfkx87USMBIO/W25F1aRk8x9CHTCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753093208; c=relaxed/simple;
-	bh=9bgiKIult709oiE+EtcY/T7jIr6TWwlF9z0Jm8sNTgE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eTKuF8zegZo5e1ZfAp9b783GijQdYLNoV/PjFLdnNFpFowFBOyApuwdUFv9q0p2gPBO9qpLeU8E0VC65A/KqXFWGfMWMxZf7QqLJr24VIJ3jfWxLXsvjtSeL8B7VLLRCnu7L8cPwjPPrxNDKnQtmU4cv7LkW/E4qQ/jzH+uQ9MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHuxt4a9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84B4C4CEF7;
-	Mon, 21 Jul 2025 10:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753093207;
-	bh=9bgiKIult709oiE+EtcY/T7jIr6TWwlF9z0Jm8sNTgE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHuxt4a9raxsIjMnRRxOdkiUKnyzHO2F8WoEKJEeby10ZA3bzbQG8bizpBD8QoGFo
-	 GxRC8CAcUwd8nxiR/mKaRL2vjAdnq/TBYr9xhaANO7HkZaPZz1801tWhS8LLi3AWZF
-	 JrtR1hDGyLeJZcFklJiQRgdvG7t+yAtfhrJYb3jd2XkGB3Htwm/w35A6jje8Bm9xDk
-	 r2iWUCZhbi25ABCDUsCBXhtD3qie+5IkgEe7UzfUyaSLiTkS4pgTQYP+6ijvB4YvGb
-	 JYlxyB1QjpLY6XRFw7xJ1iMvT69zFv+FPIfaPBNbc6Bqlgc8pypntecxpvZ5UtmIph
-	 HBN3j0odV8gew==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1udncr-00HZDF-Qk;
-	Mon, 21 Jul 2025 11:20:05 +0100
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/7] KVM: arm64: Filter out HCR_EL2 bits when running in hypervisor context
-Date: Mon, 21 Jul 2025 11:19:50 +0100
-Message-Id: <20250721101955.535159-3-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250721101955.535159-1-maz@kernel.org>
-References: <20250721101955.535159-1-maz@kernel.org>
+	s=arc-20240116; t=1753093504; c=relaxed/simple;
+	bh=GpCf6vLC/SrQAPnZzHk88zywAa32kIDZSeaRbU7tu9U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mjgWkbWzWwSohjEDRRwKaqEDSxwY/K0h2FJ5r4jDFjHcOgth/eOJvkg4R83bt//Ef2hOknIpAu9P7WdCPx6hZOs3uFXg+/LO6RMIi79pXR2hFaAzyz/BbMm1e+cj/gyIainkDst7LYTEBDSCLY38sXJdSZqIkAWoPDLYFBMEygo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jp7vGwDd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7512C4CEED;
+	Mon, 21 Jul 2025 10:25:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753093504;
+	bh=GpCf6vLC/SrQAPnZzHk88zywAa32kIDZSeaRbU7tu9U=;
+	h=Subject:To:Cc:From:Date:From;
+	b=jp7vGwDdKgrlAfj30F/iN2DowL/wrqlkH+K8TfsF0XfU1mVtKGdsnjgr2/mZkG+3c
+	 hm1GQ6UBDUuJVP5kH1DUpvfIGTk3YVSOFMWVXGHch7dz/hAe79W2fzcaxL0VXAoXLW
+	 MNcEVF+tGZA32e9Cwe2tTPJ1cvQa2wiy4cTkOJDw=
+Subject: FAILED: patch "[PATCH] drm/xe: Move page fault init after topology init" failed to apply to 6.15-stable tree
+To: matthew.brost@intel.com,jonathan.cavitt@intel.com,lucas.demarchi@intel.com,stuart.summers@intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 21 Jul 2025 12:25:01 +0200
+Message-ID: <2025072101-canola-aspect-c5c7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, will@kernel.org, catalin.marinas@arm.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Most HCR_EL2 bits are not supposed to affect EL2 at all, but only
-the guest. However, we gladly merge these bits with the host's
-HCR_EL2 configuration, irrespective of entering L1 or L2.
 
-This leads to some funky behaviour, such as L1 trying to inject
-a virtual SError for L2, and getting a taste of its own medecine.
-Not quite what the architecture anticipated.
+The patch below does not apply to the 6.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-In the end, the only bits that matter are those we have defined as
-invariants, either because we've made them RESx (E2H, HCD...), or
-that we actively refuse to merge because the mess with KVM's own
-logic.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Use the sanitisation infrastructure to get the RES1 bits, and let
-things rip in a safer way.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 3155ac89251dcb5e35a3ec2f60a74a6ed22c56fd
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072101-canola-aspect-c5c7@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
 
-Fixes: 04ab519bb86df ("KVM: arm64: nv: Configure HCR_EL2 for FEAT_NV2")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 3155ac89251dcb5e35a3ec2f60a74a6ed22c56fd Mon Sep 17 00:00:00 2001
+From: Matthew Brost <matthew.brost@intel.com>
+Date: Thu, 10 Jul 2025 12:12:08 -0700
+Subject: [PATCH] drm/xe: Move page fault init after topology init
+
+We need the topology to determine GT page fault queue size, move page
+fault init after topology init.
+
 Cc: stable@vger.kernel.org
----
- arch/arm64/kvm/hyp/vhe/switch.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Link: https://lore.kernel.org/r/20250710191208.1040215-1-matthew.brost@intel.com
+(cherry picked from commit beb72acb5b38dbe670d8eb752d1ad7a32f9c4119)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index 477f1580ffeaa..e482181c66322 100644
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -48,8 +48,7 @@ DEFINE_PER_CPU(unsigned long, kvm_hyp_vector);
+diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
+index 9752a38c0162..d554a8cc565c 100644
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -632,10 +632,6 @@ int xe_gt_init(struct xe_gt *gt)
+ 	if (err)
+ 		return err;
  
- static u64 __compute_hcr(struct kvm_vcpu *vcpu)
- {
--	u64 guest_hcr = __vcpu_sys_reg(vcpu, HCR_EL2);
--	u64 hcr = vcpu->arch.hcr_el2;
-+	u64 guest_hcr, hcr = vcpu->arch.hcr_el2;
+-	err = xe_gt_pagefault_init(gt);
+-	if (err)
+-		return err;
+-
+ 	err = xe_gt_sysfs_init(gt);
+ 	if (err)
+ 		return err;
+@@ -644,6 +640,10 @@ int xe_gt_init(struct xe_gt *gt)
+ 	if (err)
+ 		return err;
  
- 	if (!vcpu_has_nv(vcpu))
- 		return hcr;
-@@ -68,10 +67,21 @@ static u64 __compute_hcr(struct kvm_vcpu *vcpu)
- 		if (!vcpu_el2_e2h_is_set(vcpu))
- 			hcr |= HCR_NV1;
- 
-+		/*
-+		 * Nothing in HCR_EL2 should impact running in hypervisor
-+		 * context, apart from bits we have defined as RESx (E2H,
-+		 * HCD and co), or that cannot be set directly (the EXCLUDE
-+		 * bits). Given that we OR the guest's view with the host's,
-+		 * we can use the 0 value as the starting point, and only
-+		 * use the config-driven RES1 bits.
-+		 */
-+		guest_hcr = kvm_vcpu_apply_reg_masks(vcpu, HCR_EL2, 0);
++	err = xe_gt_pagefault_init(gt);
++	if (err)
++		return err;
 +
- 		write_sysreg_s(vcpu->arch.ctxt.vncr_array, SYS_VNCR_EL2);
- 	} else {
- 		host_data_clear_flag(VCPU_IN_HYP_CONTEXT);
- 
-+		guest_hcr = __vcpu_sys_reg(vcpu, HCR_EL2);
- 		if (guest_hcr & HCR_NV) {
- 			u64 va = __fix_to_virt(vncr_fixmap(smp_processor_id()));
- 
--- 
-2.39.2
+ 	err = xe_gt_idle_init(&gt->gtidle);
+ 	if (err)
+ 		return err;
 
 
