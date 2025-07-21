@@ -1,138 +1,190 @@
-Return-Path: <stable+bounces-163486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B04B0B97E
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 02:15:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC79B0B98C
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 02:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA3DB1895CEA
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 00:15:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B65F175935
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 00:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE18D39ACC;
-	Mon, 21 Jul 2025 00:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507A67260A;
+	Mon, 21 Jul 2025 00:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="deC0kWMT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XdcfoYAM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE30224FD
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 00:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8552E406;
+	Mon, 21 Jul 2025 00:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753056911; cv=none; b=LJgjBEEeNoLJ3dTdZLPSHGYnx/pjumHiwdFlqUhMvR63RpxniOl819NLFTZqIYk1yOQivdeLTdAJbZO54VRwXzOyyl6fzJb3ORz/dE/lOP3Vp5HNOGTYZRiFgLBu3pBgyrnWCTSVTwwIwe3MxvYSpfRvWf3OGU/ZN8HrYnfZLj0=
+	t=1753057595; cv=none; b=IZZu2R2kyZD13s0ZtwpfjliHjxfU698ioEWEjYJ78bk9e4oMyrHTnoBUfL9ysQ+4Jau3I2Sr+JNokrmZm/eb5FCLo5O6M9xlxrIzX3R02M5yE+1P+Wrh11Gb5jhBdyAaD3S4czw/qa6xsetq734OKp8k07A4IDYyIXlDScGlr5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753056911; c=relaxed/simple;
-	bh=OARoahJB9PxhTKsT6k22xbRA15gFmL1by/CStdQr5r0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lK3x4Hh1RoPzMsqRdO9b+tZ+4KLMg7/NRfyY6GTHaWcJXKHVzMetjkUrPnlT798pnOQrarzv2Mu/nltDX+86g5RJVLx7xoDbypiKeP4OFhp8RCh4iEXRNv8uMM3wk+DGgxfOsfrEKWj9ZS57hS8fVBlif4fucW2RTDQ/0YeWVi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=deC0kWMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01588C4CEE7;
-	Mon, 21 Jul 2025 00:15:09 +0000 (UTC)
+	s=arc-20240116; t=1753057595; c=relaxed/simple;
+	bh=2jXD6fV2pi4XdodBU4IjziGtCooOyqc6QbykipInwFo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hCam2HEPPUcVJTCAweVx8AbTgKVh8qtv0xVtQj0ANWCa2ALjZoaCXnYLurkofrIXqd+vZkw886qcxfiddih/RS0mV8rpvovEtGIzI6NA8V/a5Q+3EDaXTAaXhlBAqa/LORkyhOjmaZHOcRa5RisOiYNn0ptq2Tlu3LOLliZMCtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XdcfoYAM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CF0C4CEE7;
+	Mon, 21 Jul 2025 00:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753056911;
-	bh=OARoahJB9PxhTKsT6k22xbRA15gFmL1by/CStdQr5r0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deC0kWMTfX+1dGm50bOparQQf7F4boT7SWWrbvzsMq/zHHKJbt/HuXjT6tk4eiyHG
-	 yEyXMhTbTPEzbIyEAzh6+5jB+yOUglmajahPfcziNt635CcvS3D1LD1hW1elQ3dO3o
-	 PW98OHIsfw/QCLvLU5aZh5gCcr1cOVw5uAVsr8b1tvItiVqTTNY/5OhYT3vi2dcYUc
-	 LDN84qaXrm+URMCgak9vQFiwvbzizf1l6RaoYxsfHuzs9IQqLl1hLt9+r/4Z2//0Ph
-	 8J2pVqSP9lkPjXLOHsZBQKxTX+rVpbcPt7nzBE7sZ8qLAcK8fVFAS5/fGwTj9WV8PR
-	 PoJbafu1QD0zA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Zhang Rui <rui.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] powercap: intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be changed
-Date: Sun, 20 Jul 2025 20:15:04 -0400
-Message-Id: <20250721001504.767161-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025070818-buddhism-wikipedia-516a@gregkh>
-References: <2025070818-buddhism-wikipedia-516a@gregkh>
+	s=k20201202; t=1753057594;
+	bh=2jXD6fV2pi4XdodBU4IjziGtCooOyqc6QbykipInwFo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XdcfoYAMJGyOpwexECJfGYYaLJpKEJYaYhR7Ve456pp1Mu/xlx0GKy77EaNihR0qP
+	 bbNTuZ8BdR8SrB7V52lvnWlaWytC0BjVLaKfuxfcrSlflGZfDVJ6uQjJDyfd26XiJi
+	 fMa6nsR62qdGsIU+RMMsX1MTLVFKYZXHrT8eF36Hyv0351dK7+Nd14tTw0KWxznmaW
+	 Hy0UXyrAlM0GzSVNTcvup5NX/GBBqXfVt77RpIkmxeK52AdeepglwFzNzr+f3/QPAW
+	 XC89vjEWEpVDy8wdkBiDimVW/g9fiPtALjYmQYNvSslUw06gfM2CWvRgQtzjWaELm7
+	 OKLrf9nnyB8Qw==
+Date: Sun, 20 Jul 2025 19:26:33 -0500
+From: Rob Herring <robh@kernel.org>
+To: Macpaul Lin <macpaul.lin@mediatek.com>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Stanley Jhu <chu.stanley@gmail.com>,
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	openembedded-core@lists.openembedded.org, patches@lists.linux.dev,
+	stable@vger.kernel.org, Bear Wang <bear.wang@mediatek.com>,
+	Pablo Sun <pablo.sun@mediatek.com>,
+	Ramax Lo <ramax.lo@mediatek.com>, Macpaul Lin <macpaul@gmail.com>,
+	MediaTek Chromebook Upstream <Project_Global_Chrome_Upstream_Group@mediatek.com>
+Subject: Re: [PATCH 2/3] dt-bindings: ufs: mediatek,ufs: add MT8195
+ compatible and update clock nodes
+Message-ID: <20250721002633.GA3083612-robh@kernel.org>
+References: <20250718082719.653228-1-macpaul.lin@mediatek.com>
+ <20250718082719.653228-2-macpaul.lin@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250718082719.653228-2-macpaul.lin@mediatek.com>
 
-From: Zhang Rui <rui.zhang@intel.com>
+On Fri, Jul 18, 2025 at 04:27:17PM +0800, Macpaul Lin wrote:
+> Add 'mediatek,mt8195-ufshci' to compatible list.
+> Update clocks and clock-names constraints to allow one to eight entries.
+> Introduce 'mediatek,ufs-disable-mcq' property to disable
+> MCQ (Multi-Circular Queue). Update conditional schema for mt8195
+> requiring eight 'clocks' and eight 'clock-names'.
 
-[ Upstream commit 964209202ebe1569c858337441e87ef0f9d71416 ]
+Don't just describe the diff, we can read it. Describe why you are 
+making the changes. How is the new h/w different (or the same).
 
-PL1 cannot be disabled on some platforms. The ENABLE bit is still set
-after software clears it. This behavior leads to a scenario where, upon
-user request to disable the Power Limit through the powercap sysfs, the
-ENABLE bit remains set while the CLAMPING bit is inadvertently cleared.
+> 
+> Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+> ---
+>  .../devicetree/bindings/ufs/mediatek,ufs.yaml | 49 ++++++++++++++++---
+>  1 file changed, 43 insertions(+), 6 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml b/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
+> index 32fd535a514a..9d6bcf735920 100644
+> --- a/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
+> +++ b/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
+> @@ -9,21 +9,20 @@ title: Mediatek Universal Flash Storage (UFS) Controller
+>  maintainers:
+>    - Stanley Chu <stanley.chu@mediatek.com>
+>  
+> -allOf:
+> -  - $ref: ufs-common.yaml
+> -
+>  properties:
+>    compatible:
+>      enum:
+>        - mediatek,mt8183-ufshci
+>        - mediatek,mt8192-ufshci
+> +      - mediatek,mt8195-ufshci
+>  
+>    clocks:
+> -    maxItems: 1
+> +    minItems: 1
+> +    maxItems: 8
+>  
+>    clock-names:
+> -    items:
+> -      - const: ufs
+> +    minItems: 1
+> +    maxItems: 8
+>  
+>    phys:
+>      maxItems: 1
+> @@ -33,6 +32,11 @@ properties:
+>  
+>    vcc-supply: true
+>  
+> +  mediatek,ufs-disable-mcq:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: The mask to disable MCQ (Multi-Circular Queue) for UFS host.
+> +    type: boolean
 
-According to the Intel Software Developer's Manual, the CLAMPING bit,
-"When set, allows the processor to go below the OS requested P states in
-order to maintain the power below specified Platform Power Limit value."
+Seems this was undocumented, but already in use. That should be a 
+separate patch.
 
-Thus this means the system may operate at higher power levels than
-intended on such platforms.
+> +
+>  required:
+>    - compatible
+>    - clocks
+> @@ -43,6 +47,39 @@ required:
+>  
+>  unevaluatedProperties: false
+>  
+> +allOf:
+> +  - $ref: ufs-common.yaml
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - mediatek,mt8195-ufshci
+> +    then:
+> +      properties:
+> +        clocks:
+> +          minItems: 8
+> +          maxItems: 8
+> +        clock-names:
+> +          items:
+> +            - const: ufs
+> +            - const: ufs_aes
+> +            - const: ufs_tick
+> +            - const: unipro_sysclk
+> +            - const: unipro_tick
+> +            - const: unipro_mp_bclk
+> +            - const: ufs_tx_symbol
+> +            - const: ufs_mem_sub
+> +    else:
+> +      properties:
+> +        clocks:
+> +          minItems: 1
 
-Enhance the code to check ENABLE bit after writing to it, and stop
-further processing if ENABLE bit cannot be changed.
+1 is already the minimum. Drop.
 
-Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Fixes: 2d281d8196e3 ("PowerCap: Introduce Intel RAPL power capping driver")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/20250619071340.384782-1-rui.zhang@intel.com
-[ rjw: Use str_enabled_disabled() instead of open-coded equivalent ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[ replaced rapl_write_pl_data() and rapl_read_pl_data() with rapl_write_data_raw() and rapl_read_data_raw() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/powercap/intel_rapl_common.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index 9dfc053878fda..40d149d9dce85 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -212,12 +212,33 @@ static int find_nr_power_limit(struct rapl_domain *rd)
- static int set_domain_enable(struct powercap_zone *power_zone, bool mode)
- {
- 	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
-+	u64 val;
-+	int ret;
- 
- 	if (rd->state & DOMAIN_STATE_BIOS_LOCKED)
- 		return -EACCES;
- 
- 	cpus_read_lock();
--	rapl_write_data_raw(rd, PL1_ENABLE, mode);
-+	ret = rapl_write_data_raw(rd, PL1_ENABLE, mode);
-+	if (ret) {
-+		cpus_read_unlock();
-+		return ret;
-+	}
-+
-+	/* Check if the ENABLE bit was actually changed */
-+	ret = rapl_read_data_raw(rd, PL1_ENABLE, true, &val);
-+	if (ret) {
-+		cpus_read_unlock();
-+		return ret;
-+	}
-+
-+	if (mode != val) {
-+		pr_debug("%s cannot be %s\n", power_zone->name,
-+			 mode ? "enabled" : "disabled");
-+		cpus_read_unlock();
-+		return 0;
-+	}
-+
- 	if (rapl_defaults->set_floor_freq)
- 		rapl_defaults->set_floor_freq(rd, mode);
- 	cpus_read_unlock();
--- 
-2.39.5
-
+> +          maxItems: 1
+> +        clock-names:
+> +          items:
+> +            - const: ufs
+> +
+>  examples:
+>    - |
+>      #include <dt-bindings/clock/mt8183-clk.h>
+> -- 
+> 2.45.2
+> 
 
