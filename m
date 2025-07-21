@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-163558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C49B0C210
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:01:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B380EB0C25F
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C44203A5EDE
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 11:01:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF0AF188B1F3
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 11:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48C221421D;
-	Mon, 21 Jul 2025 11:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C777298997;
+	Mon, 21 Jul 2025 11:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqhKSs3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SctLWhn+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876201EA7EB
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 11:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A082298996
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 11:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753095708; cv=none; b=Brrg9ac2Up4Z1nTxTeewkTM3IuRnW05wPvW23fkOe7P7gK1uDOcgB998kyK/ukFbrLMp13AJhlJwha9OEgpcYcR7R2UHhF86Fb05TCoJjcT6aI4qukx7b9TZwt0gMlLoMgLDKlmeBTyl8QQPtxX04O7W9jom1PgWrep7P+R68pk=
+	t=1753096450; cv=none; b=u2uTOJhOtBKuW6DnnlWkiZpShcMAGe8zeR52V/O2PJTJpp+TskanMgnW+eKxRHPHrxKufgvCKmtxRnAM/0PuTFBc7dfuA04bQoVmuLGMyZAiKRIE1NYVZ8gH2wpSpq+ixG5J+Fgp3OfbU7M8R2RU9jpRXRYEyqZqvEFrc+1I2lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753095708; c=relaxed/simple;
-	bh=kP6ofGXQFe7mnV1P/fiYDdy3/+0di3io/5iH0sW7XMc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OMSJ0igbLLCc2+UUcpt0V1fbuxwj5LLL+tADMnasT1tTHBjNU31RgufrGc2bG7rS3qd/7CiJyV/vmnD6C09rODpokbQWcDKq2GKa6xDJOqnusSN8nj1V/SAuZ9ueNelQ//ME0yb1/PREWOEcKY06TpkGc9sBu7qb9920jtmidMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqhKSs3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4825C4CEF1;
-	Mon, 21 Jul 2025 11:01:47 +0000 (UTC)
+	s=arc-20240116; t=1753096450; c=relaxed/simple;
+	bh=C1oj7FMcx28A7v1QYuBbu8PIT1qnsW23/Ppu7IeTYB8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lzUX/PkdHWa7Ad59QuTcpWrhxE+5bb/l+yHBdzj8yh11BrRHlohkSaveDobCy1mT7Uf53Mr3GKEANdUg1kr4OxVkbP3nHkRm+QULGdlwqOi3YICPrKOX7DBqDKW/3w6qcta84MFoK/sXwSFNRWWAof0ngvzyZ894SS6eTSLWtt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SctLWhn+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA199C4CEED;
+	Mon, 21 Jul 2025 11:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753095708;
-	bh=kP6ofGXQFe7mnV1P/fiYDdy3/+0di3io/5iH0sW7XMc=;
+	s=korg; t=1753096450;
+	bh=C1oj7FMcx28A7v1QYuBbu8PIT1qnsW23/Ppu7IeTYB8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OqhKSs3QL6/hA3Al7ETX+ilsvqQDmfZnqQVFD+6AgubjBUVDXT0NtTgt2JFdixs6P
-	 vN35gPRGLsGIUXoe8TK8X+inIbPp1AqmWs9uPlc+Vcs7/iC80ptrxKTiRvBiuT0HfL
-	 PRdAqUaZhzjA9zs3hhi6HxmPKadqYDv/ZfLwyJ58=
-Subject: FAILED: patch "[PATCH] net: libwx: fix multicast packets received count" failed to apply to 6.12-stable tree
-To: jiawenwu@trustnetic.com,horms@kernel.org,kuba@kernel.org
+	b=SctLWhn+t7Jk+zIRaGcY+O60VV6v5uAUQDHxkogfYfQ/BhoEjIBclAj8pyu1zZ1Iu
+	 OyEUOiLiJAsk13iY8fwIRHXjh2D8w0isP8eVnWEefM1HZKoy5j7k60FPdb4ChRLE9n
+	 ZZFUfoekTseXgsfoMxWgTZvS8KNZRmC3lGSg6Q9o=
+Subject: FAILED: patch "[PATCH] pmdomain: governor: Consider CPU latency tolerance from" failed to apply to 5.4-stable tree
+To: maulik.shah@oss.qualcomm.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Jul 2025 13:01:37 +0200
-Message-ID: <2025072137-disarm-donator-b329@gregkh>
+Date: Mon, 21 Jul 2025 13:13:14 +0200
+Message-ID: <2025072114-matriarch-decline-2598@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77
+git cherry-pick -x 500ba33284416255b9a5b50ace24470b6fe77ea5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072137-disarm-donator-b329@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072114-matriarch-decline-2598@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,35 +77,109 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77 Mon Sep 17 00:00:00 2001
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-Date: Mon, 14 Jul 2025 09:56:56 +0800
-Subject: [PATCH] net: libwx: fix multicast packets received count
+From 500ba33284416255b9a5b50ace24470b6fe77ea5 Mon Sep 17 00:00:00 2001
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Date: Wed, 9 Jul 2025 14:00:11 +0530
+Subject: [PATCH] pmdomain: governor: Consider CPU latency tolerance from
+ pm_domain_cpu_gov
 
-Multicast good packets received by PF rings that pass ethternet MAC
-address filtering are counted for rtnl_link_stats64.multicast. The
-counter is not cleared on read. Fix the duplicate counting on updating
-statistics.
+pm_domain_cpu_gov is selecting a cluster idle state but does not consider
+latency tolerance of child CPUs. This results in deeper cluster idle state
+whose latency does not meet latency tolerance requirement.
 
-Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")
+Select deeper idle state only if global and device latency tolerance of all
+child CPUs meet.
+
+Test results on SM8750 with 300 usec PM-QoS on CPU0 which is less than
+domain idle state entry (2150) + exit (1983) usec latency mentioned in
+devicetree, demonstrate the issue.
+
+	# echo 300 > /sys/devices/system/cpu/cpu0/power/pm_qos_resume_latency_us
+
+Before: (Usage is incrementing)
+======
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             29817          537        8          270        0
+
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             30348          542        8          271        0
+
+After: (Usage is not incrementing due to latency tolerance)
+======
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             39319          626        14         307        0
+
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             39319          626        14         307        0
+
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Fixes: e94999688e3a ("PM / Domains: Add genpd governor for CPUs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/DA229A4F58B70E51+20250714015656.91772-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20250709-pmdomain_qos-v2-1-976b12257899@oss.qualcomm.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 4cce07a69891..f0823aa1ede6 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2777,6 +2777,8 @@ void wx_update_stats(struct wx *wx)
- 		hwstats->fdirmiss += rd32(wx, WX_RDB_FDIR_MISS);
+diff --git a/drivers/pmdomain/governor.c b/drivers/pmdomain/governor.c
+index c1e148657c87..39359811a930 100644
+--- a/drivers/pmdomain/governor.c
++++ b/drivers/pmdomain/governor.c
+@@ -8,6 +8,7 @@
+ #include <linux/pm_domain.h>
+ #include <linux/pm_qos.h>
+ #include <linux/hrtimer.h>
++#include <linux/cpu.h>
+ #include <linux/cpuidle.h>
+ #include <linux/cpumask.h>
+ #include <linux/ktime.h>
+@@ -349,6 +350,8 @@ static bool cpu_power_down_ok(struct dev_pm_domain *pd)
+ 	struct cpuidle_device *dev;
+ 	ktime_t domain_wakeup, next_hrtimer;
+ 	ktime_t now = ktime_get();
++	struct device *cpu_dev;
++	s64 cpu_constraint, global_constraint;
+ 	s64 idle_duration_ns;
+ 	int cpu, i;
+ 
+@@ -359,6 +362,7 @@ static bool cpu_power_down_ok(struct dev_pm_domain *pd)
+ 	if (!(genpd->flags & GENPD_FLAG_CPU_DOMAIN))
+ 		return true;
+ 
++	global_constraint = cpu_latency_qos_limit();
+ 	/*
+ 	 * Find the next wakeup for any of the online CPUs within the PM domain
+ 	 * and its subdomains. Note, we only need the genpd->cpus, as it already
+@@ -372,8 +376,16 @@ static bool cpu_power_down_ok(struct dev_pm_domain *pd)
+ 			if (ktime_before(next_hrtimer, domain_wakeup))
+ 				domain_wakeup = next_hrtimer;
+ 		}
++
++		cpu_dev = get_cpu_device(cpu);
++		if (cpu_dev) {
++			cpu_constraint = dev_pm_qos_raw_resume_latency(cpu_dev);
++			if (cpu_constraint < global_constraint)
++				global_constraint = cpu_constraint;
++		}
  	}
  
-+	/* qmprc is not cleared on read, manual reset it */
-+	hwstats->qmprc = 0;
- 	for (i = wx->num_vfs * wx->num_rx_queues_per_pool;
- 	     i < wx->mac.max_rx_queues; i++)
- 		hwstats->qmprc += rd32(wx, WX_PX_MPRC(i));
++	global_constraint *= NSEC_PER_USEC;
+ 	/* The minimum idle duration is from now - until the next wakeup. */
+ 	idle_duration_ns = ktime_to_ns(ktime_sub(domain_wakeup, now));
+ 	if (idle_duration_ns <= 0)
+@@ -389,8 +401,10 @@ static bool cpu_power_down_ok(struct dev_pm_domain *pd)
+ 	 */
+ 	i = genpd->state_idx;
+ 	do {
+-		if (idle_duration_ns >= (genpd->states[i].residency_ns +
+-		    genpd->states[i].power_off_latency_ns)) {
++		if ((idle_duration_ns >= (genpd->states[i].residency_ns +
++		    genpd->states[i].power_off_latency_ns)) &&
++		    (global_constraint >= (genpd->states[i].power_on_latency_ns +
++		    genpd->states[i].power_off_latency_ns))) {
+ 			genpd->state_idx = i;
+ 			genpd->gd->last_enter = now;
+ 			genpd->gd->reflect_residency = true;
 
 
