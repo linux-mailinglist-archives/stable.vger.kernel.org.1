@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-163592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5501B0C5AE
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:59:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AB4B0C5B0
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 846191AA3E95
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:59:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D24FB167699
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C87A2BE059;
-	Mon, 21 Jul 2025 13:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D582D8DD6;
+	Mon, 21 Jul 2025 13:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ibxWtaVW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZZl2lGBA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7F919E826
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 13:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8566D19E826
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 13:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753106338; cv=none; b=uBL2SghDXrxTjROLioQFYUUR0F6ND/0gGXE4Jkfad0IHcvgPBTy//kv4+zC3VY+nHXvMRdBoZni4UaVq1jZnwe4VJxKah/FDU9PqgjR6zLYIBLnFq7D9dtizxG19crqcMGtHkDYqs/CqCmrzxrrTElQk7oD2rjSS+JkuL9cxvtw=
+	t=1753106343; cv=none; b=RW4N/X5RwKw17eIAJKWlYBgajDqkMauR2TqCJCPc/Bzc0fo18O47n+NDPkozoFoIM5Pe6yCftCxcBOHOQOjJrhdjMpCB9tzoeNNE4LyaWg7apJwudVgO/YvT5o+JkqPWxpp29cJIFdFCeGAuDHyTSH6TlIhUK9490jmifh7N67A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753106338; c=relaxed/simple;
-	bh=b4UQmVoRjPt7pY4UBGYpHbxH4w8pgfK5inTfWpV8rwA=;
+	s=arc-20240116; t=1753106343; c=relaxed/simple;
+	bh=HfG5Ey5dJXwLJ70Y9iv1lOHxXYt3I8kku4po52+wosw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AFPn+kWh6IhuSPjJ4A6o6hPAPOztfvQqmqNAZdIuH3Fz/HxDbC/GgQEOSTzCwL6XHXNB0VrhQsNWloNLTK3uKxQEHH/ZsOQqdLQ5kS1DLIfSPkHYtLL27Bty5WcLep/EWoFNTJHux3q4bl8N/+TVdRPEu3RJyCZLW4ehK/ChVfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ibxWtaVW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C669C4CEED;
-	Mon, 21 Jul 2025 13:58:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NVv9Q0FQ59+8Q6bWJewOhZ5u258iEq5mFj6/wRA7x1QYPJHaUbjbkZDD02UT6/cQlN+t/ySknCJsY0fjuNfVQWddDyeHgnRuF0a4jUKeyKJK4BE9MFmsX5eW+q/lgvUdSllPIRQImCrHikPqAZ/yNzkZ8CzZ8+HG8yXnFNTAxWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZZl2lGBA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6775FC4CEED;
+	Mon, 21 Jul 2025 13:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753106338;
-	bh=b4UQmVoRjPt7pY4UBGYpHbxH4w8pgfK5inTfWpV8rwA=;
+	s=k20201202; t=1753106343;
+	bh=HfG5Ey5dJXwLJ70Y9iv1lOHxXYt3I8kku4po52+wosw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ibxWtaVWgFHViceJFnSD7csX0T6Epc0+dbb7jadoe0LSECcLQ1DMUKDFHgDmtBsgL
-	 /RW0+EL7PmhV7W2Fd4MmLwcEA0HHtpP1Q558WEYSoR4Afnbm5yigmWwo2IYQoK2Y05
-	 CWvxpWD8/Q2QBeZaI6MMDwZn7dWWqkgm8R6151KwVlr/vl5cPO9zR4RjkjsgbgaHR+
-	 lWy6pdtvQz4MhQRSGOxhQ55RxrvDo0bFmMlp+PdWhSN1RBB0fEk1dYxHQYyFPuqNLQ
-	 OJl/8p9M7JXR628MT4VOsapuPFcf8zprdr6XPZeMDamp5JFTbtcOhtkjYTUTMuP3bO
-	 UgXTEFGC6GVGQ==
+	b=ZZl2lGBAaQnXdyGkD8l/l/2WLzqULfVVZkfhnEttgYyf94c+k52zV65WdQkVExIBG
+	 oQvPKZAu9gFj+eHEi9O1npsX3Gw9QanCdhbebgRYxakfQT427xYymj7BH+tRYgXQ7U
+	 O6JMoi2GX4knWQF58vurPf0RSHphoBQ1TwjkwZpgSlMpwEHMlKCRkJVF3yhr5r0oGT
+	 ueM4QfdXkJxH6wQW68R2zprG7A6riZwFwVmS91HrMKwesMTFZkSkdqnLprDVR46ROt
+	 PXbxW+lWphsR34bgXXSZ2YV94kJbcHMGdB6ypqvThXU3YZc8Zoa88NPglWJIK1xGzX
+	 xHFePmEq2myBQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	eraykrdg1@gmail.com
+To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH] Fix SMB311 posix special file creation to servers which do not advertise reparse support
-Date: Mon, 21 Jul 2025 09:58:55 -0400
-Message-Id: <1753106036-b5fd2fc4@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y 2/3] power: supply: bq24190_charger: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+Date: Mon, 21 Jul 2025 09:59:00 -0400
+Message-Id: <1753105092-09735345@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250720203248.5702-1-eraykrdg1@gmail.com>
+In-Reply-To: <20250721114846.1360952-3-skulkarni@mvista.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,39 +63,31 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-❌ Patch application failures detected
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: 8767cb3fbd514c4cf85b4f516ca30388e846f540
+The upstream commit SHA1 provided is correct: d96a89407e5f682d1cb22569d91784506c784863
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: Ahmet Eray Karadag <eraykrdg1@gmail.com>
-Commit author: Steve French <stfrench@microsoft.com>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <skulkarni@mvista.com>
+Commit author: Minghao Chi <chi.minghao@zte.com.cn>
 
-Note: The patch differs from the upstream commit:
+Status in newer kernel trees:
+6.15.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (different SHA1: 10ce6db6253d)
+5.10.y | Present (different SHA1: 18359b8e30c4)
+
+Note: Could not generate a diff with upstream commit:
 ---
-1:  8767cb3fbd51 ! 1:  db704f6b22b4 Fix SMB311 posix special file creation to servers which do not advertise reparse support
-    @@ Commit message
-         Acked-by: Ralph Boehme <slow@samba.org>
-         Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-         Signed-off-by: Steve French <stfrench@microsoft.com>
-    +    Signed-off-by: Ahmet Eray Karadag <eraykrdg1@gmail.com>
-     
-      ## fs/smb/client/smb2inode.c ##
-     @@ fs/smb/client/smb2inode.c: struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
-
+Note: Could not generate diff - patch failed to apply for comparison
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| origin/linux-6.15.y       | Success     | Success    |
-| origin/linux-6.12.y       | Failed      | N/A        |
-| origin/linux-6.6.y        | Failed      | N/A        |
-| origin/linux-6.1.y        | Failed      | N/A        |
-| origin/linux-5.15.y       | Failed      | N/A        |
-| origin/linux-5.10.y       | Failed      | N/A        |
-| origin/linux-5.4.y        | Failed      | N/A        |
+| 5.4                       | Success     | Success    |
 
