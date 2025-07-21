@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-163485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B8EB0B967
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 01:47:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B04B0B97E
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 02:15:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74ADF3AC90A
-	for <lists+stable@lfdr.de>; Sun, 20 Jul 2025 23:47:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA3DB1895CEA
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 00:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256CB1F4289;
-	Sun, 20 Jul 2025 23:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE18D39ACC;
+	Mon, 21 Jul 2025 00:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GPoia08Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="deC0kWMT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1E78BEE
-	for <stable@vger.kernel.org>; Sun, 20 Jul 2025 23:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE30224FD
+	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 00:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753055246; cv=none; b=tr/Dfz2Y6RepQk+7S8C4EliFQ5OWOJellAqNu/4+dgvYv5uOq/ys0rOEjcgVbRqYeuwv/OYt9pytlTxEeiTxVEA6uCtL6PbBJgY2qJ9MlmuLrhRHBwQebnjuTaUupa/BOXUuPXNBffQ4vxXbyGv82UNYhY5MJvTtiIjOCB0xym0=
+	t=1753056911; cv=none; b=LJgjBEEeNoLJ3dTdZLPSHGYnx/pjumHiwdFlqUhMvR63RpxniOl819NLFTZqIYk1yOQivdeLTdAJbZO54VRwXzOyyl6fzJb3ORz/dE/lOP3Vp5HNOGTYZRiFgLBu3pBgyrnWCTSVTwwIwe3MxvYSpfRvWf3OGU/ZN8HrYnfZLj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753055246; c=relaxed/simple;
-	bh=Zbrrzvq3FNlZXbFF25qg2w7xZi6cC8Jg7+Oz9Gybs4o=;
+	s=arc-20240116; t=1753056911; c=relaxed/simple;
+	bh=OARoahJB9PxhTKsT6k22xbRA15gFmL1by/CStdQr5r0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Wdf0++T5Xzem0VO8P+rjXy8lD6OVuUMLBm2yLIaRyQVCeRksrELOV2/QszfVqJB1x8MX0tIQkJaCwGwGbVfHc9SLyDQWIjO8urvWUdRhBqMtujs3YvFLbiAuzI3zYZE4TXX9//951Ya1kX0hroXau7Wqz7SJiHjXxbQ7B75ic38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GPoia08Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B80C4CEFA;
-	Sun, 20 Jul 2025 23:47:25 +0000 (UTC)
+	 MIME-Version; b=lK3x4Hh1RoPzMsqRdO9b+tZ+4KLMg7/NRfyY6GTHaWcJXKHVzMetjkUrPnlT798pnOQrarzv2Mu/nltDX+86g5RJVLx7xoDbypiKeP4OFhp8RCh4iEXRNv8uMM3wk+DGgxfOsfrEKWj9ZS57hS8fVBlif4fucW2RTDQ/0YeWVi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=deC0kWMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01588C4CEE7;
+	Mon, 21 Jul 2025 00:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753055246;
-	bh=Zbrrzvq3FNlZXbFF25qg2w7xZi6cC8Jg7+Oz9Gybs4o=;
+	s=k20201202; t=1753056911;
+	bh=OARoahJB9PxhTKsT6k22xbRA15gFmL1by/CStdQr5r0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPoia08Z1FHlLU6mgPwlMXPTwnUdVa8IJrLSvYeNaXoA4+MnDmljBx/m+oBUN5pdo
-	 qbv472JZ0v5KioZT6vjoY9uTBtnOWnylqwojjKgWDQXTeEUV4sAaIFAVeGHgwoEzbw
-	 hhpTVFmNO+uEiK2Okzc5iv26U2GquD0twKu7r71o4TfmTLmWy6GDkzownm1D/hWCEB
-	 8sniA8jTjtV2Cd5HxrY/IdnHzrL4s5jtnm4fDKEPzxzsOiGaimZSuGS8PyzjmEFwEx
-	 wEwnIed5XBt0BvLYMugoMpBiPnEuAKyAz6esJ+PGMZzmOp6ncQ8TsMaUcJ34rgMYcB
-	 S6YmWFxDTE+lA==
+	b=deC0kWMTfX+1dGm50bOparQQf7F4boT7SWWrbvzsMq/zHHKJbt/HuXjT6tk4eiyHG
+	 yEyXMhTbTPEzbIyEAzh6+5jB+yOUglmajahPfcziNt635CcvS3D1LD1hW1elQ3dO3o
+	 PW98OHIsfw/QCLvLU5aZh5gCcr1cOVw5uAVsr8b1tvItiVqTTNY/5OhYT3vi2dcYUc
+	 LDN84qaXrm+URMCgak9vQFiwvbzizf1l6RaoYxsfHuzs9IQqLl1hLt9+r/4Z2//0Ph
+	 8J2pVqSP9lkPjXLOHsZBQKxTX+rVpbcPt7nzBE7sZ8qLAcK8fVFAS5/fGwTj9WV8PR
+	 PoJbafu1QD0zA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Zhang Rui <rui.zhang@intel.com>,
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 7/7] powercap: intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be changed
-Date: Sun, 20 Jul 2025 19:47:05 -0400
-Message-Id: <20250720234705.764310-7-sashal@kernel.org>
+Subject: [PATCH 5.15.y] powercap: intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be changed
+Date: Sun, 20 Jul 2025 20:15:04 -0400
+Message-Id: <20250721001504.767161-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250720234705.764310-1-sashal@kernel.org>
-References: <2025070817-quaintly-lend-80a3@gregkh>
- <20250720234705.764310-1-sashal@kernel.org>
+In-Reply-To: <2025070818-buddhism-wikipedia-516a@gregkh>
+References: <2025070818-buddhism-wikipedia-516a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,45 +87,51 @@ Signed-off-by: Zhang Rui <rui.zhang@intel.com>
 Link: https://patch.msgid.link/20250619071340.384782-1-rui.zhang@intel.com
 [ rjw: Use str_enabled_disabled() instead of open-coded equivalent ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ replaced rapl_write_pl_data() and rapl_read_pl_data() with rapl_write_data_raw() and rapl_read_data_raw() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/intel_rapl_common.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/powercap/intel_rapl_common.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index cc51bd508ad15..7550e8be488d0 100644
+index 9dfc053878fda..40d149d9dce85 100644
 --- a/drivers/powercap/intel_rapl_common.c
 +++ b/drivers/powercap/intel_rapl_common.c
-@@ -297,12 +297,28 @@ static int set_domain_enable(struct powercap_zone *power_zone, bool mode)
+@@ -212,12 +212,33 @@ static int find_nr_power_limit(struct rapl_domain *rd)
+ static int set_domain_enable(struct powercap_zone *power_zone, bool mode)
  {
  	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
- 	struct rapl_defaults *defaults = get_defaults(rd->rp);
 +	u64 val;
- 	int ret;
++	int ret;
+ 
+ 	if (rd->state & DOMAIN_STATE_BIOS_LOCKED)
+ 		return -EACCES;
  
  	cpus_read_lock();
- 	ret = rapl_write_pl_data(rd, POWER_LIMIT1, PL_ENABLE, mode);
--	if (!ret && defaults->set_floor_freq)
-+	if (ret)
-+		goto end;
+-	rapl_write_data_raw(rd, PL1_ENABLE, mode);
++	ret = rapl_write_data_raw(rd, PL1_ENABLE, mode);
++	if (ret) {
++		cpus_read_unlock();
++		return ret;
++	}
 +
-+	ret = rapl_read_pl_data(rd, POWER_LIMIT1, PL_ENABLE, false, &val);
-+	if (ret)
-+		goto end;
++	/* Check if the ENABLE bit was actually changed */
++	ret = rapl_read_data_raw(rd, PL1_ENABLE, true, &val);
++	if (ret) {
++		cpus_read_unlock();
++		return ret;
++	}
 +
 +	if (mode != val) {
 +		pr_debug("%s cannot be %s\n", power_zone->name,
-+			 str_enabled_disabled(mode));
-+		goto end;
++			 mode ? "enabled" : "disabled");
++		cpus_read_unlock();
++		return 0;
 +	}
 +
-+	if (defaults->set_floor_freq)
- 		defaults->set_floor_freq(rd, mode);
-+
-+end:
+ 	if (rapl_defaults->set_floor_freq)
+ 		rapl_defaults->set_floor_freq(rd, mode);
  	cpus_read_unlock();
- 
- 	return ret;
 -- 
 2.39.5
 
