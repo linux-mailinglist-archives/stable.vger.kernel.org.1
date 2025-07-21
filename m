@@ -1,129 +1,104 @@
-Return-Path: <stable+bounces-163495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E49B0BC0A
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 07:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5F9B0BCD8
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 08:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 954EA3ACA98
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 05:36:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28E0B3ADD81
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 06:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB20E1ACEDE;
-	Mon, 21 Jul 2025 05:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A4827E7FC;
+	Mon, 21 Jul 2025 06:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3YXxnBo"
+	dkim=pass (2048-bit key) header.d=qtmlabs.xyz header.i=@qtmlabs.xyz header.b="I83a04+j"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from s1.g1.infrastructure.qtmlabs.xyz (s1.g1.infrastructure.qtmlabs.xyz [107.172.1.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A12219CD13
-	for <stable@vger.kernel.org>; Mon, 21 Jul 2025 05:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7B52C181;
+	Mon, 21 Jul 2025 06:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=107.172.1.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753076236; cv=none; b=usghCAt1Q/8pYUb2uOE2igvCytzIgh+d1HXbbsJ0tdH11v4kZTeNotsG+FGrSJAQtMnWeeBmRjUD1DHusjFHFDPx8p0TE90hjsoSWfztbe4M+c1P1zZVLQnVVVYrbR/3/pFXS7JGEZVbJBqikxRwTyGSfNOYicxCfQWkGB0K6Tg=
+	t=1753080132; cv=none; b=nq1ae23NqgBIrm2DL/SxHtbEDmrKB5hPszWi6l5ckiSFlPDerx198Okme1+13Wh+IIF/j0j6tB6CYCZaRFs0KWvEzAAi7xKsQ64OdqX05k/lfpO+XU3TxpCg8FcnjkCa4j2Druhwpng6FwaMG0ewourGLMb313Ldz1VFIy/8Ofs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753076236; c=relaxed/simple;
-	bh=tk90Dhhnk68eq0yeTTPmpEa/JZ4j8McorbDAvuf6d3A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wnwo6qZlA4Srml+GHiLavoMjBDRkijwtLAa55d8EuS6xJnxNbw4DSJ8nZrQaew4KtMFt0h3jZJt9LQIymo8Zu8fgPIn8rgd3dBhANO6PFYkSGtuxAY90clMWvvfN7rz5TOyA5MASSdR5E2i4HJFlLxMDW08pK6kELpyyVQtrzaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3YXxnBo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24170C4CEF1;
-	Mon, 21 Jul 2025 05:37:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753076235;
-	bh=tk90Dhhnk68eq0yeTTPmpEa/JZ4j8McorbDAvuf6d3A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G3YXxnBovTDraNyy5PRhex81HIX00L7gEKfFskL1+CkZPAJFraVvFGJ3Cw61hMuy2
-	 /y2GCIYzpI5CQZ27Dxy3r8Txq6zlE5YcinX7iu4PsZrkZE/+yB4ahx5G2mm/+On1Uq
-	 Dw38C9F4A7xHFMbGyfgYE42c5lPqc052yafXj0SI=
-Date: Mon, 21 Jul 2025 07:37:11 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ahmet Eray Karadag <eraykrdg1@gmail.com>
-Cc: Steve French <stfrench@microsoft.com>, stable@vger.kernel.org,
-	Ralph Boehme <slow@samba.org>, Paulo Alcantara <pc@manguebit.org>
-Subject: Re: [PATCH] Fix SMB311 posix special file creation to servers which
- do not advertise reparse support
-Message-ID: <2025072104-rebound-aftermath-f257@gregkh>
-References: <20250720203248.5702-1-eraykrdg1@gmail.com>
+	s=arc-20240116; t=1753080132; c=relaxed/simple;
+	bh=wxeCEH+SU8MPDQOxuqjRDnvHyxvCzawyLu1QgV8iPD0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=th7xMZNbwBHUhrq1VuFAG+XYzVNGled+rtnbHPsxOrQzPYgxyjzTZmF7viugeVwqd4ED9QHPXY68Nyc6Zu9M7bPX8CKuLyRMvkajCh5eB+mxddhgSoCcaF/LA3CExvksJDvoTVauDl4iH9A5uhg7XwsY1+cE5Tlx0pNTjTKRLUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qtmlabs.xyz; spf=pass smtp.mailfrom=qtmlabs.xyz; dkim=pass (2048-bit key) header.d=qtmlabs.xyz header.i=@qtmlabs.xyz header.b=I83a04+j; arc=none smtp.client-ip=107.172.1.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qtmlabs.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qtmlabs.xyz
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qtmlabs.xyz; s=dkim;
+	t=1753079576;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JqkdQzm/twkZ0VIwHtBVBtBC90/ZA2tGjffFIZE7FDY=;
+	b=I83a04+jqtQCXmrtMyJ6J9S/WKikuzmcSD6ioHXUJb+9GzTMmmWf5QQiZYhHPX7QZ1h9Bh
+	rRuVJtS9o9Y9RhgcNKIin2IjyFWrb8TS2ACFEdTlBYVV3UfNb1mpbpHL6Ex7BwluhCsVYf
+	bD39/XeNaHk6X4QccWIWJ6a05VifPPWyclB3Al6Vqrf3Nkg9GIPzwqyRhMBm8AreAD6bNI
+	XJ1KxhWyzpet0qI9bfjwIbwLIiBPMVweG6jCVfi3waFyzzLs0siRe1J7R2bI4933+4ZYOl
+	OFYoUxsyBzKLVYScTDtiToRHocVqyLuBipHILmfaS0ICTdrmF4O8vSipi6Qghg==
+Authentication-Results: s1.g1.infrastructure.qtmlabs.xyz;
+	auth=pass smtp.mailfrom=myrrhperiwinkle@qtmlabs.xyz
+Date: Mon, 21 Jul 2025 13:32:51 +0700
+Subject: [PATCH] usb: typec: ucsi: Update power_supply on power role change
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250720203248.5702-1-eraykrdg1@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250721-fix-ucsi-pwr-dir-notify-v1-1-e53d5340cb38@qtmlabs.xyz>
+X-B4-Tracking: v=1; b=H4sIABLffWgC/x2MSQqAMAwAvyI5G9BqcfmKeKg2ai5VUlekf7d4H
+ JiZFzwJk4c2eUHoZM+ri5CnCYyLcTMh28igMqWzSuU48Y3H6Bm3S9CyoFt3nh6sTaMLY4ZSkYZ
+ Yb0JR/c9dH8IHLm38Z2kAAAA=
+X-Change-ID: 20250721-fix-ucsi-pwr-dir-notify-8a953aab42e5
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+X-Spamd-Bar: ---
 
-On Sun, Jul 20, 2025 at 11:32:48PM +0300, Ahmet Eray Karadag wrote:
-> From: Steve French <stfrench@microsoft.com>
-> 
-> Some servers (including Samba), support the SMB3.1.1 POSIX Extensions (which use reparse
-> points for handling special files) but do not properly advertise file system attribute
-> FILE_SUPPORTS_REPARSE_POINTS.  Although we don't check for this attribute flag when
-> querying special file information, we do check it when creating special files which
-> causes them to fail unnecessarily.   If we have negotiated SMB3.1.1 POSIX Extensions
-> with the server we can expect the server to support creating special files via
-> reparse points, and even if the server fails the operation due to really forbidding
-> creating special files, then it should be no problem and is more likely to return a
-> more accurate rc in any case (e.g. EACCES instead of EOPNOTSUPP).
-> 
-> Allow creating special files as long as the server supports either reparse points
-> or the SMB3.1.1 POSIX Extensions (note that if the "sfu" mount option is specified
-> it uses a different way of storing special files that does not rely on reparse points).
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: 6c06be908ca19 ("cifs: Check if server supports reparse points before using them")
-> Acked-by: Ralph Boehme <slow@samba.org>
-> Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
-> Signed-off-by: Ahmet Eray Karadag <eraykrdg1@gmail.com>
-> ---
->  fs/smb/client/smb2inode.c | 3 ++-
->  fs/smb/client/smb2ops.c   | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-> index 2a3e46b8e15a..a11a2a693c51 100644
-> --- a/fs/smb/client/smb2inode.c
-> +++ b/fs/smb/client/smb2inode.c
-> @@ -1346,7 +1346,8 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
->  	 * empty object on the server.
->  	 */
->  	if (!(le32_to_cpu(tcon->fsAttrInfo.Attributes) & FILE_SUPPORTS_REPARSE_POINTS))
-> -		return ERR_PTR(-EOPNOTSUPP);
-> +		if (!tcon->posix_extensions)
-> +			return ERR_PTR(-EOPNOTSUPP);
->  
->  	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path,
->  			     SYNCHRONIZE | DELETE |
-> diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-> index cb659256d219..938a8a7c5d21 100644
-> --- a/fs/smb/client/smb2ops.c
-> +++ b/fs/smb/client/smb2ops.c
-> @@ -5260,7 +5260,8 @@ static int smb2_make_node(unsigned int xid, struct inode *inode,
->  	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL) {
->  		rc = cifs_sfu_make_node(xid, inode, dentry, tcon,
->  					full_path, mode, dev);
-> -	} else if (le32_to_cpu(tcon->fsAttrInfo.Attributes) & FILE_SUPPORTS_REPARSE_POINTS) {
-> +	} else if ((le32_to_cpu(tcon->fsAttrInfo.Attributes) & FILE_SUPPORTS_REPARSE_POINTS)
-> +		|| (tcon->posix_extensions)) {
->  		rc = smb2_mknod_reparse(xid, inode, dentry, tcon,
->  					full_path, mode, dev);
->  	}
-> -- 
-> 2.34.1
-> 
-> 
+The current power direction of an USB-C port also influences the
+power_supply's online status, so a power role change should also update
+the power_supply.
 
-<formletter>
+Fixes an issue on some systems where plugging in a normal USB device in
+for the first time after a reboot will cause upower to erroneously
+consider the system to be connected to AC power.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Cc: stable@vger.kernel.org
+Fixes: 0e6371fbfba3 ("usb: typec: ucsi: Report power supply changes")
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+---
+ drivers/usb/typec/ucsi/ucsi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-</formletter>
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 01ce858a1a2b3466155db340e213c767d1e79479..8ff31963970bb384e28b460e5307e32cf421396b 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1246,6 +1246,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+ 
+ 	if (change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
+ 		typec_set_pwr_role(con->port, role);
++		ucsi_port_psy_changed(con);
+ 
+ 		/* Complete pending power role swap */
+ 		if (!completion_done(&con->complete))
+
+---
+base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+change-id: 20250721-fix-ucsi-pwr-dir-notify-8a953aab42e5
+
+Best regards,
+-- 
+Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+
 
