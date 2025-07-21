@@ -1,158 +1,181 @@
-Return-Path: <stable+bounces-163584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89566B0C551
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 15:36:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C9BB0C46A
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 14:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5792B1AA28DA
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 13:36:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 182571AA386D
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 12:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAE92D46A4;
-	Mon, 21 Jul 2025 13:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B412D46D2;
+	Mon, 21 Jul 2025 12:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="QO/ILNeI";
-	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="lmstuex2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGkvWwlF"
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.219])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21DE28F53F;
-	Mon, 21 Jul 2025 13:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.219
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753104987; cv=pass; b=VMJ+4IjtgvBf/7azjdkjh8VTNDV2c12F7AsSD+vIcIKrXFTU/agupHyTrco9v086Kfy3tco9AeVydwZbxelDnC6eNos4no0hcOfjXk6XZ7eJ3gJ8zaoiDT2DbhtSGB2xKzCJarXGVd6piEprUhj5be0Qz1rrthWxEeOCzLRFXa8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753104987; c=relaxed/simple;
-	bh=35cYQVm4zLLoIB57342iho+QScl4DbuVrkRFPA2X2eg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gS4Tf2N9DGxbKNa8Yp7cuRCW3OiE6g2z031aLKT5Qqk0/kTL+KYSHfT/UMB0Gs6iQ3mLYPSNIKCIjiCycZutkWZAnqQkH7eVe6Xzg0xNMp7ojzTmM7Dqfw58taa/uxdB8eo0eu2XLcxMJQe795PFJU919zwx9tkMg65DEvtfLPc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=QO/ILNeI; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=lmstuex2; arc=pass smtp.client-ip=81.169.146.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
-ARC-Seal: i=1; a=rsa-sha256; t=1753101976; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=mJh1WY17HpmgjV7HDUlAP1Bh/BhPBIW+FHPa7axDyS16/jnrHUh+M5meG6w6lPuYK6
-    sqZKVqXkrF94GWIj2tHOx2axEl2NmeJ+7lF0YhHxh407iTKVoaTFRLxVfkwd7vwcqXM9
-    xHBbFZI6gazUWmYo9ImCEcsmlRHy4ky72EVnwi6kc+IZU2gwhXRn5XnDhJkxqQM8OgG1
-    lRp9IXEC3c/mZ9UmUQZl9l56lnDvBQyj8Hr0+YKs8SjiEr5nLY6kdQIiGCfi1OIGM44E
-    qW4kJB4IPxzAL33GigOG2QOxMc0mQHoWQBw8+9mvQjxedrycpQg339ByWiauK5dfgQLx
-    PWvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1753101976;
-    s=strato-dkim-0002; d=strato.com;
-    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=T0De6Am+nfTD1/T8qRHYoVSqpbNHuCwxHjsiXItzmwA=;
-    b=fu9jHWa5LH3jxD+pm56rfm8wZzBtHYnBvIVMUzAsCTwyQ6udgWK2AUoLybSzwly7vB
-    Ceq1ZDDae/zJIKY4jzPC0K6i9KI39e3cChuppC2u6ys3wf8JjcMpQGSDK/vDogMuRcAd
-    cvU5mXkZRQIVugLd1WtqMkGwjYbzuoXLDit357VL+JwT1MHm4IB2RGJHaLQvoRFPmkTS
-    hKze1ilnAiqDlG2Y6szx003mlLxvqh7stB1Aflc8x3Cx87NiqG+QHEk83jvHuMlfqRfz
-    RmPHlJMnUePikJRm+Ihacd3k60Z1vBLZP2DlcLALNvGW46fqtaoQz+ax8pII8b3SXiKx
-    WCgA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1753101976;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=T0De6Am+nfTD1/T8qRHYoVSqpbNHuCwxHjsiXItzmwA=;
-    b=QO/ILNeIWdVFZisaq+VoQcWIoYG7Bq7fnMJEPqqAa0GIn+5mfy2HoZ9K7q+ZaX4/aN
-    JuhCf/76n2RhkoNc6qevV1BSpToxZnKtPj7ti8az/8U8UoidqKQrZ3WbRS4+IbqPUORm
-    rE13eQd7uH7yTJrOjkMbh2VFdG9hGehMdMK2IVgw96lnbRkmsXmgYwch4cvaGGY3a+KA
-    j9cz+cXEuc9wejUUoAaZBnjaqliwiq7oecQh6ohQ68lZoTt5mSOfPx1u9zwEHeMnUL5+
-    p98J5XKSIMezodOWf0IZ+SGgw14wKyJK4TI7Ap4f+IoW9jqu71CSHzw+fRIb57bS4DxG
-    NCXQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1753101976;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=T0De6Am+nfTD1/T8qRHYoVSqpbNHuCwxHjsiXItzmwA=;
-    b=lmstuex2SU9y8xFDtxbkpKSm/E/OCCSjWALYFN/SgXMr84M7OUd5XWnD2zIapNrpxE
-    0NIs9kGKMacDTwAH0lDQ==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9qVpwcQVkPW4I1HrVi5pbyciNjWBMoAEyQro/p8z/o50zTNRbUr3m"
-Received: from iMac.fritz.box
-    by smtp.strato.de (RZmta 52.1.2 AUTH)
-    with ESMTPSA id Q307a416LCkFEp5
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 21 Jul 2025 14:46:15 +0200 (CEST)
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-To: Sebastian Reichel <sre@kernel.org>,
-	Jerry Lv <Jerry.Lv@axis.com>
-Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	linux-pm@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D420F2D46AE;
+	Mon, 21 Jul 2025 12:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753102166; cv=none; b=nbk3uBrh188UPOE3D3ymNSVpdA+F6QjiARvAIaWWoShLRWBTEdXwY/bjmcTPw2wKr63Fm38fFE2gexVgfueaDgnX4BGMkM3Q9z8GDZCbjxd4kXNGpMDZaFSBMObZcQ9JlJeFwiCyG31M5AW+YZKKU2qn/fJTTSOWJgNzt8mLWiE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753102166; c=relaxed/simple;
+	bh=ohPHgBghu6f1fO7+k+hBTWWYaerI/ppVg0Kx1KUtBO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rF1OAkc/l0bjVqCBbfL+Rdp64NNGPhdAqI+KoO7hfmn1GyWowDGRgBe906XtszD+de9p1N90HA5IU+jDRigfM8+PUA/hFrmPrpxtqdlb7cnDM+YXNqFwjyisCe+qACwTKDt6SrfwqcKQO6qpnh5Kgp658xe26IUe3GUzWTs/6Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGkvWwlF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652E3C4CEF7;
+	Mon, 21 Jul 2025 12:49:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753102166;
+	bh=ohPHgBghu6f1fO7+k+hBTWWYaerI/ppVg0Kx1KUtBO0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kGkvWwlFd+DoY2STa58QgwK1FhyrZQBvUZQS4nlPmJs1YqknObFumP3LWwXtRTkaB
+	 DcNibY+5rsS+g140aekdJ/OaX/2rOcXmlLm8P8nyR5kioU7P5ZAVv4LsqzB3rX8dpA
+	 FwQFrQF6wzfDcZQg6N2gD6r0xffj6lNH6Yk2BiEAA+EoTIdrThYKumAwjScZRk5s4i
+	 RADw0bcKYNylyCMedR0iH5ByudY/jB6RooWapd7QRUv1aH1Yd06Kfqh+YQ+z/RzhWm
+	 HgVNwXVhn6xv4HVCxQhaMEszjkDgW5OtSlIxyhU1LZMYDBMzkPaNQCXvzRobLMcpi1
+	 E2tSYiyFsNh4g==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1udpxC-000000007uL-2QXv;
+	Mon, 21 Jul 2025 14:49:15 +0200
+Date: Mon, 21 Jul 2025 14:49:14 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	letux-kernel@openphoenux.org,
-	stable@vger.kernel.org,
-	kernel@pyra-handheld.com,
-	andreas@kemnade.info,
-	"H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
-Date: Mon, 21 Jul 2025 14:46:09 +0200
-Message-ID: <bc405a6f782792dc41e01f9ddf9eadca3589fcdc.1753101969.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.50.0
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] PCI: qcom: Switch to bus notifier for enabling ASPM
+ of PCI devices
+Message-ID: <aH43Sm3LWoipx5Yn@hovoldconsulting.com>
+References: <20250714-aspm_fix-v1-0-7d04b8c140c8@oss.qualcomm.com>
+ <20250714-aspm_fix-v1-1-7d04b8c140c8@oss.qualcomm.com>
+ <aH4JPBIk_GEoAezy@hovoldconsulting.com>
+ <rmltahsjvllae3or7jjk5kwvdkcqohj4bbjsfv4mnfbuq7376s@wtsha4zorf2p>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <rmltahsjvllae3or7jjk5kwvdkcqohj4bbjsfv4mnfbuq7376s@wtsha4zorf2p>
 
-Since commit
+On Mon, Jul 21, 2025 at 04:26:41PM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Jul 21, 2025 at 11:32:44AM GMT, Johan Hovold wrote:
+> > On Mon, Jul 14, 2025 at 11:31:04PM +0530, Manivannan Sadhasivam wrote:
+> > > Commit 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0
+> > > ops") allowed the Qcom controller driver to enable ASPM for all PCI devices
+> > > enumerated at the time of the controller driver probe. It proved to be
+> > > useful for devices already powered on by the bootloader as it allowed
+> > > devices to enter ASPM without user intervention.
+> > > 
+> > > However, it could not enable ASPM for the hotplug capable devices i.e.,
+> > > devices enumerated *after* the controller driver probe. This limitation
+> > > mostly went unnoticed as the Qcom PCI controllers are not hotplug capable
+> > > and also the bootloader has been enabling the PCI devices before Linux
+> > > Kernel boots (mostly on the Qcom compute platforms which users use on a
+> > > daily basis).
+> > > 
+> > > But with the advent of the commit b458ff7e8176 ("PCI/pwrctl: Ensure that
+> > > pwrctl drivers are probed before PCI client drivers"), the pwrctrl driver
+> > > started to block the PCI device enumeration until it had been probed.
+> > > Though, the intention of the commit was to avoid race between the pwrctrl
+> > > driver and PCI client driver, it also meant that the pwrctrl controlled PCI
+> > > devices may get probed after the controller driver and will no longer have
+> > > ASPM enabled. So users started noticing high runtime power consumption with
+> > > WLAN chipsets on Qcom compute platforms like Thinkpad X13s, and Thinkpad
+> > > T14s, etc...
+> > 
+> > Note the ASPM regression for ath11k/ath12k only happened in 6.15, so
+> > commit b458ff7e8176 ("PCI/pwrctl: Ensure that pwrctl drivers are probed
+> > before PCI client drivers") in 6.13 does not seem to be the immediate
+> > culprit here.
+> 
+> This series was intented to fix the ASPM issue which exist even before the
+> introduction of pwrctrl framework.
 
-commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+But this limitation of the ASPM enable implementation wasn't really an
+issue before pwrctrl since, as you point out above, these controllers
+are not hotplug capable.
 
-the console log of some devices with hdq but no bq27000 battery
-(like the Pandaboard) is flooded with messages like:
+> But I also agree that the below commits made
+> the issue more visible and caused regression on platforms where WLAN used to
+> work.
+> 
+> > Candidates from 6.15 include commits like
+> > 
+> > 	957f40d039a9 ("PCI/pwrctrl: Move creation of pwrctrl devices to pci_scan_device()")
+> > 	2489eeb777af ("PCI/pwrctrl: Skip scanning for the device further if pwrctrl device is created")
+> > 
+> > This is probably related to the reports of these drivers sometimes
+> > failing to probe with
+> > 
+> > 	ath12k_pci 0004:01:00.0: of_irq_parse_pci: failed with rc=134
+> > 
+> > after pwrctrl was merged, and which since 6.15 should instead result in
+> > the drivers not probing at all (as we've discussed off list).
+> 
+> We discussed about the ASPM issue IIRC. The above mentioned of_irq_parse_pci
+> could also be related to the fact that we are turning off the supplies after
+> pci_dev destruction. For this issue, I guess the patch from Brian could be the
+> fix:
+> 
+> https://lore.kernel.org/linux-pci/20250711174332.1.I623f788178c1e4c5b1a41dbfc8c7fa55966373c0@changeid/
 
-[   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
+We've also discussed the rc=134 issue, which appears to be due to some
+pwrctrl race. IIRC, you thought it may be the bluetooth driver powering
+down the bt/wlan controller before the wlan bit has had a chance to
+(complete its) probe. Not sure if that was fully confirmed, but I
+remember you saying that the rc=134 symptom would no longer be visible
+since 6.15 and instead wlan would never even probe at all if we hit this
+issue...
 
-as soon as user-space is finding a /sys entry and trying to read the
-"status" property.
+The patch you link to above only appears to relate to drivers being
+manually unbound. I hope we're not also hitting such issues during
+regular boot?
 
-It turns out that the offending commit changes the logic to now return the
-value of cache.flags if it is <0. This is likely under the assumption that
-it is an error number. In normal errors from bq27xxx_read() this is indeed
-the case.
+> > > Obviously, it is the pwrctrl change that caused regression, but it
+> > > ultimately uncovered a flaw in the ASPM enablement logic of the controller
+> > > driver. So to address the actual issue, switch to the bus notifier for
+> > > enabling ASPM of the PCI devices. The notifier will notify the controller
+> > > driver when a PCI device is attached to the bus, thereby allowing it to
+> > > enable ASPM more reliably. It should be noted that the
+> > > 'pci_dev::link_state', which is required for enabling ASPM by the
+> > > pci_enable_link_state_locked() API, is only set by the time of
+> > > BUS_NOTIFY_BIND_DRIVER stage of the notification. So we cannot enable ASPM
+> > > during BUS_NOTIFY_ADD_DEVICE stage.
+> > > 
+> > > So with this, we can also get rid of the controller driver specific
+> > > 'qcom_pcie_ops::host_post_init' callback.
+> > > 
+> > > Cc: stable@vger.kernel.org # v6.7
+> > > Fixes: 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0 ops")
+> > 
+> > So whatever form this fix ends up taking it only needs to be backported
+> > to 6.15.
+> > 
+> > As you mention above these platforms do not support hotplug, but even if
+> > they were, enabling ASPM for hotplugged devices is arguably more of a
+> > new features than a bug fix.
+> 
+> FYI, I'm going to drop this series in favor this (with one yet-to-be-submitted
+> patch on top):
+> https://lore.kernel.org/linux-pci/20250720190140.2639200-1-david.e.box@linux.intel.com/
 
-But there is special code to detect if no bq27000 is installed or accessible
-through hdq/1wire and wants to report this. In that case, the cache.flags
-are set (historically) to constant -1 which did make reading properties
-return -ENODEV. So everything appeared to be fine before the return value was
-fixed. Now the -1 is returned as -ENOPERM instead of -ENODEV, triggering the
-error condition in power_supply_format_property() which then floods the
-console log.
+Sounds good. Thanks.
 
-So we change the detection of missing bq27000 battery to simply set
-
-	cache.flags = -ENODEV
-
-instead of -1.
-
-Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-Cc: Jerry Lv <Jerry.Lv@axis.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
----
- drivers/power/supply/bq27xxx_battery.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index 93dcebbe11417..efe02ad695a62 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1920,7 +1920,7 @@ static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
- 
- 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
- 	if ((cache.flags & 0xff) == 0xff)
--		cache.flags = -1; /* read error */
-+		cache.flags = -ENODEV; /* read error */
- 	if (cache.flags >= 0) {
- 		cache.capacity = bq27xxx_battery_read_soc(di);
- 
--- 
-2.50.0
-
+Johan
 
