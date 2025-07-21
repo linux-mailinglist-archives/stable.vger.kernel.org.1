@@ -1,151 +1,207 @@
-Return-Path: <stable+bounces-163620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91CF7B0C9CE
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 19:38:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C52DB0CA6E
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 20:28:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9032A542501
-	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 17:38:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E2DA4E781F
+	for <lists+stable@lfdr.de>; Mon, 21 Jul 2025 18:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0B72E266A;
-	Mon, 21 Jul 2025 17:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42E72E1738;
+	Mon, 21 Jul 2025 18:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iw4aBZjv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HJebDYSL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A275E2E1C5B;
-	Mon, 21 Jul 2025 17:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F632DCF73;
+	Mon, 21 Jul 2025 18:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753119466; cv=none; b=lN4MABnZ4S1lsdIpIK3W3bG7Ho49AEyk9iOylQ6xh39E+sIGMb+wxT6f4eGvXL1DwfnQi67f/aOTFfcHtB+iEV6IFZUZ1y3nGy5TDTTKr+/YF4KjkUTVgZBWDODziFReN4kT3avlpkig37OireHW5oiTCwOa5kuXorLeEgXLUdc=
+	t=1753122520; cv=none; b=VyLQU7FpzJ+CtepkAPphk3OqbW45RN6rvyrH47T7Mp3ujeRaIQ/H/xfIewUvzLNq/UWFAxi1r3fgK/dwUIpgdqxSkDPmQDsJHGvJaZYTpuTbcEqvLLyEjPuZkAB0NEWxx2739Vt65nTPnWWNMfD8rErQHUp3HKgZEEagp9bnJCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753119466; c=relaxed/simple;
-	bh=T5RNBA25Utm0EodcHragTzQ4AVFGBMYFJF6+tSb1uIk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TSzAiLcO7Kjpd09Dx0AXf6RmdvsIxJVdEVRU6MYCwQ43CmBJu7mwCWrlJnCAAXK/2HNe1uIvoQqggFCc0uSQatzGctyFLrEhllNFIz+7o18A1+BYbiUbz2wkhmQnYpgo4iQ4YpsJLvNbZDuv30Xk/3lG8mz7EmtF4syej+NtzWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iw4aBZjv; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753119465; x=1784655465;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=T5RNBA25Utm0EodcHragTzQ4AVFGBMYFJF6+tSb1uIk=;
-  b=iw4aBZjv1IEhgOI0liQMiRaayQCHC0SaiVSXluO79E0XsY/54c4qty71
-   Y7PRoRqp918G+9bHnQE9c6x3G8W8LibQi7PLhZ1p8p9F/UfRnDvoFTfhP
-   FRpDlp0rGJQQHYBnTfIRUTHXQaqWWIHLcOC9F0O9ZoM0SVl22AZMhP5NC
-   SYUP+jdXzUkqUlsCL9qhV+ibi8Mf11XMhw7N0x2XNvUmnddCPKAJuqYuP
-   SOIVO0WczS01gPZYZlo7Gj4xmBQpSLCI5i9KkUi0X1nhsAXQXLQW7AUu8
-   r3Xv63QqtlKR2IGN4HYHaYudRpl0EFVYafjeR6mTlHiaFEzxdswriN+Dq
-   Q==;
-X-CSE-ConnectionGUID: zrzrtmNtTUWEfz+Q7qSDyA==
-X-CSE-MsgGUID: 6T0NF4VhTZuZw9GKN75GxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55193205"
-X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; 
-   d="scan'208";a="55193205"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 10:37:42 -0700
-X-CSE-ConnectionGUID: Y1rp7k9SRPezajMrYHu+WA==
-X-CSE-MsgGUID: nRBZLFP5TXC2Heig9Umt8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; 
-   d="scan'208";a="158231574"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa006.jf.intel.com with ESMTP; 21 Jul 2025 10:37:41 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Jacek Kowalski <jacek@jacekk.info>,
-	anthony.l.nguyen@intel.com,
-	vitaly.lifshits@intel.com,
-	dima.ruinskiy@intel.com,
-	horms@kernel.org,
-	Vlad URSU <vlad@ursu.me>,
-	stable@vger.kernel.org,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Subject: [PATCH net 5/5] e1000e: ignore uninitialized checksum word on tgp
-Date: Mon, 21 Jul 2025 10:37:26 -0700
-Message-ID: <20250721173733.2248057-6-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250721173733.2248057-1-anthony.l.nguyen@intel.com>
-References: <20250721173733.2248057-1-anthony.l.nguyen@intel.com>
+	s=arc-20240116; t=1753122520; c=relaxed/simple;
+	bh=I7NH1FeIwcHLYwxJFBgDnEAZ97hIN1JuI9B4dn/AH2U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jObeIo3kFpp7soqxQn5NWTqIeSKqB4fvTdwr2QgUyMtrVi7W2PUMvaV/XYxBnBt3cPkSklQKIHmmPwiB6vu6JLnShM1lT3ijo60/6Qx0REAV3MvWdJm81CzlajhF352tnCXweqFoaLyZ3oGvMxSELp/Sc3jgsnbZJ/B2dBY0W2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HJebDYSL; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a4e742dc97so2996287f8f.0;
+        Mon, 21 Jul 2025 11:28:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753122517; x=1753727317; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TuY4YQnKN/QwyJv0uRB4uQ52TvVUDyE6G0eusiV92uo=;
+        b=HJebDYSL3wOEO0eSyICLjKRnhOfuQp/qmgJarbSQ4BMYbFn94RvmbV1Whd3vm5sXz2
+         g639fYgmUKLJwMgY23p1duxTbzUutBAlzBcgpKjxdbW8scJXtyAtCKwtO1dL+TRo10/+
+         VXz8HnNDSs0z9HcMjnp54V9mFjvl/L4scyvGGFOhjzjHz3JVsRrf/WXwz5j9S+lawwOF
+         Na1+UV/0MO2t3cZH1hOAyvP4/9iD/X7vXNa5+f3ooyIRDuipEWDb9PTO+hGfAWKw7Fi2
+         DciE5KppFwVlpb9w9TEJDFDO0sawAqHSbqB50xJnesRNvVkR1RL+DgXXJ+KHTzmnra22
+         /zhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753122517; x=1753727317;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TuY4YQnKN/QwyJv0uRB4uQ52TvVUDyE6G0eusiV92uo=;
+        b=qisSjv9+h+smUmQIFPl6ezCLjau5lshAWNGyvyg1fkswsG+CuNQ06iICUX5ROeiZwe
+         WnsTU9AQmjNPS1a44eBxLDmI8D+ukTXle+lkZQOvUl84UvCLOqpvPYiDeR1+3eumJUG2
+         YQW2SFMpf1zgCncOnfNyO59gF2GNGeGT0kAupKB0IVfiUgISDrp8uqTwXXict0EecG1h
+         1FNlfv7MuDKNE6UK5VEJk3K+RqyaJcTcVHnij9Yh7LgiSCrMH51gZQns0cfRlfeGClP5
+         YrE95VT14HcNvqkRUlnEP9PnRD2TUKp4NSAP8FAtmFaYtIeBjTCB+L3ljQxpNd10GCb0
+         8yTw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZJc4K2L++J+sUoFAr/eDjfy/warOiwA27e5RM/6QJzNyi3ayQ8jplEHgvjE2/D3alcb8RIvjA@vger.kernel.org, AJvYcCXWg63wKwHdqO/l8k5KZK/zMoSnJdic2T3D22UeY4D3JaNsdD8BLpe4CHc+wNFf7t5K1Uu6olQV0VLdbOg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3rB0SVO9qaBEy9UWcf1QH7jdEGWoc2hq68cjsffX7ylPq9p16
+	nNt8WN/OCQPKIJHcgVL/qoN1DzERP0IoVY06DQHbYutJDjLWguEiz5bc
+X-Gm-Gg: ASbGncs3KdZs7ew6cWX/B/Fb1Zpwy/41KtP46PWEstODLMJmEjD5117b/7wa6VP9tHF
+	2Oe43yeUB0jBhhEQ7xgcvzdPmnTU7w3LEScxv7XOJqIed6zTAw++dzqf99HgZwRX1jDysxjOsBT
+	3FQmcRtr4hyufgCXsURo26yd9FKDKeMyiK6EWz9cb5XpsxKFEUP1Ytp2t4sCsCxEa6odscNmsNO
+	Weled4J/wFuuGzxcTHkkRARGDbkrCgNhmg6qaPgpKInELarHmLcbaTFnekcCLehuhmcGQf+ughb
+	+SPbomWsn4k71L/bPN9tpPNqiDQMYPrRi53C/cYvX8zZVSRJZSna4POL9ZPC+sSd7yQ3peJF2cj
+	PRtHOt8lTr+H+ErFIGS5W/8iJ3qoIou4Lp8PDVWwb6jpkttfJp67bUUSyX8jw
+X-Google-Smtp-Source: AGHT+IFHEOzWpT270Spaub4rqdE0tysNp0+Y6Ux8yPMMc0/ZDCRSDQtjBrNPLALYUbEHt2aRaHvHhQ==
+X-Received: by 2002:a05:6000:2210:b0:3b7:5cca:1bb with SMTP id ffacd0b85a97d-3b7634856camr537310f8f.1.1753122516606;
+        Mon, 21 Jul 2025 11:28:36 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4562e89c313sm172003665e9.28.2025.07.21.11.28.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Jul 2025 11:28:36 -0700 (PDT)
+Date: Mon, 21 Jul 2025 19:28:30 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: Jiri Slaby <jirislaby@kernel.org>, sashal@kernel.org,
+ linux-kernel@vger.kernel.org, frederic@kernel.org, david@redhat.com,
+ viro@zeniv.linux.org.uk, paulmck@kernel.org, stable@vger.kernel.org, Tejun
+ Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, "Luis R .
+ Rodriguez" <mcgrof@kernel.org>
+Subject: Re: [PATCH v2] kernel/fork: Increase minimum number of allowed
+ threads
+Message-ID: <20250721192830.6f8f57d9@pumpkin>
+In-Reply-To: <1f81e064-1b19-475d-b48c-39f56381058c@hauke-m.de>
+References: <20250711230829.214773-1-hauke@hauke-m.de>
+	<48e6e92d-6b6a-4850-9396-f3afa327ca3a@kernel.org>
+	<20250717223432.2a74e870@pumpkin>
+	<576d1040-4238-4bf0-aa61-e1261a38d780@hauke-m.de>
+	<1f81e064-1b19-475d-b48c-39f56381058c@hauke-m.de>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Jacek Kowalski <jacek@jacekk.info>
+On Sun, 20 Jul 2025 17:28:20 +0200
+Hauke Mehrtens <hauke@hauke-m.de> wrote:
 
-As described by Vitaly Lifshits:
+> Hi,
+>=20
+> I am not exactly sure how I should limit the number of parallel user=20
+> mode helper calls.
+> The user mode helper is calling wait_for_initramfs() so it could be that=
+=20
+> some calls are getting queued at the early bootup. This is probably the=20
+> problem I am hitting.
+>=20
+> I do not want to block the device creation till the user mode helper=20
+> finished. This could also result in a deadlock and would probably slow=20
+> down bootup.
+>=20
+> When I limit the number of user mode helper calls to 1 and let the=20
+> others wait in a system queue, I might block other unrelated tasks in=20
+> the system queue.
+>=20
+> I would create an own queue and let the async user mode helper wait in=20
+> this queue to only execute one at a time. When one of them needs a long=20
+> time in user space it would block the others. This workqueue would also=20
+> be active all the time. After the bootup it would probably not do much=20
+> work any more.
+>=20
+> I do not like any of these solutions. Do you have better ideas?
 
-> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
-> driver cannot perform checksum validation and correction. This means
-> that all NVM images must leave the factory with correct checksum and
-> checksum valid bit set.
+Could you put the requests onto a private queue but use a system work queue
+function the clear the queue - only starting the function if there isn't
+a copy running?
 
-Unfortunately some systems have left the factory with an uninitialized
-value of 0xFFFF at register address 0x3F (checksum word location).
-So on Tiger Lake platform we ignore the computed checksum when such
-condition is encountered.
+	David
 
-Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
-Tested-by: Vlad URSU <vlad@ursu.me>
-Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/e1000e/defines.h | 3 +++
- drivers/net/ethernet/intel/e1000e/nvm.c     | 6 ++++++
- 2 files changed, 9 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/e1000e/defines.h b/drivers/net/ethernet/intel/e1000e/defines.h
-index 8294a7c4f122..ba331899d186 100644
---- a/drivers/net/ethernet/intel/e1000e/defines.h
-+++ b/drivers/net/ethernet/intel/e1000e/defines.h
-@@ -638,6 +638,9 @@
- /* For checksumming, the sum of all words in the NVM should equal 0xBABA. */
- #define NVM_SUM                    0xBABA
- 
-+/* Uninitialized ("empty") checksum word value */
-+#define NVM_CHECKSUM_UNINITIALIZED 0xFFFF
-+
- /* PBA (printed board assembly) number words */
- #define NVM_PBA_OFFSET_0           8
- #define NVM_PBA_OFFSET_1           9
-diff --git a/drivers/net/ethernet/intel/e1000e/nvm.c b/drivers/net/ethernet/intel/e1000e/nvm.c
-index e609f4df86f4..16369e6d245a 100644
---- a/drivers/net/ethernet/intel/e1000e/nvm.c
-+++ b/drivers/net/ethernet/intel/e1000e/nvm.c
-@@ -558,6 +558,12 @@ s32 e1000e_validate_nvm_checksum_generic(struct e1000_hw *hw)
- 		checksum += nvm_data;
- 	}
- 
-+	if (hw->mac.type == e1000_pch_tgp &&
-+	    nvm_data == NVM_CHECKSUM_UNINITIALIZED) {
-+		e_dbg("Uninitialized NVM Checksum on TGP platform - ignoring\n");
-+		return 0;
-+	}
-+
- 	if (checksum != (u16)NVM_SUM) {
- 		e_dbg("NVM Checksum Invalid\n");
- 		return -E1000_ERR_NVM;
--- 
-2.47.1
+>=20
+> Hauke
+>=20
+> On 7/18/25 00:52, Hauke Mehrtens wrote:
+> > On 7/17/25 23:34, David Laight wrote: =20
+> >> On Thu, 17 Jul 2025 07:26:59 +0200
+> >> Jiri Slaby <jirislaby@kernel.org> wrote:
+> >> =20
+> >>> Cc wqueue & umode helper folks
+> >>>
+> >>> On 12. 07. 25, 1:08, Hauke Mehrtens wrote: =20
+> >>>> A modern Linux system creates much more than 20 threads at bootup.
+> >>>> When I booted up OpenWrt in qemu the system sometimes failed to boot=
+ up
+> >>>> when it wanted to create the 419th thread. The VM had 128MB RAM and =
+the
+> >>>> calculation in set_max_threads() calculated that max_threads should =
+be
+> >>>> set to 419. When the system booted up it tried to notify the user sp=
+ace
+> >>>> about every device it created because CONFIG_UEVENT_HELPER was set a=
+nd
+> >>>> used. I counted 1299 calls to call_usermodehelper_setup(), all of
+> >>>> them try to create a new thread and call the userspace hotplug=20
+> >>>> script in
+> >>>> it.
+> >>>>
+> >>>> This fixes bootup of Linux on systems with low memory.
+> >>>>
+> >>>> I saw the problem with qemu 10.0.2 using these commands:
+> >>>> qemu-system-aarch64 -machine virt -cpu cortex-a57 -nographic
+> >>>>
+> >>>> Cc: stable@vger.kernel.org
+> >>>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> >>>> ---
+> >>>> =C2=A0=C2=A0 kernel/fork.c | 2 +-
+> >>>> =C2=A0=C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>>
+> >>>> diff --git a/kernel/fork.c b/kernel/fork.c
+> >>>> index 7966c9a1c163..388299525f3c 100644
+> >>>> --- a/kernel/fork.c
+> >>>> +++ b/kernel/fork.c
+> >>>> @@ -115,7 +115,7 @@
+> >>>> =C2=A0=C2=A0 /*
+> >>>> =C2=A0=C2=A0=C2=A0 * Minimum number of threads to boot the kernel
+> >>>> =C2=A0=C2=A0=C2=A0 */
+> >>>> -#define MIN_THREADS 20
+> >>>> +#define MIN_THREADS 600 =20
+> >>>
+> >>> As David noted, this is not the proper fix. It appears that usermode
+> >>> helper should use limited thread pool. I.e. instead of
+> >>> system_unbound_wq, alloc_workqueue("", WQ_UNBOUND, max_active) with
+> >>> max_active set to max_threads divided by some arbitrary constant (3?=
+=20
+> >>> 4?)? =20
+> >>
+> >> Or maybe just 1 ?
+> >> I'd guess all the threads either block in the same place or just block
+> >> each other?? =20
+> >=20
+> > I will reduce the number of threads. Maybe to max 5 or maybe just one.
+> >=20
+> > I think we should still increase the minimum number of threads, but=20
+> > something like 60 to 100 should be fine. It is calculated based RAM siz=
+e=20
+> > 128MB RAM resulted already in 419 max threads.
+> >=20
+> > Hauke =20
+>=20
 
 
