@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-164066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F0DB0DD1B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3F2B0DE44
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F192AC0198
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B639568077
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912CA2EA168;
-	Tue, 22 Jul 2025 14:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDFE2EA17E;
+	Tue, 22 Jul 2025 14:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5zzCAdg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ho2PygRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50238288CA2;
-	Tue, 22 Jul 2025 14:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA84E1D6193;
+	Tue, 22 Jul 2025 14:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193139; cv=none; b=Z+y8z/Tz0IP0TPUX0ppCp3Qh+4ysmwlpRyeBd6LpYgCOaIzfAbyBPRaLUEfPiUs0Evc4ySQGgALephTsjPjtuM3Y+D9z45AyQuyQb8jZ+DrK5jy4zGJwyqT3T+rXr6Z/30j4T9pKiaGWtQvgyVeb24OzejSP78Le4L8MBiibXHk=
+	t=1753193641; cv=none; b=h31Zk1CUMjNkGFYDqc75/pP907GA04yrw8WeT3w8AA8LcainVO/QXMZKvVoBqA+4jlR2kq9rZz26Xny6Y69At2BpjzSW/kjfjzJwT22MvPhPeylHzzRWcJeHbuObjbonAIfJG6OhdfXPHA6BviQFmltjLIS9mJ3NVdAeF1IoiIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193139; c=relaxed/simple;
-	bh=TbBa6O7EcnsYqCCahKLB1k5inEaQbN9DligUTlBRKwE=;
+	s=arc-20240116; t=1753193641; c=relaxed/simple;
+	bh=8jZOseue006BguMJlgdaONB8D2h8ztJrZJIhgfGU/XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6wA68RBvcuivBv463BwOI0LiweaJHdYtXDXwQFTi2befL8WazZhm7hcBhxreV2J4Po4hOMPsj7PGjtRYOAimnzMlDWScydlgsLazph6Bs+poruKVFYoRg46EKsYVUi0+B5obfQ6ogImS5uuQLMqr9T4Yu3Dx2XJEBwoYRxir6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5zzCAdg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEA3C4CEF1;
-	Tue, 22 Jul 2025 14:05:38 +0000 (UTC)
+	 MIME-Version; b=ciYn1o4QsDKpBAMq7PbxSnlfixiXcpQBqAJ+EKUYA3Fji5FuJRLCbFDDLl8vtb/SRtjL6thtwpe8Y8nIrG3zebrfkRWG2qhZEh65zG1au3Dqd2nLysAvMeLr8F4bbHPC8tYabtSa+boiy8KHzPjZ2p3Gunq9W29NUL8WDh0bGWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ho2PygRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD3FC4CEEB;
+	Tue, 22 Jul 2025 14:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193139;
-	bh=TbBa6O7EcnsYqCCahKLB1k5inEaQbN9DligUTlBRKwE=;
+	s=korg; t=1753193641;
+	bh=8jZOseue006BguMJlgdaONB8D2h8ztJrZJIhgfGU/XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5zzCAdgp7msTxX93IKTnMvPidRLMj0Nk6QPHz5EWysBGSOaAnlFKQET0MrKfkTMX
-	 9Az6z6JcVrKrZU559nKSf9u9m/pgMFGUDms3kPvmVKsh9IueM0H5YLqcVd0pRazZkg
-	 ID63W+vgUC3kX+aaoDWGLF9m7UJ8ESK4gtW7ca1E=
+	b=Ho2PygRYaMLRZbzFLHO/Za3YGYIKvQcek+Ny2RUmJzFt0EwSDP0VdPGyu7O2fG6mb
+	 1yMuQzjJLamc+Og5QRkh87vhuhIl2/NjMEmQKiY7vhkiCixxoVX9aXGx9igvivK88f
+	 Wg1cJaY482LtmmEOpZ2kZNMbQ5fI3HQeDHjyzwOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aruna Ramakrishna <aruna.ramakrishna@oracle.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.12 140/158] sched: Change nr_uninterruptible type to unsigned long
+	Joseph Huang <Joseph.Huang@garmin.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 154/187] net: bridge: Do not offload IGMP/MLD messages
 Date: Tue, 22 Jul 2025 15:45:24 +0200
-Message-ID: <20250722134345.949807371@linuxfoundation.org>
+Message-ID: <20250722134351.519119219@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
+From: Joseph Huang <Joseph.Huang@garmin.com>
 
-commit 36569780b0d64de283f9d6c2195fd1a43e221ee8 upstream.
+[ Upstream commit 683dc24da8bf199bb7446e445ad7f801c79a550e ]
 
-The commit e6fe3f422be1 ("sched: Make multiple runqueue task counters
-32-bit") changed nr_uninterruptible to an unsigned int. But the
-nr_uninterruptible values for each of the CPU runqueues can grow to
-large numbers, sometimes exceeding INT_MAX. This is valid, if, over
-time, a large number of tasks are migrated off of one CPU after going
-into an uninterruptible state. Only the sum of all nr_interruptible
-values across all CPUs yields the correct result, as explained in a
-comment in kernel/sched/loadavg.c.
+Do not offload IGMP/MLD messages as it could lead to IGMP/MLD Reports
+being unintentionally flooded to Hosts. Instead, let the bridge decide
+where to send these IGMP/MLD messages.
 
-Change the type of nr_uninterruptible back to unsigned long to prevent
-overflows, and thus the miscalculation of load average.
+Consider the case where the local host is sending out reports in response
+to a remote querier like the following:
 
-Fixes: e6fe3f422be1 ("sched: Make multiple runqueue task counters 32-bit")
+       mcast-listener-process (IP_ADD_MEMBERSHIP)
+          \
+          br0
+         /   \
+      swp1   swp2
+        |     |
+  QUERIER     SOME-OTHER-HOST
 
-Signed-off-by: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250709173328.606794-1-aruna.ramakrishna@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the above setup, br0 will want to br_forward() reports for
+mcast-listener-process's group(s) via swp1 to QUERIER; but since the
+source hwdom is 0, the report is eligible for tx offloading, and is
+flooded by hardware to both swp1 and swp2, reaching SOME-OTHER-HOST as
+well. (Example and illustration provided by Tobias.)
+
+Fixes: 472111920f1c ("net: bridge: switchdev: allow the TX data plane forwarding to be offloaded")
+Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250716153551.1830255-1-Joseph.Huang@garmin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/loadavg.c |    2 +-
- kernel/sched/sched.h   |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/bridge/br_switchdev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/sched/loadavg.c
-+++ b/kernel/sched/loadavg.c
-@@ -80,7 +80,7 @@ long calc_load_fold_active(struct rq *th
- 	long nr_active, delta = 0;
+diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
+index 7b41ee8740cbb..f10bd6a233dcf 100644
+--- a/net/bridge/br_switchdev.c
++++ b/net/bridge/br_switchdev.c
+@@ -17,6 +17,9 @@ static bool nbp_switchdev_can_offload_tx_fwd(const struct net_bridge_port *p,
+ 	if (!static_branch_unlikely(&br_switchdev_tx_fwd_offload))
+ 		return false;
  
- 	nr_active = this_rq->nr_running - adjust;
--	nr_active += (int)this_rq->nr_uninterruptible;
-+	nr_active += (long)this_rq->nr_uninterruptible;
- 
- 	if (nr_active != this_rq->calc_load_active) {
- 		delta = nr_active - this_rq->calc_load_active;
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1156,7 +1156,7 @@ struct rq {
- 	 * one CPU and if it got migrated afterwards it may decrease
- 	 * it on another CPU. Always updated under the runqueue lock:
- 	 */
--	unsigned int		nr_uninterruptible;
-+	unsigned long 		nr_uninterruptible;
- 
- 	struct task_struct __rcu	*curr;
- 	struct sched_dl_entity	*dl_server;
++	if (br_multicast_igmp_type(skb))
++		return false;
++
+ 	return (p->flags & BR_TX_FWD_OFFLOAD) &&
+ 	       (p->hwdom != BR_INPUT_SKB_CB(skb)->src_hwdom);
+ }
+-- 
+2.39.5
+
 
 
 
