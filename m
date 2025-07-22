@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-163769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019F0B0DB70
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:49:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79155B0DCB5
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CD82564524
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6211889D6D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B4E2EA171;
-	Tue, 22 Jul 2025 13:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865C228BA96;
+	Tue, 22 Jul 2025 14:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FYMns1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1Q8UB/k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE9C2EA16A;
-	Tue, 22 Jul 2025 13:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4480E2E36E8;
+	Tue, 22 Jul 2025 14:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192148; cv=none; b=EsbQszVepUvxSRPnOPYX7x/cgwJ1WLsDT6NjUSbKHubiiT+dNHWrqHnSgl5YU3ANbahWfiKWv8QVmqeW1oGGPK7Pyc4whTW/tlJ0gpETjhABv8c6FbvlznXXZWwPwiwwROHf0G9MkQA8N4LWdvrnJAC3bWuMe88stqSjbjgbZyE=
+	t=1753192963; cv=none; b=EWYSbz7PWRWMx8XJrRSpKJwo3QvE94w1DTO+TUHGjtVrKo9QaItPRbD6WsrhIDtBN4lFIKxKqm7om6bLQpySRidcNQkSbV/gZDM7WrdZU7rF8w84vaUmaV/nluJQDVH4tRgrmDd9Ct1O7bu5WArT2Tmf7jGG4VctDx97UeUj+V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192148; c=relaxed/simple;
-	bh=rkZD5fU3tbwBcVcOZ3l8Ljr+2d70fi+/1Z3pcDeQKac=;
+	s=arc-20240116; t=1753192963; c=relaxed/simple;
+	bh=5yiMyiLv5lczmoeIGGLXi6hyrlSRrS5OUmYleUhKfxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2MxaYY6FnbT5d2ib3soX4Ak5Wf09tFpzWsn01+1L2eM5tyg/B0dqyyHWxu0O44l+eLklPK3E0HcY9E//hwrstkwPV61gjK5UvLMm7pf3sq8Tl73aycgZtkaXHmd78pVmrEQWpTHUGfRbLIJBdpzh+azirHOSShocdtf3mmLdWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FYMns1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71D0C4CEEB;
-	Tue, 22 Jul 2025 13:49:07 +0000 (UTC)
+	 MIME-Version; b=qvExBEoJAftsFJ2Fl3+SjUMlY4Z0abn8lwd2KAjrrXShrBffTAN7ivf5hbG6Cfek+qRdJi79clwLzBCgHRk2skHYrVuES3D3FjRLf2mYcNj720kZS9nkeICIEEC75G+X/T5qhodQs0Lf1Qe82pxnQyMAXgpntnf99FRYbe/zov4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1Q8UB/k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98B5C4CEEB;
+	Tue, 22 Jul 2025 14:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192148;
-	bh=rkZD5fU3tbwBcVcOZ3l8Ljr+2d70fi+/1Z3pcDeQKac=;
+	s=korg; t=1753192963;
+	bh=5yiMyiLv5lczmoeIGGLXi6hyrlSRrS5OUmYleUhKfxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0FYMns1QLSUUWWdaEmWDs0YjsGwGPnHqqkAdVj5vM57s3XlrZb7/DNDsc8vB4Ges9
-	 faVe/751uaAB8PVA27xRW3NPHuQR79YZzSjlXB/wGAuJRphCBeYMyH8b3UBFi7dmV7
-	 7XjR6PVq60j2utVr4hjWOBgOKFxFbIyyc8v06Ctg=
+	b=X1Q8UB/kTgL2oBngN948vA2e3S8lPt+1qAyXQizNOhVRLEhqochPFg9Wuygc7qFA4
+	 3CrH2fm67nYjhCFOkSLN/waIHqXJCr6muQ9iz2va4QMwm+C0alNviYyXCPrtguefWe
+	 Xoj5pVXzp0rOzVCA09eeLFSlq1bLrofT7UsEAnh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Razvan Cojocaru <rzvncj@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Nam Cao <namcao@linutronix.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 59/79] netfilter: nf_conntrack: fix crash due to removal of uninitialised entry
+Subject: [PATCH 6.12 111/158] riscv: Enable interrupt during exception handling
 Date: Tue, 22 Jul 2025 15:44:55 +0200
-Message-ID: <20250722134330.542894684@linuxfoundation.org>
+Message-ID: <20250722134344.895326258@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,246 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 2d72afb340657f03f7261e9243b44457a9228ac7 ]
+[ Upstream commit 969f028bf2c40573ef18061f702ede3ebfe12b42 ]
 
-A crash in conntrack was reported while trying to unlink the conntrack
-entry from the hash bucket list:
-    [exception RIP: __nf_ct_delete_from_lists+172]
-    [..]
- #7 [ff539b5a2b043aa0] nf_ct_delete at ffffffffc124d421 [nf_conntrack]
- #8 [ff539b5a2b043ad0] nf_ct_gc_expired at ffffffffc124d999 [nf_conntrack]
- #9 [ff539b5a2b043ae0] __nf_conntrack_find_get at ffffffffc124efbc [nf_conntrack]
-    [..]
+force_sig_fault() takes a spinlock, which is a sleeping lock with
+CONFIG_PREEMPT_RT=y. However, exception handling calls force_sig_fault()
+with interrupt disabled, causing a sleeping in atomic context warning.
 
-The nf_conn struct is marked as allocated from slab but appears to be in
-a partially initialised state:
+This can be reproduced using userspace programs such as:
+    int main() { asm ("ebreak"); }
+or
+    int main() { asm ("unimp"); }
 
- ct hlist pointer is garbage; looks like the ct hash value
- (hence crash).
- ct->status is equal to IPS_CONFIRMED|IPS_DYING, which is expected
- ct->timeout is 30000 (=30s), which is unexpected.
+There is no reason that interrupt must be disabled while handling
+exceptions from userspace.
 
-Everything else looks like normal udp conntrack entry.  If we ignore
-ct->status and pretend its 0, the entry matches those that are newly
-allocated but not yet inserted into the hash:
-  - ct hlist pointers are overloaded and store/cache the raw tuple hash
-  - ct->timeout matches the relative time expected for a new udp flow
-    rather than the absolute 'jiffies' value.
+Enable interrupt while handling user exceptions. This also has the added
+benefit of avoiding unnecessary delays in interrupt handling.
 
-If it were not for the presence of IPS_CONFIRMED,
-__nf_conntrack_find_get() would have skipped the entry.
-
-Theory is that we did hit following race:
-
-cpu x 			cpu y			cpu z
- found entry E		found entry E
- E is expired		<preemption>
- nf_ct_delete()
- return E to rcu slab
-					init_conntrack
-					E is re-inited,
-					ct->status set to 0
-					reply tuplehash hnnode.pprev
-					stores hash value.
-
-cpu y found E right before it was deleted on cpu x.
-E is now re-inited on cpu z.  cpu y was preempted before
-checking for expiry and/or confirm bit.
-
-					->refcnt set to 1
-					E now owned by skb
-					->timeout set to 30000
-
-If cpu y were to resume now, it would observe E as
-expired but would skip E due to missing CONFIRMED bit.
-
-					nf_conntrack_confirm gets called
-					sets: ct->status |= CONFIRMED
-					This is wrong: E is not yet added
-					to hashtable.
-
-cpu y resumes, it observes E as expired but CONFIRMED:
-			<resumes>
-			nf_ct_expired()
-			 -> yes (ct->timeout is 30s)
-			confirmed bit set.
-
-cpu y will try to delete E from the hashtable:
-			nf_ct_delete() -> set DYING bit
-			__nf_ct_delete_from_lists
-
-Even this scenario doesn't guarantee a crash:
-cpu z still holds the table bucket lock(s) so y blocks:
-
-			wait for spinlock held by z
-
-					CONFIRMED is set but there is no
-					guarantee ct will be added to hash:
-					"chaintoolong" or "clash resolution"
-					logic both skip the insert step.
-					reply hnnode.pprev still stores the
-					hash value.
-
-					unlocks spinlock
-					return NF_DROP
-			<unblocks, then
-			 crashes on hlist_nulls_del_rcu pprev>
-
-In case CPU z does insert the entry into the hashtable, cpu y will unlink
-E again right away but no crash occurs.
-
-Without 'cpu y' race, 'garbage' hlist is of no consequence:
-ct refcnt remains at 1, eventually skb will be free'd and E gets
-destroyed via: nf_conntrack_put -> nf_conntrack_destroy -> nf_ct_destroy.
-
-To resolve this, move the IPS_CONFIRMED assignment after the table
-insertion but before the unlock.
-
-Pablo points out that the confirm-bit-store could be reordered to happen
-before hlist add resp. the timeout fixup, so switch to set_bit and
-before_atomic memory barrier to prevent this.
-
-It doesn't matter if other CPUs can observe a newly inserted entry right
-before the CONFIRMED bit was set:
-
-Such event cannot be distinguished from above "E is the old incarnation"
-case: the entry will be skipped.
-
-Also change nf_ct_should_gc() to first check the confirmed bit.
-
-The gc sequence is:
- 1. Check if entry has expired, if not skip to next entry
- 2. Obtain a reference to the expired entry.
- 3. Call nf_ct_should_gc() to double-check step 1.
-
-nf_ct_should_gc() is thus called only for entries that already failed an
-expiry check. After this patch, once the confirmed bit check passes
-ct->timeout has been altered to reflect the absolute 'best before' date
-instead of a relative time.  Step 3 will therefore not remove the entry.
-
-Without this change to nf_ct_should_gc() we could still get this sequence:
-
- 1. Check if entry has expired.
- 2. Obtain a reference.
- 3. Call nf_ct_should_gc() to double-check step 1:
-    4 - entry is still observed as expired
-    5 - meanwhile, ct->timeout is corrected to absolute value on other CPU
-      and confirm bit gets set
-    6 - confirm bit is seen
-    7 - valid entry is removed again
-
-First do check 6), then 4) so the gc expiry check always picks up either
-confirmed bit unset (entry gets skipped) or expiry re-check failure for
-re-inited conntrack objects.
-
-This change cannot be backported to releases before 5.19. Without
-commit 8a75a2c17410 ("netfilter: conntrack: remove unconfirmed list")
-|= IPS_CONFIRMED line cannot be moved without further changes.
-
-Cc: Razvan Cojocaru <rzvncj@gmail.com>
-Link: https://lore.kernel.org/netfilter-devel/20250627142758.25664-1-fw@strlen.de/
-Link: https://lore.kernel.org/netfilter-devel/4239da15-83ff-4ca4-939d-faef283471bb@gmail.com/
-Fixes: 1397af5bfd7d ("netfilter: conntrack: remove the percpu dying list")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: f0bddf50586d ("riscv: entry: Convert to generic entry")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20250625085630.3649485-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack.h | 15 +++++++++++++--
- net/netfilter/nf_conntrack_core.c    | 26 ++++++++++++++++++++------
- 2 files changed, 33 insertions(+), 8 deletions(-)
+ arch/riscv/kernel/traps.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/netfilter/nf_conntrack.h b/include/net/netfilter/nf_conntrack.h
-index 3dbf947285be2..be396d566b57b 100644
---- a/include/net/netfilter/nf_conntrack.h
-+++ b/include/net/netfilter/nf_conntrack.h
-@@ -306,8 +306,19 @@ static inline bool nf_ct_is_expired(const struct nf_conn *ct)
- /* use after obtaining a reference count */
- static inline bool nf_ct_should_gc(const struct nf_conn *ct)
- {
--	return nf_ct_is_expired(ct) && nf_ct_is_confirmed(ct) &&
--	       !nf_ct_is_dying(ct);
-+	if (!nf_ct_is_confirmed(ct))
-+		return false;
-+
-+	/* load ct->timeout after is_confirmed() test.
-+	 * Pairs with __nf_conntrack_confirm() which:
-+	 * 1. Increases ct->timeout value
-+	 * 2. Inserts ct into rcu hlist
-+	 * 3. Sets the confirmed bit
-+	 * 4. Unlocks the hlist lock
-+	 */
-+	smp_acquire__after_ctrl_dep();
-+
-+	return nf_ct_is_expired(ct) && !nf_ct_is_dying(ct);
- }
+diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
+index 9c83848797a78..80230de167def 100644
+--- a/arch/riscv/kernel/traps.c
++++ b/arch/riscv/kernel/traps.c
+@@ -6,6 +6,7 @@
+ #include <linux/cpu.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
++#include <linux/irqflags.h>
+ #include <linux/randomize_kstack.h>
+ #include <linux/sched.h>
+ #include <linux/sched/debug.h>
+@@ -151,7 +152,9 @@ asmlinkage __visible __trap_section void name(struct pt_regs *regs)		\
+ {										\
+ 	if (user_mode(regs)) {							\
+ 		irqentry_enter_from_user_mode(regs);				\
++		local_irq_enable();						\
+ 		do_trap_error(regs, signo, code, regs->epc, "Oops - " str);	\
++		local_irq_disable();						\
+ 		irqentry_exit_to_user_mode(regs);				\
+ 	} else {								\
+ 		irqentry_state_t state = irqentry_nmi_enter(regs);		\
+@@ -173,17 +176,14 @@ asmlinkage __visible __trap_section void do_trap_insn_illegal(struct pt_regs *re
  
- #define	NF_CT_DAY	(86400 * HZ)
-diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
-index ec4c39641089b..002d53ded404e 100644
---- a/net/netfilter/nf_conntrack_core.c
-+++ b/net/netfilter/nf_conntrack_core.c
-@@ -1087,6 +1087,12 @@ static int nf_ct_resolve_clash_harder(struct sk_buff *skb, u32 repl_idx)
- 
- 	hlist_nulls_add_head_rcu(&loser_ct->tuplehash[IP_CT_DIR_REPLY].hnnode,
- 				 &nf_conntrack_hash[repl_idx]);
-+	/* confirmed bit must be set after hlist add, not before:
-+	 * loser_ct can still be visible to other cpu due to
-+	 * SLAB_TYPESAFE_BY_RCU.
-+	 */
-+	smp_mb__before_atomic();
-+	set_bit(IPS_CONFIRMED_BIT, &loser_ct->status);
- 
- 	NF_CT_STAT_INC(net, clash_resolve);
- 	return NF_ACCEPT;
-@@ -1224,8 +1230,6 @@ __nf_conntrack_confirm(struct sk_buff *skb)
- 	 * user context, else we insert an already 'dead' hash, blocking
- 	 * further use of that particular connection -JM.
- 	 */
--	ct->status |= IPS_CONFIRMED;
+ 	if (user_mode(regs)) {
+ 		irqentry_enter_from_user_mode(regs);
 -
- 	if (unlikely(nf_ct_is_dying(ct))) {
- 		NF_CT_STAT_INC(net, insert_failed);
- 		goto dying;
-@@ -1257,7 +1261,7 @@ __nf_conntrack_confirm(struct sk_buff *skb)
- 		}
- 	}
+ 		local_irq_enable();
  
--	/* Timer relative to confirmation time, not original
-+	/* Timeout is relative to confirmation time, not original
- 	   setting time, otherwise we'd get timer wrap in
- 	   weird delay cases. */
- 	ct->timeout += nfct_time_stamp;
-@@ -1265,11 +1269,21 @@ __nf_conntrack_confirm(struct sk_buff *skb)
- 	__nf_conntrack_insert_prepare(ct);
+ 		handled = riscv_v_first_use_handler(regs);
+-
+-		local_irq_disable();
+-
+ 		if (!handled)
+ 			do_trap_error(regs, SIGILL, ILL_ILLOPC, regs->epc,
+ 				      "Oops - illegal instruction");
  
- 	/* Since the lookup is lockless, hash insertion must be done after
--	 * starting the timer and setting the CONFIRMED bit. The RCU barriers
--	 * guarantee that no other CPU can find the conntrack before the above
--	 * stores are visible.
-+	 * setting ct->timeout. The RCU barriers guarantee that no other CPU
-+	 * can find the conntrack before the above stores are visible.
- 	 */
- 	__nf_conntrack_hash_insert(ct, hash, reply_hash);
-+
-+	/* IPS_CONFIRMED unset means 'ct not (yet) in hash', conntrack lookups
-+	 * skip entries that lack this bit.  This happens when a CPU is looking
-+	 * at a stale entry that is being recycled due to SLAB_TYPESAFE_BY_RCU
-+	 * or when another CPU encounters this entry right after the insertion
-+	 * but before the set-confirm-bit below.  This bit must not be set until
-+	 * after __nf_conntrack_hash_insert().
-+	 */
-+	smp_mb__before_atomic();
-+	set_bit(IPS_CONFIRMED_BIT, &ct->status);
-+
- 	nf_conntrack_double_unlock(hash, reply_hash);
- 	local_bh_enable();
++		local_irq_disable();
+ 		irqentry_exit_to_user_mode(regs);
+ 	} else {
+ 		irqentry_state_t state = irqentry_nmi_enter(regs);
+@@ -308,9 +308,11 @@ asmlinkage __visible __trap_section void do_trap_break(struct pt_regs *regs)
+ {
+ 	if (user_mode(regs)) {
+ 		irqentry_enter_from_user_mode(regs);
++		local_irq_enable();
  
+ 		handle_break(regs);
+ 
++		local_irq_disable();
+ 		irqentry_exit_to_user_mode(regs);
+ 	} else {
+ 		irqentry_state_t state = irqentry_nmi_enter(regs);
 -- 
 2.39.5
 
