@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-164032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758CAB0DC9B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 486EAB0DB87
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B924A7B4B60
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 921A0172B67
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1EF12E9759;
-	Tue, 22 Jul 2025 14:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C082C08B6;
+	Tue, 22 Jul 2025 13:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKRWakBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhLYmXlX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDCC23AB9D;
-	Tue, 22 Jul 2025 14:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9749A238D57;
+	Tue, 22 Jul 2025 13:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193024; cv=none; b=dhW2jbR4r3BWlBwQX3gdMHoowYa69a2gpd65qSajsuCbPTi612JlZb93PJSZ524x3ZyMjPAJN6f2r40GhnXrVVCo45Y2f4M3++K4i2WwjmmYPoI2xY3bfWirz6Z+FBXvVEuXrFSmdE35fZVN9J0068k6SrUj1/DLM2OAnqR4ZOc=
+	t=1753192209; cv=none; b=fh9b2HDudOaeUl7onuZlMxlLvJufAf38kDqU7vmwdOYXjZWuoe12YbAxkNW6P4CC27bv9jdOKlg6DjPIfKWRmF/ifi1Y2IpsprhgrJ15pFLFbLE1oE2QR/w82Xh44sZ7HNh44ZoJ7/2HnLwgA0EAm3EZfbVt5/4QyVSGUNchDRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193024; c=relaxed/simple;
-	bh=JRzxEBunyE81RCTEiVJDY0dyh2VZiIePzvvATkjS9C8=;
+	s=arc-20240116; t=1753192209; c=relaxed/simple;
+	bh=q/FevrszHJPIyszp3lrz01w5Vd+UhUbV3M74DYkrqrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvgzNlY5Wc6466N/2tM62Oy/GwERUN56qc1ovYlJ1Y5UZuYwMmI+LkU/e2Qo3SIO1hvo9/DUGMBwDwza+a2wanQ0GS4OitUhIQLXjum6EROvHjnuyoW58xftW8q5EsexEeMMyBmtL8xgEx5FMRsFrTG5ztL6c/3b9X+r6vrbRiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKRWakBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B44C4CEEB;
-	Tue, 22 Jul 2025 14:03:43 +0000 (UTC)
+	 MIME-Version; b=d5MOwozp9CFpA3HDGuM+q4fsmmo2Xn0VMx4qdyKMGaPgt0qjW2VRsQlCax6oJVI3E6VvdyCFLwCQ7tqFy9aPiLSg/gwvTbU9DV+wZBAKBnwiMFIrVuJiNxhpzcX+0YsSumK1lh3eu3bs9oKhBYuz58KNMeltfwe8AOr72ComKjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhLYmXlX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FD0C4CEEB;
+	Tue, 22 Jul 2025 13:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193024;
-	bh=JRzxEBunyE81RCTEiVJDY0dyh2VZiIePzvvATkjS9C8=;
+	s=korg; t=1753192209;
+	bh=q/FevrszHJPIyszp3lrz01w5Vd+UhUbV3M74DYkrqrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKRWakByn9ELwaWSLEa70pqXGYQhM+TbWkBa6KVkrHznozVvVrKUMmJtcLzyijQfW
-	 JZCJ8O7QkiRLh6kUL5CTL8ZZqG2OwdbwK1W0HAqmudraBodOT6glErsHMcS+Jqmcju
-	 Om5uIoEa/zRdM/+70dCa2fED6HBB4oxv1+ecajVo=
+	b=xhLYmXlXzNIMluMGprch0csX0iddek8Pa4kwG9eDCwbBnTO9V5X/vUvLRuAksbdAp
+	 uBjsghOccsOKeGjebV/pEBYr8v5xDuaJncqKgUrHSTD/XXu5gtdFR/lxdb8yGnK8Eb
+	 SFFD5b6jyfaZwZojwEZm4V+GcNIOhX5wIKyNd9sM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cathy Avery <cavery@redhat.com>,
-	Li Tian <litian@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 127/158] hv_netvsc: Set VF priv_flags to IFF_NO_ADDRCONF before open to prevent IPv6 addrconf
+Subject: [PATCH 6.1 75/79] usb: dwc3: qcom: Dont leave BCR asserted
 Date: Tue, 22 Jul 2025 15:45:11 +0200
-Message-ID: <20250722134345.472289570@linuxfoundation.org>
+Message-ID: <20250722134331.152836195@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Tian <litian@redhat.com>
+From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
 
-[ Upstream commit d7501e076d859d2f381d57bd984ff6db13172727 ]
+commit ef8abc0ba49ce717e6bc4124e88e59982671f3b5 upstream.
 
-Set an additional flag IFF_NO_ADDRCONF to prevent ipv6 addrconf.
+Leaving the USB BCR asserted prevents the associated GDSC to turn on. This
+blocks any subsequent attempts of probing the device, e.g. after a probe
+deferral, with the following showing in the log:
 
-Commit under Fixes added a new flag change that was not made
-to hv_netvsc resulting in the VF being assinged an IPv6.
+[    1.332226] usb30_prim_gdsc status stuck at 'off'
 
-Fixes: 8a321cf7becc ("net: add IFF_NO_ADDRCONF and use it in bonding to prevent ipv6 addrconf")
-Suggested-by: Cathy Avery <cavery@redhat.com>
-Signed-off-by: Li Tian <litian@redhat.com>
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20250716002607.4927-1-litian@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Leave the BCR deasserted when exiting the driver to avoid this issue.
+
+Cc: stable <stable@kernel.org>
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250709132900.3408752-1-krishna.kurapati@oss.qualcomm.com
+[ adapted to individual clock management API instead of bulk clock operations ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc_drv.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-qcom.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
-index 8ec497023224a..4376e116eb9f0 100644
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2316,8 +2316,11 @@ static int netvsc_prepare_bonding(struct net_device *vf_netdev)
- 	if (!ndev)
- 		return NOTIFY_DONE;
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -856,13 +856,13 @@ static int dwc3_qcom_probe(struct platfo
+ 	ret = reset_control_deassert(qcom->resets);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to deassert resets, err=%d\n", ret);
+-		goto reset_assert;
++		return ret;
+ 	}
  
--	/* set slave flag before open to prevent IPv6 addrconf */
-+	/* Set slave flag and no addrconf flag before open
-+	 * to prevent IPv6 addrconf.
-+	 */
- 	vf_netdev->flags |= IFF_SLAVE;
-+	vf_netdev->priv_flags |= IFF_NO_ADDRCONF;
- 	return NOTIFY_DONE;
+ 	ret = dwc3_qcom_clk_init(qcom, of_clk_get_parent_count(np));
+ 	if (ret) {
+ 		dev_err(dev, "failed to get clocks\n");
+-		goto reset_assert;
++		return ret;
+ 	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+@@ -966,8 +966,6 @@ clk_disable:
+ 		clk_disable_unprepare(qcom->clks[i]);
+ 		clk_put(qcom->clks[i]);
+ 	}
+-reset_assert:
+-	reset_control_assert(qcom->resets);
+ 
+ 	return ret;
  }
+@@ -997,7 +995,6 @@ static int dwc3_qcom_remove(struct platf
+ 	qcom->num_clocks = 0;
  
--- 
-2.39.5
-
+ 	dwc3_qcom_interconnect_exit(qcom);
+-	reset_control_assert(qcom->resets);
+ 
+ 	pm_runtime_allow(dev);
+ 	pm_runtime_disable(dev);
 
 
 
