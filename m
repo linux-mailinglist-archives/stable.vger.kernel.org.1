@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFDDB0DC8A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40265B0DB37
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12FE616AC64
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:00:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F81C547FAD
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFB42D3EFB;
-	Tue, 22 Jul 2025 14:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773BB15624B;
+	Tue, 22 Jul 2025 13:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9MdlDDi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avN1vvoF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80FD2E11B6;
-	Tue, 22 Jul 2025 14:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359A12E36E8;
+	Tue, 22 Jul 2025 13:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192802; cv=none; b=Dk9cJ7w1Qxv3orsbhn3uRCzolP53gbAVIFuKFjYblFNbARD8KeRiZ0TF2K+IazacB8F60RZw82zhFczkqt7NmOuZfIvu9+qFIGTP+amqkhYphkHcZQMCEVhZLG0d9XrcJBwaCXdfhztRUhXAqbT1Van3CIRLbrBeT/78pFnHf+o=
+	t=1753192004; cv=none; b=TJ5W/AmK/WPZLQ4yS594sscY8khDevAuaPRg8J4sf58Sr7hH6/Hk9jkfJxS4kEw4PTJ/Qxd9GI4Lb9uJiyCvLDiNFqKq20q3mz/H/w6b4PP/cy7Xj9w2LsLANasCuGhyfwHWWw5zr/IWCDVgTse0BjNfIVcuq9HQoQqrIuWa8c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192802; c=relaxed/simple;
-	bh=lDrCfDiv/OEa8K/TZTb1vMEoK9PYCAV4npZKh88nuy0=;
+	s=arc-20240116; t=1753192004; c=relaxed/simple;
+	bh=6+wLirOVEhbufO6Gehv186/NMpnB8+owJZqZ/pOy1Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YbdORD6rAPYy3/Gole/SWymvZd1wcUikfliFAIQerTgWH/HgcnkFXXxnc2zzuGlIinlICIjJI5iIaCS/KNu/lTvUikcHMQNdx54bRxnpcF7vT5uV16UL9LjNbJlWDp4Kn0Rjo7SQeEs2gieaYX29YP5S60lUAzoXaJNNSCPgsrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9MdlDDi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B97C4CEEB;
-	Tue, 22 Jul 2025 14:00:01 +0000 (UTC)
+	 MIME-Version; b=sfAbDPtJhzqssZFzLpdan1P5V9po4qDxeNHbGaa7ZlxaiZRPLDDKkYUsZRu2TDFhnKPCvma4tGhH92/JT+se8Z8HDmi6xwBS49wwtTUFf1d2NkE03p5wKXsXw2YdHBpkIACJ8XppdBzK73b7hXZtHpFdceHMpo3Oy0R8TGgqR3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avN1vvoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8A0C4CEEB;
+	Tue, 22 Jul 2025 13:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192802;
-	bh=lDrCfDiv/OEa8K/TZTb1vMEoK9PYCAV4npZKh88nuy0=;
+	s=korg; t=1753192003;
+	bh=6+wLirOVEhbufO6Gehv186/NMpnB8+owJZqZ/pOy1Iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9MdlDDii+85A2lNtBEUeqkE1YDdWWinx8HGX2xOUC459z5ezHOpOtUxlM636583o
-	 DPjW+Ov3J7+h/RAKcb9CRxhNU5G0u9889Q7KQGyznwUug1xH9MKu2uJhY6JroUpjlu
-	 2DQbPgQrkVE+F6WYPJzGQGSrH08FCviYMMd5/210=
+	b=avN1vvoFaStED5cXxKOruX3gjimSNHOL5hXbHjN5qx2wdVrKxBTbLrIaLY0mT4wfw
+	 9zgSG3vhA0m5sbYawe9g7P5MYb7rDkQOlvrWj7yMXfB+EZ2W+GH1ZiJTJeXvGM/wRp
+	 dPBH0vFbxkUMj8Za5Stw11SirKd1oWqfUk8CZTzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 060/158] net: libwx: fix the using of Rx buffer DMA
+	Vicki Pfau <vi@endrift.com>,
+	Nilton Perim Neto <niltonperimneto@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 08/79] Input: xpad - set correct controller type for Acer NGR200
 Date: Tue, 22 Jul 2025 15:44:04 +0200
-Message-ID: <20250722134342.986566113@linuxfoundation.org>
+Message-ID: <20250722134328.687203296@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Nilton Perim Neto <niltonperimneto@gmail.com>
 
-commit 5fd77cc6bd9b368431a815a780e407b7781bcca0 upstream.
+commit bcce05041b21888f10b80ea903dcfe51a25c586e upstream.
 
-The wx_rx_buffer structure contained two DMA address fields: 'dma' and
-'page_dma'. However, only 'page_dma' was actually initialized and used
-to program the Rx descriptor. But 'dma' was uninitialized and used in
-some paths.
+The controller should have been set as XTYPE_XBOX360 and not XTYPE_XBOX.
+Also the entry is in the wrong place. Fix it.
 
-This could lead to undefined behavior, including DMA errors or
-use-after-free, if the uninitialized 'dma' was used. Althrough such
-error has not yet occurred, it is worth fixing in the code.
-
-Fixes: 3c47e8ae113a ("net: libwx: Support to receive packets in NAPI")
+Reported-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
+Link: https://lore.kernel.org/r/20250708033126.26216-2-niltonperimneto@gmail.com
+Fixes: 22c69d786ef8 ("Input: xpad - support Acer NGR 200 Controller")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250714024755.17512-3-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_lib.c  |    4 ++--
- drivers/net/ethernet/wangxun/libwx/wx_type.h |    1 -
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/input/joystick/xpad.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -305,7 +305,7 @@ static bool wx_alloc_mapped_page(struct
- 		return false;
- 	dma = page_pool_get_dma_addr(page);
- 
--	bi->page_dma = dma;
-+	bi->dma = dma;
- 	bi->page = page;
- 	bi->page_offset = 0;
- 
-@@ -342,7 +342,7 @@ void wx_alloc_rx_buffers(struct wx_ring
- 						 DMA_FROM_DEVICE);
- 
- 		rx_desc->read.pkt_addr =
--			cpu_to_le64(bi->page_dma + bi->page_offset);
-+			cpu_to_le64(bi->dma + bi->page_offset);
- 
- 		rx_desc++;
- 		bi++;
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -874,7 +874,6 @@ struct wx_tx_buffer {
- struct wx_rx_buffer {
- 	struct sk_buff *skb;
- 	dma_addr_t dma;
--	dma_addr_t page_dma;
- 	struct page *page;
- 	unsigned int page_offset;
- };
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -162,12 +162,12 @@ static const struct xpad_device {
+ 	{ 0x046d, 0xca88, "Logitech Compact Controller for Xbox", 0, XTYPE_XBOX },
+ 	{ 0x046d, 0xca8a, "Logitech Precision Vibration Feedback Wheel", 0, XTYPE_XBOX },
+ 	{ 0x046d, 0xcaa3, "Logitech DriveFx Racing Wheel", 0, XTYPE_XBOX360 },
++	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX360 },
+ 	{ 0x056e, 0x2004, "Elecom JC-U3613M", 0, XTYPE_XBOX360 },
+ 	{ 0x05fd, 0x1007, "Mad Catz Controller (unverified)", 0, XTYPE_XBOX },
+ 	{ 0x05fd, 0x107a, "InterAct 'PowerPad Pro' X-Box pad (Germany)", 0, XTYPE_XBOX },
+ 	{ 0x05fe, 0x3030, "Chic Controller", 0, XTYPE_XBOX },
+ 	{ 0x05fe, 0x3031, "Chic Controller", 0, XTYPE_XBOX },
+-	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX },
+ 	{ 0x062a, 0x0020, "Logic3 Xbox GamePad", 0, XTYPE_XBOX },
+ 	{ 0x062a, 0x0033, "Competition Pro Steering Wheel", 0, XTYPE_XBOX },
+ 	{ 0x06a3, 0x0200, "Saitek Racing Wheel", 0, XTYPE_XBOX },
 
 
 
