@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-163980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1965DB0DC87
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8616B0DBEE
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0F45188B822
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E61823BFD66
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4422C159F;
-	Tue, 22 Jul 2025 14:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4F42EA16C;
+	Tue, 22 Jul 2025 13:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nenYIQN7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwS3BUle"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA32522D785;
-	Tue, 22 Jul 2025 14:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8152E4271;
+	Tue, 22 Jul 2025 13:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192848; cv=none; b=Uo0fkuLJvcOD9YvJ/kXW5IrngV3hyHV8kgoX0p69qk+GnCTyXJX/WBgcHGrFPOmsNpzvO89iwwGKLVKCMRj4dcmVLi8CFAzFHsTcmer0xIt3+8G86rBBJSjECewIXldFyIAUbrlQn8ECe+Q8BRc40ZWR/hZTQBeE0hJRXO8/ImA=
+	t=1753192366; cv=none; b=OtM7tUvmOHrPk4QnBGxm4eXGuZvP6onWcLWjq1d8kJgRZdKDlUOAW6eMCOJlLuRw2z5biwrmF6QCPS0b88A2l1se/NRy0tRPu+HTCtQKP/J3cjkbogqPVbhqlzHJ3gZdRSyy0LmFCx539RnCbGQrNUaggEpi/QXlg+6mYKOOqU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192848; c=relaxed/simple;
-	bh=VTypfrgbSlPRgzCWXH3q03FoGWBufSrUouuyPm6KI+s=;
+	s=arc-20240116; t=1753192366; c=relaxed/simple;
+	bh=6lZ5GL08HHxuQPZ4gkgZCN0yOm+JFNTzJL6+sR0cxe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NyRJkEMr2C80lJBj1yIKVgS/xL97mWyY6nsjl0RvtZD8ZE4vXBFNlxHOREtZ6IzjWz+O+y+C8BBFgMYqV1nX5v42EWen5BinRAEvm5EdxgiGOeYOO1WqVvbbNvuqApociN1ECAOGlQHEhsAMuX+kuif9gpG/2pcScu27SGkoRXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nenYIQN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3474AC4CEEB;
-	Tue, 22 Jul 2025 14:00:48 +0000 (UTC)
+	 MIME-Version; b=ok+doxwUO8ehfb5a7IvA1dWOg4M8PLx+doYdD0sZijKONZE/OIZPgcuu0gwuKmgy1HaZ5cr6fM6hcBojWLEhjO+K1y61HR17uJPB96IRch1Vtfjt6quwiFFxmo+2NEYmmDryVSMBOcJVsv4RERH/Yb/NI8Xw182TcUFYNwZzFuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwS3BUle; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FCAC4CEEB;
+	Tue, 22 Jul 2025 13:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192848;
-	bh=VTypfrgbSlPRgzCWXH3q03FoGWBufSrUouuyPm6KI+s=;
+	s=korg; t=1753192366;
+	bh=6lZ5GL08HHxuQPZ4gkgZCN0yOm+JFNTzJL6+sR0cxe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nenYIQN72KxDfkLz7MPVLqR8kQP5qgsSu+/3bqKrUaJ86AZqHUqQuvtkkRHeGEAdz
-	 Nl0ZmmWkWk19WBQIjAjKe3lQMuSpUHSagxiy5x540+rhbFrL4qfZCMmXp2JGY0fmU9
-	 JGk4mgLJelhWCwioqTzKLyv5iyh0MRyyNJWljRfM=
+	b=DwS3BUle6cXjm8SQ/wRKuxUGGxAh/QLEXnlxPxfTT0hZKdHeoPqJ9t5xKRRADUgE6
+	 xNabTCFaPhz6Lxl6In5dC9LuXEcraVOK2oXIMSHXndHdV0KEP95agBtfdPpKoQtjUB
+	 3hVrrp73tw4mw7GbfmS0Yjxy/eBYfJKtgfkAlpI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com,
-	"Enju, Kohei" <enjuk@amazon.co.jp>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.12 076/158] comedi: das16m1: Fix bit shift out of bounds
+	Jean Delvare <jdelvare@suse.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH 6.6 045/111] soc: aspeed: lpc-snoop: Cleanup resources in stack-order
 Date: Tue, 22 Jul 2025 15:44:20 +0200
-Message-ID: <20250722134343.608006948@linuxfoundation.org>
+Message-ID: <20250722134335.070880060@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
 
-commit ed93c6f68a3be06e4e0c331c6e751f462dee3932 upstream.
+commit 8481d59be606d2338dbfe14b04cdbd1a3402c150 upstream.
 
-When checking for a supported IRQ number, the following test is used:
+Free the kfifo after unregistering the miscdev in
+aspeed_lpc_disable_snoop() as the kfifo is initialised before the
+miscdev in aspeed_lpc_enable_snoop().
 
-	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
-	if ((1 << it->options[1]) & 0xdcfc) {
-
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.
-
-Reported-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c52293513298e0fd9a94
-Fixes: 729988507680 ("staging: comedi: das16m1: tidy up the irq support in das16m1_attach()")
-Tested-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
-Suggested-by: "Enju, Kohei" <enjuk@amazon.co.jp>
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707130908.70758-1-abbotti@mev.co.uk
+Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
+Cc: stable@vger.kernel.org
+Cc: Jean Delvare <jdelvare@suse.de>
+Acked-by: Jean Delvare <jdelvare@suse.de>
+Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-1-3cdd59c934d3@codeconstruct.com.au
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/das16m1.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/comedi/drivers/das16m1.c
-+++ b/drivers/comedi/drivers/das16m1.c
-@@ -522,7 +522,8 @@ static int das16m1_attach(struct comedi_
- 	devpriv->extra_iobase = dev->iobase + DAS16M1_8255_IOBASE;
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -263,8 +263,8 @@ static void aspeed_lpc_disable_snoop(str
+ 		return;
+ 	}
  
- 	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
--	if ((1 << it->options[1]) & 0xdcfc) {
-+	if (it->options[1] >= 2 && it->options[1] <= 15 &&
-+	    (1 << it->options[1]) & 0xdcfc) {
- 		ret = request_irq(it->options[1], das16m1_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0)
+-	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
++	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ }
+ 
+ static int aspeed_lpc_snoop_probe(struct platform_device *pdev)
 
 
 
