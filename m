@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-163645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65D0B0D0FA
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 06:54:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A6FB0D0FB
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 06:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFD986C26AD
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 04:54:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 052B7188C7A9
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 04:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D7428C2BD;
-	Tue, 22 Jul 2025 04:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA7228C2D3;
+	Tue, 22 Jul 2025 04:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XEAlYac3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ss/QO73C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676362E3716
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 04:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22D52E3716
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 04:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753160095; cv=none; b=u4McsIJoHXordhDryoH2utZYvCY3aRuY4e+PWY+BNLQ3U3H2JR1PPOrKuaupZvgtMIHEu2IcTAAnPWV9/lBjRH6uDkv7CmnATFRbeqNPwPiSeMSZbOtJ+uMsJOjhImKNTmEtCPi7g/96QOS8xTqTem3vQz9+8sYpA8E5dxUZ42Y=
+	t=1753160097; cv=none; b=QdU6OoyvafBnfEq2Ch1rA7ONJOXO6L0LWVSgrlpeKGrbkcrvo5OPWFLQ7Xdfl70RbmZ1cDMZoxxzAOp6VXE0BLVO7CrSO4pmRgotdLTVQeQDzHPCDEwe3abxJOlCxReRE4D7f46/b53m2yGpr8Da2fyMg1ChxtBOdOWPpM59dww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753160095; c=relaxed/simple;
-	bh=zr1yMIIkTUhMxbCW/jIhyqaeEgJT0mQC5hXhUZj7bx0=;
+	s=arc-20240116; t=1753160097; c=relaxed/simple;
+	bh=lgtG8P1GSDL9eXRNkMQBLqoK/gWnmdSjtAO/d3Hd/yE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pwl9Kr9cTMeH0zV0VjDmyxYYUMoNElGumbFP1DZMJqhcVdaSlSOC3HqZfDn+S9MqHokDxP0QKduz53ofxgbbFEe9y3cixPqKXGwnKsouqB8FJDtZxM3FLmkEO0mtAxr4Cc+2sQ5HlzpIEq5B62S6XqogZBQXv8cENCGvoExOhr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XEAlYac3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD9BC4CEF1;
-	Tue, 22 Jul 2025 04:54:53 +0000 (UTC)
+	 MIME-Version; b=pyzIKaCchTx1f/voredQQlc7tPG8FSDwZerGEol6kHEXKj9TZHHz6D37lWKT8hLYy291VP2aphGMmoy/6UXyne97j1uzziUpSKE41/1auYbrW52QiulBHgmRD6MTim0Wpl30Z0kjCrbG/XbHQjfbpCFUKztSFwusSll/7PQ1HCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ss/QO73C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA6BC4CEF8;
+	Tue, 22 Jul 2025 04:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753160095;
-	bh=zr1yMIIkTUhMxbCW/jIhyqaeEgJT0mQC5hXhUZj7bx0=;
+	s=k20201202; t=1753160096;
+	bh=lgtG8P1GSDL9eXRNkMQBLqoK/gWnmdSjtAO/d3Hd/yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEAlYac3pRYDgPNRV1G6wHSTZ8M1wALaNk4Xeb4aKbJ/1iOpmwTrD5tw9bDNFmv7L
-	 ovfihKjpqwPFj+wBx+WwxaQJFD1Rrr94+A3ZqYXVtjNWZu/hI7IXxAMZnHMxNZuzgr
-	 rqYXsu0It+z2m/J+4ktd52mTI1kbR5CaK4i+NEBW7i4ONAesUrYPuHH5Ata87ZJ2uG
-	 Iv+W1mcGBo7HiMx+7F4F/qmnMD+n1KrszP/BpIexYXZ37GA4nLxmb+8dKgL/8AoU58
-	 3k9+FCRopYUgKgSm01CLpVTwQmd4bzGhNTQYji5/BcUGtwFVAt+sUHHhYjCjRKdmRf
-	 e1lzHfQxoeQ8A==
+	b=Ss/QO73C3uN+nTFbBX2T1QpbL6N19Hqzs8wUkBTl8ouv9q3+OKIx3vj09qg2z6tvx
+	 5Uy7i/WS2jG8aEY7StK8Izx7cECnMpG1ZtH0/d8IMjuta62OoVeRaIHIsm64ztaa0S
+	 ugBdTxjI5BzFOMklMxtwHESOdiOBYW4E83xm0sdpjhs5gGK1/SxC+ld6CXvngHbT3F
+	 SMSLkQQHWaC5VGvaWoDf96VezAtat5yWEPKOIhYzJXfb3w4nJzmk2LtwUcmP9Jgepz
+	 +D+ftC1ymEh7AXs/C3mlLiFYRR2GNtxcyjZTdEV/hiqtE7him0UD0Xfobc9suJlQi/
+	 mmA8imORg6Stw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/3] i2c: omap: Fix an error handling path in omap_i2c_probe()
-Date: Tue, 22 Jul 2025 00:54:46 -0400
-Message-Id: <20250722045447.893946-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 3/3] i2c: omap: Handle omap_i2c_init() errors in omap_i2c_probe()
+Date: Tue, 22 Jul 2025 00:54:47 -0400
+Message-Id: <20250722045447.893946-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250722045447.893946-1-sashal@kernel.org>
 References: <2025072119-tragedy-multitude-6649@gregkh>
@@ -63,52 +63,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 666c23af755dccca8c25b5d5200ca28153c69a05 ]
+[ Upstream commit a9503a2ecd95e23d7243bcde7138192de8c1c281 ]
 
-If an error occurs after calling mux_state_select(), mux_state_deselect()
-should be called as already done in the remove function.
+omap_i2c_init() can fail. Handle this error in omap_i2c_probe().
 
-Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
+Fixes: 010d442c4a29 ("i2c: New bus driver for TI OMAP boards")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: <stable@vger.kernel.org> # v6.15+
+Cc: <stable@vger.kernel.org> # v2.6.19+
 Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/998542981b6d2435c057dd8b9fe71743927babab.1749913149.git.christophe.jaillet@wanadoo.fr
-Stable-dep-of: a9503a2ecd95 ("i2c: omap: Handle omap_i2c_init() errors in omap_i2c_probe()")
+Link: https://lore.kernel.org/r/565311abf9bafd7291ca82bcecb48c1fac1e727b.1751701715.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-omap.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-omap.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-index 488ee9de64108..5fbce75b5128a 100644
+index 5fbce75b5128a..5f1e4ee098c95 100644
 --- a/drivers/i2c/busses/i2c-omap.c
 +++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1461,13 +1461,13 @@ omap_i2c_probe(struct platform_device *pdev)
- 		if (IS_ERR(mux_state)) {
- 			r = PTR_ERR(mux_state);
- 			dev_dbg(&pdev->dev, "failed to get I2C mux: %d\n", r);
--			goto err_disable_pm;
-+			goto err_put_pm;
- 		}
- 		omap->mux_state = mux_state;
- 		r = mux_state_select(omap->mux_state);
- 		if (r) {
- 			dev_err(&pdev->dev, "failed to select I2C mux: %d\n", r);
--			goto err_disable_pm;
-+			goto err_put_pm;
- 		}
+@@ -1472,7 +1472,9 @@ omap_i2c_probe(struct platform_device *pdev)
  	}
  
-@@ -1515,6 +1515,9 @@ omap_i2c_probe(struct platform_device *pdev)
+ 	/* reset ASAP, clearing any IRQs */
+-	omap_i2c_init(omap);
++	r = omap_i2c_init(omap);
++	if (r)
++		goto err_mux_state_deselect;
+ 
+ 	if (omap->rev < OMAP_I2C_OMAP1_REV_2)
+ 		r = devm_request_irq(&pdev->dev, omap->irq, omap_i2c_omap1_isr,
+@@ -1515,6 +1517,7 @@ omap_i2c_probe(struct platform_device *pdev)
  
  err_unuse_clocks:
  	omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
-+	if (omap->mux_state)
-+		mux_state_deselect(omap->mux_state);
-+err_put_pm:
- 	pm_runtime_dont_use_autosuspend(omap->dev);
- 	pm_runtime_put_sync(omap->dev);
- err_disable_pm:
++err_mux_state_deselect:
+ 	if (omap->mux_state)
+ 		mux_state_deselect(omap->mux_state);
+ err_put_pm:
 -- 
 2.39.5
 
