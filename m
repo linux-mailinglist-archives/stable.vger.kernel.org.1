@@ -1,112 +1,105 @@
-Return-Path: <stable+bounces-163637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DFEB0CF7B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 04:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BB9B0CFD0
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 04:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 419E03AE6BC
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 02:01:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC72C3A46EC
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 02:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0608018E25;
-	Tue, 22 Jul 2025 02:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE261DFE0B;
+	Tue, 22 Jul 2025 02:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=bbaa.fun header.i=@bbaa.fun header.b="BgeJLEWc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB1E78F45
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 02:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643C51537DA;
+	Tue, 22 Jul 2025 02:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753149720; cv=none; b=ooonGorkkfQyGILhzWoMnXsaaAF36KYilgzccb7fJOmvr9lHtDDZa4IW+8IRmLtJZNEpOJNWAAKr23ffta6Md6bAHN9doEISlqY3wPeoOcYafH7X+O9dL8a9jODtGR5CDbn+1oBG2mj2oedK/Z9CAFB4iIQaXyxODm9p4bsBxfw=
+	t=1753152101; cv=none; b=tDnQXmZtdERym4axRjNeuk9BZ+nm7kddFuJiE9gNyoShC01PMDaZtcDvlpuU01WNyh2ARNQxbaNQDU2pt/mDGv7FzUYBFUf556tj4IC1Esv51/IiXJ+Ftos4gEUGqGClbPKWnMq7TnlH/P0y+egjcuD8f07XoAkv921W/k+R6AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753149720; c=relaxed/simple;
-	bh=osp4IuI9ZR9z66IEDoOfp1wCdDh9P6j8qg9m9y5pwos=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QV71cg2KHRzzm5carJUwWqh1PTmWZoqHcYYqei3EtcU8W67fKmjS9lMClJOJfjK+S/EQZGNLobqIcAlOLB4amYV6V4MEdeVaiGbnFajDfra0f1OycXkR0iz2B0LWXTcYPq4MKieRq9V7YF1FhioKG29Y1Tb/jIbG9Zl20wu7V+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz19t1753149700t10f6b83a
-X-QQ-Originating-IP: CT6bx6A5Sj7uFBfW7/8o5eYiiAxlrBM3wJ9h03aWusw=
-Received: from w-MS-7E16.trustnetic.com ( [36.24.205.22])
+	s=arc-20240116; t=1753152101; c=relaxed/simple;
+	bh=lj/3O/Co/a/TOZNtsKz34bzvrLC57/+nYzQmJf/IWe4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UYOe/OzaMYhewdebRSYwiQWAK4zz42XqNvNtKYJIxCjqMt/B0K5/0c+AIhmp3usLwOID6vnI19Ntv//mo/cBXMjP/KAH+byADSbAk2GTYR2SkxF2XdqlvGnvAqJAh024svgSYK0sG6HqMC5IFfNBuKlbuqLYyp1/PZcI5ATimwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bbaa.fun; spf=none smtp.mailfrom=bbaa.fun; dkim=pass (1024-bit key) header.d=bbaa.fun header.i=@bbaa.fun header.b=BgeJLEWc; arc=none smtp.client-ip=18.132.163.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bbaa.fun
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bbaa.fun
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bbaa.fun;
+	s=goar2402; t=1753152041;
+	bh=lj/3O/Co/a/TOZNtsKz34bzvrLC57/+nYzQmJf/IWe4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=BgeJLEWcePu7iD/obLTmpu4rwdPb/JJDc047l9iEf8fKwujhBcyU3brnL9KRfiC1w
+	 xkzbIM4r3RTsrFa81XdzLNa0GwezlT/RjfKVckV+mJU3JWGDalBI388d60i38UOi1R
+	 bLv+X3hcGLNPM95H/izRg+nAReMYDGRXRlHkPa8U=
+X-QQ-mid: esmtpgz11t1753152040tbfda5de9
+X-QQ-Originating-IP: qGvRIJKo3JyH86pqieyk/fky0Wuzm4ofHUD0t81YHKg=
+Received: from [198.18.0.1] ( [171.38.232.96])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 22 Jul 2025 10:01:35 +0800 (CST)
+	id ; Tue, 22 Jul 2025 10:40:38 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 2577949941488108746
-EX-QQ-RecipientCnt: 4
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: stable@vger.kernel.org
-Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15.y] net: libwx: fix multicast packets received count
-Date: Tue, 22 Jul 2025 10:01:29 +0800
-Message-ID: <528914E284765D4D+20250722020129.3432-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025072136-steersman-voicing-574e@gregkh>
-References: <2025072136-steersman-voicing-574e@gregkh>
+X-BIZMAIL-ID: 3727465619527990102
+Message-ID: <A862457AA700FAA4+c9af0384-8fb6-47c9-9876-8ea8be528ac3@bbaa.fun>
+Date: Tue, 22 Jul 2025 10:40:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=5BREGRESSION=5D=5BBISECTED=5D_PCI_Passthrough_/_SR?=
+ =?UTF-8?Q?-IOV_Failure_on_Stable_Kernel_=E2=89=A5_v6=2E12=2E35?=
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, bbaa@bbaa.moe
+References: <721D44AF820A4FEB+722679cb-2226-4287-8835-9251ad69a1ac@bbaa.fun>
+ <6294f64a-d92d-4619-aef1-a142f5e8e4a5@linux.intel.com>
+Content-Language: en-US
+From: bbaa <bbaa@bbaa.fun>
+In-Reply-To: <6294f64a-d92d-4619-aef1-a142f5e8e4a5@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: Nve6/r1uoMSa1FvADTbIM72QBWfz3MJywCnYGYQB8hJPGqFsH/uPgrgL
-	8ESL/a7Sp56l8uV7QZxAc93DmarzkIFpgbcC5xknUgI3rl6O84skU7AzwVr1NcTUZsOM11i
-	8LUl0zzy2O2htDKVeE5ZibAQ7U44qjk+M+5OSBJSp60HiS5AQe6pv7e9I8yzJ4WliHjhbf7
-	9pakhsDJo6gKvWiITuZH8AJ7ssZ+BFq8OwSAINwXEAqTxtCj56z8PncX6bZI5Fl7LXfH7Pm
-	KRjRAkqfqX5n+scnZuI4BE2S4L/YxA/l0Os/WDn0X2pJi1fZSiRl6zJqKgebw/9FEslm1x4
-	HNyVFCBMvbKkOaFxqbScXMlLJpFseCgrZpVwa3ut9F4cx6Sn/hzZ4F33RH5qtlXSvBr3rsE
-	O3AGlG2OI7YAw159tZ3iZTZRhuxVL/X1vJgrzXrQlbpGpULWArCfAhvf9HAx+UiyVYHzWvg
-	WuRrlr2IcNVb7sl0AG/2IyHJ6b6rF6CQHNMJxhekpEd3/aCITvg6A6QlySDfazzCwCGs2g7
-	/erUFoXnB03Y3iIKLeCkdTHRc8pUV/+XrBQgJN6+UEea0jVu/KjaCS+xVNDCaqfUw+OKurl
-	AguPk0N3Uffem5YRgt0zVJcc57DJno8f2NmP1AqyKMALd7J+K9dT0H+IVNVeCQIoqM/Ed0W
-	JhmDeQ265md94ooaRSD+/riFmUXFlFul/CIJlc1fS1DYRo+buivUjB7Gz8IWkRVPVebE2ff
-	lt4rrJJgn2Y7TPt0+AVrY4ewvMVIzB9jWQrTNbdGWSmZRB1Vmrzl8V8cH+So4mpA1tCZKwS
-	JTc8rNi35GOjreiD9K1tk3MyaWBcveKg+CiXFYlZG+a018JSX6JGW+fo7G7xl3hDB/7RSSd
-	1Yx4Eex3+Kfx1nb8rt/S1Zsnw11seZwDKXRBnWHN0F/IUkhPowEWa2e0JZEKno9jTCsHYJ3
-	tv5u/ZB4KG1gjmxbQ1oaX6STgT9a+hJ7H2M8QNHfArKlkdefEg1HV3rVz7FhCPoXadeku3i
-	DMOmLkrU026ihgZQMKWd0K8u2pfw7nWMSDDvsPpizOtmL/sbv6DB83xsrl4sdn4ryoJzgJq
-	F06X/YfdjHsyMAGuLNWPxw=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+Feedback-ID: esmtpgz:bbaa.fun:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: OE2BWzPe+8GtWb6VslmUpZ2QttO/EHJ717EaT4R/QwJrteMgXvF2L9JO
+	+BM280WoIVJtycwCm4iiTjKuuISpJp4ROQI6TDI7VwywNBW0rr+ER/P0ST1gg71X0LnhuSW
+	+22SoUQmxq38hOHVEz1ilI9tTHTI6n5WwOpnuV1K9ZsMbqEXhaVoH4uyKWRpZJeDxyNEXNr
+	BztBzU5r4Zz2cFTSMuMZXriNyfbTYF9R40CbgmMSySH7PbStT6+NjVyR+NFm7sv+86fvgHt
+	KS/D0Y/00CqapeaBWKMcoMLX6go4csatcFpv3fZBwo14Df62APk4n2Ttd6HIbwzvEJUaSbf
+	KWiC7hY1a+bGJhX/iymQjnxQzF/ztunrkDBDmojWldGytn7kkm7CAazO8PowJxT6WawAjM4
+	kuwz5+FqSPw16JfAqFbGIGWypwP18AUpvxAjOvynVgjNOPM/mao5f5FzCNDCtiJGtUw1iNt
+	PqVe8kZuqwyKsEmuOnfI/iaHxvp/TtpoAEsw0boCYWClKB1JM/3fVCoKMf2keezPixGpe+O
+	g4dd4N59+fNEYy0u/uNno+XWM3vgPYA5rk701TPAhascHxQMfOn2VyuJyk6EdUBGJ8U/2bq
+	8R5vBMsZZTHKWhJwjVZUuX/pgLMscN2gHVkUle8KfGvk8VKJzlFiPdMR9tuRyCMMC/RRgdy
+	v5f31PDji8Tv8k2SxiXP/V8UBEKugZxY+/4kkZrgpV231RztHCpNDQD8hoQISwMHYhn8yeW
+	TRCyHDgM1Pfx7WC1q8C7VF0zq4RxzI4Ash1pfYMWVjNS5zh6ayOOsFSwf4x1DCAx2ZA+mWH
+	aA1kpwwG/SkSlPMGDL69xHCRu1Tg+EN/bnzVqyiEu1Ml38PeqxEZVUuxcVKwMgchOM0k2Fs
+	kd5e9mE0iQvK/8xfVs0Aa3Z+xt07KyLlDPjNKSIPV5ZGtiltu7dwtbrRjYyXgsceeQA5rPp
+	lpfV6KsxnPIhyJVcZjHSmngD5
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
 X-QQ-RECHKSPAM: 0
 
-Multicast good packets received by PF rings that pass ethternet MAC
-address filtering are counted for rtnl_link_stats64.multicast. The
-counter is not cleared on read. Fix the duplicate counting on updating
-statistics.
+> Thanks for reporting. Can this issue be reproduced with the latest
+> mainline linux kernel? Can it work if you simply revert this commit?
+>
+> Thanks,
+> baolu
+Simply reverting this commit can resolve the issue.
+Since Intel GPU SR-IOV currently depends on out-of-tree modules and is not yet compatible with the mainline kernel, I will test it later.
+It can be confirmed that the v6.15 stable series is not affected, which also includes a backport of this commit.
 
-Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/DA229A4F58B70E51+20250714015656.91772-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/wangxun/libwx/wx_hw.c | 2 ++
- 1 file changed, 2 insertions(+)
+regards,
+Ban Zuoxiang
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 490d34233d38..884986973cde 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2524,6 +2524,8 @@ void wx_update_stats(struct wx *wx)
- 		hwstats->fdirmiss += rd32(wx, WX_RDB_FDIR_MISS);
- 	}
- 
-+	/* qmprc is not cleared on read, manual reset it */
-+	hwstats->qmprc = 0;
- 	for (i = 0; i < wx->mac.max_rx_queues; i++)
- 		hwstats->qmprc += rd32(wx, WX_PX_MPRC(i));
- }
--- 
-2.25.1
+
+
 
 
