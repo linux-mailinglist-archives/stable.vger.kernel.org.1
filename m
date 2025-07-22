@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-164095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B774B0DD6C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:14:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCDAB0DD71
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084F7188AFB1
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:10:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80CE91883E8F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90862E4988;
-	Tue, 22 Jul 2025 14:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AA82ED847;
+	Tue, 22 Jul 2025 14:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kl7mTI8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OXZmuyT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58AC2ED165;
-	Tue, 22 Jul 2025 14:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001282EA75E;
+	Tue, 22 Jul 2025 14:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193231; cv=none; b=gB8OUVWy65dgD8Yg44M0h4Y26dDHppL58sG1iLD2MLHJesov8BhtdTkNsraihZQ5/8vvOGcWHWStp9q7Sp0oJXrEQ7mYVw06vsPfu6KoulbZTnThjEMlZcVfJjhotSltC7u3HH1a/RfBdd96KxB3xM8QV6UjKLTorzmLx8hCk2g=
+	t=1753193239; cv=none; b=AVIvKcVNEliJFnlRb0hNhMBKrThtlX56B8NquX0OsEFRycEDCDP8C279682VVYiPrNXOjTXoSPiXsYXxZARbxjonz8Rb1b7oM7sbGcKzL27B7wBXID6zjNl41eKizj+GUz/NHhw7JMAgZ+h4nLqltJjnwL3QeYPAeC3BpRHbbh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193231; c=relaxed/simple;
-	bh=7zAbo2CbCB1oKB23wQh5uTFnCrITzi2tfy6k6L9JsnY=;
+	s=arc-20240116; t=1753193239; c=relaxed/simple;
+	bh=+PpEKXleZsh6rsFWYZGOR8jWeCL7sOMJqNXYs30NZUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BZGA+YhetVlD/drYBHxU6xMx5R6mKSXPWw9i0MfIKUR3MNWz/DE4DGW0aL9lDJPCTX+Lr0LJMDld4GrMoSHXPnAhSHYzjeXwGKR5covtDd6u3NmY+HXkvLmnhAIrbr9sziCXVH7sVf8keJQ78IoEcPNUJGsgqFNcErNRypoqr1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kl7mTI8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0895C4CEEB;
-	Tue, 22 Jul 2025 14:07:10 +0000 (UTC)
+	 MIME-Version; b=oWt7S+YTBKxIkB75xt+97Xl/SQsrKbq/vc4K79kZ3VMOAtyJcZP93jmS1PnA2AaTwPjks5GeZWJhKD+p6Hk+NlLhJ2yxEKNbFW3myOix0ZEToFb/Orb3oRLaHaVYDLAbJCIgXzGHVJ1H+8wNatXJ00bJL509az09bKoHhG3KIR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OXZmuyT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9850C4CEEB;
+	Tue, 22 Jul 2025 14:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193231;
-	bh=7zAbo2CbCB1oKB23wQh5uTFnCrITzi2tfy6k6L9JsnY=;
+	s=korg; t=1753193238;
+	bh=+PpEKXleZsh6rsFWYZGOR8jWeCL7sOMJqNXYs30NZUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kl7mTI8w9V/6glKcXT18bf+Z1Qv3+zrlKXWvZBMtO0fg2bWN8fwhmYelhsJt6zyKp
-	 bg8YJt0VCQT8hfVcRBrDBB36uGR1uIRm/H0kX4C03WsCF0l6qoTqWRdj/tscxI2s6o
-	 8GNA0tcMAaMuYAcLixFufKVGkzPIkF6FOCKFVBVg=
+	b=1OXZmuyTt6BQmO676OP6kw1gqyaUfNdRMZjSgytuvWaaEOSQ7oEas43w0cWACNr3a
+	 E1+VcCmxLT6JUdTkPVR2gZnZlO+Gk95ns/QCFlJj0Ak/byvkIAVXPA4/Q7W5za8RVf
+	 +O8+5I1VOQJvGHjjH/jta+rQTm0GTd7IoDELCmeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotien Hsu <haotienh@nvidia.com>,
-	Wayne Chang <waynec@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.15 003/187] phy: tegra: xusb: Disable periodic tracking on Tegra234
-Date: Tue, 22 Jul 2025 15:42:53 +0200
-Message-ID: <20250722134345.889908795@linuxfoundation.org>
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.15 004/187] USB: serial: option: add Telit Cinterion FE910C04 (ECM) composition
+Date: Tue, 22 Jul 2025 15:42:54 +0200
+Message-ID: <20250722134345.924839162@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -61,46 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotien Hsu <haotienh@nvidia.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit 7be54870e9bf5ed0b4fe2a23b41a630527882de5 upstream.
+commit 252f4ac08cd2f16ecd20e4c5e41ac2a17dd86942 upstream.
 
-Periodic calibration updates (~10µs) may overlap with transfers when
-PCIe NVMe SSD, LPDDR, and USB2 devices operate simultaneously, causing
-crosstalk on Tegra234 devices. Hence disable periodic calibration updates
-and make this a one-time calibration.
+Add Telit Cinterion FE910C04 (ECM) composition:
+0x10c7: ECM + tty (AT) + tty (AT) + tty (diag)
 
-Fixes: d8163a32ca95 ("phy: tegra: xusb: Add Tegra234 support")
+usb-devices output:
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c7 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20250519090929.3132456-3-waynec@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -1726,7 +1726,7 @@ const struct tegra_xusb_padctl_soc tegra
- 	.num_supplies = ARRAY_SIZE(tegra194_xusb_padctl_supply_names),
- 	.supports_gen2 = true,
- 	.poll_trk_completed = true,
--	.trk_hw_mode = true,
-+	.trk_hw_mode = false,
- 	.trk_update_on_idle = true,
- 	.supports_lp_cfg_en = true,
- };
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1415,6 +1415,9 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
++	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
+ 	  .driver_info = NCTRL(6) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
 
 
 
