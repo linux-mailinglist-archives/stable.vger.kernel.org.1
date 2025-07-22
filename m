@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-163672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB7B0D542
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 11:06:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D084B0D547
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 11:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EFBE3A1CCA
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 09:06:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5329A1891217
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 09:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CA92D59E8;
-	Tue, 22 Jul 2025 09:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002E12D9EE2;
+	Tue, 22 Jul 2025 09:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPxJxOgM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o3mMWmi0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEF44CE08;
-	Tue, 22 Jul 2025 09:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A608C2D59E8;
+	Tue, 22 Jul 2025 09:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753175200; cv=none; b=lYNnFp1rTuMd3u6h0Ee36AnfGwLizupGT9dl5u50kpm9I3Ig5+O8QD3/mLHjKGXNFml4mbFHgvQ3pwGsZs0l5YPLAYCZz9q1OOzQbwVDsRf5jEhdClFaMS9kpG6KqL6Jj5T2GRrqyDpU6arLMXYHZnrI0NjTODtmdBONKVCcBQo=
+	t=1753175264; cv=none; b=DrkTrSp/sufuPFNyBIwWIrqvZRoAM1HpnaHl1EoUqWRrsvlz7jL2vOOq8tK2RRSvtM4L/CHuCmf+xqut+pLvvSw/FKwY00GzWVbpWqZlxWS8tyHVo4L6KIJEXpOSczDB3VV5ilWuHJD8rod94MgiIjLM57j2Eqr/Ww+LwE/sXFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753175200; c=relaxed/simple;
-	bh=odkg/p7QG6NzW4EkAcRJPwercEqAXkQQ8ClGx1S5VVU=;
+	s=arc-20240116; t=1753175264; c=relaxed/simple;
+	bh=nKq81HUGzbJ8MClnTnjqNMW6seeisy/VqfcWhs+I7kU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fJpVLKLonW0c6FIJC6VIxrUUBErAv8IpbrA3ATmMUkTdJSN9+hKBbdQWvT8d7wITmtoxmYBmi7mRbySHobth0jJeog3W1dSiMsEaCmVjHRHJy8myO3VyMzBir3xsgjfiae1LLRf/8WNACe11PuASx4mLut7VQb+MMKY+g2bN/RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPxJxOgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920D0C4CEEB;
-	Tue, 22 Jul 2025 09:06:38 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=DKLPXbmIlDLkFAsDoeYlEMvwXaFUDOFf+CMtgzxIYXkZeJ8sRKQnHnk/uKyIEhiYO3HsV1nNrNwnvrLhAopWZdgmS6aK0Uk1TuxbQeoAhZqE2ZctLylZip71ZtWYW17PE3VYWVrB7XEyk5FSUmbjLrVbKzgMazb2NmzDEQ7mQQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o3mMWmi0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F45BC4CEEB;
+	Tue, 22 Jul 2025 09:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753175200;
-	bh=odkg/p7QG6NzW4EkAcRJPwercEqAXkQQ8ClGx1S5VVU=;
+	s=k20201202; t=1753175264;
+	bh=nKq81HUGzbJ8MClnTnjqNMW6seeisy/VqfcWhs+I7kU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JPxJxOgMZql613zcAE7v0+8nAa4sZgfrbizMX7j3WSiRCk9itwqGwIeVsTPbqYWtS
-	 Vn4IFJ2a5DG043765qVqpoKQv1xpJUrsaF0rzxrWe1joDHRl6P08GtXi3aNN7AHlJ9
-	 aItBeEpJ7Oldybeu0IYXnMAilS8jXtEXBPf2Xxebcz3qu9KAsCWGUnN4s35G7N2/fH
-	 WkgWrKp0hnAXrYNEMLIDAm1Qd3Q+jQ9MbmZlb4U7vbaS9B3zCC97wF/xnlk6YYy0ER
-	 5yYiNI6XV+x25/clrOEbvDQT5+HHHXZv3B5+ubs8FtqzJvTlNXIKu2alaCopqQvtN4
-	 aUXuKVVBtRT9g==
-Message-ID: <2419b7f3-43d7-42da-a1b7-693631311707@kernel.org>
-Date: Tue, 22 Jul 2025 11:06:36 +0200
+	b=o3mMWmi00DcrSSSMAiSV23FhpUNEbBXXFTxiEilMCfTtAfumDnNOio1B0ZM2qpcrN
+	 9ZLvcuuRncvNLZIP6lU4BFgfF3+qdzpjvgxoM78XQjDqXjlsbNvH/4diAk3knRvdem
+	 cKQrIEUDeYv4bf4XohtI9xOi3WyTVYewTL6A1Svu/F3/eD1BJDAMAsMDxSol4fpvHz
+	 Klybzkngvcbr9vzLVBiLYqdon+4QoSz6VNHEA85twgvq27fPom4Oq1Mdl0WVa/RqxV
+	 +wVvvD+VUvqXLXsnDAeQ+29Up4ygI7cwfS9DnqMZI5UDabqaY7p6+r8PlYigHp8fyl
+	 YgP+YYqt0WH8Q==
+Message-ID: <1755f4ab-f0c4-4442-8446-ae7b104b4e89@kernel.org>
+Date: Tue, 22 Jul 2025 11:07:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,14 +50,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] vt: keyboard: Don't process Unicode characters in
- K_OFF mode
+Subject: Re: [PATCH 2/2] vt: defkeymap: Map keycodes above 127 to K_HOLE
 To: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arthur Taylor <art@ified.ca>
 Cc: Greg Kroah-Hartman <gregkh@suse.de>, linux-kernel@vger.kernel.org,
  linux-serial@vger.kernel.org, stable@vger.kernel.org
 References: <20250702-vt-misc-unicode-fixes-v1-0-c27e143cc2eb@qtmlabs.xyz>
- <20250702-vt-misc-unicode-fixes-v1-1-c27e143cc2eb@qtmlabs.xyz>
+ <20250702-vt-misc-unicode-fixes-v1-2-c27e143cc2eb@qtmlabs.xyz>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -102,41 +101,31 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20250702-vt-misc-unicode-fixes-v1-1-c27e143cc2eb@qtmlabs.xyz>
+In-Reply-To: <20250702-vt-misc-unicode-fixes-v1-2-c27e143cc2eb@qtmlabs.xyz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 02. 07. 25, 16:17, Myrrh Periwinkle wrote:
-> We don't process Unicode characters if the virtual terminal is in raw
-> mode, so there's no reason why we shouldn't do the same for K_OFF
-> (especially since people would expect K_OFF to actually turn off all VT
-> key processing).
+> The maximum number of keycodes got bumped to 256 a very long time ago,
+> but the default keymaps were never adjusted to match. This is causing
+> the kernel to interpret keycodes above 127 as U+0000 if the shipped
+> generated keymap is used.
+> 
+> Fix this by mapping all keycodes above 127 to K_HOLE so the kernel
+> ignores them.
+> 
+> The contents of this patche were generated by rerunning `loadkeys
+> --mktable --unicode` and only including the changes to map keycodes
+> above 127 to K_HOLE.
 
-AFAICT
+OK., makes sense.
 
 Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
 
-> Fixes: 9fc3de9c8356 ("vt: Add virtual console keyboard mode OFF")
+
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 > Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 > Cc: stable@vger.kernel.org
-> ---
->   drivers/tty/vt/keyboard.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/tty/vt/keyboard.c b/drivers/tty/vt/keyboard.c
-> index dc585079c2fb8c92d37284701f15905a24161768..ee1d9c448c7ebf2f1456f6bd18e55a9681b036c2 100644
-> --- a/drivers/tty/vt/keyboard.c
-> +++ b/drivers/tty/vt/keyboard.c
-> @@ -1487,7 +1487,7 @@ static void kbd_keycode(unsigned int keycode, int down, bool hw_raw)
->   		rc = atomic_notifier_call_chain(&keyboard_notifier_list,
->   						KBD_UNICODE, &param);
->   		if (rc != NOTIFY_STOP)
-> -			if (down && !raw_mode)
-> +			if (down && !(raw_mode || kbd->kbdmode == VC_OFF))
->   				k_unicode(vc, keysym, !down);
->   		return;
->   	}
-> 
 
 
 -- 
