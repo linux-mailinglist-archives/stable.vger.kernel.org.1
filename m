@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-163856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0710B0DC09
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 919DDB0DC9C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1838FAC016C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 907C51C81F7F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B942EA490;
-	Tue, 22 Jul 2025 13:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F198528BA96;
+	Tue, 22 Jul 2025 14:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgaWk8LL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ou0exMab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB972EA15A;
-	Tue, 22 Jul 2025 13:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC055548EE;
+	Tue, 22 Jul 2025 14:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192438; cv=none; b=szBVB0LOlFVrjLy3bMu1iJeXIhNfH1weFPw64q0No7k66cNVdyu9dQ4fHTSVo2UqQW387Nck/9m8NnQsT6NOPHWpbb/snH1+621l4Rm3XyGSr5PUEqdcoqxRWFQFIWfaIzDCEihP5CD4eBOQQRYMDjDlzDf15NwvktVhBHpewwE=
+	t=1753192916; cv=none; b=QdRXyWhj0vRcgoQdQdgczgG0jHiySIMB1zEeJp+rQ9G3m98ZPn++u56kZLBSZ+RyvnXjjD+SLwTqAK7jv5SkmuLYciF+CTVIW3xUcq8iztb62BoZbZeDtv6k5P5XfzX5d+GAd7Mj0dVA4Hp3Cvkg7WR1R7KxJAmVbgS7SGaUEkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192438; c=relaxed/simple;
-	bh=O+aQk377tKLn9UmneAiZn6pAdIgQ49+wJHVFIlpA3BE=;
+	s=arc-20240116; t=1753192916; c=relaxed/simple;
+	bh=K0vKwt7CJYlcWGHbVHwuLdQTWBYDmRAUZNmTpcTtjRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SXOsgCQmAQ9ZSvqmkqpAN4F5yXzGxVIy9TkA4z65TpYk0oI3KfIEpAYFi2SDKfhMTe6G0ebOeIMmfBD2TVLFXCrdJOXFGdz6PJYzeKJQMTUakBN0BZKLorY6Esn5jBOWhmXDW7GYDrubqhzsR5W011PpTlpJYUkeITRJQ/QfW5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgaWk8LL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFAFC4CEF1;
-	Tue, 22 Jul 2025 13:53:57 +0000 (UTC)
+	 MIME-Version; b=K/SfTVtmwQiWlfHXPMme3JRRCIZBCai1P2f1VlfPt86i3PAF+7iZwyWbrRN1ZrWp0jcJlBdX3rwIFirl3QjgK2DOJoW121F8pUpaU2kVEwTqUKIJLOXPbxhnJ4iam/rhSx9N4dLNYaVj3f1LpN0y+oFkSwZvUUHhS+TxMp1dMHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ou0exMab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0C3C4CEEB;
+	Tue, 22 Jul 2025 14:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192438;
-	bh=O+aQk377tKLn9UmneAiZn6pAdIgQ49+wJHVFIlpA3BE=;
+	s=korg; t=1753192916;
+	bh=K0vKwt7CJYlcWGHbVHwuLdQTWBYDmRAUZNmTpcTtjRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgaWk8LLZC6eqSOWDcI/GwR3zPIM8bBWNBNjXKNG0j2AdaiHsA4n5ovCfcfvFjlu+
-	 9Teg/R4bcwSlBCQiZ0JQ5p/iKfOwMTl/LVfjHP47zNhcKlJnYQji9k0nzNPC/8ugYO
-	 sc0TUfp1MOPBTEFEVIbmrdNEO2eZMkVJWukaCA08=
+	b=ou0exMabGPX2HvqBZPEleAWzOxuGapqT1kGuxEVYRR+n5UOXHWsQyNK5qVEBNjFGJ
+	 ZMchlzje4DwqoJidM0JY/egmKGkt0mHLZ3LxdojYUGBBO4S93+Yvg8v1F1xWUgJLLu
+	 MgBay/gWLVMiNUg6UbfYXnfUbVwGFYz68TulmSLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/111] block: fix kobject leak in blk_unregister_queue
+Subject: [PATCH 6.12 095/158] fix a leak in fcntl_dirnotify()
 Date: Tue, 22 Jul 2025 15:44:39 +0200
-Message-ID: <20250722134335.766869246@linuxfoundation.org>
+Message-ID: <20250722134344.300673703@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 3051247e4faa32a3d90c762a243c2c62dde310db ]
+[ Upstream commit fdfe0133473a528e3f5da69c35419ce6711d6b89 ]
 
-The kobject for the queue, `disk->queue_kobj`, is initialized with a
-reference count of 1 via `kobject_init()` in `blk_register_queue()`.
-While `kobject_del()` is called during the unregister path to remove
-the kobject from sysfs, the initial reference is never released.
+[into #fixes, unless somebody objects]
 
-Add a call to `kobject_put()` in `blk_unregister_queue()` to properly
-decrement the reference count and fix the leak.
+Lifetime of new_dn_mark is controlled by that of its ->fsn_mark,
+pointed to by new_fsn_mark.  Unfortunately, a failure exit had
+been inserted between the allocation of new_dn_mark and the
+call of fsnotify_init_mark(), ending up with a leak.
 
-Fixes: 2bd85221a625 ("block: untangle request_queue refcounting from sysfs")
-Cc: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250711083009.2574432-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 1934b212615d "file: reclaim 24 bytes from f_owner"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://lore.kernel.org/20250712171843.GB1880847@ZenIV
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-sysfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/notify/dnotify/dnotify.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 74839f6f2e0cb..8d15c73a520bd 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -909,4 +909,5 @@ void blk_unregister_queue(struct gendisk *disk)
- 	mutex_unlock(&q->sysfs_dir_lock);
+diff --git a/fs/notify/dnotify/dnotify.c b/fs/notify/dnotify/dnotify.c
+index d5dbef7f5c95b..0539c2a328c73 100644
+--- a/fs/notify/dnotify/dnotify.c
++++ b/fs/notify/dnotify/dnotify.c
+@@ -309,6 +309,10 @@ int fcntl_dirnotify(int fd, struct file *filp, unsigned int arg)
+ 		goto out_err;
+ 	}
  
- 	blk_debugfs_remove(disk);
-+	kobject_put(&disk->queue_kobj);
- }
++	error = file_f_owner_allocate(filp);
++	if (error)
++		goto out_err;
++
+ 	/* new fsnotify mark, we expect most fcntl calls to add a new mark */
+ 	new_dn_mark = kmem_cache_alloc(dnotify_mark_cache, GFP_KERNEL);
+ 	if (!new_dn_mark) {
+@@ -316,10 +320,6 @@ int fcntl_dirnotify(int fd, struct file *filp, unsigned int arg)
+ 		goto out_err;
+ 	}
+ 
+-	error = file_f_owner_allocate(filp);
+-	if (error)
+-		goto out_err;
+-
+ 	/* set up the new_fsn_mark and new_dn_mark */
+ 	new_fsn_mark = &new_dn_mark->fsn_mark;
+ 	fsnotify_init_mark(new_fsn_mark, dnotify_group);
 -- 
 2.39.5
 
