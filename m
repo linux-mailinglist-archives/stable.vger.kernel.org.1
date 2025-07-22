@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3086BB0DB6C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:49:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443E8B0DBF7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CEC15613DE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C2F4188D6E8
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A60C28AB11;
-	Tue, 22 Jul 2025 13:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05732E8E0F;
+	Tue, 22 Jul 2025 13:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Crbs/7HG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYhHF7Bc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399AC7263D;
-	Tue, 22 Jul 2025 13:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCBD2B9A5;
+	Tue, 22 Jul 2025 13:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192137; cv=none; b=NvPGx3Jwkqox9tksH1/KkIhGG/TZoMO4tlebwIOsmRJglVIAfkMk50SlLRzRNCJ1hBekV/zse2kqDALshSRfqZmkn+gnyFFjM4oDsM2NRdOHzwHpJPsyixQ+cb4a0NE2LcTmaKRO0bDzZnVLm95RpelrNyp/eL/vs0cZkHJMbDg=
+	t=1753192475; cv=none; b=n6v9JnuSWvFmnxdVssK0RNbqtBDOlZnzfJ6kVgybe7frmunf5//wnSP9SB13wgPOJZEj7Dqu4w5KF6VwjjVXJEcFtrxAtmiuQ5cy6vOq8BPlywe/B8Sw8BlFmkekz4M3ihYd99DPeWwlt7cxpE3BHOl8BDQQj2wAITV0T2uf0/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192137; c=relaxed/simple;
-	bh=U1EhOJa+7ww1H5sTxO/26/XYFTMKwoOVrrBoVG5BFWk=;
+	s=arc-20240116; t=1753192475; c=relaxed/simple;
+	bh=fcFJB14nRbkG9w1dxQdXHPAsSL0LkNtEjUtgsRsP9AU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKz4mWq4XHl485VHI95Lj55Vhe/tqfow2EQs/+pXU4bsic7IAOhmORL+wIcp04S7WA43U4Ha9kEm3+E7IAxqWAQuCCZvI8dZ0R9TtX8goYm06rqAcxwYou8FB1nYHFm8T3i9V0ACd2SElv4+1Vq+JtGghlFkQe7URXdl4YNNu1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Crbs/7HG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E29C4CEEB;
-	Tue, 22 Jul 2025 13:48:56 +0000 (UTC)
+	 MIME-Version; b=vEOepmRSFRJtHa4HUjfDcY+Gv795UfS7ayDmCPPwKRB+E8YLv41xZrD0E9fKbgO4gWkSxKx7HfXoawj48IVhkpuht1Zp4fVj5RtcvSx9V5iILW8BrsUtuiACVCJ0xrlivRjyOqUH0gBk9pStbsTawV+0KKOiBe0EHM+DqEUrRSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYhHF7Bc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AB6C4CEEB;
+	Tue, 22 Jul 2025 13:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192137;
-	bh=U1EhOJa+7ww1H5sTxO/26/XYFTMKwoOVrrBoVG5BFWk=;
+	s=korg; t=1753192475;
+	bh=fcFJB14nRbkG9w1dxQdXHPAsSL0LkNtEjUtgsRsP9AU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Crbs/7HGm0e3pKqEPHvaxNozGyOeIqFd59BQmma/bb6z31NSXmu9I9JJWztu37H1w
-	 yvqUzIyQv+2oXitC6Y1W7wzVLKUEcqs8nqMl4kZC4a9C8IPgUQUvjaK56WR1VB8w+h
-	 RgF663yLGlQnRMpq664wrHSJvSvIwbFfzRjvEQI0=
+	b=VYhHF7BcMPTPmmv9br1cYKdm9BPtcij8FkSQEQGRFVKpXgqIsxMnXyPhyonzk6ZpP
+	 tra70NQdG4YyqUN4m3sAfgU5Is9fjLr2HZyRkJt5oNx6GguglnduIoaqgQGIr54BEh
+	 Z/79y4bwn37gw0C0qhpI3SRAdIagcq/IoIhcbavE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
+	Alessandro Gasbarroni <alex.gasbarroni@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 56/79] Bluetooth: btusb: QCA: Fix downloading wrong NVM for WCN6855 GF variant without board ID
+Subject: [PATCH 6.6 077/111] Bluetooth: hci_sync: fix connectable extended advertising when using static random address
 Date: Tue, 22 Jul 2025 15:44:52 +0200
-Message-ID: <20250722134330.436299437@linuxfoundation.org>
+Message-ID: <20250722134336.263041182@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Alessandro Gasbarroni <alex.gasbarroni@gmail.com>
 
-[ Upstream commit 43015955795a619f7ca4ae69b9c0ffc994c82818 ]
+[ Upstream commit d85edab911a4c1fcbe3f08336eff5c7feec567d0 ]
 
-For GF variant of WCN6855 without board ID programmed
-btusb_generate_qca_nvm_name() will chose wrong NVM
-'qca/nvm_usb_00130201.bin' to download.
+Currently, the connectable flag used by the setup of an extended
+advertising instance drives whether we require privacy when trying to pass
+a random address to the advertising parameters (Own Address).
+If privacy is not required, then it automatically falls back to using the
+controller's public address. This can cause problems when using controllers
+that do not have a public address set, but instead use a static random
+address.
 
-Fix by choosing right NVM 'qca/nvm_usb_00130201_gf.bin'.
-Also simplify NVM choice logic of btusb_generate_qca_nvm_name().
+e.g. Assume a BLE controller that does not have a public address set.
+The controller upon powering is set with a random static address by default
+by the kernel.
 
-Fixes: d6cba4e6d0e2 ("Bluetooth: btusb: Add support using different nvm for variant WCN6855 controller")
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+	< HCI Command: LE Set Random Address (0x08|0x0005) plen 6
+        	Address: E4:AF:26:D8:3E:3A (Static)
+	> HCI Event: Command Complete (0x0e) plen 4
+	      LE Set Random Address (0x08|0x0005) ncmd 1
+	        Status: Success (0x00)
+
+Setting non-connectable extended advertisement parameters in bluetoothctl
+mgmt
+
+	add-ext-adv-params -r 0x801 -x 0x802 -P 2M -g 1
+
+correctly sets Own address type as Random
+
+	< HCI Command: LE Set Extended Advertising Parameters (0x08|0x0036)
+	plen 25
+		...
+	    Own address type: Random (0x01)
+
+Setting connectable extended advertisement parameters in bluetoothctl mgmt
+
+	add-ext-adv-params -r 0x801 -x 0x802 -P 2M -g -c 1
+
+mistakenly sets Own address type to Public (which causes to use Public
+Address 00:00:00:00:00:00)
+
+	< HCI Command: LE Set Extended Advertising Parameters (0x08|0x0036)
+	plen 25
+		...
+	    Own address type: Public (0x00)
+
+This causes either the controller to emit an Invalid Parameters error or to
+mishandle the advertising.
+
+This patch makes sure that we use the already set static random address
+when requesting a connectable extended advertising when we don't require
+privacy and our public address is not set (00:00:00:00:00:00).
+
+Fixes: 3fe318ee72c5 ("Bluetooth: move hci_get_random_address() to hci_sync")
+Signed-off-by: Alessandro Gasbarroni <alex.gasbarroni@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 78 ++++++++++++++++++++++-----------------
- 1 file changed, 44 insertions(+), 34 deletions(-)
+ net/bluetooth/hci_sync.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 25adb3ac40eb8..8bb1162031a6a 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3251,6 +3251,32 @@ static const struct qca_device_info qca_devices_table[] = {
- 	{ 0x00190200, 40, 4, 16 }, /* WCN785x 2.0 */
- };
- 
-+static u16 qca_extract_board_id(const struct qca_version *ver)
-+{
-+	u16 flag = le16_to_cpu(ver->flag);
-+	u16 board_id = 0;
-+
-+	if (((flag >> 8) & 0xff) == QCA_FLAG_MULTI_NVM) {
-+		/* The board_id should be split into two bytes
-+		 * The 1st byte is chip ID, and the 2nd byte is platform ID
-+		 * For example, board ID 0x010A, 0x01 is platform ID. 0x0A is chip ID
-+		 * we have several platforms, and platform IDs are continuously added
-+		 * Platform ID:
-+		 * 0x00 is for Mobile
-+		 * 0x01 is for X86
-+		 * 0x02 is for Automotive
-+		 * 0x03 is for Consumer electronic
-+		 */
-+		board_id = (ver->chip_id << 8) + ver->platform_id;
-+	}
-+
-+	/* Take 0xffff as invalid board ID */
-+	if (board_id == 0xffff)
-+		board_id = 0;
-+
-+	return board_id;
-+}
-+
- static int btusb_qca_send_vendor_req(struct usb_device *udev, u8 request,
- 				     void *data, u16 size)
- {
-@@ -3407,44 +3433,28 @@ static void btusb_generate_qca_nvm_name(char *fwname, size_t max_size,
- 					const struct qca_version *ver)
- {
- 	u32 rom_version = le32_to_cpu(ver->rom_version);
--	u16 flag = le16_to_cpu(ver->flag);
-+	const char *variant;
-+	int len;
-+	u16 board_id;
- 
--	if (((flag >> 8) & 0xff) == QCA_FLAG_MULTI_NVM) {
--		/* The board_id should be split into two bytes
--		 * The 1st byte is chip ID, and the 2nd byte is platform ID
--		 * For example, board ID 0x010A, 0x01 is platform ID. 0x0A is chip ID
--		 * we have several platforms, and platform IDs are continuously added
--		 * Platform ID:
--		 * 0x00 is for Mobile
--		 * 0x01 is for X86
--		 * 0x02 is for Automotive
--		 * 0x03 is for Consumer electronic
--		 */
--		u16 board_id = (ver->chip_id << 8) + ver->platform_id;
--		const char *variant;
-+	board_id = qca_extract_board_id(ver);
- 
--		switch (le32_to_cpu(ver->ram_version)) {
--		case WCN6855_2_0_RAM_VERSION_GF:
--		case WCN6855_2_1_RAM_VERSION_GF:
--			variant = "_gf";
--			break;
--		default:
--			variant = "";
--			break;
--		}
--
--		if (board_id == 0) {
--			snprintf(fwname, max_size, "qca/nvm_usb_%08x%s.bin",
--				rom_version, variant);
--		} else {
--			snprintf(fwname, max_size, "qca/nvm_usb_%08x%s_%04x.bin",
--				rom_version, variant, board_id);
--		}
--	} else {
--		snprintf(fwname, max_size, "qca/nvm_usb_%08x.bin",
--			rom_version);
-+	switch (le32_to_cpu(ver->ram_version)) {
-+	case WCN6855_2_0_RAM_VERSION_GF:
-+	case WCN6855_2_1_RAM_VERSION_GF:
-+		variant = "_gf";
-+		break;
-+	default:
-+		variant = NULL;
-+		break;
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index e1df1c62017d9..01aca07707117 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6796,8 +6796,8 @@ int hci_get_random_address(struct hci_dev *hdev, bool require_privacy,
+ 		return 0;
  	}
  
-+	len = snprintf(fwname, max_size, "qca/nvm_usb_%08x", rom_version);
-+	if (variant)
-+		len += snprintf(fwname + len, max_size - len, "%s", variant);
-+	if (board_id)
-+		len += snprintf(fwname + len, max_size - len, "_%04x", board_id);
-+	len += snprintf(fwname + len, max_size - len, ".bin");
- }
+-	/* No privacy so use a public address. */
+-	*own_addr_type = ADDR_LE_DEV_PUBLIC;
++	/* No privacy, use the current address */
++	hci_copy_identity_address(hdev, rand_addr, own_addr_type);
  
- static int btusb_setup_qca_load_nvm(struct hci_dev *hdev,
+ 	return 0;
+ }
 -- 
 2.39.5
 
