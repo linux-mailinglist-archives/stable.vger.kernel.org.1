@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-164053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53546B0DD09
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:08:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 749C2B0DE63
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0035FAA784A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFCD45802B6
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA122E975F;
-	Tue, 22 Jul 2025 14:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD5D2ECD2A;
+	Tue, 22 Jul 2025 14:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcdnosXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIGFE4rL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FC8548EE;
-	Tue, 22 Jul 2025 14:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06182ECD09;
+	Tue, 22 Jul 2025 14:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193095; cv=none; b=KGeZKjeECzm0VqGYBCmT8ogBbTHBMlSYrMxfYWbHKdS0f1VCW49+Gn90WfqbHRrx3i56xOEz4dkGuKbLIzoCzbWJYbJvMWAipiFhD4eIei/0Ese3OpN/J2DE6YcJEwwX7K2+ZBzAEiiAF28t94FO1MYKiifvv9pTFCEIm22xAVg=
+	t=1753193677; cv=none; b=ND3eFdZdficFNC1Xo/PJb8u3fSkARNQJFrkSFPkPxp7HKLr4rV+1VpSa/gCFoQcxUfM1915RstZHg0ExLfSh2P4oKET9lT3cuGg7Qv/gGLJlpkuoLQXc/wh3wFvOaY5zCC6PJZzysbxSuVilEkkopwS6F1aXZLf8tMdcVUukkm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193095; c=relaxed/simple;
-	bh=bYEVWaYVD6Z2m98ffH+mJAKjNZf+CLQxmTqIF9jd3pM=;
+	s=arc-20240116; t=1753193677; c=relaxed/simple;
+	bh=fNeGOtfLTec5lGoaUdsVEkFNJvn76QLynwjDQ4ze1B8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SyAYWy+5+l3CLXS7xc+TfdO+BxB1dEFSX29CKm3uGpV+dvR0TndoTd0coidfmLUVgwE+mvXRW8VQqHghzzXbGibGHvqFnfA3Ln59jSrGAbv9Ba4ZNTeqPkuAh/mr35o1PTEwp+b/fYN+aCUn94QvklrApyjg+S9RQGIhCBniR1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcdnosXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A745DC4CEF5;
-	Tue, 22 Jul 2025 14:04:54 +0000 (UTC)
+	 MIME-Version; b=nV5AJHd1K7IwuLV4lZItOLk1UqhZ6ULDsoUsujkShEloiy98lZbasBxLfig0FCx0y8Lp96G0xaEhgQRdBxwpeZXL4e8gzRciK0O9lFu+bHTpGfTROMZ2r3aYARxSStYeb6pAE7WgbIQvWn0R+97nD+R9Ob4pBUO2TcJxEEiooU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIGFE4rL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB35C4CEEB;
+	Tue, 22 Jul 2025 14:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193095;
-	bh=bYEVWaYVD6Z2m98ffH+mJAKjNZf+CLQxmTqIF9jd3pM=;
+	s=korg; t=1753193677;
+	bh=fNeGOtfLTec5lGoaUdsVEkFNJvn76QLynwjDQ4ze1B8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcdnosXp9e3WN0H5tdJtwQ2t7dSBh+WWAs6yaxF2eMUCRbgMhaf+mWNYpttd0CZt6
-	 DCutdAKIsQ2l04eN2AmcR+aX2rgpDiEvsdLfVhCdsJcvYYugLRrLygu9D486ZbHege
-	 p0wHSnPlsF1H6uJyx4YbBVhDxGhxD9wTRmMOmIew=
+	b=AIGFE4rLzyPF4AgecJSe6Tn2kp4O70DPkniDzzAsBMcz1sonm/mVrBlWVkC45coBr
+	 UA6vy6fTSYRijeQtLyXWJGVzrLBSw6UR1YeUGLMsKQI4tiv3i4G0+ky4KAX11j0R0V
+	 kU7MRxJQOLxOSPAPGe4IFYlq5SqqPUyLjc6XmDVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wood <david@davidtw.co>,
-	Wesley Wiser <wwiser@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 149/158] rust: use `#[used(compiler)]` to fix build and `modpost` with Rust >= 1.89.0
-Date: Tue, 22 Jul 2025 15:45:33 +0200
-Message-ID: <20250722134346.273947264@linuxfoundation.org>
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 164/187] libbpf: Fix handling of BPF arena relocations
+Date: Tue, 22 Jul 2025 15:45:34 +0200
+Message-ID: <20250722134351.882861712@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +61,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 7498159226772d66f150dd406be462d75964a366 upstream.
+[ Upstream commit 0238c45fbbf8228f52aa4642f0cdc21c570d1dfe ]
 
-Starting with Rust 1.89.0 (expected 2025-08-07), the Rust compiler fails
-to build the `rusttest` target due to undefined references such as:
+Initial __arena global variable support implementation in libbpf
+contains a bug: it remembers struct bpf_map pointer for arena, which is
+used later on to process relocations. Recording this pointer is
+problematic because map pointers are not stable during ELF relocation
+collection phase, as an array of struct bpf_map's can be reallocated,
+invalidating all the pointers. Libbpf is dealing with similar issues by
+using a stable internal map index, though for BPF arena map specifically
+this approach wasn't used due to an oversight.
 
-    kernel...-cgu.0:(.text....+0x116): undefined reference to
-    `rust_helper_kunit_get_current_test'
+The resulting behavior is non-deterministic issue which depends on exact
+layout of ELF object file, number of actual maps, etc. We didn't hit
+this until very recently, when this bug started triggering crash in BPF
+CI when validating one of sched-ext BPF programs.
 
-Moreover, tooling like `modpost` gets confused:
+The fix is rather straightforward: we just follow an established pattern
+of remembering map index (just like obj->kconfig_map_idx, for example)
+instead of `struct bpf_map *`, and resolving index to a pointer at the
+point where map information is necessary.
 
-    WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/nova/nova.o
-    ERROR: modpost: missing MODULE_LICENSE() in drivers/gpu/nova-core/nova_core.o
+While at it also add debug-level message for arena-related relocation
+resolution information, which we already have for all other kinds of
+maps.
 
-The reason behind both issues is that the Rust compiler will now [1]
-treat `#[used]` as `#[used(linker)]` instead of `#[used(compiler)]`
-for our targets. This means that the retain section flag (`R`,
-`SHF_GNU_RETAIN`) will be used and that they will be marked as `unique`
-too, with different IDs. In turn, that means we end up with undefined
-references that did not get discarded in `rusttest` and that multiple
-`.modinfo` sections are generated, which confuse tooling like `modpost`
-because they only expect one.
-
-Thus start using `#[used(compiler)]` to keep the previous behavior
-and to be explicit about what we want. Sadly, it is an unstable feature
-(`used_with_arg`) [2] -- we will talk to upstream Rust about it. The good
-news is that it has been available for a long time (Rust >= 1.60) [3].
-
-The changes should also be fine for previous Rust versions, since they
-behave the same way as before [4].
-
-Alternatively, we could use `#[no_mangle]` or `#[export_name = ...]`
-since those still behave like `#[used(compiler)]`, but of course it is
-not really what we want to express, and it requires other changes to
-avoid symbol conflicts.
-
-Cc: David Wood <david@davidtw.co>
-Cc: Wesley Wiser <wwiser@gmail.com>
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/140872 [1]
-Link: https://github.com/rust-lang/rust/issues/93798 [2]
-Link: https://github.com/rust-lang/rust/pull/91504 [3]
-Link: https://godbolt.org/z/sxzWTMfzW [4]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
-Link: https://lore.kernel.org/r/20250712160103.1244945-3-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2e7ba4f8fd1f ("libbpf: Recognize __arena global variables.")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20250718001009.610955-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/Makefile          |    1 +
- rust/kernel/lib.rs     |    1 +
- rust/macros/module.rs  |   10 +++++-----
- scripts/Makefile.build |    2 +-
- 4 files changed, 8 insertions(+), 6 deletions(-)
+ tools/lib/bpf/libbpf.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -157,6 +157,7 @@ quiet_cmd_rustdoc_test = RUSTDOC T $<
-       cmd_rustdoc_test = \
- 	OBJTREE=$(abspath $(objtree)) \
- 	$(RUSTDOC) --test $(rust_common_flags) \
-+		-Zcrate-attr='feature(used_with_arg)' \
- 		@$(objtree)/include/generated/rustc_cfg \
- 		$(rustc_target_flags) $(rustdoc_test_target_flags) \
- 		$(rustdoc_test_quiet) \
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -18,6 +18,7 @@
- #![feature(inline_const)]
- #![feature(lint_reasons)]
- #![feature(unsize)]
-+#![feature(used_with_arg)]
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 97605ea8093ff..c8e29c52d28c0 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -735,7 +735,7 @@ struct bpf_object {
  
- // Ensure conditional compilation based on the kernel configuration works;
- // otherwise we may silently break things like initcall handling.
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -57,7 +57,7 @@ impl<'a> ModInfoBuilder<'a> {
-                 {cfg}
-                 #[doc(hidden)]
-                 #[link_section = \".modinfo\"]
--                #[used]
-+                #[used(compiler)]
-                 pub static __{module}_{counter}: [u8; {length}] = *{string};
-             ",
-             cfg = if builtin {
-@@ -230,7 +230,7 @@ pub(crate) fn module(ts: TokenStream) ->
-                     // key or a new section. For the moment, keep it simple.
-                     #[cfg(MODULE)]
-                     #[doc(hidden)]
--                    #[used]
-+                    #[used(compiler)]
-                     static __IS_RUST_MODULE: () = ();
+ 	struct usdt_manager *usdt_man;
  
-                     static mut __MOD: Option<{type_}> = None;
-@@ -253,7 +253,7 @@ pub(crate) fn module(ts: TokenStream) ->
+-	struct bpf_map *arena_map;
++	int arena_map_idx;
+ 	void *arena_data;
+ 	size_t arena_data_sz;
  
-                     #[cfg(MODULE)]
-                     #[doc(hidden)]
--                    #[used]
-+                    #[used(compiler)]
-                     #[link_section = \".init.data\"]
-                     static __UNIQUE_ID___addressable_init_module: unsafe extern \"C\" fn() -> i32 = init_module;
+@@ -1517,6 +1517,7 @@ static struct bpf_object *bpf_object__new(const char *path,
+ 	obj->efile.obj_buf_sz = obj_buf_sz;
+ 	obj->efile.btf_maps_shndx = -1;
+ 	obj->kconfig_map_idx = -1;
++	obj->arena_map_idx = -1;
  
-@@ -273,7 +273,7 @@ pub(crate) fn module(ts: TokenStream) ->
+ 	obj->kern_version = get_kernel_version();
+ 	obj->state  = OBJ_OPEN;
+@@ -2964,7 +2965,7 @@ static int init_arena_map_data(struct bpf_object *obj, struct bpf_map *map,
+ 	const long page_sz = sysconf(_SC_PAGE_SIZE);
+ 	size_t mmap_sz;
  
-                     #[cfg(MODULE)]
-                     #[doc(hidden)]
--                    #[used]
-+                    #[used(compiler)]
-                     #[link_section = \".exit.data\"]
-                     static __UNIQUE_ID___addressable_cleanup_module: extern \"C\" fn() = cleanup_module;
+-	mmap_sz = bpf_map_mmap_sz(obj->arena_map);
++	mmap_sz = bpf_map_mmap_sz(map);
+ 	if (roundup(data_sz, page_sz) > mmap_sz) {
+ 		pr_warn("elf: sec '%s': declared ARENA map size (%zu) is too small to hold global __arena variables of size %zu\n",
+ 			sec_name, mmap_sz, data_sz);
+@@ -3038,12 +3039,12 @@ static int bpf_object__init_user_btf_maps(struct bpf_object *obj, bool strict,
+ 		if (map->def.type != BPF_MAP_TYPE_ARENA)
+ 			continue;
  
-@@ -283,7 +283,7 @@ pub(crate) fn module(ts: TokenStream) ->
-                     #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
-                     #[doc(hidden)]
-                     #[link_section = \"{initcall_section}\"]
--                    #[used]
-+                    #[used(compiler)]
-                     pub static __{name}_initcall: extern \"C\" fn() -> kernel::ffi::c_int = __{name}_init;
+-		if (obj->arena_map) {
++		if (obj->arena_map_idx >= 0) {
+ 			pr_warn("map '%s': only single ARENA map is supported (map '%s' is also ARENA)\n",
+-				map->name, obj->arena_map->name);
++				map->name, obj->maps[obj->arena_map_idx].name);
+ 			return -EINVAL;
+ 		}
+-		obj->arena_map = map;
++		obj->arena_map_idx = i;
  
-                     #[cfg(not(MODULE))]
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -248,7 +248,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
- # Compile Rust sources (.rs)
- # ---------------------------------------------------------------------------
+ 		if (obj->efile.arena_data) {
+ 			err = init_arena_map_data(obj, map, ARENA_SEC, obj->efile.arena_data_shndx,
+@@ -3053,7 +3054,7 @@ static int bpf_object__init_user_btf_maps(struct bpf_object *obj, bool strict,
+ 				return err;
+ 		}
+ 	}
+-	if (obj->efile.arena_data && !obj->arena_map) {
++	if (obj->efile.arena_data && obj->arena_map_idx < 0) {
+ 		pr_warn("elf: sec '%s': to use global __arena variables the ARENA map should be explicitly declared in SEC(\".maps\")\n",
+ 			ARENA_SEC);
+ 		return -ENOENT;
+@@ -4583,8 +4584,13 @@ static int bpf_program__record_reloc(struct bpf_program *prog,
+ 	if (shdr_idx == obj->efile.arena_data_shndx) {
+ 		reloc_desc->type = RELO_DATA;
+ 		reloc_desc->insn_idx = insn_idx;
+-		reloc_desc->map_idx = obj->arena_map - obj->maps;
++		reloc_desc->map_idx = obj->arena_map_idx;
+ 		reloc_desc->sym_off = sym->st_value;
++
++		map = &obj->maps[obj->arena_map_idx];
++		pr_debug("prog '%s': found arena map %d (%s, sec %d, off %zu) for insn %u\n",
++			 prog->name, obj->arena_map_idx, map->name, map->sec_idx,
++			 map->sec_offset, insn_idx);
+ 		return 0;
+ 	}
  
--rust_allowed_features := arbitrary_self_types,lint_reasons
-+rust_allowed_features := arbitrary_self_types,lint_reasons,used_with_arg
- 
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
+-- 
+2.39.5
+
 
 
 
