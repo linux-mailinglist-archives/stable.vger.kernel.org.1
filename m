@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4571B0DBCE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F25C5B0DB3F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976C91C83062
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6D1562C36
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18F82EA479;
-	Tue, 22 Jul 2025 13:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9022E4266;
+	Tue, 22 Jul 2025 13:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUyGxY+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGFQsKgC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1042EA475;
-	Tue, 22 Jul 2025 13:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54033238D57;
+	Tue, 22 Jul 2025 13:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192359; cv=none; b=e0j2SYAB6YiTuSvuZs9Ff2lm1C9XUPtQad5QMBe33v4BtKplaVKzFXZQuCaKSD9bNjZGFdgTOpzKH8OZ8IhTDgOTAlLBhmH9xFvFGcGTYU3wptoT+ZtVcSOKzy2lHckmLuq2zOXz9bXuhglkC+5vmunsU4MaA9/iUCBOJRUDMxY=
+	t=1753192024; cv=none; b=YbSmjV0bIG4z4+EulfDdhZDCfe1B5Hp7AW9Lmn/CI8WVZNfX/gPScIEUk6vWl/wXzDvidw5k/09G6GQKJcQkTXLbnbdlQs2s8NO5+gJbqCskP74YSfojs32KRHAR046fiA6/UNvjEZouWrBoV1wGkfKDqKr4Ol55LF9wVJSreLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192359; c=relaxed/simple;
-	bh=T0d6PkC4q1v1Nhhn8iKg/SgfTTYy0/U6XyfYmNmf43E=;
+	s=arc-20240116; t=1753192024; c=relaxed/simple;
+	bh=ITuDusjd7f74KqP+P/IS21E5JFLm/Nnddlvwp39YGZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bM25sPaaT09AB0mUhqVy+0vZDeGKp/KJLulIpIaWXKdqKTz6QAn9m17zfrQLWFL5pDZv7rvwJSwSXNuvHvd65qjG4VD4jqDBOQZYK9LtDcqyLMON8u+Nr2U7n8xckt+vqw7zr4i8zydBP1aNeTtZBZZeVzfQs4Ty/HypOso4uDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUyGxY+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEFBC4CEEB;
-	Tue, 22 Jul 2025 13:52:38 +0000 (UTC)
+	 MIME-Version; b=cqtDBcMEjTePq3HLhJXCjXl8EtYmudnUOfcIeHdOsneEYNxhebmgIJw/RjqiKokhZj7utepkf1/PVsvwiDh7WA0UotkVxD8jiJkeUZQN2P/1ZVjQd+BTXq4YbCidIOzJlrlwWktxW5ztnjVq9hcdbQ+Xw+/5cfMjP9/cFXEvi+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGFQsKgC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AA9C4CEEB;
+	Tue, 22 Jul 2025 13:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192359;
-	bh=T0d6PkC4q1v1Nhhn8iKg/SgfTTYy0/U6XyfYmNmf43E=;
+	s=korg; t=1753192023;
+	bh=ITuDusjd7f74KqP+P/IS21E5JFLm/Nnddlvwp39YGZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hUyGxY+nPDKwmsjTsRqKnzPpkvhwWJbxWmGSD6cLQk+KSBeKFt3D+04AJUymtv5ft
-	 /UAKVTKDpX+SBVEXcj1VNUfvDJ5IDKui4sqwbiQ3ZZOzUmQNYkZcf9uyz+8ydA3sOu
-	 taGa/qpcAdfH9Raw8dE6nkSX3pYDtw/b7NaXZtJc=
+	b=JGFQsKgCnLiG2SJhLZIGXGDiCIEUR7x8/hjFSEkNZzH33kx8MUtvzhYG55oQLvO4d
+	 aubdbW+nBkOAJL8K5z5lgVPqVvpFTM407Ib76Q56l3kf7nHc04fWW7CIsRwc4EzqFw
+	 7DvvuP/YPWx2vbRXxQTVWD3o/f4TGMEXUpSV1ndo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 043/111] s390/bpf: Fix bpf_arch_text_poke() with new_addr == NULL again
+	Nathan Chancellor <nathan@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 22/79] memstick: core: Zero initialize id_reg in h_memstick_read_dev_id()
 Date: Tue, 22 Jul 2025 15:44:18 +0200
-Message-ID: <20250722134334.999390774@linuxfoundation.org>
+Message-ID: <20250722134329.194171164@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 6a5abf8cf182f577c7ae6c62f14debc9754ec986 upstream.
+commit 21b34a3a204ed616373a12ec17dc127ebe51eab3 upstream.
 
-Commit 7ded842b356d ("s390/bpf: Fix bpf_plt pointer arithmetic") has
-accidentally removed the critical piece of commit c730fce7c70c
-("s390/bpf: Fix bpf_arch_text_poke() with new_addr == NULL"), causing
-intermittent kernel panics in e.g. perf's on_switch() prog to reappear.
+A new warning in clang [1] points out that id_reg is uninitialized then
+passed to memstick_init_req() as a const pointer:
 
-Restore the fix and add a comment.
+  drivers/memstick/core/memstick.c:330:59: error: variable 'id_reg' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+    330 |                 memstick_init_req(&card->current_mrq, MS_TPC_READ_REG, &id_reg,
+        |                                                                         ^~~~~~
 
-Fixes: 7ded842b356d ("s390/bpf: Fix bpf_plt pointer arithmetic")
+Commit de182cc8e882 ("drivers/memstick/core/memstick.c: avoid -Wnonnull
+warning") intentionally passed this variable uninitialized to avoid an
+-Wnonnull warning from a NULL value that was previously there because
+id_reg is never read from the call to memstick_init_req() in
+h_memstick_read_dev_id(). Just zero initialize id_reg to avoid the
+warning, which is likely happening in the majority of builds using
+modern compilers that support '-ftrivial-auto-var-init=zero'.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250716194524.48109-2-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: de182cc8e882 ("drivers/memstick/core/memstick.c: avoid -Wnonnull warning")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2105
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250715-memstick-fix-uninit-const-pointer-v1-1-f6753829c27a@kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/net/bpf_jit_comp.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/memstick/core/memstick.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -539,7 +539,15 @@ static void bpf_jit_plt(struct bpf_plt *
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -323,7 +323,7 @@ EXPORT_SYMBOL(memstick_init_req);
+ static int h_memstick_read_dev_id(struct memstick_dev *card,
+ 				  struct memstick_request **mrq)
  {
- 	memcpy(plt, &bpf_plt, sizeof(*plt));
- 	plt->ret = ret;
--	plt->target = target;
-+	/*
-+	 * (target == NULL) implies that the branch to this PLT entry was
-+	 * patched and became a no-op. However, some CPU could have jumped
-+	 * to this PLT entry before patching and may be still executing it.
-+	 *
-+	 * Since the intention in this case is to make the PLT entry a no-op,
-+	 * make the target point to the return label instead of NULL.
-+	 */
-+	plt->target = target ?: ret;
- }
+-	struct ms_id_register id_reg;
++	struct ms_id_register id_reg = {};
  
- /*
+ 	if (!(*mrq)) {
+ 		memstick_init_req(&card->current_mrq, MS_TPC_READ_REG, &id_reg,
 
 
 
