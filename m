@@ -1,154 +1,102 @@
-Return-Path: <stable+bounces-164317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324E4B0E6F9
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 01:14:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A21A8B0E758
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 01:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 188D71C274B1
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 23:15:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC4EE4E5108
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 23:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50950289E0F;
-	Tue, 22 Jul 2025 23:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82EE828C86F;
+	Tue, 22 Jul 2025 23:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BEtUgRKN"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Igjw8yTG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124BB278E5A
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 23:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38B6288C06;
+	Tue, 22 Jul 2025 23:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753226091; cv=none; b=nWah/wEpV8btsNA+ocxN3lm4eqQiAQBRdlvy3NAdDshqH/6UEaxvdLufl567ZUrOqr810NiHZ8PtVSHb0sRjBzUzUIksB3MDBjJeMFrk30ClVdm1b2xOMXFLMpGBI0CG4ugi1kVLSjbVW60UKLoyC8QbhDmdZo4U9ItkrDqIwNc=
+	t=1753228276; cv=none; b=hzknzrf8DgA7jEmHSqwrTMs563yrovNwl9GEpTHU8aFYwBW+pSAu9ZiavgFei0MvMnuULB0EHHgxVfVMJTsKOkCpILXxBfx7RyTpVkOXj1F+3X3kMcQ4N8l99kJTqA+JlTxbtzX9REsvqO8/WMlzQ+hEykBxs4NCSkzM6gI0eJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753226091; c=relaxed/simple;
-	bh=j2r6wd5w1SgwoXgvhP/2e0CUjaE7OSsjOL5xIvzzyRI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QjPCNQgijoHwDIhUbupUh7nZHMwPr7ZZkX6Mk/WJWc/GAtE7JvXoN057ATEl7GmEJYWRUy/RM9tKDjAzS1rp50czOfwgWk9gfPv+JXUmBjY+c5zRGWr9q96rYYqa5D0yVcaxn3jclMLX9NCikp4W6Z8jwV9EHD+Nzc7vJgxKBbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BEtUgRKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43977C4CEF5;
-	Tue, 22 Jul 2025 23:14:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753226090;
-	bh=j2r6wd5w1SgwoXgvhP/2e0CUjaE7OSsjOL5xIvzzyRI=;
+	s=arc-20240116; t=1753228276; c=relaxed/simple;
+	bh=ijTQWhPIA2Tnlw+nK405RPB6WZWPAIX5VpUHzN9GbKg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=KrxLYmgLeejDcYq+nqF5PXi8wEHqRVlDzTXDVx1Sck48XpKJsSidwRsV6mdKidWdkvIi80D2e/2PdPRRE+2lYmmfRB05qFkkoWgCmmCbz5U5eybC2rvq9EbKsRK+dK6OG0ivGi3Gbvrfxjt9m6D4DCtN70KVduS2BCu0ovQmjOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Igjw8yTG; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1006)
+	id 97DF821268B0; Tue, 22 Jul 2025 16:51:14 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 97DF821268B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1753228274;
+	bh=UB1jTBbJaAAWaieKZkkKW8JaCkBj3vgYKs3ASIhN36s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEtUgRKN1ImTGKHyZTEE2BFDyO5ftq+axFfyDAtqOz4dO7gayU73+MuuWZLtmyDpr
-	 BfsMm464PQ2rjDxcMylFfLuo+6OtLSRcusDaSwmfc7oncWaJFmzNM97ozQr+gMooKo
-	 BK3MBLxe7neWwZ2vvRgzsciZAlTR4oA2K/fkpLRqHT+Gemmu4KQtBrRWQ3tL0qgiwO
-	 ELb0SDdItG0VN3LLvDZBmyfURjCPWMPSl/WWcubN+5KLX74/GY7EhRjy08yme5BZ9e
-	 oaR3UAZ6yDeX6yiLQCz95RNjICGa7ALqeaOlnYKG8SJ9GWDV0rJQSLpWAdfsUVjoI7
-	 oGAZGh/i9ZdBQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] usb: hub: Don't try to recover devices lost during warm reset.
-Date: Tue, 22 Jul 2025 19:14:43 -0400
-Message-Id: <20250722231443.999927-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250722231443.999927-1-sashal@kernel.org>
-References: <2025072256-verbally-zippy-bbd6@gregkh>
- <20250722231443.999927-1-sashal@kernel.org>
+	b=Igjw8yTGl/LJ0ResWzuYWG1kzXKXNjXo7B2ph79AXQOtKUitFAVasPGVDqu1eQnhM
+	 LH+y0GKvVqJg1TuwmLIgTGxlsmPXLFYEGfrfrXXZzxMwXaXf7HwHU2IvIKWbpO6dc1
+	 gzgRJfoCZQ1zR8RSPkbI8nhGHCooFy7U3bh22XoU=
+From: Haiyang Zhang <haiyangz@linux.microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: haiyangz@microsoft.com,
+	kys@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	andrew+netdev@lunn.ch,
+	sd@queasysnail.net,
+	viro@zeniv.linux.org.uk,
+	chuck.lever@oracle.com,
+	neil@brown.name,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	davem@davemloft.net,
+	kuniyu@google.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net, 1/2] net: core: Fix missing init of llist_node in setup_net()
+Date: Tue, 22 Jul 2025 16:50:47 -0700
+Message-Id: <1753228248-20865-2-git-send-email-haiyangz@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1753228248-20865-1-git-send-email-haiyangz@linux.microsoft.com>
+References: <1753228248-20865-1-git-send-email-haiyangz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit 2521106fc732b0b75fd3555c689b1ed1d29d273c ]
-
-Hub driver warm-resets ports in SS.Inactive or Compliance mode to
-recover a possible connected device. The port reset code correctly
-detects if a connection is lost during reset, but hub driver
-port_event() fails to take this into account in some cases.
-port_event() ends up using stale values and assumes there is a
-connected device, and will try all means to recover it, including
-power-cycling the port.
-
-Details:
-This case was triggered when xHC host was suspended with DbC (Debug
-Capability) enabled and connected. DbC turns one xHC port into a simple
-usb debug device, allowing debugging a system with an A-to-A USB debug
-cable.
-
-xhci DbC code disables DbC when xHC is system suspended to D3, and
-enables it back during resume.
-We essentially end up with two hosts connected to each other during
-suspend, and, for a short while during resume, until DbC is enabled back.
-The suspended xHC host notices some activity on the roothub port, but
-can't train the link due to being suspended, so xHC hardware sets a CAS
-(Cold Attach Status) flag for this port to inform xhci host driver that
-the port needs to be warm reset once xHC resumes.
-
-CAS is xHCI specific, and not part of USB specification, so xhci driver
-tells usb core that the port has a connection and link is in compliance
-mode. Recovery from complinace mode is similar to CAS recovery.
-
-xhci CAS driver support that fakes a compliance mode connection was added
-in commit 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-
-Once xHCI resumes and DbC is enabled back, all activity on the xHC
-roothub host side port disappears. The hub driver will anyway think
-port has a connection and link is in compliance mode, and hub driver
-will try to recover it.
-
-The port power-cycle during recovery seems to cause issues to the active
-DbC connection.
-
-Fix this by clearing connect_change flag if hub_port_reset() returns
--ENOTCONN, thus avoiding the whole unnecessary port recovery and
-initialization attempt.
+Add init_llist_node for lock-less list nodes in struct net in
+setup_net(), so we can test if a node is on a list or not.
 
 Cc: stable@vger.kernel.org
-Fixes: 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250623133947.3144608-1-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d6b3358a2813 ("llist: add interface to check if a node is on a list.")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
 ---
- drivers/usb/core/hub.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/core/net_namespace.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 3aab5fa8f8e61..1aa35e7322323 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -5656,6 +5656,7 @@ static void port_event(struct usb_hub *hub, int port1)
- 	struct usb_device *hdev = hub->hdev;
- 	u16 portstatus, portchange;
- 	int i = 0;
-+	int err;
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index ae54f26709ca..2a821849558f 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -434,6 +434,9 @@ static __net_init int setup_net(struct net *net)
+ 	LIST_HEAD(net_exit_list);
+ 	int error = 0;
  
- 	connect_change = test_bit(port1, hub->change_bits);
- 	clear_bit(port1, hub->event_bits);
-@@ -5748,8 +5749,11 @@ static void port_event(struct usb_hub *hub, int port1)
- 		} else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
- 				|| udev->state == USB_STATE_NOTATTACHED) {
- 			dev_dbg(&port_dev->dev, "do warm reset, port only\n");
--			if (hub_port_reset(hub, port1, NULL,
--					HUB_BH_RESET_TIME, true) < 0)
-+			err = hub_port_reset(hub, port1, NULL,
-+					     HUB_BH_RESET_TIME, true);
-+			if (!udev && err == -ENOTCONN)
-+				connect_change = 0;
-+			else if (err < 0)
- 				hub_port_disable(hub, port1, 1);
- 		} else {
- 			dev_dbg(&port_dev->dev, "do warm reset, full device\n");
++	init_llist_node(&net->defer_free_list);
++	init_llist_node(&net->cleanup_list);
++
+ 	preempt_disable();
+ 	net->net_cookie = gen_cookie_next(&net_cookie);
+ 	preempt_enable();
 -- 
-2.39.5
+2.34.1
 
 
