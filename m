@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-164063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89769B0DD17
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3073B0DE7E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 613B41893247
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:06:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 723BC586687
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3452EA15C;
-	Tue, 22 Jul 2025 14:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC4F2ED86C;
+	Tue, 22 Jul 2025 14:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdktgeao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxD78bKi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580382C9A;
-	Tue, 22 Jul 2025 14:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA8E2EAB69;
+	Tue, 22 Jul 2025 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193129; cv=none; b=nW41QH2sW0fyAx9V2vwX0AGEuilm5r2hycSyETCBMjVati636bc2i9sYAwcyc4dY8kGt0xHZZfw+Gr0JOeGqaBaHQZhe+aOfFpgckNVpXXVd6DxWgt1AZj0jp4xAH2Gx/M3v05Rh2i1/AB0GPun6LeLWb2k5ti+PmdIEMIDbBHg=
+	t=1753193779; cv=none; b=B2XrJCH7UFq3LPhtfUDXj9IOmRVaP+YD5ZKn1PSFJYNnvgeBHxb+Iw/QAJSqNeFnNXYH62boKcTND9Hfb9ULmUx+Ix1qV4UFPF8l1dy0tK7GbVUTWyzWLuBLPrbry1t1QsOru4pMqwsZe1v7zejtkpr2vNxbc4kCOwqP1Pce3Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193129; c=relaxed/simple;
-	bh=xzvSeHrPGh2XlznE+GlKpmSmENqkZILt9kxSivrFbt0=;
+	s=arc-20240116; t=1753193779; c=relaxed/simple;
+	bh=TSzan+PDCy02PuGG+Crw22/WUiL9v2cJkzvw1Xc2mLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTENVJ3jbkXVag9cVNTQo7lhe41k2vYGdsxFamjXJIc+kyvr63lVIoBCngIOOZm8djHIkBu/pmaCKiqtaqMAfTX9zgJ+p6R7N/W6jpByjdIxhIB8EGJQvSg4uHaTCu2k1uNQlv78cLNwRa/g2SXtByHFwCTVNWwbJdp/O8dt/IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdktgeao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF8DC4CEEB;
-	Tue, 22 Jul 2025 14:05:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VICDnjrJfXgPVPcZP2L82TI0nXLl3fqj61uaK05RPTIeZxLbes44wI7vZX1ViWJyL/4SXsVpF1ihfe1bV4jYFbeXLeOkLHuWQ88Tv9RHo4L5hRqpM4K7xl3xVrCFwLftSAAErsAbATwfk45vb1gnryE+MWbPYJV0Ip43oSFGujM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxD78bKi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2A9C4CEEB;
+	Tue, 22 Jul 2025 14:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193128;
-	bh=xzvSeHrPGh2XlznE+GlKpmSmENqkZILt9kxSivrFbt0=;
+	s=korg; t=1753193779;
+	bh=TSzan+PDCy02PuGG+Crw22/WUiL9v2cJkzvw1Xc2mLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdktgeaoYOz3VSTzHFliA9m/q8afnYNmHO1/O8jVfAH48G69RRy6OD2twPQ3klIgL
-	 tshJy3Gj9OgKmUNQZhqCPanqLau6qQ78p0uyqUwUCdpPL6ozOqAXObjaNscQSwcMpI
-	 msqEKJ1kZoceofqAIvtKwk/W0v4rbJUrT5DZ5abA=
+	b=NxD78bKiC5dtgDCZA66g4isqJwxz/PznrLtX6wWd/JTNSzRg6dOBdE0YRokpPvzXF
+	 NMK/BaVd5gtWSt9oNdXd9fgxonebijGEqUa2GbNkPOSEb0GxoXO3UW7av2O7LoqJWE
+	 e4QhdUMhrMMzDtSFh6crB+FgPSsXW/3UPnzOChWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
-	stable+noautosel@kernel.org
-Subject: [PATCH 6.12 158/158] smb: client: let smbd_post_send_iter() respect the peers max_send_size and transmit all data
-Date: Tue, 22 Jul 2025 15:45:42 +0200
-Message-ID: <20250722134346.605211690@linuxfoundation.org>
+	David Wood <david@davidtw.co>,
+	Wesley Wiser <wwiser@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.15 173/187] rust: use `#[used(compiler)]` to fix build and `modpost` with Rust >= 1.89.0
+Date: Tue, 22 Jul 2025 15:45:43 +0200
+Message-ID: <20250722134352.214605714@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,139 +62,172 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 1944f6ab4967db7ad8d4db527dceae8c77de76e9 upstream.
+commit 7498159226772d66f150dd406be462d75964a366 upstream.
 
-We should not send smbdirect_data_transfer messages larger than
-the negotiated max_send_size, typically 1364 bytes, which means
-24 bytes of the smbdirect_data_transfer header + 1340 payload bytes.
+Starting with Rust 1.89.0 (expected 2025-08-07), the Rust compiler fails
+to build the `rusttest` target due to undefined references such as:
 
-This happened when doing an SMB2 write with more than 1340 bytes
-(which is done inline as it's below rdma_readwrite_threshold).
+    kernel...-cgu.0:(.text....+0x116): undefined reference to
+    `rust_helper_kunit_get_current_test'
 
-It means the peer resets the connection.
+Moreover, tooling like `modpost` gets confused:
 
-When testing between cifs.ko and ksmbd.ko something like this
-is logged:
+    WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/nova/nova.o
+    ERROR: modpost: missing MODULE_LICENSE() in drivers/gpu/nova-core/nova_core.o
 
-client:
+The reason behind both issues is that the Rust compiler will now [1]
+treat `#[used]` as `#[used(linker)]` instead of `#[used(compiler)]`
+for our targets. This means that the retain section flag (`R`,
+`SHF_GNU_RETAIN`) will be used and that they will be marked as `unique`
+too, with different IDs. In turn, that means we end up with undefined
+references that did not get discarded in `rusttest` and that multiple
+`.modinfo` sections are generated, which confuse tooling like `modpost`
+because they only expect one.
 
-    CIFS: VFS: RDMA transport re-established
-    siw: got TERMINATE. layer 1, type 2, code 2
-    siw: got TERMINATE. layer 1, type 2, code 2
-    siw: got TERMINATE. layer 1, type 2, code 2
-    siw: got TERMINATE. layer 1, type 2, code 2
-    siw: got TERMINATE. layer 1, type 2, code 2
-    siw: got TERMINATE. layer 1, type 2, code 2
-    siw: got TERMINATE. layer 1, type 2, code 2
-    siw: got TERMINATE. layer 1, type 2, code 2
-    siw: got TERMINATE. layer 1, type 2, code 2
-    CIFS: VFS: \\carina Send error in SessSetup = -11
-    smb2_reconnect: 12 callbacks suppressed
-    CIFS: VFS: reconnect tcon failed rc = -11
-    CIFS: VFS: reconnect tcon failed rc = -11
-    CIFS: VFS: reconnect tcon failed rc = -11
-    CIFS: VFS: SMB: Zero rsize calculated, using minimum value 65536
+Thus start using `#[used(compiler)]` to keep the previous behavior
+and to be explicit about what we want. Sadly, it is an unstable feature
+(`used_with_arg`) [2] -- we will talk to upstream Rust about it. The good
+news is that it has been available for a long time (Rust >= 1.60) [3].
 
-and:
+The changes should also be fine for previous Rust versions, since they
+behave the same way as before [4].
 
-    CIFS: VFS: RDMA transport re-established
-    siw: got TERMINATE. layer 1, type 2, code 2
-    CIFS: VFS: smbd_recv:1894 disconnected
-    siw: got TERMINATE. layer 1, type 2, code 2
+Alternatively, we could use `#[no_mangle]` or `#[export_name = ...]`
+since those still behave like `#[used(compiler)]`, but of course it is
+not really what we want to express, and it requires other changes to
+avoid symbol conflicts.
 
-The ksmbd dmesg is showing things like:
-
-    smb_direct: Recv error. status='local length error (1)' opcode=128
-    smb_direct: disconnected
-    smb_direct: Recv error. status='local length error (1)' opcode=128
-    ksmbd: smb_direct: disconnected
-    ksmbd: sock_read failed: -107
-
-As smbd_post_send_iter() limits the transmitted number of bytes
-we need loop over it in order to transmit the whole iter.
-
-Reviewed-by: David Howells <dhowells@redhat.com>
-Tested-by: David Howells <dhowells@redhat.com>
-Tested-by: Meetakshi Setiya <msetiya@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: <stable+noautosel@kernel.org> # sp->max_send_size should be info->max_send_size in backports
-Fixes: 3d78fe73fa12 ("cifs: Build the RDMA SGE list directly from an iterator")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: David Wood <david@davidtw.co>
+Cc: Wesley Wiser <wwiser@gmail.com>
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/140872 [1]
+Link: https://github.com/rust-lang/rust/issues/93798 [2]
+Link: https://github.com/rust-lang/rust/pull/91504 [3]
+Link: https://godbolt.org/z/sxzWTMfzW [4]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+Link: https://lore.kernel.org/r/20250712160103.1244945-3-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c |   31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ rust/Makefile           |    1 +
+ rust/kernel/firmware.rs |    2 +-
+ rust/kernel/kunit.rs    |    2 +-
+ rust/kernel/lib.rs      |    2 ++
+ rust/macros/module.rs   |   10 +++++-----
+ scripts/Makefile.build  |    2 +-
+ 6 files changed, 11 insertions(+), 8 deletions(-)
 
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -907,8 +907,10 @@ wait_send_queue:
- 			.local_dma_lkey	= sc->ib.pd->local_dma_lkey,
- 			.direction	= DMA_TO_DEVICE,
- 		};
-+		size_t payload_len = umin(*_remaining_data_length,
-+					  sp->max_send_size - sizeof(*packet));
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -194,6 +194,7 @@ quiet_cmd_rustdoc_test = RUSTDOC T $<
+ 	RUST_MODFILE=test.rs \
+ 	OBJTREE=$(abspath $(objtree)) \
+ 	$(RUSTDOC) --test $(rust_common_flags) \
++		-Zcrate-attr='feature(used_with_arg)' \
+ 		@$(objtree)/include/generated/rustc_cfg \
+ 		$(rustc_target_flags) $(rustdoc_test_target_flags) \
+ 		$(rustdoc_test_quiet) \
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -202,7 +202,7 @@ macro_rules! module_firmware {
+             };
  
--		rc = smb_extract_iter_to_rdma(iter, *_remaining_data_length,
-+		rc = smb_extract_iter_to_rdma(iter, payload_len,
- 					      &extract);
- 		if (rc < 0)
- 			goto err_dma;
-@@ -1013,6 +1015,27 @@ static int smbd_post_send_empty(struct s
- 	return smbd_post_send_iter(info, NULL, &remaining_data_length);
- }
+             #[link_section = ".modinfo"]
+-            #[used]
++            #[used(compiler)]
+             static __MODULE_FIRMWARE: [u8; $($builder)*::create(__MODULE_FIRMWARE_PREFIX)
+                 .build_length()] = $($builder)*::create(__MODULE_FIRMWARE_PREFIX).build();
+         };
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -278,7 +278,7 @@ macro_rules! kunit_unsafe_test_suite {
+                     is_init: false,
+                 };
  
-+static int smbd_post_send_full_iter(struct smbd_connection *info,
-+				    struct iov_iter *iter,
-+				    int *_remaining_data_length)
-+{
-+	int rc = 0;
-+
-+	/*
-+	 * smbd_post_send_iter() respects the
-+	 * negotiated max_send_size, so we need to
-+	 * loop until the full iter is posted
-+	 */
-+
-+	while (iov_iter_count(iter) > 0) {
-+		rc = smbd_post_send_iter(info, iter, _remaining_data_length);
-+		if (rc < 0)
-+			break;
-+	}
-+
-+	return rc;
-+}
-+
- /*
-  * Post a receive request to the transport
-  * The remote peer can only send data when a receive request is posted
-@@ -1962,14 +1985,14 @@ int smbd_send(struct TCP_Server_Info *se
- 			klen += rqst->rq_iov[i].iov_len;
- 		iov_iter_kvec(&iter, ITER_SOURCE, rqst->rq_iov, rqst->rq_nvec, klen);
+-            #[used]
++            #[used(compiler)]
+             #[allow(unused_unsafe)]
+             #[cfg_attr(not(target_os = "macos"), link_section = ".kunit_test_suites")]
+             static mut KUNIT_TEST_SUITE_ENTRY: *const ::kernel::bindings::kunit_suite =
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -26,6 +26,8 @@
+ #![feature(const_mut_refs)]
+ #![feature(const_ptr_write)]
+ #![feature(const_refs_to_cell)]
++// To be determined.
++#![feature(used_with_arg)]
  
--		rc = smbd_post_send_iter(info, &iter, &remaining_data_length);
-+		rc = smbd_post_send_full_iter(info, &iter, &remaining_data_length);
- 		if (rc < 0)
- 			break;
+ // Ensure conditional compilation based on the kernel configuration works;
+ // otherwise we may silently break things like initcall handling.
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -57,7 +57,7 @@ impl<'a> ModInfoBuilder<'a> {
+                 {cfg}
+                 #[doc(hidden)]
+                 #[cfg_attr(not(target_os = \"macos\"), link_section = \".modinfo\")]
+-                #[used]
++                #[used(compiler)]
+                 pub static __{module}_{counter}: [u8; {length}] = *{string};
+             ",
+             cfg = if builtin {
+@@ -247,7 +247,7 @@ pub(crate) fn module(ts: TokenStream) ->
+                     // key or a new section. For the moment, keep it simple.
+                     #[cfg(MODULE)]
+                     #[doc(hidden)]
+-                    #[used]
++                    #[used(compiler)]
+                     static __IS_RUST_MODULE: () = ();
  
- 		if (iov_iter_count(&rqst->rq_iter) > 0) {
- 			/* And then the data pages if there are any */
--			rc = smbd_post_send_iter(info, &rqst->rq_iter,
--						 &remaining_data_length);
-+			rc = smbd_post_send_full_iter(info, &rqst->rq_iter,
-+						      &remaining_data_length);
- 			if (rc < 0)
- 				break;
- 		}
+                     static mut __MOD: core::mem::MaybeUninit<{type_}> =
+@@ -271,7 +271,7 @@ pub(crate) fn module(ts: TokenStream) ->
+ 
+                     #[cfg(MODULE)]
+                     #[doc(hidden)]
+-                    #[used]
++                    #[used(compiler)]
+                     #[link_section = \".init.data\"]
+                     static __UNIQUE_ID___addressable_init_module: unsafe extern \"C\" fn() -> i32 = init_module;
+ 
+@@ -291,7 +291,7 @@ pub(crate) fn module(ts: TokenStream) ->
+ 
+                     #[cfg(MODULE)]
+                     #[doc(hidden)]
+-                    #[used]
++                    #[used(compiler)]
+                     #[link_section = \".exit.data\"]
+                     static __UNIQUE_ID___addressable_cleanup_module: extern \"C\" fn() = cleanup_module;
+ 
+@@ -301,7 +301,7 @@ pub(crate) fn module(ts: TokenStream) ->
+                     #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
+                     #[doc(hidden)]
+                     #[link_section = \"{initcall_section}\"]
+-                    #[used]
++                    #[used(compiler)]
+                     pub static __{name}_initcall: extern \"C\" fn() -> kernel::ffi::c_int = __{name}_init;
+ 
+                     #[cfg(not(MODULE))]
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -222,7 +222,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+ # Compile Rust sources (.rs)
+ # ---------------------------------------------------------------------------
+ 
+-rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,raw_ref_op
++rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,raw_ref_op,used_with_arg
+ 
+ # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+ # current working directory, which may be not accessible in the out-of-tree
 
 
 
