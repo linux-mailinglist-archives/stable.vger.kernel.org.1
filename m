@@ -1,130 +1,145 @@
-Return-Path: <stable+bounces-163671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710EEB0D51F
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 10:58:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB7B0D542
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 11:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F114D1C250E3
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 08:58:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EFBE3A1CCA
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 09:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281E92DCF7D;
-	Tue, 22 Jul 2025 08:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CA92D59E8;
+	Tue, 22 Jul 2025 09:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="qdupOaGF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPxJxOgM"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B673D2D879C;
-	Tue, 22 Jul 2025 08:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEF44CE08;
+	Tue, 22 Jul 2025 09:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753174673; cv=none; b=PV3dv0msXhfQLtooNUYKnhj+i7QyGYkmBWJgmEqcT+6Re3YS0ehHZGN+SWJ+z/l5H3cgVQBnrqPjU5dh7drZV9QhDadKU6tz7vZ3MUTxNK9c7AXc/LwBWsYYPdg3aJigIaMjmYW2nfaxbshPtAp2r8kpOweohK/7bbgRwv/MW5M=
+	t=1753175200; cv=none; b=lYNnFp1rTuMd3u6h0Ee36AnfGwLizupGT9dl5u50kpm9I3Ig5+O8QD3/mLHjKGXNFml4mbFHgvQ3pwGsZs0l5YPLAYCZz9q1OOzQbwVDsRf5jEhdClFaMS9kpG6KqL6Jj5T2GRrqyDpU6arLMXYHZnrI0NjTODtmdBONKVCcBQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753174673; c=relaxed/simple;
-	bh=R6ZijVeg8VUkqySlYSIlCFa+USG4jCJR2hNpPOd8jxw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CW7gHo9d4YJOhDkZlCRYKjP2hFWgNUGCoiQlko652H1fxwi7Fo0S6DE+TwW4RegOyWs7WeC6UqY5WRvJiEzuMRWbpHOSuJUuJNcucdLJCH01S4mxM/7tVbZjjwiCNrC8tp6jCMqWW1DpFZoGadSyXof7uqSNaWPsDRpUYjpEv7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=qdupOaGF; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: ebe38b9a66d911f08b7dc59d57013e23-20250722
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=X0dKErEL1skRnp95LZxhIE6KOtuvu+ympj6r/1bWpSA=;
-	b=qdupOaGFq4ZL4PTC3NskoEy6J7MtspTaCh88QJP1nUv9nj+gVFpm/fMNJgi2FeaBdhphjp+QZB18y+FzjMO3S5E5z+7EC3BMmP8NUVwurA0+7cYaZ3yJz3I6zNLjtB6ZvfXFVPYxXsB51BFGYoVR7ULkpTxfa3TKKGR6PvP98uc=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.2,REQID:ff973ac8-da01-41a9-aa16-de0797252902,IP:0,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-25
-X-CID-META: VersionHash:9eb4ff7,CLOUDID:1a641f50-93b9-417a-b51d-915a29f1620f,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0|50,EDM:-3
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: ebe38b9a66d911f08b7dc59d57013e23-20250722
-Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
-	(envelope-from <macpaul.lin@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 634969686; Tue, 22 Jul 2025 16:57:39 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Tue, 22 Jul 2025 16:57:36 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Tue, 22 Jul 2025 16:57:36 +0800
-From: Macpaul Lin <macpaul.lin@mediatek.com>
-To: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Peter Wang
-	<peter.wang@mediatek.com>, Stanley Jhu <chu.stanley@gmail.com>, "James E . J
- . Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K . Petersen"
-	<martin.petersen@oracle.com>, <linux-scsi@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>
-CC: Bear Wang <bear.wang@mediatek.com>, Pablo Sun <pablo.sun@mediatek.com>,
-	Ramax Lo <ramax.lo@mediatek.com>, Macpaul Lin <macpaul.lin@mediatek.com>,
-	Macpaul Lin <macpaul@gmail.com>, MediaTek Chromebook Upstream
-	<Project_Global_Chrome_Upstream_Group@mediatek.com>, <stable@vger.kernel.org>
-Subject: [PATCH v2 2/4] dt-bindings: ufs: mediatek,ufs: add ufs-disable-mcq flag for UFS host
-Date: Tue, 22 Jul 2025 16:57:18 +0800
-Message-ID: <20250722085721.2062657-2-macpaul.lin@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250722085721.2062657-1-macpaul.lin@mediatek.com>
-References: <20250722085721.2062657-1-macpaul.lin@mediatek.com>
+	s=arc-20240116; t=1753175200; c=relaxed/simple;
+	bh=odkg/p7QG6NzW4EkAcRJPwercEqAXkQQ8ClGx1S5VVU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fJpVLKLonW0c6FIJC6VIxrUUBErAv8IpbrA3ATmMUkTdJSN9+hKBbdQWvT8d7wITmtoxmYBmi7mRbySHobth0jJeog3W1dSiMsEaCmVjHRHJy8myO3VyMzBir3xsgjfiae1LLRf/8WNACe11PuASx4mLut7VQb+MMKY+g2bN/RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPxJxOgM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920D0C4CEEB;
+	Tue, 22 Jul 2025 09:06:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753175200;
+	bh=odkg/p7QG6NzW4EkAcRJPwercEqAXkQQ8ClGx1S5VVU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JPxJxOgMZql613zcAE7v0+8nAa4sZgfrbizMX7j3WSiRCk9itwqGwIeVsTPbqYWtS
+	 Vn4IFJ2a5DG043765qVqpoKQv1xpJUrsaF0rzxrWe1joDHRl6P08GtXi3aNN7AHlJ9
+	 aItBeEpJ7Oldybeu0IYXnMAilS8jXtEXBPf2Xxebcz3qu9KAsCWGUnN4s35G7N2/fH
+	 WkgWrKp0hnAXrYNEMLIDAm1Qd3Q+jQ9MbmZlb4U7vbaS9B3zCC97wF/xnlk6YYy0ER
+	 5yYiNI6XV+x25/clrOEbvDQT5+HHHXZv3B5+ubs8FtqzJvTlNXIKu2alaCopqQvtN4
+	 aUXuKVVBtRT9g==
+Message-ID: <2419b7f3-43d7-42da-a1b7-693631311707@kernel.org>
+Date: Tue, 22 Jul 2025 11:06:36 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] vt: keyboard: Don't process Unicode characters in
+ K_OFF mode
+To: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arthur Taylor <art@ified.ca>
+Cc: Greg Kroah-Hartman <gregkh@suse.de>, linux-kernel@vger.kernel.org,
+ linux-serial@vger.kernel.org, stable@vger.kernel.org
+References: <20250702-vt-misc-unicode-fixes-v1-0-c27e143cc2eb@qtmlabs.xyz>
+ <20250702-vt-misc-unicode-fixes-v1-1-c27e143cc2eb@qtmlabs.xyz>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20250702-vt-misc-unicode-fixes-v1-1-c27e143cc2eb@qtmlabs.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add the 'mediatek,ufs-disable-mcq' property to the UFS device-tree
-bindings. This flag corresponds to the UFS_MTK_CAP_DISABLE_MCQ host
-capability recently introduced in the UFS host driver, allowing it
-to disable the Multiple Circular Queue (MCQ) feature when present.
-The binding schema has also been updated to resolve DTBS check errors.
+On 02. 07. 25, 16:17, Myrrh Periwinkle wrote:
+> We don't process Unicode characters if the virtual terminal is in raw
+> mode, so there's no reason why we shouldn't do the same for K_OFF
+> (especially since people would expect K_OFF to actually turn off all VT
+> key processing).
 
-Cc: stable@vger.kernel.org
-Fixes: 46bd3e31d74b ("scsi: ufs: mediatek: Add UFS_MTK_CAP_DISABLE_MCQ")
-Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
----
- Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+AFAICT
 
-Changes for v2:
- - Split new property from the origin patch.
- - Add dependency description. Since the code in ufs-mediatek.c
-   has been backport to stable tree. The dt-bindings should be backport
-   to the same stable tree as well.
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
 
-diff --git a/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml b/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
-index 32fd535a514a..20f341d25ebc 100644
---- a/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
-+++ b/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
-@@ -33,6 +33,10 @@ properties:
- 
-   vcc-supply: true
- 
-+  mediatek,ufs-disable-mcq:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: The mask to disable MCQ (Multi-Circular Queue) for UFS host.
-+
- required:
-   - compatible
-   - clocks
+> Fixes: 9fc3de9c8356 ("vt: Add virtual console keyboard mode OFF")
+> Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+> Cc: stable@vger.kernel.org
+> ---
+>   drivers/tty/vt/keyboard.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/tty/vt/keyboard.c b/drivers/tty/vt/keyboard.c
+> index dc585079c2fb8c92d37284701f15905a24161768..ee1d9c448c7ebf2f1456f6bd18e55a9681b036c2 100644
+> --- a/drivers/tty/vt/keyboard.c
+> +++ b/drivers/tty/vt/keyboard.c
+> @@ -1487,7 +1487,7 @@ static void kbd_keycode(unsigned int keycode, int down, bool hw_raw)
+>   		rc = atomic_notifier_call_chain(&keyboard_notifier_list,
+>   						KBD_UNICODE, &param);
+>   		if (rc != NOTIFY_STOP)
+> -			if (down && !raw_mode)
+> +			if (down && !(raw_mode || kbd->kbdmode == VC_OFF))
+>   				k_unicode(vc, keysym, !down);
+>   		return;
+>   	}
+> 
+
+
 -- 
-2.45.2
-
+js
+suse labs
 
