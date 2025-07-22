@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195C4B0DC77
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:02:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556F3B0DCD3
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 612AA6C0BE5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:57:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1105B7A2276
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBE528B7EA;
-	Tue, 22 Jul 2025 13:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A64719CCEC;
+	Tue, 22 Jul 2025 14:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="almWTKSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMspXw3/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB3722CBE9;
-	Tue, 22 Jul 2025 13:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC36C2C9A;
+	Tue, 22 Jul 2025 14:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192692; cv=none; b=rya76J+AWtH61rHglWCPHUna2OxRtVCBgbAgkzIDD7OUdVOCFQ9VNCnyzpiQypB1KMKV6harZwcPNIkk+5MCTJC1dSQ637mNRkMv+4KjYVWogFEtENCR6mUBYbEKlxyEZy0+IuXt5E1hekkBS696j2zQMog8FvgHWYt2km/sxLY=
+	t=1753193192; cv=none; b=Tbs5uXFQZmxChUQgtjaRP2rE5aafiTq5DdSDPnxLQm9jXB+9o00DIDRkEYAyCe8TxJxI9OVagQyqgtBHPcVRleABXA4lVDzltrIb6eF1OBe93YF6qJzklOxNtZL8SxLRP7wb+pdc14nGK3LUFPOUVxlHnf6oS5lkUg6eeDf8Pl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192692; c=relaxed/simple;
-	bh=+xet/ZcHiqcAWAWOU2mzTp7wM1ouAZVpgWeO58FxxdU=;
+	s=arc-20240116; t=1753193192; c=relaxed/simple;
+	bh=UsuhYGeKNBx+lWl6Qfy0rQwE88P2x/olXPbvKKuk5gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UPXjvue5wYJncIV6PdoaOZ1chnVcJGhNJLIm+H91IFkV5Ok1AX5ztaw9d/zGTDV+baIuuCbfcqyQqbEhKY/294pYBOiItb9fuGn2QJ5Ao62lXUIqkTat7Mlk+23RkNHgG/e+g0o5zPEffQhomW4ThnSC6gklLrOiRCGAg/XGA0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=almWTKSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0077C4CEEB;
-	Tue, 22 Jul 2025 13:58:11 +0000 (UTC)
+	 MIME-Version; b=ZDuCrrGDVdJGHSwwhyNayhSBwBrzf4CuUCv+vZtHBfHsDCKN380684hqQb3dIH+P3VM61VHQ84JOCKsAVXGb8j0/wYBi0+2ZuqN1vG+KA8rrI651f4iJ+8fM1gxCQErtVkYSuqhbSDXdbvztVOoLCcCoUdgNJKcyrEzJsGVtEJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMspXw3/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717A4C4CEEB;
+	Tue, 22 Jul 2025 14:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192692;
-	bh=+xet/ZcHiqcAWAWOU2mzTp7wM1ouAZVpgWeO58FxxdU=;
+	s=korg; t=1753193191;
+	bh=UsuhYGeKNBx+lWl6Qfy0rQwE88P2x/olXPbvKKuk5gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=almWTKSJgwNnFh3VSoAx/kYSfcaAtO8U7mxr9T0WS6uJrdypG94Qu8d5KIOfdo+Lt
-	 Cgrz6esdpKQCWXVGMIYXVHhIPP57zDWg2NOBWc/UO7TexKrUGiTD8pFRxc85HxzGea
-	 sp50xZ2Yrrq6XbSPu+ERSPp/ci/7KSlHnQOj5WTA=
+	b=KMspXw3/nSEFaoKL4xtZE2JHeXBJMLBEqvWGSzb3HZUJ3RaslwNLAc/nIzRKUaX0E
+	 Aj9WhPd2W5rfm+zhYu9g4u6MCljpMqK+N0U8DDfaZXlQiPvi18p5RNed26LJ5Ma9vN
+	 qN25G1f3CJznptjJhLGsDETrFj13N2scy0mUIvqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 005/158] USB: serial: option: add Foxconn T99W640
+	INAGAKI Hiroshi <musashino.open@gmail.com>,
+	"Michael C. Pratt" <mcpratt@pm.me>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.15 019/187] nvmem: layouts: u-boot-env: remove crc32 endianness conversion
 Date: Tue, 22 Jul 2025 15:43:09 +0200
-Message-ID: <20250722134340.805542001@linuxfoundation.org>
+Message-ID: <20250722134346.469968481@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Michael C. Pratt <mcpratt@pm.me>
 
-commit 08f49cdb71f3759368fded4dbc9dde35a404ec2b upstream.
+commit 2d7521aa26ec2dc8b877bb2d1f2611a2df49a3cf upstream.
 
-T99W640 is designed based on Qualconn SDX72 chip. There are 3
-serial ports to be enumerated: Diag, NMEA and AT.
+On 11 Oct 2022, it was reported that the crc32 verification
+of the u-boot environment failed only on big-endian systems
+for the u-boot-env nvmem layout driver with the following error.
 
-Test evidence as below:
-T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
-P:  Vendor=0489 ProdID=e167 Rev=05.15
-S:  Manufacturer=QCOM
-S:  Product=SDXPINNL USB WWAN Adapter
-S:  SerialNumber=cc1f1d92
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+  Invalid calculated CRC32: 0x88cd6f09 (expected: 0x096fcd88)
 
-0&1: MBIM, 2:Modem, 3:GNSS(non-serial port), 4: NMEA, 5:Diag
+This problem has been present since the driver was introduced,
+and before it was made into a layout driver.
 
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
+The suggested fix at the time was to use further endianness
+conversion macros in order to have both the stored and calculated
+crc32 values to compare always represented in the system's endianness.
+This was not accepted due to sparse warnings
+and some disagreement on how to handle the situation.
+Later on in a newer revision of the patch, it was proposed to use
+cpu_to_le32() for both values to compare instead of le32_to_cpu()
+and store the values as __le32 type to remove compilation errors.
+
+The necessity of this is based on the assumption that the use of crc32()
+requires endianness conversion because the algorithm uses little-endian,
+however, this does not prove to be the case and the issue is unrelated.
+
+Upon inspecting the current kernel code,
+there already is an existing use of le32_to_cpu() in this driver,
+which suggests there already is special handling for big-endian systems,
+however, it is big-endian systems that have the problem.
+
+This, being the only functional difference between architectures
+in the driver combined with the fact that the suggested fix
+was to use the exact same endianness conversion for the values
+brings up the possibility that it was not necessary to begin with,
+as the same endianness conversion for two values expected to be the same
+is expected to be equivalent to no conversion at all.
+
+After inspecting the u-boot environment of devices of both endianness
+and trying to remove the existing endianness conversion,
+the problem is resolved in an equivalent way as the other suggested fixes.
+
+Ultimately, it seems that u-boot is agnostic to endianness
+at least for the purpose of environment variables.
+In other words, u-boot reads and writes the stored crc32 value
+with the same endianness that the crc32 value is calculated with
+in whichever endianness a certain architecture runs on.
+
+Therefore, the u-boot-env driver does not need to convert endianness.
+Remove the usage of endianness macros in the u-boot-env driver,
+and change the type of local variables to maintain the same return type.
+
+If there is a special situation in the case of endianness,
+it would be a corner case and should be handled by a unique "compatible".
+
+Even though it is not necessary to use endianness conversion macros here,
+it may be useful to use them in the future for consistent error printing.
+
+Fixes: d5542923f200 ("nvmem: add driver handling U-Boot environment variables")
+Reported-by: INAGAKI Hiroshi <musashino.open@gmail.com>
+Link: https://lore.kernel.org/all/20221011024928.1807-1-musashino.open@gmail.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: "Michael C. Pratt" <mcpratt@pm.me>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250716144210.4804-1-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvmem/layouts/u-boot-env.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2346,6 +2346,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
- 	  .driver_info = RSVD(5) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe167, 0xff),                     /* Foxconn T99W640 MBIM */
-+	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
+--- a/drivers/nvmem/layouts/u-boot-env.c
++++ b/drivers/nvmem/layouts/u-boot-env.c
+@@ -92,7 +92,7 @@ int u_boot_env_parse(struct device *dev,
+ 	size_t crc32_data_offset;
+ 	size_t crc32_data_len;
+ 	size_t crc32_offset;
+-	__le32 *crc32_addr;
++	uint32_t *crc32_addr;
+ 	size_t data_offset;
+ 	size_t data_len;
+ 	size_t dev_size;
+@@ -143,8 +143,8 @@ int u_boot_env_parse(struct device *dev,
+ 		goto err_kfree;
+ 	}
+ 
+-	crc32_addr = (__le32 *)(buf + crc32_offset);
+-	crc32 = le32_to_cpu(*crc32_addr);
++	crc32_addr = (uint32_t *)(buf + crc32_offset);
++	crc32 = *crc32_addr;
+ 	crc32_data_len = dev_size - crc32_data_offset;
+ 	data_len = dev_size - data_offset;
+ 
 
 
 
