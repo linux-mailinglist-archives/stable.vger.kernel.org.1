@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3676CB0DBBF
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 627AAB0DB33
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F30C21C8271C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 420EC1C243D5
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724EA2EA499;
-	Tue, 22 Jul 2025 13:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A36E1A01B9;
+	Tue, 22 Jul 2025 13:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/HkeT/P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHlr5wK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2712EA16D;
-	Tue, 22 Jul 2025 13:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544812E36E8;
+	Tue, 22 Jul 2025 13:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192303; cv=none; b=j5WowO1lLZrPgufgJTi34MJ9313UoKIfmWc+7xsQqq1tSdKCi2/TbFaBH+twyWwdiLk+HuThU9crqCDmKx55v5WlcimOzUfESGFaD+3l4z+b8whN5b9NMtWg4sjTD+2ppkjkFnwDyHRMp2kbBXamg/K2HKdvTsQz/+7AOkkC75E=
+	t=1753191991; cv=none; b=fXBbeVX5cLuwYqstmn6JBBowFB1O8coQktD+vuUuTHZmosKx40sdUnP5RgmOvN0Jte+TSsZ5grP9Vp+/RRJyBXLPzXhxduTgV9rAjL5YUn2McV4reoH0+wX9R2a0Q+Ii+CCqRr/MVN/vSEQwWMm2La7Ttod9gq+pZBjs/NFFkQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192303; c=relaxed/simple;
-	bh=XZEeLoUaW6RY6n+cl8WZwY0OWF7z0mXgY4s4V7dChrk=;
+	s=arc-20240116; t=1753191991; c=relaxed/simple;
+	bh=1vvX19XK010sJl5eih/W3SWz5D5wmmQSbFUiqJYxY9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTTrfVQKQvKn4f1rD8dmuMt6u7JCWkSLHFP0HOlh8raHsQ1a3CiZFoz9xtm6NuN/j1gYGmBGgPl7RSq87BngYluC9LsRohzjKVfUhBrdXnNq1dZUcnXjcXfOiDbc+eHAaQiJUd+f6dEWdglY79FgIVRmbJTNmYUkYJmgMrFK7mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/HkeT/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF99C4CEEB;
-	Tue, 22 Jul 2025 13:51:42 +0000 (UTC)
+	 MIME-Version; b=VcKBHVuqPCSSFOweTaouFyzVzx1pXFg/bo0UdkJQmkUpI5ocVcfhji/g1wlSdlsELPfRZ3j6avtTetmxI6piR7hshhbkJKu4CjhHqqTU9oLgKKfd/AAT1QjhdJPFSekgSIVYQZ0jr+Ryol7qj7AlErmZXS+imhtuxRyW5heOMAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHlr5wK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898D6C4CEEB;
+	Tue, 22 Jul 2025 13:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192303;
-	bh=XZEeLoUaW6RY6n+cl8WZwY0OWF7z0mXgY4s4V7dChrk=;
+	s=korg; t=1753191990;
+	bh=1vvX19XK010sJl5eih/W3SWz5D5wmmQSbFUiqJYxY9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/HkeT/P5WmTvOVkyrq+USYuh7Krk6ZqyjP/ONVRAqvpTnUV7RMzkFOtVd9zyK/QU
-	 xhobAef8bSRCtFqnQ75RUAM4jhWhP20bORwEPt9ZOcy9nyp06hkmMAZTpFFLFuF8m0
-	 eqnfYY/2Zma+h3TSqSxd2yTWezdQqlQayoWU0lqo=
+	b=BHlr5wK2vBRdz52Y0T7rban6GQY+S/7cC3C8iWhbu0z0kJwJbCWX2p1RtZTFEIXKl
+	 Iw7pyoRbwGhU0Fov5JbKPiNv+oUasJk7c3O5NEKHfIkIF6p2YzyTMQCnvFKiQzikah
+	 WXSEsV7gCeZUOF6R2o3H5mEt8wFtAH9D/CshCFKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 025/111] io_uring/poll: fix POLLERR handling
+	Ryan Mann <rmann@ndigital.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 04/79] USB: serial: ftdi_sio: add support for NDI EMGUIDE GEMINI
 Date: Tue, 22 Jul 2025 15:44:00 +0200
-Message-ID: <20250722134334.335869448@linuxfoundation.org>
+Message-ID: <20250722134328.545872184@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Ryan Mann (NDI) <rmann@ndigital.com>
 
-commit c7cafd5b81cc07fb402e3068d134c21e60ea688c upstream.
+commit c980666b6958d9a841597331b38115a29a32250e upstream.
 
-8c8492ca64e7 ("io_uring/net: don't retry connect operation on EPOLLERR")
-is a little dirty hack that
-1) wrongfully assumes that POLLERR equals to a failed request, which
-breaks all POLLERR users, e.g. all error queue recv interfaces.
-2) deviates the connection request behaviour from connect(2), and
-3) racy and solved at a wrong level.
+NDI (Northern Digital Inc.) is introducing a new product called the
+EMGUIDE GEMINI that will use an FTDI chip for USB serial communications.
+Add the NDI EMGUIDE GEMINI product ID that uses the NDI Vendor ID
+rather than the FTDI Vendor ID, unlike older products.
 
-Nothing can be done with 2) now, and 3) is beyond the scope of the
-patch. At least solve 1) by moving the hack out of generic poll handling
-into io_connect().
-
+Signed-off-by: Ryan Mann <rmann@ndigital.com>
 Cc: stable@vger.kernel.org
-Fixes: 8c8492ca64e79 ("io_uring/net: don't retry connect operation on EPOLLERR")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/3dc89036388d602ebd84c28e5042e457bdfc952b.1752682444.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c  |   12 ++++++++----
- io_uring/poll.c |    2 --
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/usb/serial/ftdi_sio.c     |    2 ++
+ drivers/usb/serial/ftdi_sio_ids.h |    3 +++
+ 2 files changed, 5 insertions(+)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1537,9 +1537,11 @@ int io_connect(struct io_kiocb *req, uns
- 		io = &__io;
- 	}
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -803,6 +803,8 @@ static const struct usb_device_id id_tab
+ 		.driver_info = (kernel_ulong_t)&ftdi_NDI_device_quirk },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_NDI_AURORA_SCU_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_NDI_device_quirk },
++	{ USB_DEVICE(FTDI_NDI_VID, FTDI_NDI_EMGUIDE_GEMINI_PID),
++		.driver_info = (kernel_ulong_t)&ftdi_NDI_device_quirk },
+ 	{ USB_DEVICE(TELLDUS_VID, TELLDUS_TELLSTICK_PID) },
+ 	{ USB_DEVICE(NOVITUS_VID, NOVITUS_BONO_E_PID) },
+ 	{ USB_DEVICE(FTDI_VID, RTSYSTEMS_USB_VX8_PID) },
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -204,6 +204,9 @@
+ #define FTDI_NDI_FUTURE_3_PID		0xDA73	/* NDI future device #3 */
+ #define FTDI_NDI_AURORA_SCU_PID		0xDA74	/* NDI Aurora SCU */
  
--	if (unlikely(req->flags & REQ_F_FAIL)) {
--		ret = -ECONNRESET;
--		goto out;
-+	if (connect->in_progress) {
-+		struct poll_table_struct pt = { ._key = EPOLLERR };
++#define FTDI_NDI_VID			0x23F2
++#define FTDI_NDI_EMGUIDE_GEMINI_PID	0x0003	/* NDI Emguide Gemini */
 +
-+		if (vfs_poll(req->file, &pt) & EPOLLERR)
-+			goto get_sock_err;
- 	}
- 
- 	file_flags = force_nonblock ? O_NONBLOCK : 0;
-@@ -1571,8 +1573,10 @@ int io_connect(struct io_kiocb *req, uns
- 		 * which means the previous result is good. For both of these,
- 		 * grab the sock_error() and use that for the completion.
- 		 */
--		if (ret == -EBADFD || ret == -EISCONN)
-+		if (ret == -EBADFD || ret == -EISCONN) {
-+get_sock_err:
- 			ret = sock_error(sock_from_file(req->file)->sk);
-+		}
- 	}
- 	if (ret == -ERESTARTSYS)
- 		ret = -EINTR;
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -308,8 +308,6 @@ static int io_poll_check_events(struct i
- 				return IOU_POLL_REISSUE;
- 			}
- 		}
--		if (unlikely(req->cqe.res & EPOLLERR))
--			req_set_fail(req);
- 		if (req->apoll_events & EPOLLONESHOT)
- 			return IOU_POLL_DONE;
- 
+ /*
+  * ChamSys Limited (www.chamsys.co.uk) USB wing/interface product IDs
+  */
 
 
 
