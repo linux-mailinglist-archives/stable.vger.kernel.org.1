@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-163710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF81B0DA83
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:07:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 636F8B0DA8E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:11:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE28C3BA181
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:07:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 840C416AE1B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B232D9EE2;
-	Tue, 22 Jul 2025 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA012E9EBC;
+	Tue, 22 Jul 2025 13:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SWOfIZus"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KARMN0rX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EB813B280
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 13:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF0113B280
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 13:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753189673; cv=none; b=FbfFBpfJsHrYRGlBi6HuTCkNL9ktSXlGkpRcsjjM3Vmn7zEOroEkJJqF4aJDIRtkBUtp1Cupz3RlpFOOUlD8ModhC1KRD5zZAE1iNnFC0R85y6WlfLbB938/4ols9mS4IwKZLs3jQTVL5ozSc8WA7GjCUX8AjxvAbzCcuCHmejw=
+	t=1753189895; cv=none; b=iUpsZFT9wyUH8zK3kyxZKkmEaqNqH6DLWKdTCxS27jSqVQqbyxSLarePTXTSj9ZeDneBlIQvnxKJ5mtcJ1XYcgoIqsVHuKLHeqzM2+DwFeX4NqIgdv0sExtHq4m+700r07O0qsET4EPKvEmcRYRWl87SRHvTmoEZexXd6gU2kto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753189673; c=relaxed/simple;
-	bh=b3MQNVBx9hos6aiGUDyujiM1g808rGdaOpI4uwwypOI=;
+	s=arc-20240116; t=1753189895; c=relaxed/simple;
+	bh=avI19llACOZE5MUqvdzi5SGYCnluHXFOtF5h/eFnKEM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mBE8PyqOe+/4k2hziZpdOSqEdAq2Qu3DVOAnBKpGvLILUUz8eyeDCiGs7UaNUKRHc3G3OgT1Z1j9MIL7kOZ4s8VakpdNADR+N/EGd2BgDvkNWwsgT3B/+sZadxwnUMzh5EPhAnemeD5QeCyTYWBdI5wDAQ7/ZuZegzH3dWz4V6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SWOfIZus; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F95C4CEEB;
-	Tue, 22 Jul 2025 13:07:50 +0000 (UTC)
+	 MIME-Version; b=b2uzowKALnsXcc0KfC53NiyABrST+IEYjZlU+1Kx9pi6cbkSYPGWNkhfboFG1tmz7KPwT/hZ/0/N+QMUJMV0uxBP5F+1OPvHKYCGaDUqHpS9OlbvFeZ4D0ubegI/3FVzryNNvmuO7qtb7Ij16x0nQJeVHVLVmh83WjfSuPaBGAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KARMN0rX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F6AC4CEEB;
+	Tue, 22 Jul 2025 13:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753189672;
-	bh=b3MQNVBx9hos6aiGUDyujiM1g808rGdaOpI4uwwypOI=;
+	s=k20201202; t=1753189895;
+	bh=avI19llACOZE5MUqvdzi5SGYCnluHXFOtF5h/eFnKEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SWOfIZusk8eJv8k6A0VjIryaW9B5XqZjOIkYMxOpcITyJuKhvaRksKVG2EKzv8LcP
-	 InhmiFe3x702qLZFJeV1KLLdsSr2iqkBT+q9HxAtNy4qIdA83fjGFffO0U1yCu44Gd
-	 9A5REiWemzInG5KrJl+NQY6NUbkPS+jbJa2s3VtaX6vUn2dGnAiUfEOvgA2tkQgZOP
-	 QH91Cu1yrGI456KwcQbkrrJm/vWKvCnISWnwKUAMkUiRharJ3HCixLg67d/CDAkC8N
-	 wjOJgegjI7yZX4lUEIYCsRZc9vbu9AT3E1fmir0vnEgJocSD6PqpQVzqi+gU7ca7fh
-	 CaOFC6ZBwj6Aw==
+	b=KARMN0rXZ7cFTn7/qeOjnb0RsZGb7/apUW++7E2dvD/YjSXt+8ZKHmuTfVDADrcwT
+	 wIxrQ9UhEa0ELLjIDKH+ho2bnuZQuKrP7LCUjdwjFh2tz8JUOxkl82B1jc41Hy0v0L
+	 jAwH3Ll3JxEcxJCZhB0G1CNVfhNsebLGaQn+Xp/bF75k+iksB0XMmfTnnq/HmpE6WY
+	 obInRQgAnDVIQkXTDyGRm/1AV4hUwFMgUPGFCZhYerYNGeUFH2kIPIlIVrAFX1FaJ8
+	 exRnL2iKKxwi15u0AFwlilPvfqMo8p3QhUaOeZ2IooeI73k0aSsx8+QVbiR27vzoIX
+	 r9abbX7v58QVw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "Michael C. Pratt" <mcpratt@pm.me>,
@@ -48,12 +48,12 @@ Cc: "Michael C. Pratt" <mcpratt@pm.me>,
 	Srinivas Kandagatla <srini@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] nvmem: layouts: u-boot-env: remove crc32 endianness conversion
-Date: Tue, 22 Jul 2025 09:07:46 -0400
-Message-Id: <20250722130746.942677-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] nvmem: layouts: u-boot-env: remove crc32 endianness conversion
+Date: Tue, 22 Jul 2025 09:11:30 -0400
+Message-Id: <20250722131130.943212-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025072115-gotten-sprout-e549@gregkh>
-References: <2025072115-gotten-sprout-e549@gregkh>
+In-Reply-To: <2025072117-afraid-cyclic-e53c@gregkh>
+References: <2025072117-afraid-cyclic-e53c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -131,32 +131,21 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 [ applied changes to drivers/nvmem/u-boot-env.c after code was moved from drivers/nvmem/layouts/u-boot-env.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/u-boot-env.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/nvmem/u-boot-env.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/nvmem/u-boot-env.c b/drivers/nvmem/u-boot-env.c
-index adabbfdad6fb6..8712d3709a268 100644
+index 4fdbdccebda16..3d86dcd01ecf1 100644
 --- a/drivers/nvmem/u-boot-env.c
 +++ b/drivers/nvmem/u-boot-env.c
-@@ -132,7 +132,7 @@ static int u_boot_env_parse(struct u_boot_env *priv)
- 	size_t crc32_data_offset;
- 	size_t crc32_data_len;
- 	size_t crc32_offset;
--	__le32 *crc32_addr;
-+	uint32_t *crc32_addr;
- 	size_t data_offset;
- 	size_t data_len;
- 	size_t dev_size;
-@@ -183,8 +183,8 @@ static int u_boot_env_parse(struct u_boot_env *priv)
- 		goto err_kfree;
+@@ -139,7 +139,7 @@ static int u_boot_env_parse(struct u_boot_env *priv)
+ 		data_offset = offsetof(struct u_boot_env_image_redundant, data);
+ 		break;
  	}
- 
--	crc32_addr = (__le32 *)(buf + crc32_offset);
--	crc32 = le32_to_cpu(*crc32_addr);
-+	crc32_addr = (uint32_t *)(buf + crc32_offset);
-+	crc32 = *crc32_addr;
- 	crc32_data_len = dev_size - crc32_data_offset;
- 	data_len = dev_size - data_offset;
+-	crc32 = le32_to_cpu(*(__le32 *)(buf + crc32_offset));
++	crc32 = *(uint32_t *)(buf + crc32_offset);
+ 	crc32_data_len = priv->mtd->size - crc32_data_offset;
+ 	data_len = priv->mtd->size - data_offset;
  
 -- 
 2.39.5
