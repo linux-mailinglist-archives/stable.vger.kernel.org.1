@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-164025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FC5B0DC8D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4EABB0DB7D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA4BF7AD3E2
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 426B33AA707
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6C51A2C25;
-	Tue, 22 Jul 2025 14:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758C722FDFF;
+	Tue, 22 Jul 2025 13:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SL30xuv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jx7sKDzK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD9E2B9A5;
-	Tue, 22 Jul 2025 14:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A8127468;
+	Tue, 22 Jul 2025 13:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192998; cv=none; b=aaJ/TY37kBvmB3aXM6kC8XbAEH5J87PAEtRlBbaHGd2Sl5m5Rf83Qd0vxt2y8YP2POVKU0kiYFRJVFbAcw7ZM7kTN1TWeS3/QzGZIXVf3XjZwTeo8wvnKxssbCw91KFQnNX6NfTpA9AlKMgpvZ5OQf85Sc9mPsm6GH+Xhcq5x0Q=
+	t=1753192182; cv=none; b=pK+JIr8e5s/NpUlOmBDKF1/2CVFpmCscMu7h0rd92Cp4nIqqX5RT0szJ93LMtDCVOD+srK/LNUVhg9+t6XKBk9irDADfBv2uVdvjWPOFYWtKHiJiH4xbhDEkTPNXo+dh8XK1WPu8/i49qZjw64Qhx57BDgH6rQARRzNyEZo4hg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192998; c=relaxed/simple;
-	bh=c3aEsYWtS1YdMSGkzbre1CR3XHrlReWpFAobX8lA8ys=;
+	s=arc-20240116; t=1753192182; c=relaxed/simple;
+	bh=j9s9U4mznGeONOz6stf0Gusa6hm4qLc9eaOeoc0adEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sE3bUgm+Q0rWZdK4ou86FFfxW98BL/7sxnb3qhFAwvGSowRLLmh24ISTp833j4DmWAhEPZN/dgeWrm8WjGswwm9CanZrfSl0hhgLVABJqUtCh+KwSFdeQOyRrnRF24U73Jg75xRf+rCxKhB0xNmdvQVxmXipttXxrU6OgcmdPv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SL30xuv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2287C4CEEB;
-	Tue, 22 Jul 2025 14:03:17 +0000 (UTC)
+	 MIME-Version; b=o0vOrG+WVr3a5yRIx3K22sdkoZh6KX8AMvCH4XJCzZYNEoFGIHYjD/Hg2sVz3JkLGRpYr7mvzSJGQZ/MTA/vJpph3YJA+4eDo4+cjPDOf3gNVjMBXIX4ekPjGxa6qNeMgUE9lwR6CtEwlhzUXCF6qM/9NrbuiXuFycJc9CVqmtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jx7sKDzK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EABDC4CEF5;
+	Tue, 22 Jul 2025 13:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192998;
-	bh=c3aEsYWtS1YdMSGkzbre1CR3XHrlReWpFAobX8lA8ys=;
+	s=korg; t=1753192182;
+	bh=j9s9U4mznGeONOz6stf0Gusa6hm4qLc9eaOeoc0adEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SL30xuvnipWfzVwN1nWHF3I6j7ynvc4Cy6TrLo5Pb2zgRXKg5Q5qx/OJFECINmXa
-	 ymId2sENlVcgueO8ARflVgldwwTiNLiJTMoGd+i8DMBJ26h14dXl7IWeIZkF0mrYJL
-	 eTOQxEfrQfyKh9zrebURG6eV/q0rcXBHd0dR5rFo=
+	b=Jx7sKDzKKuyIcuSJzlcrE3pgXLJVlQRJMdzzTjqhT6To3yjs4scAE3ETZLPQjTQNy
+	 EMEt1EqmUORffMUXaTqbK0GeiJQpYrMGOiJBwvW6SGPKPZcQ2GHVePJ9Dxq0NQ0QhC
+	 z3TPNbqRPDLrl+E4JS6WR9SlVCv3qiRaM3/yOi1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/158] ipv6: mcast: Delay put pmc->idev in mld_del_delrec()
+	Christian Brauner <brauner@kernel.org>,
+	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.1 68/79] clone_private_mnt(): make sure that caller has CAP_SYS_ADMIN in the right userns
 Date: Tue, 22 Jul 2025 15:45:04 +0200
-Message-ID: <20250722134345.219185491@linuxfoundation.org>
+Message-ID: <20250722134330.883352928@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit ae3264a25a4635531264728859dbe9c659fad554 ]
+commit c28f922c9dcee0e4876a2c095939d77fe7e15116 upstream.
 
-pmc->idev is still used in ip6_mc_clear_src(), so as mld_clear_delrec()
-does, the reference should be put after ip6_mc_clear_src() return.
+What we want is to verify there is that clone won't expose something
+hidden by a mount we wouldn't be able to undo.  "Wouldn't be able to undo"
+may be a result of MNT_LOCKED on a child, but it may also come from
+lacking admin rights in the userns of the namespace mount belongs to.
 
-Fixes: 63ed8de4be81 ("mld: add mc_lock for protecting per-interface mld data")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://patch.msgid.link/20250714141957.3301871-1-yuehaibing@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+clone_private_mnt() checks the former, but not the latter.
+
+There's a number of rather confusing CAP_SYS_ADMIN checks in various
+userns during the mount, especially with the new mount API; they serve
+different purposes and in case of clone_private_mnt() they usually,
+but not always end up covering the missing check mentioned above.
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
+Fixes: 427215d85e8d ("ovl: prevent private clone if bind mount is not allowed")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+[ merge conflict resolution: clone_private_mount() was reworked in
+  db04662e2f4f ("fs: allow detached mounts in clone_private_mount()").
+  Tweak the relevant ns_capable check so that it works on older kernels ]
+Signed-off-by: Noah Orlando <Noah.Orlando@deshaw.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/mcast.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/namespace.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index b7b62e5a562e5..9949554e3211b 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -804,8 +804,8 @@ static void mld_del_delrec(struct inet6_dev *idev, struct ifmcaddr6 *im)
- 		} else {
- 			im->mca_crcount = idev->mc_qrv;
- 		}
--		in6_dev_put(pmc->idev);
- 		ip6_mc_clear_src(pmc);
-+		in6_dev_put(pmc->idev);
- 		kfree_rcu(pmc, rcu);
- 	}
- }
--- 
-2.39.5
-
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2018,6 +2018,11 @@ struct vfsmount *clone_private_mount(con
+ 	if (!check_mnt(old_mnt))
+ 		goto invalid;
+ 
++	if (!ns_capable(old_mnt->mnt_ns->user_ns, CAP_SYS_ADMIN)) {
++		up_read(&namespace_sem);
++		return ERR_PTR(-EPERM);
++	}
++
+ 	if (has_locked_children(old_mnt, path->dentry))
+ 		goto invalid;
+ 
 
 
 
