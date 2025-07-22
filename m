@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-164054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7771B0DCBD
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C77B0DB56
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 933A57B513A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59D751C812BB
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B632EA721;
-	Tue, 22 Jul 2025 14:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2788728B7EE;
+	Tue, 22 Jul 2025 13:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9i0zF6d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ine+XqNb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CA52EA485;
-	Tue, 22 Jul 2025 14:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC23289340
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 13:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193098; cv=none; b=BrM115HLauFTxKFeggB5/d9H+JCNImUz/BeiDUJlAUHCb28IDssazK3UrBycAW1yUJV5Mr5yhY9VFChQoSBdgA2TD0gzd/KQb10iHPnzvYMLvSV6zY/dchiuLfhJkO0nm2S4qEM1Zub2NOFCdLIsgxZS++yhCcdCU/4c8rqwvTM=
+	t=1753192111; cv=none; b=UHkenODGxLwmY7gJAAYavJQbHdxHWx/yO9PZU0g851ita1MugVcxCn87qvDXhIZm6q+KvtUqY5jt//qbEFZc1Eclig3eVxbLLDOHpvWbTSlxn42+Sk7ELJDvUfz+2F3DQbh2058xPrsMoWa9eVnTvm91R2W55M7ud/6so0KGfVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193098; c=relaxed/simple;
-	bh=F2ZzHhg+tlRAUclj4LbGWpJQ/QO8OG0JjCSDs0+eyc8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KQU4laeCB3X8bsVtjPMPDcaGyOopMjFSyUDZYhCOo7Ij93gSS+1N9hLs7gw9uwMihIXErxbAfc/vX0iaRo/MIxW5FF2ALiRp0du3Lq7Q4Rj36nJ/6pdqigN8SMH1NVp3YsDOe2b/dM1hc6dFOP1/pEhAatYi/pbSX59qAo0rKjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9i0zF6d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE523C4CEEB;
-	Tue, 22 Jul 2025 14:04:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193098;
-	bh=F2ZzHhg+tlRAUclj4LbGWpJQ/QO8OG0JjCSDs0+eyc8=;
+	s=arc-20240116; t=1753192111; c=relaxed/simple;
+	bh=EB9k1RSeCMPZoU+SqI+O7cBPupLBiZM7RCwKjXpc5Lw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=rHvGd39uYas/pBDCYPqHFd5EZabZwncPi6Qyo9gj5kUtKVp2RPOI73d/MjuiTa5DtikBTq9Al51uL0EgcHGoAGdY3d5sS9lfXZuS1igaccBRnK6Bpx0apv6RqjTHfCfFVOetRt6e0hgmM4lZWXYfTbIyZ2+IEXnWOP6WAEjr8GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ine+XqNb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2213C4CEF1;
+	Tue, 22 Jul 2025 13:48:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753192111;
+	bh=EB9k1RSeCMPZoU+SqI+O7cBPupLBiZM7RCwKjXpc5Lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9i0zF6dad7JIqxNL10NZ0h+ybuiTWzxo/eqgzr0Q9dfkHfVaEfmdUwd7dzs23bXd
-	 KPb/VO2uNUP830ObHjor2kTHjHq/WowUzCAUToxjf9m9PC6hKrgMbtJGQlxsXXu/wM
-	 vSGVBtCxyKMluMd+zQVD1VYQUuNiqxociQq4leKg=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	b=Ine+XqNbeEMeeBoc95eeoXDzxMigLsjfKOaswyWwUv7PP9rrWkwaJ9PJpKJHtvfZq
+	 riG0E6TB/espsyXuBbz1a95GnPbtUoRsk3RFVy1FoyvY+pAanCul18KMdKsS5FbwGN
+	 H9z9MMje8gHIOivNLe7oikh81ngHwALp//sSA5fbbZXdoR/oO9feTnMoKNtbV28h2Y
+	 Mkj+iCuK1lLAINJBfWyeYCtsN5AYVSuQm0RUCBAqnSakCBT0eRaJVcTnqbS8Eu2LFd
+	 rv5WqLrx9vLZw8wwD1E96IIDZLku324Uro4lTr6Dc3A+YcvtPDSwDHlChki51wq8zK
+	 hQms+NrkDjCmw==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Ihor Solodrai <ihor.solodrai@pm.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 150/158] selftests/bpf: Set test path for token/obj_priv_implicit_token_envvar
-Date: Tue, 22 Jul 2025 15:45:34 +0200
-Message-ID: <20250722134346.310524606@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+Cc: Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4.y] pmdomain: governor: Consider CPU latency tolerance from pm_domain_cpu_gov
+Date: Tue, 22 Jul 2025 09:48:27 -0400
+Message-Id: <20250722134827.947709-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025072114-matriarch-decline-2598@gregkh>
+References: <2025072114-matriarch-decline-2598@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,93 +60,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-------------------
+[ Upstream commit 500ba33284416255b9a5b50ace24470b6fe77ea5 ]
 
-From: Ihor Solodrai <ihor.solodrai@pm.me>
+pm_domain_cpu_gov is selecting a cluster idle state but does not consider
+latency tolerance of child CPUs. This results in deeper cluster idle state
+whose latency does not meet latency tolerance requirement.
 
-commit f01750aecdfb8bfb02842f60af3d805a3ae7267a upstream.
+Select deeper idle state only if global and device latency tolerance of all
+child CPUs meet.
 
-token/obj_priv_implicit_token_envvar test may fail in an environment
-where the process executing tests can not write to the root path.
+Test results on SM8750 with 300 usec PM-QoS on CPU0 which is less than
+domain idle state entry (2150) + exit (1983) usec latency mentioned in
+devicetree, demonstrate the issue.
 
-Example:
-https://github.com/libbpf/libbpf/actions/runs/11844507007/job/33007897936
+	# echo 300 > /sys/devices/system/cpu/cpu0/power/pm_qos_resume_latency_us
 
-Change default path used by the test to /tmp/bpf-token-fs, and make it
-runtime configurable via an environment variable.
+Before: (Usage is incrementing)
+======
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             29817          537        8          270        0
 
-Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241115003853.864397-1-ihor.solodrai@pm.me
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             30348          542        8          271        0
+
+After: (Usage is not incrementing due to latency tolerance)
+======
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             39319          626        14         307        0
+
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             39319          626        14         307        0
+
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Fixes: e94999688e3a ("PM / Domains: Add genpd governor for CPUs")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250709-pmdomain_qos-v2-1-976b12257899@oss.qualcomm.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ replaced cpu_latency_qos_limit() with pm_qos_request(PM_QOS_CPU_DMA_LATENCY) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/token.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/base/power/domain_governor.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/bpf/prog_tests/token.c
-+++ b/tools/testing/selftests/bpf/prog_tests/token.c
-@@ -828,8 +828,12 @@ static int userns_obj_priv_btf_success(i
- 	return validate_struct_ops_load(mnt_fd, true /* should succeed */);
- }
+diff --git a/drivers/base/power/domain_governor.c b/drivers/base/power/domain_governor.c
+index 490ed7deb99a7..35f2e961756b2 100644
+--- a/drivers/base/power/domain_governor.c
++++ b/drivers/base/power/domain_governor.c
+@@ -8,6 +8,7 @@
+ #include <linux/pm_domain.h>
+ #include <linux/pm_qos.h>
+ #include <linux/hrtimer.h>
++#include <linux/cpu.h>
+ #include <linux/cpuidle.h>
+ #include <linux/cpumask.h>
+ #include <linux/ktime.h>
+@@ -254,6 +255,8 @@ static bool cpu_power_down_ok(struct dev_pm_domain *pd)
+ 	struct generic_pm_domain *genpd = pd_to_genpd(pd);
+ 	struct cpuidle_device *dev;
+ 	ktime_t domain_wakeup, next_hrtimer;
++	struct device *cpu_dev;
++	s64 cpu_constraint, global_constraint;
+ 	s64 idle_duration_ns;
+ 	int cpu, i;
  
-+static const char *token_bpffs_custom_dir()
-+{
-+	return getenv("BPF_SELFTESTS_BPF_TOKEN_DIR") ?: "/tmp/bpf-token-fs";
-+}
+@@ -264,6 +267,7 @@ static bool cpu_power_down_ok(struct dev_pm_domain *pd)
+ 	if (!(genpd->flags & GENPD_FLAG_CPU_DOMAIN))
+ 		return true;
+ 
++	global_constraint = pm_qos_request(PM_QOS_CPU_DMA_LATENCY);
+ 	/*
+ 	 * Find the next wakeup for any of the online CPUs within the PM domain
+ 	 * and its subdomains. Note, we only need the genpd->cpus, as it already
+@@ -277,8 +281,16 @@ static bool cpu_power_down_ok(struct dev_pm_domain *pd)
+ 			if (ktime_before(next_hrtimer, domain_wakeup))
+ 				domain_wakeup = next_hrtimer;
+ 		}
 +
- #define TOKEN_ENVVAR "LIBBPF_BPF_TOKEN_PATH"
--#define TOKEN_BPFFS_CUSTOM "/bpf-token-fs"
- 
- static int userns_obj_priv_implicit_token(int mnt_fd, struct token_lsm *lsm_skel)
- {
-@@ -892,6 +896,7 @@ static int userns_obj_priv_implicit_toke
- 
- static int userns_obj_priv_implicit_token_envvar(int mnt_fd, struct token_lsm *lsm_skel)
- {
-+	const char *custom_dir = token_bpffs_custom_dir();
- 	LIBBPF_OPTS(bpf_object_open_opts, opts);
- 	struct dummy_st_ops_success *skel;
- 	int err;
-@@ -909,10 +914,10 @@ static int userns_obj_priv_implicit_toke
- 	 * BPF token implicitly, unless pointed to it through
- 	 * LIBBPF_BPF_TOKEN_PATH envvar
- 	 */
--	rmdir(TOKEN_BPFFS_CUSTOM);
--	if (!ASSERT_OK(mkdir(TOKEN_BPFFS_CUSTOM, 0777), "mkdir_bpffs_custom"))
-+	rmdir(custom_dir);
-+	if (!ASSERT_OK(mkdir(custom_dir, 0777), "mkdir_bpffs_custom"))
- 		goto err_out;
--	err = sys_move_mount(mnt_fd, "", AT_FDCWD, TOKEN_BPFFS_CUSTOM, MOVE_MOUNT_F_EMPTY_PATH);
-+	err = sys_move_mount(mnt_fd, "", AT_FDCWD, custom_dir, MOVE_MOUNT_F_EMPTY_PATH);
- 	if (!ASSERT_OK(err, "move_mount_bpffs"))
- 		goto err_out;
- 
-@@ -925,7 +930,7 @@ static int userns_obj_priv_implicit_toke
- 		goto err_out;
++		cpu_dev = get_cpu_device(cpu);
++		if (cpu_dev) {
++			cpu_constraint = dev_pm_qos_raw_resume_latency(cpu_dev);
++			if (cpu_constraint < global_constraint)
++				global_constraint = cpu_constraint;
++		}
  	}
  
--	err = setenv(TOKEN_ENVVAR, TOKEN_BPFFS_CUSTOM, 1 /*overwrite*/);
-+	err = setenv(TOKEN_ENVVAR, custom_dir, 1 /*overwrite*/);
- 	if (!ASSERT_OK(err, "setenv_token_path"))
- 		goto err_out;
- 
-@@ -951,11 +956,11 @@ static int userns_obj_priv_implicit_toke
- 	if (!ASSERT_ERR(err, "obj_empty_token_path_load"))
- 		goto err_out;
- 
--	rmdir(TOKEN_BPFFS_CUSTOM);
-+	rmdir(custom_dir);
- 	unsetenv(TOKEN_ENVVAR);
- 	return 0;
- err_out:
--	rmdir(TOKEN_BPFFS_CUSTOM);
-+	rmdir(custom_dir);
- 	unsetenv(TOKEN_ENVVAR);
- 	return -EINVAL;
- }
-
++	global_constraint *= NSEC_PER_USEC;
+ 	/* The minimum idle duration is from now - until the next wakeup. */
+ 	idle_duration_ns = ktime_to_ns(ktime_sub(domain_wakeup, ktime_get()));
+ 	if (idle_duration_ns <= 0)
+@@ -291,8 +303,10 @@ static bool cpu_power_down_ok(struct dev_pm_domain *pd)
+ 	 */
+ 	i = genpd->state_idx;
+ 	do {
+-		if (idle_duration_ns >= (genpd->states[i].residency_ns +
+-		    genpd->states[i].power_off_latency_ns)) {
++		if ((idle_duration_ns >= (genpd->states[i].residency_ns +
++		    genpd->states[i].power_off_latency_ns)) &&
++		    (global_constraint >= (genpd->states[i].power_on_latency_ns +
++		    genpd->states[i].power_off_latency_ns))) {
+ 			genpd->state_idx = i;
+ 			return true;
+ 		}
+-- 
+2.39.5
 
 
