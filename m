@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-164007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4137EB0DCAD
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A73B0DB6A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BF71188514A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D8D9AA5E7B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42322C08B6;
-	Tue, 22 Jul 2025 14:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C92242D8F;
+	Tue, 22 Jul 2025 13:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRcNvoQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPztPPAm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B042E36E8;
-	Tue, 22 Jul 2025 14:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5511433A8;
+	Tue, 22 Jul 2025 13:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192936; cv=none; b=KgTryTOFYdU6YwfPnNcHsl5IF1JqQHE5R7LD/Nx/Fexjri3/0eGiVkCwrcfflYy6jEwJTpcuYWq0Ig3OrjzEia8IQYGdK2kPURc6eh0UG21xpnaERIl9rngbMygef82v5UU2AgHBHVb/jwjx2t9opZYKEqVmjDEgQFkzGcQp/9o=
+	t=1753192120; cv=none; b=uvvKMkU4rVZo3fHn1cvmGfnVZ8Iacv4Uhw9ggAQe8RrqGMglXdwwowuLcnp7HZVn6TjursMlYI4s77C7pR4WjP9oZXkj2YEag8LGVPPUn8X13FRxXq4PxVlE7BHajPfhWHgZEN8GDfAZe2+H+UANsnV2gqqlqHsz5BdgAfN4XD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192936; c=relaxed/simple;
-	bh=2OtmVCb9xhUYvv7y+7HHokh1Jh1CwazQAsqyt7D4Xjw=;
+	s=arc-20240116; t=1753192120; c=relaxed/simple;
+	bh=UsmJf7QTk1DIZ5UST0y/tfAau2h4kwjA5TNU6dhDIDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AX8W0OSEntQPFDvCGz72c7kN6aFvl6LT8CBlcTAzB9zlW/xJ9ICfdsYycMVnSGUntyJlPiIO2XJic2R7S0/TzPJL3u2Qg288weNUI4eJvyDisv0hZm5lrmtVW0fCVh17k8BnKrabdGzyMKHk1UzLWwo76exwmqV51nkZ4i7hwYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRcNvoQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5476C4CEEB;
-	Tue, 22 Jul 2025 14:02:15 +0000 (UTC)
+	 MIME-Version; b=Dh6bKkzvrjcqh5qR0HY6zZ97YRmKBlwvEmqJjbOdXvGRiBuQKVTPl8PIU5Z1VQSdxVjChmEdI6xzte8LKfNN56DnELQJsEowXOVVJ9MhC8AiN9Ju5E4OqkLpIiQAIJ8Ct/HQPAGZ9ISepnlSnsSFkQ/b2pVkU9fxcK06XaEHvag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPztPPAm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B36EC4CEEB;
+	Tue, 22 Jul 2025 13:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192936;
-	bh=2OtmVCb9xhUYvv7y+7HHokh1Jh1CwazQAsqyt7D4Xjw=;
+	s=korg; t=1753192120;
+	bh=UsmJf7QTk1DIZ5UST0y/tfAau2h4kwjA5TNU6dhDIDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lRcNvoQ1aOXwupHk65uQ8VVE876EZzyZl+23QUsqN5QMEnb6UvbAQG1Nb0R2arhfd
-	 80tkq4/zQRKSv22slM+jDGQe401kuuQLt03DkP8MjmP4jgkEtKjoyPo9Thm5wPj0BW
-	 aWzZ5XLAyVByd0odyoTKcEG68QQ54GGYqAuhVxmk=
+	b=sPztPPAmlftRwu77z+iO8xb8euRQBilV3VAAq+yheDjLaZFubtMwNbawetCMorpEC
+	 gE9iI61wyjAusuZTYzcgX2PIky/YCXO7smOxcLIF5xE1R42wZdAAr5IS8uJfoWbE0E
+	 Hta2wZXeujXPP5sP07jOI1rhone1uat/x8rpbsjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>,
-	Fabio Estevam <festevam@denx.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 069/158] iio: adc: max1363: Fix MAX1363_4X_CHANS/MAX1363_8X_CHANS[]
-Date: Tue, 22 Jul 2025 15:44:13 +0200
-Message-ID: <20250722134343.346777037@linuxfoundation.org>
+	stable@kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Yun Lu <luyun@kylinos.cn>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 18/79] af_packet: fix the SO_SNDTIMEO constraint not effective on tpacked_snd()
+Date: Tue, 22 Jul 2025 15:44:14 +0200
+Message-ID: <20250722134329.050965650@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Yun Lu <luyun@kylinos.cn>
 
-commit 6d21f2c2dd843bceefd9455f2919f6bb526797f0 upstream.
+commit c1ba3c0cbdb5e53a8ec5d708e99cd4c497028a13 upstream.
 
-Since commit 2718f15403fb ("iio: sanity check available_scan_masks array"),
-booting a board populated with a MAX11601 results in a flood of warnings:
+Due to the changes in commit 581073f626e3 ("af_packet: do not call
+packet_read_pending() from tpacket_destruct_skb()"), every time
+tpacket_destruct_skb() is executed, the skb_completion is marked as
+completed. When wait_for_completion_interruptible_timeout() returns
+completed, the pending_refcnt has not yet been reduced to zero.
+Therefore, when ph is NULL, the wait function may need to be called
+multiple times until packet_read_pending() finally returns zero.
 
-max1363 1-0064: available_scan_mask 8 subset of 0. Never used
-max1363 1-0064: available_scan_mask 9 subset of 0. Never used
-max1363 1-0064: available_scan_mask 10 subset of 0. Never used
-max1363 1-0064: available_scan_mask 11 subset of 0. Never used
-max1363 1-0064: available_scan_mask 12 subset of 0. Never used
-max1363 1-0064: available_scan_mask 13 subset of 0. Never used
-...
+We should call sock_sndtimeo() only once, otherwise the SO_SNDTIMEO
+constraint could be way off.
 
-These warnings are caused by incorrect offsets used for differential
-channels in the MAX1363_4X_CHANS() and MAX1363_8X_CHANS() macros.
-
-The max1363_mode_table[] defines the differential channel mappings as
-follows:
-
-MAX1363_MODE_DIFF_SINGLE(0, 1, 1 << 12),
-MAX1363_MODE_DIFF_SINGLE(2, 3, 1 << 13),
-MAX1363_MODE_DIFF_SINGLE(4, 5, 1 << 14),
-MAX1363_MODE_DIFF_SINGLE(6, 7, 1 << 15),
-MAX1363_MODE_DIFF_SINGLE(8, 9, 1 << 16),
-MAX1363_MODE_DIFF_SINGLE(10, 11, 1 << 17),
-MAX1363_MODE_DIFF_SINGLE(1, 0, 1 << 18),
-MAX1363_MODE_DIFF_SINGLE(3, 2, 1 << 19),
-MAX1363_MODE_DIFF_SINGLE(5, 4, 1 << 20),
-MAX1363_MODE_DIFF_SINGLE(7, 6, 1 << 21),
-MAX1363_MODE_DIFF_SINGLE(9, 8, 1 << 22),
-MAX1363_MODE_DIFF_SINGLE(11, 10, 1 << 23),
-
-Update the macros to follow this same pattern, ensuring that the scan masks
-are valid and preventing the warnings.
-
-Cc: stable@vger.kernel.org
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://patch.msgid.link/20250516173900.677821-1-festevam@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 581073f626e3 ("af_packet: do not call packet_read_pending() from tpacket_destruct_skb()")
+Cc: stable@kernel.org
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/max1363.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ net/packet/af_packet.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -504,10 +504,10 @@ static const struct iio_event_spec max13
- 	MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),		\
- 	MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),		\
- 	MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),		\
--	MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),	\
--	MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),	\
--	MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),	\
--	MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(1, 0, d1m0, 18, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(3, 2, d3m2, 19, bits, ev_spec, num_ev_spec),	\
- 	IIO_CHAN_SOFT_TIMESTAMP(8)					\
- 	}
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2780,7 +2780,7 @@ static int tpacket_snd(struct packet_soc
+ 	int len_sum = 0;
+ 	int status = TP_STATUS_AVAILABLE;
+ 	int hlen, tlen, copylen = 0;
+-	long timeo = 0;
++	long timeo;
  
-@@ -602,14 +602,14 @@ static const enum max1363_modes max11608
- 	MAX1363_CHAN_U(5, _s5, 5, bits, NULL, 0),	\
- 	MAX1363_CHAN_U(6, _s6, 6, bits, NULL, 0),	\
- 	MAX1363_CHAN_U(7, _s7, 7, bits, NULL, 0),	\
--	MAX1363_CHAN_B(0, 1, d0m1, 8, bits, NULL, 0),	\
--	MAX1363_CHAN_B(2, 3, d2m3, 9, bits, NULL, 0),	\
--	MAX1363_CHAN_B(4, 5, d4m5, 10, bits, NULL, 0),	\
--	MAX1363_CHAN_B(6, 7, d6m7, 11, bits, NULL, 0),	\
--	MAX1363_CHAN_B(1, 0, d1m0, 12, bits, NULL, 0),	\
--	MAX1363_CHAN_B(3, 2, d3m2, 13, bits, NULL, 0),	\
--	MAX1363_CHAN_B(5, 4, d5m4, 14, bits, NULL, 0),	\
--	MAX1363_CHAN_B(7, 6, d7m6, 15, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(0, 1, d0m1, 12, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(2, 3, d2m3, 13, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(4, 5, d4m5, 14, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(6, 7, d6m7, 15, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(1, 0, d1m0, 18, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(3, 2, d3m2, 19, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(5, 4, d5m4, 20, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(7, 6, d7m6, 21, bits, NULL, 0),	\
- 	IIO_CHAN_SOFT_TIMESTAMP(16)			\
- }
- static const struct iio_chan_spec max11602_channels[] = MAX1363_8X_CHANS(8);
+ 	mutex_lock(&po->pg_vec_lock);
+ 
+@@ -2834,6 +2834,7 @@ static int tpacket_snd(struct packet_soc
+ 	if ((size_max > dev->mtu + reserve + VLAN_HLEN) && !po->has_vnet_hdr)
+ 		size_max = dev->mtu + reserve + VLAN_HLEN;
+ 
++	timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
+ 	reinit_completion(&po->skb_completion);
+ 
+ 	do {
+@@ -2841,7 +2842,6 @@ static int tpacket_snd(struct packet_soc
+ 					  TP_STATUS_SEND_REQUEST);
+ 		if (unlikely(ph == NULL)) {
+ 			if (need_wait && skb) {
+-				timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
+ 				timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
+ 				if (timeo <= 0) {
+ 					err = !timeo ? -ETIMEDOUT : -ERESTARTSYS;
 
 
 
