@@ -1,68 +1,88 @@
-Return-Path: <stable+bounces-163681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7805EB0D647
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 11:51:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FCBB0D6BC
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 12:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 553CB1AA7677
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 09:51:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9957AA0158
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 10:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D672D97A2;
-	Tue, 22 Jul 2025 09:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58BB2E1742;
+	Tue, 22 Jul 2025 10:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSYQ/k9I"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="HGsR0Kc5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3111A2CCC1
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 09:51:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B593228A718;
+	Tue, 22 Jul 2025 10:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753177873; cv=none; b=YfnHcijwvS1qCakmgVaMAWwmhBScH4ItSuAIA1RTMNfIYCb7VKoJ5d60iR2DNF4VPnNBcEOTa9kdpqMRu4eUfZheVxPR71ZBkYKg2H+bwXjrl59hYKuS4/RoGONA1mIheVS2eC+7uwGgSHeseIZVqlAM2pfP15hA+yVrTmMDhv4=
+	t=1753178442; cv=none; b=UB1nQwN62Dqu64hXSuxdB4GDyzqVNn1FpvGwtmNQQNthL+jkCcIozd4eCELlq4gByViRCjC8IsMzWqqfCm8wCDZs81IN/Tj3NJWfI1SMrVg488yMSWiDF7kH6tAdp5WW+05Bj25YeegzPc634k+Hm+fKM9OArz7aGilIiV0bZQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753177873; c=relaxed/simple;
-	bh=HzpFjaoozbW8q9r3jL2tf6aCmPsIzOa7CYCZoCPPw+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZOppTDE+7HHFbi2D6uq/bUThOiCznZUATcd/+5MFJ6AWFiD1LtY3l0+mYuLQ9UNXN+tQXLelk+QM/KFBY03mbIBmWSnNLv5UoL1rm4uS8JtbvUloId0zx1FPztxdnsP/0plLe5R2u/CC24pYo8toOWCCVB1CUEyTUFqrraJWZWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSYQ/k9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B69C4CEF4;
-	Tue, 22 Jul 2025 09:51:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753177872;
-	bh=HzpFjaoozbW8q9r3jL2tf6aCmPsIzOa7CYCZoCPPw+M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uSYQ/k9IdV2AN7Wn2jdDTk+uorRZAyUbgnJNMMfH9CIt4mwObQiMQpCNIFhMd04oI
-	 KsLxkSD4fpegl/eaZTU0R1U5cpYesJEWLXp6Jmf1gLNfxGHk4bq8Ne6K+QKWWfiZBT
-	 a+1naXPinG1PVbf5C0VknfCkylXfN3ooNuRYHROc=
-Date: Tue, 22 Jul 2025 11:51:09 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Siddhi Katage <siddhi.katage@oracle.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 5.15.y 0/4] Fix blank WHCAN value in 'ps' output
-Message-ID: <2025072252-urban-triage-41c9@gregkh>
-References: <20250722062642.309842-1-siddhi.katage@oracle.com>
+	s=arc-20240116; t=1753178442; c=relaxed/simple;
+	bh=tZ3HcF1s0zrmlCAeX9Whnel/rxThk9/kOf1hXEkLx4Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fYVM1BYAuD6SHBDA8eujS5pBnW2GEZLDpYUedNLYs8ABFjim8ea8exWTgtNEsErSGCVsNJVynNtIr6OKM0yHVp5BjF/s1zJHe2WyT4cB4qDeTPUVBgmlu8LHQ2PcscI6mE30Qw3RIakGfUU3Ii75Ijo85RwExM9BI1M6bQyEetY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=HGsR0Kc5; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753178435; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=lPjat0Bi98OfxfxyAaI3NTYf7rjxuzInugrh9ayiTI0=;
+	b=HGsR0Kc5evxmMWn6nyp9vQFGxcQjJ0Edqc8R4o+my80mosqvigaQsXy+pRVVp4uHoXf19Gs7FL9nUVnZfQAdjmkksx07Oe7MvGVHUNU47XytuUmqaxwda8ysIBc6xKI/sVWiMVgtEZRerLIyursGXK4JuImg2NtFrkLoRD0mPCI=
+Received: from x31i01179.sqa.na131.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WjVvTmr_1753178430 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 22 Jul 2025 18:00:35 +0800
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Cc: linux-erofs@lists.ozlabs.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.1.y 0/5] erofs: backport for `erofs: address D-cache aliasing`
+Date: Tue, 22 Jul 2025 18:00:24 +0800
+Message-ID: <20250722100029.3052177-1-hsiangkao@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250722062642.309842-1-siddhi.katage@oracle.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 22, 2025 at 06:26:38AM +0000, Siddhi Katage wrote:
-> The 'ps' output prints blank(hyphen) WHCAN value for all the tasks.
-> This patchset will help print the correct WCHAN value.
+6.6.y fix: https://lore.kernel.org/r/20250722094449.2950654-1-hsiangkao@linux.alibaba.com
 
-Did you forget to also backport commit b88f55389ad2 ("profiling: remove
-profile=sleep support") for this series?
+Hi Jan & Stefan,
+Please help confirm this 6.1 fix backport if possible too.
 
-thanks,
+Thanks,
+Gao Xiang
 
-greg k-h
+Gao Xiang (5):
+  erofs: get rid of debug_one_dentry()
+  erofs: sunset erofs_dbg()
+  erofs: drop z_erofs_page_mark_eio()
+  erofs: simplify z_erofs_transform_plain()
+  erofs: address D-cache aliasing
+
+ fs/erofs/decompressor.c | 23 +++++++----------
+ fs/erofs/dir.c          | 17 -------------
+ fs/erofs/inode.c        |  3 ---
+ fs/erofs/internal.h     |  2 --
+ fs/erofs/namei.c        |  9 +++----
+ fs/erofs/zdata.c        | 56 +++++++++++++++++------------------------
+ fs/erofs/zmap.c         |  3 ---
+ 7 files changed, 35 insertions(+), 78 deletions(-)
+
+-- 
+2.43.5
+
 
