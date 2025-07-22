@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23084B0DC8B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A241B0DBAD
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24C3D3A6CFD
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:58:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 944205652B3
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F6F28B7C2;
-	Tue, 22 Jul 2025 13:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016A42EA163;
+	Tue, 22 Jul 2025 13:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFsV4r6D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b06Y6DVg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8ED22CBE9;
-	Tue, 22 Jul 2025 13:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41342EA173;
+	Tue, 22 Jul 2025 13:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192741; cv=none; b=YF6ZXUxybe6AMV/ryPlFULskkjHXHGJgDPBv2GgBt5DSCsBeS3lbkeQ7CoCr1/VsMKLowM3OaqMraEJRzP0JzFcN0IAPJ29s1P056GmtHVQWoF9ZBCEMdz54Ozwgp38lJ6MIxDamGucAWq+6FgjQ3L8qckb1XyGnZgH99xhGPQs=
+	t=1753192265; cv=none; b=ZNSZvQz1ljCv0B7sSmDmIOLana72eBZgmWfgWCkcJrLhtpVleH7pIU+xnDSXOvi+RNArFALbmANvwWFDP5OpDVldaZaXtu//H1eLT0JXpNfDsxdETg1pzVuMUE0LKPPSMlMT2LEcQ1cLVk/LyQZE3Y6R00z2rZplgYdHjCKJllA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192741; c=relaxed/simple;
-	bh=oHRxizxfwYizJGNRYgeFhGw0N4msBtAciVJlPDUnmvw=;
+	s=arc-20240116; t=1753192265; c=relaxed/simple;
+	bh=q6KfQeE4rm7QR8Ybvdi7UUIFnrBV93gA+R+VXEZz5qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLHqGLMz0jGX159rnVs/qAhEzEXovqbB+8Z/fyJe6GeQ1uq8eQfV56/oFK0Cz+Dsps1WyAAzJeX91cei8z2gaCbHZB07WE2dAkBMwZHEEQa7Qx4z/fhQwRPKLkpn52e8c2SypNhrhwiNkmjfaVftuLxnN6MWVPbvfHXAKSnSSv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFsV4r6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CB8C4CEEB;
-	Tue, 22 Jul 2025 13:59:01 +0000 (UTC)
+	 MIME-Version; b=pRYFm4cSF85tXxIcQOMGb+Q58nCnGToK9YY5pOxKn15c/x6bof/GL1+7zsaYwxx/N1v86KDvcYpHgN9tqtDAg0QtPZAL1wlJN08lObX8wpOgu/TTddV7xL7xvy41FEDchJ/DdjJNpeY7h0C+NjkQVS3XdMI1ag5V/KFwH8ZjeW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b06Y6DVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221B5C4CEEB;
+	Tue, 22 Jul 2025 13:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192741;
-	bh=oHRxizxfwYizJGNRYgeFhGw0N4msBtAciVJlPDUnmvw=;
+	s=korg; t=1753192265;
+	bh=q6KfQeE4rm7QR8Ybvdi7UUIFnrBV93gA+R+VXEZz5qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zFsV4r6Dqg/gAo7Ohnc1ZSUPYYoyIPBv/apbmZhojVL3IJDhOzwLjC85jXH3p2TZ3
-	 G74sAehiWjEYQqSSpDxo+uf1klLZdboCwvHWhss4J245dVjcJnV3lw6INvhiIlH2as
-	 MGdeGFl7textkCIT1CPOD9f/pUBUSytXL5dPDYG4=
+	b=b06Y6DVg8U8reXbfbn9xWzgIyaapHcoCAR9gOArdQ7t7CzUuhXgVcpohilAoOXuqc
+	 nu/Z4H5uX4FUxETQanfRdSuED5MnvY+z2PyM3Jzqm560cBNe1NOar6CdEGPb5F+BcG
+	 CrvQFHJt9dt2zvpvjr132Fx/2ggRXy8kX2P3VNSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.12 044/158] arm64: dts: imx8mp-venice-gw71xx: fix TPM SPI frequency
-Date: Tue, 22 Jul 2025 15:43:48 +0200
-Message-ID: <20250722134342.385110787@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.6 014/111] pch_uart: Fix dma_sync_sg_for_device() nents value
+Date: Tue, 22 Jul 2025 15:43:49 +0200
+Message-ID: <20250722134333.925073611@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 528e2d3125ad8d783e922033a0a8e2adb17b400e upstream.
+commit 6c0e9f05c9d7875995b0e92ace71be947f280bbd upstream.
 
-The IMX8MPDS Table 37 [1] shows that the max SPI master read frequency
-depends on the pins the interface is muxed behind with ECSPI2
-muxed behind ECSPI2 supporting up to 25MHz.
+The dma_sync_sg_for_device() functions should be called with the same
+nents as the dma_map_sg(), not the value the map function returned
+according to the documentation in Documentation/core-api/dma-api.rst:450:
+	With the sync_sg API, all the parameters must be the same
+	as those passed into the sg mapping API.
 
-Adjust the spi-max-frequency based on these findings.
-
-[1] https://www.nxp.com/webapp/Download?colCode=IMX8MPIEC
-
-Fixes: 1a8f6ff6a291 ("arm64: dts: imx8mp-venice-gw71xx: add TPM device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Link: https://lore.kernel.org/stable/20250523173723.4167474-1-tharvey%40gateworks.com
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: da3564ee027e ("pch_uart: add multi-scatter processing")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250701113452.18590-2-fourier.thomas@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi |    2 +-
+ drivers/tty/serial/pch_uart.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-@@ -70,7 +70,7 @@
- 	tpm@1 {
- 		compatible = "atmel,attpm20p", "tcg,tpm_tis-spi";
- 		reg = <0x1>;
--		spi-max-frequency = <36000000>;
-+		spi-max-frequency = <25000000>;
- 	};
- };
- 
+--- a/drivers/tty/serial/pch_uart.c
++++ b/drivers/tty/serial/pch_uart.c
+@@ -967,7 +967,7 @@ static unsigned int dma_handle_tx(struct
+ 			__func__);
+ 		return 0;
+ 	}
+-	dma_sync_sg_for_device(port->dev, priv->sg_tx_p, nent, DMA_TO_DEVICE);
++	dma_sync_sg_for_device(port->dev, priv->sg_tx_p, num, DMA_TO_DEVICE);
+ 	priv->desc_tx = desc;
+ 	desc->callback = pch_dma_tx_complete;
+ 	desc->callback_param = priv;
 
 
 
