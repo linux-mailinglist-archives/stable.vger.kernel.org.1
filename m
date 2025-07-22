@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-163992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5731B0DC92
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6345EB0DB4E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784E91894C85
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85EBB56190A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE93219CCEC;
-	Tue, 22 Jul 2025 14:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EB228AB11;
+	Tue, 22 Jul 2025 13:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkTBeNgz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmhIaPDS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE93B1A2C25;
-	Tue, 22 Jul 2025 14:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EB2433A8;
+	Tue, 22 Jul 2025 13:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192887; cv=none; b=TwyruWtK4IRRyilEH7Ec4Y3zgrQCtDzObjYdYKV5Mh4ZvGZM9zxfkcbzHhQEzDuGAj8YoJYon156OBQgRBkHymrapiBTA3xKc8R3B12SrFfxQiREdbfn/Nn6iUoIleoL+0N2PgN5dH4FeImyVd6+pnE5BC7Nx1u9vsGFmQkID8c=
+	t=1753192070; cv=none; b=R0I+uqXZ20Aker2EbuFOM1KdiMgoliE1RvO5jo0x9z/Dtm+UkYeH1KPpL0f2wtQsZF36cmR3O9+NLs6mDlAUYqW5XQFujSyNGzqpKHaUlv/DJCEvTEY557NoKH6F/t5RjcfFcnwJeLa/ylAbgG+0mK767GjAP72L+2reqSjRyJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192887; c=relaxed/simple;
-	bh=XEKahlblWpzp5pl3JVAtkfpzyYFsnKPpr10FOwxNt9E=;
+	s=arc-20240116; t=1753192070; c=relaxed/simple;
+	bh=KC+4gWqovkxVglkZOsPumxvBN4LqtloBOz3xLWY4gu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e8twUZ775MAoyB1NxIpFOwYNqx9C37jBeHbW+YsE/scJPpr6Ddm6GlkqriM5yYsZVL1erTJQfqQA6oPsj/745Vo4Tya0WjXVwGT+uXdF/arYfxmjvy97PmudRil4Wf3ChWQ+53f+u5vaA+T+tJiXnRacQF6S8Po+JY54nGiomqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkTBeNgz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE88C4CEF5;
-	Tue, 22 Jul 2025 14:01:26 +0000 (UTC)
+	 MIME-Version; b=d4kBY3WB14fk+sm02+9OGO70NgG7F1o2/tuc01o5lWvxW6Nab4DyCZi9JxBTFUgWU9xcPy0u1kQQBWeufwpvQw5GDmt4yDxeOa/BKMKRYtfQVWg+2gJVEkk46MqhbB22uEndz+AZ62/Rp9HofNgpsuHU0Ia4URSSEq/5AVkNhG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmhIaPDS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12506C4CEEB;
+	Tue, 22 Jul 2025 13:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192887;
-	bh=XEKahlblWpzp5pl3JVAtkfpzyYFsnKPpr10FOwxNt9E=;
+	s=korg; t=1753192070;
+	bh=KC+4gWqovkxVglkZOsPumxvBN4LqtloBOz3xLWY4gu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkTBeNgzrddTjfBH6/1e29Xlz5rit8IKgu1qLXdqfkyxFQurZFDGbewl7/4kaRcLu
-	 JgSODlaUALeabah1sLatjgbWKNQDVLaxXnbcizN5vI/DVTPrip5XsjC0FEEp/tjSjF
-	 d4k4dLin0VsyAkuHDlSNnVWdProGecM17EXZaDMA=
+	b=GmhIaPDS1hXcYHEtshu7m9oxtGPp5BNthJQLH1NfbXwlhqHMwxppS1iqxmtOdeBJY
+	 w/C+j5XYabPu8SH4eYt3EE3DNG4BqViGVOtDvYwY7zrDmWLQ0t9sn8eJ6jP/qiMF3+
+	 /qlV8dCl0zM4PM8qGndjX1kGqnUm9KZgdUUeb4gI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e2c932aec5c8a6e1d31c@syzkaller.appspotmail.com,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/158] bpf: Reject %p% format string in bprintf-like helpers
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 35/79] comedi: aio_iiro_16: Fix bit shift out of bounds
 Date: Tue, 22 Jul 2025 15:44:31 +0200
-Message-ID: <20250722134344.013281054@linuxfoundation.org>
+Message-ID: <20250722134329.659119976@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit f8242745871f81a3ac37f9f51853d12854fd0b58 ]
+commit 66acb1586737a22dd7b78abc63213b1bcaa100e4 upstream.
 
-static const char fmt[] = "%p%";
-    bpf_trace_printk(fmt, sizeof(fmt));
+When checking for a supported IRQ number, the following test is used:
 
-The above BPF program isn't rejected and causes a kernel warning at
-runtime:
+	if ((1 << it->options[1]) & 0xdcfc) {
 
-    Please remove unsupported %\x00 in format string
-    WARNING: CPU: 1 PID: 7244 at lib/vsprintf.c:2680 format_decode+0x49c/0x5d0
+However, `it->options[i]` is an unchecked `int` value from userspace, so
+the shift amount could be negative or out of bounds.  Fix the test by
+requiring `it->options[1]` to be within bounds before proceeding with
+the original test.  Valid `it->options[1]` values that select the IRQ
+will be in the range [1,15]. The value 0 explicitly disables the use of
+interrupts.
 
-This happens because bpf_bprintf_prepare skips over the second %,
-detected as punctuation, while processing %p. This patch fixes it by
-not skipping over punctuation. %\x00 is then processed in the next
-iteration and rejected.
-
-Reported-by: syzbot+e2c932aec5c8a6e1d31c@syzkaller.appspotmail.com
-Fixes: 48cac3f4a96d ("bpf: Implement formatted output helpers with bstr_printf")
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/a0e06cc479faec9e802ae51ba5d66420523251ee.1751395489.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ad7a370c8be4 ("staging: comedi: aio_iiro_16: add command support for change of state detection")
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707134622.75403-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/helpers.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/comedi/drivers/aio_iiro_16.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 9173d107758d4..6cf165c55bdac 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -883,6 +883,13 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
- 		if (fmt[i] == 'p') {
- 			sizeof_cur_arg = sizeof(long);
- 
-+			if (fmt[i + 1] == 0 || isspace(fmt[i + 1]) ||
-+			    ispunct(fmt[i + 1])) {
-+				if (tmp_buf)
-+					cur_arg = raw_args[num_spec];
-+				goto nocopy_fmt;
-+			}
-+
- 			if ((fmt[i + 1] == 'k' || fmt[i + 1] == 'u') &&
- 			    fmt[i + 2] == 's') {
- 				fmt_ptype = fmt[i + 1];
-@@ -890,11 +897,9 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
- 				goto fmt_str;
- 			}
- 
--			if (fmt[i + 1] == 0 || isspace(fmt[i + 1]) ||
--			    ispunct(fmt[i + 1]) || fmt[i + 1] == 'K' ||
-+			if (fmt[i + 1] == 'K' ||
- 			    fmt[i + 1] == 'x' || fmt[i + 1] == 's' ||
- 			    fmt[i + 1] == 'S') {
--				/* just kernel pointers */
- 				if (tmp_buf)
- 					cur_arg = raw_args[num_spec];
- 				i++;
--- 
-2.39.5
-
+--- a/drivers/comedi/drivers/aio_iiro_16.c
++++ b/drivers/comedi/drivers/aio_iiro_16.c
+@@ -177,7 +177,8 @@ static int aio_iiro_16_attach(struct com
+ 	 * Digital input change of state interrupts are optionally supported
+ 	 * using IRQ 2-7, 10-12, 14, or 15.
+ 	 */
+-	if ((1 << it->options[1]) & 0xdcfc) {
++	if (it->options[1] > 0 && it->options[1] < 16 &&
++	    (1 << it->options[1]) & 0xdcfc) {
+ 		ret = request_irq(it->options[1], aio_iiro_16_cos, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0)
 
 
 
