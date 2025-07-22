@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-163932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8C9B0DC74
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:02:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 607BBB0DCAA
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDB3A6C030D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:57:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AE036C5E7C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E32B2E11B6;
-	Tue, 22 Jul 2025 13:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECBA2C159F;
+	Tue, 22 Jul 2025 14:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjRIdvF5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5bORiuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A014288C01;
-	Tue, 22 Jul 2025 13:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C33C22D785;
+	Tue, 22 Jul 2025 14:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192685; cv=none; b=NTN1D6HyLhtOSJAI5nARWQOcZApfJVrBiyie+ykA4wiqCBC3d1U2t2yxxc6Rf9G0N5sC3G2pe7JHIFdHNA5dC49wF3uNzEx6ENHavQOwY9IAqZXzdeh4gAkqis43peD0A9MKhpAARh0jDjWtYmNIWTxKG4oHcvuAX6pi++G6jF4=
+	t=1753192836; cv=none; b=UoBuPSSiXmeQ9Eu5J6jOcAh4pvpG2ZxbTachYvyDnEdE/IXAHcXePkisTyqTKK1DVHsTDfSwi/7vzMVGfPzKoicNP5vYybZZGBNB9cZK7apSEcJiWabiXbqafe1YU0bkaOdMcD+SggJLeI9nt1mXHOunbdcoa1GAUyAlZx+ddzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192685; c=relaxed/simple;
-	bh=V+z5rcyWEvjUSkg1wrUd3U5VSSRXCpn33ql9CR367Rg=;
+	s=arc-20240116; t=1753192836; c=relaxed/simple;
+	bh=m0ZGaLsinQtKPMK7o3PgRQ+RZjYJ377tDwYKmtZ2Wok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8t6Vw0tsxks7UHTF7dUj8a+vJjBra7jLnLRAFqNhUicgyZjF3FwLh5nGGesl2AHJDj4tIY8ECz04jga4/6F0UIspWEspya6hfn8azZie2gRHd4+NrGRSwEm/ry6tjjfzBNL+mngqF7kgUmvQh4lRdTGHLdzH5CWogDKNm+IDJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjRIdvF5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5261C4CEEB;
-	Tue, 22 Jul 2025 13:58:04 +0000 (UTC)
+	 MIME-Version; b=qgILh9K3ohIEAZLUgTsw6G383eq8ilLga5nRT3qN6Fzf842GIeyUryNT7Ui7zlnj+vzEr95+RjTCRP19YTRSDgL1yd+PqGEjj7ZdVFUwRdaSE4FPYnyjwFFpsKR60nWxbzBuuCj9jDybUZAwoR2vXcGv0o9MMrpGoM1kMBHnqqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5bORiuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35729C4CEEB;
+	Tue, 22 Jul 2025 14:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192685;
-	bh=V+z5rcyWEvjUSkg1wrUd3U5VSSRXCpn33ql9CR367Rg=;
+	s=korg; t=1753192835;
+	bh=m0ZGaLsinQtKPMK7o3PgRQ+RZjYJ377tDwYKmtZ2Wok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjRIdvF5K0lrQEAUO2E3Tzpn1ZRFyef3znxOwBIq2zvuksCq5mumMOBkB2yarNQTu
-	 Xxcc1Qwixpq+iokObCz0rpPpf93QpIrxez3T0mEy9YqwCn6O+to3+Q/umFesj+BxBK
-	 UWkiymJ9p/h1LzgXDswCKSVn3po6It5PK+Ov+qpA=
+	b=t5bORiuZjX4ZV5l6anR3jxjFQxqFRC9Aoe16RBuJU0HUbWGzAH7WuaSSZ34W/LJoP
+	 mSBpqe0gqLns6TrykcPiSmGnowYrrHcLsa+v5mUAKshc28LG/NECfNE+oYnVt6kbzS
+	 cVvfBap+hCUjgHD3oU9L8HS2LLK8X5rttqhTsO2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Attila Fazekas <afazekas@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 027/158] tracing/osnoise: Fix crash in timerlat_dump_stack()
-Date: Tue, 22 Jul 2025 15:43:31 +0200
-Message-ID: <20250722134341.759727083@linuxfoundation.org>
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 028/158] objtool/rust: add one more `noreturn` Rust function for Rust 1.89.0
+Date: Tue, 22 Jul 2025 15:43:32 +0200
+Message-ID: <20250722134341.795476932@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
 References: <20250722134340.596340262@linuxfoundation.org>
@@ -69,73 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 85a3bce695b361d85fc528e6fbb33e4c8089c806 upstream.
+commit aa7b65c2a29e8b07057b13624102c6810597c0d5 upstream.
 
-We have observed kernel panics when using timerlat with stack saving,
-with the following dmesg output:
+Starting with Rust 1.89.0 (expected 2025-08-07), under
+`CONFIG_RUST_DEBUG_ASSERTIONS=y`, `objtool` may report:
 
-memcpy: detected buffer overflow: 88 byte write of buffer size 0
-WARNING: CPU: 2 PID: 8153 at lib/string_helpers.c:1032 __fortify_report+0x55/0xa0
-CPU: 2 UID: 0 PID: 8153 Comm: timerlatu/2 Kdump: loaded Not tainted 6.15.3-200.fc42.x86_64 #1 PREEMPT(lazy)
-Call Trace:
- <TASK>
- ? trace_buffer_lock_reserve+0x2a/0x60
- __fortify_panic+0xd/0xf
- __timerlat_dump_stack.cold+0xd/0xd
- timerlat_dump_stack.part.0+0x47/0x80
- timerlat_fd_read+0x36d/0x390
- vfs_read+0xe2/0x390
- ? syscall_exit_to_user_mode+0x1d5/0x210
- ksys_read+0x73/0xe0
- do_syscall_64+0x7b/0x160
- ? exc_page_fault+0x7e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+    rust/kernel.o: warning: objtool: _R..._6kernel4pageNtB5_4Page8read_raw()
+    falls through to next function _R..._6kernel4pageNtB5_4Page9write_raw()
 
-__timerlat_dump_stack() constructs the ftrace stack entry like this:
+(and many others) due to calls to the `noreturn` symbol:
 
-struct stack_entry *entry;
-...
-memcpy(&entry->caller, fstack->calls, size);
-entry->size = fstack->nr_entries;
+    core::panicking::panic_nounwind_fmt
 
-Since commit e7186af7fb26 ("tracing: Add back FORTIFY_SOURCE logic to
-kernel_stack event structure"), struct stack_entry marks its caller
-field with __counted_by(size). At the time of the memcpy, entry->size
-contains garbage from the ringbuffer, which under some circumstances is
-zero, triggering a kernel panic by buffer overflow.
+Thus add the mangled one to the list so that `objtool` knows it is
+actually `noreturn`.
 
-Populate the size field before the memcpy so that the out-of-bounds
-check knows the correct size. This is analogous to
-__ftrace_trace_stack().
+See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+for more details.
 
-Cc: stable@vger.kernel.org
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Cc: Attila Fazekas <afazekas@redhat.com>
-Link: https://lore.kernel.org/20250716143601.7313-1-tglozar@redhat.com
-Fixes: e7186af7fb26 ("tracing: Add back FORTIFY_SOURCE logic to kernel_stack event structure")
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250712160103.1244945-2-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_osnoise.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/check.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -665,8 +665,8 @@ __timerlat_dump_stack(struct trace_buffe
- 
- 	entry = ring_buffer_event_data(event);
- 
--	memcpy(&entry->caller, fstack->calls, size);
- 	entry->size = fstack->nr_entries;
-+	memcpy(&entry->caller, fstack->calls, size);
- 
- 	if (!call_filter_check_discard(call, entry, buffer, event))
- 		trace_buffer_unlock_commit_nostack(buffer, event);
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -216,6 +216,7 @@ static bool is_rust_noreturn(const struc
+ 	       str_ends_with(func->name, "_4core9panicking14panic_explicit")				||
+ 	       str_ends_with(func->name, "_4core9panicking14panic_nounwind")				||
+ 	       str_ends_with(func->name, "_4core9panicking18panic_bounds_check")			||
++	       str_ends_with(func->name, "_4core9panicking18panic_nounwind_fmt")			||
+ 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
+ 	       str_ends_with(func->name, "_4core9panicking30panic_null_pointer_dereference")		||
+ 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
 
 
 
