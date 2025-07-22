@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-163862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296C7B0DC13
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4137EB0DCAD
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF917AC0A5B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BF71188514A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3702EA479;
-	Tue, 22 Jul 2025 13:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42322C08B6;
+	Tue, 22 Jul 2025 14:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2TNdTlP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRcNvoQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860E82DC32B;
-	Tue, 22 Jul 2025 13:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B042E36E8;
+	Tue, 22 Jul 2025 14:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192458; cv=none; b=EGnzmYlb6f0DhZF77zNsuAlkk6mmBJEg0l+/YMeisKZ/NEwIwq3xYtfuPYT1HgqBb+tQNFtXbjdj1AQ1vs6VMce64hJL72z8tFjqGSK9z3qt08D9u90LvY4+XxKxNMpB/gZ3AjAdLzgAe3kRZtNF3FZ6XMi+++5SLIJRxzCytmY=
+	t=1753192936; cv=none; b=KgTryTOFYdU6YwfPnNcHsl5IF1JqQHE5R7LD/Nx/Fexjri3/0eGiVkCwrcfflYy6jEwJTpcuYWq0Ig3OrjzEia8IQYGdK2kPURc6eh0UG21xpnaERIl9rngbMygef82v5UU2AgHBHVb/jwjx2t9opZYKEqVmjDEgQFkzGcQp/9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192458; c=relaxed/simple;
-	bh=6TYYfEzBTWtqxyFPV8/ws0MkFwctNwdnr7zRKjLomww=;
+	s=arc-20240116; t=1753192936; c=relaxed/simple;
+	bh=2OtmVCb9xhUYvv7y+7HHokh1Jh1CwazQAsqyt7D4Xjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jl4K+BiZt3Aeav5MwOJBAdGH8JYSA9XuvjpEBLMMLJ6AxvLt37f+yjSZ0v08nsTb2vFM2t+KQZ3Rl2sHrr+/sraicHb1wRSiPM0NAc7nNV1MbMtYNdru55G1EW9MOdebY8MaLohG+oAppDUCgCaOSII/IvL8QWwvkeL6EXen714=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2TNdTlP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0D3C4CEF1;
-	Tue, 22 Jul 2025 13:54:17 +0000 (UTC)
+	 MIME-Version; b=AX8W0OSEntQPFDvCGz72c7kN6aFvl6LT8CBlcTAzB9zlW/xJ9ICfdsYycMVnSGUntyJlPiIO2XJic2R7S0/TzPJL3u2Qg288weNUI4eJvyDisv0hZm5lrmtVW0fCVh17k8BnKrabdGzyMKHk1UzLWwo76exwmqV51nkZ4i7hwYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRcNvoQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5476C4CEEB;
+	Tue, 22 Jul 2025 14:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192458;
-	bh=6TYYfEzBTWtqxyFPV8/ws0MkFwctNwdnr7zRKjLomww=;
+	s=korg; t=1753192936;
+	bh=2OtmVCb9xhUYvv7y+7HHokh1Jh1CwazQAsqyt7D4Xjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2TNdTlPR3rWvo5cvpFy1gNPLlzhw1xJaq9OrEjKOSk9X/c+2CvnjPy4ZOO7aycPs
-	 +oDEgh21aE69fUmeW1lBoQAooaI/irUmN8G6dHC1RjDeTJyLJoU5lLUhticMt7zJhf
-	 ACwO2THHBAUR5+CS0RNYIqZ8Y9s2DtQURcIW9Pvc=
+	b=lRcNvoQ1aOXwupHk65uQ8VVE876EZzyZl+23QUsqN5QMEnb6UvbAQG1Nb0R2arhfd
+	 80tkq4/zQRKSv22slM+jDGQe401kuuQLt03DkP8MjmP4jgkEtKjoyPo9Thm5wPj0BW
+	 aWzZ5XLAyVByd0odyoTKcEG68QQ54GGYqAuhVxmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 038/111] mmc: sdhci_am654: Workaround for Errata i2312
+	Jonathan Cameron <jic23@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 069/158] iio: adc: max1363: Fix MAX1363_4X_CHANS/MAX1363_8X_CHANS[]
 Date: Tue, 22 Jul 2025 15:44:13 +0200
-Message-ID: <20250722134334.819689106@linuxfoundation.org>
+Message-ID: <20250722134343.346777037@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Fabio Estevam <festevam@denx.de>
 
-commit 6d0b1c01847fedd7c85a5cdf59b8cfc7d14512e6 upstream.
+commit 6d21f2c2dd843bceefd9455f2919f6bb526797f0 upstream.
 
-Errata i2312 [0] for K3 silicon mentions the maximum obtainable
-timeout through MMC host controller is 700ms. And for commands taking
-longer than 700ms, hardware timeout should be disabled and software
-timeout should be used.
+Since commit 2718f15403fb ("iio: sanity check available_scan_masks array"),
+booting a board populated with a MAX11601 results in a flood of warnings:
 
-The workaround for Errata i2312 can be achieved by adding
-SDHCI_QUIRK2_DISABLE_HW_TIMEOUT quirk in sdhci_am654.
+max1363 1-0064: available_scan_mask 8 subset of 0. Never used
+max1363 1-0064: available_scan_mask 9 subset of 0. Never used
+max1363 1-0064: available_scan_mask 10 subset of 0. Never used
+max1363 1-0064: available_scan_mask 11 subset of 0. Never used
+max1363 1-0064: available_scan_mask 12 subset of 0. Never used
+max1363 1-0064: available_scan_mask 13 subset of 0. Never used
+...
 
-[0] https://www.ti.com/lit/pdf/sprz487
+These warnings are caused by incorrect offsets used for differential
+channels in the MAX1363_4X_CHANS() and MAX1363_8X_CHANS() macros.
 
-Signed-off-by: Judith Mendez <jm@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Fixes: 41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
+The max1363_mode_table[] defines the differential channel mappings as
+follows:
+
+MAX1363_MODE_DIFF_SINGLE(0, 1, 1 << 12),
+MAX1363_MODE_DIFF_SINGLE(2, 3, 1 << 13),
+MAX1363_MODE_DIFF_SINGLE(4, 5, 1 << 14),
+MAX1363_MODE_DIFF_SINGLE(6, 7, 1 << 15),
+MAX1363_MODE_DIFF_SINGLE(8, 9, 1 << 16),
+MAX1363_MODE_DIFF_SINGLE(10, 11, 1 << 17),
+MAX1363_MODE_DIFF_SINGLE(1, 0, 1 << 18),
+MAX1363_MODE_DIFF_SINGLE(3, 2, 1 << 19),
+MAX1363_MODE_DIFF_SINGLE(5, 4, 1 << 20),
+MAX1363_MODE_DIFF_SINGLE(7, 6, 1 << 21),
+MAX1363_MODE_DIFF_SINGLE(9, 8, 1 << 22),
+MAX1363_MODE_DIFF_SINGLE(11, 10, 1 << 23),
+
+Update the macros to follow this same pattern, ensuring that the scan masks
+are valid and preventing the warnings.
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250626231452.3460987-1-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://patch.msgid.link/20250516173900.677821-1-festevam@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci_am654.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/iio/adc/max1363.c |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -559,7 +559,8 @@ static struct sdhci_ops sdhci_am654_ops
- static const struct sdhci_pltfm_data sdhci_am654_pdata = {
- 	.ops = &sdhci_am654_ops,
- 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
--	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-+		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
- };
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -504,10 +504,10 @@ static const struct iio_event_spec max13
+ 	MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),		\
+ 	MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),		\
+ 	MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),		\
+-	MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),	\
+-	MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),	\
+-	MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),	\
+-	MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),	\
++	MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),	\
++	MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),	\
++	MAX1363_CHAN_B(1, 0, d1m0, 18, bits, ev_spec, num_ev_spec),	\
++	MAX1363_CHAN_B(3, 2, d3m2, 19, bits, ev_spec, num_ev_spec),	\
+ 	IIO_CHAN_SOFT_TIMESTAMP(8)					\
+ 	}
  
- static const struct sdhci_am654_driver_data sdhci_am654_sr1_drvdata = {
-@@ -589,7 +590,8 @@ static struct sdhci_ops sdhci_j721e_8bit
- static const struct sdhci_pltfm_data sdhci_j721e_8bit_pdata = {
- 	.ops = &sdhci_j721e_8bit_ops,
- 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
--	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-+		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
- };
- 
- static const struct sdhci_am654_driver_data sdhci_j721e_8bit_drvdata = {
-@@ -613,7 +615,8 @@ static struct sdhci_ops sdhci_j721e_4bit
- static const struct sdhci_pltfm_data sdhci_j721e_4bit_pdata = {
- 	.ops = &sdhci_j721e_4bit_ops,
- 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
--	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-+		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
- };
- 
- static const struct sdhci_am654_driver_data sdhci_j721e_4bit_drvdata = {
+@@ -602,14 +602,14 @@ static const enum max1363_modes max11608
+ 	MAX1363_CHAN_U(5, _s5, 5, bits, NULL, 0),	\
+ 	MAX1363_CHAN_U(6, _s6, 6, bits, NULL, 0),	\
+ 	MAX1363_CHAN_U(7, _s7, 7, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(0, 1, d0m1, 8, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(2, 3, d2m3, 9, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(4, 5, d4m5, 10, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(6, 7, d6m7, 11, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(1, 0, d1m0, 12, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(3, 2, d3m2, 13, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(5, 4, d5m4, 14, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(7, 6, d7m6, 15, bits, NULL, 0),	\
++	MAX1363_CHAN_B(0, 1, d0m1, 12, bits, NULL, 0),	\
++	MAX1363_CHAN_B(2, 3, d2m3, 13, bits, NULL, 0),	\
++	MAX1363_CHAN_B(4, 5, d4m5, 14, bits, NULL, 0),	\
++	MAX1363_CHAN_B(6, 7, d6m7, 15, bits, NULL, 0),	\
++	MAX1363_CHAN_B(1, 0, d1m0, 18, bits, NULL, 0),	\
++	MAX1363_CHAN_B(3, 2, d3m2, 19, bits, NULL, 0),	\
++	MAX1363_CHAN_B(5, 4, d5m4, 20, bits, NULL, 0),	\
++	MAX1363_CHAN_B(7, 6, d7m6, 21, bits, NULL, 0),	\
+ 	IIO_CHAN_SOFT_TIMESTAMP(16)			\
+ }
+ static const struct iio_chan_spec max11602_channels[] = MAX1363_8X_CHANS(8);
 
 
 
