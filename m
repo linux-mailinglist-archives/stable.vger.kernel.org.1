@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-164116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEDAB0DDCA
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:20:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C1BB0DDBF
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94E3CAC3A1B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:13:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B71F1C8826A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3852EB5D1;
-	Tue, 22 Jul 2025 14:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C422EB5D5;
+	Tue, 22 Jul 2025 14:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRLU6Qa+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GQ2u1IR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4C42E9ECA;
-	Tue, 22 Jul 2025 14:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA98E2DEA8E;
+	Tue, 22 Jul 2025 14:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193299; cv=none; b=M/O/prfwq/+Laq9XirEkq5pzhoF8HNzCMDDoYovmW5JnAH2TLPYemNYKndWOD3nShwggmtdweQR8QcXqkoEVtSEQdC/vU6FYH8eGbmynfNCiKJ1Mnbow3t16RfLAd2C9RDmkJvRx3eVFR/ZVipmBtek8vORXDklaX9EERUuwZWg=
+	t=1753193337; cv=none; b=EUd1CATT3hv6FLTGTqooGxE1fES8beDoU/ee9cG7BDarfsgmKJ4fP1w1VJO3QLRNPNnPl75F3lxWD/wQVt6FKuOc3jYIVQBZjBr+Xir2EWTL1cGA5R3dP52jSUc454gLJanWuigmZbUKV1J0x2AVmpaF6SMKRpkTl3v6nFN/48A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193299; c=relaxed/simple;
-	bh=GYSMXA9bYKIJ6g+SWwiqlcrpbNnQjGPItDgVuqO76E0=;
+	s=arc-20240116; t=1753193337; c=relaxed/simple;
+	bh=qxJsiimbuUrreW7S6i6QZamuhJN2zOX6vL0kgYcdLoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1VY7B6osFLv+NffME1Z9/7HdOHkpvDjn9jqRB1WoDFr1wR5YrMh6J3wYGoyzWiqfnAWWCnLhuQYUUm+HP50u6JwAbaGWtWFvmCdTG2H89xgZtH1HueWUvubqbyrHMWnpV/5ojzZZn/Lyf+yowHqILJfX9fXjnmhBENSMDf4078=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRLU6Qa+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF538C4CEEB;
-	Tue, 22 Jul 2025 14:08:18 +0000 (UTC)
+	 MIME-Version; b=UkcsP5ebz/wq3ugSYpDOaV+B3jNGILL/w0/xSJf5VI9cgvxdQZfsys8WVifsEfWbq2cncfBjI66aQ62kjUEyWEjDeclrCI89RlTu/eEjXIih+geVFD8yR6TB1UuK++uGyIoLnBWPyZT5vPJzePK6IcubvbgEk6VL8SwVPMwulCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GQ2u1IR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C3AC4CEF1;
+	Tue, 22 Jul 2025 14:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193299;
-	bh=GYSMXA9bYKIJ6g+SWwiqlcrpbNnQjGPItDgVuqO76E0=;
+	s=korg; t=1753193337;
+	bh=qxJsiimbuUrreW7S6i6QZamuhJN2zOX6vL0kgYcdLoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRLU6Qa+1Zhi7xDLua+KC6KvvW3hfeZJX0x3JmBkSXdiZE+dOmk+0BZ2LtbKbyhjW
-	 3QXtm48n6K4WZGwJshmh/vK0uoHx38SrUGD3GVMKwUcK/HuCtFBIWRaSMs5gFcam1F
-	 IawOb0Buq8Z9jwCMjfm+V3NHrPwQi0odlM+SAi3A=
+	b=2GQ2u1IRbJrFzHuXfDMBXB5PDq30g+r6wzF2Modr+hpAG4FrzRNeWh0uPIJnk9pOq
+	 XMbPd8Uxs4LowzHPYPC7x1RJBM51jOpBKT4ZYXpoHyQV+D4x8k2oGSzC9Wq7n5rXub
+	 qA6XRqaJUxyETxe+uwAta9SwYgrMnjd01n1o6xpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eeli Haapalainen <eeli.haapalainen@protonmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.15 033/187] drm/amdgpu/gfx8: reset compute ring wptr on the GPU on resume
-Date: Tue, 22 Jul 2025 15:43:23 +0200
-Message-ID: <20250722134346.992023904@linuxfoundation.org>
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Steven Price <steven.price@arm.com>
+Subject: [PATCH 6.15 034/187] drm/panfrost: Fix scheduler workqueue bug
+Date: Tue, 22 Jul 2025 15:43:24 +0200
+Message-ID: <20250722134347.028250308@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -65,37 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eeli Haapalainen <eeli.haapalainen@protonmail.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-commit 83261934015c434fabb980a3e613b01d9976e877 upstream.
+commit cb345f954eacd162601e7d07ca2f0f0a17b54ee3 upstream.
 
-Commit 42cdf6f687da ("drm/amdgpu/gfx8: always restore kcq MQDs") made the
-ring pointer always to be reset on resume from suspend. This caused compute
-rings to fail since the reset was done without also resetting it for the
-firmware. Reset wptr on the GPU to avoid a disconnect between the driver
-and firmware wptr.
+When the GPU scheduler was ported to using a struct for its
+initialization parameters, it was overlooked that panfrost creates a
+distinct workqueue for timeout handling.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3911
-Fixes: 42cdf6f687da ("drm/amdgpu/gfx8: always restore kcq MQDs")
-Signed-off-by: Eeli Haapalainen <eeli.haapalainen@protonmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2becafc319db3d96205320f31cc0de4ee5a93747)
-Cc: stable@vger.kernel.org
+The pointer to this new workqueue is not initialized to the struct,
+resulting in NULL being passed to the scheduler, which then uses the
+system_wq for timeout handling.
+
+Set the correct workqueue to the init args struct.
+
+Cc: stable@vger.kernel.org # 6.15+
+Fixes: 796a9f55a8d1 ("drm/sched: Use struct for drm_sched_init() params")
+Reported-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Closes: https://lore.kernel.org/dri-devel/b5d0921c-7cbf-4d55-aa47-c35cd7861c02@igalia.com/
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20250709102957.100849-2-phasta@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/panfrost/panfrost_job.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-@@ -4664,6 +4664,7 @@ static int gfx_v8_0_kcq_init_queue(struc
- 			memcpy(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(struct vi_mqd_allocation));
- 		/* reset ring buffer */
- 		ring->wptr = 0;
-+		atomic64_set((atomic64_t *)ring->wptr_cpu_addr, 0);
- 		amdgpu_ring_clear_ring(ring);
- 	}
- 	return 0;
+diff --git a/drivers/gpu/drm/panfrost/panfrost_job.c b/drivers/gpu/drm/panfrost/panfrost_job.c
+index 5657106c2f7d..15e2d505550f 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_job.c
++++ b/drivers/gpu/drm/panfrost/panfrost_job.c
+@@ -841,7 +841,6 @@ int panfrost_job_init(struct panfrost_device *pfdev)
+ 		.num_rqs = DRM_SCHED_PRIORITY_COUNT,
+ 		.credit_limit = 2,
+ 		.timeout = msecs_to_jiffies(JOB_TIMEOUT_MS),
+-		.timeout_wq = pfdev->reset.wq,
+ 		.name = "pan_js",
+ 		.dev = pfdev->dev,
+ 	};
+@@ -879,6 +878,7 @@ int panfrost_job_init(struct panfrost_device *pfdev)
+ 	pfdev->reset.wq = alloc_ordered_workqueue("panfrost-reset", 0);
+ 	if (!pfdev->reset.wq)
+ 		return -ENOMEM;
++	args.timeout_wq = pfdev->reset.wq;
+ 
+ 	for (j = 0; j < NUM_JOB_SLOTS; j++) {
+ 		js->queue[j].fence_context = dma_fence_context_alloc(1);
+-- 
+2.50.1
+
 
 
 
