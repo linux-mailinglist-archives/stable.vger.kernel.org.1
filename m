@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-164234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7B4B0DE40
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:25:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E336CB0DD0F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B4701CA0FCD
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:19:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB5E93AF5BE
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280172ECD29;
-	Tue, 22 Jul 2025 14:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123C623AB9D;
+	Tue, 22 Jul 2025 14:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYxUrCGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2thji4Rb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82F12EBDCB;
-	Tue, 22 Jul 2025 14:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31461D6193;
+	Tue, 22 Jul 2025 14:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193687; cv=none; b=t/S7HmHhOmYPEpHeZnQY2vtyqqeXnWlWgruJQOpz3IVNmnkFQCnuxc4DsCVZsTPYT/Mk+xLp/lppUvPrKdUPSM8qSu1uaq0ng+f6thcrtSxwJsK77E5+P4KknhKnnnNl/oIU2urIy0xMYwnAsIa6g6Szx3K6/uwpB8vjxDUQcOI=
+	t=1753193108; cv=none; b=YbwG1urgC33lJQiuiVc2DWB+BfU/baBFK95oBbBeKxNPwgDU/YrVXA+YhRq+NE1BZdWcWYk1eMqG87ZOYXi218WvfgY80s9cktmyJvY2wB0cHLjoofrUmyymw/t3+YuISZJ3cLdktvGRNGFUa65/NBqgmZKobHwrKm9EBPvdRao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193687; c=relaxed/simple;
-	bh=+geQYFsefC8tzABoxLbV1EYS+u+7edUzrCiFd38Nx6c=;
+	s=arc-20240116; t=1753193108; c=relaxed/simple;
+	bh=MxfeZUtOggGDa7EHpZcMMiuYn+r1eyxzJn327PwoCZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YOtrvhOL/hHioJEnoEMJTmKAWKyXsWfPn5HV7NBDTrRdtacApqbqrHhCsGrcV+2rBF+xxST+yFkO6JBQCDw8P2lKa1fw8zF00+4tYyWilA4BqHfU19ouC8B3ObCGpGODs38NYgMVwgHaAlg5Q0yLAkEcag8ykrIfF8u6PZsasBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYxUrCGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1401C4CEEB;
-	Tue, 22 Jul 2025 14:14:46 +0000 (UTC)
+	 MIME-Version; b=iJsZDkacRvXUgil07AzpIr6qLvznQZbe6+18jY53v8cTyEQwjDW7mKviM3vKviLQsj/Hzb63hm7H5D1FEXpIIbVsutK+RL6QBnCO9P84GgNLbKqDNboeb2FmtCDdtGGuViBKQmd919rkHU3F51ghEBfYCHirfqwYJHRp0ocmQPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2thji4Rb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B23EC4CEEB;
+	Tue, 22 Jul 2025 14:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193687;
-	bh=+geQYFsefC8tzABoxLbV1EYS+u+7edUzrCiFd38Nx6c=;
+	s=korg; t=1753193108;
+	bh=MxfeZUtOggGDa7EHpZcMMiuYn+r1eyxzJn327PwoCZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FYxUrCGVZ8D21olgqzXgYZy4kdkzvpe8/wLJBqfSo2SED8QX2SkWDr7AaU8Hozgv7
-	 ZcL1x0jl2v2uT5PcYFiphETxxyIRPkvSAzJ74yhLgC4FirBj5oSzPiJE41NWNuj/B8
-	 S3feceu9jmtt8DyvYTbw348ahrm+EHFlsiIfmiJQ=
+	b=2thji4Rb6cx1sPniSzKt8xQE2bACFGQnv+zFAoUP5ij7Ltzepx4R1luZDyKKxi8aM
+	 O0JkkTymXV5Ea3EY+VqPP2mpLscZkPm3+2LRsGqtQzME9qrwgoVoPUUoCFjy4t22L0
+	 73JthCCX9SiuIGihTAttgw8GVeIxeiBiRCsm5qDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.15 167/187] usb: hub: fix detection of high tier USB3 devices behind suspended hubs
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 153/158] i2c: omap: Handle omap_i2c_init() errors in omap_i2c_probe()
 Date: Tue, 22 Jul 2025 15:45:37 +0200
-Message-ID: <20250722134351.990303451@linuxfoundation.org>
+Message-ID: <20250722134346.424543731@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
-References: <20250722134345.761035548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 8f5b7e2bec1c36578fdaa74a6951833541103e27 upstream.
+commit a9503a2ecd95e23d7243bcde7138192de8c1c281 upstream.
 
-USB3 devices connected behind several external suspended hubs may not
-be detected when plugged in due to aggressive hub runtime pm suspend.
+omap_i2c_init() can fail. Handle this error in omap_i2c_probe().
 
-The hub driver immediately runtime-suspends hubs if there are no
-active children or port activity.
-
-There is a delay between the wake signal causing hub resume, and driver
-visible port activity on the hub downstream facing ports.
-Most of the LFPS handshake, resume signaling and link training done
-on the downstream ports is not visible to the hub driver until completed,
-when device then will appear fully enabled and running on the port.
-
-This delay between wake signal and detectable port change is even more
-significant with chained suspended hubs where the wake signal will
-propagate upstream first. Suspended hubs will only start resuming
-downstream ports after upstream facing port resumes.
-
-The hub driver may resume a USB3 hub, read status of all ports, not
-yet see any activity, and runtime suspend back the hub before any
-port activity is visible.
-
-This exact case was seen when conncting USB3 devices to a suspended
-Thunderbolt dock.
-
-USB3 specification defines a 100ms tU3WakeupRetryDelay, indicating
-USB3 devices expect to be resumed within 100ms after signaling wake.
-if not then device will resend the wake signal.
-
-Give the USB3 hubs twice this time (200ms) to detect any port
-changes after resume, before allowing hub to runtime suspend again.
-
-Cc: stable <stable@kernel.org>
-Fixes: 2839f5bcfcfc ("USB: Turn on auto-suspend for USB 3.0 hubs.")
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250611112441.2267883-1-mathias.nyman@linux.intel.com
+Fixes: 010d442c4a29 ("i2c: New bus driver for TI OMAP boards")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: <stable@vger.kernel.org> # v2.6.19+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/565311abf9bafd7291ca82bcecb48c1fac1e727b.1751701715.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   33 ++++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-omap.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -68,6 +68,12 @@
-  */
- #define USB_SHORT_SET_ADDRESS_REQ_TIMEOUT	500  /* ms */
- 
-+/*
-+ * Give SS hubs 200ms time after wake to train downstream links before
-+ * assuming no port activity and allowing hub to runtime suspend back.
-+ */
-+#define USB_SS_PORT_U0_WAKE_TIME	200  /* ms */
-+
- /* Protect struct usb_device->state and ->children members
-  * Note: Both are also protected by ->dev.sem, except that ->state can
-  * change to USB_STATE_NOTATTACHED even when the semaphore isn't held. */
-@@ -1068,11 +1074,12 @@ int usb_remove_device(struct usb_device
- 
- enum hub_activation_type {
- 	HUB_INIT, HUB_INIT2, HUB_INIT3,		/* INITs must come first */
--	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME,
-+	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME, HUB_POST_RESUME,
- };
- 
- static void hub_init_func2(struct work_struct *ws);
- static void hub_init_func3(struct work_struct *ws);
-+static void hub_post_resume(struct work_struct *ws);
- 
- static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
- {
-@@ -1095,6 +1102,13 @@ static void hub_activate(struct usb_hub
- 			goto init2;
- 		goto init3;
- 	}
-+
-+	if (type == HUB_POST_RESUME) {
-+		usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
-+		hub_put(hub);
-+		return;
-+	}
-+
- 	hub_get(hub);
- 
- 	/* The superspeed hub except for root hub has to use Hub Depth
-@@ -1343,6 +1357,16 @@ static void hub_activate(struct usb_hub
- 		device_unlock(&hdev->dev);
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1472,7 +1472,9 @@ omap_i2c_probe(struct platform_device *p
  	}
  
-+	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
-+		/* give usb3 downstream links training time after hub resume */
-+		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
-+		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
-+				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
-+		usb_autopm_get_interface_no_resume(
-+			to_usb_interface(hub->intfdev));
-+		return;
-+	}
-+
- 	hub_put(hub);
- }
+ 	/* reset ASAP, clearing any IRQs */
+-	omap_i2c_init(omap);
++	r = omap_i2c_init(omap);
++	if (r)
++		goto err_mux_state_deselect;
  
-@@ -1361,6 +1385,13 @@ static void hub_init_func3(struct work_s
- 	hub_activate(hub, HUB_INIT3);
- }
+ 	if (omap->rev < OMAP_I2C_OMAP1_REV_2)
+ 		r = devm_request_irq(&pdev->dev, omap->irq, omap_i2c_omap1_isr,
+@@ -1515,6 +1517,7 @@ omap_i2c_probe(struct platform_device *p
  
-+static void hub_post_resume(struct work_struct *ws)
-+{
-+	struct usb_hub *hub = container_of(ws, struct usb_hub, init_work.work);
-+
-+	hub_activate(hub, HUB_POST_RESUME);
-+}
-+
- enum hub_quiescing_type {
- 	HUB_DISCONNECT, HUB_PRE_RESET, HUB_SUSPEND
- };
+ err_unuse_clocks:
+ 	omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
++err_mux_state_deselect:
+ 	if (omap->mux_state)
+ 		mux_state_deselect(omap->mux_state);
+ err_put_pm:
 
 
 
