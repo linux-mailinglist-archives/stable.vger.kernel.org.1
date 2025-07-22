@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-164174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A042AB0DE39
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:24:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8606B0DDE9
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7E49AC704B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:16:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54B6418986CE
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C622C2EE5F2;
-	Tue, 22 Jul 2025 14:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF45C2F0C53;
+	Tue, 22 Jul 2025 14:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIBi0VRY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKKRetqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BD52EE27B;
-	Tue, 22 Jul 2025 14:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCA02F0C49;
+	Tue, 22 Jul 2025 14:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193490; cv=none; b=WNzMNSOivt7LLAYwsnuLb159ZOJ49LsQRiGM5AtWQIyOx/fMrTzxIvFMqL4SPB+6SR8Sxpdnz1cjsWWmp4ru0eFG6951y7GK5gmlx01XF+P4K0/VrlXmUeedQFTFUNhFyxCHue/zgLppM+P49NERnF5gz22eor5oqTrz5ur5qd4=
+	t=1753193387; cv=none; b=HeX+d/szZq2mcPGEr3cavdYxwD/uBlseqVXs+hjNZSjuvzlDCRa/VjitnJAurc2VG3XzPpIwRdozAlBRIOChnhGkjPd2sgZwj4zfQcpvxLuZvKSbMte5teoy29xmi661GPmDwwhFb6OopeYV9L3IcBDb4Q9rMDzysSJZW2WlEvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193490; c=relaxed/simple;
-	bh=M6XLjpshpAYBOfVuNXaKeD2DYyfFkrs7X01Tp9Kkh8M=;
+	s=arc-20240116; t=1753193387; c=relaxed/simple;
+	bh=dqCFkix4ZRSEc4kCXzPFWD3mojdK0JTYr6nTyryjOwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQgJHQwc4xaSZdHGHp8Nf4ZaSi4Xonz2SfYa6XfLm9ko0AJzszNdwW/3p7NZA2THPI2XVbodyJvf0ipX3UKA4BCRzBausHKYMXttrmfJjBRh6m6br1J1dva9mrd2XT2cMs6xGNm96e9SE3UyKzYKr/HbQPs/G/mrUawgO/Ii4/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIBi0VRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105E0C4CEEB;
-	Tue, 22 Jul 2025 14:11:29 +0000 (UTC)
+	 MIME-Version; b=I+n0stAftWEbp5O9wAdN/9tmP4z7V0LeJu5HyfI/eZ0UZPOM6Cm8sBJus3RQwhBz0QrfC3NNPFWhkt2T66LUwubfFuqqnuZzP0tpBuUXKnmOEV43fywYBHilIiBaCd4OrZyPHYatjuEKoP4dXk/33XO+8u072pJ89LapQqn6HDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKKRetqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BFCC4CEFD;
+	Tue, 22 Jul 2025 14:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193490;
-	bh=M6XLjpshpAYBOfVuNXaKeD2DYyfFkrs7X01Tp9Kkh8M=;
+	s=korg; t=1753193386;
+	bh=dqCFkix4ZRSEc4kCXzPFWD3mojdK0JTYr6nTyryjOwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIBi0VRYTk08NkGDiEnoOUfhg/VudW45mZGQByp78IEaSsZRrfGHOi6OuQLJmEA04
-	 63bkKEr9uzaz/Gg8gl+vGVtnEgu5LxKtMbQKYkLv+y5AxvGbzUH4jO9rPfOjjGJAAw
-	 J4C3QIe9y/kBYVpEt+dNqEoesxrRUY6kMNxR8noY=
+	b=KKKRetqplAzPQMvmBcfBvF3m6UlTkb7J08n023QlFwg4GvhU4VTRi3lKJZREHz2Hv
+	 xN3IThBjBCn4CtQB5jyCmYjXZOPxVpfKCc6jVRzlrsS/EPV8Quz6ZpEjJcWigsEo/f
+	 QVaX6loxQLqV7/EYffzebUFkZUWLpeVoyZNHqR3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>
-Subject: [PATCH 6.15 076/187] soc: aspeed: lpc-snoop: Dont disable channels that arent enabled
-Date: Tue, 22 Jul 2025 15:44:06 +0200
-Message-ID: <20250722134348.558846933@linuxfoundation.org>
+	Amit Pundir <amit.pundir@linaro.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.15 077/187] soundwire: Revert "soundwire: qcom: Add set_channel_map api support"
+Date: Tue, 22 Jul 2025 15:44:07 +0200
+Message-ID: <20250722134348.596692484@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -65,84 +66,132 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
+From: Amit Pundir <amit.pundir@linaro.org>
 
-commit 56448e78a6bb4e1a8528a0e2efe94eff0400c247 upstream.
+commit 834bce6a715ae9a9c4dce7892454a19adf22b013 upstream.
 
-Mitigate e.g. the following:
+This reverts commit 7796c97df6b1b2206681a07f3c80f6023a6593d5.
 
-    # echo 1e789080.lpc-snoop > /sys/bus/platform/drivers/aspeed-lpc-snoop/unbind
-    ...
-    [  120.363594] Unable to handle kernel NULL pointer dereference at virtual address 00000004 when write
-    [  120.373866] [00000004] *pgd=00000000
-    [  120.377910] Internal error: Oops: 805 [#1] SMP ARM
-    [  120.383306] CPU: 1 UID: 0 PID: 315 Comm: sh Not tainted 6.15.0-rc1-00009-g926217bc7d7d-dirty #20 NONE
-    ...
-    [  120.679543] Call trace:
-    [  120.679559]  misc_deregister from aspeed_lpc_snoop_remove+0x84/0xac
-    [  120.692462]  aspeed_lpc_snoop_remove from platform_remove+0x28/0x38
-    [  120.700996]  platform_remove from device_release_driver_internal+0x188/0x200
-    ...
+This patch broke Dragonboard 845c (sdm845). I see:
 
-Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
-Cc: stable@vger.kernel.org
-Cc: Jean Delvare <jdelvare@suse.de>
-Acked-by: Jean Delvare <jdelvare@suse.de>
-Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-2-3cdd59c934d3@codeconstruct.com.au
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+    Unexpected kernel BRK exception at EL1
+    Internal error: BRK handler: 00000000f20003e8 [#1]  SMP
+    pc : qcom_swrm_set_channel_map+0x7c/0x80 [soundwire_qcom]
+    lr : snd_soc_dai_set_channel_map+0x34/0x78
+    Call trace:
+     qcom_swrm_set_channel_map+0x7c/0x80 [soundwire_qcom] (P)
+     sdm845_dai_init+0x18c/0x2e0 [snd_soc_sdm845]
+     snd_soc_link_init+0x28/0x6c
+     snd_soc_bind_card+0x5f4/0xb0c
+     snd_soc_register_card+0x148/0x1a4
+     devm_snd_soc_register_card+0x50/0xb0
+     sdm845_snd_platform_probe+0x124/0x148 [snd_soc_sdm845]
+     platform_probe+0x6c/0xd0
+     really_probe+0xc0/0x2a4
+     __driver_probe_device+0x7c/0x130
+     driver_probe_device+0x40/0x118
+     __device_attach_driver+0xc4/0x108
+     bus_for_each_drv+0x8c/0xf0
+     __device_attach+0xa4/0x198
+     device_initial_probe+0x18/0x28
+     bus_probe_device+0xb8/0xbc
+     deferred_probe_work_func+0xac/0xfc
+     process_one_work+0x244/0x658
+     worker_thread+0x1b4/0x360
+     kthread+0x148/0x228
+     ret_from_fork+0x10/0x20
+    Kernel panic - not syncing: BRK handler: Fatal exception
+
+Dan has also reported following issues with the original patch
+https://lore.kernel.org/all/33fe8fe7-719a-405a-9ed2-d9f816ce1d57@sabinyo.mountain/
+
+Bug #1:
+The zeroeth element of ctrl->pconfig[] is supposed to be unused.  We
+start counting at 1.  However this code sets ctrl->pconfig[0].ch_mask = 128.
+
+Bug #2:
+There are SLIM_MAX_TX_PORTS (16) elements in tx_ch[] array but only
+QCOM_SDW_MAX_PORTS + 1 (15) in the ctrl->pconfig[] array so it corrupts
+memory like Yongqin Liu pointed out.
+
+Bug 3:
+Like Jie Gan pointed out, it erases all the tx information with the rx
+information.
+
+Cc: stable@vger.kernel.org # v6.15+
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Acked-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250709174949.8541-1-amit.pundir@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/soundwire/qcom.c | 26 --------------------------
+ 1 file changed, 26 deletions(-)
 
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -58,6 +58,7 @@ struct aspeed_lpc_snoop_model_data {
+diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
+index 295a46dc2be7..0f45e3404756 100644
+--- a/drivers/soundwire/qcom.c
++++ b/drivers/soundwire/qcom.c
+@@ -156,7 +156,6 @@ struct qcom_swrm_port_config {
+ 	u8 word_length;
+ 	u8 blk_group_count;
+ 	u8 lane_control;
+-	u8 ch_mask;
  };
  
- struct aspeed_lpc_snoop_channel {
-+	bool enabled;
- 	struct kfifo		fifo;
- 	wait_queue_head_t	wq;
- 	struct miscdevice	miscdev;
-@@ -190,6 +191,9 @@ static int aspeed_lpc_enable_snoop(struc
- 	const struct aspeed_lpc_snoop_model_data *model_data =
- 		of_device_get_match_data(dev);
- 
-+	if (WARN_ON(lpc_snoop->chan[channel].enabled))
-+		return -EBUSY;
-+
- 	init_waitqueue_head(&lpc_snoop->chan[channel].wq);
- 	/* Create FIFO datastructure */
- 	rc = kfifo_alloc(&lpc_snoop->chan[channel].fifo,
-@@ -236,6 +240,8 @@ static int aspeed_lpc_enable_snoop(struc
- 		regmap_update_bits(lpc_snoop->regmap, HICRB,
- 				hicrb_en, hicrb_en);
- 
-+	lpc_snoop->chan[channel].enabled = true;
-+
- 	return 0;
- 
- err_misc_deregister:
-@@ -248,6 +254,9 @@ err_free_fifo:
- static void aspeed_lpc_disable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 				     int channel)
+ /*
+@@ -1049,13 +1048,9 @@ static int qcom_swrm_port_enable(struct sdw_bus *bus,
  {
-+	if (!lpc_snoop->chan[channel].enabled)
-+		return;
-+
- 	switch (channel) {
- 	case 0:
- 		regmap_update_bits(lpc_snoop->regmap, HICR5,
-@@ -263,6 +272,8 @@ static void aspeed_lpc_disable_snoop(str
- 		return;
- 	}
+ 	u32 reg = SWRM_DP_PORT_CTRL_BANK(enable_ch->port_num, bank);
+ 	struct qcom_swrm_ctrl *ctrl = to_qcom_sdw(bus);
+-	struct qcom_swrm_port_config *pcfg;
+ 	u32 val;
  
-+	lpc_snoop->chan[channel].enabled = false;
-+	/* Consider improving safety wrt concurrent reader(s) */
- 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
- 	kfifo_free(&lpc_snoop->chan[channel].fifo);
+-	pcfg = &ctrl->pconfig[enable_ch->port_num];
+ 	ctrl->reg_read(ctrl, reg, &val);
+-	if (pcfg->ch_mask != SWR_INVALID_PARAM && pcfg->ch_mask != 0)
+-		enable_ch->ch_mask = pcfg->ch_mask;
+ 
+ 	if (enable_ch->enable)
+ 		val |= (enable_ch->ch_mask << SWRM_DP_PORT_CTRL_EN_CHAN_SHFT);
+@@ -1275,26 +1270,6 @@ static void *qcom_swrm_get_sdw_stream(struct snd_soc_dai *dai, int direction)
+ 	return ctrl->sruntime[dai->id];
  }
+ 
+-static int qcom_swrm_set_channel_map(struct snd_soc_dai *dai,
+-				     unsigned int tx_num, const unsigned int *tx_slot,
+-				     unsigned int rx_num, const unsigned int *rx_slot)
+-{
+-	struct qcom_swrm_ctrl *ctrl = dev_get_drvdata(dai->dev);
+-	int i;
+-
+-	if (tx_slot) {
+-		for (i = 0; i < tx_num; i++)
+-			ctrl->pconfig[i].ch_mask = tx_slot[i];
+-	}
+-
+-	if (rx_slot) {
+-		for (i = 0; i < rx_num; i++)
+-			ctrl->pconfig[i].ch_mask = rx_slot[i];
+-	}
+-
+-	return 0;
+-}
+-
+ static int qcom_swrm_startup(struct snd_pcm_substream *substream,
+ 			     struct snd_soc_dai *dai)
+ {
+@@ -1331,7 +1306,6 @@ static const struct snd_soc_dai_ops qcom_swrm_pdm_dai_ops = {
+ 	.shutdown = qcom_swrm_shutdown,
+ 	.set_stream = qcom_swrm_set_sdw_stream,
+ 	.get_stream = qcom_swrm_get_sdw_stream,
+-	.set_channel_map = qcom_swrm_set_channel_map,
+ };
+ 
+ static const struct snd_soc_component_driver qcom_swrm_dai_component = {
+-- 
+2.50.1
+
 
 
 
