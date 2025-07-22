@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-164019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CF6B0DCD1
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E990BB0DB75
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:49:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 035823A0701
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E31E178A7C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2F51A2C25;
-	Tue, 22 Jul 2025 14:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FB32E9EB2;
+	Tue, 22 Jul 2025 13:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxTEIoUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCsXTk1N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE5FA32;
-	Tue, 22 Jul 2025 14:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B48433A8;
+	Tue, 22 Jul 2025 13:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192977; cv=none; b=Kp/IafZKONfZcpW14ZoUiIPO0fSXa5gndtLmfBEmcFCDWDClGqESFOMLodSmcjTprGSzJPNP/3P8h1cl3yQAMIxEaIlW22pp+NBotNEMss/8VrpzKoIrFpj8YVBiIqC2T6mf8+i/dGc82o3bt1rrfkfaPUD0rMiu2DhCN4LBYeU=
+	t=1753192161; cv=none; b=a3uobISKLqMoW/eSJZXKLlJCcV2+obK5Aiuwzy2gyOQzxPlEoV63NLDYlxkXbF0WjKVBZMPpGAi6J/iy6JCh/3/YAgJryLirv55eFIKTNPlrufxHlRpJXCVtueJYR7FBZHIIUC/fvu2DlLiwMSerTHNSp0V8589h2GFtTlYjnJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192977; c=relaxed/simple;
-	bh=aS1wFLY0iE4gdXvmwjDl9uYzc8/OLwZFPyFpQBcl0ic=;
+	s=arc-20240116; t=1753192161; c=relaxed/simple;
+	bh=jsb1Y3GPeB0MNPYWLpX96TC1cberxXW0J3coibOiZr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b815AYbbuDks5/DtNRAsUS1BS0vKnfUPaAJO60ZMJX+PwDO5qPNMlMKCFpk7H6V+EIfFrwZiQwsTfMLLXYteha3gO0LucniDxUgaLEqJEMceMbqZLE/oXzP5ehE5wIKbyIvKVofDU/FFtZ0JcfUZC1N/AAHrTQfD7d172r6Uh50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxTEIoUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0350FC4CEEB;
-	Tue, 22 Jul 2025 14:02:55 +0000 (UTC)
+	 MIME-Version; b=JX6GL3xJpZPHANOUH+FrRsa8T8QKXk+XJ8aX+vBaxLzOskLwL6of9WboheWcRw325P2wp6AukEuv81owlhkpOPH7l2sIIAp+alMgO+KdWuxZyq3TpIBoZpM6GpJJ62mlZoNA2j8vs08K9Md1uSRMkmdUXH/53LVG/2zrLpGC1xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCsXTk1N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8F3C4CEEB;
+	Tue, 22 Jul 2025 13:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192976;
-	bh=aS1wFLY0iE4gdXvmwjDl9uYzc8/OLwZFPyFpQBcl0ic=;
+	s=korg; t=1753192161;
+	bh=jsb1Y3GPeB0MNPYWLpX96TC1cberxXW0J3coibOiZr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YxTEIoUj6WmnN5Pti1Zu/rjmqUA7Bl5JD9ME5v+hjxIoWkvihrsatDIiOVEnXIX2c
-	 EgCwv3G4RTXXrMFOtJzh0mbaZKkACHWMkE+dsjkpqdhcIqE4mRQ9p06oSNfrYJm1HS
-	 hkQMK0kFA4bNweJmNb9M2lhTbg2Am83keJK7N/EA=
+	b=XCsXTk1NT+Vtrh9wXyikD4GqHR1AIyeX98d/YnHjdVH/aGIlBThomXKEg7f0Y/+cU
+	 ppqvxCE0v1nrmi9dX6pXKxEyH8O9+Si6fR5pycyD3PDB4MruVbIHUN3S7kFt9iThim
+	 isGu3KV9KV1Qzoy60dvRnSBcfNt5HgS+t4c2fRqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Joseph Huang <Joseph.Huang@garmin.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 115/158] Bluetooth: SMP: If an unallowed command is received consider it a failure
+Subject: [PATCH 6.1 63/79] net: bridge: Do not offload IGMP/MLD messages
 Date: Tue, 22 Jul 2025 15:44:59 +0200
-Message-ID: <20250722134345.042123520@linuxfoundation.org>
+Message-ID: <20250722134330.689931332@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Joseph Huang <Joseph.Huang@garmin.com>
 
-[ Upstream commit fe4840df0bdf341f376885271b7680764fe6b34e ]
+[ Upstream commit 683dc24da8bf199bb7446e445ad7f801c79a550e ]
 
-If a command is received while a bonding is ongoing consider it a
-pairing failure so the session is cleanup properly and the device is
-disconnected immediately instead of continuing with other commands that
-may result in the session to get stuck without ever completing such as
-the case bellow:
+Do not offload IGMP/MLD messages as it could lead to IGMP/MLD Reports
+being unintentionally flooded to Hosts. Instead, let the bridge decide
+where to send these IGMP/MLD messages.
 
-> ACL Data RX: Handle 2048 flags 0x02 dlen 21
-      SMP: Identity Information (0x08) len 16
-        Identity resolving key[16]: d7e08edef97d3e62cd2331f82d8073b0
-> ACL Data RX: Handle 2048 flags 0x02 dlen 21
-      SMP: Signing Information (0x0a) len 16
-        Signature key[16]: 1716c536f94e843a9aea8b13ffde477d
-Bluetooth: hci0: unexpected SMP command 0x0a from XX:XX:XX:XX:XX:XX
-> ACL Data RX: Handle 2048 flags 0x02 dlen 12
-      SMP: Identity Address Information (0x09) len 7
-        Address: XX:XX:XX:XX:XX:XX (Intel Corporate)
+Consider the case where the local host is sending out reports in response
+to a remote querier like the following:
 
-While accourding to core spec 6.1 the expected order is always BD_ADDR
-first first then CSRK:
+       mcast-listener-process (IP_ADD_MEMBERSHIP)
+          \
+          br0
+         /   \
+      swp1   swp2
+        |     |
+  QUERIER     SOME-OTHER-HOST
 
-When using LE legacy pairing, the keys shall be distributed in the
-following order:
+In the above setup, br0 will want to br_forward() reports for
+mcast-listener-process's group(s) via swp1 to QUERIER; but since the
+source hwdom is 0, the report is eligible for tx offloading, and is
+flooded by hardware to both swp1 and swp2, reaching SOME-OTHER-HOST as
+well. (Example and illustration provided by Tobias.)
 
-    LTK by the Peripheral
-
-    EDIV and Rand by the Peripheral
-
-    IRK by the Peripheral
-
-    BD_ADDR by the Peripheral
-
-    CSRK by the Peripheral
-
-    LTK by the Central
-
-    EDIV and Rand by the Central
-
-    IRK by the Central
-
-    BD_ADDR by the Central
-
-    CSRK by the Central
-
-When using LE Secure Connections, the keys shall be distributed in the
-following order:
-
-    IRK by the Peripheral
-
-    BD_ADDR by the Peripheral
-
-    CSRK by the Peripheral
-
-    IRK by the Central
-
-    BD_ADDR by the Central
-
-    CSRK by the Central
-
-According to the Core 6.1 for commands used for key distribution "Key
-Rejected" can be used:
-
-  '3.6.1. Key distribution and generation
-
-  A device may reject a distributed key by sending the Pairing Failed command
-  with the reason set to "Key Rejected".
-
-Fixes: b28b4943660f ("Bluetooth: Add strict checks for allowed SMP PDUs")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 472111920f1c ("net: bridge: switchdev: allow the TX data plane forwarding to be offloaded")
+Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250716153551.1830255-1-Joseph.Huang@garmin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/smp.c | 19 ++++++++++++++++++-
- net/bluetooth/smp.h |  1 +
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ net/bridge/br_switchdev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 8b9724fd752a1..879cfc7ae4f24 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -2977,8 +2977,25 @@ static int smp_sig_channel(struct l2cap_chan *chan, struct sk_buff *skb)
- 	if (code > SMP_CMD_MAX)
- 		goto drop;
+diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
+index b61ef2dff7a4b..a0974374bf717 100644
+--- a/net/bridge/br_switchdev.c
++++ b/net/bridge/br_switchdev.c
+@@ -17,6 +17,9 @@ static bool nbp_switchdev_can_offload_tx_fwd(const struct net_bridge_port *p,
+ 	if (!static_branch_unlikely(&br_switchdev_tx_fwd_offload))
+ 		return false;
  
--	if (smp && !test_and_clear_bit(code, &smp->allow_cmd))
-+	if (smp && !test_and_clear_bit(code, &smp->allow_cmd)) {
-+		/* If there is a context and the command is not allowed consider
-+		 * it a failure so the session is cleanup properly.
-+		 */
-+		switch (code) {
-+		case SMP_CMD_IDENT_INFO:
-+		case SMP_CMD_IDENT_ADDR_INFO:
-+		case SMP_CMD_SIGN_INFO:
-+			/* 3.6.1. Key distribution and generation
-+			 *
-+			 * A device may reject a distributed key by sending the
-+			 * Pairing Failed command with the reason set to
-+			 * "Key Rejected".
-+			 */
-+			smp_failure(conn, SMP_KEY_REJECTED);
-+			break;
-+		}
- 		goto drop;
-+	}
- 
- 	/* If we don't have a context the only allowed commands are
- 	 * pairing request and security request.
-diff --git a/net/bluetooth/smp.h b/net/bluetooth/smp.h
-index 87a59ec2c9f02..c5da53dfab04f 100644
---- a/net/bluetooth/smp.h
-+++ b/net/bluetooth/smp.h
-@@ -138,6 +138,7 @@ struct smp_cmd_keypress_notify {
- #define SMP_NUMERIC_COMP_FAILED		0x0c
- #define SMP_BREDR_PAIRING_IN_PROGRESS	0x0d
- #define SMP_CROSS_TRANSP_NOT_ALLOWED	0x0e
-+#define SMP_KEY_REJECTED		0x0f
- 
- #define SMP_MIN_ENC_KEY_SIZE		7
- #define SMP_MAX_ENC_KEY_SIZE		16
++	if (br_multicast_igmp_type(skb))
++		return false;
++
+ 	return (p->flags & BR_TX_FWD_OFFLOAD) &&
+ 	       (p->hwdom != BR_INPUT_SKB_CB(skb)->src_hwdom);
+ }
 -- 
 2.39.5
 
