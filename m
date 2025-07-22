@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-163673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D084B0D547
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 11:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E3EB0D59F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 11:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5329A1891217
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 09:08:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EECF188A057
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 09:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002E12D9EE2;
-	Tue, 22 Jul 2025 09:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C849B2DE702;
+	Tue, 22 Jul 2025 09:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o3mMWmi0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBxOqtus"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A608C2D59E8;
-	Tue, 22 Jul 2025 09:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D792DE1FC;
+	Tue, 22 Jul 2025 09:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753175264; cv=none; b=DrkTrSp/sufuPFNyBIwWIrqvZRoAM1HpnaHl1EoUqWRrsvlz7jL2vOOq8tK2RRSvtM4L/CHuCmf+xqut+pLvvSw/FKwY00GzWVbpWqZlxWS8tyHVo4L6KIJEXpOSczDB3VV5ilWuHJD8rod94MgiIjLM57j2Eqr/Ww+LwE/sXFs=
+	t=1753175778; cv=none; b=cD7XItQkSPyj/tTO52PW9vfvA7w/4B6MZW3hryWfmsDegBAoCxgqxJ9mgueqy8XCjBaZ7ZWfnjsKn0x34nPs6NlY+nCEKTunKEzMhhLmVRx7eMT0HUAj2huK1dKSzOaZdVLpUBoAlAZQr8rd6X/o4xnR64DY/Jy30xK5v0QWR0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753175264; c=relaxed/simple;
-	bh=nKq81HUGzbJ8MClnTnjqNMW6seeisy/VqfcWhs+I7kU=;
+	s=arc-20240116; t=1753175778; c=relaxed/simple;
+	bh=RimQmuozwByG0iSLT6X7qn726idglDwFDvH2n7RL6ao=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DKLPXbmIlDLkFAsDoeYlEMvwXaFUDOFf+CMtgzxIYXkZeJ8sRKQnHnk/uKyIEhiYO3HsV1nNrNwnvrLhAopWZdgmS6aK0Uk1TuxbQeoAhZqE2ZctLylZip71ZtWYW17PE3VYWVrB7XEyk5FSUmbjLrVbKzgMazb2NmzDEQ7mQQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o3mMWmi0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F45BC4CEEB;
-	Tue, 22 Jul 2025 09:07:42 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Ryv3PpBmVVmUOWOyiPBpdMkDTDFlSmFDDXok5swk3mXSbu96M9CWtk8MqAlKHAsuVLUm/9yQhqohz4Ge+cwwjp7xQ7cMJljnSfLR3TzSn/CqFX/U4YJYb9xaLqZBBB+jK9MwZYOZIeckoDEEPsonTROeUaWi9GpYUTdP+lPWRyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBxOqtus; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB9EC4CEFA;
+	Tue, 22 Jul 2025 09:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753175264;
-	bh=nKq81HUGzbJ8MClnTnjqNMW6seeisy/VqfcWhs+I7kU=;
+	s=k20201202; t=1753175778;
+	bh=RimQmuozwByG0iSLT6X7qn726idglDwFDvH2n7RL6ao=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=o3mMWmi00DcrSSSMAiSV23FhpUNEbBXXFTxiEilMCfTtAfumDnNOio1B0ZM2qpcrN
-	 9ZLvcuuRncvNLZIP6lU4BFgfF3+qdzpjvgxoM78XQjDqXjlsbNvH/4diAk3knRvdem
-	 cKQrIEUDeYv4bf4XohtI9xOi3WyTVYewTL6A1Svu/F3/eD1BJDAMAsMDxSol4fpvHz
-	 Klybzkngvcbr9vzLVBiLYqdon+4QoSz6VNHEA85twgvq27fPom4Oq1Mdl0WVa/RqxV
-	 +wVvvD+VUvqXLXsnDAeQ+29Up4ygI7cwfS9DnqMZI5UDabqaY7p6+r8PlYigHp8fyl
-	 YgP+YYqt0WH8Q==
-Message-ID: <1755f4ab-f0c4-4442-8446-ae7b104b4e89@kernel.org>
-Date: Tue, 22 Jul 2025 11:07:41 +0200
+	b=cBxOqtusF2Bnd8lVWete81JTCi0L77PbsvcgKONG4hSKS6LxuqkyZDwWVQXYHl2nt
+	 iLiLfR/aTaCczBAF0mZG3G94KRyYlpqvOkxWCN5S7REDmXLo1EVi3v8Ozj++4ERtD3
+	 gHWMz6WYBHpewMhrsPaT+r29xwvaEOfL4ozN/4z7TgspLriUFPOqB5iqa7el4OyH8U
+	 mlZAfcugtfPnRmUon+gwba9QR7OtA9YwXD11kpjDGWwLHAa3U2tvmVD0UoPdXHowcS
+	 CSCMOq6gWwZnXGfxdGbK9jS8nyOpnKbwLrX7PDXWt+h3k+E6UX6+SDtIElHWqssiBa
+	 s9rWPO691gHfg==
+Message-ID: <c90e88a4-7fff-49fa-8a6f-24f3671d9390@kernel.org>
+Date: Tue, 22 Jul 2025 11:16:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,13 +50,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] vt: defkeymap: Map keycodes above 127 to K_HOLE
-To: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arthur Taylor <art@ified.ca>
-Cc: Greg Kroah-Hartman <gregkh@suse.de>, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org, stable@vger.kernel.org
-References: <20250702-vt-misc-unicode-fixes-v1-0-c27e143cc2eb@qtmlabs.xyz>
- <20250702-vt-misc-unicode-fixes-v1-2-c27e143cc2eb@qtmlabs.xyz>
+Subject: Re: [PATCH RESEND] HID: multitouch: fix slab out-of-bounds access in
+ mt_report_fixup()
+To: Qasim Ijaz <qasdev00@gmail.com>, jikos@kernel.org, bentiss@kernel.org
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Dmitry Savin <envelsavinds@gmail.com>
+References: <20250722080003.3605-1-qasdev00@gmail.com>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -101,34 +100,115 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20250702-vt-misc-unicode-fixes-v1-2-c27e143cc2eb@qtmlabs.xyz>
+In-Reply-To: <20250722080003.3605-1-qasdev00@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 02. 07. 25, 16:17, Myrrh Periwinkle wrote:
-> The maximum number of keycodes got bumped to 256 a very long time ago,
-> but the default keymaps were never adjusted to match. This is causing
-> the kernel to interpret keycodes above 127 as U+0000 if the shipped
-> generated keymap is used.
+On 22. 07. 25, 10:00, Qasim Ijaz wrote:
+> A malicious HID device can trigger a slab out-of-bounds during
+> mt_report_fixup() by passing in report descriptor smaller than
+> 607 bytes. mt_report_fixup() attempts to patch byte offset 607
+> of the descriptor with 0x25 by first checking if byte offset
+> 607 is 0x15 however it lacks bounds checks to verify if the
+> descriptor is big enough before conducting this check. Fix
+> this vulnerability by ensuring the descriptor size is
+> greater than or equal to 608 before accessing it.
 > 
-> Fix this by mapping all keycodes above 127 to K_HOLE so the kernel
-> ignores them.
+> Below is the KASAN splat after the out of bounds access happens:
 > 
-> The contents of this patche were generated by rerunning `loadkeys
-> --mktable --unicode` and only including the changes to map keycodes
-> above 127 to K_HOLE.
-
-OK., makes sense.
-
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-
-
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+> [   13.671954] ==================================================================
+> [   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
+> [   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
+> [   13.673297]
+> [   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3
+> [   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
+> [   13.673297] Call Trace:
+> [   13.673297]  <TASK>
+> [   13.673297]  dump_stack_lvl+0x5f/0x80
+> [   13.673297]  print_report+0xd1/0x660
+> [   13.673297]  kasan_report+0xe5/0x120
+> [   13.673297]  __asan_report_load1_noabort+0x18/0x20
+> [   13.673297]  mt_report_fixup+0x103/0x110
+> [   13.673297]  hid_open_report+0x1ef/0x810
+> [   13.673297]  mt_probe+0x422/0x960
+> [   13.673297]  hid_device_probe+0x2e2/0x6f0
+> [   13.673297]  really_probe+0x1c6/0x6b0
+> [   13.673297]  __driver_probe_device+0x24f/0x310
+> [   13.673297]  driver_probe_device+0x4e/0x220
+> [   13.673297]  __device_attach_driver+0x169/0x320
+> [   13.673297]  bus_for_each_drv+0x11d/0x1b0
+> [   13.673297]  __device_attach+0x1b8/0x3e0
+> [   13.673297]  device_initial_probe+0x12/0x20
+> [   13.673297]  bus_probe_device+0x13d/0x180
+> [   13.673297]  device_add+0xe3a/0x1670
+> [   13.673297]  hid_add_device+0x31d/0xa40
+> [...]
+> 
+> Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
 > Cc: stable@vger.kernel.org
+> Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+> Reviewed-by: Dmitry Savin <envelsavinds@gmail.com>
+> ---
+>   drivers/hid/hid-multitouch.c | 25 ++++++++++++++++---------
+>   1 file changed, 16 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+> index 7ac8e16e6158..af4abe3ba410 100644
+> --- a/drivers/hid/hid-multitouch.c
+> +++ b/drivers/hid/hid-multitouch.c
+> @@ -1461,18 +1461,25 @@ static const __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+>   	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
+>   	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
+>   	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
+> -		if (rdesc[607] == 0x15) {
+> -			rdesc[607] = 0x25;
+> -			dev_info(
+> -				&hdev->dev,
+> -				"GT7868Q report descriptor fixup is applied.\n");
+> +		if (*size >= 608) {
+> +			if (rdesc[607] == 0x15) {
+> +				rdesc[607] = 0x25;
+> +				dev_info(
+> +					&hdev->dev,
+> +					"GT7868Q report descriptor fixup is applied.\n");
+> +			} else {
+> +				dev_info(
+> +					&hdev->dev,
+> +					"The byte is not expected for fixing the report descriptor. \
+> +					It's possible that the touchpad firmware is not suitable for applying the fix. \
+> +					got: %x\n",
 
+This is wrong. You have all the spaces/tabs in the string now. Drop all 
+the backslashes, and open and close the string on every line.
 
+> +					rdesc[607]);
+> +			}
+
+As this is superlong and superindented, perhaps introduce a new function 
+for these devices?
+
+>   		} else {
+>   			dev_info(
+>   				&hdev->dev,
+> -				"The byte is not expected for fixing the report descriptor. \
+> -It's possible that the touchpad firmware is not suitable for applying the fix. \
+> -got: %x\n",
+
+This was horrid too, yeah.
+
+> -				rdesc[607]);
+> +				"GT7868Q fixup: report descriptor only %u bytes, skipping\n",
+
+A predicate missing. Eg. "has only", or "is only".
+
+> +				*size);
+>   		}
+>   	}
+>   
+
+thanks,
 -- 
 js
 suse labs
+
 
