@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-164127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C1BB0DDBF
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:19:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E2AB0DDE1
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B71F1C8826A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:14:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AC36581C9D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C422EB5D5;
-	Tue, 22 Jul 2025 14:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917F82EBBB9;
+	Tue, 22 Jul 2025 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GQ2u1IR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TB1JRHxl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA98E2DEA8E;
-	Tue, 22 Jul 2025 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F52CA32;
+	Tue, 22 Jul 2025 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193337; cv=none; b=EUd1CATT3hv6FLTGTqooGxE1fES8beDoU/ee9cG7BDarfsgmKJ4fP1w1VJO3QLRNPNnPl75F3lxWD/wQVt6FKuOc3jYIVQBZjBr+Xir2EWTL1cGA5R3dP52jSUc454gLJanWuigmZbUKV1J0x2AVmpaF6SMKRpkTl3v6nFN/48A=
+	t=1753193362; cv=none; b=bSZ9qA9tkVLICpikp9vFa+2WxgKwxVR/Q5hCpajwswcFEewlIG0O2JHOXkjVDLHu0Wuvtd0OAD0Z6HgpprqpARcy9LG0FTj8d/p4YM8pBM81Z0lYdule7OoD2pFqDUbbCBK4qbq6bV6vsy/EhxgBmHmE9xxMIwn7SQc8WP7yn/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193337; c=relaxed/simple;
-	bh=qxJsiimbuUrreW7S6i6QZamuhJN2zOX6vL0kgYcdLoI=;
+	s=arc-20240116; t=1753193362; c=relaxed/simple;
+	bh=7372EADKLiKZ1Gd/Jn1tHc8+bC9UfXIzAlEVgxiJFhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UkcsP5ebz/wq3ugSYpDOaV+B3jNGILL/w0/xSJf5VI9cgvxdQZfsys8WVifsEfWbq2cncfBjI66aQ62kjUEyWEjDeclrCI89RlTu/eEjXIih+geVFD8yR6TB1UuK++uGyIoLnBWPyZT5vPJzePK6IcubvbgEk6VL8SwVPMwulCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GQ2u1IR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C3AC4CEF1;
-	Tue, 22 Jul 2025 14:08:56 +0000 (UTC)
+	 MIME-Version; b=H+jfPIOwIoHsHgSaFJM7nz0bt88BxDgETGKTuKigMKm3xMCi0fEyHebuKIFUeyqfJ2uJPRCCGNLxiZmYHpiYwKdHw4PvRmIPBzaP/ZEn3z14jT8B+S1h73pddS7R6w3EcyWVqMIz8gz182cFYTaCqdVkGc79ZdYIMrlXNmp8fMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TB1JRHxl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21F6C4CEEB;
+	Tue, 22 Jul 2025 14:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193337;
-	bh=qxJsiimbuUrreW7S6i6QZamuhJN2zOX6vL0kgYcdLoI=;
+	s=korg; t=1753193362;
+	bh=7372EADKLiKZ1Gd/Jn1tHc8+bC9UfXIzAlEVgxiJFhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2GQ2u1IRbJrFzHuXfDMBXB5PDq30g+r6wzF2Modr+hpAG4FrzRNeWh0uPIJnk9pOq
-	 XMbPd8Uxs4LowzHPYPC7x1RJBM51jOpBKT4ZYXpoHyQV+D4x8k2oGSzC9Wq7n5rXub
-	 qA6XRqaJUxyETxe+uwAta9SwYgrMnjd01n1o6xpM=
+	b=TB1JRHxlJSuLmQGUNPimwKdFt6kIYH8A4bxZsLSiXXgj9mg2dmYpZNRVfHXu4tndD
+	 Klajb5eajQvqlCHRKyMurMaGL02m6t4LkKJisIwngJJGHhONmf/APcxEI2n/LcOFlu
+	 GU9TTczRfyjPId1awLzr+DOYD0syJRdvfR3/QF24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Steven Price <steven.price@arm.com>
-Subject: [PATCH 6.15 034/187] drm/panfrost: Fix scheduler workqueue bug
-Date: Tue, 22 Jul 2025 15:43:24 +0200
-Message-ID: <20250722134347.028250308@linuxfoundation.org>
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 035/187] drm/amdgpu: Increase reset counter only on success
+Date: Tue, 22 Jul 2025 15:43:25 +0200
+Message-ID: <20250722134347.066733062@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -66,57 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Philipp Stanner <phasta@kernel.org>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-commit cb345f954eacd162601e7d07ca2f0f0a17b54ee3 upstream.
+commit 86790e300d8b7bbadaad5024e308c52f1222128f upstream.
 
-When the GPU scheduler was ported to using a struct for its
-initialization parameters, it was overlooked that panfrost creates a
-distinct workqueue for timeout handling.
+Increment the reset counter only if soft recovery succeeded. This is
+consistent with a ring hard reset behaviour where counter gets
+incremented only if hard reset succeeded.
 
-The pointer to this new workqueue is not initialized to the struct,
-resulting in NULL being passed to the scheduler, which then uses the
-system_wq for timeout handling.
-
-Set the correct workqueue to the init args struct.
-
-Cc: stable@vger.kernel.org # 6.15+
-Fixes: 796a9f55a8d1 ("drm/sched: Use struct for drm_sched_init() params")
-Reported-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Closes: https://lore.kernel.org/dri-devel/b5d0921c-7cbf-4d55-aa47-c35cd7861c02@igalia.com/
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250709102957.100849-2-phasta@kernel.org
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 25c314aa3ec3d30e4ee282540e2096b5c66a2437)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_job.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_job.c b/drivers/gpu/drm/panfrost/panfrost_job.c
-index 5657106c2f7d..15e2d505550f 100644
---- a/drivers/gpu/drm/panfrost/panfrost_job.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_job.c
-@@ -841,7 +841,6 @@ int panfrost_job_init(struct panfrost_device *pfdev)
- 		.num_rqs = DRM_SCHED_PRIORITY_COUNT,
- 		.credit_limit = 2,
- 		.timeout = msecs_to_jiffies(JOB_TIMEOUT_MS),
--		.timeout_wq = pfdev->reset.wq,
- 		.name = "pan_js",
- 		.dev = pfdev->dev,
- 	};
-@@ -879,6 +878,7 @@ int panfrost_job_init(struct panfrost_device *pfdev)
- 	pfdev->reset.wq = alloc_ordered_workqueue("panfrost-reset", 0);
- 	if (!pfdev->reset.wq)
- 		return -ENOMEM;
-+	args.timeout_wq = pfdev->reset.wq;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -463,6 +463,7 @@ bool amdgpu_ring_soft_recovery(struct am
+ {
+ 	unsigned long flags;
+ 	ktime_t deadline;
++	bool ret;
  
- 	for (j = 0; j < NUM_JOB_SLOTS; j++) {
- 		js->queue[j].fence_context = dma_fence_context_alloc(1);
--- 
-2.50.1
-
+ 	if (unlikely(ring->adev->debug_disable_soft_recovery))
+ 		return false;
+@@ -477,12 +478,16 @@ bool amdgpu_ring_soft_recovery(struct am
+ 		dma_fence_set_error(fence, -ENODATA);
+ 	spin_unlock_irqrestore(fence->lock, flags);
+ 
+-	atomic_inc(&ring->adev->gpu_reset_counter);
+ 	while (!dma_fence_is_signaled(fence) &&
+ 	       ktime_to_ns(ktime_sub(deadline, ktime_get())) > 0)
+ 		ring->funcs->soft_recovery(ring, vmid);
+ 
+-	return dma_fence_is_signaled(fence);
++	ret = dma_fence_is_signaled(fence);
++	/* increment the counter only if soft reset worked */
++	if (ret)
++		atomic_inc(&ring->adev->gpu_reset_counter);
++
++	return ret;
+ }
+ 
+ /*
 
 
 
