@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-164186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE3DB0DE18
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21305B0DE16
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E7961889272
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1001188798D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E9F2EE990;
-	Tue, 22 Jul 2025 14:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA39B2EF2B4;
+	Tue, 22 Jul 2025 14:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfrALHKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nu64Hb9z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1754F2BF012;
-	Tue, 22 Jul 2025 14:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8222BF012;
+	Tue, 22 Jul 2025 14:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193530; cv=none; b=NH1//L6TY0ORhHGsaV71S2mW8F/4iybPM1JsAvzTuzkbk1a5O5bJgxXEMykI9AGGRJIa5hOlvh32zWddZ6+v4vsvfuqL6D09by2Co/IRyjOzEGyOB9IFxZbLFVXy70g7E/FZcFgw368/vvuNr6E4ILosLWR2z1wdLGf+51Jb/aY=
+	t=1753193536; cv=none; b=ZDsNmDxaX1fGmfmTQL9CIaSyDXnuUl+hVqZMFeb374slk33h8+WbUDwQJGJAD3TVRfB5gVQlh7V8qYwDvlWiHXdayz2oxThyCbfhUHCpfqC454NURtvgWCmDRd+OD4RGhRlpV9eRVIbxQnAKYsPMTfGMmuFwfAcajVf7DPz+m6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193530; c=relaxed/simple;
-	bh=BCst1ihWSxhtrKS324vBGODNfAh5XXrjmgRq7mICxlo=;
+	s=arc-20240116; t=1753193536; c=relaxed/simple;
+	bh=gKHDyxkDhCi99UUgujlro/c+mxlAI1Q+Ug5snpT5+w0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLk/FGlyAKwF9VkSCpCmeWxp216hyNvRX9BXBUoPej8YHwPQtWUTS5T16JIQPjMz+7nq3aAJRts6nn/p/oRdcLDEP2v2NccgM1k3ogArn2Wf3b1XJYFMOpYO9tOD63HosG6KVr7Qa1LuCJky8B42RxMzHZawvj0GlYEnzAesrjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfrALHKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9F8C4CEEB;
-	Tue, 22 Jul 2025 14:12:09 +0000 (UTC)
+	 MIME-Version; b=iUWUTjmF52onhNH8D03vTe78VF1SLefan/VfPRYm5EWeB9WQbTIvO2wxLsIjg5MZlH7k8HvelW3SHsAAc/m2c6x14gq3MMBVVfg6oTyNSyeo8vxmEqiL6oL7ePspNshxufhm6ruR+3Hlpw5NV9ERnQJlmaZFwlGKy9TNXumJBbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nu64Hb9z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B885C4CEEB;
+	Tue, 22 Jul 2025 14:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193529;
-	bh=BCst1ihWSxhtrKS324vBGODNfAh5XXrjmgRq7mICxlo=;
+	s=korg; t=1753193536;
+	bh=gKHDyxkDhCi99UUgujlro/c+mxlAI1Q+Ug5snpT5+w0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfrALHKmQThps75fyuJ3uaiBTkbhyFR6T7RIynByzKFhY+b7fdrehoXv/h27FP2Pk
-	 /4qw409mUhFIE+8Zvb2Xh5prO9NauzW8jJe//pf+1GBcE7VR6FGBDkfT3zGmRN36ro
-	 IJ4CPk85D6yOILdTYNmKuZuA/vwuc8ei+4EGYVBY=
+	b=Nu64Hb9z4uUbUxK9t1G4saCaQVvVkXEKTb2n8Fwq33ZzUMnyHmwp+QGalZvbacJbp
+	 uD9AOABKgM+YoT6yoVtcebvx7//yjQ3P0DeVcUOFHIqlIANB5iLIRhOfHydiFKkdnW
+	 mO0mI1z5viskrQ8oza7lpiDa0KFuWyrUOgl/xnIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
 	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 121/187] nvme: fix misaccounting of nvme-mpath inflight I/O
-Date: Tue, 22 Jul 2025 15:44:51 +0200
-Message-ID: <20250722134350.260647109@linuxfoundation.org>
+Subject: [PATCH 6.15 122/187] nvmet-tcp: fix callback lock for TLS handshake
+Date: Tue, 22 Jul 2025 15:44:52 +0200
+Message-ID: <20250722134350.295701376@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -67,50 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit 71257925e83eae1cb6913d65ca71927d2220e6d1 ]
+[ Upstream commit 0523c6cc87e558c50ff4489c87c54c55068b1169 ]
 
-Procedures for nvme-mpath IO accounting:
+When restoring the default socket callbacks during a TLS handshake, we
+need to acquire a write lock on sk_callback_lock.  Previously, a read
+lock was used, which is insufficient for modifying sk_user_data and
+sk_data_ready.
 
- 1) initialize nvme_request and clear flags;
- 2) set NVME_MPATH_IO_STATS and increase inflight counter when IO
-    started;
- 3) check NVME_MPATH_IO_STATS and decrease inflight counter when IO is
-    done;
-
-However, for the case nvme_fail_nonready_command(), both step 1) and 2)
-are skipped, and if old nvme_request set NVME_MPATH_IO_STATS and then
-request is reused, step 3) will still be executed, causing inflight I/O
-counter to be negative.
-
-Fix the problem by clearing nvme_request in nvme_fail_nonready_command().
-
-Fixes: ea5e5f42cd2c ("nvme-fabrics: avoid double completions in nvmf_fail_nonready_command")
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/all/CAHj4cs_+dauobyYyP805t33WMJVzOWj=7+51p4_j9rA63D9sog@mail.gmail.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Fixes: 675b453e0241 ("nvmet-tcp: enable TLS handshake upcall")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/nvme/target/tcp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 89a0f2a6c6268..88fec86b8baae 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -759,6 +759,10 @@ blk_status_t nvme_fail_nonready_command(struct nvme_ctrl *ctrl,
- 	    !test_bit(NVME_CTRL_FAILFAST_EXPIRED, &ctrl->flags) &&
- 	    !blk_noretry_request(rq) && !(rq->cmd_flags & REQ_NVME_MPATH))
- 		return BLK_STS_RESOURCE;
-+
-+	if (!(rq->rq_flags & RQF_DONTPREP))
-+		nvme_clear_nvme_request(rq);
-+
- 	return nvme_host_path_error(rq);
- }
- EXPORT_SYMBOL_GPL(nvme_fail_nonready_command);
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 12a5cb8641ca3..de70ff9102538 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -1967,10 +1967,10 @@ static void nvmet_tcp_alloc_queue(struct nvmet_tcp_port *port,
+ 		struct sock *sk = queue->sock->sk;
+ 
+ 		/* Restore the default callbacks before starting upcall */
+-		read_lock_bh(&sk->sk_callback_lock);
++		write_lock_bh(&sk->sk_callback_lock);
+ 		sk->sk_user_data = NULL;
+ 		sk->sk_data_ready = port->data_ready;
+-		read_unlock_bh(&sk->sk_callback_lock);
++		write_unlock_bh(&sk->sk_callback_lock);
+ 		if (!nvmet_tcp_try_peek_pdu(queue)) {
+ 			if (!nvmet_tcp_tls_handshake(queue))
+ 				return;
 -- 
 2.39.5
 
