@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-163896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D780AB0DC3D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:59:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83EA7B0DB9E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:51:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 637713A3477
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 562ED564061
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B67F2E2F0F;
-	Tue, 22 Jul 2025 13:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D9E2EA463;
+	Tue, 22 Jul 2025 13:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAPOUdlk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3XBCGDt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22134289369;
-	Tue, 22 Jul 2025 13:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660072EA16A;
+	Tue, 22 Jul 2025 13:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192568; cv=none; b=t0INatyeA8MHYp1OL8pHE5X50IxM2b8skPVuZofVh4JSP0i7qgMs9mDwVSq+7szPKoclKfbVH0guoibZEYohLSpms5MsZg6ZzgladlqHrsM1e9yL+wgqx0q4JhnOymU+EGJpbC16hbxLHw2Ovw3QtRso58Hf9q5nmNYAu1K2yDk=
+	t=1753192240; cv=none; b=DwYfWdwk8fLye/0xcTfLA6TK/Jbp+X+xXI2M1H8nBRCcjQdkdeg3DOSBa6N7oucUSBIpfPASA7QwFxzUVT2lMbHeHOCLRHypbHT4HfMuDRU0Q+U1kJw95CuDHAhD/K7G2338NdRF5kCOwqAUajyf6z6e6G8hHw6Nk/tjGY/BrJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192568; c=relaxed/simple;
-	bh=FJGSEJHrSfIJCAFF84VkhI2Dt2DwkzNMKg/2wEyWuWk=;
+	s=arc-20240116; t=1753192240; c=relaxed/simple;
+	bh=1CqXKBdNMrFkbtZwDf+PcNFT2dSeFV0YzCrMcQbCojA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdmrNTzeyRcJVmh/fmBDctz3mbPqk2KEPb49rqiuPu7GnpAG6Ize2ruhArpy65CcNPVOWcLNw+ibt/VKRH63ESf++VT4BwFIXudq5jcjPW5OUsZn1K0Hl1oZtvZlNJBho7hjfYkQzOzgU1XsIws0wcDd42J6GPuXoF5GKrjUEAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAPOUdlk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DEEC4CEEB;
-	Tue, 22 Jul 2025 13:56:07 +0000 (UTC)
+	 MIME-Version; b=Hjw1jYdzDSvczjhtbJQemkf5QEVq5uF1ToUqSI3ZhO+b5eeEerIdL2fj2YLeG/HS0+Wn772jBuFAieHw6Am96VS4uo/dmoCgZwpm9AafJBnHzg4u32F0cG4vrT+yje2QvK9ivFgE+kVg/HVOzugg/ftXvnsKwk330TGh395ASlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3XBCGDt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEE0C4CEF5;
+	Tue, 22 Jul 2025 13:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192567;
-	bh=FJGSEJHrSfIJCAFF84VkhI2Dt2DwkzNMKg/2wEyWuWk=;
+	s=korg; t=1753192240;
+	bh=1CqXKBdNMrFkbtZwDf+PcNFT2dSeFV0YzCrMcQbCojA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IAPOUdlkNk+Mweqs3JAvMrVTFstVwQB2wzU+o0HnyTJBwZvnaSZ8PjZWARyax02JR
-	 +ASOuChebrt1oD9hy8i7w7BONwNQz7A1RsX03yFeuwi8WzA/gFH9OZXbeCEqacYt7E
-	 18AOoJkGlYFY6lQr3VLKN0+hqt9ru70uBUJusvB4=
+	b=I3XBCGDtSihK59Pa5OVDP/rrHYqVBLN8GTx/zP0z6J6SwlBbQBauEmJYPSPKqo+BF
+	 8cxeme58QOCgRg17gCP+kC0LisQbXguhRp+WkxEKx+zQ1kl23m7BryCwHPXE3IWqUM
+	 Zq1ISIPJHtqxsx7+RVvNPVVjCGP+jXIMEyy7hvd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+e4d73b165c3892852d22@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/111] selftests: net: increase inter-packet timeout in udpgro.sh
-Date: Tue, 22 Jul 2025 15:44:47 +0200
-Message-ID: <20250722134336.071710102@linuxfoundation.org>
+Subject: [PATCH 6.1 52/79] Bluetooth: Fix null-ptr-deref in l2cap_sock_resume_cb()
+Date: Tue, 22 Jul 2025 15:44:48 +0200
+Message-ID: <20250722134330.290744195@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 0e9418961f897be59b1fab6e31ae1b09a0bae902 ]
+[ Upstream commit a0075accbf0d76c2dad1ad3993d2e944505d99a0 ]
 
-The mentioned test is not very stable when running on top of
-debug kernel build. Increase the inter-packet timeout to allow
-more slack in such environments.
+syzbot reported null-ptr-deref in l2cap_sock_resume_cb(). [0]
 
-Fixes: 3327a9c46352 ("selftests: add functionals test for UDP GRO")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/b0370c06ddb3235debf642c17de0284b2cd3c652.1752163107.git.pabeni@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+l2cap_sock_resume_cb() has a similar problem that was fixed by commit
+1bff51ea59a9 ("Bluetooth: fix use-after-free error in lock_sock_nested()").
+
+Since both l2cap_sock_kill() and l2cap_sock_resume_cb() are executed
+under l2cap_sock_resume_cb(), we can avoid the issue simply by checking
+if chan->data is NULL.
+
+Let's not access to the killed socket in l2cap_sock_resume_cb().
+
+[0]:
+BUG: KASAN: null-ptr-deref in instrument_atomic_write include/linux/instrumented.h:82 [inline]
+BUG: KASAN: null-ptr-deref in clear_bit include/asm-generic/bitops/instrumented-atomic.h:41 [inline]
+BUG: KASAN: null-ptr-deref in l2cap_sock_resume_cb+0xb4/0x17c net/bluetooth/l2cap_sock.c:1711
+Write of size 8 at addr 0000000000000570 by task kworker/u9:0/52
+
+CPU: 1 UID: 0 PID: 52 Comm: kworker/u9:0 Not tainted 6.16.0-rc4-syzkaller-g7482bb149b9f #0 PREEMPT
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Workqueue: hci0 hci_rx_work
+Call trace:
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:501 (C)
+ __dump_stack+0x30/0x40 lib/dump_stack.c:94
+ dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
+ print_report+0x58/0x84 mm/kasan/report.c:524
+ kasan_report+0xb0/0x110 mm/kasan/report.c:634
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:189
+ __kasan_check_write+0x20/0x30 mm/kasan/shadow.c:37
+ instrument_atomic_write include/linux/instrumented.h:82 [inline]
+ clear_bit include/asm-generic/bitops/instrumented-atomic.h:41 [inline]
+ l2cap_sock_resume_cb+0xb4/0x17c net/bluetooth/l2cap_sock.c:1711
+ l2cap_security_cfm+0x524/0xea0 net/bluetooth/l2cap_core.c:7357
+ hci_auth_cfm include/net/bluetooth/hci_core.h:2092 [inline]
+ hci_auth_complete_evt+0x2e8/0xa4c net/bluetooth/hci_event.c:3514
+ hci_event_func net/bluetooth/hci_event.c:7511 [inline]
+ hci_event_packet+0x650/0xe9c net/bluetooth/hci_event.c:7565
+ hci_rx_work+0x320/0xb18 net/bluetooth/hci_core.c:4070
+ process_one_work+0x7e8/0x155c kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3321 [inline]
+ worker_thread+0x958/0xed8 kernel/workqueue.c:3402
+ kthread+0x5fc/0x75c kernel/kthread.c:464
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:847
+
+Fixes: d97c899bde33 ("Bluetooth: Introduce L2CAP channel callback for resuming")
+Reported-by: syzbot+e4d73b165c3892852d22@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/686c12bd.a70a0220.29fe6c.0b13.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/udpgro.sh | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/bluetooth/l2cap_sock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/net/udpgro.sh b/tools/testing/selftests/net/udpgro.sh
-index 53341c8135e88..b65cf09f9914e 100755
---- a/tools/testing/selftests/net/udpgro.sh
-+++ b/tools/testing/selftests/net/udpgro.sh
-@@ -50,7 +50,7 @@ run_one() {
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index bdfc83eb7aefc..c89277848ca83 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1723,6 +1723,9 @@ static void l2cap_sock_resume_cb(struct l2cap_chan *chan)
+ {
+ 	struct sock *sk = chan->data;
  
- 	cfg_veth
- 
--	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} &
-+	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 100 ${rx_args} &
- 	local PID1=$!
- 
- 	wait_local_port_listen ${PEER_NS} 8000 udp
-@@ -97,7 +97,7 @@ run_one_nat() {
- 	# will land on the 'plain' one
- 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -G ${family} -b ${addr1} -n 0 &
- 	local PID1=$!
--	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} &
-+	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 100 ${family} -b ${addr2%/*} ${rx_args} &
- 	local PID2=$!
- 
- 	wait_local_port_listen "${PEER_NS}" 8000 udp
-@@ -119,9 +119,9 @@ run_one_2sock() {
- 
- 	cfg_veth
- 
--	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} -p 12345 &
-+	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 100 ${rx_args} -p 12345 &
- 	local PID1=$!
--	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} &
-+	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 100 ${rx_args} &
- 	local PID2=$!
- 
- 	wait_local_port_listen "${PEER_NS}" 12345 udp
++	if (!sk)
++		return;
++
+ 	if (test_and_clear_bit(FLAG_PENDING_SECURITY, &chan->flags)) {
+ 		sk->sk_state = BT_CONNECTED;
+ 		chan->state = BT_CONNECTED;
 -- 
 2.39.5
 
