@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-164224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ADA1B0DE71
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:27:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092C9B0DE67
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24F72AC2623
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:18:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9A4B585F24
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC5A2EB5CA;
-	Tue, 22 Jul 2025 14:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA362ECD34;
+	Tue, 22 Jul 2025 14:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R77Qv+c8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+9+BXu6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C667A32;
-	Tue, 22 Jul 2025 14:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671B42ECD16;
+	Tue, 22 Jul 2025 14:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193654; cv=none; b=XVZEe7md4ReUhhRRCZ9QfCCLFNfRd8BE4NJ4gV5fTkoZ6j/Kp3z7ND6eJheXXMZdxtVpvSPFd8RyGHuaNaLJx6DTmw6g8v1RphcB3miZpkOLBDU9HGRHsWw6Uf5HBiW3TTNv9AK/DoaiZvwQEQgj4K9tcH0qQm0U1U65xcr1uww=
+	t=1753193691; cv=none; b=oz6+QU7w78WILJe31gAKTpaOPW2nw/AJ+9xYEATanAg1Uj8guKGm1EsxfVt3I0kf3r82rYAaX9scjNohIlYzNlqqSUE66c5X55KKtMP6Lh60heUvEE8ZjU3A2QPxVr44QYYZJYeJpVHNghQy6Rrzn/xyaj/RXmCZR5trUbFTRBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193654; c=relaxed/simple;
-	bh=aPUjWvtS72G9jcG2z5KWYMqx5WrVg5NKdfcaIrdBBO4=;
+	s=arc-20240116; t=1753193691; c=relaxed/simple;
+	bh=u1m2cKgmEcV+2UMmfk9vm0afPF634E7wmey2dUAAHrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cHI/qacxIxY44Hnt3jB51o1o3AbueXHX454foTxx9Ayh9p+1RB4yqBDxCm14B3XFCgdCIFA/Ju9yMreGNlJtyyl7yQ+0KTBcxlSNZy4fWtQuUnFzVUs4IhfX5IebVChFcJ12Kr6d+Bm9ljfgWQt3I3G4xryfKev2VogpzF7TEzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R77Qv+c8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0326EC4CEF5;
-	Tue, 22 Jul 2025 14:14:13 +0000 (UTC)
+	 MIME-Version; b=IWtylT0sYixGzu3qyWH4UwcoZMLSIFFQSvzvgfy4v0DRNoDefl5fhoVtKzBuaQs+UA1GWYrKrnuHjLUhtjfXbwq+mizVKYOJNU1Z7XwFYtLm3v1fHyVCN+GTlDDo0rRjeaS2vJEMLgMVFmXMUSxINP2h52UuzbzZDx5mcXSZC6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+9+BXu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0E7C4CEEB;
+	Tue, 22 Jul 2025 14:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193654;
-	bh=aPUjWvtS72G9jcG2z5KWYMqx5WrVg5NKdfcaIrdBBO4=;
+	s=korg; t=1753193690;
+	bh=u1m2cKgmEcV+2UMmfk9vm0afPF634E7wmey2dUAAHrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R77Qv+c81m17Z7bLYVtKeBt51QnPRvW/L4k8ArLFH4jU0L7yDDOdo/WR759oHMNLz
-	 J1Y3AWM/I0kmPe26IdSdmN87rHtNXtco8p/FbmMsEFuYH50yWvt7qUUeDQmcZq2z5d
-	 zr6ntXCI48cE6GB2aKSxSwlsCyZ1t5kqoN2Ai6tc=
+	b=a+9+BXu6LmPGxFinQtIJ73sB7t9rQbFuT0Ap+zherVglzdDdhNCqLaAiGzzUdccSA
+	 ckRZHSUUgzrIsUOwZzv6CZStYIxwzvSmyMVyHVm/NJFO3rvHCOvhcyArgTuyJaOIPO
+	 2rOjR4Eqqe+YhbzcEjpU0h1SlacEUdyI9h93p38I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Christoph Paasch <cpaasch@openai.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 140/187] Bluetooth: btusb: QCA: Fix downloading wrong NVM for WCN6855 GF variant without board ID
-Date: Tue, 22 Jul 2025 15:45:10 +0200
-Message-ID: <20250722134351.002379974@linuxfoundation.org>
+Subject: [PATCH 6.15 141/187] net/mlx5: Correctly set gso_size when LRO is used
+Date: Tue, 22 Jul 2025 15:45:11 +0200
+Message-ID: <20250722134351.038202384@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -66,125 +68,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Christoph Paasch <cpaasch@openai.com>
 
-[ Upstream commit 43015955795a619f7ca4ae69b9c0ffc994c82818 ]
+[ Upstream commit 531d0d32de3e1b6b77a87bd37de0c2c6e17b496a ]
 
-For GF variant of WCN6855 without board ID programmed
-btusb_generate_qca_nvm_name() will chose wrong NVM
-'qca/nvm_usb_00130201.bin' to download.
+gso_size is expected by the networking stack to be the size of the
+payload (thus, not including ethernet/IP/TCP-headers). However, cqe_bcnt
+is the full sized frame (including the headers). Dividing cqe_bcnt by
+lro_num_seg will then give incorrect results.
 
-Fix by choosing right NVM 'qca/nvm_usb_00130201_gf.bin'.
-Also simplify NVM choice logic of btusb_generate_qca_nvm_name().
+For example, running a bpftrace higher up in the TCP-stack
+(tcp_event_data_recv), we commonly have gso_size set to 1450 or 1451 even
+though in reality the payload was only 1448 bytes.
 
-Fixes: d6cba4e6d0e2 ("Bluetooth: btusb: Add support using different nvm for variant WCN6855 controller")
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This can have unintended consequences:
+- In tcp_measure_rcv_mss() len will be for example 1450, but. rcv_mss
+will be 1448 (because tp->advmss is 1448). Thus, we will always
+recompute scaling_ratio each time an LRO-packet is received.
+- In tcp_gro_receive(), it will interfere with the decision whether or
+not to flush and thus potentially result in less gro'ed packets.
+
+So, we need to discount the protocol headers from cqe_bcnt so we can
+actually divide the payload by lro_num_seg to get the real gso_size.
+
+v2:
+ - Use "(unsigned char *)tcp + tcp->doff * 4 - skb->data)" to compute header-len
+   (Tariq Toukan <tariqt@nvidia.com>)
+ - Improve commit-message (Gal Pressman <gal@nvidia.com>)
+
+Fixes: e586b3b0baee ("net/mlx5: Ethernet Datapath files")
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20250715-cpaasch-pf-925-investigate-incorrect-gso_size-on-cx-7-nic-v2-1-e06c3475f3ac@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 78 ++++++++++++++++++++++-----------------
- 1 file changed, 44 insertions(+), 34 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 42350212db082..6f2fd043fd3fa 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3230,6 +3230,32 @@ static const struct qca_device_info qca_devices_table[] = {
- 	{ 0x00190200, 40, 4, 16 }, /* WCN785x 2.0 */
- };
- 
-+static u16 qca_extract_board_id(const struct qca_version *ver)
-+{
-+	u16 flag = le16_to_cpu(ver->flag);
-+	u16 board_id = 0;
-+
-+	if (((flag >> 8) & 0xff) == QCA_FLAG_MULTI_NVM) {
-+		/* The board_id should be split into two bytes
-+		 * The 1st byte is chip ID, and the 2nd byte is platform ID
-+		 * For example, board ID 0x010A, 0x01 is platform ID. 0x0A is chip ID
-+		 * we have several platforms, and platform IDs are continuously added
-+		 * Platform ID:
-+		 * 0x00 is for Mobile
-+		 * 0x01 is for X86
-+		 * 0x02 is for Automotive
-+		 * 0x03 is for Consumer electronic
-+		 */
-+		board_id = (ver->chip_id << 8) + ver->platform_id;
-+	}
-+
-+	/* Take 0xffff as invalid board ID */
-+	if (board_id == 0xffff)
-+		board_id = 0;
-+
-+	return board_id;
-+}
-+
- static int btusb_qca_send_vendor_req(struct usb_device *udev, u8 request,
- 				     void *data, u16 size)
- {
-@@ -3386,44 +3412,28 @@ static void btusb_generate_qca_nvm_name(char *fwname, size_t max_size,
- 					const struct qca_version *ver)
- {
- 	u32 rom_version = le32_to_cpu(ver->rom_version);
--	u16 flag = le16_to_cpu(ver->flag);
-+	const char *variant;
-+	int len;
-+	u16 board_id;
- 
--	if (((flag >> 8) & 0xff) == QCA_FLAG_MULTI_NVM) {
--		/* The board_id should be split into two bytes
--		 * The 1st byte is chip ID, and the 2nd byte is platform ID
--		 * For example, board ID 0x010A, 0x01 is platform ID. 0x0A is chip ID
--		 * we have several platforms, and platform IDs are continuously added
--		 * Platform ID:
--		 * 0x00 is for Mobile
--		 * 0x01 is for X86
--		 * 0x02 is for Automotive
--		 * 0x03 is for Consumer electronic
--		 */
--		u16 board_id = (ver->chip_id << 8) + ver->platform_id;
--		const char *variant;
-+	board_id = qca_extract_board_id(ver);
- 
--		switch (le32_to_cpu(ver->ram_version)) {
--		case WCN6855_2_0_RAM_VERSION_GF:
--		case WCN6855_2_1_RAM_VERSION_GF:
--			variant = "_gf";
--			break;
--		default:
--			variant = "";
--			break;
--		}
--
--		if (board_id == 0) {
--			snprintf(fwname, max_size, "qca/nvm_usb_%08x%s.bin",
--				rom_version, variant);
--		} else {
--			snprintf(fwname, max_size, "qca/nvm_usb_%08x%s_%04x.bin",
--				rom_version, variant, board_id);
--		}
--	} else {
--		snprintf(fwname, max_size, "qca/nvm_usb_%08x.bin",
--			rom_version);
-+	switch (le32_to_cpu(ver->ram_version)) {
-+	case WCN6855_2_0_RAM_VERSION_GF:
-+	case WCN6855_2_1_RAM_VERSION_GF:
-+		variant = "_gf";
-+		break;
-+	default:
-+		variant = NULL;
-+		break;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 5fd70b4d55beb..e37cf4f754c48 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -1154,8 +1154,9 @@ static void mlx5e_lro_update_tcp_hdr(struct mlx5_cqe64 *cqe, struct tcphdr *tcp)
  	}
- 
-+	len = snprintf(fwname, max_size, "qca/nvm_usb_%08x", rom_version);
-+	if (variant)
-+		len += snprintf(fwname + len, max_size - len, "%s", variant);
-+	if (board_id)
-+		len += snprintf(fwname + len, max_size - len, "_%04x", board_id);
-+	len += snprintf(fwname + len, max_size - len, ".bin");
  }
  
- static int btusb_setup_qca_load_nvm(struct hci_dev *hdev,
+-static void mlx5e_lro_update_hdr(struct sk_buff *skb, struct mlx5_cqe64 *cqe,
+-				 u32 cqe_bcnt)
++static unsigned int mlx5e_lro_update_hdr(struct sk_buff *skb,
++					 struct mlx5_cqe64 *cqe,
++					 u32 cqe_bcnt)
+ {
+ 	struct ethhdr	*eth = (struct ethhdr *)(skb->data);
+ 	struct tcphdr	*tcp;
+@@ -1205,6 +1206,8 @@ static void mlx5e_lro_update_hdr(struct sk_buff *skb, struct mlx5_cqe64 *cqe,
+ 		tcp->check = tcp_v6_check(payload_len, &ipv6->saddr,
+ 					  &ipv6->daddr, check);
+ 	}
++
++	return (unsigned int)((unsigned char *)tcp + tcp->doff * 4 - skb->data);
+ }
+ 
+ static void *mlx5e_shampo_get_packet_hd(struct mlx5e_rq *rq, u16 header_index)
+@@ -1561,8 +1564,9 @@ static inline void mlx5e_build_rx_skb(struct mlx5_cqe64 *cqe,
+ 		mlx5e_macsec_offload_handle_rx_skb(netdev, skb, cqe);
+ 
+ 	if (lro_num_seg > 1) {
+-		mlx5e_lro_update_hdr(skb, cqe, cqe_bcnt);
+-		skb_shinfo(skb)->gso_size = DIV_ROUND_UP(cqe_bcnt, lro_num_seg);
++		unsigned int hdrlen = mlx5e_lro_update_hdr(skb, cqe, cqe_bcnt);
++
++		skb_shinfo(skb)->gso_size = DIV_ROUND_UP(cqe_bcnt - hdrlen, lro_num_seg);
+ 		/* Subtract one since we already counted this as one
+ 		 * "regular" packet in mlx5e_complete_rx_cqe()
+ 		 */
 -- 
 2.39.5
 
