@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-163797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624FBB0DB9F
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:51:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94C5B0DCAC
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54BC35647DB
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:51:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D10A67B4D49
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B042EA17E;
-	Tue, 22 Jul 2025 13:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CA623AB9D;
+	Tue, 22 Jul 2025 14:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhbDSnV9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vr+2pjiD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629B62E8E0F;
-	Tue, 22 Jul 2025 13:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F621917E3;
+	Tue, 22 Jul 2025 14:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192243; cv=none; b=rCMLjYetvPOrhdM5SsyKjfOFGyPrnQ+YzpKj8dT3Fpm6DLmTrxfXkYv6eT6ZOAo1EBYIHbLi36FDK+niOZbc7VO6vxZjWUHzYeSga573X1bPgkMHkuyKMs7M83xYfIpPeXimfJUu30xHaUEHzYQZRCYD4HG9eoFtNHaTYSSpXEA=
+	t=1753193061; cv=none; b=oJwO3cs6muGyOqcf7G+tm1p5VweE/RHVPt9bVM7kBolex2PC6OwXSLGyqsf7APb9ZcTJexPJDSe866pBi5FdL5S6IlRzCFu9RIYT3gjUGvPJd+eAl/aXnu+gR/1e7mIf1h/jd/CJtJ3SxfNGQRyDeo3ZAWHEA6a8aE1M3QibUw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192243; c=relaxed/simple;
-	bh=DhMJpvnVG3tWuAy0S76HFv1032GnYyAd2CIYHwSVTmw=;
+	s=arc-20240116; t=1753193061; c=relaxed/simple;
+	bh=fHZhFWd4avnJM0DHGG3jyoUMuPAmm34l6RP8snHww98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9e71UDmzw6nigLbCdTibfEHvKpo56fKgky/injuOFNd8eeFIoOpg7WBscTeBiz8khzi1HJroJ+8k4VQk6vCCOf6S3zsWXqgPNkvexHfo+Pq8Bc9JEd9hhB5PAr8ufkuwuwndS7EtX0RDYCE5sCn59B64W6lgq6DEjxHZfrcHhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhbDSnV9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5F3C4CEEB;
-	Tue, 22 Jul 2025 13:50:42 +0000 (UTC)
+	 MIME-Version; b=fnzHs6rFnGeT0x4ysHhMoYZu4jJVFVLa1oQRfdwEpYQef4eCYaCtsGR9/st65j9fGn8KYEo92lzLptV3PEkdZaMSv6KecY07H2uu+JGzn4UFad1pRHwuuGCP9hIl+Z12tIIDbyYcL4rgg4Gds2jRrPUk8daEb4iGMyW98JTTs0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vr+2pjiD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34284C4CEEB;
+	Tue, 22 Jul 2025 14:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192243;
-	bh=DhMJpvnVG3tWuAy0S76HFv1032GnYyAd2CIYHwSVTmw=;
+	s=korg; t=1753193061;
+	bh=fHZhFWd4avnJM0DHGG3jyoUMuPAmm34l6RP8snHww98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zhbDSnV9SjUGdPViIddM3dfq/VAKIQHE5i/Gsq3SPLulRkT64cb+KfEOoyfFzbm9d
-	 Y2FQtmJVvnqFsSZis0FPRrc9Irh9gmFxMED9v3jP1SJ9NWsXxEdWLaitdQnlrYHDUV
-	 4zYp6el+7hziW7n+NlIw14FIejzI4HJVsvalMRrs=
+	b=vr+2pjiDaMyywaeB4d/y8T7nMpogy8l4xhDNI+EbM4im46pZ7z5PVoZSfCmYg1BA4
+	 T1eT94Yb+k7AI5cHGg7yBGHyB2bXBsDuYCHcJMt2bMuk5rc4zVG5ZTknoEVKyzFE9r
+	 zqDNNwpcavOJZCIQLtBxxyJhK4bDyp9zQW8Rlorw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessandro Gasbarroni <alex.gasbarroni@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+3bbbade4e1a7ab45ca3b@syzkaller.appspotmail.com,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 53/79] Bluetooth: hci_sync: fix connectable extended advertising when using static random address
-Date: Tue, 22 Jul 2025 15:44:49 +0200
-Message-ID: <20250722134330.328274464@linuxfoundation.org>
+Subject: [PATCH 6.12 106/158] hwmon: (corsair-cpro) Validate the size of the received input buffer
+Date: Tue, 22 Jul 2025 15:44:50 +0200
+Message-ID: <20250722134344.696383320@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Gasbarroni <alex.gasbarroni@gmail.com>
+From: Marius Zachmann <mail@mariuszachmann.de>
 
-[ Upstream commit d85edab911a4c1fcbe3f08336eff5c7feec567d0 ]
+[ Upstream commit 495a4f0dce9c8c4478c242209748f1ee9e4d5820 ]
 
-Currently, the connectable flag used by the setup of an extended
-advertising instance drives whether we require privacy when trying to pass
-a random address to the advertising parameters (Own Address).
-If privacy is not required, then it automatically falls back to using the
-controller's public address. This can cause problems when using controllers
-that do not have a public address set, but instead use a static random
-address.
+Add buffer_recv_size to store the size of the received bytes.
+Validate buffer_recv_size in send_usb_cmd().
 
-e.g. Assume a BLE controller that does not have a public address set.
-The controller upon powering is set with a random static address by default
-by the kernel.
-
-	< HCI Command: LE Set Random Address (0x08|0x0005) plen 6
-        	Address: E4:AF:26:D8:3E:3A (Static)
-	> HCI Event: Command Complete (0x0e) plen 4
-	      LE Set Random Address (0x08|0x0005) ncmd 1
-	        Status: Success (0x00)
-
-Setting non-connectable extended advertisement parameters in bluetoothctl
-mgmt
-
-	add-ext-adv-params -r 0x801 -x 0x802 -P 2M -g 1
-
-correctly sets Own address type as Random
-
-	< HCI Command: LE Set Extended Advertising Parameters (0x08|0x0036)
-	plen 25
-		...
-	    Own address type: Random (0x01)
-
-Setting connectable extended advertisement parameters in bluetoothctl mgmt
-
-	add-ext-adv-params -r 0x801 -x 0x802 -P 2M -g -c 1
-
-mistakenly sets Own address type to Public (which causes to use Public
-Address 00:00:00:00:00:00)
-
-	< HCI Command: LE Set Extended Advertising Parameters (0x08|0x0036)
-	plen 25
-		...
-	    Own address type: Public (0x00)
-
-This causes either the controller to emit an Invalid Parameters error or to
-mishandle the advertising.
-
-This patch makes sure that we use the already set static random address
-when requesting a connectable extended advertising when we don't require
-privacy and our public address is not set (00:00:00:00:00:00).
-
-Fixes: 3fe318ee72c5 ("Bluetooth: move hci_get_random_address() to hci_sync")
-Signed-off-by: Alessandro Gasbarroni <alex.gasbarroni@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: syzbot+3bbbade4e1a7ab45ca3b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-hwmon/61233ba1-e5ad-4d7a-ba31-3b5d0adcffcc@roeck-us.net
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20250619132817.39764-5-mail@mariuszachmann.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/corsair-cpro.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 7d22b2b02745a..27d1209da0df9 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6508,8 +6508,8 @@ int hci_get_random_address(struct hci_dev *hdev, bool require_privacy,
- 		return 0;
- 	}
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index e1a7f7aa7f804..b7b911f8359c7 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -89,6 +89,7 @@ struct ccp_device {
+ 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
+ 	u8 *cmd_buffer;
+ 	u8 *buffer;
++	int buffer_recv_size; /* number of received bytes in buffer */
+ 	int target[6];
+ 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
+ 	DECLARE_BITMAP(fan_cnct, NUM_FANS);
+@@ -146,6 +147,9 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+ 	if (!t)
+ 		return -ETIMEDOUT;
  
--	/* No privacy so use a public address. */
--	*own_addr_type = ADDR_LE_DEV_PUBLIC;
-+	/* No privacy, use the current address */
-+	hci_copy_identity_address(hdev, rand_addr, own_addr_type);
- 
- 	return 0;
++	if (ccp->buffer_recv_size != IN_BUFFER_SIZE)
++		return -EPROTO;
++
+ 	return ccp_get_errno(ccp);
  }
+ 
+@@ -157,6 +161,7 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
+ 	spin_lock(&ccp->wait_input_report_lock);
+ 	if (!completion_done(&ccp->wait_input_report)) {
+ 		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
++		ccp->buffer_recv_size = size;
+ 		complete_all(&ccp->wait_input_report);
+ 	}
+ 	spin_unlock(&ccp->wait_input_report_lock);
 -- 
 2.39.5
 
