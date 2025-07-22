@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7BD1B0DBBE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:53:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3094BB0DC81
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB57F5478D3
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06D84188CED8
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B6C2EA73D;
-	Tue, 22 Jul 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBD923AB9D;
+	Tue, 22 Jul 2025 14:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOD4ZDpC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHSz5Bxm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5162EA140;
-	Tue, 22 Jul 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD7751C5A;
+	Tue, 22 Jul 2025 14:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192290; cv=none; b=GQXhjNOic5/JCzPDfqPjYkS3IaPg459LaT2OKU3xkk/e2rVR5LzJD6DukmGv0jC//tfJTDfihym0OYovuAmT14gJ+3kR/0hg59iXqOMcvLJog6NU79u0YKvFBiN0IYrJ/+X2CWOBYs5hUuC4M9oUkaH1lgikgtQJ2CUsQR8jk+k=
+	t=1753192826; cv=none; b=Za4zhFJwd4m3UVaDo+1jsY7PvU2fsYxAXwzpoSWw1P58wOCKjT7K/U4XfJfzhqsZkRfWLXxLV0v7bAt5gksDGLpP1QomHHyB3okRA1wKxTxkfNvfpUaNPMejvxaHF7IuGjuRyoxZh84w3fIJ8umODPHevhSEF/nVClJZLWymCzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192290; c=relaxed/simple;
-	bh=JwLziuly0AjDSRzixG9uI5u9ZPaWOGETAqZcWS3FW6Q=;
+	s=arc-20240116; t=1753192826; c=relaxed/simple;
+	bh=fnl36tM/auWeg0ov0IeslQGdgUS1j8wI/5FteCJIIsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rpg4efYZAGGHBWaNUbqzYxO3Ao6fv/yih7CiseggXt8gxrayhxnlQEtSQfzPdcGnRlGmh5RoRN4tEm+cNtNP/HG5s8nU0R2y1SSTacBI3TnScdyUBV7NJ7qD3FGmxo/haAzJfzTGjA7gd3Mm7kdBgxWeXW3LSWW5hbxhxhtChmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOD4ZDpC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD00AC4CEEB;
-	Tue, 22 Jul 2025 13:51:29 +0000 (UTC)
+	 MIME-Version; b=ipaGAD3GSwE+IEHbO/eaBLXtCpHmo6ORO2ZIn+RNPaRbEGVbH5M61RiCo/mosS04delnlSAega2YlCjTVGdAo+bUIDuQXxvejVTlHTx3mObqeNodch8hFsCy0BJaE+Vlx/L7VqWb8bGROhGMOnbiYbjNHLC3KzTGOidiwR4/D1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHSz5Bxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F9BC4CEF5;
+	Tue, 22 Jul 2025 14:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192290;
-	bh=JwLziuly0AjDSRzixG9uI5u9ZPaWOGETAqZcWS3FW6Q=;
+	s=korg; t=1753192826;
+	bh=fnl36tM/auWeg0ov0IeslQGdgUS1j8wI/5FteCJIIsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOD4ZDpCG3mCATWFVlWpfoEMVcbMXoFIk582HL62a8TA3O/pWFIAMSGoi+WawCQiv
-	 saa59D12oOSxB2iU4+isvzUyJUXaQtx6PvVH6S13n8M1OTdDdCIXdO6lX/5cQZTRkb
-	 GNdZdIxVeFN6xrF21ZSHd6AaOhoUJO8d/RAm+lug=
+	b=PHSz5BxmVOr62fTIa4QsRO8NzDWoUKs0MwVChTFlY2xEaT0L2XBEqXtUPHd0NxZeG
+	 avd9jhQ4YN0cLJtaDP1kTKBEbAYDGeGOlqeL8UTNLEtYEeWeYqCDrC14DFokey9T2y
+	 4gqtruajMYhY6/yanTxgrjM34ve+ot8E1UDQYCT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 004/111] USB: serial: option: add Telit Cinterion FE910C04 (ECM) composition
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 035/158] io_uring/poll: fix POLLERR handling
 Date: Tue, 22 Jul 2025 15:43:39 +0200
-Message-ID: <20250722134333.548600897@linuxfoundation.org>
+Message-ID: <20250722134342.057726841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 252f4ac08cd2f16ecd20e4c5e41ac2a17dd86942 upstream.
+commit c7cafd5b81cc07fb402e3068d134c21e60ea688c upstream.
 
-Add Telit Cinterion FE910C04 (ECM) composition:
-0x10c7: ECM + tty (AT) + tty (AT) + tty (diag)
+8c8492ca64e7 ("io_uring/net: don't retry connect operation on EPOLLERR")
+is a little dirty hack that
+1) wrongfully assumes that POLLERR equals to a failed request, which
+breaks all POLLERR users, e.g. all error queue recv interfaces.
+2) deviates the connection request behaviour from connect(2), and
+3) racy and solved at a wrong level.
 
-usb-devices output:
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c7 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Nothing can be done with 2) now, and 3) is beyond the scope of the
+patch. At least solve 1) by moving the hack out of generic poll handling
+into io_connect().
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 8c8492ca64e79 ("io_uring/net: don't retry connect operation on EPOLLERR")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/3dc89036388d602ebd84c28e5042e457bdfc952b.1752682444.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ io_uring/net.c  |   12 ++++++++----
+ io_uring/poll.c |    2 --
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1415,6 +1415,9 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1735,9 +1735,11 @@ int io_connect(struct io_kiocb *req, uns
+ 	int ret;
+ 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
+ 
+-	if (unlikely(req->flags & REQ_F_FAIL)) {
+-		ret = -ECONNRESET;
+-		goto out;
++	if (connect->in_progress) {
++		struct poll_table_struct pt = { ._key = EPOLLERR };
++
++		if (vfs_poll(req->file, &pt) & EPOLLERR)
++			goto get_sock_err;
+ 	}
+ 
+ 	file_flags = force_nonblock ? O_NONBLOCK : 0;
+@@ -1762,8 +1764,10 @@ int io_connect(struct io_kiocb *req, uns
+ 		 * which means the previous result is good. For both of these,
+ 		 * grab the sock_error() and use that for the completion.
+ 		 */
+-		if (ret == -EBADFD || ret == -EISCONN)
++		if (ret == -EBADFD || ret == -EISCONN) {
++get_sock_err:
+ 			ret = sock_error(sock_from_file(req->file)->sk);
++		}
+ 	}
+ 	if (ret == -ERESTARTSYS)
+ 		ret = -EINTR;
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -315,8 +315,6 @@ static int io_poll_check_events(struct i
+ 				return IOU_POLL_REISSUE;
+ 			}
+ 		}
+-		if (unlikely(req->cqe.res & EPOLLERR))
+-			req_set_fail(req);
+ 		if (req->apoll_events & EPOLLONESHOT)
+ 			return IOU_POLL_DONE;
+ 
 
 
 
