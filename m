@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-164102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0559B0DDAE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:18:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D45B0DD23
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD742580756
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:13:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BF2D162E1F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0BB2F0038;
-	Tue, 22 Jul 2025 14:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082301D6193;
+	Tue, 22 Jul 2025 14:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWLXyzvs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDRi3Coh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85342EACE5;
-	Tue, 22 Jul 2025 14:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB91A32;
+	Tue, 22 Jul 2025 14:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193256; cv=none; b=KU0DB3x3dSIZVcF1MQedikilvW4VXnsdgtp6mLFzPYEfCcibCA+KnlAN0zJykmHfVr0+ZF9iR7LWyZ4eb5yMfi4t9s9hRl8DQp6ewrQ+L9EdAENIoYO55UzYMrYbonpsfbb91lMhhF5IlnoJemyCIAu47gh1pZJ/IqGVedbwsL0=
+	t=1753193162; cv=none; b=UBCazoKTYfphZV2dJKqowWjWfqTdcmgsK/zUAUNWZzfZKwkYCacGl4EpD+SPKu6BZJmGE9QUj5BoNffoSMpz0tpuqK5yv0X4pdpM7wfyLqPK6lyIHQ92HSqbLpgkvut6sYZ4/2NugO6QwwCvhzPkxLjrxXMi/rTh7c/AyVS04A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193256; c=relaxed/simple;
-	bh=JmZN7PBquUrd144RTmBvR0s6yUV6/cDa+eXtGyAZov0=;
+	s=arc-20240116; t=1753193162; c=relaxed/simple;
+	bh=bkJG+2sRsJ0ln2gXfUMUBXFC7qiAIvG6o8zmLUiBEnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QrwYb8QgVbXr6jJK/+nxVVftI3lDRXc1YCqDlafVvoAwbqbHrg96hlD2RGcjiXmnm1t+q4Jg3uGb+EOCOTNGXUh1g9y7Z+U7CLZjfRQF+XiO4uNGuG9x16Vfp8Qa26/76CtBufGOEarBQ8rclWw+/9Hlva1R+vMboTxohSbdYU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWLXyzvs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA0BC4CEF6;
-	Tue, 22 Jul 2025 14:07:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GPhyiMD6jHqDH96EG16u+hrkxiSll+xhS2KaMXDDFQjwDX2jhdWtFp2/tUHhqZ9cnabJWRBPW8Ce8sefaqWXrJsSFbi0e1WsqMOfAd+VL0Kf66cYEP9gTtREJeudcQfQE5Y85iAdGSmzBtYEgpbGUWP7S/t3fzU9ZDze3vjx1yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDRi3Coh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C44AC4CEEB;
+	Tue, 22 Jul 2025 14:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193255;
-	bh=JmZN7PBquUrd144RTmBvR0s6yUV6/cDa+eXtGyAZov0=;
+	s=korg; t=1753193162;
+	bh=bkJG+2sRsJ0ln2gXfUMUBXFC7qiAIvG6o8zmLUiBEnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWLXyzvsFWJEodsfeaK5fEbOZf5b8oCms9c8XjioGi5vQmq9Fwxg5oiseFcqmt3b0
-	 ATWIhRBIgjiaNw3/aaLIEEnUS6vClBlDZefCVTjSDHIVqCUkXhkFleaxOz/cKcXyHD
-	 GKoSPe3UQaEBpj1d2Gu94kbcZVZ7JeeNrSivr9wI=
+	b=tDRi3CohdgsdZ2NbI7KqtJCG0TUO2KHkirqhiOs5L5y/iehzX4XmdVUOC8Di1HPYg
+	 yMoRZjg64ytxQ+46XxhWHiJ+SbTTnHKMyGuFK7+2NNa6vQSYVFy4kQc3fUIf5ioPxc
+	 3Mx/5vc+1WHKKMIkGOOTQld9jV0DQwO08ve/CmDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinyu Liu <katieeliu@tencent.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.15 009/187] usb: gadget: configfs: Fix OOB read on empty string write
-Date: Tue, 22 Jul 2025 15:42:59 +0200
-Message-ID: <20250722134346.102793847@linuxfoundation.org>
+	=?UTF-8?q?Cl=C3=A9ment=20Le=20Goffic?= <clement.legoffic@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.15 010/187] i2c: stm32: fix the device used for the DMA map
+Date: Tue, 22 Jul 2025 15:43:00 +0200
+Message-ID: <20250722134346.137486715@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -59,52 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinyu Liu <1171169449@qq.com>
+From: Clément Le Goffic <clement.legoffic@foss.st.com>
 
-commit 3014168731b7930300aab656085af784edc861f6 upstream.
+commit c870cbbd71fccda71d575f0acd4a8d2b7cd88861 upstream.
 
-When writing an empty string to either 'qw_sign' or 'landingPage'
-sysfs attributes, the store functions attempt to access page[l - 1]
-before validating that the length 'l' is greater than zero.
+If the DMA mapping failed, it produced an error log with the wrong
+device name:
+"stm32-dma3 40400000.dma-controller: rejecting DMA map of vmalloc memory"
+Fix this issue by replacing the dev with the I2C dev.
 
-This patch fixes the vulnerability by adding a check at the beginning
-of os_desc_qw_sign_store() and webusb_landingPage_store() to handle
-the zero-length input case gracefully by returning immediately.
-
-Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/tencent_B1C9481688D0E95E7362AB2E999DE8048207@qq.com
+Fixes: bb8822cbbc53 ("i2c: i2c-stm32: Add generic DMA API")
+Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
+Cc: <stable@vger.kernel.org> # v4.18+
+Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250704-i2c-upstream-v4-1-84a095a2c728@foss.st.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/configfs.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/busses/i2c-stm32.c   |    8 +++-----
+ drivers/i2c/busses/i2c-stm32f7.c |    4 ++--
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -1065,6 +1065,8 @@ static ssize_t webusb_landingPage_store(
- 	unsigned int bytes_to_strip = 0;
- 	int l = len;
+--- a/drivers/i2c/busses/i2c-stm32.c
++++ b/drivers/i2c/busses/i2c-stm32.c
+@@ -102,7 +102,6 @@ int stm32_i2c_prep_dma_xfer(struct devic
+ 			    void *dma_async_param)
+ {
+ 	struct dma_async_tx_descriptor *txdesc;
+-	struct device *chan_dev;
+ 	int ret;
  
-+	if (!len)
-+		return len;
- 	if (page[l - 1] == '\n') {
- 		--l;
- 		++bytes_to_strip;
-@@ -1188,6 +1190,8 @@ static ssize_t os_desc_qw_sign_store(str
- 	struct gadget_info *gi = os_desc_item_to_gadget_info(item);
- 	int res, l;
+ 	if (rd_wr) {
+@@ -116,11 +115,10 @@ int stm32_i2c_prep_dma_xfer(struct devic
+ 	}
  
-+	if (!len)
-+		return len;
- 	l = min_t(int, len, OS_STRING_QW_SIGN_LEN >> 1);
- 	if (page[l - 1] == '\n')
- 		--l;
+ 	dma->dma_len = len;
+-	chan_dev = dma->chan_using->device->dev;
+ 
+-	dma->dma_buf = dma_map_single(chan_dev, buf, dma->dma_len,
++	dma->dma_buf = dma_map_single(dev, buf, dma->dma_len,
+ 				      dma->dma_data_dir);
+-	if (dma_mapping_error(chan_dev, dma->dma_buf)) {
++	if (dma_mapping_error(dev, dma->dma_buf)) {
+ 		dev_err(dev, "DMA mapping failed\n");
+ 		return -EINVAL;
+ 	}
+@@ -150,7 +148,7 @@ int stm32_i2c_prep_dma_xfer(struct devic
+ 	return 0;
+ 
+ err:
+-	dma_unmap_single(chan_dev, dma->dma_buf, dma->dma_len,
++	dma_unmap_single(dev, dma->dma_buf, dma->dma_len,
+ 			 dma->dma_data_dir);
+ 	return ret;
+ }
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -741,10 +741,10 @@ static void stm32f7_i2c_dma_callback(voi
+ {
+ 	struct stm32f7_i2c_dev *i2c_dev = (struct stm32f7_i2c_dev *)arg;
+ 	struct stm32_i2c_dma *dma = i2c_dev->dma;
+-	struct device *dev = dma->chan_using->device->dev;
+ 
+ 	stm32f7_i2c_disable_dma_req(i2c_dev);
+-	dma_unmap_single(dev, dma->dma_buf, dma->dma_len, dma->dma_data_dir);
++	dma_unmap_single(i2c_dev->dev, dma->dma_buf, dma->dma_len,
++			 dma->dma_data_dir);
+ 	complete(&dma->dma_complete);
+ }
+ 
 
 
 
