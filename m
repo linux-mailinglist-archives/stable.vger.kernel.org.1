@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-164045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4A5B0DCFA
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:07:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E97AEB0DE3A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 118041883DFF
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5465FAC57F0
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AFF2E1724;
-	Tue, 22 Jul 2025 14:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604112EE276;
+	Tue, 22 Jul 2025 14:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HT6+gimw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjmZg1bo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1151DCB09;
-	Tue, 22 Jul 2025 14:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFBF2BF012;
+	Tue, 22 Jul 2025 14:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193068; cv=none; b=QDhLONralhWOooajKHQHjKRYHstSnXELPas+Q4FfZcZL7wUyZyH57jjVzk/Ofx5iDYO8UI9kohRKFcJh6XYAcsTTUFbYuRtRMlkP55DB1JyMNi66VDEfIJwbaKicGSQ5w6ZMy0IlMKAvzjqPuq4vnOLr3YKxkAlyXrxqMRdIKQ4=
+	t=1753193540; cv=none; b=BDra6E4kOOAdo1HEmabiy8HkA4rL1S9Zgg+7OLX7hxSieJi/Vy2bZhPZHTKmUoQKWOro4JRZHzhumdO3wGb14hZfNyiA+LxCeSiNtY1iEB2wxw5qAgQTocf9j0mRJsLQ1HdsVcJ+S/KMdx9Lf7nxEM8wcQhC7o40TEsxRbYrYXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193068; c=relaxed/simple;
-	bh=V1IrBlllvgk+JnRgCI+kttnXmMLnog9eU62j+7CgkLU=;
+	s=arc-20240116; t=1753193540; c=relaxed/simple;
+	bh=9HyXCdm2hhWzn4wCpSoWGkUQ7E+JDV0Lwkb0lJiTguo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCXZtmWvkN59wQJsyOpAd4wVPVyeeJIco94IF/EPXzR1SErTpOAkSjbf8OGdBqpoBNcydTkovNQobkKJubUzsQiWFO1QkhXNrcrHF+qeWfa2JHOaH9NJSptD8MVtR6JYimpDSyIOrmFv3o46XAxG9hNdpLw2Vau/XXqz8QaPuOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HT6+gimw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FB5C4CEEB;
-	Tue, 22 Jul 2025 14:04:27 +0000 (UTC)
+	 MIME-Version; b=BFzmggjZEnxqfLhOdHR0mqker7KQZ8t8d9c7Vcum3qiJ32yDhpIpZEVQOm+I5Wal7MZzu9FuyMzdT3zip7vHqsg7nLsLchuyfmfYUi2crJF8t/sdzTnrQLW4eERNbAJEgnJsWYsu5E285p2MtHJLlEkhHEQvnNdOnRCYeNSJ6P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjmZg1bo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854B2C4CEEB;
+	Tue, 22 Jul 2025 14:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193068;
-	bh=V1IrBlllvgk+JnRgCI+kttnXmMLnog9eU62j+7CgkLU=;
+	s=korg; t=1753193540;
+	bh=9HyXCdm2hhWzn4wCpSoWGkUQ7E+JDV0Lwkb0lJiTguo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HT6+gimw5sIhhWpmogX4y2/tAX4NUjmz20e8+xEPgJw+uIYipO6mgtb3bc2tcVMgd
-	 uoqfbP85VENvqGkQTYJs5vRjrBu30iSQsBoweykOUJf5vj3AJrLHzRsy4mapuRWInH
-	 BgOWyBzS7zuAhQ3+75HZwWssqYEdyHBPkI+aZcAw=
+	b=AjmZg1boV22of8BJh2naXZakxi1+N9OpuJyuWcK4XbNlZTKIFnvk/uLZRyMKsT8ES
+	 7E3zMtn5ewB+1s2evMJ2XuOOMPUnyd4a7MTy2cATPeYQvpGJDTPFTIfPwdrCk9YRcG
+	 b878dN+EfDsSViZ6OeF2xcCZyOJhxUqnZVR/gH0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 108/158] ice: check correct pointer in fwlog debugfs
-Date: Tue, 22 Jul 2025 15:44:52 +0200
-Message-ID: <20250722134344.774961163@linuxfoundation.org>
+	syzbot+e834e757bd9b3d3e1251@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 123/187] wifi: cfg80211: remove scan request n_channels counted_by
+Date: Tue, 22 Jul 2025 15:44:53 +0200
+Message-ID: <20250722134350.330728253@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,40 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit bedd0330a19b3a4448e67941732153ce04d3fb9b ]
+[ Upstream commit 444020f4bf06fb86805ee7e7ceec0375485fd94d ]
 
-pf->ice_debugfs_pf_fwlog should be checked for an error here.
+This reverts commit e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
+cfg80211_scan_request with __counted_by").
 
-Fixes: 96a9a9341cda ("ice: configure FW logging")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+This really has been a completely failed experiment. There were
+no actual bugs found, and yet at this point we already have four
+"fixes" to it, with nothing to show for but code churn, and it
+never even made the code any safer.
+
+In all of the cases that ended up getting "fixed", the structure
+is also internally inconsistent after the n_channels setting as
+the channel list isn't actually filled yet. You cannot scan with
+such a structure, that's just wrong. In mac80211, the struct is
+also reused multiple times, so initializing it once is no good.
+
+Some previous "fixes" (e.g. one in brcm80211) are also just setting
+n_channels before accessing the array, under the assumption that the
+code is correct and the array can be accessed, further showing that
+the whole thing is just pointless when the allocation count and use
+count are not separate.
+
+If we really wanted to fix it, we'd need to separately track the
+number of channels allocated and the number of channels currently
+used, but given that no bugs were found despite the numerous syzbot
+reports, that'd just be a waste of time.
+
+Remove the __counted_by() annotation. We really should also remove
+a number of the n_channels settings that are setting up a structure
+that's inconsistent, but that can wait.
+
+Reported-by: syzbot+e834e757bd9b3d3e1251@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e834e757bd9b3d3e1251
+Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
+Link: https://patch.msgid.link/20250714142130.9b0bbb7e1f07.I09112ccde72d445e11348fc2bef68942cb2ffc94@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_debugfs.c | 2 +-
+ include/net/cfg80211.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_debugfs.c b/drivers/net/ethernet/intel/ice/ice_debugfs.c
-index 9fc0fd95a13d8..cb71eca6a85bf 100644
---- a/drivers/net/ethernet/intel/ice/ice_debugfs.c
-+++ b/drivers/net/ethernet/intel/ice/ice_debugfs.c
-@@ -606,7 +606,7 @@ void ice_debugfs_fwlog_init(struct ice_pf *pf)
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index efbd79c67be21..75f2e5782887f 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -2720,7 +2720,7 @@ struct cfg80211_scan_request {
+ 	s8 tsf_report_link_id;
  
- 	pf->ice_debugfs_pf_fwlog = debugfs_create_dir("fwlog",
- 						      pf->ice_debugfs_pf);
--	if (IS_ERR(pf->ice_debugfs_pf))
-+	if (IS_ERR(pf->ice_debugfs_pf_fwlog))
- 		goto err_create_module_files;
+ 	/* keep last */
+-	struct ieee80211_channel *channels[] __counted_by(n_channels);
++	struct ieee80211_channel *channels[];
+ };
  
- 	fw_modules_dir = debugfs_create_dir("modules",
+ static inline void get_random_mask_addr(u8 *buf, const u8 *addr, const u8 *mask)
 -- 
 2.39.5
 
