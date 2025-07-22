@@ -1,182 +1,182 @@
-Return-Path: <stable+bounces-163663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7891B0D410
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 10:00:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8AFB0D426
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 10:09:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CB2E1890C4C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 08:00:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DF8B1772A8
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 08:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BA228C2B9;
-	Tue, 22 Jul 2025 08:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AB728D83B;
+	Tue, 22 Jul 2025 08:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YYocp295"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GpFz6Snq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F431241C89;
-	Tue, 22 Jul 2025 08:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8523A288C97;
+	Tue, 22 Jul 2025 08:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753171228; cv=none; b=jb0xAJCi6s6S3FzDJF8xXvePki+V/KuhYo9afDSRijP2YiDVN81yOZCcSo2VDA0BmimalNiefhiPnTPWf2xNizKSeSfvyzZDM+IdzE7W+P8W70HmOleoLmydCu7AfHxpP05GunhxA7ykgitGf3UgRYSp2OEvumL1zQE7d1YMfRs=
+	t=1753171790; cv=none; b=Fl1iNbVEKzGLxhETd2/TtMQt2tFO3Of47M/biEXAnQX2uw1fF9mZ94oczKAO/2WBHANaMoA4mt4UEiLp97t7UPfXEA2U71u1Ur2+LO02BVHwyoHsikkJWqgrf3DTo3/yorM0sz6lG1YB3Jv0wu5P6dxpu8+3UZ75OD2zP40a/uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753171228; c=relaxed/simple;
-	bh=BvHq5GXTMNnj6Xx5RcptWy7nTCMQ9+nPIXyZI9x357M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GTAXHcYAdp+TaSBLfx1hqBqPYLss8qId/xOltP1peN13mrEIPlYzHQ+glY85OvLuxxyRNIXLIAJYNLz8kzME1DZz7eHv4neh6e7gB6AdXN7NM3cvIHVWTgFJJ4IqHpcyB9Hxl1fm35b50N6PXkRRQXU4CPPLDu1ewksm0FcyTQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YYocp295; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1753171790; c=relaxed/simple;
+	bh=gn+iuOkeXx5CXapSR8JX4rx1rvfdQeO7EY0UGX2skyA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RlcEzHf4OpIZheOeFCNgPq6K60mFp2VnVqNdD2NNowTuUDmOIc22gOEoIiAuYOSFP7bJKM5cg+9lJBsw5WUvudPC1CJaC9hpVhfBa9g01lKYean9hQpaSqUxBypQccjs8LO/savDNuyyAOE5Emj9yG8Me/P1VcRvtCVZ12KpcOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GpFz6Snq; arc=none smtp.client-ip=209.85.222.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4561a4a8bf2so57550685e9.1;
-        Tue, 22 Jul 2025 01:00:26 -0700 (PDT)
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7e182e4171bso550134085a.3;
+        Tue, 22 Jul 2025 01:09:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753171224; x=1753776024; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UjkE7uD7uLuZDYl3olNEwoxF8mwgFZj795XttbcqyEU=;
-        b=YYocp295y30C8XHn4xCh4Oges3skoo6Vgl7Bgonbe/clm2QNIs/VaxwMX2fTbu4dFZ
-         U6KwX5fQisc4kyHMRY+YTL1sSSsMSgZ2Jau77pvvDmP+PyJJkeEA+RtRFvIXGfZNhUT2
-         cBU4mhJXqsIYbNvqZSlbRqvvIiREGVgsG22ZDYJsHod7sxKuqCqp3u4Vp6selPR5eJYN
-         dt8GMiQR7U0S+C3WmGpm4FzzPefTmVdHHxP6TlNwsqV2JQFGzc8TOEiBLIoW8CjMXmKg
-         mai0HPyjNUK9QxEosELS4Bf4AyBhxIwNOWEEk+2lpXbQqPRqamYVWy9gJ4byOqfNF+GR
-         69CQ==
+        d=gmail.com; s=20230601; t=1753171787; x=1753776587; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IkMRut42JbXCcjzEF/zhUxhw62vCyXsodJ4Y7LczqSg=;
+        b=GpFz6SnqGhDC3Gi/h/UOySdZA32ramjNnKx07up0ld7agvd4D1QcfAA0X7nUAJZS1l
+         x2fTGhlhTF+WC9hOk20Q78SE1A81OHsKOAIEUMMvpg6zzW7tPIHBa0A38upfJy6JWs5i
+         0A/bXrOqBDhbcrysIBbU6H/axADaviHnP6aUfyT7xn1U7c1VycWiZAwANlnsk5mUmMyJ
+         7jE+w/wrqh+78FJ6DV3UCfSpU9BUQ3enR0iPkmv7iXTJLrkhAmCOTNAq93wc75g4Th3u
+         vj4b/SvwR5yq3R3WYr5m55eauxt4BB1R7917USOfs01tOAxo43JfeXiC5Sn9fn11JZpg
+         +iRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753171224; x=1753776024;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1753171787; x=1753776587;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UjkE7uD7uLuZDYl3olNEwoxF8mwgFZj795XttbcqyEU=;
-        b=DTHf2Qq2ud+pxCKPhmI50vIR9JfKJLrKp0BDnFA9VtNzss9uVPemX6cDJLHCGZbr0N
-         m03IkXwCYnxKILlzEiGH6SAHBOzZSQ4hg0ebr7NEuuIB4zfcncZvoF+ohntIwwPT5tM+
-         XZt7l9pDeedWKakjtGwc2PPH6RbfCu0QOe64oRJ2ql3HerzG6KPFKlNM2PyqwJ4Fv8Ry
-         4gZWEUHQ8eAhXLUPTI3gghAjbZPiqBYrC74qisMVL3/UWjQa67QTJKYWOB4KlXN7DRg5
-         WbiY3b8muolNG7qak6mf8ObYbfi02vwVjuJY/etQLqazvIZQu3GeRmrmG27D1UBUGzoX
-         OruQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUqt8+43u2DJotu0erpOo6MQpQXhYG/5m/UAYI40Ls+kdpoHGzNN0bSYX1XAQGx4SCjQ5uZif0e@vger.kernel.org, AJvYcCWvAF+ku+YuTFBGQnAe/QgYZoD1HKhTt7xddGwLrEOD518zAleuIOVogpuw1zGWnxfxjvNeS6jbT5Z2eXs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7XhkPoAaDJGAZOCcgRHzj5XfYZbof5F1txu2XgHxbZdZ2MCdJ
-	CKYwZFdPiPCt+otJHEBUEar73bsrKQEDRfZzEjkVxu+zgO8bvYXD5AnFoyZefA==
-X-Gm-Gg: ASbGncuZLYQCVBYu9nuuAmUQaIkbeQvgg6Dq/sy9jacyF+liOWXNutlfwdKQ+MZahkd
-	LCU/bAYLheNy0ZVCyT56xF6qKh76C0TweqRdW1N1eo4MWmJNmxG3cndpBjhB30EkQatMPrgBoD3
-	UGlt6EDFiqgKCx15BfVmb8VhrM1Xw9IKsQ1EbBN52DXrNetAMhFWVwcNc9ghC8wMpCtiVm8l1Ln
-	juZdocWLKu1Ms7sDWXipRbVQlGUgWzLkUc3inwL9tyUdwCw0KrS8Pv959AgQIILn+np7jB+1dL9
-	3a6blMYW4quTlNYRHb1VETqHHHwn+Zoc6BznHILNY9kDKtz8ap62qEsqSiRnWKbAzEjMef02Qud
-	/j4pQrrJ2YA2ttQ5fEV8zq9U5M/y9EUJ7vQ==
-X-Google-Smtp-Source: AGHT+IHqDZUn7Hn59BvnITsvXyFBDUWkkuJexOdUbmB5NsVQNvau2eVBh/4wL6GkDxhxiJBMiv/Wvg==
-X-Received: by 2002:a05:600d:9:b0:456:10a8:ff7 with SMTP id 5b1f17b1804b1-456306da0e0mr134037275e9.28.1753171224121;
-        Tue, 22 Jul 2025 01:00:24 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:c7c:f4f0:900:eba3:22c5:bfad:dac])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca315basm12680504f8f.39.2025.07.22.01.00.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 01:00:23 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: jikos@kernel.org,
-	bentiss@kernel.org
-Cc: linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Dmitry Savin <envelsavinds@gmail.com>
-Subject: [PATCH RESEND] HID: multitouch: fix slab out-of-bounds access in mt_report_fixup()
-Date: Tue, 22 Jul 2025 09:00:03 +0100
-Message-Id: <20250722080003.3605-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        bh=IkMRut42JbXCcjzEF/zhUxhw62vCyXsodJ4Y7LczqSg=;
+        b=Zz/grrw7KIz6QuDP/imQi7dKI4tIpeSN8Aoz9p4jQZ7Q0p6zs5TV/s1wzm426yhgZm
+         1BxHgB3mgOWCEn+c8WpqPlpgE74k+1me2XW2RGMSHHwnMStRSNuft21ms/g6zMuZQV9o
+         IIw2WpiLJdvN4h7FX+6wjsuch3cyEOedVHMDYYp/hwsyY7YPmeH/KuSo2Jox2Ci4ZbhM
+         5mLIWx67SUpjRShb1NTl8KhZw5ouRQ21jb2rmAZsAwYg8por6iriXh+tBw0KasTwDIJt
+         HW2F5r0da54ezPA2ypH3EdGso6mdr/0nhmrCL5brdVfJ+PJ92p+/myEdCv7HAQkMxPLi
+         ZE7g==
+X-Forwarded-Encrypted: i=1; AJvYcCUElC8yLir+S/YFhoHjc9BtupeTJkQPyupzZnUiQ9C8n4/lDg/xTcUfVb4yzq50ULGrw7vzHssrsH+CwA==@vger.kernel.org, AJvYcCUWUZp4xYWcbSrCNBxEM4nmW4xAqGs5FGa/2++31t9ObS5FA5FzBysgNT8wJFYS39rRuCJMmNIxpALLDSZ4@vger.kernel.org, AJvYcCUbY9Z0iaZBHPb1+2YqO0ePz3VvVEu71fWH3qUWpapAeszSuoSERhukKLOlDvCdhxZzNWaC563J@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaVzE0b0HOj8CaLp7DdYg9zs7Mn+RUGCdzF9pweCq8FQBrHQge
+	yzCRLfAIIR9Xgrmwry1PKz4e6BOvD0lN/UNP3KpZT6h/qtvS4mikbgD0IGt36gaaFwIi+ptPNNn
+	Eky9eSdIeNhu6wZmhu9ExpJswpQon4tU=
+X-Gm-Gg: ASbGnctY09WGd9+gGp3srN1bk6woFp5Vi3j+WB/QYIIofYvAsW0yaFdvixV93HNi6To
+	2VaWFJJdqqCKswFw7WIAXTLvgtyCL5+e5sK5081vXf6ZHIPHNog2+3equVUbRSS+A7qXvMWj3qH
+	UyTKCtVqpWA961ONjskhqjNMkUx5tK5Fh5/kKGxBrejSoXv5wUE+keOC5a20ZRpLy1QjJG4LoEM
+	F4lGm2tDQaGOaKuEQjkYwccPrW5m9ymeUgdvkgf
+X-Google-Smtp-Source: AGHT+IHLdTP29vGvUZLmpbgdjueMPFa6ju4C/ky1Y5qT2wkgHAQc0YoCIuQb3roEVQW6tc9ak88IWATJBWQrGV46Nxw=
+X-Received: by 2002:a05:6214:419c:b0:6fd:4cd1:c79a with SMTP id
+ 6a1803df08f44-704f6adc103mr357084356d6.21.1753171787424; Tue, 22 Jul 2025
+ 01:09:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250722080003.3605-1-qasdev00@gmail.com>
+In-Reply-To: <20250722080003.3605-1-qasdev00@gmail.com>
+From: Dmitry Savin <envelsavinds@gmail.com>
+Date: Tue, 22 Jul 2025 09:09:35 +0100
+X-Gm-Features: Ac12FXwaASSHloXD55ijQi_eIPwUCNTSkE1tUTMXeaCahvY7RWmwi-wYMnuFwEg
+Message-ID: <CAP+4zOfi4v-MZoOeQmkD99-QhV45KEyHSXV2CSGtAaqOyGb6CQ@mail.gmail.com>
+Subject: Re: [PATCH RESEND] HID: multitouch: fix slab out-of-bounds access in mt_report_fixup()
+To: Qasim Ijaz <qasdev00@gmail.com>
+Cc: jikos@kernel.org, bentiss@kernel.org, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-A malicious HID device can trigger a slab out-of-bounds during
-mt_report_fixup() by passing in report descriptor smaller than
-607 bytes. mt_report_fixup() attempts to patch byte offset 607 
-of the descriptor with 0x25 by first checking if byte offset 
-607 is 0x15 however it lacks bounds checks to verify if the 
-descriptor is big enough before conducting this check. Fix 
-this vulnerability by ensuring the descriptor size is 
-greater than or equal to 608 before accessing it.
-
-Below is the KASAN splat after the out of bounds access happens:
-
-[   13.671954] ==================================================================
-[   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
-[   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
-[   13.673297] 
-[   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3 
-[   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
-[   13.673297] Call Trace:
-[   13.673297]  <TASK>
-[   13.673297]  dump_stack_lvl+0x5f/0x80
-[   13.673297]  print_report+0xd1/0x660
-[   13.673297]  kasan_report+0xe5/0x120
-[   13.673297]  __asan_report_load1_noabort+0x18/0x20
-[   13.673297]  mt_report_fixup+0x103/0x110
-[   13.673297]  hid_open_report+0x1ef/0x810
-[   13.673297]  mt_probe+0x422/0x960
-[   13.673297]  hid_device_probe+0x2e2/0x6f0
-[   13.673297]  really_probe+0x1c6/0x6b0
-[   13.673297]  __driver_probe_device+0x24f/0x310
-[   13.673297]  driver_probe_device+0x4e/0x220
-[   13.673297]  __device_attach_driver+0x169/0x320
-[   13.673297]  bus_for_each_drv+0x11d/0x1b0
-[   13.673297]  __device_attach+0x1b8/0x3e0
-[   13.673297]  device_initial_probe+0x12/0x20
-[   13.673297]  bus_probe_device+0x13d/0x180
-[   13.673297]  device_add+0xe3a/0x1670
-[   13.673297]  hid_add_device+0x31d/0xa40
-[...]
-
-Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 Reviewed-by: Dmitry Savin <envelsavinds@gmail.com>
----
- drivers/hid/hid-multitouch.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 7ac8e16e6158..af4abe3ba410 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1461,18 +1461,25 @@ static const __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
- 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
- 	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
--		if (rdesc[607] == 0x15) {
--			rdesc[607] = 0x25;
--			dev_info(
--				&hdev->dev,
--				"GT7868Q report descriptor fixup is applied.\n");
-+		if (*size >= 608) {
-+			if (rdesc[607] == 0x15) {
-+				rdesc[607] = 0x25;
-+				dev_info(
-+					&hdev->dev,
-+					"GT7868Q report descriptor fixup is applied.\n");
-+			} else {
-+				dev_info(
-+					&hdev->dev,
-+					"The byte is not expected for fixing the report descriptor. \
-+					It's possible that the touchpad firmware is not suitable for applying the fix. \
-+					got: %x\n",
-+					rdesc[607]);
-+			}
- 		} else {
- 			dev_info(
- 				&hdev->dev,
--				"The byte is not expected for fixing the report descriptor. \
--It's possible that the touchpad firmware is not suitable for applying the fix. \
--got: %x\n",
--				rdesc[607]);
-+				"GT7868Q fixup: report descriptor only %u bytes, skipping\n",
-+				*size);
- 		}
- 	}
- 
--- 
-2.39.5
-
+On Tue, 22 Jul 2025 at 09:00, Qasim Ijaz <qasdev00@gmail.com> wrote:
+>
+> A malicious HID device can trigger a slab out-of-bounds during
+> mt_report_fixup() by passing in report descriptor smaller than
+> 607 bytes. mt_report_fixup() attempts to patch byte offset 607
+> of the descriptor with 0x25 by first checking if byte offset
+> 607 is 0x15 however it lacks bounds checks to verify if the
+> descriptor is big enough before conducting this check. Fix
+> this vulnerability by ensuring the descriptor size is
+> greater than or equal to 608 before accessing it.
+>
+> Below is the KASAN splat after the out of bounds access happens:
+>
+> [   13.671954] ==================================================================
+> [   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
+> [   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
+> [   13.673297]
+> [   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3
+> [   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
+> [   13.673297] Call Trace:
+> [   13.673297]  <TASK>
+> [   13.673297]  dump_stack_lvl+0x5f/0x80
+> [   13.673297]  print_report+0xd1/0x660
+> [   13.673297]  kasan_report+0xe5/0x120
+> [   13.673297]  __asan_report_load1_noabort+0x18/0x20
+> [   13.673297]  mt_report_fixup+0x103/0x110
+> [   13.673297]  hid_open_report+0x1ef/0x810
+> [   13.673297]  mt_probe+0x422/0x960
+> [   13.673297]  hid_device_probe+0x2e2/0x6f0
+> [   13.673297]  really_probe+0x1c6/0x6b0
+> [   13.673297]  __driver_probe_device+0x24f/0x310
+> [   13.673297]  driver_probe_device+0x4e/0x220
+> [   13.673297]  __device_attach_driver+0x169/0x320
+> [   13.673297]  bus_for_each_drv+0x11d/0x1b0
+> [   13.673297]  __device_attach+0x1b8/0x3e0
+> [   13.673297]  device_initial_probe+0x12/0x20
+> [   13.673297]  bus_probe_device+0x13d/0x180
+> [   13.673297]  device_add+0xe3a/0x1670
+> [   13.673297]  hid_add_device+0x31d/0xa40
+> [...]
+>
+> Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+> Reviewed-by: Dmitry Savin <envelsavinds@gmail.com>
+> ---
+>  drivers/hid/hid-multitouch.c | 25 ++++++++++++++++---------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+> index 7ac8e16e6158..af4abe3ba410 100644
+> --- a/drivers/hid/hid-multitouch.c
+> +++ b/drivers/hid/hid-multitouch.c
+> @@ -1461,18 +1461,25 @@ static const __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+>         if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
+>             (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
+>              hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
+> -               if (rdesc[607] == 0x15) {
+> -                       rdesc[607] = 0x25;
+> -                       dev_info(
+> -                               &hdev->dev,
+> -                               "GT7868Q report descriptor fixup is applied.\n");
+> +               if (*size >= 608) {
+> +                       if (rdesc[607] == 0x15) {
+> +                               rdesc[607] = 0x25;
+> +                               dev_info(
+> +                                       &hdev->dev,
+> +                                       "GT7868Q report descriptor fixup is applied.\n");
+> +                       } else {
+> +                               dev_info(
+> +                                       &hdev->dev,
+> +                                       "The byte is not expected for fixing the report descriptor. \
+> +                                       It's possible that the touchpad firmware is not suitable for applying the fix. \
+> +                                       got: %x\n",
+> +                                       rdesc[607]);
+> +                       }
+>                 } else {
+>                         dev_info(
+>                                 &hdev->dev,
+> -                               "The byte is not expected for fixing the report descriptor. \
+> -It's possible that the touchpad firmware is not suitable for applying the fix. \
+> -got: %x\n",
+> -                               rdesc[607]);
+> +                               "GT7868Q fixup: report descriptor only %u bytes, skipping\n",
+> +                               *size);
+>                 }
+>         }
+>
+> --
+> 2.39.5
+>
 
