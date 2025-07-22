@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87213B0DC5C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:01:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CACAB0DB64
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:49:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD4D67A282D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D710CAA41A3
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0C522D785;
-	Tue, 22 Jul 2025 14:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158B423B614;
+	Tue, 22 Jul 2025 13:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUKVlQsk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBZCY/Jr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFD5548EE;
-	Tue, 22 Jul 2025 14:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9782433A8;
+	Tue, 22 Jul 2025 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192874; cv=none; b=AL+ykDEsiBtvTCEqP3kZOMzb2l3TUYvzCn1t8muSELDy4djdlI81oDNltd2oo15o3cg0+DaL29M8hN4GEU99NjDHTbVHj/HljyefB+yQUl95wbxQFoKZ4iTVrjzSJihe+CzoaurXnK7eSfVQGW4oJrrjWtOtUJy0YqoaVzmmXJQ=
+	t=1753192107; cv=none; b=Zr+Hg/cK6XiOa0CYDlWJI5eB7PrfmV2WRtpXJbx5hOZfNikq312bwF9iajcfRPyaXQ8Q0ko5jcYeUkxJwwkbV8ON26Qu/PXHV+6zMKsyzhO0viglAo6FbRzig4+PZlF1/BfIBT4lmrH0nu/SQxOycg0FX3kD49KQRk8aCKfwGx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192874; c=relaxed/simple;
-	bh=TpKfHqnX75uS2J+Tpkieh1so8aoarbF/3U8ARbi4SY8=;
+	s=arc-20240116; t=1753192107; c=relaxed/simple;
+	bh=NKMonvoGv9LabQl1se0B0Tb8rwoYbcPqvU4LS4yr3zU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I58cr9nuTCQHhe/4tsvcA23DDB0Uytq3cg+xNbtmpopfV1sTJ3S3Itbo1jpvDHOSfBbueFX71UIseVNDexoLV6E2p/hggT/ypxyf4DbOgvWwUtuL7ix6g95gwiQcwQzSoEAj5LhPaiQolUZk8zZeTDiSbIGUwH492Z1hsRkemag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUKVlQsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2B9C4CEEB;
-	Tue, 22 Jul 2025 14:01:13 +0000 (UTC)
+	 MIME-Version; b=Fnvmz2mO+DJ2LVflC1X7RsX+Xx5ltujF2J5GX42fXntP0CVnPdPYhzIHxkLxNbyCjlYGcPjvzBoXRoP8AbmOQxJ+UDtaG50ql9/vD/qvT7EeKMHs054JMVr18G4SIhd3LD/Onn6v/m9SxU6Fo6ShVbvCOxnqJW7ZcvUhD1KMykA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBZCY/Jr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6F6C4CEEB;
+	Tue, 22 Jul 2025 13:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192874;
-	bh=TpKfHqnX75uS2J+Tpkieh1so8aoarbF/3U8ARbi4SY8=;
+	s=korg; t=1753192107;
+	bh=NKMonvoGv9LabQl1se0B0Tb8rwoYbcPqvU4LS4yr3zU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EUKVlQskUGoGeoMqxMQ2YFZWn7s3Y77gYa371Pzp77cjXBh3thXi8qTFN9/NQuCXl
-	 zSZPXNJ+8xxrdcQUwJslNPFkhBmEMTd5aXY6U2RgTL5cU3xbGjbENs9ZHdPbtiKh5r
-	 isNcY4qUojuiER+Q2rPumaKKWjyMCgenaGZFoXWI=
+	b=DBZCY/JrQAg7OmrRRLifKXA9d28m1uUX7ZZemax3aUHwJVR4hg+ULm4k4auDKBTsq
+	 GUXhAqBeiO5BYWkUz+FMRQZWpfJNnqz8J9dM/fjZqWGe2UyBkJ0FdnCxafjuhVnzzR
+	 0d7p01EmEZ/YCsN0qpztH8bGT+8WrVyFJQSvD9Ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>
-Subject: [PATCH 6.12 066/158] soc: aspeed: lpc-snoop: Dont disable channels that arent enabled
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 14/79] io_uring/poll: fix POLLERR handling
 Date: Tue, 22 Jul 2025 15:44:10 +0200
-Message-ID: <20250722134343.225271232@linuxfoundation.org>
+Message-ID: <20250722134328.909922637@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 56448e78a6bb4e1a8528a0e2efe94eff0400c247 upstream.
+commit c7cafd5b81cc07fb402e3068d134c21e60ea688c upstream.
 
-Mitigate e.g. the following:
+8c8492ca64e7 ("io_uring/net: don't retry connect operation on EPOLLERR")
+is a little dirty hack that
+1) wrongfully assumes that POLLERR equals to a failed request, which
+breaks all POLLERR users, e.g. all error queue recv interfaces.
+2) deviates the connection request behaviour from connect(2), and
+3) racy and solved at a wrong level.
 
-    # echo 1e789080.lpc-snoop > /sys/bus/platform/drivers/aspeed-lpc-snoop/unbind
-    ...
-    [  120.363594] Unable to handle kernel NULL pointer dereference at virtual address 00000004 when write
-    [  120.373866] [00000004] *pgd=00000000
-    [  120.377910] Internal error: Oops: 805 [#1] SMP ARM
-    [  120.383306] CPU: 1 UID: 0 PID: 315 Comm: sh Not tainted 6.15.0-rc1-00009-g926217bc7d7d-dirty #20 NONE
-    ...
-    [  120.679543] Call trace:
-    [  120.679559]  misc_deregister from aspeed_lpc_snoop_remove+0x84/0xac
-    [  120.692462]  aspeed_lpc_snoop_remove from platform_remove+0x28/0x38
-    [  120.700996]  platform_remove from device_release_driver_internal+0x188/0x200
-    ...
+Nothing can be done with 2) now, and 3) is beyond the scope of the
+patch. At least solve 1) by moving the hack out of generic poll handling
+into io_connect().
 
-Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
 Cc: stable@vger.kernel.org
-Cc: Jean Delvare <jdelvare@suse.de>
-Acked-by: Jean Delvare <jdelvare@suse.de>
-Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-2-3cdd59c934d3@codeconstruct.com.au
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Fixes: 8c8492ca64e79 ("io_uring/net: don't retry connect operation on EPOLLERR")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/3dc89036388d602ebd84c28e5042e457bdfc952b.1752682444.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ io_uring/net.c  |   12 ++++++++----
+ io_uring/poll.c |    2 --
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -58,6 +58,7 @@ struct aspeed_lpc_snoop_model_data {
- };
- 
- struct aspeed_lpc_snoop_channel {
-+	bool enabled;
- 	struct kfifo		fifo;
- 	wait_queue_head_t	wq;
- 	struct miscdevice	miscdev;
-@@ -190,6 +191,9 @@ static int aspeed_lpc_enable_snoop(struc
- 	const struct aspeed_lpc_snoop_model_data *model_data =
- 		of_device_get_match_data(dev);
- 
-+	if (WARN_ON(lpc_snoop->chan[channel].enabled))
-+		return -EBUSY;
-+
- 	init_waitqueue_head(&lpc_snoop->chan[channel].wq);
- 	/* Create FIFO datastructure */
- 	rc = kfifo_alloc(&lpc_snoop->chan[channel].fifo,
-@@ -236,6 +240,8 @@ static int aspeed_lpc_enable_snoop(struc
- 		regmap_update_bits(lpc_snoop->regmap, HICRB,
- 				hicrb_en, hicrb_en);
- 
-+	lpc_snoop->chan[channel].enabled = true;
-+
- 	return 0;
- 
- err_misc_deregister:
-@@ -248,6 +254,9 @@ err_free_fifo:
- static void aspeed_lpc_disable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 				     int channel)
- {
-+	if (!lpc_snoop->chan[channel].enabled)
-+		return;
-+
- 	switch (channel) {
- 	case 0:
- 		regmap_update_bits(lpc_snoop->regmap, HICR5,
-@@ -263,6 +272,8 @@ static void aspeed_lpc_disable_snoop(str
- 		return;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1490,9 +1490,11 @@ int io_connect(struct io_kiocb *req, uns
+ 		io = &__io;
  	}
  
-+	lpc_snoop->chan[channel].enabled = false;
-+	/* Consider improving safety wrt concurrent reader(s) */
- 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
- 	kfifo_free(&lpc_snoop->chan[channel].fifo);
- }
+-	if (unlikely(req->flags & REQ_F_FAIL)) {
+-		ret = -ECONNRESET;
+-		goto out;
++	if (connect->in_progress) {
++		struct poll_table_struct pt = { ._key = EPOLLERR };
++
++		if (vfs_poll(req->file, &pt) & EPOLLERR)
++			goto get_sock_err;
+ 	}
+ 
+ 	file_flags = force_nonblock ? O_NONBLOCK : 0;
+@@ -1524,8 +1526,10 @@ int io_connect(struct io_kiocb *req, uns
+ 		 * which means the previous result is good. For both of these,
+ 		 * grab the sock_error() and use that for the completion.
+ 		 */
+-		if (ret == -EBADFD || ret == -EISCONN)
++		if (ret == -EBADFD || ret == -EISCONN) {
++get_sock_err:
+ 			ret = sock_error(sock_from_file(req->file)->sk);
++		}
+ 	}
+ 	if (ret == -ERESTARTSYS)
+ 		ret = -EINTR;
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -288,8 +288,6 @@ static int io_poll_check_events(struct i
+ 				return IOU_POLL_REISSUE;
+ 			}
+ 		}
+-		if (unlikely(req->cqe.res & EPOLLERR))
+-			req_set_fail(req);
+ 		if (req->apoll_events & EPOLLONESHOT)
+ 			return IOU_POLL_DONE;
+ 		if (io_is_uring_fops(req->file))
 
 
 
