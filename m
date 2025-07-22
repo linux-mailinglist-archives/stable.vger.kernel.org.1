@@ -1,105 +1,94 @@
-Return-Path: <stable+bounces-163676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CBBB0D5F6
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 11:27:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B21B0D5F9
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 11:28:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 033A916C041
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 09:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD36F1AA1007
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 09:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228952DCBF8;
-	Tue, 22 Jul 2025 09:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B088A2DCBE2;
+	Tue, 22 Jul 2025 09:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZfm9RJR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pc7nD6aF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60C02DC35C;
-	Tue, 22 Jul 2025 09:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4DF2BEFE3
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 09:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753176469; cv=none; b=MhtxPg+vTRToT3U8AeolNV1L2dGUPDm0pKlJ04EEDKxDAd4ei6gc4iXa80FY//73IH6DTFt89BPU+DlFtbBHWQICkYNsGG91Gr+3BwlUnIkpdJurTqfjrNB4awZ179h19Vs6/8cev69wyIhKcuICBZa+WeRg6T9zEL9SARORbes=
+	t=1753176500; cv=none; b=cIPpd1cUVqx20nAYeI3liyExlawmuNwG0mEigdtnGa8O2vqQP4bHPmcwRbqbIQ2Vl9eHMQEmUw0WZ1sSfJnfT9GTVRP5U5Dq9GefW8u2fxHo4cyvZ5BRFOmbR+naIepNmvXZGeiZBbPXVmyDKzrfVUjF+kcN0ElcbUKcDPrSOGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753176469; c=relaxed/simple;
-	bh=VTOBb6nBpFUj+KE94TVU4rw/yZM3+SNTYOwcbQSppQk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HEY8V0zqz6qmftobulQOvqMK8OcWASHSDcA9nX/ajgdLA3tjSCAquA0+x9PUOXlAxFhDVnWN3FCdwS63GUfHzkkDeQrWAHIgByE1G3aEDhhVe6fWYHlMRwHRmQT8UHxOs/t39JtDRCkWeqrnTa8TZARLiCqRTPxEM6/aFjBPdU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZfm9RJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65517C4CEEB;
-	Tue, 22 Jul 2025 09:27:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753176469;
-	bh=VTOBb6nBpFUj+KE94TVU4rw/yZM3+SNTYOwcbQSppQk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fZfm9RJRju+Gpg+NyeURunZ6YiGhcnGfuCO8h42Yt4aULE8qFDRd8xlxe2mIo+EWs
-	 4to72BKo0RmUSeM53nqddAMDXTqIZTJQ9c9yEF5Wm/hHhrBqz+L743AbsT00c+Nut9
-	 bwIsZCVwM2krBfhDKFP2QrbPqTp5DMMeaQLxXTsdltvtrcP9i83X45RRDl+09qc9f0
-	 LceOfe6B+gfLLR7qyY4ZB7870VzlI/9TIMcp/6m7a64XEFscAOKCAVKQAoVkFIYAjA
-	 /H9RxmjBREAZxIysVW5rv89rZXoSfsyg2ggakyCJTQgYbcGJvsWrekNoSl6+7yBkr9
-	 XSBHkJtyBfnMQ==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1ue9He-0000000007G-3858;
-	Tue, 22 Jul 2025 11:27:38 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>
-Cc: David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	"Nancy.Lin" <nancy.lin@mediatek.com>
-Subject: [PATCH] drm/mediatek: fix device leaks at bind
-Date: Tue, 22 Jul 2025 11:27:22 +0200
-Message-ID: <20250722092722.425-1-johan@kernel.org>
-X-Mailer: git-send-email 2.49.1
+	s=arc-20240116; t=1753176500; c=relaxed/simple;
+	bh=ewz3eLT0B+/MvaBAx/S+knoMxZcNCtPDduNlQ8nqtZg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EHg2W0ucTUd70SxF4zkzK2eTCYKT6k0ufpyMY0CXVPeR6Ix0MDqSQAgu0uGlgl2uIDuEQP/pAKpYBlI+FZf2rRDT3Nd/EWp6LsfsEZ2rLrTw5S6fg2K1IgR4OdXlONkM0xekOtuV40KFvVYa7ll7PHK9P4lbIbFxmY5EH9oCC8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pc7nD6aF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D28C4CEEB;
+	Tue, 22 Jul 2025 09:28:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753176499;
+	bh=ewz3eLT0B+/MvaBAx/S+knoMxZcNCtPDduNlQ8nqtZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pc7nD6aFeZd1vGTAVAGJtktdoMy9+WnutonDbgmvPq1kgRzIbov+qc/Un/0TT/VEf
+	 fOeEC6vOi0NqtSe+fi5OecIIrC8kdI5hvggXTPe+59aD1+3jP2ZponzeX52RrFv4fM
+	 GqWoqyECpn8U3TEDQDjGn1XOSdEoNLk9+Qa00WfY=
+Date: Tue, 22 Jul 2025 11:28:16 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: stable@vger.kernel.org, Yonghong Song <yonghong.song@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: Re: [PATCH stable 6.12 1/1] selftests/bpf: Add tests with stack ptr
+ register in conditional jmp
+Message-ID: <2025072251-sympathy-fender-c2b8@gregkh>
+References: <20250721084531.58557-1-shung-hsi.yu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250721084531.58557-1-shung-hsi.yu@suse.com>
 
-Make sure to drop the references to the sibling platform devices and
-their child drm devices taken by of_find_device_by_node() and
-device_find_child() when initialising the driver data during bind().
+On Mon, Jul 21, 2025 at 04:45:29PM +0800, Shung-Hsi Yu wrote:
+> From: Yonghong Song <yonghong.song@linux.dev>
+> 
+> Commit 5ffb537e416ee22dbfb3d552102e50da33fec7f6 upstream.
+> 
+> Add two tests:
+>   - one test has 'rX <op> r10' where rX is not r10, and
+>   - another test has 'rX <op> rY' where rX and rY are not r10
+>     but there is an early insn 'rX = r10'.
+> 
+> Without previous verifier change, both tests will fail.
+> 
+> Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> Link: https://lore.kernel.org/bpf/20250524041340.4046304-1-yonghong.song@linux.dev
+> [ shung-hsi.yu: contains additional hunks for kernel/bpf/verifier.c that
+>   should be part of the previous patch in the series, commit
+>   e2d2115e56c4 "bpf: Do not include stack ptr register in precision
+>   backtracking bookkeeping", which was incorporated since v6.12.37. ]
+> Link: https://lore.kernel.org/all/9b41f9f5-396f-47e0-9a12-46c52087df6c@linux.dev/
+> Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+> ---
+>  kernel/bpf/verifier.c                         |  7 ++-
+>  .../selftests/bpf/progs/verifier_precision.c  | 53 +++++++++++++++++++
+>  2 files changed, 58 insertions(+), 2 deletions(-)
 
-Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
-Cc: stable@vger.kernel.org	# 6.4
-Cc: Nancy.Lin <nancy.lin@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+We can not take a patch only for older stable kernels and not newer
+ones.
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index 7c0c12dde488..33b83576af7e 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -395,10 +395,12 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
- 			continue;
- 
- 		drm_dev = device_find_child(&pdev->dev, NULL, mtk_drm_match);
-+		put_device(&pdev->dev);
- 		if (!drm_dev)
- 			continue;
- 
- 		temp_drm_priv = dev_get_drvdata(drm_dev);
-+		put_device(drm_dev);
- 		if (!temp_drm_priv)
- 			continue;
- 
--- 
-2.49.1
+Please resubmit this as a backport for all affected kernel trees.
 
+thanks,
+
+greg k-h
 
