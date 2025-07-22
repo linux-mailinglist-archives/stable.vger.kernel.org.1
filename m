@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8BFB0DBA5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:52:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C5C4B0DC32
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72FEE1C8216F
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:51:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C163A7A590A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FE22EA177;
-	Tue, 22 Jul 2025 13:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5446288C01;
+	Tue, 22 Jul 2025 13:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okg8eoFR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJCrlKeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9AF224FD;
-	Tue, 22 Jul 2025 13:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A9422CBE9;
+	Tue, 22 Jul 2025 13:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192259; cv=none; b=bGj86Xn4cOiFaQQnOMJoymnkUcV6q66ahF8iLrE3pVwxywr8SWrsMPsFaTG57oKnh4NFVCrmekkLAP3iN+vX62UUlVjk5L0QznoAnCTJ3IXnhGV9/vhNn5J+Ng3nkxQmjgrSFy0ne8P440t1HgBvf/UpmRU1q9fcLBEdSt1GJBg=
+	t=1753192738; cv=none; b=owngWw6L0XdjwQqSaw1ssz+GSllcmDvMQUseFapmrXlk2FbNN39WXw5nNrkLLKyxGDT4G4zFsV3F1CL43f8jKHjc6EA1HMM+AeVQSeKRHjt3yXoQb7OI9yxZxPN9iqFoZz4aS1Nf5xjfSPoTMzN33+XenGyta5UJZCPgdcn06OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192259; c=relaxed/simple;
-	bh=GH7UNqbxAWt98M/CDhqUNSQhv+BQBaQsege2UxmfxOA=;
+	s=arc-20240116; t=1753192738; c=relaxed/simple;
+	bh=fp0HywTeEb27KlhscUqpUilFufq344QQKlvaxdBgpr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D8z0qPYCtc4U/2dFthxxWAkTdsxk8r3Z+h2coDBzWwppKQLelKeXaGo6ZeC1NcZn8Inh4UC5LNv2wCiss3CejXhEuIrYsvXwSQYWzbFN9s1Ykgpw/VnEVmC4Kpusp5cD5C54CiToHHLLI1er685z0m8md51CHB/t5TS/WReBZzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okg8eoFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE948C4CEEB;
-	Tue, 22 Jul 2025 13:50:58 +0000 (UTC)
+	 MIME-Version; b=ZvSsiLsnfgE6ScGu2UUw3FT4zj+UM8F+sudzIP6v7ZLnkctrTEbwJhDmAb/CCbFm4PGiAWwggO6+4u6qgMqu4Q7KNQLEDaQom4J4VGTi6MHXRoQ0JLvgMrI1Wk5SHrHxMRR3UGo2Rtv1Y9Ogb2Ctx3OalR04dOv9keZrd/IL5Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJCrlKeF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078C9C4CEEB;
+	Tue, 22 Jul 2025 13:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192259;
-	bh=GH7UNqbxAWt98M/CDhqUNSQhv+BQBaQsege2UxmfxOA=;
+	s=korg; t=1753192738;
+	bh=fp0HywTeEb27KlhscUqpUilFufq344QQKlvaxdBgpr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Okg8eoFRiUuxRVusNb5eja6inAVQUaZ9wLChz/0ruRmuHbvbjq5OkWsqMbtlvm4vC
-	 QTKsaFDwlt19Z+8Rl4WZFIsIqGYbjVhDyy37SHWrB07sdurcvAFxXjJ61lj67YchSu
-	 EC6aTrETPIQfi4SWwRtIXTjPFyRBbQpo+rtHcgis=
+	b=aJCrlKeF4AAGoca9//Rm5xpeUWtGVjxoILA5YqxzFWVXEVrq7Qsm9I9jSKTgrf/0h
+	 jeTOJmga04EyXE1dQNyCdyb+v1UjeTNNjAJeXkNZHUUgmCqUMAYN+uvdMwhUhr64ND
+	 kCbTor7uNbGopUC6I4AWBZDtTIIFvTjVx3wrc5y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.6 012/111] nvmem: imx-ocotp: fix MAC address byte length
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.12 043/158] arm64: dts: freescale: imx8mm-verdin: Keep LDO5 always on
 Date: Tue, 22 Jul 2025 15:43:47 +0200
-Message-ID: <20250722134333.841726567@linuxfoundation.org>
+Message-ID: <20250722134342.348200279@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steffen Bätz <steffen@innosonix.de>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit 2aa4ad626ee7f817a8f4715a47b318cfdc1714c9 upstream.
+commit fbe94be09fa81343d623a86ec64a742759b669b3 upstream.
 
-The commit "13bcd440f2ff nvmem: core: verify cell's raw_len" caused an
-extension of the "mac-address" cell from 6 to 8 bytes due to word_size
-of 4 bytes. This led to a required byte swap of the full buffer length,
-which caused truncation of the mac-address when read.
+LDO5 regulator is used to power the i.MX8MM NVCC_SD2 I/O supply, that is
+used for the SD2 card interface and also for some GPIOs.
 
-Previously, the mac-address was incorrectly truncated from
-70:B3:D5:14:E9:0E to 00:00:70:B3:D5:14.
+When the SD card interface is not enabled the regulator subsystem could
+turn off this supply, since it is not used anywhere else, however this
+will also remove the power to some other GPIOs, for example one I/O that
+is used to power the ethernet phy, leading to a non working ethernet
+interface.
 
-Fix the issue by swapping only the first 6 bytes to correctly pass the
-mac-address to the upper layers.
+[   31.820515] On-module +V3.3_1.8_SD (LDO5): disabling
+[   31.821761] PMIC_USDHC_VSELECT: disabling
+[   32.764949] fec 30be0000.ethernet end0: Link is Down
 
-Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
+Fix this keeping the LDO5 supply always on.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Steffen Bätz <steffen@innosonix.de>
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250712181729.6495-3-srini@kernel.org
+Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
+Fixes: f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/imx-ocotp-ele.c |    5 ++++-
- drivers/nvmem/imx-ocotp.c     |    5 ++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -12,6 +12,7 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-+#include <linux/if_ether.h>	/* ETH_ALEN */
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+@@ -484,6 +484,7 @@
+ 			};
  
- enum fuse_type {
- 	FUSE_FSB = 1,
-@@ -114,9 +115,11 @@ static int imx_ocotp_cell_pp(void *conte
- 	int i;
- 
- 	/* Deal with some post processing of nvmem cell data */
--	if (id && !strcmp(id, "mac-address"))
-+	if (id && !strcmp(id, "mac-address")) {
-+		bytes = min(bytes, ETH_ALEN);
- 		for (i = 0; i < bytes / 2; i++)
- 			swap(buf[i], buf[bytes - i - 1]);
-+	}
- 
- 	return 0;
- }
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -23,6 +23,7 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/delay.h>
-+#include <linux/if_ether.h>	/* ETH_ALEN */
- 
- #define IMX_OCOTP_OFFSET_B0W0		0x400 /* Offset from base address of the
- 					       * OTP Bank0 Word0
-@@ -227,9 +228,11 @@ static int imx_ocotp_cell_pp(void *conte
- 	int i;
- 
- 	/* Deal with some post processing of nvmem cell data */
--	if (id && !strcmp(id, "mac-address"))
-+	if (id && !strcmp(id, "mac-address")) {
-+		bytes = min(bytes, ETH_ALEN);
- 		for (i = 0; i < bytes / 2; i++)
- 			swap(buf[i], buf[bytes - i - 1]);
-+	}
- 
- 	return 0;
- }
+ 			reg_nvcc_sd: LDO5 {
++				regulator-always-on;
+ 				regulator-max-microvolt = <3300000>;
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-name = "On-module +V3.3_1.8_SD (LDO5)";
 
 
 
