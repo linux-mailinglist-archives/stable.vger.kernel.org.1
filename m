@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-163776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA42B0DB7C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5BCB0DC07
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A36743A4643
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59FF9189303C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1978D2DC32B;
-	Tue, 22 Jul 2025 13:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7A228CF47;
+	Tue, 22 Jul 2025 13:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1I4rGveD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLqwr+bG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6CC2C08B6;
-	Tue, 22 Jul 2025 13:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE742E1733;
+	Tue, 22 Jul 2025 13:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192171; cv=none; b=MtY/UvlDu7lSXznFWvxeYIHT3X1cGPx6RfmY1SX5r4MgBaPZNu5PLYzigHg5obRVVcqhW3sRNyLH9GSBeh1cWM1Sotp6p2LZZu54VeiRSx7mU+/tnwwe3eD2/q/TBLK+Bu7YEMwfas0Ks2HHGXSAg3fIRdEolzY2nCipoya6M/I=
+	t=1753192506; cv=none; b=rGBdKVWp4ZtHHpfF6IFFrnZLC9UrvB3E+3r9p9b7zUNjVR6fVmZ0Wle60nCUYFBJT1r385vJ+oLvzUh+zbmjuMF1i69VkQdKfwOEnbSmiET5Byp1but/UEHVHjpx0ceEkE9krviZHWxVvKXYGC0QWuRkKQ38LNIMaDUUwJzJV0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192171; c=relaxed/simple;
-	bh=WT66ci4pYwSkHE+1/ilodnXFowgp9wk4u+ESdKM3nW0=;
+	s=arc-20240116; t=1753192506; c=relaxed/simple;
+	bh=Lm+UYyrzjUbAyiKmnAOwcMriocRlveVLpEAtSDpstCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJkS8npgaXMHReYOV/Kd1o8UMVbJ7sngq9AmNE5N5x46kSMUBNXUC7nV+KMKzrFfgr68Q0+PUzAR1KG0BFULlgeHDgFZKOAKcbqMY68n0MOBQh38jMaY6yS41EQ4fRXXTmlbzb/ydEkpAbfqjM9oXZj641oqznoMeUJNsASAXgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1I4rGveD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BD1C4CEEB;
-	Tue, 22 Jul 2025 13:49:31 +0000 (UTC)
+	 MIME-Version; b=KdXmPROr+MS/fV9G1Eq+IHaKaOUej60/Ud3CiSsfN+58nw3qA9OSYv1cHuPl89VnQA2zN2Gcrd/tGo3CgSY14A+gcKT51Kk0ZQ/Pheu98GJezEwzjuXKsVoPDGUrkUFZUE0Xl9ZYgmHjAOmL1/kw1X+fVGUVKjfq0lRSgrxuGNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLqwr+bG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D67C4CEEB;
+	Tue, 22 Jul 2025 13:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192171;
-	bh=WT66ci4pYwSkHE+1/ilodnXFowgp9wk4u+ESdKM3nW0=;
+	s=korg; t=1753192505;
+	bh=Lm+UYyrzjUbAyiKmnAOwcMriocRlveVLpEAtSDpstCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1I4rGveDLVwZTy9MF9FXSccUpb0M6CxFYQI82LWPji2zg9lXRF9hsOmFv0AlMeTgF
-	 pDjBBZMLCO7SMHRqxHpLhF+Z28ZbIOikTauEfG+A44QAxkNw3DCeJCXAuhETsrbdF1
-	 8W15YMkgX+ciVTyoLv/8FDvF7rtLnAiaqJpb6my8=
+	b=LLqwr+bG/S1F6RhMqPwVruHwxXdSr/oZYz7YiLaoOKGjnnWvvLhEBd+WKMvGyuArX
+	 LbY9WClR59h2msPe6ZqI6s8tAYoPrqCJ0nvezx9aKIWq/vfC5bMf95KmzQrms9UvTL
+	 jeQM0C3fOkQ5WZaI7FNO8m5MUTM60fr4vqUmzrQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhong Jiawei <zhongjiawei1@huawei.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 65/79] Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"
+Subject: [PATCH 6.6 086/111] tls: always refresh the queue when reading sock
 Date: Tue, 22 Jul 2025 15:45:01 +0200
-Message-ID: <20250722134330.759974328@linuxfoundation.org>
+Message-ID: <20250722134336.605530879@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 14a67b42cb6f3ab66f41603c062c5056d32ea7dd ]
+[ Upstream commit 4ab26bce3969f8fd925fe6f6f551e4d1a508c68b ]
 
-This reverts commit cff5f49d433fcd0063c8be7dd08fa5bf190c6c37.
+After recent changes in net-next TCP compacts skbs much more
+aggressively. This unearthed a bug in TLS where we may try
+to operate on an old skb when checking if all skbs in the
+queue have matching decrypt state and geometry.
 
-Commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
-frozen") modified the cgroup_freezing() logic to verify that the FROZEN
-flag is not set, affecting the return value of the freezing() function,
-in order to address a warning in __thaw_task.
+    BUG: KASAN: slab-use-after-free in tls_strp_check_rcv+0x898/0x9a0 [tls]
+    (net/tls/tls_strp.c:436 net/tls/tls_strp.c:530 net/tls/tls_strp.c:544)
+    Read of size 4 at addr ffff888013085750 by task tls/13529
 
-A race condition exists that may allow tasks to escape being frozen. The
-following scenario demonstrates this issue:
+    CPU: 2 UID: 0 PID: 13529 Comm: tls Not tainted 6.16.0-rc5-virtme
+    Call Trace:
+     kasan_report+0xca/0x100
+     tls_strp_check_rcv+0x898/0x9a0 [tls]
+     tls_rx_rec_wait+0x2c9/0x8d0 [tls]
+     tls_sw_recvmsg+0x40f/0x1aa0 [tls]
+     inet_recvmsg+0x1c3/0x1f0
 
-CPU 0 (get_signal path)		CPU 1 (freezer.state reader)
-try_to_freeze			read freezer.state
-__refrigerator			freezer_read
-				update_if_frozen
-WRITE_ONCE(current->__state, TASK_FROZEN);
-				...
-				/* Task is now marked frozen */
-				/* frozen(task) == true */
-				/* Assuming other tasks are frozen */
-				freezer->state |= CGROUP_FROZEN;
-/* freezing(current) returns false */
-/* because cgroup is frozen (not freezing) */
-break out
-__set_current_state(TASK_RUNNING);
-/* Bug: Task resumes running when it should remain frozen */
+Always reload the queue, fast path is to have the record in the queue
+when we wake, anyway (IOW the path going down "if !strp->stm.full_len").
 
-The existing !frozen(p) check in __thaw_task makes the
-WARN_ON_ONCE(freezing(p)) warning redundant. Removing this warning enables
-reverting the commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check
-if not frozen") to resolve the issue.
-
-The warning has been removed in the previous patch. This patch revert the
-commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
-frozen") to complete the fix.
-
-Fixes: cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not frozen")
-Reported-by: Zhong Jiawei<zhongjiawei1@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 0d87bbd39d7f ("tls: strp: make sure the TCP skbs do not have overlapping data")
+Link: https://patch.msgid.link/20250716143850.1520292-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/legacy_freezer.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ net/tls/tls_strp.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/legacy_freezer.c b/kernel/cgroup/legacy_freezer.c
-index a3e13e6d5ee40..bee2f9ea5e4ae 100644
---- a/kernel/cgroup/legacy_freezer.c
-+++ b/kernel/cgroup/legacy_freezer.c
-@@ -66,15 +66,9 @@ static struct freezer *parent_freezer(struct freezer *freezer)
- bool cgroup_freezing(struct task_struct *task)
- {
- 	bool ret;
--	unsigned int state;
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index 1852fac3e72b7..bea60b0160d1f 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -511,9 +511,8 @@ static int tls_strp_read_sock(struct tls_strparser *strp)
+ 	if (inq < strp->stm.full_len)
+ 		return tls_strp_read_copy(strp, true);
  
- 	rcu_read_lock();
--	/* Check if the cgroup is still FREEZING, but not FROZEN. The extra
--	 * !FROZEN check is required, because the FREEZING bit is not cleared
--	 * when the state FROZEN is reached.
--	 */
--	state = task_freezer(task)->state;
--	ret = (state & CGROUP_FREEZING) && !(state & CGROUP_FROZEN);
-+	ret = task_freezer(task)->state & CGROUP_FREEZING;
- 	rcu_read_unlock();
- 
- 	return ret;
++	tls_strp_load_anchor_with_queue(strp, inq);
+ 	if (!strp->stm.full_len) {
+-		tls_strp_load_anchor_with_queue(strp, inq);
+-
+ 		sz = tls_rx_msg_size(strp, strp->anchor);
+ 		if (sz < 0) {
+ 			tls_strp_abort_strp(strp, sz);
 -- 
 2.39.5
 
