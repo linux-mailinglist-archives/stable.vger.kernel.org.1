@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-164026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485AAB0DCD4
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFA0B0DC22
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D74F3AD531
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BA06566596
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D436023AB9D;
-	Tue, 22 Jul 2025 14:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23F12EA173;
+	Tue, 22 Jul 2025 13:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="raYWmWAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z69a2Zol"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A2938FA3;
-	Tue, 22 Jul 2025 14:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903C02DC32B;
+	Tue, 22 Jul 2025 13:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193001; cv=none; b=goba3EQ8adMAfFaUYwDOnIi7KRYFZObA5IosBWuGdwNLSFEauSeY5y6OEF/4addtIR6umlD7HhuISrEkCIagedgUcUG3z2JXGakYLwlUAuo9sEqjwKvXk39xrkY2PhaqdjGGvZeczNHS9Ep6hfUevGbiIYPu65f0guTgJjPpx6Q=
+	t=1753192522; cv=none; b=gAOFe1mMIABRNF+pNgfCvPziebCTrSnyG7nBTzXf7SS9t1IMcDtrWN4AhijgGHeMELiHRTKkDAQSnPFo0OEuciclGcc4CzDFQFMxc9z8W0M2E5Qk6qiqyinVqey/CVgvsLFo04+tC7SdTXcj0imIl32Wf1pA84PkNLSt6A0sojw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193001; c=relaxed/simple;
-	bh=pDuGp6lEMtlgqXlbDl5d+5AniSbWaZ+oPnk6w7Fi8Ao=;
+	s=arc-20240116; t=1753192522; c=relaxed/simple;
+	bh=i7Dj0zPSXhsD11N13dyUB7aG57aPzJNl9/EhCQWLlTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ADXVbTpcv5DX3UbLJvgtz8wkP53yueLfUeoLpsDmwOKThk7SrhBE0dIbxrV1WYxTrGJ99pnVAtHVgu5UhFpMkuVjnbzWI9UYYr4DHjK5LRNV3hnbIAFcB0owsdP7Og7bUvjc2xP/sDyzJ0Z3BsyEv3HkJntVAP447odNb1X9ih8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=raYWmWAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197E6C4CEEB;
-	Tue, 22 Jul 2025 14:03:20 +0000 (UTC)
+	 MIME-Version; b=QYAGhVb/msdF1/wDW94zI8qMAYn6mEiWWYXXVm/LnRnA2zgoLcsgtUKKKztgy3Zkh+VCzq9CAplhscOtsr7nIspGzoXMfBJ+j4RSf8XyFl+VohC2mMZurfFfZo4+sQp5Yb+D8NmpkKfHx1lMmaJpm+OVKroAMqeBrf1Ue0jZ54I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z69a2Zol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9C5C4CEEB;
+	Tue, 22 Jul 2025 13:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193001;
-	bh=pDuGp6lEMtlgqXlbDl5d+5AniSbWaZ+oPnk6w7Fi8Ao=;
+	s=korg; t=1753192522;
+	bh=i7Dj0zPSXhsD11N13dyUB7aG57aPzJNl9/EhCQWLlTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=raYWmWAN63lZR/JCFtT5aD1r0147VIjNzOyG7smMbCRA+kmAgtBTU+zBbtBr0UcLU
-	 1s5SkuaOEcfyQ6zz7Y0s+hZP+cRTYTM7Zuft+c3deuEY1shMZjSikei/v0CgSg36mN
-	 7TiyQRlB/WDjsmR+zANVf7zRLdCeCJKAnZkdztVI=
+	b=z69a2ZolXqoL/47IcjkE23DcqcgUBlmeIt+562IaLuM2DRwNEYyayL5XePkZQFhDv
+	 fmX4b59Ou4djYgoMO7I7jy4n022Yz4Hs64cLJrBtNyn93uKGlo7j09+VgKIDC1EnjB
+	 cK4MvNwnBDRH75rJM+s8s59odY3ZuNidsW9CDcIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	LePremierHomme <kwqcheii@proton.me>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 121/158] net: fix segmentation after TCP/UDP fraglist GRO
+Subject: [PATCH 6.6 090/111] rxrpc: Fix recv-recv race of completed call
 Date: Tue, 22 Jul 2025 15:45:05 +0200
-Message-ID: <20250722134345.254469795@linuxfoundation.org>
+Message-ID: <20250722134336.760137621@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +68,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 9f735b6f8a77d7be7f8b0765dc93587774832cb1 ]
+[ Upstream commit 962fb1f651c2cf2083e0c3ef53ba69e3b96d3fbc ]
 
-Since "net: gro: use cb instead of skb->network_header", the skb network
-header is no longer set in the GRO path.
-This breaks fraglist segmentation, which relies on ip_hdr()/tcp_hdr()
-to check for address/port changes.
-Fix this regression by selectively setting the network header for merged
-segment skbs.
+If a call receives an event (such as incoming data), the call gets placed
+on the socket's queue and a thread in recvmsg can be awakened to go and
+process it.  Once the thread has picked up the call off of the queue,
+further events will cause it to be requeued, and once the socket lock is
+dropped (recvmsg uses call->user_mutex to allow the socket to be used in
+parallel), a second thread can come in and its recvmsg can pop the call off
+the socket queue again.
 
-Fixes: 186b1ea73ad8 ("net: gro: use cb instead of skb->network_header")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250705150622.10699-1-nbd@nbd.name
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+In such a case, the first thread will be receiving stuff from the call and
+the second thread will be blocked on call->user_mutex.  The first thread
+can, at this point, process both the event that it picked call for and the
+event that the second thread picked the call for and may see the call
+terminate - in which case the call will be "released", decoupling the call
+from the user call ID assigned to it (RXRPC_USER_CALL_ID in the control
+message).
+
+The first thread will return okay, but then the second thread will wake up
+holding the user_mutex and, if it sees that the call has been released by
+the first thread, it will BUG thusly:
+
+	kernel BUG at net/rxrpc/recvmsg.c:474!
+
+Fix this by just dequeuing the call and ignoring it if it is seen to be
+already released.  We can't tell userspace about it anyway as the user call
+ID has become stale.
+
+Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
+Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: LePremierHomme <kwqcheii@proton.me>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250717074350.3767366-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_offload.c | 1 +
- net/ipv4/udp_offload.c | 1 +
- 2 files changed, 2 insertions(+)
+ include/trace/events/rxrpc.h |  3 +++
+ net/rxrpc/call_accept.c      |  1 +
+ net/rxrpc/recvmsg.c          | 19 +++++++++++++++++--
+ 3 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-index e04ebe651c334..3a9c5c14c310e 100644
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -355,6 +355,7 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb,
- 		flush |= skb->ip_summed != p->ip_summed;
- 		flush |= skb->csum_level != p->csum_level;
- 		flush |= NAPI_GRO_CB(p)->count >= 64;
-+		skb_set_network_header(skb, skb_gro_receive_network_offset(skb));
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index e7c7b63894362..743f8f1f42a74 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -278,12 +278,15 @@
+ 	EM(rxrpc_call_put_userid,		"PUT user-id ") \
+ 	EM(rxrpc_call_see_accept,		"SEE accept  ") \
+ 	EM(rxrpc_call_see_activate_client,	"SEE act-clnt") \
++	EM(rxrpc_call_see_already_released,	"SEE alrdy-rl") \
+ 	EM(rxrpc_call_see_connect_failed,	"SEE con-fail") \
+ 	EM(rxrpc_call_see_connected,		"SEE connect ") \
+ 	EM(rxrpc_call_see_conn_abort,		"SEE conn-abt") \
++	EM(rxrpc_call_see_discard,		"SEE discard ") \
+ 	EM(rxrpc_call_see_disconnected,		"SEE disconn ") \
+ 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
+ 	EM(rxrpc_call_see_input,		"SEE input   ") \
++	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
+ 	EM(rxrpc_call_see_release,		"SEE release ") \
+ 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
+ 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
+diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
+index 773bdb2e37daf..37ac8a6656786 100644
+--- a/net/rxrpc/call_accept.c
++++ b/net/rxrpc/call_accept.c
+@@ -219,6 +219,7 @@ void rxrpc_discard_prealloc(struct rxrpc_sock *rx)
+ 	tail = b->call_backlog_tail;
+ 	while (CIRC_CNT(head, tail, size) > 0) {
+ 		struct rxrpc_call *call = b->call_backlog[tail];
++		rxrpc_see_call(call, rxrpc_call_see_discard);
+ 		rcu_assign_pointer(call->socket, rx);
+ 		if (rx->discard_new_call) {
+ 			_debug("discard %lx", call->user_call_ID);
+diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
+index a482f88c5fc5b..e24a44bae9a32 100644
+--- a/net/rxrpc/recvmsg.c
++++ b/net/rxrpc/recvmsg.c
+@@ -351,6 +351,16 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 		goto try_again;
+ 	}
  
- 		if (flush || skb_gro_receive_list(p, skb))
- 			mss = 1;
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 845730184c5d3..5de47dd5e9093 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -604,6 +604,7 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
- 					NAPI_GRO_CB(skb)->flush = 1;
- 					return NULL;
- 				}
-+				skb_set_network_header(skb, skb_gro_receive_network_offset(skb));
- 				ret = skb_gro_receive_list(p, skb);
- 			} else {
- 				skb_gro_postpull_rcsum(skb, uh,
++	rxrpc_see_call(call, rxrpc_call_see_recvmsg);
++	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
++		rxrpc_see_call(call, rxrpc_call_see_already_released);
++		list_del_init(&call->recvmsg_link);
++		spin_unlock_irq(&rx->recvmsg_lock);
++		release_sock(&rx->sk);
++		trace_rxrpc_recvmsg(call->debug_id, rxrpc_recvmsg_unqueue, 0);
++		rxrpc_put_call(call, rxrpc_call_put_recvmsg);
++		goto try_again;
++	}
+ 	if (!(flags & MSG_PEEK))
+ 		list_del_init(&call->recvmsg_link);
+ 	else
+@@ -374,8 +384,13 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 
+ 	release_sock(&rx->sk);
+ 
+-	if (test_bit(RXRPC_CALL_RELEASED, &call->flags))
+-		BUG();
++	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
++		rxrpc_see_call(call, rxrpc_call_see_already_released);
++		mutex_unlock(&call->user_mutex);
++		if (!(flags & MSG_PEEK))
++			rxrpc_put_call(call, rxrpc_call_put_recvmsg);
++		goto try_again;
++	}
+ 
+ 	if (test_bit(RXRPC_CALL_HAS_USERID, &call->flags)) {
+ 		if (flags & MSG_CMSG_COMPAT) {
 -- 
 2.39.5
 
