@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-163746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414B7B0DB5A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EEA9B0DC62
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B98B3B0EBD
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C8BA7A334C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677E623B614;
-	Tue, 22 Jul 2025 13:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B30228CF4A;
+	Tue, 22 Jul 2025 14:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOKAqsfy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5fK2QNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2492372624;
-	Tue, 22 Jul 2025 13:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7B41A2C25;
+	Tue, 22 Jul 2025 14:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192074; cv=none; b=UFK/vW+Sq8CEmeJQbIKsJYbnvpLK5eowKwvopSZ0bkOz+PrY6BtmPJJdLzfANj/uErOoV3yW8j9UNzSZY0N1NsKk4BLU1Cn0xG0jUGWrlq5nceKK92grgwuzEpY6n4uoctMxLn5NTWsB54tM6d7RQD0u1Ec+grkYU65xmXfBiLc=
+	t=1753192891; cv=none; b=IuD/ov8wsa9WKRUOCh4XzUq2uyqkV9A5g6U4Dmiw9FSU9EiGMPxtwZAF1S39juiAKekCFna7dK0cXCgVmpC8LkjvnFOxoWrbTBJWxcA9rm24/Qn7TyyZGaBxt5ctG8c/tMp6AnUiwLMbGpMk8S2WkSNWqLjaca1NlcAPxQHQjm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192074; c=relaxed/simple;
-	bh=EyWbWh9oBhqROD1S6AoSp0Ujlrv5UfYMZlQ6UzYbOcA=;
+	s=arc-20240116; t=1753192891; c=relaxed/simple;
+	bh=+kbQoGurZUfdAUN/nSad5lQhdzWuPyku1kl8mEu3LWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7k6SNlybyYHBM1nlqOCo7Q9iTHmsE/YFM2wB6PIBGFt8OQP/UWLvUXtRoXSJQvv+0hN4P4Jy97a/A1QQCOyUxCLo3N2bL8zcA7sMSmR/9cpQ5DTMWTdyxvCtnKT4xFuxcl7w1vH1RrLxeDsvpWsE21tKt2H6I2FycrnVVj2R7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOKAqsfy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C2EC4CEEB;
-	Tue, 22 Jul 2025 13:47:53 +0000 (UTC)
+	 MIME-Version; b=K41zMLOTa4O7i+4j2CjX82Sscl/fCKOapGYpYbnXgfURqGqXhZ/8Vcmp22P/rLL394S/gDs2yotiknZ84mpSu0ti2ag2lggMofDxMJGvIegpWz9aqTNweYvhv3FZNDg7PUJUQ13YcO9GeYhH7B2uVHRurgXx8VpXCPQ+WhD8dls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5fK2QNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4616CC4CEF1;
+	Tue, 22 Jul 2025 14:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192074;
-	bh=EyWbWh9oBhqROD1S6AoSp0Ujlrv5UfYMZlQ6UzYbOcA=;
+	s=korg; t=1753192890;
+	bh=+kbQoGurZUfdAUN/nSad5lQhdzWuPyku1kl8mEu3LWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zOKAqsfycE1BYO1uJ0vTNOrTzFuWBZUzcH+KmaTUXTqbB23gDrs8Radi+Rtu4gYfZ
-	 FnYIhNUPGBx/PTlTJjG94XhR9mQTPh0i1uG7uAUtxNUOLZEM6pB4g5MGHq/r7AOPMq
-	 2JfbzfrP1koBx2CswN3GLPRwcw9hqsTOuJE6OyuE=
+	b=s5fK2QNCJrWc8P6VQ6iooEU8LxcV7DGJeW0qL3I+5hKPMB7d5RulVMuRNA57Uj8Bp
+	 JZxjYmwzLsxCSfVYuazi61FrgcBost3ThbPFHGx+btMlpv2NgIlW7rrYmP64uvrzyy
+	 OzbivGABqUjfrpIzOtRMIe8DCViKpvxRiSG7pho4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com,
-	"Enju, Kohei" <enjuk@amazon.co.jp>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.1 36/79] comedi: das16m1: Fix bit shift out of bounds
+	Phil Auld <pauld@redhat.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 088/158] selftests/sched_ext: Fix exit selftest hang on UP
 Date: Tue, 22 Jul 2025 15:44:32 +0200
-Message-ID: <20250722134329.696910863@linuxfoundation.org>
+Message-ID: <20250722134344.048837715@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Andrea Righi <arighi@nvidia.com>
 
-commit ed93c6f68a3be06e4e0c331c6e751f462dee3932 upstream.
+[ Upstream commit 7980ad7e4ca80f6c255f4473fba82a475342035a ]
 
-When checking for a supported IRQ number, the following test is used:
+On single-CPU systems, ops.select_cpu() is never called, causing the
+EXIT_SELECT_CPU test case to wait indefinitely.
 
-	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
-	if ((1 << it->options[1]) & 0xdcfc) {
+Avoid the stall by skipping this specific sub-test when only one CPU is
+available.
 
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.
-
-Reported-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c52293513298e0fd9a94
-Fixes: 729988507680 ("staging: comedi: das16m1: tidy up the irq support in das16m1_attach()")
-Tested-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
-Suggested-by: "Enju, Kohei" <enjuk@amazon.co.jp>
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707130908.70758-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Phil Auld <pauld@redhat.com>
+Fixes: a5db7817af780 ("sched_ext: Add selftests")
+Signed-off-by: Andrea Righi <arighi@nvidia.com>
+Reviewed-by: Phil Auld <pauld@redhat.com>
+Tested-by: Phil Auld <pauld@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/drivers/das16m1.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/sched_ext/exit.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/comedi/drivers/das16m1.c
-+++ b/drivers/comedi/drivers/das16m1.c
-@@ -522,7 +522,8 @@ static int das16m1_attach(struct comedi_
- 	devpriv->extra_iobase = dev->iobase + DAS16M1_8255_IOBASE;
+diff --git a/tools/testing/selftests/sched_ext/exit.c b/tools/testing/selftests/sched_ext/exit.c
+index 31bcd06e21cd3..2c084ded29680 100644
+--- a/tools/testing/selftests/sched_ext/exit.c
++++ b/tools/testing/selftests/sched_ext/exit.c
+@@ -22,6 +22,14 @@ static enum scx_test_status run(void *ctx)
+ 		struct bpf_link *link;
+ 		char buf[16];
  
- 	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
--	if ((1 << it->options[1]) & 0xdcfc) {
-+	if (it->options[1] >= 2 && it->options[1] <= 15 &&
-+	    (1 << it->options[1]) & 0xdcfc) {
- 		ret = request_irq(it->options[1], das16m1_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0)
++		/*
++		 * On single-CPU systems, ops.select_cpu() is never
++		 * invoked, so skip this test to avoid getting stuck
++		 * indefinitely.
++		 */
++		if (tc == EXIT_SELECT_CPU && libbpf_num_possible_cpus() == 1)
++			continue;
++
+ 		skel = exit__open();
+ 		skel->rodata->exit_point = tc;
+ 		exit__load(skel);
+-- 
+2.39.5
+
 
 
 
