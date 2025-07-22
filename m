@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-164011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58D8B0DCB4
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C88FB0DBDC
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECA8A1887A4E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80FC21611A0
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428C928B7EA;
-	Tue, 22 Jul 2025 14:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94AC2EA462;
+	Tue, 22 Jul 2025 13:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJR5FQ4l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XL2YOG3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F256C2E36E8;
-	Tue, 22 Jul 2025 14:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A092E4271;
+	Tue, 22 Jul 2025 13:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192950; cv=none; b=YYcYga+nUYPJRSpLv6prnydgZzDrNHTXFiVJtXoO8q8d3NEg7pzJEwkv0k6huqe6gQCTgtpghaXiLemqhuG7IIRW1478m5N9skygAk5H3oMhORiNZ0U6pTHg5ibVp4ru3/QXNc//KUn0BRbO+BkCS5wfJUyyHpsTyeX1UijDHjE=
+	t=1753192355; cv=none; b=ki1JySSF/Yki8CgAy4QjVkAf+EaXQ3YsjNGQgQdYqcL0DnH9gQNswD+5M1RoV8Gq4xCD63kvoz+kwnTvvUBC4A+s77EfwY1GGpesbSAkbPVnIxtP6JUmsrG6hzKJnCc16ro/8qWQnxO7iBQ2u4sUrdULnahvqxxHHsQ4gzTLlA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192950; c=relaxed/simple;
-	bh=GGW2HFAc2EQSq86Yg44sHEo/noX+wIl8QwlvrdY5J/c=;
+	s=arc-20240116; t=1753192355; c=relaxed/simple;
+	bh=8g3oX75yP9w+5zv9Ja/1xw+LkzoKuS46JXk/iTpQXCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KC8pf9BsLvpsMGxUO+tAd8Kmk8rEg+UgUQEFvD0WXs1YmMY9LJzdelnamI3rVi5phL9hEpTS+TMXj9FfBeaaAu2JkljxOmxmKQBb25KKQe32JeGLXHrrNbLymvkDslSqJDUUPmGj7WwBa+m3IsNZINdPph1LjvJCoFQufxJ9icU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJR5FQ4l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781E9C4CEEB;
-	Tue, 22 Jul 2025 14:02:29 +0000 (UTC)
+	 MIME-Version; b=XXObAKNyzBgnHdIpDmJMiT2lutkemuSmYl/Nu04BMkOwfVfTD11SCUe2B9sr6giugy5KkdZlK8IMtDePgiLTCW/pADv3zk4Cppcb/gqm4BPO1WRczn6lw2DmYO0Dv186TkoJa1AD6XGIItMwJeJdU9SVV0BuWjwEoBubuN7Os1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XL2YOG3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9703EC4CEEB;
+	Tue, 22 Jul 2025 13:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192949;
-	bh=GGW2HFAc2EQSq86Yg44sHEo/noX+wIl8QwlvrdY5J/c=;
+	s=korg; t=1753192355;
+	bh=8g3oX75yP9w+5zv9Ja/1xw+LkzoKuS46JXk/iTpQXCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJR5FQ4l67xSSuaueic60DrNMwXdIndWxK5x2iiDrRLoygvCdzt2CydYOQhbP2MGk
-	 hMuvVoUimD7q2paQdSMIsglxk0+bUeh/qy2Pti3bk4/hiPFK6nsHNv83FiMTPk9XkB
-	 iQ5af44nQypxY1Xzz+GvvZZLibHRBROALp2Bf6+Y=
+	b=XL2YOG3xSMzdJdvXo+nmsTHta9e/C5HrDpiotfiykYWwi7SC2FXAobcW/k6fQgp8z
+	 56y828qYQqwWMCE8GTLiVSftntgCylNjPusScPuBK0o6wb8a65L7TdvFv8b69oe6N2
+	 fS9NDD7vuV432VUZhvaZXMl4wtNvV2SVGwEH3h5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 073/158] iio: common: st_sensors: Fix use of uninitialize device structs
+	Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 042/111] pmdomain: governor: Consider CPU latency tolerance from pm_domain_cpu_gov
 Date: Tue, 22 Jul 2025 15:44:17 +0200
-Message-ID: <20250722134343.497139934@linuxfoundation.org>
+Message-ID: <20250722134334.964271011@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,287 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-commit 9f92e93e257b33e73622640a9205f8642ec16ddd upstream.
+commit 500ba33284416255b9a5b50ace24470b6fe77ea5 upstream.
 
-Throughout the various probe functions &indio_dev->dev is used before it
-is initialized. This caused a kernel panic in st_sensors_power_enable()
-when the call to devm_regulator_bulk_get_enable() fails and then calls
-dev_err_probe() with the uninitialized device.
+pm_domain_cpu_gov is selecting a cluster idle state but does not consider
+latency tolerance of child CPUs. This results in deeper cluster idle state
+whose latency does not meet latency tolerance requirement.
 
-This seems to only cause a panic with dev_err_probe(), dev_err(),
-dev_warn() and dev_info() don't seem to cause a panic, but are fixed
-as well.
+Select deeper idle state only if global and device latency tolerance of all
+child CPUs meet.
 
-The issue is reported and traced here: [1]
+Test results on SM8750 with 300 usec PM-QoS on CPU0 which is less than
+domain idle state entry (2150) + exit (1983) usec latency mentioned in
+devicetree, demonstrate the issue.
 
-Link: https://lore.kernel.org/all/AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM/ [1]
+	# echo 300 > /sys/devices/system/cpu/cpu0/power/pm_qos_resume_latency_us
+
+Before: (Usage is incrementing)
+======
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             29817          537        8          270        0
+
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             30348          542        8          271        0
+
+After: (Usage is not incrementing due to latency tolerance)
+======
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             39319          626        14         307        0
+
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             39319          626        14         307        0
+
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Fixes: e94999688e3a ("PM / Domains: Add genpd governor for CPUs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://... [1]
-Link: https://patch.msgid.link/20250527-st_iio_fix-v4-1-12d89801c761@gocontroll.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20250709-pmdomain_qos-v2-1-976b12257899@oss.qualcomm.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/st_accel_core.c                  |   10 ++---
- drivers/iio/common/st_sensors/st_sensors_core.c    |   36 +++++++++------------
- drivers/iio/common/st_sensors/st_sensors_trigger.c |   20 +++++------
- 3 files changed, 31 insertions(+), 35 deletions(-)
+ drivers/base/power/domain_governor.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -1353,6 +1353,7 @@ static int apply_acpi_orientation(struct
- 	union acpi_object *ont;
- 	union acpi_object *elements;
- 	acpi_status status;
-+	struct device *parent = indio_dev->dev.parent;
- 	int ret = -EINVAL;
- 	unsigned int val;
- 	int i, j;
-@@ -1371,7 +1372,7 @@ static int apply_acpi_orientation(struct
- 	};
+--- a/drivers/base/power/domain_governor.c
++++ b/drivers/base/power/domain_governor.c
+@@ -8,6 +8,7 @@
+ #include <linux/pm_domain.h>
+ #include <linux/pm_qos.h>
+ #include <linux/hrtimer.h>
++#include <linux/cpu.h>
+ #include <linux/cpuidle.h>
+ #include <linux/cpumask.h>
+ #include <linux/ktime.h>
+@@ -345,6 +346,8 @@ static bool cpu_power_down_ok(struct dev
+ 	struct cpuidle_device *dev;
+ 	ktime_t domain_wakeup, next_hrtimer;
+ 	ktime_t now = ktime_get();
++	struct device *cpu_dev;
++	s64 cpu_constraint, global_constraint;
+ 	s64 idle_duration_ns;
+ 	int cpu, i;
  
+@@ -355,6 +358,7 @@ static bool cpu_power_down_ok(struct dev
+ 	if (!(genpd->flags & GENPD_FLAG_CPU_DOMAIN))
+ 		return true;
  
--	adev = ACPI_COMPANION(indio_dev->dev.parent);
-+	adev = ACPI_COMPANION(parent);
- 	if (!adev)
- 		return -ENXIO;
- 
-@@ -1380,8 +1381,7 @@ static int apply_acpi_orientation(struct
- 	if (status == AE_NOT_FOUND) {
- 		return -ENXIO;
- 	} else if (ACPI_FAILURE(status)) {
--		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
--			 status);
-+		dev_warn(parent, "failed to execute _ONT: %d\n", status);
- 		return status;
- 	}
- 
-@@ -1457,12 +1457,12 @@ static int apply_acpi_orientation(struct
- 	}
- 
- 	ret = 0;
--	dev_info(&indio_dev->dev, "computed mount matrix from ACPI\n");
-+	dev_info(parent, "computed mount matrix from ACPI\n");
- 
- out:
- 	kfree(buffer.pointer);
- 	if (ret)
--		dev_dbg(&indio_dev->dev,
-+		dev_dbg(parent,
- 			"failed to apply ACPI orientation data: %d\n", ret);
- 
- 	return ret;
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -154,7 +154,7 @@ static int st_sensors_set_fullscale(stru
- 	return err;
- 
- st_accel_set_fullscale_error:
--	dev_err(&indio_dev->dev, "failed to set new fullscale.\n");
-+	dev_err(indio_dev->dev.parent, "failed to set new fullscale.\n");
- 	return err;
- }
- 
-@@ -231,8 +231,7 @@ int st_sensors_power_enable(struct iio_d
- 					     ARRAY_SIZE(regulator_names),
- 					     regulator_names);
- 	if (err)
--		return dev_err_probe(&indio_dev->dev, err,
--				     "unable to enable supplies\n");
-+		return dev_err_probe(parent, err, "unable to enable supplies\n");
- 
- 	return 0;
- }
-@@ -241,13 +240,14 @@ EXPORT_SYMBOL_NS(st_sensors_power_enable
- static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 
- 	/* Sensor does not support interrupts */
- 	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
- 	    !sdata->sensor_settings->drdy_irq.int2.addr) {
- 		if (pdata->drdy_int_pin)
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "DRDY on pin INT%d specified, but sensor does not support interrupts\n",
- 				 pdata->drdy_int_pin);
- 		return 0;
-@@ -256,29 +256,27 @@ static int st_sensors_set_drdy_int_pin(s
- 	switch (pdata->drdy_int_pin) {
- 	case 1:
- 		if (!sdata->sensor_settings->drdy_irq.int1.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT1 not available.\n");
-+			dev_err(parent, "DRDY on INT1 not available.\n");
- 			return -EINVAL;
++	global_constraint = cpu_latency_qos_limit();
+ 	/*
+ 	 * Find the next wakeup for any of the online CPUs within the PM domain
+ 	 * and its subdomains. Note, we only need the genpd->cpus, as it already
+@@ -368,8 +372,16 @@ static bool cpu_power_down_ok(struct dev
+ 			if (ktime_before(next_hrtimer, domain_wakeup))
+ 				domain_wakeup = next_hrtimer;
  		}
- 		sdata->drdy_int_pin = 1;
- 		break;
- 	case 2:
- 		if (!sdata->sensor_settings->drdy_irq.int2.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT2 not available.\n");
-+			dev_err(parent, "DRDY on INT2 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 2;
- 		break;
- 	default:
--		dev_err(&indio_dev->dev, "DRDY on pdata not valid.\n");
-+		dev_err(parent, "DRDY on pdata not valid.\n");
- 		return -EINVAL;
++
++		cpu_dev = get_cpu_device(cpu);
++		if (cpu_dev) {
++			cpu_constraint = dev_pm_qos_raw_resume_latency(cpu_dev);
++			if (cpu_constraint < global_constraint)
++				global_constraint = cpu_constraint;
++		}
  	}
  
- 	if (pdata->open_drain) {
- 		if (!sdata->sensor_settings->drdy_irq.int1.addr_od &&
- 		    !sdata->sensor_settings->drdy_irq.int2.addr_od)
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"open drain requested but unsupported.\n");
- 		else
- 			sdata->int_pin_open_drain = true;
-@@ -336,6 +334,7 @@ EXPORT_SYMBOL_NS(st_sensors_dev_name_pro
- int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 	struct st_sensors_platform_data *of_pdata;
- 	int err = 0;
-@@ -343,7 +342,7 @@ int st_sensors_init_sensor(struct iio_de
- 	mutex_init(&sdata->odr_lock);
- 
- 	/* If OF/DT pdata exists, it will take precedence of anything else */
--	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
-+	of_pdata = st_sensors_dev_probe(parent, pdata);
- 	if (IS_ERR(of_pdata))
- 		return PTR_ERR(of_pdata);
- 	if (of_pdata)
-@@ -370,7 +369,7 @@ int st_sensors_init_sensor(struct iio_de
- 		if (err < 0)
- 			return err;
- 	} else
--		dev_info(&indio_dev->dev, "Full-scale not possible\n");
-+		dev_info(parent, "Full-scale not possible\n");
- 
- 	err = st_sensors_set_odr(indio_dev, sdata->odr);
- 	if (err < 0)
-@@ -405,7 +404,7 @@ int st_sensors_init_sensor(struct iio_de
- 			mask = sdata->sensor_settings->drdy_irq.int2.mask_od;
++	global_constraint *= NSEC_PER_USEC;
+ 	/* The minimum idle duration is from now - until the next wakeup. */
+ 	idle_duration_ns = ktime_to_ns(ktime_sub(domain_wakeup, now));
+ 	if (idle_duration_ns <= 0)
+@@ -385,8 +397,10 @@ static bool cpu_power_down_ok(struct dev
+ 	 */
+ 	i = genpd->state_idx;
+ 	do {
+-		if (idle_duration_ns >= (genpd->states[i].residency_ns +
+-		    genpd->states[i].power_off_latency_ns)) {
++		if ((idle_duration_ns >= (genpd->states[i].residency_ns +
++		    genpd->states[i].power_off_latency_ns)) &&
++		    (global_constraint >= (genpd->states[i].power_on_latency_ns +
++		    genpd->states[i].power_off_latency_ns))) {
+ 			genpd->state_idx = i;
+ 			return true;
  		}
- 
--		dev_info(&indio_dev->dev,
-+		dev_info(parent,
- 			 "set interrupt line to open drain mode on pin %d\n",
- 			 sdata->drdy_int_pin);
- 		err = st_sensors_write_data_with_mask(indio_dev, addr,
-@@ -594,21 +593,20 @@ EXPORT_SYMBOL_NS(st_sensors_get_settings
- int st_sensors_verify_id(struct iio_dev *indio_dev)
- {
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
-+	struct device *parent = indio_dev->dev.parent;
- 	int wai, err;
- 
- 	if (sdata->sensor_settings->wai_addr) {
- 		err = regmap_read(sdata->regmap,
- 				  sdata->sensor_settings->wai_addr, &wai);
- 		if (err < 0) {
--			dev_err(&indio_dev->dev,
--				"failed to read Who-Am-I register.\n");
--			return err;
-+			return dev_err_probe(parent, err,
-+					     "failed to read Who-Am-I register.\n");
- 		}
- 
- 		if (sdata->sensor_settings->wai != wai) {
--			dev_warn(&indio_dev->dev,
--				"%s: WhoAmI mismatch (0x%x).\n",
--				indio_dev->name, wai);
-+			dev_warn(parent, "%s: WhoAmI mismatch (0x%x).\n",
-+				 indio_dev->name, wai);
- 		}
- 	}
- 
---- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-@@ -127,7 +127,7 @@ int st_sensors_allocate_trigger(struct i
- 	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
- 					     indio_dev->name);
- 	if (sdata->trig == NULL) {
--		dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
-+		dev_err(parent, "failed to allocate iio trigger.\n");
- 		return -ENOMEM;
- 	}
- 
-@@ -143,7 +143,7 @@ int st_sensors_allocate_trigger(struct i
- 	case IRQF_TRIGGER_FALLING:
- 	case IRQF_TRIGGER_LOW:
- 		if (!sdata->sensor_settings->drdy_irq.addr_ihl) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"falling/low specified for IRQ but hardware supports only rising/high: will request rising/high\n");
- 			if (irq_trig == IRQF_TRIGGER_FALLING)
- 				irq_trig = IRQF_TRIGGER_RISING;
-@@ -156,21 +156,19 @@ int st_sensors_allocate_trigger(struct i
- 				sdata->sensor_settings->drdy_irq.mask_ihl, 1);
- 			if (err < 0)
- 				return err;
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "interrupts on the falling edge or active low level\n");
- 		}
- 		break;
- 	case IRQF_TRIGGER_RISING:
--		dev_info(&indio_dev->dev,
--			 "interrupts on the rising edge\n");
-+		dev_info(parent, "interrupts on the rising edge\n");
- 		break;
- 	case IRQF_TRIGGER_HIGH:
--		dev_info(&indio_dev->dev,
--			 "interrupts active high level\n");
-+		dev_info(parent, "interrupts active high level\n");
- 		break;
- 	default:
- 		/* This is the most preferred mode, if possible */
--		dev_err(&indio_dev->dev,
-+		dev_err(parent,
- 			"unsupported IRQ trigger specified (%lx), enforce rising edge\n", irq_trig);
- 		irq_trig = IRQF_TRIGGER_RISING;
- 	}
-@@ -179,7 +177,7 @@ int st_sensors_allocate_trigger(struct i
- 	if (irq_trig == IRQF_TRIGGER_FALLING ||
- 	    irq_trig == IRQF_TRIGGER_RISING) {
- 		if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"edge IRQ not supported w/o stat register.\n");
- 			return -EOPNOTSUPP;
- 		}
-@@ -214,13 +212,13 @@ int st_sensors_allocate_trigger(struct i
- 					sdata->trig->name,
- 					sdata->trig);
- 	if (err) {
--		dev_err(&indio_dev->dev, "failed to request trigger IRQ.\n");
-+		dev_err(parent, "failed to request trigger IRQ.\n");
- 		return err;
- 	}
- 
- 	err = devm_iio_trigger_register(parent, sdata->trig);
- 	if (err < 0) {
--		dev_err(&indio_dev->dev, "failed to register iio trigger.\n");
-+		dev_err(parent, "failed to register iio trigger.\n");
- 		return err;
- 	}
- 	indio_dev->trig = iio_trigger_get(sdata->trig);
 
 
 
