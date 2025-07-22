@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-163778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36B2B0DB77
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7592CB0DC2B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9005A545E91
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46E9E3A621B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4182C08B6;
-	Tue, 22 Jul 2025 13:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1078E2EA173;
+	Tue, 22 Jul 2025 13:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2fjlhVf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wd9vxp8m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A924122FDFF;
-	Tue, 22 Jul 2025 13:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C229D28C039;
+	Tue, 22 Jul 2025 13:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192178; cv=none; b=gCUgGZqWjxTcpk05ty/s/T31WTk6tq0TUZRaz7KMnuEYPq0qjuexwdEyAb822iSrsW2napUzShiCSCkJnHU6x8oGc0R3R/W02txVqzeVPwr5Y8yOrBxbXj5gjsEfidRbiQdLfZr8vhLk67xU+atQvS8UsQtf6T+XPOIUQUO6dAs=
+	t=1753192515; cv=none; b=CrjNh/WWsQgnO8/DyEsPoxmL0HGxlbMeRbRFQvPkIsgUESMUZPwnbJWhysyt6KVsQ1Eu/S/FlTHnuxNnupu0U0kXFqKGlLra5JRQNnFuI+Ta6ZQ/4cqDsBytfCC9lpfFsB9XJKrcsKI/2bR0bvJXwEOsX40OCZf91a6XXF3e+uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192178; c=relaxed/simple;
-	bh=itYapIPGdserzMQEih0cR9pvQsuZphF1YG+dPVs7YnY=;
+	s=arc-20240116; t=1753192515; c=relaxed/simple;
+	bh=y1RD81TdkB2HmaU6o6wIIz4Fn5r7RkQR48Y1rMNQedA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qsAEnWUaTy1Ri1ONzTyy/1sd/K3ktU/7actXLJSxRkVIBgJzvIZpcHwafGWbBagyYgxdKUxc7LRhEwugmQxqCK+QGcD2MVTuqrtUjN3EWeO9aXN6JK7PICi1i3IqO/S+FDaB601rgwtYHXr/NKCOxWD8ZDoQuZpLT23XMF6wNd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2fjlhVf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187E8C4CEEB;
-	Tue, 22 Jul 2025 13:49:37 +0000 (UTC)
+	 MIME-Version; b=sF3Ejpb54C7SGB0ic2VikLn4jqB2htvhvIaR8QLwkhi0pxYEYnXwKYLjUwCRxrY0uByHElSlFj669AMEauq0iHGa1gjo+sgaZiuT3DRG9rDdAfZb44T7Rg601zkXKmX8HhDNBbSbdxY+OOhc8Y6XYMqjwZttTr8QOkfLLcAAnyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wd9vxp8m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31086C4CEEB;
+	Tue, 22 Jul 2025 13:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192178;
-	bh=itYapIPGdserzMQEih0cR9pvQsuZphF1YG+dPVs7YnY=;
+	s=korg; t=1753192515;
+	bh=y1RD81TdkB2HmaU6o6wIIz4Fn5r7RkQR48Y1rMNQedA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2fjlhVfunfsV7Hz5sLs2b0CD4aCzk+L01VKOptuk0+MWYQ4BzFBmhDvcPmjhaawX
-	 ML5dPYMBIm+lxHTofRHA/18Zck+vuVskLvL6ua15ndhDtd+WLsN4v+38zmNU99labZ
-	 FLA+dw72q5FVZsqRETErMdNXfXzYbiWV5Ypo8bBo=
+	b=wd9vxp8mOSoExMJIPg5lIzPz5A3Ns6dc4NVWaYkWTLzTjm4fNk1X0MgXwZoQkVOO/
+	 Va6mgflfhbgGUR8N/STo+3z5Y6/OS9ZXbc8kbwrdyWDqTM23xYvnMCbdO+5Dnr76Wq
+	 M65EsgX/v2kGUCe+m4T7E5BQbu8cWkQ5IVLhvvGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Sumanth Gavini <sumanth.gavini@yahoo.com>
-Subject: [PATCH 6.1 67/79] HID: mcp2221: Set driver data before I2C adapter add
+	Joseph Huang <Joseph.Huang@garmin.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 088/111] net: bridge: Do not offload IGMP/MLD messages
 Date: Tue, 22 Jul 2025 15:45:03 +0200
-Message-ID: <20250722134330.838549046@linuxfoundation.org>
+Message-ID: <20250722134336.676973385@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+From: Joseph Huang <Joseph.Huang@garmin.com>
 
-commit f2d4a5834638bbc967371b9168c0b481519f7c5e upstream.
+[ Upstream commit 683dc24da8bf199bb7446e445ad7f801c79a550e ]
 
-The process of adding an I2C adapter can invoke I2C accesses on that new
-adapter (see i2c_detect()).
+Do not offload IGMP/MLD messages as it could lead to IGMP/MLD Reports
+being unintentionally flooded to Hosts. Instead, let the bridge decide
+where to send these IGMP/MLD messages.
 
-Ensure we have set the adapter's driver data to avoid null pointer
-dereferences in the xfer functions during the adapter add.
+Consider the case where the local host is sending out reports in response
+to a remote querier like the following:
 
-This has been noted in the past and the same fix proposed but not
-completed. See:
-https://lore.kernel.org/lkml/ef597e73-ed71-168e-52af-0d19b03734ac@vigem.de/
+       mcast-listener-process (IP_ADD_MEMBERSHIP)
+          \
+          br0
+         /   \
+      swp1   swp2
+        |     |
+  QUERIER     SOME-OTHER-HOST
 
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the above setup, br0 will want to br_forward() reports for
+mcast-listener-process's group(s) via swp1 to QUERIER; but since the
+source hwdom is 0, the report is eligible for tx offloading, and is
+flooded by hardware to both swp1 and swp2, reaching SOME-OTHER-HOST as
+well. (Example and illustration provided by Tobias.)
+
+Fixes: 472111920f1c ("net: bridge: switchdev: allow the TX data plane forwarding to be offloaded")
+Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250716153551.1830255-1-Joseph.Huang@garmin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-mcp2221.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bridge/br_switchdev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -879,12 +879,12 @@ static int mcp2221_probe(struct hid_devi
- 	snprintf(mcp->adapter.name, sizeof(mcp->adapter.name),
- 			"MCP2221 usb-i2c bridge");
+diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
+index 7b41ee8740cbb..f10bd6a233dcf 100644
+--- a/net/bridge/br_switchdev.c
++++ b/net/bridge/br_switchdev.c
+@@ -17,6 +17,9 @@ static bool nbp_switchdev_can_offload_tx_fwd(const struct net_bridge_port *p,
+ 	if (!static_branch_unlikely(&br_switchdev_tx_fwd_offload))
+ 		return false;
  
-+	i2c_set_adapdata(&mcp->adapter, mcp);
- 	ret = i2c_add_adapter(&mcp->adapter);
- 	if (ret) {
- 		hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
- 		goto err_i2c;
- 	}
--	i2c_set_adapdata(&mcp->adapter, mcp);
- 
- 	/* Setup GPIO chip */
- 	mcp->gc = devm_kzalloc(&hdev->dev, sizeof(*mcp->gc), GFP_KERNEL);
++	if (br_multicast_igmp_type(skb))
++		return false;
++
+ 	return (p->flags & BR_TX_FWD_OFFLOAD) &&
+ 	       (p->hwdom != BR_INPUT_SKB_CB(skb)->src_hwdom);
+ }
+-- 
+2.39.5
+
 
 
 
