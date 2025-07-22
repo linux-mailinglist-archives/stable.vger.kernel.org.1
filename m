@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE234B0DB73
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:49:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CDF6B0DCC1
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50C975650F5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70DF6561E65
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BBC2E1722;
-	Tue, 22 Jul 2025 13:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A141A255C;
+	Tue, 22 Jul 2025 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruey9eNH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlFBw3oB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D76D242D8F;
-	Tue, 22 Jul 2025 13:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220B81A2C25;
+	Tue, 22 Jul 2025 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192155; cv=none; b=eRZY6WfQc90J1nycVcdenno7UY07xMtyw4gOfdC0Wi8QJdMNG7FPUndAyYn1enBRWJmKg8cVfik8+KPS60OprJ3TO2n6UMBRFNj5a2+179ZZQx6Fy3FHEJiHbilmtRKHuNHp667I+hqk4k/BH3XzqDiKlW00zpOpImYUm48mrgo=
+	t=1753192973; cv=none; b=eTNmZo68hNPXmE3ZiX1ERKROnJ/rmE2dnXRyGwmECVfxXdpHwb7DhfIvW2q/Q8ZKLTxoEJGt7dYUI6J6OStWuoc7vTjJCvBAGLbuR2nd23JzOo8Mlxs7kdsEVh0fUPW2QTvATUhYx6qLYCHTVwV/H6gLCzUCX85X14pD/e91a8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192155; c=relaxed/simple;
-	bh=A5LY6Nwuoc/GJ63pMHadUynIvB+njLJO9bRVmYBXBo4=;
+	s=arc-20240116; t=1753192973; c=relaxed/simple;
+	bh=W7rk+gUIjxwK6z0G+yzYxGoUVuqSH1futDcfRQIta+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NnP2NM/lGV9bta0bc2B4PGIEF2GjRVT9ds4ImJgfcmtwM5e7BPgmUBz+rIcNhAp//nQB7/IMaIWK6JErPe0lvpT5nXFeFvIC9LMdQ8vYD7+4DWrTaXnJrFduMPPGA9G1oUfN1MLdYKOdqUCOb6SWBPoY+pgv11U2MGGZMQ0+Njc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruey9eNH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5E9C4CEEB;
-	Tue, 22 Jul 2025 13:49:14 +0000 (UTC)
+	 MIME-Version; b=cMVSSJ2luyRa4Of/phalUFsC1npXrbt9TDWfGW99E86LGqOuowTND1PH3T5L6wDVOSM6j2lF8MJ8SqXkD3n9t7JxOI+RLIM5SM1cIL8szgTfJa87mhlMGg1HgYtFfv9k+heNPBqFEWBaJPDqaR27jng9rdJae+CIAQu+JDQGMNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlFBw3oB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83105C4CEEB;
+	Tue, 22 Jul 2025 14:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192155;
-	bh=A5LY6Nwuoc/GJ63pMHadUynIvB+njLJO9bRVmYBXBo4=;
+	s=korg; t=1753192973;
+	bh=W7rk+gUIjxwK6z0G+yzYxGoUVuqSH1futDcfRQIta+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ruey9eNHJwTVSB+//AbF4325cPQNAU/6y+Wj/qmw0ilupcEqFHaE+YSRAUOephS08
-	 JO7whlnbhTMPNkqpzwbzx4I8mK/zb3MEh1jZmu+xQBhf6eCZnCInGfQLO0Brh7I9s9
-	 eBbf5rAwkMqTV1XmNEiPyb/RoG1es9qaoiylK9o4=
+	b=nlFBw3oB+BT3TevhhoONImG419+X+du9H18pulBB9fcjRUBaLItpawSBDIkVRyCXs
+	 hBuOCc7yGu2uKmL5pK2qxNFwCOup///Q9lbTL0C7BFgJkAr2zAYXUwOK4ZPnPqCkm8
+	 WC3Wi49cDy/HDeMWgTJ8euu364i2x2NyWe/XIK4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alessandro Gasbarroni <alex.gasbarroni@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 61/79] tls: always refresh the queue when reading sock
-Date: Tue, 22 Jul 2025 15:44:57 +0200
-Message-ID: <20250722134330.617793004@linuxfoundation.org>
+Subject: [PATCH 6.12 114/158] Bluetooth: hci_sync: fix connectable extended advertising when using static random address
+Date: Tue, 22 Jul 2025 15:44:58 +0200
+Message-ID: <20250722134345.005435839@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Alessandro Gasbarroni <alex.gasbarroni@gmail.com>
 
-[ Upstream commit 4ab26bce3969f8fd925fe6f6f551e4d1a508c68b ]
+[ Upstream commit d85edab911a4c1fcbe3f08336eff5c7feec567d0 ]
 
-After recent changes in net-next TCP compacts skbs much more
-aggressively. This unearthed a bug in TLS where we may try
-to operate on an old skb when checking if all skbs in the
-queue have matching decrypt state and geometry.
+Currently, the connectable flag used by the setup of an extended
+advertising instance drives whether we require privacy when trying to pass
+a random address to the advertising parameters (Own Address).
+If privacy is not required, then it automatically falls back to using the
+controller's public address. This can cause problems when using controllers
+that do not have a public address set, but instead use a static random
+address.
 
-    BUG: KASAN: slab-use-after-free in tls_strp_check_rcv+0x898/0x9a0 [tls]
-    (net/tls/tls_strp.c:436 net/tls/tls_strp.c:530 net/tls/tls_strp.c:544)
-    Read of size 4 at addr ffff888013085750 by task tls/13529
+e.g. Assume a BLE controller that does not have a public address set.
+The controller upon powering is set with a random static address by default
+by the kernel.
 
-    CPU: 2 UID: 0 PID: 13529 Comm: tls Not tainted 6.16.0-rc5-virtme
-    Call Trace:
-     kasan_report+0xca/0x100
-     tls_strp_check_rcv+0x898/0x9a0 [tls]
-     tls_rx_rec_wait+0x2c9/0x8d0 [tls]
-     tls_sw_recvmsg+0x40f/0x1aa0 [tls]
-     inet_recvmsg+0x1c3/0x1f0
+	< HCI Command: LE Set Random Address (0x08|0x0005) plen 6
+        	Address: E4:AF:26:D8:3E:3A (Static)
+	> HCI Event: Command Complete (0x0e) plen 4
+	      LE Set Random Address (0x08|0x0005) ncmd 1
+	        Status: Success (0x00)
 
-Always reload the queue, fast path is to have the record in the queue
-when we wake, anyway (IOW the path going down "if !strp->stm.full_len").
+Setting non-connectable extended advertisement parameters in bluetoothctl
+mgmt
 
-Fixes: 0d87bbd39d7f ("tls: strp: make sure the TCP skbs do not have overlapping data")
-Link: https://patch.msgid.link/20250716143850.1520292-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+	add-ext-adv-params -r 0x801 -x 0x802 -P 2M -g 1
+
+correctly sets Own address type as Random
+
+	< HCI Command: LE Set Extended Advertising Parameters (0x08|0x0036)
+	plen 25
+		...
+	    Own address type: Random (0x01)
+
+Setting connectable extended advertisement parameters in bluetoothctl mgmt
+
+	add-ext-adv-params -r 0x801 -x 0x802 -P 2M -g -c 1
+
+mistakenly sets Own address type to Public (which causes to use Public
+Address 00:00:00:00:00:00)
+
+	< HCI Command: LE Set Extended Advertising Parameters (0x08|0x0036)
+	plen 25
+		...
+	    Own address type: Public (0x00)
+
+This causes either the controller to emit an Invalid Parameters error or to
+mishandle the advertising.
+
+This patch makes sure that we use the already set static random address
+when requesting a connectable extended advertising when we don't require
+privacy and our public address is not set (00:00:00:00:00:00).
+
+Fixes: 3fe318ee72c5 ("Bluetooth: move hci_get_random_address() to hci_sync")
+Signed-off-by: Alessandro Gasbarroni <alex.gasbarroni@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_strp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/bluetooth/hci_sync.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 44d7f1aef9f12..b7ed76c0e576e 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -512,9 +512,8 @@ static int tls_strp_read_sock(struct tls_strparser *strp)
- 	if (inq < strp->stm.full_len)
- 		return tls_strp_read_copy(strp, true);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index bc01135e43f3e..bbd809414b2f2 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6789,8 +6789,8 @@ int hci_get_random_address(struct hci_dev *hdev, bool require_privacy,
+ 		return 0;
+ 	}
  
-+	tls_strp_load_anchor_with_queue(strp, inq);
- 	if (!strp->stm.full_len) {
--		tls_strp_load_anchor_with_queue(strp, inq);
--
- 		sz = tls_rx_msg_size(strp, strp->anchor);
- 		if (sz < 0) {
- 			tls_strp_abort_strp(strp, sz);
+-	/* No privacy so use a public address. */
+-	*own_addr_type = ADDR_LE_DEV_PUBLIC;
++	/* No privacy, use the current address */
++	hci_copy_identity_address(hdev, rand_addr, own_addr_type);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
