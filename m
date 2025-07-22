@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B7AB0DB85
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3ECB0DC33
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 155C15609DC
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40BA0AC2058
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C5E2E8E0F;
-	Tue, 22 Jul 2025 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979BE2EA462;
+	Tue, 22 Jul 2025 13:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWXrZSO8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BknddRsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F07E2C08B6;
-	Tue, 22 Jul 2025 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575092B9A5;
+	Tue, 22 Jul 2025 13:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192206; cv=none; b=I3V7N0b7aR2YDJ+2ngPMv6/rMFaU+EGMOXzrEjYa0JZJTJ68S9VAlyWhdsbYRixbzxgTzLWudY/2Xe3jsJ4kWp88K1pVP35aU8jjk73LcpvWLMVMaF5xSdQfUdAQaDOdbsQCs8wipebDlECHsYzMf7Q4vF0js7avA33gHC/dIE4=
+	t=1753192540; cv=none; b=nCeYF3SncRKiO7aB9FPR04uiWpLfKpr2lQ7J+XXgTsEYIz8QHbO3CiQd/Vo6aYEYdoI0/L8bfASh3KjorEP2FyOLXhZr0yVg1dv2deUruRe17GOowVxSFZxLG97CYvM+YqT7vcketFsJTThuM0nGMv779jgYeHlef2GmaT+iZUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192206; c=relaxed/simple;
-	bh=kiIIjNGA6RRUrKero6o25lUZHwo7ebXTrqhI3E17ldA=;
+	s=arc-20240116; t=1753192540; c=relaxed/simple;
+	bh=xawtXyHqOSwF6Pn7LbGW1yQWNLbaqk2xL2AehzTGpnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7nFxhPQj1+9ohtS5mlD6dfRebJEo48oNiv4G0d7yXp+ddB0V/UBwFjKrpJflVfVkwBI+CrWIJ2QfCh9UOX0ucTvDdVX9qzWyre/mS9lb59VSgPyBwBqxol3Pd5VHtdp8AEaBmV4AwjMs38Si75uc2zcrjuvsMPHgpgbD0vE0/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWXrZSO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96599C4CEF1;
-	Tue, 22 Jul 2025 13:50:05 +0000 (UTC)
+	 MIME-Version; b=oJTK9vg2ZGBQrYyq/dkF4rRozdzLr2QIgeWqe9+28+ibO+R5JElSsts6hROveBXcx2phyb/seWXhKYOSiJryX0V8bmf4vXh+IG9e3bCiUbOsoyQZQh/SchRgwvLnrbJrknykkIAhg+xY8NAj0gU0j+QFWvJyuq+CQa1WkqSh3uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BknddRsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A8AC4CEEB;
+	Tue, 22 Jul 2025 13:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192206;
-	bh=kiIIjNGA6RRUrKero6o25lUZHwo7ebXTrqhI3E17ldA=;
+	s=korg; t=1753192538;
+	bh=xawtXyHqOSwF6Pn7LbGW1yQWNLbaqk2xL2AehzTGpnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWXrZSO8V7nr5nJAJli24ZH/6NQtAM0zfmXzw5MqVEmzq7VD+GXUQq+TqbmufxmgA
-	 cBZqM69ILj8j61j9aY9TI2eE93DD3vfL4jsYDI9pu3z+6hs1sGKjFgvbrnz7p4BhV4
-	 wpTQsrd3caWhGgLyey5KRuxoqABAPWv2UAtslY1o=
+	b=BknddRsAe1vEv8mWar1CxYS6hs/LeigAcHtSJQ/UHynu040BOJSgdYqiUbq4oPKNN
+	 VQ72smWRpxCCteT9e5wnAloFHtQQKMAuqEYl5+UGh6qa1SRP6ywh9Ddus0TNxkjj55
+	 hl62dTHrAzooUHHGIT7NtR0N16qPKU9UGOn+cxIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>,
-	Drew Hamilton <drew.hamilton@zetier.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 74/79] usb: musb: fix gadget state on disconnect
+	Christian Brauner <brauner@kernel.org>,
+	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.6 095/111] clone_private_mnt(): make sure that caller has CAP_SYS_ADMIN in the right userns
 Date: Tue, 22 Jul 2025 15:45:10 +0200
-Message-ID: <20250722134331.117254437@linuxfoundation.org>
+Message-ID: <20250722134336.959568788@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Drew Hamilton <drew.hamilton@zetier.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 67a59f82196c8c4f50c83329f0577acfb1349b50 upstream.
+commit c28f922c9dcee0e4876a2c095939d77fe7e15116 upstream.
 
-When unplugging the USB cable or disconnecting a gadget in usb peripheral mode with
-echo "" > /sys/kernel/config/usb_gadget/<your_gadget>/UDC,
-/sys/class/udc/musb-hdrc.0/state does not change from USB_STATE_CONFIGURED.
+What we want is to verify there is that clone won't expose something
+hidden by a mount we wouldn't be able to undo.  "Wouldn't be able to undo"
+may be a result of MNT_LOCKED on a child, but it may also come from
+lacking admin rights in the userns of the namespace mount belongs to.
 
-Testing on dwc2/3 shows they both update the state to USB_STATE_NOTATTACHED.
+clone_private_mnt() checks the former, but not the latter.
 
-Add calls to usb_gadget_set_state in musb_g_disconnect and musb_gadget_stop
-to fix both cases.
+There's a number of rather confusing CAP_SYS_ADMIN checks in various
+userns during the mount, especially with the new mount API; they serve
+different purposes and in case of clone_private_mnt() they usually,
+but not always end up covering the missing check mentioned above.
 
-Fixes: 49401f4169c0 ("usb: gadget: introduce gadget state tracking")
-Cc: stable@vger.kernel.org
-Co-authored-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
-Signed-off-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
-Signed-off-by: Drew Hamilton <drew.hamilton@zetier.com>
-Link: https://lore.kernel.org/r/20250701154126.8543-1-drew.hamilton@zetier.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
+Fixes: 427215d85e8d ("ovl: prevent private clone if bind mount is not allowed")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+[ merge conflict resolution: clone_private_mount() was reworked in
+  db04662e2f4f ("fs: allow detached mounts in clone_private_mount()").
+  Tweak the relevant ns_capable check so that it works on older kernels ]
+Signed-off-by: Noah Orlando <Noah.Orlando@deshaw.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/musb_gadget.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/namespace.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/musb/musb_gadget.c
-+++ b/drivers/usb/musb/musb_gadget.c
-@@ -1916,6 +1916,7 @@ static int musb_gadget_stop(struct usb_g
- 	 * gadget driver here and have everything work;
- 	 * that currently misbehaves.
- 	 */
-+	usb_gadget_set_state(g, USB_STATE_NOTATTACHED);
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2110,6 +2110,11 @@ struct vfsmount *clone_private_mount(con
+ 	if (!check_mnt(old_mnt))
+ 		goto invalid;
  
- 	/* Force check of devctl register for PM runtime */
- 	pm_runtime_mark_last_busy(musb->controller);
-@@ -2022,6 +2023,7 @@ void musb_g_disconnect(struct musb *musb
- 	case OTG_STATE_B_PERIPHERAL:
- 	case OTG_STATE_B_IDLE:
- 		musb_set_state(musb, OTG_STATE_B_IDLE);
-+		usb_gadget_set_state(&musb->g, USB_STATE_NOTATTACHED);
- 		break;
- 	case OTG_STATE_B_SRP_INIT:
- 		break;
++	if (!ns_capable(old_mnt->mnt_ns->user_ns, CAP_SYS_ADMIN)) {
++		up_read(&namespace_sem);
++		return ERR_PTR(-EPERM);
++	}
++
+ 	if (has_locked_children(old_mnt, path->dentry))
+ 		goto invalid;
+ 
 
 
 
