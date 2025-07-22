@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-163764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF761B0DB5E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 253B0B0DC34
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0D131C8111F
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E84516BE2D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313B57BAEC;
-	Tue, 22 Jul 2025 13:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C022EA462;
+	Tue, 22 Jul 2025 13:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukNoDwnt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIrJ6R71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E212923B611;
-	Tue, 22 Jul 2025 13:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21207230D0E;
+	Tue, 22 Jul 2025 13:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192131; cv=none; b=EQz1QaLx1o2iq66XfmMXTGNNZXw8WaC2cy32KP3WDvOorsG+UE2HSBBcrRudU00+vpcb7LalXs0T2VCdtPaCAn5IP1cD9IyS3bvUULL2FzppdD3WlkzKcaAwSijjng5GH0XI76/jJua757/nG9aruKhQlmMH+AYeuksJHuw5AVk=
+	t=1753192579; cv=none; b=XBvshhFsntcuegpRl34R+j+DZZGQw31ljVZL9QIwID3wJmCYyoDtgs2pBrhgBMWpKj2IXUwErFGC4C1+Upi0wAkzovdmjFSBnwUz2mcV4BBF7hWZgW4Pd/ZgcykaTYVI3B8aO/8bc2PlJ1rORBs+bP44ZCP4wIVl3qq8TVOYDsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192131; c=relaxed/simple;
-	bh=7vK2JPBK8v9qF237u+++9ohlsG1wYJ9XJZ46INnogQo=;
+	s=arc-20240116; t=1753192579; c=relaxed/simple;
+	bh=gpAYHtekvJq4AM8djGq9oDSYexUtFpflglHtyju/RxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSZD07fbbzmK/R+PjhF4zZG9/2zinbldMmqICdzlN6Nm2NsRF6WHRXVYTcBdJvRW7VyvsbsmakOEfhVgn2rcshSwkESAUv1GpvFiIhhXfyoL9V2uzuW68HVD7+EPkT2e4g+j2jkKYM4aVV/7E58bhcoIWvgzC9ft2G0W9AfL1pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukNoDwnt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBF5C4CEEB;
-	Tue, 22 Jul 2025 13:48:49 +0000 (UTC)
+	 MIME-Version; b=SlDBO4srEARjcbq8Ayd2HdOrg8ZxHFF4Ot9QBzgPeQy0BcSxApGycnCyPIIWdTvgiijwMKCbsmOidJxtPU/4sTwAQCpw1be5P4noHZdG2gpYmqjw+MfAMNroY9S7GWeT4VWsWmtkdyym65Yf14bo7Pa36rRRQA47CDbsLeJ1bPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIrJ6R71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26870C4CEEB;
+	Tue, 22 Jul 2025 13:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192130;
-	bh=7vK2JPBK8v9qF237u+++9ohlsG1wYJ9XJZ46INnogQo=;
+	s=korg; t=1753192577;
+	bh=gpAYHtekvJq4AM8djGq9oDSYexUtFpflglHtyju/RxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukNoDwntPqt+L5WMTzHXiaW6C4I1NEkaMSZWbiITnDuQSHwdiobVpgIoVhL8lFpbq
-	 LG1qhViG9oosJH03A0mKmYTPUcNQPHP4FeM2PFkjqR5pgB+UJ52KI7w0JA1AfBmqlu
-	 ORNJs4b04QJxFw+KUUgjvrujL5h5eEoCCKLNyQSY=
+	b=fIrJ6R71hXA41MCEvIiIyiKk8JkMVaQh5kI5gCzqpKtHUFQJNfFMAghl/p7cbmIXs
+	 ADT/9Xv7VOIJvO7WaUQLajzqjHZDxSq4GM/F5+1NviulZiMqdt0DvIRjeHsIAkj5PL
+	 GbebhwNoSeceGJZ2j80MqY2QHB6weUbm7vWXB3UQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com,
+	Oliver Neukum <oneukum@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 54/79] Bluetooth: SMP: If an unallowed command is received consider it a failure
+Subject: [PATCH 6.6 075/111] usb: net: sierra: check for no status endpoint
 Date: Tue, 22 Jul 2025 15:44:50 +0200
-Message-ID: <20250722134330.365893463@linuxfoundation.org>
+Message-ID: <20250722134336.178885824@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit fe4840df0bdf341f376885271b7680764fe6b34e ]
+[ Upstream commit 4c4ca3c46167518f8534ed70f6e3b4bf86c4d158 ]
 
-If a command is received while a bonding is ongoing consider it a
-pairing failure so the session is cleanup properly and the device is
-disconnected immediately instead of continuing with other commands that
-may result in the session to get stuck without ever completing such as
-the case bellow:
+The driver checks for having three endpoints and
+having bulk in and out endpoints, but not that
+the third endpoint is interrupt input.
+Rectify the omission.
 
-> ACL Data RX: Handle 2048 flags 0x02 dlen 21
-      SMP: Identity Information (0x08) len 16
-        Identity resolving key[16]: d7e08edef97d3e62cd2331f82d8073b0
-> ACL Data RX: Handle 2048 flags 0x02 dlen 21
-      SMP: Signing Information (0x0a) len 16
-        Signature key[16]: 1716c536f94e843a9aea8b13ffde477d
-Bluetooth: hci0: unexpected SMP command 0x0a from XX:XX:XX:XX:XX:XX
-> ACL Data RX: Handle 2048 flags 0x02 dlen 12
-      SMP: Identity Address Information (0x09) len 7
-        Address: XX:XX:XX:XX:XX:XX (Intel Corporate)
-
-While accourding to core spec 6.1 the expected order is always BD_ADDR
-first first then CSRK:
-
-When using LE legacy pairing, the keys shall be distributed in the
-following order:
-
-    LTK by the Peripheral
-
-    EDIV and Rand by the Peripheral
-
-    IRK by the Peripheral
-
-    BD_ADDR by the Peripheral
-
-    CSRK by the Peripheral
-
-    LTK by the Central
-
-    EDIV and Rand by the Central
-
-    IRK by the Central
-
-    BD_ADDR by the Central
-
-    CSRK by the Central
-
-When using LE Secure Connections, the keys shall be distributed in the
-following order:
-
-    IRK by the Peripheral
-
-    BD_ADDR by the Peripheral
-
-    CSRK by the Peripheral
-
-    IRK by the Central
-
-    BD_ADDR by the Central
-
-    CSRK by the Central
-
-According to the Core 6.1 for commands used for key distribution "Key
-Rejected" can be used:
-
-  '3.6.1. Key distribution and generation
-
-  A device may reject a distributed key by sending the Pairing Failed command
-  with the reason set to "Key Rejected".
-
-Fixes: b28b4943660f ("Bluetooth: Add strict checks for allowed SMP PDUs")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/686d5a9f.050a0220.1ffab7.0017.GAE@google.com/
+Tested-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
+Fixes: eb4fd8cd355c8 ("net/usb: add sierra_net.c driver")
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20250714111326.258378-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/smp.c | 19 ++++++++++++++++++-
- net/bluetooth/smp.h |  1 +
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ drivers/net/usb/sierra_net.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index b93494790877f..2ed57a71f1b2f 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -2971,8 +2971,25 @@ static int smp_sig_channel(struct l2cap_chan *chan, struct sk_buff *skb)
- 	if (code > SMP_CMD_MAX)
- 		goto drop;
- 
--	if (smp && !test_and_clear_bit(code, &smp->allow_cmd))
-+	if (smp && !test_and_clear_bit(code, &smp->allow_cmd)) {
-+		/* If there is a context and the command is not allowed consider
-+		 * it a failure so the session is cleanup properly.
-+		 */
-+		switch (code) {
-+		case SMP_CMD_IDENT_INFO:
-+		case SMP_CMD_IDENT_ADDR_INFO:
-+		case SMP_CMD_SIGN_INFO:
-+			/* 3.6.1. Key distribution and generation
-+			 *
-+			 * A device may reject a distributed key by sending the
-+			 * Pairing Failed command with the reason set to
-+			 * "Key Rejected".
-+			 */
-+			smp_failure(conn, SMP_KEY_REJECTED);
-+			break;
-+		}
- 		goto drop;
+diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
+index 673d3aa837926..42b66adb35f1b 100644
+--- a/drivers/net/usb/sierra_net.c
++++ b/drivers/net/usb/sierra_net.c
+@@ -689,6 +689,10 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
+ 			status);
+ 		return -ENODEV;
+ 	}
++	if (!dev->status) {
++		dev_err(&dev->udev->dev, "No status endpoint found");
++		return -ENODEV;
 +	}
- 
- 	/* If we don't have a context the only allowed commands are
- 	 * pairing request and security request.
-diff --git a/net/bluetooth/smp.h b/net/bluetooth/smp.h
-index 87a59ec2c9f02..c5da53dfab04f 100644
---- a/net/bluetooth/smp.h
-+++ b/net/bluetooth/smp.h
-@@ -138,6 +138,7 @@ struct smp_cmd_keypress_notify {
- #define SMP_NUMERIC_COMP_FAILED		0x0c
- #define SMP_BREDR_PAIRING_IN_PROGRESS	0x0d
- #define SMP_CROSS_TRANSP_NOT_ALLOWED	0x0e
-+#define SMP_KEY_REJECTED		0x0f
- 
- #define SMP_MIN_ENC_KEY_SIZE		7
- #define SMP_MAX_ENC_KEY_SIZE		16
+ 	/* Initialize sierra private data */
+ 	priv = kzalloc(sizeof *priv, GFP_KERNEL);
+ 	if (!priv)
 -- 
 2.39.5
 
