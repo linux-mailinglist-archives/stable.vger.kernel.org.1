@@ -1,114 +1,159 @@
-Return-Path: <stable+bounces-163656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8B5B0D1B5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 08:10:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DF8B0D1CC
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 08:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E9DA546B72
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 06:10:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 017963A466C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 06:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE461CF7AF;
-	Tue, 22 Jul 2025 06:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA42728A731;
+	Tue, 22 Jul 2025 06:26:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="SvTVeMvT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B100528FA9F
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 06:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74751A29A
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 06:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753164599; cv=none; b=CNtaCHBaONCWlhK1oVGBcSaqWy1yk4Hb9vhs4EZ+++M61zoRqmTcVhLlM0V2IgC1rfO23fiqRFnHMIW3JKAQDyphEn/oYvbuF23IM0yw5f9nZcOKkEIG8xoe3U15MHdfAFjc6d8osdZesYrTC9B/O9wifN1iVMqT+zitO0Gj7Tw=
+	t=1753165606; cv=none; b=aHsNAAYip0/2+78nkddWVBbS86/IJvqmK0eTgnBiiQ2fuhIVtvJV5GqbnsDTOOIpunCRWCf6jmg+ZyPTkuqdyey3oPZP46elYxYzQjRsgEK63RO2kOXpT1AyAmzpzCtrqpw6fGNHdp9CL8aIC7c1mf6l3P0VjnvZ9fBOQpQPZ64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753164599; c=relaxed/simple;
-	bh=yEtBdhWYCRBNwtCEi5gx7vOcERXAsVABjk//PMyEC2w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfQI+nukR5zL8J5UutocipPjWrVfhHroLB7Fd8Y6yWqD+4ALzlZafQ7fXp9znvjZCVVO6QQk+0Ewuh0Ab4oBmmplfZuy6t4bL72PNHEIp/ud3+p37+vUh3O4tgGEznDISRssN1/PxgEPPljcjwVfrXyz575Hn+4TN2S59Ezy7IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpgz6t1753164578tc4ffeb52
-X-QQ-Originating-IP: Gl0InKnrgqRRODFUKVa+xJI8aC8Yl63sjMQdQw+aRhs=
-Received: from w-MS-7E16.trustnetic.com ( [36.24.205.22])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 22 Jul 2025 14:09:32 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 4513845936350232740
-EX-QQ-RecipientCnt: 4
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1753165606; c=relaxed/simple;
+	bh=GJupSTEJxYxweJ499pFCHc2a3nx8ydrfECvVlgOCuIE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eq0EWjWCvuBNF2l/TQa+VIOQvE6JWr+SNHWYr6CK94Gy5S2gnMKPznvQK6erfVxcFurYrjUxmHFMgEp0BvidB98coaG5uBqoJTr6GxHg14qwr54d+MBoAD0UzNSLzW75dv/m5Eo2JwxFjSmqNJ7hNV8WwRPhOyDFxC82owCo+Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=SvTVeMvT; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56M5TCmh021355
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 06:26:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2025-04-25; bh=6AFZ+ujkxMh+BWjq
+	xdaofFvqult6MSkWyWPI6aovOJY=; b=SvTVeMvTasJYHGk08Ozb7d+cVlLHdJ2A
+	RuRjYh6EnjMgcn/Qaw4VKKHHMSqdXjU23U/jXe/pSN1OY4oVZfeUAr6B0LLa6srC
+	/MR02NnF0jO77pT9ST0GfelW/XTYrBkktP/a6r95OszaYWUMKdf+Mri4lnjh0CiO
+	WmPVIchaQ1Pa74cRkjg2VXnIr9nCU21VlK2E7eRvAB/GO36TxPMJRb3T6mYLNpYv
+	Xk68z/F2MM2cksJWbeeIPGtgCCimxv4BQMfYwsBFcOV6COHMyFe9FtI92HCT8Tl3
+	lQuXqhUptyk1eaGCw7jHJYWKR5AsjmjTM7Ec8UNqTd5Pl4fl+q/M1w==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4805e9mhgr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 06:26:43 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56M6JePI010306
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 06:26:43 GMT
+Received: from skatage-ol9.osdevelopmeniad.oraclevcn.com (skatage-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.253.50])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4801t8xdkv-1
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 06:26:43 +0000
+From: Siddhi Katage <siddhi.katage@oracle.com>
 To: stable@vger.kernel.org
-Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15.y] net: libwx: fix multicast packets received count
-Date: Tue, 22 Jul 2025 14:09:31 +0800
-Message-ID: <29E146077CD96A7C+20250722060931.8347-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025072136-steersman-voicing-574e@gregkh>
-References: <2025072136-steersman-voicing-574e@gregkh>
+Subject: [PATCH 5.15.y 0/4] Fix blank WHCAN value in 'ps' output
+Date: Tue, 22 Jul 2025 06:26:38 +0000
+Message-ID: <20250722062642.309842-1-siddhi.katage@oracle.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NC2sbZ2AMa4KO+ixEIUZjZ8RpHvmYGz2CBhEqbJAdkwe2T6DT51asqMU
-	lxt8EbMAUHX07ZOSg2aJ+s6GpeVUeSOBCLSPCbWFDNC9dS9qEFF1s8UHD3db5Z2xMhYJVr2
-	OERe0eqdp77Q2GccfAT/qI6lnncVhl27225n/7i/LhOiQoWrS9KsDsEsGYUqc5t7LpwSMDe
-	0ngnGw+gvX6RRlyUVWfcPYhm+fAy44hmq1ysUOmUbCsRI3VLBFgJkCBfNmTkV2p7GQBSOWc
-	G5AHg+mCXZXeXMPlErixK7hwKRvFw+2HEWCcpS0ghxlftVKISREFrKhN2onVGDahPYccT3Q
-	x/MC8E1sQUPjVuO7gy2e66NNrOxtU0WUlC1Y1HdZKjFn+Zf54fzPSYPlsQ8KGglExk9DalB
-	PhtuPHGKrG18WY7vZUxW9JWOA386vny1b0CpFFCOc89O41bqeO7DkKOHlIwlbTKFobWr0nE
-	QSiUdH0YutIXmIVt3RlAaLHYnH4c676LZfYlI74heoW2BJ8d53Crv3zAmIIdchIzGx3SjWG
-	DdC0vRh0LY49TkJhxRlZqRQbDYXf72UZqoKGsZ06NgiygEGzHAq05Dy2MkOCoDPv1PG/IDC
-	uV8M4+VAb/J4K439XMYjPHTI1BUoIEPYsgurdM0wJ45gdFzeKPuhaX6mU43izwQsa5TNKbr
-	rdiZZVfiK6tewRci69cJtOkdBrIwGxl6VVpsMNwrSikYofqsFE/S7v1EVKnoUu4qN8hoiYk
-	gunQruvkU1U+wBpSlfyEKdXEPUeIwArOYPXZBRRI+3Y9l+JUeW6BhRzRQOj/4ED5zV61w5B
-	gfngSKxTfKl2jemoajrpPCEH5Smgh6DetfysoVMtigDHqNXlB/1/gOjijqcN5EtfTeHpaTK
-	LGe14bgp/zllKSwNo8RKFyKfDfKrNEFHjiGB7QG3o7GX2nRw+xXN2BNBKHgnI2uHfvrTttJ
-	GFr5AO7axT2ZHoOC3b5S1LX0bPAmTWycRSLkH56sejby1lG2XAWaA9RuTBz57mLSKKZKSyp
-	R2IvaxoPSscMPclp4dxz7tG1h09z5z4qtkw1WPg8pAmVPvtSBr4MLBsGmK26+sB+PVMYN+o
-	YGcPuiwNBnk7VVtkOGA70ndyhHhKaX61TrtUUQ+5iD8iYQgMimoJj7Q3DsHpN6/Tw==
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-X-QQ-RECHKSPAM: 0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-22_01,2025-07-21_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
+ mlxscore=0 bulkscore=0 mlxlogscore=692 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2507220051
+X-Authority-Analysis: v=2.4 cv=eqbfzppX c=1 sm=1 tr=0 ts=687f2f23 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=7B0HGO_KyTO1TtxdyTYA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 3BnYxUYHf_T2Qmyd7mKuqYCciUaNq3p3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDA1MSBTYWx0ZWRfX6JhfTbpQVo45
+ cI3ah8iBy/DbvRp1dSaBz6y1GnsLM0rHLrKtovTsBNcPJPReM4Dg5cu+CdlXDAo858H37ko1hSn
+ 2SZW9L92Y+Nhh/+nqYIsHSm2FOL2YKP/Yr25s/P8F99KK58X8KVfRRiwU1Lrdy8ZLqflkU+G1yf
+ /XQpnSG+JO/MMDtcbj+dU8GoLs0NjGevX2prDJTYcbHOtzVpp0o9iV2ZcU8FAUXFKMxNClzrtEH
+ J3rgoChsm9kIvc0OJC1buclHS/z8vwuYOlPvwG69BBAERFnUubrd5CjXiljQ2OMlUJ1O+Goj4m+
+ ROsf1yxbBjnShN47CIaspnU4rGV/beYaBO+/Qtigm5F36mJ2Y+eJ6adzibC5FoNC/Lczl29rGcJ
+ s6/lXV7WTDgqKGNCmWqQxyexzBZCvg+I4LnnvdTupjYjEGtxsA+2Pck6E0T4qK2fnOw9gruN
+X-Proofpoint-ORIG-GUID: 3BnYxUYHf_T2Qmyd7mKuqYCciUaNq3p3
 
-commit 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77 upstream.
+The 'ps' output prints blank(hyphen) WHCAN value for all the tasks.
+This patchset will help print the correct WCHAN value.
 
-Multicast good packets received by PF rings that pass ethternet MAC
-address filtering are counted for rtnl_link_stats64.multicast. The
-counter is not cleared on read. Fix the duplicate counting on updating
-statistics.
 
-Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/DA229A4F58B70E51+20250714015656.91772-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/wangxun/libwx/wx_hw.c | 2 ++
- 1 file changed, 2 insertions(+)
+Kees Cook (1):
+  sched: Add wrapper for get_wchan() to keep task blocked
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 490d34233d38..884986973cde 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2524,6 +2524,8 @@ void wx_update_stats(struct wx *wx)
- 		hwstats->fdirmiss += rd32(wx, WX_RDB_FDIR_MISS);
- 	}
- 
-+	/* qmprc is not cleared on read, manual reset it */
-+	hwstats->qmprc = 0;
- 	for (i = 0; i < wx->mac.max_rx_queues; i++)
- 		hwstats->qmprc += rd32(wx, WX_PX_MPRC(i));
- }
+Peter Zijlstra (2):
+  x86: Fix __get_wchan() for !STACKTRACE
+  x86: Pin task-stack in __get_wchan()
+
+Qi Zheng (1):
+  x86: Fix get_wchan() to support the ORC unwinder
+
+ arch/alpha/include/asm/processor.h      |  2 +-
+ arch/alpha/kernel/process.c             |  5 +-
+ arch/arc/include/asm/processor.h        |  2 +-
+ arch/arc/kernel/stacktrace.c            |  4 +-
+ arch/arm/include/asm/processor.h        |  2 +-
+ arch/arm/kernel/process.c               |  4 +-
+ arch/arm64/include/asm/processor.h      |  2 +-
+ arch/arm64/kernel/process.c             |  4 +-
+ arch/csky/include/asm/processor.h       |  2 +-
+ arch/csky/kernel/stacktrace.c           |  5 +-
+ arch/h8300/include/asm/processor.h      |  2 +-
+ arch/h8300/kernel/process.c             |  5 +-
+ arch/hexagon/include/asm/processor.h    |  2 +-
+ arch/hexagon/kernel/process.c           |  4 +-
+ arch/ia64/include/asm/processor.h       |  2 +-
+ arch/ia64/kernel/process.c              |  5 +-
+ arch/m68k/include/asm/processor.h       |  2 +-
+ arch/m68k/kernel/process.c              |  4 +-
+ arch/microblaze/include/asm/processor.h |  2 +-
+ arch/microblaze/kernel/process.c        |  2 +-
+ arch/mips/include/asm/processor.h       |  2 +-
+ arch/mips/kernel/process.c              |  8 ++--
+ arch/nds32/include/asm/processor.h      |  2 +-
+ arch/nds32/kernel/process.c             |  7 +--
+ arch/nios2/include/asm/processor.h      |  2 +-
+ arch/nios2/kernel/process.c             |  5 +-
+ arch/openrisc/include/asm/processor.h   |  2 +-
+ arch/openrisc/kernel/process.c          |  2 +-
+ arch/parisc/include/asm/processor.h     |  2 +-
+ arch/parisc/kernel/process.c            |  5 +-
+ arch/powerpc/include/asm/processor.h    |  2 +-
+ arch/powerpc/kernel/process.c           |  9 ++--
+ arch/riscv/include/asm/processor.h      |  2 +-
+ arch/riscv/kernel/stacktrace.c          | 12 ++---
+ arch/s390/include/asm/processor.h       |  2 +-
+ arch/s390/kernel/process.c              |  4 +-
+ arch/sh/include/asm/processor_32.h      |  2 +-
+ arch/sh/kernel/process_32.c             |  5 +-
+ arch/sparc/include/asm/processor_32.h   |  2 +-
+ arch/sparc/include/asm/processor_64.h   |  2 +-
+ arch/sparc/kernel/process_32.c          |  5 +-
+ arch/sparc/kernel/process_64.c          |  5 +-
+ arch/um/include/asm/processor-generic.h |  2 +-
+ arch/um/kernel/process.c                |  5 +-
+ arch/x86/include/asm/processor.h        |  2 +-
+ arch/x86/kernel/process.c               | 62 ++++++-------------------
+ arch/xtensa/include/asm/processor.h     |  2 +-
+ arch/xtensa/kernel/process.c            |  5 +-
+ include/linux/sched.h                   |  1 +
+ kernel/sched/core.c                     | 19 ++++++++
+ 50 files changed, 94 insertions(+), 155 deletions(-)
+
 -- 
-2.25.1
+2.47.1
 
 
