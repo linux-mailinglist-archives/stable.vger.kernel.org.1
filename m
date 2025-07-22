@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-164031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E355B0DCD2
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD100B0DC17
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A19816A397
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A8AC1C802CA
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E914C2E2F10;
-	Tue, 22 Jul 2025 14:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924EB2E1733;
+	Tue, 22 Jul 2025 13:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyVMMOBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEY+jfdh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A431DA32;
-	Tue, 22 Jul 2025 14:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50ACA2EA173;
+	Tue, 22 Jul 2025 13:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193021; cv=none; b=e5de2p7Q3PIpsfnuwM7YbJaSsaJIGDZT5YEWTkm0etMGb6ykTmrta/IHDgfXLpoenEuAkGQWyX6JTvNLRTIcMWwrV5xf3AaJ5PGOnGMRvLy0bm3JzzdFsxGaXmawiUo0ud6YA0P6NIQjHanhotLVvS3i8Pve/RuHnVKn0z5g+fc=
+	t=1753192542; cv=none; b=LIecjPJ/mJGEe91thLuEiKqGP7lM+8jSrVDO/04ULaaioyT5sOwlHdfjx5WRW58pQ7LUMvfqfpaRZumHqH25byv/r8N/i7T7h6KWVG0HrgfO2eLKtJ42bt6if1T9l2lt7ilgoWD9OeW9E6e2AsZYeJFwhf6i9RIG7OkB3Dkn6Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193021; c=relaxed/simple;
-	bh=fVNmRtobzVNJPRVgRjYfOU4ZCsJOxHKx/7HctQ+ug/Q=;
+	s=arc-20240116; t=1753192542; c=relaxed/simple;
+	bh=sF7/vVd7DdwjKGs2J7jon3/DYTdGB9C3oGOTFSerEMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JbjcrCaYz6oAVbKHo+WDLAsUfYMqkJmAyp/Bg/5MfkK2rWy2QhD5zFdsw3Ic2ZMYGml5sRTguivOaopl5ED1NBaNMhwK+7q9R8m42myL5xtgMEy+gTryB6tcfeAaOl+1CnK7eybgIUpPbqDGZwOp/ZHzS5X253xBSNyVuNvkH7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyVMMOBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA874C4CEEB;
-	Tue, 22 Jul 2025 14:03:40 +0000 (UTC)
+	 MIME-Version; b=Y5vTYjFjnpo3doOE5UF2jmjrCEf7/dVyk13PrvQsoMF0IIyEgtifOvyGnlLycVBJfaLKeqFVK336vYNBTpeJQW3rthtq/01SEAN5UOnnEeRX3rYXac0hfjDHhKM8FnFhMsT+BDoIpGHqFfHk1mlwSFA5sXe6PuiV6JOpQCjxLPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEY+jfdh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FF3C4CEEB;
+	Tue, 22 Jul 2025 13:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193021;
-	bh=fVNmRtobzVNJPRVgRjYfOU4ZCsJOxHKx/7HctQ+ug/Q=;
+	s=korg; t=1753192542;
+	bh=sF7/vVd7DdwjKGs2J7jon3/DYTdGB9C3oGOTFSerEMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VyVMMOBixaW/9NjP/KTSkyFQHycy2QIOOkrJ+F5f2fUvIotgpgujqxXQrWAqdgxS6
-	 D2viyOHwLlZz2Nv9KrJM7C5DV/KP/vBN9qZlT4/TB9jm3/F305eT2ToKzPSfL+8y/f
-	 HsROomyUvhCrBPP8AIF6h/z2Dk/xt8kPh1V15xCg=
+	b=HEY+jfdh0mQo7gyTH3TnA9rLrTjhqz/covbo32wi0l74eIRUvdvII/HSTQsQWzRdm
+	 5U1/uJ5jvdJZcC/TC9P3I0dRvMkmiGkRIIfN5wXNodWt8HL93+VgGHKfS+bHomnFxT
+	 QbE98FVLsjmvGtmhTZ/gVvj4fYqfBY6GaDR3iumI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/158] Bluetooth: L2CAP: Fix attempting to adjust outgoing MTU
-Date: Tue, 22 Jul 2025 15:45:10 +0200
-Message-ID: <20250722134345.436968396@linuxfoundation.org>
+	Yury Khrustalev <yury.khrustalev@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 096/111] arm64: Filter out SME hwcaps when FEAT_SME isnt implemented
+Date: Tue, 22 Jul 2025 15:45:11 +0200
+Message-ID: <20250722134336.995070928@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +60,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit d24e4a7fedae121d33fb32ad785b87046527eedb ]
+commit a75ad2fc76a2ab70817c7eed3163b66ea84ca6ac upstream.
 
-Configuration request only configure the incoming direction of the peer
-initiating the request, so using the MTU is the other direction shall
-not be used, that said the spec allows the peer responding to adjust:
+We have a number of hwcaps for various SME subfeatures enumerated via
+ID_AA64SMFR0_EL1. Currently we advertise these without cross checking
+against the main SME feature, advertised in ID_AA64PFR1_EL1.SME which
+means that if the two are out of sync userspace can see a confusing
+situation where SME subfeatures are advertised without the base SME
+hwcap. This can be readily triggered by using the arm64.nosme override
+which only masks out ID_AA64PFR1_EL1.SME, and there have also been
+reports of VMMs which do the same thing.
 
-Bluetooth Core 6.1, Vol 3, Part A, Section 4.5
+Fix this as we did previously for SVE in 064737920bdb ("arm64: Filter
+out SVE hwcaps when FEAT_SVE isn't implemented") by filtering out the
+SME subfeature hwcaps when FEAT_SME is not present.
 
- 'Each configuration parameter value (if any is present) in an
- L2CAP_CONFIGURATION_RSP packet reflects an ‘adjustment’ to a
- configuration parameter value that has been sent (or, in case of
- default values, implied) in the corresponding
- L2CAP_CONFIGURATION_REQ packet.'
-
-That said adjusting the MTU in the response shall be limited to ERTM
-channels only as for older modes the remote stack may not be able to
-detect the adjustment causing it to silently drop packets.
-
-Link: https://github.com/bluez/bluez/issues/1422
-Link: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/149
-Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/4793
-Fixes: 042bb9603c44 ("Bluetooth: L2CAP: Fix L2CAP MTU negotiation")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5e64b862c482 ("arm64/sme: Basic enumeration support")
+Reported-by: Yury Khrustalev <yury.khrustalev@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250620-arm64-sme-filter-hwcaps-v1-1-02b9d3c2d8ef@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ arch/arm64/kernel/cpufeature.c |   35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 0628fedc0e29b..7dafc3e0a15aa 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -3485,12 +3485,28 @@ static int l2cap_parse_conf_req(struct l2cap_chan *chan, void *data, size_t data
- 		/* Configure output options and let the other side know
- 		 * which ones we don't like. */
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -2804,6 +2804,13 @@ static bool has_sve_feature(const struct
+ }
+ #endif
  
--		/* If MTU is not provided in configure request, use the most recently
--		 * explicitly or implicitly accepted value for the other direction,
--		 * or the default value.
-+		/* If MTU is not provided in configure request, try adjusting it
-+		 * to the current output MTU if it has been set
-+		 *
-+		 * Bluetooth Core 6.1, Vol 3, Part A, Section 4.5
-+		 *
-+		 * Each configuration parameter value (if any is present) in an
-+		 * L2CAP_CONFIGURATION_RSP packet reflects an ‘adjustment’ to a
-+		 * configuration parameter value that has been sent (or, in case
-+		 * of default values, implied) in the corresponding
-+		 * L2CAP_CONFIGURATION_REQ packet.
- 		 */
--		if (mtu == 0)
--			mtu = chan->imtu ? chan->imtu : L2CAP_DEFAULT_MTU;
-+		if (!mtu) {
-+			/* Only adjust for ERTM channels as for older modes the
-+			 * remote stack may not be able to detect that the
-+			 * adjustment causing it to silently drop packets.
-+			 */
-+			if (chan->mode == L2CAP_MODE_ERTM &&
-+			    chan->omtu && chan->omtu != L2CAP_DEFAULT_MTU)
-+				mtu = chan->omtu;
-+			else
-+				mtu = L2CAP_DEFAULT_MTU;
-+		}
- 
- 		if (mtu < L2CAP_DEFAULT_MIN_MTU)
- 			result = L2CAP_CONF_UNACCEPT;
--- 
-2.39.5
-
++#ifdef CONFIG_ARM64_SME
++static bool has_sme_feature(const struct arm64_cpu_capabilities *cap, int scope)
++{
++	return system_supports_sme() && has_user_cpuid_feature(cap, scope);
++}
++#endif
++
+ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
+ 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
+ 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
+@@ -2875,20 +2882,20 @@ static const struct arm64_cpu_capabiliti
+ 	HWCAP_CAP(ID_AA64ISAR2_EL1, MOPS, IMP, CAP_HWCAP, KERNEL_HWCAP_MOPS),
+ 	HWCAP_CAP(ID_AA64ISAR2_EL1, BC, IMP, CAP_HWCAP, KERNEL_HWCAP_HBC),
+ #ifdef CONFIG_ARM64_SME
+-	HWCAP_CAP(ID_AA64PFR1_EL1, SME, IMP, CAP_HWCAP, KERNEL_HWCAP_SME),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, FA64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_FA64),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SMEver, SME2p1, CAP_HWCAP, KERNEL_HWCAP_SME2P1),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SMEver, SME2, CAP_HWCAP, KERNEL_HWCAP_SME2),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, I16I64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I64),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, F64F64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F64F64),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, I16I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16B16),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, F16F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F16),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, I8I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I8I32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, F16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, B16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16F32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, BI32I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_BI32I32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, F32F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F32F32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64PFR1_EL1, SME, IMP, CAP_HWCAP, KERNEL_HWCAP_SME),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, FA64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_FA64),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMEver, SME2p1, CAP_HWCAP, KERNEL_HWCAP_SME2P1),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMEver, SME2, CAP_HWCAP, KERNEL_HWCAP_SME2),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I16I64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I64),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F64F64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F64F64),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I16I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16B16),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F16F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F16),
++	HWCAP_CAP(ID_MATCH_ID(has_sme_feature, AA64SMFR0_EL1, I8I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I8I32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, B16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16F32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, BI32I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_BI32I32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F32F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F32F32),
+ #endif /* CONFIG_ARM64_SME */
+ 	{},
+ };
 
 
 
