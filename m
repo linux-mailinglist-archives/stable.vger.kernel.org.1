@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-164030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99308B0DCCA
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B7AB0DB85
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47BEE1AA6D95
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 155C15609DC
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9DB2D8766;
-	Tue, 22 Jul 2025 14:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C5E2E8E0F;
+	Tue, 22 Jul 2025 13:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPtma98G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWXrZSO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BECA23AB9D;
-	Tue, 22 Jul 2025 14:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F07E2C08B6;
+	Tue, 22 Jul 2025 13:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193018; cv=none; b=uyQD4BVIhwC0htDsWvFaBz+wZOoofpQ5HoqL560lnvaJrABLfku1gjeIw25KD7mjYBfNrNCoYv18TmkKzRJZIRZ1kxiSUlOwBEfrL8Wy91ZhRXBvZUjN6Uk+cWpmvUvoOqzxBPNjjmIjWwhS1Xc8Hv/G4StMNjiXzhrKuNOzdgw=
+	t=1753192206; cv=none; b=I3V7N0b7aR2YDJ+2ngPMv6/rMFaU+EGMOXzrEjYa0JZJTJ68S9VAlyWhdsbYRixbzxgTzLWudY/2Xe3jsJ4kWp88K1pVP35aU8jjk73LcpvWLMVMaF5xSdQfUdAQaDOdbsQCs8wipebDlECHsYzMf7Q4vF0js7avA33gHC/dIE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193018; c=relaxed/simple;
-	bh=1w9MuOiBHIbu1RvMWtY8b0z8bqnPl90fEQu6hwhE9A8=;
+	s=arc-20240116; t=1753192206; c=relaxed/simple;
+	bh=kiIIjNGA6RRUrKero6o25lUZHwo7ebXTrqhI3E17ldA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RCNmU+nhe+it9xXwC0rwmgtqgIINls/A9GncoDqVjAm04ikHO2+OwZos9+8akBYt1qCUmzSBuecS6iDy3iY8qq3Xica1sYYEP3U65O/TKUD5UBYm8cf4fjsSKhWjyFWMZAFoFQmzW6/jJVPb/PAdxOQi7UOxKTq+5Tnvg7WnOLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPtma98G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F14C4CEEB;
-	Tue, 22 Jul 2025 14:03:37 +0000 (UTC)
+	 MIME-Version; b=Q7nFxhPQj1+9ohtS5mlD6dfRebJEo48oNiv4G0d7yXp+ddB0V/UBwFjKrpJflVfVkwBI+CrWIJ2QfCh9UOX0ucTvDdVX9qzWyre/mS9lb59VSgPyBwBqxol3Pd5VHtdp8AEaBmV4AwjMs38Si75uc2zcrjuvsMPHgpgbD0vE0/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWXrZSO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96599C4CEF1;
+	Tue, 22 Jul 2025 13:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193017;
-	bh=1w9MuOiBHIbu1RvMWtY8b0z8bqnPl90fEQu6hwhE9A8=;
+	s=korg; t=1753192206;
+	bh=kiIIjNGA6RRUrKero6o25lUZHwo7ebXTrqhI3E17ldA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPtma98G1Sh93/OvO5lR+Hi5qk12FjADzduo6ch3bA9OHELEJ6xNL6XcP+Oflb5IY
-	 VK2riN2BFvU1nnepvcZKBCGo99p/RfaxA+4TUqdy2itKAvfSW/eDP7dh6u8A1C/7fR
-	 4pgvkdFq2taBmdgNlbRezeSDuZK7mdSR4dcJN4LA=
+	b=DWXrZSO8V7nr5nJAJli24ZH/6NQtAM0zfmXzw5MqVEmzq7VD+GXUQq+TqbmufxmgA
+	 cBZqM69ILj8j61j9aY9TI2eE93DD3vfL4jsYDI9pu3z+6hs1sGKjFgvbrnz7p4BhV4
+	 wpTQsrd3caWhGgLyey5KRuxoqABAPWv2UAtslY1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>,
+	Drew Hamilton <drew.hamilton@zetier.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 125/158] drm/xe/pf: Prepare to stop SR-IOV support prior GT reset
-Date: Tue, 22 Jul 2025 15:45:09 +0200
-Message-ID: <20250722134345.399908789@linuxfoundation.org>
+Subject: [PATCH 6.1 74/79] usb: musb: fix gadget state on disconnect
+Date: Tue, 22 Jul 2025 15:45:10 +0200
+Message-ID: <20250722134331.117254437@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Drew Hamilton <drew.hamilton@zetier.com>
 
-[ Upstream commit 81dccec448d204e448ae83e1fe60e8aaeaadadb8 ]
+commit 67a59f82196c8c4f50c83329f0577acfb1349b50 upstream.
 
-As part of the resume or GT reset, the PF driver schedules work
-which is then used to complete restarting of the SR-IOV support,
-including resending to the GuC configurations of provisioned VFs.
+When unplugging the USB cable or disconnecting a gadget in usb peripheral mode with
+echo "" > /sys/kernel/config/usb_gadget/<your_gadget>/UDC,
+/sys/class/udc/musb-hdrc.0/state does not change from USB_STATE_CONFIGURED.
 
-However, in case of short delay between those two actions, which
-could be seen by triggering a GT reset on the suspened device:
+Testing on dwc2/3 shows they both update the state to USB_STATE_NOTATTACHED.
 
- $ echo 1 > /sys/kernel/debug/dri/0000:00:02.0/gt0/force_reset
+Add calls to usb_gadget_set_state in musb_g_disconnect and musb_gadget_stop
+to fix both cases.
 
-this PF worker might be still busy, which lead to errors due to
-just stopped or disabled GuC CTB communication:
-
- [ ] xe 0000:00:02.0: [drm:xe_gt_resume [xe]] GT0: resumed
- [ ] xe 0000:00:02.0: [drm] GT0: trying reset from force_reset_show [xe]
- [ ] xe 0000:00:02.0: [drm] GT0: reset queued
- [ ] xe 0000:00:02.0: [drm] GT0: reset started
- [ ] xe 0000:00:02.0: [drm:guc_ct_change_state [xe]] GT0: GuC CT communication channel stopped
- [ ] xe 0000:00:02.0: [drm:guc_ct_send_recv [xe]] GT0: H2G request 0x5503 canceled!
- [ ] xe 0000:00:02.0: [drm] GT0: PF: Failed to push VF1 12 config KLVs (-ECANCELED)
- [ ] xe 0000:00:02.0: [drm] GT0: PF: Failed to push VF1 configuration (-ECANCELED)
- [ ] xe 0000:00:02.0: [drm:guc_ct_change_state [xe]] GT0: GuC CT communication channel disabled
- [ ] xe 0000:00:02.0: [drm] GT0: PF: Failed to push VF2 12 config KLVs (-ENODEV)
- [ ] xe 0000:00:02.0: [drm] GT0: PF: Failed to push VF2 configuration (-ENODEV)
- [ ] xe 0000:00:02.0: [drm] GT0: PF: Failed to push 2 of 2 VFs configurations
- [ ] xe 0000:00:02.0: [drm:pf_worker_restart_func [xe]] GT0: PF: restart completed
-
-While this VFs reprovisioning will be successful during next spin
-of the worker, to avoid those errors, make sure to cancel restart
-worker if we are about to trigger next reset.
-
-Fixes: 411220808cee ("drm/xe/pf: Restart VFs provisioning after GT reset")
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Link: https://lore.kernel.org/r/20250711193316.1920-2-michal.wajdeczko@intel.com
-(cherry picked from commit 9f50b729dd61dfb9f4d7c66900d22a7c7353a8c0)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: 49401f4169c0 ("usb: gadget: introduce gadget state tracking")
+Cc: stable@vger.kernel.org
+Co-authored-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
+Signed-off-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
+Signed-off-by: Drew Hamilton <drew.hamilton@zetier.com>
+Link: https://lore.kernel.org/r/20250701154126.8543-1-drew.hamilton@zetier.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_gt.c          |  3 +++
- drivers/gpu/drm/xe/xe_gt_sriov_pf.c | 19 +++++++++++++++++++
- drivers/gpu/drm/xe/xe_gt_sriov_pf.h |  5 +++++
- 3 files changed, 27 insertions(+)
+ drivers/usb/musb/musb_gadget.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
-index 231ed53cf907c..30d027e6ec274 100644
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -773,6 +773,9 @@ static int gt_reset(struct xe_gt *gt)
- 		goto err_out;
- 	}
+--- a/drivers/usb/musb/musb_gadget.c
++++ b/drivers/usb/musb/musb_gadget.c
+@@ -1916,6 +1916,7 @@ static int musb_gadget_stop(struct usb_g
+ 	 * gadget driver here and have everything work;
+ 	 * that currently misbehaves.
+ 	 */
++	usb_gadget_set_state(g, USB_STATE_NOTATTACHED);
  
-+	if (IS_SRIOV_PF(gt_to_xe(gt)))
-+		xe_gt_sriov_pf_stop_prepare(gt);
-+
- 	xe_uc_gucrc_disable(&gt->uc);
- 	xe_uc_stop_prepare(&gt->uc);
- 	xe_gt_pagefault_reset(gt);
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-index 1c3ba7dcb4ace..57e9eddc092e1 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-@@ -152,6 +152,25 @@ void xe_gt_sriov_pf_sanitize_hw(struct xe_gt *gt, unsigned int vfid)
- 	pf_clear_vf_scratch_regs(gt, vfid);
- }
- 
-+static void pf_cancel_restart(struct xe_gt *gt)
-+{
-+	xe_gt_assert(gt, IS_SRIOV_PF(gt_to_xe(gt)));
-+
-+	if (cancel_work_sync(&gt->sriov.pf.workers.restart))
-+		xe_gt_sriov_dbg_verbose(gt, "pending restart canceled!\n");
-+}
-+
-+/**
-+ * xe_gt_sriov_pf_stop_prepare() - Prepare to stop SR-IOV support.
-+ * @gt: the &xe_gt
-+ *
-+ * This function can only be called on the PF.
-+ */
-+void xe_gt_sriov_pf_stop_prepare(struct xe_gt *gt)
-+{
-+	pf_cancel_restart(gt);
-+}
-+
- static void pf_restart(struct xe_gt *gt)
- {
- 	struct xe_device *xe = gt_to_xe(gt);
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf.h b/drivers/gpu/drm/xe/xe_gt_sriov_pf.h
-index 96fab779a906f..165ba31d03913 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf.h
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf.h
-@@ -12,6 +12,7 @@ struct xe_gt;
- int xe_gt_sriov_pf_init_early(struct xe_gt *gt);
- void xe_gt_sriov_pf_init_hw(struct xe_gt *gt);
- void xe_gt_sriov_pf_sanitize_hw(struct xe_gt *gt, unsigned int vfid);
-+void xe_gt_sriov_pf_stop_prepare(struct xe_gt *gt);
- void xe_gt_sriov_pf_restart(struct xe_gt *gt);
- #else
- static inline int xe_gt_sriov_pf_init_early(struct xe_gt *gt)
-@@ -23,6 +24,10 @@ static inline void xe_gt_sriov_pf_init_hw(struct xe_gt *gt)
- {
- }
- 
-+static inline void xe_gt_sriov_pf_stop_prepare(struct xe_gt *gt)
-+{
-+}
-+
- static inline void xe_gt_sriov_pf_restart(struct xe_gt *gt)
- {
- }
--- 
-2.39.5
-
+ 	/* Force check of devctl register for PM runtime */
+ 	pm_runtime_mark_last_busy(musb->controller);
+@@ -2022,6 +2023,7 @@ void musb_g_disconnect(struct musb *musb
+ 	case OTG_STATE_B_PERIPHERAL:
+ 	case OTG_STATE_B_IDLE:
+ 		musb_set_state(musb, OTG_STATE_B_IDLE);
++		usb_gadget_set_state(&musb->g, USB_STATE_NOTATTACHED);
+ 		break;
+ 	case OTG_STATE_B_SRP_INIT:
+ 		break;
 
 
 
