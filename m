@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E0CB0DB6D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:49:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9EBB0DBF8
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:56:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 588DF563398
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 466B5188E577
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F882E9ECF;
-	Tue, 22 Jul 2025 13:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D282EA46A;
+	Tue, 22 Jul 2025 13:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUMRFiK4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6LBw/Fm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47EC433A8;
-	Tue, 22 Jul 2025 13:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770132B9A5;
+	Tue, 22 Jul 2025 13:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192144; cv=none; b=bN/byx5bhSR/EZemQ2tm1MlrDO9Ecakbh4veEaqwPxL4s12yZIaQ7z+4YTYzKEyfHSaTuV7DDopC9wB648CzI5pw5096uRimIDhGWohevX8aehajGnZZF0XMmJdoGGbeqUZKwTDEIb9I/xux9CP34o2uNviTTOL/dvgW3kvVCFQ=
+	t=1753192485; cv=none; b=pmi3mx+XA/IQ6jJvOvHisk/ed2OgTyMSHufHHniO4sIDgnmueubYVvdewaswPETtL4uBTB4MVpRspzj9k5gdzV8nicYxE16Eu5zpIj5S/z0ylIG7+btadIgP+ZraZN5CISj719/YJaCKsC4lXSR/Di1lrBHAaQcsTid/vzrnxAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192144; c=relaxed/simple;
-	bh=VTjhfnb/YBmSxQ7UjIWxzDDZCiZTOWocZjKct29uQ4E=;
+	s=arc-20240116; t=1753192485; c=relaxed/simple;
+	bh=dGyCl3ERWex265j79UCLnqNDI5r1RrPQDBv6QWIGTSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcfTFlUR409xC4TIF9hvBRpHhSeh9UwjDvT86kLUfiXY3/EAZVdh3UGEJqfKpeaw3sTVkNCP7gpR7rrXjRUhWVK+CNGuEECjWvseBU9bfrN0HoZF4Pca7ln3fjWpktkvI7yVncNIw3VrUMmuVybvMltBQ4xIZPfNrawYmLM6cNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUMRFiK4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9E4C4CEEB;
-	Tue, 22 Jul 2025 13:49:03 +0000 (UTC)
+	 MIME-Version; b=Y34OrHXU61kP4ZLL5O0OjR1kTahpFPIJlGlZOuYbG7FSsQR/yDZsRsM2syllUWF9clmWdZaxq7eOpRCGaTPZ+qTASUrtyhaRZC40quO/nmebevFeQMVA9SSLP9XhxzExDxZbaP9HGGZDvUtCB7MHQ8hH3SEoThhhwmKpvLdC6gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6LBw/Fm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADA9C4CEEB;
+	Tue, 22 Jul 2025 13:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192144;
-	bh=VTjhfnb/YBmSxQ7UjIWxzDDZCiZTOWocZjKct29uQ4E=;
+	s=korg; t=1753192485;
+	bh=dGyCl3ERWex265j79UCLnqNDI5r1RrPQDBv6QWIGTSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NUMRFiK4pOCDnd+5/6hc/qgSgt2ZNKPcgUvCh9fOA4oduAzQpAtSvZwWYLk+N59h7
-	 rgvb3iw2zO4ppz3uClT8Eh16h2mzXlnclsHaGFGSMSAAzBdx64Djk/C3c5EcZWfHco
-	 IjOGvU9Oc2/W1c/N+NN7u7TvaoWts+9y/+7G8n4g=
+	b=c6LBw/FmGe122ieDE8bqOsLnjiNLDjj6T6x1PC8OpMHa5N1B4urZ8a2TPeEKe4KAI
+	 BVm7Fq3cMjgYW8u3BrFWGYcFsYLyKgpHUii4IS29QmAC5mxhGtMsytDAuEbXv6oJDJ
+	 7yxfJ/TvijDep1/vpIkx+mVdVBuEaTDzkI2IiXPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zijun Hu <zijun.hu@oss.qualcomm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 58/79] ipv6: mcast: Delay put pmc->idev in mld_del_delrec()
-Date: Tue, 22 Jul 2025 15:44:54 +0200
-Message-ID: <20250722134330.507274135@linuxfoundation.org>
+Subject: [PATCH 6.6 080/111] Bluetooth: btusb: QCA: Fix downloading wrong NVM for WCN6855 GF variant without board ID
+Date: Tue, 22 Jul 2025 15:44:55 +0200
+Message-ID: <20250722134336.387352478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Zijun Hu <zijun.hu@oss.qualcomm.com>
 
-[ Upstream commit ae3264a25a4635531264728859dbe9c659fad554 ]
+[ Upstream commit 43015955795a619f7ca4ae69b9c0ffc994c82818 ]
 
-pmc->idev is still used in ip6_mc_clear_src(), so as mld_clear_delrec()
-does, the reference should be put after ip6_mc_clear_src() return.
+For GF variant of WCN6855 without board ID programmed
+btusb_generate_qca_nvm_name() will chose wrong NVM
+'qca/nvm_usb_00130201.bin' to download.
 
-Fixes: 63ed8de4be81 ("mld: add mc_lock for protecting per-interface mld data")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://patch.msgid.link/20250714141957.3301871-1-yuehaibing@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix by choosing right NVM 'qca/nvm_usb_00130201_gf.bin'.
+Also simplify NVM choice logic of btusb_generate_qca_nvm_name().
+
+Fixes: d6cba4e6d0e2 ("Bluetooth: btusb: Add support using different nvm for variant WCN6855 controller")
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/mcast.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 78 ++++++++++++++++++++++-----------------
+ 1 file changed, 44 insertions(+), 34 deletions(-)
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index a1b3f3e7921fa..e9e59a83ba9b4 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -803,8 +803,8 @@ static void mld_del_delrec(struct inet6_dev *idev, struct ifmcaddr6 *im)
- 		} else {
- 			im->mca_crcount = idev->mc_qrv;
- 		}
--		in6_dev_put(pmc->idev);
- 		ip6_mc_clear_src(pmc);
-+		in6_dev_put(pmc->idev);
- 		kfree_rcu(pmc, rcu);
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index e0dd698896088..db507a66fa8ac 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3736,6 +3736,32 @@ static const struct qca_device_info qca_devices_table[] = {
+ 	{ 0x00190200, 40, 4, 16 }, /* WCN785x 2.0 */
+ };
+ 
++static u16 qca_extract_board_id(const struct qca_version *ver)
++{
++	u16 flag = le16_to_cpu(ver->flag);
++	u16 board_id = 0;
++
++	if (((flag >> 8) & 0xff) == QCA_FLAG_MULTI_NVM) {
++		/* The board_id should be split into two bytes
++		 * The 1st byte is chip ID, and the 2nd byte is platform ID
++		 * For example, board ID 0x010A, 0x01 is platform ID. 0x0A is chip ID
++		 * we have several platforms, and platform IDs are continuously added
++		 * Platform ID:
++		 * 0x00 is for Mobile
++		 * 0x01 is for X86
++		 * 0x02 is for Automotive
++		 * 0x03 is for Consumer electronic
++		 */
++		board_id = (ver->chip_id << 8) + ver->platform_id;
++	}
++
++	/* Take 0xffff as invalid board ID */
++	if (board_id == 0xffff)
++		board_id = 0;
++
++	return board_id;
++}
++
+ static int btusb_qca_send_vendor_req(struct usb_device *udev, u8 request,
+ 				     void *data, u16 size)
+ {
+@@ -3892,44 +3918,28 @@ static void btusb_generate_qca_nvm_name(char *fwname, size_t max_size,
+ 					const struct qca_version *ver)
+ {
+ 	u32 rom_version = le32_to_cpu(ver->rom_version);
+-	u16 flag = le16_to_cpu(ver->flag);
++	const char *variant;
++	int len;
++	u16 board_id;
+ 
+-	if (((flag >> 8) & 0xff) == QCA_FLAG_MULTI_NVM) {
+-		/* The board_id should be split into two bytes
+-		 * The 1st byte is chip ID, and the 2nd byte is platform ID
+-		 * For example, board ID 0x010A, 0x01 is platform ID. 0x0A is chip ID
+-		 * we have several platforms, and platform IDs are continuously added
+-		 * Platform ID:
+-		 * 0x00 is for Mobile
+-		 * 0x01 is for X86
+-		 * 0x02 is for Automotive
+-		 * 0x03 is for Consumer electronic
+-		 */
+-		u16 board_id = (ver->chip_id << 8) + ver->platform_id;
+-		const char *variant;
++	board_id = qca_extract_board_id(ver);
+ 
+-		switch (le32_to_cpu(ver->ram_version)) {
+-		case WCN6855_2_0_RAM_VERSION_GF:
+-		case WCN6855_2_1_RAM_VERSION_GF:
+-			variant = "_gf";
+-			break;
+-		default:
+-			variant = "";
+-			break;
+-		}
+-
+-		if (board_id == 0) {
+-			snprintf(fwname, max_size, "qca/nvm_usb_%08x%s.bin",
+-				rom_version, variant);
+-		} else {
+-			snprintf(fwname, max_size, "qca/nvm_usb_%08x%s_%04x.bin",
+-				rom_version, variant, board_id);
+-		}
+-	} else {
+-		snprintf(fwname, max_size, "qca/nvm_usb_%08x.bin",
+-			rom_version);
++	switch (le32_to_cpu(ver->ram_version)) {
++	case WCN6855_2_0_RAM_VERSION_GF:
++	case WCN6855_2_1_RAM_VERSION_GF:
++		variant = "_gf";
++		break;
++	default:
++		variant = NULL;
++		break;
  	}
+ 
++	len = snprintf(fwname, max_size, "qca/nvm_usb_%08x", rom_version);
++	if (variant)
++		len += snprintf(fwname + len, max_size - len, "%s", variant);
++	if (board_id)
++		len += snprintf(fwname + len, max_size - len, "_%04x", board_id);
++	len += snprintf(fwname + len, max_size - len, ".bin");
  }
+ 
+ static int btusb_setup_qca_load_nvm(struct hci_dev *hdev,
 -- 
 2.39.5
 
