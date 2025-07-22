@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-163893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B113B0DBF0
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:56:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DA0B0DB8C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5929C7A7C02
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39AEC563D01
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A090928B7E0;
-	Tue, 22 Jul 2025 13:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB61E2EA16B;
+	Tue, 22 Jul 2025 13:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDcVsNYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eXxivaw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520E92BE03A;
-	Tue, 22 Jul 2025 13:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6975022FDFF;
+	Tue, 22 Jul 2025 13:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192558; cv=none; b=BfLebmg+gzIKi58vrPViDw9lEkwNLr8uNTKdRRNKeuh4QOO6Kp5hXSvGO7aTH57/hDOesyXSnMUEpt7/LJ7kamTB9EDbujz++s+gNDmJOtP94XGNWKYB25yB5Mgr4K9A8p5grYGv5M3RLVxhk2xIcjdyR9ZxSwPy2A5SKQfmFSU=
+	t=1753192223; cv=none; b=ixwvLxyo0K/VNXN4p193iM1WqpJqZfkXa+KA74f1PCOr0D/mTJvYrRoTCw6ob4tvxqq6lcHMTWmZqGAUC51bGGLWgeydiopt5pdG+ByvKZKX4JVFIzUy3kEdWs8PVmE4PwAdGCzBjhZk0xR6xwsREpDS4I/Tspydh8v6VJKUTEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192558; c=relaxed/simple;
-	bh=laAsQ1+bZoyTIRwcTGBAzUeWIX8Tj0O/xtzNIBf33CE=;
+	s=arc-20240116; t=1753192223; c=relaxed/simple;
+	bh=/Se7Teyt4xmVh9rWX6IAH1HkHwkqyjCMrjS54KvWodM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DODnz8GexFAlmTt5Lx2KHjRdbWTPvbCPQ5vKMC+wIKv5k2KAc8c7q93oqyTPQkAP9VYOp5tnIO4ZEols8HxS0hLgzp466xyjQ1nXkfdRb+7QZAjHY2K+ONWn1mogh885r2sZlZqdb71vhBVxWdrdjOjZAi1MbhUS9wLPoo2yaGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDcVsNYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A310C4CEEB;
-	Tue, 22 Jul 2025 13:55:57 +0000 (UTC)
+	 MIME-Version; b=O55T6MKsT7xVv3GpJAbZ3+lGsbvxbroBAcGRO0aU4aF+TvEftksUAaYlXzksWgRartvsRtjkQ0G8mCSVTcx5Tq8ON3D7y2Yyyzlfd10N4suwDCG1w+yAom1H1OosQrT4+m75/4AUyn1RswUmX9DCjm03zEP812e4y5hfmZ7mXck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eXxivaw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF172C4CEEB;
+	Tue, 22 Jul 2025 13:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192558;
-	bh=laAsQ1+bZoyTIRwcTGBAzUeWIX8Tj0O/xtzNIBf33CE=;
+	s=korg; t=1753192223;
+	bh=/Se7Teyt4xmVh9rWX6IAH1HkHwkqyjCMrjS54KvWodM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MDcVsNYY4jDaewSKhZWF6sNQzZApq/myGJd7MhbUcToaw8p3/X8Z/HqNCJhH+Dq8n
-	 rP7yVabQDh7/WaKJsoIBELk679BdRmb303lFwuReCO78TijEe70U/l6V8CRzXz/vGM
-	 u19OX16tVzzM7CacCgLvCZ+MdDs+bI7sFOJxa/Y0=
+	b=0eXxivawoWNqC9PVM6vvZ/5YKPQmXDCligWQc9xPEKMoOzUtrebEIGOxSO49aXCdS
+	 xtLA8K/Xp23qO9x4QgHSIRrygRKyyHz7PSAbFR6/DxbJZe9zUyN9tKrRzFPbydtL9N
+	 F8MT48HOVtz+5U/20Q+qr0urnqGFDNdzfI3aAtJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.6 100/111] usb: hub: Dont try to recover devices lost during warm reset.
+	INAGAKI Hiroshi <musashino.open@gmail.com>,
+	"Michael C. Pratt" <mcpratt@pm.me>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 79/79] nvmem: layouts: u-boot-env: remove crc32 endianness conversion
 Date: Tue, 22 Jul 2025 15:45:15 +0200
-Message-ID: <20250722134337.141743355@linuxfoundation.org>
+Message-ID: <20250722134331.302130274@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,94 +61,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Michael C. Pratt <mcpratt@pm.me>
 
-commit 2521106fc732b0b75fd3555c689b1ed1d29d273c upstream.
+commit 2d7521aa26ec2dc8b877bb2d1f2611a2df49a3cf upstream.
 
-Hub driver warm-resets ports in SS.Inactive or Compliance mode to
-recover a possible connected device. The port reset code correctly
-detects if a connection is lost during reset, but hub driver
-port_event() fails to take this into account in some cases.
-port_event() ends up using stale values and assumes there is a
-connected device, and will try all means to recover it, including
-power-cycling the port.
+On 11 Oct 2022, it was reported that the crc32 verification
+of the u-boot environment failed only on big-endian systems
+for the u-boot-env nvmem layout driver with the following error.
 
-Details:
-This case was triggered when xHC host was suspended with DbC (Debug
-Capability) enabled and connected. DbC turns one xHC port into a simple
-usb debug device, allowing debugging a system with an A-to-A USB debug
-cable.
+  Invalid calculated CRC32: 0x88cd6f09 (expected: 0x096fcd88)
 
-xhci DbC code disables DbC when xHC is system suspended to D3, and
-enables it back during resume.
-We essentially end up with two hosts connected to each other during
-suspend, and, for a short while during resume, until DbC is enabled back.
-The suspended xHC host notices some activity on the roothub port, but
-can't train the link due to being suspended, so xHC hardware sets a CAS
-(Cold Attach Status) flag for this port to inform xhci host driver that
-the port needs to be warm reset once xHC resumes.
+This problem has been present since the driver was introduced,
+and before it was made into a layout driver.
 
-CAS is xHCI specific, and not part of USB specification, so xhci driver
-tells usb core that the port has a connection and link is in compliance
-mode. Recovery from complinace mode is similar to CAS recovery.
+The suggested fix at the time was to use further endianness
+conversion macros in order to have both the stored and calculated
+crc32 values to compare always represented in the system's endianness.
+This was not accepted due to sparse warnings
+and some disagreement on how to handle the situation.
+Later on in a newer revision of the patch, it was proposed to use
+cpu_to_le32() for both values to compare instead of le32_to_cpu()
+and store the values as __le32 type to remove compilation errors.
 
-xhci CAS driver support that fakes a compliance mode connection was added
-in commit 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
+The necessity of this is based on the assumption that the use of crc32()
+requires endianness conversion because the algorithm uses little-endian,
+however, this does not prove to be the case and the issue is unrelated.
 
-Once xHCI resumes and DbC is enabled back, all activity on the xHC
-roothub host side port disappears. The hub driver will anyway think
-port has a connection and link is in compliance mode, and hub driver
-will try to recover it.
+Upon inspecting the current kernel code,
+there already is an existing use of le32_to_cpu() in this driver,
+which suggests there already is special handling for big-endian systems,
+however, it is big-endian systems that have the problem.
 
-The port power-cycle during recovery seems to cause issues to the active
-DbC connection.
+This, being the only functional difference between architectures
+in the driver combined with the fact that the suggested fix
+was to use the exact same endianness conversion for the values
+brings up the possibility that it was not necessary to begin with,
+as the same endianness conversion for two values expected to be the same
+is expected to be equivalent to no conversion at all.
 
-Fix this by clearing connect_change flag if hub_port_reset() returns
--ENOTCONN, thus avoiding the whole unnecessary port recovery and
-initialization attempt.
+After inspecting the u-boot environment of devices of both endianness
+and trying to remove the existing endianness conversion,
+the problem is resolved in an equivalent way as the other suggested fixes.
 
+Ultimately, it seems that u-boot is agnostic to endianness
+at least for the purpose of environment variables.
+In other words, u-boot reads and writes the stored crc32 value
+with the same endianness that the crc32 value is calculated with
+in whichever endianness a certain architecture runs on.
+
+Therefore, the u-boot-env driver does not need to convert endianness.
+Remove the usage of endianness macros in the u-boot-env driver,
+and change the type of local variables to maintain the same return type.
+
+If there is a special situation in the case of endianness,
+it would be a corner case and should be handled by a unique "compatible".
+
+Even though it is not necessary to use endianness conversion macros here,
+it may be useful to use them in the future for consistent error printing.
+
+Fixes: d5542923f200 ("nvmem: add driver handling U-Boot environment variables")
+Reported-by: INAGAKI Hiroshi <musashino.open@gmail.com>
+Link: https://lore.kernel.org/all/20221011024928.1807-1-musashino.open@gmail.com
 Cc: stable@vger.kernel.org
-Fixes: 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250623133947.3144608-1-mathias.nyman@linux.intel.com
+Signed-off-by: "Michael C. Pratt" <mcpratt@pm.me>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250716144210.4804-1-srini@kernel.org
+[ applied changes to drivers/nvmem/u-boot-env.c after code was moved from drivers/nvmem/layouts/u-boot-env.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/nvmem/u-boot-env.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -5714,6 +5714,7 @@ static void port_event(struct usb_hub *h
- 	struct usb_device *hdev = hub->hdev;
- 	u16 portstatus, portchange;
- 	int i = 0;
-+	int err;
+--- a/drivers/nvmem/u-boot-env.c
++++ b/drivers/nvmem/u-boot-env.c
+@@ -139,7 +139,7 @@ static int u_boot_env_parse(struct u_boo
+ 		data_offset = offsetof(struct u_boot_env_image_redundant, data);
+ 		break;
+ 	}
+-	crc32 = le32_to_cpu(*(__le32 *)(buf + crc32_offset));
++	crc32 = *(uint32_t *)(buf + crc32_offset);
+ 	crc32_data_len = priv->mtd->size - crc32_data_offset;
+ 	data_len = priv->mtd->size - data_offset;
  
- 	connect_change = test_bit(port1, hub->change_bits);
- 	clear_bit(port1, hub->event_bits);
-@@ -5810,8 +5811,11 @@ static void port_event(struct usb_hub *h
- 		} else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
- 				|| udev->state == USB_STATE_NOTATTACHED) {
- 			dev_dbg(&port_dev->dev, "do warm reset, port only\n");
--			if (hub_port_reset(hub, port1, NULL,
--					HUB_BH_RESET_TIME, true) < 0)
-+			err = hub_port_reset(hub, port1, NULL,
-+					     HUB_BH_RESET_TIME, true);
-+			if (!udev && err == -ENOTCONN)
-+				connect_change = 0;
-+			else if (err < 0)
- 				hub_port_disable(hub, port1, 1);
- 		} else {
- 			dev_dbg(&port_dev->dev, "do warm reset, full device\n");
 
 
 
