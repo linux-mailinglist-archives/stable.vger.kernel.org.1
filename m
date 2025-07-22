@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-163727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F274EB0DB3E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:47:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F213B0DC1B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCF593AA86B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:46:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B24FAC11FD
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88AE2EA164;
-	Tue, 22 Jul 2025 13:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B982EA48E;
+	Tue, 22 Jul 2025 13:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2OAffYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9WZB0/k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC9623B614;
-	Tue, 22 Jul 2025 13:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CA32EA462;
+	Tue, 22 Jul 2025 13:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192010; cv=none; b=ah8VakyJqjVAoxI/lliNqRNZ2j0NN35+zVXVtNDIXhTclx2MCMJsgeaN/YbVQpbJM0KsjfkvTt+8H7vYXsxKInsPdsv2FySFYaoWR/dKlYY2wISR5ynBEwlSMCy8XcezN6i3RQ2rYbJqkKIdoeBazXtQ8aPudkZZAlM1ZnOo6cQ=
+	t=1753192469; cv=none; b=EVceEcU3JQTrpcw3JBfiwWS+gbUsUJhgwCDE9P60wj9eCwZAf4ZHUvc905uZhrIIvE912Tq0F87Slj4NZnREl8jJltMnela/Mo3GbPEVufdiGWMd11iA3GlV8xbkEN2ovH6TpvuMJ/PoVUGsQQ9SxL2AdbMWMtperQACiJh5OGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192010; c=relaxed/simple;
-	bh=nB/yGCfgwSP8WrdgB2GPoAaZvGmtQn9brToKBq95AFM=;
+	s=arc-20240116; t=1753192469; c=relaxed/simple;
+	bh=LhJZt1HBATc2CyHpNOEPtOeML/8EexyrGZ66CVnX7z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SS0MA6C0ePiKh6CMAgUeKDNMxFQBvMF39Lw+F8ysTLk/m5/poFJOtnfZDIsDyhQlYNwtCOdlY6NfYDMQ88by8JfVwzqOZ4TPWxc/h9VTNrGwn4yKpclwv7AQzeAwZMraUhULgDK0UxlGn9pI0xX7k1zZVICkt073dKBdeXvCKSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2OAffYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E54C4CEEB;
-	Tue, 22 Jul 2025 13:46:49 +0000 (UTC)
+	 MIME-Version; b=AckBgLDcwSWcDOxerQhN1JE1XvScQ7KBME/Uw6/U0WHo2FjxGgKryXmUUBaqlmxu12yBqih1vMdSP819aKoEHJGqrlKvrNXQfDus1mZt/8+6dzKS0G5/apYicSMCYnSdwsnlkuSbDu/6UB5VVoVImORtHsG4jQ5DPoH6+3Wr6WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9WZB0/k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACCBC4CEEB;
+	Tue, 22 Jul 2025 13:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192010;
-	bh=nB/yGCfgwSP8WrdgB2GPoAaZvGmtQn9brToKBq95AFM=;
+	s=korg; t=1753192468;
+	bh=LhJZt1HBATc2CyHpNOEPtOeML/8EexyrGZ66CVnX7z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2OAffYED0VLWbAo5P12mwdXMpgs3OeSF/xQiEXtMB/b22h63HTzobXpmwapQea6J
-	 J8W47b7y4hfODpylpKoLizKn+SAcx+nFBFGfL9ce97TrzDHDCack0Mm7JwllNfbWn8
-	 8mvWc20BKKHiiHM+zTqoWyFcTyC+kUIWkXgL5ro0=
+	b=P9WZB0/knaNcVhh2NhSuAAZzOaIdJjC1QVIl6ipjI9R4vdzZD1RjmHqGnEpyysVxJ
+	 aEnImQ7O4hDzc1hzdE0aT4uHkjzJfrWN44J5Kxj94LgLjSnAZ1GcWp2uuaq7BHC8VD
+	 XWePBMivLD20nd7xLfZWK2Sbvq0cy5+rfT4G6LUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.1 10/79] HID: core: ensure the allocated report buffer can contain the reserved report ID
+	stable@kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Yun Lu <luyun@kylinos.cn>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 031/111] af_packet: fix the SO_SNDTIMEO constraint not effective on tpacked_snd()
 Date: Tue, 22 Jul 2025 15:44:06 +0200
-Message-ID: <20250722134328.764136168@linuxfoundation.org>
+Message-ID: <20250722134334.564317083@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Yun Lu <luyun@kylinos.cn>
 
-commit 4f15ee98304b96e164ff2340e1dfd6181c3f42aa upstream.
+commit c1ba3c0cbdb5e53a8ec5d708e99cd4c497028a13 upstream.
 
-When the report ID is not used, the low level transport drivers expect
-the first byte to be 0. However, currently the allocated buffer not
-account for that extra byte, meaning that instead of having 8 guaranteed
-bytes for implement to be working, we only have 7.
+Due to the changes in commit 581073f626e3 ("af_packet: do not call
+packet_read_pending() from tpacket_destruct_skb()"), every time
+tpacket_destruct_skb() is executed, the skb_completion is marked as
+completed. When wait_for_completion_interruptible_timeout() returns
+completed, the pending_refcnt has not yet been reduced to zero.
+Therefore, when ph is NULL, the wait function may need to be called
+multiple times until packet_read_pending() finally returns zero.
 
-Reported-by: Alan Stern <stern@rowland.harvard.edu>
-Closes: https://lore.kernel.org/linux-input/c75433e0-9b47-4072-bbe8-b1d14ea97b13@rowland.harvard.edu/
-Cc: stable@vger.kernel.org
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20250710-report-size-null-v2-1-ccf922b7c4e5@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+We should call sock_sndtimeo() only once, otherwise the SO_SNDTIMEO
+constraint could be way off.
+
+Fixes: 581073f626e3 ("af_packet: do not call packet_read_pending() from tpacket_destruct_skb()")
+Cc: stable@kernel.org
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-core.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/packet/af_packet.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1876,9 +1876,12 @@ u8 *hid_alloc_report_buf(struct hid_repo
- 	/*
- 	 * 7 extra bytes are necessary to achieve proper functionality
- 	 * of implement() working on 8 byte chunks
-+	 * 1 extra byte for the report ID if it is null (not used) so
-+	 * we can reserve that extra byte in the first position of the buffer
-+	 * when sending it to .raw_request()
- 	 */
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2791,7 +2791,7 @@ static int tpacket_snd(struct packet_soc
+ 	int len_sum = 0;
+ 	int status = TP_STATUS_AVAILABLE;
+ 	int hlen, tlen, copylen = 0;
+-	long timeo = 0;
++	long timeo;
  
--	u32 len = hid_report_len(report) + 7;
-+	u32 len = hid_report_len(report) + 7 + (report->id == 0);
+ 	mutex_lock(&po->pg_vec_lock);
  
- 	return kzalloc(len, flags);
- }
+@@ -2845,6 +2845,7 @@ static int tpacket_snd(struct packet_soc
+ 	if ((size_max > dev->mtu + reserve + VLAN_HLEN) && !vnet_hdr_sz)
+ 		size_max = dev->mtu + reserve + VLAN_HLEN;
+ 
++	timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
+ 	reinit_completion(&po->skb_completion);
+ 
+ 	do {
+@@ -2852,7 +2853,6 @@ static int tpacket_snd(struct packet_soc
+ 					  TP_STATUS_SEND_REQUEST);
+ 		if (unlikely(ph == NULL)) {
+ 			if (need_wait && skb) {
+-				timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
+ 				timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
+ 				if (timeo <= 0) {
+ 					err = !timeo ? -ETIMEDOUT : -ERESTARTSYS;
 
 
 
