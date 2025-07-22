@@ -1,47 +1,58 @@
-Return-Path: <stable+bounces-164267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7A6B0DFBF
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:59:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09E7B0DFFE
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 17:09:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2FEC7B7480
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:57:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 617426C7F33
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F194C23ED5E;
-	Tue, 22 Jul 2025 14:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5CD1E9915;
+	Tue, 22 Jul 2025 15:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="n9VO0sam"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="acPssfsk"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC752D8DCA
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 14:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753196355; cv=none; b=ajVTxxbgwsGKh/W9vct3nN9nnL9WfNkwT08OWOO0nykRaUp7+T82GOrGAF6ZkQ9iRKONETKUwLCU1+uTevqjkSX33v+RVxhwAVnm5QFsTZgNEwP+mpTLY+c3jwoGl62tQRq6DnEdb2YnO41gPSuBzL08bPpXh/lxasV9bvxHFbc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753196355; c=relaxed/simple;
-	bh=IFAsri3CcLKx0KS6+ejf7gmlRbdTaosLJeEibD3whgk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j96zQR+li+HL/SgyjpsjyxIBribIJW9LFJmuXFcju7shCHiteBGEoSvDjZDeOA/8ZVbFbVCqJXIeuIdn67+PtCQl3olZkblOp+gP/Qejm9hR9UogZlCxtp3o1EpQQzWfb3UEKhCV7HaMiphCXBDVddHe5Pg7WTKDvEwAqG6uzPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=n9VO0sam; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.79.192.236] (unknown [4.194.122.162])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 3E1E22126895;
-	Tue, 22 Jul 2025 07:59:10 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3E1E22126895
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1753196353;
-	bh=Pz7MSkW3yMmCC8dKnm/72AX+sr/xBOFpxNYar1PPysY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=n9VO0samYllWt7WDoW+UFIIA4BjJ3Og4AKVbm1chqzL3gbUh89jfTntZ8LWgjaiZR
-	 FyjE+VTZM45p2Xjp72O2nTKc69nTD+2SW7GGaPd0KIg+od9AqLktUv62uPbtA9v+lL
-	 dE+5XSgrfGZ/h35kfiv5TQTkg1Xp4NcDfuYQG4Wo=
-Message-ID: <d9be2bb3-5f84-4182-91e8-ec1a4abd8f5f@linux.microsoft.com>
-Date: Tue, 22 Jul 2025 20:29:07 +0530
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D341DDA0E;
+	Tue, 22 Jul 2025 15:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753196760; cv=pass; b=J6J0l1pRptIONmM6cBQZpyBSkCFsYEHKW76k1qXV7iM4ihUXPKd9kxjmk3zTwdKZ6IA1+PK2/AEwRF9zc5HXJWJHiG1srojxZ3AvPRV+2FfFVh0WCaP7jKO+pt0sNR7St3EpYiZcgJRufL1OjoDgmLFsS2KapIv+pi435x3BEFc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753196760; c=relaxed/simple;
+	bh=S9NzapF48kcQ0t4yyxgo8oZIiRW3qF4ZSzJJumpQekk=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=QEZmMhgc7X2tJ9zWT96QqsWYp3DwiYhaxb2M+icgbWbnuPZ1Nl0w97oR+5r4NY7aSzAvkjn3MSJ1afITt54CusTzL9LgXVajuZkI+dGTVEpq6o6vopjClVKAQpIJl5q1O8E6du1QV5iWCSLvWsvvxdv3h7k+JfapW7ApPp48jWE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=acPssfsk; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1753196713; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ZfS92ml7oakJK2191UnaySAdgMEQgM2gWjzxlfcSiIKuhjdrGJo1jyKFC5fMh32h4KedpJ2cWBFLq0ikPectQ0Ho8doXaUETDRDJAPOI6Ni+3aKQOMZNh91Z7YDdWPdKCBQrxgvmQOveFtuTDVk9bj6zpvUPCCBpgGrFnFxCYr4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1753196713; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=B6h9KYWTByAokR/crJv4d6XMusmoK5pSX1xCNc0XzKc=; 
+	b=XWy0zr8fDeSinpfTGEu6uJ190C9sO5amsAuz8BWD3c/5awedWBhoq7LR/2tqxlnq4iafMApiwKdFvZVMj7ixf0KWn7Eky17JiXIvKldTNkC15kfEddTT9deLDbJDHjo6AQ6x7j8ERNY+s5zY7IobEj1+U1PdU36XValA1iqcOgw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass header.from=<usama.anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753196713;
+	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=B6h9KYWTByAokR/crJv4d6XMusmoK5pSX1xCNc0XzKc=;
+	b=acPssfskuhVxZGjeP5/h0MnKPl7yzuFa3ElacUGYiujjk/rtWsrrSqH7RSVI++Jb
+	sF4wKJAqm1u5+v+lmxs6B2YMgoxXczc9C7f01kzj2TUAKYsoRmaa+qCBWabawjYqrjH
+	ivq8pjpTDst9Q5hG1VNCNoYZQE5A76a6vx9UWEfo=
+Received: by mx.zohomail.com with SMTPS id 175319671119016.921485936466638;
+	Tue, 22 Jul 2025 08:05:11 -0700 (PDT)
+Message-ID: <86c465a3-f9a1-4a63-9e21-7529a5634301@collabora.com>
+Date: Tue, 22 Jul 2025 20:05:01 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,244 +60,115 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 020/158] tools/hv: fcopy: Fix irregularities with
- size of ring buffer
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Saurabh Sengar <ssengar@linux.microsoft.com>,
- Long Li <longli@microsoft.com>, Wei Liu <wei.liu@kernel.org>
-References: <20250722134340.596340262@linuxfoundation.org>
- <20250722134341.490321531@linuxfoundation.org>
+Cc: usama.anjum@collabora.com, kernel@collabora.com, stable@vger.kernel.org,
+ Muna Sinada <quic_msinada@quicinc.com>,
+ Anilkumar Kolli <quic_akolli@quicinc.com>, Miles Hu <milehu@codeaurora.org>,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Julia Lawall <julia.lawall@lip6.fr>,
+ Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+ Sathishkumar Muruganandam <quic_murugana@quicinc.com>,
+ Jeff Johnson <jjohnson@kernel.org>, kbuild test robot <lkp@intel.com>,
+ Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+ Sven Eckelmann <sven@narfation.org>
+Subject: Re: [PATCH v3] wifi: ath11k: HAL SRNG: don't deinitialize and
+ re-initialize again
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+ Kalle Valo <kvalo@kernel.org>
+References: <20250722053121.1145001-1-usama.anjum@collabora.com>
+ <1598d25d-e254-410e-ac5c-66d5450fd686@oss.qualcomm.com>
+ <ae7a08cb-af73-4a27-aad4-c852be5f77aa@collabora.com>
+ <ab5af5b9-d5a7-434c-938d-3f9aac388542@oss.qualcomm.com>
 Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <20250722134341.490321531@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <ab5af5b9-d5a7-434c-938d-3f9aac388542@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-
-
-On 7/22/2025 7:13 PM, Greg Kroah-Hartman wrote:
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
+On 7/22/25 7:07 PM, Jeff Johnson wrote:
+> On 7/22/2025 4:23 AM, Muhammad Usama Anjum wrote:
+>> Hi Kalle,
 > 
-> ------------------
+> Kalle is no longer a maintainer -- I am currently the only ath11k maintainer.
+Sorry, I missed it.
+
 > 
-> From: Naman Jain <namjain@linux.microsoft.com>
+>>
+>> On 7/22/25 2:47 PM, Baochen Qiang wrote:
+>>>
+>>>
+>>> On 7/22/2025 1:31 PM, Muhammad Usama Anjum wrote:
+>>>> Don't deinitialize and reinitialize the HAL helpers. The dma memory is
+>>>> deallocated and there is high possibility that we'll not be able to get
+>>>> the same memory allocated from dma when there is high memory pressure.
+>>>>
+>>>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+>>>>
+>>>> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+>>>> Cc: stable@vger.kernel.org
+>>>> Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+>>>> Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+>>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>>>> ---
+>>>> Changes since v1:
+>>>> - Cc stable and fix tested on tag
+>>>> - Clear essential fields as they may have stale data
+>>>>
+>>>> Changes since v2:
+>>>> - Add comment and reviewed by tag
+>>>> ---
+>>>>  drivers/net/wireless/ath/ath11k/core.c |  6 +-----
+>>>>  drivers/net/wireless/ath/ath11k/hal.c  | 16 ++++++++++++++++
+>>>>  drivers/net/wireless/ath/ath11k/hal.h  |  1 +
+>>>>  3 files changed, 18 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+>>>> index 4488e4cdc5e9e..34b27711ed00f 100644
+>>>> --- a/drivers/net/wireless/ath/ath11k/core.c
+>>>> +++ b/drivers/net/wireless/ath/ath11k/core.c
+>>>> @@ -2213,14 +2213,10 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
+>>>>  	mutex_unlock(&ab->core_lock);
+>>>>  
+>>>>  	ath11k_dp_free(ab);
+>>>> -	ath11k_hal_srng_deinit(ab);
+>>>> +	ath11k_hal_srng_clear(ab);
+>>>>  
+>>>>  	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
+>>>>  
+>>>> -	ret = ath11k_hal_srng_init(ab);
+>>>> -	if (ret)
+>>>> -		return ret;
+>>>> -
+>>>>  	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
+>>>>  
+>>>>  	ret = ath11k_core_qmi_firmware_ready(ab);
+>>>> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+>>>> index b32de563d453a..e8ebf963f195c 100644
+>>>> --- a/drivers/net/wireless/ath/ath11k/hal.c
+>>>> +++ b/drivers/net/wireless/ath/ath11k/hal.c
+>>>> @@ -1359,6 +1359,22 @@ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
+>>>>  }
+>>>>  EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+>>>>  
+>>>> +void ath11k_hal_srng_clear(struct ath11k_base *ab)
+>>>> +{
+>>>> +	/* No need to memset rdp and wrp memory since each individual
+>>>> +	 * segment would get cleared ath11k_hal_srng_src_hw_init() and
+>>>
+>>> nit: s/cleared /cleared in/
+>> Please can you make this change while applying the patch?
 > 
-> commit a4131a50d072b369bfed0b41e741c41fd8048641 upstream.
+> I can make this change when I pull the patch into the pending branch.
+> I'd like to see a public Reviewed-by before doing so.
 > 
-> Size of ring buffer, as defined in uio_hv_generic driver, is no longer
-> fixed to 16 KB. This creates a problem in fcopy, since this size was
-> hardcoded. With the change in place to make ring sysfs node actually
-> reflect the size of underlying ring buffer, it is safe to get the size
-> of ring sysfs file and use it for ring buffer size in fcopy daemon.
-> Fix the issue of disparity in ring buffer size, by making it dynamic
-> in fcopy uio daemon.
+> Also note that, except for anything critical, I'm not taking any patches into
+> ath-next until the upcoming v6.17 merge window closes and all changes made to
+> Linus' tree have been backmerged via net-next => wireless-next => ath-next.
+Thank you for mentioning. I didn't know the workflow.
+
+No problem. There is no hurry.
+
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
-> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-> Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-> Reviewed-by: Long Li <longli@microsoft.com>
-> Link: https://lore.kernel.org/r/20250711060846.9168-1-namjain@linux.microsoft.com
-> Signed-off-by: Wei Liu <wei.liu@kernel.org>
-> Message-ID: <20250711060846.9168-1-namjain@linux.microsoft.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
-
-
-Hello Greg,
-Please don't pick this change yet. I have shared the reason in the other 
-thread:
-"Re: Patch "tools/hv: fcopy: Fix irregularities with size of ring 
-buffer" has been added to the 6.12-stable tree"
-
-
-Pasting it here:
-This patch depends on my older patch [1] which makes sure that the size
-of the ring sysfs node actually reflects the underlying ring buffer
-size.
-
-[1] could not be ported on 6.12 and older kernels because of missing
-dependencies [2] and [3].
-With kernel change [4] being backported to 6.12 kernel, FCopy is
-currently broken which I was trying to address with my patch.
-
-Adding Thomas as well if its possible to port these patches on older
-kernels.
-
-However for 6.6 and older kernels, fcopy is not working for me even 
-without [4], which I am trying to debug.
-
-------------
-[1]
-65995e97a1ca ("Drivers: hv: Make the sysfs node size for the ring buffer 
-dynamic")
-
-[2]
-0afcee132bbc ("sysfs: explicitly pass size to sysfs_add_bin_file_mode_ns()")
-
-[3]
-bebf29b18f34 ("sysfs: introduce callback attribute_group::bin_size")
-
-[4]
-0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
-
-Regards,
-Naman
-
-
->   tools/hv/hv_fcopy_uio_daemon.c |   91 ++++++++++++++++++++++++++++++++++++-----
->   1 file changed, 81 insertions(+), 10 deletions(-)
-> 
-> --- a/tools/hv/hv_fcopy_uio_daemon.c
-> +++ b/tools/hv/hv_fcopy_uio_daemon.c
-> @@ -35,7 +35,10 @@
->   #define WIN8_SRV_MINOR		1
->   #define WIN8_SRV_VERSION	(WIN8_SRV_MAJOR << 16 | WIN8_SRV_MINOR)
->   
-> -#define FCOPY_UIO		"/sys/bus/vmbus/devices/eb765408-105f-49b6-b4aa-c123b64d17d4/uio"
-> +#define FCOPY_DEVICE_PATH(subdir) \
-> +	"/sys/bus/vmbus/devices/eb765408-105f-49b6-b4aa-c123b64d17d4/" #subdir
-> +#define FCOPY_UIO_PATH          FCOPY_DEVICE_PATH(uio)
-> +#define FCOPY_CHANNELS_PATH     FCOPY_DEVICE_PATH(channels)
->   
->   #define FCOPY_VER_COUNT		1
->   static const int fcopy_versions[] = {
-> @@ -47,9 +50,62 @@ static const int fw_versions[] = {
->   	UTIL_FW_VERSION
->   };
->   
-> -#define HV_RING_SIZE		0x4000 /* 16KB ring buffer size */
-> +static uint32_t get_ring_buffer_size(void)
-> +{
-> +	char ring_path[PATH_MAX];
-> +	DIR *dir;
-> +	struct dirent *entry;
-> +	struct stat st;
-> +	uint32_t ring_size = 0;
-> +	int retry_count = 0;
->   
-> -static unsigned char desc[HV_RING_SIZE];
-> +	/* Find the channel directory */
-> +	dir = opendir(FCOPY_CHANNELS_PATH);
-> +	if (!dir) {
-> +		usleep(100 * 1000); /* Avoid race with kernel, wait 100ms and retry once */
-> +		dir = opendir(FCOPY_CHANNELS_PATH);
-> +		if (!dir) {
-> +			syslog(LOG_ERR, "Failed to open channels directory: %s", strerror(errno));
-> +			return 0;
-> +		}
-> +	}
-> +
-> +retry_once:
-> +	while ((entry = readdir(dir)) != NULL) {
-> +		if (entry->d_type == DT_DIR && strcmp(entry->d_name, ".") != 0 &&
-> +		    strcmp(entry->d_name, "..") != 0) {
-> +			snprintf(ring_path, sizeof(ring_path), "%s/%s/ring",
-> +				 FCOPY_CHANNELS_PATH, entry->d_name);
-> +
-> +			if (stat(ring_path, &st) == 0) {
-> +				/*
-> +				 * stat returns size of Tx, Rx rings combined,
-> +				 * so take half of it for individual ring size.
-> +				 */
-> +				ring_size = (uint32_t)st.st_size / 2;
-> +				syslog(LOG_INFO, "Ring buffer size from %s: %u bytes",
-> +				       ring_path, ring_size);
-> +				break;
-> +			}
-> +		}
-> +	}
-> +
-> +	if (!ring_size && retry_count == 0) {
-> +		retry_count = 1;
-> +		rewinddir(dir);
-> +		usleep(100 * 1000); /* Wait 100ms and retry once */
-> +		goto retry_once;
-> +	}
-> +
-> +	closedir(dir);
-> +
-> +	if (!ring_size)
-> +		syslog(LOG_ERR, "Could not determine ring size");
-> +
-> +	return ring_size;
-> +}
-> +
-> +static unsigned char *desc;
->   
->   static int target_fd;
->   static char target_fname[PATH_MAX];
-> @@ -406,7 +462,7 @@ int main(int argc, char *argv[])
->   	int daemonize = 1, long_index = 0, opt, ret = -EINVAL;
->   	struct vmbus_br txbr, rxbr;
->   	void *ring;
-> -	uint32_t len = HV_RING_SIZE;
-> +	uint32_t ring_size, len;
->   	char uio_name[NAME_MAX] = {0};
->   	char uio_dev_path[PATH_MAX] = {0};
->   
-> @@ -437,7 +493,20 @@ int main(int argc, char *argv[])
->   	openlog("HV_UIO_FCOPY", 0, LOG_USER);
->   	syslog(LOG_INFO, "starting; pid is:%d", getpid());
->   
-> -	fcopy_get_first_folder(FCOPY_UIO, uio_name);
-> +	ring_size = get_ring_buffer_size();
-> +	if (!ring_size) {
-> +		ret = -ENODEV;
-> +		goto exit;
-> +	}
-> +
-> +	desc = malloc(ring_size * sizeof(unsigned char));
-> +	if (!desc) {
-> +		syslog(LOG_ERR, "malloc failed for desc buffer");
-> +		ret = -ENOMEM;
-> +		goto exit;
-> +	}
-> +
-> +	fcopy_get_first_folder(FCOPY_UIO_PATH, uio_name);
->   	snprintf(uio_dev_path, sizeof(uio_dev_path), "/dev/%s", uio_name);
->   	fcopy_fd = open(uio_dev_path, O_RDWR);
->   
-> @@ -445,17 +514,17 @@ int main(int argc, char *argv[])
->   		syslog(LOG_ERR, "open %s failed; error: %d %s",
->   		       uio_dev_path, errno, strerror(errno));
->   		ret = fcopy_fd;
-> -		goto exit;
-> +		goto free_desc;
->   	}
->   
-> -	ring = vmbus_uio_map(&fcopy_fd, HV_RING_SIZE);
-> +	ring = vmbus_uio_map(&fcopy_fd, ring_size);
->   	if (!ring) {
->   		ret = errno;
->   		syslog(LOG_ERR, "mmap ringbuffer failed; error: %d %s", ret, strerror(ret));
->   		goto close;
->   	}
-> -	vmbus_br_setup(&txbr, ring, HV_RING_SIZE);
-> -	vmbus_br_setup(&rxbr, (char *)ring + HV_RING_SIZE, HV_RING_SIZE);
-> +	vmbus_br_setup(&txbr, ring, ring_size);
-> +	vmbus_br_setup(&rxbr, (char *)ring + ring_size, ring_size);
->   
->   	rxbr.vbr->imask = 0;
->   
-> @@ -470,7 +539,7 @@ int main(int argc, char *argv[])
->   			continue;
->   		}
->   
-> -		len = HV_RING_SIZE;
-> +		len = ring_size;
->   		ret = rte_vmbus_chan_recv_raw(&rxbr, desc, &len);
->   		if (unlikely(ret <= 0)) {
->   			/* This indicates a failure to communicate (or worse) */
-> @@ -490,6 +559,8 @@ int main(int argc, char *argv[])
->   	}
->   close:
->   	close(fcopy_fd);
-> +free_desc:
-> +	free(desc);
->   exit:
->   	return ret;
->   }
-> 
+> /jeff
 
 
