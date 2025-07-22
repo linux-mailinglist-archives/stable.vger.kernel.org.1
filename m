@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8747AB0DC1D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C5EB0DCC8
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C387AC129E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E07AA3AE17D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829DC2EA47C;
-	Tue, 22 Jul 2025 13:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF45D28CF4A;
+	Tue, 22 Jul 2025 14:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3n+xedV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3U5CIV+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BB32EA469;
-	Tue, 22 Jul 2025 13:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5D0A32;
+	Tue, 22 Jul 2025 14:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192472; cv=none; b=g44hIvuSWI5HjwCLtd4cDG+ytAm0H5xni9EanjGFdXNtoVc8o3TwjUJEthJdQIEFlECbkJdTNL8VCeEYnheO66f2PchXkNhnKzK5RSExNFxUOh/L6kOEgiFKTlVoe3c8gZguDrIHJZHAJ80Rz72Mml8sMCuUM2p3uicpepGMFdY=
+	t=1753192929; cv=none; b=LLM02zLvaMdAufJC4dF7Sv8tKEft34aX9QY03ipE+8I88yiL6ZTYNSzRbjJ2pF8SAXMNEklAxrBDbRRjBLz8mZxHulycEMs9rot4pA2on81VPIdALb0Tt8KJERUkw9efROB/9HkdPoAy3VIwS4G+cclxWqFvJce+5sku2MMQVFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192472; c=relaxed/simple;
-	bh=mef4joxOg/HzGDwf9+hTAWkyzOkFshnp1BgXyOd5Opc=;
+	s=arc-20240116; t=1753192929; c=relaxed/simple;
+	bh=h1QMUQ784L03HtdOSHYimMybxvJqC5AXLT17wX9Duv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8RSz8o4e7/SxzTCRpBze791D+8rJcPeuPgVBvEE57JtkndM+2o9QpnrzQRpHYKGGKiutAGnOGeWVcugD2BRlZOVrAburSVVJiDL6cJgmiKH0jQORwHepy6RkL7x0pNJOYK38IOyCPCQzd4LyN6yDNqKxdd04OHbI70ndPEozS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3n+xedV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8989C4CEEB;
-	Tue, 22 Jul 2025 13:54:31 +0000 (UTC)
+	 MIME-Version; b=XzL5Ja/Px7GXT0oJEUr8ESnn/vrUNJcgfouInnFkMdP4b89BpeSACD1vdi1vJ8bGMpzJ7ydbvNpwSPTy1aOSOAJRfhqzpjLcus76M/n/Jcq+s1jlXRVFUBI6sge/YYv/H0cXzJa0iifprpW6Z2Zai+KviwHYUfKKMlVHVG4SoQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3U5CIV+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD878C4CEEB;
+	Tue, 22 Jul 2025 14:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192472;
-	bh=mef4joxOg/HzGDwf9+hTAWkyzOkFshnp1BgXyOd5Opc=;
+	s=korg; t=1753192929;
+	bh=h1QMUQ784L03HtdOSHYimMybxvJqC5AXLT17wX9Duv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3n+xedVfxbd1JD/MzP4wPZ4+XomNALMTT6amS6SG28PmWKZGbpHREF+LDazhlV7V
-	 GKWFxSYBgj/oUxKbf1eCAFT/jLlbiaTYHl+Zxi+VHSBeOObzmPAKeekujWnpzcgXCU
-	 StrQNz/wrKlk+kBgCeVJ0Mg2CdvprpgwRC25MHK4=
+	b=F3U5CIV+GAj37pDHke69Zygi1PqDeHj9lbz9NJMUPGCUB8KXtLzuKGT2ZDd7aINrX
+	 s20lKy9hVHnHMe1A6+OszU8gZj/t2dobQApz0yilRGBXW0LGJ0drpZ/VtyPXrkGaL4
+	 wwoweTYsjWCJK/hEUsNI9lw7ucubz4MOJuK0anow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/111] nvme: fix inconsistent RCU list manipulation in nvme_ns_add_to_ctrl_list()
+Subject: [PATCH 6.12 099/158] net: phy: Dont register LEDs for genphy
 Date: Tue, 22 Jul 2025 15:44:43 +0200
-Message-ID: <20250722134335.912983048@linuxfoundation.org>
+Message-ID: <20250722134344.446427884@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 80d7762e0a42307ee31b21f090e21349b98c14f6 ]
+[ Upstream commit f0f2b992d8185a0366be951685e08643aae17d6d ]
 
-When inserting a namespace into the controller's namespace list, the
-function uses list_add_rcu() when the namespace is inserted in the middle
-of the list, but falls back to a regular list_add() when adding at the
-head of the list.
+If a PHY has no driver, the genphy driver is probed/removed directly in
+phy_attach/detach. If the PHY's ofnode has an "leds" subnode, then the
+LEDs will be (un)registered when probing/removing the genphy driver.
+This could occur if the leds are for a non-generic driver that isn't
+loaded for whatever reason. Synchronously removing the PHY device in
+phy_detach leads to the following deadlock:
 
-This inconsistency could lead to race conditions during concurrent
-access, as users might observe a partially updated list. Fix this by
-consistently using list_add_rcu() in both code paths to ensure proper
-RCU protection throughout the entire function.
+rtnl_lock()
+ndo_close()
+    ...
+    phy_detach()
+        phy_remove()
+            phy_leds_unregister()
+                led_classdev_unregister()
+                    led_trigger_set()
+                        netdev_trigger_deactivate()
+                            unregister_netdevice_notifier()
+                                rtnl_lock()
 
-Fixes: be647e2c76b2 ("nvme: use srcu for iterating namespace list")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+There is a corresponding deadlock on the open/register side of things
+(and that one is reported by lockdep), but it requires a race while this
+one is deterministic.
+
+Generic PHYs do not support LEDs anyway, so don't bother registering
+them.
+
+Fixes: 01e5b728e9e4 ("net: phy: Add a binding for PHY LEDs")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20250707195803.666097-1-sean.anderson@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/phy_device.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 6e2d0fda3ba4a..9feb47a604659 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3596,7 +3596,7 @@ static void nvme_ns_add_to_ctrl_list(struct nvme_ns *ns)
- 			return;
- 		}
- 	}
--	list_add(&ns->list, &ns->ctrl->namespaces);
-+	list_add_rcu(&ns->list, &ns->ctrl->namespaces);
- }
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 13dea33d86ffa..834624a61060e 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3663,7 +3663,8 @@ static int phy_probe(struct device *dev)
+ 	/* Get the LEDs from the device tree, and instantiate standard
+ 	 * LEDs for them.
+ 	 */
+-	if (IS_ENABLED(CONFIG_PHYLIB_LEDS))
++	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev) &&
++	    !phy_driver_is_genphy_10g(phydev))
+ 		err = of_phy_leds(phydev);
  
- static void nvme_alloc_ns(struct nvme_ctrl *ctrl, struct nvme_ns_info *info)
+ out:
+@@ -3680,7 +3681,8 @@ static int phy_remove(struct device *dev)
+ 
+ 	cancel_delayed_work_sync(&phydev->state_queue);
+ 
+-	if (IS_ENABLED(CONFIG_PHYLIB_LEDS))
++	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev) &&
++	    !phy_driver_is_genphy_10g(phydev))
+ 		phy_leds_unregister(phydev);
+ 
+ 	phydev->state = PHY_DOWN;
 -- 
 2.39.5
 
