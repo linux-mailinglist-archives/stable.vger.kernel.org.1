@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AF9B0DC08
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DA2B0DB8B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79BC1189370F
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2538188C6B7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2ADD2EA480;
-	Tue, 22 Jul 2025 13:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C81F22FDFF;
+	Tue, 22 Jul 2025 13:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFWG9fU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djVyGn6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CFB2EA46A;
-	Tue, 22 Jul 2025 13:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE71D154457;
+	Tue, 22 Jul 2025 13:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192509; cv=none; b=M2lt7xlnY6bxfAm6lOy0RqgxP8TlYK2vAcFrsV2IvcfHG7S8BTp5e5yz3eYvq93+j4S+81mmVqEqVtnxAct/mArEFY+CWkReBeU+3OHBZUMH979/VzeHtfss432of7POxTaGSE/TFhAINW7t/rfGxbSccCM6+SKQDSl1NcAlNtw=
+	t=1753192229; cv=none; b=Z2eCDOiJl7tkXIdVVHfHxXAuB6+GxqQS+ByWFuGa1BjB2g8csbukAm/WAL8pn+kYRXJlDI9uY1a87L8I0Mhme3ep67J22Vh1Rpcqmi9gvY0xsRIpUeETgA2Pn81UdLQvHLHGj5h8iSDa212aDMaDK7Az2YJtub9PBV1kw6u8Tl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192509; c=relaxed/simple;
-	bh=6AvkIYBEI2ulemTF3fsOd1Tp/ALlXRJDHM/Nnf22AX0=;
+	s=arc-20240116; t=1753192229; c=relaxed/simple;
+	bh=snJSgwxlR2GTWtau0XXLksW9hZrgrhl+DGqkFYzSHVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okrgVLrbQghOZBqrzaGPCe6V5R46acL571ja56/7PetMlPmMqr1tAHVbxUP1+kf1moIGiH9Q8ZZZfl0ovYv2LNvIOWY6KVbhT0gqw8hTdOUl6QnHcLEjV1/CkeLD5dgn6kF09crg43RdcIey6fIqq82TOIe+r26+xKheDwanwEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFWG9fU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9115C4CEEB;
-	Tue, 22 Jul 2025 13:55:08 +0000 (UTC)
+	 MIME-Version; b=NQvkLucSKLZo9ozQ7T3fb7OTN2+3t5FdjofLAEuXPQp6OnYbSX7RVEjQWffjkcrB5Bao5UaGjiXtgSJq0hnYxGxfC/mbKk2bi2r/Pzg7kD1ti9NUJJ4NPfxQxxsqJ3pnBkOumhEmCzU2y/vOoMUMC5lFWPUBkqwpo5UMcLzEhTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djVyGn6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B32DC4CEEB;
+	Tue, 22 Jul 2025 13:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192509;
-	bh=6AvkIYBEI2ulemTF3fsOd1Tp/ALlXRJDHM/Nnf22AX0=;
+	s=korg; t=1753192229;
+	bh=snJSgwxlR2GTWtau0XXLksW9hZrgrhl+DGqkFYzSHVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFWG9fU0/qQVZefYPhLrjlq9nlGLFdbxxP6WiJXRrrqHObtCYcbCo68PEBjtd5Rwa
-	 dMX4sERYx+8aHnCYhd62AwKr7NlJAP7PdP3xCygeejifdveWygV/loJpuhiz23h5FW
-	 Qa8FpPpy62w/jnu2LexhZ8uZ0nn1duHZBXLv4q5M=
+	b=djVyGn6ZHMbOXRw0uLkfAATPs2DqhgZfrZ6HFmCLowBfK4T7/v/YRoz8VlGJsK2fj
+	 f8bO6J+4d3k3WPQQ/Zh+IfXOxg8M01I80YJtfC2e8IESV9oB2QKarnZO5dKFesB/Th
+	 6JlH7Px06cMdQmT6xffGQjbAGnpPrYXJ1NuJPHzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/111] net: phy: Dont register LEDs for genphy
-Date: Tue, 22 Jul 2025 15:44:44 +0200
-Message-ID: <20250722134335.949926534@linuxfoundation.org>
+Subject: [PATCH 6.1 49/79] selftests: net: increase inter-packet timeout in udpgro.sh
+Date: Tue, 22 Jul 2025 15:44:45 +0200
+Message-ID: <20250722134330.181901200@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit f0f2b992d8185a0366be951685e08643aae17d6d ]
+[ Upstream commit 0e9418961f897be59b1fab6e31ae1b09a0bae902 ]
 
-If a PHY has no driver, the genphy driver is probed/removed directly in
-phy_attach/detach. If the PHY's ofnode has an "leds" subnode, then the
-LEDs will be (un)registered when probing/removing the genphy driver.
-This could occur if the leds are for a non-generic driver that isn't
-loaded for whatever reason. Synchronously removing the PHY device in
-phy_detach leads to the following deadlock:
+The mentioned test is not very stable when running on top of
+debug kernel build. Increase the inter-packet timeout to allow
+more slack in such environments.
 
-rtnl_lock()
-ndo_close()
-    ...
-    phy_detach()
-        phy_remove()
-            phy_leds_unregister()
-                led_classdev_unregister()
-                    led_trigger_set()
-                        netdev_trigger_deactivate()
-                            unregister_netdevice_notifier()
-                                rtnl_lock()
-
-There is a corresponding deadlock on the open/register side of things
-(and that one is reported by lockdep), but it requires a race while this
-one is deterministic.
-
-Generic PHYs do not support LEDs anyway, so don't bother registering
-them.
-
-Fixes: 01e5b728e9e4 ("net: phy: Add a binding for PHY LEDs")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250707195803.666097-1-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3327a9c46352 ("selftests: add functionals test for UDP GRO")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/b0370c06ddb3235debf642c17de0284b2cd3c652.1752163107.git.pabeni@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/udpgro.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index cde0e80474a1d..875788918bcb3 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3377,7 +3377,8 @@ static int phy_probe(struct device *dev)
- 	/* Get the LEDs from the device tree, and instantiate standard
- 	 * LEDs for them.
- 	 */
--	if (IS_ENABLED(CONFIG_PHYLIB_LEDS))
-+	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev) &&
-+	    !phy_driver_is_genphy_10g(phydev))
- 		err = of_phy_leds(phydev);
+diff --git a/tools/testing/selftests/net/udpgro.sh b/tools/testing/selftests/net/udpgro.sh
+index 241c6c37994d8..f6e50824c5eb9 100755
+--- a/tools/testing/selftests/net/udpgro.sh
++++ b/tools/testing/selftests/net/udpgro.sh
+@@ -50,7 +50,7 @@ run_one() {
  
- out:
-@@ -3394,7 +3395,8 @@ static int phy_remove(struct device *dev)
+ 	cfg_veth
  
- 	cancel_delayed_work_sync(&phydev->state_queue);
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} &
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 100 ${rx_args} &
+ 	local PID1=$!
  
--	if (IS_ENABLED(CONFIG_PHYLIB_LEDS))
-+	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev) &&
-+	    !phy_driver_is_genphy_10g(phydev))
- 		phy_leds_unregister(phydev);
+ 	wait_local_port_listen ${PEER_NS} 8000 udp
+@@ -97,7 +97,7 @@ run_one_nat() {
+ 	# will land on the 'plain' one
+ 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -G ${family} -b ${addr1} -n 0 &
+ 	local PID1=$!
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} &
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 100 ${family} -b ${addr2%/*} ${rx_args} &
+ 	local PID2=$!
  
- 	phydev->state = PHY_DOWN;
+ 	wait_local_port_listen "${PEER_NS}" 8000 udp
+@@ -119,9 +119,9 @@ run_one_2sock() {
+ 
+ 	cfg_veth
+ 
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} -p 12345 &
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 100 ${rx_args} -p 12345 &
+ 	local PID1=$!
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} &
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 100 ${rx_args} &
+ 	local PID2=$!
+ 
+ 	wait_local_port_listen "${PEER_NS}" 12345 udp
 -- 
 2.39.5
 
