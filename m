@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-163981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941CFB0DC89
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C49B0DBCF
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4539188A70F
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93F01C8268A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2539E2E975B;
-	Tue, 22 Jul 2025 14:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202AC2EA15A;
+	Tue, 22 Jul 2025 13:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BV9LLcuF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuwiQ8Iz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82D623AB9D;
-	Tue, 22 Jul 2025 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21032EA478;
+	Tue, 22 Jul 2025 13:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192851; cv=none; b=fGeSj0qPVFspt8n2pzyYanegpuPzcq8YnuzSkB//K8oufoUSfXWgLXcn28QtH8zRMw3wSsGc9IAjsjYcLJKYBq+4bC8HY/OuHMEWi6Cgm14IBAx4gxvRZf0TmtCdPjfG+8uvjlil/PDViODtRi7qLDDqbOFUSiEV+Kd6tm96aV0=
+	t=1753192369; cv=none; b=LzNhZ83Dy0mHBZGpXxqEs61h9F/nGId5kdyZnLsLw9Z3BjdspHL5bU7IC+5mncpELnWwk2l+NMsYzdjAzTXSM6NcNDVoljlhPUFKT7wc9GcM0yNoLB+wsA4RK2ACX5pJV/38Vc6Q6amgsnvuIhSy/Zp/O75aWjjn2ZqkGhLcFgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192851; c=relaxed/simple;
-	bh=Dfz/wBlm6Q2SgTOSQa2tJm1c3s7qJ3xLRUwwpffl8xw=;
+	s=arc-20240116; t=1753192369; c=relaxed/simple;
+	bh=00i2dSAgOKb1iAE2Gd/hjzNyGpHQBbnuQqg23BcxiNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRPUclCJASyyuBeB0DrbqPy5yaW/6coH2jo2U5L24hWAOTuEtZ5Vpp7d7KI0eWKeqvISY0BVeQvzVwqJ3bVebiuuj/0F7cxz/nkzh+1X9Vv0B8xEwa8Y1fPYi47gPFgzv6tBt6eYY3/NyrUepXVAEKiobaCARCxG5xuJ472RSDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BV9LLcuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601BDC4CEEB;
-	Tue, 22 Jul 2025 14:00:51 +0000 (UTC)
+	 MIME-Version; b=eqIqJz0yzxhvyYEwQAFBa5L9A9H5HcyyTrh5QXO9XXKQmSKli6Vg7Fuey/sCB3FIRfFK7NLPhaS2d7iEWJ9rWHjqkeIYH2QLxpaSCGUnPqxbwcWa0yPh+OGZk5OyTuKKWGX2cD41ziyOIRpbi5PnRbT3YeIna9/jjrc5H4vugCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuwiQ8Iz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDF8C4CEEB;
+	Tue, 22 Jul 2025 13:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192851;
-	bh=Dfz/wBlm6Q2SgTOSQa2tJm1c3s7qJ3xLRUwwpffl8xw=;
+	s=korg; t=1753192369;
+	bh=00i2dSAgOKb1iAE2Gd/hjzNyGpHQBbnuQqg23BcxiNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BV9LLcuFVyxg9xBc51MKdDdmMtIyeaW/LGMQ2I4bWkzYBj70TpK8UlTsi3x4STm0j
-	 GOYloA9GE4cBhP7WdplsdX+JeQ7F665SnBYssi8pWXy6jht6cR7uZRePl17w7FtP4u
-	 IYUoqbkzV52WSSC5yfnxPEt3c6V6kmyVJA++qPGA=
+	b=iuwiQ8IzAX5adcmcGkMFeVLUIRvUvMiZDlYdDpuW0QVbaRO/ymV2sMTwXB6TsuFqj
+	 q2Eo3xK9fTfNRRFKdtU8Yr+4ZYzfqKLsSwAeOFagiV4gkBopULgwDuzdD3XEoBvXk6
+	 01ungwD9LYRSf42+6UK/3zCRJT2l4Fo7K54eQ6qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.12 077/158] comedi: das6402: Fix bit shift out of bounds
+	Jean Delvare <jdelvare@suse.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH 6.6 046/111] soc: aspeed: lpc-snoop: Dont disable channels that arent enabled
 Date: Tue, 22 Jul 2025 15:44:21 +0200
-Message-ID: <20250722134343.651099018@linuxfoundation.org>
+Message-ID: <20250722134335.106063121@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
 
-commit 70f2b28b5243df557f51c054c20058ae207baaac upstream.
+commit 56448e78a6bb4e1a8528a0e2efe94eff0400c247 upstream.
 
-When checking for a supported IRQ number, the following test is used:
+Mitigate e.g. the following:
 
-	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
-	if ((1 << it->options[1]) & 0x8cec) {
+    # echo 1e789080.lpc-snoop > /sys/bus/platform/drivers/aspeed-lpc-snoop/unbind
+    ...
+    [  120.363594] Unable to handle kernel NULL pointer dereference at virtual address 00000004 when write
+    [  120.373866] [00000004] *pgd=00000000
+    [  120.377910] Internal error: Oops: 805 [#1] SMP ARM
+    [  120.383306] CPU: 1 UID: 0 PID: 315 Comm: sh Not tainted 6.15.0-rc1-00009-g926217bc7d7d-dirty #20 NONE
+    ...
+    [  120.679543] Call trace:
+    [  120.679559]  misc_deregister from aspeed_lpc_snoop_remove+0x84/0xac
+    [  120.692462]  aspeed_lpc_snoop_remove from platform_remove+0x28/0x38
+    [  120.700996]  platform_remove from device_release_driver_internal+0x188/0x200
+    ...
 
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.  Valid `it->options[1]` values that select the IRQ
-will be in the range [1,15]. The value 0 explicitly disables the use of
-interrupts.
-
-Fixes: 79e5e6addbb1 ("staging: comedi: das6402: rewrite broken driver")
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707135737.77448-1-abbotti@mev.co.uk
+Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
+Cc: stable@vger.kernel.org
+Cc: Jean Delvare <jdelvare@suse.de>
+Acked-by: Jean Delvare <jdelvare@suse.de>
+Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-2-3cdd59c934d3@codeconstruct.com.au
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/das6402.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/comedi/drivers/das6402.c
-+++ b/drivers/comedi/drivers/das6402.c
-@@ -567,7 +567,8 @@ static int das6402_attach(struct comedi_
- 	das6402_reset(dev);
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -58,6 +58,7 @@ struct aspeed_lpc_snoop_model_data {
+ };
  
- 	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
--	if ((1 << it->options[1]) & 0x8cec) {
-+	if (it->options[1] > 0 && it->options[1] < 16 &&
-+	    (1 << it->options[1]) & 0x8cec) {
- 		ret = request_irq(it->options[1], das6402_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0) {
+ struct aspeed_lpc_snoop_channel {
++	bool enabled;
+ 	struct kfifo		fifo;
+ 	wait_queue_head_t	wq;
+ 	struct miscdevice	miscdev;
+@@ -190,6 +191,9 @@ static int aspeed_lpc_enable_snoop(struc
+ 	const struct aspeed_lpc_snoop_model_data *model_data =
+ 		of_device_get_match_data(dev);
+ 
++	if (WARN_ON(lpc_snoop->chan[channel].enabled))
++		return -EBUSY;
++
+ 	init_waitqueue_head(&lpc_snoop->chan[channel].wq);
+ 	/* Create FIFO datastructure */
+ 	rc = kfifo_alloc(&lpc_snoop->chan[channel].fifo,
+@@ -236,6 +240,8 @@ static int aspeed_lpc_enable_snoop(struc
+ 		regmap_update_bits(lpc_snoop->regmap, HICRB,
+ 				hicrb_en, hicrb_en);
+ 
++	lpc_snoop->chan[channel].enabled = true;
++
+ 	return 0;
+ 
+ err_misc_deregister:
+@@ -248,6 +254,9 @@ err_free_fifo:
+ static void aspeed_lpc_disable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 				     int channel)
+ {
++	if (!lpc_snoop->chan[channel].enabled)
++		return;
++
+ 	switch (channel) {
+ 	case 0:
+ 		regmap_update_bits(lpc_snoop->regmap, HICR5,
+@@ -263,6 +272,8 @@ static void aspeed_lpc_disable_snoop(str
+ 		return;
+ 	}
+ 
++	lpc_snoop->chan[channel].enabled = false;
++	/* Consider improving safety wrt concurrent reader(s) */
+ 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
+ 	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ }
 
 
 
