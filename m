@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-163810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3173B0DBB5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 423B2B0DC6A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:02:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B33C1C828D7
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2D2318858C4
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61232E2F10;
-	Tue, 22 Jul 2025 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC0B28BAB0;
+	Tue, 22 Jul 2025 13:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5weAqrP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCJcTuwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7336B2B9A5;
-	Tue, 22 Jul 2025 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F05A288C01;
+	Tue, 22 Jul 2025 13:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192284; cv=none; b=JzmYfuGty21Fy1B54n8ewsCmCpmdm4XiW42h3FbmyeHayo3lexNmLEevztSa6O6dVOO9mTFE4w2Q1+uBkNPnGWw0xWZp5hDqgMi9C/a+E3eSdA0J1n2pvofdvQ0FL85zkF8AzLULKHsTkq3GlwaApr1KoaqDxcgrqStcx70Jm9I=
+	t=1753192768; cv=none; b=RB4m3oDaRbHwlD7GqbWZ4os0SlK10uDq0t5+OU5WG9yfa4YnsS+rUSae2Kj/LkrEVBPKjFihmbEDZDwvKFAaTrpFZdU339XxFW3xKZqdg4YeBl0Ag+cNq6Cz2x6Ww2Xvo0/mCCWONy3/wDLWbWJ9RaEds5AvyPO+VF005KTwkvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192284; c=relaxed/simple;
-	bh=nOuXSAcyYZ3NK7k1gijOE1FmqA/Z1osXRLQpvbgpiU8=;
+	s=arc-20240116; t=1753192768; c=relaxed/simple;
+	bh=jenrdlaf+U3X1iBhXnSf8ZP1uk5ZT+IbLx6fgJYdTIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BZfoqfGsAP6PlZQp1BatdaOlXWWzBDJVrxTc3sZUWNekq71k6FhCPyRz6ydURIU1gsuX0SZHXOQv8m5cyhSMiXtiH20b2Sky1BEijJDCgT1sZVAW4p6wUdftI/XKnVsCaK3einj6kERxUsYvLkaAVI72Wkh1ErjmBqvO2nNn3MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5weAqrP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CB0C4CEEB;
-	Tue, 22 Jul 2025 13:51:23 +0000 (UTC)
+	 MIME-Version; b=kIMbewWvqDSxxsPx0xdyuI6xWv02c518T6ayhFU/LExv8uxYvTGakosDSb/yOMkj3H73wJyYHt0nTDWnwNPCimVn+ePd64/wTfL92OXTQpr1Ac1kZfCQWTQw9NtD4k/VUhlRy5gHjxJo4NUy6QWacCA4DMGvXwAJ2yFAK1kGLsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCJcTuwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2167EC4CEEB;
+	Tue, 22 Jul 2025 13:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192284;
-	bh=nOuXSAcyYZ3NK7k1gijOE1FmqA/Z1osXRLQpvbgpiU8=;
+	s=korg; t=1753192768;
+	bh=jenrdlaf+U3X1iBhXnSf8ZP1uk5ZT+IbLx6fgJYdTIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5weAqrPfyfzL4kKNaBnXRWY656uXsrzq8i5cFjQl7GLTehGj//7ACS6pzc7enU3h
-	 uM2dLoBGbQ/p/aG1Q1BQBazQYy0Ki4xuCwfxMiFVXUpqMIjfkYmNzGqoTRRCnkEkya
-	 CE20cwuIaPxEdtLZHWM2hkM1oQ+TN2kkJFyOFrog=
+	b=fCJcTuwg37Gzw9Sxx2dkGaW13cFl7MDwAOeimboazSXGEVrqDlUlbcbf8cTEiBkp4
+	 WwVYgZvWXbGLGONFnt4siiN7MnVqiZsi3db8PiXxUpIp4DSu0DWDHftLECIDm36jql
+	 nJvPojfp+lfP+pkJ/J7766/s7ZzZM8CMHvte4yDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 020/111] tracing/probes: Avoid using params uninitialized in parse_btf_arg()
+	Raghavendra Kakarla <quic_rkakarla@quicinc.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 051/158] cpuidle: psci: Fix cpuhotplug routine with PREEMPT_RT=y
 Date: Tue, 22 Jul 2025 15:43:55 +0200
-Message-ID: <20250722134334.147507401@linuxfoundation.org>
+Message-ID: <20250722134342.634626595@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-commit 1ed171a3afe81531b3ace96bd151a372dda3ee25 upstream.
+commit 621a88dbfe9006c318a0cafbd12e677ccfe006e7 upstream.
 
-After a recent change in clang to strengthen uninitialized warnings [1],
-it points out that in one of the error paths in parse_btf_arg(), params
-is used uninitialized:
+Currently cpu hotplug with the PREEMPT_RT option set in the kernel is
+not supported because the underlying generic power domain functions
+used in the cpu hotplug callbacks are incompatible from a lock point
+of view. This situation prevents the suspend to idle to reach the
+deepest idle state for the "cluster" as identified in the
+undermentioned commit.
 
-  kernel/trace/trace_probe.c:660:19: warning: variable 'params' is uninitialized when used here [-Wuninitialized]
-    660 |                         return PTR_ERR(params);
-        |                                        ^~~~~~
+Use the compatible ones when PREEMPT_RT is enabled and remove the
+boolean disabling the hotplug callbacks with this option.
 
-Match many other NO_BTF_ENTRY error cases and return -ENOENT, clearing
-up the warning.
+With this change the platform can reach the deepest idle state
+allowing at suspend time to consume less power.
 
-Link: https://lore.kernel.org/all/20250715-trace_probe-fix-const-uninit-warning-v1-1-98960f91dd04@kernel.org/
+Tested-on Lenovo T14s with the following script:
 
+echo 0 > /sys/devices/system/cpu/cpu3/online
+BEFORE=$(cat /sys/kernel/debug/pm_genpd/power-domain-cpu-cluster0/idle_states | grep S0 | awk '{ print $3 }') ;
+rtcwake -s 1 -m mem;
+AFTER=$(cat /sys/kernel/debug/pm_genpd/power-domain-cpu-cluster0/idle_states | grep S0 | awk '{ print $3 }');
+if [ $BEFORE -lt $AFTER ]; then
+    echo "Test successful"
+else
+    echo "Test failed"
+fi
+echo 1 > /sys/devices/system/cpu/cpu3/online
+
+Fixes: 1c4b2932bd62 ("cpuidle: psci: Enable the hierarchical topology for s2idle on PREEMPT_RT")
+Cc: Raghavendra Kakarla <quic_rkakarla@quicinc.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2110
-Fixes: d157d7694460 ("tracing/probes: Support BTF field access from $retval")
-Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20250709154728.733920-1-daniel.lezcano@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_probe.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpuidle/cpuidle-psci.c |   23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -656,7 +656,7 @@ static int parse_btf_arg(char *varname,
- 		ret = query_btf_context(ctx);
- 		if (ret < 0 || ctx->nr_params == 0) {
- 			trace_probe_log_err(ctx->offset, NO_BTF_ENTRY);
--			return PTR_ERR(params);
-+			return -ENOENT;
- 		}
+--- a/drivers/cpuidle/cpuidle-psci.c
++++ b/drivers/cpuidle/cpuidle-psci.c
+@@ -38,7 +38,6 @@ struct psci_cpuidle_data {
+ static DEFINE_PER_CPU_READ_MOSTLY(struct psci_cpuidle_data, psci_cpuidle_data);
+ static DEFINE_PER_CPU(u32, domain_state);
+ static bool psci_cpuidle_use_syscore;
+-static bool psci_cpuidle_use_cpuhp;
+ 
+ void psci_set_domain_state(u32 state)
+ {
+@@ -105,8 +104,12 @@ static int psci_idle_cpuhp_up(unsigned i
+ {
+ 	struct device *pd_dev = __this_cpu_read(psci_cpuidle_data.dev);
+ 
+-	if (pd_dev)
+-		pm_runtime_get_sync(pd_dev);
++	if (pd_dev) {
++		if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++			pm_runtime_get_sync(pd_dev);
++		else
++			dev_pm_genpd_resume(pd_dev);
++	}
+ 
+ 	return 0;
+ }
+@@ -116,7 +119,11 @@ static int psci_idle_cpuhp_down(unsigned
+ 	struct device *pd_dev = __this_cpu_read(psci_cpuidle_data.dev);
+ 
+ 	if (pd_dev) {
+-		pm_runtime_put_sync(pd_dev);
++		if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++			pm_runtime_put_sync(pd_dev);
++		else
++			dev_pm_genpd_suspend(pd_dev);
++
+ 		/* Clear domain state to start fresh at next online. */
+ 		psci_set_domain_state(0);
  	}
- 	params = ctx->params;
+@@ -177,9 +184,6 @@ static void psci_idle_init_cpuhp(void)
+ {
+ 	int err;
+ 
+-	if (!psci_cpuidle_use_cpuhp)
+-		return;
+-
+ 	err = cpuhp_setup_state_nocalls(CPUHP_AP_CPU_PM_STARTING,
+ 					"cpuidle/psci:online",
+ 					psci_idle_cpuhp_up,
+@@ -240,10 +244,8 @@ static int psci_dt_cpu_init_topology(str
+ 	 * s2ram and s2idle.
+ 	 */
+ 	drv->states[state_count - 1].enter_s2idle = psci_enter_s2idle_domain_idle_state;
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT)) {
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
+ 		drv->states[state_count - 1].enter = psci_enter_domain_idle_state;
+-		psci_cpuidle_use_cpuhp = true;
+-	}
+ 
+ 	return 0;
+ }
+@@ -320,7 +322,6 @@ static void psci_cpu_deinit_idle(int cpu
+ 
+ 	dt_idle_detach_cpu(data->dev);
+ 	psci_cpuidle_use_syscore = false;
+-	psci_cpuidle_use_cpuhp = false;
+ }
+ 
+ static int psci_idle_init_cpu(struct device *dev, int cpu)
 
 
 
