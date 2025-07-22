@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-164038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450DDB0DCDC
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16429B0DE7A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:27:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5BCE16D173
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81F44AC6236
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6DE2D8766;
-	Tue, 22 Jul 2025 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5E52ECE9C;
+	Tue, 22 Jul 2025 14:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGriRL/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNC38gsZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17BAA32;
-	Tue, 22 Jul 2025 14:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F4C2EA166;
+	Tue, 22 Jul 2025 14:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193045; cv=none; b=TEQN/1lQ/sEVuU/s8wFMLbFDIIAjWpYrheJRpZoAy5RlGESlN5lv9VWPLEvBUkdcjvv5yya0qcDOAOvErDwsboCTXyNH1PWz/5RJOor/AwSPLkkLpi1J8ZuJsoaesC4nz9eHQtOa0RxgxavBBk85OZr6vm1btR6UDfk6jeWMbJE=
+	t=1753193725; cv=none; b=sMgFyI0Rsf5If83NydAU5aliqp2qQcwcLTGsLF8CG8XWo7rK/pkHcl9SKS+zGkslUFpjtOZC49aph15pdM3mcHgtmkhx1yiuBTXcRXB/nQnfb433Q4e+4kmWWZpJYNHAzT5equeV+Q13BEF9Bm6ojsfdF0LMI5ynllubcS4f7I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193045; c=relaxed/simple;
-	bh=7zWefpgzwnsoagNjojLoRLVwGmd2RaxDEGt4UvWhphw=;
+	s=arc-20240116; t=1753193725; c=relaxed/simple;
+	bh=UvI5m8d6Exr+o5/9Dxfkn2ElND+G7/Zj2/NFk8XS36A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKpmN9ZtYaRnDT9QsXzSxrHZCTVXNd9VTww8n6LvJ62piL1dblTRsYv+v5wFV28XCti1T0idTLApH0FLcS1P+nY7aMaosAugGaEj3B8X14f84zp7tRTgB8n59VGDEZ0FHd9AyGMXpbtGOma33kUnH5jeqYmCJscokfnFFGwJnkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGriRL/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5D3C4CEEB;
-	Tue, 22 Jul 2025 14:04:04 +0000 (UTC)
+	 MIME-Version; b=WkQEhPW2EVjeqjLRqGlNGspyLJLwOL/JCk/yBM3iGD58bs/XAcaYbgNP3Csl/vS9CkCgHblYZtj6sM5JbxiuNUfxewjzprrT24dLmUEbCjSdAnVhqRHORNz2hJ+JJny15pe3hfhxCu5brt+Hw8BfJ5M6W6E+U+5HxZQR5pUBPGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNC38gsZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD35C4CEEB;
+	Tue, 22 Jul 2025 14:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193044;
-	bh=7zWefpgzwnsoagNjojLoRLVwGmd2RaxDEGt4UvWhphw=;
+	s=korg; t=1753193725;
+	bh=UvI5m8d6Exr+o5/9Dxfkn2ElND+G7/Zj2/NFk8XS36A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGriRL/g0gV5sYlSMp0i9+7TaJ9GSqkpgveNrfcqxVcVmXYmcGJ8p76gZWRdVafmc
-	 ook4uQDAiYsNWhzsF7EzpPzjCBVaaQGv9Zo8dAgzV/81U63fpmlQx8LhPgJOKUakEL
-	 HdeWK/u9vlTWI63NDuWFwVVHCo9c8T7D6sIuqK7E=
+	b=vNC38gsZE+a8qL+5FD6v/1ZXkDgJiH7Jn4AXPXzLDYZ/dNH3Uwx7OJnkBawChDR/n
+	 75zoeQZHOEjVE7NMFKkztaVbRvAH7Ea2SWkKmZx/4idu3W52XlYXjhWF13bzxIhs3T
+	 h1zW4Dd/OIjnS+x+pIizQaDf0eXH+aSqzdr5wOWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 132/158] net/sched: Return NULL when htb_lookup_leaf encounters an empty rbtree
+Subject: [PATCH 6.15 146/187] drm/xe: Dont skip TLB invalidations on VF
 Date: Tue, 22 Jul 2025 15:45:16 +0200
-Message-ID: <20250722134345.656047559@linuxfoundation.org>
+Message-ID: <20250722134351.223007379@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Liu <will@willsroot.io>
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-[ Upstream commit 0e1d5d9b5c5966e2e42e298670808590db5ed628 ]
+[ Upstream commit fd25fa90edcfd4db5bf69c11621021a7cfd11d53 ]
 
-htb_lookup_leaf has a BUG_ON that can trigger with the following:
+Skipping TLB invalidations on VF causing unrecoverable
+faults. Probable reason for skipping TLB invalidations
+on SRIOV could be lack of support for instruction
+MI_FLUSH_DW_STORE_INDEX. Add back TLB flush with some
+additional handling.
 
-tc qdisc del dev lo root
-tc qdisc add dev lo root handle 1: htb default 1
-tc class add dev lo parent 1: classid 1:1 htb rate 64bit
-tc qdisc add dev lo parent 1:1 handle 2: netem
-tc qdisc add dev lo parent 2:1 handle 3: blackhole
-ping -I lo -c1 -W0.001 127.0.0.1
+Helps in resolving,
+[  704.913454] xe 0000:00:02.1: [drm:pf_queue_work_func [xe]]
+                ASID: 0
+                VFID: 0
+                PDATA: 0x0d92
+                Faulted Address: 0x0000000002fa0000
+                FaultType: 0
+                AccessType: 1
+                FaultLevel: 0
+                EngineClass: 3 bcs
+                EngineInstance: 8
+[  704.913551] xe 0000:00:02.1: [drm:pf_queue_work_func [xe]] Fault response: Unsuccessful -22
 
-The root cause is the following:
+V2:
+ - Use Xmas tree (MichalW)
 
-1. htb_dequeue calls htb_dequeue_tree which calls the dequeue handler on
-   the selected leaf qdisc
-2. netem_dequeue calls enqueue on the child qdisc
-3. blackhole_enqueue drops the packet and returns a value that is not
-   just NET_XMIT_SUCCESS
-4. Because of this, netem_dequeue calls qdisc_tree_reduce_backlog, and
-   since qlen is now 0, it calls htb_qlen_notify -> htb_deactivate ->
-   htb_deactiviate_prios -> htb_remove_class_from_row -> htb_safe_rb_erase
-5. As this is the only class in the selected hprio rbtree,
-   __rb_change_child in __rb_erase_augmented sets the rb_root pointer to
-   NULL
-6. Because blackhole_dequeue returns NULL, netem_dequeue returns NULL,
-   which causes htb_dequeue_tree to call htb_lookup_leaf with the same
-   hprio rbtree, and fail the BUG_ON
-
-The function graph for this scenario is shown here:
- 0)               |  htb_enqueue() {
- 0) + 13.635 us   |    netem_enqueue();
- 0)   4.719 us    |    htb_activate_prios();
- 0) # 2249.199 us |  }
- 0)               |  htb_dequeue() {
- 0)   2.355 us    |    htb_lookup_leaf();
- 0)               |    netem_dequeue() {
- 0) + 11.061 us   |      blackhole_enqueue();
- 0)               |      qdisc_tree_reduce_backlog() {
- 0)               |        qdisc_lookup_rcu() {
- 0)   1.873 us    |          qdisc_match_from_root();
- 0)   6.292 us    |        }
- 0)   1.894 us    |        htb_search();
- 0)               |        htb_qlen_notify() {
- 0)   2.655 us    |          htb_deactivate_prios();
- 0)   6.933 us    |        }
- 0) + 25.227 us   |      }
- 0)   1.983 us    |      blackhole_dequeue();
- 0) + 86.553 us   |    }
- 0) # 2932.761 us |    qdisc_warn_nonwc();
- 0)               |    htb_lookup_leaf() {
- 0)               |      BUG_ON();
- ------------------------------------------
-
-The full original bug report can be seen here [1].
-
-We can fix this just by returning NULL instead of the BUG_ON,
-as htb_dequeue_tree returns NULL when htb_lookup_leaf returns
-NULL.
-
-[1] https://lore.kernel.org/netdev/pF5XOOIim0IuEfhI-SOxTgRvNoDwuux7UHKnE_Y5-zVd4wmGvNk2ceHjKb8ORnzw0cGwfmVu42g9dL7XyJLf1NEzaztboTWcm0Ogxuojoeo=@willsroot.io/
-
-Fixes: 512bb43eb542 ("pkt_sched: sch_htb: Optimize WARN_ONs in htb_dequeue_tree() etc.")
-Signed-off-by: William Liu <will@willsroot.io>
-Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
-Link: https://patch.msgid.link/20250717022816.221364-1-will@willsroot.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Fixes: 97515d0b3ed92 ("drm/xe/vf: Don't emit access to Global HWSP if VF")
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250710045945.1023840-1-tejas.upadhyay@intel.com
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+(cherry picked from commit b528e896fa570844d654b5a4617a97fa770a1030)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_htb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_ring_ops.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-index b2494d24a5425..1021681a57182 100644
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -821,7 +821,9 @@ static struct htb_class *htb_lookup_leaf(struct htb_prio *hprio, const int prio)
- 		u32 *pid;
- 	} stk[TC_HTB_MAXDEPTH], *sp = stk;
+diff --git a/drivers/gpu/drm/xe/xe_ring_ops.c b/drivers/gpu/drm/xe/xe_ring_ops.c
+index bc1689db4cd71..7b50c7c1ee21d 100644
+--- a/drivers/gpu/drm/xe/xe_ring_ops.c
++++ b/drivers/gpu/drm/xe/xe_ring_ops.c
+@@ -110,13 +110,14 @@ static int emit_bb_start(u64 batch_addr, u32 ppgtt_flag, u32 *dw, int i)
+ 	return i;
+ }
  
--	BUG_ON(!hprio->row.rb_node);
-+	if (unlikely(!hprio->row.rb_node))
-+		return NULL;
+-static int emit_flush_invalidate(u32 *dw, int i)
++static int emit_flush_invalidate(u32 addr, u32 val, u32 *dw, int i)
+ {
+ 	dw[i++] = MI_FLUSH_DW | MI_INVALIDATE_TLB | MI_FLUSH_DW_OP_STOREDW |
+-		  MI_FLUSH_IMM_DW | MI_FLUSH_DW_STORE_INDEX;
+-	dw[i++] = LRC_PPHWSP_FLUSH_INVAL_SCRATCH_ADDR;
+-	dw[i++] = 0;
++		  MI_FLUSH_IMM_DW;
 +
- 	sp->root = hprio->row.rb_node;
- 	sp->pptr = &hprio->ptr;
- 	sp->pid = &hprio->last_ptr_id;
++	dw[i++] = addr | MI_FLUSH_DW_USE_GTT;
+ 	dw[i++] = 0;
++	dw[i++] = val;
+ 
+ 	return i;
+ }
+@@ -397,23 +398,20 @@ static void __emit_job_gen12_render_compute(struct xe_sched_job *job,
+ static void emit_migration_job_gen12(struct xe_sched_job *job,
+ 				     struct xe_lrc *lrc, u32 seqno)
+ {
++	u32 saddr = xe_lrc_start_seqno_ggtt_addr(lrc);
+ 	u32 dw[MAX_JOB_SIZE_DW], i = 0;
+ 
+ 	i = emit_copy_timestamp(lrc, dw, i);
+ 
+-	i = emit_store_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
+-				seqno, dw, i);
++	i = emit_store_imm_ggtt(saddr, seqno, dw, i);
+ 
+ 	dw[i++] = MI_ARB_ON_OFF | MI_ARB_DISABLE; /* Enabled again below */
+ 
+ 	i = emit_bb_start(job->ptrs[0].batch_addr, BIT(8), dw, i);
+ 
+-	if (!IS_SRIOV_VF(gt_to_xe(job->q->gt))) {
+-		/* XXX: Do we need this? Leaving for now. */
+-		dw[i++] = preparser_disable(true);
+-		i = emit_flush_invalidate(dw, i);
+-		dw[i++] = preparser_disable(false);
+-	}
++	dw[i++] = preparser_disable(true);
++	i = emit_flush_invalidate(saddr, seqno, dw, i);
++	dw[i++] = preparser_disable(false);
+ 
+ 	i = emit_bb_start(job->ptrs[1].batch_addr, BIT(8), dw, i);
+ 
 -- 
 2.39.5
 
