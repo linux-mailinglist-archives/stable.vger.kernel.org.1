@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-164035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9FFBB0DCCE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D780AB0DC3D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E49FF1C22584
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 637713A3477
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0674B2EA15C;
-	Tue, 22 Jul 2025 14:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B67F2E2F0F;
+	Tue, 22 Jul 2025 13:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXR9xF2w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAPOUdlk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68BF23AB9D;
-	Tue, 22 Jul 2025 14:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22134289369;
+	Tue, 22 Jul 2025 13:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193035; cv=none; b=L/vANBTjMasPPGmhi6dY2gIbacFeJwQdPRK50c7AH9bbEWy1msGyRkpiEDJKEqFqspQXhS6NZnAvH7LM78v35YsA+AvMANVIiGaqU7jSuDe6SOiSSUoqAW750PWVd19JV5yNxRoSDGMbi9brLNPXKLrkx0I9HFEbChdR5D2w1E8=
+	t=1753192568; cv=none; b=t0INatyeA8MHYp1OL8pHE5X50IxM2b8skPVuZofVh4JSP0i7qgMs9mDwVSq+7szPKoclKfbVH0guoibZEYohLSpms5MsZg6ZzgladlqHrsM1e9yL+wgqx0q4JhnOymU+EGJpbC16hbxLHw2Ovw3QtRso58Hf9q5nmNYAu1K2yDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193035; c=relaxed/simple;
-	bh=1tWHVFaD9iP1J0lU9kPqvNNlm8uak/b2WaHXOGvnWXE=;
+	s=arc-20240116; t=1753192568; c=relaxed/simple;
+	bh=FJGSEJHrSfIJCAFF84VkhI2Dt2DwkzNMKg/2wEyWuWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWV1bHVn2bXScMbI46hNN0BUHB3mcZxId4UzrC2V/ZNQdXiG/I0SDPGCV7/8Hj4o5H5v3Vt3/KnrLV5V8dxYCVVu51p4TWWugEaH4mQ1vzr4k5HdxGWTWz0nbR4ty+cgkfsqCqHvphscpLnsopFXzFBaGeFzTiCt0RraTU62kHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXR9xF2w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904FAC4CEEB;
-	Tue, 22 Jul 2025 14:03:54 +0000 (UTC)
+	 MIME-Version; b=rdmrNTzeyRcJVmh/fmBDctz3mbPqk2KEPb49rqiuPu7GnpAG6Ize2ruhArpy65CcNPVOWcLNw+ibt/VKRH63ESf++VT4BwFIXudq5jcjPW5OUsZn1K0Hl1oZtvZlNJBho7hjfYkQzOzgU1XsIws0wcDd42J6GPuXoF5GKrjUEAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAPOUdlk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DEEC4CEEB;
+	Tue, 22 Jul 2025 13:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193034;
-	bh=1tWHVFaD9iP1J0lU9kPqvNNlm8uak/b2WaHXOGvnWXE=;
+	s=korg; t=1753192567;
+	bh=FJGSEJHrSfIJCAFF84VkhI2Dt2DwkzNMKg/2wEyWuWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXR9xF2wWdXcZhdL3/E0bJEIZtJXP+9Bv17C3DfQQoQf1h/XDvsKYew0j6iLaXI0z
-	 cJSLN4ZVBNlYuko/i5Fifta8Ki+m7EKM4clThMTJh2A6EsmzgNzvuGUK5YnIILiEHr
-	 ARa34IjDVdHS25tDu94/EpRVYKRlqxQ1Nm6mqIis=
+	b=IAPOUdlkNk+Mweqs3JAvMrVTFstVwQB2wzU+o0HnyTJBwZvnaSZ8PjZWARyax02JR
+	 +ASOuChebrt1oD9hy8i7w7BONwNQz7A1RsX03yFeuwi8WzA/gFH9OZXbeCEqacYt7E
+	 18AOoJkGlYFY6lQr3VLKN0+hqt9ru70uBUJusvB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/158] can: tcan4x5x: add option for selecting nWKRQ voltage
+Subject: [PATCH 6.6 072/111] selftests: net: increase inter-packet timeout in udpgro.sh
 Date: Tue, 22 Jul 2025 15:44:47 +0200
-Message-ID: <20250722134344.586195740@linuxfoundation.org>
+Message-ID: <20250722134336.071710102@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 36131b72fb1c62bc61e86068618de304763b8ac7 ]
+[ Upstream commit 0e9418961f897be59b1fab6e31ae1b09a0bae902 ]
 
-The nWKRQ pin supports an output voltage of either the internal reference
-voltage (3.6V) or the reference voltage of
-the digital interface 0-6V (VIO).
-Add the devicetree option ti,nwkrq-voltage-vio to set it to VIO.
+The mentioned test is not very stable when running on top of
+debug kernel build. Increase the inter-packet timeout to allow
+more slack in such environments.
 
-If this property is omitted the reset default, the internal reference
-voltage, is used.
-
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20241114-tcan-wkrqv-v5-2-a2d50833ed71@geanix.com
-[mkl: remove unused variable in tcan4x5x_get_dt_data()]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: 0f97a7588db7 ("can: tcan4x5x: fix reset gpio usage during probe")
+Fixes: 3327a9c46352 ("selftests: add functionals test for UDP GRO")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/b0370c06ddb3235debf642c17de0284b2cd3c652.1752163107.git.pabeni@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/m_can/tcan4x5x-core.c | 19 +++++++++++++++++++
- drivers/net/can/m_can/tcan4x5x.h      |  2 ++
- 2 files changed, 21 insertions(+)
+ tools/testing/selftests/net/udpgro.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/m_can/tcan4x5x-core.c b/drivers/net/can/m_can/tcan4x5x-core.c
-index b6c5c8bab7390..7062a2939f501 100644
---- a/drivers/net/can/m_can/tcan4x5x-core.c
-+++ b/drivers/net/can/m_can/tcan4x5x-core.c
-@@ -92,6 +92,8 @@
- #define TCAN4X5X_MODE_STANDBY BIT(6)
- #define TCAN4X5X_MODE_NORMAL BIT(7)
+diff --git a/tools/testing/selftests/net/udpgro.sh b/tools/testing/selftests/net/udpgro.sh
+index 53341c8135e88..b65cf09f9914e 100755
+--- a/tools/testing/selftests/net/udpgro.sh
++++ b/tools/testing/selftests/net/udpgro.sh
+@@ -50,7 +50,7 @@ run_one() {
  
-+#define TCAN4X5X_NWKRQ_VOLTAGE_VIO BIT(19)
-+
- #define TCAN4X5X_DISABLE_WAKE_MSK	(BIT(31) | BIT(30))
- #define TCAN4X5X_DISABLE_INH_MSK	BIT(9)
+ 	cfg_veth
  
-@@ -267,6 +269,13 @@ static int tcan4x5x_init(struct m_can_classdev *cdev)
- 	if (ret)
- 		return ret;
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} &
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 100 ${rx_args} &
+ 	local PID1=$!
  
-+	if (tcan4x5x->nwkrq_voltage_vio) {
-+		ret = regmap_set_bits(tcan4x5x->regmap, TCAN4X5X_CONFIG,
-+				      TCAN4X5X_NWKRQ_VOLTAGE_VIO);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return ret;
- }
+ 	wait_local_port_listen ${PEER_NS} 8000 udp
+@@ -97,7 +97,7 @@ run_one_nat() {
+ 	# will land on the 'plain' one
+ 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -G ${family} -b ${addr1} -n 0 &
+ 	local PID1=$!
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} &
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 100 ${family} -b ${addr2%/*} ${rx_args} &
+ 	local PID2=$!
  
-@@ -318,6 +327,14 @@ static const struct tcan4x5x_version_info
- 	return &tcan4x5x_versions[TCAN4X5X];
- }
+ 	wait_local_port_listen "${PEER_NS}" 8000 udp
+@@ -119,9 +119,9 @@ run_one_2sock() {
  
-+static void tcan4x5x_get_dt_data(struct m_can_classdev *cdev)
-+{
-+	struct tcan4x5x_priv *tcan4x5x = cdev_to_priv(cdev);
-+
-+	tcan4x5x->nwkrq_voltage_vio =
-+		of_property_read_bool(cdev->dev->of_node, "ti,nwkrq-voltage-vio");
-+}
-+
- static int tcan4x5x_get_gpios(struct m_can_classdev *cdev,
- 			      const struct tcan4x5x_version_info *version_info)
- {
-@@ -454,6 +471,8 @@ static int tcan4x5x_can_probe(struct spi_device *spi)
- 		goto out_power;
- 	}
+ 	cfg_veth
  
-+	tcan4x5x_get_dt_data(mcan_class);
-+
- 	tcan4x5x_check_wake(priv);
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} -p 12345 &
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 100 ${rx_args} -p 12345 &
+ 	local PID1=$!
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} &
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 100 ${rx_args} &
+ 	local PID2=$!
  
- 	ret = tcan4x5x_write_tcan_reg(mcan_class, TCAN4X5X_INT_EN, 0);
-diff --git a/drivers/net/can/m_can/tcan4x5x.h b/drivers/net/can/m_can/tcan4x5x.h
-index e62c030d3e1e5..203399d5e8ccf 100644
---- a/drivers/net/can/m_can/tcan4x5x.h
-+++ b/drivers/net/can/m_can/tcan4x5x.h
-@@ -42,6 +42,8 @@ struct tcan4x5x_priv {
- 
- 	struct tcan4x5x_map_buf map_buf_rx;
- 	struct tcan4x5x_map_buf map_buf_tx;
-+
-+	bool nwkrq_voltage_vio;
- };
- 
- static inline void
+ 	wait_local_port_listen "${PEER_NS}" 12345 udp
 -- 
 2.39.5
 
