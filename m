@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E643BB0DBD2
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80670B0DCBA
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9951B1C83136
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C36E5464CB
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C842E2F10;
-	Tue, 22 Jul 2025 13:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8C41A2C25;
+	Tue, 22 Jul 2025 14:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBnj2GzO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="creGQ68x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82972E4271;
-	Tue, 22 Jul 2025 13:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7867BA32;
+	Tue, 22 Jul 2025 14:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192386; cv=none; b=j3jIiI6PAYAALhpSoYtoXHgKbo1+ridYMAnrRXS/WzOf00qhnZlfLtUJyFUftAVSyCSFmTJS2hVwKqqgde2QqebItvF/aeBuyIbJbA6Q53ZwMofkA59KjnyWTraO+xXfTDaXQhhPoSTU1ghUrQsEBz8f6KqcKcMaNQ8RphKEut0=
+	t=1753192953; cv=none; b=Ces4tdkyPLK3ijKy5Xy8egYMdzMZHKBMWJtB8DW7Zig3ownfT/3KWLi340LTl48fybe5Sl/myQiyQ/jCpXuuD11yJVVpiXFnes73EOnxZYYksFYYszH1iOwQ+izA19pnxIVFwT3qpb6Xe9JAik5JHXjR2SbuzNsGVYOnNdlPuAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192386; c=relaxed/simple;
-	bh=yZbx8LQVfYE7HKagayAGNv+9cP4Pj5vxUmQO/9oevwY=;
+	s=arc-20240116; t=1753192953; c=relaxed/simple;
+	bh=CcL7P1twAhA3kEvl4gE0fU96TvNy+DRuOXHkRMVrKlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLl0zjzSViZoHxOU/jjr6Zh0yw6rkidfpPyBQU4NTefi4B66tHJCUOyfDDXwFMpYOIwzv9t4wAomExCXIZiNa9yYzNJHbguB83KW1Q1B0g3QElFC2/74M6P+ZVH3M+2cpR5TQDc003Hqp+sGJcjpMkHlY9EJDS2Wjotg9zMz6CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBnj2GzO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1096C4CEF1;
-	Tue, 22 Jul 2025 13:53:05 +0000 (UTC)
+	 MIME-Version; b=H4zAMzHJaPedTmv2hU5UYZaDbIBu1j/dX3um7FEOEioeSRqrTr070b5loU1ttAuV+K41QGNmyb+J3VBON7qR2+866LCXgq2g6oDSJlVd4feFHTpIu3AdATfAXeuuXLdpcPPF3T3lnYgHNGdBwjPIqGbjoazBCp+d0ILFfhYVRBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=creGQ68x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A217BC4CEEB;
+	Tue, 22 Jul 2025 14:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192386;
-	bh=yZbx8LQVfYE7HKagayAGNv+9cP4Pj5vxUmQO/9oevwY=;
+	s=korg; t=1753192953;
+	bh=CcL7P1twAhA3kEvl4gE0fU96TvNy+DRuOXHkRMVrKlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBnj2GzO0AQgZ1oTEI1HNiuW8SYhAL/1NDFm7FcoSQWtYqAOYe/lH2c1h0HxOEhtj
-	 eu+Leso3lPvcpmtPPtN12MTp4oAPWWsLjDX+R6NUby1BMdqOLXLvkgBhA2VOVLM638
-	 JaGvI9/czYEBiBJfI2yvqSAU7h17jrimlMkhhy3o=
+	b=creGQ68x5H9/NykskFiW4muWkw11N6LfqmvYVYaq0pu7aERYzQKhVUzr0giafWJOi
+	 vbk5TiyVLG6XXBLN3425OSLWkf1gXnx0idahyvf1ZnnfIugHYUvNB/dOqCvv8VfEZ5
+	 lBjp+nfg8Mr2i4zGjLfmAsaPDlPVGmgw1dX94PYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 033/111] dmaengine: nbpfaxi: Fix memory corruption in probe()
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 064/158] smb: client: fix use-after-free in crypt_message when using async crypto
 Date: Tue, 22 Jul 2025 15:44:08 +0200
-Message-ID: <20250722134334.641437016@linuxfoundation.org>
+Message-ID: <20250722134343.145088225@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
 
-commit 188c6ba1dd925849c5d94885c8bbdeb0b3dcf510 upstream.
+commit b220bed63330c0e1733dc06ea8e75d5b9962b6b6 upstream.
 
-The nbpf->chan[] array is allocated earlier in the nbpf_probe() function
-and it has "num_channels" elements.  These three loops iterate one
-element farther than they should and corrupt memory.
+The CVE-2024-50047 fix removed asynchronous crypto handling from
+crypt_message(), assuming all crypto operations are synchronous.
+However, when hardware crypto accelerators are used, this can cause
+use-after-free crashes:
 
-The changes to the second loop are more involved.  In this case, we're
-copying data from the irqbuf[] array into the nbpf->chan[] array.  If
-the data in irqbuf[i] is the error IRQ then we skip it, so the iterators
-are not in sync.  I added a check to ensure that we don't go beyond the
-end of the irqbuf[] array.  I'm pretty sure this can't happen, but it
-seemed harmless to add a check.
+  crypt_message()
+    // Allocate the creq buffer containing the req
+    creq = smb2_get_aead_req(..., &req);
 
-On the other hand, after the loop has ended there is a check to ensure
-that the "chan" iterator is where we expect it to be.  In the original
-code we went one element beyond the end of the array so the iterator
-wasn't in the correct place and it would always return -EINVAL.  However,
-now it will always be in the correct place.  I deleted the check since
-we know the result.
+    // Async encryption returns -EINPROGRESS immediately
+    rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
 
+    // Free creq while async operation is still in progress
+    kvfree_sensitive(creq, ...);
+
+Hardware crypto modules often implement async AEAD operations for
+performance. When crypto_aead_encrypt/decrypt() returns -EINPROGRESS,
+the operation completes asynchronously. Without crypto_wait_req(),
+the function immediately frees the request buffer, leading to crashes
+when the driver later accesses the freed memory.
+
+This results in a use-after-free condition when the hardware crypto
+driver later accesses the freed request structure, leading to kernel
+crashes with NULL pointer dereferences.
+
+The issue occurs because crypto_alloc_aead() with mask=0 doesn't
+guarantee synchronous operation. Even without CRYPTO_ALG_ASYNC in
+the mask, async implementations can be selected.
+
+Fix by restoring the async crypto handling:
+- DECLARE_CRYPTO_WAIT(wait) for completion tracking
+- aead_request_set_callback() for async completion notification
+- crypto_wait_req() to wait for operation completion
+
+This ensures the request buffer isn't freed until the crypto operation
+completes, whether synchronous or asynchronous, while preserving the
+CVE-2024-50047 fix.
+
+Fixes: b0abcd65ec54 ("smb: client: fix UAF in async decryption")
+Link: https://lore.kernel.org/all/8b784a13-87b0-4131-9ff9-7a8993538749@huaweicloud.com/
 Cc: stable@vger.kernel.org
-Fixes: b45b262cefd5 ("dmaengine: add a driver for AMBA AXI NBPF DMAC IP cores")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/b13c5225-7eff-448c-badc-a2c98e9bcaca@sabinyo.mountain
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/nbpfaxi.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ fs/smb/client/smb2ops.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/dma/nbpfaxi.c
-+++ b/drivers/dma/nbpfaxi.c
-@@ -1351,7 +1351,7 @@ static int nbpf_probe(struct platform_de
- 	if (irqs == 1) {
- 		eirq = irqbuf[0];
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -4342,6 +4342,7 @@ crypt_message(struct TCP_Server_Info *se
+ 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
+ 	struct aead_request *req;
+ 	u8 *iv;
++	DECLARE_CRYPTO_WAIT(wait);
+ 	unsigned int crypt_len = le32_to_cpu(tr_hdr->OriginalMessageSize);
+ 	void *creq;
+ 	size_t sensitive_size;
+@@ -4392,7 +4393,11 @@ crypt_message(struct TCP_Server_Info *se
+ 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
+ 	aead_request_set_ad(req, assoc_data_len);
  
--		for (i = 0; i <= num_channels; i++)
-+		for (i = 0; i < num_channels; i++)
- 			nbpf->chan[i].irq = irqbuf[0];
- 	} else {
- 		eirq = platform_get_irq_byname(pdev, "error");
-@@ -1361,16 +1361,15 @@ static int nbpf_probe(struct platform_de
- 		if (irqs == num_channels + 1) {
- 			struct nbpf_channel *chan;
+-	rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
++	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
++				  crypto_req_done, &wait);
++
++	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req)
++				: crypto_aead_decrypt(req), &wait);
  
--			for (i = 0, chan = nbpf->chan; i <= num_channels;
-+			for (i = 0, chan = nbpf->chan; i < num_channels;
- 			     i++, chan++) {
- 				/* Skip the error IRQ */
- 				if (irqbuf[i] == eirq)
- 					i++;
-+				if (i >= ARRAY_SIZE(irqbuf))
-+					return -EINVAL;
- 				chan->irq = irqbuf[i];
- 			}
--
--			if (chan != nbpf->chan + num_channels)
--				return -EINVAL;
- 		} else {
- 			/* 2 IRQs and more than one channel */
- 			if (irqbuf[0] == eirq)
-@@ -1378,7 +1377,7 @@ static int nbpf_probe(struct platform_de
- 			else
- 				irq = irqbuf[0];
- 
--			for (i = 0; i <= num_channels; i++)
-+			for (i = 0; i < num_channels; i++)
- 				nbpf->chan[i].irq = irq;
- 		}
- 	}
+ 	if (!rc && enc)
+ 		memcpy(&tr_hdr->Signature, sign, SMB2_SIGNATURE_SIZE);
 
 
 
