@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E73B0DC8C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA2CB0DBD1
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36F49188C2D7
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 856811C830F7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4B9548EE;
-	Tue, 22 Jul 2025 14:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E212EA481;
+	Tue, 22 Jul 2025 13:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8V/kIVS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvNIt6Oq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA8E19CCEC;
-	Tue, 22 Jul 2025 14:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918932E8E0F;
+	Tue, 22 Jul 2025 13:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192861; cv=none; b=fxeACqKM+AMjFdcpFNx1rtNV3wv7zWSWGFd1HFGTFO5adPn22aY1jht2s7/4QFsSn3y561z8QfDQP2ID2D47s2jRST+m4YwS3jSGoHccobT7971H6EGivJUWgvmr+ITIOovzePxI1bs8WyyHU2L0JNzdOop8q1Mbjji/sfDv3Is=
+	t=1753192379; cv=none; b=ffdy5JUccP+g9SyEB+F9GU6AeFhJ7fDUBAO4VE44uwmyaFOrQYz8gM+IPApPVsLBVePlZrc/sGjm/8bJjPvemDqiwyVadomrmmpn1y63Q4GMy7Id51ogm/ltgBt2yfNQRzpRtuF4WIHgFZNltCJbee4bbSfoGDOywMxi/9CPapQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192861; c=relaxed/simple;
-	bh=kObZWpVuih0GwKAfG6p2wN3TrgzYJ5jWzt2Kw6IxE4Q=;
+	s=arc-20240116; t=1753192379; c=relaxed/simple;
+	bh=z6boaLnBtAGq6NS4BydHJdFiJC9De/hrZptA4uKLHZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+SGcIOgyGw1LiF3EehVBeBb5uuKRaIkhgBQZV84mbJfXUjPecipwoh9gXS1ITsIjZNq418iUnGozVKyzuu95qqY9ogM+ei9vNTeOtv1h8x+OFURmzu6JnMIUORuwKaxu+CJpLlJiUjJVYxC7MCsPwXVfcu7G9wL20EOrQL8y+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8V/kIVS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A46C4CEEB;
-	Tue, 22 Jul 2025 14:01:00 +0000 (UTC)
+	 MIME-Version; b=G+rCvma8+A0mJGGuOj38rLqe9s+jEWHp7LEh8Thu+CcaY50f+IqsZeR56zKgJmldlw/AVTHMSVx742Wv/m/sfG+PFaf91mjnXfn6uGn9Y7NlHF6OH+LcVsTg4UmPRq3XgNxPca5g5m3npU2MJHFt0u2tvrhbCBbd9urcMqt7tUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvNIt6Oq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F95C4CEEB;
+	Tue, 22 Jul 2025 13:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192861;
-	bh=kObZWpVuih0GwKAfG6p2wN3TrgzYJ5jWzt2Kw6IxE4Q=;
+	s=korg; t=1753192379;
+	bh=z6boaLnBtAGq6NS4BydHJdFiJC9De/hrZptA4uKLHZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8V/kIVSwc2c1jggPIQZ/MPx5XnXa/Nxl1yiY72KtomdPEC5RT7ENWo0SC7bJcfs7
-	 njbEkG4hbVEcXFDI1+cFRUWRB7NVxEvjvsK9yYvLPEnBIWVvy41hnxUj3lo7rb6GRc
-	 yceWx2n+c5mUtW3t/PUUnK0HyYho84rBsfOSiKB8=
+	b=vvNIt6OqcEJEeghzXv4BVEt25y55vyzH5W5gNv+8Dfqa09SSx5M6AB/CkdFGMrvln
+	 VKSnNXXTCqLFqYAt7Giu3JUl0rwKOS7kdzMPeaMUtGyfHttwp/579rh+f/BH+JezQQ
+	 e+pKVVidSRod3tG/cvgdI6yFfp9MHO+UmVQHvfPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cb96ec476fb4914445c9@syzkaller.appspotmail.com,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.12 080/158] comedi: Fix use of uninitialized data in insn_rw_emulate_bits()
+	Fabio Estevam <festevam@denx.de>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 049/111] iio: adc: max1363: Reorder mode_list[] entries
 Date: Tue, 22 Jul 2025 15:44:24 +0200
-Message-ID: <20250722134343.761622174@linuxfoundation.org>
+Message-ID: <20250722134335.214879920@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Fabio Estevam <festevam@denx.de>
 
-commit e9cb26291d009243a4478a7ffb37b3a9175bfce9 upstream.
+commit 8d8d7c1dbc46aa07a76acab7336a42ddd900be10 upstream.
 
-For Comedi `INSN_READ` and `INSN_WRITE` instructions on "digital"
-subdevices (subdevice types `COMEDI_SUBD_DI`, `COMEDI_SUBD_DO`, and
-`COMEDI_SUBD_DIO`), it is common for the subdevice driver not to have
-`insn_read` and `insn_write` handler functions, but to have an
-`insn_bits` handler function for handling Comedi `INSN_BITS`
-instructions.  In that case, the subdevice's `insn_read` and/or
-`insn_write` function handler pointers are set to point to the
-`insn_rw_emulate_bits()` function by `__comedi_device_postconfig()`.
+The IIO core issues warnings when a scan mask is a subset of a previous
+entry in the available_scan_masks array.
 
-For `INSN_WRITE`, `insn_rw_emulate_bits()` currently assumes that the
-supplied `data[0]` value is a valid copy from user memory.  It will at
-least exist because `do_insnlist_ioctl()` and `do_insn_ioctl()` in
-"comedi_fops.c" ensure at lease `MIN_SAMPLES` (16) elements are
-allocated.  However, if `insn->n` is 0 (which is allowable for
-`INSN_READ` and `INSN_WRITE` instructions, then `data[0]` may contain
-uninitialized data, and certainly contains invalid data, possibly from a
-different instruction in the array of instructions handled by
-`do_insnlist_ioctl()`.  This will result in an incorrect value being
-written to the digital output channel (or to the digital input/output
-channel if configured as an output), and may be reflected in the
-internal saved state of the channel.
+On a board using a MAX11601, the following warning is observed:
 
-Fix it by returning 0 early if `insn->n` is 0, before reaching the code
-that accesses `data[0]`.  Previously, the function always returned 1 on
-success, but it is supposed to be the number of data samples actually
-read or written up to `insn->n`, which is 0 in this case.
+max1363 1-0064: available_scan_mask 7 subset of 6. Never used
 
-Reported-by: syzbot+cb96ec476fb4914445c9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cb96ec476fb4914445c9
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707153355.82474-1-abbotti@mev.co.uk
+This occurs because the entries in the max11607_mode_list[] array are not
+ordered correctly. To fix this, reorder the entries so that no scan mask is
+a subset of an earlier one.
+
+While at it, reorder the mode_list[] arrays for other supported chips as
+well, to prevent similar warnings on different variants.
+
+Note fixes tag dropped as these were introduced over many commits a long
+time back and the side effect until recently was a reduction in sampling
+rate due to reading too many channels when only a few were desired.
+Now we have a sanity check that reports this error but that is not
+where the issue was introduced.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://patch.msgid.link/20250516173900.677821-2-festevam@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/adc/max1363.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/drivers/comedi/drivers.c
-+++ b/drivers/comedi/drivers.c
-@@ -615,6 +615,9 @@ static int insn_rw_emulate_bits(struct c
- 	unsigned int _data[2];
- 	int ret;
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -531,23 +531,23 @@ static const struct iio_chan_spec max136
+ /* Applies to max1236, max1237 */
+ static const enum max1363_modes max1236_mode_list[] = {
+ 	_s0, _s1, _s2, _s3,
+-	s0to1, s0to2, s0to3,
++	s0to1, s0to2, s2to3, s0to3,
+ 	d0m1, d2m3, d1m0, d3m2,
+ 	d0m1to2m3, d1m0to3m2,
+-	s2to3,
+ };
  
-+	if (insn->n == 0)
-+		return 0;
-+
- 	memset(_data, 0, sizeof(_data));
- 	memset(&_insn, 0, sizeof(_insn));
- 	_insn.insn = INSN_BITS;
+ /* Applies to max1238, max1239 */
+ static const enum max1363_modes max1238_mode_list[] = {
+ 	_s0, _s1, _s2, _s3, _s4, _s5, _s6, _s7, _s8, _s9, _s10, _s11,
+ 	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6,
++	s6to7, s6to8, s6to9, s6to10, s6to11,
+ 	s0to7, s0to8, s0to9, s0to10, s0to11,
+ 	d0m1, d2m3, d4m5, d6m7, d8m9, d10m11,
+ 	d1m0, d3m2, d5m4, d7m6, d9m8, d11m10,
+-	d0m1to2m3, d0m1to4m5, d0m1to6m7, d0m1to8m9, d0m1to10m11,
+-	d1m0to3m2, d1m0to5m4, d1m0to7m6, d1m0to9m8, d1m0to11m10,
+-	s6to7, s6to8, s6to9, s6to10, s6to11,
+-	d6m7to8m9, d6m7to10m11, d7m6to9m8, d7m6to11m10,
++	d0m1to2m3, d0m1to4m5, d0m1to6m7, d6m7to8m9,
++	d0m1to8m9, d6m7to10m11, d0m1to10m11, d1m0to3m2,
++	d1m0to5m4, d1m0to7m6, d7m6to9m8, d1m0to9m8,
++	d7m6to11m10, d1m0to11m10,
+ };
+ 
+ #define MAX1363_12X_CHANS(bits) {				\
+@@ -583,16 +583,15 @@ static const struct iio_chan_spec max123
+ 
+ static const enum max1363_modes max11607_mode_list[] = {
+ 	_s0, _s1, _s2, _s3,
+-	s0to1, s0to2, s0to3,
+-	s2to3,
++	s0to1, s0to2, s2to3,
++	s0to3,
+ 	d0m1, d2m3, d1m0, d3m2,
+ 	d0m1to2m3, d1m0to3m2,
+ };
+ 
+ static const enum max1363_modes max11608_mode_list[] = {
+ 	_s0, _s1, _s2, _s3, _s4, _s5, _s6, _s7,
+-	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6, s0to7,
+-	s6to7,
++	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6, s6to7, s0to7,
+ 	d0m1, d2m3, d4m5, d6m7,
+ 	d1m0, d3m2, d5m4, d7m6,
+ 	d0m1to2m3, d0m1to4m5, d0m1to6m7,
 
 
 
