@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-163782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38062B0DB80
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BEAB0DC29
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DC733AD894
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B0115674B3
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35A92E1722;
-	Tue, 22 Jul 2025 13:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522072EA49D;
+	Tue, 22 Jul 2025 13:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYIOrPCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZbBBpSx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EBA7BAEC;
-	Tue, 22 Jul 2025 13:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A532EA496;
+	Tue, 22 Jul 2025 13:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192192; cv=none; b=he45rMkphRectTZcQKcmPvh9BLLOiWWc2KnU3pf6NuAdNdfk4THFOal8a3prJ34CD4XZ+58QZG20WhN2cbqpDFdvxfe/2W+4IdtDHug3lHaAK6B1ijpmLiQoRgD39EB5gJruJyu9VLGMtO6DVU3zvrFh67tWjSw90uQqGEKEFbQ=
+	t=1753192529; cv=none; b=QuWzV2lw2J0rgzwjRn8A2RJSfQKFqUtVPp6LQQRY8sNbwckcgX4hvkpI7J1mRoB1V9Gc9Enmi7fXDjlmAEJOXKU0pIz9BXnY/ZXkhOQ4aGlE0qE/9euf5o710zOlgh9vbfAnONDrDTe1p8aCm4mAiDdV2Vfl29lHtbCTD5QI+HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192192; c=relaxed/simple;
-	bh=2iH50VZ4vgxBT4f5geBZ4cFQezLtBbLtRN8fJeobOkU=;
+	s=arc-20240116; t=1753192529; c=relaxed/simple;
+	bh=kkZowPFony1EetxwSrOGQLd0J8dDrcEAcAwd3hSJlwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gMBz/XAtFBVB5yMicpmd8WdwO7aYjR+V0rouCYCK86ePrpCw190iwAfpEglng/Bky738ncwoR167KHJK3ZUndHQ1qKrAgyJ+kqE6D+VgNc1DKHpSTwZR4bR6/iVI1vZzqPFJJAvKysdorMId9TjmTqZxzYu51En/P5ir3ejEaoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYIOrPCO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD02C4CEEB;
-	Tue, 22 Jul 2025 13:49:51 +0000 (UTC)
+	 MIME-Version; b=ipp60Rma3wK240jJ7H2JP2y69tB9n7pFxKxdEfy3GMGUSJCgGEYpfIWMNIp52QdOLXfxkpsvXQBmoZMbnE4wQzs5gGtcqGqnOA71MfYgD3j/tg9LyYwpx67us2FlE69uANA11+dwlxXUNp25rFOmwfo06dhHKuvGf4/HK9fqLXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZbBBpSx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36963C4CEF5;
+	Tue, 22 Jul 2025 13:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192192;
-	bh=2iH50VZ4vgxBT4f5geBZ4cFQezLtBbLtRN8fJeobOkU=;
+	s=korg; t=1753192528;
+	bh=kkZowPFony1EetxwSrOGQLd0J8dDrcEAcAwd3hSJlwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oYIOrPCODBmJBQf8QaPnlijN6psyFjZh/M9V5FedyMxrJcGCUZDgLvXIN/1CWpstu
-	 MTx8xQCB4rTUQnyw989ndJPMWApohEXCH6gRTUln9R0uJfFcdJxvng0Oe/pOX5x/RV
-	 E0cP/hDJguFS3fmfO8ojl+OqTIoDBYQDEi+c43MY=
+	b=YZbBBpSxpQIRXKJPcdLfCMj5YZ5WoER1ToSmj3EaYng+EzCeSxE4DGPzcVdw1P2aE
+	 Xtmc3srmeN0yN7QoPw7d/3JywOtcF2R8bTTfkfiuNCqGptsrYD42RS9OqpmHKyHkA0
+	 P7UJmbqboEk8QpCeeIjw5Nyc09LslNvJZ3Iwlfzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: [PATCH 6.1 71/79] usb: hub: Fix flushing of delayed work used for post resume purposes
+	Zhong Jiawei <zhongjiawei1@huawei.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 092/111] Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"
 Date: Tue, 22 Jul 2025 15:45:07 +0200
-Message-ID: <20250722134330.988984754@linuxfoundation.org>
+Message-ID: <20250722134336.848935716@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 9bd9c8026341f75f25c53104eb7e656e357ca1a2 upstream.
+[ Upstream commit 14a67b42cb6f3ab66f41603c062c5056d32ea7dd ]
 
-Delayed work that prevents USB3 hubs from runtime-suspending too early
-needed to be flushed in hub_quiesce() to resolve issues detected on
-QC SC8280XP CRD board during suspend resume testing.
+This reverts commit cff5f49d433fcd0063c8be7dd08fa5bf190c6c37.
 
-This flushing did however trigger new issues on Raspberry Pi 3B+, which
-doesn't have USB3 ports, and doesn't queue any post resume delayed work.
+Commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
+frozen") modified the cgroup_freezing() logic to verify that the FROZEN
+flag is not set, affecting the return value of the freezing() function,
+in order to address a warning in __thaw_task.
 
-The flushed 'hub->init_work' item is used for several purposes, and
-is originally initialized with a 'NULL' work function. The work function
-is also changed on the fly, which may contribute to the issue.
+A race condition exists that may allow tasks to escape being frozen. The
+following scenario demonstrates this issue:
 
-Solve this by creating a dedicated delayed work item for post resume work,
-and flush that delayed work in hub_quiesce()
+CPU 0 (get_signal path)		CPU 1 (freezer.state reader)
+try_to_freeze			read freezer.state
+__refrigerator			freezer_read
+				update_if_frozen
+WRITE_ONCE(current->__state, TASK_FROZEN);
+				...
+				/* Task is now marked frozen */
+				/* frozen(task) == true */
+				/* Assuming other tasks are frozen */
+				freezer->state |= CGROUP_FROZEN;
+/* freezing(current) returns false */
+/* because cgroup is frozen (not freezing) */
+break out
+__set_current_state(TASK_RUNNING);
+/* Bug: Task resumes running when it should remain frozen */
 
-Cc: stable <stable@kernel.org>
-Fixes: a49e1e2e785f ("usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm")
-Reported-by: Mark Brown <broonie@kernel.org>
-Closes: https://lore.kernel.org/linux-usb/aF5rNp1l0LWITnEB@finisterre.sirena.org.uk
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # SC8280XP CRD
-Tested-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250627164348.3982628-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The existing !frozen(p) check in __thaw_task makes the
+WARN_ON_ONCE(freezing(p)) warning redundant. Removing this warning enables
+reverting the commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check
+if not frozen") to resolve the issue.
+
+The warning has been removed in the previous patch. This patch revert the
+commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
+frozen") to complete the fix.
+
+Fixes: cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not frozen")
+Reported-by: Zhong Jiawei<zhongjiawei1@huawei.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |   21 ++++++++-------------
- drivers/usb/core/hub.h |    1 +
- 2 files changed, 9 insertions(+), 13 deletions(-)
+ kernel/cgroup/legacy_freezer.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -1044,12 +1044,11 @@ int usb_remove_device(struct usb_device
- 
- enum hub_activation_type {
- 	HUB_INIT, HUB_INIT2, HUB_INIT3,		/* INITs must come first */
--	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME, HUB_POST_RESUME,
-+	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME,
- };
- 
- static void hub_init_func2(struct work_struct *ws);
- static void hub_init_func3(struct work_struct *ws);
--static void hub_post_resume(struct work_struct *ws);
- 
- static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
+diff --git a/kernel/cgroup/legacy_freezer.c b/kernel/cgroup/legacy_freezer.c
+index a3e13e6d5ee40..bee2f9ea5e4ae 100644
+--- a/kernel/cgroup/legacy_freezer.c
++++ b/kernel/cgroup/legacy_freezer.c
+@@ -66,15 +66,9 @@ static struct freezer *parent_freezer(struct freezer *freezer)
+ bool cgroup_freezing(struct task_struct *task)
  {
-@@ -1073,12 +1072,6 @@ static void hub_activate(struct usb_hub
- 		goto init3;
- 	}
+ 	bool ret;
+-	unsigned int state;
  
--	if (type == HUB_POST_RESUME) {
--		usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
--		hub_put(hub);
--		return;
--	}
--
- 	hub_get(hub);
+ 	rcu_read_lock();
+-	/* Check if the cgroup is still FREEZING, but not FROZEN. The extra
+-	 * !FROZEN check is required, because the FREEZING bit is not cleared
+-	 * when the state FROZEN is reached.
+-	 */
+-	state = task_freezer(task)->state;
+-	ret = (state & CGROUP_FREEZING) && !(state & CGROUP_FROZEN);
++	ret = task_freezer(task)->state & CGROUP_FREEZING;
+ 	rcu_read_unlock();
  
- 	/* The superspeed hub except for root hub has to use Hub Depth
-@@ -1332,8 +1325,8 @@ static void hub_activate(struct usb_hub
- 		usb_autopm_get_interface_no_resume(
- 			to_usb_interface(hub->intfdev));
- 
--		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
--		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
-+		queue_delayed_work(system_power_efficient_wq,
-+				   &hub->post_resume_work,
- 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
- 		return;
- 	}
-@@ -1358,9 +1351,10 @@ static void hub_init_func3(struct work_s
- 
- static void hub_post_resume(struct work_struct *ws)
- {
--	struct usb_hub *hub = container_of(ws, struct usb_hub, init_work.work);
-+	struct usb_hub *hub = container_of(ws, struct usb_hub, post_resume_work.work);
- 
--	hub_activate(hub, HUB_POST_RESUME);
-+	usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
-+	hub_put(hub);
- }
- 
- enum hub_quiescing_type {
-@@ -1388,7 +1382,7 @@ static void hub_quiesce(struct usb_hub *
- 
- 	/* Stop hub_wq and related activity */
- 	del_timer_sync(&hub->irq_urb_retry);
--	flush_delayed_work(&hub->init_work);
-+	flush_delayed_work(&hub->post_resume_work);
- 	usb_kill_urb(hub->urb);
- 	if (hub->has_indicators)
- 		cancel_delayed_work_sync(&hub->leds);
-@@ -1947,6 +1941,7 @@ static int hub_probe(struct usb_interfac
- 	hub->hdev = hdev;
- 	INIT_DELAYED_WORK(&hub->leds, led_work);
- 	INIT_DELAYED_WORK(&hub->init_work, NULL);
-+	INIT_DELAYED_WORK(&hub->post_resume_work, hub_post_resume);
- 	INIT_WORK(&hub->events, hub_event);
- 	INIT_LIST_HEAD(&hub->onboard_hub_devs);
- 	spin_lock_init(&hub->irq_urb_lock);
---- a/drivers/usb/core/hub.h
-+++ b/drivers/usb/core/hub.h
-@@ -69,6 +69,7 @@ struct usb_hub {
- 	u8			indicator[USB_MAXCHILDREN];
- 	struct delayed_work	leds;
- 	struct delayed_work	init_work;
-+	struct delayed_work	post_resume_work;
- 	struct work_struct      events;
- 	spinlock_t		irq_urb_lock;
- 	struct timer_list	irq_urb_retry;
+ 	return ret;
+-- 
+2.39.5
+
 
 
 
