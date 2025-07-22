@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-164176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93623B0DE03
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:22:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B13B0DE19
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47B58188820E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A670188DE18
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCE82EE27B;
-	Tue, 22 Jul 2025 14:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08A92EF2A2;
+	Tue, 22 Jul 2025 14:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lmt2KzNe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1EH8uwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF152EAB7C;
-	Tue, 22 Jul 2025 14:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B15A2EF2AB;
+	Tue, 22 Jul 2025 14:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193497; cv=none; b=ccuScJch1roG9J4fLJmyJeiHFteJYBHs311y5f5p3FYdYOx8Y40CaUweW7Vfv2MtOH5b8wukhmCLQbe8yZxXpvIU6cgfF6xlFMn97k3qKjT9cIdrzCabte+eY6avLwVheshYPnRiX4hZ907ZoT+FbcVnIMdTvR0TddQll/H59GI=
+	t=1753193533; cv=none; b=tN7JTAPnYBnAvR+rsRC8SY9kW5Afa0HnR3U9PcgFidDsU7c5MdIp7fUo+mtFfHgFfXcCvnjqONHgeSuGFGrYKJjZWbymerCZxYvPfObb72sudT0TWLKaPgrW9vR/GM3Tz49bh+xmPoIcHiCd6Db5O5rwJvE7spoDd3DUv5AKGc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193497; c=relaxed/simple;
-	bh=zquXD6Dh7rXxMzEnpGtZ9x5BagHVcgX2b0nU9OJ3lUw=;
+	s=arc-20240116; t=1753193533; c=relaxed/simple;
+	bh=T8htSP4ij5ViPvNTr/tKvPr5uQhvnN0P8qkaB9T0v0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUf2tQ2F8OKPrUCuGvqokpmoGwrU6ND9Sybv5Qa5OfR8c5/3w5FFsUTlWiRibHP9t5bZ4bGPB2ZTPGyV+seQSbg49dlzcX088X6AtHJW5JJA8/H8Ffa5Rxl94ce/PcYnkYGm7NmGSVKqYNxmv0ZGuf1bANVmtzt9bsDnZAxgZKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lmt2KzNe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F110C4CEEB;
-	Tue, 22 Jul 2025 14:11:36 +0000 (UTC)
+	 MIME-Version; b=t3b8dmyF9YEmFwpfCaD+YfsiKzi635Rj97hPb4tDiV9bTAgQmpyoM6H+yZWUPabssgrt0XkxeaIrzc7BaJvch8eKJVbFIFrpAAbbUE9YAj9jUP6/5Sga6QP+LmbrYHSjr0oDSCHdSXYvE9OdoUcRQdlnvTfyCELvI7X8vFDac3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1EH8uwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD28FC4CEEB;
+	Tue, 22 Jul 2025 14:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193497;
-	bh=zquXD6Dh7rXxMzEnpGtZ9x5BagHVcgX2b0nU9OJ3lUw=;
+	s=korg; t=1753193533;
+	bh=T8htSP4ij5ViPvNTr/tKvPr5uQhvnN0P8qkaB9T0v0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lmt2KzNelE4cLV7oBPK58fl638q+3AcXbAhkD4Z/MI8I1xKdF4Oe1RhLKY04czQUJ
-	 /h1ToGpP46xIzdSwwcQtifEjvGHmQy5y+yLoW/XZmUaNugahdm/GkuaI/WbRhswnaU
-	 uSCWng851AUtsedg/DN0iK6N/5v0xCP+tfz0cPRM=
+	b=x1EH8uwFPTZNiIHBDQR7+uqFknGr/OOsavWmsOUSc9gZnLi7Ln0/rn8zyMDXrjgl4
+	 kA345Zu41o3ze6rmiRmmkNwWLhHtASrmq23ps61cSN/a6ps8Em/sbZbyQJSGqtXOLR
+	 7tb091yPx2ECDyp3mGqm6Mxctobnqnc0Xge0bRKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
 	Frank Li <Frank.Li@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 103/187] arm64: dts: imx95-15x15-evk: fix the overshoot issue of NETC
-Date: Tue, 22 Jul 2025 15:44:33 +0200
-Message-ID: <20250722134349.605462758@linuxfoundation.org>
+Subject: [PATCH 6.15 104/187] arm64: dts: imx95: Correct the DMA interrupter number of pcie0_ep
+Date: Tue, 22 Jul 2025 15:44:34 +0200
+Message-ID: <20250722134349.640493594@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -67,65 +68,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit e0322ac2a3cf7013b7af73b1293670f1e163c92e ]
+[ Upstream commit 61f1065272ea3721c20c4c0a6877d346b0e237c3 ]
 
-The overshoot of MDIO, MDC, ENET1_TDx and ENET2_TDx is too high, so
-reduce the drive strength of these pins.
+Correct the DMA interrupter number of pcie0_ep from 317 to 311.
 
-Fixes: e3e8b199aff8 ("arm64: dts: imx95: Add imx95-15x15-evk support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Fixes: 3b1d5deb29ff ("arm64: dts: imx95: add pcie[0,1] and pcie-ep[0,1] support")
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx95-15x15-evk.dts    | 20 +++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/freescale/imx95.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
-index 514f2429dcbc2..3ab4d27de1a22 100644
---- a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
-@@ -558,17 +558,17 @@
- &scmi_iomuxc {
- 	pinctrl_emdio: emdiogrp {
- 		fsl,pins = <
--			IMX95_PAD_ENET2_MDC__NETCMIX_TOP_NETC_MDC		0x57e
--			IMX95_PAD_ENET2_MDIO__NETCMIX_TOP_NETC_MDIO		0x97e
-+			IMX95_PAD_ENET2_MDC__NETCMIX_TOP_NETC_MDC		0x50e
-+			IMX95_PAD_ENET2_MDIO__NETCMIX_TOP_NETC_MDIO		0x90e
- 		>;
- 	};
- 
- 	pinctrl_enetc0: enetc0grp {
- 		fsl,pins = <
--			IMX95_PAD_ENET1_TD3__NETCMIX_TOP_ETH0_RGMII_TD3		0x57e
--			IMX95_PAD_ENET1_TD2__NETCMIX_TOP_ETH0_RGMII_TD2		0x57e
--			IMX95_PAD_ENET1_TD1__NETCMIX_TOP_ETH0_RGMII_TD1		0x57e
--			IMX95_PAD_ENET1_TD0__NETCMIX_TOP_ETH0_RGMII_TD0		0x57e
-+			IMX95_PAD_ENET1_TD3__NETCMIX_TOP_ETH0_RGMII_TD3		0x50e
-+			IMX95_PAD_ENET1_TD2__NETCMIX_TOP_ETH0_RGMII_TD2		0x50e
-+			IMX95_PAD_ENET1_TD1__NETCMIX_TOP_ETH0_RGMII_TD1		0x50e
-+			IMX95_PAD_ENET1_TD0__NETCMIX_TOP_ETH0_RGMII_TD0		0x50e
- 			IMX95_PAD_ENET1_TX_CTL__NETCMIX_TOP_ETH0_RGMII_TX_CTL	0x57e
- 			IMX95_PAD_ENET1_TXC__NETCMIX_TOP_ETH0_RGMII_TX_CLK	0x58e
- 			IMX95_PAD_ENET1_RX_CTL__NETCMIX_TOP_ETH0_RGMII_RX_CTL	0x57e
-@@ -582,10 +582,10 @@
- 
- 	pinctrl_enetc1: enetc1grp {
- 		fsl,pins = <
--			IMX95_PAD_ENET2_TD3__NETCMIX_TOP_ETH1_RGMII_TD3		0x57e
--			IMX95_PAD_ENET2_TD2__NETCMIX_TOP_ETH1_RGMII_TD2		0x57e
--			IMX95_PAD_ENET2_TD1__NETCMIX_TOP_ETH1_RGMII_TD1		0x57e
--			IMX95_PAD_ENET2_TD0__NETCMIX_TOP_ETH1_RGMII_TD0		0x57e
-+			IMX95_PAD_ENET2_TD3__NETCMIX_TOP_ETH1_RGMII_TD3		0x50e
-+			IMX95_PAD_ENET2_TD2__NETCMIX_TOP_ETH1_RGMII_TD2		0x50e
-+			IMX95_PAD_ENET2_TD1__NETCMIX_TOP_ETH1_RGMII_TD1		0x50e
-+			IMX95_PAD_ENET2_TD0__NETCMIX_TOP_ETH1_RGMII_TD0		0x50e
- 			IMX95_PAD_ENET2_TX_CTL__NETCMIX_TOP_ETH1_RGMII_TX_CTL	0x57e
- 			IMX95_PAD_ENET2_TXC__NETCMIX_TOP_ETH1_RGMII_TX_CLK	0x58e
- 			IMX95_PAD_ENET2_RX_CTL__NETCMIX_TOP_ETH1_RGMII_RX_CTL	0x57e
+diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+index 59f057ba6fa7f..7ad9adfb26533 100644
+--- a/arch/arm64/boot/dts/freescale/imx95.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+@@ -1678,7 +1678,7 @@
+ 			      <0x9 0 1 0>;
+ 			reg-names = "dbi","atu", "dbi2", "app", "dma", "addr_space";
+ 			num-lanes = <1>;
+-			interrupts = <GIC_SPI 317 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 311 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "dma";
+ 			clocks = <&scmi_clk IMX95_CLK_HSIO>,
+ 				 <&scmi_clk IMX95_CLK_HSIOPLL>,
 -- 
 2.39.5
 
