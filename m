@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-163830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC87B0DBEA
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E643BB0DBD2
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727653A5983
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9951B1C83136
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A3C2EAB71;
-	Tue, 22 Jul 2025 13:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C842E2F10;
+	Tue, 22 Jul 2025 13:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y16dfSB0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBnj2GzO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C6E2EA16A;
-	Tue, 22 Jul 2025 13:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82972E4271;
+	Tue, 22 Jul 2025 13:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192348; cv=none; b=NXj7EOsjcHFjGc/Icsuw3/VCUe3FDpwpxxdH+xqmyvS2AlOkRF7Bq02YzO9WAykiOXtuRTpR7u7zpcmRRJMsBvDA9hlue6WjZRGgsJFBMzgWO0Ds0ABA20+WQMDAmHfCviEiF/61jHfMioEBCX5cjK84ahXksbuHXWzeZYSLrog=
+	t=1753192386; cv=none; b=j3jIiI6PAYAALhpSoYtoXHgKbo1+ridYMAnrRXS/WzOf00qhnZlfLtUJyFUftAVSyCSFmTJS2hVwKqqgde2QqebItvF/aeBuyIbJbA6Q53ZwMofkA59KjnyWTraO+xXfTDaXQhhPoSTU1ghUrQsEBz8f6KqcKcMaNQ8RphKEut0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192348; c=relaxed/simple;
-	bh=0fo1TnrZrhHq2338lwMoyWuXELZPcx7vt5iUbpYYf8Y=;
+	s=arc-20240116; t=1753192386; c=relaxed/simple;
+	bh=yZbx8LQVfYE7HKagayAGNv+9cP4Pj5vxUmQO/9oevwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFu/wnxMdB81zJ0MRw18v83R19H9b6TGxbIvp+pzEL2bbgEHxSUGdfoM1Wn2P4N3/bgB2bHj2/+DhqIJHYgs0x/jc8aUEmCNr/iBJ488fukLqD8NdtpONa1wY9oYJx6ipAZtgDqKDo6jSD2Zr+BLpsavFpzTyvrAY6IrLoPVieU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y16dfSB0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8E2C4CEEB;
-	Tue, 22 Jul 2025 13:52:27 +0000 (UTC)
+	 MIME-Version; b=CLl0zjzSViZoHxOU/jjr6Zh0yw6rkidfpPyBQU4NTefi4B66tHJCUOyfDDXwFMpYOIwzv9t4wAomExCXIZiNa9yYzNJHbguB83KW1Q1B0g3QElFC2/74M6P+ZVH3M+2cpR5TQDc003Hqp+sGJcjpMkHlY9EJDS2Wjotg9zMz6CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBnj2GzO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1096C4CEF1;
+	Tue, 22 Jul 2025 13:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192348;
-	bh=0fo1TnrZrhHq2338lwMoyWuXELZPcx7vt5iUbpYYf8Y=;
+	s=korg; t=1753192386;
+	bh=yZbx8LQVfYE7HKagayAGNv+9cP4Pj5vxUmQO/9oevwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y16dfSB04q+FvXOX8fuWGpsHMniAG3kVUwfV23OCTMEJNaSKP+9s7VGLz7DiCEDMc
-	 xqu+ujrqc7JCOJ9zFysDsC8FDiWU4bZUBJEuP5BkYm2Dc75SyObv8obh8cqIn4Ro3Q
-	 zq85dBFP6iqlmzccJvq4XdjRYHaAnwumLbYf1cKw=
+	b=HBnj2GzO0AQgZ1oTEI1HNiuW8SYhAL/1NDFm7FcoSQWtYqAOYe/lH2c1h0HxOEhtj
+	 eu+Leso3lPvcpmtPPtN12MTp4oAPWWsLjDX+R6NUby1BMdqOLXLvkgBhA2VOVLM638
+	 JaGvI9/czYEBiBJfI2yvqSAU7h17jrimlMkhhy3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	LongJun Tang <tanglongjun@kylinos.cn>,
-	Yun Lu <luyun@kylinos.cn>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 032/111] af_packet: fix soft lockup issue caused by tpacket_snd()
-Date: Tue, 22 Jul 2025 15:44:07 +0200
-Message-ID: <20250722134334.602295080@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 033/111] dmaengine: nbpfaxi: Fix memory corruption in probe()
+Date: Tue, 22 Jul 2025 15:44:08 +0200
+Message-ID: <20250722134334.641437016@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
 References: <20250722134333.375479548@linuxfoundation.org>
@@ -68,104 +65,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 55f0bfc0370539213202f4ce1a07615327ac4713 upstream.
+commit 188c6ba1dd925849c5d94885c8bbdeb0b3dcf510 upstream.
 
-When MSG_DONTWAIT is not set, the tpacket_snd operation will wait for
-pending_refcnt to decrement to zero before returning. The pending_refcnt
-is decremented by 1 when the skb->destructor function is called,
-indicating that the skb has been successfully sent and needs to be
-destroyed.
+The nbpf->chan[] array is allocated earlier in the nbpf_probe() function
+and it has "num_channels" elements.  These three loops iterate one
+element farther than they should and corrupt memory.
 
-If an error occurs during this process, the tpacket_snd() function will
-exit and return error, but pending_refcnt may not yet have decremented to
-zero. Assuming the next send operation is executed immediately, but there
-are no available frames to be sent in tx_ring (i.e., packet_current_frame
-returns NULL), and skb is also NULL, the function will not execute
-wait_for_completion_interruptible_timeout() to yield the CPU. Instead, it
-will enter a do-while loop, waiting for pending_refcnt to be zero. Even
-if the previous skb has completed transmission, the skb->destructor
-function can only be invoked in the ksoftirqd thread (assuming NAPI
-threading is enabled). When both the ksoftirqd thread and the tpacket_snd
-operation happen to run on the same CPU, and the CPU trapped in the
-do-while loop without yielding, the ksoftirqd thread will not get
-scheduled to run. As a result, pending_refcnt will never be reduced to
-zero, and the do-while loop cannot exit, eventually leading to a CPU soft
-lockup issue.
+The changes to the second loop are more involved.  In this case, we're
+copying data from the irqbuf[] array into the nbpf->chan[] array.  If
+the data in irqbuf[i] is the error IRQ then we skip it, so the iterators
+are not in sync.  I added a check to ensure that we don't go beyond the
+end of the irqbuf[] array.  I'm pretty sure this can't happen, but it
+seemed harmless to add a check.
 
-In fact, skb is true for all but the first iterations of that loop, and
-as long as pending_refcnt is not zero, even if incremented by a previous
-call, wait_for_completion_interruptible_timeout() should be executed to
-yield the CPU, allowing the ksoftirqd thread to be scheduled. Therefore,
-the execution condition of this function should be modified to check if
-pending_refcnt is not zero, instead of check skb.
+On the other hand, after the loop has ended there is a check to ensure
+that the "chan" iterator is where we expect it to be.  In the original
+code we went one element beyond the end of the array so the iterator
+wasn't in the correct place and it would always return -EINVAL.  However,
+now it will always be in the correct place.  I deleted the check since
+we know the result.
 
--	if (need_wait && skb) {
-+	if (need_wait && packet_read_pending(&po->tx_ring)) {
-
-As a result, the judgment conditions are duplicated with the end code of
-the while loop, and packet_read_pending() is a very expensive function.
-Actually, this loop can only exit when ph is NULL, so the loop condition
-can be changed to while (1), and in the "ph = NULL" branch, if the
-subsequent condition of if is not met,  the loop can break directly. Now,
-the loop logic remains the same as origin but is clearer and more obvious.
-
-Fixes: 89ed5b519004 ("af_packet: Block execution of tasks waiting for transmit to complete in AF_PACKET")
-Cc: stable@kernel.org
-Suggested-by: LongJun Tang <tanglongjun@kylinos.cn>
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: stable@vger.kernel.org
+Fixes: b45b262cefd5 ("dmaengine: add a driver for AMBA AXI NBPF DMAC IP cores")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/b13c5225-7eff-448c-badc-a2c98e9bcaca@sabinyo.mountain
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c |   23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ drivers/dma/nbpfaxi.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2852,15 +2852,21 @@ static int tpacket_snd(struct packet_soc
- 		ph = packet_current_frame(po, &po->tx_ring,
- 					  TP_STATUS_SEND_REQUEST);
- 		if (unlikely(ph == NULL)) {
--			if (need_wait && skb) {
-+			/* Note: packet_read_pending() might be slow if we
-+			 * have to call it as it's per_cpu variable, but in
-+			 * fast-path we don't have to call it, only when ph
-+			 * is NULL, we need to check the pending_refcnt.
-+			 */
-+			if (need_wait && packet_read_pending(&po->tx_ring)) {
- 				timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
- 				if (timeo <= 0) {
- 					err = !timeo ? -ETIMEDOUT : -ERESTARTSYS;
- 					goto out_put;
- 				}
--			}
--			/* check for additional frames */
--			continue;
-+				/* check for additional frames */
-+				continue;
-+			} else
-+				break;
- 		}
+--- a/drivers/dma/nbpfaxi.c
++++ b/drivers/dma/nbpfaxi.c
+@@ -1351,7 +1351,7 @@ static int nbpf_probe(struct platform_de
+ 	if (irqs == 1) {
+ 		eirq = irqbuf[0];
  
- 		skb = NULL;
-@@ -2949,14 +2955,7 @@ tpacket_error:
- 		}
- 		packet_increment_head(&po->tx_ring);
- 		len_sum += tp_len;
--	} while (likely((ph != NULL) ||
--		/* Note: packet_read_pending() might be slow if we have
--		 * to call it as it's per_cpu variable, but in fast-path
--		 * we already short-circuit the loop with the first
--		 * condition, and luckily don't have to go that path
--		 * anyway.
--		 */
--		 (need_wait && packet_read_pending(&po->tx_ring))));
-+	} while (1);
+-		for (i = 0; i <= num_channels; i++)
++		for (i = 0; i < num_channels; i++)
+ 			nbpf->chan[i].irq = irqbuf[0];
+ 	} else {
+ 		eirq = platform_get_irq_byname(pdev, "error");
+@@ -1361,16 +1361,15 @@ static int nbpf_probe(struct platform_de
+ 		if (irqs == num_channels + 1) {
+ 			struct nbpf_channel *chan;
  
- 	err = len_sum;
- 	goto out_put;
+-			for (i = 0, chan = nbpf->chan; i <= num_channels;
++			for (i = 0, chan = nbpf->chan; i < num_channels;
+ 			     i++, chan++) {
+ 				/* Skip the error IRQ */
+ 				if (irqbuf[i] == eirq)
+ 					i++;
++				if (i >= ARRAY_SIZE(irqbuf))
++					return -EINVAL;
+ 				chan->irq = irqbuf[i];
+ 			}
+-
+-			if (chan != nbpf->chan + num_channels)
+-				return -EINVAL;
+ 		} else {
+ 			/* 2 IRQs and more than one channel */
+ 			if (irqbuf[0] == eirq)
+@@ -1378,7 +1377,7 @@ static int nbpf_probe(struct platform_de
+ 			else
+ 				irq = irqbuf[0];
+ 
+-			for (i = 0; i <= num_channels; i++)
++			for (i = 0; i < num_channels; i++)
+ 				nbpf->chan[i].irq = irq;
+ 		}
+ 	}
 
 
 
