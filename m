@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-164255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ECF5B0DE83
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:28:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C3AB0DE8D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4282586335
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:20:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32FD9AC1F1C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1A728C852;
-	Tue, 22 Jul 2025 14:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC552ED16A;
+	Tue, 22 Jul 2025 14:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTesIAfQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+wlqNlc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E847D2EA748;
-	Tue, 22 Jul 2025 14:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3C42EA16D;
+	Tue, 22 Jul 2025 14:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193758; cv=none; b=qkx8hl8Jh3nidd8uKUwiJSR2mfQXBE8fIn75WBzHwqe9LjM0VBRdxOHmXrpyR+KsxpN/WaGk8kjFslTbvb8Hiy2wYR0ezOfZ+UtjIRUjkPBtfdkVDoIuPjyA/R2gv6YB9+NkwMyeI8MBWLOts5cdSkkpYkscU+FjvKuu9RnfCLM=
+	t=1753193760; cv=none; b=k2ZjkL+hkYiY8OnxqsNNWbmxvrCrqiPu/L9JFnh1R+hKc6gtMoUxMS7eoinUuVjXYylFjrA6p4BUUJ6t+/6NRUlj4yn/M1I0zS39v5Zt9j+lbvVBAE7AkryqXDhRwxfnjz38BnfXF9pm6ilebGUq50HGWKQ0ASA+Vh/KySapCeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193758; c=relaxed/simple;
-	bh=JYBZmLSxZ8ZVqG0CEtMSedj+89s3PP+su4WjpgzH8nA=;
+	s=arc-20240116; t=1753193760; c=relaxed/simple;
+	bh=2E2QIngg8etpdIB8mS2bpx7x89rPN0T0vYC+WhxclRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKQOloCHN1GpdorpJHhjeJxwSPSsyDYmOekCiN04WrieHMlDWjYidXPbDZ2fU3hqG/SMG5mqdntwY27NVHNxHpSaN3xV29qzsvi8sW6MEgsfB6e6SMRbefQaWxJ/l7PY+xho0REynBGZ/U/GaqceMMOp3nGWdtfEExhWlY29qv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTesIAfQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABAFC4CEEB;
-	Tue, 22 Jul 2025 14:15:56 +0000 (UTC)
+	 MIME-Version; b=rCdFaavTHJ5aLI+LTB7bcjeW+otzMXL4XazhIatHI9rRFwk742JId+eQa0yhysricz2Ko0vWhqikrCEgSLx3q1carKV7wVQVm6xPlixMFXye7I3UIpI35FERLQv/C771ectbBypAqbcjKHmkoavYfFjAFhjs+5Le6y8ZOBwe/mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+wlqNlc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1ECC4CEEB;
+	Tue, 22 Jul 2025 14:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193757;
-	bh=JYBZmLSxZ8ZVqG0CEtMSedj+89s3PP+su4WjpgzH8nA=;
+	s=korg; t=1753193760;
+	bh=2E2QIngg8etpdIB8mS2bpx7x89rPN0T0vYC+WhxclRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTesIAfQP7Ndzy+NOi/8DWez5pNYocUw2gJ10TtHbFbRjJ8iyAWIbkAi73A9dlwVN
-	 Hl2cqmfP7kDutrgW9DBUxrqKc8WGnii5wMDqn8yPUoEL1NtAPz2aJ0dqMZDhExvA9D
-	 gIgDdsneWk4k9UJbeBEvnjl6EPunhTZrXo4cMb44=
+	b=g+wlqNlcXUanoSkTSESHpS723iwOepmTu3aAJNHDGRalmCldeQnfPXi93OgImqroV
+	 dV/96w5yIHRXRR4WYcqzKub95jxKaf6r3SrY+BoYZ1lBOhGrxrggOUKf0lP1de3naf
+	 BXC4Jw5tuxPPFyz0/uArVD7NAa/CGCWNPpWMFfKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -52,9 +52,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	samba-technical@lists.samba.org,
 	Stefan Metzmacher <metze@samba.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 176/187] smb: smbdirect: add smbdirect.h with public structures
-Date: Tue, 22 Jul 2025 15:45:46 +0200
-Message-ID: <20250722134352.327222366@linuxfoundation.org>
+Subject: [PATCH 6.15 177/187] smb: smbdirect: add smbdirect_socket.h
+Date: Tue, 22 Jul 2025 15:45:47 +0200
+Message-ID: <20250722134352.363245084@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -75,46 +75,76 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefan Metzmacher <metze@samba.org>
 
-commit 7e136a718633b2c54764e185f3bfccf0763fc1dd upstream.
+commit 22234e37d7e97652cb53133009da5e14793d3c10 upstream.
 
-Will be used in client and server in the next commits.
+This abstracts the common smbdirect layer.
+
+Currently with just a few things in it,
+but that will change over time until everything is
+in common.
+
+Will be used in client and server in the next commits
 
 Cc: Steve French <smfrench@gmail.com>
 Cc: Tom Talpey <tom@talpey.com>
 Cc: Long Li <longli@microsoft.com>
 Cc: Namjae Jeon <linkinjeon@kernel.org>
 Cc: Hyunchul Lee <hyc.lee@gmail.com>
-CC: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
+Cc: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
 Cc: linux-cifs@vger.kernel.org
 Cc: samba-technical@lists.samba.org
 Signed-off-by: Stefan Metzmacher <metze@samba.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/common/smbdirect/smbdirect.h |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
- create mode 100644 fs/smb/common/smbdirect/smbdirect.h
+ fs/smb/common/smbdirect/smbdirect_socket.h |   41 +++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+ create mode 100644 fs/smb/common/smbdirect/smbdirect_socket.h
 
 --- /dev/null
-+++ b/fs/smb/common/smbdirect/smbdirect.h
-@@ -0,0 +1,17 @@
++++ b/fs/smb/common/smbdirect/smbdirect_socket.h
+@@ -0,0 +1,41 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +/*
-+ *   Copyright (C) 2017, Microsoft Corporation.
-+ *   Copyright (C) 2018, LG Electronics.
++ *   Copyright (c) 2025 Stefan Metzmacher
 + */
 +
-+#ifndef __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_H__
-+#define __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_H__
++#ifndef __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__
++#define __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__
 +
-+/* SMB-DIRECT buffer descriptor V1 structure [MS-SMBD] 2.2.3.1 */
-+struct smbdirect_buffer_descriptor_v1 {
-+	__le64 offset;
-+	__le32 token;
-+	__le32 length;
-+} __packed;
++enum smbdirect_socket_status {
++	SMBDIRECT_SOCKET_CREATED,
++	SMBDIRECT_SOCKET_CONNECTING,
++	SMBDIRECT_SOCKET_CONNECTED,
++	SMBDIRECT_SOCKET_NEGOTIATE_FAILED,
++	SMBDIRECT_SOCKET_DISCONNECTING,
++	SMBDIRECT_SOCKET_DISCONNECTED,
++	SMBDIRECT_SOCKET_DESTROYED
++};
 +
-+#endif /* __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_H__ */
++struct smbdirect_socket {
++	enum smbdirect_socket_status status;
++
++	/* RDMA related */
++	struct {
++		struct rdma_cm_id *cm_id;
++	} rdma;
++
++	/* IB verbs related */
++	struct {
++		struct ib_pd *pd;
++		struct ib_cq *send_cq;
++		struct ib_cq *recv_cq;
++
++		/*
++		 * shortcuts for rdma.cm_id->{qp,device};
++		 */
++		struct ib_qp *qp;
++		struct ib_device *dev;
++	} ib;
++};
++
++#endif /* __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__ */
 
 
 
