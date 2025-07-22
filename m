@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-164002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FD1B0DCC4
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20844B0DB95
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D3BA3AA24A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BF467AE046
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD57F2EA161;
-	Tue, 22 Jul 2025 14:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7342EA480;
+	Tue, 22 Jul 2025 13:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JprOyn4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gl4M99j5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0CB2EA140;
-	Tue, 22 Jul 2025 14:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78E92EA498;
+	Tue, 22 Jul 2025 13:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192919; cv=none; b=rtZ0YnTwVJJGmf09w1JM7fr6R2Y5I2XHyZXk0mcLqTnCORreAmKxehv3ye275Huc7OuqZHKRnnwM0JZhMGqbShPzkDfLO95H/BTt44ZbJ9lzfe2ux2fNAVBpRUo1oNGZyOZMV/pafRyIFjAGnP8h+YDDmzA9f5k8ekQsQPFsXXc=
+	t=1753192246; cv=none; b=MejfatYegP/7hOq2mHUtRqn7636X9iVHV9pZoXzODkqeuGikdb8GUf6X22c9KNewSCUT10i+fNvz0S0XZZ8il/7tw2DcqI7dI+QK8jylVxojAUIE54JjyEFKH9xF/DUCzFR4b/Ywt8/3qHBuO7NuG3a12xBlHwpRS8QO/Ll7jb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192919; c=relaxed/simple;
-	bh=DOMmhkmk/LwxDOIu6xtrfJkXM1x0H5XPyunchhfOdX8=;
+	s=arc-20240116; t=1753192246; c=relaxed/simple;
+	bh=y4tZxu4lmuF5dL+STKmGsfV2e4bpoIMPmaMXf41ZcsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMlEurX/kKnnMExcB821ob5iE2gkSM+lyLcEdRkxk5J9xN4e6D179KfvJ5eVnXZYDFh1jLx1reLls25r7QIlzZkJheBSW3SI9svc3ldqCVyqeonslVlhiqERWXVJnWb19a65jpYue2wUQa3UjKXfm6io1TZqH8kEdO1rx7dB7eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JprOyn4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D525BC4CEF6;
-	Tue, 22 Jul 2025 14:01:58 +0000 (UTC)
+	 MIME-Version; b=g5iKYbRw/eRVPnIDb5bZmFEYExb+G0UXsUUBj+b13vg3r79qY2KiXn4FHWuTVUaspRvbhGGoa4vcjwjRmyjiYCNWGJrMBDmubL1XL+REolI/z5nhp5JN56N/W1ne8CqUOr6DNXNMSw0dUG2G2BlnMi+npWF5BuW0FzwlPNnXUYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gl4M99j5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281CEC4CEEB;
+	Tue, 22 Jul 2025 13:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192919;
-	bh=DOMmhkmk/LwxDOIu6xtrfJkXM1x0H5XPyunchhfOdX8=;
+	s=korg; t=1753192246;
+	bh=y4tZxu4lmuF5dL+STKmGsfV2e4bpoIMPmaMXf41ZcsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JprOyn4oOGQhlFtZs1mH9VuxcpcNoBVYkKr2FDLmoiNV/YvQb5VjAnZHFMDk15nUz
-	 bTAByTQcI8GjGuGoq2VYDoQUhHIaYOH+QXd9I8f1JTbfA11zrem5p9rpPJFQhaGUGO
-	 FkGPl44INkgJeUpypuz+QaZ7aXRMmQ5DAw/hLujY=
+	b=gl4M99j5gyf8K6f+k0D4os0lJaykn40xahpkP7o42JuqX4kp7MubCRsP27Zm7aNxJ
+	 /hAVGMqTm813xa1sMpQnfJN1w7q0uO3k54qx02gfVezY/CCd2qINic/240JbIixOUn
+	 KPijfgLCv1yafluQlxxYnToCbBuRE7MrRjU4J/NI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/158] nvme: fix inconsistent RCU list manipulation in nvme_ns_add_to_ctrl_list()
+Subject: [PATCH 6.1 44/79] net: emaclite: Fix missing pointer increment in aligned_read()
 Date: Tue, 22 Jul 2025 15:44:40 +0200
-Message-ID: <20250722134344.340290366@linuxfoundation.org>
+Message-ID: <20250722134329.998333681@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 80d7762e0a42307ee31b21f090e21349b98c14f6 ]
+[ Upstream commit 7727ec1523d7973defa1dff8f9c0aad288d04008 ]
 
-When inserting a namespace into the controller's namespace list, the
-function uses list_add_rcu() when the namespace is inserted in the middle
-of the list, but falls back to a regular list_add() when adding at the
-head of the list.
+Add missing post-increment operators for byte pointers in the
+loop that copies remaining bytes in xemaclite_aligned_read().
+Without the increment, the same byte was written repeatedly
+to the destination.
+This update aligns with xemaclite_aligned_write()
 
-This inconsistency could lead to race conditions during concurrent
-access, as users might observe a partially updated list. Fix this by
-consistently using list_add_rcu() in both code paths to ensure proper
-RCU protection throughout the entire function.
-
-Fixes: be647e2c76b2 ("nvme: use srcu for iterating namespace list")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: bb81b2ddfa19 ("net: add Xilinx emac lite device driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250710173849.2381003-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 2 +-
+ drivers/net/ethernet/xilinx/xilinx_emaclite.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index abd42598fc78b..2ca14f2b7a0b1 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3854,7 +3854,7 @@ static void nvme_ns_add_to_ctrl_list(struct nvme_ns *ns)
- 			return;
- 		}
+diff --git a/drivers/net/ethernet/xilinx/xilinx_emaclite.c b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
+index ad2c30d9a4824..fb0e42ddb3adb 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
++++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
+@@ -285,7 +285,7 @@ static void xemaclite_aligned_read(u32 *src_ptr, u8 *dest_ptr,
+ 
+ 		/* Read the remaining data */
+ 		for (; length > 0; length--)
+-			*to_u8_ptr = *from_u8_ptr;
++			*to_u8_ptr++ = *from_u8_ptr++;
  	}
--	list_add(&ns->list, &ns->ctrl->namespaces);
-+	list_add_rcu(&ns->list, &ns->ctrl->namespaces);
  }
  
- static void nvme_alloc_ns(struct nvme_ctrl *ctrl, struct nvme_ns_info *info)
 -- 
 2.39.5
 
