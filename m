@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-164084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81D5B0DD2E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B774B0DD6C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:14:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56F2B170271
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:06:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084F7188AFB1
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490B8289369;
-	Tue, 22 Jul 2025 14:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90862E4988;
+	Tue, 22 Jul 2025 14:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEOCh06X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kl7mTI8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EB62C9A;
-	Tue, 22 Jul 2025 14:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58AC2ED165;
+	Tue, 22 Jul 2025 14:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193195; cv=none; b=mbimVo52fs/33KF7BxCFlw/SAFo56jo7F6V+k6g36oW/YA4wqXbSuqq+Tm6ZYNVwLqQtRKMs2nePMDOVO7gIrd7CLakfdVtDid98rxgVYwS7pCITApAXiuS5e46FFLlOkl8yiDHvnPfM/WCtFFgLQ/VRR9W53m834MflRuKuLkI=
+	t=1753193231; cv=none; b=gB8OUVWy65dgD8Yg44M0h4Y26dDHppL58sG1iLD2MLHJesov8BhtdTkNsraihZQ5/8vvOGcWHWStp9q7Sp0oJXrEQ7mYVw06vsPfu6KoulbZTnThjEMlZcVfJjhotSltC7u3HH1a/RfBdd96KxB3xM8QV6UjKLTorzmLx8hCk2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193195; c=relaxed/simple;
-	bh=RiN4d4Ycmw5V6Ba+v1jxNcBzzyUVpjfdWA1dBUNUM6M=;
+	s=arc-20240116; t=1753193231; c=relaxed/simple;
+	bh=7zAbo2CbCB1oKB23wQh5uTFnCrITzi2tfy6k6L9JsnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+LBPg0katzv6ZG7V6vKIDvqxbe6KowlF1aRSES9mq0WGCtjBCIjuhJbiJnIciAXxoJ4ztYMW0zAIGjxEIBpJBdemBocEt/se7G+x4JSsLx3YUp+aBfL3WZXEiWJXDPH7o+Ks2x+HvNAlx+amSk5vU1wqYOqC/sLMAK1lB4QB+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEOCh06X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85027C4CEEB;
-	Tue, 22 Jul 2025 14:06:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BZGA+YhetVlD/drYBHxU6xMx5R6mKSXPWw9i0MfIKUR3MNWz/DE4DGW0aL9lDJPCTX+Lr0LJMDld4GrMoSHXPnAhSHYzjeXwGKR5covtDd6u3NmY+HXkvLmnhAIrbr9sziCXVH7sVf8keJQ78IoEcPNUJGsgqFNcErNRypoqr1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kl7mTI8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0895C4CEEB;
+	Tue, 22 Jul 2025 14:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193194;
-	bh=RiN4d4Ycmw5V6Ba+v1jxNcBzzyUVpjfdWA1dBUNUM6M=;
+	s=korg; t=1753193231;
+	bh=7zAbo2CbCB1oKB23wQh5uTFnCrITzi2tfy6k6L9JsnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EEOCh06XVmLOKW9TB2d5Yj79W+Wpce6uh0kWfdnX/jLYM0MZ9Bzqp2nmDzQKFuIHj
-	 axjjmhMZYPhimBdG/R+osjAyVNHETeITvNlPcd8MfmaWsxqhs8RdTEbw77Pu9f2vGS
-	 Otroo6N46FeB9Mo1RQro2kkIpziRapuJBhnpn5yc=
+	b=kl7mTI8w9V/6glKcXT18bf+Z1Qv3+zrlKXWvZBMtO0fg2bWN8fwhmYelhsJt6zyKp
+	 bg8YJt0VCQT8hfVcRBrDBB36uGR1uIRm/H0kX4C03WsCF0l6qoTqWRdj/tscxI2s6o
+	 8GNA0tcMAaMuYAcLixFufKVGkzPIkF6FOCKFVBVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Haotien Hsu <haotienh@nvidia.com>,
 	Wayne Chang <waynec@nvidia.com>,
 	Jon Hunter <jonathanh@nvidia.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.15 002/187] phy: tegra: xusb: Decouple CYA_TRK_CODE_UPDATE_ON_IDLE from trk_hw_mode
-Date: Tue, 22 Jul 2025 15:42:52 +0200
-Message-ID: <20250722134345.852278994@linuxfoundation.org>
+Subject: [PATCH 6.15 003/187] phy: tegra: xusb: Disable periodic tracking on Tegra234
+Date: Tue, 22 Jul 2025 15:42:53 +0200
+Message-ID: <20250722134345.889908795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -60,82 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Haotien Hsu <haotienh@nvidia.com>
 
-commit 24c63c590adca310e0df95c77cf7aa5552bc3fc5 upstream.
+commit 7be54870e9bf5ed0b4fe2a23b41a630527882de5 upstream.
 
-The logic that drives the pad calibration values resides in the
-controller reset domain and so the calibration values are only being
-captured when the controller is out of reset. However, by clearing the
-CYA_TRK_CODE_UPDATE_ON_IDLE bit, the calibration values can be set
-while the controller is in reset.
-
-The CYA_TRK_CODE_UPDATE_ON_IDLE bit was previously cleared based on the
-trk_hw_mode flag, but this dependency is not necessary. Instead,
-introduce a new flag, trk_update_on_idle, to independently control this
-bit.
+Periodic calibration updates (~10µs) may overlap with transfers when
+PCIe NVMe SSD, LPDDR, and USB2 devices operate simultaneously, causing
+crosstalk on Tegra234 devices. Hence disable periodic calibration updates
+and make this a one-time calibration.
 
 Fixes: d8163a32ca95 ("phy: tegra: xusb: Add Tegra234 support")
 Cc: stable@vger.kernel.org
+Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
 Signed-off-by: Wayne Chang <waynec@nvidia.com>
 Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
 Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20250519090929.3132456-2-waynec@nvidia.com
+Link: https://lore.kernel.org/r/20250519090929.3132456-3-waynec@nvidia.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |   14 ++++++++------
- drivers/phy/tegra/xusb.h          |    1 +
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/phy/tegra/xusb-tegra186.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/drivers/phy/tegra/xusb-tegra186.c
 +++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -648,14 +648,15 @@ static void tegra186_utmi_bias_pad_power
- 		udelay(100);
- 	}
- 
--	if (padctl->soc->trk_hw_mode) {
--		value = padctl_readl(padctl, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
--		value |= USB2_TRK_HW_MODE;
-+	value = padctl_readl(padctl, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
-+	if (padctl->soc->trk_update_on_idle)
- 		value &= ~CYA_TRK_CODE_UPDATE_ON_IDLE;
--		padctl_writel(padctl, value, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
--	} else {
-+	if (padctl->soc->trk_hw_mode)
-+		value |= USB2_TRK_HW_MODE;
-+	padctl_writel(padctl, value, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
-+
-+	if (!padctl->soc->trk_hw_mode)
- 		clk_disable_unprepare(priv->usb2_trk_clk);
--	}
- }
- 
- static void tegra186_utmi_bias_pad_power_off(struct tegra_xusb_padctl *padctl)
-@@ -1726,6 +1727,7 @@ const struct tegra_xusb_padctl_soc tegra
+@@ -1726,7 +1726,7 @@ const struct tegra_xusb_padctl_soc tegra
+ 	.num_supplies = ARRAY_SIZE(tegra194_xusb_padctl_supply_names),
  	.supports_gen2 = true,
  	.poll_trk_completed = true,
- 	.trk_hw_mode = true,
-+	.trk_update_on_idle = true,
+-	.trk_hw_mode = true,
++	.trk_hw_mode = false,
+ 	.trk_update_on_idle = true,
  	.supports_lp_cfg_en = true,
  };
- EXPORT_SYMBOL_GPL(tegra234_xusb_padctl_soc);
---- a/drivers/phy/tegra/xusb.h
-+++ b/drivers/phy/tegra/xusb.h
-@@ -434,6 +434,7 @@ struct tegra_xusb_padctl_soc {
- 	bool need_fake_usb3_port;
- 	bool poll_trk_completed;
- 	bool trk_hw_mode;
-+	bool trk_update_on_idle;
- 	bool supports_lp_cfg_en;
- };
- 
 
 
 
