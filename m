@@ -1,97 +1,117 @@
-Return-Path: <stable+bounces-163699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD25CB0D996
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:28:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5D2B0D992
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB590AA6924
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 12:25:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F8AE170F65
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 12:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B662DBF5E;
-	Tue, 22 Jul 2025 12:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XctsAK66"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171032E9730;
+	Tue, 22 Jul 2025 12:25:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1576B2DFA46
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 12:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F9B288536
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 12:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753187096; cv=none; b=LBjCbI0Q3dBXunb7BljB9DWZ/CbHPlYDiRJeauZ4HFzl79Lu5LFBGAklISQtFSdTOe2T3T8Yw3zseO/4fvjixz99vSueJy1SKpHl8Q2xPvNuBfvPwrvs09OoceTW4arEDPkElJNLhDWEFGgpQL4zNlZPd4vBJUoLg2Hlak6hugA=
+	t=1753187157; cv=none; b=oU3h+HO/NkkC+nuVHbEfFibxRB7q6Jt7HCywCw9DUUKwCk7vKUMIGXeTgfevXIhK2CMnoaJ97V3kMnQhIWON82L3obowXsXBq7CEOwO0mHNvc+VuHAAt+kiccmwPWYl1SP3fpAJTB3oNE82hhbcy+miWhn3uWV5DTxEO7x6Pz4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753187096; c=relaxed/simple;
-	bh=WiXKy5ptxkrWJXF6pWhUKgvUKbO5IKBJubU3m0HK9Uc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P1Vyzj2sclSiMkGdqf+QaXRiXaDGklujcYl4WURvGIKqrBuK0IB+FSHzrN8xcvl+y0GGTtgUryswELti1Avz4BsNpf6VqcltStqyGGnGbyJbiJydP4yasHQtWKJ8pnWQrf8rlyevBoBini1p8HL17ZC6ORJUOYEegWzqkSP3tDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XctsAK66; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08484C4CEEB;
-	Tue, 22 Jul 2025 12:24:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753187095;
-	bh=WiXKy5ptxkrWJXF6pWhUKgvUKbO5IKBJubU3m0HK9Uc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XctsAK663FsKf4+9TMbYeRWB9ka+64cDFyMbFzP0SMqt7GPYgkUouyEg34aJsMBM1
-	 hp8sAAq/UJ/Y4Es8f0ipsNKMHpsPhw+FgYf3Swc/wX2WHJ3V7+8JTAdtIpMd26UkwM
-	 bbeIELfO6yXXLADzJ+EjdjlEdtDGsj9+63fiREnM=
-Date: Tue, 22 Jul 2025 14:24:52 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-	Wang Wendy <wendy.wang@intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH 6.1.y 1/7] powercap: intel_rapl: Support per Interface
- rapl_defaults
-Message-ID: <2025072248-sixteen-thirsting-0586@gregkh>
-References: <2025070817-quaintly-lend-80a3@gregkh>
- <20250720234705.764310-1-sashal@kernel.org>
+	s=arc-20240116; t=1753187157; c=relaxed/simple;
+	bh=D6FDS4tV/qp9T+iWQPVwgr5V1Y5A2r4HIjfCBMAzdws=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R+r3UMqMeXJDrOw2AdCmQsIRceLi6VUnTkMNJDqVnaeO5cOrJI93/gEdUwaJA6QCi0piGGS0+CFYwlsFNHZ8kwRLcsiTJS77fECKh5OqfmcxnCU4tnG8gGOy42H+EX29ejMDtKxMShWioXEOl18gDqTirVlvEE0Dv32YEOg1KxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4bmc1Z1DwzzKHMc0
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 20:25:54 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id DA07F1A0BC5
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 20:25:52 +0800 (CST)
+Received: from [10.67.109.79] (unknown [10.67.109.79])
+	by APP2 (Coremail) with SMTP id Syh0CgDXlrhNg39otFZlBA--.2363S2;
+	Tue, 22 Jul 2025 20:25:50 +0800 (CST)
+Message-ID: <ebec24b9-e65e-4050-a960-d127b7215543@huaweicloud.com>
+Date: Tue, 22 Jul 2025 20:25:49 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250720234705.764310-1-sashal@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "Revert "cgroup_freezer: cgroup_freezing: Check if not
+ frozen"" has been added to the 6.15-stable tree
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: chenridong <chenridong@huawei.com>, stable@vger.kernel.org,
+ "stable-commits@vger.kernel.org Sasha Levin" <sashal@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+References: <20250721125251.814862-1-sashal@kernel.org>
+ <1bafc8a024da4a95b28c02430f3d0c9d@huawei.com>
+ <3f80facc-8bef-4fc7-ac7e-59279906a707@huaweicloud.com>
+ <2025072222-effective-jumble-c817@gregkh>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <2025072222-effective-jumble-c817@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:Syh0CgDXlrhNg39otFZlBA--.2363S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GF47tF13tryDXF4rAF1fZwb_yoWDtFcEg3
+	WxuF92k3yDJF1UGFs2gFs0kryDWa12grn5Jr47ArsrA3s8Zay5AF4fXF9agw13Aws2yF1D
+	Zw1FqF4kWw1YgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbz8YFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
+	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
+	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUwxhLUUUUU
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 
-On Sun, Jul 20, 2025 at 07:46:59PM -0400, Sasha Levin wrote:
-> From: Zhang Rui <rui.zhang@intel.com>
-> 
-> [ Upstream commit e8e28c2af16b279b6c37d533e1e73effb197cf2e ]
-> 
-> rapl_defaults is Interface specific.
-> 
-> Although current MSR and MMIO Interface share the same rapl_defaults,
-> new Interface like TPMI need its own rapl_defaults callbacks.
-> 
-> Save the rapl_defaults information in the Interface private structure.
-> 
-> No functional change.
-> 
-> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-> Tested-by: Wang Wendy <wendy.wang@intel.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Stable-dep-of: 964209202ebe ("powercap: intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be changed")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/powercap/intel_rapl_common.c | 46 ++++++++++++++++++++--------
->  include/linux/intel_rapl.h           |  2 ++
->  2 files changed, 35 insertions(+), 13 deletions(-)
 
-Your patch series here missed 3 fixes for it, and they didn't backport
-cleanly:
-	081690e94118 ("powercap: intel_rapl: Fix invalid setting of Power Limit 4")
-	a60ec4485f1c ("powercap: intel_rapl: Downgrade BIOS locked limits pr_warn() to pr_debug()")
-	95f6580352a7 ("powercap: intel_rapl: Fix off by one in get_rpi()")
 
-So I'm going to drop this series from the queue now.
+On 2025/7/22 20:18, Greg KH wrote:
+> On Tue, Jul 22, 2025 at 09:29:13AM +0800, Chen Ridong wrote:
+>>
+>>> This is a note to let you know that I've just added the patch titled
+>>>
+>>>     Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"
+>>>
+>>> to the 6.15-stable tree which can be found at:
+>>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>>
+>>> The filename of the patch is:
+>>>      revert-cgroup_freezer-cgroup_freezing-check-if-not-f.patch
+>>> and it can be found in the queue-6.15 subdirectory.
+>>>
+>>> If you, or anyone else, feels it should not be added to the stable tree, please let <stable@vger.kernel.org> know about it.
+>>>
+>>
+>> The patch ("sched,freezer: Remove unnecessary warning in __thaw_task") should also be merged to
+>> prevent triggering another warning in __thaw_task().
+> 
+> What is the git commit id of that change in Linus's tree?
+> 
+> thanks,
+> 
+> greg k-h
 
-thanks,
+9beb8c5e77dc10e3889ff5f967eeffba78617a88 ("sched,freezer: Remove unnecessary warning in __thaw_task")
 
-greg k-h
+Thanks,
+Ridong
+
 
