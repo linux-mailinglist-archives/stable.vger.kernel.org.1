@@ -1,106 +1,139 @@
-Return-Path: <stable+bounces-163649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B11B0D0FE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 06:56:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 115EAB0D110
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 07:02:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18B387ACBBF
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 04:54:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE2D7188546A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 05:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC3D1581F8;
-	Tue, 22 Jul 2025 04:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83277218AD4;
+	Tue, 22 Jul 2025 05:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cf+NjBfj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hih1/vm6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0976C2E3716
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 04:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4324D35947
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 05:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753160157; cv=none; b=AFP23ffPzr4WvysseyY0UZgrYOU/o3ZyUDZjxugnxjA5tbtQVS8kj/VAvCx9qzkqC8tY9mp3Yv/gIoEqjI/xLTJzXr1ji8AxV3DRgcoutL4i4hFUloNaiE8QDZmShoT1IfOyi9iZ2fglMh1ekqvJgiaLOME/2y22vrnkORPW74g=
+	t=1753160516; cv=none; b=YqmFmS0zob8pRmn7SEDLCBa5t1zb2ffKbmDYJosbXigxvxaJItY9SaaiyENmP4adL9IVWJr9UqbHGapBU6RiebJEp7YM94x4RpLViavLYV+I8FJoqFeq3hRRHYYZUtMsWaQn/RanbRuI2UcCsA37ifsB4zTMaU3qDxBQf8uwU0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753160157; c=relaxed/simple;
-	bh=KRO18tywI9n9sHoIIxeeWA8EbiPvKKZk5KdGs5ixUnc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u7lMknEAWVZ+s40KN3KiVu6MvFZZCw/i+nhtuF5sd23jwl5JMSKcbjRgt/GSVrIMczQgCkqNQxcOO4pBI+/Z84UOIDvXdYKrH0Ja/63h3WiVkJV7lxmmwPzUue/oZE61Ftz+WJfoZTztmgzWpRzkUvhmjWvaeaZ4tN7vBVdUwTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cf+NjBfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84912C4CEF9;
-	Tue, 22 Jul 2025 04:55:54 +0000 (UTC)
+	s=arc-20240116; t=1753160516; c=relaxed/simple;
+	bh=zOvYaIumaj9wMRfM/evTbQWpErRoOQBqiB/xK5UM0Nk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KvJAXZZLh0pjwiZfmIX54hKuXme6CpT2i4hyKXGkY7YlRYDhxXUriAJLhw+9OSXLZa99j04cooZn1JO8SA8pT4d5B6DlKFP10mFtIb41rs4iHxhrX0CK6SpFSXSmD1eHdjFp4Ha9S8+gMZ6v/gKd1SfichpI3Np+Z7X06HBRGeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hih1/vm6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B42CC4CEEB;
+	Tue, 22 Jul 2025 05:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753160155;
-	bh=KRO18tywI9n9sHoIIxeeWA8EbiPvKKZk5KdGs5ixUnc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cf+NjBfjRPgCU7jtURHK1UbljdsdcKVwFh1DycK1MHCiRXsS7ShEQWvidVRFC82j7
-	 H/ZtUFxgG61NjlFK2QNT6Crq+cBfZ0GBure1QXCHWKupQJA6f31+gG0q86Alt27x91
-	 qj3I6N70cCIC+5Or7jzDIOHYKMZumynq6Z/22Qu0wwbTjwU1KZSAsLUUmCMBSssJnU
-	 9DrC0lV3nOOV/CTrAE4Cd8msrQo5eAAwEawljT7eZfYwz/br2uUgo3dMZ3faUMYxD0
-	 p9a+EmrajhZMNpsgmzbrIULRMHwReXEGdg7szA2Q65C62mhm8VwJ4YVhUliQt5QeRt
-	 +ALzCXaoNM6fA==
+	s=k20201202; t=1753160515;
+	bh=zOvYaIumaj9wMRfM/evTbQWpErRoOQBqiB/xK5UM0Nk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hih1/vm6fYo1mF9crOtpEbuK1MbqOQo91UIM8LgFOiQcA0BzeMuVw+TjBV0c12TAA
+	 pnqgYx1v5kctTYmspKX733ekQJvk93zKS8WBB42sOsAPCaDCZEkGQDWXcif6x2epun
+	 Ka+huMpGzc9mRsoGkquD6Bd9meMLHI32zcTl58KKLv1djAKJihJHojnF0Y8OkqKg1a
+	 ++KnEXtgEGFrWFeEZM6gASAOvoZARiF9u09pwjWvpF4prC7JlhcaFHWRmv7WuURfac
+	 IZ9ivq0gfmwIIKAXKbDtRVxjed17L8eBaOU2Z2x2SGgWLty1epJdNdiU1H1PPZeCCF
+	 +PBYhY2WE/4Yw==
+Date: Tue, 22 Jul 2025 01:01:53 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] i2c: omap: Handle omap_i2c_init() errors in omap_i2c_probe()
-Date: Tue, 22 Jul 2025 00:55:34 -0400
-Message-Id: <20250722045534.894081-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250722045534.894081-1-sashal@kernel.org>
-References: <2025072119-stifling-dismount-033b@gregkh>
- <20250722045534.894081-1-sashal@kernel.org>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: stable@vger.kernel.org,
+	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 5.4.y] usb: dwc3: qcom: Don't leave BCR asserted
+Message-ID: <aH8bQfbAOsr8sVmO@lappy>
+References: <2025072117-left-ground-e763@gregkh>
+ <20250721155109.855693-1-sashal@kernel.org>
+ <53640837-9c42-41a6-a200-f4074e0931e2@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <53640837-9c42-41a6-a200-f4074e0931e2@oracle.com>
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+On Mon, Jul 21, 2025 at 09:33:11PM +0530, Harshit Mogalapalli wrote:
+>Hi Sasha,
+>
+>On 21/07/25 21:21, Sasha Levin wrote:
+>>From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+>>
+>>[ Upstream commit ef8abc0ba49ce717e6bc4124e88e59982671f3b5 ]
+>>
+>>Leaving the USB BCR asserted prevents the associated GDSC to turn on. This
+>>blocks any subsequent attempts of probing the device, e.g. after a probe
+>>deferral, with the following showing in the log:
+>>
+>>[    1.332226] usb30_prim_gdsc status stuck at 'off'
+>>
+>>Leave the BCR deasserted when exiting the driver to avoid this issue.
+>>
+>>Cc: stable <stable@kernel.org>
+>>Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+>>Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+>>Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>>Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+>>Link: https://lore.kernel.org/r/20250709132900.3408752-1-krishna.kurapati@oss.qualcomm.com
+>>Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>[ adapted to individual clock management API instead of bulk clock operations ]
+>>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>---
+>>  drivers/usb/dwc3/dwc3-qcom.c | 8 +++-----
+>>  1 file changed, 3 insertions(+), 5 deletions(-)
+>>
+>>diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+>>index 742be1e07a01d..4874a6442c806 100644
+>>--- a/drivers/usb/dwc3/dwc3-qcom.c
+>>+++ b/drivers/usb/dwc3/dwc3-qcom.c
+>>@@ -615,13 +615,13 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+>>  	ret = reset_control_deassert(qcom->resets);
+>>  	if (ret) {
+>>  		dev_err(&pdev->dev, "failed to deassert resets, err=%d\n", ret);
+>>-		goto reset_assert;
+>>+		return ret;
+>>  	}
+>>  	ret = dwc3_qcom_clk_init(qcom, of_clk_get_parent_count(np));
+>>  	if (ret) {
+>>  		dev_err(dev, "failed to get clocks\n");
+>>-		goto reset_assert;
+>>+		return ret;
+>>  	}
+>>  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>@@ -700,8 +700,6 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+>>  		clk_disable_unprepare(qcom->clks[i]);
+>>  		clk_put(qcom->clks[i]);
+>>  	}
+>>-reset_assert:
+>>-	reset_control_assert(qcom->resets);
+>>  	return ret;
+>>  }
+>>@@ -725,7 +723,7 @@ static int dwc3_qcom_remove(struct platform_device *pdev)
+>>  	}
+>>  	qcom->num_clocks = 0;
+>>-	reset_control_assert(qcom->resets);
+>>+	dwc3_qcom_interconnect_exit(qcom);
+>
+>^^ This part of diff doesn't look good to me. Can you please double 
+>check the conflict resolution ? (Probably shouldn't have addition in 
+>this hunk)
 
-[ Upstream commit a9503a2ecd95e23d7243bcde7138192de8c1c281 ]
+You're right! It came from the 5.10 backport which I've cherry picked
+onto 5.4. I'll resend.
 
-omap_i2c_init() can fail. Handle this error in omap_i2c_probe().
-
-Fixes: 010d442c4a29 ("i2c: New bus driver for TI OMAP boards")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: <stable@vger.kernel.org> # v2.6.19+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/565311abf9bafd7291ca82bcecb48c1fac1e727b.1751701715.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/i2c/busses/i2c-omap.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-index 16c5d79143ff8..534ca652c3b29 100644
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1475,7 +1475,9 @@ omap_i2c_probe(struct platform_device *pdev)
- 	}
- 
- 	/* reset ASAP, clearing any IRQs */
--	omap_i2c_init(omap);
-+	r = omap_i2c_init(omap);
-+	if (r)
-+		goto err_mux_state_deselect;
- 
- 	if (omap->rev < OMAP_I2C_OMAP1_REV_2)
- 		r = devm_request_irq(&pdev->dev, omap->irq, omap_i2c_omap1_isr,
-@@ -1518,6 +1520,7 @@ omap_i2c_probe(struct platform_device *pdev)
- 
- err_unuse_clocks:
- 	omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
-+err_mux_state_deselect:
- 	if (omap->mux_state)
- 		mux_state_deselect(omap->mux_state);
- err_put_pm:
 -- 
-2.39.5
-
+Thanks,
+Sasha
 
