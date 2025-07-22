@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-164306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A7FB0E5DB
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 23:59:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB8CB0E5F1
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 00:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FF8F3B0314
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 21:59:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CD29580B9D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 22:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A2228C86F;
-	Tue, 22 Jul 2025 21:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DA828640A;
+	Tue, 22 Jul 2025 21:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJhRrba1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g3wEqRbC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AF828C864
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 21:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC2E28725E
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 21:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753221504; cv=none; b=KdDE7Uu2kP/1WTkvDl7f0LlJmi4Kj8GLXCNMbppTAJjaqPXhmRVTSSb/8cOUq5+017KCAONOR1gocD0FrbIvqpkCde+LcZH8uUzWCV+RuLdVbWKZLma3791FAbEL4rSpJ8o6bVxyDhXFd7vfCMGIHOIT/7deDCLbWNAVcGrddH0=
+	t=1753221546; cv=none; b=BeJhlG6IxpFujnTntMM6sbMKB3bd+cBE14j39XZqqZJg7Cl866KVE4SAJhx3Wh8HhCwtW+jZXspXibIE44mcb4OweqasGcXhPZvosfWI6TPPKV56wSbyx194mc4QVKayhPvSyQ5RTXndONVF31KrB+KRBjqpbxEd8jFAJGYyQao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753221504; c=relaxed/simple;
-	bh=WrSYgFPim88QUObs6C7hbchpKkJ9jIMhkTURVdhQ34Q=;
+	s=arc-20240116; t=1753221546; c=relaxed/simple;
+	bh=RI8dZDd9ZT4uQ4WozM+QBiu32S5R56TIBmk2cz2pnNE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q2L5QqPKcl7JYC25BIEtnbWPtdrIG4sHwjkoX4twQrF+gFF3TVryXxe/XRP/dPVlFkSjzLZZrWI76RWokIa4zwrziBVI9/1qw+PPwsrjch5IrroAGEHRgWz2c0+jqNrQYdjQDEbwPgWFROmCftWbCVkUloHGgP7sWVK0DbNxUEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJhRrba1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB6B0C4CEF5;
-	Tue, 22 Jul 2025 21:58:22 +0000 (UTC)
+	 MIME-Version; b=AZJQ5/RjdJz27YPbFjlbkMjChA3dNC8r9EyaFlnQF3uw3zqbIhmxI0Yk1+piiDmkJtjdHgbknwp2rIHhfGWhaPnmvavej35zU1hy067Hkf3l4qa468uct046emnWNvf1AZ/d2Qx7M+FBRpbIOymuadEuXEs/YW8GtonCWRbftJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g3wEqRbC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AC5C4CEEB;
+	Tue, 22 Jul 2025 21:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753221504;
-	bh=WrSYgFPim88QUObs6C7hbchpKkJ9jIMhkTURVdhQ34Q=;
+	s=k20201202; t=1753221546;
+	bh=RI8dZDd9ZT4uQ4WozM+QBiu32S5R56TIBmk2cz2pnNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VJhRrba1V8HSJELIYXsaBCQDDK6vlsF7n1UKUAdtRC8Dfth0a5Z3+aesT+mepHstL
-	 QeEH02f3KJwM1y5YD2GhjVCSooSNojPM1RPRbuFWBI5oiFpp5KG3T4SlIhRfN+GkGU
-	 jgSwqTKHw/ISzqiwbBawzhMHDE0Jiybhyt0QSsCBwFqybxCAx1AI2Pqmr4RkDgLZx/
-	 rbb1Dwgd7gX4Gpwl2XxStEDyx4Z906JQ8rPD/HY+Ri/Bsuf32P7SozI6kJPAu+4whE
-	 4Vn+DtOt5M/VpuXw0GACDm9cvVv59SmSTO/eUxW8gP29WQcK6jObA1TyzN8Wj1mEMr
-	 K0xr17Iy9ucGA==
+	b=g3wEqRbCIhhGEwmI7c4o9Qo1V8fgu7FKlvgcCn8danP9roxKUQcFDSXQmuPtSiarL
+	 8FnYg92Pwgk1APU1q94WspIujxJ6iyUUCh1x2DxZEULar0y7nT2v+BLJergRub5nlV
+	 Z8ml/TjQGrKxLDyXq5MQAtw+2Nfkck/vwk9dNDdVx613SQ4WwZ2gA65A0bCc938mFR
+	 fBm2P4xBNJAH8mJBqcoKD47l+8/CWrbeZcUN2Guh3v1ZlJ4cQstxYGFYsEEb6REAqm
+	 qXqXXOuFWEwS8WRT8+GDcmlsvpLdCVDX3bpwIkmRkzNQtiZiQJVMP1rdKxAocY9Tsl
+	 hPy0uR/gbmevA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Wang Zhaolong <wangzhaolong@huaweicloud.com>,
 	Paulo Alcantara <pc@manguebit.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] smb: client: fix use-after-free in crypt_message when using async crypto
-Date: Tue, 22 Jul 2025 17:58:19 -0400
-Message-Id: <20250722215819.981600-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] smb: client: fix use-after-free in crypt_message when using async crypto
+Date: Tue, 22 Jul 2025 17:59:01 -0400
+Message-Id: <20250722215901.981691-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025072141-busybody-favoring-f21d@gregkh>
-References: <2025072141-busybody-favoring-f21d@gregkh>
+In-Reply-To: <2025072141-jujitsu-ebay-6dbf@gregkh>
+References: <2025072141-jujitsu-ebay-6dbf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -115,10 +115,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-index da9305f0b6f53..619905fc694e4 100644
+index aa1acc698caa2..1297acb5bf8e5 100644
 --- a/fs/cifs/smb2ops.c
 +++ b/fs/cifs/smb2ops.c
-@@ -4552,6 +4552,7 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
+@@ -4302,6 +4302,7 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
  	u8 key[SMB3_ENC_DEC_KEY_SIZE];
  	struct aead_request *req;
  	u8 *iv;
@@ -126,7 +126,7 @@ index da9305f0b6f53..619905fc694e4 100644
  	unsigned int crypt_len = le32_to_cpu(tr_hdr->OriginalMessageSize);
  	void *creq;
  
-@@ -4600,7 +4601,11 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
+@@ -4350,7 +4351,11 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
  	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
  	aead_request_set_ad(req, assoc_data_len);
  
