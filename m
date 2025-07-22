@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80525B0DCA9
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4571B0DBCE
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62E7F6C74D1
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:00:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976C91C83062
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7B22EA15B;
-	Tue, 22 Jul 2025 14:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18F82EA479;
+	Tue, 22 Jul 2025 13:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSm4qDbg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUyGxY+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5A52E1724;
-	Tue, 22 Jul 2025 14:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1042EA475;
+	Tue, 22 Jul 2025 13:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192842; cv=none; b=ABdCg3suCtEJkbRooCj7sLHYEMYyDTpcGgKRbGsGdbAttDF3gp1C3jtzFbKKgp5cJf66pjrhgFFqG++4lPh4xXrKcrh3tmrCJJvK2BLxHB+0/zud5T8qtcj9s+vRkKcfiBNAzPFPEX0ccDaY5SIrD0Fqcqx7AQAusQv6V0PjgMA=
+	t=1753192359; cv=none; b=e0j2SYAB6YiTuSvuZs9Ff2lm1C9XUPtQad5QMBe33v4BtKplaVKzFXZQuCaKSD9bNjZGFdgTOpzKH8OZ8IhTDgOTAlLBhmH9xFvFGcGTYU3wptoT+ZtVcSOKzy2lHckmLuq2zOXz9bXuhglkC+5vmunsU4MaA9/iUCBOJRUDMxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192842; c=relaxed/simple;
-	bh=tF6ammELxN6GS7q1tp89O++eF78UQJoNCD1jvps2aeI=;
+	s=arc-20240116; t=1753192359; c=relaxed/simple;
+	bh=T0d6PkC4q1v1Nhhn8iKg/SgfTTYy0/U6XyfYmNmf43E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnEgmLW4LDtbDqbHeSFwuvYYca4WeagDjK5JDKdcbLh6sF3ZDepaQhs41CE3wN9Git5zXRCqfVw7Sm9dVIOLPrUWMl2ml5GfKWxkpzWBzhZTxqv9gGae2xSmcw1C/Lxfb4rt0/KKZ8CVWCyrrO9ySqG8ND0QUH+gHBCJ2vbqcus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSm4qDbg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ACDC4CEEB;
-	Tue, 22 Jul 2025 14:00:41 +0000 (UTC)
+	 MIME-Version; b=bM25sPaaT09AB0mUhqVy+0vZDeGKp/KJLulIpIaWXKdqKTz6QAn9m17zfrQLWFL5pDZv7rvwJSwSXNuvHvd65qjG4VD4jqDBOQZYK9LtDcqyLMON8u+Nr2U7n8xckt+vqw7zr4i8zydBP1aNeTtZBZZeVzfQs4Ty/HypOso4uDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUyGxY+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEFBC4CEEB;
+	Tue, 22 Jul 2025 13:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192842;
-	bh=tF6ammELxN6GS7q1tp89O++eF78UQJoNCD1jvps2aeI=;
+	s=korg; t=1753192359;
+	bh=T0d6PkC4q1v1Nhhn8iKg/SgfTTYy0/U6XyfYmNmf43E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OSm4qDbg3wKUvNbG88/BpG/ydMBwOcrwyDeQtuGC/4Jj2bjyfPMe6vyCmaXeiDNdJ
-	 j2VCWYnXDr09pkW2Kcw//fLxGRDS0rGfmfoAY2WxFgC5KgAlDy97g+YoVmq2kOrv/O
-	 XD7N1RaTh95A5zWWa49mebqfBsMI7FeYxOo6HWV4=
+	b=hUyGxY+nPDKwmsjTsRqKnzPpkvhwWJbxWmGSD6cLQk+KSBeKFt3D+04AJUymtv5ft
+	 /UAKVTKDpX+SBVEXcj1VNUfvDJ5IDKui4sqwbiQ3ZZOzUmQNYkZcf9uyz+8ydA3sOu
+	 taGa/qpcAdfH9Raw8dE6nkSX3pYDtw/b7NaXZtJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+32de323b0addb9e114ff@syzkaller.appspotmail.com,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.12 074/158] comedi: pcl812: Fix bit shift out of bounds
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 043/111] s390/bpf: Fix bpf_arch_text_poke() with new_addr == NULL again
 Date: Tue, 22 Jul 2025 15:44:18 +0200
-Message-ID: <20250722134343.533927243@linuxfoundation.org>
+Message-ID: <20250722134334.999390774@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-commit b14b076ce593f72585412fc7fd3747e03a5e3632 upstream.
+commit 6a5abf8cf182f577c7ae6c62f14debc9754ec986 upstream.
 
-When checking for a supported IRQ number, the following test is used:
+Commit 7ded842b356d ("s390/bpf: Fix bpf_plt pointer arithmetic") has
+accidentally removed the critical piece of commit c730fce7c70c
+("s390/bpf: Fix bpf_arch_text_poke() with new_addr == NULL"), causing
+intermittent kernel panics in e.g. perf's on_switch() prog to reappear.
 
-	if ((1 << it->options[1]) & board->irq_bits) {
+Restore the fix and add a comment.
 
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.  Valid `it->options[1]` values that select the IRQ
-will be in the range [1,15]. The value 0 explicitly disables the use of
-interrupts.
-
-Reported-by: syzbot+32de323b0addb9e114ff@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=32de323b0addb9e114ff
-Fixes: fcdb427bc7cf ("Staging: comedi: add pcl821 driver")
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707133429.73202-1-abbotti@mev.co.uk
+Fixes: 7ded842b356d ("s390/bpf: Fix bpf_plt pointer arithmetic")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250716194524.48109-2-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/pcl812.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/s390/net/bpf_jit_comp.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/comedi/drivers/pcl812.c
-+++ b/drivers/comedi/drivers/pcl812.c
-@@ -1149,7 +1149,8 @@ static int pcl812_attach(struct comedi_d
- 		if (IS_ERR(dev->pacer))
- 			return PTR_ERR(dev->pacer);
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -539,7 +539,15 @@ static void bpf_jit_plt(struct bpf_plt *
+ {
+ 	memcpy(plt, &bpf_plt, sizeof(*plt));
+ 	plt->ret = ret;
+-	plt->target = target;
++	/*
++	 * (target == NULL) implies that the branch to this PLT entry was
++	 * patched and became a no-op. However, some CPU could have jumped
++	 * to this PLT entry before patching and may be still executing it.
++	 *
++	 * Since the intention in this case is to make the PLT entry a no-op,
++	 * make the target point to the return label instead of NULL.
++	 */
++	plt->target = target ?: ret;
+ }
  
--		if ((1 << it->options[1]) & board->irq_bits) {
-+		if (it->options[1] > 0 && it->options[1] < 16 &&
-+		    (1 << it->options[1]) & board->irq_bits) {
- 			ret = request_irq(it->options[1], pcl812_interrupt, 0,
- 					  dev->board_name, dev);
- 			if (ret == 0)
+ /*
 
 
 
