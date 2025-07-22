@@ -1,182 +1,201 @@
-Return-Path: <stable+bounces-163664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C8AFB0D426
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 10:09:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19312B0D458
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 10:21:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DF8B1772A8
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 08:09:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B22B1624AE
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 08:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AB728D83B;
-	Tue, 22 Jul 2025 08:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB97E28B7F1;
+	Tue, 22 Jul 2025 08:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GpFz6Snq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i76ZqXSo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8523A288C97;
-	Tue, 22 Jul 2025 08:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B63E1DF25C
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 08:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753171790; cv=none; b=Fl1iNbVEKzGLxhETd2/TtMQt2tFO3Of47M/biEXAnQX2uw1fF9mZ94oczKAO/2WBHANaMoA4mt4UEiLp97t7UPfXEA2U71u1Ur2+LO02BVHwyoHsikkJWqgrf3DTo3/yorM0sz6lG1YB3Jv0wu5P6dxpu8+3UZ75OD2zP40a/uY=
+	t=1753172474; cv=none; b=jPUIE7UUrgQGG8cG2EeptJb5Z0/oF5d6WWfjKLvhK7JigDlft5ahFpdyiX8b5r0xPs7PiWeagLJ+S8NRSbmtiuDDL2GNyl3MCX5H0ZhC5v5xZyyZceYOrvCTZlA5zAFCMM1bvkSLvH3oScMY/jDs2AnFxJQbU9PZ6NUt+2dTku0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753171790; c=relaxed/simple;
-	bh=gn+iuOkeXx5CXapSR8JX4rx1rvfdQeO7EY0UGX2skyA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RlcEzHf4OpIZheOeFCNgPq6K60mFp2VnVqNdD2NNowTuUDmOIc22gOEoIiAuYOSFP7bJKM5cg+9lJBsw5WUvudPC1CJaC9hpVhfBa9g01lKYean9hQpaSqUxBypQccjs8LO/savDNuyyAOE5Emj9yG8Me/P1VcRvtCVZ12KpcOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GpFz6Snq; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7e182e4171bso550134085a.3;
-        Tue, 22 Jul 2025 01:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753171787; x=1753776587; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=IkMRut42JbXCcjzEF/zhUxhw62vCyXsodJ4Y7LczqSg=;
-        b=GpFz6SnqGhDC3Gi/h/UOySdZA32ramjNnKx07up0ld7agvd4D1QcfAA0X7nUAJZS1l
-         x2fTGhlhTF+WC9hOk20Q78SE1A81OHsKOAIEUMMvpg6zzW7tPIHBa0A38upfJy6JWs5i
-         0A/bXrOqBDhbcrysIBbU6H/axADaviHnP6aUfyT7xn1U7c1VycWiZAwANlnsk5mUmMyJ
-         7jE+w/wrqh+78FJ6DV3UCfSpU9BUQ3enR0iPkmv7iXTJLrkhAmCOTNAq93wc75g4Th3u
-         vj4b/SvwR5yq3R3WYr5m55eauxt4BB1R7917USOfs01tOAxo43JfeXiC5Sn9fn11JZpg
-         +iRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753171787; x=1753776587;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IkMRut42JbXCcjzEF/zhUxhw62vCyXsodJ4Y7LczqSg=;
-        b=Zz/grrw7KIz6QuDP/imQi7dKI4tIpeSN8Aoz9p4jQZ7Q0p6zs5TV/s1wzm426yhgZm
-         1BxHgB3mgOWCEn+c8WpqPlpgE74k+1me2XW2RGMSHHwnMStRSNuft21ms/g6zMuZQV9o
-         IIw2WpiLJdvN4h7FX+6wjsuch3cyEOedVHMDYYp/hwsyY7YPmeH/KuSo2Jox2Ci4ZbhM
-         5mLIWx67SUpjRShb1NTl8KhZw5ouRQ21jb2rmAZsAwYg8por6iriXh+tBw0KasTwDIJt
-         HW2F5r0da54ezPA2ypH3EdGso6mdr/0nhmrCL5brdVfJ+PJ92p+/myEdCv7HAQkMxPLi
-         ZE7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUElC8yLir+S/YFhoHjc9BtupeTJkQPyupzZnUiQ9C8n4/lDg/xTcUfVb4yzq50ULGrw7vzHssrsH+CwA==@vger.kernel.org, AJvYcCUWUZp4xYWcbSrCNBxEM4nmW4xAqGs5FGa/2++31t9ObS5FA5FzBysgNT8wJFYS39rRuCJMmNIxpALLDSZ4@vger.kernel.org, AJvYcCUbY9Z0iaZBHPb1+2YqO0ePz3VvVEu71fWH3qUWpapAeszSuoSERhukKLOlDvCdhxZzNWaC563J@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaVzE0b0HOj8CaLp7DdYg9zs7Mn+RUGCdzF9pweCq8FQBrHQge
-	yzCRLfAIIR9Xgrmwry1PKz4e6BOvD0lN/UNP3KpZT6h/qtvS4mikbgD0IGt36gaaFwIi+ptPNNn
-	Eky9eSdIeNhu6wZmhu9ExpJswpQon4tU=
-X-Gm-Gg: ASbGnctY09WGd9+gGp3srN1bk6woFp5Vi3j+WB/QYIIofYvAsW0yaFdvixV93HNi6To
-	2VaWFJJdqqCKswFw7WIAXTLvgtyCL5+e5sK5081vXf6ZHIPHNog2+3equVUbRSS+A7qXvMWj3qH
-	UyTKCtVqpWA961ONjskhqjNMkUx5tK5Fh5/kKGxBrejSoXv5wUE+keOC5a20ZRpLy1QjJG4LoEM
-	F4lGm2tDQaGOaKuEQjkYwccPrW5m9ymeUgdvkgf
-X-Google-Smtp-Source: AGHT+IHLdTP29vGvUZLmpbgdjueMPFa6ju4C/ky1Y5qT2wkgHAQc0YoCIuQb3roEVQW6tc9ak88IWATJBWQrGV46Nxw=
-X-Received: by 2002:a05:6214:419c:b0:6fd:4cd1:c79a with SMTP id
- 6a1803df08f44-704f6adc103mr357084356d6.21.1753171787424; Tue, 22 Jul 2025
- 01:09:47 -0700 (PDT)
+	s=arc-20240116; t=1753172474; c=relaxed/simple;
+	bh=swl5Y3Ky3EvyvejvCW0pOIWfbHneLoMfVrRxsKgLqwM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=etzdQS7W9gy13l5umNia0weI2z43gHMwxHk8B8PMIzoubrjtnVhzUNEEs2Nbw2ueOdylvkglJ760eOrXVZx50gwC7cAhu2r4UTzDDRCdlkGHcKeY3WlCvSVPPRpCpXVbJ4djndA8ZVGNZ4xEerbx5wZzWFK9lRJ/6xXgo5mZ13A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i76ZqXSo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47BDC4CEEB;
+	Tue, 22 Jul 2025 08:21:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753172474;
+	bh=swl5Y3Ky3EvyvejvCW0pOIWfbHneLoMfVrRxsKgLqwM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=i76ZqXSo+rafmgfR9lclbPlptsysvLegd9DVdK38HW/480rVcwUrDflbYgSGuJ6Gs
+	 QTuuedpVwhf4cFiWeu40YfsJlOYB4KrkSzI/qwbIqPfEcY8FtYl/jhKY5xpW0cYpHt
+	 xCAVS4jGx5GqMjsFEcX8cVs1qOERqgoCUn5oi8fs=
+Subject: FAILED: patch "[PATCH] usb: hub: fix detection of high tier USB3 devices behind" failed to apply to 5.4-stable tree
+To: mathias.nyman@linux.intel.com,gregkh@linuxfoundation.org,stable@kernel.org,stern@rowland.harvard.edu
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 22 Jul 2025 10:21:11 +0200
+Message-ID: <2025072211-wolverine-heroics-ee1b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250722080003.3605-1-qasdev00@gmail.com>
-In-Reply-To: <20250722080003.3605-1-qasdev00@gmail.com>
-From: Dmitry Savin <envelsavinds@gmail.com>
-Date: Tue, 22 Jul 2025 09:09:35 +0100
-X-Gm-Features: Ac12FXwaASSHloXD55ijQi_eIPwUCNTSkE1tUTMXeaCahvY7RWmwi-wYMnuFwEg
-Message-ID: <CAP+4zOfi4v-MZoOeQmkD99-QhV45KEyHSXV2CSGtAaqOyGb6CQ@mail.gmail.com>
-Subject: Re: [PATCH RESEND] HID: multitouch: fix slab out-of-bounds access in mt_report_fixup()
-To: Qasim Ijaz <qasdev00@gmail.com>
-Cc: jikos@kernel.org, bentiss@kernel.org, linux-input@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Reviewed-by: Dmitry Savin <envelsavinds@gmail.com>
 
-On Tue, 22 Jul 2025 at 09:00, Qasim Ijaz <qasdev00@gmail.com> wrote:
->
-> A malicious HID device can trigger a slab out-of-bounds during
-> mt_report_fixup() by passing in report descriptor smaller than
-> 607 bytes. mt_report_fixup() attempts to patch byte offset 607
-> of the descriptor with 0x25 by first checking if byte offset
-> 607 is 0x15 however it lacks bounds checks to verify if the
-> descriptor is big enough before conducting this check. Fix
-> this vulnerability by ensuring the descriptor size is
-> greater than or equal to 608 before accessing it.
->
-> Below is the KASAN splat after the out of bounds access happens:
->
-> [   13.671954] ==================================================================
-> [   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
-> [   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
-> [   13.673297]
-> [   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3
-> [   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
-> [   13.673297] Call Trace:
-> [   13.673297]  <TASK>
-> [   13.673297]  dump_stack_lvl+0x5f/0x80
-> [   13.673297]  print_report+0xd1/0x660
-> [   13.673297]  kasan_report+0xe5/0x120
-> [   13.673297]  __asan_report_load1_noabort+0x18/0x20
-> [   13.673297]  mt_report_fixup+0x103/0x110
-> [   13.673297]  hid_open_report+0x1ef/0x810
-> [   13.673297]  mt_probe+0x422/0x960
-> [   13.673297]  hid_device_probe+0x2e2/0x6f0
-> [   13.673297]  really_probe+0x1c6/0x6b0
-> [   13.673297]  __driver_probe_device+0x24f/0x310
-> [   13.673297]  driver_probe_device+0x4e/0x220
-> [   13.673297]  __device_attach_driver+0x169/0x320
-> [   13.673297]  bus_for_each_drv+0x11d/0x1b0
-> [   13.673297]  __device_attach+0x1b8/0x3e0
-> [   13.673297]  device_initial_probe+0x12/0x20
-> [   13.673297]  bus_probe_device+0x13d/0x180
-> [   13.673297]  device_add+0xe3a/0x1670
-> [   13.673297]  hid_add_device+0x31d/0xa40
-> [...]
->
-> Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-> Reviewed-by: Dmitry Savin <envelsavinds@gmail.com>
-> ---
->  drivers/hid/hid-multitouch.c | 25 ++++++++++++++++---------
->  1 file changed, 16 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-> index 7ac8e16e6158..af4abe3ba410 100644
-> --- a/drivers/hid/hid-multitouch.c
-> +++ b/drivers/hid/hid-multitouch.c
-> @@ -1461,18 +1461,25 @@ static const __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
->         if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
->             (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
->              hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
-> -               if (rdesc[607] == 0x15) {
-> -                       rdesc[607] = 0x25;
-> -                       dev_info(
-> -                               &hdev->dev,
-> -                               "GT7868Q report descriptor fixup is applied.\n");
-> +               if (*size >= 608) {
-> +                       if (rdesc[607] == 0x15) {
-> +                               rdesc[607] = 0x25;
-> +                               dev_info(
-> +                                       &hdev->dev,
-> +                                       "GT7868Q report descriptor fixup is applied.\n");
-> +                       } else {
-> +                               dev_info(
-> +                                       &hdev->dev,
-> +                                       "The byte is not expected for fixing the report descriptor. \
-> +                                       It's possible that the touchpad firmware is not suitable for applying the fix. \
-> +                                       got: %x\n",
-> +                                       rdesc[607]);
-> +                       }
->                 } else {
->                         dev_info(
->                                 &hdev->dev,
-> -                               "The byte is not expected for fixing the report descriptor. \
-> -It's possible that the touchpad firmware is not suitable for applying the fix. \
-> -got: %x\n",
-> -                               rdesc[607]);
-> +                               "GT7868Q fixup: report descriptor only %u bytes, skipping\n",
-> +                               *size);
->                 }
->         }
->
-> --
-> 2.39.5
->
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8f5b7e2bec1c36578fdaa74a6951833541103e27
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072211-wolverine-heroics-ee1b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8f5b7e2bec1c36578fdaa74a6951833541103e27 Mon Sep 17 00:00:00 2001
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Date: Wed, 11 Jun 2025 14:24:41 +0300
+Subject: [PATCH] usb: hub: fix detection of high tier USB3 devices behind
+ suspended hubs
+
+USB3 devices connected behind several external suspended hubs may not
+be detected when plugged in due to aggressive hub runtime pm suspend.
+
+The hub driver immediately runtime-suspends hubs if there are no
+active children or port activity.
+
+There is a delay between the wake signal causing hub resume, and driver
+visible port activity on the hub downstream facing ports.
+Most of the LFPS handshake, resume signaling and link training done
+on the downstream ports is not visible to the hub driver until completed,
+when device then will appear fully enabled and running on the port.
+
+This delay between wake signal and detectable port change is even more
+significant with chained suspended hubs where the wake signal will
+propagate upstream first. Suspended hubs will only start resuming
+downstream ports after upstream facing port resumes.
+
+The hub driver may resume a USB3 hub, read status of all ports, not
+yet see any activity, and runtime suspend back the hub before any
+port activity is visible.
+
+This exact case was seen when conncting USB3 devices to a suspended
+Thunderbolt dock.
+
+USB3 specification defines a 100ms tU3WakeupRetryDelay, indicating
+USB3 devices expect to be resumed within 100ms after signaling wake.
+if not then device will resend the wake signal.
+
+Give the USB3 hubs twice this time (200ms) to detect any port
+changes after resume, before allowing hub to runtime suspend again.
+
+Cc: stable <stable@kernel.org>
+Fixes: 2839f5bcfcfc ("USB: Turn on auto-suspend for USB 3.0 hubs.")
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250611112441.2267883-1-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 770d1e91183c..5c12dfdef569 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -68,6 +68,12 @@
+  */
+ #define USB_SHORT_SET_ADDRESS_REQ_TIMEOUT	500  /* ms */
+ 
++/*
++ * Give SS hubs 200ms time after wake to train downstream links before
++ * assuming no port activity and allowing hub to runtime suspend back.
++ */
++#define USB_SS_PORT_U0_WAKE_TIME	200  /* ms */
++
+ /* Protect struct usb_device->state and ->children members
+  * Note: Both are also protected by ->dev.sem, except that ->state can
+  * change to USB_STATE_NOTATTACHED even when the semaphore isn't held. */
+@@ -1068,11 +1074,12 @@ int usb_remove_device(struct usb_device *udev)
+ 
+ enum hub_activation_type {
+ 	HUB_INIT, HUB_INIT2, HUB_INIT3,		/* INITs must come first */
+-	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME,
++	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME, HUB_POST_RESUME,
+ };
+ 
+ static void hub_init_func2(struct work_struct *ws);
+ static void hub_init_func3(struct work_struct *ws);
++static void hub_post_resume(struct work_struct *ws);
+ 
+ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
+ {
+@@ -1095,6 +1102,13 @@ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
+ 			goto init2;
+ 		goto init3;
+ 	}
++
++	if (type == HUB_POST_RESUME) {
++		usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
++		hub_put(hub);
++		return;
++	}
++
+ 	hub_get(hub);
+ 
+ 	/* The superspeed hub except for root hub has to use Hub Depth
+@@ -1343,6 +1357,16 @@ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
+ 		device_unlock(&hdev->dev);
+ 	}
+ 
++	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
++		/* give usb3 downstream links training time after hub resume */
++		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
++		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
++				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
++		usb_autopm_get_interface_no_resume(
++			to_usb_interface(hub->intfdev));
++		return;
++	}
++
+ 	hub_put(hub);
+ }
+ 
+@@ -1361,6 +1385,13 @@ static void hub_init_func3(struct work_struct *ws)
+ 	hub_activate(hub, HUB_INIT3);
+ }
+ 
++static void hub_post_resume(struct work_struct *ws)
++{
++	struct usb_hub *hub = container_of(ws, struct usb_hub, init_work.work);
++
++	hub_activate(hub, HUB_POST_RESUME);
++}
++
+ enum hub_quiescing_type {
+ 	HUB_DISCONNECT, HUB_PRE_RESET, HUB_SUSPEND
+ };
+
 
