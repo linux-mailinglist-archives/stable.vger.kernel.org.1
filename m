@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8616B0DBEE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA79B0DB4D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E61823BFD66
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA0393B1CA2
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4F42EA16C;
-	Tue, 22 Jul 2025 13:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332902E9ECF;
+	Tue, 22 Jul 2025 13:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwS3BUle"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbGevyF9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8152E4271;
-	Tue, 22 Jul 2025 13:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38DB199FAC;
+	Tue, 22 Jul 2025 13:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192366; cv=none; b=OtM7tUvmOHrPk4QnBGxm4eXGuZvP6onWcLWjq1d8kJgRZdKDlUOAW6eMCOJlLuRw2z5biwrmF6QCPS0b88A2l1se/NRy0tRPu+HTCtQKP/J3cjkbogqPVbhqlzHJ3gZdRSyy0LmFCx539RnCbGQrNUaggEpi/QXlg+6mYKOOqU4=
+	t=1753192031; cv=none; b=V9FwjENEV72X8Bx1xqsMRN8yXsXMqo9ypC69KmSd455thPurWpXDCu/Tywazoi0nindLhnUoVabsDeH+ygEMw10dZ+E9E0UEcO0Z15Il90u2srL7RqTBc7VlmaNR242XTT5NoihNY37lI4mt9Zgaw8AxcLDqGKBgL9K6T9IJ+Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192366; c=relaxed/simple;
-	bh=6lZ5GL08HHxuQPZ4gkgZCN0yOm+JFNTzJL6+sR0cxe4=;
+	s=arc-20240116; t=1753192031; c=relaxed/simple;
+	bh=AnjrJduUjospLW1YZrXwnndB67QxZMwQ8lxy608fHZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ok+doxwUO8ehfb5a7IvA1dWOg4M8PLx+doYdD0sZijKONZE/OIZPgcuu0gwuKmgy1HaZ5cr6fM6hcBojWLEhjO+K1y61HR17uJPB96IRch1Vtfjt6quwiFFxmo+2NEYmmDryVSMBOcJVsv4RERH/Yb/NI8Xw182TcUFYNwZzFuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwS3BUle; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FCAC4CEEB;
-	Tue, 22 Jul 2025 13:52:45 +0000 (UTC)
+	 MIME-Version; b=MgLiPETqX0Pjr8gz2h9IzaEv3bTIOLjbwlYjvofQTncdmCF46eOJwZW9jjbfTMx+XHlVSl2QgLosT3MJAsrtwSVGyITnI4q3Urb9sQ2BjRMl+HJavSqyNHrt+tLFoEw254aRpLBQzK0vL/ItT6DyMpF4+FvQTO4lUBCcyPQVh7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbGevyF9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06885C4CEEB;
+	Tue, 22 Jul 2025 13:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192366;
-	bh=6lZ5GL08HHxuQPZ4gkgZCN0yOm+JFNTzJL6+sR0cxe4=;
+	s=korg; t=1753192030;
+	bh=AnjrJduUjospLW1YZrXwnndB67QxZMwQ8lxy608fHZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwS3BUle6cXjm8SQ/wRKuxUGGxAh/QLEXnlxPxfTT0hZKdHeoPqJ9t5xKRRADUgE6
-	 xNabTCFaPhz6Lxl6In5dC9LuXEcraVOK2oXIMSHXndHdV0KEP95agBtfdPpKoQtjUB
-	 3hVrrp73tw4mw7GbfmS0Yjxy/eBYfJKtgfkAlpI4=
+	b=sbGevyF9m/1vj+TTT0k7GIBwrmFE5mwFAipBmDz2i4mdh0vnkWxmjJvG9dSWjMK4V
+	 QvkVWgIsoVE4tHsltiA5zm0I/mZ6gfQpojOrMmvr0rldiDDhXuiRKCRN29H8X8Mk+5
+	 lGLeOKZqoqSLOo29xLxD2dOtWs4/OYyrj9hQCORs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>
-Subject: [PATCH 6.6 045/111] soc: aspeed: lpc-snoop: Cleanup resources in stack-order
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 24/79] mmc: sdhci-pci: Quirk for broken command queuing on Intel GLK-based Positivo models
 Date: Tue, 22 Jul 2025 15:44:20 +0200
-Message-ID: <20250722134335.070880060@linuxfoundation.org>
+Message-ID: <20250722134329.263460258@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-commit 8481d59be606d2338dbfe14b04cdbd1a3402c150 upstream.
+commit 50c78f398e92fafa1cbba3469c95fe04b2e4206d upstream.
 
-Free the kfifo after unregistering the miscdev in
-aspeed_lpc_disable_snoop() as the kfifo is initialised before the
-miscdev in aspeed_lpc_enable_snoop().
+Disable command queuing on Intel GLK-based Positivo models.
 
-Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
+Without this quirk, CQE (Command Queuing Engine) causes instability
+or I/O errors during operation. Disabling it ensures stable
+operation on affected devices.
+
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Fixes: bedf9fc01ff1 ("mmc: sdhci: Workaround broken command queuing on Intel GLK")
 Cc: stable@vger.kernel.org
-Cc: Jean Delvare <jdelvare@suse.de>
-Acked-by: Jean Delvare <jdelvare@suse.de>
-Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-1-3cdd59c934d3@codeconstruct.com.au
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250626112442.9791-1-edson.drosdeck@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-pci-core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -263,8 +263,8 @@ static void aspeed_lpc_disable_snoop(str
- 		return;
- 	}
- 
--	kfifo_free(&lpc_snoop->chan[channel].fifo);
- 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
-+	kfifo_free(&lpc_snoop->chan[channel].fifo);
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -916,7 +916,8 @@ static bool glk_broken_cqhci(struct sdhc
+ {
+ 	return slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_GLK_EMMC &&
+ 	       (dmi_match(DMI_BIOS_VENDOR, "LENOVO") ||
+-		dmi_match(DMI_SYS_VENDOR, "IRBIS"));
++		dmi_match(DMI_SYS_VENDOR, "IRBIS") ||
++		dmi_match(DMI_SYS_VENDOR, "Positivo Tecnologia SA"));
  }
  
- static int aspeed_lpc_snoop_probe(struct platform_device *pdev)
+ static bool jsl_broken_hs400es(struct sdhci_pci_slot *slot)
 
 
 
