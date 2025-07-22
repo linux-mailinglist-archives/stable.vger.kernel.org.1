@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-164004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64CE9B0DCC6
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 662D7B0DB7B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66ED13ADB36
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3D89AA7DF1
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BAB22D8766;
-	Tue, 22 Jul 2025 14:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88EE239E91;
+	Tue, 22 Jul 2025 13:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GTKOdqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Twi/iKc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592CF23AB9D;
-	Tue, 22 Jul 2025 14:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EBB433A8;
+	Tue, 22 Jul 2025 13:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192926; cv=none; b=tME2I7hOHwfEbCgzM7zqxNac8N6OWugeSLSk+8gjSOLGs8O/O8fb1Se9sZ/OVA/tdoedfNkfOMtdEtSx67Gzimyw+v9p+ohH1JebaAsvA6pEHUwkUP/n/4LtTnS/0p8sbjXDh59jPwE9kNv4ZXaGI+8N63HmJnf64upxUT+YLEE=
+	t=1753192165; cv=none; b=AFYWQG1hT98qetKFiYFwDzP7artNMBGNhbHlfg0HdYNbBSG6X4SvyE2pNOmPrBteMxCkNl05nZl+bdQmYH8rzPvxhnP1x+HifunxEAglfH0ZNdwLc6KkVuAVLT1qhczRKiK0m8aiw52yCbDiHELgQzfwrqMrlKRBbh+uziFdTPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192926; c=relaxed/simple;
-	bh=a3Vz+y6HiS3Ef0qzn7Xof1DE2w06YE1frTHorC+Vxp4=;
+	s=arc-20240116; t=1753192165; c=relaxed/simple;
+	bh=V7VHygj7nqQZhy+BiaXeYKIruHJIrPUaJ91AUwqhfpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJRQ40R91wyBQm3dmXBS35x3cLMrXyZTcCqjmpp3Iixkcw1pYSmB2nykrWgKBQW2jOik9p1QN7zSFpaLy+vchqzzwj5IE1LU7qt6bKAqRryWgH4Sh2TDsDXUtTzq1e789/XF8KmnqVU3B9RdBquCfZasLj8RLnq9KxoGlvLiO1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GTKOdqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763E9C4CEEB;
-	Tue, 22 Jul 2025 14:02:05 +0000 (UTC)
+	 MIME-Version; b=LXXjwfgitzA7fdcrGT6FeD9VFSZtZtJgGJPdhWpOxLdJYsQx6LKSJc9tVMfhCl94FlYGFgZ8nVZ0qeYHEjy/joYA2h63jRyi9CCTjJQebn7OQDFW8ESiOs6cjkMC0S2zEXmciQNG412TxKZ173My1wTfzJEG8E1eaCCtJBm1cXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Twi/iKc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFACAC4CEEB;
+	Tue, 22 Jul 2025 13:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192925;
-	bh=a3Vz+y6HiS3Ef0qzn7Xof1DE2w06YE1frTHorC+Vxp4=;
+	s=korg; t=1753192165;
+	bh=V7VHygj7nqQZhy+BiaXeYKIruHJIrPUaJ91AUwqhfpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1GTKOdqmX3TeytH14TstntxOGjUm2lvkwcoGwxgnrst8lgVYkSUy6WBXyeRIH3yHm
-	 dQmkUbSOd+v1exsjWlu65/0E+5GsqJE5n4BURQU3TcMsBevgHYUeToe4WV0DoLZ/Ld
-	 ty48f7uPCPJmAYgZXiGO7NMc2g1cBog2RmTxf03Y=
+	b=Twi/iKc3sqHj8f2KhKAdrzSEws3a6pguPdLvgmWqLuPyYBXnzZOHVrC4AnUcdC4FD
+	 esBm0mpwl8w53ZOykFkxuntG7jOIG5yW+ag45tzxcRSwl7bhxCLkghZXmlwvfm44nR
+	 PrvfbjCq8mKuBtuZX/h2BXQ+vMONkMDW5NWEQ6xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+40bf00346c3fe40f90f2@syzkaller.appspotmail.com,
-	syzbot+f22031fad6cbe52c70e7@syzkaller.appspotmail.com,
-	syzbot+271fed3ed6f24600c364@syzkaller.appspotmail.com,
 	Kuniyuki Iwashima <kuniyu@google.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Wang Liang <wangliang74@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/158] smc: Fix various oops due to inet_sock type confusion.
+Subject: [PATCH 6.1 46/79] rpl: Fix use-after-free in rpl_do_srh_inline().
 Date: Tue, 22 Jul 2025 15:44:42 +0200
-Message-ID: <20250722134344.411453647@linuxfoundation.org>
+Message-ID: <20250722134330.071903305@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,230 +63,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 60ada4fe644edaa6c2da97364184b0425e8aeaf5 ]
+[ Upstream commit b640daa2822a39ff76e70200cb2b7b892b896dce ]
 
-syzbot reported weird splats [0][1] in cipso_v4_sock_setattr() while
-freeing inet_sk(sk)->inet_opt.
+Running lwt_dst_cache_ref_loop.sh in selftest with KASAN triggers
+the splat below [0].
 
-The address was freed multiple times even though it was read-only memory.
+rpl_do_srh_inline() fetches ipv6_hdr(skb) and accesses it after
+skb_cow_head(), which is illegal as the header could be freed then.
 
-cipso_v4_sock_setattr() did nothing wrong, and the root cause was type
-confusion.
-
-The cited commit made it possible to create smc_sock as an INET socket.
-
-The issue is that struct smc_sock does not have struct inet_sock as the
-first member but hijacks AF_INET and AF_INET6 sk_family, which confuses
-various places.
-
-In this case, inet_sock.inet_opt was actually smc_sock.clcsk_data_ready(),
-which is an address of a function in the text segment.
-
-  $ pahole -C inet_sock vmlinux
-  struct inet_sock {
-  ...
-          struct ip_options_rcu *    inet_opt;             /*   784     8 */
-
-  $ pahole -C smc_sock vmlinux
-  struct smc_sock {
-  ...
-          void                       (*clcsk_data_ready)(struct sock *); /*   784     8 */
-
-The same issue for another field was reported before. [2][3]
-
-At that time, an ugly hack was suggested [4], but it makes both INET
-and SMC code error-prone and hard to change.
-
-Also, yet another variant was fixed by a hacky commit 98d4435efcbf3
-("net/smc: prevent NULL pointer dereference in txopt_get").
-
-Instead of papering over the root cause by such hacks, we should not
-allow non-INET socket to reuse the INET infra.
-
-Let's add inet_sock as the first member of smc_sock.
+Let's fix it by making oldhdr to a local struct instead of a pointer.
 
 [0]:
-kvfree_call_rcu(): Double-freed call. rcu_head 000000006921da73
-WARNING: CPU: 0 PID: 6718 at mm/slab_common.c:1956 kvfree_call_rcu+0x94/0x3f0 mm/slab_common.c:1955
-Modules linked in:
-CPU: 0 UID: 0 PID: 6718 Comm: syz.0.17 Tainted: G        W           6.16.0-rc4-syzkaller-g7482bb149b9f #0 PREEMPT
-Tainted: [W]=WARN
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : kvfree_call_rcu+0x94/0x3f0 mm/slab_common.c:1955
-lr : kvfree_call_rcu+0x94/0x3f0 mm/slab_common.c:1955
-sp : ffff8000a03a7730
-x29: ffff8000a03a7730 x28: 00000000fffffff5 x27: 1fffe000184823d3
-x26: dfff800000000000 x25: ffff0000c2411e9e x24: ffff0000dd88da00
-x23: ffff8000891ac9a0 x22: 00000000ffffffea x21: ffff8000891ac9a0
-x20: ffff8000891ac9a0 x19: ffff80008afc2480 x18: 00000000ffffffff
-x17: 0000000000000000 x16: ffff80008ae642c8 x15: ffff700011ede14c
-x14: 1ffff00011ede14c x13: 0000000000000004 x12: ffffffffffffffff
-x11: ffff700011ede14c x10: 0000000000ff0100 x9 : 5fa3c1ffaf0ff000
-x8 : 5fa3c1ffaf0ff000 x7 : 0000000000000001 x6 : 0000000000000001
-x5 : ffff8000a03a7078 x4 : ffff80008f766c20 x3 : ffff80008054d360
-x2 : 0000000000000000 x1 : 0000000000000201 x0 : 0000000000000000
-Call trace:
- kvfree_call_rcu+0x94/0x3f0 mm/slab_common.c:1955 (P)
- cipso_v4_sock_setattr+0x2f0/0x3f4 net/ipv4/cipso_ipv4.c:1914
- netlbl_sock_setattr+0x240/0x334 net/netlabel/netlabel_kapi.c:1000
- smack_netlbl_add+0xa8/0x158 security/smack/smack_lsm.c:2581
- smack_inode_setsecurity+0x378/0x430 security/smack/smack_lsm.c:2912
- security_inode_setsecurity+0x118/0x3c0 security/security.c:2706
- __vfs_setxattr_noperm+0x174/0x5c4 fs/xattr.c:251
- __vfs_setxattr_locked+0x1ec/0x218 fs/xattr.c:295
- vfs_setxattr+0x158/0x2ac fs/xattr.c:321
- do_setxattr fs/xattr.c:636 [inline]
- file_setxattr+0x1b8/0x294 fs/xattr.c:646
- path_setxattrat+0x2ac/0x320 fs/xattr.c:711
- __do_sys_fsetxattr fs/xattr.c:761 [inline]
- __se_sys_fsetxattr fs/xattr.c:758 [inline]
- __arm64_sys_fsetxattr+0xc0/0xdc fs/xattr.c:758
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x58/0x180 arch/arm64/kernel/entry-common.c:879
- el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:898
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+[root@fedora net]# ./lwt_dst_cache_ref_loop.sh
+...
+TEST: rpl (input)
+[   57.631529] ==================================================================
+BUG: KASAN: slab-use-after-free in rpl_do_srh_inline.isra.0 (net/ipv6/rpl_iptunnel.c:174)
+Read of size 40 at addr ffff888122bf96d8 by task ping6/1543
 
-[1]:
-Unable to handle kernel write to read-only memory at virtual address ffff8000891ac9a8
-KASAN: probably user-memory-access in range [0x0000000448d64d40-0x0000000448d64d47]
-Mem abort info:
-  ESR = 0x000000009600004e
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x0e: level 2 permission fault
-Data abort info:
-  ISV = 0, ISS = 0x0000004e, ISS2 = 0x00000000
-  CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000207144000
-[ffff8000891ac9a8] pgd=0000000000000000, p4d=100000020f950003, pud=100000020f951003, pmd=0040000201000781
-Internal error: Oops: 000000009600004e [#1]  SMP
-Modules linked in:
-CPU: 0 UID: 0 PID: 6946 Comm: syz.0.69 Not tainted 6.16.0-rc4-syzkaller-g7482bb149b9f #0 PREEMPT
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : kvfree_call_rcu+0x31c/0x3f0 mm/slab_common.c:1971
-lr : add_ptr_to_bulk_krc_lock mm/slab_common.c:1838 [inline]
-lr : kvfree_call_rcu+0xfc/0x3f0 mm/slab_common.c:1963
-sp : ffff8000a28a7730
-x29: ffff8000a28a7730 x28: 00000000fffffff5 x27: 1fffe00018b09bb3
-x26: 0000000000000001 x25: ffff80008f66e000 x24: ffff00019beaf498
-x23: ffff00019beaf4c0 x22: 0000000000000000 x21: ffff8000891ac9a0
-x20: ffff8000891ac9a0 x19: 0000000000000000 x18: 00000000ffffffff
-x17: ffff800093363000 x16: ffff80008052c6e4 x15: ffff700014514ecc
-x14: 1ffff00014514ecc x13: 0000000000000004 x12: ffffffffffffffff
-x11: ffff700014514ecc x10: 0000000000000001 x9 : 0000000000000001
-x8 : ffff00019beaf7b4 x7 : ffff800080a94154 x6 : 0000000000000000
-x5 : ffff8000935efa60 x4 : 0000000000000008 x3 : ffff80008052c7fc
-x2 : 0000000000000001 x1 : ffff8000891ac9a0 x0 : 0000000000000001
-Call trace:
- kvfree_call_rcu+0x31c/0x3f0 mm/slab_common.c:1967 (P)
- cipso_v4_sock_setattr+0x2f0/0x3f4 net/ipv4/cipso_ipv4.c:1914
- netlbl_sock_setattr+0x240/0x334 net/netlabel/netlabel_kapi.c:1000
- smack_netlbl_add+0xa8/0x158 security/smack/smack_lsm.c:2581
- smack_inode_setsecurity+0x378/0x430 security/smack/smack_lsm.c:2912
- security_inode_setsecurity+0x118/0x3c0 security/security.c:2706
- __vfs_setxattr_noperm+0x174/0x5c4 fs/xattr.c:251
- __vfs_setxattr_locked+0x1ec/0x218 fs/xattr.c:295
- vfs_setxattr+0x158/0x2ac fs/xattr.c:321
- do_setxattr fs/xattr.c:636 [inline]
- file_setxattr+0x1b8/0x294 fs/xattr.c:646
- path_setxattrat+0x2ac/0x320 fs/xattr.c:711
- __do_sys_fsetxattr fs/xattr.c:761 [inline]
- __se_sys_fsetxattr fs/xattr.c:758 [inline]
- __arm64_sys_fsetxattr+0xc0/0xdc fs/xattr.c:758
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x58/0x180 arch/arm64/kernel/entry-common.c:879
- el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:898
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
-Code: aa1f03e2 52800023 97ee1e8d b4000195 (f90006b4)
+CPU: 50 UID: 0 PID: 1543 Comm: ping6 Not tainted 6.16.0-rc5-01302-gfadd1e6231b1 #23 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <IRQ>
+ dump_stack_lvl (lib/dump_stack.c:122)
+ print_report (mm/kasan/report.c:409 mm/kasan/report.c:521)
+ kasan_report (mm/kasan/report.c:221 mm/kasan/report.c:636)
+ kasan_check_range (mm/kasan/generic.c:175 (discriminator 1) mm/kasan/generic.c:189 (discriminator 1))
+ __asan_memmove (mm/kasan/shadow.c:94 (discriminator 2))
+ rpl_do_srh_inline.isra.0 (net/ipv6/rpl_iptunnel.c:174)
+ rpl_input (net/ipv6/rpl_iptunnel.c:201 net/ipv6/rpl_iptunnel.c:282)
+ lwtunnel_input (net/core/lwtunnel.c:459)
+ ipv6_rcv (./include/net/dst.h:471 (discriminator 1) ./include/net/dst.h:469 (discriminator 1) net/ipv6/ip6_input.c:79 (discriminator 1) ./include/linux/netfilter.h:317 (discriminator 1) ./include/linux/netfilter.h:311 (discriminator 1) net/ipv6/ip6_input.c:311 (discriminator 1))
+ __netif_receive_skb_one_core (net/core/dev.c:5967)
+ process_backlog (./include/linux/rcupdate.h:869 net/core/dev.c:6440)
+ __napi_poll.constprop.0 (net/core/dev.c:7452)
+ net_rx_action (net/core/dev.c:7518 net/core/dev.c:7643)
+ handle_softirqs (kernel/softirq.c:579)
+ do_softirq (kernel/softirq.c:480 (discriminator 20))
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip (kernel/softirq.c:407)
+ __dev_queue_xmit (net/core/dev.c:4740)
+ ip6_finish_output2 (./include/linux/netdevice.h:3358 ./include/net/neighbour.h:526 ./include/net/neighbour.h:540 net/ipv6/ip6_output.c:141)
+ ip6_finish_output (net/ipv6/ip6_output.c:215 net/ipv6/ip6_output.c:226)
+ ip6_output (./include/linux/netfilter.h:306 net/ipv6/ip6_output.c:248)
+ ip6_send_skb (net/ipv6/ip6_output.c:1983)
+ rawv6_sendmsg (net/ipv6/raw.c:588 net/ipv6/raw.c:918)
+ __sys_sendto (net/socket.c:714 (discriminator 1) net/socket.c:729 (discriminator 1) net/socket.c:2228 (discriminator 1))
+ __x64_sys_sendto (net/socket.c:2231)
+ do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+RIP: 0033:0x7f68cffb2a06
+Code: 5d e8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 75 19 83 e2 39 83 fa 08 75 11 e8 26 ff ff ff 66 0f 1f 44 00 00 48 8b 45 10 0f 05 <48> 8b 5d f8 c9 c3 0f 1f 40 00 f3 0f 1e fa 55 48 89 e5 48 83 ec 08
+RSP: 002b:00007ffefb7c53d0 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000564cd69f10a0 RCX: 00007f68cffb2a06
+RDX: 0000000000000040 RSI: 0000564cd69f10a4 RDI: 0000000000000003
+RBP: 00007ffefb7c53f0 R08: 0000564cd6a032ac R09: 000000000000001c
+R10: 0000000000000000 R11: 0000000000000202 R12: 0000564cd69f10a4
+R13: 0000000000000040 R14: 00007ffefb7c66e0 R15: 0000564cd69f10a0
+ </TASK>
 
-Fixes: d25a92ccae6b ("net/smc: Introduce IPPROTO_SMC")
-Reported-by: syzbot+40bf00346c3fe40f90f2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/686d9b50.050a0220.1ffab7.0020.GAE@google.com/
-Tested-by: syzbot+40bf00346c3fe40f90f2@syzkaller.appspotmail.com
-Reported-by: syzbot+f22031fad6cbe52c70e7@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/686da0f3.050a0220.1ffab7.0022.GAE@google.com/
-Reported-by: syzbot+271fed3ed6f24600c364@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=271fed3ed6f24600c364 # [2]
-Link: https://lore.kernel.org/netdev/99f284be-bf1d-4bc4-a629-77b268522fff@huawei.com/ # [3]
-Link: https://lore.kernel.org/netdev/20250331081003.1503211-1-wangliang74@huawei.com/ # [4]
+Allocated by task 1543:
+ kasan_save_stack (mm/kasan/common.c:48)
+ kasan_save_track (mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1))
+ __kasan_slab_alloc (mm/kasan/common.c:319 mm/kasan/common.c:345)
+ kmem_cache_alloc_node_noprof (./include/linux/kasan.h:250 mm/slub.c:4148 mm/slub.c:4197 mm/slub.c:4249)
+ kmalloc_reserve (net/core/skbuff.c:581 (discriminator 88))
+ __alloc_skb (net/core/skbuff.c:669)
+ __ip6_append_data (net/ipv6/ip6_output.c:1672 (discriminator 1))
+ ip6_append_data (net/ipv6/ip6_output.c:1859)
+ rawv6_sendmsg (net/ipv6/raw.c:911)
+ __sys_sendto (net/socket.c:714 (discriminator 1) net/socket.c:729 (discriminator 1) net/socket.c:2228 (discriminator 1))
+ __x64_sys_sendto (net/socket.c:2231)
+ do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Freed by task 1543:
+ kasan_save_stack (mm/kasan/common.c:48)
+ kasan_save_track (mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1))
+ kasan_save_free_info (mm/kasan/generic.c:579 (discriminator 1))
+ __kasan_slab_free (mm/kasan/common.c:271)
+ kmem_cache_free (mm/slub.c:4643 (discriminator 3) mm/slub.c:4745 (discriminator 3))
+ pskb_expand_head (net/core/skbuff.c:2274)
+ rpl_do_srh_inline.isra.0 (net/ipv6/rpl_iptunnel.c:158 (discriminator 1))
+ rpl_input (net/ipv6/rpl_iptunnel.c:201 net/ipv6/rpl_iptunnel.c:282)
+ lwtunnel_input (net/core/lwtunnel.c:459)
+ ipv6_rcv (./include/net/dst.h:471 (discriminator 1) ./include/net/dst.h:469 (discriminator 1) net/ipv6/ip6_input.c:79 (discriminator 1) ./include/linux/netfilter.h:317 (discriminator 1) ./include/linux/netfilter.h:311 (discriminator 1) net/ipv6/ip6_input.c:311 (discriminator 1))
+ __netif_receive_skb_one_core (net/core/dev.c:5967)
+ process_backlog (./include/linux/rcupdate.h:869 net/core/dev.c:6440)
+ __napi_poll.constprop.0 (net/core/dev.c:7452)
+ net_rx_action (net/core/dev.c:7518 net/core/dev.c:7643)
+ handle_softirqs (kernel/softirq.c:579)
+ do_softirq (kernel/softirq.c:480 (discriminator 20))
+ __local_bh_enable_ip (kernel/softirq.c:407)
+ __dev_queue_xmit (net/core/dev.c:4740)
+ ip6_finish_output2 (./include/linux/netdevice.h:3358 ./include/net/neighbour.h:526 ./include/net/neighbour.h:540 net/ipv6/ip6_output.c:141)
+ ip6_finish_output (net/ipv6/ip6_output.c:215 net/ipv6/ip6_output.c:226)
+ ip6_output (./include/linux/netfilter.h:306 net/ipv6/ip6_output.c:248)
+ ip6_send_skb (net/ipv6/ip6_output.c:1983)
+ rawv6_sendmsg (net/ipv6/raw.c:588 net/ipv6/raw.c:918)
+ __sys_sendto (net/socket.c:714 (discriminator 1) net/socket.c:729 (discriminator 1) net/socket.c:2228 (discriminator 1))
+ __x64_sys_sendto (net/socket.c:2231)
+ do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+The buggy address belongs to the object at ffff888122bf96c0
+ which belongs to the cache skbuff_small_head of size 704
+The buggy address is located 24 bytes inside of
+ freed 704-byte region [ffff888122bf96c0, ffff888122bf9980)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x122bf8
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0x200000000000040(head|node=0|zone=2)
+page_type: f5(slab)
+raw: 0200000000000040 ffff888101fc0a00 ffffea000464dc00 0000000000000002
+raw: 0000000000000000 0000000080270027 00000000f5000000 0000000000000000
+head: 0200000000000040 ffff888101fc0a00 ffffea000464dc00 0000000000000002
+head: 0000000000000000 0000000080270027 00000000f5000000 0000000000000000
+head: 0200000000000003 ffffea00048afe01 00000000ffffffff 00000000ffffffff
+head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff888122bf9580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888122bf9600: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+>ffff888122bf9680: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
+                                                    ^
+ ffff888122bf9700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888122bf9780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+
+Fixes: a7a29f9c361f8 ("net: ipv6: add rpl sr tunnel")
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20250711060808.2977529-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 14 ++++++++++++++
- net/smc/smc.h    |  8 ++++----
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ net/ipv6/rpl_iptunnel.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 78b0e6dba0a2b..3c43239f09d36 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -30,6 +30,10 @@
- #include <linux/splice.h>
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index 862ac1e2e191c..952ec785853ab 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -129,13 +129,13 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
+ 			     struct dst_entry *cache_dst)
+ {
+ 	struct ipv6_rpl_sr_hdr *isrh, *csrh;
+-	const struct ipv6hdr *oldhdr;
++	struct ipv6hdr oldhdr;
+ 	struct ipv6hdr *hdr;
+ 	unsigned char *buf;
+ 	size_t hdrlen;
+ 	int err;
  
- #include <net/sock.h>
-+#include <net/inet_common.h>
-+#if IS_ENABLED(CONFIG_IPV6)
-+#include <net/ipv6.h>
-+#endif
- #include <net/tcp.h>
- #include <net/smc.h>
- #include <asm/ioctls.h>
-@@ -360,6 +364,16 @@ static void smc_destruct(struct sock *sk)
- 		return;
- 	if (!sock_flag(sk, SOCK_DEAD))
- 		return;
-+	switch (sk->sk_family) {
-+	case AF_INET:
-+		inet_sock_destruct(sk);
-+		break;
-+#if IS_ENABLED(CONFIG_IPV6)
-+	case AF_INET6:
-+		inet6_sock_destruct(sk);
-+		break;
-+#endif
-+	}
- }
+-	oldhdr = ipv6_hdr(skb);
++	memcpy(&oldhdr, ipv6_hdr(skb), sizeof(oldhdr));
  
- static struct lock_class_key smc_key;
-diff --git a/net/smc/smc.h b/net/smc/smc.h
-index ad77d6b6b8d3a..7579f9622e010 100644
---- a/net/smc/smc.h
-+++ b/net/smc/smc.h
-@@ -283,10 +283,10 @@ struct smc_connection {
- };
+ 	buf = kcalloc(struct_size(srh, segments.addr, srh->segments_left), 2, GFP_ATOMIC);
+ 	if (!buf)
+@@ -147,7 +147,7 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
+ 	memcpy(isrh, srh, sizeof(*isrh));
+ 	memcpy(isrh->rpl_segaddr, &srh->rpl_segaddr[1],
+ 	       (srh->segments_left - 1) * 16);
+-	isrh->rpl_segaddr[srh->segments_left - 1] = oldhdr->daddr;
++	isrh->rpl_segaddr[srh->segments_left - 1] = oldhdr.daddr;
  
- struct smc_sock {				/* smc sock container */
--	struct sock		sk;
--#if IS_ENABLED(CONFIG_IPV6)
--	struct ipv6_pinfo	*pinet6;
--#endif
-+	union {
-+		struct sock		sk;
-+		struct inet_sock	icsk_inet;
-+	};
- 	struct socket		*clcsock;	/* internal tcp socket */
- 	void			(*clcsk_state_change)(struct sock *sk);
- 						/* original stat_change fct. */
+ 	ipv6_rpl_srh_compress(csrh, isrh, &srh->rpl_segaddr[0],
+ 			      isrh->segments_left - 1);
+@@ -169,7 +169,7 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
+ 	skb_mac_header_rebuild(skb);
+ 
+ 	hdr = ipv6_hdr(skb);
+-	memmove(hdr, oldhdr, sizeof(*hdr));
++	memmove(hdr, &oldhdr, sizeof(*hdr));
+ 	isrh = (void *)hdr + sizeof(*hdr);
+ 	memcpy(isrh, csrh, hdrlen);
+ 
 -- 
 2.39.5
 
