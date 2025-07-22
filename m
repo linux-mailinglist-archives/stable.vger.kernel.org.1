@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-164012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80670B0DCBA
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0889CB0DB5C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C36E5464CB
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2B2AA0D26
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8C41A2C25;
-	Tue, 22 Jul 2025 14:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D3028AB11;
+	Tue, 22 Jul 2025 13:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="creGQ68x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQE+dfGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7867BA32;
-	Tue, 22 Jul 2025 14:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47EC23B614;
+	Tue, 22 Jul 2025 13:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192953; cv=none; b=Ces4tdkyPLK3ijKy5Xy8egYMdzMZHKBMWJtB8DW7Zig3ownfT/3KWLi340LTl48fybe5Sl/myQiyQ/jCpXuuD11yJVVpiXFnes73EOnxZYYksFYYszH1iOwQ+izA19pnxIVFwT3qpb6Xe9JAik5JHXjR2SbuzNsGVYOnNdlPuAg=
+	t=1753192083; cv=none; b=moYigE4+I5RH5xKPmWmK78HygJR9wHHqay2jtQHGpUYmuRgkXgaljn2xvLXvuCUyBM0FVYBD3H5DBXU6uVs6ebIGwAeC3dp2V4glQyv2cZAA8nNBKYtV2q6n0cjZ+LP1xdidwPsqtOC9A3Wqoyh8Ei90V/qxuv0lM8CmlLOnjAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192953; c=relaxed/simple;
-	bh=CcL7P1twAhA3kEvl4gE0fU96TvNy+DRuOXHkRMVrKlA=;
+	s=arc-20240116; t=1753192083; c=relaxed/simple;
+	bh=zgcLAnbgM3nvdFLJDNnPMeTod4P+y3UzAWJ7Iw2DvUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4zAMzHJaPedTmv2hU5UYZaDbIBu1j/dX3um7FEOEioeSRqrTr070b5loU1ttAuV+K41QGNmyb+J3VBON7qR2+866LCXgq2g6oDSJlVd4feFHTpIu3AdATfAXeuuXLdpcPPF3T3lnYgHNGdBwjPIqGbjoazBCp+d0ILFfhYVRBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=creGQ68x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A217BC4CEEB;
-	Tue, 22 Jul 2025 14:02:32 +0000 (UTC)
+	 MIME-Version; b=aVqM00oC5/nwUGa1ahgwZUjaOXCj+eKoodwUGVMzaSCpzso621iUs1hnqExVljYf9Copq6sFi0al9QqOMoPG2SD6GVF3dyjovRMM9LDCaAFXKWBy7p/Spp0PtIYoFQFDy5GeA2l5W8aj0orOiSun7RNyylLLVsZh32dts3stLJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQE+dfGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121C6C4CEEB;
+	Tue, 22 Jul 2025 13:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192953;
-	bh=CcL7P1twAhA3kEvl4gE0fU96TvNy+DRuOXHkRMVrKlA=;
+	s=korg; t=1753192083;
+	bh=zgcLAnbgM3nvdFLJDNnPMeTod4P+y3UzAWJ7Iw2DvUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=creGQ68x5H9/NykskFiW4muWkw11N6LfqmvYVYaq0pu7aERYzQKhVUzr0giafWJOi
-	 vbk5TiyVLG6XXBLN3425OSLWkf1gXnx0idahyvf1ZnnfIugHYUvNB/dOqCvv8VfEZ5
-	 lBjp+nfg8Mr2i4zGjLfmAsaPDlPVGmgw1dX94PYw=
+	b=BQE+dfGPI1O37NUfGmVyApejF/cXezIZgC9saD4rTlclp/ly2UDVt4k8ml3JrRGRj
+	 inIwvhFxExdayMVXFv9Kdp1mwhra6p1EvxnnMoBgiqqtqUvbV34IoaANz3wXqIS8vn
+	 Vq/8/SCKTzgZ5pi78YHEg7bRUvVMg64KVcxWRI6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 064/158] smb: client: fix use-after-free in crypt_message when using async crypto
+	Alan Stern <stern@rowland.harvard.edu>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.1 12/79] HID: core: do not bypass hid_hw_raw_request
 Date: Tue, 22 Jul 2025 15:44:08 +0200
-Message-ID: <20250722134343.145088225@linuxfoundation.org>
+Message-ID: <20250722134328.835739940@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-commit b220bed63330c0e1733dc06ea8e75d5b9962b6b6 upstream.
+commit c2ca42f190b6714d6c481dfd3d9b62ea091c946b upstream.
 
-The CVE-2024-50047 fix removed asynchronous crypto handling from
-crypt_message(), assuming all crypto operations are synchronous.
-However, when hardware crypto accelerators are used, this can cause
-use-after-free crashes:
+hid_hw_raw_request() is actually useful to ensure the provided buffer
+and length are valid. Directly calling in the low level transport driver
+function bypassed those checks and allowed invalid paramto be used.
 
-  crypt_message()
-    // Allocate the creq buffer containing the req
-    creq = smb2_get_aead_req(..., &req);
-
-    // Async encryption returns -EINPROGRESS immediately
-    rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
-
-    // Free creq while async operation is still in progress
-    kvfree_sensitive(creq, ...);
-
-Hardware crypto modules often implement async AEAD operations for
-performance. When crypto_aead_encrypt/decrypt() returns -EINPROGRESS,
-the operation completes asynchronously. Without crypto_wait_req(),
-the function immediately frees the request buffer, leading to crashes
-when the driver later accesses the freed memory.
-
-This results in a use-after-free condition when the hardware crypto
-driver later accesses the freed request structure, leading to kernel
-crashes with NULL pointer dereferences.
-
-The issue occurs because crypto_alloc_aead() with mask=0 doesn't
-guarantee synchronous operation. Even without CRYPTO_ALG_ASYNC in
-the mask, async implementations can be selected.
-
-Fix by restoring the async crypto handling:
-- DECLARE_CRYPTO_WAIT(wait) for completion tracking
-- aead_request_set_callback() for async completion notification
-- crypto_wait_req() to wait for operation completion
-
-This ensures the request buffer isn't freed until the crypto operation
-completes, whether synchronous or asynchronous, while preserving the
-CVE-2024-50047 fix.
-
-Fixes: b0abcd65ec54 ("smb: client: fix UAF in async decryption")
-Link: https://lore.kernel.org/all/8b784a13-87b0-4131-9ff9-7a8993538749@huaweicloud.com/
+Reported-by: Alan Stern <stern@rowland.harvard.edu>
+Closes: https://lore.kernel.org/linux-input/c75433e0-9b47-4072-bbe8-b1d14ea97b13@rowland.harvard.edu/
 Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://patch.msgid.link/20250710-report-size-null-v2-3-ccf922b7c4e5@kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/hid/hid-core.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4342,6 +4342,7 @@ crypt_message(struct TCP_Server_Info *se
- 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
- 	struct aead_request *req;
- 	u8 *iv;
-+	DECLARE_CRYPTO_WAIT(wait);
- 	unsigned int crypt_len = le32_to_cpu(tr_hdr->OriginalMessageSize);
- 	void *creq;
- 	size_t sensitive_size;
-@@ -4392,7 +4393,11 @@ crypt_message(struct TCP_Server_Info *se
- 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
- 	aead_request_set_ad(req, assoc_data_len);
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1964,8 +1964,7 @@ int __hid_request(struct hid_device *hid
+ 	if (reqtype == HID_REQ_SET_REPORT)
+ 		hid_output_report(report, data_buf);
  
--	rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
-+	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
-+				  crypto_req_done, &wait);
-+
-+	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req)
-+				: crypto_aead_decrypt(req), &wait);
- 
- 	if (!rc && enc)
- 		memcpy(&tr_hdr->Signature, sign, SMB2_SIGNATURE_SIZE);
+-	ret = hid->ll_driver->raw_request(hid, report->id, buf, len,
+-					  report->type, reqtype);
++	ret = hid_hw_raw_request(hid, report->id, buf, len, report->type, reqtype);
+ 	if (ret < 0) {
+ 		dbg_hid("unable to complete request: %d\n", ret);
+ 		goto out;
 
 
 
