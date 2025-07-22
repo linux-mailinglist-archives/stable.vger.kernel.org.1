@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-163795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B01B0DBA1
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:51:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9FFBB0DCCE
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FFBC3BD590
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E49FF1C22584
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8672EA489;
-	Tue, 22 Jul 2025 13:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0674B2EA15C;
+	Tue, 22 Jul 2025 14:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSjSu+4a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXR9xF2w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7A52EA15A;
-	Tue, 22 Jul 2025 13:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68BF23AB9D;
+	Tue, 22 Jul 2025 14:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192237; cv=none; b=G9Ew/gcuvNgDPA/HMI0zt6i37k5/KUsr5aBSXVOfH+hplupgFsmDqdd9aRoADYaYPG//ngeH0HzLZoobDaYK2fU0Xtd0OnnvfWmnYOnHhdHh06+8A3mmJpnDLW67/woscHyih32cPz1Bcll1ylUJboU96L4Sntu/sKSLGz07gWk=
+	t=1753193035; cv=none; b=L/vANBTjMasPPGmhi6dY2gIbacFeJwQdPRK50c7AH9bbEWy1msGyRkpiEDJKEqFqspQXhS6NZnAvH7LM78v35YsA+AvMANVIiGaqU7jSuDe6SOiSSUoqAW750PWVd19JV5yNxRoSDGMbi9brLNPXKLrkx0I9HFEbChdR5D2w1E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192237; c=relaxed/simple;
-	bh=8V17qEMdliV8Wag4yVql/s0i2kJWDSWQhNxNA+XJ+ZI=;
+	s=arc-20240116; t=1753193035; c=relaxed/simple;
+	bh=1tWHVFaD9iP1J0lU9kPqvNNlm8uak/b2WaHXOGvnWXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1I3/ssY9HaupJynkG0xwIEX/cC8+91M+8ze7IWLCtdlTAJReQZIkwkgLyzqU3bd1QusBw/TmyUn4RjOepd4ih/j4qQrXVlF50P9GrXdIxkYiCu7KZCLv0zv2f8Dw9ibSrkq8H67KHtJCBaZ7dt4XRc7cw7Neg9zG85gkPKOAi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSjSu+4a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A71C4CEF1;
-	Tue, 22 Jul 2025 13:50:36 +0000 (UTC)
+	 MIME-Version; b=CWV1bHVn2bXScMbI46hNN0BUHB3mcZxId4UzrC2V/ZNQdXiG/I0SDPGCV7/8Hj4o5H5v3Vt3/KnrLV5V8dxYCVVu51p4TWWugEaH4mQ1vzr4k5HdxGWTWz0nbR4ty+cgkfsqCqHvphscpLnsopFXzFBaGeFzTiCt0RraTU62kHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXR9xF2w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904FAC4CEEB;
+	Tue, 22 Jul 2025 14:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192237;
-	bh=8V17qEMdliV8Wag4yVql/s0i2kJWDSWQhNxNA+XJ+ZI=;
+	s=korg; t=1753193034;
+	bh=1tWHVFaD9iP1J0lU9kPqvNNlm8uak/b2WaHXOGvnWXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSjSu+4ahm+LBctGixFbjQXX9ZB3OS1rNhrEhFmAyjw5i1yQ1myYFp3DCvkinNMSS
-	 Cze0EdZ/WkOP1cv2zZMoZoalQvF52iGthuLNV7FMYV51XcEs57WC0E4oz7EiS0Eb5W
-	 egdg8s59AKmGznt353hHYstrvXhJFsjyywiu+W5w=
+	b=UXR9xF2wWdXcZhdL3/E0bJEIZtJXP+9Bv17C3DfQQoQf1h/XDvsKYew0j6iLaXI0z
+	 cJSLN4ZVBNlYuko/i5Fifta8Ki+m7EKM4clThMTJh2A6EsmzgNzvuGUK5YnIILiEHr
+	 ARa34IjDVdHS25tDu94/EpRVYKRlqxQ1Nm6mqIis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 51/79] usb: net: sierra: check for no status endpoint
+Subject: [PATCH 6.12 103/158] can: tcan4x5x: add option for selecting nWKRQ voltage
 Date: Tue, 22 Jul 2025 15:44:47 +0200
-Message-ID: <20250722134330.255577573@linuxfoundation.org>
+Message-ID: <20250722134344.586195740@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit 4c4ca3c46167518f8534ed70f6e3b4bf86c4d158 ]
+[ Upstream commit 36131b72fb1c62bc61e86068618de304763b8ac7 ]
 
-The driver checks for having three endpoints and
-having bulk in and out endpoints, but not that
-the third endpoint is interrupt input.
-Rectify the omission.
+The nWKRQ pin supports an output voltage of either the internal reference
+voltage (3.6V) or the reference voltage of
+the digital interface 0-6V (VIO).
+Add the devicetree option ti,nwkrq-voltage-vio to set it to VIO.
 
-Reported-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/686d5a9f.050a0220.1ffab7.0017.GAE@google.com/
-Tested-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
-Fixes: eb4fd8cd355c8 ("net/usb: add sierra_net.c driver")
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20250714111326.258378-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If this property is omitted the reset default, the internal reference
+voltage, is used.
+
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20241114-tcan-wkrqv-v5-2-a2d50833ed71@geanix.com
+[mkl: remove unused variable in tcan4x5x_get_dt_data()]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: 0f97a7588db7 ("can: tcan4x5x: fix reset gpio usage during probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/sierra_net.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/can/m_can/tcan4x5x-core.c | 19 +++++++++++++++++++
+ drivers/net/can/m_can/tcan4x5x.h      |  2 ++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
-index b3ae949e6f1c5..d067f09fc072b 100644
---- a/drivers/net/usb/sierra_net.c
-+++ b/drivers/net/usb/sierra_net.c
-@@ -689,6 +689,10 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
- 			status);
- 		return -ENODEV;
- 	}
-+	if (!dev->status) {
-+		dev_err(&dev->udev->dev, "No status endpoint found");
-+		return -ENODEV;
+diff --git a/drivers/net/can/m_can/tcan4x5x-core.c b/drivers/net/can/m_can/tcan4x5x-core.c
+index b6c5c8bab7390..7062a2939f501 100644
+--- a/drivers/net/can/m_can/tcan4x5x-core.c
++++ b/drivers/net/can/m_can/tcan4x5x-core.c
+@@ -92,6 +92,8 @@
+ #define TCAN4X5X_MODE_STANDBY BIT(6)
+ #define TCAN4X5X_MODE_NORMAL BIT(7)
+ 
++#define TCAN4X5X_NWKRQ_VOLTAGE_VIO BIT(19)
++
+ #define TCAN4X5X_DISABLE_WAKE_MSK	(BIT(31) | BIT(30))
+ #define TCAN4X5X_DISABLE_INH_MSK	BIT(9)
+ 
+@@ -267,6 +269,13 @@ static int tcan4x5x_init(struct m_can_classdev *cdev)
+ 	if (ret)
+ 		return ret;
+ 
++	if (tcan4x5x->nwkrq_voltage_vio) {
++		ret = regmap_set_bits(tcan4x5x->regmap, TCAN4X5X_CONFIG,
++				      TCAN4X5X_NWKRQ_VOLTAGE_VIO);
++		if (ret)
++			return ret;
 +	}
- 	/* Initialize sierra private data */
- 	priv = kzalloc(sizeof *priv, GFP_KERNEL);
- 	if (!priv)
++
+ 	return ret;
+ }
+ 
+@@ -318,6 +327,14 @@ static const struct tcan4x5x_version_info
+ 	return &tcan4x5x_versions[TCAN4X5X];
+ }
+ 
++static void tcan4x5x_get_dt_data(struct m_can_classdev *cdev)
++{
++	struct tcan4x5x_priv *tcan4x5x = cdev_to_priv(cdev);
++
++	tcan4x5x->nwkrq_voltage_vio =
++		of_property_read_bool(cdev->dev->of_node, "ti,nwkrq-voltage-vio");
++}
++
+ static int tcan4x5x_get_gpios(struct m_can_classdev *cdev,
+ 			      const struct tcan4x5x_version_info *version_info)
+ {
+@@ -454,6 +471,8 @@ static int tcan4x5x_can_probe(struct spi_device *spi)
+ 		goto out_power;
+ 	}
+ 
++	tcan4x5x_get_dt_data(mcan_class);
++
+ 	tcan4x5x_check_wake(priv);
+ 
+ 	ret = tcan4x5x_write_tcan_reg(mcan_class, TCAN4X5X_INT_EN, 0);
+diff --git a/drivers/net/can/m_can/tcan4x5x.h b/drivers/net/can/m_can/tcan4x5x.h
+index e62c030d3e1e5..203399d5e8ccf 100644
+--- a/drivers/net/can/m_can/tcan4x5x.h
++++ b/drivers/net/can/m_can/tcan4x5x.h
+@@ -42,6 +42,8 @@ struct tcan4x5x_priv {
+ 
+ 	struct tcan4x5x_map_buf map_buf_rx;
+ 	struct tcan4x5x_map_buf map_buf_tx;
++
++	bool nwkrq_voltage_vio;
+ };
+ 
+ static inline void
 -- 
 2.39.5
 
