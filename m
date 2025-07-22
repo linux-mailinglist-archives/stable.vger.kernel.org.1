@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-163796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83EA7B0DB9E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:51:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3143AB0DC3E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:59:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 562ED564061
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1DD43A4301
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D9E2EA463;
-	Tue, 22 Jul 2025 13:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734861DE2B5;
+	Tue, 22 Jul 2025 13:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3XBCGDt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwDTNrHX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660072EA16A;
-	Tue, 22 Jul 2025 13:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AD72DEA68;
+	Tue, 22 Jul 2025 13:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192240; cv=none; b=DwYfWdwk8fLye/0xcTfLA6TK/Jbp+X+xXI2M1H8nBRCcjQdkdeg3DOSBa6N7oucUSBIpfPASA7QwFxzUVT2lMbHeHOCLRHypbHT4HfMuDRU0Q+U1kJw95CuDHAhD/K7G2338NdRF5kCOwqAUajyf6z6e6G8hHw6Nk/tjGY/BrJE=
+	t=1753192571; cv=none; b=dHXS5RHxQxFI0+pqQYx5wntqOCtjvPHxWGDt4NPb0I24i8V97Cameby9bvj5A/epXs3Iaf66T0xaMxL/tIb3vieHveKNc83X3Uj4oZqxjVXKN+MH2cNW3SGWne5vawDRClrwChKkcwmYYK5mbTxrKMsWmC9ZbBOfaHXtKJ4k7Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192240; c=relaxed/simple;
-	bh=1CqXKBdNMrFkbtZwDf+PcNFT2dSeFV0YzCrMcQbCojA=;
+	s=arc-20240116; t=1753192571; c=relaxed/simple;
+	bh=doB/rxLx0rn6bDKw4NwcS+dl2eIwrwLd3n21GSEiMtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hjw1jYdzDSvczjhtbJQemkf5QEVq5uF1ToUqSI3ZhO+b5eeEerIdL2fj2YLeG/HS0+Wn772jBuFAieHw6Am96VS4uo/dmoCgZwpm9AafJBnHzg4u32F0cG4vrT+yje2QvK9ivFgE+kVg/HVOzugg/ftXvnsKwk330TGh395ASlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3XBCGDt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEE0C4CEF5;
-	Tue, 22 Jul 2025 13:50:39 +0000 (UTC)
+	 MIME-Version; b=EScktM5f6FANgxnijLNWrGykB5LYiwfpHxMXSKG/4nqRcRAzJK7Ac5BWCTnqvbn8mFFby6kpp0xueEFX/ltHLSUAXSV4FJAkvxQo321zXzQhzRFBSzXq5FzQnytgAcHUJatgBJPd/PzyTp9lTqoFryD5F4d1eTcv5iR2/Oz4QbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwDTNrHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AE0C4CEEB;
+	Tue, 22 Jul 2025 13:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192240;
-	bh=1CqXKBdNMrFkbtZwDf+PcNFT2dSeFV0YzCrMcQbCojA=;
+	s=korg; t=1753192571;
+	bh=doB/rxLx0rn6bDKw4NwcS+dl2eIwrwLd3n21GSEiMtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I3XBCGDtSihK59Pa5OVDP/rrHYqVBLN8GTx/zP0z6J6SwlBbQBauEmJYPSPKqo+BF
-	 8cxeme58QOCgRg17gCP+kC0LisQbXguhRp+WkxEKx+zQ1kl23m7BryCwHPXE3IWqUM
-	 Zq1ISIPJHtqxsx7+RVvNPVVjCGP+jXIMEyy7hvd8=
+	b=EwDTNrHXZZCFqbmDjXhRZcvdcnHePzlZawqvXZ5tutjTTM5OWQafqP7BO76TwXWtg
+	 zRZsgJUBKYf1VZraA8VwYihFPWhbzNSODCSo1AedsV1UE35BLjCSUtzmpt/+91uKPj
+	 468911mwrxCeGPPdC6btoNZoW+6jC/fRcjXGHxtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e4d73b165c3892852d22@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+3bbbade4e1a7ab45ca3b@syzkaller.appspotmail.com,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 52/79] Bluetooth: Fix null-ptr-deref in l2cap_sock_resume_cb()
+Subject: [PATCH 6.6 073/111] hwmon: (corsair-cpro) Validate the size of the received input buffer
 Date: Tue, 22 Jul 2025 15:44:48 +0200
-Message-ID: <20250722134330.290744195@linuxfoundation.org>
+Message-ID: <20250722134336.106906554@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Marius Zachmann <mail@mariuszachmann.de>
 
-[ Upstream commit a0075accbf0d76c2dad1ad3993d2e944505d99a0 ]
+[ Upstream commit 495a4f0dce9c8c4478c242209748f1ee9e4d5820 ]
 
-syzbot reported null-ptr-deref in l2cap_sock_resume_cb(). [0]
+Add buffer_recv_size to store the size of the received bytes.
+Validate buffer_recv_size in send_usb_cmd().
 
-l2cap_sock_resume_cb() has a similar problem that was fixed by commit
-1bff51ea59a9 ("Bluetooth: fix use-after-free error in lock_sock_nested()").
-
-Since both l2cap_sock_kill() and l2cap_sock_resume_cb() are executed
-under l2cap_sock_resume_cb(), we can avoid the issue simply by checking
-if chan->data is NULL.
-
-Let's not access to the killed socket in l2cap_sock_resume_cb().
-
-[0]:
-BUG: KASAN: null-ptr-deref in instrument_atomic_write include/linux/instrumented.h:82 [inline]
-BUG: KASAN: null-ptr-deref in clear_bit include/asm-generic/bitops/instrumented-atomic.h:41 [inline]
-BUG: KASAN: null-ptr-deref in l2cap_sock_resume_cb+0xb4/0x17c net/bluetooth/l2cap_sock.c:1711
-Write of size 8 at addr 0000000000000570 by task kworker/u9:0/52
-
-CPU: 1 UID: 0 PID: 52 Comm: kworker/u9:0 Not tainted 6.16.0-rc4-syzkaller-g7482bb149b9f #0 PREEMPT
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Workqueue: hci0 hci_rx_work
-Call trace:
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:501 (C)
- __dump_stack+0x30/0x40 lib/dump_stack.c:94
- dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
- print_report+0x58/0x84 mm/kasan/report.c:524
- kasan_report+0xb0/0x110 mm/kasan/report.c:634
- check_region_inline mm/kasan/generic.c:-1 [inline]
- kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:189
- __kasan_check_write+0x20/0x30 mm/kasan/shadow.c:37
- instrument_atomic_write include/linux/instrumented.h:82 [inline]
- clear_bit include/asm-generic/bitops/instrumented-atomic.h:41 [inline]
- l2cap_sock_resume_cb+0xb4/0x17c net/bluetooth/l2cap_sock.c:1711
- l2cap_security_cfm+0x524/0xea0 net/bluetooth/l2cap_core.c:7357
- hci_auth_cfm include/net/bluetooth/hci_core.h:2092 [inline]
- hci_auth_complete_evt+0x2e8/0xa4c net/bluetooth/hci_event.c:3514
- hci_event_func net/bluetooth/hci_event.c:7511 [inline]
- hci_event_packet+0x650/0xe9c net/bluetooth/hci_event.c:7565
- hci_rx_work+0x320/0xb18 net/bluetooth/hci_core.c:4070
- process_one_work+0x7e8/0x155c kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3321 [inline]
- worker_thread+0x958/0xed8 kernel/workqueue.c:3402
- kthread+0x5fc/0x75c kernel/kthread.c:464
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:847
-
-Fixes: d97c899bde33 ("Bluetooth: Introduce L2CAP channel callback for resuming")
-Reported-by: syzbot+e4d73b165c3892852d22@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/686c12bd.a70a0220.29fe6c.0b13.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: syzbot+3bbbade4e1a7ab45ca3b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-hwmon/61233ba1-e5ad-4d7a-ba31-3b5d0adcffcc@roeck-us.net
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20250619132817.39764-5-mail@mariuszachmann.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hwmon/corsair-cpro.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index bdfc83eb7aefc..c89277848ca83 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1723,6 +1723,9 @@ static void l2cap_sock_resume_cb(struct l2cap_chan *chan)
- {
- 	struct sock *sk = chan->data;
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index 280b90646a873..b37f36f55f88a 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -84,6 +84,7 @@ struct ccp_device {
+ 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
+ 	u8 *cmd_buffer;
+ 	u8 *buffer;
++	int buffer_recv_size; /* number of received bytes in buffer */
+ 	int target[6];
+ 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
+ 	DECLARE_BITMAP(fan_cnct, NUM_FANS);
+@@ -139,6 +140,9 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+ 	if (!t)
+ 		return -ETIMEDOUT;
  
-+	if (!sk)
-+		return;
++	if (ccp->buffer_recv_size != IN_BUFFER_SIZE)
++		return -EPROTO;
 +
- 	if (test_and_clear_bit(FLAG_PENDING_SECURITY, &chan->flags)) {
- 		sk->sk_state = BT_CONNECTED;
- 		chan->state = BT_CONNECTED;
+ 	return ccp_get_errno(ccp);
+ }
+ 
+@@ -150,6 +154,7 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
+ 	spin_lock(&ccp->wait_input_report_lock);
+ 	if (!completion_done(&ccp->wait_input_report)) {
+ 		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
++		ccp->buffer_recv_size = size;
+ 		complete_all(&ccp->wait_input_report);
+ 	}
+ 	spin_unlock(&ccp->wait_input_report_lock);
 -- 
 2.39.5
 
