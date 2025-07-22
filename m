@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-164034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA43B0DCEC
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:07:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D8EB0DE5E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 613253BCC2B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 816A658154A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488982EA163;
-	Tue, 22 Jul 2025 14:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49612ECEA9;
+	Tue, 22 Jul 2025 14:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfFRAIZl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2EDT8VP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E0E23AB9D;
-	Tue, 22 Jul 2025 14:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9234C2E1C53;
+	Tue, 22 Jul 2025 14:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193032; cv=none; b=PokxwGww6/WQdBdh4pE9SjsZhupOUUIRLGrHJJJcG5sMkvjnYG0kMmg+BqtOQHLt66rzVGfHf9e6JlFRLUS95UIo7+lw08W0luV8NZ9shLzpicyolUI8ZKA0eqbgXc3jMbTKIKLlETPV4C9/jbe5V0VKVcubn8tG5VdLcYyF+kM=
+	t=1753193718; cv=none; b=GJnmc7x4VH4efsMuM3Wec5ER0n5dfVPQN3vCEhxqVtPEBlb8Ap/YU5CO1r60Jn2O1OkFDSMxaGZxC4uNFC+9gNoM9usDG9L/VtcYRAozPiED+x6sx/m+LMOeAdPNHwzzcYKCUwOaEBdsKd/I90Ubx6+yn81mVjTS51vYnZ+QMiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193032; c=relaxed/simple;
-	bh=dFEEu6HMNTCHUtjnmH/H59c+3WEu2XANzKdMbkavPkk=;
+	s=arc-20240116; t=1753193718; c=relaxed/simple;
+	bh=TzcwkN//7n6DQC1YTL8bEHa9xqJH4Qz5sDEsGoe6dNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQD9HQXZNA1FT/iwp/etdfaBM2TDEhVmAksQWQg/X23Ig0iiJw4QnzJsfsjnLOhiOT2hGHa/JL9WqAjwyRqZi2EQFGmeg1fs0RFxgP4baqlLCdBerQatnuvU9is6xZzYNYIHsunQB6CCj3vZ7DFsmGj48wy7YABrRp1EDab8guo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfFRAIZl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1959AC4CEEB;
-	Tue, 22 Jul 2025 14:03:50 +0000 (UTC)
+	 MIME-Version; b=KznnNYvXpCiQ67XvqJUGada9hWZRaxXON8F9W2N2SpICAiuqLCuF3nDvsn6RWB8eBloiXY6jVNk9+JshkWMMT9/3HYisxMv4GhFbY9HaVxlAIM/L/Q76aWnki8JjHG6YCHkuzB1zOdi7dkCfovMrpy8KPuD3qpgo7YnAE+OxneQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2EDT8VP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0308FC4CEF1;
+	Tue, 22 Jul 2025 14:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193031;
-	bh=dFEEu6HMNTCHUtjnmH/H59c+3WEu2XANzKdMbkavPkk=;
+	s=korg; t=1753193718;
+	bh=TzcwkN//7n6DQC1YTL8bEHa9xqJH4Qz5sDEsGoe6dNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YfFRAIZlFC7CRUF7JukmUiH3k8zcxquGOfewpp5hnMHCC1NbOFmeZVCf+njBJZGk5
-	 xywcbZrvhbNr7vSd75bY5dhj0QES9uxUKTLGsm5qXqlFPNTWwXE1ZjpS/QioD7NYtv
-	 qIue88uKcsaejhZnBe+e7Njd6lb+O2wI2tJe4YTM=
+	b=F2EDT8VPXsd3onrMcF8oMn/w4b+wjtrOL1DS4oVg/BAEojwBjao2TzKcKOfFwwXQc
+	 UsqZli86XBGF5InBqdxxpVnIv/8RunsuyuUNLMA3pEuCw2MeNBlxN+WRHt0qfg8TYB
+	 RcBaRdr3WPlfEr4FHD3oE6arGnTyJqRiJfE5jDQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 129/158] tls: always refresh the queue when reading sock
-Date: Tue, 22 Jul 2025 15:45:13 +0200
-Message-ID: <20250722134345.548097878@linuxfoundation.org>
+Subject: [PATCH 6.15 144/187] net: fix segmentation after TCP/UDP fraglist GRO
+Date: Tue, 22 Jul 2025 15:45:14 +0200
+Message-ID: <20250722134351.153179323@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 4ab26bce3969f8fd925fe6f6f551e4d1a508c68b ]
+[ Upstream commit 9f735b6f8a77d7be7f8b0765dc93587774832cb1 ]
 
-After recent changes in net-next TCP compacts skbs much more
-aggressively. This unearthed a bug in TLS where we may try
-to operate on an old skb when checking if all skbs in the
-queue have matching decrypt state and geometry.
+Since "net: gro: use cb instead of skb->network_header", the skb network
+header is no longer set in the GRO path.
+This breaks fraglist segmentation, which relies on ip_hdr()/tcp_hdr()
+to check for address/port changes.
+Fix this regression by selectively setting the network header for merged
+segment skbs.
 
-    BUG: KASAN: slab-use-after-free in tls_strp_check_rcv+0x898/0x9a0 [tls]
-    (net/tls/tls_strp.c:436 net/tls/tls_strp.c:530 net/tls/tls_strp.c:544)
-    Read of size 4 at addr ffff888013085750 by task tls/13529
-
-    CPU: 2 UID: 0 PID: 13529 Comm: tls Not tainted 6.16.0-rc5-virtme
-    Call Trace:
-     kasan_report+0xca/0x100
-     tls_strp_check_rcv+0x898/0x9a0 [tls]
-     tls_rx_rec_wait+0x2c9/0x8d0 [tls]
-     tls_sw_recvmsg+0x40f/0x1aa0 [tls]
-     inet_recvmsg+0x1c3/0x1f0
-
-Always reload the queue, fast path is to have the record in the queue
-when we wake, anyway (IOW the path going down "if !strp->stm.full_len").
-
-Fixes: 0d87bbd39d7f ("tls: strp: make sure the TCP skbs do not have overlapping data")
-Link: https://patch.msgid.link/20250716143850.1520292-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 186b1ea73ad8 ("net: gro: use cb instead of skb->network_header")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250705150622.10699-1-nbd@nbd.name
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_strp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv4/tcp_offload.c | 1 +
+ net/ipv4/udp_offload.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 65b0da6fdf6a7..095cf31bae0ba 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -512,9 +512,8 @@ static int tls_strp_read_sock(struct tls_strparser *strp)
- 	if (inq < strp->stm.full_len)
- 		return tls_strp_read_copy(strp, true);
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index d293087b426df..be5c2294610e5 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -359,6 +359,7 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb,
+ 		flush |= skb->ip_summed != p->ip_summed;
+ 		flush |= skb->csum_level != p->csum_level;
+ 		flush |= NAPI_GRO_CB(p)->count >= 64;
++		skb_set_network_header(skb, skb_gro_receive_network_offset(skb));
  
-+	tls_strp_load_anchor_with_queue(strp, inq);
- 	if (!strp->stm.full_len) {
--		tls_strp_load_anchor_with_queue(strp, inq);
--
- 		sz = tls_rx_msg_size(strp, strp->anchor);
- 		if (sz < 0) {
- 			tls_strp_abort_strp(strp, sz);
+ 		if (flush || skb_gro_receive_list(p, skb))
+ 			mss = 1;
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 9b295b2878bef..a1aca63086777 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -604,6 +604,7 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
+ 					NAPI_GRO_CB(skb)->flush = 1;
+ 					return NULL;
+ 				}
++				skb_set_network_header(skb, skb_gro_receive_network_offset(skb));
+ 				ret = skb_gro_receive_list(p, skb);
+ 			} else {
+ 				skb_gro_postpull_rcsum(skb, uh,
 -- 
 2.39.5
 
