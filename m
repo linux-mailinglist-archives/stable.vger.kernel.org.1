@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-164231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 749C2B0DE63
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:26:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79969B0DD0D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:08:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFCD45802B6
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:19:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8C04AA8057
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD5D2ECD2A;
-	Tue, 22 Jul 2025 14:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7942EA731;
+	Tue, 22 Jul 2025 14:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIGFE4rL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHijdATO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06182ECD09;
-	Tue, 22 Jul 2025 14:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB4A6D17;
+	Tue, 22 Jul 2025 14:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193677; cv=none; b=ND3eFdZdficFNC1Xo/PJb8u3fSkARNQJFrkSFPkPxp7HKLr4rV+1VpSa/gCFoQcxUfM1915RstZHg0ExLfSh2P4oKET9lT3cuGg7Qv/gGLJlpkuoLQXc/wh3wFvOaY5zCC6PJZzysbxSuVilEkkopwS6F1aXZLf8tMdcVUukkm0=
+	t=1753193101; cv=none; b=niXxlmOmhyTcc1Yk/eHI02MQJ9ksLffBZyyPyW/rOJXLexCSFHBMDwaQnPNinOyDzM6/ljJQQWUKWbqwmjwa4yVbVhHW8oLiSRoifJX/JUhVqVeTKoDtsjF/tUeBc2UOMSsekK8obe4nociZBfqtPMziiKRJHIq/ELLnp7kdry8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193677; c=relaxed/simple;
-	bh=fNeGOtfLTec5lGoaUdsVEkFNJvn76QLynwjDQ4ze1B8=;
+	s=arc-20240116; t=1753193101; c=relaxed/simple;
+	bh=J/Ff5FaTw14TbiFJg++HCwtqojq5K6FjjgmKaoD3cIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nV5AJHd1K7IwuLV4lZItOLk1UqhZ6ULDsoUsujkShEloiy98lZbasBxLfig0FCx0y8Lp96G0xaEhgQRdBxwpeZXL4e8gzRciK0O9lFu+bHTpGfTROMZ2r3aYARxSStYeb6pAE7WgbIQvWn0R+97nD+R9Ob4pBUO2TcJxEEiooU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIGFE4rL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB35C4CEEB;
-	Tue, 22 Jul 2025 14:14:37 +0000 (UTC)
+	 MIME-Version; b=EvckopFqfkWK9VmZLoT3Re78m3ZpMjsdp67g1hCxwCWa/i4kkadcNSleerKIBZlVdJKTL49ELfjAe2s3rQvyk8NPZeSl7EG77WSgk8P0Bj58f+NtEghO9NYd/cQywOQIyT8y/xrYcE0VZr2DUcb8dmzyTpL0zs8qjoOWny+BkK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHijdATO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D507C4CEF1;
+	Tue, 22 Jul 2025 14:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193677;
-	bh=fNeGOtfLTec5lGoaUdsVEkFNJvn76QLynwjDQ4ze1B8=;
+	s=korg; t=1753193101;
+	bh=J/Ff5FaTw14TbiFJg++HCwtqojq5K6FjjgmKaoD3cIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIGFE4rLzyPF4AgecJSe6Tn2kp4O70DPkniDzzAsBMcz1sonm/mVrBlWVkC45coBr
-	 UA6vy6fTSYRijeQtLyXWJGVzrLBSw6UR1YeUGLMsKQI4tiv3i4G0+ky4KAX11j0R0V
-	 kU7MRxJQOLxOSPAPGe4IFYlq5SqqPUyLjc6XmDVE=
+	b=iHijdATOqHJaW/5ROvmzcwnmI4FkzhKU/45Xo4NzjXvFCAxDsjhthfh/dxjf9WawM
+	 46Hr/vJiQngTWuT4rOKH2oXAw1XkW3v8YtYRi+VEV3t+NpW48WWYwJNfc+TrNO56Sb
+	 6FAsf1hYwIMs7whK66dUzjXQuwPt9S/98J7+mVh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 164/187] libbpf: Fix handling of BPF arena relocations
-Date: Tue, 22 Jul 2025 15:45:34 +0200
-Message-ID: <20250722134351.882861712@linuxfoundation.org>
+Subject: [PATCH 6.12 151/158] i2c: omap: Add support for setting mux
+Date: Tue, 22 Jul 2025 15:45:35 +0200
+Message-ID: <20250722134346.347298935@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
-References: <20250722134345.761035548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit 0238c45fbbf8228f52aa4642f0cdc21c570d1dfe ]
+commit b6ef830c60b6f4adfb72d0780b4363df3a1feb9c upstream.
 
-Initial __arena global variable support implementation in libbpf
-contains a bug: it remembers struct bpf_map pointer for arena, which is
-used later on to process relocations. Recording this pointer is
-problematic because map pointers are not stable during ELF relocation
-collection phase, as an array of struct bpf_map's can be reallocated,
-invalidating all the pointers. Libbpf is dealing with similar issues by
-using a stable internal map index, though for BPF arena map specifically
-this approach wasn't used due to an oversight.
+Some SoCs require muxes in the routing for SDA and SCL lines.
+Therefore, add support for setting the mux by reading the mux-states
+property from the dt-node.
 
-The resulting behavior is non-deterministic issue which depends on exact
-layout of ELF object file, number of actual maps, etc. We didn't hit
-this until very recently, when this bug started triggering crash in BPF
-CI when validating one of sched-ext BPF programs.
-
-The fix is rather straightforward: we just follow an established pattern
-of remembering map index (just like obj->kconfig_map_idx, for example)
-instead of `struct bpf_map *`, and resolving index to a pointer at the
-point where map information is necessary.
-
-While at it also add debug-level message for arena-related relocation
-resolution information, which we already have for all other kinds of
-maps.
-
-Fixes: 2e7ba4f8fd1f ("libbpf: Recognize __arena global variables.")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20250718001009.610955-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Link: https://lore.kernel.org/r/20250318103622.29979-3-j-choudhary@ti.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Stable-dep-of: a9503a2ecd95 ("i2c: omap: Handle omap_i2c_init() errors in omap_i2c_probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/libbpf.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/i2c/busses/Kconfig    |    1 +
+ drivers/i2c/busses/i2c-omap.c |   22 ++++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 97605ea8093ff..c8e29c52d28c0 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -735,7 +735,7 @@ struct bpf_object {
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -937,6 +937,7 @@ config I2C_OMAP
+ 	tristate "OMAP I2C adapter"
+ 	depends on ARCH_OMAP || ARCH_K3 || COMPILE_TEST
+ 	default MACH_OMAP_OSK
++	select MULTIPLEXER
+ 	help
+ 	  If you say yes to this option, support will be included for the
+ 	  I2C interface on the Texas Instruments OMAP1/2 family of processors.
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -24,6 +24,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/clk.h>
+ #include <linux/io.h>
++#include <linux/mux/consumer.h>
+ #include <linux/of.h>
+ #include <linux/slab.h>
+ #include <linux/platform_data/i2c-omap.h>
+@@ -211,6 +212,7 @@ struct omap_i2c_dev {
+ 	u16			syscstate;
+ 	u16			westate;
+ 	u16			errata;
++	struct mux_state	*mux_state;
+ };
  
- 	struct usdt_manager *usdt_man;
- 
--	struct bpf_map *arena_map;
-+	int arena_map_idx;
- 	void *arena_data;
- 	size_t arena_data_sz;
- 
-@@ -1517,6 +1517,7 @@ static struct bpf_object *bpf_object__new(const char *path,
- 	obj->efile.obj_buf_sz = obj_buf_sz;
- 	obj->efile.btf_maps_shndx = -1;
- 	obj->kconfig_map_idx = -1;
-+	obj->arena_map_idx = -1;
- 
- 	obj->kern_version = get_kernel_version();
- 	obj->state  = OBJ_OPEN;
-@@ -2964,7 +2965,7 @@ static int init_arena_map_data(struct bpf_object *obj, struct bpf_map *map,
- 	const long page_sz = sysconf(_SC_PAGE_SIZE);
- 	size_t mmap_sz;
- 
--	mmap_sz = bpf_map_mmap_sz(obj->arena_map);
-+	mmap_sz = bpf_map_mmap_sz(map);
- 	if (roundup(data_sz, page_sz) > mmap_sz) {
- 		pr_warn("elf: sec '%s': declared ARENA map size (%zu) is too small to hold global __arena variables of size %zu\n",
- 			sec_name, mmap_sz, data_sz);
-@@ -3038,12 +3039,12 @@ static int bpf_object__init_user_btf_maps(struct bpf_object *obj, bool strict,
- 		if (map->def.type != BPF_MAP_TYPE_ARENA)
- 			continue;
- 
--		if (obj->arena_map) {
-+		if (obj->arena_map_idx >= 0) {
- 			pr_warn("map '%s': only single ARENA map is supported (map '%s' is also ARENA)\n",
--				map->name, obj->arena_map->name);
-+				map->name, obj->maps[obj->arena_map_idx].name);
- 			return -EINVAL;
- 		}
--		obj->arena_map = map;
-+		obj->arena_map_idx = i;
- 
- 		if (obj->efile.arena_data) {
- 			err = init_arena_map_data(obj, map, ARENA_SEC, obj->efile.arena_data_shndx,
-@@ -3053,7 +3054,7 @@ static int bpf_object__init_user_btf_maps(struct bpf_object *obj, bool strict,
- 				return err;
- 		}
+ static const u8 reg_map_ip_v1[] = {
+@@ -1452,6 +1454,23 @@ omap_i2c_probe(struct platform_device *p
+ 				       (1000 * omap->speed / 8);
  	}
--	if (obj->efile.arena_data && !obj->arena_map) {
-+	if (obj->efile.arena_data && obj->arena_map_idx < 0) {
- 		pr_warn("elf: sec '%s': to use global __arena variables the ARENA map should be explicitly declared in SEC(\".maps\")\n",
- 			ARENA_SEC);
- 		return -ENOENT;
-@@ -4583,8 +4584,13 @@ static int bpf_program__record_reloc(struct bpf_program *prog,
- 	if (shdr_idx == obj->efile.arena_data_shndx) {
- 		reloc_desc->type = RELO_DATA;
- 		reloc_desc->insn_idx = insn_idx;
--		reloc_desc->map_idx = obj->arena_map - obj->maps;
-+		reloc_desc->map_idx = obj->arena_map_idx;
- 		reloc_desc->sym_off = sym->st_value;
+ 
++	if (of_property_read_bool(node, "mux-states")) {
++		struct mux_state *mux_state;
 +
-+		map = &obj->maps[obj->arena_map_idx];
-+		pr_debug("prog '%s': found arena map %d (%s, sec %d, off %zu) for insn %u\n",
-+			 prog->name, obj->arena_map_idx, map->name, map->sec_idx,
-+			 map->sec_offset, insn_idx);
- 		return 0;
- 	}
++		mux_state = devm_mux_state_get(&pdev->dev, NULL);
++		if (IS_ERR(mux_state)) {
++			r = PTR_ERR(mux_state);
++			dev_dbg(&pdev->dev, "failed to get I2C mux: %d\n", r);
++			goto err_disable_pm;
++		}
++		omap->mux_state = mux_state;
++		r = mux_state_select(omap->mux_state);
++		if (r) {
++			dev_err(&pdev->dev, "failed to select I2C mux: %d\n", r);
++			goto err_disable_pm;
++		}
++	}
++
+ 	/* reset ASAP, clearing any IRQs */
+ 	omap_i2c_init(omap);
  
--- 
-2.39.5
-
+@@ -1511,6 +1530,9 @@ static void omap_i2c_remove(struct platf
+ 
+ 	i2c_del_adapter(&omap->adapter);
+ 
++	if (omap->mux_state)
++		mux_state_deselect(omap->mux_state);
++
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+ 	if (ret < 0)
+ 		dev_err(omap->dev, "Failed to resume hardware, skip disable\n");
 
 
 
