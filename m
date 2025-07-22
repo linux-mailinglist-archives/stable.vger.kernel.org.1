@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-164189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97AEB0DE3A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1265CB0DCFF
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5465FAC57F0
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:16:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF311AA0F0C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604112EE276;
-	Tue, 22 Jul 2025 14:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5517289369;
+	Tue, 22 Jul 2025 14:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjmZg1bo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guruPpS9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFBF2BF012;
-	Tue, 22 Jul 2025 14:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808B522094;
+	Tue, 22 Jul 2025 14:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193540; cv=none; b=BDra6E4kOOAdo1HEmabiy8HkA4rL1S9Zgg+7OLX7hxSieJi/Vy2bZhPZHTKmUoQKWOro4JRZHzhumdO3wGb14hZfNyiA+LxCeSiNtY1iEB2wxw5qAgQTocf9j0mRJsLQ1HdsVcJ+S/KMdx9Lf7nxEM8wcQhC7o40TEsxRbYrYXc=
+	t=1753193071; cv=none; b=YQXu8UqsEp/ySz8KB57le1tSv7ZJfrTUNB5mreKydyFfkaTg4wdADVLkuqTn4SzO+ufi9wDRT3eHN6JZAzRXoYXnsTybrWhofYArnkJ4juGTlMoaQGlXyYg6E58d1o6y1MDy/HdbjIFn1vSIlYR8LpQkK8mBTX+8HvNI03S99Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193540; c=relaxed/simple;
-	bh=9HyXCdm2hhWzn4wCpSoWGkUQ7E+JDV0Lwkb0lJiTguo=;
+	s=arc-20240116; t=1753193071; c=relaxed/simple;
+	bh=QzyqIQ+arwDyaRc3rILFmIBVXEk/t/kA9/QDSRnTjdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFzmggjZEnxqfLhOdHR0mqker7KQZ8t8d9c7Vcum3qiJ32yDhpIpZEVQOm+I5Wal7MZzu9FuyMzdT3zip7vHqsg7nLsLchuyfmfYUi2crJF8t/sdzTnrQLW4eERNbAJEgnJsWYsu5E285p2MtHJLlEkhHEQvnNdOnRCYeNSJ6P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjmZg1bo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854B2C4CEEB;
-	Tue, 22 Jul 2025 14:12:19 +0000 (UTC)
+	 MIME-Version; b=BJfMV7KP8rX2eH6+fi4nDmigyqa0yJNGxSZc6hKCEAiEDsS4T74Zy41CXkT49HHtSkZdMI8uUiaTeln9B7dYPXr0YwihFXPKFi88/c/yEii7lPx8XOhqpiaoXFljFU1joYljPqon0VmBGafxIBf+q1pzCFRQMcMMRZp7bnnLo+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guruPpS9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A9FC4CEF6;
+	Tue, 22 Jul 2025 14:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193540;
-	bh=9HyXCdm2hhWzn4wCpSoWGkUQ7E+JDV0Lwkb0lJiTguo=;
+	s=korg; t=1753193071;
+	bh=QzyqIQ+arwDyaRc3rILFmIBVXEk/t/kA9/QDSRnTjdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AjmZg1boV22of8BJh2naXZakxi1+N9OpuJyuWcK4XbNlZTKIFnvk/uLZRyMKsT8ES
-	 7E3zMtn5ewB+1s2evMJ2XuOOMPUnyd4a7MTy2cATPeYQvpGJDTPFTIfPwdrCk9YRcG
-	 b878dN+EfDsSViZ6OeF2xcCZyOJhxUqnZVR/gH0M=
+	b=guruPpS937BTewTGJMkYecSwEykEt3geeFF4hoXklTGs5IqS/pCo0Pizr51gmmI3T
+	 VTzqnbqg6vbj6GvOvp07SXOoyU5A0HaKJ6/wnQlEIZSI6M0yIZSMDjaMaaLZBk0bv+
+	 +yOKTqvCTQEtgLo7CSSv7aKnWrTGNwKyYHn4eOK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e834e757bd9b3d3e1251@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com,
+	Oliver Neukum <oneukum@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 123/187] wifi: cfg80211: remove scan request n_channels counted_by
+Subject: [PATCH 6.12 109/158] usb: net: sierra: check for no status endpoint
 Date: Tue, 22 Jul 2025 15:44:53 +0200
-Message-ID: <20250722134350.330728253@linuxfoundation.org>
+Message-ID: <20250722134344.818098553@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
-References: <20250722134345.761035548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 444020f4bf06fb86805ee7e7ceec0375485fd94d ]
+[ Upstream commit 4c4ca3c46167518f8534ed70f6e3b4bf86c4d158 ]
 
-This reverts commit e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
-cfg80211_scan_request with __counted_by").
+The driver checks for having three endpoints and
+having bulk in and out endpoints, but not that
+the third endpoint is interrupt input.
+Rectify the omission.
 
-This really has been a completely failed experiment. There were
-no actual bugs found, and yet at this point we already have four
-"fixes" to it, with nothing to show for but code churn, and it
-never even made the code any safer.
-
-In all of the cases that ended up getting "fixed", the structure
-is also internally inconsistent after the n_channels setting as
-the channel list isn't actually filled yet. You cannot scan with
-such a structure, that's just wrong. In mac80211, the struct is
-also reused multiple times, so initializing it once is no good.
-
-Some previous "fixes" (e.g. one in brcm80211) are also just setting
-n_channels before accessing the array, under the assumption that the
-code is correct and the array can be accessed, further showing that
-the whole thing is just pointless when the allocation count and use
-count are not separate.
-
-If we really wanted to fix it, we'd need to separately track the
-number of channels allocated and the number of channels currently
-used, but given that no bugs were found despite the numerous syzbot
-reports, that'd just be a waste of time.
-
-Remove the __counted_by() annotation. We really should also remove
-a number of the n_channels settings that are setting up a structure
-that's inconsistent, but that can wait.
-
-Reported-by: syzbot+e834e757bd9b3d3e1251@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e834e757bd9b3d3e1251
-Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
-Link: https://patch.msgid.link/20250714142130.9b0bbb7e1f07.I09112ccde72d445e11348fc2bef68942cb2ffc94@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/686d5a9f.050a0220.1ffab7.0017.GAE@google.com/
+Tested-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
+Fixes: eb4fd8cd355c8 ("net/usb: add sierra_net.c driver")
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20250714111326.258378-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/cfg80211.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/sierra_net.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index efbd79c67be21..75f2e5782887f 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -2720,7 +2720,7 @@ struct cfg80211_scan_request {
- 	s8 tsf_report_link_id;
- 
- 	/* keep last */
--	struct ieee80211_channel *channels[] __counted_by(n_channels);
-+	struct ieee80211_channel *channels[];
- };
- 
- static inline void get_random_mask_addr(u8 *buf, const u8 *addr, const u8 *mask)
+diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
+index 3d239b8d1a1bc..52e9fd8116f98 100644
+--- a/drivers/net/usb/sierra_net.c
++++ b/drivers/net/usb/sierra_net.c
+@@ -689,6 +689,10 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
+ 			status);
+ 		return -ENODEV;
+ 	}
++	if (!dev->status) {
++		dev_err(&dev->udev->dev, "No status endpoint found");
++		return -ENODEV;
++	}
+ 	/* Initialize sierra private data */
+ 	priv = kzalloc(sizeof *priv, GFP_KERNEL);
+ 	if (!priv)
 -- 
 2.39.5
 
