@@ -1,59 +1,53 @@
-Return-Path: <stable+bounces-164261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F5CB0DE93
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:29:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2DBB0DE4F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:25:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 214B05865CE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:20:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 354EF1883205
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D791D2ED85F;
-	Tue, 22 Jul 2025 14:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8B52ED15A;
+	Tue, 22 Jul 2025 14:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQoLICh0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cISrMAvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2F82E9EDD;
-	Tue, 22 Jul 2025 14:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8BA2EA739;
+	Tue, 22 Jul 2025 14:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193776; cv=none; b=lYHptIYH11EByhXcDwXI7CtdRcbQImF+pK40+7IXKNbFDjS5Gj8yyUMDYAQ7aCOdlSVX2h2O2Fn3eirLmhxmIQacDGQJLKnJYFZcCayX/hiVshKGM4DdrDgrXGMJBsi2Ho4eogzQelozy2B1R8+PP8L3scUWAN48zmFJHnsMCIQ=
+	t=1753193738; cv=none; b=XhBhcAAqDUugkQVZ73qkYyDNybmxtlhOWrBEuZ8fnC44L5C9Rb8cylLwIm2Lfs+L1lbLPKv3/sgDDPa46ssVhQ5rnHxy8GGkE+BsYDnJtHk3EiNUHP5RzklEWg8HSUp8pLL/RQM65xqIc8MMw5Cs6DZFfsmtjRIx32NV61Ijg1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193776; c=relaxed/simple;
-	bh=Jxgdmvd9vf1XrSrHHguHFUN5ilgi3qa8RuE51H3F0HU=;
+	s=arc-20240116; t=1753193738; c=relaxed/simple;
+	bh=e6CjX2c7bSjxb8D2qfHaPYquCltjelwW8dqyndRsbMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kc5qIgKTxwieaotZComh6fd8qQnH82UlfJ2048eE7udbcVADWP79XaLLGWp9UtIj14NnRV+i9dZb3sUW2CD/8BxR+yE5vAFVLRkDOWCDd03z57NOsA/tOtAysA8dOKFmO9DNUWGSnAL2rQ7h/7JNNT4a/5iPN8C3XmpaQTFs1CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQoLICh0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11529C4CEEB;
-	Tue, 22 Jul 2025 14:16:15 +0000 (UTC)
+	 MIME-Version; b=WGdeUi/4/j4pFhNnUEHhqGPjALAtcjONsjZUzw/Rh8aWdZ+wCsmCtCCeD1qkNmOF+vObU14ZsqSA0pWHQ/33dBy9VNFoqDmND+rShRe8V32Cdmblk956BzQCzNEUOBKZyQKvudt+XlDKOMgd6kTEFwDgTgP7iq61ccG2qFp2r+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cISrMAvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A7FC4CEEB;
+	Tue, 22 Jul 2025 14:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193776;
-	bh=Jxgdmvd9vf1XrSrHHguHFUN5ilgi3qa8RuE51H3F0HU=;
+	s=korg; t=1753193737;
+	bh=e6CjX2c7bSjxb8D2qfHaPYquCltjelwW8dqyndRsbMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQoLICh0sKa2yM2evAXiVRJs1TfjGLhr3tE+eYN2G+YlruBD6Ulfy0TA4OI0/nBiL
-	 N1j36a3QYk65j/CkrZSC9pjQXQ0uS9ab93cA8eiRUzI1k1UmBBTuK0tUCKtIuvuJYT
-	 jDk1JRv8srs/LheuKVvcOvfVnxUFE37cxOjPFgVU=
+	b=cISrMAvRNcF/AqiDRqMB8a3HD1BeT7x0g+ovW8ihxuM6z+Qvzk4EGUhT5mVi1MadJ
+	 MLWv0ebz9oKDfGJrT0dqKyvoCruwI/azCG4GDFcvS46++LXkwyFGWBC7YSIhxsVlag
+	 hGWRQcINTX/qPYTD3+yufHLyku0svTtvM/BOXji8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	David Howells <dhowells@redhat.com>,
-	Tom Talpey <tom@talpey.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 182/187] cifs: Fix reading into an ITER_FOLIOQ from the smbdirect code
-Date: Tue, 22 Jul 2025 15:45:52 +0200
-Message-ID: <20250722134352.547987931@linuxfoundation.org>
+	Zhong Jiawei <zhongjiawei1@huawei.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.15 183/187] sched,freezer: Remove unnecessary warning in __thaw_task
+Date: Tue, 22 Jul 2025 15:45:53 +0200
+Message-ID: <20250722134352.585987270@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -72,198 +66,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 263debecb4aa7cec0a86487e6f409814f6194a21 upstream.
+commit 9beb8c5e77dc10e3889ff5f967eeffba78617a88 upstream.
 
-When performing a file read from RDMA, smbd_recv() prints an "Invalid msg
-type 4" error and fails the I/O.  This is due to the switch-statement there
-not handling the ITER_FOLIOQ handed down from netfslib.
+Commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
+frozen") modified the cgroup_freezing() logic to verify that the FROZEN
+flag is not set, affecting the return value of the freezing() function,
+in order to address a warning in __thaw_task.
 
-Fix this by collapsing smbd_recv_buf() and smbd_recv_page() into
-smbd_recv() and just using copy_to_iter() instead of memcpy().  This
-future-proofs the function too, in case more ITER_* types are added.
+A race condition exists that may allow tasks to escape being frozen. The
+following scenario demonstrates this issue:
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Reported-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Tom Talpey <tom@talpey.com>
-cc: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+CPU 0 (get_signal path)		CPU 1 (freezer.state reader)
+try_to_freeze			read freezer.state
+__refrigerator			freezer_read
+				update_if_frozen
+WRITE_ONCE(current->__state, TASK_FROZEN);
+				...
+				/* Task is now marked frozen */
+				/* frozen(task) == true */
+				/* Assuming other tasks are frozen */
+				freezer->state |= CGROUP_FROZEN;
+/* freezing(current) returns false */
+/* because cgroup is frozen (not freezing) */
+break out
+__set_current_state(TASK_RUNNING);
+/* Bug: Task resumes running when it should remain frozen */
+
+The existing !frozen(p) check in __thaw_task makes the
+WARN_ON_ONCE(freezing(p)) warning redundant. Removing this warning enables
+reverting commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if
+not frozen") to resolve the issue.
+
+This patch removes the warning from __thaw_task. A subsequent patch will
+revert commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if
+not frozen") to complete the fix.
+
+Reported-by: Zhong Jiawei<zhongjiawei1@huawei.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c |  112 ++++++----------------------------------------
- 1 file changed, 17 insertions(+), 95 deletions(-)
+ kernel/freezer.c |   15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1755,35 +1755,39 @@ try_again:
- }
+--- a/kernel/freezer.c
++++ b/kernel/freezer.c
+@@ -201,18 +201,9 @@ static int __restore_freezer_state(struc
  
- /*
-- * Receive data from receive reassembly queue
-+ * Receive data from the transport's receive reassembly queue
-  * All the incoming data packets are placed in reassembly queue
-- * buf: the buffer to read data into
-+ * iter: the buffer to read data into
-  * size: the length of data to read
-  * return value: actual data read
-- * Note: this implementation copies the data from reassebmly queue to receive
-+ *
-+ * Note: this implementation copies the data from reassembly queue to receive
-  * buffers used by upper layer. This is not the optimal code path. A better way
-  * to do it is to not have upper layer allocate its receive buffers but rather
-  * borrow the buffer from reassembly queue, and return it after data is
-  * consumed. But this will require more changes to upper layer code, and also
-  * need to consider packet boundaries while they still being reassembled.
-  */
--static int smbd_recv_buf(struct smbd_connection *info, char *buf,
--		unsigned int size)
-+int smbd_recv(struct smbd_connection *info, struct msghdr *msg)
+ void __thaw_task(struct task_struct *p)
  {
- 	struct smbdirect_socket *sc = &info->socket;
- 	struct smbd_response *response;
- 	struct smbdirect_data_transfer *data_transfer;
-+	size_t size = iov_iter_count(&msg->msg_iter);
- 	int to_copy, to_read, data_read, offset;
- 	u32 data_length, remaining_data_length, data_offset;
- 	int rc;
- 
-+	if (WARN_ON_ONCE(iov_iter_rw(&msg->msg_iter) == WRITE))
-+		return -EINVAL; /* It's a bug in upper layer to get there */
-+
- again:
- 	/*
- 	 * No need to hold the reassembly queue lock all the time as we are
- 	 * the only one reading from the front of the queue. The transport
- 	 * may add more entries to the back of the queue at the same time
- 	 */
--	log_read(INFO, "size=%d info->reassembly_data_length=%d\n", size,
-+	log_read(INFO, "size=%zd info->reassembly_data_length=%d\n", size,
- 		info->reassembly_data_length);
- 	if (info->reassembly_data_length >= size) {
- 		int queue_length;
-@@ -1821,7 +1825,10 @@ again:
- 			if (response->first_segment && size == 4) {
- 				unsigned int rfc1002_len =
- 					data_length + remaining_data_length;
--				*((__be32 *)buf) = cpu_to_be32(rfc1002_len);
-+				__be32 rfc1002_hdr = cpu_to_be32(rfc1002_len);
-+				if (copy_to_iter(&rfc1002_hdr, sizeof(rfc1002_hdr),
-+						 &msg->msg_iter) != sizeof(rfc1002_hdr))
-+					return -EFAULT;
- 				data_read = 4;
- 				response->first_segment = false;
- 				log_read(INFO, "returning rfc1002 length %d\n",
-@@ -1830,10 +1837,9 @@ again:
- 			}
- 
- 			to_copy = min_t(int, data_length - offset, to_read);
--			memcpy(
--				buf + data_read,
--				(char *)data_transfer + data_offset + offset,
--				to_copy);
-+			if (copy_to_iter((char *)data_transfer + data_offset + offset,
-+					 to_copy, &msg->msg_iter) != to_copy)
-+				return -EFAULT;
- 
- 			/* move on to the next buffer? */
- 			if (to_copy == data_length - offset) {
-@@ -1899,90 +1905,6 @@ read_rfc1002_done:
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&freezer_lock, flags);
+-	if (WARN_ON_ONCE(freezing(p)))
+-		goto unlock;
+-
+-	if (!frozen(p) || task_call_func(p, __restore_freezer_state, NULL))
+-		goto unlock;
+-
+-	wake_up_state(p, TASK_FROZEN);
+-unlock:
+-	spin_unlock_irqrestore(&freezer_lock, flags);
++	guard(spinlock_irqsave)(&freezer_lock);
++	if (frozen(p) && !task_call_func(p, __restore_freezer_state, NULL))
++		wake_up_state(p, TASK_FROZEN);
  }
  
- /*
-- * Receive a page from receive reassembly queue
-- * page: the page to read data into
-- * to_read: the length of data to read
-- * return value: actual data read
-- */
--static int smbd_recv_page(struct smbd_connection *info,
--		struct page *page, unsigned int page_offset,
--		unsigned int to_read)
--{
--	struct smbdirect_socket *sc = &info->socket;
--	int ret;
--	char *to_address;
--	void *page_address;
--
--	/* make sure we have the page ready for read */
--	ret = wait_event_interruptible(
--		info->wait_reassembly_queue,
--		info->reassembly_data_length >= to_read ||
--			sc->status != SMBDIRECT_SOCKET_CONNECTED);
--	if (ret)
--		return ret;
--
--	/* now we can read from reassembly queue and not sleep */
--	page_address = kmap_atomic(page);
--	to_address = (char *) page_address + page_offset;
--
--	log_read(INFO, "reading from page=%p address=%p to_read=%d\n",
--		page, to_address, to_read);
--
--	ret = smbd_recv_buf(info, to_address, to_read);
--	kunmap_atomic(page_address);
--
--	return ret;
--}
--
--/*
-- * Receive data from transport
-- * msg: a msghdr point to the buffer, can be ITER_KVEC or ITER_BVEC
-- * return: total bytes read, or 0. SMB Direct will not do partial read.
-- */
--int smbd_recv(struct smbd_connection *info, struct msghdr *msg)
--{
--	char *buf;
--	struct page *page;
--	unsigned int to_read, page_offset;
--	int rc;
--
--	if (iov_iter_rw(&msg->msg_iter) == WRITE) {
--		/* It's a bug in upper layer to get there */
--		cifs_dbg(VFS, "Invalid msg iter dir %u\n",
--			 iov_iter_rw(&msg->msg_iter));
--		rc = -EINVAL;
--		goto out;
--	}
--
--	switch (iov_iter_type(&msg->msg_iter)) {
--	case ITER_KVEC:
--		buf = msg->msg_iter.kvec->iov_base;
--		to_read = msg->msg_iter.kvec->iov_len;
--		rc = smbd_recv_buf(info, buf, to_read);
--		break;
--
--	case ITER_BVEC:
--		page = msg->msg_iter.bvec->bv_page;
--		page_offset = msg->msg_iter.bvec->bv_offset;
--		to_read = msg->msg_iter.bvec->bv_len;
--		rc = smbd_recv_page(info, page, page_offset, to_read);
--		break;
--
--	default:
--		/* It's a bug in upper layer to get there */
--		cifs_dbg(VFS, "Invalid msg type %d\n",
--			 iov_iter_type(&msg->msg_iter));
--		rc = -EINVAL;
--	}
--
--out:
--	/* SMBDirect will read it all or nothing */
--	if (rc > 0)
--		msg->msg_iter.count = 0;
--	return rc;
--}
--
--/*
-  * Send data to transport
-  * Each rqst is transported as a SMBDirect payload
-  * rqst: the data to write
+ /**
 
 
 
