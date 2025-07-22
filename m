@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-163828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CC3B0DBD7
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8BFB0DBA5
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19D4A565335
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72FEE1C8216F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B1E2EAB76;
-	Tue, 22 Jul 2025 13:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FE22EA177;
+	Tue, 22 Jul 2025 13:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOlp6WCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okg8eoFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63AA2E4271;
-	Tue, 22 Jul 2025 13:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9AF224FD;
+	Tue, 22 Jul 2025 13:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192342; cv=none; b=YFF+J5JIUHrvwsQbCvLzyhl35SRRNON1hn1t58fQMMbxLNHxNSMUI3ec9DX8pq65y/SwLuoSeYMVkmGrGF1xNiaxjE7g2TLRq1wprdD7/+Yy3SayHR3B2rg7xoqRn9eVd1ctPnJanTXKnXRleEbyqxWanLK/HTiYL4OLccM8+wg=
+	t=1753192259; cv=none; b=bGj86Xn4cOiFaQQnOMJoymnkUcV6q66ahF8iLrE3pVwxywr8SWrsMPsFaTG57oKnh4NFVCrmekkLAP3iN+vX62UUlVjk5L0QznoAnCTJ3IXnhGV9/vhNn5J+Ng3nkxQmjgrSFy0ne8P440t1HgBvf/UpmRU1q9fcLBEdSt1GJBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192342; c=relaxed/simple;
-	bh=oyuy1wK5aXUgnOEtfFsK1aYtZMBT20UsnV21QOjppmo=;
+	s=arc-20240116; t=1753192259; c=relaxed/simple;
+	bh=GH7UNqbxAWt98M/CDhqUNSQhv+BQBaQsege2UxmfxOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LN6kq1lfafrUKrNHcIEULkY72Db1YUGaNhY2yeX33jrMPnUAk34nbHw19lFv+8lQ8Zp3Ty01xUPGEYsR4ITt1PbF5eAp1MRyXBUoj1QYrrxgs4ip/4OGTjlZ3oko8wyg+CR5fhGqRXyx5g9KazsXL9SNy+YHpdjnepxI/x+b9I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOlp6WCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDC0C4CEF1;
-	Tue, 22 Jul 2025 13:52:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D8z0qPYCtc4U/2dFthxxWAkTdsxk8r3Z+h2coDBzWwppKQLelKeXaGo6ZeC1NcZn8Inh4UC5LNv2wCiss3CejXhEuIrYsvXwSQYWzbFN9s1Ykgpw/VnEVmC4Kpusp5cD5C54CiToHHLLI1er685z0m8md51CHB/t5TS/WReBZzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okg8eoFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE948C4CEEB;
+	Tue, 22 Jul 2025 13:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192342;
-	bh=oyuy1wK5aXUgnOEtfFsK1aYtZMBT20UsnV21QOjppmo=;
+	s=korg; t=1753192259;
+	bh=GH7UNqbxAWt98M/CDhqUNSQhv+BQBaQsege2UxmfxOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOlp6WCkSvLDXZgo+UzDCp02ZxEwWHZwmnhqgh6Tvhg6DqihG8VxOZCcRft+u0eW+
-	 0DOQWtYilAhwqWJ3ecJmXffNKk7mI7Q8XU6XEXNaic1BTPpuWaUQxHJvWQGpD8lq0Q
-	 k+yBOOtapdIHQxnt/hoRcJDnQ9Kmqc0SrgBJqz0U=
+	b=Okg8eoFRiUuxRVusNb5eja6inAVQUaZ9wLChz/0ruRmuHbvbjq5OkWsqMbtlvm4vC
+	 QTKsaFDwlt19Z+8Rl4WZFIsIqGYbjVhDyy37SHWrB07sdurcvAFxXjJ61lj67YchSu
+	 EC6aTrETPIQfi4SWwRtIXTjPFyRBbQpo+rtHcgis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 011/111] thunderbolt: Fix bit masking in tb_dp_port_set_hops()
-Date: Tue, 22 Jul 2025 15:43:46 +0200
-Message-ID: <20250722134333.797303661@linuxfoundation.org>
+	=?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.6 012/111] nvmem: imx-ocotp: fix MAC address byte length
+Date: Tue, 22 Jul 2025 15:43:47 +0200
+Message-ID: <20250722134333.841726567@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
 References: <20250722134333.375479548@linuxfoundation.org>
@@ -59,42 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Steffen Bätz <steffen@innosonix.de>
 
-commit 2cdde91c14ec358087f43287513946d493aef940 upstream.
+commit 2aa4ad626ee7f817a8f4715a47b318cfdc1714c9 upstream.
 
-The tb_dp_port_set_hops() function was incorrectly clearing
-ADP_DP_CS_1_AUX_RX_HOPID_MASK twice. According to the function's
-purpose, it should clear both TX and RX AUX HopID fields.  Replace the
-first instance with ADP_DP_CS_1_AUX_TX_HOPID_MASK to ensure proper
-configuration of both AUX directions.
+The commit "13bcd440f2ff nvmem: core: verify cell's raw_len" caused an
+extension of the "mac-address" cell from 6 to 8 bytes due to word_size
+of 4 bytes. This led to a required byte swap of the full buffer length,
+which caused truncation of the mac-address when read.
 
-Fixes: 98176380cbe5 ("thunderbolt: Convert DP adapter register names to follow the USB4 spec")
+Previously, the mac-address was incorrectly truncated from
+70:B3:D5:14:E9:0E to 00:00:70:B3:D5:14.
+
+Fix the issue by swapping only the first 6 bytes to correctly pass the
+mac-address to the upper layers.
+
+Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
 Cc: stable@vger.kernel.org
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Steffen Bätz <steffen@innosonix.de>
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250712181729.6495-3-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/switch.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/imx-ocotp-ele.c |    5 ++++-
+ drivers/nvmem/imx-ocotp.c     |    5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -1465,7 +1465,7 @@ int tb_dp_port_set_hops(struct tb_port *
- 		return ret;
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -12,6 +12,7 @@
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
++#include <linux/if_ether.h>	/* ETH_ALEN */
  
- 	data[0] &= ~ADP_DP_CS_0_VIDEO_HOPID_MASK;
--	data[1] &= ~ADP_DP_CS_1_AUX_RX_HOPID_MASK;
-+	data[1] &= ~ADP_DP_CS_1_AUX_TX_HOPID_MASK;
- 	data[1] &= ~ADP_DP_CS_1_AUX_RX_HOPID_MASK;
+ enum fuse_type {
+ 	FUSE_FSB = 1,
+@@ -114,9 +115,11 @@ static int imx_ocotp_cell_pp(void *conte
+ 	int i;
  
- 	data[0] |= (video << ADP_DP_CS_0_VIDEO_HOPID_SHIFT) &
+ 	/* Deal with some post processing of nvmem cell data */
+-	if (id && !strcmp(id, "mac-address"))
++	if (id && !strcmp(id, "mac-address")) {
++		bytes = min(bytes, ETH_ALEN);
+ 		for (i = 0; i < bytes / 2; i++)
+ 			swap(buf[i], buf[bytes - i - 1]);
++	}
+ 
+ 	return 0;
+ }
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -23,6 +23,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/delay.h>
++#include <linux/if_ether.h>	/* ETH_ALEN */
+ 
+ #define IMX_OCOTP_OFFSET_B0W0		0x400 /* Offset from base address of the
+ 					       * OTP Bank0 Word0
+@@ -227,9 +228,11 @@ static int imx_ocotp_cell_pp(void *conte
+ 	int i;
+ 
+ 	/* Deal with some post processing of nvmem cell data */
+-	if (id && !strcmp(id, "mac-address"))
++	if (id && !strcmp(id, "mac-address")) {
++		bytes = min(bytes, ETH_ALEN);
+ 		for (i = 0; i < bytes / 2; i++)
+ 			swap(buf[i], buf[bytes - i - 1]);
++	}
+ 
+ 	return 0;
+ }
 
 
 
