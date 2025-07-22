@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-163740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0E9B0DB48
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:47:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FEFAB0DBE8
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9326F1C81082
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91A2D1648CD
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F793242D8F;
-	Tue, 22 Jul 2025 13:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B546E2EA48A;
+	Tue, 22 Jul 2025 13:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KERMQGM4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoA0ugf6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E53272624;
-	Tue, 22 Jul 2025 13:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7244B2DC32B;
+	Tue, 22 Jul 2025 13:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192055; cv=none; b=N8xtud8frphFidpazzr7Pw9i03p7uzKTO3M6ypvkeS4rQw5UNNmZpsuBUKHlomzk9WhUIf5ThNL06PYdECNygD8OdmnF1bsxZB0zpHVNC+X0yN1Cc7vUXamsik2lSrhphJSkm9TTYAoXkzHPSBQ1xHr+8I9J65lj0ZJSfzWRZNY=
+	t=1753192390; cv=none; b=aZCrQZlo2cHUm7lxHEbsZe5X1U/gdMCjyaMEBNkqcVwPcpObV1Ene1SGWGcp9pV9fR4yIG4ouwrSEwISQYJG2Gkd5/MtcyCk8UdwS4do1OZVYn3ys9fHUIlDms6cUCfs3bM+wwAUhFtTP15KNXeR81u8qiLDHTbFjQrLODPFKFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192055; c=relaxed/simple;
-	bh=o1jH7MLj8IVyaPrOtHlTowBF/e0KOkwNYMM33a8zazg=;
+	s=arc-20240116; t=1753192390; c=relaxed/simple;
+	bh=AnWI0/uhpqQKMj33qcnF0JFIdahvXnpHvxd21LMp8ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QBz9ybt1mjKHxxtRNKEggyprOSL4Mcmn9t1S9oftCqEfgAppaP3PUnkwtIjisziHkpQjcIZKm5maQVz8Zn+JTNNaoSy4mHcZ8craKfnEWmzDg+Q3xPX6Yh0Xradl4XgVbDm1SFcrxDYiHrPZb7o6BUKHaHzLMcrNitqwUt2YdGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KERMQGM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C4FC4CEEB;
-	Tue, 22 Jul 2025 13:47:32 +0000 (UTC)
+	 MIME-Version; b=TqmDmLNls9RTPzlFo51cAi08Ib3J/XHgOK+Wd14no95f5+HPuWQ3KDBhQwcISlWle/7T7IVo0uIsvbNM0eUI7dsoo0QjCtds8H96tiVpMBUd3Wc586Ybxzi7fCIgEdbrkeKcUozASluXWnaPY+SyYLltwvnBj9qeTiYmxFQElNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoA0ugf6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D643DC4CEEB;
+	Tue, 22 Jul 2025 13:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192053;
-	bh=o1jH7MLj8IVyaPrOtHlTowBF/e0KOkwNYMM33a8zazg=;
+	s=korg; t=1753192390;
+	bh=AnWI0/uhpqQKMj33qcnF0JFIdahvXnpHvxd21LMp8ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KERMQGM4E2M4mYLjjJlftutjHthlVaacRN/6ZIYuIGSL1NxQlNn8P1wU2RtAA10Bz
-	 ifvzlCHZeWhSTHKRvHu/iNhlkWZVP+cq+aRmScsPQ324Uzu2XnoDo+P9SHbsj+jdHL
-	 ktWPM20mgebVm7HtKkIPDV+L5TWnYY1avotI7BNE=
+	b=LoA0ugf678qkjlcJ3kIqxSHdECoFpx8fdOvs5GSk9eO/5YHvzPjPvqIV2HxiV3MY5
+	 f2j0kT4Qcl8g5GOlX7rB6XO7h6ZcJdlhGaBgWSSKXNhDkD7k9IQ9sJDyBOm91R0NaU
+	 FN2FD4//vgClrW3cgoO0EkF+NLfV2rsduqCt+6Hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 30/79] iio: accel: fxls8962af: Fix use after free in fxls8962af_fifo_flush
+	syzbot+32de323b0addb9e114ff@syzkaller.appspotmail.com,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.6 051/111] comedi: pcl812: Fix bit shift out of bounds
 Date: Tue, 22 Jul 2025 15:44:26 +0200
-Message-ID: <20250722134329.480181385@linuxfoundation.org>
+Message-ID: <20250722134335.285892510@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 1fe16dc1a2f5057772e5391ec042ed7442966c9a upstream.
+commit b14b076ce593f72585412fc7fd3747e03a5e3632 upstream.
 
-fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
-iio_for_each_active_channel()) without making sure the indio_dev
-stays in buffer mode.
-There is a race if indio_dev exits buffer mode in the middle of the
-interrupt that flushes the fifo. Fix this by calling
-synchronize_irq() to ensure that no interrupt is currently running when
-disabling buffer mode.
+When checking for a supported IRQ number, the following test is used:
 
-Unable to handle kernel NULL pointer dereference at virtual address 00000000 when read
-[...]
-_find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
-fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
-fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
-irq_thread_fn from irq_thread+0x110/0x1f4
-irq_thread from kthread+0xe0/0xfc
-kthread from ret_from_fork+0x14/0x2c
+	if ((1 << it->options[1]) & board->irq_bits) {
 
-Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
-Cc: stable@vger.kernel.org
-Suggested-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250603-fxlsrace-v2-1-5381b36ba1db@geanix.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+However, `it->options[i]` is an unchecked `int` value from userspace, so
+the shift amount could be negative or out of bounds.  Fix the test by
+requiring `it->options[1]` to be within bounds before proceeding with
+the original test.  Valid `it->options[1]` values that select the IRQ
+will be in the range [1,15]. The value 0 explicitly disables the use of
+interrupts.
+
+Reported-by: syzbot+32de323b0addb9e114ff@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=32de323b0addb9e114ff
+Fixes: fcdb427bc7cf ("Staging: comedi: add pcl821 driver")
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707133429.73202-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/fxls8962af-core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/comedi/drivers/pcl812.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -866,6 +866,8 @@ static int fxls8962af_buffer_predisable(
- 	if (ret)
- 		return ret;
+--- a/drivers/comedi/drivers/pcl812.c
++++ b/drivers/comedi/drivers/pcl812.c
+@@ -1149,7 +1149,8 @@ static int pcl812_attach(struct comedi_d
+ 		if (!dev->pacer)
+ 			return -ENOMEM;
  
-+	synchronize_irq(data->irq);
-+
- 	ret = __fxls8962af_fifo_set_mode(data, false);
- 
- 	if (data->enable_event)
+-		if ((1 << it->options[1]) & board->irq_bits) {
++		if (it->options[1] > 0 && it->options[1] < 16 &&
++		    (1 << it->options[1]) & board->irq_bits) {
+ 			ret = request_irq(it->options[1], pcl812_interrupt, 0,
+ 					  dev->board_name, dev);
+ 			if (ret == 0)
 
 
 
