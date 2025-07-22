@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-163806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC196B0DBB2
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDC4B0DC66
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:01:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 586931C82736
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB9C91884A18
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0BF2EAB73;
-	Tue, 22 Jul 2025 13:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDF72989AD;
+	Tue, 22 Jul 2025 13:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mErVmtPu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZgewniu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6192EAB6B;
-	Tue, 22 Jul 2025 13:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F235D2C159F;
+	Tue, 22 Jul 2025 13:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192272; cv=none; b=N4bNQ0Hdn70W8mdb9f1WOMvgLYWpM7O54b9aEP+6/sAXLYHjhCM1RpLsCCYg2q9Fh5jdCdWxRKMKs8U0iOoVskd+lYmj1kKUJxkku1YnULIxaX3t/jST8wUG5GsKboXna1TlAgwWuVusNuRoBBrcN365yJc8iadTaBMrLlCYo8M=
+	t=1753192759; cv=none; b=WKZeUqt4dLP3+BrvZM+WK9RzL/tYupWpcNBE7M3zoZjN53B/Oa9fdSlQj4uMUnWqjRn/NMOdkw8JunmL0GbxFYBimQ+KP+3/ZMkk0DOESqioaHiEr4j/u8dgQHiSQW/uCsb6tydBlqP5OqX0LGDbWdlNiqROa5BknxpzPxsEdqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192272; c=relaxed/simple;
-	bh=rm2lFuyOdXMtiwjMUOt4VHIAzvwJ1GqCDI0owRGwTUE=;
+	s=arc-20240116; t=1753192759; c=relaxed/simple;
+	bh=KAXqZvUCYUJdWB3ekDQhgUPcOphP3xY5tgcJDk3Mcyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQavYfR6ckqEzGSEo+V6dcOJTknvDqld8iaaa3o3xhTIsphKE7jUxCU0tRqEFAHKXrraiuitfP7MudtEtautc4KyF9o6Z6QtAFJyj8cwLXsfhplFJmmItrplvq7pWoe5XOQYy2g1+y3lQMmZTGlcJTGFhnmAW0Ml3BSrvMiHY4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mErVmtPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91529C4CEEB;
-	Tue, 22 Jul 2025 13:51:11 +0000 (UTC)
+	 MIME-Version; b=NmAKHYpjQm4jeLDSyyRfKOtP7ghv2uj/q1mgKSX3MWLvWhdF3ippOLPAN9eRx6oteGeQ8m7J+O43s/CXKfdHrs0E7u6enkcxIb804GL75ZIBpPB9zcOgTY1xR3U9OFLhGUj2GTOGaBNal6WRTtJkK4dDjUEWWgmBXGLcLAvCCtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZgewniu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F54C4CEF5;
+	Tue, 22 Jul 2025 13:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192272;
-	bh=rm2lFuyOdXMtiwjMUOt4VHIAzvwJ1GqCDI0owRGwTUE=;
+	s=korg; t=1753192758;
+	bh=KAXqZvUCYUJdWB3ekDQhgUPcOphP3xY5tgcJDk3Mcyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mErVmtPuTW9fcUH7nW9mSoZZXwo93vv0QicGFzuEKzm3bVz2QvNHFz370xRpp0KXU
-	 T6OlkJqR32RP1w7cLLiaMnAYX8ulcltv1H5cUk0EQmEj1QIVY9kTZ6BJC3NRlPxqdg
-	 0DForCxHuTg+6OuAmkWODneGoXpsw/JGT07Dp5tQ=
+	b=nZgewniuBgUCdP/k0ORc6TWKfBMs0PeSAqLGEs2wAF9D3vYYLxGy1IuoBUDJE+6BY
+	 68fhKGWJncCwty3fuXikImB0Elkge9dSG8HDd2d3djM23AKTynaJidwQiWMcPVNssW
+	 d3bJfYoEeI+k7uHjMtLavN2cJxpWytXeP8myFkR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Shuai <wangshuai12@xiaomi.com>,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.6 016/111] dm-bufio: fix sched in atomic context
-Date: Tue, 22 Jul 2025 15:43:51 +0200
-Message-ID: <20250722134333.996771005@linuxfoundation.org>
+	stable@kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Yun Lu <luyun@kylinos.cn>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.12 048/158] af_packet: fix the SO_SNDTIMEO constraint not effective on tpacked_snd()
+Date: Tue, 22 Jul 2025 15:43:52 +0200
+Message-ID: <20250722134342.528400819@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheng Yong <shengyong1@xiaomi.com>
+From: Yun Lu <luyun@kylinos.cn>
 
-commit b1bf1a782fdf5c482215c0c661b5da98b8e75773 upstream.
+commit c1ba3c0cbdb5e53a8ec5d708e99cd4c497028a13 upstream.
 
-If "try_verify_in_tasklet" is set for dm-verity, DM_BUFIO_CLIENT_NO_SLEEP
-is enabled for dm-bufio. However, when bufio tries to evict buffers, there
-is a chance to trigger scheduling in spin_lock_bh, the following warning
-is hit:
+Due to the changes in commit 581073f626e3 ("af_packet: do not call
+packet_read_pending() from tpacket_destruct_skb()"), every time
+tpacket_destruct_skb() is executed, the skb_completion is marked as
+completed. When wait_for_completion_interruptible_timeout() returns
+completed, the pending_refcnt has not yet been reduced to zero.
+Therefore, when ph is NULL, the wait function may need to be called
+multiple times until packet_read_pending() finally returns zero.
 
-BUG: sleeping function called from invalid context at drivers/md/dm-bufio.c:2745
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 123, name: kworker/2:2
-preempt_count: 201, expected: 0
-RCU nest depth: 0, expected: 0
-4 locks held by kworker/2:2/123:
- #0: ffff88800a2d1548 ((wq_completion)dm_bufio_cache){....}-{0:0}, at: process_one_work+0xe46/0x1970
- #1: ffffc90000d97d20 ((work_completion)(&dm_bufio_replacement_work)){....}-{0:0}, at: process_one_work+0x763/0x1970
- #2: ffffffff8555b528 (dm_bufio_clients_lock){....}-{3:3}, at: do_global_cleanup+0x1ce/0x710
- #3: ffff88801d5820b8 (&c->spinlock){....}-{2:2}, at: do_global_cleanup+0x2a5/0x710
-Preemption disabled at:
-[<0000000000000000>] 0x0
-CPU: 2 UID: 0 PID: 123 Comm: kworker/2:2 Not tainted 6.16.0-rc3-g90548c634bd0 #305 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Workqueue: dm_bufio_cache do_global_cleanup
-Call Trace:
- <TASK>
- dump_stack_lvl+0x53/0x70
- __might_resched+0x360/0x4e0
- do_global_cleanup+0x2f5/0x710
- process_one_work+0x7db/0x1970
- worker_thread+0x518/0xea0
- kthread+0x359/0x690
- ret_from_fork+0xf3/0x1b0
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+We should call sock_sndtimeo() only once, otherwise the SO_SNDTIMEO
+constraint could be way off.
 
-That can be reproduced by:
-
-  veritysetup format --data-block-size=4096 --hash-block-size=4096 /dev/vda /dev/vdb
-  SIZE=$(blockdev --getsz /dev/vda)
-  dmsetup create myverity -r --table "0 $SIZE verity 1 /dev/vda /dev/vdb 4096 4096 <data_blocks> 1 sha256 <root_hash> <salt> 1 try_verify_in_tasklet"
-  mount /dev/dm-0 /mnt -o ro
-  echo 102400 > /sys/module/dm_bufio/parameters/max_cache_size_bytes
-  [read files in /mnt]
-
-Cc: stable@vger.kernel.org	# v6.4+
-Fixes: 450e8dee51aa ("dm bufio: improve concurrent IO performance")
-Signed-off-by: Wang Shuai <wangshuai12@xiaomi.com>
-Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 581073f626e3 ("af_packet: do not call packet_read_pending() from tpacket_destruct_skb()")
+Cc: stable@kernel.org
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-bufio.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/packet/af_packet.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-bufio.c
-+++ b/drivers/md/dm-bufio.c
-@@ -2708,7 +2708,11 @@ static unsigned long __evict_many(struct
- 		__make_buffer_clean(b);
- 		__free_buffer_wake(b);
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2784,7 +2784,7 @@ static int tpacket_snd(struct packet_soc
+ 	int len_sum = 0;
+ 	int status = TP_STATUS_AVAILABLE;
+ 	int hlen, tlen, copylen = 0;
+-	long timeo = 0;
++	long timeo;
  
--		cond_resched();
-+		if (need_resched()) {
-+			dm_bufio_unlock(c);
-+			cond_resched();
-+			dm_bufio_lock(c);
-+		}
- 	}
+ 	mutex_lock(&po->pg_vec_lock);
  
- 	return count;
+@@ -2838,6 +2838,7 @@ static int tpacket_snd(struct packet_soc
+ 	if ((size_max > dev->mtu + reserve + VLAN_HLEN) && !vnet_hdr_sz)
+ 		size_max = dev->mtu + reserve + VLAN_HLEN;
+ 
++	timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
+ 	reinit_completion(&po->skb_completion);
+ 
+ 	do {
+@@ -2845,7 +2846,6 @@ static int tpacket_snd(struct packet_soc
+ 					  TP_STATUS_SEND_REQUEST);
+ 		if (unlikely(ph == NULL)) {
+ 			if (need_wait && skb) {
+-				timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
+ 				timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
+ 				if (timeo <= 0) {
+ 					err = !timeo ? -ETIMEDOUT : -ERESTARTSYS;
 
 
 
