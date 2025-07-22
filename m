@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48B7B0DB59
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAEDBB0DBEB
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C42F3BCE8A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43D0F166952
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E8D23B614;
-	Tue, 22 Jul 2025 13:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B722EA15A;
+	Tue, 22 Jul 2025 13:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOYsfBZS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQmRItMf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E30A15624B;
-	Tue, 22 Jul 2025 13:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7967A32;
+	Tue, 22 Jul 2025 13:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192067; cv=none; b=tfnEijhB/ZAr8RVRioE3Aul/+zXkgjA8i10SKuVt8LzvuTT/2pwWftFSGWloxLlVgXnktecdNy74bRPUxxwe7ZWzlFc8OO/r78sVXbjAqA6qZYDkC0gC3oXoFzu0h6n9Lu26vuV3G3Z1tUGSDnXT5qTvhCs3tvQnx8jo57G/03A=
+	t=1753192403; cv=none; b=dGW8KlxMT9ZuJwn7FRZnfWiSCQ59qRy/YJO6sBJ3EV5dFzaYuBWwF4Hk9EafOD0iPLEfiOFVh5Hci9ur7ZwZWop1MTBG/dA6W/V4MIV7QhZ0EdWwts/QLvawmZEeXrfRPJvb+zyQcvRrkpw9LJpQ0usY+GGlYyJ0/KHOxM9Ystw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192067; c=relaxed/simple;
-	bh=ddscDTM1H2Oi8WfwxXvLsiMp7agqCKR47fWyEAFrh0Q=;
+	s=arc-20240116; t=1753192403; c=relaxed/simple;
+	bh=LV0d7vGdGG10/TQUReYgLyajSgJ+wcnYLSn4EAFr89c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IURdhFe26hHwAoCRE+UuoNjE67pxCo2BdAM2hfqkvlgu/jeAyuXFeMh4zLfhfiACa2PnAj4aJrojUbP/Pt0aIFIgGKOi59YRXFcUOFyo4ZY5QTEnaJjvzXM4RO24OYuhL6G700QndPPLACnAObQ1O2ZJbvFqNu+UHFkF0g606jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOYsfBZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA63DC4CEEB;
-	Tue, 22 Jul 2025 13:47:46 +0000 (UTC)
+	 MIME-Version; b=ajRKhscbdffujijphgE6HNf/32LayQwVvNDzzkHVlAl4h8tX5BMKar6mhBUwzAvdz5kCa/jHQms0kUAsZua0hnOvW7ugfjhmOVcAdd/1xUq+CnENqPNrRIFfe/WeH02GqnFMnRwgpf4tnHSrrDDlXTLbFatJGCmf3EARIKjdHZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQmRItMf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEE8C4CEF5;
+	Tue, 22 Jul 2025 13:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192067;
-	bh=ddscDTM1H2Oi8WfwxXvLsiMp7agqCKR47fWyEAFrh0Q=;
+	s=korg; t=1753192403;
+	bh=LV0d7vGdGG10/TQUReYgLyajSgJ+wcnYLSn4EAFr89c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOYsfBZSjbaJ1v5OCJuwQVjy5ivzvybAIm14z8Vgwr8Osv1ZSqgkWuIOWdQjfJnaB
-	 2iXweZ36zLCk4WIAKn8emc4bQO3ZqEqyZUZ0cG48hRlYBqnzC6qDQ61PkqXZaUYQbO
-	 l99rAbdjZRfI4XsBeHKdL2wjexcC6uA3D59RFqMY=
+	b=oQmRItMfFR/r7SCPBi9kxck56Z3IUP+CA+bY0O/lEADohoBSs/uoNH1/2f8Knew/a
+	 59ZUY786oNlgEkiNPjs7Y7SccHAsHYK+/xxaPfGdmDTR3SJK05qf9Fh73tR6hAhhgQ
+	 kNXMVBGD4n20WH25OqRPFYB9Cv2C4I2bf2Zk3DHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+32de323b0addb9e114ff@syzkaller.appspotmail.com,
+	syzbot+d6995b62e5ac7d79557a@syzkaller.appspotmail.com,
 	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.1 34/79] comedi: pcl812: Fix bit shift out of bounds
+Subject: [PATCH 6.6 055/111] comedi: Fail COMEDI_INSNLIST ioctl if n_insns is too large
 Date: Tue, 22 Jul 2025 15:44:30 +0200
-Message-ID: <20250722134329.622150591@linuxfoundation.org>
+Message-ID: <20250722134335.438210133@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ian Abbott <abbotti@mev.co.uk>
 
-commit b14b076ce593f72585412fc7fd3747e03a5e3632 upstream.
+commit 08ae4b20f5e82101d77326ecab9089e110f224cc upstream.
 
-When checking for a supported IRQ number, the following test is used:
+The handling of the `COMEDI_INSNLIST` ioctl allocates a kernel buffer to
+hold the array of `struct comedi_insn`, getting the length from the
+`n_insns` member of the `struct comedi_insnlist` supplied by the user.
+The allocation will fail with a WARNING and a stack dump if it is too
+large.
 
-	if ((1 << it->options[1]) & board->irq_bits) {
+Avoid that by failing with an `-EINVAL` error if the supplied `n_insns`
+value is unreasonable.
 
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.  Valid `it->options[1]` values that select the IRQ
-will be in the range [1,15]. The value 0 explicitly disables the use of
-interrupts.
+Define the limit on the `n_insns` value in the `MAX_INSNS` macro.  Set
+this to the same value as `MAX_SAMPLES` (65536), which is the maximum
+allowed sum of the values of the member `n` in the array of `struct
+comedi_insn`, and sensible comedi instructions will have an `n` of at
+least 1.
 
-Reported-by: syzbot+32de323b0addb9e114ff@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=32de323b0addb9e114ff
-Fixes: fcdb427bc7cf ("Staging: comedi: add pcl821 driver")
+Reported-by: syzbot+d6995b62e5ac7d79557a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d6995b62e5ac7d79557a
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Tested-by: Ian Abbott <abbotti@mev.co.uk>
 Cc: stable@vger.kernel.org # 5.13+
 Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707133429.73202-1-abbotti@mev.co.uk
+Link: https://lore.kernel.org/r/20250704120405.83028-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/pcl812.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/comedi/comedi_fops.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/comedi/drivers/pcl812.c
-+++ b/drivers/comedi/drivers/pcl812.c
-@@ -1149,7 +1149,8 @@ static int pcl812_attach(struct comedi_d
- 		if (!dev->pacer)
- 			return -ENOMEM;
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -1589,6 +1589,16 @@ error:
+ 	return i;
+ }
  
--		if ((1 << it->options[1]) & board->irq_bits) {
-+		if (it->options[1] > 0 && it->options[1] < 16 &&
-+		    (1 << it->options[1]) & board->irq_bits) {
- 			ret = request_irq(it->options[1], pcl812_interrupt, 0,
- 					  dev->board_name, dev);
- 			if (ret == 0)
++#define MAX_INSNS   MAX_SAMPLES
++static int check_insnlist_len(struct comedi_device *dev, unsigned int n_insns)
++{
++	if (n_insns > MAX_INSNS) {
++		dev_dbg(dev->class_dev, "insnlist length too large\n");
++		return -EINVAL;
++	}
++	return 0;
++}
++
+ /*
+  * COMEDI_INSN ioctl
+  * synchronous instruction
+@@ -2239,6 +2249,9 @@ static long comedi_unlocked_ioctl(struct
+ 			rc = -EFAULT;
+ 			break;
+ 		}
++		rc = check_insnlist_len(dev, insnlist.n_insns);
++		if (rc)
++			break;
+ 		insns = kcalloc(insnlist.n_insns, sizeof(*insns), GFP_KERNEL);
+ 		if (!insns) {
+ 			rc = -ENOMEM;
+@@ -3090,6 +3103,9 @@ static int compat_insnlist(struct file *
+ 	if (copy_from_user(&insnlist32, compat_ptr(arg), sizeof(insnlist32)))
+ 		return -EFAULT;
+ 
++	rc = check_insnlist_len(dev, insnlist32.n_insns);
++	if (rc)
++		return rc;
+ 	insns = kcalloc(insnlist32.n_insns, sizeof(*insns), GFP_KERNEL);
+ 	if (!insns)
+ 		return -ENOMEM;
 
 
 
