@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-163743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6BEB0DB58
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED57B0DC90
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AC2D3BBC52
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16074188FCC7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450DA2D9EE2;
-	Tue, 22 Jul 2025 13:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744F4548EE;
+	Tue, 22 Jul 2025 14:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecfZerqG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sm8FiB9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F12242D8F;
-	Tue, 22 Jul 2025 13:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3323F1A2C25;
+	Tue, 22 Jul 2025 14:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192064; cv=none; b=neZHOGzRNC1h1MaKAyOK5wsQFH89jrHHZhP64mf022NW+Tzsgqi5Wk6ZbLReyuns1p6NQJWaEDCQDqUu71Bg0/ebhLiQhX/ZxAZdzJrKhCa9LsUUOzPpLNOFuzcOvaGevtZAG+Igz1RpCguvqNfp1ITipF25b31yLk6nJb97Iks=
+	t=1753192881; cv=none; b=u8U+CyvcjMl1BiLEctfxk/JE2A6O+jza1H8Ll5ok60N+SxA/RQKR7b9xEGW3rtkgYRfib5ZfaiXPUc4nCmw+Q+LAsUOjiEh05Y71hC47ahpWnhRimYD/6Vccq95TJjOW+JIoy5xZLY36c7BhChovEcSxn2yCZ/bnWt4x9HWHbJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192064; c=relaxed/simple;
-	bh=Po709WinaWb8qbQ2PDa2RphG/3ukQQHfYF5IK+DHaqk=;
+	s=arc-20240116; t=1753192881; c=relaxed/simple;
+	bh=U/PZag4DRa0RcG9F3u/G93W8B7jUNETaBxUo68J05vY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FSMmXxa8tD0iE8BCunODE/ZL80CTKjqqRLgGWPgks4bd5zWZwER2l0cMOtUr55gDff8gtQ9opeTYo+esx9G97KINLldUqCn5QkhWBlrjKOV/eRVfrpUIrfzNN9UnM34jZugdKor1GziP+YcticBFzZTORbHb+e5HddXbJDalO8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecfZerqG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649DEC4CEEB;
-	Tue, 22 Jul 2025 13:47:43 +0000 (UTC)
+	 MIME-Version; b=sKPZoz2CXhNHCYUaqvoI1mPHpRFSAaWSibt96cVI7gMnHOC1yM9HEwopKqXjtiU3dKzV1HYgGT0lHc6DQ4qnxT64c7VFM/boGL8SLL/NYRt5O1b+7bJhBMcHd+lAnyxxKZTko3yyt9v3r9mXJYOLqsgl/1WwONKxaZJdOqsSzG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sm8FiB9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D30BC4CEF5;
+	Tue, 22 Jul 2025 14:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192063;
-	bh=Po709WinaWb8qbQ2PDa2RphG/3ukQQHfYF5IK+DHaqk=;
+	s=korg; t=1753192881;
+	bh=U/PZag4DRa0RcG9F3u/G93W8B7jUNETaBxUo68J05vY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecfZerqGeSiHSYgWbv9XayKDHz/x40Yoh+dJlSazA1vUZTM47skJfqIN+ZYCv5zNC
-	 2eu0c88r2Qpvehe919Vj+xK+pLioeNOL1YApxV3msMSGMLGcj9xGa4v83sjYyZfXoI
-	 3KG+g42AOP+fYI6Qaa8KdQ05eq7uFrx1VRXYCuC0=
+	b=Sm8FiB9/NntJW5ws1ooDuVjY8eZvE10NJfDKb/KE3/ZRSdWsx73AMBI1rKnOj7Zli
+	 7TEydnmfKxR/ul5yD6MrgWjCoCk7nFIeclKHdJwvIq+ay+AgDpRqlqxhS7LgXhixYh
+	 ZVwoqul/qoSYSpDhqPp9kdeU5/0v5zEWTQuNjgOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 33/79] iio: adc: stm32-adc: Fix race in installing chained IRQ handler
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 085/158] soundwire: amd: fix for clearing command status register
 Date: Tue, 22 Jul 2025 15:44:29 +0200
-Message-ID: <20250722134329.586396025@linuxfoundation.org>
+Message-ID: <20250722134343.941501918@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-commit e8ad595064f6ebd5d2d1a5d5d7ebe0efce623091 upstream.
+[ Upstream commit a628e69b6412dc02757a6a23f7f16ce0c14d71f1 ]
 
-Fix a race where a pending interrupt could be received and the handler
-called before the handler's data has been setup, by converting to
-irq_set_chained_handler_and_data().
+To clear the valid result status, 1 should be written to
+ACP_SDW_IMM_CMD_STS register. Update the ACP_SW_IMM_CMD_STS register value
+as 1.
 
-Fixes: 1add69880240 ("iio: adc: Add support for STM32 ADC core")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://patch.msgid.link/20250515083101.3811350-1-nichen@iscas.ac.cn
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d8f48fbdfd9a ("soundwire: amd: Add support for AMD Manager driver")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20250620102617.73437-1-Vijendar.Mukunda@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stm32-adc-core.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/soundwire/amd_manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -415,10 +415,9 @@ static int stm32_adc_irq_probe(struct pl
- 		return -ENOMEM;
+diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+index 2912f874a1352..1895fba5e70bb 100644
+--- a/drivers/soundwire/amd_manager.c
++++ b/drivers/soundwire/amd_manager.c
+@@ -187,7 +187,7 @@ static u64 amd_sdw_send_cmd_get_resp(struct amd_sdw_manager *amd_manager, u32 lo
+ 
+ 	if (sts & AMD_SDW_IMM_RES_VALID) {
+ 		dev_err(amd_manager->dev, "SDW%x manager is in bad state\n", amd_manager->instance);
+-		writel(0x00, amd_manager->mmio + ACP_SW_IMM_CMD_STS);
++		writel(AMD_SDW_IMM_RES_VALID, amd_manager->mmio + ACP_SW_IMM_CMD_STS);
  	}
- 
--	for (i = 0; i < priv->cfg->num_irqs; i++) {
--		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
--		irq_set_handler_data(priv->irq[i], priv);
--	}
-+	for (i = 0; i < priv->cfg->num_irqs; i++)
-+		irq_set_chained_handler_and_data(priv->irq[i],
-+						 stm32_adc_irq_handler, priv);
- 
- 	return 0;
- }
+ 	writel(upper_data, amd_manager->mmio + ACP_SW_IMM_CMD_UPPER_WORD);
+ 	writel(lower_data, amd_manager->mmio + ACP_SW_IMM_CMD_LOWER_QWORD);
+-- 
+2.39.5
+
 
 
 
