@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-163767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737FBB0DB71
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBB5B0DCCC
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7956EAA73ED
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12CFA3B3C97
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118E57BAEC;
-	Tue, 22 Jul 2025 13:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FC71A2C25;
+	Tue, 22 Jul 2025 14:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCFwInuT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZRRa+dn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26C27263D;
-	Tue, 22 Jul 2025 13:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E51A32;
+	Tue, 22 Jul 2025 14:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192140; cv=none; b=UHR9W3rMFxD1Xr2LmVD2ePsybQP1qqpyLir37W9VcijYBdscWrKUHeHVxptE4VtO4aITzUjynoOtLYjaW+vtVFeqoGTo6yjdDTgx0/VoA9BB4eEyuOaO9g8encKeHNi9Nivb8khLtpH+8T/C0OPos6jcGVlfUymLUnJmzpsUBB0=
+	t=1753192960; cv=none; b=OzhFY+xYbP8pltihylcgbTZls4Lkbis1JvfRPjxRtcqriCyzIeZY/WfhQshhRpIS5hCxIL4oZZfczN3kS68JFI0wFAVLQYh2Yd0h9YVZi9LWUjHxWU+oV5y8GL4mXjhNUsLBveGHFg7x7l9Tp6V04ErsA5RTkM8jCBmxOSnoKFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192140; c=relaxed/simple;
-	bh=XW7YT5Snw/1cKVDzoEsrpEsjz6Ij4Fh30XT1eU+bq58=;
+	s=arc-20240116; t=1753192960; c=relaxed/simple;
+	bh=o48poMhJqxaa4ahD6TshB9RbTCX8nmvCA9QmEBZcKiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+l1cTkVqG3lh8V2tsaqM4XoRRa1FoDoBqjuotF2rbLlJTE5cWkdjFT1IJp/BTwi425k6/rDLIhMfG1X+RIR2gOTVbj/Cg1eH20/PYqBFkaJVqhZbRulUH1P0CqFHRk27R3Bp2IzQ+hrvMhTyahlWhnePZ5rhx3FoSI5cIsGPkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCFwInuT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C0DC4CEEB;
-	Tue, 22 Jul 2025 13:48:59 +0000 (UTC)
+	 MIME-Version; b=YZ/agbZcLgWhfEUWb7RB9TkxDFsuSGyS3ogjlvC0HHXGQrINZmBF/54q5GBfwTIn3R2h5t0TVsHqFSpUIchWiSTy+QWKx4dzXnOnNyYBNNcfE2oinyDgMz31PTiMRRG3XCRm9e8XFbxdPi20x73eX1S62EeurwxuhhNi+GxlDgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZRRa+dn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A07FC4CEEB;
+	Tue, 22 Jul 2025 14:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192140;
-	bh=XW7YT5Snw/1cKVDzoEsrpEsjz6Ij4Fh30XT1eU+bq58=;
+	s=korg; t=1753192960;
+	bh=o48poMhJqxaa4ahD6TshB9RbTCX8nmvCA9QmEBZcKiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FCFwInuTPihMcT3k/C9qvzG4FniRx5nnOha2uIUd2Hj1vOm/cgwngkaNuEPedDH+O
-	 l8OWWy3of0/bALz9Uv4tUWjm8KD7TBkEvJsqK/EEOQ04pNeXhQlIK+JP5UbT0dva0X
-	 PBuseaJiPaS0GcXKcrUm673d4Mn3MkTBIO5XEjKc=
+	b=zZRRa+dnGqdYlZSNOqAb7ZSN/t3qC3LfNFZx1gkfnbSdS5gFOPwRQkfkmTVqLzwrb
+	 PY7MyJwN9NyCyfkz2d+XEk4v+cTIxKqW5I53vV3e+NO2XgTLod1NNxsd2sMx/wRdft
+	 71xU/Dulud3HQgVXPx1O8gtxrtwvorGdTLdJXe7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Paasch <cpaasch@openai.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Changhui Zhong <czhong@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 57/79] net/mlx5: Correctly set gso_size when LRO is used
-Date: Tue, 22 Jul 2025 15:44:53 +0200
-Message-ID: <20250722134330.472104583@linuxfoundation.org>
+Subject: [PATCH 6.12 110/158] loop: use kiocb helpers to fix lockdep warning
+Date: Tue, 22 Jul 2025 15:44:54 +0200
+Message-ID: <20250722134344.853543785@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Paasch <cpaasch@openai.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 531d0d32de3e1b6b77a87bd37de0c2c6e17b496a ]
+[ Upstream commit c4706c5058a7bd7d7c20f3b24a8f523ecad44e83 ]
 
-gso_size is expected by the networking stack to be the size of the
-payload (thus, not including ethernet/IP/TCP-headers). However, cqe_bcnt
-is the full sized frame (including the headers). Dividing cqe_bcnt by
-lro_num_seg will then give incorrect results.
+The lockdep tool can report a circular lock dependency warning in the loop
+driver's AIO read/write path:
 
-For example, running a bpftrace higher up in the TCP-stack
-(tcp_event_data_recv), we commonly have gso_size set to 1450 or 1451 even
-though in reality the payload was only 1448 bytes.
+```
+[ 6540.587728] kworker/u96:5/72779 is trying to acquire lock:
+[ 6540.593856] ff110001b5968440 (sb_writers#9){.+.+}-{0:0}, at: loop_process_work+0x11a/0xf70 [loop]
+[ 6540.603786]
+[ 6540.603786] but task is already holding lock:
+[ 6540.610291] ff110001b5968440 (sb_writers#9){.+.+}-{0:0}, at: loop_process_work+0x11a/0xf70 [loop]
+[ 6540.620210]
+[ 6540.620210] other info that might help us debug this:
+[ 6540.627499]  Possible unsafe locking scenario:
+[ 6540.627499]
+[ 6540.634110]        CPU0
+[ 6540.636841]        ----
+[ 6540.639574]   lock(sb_writers#9);
+[ 6540.643281]   lock(sb_writers#9);
+[ 6540.646988]
+[ 6540.646988]  *** DEADLOCK ***
+```
 
-This can have unintended consequences:
-- In tcp_measure_rcv_mss() len will be for example 1450, but. rcv_mss
-will be 1448 (because tp->advmss is 1448). Thus, we will always
-recompute scaling_ratio each time an LRO-packet is received.
-- In tcp_gro_receive(), it will interfere with the decision whether or
-not to flush and thus potentially result in less gro'ed packets.
+This patch fixes the issue by using the AIO-specific helpers
+`kiocb_start_write()` and `kiocb_end_write()`. These functions are
+designed to be used with a `kiocb` and manage write sequencing
+correctly for asynchronous I/O without introducing the problematic
+lock dependency.
 
-So, we need to discount the protocol headers from cqe_bcnt so we can
-actually divide the payload by lro_num_seg to get the real gso_size.
+The `kiocb` is already part of the `loop_cmd` struct, so this change
+also simplifies the completion function `lo_rw_aio_do_completion()` by
+using the `iocb` from the `cmd` struct directly, instead of retrieving
+the loop device from the request queue.
 
-v2:
- - Use "(unsigned char *)tcp + tcp->doff * 4 - skb->data)" to compute header-len
-   (Tariq Toukan <tariqt@nvidia.com>)
- - Improve commit-message (Gal Pressman <gal@nvidia.com>)
-
-Fixes: e586b3b0baee ("net/mlx5: Ethernet Datapath files")
-Signed-off-by: Christoph Paasch <cpaasch@openai.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20250715-cpaasch-pf-925-investigate-incorrect-gso_size-on-cx-7-nic-v2-1-e06c3475f3ac@openai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 39d86db34e41 ("loop: add file_start_write() and file_end_write()")
+Cc: Changhui Zhong <czhong@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250716114808.3159657-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/block/loop.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index ccddfa49e96c0..74dc45d9c242e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -1015,8 +1015,9 @@ static void mlx5e_lro_update_tcp_hdr(struct mlx5_cqe64 *cqe, struct tcphdr *tcp)
- 	}
- }
- 
--static void mlx5e_lro_update_hdr(struct sk_buff *skb, struct mlx5_cqe64 *cqe,
--				 u32 cqe_bcnt)
-+static unsigned int mlx5e_lro_update_hdr(struct sk_buff *skb,
-+					 struct mlx5_cqe64 *cqe,
-+					 u32 cqe_bcnt)
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index e9a197474b9d8..2f42d16446184 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -323,14 +323,13 @@ static void lo_complete_rq(struct request *rq)
+ static void lo_rw_aio_do_completion(struct loop_cmd *cmd)
  {
- 	struct ethhdr	*eth = (struct ethhdr *)(skb->data);
- 	struct tcphdr	*tcp;
-@@ -1067,6 +1068,8 @@ static void mlx5e_lro_update_hdr(struct sk_buff *skb, struct mlx5_cqe64 *cqe,
- 		tcp->check = csum_ipv6_magic(&ipv6->saddr, &ipv6->daddr, payload_len,
- 					     IPPROTO_TCP, check);
- 	}
-+
-+	return (unsigned int)((unsigned char *)tcp + tcp->doff * 4 - skb->data);
+ 	struct request *rq = blk_mq_rq_from_pdu(cmd);
+-	struct loop_device *lo = rq->q->queuedata;
+ 
+ 	if (!atomic_dec_and_test(&cmd->ref))
+ 		return;
+ 	kfree(cmd->bvec);
+ 	cmd->bvec = NULL;
+ 	if (req_op(rq) == REQ_OP_WRITE)
+-		file_end_write(lo->lo_backing_file);
++		kiocb_end_write(&cmd->iocb);
+ 	if (likely(!blk_should_fake_timeout(rq->q)))
+ 		blk_mq_complete_request(rq);
  }
+@@ -406,7 +405,7 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
+ 	}
  
- static void *mlx5e_shampo_get_packet_hd(struct mlx5e_rq *rq, u16 header_index)
-@@ -1422,8 +1425,9 @@ static inline void mlx5e_build_rx_skb(struct mlx5_cqe64 *cqe,
- 		mlx5e_macsec_offload_handle_rx_skb(netdev, skb, cqe);
- 
- 	if (lro_num_seg > 1) {
--		mlx5e_lro_update_hdr(skb, cqe, cqe_bcnt);
--		skb_shinfo(skb)->gso_size = DIV_ROUND_UP(cqe_bcnt, lro_num_seg);
-+		unsigned int hdrlen = mlx5e_lro_update_hdr(skb, cqe, cqe_bcnt);
-+
-+		skb_shinfo(skb)->gso_size = DIV_ROUND_UP(cqe_bcnt - hdrlen, lro_num_seg);
- 		/* Subtract one since we already counted this as one
- 		 * "regular" packet in mlx5e_complete_rx_cqe()
- 		 */
+ 	if (rw == ITER_SOURCE) {
+-		file_start_write(lo->lo_backing_file);
++		kiocb_start_write(&cmd->iocb);
+ 		ret = file->f_op->write_iter(&cmd->iocb, &iter);
+ 	} else
+ 		ret = file->f_op->read_iter(&cmd->iocb, &iter);
 -- 
 2.39.5
 
