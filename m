@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-163998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBA5B0DC97
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE911B0DB53
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B1EB1C22565
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A675162F0E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D6428BA96;
-	Tue, 22 Jul 2025 14:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD8C23B614;
+	Tue, 22 Jul 2025 13:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zf7oE4cZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zlcinl0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286C8548EE;
-	Tue, 22 Jul 2025 14:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9A4433A8;
+	Tue, 22 Jul 2025 13:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192907; cv=none; b=rpaHOy81EcYjsLfBeMAXYD/btSZjy+SyulqFs4uIu1X8fEfFj17ErXc82VzUVlYfSl2C0EneBBCrZXgzhxcVR9UC7qUMb+XZOB7xZvywOJpd/SyNJq9ZWhq8FrDQ+bWcKEG4N+Y2iNo2o060UummmXh73c52fWamm3f2VTidZfE=
+	t=1753192097; cv=none; b=MTDi/EkpcRwT7KkJJXGNx9kC87CNwdWibSHIDDV14LBhymA46iZY1SvSDQSRjzAaFXCIik8x5fdb5duKNgq8XvGktZra+Sym4dWNszCZaWj1xCa6JneH1kR7l+yik6itccy1FCcwAcNdTe7Jby+f+/xRi8WEwJSm323/70g2JNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192907; c=relaxed/simple;
-	bh=N1UtOXw6K38DnDw7LEyL70ciFpRTED0Cmews4Z6RW3I=;
+	s=arc-20240116; t=1753192097; c=relaxed/simple;
+	bh=kpLe++4et1TsGvFIVMK91emYVsNfjAXR2AH/IQrUF0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o87bPEMv/FkBU3QkGjsboIP3A3NaZ8YcsetGbOt85CdFl5BbcnR1ZsyV8yUatxD2AWL6IQGbXT+HuU0FOksD4bn9qKHh0XK4LDHP4PNyqqe39VEOMFp/0bQShKgK2tXT+Bijk6r21Ho1m19dBph38LVaJc2MkMs1Pwzbr2KF6O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zf7oE4cZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AC5C4CEEB;
-	Tue, 22 Jul 2025 14:01:46 +0000 (UTC)
+	 MIME-Version; b=VURWVJFVFFAGv9NMTijb1wEB0dBeAoBE7eD2/DScCfmyrp9DDkaKHnfbHTY60rGh+c/DawUnE7AEOysrdbL+YqY416Wbttxm+kJmzhjJx2FeIlJllqHLXZoU3kaXk13/Tq0giGjJ0HP3Zaf5VnMbcMzR2PdNC10sV1e2H2khj48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zlcinl0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8E9C4CEEB;
+	Tue, 22 Jul 2025 13:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192906;
-	bh=N1UtOXw6K38DnDw7LEyL70ciFpRTED0Cmews4Z6RW3I=;
+	s=korg; t=1753192097;
+	bh=kpLe++4et1TsGvFIVMK91emYVsNfjAXR2AH/IQrUF0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zf7oE4cZpmuJOGcENsviasbiu96mt4UNLrQwwMAou/ugFImYt9H2tfomjJ/0fpmyE
-	 iSKlXu7pn4AMp7E8VoUESFwXms8UP5XVtHm1QfBlfv5agtok1G6TGvw8ooniK+H/Gq
-	 xwXprT8+Axbjih7DGY9KJ0G5SrthpeZY9los7cx4=
+	b=Zlcinl0o38rq2ZY3V9RwJqqiOZ99nb9lPy9at34EiDMbW1uNLb+Obr1Rvo86kc0GS
+	 mhNgIHc7TIMCeB7cKT4wN46mB87GdTbgm46lNwLvcRd632rQtpEAumGlDbfAi9RGdD
+	 gxSrpuXxzQEG479+BinKOTSsCta0P+zsLPftQvKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot+e2c932aec5c8a6e1d31c@syzkaller.appspotmail.com,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/158] rpl: Fix use-after-free in rpl_do_srh_inline().
-Date: Tue, 22 Jul 2025 15:44:37 +0200
-Message-ID: <20250722134344.227932916@linuxfoundation.org>
+Subject: [PATCH 6.1 42/79] bpf: Reject %p% format string in bprintf-like helpers
+Date: Tue, 22 Jul 2025 15:44:38 +0200
+Message-ID: <20250722134329.927611591@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,189 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit b640daa2822a39ff76e70200cb2b7b892b896dce ]
+[ Upstream commit f8242745871f81a3ac37f9f51853d12854fd0b58 ]
 
-Running lwt_dst_cache_ref_loop.sh in selftest with KASAN triggers
-the splat below [0].
+static const char fmt[] = "%p%";
+    bpf_trace_printk(fmt, sizeof(fmt));
 
-rpl_do_srh_inline() fetches ipv6_hdr(skb) and accesses it after
-skb_cow_head(), which is illegal as the header could be freed then.
+The above BPF program isn't rejected and causes a kernel warning at
+runtime:
 
-Let's fix it by making oldhdr to a local struct instead of a pointer.
+    Please remove unsupported %\x00 in format string
+    WARNING: CPU: 1 PID: 7244 at lib/vsprintf.c:2680 format_decode+0x49c/0x5d0
 
-[0]:
-[root@fedora net]# ./lwt_dst_cache_ref_loop.sh
-...
-TEST: rpl (input)
-[   57.631529] ==================================================================
-BUG: KASAN: slab-use-after-free in rpl_do_srh_inline.isra.0 (net/ipv6/rpl_iptunnel.c:174)
-Read of size 40 at addr ffff888122bf96d8 by task ping6/1543
+This happens because bpf_bprintf_prepare skips over the second %,
+detected as punctuation, while processing %p. This patch fixes it by
+not skipping over punctuation. %\x00 is then processed in the next
+iteration and rejected.
 
-CPU: 50 UID: 0 PID: 1543 Comm: ping6 Not tainted 6.16.0-rc5-01302-gfadd1e6231b1 #23 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <IRQ>
- dump_stack_lvl (lib/dump_stack.c:122)
- print_report (mm/kasan/report.c:409 mm/kasan/report.c:521)
- kasan_report (mm/kasan/report.c:221 mm/kasan/report.c:636)
- kasan_check_range (mm/kasan/generic.c:175 (discriminator 1) mm/kasan/generic.c:189 (discriminator 1))
- __asan_memmove (mm/kasan/shadow.c:94 (discriminator 2))
- rpl_do_srh_inline.isra.0 (net/ipv6/rpl_iptunnel.c:174)
- rpl_input (net/ipv6/rpl_iptunnel.c:201 net/ipv6/rpl_iptunnel.c:282)
- lwtunnel_input (net/core/lwtunnel.c:459)
- ipv6_rcv (./include/net/dst.h:471 (discriminator 1) ./include/net/dst.h:469 (discriminator 1) net/ipv6/ip6_input.c:79 (discriminator 1) ./include/linux/netfilter.h:317 (discriminator 1) ./include/linux/netfilter.h:311 (discriminator 1) net/ipv6/ip6_input.c:311 (discriminator 1))
- __netif_receive_skb_one_core (net/core/dev.c:5967)
- process_backlog (./include/linux/rcupdate.h:869 net/core/dev.c:6440)
- __napi_poll.constprop.0 (net/core/dev.c:7452)
- net_rx_action (net/core/dev.c:7518 net/core/dev.c:7643)
- handle_softirqs (kernel/softirq.c:579)
- do_softirq (kernel/softirq.c:480 (discriminator 20))
- </IRQ>
- <TASK>
- __local_bh_enable_ip (kernel/softirq.c:407)
- __dev_queue_xmit (net/core/dev.c:4740)
- ip6_finish_output2 (./include/linux/netdevice.h:3358 ./include/net/neighbour.h:526 ./include/net/neighbour.h:540 net/ipv6/ip6_output.c:141)
- ip6_finish_output (net/ipv6/ip6_output.c:215 net/ipv6/ip6_output.c:226)
- ip6_output (./include/linux/netfilter.h:306 net/ipv6/ip6_output.c:248)
- ip6_send_skb (net/ipv6/ip6_output.c:1983)
- rawv6_sendmsg (net/ipv6/raw.c:588 net/ipv6/raw.c:918)
- __sys_sendto (net/socket.c:714 (discriminator 1) net/socket.c:729 (discriminator 1) net/socket.c:2228 (discriminator 1))
- __x64_sys_sendto (net/socket.c:2231)
- do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-RIP: 0033:0x7f68cffb2a06
-Code: 5d e8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 75 19 83 e2 39 83 fa 08 75 11 e8 26 ff ff ff 66 0f 1f 44 00 00 48 8b 45 10 0f 05 <48> 8b 5d f8 c9 c3 0f 1f 40 00 f3 0f 1e fa 55 48 89 e5 48 83 ec 08
-RSP: 002b:00007ffefb7c53d0 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 0000564cd69f10a0 RCX: 00007f68cffb2a06
-RDX: 0000000000000040 RSI: 0000564cd69f10a4 RDI: 0000000000000003
-RBP: 00007ffefb7c53f0 R08: 0000564cd6a032ac R09: 000000000000001c
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000564cd69f10a4
-R13: 0000000000000040 R14: 00007ffefb7c66e0 R15: 0000564cd69f10a0
- </TASK>
-
-Allocated by task 1543:
- kasan_save_stack (mm/kasan/common.c:48)
- kasan_save_track (mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1))
- __kasan_slab_alloc (mm/kasan/common.c:319 mm/kasan/common.c:345)
- kmem_cache_alloc_node_noprof (./include/linux/kasan.h:250 mm/slub.c:4148 mm/slub.c:4197 mm/slub.c:4249)
- kmalloc_reserve (net/core/skbuff.c:581 (discriminator 88))
- __alloc_skb (net/core/skbuff.c:669)
- __ip6_append_data (net/ipv6/ip6_output.c:1672 (discriminator 1))
- ip6_append_data (net/ipv6/ip6_output.c:1859)
- rawv6_sendmsg (net/ipv6/raw.c:911)
- __sys_sendto (net/socket.c:714 (discriminator 1) net/socket.c:729 (discriminator 1) net/socket.c:2228 (discriminator 1))
- __x64_sys_sendto (net/socket.c:2231)
- do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Freed by task 1543:
- kasan_save_stack (mm/kasan/common.c:48)
- kasan_save_track (mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1))
- kasan_save_free_info (mm/kasan/generic.c:579 (discriminator 1))
- __kasan_slab_free (mm/kasan/common.c:271)
- kmem_cache_free (mm/slub.c:4643 (discriminator 3) mm/slub.c:4745 (discriminator 3))
- pskb_expand_head (net/core/skbuff.c:2274)
- rpl_do_srh_inline.isra.0 (net/ipv6/rpl_iptunnel.c:158 (discriminator 1))
- rpl_input (net/ipv6/rpl_iptunnel.c:201 net/ipv6/rpl_iptunnel.c:282)
- lwtunnel_input (net/core/lwtunnel.c:459)
- ipv6_rcv (./include/net/dst.h:471 (discriminator 1) ./include/net/dst.h:469 (discriminator 1) net/ipv6/ip6_input.c:79 (discriminator 1) ./include/linux/netfilter.h:317 (discriminator 1) ./include/linux/netfilter.h:311 (discriminator 1) net/ipv6/ip6_input.c:311 (discriminator 1))
- __netif_receive_skb_one_core (net/core/dev.c:5967)
- process_backlog (./include/linux/rcupdate.h:869 net/core/dev.c:6440)
- __napi_poll.constprop.0 (net/core/dev.c:7452)
- net_rx_action (net/core/dev.c:7518 net/core/dev.c:7643)
- handle_softirqs (kernel/softirq.c:579)
- do_softirq (kernel/softirq.c:480 (discriminator 20))
- __local_bh_enable_ip (kernel/softirq.c:407)
- __dev_queue_xmit (net/core/dev.c:4740)
- ip6_finish_output2 (./include/linux/netdevice.h:3358 ./include/net/neighbour.h:526 ./include/net/neighbour.h:540 net/ipv6/ip6_output.c:141)
- ip6_finish_output (net/ipv6/ip6_output.c:215 net/ipv6/ip6_output.c:226)
- ip6_output (./include/linux/netfilter.h:306 net/ipv6/ip6_output.c:248)
- ip6_send_skb (net/ipv6/ip6_output.c:1983)
- rawv6_sendmsg (net/ipv6/raw.c:588 net/ipv6/raw.c:918)
- __sys_sendto (net/socket.c:714 (discriminator 1) net/socket.c:729 (discriminator 1) net/socket.c:2228 (discriminator 1))
- __x64_sys_sendto (net/socket.c:2231)
- do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-The buggy address belongs to the object at ffff888122bf96c0
- which belongs to the cache skbuff_small_head of size 704
-The buggy address is located 24 bytes inside of
- freed 704-byte region [ffff888122bf96c0, ffff888122bf9980)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x122bf8
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0x200000000000040(head|node=0|zone=2)
-page_type: f5(slab)
-raw: 0200000000000040 ffff888101fc0a00 ffffea000464dc00 0000000000000002
-raw: 0000000000000000 0000000080270027 00000000f5000000 0000000000000000
-head: 0200000000000040 ffff888101fc0a00 ffffea000464dc00 0000000000000002
-head: 0000000000000000 0000000080270027 00000000f5000000 0000000000000000
-head: 0200000000000003 ffffea00048afe01 00000000ffffffff 00000000ffffffff
-head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff888122bf9580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888122bf9600: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
->ffff888122bf9680: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
-                                                    ^
- ffff888122bf9700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888122bf9780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-
-Fixes: a7a29f9c361f8 ("net: ipv6: add rpl sr tunnel")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: syzbot+e2c932aec5c8a6e1d31c@syzkaller.appspotmail.com
+Fixes: 48cac3f4a96d ("bpf: Implement formatted output helpers with bstr_printf")
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/a0e06cc479faec9e802ae51ba5d66420523251ee.1751395489.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/rpl_iptunnel.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/bpf/helpers.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
-index 7c05ac846646f..eccfa4203e96b 100644
---- a/net/ipv6/rpl_iptunnel.c
-+++ b/net/ipv6/rpl_iptunnel.c
-@@ -129,13 +129,13 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
- 			     struct dst_entry *cache_dst)
- {
- 	struct ipv6_rpl_sr_hdr *isrh, *csrh;
--	const struct ipv6hdr *oldhdr;
-+	struct ipv6hdr oldhdr;
- 	struct ipv6hdr *hdr;
- 	unsigned char *buf;
- 	size_t hdrlen;
- 	int err;
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 94e85d311641b..be9dc396537f1 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -876,6 +876,13 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+ 		if (fmt[i] == 'p') {
+ 			sizeof_cur_arg = sizeof(long);
  
--	oldhdr = ipv6_hdr(skb);
-+	memcpy(&oldhdr, ipv6_hdr(skb), sizeof(oldhdr));
++			if (fmt[i + 1] == 0 || isspace(fmt[i + 1]) ||
++			    ispunct(fmt[i + 1])) {
++				if (tmp_buf)
++					cur_arg = raw_args[num_spec];
++				goto nocopy_fmt;
++			}
++
+ 			if ((fmt[i + 1] == 'k' || fmt[i + 1] == 'u') &&
+ 			    fmt[i + 2] == 's') {
+ 				fmt_ptype = fmt[i + 1];
+@@ -883,11 +890,9 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+ 				goto fmt_str;
+ 			}
  
- 	buf = kcalloc(struct_size(srh, segments.addr, srh->segments_left), 2, GFP_ATOMIC);
- 	if (!buf)
-@@ -147,7 +147,7 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
- 	memcpy(isrh, srh, sizeof(*isrh));
- 	memcpy(isrh->rpl_segaddr, &srh->rpl_segaddr[1],
- 	       (srh->segments_left - 1) * 16);
--	isrh->rpl_segaddr[srh->segments_left - 1] = oldhdr->daddr;
-+	isrh->rpl_segaddr[srh->segments_left - 1] = oldhdr.daddr;
- 
- 	ipv6_rpl_srh_compress(csrh, isrh, &srh->rpl_segaddr[0],
- 			      isrh->segments_left - 1);
-@@ -169,7 +169,7 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
- 	skb_mac_header_rebuild(skb);
- 
- 	hdr = ipv6_hdr(skb);
--	memmove(hdr, oldhdr, sizeof(*hdr));
-+	memmove(hdr, &oldhdr, sizeof(*hdr));
- 	isrh = (void *)hdr + sizeof(*hdr);
- 	memcpy(isrh, csrh, hdrlen);
- 
+-			if (fmt[i + 1] == 0 || isspace(fmt[i + 1]) ||
+-			    ispunct(fmt[i + 1]) || fmt[i + 1] == 'K' ||
++			if (fmt[i + 1] == 'K' ||
+ 			    fmt[i + 1] == 'x' || fmt[i + 1] == 's' ||
+ 			    fmt[i + 1] == 'S') {
+-				/* just kernel pointers */
+ 				if (tmp_buf)
+ 					cur_arg = raw_args[num_spec];
+ 				i++;
 -- 
 2.39.5
 
