@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-163753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE911B0DB53
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD87B0DCBC
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A675162F0E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7435B3A6926
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD8C23B614;
-	Tue, 22 Jul 2025 13:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A66B23AB9D;
+	Tue, 22 Jul 2025 14:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zlcinl0o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iATNk9qi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9A4433A8;
-	Tue, 22 Jul 2025 13:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3701C2E36E8;
+	Tue, 22 Jul 2025 14:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192097; cv=none; b=MTDi/EkpcRwT7KkJJXGNx9kC87CNwdWibSHIDDV14LBhymA46iZY1SvSDQSRjzAaFXCIik8x5fdb5duKNgq8XvGktZra+Sym4dWNszCZaWj1xCa6JneH1kR7l+yik6itccy1FCcwAcNdTe7Jby+f+/xRi8WEwJSm323/70g2JNs=
+	t=1753192913; cv=none; b=D/c2EwU0hEELQYBTtwcZ24rwegbNCy8oAwIfRT5wPd98wbb0bxJWsJi4G4cfcFLeYBmOaDb2XlazzVb4OKx7B5CLY9JWgN1FH+OAoW6+FFnA3t2H0AmFS4rskNvnnPijRiY+T7vGDPmazh8IffZVi/NclxlH3b2x+ByGkkCOJl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192097; c=relaxed/simple;
-	bh=kpLe++4et1TsGvFIVMK91emYVsNfjAXR2AH/IQrUF0s=;
+	s=arc-20240116; t=1753192913; c=relaxed/simple;
+	bh=wnRQlEYwQHKPs+hUB2MLiTQAwyXHKsiGThWTLgczSWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VURWVJFVFFAGv9NMTijb1wEB0dBeAoBE7eD2/DScCfmyrp9DDkaKHnfbHTY60rGh+c/DawUnE7AEOysrdbL+YqY416Wbttxm+kJmzhjJx2FeIlJllqHLXZoU3kaXk13/Tq0giGjJ0HP3Zaf5VnMbcMzR2PdNC10sV1e2H2khj48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zlcinl0o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8E9C4CEEB;
-	Tue, 22 Jul 2025 13:48:16 +0000 (UTC)
+	 MIME-Version; b=Zd+KrMNH7Kg/pLE6ihVqpA1cpOAN6IdO5xX4rV6tv/tTsAdbzl11/dRq8MU7iGzIO5hXsDdGD0SicxovjdowLpFWw5GADLMCpOElbkVynL2cz9B/Is58++hRuqSG2ZGtbXeGTiEAuY75bTtKxs13ZstlojHjqV7It301juIzPFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iATNk9qi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A08C4CEEB;
+	Tue, 22 Jul 2025 14:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192097;
-	bh=kpLe++4et1TsGvFIVMK91emYVsNfjAXR2AH/IQrUF0s=;
+	s=korg; t=1753192913;
+	bh=wnRQlEYwQHKPs+hUB2MLiTQAwyXHKsiGThWTLgczSWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zlcinl0o38rq2ZY3V9RwJqqiOZ99nb9lPy9at34EiDMbW1uNLb+Obr1Rvo86kc0GS
-	 mhNgIHc7TIMCeB7cKT4wN46mB87GdTbgm46lNwLvcRd632rQtpEAumGlDbfAi9RGdD
-	 gxSrpuXxzQEG479+BinKOTSsCta0P+zsLPftQvKc=
+	b=iATNk9qigIBrLzEoPlEyDiJb2a3TXYXQnKK0g0rET46adCrzguzTJWwfBsuEQvR4Q
+	 0WjVBXDP6W56UH5DYgFUtnp+BSZKMgcKWvjUWNZotP4adzi5btpTz6BZyCfThD6FSI
+	 tjwfs2ne+xBMETjOTa82UwMVEdiTqjGv/xpe8IcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e2c932aec5c8a6e1d31c@syzkaller.appspotmail.com,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 42/79] bpf: Reject %p% format string in bprintf-like helpers
+Subject: [PATCH 6.12 094/158] smb: client: fix use-after-free in cifs_oplock_break
 Date: Tue, 22 Jul 2025 15:44:38 +0200
-Message-ID: <20250722134329.927611591@linuxfoundation.org>
+Message-ID: <20250722134344.263894024@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
 
-[ Upstream commit f8242745871f81a3ac37f9f51853d12854fd0b58 ]
+[ Upstream commit 705c79101ccf9edea5a00d761491a03ced314210 ]
 
-static const char fmt[] = "%p%";
-    bpf_trace_printk(fmt, sizeof(fmt));
+A race condition can occur in cifs_oplock_break() leading to a
+use-after-free of the cinode structure when unmounting:
 
-The above BPF program isn't rejected and causes a kernel warning at
-runtime:
+  cifs_oplock_break()
+    _cifsFileInfo_put(cfile)
+      cifsFileInfo_put_final()
+        cifs_sb_deactive()
+          [last ref, start releasing sb]
+            kill_sb()
+              kill_anon_super()
+                generic_shutdown_super()
+                  evict_inodes()
+                    dispose_list()
+                      evict()
+                        destroy_inode()
+                          call_rcu(&inode->i_rcu, i_callback)
+    spin_lock(&cinode->open_file_lock)  <- OK
+                            [later] i_callback()
+                              cifs_free_inode()
+                                kmem_cache_free(cinode)
+    spin_unlock(&cinode->open_file_lock)  <- UAF
+    cifs_done_oplock_break(cinode)       <- UAF
 
-    Please remove unsupported %\x00 in format string
-    WARNING: CPU: 1 PID: 7244 at lib/vsprintf.c:2680 format_decode+0x49c/0x5d0
+The issue occurs when umount has already released its reference to the
+superblock. When _cifsFileInfo_put() calls cifs_sb_deactive(), this
+releases the last reference, triggering the immediate cleanup of all
+inodes under RCU. However, cifs_oplock_break() continues to access the
+cinode after this point, resulting in use-after-free.
 
-This happens because bpf_bprintf_prepare skips over the second %,
-detected as punctuation, while processing %p. This patch fixes it by
-not skipping over punctuation. %\x00 is then processed in the next
-iteration and rejected.
+Fix this by holding an extra reference to the superblock during the
+entire oplock break operation. This ensures that the superblock and
+its inodes remain valid until the oplock break completes.
 
-Reported-by: syzbot+e2c932aec5c8a6e1d31c@syzkaller.appspotmail.com
-Fixes: 48cac3f4a96d ("bpf: Implement formatted output helpers with bstr_printf")
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/a0e06cc479faec9e802ae51ba5d66420523251ee.1751395489.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220309
+Fixes: b98749cac4a6 ("CIFS: keep FileInfo handle live during oplock break")
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/smb/client/file.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 94e85d311641b..be9dc396537f1 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -876,6 +876,13 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
- 		if (fmt[i] == 'p') {
- 			sizeof_cur_arg = sizeof(long);
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 0f6fec042f6a0..166dc8fd06c02 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -3076,7 +3076,8 @@ void cifs_oplock_break(struct work_struct *work)
+ 	struct cifsFileInfo *cfile = container_of(work, struct cifsFileInfo,
+ 						  oplock_break);
+ 	struct inode *inode = d_inode(cfile->dentry);
+-	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
++	struct super_block *sb = inode->i_sb;
++	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+ 	struct cifsInodeInfo *cinode = CIFS_I(inode);
+ 	struct cifs_tcon *tcon;
+ 	struct TCP_Server_Info *server;
+@@ -3086,6 +3087,12 @@ void cifs_oplock_break(struct work_struct *work)
+ 	__u64 persistent_fid, volatile_fid;
+ 	__u16 net_fid;
  
-+			if (fmt[i + 1] == 0 || isspace(fmt[i + 1]) ||
-+			    ispunct(fmt[i + 1])) {
-+				if (tmp_buf)
-+					cur_arg = raw_args[num_spec];
-+				goto nocopy_fmt;
-+			}
-+
- 			if ((fmt[i + 1] == 'k' || fmt[i + 1] == 'u') &&
- 			    fmt[i + 2] == 's') {
- 				fmt_ptype = fmt[i + 1];
-@@ -883,11 +890,9 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
- 				goto fmt_str;
- 			}
++	/*
++	 * Hold a reference to the superblock to prevent it and its inodes from
++	 * being freed while we are accessing cinode. Otherwise, _cifsFileInfo_put()
++	 * may release the last reference to the sb and trigger inode eviction.
++	 */
++	cifs_sb_active(sb);
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
  
--			if (fmt[i + 1] == 0 || isspace(fmt[i + 1]) ||
--			    ispunct(fmt[i + 1]) || fmt[i + 1] == 'K' ||
-+			if (fmt[i + 1] == 'K' ||
- 			    fmt[i + 1] == 'x' || fmt[i + 1] == 's' ||
- 			    fmt[i + 1] == 'S') {
--				/* just kernel pointers */
- 				if (tmp_buf)
- 					cur_arg = raw_args[num_spec];
- 				i++;
+@@ -3158,6 +3165,7 @@ void cifs_oplock_break(struct work_struct *work)
+ 	cifs_put_tlink(tlink);
+ out:
+ 	cifs_done_oplock_break(cinode);
++	cifs_sb_deactive(sb);
+ }
+ 
+ static int cifs_swap_activate(struct swap_info_struct *sis,
 -- 
 2.39.5
 
