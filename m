@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-164188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21305B0DE16
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF4A5B0DCFA
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1001188798D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 118041883DFF
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA39B2EF2B4;
-	Tue, 22 Jul 2025 14:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AFF2E1724;
+	Tue, 22 Jul 2025 14:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nu64Hb9z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HT6+gimw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8222BF012;
-	Tue, 22 Jul 2025 14:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1151DCB09;
+	Tue, 22 Jul 2025 14:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193536; cv=none; b=ZDsNmDxaX1fGmfmTQL9CIaSyDXnuUl+hVqZMFeb374slk33h8+WbUDwQJGJAD3TVRfB5gVQlh7V8qYwDvlWiHXdayz2oxThyCbfhUHCpfqC454NURtvgWCmDRd+OD4RGhRlpV9eRVIbxQnAKYsPMTfGMmuFwfAcajVf7DPz+m6U=
+	t=1753193068; cv=none; b=QDhLONralhWOooajKHQHjKRYHstSnXELPas+Q4FfZcZL7wUyZyH57jjVzk/Ofx5iDYO8UI9kohRKFcJh6XYAcsTTUFbYuRtRMlkP55DB1JyMNi66VDEfIJwbaKicGSQ5w6ZMy0IlMKAvzjqPuq4vnOLr3YKxkAlyXrxqMRdIKQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193536; c=relaxed/simple;
-	bh=gKHDyxkDhCi99UUgujlro/c+mxlAI1Q+Ug5snpT5+w0=;
+	s=arc-20240116; t=1753193068; c=relaxed/simple;
+	bh=V1IrBlllvgk+JnRgCI+kttnXmMLnog9eU62j+7CgkLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUWUTjmF52onhNH8D03vTe78VF1SLefan/VfPRYm5EWeB9WQbTIvO2wxLsIjg5MZlH7k8HvelW3SHsAAc/m2c6x14gq3MMBVVfg6oTyNSyeo8vxmEqiL6oL7ePspNshxufhm6ruR+3Hlpw5NV9ERnQJlmaZFwlGKy9TNXumJBbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nu64Hb9z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B885C4CEEB;
-	Tue, 22 Jul 2025 14:12:15 +0000 (UTC)
+	 MIME-Version; b=DCXZtmWvkN59wQJsyOpAd4wVPVyeeJIco94IF/EPXzR1SErTpOAkSjbf8OGdBqpoBNcydTkovNQobkKJubUzsQiWFO1QkhXNrcrHF+qeWfa2JHOaH9NJSptD8MVtR6JYimpDSyIOrmFv3o46XAxG9hNdpLw2Vau/XXqz8QaPuOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HT6+gimw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FB5C4CEEB;
+	Tue, 22 Jul 2025 14:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193536;
-	bh=gKHDyxkDhCi99UUgujlro/c+mxlAI1Q+Ug5snpT5+w0=;
+	s=korg; t=1753193068;
+	bh=V1IrBlllvgk+JnRgCI+kttnXmMLnog9eU62j+7CgkLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nu64Hb9z4uUbUxK9t1G4saCaQVvVkXEKTb2n8Fwq33ZzUMnyHmwp+QGalZvbacJbp
-	 uD9AOABKgM+YoT6yoVtcebvx7//yjQ3P0DeVcUOFHIqlIANB5iLIRhOfHydiFKkdnW
-	 mO0mI1z5viskrQ8oza7lpiDa0KFuWyrUOgl/xnIU=
+	b=HT6+gimw5sIhhWpmogX4y2/tAX4NUjmz20e8+xEPgJw+uIYipO6mgtb3bc2tcVMgd
+	 uoqfbP85VENvqGkQTYJs5vRjrBu30iSQsBoweykOUJf5vj3AJrLHzRsy4mapuRWInH
+	 BgOWyBzS7zuAhQ3+75HZwWssqYEdyHBPkI+aZcAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 122/187] nvmet-tcp: fix callback lock for TLS handshake
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 108/158] ice: check correct pointer in fwlog debugfs
 Date: Tue, 22 Jul 2025 15:44:52 +0200
-Message-ID: <20250722134350.295701376@linuxfoundation.org>
+Message-ID: <20250722134344.774961163@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
-References: <20250722134345.761035548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +65,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit 0523c6cc87e558c50ff4489c87c54c55068b1169 ]
+[ Upstream commit bedd0330a19b3a4448e67941732153ce04d3fb9b ]
 
-When restoring the default socket callbacks during a TLS handshake, we
-need to acquire a write lock on sk_callback_lock.  Previously, a read
-lock was used, which is insufficient for modifying sk_user_data and
-sk_data_ready.
+pf->ice_debugfs_pf_fwlog should be checked for an error here.
 
-Fixes: 675b453e0241 ("nvmet-tcp: enable TLS handshake upcall")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 96a9a9341cda ("ice: configure FW logging")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 12a5cb8641ca3..de70ff9102538 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -1967,10 +1967,10 @@ static void nvmet_tcp_alloc_queue(struct nvmet_tcp_port *port,
- 		struct sock *sk = queue->sock->sk;
+diff --git a/drivers/net/ethernet/intel/ice/ice_debugfs.c b/drivers/net/ethernet/intel/ice/ice_debugfs.c
+index 9fc0fd95a13d8..cb71eca6a85bf 100644
+--- a/drivers/net/ethernet/intel/ice/ice_debugfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_debugfs.c
+@@ -606,7 +606,7 @@ void ice_debugfs_fwlog_init(struct ice_pf *pf)
  
- 		/* Restore the default callbacks before starting upcall */
--		read_lock_bh(&sk->sk_callback_lock);
-+		write_lock_bh(&sk->sk_callback_lock);
- 		sk->sk_user_data = NULL;
- 		sk->sk_data_ready = port->data_ready;
--		read_unlock_bh(&sk->sk_callback_lock);
-+		write_unlock_bh(&sk->sk_callback_lock);
- 		if (!nvmet_tcp_try_peek_pdu(queue)) {
- 			if (!nvmet_tcp_tls_handshake(queue))
- 				return;
+ 	pf->ice_debugfs_pf_fwlog = debugfs_create_dir("fwlog",
+ 						      pf->ice_debugfs_pf);
+-	if (IS_ERR(pf->ice_debugfs_pf))
++	if (IS_ERR(pf->ice_debugfs_pf_fwlog))
+ 		goto err_create_module_files;
+ 
+ 	fw_modules_dir = debugfs_create_dir("modules",
 -- 
 2.39.5
 
