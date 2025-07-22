@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-163902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8A1B0DC44
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:59:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29BFDB0DB78
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14CC9AA6B13
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:56:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22DC47A969D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38552EA499;
-	Tue, 22 Jul 2025 13:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204C62EA15E;
+	Tue, 22 Jul 2025 13:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k44Hr6+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jhm3gJh3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E272D8766;
-	Tue, 22 Jul 2025 13:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F3D2E8E0F;
+	Tue, 22 Jul 2025 13:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192584; cv=none; b=DJQXUoZygafoWNdnty8YyB64SgS1hP6YujKI7Rg4s7Fz9fN07nf98OS3DZ6EdWWbRbLhB8PObAWmQObhgGF1wRJ2ei5Z3mM5DH4l7qiWlcfF3ypV/SklQlqsPvLbxkENwnLOpkgpOCEW+4/AvMWxQg4jlHJd2KTEsk06T+avRCg=
+	t=1753192202; cv=none; b=KCjtB0X9U1E6KS1xfVdISEKCcyH9RaQ2tkkg26s7XE5ngngJMZAShmQY9itaKq7l/AwCAei9mNI5Y6drbun7oAIYU9VohgsL39QOVyCMJVA2yFBfbIRB5cait6ltto1UpY36x4YYV9K799ghyDnjODMPeSv5aO1w/ZLcu4eVOto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192584; c=relaxed/simple;
-	bh=DOG8uQLQhd1iqjR93VEKGil9QoFGRX0U6KrnpcRhqEA=;
+	s=arc-20240116; t=1753192202; c=relaxed/simple;
+	bh=ACTjI0l3JW8DH/3OWCNobcK/mW3J+f5Sr4Oq0QJmnW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHyoJPbCc93KhZcUtMtlGORioPH3PphpA8+MozTf+L+/QUHVoV/fiNWhkSqVhJt2BkhjR0UL50//oSNGJ3ppB1jaPlEbLNjgdlfFRJhe3MxurjdVe56d9Hzt8+8qNmkeV4e8fJD0UJAG2yCVzFHzJtidY0eToQYq6wDwX4SzgNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k44Hr6+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B6BC4CEF1;
-	Tue, 22 Jul 2025 13:56:23 +0000 (UTC)
+	 MIME-Version; b=QI/SlPfs7EQWRNPkX7mEe047aJeZ9mjZrszY7JcIfdANd2pKmlG1iSSqfek/Xfh5k329Iv5fbxnWAy0u5lhPRCmx6pOHIoGWBfAemKPx2k5dbuYa+aiqKgoVZk2Wn4KcFAq4bvMoSRcl4LM+UtISR6LYLFyKiJ/uYHQhPgEi/4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jhm3gJh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4F0C4CEF5;
+	Tue, 22 Jul 2025 13:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192584;
-	bh=DOG8uQLQhd1iqjR93VEKGil9QoFGRX0U6KrnpcRhqEA=;
+	s=korg; t=1753192202;
+	bh=ACTjI0l3JW8DH/3OWCNobcK/mW3J+f5Sr4Oq0QJmnW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k44Hr6+PmoYuv4ihPwRWwQMzR4wzM6DRNqFrQvbAuOo6Hp+aJNXB0azjgKrKWp5NC
-	 crCGZiolFaMbT+06f7jG86rFP3hMSE8joJrWQNFn8fUvSPZ/L9i7dfieewfUQmA/th
-	 V1vmZWJ500Vom5L/y0dDXNZJeW2RVonirLntchio=
+	b=Jhm3gJh3+RO6ee+uhWoEBqKervraqu8ybXkgq278rclrkAD3agI/i9KE64poU5Opb
+	 NFMQjtHTi14U9G9l2RXXW63q/4pT/xfu4QHJIPxCf1GTfKqR/paTK679I2xyDDvgnj
+	 c1DALkaOB60IVzqLWNdnwm10VGYO6jynvLt7m/eY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/111] smb: client: fix use-after-free in cifs_oplock_break
-Date: Tue, 22 Jul 2025 15:44:42 +0200
-Message-ID: <20250722134335.875504056@linuxfoundation.org>
+Subject: [PATCH 6.1 47/79] smb: client: fix use-after-free in cifs_oplock_break
+Date: Tue, 22 Jul 2025 15:44:43 +0200
+Message-ID: <20250722134330.109008239@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -115,10 +115,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index d883ed75022c4..99a8c6fbd41a6 100644
+index 9b0919d9e3370..3551054ef0973 100644
 --- a/fs/smb/client/file.c
 +++ b/fs/smb/client/file.c
-@@ -5042,7 +5042,8 @@ void cifs_oplock_break(struct work_struct *work)
+@@ -5189,7 +5189,8 @@ void cifs_oplock_break(struct work_struct *work)
  	struct cifsFileInfo *cfile = container_of(work, struct cifsFileInfo,
  						  oplock_break);
  	struct inode *inode = d_inode(cfile->dentry);
@@ -128,7 +128,7 @@ index d883ed75022c4..99a8c6fbd41a6 100644
  	struct cifsInodeInfo *cinode = CIFS_I(inode);
  	struct cifs_tcon *tcon;
  	struct TCP_Server_Info *server;
-@@ -5052,6 +5053,12 @@ void cifs_oplock_break(struct work_struct *work)
+@@ -5199,6 +5200,12 @@ void cifs_oplock_break(struct work_struct *work)
  	__u64 persistent_fid, volatile_fid;
  	__u16 net_fid;
  
@@ -141,7 +141,7 @@ index d883ed75022c4..99a8c6fbd41a6 100644
  	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
  			TASK_UNINTERRUPTIBLE);
  
-@@ -5124,6 +5131,7 @@ void cifs_oplock_break(struct work_struct *work)
+@@ -5271,6 +5278,7 @@ void cifs_oplock_break(struct work_struct *work)
  	cifs_put_tlink(tlink);
  out:
  	cifs_done_oplock_break(cinode);
