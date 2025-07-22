@@ -1,206 +1,292 @@
-Return-Path: <stable+bounces-164266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2D5B0DFBE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:59:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7A6B0DFBF
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9250188BFBE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:53:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2FEC7B7480
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092BF2EBDD9;
-	Tue, 22 Jul 2025 14:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F194C23ED5E;
+	Tue, 22 Jul 2025 14:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Rylzj8wd"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="n9VO0sam"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6602EBB9C
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 14:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC752D8DCA
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 14:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753195936; cv=none; b=cOUSyVMvdQn5eK1gqPgyWnCrvb+NcdVmE1VgBKz0+IT6BwzoyWvRjZm5jGJQoEknB2ETS8KZG0P0goLcYy96T+EWr6E98XF8MBIDY8hq2rhIwsAJWq78jTcQ89dkHX6id1Y2ucYXvb9c9ormBQlcB2a6BgBJpGB2jnmozwqOlLA=
+	t=1753196355; cv=none; b=ajVTxxbgwsGKh/W9vct3nN9nnL9WfNkwT08OWOO0nykRaUp7+T82GOrGAF6ZkQ9iRKONETKUwLCU1+uTevqjkSX33v+RVxhwAVnm5QFsTZgNEwP+mpTLY+c3jwoGl62tQRq6DnEdb2YnO41gPSuBzL08bPpXh/lxasV9bvxHFbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753195936; c=relaxed/simple;
-	bh=QptCdfvykdDw3mSwfgLPntt5smoEgwzkhb48jG2MnBc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uKmQHDDS5qFiv60faOGu21Un5SgbVN9d5dE7oIOjLv6Qfaoiny6snjKpRI33Cexa295y9bo/oeVhDnVwitlHOj1rzPZ0ZKFFZnMG4g4w6SfsVNPYM/As/tS5/qWMr73f2Eyney8iQyIGtyNTJ1P1a3IirqSCBLlGHIE96d7YUZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Rylzj8wd; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-32b4876dfecso58566231fa.1
-        for <stable@vger.kernel.org>; Tue, 22 Jul 2025 07:52:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753195933; x=1753800733; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ASqqLKV7bTOZHh+QoLYPQiepbbVzcIRPmS7WnFNjHYU=;
-        b=Rylzj8wdII24dUVahw5uUpv+ZlivET4HvEkoifNSSJ5MAMYXNePHa/g9enfiiaelK4
-         atgI1Nt9Xq7A69iLf67O7QgUJF5uIN09pvzK/CKkbW7vACpzsOmwnUYOYHlxyvLbmBWi
-         RDWm48OYFiGN0IJdNtDC1DDK/JSB/HH4Rz4hQzJ78TpvAywuXlzqhXIa/WWQaxWAVKkC
-         omk/5rY1TKOD83TIpMCrb1lCEi0VjVnmnTEHeP5un0D9fLQ3T9PEuLzvLQzhvulON4Ug
-         w+qB4mpbJzRV//eEnjUvKL8F4ObVwZLL4XAAVNFWBeCgScguFVfKuydvhmS8ywk7irMg
-         6FSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753195933; x=1753800733;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ASqqLKV7bTOZHh+QoLYPQiepbbVzcIRPmS7WnFNjHYU=;
-        b=uAGfR/VE3DEhwYOkAYrnxI58UFdvUMQ1bqR7gO1iLB1uqwPuIU6WH3sw1cuUFJgKjj
-         Ou0A0SNQSiU74ln934g8tgWG1eg+7laLmSkjOTOzOzbSDOk6xacaGIWZYlSsek2MKNUV
-         CRGq2oCjeV5oGsGxeoO4Pf7V9LWb2T4aKWriIUP8UKnd+eDig3sEMJy7pcj9gDqrfFvg
-         0z+eJr3bdfeeqoGegWkubF4+wMHKYIjI8hR0+VQ59zAW9X8WcbWxk0ymv3CxUV5yuyip
-         HRf5kTQdSpljGQBtLJkv4Mcd9QsI2iABGXAjeuWG/CJ3zT04hmAc4339ASjDmdViK0Mz
-         yW9A==
-X-Forwarded-Encrypted: i=1; AJvYcCXaiyFOjMekfoi0B5F9FCA83qo0Ot70HkaUeCxuCVtoxlaaM09lpxpFJam7mLOZvEAXkpWPrcc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2tkzBxdAAvX2tdsHtIdoLC0zZIlcIkOyAWxIxTGCURmy+Teko
-	giM5ZMNGxXTcX5LwTYxitMFXmM48cSCUYD481frvDIeeEDJ5fgqwgM8agj5x0g9ZUFdt0G62ZDP
-	CsvLmVIfrposchBvqyBeiZPZyBYvCJoAH8UdOO3Ml4w==
-X-Gm-Gg: ASbGncvBMYc3Sf3qWBImK3yYnsNctyhx+gOJBS15GaPPdyK4TUph1byGTagdvVgr3KT
-	K+NlL1EeewmK6P/m8tL6qwTXeJoSsAvG8gvOl57EdAvKOgAq8DwobynuzDLLVs5yQTNWYtP9a/s
-	CHxXnD/hnhMCzgyLIPU8Arz3Q4xMAMmDRm6BsgvKsIpgIF9RSI/JMR0s5xGPsqBLSl5qWo0TCoW
-	8S6iU/4+qnM3mvuDUro63ctHeYwEfQ8c/ZyKw==
-X-Google-Smtp-Source: AGHT+IFFeuzQyysu6UbiTgYyXjNhyet5KnMKaIrTOY6lGXsapE59WD9CvOGRswKVyAeZi1GXx6ySe7/m8egNRed2iQY=
-X-Received: by 2002:a05:651c:2221:b0:329:136e:300f with SMTP id
- 38308e7fff4ca-330d2615568mr12136631fa.13.1753195932997; Tue, 22 Jul 2025
- 07:52:12 -0700 (PDT)
+	s=arc-20240116; t=1753196355; c=relaxed/simple;
+	bh=IFAsri3CcLKx0KS6+ejf7gmlRbdTaosLJeEibD3whgk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j96zQR+li+HL/SgyjpsjyxIBribIJW9LFJmuXFcju7shCHiteBGEoSvDjZDeOA/8ZVbFbVCqJXIeuIdn67+PtCQl3olZkblOp+gP/Qejm9hR9UogZlCxtp3o1EpQQzWfb3UEKhCV7HaMiphCXBDVddHe5Pg7WTKDvEwAqG6uzPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=n9VO0sam; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [100.79.192.236] (unknown [4.194.122.162])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 3E1E22126895;
+	Tue, 22 Jul 2025 07:59:10 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3E1E22126895
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1753196353;
+	bh=Pz7MSkW3yMmCC8dKnm/72AX+sr/xBOFpxNYar1PPysY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=n9VO0samYllWt7WDoW+UFIIA4BjJ3Og4AKVbm1chqzL3gbUh89jfTntZ8LWgjaiZR
+	 FyjE+VTZM45p2Xjp72O2nTKc69nTD+2SW7GGaPd0KIg+od9AqLktUv62uPbtA9v+lL
+	 dE+5XSgrfGZ/h35kfiv5TQTkg1Xp4NcDfuYQG4Wo=
+Message-ID: <d9be2bb3-5f84-4182-91e8-ec1a4abd8f5f@linux.microsoft.com>
+Date: Tue, 22 Jul 2025 20:29:07 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250721162215.30327-1-davthompson@nvidia.com>
-In-Reply-To: <20250721162215.30327-1-davthompson@nvidia.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 22 Jul 2025 16:52:02 +0200
-X-Gm-Features: Ac12FXxEPv4XqzBEYN1mC45x64VjToB_w4CqfiuYbLU7-hd--JtE0CqJrybcrak
-Message-ID: <CAMRc=Mfg42wvT9qdYrhvFq_wdvThmWpbvvo-p9bHSsyK0pn+bw@mail.gmail.com>
-Subject: Re: [PATCH v3] gpio-mlxbf2: only get IRQ for device instances 0 and 3
-To: David Thompson <davthompson@nvidia.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: linus.walleij@linaro.org, davem@davemloft.net, asmaa@nvidia.com, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Shravan Kumar Ramani <shravankr@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 020/158] tools/hv: fcopy: Fix irregularities with
+ size of ring buffer
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Saurabh Sengar <ssengar@linux.microsoft.com>,
+ Long Li <longli@microsoft.com>, Wei Liu <wei.liu@kernel.org>
+References: <20250722134340.596340262@linuxfoundation.org>
+ <20250722134341.490321531@linuxfoundation.org>
+Content-Language: en-US
+From: Naman Jain <namjain@linux.microsoft.com>
+In-Reply-To: <20250722134341.490321531@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 21, 2025 at 6:22=E2=80=AFPM David Thompson <davthompson@nvidia.=
-com> wrote:
->
-> The gpio-mlxbf2 driver interfaces with four GPIO controllers,
-> device instances 0-3. There are two IRQ resources shared between
-> the four controllers, and they are found in the ACPI table for
-> device instances 0 and 3.  The driver should not attempt to get
-> an IRQ resource when probing device instance 1 or 2, otherwise
-> the following error is logged:
->   mlxbf2_gpio MLNXBF22:01: error -ENXIO: IRQ index 0 not found
->
-> Fixes: 2b725265cb08 ("gpio: mlxbf2: Introduce IRQ support")
+
+
+On 7/22/2025 7:13 PM, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Naman Jain <namjain@linux.microsoft.com>
+> 
+> commit a4131a50d072b369bfed0b41e741c41fd8048641 upstream.
+> 
+> Size of ring buffer, as defined in uio_hv_generic driver, is no longer
+> fixed to 16 KB. This creates a problem in fcopy, since this size was
+> hardcoded. With the change in place to make ring sysfs node actually
+> reflect the size of underlying ring buffer, it is safe to get the size
+> of ring sysfs file and use it for ring buffer size in fcopy daemon.
+> Fix the issue of disparity in ring buffer size, by making it dynamic
+> in fcopy uio daemon.
+> 
 > Cc: stable@vger.kernel.org
-> Signed-off-by: David Thompson <davthompson@nvidia.com>
-> Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+> Fixes: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
+> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+> Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+> Reviewed-by: Long Li <longli@microsoft.com>
+> Link: https://lore.kernel.org/r/20250711060846.9168-1-namjain@linux.microsoft.com
+> Signed-off-by: Wei Liu <wei.liu@kernel.org>
+> Message-ID: <20250711060846.9168-1-namjain@linux.microsoft.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > ---
-> v3: added version history
-> v2: added tag "Cc: stable@vger.kernel.org"
->
->  drivers/gpio/gpio-mlxbf2.c | 56 ++++++++++++++++++++++++--------------
->  1 file changed, 36 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-mlxbf2.c b/drivers/gpio/gpio-mlxbf2.c
-> index 6f3dda6b635f..fc56ac81e344 100644
-> --- a/drivers/gpio/gpio-mlxbf2.c
-> +++ b/drivers/gpio/gpio-mlxbf2.c
-> @@ -353,7 +353,9 @@ mlxbf2_gpio_probe(struct platform_device *pdev)
->         struct gpio_chip *gc;
->         unsigned int npins;
->         const char *name;
-> +       char *colon_ptr;
->         int ret, irq;
-> +       long num;
->
->         name =3D dev_name(dev);
->
-> @@ -397,26 +399,40 @@ mlxbf2_gpio_probe(struct platform_device *pdev)
->         gc->ngpio =3D npins;
->         gc->owner =3D THIS_MODULE;
->
-> -       irq =3D platform_get_irq(pdev, 0);
-> -       if (irq >=3D 0) {
-> -               girq =3D &gs->gc.irq;
-> -               gpio_irq_chip_set_chip(girq, &mlxbf2_gpio_irq_chip);
-> -               girq->handler =3D handle_simple_irq;
-> -               girq->default_type =3D IRQ_TYPE_NONE;
-> -               /* This will let us handle the parent IRQ in the driver *=
-/
-> -               girq->num_parents =3D 0;
-> -               girq->parents =3D NULL;
-> -               girq->parent_handler =3D NULL;
-> -
-> -               /*
-> -                * Directly request the irq here instead of passing
-> -                * a flow-handler because the irq is shared.
-> -                */
-> -               ret =3D devm_request_irq(dev, irq, mlxbf2_gpio_irq_handle=
-r,
-> -                                      IRQF_SHARED, name, gs);
-> -               if (ret) {
-> -                       dev_err(dev, "failed to request IRQ");
-> -                       return ret;
-> +       colon_ptr =3D strchr(dev_name(dev), ':');
-> +       if (!colon_ptr) {
-> +               dev_err(dev, "invalid device name format\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       ret =3D kstrtol(++colon_ptr, 16, &num);
-> +       if (ret) {
-> +               dev_err(dev, "invalid device instance\n");
-> +               return ret;
-> +       }
-> +
 
-That is *really* fragile. Andy, Mika: does this look remotely correct
-to you? I don't know much about ACPI systems.
 
-Bart
+Hello Greg,
+Please don't pick this change yet. I have shared the reason in the other 
+thread:
+"Re: Patch "tools/hv: fcopy: Fix irregularities with size of ring 
+buffer" has been added to the 6.12-stable tree"
 
-> +       if (!num || num =3D=3D 3) {
-> +               irq =3D platform_get_irq(pdev, 0);
-> +               if (irq >=3D 0) {
-> +                       girq =3D &gs->gc.irq;
-> +                       gpio_irq_chip_set_chip(girq, &mlxbf2_gpio_irq_chi=
-p);
-> +                       girq->handler =3D handle_simple_irq;
-> +                       girq->default_type =3D IRQ_TYPE_NONE;
-> +                       /* This will let us handle the parent IRQ in the =
-driver */
-> +                       girq->num_parents =3D 0;
-> +                       girq->parents =3D NULL;
-> +                       girq->parent_handler =3D NULL;
+
+Pasting it here:
+This patch depends on my older patch [1] which makes sure that the size
+of the ring sysfs node actually reflects the underlying ring buffer
+size.
+
+[1] could not be ported on 6.12 and older kernels because of missing
+dependencies [2] and [3].
+With kernel change [4] being backported to 6.12 kernel, FCopy is
+currently broken which I was trying to address with my patch.
+
+Adding Thomas as well if its possible to port these patches on older
+kernels.
+
+However for 6.6 and older kernels, fcopy is not working for me even 
+without [4], which I am trying to debug.
+
+------------
+[1]
+65995e97a1ca ("Drivers: hv: Make the sysfs node size for the ring buffer 
+dynamic")
+
+[2]
+0afcee132bbc ("sysfs: explicitly pass size to sysfs_add_bin_file_mode_ns()")
+
+[3]
+bebf29b18f34 ("sysfs: introduce callback attribute_group::bin_size")
+
+[4]
+0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
+
+Regards,
+Naman
+
+
+>   tools/hv/hv_fcopy_uio_daemon.c |   91 ++++++++++++++++++++++++++++++++++++-----
+>   1 file changed, 81 insertions(+), 10 deletions(-)
+> 
+> --- a/tools/hv/hv_fcopy_uio_daemon.c
+> +++ b/tools/hv/hv_fcopy_uio_daemon.c
+> @@ -35,7 +35,10 @@
+>   #define WIN8_SRV_MINOR		1
+>   #define WIN8_SRV_VERSION	(WIN8_SRV_MAJOR << 16 | WIN8_SRV_MINOR)
+>   
+> -#define FCOPY_UIO		"/sys/bus/vmbus/devices/eb765408-105f-49b6-b4aa-c123b64d17d4/uio"
+> +#define FCOPY_DEVICE_PATH(subdir) \
+> +	"/sys/bus/vmbus/devices/eb765408-105f-49b6-b4aa-c123b64d17d4/" #subdir
+> +#define FCOPY_UIO_PATH          FCOPY_DEVICE_PATH(uio)
+> +#define FCOPY_CHANNELS_PATH     FCOPY_DEVICE_PATH(channels)
+>   
+>   #define FCOPY_VER_COUNT		1
+>   static const int fcopy_versions[] = {
+> @@ -47,9 +50,62 @@ static const int fw_versions[] = {
+>   	UTIL_FW_VERSION
+>   };
+>   
+> -#define HV_RING_SIZE		0x4000 /* 16KB ring buffer size */
+> +static uint32_t get_ring_buffer_size(void)
+> +{
+> +	char ring_path[PATH_MAX];
+> +	DIR *dir;
+> +	struct dirent *entry;
+> +	struct stat st;
+> +	uint32_t ring_size = 0;
+> +	int retry_count = 0;
+>   
+> -static unsigned char desc[HV_RING_SIZE];
+> +	/* Find the channel directory */
+> +	dir = opendir(FCOPY_CHANNELS_PATH);
+> +	if (!dir) {
+> +		usleep(100 * 1000); /* Avoid race with kernel, wait 100ms and retry once */
+> +		dir = opendir(FCOPY_CHANNELS_PATH);
+> +		if (!dir) {
+> +			syslog(LOG_ERR, "Failed to open channels directory: %s", strerror(errno));
+> +			return 0;
+> +		}
+> +	}
 > +
-> +                       /*
-> +                        * Directly request the irq here instead of passi=
-ng
-> +                        * a flow-handler because the irq is shared.
-> +                        */
-> +                       ret =3D devm_request_irq(dev, irq, mlxbf2_gpio_ir=
-q_handler,
-> +                                              IRQF_SHARED, name, gs);
-> +                       if (ret) {
-> +                               dev_err(dev, "failed to request IRQ");
-> +                               return ret;
-> +                       }
->                 }
->         }
->
-> --
-> 2.30.1
->
+> +retry_once:
+> +	while ((entry = readdir(dir)) != NULL) {
+> +		if (entry->d_type == DT_DIR && strcmp(entry->d_name, ".") != 0 &&
+> +		    strcmp(entry->d_name, "..") != 0) {
+> +			snprintf(ring_path, sizeof(ring_path), "%s/%s/ring",
+> +				 FCOPY_CHANNELS_PATH, entry->d_name);
+> +
+> +			if (stat(ring_path, &st) == 0) {
+> +				/*
+> +				 * stat returns size of Tx, Rx rings combined,
+> +				 * so take half of it for individual ring size.
+> +				 */
+> +				ring_size = (uint32_t)st.st_size / 2;
+> +				syslog(LOG_INFO, "Ring buffer size from %s: %u bytes",
+> +				       ring_path, ring_size);
+> +				break;
+> +			}
+> +		}
+> +	}
+> +
+> +	if (!ring_size && retry_count == 0) {
+> +		retry_count = 1;
+> +		rewinddir(dir);
+> +		usleep(100 * 1000); /* Wait 100ms and retry once */
+> +		goto retry_once;
+> +	}
+> +
+> +	closedir(dir);
+> +
+> +	if (!ring_size)
+> +		syslog(LOG_ERR, "Could not determine ring size");
+> +
+> +	return ring_size;
+> +}
+> +
+> +static unsigned char *desc;
+>   
+>   static int target_fd;
+>   static char target_fname[PATH_MAX];
+> @@ -406,7 +462,7 @@ int main(int argc, char *argv[])
+>   	int daemonize = 1, long_index = 0, opt, ret = -EINVAL;
+>   	struct vmbus_br txbr, rxbr;
+>   	void *ring;
+> -	uint32_t len = HV_RING_SIZE;
+> +	uint32_t ring_size, len;
+>   	char uio_name[NAME_MAX] = {0};
+>   	char uio_dev_path[PATH_MAX] = {0};
+>   
+> @@ -437,7 +493,20 @@ int main(int argc, char *argv[])
+>   	openlog("HV_UIO_FCOPY", 0, LOG_USER);
+>   	syslog(LOG_INFO, "starting; pid is:%d", getpid());
+>   
+> -	fcopy_get_first_folder(FCOPY_UIO, uio_name);
+> +	ring_size = get_ring_buffer_size();
+> +	if (!ring_size) {
+> +		ret = -ENODEV;
+> +		goto exit;
+> +	}
+> +
+> +	desc = malloc(ring_size * sizeof(unsigned char));
+> +	if (!desc) {
+> +		syslog(LOG_ERR, "malloc failed for desc buffer");
+> +		ret = -ENOMEM;
+> +		goto exit;
+> +	}
+> +
+> +	fcopy_get_first_folder(FCOPY_UIO_PATH, uio_name);
+>   	snprintf(uio_dev_path, sizeof(uio_dev_path), "/dev/%s", uio_name);
+>   	fcopy_fd = open(uio_dev_path, O_RDWR);
+>   
+> @@ -445,17 +514,17 @@ int main(int argc, char *argv[])
+>   		syslog(LOG_ERR, "open %s failed; error: %d %s",
+>   		       uio_dev_path, errno, strerror(errno));
+>   		ret = fcopy_fd;
+> -		goto exit;
+> +		goto free_desc;
+>   	}
+>   
+> -	ring = vmbus_uio_map(&fcopy_fd, HV_RING_SIZE);
+> +	ring = vmbus_uio_map(&fcopy_fd, ring_size);
+>   	if (!ring) {
+>   		ret = errno;
+>   		syslog(LOG_ERR, "mmap ringbuffer failed; error: %d %s", ret, strerror(ret));
+>   		goto close;
+>   	}
+> -	vmbus_br_setup(&txbr, ring, HV_RING_SIZE);
+> -	vmbus_br_setup(&rxbr, (char *)ring + HV_RING_SIZE, HV_RING_SIZE);
+> +	vmbus_br_setup(&txbr, ring, ring_size);
+> +	vmbus_br_setup(&rxbr, (char *)ring + ring_size, ring_size);
+>   
+>   	rxbr.vbr->imask = 0;
+>   
+> @@ -470,7 +539,7 @@ int main(int argc, char *argv[])
+>   			continue;
+>   		}
+>   
+> -		len = HV_RING_SIZE;
+> +		len = ring_size;
+>   		ret = rte_vmbus_chan_recv_raw(&rxbr, desc, &len);
+>   		if (unlikely(ret <= 0)) {
+>   			/* This indicates a failure to communicate (or worse) */
+> @@ -490,6 +559,8 @@ int main(int argc, char *argv[])
+>   	}
+>   close:
+>   	close(fcopy_fd);
+> +free_desc:
+> +	free(desc);
+>   exit:
+>   	return ret;
+>   }
+> 
+
 
