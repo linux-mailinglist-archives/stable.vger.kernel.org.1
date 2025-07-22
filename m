@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-163845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3830B0DBF5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6BEB0DB58
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D7BF3A7D31
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AC2D3BBC52
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE382C08B6;
-	Tue, 22 Jul 2025 13:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450DA2D9EE2;
+	Tue, 22 Jul 2025 13:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xg6/gmm4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecfZerqG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC185A32;
-	Tue, 22 Jul 2025 13:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F12242D8F;
+	Tue, 22 Jul 2025 13:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192400; cv=none; b=sgcsWLgPjgsbq4DkjLOFVPyAko//zFmNerg2W40EGYye79Dn34TKGzCFnwkZ2tHlHxA/3YlIhdEtvYiYNE73F3DrZQFLaCJ0KlkiuB913Dj4RjwmZUyCQRybWynePFX1vN1EZJNTCvAKH6GWNuSMO3geP3+sxY9Lda8ktAh5bq0=
+	t=1753192064; cv=none; b=neZHOGzRNC1h1MaKAyOK5wsQFH89jrHHZhP64mf022NW+Tzsgqi5Wk6ZbLReyuns1p6NQJWaEDCQDqUu71Bg0/ebhLiQhX/ZxAZdzJrKhCa9LsUUOzPpLNOFuzcOvaGevtZAG+Igz1RpCguvqNfp1ITipF25b31yLk6nJb97Iks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192400; c=relaxed/simple;
-	bh=eLGZU3cf28R4t5D8ECn+nPWneOlStHAocv9FOaB3XTs=;
+	s=arc-20240116; t=1753192064; c=relaxed/simple;
+	bh=Po709WinaWb8qbQ2PDa2RphG/3ukQQHfYF5IK+DHaqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYSldJ4OZg4wQkZbKcoMKudvI7/ayJ7PEFY54w5gVecipJgv96jB0ucXrDNYr7yPn3U36AcXt0nt7Jif3knabqV5UF1NmmXMSjLo3JsxJsS4d8jEtIoC7qJNl1zbb4hhUIoxSl/FMIMUNAUJyoXfasduJZd4iQLmnpSN5EXam80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xg6/gmm4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299A1C4CEEB;
-	Tue, 22 Jul 2025 13:53:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FSMmXxa8tD0iE8BCunODE/ZL80CTKjqqRLgGWPgks4bd5zWZwER2l0cMOtUr55gDff8gtQ9opeTYo+esx9G97KINLldUqCn5QkhWBlrjKOV/eRVfrpUIrfzNN9UnM34jZugdKor1GziP+YcticBFzZTORbHb+e5HddXbJDalO8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecfZerqG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649DEC4CEEB;
+	Tue, 22 Jul 2025 13:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192400;
-	bh=eLGZU3cf28R4t5D8ECn+nPWneOlStHAocv9FOaB3XTs=;
+	s=korg; t=1753192063;
+	bh=Po709WinaWb8qbQ2PDa2RphG/3ukQQHfYF5IK+DHaqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xg6/gmm4OUpyiwuI9gWqp0SvfVXq48FfNdh6huuyq8gDK00B3K3in6OyhXZB/g3g3
-	 EpE78/tSsFC6AkMKrFTVnY64Xhv5rqgy2G1cHfIBGia2lcOs9YhaLlhOBzaC6u9M5P
-	 UslhiUGsSrZEU85TLfnvgcczE5XL6YLlj8dLD/Fg=
+	b=ecfZerqGeSiHSYgWbv9XayKDHz/x40Yoh+dJlSazA1vUZTM47skJfqIN+ZYCv5zNC
+	 2eu0c88r2Qpvehe919Vj+xK+pLioeNOL1YApxV3msMSGMLGcj9xGa4v83sjYyZfXoI
+	 3KG+g42AOP+fYI6Qaa8KdQ05eq7uFrx1VRXYCuC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.6 054/111] comedi: das6402: Fix bit shift out of bounds
+	Chen Ni <nichen@iscas.ac.cn>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 33/79] iio: adc: stm32-adc: Fix race in installing chained IRQ handler
 Date: Tue, 22 Jul 2025 15:44:29 +0200
-Message-ID: <20250722134335.397441703@linuxfoundation.org>
+Message-ID: <20250722134329.586396025@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,49 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit 70f2b28b5243df557f51c054c20058ae207baaac upstream.
+commit e8ad595064f6ebd5d2d1a5d5d7ebe0efce623091 upstream.
 
-When checking for a supported IRQ number, the following test is used:
+Fix a race where a pending interrupt could be received and the handler
+called before the handler's data has been setup, by converting to
+irq_set_chained_handler_and_data().
 
-	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
-	if ((1 << it->options[1]) & 0x8cec) {
-
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.  Valid `it->options[1]` values that select the IRQ
-will be in the range [1,15]. The value 0 explicitly disables the use of
-interrupts.
-
-Fixes: 79e5e6addbb1 ("staging: comedi: das6402: rewrite broken driver")
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707135737.77448-1-abbotti@mev.co.uk
+Fixes: 1add69880240 ("iio: adc: Add support for STM32 ADC core")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://patch.msgid.link/20250515083101.3811350-1-nichen@iscas.ac.cn
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/das6402.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/adc/stm32-adc-core.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/comedi/drivers/das6402.c
-+++ b/drivers/comedi/drivers/das6402.c
-@@ -567,7 +567,8 @@ static int das6402_attach(struct comedi_
- 	das6402_reset(dev);
+--- a/drivers/iio/adc/stm32-adc-core.c
++++ b/drivers/iio/adc/stm32-adc-core.c
+@@ -415,10 +415,9 @@ static int stm32_adc_irq_probe(struct pl
+ 		return -ENOMEM;
+ 	}
  
- 	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
--	if ((1 << it->options[1]) & 0x8cec) {
-+	if (it->options[1] > 0 && it->options[1] < 16 &&
-+	    (1 << it->options[1]) & 0x8cec) {
- 		ret = request_irq(it->options[1], das6402_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0) {
+-	for (i = 0; i < priv->cfg->num_irqs; i++) {
+-		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
+-		irq_set_handler_data(priv->irq[i], priv);
+-	}
++	for (i = 0; i < priv->cfg->num_irqs; i++)
++		irq_set_chained_handler_and_data(priv->irq[i],
++						 stm32_adc_irq_handler, priv);
+ 
+ 	return 0;
+ }
 
 
 
