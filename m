@@ -1,95 +1,69 @@
-Return-Path: <stable+bounces-163696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92653B0D8EF
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:06:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E2EB0D925
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:15:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C796189E130
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 12:06:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2354562379
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 12:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0321E32D3;
-	Tue, 22 Jul 2025 12:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B702E8E16;
+	Tue, 22 Jul 2025 12:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XMLX5o1H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhBb761t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CF522D786;
-	Tue, 22 Jul 2025 12:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572542E92A5
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 12:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753185944; cv=none; b=OpPZROZfgWSSkxLyfLvf3vzTFaaYkqJshijemAoscKyv+n4ClxC11+PshUVYabgUi+QaK+aVZKfoOSlm/GiU01KamKvpibi/N0J5/hv7voFDjOOIssfTcBo9yR04dNajOPOnzcRibK7mphlHtQhpYjn1bfw4FpbLqGUcmifJJSs=
+	t=1753186511; cv=none; b=ZOhfXladYbr66oK/A/HxuIExQjqnIbBTLLgkchv9JMAmorbuUrMwYiHucQ7aNtDSi/Znyl09aDOTXR/d760YMRuopGYUZRagYZuIN5smy5bnCekF0b5uLeCLdDOBMBziUr0O5PneDZhQ3q8BMN7ybqy2vwdn79sQEhb9QdaKT7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753185944; c=relaxed/simple;
-	bh=WOXF/xJkKnwjqYSkGaByd+W5fwkF3TFkg37atWq1MFQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yy+eLWCcm7rq4Eq+fSX+t9KKkARKLm+ivmFRThPkH40NRMLoOfkszJojH7e/5SjfiVZvLNbTfH6EI1cmBa6eqenOZvuPxxmgL9va7fLu0SeRXaJ41dFOCTxLPl1dgcKl879smGvZ5nWaChv8/iXrO8ZKlDX/R3kijQCWsyJjp2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XMLX5o1H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEE3C4CEF4;
-	Tue, 22 Jul 2025 12:05:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753185943;
-	bh=WOXF/xJkKnwjqYSkGaByd+W5fwkF3TFkg37atWq1MFQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=XMLX5o1H3iVkTCOY2CQjhqf9zgHytB8P/lq2rcxBrEQIkt7jEbhy+eGwXcbFHp3ar
-	 FObe90p4TE2Z8akWXs7f9bZ3cqjiiVc2N+hI2zmUvJBxT4sCw5/C/BN28DPf85czt2
-	 VJe0x9mHNgJbe3OA1B59lj1uLZOOPGZV/ge6/4QiAoAxT3CI82/vjRd02rK8Lnwwkl
-	 8KkhheRRtJDpX0z+Ytf38BAKTQ38f+yGB34UGatmivrPINawPYuNB4aplt5BjQL6Ro
-	 SJW6VELquadlI/Obpb7IV3jlr/EA2g3UPUzXc3u4NrBRTwK0Ia2oiewA54NtsD8KO6
-	 hPL5T18fVD8fg==
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: bleung@chromium.org
-Cc: tzungbi@kernel.org,
-	gregkh@linuxfoundation.org,
-	chrome-platform@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] platform/chrome: cros_ec: Unregister notifier in cros_ec_unregister()
-Date: Tue, 22 Jul 2025 12:05:13 +0000
-Message-ID: <20250722120513.234031-1-tzungbi@kernel.org>
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+	s=arc-20240116; t=1753186511; c=relaxed/simple;
+	bh=rMN80HF4py2Yv2Mi8Yx91mg8Jubafoat69sWoDW3uPk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tLQbqpHg3KNp317ItQZC1E6pSpo3j8YFnEXuwr5Dt8fQDlaqnu1ounKWUftzoAOCJ4yUsSTwzTKSbwXu6h5UyeXltSBVWF4Bf4oJxl1ai+vZz2c4nU4l3pRzWSq2fTVmtUlnmEmH2gjt4bDzzPQvtouEpqy6sgKKHiZMhJRl6UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhBb761t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710D6C4CEEB;
+	Tue, 22 Jul 2025 12:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753186509;
+	bh=rMN80HF4py2Yv2Mi8Yx91mg8Jubafoat69sWoDW3uPk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=yhBb761tfHH8gCO6Ec9oct18hjkCg2KOtaR/+JEaFjIXPBi5lhCNCjeziUcL9YKQY
+	 UIHisejAiWJxyDA0p5/CDKV/6dalMN4L1KO469wJ7zOKXWgA2CevBvyTACk4O3fvAY
+	 ruf5q1c3tOrRca3YUA6z69+fHZ8LmWqL37Nm/Oeo=
+Date: Tue, 22 Jul 2025 14:15:06 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Siddhi Katage <siddhi.katage@oracle.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [External] : Re: [PATCH 5.15.y 0/4] Fix blank WHCAN value in
+ 'ps' output
+Message-ID: <2025072254-numerate-uprising-72d3@gregkh>
+References: <20250722062642.309842-1-siddhi.katage@oracle.com>
+ <2025072252-urban-triage-41c9@gregkh>
+ <CY5PR10MB601266A9818ADA77134550EB8B5CA@CY5PR10MB6012.namprd10.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CY5PR10MB601266A9818ADA77134550EB8B5CA@CY5PR10MB6012.namprd10.prod.outlook.com>
 
-The blocking notifier is registered in cros_ec_register(); however, it
-isn't unregistered in cros_ec_unregister().
+On Tue, Jul 22, 2025 at 11:13:08AM +0000, Siddhi Katage wrote:
+> Hi Greg,
+> 
+> This patch is already present in stable-5.15.y.
 
-Fix it.
+Ah, missed that, thanks!
 
-Fixes: 42cd0ab476e2 ("platform/chrome: cros_ec: Query EC protocol version if EC transitions between RO/RW")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
----
-This is separated from a series (https://lore.kernel.org/chrome-platform/20250721044456.2736300-3-tzungbi@kernel.org/).
-
-While I'm still figuring out/testing the series, it'd be better to send the
-fix earlier (to catch up the upcoming merge window for example).
-
- drivers/platform/chrome/cros_ec.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/platform/chrome/cros_ec.c b/drivers/platform/chrome/cros_ec.c
-index 110771a8645e..fd58781a2fb7 100644
---- a/drivers/platform/chrome/cros_ec.c
-+++ b/drivers/platform/chrome/cros_ec.c
-@@ -318,6 +318,9 @@ EXPORT_SYMBOL(cros_ec_register);
-  */
- void cros_ec_unregister(struct cros_ec_device *ec_dev)
- {
-+	if (ec_dev->mkbp_event_supported)
-+		blocking_notifier_chain_unregister(&ec_dev->event_notifier,
-+						   &ec_dev->notifier_ready);
- 	platform_device_unregister(ec_dev->pd);
- 	platform_device_unregister(ec_dev->ec);
- 	mutex_destroy(&ec_dev->lock);
--- 
-2.50.0.727.gbf7dc18ff4-goog
-
+greg k-h
 
