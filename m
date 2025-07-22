@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-163818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C25B0DBC1
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:53:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7630DB0DB35
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:46:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 140161C82CB1
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AC52547B8F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC412EA74F;
-	Tue, 22 Jul 2025 13:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC60238D57;
+	Tue, 22 Jul 2025 13:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYt8Ku+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BB8X4ufm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF7B2EA74A;
-	Tue, 22 Jul 2025 13:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD6C433A8;
+	Tue, 22 Jul 2025 13:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192310; cv=none; b=sTZpKlx5MHwiGA17WllKsy5Lz0HP5HiXch57cowhkYJ9Pd1NsRzACO52fHm4H3hCa8oFzS0oMStExEiPMgwH8G1zH0IaEUPyoLXs/ypi8pNM1fI5uf38AoF6/KJETzNUsESC1IriYeuHyzcV2G0Y1scyaASeJutElox1CikbjkU=
+	t=1753191997; cv=none; b=Nj7iGhAQ43fIJtkwbjTZTPaBL6gMqbCgrd4eg9dLu3y7vzdpdvg8CEjt3F8uxbnhpwF3+Xh9F6d6bZgTA6HeqiXzlJ7l+BNSCGI814xetClNcDtI8/XAw3o+hczc+iqV614BmND6d8vX3oKzOaPHUngHg/CmzUyMCKPaMOprBD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192310; c=relaxed/simple;
-	bh=c4ifR8ovwSu9rrS0tY5LDqoMnnyG/5eZGsKlfN+3/EQ=;
+	s=arc-20240116; t=1753191997; c=relaxed/simple;
+	bh=O02lnFZcZk8w6I9y82k8mkmt6VGWH1Y3nCLkLR7Osmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRxArzKS5aoutcThLzQ055woXoekuG8UXcd0dCjkJFdauck63WDLZyzVS++7SqgezDLJuibIOmWnweEWiE+c2LQe6moCa0PPAb0L1wMTnk+Bj/I/vy9CvMGViQDAPlunQtQ1itrlRLekG6XMaeKhTdSLeAebZfw3DYGkwdRhGys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYt8Ku+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A04C4CEEB;
-	Tue, 22 Jul 2025 13:51:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W6wvOkBp2cju9oNl/ROuADd84Hhu3s947L+JWlomLfq/GMFJQ1RRrU2uZlcxGfbJArnv5KKw43Bnn9nlUhgKmLvBtht6Of0YU6IrzRKSjgOfbImcc0IdZnBHNcxZ+VyRbrimZD6ocSwkqKP9+T+7+7jZTJ3t5PHSxqgUkMhspr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BB8X4ufm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E526BC4CEEB;
+	Tue, 22 Jul 2025 13:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192309;
-	bh=c4ifR8ovwSu9rrS0tY5LDqoMnnyG/5eZGsKlfN+3/EQ=;
+	s=korg; t=1753191997;
+	bh=O02lnFZcZk8w6I9y82k8mkmt6VGWH1Y3nCLkLR7Osmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYt8Ku+QU/nd2J4kyPQXPleXg2VwuzIxSQePTK5TGVnX83JylFHjD1TLu4qtu/3tN
-	 OA8eRnNGQ0V2BSRcqpxpqHGNWWPHVH25DliGt4BYFkWxzyLrAjmsRII+kd7N5rsa0p
-	 i/HxylQj+DFJ45l7g7DivY/DMfauQUnqf66ScgpU=
+	b=BB8X4ufmTcFRz+duL3JdaP5M0KOSnzFpggxRydgh1Mg3ix1DyQF/vLYmWUSh9R1d4
+	 +ldiAbygVktjrw9ElXjs4hJrnH3G1v0m/PNxP0aPLgphoj2WnqUvujMGBPigd929Fu
+	 mZryTh5QCTzQrmZaemM0vZhs3ZiXuHWSpH9Dqp0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Eran Ben Elisha <eranbe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 027/111] net/mlx5: Update the list of the PCI supported devices
+	=?UTF-8?q?Cl=C3=A9ment=20Le=20Goffic?= <clement.legoffic@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 06/79] i2c: stm32: fix the device used for the DMA map
 Date: Tue, 22 Jul 2025 15:44:02 +0200
-Message-ID: <20250722134334.407505062@linuxfoundation.org>
+Message-ID: <20250722134328.616448696@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maor Gottlieb <maorg@nvidia.com>
+From: Clément Le Goffic <clement.legoffic@foss.st.com>
 
-commit ad4f6df4f384905bc85f9fbfc1c0c198fb563286 upstream.
+commit c870cbbd71fccda71d575f0acd4a8d2b7cd88861 upstream.
 
-Add the upcoming ConnectX-10 device ID to the table of supported
-PCI device IDs.
+If the DMA mapping failed, it produced an error log with the wrong
+device name:
+"stm32-dma3 40400000.dma-controller: rejecting DMA map of vmalloc memory"
+Fix this issue by replacing the dev with the I2C dev.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Eran Ben Elisha <eranbe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1752650969-148501-1-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bb8822cbbc53 ("i2c: i2c-stm32: Add generic DMA API")
+Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
+Cc: <stable@vger.kernel.org> # v4.18+
+Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250704-i2c-upstream-v4-1-84a095a2c728@foss.st.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-stm32.c   |    8 +++-----
+ drivers/i2c/busses/i2c-stm32f7.c |    4 ++--
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -2206,6 +2206,7 @@ static const struct pci_device_id mlx5_c
- 	{ PCI_VDEVICE(MELLANOX, 0x1021) },			/* ConnectX-7 */
- 	{ PCI_VDEVICE(MELLANOX, 0x1023) },			/* ConnectX-8 */
- 	{ PCI_VDEVICE(MELLANOX, 0x1025) },			/* ConnectX-9 */
-+	{ PCI_VDEVICE(MELLANOX, 0x1027) },			/* ConnectX-10 */
- 	{ PCI_VDEVICE(MELLANOX, 0xa2d2) },			/* BlueField integrated ConnectX-5 network controller */
- 	{ PCI_VDEVICE(MELLANOX, 0xa2d3), MLX5_PCI_DEV_IS_VF},	/* BlueField integrated ConnectX-5 network controller VF */
- 	{ PCI_VDEVICE(MELLANOX, 0xa2d6) },			/* BlueField-2 integrated ConnectX-6 Dx network controller */
+--- a/drivers/i2c/busses/i2c-stm32.c
++++ b/drivers/i2c/busses/i2c-stm32.c
+@@ -102,7 +102,6 @@ int stm32_i2c_prep_dma_xfer(struct devic
+ 			    void *dma_async_param)
+ {
+ 	struct dma_async_tx_descriptor *txdesc;
+-	struct device *chan_dev;
+ 	int ret;
+ 
+ 	if (rd_wr) {
+@@ -116,11 +115,10 @@ int stm32_i2c_prep_dma_xfer(struct devic
+ 	}
+ 
+ 	dma->dma_len = len;
+-	chan_dev = dma->chan_using->device->dev;
+ 
+-	dma->dma_buf = dma_map_single(chan_dev, buf, dma->dma_len,
++	dma->dma_buf = dma_map_single(dev, buf, dma->dma_len,
+ 				      dma->dma_data_dir);
+-	if (dma_mapping_error(chan_dev, dma->dma_buf)) {
++	if (dma_mapping_error(dev, dma->dma_buf)) {
+ 		dev_err(dev, "DMA mapping failed\n");
+ 		return -EINVAL;
+ 	}
+@@ -150,7 +148,7 @@ int stm32_i2c_prep_dma_xfer(struct devic
+ 	return 0;
+ 
+ err:
+-	dma_unmap_single(chan_dev, dma->dma_buf, dma->dma_len,
++	dma_unmap_single(dev, dma->dma_buf, dma->dma_len,
+ 			 dma->dma_data_dir);
+ 	return ret;
+ }
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -727,10 +727,10 @@ static void stm32f7_i2c_dma_callback(voi
+ {
+ 	struct stm32f7_i2c_dev *i2c_dev = (struct stm32f7_i2c_dev *)arg;
+ 	struct stm32_i2c_dma *dma = i2c_dev->dma;
+-	struct device *dev = dma->chan_using->device->dev;
+ 
+ 	stm32f7_i2c_disable_dma_req(i2c_dev);
+-	dma_unmap_single(dev, dma->dma_buf, dma->dma_len, dma->dma_data_dir);
++	dma_unmap_single(i2c_dev->dev, dma->dma_buf, dma->dma_len,
++			 dma->dma_data_dir);
+ 	complete(&dma->dma_complete);
+ }
+ 
 
 
 
