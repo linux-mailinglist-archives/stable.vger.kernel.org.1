@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-164049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED120B0DD06
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:08:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97594B0DDAC
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9AC01889B38
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 628237B56C5
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECF528C5D5;
-	Tue, 22 Jul 2025 14:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB042EBB98;
+	Tue, 22 Jul 2025 14:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLDRPdok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYloxr8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D01176AC5;
-	Tue, 22 Jul 2025 14:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590602EBB8E;
+	Tue, 22 Jul 2025 14:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193081; cv=none; b=eq45KRZiO5edptQyrXZ0Osu2A1SuYScXINW7tHHEcR/n7MCvzgUIjS2QZk0FFfkzaIR9dwEDLzFlquo4L5hjI/ASQvBN/qkH8jtmJYCciToBkwn2iM+BFrywzaY7Gao2AbfdZppa8E+oa0/W+pf3P7yLj+pjDsEdKw8ZEDUEEMk=
+	t=1753193661; cv=none; b=QynXSHNtEutrB1eyP0e2z5MfEgV5totzb0m1N+aWqWzQSy8oPZGC1GFx8XaTq73hUqwpXsj/uI+mrCLNm9L64REDtv2c7czViNp9C3cQVLytyonrVTMNv73ukDA71q2M4m0MfTMnVaXrYvs/CZAZs+eRrnMsKD8A8gqolyZQuco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193081; c=relaxed/simple;
-	bh=GCpWJfUJ4Eg4WOo68AJZt6ySOH93hLD0aXpl6yjPppo=;
+	s=arc-20240116; t=1753193661; c=relaxed/simple;
+	bh=3eDNjNHseR0MMN8oiS/iFFiQYkHMkqvk3Hf9KUVyYOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HOdB/5g72IWlIsj//zjxdwxsk50iZGS78G1M58V5lRQMnq9UdDTZE7P5bvJtkqEfBEDOp3PHVY6tjj52Z2WqyYemEs9a6Ds0yJL8wKq9df055y+yGJCFWvRX6SV5qLczkCchqzeMzVA2nOf57Nh1e9+11/xtFXBqPlej0w1OsTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLDRPdok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4543BC4CEEB;
-	Tue, 22 Jul 2025 14:04:41 +0000 (UTC)
+	 MIME-Version; b=b2yVVt4PeaIzGRrfopvkv8tKWfjgZAAFjKf3jN12p7f06q7DofO8UB+jIb9JJxsTHMIML4/6PnHdYZQfv/uw60SF6XMpakP92IMs45YTMHSyiq7f+k0ykypjNtHyw7s1dNSBHIWklLW6svqDCEa8mppZ+11Pc1l4YrEo23ENil0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYloxr8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864F4C4CEEB;
+	Tue, 22 Jul 2025 14:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193081;
-	bh=GCpWJfUJ4Eg4WOo68AJZt6ySOH93hLD0aXpl6yjPppo=;
+	s=korg; t=1753193661;
+	bh=3eDNjNHseR0MMN8oiS/iFFiQYkHMkqvk3Hf9KUVyYOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLDRPdokPkbKmDNOxlNr6qRkbfBEx9zrBb5tOfyOLzOmJu5QeSO3hO/hmq7eFw4fz
-	 MNEMa0qBzdW7rRFOGTWKYqdWxslgEgfT65m4ctD1HiIGvWYLNSeYxO/f2T6myTrSbN
-	 beOE+H4El+UoCgEzaOHeXz309t1wmvk0KP6wT7YU=
+	b=vYloxr8/YBgCK3efN5+ZrttaqK4IWeAIIfuf7FlQHH/XpOCR8YNIgeaOK2SRrqCIO
+	 t+Yf2+mVNpi7ZOd1fFCpfdCaOjz4s2Lb6qZkyBdcRsnFwV/M7lQkVYxwVM/1WJezkH
+	 mOHdeB86mECQFyQHC7Rh6cDWUkfQFU8cklNX7ofw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: [PATCH 6.12 145/158] usb: hub: Fix flushing of delayed work used for post resume purposes
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	LePremierHomme <kwqcheii@proton.me>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 159/187] rxrpc: Fix transmission of an abort in response to an abort
 Date: Tue, 22 Jul 2025 15:45:29 +0200
-Message-ID: <20250722134346.129142053@linuxfoundation.org>
+Message-ID: <20250722134351.698238796@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +69,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 9bd9c8026341f75f25c53104eb7e656e357ca1a2 upstream.
+[ Upstream commit e9c0b96ec0a34fcacdf9365713578d83cecac34c ]
 
-Delayed work that prevents USB3 hubs from runtime-suspending too early
-needed to be flushed in hub_quiesce() to resolve issues detected on
-QC SC8280XP CRD board during suspend resume testing.
+Under some circumstances, such as when a server socket is closing, ABORT
+packets will be generated in response to incoming packets.  Unfortunately,
+this also may include generating aborts in response to incoming aborts -
+which may cause a cycle.  It appears this may be made possible by giving
+the client a multicast address.
 
-This flushing did however trigger new issues on Raspberry Pi 3B+, which
-doesn't have USB3 ports, and doesn't queue any post resume delayed work.
+Fix this such that rxrpc_reject_packet() will refuse to generate aborts in
+response to aborts.
 
-The flushed 'hub->init_work' item is used for several purposes, and
-is originally initialized with a 'NULL' work function. The work function
-is also changed on the fly, which may contribute to the issue.
-
-Solve this by creating a dedicated delayed work item for post resume work,
-and flush that delayed work in hub_quiesce()
-
-Cc: stable <stable@kernel.org>
-Fixes: a49e1e2e785f ("usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm")
-Reported-by: Mark Brown <broonie@kernel.org>
-Closes: https://lore.kernel.org/linux-usb/aF5rNp1l0LWITnEB@finisterre.sirena.org.uk
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # SC8280XP CRD
-Tested-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250627164348.3982628-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+cc: LePremierHomme <kwqcheii@proton.me>
+cc: Linus Torvalds <torvalds@linux-foundation.org>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250717074350.3767366-5-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |   21 ++++++++-------------
- drivers/usb/core/hub.h |    1 +
- 2 files changed, 9 insertions(+), 13 deletions(-)
+ net/rxrpc/output.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -1073,12 +1073,11 @@ int usb_remove_device(struct usb_device
+diff --git a/net/rxrpc/output.c b/net/rxrpc/output.c
+index 95905b85a8d71..d0d04ee9667ef 100644
+--- a/net/rxrpc/output.c
++++ b/net/rxrpc/output.c
+@@ -814,6 +814,9 @@ void rxrpc_reject_packet(struct rxrpc_local *local, struct sk_buff *skb)
+ 	__be32 code;
+ 	int ret, ioc;
  
- enum hub_activation_type {
- 	HUB_INIT, HUB_INIT2, HUB_INIT3,		/* INITs must come first */
--	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME, HUB_POST_RESUME,
-+	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME,
- };
++	if (sp->hdr.type == RXRPC_PACKET_TYPE_ABORT)
++		return; /* Never abort an abort. */
++
+ 	rxrpc_see_skb(skb, rxrpc_skb_see_reject);
  
- static void hub_init_func2(struct work_struct *ws);
- static void hub_init_func3(struct work_struct *ws);
--static void hub_post_resume(struct work_struct *ws);
- 
- static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
- {
-@@ -1102,12 +1101,6 @@ static void hub_activate(struct usb_hub
- 		goto init3;
- 	}
- 
--	if (type == HUB_POST_RESUME) {
--		usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
--		hub_put(hub);
--		return;
--	}
--
- 	hub_get(hub);
- 
- 	/* The superspeed hub except for root hub has to use Hub Depth
-@@ -1361,8 +1354,8 @@ static void hub_activate(struct usb_hub
- 		usb_autopm_get_interface_no_resume(
- 			to_usb_interface(hub->intfdev));
- 
--		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
--		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
-+		queue_delayed_work(system_power_efficient_wq,
-+				   &hub->post_resume_work,
- 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
- 		return;
- 	}
-@@ -1387,9 +1380,10 @@ static void hub_init_func3(struct work_s
- 
- static void hub_post_resume(struct work_struct *ws)
- {
--	struct usb_hub *hub = container_of(ws, struct usb_hub, init_work.work);
-+	struct usb_hub *hub = container_of(ws, struct usb_hub, post_resume_work.work);
- 
--	hub_activate(hub, HUB_POST_RESUME);
-+	usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
-+	hub_put(hub);
- }
- 
- enum hub_quiescing_type {
-@@ -1417,7 +1411,7 @@ static void hub_quiesce(struct usb_hub *
- 
- 	/* Stop hub_wq and related activity */
- 	del_timer_sync(&hub->irq_urb_retry);
--	flush_delayed_work(&hub->init_work);
-+	flush_delayed_work(&hub->post_resume_work);
- 	usb_kill_urb(hub->urb);
- 	if (hub->has_indicators)
- 		cancel_delayed_work_sync(&hub->leds);
-@@ -1976,6 +1970,7 @@ static int hub_probe(struct usb_interfac
- 	hub->hdev = hdev;
- 	INIT_DELAYED_WORK(&hub->leds, led_work);
- 	INIT_DELAYED_WORK(&hub->init_work, NULL);
-+	INIT_DELAYED_WORK(&hub->post_resume_work, hub_post_resume);
- 	INIT_WORK(&hub->events, hub_event);
- 	INIT_LIST_HEAD(&hub->onboard_devs);
- 	spin_lock_init(&hub->irq_urb_lock);
---- a/drivers/usb/core/hub.h
-+++ b/drivers/usb/core/hub.h
-@@ -70,6 +70,7 @@ struct usb_hub {
- 	u8			indicator[USB_MAXCHILDREN];
- 	struct delayed_work	leds;
- 	struct delayed_work	init_work;
-+	struct delayed_work	post_resume_work;
- 	struct work_struct      events;
- 	spinlock_t		irq_urb_lock;
- 	struct timer_list	irq_urb_retry;
+ 	iov[0].iov_base = &whdr;
+-- 
+2.39.5
+
 
 
 
