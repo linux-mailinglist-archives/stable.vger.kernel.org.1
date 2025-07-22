@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-163734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88AC2B0DB47
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:47:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 941CFB0DC89
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD58456340C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4539188A70F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503C62EA48C;
-	Tue, 22 Jul 2025 13:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2539E2E975B;
+	Tue, 22 Jul 2025 14:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lifzK5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BV9LLcuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF55433A8;
-	Tue, 22 Jul 2025 13:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82D623AB9D;
+	Tue, 22 Jul 2025 14:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192034; cv=none; b=hp3Bon4sj6pWUDSpkMTU2o+h9E/ctPxRd6QwrQcYXNEWtgt5rhSy4VeLYDsLNW01XUgDSXLuOJNxNgALmAqKslAosQGtlOz/qoq83nCuQXkg3WdyZSS0ZZ5vSoJOJ7Q6lZSDx7yfZ1ylU74fnz82pD91qlT3rIDqggwZZA/WQS8=
+	t=1753192851; cv=none; b=fGeSj0qPVFspt8n2pzyYanegpuPzcq8YnuzSkB//K8oufoUSfXWgLXcn28QtH8zRMw3wSsGc9IAjsjYcLJKYBq+4bC8HY/OuHMEWi6Cgm14IBAx4gxvRZf0TmtCdPjfG+8uvjlil/PDViODtRi7qLDDqbOFUSiEV+Kd6tm96aV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192034; c=relaxed/simple;
-	bh=D0PcPSntyGkBYxtoNihpnoXrDj7DHaZrGfVk62yOpLQ=;
+	s=arc-20240116; t=1753192851; c=relaxed/simple;
+	bh=Dfz/wBlm6Q2SgTOSQa2tJm1c3s7qJ3xLRUwwpffl8xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=szyZB/8SoBeojfMC4HOffj6kOJq0EHVITV4cMkU5jWywxaVouQ/ul0osMKSyWTjB/qlpa6VQo4GXGDB1XpH249vaWXQfdJSxKe38akVwRwQLr3f4PkC5dL5NWLMmVb0+4U+jEfcK+x2vgqMW6jXCsIeAVQvsWUkcqYbYRSCZO5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lifzK5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A276C4AF0B;
-	Tue, 22 Jul 2025 13:47:13 +0000 (UTC)
+	 MIME-Version; b=YRPUclCJASyyuBeB0DrbqPy5yaW/6coH2jo2U5L24hWAOTuEtZ5Vpp7d7KI0eWKeqvISY0BVeQvzVwqJ3bVebiuuj/0F7cxz/nkzh+1X9Vv0B8xEwa8Y1fPYi47gPFgzv6tBt6eYY3/NyrUepXVAEKiobaCARCxG5xuJ472RSDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BV9LLcuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601BDC4CEEB;
+	Tue, 22 Jul 2025 14:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192033;
-	bh=D0PcPSntyGkBYxtoNihpnoXrDj7DHaZrGfVk62yOpLQ=;
+	s=korg; t=1753192851;
+	bh=Dfz/wBlm6Q2SgTOSQa2tJm1c3s7qJ3xLRUwwpffl8xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lifzK5uQHQCimaUSRzGv+2bOj0CYrfXxrYf9O6A/cBe29O9bdAIMc9PWxz8O/Y47
-	 dLawxEPoXxCTcaNzM6LKSOM9ErAeCkjEQH7XeoQ7RfgJv0x4UElKqxCw9RL5katyXt
-	 lEof8+0nIBX1jt1k3rxLUa66MjuHesQohM8pUo+0=
+	b=BV9LLcuFVyxg9xBc51MKdDdmMtIyeaW/LGMQ2I4bWkzYBj70TpK8UlTsi3x4STm0j
+	 GOYloA9GE4cBhP7WdplsdX+JeQ7F665SnBYssi8pWXy6jht6cR7uZRePl17w7FtP4u
+	 IYUoqbkzV52WSSC5yfnxPEt3c6V6kmyVJA++qPGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 25/79] mmc: sdhci_am654: Workaround for Errata i2312
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.12 077/158] comedi: das6402: Fix bit shift out of bounds
 Date: Tue, 22 Jul 2025 15:44:21 +0200
-Message-ID: <20250722134329.299051676@linuxfoundation.org>
+Message-ID: <20250722134343.651099018@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 6d0b1c01847fedd7c85a5cdf59b8cfc7d14512e6 upstream.
+commit 70f2b28b5243df557f51c054c20058ae207baaac upstream.
 
-Errata i2312 [0] for K3 silicon mentions the maximum obtainable
-timeout through MMC host controller is 700ms. And for commands taking
-longer than 700ms, hardware timeout should be disabled and software
-timeout should be used.
+When checking for a supported IRQ number, the following test is used:
 
-The workaround for Errata i2312 can be achieved by adding
-SDHCI_QUIRK2_DISABLE_HW_TIMEOUT quirk in sdhci_am654.
+	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
+	if ((1 << it->options[1]) & 0x8cec) {
 
-[0] https://www.ti.com/lit/pdf/sprz487
+However, `it->options[i]` is an unchecked `int` value from userspace, so
+the shift amount could be negative or out of bounds.  Fix the test by
+requiring `it->options[1]` to be within bounds before proceeding with
+the original test.  Valid `it->options[1]` values that select the IRQ
+will be in the range [1,15]. The value 0 explicitly disables the use of
+interrupts.
 
-Signed-off-by: Judith Mendez <jm@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Fixes: 41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250626231452.3460987-1-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 79e5e6addbb1 ("staging: comedi: das6402: rewrite broken driver")
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707135737.77448-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci_am654.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/comedi/drivers/das6402.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -558,7 +558,8 @@ static struct sdhci_ops sdhci_am654_ops
- static const struct sdhci_pltfm_data sdhci_am654_pdata = {
- 	.ops = &sdhci_am654_ops,
- 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
--	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-+		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
- };
+--- a/drivers/comedi/drivers/das6402.c
++++ b/drivers/comedi/drivers/das6402.c
+@@ -567,7 +567,8 @@ static int das6402_attach(struct comedi_
+ 	das6402_reset(dev);
  
- static const struct sdhci_am654_driver_data sdhci_am654_sr1_drvdata = {
-@@ -588,7 +589,8 @@ static struct sdhci_ops sdhci_j721e_8bit
- static const struct sdhci_pltfm_data sdhci_j721e_8bit_pdata = {
- 	.ops = &sdhci_j721e_8bit_ops,
- 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
--	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-+		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
- };
- 
- static const struct sdhci_am654_driver_data sdhci_j721e_8bit_drvdata = {
-@@ -612,7 +614,8 @@ static struct sdhci_ops sdhci_j721e_4bit
- static const struct sdhci_pltfm_data sdhci_j721e_4bit_pdata = {
- 	.ops = &sdhci_j721e_4bit_ops,
- 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
--	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-+		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
- };
- 
- static const struct sdhci_am654_driver_data sdhci_j721e_4bit_drvdata = {
+ 	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
+-	if ((1 << it->options[1]) & 0x8cec) {
++	if (it->options[1] > 0 && it->options[1] < 16 &&
++	    (1 << it->options[1]) & 0x8cec) {
+ 		ret = request_irq(it->options[1], das6402_interrupt, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0) {
 
 
 
