@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-163872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD17B0DC24
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:58:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE234B0DB73
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD92AAC1821
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50C975650F5
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC43A2EA15A;
-	Tue, 22 Jul 2025 13:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BBC2E1722;
+	Tue, 22 Jul 2025 13:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPa79fZ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruey9eNH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E468836;
-	Tue, 22 Jul 2025 13:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D76D242D8F;
+	Tue, 22 Jul 2025 13:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192492; cv=none; b=k5Zn+3I9x1yNu7QEHPz6DSjHYmmX8JB2Et4ek03PUXqbVwVV8GNTiqaXHPG5uiluMNWMWDxb+1n5x+hFXeNZamqNSn2iMHMDoVjt3zYrS8BeN3xR14lZxkgOcn34PoZnG8ptdn+T6+6B0SxCMhkh7kfhU17yydpahTSLV+lCVsY=
+	t=1753192155; cv=none; b=eRZY6WfQc90J1nycVcdenno7UY07xMtyw4gOfdC0Wi8QJdMNG7FPUndAyYn1enBRWJmKg8cVfik8+KPS60OprJ3TO2n6UMBRFNj5a2+179ZZQx6Fy3FHEJiHbilmtRKHuNHp667I+hqk4k/BH3XzqDiKlW00zpOpImYUm48mrgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192492; c=relaxed/simple;
-	bh=+6odMhY8iFV28kfU82yylfWLjp4OdNFE6t4pBX5tTEg=;
+	s=arc-20240116; t=1753192155; c=relaxed/simple;
+	bh=A5LY6Nwuoc/GJ63pMHadUynIvB+njLJO9bRVmYBXBo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtV2sgSI1+DRURObHV/HODM3LM8/b/ixz4qJ8FcD1zsildZOfq78HAOTtcL7JW5QuFnG4y57w1kRux+SpKIaGbM15Xe26ETuRuKfZHIA1R6k8PiJKmlS97hVPAJHXLvmcs9bJtizXkCEXkvOpRuUpcHR8fMYrqvdWH+mdktH7n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPa79fZ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D235C4CEF1;
-	Tue, 22 Jul 2025 13:54:51 +0000 (UTC)
+	 MIME-Version; b=NnP2NM/lGV9bta0bc2B4PGIEF2GjRVT9ds4ImJgfcmtwM5e7BPgmUBz+rIcNhAp//nQB7/IMaIWK6JErPe0lvpT5nXFeFvIC9LMdQ8vYD7+4DWrTaXnJrFduMPPGA9G1oUfN1MLdYKOdqUCOb6SWBPoY+pgv11U2MGGZMQ0+Njc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruey9eNH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5E9C4CEEB;
+	Tue, 22 Jul 2025 13:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192492;
-	bh=+6odMhY8iFV28kfU82yylfWLjp4OdNFE6t4pBX5tTEg=;
+	s=korg; t=1753192155;
+	bh=A5LY6Nwuoc/GJ63pMHadUynIvB+njLJO9bRVmYBXBo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPa79fZ8K1gMtTcX/uo4ANSArAWEJeBU5UQJiOF9YqzrCcC6T+X2yFu8jd9CVueXD
-	 hvtQnRbYSSnIMAJsJZKrbFmFgBI2097FbhmBX1lLY1+lWY9EWi4lspI2gnXZ+G7+Q3
-	 9cQtIEa2Ryjfwqtk2ZcSIcFIosvgaBnPsr1Uz0UY=
+	b=ruey9eNHJwTVSB+//AbF4325cPQNAU/6y+Wj/qmw0ilupcEqFHaE+YSRAUOephS08
+	 JO7whlnbhTMPNkqpzwbzx4I8mK/zb3MEh1jZmu+xQBhf6eCZnCInGfQLO0Brh7I9s9
+	 eBbf5rAwkMqTV1XmNEiPyb/RoG1es9qaoiylK9o4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/111] ipv6: mcast: Delay put pmc->idev in mld_del_delrec()
+Subject: [PATCH 6.1 61/79] tls: always refresh the queue when reading sock
 Date: Tue, 22 Jul 2025 15:44:57 +0200
-Message-ID: <20250722134336.457925991@linuxfoundation.org>
+Message-ID: <20250722134330.617793004@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit ae3264a25a4635531264728859dbe9c659fad554 ]
+[ Upstream commit 4ab26bce3969f8fd925fe6f6f551e4d1a508c68b ]
 
-pmc->idev is still used in ip6_mc_clear_src(), so as mld_clear_delrec()
-does, the reference should be put after ip6_mc_clear_src() return.
+After recent changes in net-next TCP compacts skbs much more
+aggressively. This unearthed a bug in TLS where we may try
+to operate on an old skb when checking if all skbs in the
+queue have matching decrypt state and geometry.
 
-Fixes: 63ed8de4be81 ("mld: add mc_lock for protecting per-interface mld data")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://patch.msgid.link/20250714141957.3301871-1-yuehaibing@huawei.com
+    BUG: KASAN: slab-use-after-free in tls_strp_check_rcv+0x898/0x9a0 [tls]
+    (net/tls/tls_strp.c:436 net/tls/tls_strp.c:530 net/tls/tls_strp.c:544)
+    Read of size 4 at addr ffff888013085750 by task tls/13529
+
+    CPU: 2 UID: 0 PID: 13529 Comm: tls Not tainted 6.16.0-rc5-virtme
+    Call Trace:
+     kasan_report+0xca/0x100
+     tls_strp_check_rcv+0x898/0x9a0 [tls]
+     tls_rx_rec_wait+0x2c9/0x8d0 [tls]
+     tls_sw_recvmsg+0x40f/0x1aa0 [tls]
+     inet_recvmsg+0x1c3/0x1f0
+
+Always reload the queue, fast path is to have the record in the queue
+when we wake, anyway (IOW the path going down "if !strp->stm.full_len").
+
+Fixes: 0d87bbd39d7f ("tls: strp: make sure the TCP skbs do not have overlapping data")
+Link: https://patch.msgid.link/20250716143850.1520292-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/mcast.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tls/tls_strp.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index 9bb246c09fcee..e153dac47a530 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -803,8 +803,8 @@ static void mld_del_delrec(struct inet6_dev *idev, struct ifmcaddr6 *im)
- 		} else {
- 			im->mca_crcount = idev->mc_qrv;
- 		}
--		in6_dev_put(pmc->idev);
- 		ip6_mc_clear_src(pmc);
-+		in6_dev_put(pmc->idev);
- 		kfree_rcu(pmc, rcu);
- 	}
- }
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index 44d7f1aef9f12..b7ed76c0e576e 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -512,9 +512,8 @@ static int tls_strp_read_sock(struct tls_strparser *strp)
+ 	if (inq < strp->stm.full_len)
+ 		return tls_strp_read_copy(strp, true);
+ 
++	tls_strp_load_anchor_with_queue(strp, inq);
+ 	if (!strp->stm.full_len) {
+-		tls_strp_load_anchor_with_queue(strp, inq);
+-
+ 		sz = tls_rx_msg_size(strp, strp->anchor);
+ 		if (sz < 0) {
+ 			tls_strp_abort_strp(strp, sz);
 -- 
 2.39.5
 
