@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28AEEB0DC6D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:02:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3588B0DB30
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D86118863F0
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E0BE1C23617
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551A428C5D5;
-	Tue, 22 Jul 2025 13:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A0E15624B;
+	Tue, 22 Jul 2025 13:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STGxep9F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzKFbPSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130F028B507;
-	Tue, 22 Jul 2025 13:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9327D2E36E8;
+	Tue, 22 Jul 2025 13:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192775; cv=none; b=SHC5jAWL46+FTVInSS2ddSBissUKjhHg22wWbZY5zInard+tIN0AMP80yhFWPmdn77xVAyr0uZVu8mi4QQOr6tBhW4u1NT/TJc/O+jBMCJRkJc5YTHFrOR0f4FSMVw6dOc7yZb6tTVo+atVmdEXdeGA9kfyhBvxFgefZ1EpBdGw=
+	t=1753191982; cv=none; b=hOJf1paA80kh3hmsyUHUQmu0QPlfJDblZrkxYQVTS3HaeEtEF0kRpkrJlam7yESbypOuG9h0Q33khU2v47+YVIUu1IE9axqa3E9OFgrypDLGh0H5RryaixWv+1FUrqGJ/FHpHU2AQwz1nhFByz4lm6Eg8/SNvExZpzDdb9VtdIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192775; c=relaxed/simple;
-	bh=j64YICOWRmYmCfZBTuQxKGimVbf7D7IzmJaorTkLfG8=;
+	s=arc-20240116; t=1753191982; c=relaxed/simple;
+	bh=pYe71XyNOxcL9Q4tUg+NlrSaas45/8podPjJGfk4RFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQr3ZVPkECHuOa2VngLy1h5y8tklYKc7LuF3sCRM0yIha6bt2ANbjXVkJVqzd0wFTvPXQqvJOFFMwba9MrqLBI5B5pE7SRRSJbgHkfGTdVzSZ+TKqp6MI7egdBwDi3rBT1CT3WS58smj29aHwpfxyi1B5G2VliEr4Y3j1M8+5H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STGxep9F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B74C4CEEB;
-	Tue, 22 Jul 2025 13:59:34 +0000 (UTC)
+	 MIME-Version; b=T/fDheIq67zQCnT3j5/d3j8G/EtZMALVo8KIE9VSU9sstwRIMT3ABbze5fZitxRSKCkVjeBvNfC/4IshZlvWNraUU5zXllzVBkjIbOFFjemVOul56wK+aiF6HVk7ICj7MepNQCpYba1X4+0KltjmVTgp+fcjujpr3jnahxZj8xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzKFbPSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CCCC4CEEB;
+	Tue, 22 Jul 2025 13:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192775;
-	bh=j64YICOWRmYmCfZBTuQxKGimVbf7D7IzmJaorTkLfG8=;
+	s=korg; t=1753191982;
+	bh=pYe71XyNOxcL9Q4tUg+NlrSaas45/8podPjJGfk4RFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STGxep9FBSuO6KXdHDqhSJAfjbW0mjXOzX0ReSyhq7seotHNxobAKdJMWT5rP8Okx
-	 Ko3fr6IrH2YMymsCjSGG640aMoir29JHcvsksjzhFpbu6f2ny2ZVY/Jo6ItEAYMWvH
-	 VyJNuE7TYXZew4ie5gX/cT1Ef6Nq3qFOxJUd77L0=
+	b=IzKFbPSglFQyY2GDI6zhXy7YjrTwKkqcPnbGld19De6gJZAC2C2yim3k1Iz9bYiIR
+	 TbWrV8zgQzMyZPFFrdflUeCj9Crof5Tz7cUxU2W1TCgJQ+/VkpBdClFF/cTFtBdtxc
+	 anps2eUZj+22czD7NLsidhX7wegGy6XKfuqfQoaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 053/158] isofs: Verify inode mode when loading from disk
+	Wayne Chang <waynec@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 01/79] phy: tegra: xusb: Fix unbalanced regulator disable in UTMI PHY mode
 Date: Tue, 22 Jul 2025 15:43:57 +0200
-Message-ID: <20250722134342.711249445@linuxfoundation.org>
+Message-ID: <20250722134328.441045784@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Wayne Chang <waynec@nvidia.com>
 
-commit 0a9e7405131380b57e155f10242b2e25d2e51852 upstream.
+commit cefc1caee9dd06c69e2d807edc5949b329f52b22 upstream.
 
-Verify that the inode mode is sane when loading it from the disk to
-avoid complaints from VFS about setting up invalid inodes.
+When transitioning from USB_ROLE_DEVICE to USB_ROLE_NONE, the code
+assumed that the regulator should be disabled. However, if the regulator
+is marked as always-on, regulator_is_enabled() continues to return true,
+leading to an incorrect attempt to disable a regulator which is not
+enabled.
 
-Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/20250709095545.31062-2-jack@suse.cz
-Acked-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This can result in warnings such as:
+
+[  250.155624] WARNING: CPU: 1 PID: 7326 at drivers/regulator/core.c:3004
+_regulator_disable+0xe4/0x1a0
+[  250.155652] unbalanced disables for VIN_SYS_5V0
+
+To fix this, we move the regulator control logic into
+tegra186_xusb_padctl_id_override() function since it's directly related
+to the ID override state. The regulator is now only disabled when the role
+transitions from USB_ROLE_HOST to USB_ROLE_NONE, by checking the VBUS_ID
+register. This ensures that regulator enable/disable operations are
+properly balanced and only occur when actually transitioning to/from host
+mode.
+
+Fixes: 49d46e3c7e59 ("phy: tegra: xusb: Add set_mode support for UTMI phy on Tegra186")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20250502092606.2275682-1-waynec@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/inode.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/phy/tegra/xusb-tegra186.c |   59 +++++++++++++++++++++++---------------
+ 1 file changed, 37 insertions(+), 22 deletions(-)
 
---- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -1440,9 +1440,16 @@ static int isofs_read_inode(struct inode
- 		inode->i_op = &page_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &isofs_symlink_aops;
--	} else
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		/* XXX - parse_rock_ridge_inode() had already set i_rdev. */
- 		init_special_inode(inode, inode->i_mode, inode->i_rdev);
-+	} else {
-+		printk(KERN_DEBUG "ISOFS: Invalid file type 0%04o for inode %lu.\n",
-+			inode->i_mode, inode->i_ino);
-+		ret = -EIO;
-+		goto fail;
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -719,13 +719,15 @@ static int tegra186_xusb_padctl_vbus_ove
+ }
+ 
+ static int tegra186_xusb_padctl_id_override(struct tegra_xusb_padctl *padctl,
+-					    bool status)
++					    struct tegra_xusb_usb2_port *port, bool status)
+ {
+-	u32 value;
++	u32 value, id_override;
++	int err = 0;
+ 
+ 	dev_dbg(padctl->dev, "%s id override\n", status ? "set" : "clear");
+ 
+ 	value = padctl_readl(padctl, USB2_VBUS_ID);
++	id_override = value & ID_OVERRIDE(~0);
+ 
+ 	if (status) {
+ 		if (value & VBUS_OVERRIDE) {
+@@ -736,14 +738,34 @@ static int tegra186_xusb_padctl_id_overr
+ 			value = padctl_readl(padctl, USB2_VBUS_ID);
+ 		}
+ 
+-		value &= ~ID_OVERRIDE(~0);
+-		value |= ID_OVERRIDE_GROUNDED;
++		if (id_override != ID_OVERRIDE_GROUNDED) {
++			value &= ~ID_OVERRIDE(~0);
++			value |= ID_OVERRIDE_GROUNDED;
++			padctl_writel(padctl, value, USB2_VBUS_ID);
++
++			err = regulator_enable(port->supply);
++			if (err) {
++				dev_err(padctl->dev, "Failed to enable regulator: %d\n", err);
++				return err;
++			}
++		}
+ 	} else {
+-		value &= ~ID_OVERRIDE(~0);
+-		value |= ID_OVERRIDE_FLOATING;
+-	}
++		if (id_override == ID_OVERRIDE_GROUNDED) {
++			/*
++			 * The regulator is disabled only when the role transitions
++			 * from USB_ROLE_HOST to USB_ROLE_NONE.
++			 */
++			err = regulator_disable(port->supply);
++			if (err) {
++				dev_err(padctl->dev, "Failed to disable regulator: %d\n", err);
++				return err;
++			}
+ 
+-	padctl_writel(padctl, value, USB2_VBUS_ID);
++			value &= ~ID_OVERRIDE(~0);
++			value |= ID_OVERRIDE_FLOATING;
++			padctl_writel(padctl, value, USB2_VBUS_ID);
++		}
 +	}
  
- 	ret = 0;
- out:
+ 	return 0;
+ }
+@@ -763,27 +785,20 @@ static int tegra186_utmi_phy_set_mode(st
+ 
+ 	if (mode == PHY_MODE_USB_OTG) {
+ 		if (submode == USB_ROLE_HOST) {
+-			tegra186_xusb_padctl_id_override(padctl, true);
+-
+-			err = regulator_enable(port->supply);
++			err = tegra186_xusb_padctl_id_override(padctl, port, true);
++			if (err)
++				goto out;
+ 		} else if (submode == USB_ROLE_DEVICE) {
+ 			tegra186_xusb_padctl_vbus_override(padctl, true);
+ 		} else if (submode == USB_ROLE_NONE) {
+-			/*
+-			 * When port is peripheral only or role transitions to
+-			 * USB_ROLE_NONE from USB_ROLE_DEVICE, regulator is not
+-			 * enabled.
+-			 */
+-			if (regulator_is_enabled(port->supply))
+-				regulator_disable(port->supply);
+-
+-			tegra186_xusb_padctl_id_override(padctl, false);
++			err = tegra186_xusb_padctl_id_override(padctl, port, false);
++			if (err)
++				goto out;
+ 			tegra186_xusb_padctl_vbus_override(padctl, false);
+ 		}
+ 	}
+-
++out:
+ 	mutex_unlock(&padctl->lock);
+-
+ 	return err;
+ }
+ 
 
 
 
