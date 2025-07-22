@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-163864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC24B0DBF6
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:56:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0EDB0DCB7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92AE0188AD9B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 841B0542672
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75652EA488;
-	Tue, 22 Jul 2025 13:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C35128BA96;
+	Tue, 22 Jul 2025 14:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzH+X1/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaqcneT6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6500D2DC32B;
-	Tue, 22 Jul 2025 13:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39622A32;
+	Tue, 22 Jul 2025 14:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192465; cv=none; b=f8Fczq15A0rWFGl7oDu9d3Q2etKABkDfUxsbT07GSKgvzrq1/TBpsXUt2Lb4yaqVZGmpcoTQjD5yp8tqxmrsxps/+n1f6faM0ozbTUwLPCOrn4fz3h8KyrfUMx+zqarG8p4bRzMr1kVLwsKn8dCmDnn9m3+TyT1takCnod39VN8=
+	t=1753192943; cv=none; b=qbOmwQ/Lbhu8pF4iz9VIh2HaJWRMQcZmgyORjXhuoXwovqtQfJ3QdpzRaH7Yp/wvF4sqM4zmRPPPETf3RVJlHddxjwOLurXg+Z3pHFo/76xKEhwLnoN3Wiu7rT4xJ0o+w/hOF8Jes/fdOYzcUFJRuFPV1lB8EfLunMKU+b56tmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192465; c=relaxed/simple;
-	bh=vs6/+OZEsUhnEk8iA30oubQtfVBT5tVhSWIqIBUrm8s=;
+	s=arc-20240116; t=1753192943; c=relaxed/simple;
+	bh=M0iQkVTk5uzdsfxPuDvU8u0ho1tcrB5RDI9gZqFEo0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3vvDMQ+iVU/xht+HLVjip249W7SeTTbC8GJ2bTdeX3kYOE8/OpVU/N7VQb9fg8ljNoVZID0y5AjvDGSt7qZnycdyyi8+Bk4ta/kFsloXTTP1fpwNezjxBnWx2RBECdb70lKajuxsvQvljpXTm1NTo0eDkp7dy92iuCjAFZD05U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzH+X1/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E85C4CEEB;
-	Tue, 22 Jul 2025 13:54:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hDtvqVjxFMpJwdQ+i6XqTncTAr7n48tc9bPLZyL+dDxwYiGfOule0M517BSGP4j++RFzibownOjJYmUFx6Nb+vILh4o6NnBxHg5LgzxNOoiH/ev3mzDAOlMMb0OTMNiovdIPpmXS0d5MecPIJhlNC2aZ6HtGt8dYOwbBhilSMHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaqcneT6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EF1C4CEEB;
+	Tue, 22 Jul 2025 14:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192465;
-	bh=vs6/+OZEsUhnEk8iA30oubQtfVBT5tVhSWIqIBUrm8s=;
+	s=korg; t=1753192943;
+	bh=M0iQkVTk5uzdsfxPuDvU8u0ho1tcrB5RDI9gZqFEo0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzH+X1/ubGZcS5C7+kful0EQq9WeJB3to6PBNgnGtwO6wRj1AMxQ0KzkPbRu4eCzG
-	 sQVHCo01eoTWsWSZld/ZfWHZa64TZUnd63Kwr8gfspgyNmW2PFcEuEVOYKqDDeNjNR
-	 usQxPoNUL3OkwMXuy2mMypEu6iHuLsPH4fMKxoz0=
+	b=yaqcneT6llBKmUnMge4UBaEz60vOi23fbkjN6vOXmn5eTfliiTyK+00LkhMPEga+Y
+	 t6OcX4Ko2apBZMO9u+6UtMBXHHs/X4TKRvwEkB/prm833NMqe2MKK8QlWBJBB1I6hP
+	 li7E+Y8lJKbGjZI3Wvq7SGxaQ7xe5ECq/q5c+I/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 040/111] net: libwx: fix the using of Rx buffer DMA
+	Chen Ni <nichen@iscas.ac.cn>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 071/158] iio: adc: stm32-adc: Fix race in installing chained IRQ handler
 Date: Tue, 22 Jul 2025 15:44:15 +0200
-Message-ID: <20250722134334.892325321@linuxfoundation.org>
+Message-ID: <20250722134343.418694961@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit 5fd77cc6bd9b368431a815a780e407b7781bcca0 upstream.
+commit e8ad595064f6ebd5d2d1a5d5d7ebe0efce623091 upstream.
 
-The wx_rx_buffer structure contained two DMA address fields: 'dma' and
-'page_dma'. However, only 'page_dma' was actually initialized and used
-to program the Rx descriptor. But 'dma' was uninitialized and used in
-some paths.
+Fix a race where a pending interrupt could be received and the handler
+called before the handler's data has been setup, by converting to
+irq_set_chained_handler_and_data().
 
-This could lead to undefined behavior, including DMA errors or
-use-after-free, if the uninitialized 'dma' was used. Althrough such
-error has not yet occurred, it is worth fixing in the code.
-
-Fixes: 3c47e8ae113a ("net: libwx: Support to receive packets in NAPI")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250714024755.17512-3-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1add69880240 ("iio: adc: Add support for STM32 ADC core")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://patch.msgid.link/20250515083101.3811350-1-nichen@iscas.ac.cn
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_lib.c  |    4 ++--
- drivers/net/ethernet/wangxun/libwx/wx_type.h |    1 -
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/adc/stm32-adc-core.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -307,7 +307,7 @@ static bool wx_alloc_mapped_page(struct
- 		return false;
- 	dma = page_pool_get_dma_addr(page);
+--- a/drivers/iio/adc/stm32-adc-core.c
++++ b/drivers/iio/adc/stm32-adc-core.c
+@@ -429,10 +429,9 @@ static int stm32_adc_irq_probe(struct pl
+ 		return -ENOMEM;
+ 	}
  
--	bi->page_dma = dma;
-+	bi->dma = dma;
- 	bi->page = page;
- 	bi->page_offset = 0;
+-	for (i = 0; i < priv->cfg->num_irqs; i++) {
+-		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
+-		irq_set_handler_data(priv->irq[i], priv);
+-	}
++	for (i = 0; i < priv->cfg->num_irqs; i++)
++		irq_set_chained_handler_and_data(priv->irq[i],
++						 stm32_adc_irq_handler, priv);
  
-@@ -344,7 +344,7 @@ void wx_alloc_rx_buffers(struct wx_ring
- 						 DMA_FROM_DEVICE);
- 
- 		rx_desc->read.pkt_addr =
--			cpu_to_le64(bi->page_dma + bi->page_offset);
-+			cpu_to_le64(bi->dma + bi->page_offset);
- 
- 		rx_desc++;
- 		bi++;
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -755,7 +755,6 @@ struct wx_tx_buffer {
- struct wx_rx_buffer {
- 	struct sk_buff *skb;
- 	dma_addr_t dma;
--	dma_addr_t page_dma;
- 	struct page *page;
- 	unsigned int page_offset;
- };
+ 	return 0;
+ }
 
 
 
