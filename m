@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46EB1B0DBE1
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E68EB0DC79
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F227F3B36A4
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE519188A147
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06612EA173;
-	Tue, 22 Jul 2025 13:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440DE2E9751;
+	Tue, 22 Jul 2025 14:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QB/Vh1EJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvzjRoUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB022EA140;
-	Tue, 22 Jul 2025 13:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C102E0B6E;
+	Tue, 22 Jul 2025 14:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192319; cv=none; b=I2Sa76pvJ2vunsfyFOoXKdiBfwFiWzIOAxGDvwjgpz4eQ+8KhIBP5At/1jL8B4vbvtfMOrjiXRUHMukvzq1cYefwrHIysTZMp8ThrALK4yIxxg7lJW9GrXB8zc4Cu0hCDgFhxaxwRXiyCWiJuG4RxYGABURkBzyLjafvr9zDT8w=
+	t=1753192806; cv=none; b=FuQNKsOOkmASpcEDV3tg8PWEz0by1oyqhM9AHFW2Z9Q89fNYVCH+p+W5xkswOaorq7bF4xnbTo3JEc22CqQraNfdNDl5p5X273h/RP/WrfijYasxTMFQAkoyo/F2Lz6ii1XTPDVnlIyriJt4WNrrAqG3qV/MCykNf3a8+OeivIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192319; c=relaxed/simple;
-	bh=qxcXI6KbcwxPEFHMNeclWSQA7f0sEsDSLbqBYbbbi6k=;
+	s=arc-20240116; t=1753192806; c=relaxed/simple;
+	bh=rHebapAEtWmQmNNvfPKRn5ttbs6p4wjK19e7GNIjAp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=twkOhhEPdoH7RW7cq7NTulE4U1kLqMT8rkRCI1oQeDr6WqoT+nh8QuVK8VSH0z0k59s2ajAgiBALc5hsapQjbfwHrmBhFRpzi8xWL1uMvOlqvi7w4tX/HJqEmX0Uk0Iqke1DHoxHPU46kz+0LSYkyPqbN2+sJURUFAdv8v75naw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QB/Vh1EJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3203C4CEEB;
-	Tue, 22 Jul 2025 13:51:58 +0000 (UTC)
+	 MIME-Version; b=GejrV6cUzqbrWfGlvlPHabF75PrqltKhn8aTyIgb1GoTE6H0Vd5HM2Q8yU11tY5V018yJijs8YrVT7Y4v8bqyqTtxL6hMnJPRakntA9JxSs2SmTTNoSgcl14vK3x/uk0v/OeuEjFvvjW16spP/X5A4BRApp/HvpMhs1AVDaT5DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvzjRoUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64CDEC4CEF1;
+	Tue, 22 Jul 2025 14:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192319;
-	bh=qxcXI6KbcwxPEFHMNeclWSQA7f0sEsDSLbqBYbbbi6k=;
+	s=korg; t=1753192805;
+	bh=rHebapAEtWmQmNNvfPKRn5ttbs6p4wjK19e7GNIjAp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QB/Vh1EJ/OnzL86HEar/eUwEc93IorhzioQHJxXYJIAzZA8klxZY9Q6RO5NnMhlis
-	 /dyLweJWVI7gbcEHO5jhafH2/EPqmK0mJ+DDVyRxvEE2X0LomvpPaRVVgQh12kl+nu
-	 P61ZXxl/i8o5xo1G3HdG4bkA1EJJ6bZDBzNZ/SFw=
+	b=YvzjRoUfaynwRqPjnstiFhSA/ZPR+7gXv5eqJ1g6n4P/bYepBGJ8V0DOJX2vslyW5
+	 joCxT1nvPAYeOStyJajuIkER6hLblTr74aTAXZyEhClSB0xLNIU23sMaxCl1+QEYUl
+	 QZo8TcpXgrkdIsqSFeDSTGLmtyNRzpn8xjsM0gGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.6 030/111] arm64: dts: rockchip: use cs-gpios for spi1 on ringneck
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 061/158] net: libwx: properly reset Rx ring descriptor
 Date: Tue, 22 Jul 2025 15:44:05 +0200
-Message-ID: <20250722134334.522078056@linuxfoundation.org>
+Message-ID: <20250722134343.022119204@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,97 +60,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-commit 53b6445ad08f07b6f4a84f1434f543196009ed89 upstream.
+commit d992ed7e1b687ad7df0763d3e015a5358646210b upstream.
 
-Hardware CS has a very slow rise time of about 6us,
-causing transmission errors when CS does not reach
-high between transaction.
+When device reset is triggered by feature changes such as toggling Rx
+VLAN offload, wx->do_reset() is called to reinitialize Rx rings. The
+hardware descriptor ring may retain stale values from previous sessions.
+And only set the length to 0 in rx_desc[0] would result in building
+malformed SKBs. Fix it to ensure a clean slate after device reset.
 
-It looks like it's not driven actively when transitioning
-from low to high but switched to input, so only the CPU
-pull-up pulls it high, slowly. Transitions from high to low
-are fast. On the oscilloscope, CS looks like an irregular sawtooth
-pattern like this:
-                         _____
-              ^         /     |
-      ^      /|        /      |
-     /|     / |       /       |
-    / |    /  |      /        |
-___/  |___/   |_____/         |___
+[  549.186435] [     C16] ------------[ cut here ]------------
+[  549.186457] [     C16] kernel BUG at net/core/skbuff.c:2814!
+[  549.186468] [     C16] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[  549.186472] [     C16] CPU: 16 UID: 0 PID: 0 Comm: swapper/16 Kdump: loaded Not tainted 6.16.0-rc4+ #23 PREEMPT(voluntary)
+[  549.186476] [     C16] Hardware name: Micro-Star International Co., Ltd. MS-7E16/X670E GAMING PLUS WIFI (MS-7E16), BIOS 1.90 12/31/2024
+[  549.186478] [     C16] RIP: 0010:__pskb_pull_tail+0x3ff/0x510
+[  549.186484] [     C16] Code: 06 f0 ff 4f 34 74 7b 4d 8b 8c 24 c8 00 00 00 45 8b 84 24 c0 00 00 00 e9 c8 fd ff ff 48 c7 44 24 08 00 00 00 00 e9 5e fe ff ff <0f> 0b 31 c0 e9 23 90 5b ff 41 f7 c6 ff 0f 00 00 75 bf 49 8b 06 a8
+[  549.186487] [     C16] RSP: 0018:ffffb391c0640d70 EFLAGS: 00010282
+[  549.186490] [     C16] RAX: 00000000fffffff2 RBX: ffff8fe7e4d40200 RCX: 00000000fffffff2
+[  549.186492] [     C16] RDX: ffff8fe7c3a4bf8e RSI: 0000000000000180 RDI: ffff8fe7c3a4bf40
+[  549.186494] [     C16] RBP: ffffb391c0640da8 R08: ffff8fe7c3a4c0c0 R09: 000000000000000e
+[  549.186496] [     C16] R10: ffffb391c0640d88 R11: 000000000000000e R12: ffff8fe7e4d40200
+[  549.186497] [     C16] R13: 00000000fffffff2 R14: ffff8fe7fa01a000 R15: 00000000fffffff2
+[  549.186499] [     C16] FS:  0000000000000000(0000) GS:ffff8fef5ae40000(0000) knlGS:0000000000000000
+[  549.186502] [     C16] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  549.186503] [     C16] CR2: 00007f77d81d6000 CR3: 000000051a032000 CR4: 0000000000750ef0
+[  549.186505] [     C16] PKRU: 55555554
+[  549.186507] [     C16] Call Trace:
+[  549.186510] [     C16]  <IRQ>
+[  549.186513] [     C16]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  549.186517] [     C16]  __skb_pad+0xc7/0xf0
+[  549.186523] [     C16]  wx_clean_rx_irq+0x355/0x3b0 [libwx]
+[  549.186533] [     C16]  wx_poll+0x92/0x120 [libwx]
+[  549.186540] [     C16]  __napi_poll+0x28/0x190
+[  549.186544] [     C16]  net_rx_action+0x301/0x3f0
+[  549.186548] [     C16]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  549.186551] [     C16]  ? __raw_spin_lock_irqsave+0x1e/0x50
+[  549.186554] [     C16]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  549.186557] [     C16]  ? wake_up_nohz_cpu+0x35/0x160
+[  549.186559] [     C16]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  549.186563] [     C16]  handle_softirqs+0xf9/0x2c0
+[  549.186568] [     C16]  __irq_exit_rcu+0xc7/0x130
+[  549.186572] [     C16]  common_interrupt+0xb8/0xd0
+[  549.186576] [     C16]  </IRQ>
+[  549.186577] [     C16]  <TASK>
+[  549.186579] [     C16]  asm_common_interrupt+0x22/0x40
+[  549.186582] [     C16] RIP: 0010:cpuidle_enter_state+0xc2/0x420
+[  549.186585] [     C16] Code: 00 00 e8 11 0e 5e ff e8 ac f0 ff ff 49 89 c5 0f 1f 44 00 00 31 ff e8 0d ed 5c ff 45 84 ff 0f 85 40 02 00 00 fb 0f 1f 44 00 00 <45> 85 f6 0f 88 84 01 00 00 49 63 d6 48 8d 04 52 48 8d 04 82 49 8d
+[  549.186587] [     C16] RSP: 0018:ffffb391c0277e78 EFLAGS: 00000246
+[  549.186590] [     C16] RAX: ffff8fef5ae40000 RBX: 0000000000000003 RCX: 0000000000000000
+[  549.186591] [     C16] RDX: 0000007fde0faac5 RSI: ffffffff826e53f6 RDI: ffffffff826fa9b3
+[  549.186593] [     C16] RBP: ffff8fe7c3a20800 R08: 0000000000000002 R09: 0000000000000000
+[  549.186595] [     C16] R10: 0000000000000000 R11: 000000000000ffff R12: ffffffff82ed7a40
+[  549.186596] [     C16] R13: 0000007fde0faac5 R14: 0000000000000003 R15: 0000000000000000
+[  549.186601] [     C16]  ? cpuidle_enter_state+0xb3/0x420
+[  549.186605] [     C16]  cpuidle_enter+0x29/0x40
+[  549.186609] [     C16]  cpuidle_idle_call+0xfd/0x170
+[  549.186613] [     C16]  do_idle+0x7a/0xc0
+[  549.186616] [     C16]  cpu_startup_entry+0x25/0x30
+[  549.186618] [     C16]  start_secondary+0x117/0x140
+[  549.186623] [     C16]  common_startup_64+0x13e/0x148
+[  549.186628] [     C16]  </TASK>
 
-With cs-gpios we have a CS rise time of about 20ns, as it should be,
-and CS looks rectangular.
-
-This fixes the data errors when running a flashcp loop against a
-m25p40 spi flash.
-
-With the Rockchip 6.1 kernel we see the same slow rise time, but
-for some reason CS is always high for long enough to reach a solid
-high.
-
-The RK3399 and RK3588 SoCs use the same SPI driver, so we also
-checked our "Puma" (RK3399) and "Tiger" (RK3588) boards.
-They do not have this problem. Hardware CS rise time is good.
-
-Fixes: c484cf93f61b ("arm64: dts: rockchip: add PX30-µQ7 (Ringneck) SoM with Haikou baseboard")
+Fixes: 3c47e8ae113a ("net: libwx: Support to receive packets in NAPI")
 Cc: stable@vger.kernel.org
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
-Link: https://lore.kernel.org/r/20250627131715.1074308-1-jakob.unterwurzacher@cherry.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250714024755.17512-4-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c  |    7 +++----
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c |    5 +++++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
-@@ -344,6 +344,18 @@
- 				<0 RK_PA7 RK_FUNC_GPIO &pcfg_pull_up>;
- 		};
- 	};
-+
-+	spi1 {
-+		spi1_csn0_gpio_pin: spi1-csn0-gpio-pin {
-+			rockchip,pins =
-+				<3 RK_PB1 RK_FUNC_GPIO &pcfg_pull_up_4ma>;
-+		};
-+
-+		spi1_csn1_gpio_pin: spi1-csn1-gpio-pin {
-+			rockchip,pins =
-+				<3 RK_PB2 RK_FUNC_GPIO &pcfg_pull_up_4ma>;
-+		};
-+	};
- };
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -1531,7 +1531,6 @@ static void wx_configure_rx_ring(struct
+ 				 struct wx_ring *ring)
+ {
+ 	u16 reg_idx = ring->reg_idx;
+-	union wx_rx_desc *rx_desc;
+ 	u64 rdba = ring->dma;
+ 	u32 rxdctl;
  
- &saradc {
-@@ -355,6 +367,17 @@
- 	vqmmc-supply = <&vccio_sd>;
- };
+@@ -1561,9 +1560,9 @@ static void wx_configure_rx_ring(struct
+ 	memset(ring->rx_buffer_info, 0,
+ 	       sizeof(struct wx_rx_buffer) * ring->count);
  
-+&spi1 {
-+	/*
-+	 * Hardware CS has a very slow rise time of about 6us,
-+	 * causing transmission errors.
-+	 * With cs-gpios we have a rise time of about 20ns.
-+	 */
-+	cs-gpios = <&gpio3 RK_PB1 GPIO_ACTIVE_LOW>, <&gpio3 RK_PB2 GPIO_ACTIVE_LOW>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi1_clk &spi1_csn0_gpio_pin &spi1_csn1_gpio_pin &spi1_miso &spi1_mosi>;
-+};
+-	/* initialize Rx descriptor 0 */
+-	rx_desc = WX_RX_DESC(ring, 0);
+-	rx_desc->wb.upper.length = 0;
++	/* reset ntu and ntc to place SW in sync with hardware */
++	ring->next_to_clean = 0;
++	ring->next_to_use = 0;
+ 
+ 	/* enable receive descriptor ring */
+ 	wr32m(wx, WX_PX_RR_CFG(reg_idx),
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -355,6 +355,8 @@ void wx_alloc_rx_buffers(struct wx_ring
+ 
+ 		/* clear the status bits for the next_to_use descriptor */
+ 		rx_desc->wb.upper.status_error = 0;
++		/* clear the length for the next_to_use descriptor */
++		rx_desc->wb.upper.length = 0;
+ 
+ 		cleaned_count--;
+ 	} while (cleaned_count);
+@@ -2234,6 +2236,9 @@ static void wx_clean_rx_ring(struct wx_r
+ 		}
+ 	}
+ 
++	/* Zero out the descriptor ring */
++	memset(rx_ring->desc, 0, rx_ring->size);
 +
- &tsadc {
- 	status = "okay";
- };
+ 	rx_ring->next_to_alloc = 0;
+ 	rx_ring->next_to_clean = 0;
+ 	rx_ring->next_to_use = 0;
 
 
 
