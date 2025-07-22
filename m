@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-164299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2484AB0E5A1
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 23:39:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33640B0E5A8
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 23:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4003B7A17A6
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 21:37:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A3E51C883E4
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 21:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A75D28468B;
-	Tue, 22 Jul 2025 21:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF172868AC;
+	Tue, 22 Jul 2025 21:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qUpbrkUp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4xLDyyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8AC27EC7C
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 21:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F5728688F
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 21:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753220332; cv=none; b=pX34Ih0ExSJ8EBnNOaawLpVm6d+DtCwhEMKtH5mhTkESFksQGg5GEjgxiIMDgv8YKg5dmA56+TT6zNK65HAqvH3Zbjxzpc+13YDrd18cGlwpkzGfcjKEipJv94OQOPrTXuDeOacMsVtqvvUj0PiG9jSRbwmKSlDltdi0mwhDGys=
+	t=1753220424; cv=none; b=JUVtCla1vK2orZZNVP41I/M+YvzpkzIRy+kFc9ZurtId01H59uy+XVp7p5YkYy4Z3FcGHIrVDcYEsf9qRtHsVCaR7G3EV8UJMqqO7qOakET6dEAHv1Ac2NSU1mlXc4dbbPHg97/QA0LlAmNix3maeA43OP5pGPgvz8vutFiUux4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753220332; c=relaxed/simple;
-	bh=gzmMZfFpWe8lkiBRR8CrkmYNnde3frrODYs7XZSN0rE=;
+	s=arc-20240116; t=1753220424; c=relaxed/simple;
+	bh=99He4ifu8JK0kRFJNfe3VPx6aQ2J9UCwg7Nh8tTYgsk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=M6FTBk1QG4PFpqVFfh9trqNmcJAkXwiE0Q90vbWsTAk1OdJrHaapq7VJ4iaFNvEX5KPXRvH5tz/n7ux5Uhwx4apsOBFmghIqWk5Rfn9ewdDWBkHsFqTkwELYWFMXpQZal8gEPtZ9ugDYafBM/RTO7HgC9/w+fzU4APfhB6Ek69E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qUpbrkUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDD1C4CEEB;
-	Tue, 22 Jul 2025 21:38:50 +0000 (UTC)
+	 MIME-Version; b=s7aH1wXVqFUxJCE7B0zn0pt+ixS03rnxY5ZG/fzw+97mJ08BYe8TTJg3OynYcyUp5+7xKybS/uDQXZvV+KcFTdGNx3NsrBEgOnzThZPZj17juZbsEKHXYgJVS2chF/v2md1XuqkTI4yCuwEKwIZhy2Fjbz0bIE8Cj61U8uypSq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4xLDyyK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A13BC4CEEB;
+	Tue, 22 Jul 2025 21:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753220331;
-	bh=gzmMZfFpWe8lkiBRR8CrkmYNnde3frrODYs7XZSN0rE=;
+	s=k20201202; t=1753220424;
+	bh=99He4ifu8JK0kRFJNfe3VPx6aQ2J9UCwg7Nh8tTYgsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qUpbrkUpDRYOq7+/DWghhuz2ClDoW/xTQe8cTiwO/q2BfS5j0yVdEMgUTnCf48Oss
-	 bUI+FgchIcC31diKSyV37KJCwQafTZQ1x6OcNkKGJzIC78EXNgEQEiA5LNlx1LZuAF
-	 OyKx7w0nVgxXFAQPkuSIur5oj72yzBku8jHJX1E70gQN2x6ECOPGXNGsh7nuTTF6Ri
-	 qSFGk2z/fwQ3VfSAwwWIn0IzsoUtIcwVDmiQ0tdTtUj8HeUSNte3+3YK4RDUUkpTGP
-	 mWU8lObmQE0GclfzzbEWWwmH9WxoGYKEF+zuSZLirERgDXRvY6oEDXhG3T3Xudy0sC
-	 4MXRpnDfkrRqQ==
+	b=u4xLDyyKmeclRY9T+Kqd3YvY4zSxDr6ctG4mK2Ki0NNgqrCTuyRCmUjU1ArLwhCbv
+	 vNxiLvZVwqQ1t8tIs9gWoLFiMSIG9nhboolu4yVUIBKF4NdzjUl1FxVj6mUEmWCnLc
+	 tcTg5icxUgAwOe0z84ieLpV50zWcpuQ7aSo/YefsJWswn8J4Ebs6MJvfRZZ4/lNK+I
+	 1tk6NGTPG4nlAS/EoUdmQb0J60gDh5hyM/V7Py7jhR6r4mFs1trKoTYGCTHkBQmxQ8
+	 P/aX1q8JRMBbmjOY/vY4F2wtD6eJz2EddGib5ihL6TWjbJsnnKo9EsSMRmZp6yPqae
+	 K9p4AWvo2FFnA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Ian Abbott <abbotti@mev.co.uk>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] comedi: comedi_test: Fix possible deletion of uninitialized timers
-Date: Tue, 22 Jul 2025 17:38:46 -0400
-Message-Id: <20250722213846.980515-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] comedi: comedi_test: Fix possible deletion of uninitialized timers
+Date: Tue, 22 Jul 2025 17:40:20 -0400
+Message-Id: <20250722214020.980645-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025072153-clerical-autograph-74d4@gregkh>
-References: <2025072153-clerical-autograph-74d4@gregkh>
+In-Reply-To: <2025072154-unchain-champion-e3d6@gregkh>
+References: <2025072154-unchain-champion-e3d6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,17 +80,17 @@ Cc: stable@vger.kernel.org # 6.15+
 Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
 Link: https://lore.kernel.org/r/20250708130627.21743-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ changed timer_delete_sync() to del_timer_sync() ]
+[ replaced timer_delete_sync() with del_timer_sync() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  drivers/comedi/drivers/comedi_test.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/comedi/drivers/comedi_test.c b/drivers/comedi/drivers/comedi_test.c
-index 05ae9122823f8..e713ef611434d 100644
+index 626d53bf9146a..aecb5f193be1b 100644
 --- a/drivers/comedi/drivers/comedi_test.c
 +++ b/drivers/comedi/drivers/comedi_test.c
-@@ -790,7 +790,7 @@ static void waveform_detach(struct comedi_device *dev)
+@@ -788,7 +788,7 @@ static void waveform_detach(struct comedi_device *dev)
  {
  	struct waveform_private *devpriv = dev->private;
  
