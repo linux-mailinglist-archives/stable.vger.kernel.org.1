@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-164221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7820B0DE65
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:26:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DCFB0DD19
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD7C2AC77CD
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4E8B5664D9
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDDF1D6193;
-	Tue, 22 Jul 2025 14:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4306628C5D5;
+	Tue, 22 Jul 2025 14:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UitP/cpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8QA55ln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC622DEA8E;
-	Tue, 22 Jul 2025 14:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F72288CA2;
+	Tue, 22 Jul 2025 14:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193644; cv=none; b=dmHEyQjtkNDQp5fEinApaBt+hS2Zl+H6VcXC1o2wnlj4hdbcRCxRWkOk+dJoqseCvDkV9avRk7ww1RhCOZbttzD12t36bRRlxuIEG/83ywV2V+dkPpwKTI4O+N9ZY7iQ12zHFMvFOgY4zcuLzoMIOKNU/nuVoBFrjSPXEAjbcaE=
+	t=1753193143; cv=none; b=phwiwdhy6uSl82HJoSneJLFxDPZkUHLb8xvq3l+ReuK+3h+jQabP5r+vNEr2AzFbhN+7eSjJo8RQcRawfCetxe5LApVPMrcESCAxAxG/h25gK6F7zCK2/NnoXuxYnCxm+dZOYS1FPsmKPJoMXSH0oWI/CPSg2Xk9yLg0DPF6B6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193644; c=relaxed/simple;
-	bh=SY6J4BX1aF6klvwI6Vxn559VDFbvUnUEZRqKZsNiqk8=;
+	s=arc-20240116; t=1753193143; c=relaxed/simple;
+	bh=KVkvBNZQX0AV0m2FlVwks3XCSfWaoO+k+V2sOIlPLXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eF5+BGyoYYzKillzpQwdmdYevCfD0ZBNp+l20aMSCWodqa+BIlXBo3adgV5sbZpPYGdaqfxZ19S+7j8EAUm7NB4XyeAtzOw0xkWTTWgt0Rjys+0aMdndW4t8ssEL1ai4I0X3k9h9XAQm6MNLlYRSgtM6AAJVdxU/8/XIzEqJeR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UitP/cpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C98CC4CEEB;
-	Tue, 22 Jul 2025 14:14:03 +0000 (UTC)
+	 MIME-Version; b=qccIEdZDboIm4fXQohxvaJT1tAGjioqLdD81MFITKBMpVRCIzAONaPozw4STr47As0FkVLuGwtTyqW8N15mQ5fWwNlcYurOuWQcnyaPKkO5AhIxqpcRmN9JwnUybe/VuGf5MFN+z4vThNL21qPqQsfeU220+2t4+qaYQt34aQOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8QA55ln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FD8C4CEEB;
+	Tue, 22 Jul 2025 14:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193644;
-	bh=SY6J4BX1aF6klvwI6Vxn559VDFbvUnUEZRqKZsNiqk8=;
+	s=korg; t=1753193142;
+	bh=KVkvBNZQX0AV0m2FlVwks3XCSfWaoO+k+V2sOIlPLXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UitP/cpO6vJDrINFRxTAKs+Xn7WirTAjCCaZCXvdLl10h6+BoGW3h40v6SNz4vTel
-	 mEoHTFGTwbLdcXFJi2XPelgAZFLP8Et9E6fm1wT8Pn4zlXLPaf0EgbYsdy4gtxM35h
-	 4n6A/K36sw8Ilv51/JmyjqcE99GCF6v1fD8piU3Q=
+	b=v8QA55ln9Tc+BjuUIkgdRoCANoNZCFceZWmpJ7/YlRBFMUJLhlnS1Di8bqPLDJLRP
+	 OmuSmZ8Fax2Rz62lXXXCGDV7AipfiKlgcfFYgPiRJeHVfUNIqVkjWeu5xI2h9Et8Uj
+	 yuuGd823i62zJQ58AMqTo9vj3ZQabEnvdVfVtF9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 155/187] net/sched: Return NULL when htb_lookup_leaf encounters an empty rbtree
+	Christian Brauner <brauner@kernel.org>,
+	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.12 141/158] clone_private_mnt(): make sure that caller has CAP_SYS_ADMIN in the right userns
 Date: Tue, 22 Jul 2025 15:45:25 +0200
-Message-ID: <20250722134351.554298943@linuxfoundation.org>
+Message-ID: <20250722134345.985934377@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
-References: <20250722134345.761035548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Liu <will@willsroot.io>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 0e1d5d9b5c5966e2e42e298670808590db5ed628 ]
+commit c28f922c9dcee0e4876a2c095939d77fe7e15116 upstream.
 
-htb_lookup_leaf has a BUG_ON that can trigger with the following:
+What we want is to verify there is that clone won't expose something
+hidden by a mount we wouldn't be able to undo.  "Wouldn't be able to undo"
+may be a result of MNT_LOCKED on a child, but it may also come from
+lacking admin rights in the userns of the namespace mount belongs to.
 
-tc qdisc del dev lo root
-tc qdisc add dev lo root handle 1: htb default 1
-tc class add dev lo parent 1: classid 1:1 htb rate 64bit
-tc qdisc add dev lo parent 1:1 handle 2: netem
-tc qdisc add dev lo parent 2:1 handle 3: blackhole
-ping -I lo -c1 -W0.001 127.0.0.1
+clone_private_mnt() checks the former, but not the latter.
 
-The root cause is the following:
+There's a number of rather confusing CAP_SYS_ADMIN checks in various
+userns during the mount, especially with the new mount API; they serve
+different purposes and in case of clone_private_mnt() they usually,
+but not always end up covering the missing check mentioned above.
 
-1. htb_dequeue calls htb_dequeue_tree which calls the dequeue handler on
-   the selected leaf qdisc
-2. netem_dequeue calls enqueue on the child qdisc
-3. blackhole_enqueue drops the packet and returns a value that is not
-   just NET_XMIT_SUCCESS
-4. Because of this, netem_dequeue calls qdisc_tree_reduce_backlog, and
-   since qlen is now 0, it calls htb_qlen_notify -> htb_deactivate ->
-   htb_deactiviate_prios -> htb_remove_class_from_row -> htb_safe_rb_erase
-5. As this is the only class in the selected hprio rbtree,
-   __rb_change_child in __rb_erase_augmented sets the rb_root pointer to
-   NULL
-6. Because blackhole_dequeue returns NULL, netem_dequeue returns NULL,
-   which causes htb_dequeue_tree to call htb_lookup_leaf with the same
-   hprio rbtree, and fail the BUG_ON
-
-The function graph for this scenario is shown here:
- 0)               |  htb_enqueue() {
- 0) + 13.635 us   |    netem_enqueue();
- 0)   4.719 us    |    htb_activate_prios();
- 0) # 2249.199 us |  }
- 0)               |  htb_dequeue() {
- 0)   2.355 us    |    htb_lookup_leaf();
- 0)               |    netem_dequeue() {
- 0) + 11.061 us   |      blackhole_enqueue();
- 0)               |      qdisc_tree_reduce_backlog() {
- 0)               |        qdisc_lookup_rcu() {
- 0)   1.873 us    |          qdisc_match_from_root();
- 0)   6.292 us    |        }
- 0)   1.894 us    |        htb_search();
- 0)               |        htb_qlen_notify() {
- 0)   2.655 us    |          htb_deactivate_prios();
- 0)   6.933 us    |        }
- 0) + 25.227 us   |      }
- 0)   1.983 us    |      blackhole_dequeue();
- 0) + 86.553 us   |    }
- 0) # 2932.761 us |    qdisc_warn_nonwc();
- 0)               |    htb_lookup_leaf() {
- 0)               |      BUG_ON();
- ------------------------------------------
-
-The full original bug report can be seen here [1].
-
-We can fix this just by returning NULL instead of the BUG_ON,
-as htb_dequeue_tree returns NULL when htb_lookup_leaf returns
-NULL.
-
-[1] https://lore.kernel.org/netdev/pF5XOOIim0IuEfhI-SOxTgRvNoDwuux7UHKnE_Y5-zVd4wmGvNk2ceHjKb8ORnzw0cGwfmVu42g9dL7XyJLf1NEzaztboTWcm0Ogxuojoeo=@willsroot.io/
-
-Fixes: 512bb43eb542 ("pkt_sched: sch_htb: Optimize WARN_ONs in htb_dequeue_tree() etc.")
-Signed-off-by: William Liu <will@willsroot.io>
-Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
-Link: https://patch.msgid.link/20250717022816.221364-1-will@willsroot.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
+Fixes: 427215d85e8d ("ovl: prevent private clone if bind mount is not allowed")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+[ merge conflict resolution: clone_private_mount() was reworked in
+  db04662e2f4f ("fs: allow detached mounts in clone_private_mount()").
+  Tweak the relevant ns_capable check so that it works on older kernels ]
+Signed-off-by: Noah Orlando <Noah.Orlando@deshaw.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_htb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/namespace.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-index 14bf71f570570..c968ea7637746 100644
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -821,7 +821,9 @@ static struct htb_class *htb_lookup_leaf(struct htb_prio *hprio, const int prio)
- 		u32 *pid;
- 	} stk[TC_HTB_MAXDEPTH], *sp = stk;
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2263,6 +2263,11 @@ struct vfsmount *clone_private_mount(con
+ 	if (!check_mnt(old_mnt))
+ 		goto invalid;
  
--	BUG_ON(!hprio->row.rb_node);
-+	if (unlikely(!hprio->row.rb_node))
-+		return NULL;
++	if (!ns_capable(old_mnt->mnt_ns->user_ns, CAP_SYS_ADMIN)) {
++		up_read(&namespace_sem);
++		return ERR_PTR(-EPERM);
++	}
 +
- 	sp->root = hprio->row.rb_node;
- 	sp->pptr = &hprio->ptr;
- 	sp->pid = &hprio->last_ptr_id;
--- 
-2.39.5
-
+ 	if (has_locked_children(old_mnt, path->dentry))
+ 		goto invalid;
+ 
 
 
 
