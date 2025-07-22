@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-163884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BEAB0DC29
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:58:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14377B0DB7A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B0115674B3
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D849B1891EC7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522072EA49D;
-	Tue, 22 Jul 2025 13:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18BC92C3768;
+	Tue, 22 Jul 2025 13:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZbBBpSx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/FKgv77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A532EA496;
-	Tue, 22 Jul 2025 13:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8BF21578D;
+	Tue, 22 Jul 2025 13:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192529; cv=none; b=QuWzV2lw2J0rgzwjRn8A2RJSfQKFqUtVPp6LQQRY8sNbwckcgX4hvkpI7J1mRoB1V9Gc9Enmi7fXDjlmAEJOXKU0pIz9BXnY/ZXkhOQ4aGlE0qE/9euf5o710zOlgh9vbfAnONDrDTe1p8aCm4mAiDdV2Vfl29lHtbCTD5QI+HM=
+	t=1753192195; cv=none; b=s4UalQ7485grJgGAh2PA+aIyI1gx9dQ0WTZehCgiopqWsXqlCpI10Mjm1OTx3rEqUPUwRm2+Pbz29eJhkY+4nJ5PXDqcvKnEvx3HNXRMl9/AXjZpITTGkkU+pns0+PV+bFtRgpl9MJLSbnEwLya6xhn0NiWz47szFq72CuBQif8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192529; c=relaxed/simple;
-	bh=kkZowPFony1EetxwSrOGQLd0J8dDrcEAcAwd3hSJlwE=;
+	s=arc-20240116; t=1753192195; c=relaxed/simple;
+	bh=+5JztpkMwu45Sr6MIknpY/ensHC5wwh6CG2NuJ70wsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipp60Rma3wK240jJ7H2JP2y69tB9n7pFxKxdEfy3GMGUSJCgGEYpfIWMNIp52QdOLXfxkpsvXQBmoZMbnE4wQzs5gGtcqGqnOA71MfYgD3j/tg9LyYwpx67us2FlE69uANA11+dwlxXUNp25rFOmwfo06dhHKuvGf4/HK9fqLXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZbBBpSx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36963C4CEF5;
-	Tue, 22 Jul 2025 13:55:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HmnXAJlNDvBc6VSoqvBmWKiW9unuyg+Zi2pnh8XQxFdzeicUW7WYfL5bAQ2F+b3SQawSMRfWRaCJ6M0d+GejsZhRwi10Hu+L0jBl7NGJzIBKxtjMafVmDVaR5ggxffkpgXCV67cm9cL0x8egZ0Ak13zStq1z2MyxHAmLT4XOT+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/FKgv77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3101AC4CEF1;
+	Tue, 22 Jul 2025 13:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192528;
-	bh=kkZowPFony1EetxwSrOGQLd0J8dDrcEAcAwd3hSJlwE=;
+	s=korg; t=1753192195;
+	bh=+5JztpkMwu45Sr6MIknpY/ensHC5wwh6CG2NuJ70wsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZbBBpSxpQIRXKJPcdLfCMj5YZ5WoER1ToSmj3EaYng+EzCeSxE4DGPzcVdw1P2aE
-	 Xtmc3srmeN0yN7QoPw7d/3JywOtcF2R8bTTfkfiuNCqGptsrYD42RS9OqpmHKyHkA0
-	 P7UJmbqboEk8QpCeeIjw5Nyc09LslNvJZ3Iwlfzg=
+	b=n/FKgv772+MzCeR+/0ygOuFRpUm4pRuu0BNQHTMmQoZOheU0c89BBVIHNlqJMOd2F
+	 E5vbUf/sUhnXwj47GI5onKX6IpBmyasGmHo3WR+I6/ZEDOcUNbpSIGU86ek6i2EEIN
+	 l/x+oqaTKgk9+jLdNbL/angLyhXT4YhQtP132aYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhong Jiawei <zhongjiawei1@huawei.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/111] Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"
-Date: Tue, 22 Jul 2025 15:45:07 +0200
-Message-ID: <20250722134336.848935716@linuxfoundation.org>
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.1 72/79] usb: hub: Dont try to recover devices lost during warm reset.
+Date: Tue, 22 Jul 2025 15:45:08 +0200
+Message-ID: <20250722134331.034837456@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +60,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 14a67b42cb6f3ab66f41603c062c5056d32ea7dd ]
+commit 2521106fc732b0b75fd3555c689b1ed1d29d273c upstream.
 
-This reverts commit cff5f49d433fcd0063c8be7dd08fa5bf190c6c37.
+Hub driver warm-resets ports in SS.Inactive or Compliance mode to
+recover a possible connected device. The port reset code correctly
+detects if a connection is lost during reset, but hub driver
+port_event() fails to take this into account in some cases.
+port_event() ends up using stale values and assumes there is a
+connected device, and will try all means to recover it, including
+power-cycling the port.
 
-Commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
-frozen") modified the cgroup_freezing() logic to verify that the FROZEN
-flag is not set, affecting the return value of the freezing() function,
-in order to address a warning in __thaw_task.
+Details:
+This case was triggered when xHC host was suspended with DbC (Debug
+Capability) enabled and connected. DbC turns one xHC port into a simple
+usb debug device, allowing debugging a system with an A-to-A USB debug
+cable.
 
-A race condition exists that may allow tasks to escape being frozen. The
-following scenario demonstrates this issue:
+xhci DbC code disables DbC when xHC is system suspended to D3, and
+enables it back during resume.
+We essentially end up with two hosts connected to each other during
+suspend, and, for a short while during resume, until DbC is enabled back.
+The suspended xHC host notices some activity on the roothub port, but
+can't train the link due to being suspended, so xHC hardware sets a CAS
+(Cold Attach Status) flag for this port to inform xhci host driver that
+the port needs to be warm reset once xHC resumes.
 
-CPU 0 (get_signal path)		CPU 1 (freezer.state reader)
-try_to_freeze			read freezer.state
-__refrigerator			freezer_read
-				update_if_frozen
-WRITE_ONCE(current->__state, TASK_FROZEN);
-				...
-				/* Task is now marked frozen */
-				/* frozen(task) == true */
-				/* Assuming other tasks are frozen */
-				freezer->state |= CGROUP_FROZEN;
-/* freezing(current) returns false */
-/* because cgroup is frozen (not freezing) */
-break out
-__set_current_state(TASK_RUNNING);
-/* Bug: Task resumes running when it should remain frozen */
+CAS is xHCI specific, and not part of USB specification, so xhci driver
+tells usb core that the port has a connection and link is in compliance
+mode. Recovery from complinace mode is similar to CAS recovery.
 
-The existing !frozen(p) check in __thaw_task makes the
-WARN_ON_ONCE(freezing(p)) warning redundant. Removing this warning enables
-reverting the commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check
-if not frozen") to resolve the issue.
+xhci CAS driver support that fakes a compliance mode connection was added
+in commit 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
 
-The warning has been removed in the previous patch. This patch revert the
-commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
-frozen") to complete the fix.
+Once xHCI resumes and DbC is enabled back, all activity on the xHC
+roothub host side port disappears. The hub driver will anyway think
+port has a connection and link is in compliance mode, and hub driver
+will try to recover it.
 
-Fixes: cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not frozen")
-Reported-by: Zhong Jiawei<zhongjiawei1@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The port power-cycle during recovery seems to cause issues to the active
+DbC connection.
+
+Fix this by clearing connect_change flag if hub_port_reset() returns
+-ENOTCONN, thus avoiding the whole unnecessary port recovery and
+initialization attempt.
+
+Cc: stable@vger.kernel.org
+Fixes: 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250623133947.3144608-1-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/legacy_freezer.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/usb/core/hub.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/legacy_freezer.c b/kernel/cgroup/legacy_freezer.c
-index a3e13e6d5ee40..bee2f9ea5e4ae 100644
---- a/kernel/cgroup/legacy_freezer.c
-+++ b/kernel/cgroup/legacy_freezer.c
-@@ -66,15 +66,9 @@ static struct freezer *parent_freezer(struct freezer *freezer)
- bool cgroup_freezing(struct task_struct *task)
- {
- 	bool ret;
--	unsigned int state;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -5702,6 +5702,7 @@ static void port_event(struct usb_hub *h
+ 	struct usb_device *hdev = hub->hdev;
+ 	u16 portstatus, portchange;
+ 	int i = 0;
++	int err;
  
- 	rcu_read_lock();
--	/* Check if the cgroup is still FREEZING, but not FROZEN. The extra
--	 * !FROZEN check is required, because the FREEZING bit is not cleared
--	 * when the state FROZEN is reached.
--	 */
--	state = task_freezer(task)->state;
--	ret = (state & CGROUP_FREEZING) && !(state & CGROUP_FROZEN);
-+	ret = task_freezer(task)->state & CGROUP_FREEZING;
- 	rcu_read_unlock();
- 
- 	return ret;
--- 
-2.39.5
-
+ 	connect_change = test_bit(port1, hub->change_bits);
+ 	clear_bit(port1, hub->event_bits);
+@@ -5794,8 +5795,11 @@ static void port_event(struct usb_hub *h
+ 		} else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
+ 				|| udev->state == USB_STATE_NOTATTACHED) {
+ 			dev_dbg(&port_dev->dev, "do warm reset, port only\n");
+-			if (hub_port_reset(hub, port1, NULL,
+-					HUB_BH_RESET_TIME, true) < 0)
++			err = hub_port_reset(hub, port1, NULL,
++					     HUB_BH_RESET_TIME, true);
++			if (!udev && err == -ENOTCONN)
++				connect_change = 0;
++			else if (err < 0)
+ 				hub_port_disable(hub, port1, 1);
+ 		} else {
+ 			dev_dbg(&port_dev->dev, "do warm reset, full device\n");
 
 
 
