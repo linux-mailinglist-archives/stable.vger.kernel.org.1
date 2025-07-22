@@ -1,196 +1,147 @@
-Return-Path: <stable+bounces-164284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB708B0E37A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 20:27:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72175B0E38E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 20:34:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F227556113C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 18:27:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 921133A8D9A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 18:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18E528000F;
-	Tue, 22 Jul 2025 18:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5582A281526;
+	Tue, 22 Jul 2025 18:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fbBdjSE3"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="jZD7vNB/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FFF19D082
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 18:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F56027F747;
+	Tue, 22 Jul 2025 18:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753208839; cv=none; b=taBgfte095CYV/9LQXPgx2fNe3+eG7psjuXT0jgDkDaKK5nwTAnQRlfKuTE2gFaNkpBivxpQwr3Wad/en4wWro9Q1F12weM9FJfIeQ1JWU8ax+RJ1AZgVcHgqwGQ/amE7MrUNZ3coWMVvWDZ+OfOB+UD+cEJ1uuna6bLKjrLU/Y=
+	t=1753209273; cv=none; b=BufRHrC3PnDWwQj4MX7+mBygctRBgeYkzEuYN2zS0peFsDiuCjbsmynPHGcl7Q3D6t1CDfueZmSbKRj0aX45YUc0CsyFaxmEhQe33lKSSPEgaVamaNF3e2YE5J/ZJNnGUPZgK1Ok0O2Cwl52MFX4gGcUxXmDSq78/B3gQAANezo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753208839; c=relaxed/simple;
-	bh=TzuX4mInNFL0Y71HlZ/CxdY52DbWevcbHeKa5VEl6b4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F3qXjypiL7gWf0At+OatwUbji0RmLoGR9+7Ih8DQ7/KmcaEhpAWP20d9RQMQLs8lKXQ6iDfMD9LPFbwZbJfvO+ZG15WtTz7WM4UdSusaipRbL6MfL9FVgC4tdgwChxCL5JFSPgLJrs8OABjSA+KrCmUdfCAeAQGdDNQBatbK+Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fbBdjSE3; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a507e88b0aso4006686f8f.1
-        for <stable@vger.kernel.org>; Tue, 22 Jul 2025 11:27:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753208836; x=1753813636; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0Z8+WxTUCxaG+bKBH/CjfFqMsRzOrc36DXiZRhX8IKQ=;
-        b=fbBdjSE3y2GGmYpxw+mlOrzUt9fZZvAVKKg89b6flAay1wOTFChU2s10nR6Php8caf
-         vlHE45fOuBxcyRXk2r8uj/u1iaQr+nJWdzaaHS3Zfa59gBMjsQXoN8fC3SrQUbk7K0iv
-         LUsM82heCOvhFW98e2iorMsaBuDkpKX3UPSUArRQ/wFmco7VLe7DH1y630oPfWuevjqH
-         8QtAKzhQGJ6CfgaEXMCNm4WzxijTZXkgzdlmS1JDSb9M2wzKiLwbEhIavuzwbFi6s2mX
-         TftJiA5QcOpfdzWUHPEPRBaixzcYgyDnKa92qHrjTgnV0/UKQkwmWLrh8Uxycwx/aW5o
-         uzCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753208836; x=1753813636;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Z8+WxTUCxaG+bKBH/CjfFqMsRzOrc36DXiZRhX8IKQ=;
-        b=pZ2sKxR1RZymxfk2McpU9u5nQkNsbjKf5yc8Cc8+UZbkg2wgMvjCRz6qe22h5tTwj8
-         6Vu5AvLhOUoaKm5vehhsqzrkAbXlrtTwkI2M38xZS6qcwxsNf0zdwECIb8stx0GT47p3
-         /5Dp+3m/zro/lUgLiiks4yaCX75nqcoZ4BN5d9nLEg80Z/iAeVPtPGetA1nQB378xKlu
-         3vUvgsWwQWaJ9K8o6I93TeOPF49Fw57y6mPtzKkZ0+0/cpkS6HzbXYbREaJzV3rdJg9U
-         lYloqPGsYaSQAG0X23bjh0X1CvY3P9cA/W/zr6FkkxQ78KGcKII1cRcV9Lqu51iFX7Yp
-         RQog==
-X-Forwarded-Encrypted: i=1; AJvYcCUAgRwXtkWalOwM/dvdomkDT93i4GKfjShm7rYfrLXLmWFR+cVhyQUZYVga36qJyx+0lY+3gSQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1U2eZ5vlX41yIQG0yRaA+FaqBdf36nY9VLNi4QIjH0DspEwWd
-	FHhkuU3Sb2C/cZo+kjiF28eti/BHcn6u9eFcTLh42okAGc82fWwDN9HJ7lfjlZkKtw==
-X-Gm-Gg: ASbGncvhkVydyMUfgTpAh9r5KHKO4jDl2jH8DzQv4FvFgcGOzkek2UJEEg9jgScH3kM
-	i0Qh9R2J+iAZTW0YOuf4vdflu4vC6uvvNY422EO9HOIi1rtMbpcI6ZfMh942nyNFQl/JhFz9v4C
-	JtFWTrzL2j7yShjJrRBu1R7cRVTlHrCy1tlH7visTcKdoj7W31aWpvIlw0MT1+Kq503bKSwqq1J
-	RwOPMbvUHTguhHhKobyCKuXxOQM4+bhm8yRJ2UnyvPW06NbVZp2BMXOWGj2GuqGA5WGdrVEps/h
-	KgO6bTgpUX7WEokr27M2u1je9lR+JBL4lm/ovxSE1r38RSwNVxRkOpN7C5OeNEstFbgNS2g5OPI
-	Le63txW6Xvzj/WIzMRIyMr2WjG5tkkwzjsFYHx4rgeL+1xdAqv7PP0WmFhw==
-X-Google-Smtp-Source: AGHT+IHWIMlQSVzvAq85Yom5KJ9BYmsTxVnjI5RbzJDAcwDVZQTDVOTdmdUULBd3ut0q8DI1kuLuUA==
-X-Received: by 2002:a05:6000:1885:b0:3a4:f644:95f0 with SMTP id ffacd0b85a97d-3b768f165f7mr219753f8f.54.1753208835850;
-        Tue, 22 Jul 2025 11:27:15 -0700 (PDT)
-Received: from elver.google.com ([2a00:79e0:2834:9:53e1:3729:be19:c80])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca4d807sm14296542f8f.73.2025.07.22.11.27.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 11:27:15 -0700 (PDT)
-Date: Tue, 22 Jul 2025 20:27:08 +0200
-From: Marco Elver <elver@google.com>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	clang-built-linux <llvm@lists.linux.dev>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Nathan Chancellor <nathan@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Ben Copeland <benjamin.copeland@linaro.org>
-Subject: Re: [PATCH 6.12 000/158] 6.12.40-rc1 review
-Message-ID: <aH_X_AVUDoP7oB0E@elver.google.com>
-References: <20250722134340.596340262@linuxfoundation.org>
- <CA+G9fYu8JY=k-r0hnBRSkQQrFJ1Bz+ShdXNwC1TNeMt0eXaxeA@mail.gmail.com>
+	s=arc-20240116; t=1753209273; c=relaxed/simple;
+	bh=L3vufwGgI09ZsG8XHxO8HCoUgh5XQkAgKqaKlzDDclE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=WNXYsCQpkJMsL5YuFdXop5rzb4aaykiYVengKjmLlEZF4axYQz8gB1l8Ad76CSHxoa/Rzu8tVW/X0gfCzUFuPAWm2DGweB5o3GoZB5itXbORMC9PgTxl8BYb9oCWl6dL3LVZMRGlDi9fYUciTDwKjhnr2ZVVQTfZMGgPn360t6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=jZD7vNB/; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1753209240; x=1753814040; i=markus.elfring@web.de;
+	bh=/kcMsNZpnXXW+LfAHwa/O2YgzoTjb/rnsR6TqBrmKGA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=jZD7vNB/MPYAKTMyieqeZ44bx+0srAqHiM2ROBn8o7R+rzZNa1WNua+uQH7F8Hbh
+	 QJf3DMeUYVqAhcRb1HSe1inFuqGmlnHE0gNZ71/HqgUI4hsRx15BlDbt4RWnlPjhR
+	 2GOiHnII8oW6K7CW+FmDCPJViAGk2MRAuDrsTUfZ9x9A2zFlz0Sru+635edIApKAu
+	 0K3Xyzn+RlCYWB9dVgFI4lVh0a8uA94By1IFb+H4f8ni1EHdQFgdnwQ04EsI6wfw5
+	 vrkdJ+83j/8ZQVwYdvmXwc8Rr1Mn4VXISm+tGf9Z78fo0dMjip5aysEr7i+jeYgqs
+	 y2fsbvPSzyUqS6TJ6g==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.215]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N8Voj-1uiDkH1DW5-00rbsU; Tue, 22
+ Jul 2025 20:34:00 +0200
+Message-ID: <bf959b95-3e59-4863-bd92-84adee05f9e2@web.de>
+Date: Tue, 22 Jul 2025 20:33:59 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYu8JY=k-r0hnBRSkQQrFJ1Bz+ShdXNwC1TNeMt0eXaxeA@mail.gmail.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
+User-Agent: Mozilla Thunderbird
+To: Johan Hovold <johan+linaro@kernel.org>, linux-pci@vger.kernel.org,
+ Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250721153609.8611-2-johan+linaro@kernel.org>
+Subject: Re: [PATCH 1/3] PCI/pwrctrl: Fix device leak at registration
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250721153609.8611-2-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:8vf+8TT0dTg9hS92+mlOh3EcTxVoq5GuFL+JfG4QOO1sUK5oxsT
+ gRQSPhVAgSvqyA8I0ehb2ZQgQsX7E0OipLPa5Z3k87WPBUYvcl8joaW/VcEyy7fgplAFm34
+ vjulMoiNRD/SlQ8MOozvHS1JH5geobYG6LaoMjH3jo1SE73t0lxHUPjB4ppY0x7th2IskT8
+ RMYiHqCfvj3y9ccQygqqw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:OEomLu6boB0=;ZBR9UmxKLsBSRvhXK12b+Nl1iyb
+ 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
+ ovCEot1nvEi6aKZBv86pD+o6YBRvA==
 
-On Tue, Jul 22, 2025 at 11:30PM +0530, Naresh Kamboju wrote:
-> On Tue, 22 Jul 2025 at 19:27, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.12.40 release.
-> > There are 158 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 24 Jul 2025 13:43:10 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.40-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> With addition to the previous report on the stable-rc 6.15.8-rc1 review
-> While building allyesconfig build for arm64 and x86 with the toolchain
-> clang-nightly version 22.0.0 the following build warnings / errors
-> noticed on the stable-rc 6.12.40-rc1 review.
-> 
-> Regression Analysis:
-> - New regression? Yes
-> - Reproducibility? Yes
-> 
-> Build regression: arm64 x86 kcsan_test.c error variable 'dummy' is
-> uninitialized when passed as a const pointer argument here
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> ## Build log
-> 
-> kernel/kcsan/kcsan_test.c:591:41: error: variable 'dummy' is
-> uninitialized when passed as a const pointer argument here
-> [-Werror,-Wuninitialized-const-pointer]
->   591 |         KCSAN_EXPECT_READ_BARRIER(atomic_read(&dummy), false);
->       |                                                ^~~~~
-> 1 error generated.
+=E2=80=A6
+> +++ b/drivers/pci/bus.c
+> @@ -362,11 +362,15 @@ void pci_bus_add_device(struct pci_dev *dev)
+=E2=80=A6
+> +		if (of_pci_supply_present(dn)) {
+> +			if (!device_link_add(&dev->dev, &pdev->dev,
+> +					     DL_FLAG_AUTOREMOVE_CONSUMER)) {
+> +				pci_err(dev, "failed to add device link to power control device %s\=
+n",
+> +					pdev->name);
+> +			}
+> +		}
+=E2=80=A6
 
-Thanks for catching this. Newer versions of Clang seem to be getting
-smarter. We can silence the warning with the below patch:
+How do you think about to reconsider the usage of any curly brackets
+once more?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?h=3Dv6.16-rc7#n197
 
-From 56c920457a4e7077b83aafb0c9c8105fb98b0158 Mon Sep 17 00:00:00 2001
-From: Marco Elver <elver@google.com>
-Date: Tue, 22 Jul 2025 20:19:17 +0200
-Subject: [PATCH] kcsan/test: Initialize dummy variable
-
-Newer compiler versions rightfully point out:
-
- kernel/kcsan/kcsan_test.c:591:41: error: variable 'dummy' is
- uninitialized when passed as a const pointer argument here
- [-Werror,-Wuninitialized-const-pointer]
-   591 |         KCSAN_EXPECT_READ_BARRIER(atomic_read(&dummy), false);
-       |                                                ^~~~~
- 1 error generated.
-
-Although this particular test does not care about the value stored in
-the dummy atomic variable, let's silence the warning.
-
-Link: https://lkml.kernel.org/r/CA+G9fYu8JY=k-r0hnBRSkQQrFJ1Bz+ShdXNwC1TNeMt0eXaxeA@mail.gmail.com
-Fixes: 8bc32b348178 ("kcsan: test: Add test cases for memory barrier instrumentation")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Signed-off-by: Marco Elver <elver@google.com>
----
- kernel/kcsan/kcsan_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
-index c2871180edcc..49ab81faaed9 100644
---- a/kernel/kcsan/kcsan_test.c
-+++ b/kernel/kcsan/kcsan_test.c
-@@ -533,7 +533,7 @@ static void test_barrier_nothreads(struct kunit *test)
- 	struct kcsan_scoped_access *reorder_access = NULL;
- #endif
- 	arch_spinlock_t arch_spinlock = __ARCH_SPIN_LOCK_UNLOCKED;
--	atomic_t dummy;
-+	atomic_t dummy = ATOMIC_INIT(0);
- 
- 	KCSAN_TEST_REQUIRES(test, reorder_access != NULL);
- 	KCSAN_TEST_REQUIRES(test, IS_ENABLED(CONFIG_SMP));
--- 
-2.50.0.727.gbf7dc18ff4-goog
+Regards,
+Markus
 
