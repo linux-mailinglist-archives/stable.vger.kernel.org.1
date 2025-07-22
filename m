@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-163887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F3ECB0DC33
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:59:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E355B0DCD2
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40BA0AC2058
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A19816A397
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979BE2EA462;
-	Tue, 22 Jul 2025 13:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E914C2E2F10;
+	Tue, 22 Jul 2025 14:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BknddRsA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyVMMOBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575092B9A5;
-	Tue, 22 Jul 2025 13:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A431DA32;
+	Tue, 22 Jul 2025 14:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192540; cv=none; b=nCeYF3SncRKiO7aB9FPR04uiWpLfKpr2lQ7J+XXgTsEYIz8QHbO3CiQd/Vo6aYEYdoI0/L8bfASh3KjorEP2FyOLXhZr0yVg1dv2deUruRe17GOowVxSFZxLG97CYvM+YqT7vcketFsJTThuM0nGMv779jgYeHlef2GmaT+iZUs=
+	t=1753193021; cv=none; b=e5de2p7Q3PIpsfnuwM7YbJaSsaJIGDZT5YEWTkm0etMGb6ykTmrta/IHDgfXLpoenEuAkGQWyX6JTvNLRTIcMWwrV5xf3AaJ5PGOnGMRvLy0bm3JzzdFsxGaXmawiUo0ud6YA0P6NIQjHanhotLVvS3i8Pve/RuHnVKn0z5g+fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192540; c=relaxed/simple;
-	bh=xawtXyHqOSwF6Pn7LbGW1yQWNLbaqk2xL2AehzTGpnc=;
+	s=arc-20240116; t=1753193021; c=relaxed/simple;
+	bh=fVNmRtobzVNJPRVgRjYfOU4ZCsJOxHKx/7HctQ+ug/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJTK9vg2ZGBQrYyq/dkF4rRozdzLr2QIgeWqe9+28+ibO+R5JElSsts6hROveBXcx2phyb/seWXhKYOSiJryX0V8bmf4vXh+IG9e3bCiUbOsoyQZQh/SchRgwvLnrbJrknykkIAhg+xY8NAj0gU0j+QFWvJyuq+CQa1WkqSh3uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BknddRsA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A8AC4CEEB;
-	Tue, 22 Jul 2025 13:55:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JbjcrCaYz6oAVbKHo+WDLAsUfYMqkJmAyp/Bg/5MfkK2rWy2QhD5zFdsw3Ic2ZMYGml5sRTguivOaopl5ED1NBaNMhwK+7q9R8m42myL5xtgMEy+gTryB6tcfeAaOl+1CnK7eybgIUpPbqDGZwOp/ZHzS5X253xBSNyVuNvkH7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyVMMOBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA874C4CEEB;
+	Tue, 22 Jul 2025 14:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192538;
-	bh=xawtXyHqOSwF6Pn7LbGW1yQWNLbaqk2xL2AehzTGpnc=;
+	s=korg; t=1753193021;
+	bh=fVNmRtobzVNJPRVgRjYfOU4ZCsJOxHKx/7HctQ+ug/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BknddRsAe1vEv8mWar1CxYS6hs/LeigAcHtSJQ/UHynu040BOJSgdYqiUbq4oPKNN
-	 VQ72smWRpxCCteT9e5wnAloFHtQQKMAuqEYl5+UGh6qa1SRP6ywh9Ddus0TNxkjj55
-	 hl62dTHrAzooUHHGIT7NtR0N16qPKU9UGOn+cxIg=
+	b=VyVMMOBixaW/9NjP/KTSkyFQHycy2QIOOkrJ+F5f2fUvIotgpgujqxXQrWAqdgxS6
+	 D2viyOHwLlZz2Nv9KrJM7C5DV/KP/vBN9qZlT4/TB9jm3/F305eT2ToKzPSfL+8y/f
+	 HsROomyUvhCrBPP8AIF6h/z2Dk/xt8kPh1V15xCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
-	Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 6.6 095/111] clone_private_mnt(): make sure that caller has CAP_SYS_ADMIN in the right userns
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 126/158] Bluetooth: L2CAP: Fix attempting to adjust outgoing MTU
 Date: Tue, 22 Jul 2025 15:45:10 +0200
-Message-ID: <20250722134336.959568788@linuxfoundation.org>
+Message-ID: <20250722134345.436968396@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit c28f922c9dcee0e4876a2c095939d77fe7e15116 upstream.
+[ Upstream commit d24e4a7fedae121d33fb32ad785b87046527eedb ]
 
-What we want is to verify there is that clone won't expose something
-hidden by a mount we wouldn't be able to undo.  "Wouldn't be able to undo"
-may be a result of MNT_LOCKED on a child, but it may also come from
-lacking admin rights in the userns of the namespace mount belongs to.
+Configuration request only configure the incoming direction of the peer
+initiating the request, so using the MTU is the other direction shall
+not be used, that said the spec allows the peer responding to adjust:
 
-clone_private_mnt() checks the former, but not the latter.
+Bluetooth Core 6.1, Vol 3, Part A, Section 4.5
 
-There's a number of rather confusing CAP_SYS_ADMIN checks in various
-userns during the mount, especially with the new mount API; they serve
-different purposes and in case of clone_private_mnt() they usually,
-but not always end up covering the missing check mentioned above.
+ 'Each configuration parameter value (if any is present) in an
+ L2CAP_CONFIGURATION_RSP packet reflects an ‘adjustment’ to a
+ configuration parameter value that has been sent (or, in case of
+ default values, implied) in the corresponding
+ L2CAP_CONFIGURATION_REQ packet.'
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
-Fixes: 427215d85e8d ("ovl: prevent private clone if bind mount is not allowed")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-[ merge conflict resolution: clone_private_mount() was reworked in
-  db04662e2f4f ("fs: allow detached mounts in clone_private_mount()").
-  Tweak the relevant ns_capable check so that it works on older kernels ]
-Signed-off-by: Noah Orlando <Noah.Orlando@deshaw.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+That said adjusting the MTU in the response shall be limited to ERTM
+channels only as for older modes the remote stack may not be able to
+detect the adjustment causing it to silently drop packets.
+
+Link: https://github.com/bluez/bluez/issues/1422
+Link: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/149
+Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/4793
+Fixes: 042bb9603c44 ("Bluetooth: L2CAP: Fix L2CAP MTU negotiation")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/bluetooth/l2cap_core.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2110,6 +2110,11 @@ struct vfsmount *clone_private_mount(con
- 	if (!check_mnt(old_mnt))
- 		goto invalid;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 0628fedc0e29b..7dafc3e0a15aa 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -3485,12 +3485,28 @@ static int l2cap_parse_conf_req(struct l2cap_chan *chan, void *data, size_t data
+ 		/* Configure output options and let the other side know
+ 		 * which ones we don't like. */
  
-+	if (!ns_capable(old_mnt->mnt_ns->user_ns, CAP_SYS_ADMIN)) {
-+		up_read(&namespace_sem);
-+		return ERR_PTR(-EPERM);
-+	}
-+
- 	if (has_locked_children(old_mnt, path->dentry))
- 		goto invalid;
+-		/* If MTU is not provided in configure request, use the most recently
+-		 * explicitly or implicitly accepted value for the other direction,
+-		 * or the default value.
++		/* If MTU is not provided in configure request, try adjusting it
++		 * to the current output MTU if it has been set
++		 *
++		 * Bluetooth Core 6.1, Vol 3, Part A, Section 4.5
++		 *
++		 * Each configuration parameter value (if any is present) in an
++		 * L2CAP_CONFIGURATION_RSP packet reflects an ‘adjustment’ to a
++		 * configuration parameter value that has been sent (or, in case
++		 * of default values, implied) in the corresponding
++		 * L2CAP_CONFIGURATION_REQ packet.
+ 		 */
+-		if (mtu == 0)
+-			mtu = chan->imtu ? chan->imtu : L2CAP_DEFAULT_MTU;
++		if (!mtu) {
++			/* Only adjust for ERTM channels as for older modes the
++			 * remote stack may not be able to detect that the
++			 * adjustment causing it to silently drop packets.
++			 */
++			if (chan->mode == L2CAP_MODE_ERTM &&
++			    chan->omtu && chan->omtu != L2CAP_DEFAULT_MTU)
++				mtu = chan->omtu;
++			else
++				mtu = L2CAP_DEFAULT_MTU;
++		}
  
+ 		if (mtu < L2CAP_DEFAULT_MIN_MTU)
+ 			result = L2CAP_CONF_UNACCEPT;
+-- 
+2.39.5
+
 
 
 
