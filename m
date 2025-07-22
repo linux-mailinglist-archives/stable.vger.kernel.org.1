@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-163669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4680B0D478
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 10:24:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D894DB0D47D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 10:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C2B97AEB18
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 08:22:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1F5616930B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 08:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7222D373B;
-	Tue, 22 Jul 2025 08:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3517A2D3202;
+	Tue, 22 Jul 2025 08:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPCY5IOA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXqRqd3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904872D322A
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 08:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E963328AB02
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 08:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753172648; cv=none; b=G4kgigkJzNJslxpXemuv06cLy+ONe5r6uoggvY80uk8IZGSa6fB/cFJvJdsK1O1LBFcGyKcqm9pkR68jfkRWshwhBDnPSyAEov/ZEWbeSCgf4j3HGyXJGPelKZQeaiUPYRIoAjq09cRdCQ+rIL0U0oarG5KcgLs6eYrmVEBkU6o=
+	t=1753172652; cv=none; b=BbS0fCMPCnAMYcHZi8tpB6wa2kAj8g8A48oijTNjPR28cDlw6mSN++AojNwGhiXqWTY2QKl6nIEo3SIuAuQ11ebrsJ+gNgNX4cUxW+NkPykaLLQg1rLKxNbROKGjnv3Aw/lsXCW6QPeTTI+0wOHcYciZ/E0BL5d8C9v9kSnOmYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753172648; c=relaxed/simple;
-	bh=yMvRlmF0oPBscEfIUPdDTWCYqtjPPBxXEoPzRt8M8YY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ClY5tBT+1cQoOZ5Q+BtRdECCUyWHcSNhIfctUXKY7MU3wZSAb6EyawYkQHRSJ/VhsRrDU8WMYi7n6OnNLgRCwHNz2AxKTAJ6b0tZ9wgV2s/BymhvMqzoFeA45XbWY/NVZCYjWEkOpBUvk8UcgyiiWC7GOocJa82+iiywjcrO48U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPCY5IOA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7634C4CEEB;
-	Tue, 22 Jul 2025 08:24:07 +0000 (UTC)
+	s=arc-20240116; t=1753172652; c=relaxed/simple;
+	bh=cSYGyxuurXVMM9WIfz0Y7DP+YMAf7fnt5d4vBGp1HwY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AKuimoujM5lrsoKJ3xYsinmchOUkEyBjb/smxv42YRMPRXFddp44f+IIsh0VKJoGIdiFkwqMwawQllxDOfjsYCWsfqlVRj/VDKjGip8WNP+VljpMbrBDJbQn7ACZQxNXiquf0FuSdIdV6I+GLl7k3Kpil7umH4t/9RoB6qPUTyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXqRqd3D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588DBC4CEEB;
+	Tue, 22 Jul 2025 08:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753172648;
-	bh=yMvRlmF0oPBscEfIUPdDTWCYqtjPPBxXEoPzRt8M8YY=;
+	s=korg; t=1753172651;
+	bh=cSYGyxuurXVMM9WIfz0Y7DP+YMAf7fnt5d4vBGp1HwY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sPCY5IOA1suxd6BSow4njl8KfshD9bMM++th6MmrbGPnrGru3h+Fb2f277vjjH+Td
-	 /PAUl2yhWO4FSiQ6O3eEkI2aKBiOFqIr15GeTzroyTL0h6b2f4ZDsg7EtViBiPJ5mc
-	 wG9CBKEB6TeDVz3q6RdZesfPEMyzf1NFJWgZwcyI=
-Subject: FAILED: patch "[PATCH] usb: hub: Don't try to recover devices lost during warm" failed to apply to 5.10-stable tree
+	b=MXqRqd3DIFD0hpgorTrq24KKeJo9PKT0r6+Hy8uZAkOl6/ln+izyN0dDsnilT49F1
+	 FTUjuFmsgCEajBDtGcMxLNvT9pByz5k46pyn+fZK4J6vYbP4dcB8+xbsljraM/aR/r
+	 0m9VD5lxp7hXVX5TaucQ+ZJ84WxPa/S7iH+9sxtA=
+Subject: FAILED: patch "[PATCH] usb: hub: Don't try to recover devices lost during warm" failed to apply to 5.4-stable tree
 To: mathias.nyman@linux.intel.com,gregkh@linuxfoundation.org,stern@rowland.harvard.edu,ukaszb@chromium.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 22 Jul 2025 10:23:57 +0200
-Message-ID: <2025072257-ranging-salvaging-2f13@gregkh>
+Date: Tue, 22 Jul 2025 10:23:58 +0200
+Message-ID: <2025072258-fervor-reabsorb-1b7a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2521106fc732b0b75fd3555c689b1ed1d29d273c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072257-ranging-salvaging-2f13@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072258-fervor-reabsorb-1b7a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
