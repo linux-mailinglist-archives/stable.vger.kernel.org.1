@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-164041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CC8B0DCE6
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:07:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD63B0DE09
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31006167629
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9134E18866FA
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCD328B7EA;
-	Tue, 22 Jul 2025 14:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB8E2EE97D;
+	Tue, 22 Jul 2025 14:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qh+VZBpf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="soxHnWfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AD12C9A;
-	Tue, 22 Jul 2025 14:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D092EE26E;
+	Tue, 22 Jul 2025 14:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193055; cv=none; b=Zsu3XqeI4GNbjN/HCjOgJKzc8xFQv6+XY6vn+bcTYKLb5XVUWK/0870nO04a7eh+ZiIZ4lnQ+gBpCpeo5BuOYswpSj6dR3Ok1oBcqR2k3bRt7PRcRfqRz9VVwe1tyybL3lEtPBPEbO2K877uo2ag/h/qbl8r2sWRGSwhaDt6O1s=
+	t=1753193519; cv=none; b=ZeQav98qM+bkJF3hyHCJzgSyVOKmxqh4xT9/mUeiW6koHzWgJH06ILQGwRM/htO2J/r61qui23ex14V0AY5Prh5PgdFkSB48M0jVYlRlvYpnjecntLz+1XxSsRa4GJJVKNYzzYdqCISrmBCKpQ/EOz9GRl6se/ZGnWvnekUnpnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193055; c=relaxed/simple;
-	bh=28a6Unym1sm4zdQ/l6nQAY+F2GG8N4Q9HIkoR7aVffY=;
+	s=arc-20240116; t=1753193519; c=relaxed/simple;
+	bh=wckm4b/pralUQIcKYxdhs4kPmyDNlOnmUs9sthkCLTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=epX5tHymGRTYHfpMJjC926xZlz35TQPAJQB/K1vypG5ekAnDg0HXxya/zHxtoHh1hJMgxBdJZaKaWasTqgezdccFyu03C9HzeXe6CeCn2WnF+YsY1bKL26MfIHF+LpotBHvxg32cg64mUT0qUYdzZXpHLxxVAeB5YvVRjoPwItE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qh+VZBpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558BAC4CEF5;
-	Tue, 22 Jul 2025 14:04:14 +0000 (UTC)
+	 MIME-Version; b=Fn0pQKaVYNG4noI1EOcVwOK90wDVwO8P+zWTkBv5KRoCAoQ+H0dSqsz4/3EIjblBNEu+HyDVjfi0mS5EIxIK7PS7HkO10dCSsXVyacPAcU/G4MdQfiLJs7eiT4siOU7+Pml/N29GNikylcLzE8GnXQUvEt5CHR3UGLpAbq50dds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=soxHnWfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576F0C4CEEB;
+	Tue, 22 Jul 2025 14:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193054;
-	bh=28a6Unym1sm4zdQ/l6nQAY+F2GG8N4Q9HIkoR7aVffY=;
+	s=korg; t=1753193519;
+	bh=wckm4b/pralUQIcKYxdhs4kPmyDNlOnmUs9sthkCLTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qh+VZBpfu9C24oNEYcfM9ke6L+t0O51x8e1Iq73MzfRMlsrpNgyxh7ZJU60U2lVFF
-	 q3yjBzPochlfcLUir6rxyq3epoPzFstRUKKfRIABqMKwLrOTse2wJumO103xeEkra9
-	 PWeak992hnGATMRCqbvw8oGcv3CiK2B4O0GaYCiU=
+	b=soxHnWfxFhxnHDJMP57VI87UyUgnjyIvjuiCoUU1Gzf5HkA1yhzU31ZN8fWHlJBZg
+	 3HnCB3pfast2DjwhzwZ/hAuLHq5fG9nyTboKASk8RQ3PiJOVSx8cjwFCUTqRYhxWGk
+	 L5FNx5+3rCyKoe2UnLJlUcJLI3wNYTZEGeAI7EO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Werling <brett.werling@garmin.com>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	syzbot+40bf00346c3fe40f90f2@syzkaller.appspotmail.com,
+	syzbot+f22031fad6cbe52c70e7@syzkaller.appspotmail.com,
+	syzbot+271fed3ed6f24600c364@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Wang Liang <wangliang74@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/158] can: tcan4x5x: fix reset gpio usage during probe
+Subject: [PATCH 6.15 118/187] smc: Fix various oops due to inet_sock type confusion.
 Date: Tue, 22 Jul 2025 15:44:48 +0200
-Message-ID: <20250722134344.625032471@linuxfoundation.org>
+Message-ID: <20250722134350.153506778@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +67,230 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Werling <brett.werling@garmin.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 0f97a7588db7a545ea07ee0d512789bfad4931d8 ]
+[ Upstream commit 60ada4fe644edaa6c2da97364184b0425e8aeaf5 ]
 
-Fixes reset GPIO usage during probe by ensuring we retrieve the GPIO and
-take the device out of reset (if it defaults to being in reset) before
-we attempt to communicate with the device. This is achieved by moving
-the call to tcan4x5x_get_gpios() before tcan4x5x_find_version() and
-avoiding any device communication while getting the GPIOs. Once we
-determine the version, we can then take the knowledge of which GPIOs we
-obtained and use it to decide whether we need to disable the wake or
-state pin functions within the device.
+syzbot reported weird splats [0][1] in cipso_v4_sock_setattr() while
+freeing inet_sk(sk)->inet_opt.
 
-This change is necessary in a situation where the reset GPIO is pulled
-high externally before the CPU takes control of it, meaning we need to
-explicitly bring the device out of reset before we can start
-communicating with it at all.
+The address was freed multiple times even though it was read-only memory.
 
-This also has the effect of fixing an issue where a reset of the device
-would occur after having called tcan4x5x_disable_wake(), making the
-original behavior not actually disable the wake. This patch should now
-disable wake or state pin functions well after the reset occurs.
+cipso_v4_sock_setattr() did nothing wrong, and the root cause was type
+confusion.
 
-Signed-off-by: Brett Werling <brett.werling@garmin.com>
-Link: https://patch.msgid.link/20250711141728.1826073-1-brett.werling@garmin.com
-Cc: Markus Schneider-Pargmann <msp@baylibre.com>
-Fixes: 142c6dc6d9d7 ("can: tcan4x5x: Add support for tcan4552/4553")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The cited commit made it possible to create smc_sock as an INET socket.
+
+The issue is that struct smc_sock does not have struct inet_sock as the
+first member but hijacks AF_INET and AF_INET6 sk_family, which confuses
+various places.
+
+In this case, inet_sock.inet_opt was actually smc_sock.clcsk_data_ready(),
+which is an address of a function in the text segment.
+
+  $ pahole -C inet_sock vmlinux
+  struct inet_sock {
+  ...
+          struct ip_options_rcu *    inet_opt;             /*   784     8 */
+
+  $ pahole -C smc_sock vmlinux
+  struct smc_sock {
+  ...
+          void                       (*clcsk_data_ready)(struct sock *); /*   784     8 */
+
+The same issue for another field was reported before. [2][3]
+
+At that time, an ugly hack was suggested [4], but it makes both INET
+and SMC code error-prone and hard to change.
+
+Also, yet another variant was fixed by a hacky commit 98d4435efcbf3
+("net/smc: prevent NULL pointer dereference in txopt_get").
+
+Instead of papering over the root cause by such hacks, we should not
+allow non-INET socket to reuse the INET infra.
+
+Let's add inet_sock as the first member of smc_sock.
+
+[0]:
+kvfree_call_rcu(): Double-freed call. rcu_head 000000006921da73
+WARNING: CPU: 0 PID: 6718 at mm/slab_common.c:1956 kvfree_call_rcu+0x94/0x3f0 mm/slab_common.c:1955
+Modules linked in:
+CPU: 0 UID: 0 PID: 6718 Comm: syz.0.17 Tainted: G        W           6.16.0-rc4-syzkaller-g7482bb149b9f #0 PREEMPT
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : kvfree_call_rcu+0x94/0x3f0 mm/slab_common.c:1955
+lr : kvfree_call_rcu+0x94/0x3f0 mm/slab_common.c:1955
+sp : ffff8000a03a7730
+x29: ffff8000a03a7730 x28: 00000000fffffff5 x27: 1fffe000184823d3
+x26: dfff800000000000 x25: ffff0000c2411e9e x24: ffff0000dd88da00
+x23: ffff8000891ac9a0 x22: 00000000ffffffea x21: ffff8000891ac9a0
+x20: ffff8000891ac9a0 x19: ffff80008afc2480 x18: 00000000ffffffff
+x17: 0000000000000000 x16: ffff80008ae642c8 x15: ffff700011ede14c
+x14: 1ffff00011ede14c x13: 0000000000000004 x12: ffffffffffffffff
+x11: ffff700011ede14c x10: 0000000000ff0100 x9 : 5fa3c1ffaf0ff000
+x8 : 5fa3c1ffaf0ff000 x7 : 0000000000000001 x6 : 0000000000000001
+x5 : ffff8000a03a7078 x4 : ffff80008f766c20 x3 : ffff80008054d360
+x2 : 0000000000000000 x1 : 0000000000000201 x0 : 0000000000000000
+Call trace:
+ kvfree_call_rcu+0x94/0x3f0 mm/slab_common.c:1955 (P)
+ cipso_v4_sock_setattr+0x2f0/0x3f4 net/ipv4/cipso_ipv4.c:1914
+ netlbl_sock_setattr+0x240/0x334 net/netlabel/netlabel_kapi.c:1000
+ smack_netlbl_add+0xa8/0x158 security/smack/smack_lsm.c:2581
+ smack_inode_setsecurity+0x378/0x430 security/smack/smack_lsm.c:2912
+ security_inode_setsecurity+0x118/0x3c0 security/security.c:2706
+ __vfs_setxattr_noperm+0x174/0x5c4 fs/xattr.c:251
+ __vfs_setxattr_locked+0x1ec/0x218 fs/xattr.c:295
+ vfs_setxattr+0x158/0x2ac fs/xattr.c:321
+ do_setxattr fs/xattr.c:636 [inline]
+ file_setxattr+0x1b8/0x294 fs/xattr.c:646
+ path_setxattrat+0x2ac/0x320 fs/xattr.c:711
+ __do_sys_fsetxattr fs/xattr.c:761 [inline]
+ __se_sys_fsetxattr fs/xattr.c:758 [inline]
+ __arm64_sys_fsetxattr+0xc0/0xdc fs/xattr.c:758
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x58/0x180 arch/arm64/kernel/entry-common.c:879
+ el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:898
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+
+[1]:
+Unable to handle kernel write to read-only memory at virtual address ffff8000891ac9a8
+KASAN: probably user-memory-access in range [0x0000000448d64d40-0x0000000448d64d47]
+Mem abort info:
+  ESR = 0x000000009600004e
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x0e: level 2 permission fault
+Data abort info:
+  ISV = 0, ISS = 0x0000004e, ISS2 = 0x00000000
+  CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000207144000
+[ffff8000891ac9a8] pgd=0000000000000000, p4d=100000020f950003, pud=100000020f951003, pmd=0040000201000781
+Internal error: Oops: 000000009600004e [#1]  SMP
+Modules linked in:
+CPU: 0 UID: 0 PID: 6946 Comm: syz.0.69 Not tainted 6.16.0-rc4-syzkaller-g7482bb149b9f #0 PREEMPT
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : kvfree_call_rcu+0x31c/0x3f0 mm/slab_common.c:1971
+lr : add_ptr_to_bulk_krc_lock mm/slab_common.c:1838 [inline]
+lr : kvfree_call_rcu+0xfc/0x3f0 mm/slab_common.c:1963
+sp : ffff8000a28a7730
+x29: ffff8000a28a7730 x28: 00000000fffffff5 x27: 1fffe00018b09bb3
+x26: 0000000000000001 x25: ffff80008f66e000 x24: ffff00019beaf498
+x23: ffff00019beaf4c0 x22: 0000000000000000 x21: ffff8000891ac9a0
+x20: ffff8000891ac9a0 x19: 0000000000000000 x18: 00000000ffffffff
+x17: ffff800093363000 x16: ffff80008052c6e4 x15: ffff700014514ecc
+x14: 1ffff00014514ecc x13: 0000000000000004 x12: ffffffffffffffff
+x11: ffff700014514ecc x10: 0000000000000001 x9 : 0000000000000001
+x8 : ffff00019beaf7b4 x7 : ffff800080a94154 x6 : 0000000000000000
+x5 : ffff8000935efa60 x4 : 0000000000000008 x3 : ffff80008052c7fc
+x2 : 0000000000000001 x1 : ffff8000891ac9a0 x0 : 0000000000000001
+Call trace:
+ kvfree_call_rcu+0x31c/0x3f0 mm/slab_common.c:1967 (P)
+ cipso_v4_sock_setattr+0x2f0/0x3f4 net/ipv4/cipso_ipv4.c:1914
+ netlbl_sock_setattr+0x240/0x334 net/netlabel/netlabel_kapi.c:1000
+ smack_netlbl_add+0xa8/0x158 security/smack/smack_lsm.c:2581
+ smack_inode_setsecurity+0x378/0x430 security/smack/smack_lsm.c:2912
+ security_inode_setsecurity+0x118/0x3c0 security/security.c:2706
+ __vfs_setxattr_noperm+0x174/0x5c4 fs/xattr.c:251
+ __vfs_setxattr_locked+0x1ec/0x218 fs/xattr.c:295
+ vfs_setxattr+0x158/0x2ac fs/xattr.c:321
+ do_setxattr fs/xattr.c:636 [inline]
+ file_setxattr+0x1b8/0x294 fs/xattr.c:646
+ path_setxattrat+0x2ac/0x320 fs/xattr.c:711
+ __do_sys_fsetxattr fs/xattr.c:761 [inline]
+ __se_sys_fsetxattr fs/xattr.c:758 [inline]
+ __arm64_sys_fsetxattr+0xc0/0xdc fs/xattr.c:758
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x58/0x180 arch/arm64/kernel/entry-common.c:879
+ el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:898
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+Code: aa1f03e2 52800023 97ee1e8d b4000195 (f90006b4)
+
+Fixes: d25a92ccae6b ("net/smc: Introduce IPPROTO_SMC")
+Reported-by: syzbot+40bf00346c3fe40f90f2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/686d9b50.050a0220.1ffab7.0020.GAE@google.com/
+Tested-by: syzbot+40bf00346c3fe40f90f2@syzkaller.appspotmail.com
+Reported-by: syzbot+f22031fad6cbe52c70e7@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/686da0f3.050a0220.1ffab7.0022.GAE@google.com/
+Reported-by: syzbot+271fed3ed6f24600c364@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=271fed3ed6f24600c364 # [2]
+Link: https://lore.kernel.org/netdev/99f284be-bf1d-4bc4-a629-77b268522fff@huawei.com/ # [3]
+Link: https://lore.kernel.org/netdev/20250331081003.1503211-1-wangliang74@huawei.com/ # [4]
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Wang Liang <wangliang74@huawei.com>
+Link: https://patch.msgid.link/20250711060808.2977529-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/m_can/tcan4x5x-core.c | 61 ++++++++++++++++++---------
- 1 file changed, 41 insertions(+), 20 deletions(-)
+ net/smc/af_smc.c | 14 ++++++++++++++
+ net/smc/smc.h    |  8 ++++----
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/m_can/tcan4x5x-core.c b/drivers/net/can/m_can/tcan4x5x-core.c
-index 7062a2939f501..e8995738cf996 100644
---- a/drivers/net/can/m_can/tcan4x5x-core.c
-+++ b/drivers/net/can/m_can/tcan4x5x-core.c
-@@ -335,21 +335,19 @@ static void tcan4x5x_get_dt_data(struct m_can_classdev *cdev)
- 		of_property_read_bool(cdev->dev->of_node, "ti,nwkrq-voltage-vio");
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 3760131f14845..1882bab8e00e7 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -30,6 +30,10 @@
+ #include <linux/splice.h>
+ 
+ #include <net/sock.h>
++#include <net/inet_common.h>
++#if IS_ENABLED(CONFIG_IPV6)
++#include <net/ipv6.h>
++#endif
+ #include <net/tcp.h>
+ #include <net/smc.h>
+ #include <asm/ioctls.h>
+@@ -360,6 +364,16 @@ static void smc_destruct(struct sock *sk)
+ 		return;
+ 	if (!sock_flag(sk, SOCK_DEAD))
+ 		return;
++	switch (sk->sk_family) {
++	case AF_INET:
++		inet_sock_destruct(sk);
++		break;
++#if IS_ENABLED(CONFIG_IPV6)
++	case AF_INET6:
++		inet6_sock_destruct(sk);
++		break;
++#endif
++	}
  }
  
--static int tcan4x5x_get_gpios(struct m_can_classdev *cdev,
--			      const struct tcan4x5x_version_info *version_info)
-+static int tcan4x5x_get_gpios(struct m_can_classdev *cdev)
- {
- 	struct tcan4x5x_priv *tcan4x5x = cdev_to_priv(cdev);
- 	int ret;
+ static struct lock_class_key smc_key;
+diff --git a/net/smc/smc.h b/net/smc/smc.h
+index 78ae10d06ed2e..2c90849637398 100644
+--- a/net/smc/smc.h
++++ b/net/smc/smc.h
+@@ -283,10 +283,10 @@ struct smc_connection {
+ };
  
--	if (version_info->has_wake_pin) {
--		tcan4x5x->device_wake_gpio = devm_gpiod_get(cdev->dev, "device-wake",
--							    GPIOD_OUT_HIGH);
--		if (IS_ERR(tcan4x5x->device_wake_gpio)) {
--			if (PTR_ERR(tcan4x5x->device_wake_gpio) == -EPROBE_DEFER)
--				return -EPROBE_DEFER;
-+	tcan4x5x->device_wake_gpio = devm_gpiod_get_optional(cdev->dev,
-+							     "device-wake",
-+							     GPIOD_OUT_HIGH);
-+	if (IS_ERR(tcan4x5x->device_wake_gpio)) {
-+		if (PTR_ERR(tcan4x5x->device_wake_gpio) == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
- 
--			tcan4x5x_disable_wake(cdev);
--		}
-+		tcan4x5x->device_wake_gpio = NULL;
- 	}
- 
- 	tcan4x5x->reset_gpio = devm_gpiod_get_optional(cdev->dev, "reset",
-@@ -361,14 +359,31 @@ static int tcan4x5x_get_gpios(struct m_can_classdev *cdev,
- 	if (ret)
- 		return ret;
- 
--	if (version_info->has_state_pin) {
--		tcan4x5x->device_state_gpio = devm_gpiod_get_optional(cdev->dev,
--								      "device-state",
--								      GPIOD_IN);
--		if (IS_ERR(tcan4x5x->device_state_gpio)) {
--			tcan4x5x->device_state_gpio = NULL;
--			tcan4x5x_disable_state(cdev);
--		}
-+	tcan4x5x->device_state_gpio = devm_gpiod_get_optional(cdev->dev,
-+							      "device-state",
-+							      GPIOD_IN);
-+	if (IS_ERR(tcan4x5x->device_state_gpio))
-+		tcan4x5x->device_state_gpio = NULL;
-+
-+	return 0;
-+}
-+
-+static int tcan4x5x_check_gpios(struct m_can_classdev *cdev,
-+				const struct tcan4x5x_version_info *version_info)
-+{
-+	struct tcan4x5x_priv *tcan4x5x = cdev_to_priv(cdev);
-+	int ret;
-+
-+	if (version_info->has_wake_pin && !tcan4x5x->device_wake_gpio) {
-+		ret = tcan4x5x_disable_wake(cdev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (version_info->has_state_pin && !tcan4x5x->device_state_gpio) {
-+		ret = tcan4x5x_disable_state(cdev);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	return 0;
-@@ -459,15 +474,21 @@ static int tcan4x5x_can_probe(struct spi_device *spi)
- 		goto out_m_can_class_free_dev;
- 	}
- 
-+	ret = tcan4x5x_get_gpios(mcan_class);
-+	if (ret) {
-+		dev_err(&spi->dev, "Getting gpios failed %pe\n", ERR_PTR(ret));
-+		goto out_power;
-+	}
-+
- 	version_info = tcan4x5x_find_version(priv);
- 	if (IS_ERR(version_info)) {
- 		ret = PTR_ERR(version_info);
- 		goto out_power;
- 	}
- 
--	ret = tcan4x5x_get_gpios(mcan_class, version_info);
-+	ret = tcan4x5x_check_gpios(mcan_class, version_info);
- 	if (ret) {
--		dev_err(&spi->dev, "Getting gpios failed %pe\n", ERR_PTR(ret));
-+		dev_err(&spi->dev, "Checking gpios failed %pe\n", ERR_PTR(ret));
- 		goto out_power;
- 	}
- 
+ struct smc_sock {				/* smc sock container */
+-	struct sock		sk;
+-#if IS_ENABLED(CONFIG_IPV6)
+-	struct ipv6_pinfo	*pinet6;
+-#endif
++	union {
++		struct sock		sk;
++		struct inet_sock	icsk_inet;
++	};
+ 	struct socket		*clcsock;	/* internal tcp socket */
+ 	void			(*clcsk_state_change)(struct sock *sk);
+ 						/* original stat_change fct. */
 -- 
 2.39.5
 
