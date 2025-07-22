@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721AEB0DC93
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C9EB0DBDB
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D33E1AA56EA
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D5D61C82805
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3C42DEA8E;
-	Tue, 22 Jul 2025 14:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DFE2EA16C;
+	Tue, 22 Jul 2025 13:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwQDJ9qB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGlhyu2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40071548EE;
-	Tue, 22 Jul 2025 14:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF2DA32;
+	Tue, 22 Jul 2025 13:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192897; cv=none; b=WD75E23PgShP0CWIHPx2VnkGyLDqeVdbcVW/R09AiBOk41kqsEwrD96pGJGRjaXq3OUZZuOjeNe0t0MzqE+jD0mrazDIMVIM+DTJdw0ZR5M7AKbhJWcLnnhxlsR+DLi3QHTNQ3xbp6AlROSBfFUa0Ddm9KG99lnNCXy8rtzN2Rg=
+	t=1753192417; cv=none; b=azJ9kLUkP8GCmxqudMrn7YyfmTKw6KZx8h23+FuDrnUuda9FTY7pnkgbtIgejEJOHfJDUU20ZI88qoOWQYIcFdVoC5zV05Uf2rAahivuyH93101qc+8bYCKE3Cmm45BXw1n9TxLxKMCADuJrQQMgxyIkEK0QumZv+BoBRR/wIxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192897; c=relaxed/simple;
-	bh=a31M/d2Q5YZkXc0I2gtZoqXr5L91Wfm80ROcfdsbBxw=;
+	s=arc-20240116; t=1753192417; c=relaxed/simple;
+	bh=ZCGPc4TjXOJmlK6YHn6Y9kBCVYlyV93b8V+eaQmfclc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0VUdtLVgRr6E6aFTq3UN5QaC0lD4gSXeS9SV5hDYYDBDBXJqc6heZpTfA8TaJCcPFmD7FNyOJQ7o+3JPTFzHUm9fIWFOhW4PkPhJXqiV/YPDzIUlvNJlcFK7Qbyzj88kqwz4iMZ/nZ64qQ0ThgPSVn0poalvN7i0XcxARjKUuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwQDJ9qB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBBCC4CEEB;
-	Tue, 22 Jul 2025 14:01:36 +0000 (UTC)
+	 MIME-Version; b=qL0pS0Am+bhlumRGIuQBIDYnGJnWpAP89l5+sIIy91sqBNnjvSpZNpdoXLvW8hXfMH0/Hic+uVPfOkrFb2iegjTKoPFQeTDcb5uOh3GC0zk8sSAH4ezfpWnRpv1aQ/4nS5uVJmGCO83T3lDeVoD2oxxtiWMwLmB5OCRAtrORWA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGlhyu2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008E3C4CEEB;
+	Tue, 22 Jul 2025 13:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192897;
-	bh=a31M/d2Q5YZkXc0I2gtZoqXr5L91Wfm80ROcfdsbBxw=;
+	s=korg; t=1753192417;
+	bh=ZCGPc4TjXOJmlK6YHn6Y9kBCVYlyV93b8V+eaQmfclc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwQDJ9qBoTn0E2id3reOOzzFihzopKLlI06emVmg93Ub4utvMSFnCIc2s+wcIj/i/
-	 bWNLtM6qT4HwOZ3GaSwcKJZvdUf4PO0QA7lUGvkJFlhyvNVdH/+5E95VLQlIgv4hjY
-	 MUalhTsr6MvqRNHIBB7y32xyeDvB89r8gj2nndU8=
+	b=NGlhyu2pjZMX7wq1gf1qWgaYPRn8NgGSnf+QygkkY1BPrG/6pafJvsRG+H7lp1iKJ
+	 mUhzxBS8fI/tFlwssqQi5M7I9PirPJoPF668dQ+syhgxd+XOuanf/RIL7VKb3rSsAy
+	 gm+QUjSPTbARZjVtxqeRZ4jRlzFk0eUULXGY7p70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/158] net: emaclite: Fix missing pointer increment in aligned_read()
+Subject: [PATCH 6.6 059/111] soundwire: amd: fix for handling slave alerts after link is down
 Date: Tue, 22 Jul 2025 15:44:34 +0200
-Message-ID: <20250722134344.120307303@linuxfoundation.org>
+Message-ID: <20250722134335.588948951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 7727ec1523d7973defa1dff8f9c0aad288d04008 ]
+[ Upstream commit 86a4371b76976158be875dc654ceee35c574b27b ]
 
-Add missing post-increment operators for byte pointers in the
-loop that copies remaining bytes in xemaclite_aligned_read().
-Without the increment, the same byte was written repeatedly
-to the destination.
-This update aligns with xemaclite_aligned_write()
+Sometimes, its observed that during system level suspend callback
+execution, after link is down, handling pending slave status workqueue
+results in mipi register access failures as shown below.
 
-Fixes: bb81b2ddfa19 ("net: add Xilinx emac lite device driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250710173849.2381003-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+soundwire sdw-master-0-0: trf on Slave 1 failed:-110 read addr 0 count 1
+rt722-sdca sdw:0:0:025d:0722:01: SDW_DP0_INT recheck read failed:-110
+rt722-sdca sdw:0:0:025d:0722:01: Slave 1 alert handling failed: -110
+amd_sdw_manager amd_sdw_manager.0: SDW0 cmd response timeout occurred
+amd_sdw_manager amd_sdw_manager.0: command timeout for Slave 1
+soundwire sdw-master-0-0: trf on Slave 1 failed:-110 write addr 5c count 1
+amd_sdw_manager amd_sdw_manager.0: SDW0 previous cmd status clear failed
+amd_sdw_manager amd_sdw_manager.0: command timeout for Slave 1
+soundwire sdw-master-0-0: trf on Slave 1 failed:-110 write addr 5d count 1
+amd_sdw_manager amd_sdw_manager.0: SDW0 previous cmd status clear failed
+amd_sdw_manager amd_sdw_manager.0: command timeout for Slave 1
+
+Cancel the pending slave status workqueue prior to initiating clock stop
+sequence during suspend callback execution for both the power modes.
+
+Fixes: 9cf1efc5ed2d ("soundwire: amd: add pm_prepare callback and pm ops support")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20250530054447.1645807-2-Vijendar.Mukunda@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_emaclite.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soundwire/amd_manager.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_emaclite.c b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-index 940452d0a4d2a..258096543b08a 100644
---- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-@@ -285,7 +285,7 @@ static void xemaclite_aligned_read(u32 *src_ptr, u8 *dest_ptr,
- 
- 		/* Read the remaining data */
- 		for (; length > 0; length--)
--			*to_u8_ptr = *from_u8_ptr;
-+			*to_u8_ptr++ = *from_u8_ptr++;
+diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+index 31b203ebbae0c..ce1c8e1372eed 100644
+--- a/drivers/soundwire/amd_manager.c
++++ b/drivers/soundwire/amd_manager.c
+@@ -1135,9 +1135,11 @@ static int __maybe_unused amd_suspend(struct device *dev)
  	}
- }
  
+ 	if (amd_manager->power_mode_mask & AMD_SDW_CLK_STOP_MODE) {
++		cancel_work_sync(&amd_manager->amd_sdw_work);
+ 		amd_sdw_wake_enable(amd_manager, false);
+ 		return amd_sdw_clock_stop(amd_manager);
+ 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
++		cancel_work_sync(&amd_manager->amd_sdw_work);
+ 		amd_sdw_wake_enable(amd_manager, false);
+ 		/*
+ 		 * As per hardware programming sequence on AMD platforms,
 -- 
 2.39.5
 
