@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-163779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4EABB0DB7D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 485AAB0DCD4
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 426B33AA707
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:49:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D74F3AD531
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758C722FDFF;
-	Tue, 22 Jul 2025 13:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D436023AB9D;
+	Tue, 22 Jul 2025 14:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jx7sKDzK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="raYWmWAN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A8127468;
-	Tue, 22 Jul 2025 13:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A2938FA3;
+	Tue, 22 Jul 2025 14:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192182; cv=none; b=pK+JIr8e5s/NpUlOmBDKF1/2CVFpmCscMu7h0rd92Cp4nIqqX5RT0szJ93LMtDCVOD+srK/LNUVhg9+t6XKBk9irDADfBv2uVdvjWPOFYWtKHiJiH4xbhDEkTPNXo+dh8XK1WPu8/i49qZjw64Qhx57BDgH6rQARRzNyEZo4hg8=
+	t=1753193001; cv=none; b=goba3EQ8adMAfFaUYwDOnIi7KRYFZObA5IosBWuGdwNLSFEauSeY5y6OEF/4addtIR6umlD7HhuISrEkCIagedgUcUG3z2JXGakYLwlUAuo9sEqjwKvXk39xrkY2PhaqdjGGvZeczNHS9Ep6hfUevGbiIYPu65f0guTgJjPpx6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192182; c=relaxed/simple;
-	bh=j9s9U4mznGeONOz6stf0Gusa6hm4qLc9eaOeoc0adEg=;
+	s=arc-20240116; t=1753193001; c=relaxed/simple;
+	bh=pDuGp6lEMtlgqXlbDl5d+5AniSbWaZ+oPnk6w7Fi8Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o0vOrG+WVr3a5yRIx3K22sdkoZh6KX8AMvCH4XJCzZYNEoFGIHYjD/Hg2sVz3JkLGRpYr7mvzSJGQZ/MTA/vJpph3YJA+4eDo4+cjPDOf3gNVjMBXIX4ekPjGxa6qNeMgUE9lwR6CtEwlhzUXCF6qM/9NrbuiXuFycJc9CVqmtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jx7sKDzK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EABDC4CEF5;
-	Tue, 22 Jul 2025 13:49:41 +0000 (UTC)
+	 MIME-Version; b=ADXVbTpcv5DX3UbLJvgtz8wkP53yueLfUeoLpsDmwOKThk7SrhBE0dIbxrV1WYxTrGJ99pnVAtHVgu5UhFpMkuVjnbzWI9UYYr4DHjK5LRNV3hnbIAFcB0owsdP7Og7bUvjc2xP/sDyzJ0Z3BsyEv3HkJntVAP447odNb1X9ih8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=raYWmWAN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197E6C4CEEB;
+	Tue, 22 Jul 2025 14:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192182;
-	bh=j9s9U4mznGeONOz6stf0Gusa6hm4qLc9eaOeoc0adEg=;
+	s=korg; t=1753193001;
+	bh=pDuGp6lEMtlgqXlbDl5d+5AniSbWaZ+oPnk6w7Fi8Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jx7sKDzKKuyIcuSJzlcrE3pgXLJVlQRJMdzzTjqhT6To3yjs4scAE3ETZLPQjTQNy
-	 EMEt1EqmUORffMUXaTqbK0GeiJQpYrMGOiJBwvW6SGPKPZcQ2GHVePJ9Dxq0NQ0QhC
-	 z3TPNbqRPDLrl+E4JS6WR9SlVCv3qiRaM3/yOi1o=
+	b=raYWmWAN63lZR/JCFtT5aD1r0147VIjNzOyG7smMbCRA+kmAgtBTU+zBbtBr0UcLU
+	 1s5SkuaOEcfyQ6zz7Y0s+hZP+cRTYTM7Zuft+c3deuEY1shMZjSikei/v0CgSg36mN
+	 7TiyQRlB/WDjsmR+zANVf7zRLdCeCJKAnZkdztVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
-	Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 6.1 68/79] clone_private_mnt(): make sure that caller has CAP_SYS_ADMIN in the right userns
-Date: Tue, 22 Jul 2025 15:45:04 +0200
-Message-ID: <20250722134330.883352928@linuxfoundation.org>
+	Felix Fietkau <nbd@nbd.name>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 121/158] net: fix segmentation after TCP/UDP fraglist GRO
+Date: Tue, 22 Jul 2025 15:45:05 +0200
+Message-ID: <20250722134345.254469795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit c28f922c9dcee0e4876a2c095939d77fe7e15116 upstream.
+[ Upstream commit 9f735b6f8a77d7be7f8b0765dc93587774832cb1 ]
 
-What we want is to verify there is that clone won't expose something
-hidden by a mount we wouldn't be able to undo.  "Wouldn't be able to undo"
-may be a result of MNT_LOCKED on a child, but it may also come from
-lacking admin rights in the userns of the namespace mount belongs to.
+Since "net: gro: use cb instead of skb->network_header", the skb network
+header is no longer set in the GRO path.
+This breaks fraglist segmentation, which relies on ip_hdr()/tcp_hdr()
+to check for address/port changes.
+Fix this regression by selectively setting the network header for merged
+segment skbs.
 
-clone_private_mnt() checks the former, but not the latter.
-
-There's a number of rather confusing CAP_SYS_ADMIN checks in various
-userns during the mount, especially with the new mount API; they serve
-different purposes and in case of clone_private_mnt() they usually,
-but not always end up covering the missing check mentioned above.
-
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
-Fixes: 427215d85e8d ("ovl: prevent private clone if bind mount is not allowed")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-[ merge conflict resolution: clone_private_mount() was reworked in
-  db04662e2f4f ("fs: allow detached mounts in clone_private_mount()").
-  Tweak the relevant ns_capable check so that it works on older kernels ]
-Signed-off-by: Noah Orlando <Noah.Orlando@deshaw.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 186b1ea73ad8 ("net: gro: use cb instead of skb->network_header")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250705150622.10699-1-nbd@nbd.name
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv4/tcp_offload.c | 1 +
+ net/ipv4/udp_offload.c | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2018,6 +2018,11 @@ struct vfsmount *clone_private_mount(con
- 	if (!check_mnt(old_mnt))
- 		goto invalid;
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index e04ebe651c334..3a9c5c14c310e 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -355,6 +355,7 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb,
+ 		flush |= skb->ip_summed != p->ip_summed;
+ 		flush |= skb->csum_level != p->csum_level;
+ 		flush |= NAPI_GRO_CB(p)->count >= 64;
++		skb_set_network_header(skb, skb_gro_receive_network_offset(skb));
  
-+	if (!ns_capable(old_mnt->mnt_ns->user_ns, CAP_SYS_ADMIN)) {
-+		up_read(&namespace_sem);
-+		return ERR_PTR(-EPERM);
-+	}
-+
- 	if (has_locked_children(old_mnt, path->dentry))
- 		goto invalid;
- 
+ 		if (flush || skb_gro_receive_list(p, skb))
+ 			mss = 1;
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 845730184c5d3..5de47dd5e9093 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -604,6 +604,7 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
+ 					NAPI_GRO_CB(skb)->flush = 1;
+ 					return NULL;
+ 				}
++				skb_set_network_header(skb, skb_gro_receive_network_offset(skb));
+ 				ret = skb_gro_receive_list(p, skb);
+ 			} else {
+ 				skb_gro_postpull_rcsum(skb, uh,
+-- 
+2.39.5
+
 
 
 
