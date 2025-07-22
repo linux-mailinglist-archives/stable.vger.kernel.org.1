@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-164046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1265CB0DCFF
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:07:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FD5B0DE17
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF311AA0F0C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 814011C857FD
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5517289369;
-	Tue, 22 Jul 2025 14:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13E42EF2BB;
+	Tue, 22 Jul 2025 14:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guruPpS9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krekymIN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808B522094;
-	Tue, 22 Jul 2025 14:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F352EF2B7;
+	Tue, 22 Jul 2025 14:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193071; cv=none; b=YQXu8UqsEp/ySz8KB57le1tSv7ZJfrTUNB5mreKydyFfkaTg4wdADVLkuqTn4SzO+ufi9wDRT3eHN6JZAzRXoYXnsTybrWhofYArnkJ4juGTlMoaQGlXyYg6E58d1o6y1MDy/HdbjIFn1vSIlYR8LpQkK8mBTX+8HvNI03S99Ls=
+	t=1753193543; cv=none; b=IvS7JwcnHA+NFYs2Kge8Msqtr/AYahBo4BhtyL5mu6EHrBfR8f74gaZzuJzwZUGlOEorquB3Dg5WKwTaTUuj5tJvP2kDCEGWCa4BSPUN8Mhvzur94M/+chf4LhIWsq00A4l9dtQPTtcgLlxNwFG4MI0S46FkG3vA9atZ/uwQYBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193071; c=relaxed/simple;
-	bh=QzyqIQ+arwDyaRc3rILFmIBVXEk/t/kA9/QDSRnTjdM=;
+	s=arc-20240116; t=1753193543; c=relaxed/simple;
+	bh=P2INypJ59NakWimv+4N/Cnah6czjAq+pW7VKo0mRBrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJfMV7KP8rX2eH6+fi4nDmigyqa0yJNGxSZc6hKCEAiEDsS4T74Zy41CXkT49HHtSkZdMI8uUiaTeln9B7dYPXr0YwihFXPKFi88/c/yEii7lPx8XOhqpiaoXFljFU1joYljPqon0VmBGafxIBf+q1pzCFRQMcMMRZp7bnnLo+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guruPpS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A9FC4CEF6;
-	Tue, 22 Jul 2025 14:04:30 +0000 (UTC)
+	 MIME-Version; b=O89EGG2sm/86wq5yRtPxi1mLhitesbeeQT7jBSrKBP/CQFulLyq7AsGFzml4tE6pWI48ONstrU+fTfaD+79Zlp+rVqBuBlqXdizBhPpjrZrO3naelytnCGxcgP7DO4/UObuOIyWHcEoepUWAjgftjWVDCj4orOAhNyW41vB1g9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krekymIN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C531EC4CEEB;
+	Tue, 22 Jul 2025 14:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193071;
-	bh=QzyqIQ+arwDyaRc3rILFmIBVXEk/t/kA9/QDSRnTjdM=;
+	s=korg; t=1753193543;
+	bh=P2INypJ59NakWimv+4N/Cnah6czjAq+pW7VKo0mRBrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=guruPpS937BTewTGJMkYecSwEykEt3geeFF4hoXklTGs5IqS/pCo0Pizr51gmmI3T
-	 VTzqnbqg6vbj6GvOvp07SXOoyU5A0HaKJ6/wnQlEIZSI6M0yIZSMDjaMaaLZBk0bv+
-	 +yOKTqvCTQEtgLo7CSSv7aKnWrTGNwKyYHn4eOK8=
+	b=krekymINtBjCQUDg2SYVmMy0sOVz+5jtZze6h+xapgokgL/RkLjEJ3agieiMM/vSX
+	 kuMCcBmEL/c7Y4eIA5ZqbnI65n2S4z8ipfYVtZlXekb96U0BdMmM+pWKNs++zd0k8V
+	 M9Bk/3I2kCU30mB9iarr35QtZddGi27VmmFh9kfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Brett Werling <brett.werling@garmin.com>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/158] usb: net: sierra: check for no status endpoint
-Date: Tue, 22 Jul 2025 15:44:53 +0200
-Message-ID: <20250722134344.818098553@linuxfoundation.org>
+Subject: [PATCH 6.15 124/187] can: tcan4x5x: fix reset gpio usage during probe
+Date: Tue, 22 Jul 2025 15:44:54 +0200
+Message-ID: <20250722134350.366589162@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Brett Werling <brett.werling@garmin.com>
 
-[ Upstream commit 4c4ca3c46167518f8534ed70f6e3b4bf86c4d158 ]
+[ Upstream commit 0f97a7588db7a545ea07ee0d512789bfad4931d8 ]
 
-The driver checks for having three endpoints and
-having bulk in and out endpoints, but not that
-the third endpoint is interrupt input.
-Rectify the omission.
+Fixes reset GPIO usage during probe by ensuring we retrieve the GPIO and
+take the device out of reset (if it defaults to being in reset) before
+we attempt to communicate with the device. This is achieved by moving
+the call to tcan4x5x_get_gpios() before tcan4x5x_find_version() and
+avoiding any device communication while getting the GPIOs. Once we
+determine the version, we can then take the knowledge of which GPIOs we
+obtained and use it to decide whether we need to disable the wake or
+state pin functions within the device.
 
-Reported-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/686d5a9f.050a0220.1ffab7.0017.GAE@google.com/
-Tested-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
-Fixes: eb4fd8cd355c8 ("net/usb: add sierra_net.c driver")
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20250714111326.258378-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This change is necessary in a situation where the reset GPIO is pulled
+high externally before the CPU takes control of it, meaning we need to
+explicitly bring the device out of reset before we can start
+communicating with it at all.
+
+This also has the effect of fixing an issue where a reset of the device
+would occur after having called tcan4x5x_disable_wake(), making the
+original behavior not actually disable the wake. This patch should now
+disable wake or state pin functions well after the reset occurs.
+
+Signed-off-by: Brett Werling <brett.werling@garmin.com>
+Link: https://patch.msgid.link/20250711141728.1826073-1-brett.werling@garmin.com
+Cc: Markus Schneider-Pargmann <msp@baylibre.com>
+Fixes: 142c6dc6d9d7 ("can: tcan4x5x: Add support for tcan4552/4553")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/sierra_net.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/can/m_can/tcan4x5x-core.c | 61 ++++++++++++++++++---------
+ 1 file changed, 41 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
-index 3d239b8d1a1bc..52e9fd8116f98 100644
---- a/drivers/net/usb/sierra_net.c
-+++ b/drivers/net/usb/sierra_net.c
-@@ -689,6 +689,10 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
- 			status);
- 		return -ENODEV;
+diff --git a/drivers/net/can/m_can/tcan4x5x-core.c b/drivers/net/can/m_can/tcan4x5x-core.c
+index 8edaa339d590b..39b0b5277b11f 100644
+--- a/drivers/net/can/m_can/tcan4x5x-core.c
++++ b/drivers/net/can/m_can/tcan4x5x-core.c
+@@ -343,21 +343,19 @@ static void tcan4x5x_get_dt_data(struct m_can_classdev *cdev)
+ 		of_property_read_bool(cdev->dev->of_node, "ti,nwkrq-voltage-vio");
+ }
+ 
+-static int tcan4x5x_get_gpios(struct m_can_classdev *cdev,
+-			      const struct tcan4x5x_version_info *version_info)
++static int tcan4x5x_get_gpios(struct m_can_classdev *cdev)
+ {
+ 	struct tcan4x5x_priv *tcan4x5x = cdev_to_priv(cdev);
+ 	int ret;
+ 
+-	if (version_info->has_wake_pin) {
+-		tcan4x5x->device_wake_gpio = devm_gpiod_get(cdev->dev, "device-wake",
+-							    GPIOD_OUT_HIGH);
+-		if (IS_ERR(tcan4x5x->device_wake_gpio)) {
+-			if (PTR_ERR(tcan4x5x->device_wake_gpio) == -EPROBE_DEFER)
+-				return -EPROBE_DEFER;
++	tcan4x5x->device_wake_gpio = devm_gpiod_get_optional(cdev->dev,
++							     "device-wake",
++							     GPIOD_OUT_HIGH);
++	if (IS_ERR(tcan4x5x->device_wake_gpio)) {
++		if (PTR_ERR(tcan4x5x->device_wake_gpio) == -EPROBE_DEFER)
++			return -EPROBE_DEFER;
+ 
+-			tcan4x5x_disable_wake(cdev);
+-		}
++		tcan4x5x->device_wake_gpio = NULL;
  	}
-+	if (!dev->status) {
-+		dev_err(&dev->udev->dev, "No status endpoint found");
-+		return -ENODEV;
+ 
+ 	tcan4x5x->reset_gpio = devm_gpiod_get_optional(cdev->dev, "reset",
+@@ -369,14 +367,31 @@ static int tcan4x5x_get_gpios(struct m_can_classdev *cdev,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (version_info->has_state_pin) {
+-		tcan4x5x->device_state_gpio = devm_gpiod_get_optional(cdev->dev,
+-								      "device-state",
+-								      GPIOD_IN);
+-		if (IS_ERR(tcan4x5x->device_state_gpio)) {
+-			tcan4x5x->device_state_gpio = NULL;
+-			tcan4x5x_disable_state(cdev);
+-		}
++	tcan4x5x->device_state_gpio = devm_gpiod_get_optional(cdev->dev,
++							      "device-state",
++							      GPIOD_IN);
++	if (IS_ERR(tcan4x5x->device_state_gpio))
++		tcan4x5x->device_state_gpio = NULL;
++
++	return 0;
++}
++
++static int tcan4x5x_check_gpios(struct m_can_classdev *cdev,
++				const struct tcan4x5x_version_info *version_info)
++{
++	struct tcan4x5x_priv *tcan4x5x = cdev_to_priv(cdev);
++	int ret;
++
++	if (version_info->has_wake_pin && !tcan4x5x->device_wake_gpio) {
++		ret = tcan4x5x_disable_wake(cdev);
++		if (ret)
++			return ret;
 +	}
- 	/* Initialize sierra private data */
- 	priv = kzalloc(sizeof *priv, GFP_KERNEL);
- 	if (!priv)
++
++	if (version_info->has_state_pin && !tcan4x5x->device_state_gpio) {
++		ret = tcan4x5x_disable_state(cdev);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	return 0;
+@@ -468,15 +483,21 @@ static int tcan4x5x_can_probe(struct spi_device *spi)
+ 		goto out_m_can_class_free_dev;
+ 	}
+ 
++	ret = tcan4x5x_get_gpios(mcan_class);
++	if (ret) {
++		dev_err(&spi->dev, "Getting gpios failed %pe\n", ERR_PTR(ret));
++		goto out_power;
++	}
++
+ 	version_info = tcan4x5x_find_version(priv);
+ 	if (IS_ERR(version_info)) {
+ 		ret = PTR_ERR(version_info);
+ 		goto out_power;
+ 	}
+ 
+-	ret = tcan4x5x_get_gpios(mcan_class, version_info);
++	ret = tcan4x5x_check_gpios(mcan_class, version_info);
+ 	if (ret) {
+-		dev_err(&spi->dev, "Getting gpios failed %pe\n", ERR_PTR(ret));
++		dev_err(&spi->dev, "Checking gpios failed %pe\n", ERR_PTR(ret));
+ 		goto out_power;
+ 	}
+ 
 -- 
 2.39.5
 
