@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-163857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90AB0B0DBED
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F232B0DCC7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04CE21886D48
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A6233AD169
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E285D2EA735;
-	Tue, 22 Jul 2025 13:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D281A2C25;
+	Tue, 22 Jul 2025 14:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXypjkLN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQX8tMep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6642EA72D;
-	Tue, 22 Jul 2025 13:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D473628BA96;
+	Tue, 22 Jul 2025 14:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192441; cv=none; b=nldwfC3rjSwfYmsCs9AsSu4RRP4bn5wkZkELU+uC7G5lOqN2tUvckuVEdmPfjB5zmoTLRLNWMU+29/uIG4pN0KhvdzZneM5Qanc0m6p3Tu/EVPLfuV4UT4TNxxkXB13CiweTiiDNfbilg4/dGUdviVD9HxhaSYLqE8V4cKNOQEA=
+	t=1753192922; cv=none; b=UqxEZbwQHZ9JcTt6AYyN1g/46M0nNUczffN13rP4IxhoW5E+yW6sxgVLCf+tzRVnXCjDj6saM4JOoWtGWlp4nPRsdxFmN+MAap3sGJISCI2mJknjF6N0uci57KH1RpVAi5Na2hoFo78SHNYnOYK/s2kg9dXaoAzLIlMKZc7+E7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192441; c=relaxed/simple;
-	bh=KTgPrSTRaekS11iw00mxft74QMwaC3hjoStjawm2fcM=;
+	s=arc-20240116; t=1753192922; c=relaxed/simple;
+	bh=J3veklS9bmffwOFW+OMN4VSJrqwlDh3Bta2Nt1Z8h5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvLuX1KODfbR0Xj4UWrt7iDyEplerykmmlOI6Y9YcFklcZwIrUfIIp7jczu6y/RIL/qBFrSAaF8vsMupMG/MbXsvzJEQjshNfmadDUsOmpna6fuj1qDMXudIqSmlH84G5rhwoxKTHRWoH9GTkhbvNnw1phs9Ym2eKbo/bUb3iRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXypjkLN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1021DC4CEEB;
-	Tue, 22 Jul 2025 13:54:00 +0000 (UTC)
+	 MIME-Version; b=SqiFZ5fu0EowYfHJvmSyv9C07tp8qwCnSRStg03kZFR/v2iDNh4eHIwACWAhNXKchNzca3oIV8Ww2GyEvi+IMgubvRZiOD9eZPKS1D5838R5eTv6zWK0+Wx81flTbjH/JkpJo1MjxVXeYNJnFLY3ljY8/4xSAD/agQ54sPM8Q98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQX8tMep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2464AC4CEEB;
+	Tue, 22 Jul 2025 14:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192441;
-	bh=KTgPrSTRaekS11iw00mxft74QMwaC3hjoStjawm2fcM=;
+	s=korg; t=1753192922;
+	bh=J3veklS9bmffwOFW+OMN4VSJrqwlDh3Bta2Nt1Z8h5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXypjkLNvO+FtCG0Ld4GWhQfQ3ZDpPkrg/qipxmE122r+Hob8r8fZYzkIfPzpqB1e
-	 59Rs0D7Y7ORzHIjKP3okffGgG5+VE715PMgXHqGofQ+wBvci9TyI/UbLAV0GQ5gZED
-	 tA1mNaUhYXaLERNZEELM/45NQMYO6JuXap72sDFs=
+	b=eQX8tMepklYb4W0TePmI/gIvuRIm50/MpA4ymv8B40MuEhw9V6dBuF2ObxKvVe67Y
+	 /fSs+CP0ISlsm+KXEOnqK4lJpa8UwgeirkJxf9f7UjUjzoBVpVuPWZs5E/Lc5C/XN4
+	 wzj3oKabCh40hQkCz2Eou+snGPYvt2WaQG0jOmuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	John Garry <john.g.garry@oracle.com>,
+	Alan Adamson <alan.adamson@oracle.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/111] net/sched: sch_qfq: Fix race condition on qfq_aggregate
-Date: Tue, 22 Jul 2025 15:44:40 +0200
-Message-ID: <20250722134335.801908151@linuxfoundation.org>
+Subject: [PATCH 6.12 097/158] nvme: fix endianness of command word prints in nvme_log_err_passthru()
+Date: Tue, 22 Jul 2025 15:44:41 +0200
+Message-ID: <20250722134344.375355172@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit 5e28d5a3f774f118896aec17a3a20a9c5c9dfc64 ]
+[ Upstream commit dd8e34afd6709cb2f9c0e63340f567e6c066ed8e ]
 
-A race condition can occur when 'agg' is modified in qfq_change_agg
-(called during qfq_enqueue) while other threads access it
-concurrently. For example, qfq_dump_class may trigger a NULL
-dereference, and qfq_delete_class may cause a use-after-free.
+The command word members of struct nvme_common_command are __le32 type,
+so use helper le32_to_cpu() to read them properly.
 
-This patch addresses the issue by:
-
-1. Moved qfq_destroy_class into the critical section.
-
-2. Added sch_tree_lock protection to qfq_dump_class and
-qfq_dump_class_stats.
-
-Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 9f079dda1433 ("nvme: allow passthru cmd error logging")
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Alan Adamson <alan.adamson@oracle.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ drivers/nvme/host/core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 5e557b960bde3..a2b321fec13c1 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -412,7 +412,7 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 	bool existing = false;
- 	struct nlattr *tb[TCA_QFQ_MAX + 1];
- 	struct qfq_aggregate *new_agg = NULL;
--	u32 weight, lmax, inv_w;
-+	u32 weight, lmax, inv_w, old_weight, old_lmax;
- 	int err;
- 	int delta_w;
- 
-@@ -446,12 +446,16 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 	inv_w = ONE_FP / weight;
- 	weight = ONE_FP / inv_w;
- 
--	if (cl != NULL &&
--	    lmax == cl->agg->lmax &&
--	    weight == cl->agg->class_weight)
--		return 0; /* nothing to change */
-+	if (cl != NULL) {
-+		sch_tree_lock(sch);
-+		old_weight = cl->agg->class_weight;
-+		old_lmax   = cl->agg->lmax;
-+		sch_tree_unlock(sch);
-+		if (lmax == old_lmax && weight == old_weight)
-+			return 0; /* nothing to change */
-+	}
- 
--	delta_w = weight - (cl ? cl->agg->class_weight : 0);
-+	delta_w = weight - (cl ? old_weight : 0);
- 
- 	if (q->wsum + delta_w > QFQ_MAX_WSUM) {
- 		NL_SET_ERR_MSG_FMT_MOD(extack,
-@@ -558,10 +562,10 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg,
- 
- 	qdisc_purge_queue(cl->qdisc);
- 	qdisc_class_hash_remove(&q->clhash, &cl->common);
-+	qfq_destroy_class(sch, cl);
- 
- 	sch_tree_unlock(sch);
- 
--	qfq_destroy_class(sch, cl);
- 	return 0;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 2ca14f2b7a0b1..947488bf43144 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -375,12 +375,12 @@ static void nvme_log_err_passthru(struct request *req)
+ 		nr->status & NVME_SC_MASK,	/* Status Code */
+ 		nr->status & NVME_STATUS_MORE ? "MORE " : "",
+ 		nr->status & NVME_STATUS_DNR  ? "DNR "  : "",
+-		nr->cmd->common.cdw10,
+-		nr->cmd->common.cdw11,
+-		nr->cmd->common.cdw12,
+-		nr->cmd->common.cdw13,
+-		nr->cmd->common.cdw14,
+-		nr->cmd->common.cdw15);
++		le32_to_cpu(nr->cmd->common.cdw10),
++		le32_to_cpu(nr->cmd->common.cdw11),
++		le32_to_cpu(nr->cmd->common.cdw12),
++		le32_to_cpu(nr->cmd->common.cdw13),
++		le32_to_cpu(nr->cmd->common.cdw14),
++		le32_to_cpu(nr->cmd->common.cdw15));
  }
  
-@@ -628,6 +632,7 @@ static int qfq_dump_class(struct Qdisc *sch, unsigned long arg,
- {
- 	struct qfq_class *cl = (struct qfq_class *)arg;
- 	struct nlattr *nest;
-+	u32 class_weight, lmax;
- 
- 	tcm->tcm_parent	= TC_H_ROOT;
- 	tcm->tcm_handle	= cl->common.classid;
-@@ -636,8 +641,13 @@ static int qfq_dump_class(struct Qdisc *sch, unsigned long arg,
- 	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
- 	if (nest == NULL)
- 		goto nla_put_failure;
--	if (nla_put_u32(skb, TCA_QFQ_WEIGHT, cl->agg->class_weight) ||
--	    nla_put_u32(skb, TCA_QFQ_LMAX, cl->agg->lmax))
-+
-+	sch_tree_lock(sch);
-+	class_weight	= cl->agg->class_weight;
-+	lmax		= cl->agg->lmax;
-+	sch_tree_unlock(sch);
-+	if (nla_put_u32(skb, TCA_QFQ_WEIGHT, class_weight) ||
-+	    nla_put_u32(skb, TCA_QFQ_LMAX, lmax))
- 		goto nla_put_failure;
- 	return nla_nest_end(skb, nest);
- 
-@@ -654,8 +664,10 @@ static int qfq_dump_class_stats(struct Qdisc *sch, unsigned long arg,
- 
- 	memset(&xstats, 0, sizeof(xstats));
- 
-+	sch_tree_lock(sch);
- 	xstats.weight = cl->agg->class_weight;
- 	xstats.lmax = cl->agg->lmax;
-+	sch_tree_unlock(sch);
- 
- 	if (gnet_stats_copy_basic(d, NULL, &cl->bstats, true) < 0 ||
- 	    gnet_stats_copy_rate_est(d, &cl->rate_est) < 0 ||
+ enum nvme_disposition {
 -- 
 2.39.5
 
