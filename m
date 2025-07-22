@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-164246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AEC6B0DE78
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:27:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F90AB0DCF7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D94433AC20C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:19:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0031B6C0F0E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A927D2ECEAB;
-	Tue, 22 Jul 2025 14:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14152C08B6;
+	Tue, 22 Jul 2025 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1rqHt4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUT7Q5KC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B382EA49E;
-	Tue, 22 Jul 2025 14:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C26F2DEA8E;
+	Tue, 22 Jul 2025 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193728; cv=none; b=pkc4zaZm7Gh6DbOEi3IALJu/MTvK2dTGK1KubB8ndV5NE0MgCQcAo5U5WA+MsoKEonvuhuSdXnragtB3qbm+0B1By2FRHUmFmbpw4XGrpw1W0qkOkj8pghjaMWIUtjaFtIzPvlsLVlHsBFiDOmkUses138r12OLbvEBYAKKYFEU=
+	t=1753193048; cv=none; b=Y8nWoMfcKWjzTGxqxxD3seOkQjSw8SLp8htaBbGaiLEuZHAWyJPezVDlw81fh/RFVZwZI6O3TvrxKzX3ACJBDW95d0a07uY3ButizAp8diKSoRCAmX4wk+pI13Ye5V/WobUzXH7/RA2+mrudWqvbpe++WZegaor1AvAJmh88E8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193728; c=relaxed/simple;
-	bh=s/z/GdOz/ahvuBG7P2+EueTtN+wYeL7KfI2a3W0C70Q=;
+	s=arc-20240116; t=1753193048; c=relaxed/simple;
+	bh=h+LpW9m/G+fDVL9datIpgqBu82dRYgiN3w1VVukQEKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pss6kPOSkVsqmqzZlkwjAK5odiYffjApLWyvURdRK+os4ht6PWkY8v+qJ7IGx3BqVrCDYAdESSastcEnhhOueU4y8au/Y5nOvnazMxIyE5n8zLtjtZW8wlag5GDp96NP0RIMRAbNU9pxm3C7GVtzS7Lkk/JeOKaIbueFp33+GMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1rqHt4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8E2C4CEEB;
-	Tue, 22 Jul 2025 14:15:27 +0000 (UTC)
+	 MIME-Version; b=IEcPJd7C1m+l8Sk8EXnM7lLfif8lB6F+gmW2/TdW/a6xdRxIzth5KuSwb7i88kQ9riA+zJL+4fRpCNPdKtU6fZ0otBSY6od9/o7sJ+H6CS1lFjH5x2/DdABPQ36WHobran/GRsb7ol+OQ20dfZKoSJjUaIRg+xr2+A0WfAgCNDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUT7Q5KC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907DFC4CEEB;
+	Tue, 22 Jul 2025 14:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193728;
-	bh=s/z/GdOz/ahvuBG7P2+EueTtN+wYeL7KfI2a3W0C70Q=;
+	s=korg; t=1753193048;
+	bh=h+LpW9m/G+fDVL9datIpgqBu82dRYgiN3w1VVukQEKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H1rqHt4wQH15BTK01sM7uI6on4Dr26GGMmZgln780/yS8CcFlSRU+//g0OfdpQfJc
-	 8Ocmwyj8VjeD8OHifY3ZMrbT70NLT6IGOn71y+m88QUKwAgWHGN1ky56POTuzCtSuI
-	 moNh2kcG9IOOJl0asWmjb75mt0etSs1tRq+oVCBo=
+	b=AUT7Q5KCayhg22t7Qoz7IiY7MMdFIsoDmUb4iOFsfku2yqJyyj5Rte3TuPiIBl+Dm
+	 aTliPfKbnkGJqfvAZH/fTlhW1NLuCjWndLwZSWZDPuyqixY71yAVgw3B2RtdbkeHib
+	 N8MKI7mTAkQDWyCvGRCs3Bf10VBbyCPwd/q54o6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	LePremierHomme <kwqcheii@proton.me>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 147/187] drm/xe/pf: Prepare to stop SR-IOV support prior GT reset
+Subject: [PATCH 6.12 133/158] rxrpc: Fix recv-recv race of completed call
 Date: Tue, 22 Jul 2025 15:45:17 +0200
-Message-ID: <20250722134351.263077950@linuxfoundation.org>
+Message-ID: <20250722134345.690575280@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
-References: <20250722134345.761035548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,127 +66,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 81dccec448d204e448ae83e1fe60e8aaeaadadb8 ]
+[ Upstream commit 962fb1f651c2cf2083e0c3ef53ba69e3b96d3fbc ]
 
-As part of the resume or GT reset, the PF driver schedules work
-which is then used to complete restarting of the SR-IOV support,
-including resending to the GuC configurations of provisioned VFs.
+If a call receives an event (such as incoming data), the call gets placed
+on the socket's queue and a thread in recvmsg can be awakened to go and
+process it.  Once the thread has picked up the call off of the queue,
+further events will cause it to be requeued, and once the socket lock is
+dropped (recvmsg uses call->user_mutex to allow the socket to be used in
+parallel), a second thread can come in and its recvmsg can pop the call off
+the socket queue again.
 
-However, in case of short delay between those two actions, which
-could be seen by triggering a GT reset on the suspened device:
+In such a case, the first thread will be receiving stuff from the call and
+the second thread will be blocked on call->user_mutex.  The first thread
+can, at this point, process both the event that it picked call for and the
+event that the second thread picked the call for and may see the call
+terminate - in which case the call will be "released", decoupling the call
+from the user call ID assigned to it (RXRPC_USER_CALL_ID in the control
+message).
 
- $ echo 1 > /sys/kernel/debug/dri/0000:00:02.0/gt0/force_reset
+The first thread will return okay, but then the second thread will wake up
+holding the user_mutex and, if it sees that the call has been released by
+the first thread, it will BUG thusly:
 
-this PF worker might be still busy, which lead to errors due to
-just stopped or disabled GuC CTB communication:
+	kernel BUG at net/rxrpc/recvmsg.c:474!
 
- [ ] xe 0000:00:02.0: [drm:xe_gt_resume [xe]] GT0: resumed
- [ ] xe 0000:00:02.0: [drm] GT0: trying reset from force_reset_show [xe]
- [ ] xe 0000:00:02.0: [drm] GT0: reset queued
- [ ] xe 0000:00:02.0: [drm] GT0: reset started
- [ ] xe 0000:00:02.0: [drm:guc_ct_change_state [xe]] GT0: GuC CT communication channel stopped
- [ ] xe 0000:00:02.0: [drm:guc_ct_send_recv [xe]] GT0: H2G request 0x5503 canceled!
- [ ] xe 0000:00:02.0: [drm] GT0: PF: Failed to push VF1 12 config KLVs (-ECANCELED)
- [ ] xe 0000:00:02.0: [drm] GT0: PF: Failed to push VF1 configuration (-ECANCELED)
- [ ] xe 0000:00:02.0: [drm:guc_ct_change_state [xe]] GT0: GuC CT communication channel disabled
- [ ] xe 0000:00:02.0: [drm] GT0: PF: Failed to push VF2 12 config KLVs (-ENODEV)
- [ ] xe 0000:00:02.0: [drm] GT0: PF: Failed to push VF2 configuration (-ENODEV)
- [ ] xe 0000:00:02.0: [drm] GT0: PF: Failed to push 2 of 2 VFs configurations
- [ ] xe 0000:00:02.0: [drm:pf_worker_restart_func [xe]] GT0: PF: restart completed
+Fix this by just dequeuing the call and ignoring it if it is seen to be
+already released.  We can't tell userspace about it anyway as the user call
+ID has become stale.
 
-While this VFs reprovisioning will be successful during next spin
-of the worker, to avoid those errors, make sure to cancel restart
-worker if we are about to trigger next reset.
-
-Fixes: 411220808cee ("drm/xe/pf: Restart VFs provisioning after GT reset")
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Link: https://lore.kernel.org/r/20250711193316.1920-2-michal.wajdeczko@intel.com
-(cherry picked from commit 9f50b729dd61dfb9f4d7c66900d22a7c7353a8c0)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
+Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: LePremierHomme <kwqcheii@proton.me>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250717074350.3767366-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt.c          |  3 +++
- drivers/gpu/drm/xe/xe_gt_sriov_pf.c | 19 +++++++++++++++++++
- drivers/gpu/drm/xe/xe_gt_sriov_pf.h |  5 +++++
- 3 files changed, 27 insertions(+)
+ include/trace/events/rxrpc.h |  3 +++
+ net/rxrpc/call_accept.c      |  1 +
+ net/rxrpc/recvmsg.c          | 19 +++++++++++++++++--
+ 3 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
-index 4bad8894fa12c..7b8556fa17435 100644
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -797,6 +797,9 @@ static int gt_reset(struct xe_gt *gt)
- 		goto err_out;
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index e1a37e9c2d42d..eea3769765ac0 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -282,12 +282,15 @@
+ 	EM(rxrpc_call_put_userid,		"PUT user-id ") \
+ 	EM(rxrpc_call_see_accept,		"SEE accept  ") \
+ 	EM(rxrpc_call_see_activate_client,	"SEE act-clnt") \
++	EM(rxrpc_call_see_already_released,	"SEE alrdy-rl") \
+ 	EM(rxrpc_call_see_connect_failed,	"SEE con-fail") \
+ 	EM(rxrpc_call_see_connected,		"SEE connect ") \
+ 	EM(rxrpc_call_see_conn_abort,		"SEE conn-abt") \
++	EM(rxrpc_call_see_discard,		"SEE discard ") \
+ 	EM(rxrpc_call_see_disconnected,		"SEE disconn ") \
+ 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
+ 	EM(rxrpc_call_see_input,		"SEE input   ") \
++	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
+ 	EM(rxrpc_call_see_release,		"SEE release ") \
+ 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
+ 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
+diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
+index 773bdb2e37daf..37ac8a6656786 100644
+--- a/net/rxrpc/call_accept.c
++++ b/net/rxrpc/call_accept.c
+@@ -219,6 +219,7 @@ void rxrpc_discard_prealloc(struct rxrpc_sock *rx)
+ 	tail = b->call_backlog_tail;
+ 	while (CIRC_CNT(head, tail, size) > 0) {
+ 		struct rxrpc_call *call = b->call_backlog[tail];
++		rxrpc_see_call(call, rxrpc_call_see_discard);
+ 		rcu_assign_pointer(call->socket, rx);
+ 		if (rx->discard_new_call) {
+ 			_debug("discard %lx", call->user_call_ID);
+diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
+index a482f88c5fc5b..e24a44bae9a32 100644
+--- a/net/rxrpc/recvmsg.c
++++ b/net/rxrpc/recvmsg.c
+@@ -351,6 +351,16 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 		goto try_again;
  	}
  
-+	if (IS_SRIOV_PF(gt_to_xe(gt)))
-+		xe_gt_sriov_pf_stop_prepare(gt);
-+
- 	xe_uc_gucrc_disable(&gt->uc);
- 	xe_uc_stop_prepare(&gt->uc);
- 	xe_gt_pagefault_reset(gt);
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-index c08efca6420e7..35489fa818259 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-@@ -172,6 +172,25 @@ void xe_gt_sriov_pf_sanitize_hw(struct xe_gt *gt, unsigned int vfid)
- 	pf_clear_vf_scratch_regs(gt, vfid);
- }
++	rxrpc_see_call(call, rxrpc_call_see_recvmsg);
++	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
++		rxrpc_see_call(call, rxrpc_call_see_already_released);
++		list_del_init(&call->recvmsg_link);
++		spin_unlock_irq(&rx->recvmsg_lock);
++		release_sock(&rx->sk);
++		trace_rxrpc_recvmsg(call->debug_id, rxrpc_recvmsg_unqueue, 0);
++		rxrpc_put_call(call, rxrpc_call_put_recvmsg);
++		goto try_again;
++	}
+ 	if (!(flags & MSG_PEEK))
+ 		list_del_init(&call->recvmsg_link);
+ 	else
+@@ -374,8 +384,13 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
  
-+static void pf_cancel_restart(struct xe_gt *gt)
-+{
-+	xe_gt_assert(gt, IS_SRIOV_PF(gt_to_xe(gt)));
-+
-+	if (cancel_work_sync(&gt->sriov.pf.workers.restart))
-+		xe_gt_sriov_dbg_verbose(gt, "pending restart canceled!\n");
-+}
-+
-+/**
-+ * xe_gt_sriov_pf_stop_prepare() - Prepare to stop SR-IOV support.
-+ * @gt: the &xe_gt
-+ *
-+ * This function can only be called on the PF.
-+ */
-+void xe_gt_sriov_pf_stop_prepare(struct xe_gt *gt)
-+{
-+	pf_cancel_restart(gt);
-+}
-+
- static void pf_restart(struct xe_gt *gt)
- {
- 	struct xe_device *xe = gt_to_xe(gt);
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf.h b/drivers/gpu/drm/xe/xe_gt_sriov_pf.h
-index f474509411c0c..e2b2ff8132dc5 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf.h
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf.h
-@@ -13,6 +13,7 @@ int xe_gt_sriov_pf_init_early(struct xe_gt *gt);
- int xe_gt_sriov_pf_init(struct xe_gt *gt);
- void xe_gt_sriov_pf_init_hw(struct xe_gt *gt);
- void xe_gt_sriov_pf_sanitize_hw(struct xe_gt *gt, unsigned int vfid);
-+void xe_gt_sriov_pf_stop_prepare(struct xe_gt *gt);
- void xe_gt_sriov_pf_restart(struct xe_gt *gt);
- #else
- static inline int xe_gt_sriov_pf_init_early(struct xe_gt *gt)
-@@ -29,6 +30,10 @@ static inline void xe_gt_sriov_pf_init_hw(struct xe_gt *gt)
- {
- }
+ 	release_sock(&rx->sk);
  
-+static inline void xe_gt_sriov_pf_stop_prepare(struct xe_gt *gt)
-+{
-+}
-+
- static inline void xe_gt_sriov_pf_restart(struct xe_gt *gt)
- {
- }
+-	if (test_bit(RXRPC_CALL_RELEASED, &call->flags))
+-		BUG();
++	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
++		rxrpc_see_call(call, rxrpc_call_see_already_released);
++		mutex_unlock(&call->user_mutex);
++		if (!(flags & MSG_PEEK))
++			rxrpc_put_call(call, rxrpc_call_put_recvmsg);
++		goto try_again;
++	}
+ 
+ 	if (test_bit(RXRPC_CALL_HAS_USERID, &call->flags)) {
+ 		if (flags & MSG_CMSG_COMPAT) {
 -- 
 2.39.5
 
