@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-164039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F90AB0DCF7
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:07:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5F5B0DE49
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0031B6C0F0E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D0DE56818D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14152C08B6;
-	Tue, 22 Jul 2025 14:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC832EACFE;
+	Tue, 22 Jul 2025 14:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUT7Q5KC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jttLOEx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C26F2DEA8E;
-	Tue, 22 Jul 2025 14:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF622B9A5;
+	Tue, 22 Jul 2025 14:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193048; cv=none; b=Y8nWoMfcKWjzTGxqxxD3seOkQjSw8SLp8htaBbGaiLEuZHAWyJPezVDlw81fh/RFVZwZI6O3TvrxKzX3ACJBDW95d0a07uY3ButizAp8diKSoRCAmX4wk+pI13Ye5V/WobUzXH7/RA2+mrudWqvbpe++WZegaor1AvAJmh88E8I=
+	t=1753193621; cv=none; b=X7l3q/aZCUzXO1eib5VzAZkA4OjTNBro9Ssmz3IYziYOdug7BauEEMWLiVq7nqYZVrsSlp4+oey/GpJ5Qvstu0kpeeW2hH8/pv5Bwe7dJL1P3xBAClewhWMY6hyiS91rtewG46m6V6IU2gpXILdnPSxxwu6sXN+fKh1dI+9gmGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193048; c=relaxed/simple;
-	bh=h+LpW9m/G+fDVL9datIpgqBu82dRYgiN3w1VVukQEKs=;
+	s=arc-20240116; t=1753193621; c=relaxed/simple;
+	bh=rROtZMTRamDjRtwM2zIUAH30ihMstzy8+qG5SzoBv3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IEcPJd7C1m+l8Sk8EXnM7lLfif8lB6F+gmW2/TdW/a6xdRxIzth5KuSwb7i88kQ9riA+zJL+4fRpCNPdKtU6fZ0otBSY6od9/o7sJ+H6CS1lFjH5x2/DdABPQ36WHobran/GRsb7ol+OQ20dfZKoSJjUaIRg+xr2+A0WfAgCNDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUT7Q5KC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907DFC4CEEB;
-	Tue, 22 Jul 2025 14:04:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U7Zrvd4Cqr1D5Oham7sJYRTz1mTaf1M2TBoy9tGIUzCiDrsK+QEtZTOoWmZ6F2IT1CfS9qUrvCF3EAe77wcIncD6kmKmEyIKl+uWxQTbtmXmO2VLgdsTZq3o+nGV50d7PQr/qKe2R/LOK3XyI4BEgyvAouSFk9+Jv/xUQ/ZuWKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jttLOEx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2260C4CEEB;
+	Tue, 22 Jul 2025 14:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193048;
-	bh=h+LpW9m/G+fDVL9datIpgqBu82dRYgiN3w1VVukQEKs=;
+	s=korg; t=1753193621;
+	bh=rROtZMTRamDjRtwM2zIUAH30ihMstzy8+qG5SzoBv3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUT7Q5KCayhg22t7Qoz7IiY7MMdFIsoDmUb4iOFsfku2yqJyyj5Rte3TuPiIBl+Dm
-	 aTliPfKbnkGJqfvAZH/fTlhW1NLuCjWndLwZSWZDPuyqixY71yAVgw3B2RtdbkeHib
-	 N8MKI7mTAkQDWyCvGRCs3Bf10VBbyCPwd/q54o6g=
+	b=1jttLOExRUVUk6bzPbxQdxMiocIBAgYRUZuxJujuptOz5EbgnbKSHEa7aBb37aOiT
+	 YyYwKfnCKj+k6NoEKFM5vKsqWM6dPnYuPe5lt5ZzX+jEfVMyAHP9LcEwzevllgFeXg
+	 RtR+WpQd8LBmXAknEe8QXkxuI9r6UQ8DfBUSn5Z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	LePremierHomme <kwqcheii@proton.me>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/158] rxrpc: Fix recv-recv race of completed call
-Date: Tue, 22 Jul 2025 15:45:17 +0200
-Message-ID: <20250722134345.690575280@linuxfoundation.org>
+Subject: [PATCH 6.15 148/187] drm/xe/pf: Resend PF provisioning after GT reset
+Date: Tue, 22 Jul 2025 15:45:18 +0200
+Message-ID: <20250722134351.301676554@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,128 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit 962fb1f651c2cf2083e0c3ef53ba69e3b96d3fbc ]
+[ Upstream commit 5c244eeca57ff4e47e1f60310d059346d1b86b9b ]
 
-If a call receives an event (such as incoming data), the call gets placed
-on the socket's queue and a thread in recvmsg can be awakened to go and
-process it.  Once the thread has picked up the call off of the queue,
-further events will cause it to be requeued, and once the socket lock is
-dropped (recvmsg uses call->user_mutex to allow the socket to be used in
-parallel), a second thread can come in and its recvmsg can pop the call off
-the socket queue again.
+If we reload the GuC due to suspend/resume or GT reset then we
+have to resend not only any VFs provisioning data, but also PF
+configuration, like scheduling parameters (EQ, PT), as otherwise
+GuC will continue to use default values.
 
-In such a case, the first thread will be receiving stuff from the call and
-the second thread will be blocked on call->user_mutex.  The first thread
-can, at this point, process both the event that it picked call for and the
-event that the second thread picked the call for and may see the call
-terminate - in which case the call will be "released", decoupling the call
-from the user call ID assigned to it (RXRPC_USER_CALL_ID in the control
-message).
-
-The first thread will return okay, but then the second thread will wake up
-holding the user_mutex and, if it sees that the call has been released by
-the first thread, it will BUG thusly:
-
-	kernel BUG at net/rxrpc/recvmsg.c:474!
-
-Fix this by just dequeuing the call and ignoring it if it is seen to be
-already released.  We can't tell userspace about it anyway as the user call
-ID has become stale.
-
-Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
-Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: LePremierHomme <kwqcheii@proton.me>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/20250717074350.3767366-3-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 411220808cee ("drm/xe/pf: Restart VFs provisioning after GT reset")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Link: https://lore.kernel.org/r/20250711193316.1920-3-michal.wajdeczko@intel.com
+(cherry picked from commit 1c38dd6afa4a8ecce28e94da794fd1d205c30f51)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/rxrpc.h |  3 +++
- net/rxrpc/call_accept.c      |  1 +
- net/rxrpc/recvmsg.c          | 19 +++++++++++++++++--
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c | 27 ++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index e1a37e9c2d42d..eea3769765ac0 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -282,12 +282,15 @@
- 	EM(rxrpc_call_put_userid,		"PUT user-id ") \
- 	EM(rxrpc_call_see_accept,		"SEE accept  ") \
- 	EM(rxrpc_call_see_activate_client,	"SEE act-clnt") \
-+	EM(rxrpc_call_see_already_released,	"SEE alrdy-rl") \
- 	EM(rxrpc_call_see_connect_failed,	"SEE con-fail") \
- 	EM(rxrpc_call_see_connected,		"SEE connect ") \
- 	EM(rxrpc_call_see_conn_abort,		"SEE conn-abt") \
-+	EM(rxrpc_call_see_discard,		"SEE discard ") \
- 	EM(rxrpc_call_see_disconnected,		"SEE disconn ") \
- 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
- 	EM(rxrpc_call_see_input,		"SEE input   ") \
-+	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
- 	EM(rxrpc_call_see_release,		"SEE release ") \
- 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
- 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
-diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
-index 773bdb2e37daf..37ac8a6656786 100644
---- a/net/rxrpc/call_accept.c
-+++ b/net/rxrpc/call_accept.c
-@@ -219,6 +219,7 @@ void rxrpc_discard_prealloc(struct rxrpc_sock *rx)
- 	tail = b->call_backlog_tail;
- 	while (CIRC_CNT(head, tail, size) > 0) {
- 		struct rxrpc_call *call = b->call_backlog[tail];
-+		rxrpc_see_call(call, rxrpc_call_see_discard);
- 		rcu_assign_pointer(call->socket, rx);
- 		if (rx->discard_new_call) {
- 			_debug("discard %lx", call->user_call_ID);
-diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
-index a482f88c5fc5b..e24a44bae9a32 100644
---- a/net/rxrpc/recvmsg.c
-+++ b/net/rxrpc/recvmsg.c
-@@ -351,6 +351,16 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 		goto try_again;
- 	}
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
+index 10be109bf357f..96289195a3d3e 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
+@@ -2356,6 +2356,21 @@ int xe_gt_sriov_pf_config_restore(struct xe_gt *gt, unsigned int vfid,
+ 	return err;
+ }
  
-+	rxrpc_see_call(call, rxrpc_call_see_recvmsg);
-+	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
-+		rxrpc_see_call(call, rxrpc_call_see_already_released);
-+		list_del_init(&call->recvmsg_link);
-+		spin_unlock_irq(&rx->recvmsg_lock);
-+		release_sock(&rx->sk);
-+		trace_rxrpc_recvmsg(call->debug_id, rxrpc_recvmsg_unqueue, 0);
-+		rxrpc_put_call(call, rxrpc_call_put_recvmsg);
-+		goto try_again;
++static int pf_push_self_config(struct xe_gt *gt)
++{
++	int err;
++
++	err = pf_push_full_vf_config(gt, PFID);
++	if (err) {
++		xe_gt_sriov_err(gt, "Failed to push self configuration (%pe)\n",
++				ERR_PTR(err));
++		return err;
 +	}
- 	if (!(flags & MSG_PEEK))
- 		list_del_init(&call->recvmsg_link);
- 	else
-@@ -374,8 +384,13 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
++
++	xe_gt_sriov_dbg_verbose(gt, "self configuration completed\n");
++	return 0;
++}
++
+ static void fini_config(void *arg)
+ {
+ 	struct xe_gt *gt = arg;
+@@ -2379,9 +2394,17 @@ static void fini_config(void *arg)
+ int xe_gt_sriov_pf_config_init(struct xe_gt *gt)
+ {
+ 	struct xe_device *xe = gt_to_xe(gt);
++	int err;
  
- 	release_sock(&rx->sk);
+ 	xe_gt_assert(gt, IS_SRIOV_PF(xe));
  
--	if (test_bit(RXRPC_CALL_RELEASED, &call->flags))
--		BUG();
-+	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
-+		rxrpc_see_call(call, rxrpc_call_see_already_released);
-+		mutex_unlock(&call->user_mutex);
-+		if (!(flags & MSG_PEEK))
-+			rxrpc_put_call(call, rxrpc_call_put_recvmsg);
-+		goto try_again;
-+	}
++	mutex_lock(xe_gt_sriov_pf_master_mutex(gt));
++	err = pf_push_self_config(gt);
++	mutex_unlock(xe_gt_sriov_pf_master_mutex(gt));
++
++	if (err)
++		return err;
++
+ 	return devm_add_action_or_reset(xe->drm.dev, fini_config, gt);
+ }
  
- 	if (test_bit(RXRPC_CALL_HAS_USERID, &call->flags)) {
- 		if (flags & MSG_CMSG_COMPAT) {
+@@ -2399,6 +2422,10 @@ void xe_gt_sriov_pf_config_restart(struct xe_gt *gt)
+ 	unsigned int n, total_vfs = xe_sriov_pf_get_totalvfs(gt_to_xe(gt));
+ 	unsigned int fail = 0, skip = 0;
+ 
++	mutex_lock(xe_gt_sriov_pf_master_mutex(gt));
++	pf_push_self_config(gt);
++	mutex_unlock(xe_gt_sriov_pf_master_mutex(gt));
++
+ 	for (n = 1; n <= total_vfs; n++) {
+ 		if (xe_gt_sriov_pf_config_is_empty(gt, n))
+ 			skip++;
 -- 
 2.39.5
 
