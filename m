@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82CD5B0DC61
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:01:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB72B0DBA7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C67C8188297F
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCA8E1C82535
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3709E28BAB0;
-	Tue, 22 Jul 2025 13:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3CA2EA468;
+	Tue, 22 Jul 2025 13:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m78upNLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mo9MX0AB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D703E22CBE9;
-	Tue, 22 Jul 2025 13:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AD2224FD;
+	Tue, 22 Jul 2025 13:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192748; cv=none; b=mlFMbmSVs6RC9ix/Iy0fHteS0XP19r/wM4JET1/o97bxkV3uTZhNZ95t/jzW4FqZ4PlVCQWzrrYUOFrb/hLF5EiMensVi3qWWZUJKNVx3ON0n0H+CyQBTgOnzpMTqL9njfFBFvBortGDnUmfUj8CxwiYGlK0hZmZFJulsn+DZtA=
+	t=1753192269; cv=none; b=XKSUuD5temggaGGaIl2DegzlO7FMv60tbPWrJZPEJC5psieMLXxotDqZQqJLnrUmFfpm76OccWpFpqaxulr4og/CFLuK+QlFMvnLnMdq2dFaZHFu5Okxr9Y9961y+2F3UygN2gi1HwL8lA5xKAVuWh7U0ifoHHJllA6CuaEqzQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192748; c=relaxed/simple;
-	bh=ja20C41F31KUmXNikW/Y1Mix4uV/HpSeqlAJnyX/jCE=;
+	s=arc-20240116; t=1753192269; c=relaxed/simple;
+	bh=WUD+FHfvkb3mYWs+Gjg1UbEoTNuKoe/dGj1xivSryO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSYtOQQjaD9AfRIST8AeexcQCNjzjAziyd8hvJqxC+OpkDVFU5p9DuGBUiRkZiZV1s+9ygd7AW9aKW7mhS1tbRhOaTcMnDqr62Int/VZu5vCkFDjs93S7nMmBYVBMM3BHktIB9GqEWMMHrvC2ATmEWEWlhwEXEWsUmOwVSKhD6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m78upNLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB30CC4CEEB;
-	Tue, 22 Jul 2025 13:59:07 +0000 (UTC)
+	 MIME-Version; b=EjDGbqj/aktqm1dFMvgOlJYeHQMuLaFQHDIwr33KwH4dbeuPfi7geu366WMCoGhNjP9Ih9Q6GWuOYMmoAEJbCVbbTSPEAj1TDUWnGs99qK1MI+cMBct73UeCvpS8zL1TnyI/O08u6ccRkyYOVdbqUBqfmNs5igAKOy9Up6egLGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mo9MX0AB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DF3C4CEEB;
+	Tue, 22 Jul 2025 13:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192748;
-	bh=ja20C41F31KUmXNikW/Y1Mix4uV/HpSeqlAJnyX/jCE=;
+	s=korg; t=1753192268;
+	bh=WUD+FHfvkb3mYWs+Gjg1UbEoTNuKoe/dGj1xivSryO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m78upNLyQSDZ+W9990Kfl7Ky1DDIgwkMG6nmqZv6vfClR5ako7jkYyoRyNjMSBqhY
-	 F3w9CBh8beDpQKHzzDQHwpG6bgZNf5xLIDrxxtRFtQ6FI0wuxb/7Ig3dRNkK4vqiVL
-	 hfqmE/3jjhpmsJyJ1E8574qu4pM2DxcK6qPwMRWo=
+	b=mo9MX0ABP1uPGjBfvuGb5eGwyR22DLMo9ZK3vaZ0QXgwCImvU3UJPoPtIKg/YXQHS
+	 HSAmMgoP5+84L3D/rW3PSW9ODviQ9+ILOYPCS+c++efnmsBJVmwUGJpPUUHbjdwMom
+	 AqzaDLFNu7J7t5469Wu/44xMhVqEobHB3UZqUrTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.12 046/158] arm64: dts: imx8mp-venice-gw73xx: fix TPM SPI frequency
+	Cheng Ming Lin <chengminglin@mxic.com.tw>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 015/111] spi: Add check for 8-bit transfer with 8 IO mode support
 Date: Tue, 22 Jul 2025 15:43:50 +0200
-Message-ID: <20250722134342.457407777@linuxfoundation.org>
+Message-ID: <20250722134333.961297944@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Cheng Ming Lin <chengminglin@mxic.com.tw>
 
-commit 1fc02c2086003c5fdaa99cde49a987992ff1aae4 upstream.
+commit 710505212e3272396394f8cf78e3ddfd05df3f22 upstream.
 
-The IMX8MPDS Table 37 [1] shows that the max SPI master read frequency
-depends on the pins the interface is muxed behind with ECSPI2
-muxed behind ECSPI2 supporting up to 25MHz.
+The current SPI framework does not verify if the SPI device supports
+8 IO mode when doing an 8-bit transfer. This patch adds a check to
+ensure that if the transfer tx_nbits or rx_nbits is 8, the SPI mode must
+support 8 IO. If not, an error is returned, preventing undefined behavior.
 
-Adjust the spi-max-frequency based on these findings.
-
-[1] https://www.nxp.com/webapp/Download?colCode=IMX8MPIEC
-
-Fixes: 2b3ab9d81ab4 ("arm64: dts: imx8mp-venice-gw73xx: add TPM device")
+Fixes: d6a711a898672 ("spi: Fix OCTAL mode support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
+Link: https://patch.msgid.link/20250714031023.504752-1-linchengming884@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
-@@ -122,7 +122,7 @@
- 	tpm@1 {
- 		compatible = "atmel,attpm20p", "tcg,tpm_tis-spi";
- 		reg = <0x1>;
--		spi-max-frequency = <36000000>;
-+		spi-max-frequency = <25000000>;
- 	};
- };
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -4011,10 +4011,13 @@ static int __spi_validate(struct spi_dev
+ 				xfer->tx_nbits != SPI_NBITS_OCTAL)
+ 				return -EINVAL;
+ 			if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
+-				!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
++				!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL)))
+ 				return -EINVAL;
+ 			if ((xfer->tx_nbits == SPI_NBITS_QUAD) &&
+-				!(spi->mode & SPI_TX_QUAD))
++				!(spi->mode & (SPI_TX_QUAD | SPI_TX_OCTAL)))
++				return -EINVAL;
++			if ((xfer->tx_nbits == SPI_NBITS_OCTAL) &&
++				!(spi->mode & SPI_TX_OCTAL))
+ 				return -EINVAL;
+ 		}
+ 		/* Check transfer rx_nbits */
+@@ -4027,10 +4030,13 @@ static int __spi_validate(struct spi_dev
+ 				xfer->rx_nbits != SPI_NBITS_OCTAL)
+ 				return -EINVAL;
+ 			if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
+-				!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
++				!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL)))
+ 				return -EINVAL;
+ 			if ((xfer->rx_nbits == SPI_NBITS_QUAD) &&
+-				!(spi->mode & SPI_RX_QUAD))
++				!(spi->mode & (SPI_RX_QUAD | SPI_RX_OCTAL)))
++				return -EINVAL;
++			if ((xfer->rx_nbits == SPI_NBITS_OCTAL) &&
++				!(spi->mode & SPI_RX_OCTAL))
+ 				return -EINVAL;
+ 		}
  
 
 
