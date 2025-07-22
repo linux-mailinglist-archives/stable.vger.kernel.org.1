@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC50B0DB31
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4EC3B0DBC2
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF37D547DBE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:46:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0B0516413E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7403722FDFF;
-	Tue, 22 Jul 2025 13:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17AC2EA46A;
+	Tue, 22 Jul 2025 13:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c7Ho3yh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCZAMS/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D542E36E8;
-	Tue, 22 Jul 2025 13:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AED2EA16D;
+	Tue, 22 Jul 2025 13:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753191985; cv=none; b=AS4yufEvC596OmxHJ6BncLrTq7e++iGlHj6GnJO/aMa1nnuHvj0PgAq46VyMtrWANNl3UMaGvgF1+GbaJYfCEfWLkNzWF9OzxJZZMf5dLdkSLaKx0aELJMOWtwdXucg3Om64UqfHsl4NL+HN4gUFbzVfSRfD4eRo7mzAqdwgnPk=
+	t=1753192296; cv=none; b=l5koiGANzIZ6OjeyTh4/xtFs2ylctUfJ5biCo/k2NA7Yf0da/UO2LNVfvlkFOkGF5v6w/evU6ctbVExgDcT3gosXJfYIPPS2GgueuJb/9v4+NGrCYAPueFUXKgF4NO5+uMatcdwqCbw5HCFkEU1K10TgEBCpxBazkGkr2QA2+fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753191985; c=relaxed/simple;
-	bh=EdA7ezVqS3RlOihp+IRYdm3/CJL6BUEriMolmZ5al8s=;
+	s=arc-20240116; t=1753192296; c=relaxed/simple;
+	bh=ryi5EDFlGNOpWFXh5wWYEyteMOJS3Sga7q3JvKpNMG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btSLqdY93QfmUDQ0TvrvCz6KGLuks1rOVAo7TI3nl8bAeky6lAj93eAm0feKNth+FrYTaBlA5zFlXM8SLRlnphlDKAJUdkaq4vSWo8hQUzYEa58uH72o0BH75Rn4iCEcW9P8OG9+Vfxiieb1uDx8DtkaIdq7GhNA7IsitaBmyuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c7Ho3yh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FFAC4CEEB;
-	Tue, 22 Jul 2025 13:46:24 +0000 (UTC)
+	 MIME-Version; b=rQbwqTGN4rxjENlZ7mIfGkJDkkCtPbHcFJ9aIh08XrtqdtZPuS3kirnE/4mBATWZhgDuMqxYJy9AUxkCZZzBJcIJEJ0ujb/j1NcITG7B7FRx+a+Xpmk3PGnZHBmaFwYC8XzWusH7+H9IZVEu2wybq3KGxk3BPq1R6vqpUOxazMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCZAMS/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC95C4CEF5;
+	Tue, 22 Jul 2025 13:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753191985;
-	bh=EdA7ezVqS3RlOihp+IRYdm3/CJL6BUEriMolmZ5al8s=;
+	s=korg; t=1753192296;
+	bh=ryi5EDFlGNOpWFXh5wWYEyteMOJS3Sga7q3JvKpNMG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2c7Ho3yhaCioKkTeba9efZesOKMk6tqIDhEScAzlShVNrxMFFa6CV7//OUhIGZuR3
-	 73nRohmFRJrxK9XfZcHLfNZaCgOp7SQ207o4vfAYYEcQfgObKcH+TVt1an78ne6H4q
-	 KTxT4/wyUnNzhuPh+3a35gD56gSLmh+n27Tgc9c0=
+	b=sCZAMS/bnNs1ggLnqFvhlipdo4djiQKOu0oWN9q4WYkaJNJO9aUsyRc8aBLuKAAJZ
+	 0WD0mwDhg7liliaBKqXMlmsXqXsBBO4Esa52CT3pquQXlTHyGid/T9kpuujXjXYWYH
+	 zOd0dFOc/f7GRQoKTSo2y5Fp7NrPIuWR5JbuqAjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 02/79] USB: serial: option: add Telit Cinterion FE910C04 (ECM) composition
+	Eeli Haapalainen <eeli.haapalainen@protonmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 023/111] drm/amdgpu/gfx8: reset compute ring wptr on the GPU on resume
 Date: Tue, 22 Jul 2025 15:43:58 +0200
-Message-ID: <20250722134328.475863939@linuxfoundation.org>
+Message-ID: <20250722134334.258726477@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Eeli Haapalainen <eeli.haapalainen@protonmail.com>
 
-commit 252f4ac08cd2f16ecd20e4c5e41ac2a17dd86942 upstream.
+commit 83261934015c434fabb980a3e613b01d9976e877 upstream.
 
-Add Telit Cinterion FE910C04 (ECM) composition:
-0x10c7: ECM + tty (AT) + tty (AT) + tty (diag)
+Commit 42cdf6f687da ("drm/amdgpu/gfx8: always restore kcq MQDs") made the
+ring pointer always to be reset on resume from suspend. This caused compute
+rings to fail since the reset was done without also resetting it for the
+firmware. Reset wptr on the GPU to avoid a disconnect between the driver
+and firmware wptr.
 
-usb-devices output:
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c7 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3911
+Fixes: 42cdf6f687da ("drm/amdgpu/gfx8: always restore kcq MQDs")
+Signed-off-by: Eeli Haapalainen <eeli.haapalainen@protonmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2becafc319db3d96205320f31cc0de4ee5a93747)
 Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1415,6 +1415,9 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
+@@ -4656,6 +4656,7 @@ static int gfx_v8_0_kcq_init_queue(struc
+ 			memcpy(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(struct vi_mqd_allocation));
+ 		/* reset ring buffer */
+ 		ring->wptr = 0;
++		atomic64_set((atomic64_t *)ring->wptr_cpu_addr, 0);
+ 		amdgpu_ring_clear_ring(ring);
+ 	}
+ 	return 0;
 
 
 
