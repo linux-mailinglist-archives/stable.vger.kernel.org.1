@@ -1,198 +1,228 @@
-Return-Path: <stable+bounces-163679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58EFCB0D63B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 11:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B3DB0D63F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 11:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A8A0AA4346
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 09:44:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A62C2AA4358
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 09:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0BD2DD5E2;
-	Tue, 22 Jul 2025 09:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFC42BEFE6;
+	Tue, 22 Jul 2025 09:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="c0ch38LC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bNmGnpZB"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1D02DC34C;
-	Tue, 22 Jul 2025 09:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EFD23C50E
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 09:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753177506; cv=none; b=S8b0vnrvytJwj/8mig40edCbaRG7sehO/0XsKTuEX7ZW6HCeZv4HDkqCACND5cEJo8N5CAmTBq3WvKvtEe0+gh/DTeUYwvK8cg2+HDsPYiuvJIGBoD5myJW6vKVra9E1gBN1mDCC3DksXVI1l5TMh6wEIjMbOR8Wrrug80lM1aM=
+	t=1753177672; cv=none; b=QOn/9zPwwpmmJN6eUmE2D95hKPPcZpGu92DWk6ttD6olnqajzK9srpB8ggaCuIPxf8lbWICEkiT01N8WtodWfuFR7vG+7WwG5pzew5+tswAzJ33evm3GQFZ8e5wjTggk5bCzzjLpZLLlehBokbW3Jyj1DPfrNix//36mezGA1ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753177506; c=relaxed/simple;
-	bh=r9oXuVbFRVKmHJJp2OQCjO0e+dxd8XlKIXwlPOtksDE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u/d5yepTFvJBQUunyzuRBv3FYmotjzmDA9cN/OukRrPpW6lpQctU/m7LqWsT2RXgPS/CZ1GSHq8ISmLG4CzhAW1klcb3ClENsTk7UyNl2pEBDkNFCEzVr8y2b3WaaIrGnylwzU6PMJTV7z0wVPR1IsJeL+bqg395U+YEE2zrmss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=c0ch38LC; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753177494; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=1cXlaQuqCs1uV+qE0zIs8uhrxULjZFWlQ9DRk2BEc2k=;
-	b=c0ch38LCpMRAIepZmw9UzhENMxEgYOVW1rVmFZqogfXM6eJStxTT/V2vTQegpyS/4XYJFLwvNMM13zz7ZVALmTl9qeIhsuc+g7t9/YfLVE5Bs8GBQXUYEWC6Osvp85/U38mFzmkSyPZwqm4MvXFdwBPrA24iXSPrPA9MiRsC5P0=
-Received: from x31i01179.sqa.na131.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WjVoKhE_1753177490 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 22 Jul 2025 17:44:54 +0800
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Cc: linux-erofs@lists.ozlabs.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.6.y] erofs: address D-cache aliasing
-Date: Tue, 22 Jul 2025 17:44:49 +0800
-Message-ID: <20250722094449.2950654-1-hsiangkao@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1753177672; c=relaxed/simple;
+	bh=/A5bLX16piFxZp3C1uvq7w0g/FlmchWFhW3t4OYe1G4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SUj9JrX0cr8AZK0z8o+TXQCFG1K0HV7JilloTC8RG0YWF3ipwFLzBpGly5ywU4fPfXQwkb3RRtUhyybpjGW3uUu+CzACYGr7tIv9HEFqxQ8U+jY4XybEuTWgE8ikMgdsNlHO1V8PvG+r8mOxaDWX14lIOfIRaBUMu2O3hy+PrfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bNmGnpZB; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56M83qdH010552
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 09:47:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	8BjM9ebfFLsQQcZe6TQ0vgUH4ajpI01hnGqNMGuQ5N4=; b=bNmGnpZBKEr/+gT+
+	Gf7YHgqDyL36SAGt8rwfkfYdw1+m84Sa/N8PyIrOktbzpow0609ipmsdR8zbGoTT
+	v20gVWNzdF5F8d1S5/4ZrXGo23r7sFMTaOlqcQKYZ91x58pk6XxlYQ7eDXQuwsF1
+	7JKMJx8KI74TlvzC4Q5kn2Z1av2o+gkjjvgJVbFV4bfPMsXv0U39DF99xGajnJrf
+	0Nq6ru8p/FDV0JMnSecEVJiSy6a2hyty7wM1416WdVdZPzOoLhxzD94KKWRXzOAo
+	XXh+LF5n5HcQL6zVRZMZKqsK54dIISctG49NJF5SEfSQFKVqzbRolryju45TWIpO
+	ABzC8w==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4826t18asw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 09:47:50 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-237e6963f70so86737575ad.2
+        for <stable@vger.kernel.org>; Tue, 22 Jul 2025 02:47:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753177669; x=1753782469;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8BjM9ebfFLsQQcZe6TQ0vgUH4ajpI01hnGqNMGuQ5N4=;
+        b=D/DnXQXMp81sLWaq1SDMuxbKuZOitEfz+S+qS5V+u1GZ0H4Xhn8vMFsYfAcZSLW1C2
+         xW0HvA94JQgvjnSoJiWZxb0bTq8p0LhmdVwf2RIhSkn5x7FkbgBD6M1iyKryRm0out72
+         NHLsen5auAyXTpsvgvMdywmFZfHLmr8jOLVN5p35crY1HTHI+Qgu/k5WeZIu+dPtDoNi
+         RjkduXIxGNM4J04U8wvlp+HQnnbL42uV6Xra5BGriB7Q+xvv9Ju1IsZSxNSuwGhQh9vP
+         jkRskCxcYCc1f+JtTagoBxRkOIlqtI0MYHI398t/VuzwUlKGpilcD5TIgD1AoLral4io
+         9yvg==
+X-Forwarded-Encrypted: i=1; AJvYcCVcaKLUGu9Xy5212lHGJTCTvFzbVH+QyGT0qUnqS3rp7AcVRTs2t2rXa7zdZ7shiEqG0TIGzos=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJMbGHFRxl2dL5RTUgoDaNkWkpq2Dx4pwAuft2kg0nkxHsbj/s
+	tI/ORopj/iI9RxRYpRqHlGZpxJ7vSczjaseM78whqMdtk70WkNKjq6XGy9x20F/0YkuxfAbpk51
+	4jfAAALJQqkXhViYpcOBju3JYdu48uaAH64OnAl3pinodtmzXapYHd28fjLY=
+X-Gm-Gg: ASbGncta/QPyqricwgbUBXcmD8ME2WzWbdwD9iYl+realbT2TfaH92Xn7tZ+ZRm7z2C
+	xtS+F4Aeb4iX+RPzEYQa62Ve9OI7XB+bHQUuYmwwMymt6zn7I5Bi8IAl+9wQ8dzOeCoLNYTH7FT
+	z8bu5BIg/ukdD4G0vnqii5vUseZkz/c7igDFPBM3Jgbd/MOql4xwg3ZvGt8tOnsmXXSuVJOLzVo
+	t6o+3QzOLi645QpD3ajULruqYjeBU43yrKHcG9eCPi0nlC1SX0a+3XMQowSHKzV/fHQXtqowXK5
+	kYpxEwk6NOxEE8DpjkdKQkV4TEwlBUUnO4DZCtoMWGh7aWkNec5Li9LHJWuQnDy65OCUqFv7za7
+	1N+FExMXqaNbJBhVbqUHfp4bhiQr71fA=
+X-Received: by 2002:a17:903:2d2:b0:234:c5c1:9b84 with SMTP id d9443c01a7336-23e3035f2eamr249469205ad.37.1753177668775;
+        Tue, 22 Jul 2025 02:47:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFb4WZW5dxHh8zGqRjkvN4xW3CSAyaaR3EwQbz0e6h/H5rEz1JsDrBRAu/UMYCUGTF2EEQHYA==
+X-Received: by 2002:a17:903:2d2:b0:234:c5c1:9b84 with SMTP id d9443c01a7336-23e3035f2eamr249468855ad.37.1753177668301;
+        Tue, 22 Jul 2025 02:47:48 -0700 (PDT)
+Received: from [10.133.33.45] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b6ef9aesm72272625ad.211.2025.07.22.02.47.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Jul 2025 02:47:47 -0700 (PDT)
+Message-ID: <1598d25d-e254-410e-ac5c-66d5450fd686@oss.qualcomm.com>
+Date: Tue, 22 Jul 2025 17:47:43 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] wifi: ath11k: HAL SRNG: don't deinitialize and
+ re-initialize again
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+        kbuild test robot <lkp@intel.com>, Julia Lawall <julia.lawall@lip6.fr>,
+        Sven Eckelmann <sven@narfation.org>,
+        Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+Cc: kernel@collabora.com, stable@vger.kernel.org,
+        Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+        Muna Sinada <quic_msinada@quicinc.com>,
+        Anilkumar Kolli <quic_akolli@quicinc.com>,
+        Kalle Valo <kvalo@kernel.org>, Miles Hu <milehu@codeaurora.org>,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20250722053121.1145001-1-usama.anjum@collabora.com>
+Content-Language: en-US
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+In-Reply-To: <20250722053121.1145001-1-usama.anjum@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: xCcJbBMF_lfJ6Aqrwj86gQwrsY4j0tSQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDA4MSBTYWx0ZWRfX8PUVUSYAjF0I
+ /EahP8Q3oYmEBJ+YGsQojbsIlQQR3RVQ3Y3pKCO8Fq02vGTylvS1ARV9MDctnFdLAOursMMp02C
+ jaWXOrOwqG6CKMnPTcWIR2rt0QXwqQGXjRcRGiImLy3BuPFVUc3RPfrcfV+zDNGHekwoWILIVeG
+ t0kIMYXuK2BxOnq8Fw9MbngjGpQsIaL+XDUM0lydQb63wDkKa7m5x1PPds4etAzJofgznRvaC/n
+ tHogdA7NRnQaOwi141eeiINzw80ZED2m7nPlGg4Y6cGjXwJ7L74IARpmVVDYPwSjoF8ixNVsXZN
+ lk9+vXPV7wcR10GAMXVxfeOx4cRon5CTh3uQxAPpS20lob+HLHUHWK4Fivom4YuvzvGOIeJi12K
+ p0RthOl+w634qGOigHEsDumZZ6R/D2iHJzLAJNXtrKUKFArTD9Hw7knqEJBi9eo5ha1oKmXJ
+X-Authority-Analysis: v=2.4 cv=E8/Npbdl c=1 sm=1 tr=0 ts=687f5e46 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=QX4gbG5DAAAA:8 a=FO1u493g7a1ack9Z5SAA:9 a=QEXdDO2ut3YA:10
+ a=uG9DUKGECoFWVXl0Dc02:22 a=AbAUZ8qAyYyZVLSsDulk:22
+X-Proofpoint-ORIG-GUID: xCcJbBMF_lfJ6Aqrwj86gQwrsY4j0tSQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-22_01,2025-07-21_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 spamscore=0 bulkscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 suspectscore=0 clxscore=1015 phishscore=0
+ mlxlogscore=999 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507220081
 
-commit 27917e8194f91dffd8b4825350c63cb68e98ce58 upstream.
 
-Flush the D-cache before unlocking folios for compressed inodes, as
-they are dirtied during decompression.
 
-Avoid calling flush_dcache_folio() on every CPU write, since it's more
-like playing whack-a-mole without real benefit.
+On 7/22/2025 1:31 PM, Muhammad Usama Anjum wrote:
+> Don't deinitialize and reinitialize the HAL helpers. The dma memory is
+> deallocated and there is high possibility that we'll not be able to get
+> the same memory allocated from dma when there is high memory pressure.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+> 
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Cc: stable@vger.kernel.org
+> Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+> Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+> Changes since v1:
+> - Cc stable and fix tested on tag
+> - Clear essential fields as they may have stale data
+> 
+> Changes since v2:
+> - Add comment and reviewed by tag
+> ---
+>  drivers/net/wireless/ath/ath11k/core.c |  6 +-----
+>  drivers/net/wireless/ath/ath11k/hal.c  | 16 ++++++++++++++++
+>  drivers/net/wireless/ath/ath11k/hal.h  |  1 +
+>  3 files changed, 18 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+> index 4488e4cdc5e9e..34b27711ed00f 100644
+> --- a/drivers/net/wireless/ath/ath11k/core.c
+> +++ b/drivers/net/wireless/ath/ath11k/core.c
+> @@ -2213,14 +2213,10 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
+>  	mutex_unlock(&ab->core_lock);
+>  
+>  	ath11k_dp_free(ab);
+> -	ath11k_hal_srng_deinit(ab);
+> +	ath11k_hal_srng_clear(ab);
+>  
+>  	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
+>  
+> -	ret = ath11k_hal_srng_init(ab);
+> -	if (ret)
+> -		return ret;
+> -
+>  	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
+>  
+>  	ret = ath11k_core_qmi_firmware_ready(ab);
+> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+> index b32de563d453a..e8ebf963f195c 100644
+> --- a/drivers/net/wireless/ath/ath11k/hal.c
+> +++ b/drivers/net/wireless/ath/ath11k/hal.c
+> @@ -1359,6 +1359,22 @@ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
+>  }
+>  EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+>  
+> +void ath11k_hal_srng_clear(struct ath11k_base *ab)
+> +{
+> +	/* No need to memset rdp and wrp memory since each individual
+> +	 * segment would get cleared ath11k_hal_srng_src_hw_init() and
 
-It has no impact on x86 and arm64/risc-v: on x86, flush_dcache_folio()
-is a no-op, and on arm64/risc-v, PG_dcache_clean (PG_arch_1) is clear
-for new page cache folios.  However, certain ARM boards are affected,
-as reported.
+nit: s/cleared /cleared in/
 
-Fixes: 3883a79abd02 ("staging: erofs: introduce VLE decompression support")
-Closes: https://lore.kernel.org/r/c1e51e16-6cc6-49d0-a63e-4e9ff6c4dd53@pengutronix.de
-Closes: https://lore.kernel.org/r/38d43fae-1182-4155-9c5b-ffc7382d9917@siemens.com
-Tested-by: Jan Kiszka <jan.kiszka@siemens.com>
-Tested-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Link: https://lore.kernel.org/r/20250709034614.2780117-2-hsiangkao@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
----
-Hi Jan & Stefan,
-Please help confirm this 6.6 fix backport if possible.
-
-Thanks,
-Gao Xiang
-
- fs/erofs/decompressor.c |  6 ++----
- fs/erofs/zdata.c        | 32 +++++++++++++++++++-------------
- 2 files changed, 21 insertions(+), 17 deletions(-)
-
-diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
-index aa59788a61e6..86e088fd386e 100644
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -342,14 +342,12 @@ static int z_erofs_transform_plain(struct z_erofs_decompress_req *rq,
- 
- 	if (outpages > inpages) {
- 		DBG_BUGON(!rq->out[outpages - 1]);
--		if (rq->out[outpages - 1] != rq->in[inpages - 1]) {
-+		if (rq->out[outpages - 1] != rq->in[inpages - 1])
- 			memcpy_to_page(rq->out[outpages - 1], 0, src +
- 					(interlaced_offset ? 0 : righthalf),
- 				       lefthalf);
--		} else if (!interlaced_offset) {
-+		else if (!interlaced_offset)
- 			memmove(src, src + righthalf, lefthalf);
--			flush_dcache_page(rq->in[inpages - 1]);
--		}
- 	}
- 	kunmap_local(src);
- 	return 0;
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 496e4c7c52a4..d852b43ac43e 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -122,9 +122,11 @@ static inline unsigned int z_erofs_pclusterpages(struct z_erofs_pcluster *pcl)
- 
- /*
-  * bit 30: I/O error occurred on this page
-+ * bit 29: CPU has dirty data in D-cache (needs aliasing handling);
-  * bit 0 - 29: remaining parts to complete this page
-  */
--#define Z_EROFS_PAGE_EIO			(1 << 30)
-+#define Z_EROFS_ONLINEPAGE_EIO		30
-+#define Z_EROFS_ONLINEPAGE_DIRTY	29
- 
- static inline void z_erofs_onlinepage_init(struct page *page)
- {
-@@ -143,7 +145,7 @@ static inline void z_erofs_onlinepage_split(struct page *page)
- 	atomic_inc((atomic_t *)&page->private);
- }
- 
--static void z_erofs_onlinepage_endio(struct page *page, int err)
-+static void z_erofs_onlinepage_end(struct page *page, int err, bool dirty)
- {
- 	int orig, v;
- 
-@@ -151,16 +153,20 @@ static void z_erofs_onlinepage_endio(struct page *page, int err)
- 
- 	do {
- 		orig = atomic_read((atomic_t *)&page->private);
--		v = (orig - 1) | (err ? Z_EROFS_PAGE_EIO : 0);
-+		DBG_BUGON(orig <= 0);
-+		v = dirty << Z_EROFS_ONLINEPAGE_DIRTY;
-+		v |= (orig - 1) | (!!err << Z_EROFS_ONLINEPAGE_EIO);
- 	} while (atomic_cmpxchg((atomic_t *)&page->private, orig, v) != orig);
- 
--	if (!(v & ~Z_EROFS_PAGE_EIO)) {
--		set_page_private(page, 0);
--		ClearPagePrivate(page);
--		if (!(v & Z_EROFS_PAGE_EIO))
--			SetPageUptodate(page);
--		unlock_page(page);
--	}
-+	if (v & (BIT(Z_EROFS_ONLINEPAGE_DIRTY) - 1))
-+		return;
-+	set_page_private(page, 0);
-+	ClearPagePrivate(page);
-+	if (v & BIT(Z_EROFS_ONLINEPAGE_DIRTY))
-+		flush_dcache_page(page);
-+	if (!(v & BIT(Z_EROFS_ONLINEPAGE_EIO)))
-+		SetPageUptodate(page);
-+	unlock_page(page);
- }
- 
- #define Z_EROFS_ONSTACK_PAGES		32
-@@ -1060,7 +1066,7 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
- 		goto repeat;
- 
- out:
--	z_erofs_onlinepage_endio(page, err);
-+	z_erofs_onlinepage_end(page, err, false);
- 	return err;
- }
- 
-@@ -1163,7 +1169,7 @@ static void z_erofs_fill_other_copies(struct z_erofs_decompress_backend *be,
- 			cur += len;
- 		}
- 		kunmap_local(dst);
--		z_erofs_onlinepage_endio(bvi->bvec.page, err);
-+		z_erofs_onlinepage_end(bvi->bvec.page, err, true);
- 		list_del(p);
- 		kfree(bvi);
- 	}
-@@ -1333,7 +1339,7 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
- 		/* recycle all individual short-lived pages */
- 		if (z_erofs_put_shortlivedpage(be->pagepool, page))
- 			continue;
--		z_erofs_onlinepage_endio(page, err);
-+		z_erofs_onlinepage_end(page, err, true);
- 	}
- 
- 	if (be->decompressed_pages != be->onstack_pages)
--- 
-2.43.5
+> +	 * ath11k_hal_srng_dst_hw_init().
+> +	 */
+> +	memset(ab->hal.srng_list, 0,
+> +	       sizeof(ab->hal.srng_list));
+> +	memset(ab->hal.shadow_reg_addr, 0,
+> +	       sizeof(ab->hal.shadow_reg_addr));
+> +	ab->hal.avail_blk_resource = 0;
+> +	ab->hal.current_blk_index = 0;
+> +	ab->hal.num_shadow_reg_configured = 0;
+> +}
+> +EXPORT_SYMBOL(ath11k_hal_srng_clear);
+> +
+>  void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
+>  {
+>  	struct hal_srng *srng;
+> diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
+> index 601542410c752..839095af9267e 100644
+> --- a/drivers/net/wireless/ath/ath11k/hal.h
+> +++ b/drivers/net/wireless/ath/ath11k/hal.h
+> @@ -965,6 +965,7 @@ int ath11k_hal_srng_setup(struct ath11k_base *ab, enum hal_ring_type type,
+>  			  struct hal_srng_params *params);
+>  int ath11k_hal_srng_init(struct ath11k_base *ath11k);
+>  void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
+> +void ath11k_hal_srng_clear(struct ath11k_base *ab);
+>  void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
+>  void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
+>  				       u32 **cfg, u32 *len);
 
 
