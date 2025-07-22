@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-164058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A15AB0DD11
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E975DB0DE43
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20CBA3AC627
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EFBB1C87284
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D901D7E37;
-	Tue, 22 Jul 2025 14:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8682C159F;
+	Tue, 22 Jul 2025 14:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJlwg3hi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+3UJbSe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DFF2C9A;
-	Tue, 22 Jul 2025 14:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687AC2EBDD9;
+	Tue, 22 Jul 2025 14:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193112; cv=none; b=IODUx+FIyaJXct6WE54X/biyHcu0WkNzyZGUpZI7Xqe1CUcOAaEpJ9Yl2HTnmJvtCckZ+F7mX0auABk7S4gVTCTNR+zgNdnXe0yEgBrYpmZbg259Ve14rZ7D8xg4+KRkrWuwQGtILFHmQm2QAbf6Ltfjelhym6WhpC6hI3/7iPU=
+	t=1753193694; cv=none; b=Ck3coDSJ4JICdi1MXhtOQgEUk0KnPvhqmFWr0BkO0uYBj1B/eVBu/n1nYAzDI9NVeSsnN+zGrBjw5Hse5kgx4+mQJi0ghVJoZjZWlMSEyjWtqXYnRHXAE6gGNJYojtQ7XPjA7yzoHUCg3Fc1X+YgruUtraE1xNAcCIp9vmXcPuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193112; c=relaxed/simple;
-	bh=1DhEOC4e5PL2JdwZ2sDYyb8YAqL7VmYD9Y4Sw4Otwe4=;
+	s=arc-20240116; t=1753193694; c=relaxed/simple;
+	bh=okB9wVqVd/mOlZjPbC8z7gbqyW+pxRIvMguYGiMnw5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i7YJE7MCoAY5twXE2Vd0zVvt8DlUICjj9webe/z3ZoKzE+paYZXrgZJ7Dd33Bj8xIw6mGd0ohb3C6IdMo6yOUZRG4cIwQk4/6iuNbwpEjG01h33zHSBEYBu1diaCvq+JxvoytDpm1baurtmrYh0i9stpZHqHv3Xn3s/1Xu0dZkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJlwg3hi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D77C4CEF5;
-	Tue, 22 Jul 2025 14:05:11 +0000 (UTC)
+	 MIME-Version; b=qkYPLfLITej4loh3m8joIfxyJ69DXkGsuzcGi1Nzj119Sovh+7O8UHu0DKzcrQJi7jZ7tQUyhxP0X2U9HD8xwfo01VCR2HVCS0+qeURSJnqPhnd+7b1kNJQbPmBPJmfH2Lrpx0BBkcy7O6H6FtQ3vOSYqyiT/hcoLFdy890F1Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+3UJbSe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE64BC4CEEB;
+	Tue, 22 Jul 2025 14:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193112;
-	bh=1DhEOC4e5PL2JdwZ2sDYyb8YAqL7VmYD9Y4Sw4Otwe4=;
+	s=korg; t=1753193694;
+	bh=okB9wVqVd/mOlZjPbC8z7gbqyW+pxRIvMguYGiMnw5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJlwg3hiJLKRhqvj8mpcAS7t+hr9jyQWFXBIv5Lr+yxGi6tgeYJsWVR19Kzlt7kAv
-	 NbJaMaOOVELoNyWITCa4cE5WRTY8yzT7cmFlCgGt9BoR1YldEQgk07bi1B5N55VcGO
-	 PaKWlEqb/4MUdmHtsXRhil8PqHON5O+Ktv8z3xdY=
+	b=0+3UJbSegXG3fZJB57s+42k/pM4h/XQoqUDQaJljzvg+Fv5x92S1lKgAxoVrrDGFB
+	 dDARQeUtnarTnHAX/Z+u9Fv3Tg4058D6vgVLHjU5hCeCvDJm4XkwzrwUR2ZFJ/3qAw
+	 cGPblYH1f3sVOyqqOEnWIE99/egXQ/CFGPPvewv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.12 154/158] i2c: omap: fix deprecated of_property_read_bool() use
+	stable <stable@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.15 168/187] usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm
 Date: Tue, 22 Jul 2025 15:45:38 +0200
-Message-ID: <20250722134346.459996003@linuxfoundation.org>
+Message-ID: <20250722134352.026834875@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit e66b0a8f048bc8590eb1047480f946898a3f80c9 upstream.
+commit a49e1e2e785fb3621f2d748581881b23a364998a upstream.
 
-Using of_property_read_bool() for non-boolean properties is deprecated
-and results in a warning during runtime since commit c141ecc3cecd ("of:
-Warn when of_property_read_bool() is used on non-boolean properties").
+Delayed work to prevent USB3 hubs from runtime-suspending immediately
+after resume was added in commit 8f5b7e2bec1c ("usb: hub: fix detection
+of high tier USB3 devices behind suspended hubs").
 
-Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
-Cc: Jayesh Choudhary <j-choudhary@ti.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Link: https://lore.kernel.org/r/20250415075230.16235-1-johan+linaro@kernel.org
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+This delayed work needs be flushed if system suspends, or hub needs to
+be quiesced for other reasons right after resume. Not flushing it
+triggered issues on QC SC8280XP CRD board during suspend/resume testing.
+
+Fix it by flushing the delayed resume work in hub_quiesce()
+
+The delayed work item that allow hub runtime suspend is also scheduled
+just before calling autopm get. Alan pointed out there is a small risk
+that work is run before autopm get, which would call autopm put before
+get, and mess up the runtime pm usage order.
+Swap the order of work sheduling and calling autopm get to solve this.
+
+Cc: stable <stable@kernel.org>
+Fixes: 8f5b7e2bec1c ("usb: hub: fix detection of high tier USB3 devices behind suspended hubs")
+Reported-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Closes: https://lore.kernel.org/linux-usb/acaaa928-832c-48ca-b0ea-d202d5cd3d6c@oss.qualcomm.com
+Reported-by: Alan Stern <stern@rowland.harvard.edu>
+Closes: https://lore.kernel.org/linux-usb/c73fbead-66d7-497a-8fa1-75ea4761090a@rowland.harvard.edu
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250626130102.3639861-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-omap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/hub.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1454,7 +1454,7 @@ omap_i2c_probe(struct platform_device *p
- 				       (1000 * omap->speed / 8);
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1359,11 +1359,12 @@ static void hub_activate(struct usb_hub
+ 
+ 	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
+ 		/* give usb3 downstream links training time after hub resume */
++		usb_autopm_get_interface_no_resume(
++			to_usb_interface(hub->intfdev));
++
+ 		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
+ 		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
+ 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
+-		usb_autopm_get_interface_no_resume(
+-			to_usb_interface(hub->intfdev));
+ 		return;
  	}
  
--	if (of_property_read_bool(node, "mux-states")) {
-+	if (of_property_present(node, "mux-states")) {
- 		struct mux_state *mux_state;
+@@ -1417,6 +1418,7 @@ static void hub_quiesce(struct usb_hub *
  
- 		mux_state = devm_mux_state_get(&pdev->dev, NULL);
+ 	/* Stop hub_wq and related activity */
+ 	timer_delete_sync(&hub->irq_urb_retry);
++	flush_delayed_work(&hub->init_work);
+ 	usb_kill_urb(hub->urb);
+ 	if (hub->has_indicators)
+ 		cancel_delayed_work_sync(&hub->leds);
 
 
 
