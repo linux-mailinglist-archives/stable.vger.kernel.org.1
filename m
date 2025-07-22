@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-164062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE632B0DD12
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248B4B0DDC9
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7E64562F09
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C6717B5A21
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987EF2EA140;
-	Tue, 22 Jul 2025 14:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA09A2ECE9B;
+	Tue, 22 Jul 2025 14:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7k/xNHM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/vXaOsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567202C9A;
-	Tue, 22 Jul 2025 14:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CB92ECE99;
+	Tue, 22 Jul 2025 14:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193126; cv=none; b=XL41kxWJn2kY3zEd7fUdbBucTLOA6Z8fYlmftrIAs5dqVtvCmLigl9ojLH1FF3qQ7GmqOuqoElI/We1wr0k0XbdrSKDC5sBVpi6JFqwL5QO1HA94EFtUUYp+IhdU4UFCPC4kF5XyEgwKMHhptAV+jaLaD8n9xSUjWQnNbfnhSkU=
+	t=1753193708; cv=none; b=grz8JsAsSv2uC10sQ+9igShNGDh9blwGlT4DWkRzYMCq9pNttw9uXeUe3ckebYWJf1YgmcatDjIBpuz8LgNITEUJzcGTXletiFGh9+O1GTJqU29wT8395CgzR1zO/kYolxF10tHdT2b1EnJpHc3SauC9XgxLFTEXM6U4FRaGFsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193126; c=relaxed/simple;
-	bh=2c96gDvAL88IuquG7YdsRed3xt14jz9xuqTKBDNCX1E=;
+	s=arc-20240116; t=1753193708; c=relaxed/simple;
+	bh=FjChAPGPjtq7bmvb4Hswo9dGVeABf7fSF+/Vrgv4DNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HLEXTIG7uUI8hUSmulpd+hBOOSw4GYDvGAqNt8AH0pyV+jGeXWpIYF9g2WwRgG6GwlXPR+i9XsKoRdPaoFYW+USQFS0Uw+ic0CD3u53e64SAXx5wTJWpNLlwXPpG8IjSdxJn79zu/MXNKyaGjG2I4cpEZw10eTMBTtUjrcppfd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7k/xNHM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E5AC4CEEB;
-	Tue, 22 Jul 2025 14:05:25 +0000 (UTC)
+	 MIME-Version; b=iCPEthqkCdp9LgRH+J7DEOXPj/UlzE8B/gbYedlO7tOwFo7Sma5kO8eRsPOT+3RjzJ+tzpJ6hkzHNiE8nNuTIa3y0Sn8rcsJfc4NfVeUqfIrUqvYm3b6T0a6MZB46pXzbLKrRoZsviTuoNMh5bopjbiiyzdqwdBgLbB0TjSWYZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/vXaOsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D75C4CEEB;
+	Tue, 22 Jul 2025 14:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193125;
-	bh=2c96gDvAL88IuquG7YdsRed3xt14jz9xuqTKBDNCX1E=;
+	s=korg; t=1753193708;
+	bh=FjChAPGPjtq7bmvb4Hswo9dGVeABf7fSF+/Vrgv4DNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7k/xNHMvqiC8P5IxhM1dacP6Ysz0uv5lg7QkN4Mkk7S0PKF4BEV+VpbTVLlZQdLF
-	 UAN/3ToGUSV8j5whbJp9f8l3r4RU3cIGAEopW+4U7Os1tNb0Y+e3j9u0WNdWz4UvgB
-	 0lQCfGEcHE35II7zPlu7xdqOR6zOTVZHigo4CgDo=
+	b=I/vXaOsAs3Fa0XDbQWfq3u3iaPHv2Dkv8wV/mfAvd1ayaUggORwBd6iem+AaDq0lq
+	 TNHZ5/V9jF4zh5HWcjYzA4HRfLOVARGdOHspzuo81InMA9RWROLXUm9EHvEqevB4s5
+	 DoTHwDzIPjAwa8+8WWsw8beTcOgPnKJWxxERZS94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/158] drm/xe: Move page fault init after topology init
-Date: Tue, 22 Jul 2025 15:45:41 +0200
-Message-ID: <20250722134346.569816128@linuxfoundation.org>
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 172/187] net: libwx: fix multicast packets received count
+Date: Tue, 22 Jul 2025 15:45:42 +0200
+Message-ID: <20250722134352.178197030@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-commit 3155ac89251dcb5e35a3ec2f60a74a6ed22c56fd upstream.
+commit 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77 upstream.
 
-We need the topology to determine GT page fault queue size, move page
-fault init after topology init.
+Multicast good packets received by PF rings that pass ethternet MAC
+address filtering are counted for rtnl_link_stats64.multicast. The
+counter is not cleared on read. Fix the duplicate counting on updating
+statistics.
 
+Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")
 Cc: stable@vger.kernel.org
-Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Link: https://lore.kernel.org/r/20250710191208.1040215-1-matthew.brost@intel.com
-(cherry picked from commit beb72acb5b38dbe670d8eb752d1ad7a32f9c4119)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/DA229A4F58B70E51+20250714015656.91772-1-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_gt.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -594,15 +594,15 @@ int xe_gt_init(struct xe_gt *gt)
- 		xe_hw_fence_irq_init(&gt->fence_irq[i]);
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -2523,6 +2523,8 @@ void wx_update_stats(struct wx *wx)
+ 		hwstats->fdirmiss += rd32(wx, WX_RDB_FDIR_MISS);
  	}
  
--	err = xe_gt_pagefault_init(gt);
-+	err = xe_gt_sysfs_init(gt);
- 	if (err)
- 		return err;
- 
--	err = xe_gt_sysfs_init(gt);
-+	err = gt_fw_domain_init(gt);
- 	if (err)
- 		return err;
- 
--	err = gt_fw_domain_init(gt);
-+	err = xe_gt_pagefault_init(gt);
- 	if (err)
- 		return err;
- 
++	/* qmprc is not cleared on read, manual reset it */
++	hwstats->qmprc = 0;
+ 	for (i = 0; i < wx->mac.max_rx_queues; i++)
+ 		hwstats->qmprc += rd32(wx, WX_PX_MPRC(i));
+ }
 
 
 
