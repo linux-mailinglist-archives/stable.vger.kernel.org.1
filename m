@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-164047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F056B0DCF8
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:07:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD73B0DE02
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F75B172202
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 944F71C85581
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6A528B7EA;
-	Tue, 22 Jul 2025 14:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3CC2ED87C;
+	Tue, 22 Jul 2025 14:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OR258Ve8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1rVp5R7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE768176AC5;
-	Tue, 22 Jul 2025 14:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2AD2EE5FB;
+	Tue, 22 Jul 2025 14:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193075; cv=none; b=jQ9F3QZ+Nx4SgEZX72+aNRPUTcRmi823ngypVEd05mFRoqwVispSTplAZsI3zfTRE8aHMpjuC2u6v4pFLmk+TZFj/LHRv21dO6pOS4exPxqa2qaR1m979CRZuf+LMwQj+WKIzA68SDRkpjwGhRI282zkLi6peoLISLhQ7bVzMIU=
+	t=1753193507; cv=none; b=SaRiuh6iEWWjFSwqlOiSbBK2Ph0zQsRLAoCG4Q4U3vtojHOOF8RIQ9bFhNv2Y5XL5NR/D7cE3C3bhbWhKQ//iT/cPL37L7Cu6rdJV6u6PxMAERqFv1dSphY6ihY9q/9bXROLlLCybJF4BCMCNZ1GHG9XdRFEm3hdVszE8L8v6LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193075; c=relaxed/simple;
-	bh=RWED8ZxfmsIPOkb5TeeZvrC2i1GG1NvdxVnq710GLtg=;
+	s=arc-20240116; t=1753193507; c=relaxed/simple;
+	bh=3QZfwlItqeTet+aKIvapjs/qrLQohuJJ67xWhPwIWkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmjAaXSPkiWU5mTDKIniqmUdIPSe/GrOQFBZ2Y9ODATh+jGKcM4dimz8tGImggcoG5lyR48gD650Z91VoRvuqadRxA4Q/I8R7fHFMNr5D9uSj5D822sgNcgu+U7DHIy6KuTH8L67lvAOVaBef3jVAPc2UHVrUyQhPyv1psYy8YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OR258Ve8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1EEC4CEEB;
-	Tue, 22 Jul 2025 14:04:34 +0000 (UTC)
+	 MIME-Version; b=EBabFMdWmrqr2bUR2CC4LBq6IFddyNEDwWS7yPjhE8Nu4B8T+UWYzLXmueJi2tBcg5yAHzguJ3k7mqjmIToAi+jfPQiVVZgj0gL+gBRR5MXwe+ocRYluenbarH8W2icOiGNDTa/CAvMDQb5qO+oWDCMBYrUiEUG0xcIYoiHJH3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1rVp5R7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62937C4CEEB;
+	Tue, 22 Jul 2025 14:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193074;
-	bh=RWED8ZxfmsIPOkb5TeeZvrC2i1GG1NvdxVnq710GLtg=;
+	s=korg; t=1753193506;
+	bh=3QZfwlItqeTet+aKIvapjs/qrLQohuJJ67xWhPwIWkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OR258Ve85Z/uzTbwUzha309cnxpk4oNWWF/8fbcSDrXOvigw1QMJCF6PvgHJGPtRW
-	 SJilXBDvZSOS63IjobxanWfgBX5BQp96oB0xDSy4HaFKawd8nhXejiCbXCfucbH2TN
-	 zjvDyrMsqyJ5JDP2nAuRVKNoMtCvQZy6dTaAT7pY=
+	b=x1rVp5R7SYhgam5V3QoTdsooMneP2/IfxKXeRaXMhzR/yxpRn6YY+z9ognGqUETwE
+	 pedVxIs4V2gjKqxNjnH9Qha1jlhvUCI9xcmul85Owpk1V8asXnS1vZKRUNpuAnvNGf
+	 hdpQxD7Uq6/2ChTGwdWv25M8EJHi3VFpDRA+jMEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/158] nvme: fix misaccounting of nvme-mpath inflight I/O
+Subject: [PATCH 6.15 114/187] smb: client: fix use-after-free in cifs_oplock_break
 Date: Tue, 22 Jul 2025 15:44:44 +0200
-Message-ID: <20250722134344.481358481@linuxfoundation.org>
+Message-ID: <20250722134350.005403265@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
 
-[ Upstream commit 71257925e83eae1cb6913d65ca71927d2220e6d1 ]
+[ Upstream commit 705c79101ccf9edea5a00d761491a03ced314210 ]
 
-Procedures for nvme-mpath IO accounting:
+A race condition can occur in cifs_oplock_break() leading to a
+use-after-free of the cinode structure when unmounting:
 
- 1) initialize nvme_request and clear flags;
- 2) set NVME_MPATH_IO_STATS and increase inflight counter when IO
-    started;
- 3) check NVME_MPATH_IO_STATS and decrease inflight counter when IO is
-    done;
+  cifs_oplock_break()
+    _cifsFileInfo_put(cfile)
+      cifsFileInfo_put_final()
+        cifs_sb_deactive()
+          [last ref, start releasing sb]
+            kill_sb()
+              kill_anon_super()
+                generic_shutdown_super()
+                  evict_inodes()
+                    dispose_list()
+                      evict()
+                        destroy_inode()
+                          call_rcu(&inode->i_rcu, i_callback)
+    spin_lock(&cinode->open_file_lock)  <- OK
+                            [later] i_callback()
+                              cifs_free_inode()
+                                kmem_cache_free(cinode)
+    spin_unlock(&cinode->open_file_lock)  <- UAF
+    cifs_done_oplock_break(cinode)       <- UAF
 
-However, for the case nvme_fail_nonready_command(), both step 1) and 2)
-are skipped, and if old nvme_request set NVME_MPATH_IO_STATS and then
-request is reused, step 3) will still be executed, causing inflight I/O
-counter to be negative.
+The issue occurs when umount has already released its reference to the
+superblock. When _cifsFileInfo_put() calls cifs_sb_deactive(), this
+releases the last reference, triggering the immediate cleanup of all
+inodes under RCU. However, cifs_oplock_break() continues to access the
+cinode after this point, resulting in use-after-free.
 
-Fix the problem by clearing nvme_request in nvme_fail_nonready_command().
+Fix this by holding an extra reference to the superblock during the
+entire oplock break operation. This ensures that the superblock and
+its inodes remain valid until the oplock break completes.
 
-Fixes: ea5e5f42cd2c ("nvme-fabrics: avoid double completions in nvmf_fail_nonready_command")
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/all/CAHj4cs_+dauobyYyP805t33WMJVzOWj=7+51p4_j9rA63D9sog@mail.gmail.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220309
+Fixes: b98749cac4a6 ("CIFS: keep FileInfo handle live during oplock break")
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/client/file.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 947488bf43144..9e223574db7f7 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -757,6 +757,10 @@ blk_status_t nvme_fail_nonready_command(struct nvme_ctrl *ctrl,
- 	    !test_bit(NVME_CTRL_FAILFAST_EXPIRED, &ctrl->flags) &&
- 	    !blk_noretry_request(rq) && !(rq->cmd_flags & REQ_NVME_MPATH))
- 		return BLK_STS_RESOURCE;
-+
-+	if (!(rq->rq_flags & RQF_DONTPREP))
-+		nvme_clear_nvme_request(rq);
-+
- 	return nvme_host_path_error(rq);
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 9835672267d27..3819378b10129 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -3084,7 +3084,8 @@ void cifs_oplock_break(struct work_struct *work)
+ 	struct cifsFileInfo *cfile = container_of(work, struct cifsFileInfo,
+ 						  oplock_break);
+ 	struct inode *inode = d_inode(cfile->dentry);
+-	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
++	struct super_block *sb = inode->i_sb;
++	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+ 	struct cifsInodeInfo *cinode = CIFS_I(inode);
+ 	struct cifs_tcon *tcon;
+ 	struct TCP_Server_Info *server;
+@@ -3094,6 +3095,12 @@ void cifs_oplock_break(struct work_struct *work)
+ 	__u64 persistent_fid, volatile_fid;
+ 	__u16 net_fid;
+ 
++	/*
++	 * Hold a reference to the superblock to prevent it and its inodes from
++	 * being freed while we are accessing cinode. Otherwise, _cifsFileInfo_put()
++	 * may release the last reference to the sb and trigger inode eviction.
++	 */
++	cifs_sb_active(sb);
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
+ 
+@@ -3166,6 +3173,7 @@ void cifs_oplock_break(struct work_struct *work)
+ 	cifs_put_tlink(tlink);
+ out:
+ 	cifs_done_oplock_break(cinode);
++	cifs_sb_deactive(sb);
  }
- EXPORT_SYMBOL_GPL(nvme_fail_nonready_command);
+ 
+ static int cifs_swap_activate(struct swap_info_struct *sis,
 -- 
 2.39.5
 
