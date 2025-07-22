@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF41FB0DC98
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F9BB0DB44
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CBDB16DB3C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:00:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00A241C810FE
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CB128CF4A;
-	Tue, 22 Jul 2025 14:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829BA2E9EDA;
+	Tue, 22 Jul 2025 13:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wWlrRLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zg68ECVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEBD1A2C25;
-	Tue, 22 Jul 2025 14:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0EF2E4266;
+	Tue, 22 Jul 2025 13:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192855; cv=none; b=IxCxoNnMjjM4Z0kTY+QHJPgzNiSJi5D9XzFA5ccylpIm+QGoiIaLsXVbN5yn46dkit4Owf22NIfTJWx1xc+n4A9j2YwSUa2b1HwJKiyFSdfj8udq+3BQR+DmQ6pR7ACv9qJKTR1Ng4deGeBB2fECUAowUG1KLGIdhZJOp/CqKe8=
+	t=1753192037; cv=none; b=KoRs/O8XCqhfdjgh6onmvW1TOj6L62PrUlRPwPS3MMVX8pwCoYv0UfDvB1IcdxJk9G4ykU3L0mfmuugnlwXEEU4GGafyTneoHuTEJgoONfjnVOso3EraNdai0D0cAQr5HrLLbkd/S1+cfQS6Gzmc3qNcjeHgLUtB2deknal7qf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192855; c=relaxed/simple;
-	bh=IFe3iTJYS+LtjG6FV42LPWRkTJzTwSxEb4uzIYYrXnA=;
+	s=arc-20240116; t=1753192037; c=relaxed/simple;
+	bh=NPUO9EprdkWX8qs/uymZqBAd8AKjeRgx10MpIdGhb7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgGg6UJ9biGS+bgGF5L+AV0x5sV/nxB9l0O66esZL70PXvILkK9YJGivg3duP0MhxMjwmeC6SRe5tBlwZqTnNRnXA3AeQqx4/ljSr56EtCu8gjQdrOHPIXaOJvKXruSI/Pxs1p/0WjVYiU9hNV5QgY7+lWfV7flD/71jiqJKcGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wWlrRLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5815AC4CEEB;
-	Tue, 22 Jul 2025 14:00:54 +0000 (UTC)
+	 MIME-Version; b=OHFM3vhwdHgCLmLmYQ1CBuvJfOBFj0fFYatcofrvpFdp5RXgfHydaDkd2/Zk86gDRh/7HlGOB+TUS2en59CAlVmi/GqdJ8R62u5ukiz7+k2b7vaN0VeyDeSNe4Vurv5JAvNMxFXg84efZrRBoqEl0P78VC14Tib7cutexTBIObw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zg68ECVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E11FC4CEEB;
+	Tue, 22 Jul 2025 13:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192854;
-	bh=IFe3iTJYS+LtjG6FV42LPWRkTJzTwSxEb4uzIYYrXnA=;
+	s=korg; t=1753192037;
+	bh=NPUO9EprdkWX8qs/uymZqBAd8AKjeRgx10MpIdGhb7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0wWlrRLnMZ7LWltCtGW0dNccVTLoKHX2Ni+ZISFr2lOfLfv4NaAU8YKTxVgmxzpGw
-	 Fq5cE6AG42R/LOjL/5kHJbcM/S4gGYcX5SOSq8Osyu4Nu2g2l9onDgKvX8hY3fACQa
-	 bKdDLqriyIhZ1+gvXsvP8B/Wd1dxE2MGy4oM5dN0=
+	b=Zg68ECVFcKyt6zUqWLtomi8ajoAIv7lU0mksRZS107mJPcwNn3oO/UVi6pCzJDc1m
+	 +vMP56qgnIrS+1IYrXW9asu+YrPttAzK5eSjZs8UePYcy9aeyIrclQoFakx+5sk3Rg
+	 PpjN0Td88dFJduIDVjtSNoCs2yUBRsTOXTgkeF78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d6995b62e5ac7d79557a@syzkaller.appspotmail.com,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.12 078/158] comedi: Fail COMEDI_INSNLIST ioctl if n_insns is too large
+	Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 26/79] pmdomain: governor: Consider CPU latency tolerance from pm_domain_cpu_gov
 Date: Tue, 22 Jul 2025 15:44:22 +0200
-Message-ID: <20250722134343.688267643@linuxfoundation.org>
+Message-ID: <20250722134329.334091729@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-commit 08ae4b20f5e82101d77326ecab9089e110f224cc upstream.
+commit 500ba33284416255b9a5b50ace24470b6fe77ea5 upstream.
 
-The handling of the `COMEDI_INSNLIST` ioctl allocates a kernel buffer to
-hold the array of `struct comedi_insn`, getting the length from the
-`n_insns` member of the `struct comedi_insnlist` supplied by the user.
-The allocation will fail with a WARNING and a stack dump if it is too
-large.
+pm_domain_cpu_gov is selecting a cluster idle state but does not consider
+latency tolerance of child CPUs. This results in deeper cluster idle state
+whose latency does not meet latency tolerance requirement.
 
-Avoid that by failing with an `-EINVAL` error if the supplied `n_insns`
-value is unreasonable.
+Select deeper idle state only if global and device latency tolerance of all
+child CPUs meet.
 
-Define the limit on the `n_insns` value in the `MAX_INSNS` macro.  Set
-this to the same value as `MAX_SAMPLES` (65536), which is the maximum
-allowed sum of the values of the member `n` in the array of `struct
-comedi_insn`, and sensible comedi instructions will have an `n` of at
-least 1.
+Test results on SM8750 with 300 usec PM-QoS on CPU0 which is less than
+domain idle state entry (2150) + exit (1983) usec latency mentioned in
+devicetree, demonstrate the issue.
 
-Reported-by: syzbot+d6995b62e5ac7d79557a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d6995b62e5ac7d79557a
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Tested-by: Ian Abbott <abbotti@mev.co.uk>
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250704120405.83028-1-abbotti@mev.co.uk
+	# echo 300 > /sys/devices/system/cpu/cpu0/power/pm_qos_resume_latency_us
+
+Before: (Usage is incrementing)
+======
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             29817          537        8          270        0
+
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             30348          542        8          271        0
+
+After: (Usage is not incrementing due to latency tolerance)
+======
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             39319          626        14         307        0
+
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             39319          626        14         307        0
+
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Fixes: e94999688e3a ("PM / Domains: Add genpd governor for CPUs")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250709-pmdomain_qos-v2-1-976b12257899@oss.qualcomm.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/comedi_fops.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/base/power/domain_governor.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -1589,6 +1589,16 @@ error:
- 	return i;
- }
+--- a/drivers/base/power/domain_governor.c
++++ b/drivers/base/power/domain_governor.c
+@@ -8,6 +8,7 @@
+ #include <linux/pm_domain.h>
+ #include <linux/pm_qos.h>
+ #include <linux/hrtimer.h>
++#include <linux/cpu.h>
+ #include <linux/cpuidle.h>
+ #include <linux/cpumask.h>
+ #include <linux/ktime.h>
+@@ -345,6 +346,8 @@ static bool cpu_power_down_ok(struct dev
+ 	struct cpuidle_device *dev;
+ 	ktime_t domain_wakeup, next_hrtimer;
+ 	ktime_t now = ktime_get();
++	struct device *cpu_dev;
++	s64 cpu_constraint, global_constraint;
+ 	s64 idle_duration_ns;
+ 	int cpu, i;
  
-+#define MAX_INSNS   MAX_SAMPLES
-+static int check_insnlist_len(struct comedi_device *dev, unsigned int n_insns)
-+{
-+	if (n_insns > MAX_INSNS) {
-+		dev_dbg(dev->class_dev, "insnlist length too large\n");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- /*
-  * COMEDI_INSN ioctl
-  * synchronous instruction
-@@ -2239,6 +2249,9 @@ static long comedi_unlocked_ioctl(struct
- 			rc = -EFAULT;
- 			break;
+@@ -355,6 +358,7 @@ static bool cpu_power_down_ok(struct dev
+ 	if (!(genpd->flags & GENPD_FLAG_CPU_DOMAIN))
+ 		return true;
+ 
++	global_constraint = cpu_latency_qos_limit();
+ 	/*
+ 	 * Find the next wakeup for any of the online CPUs within the PM domain
+ 	 * and its subdomains. Note, we only need the genpd->cpus, as it already
+@@ -368,8 +372,16 @@ static bool cpu_power_down_ok(struct dev
+ 			if (ktime_before(next_hrtimer, domain_wakeup))
+ 				domain_wakeup = next_hrtimer;
  		}
-+		rc = check_insnlist_len(dev, insnlist.n_insns);
-+		if (rc)
-+			break;
- 		insns = kcalloc(insnlist.n_insns, sizeof(*insns), GFP_KERNEL);
- 		if (!insns) {
- 			rc = -ENOMEM;
-@@ -3090,6 +3103,9 @@ static int compat_insnlist(struct file *
- 	if (copy_from_user(&insnlist32, compat_ptr(arg), sizeof(insnlist32)))
- 		return -EFAULT;
++
++		cpu_dev = get_cpu_device(cpu);
++		if (cpu_dev) {
++			cpu_constraint = dev_pm_qos_raw_resume_latency(cpu_dev);
++			if (cpu_constraint < global_constraint)
++				global_constraint = cpu_constraint;
++		}
+ 	}
  
-+	rc = check_insnlist_len(dev, insnlist32.n_insns);
-+	if (rc)
-+		return rc;
- 	insns = kcalloc(insnlist32.n_insns, sizeof(*insns), GFP_KERNEL);
- 	if (!insns)
- 		return -ENOMEM;
++	global_constraint *= NSEC_PER_USEC;
+ 	/* The minimum idle duration is from now - until the next wakeup. */
+ 	idle_duration_ns = ktime_to_ns(ktime_sub(domain_wakeup, now));
+ 	if (idle_duration_ns <= 0)
+@@ -382,8 +394,10 @@ static bool cpu_power_down_ok(struct dev
+ 	 */
+ 	i = genpd->state_idx;
+ 	do {
+-		if (idle_duration_ns >= (genpd->states[i].residency_ns +
+-		    genpd->states[i].power_off_latency_ns)) {
++		if ((idle_duration_ns >= (genpd->states[i].residency_ns +
++		    genpd->states[i].power_off_latency_ns)) &&
++		    (global_constraint >= (genpd->states[i].power_on_latency_ns +
++		    genpd->states[i].power_off_latency_ns))) {
+ 			genpd->state_idx = i;
+ 			return true;
+ 		}
 
 
 
