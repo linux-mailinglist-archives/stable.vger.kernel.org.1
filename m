@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-164094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F6CB0DD63
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:13:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E491B0DD75
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:15:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B2321881A36
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:09:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC546188F855
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8125E2ECE94;
-	Tue, 22 Jul 2025 14:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9632ED84C;
+	Tue, 22 Jul 2025 14:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJ4hCiTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoHKzasF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355122ECE8B;
-	Tue, 22 Jul 2025 14:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311B82ED15D;
+	Tue, 22 Jul 2025 14:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193228; cv=none; b=Ve8YTCDz9G8ykvWSrx0gLKMHmXz1Xwu6dSRdbI+eofUMpGzz+0H1T0Oe2ZwkSRLFvYjvzfmQpPk6XwqdUyhUO0ZpOOYkseiGLtK3bq1wKVoPMbIVjvjHxn2sYKfqdSOmL85UeCs72eLyqCFnRCnELzRl2uI3pdDkA1gaGSRGmIc=
+	t=1753193235; cv=none; b=Bx5s6XJjSFzQn4qnOZyUl0yhKf7cBrrsLcko7dTsdOS+/phlFrtpFyXjhNNJqpNwHPMSrDZDj2yWI+W9kUE1QNnNuHdXkLzZ3d7l60i7emgox/AI5AUoFZwaztL4xUEc7tdaqWD0vcND8TmTJ5fV4Xu3OOhVl0gglVXNhz4RUEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193228; c=relaxed/simple;
-	bh=UcL8aQ2zC3f1+LvLK9waY+kqu7erFKbxZG0kthScHtM=;
+	s=arc-20240116; t=1753193235; c=relaxed/simple;
+	bh=Lu4CG4CM8Pcl6O709O0kwGE9dc3h3JRcFaw4FSh9DIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=clmkr7Z3MfgNK4tLyNRDat7QkE5MWpKByGn3g2FYAMYgmZnOUrTP4IjmmY/QJKE38V1zTfrrfxi1q0Yxo/SuSdC6hf1HMKtrVUa44f2Q/5NiOOZTn8HAsDBI/oHRaE+iax7XXFIEM8JTlLyBIy46lLYTLCIw9RishsCtMZcCat8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJ4hCiTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001EDC4CEF7;
-	Tue, 22 Jul 2025 14:07:06 +0000 (UTC)
+	 MIME-Version; b=bp5HRyK6loAgYUs/fOkL3xecP6uiGmKvPRmGotkPNl+xxLMMnbIo6lxV13MeqoqMep7xssHS376NNAK8SxYnxVWp9lhPOgHPvforPNFio/MonNUFbQE5fIBNQTEJPmUEdrS97OpXpY2WY8EZfGVBDdzazsPDY025isNW+jGnhhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoHKzasF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419F8C4CEF7;
+	Tue, 22 Jul 2025 14:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193227;
-	bh=UcL8aQ2zC3f1+LvLK9waY+kqu7erFKbxZG0kthScHtM=;
+	s=korg; t=1753193234;
+	bh=Lu4CG4CM8Pcl6O709O0kwGE9dc3h3JRcFaw4FSh9DIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJ4hCiTExwnxSR1RB8Z1ln9p/22y8t9iEoxWZx9b30Aq18UVjjQ+YMmKFq7DdaE2+
-	 E3GeArXAwydDXK8IjkCMADpxKW+oryVR1nQQeDxY4N69ZKKVVNA6CWkceWXIuhHso0
-	 vI3CFujXW5KcEzp//jSvGv68ES+0LU3MvtzQ12j4=
+	b=AoHKzasF1iyJHqzcmV8jcgUwMMNvxCVrISfUi5R4aKFt/I7IIZuQ+r73XLFcZglQ8
+	 Makgb7YqbdtJMmcZ5inkDmZN+AaBy0Yoo+C/3v1CPa4c/6hrXlAOnXBeZMc40gfHsx
+	 JJktlMqEGUBsH/O0f/19GrY7WW190ahEW6H2dsHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Attila Fazekas <afazekas@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	=?UTF-8?q?Fusheng=20Huang ?= <Fusheng.Huang@luxshare-ict.com>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.15 029/187] tracing: Add down_write(trace_event_sem) when adding trace event
-Date: Tue, 22 Jul 2025 15:43:19 +0200
-Message-ID: <20250722134346.845356660@linuxfoundation.org>
+Subject: [PATCH 6.15 030/187] tracing/osnoise: Fix crash in timerlat_dump_stack()
+Date: Tue, 22 Jul 2025 15:43:20 +0200
+Message-ID: <20250722134346.881116849@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -61,66 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit b5e8acc14dcb314a9b61ff19dcd9fdd0d88f70df upstream.
+commit 85a3bce695b361d85fc528e6fbb33e4c8089c806 upstream.
 
-When a module is loaded, it adds trace events defined by the module. It
-may also need to modify the modules trace printk formats to replace enum
-names with their values.
+We have observed kernel panics when using timerlat with stack saving,
+with the following dmesg output:
 
-If two modules are loaded at the same time, the adding of the event to the
-ftrace_events list can corrupt the walking of the list in the code that is
-modifying the printk format strings and crash the kernel.
+memcpy: detected buffer overflow: 88 byte write of buffer size 0
+WARNING: CPU: 2 PID: 8153 at lib/string_helpers.c:1032 __fortify_report+0x55/0xa0
+CPU: 2 UID: 0 PID: 8153 Comm: timerlatu/2 Kdump: loaded Not tainted 6.15.3-200.fc42.x86_64 #1 PREEMPT(lazy)
+Call Trace:
+ <TASK>
+ ? trace_buffer_lock_reserve+0x2a/0x60
+ __fortify_panic+0xd/0xf
+ __timerlat_dump_stack.cold+0xd/0xd
+ timerlat_dump_stack.part.0+0x47/0x80
+ timerlat_fd_read+0x36d/0x390
+ vfs_read+0xe2/0x390
+ ? syscall_exit_to_user_mode+0x1d5/0x210
+ ksys_read+0x73/0xe0
+ do_syscall_64+0x7b/0x160
+ ? exc_page_fault+0x7e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-The addition of the event should take the trace_event_sem for write while
-it adds the new event.
+__timerlat_dump_stack() constructs the ftrace stack entry like this:
 
-Also add a lockdep_assert_held() on that semaphore in
-__trace_add_event_dirs() as it iterates the list.
+struct stack_entry *entry;
+...
+memcpy(&entry->caller, fstack->calls, size);
+entry->size = fstack->nr_entries;
+
+Since commit e7186af7fb26 ("tracing: Add back FORTIFY_SOURCE logic to
+kernel_stack event structure"), struct stack_entry marks its caller
+field with __counted_by(size). At the time of the memcpy, entry->size
+contains garbage from the ringbuffer, which under some circumstances is
+zero, triggering a kernel panic by buffer overflow.
+
+Populate the size field before the memcpy so that the out-of-bounds
+check knows the correct size. This is analogous to
+__ftrace_trace_stack().
 
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Cc: Attila Fazekas <afazekas@redhat.com>
+Link: https://lore.kernel.org/20250716143601.7313-1-tglozar@redhat.com
+Fixes: e7186af7fb26 ("tracing: Add back FORTIFY_SOURCE logic to kernel_stack event structure")
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
 Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/20250718223158.799bfc0c@batman.local.home
-Reported-by: Fusheng Huang(黄富生)  <Fusheng.Huang@luxshare-ict.com>
-Closes: https://lore.kernel.org/all/20250717105007.46ccd18f@batman.local.home/
-Fixes: 110bf2b764eb6 ("tracing: add protection around module events unload")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/trace/trace_osnoise.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -3125,7 +3125,10 @@ __register_event(struct trace_event_call
- 	if (ret < 0)
- 		return ret;
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -637,8 +637,8 @@ __timerlat_dump_stack(struct trace_buffe
  
-+	down_write(&trace_event_sem);
- 	list_add(&call->list, &ftrace_events);
-+	up_write(&trace_event_sem);
-+
- 	if (call->flags & TRACE_EVENT_FL_DYNAMIC)
- 		atomic_set(&call->refcnt, 0);
- 	else
-@@ -3739,6 +3742,8 @@ __trace_add_event_dirs(struct trace_arra
- 	struct trace_event_call *call;
- 	int ret;
+ 	entry = ring_buffer_event_data(event);
  
-+	lockdep_assert_held(&trace_event_sem);
-+
- 	list_for_each_entry(call, &ftrace_events, list) {
- 		ret = __trace_add_new_event(call, tr);
- 		if (ret < 0)
+-	memcpy(&entry->caller, fstack->calls, size);
+ 	entry->size = fstack->nr_entries;
++	memcpy(&entry->caller, fstack->calls, size);
+ 
+ 	trace_buffer_unlock_commit_nostack(buffer, event);
+ }
 
 
 
