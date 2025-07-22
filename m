@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CABB0DB3C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:47:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D58D8B0DCB4
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF2A3560B50
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECA8A1887A4E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0AB2EA15A;
-	Tue, 22 Jul 2025 13:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428C928B7EA;
+	Tue, 22 Jul 2025 14:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U37WRx6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJR5FQ4l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA51289340;
-	Tue, 22 Jul 2025 13:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F256C2E36E8;
+	Tue, 22 Jul 2025 14:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192018; cv=none; b=IpS/Hmcbxmlq/K6BfBNEV3X2L4QW3ZU676fKlv6ByiVqeqamQs9j/CqVWqIlU0Vd3BQBr0JlWfhWE5UWA/SJNA8d8hsXK9y6AX1YyYEKH2sW6wHnejyIfdc1rGrZlWGNpDaLjDKy74hIX9mbGpag+CtUZzEWCrfIGjqwm56f4BM=
+	t=1753192950; cv=none; b=YYcYga+nUYPJRSpLv6prnydgZzDrNHTXFiVJtXoO8q8d3NEg7pzJEwkv0k6huqe6gQCTgtpghaXiLemqhuG7IIRW1478m5N9skygAk5H3oMhORiNZ0U6pTHg5ibVp4ru3/QXNc//KUn0BRbO+BkCS5wfJUyyHpsTyeX1UijDHjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192018; c=relaxed/simple;
-	bh=FfbWPCfQhi1M5qi8lpgA4vtcYxkHAWGNuTS9GacZmko=;
+	s=arc-20240116; t=1753192950; c=relaxed/simple;
+	bh=GGW2HFAc2EQSq86Yg44sHEo/noX+wIl8QwlvrdY5J/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Htj7VpU7Yii8LMyM+pwOw2L6qAqeZ07URPUdHsJASfvYFB3NgZtMz7byhMYUKDb/Lsth3N2m+VH9z12wlYG5wueAACqqWM9L9A5Ikwj95JsifLKidumcMzvxCC7Hk6AhDbSR23FLu/pZg/MmrKMGYMM/dLf0+idUhX0e+GUNadI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U37WRx6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78E4C4CEEB;
-	Tue, 22 Jul 2025 13:46:56 +0000 (UTC)
+	 MIME-Version; b=KC8pf9BsLvpsMGxUO+tAd8Kmk8rEg+UgUQEFvD0WXs1YmMY9LJzdelnamI3rVi5phL9hEpTS+TMXj9FfBeaaAu2JkljxOmxmKQBb25KKQe32JeGLXHrrNbLymvkDslSqJDUUPmGj7WwBa+m3IsNZINdPph1LjvJCoFQufxJ9icU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJR5FQ4l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781E9C4CEEB;
+	Tue, 22 Jul 2025 14:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192017;
-	bh=FfbWPCfQhi1M5qi8lpgA4vtcYxkHAWGNuTS9GacZmko=;
+	s=korg; t=1753192949;
+	bh=GGW2HFAc2EQSq86Yg44sHEo/noX+wIl8QwlvrdY5J/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U37WRx6lDC00rKQGnrmIE2P9L8WODZHvKgjlDyuD8/QRac2/2axxdhRemJU9h2ejs
-	 I/d+fJU1V4KvHIA4jxcBby4SzMqTQ8PEc7EkVsviFMHUaQl7rHjkRTwToBZYQKzjJ8
-	 GizO+5ZiUK+M5CZ86C1SQrb3KGHnv3tHdIQRUDh8=
+	b=nJR5FQ4l67xSSuaueic60DrNMwXdIndWxK5x2iiDrRLoygvCdzt2CydYOQhbP2MGk
+	 hMuvVoUimD7q2paQdSMIsglxk0+bUeh/qy2Pti3bk4/hiPFK6nsHNv83FiMTPk9XkB
+	 iQ5af44nQypxY1Xzz+GvvZZLibHRBROALp2Bf6+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 20/79] dmaengine: nbpfaxi: Fix memory corruption in probe()
-Date: Tue, 22 Jul 2025 15:44:16 +0200
-Message-ID: <20250722134329.122144456@linuxfoundation.org>
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 073/158] iio: common: st_sensors: Fix use of uninitialize device structs
+Date: Tue, 22 Jul 2025 15:44:17 +0200
+Message-ID: <20250722134343.497139934@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,287 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-commit 188c6ba1dd925849c5d94885c8bbdeb0b3dcf510 upstream.
+commit 9f92e93e257b33e73622640a9205f8642ec16ddd upstream.
 
-The nbpf->chan[] array is allocated earlier in the nbpf_probe() function
-and it has "num_channels" elements.  These three loops iterate one
-element farther than they should and corrupt memory.
+Throughout the various probe functions &indio_dev->dev is used before it
+is initialized. This caused a kernel panic in st_sensors_power_enable()
+when the call to devm_regulator_bulk_get_enable() fails and then calls
+dev_err_probe() with the uninitialized device.
 
-The changes to the second loop are more involved.  In this case, we're
-copying data from the irqbuf[] array into the nbpf->chan[] array.  If
-the data in irqbuf[i] is the error IRQ then we skip it, so the iterators
-are not in sync.  I added a check to ensure that we don't go beyond the
-end of the irqbuf[] array.  I'm pretty sure this can't happen, but it
-seemed harmless to add a check.
+This seems to only cause a panic with dev_err_probe(), dev_err(),
+dev_warn() and dev_info() don't seem to cause a panic, but are fixed
+as well.
 
-On the other hand, after the loop has ended there is a check to ensure
-that the "chan" iterator is where we expect it to be.  In the original
-code we went one element beyond the end of the array so the iterator
-wasn't in the correct place and it would always return -EINVAL.  However,
-now it will always be in the correct place.  I deleted the check since
-we know the result.
+The issue is reported and traced here: [1]
 
+Link: https://lore.kernel.org/all/AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM/ [1]
 Cc: stable@vger.kernel.org
-Fixes: b45b262cefd5 ("dmaengine: add a driver for AMBA AXI NBPF DMAC IP cores")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/b13c5225-7eff-448c-badc-a2c98e9bcaca@sabinyo.mountain
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://... [1]
+Link: https://patch.msgid.link/20250527-st_iio_fix-v4-1-12d89801c761@gocontroll.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/nbpfaxi.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/iio/accel/st_accel_core.c                  |   10 ++---
+ drivers/iio/common/st_sensors/st_sensors_core.c    |   36 +++++++++------------
+ drivers/iio/common/st_sensors/st_sensors_trigger.c |   20 +++++------
+ 3 files changed, 31 insertions(+), 35 deletions(-)
 
---- a/drivers/dma/nbpfaxi.c
-+++ b/drivers/dma/nbpfaxi.c
-@@ -1354,7 +1354,7 @@ static int nbpf_probe(struct platform_de
- 	if (irqs == 1) {
- 		eirq = irqbuf[0];
+--- a/drivers/iio/accel/st_accel_core.c
++++ b/drivers/iio/accel/st_accel_core.c
+@@ -1353,6 +1353,7 @@ static int apply_acpi_orientation(struct
+ 	union acpi_object *ont;
+ 	union acpi_object *elements;
+ 	acpi_status status;
++	struct device *parent = indio_dev->dev.parent;
+ 	int ret = -EINVAL;
+ 	unsigned int val;
+ 	int i, j;
+@@ -1371,7 +1372,7 @@ static int apply_acpi_orientation(struct
+ 	};
  
--		for (i = 0; i <= num_channels; i++)
-+		for (i = 0; i < num_channels; i++)
- 			nbpf->chan[i].irq = irqbuf[0];
- 	} else {
- 		eirq = platform_get_irq_byname(pdev, "error");
-@@ -1364,16 +1364,15 @@ static int nbpf_probe(struct platform_de
- 		if (irqs == num_channels + 1) {
- 			struct nbpf_channel *chan;
  
--			for (i = 0, chan = nbpf->chan; i <= num_channels;
-+			for (i = 0, chan = nbpf->chan; i < num_channels;
- 			     i++, chan++) {
- 				/* Skip the error IRQ */
- 				if (irqbuf[i] == eirq)
- 					i++;
-+				if (i >= ARRAY_SIZE(irqbuf))
-+					return -EINVAL;
- 				chan->irq = irqbuf[i];
- 			}
--
--			if (chan != nbpf->chan + num_channels)
--				return -EINVAL;
- 		} else {
- 			/* 2 IRQs and more than one channel */
- 			if (irqbuf[0] == eirq)
-@@ -1381,7 +1380,7 @@ static int nbpf_probe(struct platform_de
- 			else
- 				irq = irqbuf[0];
+-	adev = ACPI_COMPANION(indio_dev->dev.parent);
++	adev = ACPI_COMPANION(parent);
+ 	if (!adev)
+ 		return -ENXIO;
  
--			for (i = 0; i <= num_channels; i++)
-+			for (i = 0; i < num_channels; i++)
- 				nbpf->chan[i].irq = irq;
+@@ -1380,8 +1381,7 @@ static int apply_acpi_orientation(struct
+ 	if (status == AE_NOT_FOUND) {
+ 		return -ENXIO;
+ 	} else if (ACPI_FAILURE(status)) {
+-		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
+-			 status);
++		dev_warn(parent, "failed to execute _ONT: %d\n", status);
+ 		return status;
+ 	}
+ 
+@@ -1457,12 +1457,12 @@ static int apply_acpi_orientation(struct
+ 	}
+ 
+ 	ret = 0;
+-	dev_info(&indio_dev->dev, "computed mount matrix from ACPI\n");
++	dev_info(parent, "computed mount matrix from ACPI\n");
+ 
+ out:
+ 	kfree(buffer.pointer);
+ 	if (ret)
+-		dev_dbg(&indio_dev->dev,
++		dev_dbg(parent,
+ 			"failed to apply ACPI orientation data: %d\n", ret);
+ 
+ 	return ret;
+--- a/drivers/iio/common/st_sensors/st_sensors_core.c
++++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+@@ -154,7 +154,7 @@ static int st_sensors_set_fullscale(stru
+ 	return err;
+ 
+ st_accel_set_fullscale_error:
+-	dev_err(&indio_dev->dev, "failed to set new fullscale.\n");
++	dev_err(indio_dev->dev.parent, "failed to set new fullscale.\n");
+ 	return err;
+ }
+ 
+@@ -231,8 +231,7 @@ int st_sensors_power_enable(struct iio_d
+ 					     ARRAY_SIZE(regulator_names),
+ 					     regulator_names);
+ 	if (err)
+-		return dev_err_probe(&indio_dev->dev, err,
+-				     "unable to enable supplies\n");
++		return dev_err_probe(parent, err, "unable to enable supplies\n");
+ 
+ 	return 0;
+ }
+@@ -241,13 +240,14 @@ EXPORT_SYMBOL_NS(st_sensors_power_enable
+ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
+ 					struct st_sensors_platform_data *pdata)
+ {
++	struct device *parent = indio_dev->dev.parent;
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
+ 
+ 	/* Sensor does not support interrupts */
+ 	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
+ 	    !sdata->sensor_settings->drdy_irq.int2.addr) {
+ 		if (pdata->drdy_int_pin)
+-			dev_info(&indio_dev->dev,
++			dev_info(parent,
+ 				 "DRDY on pin INT%d specified, but sensor does not support interrupts\n",
+ 				 pdata->drdy_int_pin);
+ 		return 0;
+@@ -256,29 +256,27 @@ static int st_sensors_set_drdy_int_pin(s
+ 	switch (pdata->drdy_int_pin) {
+ 	case 1:
+ 		if (!sdata->sensor_settings->drdy_irq.int1.mask) {
+-			dev_err(&indio_dev->dev,
+-					"DRDY on INT1 not available.\n");
++			dev_err(parent, "DRDY on INT1 not available.\n");
+ 			return -EINVAL;
+ 		}
+ 		sdata->drdy_int_pin = 1;
+ 		break;
+ 	case 2:
+ 		if (!sdata->sensor_settings->drdy_irq.int2.mask) {
+-			dev_err(&indio_dev->dev,
+-					"DRDY on INT2 not available.\n");
++			dev_err(parent, "DRDY on INT2 not available.\n");
+ 			return -EINVAL;
+ 		}
+ 		sdata->drdy_int_pin = 2;
+ 		break;
+ 	default:
+-		dev_err(&indio_dev->dev, "DRDY on pdata not valid.\n");
++		dev_err(parent, "DRDY on pdata not valid.\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (pdata->open_drain) {
+ 		if (!sdata->sensor_settings->drdy_irq.int1.addr_od &&
+ 		    !sdata->sensor_settings->drdy_irq.int2.addr_od)
+-			dev_err(&indio_dev->dev,
++			dev_err(parent,
+ 				"open drain requested but unsupported.\n");
+ 		else
+ 			sdata->int_pin_open_drain = true;
+@@ -336,6 +334,7 @@ EXPORT_SYMBOL_NS(st_sensors_dev_name_pro
+ int st_sensors_init_sensor(struct iio_dev *indio_dev,
+ 					struct st_sensors_platform_data *pdata)
+ {
++	struct device *parent = indio_dev->dev.parent;
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
+ 	struct st_sensors_platform_data *of_pdata;
+ 	int err = 0;
+@@ -343,7 +342,7 @@ int st_sensors_init_sensor(struct iio_de
+ 	mutex_init(&sdata->odr_lock);
+ 
+ 	/* If OF/DT pdata exists, it will take precedence of anything else */
+-	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
++	of_pdata = st_sensors_dev_probe(parent, pdata);
+ 	if (IS_ERR(of_pdata))
+ 		return PTR_ERR(of_pdata);
+ 	if (of_pdata)
+@@ -370,7 +369,7 @@ int st_sensors_init_sensor(struct iio_de
+ 		if (err < 0)
+ 			return err;
+ 	} else
+-		dev_info(&indio_dev->dev, "Full-scale not possible\n");
++		dev_info(parent, "Full-scale not possible\n");
+ 
+ 	err = st_sensors_set_odr(indio_dev, sdata->odr);
+ 	if (err < 0)
+@@ -405,7 +404,7 @@ int st_sensors_init_sensor(struct iio_de
+ 			mask = sdata->sensor_settings->drdy_irq.int2.mask_od;
+ 		}
+ 
+-		dev_info(&indio_dev->dev,
++		dev_info(parent,
+ 			 "set interrupt line to open drain mode on pin %d\n",
+ 			 sdata->drdy_int_pin);
+ 		err = st_sensors_write_data_with_mask(indio_dev, addr,
+@@ -594,21 +593,20 @@ EXPORT_SYMBOL_NS(st_sensors_get_settings
+ int st_sensors_verify_id(struct iio_dev *indio_dev)
+ {
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
++	struct device *parent = indio_dev->dev.parent;
+ 	int wai, err;
+ 
+ 	if (sdata->sensor_settings->wai_addr) {
+ 		err = regmap_read(sdata->regmap,
+ 				  sdata->sensor_settings->wai_addr, &wai);
+ 		if (err < 0) {
+-			dev_err(&indio_dev->dev,
+-				"failed to read Who-Am-I register.\n");
+-			return err;
++			return dev_err_probe(parent, err,
++					     "failed to read Who-Am-I register.\n");
+ 		}
+ 
+ 		if (sdata->sensor_settings->wai != wai) {
+-			dev_warn(&indio_dev->dev,
+-				"%s: WhoAmI mismatch (0x%x).\n",
+-				indio_dev->name, wai);
++			dev_warn(parent, "%s: WhoAmI mismatch (0x%x).\n",
++				 indio_dev->name, wai);
  		}
  	}
+ 
+--- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
++++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+@@ -127,7 +127,7 @@ int st_sensors_allocate_trigger(struct i
+ 	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
+ 					     indio_dev->name);
+ 	if (sdata->trig == NULL) {
+-		dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
++		dev_err(parent, "failed to allocate iio trigger.\n");
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -143,7 +143,7 @@ int st_sensors_allocate_trigger(struct i
+ 	case IRQF_TRIGGER_FALLING:
+ 	case IRQF_TRIGGER_LOW:
+ 		if (!sdata->sensor_settings->drdy_irq.addr_ihl) {
+-			dev_err(&indio_dev->dev,
++			dev_err(parent,
+ 				"falling/low specified for IRQ but hardware supports only rising/high: will request rising/high\n");
+ 			if (irq_trig == IRQF_TRIGGER_FALLING)
+ 				irq_trig = IRQF_TRIGGER_RISING;
+@@ -156,21 +156,19 @@ int st_sensors_allocate_trigger(struct i
+ 				sdata->sensor_settings->drdy_irq.mask_ihl, 1);
+ 			if (err < 0)
+ 				return err;
+-			dev_info(&indio_dev->dev,
++			dev_info(parent,
+ 				 "interrupts on the falling edge or active low level\n");
+ 		}
+ 		break;
+ 	case IRQF_TRIGGER_RISING:
+-		dev_info(&indio_dev->dev,
+-			 "interrupts on the rising edge\n");
++		dev_info(parent, "interrupts on the rising edge\n");
+ 		break;
+ 	case IRQF_TRIGGER_HIGH:
+-		dev_info(&indio_dev->dev,
+-			 "interrupts active high level\n");
++		dev_info(parent, "interrupts active high level\n");
+ 		break;
+ 	default:
+ 		/* This is the most preferred mode, if possible */
+-		dev_err(&indio_dev->dev,
++		dev_err(parent,
+ 			"unsupported IRQ trigger specified (%lx), enforce rising edge\n", irq_trig);
+ 		irq_trig = IRQF_TRIGGER_RISING;
+ 	}
+@@ -179,7 +177,7 @@ int st_sensors_allocate_trigger(struct i
+ 	if (irq_trig == IRQF_TRIGGER_FALLING ||
+ 	    irq_trig == IRQF_TRIGGER_RISING) {
+ 		if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
+-			dev_err(&indio_dev->dev,
++			dev_err(parent,
+ 				"edge IRQ not supported w/o stat register.\n");
+ 			return -EOPNOTSUPP;
+ 		}
+@@ -214,13 +212,13 @@ int st_sensors_allocate_trigger(struct i
+ 					sdata->trig->name,
+ 					sdata->trig);
+ 	if (err) {
+-		dev_err(&indio_dev->dev, "failed to request trigger IRQ.\n");
++		dev_err(parent, "failed to request trigger IRQ.\n");
+ 		return err;
+ 	}
+ 
+ 	err = devm_iio_trigger_register(parent, sdata->trig);
+ 	if (err < 0) {
+-		dev_err(&indio_dev->dev, "failed to register iio trigger.\n");
++		dev_err(parent, "failed to register iio trigger.\n");
+ 		return err;
+ 	}
+ 	indio_dev->trig = iio_trigger_get(sdata->trig);
 
 
 
