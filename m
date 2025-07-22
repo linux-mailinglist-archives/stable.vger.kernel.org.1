@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D37B0DCA3
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8BD1B0DBC9
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6ED06C0FE3
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32E4F1C82FC2
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D3A2E1724;
-	Tue, 22 Jul 2025 14:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00B62EA743;
+	Tue, 22 Jul 2025 13:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWpQKeQG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSBGBxmT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6825622D785;
-	Tue, 22 Jul 2025 14:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7442E4271;
+	Tue, 22 Jul 2025 13:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192819; cv=none; b=fQsq+dG+CFeiTGdG2+3PwySpPbNViOywbPZXB4vI4TqNhKbBcq/qJQz/dqnGmFvAThFADtGNg54suk6HMxGWms5g54UKbzHJmiVygrPCbBMpCuwyUyPtwp9cDOqyT+A2wYDIkN9KNKLXWzc7qj61/cpgymBvjZslomENX0Sf6Xg=
+	t=1753192345; cv=none; b=eGXobKwzCrRKvSzAmunDtgKpvjxPBC7ppOUJQyaRVc3bxwmeSmfqErBXjNHIG+l3fFEl4ZzU0h6VMKOzF3ZQlZ0XDeStO1Js9ZDzK+s/xQhdLUjItuyDFFVENL29QhWY5Nh6ji22dZnqYphykodJmAUMSfcOIa8SopJyT88QqYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192819; c=relaxed/simple;
-	bh=iz7feAaAEpPH0t6I2NGWvB7LS1xnjMYR5fC48bfBdDE=;
+	s=arc-20240116; t=1753192345; c=relaxed/simple;
+	bh=gC/Y/9/PfGrHsw341OG2pEPmA3QkFv9u5r/LA2M/ueo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s16+H9PFHisc7VMWh+Jb+mKzFWVtnC4mV3GCyekxNupOPx8cttaGQjfwzR5bED9rel9a3yezZGa+FX97VAo/46wQLedqCqvelT8jABSa1ZB5kOxqSfvIhMnjanQB9kedB0aZM1zTNVsDi7b1aCaEAAX2Ao6du01JRntrI9uFpn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWpQKeQG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB4CC4CEEB;
-	Tue, 22 Jul 2025 14:00:18 +0000 (UTC)
+	 MIME-Version; b=pKKo81qbjahdEY7GWVjpEu5eAWimoaYBU3Gwt4mKP0d7KpPouPM4i6ut1D9Sw/qYIiOw9lKw1qnK9v7mvALPfFDRg5ieqhSDYKvTh1TE9QxjhbLN3vczJsaEi9tRl4b2TUzLeHc42tVYt/YRZGvSCUEBP6QgtZOz7+RysmlxFhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSBGBxmT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5AB6C4CEEB;
+	Tue, 22 Jul 2025 13:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192819;
-	bh=iz7feAaAEpPH0t6I2NGWvB7LS1xnjMYR5fC48bfBdDE=;
+	s=korg; t=1753192345;
+	bh=gC/Y/9/PfGrHsw341OG2pEPmA3QkFv9u5r/LA2M/ueo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWpQKeQG7+Wq3xdK/lna0LJ80C0wbxMW/lVbEupF8/D2zJDNCjEEw15IBdNV6OjfH
-	 XG0+HiHGh0UIq7Wp69xIhJQPWhVMVJkDxP6QTNGauIjmc9U5rLAfrfzXAlxOrpSyEO
-	 bi+Tu9ibj6TDTpOE7yhb24qmTQLy7Weq/ARw64Hs=
+	b=LSBGBxmT6qLkImFc9ky1iYwyXaO/TDRdc002Fu3iRpu7WtGLfRroPIwwHTkNwoJKd
+	 uKIGrrzSpZAR6cxqe6vITnhaKhG/cVLhVqR2PQhC0d0LAPwBBY9x8ep0S+uumyMDwC
+	 VXwzF3ADd3C11iY6M59yKbhHItUz8XUBXpiVRyaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edip Hazuri <edip@medip.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 033/158] ALSA: hda/realtek - Fix mute LED for HP Victus 16-r0xxx
+	Wayne Chang <waynec@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 002/111] phy: tegra: xusb: Decouple CYA_TRK_CODE_UPDATE_ON_IDLE from trk_hw_mode
 Date: Tue, 22 Jul 2025 15:43:37 +0200
-Message-ID: <20250722134341.987212335@linuxfoundation.org>
+Message-ID: <20250722134333.475673986@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edip Hazuri <edip@medip.dev>
+From: Wayne Chang <waynec@nvidia.com>
 
-commit d9b99eb3d76a603442311926617654f0e35581d4 upstream.
+commit 24c63c590adca310e0df95c77cf7aa5552bc3fc5 upstream.
 
-The mute led on this laptop is using ALC245 but requires a quirk to work
-This patch enables the existing quirk for the device.
+The logic that drives the pad calibration values resides in the
+controller reset domain and so the calibration values are only being
+captured when the controller is out of reset. However, by clearing the
+CYA_TRK_CODE_UPDATE_ON_IDLE bit, the calibration values can be set
+while the controller is in reset.
 
-Tested on Victus 16-r0xxx Laptop. The LED behaviour works
-as intended.
+The CYA_TRK_CODE_UPDATE_ON_IDLE bit was previously cleared based on the
+trk_hw_mode flag, but this dependency is not necessary. Instead,
+introduce a new flag, trk_update_on_idle, to independently control this
+bit.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Edip Hazuri <edip@medip.dev>
-Link: https://patch.msgid.link/20250710131812.27509-1-edip@medip.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: d8163a32ca95 ("phy: tegra: xusb: Add Tegra234 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20250519090929.3132456-2-waynec@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/phy/tegra/xusb-tegra186.c |   14 ++++++++------
+ drivers/phy/tegra/xusb.h          |    1 +
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10731,6 +10731,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8bb3, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bb4, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8bbe, "HP Victus 16-r0xxx (MB 8BBE)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bc8, "HP Victus 15-fa1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -648,14 +648,15 @@ static void tegra186_utmi_bias_pad_power
+ 		udelay(100);
+ 	}
+ 
+-	if (padctl->soc->trk_hw_mode) {
+-		value = padctl_readl(padctl, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
+-		value |= USB2_TRK_HW_MODE;
++	value = padctl_readl(padctl, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
++	if (padctl->soc->trk_update_on_idle)
+ 		value &= ~CYA_TRK_CODE_UPDATE_ON_IDLE;
+-		padctl_writel(padctl, value, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
+-	} else {
++	if (padctl->soc->trk_hw_mode)
++		value |= USB2_TRK_HW_MODE;
++	padctl_writel(padctl, value, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
++
++	if (!padctl->soc->trk_hw_mode)
+ 		clk_disable_unprepare(priv->usb2_trk_clk);
+-	}
+ }
+ 
+ static void tegra186_utmi_bias_pad_power_off(struct tegra_xusb_padctl *padctl)
+@@ -1726,6 +1727,7 @@ const struct tegra_xusb_padctl_soc tegra
+ 	.supports_gen2 = true,
+ 	.poll_trk_completed = true,
+ 	.trk_hw_mode = true,
++	.trk_update_on_idle = true,
+ 	.supports_lp_cfg_en = true,
+ };
+ EXPORT_SYMBOL_GPL(tegra234_xusb_padctl_soc);
+--- a/drivers/phy/tegra/xusb.h
++++ b/drivers/phy/tegra/xusb.h
+@@ -434,6 +434,7 @@ struct tegra_xusb_padctl_soc {
+ 	bool need_fake_usb3_port;
+ 	bool poll_trk_completed;
+ 	bool trk_hw_mode;
++	bool trk_update_on_idle;
+ 	bool supports_lp_cfg_en;
+ };
+ 
 
 
 
