@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-164311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A04B0E679
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 00:36:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A130B0E6B6
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 00:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADB23547C8A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 22:36:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38D4754796D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 22:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6229227A446;
-	Tue, 22 Jul 2025 22:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F68F286D64;
+	Tue, 22 Jul 2025 22:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XJSlPe0K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ogTXPWt1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E6E10F2
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 22:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA372868BE
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 22:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753223759; cv=none; b=GdGkAjyms293hPJFaCfN2aB+3BKSW1IlDYIN0Y6k4WqUvMEP6npf6wQrGnIRNYUnUnVkZZCSPuEK4g0MIG8uBvds9RiZmXycVdf1Re9Me/yYhO6VD5Db1odGok0+rQQdv601JeBz9OQ74nZoo1p/BeaRHpUpkOPT9cuw1q18JTA=
+	t=1753224656; cv=none; b=JiNxmiul970TxxJSC0kQ/ao7KfEh8jDp7E9tLlI/g0eoBBeiuraeiBIb9KlyBfujQPBQXYuKWRR92ykfheeuXlcrDM0NtUTdWmAFKgbORSbpIyEFmEvTOBgXqCKiw06714BJxehPg6+C7vsbjdq659FkdbzJgnF4NiUnWwTvwHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753223759; c=relaxed/simple;
-	bh=KHktdl0yaWgzkOEaAZMNoS72sI99oX4iNSnx3yHEc+g=;
+	s=arc-20240116; t=1753224656; c=relaxed/simple;
+	bh=Ekvh3czOSBgmEChcw3KCGFyhViQXDS/X9hzSzU7QxkY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YHOtEUontQm3HMJdNC3Hh3EOyR+ItjhmQ4miVLG4NajtGe7XiL9n6vgedCy/X3589dgl597Q6B/W6soL4+dEl7r5LpDiB+zX6prdBL8gpP7rmFCRnn8ElAo4YOXtn9i+hyRZuNmXef9Ti0ROeQP67Fj0tgF0+devuiRD7R5ywh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XJSlPe0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80134C4CEEB;
-	Tue, 22 Jul 2025 22:35:57 +0000 (UTC)
+	 MIME-Version; b=PYuPqxuN0S7vfbIoVDff4/tAxz1REmYPzZNv1aVTgfkoP2NrWLz448fsie369sBtbdytwY0Z8pnnZ6zUP/qdhSl8gy0N8BwQHSnDEU6HzwaiBsMJkEG5Aj6vZZ4MZb3y9gwctIclOEumi7a/RUgSTWNU5QxfGw6TxDjuLJHX3gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ogTXPWt1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9B7C4CEEB;
+	Tue, 22 Jul 2025 22:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753223758;
-	bh=KHktdl0yaWgzkOEaAZMNoS72sI99oX4iNSnx3yHEc+g=;
+	s=k20201202; t=1753224654;
+	bh=Ekvh3czOSBgmEChcw3KCGFyhViQXDS/X9hzSzU7QxkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJSlPe0KFCxi6aWDL167NCq3uD+Ot3aPq8TDcyrznKCVAg36vuMJy6bVLVL21RZW9
-	 qsSasUwefqVr0k4Eg45udntfnvSbal03dLaZs+b7lAOCKlrs5VRgmOOyKzh/8vTMaF
-	 6Y3NjiTEN11iSvn8gtQIjsS07HoqUdDQmASjv/hl3uBW8qvJXVjTFXQxkohms4qmdi
-	 6YaVTwlwQ66ryosxT7Z64amtKSIhmYaN7QqCa4B1pHmXwVB+dRqmY1/Y++mmH+0+5T
-	 J/T0mOGtcZicvX7rblDR31IuE6N90o2UaYnTA+tKTzrLKIhdeT6/dhFw+gRWV1zuqb
-	 cOZHYswael4LQ==
+	b=ogTXPWt1Z8TakijPB27refEwieYOk9fmCvxCF2oogyn8ujpILZUEwE6nIyp08uqPt
+	 ZHWJ1PJ3SXSxXCFiseFFbaINQeoBVuTQPaoCHkpSLxkLZI87UsPVFrA+ebkx0fFmo3
+	 feidMLsq0MPIwJbuAqZFA3dcgGRyXLVml4buHEBRXs3YSh5sFsIJQm7wmhKAZZYRzg
+	 zfEeonj7T309ZoOJ9dA22uAhgBjz+ZjkExOmhtPoKFXe0cGTcFSIXZ4Pt1kPANeu6T
+	 QsEokz7+lJmXfZiT6hoFfPBbq9fbmVslswUGCo1q941NMYmbDxUgLYCSLJXHu7dpFY
+	 G+IwtjqoesBXA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Mark Pearson <markpearson@lenovo.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] usb: hub: fix detection of high tier USB3 devices behind suspended hubs
-Date: Tue, 22 Jul 2025 18:35:54 -0400
-Message-Id: <20250722223554.994323-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] usb: hub: avoid warm port reset during USB3 disconnect
+Date: Tue, 22 Jul 2025 18:50:49 -0400
+Message-Id: <20250722225050.997941-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025072211-wolverine-heroics-ee1b@gregkh>
-References: <2025072211-wolverine-heroics-ee1b@gregkh>
+In-Reply-To: <2025072257-ranging-salvaging-2f13@gregkh>
+References: <2025072257-ranging-salvaging-2f13@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,127 +63,98 @@ Content-Transfer-Encoding: 8bit
 
 From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 8f5b7e2bec1c36578fdaa74a6951833541103e27 ]
+[ Upstream commit f59f93cd1d720809466c7fd5aa16a236156c672b ]
 
-USB3 devices connected behind several external suspended hubs may not
-be detected when plugged in due to aggressive hub runtime pm suspend.
+During disconnect USB-3 ports often go via SS.Inactive link error state
+before the missing terminations are noticed, and link finally goes to
+RxDetect state
 
-The hub driver immediately runtime-suspends hubs if there are no
-active children or port activity.
+Avoid immediately warm-resetting ports in SS.Inactive state.
+Let ports settle for a while and re-read the link status a few times 20ms
+apart to see if the ports transitions out of SS.Inactive.
 
-There is a delay between the wake signal causing hub resume, and driver
-visible port activity on the hub downstream facing ports.
-Most of the LFPS handshake, resume signaling and link training done
-on the downstream ports is not visible to the hub driver until completed,
-when device then will appear fully enabled and running on the port.
+According to USB 3.x spec 7.5.2, a port in SS.Inactive should
+automatically check for missing far-end receiver termination every
+12 ms (SSInactiveQuietTimeout)
 
-This delay between wake signal and detectable port change is even more
-significant with chained suspended hubs where the wake signal will
-propagate upstream first. Suspended hubs will only start resuming
-downstream ports after upstream facing port resumes.
+The futile multiple warm reset retries of a disconnected device takes
+a lot of time, also the resetting of a removed devices has caused cases
+where the reset bit got stuck for a long time on xHCI roothub.
+This lead to issues in detecting new devices connected to the same port
+shortly after.
 
-The hub driver may resume a USB3 hub, read status of all ports, not
-yet see any activity, and runtime suspend back the hub before any
-port activity is visible.
-
-This exact case was seen when conncting USB3 devices to a suspended
-Thunderbolt dock.
-
-USB3 specification defines a 100ms tU3WakeupRetryDelay, indicating
-USB3 devices expect to be resumed within 100ms after signaling wake.
-if not then device will resend the wake signal.
-
-Give the USB3 hubs twice this time (200ms) to detect any port
-changes after resume, before allowing hub to runtime suspend again.
-
-Cc: stable <stable@kernel.org>
-Fixes: 2839f5bcfcfc ("USB: Turn on auto-suspend for USB 3.0 hubs.")
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Tested-by: Mark Pearson <markpearson@lenovo.com>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250611112441.2267883-1-mathias.nyman@linux.intel.com
+Link: https://lore.kernel.org/r/20211210111653.1378381-1-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ replaced hub_get/hub_put wrapper functions with direct kref_get/kref_put calls ]
+Stable-dep-of: 2521106fc732 ("usb: hub: Don't try to recover devices lost during warm reset.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c | 33 ++++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ drivers/usb/core/hub.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 585375817f5ed..e14bf25a14a69 100644
+index b88e3a5e86168..434ad066a7160 100644
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -51,6 +51,12 @@
- #define USB_TP_TRANSMISSION_DELAY_MAX	65535	/* ns */
- #define USB_PING_RESPONSE_TIME		400	/* ns */
+@@ -2856,6 +2856,8 @@ static unsigned hub_is_wusb(struct usb_hub *hub)
+ #define PORT_INIT_TRIES		4
+ #endif	/* CONFIG_USB_FEW_INIT_RETRIES */
  
-+/*
-+ * Give SS hubs 200ms time after wake to train downstream links before
-+ * assuming no port activity and allowing hub to runtime suspend back.
-+ */
-+#define USB_SS_PORT_U0_WAKE_TIME	200  /* ms */
++#define DETECT_DISCONNECT_TRIES 5
 +
- /* Protect struct usb_device->state and ->children members
-  * Note: Both are also protected by ->dev.sem, except that ->state can
-  * change to USB_STATE_NOTATTACHED even when the semaphore isn't held. */
-@@ -1024,11 +1030,12 @@ int usb_remove_device(struct usb_device *udev)
+ #define HUB_ROOT_RESET_TIME	60	/* times are in msec */
+ #define HUB_SHORT_RESET_TIME	10
+ #define HUB_BH_RESET_TIME	50
+@@ -5657,6 +5659,7 @@ static void port_event(struct usb_hub *hub, int port1)
+ 	struct usb_device *udev = port_dev->child;
+ 	struct usb_device *hdev = hub->hdev;
+ 	u16 portstatus, portchange;
++	int i = 0;
  
- enum hub_activation_type {
- 	HUB_INIT, HUB_INIT2, HUB_INIT3,		/* INITs must come first */
--	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME,
-+	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME, HUB_POST_RESUME,
- };
+ 	connect_change = test_bit(port1, hub->change_bits);
+ 	clear_bit(port1, hub->event_bits);
+@@ -5733,17 +5736,27 @@ static void port_event(struct usb_hub *hub, int port1)
+ 		connect_change = 1;
  
- static void hub_init_func2(struct work_struct *ws);
- static void hub_init_func3(struct work_struct *ws);
-+static void hub_post_resume(struct work_struct *ws);
- 
- static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
- {
-@@ -1051,6 +1058,13 @@ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
- 			goto init2;
- 		goto init3;
+ 	/*
+-	 * Warm reset a USB3 protocol port if it's in
+-	 * SS.Inactive state.
++	 * Avoid trying to recover a USB3 SS.Inactive port with a warm reset if
++	 * the device was disconnected. A 12ms disconnect detect timer in
++	 * SS.Inactive state transitions the port to RxDetect automatically.
++	 * SS.Inactive link error state is common during device disconnect.
+ 	 */
+-	if (hub_port_warm_reset_required(hub, port1, portstatus)) {
+-		dev_dbg(&port_dev->dev, "do warm reset\n");
+-		if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
++	while (hub_port_warm_reset_required(hub, port1, portstatus)) {
++		if ((i++ < DETECT_DISCONNECT_TRIES) && udev) {
++			u16 unused;
++
++			msleep(20);
++			hub_port_status(hub, port1, &portstatus, &unused);
++			dev_dbg(&port_dev->dev, "Wait for inactive link disconnect detect\n");
++			continue;
++		} else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
+ 				|| udev->state == USB_STATE_NOTATTACHED) {
++			dev_dbg(&port_dev->dev, "do warm reset, port only\n");
+ 			if (hub_port_reset(hub, port1, NULL,
+ 					HUB_BH_RESET_TIME, true) < 0)
+ 				hub_port_disable(hub, port1, 1);
+ 		} else {
++			dev_dbg(&port_dev->dev, "do warm reset, full device\n");
+ 			usb_unlock_port(port_dev);
+ 			usb_lock_device(udev);
+ 			usb_reset_device(udev);
+@@ -5751,6 +5764,7 @@ static void port_event(struct usb_hub *hub, int port1)
+ 			usb_lock_port(port_dev);
+ 			connect_change = 0;
+ 		}
++		break;
  	}
-+
-+	if (type == HUB_POST_RESUME) {
-+		usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
-+		kref_put(&hub->kref, hub_release);
-+		return;
-+	}
-+
- 	kref_get(&hub->kref);
  
- 	/* The superspeed hub except for root hub has to use Hub Depth
-@@ -1299,6 +1313,16 @@ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
- 		device_unlock(&hdev->dev);
- 	}
- 
-+	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
-+		/* give usb3 downstream links training time after hub resume */
-+		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
-+		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
-+				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
-+		usb_autopm_get_interface_no_resume(
-+			to_usb_interface(hub->intfdev));
-+		return;
-+	}
-+
- 	kref_put(&hub->kref, hub_release);
- }
- 
-@@ -1317,6 +1341,13 @@ static void hub_init_func3(struct work_struct *ws)
- 	hub_activate(hub, HUB_INIT3);
- }
- 
-+static void hub_post_resume(struct work_struct *ws)
-+{
-+	struct usb_hub *hub = container_of(ws, struct usb_hub, init_work.work);
-+
-+	hub_activate(hub, HUB_POST_RESUME);
-+}
-+
- enum hub_quiescing_type {
- 	HUB_DISCONNECT, HUB_PRE_RESET, HUB_SUSPEND
- };
+ 	if (connect_change)
 -- 
 2.39.5
 
