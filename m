@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-163772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4660B0DB79
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39546B0DBFC
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C02BAA7CB9
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06FCC188FD3F
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB27D28B7EE;
-	Tue, 22 Jul 2025 13:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007F82EA478;
+	Tue, 22 Jul 2025 13:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isbSBW7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/2C0ert"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C0628AB11;
-	Tue, 22 Jul 2025 13:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DF02EA46C;
+	Tue, 22 Jul 2025 13:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192158; cv=none; b=bBJUhs9llXaNl3+78GmV63jxXFF8wRxIDPcLiFx4RaWHjElPSnnjlXm23YiPS2b62c0MvAxJZnj+fe5S2H+dzrwWDWwelbOgv2B2h9a6whpHe1BgprFC5rY0Nsb5wHzhqPNcRZxouiZUd08kPLWJjb5l8wDzlbifGE+tZtw83Qo=
+	t=1753192495; cv=none; b=Ap3r7Lkwk74oWEI+u52evGJ6Zv3jb+BtD+Buv8Is9oF0kKWMEGN0CdlT8RDGGSMuIp7p3XnRv1CP+9Qxo9/JQrZDqqXzUUejM/8oCQbKrMdIq1zorQypEhk4VIy2cKgijMCbsmATpopR4BGQeMtZFIF96m8+H5+ploEk4r8PP8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192158; c=relaxed/simple;
-	bh=nb/kp04xpe2DEZEGZC3UTRZqxmjJDI9B+oUBElrqaBM=;
+	s=arc-20240116; t=1753192495; c=relaxed/simple;
+	bh=1U/E1BKn9Ywmz9Zd2KZZaHjTho3sVtdJ6x/Q/S6vrVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ht7xz9Y4dYzM92Ig2K99Xm08+gOyBf/Eugg67o5+bYhER0NjhDzYaj+oTay3pcI77igPWxxQV5q2r1BGDPtuYKMrQ3CMgsrCa9qG50zAZHq+7K/1XdD7TB4XilBYUbWU8/3/xF6S0KAW328f2X92SWyrltejMCH5+ZL1Feje1O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isbSBW7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082EEC4CEEB;
-	Tue, 22 Jul 2025 13:49:17 +0000 (UTC)
+	 MIME-Version; b=Yg1ZM59Z59f1JRq2RmW8Y6mBOYEf3EinN0cVPmawFrR6OlqMxrmS4/yIOGF6ax9RNcSYSupE/zM0nTbx5477eRV7g/ofTZqqFtEh1a8Fynq2ufnfz2r/OOsYeI6QkrRZt+1tIzEYTzTW2CfFZTaTTYOCie9H2R95/IQZyTw+hPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/2C0ert; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFE6C4CEF1;
+	Tue, 22 Jul 2025 13:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192158;
-	bh=nb/kp04xpe2DEZEGZC3UTRZqxmjJDI9B+oUBElrqaBM=;
+	s=korg; t=1753192495;
+	bh=1U/E1BKn9Ywmz9Zd2KZZaHjTho3sVtdJ6x/Q/S6vrVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=isbSBW7WBMBD/gy89iD4JEPYTGiMZII1OYs4tT72V8YsJBCy5OqEQjaQit0kjH1yv
-	 MspT2ZdZ12gBtLC5X59OFB1hJfkd2NfGppwUXlurA1UoB0NbctXDnAvNIg9I0D3HmB
-	 LZqkkCYMpiuWXn36A0SN/pUV1B54jd31hoDAS79Q=
+	b=V/2C0ertlNd+lO/e3aMpWlDD7kBWZSMBgp+68AeSQweBNFBZdF8acVP79bBIaaHDy
+	 zfu1UOdIUTYQKiS0818/WvJmDCP/+VsGBHzAaab6JhhI1zABHdbPgkY9dtEvQ4Dy7r
+	 FxdSRJ5o8graTan3e/TGQE45sqUaRJCCvKbRM99o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a8b046e462915c65b10b@syzkaller.appspotmail.com,
-	Ido Schimmel <idosch@idosch.org>,
-	Dong Chenchen <dongchenchen2@huawei.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Razvan Cojocaru <rzvncj@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 62/79] net: vlan: fix VLAN 0 refcount imbalance of toggling filtering during runtime
+Subject: [PATCH 6.6 083/111] netfilter: nf_conntrack: fix crash due to removal of uninitialised entry
 Date: Tue, 22 Jul 2025 15:44:58 +0200
-Message-ID: <20250722134330.653863218@linuxfoundation.org>
+Message-ID: <20250722134336.493717588@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,204 +63,245 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dong Chenchen <dongchenchen2@huawei.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 579d4f9ca9a9a605184a9b162355f6ba131f678d ]
+[ Upstream commit 2d72afb340657f03f7261e9243b44457a9228ac7 ]
 
-Assuming the "rx-vlan-filter" feature is enabled on a net device, the
-8021q module will automatically add or remove VLAN 0 when the net device
-is put administratively up or down, respectively. There are a couple of
-problems with the above scheme.
+A crash in conntrack was reported while trying to unlink the conntrack
+entry from the hash bucket list:
+    [exception RIP: __nf_ct_delete_from_lists+172]
+    [..]
+ #7 [ff539b5a2b043aa0] nf_ct_delete at ffffffffc124d421 [nf_conntrack]
+ #8 [ff539b5a2b043ad0] nf_ct_gc_expired at ffffffffc124d999 [nf_conntrack]
+ #9 [ff539b5a2b043ae0] __nf_conntrack_find_get at ffffffffc124efbc [nf_conntrack]
+    [..]
 
-The first problem is a memory leak that can happen if the "rx-vlan-filter"
-feature is disabled while the device is running:
+The nf_conn struct is marked as allocated from slab but appears to be in
+a partially initialised state:
 
- # ip link add bond1 up type bond mode 0
- # ethtool -K bond1 rx-vlan-filter off
- # ip link del dev bond1
+ ct hlist pointer is garbage; looks like the ct hash value
+ (hence crash).
+ ct->status is equal to IPS_CONFIRMED|IPS_DYING, which is expected
+ ct->timeout is 30000 (=30s), which is unexpected.
 
-When the device is put administratively down the "rx-vlan-filter"
-feature is disabled, so the 8021q module will not remove VLAN 0 and the
-memory will be leaked [1].
+Everything else looks like normal udp conntrack entry.  If we ignore
+ct->status and pretend its 0, the entry matches those that are newly
+allocated but not yet inserted into the hash:
+  - ct hlist pointers are overloaded and store/cache the raw tuple hash
+  - ct->timeout matches the relative time expected for a new udp flow
+    rather than the absolute 'jiffies' value.
 
-Another problem that can happen is that the kernel can automatically
-delete VLAN 0 when the device is put administratively down despite not
-adding it when the device was put administratively up since during that
-time the "rx-vlan-filter" feature was disabled. null-ptr-unref or
-bug_on[2] will be triggered by unregister_vlan_dev() for refcount
-imbalance if toggling filtering during runtime:
+If it were not for the presence of IPS_CONFIRMED,
+__nf_conntrack_find_get() would have skipped the entry.
 
-$ ip link add bond0 type bond mode 0
-$ ip link add link bond0 name vlan0 type vlan id 0 protocol 802.1q
-$ ethtool -K bond0 rx-vlan-filter off
-$ ifconfig bond0 up
-$ ethtool -K bond0 rx-vlan-filter on
-$ ifconfig bond0 down
-$ ip link del vlan0
+Theory is that we did hit following race:
 
-Root cause is as below:
-step1: add vlan0 for real_dev, such as bond, team.
-register_vlan_dev
-    vlan_vid_add(real_dev,htons(ETH_P_8021Q),0) //refcnt=1
-step2: disable vlan filter feature and enable real_dev
-step3: change filter from 0 to 1
-vlan_device_event
-    vlan_filter_push_vids
-        ndo_vlan_rx_add_vid //No refcnt added to real_dev vlan0
-step4: real_dev down
-vlan_device_event
-    vlan_vid_del(dev, htons(ETH_P_8021Q), 0); //refcnt=0
-        vlan_info_rcu_free //free vlan0
-step5: delete vlan0
-unregister_vlan_dev
-    BUG_ON(!vlan_info); //vlan_info is null
+cpu x 			cpu y			cpu z
+ found entry E		found entry E
+ E is expired		<preemption>
+ nf_ct_delete()
+ return E to rcu slab
+					init_conntrack
+					E is re-inited,
+					ct->status set to 0
+					reply tuplehash hnnode.pprev
+					stores hash value.
 
-Fix both problems by noting in the VLAN info whether VLAN 0 was
-automatically added upon NETDEV_UP and based on that decide whether it
-should be deleted upon NETDEV_DOWN, regardless of the state of the
-"rx-vlan-filter" feature.
+cpu y found E right before it was deleted on cpu x.
+E is now re-inited on cpu z.  cpu y was preempted before
+checking for expiry and/or confirm bit.
 
-[1]
-unreferenced object 0xffff8880068e3100 (size 256):
-  comm "ip", pid 384, jiffies 4296130254
-  hex dump (first 32 bytes):
-    00 20 30 0d 80 88 ff ff 00 00 00 00 00 00 00 00  . 0.............
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 81ce31fa):
-    __kmalloc_cache_noprof+0x2b5/0x340
-    vlan_vid_add+0x434/0x940
-    vlan_device_event.cold+0x75/0xa8
-    notifier_call_chain+0xca/0x150
-    __dev_notify_flags+0xe3/0x250
-    rtnl_configure_link+0x193/0x260
-    rtnl_newlink_create+0x383/0x8e0
-    __rtnl_newlink+0x22c/0xa40
-    rtnl_newlink+0x627/0xb00
-    rtnetlink_rcv_msg+0x6fb/0xb70
-    netlink_rcv_skb+0x11f/0x350
-    netlink_unicast+0x426/0x710
-    netlink_sendmsg+0x75a/0xc20
-    __sock_sendmsg+0xc1/0x150
-    ____sys_sendmsg+0x5aa/0x7b0
-    ___sys_sendmsg+0xfc/0x180
+					->refcnt set to 1
+					E now owned by skb
+					->timeout set to 30000
 
-[2]
-kernel BUG at net/8021q/vlan.c:99!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 382 Comm: ip Not tainted 6.16.0-rc3 #61 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:unregister_vlan_dev (net/8021q/vlan.c:99 (discriminator 1))
-RSP: 0018:ffff88810badf310 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88810da84000 RCX: ffffffffb47ceb9a
-RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff88810e8b43c8
-RBP: 0000000000000000 R08: 0000000000000000 R09: fffffbfff6cefe80
-R10: ffffffffb677f407 R11: ffff88810badf3c0 R12: ffff88810e8b4000
-R13: 0000000000000000 R14: ffff88810642a5c0 R15: 000000000000017e
-FS:  00007f1ff68c20c0(0000) GS:ffff888163a24000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1ff5dad240 CR3: 0000000107e56000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
-rtnl_dellink (net/core/rtnetlink.c:3511 net/core/rtnetlink.c:3553)
-rtnetlink_rcv_msg (net/core/rtnetlink.c:6945)
-netlink_rcv_skb (net/netlink/af_netlink.c:2535)
-netlink_unicast (net/netlink/af_netlink.c:1314 net/netlink/af_netlink.c:1339)
-netlink_sendmsg (net/netlink/af_netlink.c:1883)
-____sys_sendmsg (net/socket.c:712 net/socket.c:727 net/socket.c:2566)
-___sys_sendmsg (net/socket.c:2622)
-__sys_sendmsg (net/socket.c:2652)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+If cpu y were to resume now, it would observe E as
+expired but would skip E due to missing CONFIRMED bit.
 
-Fixes: ad1afb003939 ("vlan_dev: VLAN 0 should be treated as "no vlan tag" (802.1p packet)")
-Reported-by: syzbot+a8b046e462915c65b10b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a8b046e462915c65b10b
-Suggested-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250716034504.2285203-2-dongchenchen2@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+					nf_conntrack_confirm gets called
+					sets: ct->status |= CONFIRMED
+					This is wrong: E is not yet added
+					to hashtable.
+
+cpu y resumes, it observes E as expired but CONFIRMED:
+			<resumes>
+			nf_ct_expired()
+			 -> yes (ct->timeout is 30s)
+			confirmed bit set.
+
+cpu y will try to delete E from the hashtable:
+			nf_ct_delete() -> set DYING bit
+			__nf_ct_delete_from_lists
+
+Even this scenario doesn't guarantee a crash:
+cpu z still holds the table bucket lock(s) so y blocks:
+
+			wait for spinlock held by z
+
+					CONFIRMED is set but there is no
+					guarantee ct will be added to hash:
+					"chaintoolong" or "clash resolution"
+					logic both skip the insert step.
+					reply hnnode.pprev still stores the
+					hash value.
+
+					unlocks spinlock
+					return NF_DROP
+			<unblocks, then
+			 crashes on hlist_nulls_del_rcu pprev>
+
+In case CPU z does insert the entry into the hashtable, cpu y will unlink
+E again right away but no crash occurs.
+
+Without 'cpu y' race, 'garbage' hlist is of no consequence:
+ct refcnt remains at 1, eventually skb will be free'd and E gets
+destroyed via: nf_conntrack_put -> nf_conntrack_destroy -> nf_ct_destroy.
+
+To resolve this, move the IPS_CONFIRMED assignment after the table
+insertion but before the unlock.
+
+Pablo points out that the confirm-bit-store could be reordered to happen
+before hlist add resp. the timeout fixup, so switch to set_bit and
+before_atomic memory barrier to prevent this.
+
+It doesn't matter if other CPUs can observe a newly inserted entry right
+before the CONFIRMED bit was set:
+
+Such event cannot be distinguished from above "E is the old incarnation"
+case: the entry will be skipped.
+
+Also change nf_ct_should_gc() to first check the confirmed bit.
+
+The gc sequence is:
+ 1. Check if entry has expired, if not skip to next entry
+ 2. Obtain a reference to the expired entry.
+ 3. Call nf_ct_should_gc() to double-check step 1.
+
+nf_ct_should_gc() is thus called only for entries that already failed an
+expiry check. After this patch, once the confirmed bit check passes
+ct->timeout has been altered to reflect the absolute 'best before' date
+instead of a relative time.  Step 3 will therefore not remove the entry.
+
+Without this change to nf_ct_should_gc() we could still get this sequence:
+
+ 1. Check if entry has expired.
+ 2. Obtain a reference.
+ 3. Call nf_ct_should_gc() to double-check step 1:
+    4 - entry is still observed as expired
+    5 - meanwhile, ct->timeout is corrected to absolute value on other CPU
+      and confirm bit gets set
+    6 - confirm bit is seen
+    7 - valid entry is removed again
+
+First do check 6), then 4) so the gc expiry check always picks up either
+confirmed bit unset (entry gets skipped) or expiry re-check failure for
+re-inited conntrack objects.
+
+This change cannot be backported to releases before 5.19. Without
+commit 8a75a2c17410 ("netfilter: conntrack: remove unconfirmed list")
+|= IPS_CONFIRMED line cannot be moved without further changes.
+
+Cc: Razvan Cojocaru <rzvncj@gmail.com>
+Link: https://lore.kernel.org/netfilter-devel/20250627142758.25664-1-fw@strlen.de/
+Link: https://lore.kernel.org/netfilter-devel/4239da15-83ff-4ca4-939d-faef283471bb@gmail.com/
+Fixes: 1397af5bfd7d ("netfilter: conntrack: remove the percpu dying list")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan.c | 42 +++++++++++++++++++++++++++++++++---------
- net/8021q/vlan.h |  1 +
- 2 files changed, 34 insertions(+), 9 deletions(-)
+ include/net/netfilter/nf_conntrack.h | 15 +++++++++++++--
+ net/netfilter/nf_conntrack_core.c    | 26 ++++++++++++++++++++------
+ 2 files changed, 33 insertions(+), 8 deletions(-)
 
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index b477ba37a6991..422f726346ea5 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -358,6 +358,35 @@ static int __vlan_device_event(struct net_device *dev, unsigned long event)
- 	return err;
+diff --git a/include/net/netfilter/nf_conntrack.h b/include/net/netfilter/nf_conntrack.h
+index 4085765c33705..a2c987289401e 100644
+--- a/include/net/netfilter/nf_conntrack.h
++++ b/include/net/netfilter/nf_conntrack.h
+@@ -302,8 +302,19 @@ static inline bool nf_ct_is_expired(const struct nf_conn *ct)
+ /* use after obtaining a reference count */
+ static inline bool nf_ct_should_gc(const struct nf_conn *ct)
+ {
+-	return nf_ct_is_expired(ct) && nf_ct_is_confirmed(ct) &&
+-	       !nf_ct_is_dying(ct);
++	if (!nf_ct_is_confirmed(ct))
++		return false;
++
++	/* load ct->timeout after is_confirmed() test.
++	 * Pairs with __nf_conntrack_confirm() which:
++	 * 1. Increases ct->timeout value
++	 * 2. Inserts ct into rcu hlist
++	 * 3. Sets the confirmed bit
++	 * 4. Unlocks the hlist lock
++	 */
++	smp_acquire__after_ctrl_dep();
++
++	return nf_ct_is_expired(ct) && !nf_ct_is_dying(ct);
  }
  
-+static void vlan_vid0_add(struct net_device *dev)
-+{
-+	struct vlan_info *vlan_info;
-+	int err;
-+
-+	if (!(dev->features & NETIF_F_HW_VLAN_CTAG_FILTER))
-+		return;
-+
-+	pr_info("adding VLAN 0 to HW filter on device %s\n", dev->name);
-+
-+	err = vlan_vid_add(dev, htons(ETH_P_8021Q), 0);
-+	if (err)
-+		return;
-+
-+	vlan_info = rtnl_dereference(dev->vlan_info);
-+	vlan_info->auto_vid0 = true;
-+}
-+
-+static void vlan_vid0_del(struct net_device *dev)
-+{
-+	struct vlan_info *vlan_info = rtnl_dereference(dev->vlan_info);
-+
-+	if (!vlan_info || !vlan_info->auto_vid0)
-+		return;
-+
-+	vlan_info->auto_vid0 = false;
-+	vlan_vid_del(dev, htons(ETH_P_8021Q), 0);
-+}
-+
- static int vlan_device_event(struct notifier_block *unused, unsigned long event,
- 			     void *ptr)
- {
-@@ -379,15 +408,10 @@ static int vlan_device_event(struct notifier_block *unused, unsigned long event,
- 			return notifier_from_errno(err);
+ #define	NF_CT_DAY	(86400 * HZ)
+diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
+index 34ad5975fbf3b..0081c1a0d5e56 100644
+--- a/net/netfilter/nf_conntrack_core.c
++++ b/net/netfilter/nf_conntrack_core.c
+@@ -1075,6 +1075,12 @@ static int nf_ct_resolve_clash_harder(struct sk_buff *skb, u32 repl_idx)
+ 
+ 	hlist_nulls_add_head_rcu(&loser_ct->tuplehash[IP_CT_DIR_REPLY].hnnode,
+ 				 &nf_conntrack_hash[repl_idx]);
++	/* confirmed bit must be set after hlist add, not before:
++	 * loser_ct can still be visible to other cpu due to
++	 * SLAB_TYPESAFE_BY_RCU.
++	 */
++	smp_mb__before_atomic();
++	set_bit(IPS_CONFIRMED_BIT, &loser_ct->status);
+ 
+ 	NF_CT_STAT_INC(net, clash_resolve);
+ 	return NF_ACCEPT;
+@@ -1211,8 +1217,6 @@ __nf_conntrack_confirm(struct sk_buff *skb)
+ 	 * user context, else we insert an already 'dead' hash, blocking
+ 	 * further use of that particular connection -JM.
+ 	 */
+-	ct->status |= IPS_CONFIRMED;
+-
+ 	if (unlikely(nf_ct_is_dying(ct))) {
+ 		NF_CT_STAT_INC(net, insert_failed);
+ 		goto dying;
+@@ -1244,7 +1248,7 @@ __nf_conntrack_confirm(struct sk_buff *skb)
+ 		}
  	}
  
--	if ((event == NETDEV_UP) &&
--	    (dev->features & NETIF_F_HW_VLAN_CTAG_FILTER)) {
--		pr_info("adding VLAN 0 to HW filter on device %s\n",
--			dev->name);
--		vlan_vid_add(dev, htons(ETH_P_8021Q), 0);
--	}
--	if (event == NETDEV_DOWN &&
--	    (dev->features & NETIF_F_HW_VLAN_CTAG_FILTER))
--		vlan_vid_del(dev, htons(ETH_P_8021Q), 0);
-+	if (event == NETDEV_UP)
-+		vlan_vid0_add(dev);
-+	else if (event == NETDEV_DOWN)
-+		vlan_vid0_del(dev);
+-	/* Timer relative to confirmation time, not original
++	/* Timeout is relative to confirmation time, not original
+ 	   setting time, otherwise we'd get timer wrap in
+ 	   weird delay cases. */
+ 	ct->timeout += nfct_time_stamp;
+@@ -1252,11 +1256,21 @@ __nf_conntrack_confirm(struct sk_buff *skb)
+ 	__nf_conntrack_insert_prepare(ct);
  
- 	vlan_info = rtnl_dereference(dev->vlan_info);
- 	if (!vlan_info)
-diff --git a/net/8021q/vlan.h b/net/8021q/vlan.h
-index 5eaf38875554b..c7ffe591d5936 100644
---- a/net/8021q/vlan.h
-+++ b/net/8021q/vlan.h
-@@ -33,6 +33,7 @@ struct vlan_info {
- 	struct vlan_group	grp;
- 	struct list_head	vid_list;
- 	unsigned int		nr_vids;
-+	bool			auto_vid0;
- 	struct rcu_head		rcu;
- };
+ 	/* Since the lookup is lockless, hash insertion must be done after
+-	 * starting the timer and setting the CONFIRMED bit. The RCU barriers
+-	 * guarantee that no other CPU can find the conntrack before the above
+-	 * stores are visible.
++	 * setting ct->timeout. The RCU barriers guarantee that no other CPU
++	 * can find the conntrack before the above stores are visible.
+ 	 */
+ 	__nf_conntrack_hash_insert(ct, hash, reply_hash);
++
++	/* IPS_CONFIRMED unset means 'ct not (yet) in hash', conntrack lookups
++	 * skip entries that lack this bit.  This happens when a CPU is looking
++	 * at a stale entry that is being recycled due to SLAB_TYPESAFE_BY_RCU
++	 * or when another CPU encounters this entry right after the insertion
++	 * but before the set-confirm-bit below.  This bit must not be set until
++	 * after __nf_conntrack_hash_insert().
++	 */
++	smp_mb__before_atomic();
++	set_bit(IPS_CONFIRMED_BIT, &ct->status);
++
+ 	nf_conntrack_double_unlock(hash, reply_hash);
+ 	local_bh_enable();
  
 -- 
 2.39.5
