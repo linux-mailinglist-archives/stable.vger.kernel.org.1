@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-164211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2C0B0DE22
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:23:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3C0B0DE27
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 233C21CA0F2F
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98F34164999
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967D82C9A;
-	Tue, 22 Jul 2025 14:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929112EE60A;
+	Tue, 22 Jul 2025 14:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCz+7/1c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iuhTFSe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D1C28BA96;
-	Tue, 22 Jul 2025 14:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477F82EE5FC;
+	Tue, 22 Jul 2025 14:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193611; cv=none; b=cvQWZ01nsKLSTKAC9J16HJJo0QCprxooNfdTeL7c3Xok9d97bv0e9FvCdOw2N3gjk1x8XoQu6FMiCNG4okad+AHisYU0tBEGIkigFsLw8eb5MtNPW1JZUc7IvtD3ncOs0lMUprOeUzUnrUE0Ih01FUQHwqvddpzNtb6sl4vUroQ=
+	t=1753193500; cv=none; b=BkRjoELqxc1mdB16vw1cxxhAzBnIRtNzJTKwqGufI5BBIUzIHHXSV27IE1rwmgWgi6NKO42+ZlzQhdvAzCYiNxsSyjfNaJRWEhHIW22pcbeFkaAy+2WS+0e9l5ILWNNlOt2jJYoLqmihRiAx39Qcptgn1oH6eEleGjAF2BcGiyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193611; c=relaxed/simple;
-	bh=buHslJC5sM/T+vAyoUMmYXTTWBVp+3UAGDbq5/am1K0=;
+	s=arc-20240116; t=1753193500; c=relaxed/simple;
+	bh=N8VAX53QoXYNoy/YXmxN8mhnY9Ow9i3weu6/z5/QgHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4zAU02rkiuM37NRrxGgSrtgMcvamg0aiWSJSb6f7dm6msKJ3dDCkRz4+QgofkQLbyPZ4lm66AwwvOHR3p8Cmn/KdQGdgbb4O3y0rMb0soHDx9Lz2W/yaUyCtuu8TVyTWhtcIMN099R/g/DqitV0EZOYBeYj/gnojw5mmJWxNW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCz+7/1c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD92FC4CEF6;
-	Tue, 22 Jul 2025 14:13:30 +0000 (UTC)
+	 MIME-Version; b=M9Js2lkuL3qOcCQvyjKs5FsOgK1Sl4tckiKvB2+b6RlgxMmbo4TfJSupyI3+TcWDNeJUuJov1m47SCFGUprA2jGoNhu/Q2HOh4cJ+qVB7IArO0RgpVsv2aFkADGKuJ8ZDu8WSiqZyrNqUPW4lYftTnQyxwPtB2vYl3o63ipXMDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iuhTFSe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BD2C4CEEB;
+	Tue, 22 Jul 2025 14:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193611;
-	bh=buHslJC5sM/T+vAyoUMmYXTTWBVp+3UAGDbq5/am1K0=;
+	s=korg; t=1753193500;
+	bh=N8VAX53QoXYNoy/YXmxN8mhnY9Ow9i3weu6/z5/QgHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCz+7/1c34l14vAgdo+ZfTPvJN3+aPreGd7ThOOv3EttjY+r8+a8zPZHx7CyR8YDP
-	 41uttbw/wMrnGdDAtplq6yxQg7a0F0AvHNtZ4GoEAXYdbhRvb+jVC/+jBbVNHAkhSK
-	 +1AzH4OMoMRbXylkbrIQU7Owx3cePlGkiCWtQ/qs=
+	b=1iuhTFSeu4aPxA2yuG8gUIItCiFVQNyXV4iO2yYLSsd4mqyiooG7h2+GcZDZbMn4d
+	 to+fGfXkEEXmB6A6NICMD57D3xeiVWYnL1i5MtfpKlZdsMHYkKfaG/EIfksTVmmY1y
+	 IpTMSW+6T6MRVGJ77/hOD19Yw0JqAlDUE+FIwt78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Xiang Mei <xmei5@asu.edu>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 111/187] block: fix kobject leak in blk_unregister_queue
-Date: Tue, 22 Jul 2025 15:44:41 +0200
-Message-ID: <20250722134349.898992418@linuxfoundation.org>
+Subject: [PATCH 6.15 112/187] net/sched: sch_qfq: Fix race condition on qfq_aggregate
+Date: Tue, 22 Jul 2025 15:44:42 +0200
+Message-ID: <20250722134349.935102575@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -67,38 +67,113 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 3051247e4faa32a3d90c762a243c2c62dde310db ]
+[ Upstream commit 5e28d5a3f774f118896aec17a3a20a9c5c9dfc64 ]
 
-The kobject for the queue, `disk->queue_kobj`, is initialized with a
-reference count of 1 via `kobject_init()` in `blk_register_queue()`.
-While `kobject_del()` is called during the unregister path to remove
-the kobject from sysfs, the initial reference is never released.
+A race condition can occur when 'agg' is modified in qfq_change_agg
+(called during qfq_enqueue) while other threads access it
+concurrently. For example, qfq_dump_class may trigger a NULL
+dereference, and qfq_delete_class may cause a use-after-free.
 
-Add a call to `kobject_put()` in `blk_unregister_queue()` to properly
-decrement the reference count and fix the leak.
+This patch addresses the issue by:
 
-Fixes: 2bd85221a625 ("block: untangle request_queue refcounting from sysfs")
-Cc: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250711083009.2574432-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+1. Moved qfq_destroy_class into the critical section.
+
+2. Added sch_tree_lock protection to qfq_dump_class and
+qfq_dump_class_stats.
+
+Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-sysfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_qfq.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 1f9b45b0b9ee7..12a5059089a2f 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -964,4 +964,5 @@ void blk_unregister_queue(struct gendisk *disk)
- 	kobject_del(&disk->queue_kobj);
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index bf1282cb22eba..2b1b025c31a33 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -412,7 +412,7 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 	bool existing = false;
+ 	struct nlattr *tb[TCA_QFQ_MAX + 1];
+ 	struct qfq_aggregate *new_agg = NULL;
+-	u32 weight, lmax, inv_w;
++	u32 weight, lmax, inv_w, old_weight, old_lmax;
+ 	int err;
+ 	int delta_w;
  
- 	blk_debugfs_remove(disk);
-+	kobject_put(&disk->queue_kobj);
+@@ -443,12 +443,16 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 	inv_w = ONE_FP / weight;
+ 	weight = ONE_FP / inv_w;
+ 
+-	if (cl != NULL &&
+-	    lmax == cl->agg->lmax &&
+-	    weight == cl->agg->class_weight)
+-		return 0; /* nothing to change */
++	if (cl != NULL) {
++		sch_tree_lock(sch);
++		old_weight = cl->agg->class_weight;
++		old_lmax   = cl->agg->lmax;
++		sch_tree_unlock(sch);
++		if (lmax == old_lmax && weight == old_weight)
++			return 0; /* nothing to change */
++	}
+ 
+-	delta_w = weight - (cl ? cl->agg->class_weight : 0);
++	delta_w = weight - (cl ? old_weight : 0);
+ 
+ 	if (q->wsum + delta_w > QFQ_MAX_WSUM) {
+ 		NL_SET_ERR_MSG_FMT_MOD(extack,
+@@ -555,10 +559,10 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg,
+ 
+ 	qdisc_purge_queue(cl->qdisc);
+ 	qdisc_class_hash_remove(&q->clhash, &cl->common);
++	qfq_destroy_class(sch, cl);
+ 
+ 	sch_tree_unlock(sch);
+ 
+-	qfq_destroy_class(sch, cl);
+ 	return 0;
  }
+ 
+@@ -625,6 +629,7 @@ static int qfq_dump_class(struct Qdisc *sch, unsigned long arg,
+ {
+ 	struct qfq_class *cl = (struct qfq_class *)arg;
+ 	struct nlattr *nest;
++	u32 class_weight, lmax;
+ 
+ 	tcm->tcm_parent	= TC_H_ROOT;
+ 	tcm->tcm_handle	= cl->common.classid;
+@@ -633,8 +638,13 @@ static int qfq_dump_class(struct Qdisc *sch, unsigned long arg,
+ 	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
+ 	if (nest == NULL)
+ 		goto nla_put_failure;
+-	if (nla_put_u32(skb, TCA_QFQ_WEIGHT, cl->agg->class_weight) ||
+-	    nla_put_u32(skb, TCA_QFQ_LMAX, cl->agg->lmax))
++
++	sch_tree_lock(sch);
++	class_weight	= cl->agg->class_weight;
++	lmax		= cl->agg->lmax;
++	sch_tree_unlock(sch);
++	if (nla_put_u32(skb, TCA_QFQ_WEIGHT, class_weight) ||
++	    nla_put_u32(skb, TCA_QFQ_LMAX, lmax))
+ 		goto nla_put_failure;
+ 	return nla_nest_end(skb, nest);
+ 
+@@ -651,8 +661,10 @@ static int qfq_dump_class_stats(struct Qdisc *sch, unsigned long arg,
+ 
+ 	memset(&xstats, 0, sizeof(xstats));
+ 
++	sch_tree_lock(sch);
+ 	xstats.weight = cl->agg->class_weight;
+ 	xstats.lmax = cl->agg->lmax;
++	sch_tree_unlock(sch);
+ 
+ 	if (gnet_stats_copy_basic(d, NULL, &cl->bstats, true) < 0 ||
+ 	    gnet_stats_copy_rate_est(d, &cl->rate_est) < 0 ||
 -- 
 2.39.5
 
