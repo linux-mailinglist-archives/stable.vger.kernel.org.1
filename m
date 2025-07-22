@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-164232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD69B0DDCE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:20:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D76AB0DD10
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 633B87B5B4A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82A0F188FD2B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0062ECD30;
-	Tue, 22 Jul 2025 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BF328B7EA;
+	Tue, 22 Jul 2025 14:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whUGT7YO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GT7Adx8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758EF2ECD29;
-	Tue, 22 Jul 2025 14:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E412E1724;
+	Tue, 22 Jul 2025 14:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193682; cv=none; b=fSjq69HcQG+2optWYkVAekwETJI4uaRNpYpJY+LFMtbcdrdBWraQjEZ3bkkme8YBSRp77o5mwj7O+tXJN3F0luiVVN7Qrv6ntUh/V7A9tjvGhE1X8mlL99nKdmZg6aaz5pfExIRz22bVgvozCh88MTY6DuNUAQceZdEZrF3XabA=
+	t=1753193105; cv=none; b=ZcGbZbu6g6kRKZKGd8GHIIdnKw51BYRL1Rrn8oegely6gDnuRwCPPhB+yPN9QnAdQ7gHOe+UXAvJbyJaVKXmHuAFAWgbn9XOuMrjivgNMyU5G8dkpON/48SPRi98PcNjieA9pFfPEBBoZkh7yVmFRIRTxf64x6hijCb14I61UnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193682; c=relaxed/simple;
-	bh=dx3QLZFobVnJn+2QzmFQZUv8KnkqS8oSEosofWoy6qw=;
+	s=arc-20240116; t=1753193105; c=relaxed/simple;
+	bh=AOEp3aBYa2Is8ViAw41UFhoqzZ2qeZCVWEdZHawBHyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VmxEqO2Jbe7Vx4ayTITVI+Fgpe/esqhklP90FzwGqhTS1iVPGb5s7WWl8fmUxSqEPTymgwTW3f18mwwh3BmjpCbPOwIwbfW1/ivIX+LlzmCvUQxBifmC7FgzD1uUQSAmrM78VW99ifjjbvPI6aothQWjpdhWkinkzqc0VZrhOy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whUGT7YO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CA5C4CEEB;
-	Tue, 22 Jul 2025 14:14:40 +0000 (UTC)
+	 MIME-Version; b=SMZOpdKUmQOWxBIyaiMbvdD5fKMMS2K6+1hWVNxGYJWHScJBp8BSvr2UYrVpRda5UqO67uCrttJS6QACZXOum6CQaDIPes100n/WrPd094x8M1LEF+7WfrI5SP3FRX9OcuT3ZSyHOdMJHQZgLPN2D/a/OLmuSllbSrzOGWwJEwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GT7Adx8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F00C4CEF1;
+	Tue, 22 Jul 2025 14:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193680;
-	bh=dx3QLZFobVnJn+2QzmFQZUv8KnkqS8oSEosofWoy6qw=;
+	s=korg; t=1753193105;
+	bh=AOEp3aBYa2Is8ViAw41UFhoqzZ2qeZCVWEdZHawBHyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=whUGT7YOjRsULwWVBb7iVLP8vn8anW5ZjjgTMmY9S1P0V0RfD+00okgbdSkrg4hRB
-	 0szk4ARttEr7lxe6lBxCKFuK8nj/Hsw/r0HN8p5YRAN/v4hdCOweNMeYOUmg3DP3f/
-	 b/vFGgt58Oo0Lv9RINnHuzUv+UZLfs1qdV7kGlH8=
+	b=GT7Adx8a1qKzNWwDCq313WrIe78qf7z9ajmhOhbi3XKAQ8zixV6kzNno402YXbPVr
+	 qovUx7gyk2ZSbLGxXUFtSnV9vstoAwv2ZurmR2QllbrdY0SH3QilZdM6gBYVGI2XZ+
+	 rr68eBN5ODYo5y17a2Ikc9qQqTksCBLSGNy0oQ/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Breno Leitao <leitao@debian.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 165/187] efivarfs: Fix memory leak of efivarfs_fs_info in fs_context error paths
-Date: Tue, 22 Jul 2025 15:45:35 +0200
-Message-ID: <20250722134351.920744753@linuxfoundation.org>
+Subject: [PATCH 6.12 152/158] i2c: omap: Fix an error handling path in omap_i2c_probe()
+Date: Tue, 22 Jul 2025 15:45:36 +0200
+Message-ID: <20250722134346.383785228@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
-References: <20250722134345.761035548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 64e135f1eaba0bbb0cdee859af3328c68d5b9789 ]
+commit 666c23af755dccca8c25b5d5200ca28153c69a05 upstream.
 
-When processing mount options, efivarfs allocates efivarfs_fs_info (sfi)
-early in fs_context initialization. However, sfi is associated with the
-superblock and typically freed when the superblock is destroyed. If the
-fs_context is released (final put) before fill_super is called—such as
-on error paths or during reconfiguration—the sfi structure would leak,
-as ownership never transfers to the superblock.
+If an error occurs after calling mux_state_select(), mux_state_deselect()
+should be called as already done in the remove function.
 
-Implement the .free callback in efivarfs_context_ops to ensure any
-allocated sfi is properly freed if the fs_context is torn down before
-fill_super, preventing this memory leak.
-
-Suggested-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-Fixes: 5329aa5101f73c ("efivarfs: Add uid/gid mount options")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: <stable@vger.kernel.org> # v6.15+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/998542981b6d2435c057dd8b9fe71743927babab.1749913149.git.christophe.jaillet@wanadoo.fr
+Stable-dep-of: a9503a2ecd95 ("i2c: omap: Handle omap_i2c_init() errors in omap_i2c_probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/efivarfs/super.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/i2c/busses/i2c-omap.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 0486e9b68bc6e..f681814fe8bb0 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -387,10 +387,16 @@ static int efivarfs_reconfigure(struct fs_context *fc)
- 	return 0;
- }
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1461,13 +1461,13 @@ omap_i2c_probe(struct platform_device *p
+ 		if (IS_ERR(mux_state)) {
+ 			r = PTR_ERR(mux_state);
+ 			dev_dbg(&pdev->dev, "failed to get I2C mux: %d\n", r);
+-			goto err_disable_pm;
++			goto err_put_pm;
+ 		}
+ 		omap->mux_state = mux_state;
+ 		r = mux_state_select(omap->mux_state);
+ 		if (r) {
+ 			dev_err(&pdev->dev, "failed to select I2C mux: %d\n", r);
+-			goto err_disable_pm;
++			goto err_put_pm;
+ 		}
+ 	}
  
-+static void efivarfs_free(struct fs_context *fc)
-+{
-+	kfree(fc->s_fs_info);
-+}
-+
- static const struct fs_context_operations efivarfs_context_ops = {
- 	.get_tree	= efivarfs_get_tree,
- 	.parse_param	= efivarfs_parse_param,
- 	.reconfigure	= efivarfs_reconfigure,
-+	.free		= efivarfs_free,
- };
+@@ -1515,6 +1515,9 @@ omap_i2c_probe(struct platform_device *p
  
- struct efivarfs_ctx {
--- 
-2.39.5
-
+ err_unuse_clocks:
+ 	omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
++	if (omap->mux_state)
++		mux_state_deselect(omap->mux_state);
++err_put_pm:
+ 	pm_runtime_dont_use_autosuspend(omap->dev);
+ 	pm_runtime_put_sync(omap->dev);
+ err_disable_pm:
 
 
 
