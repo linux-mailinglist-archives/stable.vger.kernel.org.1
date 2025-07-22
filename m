@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627AAB0DB33
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:46:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E279B0DBD6
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 420EC1C243D5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:46:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334EA3AFE8A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A36E1A01B9;
-	Tue, 22 Jul 2025 13:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFDE2EA49A;
+	Tue, 22 Jul 2025 13:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHlr5wK2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekiDxnFC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544812E36E8;
-	Tue, 22 Jul 2025 13:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E912E8E0F;
+	Tue, 22 Jul 2025 13:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753191991; cv=none; b=fXBbeVX5cLuwYqstmn6JBBowFB1O8coQktD+vuUuTHZmosKx40sdUnP5RgmOvN0Jte+TSsZ5grP9Vp+/RRJyBXLPzXhxduTgV9rAjL5YUn2McV4reoH0+wX9R2a0Q+Ii+CCqRr/MVN/vSEQwWMm2La7Ttod9gq+pZBjs/NFFkQU=
+	t=1753192306; cv=none; b=gc83OK4WfBeA1AwMjdP6YyU1WboXaIvdLwFY2Xo8DraQ7q2jGVnVpdu5o+Uwc8u7lMgvfsVdW1BSBjpLudU7CC9sEvDW9Db17cp/Xabx6XruN+39P0Ca082GQL4rijBN+HYN8axwBjIICPMhmee0OykbkVbWmYWr1UWiKy0wOfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753191991; c=relaxed/simple;
-	bh=1vvX19XK010sJl5eih/W3SWz5D5wmmQSbFUiqJYxY9Q=;
+	s=arc-20240116; t=1753192306; c=relaxed/simple;
+	bh=7ZysJNVniMNEqkU1w/OGGj4t4TOuphGuKUvVHNCJC8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcKBHVuqPCSSFOweTaouFyzVzx1pXFg/bo0UdkJQmkUpI5ocVcfhji/g1wlSdlsELPfRZ3j6avtTetmxI6piR7hshhbkJKu4CjhHqqTU9oLgKKfd/AAT1QjhdJPFSekgSIVYQZ0jr+Ryol7qj7AlErmZXS+imhtuxRyW5heOMAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHlr5wK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898D6C4CEEB;
-	Tue, 22 Jul 2025 13:46:30 +0000 (UTC)
+	 MIME-Version; b=Yq8+kDf9gXTQji0zz6xy2uyMul7P4DiGwtaDI3b/8vrVdmVl5+X1FKsdrcxz4bvme1byJvQHnpcOQvzMGmSK/Ax2Bl33s2tdjbkQhnTpId7ESlZIJFwctpRON/3PCMDsrKKtFs6Hty5N7t9ZhOTtOxGEfJqbj62hgTAuZkFX1sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekiDxnFC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB061C4CEEB;
+	Tue, 22 Jul 2025 13:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753191990;
-	bh=1vvX19XK010sJl5eih/W3SWz5D5wmmQSbFUiqJYxY9Q=;
+	s=korg; t=1753192306;
+	bh=7ZysJNVniMNEqkU1w/OGGj4t4TOuphGuKUvVHNCJC8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHlr5wK2vBRdz52Y0T7rban6GQY+S/7cC3C8iWhbu0z0kJwJbCWX2p1RtZTFEIXKl
-	 Iw7pyoRbwGhU0Fov5JbKPiNv+oUasJk7c3O5NEKHfIkIF6p2YzyTMQCnvFKiQzikah
-	 WXSEsV7gCeZUOF6R2o3H5mEt8wFtAH9D/CshCFKU=
+	b=ekiDxnFCw4yeJFS0RQHF3UuOwkabEGjdaaO+qloZ/G1IGchPwNM0UNhW8JFaonrgg
+	 /pAgDiNLEZ7QkMJDvlgJ74PJGWjOplohR5Se9yEblUmSu9W1WbmCThsoSEk0xIdeF9
+	 QlDi0PfH7l6FcXZ3raBSA5AjgCHfw5EZe1J7e6wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Mann <rmann@ndigital.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 04/79] USB: serial: ftdi_sio: add support for NDI EMGUIDE GEMINI
-Date: Tue, 22 Jul 2025 15:44:00 +0200
-Message-ID: <20250722134328.545872184@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 026/111] phonet/pep: Move call to pn_skb_get_dst_sockaddr() earlier in pep_sock_accept()
+Date: Tue, 22 Jul 2025 15:44:01 +0200
+Message-ID: <20250722134334.372300709@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Mann (NDI) <rmann@ndigital.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit c980666b6958d9a841597331b38115a29a32250e upstream.
+commit 17ba793f381eb813596d6de1cc6820bcbda5ed8b upstream.
 
-NDI (Northern Digital Inc.) is introducing a new product called the
-EMGUIDE GEMINI that will use an FTDI chip for USB serial communications.
-Add the NDI EMGUIDE GEMINI product ID that uses the NDI Vendor ID
-rather than the FTDI Vendor ID, unlike older products.
+A new warning in clang [1] points out a place in pep_sock_accept() where
+dst is uninitialized then passed as a const pointer to pep_find_pipe():
 
-Signed-off-by: Ryan Mann <rmann@ndigital.com>
+  net/phonet/pep.c:829:37: error: variable 'dst' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+    829 |         newsk = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
+        |                                            ^~~:
+
+Move the call to pn_skb_get_dst_sockaddr(), which initializes dst, to
+before the call to pep_find_pipe(), so that dst is consistently used
+initialized throughout the function.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: f7ae8d59f661 ("Phonet: allocate sock from accept syscall rather than soft IRQ")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2101
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://patch.msgid.link/20250715-net-phonet-fix-uninit-const-pointer-v1-1-8efd1bd188b3@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    2 ++
- drivers/usb/serial/ftdi_sio_ids.h |    3 +++
- 2 files changed, 5 insertions(+)
+ net/phonet/pep.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -803,6 +803,8 @@ static const struct usb_device_id id_tab
- 		.driver_info = (kernel_ulong_t)&ftdi_NDI_device_quirk },
- 	{ USB_DEVICE(FTDI_VID, FTDI_NDI_AURORA_SCU_PID),
- 		.driver_info = (kernel_ulong_t)&ftdi_NDI_device_quirk },
-+	{ USB_DEVICE(FTDI_NDI_VID, FTDI_NDI_EMGUIDE_GEMINI_PID),
-+		.driver_info = (kernel_ulong_t)&ftdi_NDI_device_quirk },
- 	{ USB_DEVICE(TELLDUS_VID, TELLDUS_TELLSTICK_PID) },
- 	{ USB_DEVICE(NOVITUS_VID, NOVITUS_BONO_E_PID) },
- 	{ USB_DEVICE(FTDI_VID, RTSYSTEMS_USB_VX8_PID) },
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -204,6 +204,9 @@
- #define FTDI_NDI_FUTURE_3_PID		0xDA73	/* NDI future device #3 */
- #define FTDI_NDI_AURORA_SCU_PID		0xDA74	/* NDI Aurora SCU */
+--- a/net/phonet/pep.c
++++ b/net/phonet/pep.c
+@@ -826,6 +826,7 @@ static struct sock *pep_sock_accept(stru
+ 	}
  
-+#define FTDI_NDI_VID			0x23F2
-+#define FTDI_NDI_EMGUIDE_GEMINI_PID	0x0003	/* NDI Emguide Gemini */
-+
- /*
-  * ChamSys Limited (www.chamsys.co.uk) USB wing/interface product IDs
-  */
+ 	/* Check for duplicate pipe handle */
++	pn_skb_get_dst_sockaddr(skb, &dst);
+ 	newsk = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
+ 	if (unlikely(newsk)) {
+ 		__sock_put(newsk);
+@@ -850,7 +851,6 @@ static struct sock *pep_sock_accept(stru
+ 	newsk->sk_destruct = pipe_destruct;
+ 
+ 	newpn = pep_sk(newsk);
+-	pn_skb_get_dst_sockaddr(skb, &dst);
+ 	pn_skb_get_src_sockaddr(skb, &src);
+ 	newpn->pn_sk.sobject = pn_sockaddr_get_object(&dst);
+ 	newpn->pn_sk.dobject = pn_sockaddr_get_object(&src);
 
 
 
