@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-163852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B98B0DBFD
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:56:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77ADCB0DB57
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A93FAA7887
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62BEF16A7B5
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FD22EA46C;
-	Tue, 22 Jul 2025 13:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7F828AB11;
+	Tue, 22 Jul 2025 13:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sv+IYiqH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFy0WcfB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E1028C039;
-	Tue, 22 Jul 2025 13:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473F923B614;
+	Tue, 22 Jul 2025 13:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192424; cv=none; b=olBXQTkIjD77d4sLwFrogfUH2YatbWUylRqP6SQcm0x/ZPBezPjmgYtxEAUQZaVpJ8vA745W+QwUAAI4qJ25+sZebAR4zrV8TPIpspRAP5+/abYhscGUnN/NEhfyYrdXatd8HxcQNlXyGJzEKH9UgjFhK3A+BVoPYGt1ImxgZdM=
+	t=1753192104; cv=none; b=LaN3kMhPLTUoTK9BjIChQXqJVbVLE/bliiKPZZXATk5QkUsUN6sKx7iCyCp4VTxVHR9qIYdJ1O6VcP6ftNueC+byWRik0ERCdOszm6hz1N6Z+wiIrBxqsAUXBlG++wPff7qH46e6uKL1fCrM3DIDqMNowPCVJs0401CbsNdqpKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192424; c=relaxed/simple;
-	bh=lxqemhfMZR3gZz8rKo5FT4DIPYn4KWwWtmrgOa/s19I=;
+	s=arc-20240116; t=1753192104; c=relaxed/simple;
+	bh=RdPe16PxSXJx3+029KMe9DeVTvf5/xyZ8B2+yrACn/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TV33a1dLmX49jQNl2RiStEzVUlaPbxq1sa/yE9/SAS7MjJnCXMgbtZA0myA0ylc5scXDx1FXje0RYkz8rU6dZh22v9fITJSo6Lola11hXjhSqIPnvy7k+3jvkF5qNeGKzY9ZGVVzT3aGgW4La7cN09OE8ecBmXlIT9k4ERugt7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sv+IYiqH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC71BC4CEEB;
-	Tue, 22 Jul 2025 13:53:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KXFPc2LAiozgkrHYdpr/p0WazIY4VHZ38NyuUe+kHMpkaGhGxTkpZqtERn+yvWg/N38C0XKuERnauNTlnv6HNtjo+ozsYsPAjHjY1mibeLYlzuUBSRFU3e4b06TntVk2hnaW+sWWQX6QVVRAiFVrzd/9eSSqTpBInDu3whyDdz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFy0WcfB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F999C4CEEB;
+	Tue, 22 Jul 2025 13:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192424;
-	bh=lxqemhfMZR3gZz8rKo5FT4DIPYn4KWwWtmrgOa/s19I=;
+	s=korg; t=1753192104;
+	bh=RdPe16PxSXJx3+029KMe9DeVTvf5/xyZ8B2+yrACn/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sv+IYiqHSaxJ12O6RpFjksWl1NJOLsOy4OON7NHGscZ7GXavoDsPEfmNsJAn0A/96
-	 +7n1y/W+SN96rLjo568NS5J9OEpKyo8tJ2U6qqh2PLT6D20PGrTXCIexO8mBpeJHfN
-	 eVrKOZSZ2xrTEAew7+UgfLLAySv5S04aoJLKONbw=
+	b=ZFy0WcfB+bflEwOb8pSuIA1WBlWqaiAV6zeB9pRtCOX+IGUzW0/q+G526h69lqE8m
+	 032BosTCoi7qKyQXqIAgro8XP8PwWg+V8w+kggjx8e9sik/NHjma3ZIvQghrF19AJU
+	 DNT8KiLupxtpBhJudYUcDTAz4exf1o9Ev9sTJkXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 034/111] isofs: Verify inode mode when loading from disk
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	=?UTF-8?q?Fusheng=20Huang ?= <Fusheng.Huang@luxshare-ict.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 13/79] tracing: Add down_write(trace_event_sem) when adding trace event
 Date: Tue, 22 Jul 2025 15:44:09 +0200
-Message-ID: <20250722134334.677766627@linuxfoundation.org>
+Message-ID: <20250722134328.871934252@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 0a9e7405131380b57e155f10242b2e25d2e51852 upstream.
+commit b5e8acc14dcb314a9b61ff19dcd9fdd0d88f70df upstream.
 
-Verify that the inode mode is sane when loading it from the disk to
-avoid complaints from VFS about setting up invalid inodes.
+When a module is loaded, it adds trace events defined by the module. It
+may also need to modify the modules trace printk formats to replace enum
+names with their values.
 
-Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/20250709095545.31062-2-jack@suse.cz
-Acked-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+If two modules are loaded at the same time, the adding of the event to the
+ftrace_events list can corrupt the walking of the list in the code that is
+modifying the printk format strings and crash the kernel.
+
+The addition of the event should take the trace_event_sem for write while
+it adds the new event.
+
+Also add a lockdep_assert_held() on that semaphore in
+__trace_add_event_dirs() as it iterates the list.
+
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/20250718223158.799bfc0c@batman.local.home
+Reported-by: Fusheng Huang(黄富生)  <Fusheng.Huang@luxshare-ict.com>
+Closes: https://lore.kernel.org/all/20250717105007.46ccd18f@batman.local.home/
+Fixes: 110bf2b764eb6 ("tracing: add protection around module events unload")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/inode.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -1486,9 +1486,16 @@ static int isofs_read_inode(struct inode
- 		inode->i_op = &page_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &isofs_symlink_aops;
--	} else
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		/* XXX - parse_rock_ridge_inode() had already set i_rdev. */
- 		init_special_inode(inode, inode->i_mode, inode->i_rdev);
-+	} else {
-+		printk(KERN_DEBUG "ISOFS: Invalid file type 0%04o for inode %lu.\n",
-+			inode->i_mode, inode->i_ino);
-+		ret = -EIO;
-+		goto fail;
-+	}
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -2714,7 +2714,10 @@ __register_event(struct trace_event_call
+ 	if (ret < 0)
+ 		return ret;
  
- 	ret = 0;
- out:
++	down_write(&trace_event_sem);
+ 	list_add(&call->list, &ftrace_events);
++	up_write(&trace_event_sem);
++
+ 	if (call->flags & TRACE_EVENT_FL_DYNAMIC)
+ 		atomic_set(&call->refcnt, 0);
+ 	else
+@@ -3189,6 +3192,8 @@ __trace_add_event_dirs(struct trace_arra
+ 	struct trace_event_call *call;
+ 	int ret;
+ 
++	lockdep_assert_held(&trace_event_sem);
++
+ 	list_for_each_entry(call, &ftrace_events, list) {
+ 		ret = __trace_add_new_event(call, tr);
+ 		if (ret < 0)
 
 
 
