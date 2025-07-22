@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-164056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D76AB0DD10
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B36D5B0DE42
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82A0F188FD2B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C44301C87F99
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BF328B7EA;
-	Tue, 22 Jul 2025 14:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8329D2EA499;
+	Tue, 22 Jul 2025 14:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GT7Adx8a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HX998JG/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E412E1724;
-	Tue, 22 Jul 2025 14:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403692EBDCB;
+	Tue, 22 Jul 2025 14:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193105; cv=none; b=ZcGbZbu6g6kRKZKGd8GHIIdnKw51BYRL1Rrn8oegely6gDnuRwCPPhB+yPN9QnAdQ7gHOe+UXAvJbyJaVKXmHuAFAWgbn9XOuMrjivgNMyU5G8dkpON/48SPRi98PcNjieA9pFfPEBBoZkh7yVmFRIRTxf64x6hijCb14I61UnY=
+	t=1753193684; cv=none; b=Y1+AvCJEt8Kg1AqIc1ywNtfRMfo7gMf/tLXWLi/S3Rl2Qg0GZdPHp6FvZBy63uDPe7wagRhKWjKghzGlSKDXdL7oKmLWIVOafOy+fEGlQjILrKL+P+ZjyAyzrdQ2k8zvCsZ5qUlKzFIhSGKJQRPalWWZcyCJfwSDRY9KpVyphC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193105; c=relaxed/simple;
-	bh=AOEp3aBYa2Is8ViAw41UFhoqzZ2qeZCVWEdZHawBHyw=;
+	s=arc-20240116; t=1753193684; c=relaxed/simple;
+	bh=Y7Uh8X3/6O7+UBAT4/RPeoltPQ6p0P98pqLWrD8ZKe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SMZOpdKUmQOWxBIyaiMbvdD5fKMMS2K6+1hWVNxGYJWHScJBp8BSvr2UYrVpRda5UqO67uCrttJS6QACZXOum6CQaDIPes100n/WrPd094x8M1LEF+7WfrI5SP3FRX9OcuT3ZSyHOdMJHQZgLPN2D/a/OLmuSllbSrzOGWwJEwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GT7Adx8a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F00C4CEF1;
-	Tue, 22 Jul 2025 14:05:04 +0000 (UTC)
+	 MIME-Version; b=Ager9ePIootrCNm4kl1dK2B2PP51qMvDq4avJQh7gcAjGBIZgm/YxNVJmilplm+U3z0zeJORkZXDUy9afOtnVlPjQQWhD7gcLfaBnqgSZK92YZw9W71tH5jf+618AqiHj3CTPHBsJf5s2zJ/ikbkQ+iNGawhTPbX2KCbOrsTWyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HX998JG/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEA0C4CEEB;
+	Tue, 22 Jul 2025 14:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193105;
-	bh=AOEp3aBYa2Is8ViAw41UFhoqzZ2qeZCVWEdZHawBHyw=;
+	s=korg; t=1753193684;
+	bh=Y7Uh8X3/6O7+UBAT4/RPeoltPQ6p0P98pqLWrD8ZKe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GT7Adx8a1qKzNWwDCq313WrIe78qf7z9ajmhOhbi3XKAQ8zixV6kzNno402YXbPVr
-	 qovUx7gyk2ZSbLGxXUFtSnV9vstoAwv2ZurmR2QllbrdY0SH3QilZdM6gBYVGI2XZ+
-	 rr68eBN5ODYo5y17a2Ikc9qQqTksCBLSGNy0oQ/M=
+	b=HX998JG/n4Lxd79pOMjto/O+clJYLF9c3+QqbaBslY4D3ltAPPbnYJPKXwaS2Emt8
+	 Xoawd93aAlZ3LfUPi+je+0gQ48N+FCyuK7ZOXDwqCzUiTqtRCgl8e4TctFYN0AFfSe
+	 Yj94oW0xoPDh1LhC7PMC/r4DxUwmJHzhyK1o7DrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 152/158] i2c: omap: Fix an error handling path in omap_i2c_probe()
+	Aruna Ramakrishna <aruna.ramakrishna@oracle.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.15 166/187] sched: Change nr_uninterruptible type to unsigned long
 Date: Tue, 22 Jul 2025 15:45:36 +0200
-Message-ID: <20250722134346.383785228@linuxfoundation.org>
+Message-ID: <20250722134351.955582392@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
 
-commit 666c23af755dccca8c25b5d5200ca28153c69a05 upstream.
+commit 36569780b0d64de283f9d6c2195fd1a43e221ee8 upstream.
 
-If an error occurs after calling mux_state_select(), mux_state_deselect()
-should be called as already done in the remove function.
+The commit e6fe3f422be1 ("sched: Make multiple runqueue task counters
+32-bit") changed nr_uninterruptible to an unsigned int. But the
+nr_uninterruptible values for each of the CPU runqueues can grow to
+large numbers, sometimes exceeding INT_MAX. This is valid, if, over
+time, a large number of tasks are migrated off of one CPU after going
+into an uninterruptible state. Only the sum of all nr_interruptible
+values across all CPUs yields the correct result, as explained in a
+comment in kernel/sched/loadavg.c.
 
-Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: <stable@vger.kernel.org> # v6.15+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/998542981b6d2435c057dd8b9fe71743927babab.1749913149.git.christophe.jaillet@wanadoo.fr
-Stable-dep-of: a9503a2ecd95 ("i2c: omap: Handle omap_i2c_init() errors in omap_i2c_probe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Change the type of nr_uninterruptible back to unsigned long to prevent
+overflows, and thus the miscalculation of load average.
+
+Fixes: e6fe3f422be1 ("sched: Make multiple runqueue task counters 32-bit")
+
+Signed-off-by: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250709173328.606794-1-aruna.ramakrishna@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-omap.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/sched/loadavg.c |    2 +-
+ kernel/sched/sched.h   |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1461,13 +1461,13 @@ omap_i2c_probe(struct platform_device *p
- 		if (IS_ERR(mux_state)) {
- 			r = PTR_ERR(mux_state);
- 			dev_dbg(&pdev->dev, "failed to get I2C mux: %d\n", r);
--			goto err_disable_pm;
-+			goto err_put_pm;
- 		}
- 		omap->mux_state = mux_state;
- 		r = mux_state_select(omap->mux_state);
- 		if (r) {
- 			dev_err(&pdev->dev, "failed to select I2C mux: %d\n", r);
--			goto err_disable_pm;
-+			goto err_put_pm;
- 		}
- 	}
+--- a/kernel/sched/loadavg.c
++++ b/kernel/sched/loadavg.c
+@@ -80,7 +80,7 @@ long calc_load_fold_active(struct rq *th
+ 	long nr_active, delta = 0;
  
-@@ -1515,6 +1515,9 @@ omap_i2c_probe(struct platform_device *p
+ 	nr_active = this_rq->nr_running - adjust;
+-	nr_active += (int)this_rq->nr_uninterruptible;
++	nr_active += (long)this_rq->nr_uninterruptible;
  
- err_unuse_clocks:
- 	omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
-+	if (omap->mux_state)
-+		mux_state_deselect(omap->mux_state);
-+err_put_pm:
- 	pm_runtime_dont_use_autosuspend(omap->dev);
- 	pm_runtime_put_sync(omap->dev);
- err_disable_pm:
+ 	if (nr_active != this_rq->calc_load_active) {
+ 		delta = nr_active - this_rq->calc_load_active;
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1147,7 +1147,7 @@ struct rq {
+ 	 * one CPU and if it got migrated afterwards it may decrease
+ 	 * it on another CPU. Always updated under the runqueue lock:
+ 	 */
+-	unsigned int		nr_uninterruptible;
++	unsigned long 		nr_uninterruptible;
+ 
+ 	union {
+ 		struct task_struct __rcu *donor; /* Scheduler context */
 
 
 
