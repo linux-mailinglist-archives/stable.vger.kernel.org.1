@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-163789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89A8B0DB89
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:50:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2B0B0DC37
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1B9F561FCA
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D4B13B04F5
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CED52C08B6;
-	Tue, 22 Jul 2025 13:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C435D2EA475;
+	Tue, 22 Jul 2025 13:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/6oMKSP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hx9sRcqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4EE154457;
-	Tue, 22 Jul 2025 13:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828BF2E11B6;
+	Tue, 22 Jul 2025 13:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192216; cv=none; b=lGCTWy0adOTaejtb8h1dCLO3Fe6U9tx0YLH9njNvl+drwfFpMhKCEuG6KR/NYeizYqCgOdWuvONpwT3N+GCXqBqLUYP9Ib1Wv+BlUDsQPQH43Zl+eII7RodIIydgIbSuOp3EIW6kIdxrYMABTjebjsvdVwaMDtgiMyeu0cs8fQI=
+	t=1753192551; cv=none; b=NxmLTiqr//Okuv0YW6iHt2VCy868yVjpRv+MfL+SXkWC0C6wYQpM7RZxTwf8xhC6+aVTHan4P65ENkQL/jn7uOtoj1zohMUfuXSJ+Y8lMGQ804MZooSm3jY9pL7uvoCMM3N68+FV8ZKf0MpArQ+DVtF871pcy2qmuQOJGEZzv9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192216; c=relaxed/simple;
-	bh=zLIe5BpMEg0PppsLuONzezZMms03391Gt3ywGj13wJs=;
+	s=arc-20240116; t=1753192551; c=relaxed/simple;
+	bh=nc89nNAQ3JKJJKPx2tmX3T6u7gWXutxEuYzSp1OwftU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlc9dvhWn3818VzHNuby2LqkpPEVgC46WthzzDXAYbYpjfIWRsZ5J93sGsgMP8DkSRKsBXvKIz/1PojBAq5vkpIY/6vYQZdAdyHObcuelwBhnHjNxM0KxP7aiz2IFoWT67DlqF2AQH7S5X7BHxAA7rNOGvgzq9DTMM3aMOBg02A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/6oMKSP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9B0C4CEEB;
-	Tue, 22 Jul 2025 13:50:15 +0000 (UTC)
+	 MIME-Version; b=pmlKsQytb1AeQZzLHhSFLG8NmmYm6P42LqTVjf2jxfPNCg2/+oWhgSX+L7F+6xaowWNFAVf/ouOZ3fgfbnzknb3RQim85lUP94RdllCeyZjgNJtwy6OwU93I05fks1gmZD8r+r0Y31uo07aqv2zKwrhR5mUdGLVKpc7eJdZbo8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hx9sRcqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09927C4CEEB;
+	Tue, 22 Jul 2025 13:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192216;
-	bh=zLIe5BpMEg0PppsLuONzezZMms03391Gt3ywGj13wJs=;
+	s=korg; t=1753192551;
+	bh=nc89nNAQ3JKJJKPx2tmX3T6u7gWXutxEuYzSp1OwftU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/6oMKSPH2B+WGVv4r8gn5mz6J9m4L11UWK7kJtRWQ4NTbhTwf8T4uLRn9TIlfT2q
-	 vL4lYgQDL2t/JL1ICBVKDVEVrMztwxC8hJfaRYs8uY2InMHN2H/Q9fzuDKrjuScMEp
-	 cClDGTEKQqNRm/ZE38BNMgUw3qkU3mkq6aUYAx6I=
+	b=Hx9sRcqMSAjz8jdk4xZADf00+4qrtHpHx6v861E5p7jjHpqdFK6+Wvpn5H20PFKrZ
+	 3e7LdNHHwM4jcDIlFofH8TnSRHPo8UvipNtxVSsTeTUTIjVqXZexd0W9BFQfERKvlM
+	 PQ3V9n1ppr/dcLB6KTDXPzRLbQP7ROrWK6lnq/4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 77/79] Bluetooth: HCI: Set extended advertising data synchronously
+	stable <stable@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 098/111] usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm
 Date: Tue, 22 Jul 2025 15:45:13 +0200
-Message-ID: <20250722134331.225159862@linuxfoundation.org>
+Message-ID: <20250722134337.066534704@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,341 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 89fb8acc38852116d38d721ad394aad7f2871670 upstream.
+commit a49e1e2e785fb3621f2d748581881b23a364998a upstream.
 
-Currently, for controllers with extended advertising, the advertising
-data is set in the asynchronous response handler for extended
-adverstising params. As most advertising settings are performed in a
-synchronous context, the (asynchronous) setting of the advertising data
-is done too late (after enabling the advertising).
+Delayed work to prevent USB3 hubs from runtime-suspending immediately
+after resume was added in commit 8f5b7e2bec1c ("usb: hub: fix detection
+of high tier USB3 devices behind suspended hubs").
 
-Move setting of adverstising data from asynchronous response handler
-into synchronous context to fix ordering of HCI commands.
+This delayed work needs be flushed if system suspends, or hub needs to
+be quiesced for other reasons right after resume. Not flushing it
+triggered issues on QC SC8280XP CRD board during suspend/resume testing.
 
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Fixes: a0fb3726ba55 ("Bluetooth: Use Set ext adv/scan rsp data if controller supports")
-Cc: stable@vger.kernel.org
-v2: https://lore.kernel.org/linux-bluetooth/20250626115209.17839-1-ceggers@arri.de/
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-[ Adapted DEFINE_FLEX macro usage to struct with flexible array member for compatibility with kernel 6.1. ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by flushing the delayed resume work in hub_quiesce()
+
+The delayed work item that allow hub runtime suspend is also scheduled
+just before calling autopm get. Alan pointed out there is a small risk
+that work is run before autopm get, which would call autopm put before
+get, and mess up the runtime pm usage order.
+Swap the order of work sheduling and calling autopm get to solve this.
+
+Cc: stable <stable@kernel.org>
+Fixes: 8f5b7e2bec1c ("usb: hub: fix detection of high tier USB3 devices behind suspended hubs")
+Reported-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Closes: https://lore.kernel.org/linux-usb/acaaa928-832c-48ca-b0ea-d202d5cd3d6c@oss.qualcomm.com
+Reported-by: Alan Stern <stern@rowland.harvard.edu>
+Closes: https://lore.kernel.org/linux-usb/c73fbead-66d7-497a-8fa1-75ea4761090a@rowland.harvard.edu
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250626130102.3639861-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |   36 -------
- net/bluetooth/hci_sync.c  |  213 ++++++++++++++++++++++++++++------------------
- 2 files changed, 133 insertions(+), 116 deletions(-)
+ drivers/usb/core/hub.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2196,40 +2196,6 @@ static u8 hci_cc_set_adv_param(struct hc
- 	return rp->status;
- }
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1329,11 +1329,12 @@ static void hub_activate(struct usb_hub
  
--static u8 hci_cc_set_ext_adv_param(struct hci_dev *hdev, void *data,
--				   struct sk_buff *skb)
--{
--	struct hci_rp_le_set_ext_adv_params *rp = data;
--	struct hci_cp_le_set_ext_adv_params *cp;
--	struct adv_info *adv_instance;
--
--	bt_dev_dbg(hdev, "status 0x%2.2x", rp->status);
--
--	if (rp->status)
--		return rp->status;
--
--	cp = hci_sent_cmd_data(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS);
--	if (!cp)
--		return rp->status;
--
--	hci_dev_lock(hdev);
--	hdev->adv_addr_type = cp->own_addr_type;
--	if (!cp->handle) {
--		/* Store in hdev for instance 0 */
--		hdev->adv_tx_power = rp->tx_power;
--	} else {
--		adv_instance = hci_find_adv_instance(hdev, cp->handle);
--		if (adv_instance)
--			adv_instance->tx_power = rp->tx_power;
--	}
--	/* Update adv data as tx power is known now */
--	hci_update_adv_data(hdev, cp->handle);
--
--	hci_dev_unlock(hdev);
--
--	return rp->status;
--}
--
- static u8 hci_cc_read_rssi(struct hci_dev *hdev, void *data,
- 			   struct sk_buff *skb)
- {
-@@ -4172,8 +4138,6 @@ static const struct hci_cc {
- 	HCI_CC(HCI_OP_LE_READ_NUM_SUPPORTED_ADV_SETS,
- 	       hci_cc_le_read_num_adv_sets,
- 	       sizeof(struct hci_rp_le_read_num_supported_adv_sets)),
--	HCI_CC(HCI_OP_LE_SET_EXT_ADV_PARAMS, hci_cc_set_ext_adv_param,
--	       sizeof(struct hci_rp_le_set_ext_adv_params)),
- 	HCI_CC_STATUS(HCI_OP_LE_SET_EXT_ADV_ENABLE,
- 		      hci_cc_le_set_ext_adv_enable),
- 	HCI_CC_STATUS(HCI_OP_LE_SET_ADV_SET_RAND_ADDR,
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1181,9 +1181,129 @@ static int hci_set_adv_set_random_addr_s
- 				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
- }
- 
-+static int
-+hci_set_ext_adv_params_sync(struct hci_dev *hdev, struct adv_info *adv,
-+			    const struct hci_cp_le_set_ext_adv_params *cp,
-+			    struct hci_rp_le_set_ext_adv_params *rp)
-+{
-+	struct sk_buff *skb;
+ 	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
+ 		/* give usb3 downstream links training time after hub resume */
++		usb_autopm_get_interface_no_resume(
++			to_usb_interface(hub->intfdev));
 +
-+	skb = __hci_cmd_sync(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS, sizeof(*cp),
-+			     cp, HCI_CMD_TIMEOUT);
-+
-+	/* If command return a status event, skb will be set to -ENODATA */
-+	if (skb == ERR_PTR(-ENODATA))
-+		return 0;
-+
-+	if (IS_ERR(skb)) {
-+		bt_dev_err(hdev, "Opcode 0x%4.4x failed: %ld",
-+			   HCI_OP_LE_SET_EXT_ADV_PARAMS, PTR_ERR(skb));
-+		return PTR_ERR(skb);
-+	}
-+
-+	if (skb->len != sizeof(*rp)) {
-+		bt_dev_err(hdev, "Invalid response length for 0x%4.4x: %u",
-+			   HCI_OP_LE_SET_EXT_ADV_PARAMS, skb->len);
-+		kfree_skb(skb);
-+		return -EIO;
-+	}
-+
-+	memcpy(rp, skb->data, sizeof(*rp));
-+	kfree_skb(skb);
-+
-+	if (!rp->status) {
-+		hdev->adv_addr_type = cp->own_addr_type;
-+		if (!cp->handle) {
-+			/* Store in hdev for instance 0 */
-+			hdev->adv_tx_power = rp->tx_power;
-+		} else if (adv) {
-+			adv->tx_power = rp->tx_power;
-+		}
-+	}
-+
-+	return rp->status;
-+}
-+
-+static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
-+{
-+	struct {
-+		struct hci_cp_le_set_ext_adv_data cp;
-+		u8 data[HCI_MAX_EXT_AD_LENGTH];
-+	} pdu;
-+	u8 len;
-+	struct adv_info *adv = NULL;
-+	int err;
-+
-+	memset(&pdu, 0, sizeof(pdu));
-+
-+	if (instance) {
-+		adv = hci_find_adv_instance(hdev, instance);
-+		if (!adv || !adv->adv_data_changed)
-+			return 0;
-+	}
-+
-+	len = eir_create_adv_data(hdev, instance, pdu.data);
-+
-+	pdu.cp.length = len;
-+	pdu.cp.handle = instance;
-+	pdu.cp.operation = LE_SET_ADV_DATA_OP_COMPLETE;
-+	pdu.cp.frag_pref = LE_SET_ADV_DATA_NO_FRAG;
-+
-+	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_DATA,
-+				    sizeof(pdu.cp) + len, &pdu.cp,
-+				    HCI_CMD_TIMEOUT);
-+	if (err)
-+		return err;
-+
-+	/* Update data if the command succeed */
-+	if (adv) {
-+		adv->adv_data_changed = false;
-+	} else {
-+		memcpy(hdev->adv_data, pdu.data, len);
-+		hdev->adv_data_len = len;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
-+{
-+	struct hci_cp_le_set_adv_data cp;
-+	u8 len;
-+
-+	memset(&cp, 0, sizeof(cp));
-+
-+	len = eir_create_adv_data(hdev, instance, cp.data);
-+
-+	/* There's nothing to do if the data hasn't changed */
-+	if (hdev->adv_data_len == len &&
-+	    memcmp(cp.data, hdev->adv_data, len) == 0)
-+		return 0;
-+
-+	memcpy(hdev->adv_data, cp.data, sizeof(cp.data));
-+	hdev->adv_data_len = len;
-+
-+	cp.length = len;
-+
-+	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_DATA,
-+				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-+}
-+
-+int hci_update_adv_data_sync(struct hci_dev *hdev, u8 instance)
-+{
-+	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
-+		return 0;
-+
-+	if (ext_adv_capable(hdev))
-+		return hci_set_ext_adv_data_sync(hdev, instance);
-+
-+	return hci_set_adv_data_sync(hdev, instance);
-+}
-+
- int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
- {
- 	struct hci_cp_le_set_ext_adv_params cp;
-+	struct hci_rp_le_set_ext_adv_params rp;
- 	bool connectable;
- 	u32 flags;
- 	bdaddr_t random_addr;
-@@ -1290,8 +1410,12 @@ int hci_setup_ext_adv_instance_sync(stru
- 		cp.secondary_phy = HCI_ADV_PHY_1M;
+ 		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
+ 		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
+ 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
+-		usb_autopm_get_interface_no_resume(
+-			to_usb_interface(hub->intfdev));
+ 		return;
  	}
  
--	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS,
--				    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-+	err = hci_set_ext_adv_params_sync(hdev, adv, &cp, &rp);
-+	if (err)
-+		return err;
-+
-+	/* Update adv data as tx power is known now */
-+	err = hci_set_ext_adv_data_sync(hdev, cp.handle);
- 	if (err)
- 		return err;
+@@ -1387,6 +1388,7 @@ static void hub_quiesce(struct usb_hub *
  
-@@ -1815,82 +1939,6 @@ int hci_le_terminate_big_sync(struct hci
- 				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
- }
- 
--static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
--{
--	struct {
--		struct hci_cp_le_set_ext_adv_data cp;
--		u8 data[HCI_MAX_EXT_AD_LENGTH];
--	} pdu;
--	u8 len;
--	struct adv_info *adv = NULL;
--	int err;
--
--	memset(&pdu, 0, sizeof(pdu));
--
--	if (instance) {
--		adv = hci_find_adv_instance(hdev, instance);
--		if (!adv || !adv->adv_data_changed)
--			return 0;
--	}
--
--	len = eir_create_adv_data(hdev, instance, pdu.data);
--
--	pdu.cp.length = len;
--	pdu.cp.handle = instance;
--	pdu.cp.operation = LE_SET_ADV_DATA_OP_COMPLETE;
--	pdu.cp.frag_pref = LE_SET_ADV_DATA_NO_FRAG;
--
--	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_DATA,
--				    sizeof(pdu.cp) + len, &pdu.cp,
--				    HCI_CMD_TIMEOUT);
--	if (err)
--		return err;
--
--	/* Update data if the command succeed */
--	if (adv) {
--		adv->adv_data_changed = false;
--	} else {
--		memcpy(hdev->adv_data, pdu.data, len);
--		hdev->adv_data_len = len;
--	}
--
--	return 0;
--}
--
--static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
--{
--	struct hci_cp_le_set_adv_data cp;
--	u8 len;
--
--	memset(&cp, 0, sizeof(cp));
--
--	len = eir_create_adv_data(hdev, instance, cp.data);
--
--	/* There's nothing to do if the data hasn't changed */
--	if (hdev->adv_data_len == len &&
--	    memcmp(cp.data, hdev->adv_data, len) == 0)
--		return 0;
--
--	memcpy(hdev->adv_data, cp.data, sizeof(cp.data));
--	hdev->adv_data_len = len;
--
--	cp.length = len;
--
--	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_DATA,
--				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
--}
--
--int hci_update_adv_data_sync(struct hci_dev *hdev, u8 instance)
--{
--	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
--		return 0;
--
--	if (ext_adv_capable(hdev))
--		return hci_set_ext_adv_data_sync(hdev, instance);
--
--	return hci_set_adv_data_sync(hdev, instance);
--}
--
- int hci_schedule_adv_instance_sync(struct hci_dev *hdev, u8 instance,
- 				   bool force)
- {
-@@ -6127,6 +6175,7 @@ static int hci_le_ext_directed_advertisi
- 						struct hci_conn *conn)
- {
- 	struct hci_cp_le_set_ext_adv_params cp;
-+	struct hci_rp_le_set_ext_adv_params rp;
- 	int err;
- 	bdaddr_t random_addr;
- 	u8 own_addr_type;
-@@ -6169,8 +6218,12 @@ static int hci_le_ext_directed_advertisi
- 	if (err)
- 		return err;
- 
--	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS,
--				    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-+	err = hci_set_ext_adv_params_sync(hdev, NULL, &cp, &rp);
-+	if (err)
-+		return err;
-+
-+	/* Update adv data as tx power is known now */
-+	err = hci_set_ext_adv_data_sync(hdev, cp.handle);
- 	if (err)
- 		return err;
- 
+ 	/* Stop hub_wq and related activity */
+ 	del_timer_sync(&hub->irq_urb_retry);
++	flush_delayed_work(&hub->init_work);
+ 	usb_kill_urb(hub->urb);
+ 	if (hub->has_indicators)
+ 		cancel_delayed_work_sync(&hub->leds);
 
 
 
