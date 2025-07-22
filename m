@@ -1,314 +1,161 @@
-Return-Path: <stable+bounces-164290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B196B0E3EC
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 21:11:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBDEFB0E3FA
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 21:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BDC2567E18
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 19:11:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5307189F484
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 19:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1A9283FE4;
-	Tue, 22 Jul 2025 19:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9B628504F;
+	Tue, 22 Jul 2025 19:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q0YLnxi+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b5y6dRVb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD5727E077;
-	Tue, 22 Jul 2025 19:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676A3284B3B;
+	Tue, 22 Jul 2025 19:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753211488; cv=none; b=qO9XPOWxXUa2rLt+kbUJvr7yuJh+2KCZA6qc84XR7QtCHUmwlhIwT+GOLu4h6t58iesPe5aei5AbSOdCZ4LycmyY9nrH0wE4pec4uOk8HVisCLZe8Nt/wjhlGfUMzpqSQTRKPmGmORPGlzIp7wVUDpXgVCmQYRvexwN61lyi7hQ=
+	t=1753211708; cv=none; b=QWRssQm6ghbNmlwNZqKnzDonh9GWHmvTBWNmRZnb5bWNd4X1OlPVZeXu1e0UThQmAoNztsU62WOgpAqY5h4lbJvgXu5tyctvUCoflnX9g/qFCkf9cLiN2snckDrHymb03nSEFx8Xnpx6GSnZzYCo4xiz1ZsTN2H0rymXd6OO88Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753211488; c=relaxed/simple;
-	bh=AlDGH8LMnbCC2+qZqNb7xkjTZR3D+b+9XwvWK4epyZQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aqUTrbaZjyLx3Xoqy/7ocq8YhnOrHXs4V2tMB22cFxD+jZHdcZqWY9rP1jcPSME1mIUeF8fnXdn+19Sb+DCgM/siNSv0yPpdT62k5BsR7fOZ+lLjxqDXWJ1VtRxHz/ZFW6vBwVayYtwsWQ0Kna4tj8bSJ8ORkZ77/ySbA9JFI9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q0YLnxi+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C209EC4CEEB;
-	Tue, 22 Jul 2025 19:11:26 +0000 (UTC)
+	s=arc-20240116; t=1753211708; c=relaxed/simple;
+	bh=hYl7SIkdl/URxlHfT+Z6G/6IY/jmbMbxnem0O0iNRPQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=fW66MT6qgrRmc0t/wUMW8Ko5WlxcSdEwWfGIla6D+/F0l5pp6xrOUdLxba5E2J7G7b/XWW2kyInVMFGIwIY6nmEsj3cKJwSiuDeT7tPdwH5tKV7GcTfnkXGsNsXNDM7zN8vjm2ZO22rbfpQnZ3vX3lIA6N96jaqKNPrhjAoSou8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b5y6dRVb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC582C4CEEB;
+	Tue, 22 Jul 2025 19:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753211488;
-	bh=AlDGH8LMnbCC2+qZqNb7xkjTZR3D+b+9XwvWK4epyZQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Q0YLnxi+Ysu6XkdzqTG4tTl81NcHj6SZYiJJNsjsli8hQLmsbJjK+i9bYjfjPfS/K
-	 5xNk/Ne4cKwwNUOdJvQ5MtThdXQqIqKKqkbWi+IOlyF4ISUw92JF0vVWPohP90fa1U
-	 o5P1Quu2eKE9oBGIPdV44xONi+mmFQs0ydh6ep2SKoaZJWEla7iewcsaiXmcpHdjSp
-	 FxUNxbI7e9txXUifEB6+/T8DmqYGsQpAdtyORAIfNMccGRfy89BrzfqwFVWGLS2vJt
-	 B7MkCigu14mt5L3Dai4mLD289K6SNO8q75QfDy+JHTwoEV0XxoLiLIo7RU9YIy13Ha
-	 ODyG8xjDfHPOQ==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 22 Jul 2025 12:11:18 -0700
-Subject: [PATCH v2] usb: atm: cxacru: Merge cxacru_upload_firmware() into
- cxacru_heavy_init()
+	s=k20201202; t=1753211707;
+	bh=hYl7SIkdl/URxlHfT+Z6G/6IY/jmbMbxnem0O0iNRPQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=b5y6dRVb8lebfblIJneCLKujCxqzhhtuQCuQtP7wJmCI2x3Cdj2zOaBiewzL25kHs
+	 0sR3tWHh0iH2zMIW5NUYXD4bc+GIIlICDGxcGfuOPW8MOQH76m9s6YCpOVJ/xqU3yz
+	 60CR72x8VBQTn0LBizpRHM9QiqDIAsRTIED2P3b/aDduVHqIv5d6YHdAXRTAvyvRrB
+	 52Px7l0ut0ssZOfn9fHpP/lKyikAn54DEPDiklv7B75FasHLz/oiDhEA982n+Gw7AJ
+	 2+85ee0d6YMNKuHShBQJqp958gTHE1uczZGn0usPnmv0K2a7QMFnBg8gQqnXwCSuH8
+	 OII9E8yaOKD6w==
+Date: Tue, 22 Jul 2025 14:15:06 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: bhelgaas@google.com, lukas@wunner.de, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Jim Quinlan <james.quinlan@broadcom.com>
+Subject: Re: [PATCH v2] PCI/pwrctrl: Skip creating pwrctrl device unless
+ CONFIG_PCI_PWRCTRL is enabled
+Message-ID: <20250722191506.GA2810550@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250722-usb-cxacru-fix-clang-21-uninit-warning-v2-1-6708a18decd2@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAFXif2gC/5WNQQ6CQBAEv0L27JjdRSB48h+GAwwjTCSLmQXEE
- P7uyA+8dXU6XZuJJEzRXJPNCC0ceQwK/pQY7OvQEXCrbLz1mS1cBnNsANcaZYYHr4CDjsA7mAM
- HnuBdi4YOyktq2zLHvEFn9OwlpPNDdK+Ue47TKJ/Du7hf+7diceCgJXVkHlNblLcnSaDhPEpnq
- n3fv6akkVHdAAAA
-X-Change-ID: 20250715-usb-cxacru-fix-clang-21-uninit-warning-9430d96c6bc1
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org, llvm@lists.linux.dev, 
- patches@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8750; i=nathan@kernel.org;
- h=from:subject:message-id; bh=AlDGH8LMnbCC2+qZqNb7xkjTZR3D+b+9XwvWK4epyZQ=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDBn1j+L+z+SY59s5Se8uH+MHi4lHJmzizpHqUXLuXJwkw
- t2YeKypo5SFQYyLQVZMkaX6sepxQ8M5ZxlvnJoEM4eVCWQIAxenAEykqJWRYed30+OpB2ZfNO+M
- 72jYdNfi8TX1mNKk/Czxty9FefKcFzD8FT531X3ifO2IJb//yUxsl2lZ/GP5xrOyl2NrtS3cX3K
- +4gcA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250722185810.GA2809731@bhelgaas>
 
-After a recent change in clang to expose uninitialized warnings from
-const variables [1], there is a warning in cxacru_heavy_init():
+[use Mani's new email addr]
 
-  drivers/usb/atm/cxacru.c:1104:6: error: variable 'bp' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
-   1104 |         if (instance->modem_type->boot_rom_patch) {
-        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/usb/atm/cxacru.c:1113:39: note: uninitialized use occurs here
-   1113 |         cxacru_upload_firmware(instance, fw, bp);
-        |                                              ^~
-  drivers/usb/atm/cxacru.c:1104:2: note: remove the 'if' if its condition is always true
-   1104 |         if (instance->modem_type->boot_rom_patch) {
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/usb/atm/cxacru.c:1095:32: note: initialize the variable 'bp' to silence this warning
-   1095 |         const struct firmware *fw, *bp;
-        |                                       ^
-        |                                        = NULL
-
-While the warning is technically correct that bp is conditionally passed
-uninitialized to cxacru_upload_firmware(), it is ultimately a false
-positive warning on the uninitialized use of bp because the same
-condition that initializes bp, instance->modem_type->boot_rom_patch, is
-the same one that gates the use of bp within cxacru_upload_firmware().
-As this warning occurs in clang's frontend before inlining occurs, it
-cannot know that these conditions are indentical to avoid the warning.
-
-Manually inline cxacru_upload_firmware() into cxacru_heavy_init(), as
-that is its only callsite, so that clang can see that bp is initialized
-and used under the same condition, clearing up the warning without any
-functional changes to the code (LLVM was already doing this inlining
-later).
-
-Cc: stable@vger.kernel.org
-Fixes: 1b0e61465234 ("[PATCH] USB ATM: driver for the Conexant AccessRunner chipset cxacru")
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2102
-Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-Changes in v2:
-- Rather than initialize bp to NULL, manually inline
-  cxacru_upload_firmware() into cxacru_heavy_init() so that clang can
-  see the matching conditions for bp's initialization and use (based on
-  feedback from Greg).
-- Drop accessrunner-general@lists.sourceforge.net, as I got bounces when
-  sending to it unsubscribed.
-- Link to v1: https://lore.kernel.org/r/20250715-usb-cxacru-fix-clang-21-uninit-warning-v1-1-de6c652c3079@kernel.org
----
- drivers/usb/atm/cxacru.c | 106 ++++++++++++++++++++++-------------------------
- 1 file changed, 49 insertions(+), 57 deletions(-)
-
-diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
-index a12ab90b3db75b230dcf319a949e6d10dbac0363..68a8e9de8b4fe95be31b561f7f5df7e3c59142ae 100644
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -980,25 +980,60 @@ static int cxacru_fw(struct usb_device *usb_dev, enum cxacru_fw_request fw,
- 	return ret;
- }
- 
--static void cxacru_upload_firmware(struct cxacru_data *instance,
--				   const struct firmware *fw,
--				   const struct firmware *bp)
-+
-+static int cxacru_find_firmware(struct cxacru_data *instance,
-+				char *phase, const struct firmware **fw_p)
- {
--	int ret;
-+	struct usbatm_data *usbatm = instance->usbatm;
-+	struct device *dev = &usbatm->usb_intf->dev;
-+	char buf[16];
-+
-+	sprintf(buf, "cxacru-%s.bin", phase);
-+	usb_dbg(usbatm, "cxacru_find_firmware: looking for %s\n", buf);
-+
-+	if (request_firmware(fw_p, buf, dev)) {
-+		usb_dbg(usbatm, "no stage %s firmware found\n", phase);
-+		return -ENOENT;
-+	}
-+
-+	usb_info(usbatm, "found firmware %s\n", buf);
-+
-+	return 0;
-+}
-+
-+static int cxacru_heavy_init(struct usbatm_data *usbatm_instance,
-+			     struct usb_interface *usb_intf)
-+{
-+	const struct firmware *fw, *bp;
-+	struct cxacru_data *instance = usbatm_instance->driver_data;
- 	struct usbatm_data *usbatm = instance->usbatm;
- 	struct usb_device *usb_dev = usbatm->usb_dev;
- 	__le16 signature[] = { usb_dev->descriptor.idVendor,
- 			       usb_dev->descriptor.idProduct };
- 	__le32 val;
-+	int ret;
- 
--	usb_dbg(usbatm, "%s\n", __func__);
-+	ret = cxacru_find_firmware(instance, "fw", &fw);
-+	if (ret) {
-+		usb_warn(usbatm_instance, "firmware (cxacru-fw.bin) unavailable (system misconfigured?)\n");
-+		return ret;
-+	}
-+
-+	if (instance->modem_type->boot_rom_patch) {
-+		ret = cxacru_find_firmware(instance, "bp", &bp);
-+		if (ret) {
-+			usb_warn(usbatm_instance, "boot ROM patch (cxacru-bp.bin) unavailable (system misconfigured?)\n");
-+			release_firmware(fw);
-+			return ret;
-+		}
-+	}
- 
- 	/* FirmwarePllFClkValue */
- 	val = cpu_to_le32(instance->modem_type->pll_f_clk);
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, PLLFCLK_ADDR, (u8 *) &val, 4);
- 	if (ret) {
- 		usb_err(usbatm, "FirmwarePllFClkValue failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* FirmwarePllBClkValue */
-@@ -1006,7 +1041,7 @@ static void cxacru_upload_firmware(struct cxacru_data *instance,
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, PLLBCLK_ADDR, (u8 *) &val, 4);
- 	if (ret) {
- 		usb_err(usbatm, "FirmwarePllBClkValue failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Enable SDRAM */
-@@ -1014,7 +1049,7 @@ static void cxacru_upload_firmware(struct cxacru_data *instance,
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, SDRAMEN_ADDR, (u8 *) &val, 4);
- 	if (ret) {
- 		usb_err(usbatm, "Enable SDRAM failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Firmware */
-@@ -1022,7 +1057,7 @@ static void cxacru_upload_firmware(struct cxacru_data *instance,
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, FW_ADDR, fw->data, fw->size);
- 	if (ret) {
- 		usb_err(usbatm, "Firmware upload failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Boot ROM patch */
-@@ -1031,7 +1066,7 @@ static void cxacru_upload_firmware(struct cxacru_data *instance,
- 		ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, BR_ADDR, bp->data, bp->size);
- 		if (ret) {
- 			usb_err(usbatm, "Boot ROM patching failed: %d\n", ret);
--			return;
-+			goto done;
- 		}
- 	}
- 
-@@ -1039,7 +1074,7 @@ static void cxacru_upload_firmware(struct cxacru_data *instance,
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, SIG_ADDR, (u8 *) signature, 4);
- 	if (ret) {
- 		usb_err(usbatm, "Signature storing failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	usb_info(usbatm, "starting device\n");
-@@ -1051,7 +1086,7 @@ static void cxacru_upload_firmware(struct cxacru_data *instance,
- 	}
- 	if (ret) {
- 		usb_err(usbatm, "Passing control to firmware failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Delay to allow firmware to start up. */
-@@ -1065,53 +1100,10 @@ static void cxacru_upload_firmware(struct cxacru_data *instance,
- 	ret = cxacru_cm(instance, CM_REQUEST_CARD_GET_STATUS, NULL, 0, NULL, 0);
- 	if (ret < 0) {
- 		usb_err(usbatm, "modem failed to initialize: %d\n", ret);
--		return;
--	}
--}
--
--static int cxacru_find_firmware(struct cxacru_data *instance,
--				char *phase, const struct firmware **fw_p)
--{
--	struct usbatm_data *usbatm = instance->usbatm;
--	struct device *dev = &usbatm->usb_intf->dev;
--	char buf[16];
--
--	sprintf(buf, "cxacru-%s.bin", phase);
--	usb_dbg(usbatm, "cxacru_find_firmware: looking for %s\n", buf);
--
--	if (request_firmware(fw_p, buf, dev)) {
--		usb_dbg(usbatm, "no stage %s firmware found\n", phase);
--		return -ENOENT;
--	}
--
--	usb_info(usbatm, "found firmware %s\n", buf);
--
--	return 0;
--}
--
--static int cxacru_heavy_init(struct usbatm_data *usbatm_instance,
--			     struct usb_interface *usb_intf)
--{
--	const struct firmware *fw, *bp;
--	struct cxacru_data *instance = usbatm_instance->driver_data;
--	int ret = cxacru_find_firmware(instance, "fw", &fw);
--
--	if (ret) {
--		usb_warn(usbatm_instance, "firmware (cxacru-fw.bin) unavailable (system misconfigured?)\n");
--		return ret;
-+		goto done;
- 	}
- 
--	if (instance->modem_type->boot_rom_patch) {
--		ret = cxacru_find_firmware(instance, "bp", &bp);
--		if (ret) {
--			usb_warn(usbatm_instance, "boot ROM patch (cxacru-bp.bin) unavailable (system misconfigured?)\n");
--			release_firmware(fw);
--			return ret;
--		}
--	}
--
--	cxacru_upload_firmware(instance, fw, bp);
--
-+done:
- 	if (instance->modem_type->boot_rom_patch)
- 		release_firmware(bp);
- 	release_firmware(fw);
-
----
-base-commit: fdfa018c6962c86d2faa183187669569be4d513f
-change-id: 20250715-usb-cxacru-fix-clang-21-uninit-warning-9430d96c6bc1
-
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
-
+On Tue, Jul 22, 2025 at 01:58:11PM -0500, Bjorn Helgaas wrote:
+> On Tue, Jul 01, 2025 at 12:17:31PM +0530, Manivannan Sadhasivam wrote:
+> > If devicetree describes power supplies related to a PCI device, we
+> > previously created a pwrctrl device even if CONFIG_PCI_PWRCTL was
+> > not enabled.
+> > 
+> > When pci_pwrctrl_create_device() creates and returns a pwrctrl device,
+> > pci_scan_device() doesn't enumerate the PCI device. It assumes the pwrctrl
+> > core will rescan the bus after turning on the power. However, if
+> > CONFIG_PCI_PWRCTL is not enabled, the rescan never happens.
+> > 
+> > This may break PCI enumeration on any system that describes power supplies
+> > in devicetree but does not use pwrctrl. Jim reported that some brcmstb
+> > platforms break this way.
+> > 
+> > While the actual fix would be to convert all the platforms to use pwrctrl
+> > framework, we also need to skip creating the pwrctrl device if
+> > CONFIG_PCI_PWRCTL is not enabled and let the PCI core scan the device
+> > normally (assuming it is already powered on or by the controller driver).
+> > 
+> > Cc: stable@vger.kernel.org # 6.15
+> > Fixes: 957f40d039a9 ("PCI/pwrctrl: Move creation of pwrctrl devices to pci_scan_device()")
+> > Reported-by: Jim Quinlan <james.quinlan@broadcom.com>
+> > Closes: https://lore.kernel.org/r/CA+-6iNwgaByXEYD3j=-+H_PKAxXRU78svPMRHDKKci8AGXAUPg@mail.gmail.com
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> 
+> I (finally) applied this to for-linus for v6.16 with the following
+> commit log:
+> 
+>     PCI/pwrctrl: Create pwrctrl devices only when CONFIG_PCI_PWRCTRL is enabled
+>     
+>     If devicetree describes power supplies related to a PCI device, we
+>     unnecessarily created a pwrctrl device even if CONFIG_PCI_PWRCTL was not
+>     enabled.
+>     
+>     We only need pci_pwrctrl_create_device() when CONFIG_PCI_PWRCTRL is
+>     enabled.  Compile it out when CONFIG_PCI_PWRCTRL is not enabled.
+>     
+>     When pci_pwrctrl_create_device() creates and returns a pwrctrl device,
+>     pci_scan_device() doesn't enumerate the PCI device. It assumes the pwrctrl
+>     core will rescan the bus after turning on the power. However, if
+>     CONFIG_PCI_PWRCTRL is not enabled, the rescan never happens, which breaks
+>     PCI enumeration on any system that describes power supplies in devicetree
+>     but does not use pwrctrl.
+>     
+>     Jim reported that some brcmstb platforms break this way.  The brcmstb
+>     driver is still broken if CONFIG_PCI_PWRCTRL is enabled, but this commit at
+>     least allows brcmstb to work when it's NOT enabled.
+>     
+>     Fixes: 957f40d039a9 ("PCI/pwrctrl: Move creation of pwrctrl devices to pci_scan_device()")
+>     Reported-by: Jim Quinlan <james.quinlan@broadcom.com>
+>     Link: https://lore.kernel.org/r/CA+-6iNwgaByXEYD3j=-+H_PKAxXRU78svPMRHDKKci8AGXAUPg@mail.gmail.com
+>     Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>     [bhelgaas: commit log]
+>     Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+>     Reviewed-by: Lukas Wunner <lukas@wunner.de>
+>     Cc: stable@vger.kernel.org  # v6.15
+>     Link: https://patch.msgid.link/20250701064731.52901-1-manivannan.sadhasivam@linaro.org
+> 
+> > ---
+> > 
+> > Changes in v2:
+> > 
+> > * Used the stub instead of returning NULL inside the function
+> > 
+> >  drivers/pci/probe.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> > 
+> > diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> > index 4b8693ec9e4c..e6a34db77826 100644
+> > --- a/drivers/pci/probe.c
+> > +++ b/drivers/pci/probe.c
+> > @@ -2508,6 +2508,7 @@ bool pci_bus_read_dev_vendor_id(struct pci_bus *bus, int devfn, u32 *l,
+> >  }
+> >  EXPORT_SYMBOL(pci_bus_read_dev_vendor_id);
+> >  
+> > +#if IS_ENABLED(CONFIG_PCI_PWRCTRL)
+> >  static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, int devfn)
+> >  {
+> >  	struct pci_host_bridge *host = pci_find_host_bridge(bus);
+> > @@ -2537,6 +2538,12 @@ static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, in
+> >  
+> >  	return pdev;
+> >  }
+> > +#else
+> > +static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, int devfn)
+> > +{
+> > +	return NULL;
+> > +}
+> > +#endif
+> >  
+> >  /*
+> >   * Read the config data for a PCI device, sanity-check it,
+> > -- 
+> > 2.43.0
+> > 
 
