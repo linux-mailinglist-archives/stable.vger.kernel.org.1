@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-164068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56755B0DD1F
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 856B9B0DE66
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 212CC3B53FF
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78274585ACA
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679E3245012;
-	Tue, 22 Jul 2025 14:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C452EB5CB;
+	Tue, 22 Jul 2025 14:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXL1hi2j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obuGRWiR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2546D548EE;
-	Tue, 22 Jul 2025 14:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6C02EB5CA;
+	Tue, 22 Jul 2025 14:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193146; cv=none; b=VR1duiuNgnAqMmvIF1oCaaONY4qa+jdpO8z9TnvMpP67krS72VvMx9a6D1vGJhWuv+hrS6igFy9b14ofdv4Hl04LP+1JDDLxohhmlgxqAuV2kjuXxB0CMJk/egVKNQVSiuneC9LTWJ4GvLZ9nfxplWGpNPsJJia2RemHN+n+apQ=
+	t=1753193651; cv=none; b=cM45CxBYSnsjiKQMdG8PIRT5rd4MobAlZrRtx4z3OQEoeyjRgwlrcY+dP+qCpfqG3e6BgpgRphywkCEOFTSxmR3NrJ07ctq3H/8uCd8C/QpQT9VDikZPpUjgUGHZQtGAybYtzVx7LoeWDFTN/q59Q/Hbx3wPeVYOfDrUb9Qb+YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193146; c=relaxed/simple;
-	bh=sQldkDg83g79ElwOD7Fcclsx/Ju5I+F0ffsi4eiq3Pk=;
+	s=arc-20240116; t=1753193651; c=relaxed/simple;
+	bh=lcG0dZJrQsUHcURR7fArHLhxd6qgFu3n624JVh0mRnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfifIcqvOPiAd3oo0eX3vfdb3qA39UytQEB1Hn9T+TmZI0lgA0n5MqvE+pBo5zX1T2Z5dTpkBcRD3332X5ostEqW1FkBwfIKWgO9RmyixUJVrYuT5IEHYMBh3/SjfFc74BIpacXSu0sFclLOcDbU1TXybV+u5SIr42QyJ01VeKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXL1hi2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFCFC4CEEB;
-	Tue, 22 Jul 2025 14:05:45 +0000 (UTC)
+	 MIME-Version; b=BFZClXFydHaPOvS3+plueZeh8y2fKqw7wU83HHWz6q2VBRhuJT9J2jOPjo/rDBb1zZ/xP7GnPZTpY3DYVDz/XhhxKjvL6Q9BReDuWxeDwgLUz4Ggv3gtZEk4+f/gZv7cTN29YZIlqOueExdWdALtdgHMnR8+hvIginyspl0C12o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obuGRWiR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5735C4CEEB;
+	Tue, 22 Jul 2025 14:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193146;
-	bh=sQldkDg83g79ElwOD7Fcclsx/Ju5I+F0ffsi4eiq3Pk=;
+	s=korg; t=1753193651;
+	bh=lcG0dZJrQsUHcURR7fArHLhxd6qgFu3n624JVh0mRnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vXL1hi2jur+1WDpd27wuOGHXyg7u2IiUlPjkeiwhSvu+Vn2vr59Qy2Sb1TrYcsFeD
-	 Lnhb7QFAT03ZJZ4a7TNsK49cHEgiOc33tr6gIRTbDvAr59/pI1/Fy2Kjd8ArT9qtjh
-	 +r1Mvh6H6WIZatvudvU9yUjxMRF+FRmMGGt5n8dw=
+	b=obuGRWiRaFLElRD2FJoUC7vFauRgsUypT6/VaufRF4VrTM7mwtYZmUUc/aRvCUEjm
+	 EYa6xKpuQms9yzfWxw0YoAmkdqe0rDJQRcAH9gEC6HRMnOKt9IJHgG5SlxrqTcTkK1
+	 RBmLYxQE6ZTPSOUPqk/kuhE0yJW3bCZDODdcBC/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.12 142/158] btrfs: fix block group refcount race in btrfs_create_pending_block_groups()
-Date: Tue, 22 Jul 2025 15:45:26 +0200
-Message-ID: <20250722134346.021137671@linuxfoundation.org>
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	LePremierHomme <kwqcheii@proton.me>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 157/187] rxrpc: Fix recv-recv race of completed call
+Date: Tue, 22 Jul 2025 15:45:27 +0200
+Message-ID: <20250722134351.628198102@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +68,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: David Howells <dhowells@redhat.com>
 
-commit 2d8e5168d48a91e7a802d3003e72afb4304bebfa upstream.
+[ Upstream commit 962fb1f651c2cf2083e0c3ef53ba69e3b96d3fbc ]
 
-Block group creation is done in two phases, which results in a slightly
-unintuitive property: a block group can be allocated/deallocated from
-after btrfs_make_block_group() adds it to the space_info with
-btrfs_add_bg_to_space_info(), but before creation is completely completed
-in btrfs_create_pending_block_groups(). As a result, it is possible for a
-block group to go unused and have 'btrfs_mark_bg_unused' called on it
-concurrently with 'btrfs_create_pending_block_groups'. This causes a
-number of issues, which were fixed with the block group flag
-'BLOCK_GROUP_FLAG_NEW'.
+If a call receives an event (such as incoming data), the call gets placed
+on the socket's queue and a thread in recvmsg can be awakened to go and
+process it.  Once the thread has picked up the call off of the queue,
+further events will cause it to be requeued, and once the socket lock is
+dropped (recvmsg uses call->user_mutex to allow the socket to be used in
+parallel), a second thread can come in and its recvmsg can pop the call off
+the socket queue again.
 
-However, this fix is not quite complete. Since it does not use the
-unused_bg_lock, it is possible for the following race to occur:
+In such a case, the first thread will be receiving stuff from the call and
+the second thread will be blocked on call->user_mutex.  The first thread
+can, at this point, process both the event that it picked call for and the
+event that the second thread picked the call for and may see the call
+terminate - in which case the call will be "released", decoupling the call
+from the user call ID assigned to it (RXRPC_USER_CALL_ID in the control
+message).
 
-btrfs_create_pending_block_groups            btrfs_mark_bg_unused
-                                           if list_empty // false
-        list_del_init
-        clear_bit
-                                           else if (test_bit) // true
-                                                list_move_tail
+The first thread will return okay, but then the second thread will wake up
+holding the user_mutex and, if it sees that the call has been released by
+the first thread, it will BUG thusly:
 
-And we get into the exact same broken ref count and invalid new_bgs
-state for transaction cleanup that BLOCK_GROUP_FLAG_NEW was designed to
-prevent.
+	kernel BUG at net/rxrpc/recvmsg.c:474!
 
-The broken refcount aspect will result in a warning like:
+Fix this by just dequeuing the call and ignoring it if it is seen to be
+already released.  We can't tell userspace about it anyway as the user call
+ID has become stale.
 
-  [1272.943527] refcount_t: underflow; use-after-free.
-  [1272.943967] WARNING: CPU: 1 PID: 61 at lib/refcount.c:28 refcount_warn_saturate+0xba/0x110
-  [1272.944731] Modules linked in: btrfs virtio_net xor zstd_compress raid6_pq null_blk [last unloaded: btrfs]
-  [1272.945550] CPU: 1 UID: 0 PID: 61 Comm: kworker/u32:1 Kdump: loaded Tainted: G        W          6.14.0-rc5+ #108
-  [1272.946368] Tainted: [W]=WARN
-  [1272.946585] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-  [1272.947273] Workqueue: btrfs_discard btrfs_discard_workfn [btrfs]
-  [1272.947788] RIP: 0010:refcount_warn_saturate+0xba/0x110
-  [1272.949532] RSP: 0018:ffffbf1200247df0 EFLAGS: 00010282
-  [1272.949901] RAX: 0000000000000000 RBX: ffffa14b00e3f800 RCX: 0000000000000000
-  [1272.950437] RDX: 0000000000000000 RSI: ffffbf1200247c78 RDI: 00000000ffffdfff
-  [1272.950986] RBP: ffffa14b00dc2860 R08: 00000000ffffdfff R09: ffffffff90526268
-  [1272.951512] R10: ffffffff904762c0 R11: 0000000063666572 R12: ffffa14b00dc28c0
-  [1272.952024] R13: 0000000000000000 R14: ffffa14b00dc2868 R15: 000001285dcd12c0
-  [1272.952850] FS:  0000000000000000(0000) GS:ffffa14d33c40000(0000) knlGS:0000000000000000
-  [1272.953458] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [1272.953931] CR2: 00007f838cbda000 CR3: 000000010104e000 CR4: 00000000000006f0
-  [1272.954474] Call Trace:
-  [1272.954655]  <TASK>
-  [1272.954812]  ? refcount_warn_saturate+0xba/0x110
-  [1272.955173]  ? __warn.cold+0x93/0xd7
-  [1272.955487]  ? refcount_warn_saturate+0xba/0x110
-  [1272.955816]  ? report_bug+0xe7/0x120
-  [1272.956103]  ? handle_bug+0x53/0x90
-  [1272.956424]  ? exc_invalid_op+0x13/0x60
-  [1272.956700]  ? asm_exc_invalid_op+0x16/0x20
-  [1272.957011]  ? refcount_warn_saturate+0xba/0x110
-  [1272.957399]  btrfs_discard_cancel_work.cold+0x26/0x2b [btrfs]
-  [1272.957853]  btrfs_put_block_group.cold+0x5d/0x8e [btrfs]
-  [1272.958289]  btrfs_discard_workfn+0x194/0x380 [btrfs]
-  [1272.958729]  process_one_work+0x130/0x290
-  [1272.959026]  worker_thread+0x2ea/0x420
-  [1272.959335]  ? __pfx_worker_thread+0x10/0x10
-  [1272.959644]  kthread+0xd7/0x1c0
-  [1272.959872]  ? __pfx_kthread+0x10/0x10
-  [1272.960172]  ret_from_fork+0x30/0x50
-  [1272.960474]  ? __pfx_kthread+0x10/0x10
-  [1272.960745]  ret_from_fork_asm+0x1a/0x30
-  [1272.961035]  </TASK>
-  [1272.961238] ---[ end trace 0000000000000000 ]---
-
-Though we have seen them in the async discard workfn as well. It is
-most likely to happen after a relocation finishes which cancels discard,
-tears down the block group, etc.
-
-Fix this fully by taking the lock around the list_del_init + clear_bit
-so that the two are done atomically.
-
-Fixes: 0657b20c5a76 ("btrfs: fix use-after-free of new block group that became unused")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
+Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: LePremierHomme <kwqcheii@proton.me>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250717074350.3767366-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/trace/events/rxrpc.h |  3 +++
+ net/rxrpc/call_accept.c      |  1 +
+ net/rxrpc/recvmsg.c          | 19 +++++++++++++++++--
+ 3 files changed, 21 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -2780,8 +2780,11 @@ void btrfs_create_pending_block_groups(s
- 		/* Already aborted the transaction if it failed. */
- next:
- 		btrfs_dec_delayed_refs_rsv_bg_inserts(fs_info);
-+
-+		spin_lock(&fs_info->unused_bgs_lock);
- 		list_del_init(&block_group->bg_list);
- 		clear_bit(BLOCK_GROUP_FLAG_NEW, &block_group->runtime_flags);
-+		spin_unlock(&fs_info->unused_bgs_lock);
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index cad50d91077ef..a785b177c6927 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -283,12 +283,15 @@
+ 	EM(rxrpc_call_put_userid,		"PUT user-id ") \
+ 	EM(rxrpc_call_see_accept,		"SEE accept  ") \
+ 	EM(rxrpc_call_see_activate_client,	"SEE act-clnt") \
++	EM(rxrpc_call_see_already_released,	"SEE alrdy-rl") \
+ 	EM(rxrpc_call_see_connect_failed,	"SEE con-fail") \
+ 	EM(rxrpc_call_see_connected,		"SEE connect ") \
+ 	EM(rxrpc_call_see_conn_abort,		"SEE conn-abt") \
++	EM(rxrpc_call_see_discard,		"SEE discard ") \
+ 	EM(rxrpc_call_see_disconnected,		"SEE disconn ") \
+ 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
+ 	EM(rxrpc_call_see_input,		"SEE input   ") \
++	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
+ 	EM(rxrpc_call_see_release,		"SEE release ") \
+ 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
+ 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
+diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
+index bbed314b7d963..978f0c6ee3c8a 100644
+--- a/net/rxrpc/call_accept.c
++++ b/net/rxrpc/call_accept.c
+@@ -219,6 +219,7 @@ void rxrpc_discard_prealloc(struct rxrpc_sock *rx)
+ 	tail = b->call_backlog_tail;
+ 	while (CIRC_CNT(head, tail, size) > 0) {
+ 		struct rxrpc_call *call = b->call_backlog[tail];
++		rxrpc_see_call(call, rxrpc_call_see_discard);
+ 		rcu_assign_pointer(call->socket, rx);
+ 		if (rx->discard_new_call) {
+ 			_debug("discard %lx", call->user_call_ID);
+diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
+index 32cd5f1d541db..1668495e4ae63 100644
+--- a/net/rxrpc/recvmsg.c
++++ b/net/rxrpc/recvmsg.c
+@@ -351,6 +351,16 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 		goto try_again;
+ 	}
  
- 		/*
- 		 * If the block group is still unused, add it to the list of
++	rxrpc_see_call(call, rxrpc_call_see_recvmsg);
++	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
++		rxrpc_see_call(call, rxrpc_call_see_already_released);
++		list_del_init(&call->recvmsg_link);
++		spin_unlock_irq(&rx->recvmsg_lock);
++		release_sock(&rx->sk);
++		trace_rxrpc_recvmsg(call->debug_id, rxrpc_recvmsg_unqueue, 0);
++		rxrpc_put_call(call, rxrpc_call_put_recvmsg);
++		goto try_again;
++	}
+ 	if (!(flags & MSG_PEEK))
+ 		list_del_init(&call->recvmsg_link);
+ 	else
+@@ -374,8 +384,13 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 
+ 	release_sock(&rx->sk);
+ 
+-	if (test_bit(RXRPC_CALL_RELEASED, &call->flags))
+-		BUG();
++	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
++		rxrpc_see_call(call, rxrpc_call_see_already_released);
++		mutex_unlock(&call->user_mutex);
++		if (!(flags & MSG_PEEK))
++			rxrpc_put_call(call, rxrpc_call_put_recvmsg);
++		goto try_again;
++	}
+ 
+ 	if (test_bit(RXRPC_CALL_HAS_USERID, &call->flags)) {
+ 		if (flags & MSG_CMSG_COMPAT) {
+-- 
+2.39.5
+
 
 
 
