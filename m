@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B89EB0DB40
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:47:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1124AB0DBE2
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 619B056097B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD77A161DC7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100F82EA15E;
-	Tue, 22 Jul 2025 13:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE832EA464;
+	Tue, 22 Jul 2025 13:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Da8W0J9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x076ErPS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8C32EA16A;
-	Tue, 22 Jul 2025 13:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5C4289340;
+	Tue, 22 Jul 2025 13:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192027; cv=none; b=Pgi/vOxtum8iEMvKQMESjR1mvnpXwe6elzGP0G75AdanO6de2BXRsjwhKscHeyFVemyfOcvOA0EES4W+Pj5ouGFAjiMV29JzX/s6VPVLT2mEH8lhWTdiQnUZQ9s/sC4zrF11uHh8BoeyxALu1iZUKj/2fhq7XypHkHgE0BihQRU=
+	t=1753192363; cv=none; b=sOs8Pm8trxaBnFeCGnZ2pz/lsPKf5qu9V+L6MuHB+rOw6vO4lQBGlQSFPU46GsLpjYBcXpsFfmf/AARAa4cJDxJYgjvoZCT2azCkh2df02/pl/OeTOmuLRzfvOYKYzbmkkuzfM6MTddbH0Hi+EhszwRcwwqdkJZ4R2Npalh6lYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192027; c=relaxed/simple;
-	bh=R9Zn5D5B9HUmqwGTgWxWHNDvDzFO5BobPVOAFHRO1mU=;
+	s=arc-20240116; t=1753192363; c=relaxed/simple;
+	bh=BoTbcfSwMoZtKwrYsJvCGKVfGVVzeUqF2ao/XlTyI4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzYCwB/vfucSu9E8vvqbVGp14I0GnfcH0KNazZYT+ISZbGcdfAHNHyV0MWDL+mvokKz/daLcIzdQUlVpjkSTV/19jxj9IvH1Kzs9eLVV2rnNYZ5GCfcc/ACoqyWKNjGM6L0hvgtb73TBQS4GCdUl6n7rOQ06P7xCdhGt+6QUvaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Da8W0J9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7788C4CEEB;
-	Tue, 22 Jul 2025 13:47:06 +0000 (UTC)
+	 MIME-Version; b=lOhHWTgJI0muqdRPCHoBGavgFFmqC2YR5i/kYo7El9s+ZNHFG5RvtcBk8rQvo2uVwZtQsYDVtEnu+Y3ibMy/tRokloOz4LLCy5WZsHsy0FGZUOFl/BEOPXwmQPm2Sn2CPSAaKdJ4jiEZc4/31rXmL39TWUTOCnTmu7w4TsKPMos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x076ErPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496A1C4CEEB;
+	Tue, 22 Jul 2025 13:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192027;
-	bh=R9Zn5D5B9HUmqwGTgWxWHNDvDzFO5BobPVOAFHRO1mU=;
+	s=korg; t=1753192362;
+	bh=BoTbcfSwMoZtKwrYsJvCGKVfGVVzeUqF2ao/XlTyI4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Da8W0J9GzOUOQ21fu9tMzi5STUkp6sn57M2S6ysz5F7Keo/GfOX1QIAu2tVKjbybk
-	 gRqPNyQHtSGtu0i5boGIPfHfK9vmkNMx93sFMLyRszvSVBU2L3sqktMjUJAOCMMrX3
-	 KWAhRlQ8sKZ+bhfzfn83VyGiyl6TP2hPqc2z1C3Y=
+	b=x076ErPSI2SH7IvdsVPjj91Ghck9HeyF06AjLMCx7Padz22lzTen0RxM/u4lscrqV
+	 hW3Kqxw1oBhkPIlDyPFX2ORYbgkOKWXe+c2hZ/OgST4cJeDR2JNdBamQ4xgvhtSDYs
+	 vYPJ/NuAHlTJoupCZg5OBGbwaQs8tlQAZA+Le/rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 23/79] mmc: bcm2835: Fix dma_unmap_sg() nents value
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 044/111] smb: client: fix use-after-free in crypt_message when using async crypto
 Date: Tue, 22 Jul 2025 15:44:19 +0200
-Message-ID: <20250722134329.228682822@linuxfoundation.org>
+Message-ID: <20250722134335.035778766@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
 
-commit ff09b71bf9daeca4f21d6e5e449641c9fad75b53 upstream.
+commit b220bed63330c0e1733dc06ea8e75d5b9962b6b6 upstream.
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+The CVE-2024-50047 fix removed asynchronous crypto handling from
+crypt_message(), assuming all crypto operations are synchronous.
+However, when hardware crypto accelerators are used, this can cause
+use-after-free crashes:
 
-Fixes: 2f5da678351f ("mmc: bcm2835: Properly handle dmaengine_prep_slave_sg")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+  crypt_message()
+    // Allocate the creq buffer containing the req
+    creq = smb2_get_aead_req(..., &req);
+
+    // Async encryption returns -EINPROGRESS immediately
+    rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
+
+    // Free creq while async operation is still in progress
+    kvfree_sensitive(creq, ...);
+
+Hardware crypto modules often implement async AEAD operations for
+performance. When crypto_aead_encrypt/decrypt() returns -EINPROGRESS,
+the operation completes asynchronously. Without crypto_wait_req(),
+the function immediately frees the request buffer, leading to crashes
+when the driver later accesses the freed memory.
+
+This results in a use-after-free condition when the hardware crypto
+driver later accesses the freed request structure, leading to kernel
+crashes with NULL pointer dereferences.
+
+The issue occurs because crypto_alloc_aead() with mask=0 doesn't
+guarantee synchronous operation. Even without CRYPTO_ALG_ASYNC in
+the mask, async implementations can be selected.
+
+Fix by restoring the async crypto handling:
+- DECLARE_CRYPTO_WAIT(wait) for completion tracking
+- aead_request_set_callback() for async completion notification
+- crypto_wait_req() to wait for operation completion
+
+This ensures the request buffer isn't freed until the crypto operation
+completes, whether synchronous or asynchronous, while preserving the
+CVE-2024-50047 fix.
+
+Fixes: b0abcd65ec54 ("smb: client: fix UAF in async decryption")
+Link: https://lore.kernel.org/all/8b784a13-87b0-4131-9ff9-7a8993538749@huaweicloud.com/
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250630093510.82871-2-fourier.thomas@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/bcm2835.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/smb2ops.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/bcm2835.c
-+++ b/drivers/mmc/host/bcm2835.c
-@@ -507,7 +507,8 @@ void bcm2835_prepare_dma(struct bcm2835_
- 				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -4271,6 +4271,7 @@ crypt_message(struct TCP_Server_Info *se
+ 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
+ 	struct aead_request *req;
+ 	u8 *iv;
++	DECLARE_CRYPTO_WAIT(wait);
+ 	unsigned int crypt_len = le32_to_cpu(tr_hdr->OriginalMessageSize);
+ 	void *creq;
+ 	size_t sensitive_size;
+@@ -4321,7 +4322,11 @@ crypt_message(struct TCP_Server_Info *se
+ 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
+ 	aead_request_set_ad(req, assoc_data_len);
  
- 	if (!desc) {
--		dma_unmap_sg(dma_chan->device->dev, data->sg, sg_len, dir_data);
-+		dma_unmap_sg(dma_chan->device->dev, data->sg, data->sg_len,
-+			     dir_data);
- 		return;
- 	}
+-	rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
++	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
++				  crypto_req_done, &wait);
++
++	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req)
++				: crypto_aead_decrypt(req), &wait);
  
+ 	if (!rc && enc)
+ 		memcpy(&tr_hdr->Signature, sign, SMB2_SIGNATURE_SIZE);
 
 
 
