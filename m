@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-164024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C22B0DCBB
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47ECEB0DBA0
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C316188AD5D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 098B7AA7729
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5414D1A255C;
-	Tue, 22 Jul 2025 14:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588C02EA48E;
+	Tue, 22 Jul 2025 13:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vshsL3kh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4mjofJw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118DE2E36E8;
-	Tue, 22 Jul 2025 14:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174862EA48B;
+	Tue, 22 Jul 2025 13:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192995; cv=none; b=VQeDO+Fd8foMQFCwCLwEMET+3RVpWEJRUyUfLNh8N892T9X/0mp5th9Xe3la6XtI9aBsMtx/9zRNBLME4kspp4X0sprrRFexKwy42dMrIoOB13TXUPsNVm3S845M0lhsE0nASRaooChsoOl25Do5OE4LprGodPu/pWx52ZU7bHo=
+	t=1753192234; cv=none; b=HZGkOx4MHAVj+lx91TMC4LxFvILWkrxmMOLRoJLV6/YAoOClcZqNowGj5kSeoqZ7poElpvfEm30i0gkFPDqFsqVK5IpvjXIQAdAEsAjTRvnmS1B6lj/qi9w1VEZF4OowQ2NYiVSJ7W6IkWFkwC5OMb5aIzOmb0s7asNv8ARD//s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192995; c=relaxed/simple;
-	bh=6bgzuaRGYnoZz6H/jhv1y4sApbyRih54N8pPDhZW5To=;
+	s=arc-20240116; t=1753192234; c=relaxed/simple;
+	bh=u9hbEAoDXnpePIYlFULSSKHOrRTbtM7L+B+ZrACRNcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iw/WJtzoRHDf52vtaKGTwWcQC4Y1ihOwuod1E5PptGHFNgdcGsKVjid8vmuwlo4o/Zp8bFySEGtrMgL7FUQqJGDcxz1w6msN4dPYe5K5Lm3ISBqZAFUdR8Ezb3tu+HHABwhMcGypraYrYCLeq+5M5LBIJBFGsGLYQ3Nvxksj7jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vshsL3kh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843DFC4CEEB;
-	Tue, 22 Jul 2025 14:03:14 +0000 (UTC)
+	 MIME-Version; b=pvpOq1pav7QwO6vksWKmgF8XnhQf2O1tFRXFK370ZKKTn4yh8ALNg1Dbc1bOTSJkIjem2M+JkKiHucj4aBxW50ThtoDmgjcFeDQzHjhABJ+IpIbxl5Xc8HCj53XlaX9AcMzzO82Rokz9HAxDjK2w/3FNgxp+2d3fOIIRgTyaDgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4mjofJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A230C4CEEB;
+	Tue, 22 Jul 2025 13:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192994;
-	bh=6bgzuaRGYnoZz6H/jhv1y4sApbyRih54N8pPDhZW5To=;
+	s=korg; t=1753192234;
+	bh=u9hbEAoDXnpePIYlFULSSKHOrRTbtM7L+B+ZrACRNcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vshsL3khsLO27vPRcLy/DFOiYqe2RkorRQBztJxko9Rb1/2wH6TjP4MQgHtU7mJ6v
-	 8o/jXhBotv4xnXynm1Inx6fxCwwXXUUGWv5hOZ8irlvsbsayhP46xcCzfEMvJB3Dt/
-	 olzR+sIgUbsnZvW/X3RfaHZ45sKV3G4O4uuX/0N4=
+	b=T4mjofJwnd3bCIVB0qeYRxCy8j002Nba8ZWFqOjl41/7GDl7kLpuWm76d459bALcZ
+	 aYlErmcGH0xad2r6HbbF6ihB+/78W+1fX5EyWoiIQx504lu+j7SVQrsYX7Y4jjCpzr
+	 uu/A1OY2+CZ9QbMj1czfT+KeAe1JE00XvV7/I3yA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e834e757bd9b3d3e1251@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+3bbbade4e1a7ab45ca3b@syzkaller.appspotmail.com,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/158] wifi: cfg80211: remove scan request n_channels counted_by
+Subject: [PATCH 6.1 50/79] hwmon: (corsair-cpro) Validate the size of the received input buffer
 Date: Tue, 22 Jul 2025 15:44:46 +0200
-Message-ID: <20250722134344.551250324@linuxfoundation.org>
+Message-ID: <20250722134330.219273431@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Marius Zachmann <mail@mariuszachmann.de>
 
-[ Upstream commit 444020f4bf06fb86805ee7e7ceec0375485fd94d ]
+[ Upstream commit 495a4f0dce9c8c4478c242209748f1ee9e4d5820 ]
 
-This reverts commit e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
-cfg80211_scan_request with __counted_by").
+Add buffer_recv_size to store the size of the received bytes.
+Validate buffer_recv_size in send_usb_cmd().
 
-This really has been a completely failed experiment. There were
-no actual bugs found, and yet at this point we already have four
-"fixes" to it, with nothing to show for but code churn, and it
-never even made the code any safer.
-
-In all of the cases that ended up getting "fixed", the structure
-is also internally inconsistent after the n_channels setting as
-the channel list isn't actually filled yet. You cannot scan with
-such a structure, that's just wrong. In mac80211, the struct is
-also reused multiple times, so initializing it once is no good.
-
-Some previous "fixes" (e.g. one in brcm80211) are also just setting
-n_channels before accessing the array, under the assumption that the
-code is correct and the array can be accessed, further showing that
-the whole thing is just pointless when the allocation count and use
-count are not separate.
-
-If we really wanted to fix it, we'd need to separately track the
-number of channels allocated and the number of channels currently
-used, but given that no bugs were found despite the numerous syzbot
-reports, that'd just be a waste of time.
-
-Remove the __counted_by() annotation. We really should also remove
-a number of the n_channels settings that are setting up a structure
-that's inconsistent, but that can wait.
-
-Reported-by: syzbot+e834e757bd9b3d3e1251@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e834e757bd9b3d3e1251
-Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
-Link: https://patch.msgid.link/20250714142130.9b0bbb7e1f07.I09112ccde72d445e11348fc2bef68942cb2ffc94@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+3bbbade4e1a7ab45ca3b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-hwmon/61233ba1-e5ad-4d7a-ba31-3b5d0adcffcc@roeck-us.net
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20250619132817.39764-5-mail@mariuszachmann.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/cfg80211.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/corsair-cpro.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 8a712ca73f2b0..bb1862536f9ca 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -2710,7 +2710,7 @@ struct cfg80211_scan_request {
- 	s8 tsf_report_link_id;
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index 486fb6a8c3566..18da3e013c20b 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -84,6 +84,7 @@ struct ccp_device {
+ 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
+ 	u8 *cmd_buffer;
+ 	u8 *buffer;
++	int buffer_recv_size; /* number of received bytes in buffer */
+ 	int target[6];
+ 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
+ 	DECLARE_BITMAP(fan_cnct, NUM_FANS);
+@@ -139,6 +140,9 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+ 	if (!t)
+ 		return -ETIMEDOUT;
  
- 	/* keep last */
--	struct ieee80211_channel *channels[] __counted_by(n_channels);
-+	struct ieee80211_channel *channels[];
- };
++	if (ccp->buffer_recv_size != IN_BUFFER_SIZE)
++		return -EPROTO;
++
+ 	return ccp_get_errno(ccp);
+ }
  
- static inline void get_random_mask_addr(u8 *buf, const u8 *addr, const u8 *mask)
+@@ -150,6 +154,7 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
+ 	spin_lock(&ccp->wait_input_report_lock);
+ 	if (!completion_done(&ccp->wait_input_report)) {
+ 		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
++		ccp->buffer_recv_size = size;
+ 		complete_all(&ccp->wait_input_report);
+ 	}
+ 	spin_unlock(&ccp->wait_input_report_lock);
 -- 
 2.39.5
 
