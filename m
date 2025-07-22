@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A24B0DB54
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82B6B0DCB6
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6AC51C811EB
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3162C17F99E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28ADE242D8F;
-	Tue, 22 Jul 2025 13:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E982E2F10;
+	Tue, 22 Jul 2025 14:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzVctIqB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgjJf0XQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7637BAEC;
-	Tue, 22 Jul 2025 13:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC21FA32;
+	Tue, 22 Jul 2025 14:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192110; cv=none; b=N/NfYA82D7wT6qFUgG0ppH17K/20zLbloeUfZdMM01Up3s95z0kcahiquC6yPQxdUjEGjHSLbwl5c0eRSYFRD5PWq6rH0BP/FodhBKC10wk28VwWc7q+dPmvXdHTJpZ8/eZAbIpsawS7G2gYm6hpJF4GhTa58KsJm7sgg89lIOo=
+	t=1753192932; cv=none; b=bFRKs27VP0PB4QI7rlbHl19DDA1n9y6uBh+mbU+e+IFo/rGKmjz9PcPYvyFTnUmCVztb5kTWNqdF1tVa6W9GiBJGjr/bbDx/uR6h/opAqRFURXitDWTWnICKms1zGJniPBVUGSMjvVJbFIACu9OztwcC8GOkCBKHsciNXB5o3ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192110; c=relaxed/simple;
-	bh=89xZKGsj3tuc0qpKAJhHUzheqTDpPAwkq/O8AT0Pbrs=;
+	s=arc-20240116; t=1753192932; c=relaxed/simple;
+	bh=J5+h4I/pINuYt2rXZzpXYWW6s3RuzFacV+OltdeKcQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wko59NWlON2csKrv0PfCOwvhS4tt7BGPA1I3gIDeHuTANn7kda7SGjLS9FFIFNbV/YVgc/rAcJxouZ8EG9DJU5dKVBAmfJe+sQPmpDuhxdM0kv8uEy9YQptRvWKy9HT1kXPDkY05GX4fwZa7zOn1KDHDtZHxiseGNrUuYLF/Trc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzVctIqB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3D7C4CEEB;
-	Tue, 22 Jul 2025 13:48:30 +0000 (UTC)
+	 MIME-Version; b=jMCrVwPAlVDVL4MOOk1z3ysIyrAT561/GlIvc7r2MLvzn20Y4CV/77ux5Y/nEg4NAItsd/m982GH5ZMIGdgHc9Xc+dI/KhsInn8g7gNNaGhZIuoiMtjhGJ23/CX6patt//QEny594+ZuocFThuLyQN7oMAsZ/ESmjL/dkLstcWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgjJf0XQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A381C4CEEB;
+	Tue, 22 Jul 2025 14:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192110;
-	bh=89xZKGsj3tuc0qpKAJhHUzheqTDpPAwkq/O8AT0Pbrs=;
+	s=korg; t=1753192932;
+	bh=J5+h4I/pINuYt2rXZzpXYWW6s3RuzFacV+OltdeKcQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dzVctIqB/iLkdy8SZh/gDhpjzjWreS/QxXFZIHXwljLC1Ipb/LfSiYXZ+SPNess7v
-	 f9ljDp93nywfIblGbY61X0gE38YfDE7OCcAJwhC1rLhjo6SS1NDRn6mHB4CzAbIGnG
-	 x3CIiflWHURT0BH9Rw8vfp4Hm1yQlZrlNSBFQ0Wc=
+	b=fgjJf0XQPjl9ZYHJ82cKIiX460tCuzSikOHvotD2cMoKwra1zj3jtPCOtjVFkq2Kx
+	 DOUjm1A7zrvI4bJ3UqwpebUgJwKNX9HEpKe1wX0P9zCmSxC1AvtPqNPGKjMcRGlUlP
+	 PE/v0tcOTZzGO9tFM+bbProibR/LIqe1kWjRVkZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 15/79] phonet/pep: Move call to pn_skb_get_dst_sockaddr() earlier in pep_sock_accept()
-Date: Tue, 22 Jul 2025 15:44:11 +0200
-Message-ID: <20250722134328.944294046@linuxfoundation.org>
+	Chen-Yu Tsai <wens@csie.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 068/158] iio: adc: axp20x_adc: Add missing sentinel to AXP717 ADC channel maps
+Date: Tue, 22 Jul 2025 15:44:12 +0200
+Message-ID: <20250722134343.310649752@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Chen-Yu Tsai <wens@csie.org>
 
-commit 17ba793f381eb813596d6de1cc6820bcbda5ed8b upstream.
+commit 3281ddcea6429f7bc1fdb39d407752dd1371aba9 upstream.
 
-A new warning in clang [1] points out a place in pep_sock_accept() where
-dst is uninitialized then passed as a const pointer to pep_find_pipe():
+The AXP717 ADC channel maps is missing a sentinel entry at the end. This
+causes a KASAN warning.
 
-  net/phonet/pep.c:829:37: error: variable 'dst' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-    829 |         newsk = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
-        |                                            ^~~:
+Add the missing sentinel entry.
 
-Move the call to pn_skb_get_dst_sockaddr(), which initializes dst, to
-before the call to pep_find_pipe(), so that dst is consistently used
-initialized throughout the function.
-
-Cc: stable@vger.kernel.org
-Fixes: f7ae8d59f661 ("Phonet: allocate sock from accept syscall rather than soft IRQ")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2101
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20250715-net-phonet-fix-uninit-const-pointer-v1-1-8efd1bd188b3@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5ba0cb92584b ("iio: adc: axp20x_adc: add support for AXP717 ADC")
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://patch.msgid.link/20250607135627.2086850-1-wens@kernel.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pep.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/axp20x_adc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -826,6 +826,7 @@ static struct sock *pep_sock_accept(stru
- 	}
+--- a/drivers/iio/adc/axp20x_adc.c
++++ b/drivers/iio/adc/axp20x_adc.c
+@@ -217,6 +217,7 @@ static struct iio_map axp717_maps[] = {
+ 		.consumer_channel = "batt_chrg_i",
+ 		.adc_channel_label = "batt_chrg_i",
+ 	},
++	{ }
+ };
  
- 	/* Check for duplicate pipe handle */
-+	pn_skb_get_dst_sockaddr(skb, &dst);
- 	newsk = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
- 	if (unlikely(newsk)) {
- 		__sock_put(newsk);
-@@ -850,7 +851,6 @@ static struct sock *pep_sock_accept(stru
- 	newsk->sk_destruct = pipe_destruct;
- 
- 	newpn = pep_sk(newsk);
--	pn_skb_get_dst_sockaddr(skb, &dst);
- 	pn_skb_get_src_sockaddr(skb, &src);
- 	newpn->pn_sk.sobject = pn_sockaddr_get_object(&dst);
- 	newpn->pn_sk.dobject = pn_sockaddr_get_object(&src);
+ /*
 
 
 
