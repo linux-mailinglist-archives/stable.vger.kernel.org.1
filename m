@@ -1,149 +1,206 @@
-Return-Path: <stable+bounces-164265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F276B0DE35
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:24:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2D5B0DFBE
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F90E7B70F4
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:21:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9250188BFBE
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE9B2EA485;
-	Tue, 22 Jul 2025 14:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092BF2EBDD9;
+	Tue, 22 Jul 2025 14:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="V4g9zK7b"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Rylzj8wd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFAD2BE045;
-	Tue, 22 Jul 2025 14:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6602EBB9C
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 14:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753194080; cv=none; b=A37kQX4GTC5Qddvt37BufUGPYF9CbxpwAgwRaSKIMIqbrJ5wVyDeCpX8uuV883itQ1s4ulCJYX9ni8NI/PxjkATj/40o0ppYvRzpTFk7LQItIa+y7WPJzaaANq/HshnskX6t93Amwr5oLHXeK8wrlN0Y6b+M0p8WtK4S8Fm6Ev0=
+	t=1753195936; cv=none; b=cOUSyVMvdQn5eK1gqPgyWnCrvb+NcdVmE1VgBKz0+IT6BwzoyWvRjZm5jGJQoEknB2ETS8KZG0P0goLcYy96T+EWr6E98XF8MBIDY8hq2rhIwsAJWq78jTcQ89dkHX6id1Y2ucYXvb9c9ormBQlcB2a6BgBJpGB2jnmozwqOlLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753194080; c=relaxed/simple;
-	bh=c4Hfuep6V/m0YxeQR3WbKYkqUiAZDaY00w0YeOziUc8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lNdSD7wzreDbVZG03Ndd0NvbD/JilgY/VLELJKAhxVnbaVrT39Ql7q5SOjCNQgrJR0EEdo9QzYr8I1/12kPedgn9CUyzBEwV+HTu0M0Uu8HZqa8bTKEp7xk8bchUhvNJhUHtrc01Zcr613wao/IDsxhtBl/hvE4eSvc+d5mkYdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=V4g9zK7b; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 94A3540E0268;
-	Tue, 22 Jul 2025 14:21:07 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 1n529-wzSz3w; Tue, 22 Jul 2025 14:21:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1753194063; bh=8yCRXxenRxqYzn5Gdaq3yWn9Oudb2WG37Lz5ZmLh34U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V4g9zK7bJKmGodh/Nn+zRfCdtW1tVRX5jWmO/yOlRlVWnwr96CuCGNpfxm42y1i1h
-	 Sc0HUDn700m7+YvVqNZveem0iqCPE1X4hiQqWien1/n17Va6DXMnDL2wdWBe/WTENi
-	 +f1PQKK0krB8Dsr3O0tdVgmjvQrXrvN32Xinjm8WrLikTaxHRtILp9lxaAvb44/YBD
-	 cRxOukGn8gqEGR7HhovG2ELghbwhamiZZGjRpo8npcHjJ4dxZz8SeA+4bShS6xcQSV
-	 esuWMb6aTvqfMsZSI5iGPw8CMFr+tZlfhGxSts4DQL3sOCBGZNFET+yPfR2+XrLO4r
-	 kjA1SxbfZSOBpbcaAY+x5msOU1wWCXOE0KNSyXBz7qlOeDIqu9AIeQaeCw27Td/plX
-	 zJGhnPbO4B0ILQf3cJka/x73HagzwRE0aJwqf0ZVsnwxVezeljLpvP4UkPzOvAvsFi
-	 BdhXHB0k1cSvMKUM80LduJwBtfm8oJc+M3rBdbGCsGzypjcqmpYU4m0NROdN1joxCL
-	 p3VoCYyJH/dxCWH+FI2GB8dgDKF1e3tysxhaQvYDE75robaKCWc+uXZStgHxGoy/JV
-	 h9p1aOdptRD82ZF2/hk+uQEs0Nr0ImnijPUnORbK+VGfLa/folP7vmElbKfqXdxzrY
-	 f6qXwJvHw7Xz2y8Qf/ufnOeA=
-Received: from rn.tnic (unknown [78.130.214.207])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 9295040E00CE;
-	Tue, 22 Jul 2025 14:20:54 +0000 (UTC)
-Date: Tue, 22 Jul 2025 16:22:54 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Zhivich <mzhivich@akamai.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] x86/bugs: Fix use of possibly uninit value in
- amd_check_tsa_microcode()
-Message-ID: <20250722142254.GAaH-evk-BqchvvIaZ@renoirsky.local>
-References: <20250722122844.2199661-1-mzhivich@akamai.com>
+	s=arc-20240116; t=1753195936; c=relaxed/simple;
+	bh=QptCdfvykdDw3mSwfgLPntt5smoEgwzkhb48jG2MnBc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uKmQHDDS5qFiv60faOGu21Un5SgbVN9d5dE7oIOjLv6Qfaoiny6snjKpRI33Cexa295y9bo/oeVhDnVwitlHOj1rzPZ0ZKFFZnMG4g4w6SfsVNPYM/As/tS5/qWMr73f2Eyney8iQyIGtyNTJ1P1a3IirqSCBLlGHIE96d7YUZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Rylzj8wd; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-32b4876dfecso58566231fa.1
+        for <stable@vger.kernel.org>; Tue, 22 Jul 2025 07:52:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753195933; x=1753800733; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ASqqLKV7bTOZHh+QoLYPQiepbbVzcIRPmS7WnFNjHYU=;
+        b=Rylzj8wdII24dUVahw5uUpv+ZlivET4HvEkoifNSSJ5MAMYXNePHa/g9enfiiaelK4
+         atgI1Nt9Xq7A69iLf67O7QgUJF5uIN09pvzK/CKkbW7vACpzsOmwnUYOYHlxyvLbmBWi
+         RDWm48OYFiGN0IJdNtDC1DDK/JSB/HH4Rz4hQzJ78TpvAywuXlzqhXIa/WWQaxWAVKkC
+         omk/5rY1TKOD83TIpMCrb1lCEi0VjVnmnTEHeP5un0D9fLQ3T9PEuLzvLQzhvulON4Ug
+         w+qB4mpbJzRV//eEnjUvKL8F4ObVwZLL4XAAVNFWBeCgScguFVfKuydvhmS8ywk7irMg
+         6FSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753195933; x=1753800733;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ASqqLKV7bTOZHh+QoLYPQiepbbVzcIRPmS7WnFNjHYU=;
+        b=uAGfR/VE3DEhwYOkAYrnxI58UFdvUMQ1bqR7gO1iLB1uqwPuIU6WH3sw1cuUFJgKjj
+         Ou0A0SNQSiU74ln934g8tgWG1eg+7laLmSkjOTOzOzbSDOk6xacaGIWZYlSsek2MKNUV
+         CRGq2oCjeV5oGsGxeoO4Pf7V9LWb2T4aKWriIUP8UKnd+eDig3sEMJy7pcj9gDqrfFvg
+         0z+eJr3bdfeeqoGegWkubF4+wMHKYIjI8hR0+VQ59zAW9X8WcbWxk0ymv3CxUV5yuyip
+         HRf5kTQdSpljGQBtLJkv4Mcd9QsI2iABGXAjeuWG/CJ3zT04hmAc4339ASjDmdViK0Mz
+         yW9A==
+X-Forwarded-Encrypted: i=1; AJvYcCXaiyFOjMekfoi0B5F9FCA83qo0Ot70HkaUeCxuCVtoxlaaM09lpxpFJam7mLOZvEAXkpWPrcc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2tkzBxdAAvX2tdsHtIdoLC0zZIlcIkOyAWxIxTGCURmy+Teko
+	giM5ZMNGxXTcX5LwTYxitMFXmM48cSCUYD481frvDIeeEDJ5fgqwgM8agj5x0g9ZUFdt0G62ZDP
+	CsvLmVIfrposchBvqyBeiZPZyBYvCJoAH8UdOO3Ml4w==
+X-Gm-Gg: ASbGncvBMYc3Sf3qWBImK3yYnsNctyhx+gOJBS15GaPPdyK4TUph1byGTagdvVgr3KT
+	K+NlL1EeewmK6P/m8tL6qwTXeJoSsAvG8gvOl57EdAvKOgAq8DwobynuzDLLVs5yQTNWYtP9a/s
+	CHxXnD/hnhMCzgyLIPU8Arz3Q4xMAMmDRm6BsgvKsIpgIF9RSI/JMR0s5xGPsqBLSl5qWo0TCoW
+	8S6iU/4+qnM3mvuDUro63ctHeYwEfQ8c/ZyKw==
+X-Google-Smtp-Source: AGHT+IFFeuzQyysu6UbiTgYyXjNhyet5KnMKaIrTOY6lGXsapE59WD9CvOGRswKVyAeZi1GXx6ySe7/m8egNRed2iQY=
+X-Received: by 2002:a05:651c:2221:b0:329:136e:300f with SMTP id
+ 38308e7fff4ca-330d2615568mr12136631fa.13.1753195932997; Tue, 22 Jul 2025
+ 07:52:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250722122844.2199661-1-mzhivich@akamai.com>
+References: <20250721162215.30327-1-davthompson@nvidia.com>
+In-Reply-To: <20250721162215.30327-1-davthompson@nvidia.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 22 Jul 2025 16:52:02 +0200
+X-Gm-Features: Ac12FXxEPv4XqzBEYN1mC45x64VjToB_w4CqfiuYbLU7-hd--JtE0CqJrybcrak
+Message-ID: <CAMRc=Mfg42wvT9qdYrhvFq_wdvThmWpbvvo-p9bHSsyK0pn+bw@mail.gmail.com>
+Subject: Re: [PATCH v3] gpio-mlxbf2: only get IRQ for device instances 0 and 3
+To: David Thompson <davthompson@nvidia.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: linus.walleij@linaro.org, davem@davemloft.net, asmaa@nvidia.com, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Shravan Kumar Ramani <shravankr@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 22, 2025 at 08:28:44AM -0400, Michael Zhivich wrote:
-> For kernels compiled with CONFIG_INIT_STACK_NONE=y, the value of __reserved
-> field in zen_patch_rev union on the stack may be garbage.  If so, it will
-> prevent correct microcode check when consulting p.ucode_rev, resulting in
-> incorrect mitigation selection.
+On Mon, Jul 21, 2025 at 6:22=E2=80=AFPM David Thompson <davthompson@nvidia.=
+com> wrote:
+>
+> The gpio-mlxbf2 driver interfaces with four GPIO controllers,
+> device instances 0-3. There are two IRQ resources shared between
+> the four controllers, and they are found in the ACPI table for
+> device instances 0 and 3.  The driver should not attempt to get
+> an IRQ resource when probing device instance 1 or 2, otherwise
+> the following error is logged:
+>   mlxbf2_gpio MLNXBF22:01: error -ENXIO: IRQ index 0 not found
+>
+> Fixes: 2b725265cb08 ("gpio: mlxbf2: Introduce IRQ support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Thompson <davthompson@nvidia.com>
+> Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+> ---
+> v3: added version history
+> v2: added tag "Cc: stable@vger.kernel.org"
+>
+>  drivers/gpio/gpio-mlxbf2.c | 56 ++++++++++++++++++++++++--------------
+>  1 file changed, 36 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-mlxbf2.c b/drivers/gpio/gpio-mlxbf2.c
+> index 6f3dda6b635f..fc56ac81e344 100644
+> --- a/drivers/gpio/gpio-mlxbf2.c
+> +++ b/drivers/gpio/gpio-mlxbf2.c
+> @@ -353,7 +353,9 @@ mlxbf2_gpio_probe(struct platform_device *pdev)
+>         struct gpio_chip *gc;
+>         unsigned int npins;
+>         const char *name;
+> +       char *colon_ptr;
+>         int ret, irq;
+> +       long num;
+>
+>         name =3D dev_name(dev);
+>
+> @@ -397,26 +399,40 @@ mlxbf2_gpio_probe(struct platform_device *pdev)
+>         gc->ngpio =3D npins;
+>         gc->owner =3D THIS_MODULE;
+>
+> -       irq =3D platform_get_irq(pdev, 0);
+> -       if (irq >=3D 0) {
+> -               girq =3D &gs->gc.irq;
+> -               gpio_irq_chip_set_chip(girq, &mlxbf2_gpio_irq_chip);
+> -               girq->handler =3D handle_simple_irq;
+> -               girq->default_type =3D IRQ_TYPE_NONE;
+> -               /* This will let us handle the parent IRQ in the driver *=
+/
+> -               girq->num_parents =3D 0;
+> -               girq->parents =3D NULL;
+> -               girq->parent_handler =3D NULL;
+> -
+> -               /*
+> -                * Directly request the irq here instead of passing
+> -                * a flow-handler because the irq is shared.
+> -                */
+> -               ret =3D devm_request_irq(dev, irq, mlxbf2_gpio_irq_handle=
+r,
+> -                                      IRQF_SHARED, name, gs);
+> -               if (ret) {
+> -                       dev_err(dev, "failed to request IRQ");
+> -                       return ret;
+> +       colon_ptr =3D strchr(dev_name(dev), ':');
+> +       if (!colon_ptr) {
+> +               dev_err(dev, "invalid device name format\n");
+> +               return -EINVAL;
+> +       }
+> +
+> +       ret =3D kstrtol(++colon_ptr, 16, &num);
+> +       if (ret) {
+> +               dev_err(dev, "invalid device instance\n");
+> +               return ret;
+> +       }
+> +
 
-"This is a stable-only fix." so that the AI is happy. :-P
+That is *really* fragile. Andy, Mika: does this look remotely correct
+to you? I don't know much about ACPI systems.
 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by:  Michael Zhivich <mzhivich@akamai.com>
+Bart
 
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-
-> Fixes: 7a0395f6607a5 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
-
-That commit in Fixes: is the 6.12 stable one.
-
-The 6.6 one is:
-
-Fixes: 90293047df18 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
-
-The 6.1 is:
-
-Fixes: d12145e8454f ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
-
-The 5.15 one:
-
-Fixes: f2b75f1368af ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
-
-and the 5.10 one is
-
-Fixes: 78192f511f40 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
-
-and since all stable kernels above have INIT_STACK_NONE, that same
-one-liner should be applied to all of them.
-
-Greg, I'm thinking this one-liner should apply to all of the above with
-some fuzz. Can you simply add it to each stable version with a different
-Fixes: tag each?
-
-Or do you prefer separate submissions?
-
-Thx.
-
->  arch/x86/kernel/cpu/amd.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-> index efd42ee9d1cc..289ff197b1b3 100644
-> --- a/arch/x86/kernel/cpu/amd.c
-> +++ b/arch/x86/kernel/cpu/amd.c
-> @@ -378,6 +378,8 @@ static bool amd_check_tsa_microcode(void)
->  	p.model		= c->x86_model;
->  	p.ext_model	= c->x86_model >> 4;
->  	p.stepping	= c->x86_stepping;
-> +	/* reserved bits are expected to be 0 in test below */
-> +	p.__reserved    = 0;
->  
->  	if (cpu_has(c, X86_FEATURE_ZEN3) ||
->  	    cpu_has(c, X86_FEATURE_ZEN4)) {
-> -- 
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> +       if (!num || num =3D=3D 3) {
+> +               irq =3D platform_get_irq(pdev, 0);
+> +               if (irq >=3D 0) {
+> +                       girq =3D &gs->gc.irq;
+> +                       gpio_irq_chip_set_chip(girq, &mlxbf2_gpio_irq_chi=
+p);
+> +                       girq->handler =3D handle_simple_irq;
+> +                       girq->default_type =3D IRQ_TYPE_NONE;
+> +                       /* This will let us handle the parent IRQ in the =
+driver */
+> +                       girq->num_parents =3D 0;
+> +                       girq->parents =3D NULL;
+> +                       girq->parent_handler =3D NULL;
+> +
+> +                       /*
+> +                        * Directly request the irq here instead of passi=
+ng
+> +                        * a flow-handler because the irq is shared.
+> +                        */
+> +                       ret =3D devm_request_irq(dev, irq, mlxbf2_gpio_ir=
+q_handler,
+> +                                              IRQF_SHARED, name, gs);
+> +                       if (ret) {
+> +                               dev_err(dev, "failed to request IRQ");
+> +                               return ret;
+> +                       }
+>                 }
+>         }
+>
+> --
+> 2.30.1
+>
 
