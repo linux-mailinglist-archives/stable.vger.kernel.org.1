@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDBFB0DC84
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B98B0DBFD
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:56:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DE71889F2B
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:00:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A93FAA7887
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B50F28B7EA;
-	Tue, 22 Jul 2025 14:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FD22EA46C;
+	Tue, 22 Jul 2025 13:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJdYpegp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sv+IYiqH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A63E548EE;
-	Tue, 22 Jul 2025 14:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E1028C039;
+	Tue, 22 Jul 2025 13:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192839; cv=none; b=pB4iij4mHv2bxIyxmwwRn7+3RnLicZtOmUZqtkKR0FMHf6GdATev+ynr2jZjgLrUHEcnEcpTl+DtXKLfPWDHDdfCzUyIwxu9YwBXg5TkBCENaN46IruQwx6aQg7vbi+PhH4+h0n6C+KXN6oTG0tUlk55Ih/JpGzqa6JUloRArWk=
+	t=1753192424; cv=none; b=olBXQTkIjD77d4sLwFrogfUH2YatbWUylRqP6SQcm0x/ZPBezPjmgYtxEAUQZaVpJ8vA745W+QwUAAI4qJ25+sZebAR4zrV8TPIpspRAP5+/abYhscGUnN/NEhfyYrdXatd8HxcQNlXyGJzEKH9UgjFhK3A+BVoPYGt1ImxgZdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192839; c=relaxed/simple;
-	bh=PjgXgsXOtW4wd2jjoic3f+zb+EwLGR++7l9S0MPB3AI=;
+	s=arc-20240116; t=1753192424; c=relaxed/simple;
+	bh=lxqemhfMZR3gZz8rKo5FT4DIPYn4KWwWtmrgOa/s19I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFZ1EqxSA2XJFMGQEGgvxq7YHD7FWT7zKtCn0JVruTYwyvMvduszQ9L7qJMi2UL3GPZx0c8EWhghVsDumEjItgF9jXRto9QG2el8yXRkOhh85H5hYqZ3IsZcogLTrsBpUQ0XeLnLCvIQvvwV0Q5O0t93JGYU9HMkeUkCssOuKwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJdYpegp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904C9C4CEEB;
-	Tue, 22 Jul 2025 14:00:38 +0000 (UTC)
+	 MIME-Version; b=TV33a1dLmX49jQNl2RiStEzVUlaPbxq1sa/yE9/SAS7MjJnCXMgbtZA0myA0ylc5scXDx1FXje0RYkz8rU6dZh22v9fITJSo6Lola11hXjhSqIPnvy7k+3jvkF5qNeGKzY9ZGVVzT3aGgW4La7cN09OE8ecBmXlIT9k4ERugt7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sv+IYiqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC71BC4CEEB;
+	Tue, 22 Jul 2025 13:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192839;
-	bh=PjgXgsXOtW4wd2jjoic3f+zb+EwLGR++7l9S0MPB3AI=;
+	s=korg; t=1753192424;
+	bh=lxqemhfMZR3gZz8rKo5FT4DIPYn4KWwWtmrgOa/s19I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJdYpegpeQcfuyRtfd7/0veNxDiqSGwS0YgdWdcPZ5WmwbIha47DlXA1X/2CuMSe6
-	 z8XJf8ub6t7p910MUjPfqO3CJMsPXpd2eaRIQWed9D2xIrbFnCvOCdkrUC5hG/DnV1
-	 639OlDXrrwjCw7IFnQf27LsMap/c37A6t2FT2l98=
+	b=sv+IYiqHSaxJ12O6RpFjksWl1NJOLsOy4OON7NHGscZ7GXavoDsPEfmNsJAn0A/96
+	 +7n1y/W+SN96rLjo568NS5J9OEpKyo8tJ2U6qqh2PLT6D20PGrTXCIexO8mBpeJHfN
+	 eVrKOZSZ2xrTEAew7+UgfLLAySv5S04aoJLKONbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>
-Subject: [PATCH 6.12 065/158] soc: aspeed: lpc-snoop: Cleanup resources in stack-order
+	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 034/111] isofs: Verify inode mode when loading from disk
 Date: Tue, 22 Jul 2025 15:44:09 +0200
-Message-ID: <20250722134343.181508708@linuxfoundation.org>
+Message-ID: <20250722134334.677766627@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
+From: Jan Kara <jack@suse.cz>
 
-commit 8481d59be606d2338dbfe14b04cdbd1a3402c150 upstream.
+commit 0a9e7405131380b57e155f10242b2e25d2e51852 upstream.
 
-Free the kfifo after unregistering the miscdev in
-aspeed_lpc_disable_snoop() as the kfifo is initialised before the
-miscdev in aspeed_lpc_enable_snoop().
+Verify that the inode mode is sane when loading it from the disk to
+avoid complaints from VFS about setting up invalid inodes.
 
-Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
-Cc: stable@vger.kernel.org
-Cc: Jean Delvare <jdelvare@suse.de>
-Acked-by: Jean Delvare <jdelvare@suse.de>
-Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-1-3cdd59c934d3@codeconstruct.com.au
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/20250709095545.31062-2-jack@suse.cz
+Acked-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/isofs/inode.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -263,8 +263,8 @@ static void aspeed_lpc_disable_snoop(str
- 		return;
- 	}
+--- a/fs/isofs/inode.c
++++ b/fs/isofs/inode.c
+@@ -1486,9 +1486,16 @@ static int isofs_read_inode(struct inode
+ 		inode->i_op = &page_symlink_inode_operations;
+ 		inode_nohighmem(inode);
+ 		inode->i_data.a_ops = &isofs_symlink_aops;
+-	} else
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		/* XXX - parse_rock_ridge_inode() had already set i_rdev. */
+ 		init_special_inode(inode, inode->i_mode, inode->i_rdev);
++	} else {
++		printk(KERN_DEBUG "ISOFS: Invalid file type 0%04o for inode %lu.\n",
++			inode->i_mode, inode->i_ino);
++		ret = -EIO;
++		goto fail;
++	}
  
--	kfifo_free(&lpc_snoop->chan[channel].fifo);
- 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
-+	kfifo_free(&lpc_snoop->chan[channel].fifo);
- }
- 
- static int aspeed_lpc_snoop_probe(struct platform_device *pdev)
+ 	ret = 0;
+ out:
 
 
 
