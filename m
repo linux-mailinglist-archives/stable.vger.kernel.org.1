@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-164140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640D5B0DDF5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:21:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D4BB0DDB6
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A98203B6679
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:14:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DDC7583B5A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD102ECE98;
-	Tue, 22 Jul 2025 14:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63062F003F;
+	Tue, 22 Jul 2025 14:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siLSuHu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2rLcXRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C522D9EE2;
-	Tue, 22 Jul 2025 14:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847832F002F;
+	Tue, 22 Jul 2025 14:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193380; cv=none; b=PP2IOdOkjEnNyAvugk0p+q+HzmUrnJRLx4jWlIDQiXZnvSUaKmh7TNfzgsRwC62vYzX+KrUhG5xgBXRCTAXVWo39MTds1t2cxpUK6mjeSDLu8dVtXZmMWuyXC0RgfjquNVyfRTuS3SxREoIOUCTncjS1Rj/OCgaM3MywvNYdo+Q=
+	t=1753193264; cv=none; b=Fj/pVevpzUe99dcnKDaeshJK+XNDdr4bZYE4k2JWZImSSy2Brqi/RI97YaZK6DXRO9hX9CuHnHe6cFFQeluE3lVJG7QUju6XFvCaC7Cb2i5XyVyDwl/isxzKW0YxprB5Du2hBvVd3M2Ps9cc1pJ69x0LVknbDR6T5TApSKMVFEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193380; c=relaxed/simple;
-	bh=6Y4ChGAvnOAGedA0gnu8KuAfWL7uEpU7zTBgM+F63JQ=;
+	s=arc-20240116; t=1753193264; c=relaxed/simple;
+	bh=A2AbqezS8NKzk/9EFcR9mmTZqhaw2tisf5UT2VJzI+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufuGo1ikJzL3QCEzCvW9g7lX6wFFiGLF74+WNBsGcaWTiej5Mt13rh4y/u/2CRyfpgIMoJLdH5K3cMo0UomvII1knRJRMG8WJrXfA+R6dn1m67LCb+OR0GktvLfJHWMhdK1Zsm522Gg73NtiuFrx4Hg86Aqaa4fLMUGYiUpLjtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siLSuHu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9D7C4CEEB;
-	Tue, 22 Jul 2025 14:09:39 +0000 (UTC)
+	 MIME-Version; b=I60TgpBnC11w6myTBj4vdLrjmz74sjezJzEF2xQi+rvguVLAoYs1XLNY4oh6mU6tw22geGjTYoGEgpJGqJuc8twftc3wkKuuuSbnRrmAXaNFHcTpM3qN+KLy6xE1EHGL5aV6qcscVFg4ZYvNDLpIL8iuGGFi+Cpf3RcVQsAmQaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2rLcXRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD2DC4CEEB;
+	Tue, 22 Jul 2025 14:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193380;
-	bh=6Y4ChGAvnOAGedA0gnu8KuAfWL7uEpU7zTBgM+F63JQ=;
+	s=korg; t=1753193262;
+	bh=A2AbqezS8NKzk/9EFcR9mmTZqhaw2tisf5UT2VJzI+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=siLSuHu1MalpyX0kB6cXZ3X/QiLMfuqg2nuNqHm3IpZvj2mrpZY/B6LkQm99FbAgq
-	 I2wvMKJfrntFddZQRBVjhh1CbHGzcPUdepkTbjvV5ghqwkUX0Lt07CwGrzpbgppLdi
-	 qaFFWggbEEFFRaK4nQDPR6reVgiU8sLLPTys2KLw=
+	b=G2rLcXRjq2OYcQxue7K1Hp97Q0lCCOFlMvueSEhP3J3F/NxFpWXYhJPIA2ko6n+rg
+	 mzCLKt1Hs9t1vNnJevtFvpIqpA/DoBumlJYZsRwb63Jv5ATLpQJhcXEv9uuXjfwyV8
+	 iBZwYXPaqPh+6DNHBY8Scn74/7A4HcBUr8ZwWsBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Benno Lossin <lossin@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.15 031/187] rust: init: Fix generics in *_init! macros
-Date: Tue, 22 Jul 2025 15:43:21 +0200
-Message-ID: <20250722134346.918055407@linuxfoundation.org>
+Subject: [PATCH 6.15 032/187] objtool/rust: add one more `noreturn` Rust function for Rust 1.89.0
+Date: Tue, 22 Jul 2025 15:43:22 +0200
+Message-ID: <20250722134346.953541759@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -66,74 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit fe49aae0fcb348b656bbde2eb1d1c75d8a1a5c3c upstream.
+commit aa7b65c2a29e8b07057b13624102c6810597c0d5 upstream.
 
-The match pattern for a optional trailing comma in the list of generics
-is erroneously repeated in the code block resulting in following error:
+Starting with Rust 1.89.0 (expected 2025-08-07), under
+`CONFIG_RUST_DEBUG_ASSERTIONS=y`, `objtool` may report:
 
-| error: attempted to repeat an expression containing no syntax variables matched as repeating at this depth
-|    --> rust/kernel/init.rs:301:73
-|     |
-| 301 |         ::pin_init::try_pin_init!($(&$this in)? $t $(::<$($generics),* $(,)?>)? {
-|     |                                                                         ^^^
+    rust/kernel.o: warning: objtool: _R..._6kernel4pageNtB5_4Page8read_raw()
+    falls through to next function _R..._6kernel4pageNtB5_4Page9write_raw()
 
-Remove "$(,)?" from all code blocks in the try_init! and try_pin_init!
-definitions.
+(and many others) due to calls to the `noreturn` symbol:
 
-Cc: stable@vger.kernel.org
-Fixes: 578eb8b6db13 ("rust: pin-init: move the default error behavior of `try_[pin_]init`")
-Signed-off-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Link: https://lore.kernel.org/r/20250628-rust_init_trailing_comma-v1-1-2d162ae1a757@jannau.net
+    core::panicking::panic_nounwind_fmt
+
+Thus add the mangled one to the list so that `objtool` knows it is
+actually `noreturn`.
+
+See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+for more details.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250712160103.1244945-2-ojeda@kernel.org
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/init.rs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/objtool/check.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 8d228c237954..21ef202ab0db 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -231,14 +231,14 @@ macro_rules! try_init {
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }) => {
--        ::pin_init::try_init!($(&$this in)? $t $(::<$($generics),* $(,)?>)? {
-+        ::pin_init::try_init!($(&$this in)? $t $(::<$($generics),*>)? {
-             $($fields)*
-         }? $crate::error::Error)
-     };
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }? $err:ty) => {
--        ::pin_init::try_init!($(&$this in)? $t $(::<$($generics),* $(,)?>)? {
-+        ::pin_init::try_init!($(&$this in)? $t $(::<$($generics),*>)? {
-             $($fields)*
-         }? $err)
-     };
-@@ -291,14 +291,14 @@ macro_rules! try_pin_init {
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }) => {
--        ::pin_init::try_pin_init!($(&$this in)? $t $(::<$($generics),* $(,)?>)? {
-+        ::pin_init::try_pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
-             $($fields)*
-         }? $crate::error::Error)
-     };
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }? $err:ty) => {
--        ::pin_init::try_pin_init!($(&$this in)? $t $(::<$($generics),* $(,)?>)? {
-+        ::pin_init::try_pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
-             $($fields)*
-         }? $err)
-     };
--- 
-2.50.1
-
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -224,6 +224,7 @@ static bool is_rust_noreturn(const struc
+ 	       str_ends_with(func->name, "_4core9panicking14panic_explicit")				||
+ 	       str_ends_with(func->name, "_4core9panicking14panic_nounwind")				||
+ 	       str_ends_with(func->name, "_4core9panicking18panic_bounds_check")			||
++	       str_ends_with(func->name, "_4core9panicking18panic_nounwind_fmt")			||
+ 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
+ 	       str_ends_with(func->name, "_4core9panicking30panic_null_pointer_dereference")		||
+ 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
 
 
 
