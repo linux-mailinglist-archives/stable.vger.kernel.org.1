@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-163946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C2FB0DC6E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CC3B0DBD7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 213A2166309
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:58:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19D4A565335
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D57328B3EC;
-	Tue, 22 Jul 2025 13:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B1E2EAB76;
+	Tue, 22 Jul 2025 13:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpugiUIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOlp6WCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF40288C01;
-	Tue, 22 Jul 2025 13:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63AA2E4271;
+	Tue, 22 Jul 2025 13:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192735; cv=none; b=h9qo+Af/pAAmMHg6Ni5mzBPLAvKdxUrb2kVlXXA8/Mc9rUZjDjDgX7w/Xm8oobozcm9ZRDBOPNJGOu6WBI72vbsuRF8R42ItUfhzNEY+x0lNUe6Ft5z2HVDVnic94/Ui/xtimWDtzHfdm1+KUAXPy6+1MLKclYGXCiIs8NagvIU=
+	t=1753192342; cv=none; b=YFF+J5JIUHrvwsQbCvLzyhl35SRRNON1hn1t58fQMMbxLNHxNSMUI3ec9DX8pq65y/SwLuoSeYMVkmGrGF1xNiaxjE7g2TLRq1wprdD7/+Yy3SayHR3B2rg7xoqRn9eVd1ctPnJanTXKnXRleEbyqxWanLK/HTiYL4OLccM8+wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192735; c=relaxed/simple;
-	bh=mbGIytzGu8stPNHRxTRguXGs8GJeUaUK2BG2BQvbV9s=;
+	s=arc-20240116; t=1753192342; c=relaxed/simple;
+	bh=oyuy1wK5aXUgnOEtfFsK1aYtZMBT20UsnV21QOjppmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cMWm8jXxEAeZlV4OdDuqyLzDtKLobgU7ECZ84rYoUCPj0e5PUf4uqGDAQkUHfg6Z5QbvJmQX5hfkVkOjRjqGdHv432hojU9gj8ZRPEiR4dZBWIPOW5Q6kRq87BwETcaBFsjeNxib5lNtEnucROl8854rQhUNSRtn0PE1CLSZsMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpugiUIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F078C4CEEB;
-	Tue, 22 Jul 2025 13:58:54 +0000 (UTC)
+	 MIME-Version; b=LN6kq1lfafrUKrNHcIEULkY72Db1YUGaNhY2yeX33jrMPnUAk34nbHw19lFv+8lQ8Zp3Ty01xUPGEYsR4ITt1PbF5eAp1MRyXBUoj1QYrrxgs4ip/4OGTjlZ3oko8wyg+CR5fhGqRXyx5g9KazsXL9SNy+YHpdjnepxI/x+b9I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOlp6WCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDC0C4CEF1;
+	Tue, 22 Jul 2025 13:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192735;
-	bh=mbGIytzGu8stPNHRxTRguXGs8GJeUaUK2BG2BQvbV9s=;
+	s=korg; t=1753192342;
+	bh=oyuy1wK5aXUgnOEtfFsK1aYtZMBT20UsnV21QOjppmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dpugiUIulrP5n590/HMeME6EH4RHCZNsSjAiiP89W4v+wK6N9fcNthYC9j4qpy+dj
-	 vl5txE1mCSeKu/1QPDGmpv8J7M5g9YsmM7PAJR92DVjifhdE1DjUKKh6/94W9rRfYf
-	 uIYnO2eQgq/T/4vlWdlkDtnfJ5IKKdQytxWhFE54=
+	b=jOlp6WCkSvLDXZgo+UzDCp02ZxEwWHZwmnhqgh6Tvhg6DqihG8VxOZCcRft+u0eW+
+	 0DOQWtYilAhwqWJ3ecJmXffNKk7mI7Q8XU6XEXNaic1BTPpuWaUQxHJvWQGpD8lq0Q
+	 k+yBOOtapdIHQxnt/hoRcJDnQ9Kmqc0SrgBJqz0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meng Li <Meng.Li@windriver.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.12 042/158] arm64: dts: add big-endian property back into watchdog node
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.6 011/111] thunderbolt: Fix bit masking in tb_dp_port_set_hops()
 Date: Tue, 22 Jul 2025 15:43:46 +0200
-Message-ID: <20250722134342.310377980@linuxfoundation.org>
+Message-ID: <20250722134333.797303661@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meng Li <Meng.Li@windriver.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 720fd1cbc0a0f3acdb26aedb3092ab10fe05e7ae upstream.
+commit 2cdde91c14ec358087f43287513946d493aef940 upstream.
 
-Watchdog doesn't work on NXP ls1046ardb board because in commit
-7c8ffc5555cb("arm64: dts: layerscape: remove big-endian for mmc nodes"),
-it intended to remove the big-endian from mmc node, but the big-endian of
-watchdog node is also removed by accident. So, add watchdog big-endian
-property back.
+The tb_dp_port_set_hops() function was incorrectly clearing
+ADP_DP_CS_1_AUX_RX_HOPID_MASK twice. According to the function's
+purpose, it should clear both TX and RX AUX HopID fields.  Replace the
+first instance with ADP_DP_CS_1_AUX_TX_HOPID_MASK to ensure proper
+configuration of both AUX directions.
 
-In addition, add compatible string fsl,ls1046a-wdt, which allow big-endian
-property.
-
-Fixes: 7c8ffc5555cb ("arm64: dts: layerscape: remove big-endian for mmc nodes")
+Fixes: 98176380cbe5 ("thunderbolt: Convert DP adapter register names to follow the USB4 spec")
 Cc: stable@vger.kernel.org
-Signed-off-by: Meng Li <Meng.Li@windriver.com>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/thunderbolt/switch.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
-index 0baf256b4400..983b2f0e8797 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
-@@ -687,11 +687,12 @@ lpuart5: serial@29a0000 {
- 		};
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -1465,7 +1465,7 @@ int tb_dp_port_set_hops(struct tb_port *
+ 		return ret;
  
- 		wdog0: watchdog@2ad0000 {
--			compatible = "fsl,imx21-wdt";
-+			compatible = "fsl,ls1046a-wdt", "fsl,imx21-wdt";
- 			reg = <0x0 0x2ad0000 0x0 0x10000>;
- 			interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(2)>;
-+			big-endian;
- 		};
+ 	data[0] &= ~ADP_DP_CS_0_VIDEO_HOPID_MASK;
+-	data[1] &= ~ADP_DP_CS_1_AUX_RX_HOPID_MASK;
++	data[1] &= ~ADP_DP_CS_1_AUX_TX_HOPID_MASK;
+ 	data[1] &= ~ADP_DP_CS_1_AUX_RX_HOPID_MASK;
  
- 		edma0: dma-controller@2c00000 {
--- 
-2.50.1
-
+ 	data[0] |= (video << ADP_DP_CS_0_VIDEO_HOPID_SHIFT) &
 
 
 
