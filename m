@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-164307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB8CB0E5F1
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 00:00:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 017CDB0E610
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 00:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CD29580B9D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 22:00:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31514AA2E87
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 22:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DA828640A;
-	Tue, 22 Jul 2025 21:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A29285C89;
+	Tue, 22 Jul 2025 22:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g3wEqRbC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1wcveUs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC2E28725E
-	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 21:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD45B284690
+	for <stable@vger.kernel.org>; Tue, 22 Jul 2025 22:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753221546; cv=none; b=BeJhlG6IxpFujnTntMM6sbMKB3bd+cBE14j39XZqqZJg7Cl866KVE4SAJhx3Wh8HhCwtW+jZXspXibIE44mcb4OweqasGcXhPZvosfWI6TPPKV56wSbyx194mc4QVKayhPvSyQ5RTXndONVF31KrB+KRBjqpbxEd8jFAJGYyQao=
+	t=1753221836; cv=none; b=apShPKl5IrHHzSIVQc2oX4uQRqiKqVRLaYqWB8gmgfLIy1+BepAn3HxP2r4q2DAFZnsKHOvKyH5KpEwU4gFHOxPvn6uAgRiiTP2nQQYW3tHIXb0LYNLw/eTWU3RLyKyG2ea+wCPzEcTbYGIBdIN52BLprLoaEKQ/Ntxo5aaet40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753221546; c=relaxed/simple;
-	bh=RI8dZDd9ZT4uQ4WozM+QBiu32S5R56TIBmk2cz2pnNE=;
+	s=arc-20240116; t=1753221836; c=relaxed/simple;
+	bh=epCI0xhNwFBfoMOPTDbq/c7NOQiOrgr71I9lOyVrqaY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AZJQ5/RjdJz27YPbFjlbkMjChA3dNC8r9EyaFlnQF3uw3zqbIhmxI0Yk1+piiDmkJtjdHgbknwp2rIHhfGWhaPnmvavej35zU1hy067Hkf3l4qa468uct046emnWNvf1AZ/d2Qx7M+FBRpbIOymuadEuXEs/YW8GtonCWRbftJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g3wEqRbC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AC5C4CEEB;
-	Tue, 22 Jul 2025 21:59:04 +0000 (UTC)
+	 MIME-Version; b=clz/jcPGORhihVmSqGw8OKg+NGnoSI3cJqhqW7FHqsJ6Pd5GFKg8ppF03fVYIdLCU18ktO7p3OtAT8n054n5Ic95NwIxyoVOMI1suWPEj3jjXG+8qdY1SkFS2jfePmPgcoo5sa7M8qK6hwIQ/U+J4H992LjAHGlNqrZudHIxOGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1wcveUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6C2C4CEEB;
+	Tue, 22 Jul 2025 22:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753221546;
-	bh=RI8dZDd9ZT4uQ4WozM+QBiu32S5R56TIBmk2cz2pnNE=;
+	s=k20201202; t=1753221836;
+	bh=epCI0xhNwFBfoMOPTDbq/c7NOQiOrgr71I9lOyVrqaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3wEqRbCIhhGEwmI7c4o9Qo1V8fgu7FKlvgcCn8danP9roxKUQcFDSXQmuPtSiarL
-	 8FnYg92Pwgk1APU1q94WspIujxJ6iyUUCh1x2DxZEULar0y7nT2v+BLJergRub5nlV
-	 Z8ml/TjQGrKxLDyXq5MQAtw+2Nfkck/vwk9dNDdVx613SQ4WwZ2gA65A0bCc938mFR
-	 fBm2P4xBNJAH8mJBqcoKD47l+8/CWrbeZcUN2Guh3v1ZlJ4cQstxYGFYsEEb6REAqm
-	 qXqXXOuFWEwS8WRT8+GDcmlsvpLdCVDX3bpwIkmRkzNQtiZiQJVMP1rdKxAocY9Tsl
-	 hPy0uR/gbmevA==
+	b=b1wcveUs8KDF2QGtXVXlKFtJ/kvqaE3GdPKplBjkSxn5GGZn5z8S64Js3Mlcqtsm6
+	 AcE2Mi3Ngn2QecKXbaCv3QcJWoPtyNKaEiU+Gby7+p2ZJQP1HxGoisq+ggPa7Vv4To
+	 VO5ElwCP8LHVa6t3M3+BgbXMZhNKb3jxY35vl1CtNOy6ftzNP3xsQn3tdIzUfA3wjh
+	 Aeb/HX/L+utJZx//1jNQJG4OpeTwYsaeaAJZAZ7c57U8TTpoo+Aaqm0eBpz5Gikdvr
+	 eCEieNkpuMH56DwPixLMCxW0sJ0X0Uguf812iOQrR3acU/dbG2vU63sTJW8OiS72dH
+	 XgVUZSYA4BJyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Wang Zhaolong <wangzhaolong@huaweicloud.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Ian Abbott <abbotti@mev.co.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] smb: client: fix use-after-free in crypt_message when using async crypto
-Date: Tue, 22 Jul 2025 17:59:01 -0400
-Message-Id: <20250722215901.981691-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y] comedi: Fix initialization of data for instructions that write to subdevice
+Date: Tue, 22 Jul 2025 18:03:52 -0400
+Message-Id: <20250722220352.981909-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025072141-jujitsu-ebay-6dbf@gregkh>
-References: <2025072141-jujitsu-ebay-6dbf@gregkh>
+In-Reply-To: <2025072152-submitter-sterile-1681@gregkh>
+References: <2025072152-submitter-sterile-1681@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,84 +60,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit b220bed63330c0e1733dc06ea8e75d5b9962b6b6 ]
+[ Upstream commit 46d8c744136ce2454aa4c35c138cc06817f92b8e ]
 
-The CVE-2024-50047 fix removed asynchronous crypto handling from
-crypt_message(), assuming all crypto operations are synchronous.
-However, when hardware crypto accelerators are used, this can cause
-use-after-free crashes:
+Some Comedi subdevice instruction handlers are known to access
+instruction data elements beyond the first `insn->n` elements in some
+cases.  The `do_insn_ioctl()` and `do_insnlist_ioctl()` functions
+allocate at least `MIN_SAMPLES` (16) data elements to deal with this,
+but they do not initialize all of that.  For Comedi instruction codes
+that write to the subdevice, the first `insn->n` data elements are
+copied from user-space, but the remaining elements are left
+uninitialized.  That could be a problem if the subdevice instruction
+handler reads the uninitialized data.  Ensure that the first
+`MIN_SAMPLES` elements are initialized before calling these instruction
+handlers, filling the uncopied elements with 0.  For
+`do_insnlist_ioctl()`, the same data buffer elements are used for
+handling a list of instructions, so ensure the first `MIN_SAMPLES`
+elements are initialized for each instruction that writes to the
+subdevice.
 
-  crypt_message()
-    // Allocate the creq buffer containing the req
-    creq = smb2_get_aead_req(..., &req);
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707161439.88385-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Based on the conflict resolution documentation and code analysis, the adaptation was:
 
-    // Async encryption returns -EINPROGRESS immediately
-    rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
-
-    // Free creq while async operation is still in progress
-    kvfree_sensitive(creq, ...);
-
-Hardware crypto modules often implement async AEAD operations for
-performance. When crypto_aead_encrypt/decrypt() returns -EINPROGRESS,
-the operation completes asynchronously. Without crypto_wait_req(),
-the function immediately frees the request buffer, leading to crashes
-when the driver later accesses the freed memory.
-
-This results in a use-after-free condition when the hardware crypto
-driver later accesses the freed request structure, leading to kernel
-crashes with NULL pointer dereferences.
-
-The issue occurs because crypto_alloc_aead() with mask=0 doesn't
-guarantee synchronous operation. Even without CRYPTO_ALG_ASYNC in
-the mask, async implementations can be selected.
-
-Fix by restoring the async crypto handling:
-- DECLARE_CRYPTO_WAIT(wait) for completion tracking
-- aead_request_set_callback() for async completion notification
-- crypto_wait_req() to wait for operation completion
-
-This ensures the request buffer isn't freed until the crypto operation
-completes, whether synchronous or asynchronous, while preserving the
-CVE-2024-50047 fix.
-
-Fixes: b0abcd65ec54 ("smb: client: fix UAF in async decryption")
-Link: https://lore.kernel.org/all/8b784a13-87b0-4131-9ff9-7a8993538749@huaweicloud.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+changed pointer notation insn->n to struct notation insn.n to match 5.4 code style ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2ops.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/staging/comedi/comedi_fops.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-index aa1acc698caa2..1297acb5bf8e5 100644
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -4302,6 +4302,7 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
- 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
- 	struct aead_request *req;
- 	u8 *iv;
-+	DECLARE_CRYPTO_WAIT(wait);
- 	unsigned int crypt_len = le32_to_cpu(tr_hdr->OriginalMessageSize);
- 	void *creq;
+diff --git a/drivers/staging/comedi/comedi_fops.c b/drivers/staging/comedi/comedi_fops.c
+index 8b2337f8303d8..9ce5d29365604 100644
+--- a/drivers/staging/comedi/comedi_fops.c
++++ b/drivers/staging/comedi/comedi_fops.c
+@@ -1567,21 +1567,27 @@ static int do_insnlist_ioctl(struct comedi_device *dev,
+ 	}
  
-@@ -4350,7 +4351,11 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
- 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
- 	aead_request_set_ad(req, assoc_data_len);
- 
--	rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
-+	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
-+				  crypto_req_done, &wait);
+ 	for (i = 0; i < insnlist.n_insns; ++i) {
++		unsigned int n = insns[i].n;
 +
-+	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req)
-+				: crypto_aead_decrypt(req), &wait);
- 
- 	if (!rc && enc)
- 		memcpy(&tr_hdr->Signature, sign, SMB2_SIGNATURE_SIZE);
+ 		if (insns[i].insn & INSN_MASK_WRITE) {
+ 			if (copy_from_user(data, insns[i].data,
+-					   insns[i].n * sizeof(unsigned int))) {
++					   n * sizeof(unsigned int))) {
+ 				dev_dbg(dev->class_dev,
+ 					"copy_from_user failed\n");
+ 				ret = -EFAULT;
+ 				goto error;
+ 			}
++			if (n < MIN_SAMPLES) {
++				memset(&data[n], 0, (MIN_SAMPLES - n) *
++						    sizeof(unsigned int));
++			}
+ 		}
+ 		ret = parse_insn(dev, insns + i, data, file);
+ 		if (ret < 0)
+ 			goto error;
+ 		if (insns[i].insn & INSN_MASK_READ) {
+ 			if (copy_to_user(insns[i].data, data,
+-					 insns[i].n * sizeof(unsigned int))) {
++					 n * sizeof(unsigned int))) {
+ 				dev_dbg(dev->class_dev,
+ 					"copy_to_user failed\n");
+ 				ret = -EFAULT;
+@@ -1648,6 +1654,10 @@ static int do_insn_ioctl(struct comedi_device *dev,
+ 			ret = -EFAULT;
+ 			goto error;
+ 		}
++		if (insn.n < MIN_SAMPLES) {
++			memset(&data[insn.n], 0,
++			       (MIN_SAMPLES - insn.n) * sizeof(unsigned int));
++		}
+ 	}
+ 	ret = parse_insn(dev, &insn, data, file);
+ 	if (ret < 0)
 -- 
 2.39.5
 
