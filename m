@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-163999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04066B0DC99
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A24B0DB54
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6661C2358A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:02:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6AC51C811EB
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B477523AB9D;
-	Tue, 22 Jul 2025 14:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28ADE242D8F;
+	Tue, 22 Jul 2025 13:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTQV03pn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzVctIqB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712C9A32;
-	Tue, 22 Jul 2025 14:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7637BAEC;
+	Tue, 22 Jul 2025 13:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192910; cv=none; b=AMFuDleON2jN6ifVSqEbUHQ/ePMMyCNBFkgzmiGLYJXTqqlqhJNkbGBvUNbbzGZxzZh+ESKDX61lPpWFLezw2ItlLhlHEZ4C554aoOhofLmnU1nYrJw4mGj93Too0YkGDpS9fcy8dsHWq3u/tOeuN1OBsrJCgeuJLU9W3YZ748A=
+	t=1753192110; cv=none; b=N/NfYA82D7wT6qFUgG0ppH17K/20zLbloeUfZdMM01Up3s95z0kcahiquC6yPQxdUjEGjHSLbwl5c0eRSYFRD5PWq6rH0BP/FodhBKC10wk28VwWc7q+dPmvXdHTJpZ8/eZAbIpsawS7G2gYm6hpJF4GhTa58KsJm7sgg89lIOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192910; c=relaxed/simple;
-	bh=MP3/+FIx8vzp/+EBHfIUmHssihXVQfKAw9I3jcsZxec=;
+	s=arc-20240116; t=1753192110; c=relaxed/simple;
+	bh=89xZKGsj3tuc0qpKAJhHUzheqTDpPAwkq/O8AT0Pbrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwGma/5YPqmiRLxvVSC0Yr4rmN+tC24fiJubDrKzBsVjV1CDmA/JnTUJCYF7a9zPAkzWGZXAM9Rlv/eqfTvJzszyGkIJ4rpD+Ps6Ygr8FE7E6XYkeLCPdg6ZqC/jvWIMXJhHUbEq3UAF4tqkP3/eFv68SOVbqTvWTUTXMR3tlHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTQV03pn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F23FC4CEEB;
-	Tue, 22 Jul 2025 14:01:49 +0000 (UTC)
+	 MIME-Version; b=Wko59NWlON2csKrv0PfCOwvhS4tt7BGPA1I3gIDeHuTANn7kda7SGjLS9FFIFNbV/YVgc/rAcJxouZ8EG9DJU5dKVBAmfJe+sQPmpDuhxdM0kv8uEy9YQptRvWKy9HT1kXPDkY05GX4fwZa7zOn1KDHDtZHxiseGNrUuYLF/Trc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzVctIqB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3D7C4CEEB;
+	Tue, 22 Jul 2025 13:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192909;
-	bh=MP3/+FIx8vzp/+EBHfIUmHssihXVQfKAw9I3jcsZxec=;
+	s=korg; t=1753192110;
+	bh=89xZKGsj3tuc0qpKAJhHUzheqTDpPAwkq/O8AT0Pbrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTQV03pnRQsbKGStpTMC+iUUUGEkIsrO+L21dlbCYXSpna6CoabBOaRSTy3bb37EX
-	 cDXyMEr82XX5aj4bG2QLVAP1rInLySzaqJgYX0q2G7g8dXYY6CrYaQMgaKDylJFtgZ
-	 ZF3bIfegxKBBsNCOaamyQLIkeTx7zZORXJzV+MBc=
+	b=dzVctIqB/iLkdy8SZh/gDhpjzjWreS/QxXFZIHXwljLC1Ipb/LfSiYXZ+SPNess7v
+	 f9ljDp93nywfIblGbY61X0gE38YfDE7OCcAJwhC1rLhjo6SS1NDRn6mHB4CzAbIGnG
+	 x3CIiflWHURT0BH9Rw8vfp4Hm1yQlZrlNSBFQ0Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 067/158] iio: accel: fxls8962af: Fix use after free in fxls8962af_fifo_flush
+	Nathan Chancellor <nathan@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 15/79] phonet/pep: Move call to pn_skb_get_dst_sockaddr() earlier in pep_sock_accept()
 Date: Tue, 22 Jul 2025 15:44:11 +0200
-Message-ID: <20250722134343.264774767@linuxfoundation.org>
+Message-ID: <20250722134328.944294046@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 1fe16dc1a2f5057772e5391ec042ed7442966c9a upstream.
+commit 17ba793f381eb813596d6de1cc6820bcbda5ed8b upstream.
 
-fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
-iio_for_each_active_channel()) without making sure the indio_dev
-stays in buffer mode.
-There is a race if indio_dev exits buffer mode in the middle of the
-interrupt that flushes the fifo. Fix this by calling
-synchronize_irq() to ensure that no interrupt is currently running when
-disabling buffer mode.
+A new warning in clang [1] points out a place in pep_sock_accept() where
+dst is uninitialized then passed as a const pointer to pep_find_pipe():
 
-Unable to handle kernel NULL pointer dereference at virtual address 00000000 when read
-[...]
-_find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
-fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
-fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
-irq_thread_fn from irq_thread+0x110/0x1f4
-irq_thread from kthread+0xe0/0xfc
-kthread from ret_from_fork+0x14/0x2c
+  net/phonet/pep.c:829:37: error: variable 'dst' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+    829 |         newsk = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
+        |                                            ^~~:
 
-Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
+Move the call to pn_skb_get_dst_sockaddr(), which initializes dst, to
+before the call to pep_find_pipe(), so that dst is consistently used
+initialized throughout the function.
+
 Cc: stable@vger.kernel.org
-Suggested-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250603-fxlsrace-v2-1-5381b36ba1db@geanix.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: f7ae8d59f661 ("Phonet: allocate sock from accept syscall rather than soft IRQ")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2101
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://patch.msgid.link/20250715-net-phonet-fix-uninit-const-pointer-v1-1-8efd1bd188b3@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/fxls8962af-core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/phonet/pep.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -865,6 +865,8 @@ static int fxls8962af_buffer_predisable(
- 	if (ret)
- 		return ret;
+--- a/net/phonet/pep.c
++++ b/net/phonet/pep.c
+@@ -826,6 +826,7 @@ static struct sock *pep_sock_accept(stru
+ 	}
  
-+	synchronize_irq(data->irq);
-+
- 	ret = __fxls8962af_fifo_set_mode(data, false);
+ 	/* Check for duplicate pipe handle */
++	pn_skb_get_dst_sockaddr(skb, &dst);
+ 	newsk = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
+ 	if (unlikely(newsk)) {
+ 		__sock_put(newsk);
+@@ -850,7 +851,6 @@ static struct sock *pep_sock_accept(stru
+ 	newsk->sk_destruct = pipe_destruct;
  
- 	if (data->enable_event)
+ 	newpn = pep_sk(newsk);
+-	pn_skb_get_dst_sockaddr(skb, &dst);
+ 	pn_skb_get_src_sockaddr(skb, &src);
+ 	newpn->pn_sk.sobject = pn_sockaddr_get_object(&dst);
+ 	newpn->pn_sk.dobject = pn_sockaddr_get_object(&src);
 
 
 
