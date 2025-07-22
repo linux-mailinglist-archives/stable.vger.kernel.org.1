@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-163952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3111FB0DC78
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:02:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B768B0DC85
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79E7D1678F5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F43B16A101
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D835C28B7EA;
-	Tue, 22 Jul 2025 13:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DAF288C01;
+	Tue, 22 Jul 2025 13:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M57eP/AI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vym7pX7j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98334288C01;
-	Tue, 22 Jul 2025 13:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F3628B7C2;
+	Tue, 22 Jul 2025 13:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192755; cv=none; b=BF/5isxx6TXFAFY/qprA3gaoTwht0d2OvdZ1afhaE2C12pNIjooGOqBlWFhzmCjXs++AfmyVy+RvblsnzrzzpgR+H4x1CanbjHx1iIlDbjuAgrLNuYEMwp7rNux8cMVY5CMjfXUrLkiU0jJgDFErXi9f36lX69OkXxYyWEN1SzM=
+	t=1753192792; cv=none; b=aaIWUN7eOf+vkOsCu5PEPpS57uZ09ewnjYtp8qkx5atMn1VXn9Yj6s4awSafv7+6wsZhJCgIPyfOAu8iSrYnaVkuwU2E3A8IwT2fBo5ZZuW6ftwrC6xhBhg8dFQHNH0di1LrGT2pXv8W6FagFBTawygC8uKiL/jI3CelwRX8Bl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192755; c=relaxed/simple;
-	bh=atazycSlGP97zp9ICzaIcL+FJxNVftlYn/DdB62puRI=;
+	s=arc-20240116; t=1753192792; c=relaxed/simple;
+	bh=aJXp+5bl6uMJnK5+5twbt7dSRtpr4LyIC5QO3g4Gs90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jujFejX9xvWPty3Zf63V3jf4XoP7uQX9Jom9kntnhaDq4eIPWmF3FmbQquUl0EJ4sMuJ24Auwmi7GWE5tLCV38wEpd90cS8SW8sp557Xzlq/am63/vrHmNQYFtWDxENW2yR1EyHyIrIUSySv7cALdi/cFk9/qziAaM/R7qHTEtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M57eP/AI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F88C4CEEB;
-	Tue, 22 Jul 2025 13:59:14 +0000 (UTC)
+	 MIME-Version; b=XnFOn8lKGbD1v32Mje9FrDBJtrHDtw3C3aHUvdhqAdUqRcFSEb6eLI+MF4Mz3qAaPxZ5iNLFLY123+SNA4C6DodDhR+2txUgVGMdmFRcrJYhmEuwWhvj6DS41s+MNQQdD++LKvNMGKrtMDwdCnaJnPJS20Rd1YV+ISUnDdJqHZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vym7pX7j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762DEC4CEEB;
+	Tue, 22 Jul 2025 13:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192755;
-	bh=atazycSlGP97zp9ICzaIcL+FJxNVftlYn/DdB62puRI=;
+	s=korg; t=1753192791;
+	bh=aJXp+5bl6uMJnK5+5twbt7dSRtpr4LyIC5QO3g4Gs90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M57eP/AIT7Tzeq0rQmKrK/OLYOQFVOHqEJtfmv9zc7KGY+uOSRxy9ae5lD6FJqLAP
-	 43o0WSKgHDUJQnywRWP1zB0PZMw46+WF/M+ySTk34ytOl/ki6mYByvJftyNBma90U8
-	 kRXTqYU9cn9M84S6Iyrsn4SFj15TBiE6mjb5PFFc=
+	b=Vym7pX7jKqaoe84hN7rk2P+GoD5og6M8FJk3foGBocnK0NLvXG6mascQnuKvzMuJ7
+	 llH9zPyrsWYv+digAkOjqJ/3CZ3GNYJfH6qqH0Z8Rm7oYWQq5d2CxrOhihbQk64uq2
+	 p9wlmHG/7PT4nkGwMdLLqsxex3WPFUV1UojSj8AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Melissa Wen <mwen@igalia.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 030/158] drm/amdgpu: Increase reset counter only on success
-Date: Tue, 22 Jul 2025 15:43:34 +0200
-Message-ID: <20250722134341.868086679@linuxfoundation.org>
+Subject: [PATCH 6.12 031/158] drm/amd/display: Disable CRTC degamma LUT for DCN401
+Date: Tue, 22 Jul 2025 15:43:35 +0200
+Message-ID: <20250722134341.906841900@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
 References: <20250722134340.596340262@linuxfoundation.org>
@@ -66,54 +68,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Melissa Wen <mwen@igalia.com>
 
-commit 86790e300d8b7bbadaad5024e308c52f1222128f upstream.
+commit 97a0f2b5f4d4afcec34376e4428e157ce95efa71 upstream.
 
-Increment the reset counter only if soft recovery succeeded. This is
-consistent with a ring hard reset behaviour where counter gets
-incremented only if hard reset succeeded.
+In DCN401 pre-blending degamma LUT isn't affecting cursor as in previous
+DCN version. As this is not the behavior close to what is expected for
+CRTC degamma LUT, disable CRTC degamma LUT property in this HW.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/4176
+---
+
+When enabling HDR on KDE, it takes the first CRTC 1D LUT available and
+apply a color transformation (Gamma 2.2 -> PQ). AMD driver usually
+advertises a CRTC degamma LUT as the first CRTC 1D LUT, but it's
+actually applied pre-blending. In previous HW version, it seems to work
+fine because the 1D LUT was applied to cursor too, but DCN401 presents a
+different behavior and the 1D LUT isn't affecting the hardware cursor.
+
+To address the wrong gamma on cursor with HDR (see the link), I came up
+with this patch that disables CRTC degamma LUT in this hw, since it
+presents a different behavior than others. With this KDE sees CRTC
+regamma LUT as the first post-blending 1D LUT available. This is
+actually more consistent with AMD color pipeline. It was tested by the
+reporter, since I don't have the HW available for local testing and
+debugging.
+
+Melissa
+---
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 25c314aa3ec3d30e4ee282540e2096b5c66a2437)
+(cherry picked from commit 340231cdceec2c45995d773a358ca3c341f151aa)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -439,6 +439,7 @@ bool amdgpu_ring_soft_recovery(struct am
- {
- 	unsigned long flags;
- 	ktime_t deadline;
-+	bool ret;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -731,7 +731,16 @@ int amdgpu_dm_crtc_init(struct amdgpu_di
+ 	 * support programmable degamma anywhere.
+ 	 */
+ 	is_dcn = dm->adev->dm.dc->caps.color.dpp.dcn_arch;
+-	drm_crtc_enable_color_mgmt(&acrtc->base, is_dcn ? MAX_COLOR_LUT_ENTRIES : 0,
++	/* Dont't enable DRM CRTC degamma property for DCN401 since the
++	 * pre-blending degamma LUT doesn't apply to cursor, and therefore
++	 * can't work similar to a post-blending degamma LUT as in other hw
++	 * versions.
++	 * TODO: revisit it once KMS plane color API is merged.
++	 */
++	drm_crtc_enable_color_mgmt(&acrtc->base,
++				   (is_dcn &&
++				    dm->adev->dm.dc->ctx->dce_version != DCN_VERSION_4_01) ?
++				     MAX_COLOR_LUT_ENTRIES : 0,
+ 				   true, MAX_COLOR_LUT_ENTRIES);
  
- 	if (unlikely(ring->adev->debug_disable_soft_recovery))
- 		return false;
-@@ -453,12 +454,16 @@ bool amdgpu_ring_soft_recovery(struct am
- 		dma_fence_set_error(fence, -ENODATA);
- 	spin_unlock_irqrestore(fence->lock, flags);
- 
--	atomic_inc(&ring->adev->gpu_reset_counter);
- 	while (!dma_fence_is_signaled(fence) &&
- 	       ktime_to_ns(ktime_sub(deadline, ktime_get())) > 0)
- 		ring->funcs->soft_recovery(ring, vmid);
- 
--	return dma_fence_is_signaled(fence);
-+	ret = dma_fence_is_signaled(fence);
-+	/* increment the counter only if soft reset worked */
-+	if (ret)
-+		atomic_inc(&ring->adev->gpu_reset_counter);
-+
-+	return ret;
- }
- 
- /*
+ 	drm_mode_crtc_set_gamma_size(&acrtc->base, MAX_COLOR_LEGACY_LUT_ENTRIES);
 
 
 
