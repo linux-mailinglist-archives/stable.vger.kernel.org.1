@@ -1,145 +1,122 @@
-Return-Path: <stable+bounces-163702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93E3B0D9A7
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:30:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45DC5B0D99A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D98541885876
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 12:30:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75454544732
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 12:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827682E9EA4;
-	Tue, 22 Jul 2025 12:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7A92E2F05;
+	Tue, 22 Jul 2025 12:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="C/Oa7IzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrU3JwKI"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00190b01.pphosted.com (mx0a-00190b01.pphosted.com [67.231.149.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A652E2F04;
-	Tue, 22 Jul 2025 12:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDC138FA6;
+	Tue, 22 Jul 2025 12:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753187375; cv=none; b=KaYqC6hj2ILCVJC2x0x8Czj3vRA7lLKKlwiPUBLXCuyHQYbaOi+aOExV+7vLYVrHSqK7dKif0KbJzpi3QIPhdTkafMBw3OBh0EY8U0cJJ4MNFLZ2rSgJrYnKxzxLPR+Nla6GQEiuyDgm7MQGdwih+BIjWfdEdFmUcTOOvjSw4LY=
+	t=1753187345; cv=none; b=NTVEgcmVmJdwK6F3fjYdyy6sEQDd4kTN/VSNgjlBz+GzmVeL33ACuXN0zsJk6nCcDxtKrKSLeX6VnFUPekd/PRJQiZYop4sJ+F0Th4LDpF+Umnaw1PGrthsboBymusLp2HLf6TxFAfxoNVujzluLaVDHMvT/i+qyKbbqFT346c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753187375; c=relaxed/simple;
-	bh=H6bvARozgPG1wqUKeZIQSmayUowJ0OhxNhPVUX87UPo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VmEepsrp+WXZM7kogcEnTiDmfEprxeHBofTNa2bxYNvH3qrb1RcbDroGNUtdPZoCZsFDtXSovVbAHNcQmtYLv1N7NoP2tx9fk66tiE3EgDrMUc8C9VHWbB4kue+rCN/3hsLbhSttTK7LWdiznRhjvltJk6NQ+6qkQMqgitvrNK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=C/Oa7IzQ; arc=none smtp.client-ip=67.231.149.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
-Received: from pps.filterd (m0122332.ppops.net [127.0.0.1])
-	by mx0a-00190b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56MC8Gvl025577;
-	Tue, 22 Jul 2025 13:29:08 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=jan2016.eng; bh=iw9zjpJXKCZsEgNg5I4C
-	o8x8E+jUJm1BJg8AN+fVQH8=; b=C/Oa7IzQHezJch+9gDd+fdmMblDbs+/VTrT9
-	YRKYrHrvpuZrwQ9/MgZE1hR1bKs6P4kWP7/YPa5Xq9BGTRgw333PrdJhma4uTDSA
-	rXPQL2xoo+CWXQg0xPB3IN3p09f3gqrUBikMApmI06h90p5/D0jIEL8+XYM7WC9l
-	LiKUKxrvxMnBp7VgOeai3Ke+mlbYex73OxOn+p1t9eBRCjBQpbM3uJWkTV5yZzlY
-	R90GyLlc6b9DSh1Pj/9Xy5uq5ON3OutUykndWK3D5nDPsguqz1ahH4wQsWlkykeB
-	nqhOzKhinsqTNWS/JK5dhzFfsMOQxwHw9hGxWAvcfOPW4Pg7eA==
-Received: from prod-mail-ppoint7 (a72-247-45-33.deploy.static.akamaitechnologies.com [72.247.45.33] (may be forged))
-	by mx0a-00190b01.pphosted.com (PPS) with ESMTPS id 4804980hqe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Jul 2025 13:29:07 +0100 (BST)
-Received: from pps.filterd (prod-mail-ppoint7.akamai.com [127.0.0.1])
-	by prod-mail-ppoint7.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id 56MAR5Zs022022;
-	Tue, 22 Jul 2025 08:29:06 -0400
-Received: from email.msg.corp.akamai.com ([172.27.91.22])
-	by prod-mail-ppoint7.akamai.com (PPS) with ESMTPS id 4806px6fda-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Jul 2025 08:29:06 -0400
-Received: from usma1ex-dag4mb4.msg.corp.akamai.com (172.27.91.23) by
- usma1ex-dag4mb3.msg.corp.akamai.com (172.27.91.22) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Tue, 22 Jul 2025 08:29:05 -0400
-Received: from bos-lhvzmp.bos01.corp.akamai.com (172.28.221.177) by
- usma1ex-dag4mb4.msg.corp.akamai.com (172.27.91.23) with Microsoft SMTP Server
- id 15.2.1748.26 via Frontend Transport; Tue, 22 Jul 2025 08:29:05 -0400
-Received: by bos-lhvzmp.bos01.corp.akamai.com (Postfix, from userid 42339)
-	id A323C15F582; Tue, 22 Jul 2025 08:29:05 -0400 (EDT)
-From: Michael Zhivich <mzhivich@akamai.com>
-To: <stable@vger.kernel.org>, <bp@alien8.de>
-CC: <tglx@linutronix.de>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-        <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
-        Michael Zhivich
-	<mzhivich@akamai.com>
-Subject: [PATCH v2] x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
-Date: Tue, 22 Jul 2025 08:28:44 -0400
-Message-ID: <20250722122844.2199661-1-mzhivich@akamai.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1753187345; c=relaxed/simple;
+	bh=agCvsFi3mrQg5yU7w0G/sKmhRPc+EfkR79PXNC2mctk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fCXKCpb0N6X1UPOZIaDrnMsbpX7xGfqEtMmRRKLYQM239QqQzD0iVuOeGgKBwVDyIiYsoHdvdH1uSFQB9LZ33YzoZWfnAWelgRs2UEEjgjMQbCb7PCYwGe7FCKBG8Qj7yF3+tHd+Wb1y2WJSdGF+K5FPfqcgPqV4qE3ZcbxqkGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrU3JwKI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D008EC4CEEB;
+	Tue, 22 Jul 2025 12:29:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753187345;
+	bh=agCvsFi3mrQg5yU7w0G/sKmhRPc+EfkR79PXNC2mctk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xrU3JwKIOmct0nO0nAI/xLltFRR1MjWW/AZ7kfQTtBDjz91IC+OLzYDZ0xs5WIOUj
+	 HY1znfdKhQj3+q1QlKGPzPNvBbTM76IB6QZj9Ax/XbtgEn3pdoCc9Yzr6AAUzfDG7f
+	 aj5R/acFr02ztGtUuzQ5q7HWb0F20wswHqK7+99I=
+Date: Tue, 22 Jul 2025 14:29:02 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Stefan Metzmacher <metze@samba.org>
+Cc: Sasha Levin <sashal@kernel.org>, Stable <stable@vger.kernel.org>,
+	stable-commits@vger.kernel.org, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Steve French <smfrench@gmail.com>
+Subject: Re: Patch "smb: client: make use of common
+ smbdirect_socket_parameters" has been added to the 6.12-stable tree
+Message-ID: <2025072253-blend-fondue-a487@gregkh>
+References: <20250629142801.1093341-1-sashal@kernel.org>
+ <e3d3d647-12a7-4e17-9206-25d03304ac65@samba.org>
+ <CAH2r5muFzLct62LPL-1rE35X9Ps+ghxGk=J0FQPfLXwQeTXc6w@mail.gmail.com>
+ <73624e22-5421-492c-8725-88284f976dc9@samba.org>
+ <2025070824-untreated-bouncing-deb0@gregkh>
+ <28fde5eb-42d0-4e41-b048-d5b6f1593bcf@samba.org>
+ <2025071523-recant-from-b56a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-22_02,2025-07-21_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 spamscore=0 phishscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507220101
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDEwMiBTYWx0ZWRfX8wo69AXnXZdu
- HIjxXgqXVGoc3VZcxhXGIGTQ8URhBpcvUIdsx20z3vY/YDi6A7RS4ZVd5Opf8rQrNEEbYpfu/6i
- WHRi55s5WfPOjuO2/7vveQp4Y4krsO16vKcQaNFrKlVVl5mqrG8ys4d/LRPyVD48R8dtJ+Cy+J+
- ofgI9GHl8f1dQ5sSRr4/OxFgvtyY1jIVDkBlbyBaIjyQxgygEqYxOq083DqDe3AA8ojVU6A6sEx
- 2Co4ETAVmAxnKHiO6DOrO19ma7iov0lQXe6CNN73YDM371zjZ4K1SPZfVJZ1vHPTB0vzkK/7iA/
- rlGVz+jCtm07QZxMONZrbEDCKrDKz3GVzMhzro6ZjAItVWNX+EoZ6YA00qDFUIYfxd8hgBNSJou
- v5cmsI0EhNUoeyFxVpkbpGzxqm5ebm+2ufC3iEiWuiY1AQXmwbOhM32U44s69aqnyxUkUr7s
-X-Proofpoint-GUID: kcexfW2z2x8Rgo-taRY0L8EXvUTwYDst
-X-Proofpoint-ORIG-GUID: kcexfW2z2x8Rgo-taRY0L8EXvUTwYDst
-X-Authority-Analysis: v=2.4 cv=H8Pbw/Yi c=1 sm=1 tr=0 ts=687f8413 cx=c_pps
- a=3lD5tZmBJQAvN++OlPJl4w==:117 a=3lD5tZmBJQAvN++OlPJl4w==:17
- a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=X7Ea-ya5AAAA:8 a=pmTPSbCVOfBdVNymtuMA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-22_02,2025-07-21_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxlogscore=893 priorityscore=1501 impostorscore=0 lowpriorityscore=0
- malwarescore=0 suspectscore=0 mlxscore=0 adultscore=0 phishscore=0
- bulkscore=0 clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507220102
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025071523-recant-from-b56a@gregkh>
 
-For kernels compiled with CONFIG_INIT_STACK_NONE=y, the value of __reserved
-field in zen_patch_rev union on the stack may be garbage.  If so, it will
-prevent correct microcode check when consulting p.ucode_rev, resulting in
-incorrect mitigation selection.
+On Tue, Jul 15, 2025 at 06:39:39PM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Jul 15, 2025 at 05:57:10PM +0200, Stefan Metzmacher wrote:
+> > Hi Greg,
+> > 
+> > > > any reason why this is only backported to 6.12, but not 6.15?
+> > > 
+> > > Looks like Sasha's scripts missed them, thanks for catching.  We need to
+> > > run the "what patches are only in older trees" script again one of these
+> > > days to sweep all of these up...
+> > > 
+> > > > I'm looking at v6.15.5 and v6.12.36 and the following are missing
+> > > > from 6.15:
+> > > > 
+> > > > bced02aca343 David Howells Wed Apr 2 20:27:26 2025 +0100 cifs: Fix reading into an ITER_FOLIOQ from the smbdirect code
+> > > > 87dcc7e33fc3 David Howells Wed Jun 25 14:15:04 2025 +0100 cifs: Fix the smbd_response slab to allow usercopy
+> > > > b8ddcca4391e Stefan Metzmacher Wed May 28 18:01:40 2025 +0200 smb: client: make use of common smbdirect_socket_parameters
+> > > > 69cafc413c2d Stefan Metzmacher Wed May 28 18:01:39 2025 +0200 smb: smbdirect: introduce smbdirect_socket_parameters
+> > > > c39639bc7723 Stefan Metzmacher Wed May 28 18:01:37 2025 +0200 smb: client: make use of common smbdirect_socket
+> > > > f4b05342c293 Stefan Metzmacher Wed May 28 18:01:36 2025 +0200 smb: smbdirect: add smbdirect_socket.h
+> > > > a6ec1fcafd41 Stefan Metzmacher Wed May 28 18:01:33 2025 +0200 smb: smbdirect: add smbdirect.h with public structures
+> > > > 6509de31b1b6 Stefan Metzmacher Wed May 28 18:01:31 2025 +0200 smb: client: make use of common smbdirect_pdu.h
+> > > > a9bb4006c4f3 Stefan Metzmacher Wed May 28 18:01:30 2025 +0200 smb: smbdirect: add smbdirect_pdu.h with protocol definitions
+> > > > 
+> > > > With these being backported to 6.15 too, the following is missing in
+> > > > both:
+> > > > 
+> > > > commit 1944f6ab4967db7ad8d4db527dceae8c77de76e9
+> > > > Author:     Stefan Metzmacher <metze@samba.org>
+> > > > AuthorDate: Wed Jun 25 10:16:38 2025 +0200
+> > > > Commit:     Steve French <stfrench@microsoft.com>
+> > > > CommitDate: Wed Jun 25 11:12:54 2025 -0500
+> > > > 
+> > > >      smb: client: let smbd_post_send_iter() respect the peers max_send_size and transmit all data
+> > > > 
+> > > > As it was marked as
+> > > > Cc: <stable+noautosel@kernel.org> # sp->max_send_size should be info->max_send_size in backports
+> > > > 
+> > > > But now that the patches up to b8ddcca4391e are backported it can be cherry-picked just
+> > > > fine to both branches.
+> > > 
+> > > Ok, will do.  I think I might have dropped these from 6.15 previously as
+> > > the "noautosel" tag threw me...
+> > 
+> > Any idea when this will happen?
+> 
+> Ugh, sorry, missed that this release cycle, I'll do it next one, my
+> fault.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by:  Michael Zhivich <mzhivich@akamai.com>
-Fixes: 7a0395f6607a5 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
----
+Sorry for the delay, now all queued up.
 
-Changes in v2:
-- Rework patch per feedback
-- Add Cc: stable
-
- arch/x86/kernel/cpu/amd.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index efd42ee9d1cc..289ff197b1b3 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -378,6 +378,8 @@ static bool amd_check_tsa_microcode(void)
- 	p.model		= c->x86_model;
- 	p.ext_model	= c->x86_model >> 4;
- 	p.stepping	= c->x86_stepping;
-+	/* reserved bits are expected to be 0 in test below */
-+	p.__reserved    = 0;
- 
- 	if (cpu_has(c, X86_FEATURE_ZEN3) ||
- 	    cpu_has(c, X86_FEATURE_ZEN4)) {
--- 
-2.34.1
-
+greg k-h
 
