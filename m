@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D24B0DC91
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3173B0DBB5
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:52:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AF8E3B3106
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B33C1C828D7
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB9B28B507;
-	Tue, 22 Jul 2025 13:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61232E2F10;
+	Tue, 22 Jul 2025 13:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWq4oxwS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5weAqrP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A2F7263D;
-	Tue, 22 Jul 2025 13:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7336B2B9A5;
+	Tue, 22 Jul 2025 13:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192765; cv=none; b=jMzZj9YTu6msbmu7rBj5JyDXHLuJV3LGIrgmZSfeyvPaP/UXbZovDiCSUd7Qc2QDI77DqrWrCZr8+emeuEQhGKNFpmDbny6Afi9HL9gtstFVosrHfEv4CFxN3BVHMTESkcWdK2tohryuHfbYMURbqZoZSfEIWx3RDsXMKKf9fUA=
+	t=1753192284; cv=none; b=JzmYfuGty21Fy1B54n8ewsCmCpmdm4XiW42h3FbmyeHayo3lexNmLEevztSa6O6dVOO9mTFE4w2Q1+uBkNPnGWw0xWZp5hDqgMi9C/a+E3eSdA0J1n2pvofdvQ0FL85zkF8AzLULKHsTkq3GlwaApr1KoaqDxcgrqStcx70Jm9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192765; c=relaxed/simple;
-	bh=B3ZVGUxH1Fq1EcWpjCIUvu9Pfunkdc5E3VVj6a8vmUk=;
+	s=arc-20240116; t=1753192284; c=relaxed/simple;
+	bh=nOuXSAcyYZ3NK7k1gijOE1FmqA/Z1osXRLQpvbgpiU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUnsQAVQk1AzgIROmsxG+a27to1r3fajtCYjIGUCayQyl0IlnWHKq3l7CN3YKBv125TAOdAeh+GZICGpxXSffw5m0FxlV0iY8oSuhzHc3MeiKxLkQpAUXMDRbdK6EUtuDiX9YC5XIl6n1KtkulxAN0yVYHTdlvdzGdgzHsV3w/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWq4oxwS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8A7C4CEEB;
-	Tue, 22 Jul 2025 13:59:24 +0000 (UTC)
+	 MIME-Version; b=BZfoqfGsAP6PlZQp1BatdaOlXWWzBDJVrxTc3sZUWNekq71k6FhCPyRz6ydURIU1gsuX0SZHXOQv8m5cyhSMiXtiH20b2Sky1BEijJDCgT1sZVAW4p6wUdftI/XKnVsCaK3einj6kERxUsYvLkaAVI72Wkh1ErjmBqvO2nNn3MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5weAqrP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CB0C4CEEB;
+	Tue, 22 Jul 2025 13:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192765;
-	bh=B3ZVGUxH1Fq1EcWpjCIUvu9Pfunkdc5E3VVj6a8vmUk=;
+	s=korg; t=1753192284;
+	bh=nOuXSAcyYZ3NK7k1gijOE1FmqA/Z1osXRLQpvbgpiU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WWq4oxwSWukhcWPvIiSAagqalKZtA4o543Udub15wvPY7yZDpqO/m1Af2Lo31IMnT
-	 /X7ZR+yb6/4yZTawOtktSVmJzl2Dg2hUuEOdTFpEs2qLuBuSCXeq4jo6AGeEzW6GSP
-	 3TCLtqCiLl/d5hLhOcKP7zBYBxKQDHm4v1RPs9hU=
+	b=x5weAqrPfyfzL4kKNaBnXRWY656uXsrzq8i5cFjQl7GLTehGj//7ACS6pzc7enU3h
+	 uM2dLoBGbQ/p/aG1Q1BQBazQYy0Ki4xuCwfxMiFVXUpqMIjfkYmNzGqoTRRCnkEkya
+	 CE20cwuIaPxEdtLZHWM2hkM1oQ+TN2kkJFyOFrog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sean Rhodes <sean@starlabs.systems>
-Subject: [PATCH 6.12 050/158] Bluetooth: btintel: Check if controller is ISO capable on btintel_classify_pkt_type
-Date: Tue, 22 Jul 2025 15:43:54 +0200
-Message-ID: <20250722134342.599709958@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.6 020/111] tracing/probes: Avoid using params uninitialized in parse_btf_arg()
+Date: Tue, 22 Jul 2025 15:43:55 +0200
+Message-ID: <20250722134334.147507401@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 6ec3185fbc3528f2284c347fb9bd8be6fa672ed4 upstream.
+commit 1ed171a3afe81531b3ace96bd151a372dda3ee25 upstream.
 
-Due to what seem to be a bug with variant version returned by some
-firmwares the code may set hdev->classify_pkt_type with
-btintel_classify_pkt_type when in fact the controller doesn't even
-support ISO channels feature but may use the handle range expected from
-a controllers that does causing the packets to be reclassified as ISO
-causing several bugs.
+After a recent change in clang to strengthen uninitialized warnings [1],
+it points out that in one of the error paths in parse_btf_arg(), params
+is used uninitialized:
 
-To fix the above btintel_classify_pkt_type will attempt to check if the
-controller really supports ISO channels and in case it doesn't don't
-reclassify even if the handle range is considered to be ISO, this is
-considered safer than trying to fix the specific controller/firmware
-version as that could change over time and causing similar problems in
-the future.
+  kernel/trace/trace_probe.c:660:19: warning: variable 'params' is uninitialized when used here [-Wuninitialized]
+    660 |                         return PTR_ERR(params);
+        |                                        ^~~~~~
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219553
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2100565
-Link: https://github.com/StarLabsLtd/firmware/issues/180
-Fixes: f25b7fd36cc3 ("Bluetooth: Add vendor-specific packet classification for ISO data")
+Match many other NO_BTF_ENTRY error cases and return -ENOENT, clearing
+up the warning.
+
+Link: https://lore.kernel.org/all/20250715-trace_probe-fix-const-uninit-warning-v1-1-98960f91dd04@kernel.org/
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: Sean Rhodes <sean@starlabs.systems>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2110
+Fixes: d157d7694460 ("tracing/probes: Support BTF field access from $retval")
+Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btintel.c |    2 +-
+ kernel/trace/trace_probe.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -2656,7 +2656,7 @@ static u8 btintel_classify_pkt_type(stru
- 	 * Distinguish ISO data packets form ACL data packets
- 	 * based on their connection handle value range.
- 	 */
--	if (hci_skb_pkt_type(skb) == HCI_ACLDATA_PKT) {
-+	if (iso_capable(hdev) && hci_skb_pkt_type(skb) == HCI_ACLDATA_PKT) {
- 		__u16 handle = __le16_to_cpu(hci_acl_hdr(skb)->handle);
- 
- 		if (hci_handle(handle) >= BTINTEL_ISODATA_HANDLE_BASE)
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -656,7 +656,7 @@ static int parse_btf_arg(char *varname,
+ 		ret = query_btf_context(ctx);
+ 		if (ret < 0 || ctx->nr_params == 0) {
+ 			trace_probe_log_err(ctx->offset, NO_BTF_ENTRY);
+-			return PTR_ERR(params);
++			return -ENOENT;
+ 		}
+ 	}
+ 	params = ctx->params;
 
 
 
