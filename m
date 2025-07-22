@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-163846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAEDBB0DBEB
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5731B0DC92
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43D0F166952
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784E91894C85
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B722EA15A;
-	Tue, 22 Jul 2025 13:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE93219CCEC;
+	Tue, 22 Jul 2025 14:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQmRItMf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkTBeNgz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7967A32;
-	Tue, 22 Jul 2025 13:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE93B1A2C25;
+	Tue, 22 Jul 2025 14:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192403; cv=none; b=dGW8KlxMT9ZuJwn7FRZnfWiSCQ59qRy/YJO6sBJ3EV5dFzaYuBWwF4Hk9EafOD0iPLEfiOFVh5Hci9ur7ZwZWop1MTBG/dA6W/V4MIV7QhZ0EdWwts/QLvawmZEeXrfRPJvb+zyQcvRrkpw9LJpQ0usY+GGlYyJ0/KHOxM9Ystw=
+	t=1753192887; cv=none; b=TwyruWtK4IRRyilEH7Ec4Y3zgrQCtDzObjYdYKV5Mh4ZvGZM9zxfkcbzHhQEzDuGAj8YoJYon156OBQgRBkHymrapiBTA3xKc8R3B12SrFfxQiREdbfn/Nn6iUoIleoL+0N2PgN5dH4FeImyVd6+pnE5BC7Nx1u9vsGFmQkID8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192403; c=relaxed/simple;
-	bh=LV0d7vGdGG10/TQUReYgLyajSgJ+wcnYLSn4EAFr89c=;
+	s=arc-20240116; t=1753192887; c=relaxed/simple;
+	bh=XEKahlblWpzp5pl3JVAtkfpzyYFsnKPpr10FOwxNt9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajRKhscbdffujijphgE6HNf/32LayQwVvNDzzkHVlAl4h8tX5BMKar6mhBUwzAvdz5kCa/jHQms0kUAsZua0hnOvW7ugfjhmOVcAdd/1xUq+CnENqPNrRIFfe/WeH02GqnFMnRwgpf4tnHSrrDDlXTLbFatJGCmf3EARIKjdHZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQmRItMf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEE8C4CEF5;
-	Tue, 22 Jul 2025 13:53:23 +0000 (UTC)
+	 MIME-Version; b=e8twUZ775MAoyB1NxIpFOwYNqx9C37jBeHbW+YsE/scJPpr6Ddm6GlkqriM5yYsZVL1erTJQfqQA6oPsj/745Vo4Tya0WjXVwGT+uXdF/arYfxmjvy97PmudRil4Wf3ChWQ+53f+u5vaA+T+tJiXnRacQF6S8Po+JY54nGiomqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkTBeNgz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE88C4CEF5;
+	Tue, 22 Jul 2025 14:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192403;
-	bh=LV0d7vGdGG10/TQUReYgLyajSgJ+wcnYLSn4EAFr89c=;
+	s=korg; t=1753192887;
+	bh=XEKahlblWpzp5pl3JVAtkfpzyYFsnKPpr10FOwxNt9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQmRItMfFR/r7SCPBi9kxck56Z3IUP+CA+bY0O/lEADohoBSs/uoNH1/2f8Knew/a
-	 59ZUY786oNlgEkiNPjs7Y7SccHAsHYK+/xxaPfGdmDTR3SJK05qf9Fh73tR6hAhhgQ
-	 kNXMVBGD4n20WH25OqRPFYB9Cv2C4I2bf2Zk3DHo=
+	b=FkTBeNgzrddTjfBH6/1e29Xlz5rit8IKgu1qLXdqfkyxFQurZFDGbewl7/4kaRcLu
+	 JgSODlaUALeabah1sLatjgbWKNQDVLaxXnbcizN5vI/DVTPrip5XsjC0FEEp/tjSjF
+	 d4k4dLin0VsyAkuHDlSNnVWdProGecM17EXZaDMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d6995b62e5ac7d79557a@syzkaller.appspotmail.com,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.6 055/111] comedi: Fail COMEDI_INSNLIST ioctl if n_insns is too large
-Date: Tue, 22 Jul 2025 15:44:30 +0200
-Message-ID: <20250722134335.438210133@linuxfoundation.org>
+	syzbot+e2c932aec5c8a6e1d31c@syzkaller.appspotmail.com,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 087/158] bpf: Reject %p% format string in bprintf-like helpers
+Date: Tue, 22 Jul 2025 15:44:31 +0200
+Message-ID: <20250722134344.013281054@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-commit 08ae4b20f5e82101d77326ecab9089e110f224cc upstream.
+[ Upstream commit f8242745871f81a3ac37f9f51853d12854fd0b58 ]
 
-The handling of the `COMEDI_INSNLIST` ioctl allocates a kernel buffer to
-hold the array of `struct comedi_insn`, getting the length from the
-`n_insns` member of the `struct comedi_insnlist` supplied by the user.
-The allocation will fail with a WARNING and a stack dump if it is too
-large.
+static const char fmt[] = "%p%";
+    bpf_trace_printk(fmt, sizeof(fmt));
 
-Avoid that by failing with an `-EINVAL` error if the supplied `n_insns`
-value is unreasonable.
+The above BPF program isn't rejected and causes a kernel warning at
+runtime:
 
-Define the limit on the `n_insns` value in the `MAX_INSNS` macro.  Set
-this to the same value as `MAX_SAMPLES` (65536), which is the maximum
-allowed sum of the values of the member `n` in the array of `struct
-comedi_insn`, and sensible comedi instructions will have an `n` of at
-least 1.
+    Please remove unsupported %\x00 in format string
+    WARNING: CPU: 1 PID: 7244 at lib/vsprintf.c:2680 format_decode+0x49c/0x5d0
 
-Reported-by: syzbot+d6995b62e5ac7d79557a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d6995b62e5ac7d79557a
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Tested-by: Ian Abbott <abbotti@mev.co.uk>
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250704120405.83028-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This happens because bpf_bprintf_prepare skips over the second %,
+detected as punctuation, while processing %p. This patch fixes it by
+not skipping over punctuation. %\x00 is then processed in the next
+iteration and rejected.
+
+Reported-by: syzbot+e2c932aec5c8a6e1d31c@syzkaller.appspotmail.com
+Fixes: 48cac3f4a96d ("bpf: Implement formatted output helpers with bstr_printf")
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/a0e06cc479faec9e802ae51ba5d66420523251ee.1751395489.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/comedi_fops.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ kernel/bpf/helpers.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -1589,6 +1589,16 @@ error:
- 	return i;
- }
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 9173d107758d4..6cf165c55bdac 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -883,6 +883,13 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+ 		if (fmt[i] == 'p') {
+ 			sizeof_cur_arg = sizeof(long);
  
-+#define MAX_INSNS   MAX_SAMPLES
-+static int check_insnlist_len(struct comedi_device *dev, unsigned int n_insns)
-+{
-+	if (n_insns > MAX_INSNS) {
-+		dev_dbg(dev->class_dev, "insnlist length too large\n");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
++			if (fmt[i + 1] == 0 || isspace(fmt[i + 1]) ||
++			    ispunct(fmt[i + 1])) {
++				if (tmp_buf)
++					cur_arg = raw_args[num_spec];
++				goto nocopy_fmt;
++			}
 +
- /*
-  * COMEDI_INSN ioctl
-  * synchronous instruction
-@@ -2239,6 +2249,9 @@ static long comedi_unlocked_ioctl(struct
- 			rc = -EFAULT;
- 			break;
- 		}
-+		rc = check_insnlist_len(dev, insnlist.n_insns);
-+		if (rc)
-+			break;
- 		insns = kcalloc(insnlist.n_insns, sizeof(*insns), GFP_KERNEL);
- 		if (!insns) {
- 			rc = -ENOMEM;
-@@ -3090,6 +3103,9 @@ static int compat_insnlist(struct file *
- 	if (copy_from_user(&insnlist32, compat_ptr(arg), sizeof(insnlist32)))
- 		return -EFAULT;
+ 			if ((fmt[i + 1] == 'k' || fmt[i + 1] == 'u') &&
+ 			    fmt[i + 2] == 's') {
+ 				fmt_ptype = fmt[i + 1];
+@@ -890,11 +897,9 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+ 				goto fmt_str;
+ 			}
  
-+	rc = check_insnlist_len(dev, insnlist32.n_insns);
-+	if (rc)
-+		return rc;
- 	insns = kcalloc(insnlist32.n_insns, sizeof(*insns), GFP_KERNEL);
- 	if (!insns)
- 		return -ENOMEM;
+-			if (fmt[i + 1] == 0 || isspace(fmt[i + 1]) ||
+-			    ispunct(fmt[i + 1]) || fmt[i + 1] == 'K' ||
++			if (fmt[i + 1] == 'K' ||
+ 			    fmt[i + 1] == 'x' || fmt[i + 1] == 's' ||
+ 			    fmt[i + 1] == 'S') {
+-				/* just kernel pointers */
+ 				if (tmp_buf)
+ 					cur_arg = raw_args[num_spec];
+ 				i++;
+-- 
+2.39.5
+
 
 
 
