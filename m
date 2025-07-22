@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-163819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360A8B0DBDE
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C51B0DB36
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8BBC3B26C8
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A919F547F50
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0223B2EACF6;
-	Tue, 22 Jul 2025 13:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B912E36E8;
+	Tue, 22 Jul 2025 13:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="au70g8v3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUegOAyM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFBA2EA15C;
-	Tue, 22 Jul 2025 13:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84C9433A8;
+	Tue, 22 Jul 2025 13:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192312; cv=none; b=ELoWJwIAizu4snwUbsDZXPJPY23c+BgxWWnUKkIqW1Svvhv/EghMXPH/Pb2+wtOLnzArhMD3udp/51vf+ZX5IaZPwOgQEIsrUPOrheE0kmMQv18Qu6CqPy7yPyiP6PjDl/fsTPqffKrm+bbF3hFSUPOQ5JGgctsFjhbPk25nZbE=
+	t=1753192000; cv=none; b=q2h8pD1cKStVHHTLSpTCT3nmp5IWKCDgc4HbFJ6MB5K0dlU8GMDvW+y7+4y8cOGWEfPpElr41lINW75ejnNc+AfYuThuP/VZY5cxwgBbrvk0wgbRUQimYo2sXvPkSueO8DvtNy7H6MYlaKJ1dwJ0/W0V+ZEmyTR/T9W0KZV5R9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192312; c=relaxed/simple;
-	bh=6dwpnIjraPtcfw0hKuNnjRkPHBFfVbs6zqbQGQSEK4Y=;
+	s=arc-20240116; t=1753192000; c=relaxed/simple;
+	bh=jQ2AXPVGYpJlMFhLlvkZ4C7Ug0giQysC39i/Ud1pOXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSFlf+otxgjJp31Yji9bGcXDRsAWwphFGF3bT5qQmy6ajvCj4WP4vxkBBDPbqRX6OrVwgsSCjTkVGpBnln8sxt0R93IK2u1emeFGqRN35YIG9Emheg4zDnHDJbOXoEhC7G1QbucuUA/gA5eEG7eH4nQ8KDqFC1cl1DmlU5hl7eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=au70g8v3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F3DC4CEEB;
-	Tue, 22 Jul 2025 13:51:51 +0000 (UTC)
+	 MIME-Version; b=CexkW1EaNWNXzJPaY7iWxq1vtF64QHA+JJTuIPal8uA2S65no2ZroCZKfmmTPvJS3ZiKzu2QGpw7QX0lyqjmO/qEz+94La2A6qdp2mK79GeRK67UagZLeo2rubDmFTEzA13SUAjcUs/TLfYhSS6xp9nCBe/0LRfpXvyWtGpdfmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUegOAyM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3730AC4CEEB;
+	Tue, 22 Jul 2025 13:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192312;
-	bh=6dwpnIjraPtcfw0hKuNnjRkPHBFfVbs6zqbQGQSEK4Y=;
+	s=korg; t=1753192000;
+	bh=jQ2AXPVGYpJlMFhLlvkZ4C7Ug0giQysC39i/Ud1pOXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=au70g8v3W6bDo2QmfZK0tleO16D1d8aK/0l7PRUmkyRvLtBByMppVAWKgFo7UdG52
-	 hq2ayFr+u8OOwd+xg8r4g+iAMbiP1Cr/mHNuTctB4leXBlD4yPz7QvdrgiZeqWW2gi
-	 KT1CYyaObgUTc+VLN8+WzcGrTiLIAxMezpn7+aLs=
+	b=QUegOAyMfwOfw4PS6RantLKld0mDTdw5xPr4bfuC6pT1/oREuen1p2qzS6Cig8PqW
+	 21ukxhpLC5BeNQ31hL2v6E74YA+R/SttonqA+x3iVYE2Wjm8WHsqgajo3JMd6Haiei
+	 nmCqnlBCjEHRjHU47mygsh7Zo5MCmlE37cnid8nM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.6 028/111] arm64: dts: imx8mp-venice-gw74xx: fix TPM SPI frequency
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.1 07/79] thunderbolt: Fix bit masking in tb_dp_port_set_hops()
 Date: Tue, 22 Jul 2025 15:44:03 +0200
-Message-ID: <20250722134334.443434968@linuxfoundation.org>
+Message-ID: <20250722134328.651985984@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 0bdaca0922175478ddeadf8e515faa5269f6fae6 upstream.
+commit 2cdde91c14ec358087f43287513946d493aef940 upstream.
 
-The IMX8MPDS Table 37 [1] shows that the max SPI master read frequency
-depends on the pins the interface is muxed behind with ECSPI2
-muxed behind ECSPI2 supporting up to 25MHz.
+The tb_dp_port_set_hops() function was incorrectly clearing
+ADP_DP_CS_1_AUX_RX_HOPID_MASK twice. According to the function's
+purpose, it should clear both TX and RX AUX HopID fields.  Replace the
+first instance with ADP_DP_CS_1_AUX_TX_HOPID_MASK to ensure proper
+configuration of both AUX directions.
 
-Adjust the spi-max-frequency based on these findings.
-
-[1] https://www.nxp.com/webapp/Download?colCode=IMX8MPIEC
-
-Fixes: 531936b218d8 ("arm64: dts: imx8mp-venice-gw74xx: update to revB PCB")
+Fixes: 98176380cbe5 ("thunderbolt: Convert DP adapter register names to follow the USB4 spec")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts |    2 +-
+ drivers/thunderbolt/switch.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-@@ -185,7 +185,7 @@
- 		#address-cells = <0x1>;
- 		#size-cells = <0x1>;
- 		reg = <0x0>;
--		spi-max-frequency = <36000000>;
-+		spi-max-frequency = <25000000>;
- 	};
- };
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -1491,7 +1491,7 @@ int tb_dp_port_set_hops(struct tb_port *
+ 		return ret;
  
+ 	data[0] &= ~ADP_DP_CS_0_VIDEO_HOPID_MASK;
+-	data[1] &= ~ADP_DP_CS_1_AUX_RX_HOPID_MASK;
++	data[1] &= ~ADP_DP_CS_1_AUX_TX_HOPID_MASK;
+ 	data[1] &= ~ADP_DP_CS_1_AUX_RX_HOPID_MASK;
+ 
+ 	data[0] |= (video << ADP_DP_CS_0_VIDEO_HOPID_SHIFT) &
 
 
 
