@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-163854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E53BB0DBDF
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D284DB0DB60
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A21F11C82873
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DF16AA1947
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9A02EA173;
-	Tue, 22 Jul 2025 13:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D490322FDFF;
+	Tue, 22 Jul 2025 13:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvF07zkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPKjql8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB822EA16C;
-	Tue, 22 Jul 2025 13:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C06433A8;
+	Tue, 22 Jul 2025 13:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192431; cv=none; b=k52NNn0f5RBtE0s4hP7wAaG94KD+nQP0+PHHhCyuqhodqPnyZc3mL+hAQNzNEGpieBlsn8yJesZat3FQs4ggH8Y0YYOJ+SPdjgY6ABGSJ5V9+FRWu/bosq3pSbqAQKwDvcUOW0jUropGX8g3AZ0qK108Zg6CA4piuPpBmN8LF48=
+	t=1753192094; cv=none; b=pDu2pHOwm5RrmHJZVIlxbwffnVTdcSANy3TAMHBYQb26kRaXI6pzB53xOsfzt39vEzkmjoFbdB3veuMpJNedxAdQrV0+XFaoN7P+UyWttxmSX8LfOHJOiuUxjy+T2GFl5ruNe/xzwX7SPIQhZ57SkatINz70dHvceG0nFRQi58g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192431; c=relaxed/simple;
-	bh=o+N+InAxitP5eOxy5NekaxYQFgznrC7xeu25uw6hw08=;
+	s=arc-20240116; t=1753192094; c=relaxed/simple;
+	bh=YkoKp9kBSTLnC8seaWwaA5MEA6wB/m+WGD5HE3mi2hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlLpNupTELWjZDQiv8lBCwcOLKxlAGs0SzSH9fdzYWkRUHCrjXOWV68/SX/DkDYdRxrC5C1Hv3ZwZTene594e96BWnkTiqVrqyjdz4D3pun/9a1qqDp22Eb98WZB+7o7EB/srpbZcWik4qJs61bjkYcDepydVxC6RrX5wqgygqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvF07zkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36AEC4CEEB;
-	Tue, 22 Jul 2025 13:53:50 +0000 (UTC)
+	 MIME-Version; b=i3pZlSECJZ0vqx7W99V4O4tsyfD3Ixge4Vnls7FvMq4sFCuwOiV+pcCBF+xwAlI/Ogg2Ty6zGHsqcOGJ/dDOnZI0ht5hJ2TG/J6AQpVga7C+4jsqddintpdrw0Lzw3P4hqqeX6oDvB4G/vomE+FMqlftWnXIXVlg9lwSWL+RXvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPKjql8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9744BC4CEEB;
+	Tue, 22 Jul 2025 13:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192431;
-	bh=o+N+InAxitP5eOxy5NekaxYQFgznrC7xeu25uw6hw08=;
+	s=korg; t=1753192094;
+	bh=YkoKp9kBSTLnC8seaWwaA5MEA6wB/m+WGD5HE3mi2hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MvF07zkhmuPc2vkEWepEIaXQYxfOG1+AHXFl5LGOW0yaWGY+j8TOuAUsWoBkqlhTY
-	 NClcWixjrN/Po1zD6Eec4m9z40cjb9582qOLxuLezxTcasCXfEJTend7sO7Y/mj/kd
-	 JR059As9pPfqhbV0FeEZ4lbtThJ8tceNa1aFddU8=
+	b=NPKjql8CURFe4Or4Js9xHOqzSOJk20dudcnsQAK5wUu105OkEXJ5Ukj6bqwjmOjxd
+	 xv6D1d4TbIbvA2rD7ywotfg9nUP2bGlrNrWtz3Y3bRWYAIxacdhyVDsruuUfJ4zgU6
+	 /nmq0IT79SRswDthmhL6YVS9F/eC6sXi4qzhnw5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/111] cachefiles: Fix the incorrect return value in __cachefiles_write()
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 41/79] comedi: Fix initialization of data for instructions that write to subdevice
 Date: Tue, 22 Jul 2025 15:44:37 +0200
-Message-ID: <20250722134335.695644848@linuxfoundation.org>
+Message-ID: <20250722134329.889424637@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +60,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 6b89819b06d8d339da414f06ef3242f79508be5e ]
+commit 46d8c744136ce2454aa4c35c138cc06817f92b8e upstream.
 
-In __cachefiles_write(), if the return value of the write operation > 0, it
-is set to 0. This makes it impossible to distinguish scenarios where a
-partial write has occurred, and will affect the outer calling functions:
+Some Comedi subdevice instruction handlers are known to access
+instruction data elements beyond the first `insn->n` elements in some
+cases.  The `do_insn_ioctl()` and `do_insnlist_ioctl()` functions
+allocate at least `MIN_SAMPLES` (16) data elements to deal with this,
+but they do not initialize all of that.  For Comedi instruction codes
+that write to the subdevice, the first `insn->n` data elements are
+copied from user-space, but the remaining elements are left
+uninitialized.  That could be a problem if the subdevice instruction
+handler reads the uninitialized data.  Ensure that the first
+`MIN_SAMPLES` elements are initialized before calling these instruction
+handlers, filling the uncopied elements with 0.  For
+`do_insnlist_ioctl()`, the same data buffer elements are used for
+handling a list of instructions, so ensure the first `MIN_SAMPLES`
+elements are initialized for each instruction that writes to the
+subdevice.
 
- 1) cachefiles_write_complete() will call "term_func" such as
-netfs_write_subrequest_terminated(). When "ret" in __cachefiles_write()
-is used as the "transferred_or_error" of this function, it can not
-distinguish the amount of data written, makes the WARN meaningless.
-
- 2) cachefiles_ondemand_fd_write_iter() can only assume all writes were
-successful by default when "ret" is 0, and unconditionally return the full
-length specified by user space.
-
-Fix it by modifying "ret" to reflect the actual number of bytes written.
-Furthermore, returning a value greater than 0 from __cachefiles_write()
-does not affect other call paths, such as cachefiles_issue_write() and
-fscache_write().
-
-Fixes: 047487c947e8 ("cachefiles: Implement the I/O routines")
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Link: https://lore.kernel.org/20250703024418.2809353-1-wozizhi@huaweicloud.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707161439.88385-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cachefiles/io.c       | 2 --
- fs/cachefiles/ondemand.c | 4 +---
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/comedi/comedi_fops.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
-index 009d23cd435b5..239a6002083d7 100644
---- a/fs/cachefiles/io.c
-+++ b/fs/cachefiles/io.c
-@@ -346,8 +346,6 @@ int __cachefiles_write(struct cachefiles_object *object,
- 	default:
- 		ki->was_async = false;
- 		cachefiles_write_complete(&ki->iocb, ret);
--		if (ret > 0)
--			ret = 0;
- 		break;
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -1551,21 +1551,27 @@ static int do_insnlist_ioctl(struct come
  	}
  
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 3389a373faf68..cfa8f23fdfb65 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -84,10 +84,8 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
- 
- 	trace_cachefiles_ondemand_fd_write(object, file_inode(file), pos, len);
- 	ret = __cachefiles_write(object, file, pos, iter, NULL, NULL);
--	if (!ret) {
--		ret = len;
-+	if (ret > 0)
- 		kiocb->ki_pos += ret;
--	}
- 
- out:
- 	fput(file);
--- 
-2.39.5
-
+ 	for (i = 0; i < n_insns; ++i) {
++		unsigned int n = insns[i].n;
++
+ 		if (insns[i].insn & INSN_MASK_WRITE) {
+ 			if (copy_from_user(data, insns[i].data,
+-					   insns[i].n * sizeof(unsigned int))) {
++					   n * sizeof(unsigned int))) {
+ 				dev_dbg(dev->class_dev,
+ 					"copy_from_user failed\n");
+ 				ret = -EFAULT;
+ 				goto error;
+ 			}
++			if (n < MIN_SAMPLES) {
++				memset(&data[n], 0, (MIN_SAMPLES - n) *
++						    sizeof(unsigned int));
++			}
+ 		}
+ 		ret = parse_insn(dev, insns + i, data, file);
+ 		if (ret < 0)
+ 			goto error;
+ 		if (insns[i].insn & INSN_MASK_READ) {
+ 			if (copy_to_user(insns[i].data, data,
+-					 insns[i].n * sizeof(unsigned int))) {
++					 n * sizeof(unsigned int))) {
+ 				dev_dbg(dev->class_dev,
+ 					"copy_to_user failed\n");
+ 				ret = -EFAULT;
+@@ -1638,6 +1644,10 @@ static int do_insn_ioctl(struct comedi_d
+ 			ret = -EFAULT;
+ 			goto error;
+ 		}
++		if (insn->n < MIN_SAMPLES) {
++			memset(&data[insn->n], 0,
++			       (MIN_SAMPLES - insn->n) * sizeof(unsigned int));
++		}
+ 	}
+ 	ret = parse_insn(dev, insn, data, file);
+ 	if (ret < 0)
 
 
 
