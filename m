@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-164069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6078AB0DD1C
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0EA5B0DE62
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E1D0566851
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6289758391E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FB4176AC5;
-	Tue, 22 Jul 2025 14:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2659C2EB5CF;
+	Tue, 22 Jul 2025 14:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAOQhhRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC2b8qRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0C322094;
-	Tue, 22 Jul 2025 14:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D760DA32;
+	Tue, 22 Jul 2025 14:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193149; cv=none; b=lSBY9epeRXeUcDl1zLibkLiXmqOBC6kzl9PxvHavgv82wtvnLDcRpUSRXHAasrm6DEkTSjvvAfIUyQPrk00XDbx/+BZ2GD1YkSmWfLlm7om46/GWId9qrrJdchkWdKfPNSiOrtTJ4COcKf8sdIHQgtQVUalrQhHqr96shfb68w0=
+	t=1753193657; cv=none; b=tJz7iMTKeBV2PZs+1PzW8g9+Uo7zOuDbaEeL+mGOyscf84wJ/hWeQQhI1WxPZ1o8Na3qH/WEtC9smAWa42FwGuXf5PgunvTy3qPhyszLUb3rWg11YMWAV40K5htE17QXGBd7zkf1uDG7cD1C6d3NGN8Wr3Fym1Zotmsrze7szus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193149; c=relaxed/simple;
-	bh=LYixdzxuvfqd01LibFBsJxh6tlF3Es3geNqGKkBCM6o=;
+	s=arc-20240116; t=1753193657; c=relaxed/simple;
+	bh=G6xO+xurCB6bkhIijEY9EovtB8CopoqLs1VgmFqzhm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ac2LHfdSB3yaKvaeZVb0EPgp78EWGPgF8rp9uZuyJ7ZN4rde96yMXqhPumVXFonaxRUgexl+1Qd/LuRUJJRBj7wQZb7ujxA/6M1sd8R9iL+APZO8JS7tP2oVYoqNJjTKWdwd/p/l6a2p7+4MaIcrEZEuvE+qgZ7ZS7i9SdZmsiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAOQhhRI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3534C4CEF1;
-	Tue, 22 Jul 2025 14:05:48 +0000 (UTC)
+	 MIME-Version; b=tbaa52m75VDRW0sKd+C17j8XUyr0MeEB9NWmum3uKLd3/jhyqHwgDni4aVCpXavWMFt6V2wzCVMSIoynu2kOjzRjv8oWdP0S9/An959tE641/WoWtJWA5aQrxW67gNn9t8gCZFn32t3IRCeqr6/5Whr2rgYsN4FC1COVQfJd9Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SC2b8qRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0CCC4CEEB;
+	Tue, 22 Jul 2025 14:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193149;
-	bh=LYixdzxuvfqd01LibFBsJxh6tlF3Es3geNqGKkBCM6o=;
+	s=korg; t=1753193657;
+	bh=G6xO+xurCB6bkhIijEY9EovtB8CopoqLs1VgmFqzhm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SAOQhhRINHhQVYSVKssFcjo4gZOgaGz3K17lGlLtAxpBSfgckGUfYo3HYhybo/uVq
-	 SQ+BkpJNTDMK892djd6k7FVaRBF8KEyKTsYveLBYT42rOIanBpD1+ehf/Z2XJka1Qi
-	 zfuzIz5n9cjy8jFHWvY1IUMQLhzzPWsmaLLPLpVU=
+	b=SC2b8qRYTtXeOmWjy5nbfHU06XQ7ByRhz1oxlb5qbd5TXZ7LxhCiqIMfGYseoEG7C
+	 k24Qkt42Mjr9D8MYp++jLWC1PyrYkE4GWuSmrg3KCCLyEI0LWxB0m2HPaA7+AFasLE
+	 8TQnaJRKUek2Dua1GWabwJtH6tOh3lQv0uCT0Boc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.12 143/158] usb: hub: fix detection of high tier USB3 devices behind suspended hubs
-Date: Tue, 22 Jul 2025 15:45:27 +0200
-Message-ID: <20250722134346.057364697@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	LePremierHomme <kwqcheii@proton.me>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 158/187] rxrpc: Fix notification vs call-release vs recvmsg
+Date: Tue, 22 Jul 2025 15:45:28 +0200
+Message-ID: <20250722134351.663559015@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
+References: <20250722134345.761035548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +68,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 8f5b7e2bec1c36578fdaa74a6951833541103e27 upstream.
+[ Upstream commit 2fd895842d49c23137ae48252dd211e5d6d8a3ed ]
 
-USB3 devices connected behind several external suspended hubs may not
-be detected when plugged in due to aggressive hub runtime pm suspend.
+When a call is released, rxrpc takes the spinlock and removes it from
+->recvmsg_q in an effort to prevent racing recvmsg() invocations from
+seeing the same call.  Now, rxrpc_recvmsg() only takes the spinlock when
+actually removing a call from the queue; it doesn't, however, take it in
+the lead up to that when it checks to see if the queue is empty.  It *does*
+hold the socket lock, which prevents a recvmsg/recvmsg race - but this
+doesn't prevent sendmsg from ending the call because sendmsg() drops the
+socket lock and relies on the call->user_mutex.
 
-The hub driver immediately runtime-suspends hubs if there are no
-active children or port activity.
+Fix this by firstly removing the bit in rxrpc_release_call() that dequeues
+the released call and, instead, rely on recvmsg() to simply discard
+released calls (done in a preceding fix).
 
-There is a delay between the wake signal causing hub resume, and driver
-visible port activity on the hub downstream facing ports.
-Most of the LFPS handshake, resume signaling and link training done
-on the downstream ports is not visible to the hub driver until completed,
-when device then will appear fully enabled and running on the port.
+Secondly, rxrpc_notify_socket() is abandoned if the call is already marked
+as released rather than trying to be clever by setting both pointers in
+call->recvmsg_link to NULL to trick list_empty().  This isn't perfect and
+can still race, resulting in a released call on the queue, but recvmsg()
+will now clean that up.
 
-This delay between wake signal and detectable port change is even more
-significant with chained suspended hubs where the wake signal will
-propagate upstream first. Suspended hubs will only start resuming
-downstream ports after upstream facing port resumes.
-
-The hub driver may resume a USB3 hub, read status of all ports, not
-yet see any activity, and runtime suspend back the hub before any
-port activity is visible.
-
-This exact case was seen when conncting USB3 devices to a suspended
-Thunderbolt dock.
-
-USB3 specification defines a 100ms tU3WakeupRetryDelay, indicating
-USB3 devices expect to be resumed within 100ms after signaling wake.
-if not then device will resend the wake signal.
-
-Give the USB3 hubs twice this time (200ms) to detect any port
-changes after resume, before allowing hub to runtime suspend again.
-
-Cc: stable <stable@kernel.org>
-Fixes: 2839f5bcfcfc ("USB: Turn on auto-suspend for USB 3.0 hubs.")
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250611112441.2267883-1-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+cc: LePremierHomme <kwqcheii@proton.me>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20250717074350.3767366-4-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |   33 ++++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ include/trace/events/rxrpc.h |  3 ++-
+ net/rxrpc/call_object.c      | 28 ++++++++++++----------------
+ net/rxrpc/recvmsg.c          |  4 ++++
+ 3 files changed, 18 insertions(+), 17 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -67,6 +67,12 @@
-  */
- #define USB_SHORT_SET_ADDRESS_REQ_TIMEOUT	500  /* ms */
- 
-+/*
-+ * Give SS hubs 200ms time after wake to train downstream links before
-+ * assuming no port activity and allowing hub to runtime suspend back.
-+ */
-+#define USB_SS_PORT_U0_WAKE_TIME	200  /* ms */
-+
- /* Protect struct usb_device->state and ->children members
-  * Note: Both are also protected by ->dev.sem, except that ->state can
-  * change to USB_STATE_NOTATTACHED even when the semaphore isn't held. */
-@@ -1067,11 +1073,12 @@ int usb_remove_device(struct usb_device
- 
- enum hub_activation_type {
- 	HUB_INIT, HUB_INIT2, HUB_INIT3,		/* INITs must come first */
--	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME,
-+	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME, HUB_POST_RESUME,
- };
- 
- static void hub_init_func2(struct work_struct *ws);
- static void hub_init_func3(struct work_struct *ws);
-+static void hub_post_resume(struct work_struct *ws);
- 
- static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index a785b177c6927..f2ef106b61969 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -275,10 +275,10 @@
+ 	EM(rxrpc_call_put_kernel,		"PUT kernel  ") \
+ 	EM(rxrpc_call_put_poke,			"PUT poke    ") \
+ 	EM(rxrpc_call_put_recvmsg,		"PUT recvmsg ") \
++	EM(rxrpc_call_put_release_recvmsg_q,	"PUT rls-rcmq") \
+ 	EM(rxrpc_call_put_release_sock,		"PUT rls-sock") \
+ 	EM(rxrpc_call_put_release_sock_tba,	"PUT rls-sk-a") \
+ 	EM(rxrpc_call_put_sendmsg,		"PUT sendmsg ") \
+-	EM(rxrpc_call_put_unnotify,		"PUT unnotify") \
+ 	EM(rxrpc_call_put_userid_exists,	"PUT u-exists") \
+ 	EM(rxrpc_call_put_userid,		"PUT user-id ") \
+ 	EM(rxrpc_call_see_accept,		"SEE accept  ") \
+@@ -291,6 +291,7 @@
+ 	EM(rxrpc_call_see_disconnected,		"SEE disconn ") \
+ 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
+ 	EM(rxrpc_call_see_input,		"SEE input   ") \
++	EM(rxrpc_call_see_notify_released,	"SEE nfy-rlsd") \
+ 	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
+ 	EM(rxrpc_call_see_release,		"SEE release ") \
+ 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
+diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
+index fce58be65e7cf..4be3713a5a339 100644
+--- a/net/rxrpc/call_object.c
++++ b/net/rxrpc/call_object.c
+@@ -561,7 +561,7 @@ static void rxrpc_cleanup_rx_buffers(struct rxrpc_call *call)
+ void rxrpc_release_call(struct rxrpc_sock *rx, struct rxrpc_call *call)
  {
-@@ -1094,6 +1101,13 @@ static void hub_activate(struct usb_hub
- 			goto init2;
- 		goto init3;
+ 	struct rxrpc_connection *conn = call->conn;
+-	bool put = false, putu = false;
++	bool putu = false;
+ 
+ 	_enter("{%d,%d}", call->debug_id, refcount_read(&call->ref));
+ 
+@@ -573,23 +573,13 @@ void rxrpc_release_call(struct rxrpc_sock *rx, struct rxrpc_call *call)
+ 
+ 	rxrpc_put_call_slot(call);
+ 
+-	/* Make sure we don't get any more notifications */
++	/* Note that at this point, the call may still be on or may have been
++	 * added back on to the socket receive queue.  recvmsg() must discard
++	 * released calls.  The CALL_RELEASED flag should prevent further
++	 * notifications.
++	 */
+ 	spin_lock_irq(&rx->recvmsg_lock);
+-
+-	if (!list_empty(&call->recvmsg_link)) {
+-		_debug("unlinking once-pending call %p { e=%lx f=%lx }",
+-		       call, call->events, call->flags);
+-		list_del(&call->recvmsg_link);
+-		put = true;
+-	}
+-
+-	/* list_empty() must return false in rxrpc_notify_socket() */
+-	call->recvmsg_link.next = NULL;
+-	call->recvmsg_link.prev = NULL;
+-
+ 	spin_unlock_irq(&rx->recvmsg_lock);
+-	if (put)
+-		rxrpc_put_call(call, rxrpc_call_put_unnotify);
+ 
+ 	write_lock(&rx->call_lock);
+ 
+@@ -638,6 +628,12 @@ void rxrpc_release_calls_on_socket(struct rxrpc_sock *rx)
+ 		rxrpc_put_call(call, rxrpc_call_put_release_sock);
  	}
-+
-+	if (type == HUB_POST_RESUME) {
-+		usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
-+		hub_put(hub);
-+		return;
+ 
++	while ((call = list_first_entry_or_null(&rx->recvmsg_q,
++						struct rxrpc_call, recvmsg_link))) {
++		list_del_init(&call->recvmsg_link);
++		rxrpc_put_call(call, rxrpc_call_put_release_recvmsg_q);
 +	}
 +
- 	hub_get(hub);
+ 	_leave("");
+ }
  
- 	/* The superspeed hub except for root hub has to use Hub Depth
-@@ -1342,6 +1356,16 @@ static void hub_activate(struct usb_hub
- 		device_unlock(&hdev->dev);
- 	}
+diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
+index 1668495e4ae63..89dc612fb89e0 100644
+--- a/net/rxrpc/recvmsg.c
++++ b/net/rxrpc/recvmsg.c
+@@ -29,6 +29,10 @@ void rxrpc_notify_socket(struct rxrpc_call *call)
  
-+	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
-+		/* give usb3 downstream links training time after hub resume */
-+		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
-+		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
-+				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
-+		usb_autopm_get_interface_no_resume(
-+			to_usb_interface(hub->intfdev));
+ 	if (!list_empty(&call->recvmsg_link))
+ 		return;
++	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
++		rxrpc_see_call(call, rxrpc_call_see_notify_released);
 +		return;
 +	}
-+
- 	hub_put(hub);
- }
  
-@@ -1360,6 +1384,13 @@ static void hub_init_func3(struct work_s
- 	hub_activate(hub, HUB_INIT3);
- }
+ 	rcu_read_lock();
  
-+static void hub_post_resume(struct work_struct *ws)
-+{
-+	struct usb_hub *hub = container_of(ws, struct usb_hub, init_work.work);
-+
-+	hub_activate(hub, HUB_POST_RESUME);
-+}
-+
- enum hub_quiescing_type {
- 	HUB_DISCONNECT, HUB_PRE_RESET, HUB_SUSPEND
- };
+-- 
+2.39.5
+
 
 
 
