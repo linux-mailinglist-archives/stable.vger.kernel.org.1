@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-164029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B427DB0DCD0
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:06:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B92B0DC16
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E157016677A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B56251C20A54
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6478A2EA167;
-	Tue, 22 Jul 2025 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5FC2EA481;
+	Tue, 22 Jul 2025 13:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jF9iPAr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6yOu7B2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B96B2E9ECA;
-	Tue, 22 Jul 2025 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1886B2B9A5;
+	Tue, 22 Jul 2025 13:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193013; cv=none; b=mqPkBYfUqDWSLt8CxTV4fUSVEGsyJP9i20Dv2t9KWtkRl2P8inIBoyCaJ20CUAbkJQTN3fSmqjV7ySdkY9Z9g9LOrzCZPnIlcXbM2bGg/xiqUeS8VmoxRhuZNtYlfmTYkY8h9CQ8WQAlKAjyp4d9+JLIbViTI/nBW9V3Z7lQDpM=
+	t=1753192532; cv=none; b=TMTW4ZofihRRAsrUhQrYEC63DNyS0dvKHOck2FoMXSsw7mCdLrtxRrFYfdUjyJBQApY3URCU7I0/Cl1OyHQwmPNspqoLZsxiLtbe9+PleX4LtueE9t0/HaqNEhh9L0/yVgkB4oQRrZqLbvzByJE8UtgJ9HgSFyFKkCspvdx0Cj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193013; c=relaxed/simple;
-	bh=6Cr7NhAZeHoRkRm0L9f2oHerul0luAFkx4Qks6lqjgA=;
+	s=arc-20240116; t=1753192532; c=relaxed/simple;
+	bh=7PLJ/71VOH4HdcfaGpQSiDdc+3PLbCDFVh7aWM4yqCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QeQ2WH1y+12aRiODlNNtJCdjYdAWejBrNy+OmKN0TY63GQFQsR6Uqad2itsxj8Fis0wL0Ph+DUVnEpamqBPInhJLtKwgoNseIURJW8SHUYNKHmxNNAFaVVZygJfHRUaOykyo1EAwUzJPfXPckU54MwNCH4HXc6F8cBucnTowbBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jF9iPAr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB1AC4CEEB;
-	Tue, 22 Jul 2025 14:03:32 +0000 (UTC)
+	 MIME-Version; b=qJpMBXj7VqEw/6SuZBzS6lQQSove1GYJWQ6PwU0mzTKjfMRE3/yd39t7yBOf2W7vWDmR7JF8YG4C9vYwcdALjirjShS1n0SbURt7JPC8dvE6wXvk4tXqrK6YlbtaPgejE21l0Qk/TYfxew3UNJ6lTPEIXrePTVZfWIsmginA97s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6yOu7B2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40290C4CEEB;
+	Tue, 22 Jul 2025 13:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193012;
-	bh=6Cr7NhAZeHoRkRm0L9f2oHerul0luAFkx4Qks6lqjgA=;
+	s=korg; t=1753192531;
+	bh=7PLJ/71VOH4HdcfaGpQSiDdc+3PLbCDFVh7aWM4yqCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2jF9iPAr7E2XwVfjmRGe2HV2C2XqHa+/xqAZCp9Z3laHk4eVd3rIbmBth0rPzXDWV
-	 3tbhk8CsXUOOelQfZCzUJhtJ8KBqd6PbuRpPEaWrIWdb+5GBjb2AgDChVm/xDzF0e7
-	 QaxmU/esPvEAxjQBM37hhIpibT23LkaBSiSvORlU=
+	b=X6yOu7B2mJYRf+7NYm1yvnhCryOd/+PyYrrIvUnu1HosY5CsoKq65Ieg8dPbh6gXA
+	 wIpXGHbgXNpHYdvly807VKnuh5rONEcs+GzHCOz3i/9ggfiO2itOOimTtFhCBysoEM
+	 7+Q8wamYr6W+S8PhOhY2Kq90EBav7avJF6g0lqiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 124/158] drm/xe/pf: Move VFs reprovisioning to worker
+	Aruna Ramakrishna <aruna.ramakrishna@oracle.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 093/111] sched: Change nr_uninterruptible type to unsigned long
 Date: Tue, 22 Jul 2025 15:45:08 +0200
-Message-ID: <20250722134345.362612294@linuxfoundation.org>
+Message-ID: <20250722134336.886220260@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,153 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
 
-[ Upstream commit a4d1c5d0b99b75263a5626d2e52d569db3844b33 ]
+commit 36569780b0d64de283f9d6c2195fd1a43e221ee8 upstream.
 
-Since the GuC is reset during GT reset, we need to re-send the
-entire SR-IOV provisioning configuration to the GuC. But since
-this whole configuration is protected by the PF master mutex and
-we can't avoid making allocations under this mutex (like during
-LMEM provisioning), we can't do this reprovisioning from gt-reset
-path if we want to be reclaim-safe. Move VFs reprovisioning to a
-async worker that we will start from the gt-reset path.
+The commit e6fe3f422be1 ("sched: Make multiple runqueue task counters
+32-bit") changed nr_uninterruptible to an unsigned int. But the
+nr_uninterruptible values for each of the CPU runqueues can grow to
+large numbers, sometimes exceeding INT_MAX. This is valid, if, over
+time, a large number of tasks are migrated off of one CPU after going
+into an uninterruptible state. Only the sum of all nr_interruptible
+values across all CPUs yields the correct result, as explained in a
+comment in kernel/sched/loadavg.c.
 
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Michał Winiarski <michal.winiarski@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250125215505.720-1-michal.wajdeczko@intel.com
-Stable-dep-of: 81dccec448d2 ("drm/xe/pf: Prepare to stop SR-IOV support prior GT reset")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Change the type of nr_uninterruptible back to unsigned long to prevent
+overflows, and thus the miscalculation of load average.
+
+Fixes: e6fe3f422be1 ("sched: Make multiple runqueue task counters 32-bit")
+
+Signed-off-by: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250709173328.606794-1-aruna.ramakrishna@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_gt_sriov_pf.c       | 43 +++++++++++++++++++++--
- drivers/gpu/drm/xe/xe_gt_sriov_pf_types.h | 10 ++++++
- 2 files changed, 51 insertions(+), 2 deletions(-)
+ kernel/sched/loadavg.c |    2 +-
+ kernel/sched/sched.h   |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-index 919d960165d51..1c3ba7dcb4ace 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-@@ -14,7 +14,11 @@
- #include "xe_gt_sriov_pf_control.h"
- #include "xe_gt_sriov_pf_helpers.h"
- #include "xe_gt_sriov_pf_service.h"
-+#include "xe_gt_sriov_printk.h"
- #include "xe_mmio.h"
-+#include "xe_pm.h"
-+
-+static void pf_worker_restart_func(struct work_struct *w);
+--- a/kernel/sched/loadavg.c
++++ b/kernel/sched/loadavg.c
+@@ -80,7 +80,7 @@ long calc_load_fold_active(struct rq *th
+ 	long nr_active, delta = 0;
  
- /*
-  * VF's metadata is maintained in the flexible array where:
-@@ -40,6 +44,11 @@ static int pf_alloc_metadata(struct xe_gt *gt)
- 	return 0;
- }
+ 	nr_active = this_rq->nr_running - adjust;
+-	nr_active += (int)this_rq->nr_uninterruptible;
++	nr_active += (long)this_rq->nr_uninterruptible;
  
-+static void pf_init_workers(struct xe_gt *gt)
-+{
-+	INIT_WORK(&gt->sriov.pf.workers.restart, pf_worker_restart_func);
-+}
-+
- /**
-  * xe_gt_sriov_pf_init_early - Prepare SR-IOV PF data structures on PF.
-  * @gt: the &xe_gt to initialize
-@@ -64,6 +73,8 @@ int xe_gt_sriov_pf_init_early(struct xe_gt *gt)
- 	if (err)
- 		return err;
+ 	if (nr_active != this_rq->calc_load_active) {
+ 		delta = nr_active - this_rq->calc_load_active;
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1011,7 +1011,7 @@ struct rq {
+ 	 * one CPU and if it got migrated afterwards it may decrease
+ 	 * it on another CPU. Always updated under the runqueue lock:
+ 	 */
+-	unsigned int		nr_uninterruptible;
++	unsigned long 		nr_uninterruptible;
  
-+	pf_init_workers(gt);
-+
- 	return 0;
- }
- 
-@@ -141,6 +152,35 @@ void xe_gt_sriov_pf_sanitize_hw(struct xe_gt *gt, unsigned int vfid)
- 	pf_clear_vf_scratch_regs(gt, vfid);
- }
- 
-+static void pf_restart(struct xe_gt *gt)
-+{
-+	struct xe_device *xe = gt_to_xe(gt);
-+
-+	xe_pm_runtime_get(xe);
-+	xe_gt_sriov_pf_config_restart(gt);
-+	xe_gt_sriov_pf_control_restart(gt);
-+	xe_pm_runtime_put(xe);
-+
-+	xe_gt_sriov_dbg(gt, "restart completed\n");
-+}
-+
-+static void pf_worker_restart_func(struct work_struct *w)
-+{
-+	struct xe_gt *gt = container_of(w, typeof(*gt), sriov.pf.workers.restart);
-+
-+	pf_restart(gt);
-+}
-+
-+static void pf_queue_restart(struct xe_gt *gt)
-+{
-+	struct xe_device *xe = gt_to_xe(gt);
-+
-+	xe_gt_assert(gt, IS_SRIOV_PF(xe));
-+
-+	if (!queue_work(xe->sriov.wq, &gt->sriov.pf.workers.restart))
-+		xe_gt_sriov_dbg(gt, "restart already in queue!\n");
-+}
-+
- /**
-  * xe_gt_sriov_pf_restart - Restart SR-IOV support after a GT reset.
-  * @gt: the &xe_gt
-@@ -149,6 +189,5 @@ void xe_gt_sriov_pf_sanitize_hw(struct xe_gt *gt, unsigned int vfid)
-  */
- void xe_gt_sriov_pf_restart(struct xe_gt *gt)
- {
--	xe_gt_sriov_pf_config_restart(gt);
--	xe_gt_sriov_pf_control_restart(gt);
-+	pf_queue_restart(gt);
- }
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_types.h b/drivers/gpu/drm/xe/xe_gt_sriov_pf_types.h
-index 28e1b130bf87c..a69d128c4f45a 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_types.h
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_types.h
-@@ -31,8 +31,17 @@ struct xe_gt_sriov_metadata {
- 	struct xe_gt_sriov_pf_service_version version;
- };
- 
-+/**
-+ * struct xe_gt_sriov_pf_workers - GT level workers used by the PF.
-+ */
-+struct xe_gt_sriov_pf_workers {
-+	/** @restart: worker that executes actions post GT reset */
-+	struct work_struct restart;
-+};
-+
- /**
-  * struct xe_gt_sriov_pf - GT level PF virtualization data.
-+ * @workers: workers data.
-  * @service: service data.
-  * @control: control data.
-  * @policy: policy data.
-@@ -40,6 +49,7 @@ struct xe_gt_sriov_metadata {
-  * @vfs: metadata for all VFs.
-  */
- struct xe_gt_sriov_pf {
-+	struct xe_gt_sriov_pf_workers workers;
- 	struct xe_gt_sriov_pf_service service;
- 	struct xe_gt_sriov_pf_control control;
- 	struct xe_gt_sriov_pf_policy policy;
--- 
-2.39.5
-
+ 	struct task_struct __rcu	*curr;
+ 	struct task_struct	*idle;
 
 
 
