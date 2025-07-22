@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-163969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5165DB0DC9D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:04:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F23B0DB49
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA5DA3BE707
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CED1560675
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC472C159F;
-	Tue, 22 Jul 2025 14:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9778D2EA15C;
+	Tue, 22 Jul 2025 13:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elyEv2fv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axsgLLne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB8919E81F;
-	Tue, 22 Jul 2025 14:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EC022FDFF;
+	Tue, 22 Jul 2025 13:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192812; cv=none; b=Pj7ndcJmPVbjkNwPvIF+y6dBzNzQpPzYUMNNKBM9YY2DOdGuc6Pv68dlG5/8eblIAto2G3/uQpzyk7wWlMk5GQHZnTrbslw+C5ESyQqF+joO8L5nmm7D7ms3o7GbCt3FOxtJaXUtjH44SqObreDT3FTME+Umel4jYSHcLTX6V4w=
+	t=1753192047; cv=none; b=k1PcsT9JwNNfq4Q3OwNJPg2qV+CQjtjHKR4MT05DN/ZYIBWxBHmJDKfPS2RN76aGxGYxbkd0aUwbqBSxsXCrSvEe4mWDXBEAjAK5+sfejBMRKzuWYyArF8S5oZoQUrWbqL9xzbIl7ELIzh/oI9VzgebU5cir6jr1bt++QF5FH3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192812; c=relaxed/simple;
-	bh=MNd/OzlU1QEk+/QZFfiBuNVjJYv4sqdAVNrzCkm9V7Y=;
+	s=arc-20240116; t=1753192047; c=relaxed/simple;
+	bh=fcaahyw6Le9rMJMbAowbhEmLwm1b/gjK8w7IXUWw8qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxNKC244V/AN/U5thMiNUOititp0cde/+5lf7etW6JLOT5cfuEhRQ5jFpduItT9LCjoCykmzdWhK2y2Yo5Qqe6NczL9/kzXxeroEuqdMK1CjyfODysmzk29/QTeOjWH5RdTIS+p11SMWsYHCv6uAq4DTdPmfuAlTFYlsIbTpmHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elyEv2fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AF6C4CEEB;
-	Tue, 22 Jul 2025 14:00:11 +0000 (UTC)
+	 MIME-Version; b=sDJvep4de61IHSWOKpAUH1c1+oZD46qg7AENoIZ0fI8b4YQvWZDveotHONu0/me5Q02RBJr6rapXHygvjUjrBmVyPH37gJFR97rb/gmEloNH25dFylRO+/xbc8ZLuTpTP2jrU/BGkJQaVWorHr66FRNhrwoCKKGsOW+MT3p84Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axsgLLne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65916C4CEEB;
+	Tue, 22 Jul 2025 13:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192812;
-	bh=MNd/OzlU1QEk+/QZFfiBuNVjJYv4sqdAVNrzCkm9V7Y=;
+	s=korg; t=1753192046;
+	bh=fcaahyw6Le9rMJMbAowbhEmLwm1b/gjK8w7IXUWw8qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=elyEv2fv2ziSzKNX/xLEV2xzBGWRCY/5JCRrAnKSfHFdmG6bFwYt/grsVOmP4i9A+
-	 Rtvu7dgWGb/4PUPJmBFv8gjHCOTkygDRQkC7DSSeIFLcW8hdyetzS7a6sWsBYjJ/bb
-	 Hq+cZmSxpbqwCqplSOD1/R+kNuEqRJB9ice8QunA=
+	b=axsgLLne+cOO0VAhAN+go4/y5xDAF323hLrx9W9wuUDYlChE/q+3JVAgF7EgTVoRW
+	 dm7bSJ7VNC9/uY0SYaNMuxyY7dLwW5DIHuKwWUPIedouh5On+rr3nHoHiD61QJRaXt
+	 qk2AjxUOqqSBUWprrIGJOf8NcU29KqMTw21svJns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.12 063/158] s390/bpf: Fix bpf_arch_text_poke() with new_addr == NULL again
+	Alan Stern <stern@rowland.harvard.edu>,
+	syzbot+8258d5439c49d4c35f43@syzkaller.appspotmail.com,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.1 11/79] HID: core: ensure __hid_request reserves the report ID as the first byte
 Date: Tue, 22 Jul 2025 15:44:07 +0200
-Message-ID: <20250722134343.099581706@linuxfoundation.org>
+Message-ID: <20250722134328.799238320@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-commit 6a5abf8cf182f577c7ae6c62f14debc9754ec986 upstream.
+commit 0d0777ccaa2d46609d05b66ba0096802a2746193 upstream.
 
-Commit 7ded842b356d ("s390/bpf: Fix bpf_plt pointer arithmetic") has
-accidentally removed the critical piece of commit c730fce7c70c
-("s390/bpf: Fix bpf_arch_text_poke() with new_addr == NULL"), causing
-intermittent kernel panics in e.g. perf's on_switch() prog to reappear.
+The low level transport driver expects the first byte to be the report
+ID, even when the report ID is not use (in which case they just shift
+the buffer).
 
-Restore the fix and add a comment.
+However, __hid_request() whas not offsetting the buffer it used by one
+in this case, meaning that the raw_request() callback emitted by the
+transport driver would be stripped of the first byte.
 
-Fixes: 7ded842b356d ("s390/bpf: Fix bpf_plt pointer arithmetic")
+Note: this changes the API for uhid devices when a request is made
+through hid_hw_request. However, several considerations makes me think
+this is fine:
+- every request to a HID device made through hid_hw_request() would see
+  that change, but every request made through hid_hw_raw_request()
+  already has the new behaviour. So that means that the users are
+  already facing situations where they might have or not the first byte
+  being the null report ID when it is 0. We are making things more
+  straightforward in the end.
+- uhid is mainly used for BLE devices
+- uhid is also used for testing, but I don't see that change a big issue
+- for BLE devices, we can check which kernel module is calling
+  hid_hw_request()
+- and in those modules, we can check which are using a Bluetooth device
+- and then we can check if the command is used with a report ID or not.
+- surprise: none of the kernel module are using a report ID 0
+- and finally, bluez, in its function set_report()[0], does the same
+  shift if the report ID is 0 and the given buffer has a size > 0.
+
+[0] https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/profiles/input/hog-lib.c#n879
+
+Reported-by: Alan Stern <stern@rowland.harvard.edu>
+Closes: https://lore.kernel.org/linux-input/c75433e0-9b47-4072-bbe8-b1d14ea97b13@rowland.harvard.edu/
+Reported-by: syzbot+8258d5439c49d4c35f43@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8258d5439c49d4c35f43
+Tested-by: syzbot+8258d5439c49d4c35f43@syzkaller.appspotmail.com
+Fixes: 4fa5a7f76cc7 ("HID: core: implement generic .request()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250716194524.48109-2-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://patch.msgid.link/20250710-report-size-null-v2-2-ccf922b7c4e5@kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/net/bpf_jit_comp.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/hid/hid-core.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -544,7 +544,15 @@ static void bpf_jit_plt(struct bpf_plt *
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1944,7 +1944,7 @@ static struct hid_report *hid_get_report
+ int __hid_request(struct hid_device *hid, struct hid_report *report,
+ 		enum hid_class_request reqtype)
  {
- 	memcpy(plt, &bpf_plt, sizeof(*plt));
- 	plt->ret = ret;
--	plt->target = target;
-+	/*
-+	 * (target == NULL) implies that the branch to this PLT entry was
-+	 * patched and became a no-op. However, some CPU could have jumped
-+	 * to this PLT entry before patching and may be still executing it.
-+	 *
-+	 * Since the intention in this case is to make the PLT entry a no-op,
-+	 * make the target point to the return label instead of NULL.
-+	 */
-+	plt->target = target ?: ret;
- }
+-	char *buf;
++	char *buf, *data_buf;
+ 	int ret;
+ 	u32 len;
  
- /*
+@@ -1952,10 +1952,17 @@ int __hid_request(struct hid_device *hid
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
++	data_buf = buf;
+ 	len = hid_report_len(report);
+ 
++	if (report->id == 0) {
++		/* reserve the first byte for the report ID */
++		data_buf++;
++		len++;
++	}
++
+ 	if (reqtype == HID_REQ_SET_REPORT)
+-		hid_output_report(report, buf);
++		hid_output_report(report, data_buf);
+ 
+ 	ret = hid->ll_driver->raw_request(hid, report->id, buf, len,
+ 					  report->type, reqtype);
 
 
 
