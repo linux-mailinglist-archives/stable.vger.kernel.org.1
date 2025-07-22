@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-163807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F419B0DBC0
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:53:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6AFB0DC7E
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:02:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A52DE3A7FAF
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:51:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF61D168800
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0DC2EA481;
-	Tue, 22 Jul 2025 13:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B7928B7EA;
+	Tue, 22 Jul 2025 13:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMpo/uhl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYyuJc/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC242EA484;
-	Tue, 22 Jul 2025 13:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFD422CBE9;
+	Tue, 22 Jul 2025 13:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192277; cv=none; b=qou+CV7iS8dTErjWhNmfILIYeYlmQG/1PHoZgjtA5bALxAst8tpy7s2Ad6IO92hIC6vKYP70sRgLe66xrZ70jPlGC62/is1keA6DgdI/eK4zEAgaxK2l1UsfzbsFFdI2R8uNRUIP5vaDeixf2bRkdf266LvbLhaoxjs87yHKpRk=
+	t=1753192762; cv=none; b=qloUNLo27eoOL+9QeClsMZQjkjSWKWDZbOOAO97MZe6apg66jvo5Jcn6H0OVF5q57ZCPPvqrASn7rG/BLP6aQUkcfNQLJaV9pMoZucHaQ5S0WlOh2KcPUB5YtaVHSpSpdvzThYzYzmt7OkmYKExkdMs7wJz4jd9ZlgQvhNehA70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192277; c=relaxed/simple;
-	bh=HJq3u9RqSGSte9nAOcGYCw2NZtSKEOQt1qy2HdAadNI=;
+	s=arc-20240116; t=1753192762; c=relaxed/simple;
+	bh=wz8ZR7ZH8l1iqg5d/aLYMJa76hRL5OLWKpHphRIpRMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiwIe8W3JDV1NyY9LWWBjzEEGSv6BwI3wSvL45R5sOUZ9rKBYgxdMwJMHPvUx8zkjPaogYfogIbmojctYNG3s8kkkMSkHj2JQvY+xRfcXH63SGApE6bFwdL26v+MVdPu6Ft1RWVn8IQjl9AyM9Viqb5L72LPIoKiWvt8YPDEsVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMpo/uhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADCC8C4CEEB;
-	Tue, 22 Jul 2025 13:51:14 +0000 (UTC)
+	 MIME-Version; b=RpDc+ldinGIUgVzLQ0su6l5t1raFi3vvoMfy+U/QVChfRYufTNnEbHsl5a1pD0WrLqTX7E1sMWpQsaoxL0mlC38gI0TZFOYD2cXdnPYKrk/9g/ybhiH/xXMdTZ5nnsJ4zrwx8d7i7wYtBSU/ebH86pPmR9Oyyw8k/u+IL4eKvn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYyuJc/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E80DC4CEEB;
+	Tue, 22 Jul 2025 13:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192275;
-	bh=HJq3u9RqSGSte9nAOcGYCw2NZtSKEOQt1qy2HdAadNI=;
+	s=korg; t=1753192762;
+	bh=wz8ZR7ZH8l1iqg5d/aLYMJa76hRL5OLWKpHphRIpRMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMpo/uhlyDyiYBrXguUa2oWqa+oqw3BLiS6RS+e5V43XG5KUd1F/im+t+xEmk1A6F
-	 edtE0T4ujvY0Fd59Ov5DAWdhf0YTtkDGCBjRY4VdZBDbgVa5/fuY8jSKgLrvpwqzqE
-	 8CfAPz8gqvAx1rEafsUGnMzKhIdF0ddeJQUCQj/M=
+	b=DYyuJc/o/hqDuhMYRRT3WKSCqGot+PJQuGSeAgIe6r60EgCfdztT903eL+SfCMLPE
+	 /FN2NxrsR5YNTT9/mY4iOVucCO070Vt0ePDVCuPNrGrWemxfWF4/9mm9vAUwpQZpTK
+	 k6FhKdKXbQBqrDARaEVsRMeOb16Mo36coApn7tSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.6 017/111] HID: core: ensure the allocated report buffer can contain the reserved report ID
-Date: Tue, 22 Jul 2025 15:43:52 +0200
-Message-ID: <20250722134334.034053447@linuxfoundation.org>
+	stable@kernel.org,
+	LongJun Tang <tanglongjun@kylinos.cn>,
+	Yun Lu <luyun@kylinos.cn>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.12 049/158] af_packet: fix soft lockup issue caused by tpacket_snd()
+Date: Tue, 22 Jul 2025 15:43:53 +0200
+Message-ID: <20250722134342.564878941@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Yun Lu <luyun@kylinos.cn>
 
-commit 4f15ee98304b96e164ff2340e1dfd6181c3f42aa upstream.
+commit 55f0bfc0370539213202f4ce1a07615327ac4713 upstream.
 
-When the report ID is not used, the low level transport drivers expect
-the first byte to be 0. However, currently the allocated buffer not
-account for that extra byte, meaning that instead of having 8 guaranteed
-bytes for implement to be working, we only have 7.
+When MSG_DONTWAIT is not set, the tpacket_snd operation will wait for
+pending_refcnt to decrement to zero before returning. The pending_refcnt
+is decremented by 1 when the skb->destructor function is called,
+indicating that the skb has been successfully sent and needs to be
+destroyed.
 
-Reported-by: Alan Stern <stern@rowland.harvard.edu>
-Closes: https://lore.kernel.org/linux-input/c75433e0-9b47-4072-bbe8-b1d14ea97b13@rowland.harvard.edu/
-Cc: stable@vger.kernel.org
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20250710-report-size-null-v2-1-ccf922b7c4e5@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+If an error occurs during this process, the tpacket_snd() function will
+exit and return error, but pending_refcnt may not yet have decremented to
+zero. Assuming the next send operation is executed immediately, but there
+are no available frames to be sent in tx_ring (i.e., packet_current_frame
+returns NULL), and skb is also NULL, the function will not execute
+wait_for_completion_interruptible_timeout() to yield the CPU. Instead, it
+will enter a do-while loop, waiting for pending_refcnt to be zero. Even
+if the previous skb has completed transmission, the skb->destructor
+function can only be invoked in the ksoftirqd thread (assuming NAPI
+threading is enabled). When both the ksoftirqd thread and the tpacket_snd
+operation happen to run on the same CPU, and the CPU trapped in the
+do-while loop without yielding, the ksoftirqd thread will not get
+scheduled to run. As a result, pending_refcnt will never be reduced to
+zero, and the do-while loop cannot exit, eventually leading to a CPU soft
+lockup issue.
+
+In fact, skb is true for all but the first iterations of that loop, and
+as long as pending_refcnt is not zero, even if incremented by a previous
+call, wait_for_completion_interruptible_timeout() should be executed to
+yield the CPU, allowing the ksoftirqd thread to be scheduled. Therefore,
+the execution condition of this function should be modified to check if
+pending_refcnt is not zero, instead of check skb.
+
+-	if (need_wait && skb) {
++	if (need_wait && packet_read_pending(&po->tx_ring)) {
+
+As a result, the judgment conditions are duplicated with the end code of
+the while loop, and packet_read_pending() is a very expensive function.
+Actually, this loop can only exit when ph is NULL, so the loop condition
+can be changed to while (1), and in the "ph = NULL" branch, if the
+subsequent condition of if is not met,  the loop can break directly. Now,
+the loop logic remains the same as origin but is clearer and more obvious.
+
+Fixes: 89ed5b519004 ("af_packet: Block execution of tasks waiting for transmit to complete in AF_PACKET")
+Cc: stable@kernel.org
+Suggested-by: LongJun Tang <tanglongjun@kylinos.cn>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-core.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/packet/af_packet.c |   23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1873,9 +1873,12 @@ u8 *hid_alloc_report_buf(struct hid_repo
- 	/*
- 	 * 7 extra bytes are necessary to achieve proper functionality
- 	 * of implement() working on 8 byte chunks
-+	 * 1 extra byte for the report ID if it is null (not used) so
-+	 * we can reserve that extra byte in the first position of the buffer
-+	 * when sending it to .raw_request()
- 	 */
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2845,15 +2845,21 @@ static int tpacket_snd(struct packet_soc
+ 		ph = packet_current_frame(po, &po->tx_ring,
+ 					  TP_STATUS_SEND_REQUEST);
+ 		if (unlikely(ph == NULL)) {
+-			if (need_wait && skb) {
++			/* Note: packet_read_pending() might be slow if we
++			 * have to call it as it's per_cpu variable, but in
++			 * fast-path we don't have to call it, only when ph
++			 * is NULL, we need to check the pending_refcnt.
++			 */
++			if (need_wait && packet_read_pending(&po->tx_ring)) {
+ 				timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
+ 				if (timeo <= 0) {
+ 					err = !timeo ? -ETIMEDOUT : -ERESTARTSYS;
+ 					goto out_put;
+ 				}
+-			}
+-			/* check for additional frames */
+-			continue;
++				/* check for additional frames */
++				continue;
++			} else
++				break;
+ 		}
  
--	u32 len = hid_report_len(report) + 7;
-+	u32 len = hid_report_len(report) + 7 + (report->id == 0);
+ 		skb = NULL;
+@@ -2942,14 +2948,7 @@ tpacket_error:
+ 		}
+ 		packet_increment_head(&po->tx_ring);
+ 		len_sum += tp_len;
+-	} while (likely((ph != NULL) ||
+-		/* Note: packet_read_pending() might be slow if we have
+-		 * to call it as it's per_cpu variable, but in fast-path
+-		 * we already short-circuit the loop with the first
+-		 * condition, and luckily don't have to go that path
+-		 * anyway.
+-		 */
+-		 (need_wait && packet_read_pending(&po->tx_ring))));
++	} while (1);
  
- 	return kzalloc(len, flags);
- }
+ 	err = len_sum;
+ 	goto out_put;
 
 
 
