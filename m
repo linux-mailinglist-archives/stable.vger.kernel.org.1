@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-163911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC78BB0DC5E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:01:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7771B0DCBD
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91D293ADF72
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:56:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 933A57B513A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17CBE28B7EA;
-	Tue, 22 Jul 2025 13:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B632EA721;
+	Tue, 22 Jul 2025 14:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TmV9Brx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9i0zF6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FFF2EA732;
-	Tue, 22 Jul 2025 13:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CA52EA485;
+	Tue, 22 Jul 2025 14:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192614; cv=none; b=nlViSKjolWrwP95JB7uIk98aErQt7t9UjcW37hxuLfjrb+hb2Vf45G+K9QwigumB8Hd0Q8cI+bbP5jfoC0v0RoE9lJs42vlM6Gc+U5x1taH5OTLtRIR/my6USzceO2mvm58RmnvqnCc9WMbwd+8MEOsv6OC0P+gJCoiQpDLha5I=
+	t=1753193098; cv=none; b=BrM115HLauFTxKFeggB5/d9H+JCNImUz/BeiDUJlAUHCb28IDssazK3UrBycAW1yUJV5Mr5yhY9VFChQoSBdgA2TD0gzd/KQb10iHPnzvYMLvSV6zY/dchiuLfhJkO0nm2S4qEM1Zub2NOFCdLIsgxZS++yhCcdCU/4c8rqwvTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192614; c=relaxed/simple;
-	bh=iEJhwkXnQ2jpTtwozewXgipUPG71f9KmHoWgO4TS/IQ=;
+	s=arc-20240116; t=1753193098; c=relaxed/simple;
+	bh=F2ZzHhg+tlRAUclj4LbGWpJQ/QO8OG0JjCSDs0+eyc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPd6YYJ8yQVwxYehWH3II9vg7bHF6FOALfSHHO+W+jr3gVFAdOz26fgGREjo8PDw/suX296chGu2zYcShErIkbCZBE6XL0n0GoWdcLpQ5AEJZ5iR+bFq9czs0HNR0pJLj4SqjNDvlu3k7reBlb1kbPUV5tDA6eKQB3pYQ+Zi9NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TmV9Brx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5A2C4CEEB;
-	Tue, 22 Jul 2025 13:56:53 +0000 (UTC)
+	 MIME-Version; b=KQU4laeCB3X8bsVtjPMPDcaGyOopMjFSyUDZYhCOo7Ij93gSS+1N9hLs7gw9uwMihIXErxbAfc/vX0iaRo/MIxW5FF2ALiRp0du3Lq7Q4Rj36nJ/6pdqigN8SMH1NVp3YsDOe2b/dM1hc6dFOP1/pEhAatYi/pbSX59qAo0rKjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9i0zF6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE523C4CEEB;
+	Tue, 22 Jul 2025 14:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192614;
-	bh=iEJhwkXnQ2jpTtwozewXgipUPG71f9KmHoWgO4TS/IQ=;
+	s=korg; t=1753193098;
+	bh=F2ZzHhg+tlRAUclj4LbGWpJQ/QO8OG0JjCSDs0+eyc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TmV9Brxo5dUVIpikIgwV+gWX+ZrB72hu9NzNfX6wAD8dsU7PkHm9aIDDsaQuhJaX
-	 qmcOjsNnIVuy+/LXo31KQ8SSNMRL6dolf8i0mCxzIvUIM9js/NIRh83GZuOWDkFf9E
-	 LxpEek7b5YDB2rSA5ah6xnAc5flUDVJd1hDBGbjU=
+	b=p9i0zF6dad7JIqxNL10NZ0h+ybuiTWzxo/eqgzr0Q9dfkHfVaEfmdUwd7dzs23bXd
+	 KPb/VO2uNUP830ObHjor2kTHjHq/WowUzCAUToxjf9m9PC6hKrgMbtJGQlxsXXu/wM
+	 vSGVBtCxyKMluMd+zQVD1VYQUuNiqxociQq4leKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	INAGAKI Hiroshi <musashino.open@gmail.com>,
-	"Michael C. Pratt" <mcpratt@pm.me>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/111] nvmem: layouts: u-boot-env: remove crc32 endianness conversion
-Date: Tue, 22 Jul 2025 15:45:26 +0200
-Message-ID: <20250722134337.561185968@linuxfoundation.org>
+	Ihor Solodrai <ihor.solodrai@pm.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.12 150/158] selftests/bpf: Set test path for token/obj_priv_implicit_token_envvar
+Date: Tue, 22 Jul 2025 15:45:34 +0200
+Message-ID: <20250722134346.310524606@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael C. Pratt <mcpratt@pm.me>
+From: Ihor Solodrai <ihor.solodrai@pm.me>
 
-commit 2d7521aa26ec2dc8b877bb2d1f2611a2df49a3cf upstream.
+commit f01750aecdfb8bfb02842f60af3d805a3ae7267a upstream.
 
-On 11 Oct 2022, it was reported that the crc32 verification
-of the u-boot environment failed only on big-endian systems
-for the u-boot-env nvmem layout driver with the following error.
+token/obj_priv_implicit_token_envvar test may fail in an environment
+where the process executing tests can not write to the root path.
 
-  Invalid calculated CRC32: 0x88cd6f09 (expected: 0x096fcd88)
+Example:
+https://github.com/libbpf/libbpf/actions/runs/11844507007/job/33007897936
 
-This problem has been present since the driver was introduced,
-and before it was made into a layout driver.
+Change default path used by the test to /tmp/bpf-token-fs, and make it
+runtime configurable via an environment variable.
 
-The suggested fix at the time was to use further endianness
-conversion macros in order to have both the stored and calculated
-crc32 values to compare always represented in the system's endianness.
-This was not accepted due to sparse warnings
-and some disagreement on how to handle the situation.
-Later on in a newer revision of the patch, it was proposed to use
-cpu_to_le32() for both values to compare instead of le32_to_cpu()
-and store the values as __le32 type to remove compilation errors.
-
-The necessity of this is based on the assumption that the use of crc32()
-requires endianness conversion because the algorithm uses little-endian,
-however, this does not prove to be the case and the issue is unrelated.
-
-Upon inspecting the current kernel code,
-there already is an existing use of le32_to_cpu() in this driver,
-which suggests there already is special handling for big-endian systems,
-however, it is big-endian systems that have the problem.
-
-This, being the only functional difference between architectures
-in the driver combined with the fact that the suggested fix
-was to use the exact same endianness conversion for the values
-brings up the possibility that it was not necessary to begin with,
-as the same endianness conversion for two values expected to be the same
-is expected to be equivalent to no conversion at all.
-
-After inspecting the u-boot environment of devices of both endianness
-and trying to remove the existing endianness conversion,
-the problem is resolved in an equivalent way as the other suggested fixes.
-
-Ultimately, it seems that u-boot is agnostic to endianness
-at least for the purpose of environment variables.
-In other words, u-boot reads and writes the stored crc32 value
-with the same endianness that the crc32 value is calculated with
-in whichever endianness a certain architecture runs on.
-
-Therefore, the u-boot-env driver does not need to convert endianness.
-Remove the usage of endianness macros in the u-boot-env driver,
-and change the type of local variables to maintain the same return type.
-
-If there is a special situation in the case of endianness,
-it would be a corner case and should be handled by a unique "compatible".
-
-Even though it is not necessary to use endianness conversion macros here,
-it may be useful to use them in the future for consistent error printing.
-
-Fixes: d5542923f200 ("nvmem: add driver handling U-Boot environment variables")
-Reported-by: INAGAKI Hiroshi <musashino.open@gmail.com>
-Link: https://lore.kernel.org/all/20221011024928.1807-1-musashino.open@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: "Michael C. Pratt" <mcpratt@pm.me>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250716144210.4804-1-srini@kernel.org
-[ applied changes to drivers/nvmem/u-boot-env.c after code was moved from drivers/nvmem/layouts/u-boot-env.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241115003853.864397-1-ihor.solodrai@pm.me
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 ---
- drivers/nvmem/u-boot-env.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/token.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/nvmem/u-boot-env.c
-+++ b/drivers/nvmem/u-boot-env.c
-@@ -132,7 +132,7 @@ static int u_boot_env_parse(struct u_boo
- 	size_t crc32_data_offset;
- 	size_t crc32_data_len;
- 	size_t crc32_offset;
--	__le32 *crc32_addr;
-+	uint32_t *crc32_addr;
- 	size_t data_offset;
- 	size_t data_len;
- 	size_t dev_size;
-@@ -183,8 +183,8 @@ static int u_boot_env_parse(struct u_boo
- 		goto err_kfree;
+--- a/tools/testing/selftests/bpf/prog_tests/token.c
++++ b/tools/testing/selftests/bpf/prog_tests/token.c
+@@ -828,8 +828,12 @@ static int userns_obj_priv_btf_success(i
+ 	return validate_struct_ops_load(mnt_fd, true /* should succeed */);
+ }
+ 
++static const char *token_bpffs_custom_dir()
++{
++	return getenv("BPF_SELFTESTS_BPF_TOKEN_DIR") ?: "/tmp/bpf-token-fs";
++}
++
+ #define TOKEN_ENVVAR "LIBBPF_BPF_TOKEN_PATH"
+-#define TOKEN_BPFFS_CUSTOM "/bpf-token-fs"
+ 
+ static int userns_obj_priv_implicit_token(int mnt_fd, struct token_lsm *lsm_skel)
+ {
+@@ -892,6 +896,7 @@ static int userns_obj_priv_implicit_toke
+ 
+ static int userns_obj_priv_implicit_token_envvar(int mnt_fd, struct token_lsm *lsm_skel)
+ {
++	const char *custom_dir = token_bpffs_custom_dir();
+ 	LIBBPF_OPTS(bpf_object_open_opts, opts);
+ 	struct dummy_st_ops_success *skel;
+ 	int err;
+@@ -909,10 +914,10 @@ static int userns_obj_priv_implicit_toke
+ 	 * BPF token implicitly, unless pointed to it through
+ 	 * LIBBPF_BPF_TOKEN_PATH envvar
+ 	 */
+-	rmdir(TOKEN_BPFFS_CUSTOM);
+-	if (!ASSERT_OK(mkdir(TOKEN_BPFFS_CUSTOM, 0777), "mkdir_bpffs_custom"))
++	rmdir(custom_dir);
++	if (!ASSERT_OK(mkdir(custom_dir, 0777), "mkdir_bpffs_custom"))
+ 		goto err_out;
+-	err = sys_move_mount(mnt_fd, "", AT_FDCWD, TOKEN_BPFFS_CUSTOM, MOVE_MOUNT_F_EMPTY_PATH);
++	err = sys_move_mount(mnt_fd, "", AT_FDCWD, custom_dir, MOVE_MOUNT_F_EMPTY_PATH);
+ 	if (!ASSERT_OK(err, "move_mount_bpffs"))
+ 		goto err_out;
+ 
+@@ -925,7 +930,7 @@ static int userns_obj_priv_implicit_toke
+ 		goto err_out;
  	}
  
--	crc32_addr = (__le32 *)(buf + crc32_offset);
--	crc32 = le32_to_cpu(*crc32_addr);
-+	crc32_addr = (uint32_t *)(buf + crc32_offset);
-+	crc32 = *crc32_addr;
- 	crc32_data_len = dev_size - crc32_data_offset;
- 	data_len = dev_size - data_offset;
+-	err = setenv(TOKEN_ENVVAR, TOKEN_BPFFS_CUSTOM, 1 /*overwrite*/);
++	err = setenv(TOKEN_ENVVAR, custom_dir, 1 /*overwrite*/);
+ 	if (!ASSERT_OK(err, "setenv_token_path"))
+ 		goto err_out;
  
+@@ -951,11 +956,11 @@ static int userns_obj_priv_implicit_toke
+ 	if (!ASSERT_ERR(err, "obj_empty_token_path_load"))
+ 		goto err_out;
+ 
+-	rmdir(TOKEN_BPFFS_CUSTOM);
++	rmdir(custom_dir);
+ 	unsetenv(TOKEN_ENVVAR);
+ 	return 0;
+ err_out:
+-	rmdir(TOKEN_BPFFS_CUSTOM);
++	rmdir(custom_dir);
+ 	unsetenv(TOKEN_ENVVAR);
+ 	return -EINVAL;
+ }
 
 
 
