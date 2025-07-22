@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-164023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B40EB0DC86
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B454BB0DC0C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6BED7A4585
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:01:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FBAF18922B8
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174861A2C25;
-	Tue, 22 Jul 2025 14:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1AD8836;
+	Tue, 22 Jul 2025 13:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IghIuTln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmXpmw+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C262E36E8;
-	Tue, 22 Jul 2025 14:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFC52DC32B;
+	Tue, 22 Jul 2025 13:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192990; cv=none; b=nsPg87Dw0ptReSvuV5yS07sgrAyvlLfSU+QRX21N4YyQguN7K4YAoKZBa/8kAy1rq7xYJVEpHuHSuTmSZfbwh1zI7LmQ4n7jfjyVmGUDIt1w6SxN8ZF+VuFtKoeLJXnPd4oVeVcpraWE4Pg+bwN+hLoJmMXdSCipC15BgZce2Fc=
+	t=1753192519; cv=none; b=n2DW+wgppz2h9eeNHPXeuOu5Auz4cdyJ2VGof5N616XvxMqfbs25ApuU79Q9VbVEx1Uierc9gQE9gkQ63AL3CnVcFaj31raupxuZSZOtTKGyk2IFwLm25UoddA8CwOpEHA+oLuVep5NSptQhxctgRRfVLZT2qCocTHaHOq8yW7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192990; c=relaxed/simple;
-	bh=36IAOEwbkAiMe+MY3bN7le6V08GlGgABma6UUQcoq5g=;
+	s=arc-20240116; t=1753192519; c=relaxed/simple;
+	bh=JeB7JiWbk0cVE5rtXUliM+gB/WXy2Vz95FaGajlGmSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9KsmgAwUqCa8ObnSvcuPTtI3wb11EEFWtqxR9Ud499nU/g3hafAbET2mGTtLjhULEjel+2Htph/ih1Y8ACvp98ZwdIJRmSrlQvoLI2/Wq6d2Msd8avH5qFvJS7gWrjKEU1rE8A+DwgLXERSmCIB0ixIPYinLGCgxp4/x6gzjSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IghIuTln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7141C4CEEB;
-	Tue, 22 Jul 2025 14:03:09 +0000 (UTC)
+	 MIME-Version; b=NSmE1TXiJ6w1hOvWYi59b65Jxq0DFlrrLXfR98kv5mLD982MlGkZKBA7t813JOYM98vDR9z70Eh/c/+UedQi+5zs1dc03z5R+ygG/oNIp4ZbHLoSlfifin+TpKFXwwLQf9gCkdeSAz1Uf4v2uTM5gv951LOvBcN5jLJ0CdwD/3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmXpmw+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D41C4CEEB;
+	Tue, 22 Jul 2025 13:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192990;
-	bh=36IAOEwbkAiMe+MY3bN7le6V08GlGgABma6UUQcoq5g=;
+	s=korg; t=1753192518;
+	bh=JeB7JiWbk0cVE5rtXUliM+gB/WXy2Vz95FaGajlGmSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IghIuTlnMyvAaLSJ5eszlGz8Kr9FTglBUUQK4FDdB7zU4wCsViKcA9AEgFHqtc6VI
-	 jitqLyS56jDrvRzTgVAEuuH0zAnMYBjREk3dQZxw81ekghEfWL2vx1KWrdI8+c5VR2
-	 JHnS0RFzIgZp+2eZzesp+DnuioyCNe4yHk/cAi/8=
+	b=HmXpmw+w0s6ec/hNn4+aqtUyJe7ZdlEAhn7Hd1q+fD3CUATkdn7TvqO9IKCPRPFkf
+	 5OB/YbM2NSQqJMJoKXJCq2GRKqXfJcFOn8gc8BOXcPI42zr8JhGnfIq4HCAjG8TK0M
+	 d+Y+7zMjWFs9+B1yEAyWDtf2ww3Aa63Ra+Vks4H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Paasch <cpaasch@openai.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/158] net/mlx5: Correctly set gso_size when LRO is used
-Date: Tue, 22 Jul 2025 15:45:03 +0200
-Message-ID: <20250722134345.184095166@linuxfoundation.org>
+Subject: [PATCH 6.6 089/111] net/sched: Return NULL when htb_lookup_leaf encounters an empty rbtree
+Date: Tue, 22 Jul 2025 15:45:04 +0200
+Message-ID: <20250722134336.723733320@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Paasch <cpaasch@openai.com>
+From: William Liu <will@willsroot.io>
 
-[ Upstream commit 531d0d32de3e1b6b77a87bd37de0c2c6e17b496a ]
+[ Upstream commit 0e1d5d9b5c5966e2e42e298670808590db5ed628 ]
 
-gso_size is expected by the networking stack to be the size of the
-payload (thus, not including ethernet/IP/TCP-headers). However, cqe_bcnt
-is the full sized frame (including the headers). Dividing cqe_bcnt by
-lro_num_seg will then give incorrect results.
+htb_lookup_leaf has a BUG_ON that can trigger with the following:
 
-For example, running a bpftrace higher up in the TCP-stack
-(tcp_event_data_recv), we commonly have gso_size set to 1450 or 1451 even
-though in reality the payload was only 1448 bytes.
+tc qdisc del dev lo root
+tc qdisc add dev lo root handle 1: htb default 1
+tc class add dev lo parent 1: classid 1:1 htb rate 64bit
+tc qdisc add dev lo parent 1:1 handle 2: netem
+tc qdisc add dev lo parent 2:1 handle 3: blackhole
+ping -I lo -c1 -W0.001 127.0.0.1
 
-This can have unintended consequences:
-- In tcp_measure_rcv_mss() len will be for example 1450, but. rcv_mss
-will be 1448 (because tp->advmss is 1448). Thus, we will always
-recompute scaling_ratio each time an LRO-packet is received.
-- In tcp_gro_receive(), it will interfere with the decision whether or
-not to flush and thus potentially result in less gro'ed packets.
+The root cause is the following:
 
-So, we need to discount the protocol headers from cqe_bcnt so we can
-actually divide the payload by lro_num_seg to get the real gso_size.
+1. htb_dequeue calls htb_dequeue_tree which calls the dequeue handler on
+   the selected leaf qdisc
+2. netem_dequeue calls enqueue on the child qdisc
+3. blackhole_enqueue drops the packet and returns a value that is not
+   just NET_XMIT_SUCCESS
+4. Because of this, netem_dequeue calls qdisc_tree_reduce_backlog, and
+   since qlen is now 0, it calls htb_qlen_notify -> htb_deactivate ->
+   htb_deactiviate_prios -> htb_remove_class_from_row -> htb_safe_rb_erase
+5. As this is the only class in the selected hprio rbtree,
+   __rb_change_child in __rb_erase_augmented sets the rb_root pointer to
+   NULL
+6. Because blackhole_dequeue returns NULL, netem_dequeue returns NULL,
+   which causes htb_dequeue_tree to call htb_lookup_leaf with the same
+   hprio rbtree, and fail the BUG_ON
 
-v2:
- - Use "(unsigned char *)tcp + tcp->doff * 4 - skb->data)" to compute header-len
-   (Tariq Toukan <tariqt@nvidia.com>)
- - Improve commit-message (Gal Pressman <gal@nvidia.com>)
+The function graph for this scenario is shown here:
+ 0)               |  htb_enqueue() {
+ 0) + 13.635 us   |    netem_enqueue();
+ 0)   4.719 us    |    htb_activate_prios();
+ 0) # 2249.199 us |  }
+ 0)               |  htb_dequeue() {
+ 0)   2.355 us    |    htb_lookup_leaf();
+ 0)               |    netem_dequeue() {
+ 0) + 11.061 us   |      blackhole_enqueue();
+ 0)               |      qdisc_tree_reduce_backlog() {
+ 0)               |        qdisc_lookup_rcu() {
+ 0)   1.873 us    |          qdisc_match_from_root();
+ 0)   6.292 us    |        }
+ 0)   1.894 us    |        htb_search();
+ 0)               |        htb_qlen_notify() {
+ 0)   2.655 us    |          htb_deactivate_prios();
+ 0)   6.933 us    |        }
+ 0) + 25.227 us   |      }
+ 0)   1.983 us    |      blackhole_dequeue();
+ 0) + 86.553 us   |    }
+ 0) # 2932.761 us |    qdisc_warn_nonwc();
+ 0)               |    htb_lookup_leaf() {
+ 0)               |      BUG_ON();
+ ------------------------------------------
 
-Fixes: e586b3b0baee ("net/mlx5: Ethernet Datapath files")
-Signed-off-by: Christoph Paasch <cpaasch@openai.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20250715-cpaasch-pf-925-investigate-incorrect-gso_size-on-cx-7-nic-v2-1-e06c3475f3ac@openai.com
+The full original bug report can be seen here [1].
+
+We can fix this just by returning NULL instead of the BUG_ON,
+as htb_dequeue_tree returns NULL when htb_lookup_leaf returns
+NULL.
+
+[1] https://lore.kernel.org/netdev/pF5XOOIim0IuEfhI-SOxTgRvNoDwuux7UHKnE_Y5-zVd4wmGvNk2ceHjKb8ORnzw0cGwfmVu42g9dL7XyJLf1NEzaztboTWcm0Ogxuojoeo=@willsroot.io/
+
+Fixes: 512bb43eb542 ("pkt_sched: sch_htb: Optimize WARN_ONs in htb_dequeue_tree() etc.")
+Signed-off-by: William Liu <will@willsroot.io>
+Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
+Link: https://patch.msgid.link/20250717022816.221364-1-will@willsroot.io
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/sched/sch_htb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 8e24ba96c779a..8ed47e7a7515b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -1156,8 +1156,9 @@ static void mlx5e_lro_update_tcp_hdr(struct mlx5_cqe64 *cqe, struct tcphdr *tcp)
- 	}
- }
+diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+index 716da8c6b3def..113b305b0d154 100644
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -821,7 +821,9 @@ static struct htb_class *htb_lookup_leaf(struct htb_prio *hprio, const int prio)
+ 		u32 *pid;
+ 	} stk[TC_HTB_MAXDEPTH], *sp = stk;
  
--static void mlx5e_lro_update_hdr(struct sk_buff *skb, struct mlx5_cqe64 *cqe,
--				 u32 cqe_bcnt)
-+static unsigned int mlx5e_lro_update_hdr(struct sk_buff *skb,
-+					 struct mlx5_cqe64 *cqe,
-+					 u32 cqe_bcnt)
- {
- 	struct ethhdr	*eth = (struct ethhdr *)(skb->data);
- 	struct tcphdr	*tcp;
-@@ -1207,6 +1208,8 @@ static void mlx5e_lro_update_hdr(struct sk_buff *skb, struct mlx5_cqe64 *cqe,
- 		tcp->check = tcp_v6_check(payload_len, &ipv6->saddr,
- 					  &ipv6->daddr, check);
- 	}
+-	BUG_ON(!hprio->row.rb_node);
++	if (unlikely(!hprio->row.rb_node))
++		return NULL;
 +
-+	return (unsigned int)((unsigned char *)tcp + tcp->doff * 4 - skb->data);
- }
- 
- static void *mlx5e_shampo_get_packet_hd(struct mlx5e_rq *rq, u16 header_index)
-@@ -1563,8 +1566,9 @@ static inline void mlx5e_build_rx_skb(struct mlx5_cqe64 *cqe,
- 		mlx5e_macsec_offload_handle_rx_skb(netdev, skb, cqe);
- 
- 	if (lro_num_seg > 1) {
--		mlx5e_lro_update_hdr(skb, cqe, cqe_bcnt);
--		skb_shinfo(skb)->gso_size = DIV_ROUND_UP(cqe_bcnt, lro_num_seg);
-+		unsigned int hdrlen = mlx5e_lro_update_hdr(skb, cqe, cqe_bcnt);
-+
-+		skb_shinfo(skb)->gso_size = DIV_ROUND_UP(cqe_bcnt - hdrlen, lro_num_seg);
- 		/* Subtract one since we already counted this as one
- 		 * "regular" packet in mlx5e_complete_rx_cqe()
- 		 */
+ 	sp->root = hprio->row.rb_node;
+ 	sp->pptr = &hprio->ptr;
+ 	sp->pid = &hprio->last_ptr_id;
 -- 
 2.39.5
 
