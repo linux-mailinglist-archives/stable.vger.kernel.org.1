@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-163815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF8CB0DBD4
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:54:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35908B0DC94
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93C433AEEBC
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:52:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83EEC3B569D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C1C2EACF0;
-	Tue, 22 Jul 2025 13:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD2228B507;
+	Tue, 22 Jul 2025 13:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXi5Yiup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKty+S1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFBF2EACE8;
-	Tue, 22 Jul 2025 13:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4F77263D;
+	Tue, 22 Jul 2025 13:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192299; cv=none; b=i8fsfoCTHBL5RqRqdiA1/pV9Zqc0OM1eYYQV74Hg6snXa8vmCYp7eVsaScYNI+ICSa+7tFMnPk8Uqy2l7dU97MsGp7u0O/rZqiX0tKamd636cgPY94AaoOGGrPg/3MdT/n+dKXOC4wa8VblZyJyPXABGR8snD91UmguUpNY2XtU=
+	t=1753192782; cv=none; b=bHjsiGAZOAcZpqwgHJq3HcE0dWmWZ7lyISttp0ziVCLkX9QoTV635hRxxzX1/HGKILx6Tv/sya5e0MRHITFKPBf1M9w/3ZNaTG4p9U24lz1nY0AOkZf0dxTIhe+z47CeknXZbUo3crhVJEkbDq2B3QWnjDHloW8InsDA9aJwJvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192299; c=relaxed/simple;
-	bh=WEzvyWoYscKeYFlIyoudNASbW7Ho5YrHiohVrkaMoLw=;
+	s=arc-20240116; t=1753192782; c=relaxed/simple;
+	bh=iwtGz6xFsWaCoBoFqdf9kTyL86aI9Y683ikCQBKcau8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jE+CyAMcBBltalB+5VPzcPf5C4tIeVL+C1TergUwQ5ufYqi3lHQv7p4e0BHvUTAqROGV5nW+gqP6uYNKBVBvDkaejRX+avVPWCCyVuNSt3IQbZ9/OOA2g8+AeZARpDF3f7BaLi/Hu3/1oz+HOWyp7qcK0fU7l+kN88DMhZUQjGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXi5Yiup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5186C4CEEB;
-	Tue, 22 Jul 2025 13:51:38 +0000 (UTC)
+	 MIME-Version; b=pzOY19OJGWtawcHV/JkR+U1QNS1HMBsA8wiPCTq/V/+0ULEPjE+p+7pSOlxMsYJhYedJ/WyzptKeLUmkcUjyUVeZsVeJUlix96AaTUxy86gEYI2r9Sun+GoaqJxjDCf55HPLQPGwjmrmqwEmxFUaCTbNYbqp2XHmC/mJkd1ufCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKty+S1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F404C4CEEB;
+	Tue, 22 Jul 2025 13:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192299;
-	bh=WEzvyWoYscKeYFlIyoudNASbW7Ho5YrHiohVrkaMoLw=;
+	s=korg; t=1753192781;
+	bh=iwtGz6xFsWaCoBoFqdf9kTyL86aI9Y683ikCQBKcau8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nXi5YiupuHWv8wqZ9kHGZegUFFcJwHuRHCZN/52EqegZxkYluedgO4B2/Zki/fzuI
-	 vC+AMTHK+sPI5T6imR9gPpWZZClgZOEX/zK9y+fPhBbn6GxPjl3WX/sG5Wrk9AEs/3
-	 gi+vMp0mUbGSEMUesNqtBIY964JkXit1eVL7Mpx8=
+	b=mKty+S1dH6Zd8pp3jyEOr1BMMZdaml96is3q/RWUFZHhy/xUYuvCKFsLdQguMMKxs
+	 0GSmtV+nhvkRkV1jEVzvrdtuk/8XOGeAyxrP/XWdp1Qc1ILFuR1ErjLu+NlUqaZN9Z
+	 j+Ip22wmmOyewbTmVGZHaK9ap+Aeso3jSV62Dx+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 024/111] ALSA: hda/realtek: Add quirk for ASUS ROG Strix G712LWS
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 055/158] mmc: bcm2835: Fix dma_unmap_sg() nents value
 Date: Tue, 22 Jul 2025 15:43:59 +0200
-Message-ID: <20250722134334.300342430@linuxfoundation.org>
+Message-ID: <20250722134342.789504159@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit e201c19ddeed6b37f05617e529d8efa079657ed7 upstream.
+commit ff09b71bf9daeca4f21d6e5e449641c9fad75b53 upstream.
 
-ASUS ROG Strix G712LWS (PCI SSID 1043:1a83) requires the quirk for
-ALC294 headset mode in order to make the speaker and headset I/O
-working properly.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Cc: <stable@vger.kernel.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220334
-Link: https://patch.msgid.link/20250715062906.11857-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 2f5da678351f ("mmc: bcm2835: Properly handle dmaengine_prep_slave_sg")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250630093510.82871-2-fourier.thomas@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/bcm2835.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10303,6 +10303,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1043, 0x1a13, "Asus G73Jw", ALC269_FIXUP_ASUS_G73JW),
- 	SND_PCI_QUIRK(0x1043, 0x1a63, "ASUS UX3405MA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a83, "ASUS UM5302LA", ALC294_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1a8e, "ASUS G712LWS", ALC294_FIXUP_LENOVO_MIC_LOCATION),
- 	SND_PCI_QUIRK(0x1043, 0x1a8f, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1b11, "ASUS UX431DA", ALC294_FIXUP_ASUS_COEF_1B),
- 	SND_PCI_QUIRK(0x1043, 0x1b13, "Asus U41SV", ALC269_FIXUP_INV_DMIC),
+--- a/drivers/mmc/host/bcm2835.c
++++ b/drivers/mmc/host/bcm2835.c
+@@ -502,7 +502,8 @@ void bcm2835_prepare_dma(struct bcm2835_
+ 				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 
+ 	if (!desc) {
+-		dma_unmap_sg(dma_chan->device->dev, data->sg, sg_len, dir_data);
++		dma_unmap_sg(dma_chan->device->dev, data->sg, data->sg_len,
++			     dir_data);
+ 		return;
+ 	}
+ 
 
 
 
