@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-163868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0B9EB0DC10
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 737FBB0DB71
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E2E217A999
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:54:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7956EAA73ED
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BF22DC32B;
-	Tue, 22 Jul 2025 13:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118E57BAEC;
+	Tue, 22 Jul 2025 13:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdmxtN0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCFwInuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58CE2B9A5;
-	Tue, 22 Jul 2025 13:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26C27263D;
+	Tue, 22 Jul 2025 13:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192479; cv=none; b=ox7IihnVGY3tYyhgzrEN1JojVNT0Pk1nb7APrKdRHGXMPJSiIVtzurs18s1qC/cMq5PlpBM+W8f5L/ZbrHtT8/95q0sxeXvZn6W01U3BZaQ1WYuwXWFCX2ql33rGRnIsgxYxUs7sekwNxi6bm2c/OX+ae7CP1nUTYH0hEwXPhj0=
+	t=1753192140; cv=none; b=UHR9W3rMFxD1Xr2LmVD2ePsybQP1qqpyLir37W9VcijYBdscWrKUHeHVxptE4VtO4aITzUjynoOtLYjaW+vtVFeqoGTo6yjdDTgx0/VoA9BB4eEyuOaO9g8encKeHNi9Nivb8khLtpH+8T/C0OPos6jcGVlfUymLUnJmzpsUBB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192479; c=relaxed/simple;
-	bh=THvWnCnTCH8ldFDB+/ZrXwsREdf9gcR8uGSr3dCtUEQ=;
+	s=arc-20240116; t=1753192140; c=relaxed/simple;
+	bh=XW7YT5Snw/1cKVDzoEsrpEsjz6Ij4Fh30XT1eU+bq58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ym1Nhv1EQGT3qF8tVCW9lMIzqzE9jnHAlV4VA3GbJo3S8L6wrBntYOjjiHP5FW5ZlQ8RGZGHf3jFOcIEtUEMeXvxzdy+qwhthqzu0Z2kHms2+8LUwIkVAviUNUNbH5DNpodrxtEJlijnAKurQ7H8trGvvpqTyg+WoBdnxXUaZ/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdmxtN0k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A6DC4CEEB;
-	Tue, 22 Jul 2025 13:54:38 +0000 (UTC)
+	 MIME-Version; b=V+l1cTkVqG3lh8V2tsaqM4XoRRa1FoDoBqjuotF2rbLlJTE5cWkdjFT1IJp/BTwi425k6/rDLIhMfG1X+RIR2gOTVbj/Cg1eH20/PYqBFkaJVqhZbRulUH1P0CqFHRk27R3Bp2IzQ+hrvMhTyahlWhnePZ5rhx3FoSI5cIsGPkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCFwInuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C0DC4CEEB;
+	Tue, 22 Jul 2025 13:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192478;
-	bh=THvWnCnTCH8ldFDB+/ZrXwsREdf9gcR8uGSr3dCtUEQ=;
+	s=korg; t=1753192140;
+	bh=XW7YT5Snw/1cKVDzoEsrpEsjz6Ij4Fh30XT1eU+bq58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdmxtN0kf3NlX59ed72pj0fuYIYOXnNju1hTFXgQLLUyfLo0iI826IoewpU7YG0HW
-	 MfuvVa7OXiC8X3YQ+LA6qVDbld8AOY4kM2SmMgqFyhiet0mYYPw4F1EeEgHdw+QnFU
-	 IR9eFVesoen4GRpXSoKvgzMbLqOfIMwBow/MUgQY=
+	b=FCFwInuTPihMcT3k/C9qvzG4FniRx5nnOha2uIUd2Hj1vOm/cgwngkaNuEPedDH+O
+	 l8OWWy3of0/bALz9Uv4tUWjm8KD7TBkEvJsqK/EEOQ04pNeXhQlIK+JP5UbT0dva0X
+	 PBuseaJiPaS0GcXKcrUm673d4Mn3MkTBIO5XEjKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Christoph Paasch <cpaasch@openai.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/111] Bluetooth: SMP: If an unallowed command is received consider it a failure
+Subject: [PATCH 6.1 57/79] net/mlx5: Correctly set gso_size when LRO is used
 Date: Tue, 22 Jul 2025 15:44:53 +0200
-Message-ID: <20250722134336.298615412@linuxfoundation.org>
+Message-ID: <20250722134330.472104583@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Christoph Paasch <cpaasch@openai.com>
 
-[ Upstream commit fe4840df0bdf341f376885271b7680764fe6b34e ]
+[ Upstream commit 531d0d32de3e1b6b77a87bd37de0c2c6e17b496a ]
 
-If a command is received while a bonding is ongoing consider it a
-pairing failure so the session is cleanup properly and the device is
-disconnected immediately instead of continuing with other commands that
-may result in the session to get stuck without ever completing such as
-the case bellow:
+gso_size is expected by the networking stack to be the size of the
+payload (thus, not including ethernet/IP/TCP-headers). However, cqe_bcnt
+is the full sized frame (including the headers). Dividing cqe_bcnt by
+lro_num_seg will then give incorrect results.
 
-> ACL Data RX: Handle 2048 flags 0x02 dlen 21
-      SMP: Identity Information (0x08) len 16
-        Identity resolving key[16]: d7e08edef97d3e62cd2331f82d8073b0
-> ACL Data RX: Handle 2048 flags 0x02 dlen 21
-      SMP: Signing Information (0x0a) len 16
-        Signature key[16]: 1716c536f94e843a9aea8b13ffde477d
-Bluetooth: hci0: unexpected SMP command 0x0a from XX:XX:XX:XX:XX:XX
-> ACL Data RX: Handle 2048 flags 0x02 dlen 12
-      SMP: Identity Address Information (0x09) len 7
-        Address: XX:XX:XX:XX:XX:XX (Intel Corporate)
+For example, running a bpftrace higher up in the TCP-stack
+(tcp_event_data_recv), we commonly have gso_size set to 1450 or 1451 even
+though in reality the payload was only 1448 bytes.
 
-While accourding to core spec 6.1 the expected order is always BD_ADDR
-first first then CSRK:
+This can have unintended consequences:
+- In tcp_measure_rcv_mss() len will be for example 1450, but. rcv_mss
+will be 1448 (because tp->advmss is 1448). Thus, we will always
+recompute scaling_ratio each time an LRO-packet is received.
+- In tcp_gro_receive(), it will interfere with the decision whether or
+not to flush and thus potentially result in less gro'ed packets.
 
-When using LE legacy pairing, the keys shall be distributed in the
-following order:
+So, we need to discount the protocol headers from cqe_bcnt so we can
+actually divide the payload by lro_num_seg to get the real gso_size.
 
-    LTK by the Peripheral
+v2:
+ - Use "(unsigned char *)tcp + tcp->doff * 4 - skb->data)" to compute header-len
+   (Tariq Toukan <tariqt@nvidia.com>)
+ - Improve commit-message (Gal Pressman <gal@nvidia.com>)
 
-    EDIV and Rand by the Peripheral
-
-    IRK by the Peripheral
-
-    BD_ADDR by the Peripheral
-
-    CSRK by the Peripheral
-
-    LTK by the Central
-
-    EDIV and Rand by the Central
-
-    IRK by the Central
-
-    BD_ADDR by the Central
-
-    CSRK by the Central
-
-When using LE Secure Connections, the keys shall be distributed in the
-following order:
-
-    IRK by the Peripheral
-
-    BD_ADDR by the Peripheral
-
-    CSRK by the Peripheral
-
-    IRK by the Central
-
-    BD_ADDR by the Central
-
-    CSRK by the Central
-
-According to the Core 6.1 for commands used for key distribution "Key
-Rejected" can be used:
-
-  '3.6.1. Key distribution and generation
-
-  A device may reject a distributed key by sending the Pairing Failed command
-  with the reason set to "Key Rejected".
-
-Fixes: b28b4943660f ("Bluetooth: Add strict checks for allowed SMP PDUs")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: e586b3b0baee ("net/mlx5: Ethernet Datapath files")
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20250715-cpaasch-pf-925-investigate-incorrect-gso_size-on-cx-7-nic-v2-1-e06c3475f3ac@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/smp.c | 19 ++++++++++++++++++-
- net/bluetooth/smp.h |  1 +
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 56f7f041c9a60..7040705876b70 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -2978,8 +2978,25 @@ static int smp_sig_channel(struct l2cap_chan *chan, struct sk_buff *skb)
- 	if (code > SMP_CMD_MAX)
- 		goto drop;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index ccddfa49e96c0..74dc45d9c242e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -1015,8 +1015,9 @@ static void mlx5e_lro_update_tcp_hdr(struct mlx5_cqe64 *cqe, struct tcphdr *tcp)
+ 	}
+ }
  
--	if (smp && !test_and_clear_bit(code, &smp->allow_cmd))
-+	if (smp && !test_and_clear_bit(code, &smp->allow_cmd)) {
-+		/* If there is a context and the command is not allowed consider
-+		 * it a failure so the session is cleanup properly.
-+		 */
-+		switch (code) {
-+		case SMP_CMD_IDENT_INFO:
-+		case SMP_CMD_IDENT_ADDR_INFO:
-+		case SMP_CMD_SIGN_INFO:
-+			/* 3.6.1. Key distribution and generation
-+			 *
-+			 * A device may reject a distributed key by sending the
-+			 * Pairing Failed command with the reason set to
-+			 * "Key Rejected".
-+			 */
-+			smp_failure(conn, SMP_KEY_REJECTED);
-+			break;
-+		}
- 		goto drop;
-+	}
+-static void mlx5e_lro_update_hdr(struct sk_buff *skb, struct mlx5_cqe64 *cqe,
+-				 u32 cqe_bcnt)
++static unsigned int mlx5e_lro_update_hdr(struct sk_buff *skb,
++					 struct mlx5_cqe64 *cqe,
++					 u32 cqe_bcnt)
+ {
+ 	struct ethhdr	*eth = (struct ethhdr *)(skb->data);
+ 	struct tcphdr	*tcp;
+@@ -1067,6 +1068,8 @@ static void mlx5e_lro_update_hdr(struct sk_buff *skb, struct mlx5_cqe64 *cqe,
+ 		tcp->check = csum_ipv6_magic(&ipv6->saddr, &ipv6->daddr, payload_len,
+ 					     IPPROTO_TCP, check);
+ 	}
++
++	return (unsigned int)((unsigned char *)tcp + tcp->doff * 4 - skb->data);
+ }
  
- 	/* If we don't have a context the only allowed commands are
- 	 * pairing request and security request.
-diff --git a/net/bluetooth/smp.h b/net/bluetooth/smp.h
-index 87a59ec2c9f02..c5da53dfab04f 100644
---- a/net/bluetooth/smp.h
-+++ b/net/bluetooth/smp.h
-@@ -138,6 +138,7 @@ struct smp_cmd_keypress_notify {
- #define SMP_NUMERIC_COMP_FAILED		0x0c
- #define SMP_BREDR_PAIRING_IN_PROGRESS	0x0d
- #define SMP_CROSS_TRANSP_NOT_ALLOWED	0x0e
-+#define SMP_KEY_REJECTED		0x0f
+ static void *mlx5e_shampo_get_packet_hd(struct mlx5e_rq *rq, u16 header_index)
+@@ -1422,8 +1425,9 @@ static inline void mlx5e_build_rx_skb(struct mlx5_cqe64 *cqe,
+ 		mlx5e_macsec_offload_handle_rx_skb(netdev, skb, cqe);
  
- #define SMP_MIN_ENC_KEY_SIZE		7
- #define SMP_MAX_ENC_KEY_SIZE		16
+ 	if (lro_num_seg > 1) {
+-		mlx5e_lro_update_hdr(skb, cqe, cqe_bcnt);
+-		skb_shinfo(skb)->gso_size = DIV_ROUND_UP(cqe_bcnt, lro_num_seg);
++		unsigned int hdrlen = mlx5e_lro_update_hdr(skb, cqe, cqe_bcnt);
++
++		skb_shinfo(skb)->gso_size = DIV_ROUND_UP(cqe_bcnt - hdrlen, lro_num_seg);
+ 		/* Subtract one since we already counted this as one
+ 		 * "regular" packet in mlx5e_complete_rx_cqe()
+ 		 */
 -- 
 2.39.5
 
