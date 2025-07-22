@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-163803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C223BB0DBA6
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:52:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23084B0DC8B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A946189106D
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:51:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24C3D3A6CFD
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373852EA17D;
-	Tue, 22 Jul 2025 13:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F6F28B7C2;
+	Tue, 22 Jul 2025 13:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5cJeELp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFsV4r6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA412EA163;
-	Tue, 22 Jul 2025 13:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8ED22CBE9;
+	Tue, 22 Jul 2025 13:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192263; cv=none; b=dsDFzASnTeRlIK7zGMRigUI6kNn33nN/9vTvCKd/yFv38pg3toG7lC93v1CMhLwEN+EpH4Z+SswDLXwiiMN0BmEMe2cGJk9chNm75L2D1+Q73Fd8QKWhv8SlvRxqfumS6JUwZFxVOFIkWYc0NacsUQeuDaDBhFHvpTpURL4LUwk=
+	t=1753192741; cv=none; b=YF6ZXUxybe6AMV/ryPlFULskkjHXHGJgDPBv2GgBt5DSCsBeS3lbkeQ7CoCr1/VsMKLowM3OaqMraEJRzP0JzFcN0IAPJ29s1P056GmtHVQWoF9ZBCEMdz54Ozwgp38lJ6MIxDamGucAWq+6FgjQ3L8qckb1XyGnZgH99xhGPQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192263; c=relaxed/simple;
-	bh=RNwbgpTgIbb2hc0dnC8KNQS0wGA40VEPGe+X+rOyi0M=;
+	s=arc-20240116; t=1753192741; c=relaxed/simple;
+	bh=oHRxizxfwYizJGNRYgeFhGw0N4msBtAciVJlPDUnmvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDVPfLkqENTB6QELmjDB25oaaijw6AbJhQW80S6e0SxXrsEefirAb8fRIM3Vrt+c6gjE9296boTPJCnljYTNyMhYJBGqX27oJI1U27G2XBxZpXvBfCWnXEZzDrLNbv/5p+m8lrIES1Ew4JJIlsFd4fiYOF2TejS6+K9Cns5hw6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5cJeELp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB9CC4CEEB;
-	Tue, 22 Jul 2025 13:51:01 +0000 (UTC)
+	 MIME-Version; b=FLHqGLMz0jGX159rnVs/qAhEzEXovqbB+8Z/fyJe6GeQ1uq8eQfV56/oFK0Cz+Dsps1WyAAzJeX91cei8z2gaCbHZB07WE2dAkBMwZHEEQa7Qx4z/fhQwRPKLkpn52e8c2SypNhrhwiNkmjfaVftuLxnN6MWVPbvfHXAKSnSSv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFsV4r6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CB8C4CEEB;
+	Tue, 22 Jul 2025 13:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192262;
-	bh=RNwbgpTgIbb2hc0dnC8KNQS0wGA40VEPGe+X+rOyi0M=;
+	s=korg; t=1753192741;
+	bh=oHRxizxfwYizJGNRYgeFhGw0N4msBtAciVJlPDUnmvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T5cJeELpywdMRSh1WYMZWXTU/fgBGcNRY+zh/+VQPl6RBV2e2YlqwTx9sG6nij89f
-	 IqQdPZX21oMQYfzAIsSaKBCOJ543stOaxIyeGif2NbDYxOp1OXDKSTnMogvYIwRTJf
-	 B5qE9Vf1qAR3WAS5zG0DFjNUZZNnfWUTwXwV+XAE=
+	b=zFsV4r6Dqg/gAo7Ohnc1ZSUPYYoyIPBv/apbmZhojVL3IJDhOzwLjC85jXH3p2TZ3
+	 G74sAehiWjEYQqSSpDxo+uf1klLZdboCwvHWhss4J245dVjcJnV3lw6INvhiIlH2as
+	 MGdeGFl7textkCIT1CPOD9f/pUBUSytXL5dPDYG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Nilton Perim Neto <niltonperimneto@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 013/111] Input: xpad - set correct controller type for Acer NGR200
+	Tim Harvey <tharvey@gateworks.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.12 044/158] arm64: dts: imx8mp-venice-gw71xx: fix TPM SPI frequency
 Date: Tue, 22 Jul 2025 15:43:48 +0200
-Message-ID: <20250722134333.886942407@linuxfoundation.org>
+Message-ID: <20250722134342.385110787@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilton Perim Neto <niltonperimneto@gmail.com>
+From: Tim Harvey <tharvey@gateworks.com>
 
-commit bcce05041b21888f10b80ea903dcfe51a25c586e upstream.
+commit 528e2d3125ad8d783e922033a0a8e2adb17b400e upstream.
 
-The controller should have been set as XTYPE_XBOX360 and not XTYPE_XBOX.
-Also the entry is in the wrong place. Fix it.
+The IMX8MPDS Table 37 [1] shows that the max SPI master read frequency
+depends on the pins the interface is muxed behind with ECSPI2
+muxed behind ECSPI2 supporting up to 25MHz.
 
-Reported-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
-Link: https://lore.kernel.org/r/20250708033126.26216-2-niltonperimneto@gmail.com
-Fixes: 22c69d786ef8 ("Input: xpad - support Acer NGR 200 Controller")
+Adjust the spi-max-frequency based on these findings.
+
+[1] https://www.nxp.com/webapp/Download?colCode=IMX8MPIEC
+
+Fixes: 1a8f6ff6a291 ("arm64: dts: imx8mp-venice-gw71xx: add TPM device")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Link: https://lore.kernel.org/stable/20250523173723.4167474-1-tharvey%40gateworks.com
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    2 +-
+ arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -169,12 +169,12 @@ static const struct xpad_device {
- 	{ 0x046d, 0xca88, "Logitech Compact Controller for Xbox", 0, XTYPE_XBOX },
- 	{ 0x046d, 0xca8a, "Logitech Precision Vibration Feedback Wheel", 0, XTYPE_XBOX },
- 	{ 0x046d, 0xcaa3, "Logitech DriveFx Racing Wheel", 0, XTYPE_XBOX360 },
-+	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX360 },
- 	{ 0x056e, 0x2004, "Elecom JC-U3613M", 0, XTYPE_XBOX360 },
- 	{ 0x05fd, 0x1007, "Mad Catz Controller (unverified)", 0, XTYPE_XBOX },
- 	{ 0x05fd, 0x107a, "InterAct 'PowerPad Pro' X-Box pad (Germany)", 0, XTYPE_XBOX },
- 	{ 0x05fe, 0x3030, "Chic Controller", 0, XTYPE_XBOX },
- 	{ 0x05fe, 0x3031, "Chic Controller", 0, XTYPE_XBOX },
--	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX },
- 	{ 0x062a, 0x0020, "Logic3 Xbox GamePad", 0, XTYPE_XBOX },
- 	{ 0x062a, 0x0033, "Competition Pro Steering Wheel", 0, XTYPE_XBOX },
- 	{ 0x06a3, 0x0200, "Saitek Racing Wheel", 0, XTYPE_XBOX },
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
+@@ -70,7 +70,7 @@
+ 	tpm@1 {
+ 		compatible = "atmel,attpm20p", "tcg,tpm_tis-spi";
+ 		reg = <0x1>;
+-		spi-max-frequency = <36000000>;
++		spi-max-frequency = <25000000>;
+ 	};
+ };
+ 
 
 
 
