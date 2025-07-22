@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-163804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A241B0DBAD
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:52:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B605B0DC71
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:02:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 944205652B3
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:51:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 576B8166D58
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016A42EA163;
-	Tue, 22 Jul 2025 13:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846FB289369;
+	Tue, 22 Jul 2025 13:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b06Y6DVg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvU8kI4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41342EA173;
-	Tue, 22 Jul 2025 13:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437517263D;
+	Tue, 22 Jul 2025 13:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192265; cv=none; b=ZNSZvQz1ljCv0B7sSmDmIOLana72eBZgmWfgWCkcJrLhtpVleH7pIU+xnDSXOvi+RNArFALbmANvwWFDP5OpDVldaZaXtu//H1eLT0JXpNfDsxdETg1pzVuMUE0LKPPSMlMT2LEcQ1cLVk/LyQZE3Y6R00z2rZplgYdHjCKJllA=
+	t=1753192745; cv=none; b=XbxhTMJzGCeulFIOTVFqh4RD83s0c7ApG0HVk6SX4yP3I0pjdQCExfGxhRr19HIqVHjjZwrI38m6lNjLX72dQO0vixsW1/rhLsMjgMw0FZfJR5mr/UA+VgFk619NOQakTQcwfSPP8ABmvw7+SiZskm15DQLqoqSELCSb0+CsOds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192265; c=relaxed/simple;
-	bh=q6KfQeE4rm7QR8Ybvdi7UUIFnrBV93gA+R+VXEZz5qE=;
+	s=arc-20240116; t=1753192745; c=relaxed/simple;
+	bh=yGVwN5u1vthZIyH0jcXomsOxbRD0oYbs637tnT/hDE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRYFm4cSF85tXxIcQOMGb+Q58nCnGToK9YY5pOxKn15c/x6bof/GL1+7zsaYwxx/N1v86KDvcYpHgN9tqtDAg0QtPZAL1wlJN08lObX8wpOgu/TTddV7xL7xvy41FEDchJ/DdjJNpeY7h0C+NjkQVS3XdMI1ag5V/KFwH8ZjeW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b06Y6DVg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221B5C4CEEB;
-	Tue, 22 Jul 2025 13:51:04 +0000 (UTC)
+	 MIME-Version; b=oUJksL4NorFs0uDdQCzvsCj1U6w1BZzn5b72RxkhKV4geMtNQjeljVvatrnHQeYSK+jxY65FLbmDrZqQviRyF+yowtI+wjdqM2YeWlSWNexrU4V9dF8yuEr/vNOAUBqquDeZAoJ4Jld1UTmUteoJ5J2FrjaY/uK9U5uH0YpUNy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvU8kI4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D3DC4CEEB;
+	Tue, 22 Jul 2025 13:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192265;
-	bh=q6KfQeE4rm7QR8Ybvdi7UUIFnrBV93gA+R+VXEZz5qE=;
+	s=korg; t=1753192745;
+	bh=yGVwN5u1vthZIyH0jcXomsOxbRD0oYbs637tnT/hDE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b06Y6DVg8U8reXbfbn9xWzgIyaapHcoCAR9gOArdQ7t7CzUuhXgVcpohilAoOXuqc
-	 nu/Z4H5uX4FUxETQanfRdSuED5MnvY+z2PyM3Jzqm560cBNe1NOar6CdEGPb5F+BcG
-	 CrvQFHJt9dt2zvpvjr132Fx/2ggRXy8kX2P3VNSs=
+	b=XvU8kI4pioE4y+iKmQFvNBrpX+/KMFgYVxtVnLQkaENGKg81ayMInEPE2yTB/4/io
+	 eFbKIWJcdz2hXp8dBIuHF+Pnm+yapzBkTXkjoCvNPd2BqdCKmE7YtC2wWsxkNnUlRy
+	 L2E2W4MxIefcBJb7kNk41ncOO/fVFYmDfyT00qWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.6 014/111] pch_uart: Fix dma_sync_sg_for_device() nents value
+	Tim Harvey <tharvey@gateworks.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.12 045/158] arm64: dts: imx8mp-venice-gw72xx: fix TPM SPI frequency
 Date: Tue, 22 Jul 2025 15:43:49 +0200
-Message-ID: <20250722134333.925073611@linuxfoundation.org>
+Message-ID: <20250722134342.420808506@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Tim Harvey <tharvey@gateworks.com>
 
-commit 6c0e9f05c9d7875995b0e92ace71be947f280bbd upstream.
+commit b25344753c53a5524ba80280ce68f2046e559ce0 upstream.
 
-The dma_sync_sg_for_device() functions should be called with the same
-nents as the dma_map_sg(), not the value the map function returned
-according to the documentation in Documentation/core-api/dma-api.rst:450:
-	With the sync_sg API, all the parameters must be the same
-	as those passed into the sg mapping API.
+The IMX8MPDS Table 37 [1] shows that the max SPI master read frequency
+depends on the pins the interface is muxed behind with ECSPI2
+muxed behind ECSPI2 supporting up to 25MHz.
 
-Fixes: da3564ee027e ("pch_uart: add multi-scatter processing")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250701113452.18590-2-fourier.thomas@gmail.com
+Adjust the spi-max-frequency based on these findings.
+
+[1] https://www.nxp.com/webapp/Download?colCode=IMX8MPIEC
+
+Fixes: 5016f22028e4 ("arm64: dts: imx8mp-venice-gw72xx: add TPM device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/pch_uart.c |    2 +-
+ arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/pch_uart.c
-+++ b/drivers/tty/serial/pch_uart.c
-@@ -967,7 +967,7 @@ static unsigned int dma_handle_tx(struct
- 			__func__);
- 		return 0;
- 	}
--	dma_sync_sg_for_device(port->dev, priv->sg_tx_p, nent, DMA_TO_DEVICE);
-+	dma_sync_sg_for_device(port->dev, priv->sg_tx_p, num, DMA_TO_DEVICE);
- 	priv->desc_tx = desc;
- 	desc->callback = pch_dma_tx_complete;
- 	desc->callback_param = priv;
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
+@@ -110,7 +110,7 @@
+ 	tpm@1 {
+ 		compatible = "atmel,attpm20p", "tcg,tpm_tis-spi";
+ 		reg = <0x1>;
+-		spi-max-frequency = <36000000>;
++		spi-max-frequency = <25000000>;
+ 	};
+ };
+ 
 
 
 
