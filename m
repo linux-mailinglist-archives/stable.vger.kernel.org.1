@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-163847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7EBB0DBEC
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:55:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 414B7B0DB5A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C1701675F5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:53:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B98B3B0EBD
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684862EA485;
-	Tue, 22 Jul 2025 13:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677E623B614;
+	Tue, 22 Jul 2025 13:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjLv3LB+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOKAqsfy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D242EA477;
-	Tue, 22 Jul 2025 13:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2492372624;
+	Tue, 22 Jul 2025 13:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192407; cv=none; b=TjH+RCetvVgo4RLSMIsMyBqfG7RvTlB7fybl9KKqS2FuAhYNrU3ZkMsut/QY4GohQsw/tBF8aE1A5DPLBLBrPEhISB0F22LPbbeuAFo0K+nEkpDD6SOWcg2gMylcyg+u3sDEQnPd+PZK+VCI5oqUPnz59Kd7T5oRpOP9hWDEe5Y=
+	t=1753192074; cv=none; b=UFK/vW+Sq8CEmeJQbIKsJYbnvpLK5eowKwvopSZ0bkOz+PrY6BtmPJJdLzfANj/uErOoV3yW8j9UNzSZY0N1NsKk4BLU1Cn0xG0jUGWrlq5nceKK92grgwuzEpY6n4uoctMxLn5NTWsB54tM6d7RQD0u1Ec+grkYU65xmXfBiLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192407; c=relaxed/simple;
-	bh=dO7Os36xiiARHlGMimqJL5JxvjrijAxjnYFI9bUUUCc=;
+	s=arc-20240116; t=1753192074; c=relaxed/simple;
+	bh=EyWbWh9oBhqROD1S6AoSp0Ujlrv5UfYMZlQ6UzYbOcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIkhVD5fDQmjKQB0Rb/K4Kq3D9RqfUxvQzrCycSeMvNGIz8rjEb+vwlEF5TXMJamS4wmAf/Rdgx2u3kbZoW9naNHCb2MtgHIVTrPkazel9uopIuyzOHkhtYuNS0vdB12jHaCc/Nz5S95G9J0/ftuzcURTundK6SS8VEjqOpRFgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjLv3LB+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881C4C4CEEB;
-	Tue, 22 Jul 2025 13:53:26 +0000 (UTC)
+	 MIME-Version; b=W7k6SNlybyYHBM1nlqOCo7Q9iTHmsE/YFM2wB6PIBGFt8OQP/UWLvUXtRoXSJQvv+0hN4P4Jy97a/A1QQCOyUxCLo3N2bL8zcA7sMSmR/9cpQ5DTMWTdyxvCtnKT4xFuxcl7w1vH1RrLxeDsvpWsE21tKt2H6I2FycrnVVj2R7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOKAqsfy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C2EC4CEEB;
+	Tue, 22 Jul 2025 13:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192407;
-	bh=dO7Os36xiiARHlGMimqJL5JxvjrijAxjnYFI9bUUUCc=;
+	s=korg; t=1753192074;
+	bh=EyWbWh9oBhqROD1S6AoSp0Ujlrv5UfYMZlQ6UzYbOcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HjLv3LB+a+UM8kNhwzrFy3EcHF1S2T2H6Ka+D08M9JWc0OY/JQgpO5S4OTGfJWKso
-	 AS12i6557L062imhu4ZCbynZvepN6RsQm70ZI6onsT3LgakhCAwoQcmYoB6IdiFl8V
-	 rZvmBSAozAgBxYFHF8Yz0SecOkxVNhOEELnBccT0=
+	b=zOKAqsfycE1BYO1uJ0vTNOrTzFuWBZUzcH+KmaTUXTqbB23gDrs8Radi+Rtu4gYfZ
+	 FnYIhNUPGBx/PTlTJjG94XhR9mQTPh0i1uG7uAUtxNUOLZEM6pB4g5MGHq/r7AOPMq
+	 2JfbzfrP1koBx2CswN3GLPRwcw9hqsTOuJE6OyuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com,
+	"Enju, Kohei" <enjuk@amazon.co.jp>,
 	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.6 056/111] comedi: Fix some signed shift left operations
-Date: Tue, 22 Jul 2025 15:44:31 +0200
-Message-ID: <20250722134335.475203189@linuxfoundation.org>
+Subject: [PATCH 6.1 36/79] comedi: das16m1: Fix bit shift out of bounds
+Date: Tue, 22 Jul 2025 15:44:32 +0200
+Message-ID: <20250722134329.696910863@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
+References: <20250722134328.384139905@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ian Abbott <abbotti@mev.co.uk>
 
-commit ab705c8c35e18652abc6239c07cf3441f03e2cda upstream.
+commit ed93c6f68a3be06e4e0c331c6e751f462dee3932 upstream.
 
-Correct some left shifts of the signed integer constant 1 by some
-unsigned number less than 32.  Change the constant to 1U to avoid
-shifting a 1 into the sign bit.
+When checking for a supported IRQ number, the following test is used:
 
-The corrected functions are comedi_dio_insn_config(),
-comedi_dio_update_state(), and __comedi_device_postconfig().
+	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
+	if ((1 << it->options[1]) & 0xdcfc) {
 
-Fixes: e523c6c86232 ("staging: comedi: drivers: introduce comedi_dio_insn_config()")
-Fixes: 05e60b13a36b ("staging: comedi: drivers: introduce comedi_dio_update_state()")
-Fixes: 09567cb4373e ("staging: comedi: initialize subdevice s->io_bits in postconfig")
+However, `it->options[i]` is an unchecked `int` value from userspace, so
+the shift amount could be negative or out of bounds.  Fix the test by
+requiring `it->options[1]` to be within bounds before proceeding with
+the original test.
+
+Reported-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c52293513298e0fd9a94
+Fixes: 729988507680 ("staging: comedi: das16m1: tidy up the irq support in das16m1_attach()")
+Tested-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
+Suggested-by: "Enju, Kohei" <enjuk@amazon.co.jp>
 Cc: stable@vger.kernel.org # 5.13+
 Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707121555.65424-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250707130908.70758-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/comedi/drivers/das16m1.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/comedi/drivers.c
-+++ b/drivers/comedi/drivers.c
-@@ -338,10 +338,10 @@ int comedi_dio_insn_config(struct comedi
- 			   unsigned int *data,
- 			   unsigned int mask)
- {
--	unsigned int chan_mask = 1 << CR_CHAN(insn->chanspec);
-+	unsigned int chan = CR_CHAN(insn->chanspec);
+--- a/drivers/comedi/drivers/das16m1.c
++++ b/drivers/comedi/drivers/das16m1.c
+@@ -522,7 +522,8 @@ static int das16m1_attach(struct comedi_
+ 	devpriv->extra_iobase = dev->iobase + DAS16M1_8255_IOBASE;
  
--	if (!mask)
--		mask = chan_mask;
-+	if (!mask && chan < 32)
-+		mask = 1U << chan;
- 
- 	switch (data[0]) {
- 	case INSN_CONFIG_DIO_INPUT:
-@@ -381,7 +381,7 @@ EXPORT_SYMBOL_GPL(comedi_dio_insn_config
- unsigned int comedi_dio_update_state(struct comedi_subdevice *s,
- 				     unsigned int *data)
- {
--	unsigned int chanmask = (s->n_chan < 32) ? ((1 << s->n_chan) - 1)
-+	unsigned int chanmask = (s->n_chan < 32) ? ((1U << s->n_chan) - 1)
- 						 : 0xffffffff;
- 	unsigned int mask = data[0] & chanmask;
- 	unsigned int bits = data[1];
-@@ -624,8 +624,8 @@ static int insn_rw_emulate_bits(struct c
- 	if (insn->insn == INSN_WRITE) {
- 		if (!(s->subdev_flags & SDF_WRITABLE))
- 			return -EINVAL;
--		_data[0] = 1 << (chan - base_chan);		    /* mask */
--		_data[1] = data[0] ? (1 << (chan - base_chan)) : 0; /* bits */
-+		_data[0] = 1U << (chan - base_chan);		     /* mask */
-+		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
- 	}
- 
- 	ret = s->insn_bits(dev, s, &_insn, _data);
-@@ -708,7 +708,7 @@ static int __comedi_device_postconfig(st
- 
- 		if (s->type == COMEDI_SUBD_DO) {
- 			if (s->n_chan < 32)
--				s->io_bits = (1 << s->n_chan) - 1;
-+				s->io_bits = (1U << s->n_chan) - 1;
- 			else
- 				s->io_bits = 0xffffffff;
- 		}
+ 	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
+-	if ((1 << it->options[1]) & 0xdcfc) {
++	if (it->options[1] >= 2 && it->options[1] <= 15 &&
++	    (1 << it->options[1]) & 0xdcfc) {
+ 		ret = request_irq(it->options[1], das16m1_interrupt, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0)
 
 
 
