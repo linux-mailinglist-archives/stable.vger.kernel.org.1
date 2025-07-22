@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-164104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D4BB0DDB6
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:19:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BEDAB0DDCA
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:20:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DDC7583B5A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:13:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94E3CAC3A1B
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63062F003F;
-	Tue, 22 Jul 2025 14:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3852EB5D1;
+	Tue, 22 Jul 2025 14:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2rLcXRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRLU6Qa+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847832F002F;
-	Tue, 22 Jul 2025 14:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4C42E9ECA;
+	Tue, 22 Jul 2025 14:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193264; cv=none; b=Fj/pVevpzUe99dcnKDaeshJK+XNDdr4bZYE4k2JWZImSSy2Brqi/RI97YaZK6DXRO9hX9CuHnHe6cFFQeluE3lVJG7QUju6XFvCaC7Cb2i5XyVyDwl/isxzKW0YxprB5Du2hBvVd3M2Ps9cc1pJ69x0LVknbDR6T5TApSKMVFEE=
+	t=1753193299; cv=none; b=M/O/prfwq/+Laq9XirEkq5pzhoF8HNzCMDDoYovmW5JnAH2TLPYemNYKndWOD3nShwggmtdweQR8QcXqkoEVtSEQdC/vU6FYH8eGbmynfNCiKJ1Mnbow3t16RfLAd2C9RDmkJvRx3eVFR/ZVipmBtek8vORXDklaX9EERUuwZWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193264; c=relaxed/simple;
-	bh=A2AbqezS8NKzk/9EFcR9mmTZqhaw2tisf5UT2VJzI+Q=;
+	s=arc-20240116; t=1753193299; c=relaxed/simple;
+	bh=GYSMXA9bYKIJ6g+SWwiqlcrpbNnQjGPItDgVuqO76E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I60TgpBnC11w6myTBj4vdLrjmz74sjezJzEF2xQi+rvguVLAoYs1XLNY4oh6mU6tw22geGjTYoGEgpJGqJuc8twftc3wkKuuuSbnRrmAXaNFHcTpM3qN+KLy6xE1EHGL5aV6qcscVFg4ZYvNDLpIL8iuGGFi+Cpf3RcVQsAmQaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2rLcXRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD2DC4CEEB;
-	Tue, 22 Jul 2025 14:07:41 +0000 (UTC)
+	 MIME-Version; b=i1VY7B6osFLv+NffME1Z9/7HdOHkpvDjn9jqRB1WoDFr1wR5YrMh6J3wYGoyzWiqfnAWWCnLhuQYUUm+HP50u6JwAbaGWtWFvmCdTG2H89xgZtH1HueWUvubqbyrHMWnpV/5ojzZZn/Lyf+yowHqILJfX9fXjnmhBENSMDf4078=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRLU6Qa+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF538C4CEEB;
+	Tue, 22 Jul 2025 14:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193262;
-	bh=A2AbqezS8NKzk/9EFcR9mmTZqhaw2tisf5UT2VJzI+Q=;
+	s=korg; t=1753193299;
+	bh=GYSMXA9bYKIJ6g+SWwiqlcrpbNnQjGPItDgVuqO76E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2rLcXRjq2OYcQxue7K1Hp97Q0lCCOFlMvueSEhP3J3F/NxFpWXYhJPIA2ko6n+rg
-	 mzCLKt1Hs9t1vNnJevtFvpIqpA/DoBumlJYZsRwb63Jv5ATLpQJhcXEv9uuXjfwyV8
-	 iBZwYXPaqPh+6DNHBY8Scn74/7A4HcBUr8ZwWsBs=
+	b=aRLU6Qa+1Zhi7xDLua+KC6KvvW3hfeZJX0x3JmBkSXdiZE+dOmk+0BZ2LtbKbyhjW
+	 3QXtm48n6K4WZGwJshmh/vK0uoHx38SrUGD3GVMKwUcK/HuCtFBIWRaSMs5gFcam1F
+	 IawOb0Buq8Z9jwCMjfm+V3NHrPwQi0odlM+SAi3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.15 032/187] objtool/rust: add one more `noreturn` Rust function for Rust 1.89.0
-Date: Tue, 22 Jul 2025 15:43:22 +0200
-Message-ID: <20250722134346.953541759@linuxfoundation.org>
+	Eeli Haapalainen <eeli.haapalainen@protonmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.15 033/187] drm/amdgpu/gfx8: reset compute ring wptr on the GPU on resume
+Date: Tue, 22 Jul 2025 15:43:23 +0200
+Message-ID: <20250722134346.992023904@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
 References: <20250722134345.761035548@linuxfoundation.org>
@@ -66,47 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Eeli Haapalainen <eeli.haapalainen@protonmail.com>
 
-commit aa7b65c2a29e8b07057b13624102c6810597c0d5 upstream.
+commit 83261934015c434fabb980a3e613b01d9976e877 upstream.
 
-Starting with Rust 1.89.0 (expected 2025-08-07), under
-`CONFIG_RUST_DEBUG_ASSERTIONS=y`, `objtool` may report:
+Commit 42cdf6f687da ("drm/amdgpu/gfx8: always restore kcq MQDs") made the
+ring pointer always to be reset on resume from suspend. This caused compute
+rings to fail since the reset was done without also resetting it for the
+firmware. Reset wptr on the GPU to avoid a disconnect between the driver
+and firmware wptr.
 
-    rust/kernel.o: warning: objtool: _R..._6kernel4pageNtB5_4Page8read_raw()
-    falls through to next function _R..._6kernel4pageNtB5_4Page9write_raw()
-
-(and many others) due to calls to the `noreturn` symbol:
-
-    core::panicking::panic_nounwind_fmt
-
-Thus add the mangled one to the list so that `objtool` knows it is
-actually `noreturn`.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250712160103.1244945-2-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3911
+Fixes: 42cdf6f687da ("drm/amdgpu/gfx8: always restore kcq MQDs")
+Signed-off-by: Eeli Haapalainen <eeli.haapalainen@protonmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2becafc319db3d96205320f31cc0de4ee5a93747)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c |    1 +
+ drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -224,6 +224,7 @@ static bool is_rust_noreturn(const struc
- 	       str_ends_with(func->name, "_4core9panicking14panic_explicit")				||
- 	       str_ends_with(func->name, "_4core9panicking14panic_nounwind")				||
- 	       str_ends_with(func->name, "_4core9panicking18panic_bounds_check")			||
-+	       str_ends_with(func->name, "_4core9panicking18panic_nounwind_fmt")			||
- 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
- 	       str_ends_with(func->name, "_4core9panicking30panic_null_pointer_dereference")		||
- 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
+@@ -4664,6 +4664,7 @@ static int gfx_v8_0_kcq_init_queue(struc
+ 			memcpy(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(struct vi_mqd_allocation));
+ 		/* reset ring buffer */
+ 		ring->wptr = 0;
++		atomic64_set((atomic64_t *)ring->wptr_cpu_addr, 0);
+ 		amdgpu_ring_clear_ring(ring);
+ 	}
+ 	return 0;
 
 
 
