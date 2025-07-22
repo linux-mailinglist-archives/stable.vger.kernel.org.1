@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-163755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77ADCB0DB57
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:48:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87213B0DC5C
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62BEF16A7B5
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:48:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD4D67A282D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7F828AB11;
-	Tue, 22 Jul 2025 13:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0C522D785;
+	Tue, 22 Jul 2025 14:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFy0WcfB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUKVlQsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473F923B614;
-	Tue, 22 Jul 2025 13:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFD5548EE;
+	Tue, 22 Jul 2025 14:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192104; cv=none; b=LaN3kMhPLTUoTK9BjIChQXqJVbVLE/bliiKPZZXATk5QkUsUN6sKx7iCyCp4VTxVHR9qIYdJ1O6VcP6ftNueC+byWRik0ERCdOszm6hz1N6Z+wiIrBxqsAUXBlG++wPff7qH46e6uKL1fCrM3DIDqMNowPCVJs0401CbsNdqpKo=
+	t=1753192874; cv=none; b=AL+ykDEsiBtvTCEqP3kZOMzb2l3TUYvzCn1t8muSELDy4djdlI81oDNltd2oo15o3cg0+DaL29M8hN4GEU99NjDHTbVHj/HljyefB+yQUl95wbxQFoKZ4iTVrjzSJihe+CzoaurXnK7eSfVQGW4oJrrjWtOtUJy0YqoaVzmmXJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192104; c=relaxed/simple;
-	bh=RdPe16PxSXJx3+029KMe9DeVTvf5/xyZ8B2+yrACn/k=;
+	s=arc-20240116; t=1753192874; c=relaxed/simple;
+	bh=TpKfHqnX75uS2J+Tpkieh1so8aoarbF/3U8ARbi4SY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KXFPc2LAiozgkrHYdpr/p0WazIY4VHZ38NyuUe+kHMpkaGhGxTkpZqtERn+yvWg/N38C0XKuERnauNTlnv6HNtjo+ozsYsPAjHjY1mibeLYlzuUBSRFU3e4b06TntVk2hnaW+sWWQX6QVVRAiFVrzd/9eSSqTpBInDu3whyDdz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFy0WcfB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F999C4CEEB;
-	Tue, 22 Jul 2025 13:48:23 +0000 (UTC)
+	 MIME-Version; b=I58cr9nuTCQHhe/4tsvcA23DDB0Uytq3cg+xNbtmpopfV1sTJ3S3Itbo1jpvDHOSfBbueFX71UIseVNDexoLV6E2p/hggT/ypxyf4DbOgvWwUtuL7ix6g95gwiQcwQzSoEAj5LhPaiQolUZk8zZeTDiSbIGUwH492Z1hsRkemag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUKVlQsk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2B9C4CEEB;
+	Tue, 22 Jul 2025 14:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192104;
-	bh=RdPe16PxSXJx3+029KMe9DeVTvf5/xyZ8B2+yrACn/k=;
+	s=korg; t=1753192874;
+	bh=TpKfHqnX75uS2J+Tpkieh1so8aoarbF/3U8ARbi4SY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFy0WcfB+bflEwOb8pSuIA1WBlWqaiAV6zeB9pRtCOX+IGUzW0/q+G526h69lqE8m
-	 032BosTCoi7qKyQXqIAgro8XP8PwWg+V8w+kggjx8e9sik/NHjma3ZIvQghrF19AJU
-	 DNT8KiLupxtpBhJudYUcDTAz4exf1o9Ev9sTJkXQ=
+	b=EUKVlQskUGoGeoMqxMQ2YFZWn7s3Y77gYa371Pzp77cjXBh3thXi8qTFN9/NQuCXl
+	 zSZPXNJ+8xxrdcQUwJslNPFkhBmEMTd5aXY6U2RgTL5cU3xbGjbENs9ZHdPbtiKh5r
+	 isNcY4qUojuiER+Q2rPumaKKWjyMCgenaGZFoXWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	=?UTF-8?q?Fusheng=20Huang ?= <Fusheng.Huang@luxshare-ict.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 13/79] tracing: Add down_write(trace_event_sem) when adding trace event
-Date: Tue, 22 Jul 2025 15:44:09 +0200
-Message-ID: <20250722134328.871934252@linuxfoundation.org>
+	Jean Delvare <jdelvare@suse.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH 6.12 066/158] soc: aspeed: lpc-snoop: Dont disable channels that arent enabled
+Date: Tue, 22 Jul 2025 15:44:10 +0200
+Message-ID: <20250722134343.225271232@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134328.384139905@linuxfoundation.org>
-References: <20250722134328.384139905@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +59,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
 
-commit b5e8acc14dcb314a9b61ff19dcd9fdd0d88f70df upstream.
+commit 56448e78a6bb4e1a8528a0e2efe94eff0400c247 upstream.
 
-When a module is loaded, it adds trace events defined by the module. It
-may also need to modify the modules trace printk formats to replace enum
-names with their values.
+Mitigate e.g. the following:
 
-If two modules are loaded at the same time, the adding of the event to the
-ftrace_events list can corrupt the walking of the list in the code that is
-modifying the printk format strings and crash the kernel.
+    # echo 1e789080.lpc-snoop > /sys/bus/platform/drivers/aspeed-lpc-snoop/unbind
+    ...
+    [  120.363594] Unable to handle kernel NULL pointer dereference at virtual address 00000004 when write
+    [  120.373866] [00000004] *pgd=00000000
+    [  120.377910] Internal error: Oops: 805 [#1] SMP ARM
+    [  120.383306] CPU: 1 UID: 0 PID: 315 Comm: sh Not tainted 6.15.0-rc1-00009-g926217bc7d7d-dirty #20 NONE
+    ...
+    [  120.679543] Call trace:
+    [  120.679559]  misc_deregister from aspeed_lpc_snoop_remove+0x84/0xac
+    [  120.692462]  aspeed_lpc_snoop_remove from platform_remove+0x28/0x38
+    [  120.700996]  platform_remove from device_release_driver_internal+0x188/0x200
+    ...
 
-The addition of the event should take the trace_event_sem for write while
-it adds the new event.
-
-Also add a lockdep_assert_held() on that semaphore in
-__trace_add_event_dirs() as it iterates the list.
-
+Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/20250718223158.799bfc0c@batman.local.home
-Reported-by: Fusheng Huang(黄富生)  <Fusheng.Huang@luxshare-ict.com>
-Closes: https://lore.kernel.org/all/20250717105007.46ccd18f@batman.local.home/
-Fixes: 110bf2b764eb6 ("tracing: add protection around module events unload")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Jean Delvare <jdelvare@suse.de>
+Acked-by: Jean Delvare <jdelvare@suse.de>
+Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-2-3cdd59c934d3@codeconstruct.com.au
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -2714,7 +2714,10 @@ __register_event(struct trace_event_call
- 	if (ret < 0)
- 		return ret;
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -58,6 +58,7 @@ struct aspeed_lpc_snoop_model_data {
+ };
  
-+	down_write(&trace_event_sem);
- 	list_add(&call->list, &ftrace_events);
-+	up_write(&trace_event_sem);
-+
- 	if (call->flags & TRACE_EVENT_FL_DYNAMIC)
- 		atomic_set(&call->refcnt, 0);
- 	else
-@@ -3189,6 +3192,8 @@ __trace_add_event_dirs(struct trace_arra
- 	struct trace_event_call *call;
- 	int ret;
+ struct aspeed_lpc_snoop_channel {
++	bool enabled;
+ 	struct kfifo		fifo;
+ 	wait_queue_head_t	wq;
+ 	struct miscdevice	miscdev;
+@@ -190,6 +191,9 @@ static int aspeed_lpc_enable_snoop(struc
+ 	const struct aspeed_lpc_snoop_model_data *model_data =
+ 		of_device_get_match_data(dev);
  
-+	lockdep_assert_held(&trace_event_sem);
++	if (WARN_ON(lpc_snoop->chan[channel].enabled))
++		return -EBUSY;
 +
- 	list_for_each_entry(call, &ftrace_events, list) {
- 		ret = __trace_add_new_event(call, tr);
- 		if (ret < 0)
+ 	init_waitqueue_head(&lpc_snoop->chan[channel].wq);
+ 	/* Create FIFO datastructure */
+ 	rc = kfifo_alloc(&lpc_snoop->chan[channel].fifo,
+@@ -236,6 +240,8 @@ static int aspeed_lpc_enable_snoop(struc
+ 		regmap_update_bits(lpc_snoop->regmap, HICRB,
+ 				hicrb_en, hicrb_en);
+ 
++	lpc_snoop->chan[channel].enabled = true;
++
+ 	return 0;
+ 
+ err_misc_deregister:
+@@ -248,6 +254,9 @@ err_free_fifo:
+ static void aspeed_lpc_disable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 				     int channel)
+ {
++	if (!lpc_snoop->chan[channel].enabled)
++		return;
++
+ 	switch (channel) {
+ 	case 0:
+ 		regmap_update_bits(lpc_snoop->regmap, HICR5,
+@@ -263,6 +272,8 @@ static void aspeed_lpc_disable_snoop(str
+ 		return;
+ 	}
+ 
++	lpc_snoop->chan[channel].enabled = false;
++	/* Consider improving safety wrt concurrent reader(s) */
+ 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
+ 	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ }
 
 
 
