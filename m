@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-163947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-163803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C5C4B0DC32
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:59:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C223BB0DBA6
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:52:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C163A7A590A
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:57:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A946189106D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5446288C01;
-	Tue, 22 Jul 2025 13:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373852EA17D;
+	Tue, 22 Jul 2025 13:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJCrlKeF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5cJeELp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A9422CBE9;
-	Tue, 22 Jul 2025 13:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA412EA163;
+	Tue, 22 Jul 2025 13:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192738; cv=none; b=owngWw6L0XdjwQqSaw1ssz+GSllcmDvMQUseFapmrXlk2FbNN39WXw5nNrkLLKyxGDT4G4zFsV3F1CL43f8jKHjc6EA1HMM+AeVQSeKRHjt3yXoQb7OI9yxZxPN9iqFoZz4aS1Nf5xjfSPoTMzN33+XenGyta5UJZCPgdcn06OQ=
+	t=1753192263; cv=none; b=dsDFzASnTeRlIK7zGMRigUI6kNn33nN/9vTvCKd/yFv38pg3toG7lC93v1CMhLwEN+EpH4Z+SswDLXwiiMN0BmEMe2cGJk9chNm75L2D1+Q73Fd8QKWhv8SlvRxqfumS6JUwZFxVOFIkWYc0NacsUQeuDaDBhFHvpTpURL4LUwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192738; c=relaxed/simple;
-	bh=fp0HywTeEb27KlhscUqpUilFufq344QQKlvaxdBgpr0=;
+	s=arc-20240116; t=1753192263; c=relaxed/simple;
+	bh=RNwbgpTgIbb2hc0dnC8KNQS0wGA40VEPGe+X+rOyi0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZvSsiLsnfgE6ScGu2UUw3FT4zj+UM8F+sudzIP6v7ZLnkctrTEbwJhDmAb/CCbFm4PGiAWwggO6+4u6qgMqu4Q7KNQLEDaQom4J4VGTi6MHXRoQ0JLvgMrI1Wk5SHrHxMRR3UGo2Rtv1Y9Ogb2Ctx3OalR04dOv9keZrd/IL5Q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJCrlKeF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078C9C4CEEB;
-	Tue, 22 Jul 2025 13:58:57 +0000 (UTC)
+	 MIME-Version; b=uDVPfLkqENTB6QELmjDB25oaaijw6AbJhQW80S6e0SxXrsEefirAb8fRIM3Vrt+c6gjE9296boTPJCnljYTNyMhYJBGqX27oJI1U27G2XBxZpXvBfCWnXEZzDrLNbv/5p+m8lrIES1Ew4JJIlsFd4fiYOF2TejS6+K9Cns5hw6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5cJeELp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB9CC4CEEB;
+	Tue, 22 Jul 2025 13:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192738;
-	bh=fp0HywTeEb27KlhscUqpUilFufq344QQKlvaxdBgpr0=;
+	s=korg; t=1753192262;
+	bh=RNwbgpTgIbb2hc0dnC8KNQS0wGA40VEPGe+X+rOyi0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJCrlKeF4AAGoca9//Rm5xpeUWtGVjxoILA5YqxzFWVXEVrq7Qsm9I9jSKTgrf/0h
-	 jeTOJmga04EyXE1dQNyCdyb+v1UjeTNNjAJeXkNZHUUgmCqUMAYN+uvdMwhUhr64ND
-	 kCbTor7uNbGopUC6I4AWBZDtTIIFvTjVx3wrc5y8=
+	b=T5cJeELpywdMRSh1WYMZWXTU/fgBGcNRY+zh/+VQPl6RBV2e2YlqwTx9sG6nij89f
+	 IqQdPZX21oMQYfzAIsSaKBCOJ543stOaxIyeGif2NbDYxOp1OXDKSTnMogvYIwRTJf
+	 B5qE9Vf1qAR3WAS5zG0DFjNUZZNnfWUTwXwV+XAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.12 043/158] arm64: dts: freescale: imx8mm-verdin: Keep LDO5 always on
-Date: Tue, 22 Jul 2025 15:43:47 +0200
-Message-ID: <20250722134342.348200279@linuxfoundation.org>
+	Vicki Pfau <vi@endrift.com>,
+	Nilton Perim Neto <niltonperimneto@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 013/111] Input: xpad - set correct controller type for Acer NGR200
+Date: Tue, 22 Jul 2025 15:43:48 +0200
+Message-ID: <20250722134333.886942407@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-References: <20250722134340.596340262@linuxfoundation.org>
+In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
+References: <20250722134333.375479548@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Nilton Perim Neto <niltonperimneto@gmail.com>
 
-commit fbe94be09fa81343d623a86ec64a742759b669b3 upstream.
+commit bcce05041b21888f10b80ea903dcfe51a25c586e upstream.
 
-LDO5 regulator is used to power the i.MX8MM NVCC_SD2 I/O supply, that is
-used for the SD2 card interface and also for some GPIOs.
+The controller should have been set as XTYPE_XBOX360 and not XTYPE_XBOX.
+Also the entry is in the wrong place. Fix it.
 
-When the SD card interface is not enabled the regulator subsystem could
-turn off this supply, since it is not used anywhere else, however this
-will also remove the power to some other GPIOs, for example one I/O that
-is used to power the ethernet phy, leading to a non working ethernet
-interface.
-
-[   31.820515] On-module +V3.3_1.8_SD (LDO5): disabling
-[   31.821761] PMIC_USDHC_VSELECT: disabling
-[   32.764949] fec 30be0000.ethernet end0: Link is Down
-
-Fix this keeping the LDO5 supply always on.
-
+Reported-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
+Link: https://lore.kernel.org/r/20250708033126.26216-2-niltonperimneto@gmail.com
+Fixes: 22c69d786ef8 ("Input: xpad - support Acer NGR 200 Controller")
 Cc: stable@vger.kernel.org
-Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
-Fixes: f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/joystick/xpad.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-@@ -484,6 +484,7 @@
- 			};
- 
- 			reg_nvcc_sd: LDO5 {
-+				regulator-always-on;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-min-microvolt = <1800000>;
- 				regulator-name = "On-module +V3.3_1.8_SD (LDO5)";
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -169,12 +169,12 @@ static const struct xpad_device {
+ 	{ 0x046d, 0xca88, "Logitech Compact Controller for Xbox", 0, XTYPE_XBOX },
+ 	{ 0x046d, 0xca8a, "Logitech Precision Vibration Feedback Wheel", 0, XTYPE_XBOX },
+ 	{ 0x046d, 0xcaa3, "Logitech DriveFx Racing Wheel", 0, XTYPE_XBOX360 },
++	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX360 },
+ 	{ 0x056e, 0x2004, "Elecom JC-U3613M", 0, XTYPE_XBOX360 },
+ 	{ 0x05fd, 0x1007, "Mad Catz Controller (unverified)", 0, XTYPE_XBOX },
+ 	{ 0x05fd, 0x107a, "InterAct 'PowerPad Pro' X-Box pad (Germany)", 0, XTYPE_XBOX },
+ 	{ 0x05fe, 0x3030, "Chic Controller", 0, XTYPE_XBOX },
+ 	{ 0x05fe, 0x3031, "Chic Controller", 0, XTYPE_XBOX },
+-	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX },
+ 	{ 0x062a, 0x0020, "Logic3 Xbox GamePad", 0, XTYPE_XBOX },
+ 	{ 0x062a, 0x0033, "Competition Pro Steering Wheel", 0, XTYPE_XBOX },
+ 	{ 0x06a3, 0x0200, "Saitek Racing Wheel", 0, XTYPE_XBOX },
 
 
 
