@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-164230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C38B0DDB8
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:19:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53546B0DD09
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAC987B5A92
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:17:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0035FAA784A
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141CA2ECD0D;
-	Tue, 22 Jul 2025 14:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA122E975F;
+	Tue, 22 Jul 2025 14:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaBQkje7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcdnosXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53E32ECD02;
-	Tue, 22 Jul 2025 14:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FC8548EE;
+	Tue, 22 Jul 2025 14:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193674; cv=none; b=V74ktN2XMhocdtTcnKTkDMl0v7WpXb5I663pRMLnh7/IiwnnDR95RiBzNivId/61DtmuH1n9NyHjaQtHAXPxvmS/eBNu4EzofUa/qcies1VZq8yGJS7N2/oPzr200MnGditOQTOSlp7qW0yy02kL9EEmPlWZfRUevRj4GcbO0nE=
+	t=1753193095; cv=none; b=KGeZKjeECzm0VqGYBCmT8ogBbTHBMlSYrMxfYWbHKdS0f1VCW49+Gn90WfqbHRrx3i56xOEz4dkGuKbLIzoCzbWJYbJvMWAipiFhD4eIei/0Ese3OpN/J2DE6YcJEwwX7K2+ZBzAEiiAF28t94FO1MYKiifvv9pTFCEIm22xAVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193674; c=relaxed/simple;
-	bh=QhtRWZhkuciJ2PDMAHeMcJxPew1WD2yJZzU+AUP73Tc=;
+	s=arc-20240116; t=1753193095; c=relaxed/simple;
+	bh=bYEVWaYVD6Z2m98ffH+mJAKjNZf+CLQxmTqIF9jd3pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4R0PMojB0YAZt25zMZqZ869ubyhm/1zf4WYnjZ7Dr9KjhSKy8UX24SJIJnyqUzfc7TVu/4Lpi7WCRCCk/oqOOjsPqzLuePPI+9mt+RUI1rYTclu84lSzJ0ZGQZxE2AJgcIeGvtgiqz6NQ+nGldoZ7qRrlK9H3tmgOmikLRMPfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaBQkje7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C90C4CEEB;
-	Tue, 22 Jul 2025 14:14:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SyAYWy+5+l3CLXS7xc+TfdO+BxB1dEFSX29CKm3uGpV+dvR0TndoTd0coidfmLUVgwE+mvXRW8VQqHghzzXbGibGHvqFnfA3Ln59jSrGAbv9Ba4ZNTeqPkuAh/mr35o1PTEwp+b/fYN+aCUn94QvklrApyjg+S9RQGIhCBniR1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcdnosXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A745DC4CEF5;
+	Tue, 22 Jul 2025 14:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193674;
-	bh=QhtRWZhkuciJ2PDMAHeMcJxPew1WD2yJZzU+AUP73Tc=;
+	s=korg; t=1753193095;
+	bh=bYEVWaYVD6Z2m98ffH+mJAKjNZf+CLQxmTqIF9jd3pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MaBQkje7oWLXIQxQGKVTa8LdJNiXSz1f9jVx7VrIZCMd8EhgZK+XQ5nfxcE/zHvtz
-	 zVKpTLCRK80KtCivDcjnxkuZoX6kPd5eEMr7tpyMuYoSijgDlSZkiG4JTZvSV8+5td
-	 adVO55V11QZJM7X+uSvnn2+w7ChnXLATi8eY6f1I=
+	b=KcdnosXp9e3WN0H5tdJtwQ2t7dSBh+WWAs6yaxF2eMUCRbgMhaf+mWNYpttd0CZt6
+	 DCutdAKIsQ2l04eN2AmcR+aX2rgpDiEvsdLfVhCdsJcvYYugLRrLygu9D486ZbHege
+	 p0wHSnPlsF1H6uJyx4YbBVhDxGhxD9wTRmMOmIew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	CK Hu <ck.hu@medaitek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 163/187] drm/mediatek: only announce AFBC if really supported
+	David Wood <david@davidtw.co>,
+	Wesley Wiser <wwiser@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 149/158] rust: use `#[used(compiler)]` to fix build and `modpost` with Rust >= 1.89.0
 Date: Tue, 22 Jul 2025 15:45:33 +0200
-Message-ID: <20250722134351.848441240@linuxfoundation.org>
+Message-ID: <20250722134346.273947264@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134345.761035548@linuxfoundation.org>
-References: <20250722134345.761035548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,162 +62,147 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 8d121a82fa564e0c8bd86ce4ec56b2a43b9b016e ]
+commit 7498159226772d66f150dd406be462d75964a366 upstream.
 
-Currently even the SoC's OVL does not declare the support of AFBC, AFBC
-is still announced to the userspace within the IN_FORMATS blob, which
-breaks modern Wayland compositors like KWin Wayland and others.
+Starting with Rust 1.89.0 (expected 2025-08-07), the Rust compiler fails
+to build the `rusttest` target due to undefined references such as:
 
-Gate passing modifiers to drm_universal_plane_init() behind querying the
-driver of the hardware block for AFBC support.
+    kernel...-cgu.0:(.text....+0x116): undefined reference to
+    `rust_helper_kunit_get_current_test'
 
-Fixes: c410fa9b07c3 ("drm/mediatek: Add AFBC support to Mediatek DRM driver")
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Reviewed-by: CK Hu <ck.hu@medaitek.com>
-Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250531121140.387661-1-uwu@icenowy.me/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Moreover, tooling like `modpost` gets confused:
+
+    WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/nova/nova.o
+    ERROR: modpost: missing MODULE_LICENSE() in drivers/gpu/nova-core/nova_core.o
+
+The reason behind both issues is that the Rust compiler will now [1]
+treat `#[used]` as `#[used(linker)]` instead of `#[used(compiler)]`
+for our targets. This means that the retain section flag (`R`,
+`SHF_GNU_RETAIN`) will be used and that they will be marked as `unique`
+too, with different IDs. In turn, that means we end up with undefined
+references that did not get discarded in `rusttest` and that multiple
+`.modinfo` sections are generated, which confuse tooling like `modpost`
+because they only expect one.
+
+Thus start using `#[used(compiler)]` to keep the previous behavior
+and to be explicit about what we want. Sadly, it is an unstable feature
+(`used_with_arg`) [2] -- we will talk to upstream Rust about it. The good
+news is that it has been available for a long time (Rust >= 1.60) [3].
+
+The changes should also be fine for previous Rust versions, since they
+behave the same way as before [4].
+
+Alternatively, we could use `#[no_mangle]` or `#[export_name = ...]`
+since those still behave like `#[used(compiler)]`, but of course it is
+not really what we want to express, and it requires other changes to
+avoid symbol conflicts.
+
+Cc: David Wood <david@davidtw.co>
+Cc: Wesley Wiser <wwiser@gmail.com>
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/140872 [1]
+Link: https://github.com/rust-lang/rust/issues/93798 [2]
+Link: https://github.com/rust-lang/rust/pull/91504 [3]
+Link: https://godbolt.org/z/sxzWTMfzW [4]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+Link: https://lore.kernel.org/r/20250712160103.1244945-3-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_crtc.c     | 3 ++-
- drivers/gpu/drm/mediatek/mtk_ddp_comp.c | 1 +
- drivers/gpu/drm/mediatek/mtk_ddp_comp.h | 9 +++++++++
- drivers/gpu/drm/mediatek/mtk_disp_drv.h | 1 +
- drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 7 +++++++
- drivers/gpu/drm/mediatek/mtk_plane.c    | 7 +++++--
- drivers/gpu/drm/mediatek/mtk_plane.h    | 3 ++-
- 7 files changed, 27 insertions(+), 4 deletions(-)
+ rust/Makefile          |    1 +
+ rust/kernel/lib.rs     |    1 +
+ rust/macros/module.rs  |   10 +++++-----
+ scripts/Makefile.build |    2 +-
+ 4 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_crtc.c b/drivers/gpu/drm/mediatek/mtk_crtc.c
-index 6916c8925b412..bc7527542fdc6 100644
---- a/drivers/gpu/drm/mediatek/mtk_crtc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_crtc.c
-@@ -963,7 +963,8 @@ static int mtk_crtc_init_comp_planes(struct drm_device *drm_dev,
- 				mtk_ddp_comp_supported_rotations(comp),
- 				mtk_ddp_comp_get_blend_modes(comp),
- 				mtk_ddp_comp_get_formats(comp),
--				mtk_ddp_comp_get_num_formats(comp), i);
-+				mtk_ddp_comp_get_num_formats(comp),
-+				mtk_ddp_comp_is_afbc_supported(comp), i);
- 		if (ret)
- 			return ret;
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -157,6 +157,7 @@ quiet_cmd_rustdoc_test = RUSTDOC T $<
+       cmd_rustdoc_test = \
+ 	OBJTREE=$(abspath $(objtree)) \
+ 	$(RUSTDOC) --test $(rust_common_flags) \
++		-Zcrate-attr='feature(used_with_arg)' \
+ 		@$(objtree)/include/generated/rustc_cfg \
+ 		$(rustc_target_flags) $(rustdoc_test_target_flags) \
+ 		$(rustdoc_test_quiet) \
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -18,6 +18,7 @@
+ #![feature(inline_const)]
+ #![feature(lint_reasons)]
+ #![feature(unsize)]
++#![feature(used_with_arg)]
  
-diff --git a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
-index edc6417639e64..ac6620e10262e 100644
---- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
-@@ -366,6 +366,7 @@ static const struct mtk_ddp_comp_funcs ddp_ovl = {
- 	.get_blend_modes = mtk_ovl_get_blend_modes,
- 	.get_formats = mtk_ovl_get_formats,
- 	.get_num_formats = mtk_ovl_get_num_formats,
-+	.is_afbc_supported = mtk_ovl_is_afbc_supported,
- };
+ // Ensure conditional compilation based on the kernel configuration works;
+ // otherwise we may silently break things like initcall handling.
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -57,7 +57,7 @@ impl<'a> ModInfoBuilder<'a> {
+                 {cfg}
+                 #[doc(hidden)]
+                 #[link_section = \".modinfo\"]
+-                #[used]
++                #[used(compiler)]
+                 pub static __{module}_{counter}: [u8; {length}] = *{string};
+             ",
+             cfg = if builtin {
+@@ -230,7 +230,7 @@ pub(crate) fn module(ts: TokenStream) ->
+                     // key or a new section. For the moment, keep it simple.
+                     #[cfg(MODULE)]
+                     #[doc(hidden)]
+-                    #[used]
++                    #[used(compiler)]
+                     static __IS_RUST_MODULE: () = ();
  
- static const struct mtk_ddp_comp_funcs ddp_postmask = {
-diff --git a/drivers/gpu/drm/mediatek/mtk_ddp_comp.h b/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
-index 39720b27f4e9e..7289b3dcf22f2 100644
---- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
-+++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
-@@ -83,6 +83,7 @@ struct mtk_ddp_comp_funcs {
- 	u32 (*get_blend_modes)(struct device *dev);
- 	const u32 *(*get_formats)(struct device *dev);
- 	size_t (*get_num_formats)(struct device *dev);
-+	bool (*is_afbc_supported)(struct device *dev);
- 	void (*connect)(struct device *dev, struct device *mmsys_dev, unsigned int next);
- 	void (*disconnect)(struct device *dev, struct device *mmsys_dev, unsigned int next);
- 	void (*add)(struct device *dev, struct mtk_mutex *mutex);
-@@ -294,6 +295,14 @@ size_t mtk_ddp_comp_get_num_formats(struct mtk_ddp_comp *comp)
- 	return 0;
- }
+                     static mut __MOD: Option<{type_}> = None;
+@@ -253,7 +253,7 @@ pub(crate) fn module(ts: TokenStream) ->
  
-+static inline bool mtk_ddp_comp_is_afbc_supported(struct mtk_ddp_comp *comp)
-+{
-+	if (comp->funcs && comp->funcs->is_afbc_supported)
-+		return comp->funcs->is_afbc_supported(comp->dev);
-+
-+	return false;
-+}
-+
- static inline bool mtk_ddp_comp_add(struct mtk_ddp_comp *comp, struct mtk_mutex *mutex)
- {
- 	if (comp->funcs && comp->funcs->add) {
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_drv.h b/drivers/gpu/drm/mediatek/mtk_disp_drv.h
-index 04217a36939cd..679d413bf10be 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_drv.h
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_drv.h
-@@ -106,6 +106,7 @@ void mtk_ovl_disable_vblank(struct device *dev);
- u32 mtk_ovl_get_blend_modes(struct device *dev);
- const u32 *mtk_ovl_get_formats(struct device *dev);
- size_t mtk_ovl_get_num_formats(struct device *dev);
-+bool mtk_ovl_is_afbc_supported(struct device *dev);
+                     #[cfg(MODULE)]
+                     #[doc(hidden)]
+-                    #[used]
++                    #[used(compiler)]
+                     #[link_section = \".init.data\"]
+                     static __UNIQUE_ID___addressable_init_module: unsafe extern \"C\" fn() -> i32 = init_module;
  
- void mtk_ovl_adaptor_add_comp(struct device *dev, struct mtk_mutex *mutex);
- void mtk_ovl_adaptor_remove_comp(struct device *dev, struct mtk_mutex *mutex);
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-index d0581c4e3c999..e0236353d4997 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-@@ -236,6 +236,13 @@ size_t mtk_ovl_get_num_formats(struct device *dev)
- 	return ovl->data->num_formats;
- }
+@@ -273,7 +273,7 @@ pub(crate) fn module(ts: TokenStream) ->
  
-+bool mtk_ovl_is_afbc_supported(struct device *dev)
-+{
-+	struct mtk_disp_ovl *ovl = dev_get_drvdata(dev);
-+
-+	return ovl->data->supports_afbc;
-+}
-+
- int mtk_ovl_clk_enable(struct device *dev)
- {
- 	struct mtk_disp_ovl *ovl = dev_get_drvdata(dev);
-diff --git a/drivers/gpu/drm/mediatek/mtk_plane.c b/drivers/gpu/drm/mediatek/mtk_plane.c
-index 59edbe26f01ee..cbc4f37da8ba8 100644
---- a/drivers/gpu/drm/mediatek/mtk_plane.c
-+++ b/drivers/gpu/drm/mediatek/mtk_plane.c
-@@ -326,7 +326,8 @@ static const struct drm_plane_helper_funcs mtk_plane_helper_funcs = {
- int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
- 		   unsigned long possible_crtcs, enum drm_plane_type type,
- 		   unsigned int supported_rotations, const u32 blend_modes,
--		   const u32 *formats, size_t num_formats, unsigned int plane_idx)
-+		   const u32 *formats, size_t num_formats,
-+		   bool supports_afbc, unsigned int plane_idx)
- {
- 	int err;
+                     #[cfg(MODULE)]
+                     #[doc(hidden)]
+-                    #[used]
++                    #[used(compiler)]
+                     #[link_section = \".exit.data\"]
+                     static __UNIQUE_ID___addressable_cleanup_module: extern \"C\" fn() = cleanup_module;
  
-@@ -337,7 +338,9 @@ int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
+@@ -283,7 +283,7 @@ pub(crate) fn module(ts: TokenStream) ->
+                     #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
+                     #[doc(hidden)]
+                     #[link_section = \"{initcall_section}\"]
+-                    #[used]
++                    #[used(compiler)]
+                     pub static __{name}_initcall: extern \"C\" fn() -> kernel::ffi::c_int = __{name}_init;
  
- 	err = drm_universal_plane_init(dev, plane, possible_crtcs,
- 				       &mtk_plane_funcs, formats,
--				       num_formats, modifiers, type, NULL);
-+				       num_formats,
-+				       supports_afbc ? modifiers : NULL,
-+				       type, NULL);
- 	if (err) {
- 		DRM_ERROR("failed to initialize plane\n");
- 		return err;
-diff --git a/drivers/gpu/drm/mediatek/mtk_plane.h b/drivers/gpu/drm/mediatek/mtk_plane.h
-index 3b13b89989c7e..95c5fa5295d8a 100644
---- a/drivers/gpu/drm/mediatek/mtk_plane.h
-+++ b/drivers/gpu/drm/mediatek/mtk_plane.h
-@@ -49,5 +49,6 @@ to_mtk_plane_state(struct drm_plane_state *state)
- int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
- 		   unsigned long possible_crtcs, enum drm_plane_type type,
- 		   unsigned int supported_rotations, const u32 blend_modes,
--		   const u32 *formats, size_t num_formats, unsigned int plane_idx);
-+		   const u32 *formats, size_t num_formats,
-+		   bool supports_afbc, unsigned int plane_idx);
- #endif
--- 
-2.39.5
-
+                     #[cfg(not(MODULE))]
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -248,7 +248,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+ # Compile Rust sources (.rs)
+ # ---------------------------------------------------------------------------
+ 
+-rust_allowed_features := arbitrary_self_types,lint_reasons
++rust_allowed_features := arbitrary_self_types,lint_reasons,used_with_arg
+ 
+ # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+ # current working directory, which may be not accessible in the out-of-tree
 
 
 
