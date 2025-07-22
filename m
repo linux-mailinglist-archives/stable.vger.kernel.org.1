@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-164071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0403B0DD1E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:09:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3CCB0DD05
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE954AC0274
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FF7C1889384
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AAE28C5D5;
-	Tue, 22 Jul 2025 14:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B8F2EA74A;
+	Tue, 22 Jul 2025 14:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7nnIXIM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJ//WGb9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C671322094;
-	Tue, 22 Jul 2025 14:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620122EA73F;
+	Tue, 22 Jul 2025 14:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193155; cv=none; b=F6UOYwZsShrVSZyqIf+ZxXOmZY+jVz3MMx/hKnxVh9DdlTF4EHQJImCkAxanKqkO1LODtwVJzIQkKuukcFjachQNHdIKhmIK9YO+pSM9CeDQZuDN/9Yw3d4kJi6St72qrW4jByEg/J3GyYlb4Wa75iPSPcUh8N3d7Fx7vl9p9OI=
+	t=1753193078; cv=none; b=dPQZn5LOKG2zjxtm6MDvBdS0CENzEiCPBdejHOru2ALjlWCJNy24JS7Zn6t9RYrJAj5RK16BisGoktK9hD6HSUxw94GNlcstFlZnkZA49hHNa/CUGZeXiB2nZsmtPb9kkhGBYgSl6Qcv1jvhkrZMTHVmTLSFPji7EbH88As0g/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193155; c=relaxed/simple;
-	bh=d2fTc8FnXJ4oKoizVmFoy+Peh7lEsbR+l4g63vOk/GI=;
+	s=arc-20240116; t=1753193078; c=relaxed/simple;
+	bh=HiUanZnC0+KWnPlK5vRmJIi9ev57PfWLwyQJBHCQ+Yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHPE+6xX8lUEv4p381BFiclv/GdL4R1j1Ckb5t6pG+3RjdRGK70Iylc57hbiJb825TaznTeXgXjzxk8SuSMicUb9lSNQ8wcsZJTniXedHi3ajtz4ukUAzYHCPfenEr07NiR9lA+n+t0VlecKo6Lse8f52Juxw0Gw6Oom16ZO47Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7nnIXIM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430B5C4CEEB;
-	Tue, 22 Jul 2025 14:05:55 +0000 (UTC)
+	 MIME-Version; b=CnR9hSphd0L8Pi4SQ6lliK+Nl+CPDDT5FRJRVPpLb1E9ceBM5ACB5HDrrJY3FL5Li5JwBfOYVNnMJF9sL4WkzC6I3GO7+vofabICrkQCGcuxFLdZNaHB9MqDXXZfNdN1pJxtOaXWa8QKfnUsy6T7OPpS0pabSK+cfdKSbRuMsV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJ//WGb9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33CBC4CEF6;
+	Tue, 22 Jul 2025 14:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193155;
-	bh=d2fTc8FnXJ4oKoizVmFoy+Peh7lEsbR+l4g63vOk/GI=;
+	s=korg; t=1753193078;
+	bh=HiUanZnC0+KWnPlK5vRmJIi9ev57PfWLwyQJBHCQ+Yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7nnIXIMekZff3N0OCdKZRh3HeOc8o3KMyip6WYelk/9lnxChSIIQqtoIi9+RJZg3
-	 q/y1g7gjqnJQcvC21O9DkZWtAvWNUFc+hgIpAsjpUQ8yegpnJe+hIsholhWwucKCa8
-	 sOkJOEarss8Y6NvYegkBgW0fQ7Fmm+4CPootyuI4=
+	b=fJ//WGb9a8UpDzmQfChXTrQdLQIJlQfovV1eI5kLn9fOgM5RB13LkCaCchuiJQj1e
+	 Vd2dYvfKrBD/wiEOsUkxZNqojHOkYcuu694OfzYa0vFhznA/r1VXFvTJvLwMcTa3en
+	 KQC2Pwrljdop6kPum+jAqLll37mKh+sgTAXzE01Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhong Jiawei <zhongjiawei1@huawei.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
+	Jason-JH Lin <jason-jh.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/158] Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"
-Date: Tue, 22 Jul 2025 15:45:19 +0200
-Message-ID: <20250722134345.764093869@linuxfoundation.org>
+Subject: [PATCH 6.12 136/158] drm/mediatek: Add wait_event_timeout when disabling plane
+Date: Tue, 22 Jul 2025 15:45:20 +0200
+Message-ID: <20250722134345.800323774@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
 References: <20250722134340.596340262@linuxfoundation.org>
@@ -67,75 +68,112 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 14a67b42cb6f3ab66f41603c062c5056d32ea7dd ]
+[ Upstream commit d208261e9f7c66960587b10473081dc1cecbe50b ]
 
-This reverts commit cff5f49d433fcd0063c8be7dd08fa5bf190c6c37.
+Our hardware registers are set through GCE, not by the CPU.
+DRM might assume the hardware is disabled immediately after calling
+atomic_disable() of drm_plane, but it is only truly disabled after the
+GCE IRQ is triggered.
 
-Commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
-frozen") modified the cgroup_freezing() logic to verify that the FROZEN
-flag is not set, affecting the return value of the freezing() function,
-in order to address a warning in __thaw_task.
+Additionally, the cursor plane in DRM uses async_commit, so DRM will
+not wait for vblank and will free the buffer immediately after calling
+atomic_disable().
 
-A race condition exists that may allow tasks to escape being frozen. The
-following scenario demonstrates this issue:
+To prevent the framebuffer from being freed before the layer disable
+settings are configured into the hardware, which can cause an IOMMU
+fault error, a wait_event_timeout has been added to wait for the
+ddp_cmdq_cb() callback,indicating that the GCE IRQ has been triggered.
 
-CPU 0 (get_signal path)		CPU 1 (freezer.state reader)
-try_to_freeze			read freezer.state
-__refrigerator			freezer_read
-				update_if_frozen
-WRITE_ONCE(current->__state, TASK_FROZEN);
-				...
-				/* Task is now marked frozen */
-				/* frozen(task) == true */
-				/* Assuming other tasks are frozen */
-				freezer->state |= CGROUP_FROZEN;
-/* freezing(current) returns false */
-/* because cgroup is frozen (not freezing) */
-break out
-__set_current_state(TASK_RUNNING);
-/* Bug: Task resumes running when it should remain frozen */
-
-The existing !frozen(p) check in __thaw_task makes the
-WARN_ON_ONCE(freezing(p)) warning redundant. Removing this warning enables
-reverting the commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check
-if not frozen") to resolve the issue.
-
-The warning has been removed in the previous patch. This patch revert the
-commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
-frozen") to complete the fix.
-
-Fixes: cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not frozen")
-Reported-by: Zhong Jiawei<zhongjiawei1@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 2f965be7f900 ("drm/mediatek: apply CMDQ control flow")
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250624113223.443274-1-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/legacy_freezer.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_crtc.c  | 33 ++++++++++++++++++++++++++++
+ drivers/gpu/drm/mediatek/mtk_crtc.h  |  1 +
+ drivers/gpu/drm/mediatek/mtk_plane.c |  5 +++++
+ 3 files changed, 39 insertions(+)
 
-diff --git a/kernel/cgroup/legacy_freezer.c b/kernel/cgroup/legacy_freezer.c
-index 01c02d116e8e1..c37888b7d25af 100644
---- a/kernel/cgroup/legacy_freezer.c
-+++ b/kernel/cgroup/legacy_freezer.c
-@@ -66,15 +66,9 @@ static struct freezer *parent_freezer(struct freezer *freezer)
- bool cgroup_freezing(struct task_struct *task)
+diff --git a/drivers/gpu/drm/mediatek/mtk_crtc.c b/drivers/gpu/drm/mediatek/mtk_crtc.c
+index 8f6fba4217ece..6916c8925b412 100644
+--- a/drivers/gpu/drm/mediatek/mtk_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_crtc.c
+@@ -719,6 +719,39 @@ int mtk_crtc_plane_check(struct drm_crtc *crtc, struct drm_plane *plane,
+ 	return 0;
+ }
+ 
++void mtk_crtc_plane_disable(struct drm_crtc *crtc, struct drm_plane *plane)
++{
++#if IS_REACHABLE(CONFIG_MTK_CMDQ)
++	struct mtk_crtc *mtk_crtc = to_mtk_crtc(crtc);
++	struct mtk_plane_state *plane_state = to_mtk_plane_state(plane->state);
++	int i;
++
++	/* no need to wait for disabling the plane by CPU */
++	if (!mtk_crtc->cmdq_client.chan)
++		return;
++
++	if (!mtk_crtc->enabled)
++		return;
++
++	/* set pending plane state to disabled */
++	for (i = 0; i < mtk_crtc->layer_nr; i++) {
++		struct drm_plane *mtk_plane = &mtk_crtc->planes[i];
++		struct mtk_plane_state *mtk_plane_state = to_mtk_plane_state(mtk_plane->state);
++
++		if (mtk_plane->index == plane->index) {
++			memcpy(mtk_plane_state, plane_state, sizeof(*plane_state));
++			break;
++		}
++	}
++	mtk_crtc_update_config(mtk_crtc, false);
++
++	/* wait for planes to be disabled by CMDQ */
++	wait_event_timeout(mtk_crtc->cb_blocking_queue,
++			   mtk_crtc->cmdq_vblank_cnt == 0,
++			   msecs_to_jiffies(500));
++#endif
++}
++
+ void mtk_crtc_async_update(struct drm_crtc *crtc, struct drm_plane *plane,
+ 			   struct drm_atomic_state *state)
  {
- 	bool ret;
--	unsigned int state;
+diff --git a/drivers/gpu/drm/mediatek/mtk_crtc.h b/drivers/gpu/drm/mediatek/mtk_crtc.h
+index 388e900b6f4de..828f109b83e78 100644
+--- a/drivers/gpu/drm/mediatek/mtk_crtc.h
++++ b/drivers/gpu/drm/mediatek/mtk_crtc.h
+@@ -21,6 +21,7 @@ int mtk_crtc_create(struct drm_device *drm_dev, const unsigned int *path,
+ 		    unsigned int num_conn_routes);
+ int mtk_crtc_plane_check(struct drm_crtc *crtc, struct drm_plane *plane,
+ 			 struct mtk_plane_state *state);
++void mtk_crtc_plane_disable(struct drm_crtc *crtc, struct drm_plane *plane);
+ void mtk_crtc_async_update(struct drm_crtc *crtc, struct drm_plane *plane,
+ 			   struct drm_atomic_state *plane_state);
+ struct device *mtk_crtc_dma_dev_get(struct drm_crtc *crtc);
+diff --git a/drivers/gpu/drm/mediatek/mtk_plane.c b/drivers/gpu/drm/mediatek/mtk_plane.c
+index 8a48b3b0a9567..1a855a75367a1 100644
+--- a/drivers/gpu/drm/mediatek/mtk_plane.c
++++ b/drivers/gpu/drm/mediatek/mtk_plane.c
+@@ -285,9 +285,14 @@ static void mtk_plane_atomic_disable(struct drm_plane *plane,
+ 	struct drm_plane_state *new_state = drm_atomic_get_new_plane_state(state,
+ 									   plane);
+ 	struct mtk_plane_state *mtk_plane_state = to_mtk_plane_state(new_state);
++	struct drm_plane_state *old_state = drm_atomic_get_old_plane_state(state,
++									   plane);
++
+ 	mtk_plane_state->pending.enable = false;
+ 	wmb(); /* Make sure the above parameter is set before update */
+ 	mtk_plane_state->pending.dirty = true;
++
++	mtk_crtc_plane_disable(old_state->crtc, plane);
+ }
  
- 	rcu_read_lock();
--	/* Check if the cgroup is still FREEZING, but not FROZEN. The extra
--	 * !FROZEN check is required, because the FREEZING bit is not cleared
--	 * when the state FROZEN is reached.
--	 */
--	state = task_freezer(task)->state;
--	ret = (state & CGROUP_FREEZING) && !(state & CGROUP_FROZEN);
-+	ret = task_freezer(task)->state & CGROUP_FREEZING;
- 	rcu_read_unlock();
- 
- 	return ret;
+ static void mtk_plane_atomic_update(struct drm_plane *plane,
 -- 
 2.39.5
 
