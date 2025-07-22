@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-163895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B4CB0DC1E
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 15:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C22B0DCBB
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 16:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5E8E1C83636
-	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 13:56:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C316188AD5D
+	for <lists+stable@lfdr.de>; Tue, 22 Jul 2025 14:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF432EA475;
-	Tue, 22 Jul 2025 13:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5414D1A255C;
+	Tue, 22 Jul 2025 14:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4eY8id7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vshsL3kh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BAC2D130C;
-	Tue, 22 Jul 2025 13:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118DE2E36E8;
+	Tue, 22 Jul 2025 14:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753192565; cv=none; b=jJJkNZvbmXafYO7bR4AlPOSP6tjN+7zx9e2Fx37uHwgZpzZS8Yi7g0vql1Jqm1j0Ht07WKE9YYJyVBPLAJWvtiY9qAIIwttml23bazDNhoUm69p/bz6Kuu7UT1ZKzKavyViakBIk3U58sBMmYmib1aCtHmKFK8YJbx8gv/hiaW8=
+	t=1753192995; cv=none; b=VQeDO+Fd8foMQFCwCLwEMET+3RVpWEJRUyUfLNh8N892T9X/0mp5th9Xe3la6XtI9aBsMtx/9zRNBLME4kspp4X0sprrRFexKwy42dMrIoOB13TXUPsNVm3S845M0lhsE0nASRaooChsoOl25Do5OE4LprGodPu/pWx52ZU7bHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753192565; c=relaxed/simple;
-	bh=PyUd33XSp86hgqj4bMlXgGthcL7qLLIiARBXjy13SrA=;
+	s=arc-20240116; t=1753192995; c=relaxed/simple;
+	bh=6bgzuaRGYnoZz6H/jhv1y4sApbyRih54N8pPDhZW5To=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dn9Cpn394IPbSqz+1sJnTOmEKbB4W6PbLCdtPQFTCm6pZNRJgskn5X/1upm7/3G6onT0w/FFrrWTO/q7P3oA5fsN7trUswGk+YNt+Pln2PFRJa7PyWZh2YcQdq0tz39aM4EdHjt01zpUJfi4O6VVlh89zsGRgri2APaqN0T04K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4eY8id7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7286C4CEEB;
-	Tue, 22 Jul 2025 13:56:03 +0000 (UTC)
+	 MIME-Version; b=iw/WJtzoRHDf52vtaKGTwWcQC4Y1ihOwuod1E5PptGHFNgdcGsKVjid8vmuwlo4o/Zp8bFySEGtrMgL7FUQqJGDcxz1w6msN4dPYe5K5Lm3ISBqZAFUdR8Ezb3tu+HHABwhMcGypraYrYCLeq+5M5LBIJBFGsGLYQ3Nvxksj7jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vshsL3kh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843DFC4CEEB;
+	Tue, 22 Jul 2025 14:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753192564;
-	bh=PyUd33XSp86hgqj4bMlXgGthcL7qLLIiARBXjy13SrA=;
+	s=korg; t=1753192994;
+	bh=6bgzuaRGYnoZz6H/jhv1y4sApbyRih54N8pPDhZW5To=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4eY8id7shMhiwuy7RhdHc69PhWFq88BNH3SXKFD6rlAIHjPBG6pynj/hJLaH/n2l
-	 HPc9iX5bwDX74JBXtpJaa2CfBSDeHO6xktfe9UvkttxryVLMGD8tmL6uJSBkSNSsc+
-	 /a6B+MUpwvuOlLJEer0nQqcZ9KwvXYl0ytkpFkyc=
+	b=vshsL3khsLO27vPRcLy/DFOiYqe2RkorRQBztJxko9Rb1/2wH6TjP4MQgHtU7mJ6v
+	 8o/jXhBotv4xnXynm1Inx6fxCwwXXUUGWv5hOZ8irlvsbsayhP46xcCzfEMvJB3Dt/
+	 olzR+sIgUbsnZvW/X3RfaHZ45sKV3G4O4uuX/0N4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	syzbot+e834e757bd9b3d3e1251@syzkaller.appspotmail.com,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/111] wifi: cfg80211: remove scan request n_channels counted_by
+Subject: [PATCH 6.12 102/158] wifi: cfg80211: remove scan request n_channels counted_by
 Date: Tue, 22 Jul 2025 15:44:46 +0200
-Message-ID: <20250722134336.036965705@linuxfoundation.org>
+Message-ID: <20250722134344.551250324@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250722134333.375479548@linuxfoundation.org>
-References: <20250722134333.375479548@linuxfoundation.org>
+In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
+References: <20250722134340.596340262@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -110,11 +110,11 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 802ea3080d0b3..2fb3151ea7c9e 100644
+index 8a712ca73f2b0..bb1862536f9ca 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -2543,7 +2543,7 @@ struct cfg80211_scan_request {
- 	struct cfg80211_scan_6ghz_params *scan_6ghz_params;
+@@ -2710,7 +2710,7 @@ struct cfg80211_scan_request {
+ 	s8 tsf_report_link_id;
  
  	/* keep last */
 -	struct ieee80211_channel *channels[] __counted_by(n_channels);
