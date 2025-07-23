@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-164451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8BBB0F486
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 15:51:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02651B0F47D
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 15:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B60CB1892B04
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 13:50:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFEA5543AA3
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 13:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634562E7F25;
-	Wed, 23 Jul 2025 13:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06113272E5A;
+	Wed, 23 Jul 2025 13:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iMpBVMm+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pBPP4MGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244F92E610B
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 13:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77EE2E610B
+	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 13:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753278622; cv=none; b=Z7qaQ5eQBfOvBwcQ86xEbB8xJLL14IA9tGMcDGIquHlL+sWjVv4ufh3tX8pv9nwEvAebCuPLH5KP/eDc8wrgH9ze/haszykeQQ6cIjn1JkvoyplyeEmP+cIxcP+iE88MCHLmbmlDu26LR2jdr7dfR1pIaAVSUKfhjmes8p9lJfk=
+	t=1753278623; cv=none; b=GZbCfdSu7+zoj/4/dF+4OKQRR6hHJK3G3cQE4jtIKzUT1ZPcIAtWDJxC5AfuB97hmW6CoDjPIDCa0bi3pAm64Hoqp6bfNXk5WtxBBst5dX1H4Y4eZGEt96nqJBPj2patCbXPUpeCaSAPbgtSIAxsUc1C+F5qReLXgYewmhiO3ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753278622; c=relaxed/simple;
-	bh=MtjBL5hy3kiyRYrBuGyxA9Q33lQoaKezou0QJBw1VE8=;
+	s=arc-20240116; t=1753278623; c=relaxed/simple;
+	bh=4pNOpVdchWfxNwIZ1PwC3ltVYTj3JdUXL0Q2Z8JfV8c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J58XA2/XWEMTTT5pdE4gGPVSwdUKTWW73G8B6B3QtGnyfMtbpH9lmUAbup9zh4K6SvsPr/nraggb8+BvDF23nu9D6e3rGHAH5i032EKcaSsy4ATfh63BydRa0tYISGV6UxTVOzf6hmxJ1ax46nPqUb0v4VNjWu+2++G6lxZubEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iMpBVMm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45D5C4CEE7;
-	Wed, 23 Jul 2025 13:50:20 +0000 (UTC)
+	 MIME-Version; b=Nj9cZMbB3fm8YcSQykbbNhVHe8yfrJ0rD0Z/v92tEjlNdc5AMXKrrgzA1JSSnvdlKaK/NFSxPRb2WFcsLue+94pONseGKn6tBUyLd4SoRN8S9/jfXMp/knH4DMTTwmdpnAIxE/1wRzFrRaY5m55ofQiRrnl7ofOLd+6xif32k/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pBPP4MGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4017AC4CEF1;
+	Wed, 23 Jul 2025 13:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753278621;
-	bh=MtjBL5hy3kiyRYrBuGyxA9Q33lQoaKezou0QJBw1VE8=;
+	s=k20201202; t=1753278623;
+	bh=4pNOpVdchWfxNwIZ1PwC3ltVYTj3JdUXL0Q2Z8JfV8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMpBVMm+3oUqeEtF+Bp1TyIpTVWhsG1CX33X+v5+URLb1xa43RtBZhrcGMfCs/YNr
-	 9B2jOjoUm36zqdOjmAa0UVZj25xn41IRHctXx2AGHrWznr8kZvaoXRPImGCzKO4AhX
-	 HfeKFiu2JYmbjNRtVs40SIfgvpc0IDPPxvzs1Gpco50oQWfxB+cWf+FYZ3x+HZzJkd
-	 WA+OgKOWgZENRMs9H6w7YRmaS8CrYK+55IGnPKF92ETZSHdA+Y6IM0h4maXFK4aJvv
-	 UWr4PbRjHywGH6L+T+wWmj7DeOsQd7JPpnXx3zMU7xqdv0mdNwOLvEib4qMVrO8vJS
-	 TKU3LlCv7UPYA==
+	b=pBPP4MGz7S2AzMGmihGMo3PbuOSc5AvOP7al5jqJ4Zc2QRRXVfbDAqDLGeP5ctcbv
+	 ukduMxzIItsWlhh0m0HZNNQ73ynMc+WKVmrgpN+H6t3pbj8ejNf+nYYY6XxN4aG14b
+	 QiCcP6M40GhEmTkoLMyuyTd2qzuj6/6MuXZrjBvQS+jQlwKDfVkSQmKDiw0V77BdhZ
+	 m+/J3oSolqD/s1zS1/S4w+2RBJHau0IiO0JlkJdZyx3w82HR9yXd95EEhsa2e2/46T
+	 aRzSBH0th9dT2ZLQOhtxcx6pxAHnpKaWxCMzgR/sKEI+2EOQSRidA4ebqD0nd4Nssp
+	 1n15nAU91pJFA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Chao Yu <chao@kernel.org>,
+	Axel Fontaine <axel@axelfontaine.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 5/6] erofs: clean up header parsing for ztailpacking and fragments
-Date: Wed, 23 Jul 2025 09:50:08 -0400
-Message-Id: <20250723135009.1089152-5-sashal@kernel.org>
+Subject: [PATCH 6.12.y 6/6] erofs: fix large fragment handling
+Date: Wed, 23 Jul 2025 09:50:09 -0400
+Message-Id: <20250723135009.1089152-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250723135009.1089152-1-sashal@kernel.org>
 References: <2025071422-preview-germinate-b2de@gregkh>
@@ -63,111 +63,92 @@ Content-Transfer-Encoding: 8bit
 
 From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 540787d38b10dbc16a7d2bc2845752ab1605403a ]
+[ Upstream commit b44686c8391b427fb1c85a31c35077e6947c6d90 ]
 
-Simplify the logic in z_erofs_fill_inode_lazy() by combining the
-handling of ztailpacking and fragments, as they are mutually exclusive.
+Fragments aren't limited by Z_EROFS_PCLUSTER_MAX_DSIZE. However, if
+a fragment's logical length is larger than Z_EROFS_PCLUSTER_MAX_DSIZE
+but the fragment is not the whole inode, it currently returns
+-EOPNOTSUPP because m_flags has the wrong EROFS_MAP_ENCODED flag set.
+It is not intended by design but should be rare, as it can only be
+reproduced by mkfs with `-Eall-fragments` in a specific case.
 
-Note that `h->h_clusterbits >> Z_EROFS_FRAGMENT_INODE_BIT` is handled
-above, so no need to duplicate the check.
+Let's normalize fragment m_flags using the new EROFS_MAP_FRAGMENT.
 
-Reviewed-by: Chao Yu <chao@kernel.org>
+Reported-by: Axel Fontaine <axel@axelfontaine.com>
+Closes: https://github.com/erofs/erofs-utils/issues/23
+Fixes: 7c3ca1838a78 ("erofs: restrict pcluster size limitations")
 Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250224123747.1387122-2-hsiangkao@linux.alibaba.com
-Stable-dep-of: b44686c8391b ("erofs: fix large fragment handling")
+Link: https://lore.kernel.org/r/20250711195826.3601157-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zmap.c | 39 ++++++++++++++-------------------------
- 1 file changed, 14 insertions(+), 25 deletions(-)
+ fs/erofs/internal.h | 4 +++-
+ fs/erofs/zdata.c    | 2 +-
+ fs/erofs/zmap.c     | 7 +++----
+ 3 files changed, 7 insertions(+), 6 deletions(-)
 
+diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+index 06895e9fec38f..856463a702b2c 100644
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -324,10 +324,12 @@ static inline struct folio *erofs_grab_folio_nowait(struct address_space *as,
+ /* The length of extent is full */
+ #define EROFS_MAP_FULL_MAPPED	0x0008
+ /* Located in the special packed inode */
+-#define EROFS_MAP_FRAGMENT	0x0010
++#define __EROFS_MAP_FRAGMENT	0x0010
+ /* The extent refers to partial decompressed data */
+ #define EROFS_MAP_PARTIAL_REF	0x0020
+ 
++#define EROFS_MAP_FRAGMENT	(EROFS_MAP_MAPPED | __EROFS_MAP_FRAGMENT)
++
+ struct erofs_map_blocks {
+ 	struct erofs_buf buf;
+ 
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 94c1e2d64df96..f35d2eb0ed11c 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1016,7 +1016,7 @@ static int z_erofs_scan_folio(struct z_erofs_frontend *f,
+ 		if (!(map->m_flags & EROFS_MAP_MAPPED)) {
+ 			folio_zero_segment(folio, cur, end);
+ 			tight = false;
+-		} else if (map->m_flags & EROFS_MAP_FRAGMENT) {
++		} else if (map->m_flags & __EROFS_MAP_FRAGMENT) {
+ 			erofs_off_t fpos = offset + cur - map->m_la;
+ 
+ 			err = z_erofs_read_fragment(inode->i_sb, folio, cur,
 diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index f2ff0cba2bc8c..f076cafb304f2 100644
+index f076cafb304f2..25a4b82c183c0 100644
 --- a/fs/erofs/zmap.c
 +++ b/fs/erofs/zmap.c
-@@ -394,7 +394,8 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
- static int z_erofs_do_map_blocks(struct inode *inode,
- 				 struct erofs_map_blocks *map, int flags)
- {
--	struct erofs_inode *const vi = EROFS_I(inode);
-+	struct erofs_inode *vi = EROFS_I(inode);
-+	struct super_block *sb = inode->i_sb;
- 	bool fragment = vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER;
- 	bool ztailpacking = vi->z_idata_size;
- 	struct z_erofs_maprecorder m = {
-@@ -438,7 +439,7 @@ static int z_erofs_do_map_blocks(struct inode *inode,
+@@ -481,7 +481,7 @@ static int z_erofs_do_map_blocks(struct inode *inode,
+ 			goto unmap_out;
  		}
- 		/* m.lcn should be >= 1 if endoff < m.clusterofs */
- 		if (!m.lcn) {
--			erofs_err(inode->i_sb, "invalid logical cluster 0 at nid %llu",
-+			erofs_err(sb, "invalid logical cluster 0 at nid %llu",
- 				  vi->nid);
- 			err = -EFSCORRUPTED;
- 			goto unmap_out;
-@@ -454,7 +455,7 @@ static int z_erofs_do_map_blocks(struct inode *inode,
- 			goto unmap_out;
- 		break;
- 	default:
--		erofs_err(inode->i_sb, "unknown type %u @ offset %llu of nid %llu",
-+		erofs_err(sb, "unknown type %u @ offset %llu of nid %llu",
- 			  m.type, ofs, vi->nid);
- 		err = -EOPNOTSUPP;
- 		goto unmap_out;
-@@ -473,10 +474,16 @@ static int z_erofs_do_map_blocks(struct inode *inode,
- 		map->m_flags |= EROFS_MAP_META;
- 		map->m_pa = vi->z_fragmentoff;
- 		map->m_plen = vi->z_idata_size;
-+		if (erofs_blkoff(sb, map->m_pa) + map->m_plen > sb->s_blocksize) {
-+			erofs_err(sb, "invalid tail-packing pclustersize %llu",
-+				  map->m_plen);
-+			err = -EFSCORRUPTED;
-+			goto unmap_out;
-+		}
  	} else if (fragment && m.lcn == vi->z_tailextent_headlcn) {
- 		map->m_flags |= EROFS_MAP_FRAGMENT;
+-		map->m_flags |= EROFS_MAP_FRAGMENT;
++		map->m_flags = EROFS_MAP_FRAGMENT;
  	} else {
--		map->m_pa = erofs_pos(inode->i_sb, m.pblk);
-+		map->m_pa = erofs_pos(sb, m.pblk);
+ 		map->m_pa = erofs_pos(sb, m.pblk);
  		err = z_erofs_get_extent_compressedlen(&m, initial_lcn);
- 		if (err)
- 			goto unmap_out;
-@@ -495,7 +502,7 @@ static int z_erofs_do_map_blocks(struct inode *inode,
- 		afmt = m.headtype == Z_EROFS_LCLUSTER_TYPE_HEAD2 ?
- 			vi->z_algorithmtype[1] : vi->z_algorithmtype[0];
- 		if (!(EROFS_I_SB(inode)->available_compr_algs & (1 << afmt))) {
--			erofs_err(inode->i_sb, "inconsistent algorithmtype %u for nid %llu",
-+			erofs_err(sb, "inconsistent algorithmtype %u for nid %llu",
- 				  afmt, vi->nid);
- 			err = -EFSCORRUPTED;
- 			goto unmap_out;
-@@ -596,26 +603,8 @@ static int z_erofs_fill_inode_lazy(struct inode *inode)
- 		goto out_put_metabuf;
- 	}
- 
--	if (vi->z_idata_size) {
--		struct erofs_map_blocks map = {
--			.buf = __EROFS_BUF_INITIALIZER
--		};
--
--		err = z_erofs_do_map_blocks(inode, &map,
--					    EROFS_GET_BLOCKS_FINDTAIL);
--		erofs_put_metabuf(&map.buf);
--
--		if (erofs_blkoff(sb, map.m_pa) + map.m_plen > sb->s_blocksize) {
--			erofs_err(sb, "invalid tail-packing pclustersize %llu",
--				  map.m_plen);
--			err = -EFSCORRUPTED;
--		}
--		if (err < 0)
--			goto out_put_metabuf;
--	}
--
--	if (vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER &&
--	    !(h->h_clusterbits >> Z_EROFS_FRAGMENT_INODE_BIT)) {
-+	if (vi->z_idata_size ||
-+	    (vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER)) {
- 		struct erofs_map_blocks map = {
- 			.buf = __EROFS_BUF_INITIALIZER
- 		};
+@@ -644,8 +644,7 @@ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
+ 			    !vi->z_tailextent_headlcn) {
+ 				map->m_la = 0;
+ 				map->m_llen = inode->i_size;
+-				map->m_flags = EROFS_MAP_MAPPED |
+-					EROFS_MAP_FULL_MAPPED | EROFS_MAP_FRAGMENT;
++				map->m_flags = EROFS_MAP_FRAGMENT;
+ 			} else {
+ 				err = z_erofs_do_map_blocks(inode, map, flags);
+ 			}
+@@ -678,7 +677,7 @@ static int z_erofs_iomap_begin_report(struct inode *inode, loff_t offset,
+ 	iomap->length = map.m_llen;
+ 	if (map.m_flags & EROFS_MAP_MAPPED) {
+ 		iomap->type = IOMAP_MAPPED;
+-		iomap->addr = map.m_flags & EROFS_MAP_FRAGMENT ?
++		iomap->addr = map.m_flags & __EROFS_MAP_FRAGMENT ?
+ 			      IOMAP_NULL_ADDR : map.m_pa;
+ 	} else {
+ 		iomap->type = IOMAP_HOLE;
 -- 
 2.39.5
 
