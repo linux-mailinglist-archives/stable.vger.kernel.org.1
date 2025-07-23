@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-164362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FB4B0E961
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 05:57:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0ECB0E96A
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 06:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 719B71C27738
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 03:57:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C06916A6D9
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 04:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6539A1FE44B;
-	Wed, 23 Jul 2025 03:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0638157E99;
+	Wed, 23 Jul 2025 04:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5yQ22qh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kY+84U8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244334204E
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 03:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8681C27
+	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 04:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753243047; cv=none; b=QIwopl2f9c/TWUjLVGbPWglW0vhatzpAYR8qnOhuTr2ScqJr4INeOPNIxtGY/bmpVQya67J1eMkaNEx+KMX7a05+iVRRsBvjV79L8BtsUBCWi9mGlXXg0urGaOAFoWg9PlQ2Chkq3e8lCtjuJ11uYrn43DITBFmL3MYgpGHccOs=
+	t=1753243483; cv=none; b=OYefnqTg8qJjVT+tIAzRrUYUU+NTYE3UKQ3uACaWiOeAhEmDDU10xQkRMTb4Sl1r/DGs+It7PHcXtnkBG2tlZubeJIWe+0JbkfvZspVEfdc6DKAbkYjSpKM9p3ztQAnLaorFqykd4Ime+VZQor0cqDQ5AMT1el5EHFRK8L0wcMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753243047; c=relaxed/simple;
-	bh=KsCYfyUMzKlX3XjEQPMYXgf3xzBScv6qoEnm3QEtFKY=;
+	s=arc-20240116; t=1753243483; c=relaxed/simple;
+	bh=2BlrtkI5OIXI7IpAKLq0wYy3v+13NorGFAZ6xx/HtvQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uwWn7BSDDxC1Y/P3nFadS63FsOFtO9Rh0686TujnimOmbNSKQnaEclWqlxEc8VCt8MvVqhhUhan+Raxi/ayOfxcj85l2LKBHynACGcijmPvpD/TRNY1cePJKYC2pvXP9tkKcnlPaZCD09AqnW/9J12tn2X2K8N3DqwSJ8iAMCaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5yQ22qh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B754AC4CEE7;
-	Wed, 23 Jul 2025 03:57:25 +0000 (UTC)
+	 MIME-Version; b=ISDCTTj324IIDuKTgXuniGzniIYu4sSVx/oXXlU3LLc6xQg27OxFRc53IuyavG5bj5SjBXnALsHyOY3/H+9pomV9xOKM5JyJ/JFttJREOFyvMlJp3i+bhMdW0peaNI/482Q7bIlRwyHBX0iQLWRe2E+/lv6BhkXgmdU6SoDmsTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kY+84U8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FD3C4CEE7;
+	Wed, 23 Jul 2025 04:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753243046;
-	bh=KsCYfyUMzKlX3XjEQPMYXgf3xzBScv6qoEnm3QEtFKY=;
+	s=k20201202; t=1753243483;
+	bh=2BlrtkI5OIXI7IpAKLq0wYy3v+13NorGFAZ6xx/HtvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5yQ22qh46oFiquwBKenDJ1M9LNrqxROmxHS+UAS6mu/VLZCgTOEY2F+z85zIi/OZ
-	 YxlCnZ46tighogkJhQu9EPjwFmmSiW+VW3MAHgSrFg2oD1qEIqtLjbvjkGotoN++Et
-	 rihDzSbHffpgm7y038n+2bzzJcGdAsFCz3gvhyAoskc8nN0YJO36U63N12mOeQdOts
-	 h5xWi08jBu/gRuNyOKE0uBpztZwdfZ7n8rh89Yyfh5Fnx7TqxaiYIrSQl0R5QFeaGs
-	 gQh+jVItedGSDSn2pd3C34BL03xuGRXu1SSb4MzL1nNiAvpCy+6qUvubxRDfA9rRdJ
-	 1IdvG/FmidBBA==
+	b=kY+84U8B5L+ErQMJqzMqqKfdX5LR47p0SGbC+5zQn+3OB0XtJuT3QmvkunB6qgUtE
+	 TzJ/QS4c8orq6TAu5CQljDEcNcJ3KTU/j6KqvQAQiF7XQGliZ3q3X53OvUNlkL05vt
+	 kRZC54HXM5utrpLW5UYEiZaNWD4kuRCfXKlZxsvZTJXJIuBkD8dqCHiysZmjntZ7ir
+	 lXfdREnEPnxp72AXaHlbSSVklKWk0QBNc6jKWSFCAILEDAFWRymnxV0fekIN5fCWHf
+	 yDdQfT8vctvqhIfidP5MODyxt39RCI8iVP4E8x67G1JBRC8ewm149Aeb79sIy4nhL4
+	 jKTw7GCc6Doug==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Yazen Ghannam <yazen.ghannam@amd.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] x86/mce/amd: Add default names for MCA banks and blocks
-Date: Tue, 22 Jul 2025 23:57:21 -0400
-Message-Id: <20250723035721.1044134-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] x86/mce/amd: Add default names for MCA banks and blocks
+Date: Wed, 23 Jul 2025 00:04:37 -0400
+Message-Id: <20250723040437.1045199-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025071200-cone-ogle-b45b@gregkh>
-References: <2025071200-cone-ogle-b45b@gregkh>
+In-Reply-To: <2025071201-coping-motto-1a12@gregkh>
+References: <2025071201-coping-motto-1a12@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,16 +82,17 @@ Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
 Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com
+[ adapted get_name() function signature ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  arch/x86/kernel/cpu/mce/amd.c | 13 ++++++++++---
  1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index aa20b2c6881e9..ef8a28343ffb7 100644
+index c011fe79f0249..2bd22090a159d 100644
 --- a/arch/x86/kernel/cpu/mce/amd.c
 +++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -1228,13 +1228,20 @@ static const char *get_name(unsigned int bank, struct threshold_block *b)
+@@ -1215,13 +1215,20 @@ static const char *get_name(unsigned int bank, struct threshold_block *b)
  	}
  
  	bank_type = smca_get_bank_type(bank);
