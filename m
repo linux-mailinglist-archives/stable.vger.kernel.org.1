@@ -1,125 +1,188 @@
-Return-Path: <stable+bounces-164395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71546B0EBFE
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 09:33:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E52B0EC78
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 09:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 476453A1689
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 07:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91A54541B17
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 07:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F487277C82;
-	Wed, 23 Jul 2025 07:32:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="k7Y6gWc6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A88277CBA;
+	Wed, 23 Jul 2025 07:55:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from psionic.psi5.com (psionic.psi5.com [185.187.169.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F5B277803;
-	Wed, 23 Jul 2025 07:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE6C191493
+	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 07:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.187.169.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753255930; cv=none; b=Z8C/rEttQUiDg9eTaQkuAQeWCr2Vv8cg8Zp9zE7N6JDRIwEg2lA/gaBn5IAp7CFHyAObKG15xM2Dz7MMJ+yeMtq/mFQ2wyxR7ihEVL+9V78YKEcP65mq4yG5OAvz5ez0n3o6Gvy01KMMBlhYRUa6XfUZ8oJnwNJKHe52LjQ7WxI=
+	t=1753257335; cv=none; b=WxDQnJAWy14SOOV4mNTKUQVLsG5VcjAE5wHMvT1xZSod5qH27JoakkQhRn4t8yvchOxOfCZI2gkH/3ntOZMo5yz5sRxHshsPEbzoAhFzC3NUxGGwHBkusXGkqW/GrR6CsIrWmknHx4w3e81eRet6PbyQNF0E20oYnl74Ucfrr+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753255930; c=relaxed/simple;
-	bh=53FRn1dg5nX7qRA6SkVZVVkyE6GAjP4N8MbpH3Gndlw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uc54QUQGqZ2LNTtxHBjYUxeA2aCNpdLZB5WFxsq4NAXOcvVDlMNx3OmwWTQRIC5L3PppmoOVlP6FX4iMn4jW9raXi9/FqvjBTj03LM3bIIRbnkfs6rNHEQafgIwbjZ9fxgNhfIztSy1oEFHr74QOEkVrL+IaioTxJN+gwBhp5uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=k7Y6gWc6; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a528243636so3809741f8f.3;
-        Wed, 23 Jul 2025 00:32:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1753255927; x=1753860727; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z/P0pFS6WBNNgY7NAWkRahkU88sfun4LTwe81ga9tlc=;
-        b=k7Y6gWc6VY3T6vb5KF60z47yL096nx9mMzIQmz2dHCL49bsGhcQyOJ4OTzJXlfMJyz
-         E5LYJ5cnp+LfABSjv7dWZkcEiswOU7x22YLNKNTylf+cg786mD2cqi4qVHn+crmPpo3Z
-         93w+IlHDYDFBTTNlDwS9G9ji8l6Xh2987DsZgS+BYSYQt8H28MGAhzboasvScHoHF2uu
-         OZCTz+OYOypOguErH4cM5YNMjloUuJzyvYVn1H7GtN9a92Fy0MOBuCIcos7q6Bb3YH8j
-         BeJzlD1VX00NUNoY3zgqAzbrp4bvNkXrFtUQtF3OtN/andMI44pVYmItgCxdrY/wke1w
-         EY+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753255927; x=1753860727;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z/P0pFS6WBNNgY7NAWkRahkU88sfun4LTwe81ga9tlc=;
-        b=PP3g/GJJqEKizbVR20Hyhf46terCu7G4ZNeDzZon01pjtWqlpHzDdxy4yXc5Oa+fSP
-         eyTRfScj9U9N1Uh71xhYUoai7XBhU7Zngmu0si5SnIpMqvUoQ8hxHomITk1633wzMzms
-         EQWNA6I5qUyjFZxmiGzDMiBrTqIMUf2TVSLB36eSELPoOpaIviYkRdW3aVuzgb7rY+aJ
-         mQPIsRtVOB3/ts4+T7WOo6kA0Dq7xTt329Qig7gs2kzy4ufkyTY/dNvdENsyd1I+mIym
-         ea9MK58rzePR1hl4i0H2Zy1drdGOGtegMhr95Xl3FQPEeVKNXaCr/cUxcEoeZ/afHcrF
-         Lx7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUQLvWeF/anCDyJHwRwuLjIhYim3GENKNtKdyf+muysrUrmYryIPuueITxIkMqB2IKjjX/4v5lT@vger.kernel.org, AJvYcCWtyw8wwGVeQbtMzLJumnbcYa8OiPFndm3EwjAhTOBMRSWXJazncprHx2QRbejtFM2mefOfrq4zeTh+XmA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySNemUaWbSkTuEZ14nVMOSRtzk+hT+Ypg51f/aqATnVDwLSWmK
-	fa5lHv4TASBak+jiJEJQrCjKZjqNLxGk+8xTMcPbXhMH+lRN1Qk5g/A=
-X-Gm-Gg: ASbGnct9gaKrKI1jjTMuk/0v9lzvijp4+2Qd8fzrc+C5lP80W17LPDvuwjHylYrDfvG
-	93Uw30QoGsn2dAksS+guDkbF8rqeEPxYxxhSvN8kFrmUi5GE5Dh82jkSCEIMZ9eaTnNSyq4Mtma
-	ztMZP/lW6XKLnuH9bRNdfCVlshIE9godYLLGttd3/HZWvQ5gXqQ8XdK3FV71m+fVqSPz2+4l80x
-	yW3Z9H2RVnizCHKfBaCTCFZxgzCB/U9C6vIHF5IZLrp0p1GqrdXGJfb0C916psKj2qYeCTi7Je4
-	ef4VZXi8K8YTf2gkA1a8jhPH9UT8srVGBWvlRLhZ+1kT9hFePrT3kN4HcHYQ0SXrzWx8oSjCWZU
-	urioqkJZ6sGHqfbj7YlAEAebrJsxNuJT7UTWEhsZOjdoambidw5maY/gq9PtBrm2QH7+tcZsqLQ
-	HWlnBGf/h2P9o=
-X-Google-Smtp-Source: AGHT+IFlJDf15up2Xv/cRTUYlYOXXf1nRIW3wifWm4bDqNWuGTxkTGB+WrYc1h56uOBrzbnlnF5L/g==
-X-Received: by 2002:a05:6000:26cd:b0:3b6:c88:7b74 with SMTP id ffacd0b85a97d-3b768f2e446mr1325854f8f.59.1753255926559;
-        Wed, 23 Jul 2025 00:32:06 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ac7d3.dip0.t-ipconnect.de. [91.42.199.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca4d7efsm15569792f8f.67.2025.07.23.00.32.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Jul 2025 00:32:05 -0700 (PDT)
-Message-ID: <7984be98-e376-42a3-83f1-e2d572757491@googlemail.com>
-Date: Wed, 23 Jul 2025 09:32:04 +0200
+	s=arc-20240116; t=1753257335; c=relaxed/simple;
+	bh=gsOMyoNdTdebjO3YtW4cStm88h5Yl/HyJEqO5YlkCtk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Nq6tGrpqs9j19xVwcDspWD1HPipMQjdgG0tOKkwmfDsr4qFKo3CZ7UJydai3QEr5JuucVykSCBJU6xOPZgSwNuZgzIFowvdhuMYPe2jYHruM2tOSS7u7eY6W28DVN25bRHukmFWNm4iAdREUlBdJGWqsCF4WIJwSl1DLxKKYd34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hogyros.de; spf=pass smtp.mailfrom=hogyros.de; arc=none smtp.client-ip=185.187.169.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hogyros.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hogyros.de
+Received: from localhost.localdomain (unknown [IPv6:2400:2410:b120:f200:2e09:4dff:fe00:2e9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by psionic.psi5.com (Postfix) with ESMTPSA id D1FDF3F11A;
+	Wed, 23 Jul 2025 09:45:52 +0200 (CEST)
+From: Simon Richter <Simon.Richter@hogyros.de>
+To: intel-xe@lists.freedesktop.org
+Cc: jeffbai@aosc.io,
+	Simon Richter <Simon.Richter@hogyros.de>,
+	stable@vger.kernel.org,
+	Wenbin Fang <fangwenbin@vip.qq.com>,
+	Haien Liang <27873200@qq.com>,
+	Jianfeng Liu <liujianfeng1994@gmail.com>,
+	Shirong Liu <lsr1024@qq.com>,
+	Haofeng Wu <s2600cw2@126.com>,
+	Shang Yatsen <429839446@qq.com>
+Subject: [PATCH v3 1/5] drm/xe/bo: fix alignment with non-4KiB kernel page sizes
+Date: Wed, 23 Jul 2025 16:45:13 +0900
+Message-ID: <20250723074540.2660-2-Simon.Richter@hogyros.de>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250723074540.2660-1-Simon.Richter@hogyros.de>
+References: <20250723074540.2660-1-Simon.Richter@hogyros.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/158] 6.12.40-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250722134340.596340262@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250722134340.596340262@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Am 22.07.2025 um 15:43 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.40 release.
-> There are 158 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+From: Mingcong Bai <jeffbai@aosc.io>
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+The bo/ttm interfaces with kernel memory mapping from dedicated GPU
+memory. It is not correct to assume that SZ_4K would suffice for page
+alignment as there are a few hardware platforms that commonly uses non-
+4KiB pages - for instance, 16KiB is the most commonly used kernel page
+size used on Loongson devices (of the LoongArch architecture).
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Per our testing, Intel Xe/Alchemist/Battlemage families of GPUs works on
+Loongson platforms so long as "Above 4G Decoding" was enabled and
+"Resizable BAR" was set to auto in the UEFI firmware settings.
 
+Without this fix, the kernel will hang at a kernel BUG():
 
-Beste Grüße,
-Peter Schneider
+[    7.425445] ------------[ cut here ]------------
+[    7.430032] kernel BUG at drivers/gpu/drm/drm_gem.c:181!
+[    7.435330] Oops - BUG[#1]:
+[    7.438099] CPU: 0 UID: 0 PID: 102 Comm: kworker/0:4 Tainted: G            E      6.13.3-aosc-main-00336-g60829239b300-dirty #3
+[    7.449511] Tainted: [E]=UNSIGNED_MODULE
+[    7.453402] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.05756-prestab
+[    7.467144] Workqueue: events work_for_cpu_fn
+[    7.471472] pc 9000000001045fa4 ra ffff8000025331dc tp 90000001010c8000 sp 90000001010cb960
+[    7.479770] a0 900000012a3e8000 a1 900000010028c000 a2 000000000005d000 a3 0000000000000000
+[    7.488069] a4 0000000000000000 a5 0000000000000000 a6 0000000000000000 a7 0000000000000001
+[    7.496367] t0 0000000000001000 t1 9000000001045000 t2 0000000000000000 t3 0000000000000000
+[    7.504665] t4 0000000000000000 t5 0000000000000000 t6 0000000000000000 t7 0000000000000000
+[    7.504667] t8 0000000000000000 u0 90000000029ea7d8 s9 900000012a3e9360 s0 900000010028c000
+[    7.504668] s1 ffff800002744000 s2 0000000000000000 s3 0000000000000000 s4 0000000000000001
+[    7.504669] s5 900000012a3e8000 s6 0000000000000001 s7 0000000000022022 s8 0000000000000000
+[    7.537855]    ra: ffff8000025331dc ___xe_bo_create_locked+0x158/0x3b0 [xe]
+[    7.544893]   ERA: 9000000001045fa4 drm_gem_private_object_init+0xcc/0xd0
+[    7.551639]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+[    7.557785]  PRMD: 00000004 (PPLV0 +PIE -PWE)
+[    7.562111]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+[    7.566870]  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
+[    7.571628] ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
+[    7.577163]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
+[    7.583128] Modules linked in: xe(E+) drm_gpuvm(E) drm_exec(E) drm_buddy(E) gpu_sched(E) drm_suballoc_helper(E) drm_display_helper(E) loongson(E) r8169(E) cec(E) rc_core(E) realtek(E) i2c_algo_bit(E) tpm_tis_spi(E) led_class(E) hid_generic(E) drm_ttm_helper(E) ttm(E) drm_client_lib(E) drm_kms_helper(E) sunrpc(E) la_ow_syscall(E) i2c_dev(E)
+[    7.613049] Process kworker/0:4 (pid: 102, threadinfo=00000000bc26ebd1, task=0000000055480707)
+[    7.621606] Stack : 0000000000000000 3030303a6963702b 000000000005d000 0000000000000000
+[    7.629563]         0000000000000001 0000000000000000 0000000000000000 8e1bfae42b2f7877
+[    7.637519]         000000000005d000 900000012a3e8000 900000012a3e9360 0000000000000000
+[    7.645475]         ffffffffffffffff 0000000000000000 0000000000022022 0000000000000000
+[    7.653431]         0000000000000001 ffff800002533660 0000000000022022 9000000000234470
+[    7.661386]         90000001010cba28 0000000000001000 0000000000000000 000000000005c300
+[    7.669342]         900000012a3e8000 0000000000000000 0000000000000001 900000012a3e8000
+[    7.677298]         ffffffffffffffff 0000000000022022 900000012a3e9498 ffff800002533a14
+[    7.685254]         0000000000022022 0000000000000000 900000000209c000 90000000010589e0
+[    7.693209]         90000001010cbab8 ffff8000027c78c0 fffffffffffff000 900000012a3e8000
+[    7.701165]         ...
+[    7.703588] Call Trace:
+[    7.703590] [<9000000001045fa4>] drm_gem_private_object_init+0xcc/0xd0
+[    7.712496] [<ffff8000025331d8>] ___xe_bo_create_locked+0x154/0x3b0 [xe]
+[    7.719268] [<ffff80000253365c>] __xe_bo_create_locked+0x228/0x304 [xe]
+[    7.725951] [<ffff800002533a10>] xe_bo_create_pin_map_at_aligned+0x70/0x1b0 [xe]
+[    7.733410] [<ffff800002533c7c>] xe_managed_bo_create_pin_map+0x34/0xcc [xe]
+[    7.740522] [<ffff800002533d58>] xe_managed_bo_create_from_data+0x44/0xb0 [xe]
+[    7.747807] [<ffff80000258d19c>] xe_uc_fw_init+0x3ec/0x904 [xe]
+[    7.753814] [<ffff80000254a478>] xe_guc_init+0x30/0x3dc [xe]
+[    7.759553] [<ffff80000258bc04>] xe_uc_init+0x20/0xf0 [xe]
+[    7.765121] [<ffff800002542abc>] xe_gt_init_hwconfig+0x5c/0xd0 [xe]
+[    7.771461] [<ffff800002537204>] xe_device_probe+0x240/0x588 [xe]
+[    7.777627] [<ffff800002575448>] xe_pci_probe+0x6c0/0xa6c [xe]
+[    7.783540] [<9000000000e9828c>] local_pci_probe+0x4c/0xb4
+[    7.788989] [<90000000002aa578>] work_for_cpu_fn+0x20/0x40
+[    7.794436] [<90000000002aeb50>] process_one_work+0x1a4/0x458
+[    7.800143] [<90000000002af5a0>] worker_thread+0x304/0x3fc
+[    7.805591] [<90000000002bacac>] kthread+0x114/0x138
+[    7.810520] [<9000000000241f64>] ret_from_kernel_thread+0x8/0xa4
+[    7.816489]
+[    7.817961] Code: 4c000020  29c3e2f9  53ff93ff <002a0001> 0015002c  03400000  02ff8063  29c04077  001500f7
+[    7.827651]
+[    7.829140] ---[ end trace 0000000000000000 ]---
 
+Revise all instances of `SZ_4K' with `PAGE_SIZE' and revise the call to
+`drm_gem_private_object_init()' in `*___xe_bo_create_locked()' (last call
+before BUG()) to use `size_t aligned_size' calculated from `PAGE_SIZE' to
+fix the above error.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 4e03b584143e ("drm/xe/uapi: Reject bo creation of unaligned size")
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Tested-by: Mingcong Bai <jeffbai@aosc.io>
+Tested-by: Wenbin Fang <fangwenbin@vip.qq.com>
+Tested-by: Haien Liang <27873200@qq.com>
+Tested-by: Jianfeng Liu <liujianfeng1994@gmail.com>
+Tested-by: Shirong Liu <lsr1024@qq.com>
+Tested-by: Haofeng Wu <s2600cw2@126.com>
+Link: https://github.com/FanFansfan/loongson-linux/commit/22c55ab3931c32410a077b3ddb6dca3f28223360
+Link: https://t.me/c/1109254909/768552
+Co-developed-by: Shang Yatsen <429839446@qq.com>
+Signed-off-by: Shang Yatsen <429839446@qq.com>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+---
+ drivers/gpu/drm/xe/xe_bo.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 00ce067d5fd3..649e6d0e05a1 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -1861,9 +1861,9 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+ 		flags |= XE_BO_FLAG_INTERNAL_64K;
+ 		alignment = align >> PAGE_SHIFT;
+ 	} else {
+-		aligned_size = ALIGN(size, SZ_4K);
++		aligned_size = ALIGN(size, PAGE_SIZE);
+ 		flags &= ~XE_BO_FLAG_INTERNAL_64K;
+-		alignment = SZ_4K >> PAGE_SHIFT;
++		alignment = PAGE_SIZE >> PAGE_SHIFT;
+ 	}
+ 
+ 	if (type == ttm_bo_type_device && aligned_size != size)
+@@ -1887,7 +1887,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+ #endif
+ 	INIT_LIST_HEAD(&bo->vram_userfault_link);
+ 
+-	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, size);
++	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, aligned_size);
+ 
+ 	if (resv) {
+ 		ctx.allow_res_evict = !(flags & XE_BO_FLAG_NO_RESV_EVICT);
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.47.2
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
