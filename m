@@ -1,134 +1,121 @@
-Return-Path: <stable+bounces-164357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7C7B0E7E0
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 03:01:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F5FB0E8A7
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 04:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61C555653D8
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 01:01:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 102AD1C8536A
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 02:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E21314A8E;
-	Wed, 23 Jul 2025 01:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0990C18DB1C;
+	Wed, 23 Jul 2025 02:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQgPwx/I"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8314D19A
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 01:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C687E0E8
+	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 02:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753232512; cv=none; b=tm6UgoD5oGZo4G1eYfTRcOIxDUGdEsh8nP9zl9e36OyHHGbsCfWHcluACfx1f3MjqAY/znadUpcCZCEff3fb7tPTzWz1jVT0G97gm31t+b5NdNlZnZDw+C4qjc5t+cYvbF081tqIWpJ9guTcgWpk381gYMoRIOC5DoFuIUxIAgg=
+	t=1753237821; cv=none; b=N+fsdfdmtY9npyTYpkZ4ig3uL/SZK58fL+s9WjVKmCrm4ifQ9eaTCf4k+OG9jdq73TxILQg9GjS7OUGcF0pwvw0tSvcdalvNQykGoTwI/RaA2NZVF/EVe2ZMi/lYBZlsNuQhMKW9tqXeS4lI7BWnSAeaqPy5IjKPmP51R+jScc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753232512; c=relaxed/simple;
-	bh=285yY/ngziz6+OaWNmTa89xyEZaDd2YPyc0sfHnmUjQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NH7QItP4wjWzw8RDXS4bisDEhRQgTozgfO7OasP0h5RBKbbD2DmFnJ1dEJWMuPDbxoGs9pwKKAtB+DE03XVKCfkEku2eSfyCdZdzKip1zimoh5ObKXpJz1mDxdEu8chmlepivhodWtQV/QyylgCQlMwnnHToQ4E8SioHZSbB/cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4bmwnm094GzYQvff
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 09:01:48 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id B8BD61A08FF
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 09:01:46 +0800 (CST)
-Received: from [10.67.109.79] (unknown [10.67.109.79])
-	by APP4 (Coremail) with SMTP id gCh0CgCHTxB4NIBok1qvBA--.43591S2;
-	Wed, 23 Jul 2025 09:01:45 +0800 (CST)
-Message-ID: <5c09fe1c-cb0c-46bf-ab6d-fda063a0e812@huaweicloud.com>
-Date: Wed, 23 Jul 2025 09:01:43 +0800
+	s=arc-20240116; t=1753237821; c=relaxed/simple;
+	bh=4rkD5+oaBe4AhLBmtX2zYDlz6fZnsaGo/3ooYP16TJc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Nol6dCZXnooqK1kYiNG2Uw6u0Cwy8XOhL9j7CO5rDVZeSSfpJkXKOYP1PzZc9jA9LH98U7okW9weQDmT2IjYVF+imDA1aSNHcN56ILTMRi+gdYP1hV/Rd3svsrWh6Lb9eO/ZNa74bgqq+FYxbajC9kid6ke4wipZExVqKZ5x87U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sQgPwx/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B848C4CEEB;
+	Wed, 23 Jul 2025 02:30:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753237821;
+	bh=4rkD5+oaBe4AhLBmtX2zYDlz6fZnsaGo/3ooYP16TJc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sQgPwx/IBVmK+Uvs4OkG1qAQCE4j3D5NEUmt1IBAULOQI0Qf0AyaP9HkUCoBUV8Bp
+	 XDrSQzmgsJ+GoYsdlX2Pkvix6tixbs0N3lcbw1oXB5qAVR1ExnPH0exjMzsFViS/q4
+	 HUInU/ZpR6x9yD4t41h2fBTGHQHjHfQ4VUApzP2HW1vPqzsIIuLKYi9G2Bs44ky5tN
+	 SM4tSJc5/kOYkohBg9iEboPWcohR06aFCP9e3OUIQhI42S87n1LR2k7V4EDj1RKZ3P
+	 jFl+/hI63Uv3Xiyd0W1icS3NgCxZyZujfQzZbq03mv8IZCOJNgi64DoUJ7SEpRJRcs
+	 L2bV5DkT4gDpw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] x86/mce/amd: Add default names for MCA banks and blocks
+Date: Tue, 22 Jul 2025 22:30:16 -0400
+Message-Id: <20250723023016.1031080-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025071200-bath-copartner-6a91@gregkh>
+References: <2025071200-bath-copartner-6a91@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "Revert "cgroup_freezer: cgroup_freezing: Check if not
- frozen"" has been added to the 6.15-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: chenridong <chenridong@huawei.com>, stable@vger.kernel.org,
- "stable-commits@vger.kernel.org Sasha Levin" <sashal@kernel.org>,
- Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-References: <20250721125251.814862-1-sashal@kernel.org>
- <1bafc8a024da4a95b28c02430f3d0c9d@huawei.com>
- <3f80facc-8bef-4fc7-ac7e-59279906a707@huaweicloud.com>
- <2025072222-effective-jumble-c817@gregkh>
- <ebec24b9-e65e-4050-a960-d127b7215543@huaweicloud.com>
- <2025072253-gravity-shown-3a37@gregkh>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <2025072253-gravity-shown-3a37@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgCHTxB4NIBok1qvBA--.43591S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZrW7ZF4kCr4xGr15KFyxuFg_yoW8WF17p3
-	9xCFWYyan5tr17Jw42y3yaqF45trZ3A34jgr1kAr1UtF90qas3XF1xuryS934qvFn7C3W7
-	tFyDW34xKrW0v3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUylb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAK
-	I48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
-	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xII
-	jxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw2
-	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
-	67AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUwxhLUUUUU
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+Content-Transfer-Encoding: 8bit
 
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
+[ Upstream commit d66e1e90b16055d2f0ee76e5384e3f119c3c2773 ]
 
-On 2025/7/22 20:38, Greg KH wrote:
-> On Tue, Jul 22, 2025 at 08:25:49PM +0800, Chen Ridong wrote:
->>
->>
->> On 2025/7/22 20:18, Greg KH wrote:
->>> On Tue, Jul 22, 2025 at 09:29:13AM +0800, Chen Ridong wrote:
->>>>
->>>>> This is a note to let you know that I've just added the patch titled
->>>>>
->>>>>     Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"
->>>>>
->>>>> to the 6.15-stable tree which can be found at:
->>>>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>>>>
->>>>> The filename of the patch is:
->>>>>      revert-cgroup_freezer-cgroup_freezing-check-if-not-f.patch
->>>>> and it can be found in the queue-6.15 subdirectory.
->>>>>
->>>>> If you, or anyone else, feels it should not be added to the stable tree, please let <stable@vger.kernel.org> know about it.
->>>>>
->>>>
->>>> The patch ("sched,freezer: Remove unnecessary warning in __thaw_task") should also be merged to
->>>> prevent triggering another warning in __thaw_task().
->>>
->>> What is the git commit id of that change in Linus's tree?
->>>
->>> thanks,
->>>
->>> greg k-h
->>
->> 9beb8c5e77dc10e3889ff5f967eeffba78617a88 ("sched,freezer: Remove unnecessary warning in __thaw_task")
-> 
-> Thanks, but that didn't apply to 6.1.y or 6.6.y.  Shouldn't it also go
-> there as that's what this revert was applied back to.
-> 
-> greg k-h
+Ensure that sysfs init doesn't fail for new/unrecognized bank types or if
+a bank has additional blocks available.
 
-Hi Greg,
+Most MCA banks have a single thresholding block, so the block takes the same
+name as the bank.
 
-The commit 9beb8c5e77dc ("sched,freezer: Remove unnecessary warning...") should be merged together
-with 14a67b42cb6f ("Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"") to avoid the
-warning for 6.1.y or 6.6.y.
+Unified Memory Controllers (UMCs) are a special case where there are two
+blocks and each has a unique name.
 
-Best regards,
-Ridong
+However, the microarchitecture allows for five blocks. Any new MCA bank types
+with more than one block will be missing names for the extra blocks. The MCE
+sysfs will fail to initialize in this case.
+
+Fixes: 87a6d4091bd7 ("x86/mce/AMD: Update sysfs bank names for SMCA systems")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/kernel/cpu/mce/amd.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index 5535749620afd..9939b984bceb7 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -1052,13 +1052,20 @@ static const char *get_name(unsigned int cpu, unsigned int bank, struct threshol
+ 	}
+ 
+ 	bank_type = smca_get_bank_type(cpu, bank);
+-	if (bank_type >= N_SMCA_BANK_TYPES)
+-		return NULL;
+ 
+ 	if (b && bank_type == SMCA_UMC) {
+ 		if (b->block < ARRAY_SIZE(smca_umc_block_names))
+ 			return smca_umc_block_names[b->block];
+-		return NULL;
++	}
++
++	if (b && b->block) {
++		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_block_%u", b->block);
++		return buf_mcatype;
++	}
++
++	if (bank_type >= N_SMCA_BANK_TYPES) {
++		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_bank_%u", bank);
++		return buf_mcatype;
+ 	}
+ 
+ 	if (per_cpu(smca_bank_counts, cpu)[bank_type] == 1)
+-- 
+2.39.5
 
 
