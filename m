@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-164438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48EC0B0F44A
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 15:42:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 960C2B0F44C
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 15:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 599383A48EA
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 13:42:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F14D1C8110D
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 13:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CABD2E7F01;
-	Wed, 23 Jul 2025 13:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DE72E7F07;
+	Wed, 23 Jul 2025 13:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="Km34D7Q1"
+	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="SvCzW4cx"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0a-00190b01.pphosted.com (mx0a-00190b01.pphosted.com [67.231.149.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32122E7165;
-	Wed, 23 Jul 2025 13:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C122E7165;
+	Wed, 23 Jul 2025 13:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753278155; cv=none; b=gQG9y683ijXHscwRsv3p8YNgZZbsSfy7HsyF+jdiBkykOXqI0ftyuJZOOSaKWbP59qOrP4CNuvRQa49s74NY+wLyxi87+y8ubPZb/MgDsb/9iRE71EcxgIW+drYkTUJi0CNDTKe5HDlyF2a/Thbq+greRaoQObP6mwRsqcXa7o8=
+	t=1753278161; cv=none; b=csKzrZ6gYDYxcN9xd1k8kdZNdRhkQaMHHBqDKB92QhNixJNU3PyqBno54TMa81DZPVZKLIAh1mSOXK7HYFYPXspjxisGqAL5bh2W6wZBLi1CVq/v5k5aqDFXSWiaQJ/IjKOu/C04t8UXGgHvMyR8gribrwwXHwhDEe0aVGAzrb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753278155; c=relaxed/simple;
-	bh=XGxnzDw3YNfZzn6FgKhNOoaK4MmC3pXM+/g85jBE3+M=;
+	s=arc-20240116; t=1753278161; c=relaxed/simple;
+	bh=rn4fY3XIyWCF4zmZc8ml/ezpFjtNDCK4QprIq9gcSrw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VS5R4g7pl51SaUfm8d3aNpUt0hiDN8BHVwEg2fwQ20NKNyxEXzMlzwHOql2GwE8h/2e/FfMMJUZLU8wT6LWbuTwQapaXKFVPWf55e7/MbhSl8aD5QBRLNSGh7/58ST+NITAiPxyXfWYbA0leb8UQ/4/budND9jDbhxB/AYpOyuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=Km34D7Q1; arc=none smtp.client-ip=67.231.149.131
+	 MIME-Version:Content-Type; b=rE3/bC0gr4QjqkMyGDx0QwdYfZL+ud20vwPJAuSYoT9Qr4V0l5cGQP6eyiuNVcjMK/AHEZnCQTVYGQGzE6Z8ilWBqrppt8mT74Z2p8I5gc5iFe5B4CV+2q3ABWY44Dc3Cb+30gsRmFbMZgDG6EDl15dWHXzuLD3IYLR5fBPGCpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=SvCzW4cx; arc=none smtp.client-ip=67.231.149.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
 Received: from pps.filterd (m0050095.ppops.net [127.0.0.1])
-	by m0050095.ppops.net-00190b01. (8.18.1.2/8.18.1.2) with ESMTP id 56NDSruB015860;
-	Wed, 23 Jul 2025 14:42:12 +0100
+	by m0050095.ppops.net-00190b01. (8.18.1.2/8.18.1.2) with ESMTP id 56NDSr3v015880;
+	Wed, 23 Jul 2025 14:42:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=jan2016.eng;
-	 bh=VsUgfZQbVMhypLf4VBQzUl/jOUr04LK/GdhtA+X53sU=; b=Km34D7Q1ks8U
-	WU10pmh5JgwtMLg1teaqyb7Qn/tHl3uXhtwMc2EBy0kiw/NEdEmDaODD1tdV7nkc
-	mAObm0Xif1M01gxOsiHRGMGLW1UIBOAibPB31tAnsFNT3Zv3EPXyA809BBNMAaIS
-	JRCukFUzhuvBL+6yKr/TlO2GoJZaTdDyc41jaf3ejk8niGpupxYwC3ypfk3xMyQ1
-	C+vrH16wTF5pStC/IyJl8NcD4ptX2I0Q4TwDeXMBBbj/jAc2Z04S71aVFd+3d3c7
-	8kQN0H4UCrz7ZyTTHjDqxochGaY2ysXsRxkutQE2njRSnAfSjiaYdlkYOfg+Nv8f
-	qwXeDoYo+g==
-Received: from prod-mail-ppoint8 (a72-247-45-34.deploy.static.akamaitechnologies.com [72.247.45.34] (may be forged))
-	by m0050095.ppops.net-00190b01. (PPS) with ESMTPS id 48303vrpbc-1
+	 bh=EVir28eF1p7kbrHktJsOgzIhHKeU5ir2V3FVm5jlrz4=; b=SvCzW4cx7/8/
+	e8aHLJoy+LP07nEPUVIe3B5dCxL0fICqEETJVQEpsbIvQ5zU9eVG0AR8F4At9V1Z
+	BF57uJQzE9Vz5rl/1F8sp/9M4KxZUqMCgdtXPi7IxXIax5YwL6CWqV0ej6nAn7Gq
+	FFMW8ziulu4pPPz0bOQ7+N63L84+SKvG/OVplAJS3ZlUxwj+v8Wow2nE4o7KhQKP
+	1Ey9xYYOtpvP9agJhSGqW0y/mG3ItzUgT9NG2viaiUekbgpTPRx18t4IG9NzgrH6
+	KRYjhYnpa/6VTidS6mPJXAC7XJPbvS0ZWqDQU5MWMZawbrHy/02Kdz7NQ1kGPJkn
+	KkMNVOHhmQ==
+Received: from prod-mail-ppoint3 (a72-247-45-31.deploy.static.akamaitechnologies.com [72.247.45.31] (may be forged))
+	by m0050095.ppops.net-00190b01. (PPS) with ESMTPS id 48303vrpe5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 14:42:12 +0100 (BST)
-Received: from pps.filterd (prod-mail-ppoint8.akamai.com [127.0.0.1])
-	by prod-mail-ppoint8.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id 56NCeYB8000862;
-	Wed, 23 Jul 2025 09:42:11 -0400
-Received: from email.msg.corp.akamai.com ([172.27.91.26])
-	by prod-mail-ppoint8.akamai.com (PPS) with ESMTPS id 4806px60q4-1
+	Wed, 23 Jul 2025 14:42:24 +0100 (BST)
+Received: from pps.filterd (prod-mail-ppoint3.akamai.com [127.0.0.1])
+	by prod-mail-ppoint3.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id 56NCG2cf011575;
+	Wed, 23 Jul 2025 09:42:23 -0400
+Received: from email.msg.corp.akamai.com ([172.27.91.22])
+	by prod-mail-ppoint3.akamai.com (PPS) with ESMTPS id 480r8y19yr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 09:42:10 -0400
-Received: from usma1ex-dag4mb7.msg.corp.akamai.com (172.27.91.26) by
- usma1ex-dag4mb7.msg.corp.akamai.com (172.27.91.26) with Microsoft SMTP Server
+	Wed, 23 Jul 2025 09:42:23 -0400
+Received: from usma1ex-dag4mb1.msg.corp.akamai.com (172.27.91.20) by
+ usma1ex-dag4mb3.msg.corp.akamai.com (172.27.91.22) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Wed, 23 Jul 2025 09:42:10 -0400
+ 15.2.1748.26; Wed, 23 Jul 2025 09:42:22 -0400
 Received: from bos-lhvzmp.bos01.corp.akamai.com (172.28.221.177) by
- usma1ex-dag4mb7.msg.corp.akamai.com (172.27.91.26) with Microsoft SMTP Server
- id 15.2.1748.26 via Frontend Transport; Wed, 23 Jul 2025 09:42:10 -0400
+ usma1ex-dag4mb1.msg.corp.akamai.com (172.27.91.20) with Microsoft SMTP Server
+ id 15.2.1748.26 via Frontend Transport; Wed, 23 Jul 2025 09:42:22 -0400
 Received: by bos-lhvzmp.bos01.corp.akamai.com (Postfix, from userid 42339)
-	id D07EC15F582; Wed, 23 Jul 2025 09:42:09 -0400 (EDT)
+	id 5140E15F582; Wed, 23 Jul 2025 09:42:22 -0400 (EDT)
 From: Michael Zhivich <mzhivich@akamai.com>
 To: <stable@vger.kernel.org>, <bp@alien8.de>
 CC: <tglx@linutronix.de>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
@@ -71,8 +71,8 @@ CC: <tglx@linutronix.de>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
         Michael Zhivich
 	<mzhivich@akamai.com>
 Subject: [PATCH v3 6.6] x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
-Date: Wed, 23 Jul 2025 09:42:08 -0400
-Message-ID: <20250723134208.2371260-1-mzhivich@akamai.com>
+Date: Wed, 23 Jul 2025 09:42:21 -0400
+Message-ID: <20250723134221.2371313-1-mzhivich@akamai.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <2025072219-mulberry-shallow-da0d@gregkh>
 References: <2025072219-mulberry-shallow-da0d@gregkh>
@@ -87,28 +87,28 @@ Content-Type: text/plain
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-23_02,2025-07-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 adultscore=0
- phishscore=0 bulkscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507230116
-X-Proofpoint-GUID: O4ig7qo9Tk0-RnnBgO1y5f6MWMBDZWJj
-X-Authority-Analysis: v=2.4 cv=WpwrMcfv c=1 sm=1 tr=0 ts=6880e6b4 cx=c_pps
- a=YfDTZII5gR69fLX6qI1EXA==:117 a=YfDTZII5gR69fLX6qI1EXA==:17
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
+ phishscore=0 suspectscore=0 mlxscore=0 bulkscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2507230116
+X-Proofpoint-GUID: WITi8dSf-_AkBKAcVpEnLgEs30VaTlXj
+X-Authority-Analysis: v=2.4 cv=WpwrMcfv c=1 sm=1 tr=0 ts=6880e6c0 cx=c_pps
+ a=x6EWYSa6xQJ7sIVSrxzgOQ==:117 a=x6EWYSa6xQJ7sIVSrxzgOQ==:17
  a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=X7Ea-ya5AAAA:8 a=QyML1Wa_BHPz27VLx9cA:9
-X-Proofpoint-ORIG-GUID: O4ig7qo9Tk0-RnnBgO1y5f6MWMBDZWJj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDExNyBTYWx0ZWRfX3Tp06UMXX5sE
- 3i1dEtK7rfZ3w5FKFz5+/BuMTw/hvgmgbCeC7VhrXI/vfuIwGJj4Fuk/Dh10p2RVsPd2k3+0uTV
- 3NuwmlS5Q3lj7+n6wUPdjKenYVzbsHzNrHkgVUKIKUirV22vVD/5tlYRVUdHuzAEaDsnwy8KWX5
- tjBqSYKomSiwrvUbXaSARVt4E+MmqHIzFZyOC2wmz3mko1rLB7fKqxyENf/bJxglyjrBnH+Pbts
- 7sKexWG9duM8gnAIsv472bbJ2SmSeQjF6Bb2DDKOUrnDGbv01yQdx/LFYEvBnajLhiM8E+AeoL5
- Hy6K6HQ4nIgr29gygfnC3XhUby14yettgFxSj9OxDehmZ9Cn/lJ/sS00rnIhMrKqpQBq49dPPYm
- AapZ86VCEidwKfTHlKDB+ZPrYpfJWPnWwhXpKVp0VwjY85RsHk1EP2H1QGfFrVJYy40JcUO1
+X-Proofpoint-ORIG-GUID: WITi8dSf-_AkBKAcVpEnLgEs30VaTlXj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDExNyBTYWx0ZWRfX0OOt8vtOmuwT
+ cDle+bunQnmWRIzhCTer6PyKzGXA7lzqdsz3KeGjvIv3Wbx8NmWHke7+N09k3i090J9lJbzpgAH
+ /j3jMtiBItTAtrlujK4fiLYIqRGznNJXPk3IatXJPkHVCZGySZ6YrrWnkyMheWu0hXVVSHxKYZV
+ TdhyfyTrVK9pCWGtBTgd1hfFVJpU0bvchOWNebwxyM8N3yOi2jjSlbOA7NDWODIhZsrDsyFDkLW
+ Pv7Y/LQlltAyxp+aRY1YtMqDyVayjFsDZnk9IEL0hpBMs005hCWnOkt6VYKMSo5bk24IU1w3VzV
+ v1IkUyu9Qbuh5H6jtXxQYlJnd/6B8xoh/G5fssekZSGkOc5y3dIKvIPVDk6Cp9NTc74s32xOhGU
+ lw0brTEvpdLi1+oHPhjUq+XW2qyQUcYZI5nigo6PguYRaDoVO8bBbDqqyYsWwsdViJdBaizf
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-23_02,2025-07-22_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  malwarescore=0 bulkscore=0 adultscore=0 lowpriorityscore=0 spamscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 mlxlogscore=937 phishscore=0
+ priorityscore=1501 clxscore=1015 suspectscore=0 mlxlogscore=925 phishscore=0
  impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
  adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2507230117
@@ -122,7 +122,7 @@ This is a stable-only fix.
 
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Michael Zhivich <mzhivich@akamai.com>
-Fixes: f2b75f1368af ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
+Fixes: 78192f511f40 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
 ---
 
 Changes in v3:
@@ -132,10 +132,10 @@ Changes in v3:
  1 file changed, 2 insertions(+)
 
 diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 04ac18ff022f..3c7d64c454b3 100644
+index e67d7603449b..bf07b2c5418a 100644
 --- a/arch/x86/kernel/cpu/amd.c
 +++ b/arch/x86/kernel/cpu/amd.c
-@@ -592,6 +592,8 @@ static bool amd_check_tsa_microcode(void)
+@@ -599,6 +599,8 @@ static bool amd_check_tsa_microcode(void)
  	p.model		= c->x86_model;
  	p.ext_model	= c->x86_model >> 4;
  	p.stepping	= c->x86_stepping;
