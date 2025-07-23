@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-164373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B590EB0E99E
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 06:34:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83853B0E99F
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 06:34:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97E471C852FA
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 04:34:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B8806C68B3
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 04:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928B9149C7B;
-	Wed, 23 Jul 2025 04:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D60F1DFE0B;
+	Wed, 23 Jul 2025 04:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9eNMA5W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RPnVgbTs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521BD2AE72
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 04:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E262AE72
+	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 04:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753245238; cv=none; b=hWCjPsG0/AZTDA+geSe/+74i5IdJeUia7DEqTtrElBDqmcAzEfjHZRRPjVeh5E4QBF69PMcC9OiBBV+aePMM+mW51WRbmo0KILpXS6iuDZ9cd9sE+m8QgIMA/jLKmg0v5ZkJC1VVNwqsTcdVm7FGMQEdWnkiC9dnOHVmOTZD+No=
+	t=1753245241; cv=none; b=qJs4GMxx/MqNUMMQHh+L5/+/h4R6ndQTlMBr4XaXg0IcKpy1cEKEx8X1k4yq8m3EmrVZiGucyJcfTlrxCqmfKFf/lcva08HOyQvd+bdOjVqKXYRbXO2nmmiTCoMHs13Oin6BiAvXW304J9ntZ5AMxG2LhOn1kT7WRKzC6sV2ZQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753245238; c=relaxed/simple;
-	bh=dUbrXWb0IALsWZVPsF8h9oqqjnH10wDvO5kHDjP9rDw=;
+	s=arc-20240116; t=1753245241; c=relaxed/simple;
+	bh=7OqRAmFVC+xx7UUGDh3wLQi94PsSSnx4iVsWhuOl7Yk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZkMHwG5obOUMb1idg0hT48uytIrFeAdy5cWFCTmq+XkRmltjHzf2m52m6AGmkGgKyIqUwLI1XDpbXEBxLkZZMQu+G1hZ0URFeEL20DVBBSrPe5PYROiAw/wOZiqsWjCe4wMJVN5B49xivUsSD2/hlxEyGIDDAeXnpWTZHF4YPdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9eNMA5W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5A8C4CEE7;
-	Wed, 23 Jul 2025 04:33:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Si5c0frsbIHm0XmAAYmX3hAweRJiCqN8SUxATZCi+vvGClc62sfv3Su/i853JdZFtzUSp/ibebor9WE1FIZjgBI26T44783VBrhxcmR2+HMYkt/3vn+upWIaALOaVC8vzc0FIIbvgr3dQ0XCZrUP5VwjUR9ZdTlctkAklAPyIis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RPnVgbTs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1702AC4CEE7;
+	Wed, 23 Jul 2025 04:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753245237;
-	bh=dUbrXWb0IALsWZVPsF8h9oqqjnH10wDvO5kHDjP9rDw=;
+	s=k20201202; t=1753245240;
+	bh=7OqRAmFVC+xx7UUGDh3wLQi94PsSSnx4iVsWhuOl7Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K9eNMA5W4Ixsj6/w//3SYDM3l5yTsunHhvhu480XXhKLI1Pm17rFRqm08DqtcS92W
-	 2IyZXQv56zimxfbFQoOoEnj9NxCUAul29Y3umeGfQaAlQOGmdJymGvAkMpEsmdI8Ai
-	 563gfw36unYyeUZ22fnj4SVPxZm333ibiSxU+Mci+Br2GMCN/ExyI24pliUjRwtPnL
-	 gFZA0nsX2+ItrzJ3MEGTca8Ui1FOj5bsEYzwmKDoIfuXUpdlkihrHE1Rv74kATjOr+
-	 RC0LWUS/GFXC7Z8t85TqCIH4Xhgdt9HWLauEdPijtyy8RVzUA0xfv34W7zTvqF7cin
-	 Nv1x6FWRUetpw==
+	b=RPnVgbTsLrNmbWNYBc3GESsMwOUVyiDjyxBuZOQVlUApO9vSyrupLeUP60DojFvEA
+	 6kHz0lzJhFv+x6SPI6xPawsSpBT60jaVU9YKiCCOrBsZokAn758SUmBSn7cWsW3Kyn
+	 EyvKDO9dn2ppgS22OxtKdXdqxozHjb81Xwic2h/SBXJU2prp1P4Z9xfXbYZ+gk5ydD
+	 9aKekbyfsGgA3Ke/qIkMVTPrzfHKyfg9/pYillPs3CPI/qtO/+S+CMc4YGY2Sg7ryG
+	 ZbwAwHYm53lCv8xrLhnkg4gjizhvZQCgWB5N/vW+CsQ3hVqiYiEutsTLVJExDHlVXe
+	 FKynNj+4ktHQg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	siddhi.katage@oracle.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] net: libwx: fix multicast packets received count
-Date: Wed, 23 Jul 2025 00:33:55 -0400
-Message-Id: <1753233976-6f7d2840@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y 1/4] x86: Fix get_wchan() to support the ORC unwinder
+Date: Wed, 23 Jul 2025 00:33:58 -0400
+Message-Id: <1753233242-65cf59f4@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <1FD2A049AA18CEF9+20250722060854.8327-1-jiawenwu@trustnetic.com>
+In-Reply-To: <20250722062642.309842-2-siddhi.katage@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,35 +64,44 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found follow-up fixes in mainline
 
-The upstream commit SHA1 provided is correct: 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77
+The upstream commit SHA1 provided is correct: bc9bbb81730ea667c31c5b284f95ee312bab466f
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Siddhi Katage <siddhi.katage@oracle.com>
+Commit author: Qi Zheng <zhengqi.arch@bytedance.com>
 
 Status in newer kernel trees:
-6.15.y | Not found
+6.15.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+
+Found fixes commits:
+5d1ceb3969b6 x86: Fix __get_wchan() for !STACKTRACE
 
 Note: The patch differs from the upstream commit:
 ---
-1:  2b30a3d1ec25 ! 1:  b062f4861662 net: libwx: fix multicast packets received count
+1:  bc9bbb81730e ! 1:  1f7a2f87bdde x86: Fix get_wchan() to support the ORC unwinder
     @@ Metadata
       ## Commit message ##
-         net: libwx: fix multicast packets received count
+         x86: Fix get_wchan() to support the ORC unwinder
      
-    +    commit 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77 upstream.
+    +    [ Upstream commit bc9bbb81730ea667c31c5b284f95ee312bab466f ]
     +
-         Multicast good packets received by PF rings that pass ethternet MAC
-         address filtering are counted for rtnl_link_stats64.multicast. The
-         counter is not cleared on read. Fix the duplicate counting on updating
-    @@ drivers/net/ethernet/wangxun/libwx/wx_hw.c: void wx_update_stats(struct wx *wx)
-      
-     +	/* qmprc is not cleared on read, manual reset it */
-     +	hwstats->qmprc = 0;
-    - 	for (i = wx->num_vfs * wx->num_rx_queues_per_pool;
-    - 	     i < wx->mac.max_rx_queues; i++)
-    + 	for (i = 0; i < wx->mac.max_rx_queues; i++)
-      		hwstats->qmprc += rd32(wx, WX_PX_MPRC(i));
-    + }
+         Currently, the kernel CONFIG_UNWINDER_ORC option is enabled by default
+         on x86, but the implementation of get_wchan() is still based on the frame
+         pointer unwinder, so the /proc/<pid>/wchan usually returned 0 regardless
+    @@ Commit message
+         Signed-off-by: Kees Cook <keescook@chromium.org>
+         Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+         Link: https://lkml.kernel.org/r/20211008111626.271115116@infradead.org
+    +    Signed-off-by: Siddhi Katage <siddhi.katage@oracle.com>
+     
+      ## arch/x86/kernel/process.c ##
+     @@ arch/x86/kernel/process.c: unsigned long arch_randomize_brk(struct mm_struct *mm)
 
 ---
 
@@ -99,5 +109,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| origin/linux-6.12.y       | Success     | Success    |
+| 5.15                      | Success     | Success    |
 
