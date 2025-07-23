@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-164408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79B6B0EE9D
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 11:41:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14326B0EEB1
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 11:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D002D1C82CA9
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 09:42:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F03737B6AD1
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 09:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63B3281526;
-	Wed, 23 Jul 2025 09:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AAE2281526;
+	Wed, 23 Jul 2025 09:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlt4dpb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtwUIDT2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A93227CCEE;
-	Wed, 23 Jul 2025 09:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC56C1F1302;
+	Wed, 23 Jul 2025 09:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753263696; cv=none; b=RJzalbetXgpfMTP+ihXXSZyukblurp0ySdL79NcZRluTHC+EHhUpq9YGa3rt/2AT3jADgYcDySQLpakHmzvpUQH+SLlwM5c7E4OlomtdwUfakQlyONcJ8yk/KzXPdsvjXHlGbr0ANnhmZHw9QbYUEXaIBR+hj5OI3w8AgDWwIEc=
+	t=1753263926; cv=none; b=Mr6WSBabndTARV5jiOB1YLSMtX3c6uRHSeYLTeYuuX/6n62oW4sR+cJoqHK3n2STVyDZvcIsHZQLSsdTA92TcrLg7ngtC7L4eV2UdzSbl9RgOGnch4eTMmAXZBg0z4duUTsIU7848OZlxTKtb+dL2Bxd7Mw47qynCfANIVWdRV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753263696; c=relaxed/simple;
-	bh=1/lbNstEMNBJzLLuXN9FzvhMHrlDsRI79DtutyWW4Bc=;
+	s=arc-20240116; t=1753263926; c=relaxed/simple;
+	bh=PDEeI1ivMDfKIOi4Ka3l8JqzcYedC/VHBhmrDn9EQ6U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F99Hp4cyxTaxZ9jx2Okp4Kl/saFAxG77f4mEOqLnEZI5jDqBYuMgAKhjK7hHOtVALrYlPP4Kj1ARjAKkRurp2p79pT2L3WrBKEotSr4vmCGEkhAQ4Hx5dSwpKqOPiuceRbVDf72rgxPsdN9OviWW3/c7B0dOqyld4X6JCgx3vqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlt4dpb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF66C4CEE7;
-	Wed, 23 Jul 2025 09:41:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=KAlyZ+CQ+I6LK8YRYFKply9ajzs4/1xEPQrS9nkwBR1/zIM4EhXJx++lWtzXgCkgHVWJ53GrzAXLcwaB6hc2y6gSLBSPFETj5ZrctNIE3Ufb+NS39OQoXynfq5sMh5BvJPbvwbtnknRBDedDUHVjYIK3LRMZqp1iVUbPoap4RvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtwUIDT2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44DFC4CEE7;
+	Wed, 23 Jul 2025 09:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753263695;
-	bh=1/lbNstEMNBJzLLuXN9FzvhMHrlDsRI79DtutyWW4Bc=;
+	s=korg; t=1753263925;
+	bh=PDEeI1ivMDfKIOi4Ka3l8JqzcYedC/VHBhmrDn9EQ6U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wlt4dpb8qq26vBixU70O29k4bGja5UeoLkHFEgZ9Fxl3BsjKxbU78pDfKBfzVZ+j4
-	 BRao6VRPDCSogF/Jzt0hoOggtg+RUHKFwEh+ymbhfnCf0nxC6xavG8PIHGkJ7wbMB2
-	 sAL63FkM7x5ICIzzMg83RPZnCNr4CXBVGZdsmq5Q=
-Date: Wed, 23 Jul 2025 11:41:31 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Lee Jones <lee@kernel.org>
-Cc: Chao Yu <chao@kernel.org>, stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>, jaegeuk@kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Subject: Re: [STABLE 5.15+] f2fs: sysfs: add encoding_flags entry
-Message-ID: <2025072354-tricolor-annex-92fb@gregkh>
-References: <20250416054805.1416834-1-chao@kernel.org>
- <20250624100039.GA3680448@google.com>
- <2025070253-erased-armadillo-0984@gregkh>
- <20250723082639.GP11056@google.com>
+	b=xtwUIDT2ZkL012VPgHrS3FTEkrtO1TSry8KSZ6cfysLIlWp3zNROecdoatGX+JowI
+	 IgO52Bg3y/cG28QXw3aP5bnqq2Xm5NZl+SmvmletrtL5Le3T+Mu6lDMSvKWr1QTJjq
+	 U84YFBINSQgUZpQKuifr5RIsoa6ouLoHmMMysqdU=
+Date: Wed, 23 Jul 2025 11:45:22 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Xin Li <xin3.li@intel.com>,
+	Sai Praneeth <sai.praneeth.prakhya@intel.com>,
+	Jethro Beekman <jethro@fortanix.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Yu-cheng Yu <yu-cheng.yu@intel.com>, stable@vger.kernel.org,
+	Borislav Petkov <bp@suse.de>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] x86: Clear feature bits disabled at compile-time
+Message-ID: <2025072310-eldest-paddle-99b3@gregkh>
+References: <20250723092250.3411923-1-maciej.wieczor-retman@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,94 +70,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250723082639.GP11056@google.com>
+In-Reply-To: <20250723092250.3411923-1-maciej.wieczor-retman@intel.com>
 
-On Wed, Jul 23, 2025 at 09:26:39AM +0100, Lee Jones wrote:
-> On Wed, 02 Jul 2025, Greg Kroah-Hartman wrote:
+On Wed, Jul 23, 2025 at 11:22:49AM +0200, Maciej Wieczor-Retman wrote:
+> If some config options are disabled during compile time, they still are
+> enumerated in macros that use the x86_capability bitmask - cpu_has() or
+> this_cpu_has().
 > 
-> > On Tue, Jun 24, 2025 at 11:00:39AM +0100, Lee Jones wrote:
-> > > On Wed, 16 Apr 2025, Chao Yu wrote:
-> > > 
-> > > > This patch adds a new sysfs entry /sys/fs/f2fs/<disk>/encoding_flags,
-> > > > it is a read-only entry to show the value of sb.s_encoding_flags, the
-> > > > value is hexadecimal.
-> > > > 
-> > > > ===========================      ==========
-> > > > Flag_Name                        Flag_Value
-> > > > ===========================      ==========
-> > > > SB_ENC_STRICT_MODE_FL            0x00000001
-> > > > SB_ENC_NO_COMPAT_FALLBACK_FL     0x00000002
-> > > > ===========================      ==========
-> > > > 
-> > > > case#1
-> > > > mkfs.f2fs -f -O casefold -C utf8:strict /dev/vda
-> > > > mount /dev/vda /mnt/f2fs
-> > > > cat /sys/fs/f2fs/vda/encoding_flags
-> > > > 1
-> > > > 
-> > > > case#2
-> > > > mkfs.f2fs -f -O casefold -C utf8 /dev/vda
-> > > > fsck.f2fs --nolinear-lookup=1 /dev/vda
-> > > > mount /dev/vda /mnt/f2fs
-> > > > cat /sys/fs/f2fs/vda/encoding_flags
-> > > > 2
-> > > > 
-> > > > Signed-off-by: Chao Yu <chao@kernel.org>
-> > > > ---
-> > > >  Documentation/ABI/testing/sysfs-fs-f2fs | 13 +++++++++++++
-> > > >  fs/f2fs/sysfs.c                         |  9 +++++++++
-> > > >  2 files changed, 22 insertions(+)
-> > > 
-> > > This patch, commit 617e0491abe4 ("f2fs: sysfs: export linear_lookup in
-> > > features directory") upstream, needs to find its way into all Stable
-> > > branches containing upstream commit 91b587ba79e1 ("f2fs: Introduce
-> > > linear search for dentries"), which is essentially linux-5.15.y and
-> > > newer.
-> > > 
-> > > stable/linux-5.4.y:
-> > > MISSING:     f2fs: Introduce linear search for dentries
-> > > MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> > > 
-> > > stable/linux-5.10.y:
-> > > MISSING:     f2fs: Introduce linear search for dentries
-> > > MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> > > 
-> > > stable/linux-5.15.y:
-> > > b0938ffd39ae f2fs: Introduce linear search for dentries [5.15.179]
-> > > MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> > > 
-> > > stable/linux-6.1.y:
-> > > de605097eb17 f2fs: Introduce linear search for dentries [6.1.129]
-> > > MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> > > 
-> > > stable/linux-6.6.y:
-> > > 0bf2adad03e1 f2fs: Introduce linear search for dentries [6.6.76]
-> > > MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> > > 
-> > > stable/linux-6.12.y:
-> > > 00d1943fe46d f2fs: Introduce linear search for dentries [6.12.13]
-> > > MISSING:     f2fs: sysfs: export linear_lookup in features directory
-> > > 
-> > > mainline:
-> > > 91b587ba79e1 f2fs: Introduce linear search for dentries
-> > > 617e0491abe4 f2fs: sysfs: export linear_lookup in features directory
-> > 
-> > Great, then can someone submit these in a format we can apply them in?
-> > or do clean cherry-picks work properly?
+> The features are also visible in /proc/cpuinfo even though they are not
+> enabled - which is contrary to what the documentation states about the
+> file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
+> split_lock_detect, user_shstk, avx_vnni and enqcmd.
 > 
-> Does this work:
+> Add a DISABLED_MASK() macro that returns 32 bit chunks of the disabled
+> feature bits bitmask.
 > 
-> Please backport upstream commit:
+> Initialize the cpu_caps_cleared and cpu_caps_set arrays with the
+> contents of the disabled and required bitmasks respectively. Then let
+> apply_forced_caps() clear/set these feature bits in the x86_capability.
 > 
->   617e0491abe4 f2fs: sysfs: export linear_lookup in features directory
-> 
-> ... to all stable branches up to and including linux-5.15.y.
-> 
-> If there are conflicts, I can do the backport myself and submit as patches.
+> Fixes: 6449dcb0cac7 ("x86: CPUID and CR3/CR4 flags for Linear Address Masking")
+> Fixes: 51c158f7aacc ("x86/cpufeatures: Add the CPU feature bit for FRED")
+> Fixes: 706d51681d63 ("x86/speculation: Support Enhanced IBRS on future CPUs")
+> Fixes: e7b6385b01d8 ("x86/cpufeatures: Add Intel SGX hardware bits")
+> Fixes: 6650cdd9a8cc ("x86/split_lock: Enable split lock detection by kernel")
+> Fixes: 701fb66d576e ("x86/cpufeatures: Add CPU feature flags for shadow stacks")
+> Fixes: ff4f82816dff ("x86/cpufeatures: Enumerate ENQCMD and ENQCMDS instructions")
 
-There are conflicts, it doesn't apply to 6.1.y or 5.15.y :(
+That is fricken insane.
 
-thanks,
+You are saying to people who backport stuff:
+	This fixes a commit found in the following kernel releases:
+		6.4
+		6.9
+		3.16.68 4.4.180 4.9.137 4.14.81 4.18.19 4.19
+		5.11
+		5.7
+		6.6
+		5.10
+
+You didn't even sort this in any sane order, how was it generated?
+
+What in the world is anyone supposed to do with this?
+
+If you were sent a patch with this in it, what would you think?  What
+could you do with it?
+
+Please be reasonable and consider us overworked stable maintainers and
+give us a chance to get things right.  As it is, this just makes things
+worse...
 
 greg k-h
 
