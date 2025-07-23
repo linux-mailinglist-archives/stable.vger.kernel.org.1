@@ -1,177 +1,166 @@
-Return-Path: <stable+bounces-164414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4270B0F071
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 12:54:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9C6B0F0A9
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 13:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453881C21B52
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 10:54:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4374C1C8537F
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 11:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B5D28A1D7;
-	Wed, 23 Jul 2025 10:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7072F28981C;
+	Wed, 23 Jul 2025 11:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="q2/3dzoP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mCkNJQvE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF0329B8DB
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 10:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8150E8836;
+	Wed, 23 Jul 2025 11:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753268066; cv=none; b=RsEeNK2QaBApic0JUBtCVJIsoFwrtdf+EdxvW5Xe0t7aenjpdKAAxlI1X6V1DSPcSNahlSX7tuiRy5JEaTg9olRph0ibeeQNC2OyPqTFykeNknaR+qsM1uvsSXgP3sgAAR0yobOxAGyDmqWQMLOlEYyfABp7dXIzwC0zc1BSNgk=
+	t=1753268455; cv=none; b=ZvX7J1dTzjF0Vl6TGDX4i3D7INp27dx2QbyBu5LLqZq1Qrz9fU2qCGLobTDtK7Q6EE/CCD6T+ftqRinmmOLQkKupvqDhxx7mnG/CHQsADDGY3dbaaFVgIps5yGYMl6+fYuXOrN8kHYqzE/3d/upf7TGHrjZiuvqrqMpiktB1mVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753268066; c=relaxed/simple;
-	bh=Zcas9eE5csMNiM9e3VG5sF1smKTbMZmNZrhcriyHhmo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rx2dzt78UkLCu8S7IsqIdHlyK2rkz11XF8wGB1mFi+/yuO6c5SASY7K93rsGqXaFZc6ubF2KvkL6Y9GMmIbY7ld0JNzQNkySFJG1gwHI1szifRl1wgqfOMl7WrJ/G2bWovp51YqgogCzoomtxtWWe3a+rwXrfysptSuIe05c38w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=q2/3dzoP; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1753268056; x=1753527256;
-	bh=2UASD4ILAuLiyKedfAnn94cAyJ50UzLqHCB1+nHaE9Q=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=q2/3dzoPFiUbtioR8Nxa1GKizdawq+dlpfi9DmST8gvMGXUYBSD0AD8hCIq+h9rtp
-	 6CrAla7rlo8Ypk4Ow2pddHf7Ei3mCBH83ReS0pWwiR+kN1vWfPI70nUpYJu3iWPLIG
-	 X63rrSjS9x0U9D1qrwDOadp+fe7kEUVI7U7pQCLTbrZzs4rMjwhY+LsHidAnZBhKIh
-	 lbNTdC5cDjgGRhlDx4ig0E05N7gT8gXzMnpmf0lI6NkfhSDzD4gHkjIh0v2dpchAvC
-	 VB4ydY4qmbefyro3DA2Zyt5YdXZR3/uBPGRvENOhIW/8IrHGG3BEPBH5W3gk4l5UOW
-	 M2ooCrPaBjSvQ==
-Date: Wed, 23 Jul 2025 10:54:12 +0000
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From: Michael Pratt <mcpratt@pm.me>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, "patches@lists.linux.dev" <patches@lists.linux.dev>, INAGAKI Hiroshi <musashino.open@gmail.com>, Srinivas Kandagatla <srini@kernel.org>, "sashal@kernel.org" <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 111/111] nvmem: layouts: u-boot-env: remove crc32 endianness conversion
-Message-ID: <Sl8R4r1d5VEvkHFZH5VnOWX1hdLmCXgNBy-QeLBTB8tbrzrz4XLmRcf6AS4MxWBzAY0fl8ISERCaTh8hJVDkBgpV5NLjweTQLXKjpm9vyag=@pm.me>
-In-Reply-To: <2025072359-deranged-reclining-97ac@gregkh>
-References: <20250722134333.375479548@linuxfoundation.org> <20250722134337.561185968@linuxfoundation.org> <OtYC5V_o5aJvujD0QIBYfFMqHJbKopAZebvBnDZ398q36FII2UJGr-gWv2Z-ogM5GLwXLnmHjT0orC0RyuAbvPYG-P-EP82l14gy4pG7H-w=@pm.me> <2025072359-deranged-reclining-97ac@gregkh>
-Feedback-ID: 27397442:user:proton
-X-Pm-Message-ID: e8e6ef109c1cd2174ff708943c60455be735510c
+	s=arc-20240116; t=1753268455; c=relaxed/simple;
+	bh=bMahuYUYM6/64hnLQulgIzsZOf3xlVVH4Q9fDdEtIFk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Pp1VwUatGykJH4pLOJIfAKc2D0lGF0lt5Dd8mdU/fzOKEN5TXm3hLM6akkuhIRELAT9fFFf2Lk6XTvSZGhPMahy81iijSqUbTLcLm/okM3BvUw+Lq6HXxg2liSsvP0i5VUSl6/uAbi4McTdZ8/8Dyb5abQqNBbB2qNTbFgapnLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mCkNJQvE; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-455b00339c8so46958095e9.3;
+        Wed, 23 Jul 2025 04:00:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753268452; x=1753873252; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=stallE/vzxsBh3c9kZVq7u8ek21pHjIuCENjScXlQNU=;
+        b=mCkNJQvEFXarwNsFprXSUxYoFzoBN5sdUETlIKl2yN0z8dzA+0C3/cTlVqcPoxzCUS
+         55JuTh7Gex9iaWlA27JamkilqUh7OEM0azyKnqauYb1QtVANtt7F88OAbR3ZqKKbPt3Q
+         XuyjQEHJRH5ZokwyzkPu7r8MVpKcBXeQOvNWUntG1h/WXFbXib0uW/DfWi7AsgOSC+2W
+         81zYYkvOWFDeL0ajwFeKchfR10LvPKk3D4WfyFp4GUNFrx+/eGj/biW4cfRPBNNHOHf6
+         Ls9b3IoR1mr3L90ukWHRbmxRLTW8yTWEJhRN68lkyQCQJJAQHoNKfjXL97rl8+TJL9tl
+         GqTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753268452; x=1753873252;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=stallE/vzxsBh3c9kZVq7u8ek21pHjIuCENjScXlQNU=;
+        b=mGfehKWYPcBybfeZrZWMBAyvvZkGf7HUKzfvDBfNRwjNIoghfXoS3jAaERccvCEN2F
+         d1Zdgkw8I0rOLgmyeQ7r4rtFjHUIpfszEVWqWwwTs7qMiKRhV+F+sUAQQujXY01KWZmo
+         lksycLUNGisEc3KtOyXc9lUalwvzhLRAXFkTU38hib09xjbbWaIGNT0H7hZ9Ti2MDcmk
+         ZVRdJyZAU6auTJBpCr54SC2jddanX5lwm/Lg5cY4EdidywQGJc/1p106vNlx7uxoUtkz
+         seT6LuDVEXubfw7GBdfzXq8wnWtCvudL/aI6zZ2+qjY2sNh1do+zJjjGqndad/c7oBwW
+         NbRw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+Xk/I7WyXwLdA2dBgaryWvcX1iFs95pTFOeD7QEOvMMfgCUQCguLST0n6LZ03TCGaIalaoHiC@vger.kernel.org, AJvYcCWph+3+3pGGBRfkhyJ24zn7xMlsZgoXdC1Fr6xVBPW1Sqxgb+RUWIqohL2nEv8BOJsckhAUKmMSOe9HfWke@vger.kernel.org, AJvYcCXEqmL6Szn48VjRcVQHjq8e49Gk+HIQX5xyLjR/g7tJrt2T3E8vD7PmlAf7DaYlrJ8WCfwJ1LbHp4POjA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsdbtXjwxzrCnlhGShkVbNu0WuZPYNEBXp14nzNsLeRX7T9LKN
+	iCd4RxVBuieSr3k1HZWwwxgrcycMD73d+hpkfAIhtFL84ygKTEYwSh+A
+X-Gm-Gg: ASbGncu5DORANaaFqbWhKT/Tn7YRMDhlL9aRZNUPg//TE6czComhqIkCyOf7w1rM5vX
+	sHeXnH8PsgJ4P1hnvEK4UTBgsCdyP5wne8jtl3QCpbD6ZX6+XMn5j4aG51sIiVOc1QlcyfAcfQl
+	YgHXUDIdxIvO867XxMFsm5QllQDk5+8Wuoi1pc862TfCAfQvfsCCAsPuWSrJPPmax0k0N9wKMdQ
+	PLoLF7+Ma2AkDpt8r73yhBFzAHpRrGS9VuWfbRqr+622JGc+jJ0dL/0sSVBnY6gKQk8FkC033+H
+	2t24laDzEx/XKlZ5c2LCHjcfx8wDaiXq7+Q7tkne9sBct2zMeQWBQySlLYuaVhCog7d4qGY6qQf
+	CKc5AgfnNmB9DpLYsarg1Xa31F/w4eFc=
+X-Google-Smtp-Source: AGHT+IFeylv5DxY9J/rJ1xIOfkPYVeNtwo6o2ATJVK60KjhMryniQO9VztIJxYyMrYgGrOndtZr1YA==
+X-Received: by 2002:a05:600c:4509:b0:456:133f:a02d with SMTP id 5b1f17b1804b1-45868d2dd64mr20531965e9.17.1753268451619;
+        Wed, 23 Jul 2025 04:00:51 -0700 (PDT)
+Received: from qasdev.Home ([2a02:c7c:f4f0:900:dbce:b6e:fb8b:9dcf])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458691ab836sm20061245e9.25.2025.07.23.04.00.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jul 2025 04:00:51 -0700 (PDT)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: jikos@kernel.org,
+	bentiss@kernel.org
+Cc: envelsavinds@gmail.com,
+	jirislaby@kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] HID: multitouch: fix slab out-of-bounds access in mt_report_fixup()
+Date: Wed, 23 Jul 2025 12:00:36 +0100
+Message-Id: <20250723110036.24439-1-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
+A malicious HID device can trigger a slab out-of-bounds during
+mt_report_fixup() by passing in report descriptor smaller than
+607 bytes. mt_report_fixup() attempts to patch byte offset 607
+of the descriptor with 0x25 by first checking if byte offset
+607 is 0x15 however it lacks bounds checks to verify if the
+descriptor is big enough before conducting this check. Fix
+this bug by ensuring the descriptor size is at least 608
+bytes before accessing it.
 
-Hi Greg,
+Below is the KASAN splat after the out of bounds access happens:
 
-I still see it says "moved from" instead of "to".
+[   13.671954] ==================================================================
+[   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
+[   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
+[   13.673297]
+[   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3
+[   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
+[   13.673297] Call Trace:
+[   13.673297]  <TASK>
+[   13.673297]  dump_stack_lvl+0x5f/0x80
+[   13.673297]  print_report+0xd1/0x660
+[   13.673297]  kasan_report+0xe5/0x120
+[   13.673297]  __asan_report_load1_noabort+0x18/0x20
+[   13.673297]  mt_report_fixup+0x103/0x110
+[   13.673297]  hid_open_report+0x1ef/0x810
+[   13.673297]  mt_probe+0x422/0x960
+[   13.673297]  hid_device_probe+0x2e2/0x6f0
+[   13.673297]  really_probe+0x1c6/0x6b0
+[   13.673297]  __driver_probe_device+0x24f/0x310
+[   13.673297]  driver_probe_device+0x4e/0x220
+[   13.673297]  __device_attach_driver+0x169/0x320
+[   13.673297]  bus_for_each_drv+0x11d/0x1b0
+[   13.673297]  __device_attach+0x1b8/0x3e0
+[   13.673297]  device_initial_probe+0x12/0x20
+[   13.673297]  bus_probe_device+0x13d/0x180
+[   13.673297]  device_add+0xe3a/0x1670
+[   13.673297]  hid_add_device+0x31d/0xa40
+[...]
 
-On 7/23/25 2:41 AM, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+---
+v2:
+- Simplify fix with a if-size check after discussion with Jiri Slaby
+- Change explanation of bug to reflect inclusion of a if-size check
 
->  On Wed, Jul 23, 2025 at 06:33:10AM +0000, Michael Pratt wrote:
->  > Hi,
->  >
->  > I don't mean to be nitpicking too hard
->  > but the manual edit description below would  read better as:
->  >
->  > On 7/22/25 9:56 AM, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wr=
-ote:
->  >
->  > >  6.6-stable review patch.  If anyone has any objections, please let =
-me know.
->  > >
->  > >  ------------------
->  > >
->  > >  From: Michael C. Pratt <mcpratt@pm.me>
->  > >
->  > >  commit 2d7521aa26ec2dc8b877bb2d1f2611a2df49a3cf upstream.
->  > >
->  > >  On 11 Oct 2022, it was reported that the crc32 verification
->  > >  of the u-boot environment failed only on big-endian systems
->  > >  for the u-boot-env nvmem layout driver with the following error.
->  > >
->  > >    Invalid calculated CRC32: 0x88cd6f09 (expected: 0x096fcd88)
->  > >
->  > >  This problem has been present since the driver was introduced,
->  > >  and before it was made into a layout driver.
->  > >
->  > >  The suggested fix at the time was to use further endianness
->  > >  conversion macros in order to have both the stored and calculated
->  > >  crc32 values to compare always represented in the system's endianne=
-ss.
->  > >  This was not accepted due to sparse warnings
->  > >  and some disagreement on how to handle the situation.
->  > >  Later on in a newer revision of the patch, it was proposed to use
->  > >  cpu_to_le32() for both values to compare instead of le32_to_cpu()
->  > >  and store the values as __le32 type to remove compilation errors.
->  > >
->  > >  The necessity of this is based on the assumption that the use of cr=
-c32()
->  > >  requires endianness conversion because the algorithm uses little-en=
-dian,
->  > >  however, this does not prove to be the case and the issue is unrela=
-ted.
->  > >
->  > >  Upon inspecting the current kernel code,
->  > >  there already is an existing use of le32_to_cpu() in this driver,
->  > >  which suggests there already is special handling for big-endian sys=
-tems,
->  > >  however, it is big-endian systems that have the problem.
->  > >
->  > >  This, being the only functional difference between architectures
->  > >  in the driver combined with the fact that the suggested fix
->  > >  was to use the exact same endianness conversion for the values
->  > >  brings up the possibility that it was not necessary to begin with,
->  > >  as the same endianness conversion for two values expected to be the=
- same
->  > >  is expected to be equivalent to no conversion at all.
->  > >
->  > >  After inspecting the u-boot environment of devices of both endianne=
-ss
->  > >  and trying to remove the existing endianness conversion,
->  > >  the problem is resolved in an equivalent way as the other suggested=
- fixes.
->  > >
->  > >  Ultimately, it seems that u-boot is agnostic to endianness
->  > >  at least for the purpose of environment variables.
->  > >  In other words, u-boot reads and writes the stored crc32 value
->  > >  with the same endianness that the crc32 value is calculated with
->  > >  in whichever endianness a certain architecture runs on.
->  > >
->  > >  Therefore, the u-boot-env driver does not need to convert endiannes=
-s.
->  > >  Remove the usage of endianness macros in the u-boot-env driver,
->  > >  and change the type of local variables to maintain the same return =
-type.
->  > >
->  > >  If there is a special situation in the case of endianness,
->  > >  it would be a corner case and should be handled by a unique "compat=
-ible".
->  > >
->  > >  Even though it is not necessary to use endianness conversion macros=
- here,
->  > >  it may be useful to use them in the future for consistent error pri=
-nting.
->  > >
->  > >  Fixes: d5542923f200 ("nvmem: add driver handling U-Boot environment=
- variables")
->  > >  Reported-by: INAGAKI Hiroshi <musashino.open@gmail.com>
->  > >  Link: https://lore.kernel.org/all/20221011024928.1807-1-musashino.o=
-pen@gmail.com
->  > >  Cc: stable@vger.kernel.org
->  > >  Signed-off-by: "Michael C. Pratt" <mcpratt@pm.me>
->  > >  Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
->  > >  Link: https://lore.kernel.org/r/20250716144210.4804-1-srini@kernel.=
-org
->  > >  [ applied changes to drivers/nvmem/u-boot-env.c after code was move=
-d from drivers/nvmem/layouts/u-boot-env.c ]
->  >
->  > [ applied changes to drivers/nvmem/u-boot-env.c before code was moved =
-to drivers
->  > drivers/nvmem/layouts/u-boot-env.c ]
-> =20
+ drivers/hid/hid-multitouch.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---
-MCP
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 294516a8f541..22c6314a8843 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1503,6 +1503,14 @@ static const __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
+ 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
+ 	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
++		if (*size < 608) {
++			dev_info(
++				&hdev->dev,
++				"GT7868Q fixup: report descriptor is only %u bytes, skipping\n",
++				*size);
++			return rdesc;
++		}
++
+ 		if (rdesc[607] == 0x15) {
+ 			rdesc[607] = 0x25;
+ 			dev_info(
+-- 
+2.39.5
+
 
