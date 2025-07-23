@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-164501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182AFB0FA65
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 20:41:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED09B0FA6E
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 20:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EB7B547A71
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 18:41:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6E1F7B3A1A
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 18:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3D01F418F;
-	Wed, 23 Jul 2025 18:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2799620B812;
+	Wed, 23 Jul 2025 18:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxkzhjXH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ceNY8cy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2FE82C60
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 18:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB10782C60
+	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 18:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753296066; cv=none; b=bDopJAyUqkSDQZt0MSqbw8Ix9Cf2O6mOP3rvRfHyJTbp0o1OcRxPLqHRUkEt12MGnrQF1Dszy7FdXUT/49XH3od2k6dr58itf1NxnRHZFslMNj0j0j5iNKSvXnAaurW1grgdDGGYrDfXss7i1MmeIuDMAdoahsEyvnuxhxdOsYs=
+	t=1753296217; cv=none; b=NtkPxuX+4720zOxHxaZqqtApQWa2InqD2JzJdotRVwwQdrpfHH12BmYX5LcZwkXaw7px2MHtuYP8+qAmOgHMVFbO69t7qlTJ105eFzJGa0qw9xYeINji9WsNvPzVxV85c5g2FShJtvs8DF7Mt6Mwsk4atWfLkDgK8B59M36UoCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753296066; c=relaxed/simple;
-	bh=oa5fH1/37v+xVjRy+xCCuQY/CnXAO0XY04/A/Yg6sWo=;
+	s=arc-20240116; t=1753296217; c=relaxed/simple;
+	bh=hQFRlx9bi3sIT7mU4BzJuG6/WdlZ4DW+HoPoAlDHgsI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Bq/l0ffPJrjDnH2nYNfiBUT47Zq6UQ8zeUEt5oWynVIOqE2cZ3j9ARnTRDXPFoi7lZaAgNrHeGG1ZdKxtmsfcTJ00Xy+IbABIMjxySwi1qEDi4n6kg8701CxuyBzvKrnw85HiyG1zCOLIUSOU9MtSXNW9nRyQ9bBCu8EU1Vutqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxkzhjXH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D256C4CEE7;
-	Wed, 23 Jul 2025 18:41:05 +0000 (UTC)
+	 MIME-Version; b=aEaDuBhqb5V0DhZKcRenWsZhYfWPBAyuAGpgFfUC+HEq5geNgLkfXBMPvg13QCN0LYG7tGfyzqZoYabdnbdUAlUVaJYwY9VLZ3GknBgvuniXWa23V3XHL/KXm1bHP8yK5fpfpp3fjvafQo+41jCTCZs2y1/Dyft+FK+7LqMn3/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ceNY8cy9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CA0C4CEE7;
+	Wed, 23 Jul 2025 18:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753296066;
-	bh=oa5fH1/37v+xVjRy+xCCuQY/CnXAO0XY04/A/Yg6sWo=;
+	s=k20201202; t=1753296217;
+	bh=hQFRlx9bi3sIT7mU4BzJuG6/WdlZ4DW+HoPoAlDHgsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VxkzhjXHYhShCL0D88+piHeyBBxw88k8zvNBNe4bYLCDTdo3AwWHlo9LwKrySh6gK
-	 SzfBg7FnplFkizHgIuPmENdbI398dHaNpchTUGoY+gKYFpnaxolf2ywtnUsTV+924n
-	 ipEbT+LhyJpT7H0ImUYtXSDkkIblfB+bFbK75skbjOjpd/Kw5odfeL/WoHbvo+nNJt
-	 gmuYvvuKopyMqwP+c1klx6yGLj9rc+GR3wiO0flFFVhoNOyKc1s5RyL9VyX7mv50ku
-	 4O982BFHWeA7e0gqHCdeTTxumbtYVwrhy6UQv1yZ4lTUxYvCYsetvaS+54qG32XhCK
-	 nZP0scj48UF8g==
+	b=ceNY8cy9vb0qX5Y9JTHbNLcrylq48dE/blYRBCgFAfTlWCSDQA6JDBiQJnuULCazO
+	 f+pKTKSMiByinedq9YY5XbnmpB+CrFRNeG96llD2Vut7YVfWTXnIzZN50piIyxqdjc
+	 6ZOPu4d5hs7ruMWlIY9pJjjuKI6TgBPpMnAusjWq02huCYV/8emK0xoDhCpAeF6RHM
+	 Nr+tgptARHck0Ye1EJirOcVBkHlsUN/8BuYuqRdAa4ZnDaCTV8HAsljt2tZhyozGwD
+	 kaQEOszPJDTWiu7SldjCgXn0Ycmzp7/t61OkUi981hOQSTMUGRGDvFM2gOuGPdV/Y4
+	 47yNNqzXBF7bQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Philip Yang <Philip.Yang@amd.com>,
 	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] drm/amdkfd: Don't call mmput from MMU notifier callback
-Date: Wed, 23 Jul 2025 14:34:30 -0400
-Message-Id: <20250723183430.1097183-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] drm/amdkfd: Don't call mmput from MMU notifier callback
+Date: Wed, 23 Jul 2025 14:37:02 -0400
+Message-Id: <20250723183702.1097364-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025071252-fountain-preacher-2c65@gregkh>
-References: <2025071252-fountain-preacher-2c65@gregkh>
+In-Reply-To: <2025071256-province-work-ddbd@gregkh>
+References: <2025071256-province-work-ddbd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -137,10 +137,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 22 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 6b7c6f45a80a8..b77b472332316 100644
+index 7fa5e70f1aace..09ce90cf6b532 100644
 --- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
 +++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -1130,13 +1130,12 @@ svm_range_split_head(struct svm_range *prange,
+@@ -1076,13 +1076,12 @@ svm_range_split_head(struct svm_range *prange,
  }
  
  static void
@@ -156,7 +156,7 @@ index 6b7c6f45a80a8..b77b472332316 100644
  	pchild->work_item.op = op;
  	list_add_tail(&pchild->child_list, &prange->child_list);
  }
-@@ -1182,14 +1181,14 @@ svm_range_split_by_granularity(struct kfd_process *p, struct mm_struct *mm,
+@@ -1128,14 +1127,14 @@ svm_range_split_by_granularity(struct kfd_process *p, struct mm_struct *mm,
  		r = svm_range_split(prange, start, prange->last, &head);
  		if (r)
  			return r;
@@ -173,7 +173,7 @@ index 6b7c6f45a80a8..b77b472332316 100644
  	}
  
  	/* xnack on, update mapping on GPUs with ACCESS_IN_PLACE */
-@@ -2393,15 +2392,17 @@ svm_range_add_list_work(struct svm_range_list *svms, struct svm_range *prange,
+@@ -2265,15 +2264,17 @@ svm_range_add_list_work(struct svm_range_list *svms, struct svm_range *prange,
  		    prange->work_item.op != SVM_OP_UNMAP_RANGE)
  			prange->work_item.op = op;
  	} else {
@@ -200,7 +200,7 @@ index 6b7c6f45a80a8..b77b472332316 100644
  	}
  	spin_unlock(&svms->deferred_list_lock);
  }
-@@ -2415,8 +2416,7 @@ void schedule_deferred_list_work(struct svm_range_list *svms)
+@@ -2287,8 +2288,7 @@ void schedule_deferred_list_work(struct svm_range_list *svms)
  }
  
  static void
@@ -210,7 +210,7 @@ index 6b7c6f45a80a8..b77b472332316 100644
  		      unsigned long last)
  {
  	struct svm_range *head;
-@@ -2437,12 +2437,12 @@ svm_range_unmap_split(struct mm_struct *mm, struct svm_range *parent,
+@@ -2309,12 +2309,12 @@ svm_range_unmap_split(struct mm_struct *mm, struct svm_range *parent,
  		svm_range_split(tail, last + 1, tail->last, &head);
  
  	if (head != prange && tail != prange) {
@@ -227,7 +227,7 @@ index 6b7c6f45a80a8..b77b472332316 100644
  	} else if (parent != prange) {
  		prange->work_item.op = SVM_OP_UNMAP_RANGE;
  	}
-@@ -2481,14 +2481,14 @@ svm_range_unmap_from_cpu(struct mm_struct *mm, struct svm_range *prange,
+@@ -2353,14 +2353,14 @@ svm_range_unmap_from_cpu(struct mm_struct *mm, struct svm_range *prange,
  		l = min(last, pchild->last);
  		if (l >= s)
  			svm_range_unmap_from_gpus(pchild, s, l, trigger);
@@ -244,7 +244,7 @@ index 6b7c6f45a80a8..b77b472332316 100644
  
  	if (unmap_parent)
  		svm_range_add_list_work(svms, prange, mm, SVM_OP_UNMAP_RANGE);
-@@ -2531,8 +2531,6 @@ svm_range_cpu_invalidate_pagetables(struct mmu_interval_notifier *mni,
+@@ -2403,8 +2403,6 @@ svm_range_cpu_invalidate_pagetables(struct mmu_interval_notifier *mni,
  
  	if (range->event == MMU_NOTIFY_RELEASE)
  		return true;
@@ -253,7 +253,7 @@ index 6b7c6f45a80a8..b77b472332316 100644
  
  	start = mni->interval_tree.start;
  	last = mni->interval_tree.last;
-@@ -2559,7 +2557,6 @@ svm_range_cpu_invalidate_pagetables(struct mmu_interval_notifier *mni,
+@@ -2431,7 +2429,6 @@ svm_range_cpu_invalidate_pagetables(struct mmu_interval_notifier *mni,
  	}
  
  	svm_range_unlock(prange);
