@@ -1,106 +1,124 @@
-Return-Path: <stable+bounces-164392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCBEB0EAC5
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 08:42:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 566FAB0EB2D
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 09:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 160CF1C817F2
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 06:43:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86FE8580B1F
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 07:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5873926E712;
-	Wed, 23 Jul 2025 06:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A05C126C3B0;
+	Wed, 23 Jul 2025 07:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9Jo7wZ/"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="FCUIMrnu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8D12E36E7;
-	Wed, 23 Jul 2025 06:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEE32571B4;
+	Wed, 23 Jul 2025 07:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753252969; cv=none; b=J0IeXEKq/AvjuBh0aWKwoEubPLGikHvPHxRVbZlLwOXSkZ08Df4eIgGdaeMqRrOo77jlaCHqZY+biTux+u/fvqWgKNZuu3qYyH59ZZXb02rmgGQEOw4EOALyyRQYJFPLSxTtr7Ixz0qKk05dv+SfUpy3eRQiufqfnKRKgXFC2Oo=
+	t=1753254133; cv=none; b=bmTqALL1jTpBdPLN2c1UbTGtIN4Y21a5YHkNxs4qZ9mjxXDh43qItHdL9Gd2YRvMRGqFnP1AB46U4KN08gTPBwXYCIIRdAuHAkYkgrDZ6e/GOu8u5nn+7tsgdAQ5vBuhiXLB+lS2k1PALID2Y6QsIGaWkSFA7HCkx3Q64+ZIvl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753252969; c=relaxed/simple;
-	bh=J+S3eW18Zh9zN2pLJpGnqhlMJsPNAU9Sx9yiBRNsfSo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=datzGQvKUvi5TGeG4rSIY8J2lDrRhjBUIiTtDCiOGewOvoJ2Lp5dv/fiUebfAdGR+e75nr+igieIF0B1w+rU85fupSwtPv3IVbvA2cNPcHlWNJleXCe3QsBrT2TaKWVH6slJsnd9amyPx10mc9tz4WmPhRpHTGVOyguLADRweDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9Jo7wZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201F4C4CEE7;
-	Wed, 23 Jul 2025 06:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753252968;
-	bh=J+S3eW18Zh9zN2pLJpGnqhlMJsPNAU9Sx9yiBRNsfSo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s9Jo7wZ/xVu7Pj5PyqLLeSIPlTZwSYLpzFvCKDh4j4VqaItnPIPc4d5NxqGynNZBp
-	 K2+sfFoQjzHw5zF0FtbfcmkGQ7rVj57Jg+cOdKLFm+Q7WT9pp7f7gwm5Z5qzzdZbOT
-	 uio2IfljhyKdXfBgSG45m/X54PgYamlRqQbHzNTg=
-Date: Wed, 23 Jul 2025 08:42:45 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naman Jain <namjain@linux.microsoft.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Long Li <longli@microsoft.com>, Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PATCH 6.12 020/158] tools/hv: fcopy: Fix irregularities with
- size of ring buffer
-Message-ID: <2025072316-mop-manhood-b63e@gregkh>
-References: <20250722134340.596340262@linuxfoundation.org>
- <20250722134341.490321531@linuxfoundation.org>
- <d9be2bb3-5f84-4182-91e8-ec1a4abd8f5f@linux.microsoft.com>
+	s=arc-20240116; t=1753254133; c=relaxed/simple;
+	bh=sMSWpuL3NbrBKZm2iT8FUES5vNyP6oZOFwZ2CCguIug=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dTy82wvl7RWqF0xOODKGjH/A6gEsMVmv1Q/7IdnXkfBQZBP6T5kBhK+vZm6tgnqwzWF7vfjv/In7JdTUVNCbmHyYtKpSqfhjzFF0V9PJ3YV+No1wBMA5HNDgS2BvXshsq6+126QLEdvx+Lb86y43ADDF994PgWI+05WZIMMfpBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=FCUIMrnu; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from namjain-Virtual-Machine.mshome.net (unknown [4.213.232.43])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 1FFCE2126891;
+	Wed, 23 Jul 2025 00:02:07 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1FFCE2126891
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1753254131;
+	bh=AdQWIoxaEDYaHE+B2o2jADCLoSIJqb1hT+F8ZeUMGxI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FCUIMrnu7EVKAlnkmu5sGdSICICeMJrXUdbDxxlFtJg74YedEr/DpiJzGLgH0yjdA
+	 53+KhXnmDY7aEi2CogctNOpXtxaAdRvyW6AyAxaeGuvonK7r0v79fqSo4icL+J1C+X
+	 v8pORf8PhKBFwKiBRNdwbkmxmJnZwPi+M/pcUIBc=
+From: Naman Jain <namjain@linux.microsoft.com>
+To: stable@vger.kernel.org,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>
+Cc: "K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux@weissschuh.net,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.12] Drivers: hv: Make the sysfs node size for the ring buffer dynamic
+Date: Wed, 23 Jul 2025 12:32:00 +0530
+Message-Id: <20250723070200.2775-1-namjain@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d9be2bb3-5f84-4182-91e8-ec1a4abd8f5f@linux.microsoft.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 22, 2025 at 08:29:07PM +0530, Naman Jain wrote:
-> 
-> 
-> On 7/22/2025 7:13 PM, Greg Kroah-Hartman wrote:
-> > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Naman Jain <namjain@linux.microsoft.com>
-> > 
-> > commit a4131a50d072b369bfed0b41e741c41fd8048641 upstream.
-> > 
-> > Size of ring buffer, as defined in uio_hv_generic driver, is no longer
-> > fixed to 16 KB. This creates a problem in fcopy, since this size was
-> > hardcoded. With the change in place to make ring sysfs node actually
-> > reflect the size of underlying ring buffer, it is safe to get the size
-> > of ring sysfs file and use it for ring buffer size in fcopy daemon.
-> > Fix the issue of disparity in ring buffer size, by making it dynamic
-> > in fcopy uio daemon.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
-> > Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-> > Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-> > Reviewed-by: Long Li <longli@microsoft.com>
-> > Link: https://lore.kernel.org/r/20250711060846.9168-1-namjain@linux.microsoft.com
-> > Signed-off-by: Wei Liu <wei.liu@kernel.org>
-> > Message-ID: <20250711060846.9168-1-namjain@linux.microsoft.com>
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> 
-> 
-> Hello Greg,
-> Please don't pick this change yet. I have shared the reason in the other
-> thread:
-> "Re: Patch "tools/hv: fcopy: Fix irregularities with size of ring buffer"
-> has been added to the 6.12-stable tree"
+The ring buffer size varies across VMBus channels. The size of sysfs
+node for the ring buffer is currently hardcoded to 4 MB. Userspace
+clients either use fstat() or hardcode this size for doing mmap().
+To address this, make the sysfs node size dynamic to reflect the
+actual ring buffer size for each channel. This will ensure that
+fstat() on ring sysfs node always returns the correct size of
+ring buffer.
 
-Ok, I have dropped this from the 6.12.y tree now.
+This is a backport of the upstream commit
+65995e97a1ca ("Drivers: hv: Make the sysfs node size for the ring buffer dynamic")
+with modifications, as the original patch has missing dependencies on
+kernel v6.12.x. The structure "struct attribute_group" does not have
+bin_size field in v6.12.x kernel so the logic of configuring size of
+sysfs node for ring buffer has been moved to
+vmbus_chan_bin_attr_is_visible().
 
-thanks,
+Original change was not a fix, but it needs to be backported to fix size
+related discrepancy caused by the commit mentioned in Fixes tag.
 
-greg k-h
+Fixes: bf1299797c3c ("uio_hv_generic: Align ring size to system page")
+Cc: <stable@vger.kernel.org> # 6.12.x
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+---
+
+This change won't apply on older kernels currently due to missing
+dependencies. I will take care of them after this goes in.
+
+I did not retain any Reviewed-by or Tested-by tags, since the code has
+changed completely, while the functionality remains same.
+Requesting Michael, Dexuan, Wei to please review again.
+
+---
+ drivers/hv/vmbus_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 1f519e925f06..616e63fb2f15 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -1810,7 +1810,6 @@ static struct bin_attribute chan_attr_ring_buffer = {
+ 		.name = "ring",
+ 		.mode = 0600,
+ 	},
+-	.size = 2 * SZ_2M,
+ 	.mmap = hv_mmap_ring_buffer_wrapper,
+ };
+ static struct attribute *vmbus_chan_attrs[] = {
+@@ -1866,6 +1865,7 @@ static umode_t vmbus_chan_bin_attr_is_visible(struct kobject *kobj,
+ 	/* Hide ring attribute if channel's ring_sysfs_visible is set to false */
+ 	if (attr ==  &chan_attr_ring_buffer && !channel->ring_sysfs_visible)
+ 		return 0;
++	attr->size = channel->ringbuffer_pagecount << PAGE_SHIFT;
+ 
+ 	return attr->attr.mode;
+ }
+-- 
+2.34.1
+
 
