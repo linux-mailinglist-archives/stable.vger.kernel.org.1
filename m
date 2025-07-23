@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-164473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35120B0F6D6
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 17:19:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E64CEB0F6CD
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 17:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C9003B89B6
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 15:13:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01D7C16D183
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 15:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E09B2E4277;
-	Wed, 23 Jul 2025 15:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281E62E6108;
+	Wed, 23 Jul 2025 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sVaPITbS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GIDr2vrA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF3429C33C
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 15:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD7B26E714
+	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 15:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753283665; cv=none; b=ro86iIkdNn8sfNlF0j9jCf6mGlM8w4Zp2cBzhE5xvKgHSlLy8qBg2V9h8Jx4l0ybNEu2OjiN4qJ51Ha+JrIaAULU0ufkvAza5LRuEbG0wBYNJlhIm6z5kddVxJ6EuIqZCUrEnpRb+InT1xZrOZ/xB+ZHe1pd47GFO491Tzhhqfg=
+	t=1753283666; cv=none; b=a9/klS3zP35e+iIMl3RsdJ+/X/RdVnNmZOq+qorBSPozALvITSnr/+ejb5XYRcaetiEQZoL03KuN3hN1V1YiQk2/bQ5hECfigmbgIA0tTt6Djvk/eX45dlUnWVYtMDpibldhDm6swWNUfErNPZdACMOrRQNTNI9rDV7oA3F2mBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753283665; c=relaxed/simple;
-	bh=V2shxoEt1wvGcWkAFgk9cMDQ1zLGaj1wRRjf1k6ulwI=;
+	s=arc-20240116; t=1753283666; c=relaxed/simple;
+	bh=1yS3AYH+UsyH035Ia2EsjDQpp7LVxIXow593U7VxcEA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P8YbqGLxMP5fB78mlkt4tLtYWezTR7YiVRIGVGFUdiz2fdF8BUgpKo2BJ5ZCPZW0hZOnvUZeQN8J9Lz59J59B56tQ1nHYe8sofUIwXvOjWPb+w+ehv78dTeLLAPABmZEqTvFk7fAqylqR0RW5CmTgCn/ovgGeJj3nI+L2WYPWlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sVaPITbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660E0C4CEE7;
-	Wed, 23 Jul 2025 15:14:23 +0000 (UTC)
+	 MIME-Version; b=fBBVqW6M6uV+QJeRkktTpVgbWTU/fBnYXWdBUVx224SWVV6kv9VOpaAMAA0ucdX/QIp6yNo47Ok4+aLv8aG1umebSwfacmStTqrd5BV0kl4Dd4jKw5JOTRVN0hvQUydG8htEAtgj9aiW532pn4854OcckJThfG2kPEJyQaJGfak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GIDr2vrA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E12DC4CEF1;
+	Wed, 23 Jul 2025 15:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753283664;
-	bh=V2shxoEt1wvGcWkAFgk9cMDQ1zLGaj1wRRjf1k6ulwI=;
+	s=k20201202; t=1753283666;
+	bh=1yS3AYH+UsyH035Ia2EsjDQpp7LVxIXow593U7VxcEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVaPITbSP8LdkFBsNRT0JuvhRWIAR0+t0qUS54e6D2ke5aNZC0qcZ2hZvB8KBYp4m
-	 1hZAhj3ygZH45cAGWn0pCcDhNDyhiBHkdarRZGLcOZvPjM/VIHNeIa/u7xLN+/EKHr
-	 kLeHHYvf73aHxVKjJKsty6Aoi0RO91uT5mPzT/M/R0rAfyKoMXjcpg0sJFdV0+Tnhk
-	 tjpXYsAcNF2pFmTUjkp5XvoYaAksOiH3rQ1jk749wkvklP0EMOruac72byf0OD8nVv
-	 i/BmhHpXmaVCqiX11cAmx9IPCMNw5D6t3Zyovid4uPABPzCTe/koVeZebNOe3T8Bzn
-	 hmFnmEKzfZ1Uw==
+	b=GIDr2vrAlSMFyk8hKaINf8e4HJneq4q3KVTJavuThAZDDQM85AdF/gDWI3mBKshi8
+	 rmffFzO3dhoxGHPIjf/9FMzGyjUh9kkOL2MA403m7R3bLGdqt+03huJgGr8FA6kOE3
+	 1H487y96l7UNbsz3mTdxIMOpEKiqFhv9V1ZjXMT25u70pGImhB1iuPayDAo6Ya06Uf
+	 5z46dC/eC1eqaJqjJ6oMI8eYqwWAb4MgD+pgm4c+7+y+boYO+jwmoK1Zqxr8XoJi1g
+	 GuQyu35+tTOZ6EBdqfX9vfteqyJ6k3WQRh0JgajBxea7sCThQyBIP+29qKbc+n50AS
+	 hhXl5U4COEIrw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Maxim Levitsky <mlevitsk@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/5] KVM: x86: Add X86EMUL_F_MSR and X86EMUL_F_DT_LOAD to aid canonical checks
-Date: Wed, 23 Jul 2025 11:14:14 -0400
-Message-Id: <20250723151416.1092631-3-sashal@kernel.org>
+Subject: [PATCH 6.12.y 4/5] KVM: x86: model canonical checks more precisely
+Date: Wed, 23 Jul 2025 11:14:15 -0400
+Message-Id: <20250723151416.1092631-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250723151416.1092631-1-sashal@kernel.org>
 References: <2025071240-phoney-deniable-545a@gregkh>
@@ -63,112 +63,283 @@ Content-Transfer-Encoding: 8bit
 
 From: Maxim Levitsky <mlevitsk@redhat.com>
 
-[ Upstream commit c534b37b7584e2abc5d487b4e017f61a61959ca9 ]
+[ Upstream commit 9245fd6b8531497d129a7a6e3eef258042862f85 ]
 
-Add emulation flags for MSR accesses and Descriptor Tables loads, and pass
-the new flags as appropriate to emul_is_noncanonical_address().  The flags
-will be used to perform the correct canonical check, as the type of access
-affects whether or not CR4.LA57 is consulted when determining the canonical
-bit.
+As a result of a recent investigation, it was determined that x86 CPUs
+which support 5-level paging, don't always respect CR4.LA57 when doing
+canonical checks.
 
-No functional change is intended.
+In particular:
+
+1. MSRs which contain a linear address, allow full 57-bitcanonical address
+regardless of CR4.LA57 state. For example: MSR_KERNEL_GS_BASE.
+
+2. All hidden segment bases and GDT/IDT bases also behave like MSRs.
+This means that full 57-bit canonical address can be loaded to them
+regardless of CR4.LA57, both using MSRS (e.g GS_BASE) and instructions
+(e.g LGDT).
+
+3. TLB invalidation instructions also allow the user to use full 57-bit
+address regardless of the CR4.LA57.
+
+Finally, it must be noted that the CPU doesn't prevent the user from
+disabling 5-level paging, even when the full 57-bit canonical address is
+present in one of the registers mentioned above (e.g GDT base).
+
+In fact, this can happen without any userspace help, when the CPU enters
+SMM mode - some MSRs, for example MSR_KERNEL_GS_BASE are left to contain
+a non-canonical address in regard to the new mode.
+
+Since most of the affected MSRs and all segment bases can be read and
+written freely by the guest without any KVM intervention, this patch makes
+the emulator closely follow hardware behavior, which means that the
+emulator doesn't take in the account the guest CPUID support for 5-level
+paging, and only takes in the account the host CPU support.
 
 Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Link: https://lore.kernel.org/r/20240906221824.491834-3-mlevitsk@redhat.com
-[sean: split to separate patch, massage changelog]
+Link: https://lore.kernel.org/r/20240906221824.491834-4-mlevitsk@redhat.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Stable-dep-of: fa787ac07b3c ("KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB flush")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/emulate.c     | 15 +++++++++------
- arch/x86/kvm/kvm_emulate.h |  5 ++++-
- arch/x86/kvm/x86.c         |  2 +-
- 3 files changed, 14 insertions(+), 8 deletions(-)
+ arch/x86/kvm/mmu/mmu.c       |  2 +-
+ arch/x86/kvm/vmx/nested.c    | 22 ++++++++---------
+ arch/x86/kvm/vmx/pmu_intel.c |  2 +-
+ arch/x86/kvm/vmx/sgx.c       |  2 +-
+ arch/x86/kvm/vmx/vmx.c       |  4 +--
+ arch/x86/kvm/x86.c           |  8 +++---
+ arch/x86/kvm/x86.h           | 48 ++++++++++++++++++++++++++++++++++--
+ 7 files changed, 66 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 3ce83f57d267d..60986f67c35a8 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -651,9 +651,10 @@ static inline u8 ctxt_virt_addr_bits(struct x86_emulate_ctxt *ctxt)
- }
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 4607610ef0628..8edfb4e4a73d0 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -6234,7 +6234,7 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+ 	/* It's actually a GPA for vcpu->arch.guest_mmu.  */
+ 	if (mmu != &vcpu->arch.guest_mmu) {
+ 		/* INVLPG on a non-canonical address is a NOP according to the SDM.  */
+-		if (is_noncanonical_address(addr, vcpu))
++		if (is_noncanonical_invlpg_address(addr, vcpu))
+ 			return;
  
- static inline bool emul_is_noncanonical_address(u64 la,
--						struct x86_emulate_ctxt *ctxt)
-+						struct x86_emulate_ctxt *ctxt,
-+						unsigned int flags)
- {
--	return !ctxt->ops->is_canonical_addr(ctxt, la);
-+	return !ctxt->ops->is_canonical_addr(ctxt, la, flags);
- }
+ 		kvm_x86_call(flush_tlb_gva)(vcpu, addr);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 7c42d8627fc90..903e874041ac8 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -3020,8 +3020,8 @@ static int nested_vmx_check_host_state(struct kvm_vcpu *vcpu,
+ 	    CC(!kvm_vcpu_is_legal_cr3(vcpu, vmcs12->host_cr3)))
+ 		return -EINVAL;
  
- /*
-@@ -1733,7 +1734,8 @@ static int __load_segment_descriptor(struct x86_emulate_ctxt *ctxt,
- 		if (ret != X86EMUL_CONTINUE)
- 			return ret;
- 		if (emul_is_noncanonical_address(get_desc_base(&seg_desc) |
--						 ((u64)base3 << 32), ctxt))
-+						 ((u64)base3 << 32), ctxt,
-+						 X86EMUL_F_DT_LOAD))
- 			return emulate_gp(ctxt, err_code);
+-	if (CC(is_noncanonical_address(vmcs12->host_ia32_sysenter_esp, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_ia32_sysenter_eip, vcpu)))
++	if (CC(is_noncanonical_msr_address(vmcs12->host_ia32_sysenter_esp, vcpu)) ||
++	    CC(is_noncanonical_msr_address(vmcs12->host_ia32_sysenter_eip, vcpu)))
+ 		return -EINVAL;
+ 
+ 	if ((vmcs12->vm_exit_controls & VM_EXIT_LOAD_IA32_PAT) &&
+@@ -3055,12 +3055,12 @@ static int nested_vmx_check_host_state(struct kvm_vcpu *vcpu,
+ 	    CC(vmcs12->host_ss_selector == 0 && !ia32e))
+ 		return -EINVAL;
+ 
+-	if (CC(is_noncanonical_address(vmcs12->host_fs_base, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_gs_base, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_gdtr_base, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_idtr_base, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_tr_base, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_rip, vcpu)))
++	if (CC(is_noncanonical_base_address(vmcs12->host_fs_base, vcpu)) ||
++	    CC(is_noncanonical_base_address(vmcs12->host_gs_base, vcpu)) ||
++	    CC(is_noncanonical_base_address(vmcs12->host_gdtr_base, vcpu)) ||
++	    CC(is_noncanonical_base_address(vmcs12->host_idtr_base, vcpu)) ||
++	    CC(is_noncanonical_base_address(vmcs12->host_tr_base, vcpu)) ||
++	    CC(is_noncanonical_address(vmcs12->host_rip, vcpu, 0)))
+ 		return -EINVAL;
+ 
+ 	/*
+@@ -3178,7 +3178,7 @@ static int nested_vmx_check_guest_state(struct kvm_vcpu *vcpu,
  	}
  
-@@ -2516,8 +2518,8 @@ static int em_sysexit(struct x86_emulate_ctxt *ctxt)
- 		ss_sel = cs_sel + 8;
- 		cs.d = 0;
- 		cs.l = 1;
--		if (emul_is_noncanonical_address(rcx, ctxt) ||
--		    emul_is_noncanonical_address(rdx, ctxt))
-+		if (emul_is_noncanonical_address(rcx, ctxt, 0) ||
-+		    emul_is_noncanonical_address(rdx, ctxt, 0))
- 			return emulate_gp(ctxt, 0);
+ 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS) &&
+-	    (CC(is_noncanonical_address(vmcs12->guest_bndcfgs & PAGE_MASK, vcpu)) ||
++	    (CC(is_noncanonical_msr_address(vmcs12->guest_bndcfgs & PAGE_MASK, vcpu)) ||
+ 	     CC((vmcs12->guest_bndcfgs & MSR_IA32_BNDCFGS_RSVD))))
+ 		return -EINVAL;
+ 
+@@ -5172,7 +5172,7 @@ int get_vmx_mem_address(struct kvm_vcpu *vcpu, unsigned long exit_qualification,
+ 		 * non-canonical form. This is the only check on the memory
+ 		 * destination for long mode!
+ 		 */
+-		exn = is_noncanonical_address(*ret, vcpu);
++		exn = is_noncanonical_address(*ret, vcpu, 0);
+ 	} else {
+ 		/*
+ 		 * When not in long mode, the virtual/linear address is
+@@ -5983,7 +5983,7 @@ static int handle_invvpid(struct kvm_vcpu *vcpu)
+ 		 * invalidation.
+ 		 */
+ 		if (!operand.vpid ||
+-		    is_noncanonical_address(operand.gla, vcpu))
++		    is_noncanonical_invlpg_address(operand.gla, vcpu))
+ 			return nested_vmx_fail(vcpu,
+ 				VMXERR_INVALID_OPERAND_TO_INVEPT_INVVPID);
+ 		vpid_sync_vcpu_addr(vpid02, operand.gla);
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index 83382a4d1d66f..9c9d4a3361664 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -365,7 +365,7 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		}
  		break;
- 	}
-@@ -3494,7 +3496,8 @@ static int em_lgdt_lidt(struct x86_emulate_ctxt *ctxt, bool lgdt)
- 	if (rc != X86EMUL_CONTINUE)
- 		return rc;
- 	if (ctxt->mode == X86EMUL_MODE_PROT64 &&
--	    emul_is_noncanonical_address(desc_ptr.address, ctxt))
-+	    emul_is_noncanonical_address(desc_ptr.address, ctxt,
-+					 X86EMUL_F_DT_LOAD))
- 		return emulate_gp(ctxt, 0);
- 	if (lgdt)
- 		ctxt->ops->set_gdt(ctxt, &desc_ptr);
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 1b1843ff210fd..10495fffb8905 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -94,6 +94,8 @@ struct x86_instruction_info {
- #define X86EMUL_F_FETCH			BIT(1)
- #define X86EMUL_F_IMPLICIT		BIT(2)
- #define X86EMUL_F_INVLPG		BIT(3)
-+#define X86EMUL_F_MSR			BIT(4)
-+#define X86EMUL_F_DT_LOAD		BIT(5)
+ 	case MSR_IA32_DS_AREA:
+-		if (is_noncanonical_address(data, vcpu))
++		if (is_noncanonical_msr_address(data, vcpu))
+ 			return 1;
  
- struct x86_emulate_ops {
- 	void (*vm_bugged)(struct x86_emulate_ctxt *ctxt);
-@@ -236,7 +238,8 @@ struct x86_emulate_ops {
- 	gva_t (*get_untagged_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
- 				   unsigned int flags);
+ 		pmu->ds_area = data;
+diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
+index 7fc64b759f851..b352a3ba7354a 100644
+--- a/arch/x86/kvm/vmx/sgx.c
++++ b/arch/x86/kvm/vmx/sgx.c
+@@ -37,7 +37,7 @@ static int sgx_get_encls_gva(struct kvm_vcpu *vcpu, unsigned long offset,
+ 		fault = true;
+ 	} else if (likely(is_64_bit_mode(vcpu))) {
+ 		*gva = vmx_get_untagged_addr(vcpu, *gva, 0);
+-		fault = is_noncanonical_address(*gva, vcpu);
++		fault = is_noncanonical_address(*gva, vcpu, 0);
+ 	} else {
+ 		*gva &= 0xffffffff;
+ 		fault = (s.unusable) ||
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 029fbf3791f17..9a4ebf3dfbfc8 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -2284,7 +2284,7 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		    (!msr_info->host_initiated &&
+ 		     !guest_cpuid_has(vcpu, X86_FEATURE_MPX)))
+ 			return 1;
+-		if (is_noncanonical_address(data & PAGE_MASK, vcpu) ||
++		if (is_noncanonical_msr_address(data & PAGE_MASK, vcpu) ||
+ 		    (data & MSR_IA32_BNDCFGS_RSVD))
+ 			return 1;
  
--	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr);
-+	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
-+				  unsigned int flags);
- };
- 
- /* Type, address-of, and value of an instruction's operand. */
+@@ -2449,7 +2449,7 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		index = msr_info->index - MSR_IA32_RTIT_ADDR0_A;
+ 		if (index >= 2 * vmx->pt_desc.num_address_ranges)
+ 			return 1;
+-		if (is_noncanonical_address(data, vcpu))
++		if (is_noncanonical_msr_address(data, vcpu))
+ 			return 1;
+ 		if (index % 2)
+ 			vmx->pt_desc.guest.addr_b[index / 2] = data;
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index d7416dc7f4974..c25f8e016fc5c 100644
+index c25f8e016fc5c..d00c8df90c945 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -8609,7 +8609,7 @@ static gva_t emulator_get_untagged_addr(struct x86_emulate_ctxt *ctxt,
+@@ -1845,7 +1845,7 @@ static int __kvm_set_msr(struct kvm_vcpu *vcpu, u32 index, u64 data,
+ 	case MSR_KERNEL_GS_BASE:
+ 	case MSR_CSTAR:
+ 	case MSR_LSTAR:
+-		if (is_noncanonical_address(data, vcpu))
++		if (is_noncanonical_msr_address(data, vcpu))
+ 			return 1;
+ 		break;
+ 	case MSR_IA32_SYSENTER_EIP:
+@@ -1862,7 +1862,7 @@ static int __kvm_set_msr(struct kvm_vcpu *vcpu, u32 index, u64 data,
+ 		 * value, and that something deterministic happens if the guest
+ 		 * invokes 64-bit SYSENTER.
+ 		 */
+-		data = __canonical_address(data, vcpu_virt_addr_bits(vcpu));
++		data = __canonical_address(data, max_host_virt_addr_bits());
+ 		break;
+ 	case MSR_TSC_AUX:
+ 		if (!kvm_is_supported_user_return_msr(MSR_TSC_AUX))
+@@ -8611,7 +8611,7 @@ static gva_t emulator_get_untagged_addr(struct x86_emulate_ctxt *ctxt,
+ static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
+ 				       gva_t addr, unsigned int flags)
+ {
+-	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt));
++	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt), flags);
  }
  
- static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
--				       gva_t addr)
-+				       gva_t addr, unsigned int flags)
- {
- 	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt));
+ static const struct x86_emulate_ops emulate_ops = {
+@@ -13763,7 +13763,7 @@ int kvm_handle_invpcid(struct kvm_vcpu *vcpu, unsigned long type, gva_t gva)
+ 		 * invalidation.
+ 		 */
+ 		if ((!pcid_enabled && (operand.pcid != 0)) ||
+-		    is_noncanonical_address(operand.gla, vcpu)) {
++		    is_noncanonical_invlpg_address(operand.gla, vcpu)) {
+ 			kvm_inject_gp(vcpu, 0);
+ 			return 1;
+ 		}
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index a84c48ef52785..ec623d23d13d2 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -8,6 +8,7 @@
+ #include <asm/pvclock.h>
+ #include "kvm_cache_regs.h"
+ #include "kvm_emulate.h"
++#include "cpuid.h"
+ 
+ struct kvm_caps {
+ 	/* control of guest tsc rate supported? */
+@@ -233,9 +234,52 @@ static inline u8 vcpu_virt_addr_bits(struct kvm_vcpu *vcpu)
+ 	return kvm_is_cr4_bit_set(vcpu, X86_CR4_LA57) ? 57 : 48;
  }
+ 
+-static inline bool is_noncanonical_address(u64 la, struct kvm_vcpu *vcpu)
++static inline u8 max_host_virt_addr_bits(void)
+ {
+-	return !__is_canonical_address(la, vcpu_virt_addr_bits(vcpu));
++	return kvm_cpu_cap_has(X86_FEATURE_LA57) ? 57 : 48;
++}
++
++/*
++ * x86 MSRs which contain linear addresses, x86 hidden segment bases, and
++ * IDT/GDT bases have static canonicality checks, the size of which depends
++ * only on the CPU's support for 5-level paging, rather than on the state of
++ * CR4.LA57.  This applies to both WRMSR and to other instructions that set
++ * their values, e.g. SGDT.
++ *
++ * KVM passes through most of these MSRS and also doesn't intercept the
++ * instructions that set the hidden segment bases.
++ *
++ * Because of this, to be consistent with hardware, even if the guest doesn't
++ * have LA57 enabled in its CPUID, perform canonicality checks based on *host*
++ * support for 5 level paging.
++ *
++ * Finally, instructions which are related to MMU invalidation of a given
++ * linear address, also have a similar static canonical check on address.
++ * This allows for example to invalidate 5-level addresses of a guest from a
++ * host which uses 4-level paging.
++ */
++static inline bool is_noncanonical_address(u64 la, struct kvm_vcpu *vcpu,
++					   unsigned int flags)
++{
++	if (flags & (X86EMUL_F_INVLPG | X86EMUL_F_MSR | X86EMUL_F_DT_LOAD))
++		return !__is_canonical_address(la, max_host_virt_addr_bits());
++	else
++		return !__is_canonical_address(la, vcpu_virt_addr_bits(vcpu));
++}
++
++static inline bool is_noncanonical_msr_address(u64 la, struct kvm_vcpu *vcpu)
++{
++	return is_noncanonical_address(la, vcpu, X86EMUL_F_MSR);
++}
++
++static inline bool is_noncanonical_base_address(u64 la, struct kvm_vcpu *vcpu)
++{
++	return is_noncanonical_address(la, vcpu, X86EMUL_F_DT_LOAD);
++}
++
++static inline bool is_noncanonical_invlpg_address(u64 la, struct kvm_vcpu *vcpu)
++{
++	return is_noncanonical_address(la, vcpu, X86EMUL_F_INVLPG);
+ }
+ 
+ static inline void vcpu_cache_mmio_info(struct kvm_vcpu *vcpu,
 -- 
 2.39.5
 
