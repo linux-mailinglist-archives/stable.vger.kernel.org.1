@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-164485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BEF2B0F82A
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 18:32:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B4DB0F82B
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 18:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CB84544160
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 16:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D1A03A9E3A
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 16:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222211F4634;
-	Wed, 23 Jul 2025 16:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739BC1F428C;
+	Wed, 23 Jul 2025 16:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GV6Xj0wU"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tojCH51c"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607751F4628
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 16:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41681F09A8
+	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 16:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753288339; cv=none; b=BXdSSkEmKJWMfJCOViYobfsWzmTUu3w+2+GeSeHESRRWjMBiwkAgIzCYZoObadBVdPlmTzAkMWpw16OviFJml8OYD5efEcDzwRq2CiBfG9WOUdAsHZQZLHt4a+Sa1bL+Np90ixzDMS+amNVSFqPyqA/MUPgFadLwPxza8cUJFIk=
+	t=1753288341; cv=none; b=jyynGw+RRuejVJ8P1QunyUX00aAA4HrF2MYpaOIs7NSCNlnD+aeqN1pSp9XoUvTE3o9PsO2PwvGFsbxWj6IXOGQx55z4wVNvwYQ0ivqOJrYkULG7TLEGgeOISGQvum/AAA6YBDGh2X2SKXCkANo4ntAtJMhYLFQ/JpGk1ep6zyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753288339; c=relaxed/simple;
-	bh=i2PevyDaj0s7rgGu8xf75hRjJbgkN6sLNaP3bfNMmc0=;
+	s=arc-20240116; t=1753288341; c=relaxed/simple;
+	bh=SdZhvagbCML2W0OAKAluXUnQn3l6YzufnDMBsmWGmso=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AAsEsYAsQRuQY0KaWSHA3A5Iizbk0mhiyYzfim3g5D1xV2U2P07cJTOw07dQtSb6ZUPZ2lHpl0DuwWF5tnyzv9uFDJZ7VrNBgaSy2pkcR55rk82s0AfyonFlFLduL2PO8m1gnAygH+pyqhx+7+CiOSYU7+JAhvenuuT9fO4dU6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jtoantran.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GV6Xj0wU; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=Cohkqe3bTlCom53BMduapEknzq3gIFR/GDttR+GdRc5b9+A76RZYQikUuO9nbDU4AmRMP9XNW/Sm4D6dsmYGr5EqSeLEZjYnssB9J/INXK91xS1fObcyaDRUje/oosxLu/+MX7uoOBM/l/1vfCtnmrc/KrQXgUhyv8/slMusgxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jtoantran.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tojCH51c; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jtoantran.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b31cc625817so880451a12.0
-        for <stable@vger.kernel.org>; Wed, 23 Jul 2025 09:32:18 -0700 (PDT)
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b34abbcdcf3so71194a12.1
+        for <stable@vger.kernel.org>; Wed, 23 Jul 2025 09:32:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753288338; x=1753893138; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1753288339; x=1753893139; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=m0s3rllgkjDarEULakl9MiGjhDbZfYra7BMAYPRbah0=;
-        b=GV6Xj0wUL3S0BKtE1OaiXzfL2gWf0VGqqqh+GfMJW84ukuOC0eZUW34F4ox00OuzCD
-         huXWE5xb5SzcimCaaPSkgz8vC+d0M/hQS7zyy7CWgDtmLSyvY2Ogo6FGMr9qnNWCvFeP
-         cwF3W+R/lDoaJLE1KaUyF0cCyBjbEHvXVctwC+QFYbYBV2ySnRkGa2aKISIwVOHJy0/Q
-         kbO2bQlJE2UXYTt8S7jcEFbYg7ceZw+BMxMivrnlzDm1UYpF/EsgIYWx+G3LGozWnpDN
-         lUGcnolQfGSrJeW8QCd/q4PewwI9xYRKRxLC0yvYdwILxdXgySTgtCDe0StcKl5zOEbk
-         N3dw==
+        bh=v+qLvaz7POc6U1zoe+y0zRKFzMnYr6KCoMfLSysNl9I=;
+        b=tojCH51cWVcSCaky5V1TVtQmIUqzBmYVbL2fq6aIwlOagmWnGjsKSnvcvN6NlyIf7J
+         9OoN637nk8yeD7oIOqiMF3H1p6Kd3o/8vLC8zc2mso4J6P8z+S4jNHWdOSoH7lK4Nr6L
+         gM/8MZ8n32K503Lq1hvmZYdRoY1HIthKH32fbe6IDH8QJTUwuvS/1zz8JJ24IIlkopnO
+         b+Akl46CU5CKJfB5sou38o3nbH4ku4PyTsn2KZNiFkC31M0zzh+tXj+wAfZdf6+tYOKU
+         hr40BXFFwhDxuZFXVyycVTIpaQpBo6kEVRJ0W+QtWUIkShR2xL6u3YDDJhfURjroQ7OC
+         iT8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753288338; x=1753893138;
+        d=1e100.net; s=20230601; t=1753288339; x=1753893139;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=m0s3rllgkjDarEULakl9MiGjhDbZfYra7BMAYPRbah0=;
-        b=HsasimiwdrE5tgxxiuAp7WgfuPo+lSaAD7MoNjMlAJTPCTzpHl2QkVolaJDuKWoD/3
-         un0W/Bno4o/z/qA+Yc+Z7PW/42l9BpzYN0VAvpkhSsX190OjQq0tgYhWMPRE/l9iN1Bz
-         +QaY9MMKHMpByVCq93Jo5rViM2wH5JHxdCHxf/jS6sfkvSIdCWgBoKrOPi99BruKaOs+
-         NPOpG1grXsw1lyoesvjCv8ISnV253mhjIbpXvzxt32gy22VKMQype+H/KbFCobGXQmP0
-         +H56xvlNhQjkKJ/FWJB+3Osx16GjHF1erFrY23zcZAP55PYk8nztk3Qmv0TA/XbvbZfD
-         f6Eg==
-X-Gm-Message-State: AOJu0YyVwTDcbpnr31gbtgtluJ8+eVrGdx/W9o0CXwcP8iHCwmWgUODV
-	JXkTnKnyiCUUfhgysstfYcXQNYrS9j5lNm5vfqwJFf8mUs/qkeFqHxRLQJ02VdZ6/FYY6wiz02y
-	zy9FBkK4pqVrrXuOaGrxKY8YaMhKqnPNg++VBoEhh2bw/yHTlyu++2LZcpreYq94luUGYdK058R
-	XI34LGVC2Wt+a4uQczhV/IhHfPA+gRoHuX5NaZLAw7L6RngxCFGXIA
-X-Google-Smtp-Source: AGHT+IHwY6YBBdEwIXjjWgPIM2PLpe7V+sb249s+XQm4zhk54iDc5F5u0VJq6Qud5IHsdOqXIbycQl23FE1dnuU=
-X-Received: from pjbst13.prod.google.com ([2002:a17:90b:1fcd:b0:31e:40d4:1d0e])
+        bh=v+qLvaz7POc6U1zoe+y0zRKFzMnYr6KCoMfLSysNl9I=;
+        b=DOQcaYL2RMnPMniklsJzS8B9MvE5G9QOnBkTNsjzfLEKuU4m9ZjVgbubNTEXiWzOKv
+         ZqIm6oYGU0TjggZdB2F0Y1Wyc5dX01NexEjRlDU6A4SljW/safKAqQuB2OvvhpVEN5hD
+         9nYfHUmO/XNQaRIPUFVcWYIO6uSgRd/Dc4XzX8CQH64a77EzRtsSmfxch5KefUxxuSuJ
+         MPWaHEimlfizXUkv+/G2QJV1qpCRuNw8wBkcXesHCiG+/dO0sz55ohBQZAeYuPqctZjR
+         S0nhzpgruTyWSUoTrf6AUSXZiLjqxk/BEAEMxo2nB1BFpo2DzpfUyuigdiA+NXiNz7c1
+         P49w==
+X-Gm-Message-State: AOJu0YwBBIVIbkDg8pDGoxTTkdlVrc9aXMQwHwDXVSt/TkY9iVJqVl+a
+	TeiCpCIDKrv9IuJ+3Ck/ykTKJRyo2YELzKpsG/NibnR2alviZr0p29iegscscHZXvUQ97XKI8al
+	Bb8IEjKaP9HqD5tY2kQVXZnsuM/LqOXyc0zZz2vwwNJxHk+iajAa6MsxwiMpDoc2lgzaQK6ITaz
+	dar2jQwoXo2cdZpke0xb5Ni68vu+tL2SyAk7yKee9q8aTPrG+uRlX3
+X-Google-Smtp-Source: AGHT+IHgNkp5Ry+p8LC23Kxzj7GttROOiSVhzX11Pf518CUdYFPuoMGo+/HT4NSx49Wi1VuOFYeiAgprX+gMyJ8=
+X-Received: from pfbcq12.prod.google.com ([2002:a05:6a00:330c:b0:748:8e9:968e])
  (user=jtoantran job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:33c9:b0:313:d342:448c with SMTP id 98e67ed59e1d1-31e513cfdd3mr4557036a91.17.1753288337311;
- Wed, 23 Jul 2025 09:32:17 -0700 (PDT)
-Date: Wed, 23 Jul 2025 16:32:05 +0000
+ 2002:a05:6a20:7f93:b0:23d:54bd:92e6 with SMTP id adf61e73a8af0-23d54bd92f8mr819134637.29.1753288338900;
+ Wed, 23 Jul 2025 09:32:18 -0700 (PDT)
+Date: Wed, 23 Jul 2025 16:32:06 +0000
 In-Reply-To: <20250723163209.1929303-1-jtoantran@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,8 +74,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250723163209.1929303-1-jtoantran@google.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250723163209.1929303-3-jtoantran@google.com>
-Subject: [PATCH v1 2/6] runtime constants: add default dummy infrastructure
+Message-ID: <20250723163209.1929303-4-jtoantran@google.com>
+Subject: [PATCH v1 3/6] runtime constants: add x86 architecture support
 From: Jimmy Tran <jtoantran@google.com>
 To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
@@ -88,123 +88,103 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit e78298556ee5d881f6679effb2a6743969ea6e2d upstream.
+commit e3c92e81711d14b46c3121d36bc8e152cb843923 upstream.
 
-This adds the initial dummy support for 'runtime constants' for when
-an architecture doesn't actually support an implementation of fixing
-up said runtime constants.
-
-This ends up being the fallback to just using the variables as regular
-__ro_after_init variables, and changes the dcache d_hash() function to
-use this model.
+This implements the runtime constant infrastructure for x86, allowing
+the dcache d_hash() function to be generated using as a constant for
+hash table address followed by shift by a constant of the hash index.
 
 Cc: <stable@vger.kernel.org> # 6.10.x: e60cc61: vfs: dcache: move hashlen_hash
-Fixes: e78298556ee5 ("runtime constants: add default dummy infrastructure")
+Cc: <stable@vger.kernel.org> # 6.10.x: e782985: runtime constants: add default
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Jimmy Tran <jtoantran@google.com>
 ---
- fs/dcache.c                         | 11 ++++++++++-
- include/asm-generic/Kbuild          |  1 +
- include/asm-generic/runtime-const.h | 15 +++++++++++++++
- include/asm-generic/vmlinux.lds.h   |  8 ++++++++
- 4 files changed, 34 insertions(+), 1 deletion(-)
- create mode 100644 include/asm-generic/runtime-const.h
+ arch/x86/include/asm/runtime-const.h | 61 ++++++++++++++++++++++++++++
+ arch/x86/kernel/vmlinux.lds.S        |  3 ++
+ 2 files changed, 64 insertions(+)
+ create mode 100644 arch/x86/include/asm/runtime-const.h
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 82adee104f82c..9e5c92b4b4aaa 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -35,6 +35,8 @@
- #include "internal.h"
- #include "mount.h"
- 
-+#include <asm/runtime-const.h>
-+
- /*
-  * Usage:
-  * dcache->d_inode->i_lock protects:
-@@ -102,7 +104,8 @@ static struct hlist_bl_head *dentry_hashtable __read_mostly;
- 
- static inline struct hlist_bl_head *d_hash(unsigned long hashlen)
- {
--	return dentry_hashtable + ((u32)hashlen >> d_hash_shift);
-+	return runtime_const_ptr(dentry_hashtable) +
-+		runtime_const_shift_right_32(hashlen, d_hash_shift);
- }
- 
- #define IN_LOOKUP_SHIFT 10
-@@ -3297,6 +3300,9 @@ static void __init dcache_init_early(void)
- 					0,
- 					0);
- 	d_hash_shift = 32 - d_hash_shift;
-+
-+	runtime_const_init(shift, d_hash_shift);
-+	runtime_const_init(ptr, dentry_hashtable);
- }
- 
- static void __init dcache_init(void)
-@@ -3325,6 +3331,9 @@ static void __init dcache_init(void)
- 					0,
- 					0);
- 	d_hash_shift = 32 - d_hash_shift;
-+
-+	runtime_const_init(shift, d_hash_shift);
-+	runtime_const_init(ptr, dentry_hashtable);
- }
- 
- /* SLAB cache for __getname() consumers */
-diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
-index 941be574bbe00..22673ec5defbb 100644
---- a/include/asm-generic/Kbuild
-+++ b/include/asm-generic/Kbuild
-@@ -46,6 +46,7 @@ mandatory-y += pci.h
- mandatory-y += percpu.h
- mandatory-y += pgalloc.h
- mandatory-y += preempt.h
-+mandatory-y += runtime-const.h
- mandatory-y += rwonce.h
- mandatory-y += sections.h
- mandatory-y += serial.h
-diff --git a/include/asm-generic/runtime-const.h b/include/asm-generic/runtime-const.h
+diff --git a/arch/x86/include/asm/runtime-const.h b/arch/x86/include/asm/runtime-const.h
 new file mode 100644
-index 0000000000000..3e68a17fbf287
+index 0000000000000..76fdeaa0faa3f
 --- /dev/null
-+++ b/include/asm-generic/runtime-const.h
-@@ -0,0 +1,15 @@
++++ b/arch/x86/include/asm/runtime-const.h
+@@ -0,0 +1,61 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +#ifndef _ASM_RUNTIME_CONST_H
 +#define _ASM_RUNTIME_CONST_H
 +
++#define runtime_const_ptr(sym) ({				\
++	typeof(sym) __ret;					\
++	asm_inline("mov %1,%0\n1:\n"				\
++		".pushsection runtime_ptr_" #sym ",\"a\"\n\t"	\
++		".long 1b - %c2 - .\n\t"			\
++		".popsection"					\
++		 : "=r" (__ret)					\
++		 : "i" (0x0123456789abcdefULL),	\
++		 "i" (sizeof(long)));				\
++	__ret; })
++
++// The 'typeof' will create at _least_ a 32-bit type, but
++// will happily also take a bigger type and the 'shrl' will
++// clear the upper bits
++#define runtime_const_shift_right_32(val, sym) ({		\
++	typeof(0u+(val)) __ret = (val);				\
++	asm_inline("shrl $12,%k0\n1:\n"				\
++		".pushsection runtime_shift_" #sym ",\"a\"\n\t"	\
++		".long 1b - 1 - .\n\t"				\
++		".popsection"					\
++		 : "+r" (__ret));					\
++	__ret; })
++
++#define runtime_const_init(type, sym) do {		\
++	extern s32 __start_runtime_##type##_##sym[];	\
++	extern s32 __stop_runtime_##type##_##sym[];	\
++	runtime_const_fixup(__runtime_fixup_##type,	\
++		(unsigned long)(sym),				\
++		__start_runtime_##type##_##sym,		\
++		__stop_runtime_##type##_##sym);		\
++} while (0)
++
 +/*
-+ * This is the fallback for when the architecture doesn't
-+ * support the runtime const operations.
-+ *
-+ * We just use the actual symbols as-is.
++ * The text patching is trivial - you can only do this at init time,
++ * when the text section hasn't been marked RO, and before the text
++ * has ever been executed.
 + */
-+#define runtime_const_ptr(sym) (sym)
-+#define runtime_const_shift_right_32(val, sym) ((u32)(val)>>(sym))
-+#define runtime_const_init(type, sym) do { } while (0)
++static inline void __runtime_fixup_ptr(void *where, unsigned long val)
++{
++	*(unsigned long *)where = val;
++}
++
++static inline void __runtime_fixup_shift(void *where, unsigned long val)
++{
++	*(unsigned char *)where = val;
++}
++
++static inline void runtime_const_fixup(void (*fn)(void *, unsigned long),
++	unsigned long val, s32 *start, s32 *end)
++{
++	while (start < end) {
++		fn(*start + (void *)start, val);
++		start++;
++	}
++}
 +
 +#endif
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index cf3f8b9bf43f0..66bfd3dc91a33 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -907,6 +907,14 @@
- #define CON_INITCALL							\
- 	BOUNDED_SECTION_POST_LABEL(.con_initcall.init, __con_initcall, _start, _end)
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index c57d5df1abc60..cb5b41480a848 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -371,6 +371,9 @@ SECTIONS
+ 	PERCPU_SECTION(INTERNODE_CACHE_BYTES)
+ #endif
  
-+#define RUNTIME_NAME(t, x) runtime_##t##_##x
++	RUNTIME_CONST(shift, d_hash_shift)
++	RUNTIME_CONST(ptr, dentry_hashtable)
 +
-+#define RUNTIME_CONST(t, x)						\
-+	. = ALIGN(8);							\
-+	RUNTIME_NAME(t, x) : AT(ADDR(RUNTIME_NAME(t, x)) - LOAD_OFFSET) {	\
-+		*(RUNTIME_NAME(t, x));					\
-+	}
-+
- /* Alignment must be consistent with (kunit_suite *) in include/kunit/test.h */
- #define KUNIT_TABLE()							\
- 		. = ALIGN(8);						\
+ 	. = ALIGN(PAGE_SIZE);
+ 
+ 	/* freed after init ends here */
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
