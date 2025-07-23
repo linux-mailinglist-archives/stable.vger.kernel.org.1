@@ -1,127 +1,129 @@
-Return-Path: <stable+bounces-164498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447E6B0F97F
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 19:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E845B0FA3D
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 20:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF26F16E28B
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 17:41:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3737D54076A
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 18:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2FD241686;
-	Wed, 23 Jul 2025 17:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0D5225A37;
+	Wed, 23 Jul 2025 18:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VYa2s30/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1mRiNne"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BA2227574;
-	Wed, 23 Jul 2025 17:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF60F21421D
+	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 18:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753292240; cv=none; b=HI06fMETzi2OuIL+alrV3DEoi6vKgrS2OdEL5TKuSU2gJZejTiZS4myFsCWzxMfz7nTThZtUpD1AuB/xcxcnlurSSjwWJQ7L3BhnBc0lfQT3JbOgfOU5c2OfhfWYBjr4HAd8IYWvCaJ8icZOH2HohBD9XI/DeR/YJUtjCzfLx8k=
+	t=1753295010; cv=none; b=cQvHR0XBkeZNx2YS2sFJaDJZp2N3eqt0aDjNtXubblrO3QG5KftUt1qG3MzNo22NM8bfSt0apOkGvxgzjOECK/FCOIVFOt/jL1gKMZPRT+T/sk7rHONk37Aj/RWeKgrpDJ/0ar2jTXyJROCTHFOResiVDLCheN4MmolgV0sPY70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753292240; c=relaxed/simple;
-	bh=rjZa4jQ92WzR1buCinsSPkKs46EphiG1VoHBWeHqJ44=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iAak2V2vyzJEp4/+dUaGq+SQ191n+RxPGWNeSS3dB1Az33rMEwQlPuw1xPZJXfkpFNiJcotdZsUhinJrAfa9x9CKDM0oYsdg+5JGekalVKK7umolxwC7SWUcLBqXXK4VxUS4xe3zSo9KS+sygNMUoMK7QgSS1hzEqPe/5n2ddVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VYa2s30/; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a507e88b0aso68128f8f.1;
-        Wed, 23 Jul 2025 10:37:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753292237; x=1753897037; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KlttEDH05prTNfq+ea0u2Drdfy6nVwhRi7cMSKNkO7o=;
-        b=VYa2s30/Rw5ANj2emubxyZ8keO8oOeXO7NUgxNoFM7B9tHeuXvgs3yxzYwqrRJYYTc
-         gqb65P6RAGE07uBWt2t43yZmoUpw+S/iQ/Fj62x660KjKzPLFCH/be4xRyxFkx2ZokDw
-         KU1hrnBDBq4khkY87nhAVIDkKoH7T422wdsrEkI7I/PLBceVs1hcVxCvSHYKEmOanrY8
-         bZbH78PkREYNBipz2WLOS6JRuVdK0QIUUOrgyIpXfpAxbar6PnSlK7PSSyHee95o6PX9
-         f6umAdy2aNm/bbbm3RYGPv6GaldyjCsvsjiXh3mgd6h2UFYKdy7AiczW/R7BFHM1Sdaw
-         AMLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753292237; x=1753897037;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KlttEDH05prTNfq+ea0u2Drdfy6nVwhRi7cMSKNkO7o=;
-        b=BFFQndrI9JgntwdOzR2RZsIEYCAqR66qPhGgh7wQwh/pMVHLIRdnRLH9znAuWkmuA5
-         2Z5A06iEINiWJwSS9FrOrjM6LrrC1lLU4ebMUltFJ7HYqSrjjhAgPnUS+cWb+zXNEeUj
-         4GudhLBQrXiM+ALCVFuztShdZD/i1vKUsbXpGWu5SeKx0XC+4eTt97daBcC9jNat0kNI
-         o41Lgmu6WACbzaOnPJ8MuzFqKSmD4gYvSoT19lhHS8X4XSc51Jlnqfa5roR8dqqYyl2C
-         u9gWY3ji1918aOIORoxhE73JnVZ3j81uuUW4t3XrN0PBqHz+qjcxpF2FMQWymfyUFekY
-         BFhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcedbS6gSRTEsHlfq6z/g02QqSxXMbkSG68BC2s/vdjI5GvduI3hh9AwT/PiN02gfB+n/zWsxat9YHCXE=@vger.kernel.org, AJvYcCVodC1j2Oi2FTDHfA3KobrlN7kvQ3hNl9MLCWSvhu5FUfe3P//OLDs6OKtRR6CWsBTC8LhU2JxS@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvfmfX39HlP10SFigF0Ub/JsvwWJV1U+Y8sSbIGlZyHvS3jHHE
-	5xLz/F04Ce+hrXhUjsOPy2kgNNCtDVyF8dGhoMD95YcSvXP+yDpS38c0
-X-Gm-Gg: ASbGnct04bODvj4OiU2AEuusMjZuq1fTvXVstmzBR4DDKhgUDIfRSXzyRAWYmZ1jgbv
-	oe+EkVXRqXfp1jFNO6NQamzSyHnjxpWssVjUtCw6s9OiWewbSwExhxD3TBpl0X/Abd/G3sjcp/+
-	KOgIW/dnMmCXPZxbv8Gsu9mYfhYEFUr+JgbmJ51v8LWAKbgCvCAf2OkXyWynyNbB1J75csJmT3k
-	3imZszbLWVmC1BmKrhINUFQtOmSfgjLfsR/ZqzLEiVWLr8uoBmzjOGsJpPt7gEVFjuAIn8tUElB
-	QKOS64nOyi7Zm3B9p01Ny7c+53U9Lh3aYixNBHpKWuCEyg4gbCbv0qQxwdhme+T+1jw5dnNR0yW
-	jt9l4D/9J7lYODYCtRy0Ckg==
-X-Google-Smtp-Source: AGHT+IE3KbWMQ5xYVuQes3e+Ej3tBCSlC2qdBRuaX0zaWpDwjxOX/Cd/Zs4snUJi1/joOzjnGEafCA==
-X-Received: by 2002:a05:6000:1885:b0:3a4:f644:95f0 with SMTP id ffacd0b85a97d-3b768f165f7mr3434077f8f.54.1753292236917;
-        Wed, 23 Jul 2025 10:37:16 -0700 (PDT)
-Received: from qasdev.Home ([2a02:c7c:f4f0:900:24ed:b04c:5d6c:b1a7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca487c1sm16953808f8f.41.2025.07.23.10.37.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 10:37:16 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: jikos@kernel.org,
-	bentiss@kernel.org
-Cc: linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] HID: multitouch: fix integer overflow in set_abs()
-Date: Wed, 23 Jul 2025 18:36:59 +0100
-Message-Id: <20250723173659.59327-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1753295010; c=relaxed/simple;
+	bh=TZj0F7YLGd/BoOU359y6vT9r1tCi3dr7yh5cDQ0maDA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cV3ViA05gsFi0/Ho+zmx6oRyjUFLsUs3i16NI4W8Q+gTAe0oqmMzSs52b/irSdKFQg+EbwxIeFwvWaV1UPOQkMoJPehahRrT2A5EI6GO2Aq8nXVaPN2sjpThUYsUVfINNaFoqOCDwOHo1ggi7suR2f2yLWcgijZCLQ4NbBXYAqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1mRiNne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41788C4CEE7;
+	Wed, 23 Jul 2025 18:23:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753295009;
+	bh=TZj0F7YLGd/BoOU359y6vT9r1tCi3dr7yh5cDQ0maDA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b1mRiNneuG9YQEjMwYPxFY4zymmL7BWxjahVWYlSm15CcjsnLaq2cK48cinlU9Mv8
+	 knMv7E9+yCONumw4s3MOJIHWR/YUNOJwj8yB6M6UyOji/2loNwcycJhFMxzOIZWeLt
+	 35Kyewl+4dZCbw2NyukWO63LjLB5qReEb52LSbI/iGft486BppS2sxsSO4xsjMv7qd
+	 dVgK/N0lULKw3N+AU4VdJcRhgWUGrFlUmdQ1WUzTwoPb4IzIuTw7CwAFrkO5BQde1L
+	 TMoNkYlJvUlvP7n+f5n5T7CmTa3BnCTn9vKRa7fsfDUG166jrbgQXFGPtde96M/NuN
+	 EdqrdJq7phvOw==
+Date: Wed, 23 Jul 2025 14:23:26 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Daniel Dadap <ddadap@nvidia.com>
+Cc: stable@vger.kernel.org, Takashi Iwai <tiwai@suse.de>
+Subject: Re: [PATCH 5.15.y] ALSA: hda: Add missing NVIDIA HDA codec IDs
+Message-ID: <aIEonpWtKY_hy9T7@lappy>
+References: <2025071244-canon-whacky-600c@gregkh>
+ <20250723141042.1090223-1-sashal@kernel.org>
+ <aIER3X-61j_VVKkr@ddadap-lakeline.nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aIER3X-61j_VVKkr@ddadap-lakeline.nvidia.com>
 
-It is possible for a malicious HID device to trigger a signed integer
-overflow (undefined behaviour) in set_abs() in the following expression
-by supplying bogus logical maximum and minimum values:
-	
-	int fuzz = snratio ? (fmax - fmin) / snratio : 0;
+On Wed, Jul 23, 2025 at 11:46:21AM -0500, Daniel Dadap wrote:
+>On Wed, Jul 23, 2025 at 10:10:42AM -0400, Sasha Levin wrote:
+>> From: Daniel Dadap <ddadap@nvidia.com>
+>>
+>> [ Upstream commit e0a911ac86857a73182edde9e50d9b4b949b7f01 ]
+>>
+>> Add codec IDs for several NVIDIA products with HDA controllers to the
+>> snd_hda_id_hdmi[] patch table.
+>>
+>> Signed-off-by: Daniel Dadap <ddadap@nvidia.com>
+>> Cc: <stable@vger.kernel.org>
+>> Link: https://patch.msgid.link/aF24rqwMKFWoHu12@ddadap-lakeline.nvidia.com
+>> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+>> [ change patch_tegra234_hdmi function calls to patch_tegra_hdmi ]
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>  sound/pci/hda/patch_hdmi.c | 19 +++++++++++++++++++
+>>  1 file changed, 19 insertions(+)
+>>
+>> diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
+>> index 81025d45306d3..fcd7d94afc5d5 100644
+>> --- a/sound/pci/hda/patch_hdmi.c
+>> +++ b/sound/pci/hda/patch_hdmi.c
+>> @@ -4364,6 +4364,8 @@ HDA_CODEC_ENTRY(0x10de002d, "Tegra186 HDMI/DP0", patch_tegra_hdmi),
+>>  HDA_CODEC_ENTRY(0x10de002e, "Tegra186 HDMI/DP1", patch_tegra_hdmi),
+>>  HDA_CODEC_ENTRY(0x10de002f, "Tegra194 HDMI/DP2", patch_tegra_hdmi),
+>>  HDA_CODEC_ENTRY(0x10de0030, "Tegra194 HDMI/DP3", patch_tegra_hdmi),
+>> +HDA_CODEC_ENTRY(0x10de0033, "SoC 33 HDMI/DP",	patch_tegra_hdmi),
+>> +HDA_CODEC_ENTRY(0x10de0035, "SoC 35 HDMI/DP",	patch_tegra_hdmi),
+>
+>I tested a modified snd-hda-codec-hdmi.ko which patched one of these to
+>patch_tegra_hdmi instead of patch_tegra234_hdmi, and it still worked
+>correctly as far as I could tell with a few brief checks. However, it
+>seems like patch_nvhdmi might be a better match, at least based on how
+>it seems to behave with DP MST, so if we don't decide to drop the codec
+>entries for 0x10de0033 and 0x10de0035 in the older branches it might be
+>good to use patch_nvhdmi.
 
-For example, if the logical_maximum is INT_MAX and logical_minimum is -1
-then (fmax - fmin) resolves to INT_MAX + 1, which does not fit in a 32-bit
-signed int, so the subtraction overflows. Fix this by computing the 
-difference in a 64 bit context.
+Hmm...
 
-Fixes: 5519cab477b6 ("HID: hid-multitouch: support for PixCir-based panels")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
----
- drivers/hid/hid-multitouch.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I've used patch_tegra_hdmi because from my understanding of the code,
+Tegra SoCs require explicit format notification through NVIDIA AFG
+scratch registers. The key mechanism is in tegra_hdmi_set_format() which
+writes the HDA format to NVIDIA_SET_SCRATCH0_BYTE[0-1] and toggles
+NVIDIA_SCRATCH_VALID (bit 30) in NVIDIA_SET_SCRATCH0_BYTE3.
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 22c6314a8843..687638ed6d0f 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -540,7 +540,8 @@ static void set_abs(struct input_dev *input, unsigned int code,
- {
- 	int fmin = field->logical_minimum;
- 	int fmax = field->logical_maximum;
--	int fuzz = snratio ? (fmax - fmin) / snratio : 0;
-+	s64 diff = (s64)fmax - (s64)fmin;
-+	int fuzz = snratio ? (int)div_s64(diff, snratio) : 0;
- 	input_set_abs_params(input, code, fmin, fmax, fuzz, 0);
- 	input_abs_set_res(input, code, hidinput_calc_abs_res(field, code));
- }
+patch_nvhdmi doesn't seem to deal with this at all.
+
+>It probably does make more sense to drop the SoC codec entries for the
+>backports, the more I think about it. It makes sense to backport dGPU
+>codec entries since somebody could put an add-in-board into an existing
+>system running an LTS kernel, but for new SoCs you'd want the kernel to
+>be recent enough to support all of the hardware on the system. Notably,
+>we don't seem to have backported HDA codec entries for other SoCs like
+>the T234 that patch_tegra234_hdmi was added for in the first place.
+
+On our end we'd prefer to keep this align with upstream as much as
+possible: it will make future patches easier to apply without manual
+modifications.
+
+If leaving them in there is harmless (and only unnecessary), I'd rather
+just leave it there.
+
 -- 
-2.39.5
-
+Thanks,
+Sasha
 
