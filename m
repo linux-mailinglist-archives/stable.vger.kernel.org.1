@@ -1,146 +1,132 @@
-Return-Path: <stable+bounces-164427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105EBB0F1BF
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 13:57:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313F9B0F1DC
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 14:05:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 063DE1C84BD6
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 11:58:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DC51565EA1
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 12:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B342E49AD;
-	Wed, 23 Jul 2025 11:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A4A2E54C9;
+	Wed, 23 Jul 2025 12:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="052dEdrh"
+	dkim=pass (1024-bit key) header.d=bbaa.fun header.i=@bbaa.fun header.b="fS0YXnJf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2414A2E4257;
-	Wed, 23 Jul 2025 11:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C0127EFFA;
+	Wed, 23 Jul 2025 12:05:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753271859; cv=none; b=nTdIeTd7GQ4eR3OOKGbwEh7GoMsuXMyPbH9wzQCX6Fsn5zv998KB/lcFx026pqJ3SddAvFBl4PEFOEFMywbI6AaHfhPdl0+xBcl6uDj0Fc9RcdnWkJWOwmkD2xqASsQ6SGxXWWGuylqdpK5YREZm8AZuoXrh5gMxTBqCLYmuIVM=
+	t=1753272315; cv=none; b=LlQs/Za2z0CqGos9WvIr3pAuGkodv5OCVxOgGIcCzbUKGDhQYnaPEeKaip7P6OjGR6HVEp9C90jV2w3YysDsfIGlx5vk1edPh8g/w4I1KhEQeTprYtoj5pX678gCuh3hVKx7IYQ/XDA2kAG1ZDQvh22hdR7Vk/vfjRlW2Gv1dYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753271859; c=relaxed/simple;
-	bh=BjTE+1VS+45LArrbJs6YQ54EMN556aHmCu91/b0/ooY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eNtldevc0kyEkOqQOBws+Bx6uRuU9DHMoOmoELzD2Lh+shwlRDsWY5NtFEUmHRmh6di4QE/MB3AtZNIYuitaQYlxTZb5Z7cizFklj0S8OGZUjttXHIEKMCX+Kk//8ow+0FBlQhigMSf1QIa21+hE8p3kggxKEmrbW4I02C8lShY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=052dEdrh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE427C4CEE7;
-	Wed, 23 Jul 2025 11:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753271857;
-	bh=BjTE+1VS+45LArrbJs6YQ54EMN556aHmCu91/b0/ooY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=052dEdrhEVx0fMTiMnIMXN5lNCFpceQgmVJ7YZvH4n91wqFspOWc2yJuUBwSNbHRD
-	 kX3HBQuuM8b1elJf6rM/U9KU2bPecgJDQxpizRtbtS6C50EtqYdC9+PTVdWin5ysGE
-	 rc3SefbiUPHP0stRQ2yhMNIxN9lC4kE0wi3Buh+U=
-Date: Wed, 23 Jul 2025 13:57:34 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Xin Li <xin3.li@intel.com>,
-	Sai Praneeth <sai.praneeth.prakhya@intel.com>,
-	Jethro Beekman <jethro@fortanix.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Yu-cheng Yu <yu-cheng.yu@intel.com>, stable@vger.kernel.org,
-	Borislav Petkov <bp@suse.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] x86: Clear feature bits disabled at compile-time
-Message-ID: <2025072347-legible-running-efbb@gregkh>
-References: <20250723092250.3411923-1-maciej.wieczor-retman@intel.com>
- <2025072310-eldest-paddle-99b3@gregkh>
- <5pzffj2kde67oqgwpvw4j3lxd3fstuhgnosmhiyf5wcdr3je6i@juy3hfn4fiw7>
+	s=arc-20240116; t=1753272315; c=relaxed/simple;
+	bh=p3Y86nc38LoiKKqABtDaF5tDDqxNVBq0P6kFqBg05XM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m/OxjZ4CTFDKI7nH8zGfhSF78mC0MvhVcYyi4FflYJFlGkgPYveew0EoAtRCiPZeG7CkmUq8rSZRXRMAr/8BnqXSy/DUP+rwZppBcH2iEvCS6dH3VVLcM6LPvbmT57f8UlbcXsOHN12I7xTg7jvKpUQ6mx/uYbMpifUekb4RlTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bbaa.fun; spf=none smtp.mailfrom=bbaa.fun; dkim=pass (1024-bit key) header.d=bbaa.fun header.i=@bbaa.fun header.b=fS0YXnJf; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bbaa.fun
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bbaa.fun
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bbaa.fun;
+	s=goar2402; t=1753272271;
+	bh=+I7xsf7G7jFeIPNE7axWQVp7+uIyws4cVypDWIf1bKg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=fS0YXnJf7DMxMZxH1RzA2SIRZQvT4uDe9hJxUOoaqblFPMEhJp6F4TGR1GhC0hWft
+	 nagbG6AcwWJ6Y+CLZlgKCNfoxNkGkJ/aVHv92ElsdFSawc0DOu9hxnqG/IeYVJnQFS
+	 nmCfZTKwqGxhGwg73bixwpfjCsDUKQTeRCTRZCMw=
+X-QQ-mid: zesmtpip2t1753272266tcc89ea27
+X-QQ-Originating-IP: KheH5zzepJwErfQEAABqPMuD/+8ySdoAYJ2HK++Onls=
+Received: from localhost ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 23 Jul 2025 20:04:25 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14388533980788281363
+EX-QQ-RecipientCnt: 6
+From: Ban ZuoXiang <bbaa@bbaa.fun>
+To: stable@vger.kernel.org
+Cc: iommu@lists.linux.dev,
+	baolu.lu@linux.intel.com,
+	gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	Ban ZuoXiang <bbaa@bbaa.fun>
+Subject: [PATCH] iommu/vt-d: Fix misplaced domain_attached assignment
+Date: Wed, 23 Jul 2025 20:04:23 +0800
+Message-ID: <468CF4B655888074+20250723120423.37924-1-bbaa@bbaa.fun>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5pzffj2kde67oqgwpvw4j3lxd3fstuhgnosmhiyf5wcdr3je6i@juy3hfn4fiw7>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:bbaa.fun:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: MpO6L0LObisWl+PGsSopayhkh5clV6lzYsQ/+m0W7hBGvlarcuCwvNob
+	53vetMWNsXF3TlGNn1MeV+IXukoMsbgQNdFgwxWbs/SNbhx8p1yVNFEL+kH2rlpDnR1RNkP
+	aIOXT1MAOZAxNi2dy/rQazFBMaRvlbT46O13mC5F7aAuIRpjaMCqmLnuxEjD10ypsAZJ+Ew
+	fumM5n9viUfZryQiBo7dSV1UMtvFVHot6iHBbH/Ypj0KzdkgmtjPxm0Tc/99g2pXw4mgwQ5
+	rZzZ+XE0RZogBMw3LcCIkQUqmTQDA5ry1A788/aRCCmXP6ENKGkStuIQvBTIuW/eFyH6H1u
+	2KpX71x1z9qxBxJ11E4hPd384NYHVXaemyOPLm++surmhSIqmD6JhkH4u1JScnWt6Qbj7bx
+	W43u6zW13PjB/QQ2rp/K3fNMh1TDZJc4WU+/HMscIBGJRRkACUaECC7jQp+HVZfmwIZ7qJj
+	noPw4jqBK/ncwZ3zYjEstqjN1JGx8y+R64ODJa8TMYtixe9VXq0aZsFlZDB+hJeg7UTk13T
+	p3k7pEEhKoMkAg/jjjYyHWa5GSKpzeZRj34XKwYAffcxxbDsPpZL1B//tCsMEyYdh8Kl+c+
+	EG4LZwZ8Ft+Gea8S9dWRw8NiLWMgEkyHvcGGJ0t2HpmCbo4MNOXfBCs/ySB5UGKJldz2b+c
+	p/6NC9l0zgPF0ATgUvKttdIDdUHEekyA/e+IhD5QAobLrbhdIDC++qYY+MhSSxsBhh2h0v9
+	xQuC997DjEDNCC2z0MX+ccLa+t4KNTDxsshxSg0TgFqfl66ptOEZqZrbX+n8tmJqGp12Uka
+	XMu8Cd5P4OWDmuZMktjyqHuwTOPcwPqd86SqeFsEe1G1QcAQpniQHkSrWA7WfvxVDjH8cFl
+	+FjxZ0riqmyAzDxCx1GpJYOhC6eblSLMGWvje+pODbm5T0MMJrsWmtS9xv+AuqdtxGC0Zsn
+	WoiHQjbdKen/NsaBmcVAIqMrX5lhKMqOy754ldleCamzntnEiDBA8vsxrHE3aKNjZsDdR23
+	DjG4OL6g==
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
+X-QQ-RECHKSPAM: 0
 
-On Wed, Jul 23, 2025 at 01:46:44PM +0200, Maciej Wieczor-Retman wrote:
-> On 2025-07-23 at 11:45:22 +0200, Greg KH wrote:
-> >On Wed, Jul 23, 2025 at 11:22:49AM +0200, Maciej Wieczor-Retman wrote:
-> >> If some config options are disabled during compile time, they still are
-> >> enumerated in macros that use the x86_capability bitmask - cpu_has() or
-> >> this_cpu_has().
-> >> 
-> >> The features are also visible in /proc/cpuinfo even though they are not
-> >> enabled - which is contrary to what the documentation states about the
-> >> file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
-> >> split_lock_detect, user_shstk, avx_vnni and enqcmd.
-> >> 
-> >> Add a DISABLED_MASK() macro that returns 32 bit chunks of the disabled
-> >> feature bits bitmask.
-> >> 
-> >> Initialize the cpu_caps_cleared and cpu_caps_set arrays with the
-> >> contents of the disabled and required bitmasks respectively. Then let
-> >> apply_forced_caps() clear/set these feature bits in the x86_capability.
-> >> 
-> >> Fixes: 6449dcb0cac7 ("x86: CPUID and CR3/CR4 flags for Linear Address Masking")
-> >> Fixes: 51c158f7aacc ("x86/cpufeatures: Add the CPU feature bit for FRED")
-> >> Fixes: 706d51681d63 ("x86/speculation: Support Enhanced IBRS on future CPUs")
-> >> Fixes: e7b6385b01d8 ("x86/cpufeatures: Add Intel SGX hardware bits")
-> >> Fixes: 6650cdd9a8cc ("x86/split_lock: Enable split lock detection by kernel")
-> >> Fixes: 701fb66d576e ("x86/cpufeatures: Add CPU feature flags for shadow stacks")
-> >> Fixes: ff4f82816dff ("x86/cpufeatures: Enumerate ENQCMD and ENQCMDS instructions")
-> >
-> >That is fricken insane.
-> >
-> >You are saying to people who backport stuff:
-> >	This fixes a commit found in the following kernel releases:
-> >		6.4
-> >		6.9
-> >		3.16.68 4.4.180 4.9.137 4.14.81 4.18.19 4.19
-> >		5.11
-> >		5.7
-> >		6.6
-> >		5.10
-> >
-> >You didn't even sort this in any sane order, how was it generated?
-> >
-> >What in the world is anyone supposed to do with this?
-> >
-> >If you were sent a patch with this in it, what would you think?  What
-> >could you do with it?
-> >
-> >Please be reasonable and consider us overworked stable maintainers and
-> >give us a chance to get things right.  As it is, this just makes things
-> >worse...
-> >
-> >greg k-h
-> 
-> Sorry, I certainly didn't want to add you more work.
-> 
-> I noted down which features are present in the x86_capability bitmask while
-> they're not compiled into the kernel. Then I noted down which commits added
-> these feature flags. So I suppose the order is from least to most significant
-> feature bit, which now I realize doesn't help much in backporting, again sorry.
-> 
-> Would a more fitting Fixes: commit be the one that changed how the feature flags
-> are used? At some point docs started stating to have them set only when features
-> are COMPILED & HARDWARE-SUPPORTED.
+Commit fb5873b779dd ("iommu/vt-d: Restore context entry setup order
+for aliased devices") was incorrectly backported: the domain_attached
+assignment was mistakenly placed in device_set_dirty_tracking()
+instead of original identity_domain_attach_dev().
 
-What would you want to see if you had to do something with a "Fixes:"
-line?
+Fix this by moving the assignment to the correct function as in the
+original commit.
 
-thanks,
+Fixes: fb5873b779dd ("iommu/vt-d: Restore context entry setup order for aliased devices")
+Closes: https://lore.kernel.org/linux-iommu/721D44AF820A4FEB+722679cb-2226-4287-8835-9251ad69a1ac@bbaa.fun/
+Cc: stable@vger.kernel.org
+Reported-by: Ban ZuoXiang <bbaa@bbaa.fun>
+Signed-off-by: Ban ZuoXiang <bbaa@bbaa.fun>
+---
+ drivers/iommu/intel/iommu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-greg k-h
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 56e9f125cda9..af4e6c1e55db 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4414,9 +4414,6 @@ static int device_set_dirty_tracking(struct list_head *devices, bool enable)
+ 			break;
+ 	}
+ 
+-	if (!ret)
+-		info->domain_attached = true;
+-
+ 	return ret;
+ }
+ 
+@@ -4600,6 +4597,9 @@ static int identity_domain_attach_dev(struct iommu_domain *domain, struct device
+ 		ret = device_setup_pass_through(dev);
+ 	}
+ 
++	if (!ret)
++		info->domain_attached = true;
++
+ 	return ret;
+ }
+ 
+-- 
+2.50.1
+
 
