@@ -1,294 +1,204 @@
-Return-Path: <stable+bounces-164410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05BFCB0EFB4
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 12:24:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D479B0EFB7
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 12:25:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E128D188FF45
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 10:25:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5069518904DE
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 10:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E3C28B7E5;
-	Wed, 23 Jul 2025 10:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QUoTdpub"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161DA28C2C3;
+	Wed, 23 Jul 2025 10:25:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail.actia.se (mail.actia.se [212.181.117.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3BA28B4FE;
-	Wed, 23 Jul 2025 10:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2A528A73F;
+	Wed, 23 Jul 2025 10:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753266284; cv=none; b=IJ8/E0LVWmcjruLr5gJU7+UylpDEpHr0AyWlCPoR73VgdAUzLqFDxphlZLpx5tbjQaoatE0K5eGr0y+E8vKgkEXK8G5zgPugMMQm4Hwl8UpoHoxEjxxJTGK1pf0pY5QYKIVEHeQZFFNhshkVNYAGvdUx7EyH+HurH5cWEYlIKSk=
+	t=1753266341; cv=none; b=uh0peKqauO0cA1jIf2jfq9sp5Jk7VpYTO9e5amfygcZB1UM7PyLbiVJlEXRImXULTPqrk7u90Dby0Qke6ahQ1+ReNMYuRvwOHPy4otDIEXGmzHRhfnTOxvaL5oG3Jk56H/phYYlgYJEUJS78+btAYZGaQyd7I6TwptsHB0ZXVXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753266284; c=relaxed/simple;
-	bh=fdOwq/b2f7LD/Gf9dK9AiNuHaOxniq0rEMtRpG8ko2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hTnEjAr9FEiq1sNWKm3WRP0f8o6ON9zbzzoaNyMWkJ4JEEO5HNLHVXfJEYpRzopp8AJyKYPQf9DNm2vuMsD38WGKqLubTS9hl3F56P/VdimiQfoO34syJ8Lw5ibIdHLlxiQuDFs0JgfrPhtYFKfmeU5ldzOY70oO0myo0rph9yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QUoTdpub; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a54690d369so5348452f8f.3;
-        Wed, 23 Jul 2025 03:24:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753266280; x=1753871080; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3QfeDIhZBxM0UUz93jdrNB6cr19zCPo/07VW3k9S7Eo=;
-        b=QUoTdpubiqm7XDgt+TJUYZDBNaExnozI4gDE5PIVNfG2S/sLmbQGmIJvyccXrhz01i
-         oUVE6P0+xjF43RU2hZYyyefYu2xDgYmfL3vb4kT0MYypP+nh7yzzx2OWg9fsKrbLSmlL
-         viOvzDIxIDHQVUaFRhl9OeXbFfs1g93cXZphdHi1/M1/HB6ByK+/p2JjyVuuUzm1wqg3
-         NOiWfsC6g2yidm71mZzcdelKL5VtaAp0x4GrYWZbQJ+0IMDe6jqQgxj4oH6e9YVRCJlS
-         wZK6kBNm7ObTafzv50Wrv0hx95sYqipjuqnKzBkr8HWOGPPu8kVitQwGIDU8DHAiH7K/
-         4Hkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753266280; x=1753871080;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3QfeDIhZBxM0UUz93jdrNB6cr19zCPo/07VW3k9S7Eo=;
-        b=VWt97Szdn4BwDU1mbvIZZ001RXEHkmkzCPmOfuUtUWKexd2rkQoLQHcENneMwPs52H
-         vgM4Y+Rh/ossFAtHaFuM4rwUg1/qkP12gNEXDyN5P5VhrikEl9g008jE24ezIC3ARDUM
-         ysCHIojue0M5lqqziebYVtS/qV3cCMtBdox4cNWpLtWT7raGCwESh4zHxe7dRDRgGfe/
-         FQNSABaWbPX9S4OZZgw9rCJThGe8US2y5cVSXWCzGlZrlaPoHwpJiHB1/u+n4Mpi9RRG
-         rwOdqRwkFCjSWbhBPVI0DkPJoCVx+uPPuZBUB0Wx/cKT8+T026rh7UThlRmtZvhn2de2
-         ovtg==
-X-Forwarded-Encrypted: i=1; AJvYcCU8z5pk8gUuW1g+vEM3lHM+9fySJrgLQVGvl1tuSagJ/dCV//IKSejhmhDQGt2c4lFVNWrmktDXa/JGqA==@vger.kernel.org, AJvYcCUuzFpClTN0nGNB5e+ZPseEQsY6XMPV/PklewsB7EPMoQb64PtvozCgjrV9wTKkZeQDkWupS5EJ@vger.kernel.org, AJvYcCV+xsHP0/XZcpb3uiBPi4TyJ32r6vQc1Z4Dfs1JfvXR+KCmxjx2PBM4j9O/xglaiFEZI7JZOK1z2v2ngG/p@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXfy8OKBJ6arep7KPqQ19zbHVRRAZPhkeRaVajfMq1g+B17dNC
-	Y1cNM6VFwNkhhZKbm7f+rwUCoydw/53pIVgCSP+Db8n6i2m+EuwIYRsr
-X-Gm-Gg: ASbGnctCQ6fXD/sK81yf20iipZe348jZmtFxMbHrrPd1rc0cK7P9PbHeLOQeKNy8Wv/
-	4VfugK8Znod85N61CoJjdE8MvoIM43CaGUr8OOc07F6z504m2Wkxezt6MBgumpLlO9rWF0oUX8S
-	Gpsy9NR6P5GgUqzqmJ7b/hm9nQEMNrxwMKSAyAU749y5A7VoEbgLyqBVNF2bFKUuYQyK+SDYfPT
-	yiuCHI/HhE/Z8p65RILFkw065toYEgDmXr82GqjupLyYpiua/+6ySegBDvCL452wMEU5adLtQrv
-	tbhOmhwRqA6wSm/pkfATq7woXvSfBKFUcP6ElqQLsR9XP/CzXODS3Ibz7n3JdsLbb0j+7lBgk4Z
-	mq3cKQ5InkBWA1gnrig==
-X-Google-Smtp-Source: AGHT+IGS04CA4uRCGjfoHnJSh4w9B1dOWMtvG+P9rrFOsMscOys6Vkwj4GFJ5qvKH1O+tSHxvpYVmQ==
-X-Received: by 2002:a05:6000:250a:b0:3b6:d6d:dd2 with SMTP id ffacd0b85a97d-3b768eb0630mr2546202f8f.25.1753266279498;
-        Wed, 23 Jul 2025 03:24:39 -0700 (PDT)
-Received: from gmail.com ([2a02:c7c:f4f0:900:dbce:b6e:fb8b:9dcf])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca487fdsm15906378f8f.48.2025.07.23.03.24.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 03:24:39 -0700 (PDT)
-Date: Wed, 23 Jul 2025 11:24:31 +0100
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: jikos@kernel.org, bentiss@kernel.org, linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Dmitry Savin <envelsavinds@gmail.com>
-Subject: Re: [PATCH RESEND] HID: multitouch: fix slab out-of-bounds access in
- mt_report_fixup()
-Message-ID: <aIC4X_pDf6SFd55c@gmail.com>
-References: <20250722080003.3605-1-qasdev00@gmail.com>
- <c90e88a4-7fff-49fa-8a6f-24f3671d9390@kernel.org>
- <aH9zl18IqvL7l9pX@gmail.com>
- <1a2d0220-5862-4cba-8d0f-2eb7556c9620@kernel.org>
+	s=arc-20240116; t=1753266341; c=relaxed/simple;
+	bh=7WY5QMb3nxJDoy5eYEtR2dYXbPSUspjTvNcDX4R2aQE=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EwvicOGzvGhX+0DPhJTcNfUDuAk3F8k6Iz1k/PFjvQdsyKHZ6wa4PgFlzL8ywhfH/+/FtZNqBt4mb8kZpM71QmyIiAQlj+ZV6yOtmXwsOe6YMW8CpmmHzTf98RKPrzjUoeGCubE3VXj+sf8/pKw4oDAb5EcCJFlknFk1wr0MtAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
+Received: from S036ANL.actianordic.se (10.12.31.117) by S036ANL.actianordic.se
+ (10.12.31.117) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Wed, 23 Jul
+ 2025 12:25:35 +0200
+Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
+ S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%6]) with mapi id
+ 15.01.2507.057; Wed, 23 Jul 2025 12:25:35 +0200
+From: John Ernberg <john.ernberg@actia.se>
+To: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, John Ernberg <john.ernberg@actia.se>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH net v2] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
+ event
+Thread-Topic: [PATCH net v2] net: usbnet: Avoid potential RCU stall on
+ LINK_CHANGE event
+Thread-Index: AQHb+7wgjhsMeSA3wESW6FUdmfaw8Q==
+Date: Wed, 23 Jul 2025 10:25:35 +0000
+Message-ID: <20250723102526.1305339-1-john.ernberg@actia.se>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: git-send-email 2.49.0
+x-esetresult: clean, is OK
+x-esetid: 37303A2955B14450647C65
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1a2d0220-5862-4cba-8d0f-2eb7556c9620@kernel.org>
 
-On Wed, Jul 23, 2025 at 06:40:52AM +0200, Jiri Slaby wrote:
-> On 22. 07. 25, 13:19, Qasim Ijaz wrote:
-> > On Tue, Jul 22, 2025 at 11:16:15AM +0200, Jiri Slaby wrote:
-> > > On 22. 07. 25, 10:00, Qasim Ijaz wrote:
-> > > > A malicious HID device can trigger a slab out-of-bounds during
-> > > > mt_report_fixup() by passing in report descriptor smaller than
-> > > > 607 bytes. mt_report_fixup() attempts to patch byte offset 607
-> > > > of the descriptor with 0x25 by first checking if byte offset
-> > > > 607 is 0x15 however it lacks bounds checks to verify if the
-> > > > descriptor is big enough before conducting this check. Fix
-> > > > this vulnerability by ensuring the descriptor size is
-> > > > greater than or equal to 608 before accessing it.
-> > > > 
-> > > > Below is the KASAN splat after the out of bounds access happens:
-> > > > 
-> > > > [   13.671954] ==================================================================
-> > > > [   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
-> > > > [   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
-> > > > [   13.673297]
-> > > > [   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3
-> > > > [   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
-> > > > [   13.673297] Call Trace:
-> > > > [   13.673297]  <TASK>
-> > > > [   13.673297]  dump_stack_lvl+0x5f/0x80
-> > > > [   13.673297]  print_report+0xd1/0x660
-> > > > [   13.673297]  kasan_report+0xe5/0x120
-> > > > [   13.673297]  __asan_report_load1_noabort+0x18/0x20
-> > > > [   13.673297]  mt_report_fixup+0x103/0x110
-> > > > [   13.673297]  hid_open_report+0x1ef/0x810
-> > > > [   13.673297]  mt_probe+0x422/0x960
-> > > > [   13.673297]  hid_device_probe+0x2e2/0x6f0
-> > > > [   13.673297]  really_probe+0x1c6/0x6b0
-> > > > [   13.673297]  __driver_probe_device+0x24f/0x310
-> > > > [   13.673297]  driver_probe_device+0x4e/0x220
-> > > > [   13.673297]  __device_attach_driver+0x169/0x320
-> > > > [   13.673297]  bus_for_each_drv+0x11d/0x1b0
-> > > > [   13.673297]  __device_attach+0x1b8/0x3e0
-> > > > [   13.673297]  device_initial_probe+0x12/0x20
-> > > > [   13.673297]  bus_probe_device+0x13d/0x180
-> > > > [   13.673297]  device_add+0xe3a/0x1670
-> > > > [   13.673297]  hid_add_device+0x31d/0xa40
-> > > > [...]
-> > > > 
-> > > > Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-> > > > Reviewed-by: Dmitry Savin <envelsavinds@gmail.com>
-> > > > ---
-> > > >    drivers/hid/hid-multitouch.c | 25 ++++++++++++++++---------
-> > > >    1 file changed, 16 insertions(+), 9 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-> > > > index 7ac8e16e6158..af4abe3ba410 100644
-> > > > --- a/drivers/hid/hid-multitouch.c
-> > > > +++ b/drivers/hid/hid-multitouch.c
-> > > > @@ -1461,18 +1461,25 @@ static const __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
-> > > >    	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
-> > > >    	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
-> > > >    	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
-> > > > -		if (rdesc[607] == 0x15) {
-> > > > -			rdesc[607] = 0x25;
-> > > > -			dev_info(
-> > > > -				&hdev->dev,
-> > > > -				"GT7868Q report descriptor fixup is applied.\n");
-> > > > +		if (*size >= 608) {
-> > > > +			if (rdesc[607] == 0x15) {
-> > > > +				rdesc[607] = 0x25;
-> > > > +				dev_info(
-> > > > +					&hdev->dev,
-> > > > +					"GT7868Q report descriptor fixup is applied.\n");
-> > > > +			} else {
-> > > > +				dev_info(
-> > > > +					&hdev->dev,
-> > > > +					"The byte is not expected for fixing the report descriptor. \
-> > > > +					It's possible that the touchpad firmware is not suitable for applying the fix. \
-> > > > +					got: %x\n",
-> > > 
-> > > This is wrong. You have all the spaces/tabs in the string now. Drop all the
-> > > backslashes, and open and close the string on every line.
-> > > 
-> > > > +					rdesc[607]);
-> > > > +			}
-> > > 
-> > > As this is superlong and superindented, perhaps introduce a new function for
-> > > these devices?
-> > > 
-> > > >    		} else {
-> > > >    			dev_info(
-> > > >    				&hdev->dev,
-> > > > -				"The byte is not expected for fixing the report descriptor. \
-> > > > -It's possible that the touchpad firmware is not suitable for applying the fix. \
-> > > > -got: %x\n",
-> > > 
-> > > This was horrid too, yeah.
-> > > 
-> > > > -				rdesc[607]);
-> > > > +				"GT7868Q fixup: report descriptor only %u bytes, skipping\n",
-> > > 
-> > > A predicate missing. Eg. "has only", or "is only".
-> > > 
-> > 
-> > Thanks for the feedback Jiri, I took the advice on board, is something
-> > like this better?
-> 
-> Definitely.
-> 
-> >   static const __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
-> > 				   unsigned int *size)
-> >   {
-> >            if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
-> >                (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
-> >                 hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
-> > 		 if (*size < 608) {
-> > 			 dev_info(
-> > 				 &hdev->dev,
-> > 				 "GT7868Q fixup: report descriptor is only %u bytes, skipping\n",
-> > 				 *size);
-> >                            return rdesc;
-> >                    }
-> > 		 if (rdesc[607] == 0x15) {
-> > 			 rdesc[607] = 0x25;
-> > 			 dev_info(
-> > 				 &hdev->dev,
-> > 				 "GT7868Q fixup: report descriptor fixup is applied.\n");
-> > 		 } else {
-> > 			 dev_info(&hdev->dev,
-> > 				 "GT7868Q fixup: offset 607 is %x (expected 0x15), "
-> > 				 "descriptor may be malformed, skipping\n",
-> > 				 rdesc[607]);
-> > 		 }
-> > 	  }
-> >   	  return rdesc;
-> >   }
-> > 
-> > the key changes I made are:
-> > 
-> > - Move size check to the top, this way the indentation level is decent
-> > - get rid of message backslashes
-> > - shorten the fixup failure message when rdesc[607] is not 0x15 and make
-> >    it a bit clearer since this message was the longest - just a minor
-> >    cleanup
-> > - added "is only %u bytes" as you suggested
-> > 
-> > if this is all good I can send v2.
-> 
-> I would invert the conditions. So the code would look like:
-> 
-> static bool goodix_needs_fixup(hdev)
-> {
->   if (hdev->vendor != I2C_VENDOR_ID_GOODIX)
->     return false;
-> 
->  return hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
->                  hdev->product == I2C_DEVICE_ID_GOODIX_01E9;
-> }
-> 
-> static const __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
->  				   unsigned int *size)
-> {
->   if (!goodix_needs_fixup(hdev))
->     return rdesc;
-> 
->   if (*size < 608) {
->     dev_info(&hdev->dev,
->              "GT7868Q fixup: report descriptor is only %u bytes,
-> skipping\n",
->  	     *size);
->     return rdesc;
->   }
-> 
->   if (rdesc[607] != 0x15) {
->     dev_info(&hdev->dev,
->  	 "GT7868Q fixup: offset 607 is %x (expected 0x15), descriptor may be
-> malformed, skipping\n",
->          rdesc[607]);
->     return rdesc;
->   }
-> 
->   rdesc[607] = 0x25;
->   dev_info(&hdev->dev,
->  	 "GT7868Q fixup: report descriptor fixup is applied.\n");
-> 
->   return rdesc;
-> }
+The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
+up and down events when the WWAN interface is activated on the modem-side.
 
-Thanks Jiri, this looks good. I think Ill split this into 2 patches
-one for fixing the OOB with a size check and the second for a general
-function cleanup. Hope that sounds good.
+Interrupt URBs will in consecutive polls grab:
+* Link Connected
+* Link Disconnected
+* Link Connected
 
-Thanks
-qasim
-> 
-> thanks,
-> -- 
-> js
-> suse labs
+Where the last Connected is then a stable link state.
+
+When the system is under load this may cause the unlink_urbs() work in
+__handle_link_change() to not complete before the next usbnet_link_change()
+call turns the carrier on again, allowing rx_submit() to queue new SKBs.
+
+In that event the URB queue is filled faster than it can drain, ending up
+in a RCU stall:
+
+    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... =
+} 33108 jiffies s: 201 root: 0x1/.
+    rcu: blocking rcu_node structures (internal RCU debug):
+    Sending NMI from CPU 1 to CPUs 0:
+    NMI backtrace for cpu 0
+
+    Call trace:
+     arch_local_irq_enable+0x4/0x8
+     local_bh_enable+0x18/0x20
+     __netdev_alloc_skb+0x18c/0x1cc
+     rx_submit+0x68/0x1f8 [usbnet]
+     rx_alloc_submit+0x4c/0x74 [usbnet]
+     usbnet_bh+0x1d8/0x218 [usbnet]
+     usbnet_bh_tasklet+0x10/0x18 [usbnet]
+     tasklet_action_common+0xa8/0x110
+     tasklet_action+0x2c/0x34
+     handle_softirqs+0x2cc/0x3a0
+     __do_softirq+0x10/0x18
+     ____do_softirq+0xc/0x14
+     call_on_irq_stack+0x24/0x34
+     do_softirq_own_stack+0x18/0x20
+     __irq_exit_rcu+0xa8/0xb8
+     irq_exit_rcu+0xc/0x30
+     el1_interrupt+0x34/0x48
+     el1h_64_irq_handler+0x14/0x1c
+     el1h_64_irq+0x68/0x6c
+     _raw_spin_unlock_irqrestore+0x38/0x48
+     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
+     unlink1+0xd4/0xdc [usbcore]
+     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
+     usb_unlink_urb+0x24/0x44 [usbcore]
+     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
+     __handle_link_change+0x34/0x70 [usbnet]
+     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
+     process_scheduled_works+0x2d0/0x48c
+     worker_thread+0x150/0x1dc
+     kthread+0xd8/0xe8
+     ret_from_fork+0x10/0x20
+
+Get around the problem by delaying the carrier on to the scheduled work.
+
+This needs a new flag to keep track of the necessary action.
+
+The carrier ok check cannot be removed as it remains required for the
+LINK_RESET event flow.
+
+Fixes: 4b49f58fff00 ("usbnet: handle link change")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+
+---
+
+I've been testing this quite aggressively over a night, and seems equally
+stable to my first approach. I'm a little bit concerned that the bit stuff
+can now race (although much smaller) in the opposite direction, that a
+carrier off can occur between test_and_clear_bit() and the carrier on
+action in the handler. Leaving the carrier on when it shouldn't be.
+
+v2:
+ - target tree in patch description.
+ - Drop Ming Lei from address list as their address bounces.
+ - Rework solution based on feedback by Jakub (let me know if you want a
+     Suggested-by tag, if we're keeping this direction)
+
+v1: https://lore.kernel.org/netdev/20250710085028.1070922-1-john.ernberg@ac=
+tia.se/
+
+Tested on 6.12.20 and forward ported. Stack trace from 6.12.20.
+---
+ drivers/net/usb/usbnet.c   | 11 ++++++++---
+ include/linux/usb/usbnet.h |  1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index c04e715a4c2a..bc1d8631ffe0 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1122,6 +1122,9 @@ static void __handle_link_change(struct usbnet *dev)
+ 		 * tx queue is stopped by netcore after link becomes off
+ 		 */
+ 	} else {
++		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
++			netif_carrier_on(dev->net);
++
+ 		/* submitting URBs for reading packets */
+ 		tasklet_schedule(&dev->bh);
+ 	}
+@@ -2009,10 +2012,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
+ void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
+ {
+ 	/* update link after link is reseted */
+-	if (link && !need_reset)
+-		netif_carrier_on(dev->net);
+-	else
++	if (link && !need_reset) {
++		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
++	} else {
++		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
+ 		netif_carrier_off(dev->net);
++	}
+=20
+ 	if (need_reset && link)
+ 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
+diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
+index 0b9f1e598e3a..4bc6bb01a0eb 100644
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -76,6 +76,7 @@ struct usbnet {
+ #		define EVENT_LINK_CHANGE	11
+ #		define EVENT_SET_RX_MODE	12
+ #		define EVENT_NO_IP_ALIGN	13
++#		define EVENT_LINK_CARRIER_ON	14
+ /* This one is special, as it indicates that the device is going away
+  * there are cyclic dependencies between tasklet, timer and bh
+  * that must be broken
+--=20
+2.49.0
 
