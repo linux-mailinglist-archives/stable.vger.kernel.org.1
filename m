@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-164372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567B0B0E99D
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 06:33:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B590EB0E99E
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 06:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91E5E5632A3
-	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 04:33:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97E471C852FA
+	for <lists+stable@lfdr.de>; Wed, 23 Jul 2025 04:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B282C1DFE0B;
-	Wed, 23 Jul 2025 04:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928B9149C7B;
+	Wed, 23 Jul 2025 04:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ldp1wYtH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9eNMA5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727CD2AE72
-	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 04:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521BD2AE72
+	for <stable@vger.kernel.org>; Wed, 23 Jul 2025 04:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753245235; cv=none; b=UP6g6IvXzl+DrM6tRFb72Ubppu9RQdnJexfr5Itfiq/0LbqvIfKf9PMjHeKUbS8y/HQk6d8A5yOhI+lWOKHF7ggySL6L/in4+qz3y/pX7Zwg9VVqq8pur4rdzVh1oJET0PcpgXArhNpLktDkdbvqCfAze2/oOvESc9/soL6qU+E=
+	t=1753245238; cv=none; b=hWCjPsG0/AZTDA+geSe/+74i5IdJeUia7DEqTtrElBDqmcAzEfjHZRRPjVeh5E4QBF69PMcC9OiBBV+aePMM+mW51WRbmo0KILpXS6iuDZ9cd9sE+m8QgIMA/jLKmg0v5ZkJC1VVNwqsTcdVm7FGMQEdWnkiC9dnOHVmOTZD+No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753245235; c=relaxed/simple;
-	bh=VNUB7iMKPiz5wZD+jPvXUWB7mYzo1RzfCiAGfeHkqqA=;
+	s=arc-20240116; t=1753245238; c=relaxed/simple;
+	bh=dUbrXWb0IALsWZVPsF8h9oqqjnH10wDvO5kHDjP9rDw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R1U8JR5Md5caaKLgab3zrbzZoBGMg+FwgJ/acfcejb4ym/jebAbcV46D0NPdsUxjxlY21WHp/iPkxW7a86QJ3x5GUmjh1ktiNFqCOlzzDxKrpiHQfdhBwdUqoyzxK9C+SBrupxa0KXA1UB89l+AALXXYjSo6AFldFougXmkAuPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ldp1wYtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EEFC4CEE7;
-	Wed, 23 Jul 2025 04:33:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZkMHwG5obOUMb1idg0hT48uytIrFeAdy5cWFCTmq+XkRmltjHzf2m52m6AGmkGgKyIqUwLI1XDpbXEBxLkZZMQu+G1hZ0URFeEL20DVBBSrPe5PYROiAw/wOZiqsWjCe4wMJVN5B49xivUsSD2/hlxEyGIDDAeXnpWTZHF4YPdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9eNMA5W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5A8C4CEE7;
+	Wed, 23 Jul 2025 04:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753245235;
-	bh=VNUB7iMKPiz5wZD+jPvXUWB7mYzo1RzfCiAGfeHkqqA=;
+	s=k20201202; t=1753245237;
+	bh=dUbrXWb0IALsWZVPsF8h9oqqjnH10wDvO5kHDjP9rDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ldp1wYtHvDuUbmAt965Coz33dkhj8fTdjYVR4V81ezUEbZE0UvSUT8GMwXXUdqv5k
-	 8Zy+bul2F2k/zJIhXkRBpJpgW+1HILS+CSbuBYAA9nQdBIHSdzHNFKtQBQwOAMlD9b
-	 +WbUYavIEGi9Qiqc6Ru7/4RkbGWBpEQWQFeBJABDq0xmkJXGNHckH+wmKtdbTq/S3X
-	 uYPk+RFfitsYh9UQl3c2j0051FoXgCKNS7anD16kTrc2kFvMtmovj3kpo2obP4ULBs
-	 NfNbLZsCyNhiS8NM7enW+6nXD/wKQqmCPGB5WT/dFnieSTm3egXBXqQjr8gyJ9JdcL
-	 vHspDs2Cii52A==
+	b=K9eNMA5W4Ixsj6/w//3SYDM3l5yTsunHhvhu480XXhKLI1Pm17rFRqm08DqtcS92W
+	 2IyZXQv56zimxfbFQoOoEnj9NxCUAul29Y3umeGfQaAlQOGmdJymGvAkMpEsmdI8Ai
+	 563gfw36unYyeUZ22fnj4SVPxZm333ibiSxU+Mci+Br2GMCN/ExyI24pliUjRwtPnL
+	 gFZA0nsX2+ItrzJ3MEGTca8Ui1FOj5bsEYzwmKDoIfuXUpdlkihrHE1Rv74kATjOr+
+	 RC0LWUS/GFXC7Z8t85TqCIH4Xhgdt9HWLauEdPijtyy8RVzUA0xfv34W7zTvqF7cin
+	 Nv1x6FWRUetpw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
 Subject: Re: [PATCH 6.12.y] net: libwx: fix multicast packets received count
-Date: Wed, 23 Jul 2025 00:33:52 -0400
-Message-Id: <1753234538-d2a2c5ea@stable.kernel.org>
+Date: Wed, 23 Jul 2025 00:33:55 -0400
+Message-Id: <1753233976-6f7d2840@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <DCAB16D0A9C714C3+20250722020037.3406-1-jiawenwu@trustnetic.com>
+In-Reply-To: <1FD2A049AA18CEF9+20250722060854.8327-1-jiawenwu@trustnetic.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,14 +66,23 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-Found matching upstream commit: 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77
+The upstream commit SHA1 provided is correct: 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77
 
 Status in newer kernel trees:
 6.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  2b30a3d1ec25 ! 1:  e778f2ab1e48 net: libwx: fix multicast packets received count
+1:  2b30a3d1ec25 ! 1:  b062f4861662 net: libwx: fix multicast packets received count
+    @@ Metadata
+      ## Commit message ##
+         net: libwx: fix multicast packets received count
+     
+    +    commit 2b30a3d1ec2538a1fd363fde746b9fe1d38abc77 upstream.
+    +
+         Multicast good packets received by PF rings that pass ethternet MAC
+         address filtering are counted for rtnl_link_stats64.multicast. The
+         counter is not cleared on read. Fix the duplicate counting on updating
     @@ drivers/net/ethernet/wangxun/libwx/wx_hw.c: void wx_update_stats(struct wx *wx)
       
      +	/* qmprc is not cleared on read, manual reset it */
