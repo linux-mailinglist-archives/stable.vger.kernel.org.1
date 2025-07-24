@@ -1,109 +1,80 @@
-Return-Path: <stable+bounces-164596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F07FB1094D
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 13:35:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E87AB1096E
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 13:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6FE61C875A2
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 11:35:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FD0A1668C0
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 11:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D6B2777E2;
-	Thu, 24 Jul 2025 11:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6612823C8C7;
+	Thu, 24 Jul 2025 11:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="Lhi4KC0j";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oJcOTe0r"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bC+DkLpM"
 X-Original-To: stable@vger.kernel.org
-Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6BA1339A4;
-	Thu, 24 Jul 2025 11:34:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4612928540F;
+	Thu, 24 Jul 2025 11:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753356894; cv=none; b=WSl8LtaW9YuxnGJ3wC3qq8Kpnf7mVLuCm36FhiCPCx7g8SCE7ssTTV9NXJ/jPpeqNO6WxUfp7eBSnPsmcLwAnwxxly8XIijc1eYvX+1ZjvrCYQbQaYHykJHdbqoB6eeMkaae/r8RPby6V46FSJ7+cVCJcLNAR0CkoodueAW8ELE=
+	t=1753357393; cv=none; b=F3MonqdKxwF2qQk7BxRj6dE1JwPN2RwdqtK119vSTfSP1TlmpgJyFhTW9jgA6r3qNBMXtj2A7prKi4q6VbdWKII23dLPE69HeMyb2Qu1g5LdpW5eYmX43xlQ21gxx5W/Pnzo/GGwIZu4l303WYE8dhX4LKYdFg7DH7tQRqZjkGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753356894; c=relaxed/simple;
-	bh=SoMhZ76vgVDSFxSBf5IMdj3LjxZmenzhbkKzcjKrPjo=;
+	s=arc-20240116; t=1753357393; c=relaxed/simple;
+	bh=Pvohvv1QHNzbejr5xmkd8GWHpndcwCkqruwu46mGWeo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PxtC+Mqegfb1VfDLiurve5wTxBDR2WHbUgiDXDWHlDJx6bNSMbth0JW1fUn6bMrkTZOd7/h1a7ZQ0oUWb2lqWEjGNtU5uaYzyW2+4MY7lixcFLeEutMzgoLzV+2vP+bMzhNxzUVqGiR8xwxsGWd1v46IcC7eF1lYXsG94ynMgvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=Lhi4KC0j; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oJcOTe0r; arc=none smtp.client-ip=202.12.124.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailflow.stl.internal (Postfix) with ESMTP id 3EFF2130208F;
-	Thu, 24 Jul 2025 07:34:50 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 24 Jul 2025 07:34:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1753356890; x=1753364090; bh=ayZPjTbnqa
-	GMIbyiNla0DcfzBuX0r5Ej8CoWt6fQIes=; b=Lhi4KC0jV5xluRUm3bB4L3qaNU
-	vOo5/p9eXlVCqRsHi7pOaVZp+J5CgVYVZAa488ZVbJf/yQ4IpD9WWnztUooPNGdw
-	MHdsJ7wWBvbMVI/lvJWdCn4EFmP0lHitMHBZr+CXC1MsgOl8dLetnTkoSBzfL1Gg
-	vrYPl6IYJxoMromhpQLNMlEARyfV+Po9EyI1S4Y/UPLVl0CfDa9kBpPqFYkQ4aEe
-	SNHu5sQ+cpK133mSdxh66I+wtgMLuTYEzPB1ee61LY/N151BPvmNlYpH2VL9AB6S
-	Xii8nDOonqwxIlyWQn8GKUnDwDASXGN05ptZrYJqb5SeeiCcg9wcDz95Tpkg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1753356890; x=1753364090; bh=ayZPjTbnqaGMIbyiNla0DcfzBuX0r5Ej8Co
-	Wt6fQIes=; b=oJcOTe0rddHdGy0Enco7O1vQm2Qa5J+HfVZoBqhLJ/XIo19uNPU
-	GTItOr7WHfyrsrvUr0zJ1OjrDtDqgOnJ78uO/EsZgSbUd95A57gYOZix1X9yewQG
-	PbNtUfX6UoYPokh+EGYJi7zPLeKG8WFPB4zMm2p6RwZfgCcV/1Dy6r8lMn1cYI9J
-	3cXaCyhAHDvAj+rcD/4Rha1/+6wJTxaBYBooAhu9FSoI+SdqWKNWdrT4jtCVLs5/
-	hp+c8Sr2/CODJWqzN2Sg5ednC+JBvIRPuj+ko5HTMJhm5uZu3PhXHvDTzPYyZ1up
-	cRrTqs7KrXwNW3+31tcLCfEXN/YhTAC5Zeg==
-X-ME-Sender: <xms:WBqCaBP2qsMkAA92ATxwMcYgrjgzSkE6JkcSglknOOJ6Zq3g6OlCbA>
-    <xme:WBqCaBHu2EYcBG3hh7VSbE8PGLrbQwBRj8IX5eeNcaemg9EQORSUgz8uXmL6judlm
-    cmTUqqCf3MvtA>
-X-ME-Received: <xmr:WBqCaAuLXeT3NqKlh_vzdPi4qrKKcp-vX1D_8oYhfG_vzhnFS1LQc4sTpGTU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdektdehhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffj
-    uceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvvedvle
-    ejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushhtvghr
-    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtg
-    homhdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehmrggtihgvjhdrfihivggtiihorhdqrhgvthhmrghnsehinhhtvghlrdgtohhmpdhrtg
-    hpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinhhg
-    ohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtg
-    hpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgt
-    phhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhphgrseiihihtoh
-    hrrdgtohhmpdhrtghpthhtoheprhhitggrrhguohdrnhgvrhhiqdgtrghluggvrhhonhes
-    lhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehtohhnhidrlhhutghksehinh
-    htvghlrdgtohhm
-X-ME-Proxy: <xmx:WRqCaOuWvZo97rBqo12hiVnjqFcJfYmT9jZihR7Fuc0jSTgo6Ypw0g>
-    <xmx:WRqCaBEflHAII7P-tohTvuxl6k4evOFix52LYGP3HUW0SmCXLCemHA>
-    <xmx:WRqCaBIS3zPB8RHHBIes3Th1MyhPtOxsuXZs-yDc1tAYBeqimgO4QQ>
-    <xmx:WRqCaBaq9paiRHvwv4sgKjrXjxDn_ZKUsFUdzKCBnSWF7VsekJ3pUQ>
-    <xmx:WhqCaPEMluCYz4aD5oAFgb0LZvnBBK48apnGq4UJD2QUd_fNzc2WOT96>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Jul 2025 07:34:48 -0400 (EDT)
-Date: Thu, 24 Jul 2025 13:34:44 +0200
-From: Greg KH <greg@kroah.com>
-To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Kyung Min Park <kyung.min.park@intel.com>, xin3.li@intel.com,
-	maciej.wieczor-retman@intel.com,
-	Farrah Chen <farrah.chen@intel.com>, stable@vger.kernel.org,
-	Borislav Petkov <bp@suse.de>, linux-kernel@vger.kernel.org
-Subject: Re: [RESEND PATCH v3] x86: Clear feature bits disabled at
- compile-time
-Message-ID: <2025072440-prepaid-resilient-9603@gregkh>
-References: <20250724104539.2416468-1-maciej.wieczor-retman@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZJg6rsEd6265HVOCT86v0SGwKd2PrGYZFUyW0bBt+gMVnYEklR2VSD9h5oW2gInue5Yr7IBndjcYMdEzm43lt/z8PV8+p4ZTiT/vX+vHeM+LujMOKNoRaxppGPGHvzlysvhKpTY5n61o0EmRTSuzlQoVJjd0hNdfPPofyw2E7po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bC+DkLpM; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753357391; x=1784893391;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Pvohvv1QHNzbejr5xmkd8GWHpndcwCkqruwu46mGWeo=;
+  b=bC+DkLpMvKqevmyTAk5tF2zosCj9dgHdO+F6gtQruiiu1SyHNJy7qf2+
+   t4svz5l/RNFMC4CZSr0wHLl7Mztdn8aPPHfEJG2+pBPKz09GpwYep7WZs
+   sI9IMusjmRtBEEBEew3lXD/O8F3imdTvqtDyqYnhGQ/0NjJMdrZQtaMSo
+   4Es5FQGCk4ARJqa/GceyQlUFGfcjcIAFhET5B53nMmQAqupsGd3DGSQxr
+   S0GIseDKS5OuMLIBDmrW0swmnczbEfc3MT/m69cCfe9UD5MOqobBnx1qf
+   wsDEQbewPEbdLkwL7D+VEl96/PKbjBFAAetC19Zj5xwhbZ9QvMTi/bziR
+   Q==;
+X-CSE-ConnectionGUID: qBQ9NxfVQQ6H7+H1aCsSKQ==
+X-CSE-MsgGUID: uviYnItdRDOE0ssqTkSXjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="66232552"
+X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
+   d="scan'208";a="66232552"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 04:43:10 -0700
+X-CSE-ConnectionGUID: +5uwzGTPTb6k3cREUtTLwA==
+X-CSE-MsgGUID: R+PPhbiITqSm4xwCaipkAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
+   d="scan'208";a="164377079"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 04:42:22 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1ueuL4-00000000Ycf-3K7p;
+	Thu, 24 Jul 2025 14:42:18 +0300
+Date: Thu, 24 Jul 2025 14:42:18 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org,
+	stable@vger.kernel.org, senozhatsky@chromium.org,
+	rostedt@goodmis.org, pmladek@suse.com, linux@rasmusvillemoes.dk,
+	herbert@gondor.apana.org.au
+Subject: Re: + sprintfh-requires-stdargh.patch added to mm-hotfixes-unstable
+ branch
+Message-ID: <aIIcGulQp7MOsYtP@smile.fi.intel.com>
+References: <20250721211353.41334C4CEED@smtp.kernel.org>
+ <aID_3hHxWXd1LC5F@smile.fi.intel.com>
+ <20250724084012.5d7bbc47@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -112,41 +83,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250724104539.2416468-1-maciej.wieczor-retman@intel.com>
+In-Reply-To: <20250724084012.5d7bbc47@canb.auug.org.au>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Your reply-to is messed up :(
+On Thu, Jul 24, 2025 at 08:40:12AM +1000, Stephen Rothwell wrote:
+> On Wed, 23 Jul 2025 18:29:34 +0300 Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > On Mon, Jul 21, 2025 at 02:13:52PM -0700, Andrew Morton wrote:
+> > 
+> > > ------------------------------------------------------
+> > > From: Stephen Rothwell <sfr@canb.auug.org.au>
+> > > Subject: sprintf.h requires stdarg.h
+> > > Date: Mon, 21 Jul 2025 16:15:57 +1000
+> > > 
+> > > In file included from drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c:4:
+> > > include/linux/sprintf.h:11:54: error: unknown type name 'va_list'
+> > >    11 | __printf(2, 0) int vsprintf(char *buf, const char *, va_list);
+> > >       |                                                      ^~~~~~~
+> > > include/linux/sprintf.h:1:1: note: 'va_list' is defined in header '<stdarg.h>'; this is probably fixable by adding '#include <stdarg.h>'  
 
-On Thu, Jul 24, 2025 at 12:45:35PM +0200, Maciej Wieczor-Retman wrote:
-> If some config options are disabled during compile time, they still are
-> enumerated in macros that use the x86_capability bitmask - cpu_has() or
-> this_cpu_has().
+...
+
+> > >  #include <linux/compiler_attributes.h>
+> > >  #include <linux/types.h>
+> > > +#include <linux/stdarg.h>  
+> > 
+> > Can we prevent the ordering?
 > 
-> The features are also visible in /proc/cpuinfo even though they are not
-> enabled - which is contrary to what the documentation states about the
-> file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
-> split_lock_detect, user_shstk, avx_vnni and enqcmd.
-> 
-> Add a DISABLED_MASK_INITIALIZER macro that creates an initializer list
-> filled with DISABLED_MASKx bitmasks.
-> 
-> Initialize the cpu_caps_cleared array with the autogenerated disabled
-> bitmask.
-> 
-> Fixes: ea4e3bef4c94 ("Documentation/x86: Add documentation for /proc/cpuinfo feature flags")
-> Reported-by: Farrah Chen <farrah.chen@intel.com>
-> Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-> Cc: <stable@vger.kernel.org>
-> ---
-> Resend:
-> - Fix macro name to match with the patch message.
+> I am not sure what you mean by this.  Do you want alphabetical, reverse
+> christmas tree, or something else?  Or are you concerned with something
+> completely different?
 
-That's a v4, not a RESEND.
+Alphabetical
 
-Doesn't Intel have a "Here is how to submit a patch to the kernel"
-training program you have to go through?
+#include <linux/compiler_attributes.h>
+#include <linux/stdarg.h>  
+#include <linux/types.h>
 
-confused,
+-- 
+With Best Regards,
+Andy Shevchenko
 
-greg k-h
+
 
