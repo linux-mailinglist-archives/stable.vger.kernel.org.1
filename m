@@ -1,121 +1,106 @@
-Return-Path: <stable+bounces-164613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC971B10BD1
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 15:47:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5574B10CB8
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 16:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC18B3B38B7
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 13:47:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDC571C243A1
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 14:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3721C2D5C97;
-	Thu, 24 Jul 2025 13:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044972C3773;
+	Thu, 24 Jul 2025 14:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="bgKWeb14"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LHxJKqcf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D156BB5B;
-	Thu, 24 Jul 2025 13:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B7B2C2ACE
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 14:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753364845; cv=none; b=aKSe4H38vCUczlP6Qfv0zX3OaqPcU6mgJQ7TtcvphHfBwlo1ZYHnaVGhTkxlAURFk3hMet92pTwp7PBoNUf4RsCTV1u1loTn5DI06tuj9zZri2ZGqpnCz6/Nm7a7K8ODQcQlP7ZsS5D1EdBc8btKR28Q+XPwH/FxjzfLaz8DaRk=
+	t=1753366169; cv=none; b=F4J824ZvjOzD1fgrb4WbtPBIOG9qDqfG3cRKg8F3Zun7wv+0lKL508QpO1yeZZgTcegw3a/y82HZQERbFVJoc1jWpT6MaoxpIOHT8lkcA6D/ifZo1qS81Teh+NczOMz9JsXv1+kBC96+EAsqwUxfcx5AK1kY3NdIKPQSdMDARVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753364845; c=relaxed/simple;
-	bh=2kdZ4xvUYXwlOleN9a/KN6UiK3wSYlarxxKPxFl/eFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TddJYt3J7AXLwDMwcnVN4UdWqryDy6xIlz1cIPSNN9YlVkIZ4hvuk+4Up+LMe9fqSZg0edRgduQgm0kQjBvB4UskxMtxTtX9u+4206fR5VNGa5CjVR6gBKQuN4/4ilonABzflXmv/Bz5IEZd5mllbF4Vot7bbseYZ3fMm8AjdjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=bgKWeb14; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=202503; t=1753364660;
-	bh=Wyb3wp6qFEX/SdEeQNb+HyojfhrBOwJWLpGcOwCl/BE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bgKWeb14NXrC8IjsZdHw3Wra65z2AAsBaaK0hwmMo1krznGejfEj+0/HCuB4ODZ4t
-	 HebyBOsEr/m8WSXKT0AQa7ZJwAJfXSM9onHB3X8U9R4TZO566g2NARgeRVeR7Pail3
-	 /4conJbtaBvwpC9T75aovj2iVjby5Psy3NIMDtyUWHlD2AXPpiPECI4oaqzKITSf85
-	 g78rw/PgnSxvLTmB8ityt4Chm/Wvnxr5fDagVhrSV54hvagATTrL06vMcHSVDHlXo1
-	 yKoAEPPHITGb5Zew//Qyh8pTkO+s3ICItEreX80akhMvNUXKNod99jwOXkj0FJfQ7b
-	 LjCUDnwb30uDQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4bnsg44GQrz4x11;
-	Thu, 24 Jul 2025 23:44:16 +1000 (AEST)
-Date: Thu, 24 Jul 2025 23:46:57 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org,
- stable@vger.kernel.org, senozhatsky@chromium.org, rostedt@goodmis.org,
- pmladek@suse.com, linux@rasmusvillemoes.dk, herbert@gondor.apana.org.au
-Subject: Re: + sprintfh-requires-stdargh.patch added to mm-hotfixes-unstable
- branch
-Message-ID: <20250724234547.737912c1@canb.auug.org.au>
-In-Reply-To: <aIIcGulQp7MOsYtP@smile.fi.intel.com>
-References: <20250721211353.41334C4CEED@smtp.kernel.org>
-	<aID_3hHxWXd1LC5F@smile.fi.intel.com>
-	<20250724084012.5d7bbc47@canb.auug.org.au>
-	<aIIcGulQp7MOsYtP@smile.fi.intel.com>
+	s=arc-20240116; t=1753366169; c=relaxed/simple;
+	bh=5ZBfrtmQTISoCtlECx5yMWCiuJv8lY+fvUdsiwbAEkg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WekQWPyVbK1ztDiSn0+zz1Li/wOBpnqynmgfZ3jY9Ra6M3gKwoyFLuIgM0xHtlE9EfZWtG/8x9Ad5XJvwZChSTRMb4Kwi2pphH6r06a296bPGnD9YFk4g0sSkJMyh+WFtVF2X4aTx2Y5HVBoazDIjPeOWQPb+g57YVxdd4HCv8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LHxJKqcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BEFC4CEED;
+	Thu, 24 Jul 2025 14:09:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753366169;
+	bh=5ZBfrtmQTISoCtlECx5yMWCiuJv8lY+fvUdsiwbAEkg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LHxJKqcf8rPX6eGQnfeoxT7b6P77OV/ZqJJe/dUZO1Wv+q/TXQyQsJtzkmMK6T3fC
+	 GkdIpC5dKwoEyk7+Y6+cP0WUsz/MeCU1SGk7TET2Xm8bS4/UrDkyE29I21+xL57ZSf
+	 gtyKtIOcwO6wtqPB5Rv8UqCFyECL8KDyxNeTtoT0/3aGlFV7MxsHzzEeQbjOm1Sysl
+	 Y0dpiWcS94vWMQAr0aTGrniLH02h0qDV3H1BgQc+MJ0tkQ7wpzBY1vdaJErMrsVq84
+	 EEG+34h8TDw8uqW55Fh5UJ8ZcX3BeFlwmUika2uUWI31QHr9Q1sKcAuVMcKGVaMwAH
+	 pWhb3jKmusCxg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] arm64: dts: qcom: x1-crd: Fix vreg_l2j_1p2 voltage
+Date: Thu, 24 Jul 2025 10:09:23 -0400
+Message-Id: <20250724140923.1305618-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025060236-resale-proactive-e484@gregkh>
+References: <2025060236-resale-proactive-e484@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/aMLhU40Npbud8+Di1qBqoOL";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 
---Sig_/aMLhU40Npbud8+Di1qBqoOL
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-Hi Andy,
+[ Upstream commit 5ce920e6a8db40e4b094c0d863cbd19fdcfbbb7a ]
 
-On Thu, 24 Jul 2025 14:42:18 +0300 Andy Shevchenko <andriy.shevchenko@linux=
-.intel.com> wrote:
->
-> > > >  #include <linux/compiler_attributes.h>
-> > > >  #include <linux/types.h>
-> > > > +#include <linux/stdarg.h>   =20
-> > >=20
-> > > Can we prevent the ordering? =20
-> >=20
-> > I am not sure what you mean by this.  Do you want alphabetical, reverse
-> > christmas tree, or something else?  Or are you concerned with something
-> > completely different? =20
->=20
-> Alphabetical
->=20
-> #include <linux/compiler_attributes.h>
-> #include <linux/stdarg.h> =20
-> #include <linux/types.h>
+In the ACPI DSDT table, PPP_RESOURCE_ID_LDO2_J is configured with 1256000
+uV instead of the 1200000 uV we have currently in the device tree. Use the
+same for consistency and correctness.
 
-I have no strong opinion, so fine by me.
+Cc: stable@vger.kernel.org
+Fixes: bd50b1f5b6f3 ("arm64: dts: qcom: x1e80100: Add Compute Reference Device")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-1-24b6a2043025@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[ Change x1e80100-crd.dts instead ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm64/boot/dts/qcom/x1e80100-crd.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---=20
-Cheers,
-Stephen Rothwell
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+index 2a504a449b0bb..e5d0d7d898c38 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+@@ -659,8 +659,8 @@ vreg_l1j_0p8: ldo1 {
+ 
+ 		vreg_l2j_1p2: ldo2 {
+ 			regulator-name = "vreg_l2j_1p2";
+-			regulator-min-microvolt = <1200000>;
+-			regulator-max-microvolt = <1200000>;
++			regulator-min-microvolt = <1256000>;
++			regulator-max-microvolt = <1256000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
+ 
+-- 
+2.39.5
 
---Sig_/aMLhU40Npbud8+Di1qBqoOL
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmiCOVMACgkQAVBC80lX
-0GwonQf9EHmHJ7tpYBFmwqQVKPGqnctEg41METeKXPZSiZsXEIngKsd2gjv7pPVs
-qNwY/sDMq1HJ/ErsozcEUv8/w5ukuz12uNVEp/sioLx7V6G7nW5iBf4i4cYpaWU4
-LdRSFVh28VYIsD1neGf8AG2Orvoqkyvjs3QATk2xcqMYHasU/Ur3oAruXzxsjYvW
-lkrCNLwBotiM8VUYU9tKPpmdZDY0cmhgLW2jSH83v++0KbYtm3Nl233XztFERFZS
-9rTQuFrldw1gNHCfCYUmFr1o8lbtOvLUqelXBWwg9eUjZ7FXmhWxzNyw7aadX2YQ
-Er0MN2iDHbLVHrRkdJuPcCZDnMvAxg==
-=VWYK
------END PGP SIGNATURE-----
-
---Sig_/aMLhU40Npbud8+Di1qBqoOL--
 
