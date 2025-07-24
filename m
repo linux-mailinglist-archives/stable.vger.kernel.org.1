@@ -1,100 +1,165 @@
-Return-Path: <stable+bounces-164606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F151B10AB1
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 14:52:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD0BB10ABB
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 14:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08603169DC9
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 12:52:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E255188B273
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 12:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CE32D5C6E;
-	Thu, 24 Jul 2025 12:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC01F2D4B5B;
+	Thu, 24 Jul 2025 12:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZYI2xX2L"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bf6yVMhO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFC82D3ED7
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 12:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DDE2D3ED7;
+	Thu, 24 Jul 2025 12:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753361546; cv=none; b=TieBA1Dl4xF5X/6dD6DYYtq4+9rmuWOSj0O0WaGEaD2h8YPufXjlrCi4YdhDpo99Z6h1WfwxdTER7UwbTVbGW+4K0sigOhyQRZnLjg20DTWcJsMlZAeCAEMosK6pxOLmGYeA2evyjrdgKz24E/Zv5VhPOYbb92dXVq0fh7EQ3O4=
+	t=1753361646; cv=none; b=SlEkQ5XYbSeKdF/yfESdColid7Ou+e1cnqC7iTyrUDM2iTXadSRtF3WNSq40ex3zUsJAYmC+rJvvpI+Whr/6aFGS/EcIekmaXbMGL1ltu4gfHU84ugosxxAQjdh1NlwCtEizWqif8AD+Qkx9A9KVXBsOwqFNZnVAhhmtXDYsYSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753361546; c=relaxed/simple;
-	bh=M4TWp7K+Ol0BcCvSQCZkI2VlvJcQV50Lby6E0Kc0HA4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=tRmpd+I5v0b5GwwbqPV++bJnVooHSz/cjP0SCaOkFArT4Ri8WrSjU2tj8RIWBODCYOJ+KnsI+ZAKVSLe5i5h8QMhnRmp/Zywc4+bvE+2+4lv5Vy5L+AOlJRKGKv1ny+m2bH5LP9cuDXdI8aTalNlJyOw4sJeawepoRpaRYE0Fms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZYI2xX2L; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1753361646; c=relaxed/simple;
+	bh=o/HNMzmoL5jVJLbw/YCLhzRdjr7O65GLHlcUxrOksEQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XPHrbQkIcAeOnKyZKorDQQ4OiCEyT1WBajs+3c7x4QwlSv8svdNIOA+f03t2K796rhhopZSdJq6I/Icp/YK6dB/NAgYlkGWRMeJdtXFtJfNfraiHRA80qOMSalxzTXLt0ZXPkEndkmK2Vu64TqjMQuDLv1ZBo2vqCy7abGQ7ny4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bf6yVMhO; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753361545; x=1784897545;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=M4TWp7K+Ol0BcCvSQCZkI2VlvJcQV50Lby6E0Kc0HA4=;
-  b=ZYI2xX2LCyrfKOuxgjayZ2dszA648mmcjCxKSdA47cDO3eyrBB3ZIVKp
-   2TiHUpqPfnpUPZvE88bfBNWO6L5KqOni9kaxK39kJfEphvyHyb9mtw5PC
-   sZTFsdAXTEz9sMUSBjADMTxOARMX2FU3VBaZ6KHzZGFig0K8/EqLuaZgv
-   XTGJdYXV+cNJt7M55AysqamLCBUb3yB2LzwH8C5Pl4qzwvafnUqqFQ4HF
-   yz2lGsw5vTVQxgkBphr9uua+plYBS8rEBqdZ46X37qhrnbGC4eiVcVnyT
-   9A2x5vFguXRG9HGkWVWheaomD5ZQYjfIuv8jomS6xWcSTySDeMdpcLpf5
+  t=1753361645; x=1784897645;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=o/HNMzmoL5jVJLbw/YCLhzRdjr7O65GLHlcUxrOksEQ=;
+  b=Bf6yVMhOeRIsghxSHSJD5FMRjub9HB4iu4YJ/RGj4MrUgJOjdXfuBpJU
+   APoF/Vaw26XH3Idypn8KvSxOAdgDxXF/EFXOzkDbipk5LqO86dN5PFO06
+   8Fbp3jm99ZN0P+wtSxWLiv8IwyfiiUoYlJuqTkjyjGUracDtcXzD33gYg
+   UXWVzwrZitgOZ8yeqtJflDcWSth932KXOHUUlBPSKoLquwu7ugy9JaTsA
+   TFirSTXOokNxWn4Yc9ukAcfVfVbIQaTGI5gQLmmvuMMQvS0SeuYD1GdF9
+   w7q+VO5cARmMWyrIvYcHpmwN26/1BKaQmZpSQDZwbmlj9fz83c1oDF3V3
    Q==;
-X-CSE-ConnectionGUID: ThqT5cA3TWq2YLEuz4nMGQ==
-X-CSE-MsgGUID: NwRgbKYUT8KlnGTq6JQc0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="73254220"
+X-CSE-ConnectionGUID: tIwSoiWlSt2K79Q+plyrhA==
+X-CSE-MsgGUID: xG6kZDVHQCqP7EbY0igc2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55778212"
 X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
-   d="scan'208";a="73254220"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 05:52:24 -0700
-X-CSE-ConnectionGUID: a9M29K29Qye8Yazuf8dxLg==
-X-CSE-MsgGUID: FasRdBspR7yU6/OmRlSX+g==
+   d="scan'208";a="55778212"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 05:54:04 -0700
+X-CSE-ConnectionGUID: MvuiZzvORyu+oi7jI86Kdg==
+X-CSE-MsgGUID: 8PZcJ1kUTCmTpJpYRniPwQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
-   d="scan'208";a="159460782"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 24 Jul 2025 05:52:24 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uevQr-000KRj-0h;
-	Thu, 24 Jul 2025 12:52:21 +0000
-Date: Thu, 24 Jul 2025 20:52:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Oscar Maes <oscmaes92@gmail.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net-next] net: ipv4: allow directed broadcast routes to
- use dst hint
-Message-ID: <aIIshP1U2XxL-uU_@17a2457f42e1>
+   d="scan'208";a="159981097"
+Received: from sschumil-mobl2.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.244.18])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 05:54:00 -0700
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+	Kyung Min Park <kyung.min.park@intel.com>,
+	Tony Luck <tony.luck@intel.com>
+Cc: xin3.li@intel.com,
+	maciej.wieczor-retman@intel.com,
+	Farrah Chen <farrah.chen@intel.com>,
+	stable@vger.kernel.org,
+	Borislav Petkov <bp@suse.de>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4] x86: Clear feature bits disabled at compile-time
+Date: Thu, 24 Jul 2025 14:53:46 +0200
+Message-ID: <20250724125346.2792543-1-maciej.wieczor-retman@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250724124942.6895-1-oscmaes92@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+If some config options are disabled during compile time, they still are
+enumerated in macros that use the x86_capability bitmask - cpu_has() or
+this_cpu_has().
 
-Thanks for your patch.
+The features are also visible in /proc/cpuinfo even though they are not
+enabled - which is contrary to what the documentation states about the
+file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
+split_lock_detect, user_shstk, avx_vnni and enqcmd.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Add a DISABLED_MASK_INITIALIZER macro that creates an initializer list
+filled with DISABLED_MASKx bitmasks.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Initialize the cpu_caps_cleared array with the autogenerated disabled
+bitmask.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH net-next] net: ipv4: allow directed broadcast routes to use dst hint
-Link: https://lore.kernel.org/stable/20250724124942.6895-1-oscmaes92%40gmail.com
+Fixes: ea4e3bef4c94 ("Documentation/x86: Add documentation for /proc/cpuinfo feature flags")
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: <stable@vger.kernel.org>
+---
+Changelog v4:
+- Fix macro name to match with the patch message.
+- Add Peter's SoB.
 
+Changelog v3:
+- Remove Fixes: tags, keep only one at the point where the documentation
+  changed and promised feature bits wouldn't show up if they're not
+  enabled.
+- Don't use a helper to initialize cpu_caps_cleared, just statically
+  initialize it.
+- Remove changes to cpu_caps_set.
+- Rewrite patch message to account for changes.
+
+Changelog v2:
+- Redo the patch to utilize a more generic solution, not just fix the
+  LAM and FRED feature bits.
+- Note more feature flags that shouldn't be present.
+- Add fixes and cc tags.
+
+ arch/x86/kernel/cpu/common.c       | 3 ++-
+ arch/x86/tools/cpufeaturemasks.awk | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 77afca95cced..a9040038ad9d 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -704,7 +704,8 @@ static const char *table_lookup_model(struct cpuinfo_x86 *c)
+ }
+ 
+ /* Aligned to unsigned long to avoid split lock in atomic bitmap ops */
+-__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long));
++__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long)) =
++	DISABLED_MASK_INITIALIZER;
+ __u32 cpu_caps_set[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long));
+ 
+ #ifdef CONFIG_X86_32
+diff --git a/arch/x86/tools/cpufeaturemasks.awk b/arch/x86/tools/cpufeaturemasks.awk
+index 173d5bf2d999..1eabbc69f50d 100755
+--- a/arch/x86/tools/cpufeaturemasks.awk
++++ b/arch/x86/tools/cpufeaturemasks.awk
+@@ -84,5 +84,11 @@ END {
+ 		printf "\t) & (1U << ((x) & 31)))\n\n";
+ 	}
+ 
++		printf "\n#define DISABLED_MASK_INITIALIZER\t\t\t\\";
++		printf "\n\t{\t\t\t\t\t\t\\";
++		for (i = 0; i < ncapints; i++)
++			printf "\n\t\tDISABLED_MASK%d,\t\t\t\\", i;
++		printf "\n\t}\n\n";
++
+ 	printf "#endif /* _ASM_X86_CPUFEATUREMASKS_H */\n";
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.49.0
 
 
