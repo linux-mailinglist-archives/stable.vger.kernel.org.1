@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-164651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E23B1107A
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 19:44:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85859B1107E
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 19:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 536021CC18B7
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 17:44:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9958C5A7897
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 17:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9772EAD09;
-	Thu, 24 Jul 2025 17:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9508285045;
+	Thu, 24 Jul 2025 17:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7qo5OSY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYlLfYcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2E92EA758
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 17:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995091B4F0A
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 17:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753379042; cv=none; b=EDEVKs8TperIMUuVC81OJ9md3P6CKe+QqbfVfAUtR94p2bj0BXBk2EWEoUuUhdDrhRUoVb17dbEnP210Slr5UWKaD3s/5cy+teH+ZSgNLQd6xDKQ/rproq5qkcRx/8jFNUrTFeYIsoT5E2NgQkkeohnGoFbzUcgzbRVDoPhmimo=
+	t=1753379241; cv=none; b=F6e4/jekgqJUVRH9p792AWRcJU5g868mwKZ0tjM/lgp7HZqY/1IevswDLgfBCgcRXUOsT4wxPeA3HsHrWMpe2JB8+sN8ABA7po7z8Arq81MSU4CApjs86qhXczSZVSd5/FibgXcjrT/LORrm3K72ER29qT4thXgV9h9ykb7eDXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753379042; c=relaxed/simple;
-	bh=bMvny6AOfCf+GS4Scm9WfAOYhCJuivAYp8KZV/mCRxk=;
+	s=arc-20240116; t=1753379241; c=relaxed/simple;
+	bh=lT31yPm/0Eq/cG1VpiMIUdxtyQ9X0HwXZIyQM8UxiQI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L0FwoqepBigw2qw13IendUnjJRlUGdN4tl6L8ePUISewIjne4dgSq+93iorGVWJYRGpGTJajaYep3/ORJz5KfvImWrRaSq2Mqo6Nw6INvDI5s4tbUoziAaeUudP2k0rsKTRZSYSsyz+cUt8BCBrmT3KRheKPMp3GDmRiL86WfCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7qo5OSY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E667C4CEED;
-	Thu, 24 Jul 2025 17:44:01 +0000 (UTC)
+	 MIME-Version; b=Hh4ZhcPySxDMd3aV1Axx7B7zaxd2LcbXaB3U+IAmeNwxHTjZNDmDU6Mf2kBWX9Z1oRCIGirEqfkvBFRgc5Jnq0x0mpkbCpUEi+o8hu4OxHO6aUBuyVhkEVx4kZhosnPPq/hYhB1Hb0Hn2d2eHZOMAGu3EhLAD8bvXkIPb8UzxP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYlLfYcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DB5C4CEED;
+	Thu, 24 Jul 2025 17:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753379042;
-	bh=bMvny6AOfCf+GS4Scm9WfAOYhCJuivAYp8KZV/mCRxk=;
+	s=k20201202; t=1753379240;
+	bh=lT31yPm/0Eq/cG1VpiMIUdxtyQ9X0HwXZIyQM8UxiQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7qo5OSYhxs0moQlmjMJqwAUqt6VwHq2DrUGcp/IbbcIC2PQrdUXN+wpnbHVTtLsS
-	 S2phWimVoVBytg9cFP7IcWBRsw9YLUH1RewoZuU5LHMBNK9bjIRSFCEzLHCcGOAHoU
-	 6UGbhoEUMO7XeT2QVe+Wt2/vupRkslYsbNNOwTWNxOR2Jf4+FZvWl4kP08rMidyITK
-	 r/A5SNAAyzSDSa+OYq3vayeHeVKOsP8gK79BM3yhuGDx637CW1a4JVX3I5NDDql1in
-	 doBhsQ2pIKBjmZdtXwmwPUVBM9SCIbrQ0LrtAFZ8jIcKTrCPORyfgAkPLNJLqIXgJ/
-	 TYJUwOMJbXSiA==
+	b=KYlLfYcTeneadLlfdAXhE1whD/mr/xFWVzWgoQee+/ihFz/reT73leUTFplX+4TBB
+	 SVhWgv4+9qr52W7ySuPjOgchrD9D9H8R5jMLDf60urKWa/xl4ocMgYhbeXlSHg0UTm
+	 x7ozMgHogGpg+e1TE9UDODxkYb9uh9thrljt/WxgRi+52alDvyeoFSFWuUTiOdFX4B
+	 RDBfbtH1cltUqj1BgmNKlN2NPharAh/rltOw7Mnpqh7w4QpCWCoz2IpUboxr53+HmV
+	 lQavG7AcyyAmsnKpInHhMV5q6ILzdxzVCTCCUAi7Jb4LXGBrme6zJ9XT1tMPP8v3Nf
+	 MNEAEaaqcBSHw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Chao Yu <chao@kernel.org>,
 	syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] f2fs: fix to do sanity check on ino and xnid
-Date: Thu, 24 Jul 2025 13:43:58 -0400
-Message-Id: <20250724174358.1407937-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] f2fs: fix to do sanity check on ino and xnid
+Date: Thu, 24 Jul 2025 13:47:16 -0400
+Message-Id: <20250724174716.1409709-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025062013-uncertain-flyable-d3b8@gregkh>
-References: <2025062013-uncertain-flyable-d3b8@gregkh>
+In-Reply-To: <2025062023-frequent-thousand-f5c6@gregkh>
+References: <2025062023-frequent-thousand-f5c6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -143,10 +143,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+)
 
 diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 558f478d037d0..515a32fd943dd 100644
+index 452c0240cc11e..1997d71041f0e 100644
 --- a/fs/f2fs/inode.c
 +++ b/fs/f2fs/inode.c
-@@ -226,6 +226,13 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
+@@ -222,6 +222,13 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
  		return false;
  	}
  
