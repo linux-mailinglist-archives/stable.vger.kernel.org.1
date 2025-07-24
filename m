@@ -1,86 +1,85 @@
-Return-Path: <stable+bounces-164690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93990B111A8
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 21:27:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104D5B111A3
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 21:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BF653B3728
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 19:26:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10D5C1CE708E
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 19:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C802ECD3F;
-	Thu, 24 Jul 2025 19:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2242ECEA8;
+	Thu, 24 Jul 2025 19:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="fUT+NkDo"
+	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="RF9l4WOv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9DD2ECE81
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 19:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9512ED163
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 19:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753385230; cv=none; b=H9SeTPzwMl4F2xPE2iPXx5x1nJt26nXozuFiRKqCtEQHk5/zwd0T3qfgRiJAW2zuMaLJnSjLGo03G1dJOdcFjEnpsGkRhhdYDiaZiA0jIUTMRE3w4bWhKt7I4EfNyBdCbkktV0HzfOcVGTwz0X4/qaAHSXlD/oQdFoEp68fU8XM=
+	t=1753385235; cv=none; b=gbA0m6EOrod/t1MxClAf2B6uzSWxJ9E+Kh2kg7C60qxN3SCcx7IKrLyWCea4og0lniNEk9Tv3Xd3fh+2USuAshFs0wG4PCVHz3pVbiAvS6i6hlVZDO7MKm2I8MT80F+9R8SqM5N6dJonQC3spDb6DSTmCPMSdloyG30c1anDYgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753385230; c=relaxed/simple;
-	bh=jAT/TUwURPN8GASB5irpI01n1mu6tD5g0uiI2/5mfm0=;
+	s=arc-20240116; t=1753385235; c=relaxed/simple;
+	bh=NLATYq5SkCJJLMQ/X7KKcR/cneORGmAZ2H80cv29d/0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RsgaX68Z3Wuis49+1LwXM8sLpKICtP37xfe2xa4l770vdBZ+vVL8Sgv7BAHiJSh75VRxwA3lyujEu/DN//XmdQWM32pBzuwtvrP+i+/2N/wF3D5MWpVHejjk4AyZ4JLorXKprpGzV6aV5ZibWnEAWqh+wJsYuWyQ5oYkIRGImNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=fUT+NkDo; arc=none smtp.client-ip=209.85.216.43
+	 MIME-Version; b=qDcConDXgV65z5BRPZcA18211Ed6hxY9X5UDjKizPJlxOYOKana2cbDmNgoq0areX8TTxNl4iqALJRRfO1QkQ0UyLN+FFedYGLmFV9ninyv6y3kI8DDsdvIJfXtsbkocaJWzxTN1AxaO0X46OCBRLbX5eS6ds3WVA5KEz3vvWro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=RF9l4WOv; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-313290ea247so33367a91.3
-        for <stable@vger.kernel.org>; Thu, 24 Jul 2025 12:27:09 -0700 (PDT)
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-313756c602fso34294a91.3
+        for <stable@vger.kernel.org>; Thu, 24 Jul 2025 12:27:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mvista.com; s=google; t=1753385228; x=1753990028; darn=vger.kernel.org;
+        d=mvista.com; s=google; t=1753385233; x=1753990033; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y5VcQ1YDoDCdjFi6qnB26AKzwkL5qLrc0HnnYyjdFeY=;
-        b=fUT+NkDoopJ+6YkYdSt/e2EdqR2AYd6seRbMXkYDpsEu07O8wC7bI+/v8SKIqVA2l/
-         LtH+JGgstuZeVwxIAGaTrAi90t3gRd64VozIarKm9j8E1WD19W5cP36THsowtWW4xZpd
-         n0Y5JWfebg0ofgVTJ5hI4VU0q+yyCn2VWI2vg=
+        bh=DCeulzLEue6JxqgJqitoOqrSG2i179oJCPK21QQ1wug=;
+        b=RF9l4WOvcNXMO43i5BPiMgmLU7ntVtE34FPY0MNPHrgr8UBABaQVZ6XeGArZMaEbdR
+         vlqAxn62+jjf/WF/tlgBp/dTkiOui6SlQ4l8PkjbGIInDzCqZtJJLVNaSesASGbH0QF/
+         UkHF6ZgYmQ7RE1cLyxObbcWyFwfpGb5gz24I8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753385228; x=1753990028;
+        d=1e100.net; s=20230601; t=1753385233; x=1753990033;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y5VcQ1YDoDCdjFi6qnB26AKzwkL5qLrc0HnnYyjdFeY=;
-        b=hADMt2ASNrhm7TYFLN9ikhNWk0tE9ngvdIqZfNzd3prJKAb5FR8yFasThVuU32g0CG
-         5fFrea3X4GiOFBNVmVdaB4cxA025C65nOQqVe5QotKIMO9YU9zBMi+jfysQQFfIfJQPg
-         keg5UJIvpPmmBZUhVslmIrygzx26mKSSiFu2W8n7UelIF8GR1xV+DNBcH0SIJYiz7FoB
-         3Y0wdcsmbP8y8FWCurTRlPHzPaOyGN7bmfV4soG7aq0hWnGvH7cFQoIviRGImwvUL9jH
-         BLrx4K2j4hvZM3kfQ3LOcwy5VuHH34ri+aqLy0RKRRlB4KtdnWTmSeR3gSpar2kUkvWc
-         8V9A==
-X-Gm-Message-State: AOJu0Yw3qZ4etoozX80lMWPagyz0lAz1DitLdKLg7XZBlcq19QP4r6vD
-	F6QnjmHVkyYTPI0wjST9v3gaTkTPxDUf3B4csrlPrKsfsGNgQoMVXsYvkUZq86sKf+XK3I3kmey
-	vcYgDhBCCMg==
-X-Gm-Gg: ASbGncuiEdfn33xT8ZquPBaUzRYk7D7nLHI6WridGPGUKUbW8LT2p4Q2XZUH8rvYhCg
-	IS2KUk6K3fNas8jO4TTbxu37efoxwpHYk06FNgMJGAwQjsxM7s8O5hc+RXANcBky7gFdovD3Afk
-	H1EITQ3UcXhPCFHPWg60ykUo4UVzSZxne1OmeUhvJzy82h+p6F6jer88vxJ4TQHpdZlYyl726nt
-	kDpoVKT5B7TRZa0y3LOnG93SpKWswvhJbJc8/2MbKIgrqfsSpgNyjL3JOGJ0zhA97Ouc6DFyiWh
-	NaGGWyRBzA5lZ4Nu+6dp7bwbad5rJ7wY5UNZzSVomG2jda3d5iyx7TOTMu4ifWuhUaq4H076kZp
-	lSmgsYJH5H5FSiB9EEfD34HRkU80R8lgr1l64Eq6Uoto8
-X-Google-Smtp-Source: AGHT+IF3wC5m18xOhikzN8U3n2m32zlz8iNzYzumkjDBNC85J8clwHWJxPeyI1iHorW75bobDDDyZA==
-X-Received: by 2002:a17:90b:164f:b0:314:2d38:3e4d with SMTP id 98e67ed59e1d1-31e507e77a5mr4483279a91.3.1753385228366;
-        Thu, 24 Jul 2025 12:27:08 -0700 (PDT)
+        bh=DCeulzLEue6JxqgJqitoOqrSG2i179oJCPK21QQ1wug=;
+        b=amdk9EWw9roXtfAvAf9smg/ebnh3eRdoOkColprFGj5XHhE/dmoPM4qNSb2c+bTwip
+         KgxW7iTktdsmJDifs15b/c1jWvR0zz97EhbOjSF5Vt9lpjjqMG0VQFyQ2gooCnRxVoau
+         ZIuJ/RkAPDOJyEDgN3dd/JpOF/dYxSoPeyhbeLTBnLga8SILgnvCVO9uKTWoqG9oyS62
+         6/7i+IICSua2iQiJAjAsk8BM64p1X7XzsUYYk8i1mAl5XTCm9SE70VUVo+/ra4lraE8y
+         MQ0rEsR1aiNpNbABJSxpd022XkIDkYdNaclEB4KyEJHa9+e3A8f8gXG0eGmp5gn/RD5I
+         BNRA==
+X-Gm-Message-State: AOJu0Yz05YnxAJgaA+c4YFtHrrqKn0Uu2CPWh9LOZobFyF+t1dMkjx2T
+	WUlc3u9GCRzLPGqxwGJMbqMfNUb8s8A329uF/z+6BiJOCx4RePgW3VPI67mScDzu/2NcVRZPblg
+	Jp+8wIWTzJQ==
+X-Gm-Gg: ASbGncvmJe4VtAZelRCOKXy7VoAW1usVMQcLyk4kCLOq/WMGdsYBuT+hRzamCun1R8j
+	wZuPVbenqVgCLEKX8FKA6u84iGqHhm+VWoz/oGA2jNgm6VwH/1WQ/yD5RnuijpBZ+LrYiGbzOz6
+	eP6wKdCo8ZffdWsJ9GXNit7wVabpkoJbY+uCzvKAzNaQXAVAxyUKYAEyP6TdJ9a5Jx27941SuQ3
+	/OdCCu1dyP1hTkUbnJ0zihYjlQBvJPqWA7TO7wT6n5lnSfvAEHhVEqG4lascsRSJDzal7zEfyl2
+	C7/lB7n/mlpbccMCF7ph5TieKMooak3rdF1gYxl6ABuqk0oM/D+ugwXSwgxtTsEs8FVLTxEDi5H
+	yhRjsUdoHS26xG0dBRMBlnLzsqoQ/cm2Czg==
+X-Google-Smtp-Source: AGHT+IF+m9fnrVon/CTlR3NvtBop/UnzA0x2mlBTx0ow2euaYe9HsMmXUMu9S2mO26XUCKnPgtldXA==
+X-Received: by 2002:a17:90b:2247:b0:31e:3bac:96b8 with SMTP id 98e67ed59e1d1-31e5081718emr4885292a91.4.1753385232528;
+        Thu, 24 Jul 2025 12:27:12 -0700 (PDT)
 Received: from shubhamPC.mvista.com ([182.74.28.237])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31e6635f0a0sm1945884a91.24.2025.07.24.12.27.05
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31e6635f0a0sm1945884a91.24.2025.07.24.12.27.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 12:27:08 -0700 (PDT)
+        Thu, 24 Jul 2025 12:27:12 -0700 (PDT)
 From: skulkarni@mvista.com
 To: stable@vger.kernel.org
 Cc: akuster@mvista.com,
 	cminyard@mvista.com,
-	Jiri Pirko <jiri@mellanox.com>,
-	Ido Schimmel <idosch@mellanox.com>,
-	"David S . Miller" <davem@davemloft.net>,
+	wenxu <wenxu@ucloud.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Shubham Kulkarni <skulkarni@mvista.com>
-Subject: [PATCH 5.4.y 5/8] selftests: forwarding: tc_actions.sh: add matchall mirror test
-Date: Fri, 25 Jul 2025 00:56:16 +0530
-Message-Id: <20250724192619.217203-6-skulkarni@mvista.com>
+Subject: [PATCH 5.4.y 6/8] net/sched: act_mirred: refactor the handle of xmit
+Date: Fri, 25 Jul 2025 00:56:17 +0530
+Message-Id: <20250724192619.217203-7-skulkarni@mvista.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250724192619.217203-1-skulkarni@mvista.com>
 References: <20250724192619.217203-1-skulkarni@mvista.com>
@@ -92,92 +91,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jiri Pirko <jiri@mellanox.com>
+From: wenxu <wenxu@ucloud.cn>
 
-[ Upstream commit 075c8aa79d541ea08c67a2e6d955f6457e98c21c ]
+[ Upstream commit fa6d639930ee5cd3f932cc314f3407f07a06582d ]
 
-Add test for matchall classifier with mirred egress mirror action.
+This one is prepare for the next patch.
 
-Signed-off-by: Jiri Pirko <jiri@mellanox.com>
-Signed-off-by: Ido Schimmel <idosch@mellanox.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: wenxu <wenxu@ucloud.cn>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ skulkarni: Adjusted patch for file 'sch_generic.h' wrt the mainline commit ]
 Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
 Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
 ---
- .../selftests/net/forwarding/tc_actions.sh    | 26 +++++++++++++------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ include/net/sch_generic.h |  5 -----
+ net/sched/act_mirred.c    | 21 +++++++++++++++------
+ 2 files changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/tc_actions.sh b/tools/testing/selftests/net/forwarding/tc_actions.sh
-index 813d02d1939d..d9eca227136b 100755
---- a/tools/testing/selftests/net/forwarding/tc_actions.sh
-+++ b/tools/testing/selftests/net/forwarding/tc_actions.sh
-@@ -2,7 +2,8 @@
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index ee47d65b9b20..a9a68714b58f 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -1320,11 +1320,6 @@ void mini_qdisc_pair_swap(struct mini_Qdisc_pair *miniqp,
+ void mini_qdisc_pair_init(struct mini_Qdisc_pair *miniqp, struct Qdisc *qdisc,
+ 			  struct mini_Qdisc __rcu **p_miniq);
  
- ALL_TESTS="gact_drop_and_ok_test mirred_egress_redirect_test \
--	mirred_egress_mirror_test gact_trap_test"
-+	mirred_egress_mirror_test matchall_mirred_egress_mirror_test \
-+	gact_trap_test"
- NUM_NETIFS=4
- source tc_common.sh
- source lib.sh
-@@ -50,6 +51,9 @@ switch_destroy()
- mirred_egress_test()
+-static inline int skb_tc_reinsert(struct sk_buff *skb, struct tcf_result *res)
+-{
+-	return res->ingress ? netif_receive_skb(skb) : dev_queue_xmit(skb);
+-}
+-
+ /* Make sure qdisc is no longer in SCHED state. */
+ static inline void qdisc_synchronize(const struct Qdisc *q)
  {
- 	local action=$1
-+	local protocol=$2
-+	local classifier=$3
-+	local classifier_args=$4
- 
- 	RET=0
- 
-@@ -62,9 +66,9 @@ mirred_egress_test()
- 	tc_check_packets "dev $h2 ingress" 101 1
- 	check_fail $? "Matched without redirect rule inserted"
- 
--	tc filter add dev $swp1 ingress protocol ip pref 1 handle 101 flower \
--		$tcflags dst_ip 192.0.2.2 action mirred egress $action \
--		dev $swp2
-+	tc filter add dev $swp1 ingress protocol $protocol pref 1 handle 101 \
-+		$classifier $tcflags $classifier_args \
-+		action mirred egress $action dev $swp2
- 
- 	$MZ $h1 -c 1 -p 64 -a $h1mac -b $h2mac -A 192.0.2.1 -B 192.0.2.2 \
- 		-t ip -q
-@@ -72,10 +76,11 @@ mirred_egress_test()
- 	tc_check_packets "dev $h2 ingress" 101 1
- 	check_err $? "Did not match incoming $action packet"
- 
--	tc filter del dev $swp1 ingress protocol ip pref 1 handle 101 flower
-+	tc filter del dev $swp1 ingress protocol $protocol pref 1 handle 101 \
-+		$classifier
- 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
- 
--	log_test "mirred egress $action ($tcflags)"
-+	log_test "mirred egress $classifier $action ($tcflags)"
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index a7e924806c2c..9e094c984217 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -206,6 +206,18 @@ static int tcf_mirred_init(struct net *net, struct nlattr *nla,
+ 	return err;
  }
  
- gact_drop_and_ok_test()
-@@ -187,12 +192,17 @@ cleanup()
- 
- mirred_egress_redirect_test()
- {
--	mirred_egress_test "redirect"
-+	mirred_egress_test "redirect" "ip" "flower" "dst_ip 192.0.2.2"
- }
- 
- mirred_egress_mirror_test()
- {
--	mirred_egress_test "mirror"
-+	mirred_egress_test "mirror" "ip" "flower" "dst_ip 192.0.2.2"
++static int tcf_mirred_forward(bool want_ingress, struct sk_buff *skb)
++{
++	int err;
++
++	if (!want_ingress)
++		err = dev_queue_xmit(skb);
++	else
++		err = netif_receive_skb(skb);
++
++	return err;
 +}
 +
-+matchall_mirred_egress_mirror_test()
-+{
-+	mirred_egress_test "mirror" "all" "matchall" ""
- }
+ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
+ 			  struct tcf_result *res)
+ {
+@@ -295,18 +307,15 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
+ 		/* let's the caller reinsert the packet, if possible */
+ 		if (use_reinsert) {
+ 			res->ingress = want_ingress;
+-			if (skb_tc_reinsert(skb, res))
++			err = tcf_mirred_forward(res->ingress, skb);
++			if (err)
+ 				tcf_action_inc_overlimit_qstats(&m->common);
+ 			__this_cpu_dec(mirred_rec_level);
+ 			return TC_ACT_CONSUMED;
+ 		}
+ 	}
  
- trap cleanup EXIT
+-	if (!want_ingress)
+-		err = dev_queue_xmit(skb2);
+-	else
+-		err = netif_receive_skb(skb2);
+-
++	err = tcf_mirred_forward(want_ingress, skb2);
+ 	if (err) {
+ out:
+ 		tcf_action_inc_overlimit_qstats(&m->common);
 -- 
 2.25.1
 
