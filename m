@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-164675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C1AB110DB
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 20:27:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A802B110DC
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 20:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16AD81CE1B29
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 18:27:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1695481DF
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 18:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3AC9274FD6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9C92ECD3C;
 	Thu, 24 Jul 2025 18:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="toqdKcel"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="wmSfppkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp119.iad3b.emailsrvr.com (smtp119.iad3b.emailsrvr.com [146.20.161.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324AF1DA23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8A32701D6
 	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 18:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753381627; cv=none; b=AgMROG/IidQBqcWVoHqjrBsbYOUGwuhH+CXqQVZ6NLSSer3FS4jM9iljYEYRh9XsFxujifaKXSO4pj0rJD87asWwBsNQjWwLQyujY+nNFkiKxZWvMABlsbK5gdz6hY5ZJlATzOFu/rECQ89nPF6VHX6JXHfGgkpG91Mw0CdJNnE=
+	t=1753381627; cv=none; b=jv8MgTt2FH3ToILj9Szgy5CfTPtu1xeZe67i98pQVjbRNfc66kwjkmWxfUI/HuHpAlDr+zU0Wv7oMmWADyROhXeW/FlrNjRFusN+/XidHNNx8DUBNjzvIFXmeZA5Ku7cKSvDCFNqK5l2CbsWPoI38VN0v46bOK2fxdkBGgkOLas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753381627; c=relaxed/simple;
-	bh=6zIzgNYA5Uo967av3T2XVIKJqiEP/TGM22wEDB+Rydw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=edVAzHqwtHEJ90lnxjgEpaEZa7gJ2e/H1JrP5/JQYsADTIpX2pfJ1qFa0E24vUvvCA2Lkd2Wy5Wz80kONzDUjv9/YyhVwrGLNiY6WKMoC481FizYHjMdiv8/XRVgpSqWp8bc25M799QMyeXhnUYIhjIDPtpqpwTkhZkGAaT8Y6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=toqdKcel; arc=none smtp.client-ip=146.20.161.119
+	bh=N69xt124ke5qNqdC4veBQEMGML5xUc/HiX8S6zvM2DY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NddFSJ7YWJqZZ5iRdOlAcJ/X/RGQVfl7j0TVlr0c8GmMwcm+X2EgEMsYOcbe9ldUE7YWHHruY9NeMIRvA9ik71Z9KV5OWI9VCOoUxvan68MM+Z6BoQoCLWN7M/t47bpwTR+xSWHrUOEII1R98Dm43z0qbAN97pWQRC08PuYkOZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=wmSfppkL; arc=none smtp.client-ip=146.20.161.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1753381022;
-	bh=6zIzgNYA5Uo967av3T2XVIKJqiEP/TGM22wEDB+Rydw=;
+	s=20221208-6x11dpa4; t=1753381023;
+	bh=N69xt124ke5qNqdC4veBQEMGML5xUc/HiX8S6zvM2DY=;
 	h=From:To:Subject:Date:From;
-	b=toqdKcelhnjnLbwRhs0RAJj81Q6+kcoEMw6FSHVdztA7o20ZVkw5QHJNz7zMy5YRg
-	 3kDggfhETSabJbrDzlEI0UueBZSKUYL0c1i1eIXJFccBbS3zsSZ/bqkcngrvXVE5qT
-	 M7w7xCt1ZYrONI2IcgJR6HCAv/hezz2A+p+s/32w=
+	b=wmSfppkLZCRj9iswJn+WczVvhJFreb/zNYM+tJZgSjUSvMy5is2/AQ6JXKAu0jxXI
+	 a88Gi3FF2s57GMM37F7n3F/CYsNEnHZUTIIitn0x1XoKrGzLBsGErEKDmR2BlcahrD
+	 B2EOTUkYpaKMqc7iAJxy41HXcsnaKFQvoHZn9C6I=
 X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp7.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id D7E746018C;
-	Thu, 24 Jul 2025 14:17:01 -0400 (EDT)
+Received: by smtp7.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id DF9FF60198;
+	Thu, 24 Jul 2025 14:17:02 -0400 (EDT)
 From: Ian Abbott <abbotti@mev.co.uk>
 To: stable@vger.kernel.org
 Cc: Ian Abbott <abbotti@mev.co.uk>,
-	syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com,
-	"Enju, Kohei" <enjuk@amazon.co.jp>,
+	syzbot+32de323b0addb9e114ff@syzkaller.appspotmail.com,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 5.10.y] comedi: das16m1: Fix bit shift out of bounds
-Date: Thu, 24 Jul 2025 19:16:40 +0100
-Message-ID: <20250724181646.291939-3-abbotti@mev.co.uk>
+Subject: [PATCH 5.10.y] comedi: pcl812: Fix bit shift out of bounds
+Date: Thu, 24 Jul 2025 19:16:41 +0100
+Message-ID: <20250724181646.291939-4-abbotti@mev.co.uk>
 X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,47 +56,46 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Classification-ID: d9dea1d7-0c3d-4a32-a1eb-78b88e148596-3-1
+X-Classification-ID: d9dea1d7-0c3d-4a32-a1eb-78b88e148596-4-1
 
-[ Upstream commit ed93c6f68a3be06e4e0c331c6e751f462dee3932 ]
+[ Upstream commit b14b076ce593f72585412fc7fd3747e03a5e3632 ]
 
 When checking for a supported IRQ number, the following test is used:
 
-	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
-	if ((1 << it->options[1]) & 0xdcfc) {
+	if ((1 << it->options[1]) & board->irq_bits) {
 
 However, `it->options[i]` is an unchecked `int` value from userspace, so
 the shift amount could be negative or out of bounds.  Fix the test by
 requiring `it->options[1]` to be within bounds before proceeding with
-the original test.
+the original test.  Valid `it->options[1]` values that select the IRQ
+will be in the range [1,15]. The value 0 explicitly disables the use of
+interrupts.
 
-Reported-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c52293513298e0fd9a94
-Fixes: 729988507680 ("staging: comedi: das16m1: tidy up the irq support in das16m1_attach()")
-Tested-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
-Suggested-by: "Enju, Kohei" <enjuk@amazon.co.jp>
+Reported-by: syzbot+32de323b0addb9e114ff@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=32de323b0addb9e114ff
+Fixes: fcdb427bc7cf ("Staging: comedi: add pcl821 driver")
 Cc: stable@vger.kernel.org # 5.13+
 Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707130908.70758-1-abbotti@mev.co.uk
+Link: https://lore.kernel.org/r/20250707133429.73202-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/comedi/drivers/das16m1.c | 3 ++-
+ drivers/staging/comedi/drivers/pcl812.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/comedi/drivers/das16m1.c b/drivers/staging/comedi/drivers/das16m1.c
-index 75f3dbbe97ac..0d54387a1c26 100644
---- a/drivers/staging/comedi/drivers/das16m1.c
-+++ b/drivers/staging/comedi/drivers/das16m1.c
-@@ -523,7 +523,8 @@ static int das16m1_attach(struct comedi_device *dev,
- 	devpriv->extra_iobase = dev->iobase + DAS16M1_8255_IOBASE;
+diff --git a/drivers/staging/comedi/drivers/pcl812.c b/drivers/staging/comedi/drivers/pcl812.c
+index b87ab3840eee..fc06f284ba74 100644
+--- a/drivers/staging/comedi/drivers/pcl812.c
++++ b/drivers/staging/comedi/drivers/pcl812.c
+@@ -1151,7 +1151,8 @@ static int pcl812_attach(struct comedi_device *dev, struct comedi_devconfig *it)
+ 		if (!dev->pacer)
+ 			return -ENOMEM;
  
- 	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
--	if ((1 << it->options[1]) & 0xdcfc) {
-+	if (it->options[1] >= 2 && it->options[1] <= 15 &&
-+	    (1 << it->options[1]) & 0xdcfc) {
- 		ret = request_irq(it->options[1], das16m1_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0)
+-		if ((1 << it->options[1]) & board->irq_bits) {
++		if (it->options[1] > 0 && it->options[1] < 16 &&
++		    (1 << it->options[1]) & board->irq_bits) {
+ 			ret = request_irq(it->options[1], pcl812_interrupt, 0,
+ 					  dev->board_name, dev);
+ 			if (ret == 0)
 -- 
 2.47.2
 
