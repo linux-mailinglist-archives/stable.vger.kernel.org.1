@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-164557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A812AB0FF6C
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 06:06:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89DDB0FF75
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 06:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F104547E19
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:06:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0B1058272B
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569E71EC01B;
-	Thu, 24 Jul 2025 04:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528AF1E9B35;
+	Thu, 24 Jul 2025 04:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QNGhM065"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lt7wAdbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127001E8335
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 04:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E8C1E8335
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 04:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753329977; cv=none; b=UltjhmwVqY6cyMOT+ebzzHBjysmNNzNmfuUdOy+wrVtCuQMZP7Ni4/sehj4H3SU03Hmim8FfhSDgqZnpls7nil/lMFgzAmBeFg+5Wf3eWfu+DpLWFPbznnAvHeW54jmLhjuhZL9yR6DcFnKOdoaOaq1hjqBrqqBWwA9OcM4z7SQ=
+	t=1753330315; cv=none; b=MKWm3K6tuQRBoiqQO94xzsBoTN5cDaX5dwF23I2absMK1AyRweZSCFW9gsM2TbamfJMVLhE2vrMxULFYIxwPV472Dsu9r/NtR4oQVlxnRixdTS39H9LyTjh9IV1v9A6iB+qb7i0D/Ur796Frwh3NBrbjyWVVdM0wNaVxPqAPxW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753329977; c=relaxed/simple;
-	bh=7LhSsrSSMmJlaXd4IkRIGV7ifMRhAO6gF3cgw563aJg=;
+	s=arc-20240116; t=1753330315; c=relaxed/simple;
+	bh=VPeQNGHO3+FoLc6dS+uniDRaMr4k4JCT/B4EAE1G67Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SM+r6PdUGWd5mNBOUApqohF6gO6YxBH/kA1HGlqkqUy30T++ec5+EhVKlTzIwc/0vFHP+/IeENlP9Vk+i5ZZSs+rpTJp0gyRaEgZHwEKrmD0NR5SylMf1R61cjGPtDQIoQIvq4Zf2NumHEeEQosukRSeX+W8vyBoaRAAYdUsvTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QNGhM065; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7721DC4CEED;
-	Thu, 24 Jul 2025 04:06:15 +0000 (UTC)
+	 MIME-Version; b=aAEjPfGbAlZnWmT5RnN+GPdr9rytqLN3bnHnI3Q+8GGZ8ZLPCXb5YwJHonib8SitAsPB7dvR1qfvfBwp2Ve8Jl+iSWBrUOby9CSikyN+VmsK/GYTDsFJGMlMa9B7/XlFeIOS6nwcbuPkW9l1+sO2C0oio3qKPHn73V7DK8VTWT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lt7wAdbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE84C4CEED;
+	Thu, 24 Jul 2025 04:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753329976;
-	bh=7LhSsrSSMmJlaXd4IkRIGV7ifMRhAO6gF3cgw563aJg=;
+	s=k20201202; t=1753330314;
+	bh=VPeQNGHO3+FoLc6dS+uniDRaMr4k4JCT/B4EAE1G67Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNGhM065oP+rTa31WDcEal8mSZEFZm/lf7tAto7zhWYFLqcBSdWkYevyMwkrlYgEJ
-	 NQMknHPgJPZM0AouUlzoCRGIB2Z+b3LIkFXSQQZF6uAfdBNXlDTPcwtcViu/p/qZQJ
-	 onWSUba0Mue5tFsPx/3GAqwaGsK/dBvifvJzBe+C706ioiQQZFcwn0cvhaZGYqLgZv
-	 ZCn98ve4NzLfHa6BTQZmuYC8lUBsue9EeDcTZDkD4JKaAb2Ko14wjrEAdojoS1ewQT
-	 5Y7KXajt7fJBUYtShMc+Bxqg44McxusXPBWc+URtQ3kjrF4s0G2xUK3FECXXdSGa00
-	 TpoxHAntZ2F0g==
+	b=lt7wAdbL8vMNrvcu+zuqOtQBLpkZg8bBsj/ClgITOiYuSD4NAAPi0s3Zs2oQH4VcB
+	 YO84Jp7jAcaD00Xoah7HoeoZmbSdl3OGmMNtN+bFv8xo5B5SnS4GefTKEzM0Jx21k9
+	 CkjnGEDkSUOij+h46H+JQKFA4vR8SsPyuWpl4nObdLk98qYoahYKb3/U2v0Up46s7w
+	 Vv+c3B1WykukytBi8D/M6i/zbCPcv8aMqSQZ8dIUkZhlSjbmebLOKL5Kx8qYwCpKIa
+	 0S5jnKrnBp+FMaoqUvV7J3gy5NgdHedbaGCBnkO2Ejib/bhlY8Wg5HAflNHnS2CeQr
+	 Y88VvXdQuv3og==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Kan Liang <kan.liang@linux.intel.com>,
@@ -48,12 +48,12 @@ Cc: Kan Liang <kan.liang@linux.intel.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] perf/x86/intel: Fix crash in icl_update_topdown_event()
-Date: Thu, 24 Jul 2025 00:06:12 -0400
-Message-Id: <20250724040612.1296188-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] perf/x86/intel: Fix crash in icl_update_topdown_event()
+Date: Thu, 24 Jul 2025 00:11:50 -0400
+Message-Id: <20250724041150.1296795-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025062337-conceal-parole-52a4@gregkh>
-References: <2025062337-conceal-parole-52a4@gregkh>
+In-Reply-To: <2025062338-sliver-bacteria-7a82@gregkh>
+References: <2025062338-sliver-bacteria-7a82@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -112,10 +112,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 835c9febb6a85..87ea4339e03a2 100644
+index b380fc5ea0887..2cb5b1f715b62 100644
 --- a/arch/x86/events/intel/core.c
 +++ b/arch/x86/events/intel/core.c
-@@ -2734,7 +2734,7 @@ static void intel_pmu_read_event(struct perf_event *event)
+@@ -2703,7 +2703,7 @@ static void intel_pmu_read_event(struct perf_event *event)
  		if (pmu_enabled)
  			intel_pmu_disable_all();
  
