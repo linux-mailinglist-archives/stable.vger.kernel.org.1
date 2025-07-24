@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-164556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C10B0FF5C
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 05:56:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A812AB0FF6C
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 06:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F82A7B408C
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 03:54:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F104547E19
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F58C1DF98D;
-	Thu, 24 Jul 2025 03:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569E71EC01B;
+	Thu, 24 Jul 2025 04:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iI+jzVEd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QNGhM065"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19111D63C6
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 03:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127001E8335
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 04:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753329380; cv=none; b=qaBGVc993UqJFWZmdR4cwrxom6iNxTMZh1sHpNGZNN5kWbdiGBf6NqH47L8DTV3UwFwruNBEWZQWqyAzfiEX/xEveh9BF7IdWQe8/eAcFuKPYTouSlbRTVNF5oPQXZDNIcPacIJgSJCrssMUrhRop++Qct3Q1BlwK22HLpOMdmg=
+	t=1753329977; cv=none; b=UltjhmwVqY6cyMOT+ebzzHBjysmNNzNmfuUdOy+wrVtCuQMZP7Ni4/sehj4H3SU03Hmim8FfhSDgqZnpls7nil/lMFgzAmBeFg+5Wf3eWfu+DpLWFPbznnAvHeW54jmLhjuhZL9yR6DcFnKOdoaOaq1hjqBrqqBWwA9OcM4z7SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753329380; c=relaxed/simple;
-	bh=P+zmOVhT4nhj8xIVUJEd5yZ8PqRNOngDaB8MacGq2q0=;
+	s=arc-20240116; t=1753329977; c=relaxed/simple;
+	bh=7LhSsrSSMmJlaXd4IkRIGV7ifMRhAO6gF3cgw563aJg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Lz6QpspK2bs5wHxsW1VlQn3hoJ1Zt5MLmaajaFYfoH4XuSzSMTIoHvfxQnmXxqpye1AOa3XUvwj6f6T4CyxDsyEzreYOXPS0xZFv+i0IZYIhBBTN2GePj6ArFdyIyZ5DYhh4GmBxFo69ACNNqKMgpWYdtz26G9/AjvhirurlbcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iI+jzVEd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DBBC4CEED;
-	Thu, 24 Jul 2025 03:56:16 +0000 (UTC)
+	 MIME-Version; b=SM+r6PdUGWd5mNBOUApqohF6gO6YxBH/kA1HGlqkqUy30T++ec5+EhVKlTzIwc/0vFHP+/IeENlP9Vk+i5ZZSs+rpTJp0gyRaEgZHwEKrmD0NR5SylMf1R61cjGPtDQIoQIvq4Zf2NumHEeEQosukRSeX+W8vyBoaRAAYdUsvTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QNGhM065; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7721DC4CEED;
+	Thu, 24 Jul 2025 04:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753329377;
-	bh=P+zmOVhT4nhj8xIVUJEd5yZ8PqRNOngDaB8MacGq2q0=;
+	s=k20201202; t=1753329976;
+	bh=7LhSsrSSMmJlaXd4IkRIGV7ifMRhAO6gF3cgw563aJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iI+jzVEdf9qUxpwXmi2KWyNyMT2OPrTEtFEp+BOkevxo8TbjDEfS3Y9VuLApZNaQl
-	 G4iA8KCgAMxZV+zvZIUktV/W5bAdqAzDP2ytoz1c7CVAhvLRye63rViWHcn/5nTRvC
-	 hbVfvOpReEso462bLo73yqYG7cDysGbvQVNWCz2TKzv8Lu888ADTUMRRIkOMUcc1HW
-	 PUNINltzXnPhEQp8jYychShupROEWWH4CpAvBAjZMB8b0OMeMUYaUbYa9OfitbpoX2
-	 4PVUGoX0PKoECQ0/+Pnn1dEB3XQSgPvywYIvFcvdw3Wvwc4GBgebC6PtlI1YxhrkVH
-	 6to5hRkQ+pvcA==
+	b=QNGhM065oP+rTa31WDcEal8mSZEFZm/lf7tAto7zhWYFLqcBSdWkYevyMwkrlYgEJ
+	 NQMknHPgJPZM0AouUlzoCRGIB2Z+b3LIkFXSQQZF6uAfdBNXlDTPcwtcViu/p/qZQJ
+	 onWSUba0Mue5tFsPx/3GAqwaGsK/dBvifvJzBe+C706ioiQQZFcwn0cvhaZGYqLgZv
+	 ZCn98ve4NzLfHa6BTQZmuYC8lUBsue9EeDcTZDkD4JKaAb2Ko14wjrEAdojoS1ewQT
+	 5Y7KXajt7fJBUYtShMc+Bxqg44McxusXPBWc+URtQ3kjrF4s0G2xUK3FECXXdSGa00
+	 TpoxHAntZ2F0g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Gatien Chevallier <gatien.chevallier@foss.st.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+	Vince Weaver <vincent.weaver@maine.edu>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
-Date: Wed, 23 Jul 2025 23:56:12 -0400
-Message-Id: <20250724035612.1293761-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] perf/x86/intel: Fix crash in icl_update_topdown_event()
+Date: Thu, 24 Jul 2025 00:06:12 -0400
+Message-Id: <20250724040612.1296188-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025062006-pristine-unfitted-7204@gregkh>
-References: <2025062006-pristine-unfitted-7204@gregkh>
+In-Reply-To: <2025062337-conceal-parole-52a4@gregkh>
+References: <2025062337-conceal-parole-52a4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,70 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit f4a8f561d08e39f7833d4a278ebfb12a41eef15f ]
+[ Upstream commit b0823d5fbacb1c551d793cbfe7af24e0d1fa45ed ]
 
-When enabling PREEMPT_RT, the gpio_keys_irq_timer() callback runs in
-hard irq context, but the input_event() takes a spin_lock, which isn't
-allowed there as it is converted to a rt_spin_lock().
+The perf_fuzzer found a hard-lockup crash on a RaptorLake machine:
 
-[ 4054.289999] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-[ 4054.290028] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/0
-...
-[ 4054.290195]  __might_resched+0x13c/0x1f4
-[ 4054.290209]  rt_spin_lock+0x54/0x11c
-[ 4054.290219]  input_event+0x48/0x80
-[ 4054.290230]  gpio_keys_irq_timer+0x4c/0x78
-[ 4054.290243]  __hrtimer_run_queues+0x1a4/0x438
-[ 4054.290257]  hrtimer_interrupt+0xe4/0x240
-[ 4054.290269]  arch_timer_handler_phys+0x2c/0x44
-[ 4054.290283]  handle_percpu_devid_irq+0x8c/0x14c
-[ 4054.290297]  handle_irq_desc+0x40/0x58
-[ 4054.290307]  generic_handle_domain_irq+0x1c/0x28
-[ 4054.290316]  gic_handle_irq+0x44/0xcc
+  Oops: general protection fault, maybe for address 0xffff89aeceab400: 0000
+  CPU: 23 UID: 0 PID: 0 Comm: swapper/23
+  Tainted: [W]=WARN
+  Hardware name: Dell Inc. Precision 9660/0VJ762
+  RIP: 0010:native_read_pmc+0x7/0x40
+  Code: cc e8 8d a9 01 00 48 89 03 5b cd cc cc cc cc 0f 1f ...
+  RSP: 000:fffb03100273de8 EFLAGS: 00010046
+  ....
+  Call Trace:
+    <TASK>
+    icl_update_topdown_event+0x165/0x190
+    ? ktime_get+0x38/0xd0
+    intel_pmu_read_event+0xf9/0x210
+    __perf_event_read+0xf9/0x210
 
-Considering the gpio_keys_irq_isr() can run in any context, e.g. it can
-be threaded, it seems there's no point in requesting the timer isr to
-run in hard irq context.
+CPUs 16-23 are E-core CPUs that don't support the perf metrics feature.
+The icl_update_topdown_event() should not be invoked on these CPUs.
 
-Relax the hrtimer not to use the hard context.
+It's a regression of commit:
 
-Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-1-3fc55a9c3619@foss.st.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-[ adjusted context ]
+  f9bdf1f95339 ("perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read")
+
+The bug introduced by that commit is that the is_topdown_event() function
+is mistakenly used to replace the is_topdown_count() call to check if the
+topdown functions for the perf metrics feature should be invoked.
+
+Fix it.
+
+Fixes: f9bdf1f95339 ("perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read")
+Closes: https://lore.kernel.org/lkml/352f0709-f026-cd45-e60c-60dfd97f73f3@maine.edu/
+Reported-by: Vince Weaver <vincent.weaver@maine.edu>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Vince Weaver <vincent.weaver@maine.edu>
+Cc: stable@vger.kernel.org # v6.15+
+Link: https://lore.kernel.org/r/20250612143818.2889040-1-kan.liang@linux.intel.com
+[ omitted PEBS check ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/gpio_keys.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
-index 9514f577995fa..cd14017e7df62 100644
---- a/drivers/input/keyboard/gpio_keys.c
-+++ b/drivers/input/keyboard/gpio_keys.c
-@@ -488,7 +488,7 @@ static irqreturn_t gpio_keys_irq_isr(int irq, void *dev_id)
- 	if (bdata->release_delay)
- 		hrtimer_start(&bdata->release_timer,
- 			      ms_to_ktime(bdata->release_delay),
--			      HRTIMER_MODE_REL_HARD);
-+			      HRTIMER_MODE_REL);
- out:
- 	return IRQ_HANDLED;
- }
-@@ -633,7 +633,7 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 835c9febb6a85..87ea4339e03a2 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2734,7 +2734,7 @@ static void intel_pmu_read_event(struct perf_event *event)
+ 		if (pmu_enabled)
+ 			intel_pmu_disable_all();
  
- 		bdata->release_delay = button->debounce_interval;
- 		hrtimer_init(&bdata->release_timer,
--			     CLOCK_REALTIME, HRTIMER_MODE_REL_HARD);
-+			     CLOCK_REALTIME, HRTIMER_MODE_REL);
- 		bdata->release_timer.function = gpio_keys_irq_timer;
- 
- 		isr = gpio_keys_irq_isr;
+-		if (is_topdown_event(event))
++		if (is_topdown_count(event))
+ 			static_call(intel_pmu_update_topdown_event)(event);
+ 		else
+ 			intel_pmu_drain_pebs_buffer();
 -- 
 2.39.5
 
