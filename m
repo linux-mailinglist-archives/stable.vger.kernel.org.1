@@ -1,61 +1,88 @@
-Return-Path: <stable+bounces-164527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7E8B0FE52
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 03:13:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F4EB0FE5D
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 03:36:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC49A4E701F
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 01:12:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73843546D16
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 01:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D954213E898;
-	Thu, 24 Jul 2025 01:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A636190664;
+	Thu, 24 Jul 2025 01:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RpGiOrck"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m+lhX8gx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AEF136658
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 01:13:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B323D156C79;
+	Thu, 24 Jul 2025 01:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753319590; cv=none; b=FNTD6qM+JHrzbWpHoOhqCLOKehZzXPOnul82U1eWS4R5fvLMS3nPWig32Mw+bWLoI7V6uAJ/RF9jOAqf0sRAOFQrfDYIDfyzwCTXkIf6Gcudqah0tu5ty+352qBa+mio02Coww28zuiw7Q8JfpX91Kx7OtzOEACcDYMAoxrmxbQ=
+	t=1753320960; cv=none; b=K0jaY4W7X20DuYfG+cEVeUWiCqCFqTx7ql15iZh322l5QKBZzCVumJEqXJ/DIwBedMPZUH0ozNryQNBU5MqpZtD44COJi4XITP973DDlOuMz9BlRE1T1y2OK3G6H2HZgbVGq7zDIOi6KknythoePlMce9IRf1tNz/BUcwhndEAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753319590; c=relaxed/simple;
-	bh=zcZ/2QEpxqroSDthrOsUO4yW/YE50X/fQ2fPPIP/qJE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q0izppNSOXaeUU9jh8iYB8Z4pIagxAD/UgsQ29SkpTaFXTme4gfV80+LNpWz9+9hSoDSSVYC4msik7NxT95R/Fa5glwMtcdPpVC1pqv2QYBROE7dM0/yNh31dWy03CZLl0Cq7PsQ+b/j/57aG+szt70vQZS1iSb3aJpzlBbTr6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RpGiOrck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1347DC4CEE7;
-	Thu, 24 Jul 2025 01:13:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753319590;
-	bh=zcZ/2QEpxqroSDthrOsUO4yW/YE50X/fQ2fPPIP/qJE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpGiOrckIb2ZYQKtk0tQZdmdyMzfw8+iq5e///8z9zRfs+EdI77Ll/tUgEfU/GL0+
-	 Fde0oVqoF9CyTwtUtOQZRu7hYtDUv8zxm5O0q+RmddWPqkTlskqdIoN/sVwWfALdtx
-	 Tpf5nOTksLrX405VIKijT6dZV0FzWPlRrqFr/KBDKKwPGYL/hBIfG5WPde5Ad2B1tZ
-	 NvRPWHyvy5KgAbW8Ap4cgYNmISb4fwspswwxWuJFbLnCCdNk+6Hw2UTJvYhPErWEq7
-	 0COSMU0/Gi/NjtqkNrjiMJJ/Ps3cXVz3fnh1IrF6enSf6kuoIenNHE1JA8IyiA22YL
-	 Q7h1oyCDc3R0g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Xin Li (Intel)" <xin@zytor.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	s=arc-20240116; t=1753320960; c=relaxed/simple;
+	bh=z+nGo5hRjMtOQRT8LU6RDRf9rSnaquYa5CSInK+fhRQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p7S4bd2NvG6JKP/hXJ1v59vUAbKIHG4aszfoqcabnoT8jWZMH5BOAewQLxVIYNZUNtUf6eVEuAIntecNrOuFpF/dYSGTN5WNw+LRi7B2bNqJFnxZgjhSrwHlDTwxp2H6kYTLrjQGwkPWhMwjJCU2U4LSZtUIQbQRXVFu0/9p6s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m+lhX8gx; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753320958; x=1784856958;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=z+nGo5hRjMtOQRT8LU6RDRf9rSnaquYa5CSInK+fhRQ=;
+  b=m+lhX8gxhANW3qRN9pnM2NlH1+O0IU4CCb1bnx6BPUVOXXjDjhZf5lJE
+   vDmxyK86Y18WrPP1Nk/fCi2J38OFeViAyCU0UvcqZKts9r1xIWhL9VMjA
+   lfYmRNpzK3UHbflm6uZBWSUt0RA7xcfZZ+oLDKR0U04VEi9/A7BzeGOxK
+   ll/CjKkmZbv45C8LsSSa7jJOfXD5oJhE03MwUkS2/98CPGDIflODeWVKw
+   hdGGn51+5dhlj00fHLST6ovo3MNMuDLwjXM6sJn59OW3WiI6M52Fd3YTZ
+   RjPN4hclBOaCHnTBQQW681XPvdNncfuxRj2fg7w3z6z9DPV4VpSPw5ry8
+   g==;
+X-CSE-ConnectionGUID: UBeWL2l+TOmx61SvSRCNUg==
+X-CSE-MsgGUID: XwYM6vurThOHb2HU5fyTsg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="59434473"
+X-IronPort-AV: E=Sophos;i="6.16,336,1744095600"; 
+   d="scan'208";a="59434473"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 18:35:56 -0700
+X-CSE-ConnectionGUID: CQZG2qV0QDCh6EJGpQ4Yeg==
+X-CSE-MsgGUID: nWXTyqtaThS4KRFZx5MWPg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,336,1744095600"; 
+   d="scan'208";a="164010225"
+Received: from sohilmeh.sc.intel.com ([172.25.103.65])
+  by fmviesa003.fm.intel.com with ESMTP; 23 Jul 2025 18:35:56 -0700
+From: Sohil Mehta <sohil.mehta@intel.com>
+To: Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org
+Cc: Borislav Petkov <bp@alien8.de>,
 	"H . Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@intel.com>,
 	Sohil Mehta <sohil.mehta@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
 	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] x86/traps: Initialize DR7 by writing its architectural reset value
-Date: Wed, 23 Jul 2025 21:13:06 -0400
-Message-Id: <20250724011306.1220450-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025063026-grandma-tributary-5bd8@gregkh>
-References: <2025063026-grandma-tributary-5bd8@gregkh>
+	Peter Zijlstra <peterz@infradead.org>,
+	Vignesh Balasubramanian <vigbalas@amd.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	"Chang S . Bae" <chang.seok.bae@intel.com>,
+	Brian Gerst <brgerst@gmail.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Chao Gao <chao.gao@intel.com>,
+	Fushuai Wang <wangfushuai@baidu.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] x86/fpu: Fix NULL dereference in avx512_status()
+Date: Wed, 23 Jul 2025 18:34:21 -0700
+Message-ID: <20250724013422.307954-1-sohil.mehta@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,176 +91,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Xin Li (Intel)" <xin@zytor.com>
+From: Fushuai Wang <wangfushuai@baidu.com>
 
-[ Upstream commit fa7d0f83c5c4223a01598876352473cb3d3bd4d7 ]
+Problem
+-------
+With CONFIG_X86_DEBUG_FPU enabled, reading /proc/[kthread]/arch_status
+causes a kernel NULL pointer dereference.
 
-Initialize DR7 by writing its architectural reset value to always set
-bit 10, which is reserved to '1', when "clearing" DR7 so as not to
-trigger unanticipated behavior if said bit is ever unreserved, e.g. as
-a feature enabling flag with inverted polarity.
+Kernel threads aren't expected to access the FPU state directly. Kernel
+usage of FPU registers is contained within kernel_fpu_begin()/_end()
+sections.
 
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Sohil Mehta <sohil.mehta@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250620231504.2676902-3-xin%40zytor.com
-[ context adjusted: no KVM_DEBUGREG_AUTO_SWITCH flag test ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, to report AVX-512 usage, the avx512_timestamp variable within
+struct fpu needs to be accessed, which triggers a warning in
+x86_task_fpu().
+
+For Kthreads:
+  proc_pid_arch_status()
+    avx512_status()
+      x86_task_fpu() => Warning and returns NULL
+      x86_task_fpu()->avx512_timestamp => NULL dereference
+
+The warning is a false alarm in this case, since the access isn't
+intended for modifying the FPU state. All kernel threads (except the
+init_task) have a "struct fpu" with an accessible avx512_timestamp
+variable. The init_task (PID 0) never follows this path since it is not
+exposed in /proc.
+
+Solution
+--------
+One option is to get rid of the warning in x86_task_fpu() for kernel
+threads. However, that warning was recently added and might be useful to
+catch any potential misuse of the FPU state in kernel threads.
+
+Another option is to avoid the access altogether. The kernel does not
+track AVX-512 usage for kernel threads.
+save_fpregs_to_fpstate()->update_avx_timestamp() is never invoked for
+kernel threads, so avx512_timestamp is always guaranteed to be 0.
+
+Also, the legacy behavior of reporting "AVX512_elapsed_ms: -1", which
+signifies "no AVX-512 usage", is misleading. The kernel usage just isn't
+tracked.
+
+Update the ABI for kernel threads and do not report AVX-512 usage for
+them. Not having a value in the file avoids the NULL dereference as well
+as the misleading report.
+
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Fixes: 22aafe3bcb67 ("x86/fpu: Remove init_task FPU state dependencies, add debugging warning for PF_KTHREAD tasks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Co-developed-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
- arch/x86/include/asm/debugreg.h | 19 +++++++++++++++----
- arch/x86/include/asm/kvm_host.h |  2 +-
- arch/x86/kernel/cpu/common.c    |  2 +-
- arch/x86/kernel/kgdb.c          |  2 +-
- arch/x86/kernel/process_32.c    |  2 +-
- arch/x86/kernel/process_64.c    |  2 +-
- arch/x86/kvm/x86.c              |  4 ++--
- 7 files changed, 22 insertions(+), 11 deletions(-)
+v3:
+ - Do not report anything for kernel threads. (DaveH)
+ - Make the commit message more precise.
 
-diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
-index fdbbbfec745aa..820b4aeabd0c2 100644
---- a/arch/x86/include/asm/debugreg.h
-+++ b/arch/x86/include/asm/debugreg.h
-@@ -9,6 +9,14 @@
- #include <asm/cpufeature.h>
- #include <asm/msr.h>
- 
-+/*
-+ * Define bits that are always set to 1 in DR7, only bit 10 is
-+ * architecturally reserved to '1'.
-+ *
-+ * This is also the init/reset value for DR7.
-+ */
-+#define DR7_FIXED_1	0x00000400
-+
- DECLARE_PER_CPU(unsigned long, cpu_dr7);
- 
- #ifndef CONFIG_PARAVIRT_XXL
-@@ -100,8 +108,8 @@ static __always_inline void native_set_debugreg(int regno, unsigned long value)
- 
- static inline void hw_breakpoint_disable(void)
+v2: https://lore.kernel.org/lkml/20250721215302.3562784-1-sohil.mehta@intel.com/
+ - Avoid making the fix dependent on CONFIG_X86_DEBUG_FPU.
+ - Include PF_USER_WORKER in the kernel thread check.
+ - Update commit message for clarity.
+---
+ arch/x86/kernel/fpu/xstate.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 9aa9ac8399ae..b90b2eec8fb8 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -1855,19 +1855,20 @@ long fpu_xstate_prctl(int option, unsigned long arg2)
+ #ifdef CONFIG_PROC_PID_ARCH_STATUS
+ /*
+  * Report the amount of time elapsed in millisecond since last AVX512
+- * use in the task.
++ * use in the task. Report -1 if no AVX-512 usage.
+  */
+ static void avx512_status(struct seq_file *m, struct task_struct *task)
  {
--	/* Zero the control register for HW Breakpoint */
--	set_debugreg(0UL, 7);
-+	/* Reset the control register for HW Breakpoint */
-+	set_debugreg(DR7_FIXED_1, 7);
+-	unsigned long timestamp = READ_ONCE(x86_task_fpu(task)->avx512_timestamp);
+-	long delta;
++	unsigned long timestamp;
++	long delta = -1;
  
- 	/* Zero-out the individual HW breakpoint address registers */
- 	set_debugreg(0UL, 0);
-@@ -125,9 +133,12 @@ static __always_inline unsigned long local_db_save(void)
- 		return 0;
- 
- 	get_debugreg(dr7, 7);
--	dr7 &= ~0x400; /* architecturally set bit */
+-	if (!timestamp) {
+-		/*
+-		 * Report -1 if no AVX512 usage
+-		 */
+-		delta = -1;
+-	} else {
++	/* AVX-512 usage is not tracked for kernel threads. */
++	if (task->flags & (PF_KTHREAD | PF_USER_WORKER))
++		return;
 +
-+	/* Architecturally set bit */
-+	dr7 &= ~DR7_FIXED_1;
- 	if (dr7)
--		set_debugreg(0, 7);
-+		set_debugreg(DR7_FIXED_1, 7);
++	timestamp = READ_ONCE(x86_task_fpu(task)->avx512_timestamp);
 +
- 	/*
- 	 * Ensure the compiler doesn't lower the above statements into
- 	 * the critical section; disabling breakpoints late would not
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index e4dd840e0becd..0caa3293f6db9 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -31,6 +31,7 @@
- 
- #include <asm/apic.h>
- #include <asm/pvclock-abi.h>
-+#include <asm/debugreg.h>
- #include <asm/desc.h>
- #include <asm/mtrr.h>
- #include <asm/msr-index.h>
-@@ -246,7 +247,6 @@ enum x86_intercept_stage;
- #define DR7_BP_EN_MASK	0x000000ff
- #define DR7_GE		(1 << 9)
- #define DR7_GD		(1 << 13)
--#define DR7_FIXED_1	0x00000400
- #define DR7_VOLATILE	0xffff2bff
- 
- #define KVM_GUESTDBG_VALID_MASK \
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index ed072b126111c..976545ec8fdcb 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2160,7 +2160,7 @@ EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
- static void initialize_debug_regs(void)
- {
- 	/* Control register first -- to make sure everything is disabled. */
--	set_debugreg(0, 7);
-+	set_debugreg(DR7_FIXED_1, 7);
- 	set_debugreg(DR6_RESERVED, 6);
- 	/* dr5 and dr4 don't exist */
- 	set_debugreg(0, 3);
-diff --git a/arch/x86/kernel/kgdb.c b/arch/x86/kernel/kgdb.c
-index 9c9faa1634fb9..e5faeec20b1f4 100644
---- a/arch/x86/kernel/kgdb.c
-+++ b/arch/x86/kernel/kgdb.c
-@@ -385,7 +385,7 @@ static void kgdb_disable_hw_debug(struct pt_regs *regs)
- 	struct perf_event *bp;
- 
- 	/* Disable hardware debugging while we are in kgdb: */
--	set_debugreg(0UL, 7);
-+	set_debugreg(DR7_FIXED_1, 7);
- 	for (i = 0; i < HBP_NUM; i++) {
- 		if (!breakinfo[i].enabled)
- 			continue;
-diff --git a/arch/x86/kernel/process_32.c b/arch/x86/kernel/process_32.c
-index 0917c7f25720b..f10c14cb6ef8b 100644
---- a/arch/x86/kernel/process_32.c
-+++ b/arch/x86/kernel/process_32.c
-@@ -93,7 +93,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode,
- 
- 	/* Only print out debug registers if they are in their non-default state. */
- 	if ((d0 == 0) && (d1 == 0) && (d2 == 0) && (d3 == 0) &&
--	    (d6 == DR6_RESERVED) && (d7 == 0x400))
-+	    (d6 == DR6_RESERVED) && (d7 == DR7_FIXED_1))
- 		return;
- 
- 	printk("%sDR0: %08lx DR1: %08lx DR2: %08lx DR3: %08lx\n",
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 226472332a70d..266366a945ed2 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -132,7 +132,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode,
- 
- 	/* Only print out debug registers if they are in their non-default state. */
- 	if (!((d0 == 0) && (d1 == 0) && (d2 == 0) && (d3 == 0) &&
--	    (d6 == DR6_RESERVED) && (d7 == 0x400))) {
-+	    (d6 == DR6_RESERVED) && (d7 == DR7_FIXED_1))) {
- 		printk("%sDR0: %016lx DR1: %016lx DR2: %016lx\n",
- 		       log_lvl, d0, d1, d2);
- 		printk("%sDR3: %016lx DR6: %016lx DR7: %016lx\n",
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index f378d479fea3f..27d0d6fdd418e 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10959,7 +10959,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		wrmsrl(MSR_IA32_XFD_ERR, vcpu->arch.guest_fpu.xfd_err);
- 
- 	if (unlikely(vcpu->arch.switch_db_regs)) {
--		set_debugreg(0, 7);
-+		set_debugreg(DR7_FIXED_1, 7);
- 		set_debugreg(vcpu->arch.eff_db[0], 0);
- 		set_debugreg(vcpu->arch.eff_db[1], 1);
- 		set_debugreg(vcpu->arch.eff_db[2], 2);
-@@ -10968,7 +10968,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
- 			kvm_x86_call(set_dr6)(vcpu, vcpu->arch.dr6);
- 	} else if (unlikely(hw_breakpoint_active())) {
--		set_debugreg(0, 7);
-+		set_debugreg(DR7_FIXED_1, 7);
- 	}
- 
- 	vcpu->arch.host_debugctl = get_debugctlmsr();
++	if (timestamp) {
+ 		delta = (long)(jiffies - timestamp);
+ 		/*
+ 		 * Cap to LONG_MAX if time difference > LONG_MAX
 -- 
-2.39.5
+2.43.0
 
 
