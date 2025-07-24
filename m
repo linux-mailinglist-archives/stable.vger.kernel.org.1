@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-164524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F045B0FE31
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 02:36:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03ADDB0FE32
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 02:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 330065851B5
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 00:36:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33F4F585154
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 00:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDEE1805E;
-	Thu, 24 Jul 2025 00:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B389219E0;
+	Thu, 24 Jul 2025 00:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jELgxRy3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DIIupvsg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED98256D
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 00:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A644256D
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 00:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753317385; cv=none; b=Vg6pocUc6TZi6FxmyignPWYeJ1YJv/xtlDVWIm9wT3DWHvp/mpAyiJSZ7LaqsIgkpoPQLYqJcieg+ydeF0wGhkmDZsqwMvu2MGud/iOiOV8smo5eAhjanvPNPWm4htVnCPDaSGrqeDmKuUj+VGQ+cKmh92TNAx+356TRBE1sz6M=
+	t=1753317387; cv=none; b=jCY3jmTi94ljKApbtF3B99KdCI6utpwY76TkWIA7ILm1P6GKTXfjWptRpkSMq0irffvxCaa2WlZbje64wPiR3AfKwL3sKN1DRPbReRYMrd+CAEORZhfVE0Z0yGHYAFuwgz946LrVp2U0Y1RDmIL7oXXpfRcNnOPBVESTbqLqkhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753317385; c=relaxed/simple;
-	bh=PSyKf9Cc4nwBUFzixdHaxvYymDgGnVE2FQMQdiJc+vE=;
+	s=arc-20240116; t=1753317387; c=relaxed/simple;
+	bh=MNytIwPwAnqdLi/5UvXvUFnFFzrVkhpfrBvW4AL0UU8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PVODwL3ZomO33+PnBlQc2IIRPXv0hmMIUCPPI/XDnyEU+pe+LNi8n+xLZHTG5mwi1M1uL3OaC0l5eZhNOlyJ4Jdq0/1evJ9cbRWJ8P0ScXVKcg9WaXigpJ5CvEpWqavhC8M58nQ3PjmjeTTBBbwYiA2CM/e0MJiE43Kc4u9O09w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jELgxRy3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8EBC4CEEF;
-	Thu, 24 Jul 2025 00:36:24 +0000 (UTC)
+	 MIME-Version; b=WrgwddR01DRqtdS6Wj1AwILbfaELZusPpbIMCmQ6KsyO+cZenVsm9tcQyiKXsCQna/+FEippCtKvfEGOWbTiKEG82bkkKay20qMbfbkkwRLm9vHIyWmUu0/THWHkBySZdSoQoKbWfMc0gNC9JS8mzKw09ZXuPsncrK02jcLUrng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DIIupvsg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A396FC4CEE7;
+	Thu, 24 Jul 2025 00:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753317385;
-	bh=PSyKf9Cc4nwBUFzixdHaxvYymDgGnVE2FQMQdiJc+vE=;
+	s=k20201202; t=1753317386;
+	bh=MNytIwPwAnqdLi/5UvXvUFnFFzrVkhpfrBvW4AL0UU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jELgxRy32xuux4Xr3SQX5uGzZlAD9c6uAdoG/czbk53s3QS4S1FvWLErhPUGylTjY
-	 oM1ZBX+84L28dUarQofb9SxJV72tKU+rxYTeUDERH7HqIUiuK6THK3e8n4eEj0rxBr
-	 iNWtC3VnmS+fz2a7a5ddocJXdyPtHCau9iBUjSGzf55ngbygXseuz4lJZ7iMkwipat
-	 UKdxhcOEqHcEzBUT3cRvI5Sw00ITg6uAF1/HiPEn7UOesF7sQ9VYsKUPSQwz2GfqAv
-	 GFLD0IlBw9X19BfU0fS2AWUR8Y/4VvJv6/Q1nQtllk27ev1XhG61wVX59BlbnhcT7q
-	 b8qP3r5sER3vA==
+	b=DIIupvsgKDRh4eMprQznNRKTpc6ujP/4XjXGDE/H9dl1ZmtX4/xuYZZ9LyhJp5bIe
+	 y1av1TqobnDEjvnaEO5xw1mg3kqu13epWgudd6V0Gnnpr/+Vg1FfVw9KzpwtzAya7T
+	 ArQhuW7twvEWVLFQf1pBVUwuMA1gMacH2Y8CARbYo+aoUUAXOJmQLt/ztQJqhUy5V2
+	 dkI+hBAA2TI/7tM7JVKys5n3bvc/f1A/AAI6p/g7L800wEXcB3lxhcG8bHnxiTFPDR
+	 5OiJFMyjuIZL5yy7UCV8UXvSBBUbqyNA8cBgEnRZwQS1vTDgLWz1IPg/hWnKENGvDJ
+	 6wzK+G7+IkCLw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>,
+Cc: RD Babiera <rdbabiera@google.com>,
+	stable <stable@kernel.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/3] usb: typec: tcpm: allow switching to mode accessory to mux properly
-Date: Wed, 23 Jul 2025 20:36:18 -0400
-Message-Id: <20250724003619.1211156-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 3/3] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
+Date: Wed, 23 Jul 2025 20:36:19 -0400
+Message-Id: <20250724003619.1211156-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250724003619.1211156-1-sashal@kernel.org>
 References: <2025070814-evict-shelf-8b8d@gregkh>
@@ -62,123 +64,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 8a50da849151e7e12b43c1d8fe7ad302223aef6b ]
+[ Upstream commit bec15191d52300defa282e3fd83820f69e447116 ]
 
-The funciton tcpm_acc_attach is not setting the proper state when
-calling tcpm_set_role. The function tcpm_set_role is currently only
-handling TYPEC_STATE_USB. For the tcpm_acc_attach to switch into other
-modal states tcpm_set_role needs to be extended by an extra state
-parameter. This patch is handling the proper state change when calling
-tcpm_acc_attach.
+This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
+SNKAS.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
+testers can interpret the TryWait.Src to Attached.Src transition after
+Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
+to the debounce timer.
+
+Setting the data role can be a costly operation in host mode, and when
+completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
+to fail.
+
+Turn VBUS on before tcpm_set_roles to meet timing requirement.
+
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable <stable@kernel.org>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
 Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250404-ml-topic-tcpm-v1-3-b99f44badce8@pengutronix.de
+Link: https://lore.kernel.org/r/20250618230606.3272497-2-rdbabiera@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: bec15191d523 ("usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 2515fa12c626e..09b43d5260fa4 100644
+index 09b43d5260fa4..9d8fcfac57610 100644
 --- a/drivers/usb/typec/tcpm/tcpm.c
 +++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1032,7 +1032,7 @@ static int tcpm_set_attached_state(struct tcpm_port *port, bool attached)
- 				     port->data_role);
- }
+@@ -3686,17 +3686,6 @@ static int tcpm_src_attach(struct tcpm_port *port)
  
--static int tcpm_set_roles(struct tcpm_port *port, bool attached,
-+static int tcpm_set_roles(struct tcpm_port *port, bool attached, int state,
- 			  enum typec_role role, enum typec_data_role data)
- {
- 	enum typec_orientation orientation;
-@@ -1069,7 +1069,7 @@ static int tcpm_set_roles(struct tcpm_port *port, bool attached,
- 		}
+ 	tcpm_enable_auto_vbus_discharge(port, true);
+ 
+-	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
+-			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
+-	if (ret < 0)
+-		return ret;
+-
+-	if (port->pd_supported) {
+-		ret = port->tcpc->set_pd_rx(port->tcpc, true);
+-		if (ret < 0)
+-			goto out_disable_mux;
+-	}
+-
+ 	/*
+ 	 * USB Type-C specification, version 1.2,
+ 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
+@@ -3706,13 +3695,24 @@ static int tcpm_src_attach(struct tcpm_port *port)
+ 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
+ 		ret = tcpm_set_vconn(port, true);
+ 		if (ret < 0)
+-			goto out_disable_pd;
++			return ret;
  	}
  
--	ret = tcpm_mux_set(port, TYPEC_STATE_USB, usb_role, orientation);
-+	ret = tcpm_mux_set(port, state, usb_role, orientation);
+ 	ret = tcpm_set_vbus(port, true);
  	if (ret < 0)
- 		return ret;
+ 		goto out_disable_vconn;
  
-@@ -3686,7 +3686,8 @@ static int tcpm_src_attach(struct tcpm_port *port)
- 
- 	tcpm_enable_auto_vbus_discharge(port, true);
- 
--	ret = tcpm_set_roles(port, true, TYPEC_SOURCE, tcpm_data_role_for_source(port));
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
-+			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
- 	if (ret < 0)
- 		return ret;
- 
-@@ -3844,7 +3845,8 @@ static int tcpm_snk_attach(struct tcpm_port *port)
- 
- 	tcpm_enable_auto_vbus_discharge(port, true);
- 
--	ret = tcpm_set_roles(port, true, TYPEC_SINK, tcpm_data_role_for_sink(port));
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
-+			     TYPEC_SINK, tcpm_data_role_for_sink(port));
- 	if (ret < 0)
- 		return ret;
- 
-@@ -3868,6 +3870,7 @@ static int tcpm_acc_attach(struct tcpm_port *port)
- 	int ret;
- 	enum typec_role role;
- 	enum typec_data_role data;
-+	int state = TYPEC_STATE_USB;
- 
- 	if (port->attached)
- 		return 0;
-@@ -3876,7 +3879,13 @@ static int tcpm_acc_attach(struct tcpm_port *port)
- 	data = tcpm_port_is_sink(port) ? tcpm_data_role_for_sink(port)
- 				       : tcpm_data_role_for_source(port);
- 
--	ret = tcpm_set_roles(port, true, role, data);
-+	if (tcpm_port_is_audio(port))
-+		state = TYPEC_MODE_AUDIO;
++	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB, TYPEC_SOURCE,
++			     tcpm_data_role_for_source(port));
++	if (ret < 0)
++		goto out_disable_vbus;
 +
-+	if (tcpm_port_is_debug(port))
-+		state = TYPEC_MODE_DEBUG;
++	if (port->pd_supported) {
++		ret = port->tcpc->set_pd_rx(port->tcpc, true);
++		if (ret < 0)
++			goto out_disable_mux;
++	}
 +
-+	ret = tcpm_set_roles(port, true, state, role, data);
- 	if (ret < 0)
- 		return ret;
+ 	port->pd_capable = false;
  
-@@ -4556,7 +4565,7 @@ static void run_state_machine(struct tcpm_port *port)
- 		 */
- 		tcpm_set_vconn(port, false);
- 		tcpm_set_vbus(port, false);
--		tcpm_set_roles(port, port->self_powered, TYPEC_SOURCE,
-+		tcpm_set_roles(port, port->self_powered, TYPEC_STATE_USB, TYPEC_SOURCE,
- 			       tcpm_data_role_for_source(port));
- 		/*
- 		 * If tcpc fails to notify vbus off, TCPM will wait for PD_T_SAFE_0V +
-@@ -4588,7 +4597,7 @@ static void run_state_machine(struct tcpm_port *port)
- 		tcpm_set_vconn(port, false);
- 		if (port->pd_capable)
- 			tcpm_set_charge(port, false);
--		tcpm_set_roles(port, port->self_powered, TYPEC_SINK,
-+		tcpm_set_roles(port, port->self_powered, TYPEC_STATE_USB, TYPEC_SINK,
- 			       tcpm_data_role_for_sink(port));
- 		/*
- 		 * VBUS may or may not toggle, depending on the adapter.
-@@ -4693,10 +4702,10 @@ static void run_state_machine(struct tcpm_port *port)
- 	case DR_SWAP_CHANGE_DR:
- 		tcpm_unregister_altmodes(port);
- 		if (port->data_role == TYPEC_HOST)
--			tcpm_set_roles(port, true, port->pwr_role,
-+			tcpm_set_roles(port, true, TYPEC_STATE_USB, port->pwr_role,
- 				       TYPEC_DEVICE);
- 		else
--			tcpm_set_roles(port, true, port->pwr_role,
-+			tcpm_set_roles(port, true, TYPEC_STATE_USB, port->pwr_role,
- 				       TYPEC_HOST);
- 		tcpm_ams_finish(port);
- 		tcpm_set_state(port, ready_state(port), 0);
+ 	port->partner = NULL;
+@@ -3722,14 +3722,14 @@ static int tcpm_src_attach(struct tcpm_port *port)
+ 
+ 	return 0;
+ 
+-out_disable_vconn:
+-	tcpm_set_vconn(port, false);
+-out_disable_pd:
+-	if (port->pd_supported)
+-		port->tcpc->set_pd_rx(port->tcpc, false);
+ out_disable_mux:
+ 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
+ 		     TYPEC_ORIENTATION_NONE);
++out_disable_vbus:
++	tcpm_set_vbus(port, false);
++out_disable_vconn:
++	tcpm_set_vconn(port, false);
++
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
