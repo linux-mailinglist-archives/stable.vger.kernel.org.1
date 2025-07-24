@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-164559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93055B0FF7B
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 06:13:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 635C0B0FF7F
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 06:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAA80172D82
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:13:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 526CA3AF035
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD501E9B35;
-	Thu, 24 Jul 2025 04:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E2F1E832A;
+	Thu, 24 Jul 2025 04:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o5qLtPke"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RQKjYnKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDC41A83F8
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 04:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB961362
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 04:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753330425; cv=none; b=XqsIiUA9+RBKlSYITWA0B8Z4WXddMRZ5a9Y6/oO1nW7fqlK/BT0HHfEtiLHoDcY29kvzcMaCZ0ixILgI3lrkMh9WdL6DcL4O8noLFyPdLSPZRuISGlTza6kwiC6xEi3jLm7Jwd/Wmay5tLsnNnGB8RiEK1A7rGeTovlL+8xT1wE=
+	t=1753330673; cv=none; b=AnFxW470OJz6CFfmmzaJMFKuAdzeF1dODzKNViMFQrXSXo+ShWgTMSPhKDn78LADX2Q6UKb1qii5UHjIejqLOhBm4jiAtnSHZpOVA0QqkzAj3NsiML8XUDNJAik7rtYBYw2uG33yjF3fDAHpyGeqdySFZImgvOuYWuVYCMmZrzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753330425; c=relaxed/simple;
-	bh=CbQ2bDDKaZOJDLOQdlF66t6IrtiCT3G/16Q+Q3l8XLc=;
+	s=arc-20240116; t=1753330673; c=relaxed/simple;
+	bh=rbuweX8lqkyyKixjIDvpnWoo5DAaq/TKp+ZeTJhjIis=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=He1N19bkuZ8t8nriYqNs6YPjfCHkHOoUBiGKN40/LWuK0UBu1qbCgB4f84e+cWyHq0iLBQD5R6KtqyHjhAfj4wHCl+UpG7cW0NpNVwHZrRcR5j8ipilvukE01HqDZIWfDTUErxzvsbHzV9etrKWNNIV+FHZiWlLldhXvXjWcnb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o5qLtPke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D740C4CEED;
-	Thu, 24 Jul 2025 04:13:42 +0000 (UTC)
+	 MIME-Version; b=StOIIBGDqFU48Ioit2IfkvRgRcZFN95QNAqXAtMWrzQ866XUa6BwVLTXa7c4OOiHfAT4BOpeKPH0lca5MBZ3uFeI3GeyAji55E1xkV3dA6JicxIwZEU6CtJ/2CdvxCFyPQiJE9ptmdGKCp7vNjh8RjO7T8LzT2qxtNP45A5V2wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RQKjYnKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7775DC4CEED;
+	Thu, 24 Jul 2025 04:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753330423;
-	bh=CbQ2bDDKaZOJDLOQdlF66t6IrtiCT3G/16Q+Q3l8XLc=;
+	s=k20201202; t=1753330672;
+	bh=rbuweX8lqkyyKixjIDvpnWoo5DAaq/TKp+ZeTJhjIis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5qLtPke6WrF6MwxspB4ryT2p58rizv+you2wyyiWJVWrd61PfWTAO8SVX4xt/tnO
-	 Eug11EqTbXyrvmruW6Gy3VKGiC7HK4byX/QOstp/7tubtdNK0wLTZnlWRyHpADGPzF
-	 k3Oy3LT6bLfSkchTTNc14D70EIvCezYCtlMkGkPVrG2YK2DP+qqGdSPjHUHdw/G9Gu
-	 DksM0c17xsNavspw/AhxTlw/p59g1YRTKBhY/V62Nxj+5Qajn5oz+S+dwYwTUWeAED
-	 xYNTomABMMat+d1JieGGShMVZ+MslDU0J1r8mTCRAb0Ssb2sQMtq3LBk+kMUSCvf/V
-	 ssjEzRucuKJQQ==
+	b=RQKjYnKYgTurEtqPQ7KGE/kQyiimAkPEyBg8DmHTU7yAVJjIZo6erftLqKnFbpZUh
+	 zUfWXG3aCvOPch3btpdeh6eoK68EuLkOOUsDKGJu11NLjFKKOyXeo3k8p1wBQkBseS
+	 w/l2KjqL6JyhHf6LHMWbBsvfbat+ToAn4Tfz8R0VUDHe9E5U1H6qQlX/4GdXm9sjjw
+	 DqXPqXxkdmYbqpVtKM0NMk9w1xrkPaZVvTbAeaVPMHZtlcPZJUc0FncptSOC8R7kUy
+	 KcHCrcBW3BxM+fyf2Bk7yul1mfXftNrFelyTgkznLx+bZc5nuZ4kXgzT/Rzoi+037M
+	 JZgwMNsD7mJMA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
@@ -48,12 +48,12 @@ Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
 	Gatien Chevallier <gatien.chevallier@foss.st.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
-Date: Thu, 24 Jul 2025 00:13:39 -0400
-Message-Id: <20250724041339.1297276-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
+Date: Thu, 24 Jul 2025 00:17:48 -0400
+Message-Id: <20250724041748.1298627-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025062008-carrousel-lazily-2f19@gregkh>
-References: <2025062008-carrousel-lazily-2f19@gregkh>
+In-Reply-To: <2025062006-onshore-stool-de98@gregkh>
+References: <2025062006-onshore-stool-de98@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,10 +105,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
-index 22a91db645b8f..525c311ddb181 100644
+index c5f4207fddce9..a34b9533d8f18 100644
 --- a/drivers/input/keyboard/gpio_keys.c
 +++ b/drivers/input/keyboard/gpio_keys.c
-@@ -493,7 +493,7 @@ static irqreturn_t gpio_keys_irq_isr(int irq, void *dev_id)
+@@ -495,7 +495,7 @@ static irqreturn_t gpio_keys_irq_isr(int irq, void *dev_id)
  	if (bdata->release_delay)
  		hrtimer_start(&bdata->release_timer,
  			      ms_to_ktime(bdata->release_delay),
@@ -117,7 +117,7 @@ index 22a91db645b8f..525c311ddb181 100644
  out:
  	spin_unlock_irqrestore(&bdata->lock, flags);
  	return IRQ_HANDLED;
-@@ -633,7 +633,7 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
+@@ -632,7 +632,7 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
  
  		bdata->release_delay = button->debounce_interval;
  		hrtimer_init(&bdata->release_timer,
