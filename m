@@ -1,170 +1,169 @@
-Return-Path: <stable+bounces-164618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F38B10DCD
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 16:38:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BFAB10DD3
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 16:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAF4F5467D1
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 14:37:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4910E3BAB88
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 14:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41CE2E543E;
-	Thu, 24 Jul 2025 14:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1E82E2652;
+	Thu, 24 Jul 2025 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nJNUZb2M"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="o++Usffs"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B0F2E1741
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 14:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDAC1632C8;
+	Thu, 24 Jul 2025 14:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753367850; cv=none; b=CwAkSB4DlFQWOj+gWRWdCU8iFX4zn63CGgjZCcVFUmprn9e1XMvlCgpc7DDONjqUjMcAfd7IAxJi2FjEc9ijtsSXHUL8xZWtKS1BixPioZCv6cqn8iRigcKl/mrA1ExnFy8QR+CP8eKsHJxSvCI9yLEL0nqwM7vpOGLUyOF8A8A=
+	t=1753367990; cv=none; b=cIR94WcfY5EpLRrSgohIT3HH2rysgA+Y0fGZh6OfCpSSBsQ6TgbLSmKCsyEipduHPLNz8GDMNMiJBLz7PNJLZkzmYNTgcDxTa6Vnz7rkp0dWMFzgbc3L4ixz9P9P8mGe8lJ1KErtMdogM5+iKXaqWqD53K3uMNa5KbdkGcoqYMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753367850; c=relaxed/simple;
-	bh=i1slLS6fKL6k/lJjpB1zEBUCWviGCPU4GQH5Mw9K1LE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgTouUv0rEcXDFpVloAWZv0hr16MlmjztsGuWz3c9xJbUT5fXE3OpxADceqMTjA7qNOWFW2AjiDRAjl3S/95rZgGfWLxajYMxFCZfKUmSEbDZNOQ+l74Daz23PvPuMwSbgC5sVHwaR6Lk3ia00fuo1E0M80Al4n5gYgKl0Ss73I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nJNUZb2M; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56O9iJ2w018177
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 14:37:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=1/ClJdrWPfw
-	KRkRpbRRXkAMnaqMIpW6RqyjsVq8yU5M=; b=nJNUZb2MHMlazo/lHBTTkx7RVqD
-	mKkM1XLOTUjLVxHwwO6ntu5k5NMLGeu3GfWfeExSsH4CoG18PYbY2sRQZwk6GepE
-	kKJnegj1qnrJ9987J981svWV6MRgM5b4e7lhl0k3JWRT/0Jsiq74Mt0sZCIoFjoz
-	WzunazjjNXLOQyIBbthmKudOX/0HTUd3oKj7vZgQOiexnSKaqCApet/I4mW4AXh7
-	sJOhS0RpouMRpufAsY8vfP1N+Jkfgmx2iVB3rwgPS+2EazMnGYACZFEdT+/nr0Cw
-	TXwOKZIkQ1w9XlFcueMIDTmmQENAQ9g9sJ6PbIXm5simWPnD8+deTD6gRRA==
-Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com [209.85.221.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 481qh6u6s3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 14:37:27 +0000 (GMT)
-Received: by mail-vk1-f200.google.com with SMTP id 71dfb90a1353d-531566c838cso279436e0c.2
-        for <stable@vger.kernel.org>; Thu, 24 Jul 2025 07:37:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753367847; x=1753972647;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1/ClJdrWPfwKRkRpbRRXkAMnaqMIpW6RqyjsVq8yU5M=;
-        b=Hr1Q5J7zcfTRd633Hm4jhh6FgSpw08YvjrCcDJV5QEETjdeCC2g/NtMC0VE7g2goUY
-         BzzDKgf6uWdt5i8Fc6cSxxrzxXTWXGXlrJoQunMguSj+cZrxm3V+Gn6eGdyoF7fHeZBS
-         B/lvyOmU2ejmUQMF0Vk3n2+ktxn5Sux5ptxupT6d0KwhjtCwg1qkQ/tMexHgbxF1Yu1q
-         YDf9y7mZW4bsE9N6I1C3jO+y0K+cHKsRNMStO88WSQ9ktI2U1kux925Jn7wmEmqv6+JY
-         9UkqbrmuIPXR56yU9HyLfL+Zb3s92In3G4SXodiN/Fho2E6SponA8qnf1jVp1OHk7oHU
-         MNEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSaxSh19OTgDsW5deEZVOzhAq95iA82Ynb3TjG8H4EFLWrl3MSzQ9+It9XbV9rLS6gJgDTdcw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2r4vMfgKo56EJuMOXJ5Y0rxAikpXTw4bIy9+QkR39KXrINY6n
-	muSbgu5jGuwTkgMxulzKfzGFW0vbR2WxSEUXqJusycECyt4g8EBZg9tBS18sd7euVtwlanc252E
-	9LDAZBNKvz/qAcB7z3q+/qwFr8RhomJmNBI/8PYi5Jm2JPptnFgZBqEdcAWE5V+K9+Sg=
-X-Gm-Gg: ASbGncvbjljuWomh3a5TzdPwRUNh3eJneN+nTbDu9Y7YbXQqPPxpsNWH6CAWUHhBBJf
-	a4OFucO2JbdM2f0AgXQXzy5uhrRh8EXjBf+sZAbtGidO89DiO8bQu+q6x+RwGSy8JQfdqpjBtCH
-	sPTNYXczwSnv6u+zeGSb1w3Hxflu+jDU5/2taGBgamk12hfidY00rh2ABFYLsZTx3P456mWKUNF
-	nOD95QGmM0LZQv2k22ljxwys+BZnpZ49d21kBrn/pyBOdZHZsGijq0bGp6uCWy6Li8UY0X8I3SW
-	PY60hi9qXc91e6ubQjMQsaxtViRvIFy7XdmLkHThRfkrkJ3OcgtZznVs6e2GE5fBXQ==
-X-Received: by 2002:a05:6122:509:b0:531:2f51:7676 with SMTP id 71dfb90a1353d-537af565921mr3835504e0c.9.1753367846766;
-        Thu, 24 Jul 2025 07:37:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFC9QgriQyVRZksDj1oB9q4RdVIKez8rc+GtzAgwBhWM1KCgo2TsHI0fM64ZXC1O2Pn7YiEg==
-X-Received: by 2002:a05:6122:509:b0:531:2f51:7676 with SMTP id 71dfb90a1353d-537af565921mr3835474e0c.9.1753367846304;
-        Thu, 24 Jul 2025 07:37:26 -0700 (PDT)
-Received: from HMOMMER.na.qualcomm.com ([212.136.9.4])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af47c495f02sm122856266b.2.2025.07.24.07.37.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 07:37:25 -0700 (PDT)
-From: Harald Mommer <harald.mommer@oss.qualcomm.com>
-To: Enrico Weigelt <info@metux.net>, Viresh Kumar <vireshk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: linux-gpio@vger.kernel.org, virtualization@lists.linux.dev,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH v2 1/1] gpio: virtio: Fix config space reading.
-Date: Thu, 24 Jul 2025 16:36:53 +0200
-Message-ID: <20250724143718.5442-2-harald.mommer@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250724143718.5442-1-harald.mommer@oss.qualcomm.com>
-References: <20250724143718.5442-1-harald.mommer@oss.qualcomm.com>
+	s=arc-20240116; t=1753367990; c=relaxed/simple;
+	bh=xg2atMU/cA+E9kWDYocMv4tlsJgUDqoy5fxUbDfUXlg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BY0hQqCaRDoPzEeeRlI39LohJHklBQWGi7l0YC6d/MzpCrQ7YC9JoaY7FY3X+lBtVeyM870OKR7i0oRwWdhm/THPhUJi5rl9jxfvdch3kq20EHQV0eSXYQoPuppmHNLKQYk1DMDCJYqBpPyxCPNLM4a0Aq4x50gSelnJ3autE8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=o++Usffs; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1753367986;
+	bh=xg2atMU/cA+E9kWDYocMv4tlsJgUDqoy5fxUbDfUXlg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=o++Usffs2STqsJCEKZag/TIYBLHnlf6S/vzpky7JztXxcvbY1cROpmwvdjuGqjV7E
+	 qOd67tWGpyJTWmDrA0/nP9jOFQD5NqjvJGNHWdP53PQ0gEr+CQe44JuLSB0Y/CvoMK
+	 iNI3A9Xc80BdW5mWCDlDrGM/NwmxLkaSx79tbEn+YghKYnsLSb/HgyFWJNB3QK3KH9
+	 kduDeYMBNn0AJ8xdfMP27nfzBXfeF964hwMjSpRgYnji9k6DLSmjRfDhAysqf7TMS9
+	 UDw0xvoejzdQNrPrXnh3gm0W14qkpdTiC5MhgXgkQSf37OAWisu83p52jmRyZ7LmPf
+	 dU7cJiIVoLUDA==
+Received: from jupiter.universe (dyndsl-091-248-210-114.ewe-ip-backbone.de [91.248.210.114])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: sre)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 72FB617E0188;
+	Thu, 24 Jul 2025 16:39:46 +0200 (CEST)
+Received: by jupiter.universe (Postfix, from userid 1000)
+	id 39E0D480039; Thu, 24 Jul 2025 16:39:46 +0200 (CEST)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+Date: Thu, 24 Jul 2025 16:39:42 +0200
+Subject: [PATCH net v2] net: phy: realtek: Reset after clock enable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=CZ4I5Krl c=1 sm=1 tr=0 ts=68824528 cx=c_pps
- a=wuOIiItHwq1biOnFUQQHKA==:117 a=dNlqnMcrdpbb+gQrTujlOQ==:17
- a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8
- a=x8YHxakxDffKOoiCecoA:9 a=XD7yVLdPMpWraOa8Un9W:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-ORIG-GUID: PHYhL8sYSn_KTpEP3oWgWhbkCIWpQccS
-X-Proofpoint-GUID: PHYhL8sYSn_KTpEP3oWgWhbkCIWpQccS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDExMSBTYWx0ZWRfX0X27A4qnaVKX
- jlS7r1oFuLSq+ecenAmGrUFj2dV50hEQPRFvTkqA1Z718rquthjsNb029u0HWkFeTQDiTVGzkmD
- b1xQluj0CnSo3ZcFQJwOxyaI+EyXS+1/aUPmd/qbnCDkM5nGYz/vMbpAfnB28HsmqZQsdPWfd5G
- +3c0g9JPVP/n7lzzWjY3ugUWd4FQQvik77EYzohV/arxl586mM41WMb/h/UHHxnifJyk3qt/o1H
- 0EjMoKgKy1MEdDNSV0v1/FKn/gyRoFYZtK9/7NC3ArJCa6FeT+nz+nVHy6j6zMb/ITP4T4P0whq
- KS2i2wAANbqJkLGA/SWPPsOhn+zBQdP4XoQQwAV1ycanY7k6sIP8o2arb/hW6pm0AxuWZB9i+/c
- Gy9WufjtvW8Eq0go4RbVeQMwUtIAlyKgTRaD0Ck7qPmfHVDbJaZnZcBPEHGLcv4BCqcneqMh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-24_02,2025-07-24_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 mlxlogscore=999 impostorscore=0
- clxscore=1011 mlxscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- bulkscore=0 spamscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507240111
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250724-phy-realtek-clock-fix-v2-1-ae53e341afb7@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAK1FgmgC/4WNTQqDMBCFryKz7pSY+NO66j2KC41TDUoikxAqk
+ rs3eIEu3/d43zvBExvy0BUnMEXjjbM5yFsBehnsTGimnEEKWYtWVLgvBzINW6AV9eb0ih/zxUZ
+ P6qnooUc5QN7uTBlf3jdYCtBnuBgfHB/XVyyv6o82llhio0alJimqWrWvldjSdnc8Q59S+gG+D
+ FyPwAAAAA==
+X-Change-ID: 20250704-phy-realtek-clock-fix-6cd393e8cb2a
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Detlev Casanova <detlev.casanova@collabora.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kernel@collabora.com, stable@vger.kernel.org, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3041; i=sre@kernel.org;
+ h=from:subject:message-id; bh=xg2atMU/cA+E9kWDYocMv4tlsJgUDqoy5fxUbDfUXlg=;
+ b=owJ4nAFtApL9kA0DAAoB2O7X88g7+poByyZiAGiCRbJ/xtvcileJVIl8LJxn9j7Jf26r56TdP
+ il8Ob78nspdyIkCMwQAAQoAHRYhBO9mDQdGP4tyanlUE9ju1/PIO/qaBQJogkWyAAoJENju1/PI
+ O/qawAoP/2BnLWGbH9smbQPfj88LlvRMoYRUSyHLmHdDSjR1xRrkdBbUF28+l702Mw6u0sllwx+
+ TXvMSOZnVTC3vPRBnW3kTl5EndmQUk/4Ui43Glb4xrtLBoiwFq23JEXxcNhUkKwTKrZlZaOD/SG
+ HF4i5+UXBdxRjXXDcpUhXn0e6KfeT/sluNi08y0IhqVTX+nU0xabXWCfIHr7Xq5IyFzEXmZ1Tbi
+ Gbxeb8kszJa2s9dkk/ZvWF3qJQ1fm6EuGuowwMbBWHTVxl+RDgW1t/07ImyOzjzLalGKRusJSc6
+ CqK6k+GpArYxDqGpBdRQfaMFro2B0V1+jLRjceSKwGLF6yGXaHksoR+0aaWXgcfnoWl/qWLughJ
+ bCbHyp2F4SxzIAM6KrGhV0hCwjSHbCYhC5ExS3+t/W936Pe/00eJQjSMHW1AHYO6nYRqu4mX8nG
+ m3QNIoIJLoDQxhMyoaHz/wqUSC/hIOFSKBjRo4h0VMUurKg7FW1D0qK6IU/8g79OUuDLW5luP0o
+ rtYhsWPZ7uC0c/2fL3/tTGDZXrm0cveXDqfqPUH/y9coSsSoGz+WPQvdPLhqRN16DFgafhp+6FU
+ uK0UaDVbUMNWG48gcnI2iow3glAOw0A4vNNUVI4T/kv1NbS2uSmg49O2UAP5gA/pwyLDv61y6vo
+ IYtDXmoUh3C8AVIwHWOsvPQ==
+X-Developer-Key: i=sre@kernel.org; a=openpgp;
+ fpr=EF660D07463F8B726A795413D8EED7F3C83BFA9A
 
-Quote from the virtio specification chapter 4.2.2.2:
+On Radxa ROCK 4D boards we are seeing some issues with PHY detection and
+stability (e.g. link loss or not capable of transceiving packages) after
+new board revisions switched from a dedicated crystal to providing the
+25 MHz PHY input clock from the SoC instead.
 
-"For the device-specific configuration space, the driver MUST use 8 bit
-wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
-for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
-64 bit wide fields."
+This board is using a RTL8211F PHY, which is connected to an always-on
+regulator. Unfortunately the datasheet does not explicitly mention the
+power-up sequence regarding the clock, but it seems to assume that the
+clock is always-on (i.e. dedicated crystal).
 
-Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
+By doing an explicit reset after enabling the clock, the issue on the
+boards could no longer be observed.
+
+Note, that the RK3576 SoC used by the ROCK 4D board does not yet
+support system level PM, so the resume path has not been tested.
+
 Cc: stable@vger.kernel.org
-Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 7300c9b574cc ("net: phy: realtek: Add optional external PHY clock")
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- drivers/gpio/gpio-virtio.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Changes in v2:
+- Switch to PHY_RST_AFTER_CLK_EN + phy_reset_after_clk_enable(); the
+  API is so far only used by the freescale/NXP MAC driver and does
+  not seem to be written for usage from within the PHY driver, but
+  I also don't see a good reason not to use it.
+- Also reset after re-enabling the clock in rtl821x_resume()
+- Link to v1: https://lore.kernel.org/r/20250704-phy-realtek-clock-fix-v1-1-63b33d204537@kernel.org
+---
+ drivers/net/phy/realtek/realtek_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-virtio.c b/drivers/gpio/gpio-virtio.c
-index 92b456475d89..07552611da98 100644
---- a/drivers/gpio/gpio-virtio.c
-+++ b/drivers/gpio/gpio-virtio.c
-@@ -527,7 +527,6 @@ static const char **virtio_gpio_get_names(struct virtio_gpio *vgpio,
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index c3dcb62574303374666b46a454cd4e10de455d24..cf128af0ec0c778262d70d6dc4524d06cbfccf1f 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -230,6 +230,7 @@ static int rtl821x_probe(struct phy_device *phydev)
+ 	if (IS_ERR(priv->clk))
+ 		return dev_err_probe(dev, PTR_ERR(priv->clk),
+ 				     "failed to get phy clock\n");
++	phy_reset_after_clk_enable(phydev);
  
- static int virtio_gpio_probe(struct virtio_device *vdev)
- {
--	struct virtio_gpio_config config;
- 	struct device *dev = &vdev->dev;
- 	struct virtio_gpio *vgpio;
- 	struct irq_chip *gpio_irq_chip;
-@@ -540,9 +539,11 @@ static int virtio_gpio_probe(struct virtio_device *vdev)
- 		return -ENOMEM;
+ 	ret = phy_read_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1);
+ 	if (ret < 0)
+@@ -627,8 +628,10 @@ static int rtl821x_resume(struct phy_device *phydev)
+ 	struct rtl821x_priv *priv = phydev->priv;
+ 	int ret;
  
- 	/* Read configuration */
--	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
--	gpio_names_size = le32_to_cpu(config.gpio_names_size);
--	ngpio = le16_to_cpu(config.ngpio);
-+	gpio_names_size =
-+		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
-+					      gpio_names_size));
-+	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
-+					       ngpio));
- 	if (!ngpio) {
- 		dev_err(dev, "Number of GPIOs can't be zero\n");
- 		return -EINVAL;
+-	if (!phydev->wol_enabled)
++	if (!phydev->wol_enabled) {
+ 		clk_prepare_enable(priv->clk);
++		phy_reset_after_clk_enable(phydev);
++	}
+ 
+ 	ret = genphy_resume(phydev);
+ 	if (ret < 0)
+@@ -1617,7 +1620,7 @@ static struct phy_driver realtek_drvs[] = {
+ 		.resume		= rtl821x_resume,
+ 		.read_page	= rtl821x_read_page,
+ 		.write_page	= rtl821x_write_page,
+-		.flags		= PHY_ALWAYS_CALL_SUSPEND,
++		.flags		= PHY_ALWAYS_CALL_SUSPEND | PHY_RST_AFTER_CLK_EN,
+ 		.led_hw_is_supported = rtl8211x_led_hw_is_supported,
+ 		.led_hw_control_get = rtl8211f_led_hw_control_get,
+ 		.led_hw_control_set = rtl8211f_led_hw_control_set,
+
+---
+base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+change-id: 20250704-phy-realtek-clock-fix-6cd393e8cb2a
+
+Best regards,
 -- 
-2.43.0
+Sebastian Reichel <sre@kernel.org>
 
 
