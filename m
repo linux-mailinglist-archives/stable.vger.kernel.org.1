@@ -1,314 +1,176 @@
-Return-Path: <stable+bounces-164646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2410DB11020
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 19:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86104B1102E
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 19:07:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02E7F1685BC
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 17:03:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3CAC16C202
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 17:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65CB2EACEF;
-	Thu, 24 Jul 2025 17:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4DC2E091B;
+	Thu, 24 Jul 2025 17:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hcSp8PLl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T0YZBI2L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901F122083;
-	Thu, 24 Jul 2025 17:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9C91F7586
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 17:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753376593; cv=none; b=f2KkUeStsxsY0ZquIA++9a2Zy7HwcBkdWYxghKD08DFz7LX5z+2tOS9ADE908q4n3krljNq752BXiyIe20OZsftpFxdtC9iQJuVrbtu77Ed6MYmsPEOa2NRhXrPYfzeyB1uVjdQ7rr0lJj9qahDio7ppbfp4xetsBj+3cSo+CuY=
+	t=1753376852; cv=none; b=GHh8ccbVZiO7lbQJ6XZzP/9HuPj8TTFkY6MdpAhMH9Z6R1SsPSsOZ824HyHOawkMpsXbNspFOpLObBYgFwQUm8ZlPRlj56t+xzX5I55uiNvgjpJ/JfHGtN8fC0Ru+tqk0h2RQJBfDmesClP10YbVECeXrn3YmX68cG+/UKKwc1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753376593; c=relaxed/simple;
-	bh=rwSPoon0E7mhNdh+2hHRnGAvqDzdRjJyRJp84+Blkz0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tDo5oiG+x8HphcXxWh0VFIm5dU9WpwhPPhObEsH0og/9p/aVhhefPDmvwZIY99nbFaD0batY9rGS4KqIJmlRaY+OjUrIV9VskSQc8LpKjRsHp7Tw/0QziNyVmxs/OJ8JEF5SPMhS4BTjcY2m1VbtC5DVVEQfsQttbDei9FHElU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hcSp8PLl; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-32b7f41d3e6so14865391fa.1;
-        Thu, 24 Jul 2025 10:03:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753376587; x=1753981387; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0FGOOiPVQqYASE7Wmz67+AH5G3BHXQxt/qem1BnGLQw=;
-        b=hcSp8PLlB7Gj8bBXHv9nTlss+9iLw/3oTi9AgS61Nat9HYAzUAlW9M3L3Yh5tTYzPH
-         wfX+avzB2xA6qlbImm97klU7x86sXM6yt3/cfhtsT3VBBgeJqxjwZejJyzpnnm4A3Uvg
-         iaPVOlHCl4/NVDy8Mdsye8UhimlnL6nBj1P5Z0EmwmnRuhs9bb/94PQkB/7XgwoA3tz5
-         qRUSQdxSUR/7x8GQOFa276XxbXjkSB2HmtYzbrsptz+OrzO3EuK88NRMCF7YXa+1T8BH
-         iP7yGRTz4iNzeKHi3RHwuZtvcT38pmD7Ut+C0cvBqsyrBWpno0rOnxFLB8951YTsg12o
-         9+WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753376587; x=1753981387;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0FGOOiPVQqYASE7Wmz67+AH5G3BHXQxt/qem1BnGLQw=;
-        b=qflYQmQGHU+ygwTU+9tDYkxypx1F57cC6Ha/j+C4XCLQe7cighT1O4QALx/mNCz7mZ
-         2KD6+cXFR5eM6+ejblJxEwE3g+2ituUvuyzasAvESSmvh0UNXJAK8ADyCd96UoU9BY1W
-         Bl+oJmcyCuVMx4rMSsDfhJwFTOP7Kl6NxcSHkE3til+y2F+tSgWiRS4/AJ2aR0MDRAbI
-         Qg4XRqPAFmHLwXmhURu7jozmIEnKqA2xzn4KSukkA88lcuaEjmLJ1hAbWaIZJSTeId5f
-         Jo8bGlrjUe7YKtJmLWmso/HJr3jKjk0msedMMkd4T2iuykpnufYHha/8OVcZOCgK5nZI
-         3GXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCdUMQu1wD9fXnfEXO0pEyQefn8E2sKJyDdbI72d+Ybh2RJPgCvZR27kO1MvqQEk3SuTsJLMM9@vger.kernel.org, AJvYcCX7MxqPLX1/6xrtwrYzWb8Rbj4ZhSto6HuCyIC4ak/PQiVSdWwSysK7U02XOkBib0TwuWqDAav5OBzpTjQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEyqZ3UvIrOAlzmhPtBlv7KmrpoPlHKXVMZF3m2JK930Ckzpof
-	9JXGjFeJBSHqGY4sEjYJr7uVdKy583X2AbtrWKwld9OlT32EE+65enYeH+h8mtReRqbIs1HaiZW
-	3yfhjiqLwkXmFLALI3s7z6qWW+HmULxA=
-X-Gm-Gg: ASbGncvilIQUtbeTniI6kTLLmFj3Y0yHIS9HAaXEqKUdDz9oCE1bCJzgyTzsY/ltGgY
-	NeLOPgKX0iDVVAfCcvVST2R02OYWXweKbEHuDGAnpUgB3VBUDJxNvauhClOH6hzX7BeF1CQDC3W
-	CqSvcDRZZmyFHX+9M2w79CPTA0VeucryutSgRr4tnRS0FzqrMAiuoCi13tmhZTnxPaCcvAMcX72
-	1noOIs=
-X-Google-Smtp-Source: AGHT+IH2SK9nNFgrAJTPUO9UuVWjDcmLx1aMVGa4BQ7jWyaoMvsByiN2oGkEo7mQNMXKziQVY3Jn0YtJZ4JLlWl3sdU=
-X-Received: by 2002:a2e:a00f:0:b0:32e:aaa0:e68c with SMTP id
- 38308e7fff4ca-331e25b98eamr7355731fa.19.1753376587111; Thu, 24 Jul 2025
- 10:03:07 -0700 (PDT)
+	s=arc-20240116; t=1753376852; c=relaxed/simple;
+	bh=m8fxeVi0BvoM1Jw4rYSy8k4ELezpE7ppQC33LCeKdq0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=BaAbZWUNK/x1vSbiq5ksfCzZMaf+cdJW92svxQrNhBhq0fzuqIUTpg2lSBUWEm7cPatNHkTv2rCy8mWdKoxr59nR861Ny3OYc31Y+ntycUVmlcGz1yO7egPfcvmUxCR0Vl9qHc36aW2517RjIHG2VQn7NrObiYbFq7IXbFThilo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T0YZBI2L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2642C4CEED;
+	Thu, 24 Jul 2025 17:07:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753376852;
+	bh=m8fxeVi0BvoM1Jw4rYSy8k4ELezpE7ppQC33LCeKdq0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T0YZBI2LwAEJ9wDzbXza19eZF2YJnVFWeP2bi/j45+QNWsX4TqubjLLUimwrdRVIB
+	 S9dIdu2nDPvNYUjcEEoVBvsnm7qGOcptcdQFvOOuh72Kr3YNNxHpHbJVK3qPtM9xl9
+	 PDvwws4701Q3b39robKBM0fInT7K66sq1Z98/vgGJg0lmoeagKuM3jf9EgLk2EOpFr
+	 YCsQZeDkSlFroGj4Njt4VKWTrsxDXGhcGVgnJXJ8ydgvvKvAxZDEdEIdKM0cfUp1/p
+	 rrBSST8cemIN2iNdssIx93Vp4BMQOSF3qaEy9rBJ8KCafsgE9MkXt15he5LlONF7uy
+	 Dm+sDqUL5C/dw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/3] x86/reboot: Harden virtualization hooks for emergency reboot
+Date: Thu, 24 Jul 2025 13:07:23 -0400
+Message-Id: <20250724170725.1404455-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025062034-chastise-wrecking-9a12@gregkh>
+References: <2025062034-chastise-wrecking-9a12@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250710033706.71042-1-ryncsn@gmail.com> <20250710033706.71042-2-ryncsn@gmail.com>
-In-Reply-To: <20250710033706.71042-2-ryncsn@gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 25 Jul 2025 01:02:28 +0800
-X-Gm-Features: Ac12FXz-JktFoi6dxbYyvTuXYPqprk55h_78M1lLvSRdsUEznKRvFtJBvXljRws
-Message-ID: <CAMgjq7A+DBw=z8RPP-P1hcCH4Mid0txfmKqgqXghoE_v7zGEoA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/8] mm/shmem, swap: improve cached mTHP handling and
- fix potential hung
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Chris Li <chrisl@kernel.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 10, 2025 at 11:37=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> The current swap-in code assumes that, when a swap entry in shmem mapping
-> is order 0, its cached folios (if present) must be order 0 too, which
-> turns out not always correct.
->
-> The problem is shmem_split_large_entry is called before verifying the
-> folio will eventually be swapped in, one possible race is:
->
->     CPU1                          CPU2
-> shmem_swapin_folio
-> /* swap in of order > 0 swap entry S1 */
->   folio =3D swap_cache_get_folio
->   /* folio =3D NULL */
->   order =3D xa_get_order
->   /* order > 0 */
->   folio =3D shmem_swap_alloc_folio
->   /* mTHP alloc failure, folio =3D NULL */
->   <... Interrupted ...>
->                                  shmem_swapin_folio
->                                  /* S1 is swapped in */
->                                  shmem_writeout
->                                  /* S1 is swapped out, folio cached */
->   shmem_split_large_entry(..., S1)
->   /* S1 is split, but the folio covering it has order > 0 now */
->
-> Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
-> folio lookup will return a folio with order > 0.  The
-> `xa_get_order(&mapping->i_pages, index) !=3D folio_order(folio)` will alw=
-ays
-> return false causing swap-in to return -EEXIST.
->
-> And this looks fragile.  So fix this up by allowing seeing a larger folio
-> in swap cache, and check the whole shmem mapping range covered by the
-> swapin have the right swap value upon inserting the folio.  And drop the
-> redundant tree walks before the insertion.
->
-> This will actually improve performance, as it avoids two redundant Xarray
-> tree walks in the hot path, and the only side effect is that in the
-> failure path, shmem may redundantly reallocate a few folios causing
-> temporary slight memory pressure.
->
-> And worth noting, it may seems the order and value check before inserting
-> might help reducing the lock contention, which is not true.  The swap
-> cache layer ensures raced swapin will either see a swap cache folio or
-> failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
-> bypassed), so holding the folio lock and checking the folio flag is
-> already good enough for avoiding the lock contention.  The chance that a
-> folio passes the swap entry value check but the shmem mapping slot has
-> changed should be very low.
->
-> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: <stable@vger.kernel.org>
-> ---
->  mm/shmem.c | 30 +++++++++++++++++++++---------
->  1 file changed, 21 insertions(+), 9 deletions(-)
+From: Sean Christopherson <seanjc@google.com>
 
-Hi All,
+[ Upstream commit 5e408396c60cd0f0b53a43713016b6d6af8d69e0 ]
 
-Just found some issue here with this patch...
+Provide dedicated helpers to (un)register virt hooks used during an
+emergency crash/reboot, and WARN if there is an attempt to overwrite
+the registered callback, or an attempt to do an unpaired unregister.
 
->
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 334b7b4a61a0..e3c9a1365ff4 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struct folio *foli=
-o,
->                                    pgoff_t index, void *expected, gfp_t g=
-fp)
->  {
->         XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio))=
-;
-> -       long nr =3D folio_nr_pages(folio);
-> +       unsigned long nr =3D folio_nr_pages(folio);
-> +       swp_entry_t iter, swap;
-> +       void *entry;
->
->         VM_BUG_ON_FOLIO(index !=3D round_down(index, nr), folio);
->         VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-> @@ -896,14 +898,24 @@ static int shmem_add_to_page_cache(struct folio *fo=
-lio,
->
->         gfp &=3D GFP_RECLAIM_MASK;
->         folio_throttle_swaprate(folio, gfp);
-> +       swap =3D iter =3D radix_to_swp_entry(expected);
->
->         do {
->                 xas_lock_irq(&xas);
+Opportunsitically use rcu_assign_pointer() instead of RCU_INIT_POINTER(),
+mainly so that the set/unset paths are more symmetrical, but also because
+any performance gains from using RCU_INIT_POINTER() are meaningless for
+this code.
 
-I missed a xas_reset here, also better reset iter value too.
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/r/20230721201859.2307736-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: a0ee1d5faff1 ("KVM: VMX: Flush shadow VMCS on emergency reboot")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/include/asm/reboot.h |  5 +++--
+ arch/x86/kernel/reboot.c      | 30 ++++++++++++++++++++++++------
+ arch/x86/kvm/vmx/vmx.c        |  6 ++----
+ 3 files changed, 29 insertions(+), 12 deletions(-)
 
-> -               if (expected !=3D xas_find_conflict(&xas)) {
-> -                       xas_set_err(&xas, -EEXIST);
-> -                       goto unlock;
-> +               xas_for_each_conflict(&xas, entry) {
-> +                       /*
-> +                        * The range must either be empty, or filled with
-> +                        * expected swap entries. Shmem swap entries are =
-never
-> +                        * partially freed without split of both entry an=
-d
-> +                        * folio, so there shouldn't be any holes.
-> +                        */
-> +                       if (!expected || entry !=3D swp_to_radix_entry(it=
-er)) {
-> +                               xas_set_err(&xas, -EEXIST);
-> +                               goto unlock;
-> +                       }
-> +                       iter.val +=3D 1 << xas_get_order(&xas);
->                 }
-> -               if (expected && xas_find_conflict(&xas)) {
-> +               if (expected && iter.val - nr !=3D swap.val) {
->                         xas_set_err(&xas, -EEXIST);
->                         goto unlock;
->                 }
-> @@ -2323,7 +2335,7 @@ static int shmem_swapin_folio(struct inode *inode, =
-pgoff_t index,
->                         error =3D -ENOMEM;
->                         goto failed;
->                 }
-> -       } else if (order !=3D folio_order(folio)) {
-> +       } else if (order > folio_order(folio)) {
->                 /*
->                  * Swap readahead may swap in order 0 folios into swapcac=
-he
->                  * asynchronously, while the shmem mapping can still stor=
-es
-> @@ -2348,15 +2360,15 @@ static int shmem_swapin_folio(struct inode *inode=
-, pgoff_t index,
->
->                         swap =3D swp_entry(swp_type(swap), swp_offset(swa=
-p) + offset);
->                 }
-> +       } else if (order < folio_order(folio)) {
-> +               swap.val =3D round_down(swap.val, 1 << folio_order(folio)=
-);
->         }
->
->  alloced:
->         /* We have to do this with folio locked to prevent races */
->         folio_lock(folio);
->         if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
-> -           folio->swap.val !=3D swap.val ||
-> -           !shmem_confirm_swap(mapping, index, swap) ||
-> -           xa_get_order(&mapping->i_pages, index) !=3D folio_order(folio=
-)) {
+diff --git a/arch/x86/include/asm/reboot.h b/arch/x86/include/asm/reboot.h
+index 2551baec927d2..d9a38d379d182 100644
+--- a/arch/x86/include/asm/reboot.h
++++ b/arch/x86/include/asm/reboot.h
+@@ -25,8 +25,9 @@ void __noreturn machine_real_restart(unsigned int type);
+ #define MRR_BIOS	0
+ #define MRR_APM		1
+ 
+-typedef void crash_vmclear_fn(void);
+-extern crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss;
++typedef void (cpu_emergency_virt_cb)(void);
++void cpu_emergency_register_virt_callback(cpu_emergency_virt_cb *callback);
++void cpu_emergency_unregister_virt_callback(cpu_emergency_virt_cb *callback);
+ void cpu_emergency_disable_virtualization(void);
+ 
+ typedef void (*nmi_shootdown_cb)(int, struct pt_regs*);
+diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
+index d9dbcd1cf75f8..635995e7a704a 100644
+--- a/arch/x86/kernel/reboot.c
++++ b/arch/x86/kernel/reboot.c
+@@ -794,17 +794,35 @@ void machine_crash_shutdown(struct pt_regs *regs)
+  *
+  * protected by rcu.
+  */
+-crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss;
+-EXPORT_SYMBOL_GPL(crash_vmclear_loaded_vmcss);
++static cpu_emergency_virt_cb __rcu *cpu_emergency_virt_callback;
++
++void cpu_emergency_register_virt_callback(cpu_emergency_virt_cb *callback)
++{
++	if (WARN_ON_ONCE(rcu_access_pointer(cpu_emergency_virt_callback)))
++		return;
++
++	rcu_assign_pointer(cpu_emergency_virt_callback, callback);
++}
++EXPORT_SYMBOL_GPL(cpu_emergency_register_virt_callback);
++
++void cpu_emergency_unregister_virt_callback(cpu_emergency_virt_cb *callback)
++{
++	if (WARN_ON_ONCE(rcu_access_pointer(cpu_emergency_virt_callback) != callback))
++		return;
++
++	rcu_assign_pointer(cpu_emergency_virt_callback, NULL);
++	synchronize_rcu();
++}
++EXPORT_SYMBOL_GPL(cpu_emergency_unregister_virt_callback);
+ 
+ static inline void cpu_crash_vmclear_loaded_vmcss(void)
+ {
+-	crash_vmclear_fn *do_vmclear_operation = NULL;
++	cpu_emergency_virt_cb *callback;
+ 
+ 	rcu_read_lock();
+-	do_vmclear_operation = rcu_dereference(crash_vmclear_loaded_vmcss);
+-	if (do_vmclear_operation)
+-		do_vmclear_operation();
++	callback = rcu_dereference(cpu_emergency_virt_callback);
++	if (callback)
++		callback();
+ 	rcu_read_unlock();
+ }
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index fbe26b88f7312..aef2f09718b57 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -8554,8 +8554,7 @@ static void __vmx_exit(void)
+ {
+ 	allow_smaller_maxphyaddr = false;
+ 
+-	RCU_INIT_POINTER(crash_vmclear_loaded_vmcss, NULL);
+-	synchronize_rcu();
++	cpu_emergency_unregister_virt_callback(crash_vmclear_local_loaded_vmcss);
+ 
+ 	vmx_cleanup_l1d_flush();
+ }
+@@ -8629,8 +8628,7 @@ static int __init vmx_init(void)
+ 		pi_init_cpu(cpu);
+ 	}
+ 
+-	rcu_assign_pointer(crash_vmclear_loaded_vmcss,
+-			   crash_vmclear_local_loaded_vmcss);
++	cpu_emergency_register_virt_callback(crash_vmclear_local_loaded_vmcss);
+ 
+ 	vmx_check_vmcs12_offsets();
+ 
+-- 
+2.39.5
 
-And this part is incorrect. This `shmem_confirm_swap(mapping, index,
-swap) ` can't be simply omitted. Some functions below before the
-shmem_add_to_page_cache shouldn't be called on folios might have
-already been mapped by others. This shmem_confirm_swap ensures that
-won't happen.
-
-It may seem like a small change, but it leads to some minor conflicts
-in one or two following commits, the benchmark result will change too.
-So I'll have to send a V6 I think.
-
-We can remove this `shmem_confirm_swap`, but not in this series I
-think, maybe after this. Need to re-arrange some functions, with some
-clean ups for shmem_add_to_page_cache and others.
-
-> +           folio->swap.val !=3D swap.val) {
->                 error =3D -EEXIST;
->                 goto unlock;
->         }
-> --
-> 2.50.0
->
-
-In summary, I'll squash this patch into it and do a rebase of later commits=
-:
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index e3c9a1365ff4..4ca0b665b79e 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -898,9 +898,11 @@ static int shmem_add_to_page_cache(struct folio *folio=
-,
-
-        gfp &=3D GFP_RECLAIM_MASK;
-        folio_throttle_swaprate(folio, gfp);
--       swap =3D iter =3D radix_to_swp_entry(expected);
-+       swap =3D radix_to_swp_entry(expected);
-
-        do {
-+               iter =3D swap;
-+               xas_reset(&xas);
-                xas_lock_irq(&xas);
-                xas_for_each_conflict(&xas, entry) {
-                        /*
-@@ -2365,9 +2367,16 @@ static int shmem_swapin_folio(struct inode
-*inode, pgoff_t index,
-        }
-
- alloced:
--       /* We have to do this with folio locked to prevent races */
-+       /*
-+        * We have to do this with folio locked to prevent races.
-+        * The shmem_confirm_swap below only checks if the first swap
-+        * entry matches the folio, that's enough to ensure the folio
-+        * is not used outside of shmem, as shmem swap entrie
-+        * and swap cache folios are never partially freed.
-+        */
-        folio_lock(folio);
-        if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
-+           !shmem_confirm_swap(mapping, index, swap) ||
-            folio->swap.val !=3D swap.val) {
-                error =3D -EEXIST;
-                goto unlock;
-
-And I'll do some clean up afterward to get rid of this
-shmem_confirm_swap. How do you think?
 
