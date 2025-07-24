@@ -1,59 +1,99 @@
-Return-Path: <stable+bounces-164561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC64B0FF88
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 06:23:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BD3B0FFE3
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 07:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDD01964BA1
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:22:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3021D1C87FC2
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 05:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3914D1EFF96;
-	Thu, 24 Jul 2025 04:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6181F5858;
+	Thu, 24 Jul 2025 05:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jctrgS5o"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="rJVFQyzh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic301-19.consmr.mail.sg3.yahoo.com (sonic301-19.consmr.mail.sg3.yahoo.com [106.10.242.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEA71EB1AF
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 04:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C0B1F152D
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 05:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.242.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753330945; cv=none; b=bGkchzbDkxmVm35vP0VCcMekm7Ebv3teF/weTEAkdpEIXPvY7vIuRlXMRVC7uHG68LErImnU9wTHpMf7PX5kNKOCQ1VV2mDLn14ZpsT6TSOzM1tXRueFipMlSs0Jp/KgvtChe/sRgbNdzHUzlp4BLbgUTtll5ZEnvGtQK83VHww=
+	t=1753334464; cv=none; b=G6rN1h5cJxh9IxjCR6wkfwkzc0+irD/fysFC8w0uAtpn1b2Vp5+gy9B6M4WGsZVCuogIENYoQbmdAHwG21cQvtWvdCMjT0NUrnl+pagrGxtqsMdMhbfO1WRsAkdGF7N2qvOJ52Cr6xDmfI4EuXo1IaNZhtCKzYGMCA4ayFmdR8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753330945; c=relaxed/simple;
-	bh=A6Oi9FHCTX57lIvMEQ2XXWnrhaayi+LWVq+2Xz6j8Bs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dEznBVrWXB09sMf2nvvi5eZlKiNNNlspBXA7VyHmYCOvjBSLR2kaTMDX7ghXZnntU206sE2gXW6KBXM8BWl3oUJQ00lhmViM4SY1US9f9B7UCkwAl8paLcVpcJ9yYBfijgc3OFE/NPABMKkFA03zqGxhF08TF7HjGP3eqHeUxhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jctrgS5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7777EC4CEED;
-	Thu, 24 Jul 2025 04:22:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753330944;
-	bh=A6Oi9FHCTX57lIvMEQ2XXWnrhaayi+LWVq+2Xz6j8Bs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jctrgS5oNvKIwM/DJfn5SVFajtq4Y8ZOZnXYiCyknpIZ9X5CR0w01tU2Q+zxK0ImC
-	 vF+CIm1IFg42RP+g4VqS0yoOveJ/xeX1RnvY3xdiMVfusdQ7chLqTBT0V8S++0flO4
-	 EpWwi/MdQVl/mfWsjce0bYKpLxtUqQqxUnuMlHjRu2OqQvyqLUGbvF0QI10iyTrf/e
-	 qEaT9zPqWgPCVP98mr+sFsD8/12d5I/qKjNE27+DN8E/4jaZsZCl5t2gVuIXB2vDgU
-	 wPrV2MA+d63Jbfe0VXey8YEr3lHCtlqdzamuYwQ91v+Jrh2aN6gJhmU/TAxDJeU8KE
-	 eMooB6uxVZ4Vg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Gatien Chevallier <gatien.chevallier@foss.st.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
-Date: Thu, 24 Jul 2025 00:22:20 -0400
-Message-Id: <20250724042220.1299374-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025062007-outrage-unaudited-e2a9@gregkh>
-References: <2025062007-outrage-unaudited-e2a9@gregkh>
+	s=arc-20240116; t=1753334464; c=relaxed/simple;
+	bh=ePmOVTarAt2rf82NusGQFjF8cZ5wgIGz43QXgnV2NcU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=Yrs9m9HrkhdNOkObZvyP3c+o9nRbeEWj/JjXt3fWVKYLcuIQwnRJ4X+PdIgVAE9aWJSvcgWpJMVF1lXzJNIyn4pyIAUHmOHG85YBZyRAoDnwt6ojhwtbsSQDCgvVb6PHIgGu83Tp+DyM+NhNXfvvcqPhqeVujkOsH1YkOFyIC+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=rJVFQyzh; arc=none smtp.client-ip=106.10.242.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1753334460; bh=GVGjwZCKFTawD0RDHIHwLY8BD4tWlYu9ievwd0Nqm2k=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=rJVFQyzhZgziAKlwiT/1LG7IbLtf7HmQKqVJ1jIB89x0fB5yfY1mbxlBSUehXgH1Gjc/aoH+udq6wa2NIKkstJxjvbAyvz40ByVazUBpLffNDZWUM19CmEo5Mx71Vy0hW/R2Dt5ZfoQ2ix850wSmRRMdsxwT9YjWhipcZMMDMcjkKJE6zjBjNJoWz9iaQnXKO9ash2ZMttAECQDs4CAAD1hbeHauDWdgMtTrxWDNOaESsoZXTRgT+s05oBMgAnUaZrirn9nh6LPYlwRAvReOUDdFrMOEktrGIs6/A2Q7OilKRgmRUNQsK1bkxPUFW2TWs405pDhTkSMrYcKhrZaBeg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1753334460; bh=ma6j8zZjHmGyF5FBmUzAgybttTOIG68YwAd++dn0Yw9=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=KYfzdpWs6Y0jNdPVS4dL+TCRHDsahVhPnl/XAirAmL2qn47IXCWb5kGeIYe+IZ3HYeneUmAmC+qyDI1a+I8niH2fA3pNTqwKb+lGQZvIH6yb/AF22WbhtYXfRBeMHeO5Qc8XdOFAX3NZWXuuzxXyXAWx2p/lWKhgSxEfY9O0yUu4klSA2H4OBvMHHg8B82XH9aj3GDGJJmDQ/+LVq0NWU+6Qthp9CpwjodN9bk9/lBDuyPVWm1ssr3t2DtbxvAh7UUhbo1oBtLBsWujsikApi6wM9Yr5Rb9U4z6i0RqgihfPvlAuNKVLYaZrbXo83pZSKlrJrU28QEJ2pTL6Z8U5LQ==
+X-YMail-OSG: b2EaZZQVM1kLVENHUMZDtC40xMXIh.jcAxHlVmjOgPqShlcjLyzqNVqEVd_ekL5
+ uxrklzmy2JCtpK6tPO105AKuQrmCu646W18pRDLN.pVRFnLupW8tmaagOgcOtgoE69XYzjYc1LwQ
+ WuEcdd3x22UEXUMuuN0BaVv24wpgzISC3pRWk4LlbefEBGk5G.npPDMSmBBrceZJsz.wgWtjS5iT
+ HKLz3YfPcAI8jP5Bp7h3cWI6WFPRicOQUs1xmCYTnDJGzhVSzkr_Z_wSeR_LpV.8Bh.RZrDCSlmX
+ ZCqmVlEL9GTl4CMMGV.DR_UJt0r9_LRgUOjJiDuTGrVPFLieZDKH19nBLGYeajrCKn886SyhYSO1
+ Cefp3fEx.p_Ce4VsukVRvbANwI3Pgs77T9okwhMJu30_4zJsrt.kIYyAo28ly4a9DSwi6XbG01SJ
+ L_NlmaTHSLApjG2Y_s3i6j8agw5C0qRKLKH1bcW83FQbbMteCFsjqmmxHyyPIU918N71rSlhWZhK
+ 2dQBkC4fvqyczNiRT2JVbDG0qIaH.JwSEkWlJGVY3SXLL_GXCX5fSQ2UUKML_SsO7OhNaobme4yV
+ SXM2Go5MjVWegFNkYGxKLFHynfHKyqPipJV374POJZrJqRKSRmDWTuQDjNImLMAtwOACDSbcTgUO
+ NKrUBgcNL4iFTZF7Xewf6BnGv8CHQV8ogvJoR7QH1Nx6inzup0wm_W1csjaApMbGuh1zLTbjLrjg
+ a9_jX8QyuUzscvEmjEOoP8L96QAsGPZ7.zUcZ48Otdw3WLtwU54CkIyftGEfBphXy10G8tgqLaIA
+ .d0S6IoCm8PQGOL6CDhPVEt4qu9_ggUq2RIRi3ZOoKnig5QNmD8fQ78VCVHcUpozdAVaIT9Wt7lU
+ JHp5DnwHKSQZ3Ucq5daHxE4Z577e2FkOg6RoY14FyAvjTnucEmDRh_0O3wieicj9grn1.3Fwl5gW
+ mvyhP2RGrHYrGVywHyRzKAyQFvYlsQqNk5yOc.vi91nvxPT_LFCngJvdF9g9FG_wB_rOBRREIYyJ
+ dcpGqKrq6BJW1nJkfYOVNciPIhT5WAiKkiJqhFLyGOS3nTee3QRJHK_7crn__Oz9om8d4Qm7v07l
+ WT62eGJ2ogSz7bM.GuwG6SI5P1rUQm_bptyjAkfrgyMYpIv_TiAgHJouZNnjjJIncqDZt7jj2_5G
+ rc7glqdh7l66lEV4VP3K3VNxsZKko0Fn2R3wef6_7ymHJCmxF5HGtWiv2ESrpFIx0dkgW.ffX5qJ
+ W1IP7ZZXzx1Sh4ObjRcb2tWMgqTs4hZpWJ4hj3BwokxflafBWUNL_t5tBaeoCg_DLeVpnl7J0yLX
+ LA.3lKET7HF.dhGKdeY1JywZv6zWQbDPiZ.r3fS16M5KYl3Zwc4S_t.inBisCcOHVffI7Ar93rLQ
+ e8v5jiJIQirFGtmxzQwTvCZ2mk8K6oTJEjDWL6eQyVnJ5PW.Xqtb5YxjRt4Uy7uYSah3oojDWQ7d
+ 0InDB0KI5EmGNepTr81fHfwwMSb7ZSCuTCl0mZnanI7HLK_OWTLtNs06ReGeMOaDhswqI__smvcX
+ Az5RBYUOS8ePTJ9SFZo7qD9mA23z73YzIg_Qd3EV8IHsp0GZGWzhVRHcy0qP.CaUeTDY7j9rklQN
+ J5adOsyVsV06VQoPpfsRVDzO116YmDfHkIUAFQtXZcyhOaUn62NR2txM69Tc0zhsiLBdzIUYldMZ
+ EAOm_0MvF7QMn88_AGbba2lf33vTYqzK1_01eei2mAPo32QmRv0o167Xtp.RiIFdcoGqeTkGXuU7
+ jo0.0A7a.bwNC8.1Tooymz1d74nnDItoH1YRPPLD0i80cY5IcWvGOic8H5dL0VrbndawKuGDxFaC
+ 1vlv2c8G0yk4KXbX2iqtPzpkJfOuvbOHsrA3CVMW7p_N8uytif_qTGV_8koQcQOTLG4UjtCGuN94
+ qId8L8OpAP94jZVyLpiBC30U4kEuJ8wfmvSEl5wRdd46djAST4SYpsegCT4i59gSq2VP2HUxGmqH
+ VD9lXzOid4Thqc8UxCE5gU_RktOK4FDLxL0OQHrRIQbLoMcfa7SDKNz6fZh.fW5FnVka99irIhFf
+ 8Vc02Qt6Burn2xNKhmDAOBagygLh2vdie.FKimlGUBV7dYHPy3tdTKXV7lnWN4oaeGegN.oTBH6Q
+ zhacKO.TZQ2ATtMfwFrA3fOSDw486VImvj.hGuvXEmiV16DxndSBg0bJS5Qn_aUG4KHTaLn7ofNe
+ j1vYUVBEH5SDfS7DPzoKE4hWfCIXJKJyA05P2ij8_m1pdVnVyiCv9Uo9TzTvVG_G8v9c9zkFiHH0
+ foqDJbAy..7LQdJmy_A--
+X-Sonic-MF: <sumanth.gavini@yahoo.com>
+X-Sonic-ID: 31e90993-cd1f-4d60-8d98-cf92647c1ad9
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.sg3.yahoo.com with HTTP; Thu, 24 Jul 2025 05:21:00 +0000
+Received: by hermes--production-ne1-9495dc4d7-vm8nz (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 79c8f99e40d0951275ebfec5ff32d5cd;
+          Thu, 24 Jul 2025 04:30:15 +0000 (UTC)
+From: Sumanth Gavini <sumanth.gavini@yahoo.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	yoshfuji@linux-ipv6.org,
+	dsahern@kernel.org,
+	steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com
+Cc: Sumanth Gavini <sumanth.gavini@yahoo.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	stable@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	syzbot <syzkaller@googlegroups.com>
+Subject: [PATCH 6.1] net: add netdev_lockdep_set_classes() to virtual drivers
+Date: Wed, 23 Jul 2025 23:30:09 -0500
+Message-ID: <20250724043010.129297-1-sumanth.gavini@yahoo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,72 +101,308 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+References: <20250724043010.129297-1-sumanth.gavini.ref@yahoo.com>
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+commit 0bef512012b1cd8820f0c9ec80e5f8ceb43fdd59 upstream.
 
-[ Upstream commit f4a8f561d08e39f7833d4a278ebfb12a41eef15f ]
+Based on a syzbot report, it appears many virtual
+drivers do not yet use netdev_lockdep_set_classes(),
+triggerring lockdep false positives.
 
-When enabling PREEMPT_RT, the gpio_keys_irq_timer() callback runs in
-hard irq context, but the input_event() takes a spin_lock, which isn't
-allowed there as it is converted to a rt_spin_lock().
+WARNING: possible recursive locking detected
+6.8.0-rc4-next-20240212-syzkaller #0 Not tainted
 
-[ 4054.289999] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-[ 4054.290028] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/0
-...
-[ 4054.290195]  __might_resched+0x13c/0x1f4
-[ 4054.290209]  rt_spin_lock+0x54/0x11c
-[ 4054.290219]  input_event+0x48/0x80
-[ 4054.290230]  gpio_keys_irq_timer+0x4c/0x78
-[ 4054.290243]  __hrtimer_run_queues+0x1a4/0x438
-[ 4054.290257]  hrtimer_interrupt+0xe4/0x240
-[ 4054.290269]  arch_timer_handler_phys+0x2c/0x44
-[ 4054.290283]  handle_percpu_devid_irq+0x8c/0x14c
-[ 4054.290297]  handle_irq_desc+0x40/0x58
-[ 4054.290307]  generic_handle_domain_irq+0x1c/0x28
-[ 4054.290316]  gic_handle_irq+0x44/0xcc
+syz-executor.0/19016 is trying to acquire lock:
+ ffff8880162cb298 (_xmit_ETHER#2){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+ ffff8880162cb298 (_xmit_ETHER#2){+.-.}-{2:2}, at: __netif_tx_lock include/linux/netdevice.h:4452 [inline]
+ ffff8880162cb298 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
 
-Considering the gpio_keys_irq_isr() can run in any context, e.g. it can
-be threaded, it seems there's no point in requesting the timer isr to
-run in hard irq context.
+but task is already holding lock:
+ ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+ ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: __netif_tx_lock include/linux/netdevice.h:4452 [inline]
+ ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
 
-Relax the hrtimer not to use the hard context.
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-1-3fc55a9c3619@foss.st.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-[ adjusted context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+       CPU0
+  lock(_xmit_ETHER#2);
+  lock(_xmit_ETHER#2);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+9 locks held by syz-executor.0/19016:
+  #0: ffffffff8f385208 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_lock net/core/rtnetlink.c:79 [inline]
+  #0: ffffffff8f385208 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x82c/0x1040 net/core/rtnetlink.c:6603
+  #1: ffffc90000a08c00 ((&in_dev->mr_ifc_timer)){+.-.}-{0:0}, at: call_timer_fn+0xc0/0x600 kernel/time/timer.c:1697
+  #2: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:298 [inline]
+  #2: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:750 [inline]
+  #2: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x45f/0x1360 net/ipv4/ip_output.c:228
+  #3: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: local_bh_disable include/linux/bottom_half.h:20 [inline]
+  #3: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: rcu_read_lock_bh include/linux/rcupdate.h:802 [inline]
+  #3: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x2c4/0x3b10 net/core/dev.c:4284
+  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: spin_trylock include/linux/spinlock.h:361 [inline]
+  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: qdisc_run_begin include/net/sch_generic.h:195 [inline]
+  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_xmit_skb net/core/dev.c:3771 [inline]
+  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x1262/0x3b10 net/core/dev.c:4325
+  #5: ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+  #5: ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: __netif_tx_lock include/linux/netdevice.h:4452 [inline]
+  #5: ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
+  #6: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:298 [inline]
+  #6: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:750 [inline]
+  #6: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x45f/0x1360 net/ipv4/ip_output.c:228
+  #7: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: local_bh_disable include/linux/bottom_half.h:20 [inline]
+  #7: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: rcu_read_lock_bh include/linux/rcupdate.h:802 [inline]
+  #7: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x2c4/0x3b10 net/core/dev.c:4284
+  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: spin_trylock include/linux/spinlock.h:361 [inline]
+  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: qdisc_run_begin include/net/sch_generic.h:195 [inline]
+  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_xmit_skb net/core/dev.c:3771 [inline]
+  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x1262/0x3b10 net/core/dev.c:4325
+
+stack backtrace:
+CPU: 1 PID: 19016 Comm: syz-executor.0 Not tainted 6.8.0-rc4-next-20240212-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
+Call Trace:
+ <IRQ>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+  check_deadlock kernel/locking/lockdep.c:3062 [inline]
+  validate_chain+0x15c1/0x58e0 kernel/locking/lockdep.c:3856
+  __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
+  lock_acquire+0x1e4/0x530 kernel/locking/lockdep.c:5754
+  __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+  _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+  spin_lock include/linux/spinlock.h:351 [inline]
+  __netif_tx_lock include/linux/netdevice.h:4452 [inline]
+  sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
+  __dev_xmit_skb net/core/dev.c:3784 [inline]
+  __dev_queue_xmit+0x1912/0x3b10 net/core/dev.c:4325
+  neigh_output include/net/neighbour.h:542 [inline]
+  ip_finish_output2+0xe66/0x1360 net/ipv4/ip_output.c:235
+  iptunnel_xmit+0x540/0x9b0 net/ipv4/ip_tunnel_core.c:82
+  ip_tunnel_xmit+0x20ee/0x2960 net/ipv4/ip_tunnel.c:831
+  erspan_xmit+0x9de/0x1460 net/ipv4/ip_gre.c:720
+  __netdev_start_xmit include/linux/netdevice.h:4989 [inline]
+  netdev_start_xmit include/linux/netdevice.h:5003 [inline]
+  xmit_one net/core/dev.c:3555 [inline]
+  dev_hard_start_xmit+0x242/0x770 net/core/dev.c:3571
+  sch_direct_xmit+0x2b6/0x5f0 net/sched/sch_generic.c:342
+  __dev_xmit_skb net/core/dev.c:3784 [inline]
+  __dev_queue_xmit+0x1912/0x3b10 net/core/dev.c:4325
+  neigh_output include/net/neighbour.h:542 [inline]
+  ip_finish_output2+0xe66/0x1360 net/ipv4/ip_output.c:235
+  igmpv3_send_cr net/ipv4/igmp.c:723 [inline]
+  igmp_ifc_timer_expire+0xb71/0xd90 net/ipv4/igmp.c:813
+  call_timer_fn+0x17e/0x600 kernel/time/timer.c:1700
+  expire_timers kernel/time/timer.c:1751 [inline]
+  __run_timers+0x621/0x830 kernel/time/timer.c:2038
+  run_timer_softirq+0x67/0xf0 kernel/time/timer.c:2051
+  __do_softirq+0x2bc/0x943 kernel/softirq.c:554
+  invoke_softirq kernel/softirq.c:428 [inline]
+  __irq_exit_rcu+0xf2/0x1c0 kernel/softirq.c:633
+  irq_exit_rcu+0x9/0x30 kernel/softirq.c:645
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1076 [inline]
+  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1076
+ </IRQ>
+ <TASK>
+  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+ RIP: 0010:resched_offsets_ok kernel/sched/core.c:10127 [inline]
+ RIP: 0010:__might_resched+0x16f/0x780 kernel/sched/core.c:10142
+Code: 00 4c 89 e8 48 c1 e8 03 48 ba 00 00 00 00 00 fc ff df 48 89 44 24 38 0f b6 04 10 84 c0 0f 85 87 04 00 00 41 8b 45 00 c1 e0 08 <01> d8 44 39 e0 0f 85 d6 00 00 00 44 89 64 24 1c 48 8d bc 24 a0 00
+RSP: 0018:ffffc9000ee069e0 EFLAGS: 00000246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff8880296a9e00
+RDX: dffffc0000000000 RSI: ffff8880296a9e00 RDI: ffffffff8bfe8fa0
+RBP: ffffc9000ee06b00 R08: ffffffff82326877 R09: 1ffff11002b5ad1b
+R10: dffffc0000000000 R11: ffffed1002b5ad1c R12: 0000000000000000
+R13: ffff8880296aa23c R14: 000000000000062a R15: 1ffff92001dc0d44
+  down_write+0x19/0x50 kernel/locking/rwsem.c:1578
+  kernfs_activate fs/kernfs/dir.c:1403 [inline]
+  kernfs_add_one+0x4af/0x8b0 fs/kernfs/dir.c:819
+  __kernfs_create_file+0x22e/0x2e0 fs/kernfs/file.c:1056
+  sysfs_add_file_mode_ns+0x24a/0x310 fs/sysfs/file.c:307
+  create_files fs/sysfs/group.c:64 [inline]
+  internal_create_group+0x4f4/0xf20 fs/sysfs/group.c:152
+  internal_create_groups fs/sysfs/group.c:192 [inline]
+  sysfs_create_groups+0x56/0x120 fs/sysfs/group.c:218
+  create_dir lib/kobject.c:78 [inline]
+  kobject_add_internal+0x472/0x8d0 lib/kobject.c:240
+  kobject_add_varg lib/kobject.c:374 [inline]
+  kobject_init_and_add+0x124/0x190 lib/kobject.c:457
+  netdev_queue_add_kobject net/core/net-sysfs.c:1706 [inline]
+  netdev_queue_update_kobjects+0x1f3/0x480 net/core/net-sysfs.c:1758
+  register_queue_kobjects net/core/net-sysfs.c:1819 [inline]
+  netdev_register_kobject+0x265/0x310 net/core/net-sysfs.c:2059
+  register_netdevice+0x1191/0x19c0 net/core/dev.c:10298
+  bond_newlink+0x3b/0x90 drivers/net/bonding/bond_netlink.c:576
+  rtnl_newlink_create net/core/rtnetlink.c:3506 [inline]
+  __rtnl_newlink net/core/rtnetlink.c:3726 [inline]
+  rtnl_newlink+0x158f/0x20a0 net/core/rtnetlink.c:3739
+  rtnetlink_rcv_msg+0x885/0x1040 net/core/rtnetlink.c:6606
+  netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2543
+  netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
+  netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1367
+  netlink_sendmsg+0xa3c/0xd70 net/netlink/af_netlink.c:1908
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x221/0x270 net/socket.c:745
+  __sys_sendto+0x3a4/0x4f0 net/socket.c:2191
+  __do_sys_sendto net/socket.c:2203 [inline]
+  __se_sys_sendto net/socket.c:2199 [inline]
+  __x64_sys_sendto+0xde/0x100 net/socket.c:2199
+ do_syscall_64+0xfb/0x240
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+RIP: 0033:0x7fc3fa87fa9c
+
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240212140700.2795436-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
 ---
- drivers/input/keyboard/gpio_keys.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dummy.c            | 1 +
+ drivers/net/geneve.c           | 2 ++
+ drivers/net/loopback.c         | 2 ++
+ drivers/net/veth.c             | 1 +
+ drivers/net/vxlan/vxlan_core.c | 1 +
+ net/ipv4/ip_tunnel.c           | 1 +
+ net/ipv6/ip6_gre.c             | 2 ++
+ net/ipv6/ip6_tunnel.c          | 1 +
+ net/ipv6/ip6_vti.c             | 1 +
+ net/ipv6/sit.c                 | 1 +
+ 10 files changed, 13 insertions(+)
 
-diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
-index b55306cb354ae..f8ae4b08668bb 100644
---- a/drivers/input/keyboard/gpio_keys.c
-+++ b/drivers/input/keyboard/gpio_keys.c
-@@ -495,7 +495,7 @@ static irqreturn_t gpio_keys_irq_isr(int irq, void *dev_id)
- 	if (bdata->release_delay)
- 		hrtimer_start(&bdata->release_timer,
- 			      ms_to_ktime(bdata->release_delay),
--			      HRTIMER_MODE_REL_HARD);
-+			      HRTIMER_MODE_REL);
- out:
- 	spin_unlock_irqrestore(&bdata->lock, flags);
- 	return IRQ_HANDLED;
-@@ -635,7 +635,7 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
+diff --git a/drivers/net/dummy.c b/drivers/net/dummy.c
+index aa0fc00faecb..f05d4194eb09 100644
+--- a/drivers/net/dummy.c
++++ b/drivers/net/dummy.c
+@@ -71,6 +71,7 @@ static int dummy_dev_init(struct net_device *dev)
+ 	if (!dev->lstats)
+ 		return -ENOMEM;
  
- 		bdata->release_delay = button->debounce_interval;
- 		hrtimer_init(&bdata->release_timer,
--			     CLOCK_REALTIME, HRTIMER_MODE_REL_HARD);
-+			     CLOCK_REALTIME, HRTIMER_MODE_REL);
- 		bdata->release_timer.function = gpio_keys_irq_timer;
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
  
- 		isr = gpio_keys_irq_isr;
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index f393e454f45c..d2fbd1cd0ce3 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -335,6 +335,8 @@ static int geneve_init(struct net_device *dev)
+ 		gro_cells_destroy(&geneve->gro_cells);
+ 		return err;
+ 	}
++
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/loopback.c b/drivers/net/loopback.c
+index 2e9742952c4e..ab5264ddd765 100644
+--- a/drivers/net/loopback.c
++++ b/drivers/net/loopback.c
+@@ -144,6 +144,8 @@ static int loopback_dev_init(struct net_device *dev)
+ 	dev->lstats = netdev_alloc_pcpu_stats(struct pcpu_lstats);
+ 	if (!dev->lstats)
+ 		return -ENOMEM;
++
++    netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 09682ea3354e..00ad39dc297e 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1391,6 +1391,7 @@ static void veth_free_queues(struct net_device *dev)
+ {
+ 	struct veth_priv *priv = netdev_priv(dev);
+ 
++	netdev_lockdep_set_classes(dev);
+ 	kfree(priv->rq);
+ }
+ 
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 6ab669dcd1c6..a233ae4bf61f 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2926,6 +2926,7 @@ static int vxlan_init(struct net_device *dev)
+ 		return err;
+ 	}
+ 
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
+ 
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 019f3b0839c5..20e35fdb373d 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -1253,6 +1253,7 @@ int ip_tunnel_init(struct net_device *dev)
+ 
+ 	if (tunnel->collect_md)
+ 		netif_keep_dst(dev);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(ip_tunnel_init);
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index c035a96fba3a..419e94e9bd62 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -1530,6 +1530,7 @@ static int ip6gre_tunnel_init_common(struct net_device *dev)
+ 	ip6gre_tnl_init_features(dev);
+ 
+ 	netdev_hold(dev, &tunnel->dev_tracker, GFP_KERNEL);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ 
+ cleanup_dst_cache_init:
+@@ -1922,6 +1923,7 @@ static int ip6erspan_tap_init(struct net_device *dev)
+ 	ip6erspan_tnl_link_config(tunnel, 1);
+ 
+ 	netdev_hold(dev, &tunnel->dev_tracker, GFP_KERNEL);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ 
+ cleanup_dst_cache_init:
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 2fb4c6ad7243..96030f29df9b 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -1885,6 +1885,7 @@ ip6_tnl_dev_init_gen(struct net_device *dev)
+ 	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len;
+ 
+ 	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ 
+ destroy_dst:
+diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+index 151337d7f67b..f6a2c55a4dcb 100644
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -937,6 +937,7 @@ static inline int vti6_dev_init_gen(struct net_device *dev)
+ 	if (!dev->tstats)
+ 		return -ENOMEM;
+ 	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
+ 
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 5703d3cbea9b..c2bf8eb81a58 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -1458,6 +1458,7 @@ static int ipip6_tunnel_init(struct net_device *dev)
+ 		return err;
+ 	}
+ 	netdev_hold(dev, &tunnel->dev_tracker, GFP_KERNEL);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
+ 
 -- 
-2.39.5
+2.43.0
 
 
