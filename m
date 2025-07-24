@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-164540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56339B0FF02
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:57:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC4EB0FF03
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 854DE546AA0
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 02:57:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 052F41C872F0
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 02:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6810C1D514B;
-	Thu, 24 Jul 2025 02:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC00C1C6FF5;
+	Thu, 24 Jul 2025 02:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/U4feUH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQ3/AdH+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CBD22097
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 02:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D97422097
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 02:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753325854; cv=none; b=ef/Fs7JEuCUM02J2d+3ZHBAcsoT/NDnZAbSRuOCh4ravas8eCaId/ajIqI5vRHf3aYodcz63b7ZoryIs4rUL3xCgQVgIahSFvrqbCoqhpSuQej/oOW8Hc6LOt6ESiIF8SpbEaldQYdGuHDeulSwoNUxVnuLu79QHB5sUhh8lEDc=
+	t=1753325855; cv=none; b=JG1UpwF/WMF31VCfgPY7OPBH7Y5SuYoOz0f8NXOJr3p8HeTaMqkQRZxmGBMD0QN3m+KXg/DKPvaqGT/ewtE0hx+WUvtVep2ZmSz8rPgr6Iot75iiUZr6EItuHP4m0BC3TfQtdVFVxDamQIlIeQSnwa6NyPg31f4D7af91oDKwvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753325854; c=relaxed/simple;
-	bh=Xgd9GEW0zp6yLDslY3tB2sGRZsPYsJWVghcY9Jk3GtY=;
+	s=arc-20240116; t=1753325855; c=relaxed/simple;
+	bh=BEnz+H/Ihe6+nYxY64bajEdwgJPC8/3TsWkX+ENF9tU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=he5pFBEdyedl3gCXOLkrnmtBOgRx3/pPsGWi7xmc2WTzuJeyZWT41ClL9Jsm4m6mgDpppyDVfwqJ3D63LgONpG9AR3NoDrs0HS4W+/jpALmKQ6ezE5NTERLA9Zyn2xILjYg2uVzNPqbeqJxsHdrQGz7pIOkZb499OnFDjkja10Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/U4feUH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC75C4CEEF;
-	Thu, 24 Jul 2025 02:57:32 +0000 (UTC)
+	 MIME-Version; b=s/W5hBygT+3FQMGhEF0n1TP+RyakkEuDjPPCZ1mYFGbz2kKux22EllpiKg8sf/LhEev2TqSrxCVxfxChGKWaZ7mR1GfFqt16HTGdBAdmCKsF/kAJYwtGjWQJIQ0pupMUREBlbIi4cPGE3N+wH66dfItYT+e83va9xpf7vOCXyfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQ3/AdH+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684D5C4CEF4;
+	Thu, 24 Jul 2025 02:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753325854;
-	bh=Xgd9GEW0zp6yLDslY3tB2sGRZsPYsJWVghcY9Jk3GtY=;
+	s=k20201202; t=1753325855;
+	bh=BEnz+H/Ihe6+nYxY64bajEdwgJPC8/3TsWkX+ENF9tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R/U4feUH48/tfuoTB/2yG9vwvH2itclHzqtYiw/A97MU9+AVZAS931ETQuqK5+tSQ
-	 okdCRazAZ85VJHSgcKP67LfBl84CCFq6+CQz3EcCIaGaT5DAsNOKnQqQK2/Hkfwe2x
-	 gRK0n5E8N13jWp4QlDeEwXZWzy5tOhC01UjakYNtaEwPWvi9UenaIuQcAetNMcEKmu
-	 YjCXdecvFi44aHIro1jGJS/GBc8+6i/CEANf0saJk3YNJxoZ6tuDZ9v4POhX+D6W70
-	 WSb/rG0KiYcuJhgirf8qv7XY7Z4XJqGlnFyRqNbeovCTkeOuKZk3kxuDzfKsgbD67T
-	 vNDZnzk6RhE6A==
+	b=MQ3/AdH+IyqQE2pVrtQnIHGvppGYL4CG0ZNP4n5nDte/1kn0/XAWQYl//fQ7mnh0f
+	 75BEdm+v8iPPgS04tfy5pWXAM1oix8hCW4eIvsT+mkJ3UW6yRsGPynrVeM4Hd89+vY
+	 +m4LqkU4ilTPv+MpXygj7dQOAxfxGAZJybalVdaS5yb1eiQxRJR7PchSGl2sxupJFq
+	 uXAa6mCZrtyQhERizmXYP6M0dcUec4adg/AGoaA+JvOTElNJ+8Ua/ndjlVgR/WBC9T
+	 X+1jX9NdL80bApEH/hl3u8XlcF+lQ3thnZVagsNA29dMD2590Vk2JI6LHz8FX1xZ+x
+	 UkNCZVJDqpHYw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Zhang Yi <yi.zhang@huawei.com>,
@@ -48,9 +48,9 @@ Cc: Zhang Yi <yi.zhang@huawei.com>,
 	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
 	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 07/11] ext4: move out inode_lock into ext4_fallocate()
-Date: Wed, 23 Jul 2025 22:57:14 -0400
-Message-Id: <20250724025718.1277650-7-sashal@kernel.org>
+Subject: [PATCH 6.12.y 08/11] ext4: move out common parts into ext4_fallocate()
+Date: Wed, 23 Jul 2025 22:57:15 -0400
+Message-Id: <20250724025718.1277650-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250724025718.1277650-1-sashal@kernel.org>
 References: <2025062009-junior-thriving-f882@gregkh>
@@ -65,279 +65,348 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit ea3f17efd36b56c5839289716ba83eaa85893590 ]
+[ Upstream commit 2890e5e0f49e10f3dadc5f7b7ea434e3e77e12a6 ]
 
-Currently, all five sub-functions of ext4_fallocate() acquire the
-inode's i_rwsem at the beginning and release it before exiting. This
-process can be simplified by factoring out the management of i_rwsem
-into the ext4_fallocate() function.
+Currently, all zeroing ranges, punch holes, collapse ranges, and insert
+ranges first wait for all existing direct I/O workers to complete, and
+then they acquire the mapping's invalidate lock before performing the
+actual work. These common components are nearly identical, so we can
+simplify the code by factoring them out into the ext4_fallocate().
 
 Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
 Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20241220011637.1157197-10-yi.zhang@huaweicloud.com
+Link: https://patch.msgid.link/20241220011637.1157197-11-yi.zhang@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Stable-dep-of: 29ec9bed2395 ("ext4: fix incorrect punch max_end")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 90 +++++++++++++++--------------------------------
- fs/ext4/inode.c   | 13 +++----
- 2 files changed, 33 insertions(+), 70 deletions(-)
+ fs/ext4/extents.c | 124 ++++++++++++++++------------------------------
+ fs/ext4/inode.c   |  25 ++--------
+ 2 files changed, 45 insertions(+), 104 deletions(-)
 
 diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index eb58f7a1ab5aa..30d412b62d9ed 100644
+index 30d412b62d9ed..51b9533416e04 100644
 --- a/fs/ext4/extents.c
 +++ b/fs/ext4/extents.c
-@@ -4579,23 +4579,18 @@ static long ext4_zero_range(struct file *file, loff_t offset,
- 	int ret, flags, credits;
+@@ -4569,7 +4569,6 @@ static long ext4_zero_range(struct file *file, loff_t offset,
+ 			    loff_t len, int mode)
+ {
+ 	struct inode *inode = file_inode(file);
+-	struct address_space *mapping = file->f_mapping;
+ 	handle_t *handle = NULL;
+ 	loff_t new_size = 0;
+ 	loff_t end = offset + len;
+@@ -4593,23 +4592,6 @@ static long ext4_zero_range(struct file *file, loff_t offset,
+ 			return ret;
+ 	}
  
- 	trace_ext4_zero_range(inode, offset, len, mode);
-+	WARN_ON_ONCE(!inode_is_locked(inode));
- 
--	inode_lock(inode);
+-	/* Wait all existing dio workers, newcomers will block on i_rwsem */
+-	inode_dio_wait(inode);
+-
+-	ret = file_modified(file);
+-	if (ret)
+-		return ret;
 -
 -	/*
--	 * Indirect files do not support unwritten extents
+-	 * Prevent page faults from reinstantiating pages we have released
+-	 * from page cache.
 -	 */
--	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))) {
--		ret = -EOPNOTSUPP;
--		goto out;
--	}
-+	/* Indirect files do not support unwritten extents */
-+	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
-+		return -EOPNOTSUPP;
- 
- 	if (!(mode & FALLOC_FL_KEEP_SIZE) &&
- 	    (end > inode->i_size || end > EXT4_I(inode)->i_disksize)) {
- 		new_size = end;
- 		ret = inode_newsize_ok(inode, new_size);
+-	filemap_invalidate_lock(mapping);
+-
+-	ret = ext4_break_layouts(inode);
+-	if (ret)
+-		goto out_invalidate_lock;
+-
+ 	flags = EXT4_GET_BLOCKS_CREATE_UNWRIT_EXT;
+ 	/* Preallocate the range including the unaligned edges */
+ 	if (!IS_ALIGNED(offset | end, blocksize)) {
+@@ -4619,17 +4601,17 @@ static long ext4_zero_range(struct file *file, loff_t offset,
+ 		ret = ext4_alloc_file_blocks(file, alloc_lblk, len_lblk,
+ 					     new_size, flags);
  		if (ret)
--			goto out;
+-			goto out_invalidate_lock;
 +			return ret;
  	}
  
- 	/* Wait all existing dio workers, newcomers will block on i_rwsem */
-@@ -4603,7 +4598,7 @@ static long ext4_zero_range(struct file *file, loff_t offset,
- 
- 	ret = file_modified(file);
+ 	ret = ext4_update_disksize_before_punch(inode, offset, len);
  	if (ret)
--		goto out;
+-		goto out_invalidate_lock;
++		return ret;
+ 
+ 	/* Now release the pages and zero block aligned part of pages */
+ 	ret = ext4_truncate_page_cache_block_range(inode, offset, end);
+ 	if (ret)
+-		goto out_invalidate_lock;
++		return ret;
+ 
+ 	/* Zero range excluding the unaligned edges */
+ 	start_lblk = EXT4_B_TO_LBLK(inode, offset);
+@@ -4641,11 +4623,11 @@ static long ext4_zero_range(struct file *file, loff_t offset,
+ 		ret = ext4_alloc_file_blocks(file, start_lblk, zero_blks,
+ 					     new_size, flags);
+ 		if (ret)
+-			goto out_invalidate_lock;
++			return ret;
+ 	}
+ 	/* Finish zeroing out if it doesn't contain partial block */
+ 	if (IS_ALIGNED(offset | end, blocksize))
+-		goto out_invalidate_lock;
 +		return ret;
  
  	/*
- 	 * Prevent page faults from reinstantiating pages we have released
-@@ -4685,8 +4680,6 @@ static long ext4_zero_range(struct file *file, loff_t offset,
+ 	 * In worst case we have to writeout two nonadjacent unwritten
+@@ -4658,7 +4640,7 @@ static long ext4_zero_range(struct file *file, loff_t offset,
+ 	if (IS_ERR(handle)) {
+ 		ret = PTR_ERR(handle);
+ 		ext4_std_error(inode->i_sb, ret);
+-		goto out_invalidate_lock;
++		return ret;
+ 	}
+ 
+ 	/* Zero out partial block at the edges of the range */
+@@ -4678,8 +4660,6 @@ static long ext4_zero_range(struct file *file, loff_t offset,
+ 
+ out_handle:
  	ext4_journal_stop(handle);
- out_invalidate_lock:
- 	filemap_invalidate_unlock(mapping);
--out:
--	inode_unlock(inode);
+-out_invalidate_lock:
+-	filemap_invalidate_unlock(mapping);
  	return ret;
  }
  
-@@ -4700,12 +4693,11 @@ static long ext4_do_fallocate(struct file *file, loff_t offset,
+@@ -4712,13 +4692,6 @@ static long ext4_do_fallocate(struct file *file, loff_t offset,
+ 			goto out;
+ 	}
+ 
+-	/* Wait all existing dio workers, newcomers will block on i_rwsem */
+-	inode_dio_wait(inode);
+-
+-	ret = file_modified(file);
+-	if (ret)
+-		goto out;
+-
+ 	ret = ext4_alloc_file_blocks(file, start_lblk, len_lblk, new_size,
+ 				     EXT4_GET_BLOCKS_CREATE_UNWRIT_EXT);
+ 	if (ret)
+@@ -4743,6 +4716,7 @@ static long ext4_do_fallocate(struct file *file, loff_t offset,
+ long ext4_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+ {
+ 	struct inode *inode = file_inode(file);
++	struct address_space *mapping = file->f_mapping;
  	int ret;
  
- 	trace_ext4_fallocate_enter(inode, offset, len, mode);
-+	WARN_ON_ONCE(!inode_is_locked(inode));
- 
- 	start_lblk = offset >> inode->i_blkbits;
- 	len_lblk = EXT4_MAX_BLOCKS(len, offset, inode->i_blkbits);
- 
--	inode_lock(inode);
--
- 	/* We only support preallocation for extent-based files only. */
- 	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))) {
- 		ret = -EOPNOTSUPP;
-@@ -4737,7 +4729,6 @@ static long ext4_do_fallocate(struct file *file, loff_t offset,
- 					EXT4_I(inode)->i_sync_tid);
- 	}
- out:
--	inode_unlock(inode);
- 	trace_ext4_fallocate_exit(inode, offset, len_lblk, ret);
- 	return ret;
- }
-@@ -4772,9 +4763,8 @@ long ext4_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
- 
- 	inode_lock(inode);
- 	ret = ext4_convert_inline_data(inode);
--	inode_unlock(inode);
+ 	/*
+@@ -4766,6 +4740,29 @@ long ext4_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
  	if (ret)
--		return ret;
-+		goto out_inode_lock;
+ 		goto out_inode_lock;
  
++	/* Wait all existing dio workers, newcomers will block on i_rwsem */
++	inode_dio_wait(inode);
++
++	ret = file_modified(file);
++	if (ret)
++		return ret;
++
++	if ((mode & FALLOC_FL_MODE_MASK) == FALLOC_FL_ALLOCATE_RANGE) {
++		ret = ext4_do_fallocate(file, offset, len, mode);
++		goto out_inode_lock;
++	}
++
++	/*
++	 * Follow-up operations will drop page cache, hold invalidate lock
++	 * to prevent page faults from reinstantiating pages we have
++	 * released from page cache.
++	 */
++	filemap_invalidate_lock(mapping);
++
++	ret = ext4_break_layouts(inode);
++	if (ret)
++		goto out_invalidate_lock;
++
  	if (mode & FALLOC_FL_PUNCH_HOLE)
  		ret = ext4_punch_hole(file, offset, len);
-@@ -4786,7 +4776,8 @@ long ext4_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+ 	else if (mode & FALLOC_FL_COLLAPSE_RANGE)
+@@ -4775,7 +4772,10 @@ long ext4_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+ 	else if (mode & FALLOC_FL_ZERO_RANGE)
  		ret = ext4_zero_range(file, offset, len, mode);
  	else
- 		ret = ext4_do_fallocate(file, offset, len, mode);
+-		ret = ext4_do_fallocate(file, offset, len, mode);
++		ret = -EOPNOTSUPP;
++
++out_invalidate_lock:
++	filemap_invalidate_unlock(mapping);
+ out_inode_lock:
+ 	inode_unlock(inode);
+ 	return ret;
+@@ -5297,23 +5297,6 @@ static int ext4_collapse_range(struct file *file, loff_t offset, loff_t len)
+ 	if (end >= inode->i_size)
+ 		return -EINVAL;
+ 
+-	/* Wait for existing dio to complete */
+-	inode_dio_wait(inode);
 -
-+out_inode_lock:
-+	inode_unlock(inode);
+-	ret = file_modified(file);
+-	if (ret)
+-		return ret;
+-
+-	/*
+-	 * Prevent page faults from reinstantiating pages we have released from
+-	 * page cache.
+-	 */
+-	filemap_invalidate_lock(mapping);
+-
+-	ret = ext4_break_layouts(inode);
+-	if (ret)
+-		goto out_invalidate_lock;
+-
+ 	/*
+ 	 * Write tail of the last page before removed range and data that
+ 	 * will be shifted since they will get removed from the page cache
+@@ -5327,16 +5310,15 @@ static int ext4_collapse_range(struct file *file, loff_t offset, loff_t len)
+ 	if (!ret)
+ 		ret = filemap_write_and_wait_range(mapping, end, LLONG_MAX);
+ 	if (ret)
+-		goto out_invalidate_lock;
++		return ret;
+ 
+ 	truncate_pagecache(inode, start);
+ 
+ 	credits = ext4_writepage_trans_blocks(inode);
+ 	handle = ext4_journal_start(inode, EXT4_HT_TRUNCATE, credits);
+-	if (IS_ERR(handle)) {
+-		ret = PTR_ERR(handle);
+-		goto out_invalidate_lock;
+-	}
++	if (IS_ERR(handle))
++		return PTR_ERR(handle);
++
+ 	ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_FALLOC_RANGE, handle);
+ 
+ 	start_lblk = offset >> inode->i_blkbits;
+@@ -5375,8 +5357,6 @@ static int ext4_collapse_range(struct file *file, loff_t offset, loff_t len)
+ 
+ out_handle:
+ 	ext4_journal_stop(handle);
+-out_invalidate_lock:
+-	filemap_invalidate_unlock(mapping);
  	return ret;
  }
  
-@@ -5291,36 +5282,27 @@ static int ext4_collapse_range(struct file *file, loff_t offset, loff_t len)
- 	int ret;
+@@ -5417,23 +5397,6 @@ static int ext4_insert_range(struct file *file, loff_t offset, loff_t len)
+ 	if (len > inode->i_sb->s_maxbytes - inode->i_size)
+ 		return -EFBIG;
  
- 	trace_ext4_collapse_range(inode, offset, len);
+-	/* Wait for existing dio to complete */
+-	inode_dio_wait(inode);
 -
--	inode_lock(inode);
-+	WARN_ON_ONCE(!inode_is_locked(inode));
- 
- 	/* Currently just for extent based files */
--	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
--		ret = -EOPNOTSUPP;
--		goto out;
--	}
+-	ret = file_modified(file);
+-	if (ret)
+-		return ret;
 -
-+	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		return -EOPNOTSUPP;
- 	/* Collapse range works only on fs cluster size aligned regions. */
--	if (!IS_ALIGNED(offset | len, EXT4_CLUSTER_SIZE(sb))) {
--		ret = -EINVAL;
--		goto out;
--	}
+-	/*
+-	 * Prevent page faults from reinstantiating pages we have released from
+-	 * page cache.
+-	 */
+-	filemap_invalidate_lock(mapping);
 -
-+	if (!IS_ALIGNED(offset | len, EXT4_CLUSTER_SIZE(sb)))
-+		return -EINVAL;
+-	ret = ext4_break_layouts(inode);
+-	if (ret)
+-		goto out_invalidate_lock;
+-
  	/*
- 	 * There is no need to overlap collapse range with EOF, in which case
- 	 * it is effectively a truncate operation
- 	 */
--	if (end >= inode->i_size) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (end >= inode->i_size)
-+		return -EINVAL;
- 
- 	/* Wait for existing dio to complete */
- 	inode_dio_wait(inode);
- 
- 	ret = file_modified(file);
+ 	 * Write out all dirty pages. Need to round down to align start offset
+ 	 * to page size boundary for page size > block size.
+@@ -5441,16 +5404,15 @@ static int ext4_insert_range(struct file *file, loff_t offset, loff_t len)
+ 	start = round_down(offset, PAGE_SIZE);
+ 	ret = filemap_write_and_wait_range(mapping, start, LLONG_MAX);
  	if (ret)
--		goto out;
+-		goto out_invalidate_lock;
 +		return ret;
  
- 	/*
- 	 * Prevent page faults from reinstantiating pages we have released from
-@@ -5395,8 +5377,6 @@ static int ext4_collapse_range(struct file *file, loff_t offset, loff_t len)
+ 	truncate_pagecache(inode, start);
+ 
+ 	credits = ext4_writepage_trans_blocks(inode);
+ 	handle = ext4_journal_start(inode, EXT4_HT_TRUNCATE, credits);
+-	if (IS_ERR(handle)) {
+-		ret = PTR_ERR(handle);
+-		goto out_invalidate_lock;
+-	}
++	if (IS_ERR(handle))
++		return PTR_ERR(handle);
++
+ 	ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_FALLOC_RANGE, handle);
+ 
+ 	/* Expand file to avoid data loss if there is error while shifting */
+@@ -5521,8 +5483,6 @@ static int ext4_insert_range(struct file *file, loff_t offset, loff_t len)
+ 
+ out_handle:
  	ext4_journal_stop(handle);
- out_invalidate_lock:
- 	filemap_invalidate_unlock(mapping);
--out:
--	inode_unlock(inode);
- 	return ret;
- }
- 
-@@ -5422,39 +5402,27 @@ static int ext4_insert_range(struct file *file, loff_t offset, loff_t len)
- 	loff_t start;
- 
- 	trace_ext4_insert_range(inode, offset, len);
--
--	inode_lock(inode);
-+	WARN_ON_ONCE(!inode_is_locked(inode));
- 
- 	/* Currently just for extent based files */
--	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
--		ret = -EOPNOTSUPP;
--		goto out;
--	}
--
-+	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		return -EOPNOTSUPP;
- 	/* Insert range works only on fs cluster size aligned regions. */
--	if (!IS_ALIGNED(offset | len, EXT4_CLUSTER_SIZE(sb))) {
--		ret = -EINVAL;
--		goto out;
--	}
--
-+	if (!IS_ALIGNED(offset | len, EXT4_CLUSTER_SIZE(sb)))
-+		return -EINVAL;
- 	/* Offset must be less than i_size */
--	if (offset >= inode->i_size) {
--		ret = -EINVAL;
--		goto out;
--	}
--
-+	if (offset >= inode->i_size)
-+		return -EINVAL;
- 	/* Check whether the maximum file size would be exceeded */
--	if (len > inode->i_sb->s_maxbytes - inode->i_size) {
--		ret = -EFBIG;
--		goto out;
--	}
-+	if (len > inode->i_sb->s_maxbytes - inode->i_size)
-+		return -EFBIG;
- 
- 	/* Wait for existing dio to complete */
- 	inode_dio_wait(inode);
- 
- 	ret = file_modified(file);
- 	if (ret)
--		goto out;
-+		return ret;
- 
- 	/*
- 	 * Prevent page faults from reinstantiating pages we have released from
-@@ -5555,8 +5523,6 @@ static int ext4_insert_range(struct file *file, loff_t offset, loff_t len)
- 	ext4_journal_stop(handle);
- out_invalidate_lock:
- 	filemap_invalidate_unlock(mapping);
--out:
--	inode_unlock(inode);
+-out_invalidate_lock:
+-	filemap_invalidate_unlock(mapping);
  	return ret;
  }
  
 diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index bb68c851b33ad..6f0b1b0bd1af8 100644
+index 6f0b1b0bd1af8..ca98f04fcf556 100644
 --- a/fs/ext4/inode.c
 +++ b/fs/ext4/inode.c
-@@ -3997,15 +3997,14 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+@@ -3992,7 +3992,6 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+ 	struct inode *inode = file_inode(file);
+ 	struct super_block *sb = inode->i_sb;
+ 	ext4_lblk_t start_lblk, end_lblk;
+-	struct address_space *mapping = inode->i_mapping;
+ 	loff_t max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
  	loff_t end = offset + length;
  	handle_t *handle;
- 	unsigned int credits;
--	int ret = 0;
-+	int ret;
- 
- 	trace_ext4_punch_hole(inode, offset, length, 0);
--
--	inode_lock(inode);
-+	WARN_ON_ONCE(!inode_is_locked(inode));
- 
- 	/* No need to punch hole beyond i_size */
- 	if (offset >= inode->i_size)
--		goto out;
-+		return 0;
- 
- 	/*
- 	 * If the hole extends beyond i_size, set the hole to end after
-@@ -4025,7 +4024,7 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
- 	if (!IS_ALIGNED(offset | end, sb->s_blocksize)) {
- 		ret = ext4_inode_attach_jinode(inode);
- 		if (ret < 0)
--			goto out;
-+			return ret;
+@@ -4027,31 +4026,15 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+ 			return ret;
  	}
  
- 	/* Wait all existing dio workers, newcomers will block on i_rwsem */
-@@ -4033,7 +4032,7 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+-	/* Wait all existing dio workers, newcomers will block on i_rwsem */
+-	inode_dio_wait(inode);
+-
+-	ret = file_modified(file);
+-	if (ret)
+-		return ret;
+-
+-	/*
+-	 * Prevent page faults from reinstantiating pages we have released from
+-	 * page cache.
+-	 */
+-	filemap_invalidate_lock(mapping);
+-
+-	ret = ext4_break_layouts(inode);
+-	if (ret)
+-		goto out_invalidate_lock;
  
- 	ret = file_modified(file);
+ 	ret = ext4_update_disksize_before_punch(inode, offset, length);
  	if (ret)
--		goto out;
+-		goto out_invalidate_lock;
 +		return ret;
  
- 	/*
- 	 * Prevent page faults from reinstantiating pages we have released from
-@@ -4109,8 +4108,6 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+ 	/* Now release the pages and zero block aligned part of pages*/
+ 	ret = ext4_truncate_page_cache_block_range(inode, offset, end);
+ 	if (ret)
+-		goto out_invalidate_lock;
++		return ret;
+ 
+ 	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
+ 		credits = ext4_writepage_trans_blocks(inode);
+@@ -4061,7 +4044,7 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+ 	if (IS_ERR(handle)) {
+ 		ret = PTR_ERR(handle);
+ 		ext4_std_error(sb, ret);
+-		goto out_invalidate_lock;
++		return ret;
+ 	}
+ 
+ 	ret = ext4_zero_partial_blocks(handle, inode, offset, length);
+@@ -4106,8 +4089,6 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+ 		ext4_handle_sync(handle);
+ out_handle:
  	ext4_journal_stop(handle);
- out_invalidate_lock:
- 	filemap_invalidate_unlock(mapping);
--out:
--	inode_unlock(inode);
+-out_invalidate_lock:
+-	filemap_invalidate_unlock(mapping);
  	return ret;
  }
  
