@@ -1,160 +1,140 @@
-Return-Path: <stable+bounces-164544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789F9B0FF06
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:57:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C928B0FF0C
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 05:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A980E546B07
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 02:57:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06DC516B89C
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 03:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A9A1D5ABA;
-	Thu, 24 Jul 2025 02:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE4A1C8FBA;
+	Thu, 24 Jul 2025 03:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OkmWXv+n"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fZ7gOIW+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387FC1A316C
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 02:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849E11BF58;
+	Thu, 24 Jul 2025 03:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753325860; cv=none; b=kLadOEsRfBPh9hKh22neUrdv3RwrYNUiEuyPJZy4t79H9uG18xGAZA4NXtkJcZoCdZeP0LET2O6fzOaHPLPMggAGJBeYllryACCScwbE6P77V2olWP8EjASXCR7LZOWLiKLywKwxqmSOKOXyOz9YEUQWTD3ZkhgCEs+wZ4nPKvs=
+	t=1753326204; cv=none; b=FiC7TtQoXmb8o2lN0Uk5Kk2GCxIQotIZ42CYrQFrA7HbJiLnrTHhx2jjjGxOBfP4QgNPvdiRTE4wUF1FbmOGfuPdm2VddPSy94wuyYm4bnhE7gwKlSVjqrhMsEqaW4e6Whmk9qtKXIgAUFEWczFRrBKZL/CjS2de8NNu6nkDemY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753325860; c=relaxed/simple;
-	bh=ykISAG2IG4tYq6ITzjQ8M302ZIS0ViewbaEXFFtriCA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=emk5WAMRETsKLg+ake6ZIRa2cSN85Et9v1FmrTKuyj+a4bN2dY7c426TTS6nrt3xMwZ7JocqywKZjH2Bsfo+wgNmCCbdY8hrsumbDaUgHYg7Je0lESV5WyxDYt2pCdzg0zYwX+Dbxbc7joFIfW+wN0t7h4XNpW4+zIjTWqKqAfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OkmWXv+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6494C4CEF4;
-	Thu, 24 Jul 2025 02:57:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753325860;
-	bh=ykISAG2IG4tYq6ITzjQ8M302ZIS0ViewbaEXFFtriCA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OkmWXv+nMsxen47HMPk3Z550ny8ALWuJHcgO/BK9B/isfOgqEENsUMvpVPGnvZI18
-	 LcTX9xgIKgcMjhHy4mnUT6F5g+KRZZ2agSOBDwK0PwjSxrYEgToVjaDzv/ZPoSI/fq
-	 m3m+be1y2lM9TYQDqajqYC04SWPocric6eVuHQWTDyueFnvswfRRAL3U6DYaHWM3zI
-	 CHu77BhJdwD1z5SezH/RuVlOjtVebzX5rbOhBM2PzE8LSDfQM3nd20su0e+t4mCGBD
-	 M8+Ts9XSsz+BxY9l+G3ZuFVzzDO5KwblTPSO1DQI2kYr6nDFExuX/i90jfeRuYXKlo
-	 fvFFVYhrkWcwQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Zhang Yi <yi.zhang@huawei.com>,
-	Liebes Wang <wanghaichi0403@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 11/11] ext4: fix out of bounds punch offset
-Date: Wed, 23 Jul 2025 22:57:18 -0400
-Message-Id: <20250724025718.1277650-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250724025718.1277650-1-sashal@kernel.org>
-References: <2025062009-junior-thriving-f882@gregkh>
- <20250724025718.1277650-1-sashal@kernel.org>
+	s=arc-20240116; t=1753326204; c=relaxed/simple;
+	bh=kmKfDqwToB2wQazMZlvCLP2VSC7ACpEaqy/OGDLkVTc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YgOUPMJyRH4HET6T/MJxPh/p5VHlgvmiX1TxIFjopfAIXNmN3oFToMVWb3oKkgf2OWEDec6hCSjLaH7xS9Rz6vVr5pGjuZqbssnHu580MKBYQAwKMjB/as3FjfVtPTjP+qv6Y8AvrUcbyil+0bwodf87tlZKsn9rATIFRF/7Vl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fZ7gOIW+; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753326203; x=1784862203;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kmKfDqwToB2wQazMZlvCLP2VSC7ACpEaqy/OGDLkVTc=;
+  b=fZ7gOIW+9IKbq6xarDRChBZEVlYmaEYqAZpxWZL5PWUSpW7b3QDXubEY
+   K3z05xjHmxXrKvt4FGKjhy0mNbpi6KK2iUAbLa7k5fZ5SG0ouI1U9/U3r
+   mU7CTWxQfnHPv6pUIOrbwAmo/xHiHqVTm+2ZaXchP6NKFvOPKrxyCzW+S
+   KDWxCVjSSJg77wx2XV99wjCqeU7e74LrObwda8QeFCalieXDgrc3aALE7
+   ddSaDKFuQwlzmK1nPOoSgamOfIN9JxHtZrfCpgoUBLC5NJpQ1HzZMywwR
+   Iqy5CtkYvkzOl3F9mXCRJ/nXtk5QhREo5g6oxq1TB35GWR05P4QB6NvVX
+   g==;
+X-CSE-ConnectionGUID: Mf5cPKQFSzWKCYVkRZEIaA==
+X-CSE-MsgGUID: IM0OYFkMTQ6s5Grz7TmFUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55501045"
+X-IronPort-AV: E=Sophos;i="6.16,336,1744095600"; 
+   d="scan'208";a="55501045"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 20:03:23 -0700
+X-CSE-ConnectionGUID: NOnQGpbMQ5KTds/Btk2D2w==
+X-CSE-MsgGUID: bAlQREAIR+6Es9SYo8nZXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,336,1744095600"; 
+   d="scan'208";a="197049249"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 20:03:18 -0700
+Message-ID: <2a1ffe30-b0a6-45b3-8dcb-feaa285e1e5b@linux.intel.com>
+Date: Thu, 24 Jul 2025 11:01:12 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Yu Zhang <zhangyu1@linux.microsoft.com>,
+ Dave Hansen <dave.hansen@intel.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, "Tested-by : Yi Lai" <yi1.lai@intel.com>,
+ iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250709062800.651521-1-baolu.lu@linux.intel.com>
+ <ee7585bd-d87c-4f93-9c8e-b8c1d649cdfe@intel.com>
+ <228cd2c9-b781-4505-8b54-42dab03f3650@linux.intel.com>
+ <326c60aa-37f3-458d-a534-6e0106cc244b@intel.com>
+ <20250710132234.GL1599700@nvidia.com>
+ <62580eab-3e68-4132-981a-84167d130d9f@intel.com>
+ <6dn5n5cge7acmmfgb5zi7ctcbn5hiqyr2xhmgbdxohqydhgmtt@47nnr4tnzlnh>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <6dn5n5cge7acmmfgb5zi7ctcbn5hiqyr2xhmgbdxohqydhgmtt@47nnr4tnzlnh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Zhang Yi <yi.zhang@huawei.com>
+On 7/11/25 16:17, Yu Zhang wrote:
+> On Thu, Jul 10, 2025 at 08:26:06AM -0700, Dave Hansen wrote:
+>> On 7/10/25 06:22, Jason Gunthorpe wrote:
+>>>> Why does this matter? We flush the CPU TLB in a bunch of different ways,
+>>>> _especially_ when it's being done for kernel mappings. For example,
+>>>> __flush_tlb_all() is a non-ranged kernel flush which has a completely
+>>>> parallel implementation with flush_tlb_kernel_range(). Call sites that
+>>>> use_it_ are unaffected by the patch here.
+>>>>
+>>>> Basically, if we're only worried about vmalloc/vfree freeing page
+>>>> tables, then this patch is OK. If the problem is bigger than that, then
+>>>> we need a more comprehensive patch.
+>>> I think we are worried about any place that frees page tables.
+>> The two places that come to mind are the remove_memory() code and
+>> __change_page_attr().
+>>
+>> The remove_memory() gunk is in arch/x86/mm/init_64.c. It has a few sites
+>> that do flush_tlb_all(). Now that I'm looking at it, there look to be
+>> some races between freeing page tables pages and flushing the TLB. But,
+>> basically, if you stick to the sites in there that do flush_tlb_all()
+>> after free_pagetable(), you should be good.
+>>
+>> As for the __change_page_attr() code, I think the only spot you need to
+>> hit is cpa_collapse_large_pages() and maybe the one in
+>> __split_large_page() as well.
+>>
+>> This is all disturbingly ad-hoc, though. The remove_memory() code needs
+>> fixing and I'll probably go try to bring some order to the chaos in the
+>> process of fixing it up. But that's a separate problem than this IOMMU fun.
+>>
+> Could we consider to split the flush_tlb_kernel_range() into 2 different
+> versions:
+> - the one which only flushes the CPU TLB
+> - the one which flushes the CPU paging structure cache and then notifies
+>    IOMMU to do the same(e.g., in pud_free_pmd_page()/pmd_free_pte_page())?
 
-[ Upstream commit b5e58bcd79625423487fa3ecba8e8411b5396327 ]
+ From the perspective of an IOMMU, there is no need to split. IOMMU SVA
+only allows the device to access user-space memory with user
+permission. Access to kernel address space with privileged permission
+is not allowed. Therefore, the IOMMU subsystem only needs a callback to
+invalidate the paging structure cache.
 
-Punching a hole with a start offset that exceeds max_end is not
-permitted and will result in a negative length in the
-truncate_inode_partial_folio() function while truncating the page cache,
-potentially leading to undesirable consequences.
-
-A simple reproducer:
-
-  truncate -s 9895604649994 /mnt/foo
-  xfs_io -c "pwrite 8796093022208 4096" /mnt/foo
-  xfs_io -c "fpunch 8796093022213 25769803777" /mnt/foo
-
-  kernel BUG at include/linux/highmem.h:275!
-  Oops: invalid opcode: 0000 [#1] SMP PTI
-  CPU: 3 UID: 0 PID: 710 Comm: xfs_io Not tainted 6.15.0-rc3
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-  RIP: 0010:zero_user_segments.constprop.0+0xd7/0x110
-  RSP: 0018:ffffc90001cf3b38 EFLAGS: 00010287
-  RAX: 0000000000000005 RBX: ffffea0001485e40 RCX: 0000000000001000
-  RDX: 000000000040b000 RSI: 0000000000000005 RDI: 000000000040b000
-  RBP: 000000000040affb R08: ffff888000000000 R09: ffffea0000000000
-  R10: 0000000000000003 R11: 00000000fffc7fc5 R12: 0000000000000005
-  R13: 000000000040affb R14: ffffea0001485e40 R15: ffff888031cd3000
-  FS:  00007f4f63d0b780(0000) GS:ffff8880d337d000(0000)
-  knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 000000001ae0b038 CR3: 00000000536aa000 CR4: 00000000000006f0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   <TASK>
-   truncate_inode_partial_folio+0x3dd/0x620
-   truncate_inode_pages_range+0x226/0x720
-   ? bdev_getblk+0x52/0x3e0
-   ? ext4_get_group_desc+0x78/0x150
-   ? crc32c_arch+0xfd/0x180
-   ? __ext4_get_inode_loc+0x18c/0x840
-   ? ext4_inode_csum+0x117/0x160
-   ? jbd2_journal_dirty_metadata+0x61/0x390
-   ? __ext4_handle_dirty_metadata+0xa0/0x2b0
-   ? kmem_cache_free+0x90/0x5a0
-   ? jbd2_journal_stop+0x1d5/0x550
-   ? __ext4_journal_stop+0x49/0x100
-   truncate_pagecache_range+0x50/0x80
-   ext4_truncate_page_cache_block_range+0x57/0x3a0
-   ext4_punch_hole+0x1fe/0x670
-   ext4_fallocate+0x792/0x17d0
-   ? __count_memcg_events+0x175/0x2a0
-   vfs_fallocate+0x121/0x560
-   ksys_fallocate+0x51/0xc0
-   __x64_sys_fallocate+0x24/0x40
-   x64_sys_call+0x18d2/0x4170
-   do_syscall_64+0xa7/0x220
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fix this by filtering out cases where the punching start offset exceeds
-max_end.
-
-Fixes: 982bf37da09d ("ext4: refactor ext4_punch_hole()")
-Reported-by: Liebes Wang <wanghaichi0403@gmail.com>
-Closes: https://lore.kernel.org/linux-ext4/ac3a58f6-e686-488b-a9ee-fc041024e43d@huawei.com/
-Tested-by: Liebes Wang <wanghaichi0403@gmail.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ext4/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index fe1d19d920a96..eb092133c6b88 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4009,7 +4009,7 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
- 		max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
- 
- 	/* No need to punch hole beyond i_size */
--	if (offset >= inode->i_size)
-+	if (offset >= inode->i_size || offset >= max_end)
- 		return 0;
- 
- 	/*
--- 
-2.39.5
-
+Thanks,
+baolu
 
