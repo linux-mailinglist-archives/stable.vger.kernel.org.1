@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-164530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDDFB0FECA
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:31:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094A7B0FECB
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:34:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FC3F1C2421E
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 02:31:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAD4496438F
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 02:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069F57261B;
-	Thu, 24 Jul 2025 02:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C348C165F13;
+	Thu, 24 Jul 2025 02:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FW7nt43O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcVywxYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC06418EB0
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 02:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6B013A41F
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 02:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753324271; cv=none; b=kA1zF/ELy4EG+xqHv3Hymlf+Te1ANsma5nDRy6BGCGDdeTM4KZBDSylo9lH0/QqpuKJ4qftzlFh7Vb5lCYMapc02ububibLvV8smuwlzxVS/upPTYVfxFhpc7WTRy9F/HCOQZlPIOyF/YjbQeNLpj2a5zYfFbHUOYQLQfMX8/Gw=
+	t=1753324443; cv=none; b=TU+0CLZ9cKUHBQAd/TPFlvL8NQND8TKALwSVcxiDJL/mvBMZPRbIXDgIWimfY4p8qM0WvpGxkotpX9lqBDBR0pZZdaPYZ7G2zY9iJL5YbR+h8G2zubaT+OfbovSZlm4MSYXbXCfr7CJVL0/Y6ngDBk47AnP4bRTBQdeJ/L/J9Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753324271; c=relaxed/simple;
+	s=arc-20240116; t=1753324443; c=relaxed/simple;
 	bh=9FdP2FdmGwSu8KSQyWxCnN91gYqJ+8+kQiV+9HRZPr0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LWaVbEODbG667myUwtCdmG4NTOjlpZkDvCensVL1jmkmJy6QjW+idzJXjH9q16j6RdI2e3A0S6ttDx8uv0XPy+CQ4GkZQFDjcH4/NDKB3XBem6bfrJk76YQo2tJXZeO+yZ4xBmXV68JD1CK/tBzGZk6cQQQQg4k7cLlq+cZgnJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FW7nt43O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345DEC4CEEF;
-	Thu, 24 Jul 2025 02:31:10 +0000 (UTC)
+	 MIME-Version; b=bCOgLiKvZJl877ZyrF/5JzoypVkpztw3YD1RL1wy6GhzaaxcxxWr8K3UmmJhTcsRAtqSH//33PAIjAWKf7uvrmYhUZKxJBEZfYm6DqVezEbQDjFHncgJyVB4F8rr3wHKSLkhGXOAYK8tks7vTJnTD93i2VLCAU09oGQrBF/oyf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcVywxYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB3EC4CEE7;
+	Thu, 24 Jul 2025 02:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753324271;
+	s=k20201202; t=1753324443;
 	bh=9FdP2FdmGwSu8KSQyWxCnN91gYqJ+8+kQiV+9HRZPr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FW7nt43OZmjpFQqkYz5zzvNQQ2VspWU2u5iLn1ylwo+jSdwBiSj2ULM80UsKmWD9q
-	 /9DEXj+2migYvU5dQU3Ql3v+HVeRvuOXqBXYiW3I3m++oWyKPjVybDxoWjfDZeZsD7
-	 CZjP20THR602VYoka2yM/XKHKvuObal3OwdrVTtziblpY4drWxWb0OY2AY39yBRNfT
-	 4s75X7QBuaQvf58yE+4u37w47iv+ATdujRA09AQYenG/8CEyr/byfeCsQ2f9bTm/s7
-	 hKmTrhuoD9GtpW1nndKLAY1CHgrxleVk5Byz0tpRNNJyG0bS7RtbT52jGafTjBWL7U
-	 wdXH6B0fwqn6Q==
+	b=YcVywxYm9NaDKR2DHbosJScks7UCrqOnPl46pThZ50i1IAzAWU7jho/5Drbc4t2j6
+	 7/Yk2XsL39YExRuDQvo7FLkNqwJ3Cc6c3uYCMgze22b7wuDKPPdI7JKzAevEMwj578
+	 qnzbGsyo8DaPPSqfKcLSWKjtyDVRGuE8V3GpdIiUa8PqXA/Mt11UTleVacHDpo9pj7
+	 7/4suX8GrGbLrFX2dOFwmV0Jo2C57QChuI/clhWypWzUEoivxiLMelu41PHp10M3uw
+	 vjtKQZ/FDs8iFN6p9syS+8R/KQeXohLm58amnLTdTnWVq/7WHxU1QindvIKHTyvTG/
+	 tAa1c7VNSFWyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Md Sadre Alam <quic_mdalam@quicinc.com>,
@@ -48,12 +48,12 @@ Cc: Md Sadre Alam <quic_mdalam@quicinc.com>,
 	Lakshmi Sowjanya D <quic_laksd@quicinc.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] mtd: rawnand: qcom: Fix last codeword read in qcom_param_page_type_exec()
-Date: Wed, 23 Jul 2025 22:31:05 -0400
-Message-Id: <20250724023105.1267926-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] mtd: rawnand: qcom: Fix last codeword read in qcom_param_page_type_exec()
+Date: Wed, 23 Jul 2025 22:33:58 -0400
+Message-Id: <20250724023358.1268700-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025062000-manhunt-treachery-4c42@gregkh>
-References: <2025062000-manhunt-treachery-4c42@gregkh>
+In-Reply-To: <2025062002-disperser-removing-78fc@gregkh>
+References: <2025062002-disperser-removing-78fc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
