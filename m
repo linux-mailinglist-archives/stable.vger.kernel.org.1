@@ -1,91 +1,102 @@
-Return-Path: <stable+bounces-164626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E59B10E65
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 17:15:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3719B10E7E
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 17:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3057756866B
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 15:15:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7A2C17DD1E
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 15:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F4C2EA173;
-	Thu, 24 Jul 2025 15:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB082E9EA7;
+	Thu, 24 Jul 2025 15:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OpGH19N4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzSrGuPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798722EA164
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 15:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB6E2D5423
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 15:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753370123; cv=none; b=M+JNfG99Z5iSRmMyfOn3TsleG6hr0WIMwxGCB1qG13k5Kc3HEHa/UUfat5vDZgCWIg1WbmcqGkAOvD3KO4RK6xdaO97VUSEZHT9PrI1HoFKzBVvRk0H1wQw25YwLbMDH9rG7ypbP17GvKha/dMcCN1+WsTkfViMLU6YXPpl9OSA=
+	t=1753370366; cv=none; b=qMpv/b1TNuYX1S8ez1xArW1wINILL8KdTqTWcoG4Qd2icj5cikKsPH5wTphrCjas7kLwf44MnNK+PX9NsG4SagF8W8nXy/F1rYCurEYeGF+XGBp4kggei7Y7zzhyRZlqSl8F4RatfIAiTqVvcfpWwLrNoutNeflh/G+doyuOT68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753370123; c=relaxed/simple;
-	bh=w/Ed3QO1Ij7t6YI2carfE0DTyhElfnuoledAP7RxVgk=;
+	s=arc-20240116; t=1753370366; c=relaxed/simple;
+	bh=AADdCl40B37wDfclhQh6Rt+yiUaVSUOkBQxheJ3jQZc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QboCO16OZj9PP8XwbbJzRvZx9DpkxHuBPtf/BWUnEhaJIQ1vz+c8k8fI4GNFZNKRZpl6Y6CMxMlpfjc85PpS4QnenpIJorYB+6S97Eg4NYmR7XYT7kg4y0A7sQf0OCRpeUxUxLYMAgrixakBJ3IB2TRr9FEVn1fHnOjLlOya58Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OpGH19N4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8BDC4CEFA;
-	Thu, 24 Jul 2025 15:15:22 +0000 (UTC)
+	 MIME-Version; b=fhW3/zAIYZesuPP1LHA7UMmeYvisXOd/fjZsFGbOEof4Gl6gVmz9jhFVFC4hdu3x+RTc+nAQREOuZOKslIL1FR97ImUxfc0oJsIAfkaXtNAgpWLm1pItMXV9EniQynL7Bfxr4kc/NaeZHZzZqsIQ2behBcyBIy1WKTrrl2KsEog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzSrGuPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11362C4CEED;
+	Thu, 24 Jul 2025 15:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753370123;
-	bh=w/Ed3QO1Ij7t6YI2carfE0DTyhElfnuoledAP7RxVgk=;
+	s=k20201202; t=1753370366;
+	bh=AADdCl40B37wDfclhQh6Rt+yiUaVSUOkBQxheJ3jQZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OpGH19N4gMMZRuu4NBDoMfKEOhgrylcr3XXJiYJ006glN8dltHJop0aiS3WKF+Zk2
-	 Kcs3JZx7KOwjB2MaOrlT3/GiaZnOkHE3afzj7LGBAEbFm+Z1anj2Dj0WhCjs2U7ARE
-	 rIBHstvDcho6hr++6r8pfURNfM12BivEdVjT9deaS/67qj6Zd0JB2KHbbmH/Z+ONxo
-	 Y7Q1muAmtQV2y56Pi6MTk7kD/zRiTtHh1qqHSiWREWBJGX/G9iaOWziDQgMTzUN5n5
-	 FKDyhHqHIqAvomLpsmqbrlmX+J2bOeflSwsSK5O+OntSv5xVTyiGPtKK6ZxiAauecl
-	 Lfde/yFfSmsfA==
+	b=mzSrGuPE6doNQP4lM2XwE3RNl147zvB+5y7wYiJQKbLZ//tipCU2UyVndr/5EdZQQ
+	 VHZSerXPAro+vkjmmng7b9TGKPntVsOE6iJ88NFrFe6Pls/SWE3gAjREESciGymVEd
+	 mk3+Bu7a9XSappy3x+dGC5YA9VhTUYeADugWIa+grWucDvm1WIvSxpPnJ+AgDcwAZ3
+	 kwFpd47IQRQ1bRqzSmjJAsnlB2l631yykljjyr5X7JbuB2TaN30xW0e59UTQqSUpiB
+	 919INgiv/K/JD5OEuVo/BgJwjZHYFUcgqCTAbXtL+IePQtmXgXjHnpqJWsLvLBDUDh
+	 8zVQCiAvyrEhA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	sumanth.gavini@yahoo.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] net: add netdev_lockdep_set_classes() to virtual drivers
-Date: Thu, 24 Jul 2025 11:15:20 -0400
-Message-Id: <1753367981-e2a8d101@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] iio: hid-sensor-prox: Fix incorrect OFFSET calculation
+Date: Thu, 24 Jul 2025 11:19:22 -0400
+Message-Id: <20250724151922.1365648-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250724043010.129297-1-sumanth.gavini@yahoo.com>
-References: 
+In-Reply-To: <2025051216-fantasy-preschool-858d@gregkh>
+References: <2025051216-fantasy-preschool-858d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-Hi,
+[ Upstream commit 79dabbd505210e41c88060806c92c052496dd61c ]
 
-Summary of potential issues:
-❌ Patch application failures detected
+The OFFSET calculation in the prox_read_raw() was incorrectly using the
+unit exponent, which is intended for SCALE calculations.
 
-The upstream commit SHA1 provided is correct: 0bef512012b1cd8820f0c9ec80e5f8ceb43fdd59
+Remove the incorrect OFFSET calculation and set it to a fixed value of 0.
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Sumanth Gavini <sumanth.gavini@yahoo.com>
-Commit author: Eric Dumazet <edumazet@google.com>
-
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Not found
-
-Note: Could not generate a diff with upstream commit:
+Cc: stable@vger.kernel.org
+Fixes: 39a3a0138f61 ("iio: hid-sensors: Added Proximity Sensor Driver")
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20250331055022.1149736-4-lixu.zhang@intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ adapted prox_attr array access to single structure member access ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Note: Could not generate diff - patch failed to apply for comparison
----
+ drivers/iio/light/hid-sensor-prox.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Results of testing on various branches:
+diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
+index 26c481d2998c1..ba8e898969df7 100644
+--- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -102,8 +102,7 @@ static int prox_read_raw(struct iio_dev *indio_dev,
+ 		ret_type = prox_state->scale_precision;
+ 		break;
+ 	case IIO_CHAN_INFO_OFFSET:
+-		*val = hid_sensor_convert_exponent(
+-				prox_state->prox_attr.unit_expo);
++		*val = 0;
+ 		ret_type = IIO_VAL_INT;
+ 		break;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-- 
+2.39.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| origin/linux-6.1.y        | Failed      | N/A        |
 
