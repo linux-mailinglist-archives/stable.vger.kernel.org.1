@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-164531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094A7B0FECB
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:34:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C39B0FEEC
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 04:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAD4496438F
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 02:33:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E5513A58D2
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 02:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C348C165F13;
-	Thu, 24 Jul 2025 02:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAE215855E;
+	Thu, 24 Jul 2025 02:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcVywxYm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMHVJo8F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6B013A41F
-	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 02:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B96A22097
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 02:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753324443; cv=none; b=TU+0CLZ9cKUHBQAd/TPFlvL8NQND8TKALwSVcxiDJL/mvBMZPRbIXDgIWimfY4p8qM0WvpGxkotpX9lqBDBR0pZZdaPYZ7G2zY9iJL5YbR+h8G2zubaT+OfbovSZlm4MSYXbXCfr7CJVL0/Y6ngDBk47AnP4bRTBQdeJ/L/J9Wg=
+	t=1753325366; cv=none; b=q8f8fRLZHCkuR0vjU18lgjvq3A5pnFjP8OlMjBHy5FXdC2wcEJNtvmkf7MmkdZ0EJ+HUpDJm/ZCojruT0dRTSM8yvKgDsqb+IuF2VNU8m8yg6vMjr4cQZeCcuFusrAaOkjIFckFsXfLdvoqyeKONFf2XonwHIpwHCA94D9PPDZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753324443; c=relaxed/simple;
-	bh=9FdP2FdmGwSu8KSQyWxCnN91gYqJ+8+kQiV+9HRZPr0=;
+	s=arc-20240116; t=1753325366; c=relaxed/simple;
+	bh=PQzmD1EtO87cCbmjbLgK4Rpzjk6/3kBhCzwTi7SqmYA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bCOgLiKvZJl877ZyrF/5JzoypVkpztw3YD1RL1wy6GhzaaxcxxWr8K3UmmJhTcsRAtqSH//33PAIjAWKf7uvrmYhUZKxJBEZfYm6DqVezEbQDjFHncgJyVB4F8rr3wHKSLkhGXOAYK8tks7vTJnTD93i2VLCAU09oGQrBF/oyf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcVywxYm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB3EC4CEE7;
-	Thu, 24 Jul 2025 02:34:01 +0000 (UTC)
+	 MIME-Version; b=EQrOwhgP4FsPLTo9iFkMTrxEYkIx3/ymPDKiQ7HkVCo7gYA6mCKrNeJyM0cVLRWh4zoJr+GmgXBz4ukMFwLyHa5uiKFyRUDANMfvHBZO6srRUSWC1ew691t+bThBsb8OF9Ggj2rY8cQ7ByUlXpffITstWm991KfffOs6OtGVW2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMHVJo8F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A17C4CEE7;
+	Thu, 24 Jul 2025 02:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753324443;
-	bh=9FdP2FdmGwSu8KSQyWxCnN91gYqJ+8+kQiV+9HRZPr0=;
+	s=k20201202; t=1753325366;
+	bh=PQzmD1EtO87cCbmjbLgK4Rpzjk6/3kBhCzwTi7SqmYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YcVywxYm9NaDKR2DHbosJScks7UCrqOnPl46pThZ50i1IAzAWU7jho/5Drbc4t2j6
-	 7/Yk2XsL39YExRuDQvo7FLkNqwJ3Cc6c3uYCMgze22b7wuDKPPdI7JKzAevEMwj578
-	 qnzbGsyo8DaPPSqfKcLSWKjtyDVRGuE8V3GpdIiUa8PqXA/Mt11UTleVacHDpo9pj7
-	 7/4suX8GrGbLrFX2dOFwmV0Jo2C57QChuI/clhWypWzUEoivxiLMelu41PHp10M3uw
-	 vjtKQZ/FDs8iFN6p9syS+8R/KQeXohLm58amnLTdTnWVq/7WHxU1QindvIKHTyvTG/
-	 tAa1c7VNSFWyQ==
+	b=WMHVJo8F6rRmy49hr0OJW/fj67GvbbwLZbrbeT4NkfEzSQx7DajJQrlMVKGDmRP3X
+	 sFbw4AS4PJK+1lXTNUYAek7TVAGe6+DeT/hVvUfMmDsOXM/E9sYS3bGlGk0SyITeBf
+	 K4GCJV/0eFaxqhS209nELfhaVGszWt1li0Ltp0SBkKsxa1INxXgN4HQa/WuGBSkJjy
+	 ThCxo2K3dz9AoP4bIzOUbZ0MYVZXwYjcrWUHQp7n3TFa6gAP/sB2j7c5TXbgYBOr/f
+	 QHd3wNdMUFP+TpAbvLPs8vT88wyTJhD6jW0L7hiScNwf5ohH1eYPSA815IzIt7/WQm
+	 nmFLxE1rkRSwA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lakshmi Sowjanya D <quic_laksd@quicinc.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+Cc: Eric Biggers <ebiggers@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] mtd: rawnand: qcom: Fix last codeword read in qcom_param_page_type_exec()
-Date: Wed, 23 Jul 2025 22:33:58 -0400
-Message-Id: <20250724023358.1268700-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] crypto: powerpc/poly1305 - add depends on BROKEN for now
+Date: Wed, 23 Jul 2025 22:49:21 -0400
+Message-Id: <20250724024921.1276399-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025062002-disperser-removing-78fc@gregkh>
-References: <2025062002-disperser-removing-78fc@gregkh>
+In-Reply-To: <2025062040-renderer-tremor-6a52@gregkh>
+References: <2025062040-renderer-tremor-6a52@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,70 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Md Sadre Alam <quic_mdalam@quicinc.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 47bddabbf69da50999ec68be92b58356c687e1d6 ]
+[ Upstream commit bc8169003b41e89fe7052e408cf9fdbecb4017fe ]
 
-For QPIC V2 onwards there is a separate register to read
-last code word "QPIC_NAND_READ_LOCATION_LAST_CW_n".
+As discussed in the thread containing
+https://lore.kernel.org/linux-crypto/20250510053308.GB505731@sol/, the
+Power10-optimized Poly1305 code is currently not safe to call in softirq
+context.  Disable it for now.  It can be re-enabled once it is fixed.
 
-qcom_param_page_type_exec() is used to read only one code word
-If it configures the number of code words to 1 in QPIC_NAND_DEV0_CFG0
-register then QPIC controller thinks its reading the last code word,
-since we are having separate register to read the last code word,
-we have to configure "QPIC_NAND_READ_LOCATION_LAST_CW_n" register
-to fetch data from QPIC buffer to system memory.
-
-Without this change page read was failing with timeout error
-
-/ # hexdump -C /dev/mtd1
-[  129.206113] qcom-nandc 1cc8000.nand-controller: failure to read page/oob
-hexdump: /dev/mtd1: Connection timed out
-
-This issue only seen on SDX targets since SDX target used QPICv2. But
-same working on IPQ targets since IPQ used QPICv1.
-
+Fixes: ba8f8624fde2 ("crypto: poly1305-p10 - Glue code for optmized Poly1305 implementation for ppc64le")
 Cc: stable@vger.kernel.org
-Fixes: 89550beb098e ("mtd: rawnand: qcom: Implement exec_op()")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Tested-by: Lakshmi Sowjanya D <quic_laksd@quicinc.com>
-Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ applied to arch/powerpc/crypto/Kconfig ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/powerpc/crypto/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-index beafca6ba0df4..275d34119acdc 100644
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2858,7 +2858,12 @@ static int qcom_param_page_type_exec(struct nand_chip *chip,  const struct nand_
- 	const struct nand_op_instr *instr = NULL;
- 	unsigned int op_id = 0;
- 	unsigned int len = 0;
--	int ret;
-+	int ret, reg_base;
-+
-+	reg_base = NAND_READ_LOCATION_0;
-+
-+	if (nandc->props->qpic_v2)
-+		reg_base = NAND_READ_LOCATION_LAST_CW_0;
- 
- 	ret = qcom_parse_instructions(chip, subop, &q_op);
- 	if (ret)
-@@ -2910,7 +2915,10 @@ static int qcom_param_page_type_exec(struct nand_chip *chip,  const struct nand_
- 	op_id = q_op.data_instr_idx;
- 	len = nand_subop_get_data_len(subop, op_id);
- 
--	nandc_set_read_loc(chip, 0, 0, 0, len, 1);
-+	if (nandc->props->qpic_v2)
-+		nandc_set_read_loc_last(chip, reg_base, 0, len, 1);
-+	else
-+		nandc_set_read_loc_first(chip, reg_base, 0, len, 1);
- 
- 	if (!nandc->props->qpic_v2) {
- 		write_reg_dma(nandc, NAND_DEV_CMD_VLD, 1, 0);
+diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+index 7012fa55aceb9..15783f2307dfe 100644
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -143,6 +143,7 @@ config CRYPTO_CHACHA20_P10
+ config CRYPTO_POLY1305_P10
+ 	tristate "Hash functions: Poly1305 (P10 or later)"
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
++	depends on BROKEN # Needs to be fixed to work in softirq context
+ 	select CRYPTO_HASH
+ 	select CRYPTO_LIB_POLY1305_GENERIC
+ 	help
 -- 
 2.39.5
 
