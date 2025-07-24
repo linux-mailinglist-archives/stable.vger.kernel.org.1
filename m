@@ -1,116 +1,165 @@
-Return-Path: <stable+bounces-164616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE47B10D6F
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 16:26:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845EDB10DBE
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 16:37:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 493DB1C87499
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 14:23:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B39617B4CC
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 14:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172F22E0925;
-	Thu, 24 Jul 2025 14:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EB42C15B4;
+	Thu, 24 Jul 2025 14:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="IvdPYPa8"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZKwvXGi2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E30E2DA74A;
-	Thu, 24 Jul 2025 14:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FD32E543A
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 14:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753366994; cv=none; b=eVojj3UAubb/ii3HuWf7eA9kc0iC/p3vPq6+4TWByrv2hTVNa2yau22SacwxGD+gbQyStD46lpYzps52Mzzpfa6egIuFAtEM4YkHCKvR3zd6hv3GJjZiQApdUqAx80VxCt1yXVusAkTCL560F1bA4LY62jhMyf9TMK+m2kGCD6o=
+	t=1753367764; cv=none; b=Z8nfYTBBXxsjuQA7WNXhBoEq3XkQLGuqmRFFoXAzx5qR97L2n5Lkv4Ga00M5BnBoQ7ot4CWKoU6wuSKbmbO7bcqjKtz8p1KF074SHAH9ETD89u6yDnxpj+X+kVDpVQ4PKCAvsbI6d0JZh1Mvk4EmadUGKk8j2LyyihiD88mg/fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753366994; c=relaxed/simple;
-	bh=6Cz7GV6Zqf2gSNVM0mNkF0gdFV7Ea6eFphF/n7avkxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LxEotbpM3u/ctOIqdBmH4+sLHYBW6tcdwsHH+GFekEEqFv7QT+RNzQ8FjrxDAr3nItdkYB0CuNN4gjlKnshO0rdhc/oi/z0wfvTwTUKrZ/nzbJxpNvMFsLOvkZOhcM4Nowiz42Pv1C0+7M6Py9cr3rDMaqMBEqN9dEDapSq2soc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=IvdPYPa8; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3AA5140E026A;
-	Thu, 24 Jul 2025 14:23:09 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id sF_U7XUFOYGo; Thu, 24 Jul 2025 14:23:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1753366986; bh=CXrtkrbk3JW8sRHE4cFKjVLIz7pLtFMQKpN/mwKXvJQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IvdPYPa8jr5yt7k2Y+fNvcjRuak3n2kQLKDQ1QO2jJvbfHeWu9QPoznlgTboJhuaG
-	 5yZHtC1cEKM4XWgKq2ujjzfGuw+A1SLCyOgFeqomxBlt7Bh7ctEWLnOUbxtbZuABhq
-	 8L3q0d3bGwXEbtI2jkbNTRwaIcL/qztm+gWeTsa7BSKYkFbcDJ4Y3Nv9Oi/iWioDDJ
-	 L5YzDwIXZ1NvwsORtdz5Lmi3hdxBxJyLVPaQnTNkTn9vKwK6jxabBipajjF8R8BS2M
-	 kOx+ifDAudokRdF9SzRaO5vkis9nwgtU32F5XynOWk8exRxexZV+3EK7SadZR24eTn
-	 mtsrrXLxuGneJR2OB9VoSyw8rs0/H2ExXXekqED0dAi7OqkISZe4k0mz9/seb3C0C6
-	 xoMXUzthy+YPBIOUL20KvfDJN7yrFPMRFmKS+SsSVTsReMlZJI5CH62C09ziDqLk5z
-	 KelICRu9B3sPv8GlbKReZJ9g2ZvdcC3HCuS8pzCTcfQe9sm+ACLLOFoVjL+CjTeWai
-	 W2tl59yCx3toL9aVXYbs4i5zWiPAScZJWi93ddhz1P3ZJ8fo9B+SB23fQ5EVFA/Fph
-	 xvCh9pdd2P5FojkpL8hkv/BK3jewKa2s+G8xt4vfcmHrI7V7IlYVtyIXZscZatYIRj
-	 aVuMaYRhq/mJjV3Z4NrkDHYA=
-Received: from rn.tnic (unknown [78.130.214.207])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 5138440E0269;
-	Thu, 24 Jul 2025 14:22:51 +0000 (UTC)
-Date: Thu, 24 Jul 2025 16:24:52 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kyung Min Park <kyung.min.park@intel.com>,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	Tony Luck <tony.luck@intel.com>, xin3.li@intel.com,
-	Farrah Chen <farrah.chen@intel.com>, stable@vger.kernel.org,
-	Borislav Petkov <bp@suse.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] x86: Clear feature bits disabled at compile-time
-Message-ID: <20250724142452.GAaIJCNFO9tLS_ezVV@renoirsky.local>
-References: <20250724094554.2153919-1-maciej.wieczor-retman@intel.com>
- <C723416D-E1C9-4E18-A3B2-D386B1CB2041@alien8.de>
- <bc4w3nbkjzyrwmcjodrrwg7klgg532gre5v6fiwe3jvrww5egp@zezyxzny3ux4>
+	s=arc-20240116; t=1753367764; c=relaxed/simple;
+	bh=i1slLS6fKL6k/lJjpB1zEBUCWviGCPU4GQH5Mw9K1LE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uUfdD5wsmZ6qVJ8pYIick7QEiHPWBak5QBWy7V/C//WbNdQlR/KFLH+Hr+WxtBzVbBsV6CE7de30wi1dttwKDDEUjZWHLn0p3CkrWoKUU5UzcBCAWKzNJTSV7nS5unGgDkJfaXBbUwzGluMU/uePwZ+yodhls6sZiNGbph6NyIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZKwvXGi2; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56O9swNu018153
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 14:36:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=1/ClJdrWPfw
+	KRkRpbRRXkAMnaqMIpW6RqyjsVq8yU5M=; b=ZKwvXGi2aiShTAHqMmAmlRid4JA
+	ne4FCtwYPfxKza6gCZFAqbLS0tu1kGkBKndvSkCx+oUm29wBpNSWvjn1Gx7tWBIE
+	icA+iHbbM+2V73n7jsnLwHNQQIOkcT2FYHZYoLXJeXNYi8wImwlOamPcErNtdTSc
+	CGcWW8HxGW5P0OALQWlvJoOxX6TCfRm/U45ppSXjofsPRqzOKYI3YPSOg86yQsRB
+	2sf7zJiJZU3V5thvXowI8Jza4grXLIre5rtRsl/GsKeVeMahW9IdLjpVsdQvWwPA
+	Iejqc3K+Y9W2mv5p4tuhKr/4dxxK5jIY6+lDvrxEo3Z2d919IhGGK+f13Ow==
+Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com [209.85.221.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 481g3euvt8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 24 Jul 2025 14:36:01 +0000 (GMT)
+Received: by mail-vk1-f198.google.com with SMTP id 71dfb90a1353d-5331c1d1692so294505e0c.1
+        for <stable@vger.kernel.org>; Thu, 24 Jul 2025 07:36:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753367760; x=1753972560;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1/ClJdrWPfwKRkRpbRRXkAMnaqMIpW6RqyjsVq8yU5M=;
+        b=DOHeA2ILgTM4bct85htDYJgfv0h1KuVkuHvRHBuIPt5WUARqbBquz6H0afcKdjPpY+
+         yu/AjlQt9jJJYCoFh4GxYpDcv1lRRJIhiOW9Xpip8pMa16yF7kaGwXuDZN2h36ekO8H5
+         kd1fGVOUKgWzcWHfr3M/JZVe8e5F5U27aPzBcd4lHsKa0OutDrUmtuJ5g8/IgxmqQmdY
+         oJOpwQgoFTb8AEr1jQA+skf0ylryR69fd7FuSoggSfMMZggeJHawIFwikmFYqN0Fsecr
+         hdCu0bEPQRlDENMeP36GaqrWm4YuP8qxijmM0NHN8AmpkpxG3OLmr4UxyLifj1K2qJ6S
+         6ylw==
+X-Gm-Message-State: AOJu0YxXmw55enV9IulRxwA4YR+O+1L7AcE3ItqGBb/g/uDnzCXw5+za
+	Dw+4mp3r5Yi8HQHZlVLLFoVll2wBySzLPUb+VpCQDs3TtA2PKRw/8bKmSvehawSDyAsNkbj51+e
+	SZDgKK6yaNWPCeUhXq6nb7EHtLvcyBlsWLn5Q9G4ZZspSyMoqBqI0n+rDUQE=
+X-Gm-Gg: ASbGncvshZ0WFZoSBog4GTOfPpuys2o7gs7UjqZsrRf4hciyKvxoz4adToJs4hx13Ru
+	9jQN/hgGNlEuEHveynSrQuQbw7WFYFhjP8sDde6FgF0vanIRj/l1MNXMJIdgXCsFudhyzuN2he3
+	nW8PT72Pq6tuMt3tQYM5DScVZmS2yqNyyAKvrmJO+wSZU7PjaXeFTMaQzH2CAk8ZaC+5VfJ7EBX
+	uoHD8rHKlkpFq75bWRU8ppchyiTzq6fDQ/w9FBFcWiO/wHAR0q0ZkGc1RLuM4zVzUnd41HoVvKR
+	rHbHqrZm0v3pMNJ2PPqLAhFdvIH2LS/Bj92pqxcoCbFJtx/NIL/AA5xqPZl0nhCk6w==
+X-Received: by 2002:a05:6122:6b01:b0:537:b0ed:8880 with SMTP id 71dfb90a1353d-537b0ed88a5mr3085212e0c.0.1753367760390;
+        Thu, 24 Jul 2025 07:36:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGV7/4xTbCwqcV4MMHokj20TcECLL4PLxvjwMzyiIpFYCs4G6HF8VmgXAUs3OM8Wh+qWkoFfA==
+X-Received: by 2002:a05:6122:6b01:b0:537:b0ed:8880 with SMTP id 71dfb90a1353d-537b0ed88a5mr3085164e0c.0.1753367759881;
+        Thu, 24 Jul 2025 07:35:59 -0700 (PDT)
+Received: from HMOMMER.na.qualcomm.com ([212.136.9.4])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-614cd0d8232sm922113a12.13.2025.07.24.07.35.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Jul 2025 07:35:59 -0700 (PDT)
+From: Harald Mommer <harald.mommer@oss.qualcomm.com>
+To: Harald Mommer <hmommer@qti.qualcomm.com>
+Cc: stable@vger.kernel.org, Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH v2 1/1] gpio: virtio: Fix config space reading.
+Date: Thu, 24 Jul 2025 16:35:22 +0200
+Message-ID: <20250724143554.5418-2-harald.mommer@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250724143554.5418-1-harald.mommer@oss.qualcomm.com>
+References: <20250724143554.5418-1-harald.mommer@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <bc4w3nbkjzyrwmcjodrrwg7klgg532gre5v6fiwe3jvrww5egp@zezyxzny3ux4>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: xURLY4F8jlAkcScnpBaO2R8qCxrIR7DM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDExMSBTYWx0ZWRfXyjLCPdRWtsGd
+ elwrVLN+Ft6xKyrRqZDdIPBiJb93tVgtG6/iuxRuQssbslpZZYKk0vGlrcwjzsFyEV2ENS8VvjW
+ ZtGA9+0d9PLBFqTDy13owdfZH+3DtT5XBAb77+nnwvS2DouOpoV8SwyJnTBVwY58Ty/W46x7idl
+ Tgpmw4V+b8f8DYlnuU8/vLKdL9MJ0CJXy9pwAInOF0tC1gy10MVN7bTSj7t+aZ8IsS8Q+5vXw3V
+ 5gOtjLqRB691v7d0QL4CSnB3jWv0gE0UUUdE9ab64YTycnc8esBOhtj5Ite0nkRUEJPJzqE2ySL
+ G2G/mcE3ewE+UCf/6c6vHke9vJYlGF7R/MarJlcMMGz8rmkNtbDQfe9oIcBLn0fNYHDbz41+U+I
+ UKhFh+YcaX8rJUyzIVos5o6M0XoCU65nxKs4RgJ/mI5MtUhLevFSApwlJQSqM45mSKU484Je
+X-Authority-Analysis: v=2.4 cv=Q+fS452a c=1 sm=1 tr=0 ts=688244d1 cx=c_pps
+ a=1Os3MKEOqt8YzSjcPV0cFA==:117 a=dNlqnMcrdpbb+gQrTujlOQ==:17
+ a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8
+ a=x8YHxakxDffKOoiCecoA:9 a=hhpmQAJR8DioWGSBphRh:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: xURLY4F8jlAkcScnpBaO2R8qCxrIR7DM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-24_02,2025-07-24_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 adultscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0
+ mlxlogscore=999 suspectscore=0 spamscore=0 priorityscore=1501 malwarescore=0
+ bulkscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507240111
 
-On Thu, Jul 24, 2025 at 12:59:47PM +0200, Maciej Wieczor-Retman wrote:
-> As I wrote in the v2 thread, based on what's in the documentation added at the
-> commit I pointed out, the behavior is a bug.
+Quote from the virtio specification chapter 4.2.2.2:
 
-That's all missing the whole idea of Fixes: tags and backports.
+"For the device-specific configuration space, the driver MUST use 8 bit
+wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
+for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
+64 bit wide fields."
 
-Your patch must point to the correct faulty commit which causes this
-behavior or to none, which means backport everywhere. And I already
-explained this to you.
+Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ drivers/gpio/gpio-virtio.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Pointing to a commit documenting this doesn't make the tree *before*
-that all of a sudden not affected.
-
-What I would do is, I'd go through all stable trees and check whether
-they're affected. If they are, you craft backports for all of them. You
-were already asking Greg what to do.
-
-But pointing to some innocuous commit and deciding that that is the
-culprit is not what you should do.
-
-Thx.
-
+diff --git a/drivers/gpio/gpio-virtio.c b/drivers/gpio/gpio-virtio.c
+index 92b456475d89..07552611da98 100644
+--- a/drivers/gpio/gpio-virtio.c
++++ b/drivers/gpio/gpio-virtio.c
+@@ -527,7 +527,6 @@ static const char **virtio_gpio_get_names(struct virtio_gpio *vgpio,
+ 
+ static int virtio_gpio_probe(struct virtio_device *vdev)
+ {
+-	struct virtio_gpio_config config;
+ 	struct device *dev = &vdev->dev;
+ 	struct virtio_gpio *vgpio;
+ 	struct irq_chip *gpio_irq_chip;
+@@ -540,9 +539,11 @@ static int virtio_gpio_probe(struct virtio_device *vdev)
+ 		return -ENOMEM;
+ 
+ 	/* Read configuration */
+-	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
+-	gpio_names_size = le32_to_cpu(config.gpio_names_size);
+-	ngpio = le16_to_cpu(config.ngpio);
++	gpio_names_size =
++		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
++					      gpio_names_size));
++	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
++					       ngpio));
+ 	if (!ngpio) {
+ 		dev_err(dev, "Number of GPIOs can't be zero\n");
+ 		return -EINVAL;
 -- 
-Regards/Gruss,
-    Boris.
+2.43.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
