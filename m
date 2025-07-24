@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-164577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A186B10598
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 11:19:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99461B105A1
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 11:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56786189B2F2
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 09:20:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A53C7AB396
+	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 09:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86109259CA7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4CEB274B2F;
 	Thu, 24 Jul 2025 09:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lD4hFQdo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CIx00lE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF28258CE7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9884B259CBA;
 	Thu, 24 Jul 2025 09:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753348771; cv=none; b=Slg+klEJ62VjIDqewK3bNzu7DywLlkuudqzqu+1owhovDdFRccysPJ6AcTExWqjQOnEXxk+cAbS9W2biz3kXQDpLc+LNQGXcTBfgoFMboSQ303BG8/DiKX57uFbtOhXLVxQMdvA3zClMLEyN9TzJRXtxylC3VMKskxdg1fJJdVc=
+	t=1753348771; cv=none; b=oMHjHxHp3mF2PYcs/Wnr0hcKoUdxiZ9GHWuquD+2029HPBZyMcyi864a82MKqxiOsuM5C+3N+63Fg7jW0tKVOGf7ZBjJOHhUj/E887Eqh3EF8DYTK4R3icdxG1+p/BjSBkKiytCtoxlmp/Xf27LjpI4lwaZ16JDGPdI3ut4/Ls8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753348771; c=relaxed/simple;
-	bh=4QBXBq2TIpUKWHS0dOXuGcrJ+33C285poMFsrX5wwTQ=;
+	bh=heZubNRf2SjBNIuw2Atw10HonqmFi54G/HKy4mFRFIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgjw3zdsqUQ7uCYFGkAeDddLWd1nzcDkaSmqmmALLVJDz0wku5Ht6iMNWHvT0zbxyIvYWP8jkQT7IhpOW3MKyv+tOShho5kyLzOIp43bBXBclr+tmQ/mpLFnYPkWalAHZzg8fmUyKSDPswIeDfXm3PSMwuA77mQ9WuOHICfmaks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lD4hFQdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2DFC4CEF9;
+	 MIME-Version; b=ZCs+S8MlgG17l9zqUIsiwQ7e0JlncJaTj5HIx9teG2nP5mnay6CLMYrYBeA7LUtjB3ZaqheROkWCgrcNKz5ydf2MI8rZiBQn1Q8VDEvQ23w3WfDw1nwSso3WmltRHd6vyiq0ArfNHtTe/DWyOFL2NF71sEnznrshXcaYIdV6+bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CIx00lE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15A2C4CEFA;
 	Thu, 24 Jul 2025 09:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1753348771;
-	bh=4QBXBq2TIpUKWHS0dOXuGcrJ+33C285poMFsrX5wwTQ=;
+	bh=heZubNRf2SjBNIuw2Atw10HonqmFi54G/HKy4mFRFIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lD4hFQdowc88sXR1TgcS7XG5ndJMfIitgPEMmTsz0cCJc4tWsisycukC9VS6ss0NT
-	 MIQmHBJhXF2fnufLG596NEWAWuq6ExVLDg1HbpuNARxR61xym8PTuageJWbIcY6B2m
-	 QyXZUF0MEd4N6dkanizu8zzRdniSMJqmMeyPurBmulYCpvl6+JTiY5EEZYXtOlBnLE
-	 JacPFdBdVZO6nWNq6XDh3bCyEIf2iFokhDcr2iYNzGoxcKKjyndryaJlrW4P95/UVU
-	 +OKvygmKzo1gYoDX5yqnGXalFw5PLHH8VIJ5OsM+l1jZcv0PU2u/cEPnI2rZR+9IRD
-	 zoFWRreT9l5+w==
+	b=CIx00lE9oSnUaRBc7WEcZvhZSzTfjC3CH99QmbfDDQLZoKxZjJ/qfAMtf8d2lyriV
+	 n/te2CxDcO9q58DUXBsSXmtbkK4su6+Wa1PZ2MjuL7pOvlEpzkoGMkpQQ2+KsjYitx
+	 H09hPPDKUxo1D9gjUjs9XpNYqL/W+YmHVH8XVTjTktO8NGQIxFCVU0sYSFFg/bUxVH
+	 Y/qiOt+UmHGiADEvZDiLYuUrBYukCAScTEnWxRNQREYghINN4B+5Em/jMVLi7FLLcv
+	 O9d5zoOCTja7kwkdFwcwCzm0oH7MDrbGAgsWSTurKxFtByi5vxJ0mbc3bF+CDjKfRT
+	 NNgUwLsG+Cf5w==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1ues6n-000000005Uz-3YCG;
+	id 1ues6n-000000005V1-3sbp;
 	Thu, 24 Jul 2025 11:19:25 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -61,10 +61,10 @@ Cc: Shawn Guo <shawnguo@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH 3/5] usb: gadget: udc: renesas_usb3: fix device leak at unbind
-Date: Thu, 24 Jul 2025 11:19:08 +0200
-Message-ID: <20250724091910.21092-4-johan@kernel.org>
+	Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH 4/5] usb: musb: omap2430: fix device leak at unbind
+Date: Thu, 24 Jul 2025 11:19:09 +0200
+Message-ID: <20250724091910.21092-5-johan@kernel.org>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250724091910.21092-1-johan@kernel.org>
 References: <20250724091910.21092-1-johan@kernel.org>
@@ -76,29 +76,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to drop the reference to the companion device taken during
-probe when the driver is unbound.
+Make sure to drop the reference to the control device taken by
+of_find_device_by_node() during probe when the driver is unbound.
 
-Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Roger Quadros <rogerq@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/musb/omap2430.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/renesas_usb3.c b/drivers/usb/gadget/udc/renesas_usb3.c
-index 3e4d56457597..d23b1762e0e4 100644
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -2657,6 +2657,7 @@ static void renesas_usb3_remove(struct platform_device *pdev)
- 	struct renesas_usb3 *usb3 = platform_get_drvdata(pdev);
+diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
+index 2970967a4fd2..36f756f9b7f6 100644
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -400,7 +400,7 @@ static int omap2430_probe(struct platform_device *pdev)
+ 	ret = platform_device_add_resources(musb, pdev->resource, pdev->num_resources);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add resources\n");
+-		goto err2;
++		goto err_put_control_otghs;
+ 	}
  
- 	debugfs_remove_recursive(usb3->dentry);
-+	put_device(usb3->host_dev);
- 	device_remove_file(&pdev->dev, &dev_attr_role);
+ 	if (populate_irqs) {
+@@ -413,7 +413,7 @@ static int omap2430_probe(struct platform_device *pdev)
+ 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 		if (!res) {
+ 			ret = -EINVAL;
+-			goto err2;
++			goto err_put_control_otghs;
+ 		}
  
- 	cancel_work_sync(&usb3->role_work);
+ 		musb_res[i].start = res->start;
+@@ -441,14 +441,14 @@ static int omap2430_probe(struct platform_device *pdev)
+ 		ret = platform_device_add_resources(musb, musb_res, i);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to add IRQ resources\n");
+-			goto err2;
++			goto err_put_control_otghs;
+ 		}
+ 	}
+ 
+ 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add platform_data\n");
+-		goto err2;
++		goto err_put_control_otghs;
+ 	}
+ 
+ 	pm_runtime_enable(glue->dev);
+@@ -463,7 +463,9 @@ static int omap2430_probe(struct platform_device *pdev)
+ 
+ err3:
+ 	pm_runtime_disable(glue->dev);
+-
++err_put_control_otghs:
++	if (!IS_ERR(glue->control_otghs))
++		put_device(glue->control_otghs);
+ err2:
+ 	platform_device_put(musb);
+ 
+@@ -477,6 +479,8 @@ static void omap2430_remove(struct platform_device *pdev)
+ 
+ 	platform_device_unregister(glue->musb);
+ 	pm_runtime_disable(glue->dev);
++	if (!IS_ERR(glue->control_otghs))
++		put_device(glue->control_otghs);
+ }
+ 
+ #ifdef CONFIG_PM
 -- 
 2.49.1
 
