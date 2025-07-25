@@ -1,103 +1,75 @@
-Return-Path: <stable+bounces-164721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF0EB11901
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 09:14:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADCCB11931
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 09:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 901F356657E
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 07:13:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A373A585E74
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 07:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BD1291C2F;
-	Fri, 25 Jul 2025 07:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA0C289347;
+	Fri, 25 Jul 2025 07:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Yv9bAb8s";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="YYljWWsL";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Yv9bAb8s";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="YYljWWsL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PktTho9E"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1745729117A
-	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 07:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302D821C16E;
+	Fri, 25 Jul 2025 07:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753427622; cv=none; b=rZtmCOgD5KoWlGFZpdQNYV4xlWWWMi8yMAiIl5jjK9cM1H7+ui8Ul7kdZ4sS3HfXiAdqE8iKsTUCn6Q6oEOfaTAlYQBCBGYSaNEPdqh5ytc9oPyshHBM3nl2mpRXF/5XwnKEbnaXIXzv6JGpZgyZ1cA1BSqle0j+FfS3kSHp2/0=
+	t=1753428626; cv=none; b=u76eaJSwrws7kqUUbbiCT8W1K9CIDnbIYL4ifF4FzQmZU5uACfmqf70DL7M5pYXZR/uwuCUtDVsShdKf29xfvCAVviOADhQdzS+N1U0+HmRMco7a/waJqtXuvd/5cZHPLzu8azGzqLgSjygkVGVLhzxOlXlWIXWSQ17qRUGBO2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753427622; c=relaxed/simple;
-	bh=/IkDkDbWAVH+ZJLhTp3vFZDgVPllBPScloI4CyVXMyY=;
+	s=arc-20240116; t=1753428626; c=relaxed/simple;
+	bh=nua92x0daTGPAa9Lcxv8VEukL2BqG6YUkO/iJsGHqfA=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NBsoX3nDFX6iK/3wuVhPPUs9M5xNgwklBC7VoPM+w39xhBdnxcqGXGWfsnmd/SW1nBgB2ckdnb7UFMiSqFTiTwesM0nOONAn/6AByB5K5EUeXNaYwzS1dOVITfDHEelnoo1MQ84jTc5+faEd13WJbyTemK4RJ5LfnQrAYYzrIdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Yv9bAb8s; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=YYljWWsL; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Yv9bAb8s; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=YYljWWsL; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 31525218E6;
-	Fri, 25 Jul 2025 07:13:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753427619; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VEjNs39rbDw3xe1WcmCyVCH4R75euEwRyxD46VfmQAg=;
-	b=Yv9bAb8sdS9G5WL5yivSMPoc1OdBgmKHxt2MYHfNmoZmPhIO8nNq8ZYUOxqvzs8szY21Gd
-	W65A7nldIpbPIvlPTL0Zbjf7m4ZkWN27+brr+bemOLur/k3jtwLv6P3XreIudiK8neWuJw
-	xixLT2Ra4tkct6iuUmmrmY6M7CvDxAo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753427619;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VEjNs39rbDw3xe1WcmCyVCH4R75euEwRyxD46VfmQAg=;
-	b=YYljWWsLde049BD53Xulfcx+E0v3cRrhdw/vYJ5tmVhItzWE4WfO4G+LlNnPZ7OCd8FA7h
-	YOQAg3cjcs/prbCg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Yv9bAb8s;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YYljWWsL
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753427619; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VEjNs39rbDw3xe1WcmCyVCH4R75euEwRyxD46VfmQAg=;
-	b=Yv9bAb8sdS9G5WL5yivSMPoc1OdBgmKHxt2MYHfNmoZmPhIO8nNq8ZYUOxqvzs8szY21Gd
-	W65A7nldIpbPIvlPTL0Zbjf7m4ZkWN27+brr+bemOLur/k3jtwLv6P3XreIudiK8neWuJw
-	xixLT2Ra4tkct6iuUmmrmY6M7CvDxAo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753427619;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VEjNs39rbDw3xe1WcmCyVCH4R75euEwRyxD46VfmQAg=;
-	b=YYljWWsLde049BD53Xulfcx+E0v3cRrhdw/vYJ5tmVhItzWE4WfO4G+LlNnPZ7OCd8FA7h
-	YOQAg3cjcs/prbCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0406B134E8;
-	Fri, 25 Jul 2025 07:13:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id L8tvO6Iug2gERwAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Fri, 25 Jul 2025 07:13:38 +0000
-Date: Fri, 25 Jul 2025 09:13:38 +0200
-Message-ID: <87a54skajh.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: edip@medip.dev
-Cc: perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
+	 MIME-Version:Content-Type; b=KBc/sryH8pMjsxK2XUOPlkTgoVcXXsm8doMuafGRpx/v5a+H9c2s6a5zG5tvhUqLYn5a5tXmnSegc9TX7Q+fuNpNnig1cQhKXaJ7GvOwe9Q4gkSinYkHky98/DXrn4vfQLBrL99Dz6Jg9f/X+TOhb4+ZGFXchx1W1j74/M+HlVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PktTho9E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BCCC4CEF7;
+	Fri, 25 Jul 2025 07:30:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753428625;
+	bh=nua92x0daTGPAa9Lcxv8VEukL2BqG6YUkO/iJsGHqfA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PktTho9E1qwbQ/oaxMdmeQZJbUc0K+8IsdTr+SwJFzoGdb0F6AeGY5Vqj4wuy38lH
+	 V23AMLL1R3Vn6AmmcLnifTbF6b/hkCJco73Njoa9ggokJklTYud+ujwle460wD7KAX
+	 DjJ2gEFn6v5RyCa1QrR9oSmtTXwEQtkP3xuy7DpNJJZ00olhAuIU/anO3JAeKbLO9W
+	 FTc2c0xKTsd6RDULQyZSrAiSFGdD+5X9rw/QPtOlr+Qqd1+jg4AawKXpgpP6NDf1lx
+	 y5i6bwaAHzg+gxvZLvK4hCxqKwuPoE0GGyAd9K+CtqwmECNBrVrhyPp2IdnlnqPih+
+	 o9LZ/32NZtH0Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1ufCsp-001GT7-59;
+	Fri, 25 Jul 2025 08:30:23 +0100
+Date: Fri, 25 Jul 2025 08:30:21 +0100
+Message-ID: <86frek9182.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Justin Stitt <justinstitt@google.com>
+Cc: James Morse <james.morse@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tom Rix <trix@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda/realtek - Fix mute LED for HP Victus 16-r1xxx
-In-Reply-To: <20250724210756.61453-2-edip@medip.dev>
-References: <20250724210756.61453-2-edip@medip.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+Subject: Re: [PATCH 6.1.y] KVM: arm64: silence -Wuninitialized-const-pointer warning
+In-Reply-To: <20250724-b4-clidr-unint-const-ptr-v1-1-67c4d620b6b6@google.com>
+References: <20250724-b4-clidr-unint-const-ptr-v1-1-67c4d620b6b6@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,61 +77,67 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 31525218E6
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	TO_DN_NONE(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -3.51
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: justinstitt@google.com, james.morse@arm.com, alexandru.elisei@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, catalin.marinas@arm.com, will@kernel.org, nathan@kernel.org, trix@redhat.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, 24 Jul 2025 23:07:56 +0200,
-edip@medip.dev wrote:
+[Dropping a few emails from the list, as they are very likely to
+ simply bounce]
+
+On Fri, 25 Jul 2025 02:15:28 +0100,
+Justin Stitt <justinstitt@google.com> wrote:
 > 
-> From: Edip Hazuri <edip@medip.dev>
+> A new warning in Clang 22 [1] complains that @clidr passed to
+> get_clidr_el1() is an uninitialized const pointer. get_clidr_el1()
+> doesn't really care since it casts away the const-ness anyways.
 > 
-> The mute led on this laptop is using ALC245 but requires a quirk to work
-> This patch enables the existing quirk for the device.
+> Silence the warning by initializing the struct.
 > 
-> Tested on Victus 16-r1xxx Laptop. The LED behaviour works
-> as intended.
+> This patch won't apply to anything past v6.1 as this code section was
+> reworked in Commit 7af0c2534f4c ("KVM: arm64: Normalize cache configuration").
 > 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Edip Hazuri <edip@medip.dev>
+> Cc: stable@vger.kernel.org
+> Fixes: 7c8c5e6a9101e ("arm64: KVM: system register handling")
 
-The HD-audio code was relocated and split to different files recently
-(for 6.17 kernel), e.g. this Realtek codec is now located in
-sound/hda/codecs/realtek/alc269.c.
+No, this really doesn't fix anything other than paper over an
+overzealous warning.
 
-As I already closed the changes for 6.16 and it'll be put for
-6.17-rc1, could you rebase on for-next branch of sound.git tree and
-resubmit?
+> Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+> Signed-off-by: Justin Stitt <justinstitt@google.com>
+> ---
+>  arch/arm64/kvm/sys_regs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index f4a7c5abcbca..d7ebd7387221 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -2948,7 +2948,7 @@ int kvm_sys_reg_table_init(void)
+>  {
+>  	bool valid = true;
+>  	unsigned int i;
+> -	struct sys_reg_desc clidr;
+> +	struct sys_reg_desc clidr = {0};
+>  
+>  	/* Make sure tables are unique and in order. */
+>  	valid &= check_sysreg_table(sys_reg_descs, ARRAY_SIZE(sys_reg_descs), false);
+> 
 
+Frankly, this sort of things is the worse you can do, as
 
-thanks,
+- it perpetuates a bad design
 
-Takashi
+- it is completely pointless, as you pointed out
+
+- it is only going to make it harder to backport other patches
+
+The correct fix would be to backport the series described in
+e8789ab7047a8, which should be easy enough to apply. it would also
+make 6.1 less of a terrible kernel.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
