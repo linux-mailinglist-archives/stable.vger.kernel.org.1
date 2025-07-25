@@ -1,121 +1,131 @@
-Return-Path: <stable+bounces-164752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BA1B12256
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 18:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABE8B1226A
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 18:57:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13736AA3860
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 16:52:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97EB33B33D5
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 16:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE78C2EF2BE;
-	Fri, 25 Jul 2025 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B872EF66D;
+	Fri, 25 Jul 2025 16:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ucu8QzGp"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="HiWwRHBW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598AD190472;
-	Fri, 25 Jul 2025 16:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B7D2EF644
+	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 16:57:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753462402; cv=none; b=DvW4k/l4YwRqhwYBX4SKQJMG3ETKqfOVmrjjM+BGiQZ1WTqrdQRxPcztiS6m3ShpTcyZhwdg567XfRWAz1RkLXn8Sbb/iTHogqYyAFxhwhfT+pUowmNyBcLn6WagQ5QZLOZGdErE1++5asAvuFTee26Nh3HLRLavDwG38pukNPY=
+	t=1753462624; cv=none; b=OlcEUrlK+L4Ws/GEjgZ8d0XStdjh56GCFRXOZ8/KQKzzyK1SXKE0A5U88XRm5eNNEdXkMnpWUZrr9zoIGFBKHOQW9Fh2Wd9KSo77SxK4eNg9HzPjq2SFWLPtUseSSDitLxYFnR7l2t10yH/c1K/vQdSnJTY6+IGkMkCRL7I9wWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753462402; c=relaxed/simple;
-	bh=fdkIHtrgkFLcz98GalrIHm8UhzdxtNxljZswxai38T4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P1VMZzoKRv24bCII1iaPAzr2jMv7z2xWTVK/GEI9FWH8QKqsaKmhE8Tg00+cJBKKze1PIbKaHwveSDqUegSyGE/JX3XJrb6jroxnT+t59erOeDLRxhUc9p462wukr0yajl2I/Bad54VdVLjB/M6AzzMoQAZJ6UkowmIAC1jNOFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ucu8QzGp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C359EC4CEE7;
-	Fri, 25 Jul 2025 16:53:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753462401;
-	bh=fdkIHtrgkFLcz98GalrIHm8UhzdxtNxljZswxai38T4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ucu8QzGpXFqBNMVE65B7Upbb998yCXv5vjEfuLcdjj/vxHkEoCrpHzHR/QzlzBVZ0
-	 ZeZAlW29TdMLXlCMxpw+D7qvN8Y23kQXNyTQWk3RKO9X70AA4pIYZQGrgztpQSNH2t
-	 rB9YYmwXd5VtW2mh40fjJjBicjDGdknOdOdejL4yGRSEXd8+msY+cRoB4nw9FP4c9l
-	 iSNDDraIUDKisF1HAM+a8IFjFJHxhVzA4OkbJlbVPzgJ5OLRifQE9Rar9/wSE8Pqz3
-	 yHijA7s+/4Ft8Q7DcmrVvyS8N9ti6lXnpVROzxaAxcrm1V69/tCjX+n19X2rrEhiAW
-	 MbmIYYVRs1MpQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1ufLfb-001Oie-MY;
-	Fri, 25 Jul 2025 17:53:19 +0100
-Date: Fri, 25 Jul 2025 17:53:19 +0100
-Message-ID: <86bjp88b5s.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Justin Stitt <justinstitt@google.com>,
-	James Morse <james.morse@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Tom Rix <trix@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] KVM: arm64: silence -Wuninitialized-const-pointer warning
-In-Reply-To: <20250725162654.GA684490@ax162>
-References: <20250724-b4-clidr-unint-const-ptr-v1-1-67c4d620b6b6@google.com>
-	<86frek9182.wl-maz@kernel.org>
-	<20250725162654.GA684490@ax162>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1753462624; c=relaxed/simple;
+	bh=o8PGWrA3RMhqLDmbTJpWQAnuM32YJpgK1W2keKuVRSc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ga+BJ5u+MaR9SKRLhz560MvMFGZicsv6utZwy3qjmH0ChJ8zRdvvZIzTlO1OkUBXV9F9j03KzIX3aRmV5TPUly1KLdqFOvAHR+YnxVxuwjU4X33/xyUEC+uskzzrHGiftuhibAcNKKPXyVg2MKc/Oh7HLIvjetSXhePpdSZQry0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=HiWwRHBW; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3b39c46e1cfso225874f8f.3
+        for <stable@vger.kernel.org>; Fri, 25 Jul 2025 09:57:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1753462621; x=1754067421; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G5wCo50uCFgJpMI7LbHbH8s69mNDIY7eBkEPfxQyUMI=;
+        b=HiWwRHBW+hpdpA/pzahHHaAlEyphlkjc7DLvt+zVZTO15WuTTfhNln/U1W20mluXBI
+         ibWOs7vFhfADgNPAcKtkC/qTlyPE0Q2fOlT4tG/ExL+SHTH7oUko17EEgc8uFrenuaXB
+         pYEsPVSMUfGSYTEV6cPHu9XxzjvfdJNUB2WRe792P9v8RPD2jSFF9D/qQFjyaRl+2tPD
+         AvPndjozGOb7RozM+2XNvpkdV40EYHWO6m46ca2Fj5+3mTp6205e6XOoNesc7P9NrKtR
+         Jl/T1DnXhlkd1gcAn/MKWw82FyXyGC7dBfLUECNRnciGZZybBPHvl00Uu58mR5QLuQPI
+         igPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753462621; x=1754067421;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=G5wCo50uCFgJpMI7LbHbH8s69mNDIY7eBkEPfxQyUMI=;
+        b=afCs2D1L0eazdSCgHWCesqbGWPN40QjUdcby/qJgYVxz5uttnpNLtKYgBUQk5cy1jQ
+         8Jw4AKBqoG0q4eJslbIE2gWhYqJhdAYgZQsaUqICPBxb9XbO8HnB40cReeiO1SAnQEnn
+         wJrv/Vb1ABhC4WTjiYUYpnnI83Vc4trNbw5Od2L6cG/5sNYMj31q7nDmuichlRvsfHmT
+         X/QQN5QYzn3aWsUyZLmDxFbUzg6XCvCeMCbWlG5Fr42FkrZNDh+Q2VdIzfXBbNlvR9Fj
+         9L6Inu95IsLT6sN5JZkkpZ5P9sVzeyiW4yctVUSKA0yT2upmbKU8KgQZHRO0gx+V7yi4
+         xaVw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQvoLTdWYflzfY2hmyPhGbspbdtYAoI7N7M/4TyEG9t7+uJpC4M9soJdpgS/MyLgud7SnOBP8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrcVaIGJ9l01cUvN2LrKxKkhGAVou30gqpWRFs0cLFO8D1I09S
+	soyGZb7/Dq3NSWdOBXQGfTYWoZsdZpCJVHnu/bD+J/VztnGCMMdKo7EHRzZrfWN1S+g=
+X-Gm-Gg: ASbGnctCTMmSONw8vxLSO0K5DUhDEo9nVR4cYW5SNwEn2h9asGKe2g35E/DWGiLkwlP
+	WcU6f0gDisVXlEQMGPOWtYf/yylVplnkRQI5BmSeKB+4D9LTCwfnjXgcj0QiTnY8rg34wQCon3r
+	uFCzEqdOBIUARaLEIEJ24I6YfEeOlBFewtoQqANF0nmVChDbIp5swfdo8GyqAb4hNG9Tmm7d358
+	NqSfMLWyqO+moHjZjXDO0SjCF3Pu0hmbn1s6sNIQh8AJIRgMbZqttGky13zWVuhHi4g64VMwr7Z
+	F3XqGWVP6syBsTBM63achHviK22/32cXYK+vS0quLMjI74s3EiVuUpKWgUFv6+1NIZ6B/l8D+yC
+	2PmJqCrvHEL/0qaTwXGJN6zTXUtCJxQ==
+X-Google-Smtp-Source: AGHT+IFE0VwAz2zEeGx2Qzxk8E6WuBhcU7HaGl2wpgJlNEjaoTX1yD9xeYguw1eB6wx5XJ8Oij5/AQ==
+X-Received: by 2002:a5d:5f92:0:b0:3a5:3369:391c with SMTP id ffacd0b85a97d-3b7766d2d43mr701824f8f.1.1753462620875;
+        Fri, 25 Jul 2025 09:57:00 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200:8c15:2281:5347:b367])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b778eb9eaasm401817f8f.24.2025.07.25.09.57.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jul 2025 09:57:00 -0700 (PDT)
+From: =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
+To: linux-riscv@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Deepak Gupta <debug@rivosinc.com>,
+	stable@vger.kernel.org,
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH v2 1/4] riscv: use lw when reading int cpu in new_vmalloc_check
+Date: Fri, 25 Jul 2025 18:54:09 +0200
+Message-ID: <20250725165410.2896641-4-rkrcmar@ventanamicro.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250725165410.2896641-3-rkrcmar@ventanamicro.com>
+References: <20250725165410.2896641-3-rkrcmar@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: nathan@kernel.org, justinstitt@google.com, james.morse@arm.com, alexandru.elisei@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, catalin.marinas@arm.com, will@kernel.org, trix@redhat.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, 25 Jul 2025 17:26:54 +0100,
-Nathan Chancellor <nathan@kernel.org> wrote:
-> 
-> On Fri, Jul 25, 2025 at 08:30:21AM +0100, Marc Zyngier wrote:
-> > The correct fix would be to backport the series described in
-> > e8789ab7047a8, which should be easy enough to apply. it would also
-> > make 6.1 less of a terrible kernel.
-> 
-> If doing that is reasonable to clear this up, I think that would be fine
-> to do. This is the only stable-only instance of that warning that I have
-> seen in the build logs, I have sent patches to deal with all the other
-> instances upstream. We would need this in 5.15 to avoid failures from
-> -Werror as well but if it is too hard to backport that series there, we
-> could just disable this warning for this file since we know it is a
-> false positive.
+REG_L is wrong, because thread_info.cpu is 32-bit, not xlen-bit wide.
+The struct currently has a hole after cpu, so little endian accesses
+seemed fine.
 
-5.15 would be rather challenging, I'm afraid, and I wouldn't want to
-review such a thing.
+Fixes: 503638e0babf ("riscv: Stop emitting preventive sfence.vma for new vmalloc mappings")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
+---
+v2: split for stable [Alex]
+---
+ arch/riscv/kernel/entry.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> The whole reason the warning occurs is due to the constness of the
-> sys_reg_desc parameter in the function created by FUNCTION_INVARIANT(),
-> which I am guessing cannot be removed because it is present in
-> ->access() and it proliferates out from there?
-
-Exactly. Which was a rather bad move when it was introduced over a
-decade ago (in v3.11), and we only got 'round to killing it entirely
-in v6.15.
-
-Thanks,
-
-	M.
-
+diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
+index 75656afa2d6b..4fdf187a62bf 100644
+--- a/arch/riscv/kernel/entry.S
++++ b/arch/riscv/kernel/entry.S
+@@ -46,7 +46,7 @@
+ 	 * a0 = &new_vmalloc[BIT_WORD(cpu)]
+ 	 * a1 = BIT_MASK(cpu)
+ 	 */
+-	REG_L 	a2, TASK_TI_CPU(tp)
++	lw	a2, TASK_TI_CPU(tp)
+ 	/*
+ 	 * Compute the new_vmalloc element position:
+ 	 * (cpu / 64) * 8 = (cpu >> 6) << 3
 -- 
-Without deviation from the norm, progress is not possible.
+2.50.0
+
 
