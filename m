@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-164701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E556DB11579
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 02:58:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F97DB115A1
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 03:15:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E471AAE23A5
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 00:58:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EFD94E0C71
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 01:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF94A18DB1F;
-	Fri, 25 Jul 2025 00:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5279A1C860B;
+	Fri, 25 Jul 2025 01:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WTt5y3xH"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="J5wVkoao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D146BA3D;
-	Fri, 25 Jul 2025 00:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8531C549F;
+	Fri, 25 Jul 2025 01:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753405114; cv=none; b=FW3RRpOw0IGaZeSIhzv20oC3SpNJoYGbA2CvAi6BO5X3740CAfCP2u2iLYZN4LmXnQWYDQ5UcYYaDUeorl8SppK7Skdp0Sy5JJAYnNYbKS9U3jU6bhU3S7U/8dgM8o2xIY1CwWXNgveeXcXdi3a2mhcroLhk0xZwJPNfKarzkd4=
+	t=1753406112; cv=none; b=IiAwV3I4knGK7Xd1HKgX1QGRum6EHyXev5xBV+NBiM6axg1/wrf0XcZ4NvVk0iPsPfwNBUrOkHme29HJAQTmW+R3lxAhWRCfCAMPqddFDLE2iA5/t/yr/gfka4FF3q+6sYwhKbEMJe9CnxHwHa6ok0CxbL5WxX/UhlRP1xv4NPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753405114; c=relaxed/simple;
-	bh=zvXYrAI1SQv4U+ZFGo0Gf9ewLL/nHTCZThClfO2JKAI=;
-	h=Date:To:From:Subject:Message-Id; b=kdGyAVTF4eQBgFV0tueV7pvSnqRfLJLjFw1RAL4FB7hT0rvHeqnLJWoUt8EdKho7uzf+txuZTwx5q1VWfMy7R3Shxs3WMGQNGqe/gx0KaKFDrnGi6sEDfimhXOaoau8+5rjIGHCiWH9jKAczjUBJqJgeTOPx10AON0NjG6WxQeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WTt5y3xH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A34C4CEED;
-	Fri, 25 Jul 2025 00:58:33 +0000 (UTC)
+	s=arc-20240116; t=1753406112; c=relaxed/simple;
+	bh=89Yza8Xv2Li3h+dr5UEgW+Lj7H39SWvzgfWawX74SGI=;
+	h=Date:To:From:Subject:Message-Id; b=hGYpibpXhfGDNvzn3dxum5a2Yd3huryu1LhUOfjEaMxkVDn1IYhMHW2+6qxnBIobFSZbdkrQnM1qUgAKzoasQ8fPUNGv0XoX8LutBwlHasUIi/JG9D9RBpKeMjqOpAN1DvOtzI+hI1x0CoZhIoVJ4R9KPvIF3sGuZYHDJQreEBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=J5wVkoao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E66C4CEED;
+	Fri, 25 Jul 2025 01:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1753405113;
-	bh=zvXYrAI1SQv4U+ZFGo0Gf9ewLL/nHTCZThClfO2JKAI=;
+	s=korg; t=1753406111;
+	bh=89Yza8Xv2Li3h+dr5UEgW+Lj7H39SWvzgfWawX74SGI=;
 	h=Date:To:From:Subject:From;
-	b=WTt5y3xHxVBQuGw5VuHSl1TC5ZaD7rAf6xbPAHIdRxvAKaGL2dk0wKcf9uVAUWRXg
-	 Y7TGJ3lgUooN/3Vqw0kygpf6mk2tDUjN9xfKZNIorVLKpr4hSoVnT6vNlEwp88+Jdx
-	 bKqu+wvyz447rNY6LwCj+LGAFnBzGxTcafgrFToI=
-Date: Thu, 24 Jul 2025 17:58:33 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,senozhatsky@chromium.org,rostedt@goodmis.org,pmladek@suse.com,linux@rasmusvillemoes.dk,herbert@gondor.apana.org.au,andriy.shevchenko@linux.intel.com,sfr@canb.auug.org.au,akpm@linux-foundation.org
+	b=J5wVkoaoZ6l+0UR3AR6J+bmeRzpJW0gCvII3y4CHk3WlPGzrdhHBlcja25vIoZnyl
+	 1jM6vUgp744URl7F+gLw6XX7PDdOtoCghaOnsn/BBub720j/or6FWn4KrnD711wMpv
+	 EKS5Nrjm5MB+6bgE5xoEuiqQ2LgJNsMzrg/Wg8Zc=
+Date: Thu, 24 Jul 2025 18:15:11 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kasong@tencent.com,hannes@cmpxchg.org,bhe@redhat.com,shikemeng@huaweicloud.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] sprintfh-requires-stdargh.patch removed from -mm tree
-Message-Id: <20250725005833.D1A34C4CEED@smtp.kernel.org>
+Subject: [folded-merged] mm-swap-correctly-use-maxpages-in-swapon-syscall-to-avoid-potensial-deadloop-fix.patch removed from -mm tree
+Message-Id: <20250725011511.81E66C4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,53 +50,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: sprintf.h requires stdarg.h
+     Subject: mm: swap: correctly use maxpages in swapon syscall to avoid potential deadloop
 has been removed from the -mm tree.  Its filename was
-     sprintfh-requires-stdargh.patch
+     mm-swap-correctly-use-maxpages-in-swapon-syscall-to-avoid-potensial-deadloop-fix.patch
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+This patch was dropped because it was folded into mm-swap-correctly-use-maxpages-in-swapon-syscall-to-avoid-potensial-deadloop.patch
 
 ------------------------------------------------------
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: sprintf.h requires stdarg.h
-Date: Mon, 21 Jul 2025 16:15:57 +1000
+From: Kemeng Shi <shikemeng@huaweicloud.com>
+Subject: mm: swap: correctly use maxpages in swapon syscall to avoid potential deadloop
+Date: Fri, 18 Jul 2025 14:51:39 +0800
 
-In file included from drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c:4:
-include/linux/sprintf.h:11:54: error: unknown type name 'va_list'
-   11 | __printf(2, 0) int vsprintf(char *buf, const char *, va_list);
-      |                                                      ^~~~~~~
-include/linux/sprintf.h:1:1: note: 'va_list' is defined in header '<stdarg.h>'; this is probably fixable by adding '#include <stdarg.h>'
+ensure si->pages == si->max - 1 after setup_swap_extents()
 
-Link: https://lkml.kernel.org/r/20250721173754.42865913@canb.auug.org.au
-Fixes: 39ced19b9e60 ("lib/vsprintf: split out sprintf() and friends")
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Link: https://lkml.kernel.org/r/20250522122554.12209-3-shikemeng@huaweicloud.com
+Link: https://lkml.kernel.org/r/20250718065139.61989-1-shikemeng@huaweicloud.com
+Fixes: 661383c6111a ("mm: swap: relaim the cached parts that got scanned")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kairui Song <kasong@tencent.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/sprintf.h |    1 +
- 1 file changed, 1 insertion(+)
+ mm/swapfile.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/include/linux/sprintf.h~sprintfh-requires-stdargh
-+++ a/include/linux/sprintf.h
-@@ -4,6 +4,7 @@
+--- a/mm/swapfile.c~mm-swap-correctly-use-maxpages-in-swapon-syscall-to-avoid-potensial-deadloop-fix
++++ a/mm/swapfile.c
+@@ -3357,6 +3357,12 @@ SYSCALL_DEFINE2(swapon, const char __use
+ 		error = nr_extents;
+ 		goto bad_swap_unlock_inode;
+ 	}
++	if (si->pages != si->max - 1) {
++		pr_err("swap:%u != (max:%u - 1)\n", si->pages, si->max);
++		error = -EINVAL;
++		goto bad_swap_unlock_inode;
++	}
++
+ 	maxpages = si->max;
  
- #include <linux/compiler_attributes.h>
- #include <linux/types.h>
-+#include <linux/stdarg.h>
- 
- int num_to_str(char *buf, int size, unsigned long long num, unsigned int width);
- 
+ 	/* OK, set up the swap map and apply the bad block list */
 _
 
-Patches currently in -mm which might be from sfr@canb.auug.org.au are
+Patches currently in -mm which might be from shikemeng@huaweicloud.com are
 
+mm-swap-move-nr_swap_pages-counter-decrement-from-folio_alloc_swap-to-swap_range_alloc.patch
+mm-swap-correctly-use-maxpages-in-swapon-syscall-to-avoid-potensial-deadloop.patch
+mm-swap-fix-potensial-buffer-overflow-in-setup_clusters.patch
+mm-swap-remove-stale-comment-stale-comment-in-cluster_alloc_swap_entry.patch
 
 
